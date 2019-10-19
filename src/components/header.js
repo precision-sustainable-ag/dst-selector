@@ -1,43 +1,29 @@
 import React, { Component } from 'react';
-import '../styles/header.css';
 import psaLogo from '../images/PSAlogo-text.png';
-import { makeStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
+import necccLogo from '../images/NECCCLogo.png';
+import nrcsLogo from '../images/USDANRCSLogo.png';
+import Container from '@material-ui/core/Container';
+import Grid from '@material-ui/core/Grid';
 
-const useStyles = makeStyles(theme => ({
-    root: {
-        flexGrow: 1,
-    },
-    menuButton: {
-        marginRight: theme.spacing(2),
-    },
-    title: {
-        flexGrow: 1,
-    },
-}));
+import '../styles/header.css';
 
 class Header extends Component {
     render() {
         return (
             <header>
-                <AppBar position="static">
-                    <Toolbar>
-                        <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-                            <MenuIcon />
-                        </IconButton>
-                        <Typography variant="h6" className={classes.title}>
-                            News
-                        </Typography>
-                        <Button color="inherit">Login</Button>
-                    </Toolbar>
-                </AppBar>
+                <Grid container spacing={3} style={{ maxHeight: '100px' }}>
+                    <Grid item xs={12} sm={6} lg={6} className="psaLogo">
+                    </Grid>
+                    <Grid item xs={12} sm={3} lg={3} className="necccLogo">
+
+                    </Grid>
+                    <Grid item xs={12} sm={3} lg={3} className="nrcsLogo">
+
+                    </Grid>
+                </Grid>
             </header>
         );
     }
 }
+
 export default Header;
