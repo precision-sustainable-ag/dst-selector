@@ -1,28 +1,55 @@
-$break-small: 320px;
-$break-large: 1200px;
+@import '../../node_modules/sass-mediaqueries/media-queries';
 
-@media screen and (max-width: $break-large) {
-header {
-    height: 100px;
-    width: 100vw;
+@include screen(320px, 640px) {
+
+}
+
+@include screen(641px, 1200px) {
+
+}
+
+@include min-screen(1201px) {
     .psaLogo {
-        
-        img {
-            width: 15%;
-        }
-    }
-}
-}
+        background: url('../images/PSAlogo-text.png');
+        background-size: contain;
+        background-repeat: no-repeat;
+        height: 100px;
 
-@media screen and (max-width: $break-small) {
-    header {
-        height: 40vh;
-        width: 100%;
-        .psaLogo {
-            img {
-                width: 100%;
-                max-height: 40vh;;
-            }
-        }
     }
+            .necccLogo {
+                background: url('../images/NECCCLogo.png');
+                background-size: contain;
+                background-repeat: no-repeat;
+                height: 100px;
+        }
+        .nrcsLogo {
+            background: url('../images/USDANRCSLogo.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            height: 100px;
+        }
+    header {
+        padding: 1em;;
+        // max-height: 100px;
+    }
+    // header {
+    //     height: 150px;
+    //     display: grid;
+    //     grid-template-columns: 3fr repeat(2, 1fr);
+    //     grid-template-rows: 1fr;
+    //     column-gap: 40px;
+
+    //     .psaLogo {
+    //         background: url('../images/PSAlogo-text.png');
+    //         background-size: cover;
+    //         background-repeat: no-repeat;
+    //         width: 35%;
+    //     }
+    //     .necccLogo {
+    //         width: 15%;
+    //     }
+    //     .nrcsLogo {
+    //         width: 15%;
+    //     }
+    // }
 }
