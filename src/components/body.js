@@ -27,13 +27,28 @@ class Body extends Component {
             <Grid container style={{ height: '60vh', padding: '2em' }}>
                 <Grid item lg={12}>
                     <Zipcode />
+                    <div style={{ padding: '3em' }}></div>
+                    <Search />
                 </Grid>
             </Grid>
             // </Paper>
         );
     }
 }
+function Search() {
 
+    return (
+        <form noValidate autoComplete="off">
+            <h3 style={{ textAlign: 'center' }}>Search</h3>
+            <TextField
+                id="searchField"
+                label="Search [enter cover crop name, scientific name, or synonym]"
+                fullWidth
+
+            />
+        </form>
+    );
+}
 function Zipcode() {
     const [values, setValues] = useState({
         location: '27606',
