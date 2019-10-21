@@ -4,11 +4,16 @@
   "private": true,
   "dependencies": {
     "@material-ui/core": "^4.5.1",
+    "@material-ui/icons": "^4.5.1",
     "airtable": "^0.7.1",
+    "axios": "^0.19.0",
+    "downshift": "^3.3.5",
+    "prop-types": "^15.7.2",
     "react": "^16.10.2",
     "react-dom": "^16.10.2",
     "react-scripts": "3.2.0",
-    "sass-mediaqueries": "^1.6.1"
+    "sass-mediaqueries": "^1.6.1",
+    "starwars-names": "^1.6.0"
   },
   "scripts": {
     "start": "react-scripts start",

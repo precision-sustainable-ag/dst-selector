@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import psaLogo from '../images/PSAlogo-text.png';
-import necccLogo from '../images/NECCCLogo.png';
-import nrcsLogo from '../images/USDANRCSLogo.png';
-import Container from '@material-ui/core/Container';
+// import psaLogo from '../images/PSAlogo-text.png';
+// import necccLogo from '../images/NECCCLogo.png';
+// import nrcsLogo from '../images/USDANRCSLogo.png';
+// import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 
 import '../styles/header.css';
