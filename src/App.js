@@ -10,6 +10,8 @@ function App() {
     <Grid>
       <Header />
       <Body />
+      <h1>Section 2</h1>
+      <Body />
     </Grid>
 
   );
