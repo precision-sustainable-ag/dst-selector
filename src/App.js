@@ -9,8 +9,8 @@ function App() {
   return (
     <Grid>
       <Header />
-      <Body />
-      <h1>Section 2</h1>
+      <hr />
+      <div style={{ paddingTop: '20px' }}></div>
       <Body />
     </Grid>
 
