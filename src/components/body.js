@@ -7,6 +7,7 @@ import CropSuggestions from './cropSuggestions';
 // import axios from 'axios';
 
 
+
 class Body extends Component {
     allItems = starWarsNames
         .random(7)
@@ -24,12 +25,14 @@ class Body extends Component {
         //         this.setState({ items: data.records.crover });
         //     })
         const hdrs = new Headers();
-        hdrs.append('Cotent-Type', 'application/json');
+        hdrs.append('Content-Type', 'application/json');
         hdrs.append('secret-key', '$2b$10$cB.vdtYXdwSORs8uKPq9.uWi1vLDspYmJoHamkfLZxiwvZHsswg4m');
+
         fetch('https://api.jsonbin.io/b/5daab0ecee19b1311aa10fcf/latest', {
             headers: hdrs
         })
             .then(resp => resp.json())
+
             .then((result) => {
                 console.log(result);
                 this.setState({
