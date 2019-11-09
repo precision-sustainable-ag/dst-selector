@@ -7,18 +7,29 @@ class Zipcode extends Component {
         super(props);
 
         this.state = {
-            location: ''
+            location: '10000'
         }
     }
 
+    handleChange = (e) => {
+        var isZipCode = true;
+        if (isNaN(e.target.value)) {
+            isZipCode = false;
+            // search for a city and update the state for a relevant zip
+        }
+
+        this.setState({
+            location: e.target.value
+        })
+    }
     componentDidMount() {
         fetch('https://ipapi.co/json/')
             .then(res => res.json())
             .then((data) => {
 
-                this.setState({
-                    location: data.postal
-                })
+                // this.setState({
+                //     location: data.postal
+                // })
             })
     }
     render() {
@@ -39,6 +50,7 @@ class Zipcode extends Component {
                     id="locationField"
                     label="Set Your Location"
                     value={this.state.location}
+                    onChange={this.handleChange}
                     // onChange={handleChange('location')}
                     margin='normal'
                     fullWidth

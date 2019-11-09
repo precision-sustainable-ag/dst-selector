@@ -9,47 +9,5 @@
 }
 
 @include min-screen(1201px) {
-    .psaLogo {
-        background: url('../images/PSAlogo-text.png');
-        background-size: contain;
-        background-repeat: no-repeat;
-        height: 100px;
 
-    }
-            .necccLogo {
-                background: url('../images/NECCCLogo.png');
-                background-size: contain;
-                background-repeat: no-repeat;
-                height: 100px;
-        }
-        .nrcsLogo {
-            background: url('../images/USDANRCSLogo.png');
-            background-size: contain;
-            background-repeat: no-repeat;
-            height: 100px;
-        }
-    header {
-        padding: 1em;;
-        // max-height: 100px;
-    }
-    // header {
-    //     height: 150px;
-    //     display: grid;
-    //     grid-template-columns: 3fr repeat(2, 1fr);
-    //     grid-template-rows: 1fr;
-    //     column-gap: 40px;
-
-    //     .psaLogo {
-    //         background: url('../images/PSAlogo-text.png');
-    //         background-size: cover;
-    //         background-repeat: no-repeat;
-    //         width: 35%;
-    //     }
-    //     .necccLogo {
-    //         width: 15%;
-    //     }
-    //     .nrcsLogo {
-    //         width: 15%;
-    //     }
-    // }
 }

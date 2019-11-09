@@ -3,25 +3,38 @@ import React, { Component } from 'react';
 // import necccLogo from '../images/NECCCLogo.png';
 // import nrcsLogo from '../images/USDANRCSLogo.png';
 // import Container from '@material-ui/core/Container';
-import Grid from '@material-ui/core/Grid';
 
+import necc from '../images/neccclogo-temp.png';
+import Grid from '@material-ui/core/Grid';
 import '../styles/header.css';
+import { Container, Typography } from '@material-ui/core';
+
+
 
 class Header extends Component {
     render() {
+
         return (
-            <header>
-                <Grid container spacing={3} style={{ maxHeight: '100px' }}>
-                    <Grid item xs={12} sm={6} lg={6} className="psaLogo">
-                    </Grid>
-                    <Grid item xs={12} sm={3} lg={3} className="necccLogo">
 
+            <Container maxWidth="xl">
+                <Grid container>
+                    <Grid item md={1}>
+                        <img src={necc} width="100%"></img>
                     </Grid>
-                    <Grid item xs={12} sm={3} lg={3} className="nrcsLogo">
+                    <Grid item container md={11} direction="column" alignItems="flex-start" justify="center" spacing={2}>
+                        <Grid item >
+                            <Typography variant="h4">Northeast Cover Crops Councils</Typography>
 
+                        </Grid>
+                        <Grid item>
+                            <Typography variant="h5">Cover Crop Decision Support Tools</Typography>
+                        </Grid>
                     </Grid>
                 </Grid>
-            </header>
+
+            </Container>
+
+
         );
     }
 }
