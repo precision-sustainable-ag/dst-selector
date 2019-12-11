@@ -1,13 +1,59 @@
-@import '../../node_modules/sass-mediaqueries/media-queries';
+// @import '../../node_modules/sass-mediaqueries/media-queries';
 
-@include screen(320px, 640px) {
+// @include screen(320px, 640px) {
 
+// }
+
+// @include screen(641px, 1200px) {
+
+// }
+
+// @include min-screen(1201px) {
+
+// }
+
+#banner {
+  vertical-align: middle;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  height: 30px;
+  ul {
+    list-style: none;
+    //   height: 30px;
+    padding: 0;
+    position: relative;
+    li {
+      float: left;
+      margin: auto 0;
+      height: 30px;
+      line-height: 30px;
+      width: 100px;
+      text-align: center;
+      a {
+        font-size: 10pt;
+        text-decoration: none;
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+      &:not(:last-child):after {
+        content: "";
+        display: inline-block;
+        margin-left: 18px;
+        border-right: 1px solid #aba;
+        height: 20px;
+        top: 5px;
+        position: absolute;
+      }
+    }
+  }
 }
 
-@include screen(641px, 1200px) {
+// .logoGrid {
 
-}
+// }
 
-@include min-screen(1201px) {
-
+.MuiListItem-gutters:first-child {
+  padding-left: 0px;
 }
