@@ -38,7 +38,10 @@ function Footer() {
           <Box flexGrow={1}>
             <p>
               Disclaimer: Actual cover crop performance may vary. Consult an{" "}
-              <a href="">NRCS Extension Educator</a> for detailed guidance.
+              <a href="http://placehold.it/1000x1000" style={{ color: "#fff" }}>
+                NRCS Extension Educator
+              </a>{" "}
+              for detailed guidance.
             </p>
           </Box>
 
