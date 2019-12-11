@@ -1,1 +1,52 @@
-/* No CSS *//*# sourceMappingURL=header.css.map */
+#banner {
+  vertical-align: middle;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+  height: 30px;
+}
+
+#banner ul {
+  list-style: none;
+  padding: 0;
+  position: relative;
+}
+
+#banner ul li {
+  float: left;
+  margin: auto 0;
+  height: 30px;
+  line-height: 30px;
+  width: 100px;
+  text-align: center;
+}
+
+#banner ul li a {
+  font-size: 10pt;
+  text-decoration: none;
+}
+
+#banner ul li a:hover {
+  text-decoration: underline;
+}
+
+#banner ul li:not(:last-child):after {
+  content: "";
+  display: inline-block;
+  margin-left: 18px;
+  border-right: 1px solid #aba;
+  height: 20px;
+  top: 5px;
+  position: absolute;
+}
+
+.MuiListItem-gutters:first-child {
+  padding-left: 0px;
+}
+/*# sourceMappingURL=header.css.map */

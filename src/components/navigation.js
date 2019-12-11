@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import { AppBar, Paper, Tabs, Tab, Typography, Box } from "@material-ui/core";
 import PropTypes from "prop-types";
-import Header from "./header";
-// import TabPanel from '@material-ui/core/Tabs/'
 
 export default function Navigation() {
   const [value, setValue] = React.useState(0);
