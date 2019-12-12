@@ -19,7 +19,9 @@ const useStyles = makeStyles(theme => ({
     position: `absolute`,
     bottom: 0,
     backgroundColor: `#598445`,
-    width: `100%`
+    width: `100%`,
+    height: `5%`,
+    maxHeight: "5%"
   },
   textButton: {},
 
