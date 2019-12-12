@@ -8,6 +8,7 @@ import Navigation from "./components/navigation";
 import Footer from "./components/Footer/footer";
 import Header from "./components/Header/header";
 import { WellComponent } from "./components/Well/wellComponent";
+import { GreenBarComponent } from "./components/GreenBar/greenBarComponent";
 
 const logoPath = "/images/neccc_wide_logo_color_web.jpg";
 
@@ -19,8 +20,8 @@ function App() {
       It is just a simple Grid based header with logo on the left hand side and typography on the right  */}
 
       <Header logoPath={`${logoPath}`} />
-
-      {/* <WellComponent /> */}
+      <GreenBarComponent />
+      <WellComponent />
       {/* {isRootRoute ? <Header logoPath={`${logoPath}`} /> : ""} */}
 
       {/*
