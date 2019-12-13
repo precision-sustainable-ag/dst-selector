@@ -8,7 +8,7 @@ export class GreenBarComponent extends Component {
 
   render() {
     return (
-      <Grid container style={{ backgroundColor: "green", height: "30px" }}>
+      <Grid container style={{ backgroundColor: "green", height: "40px" }}>
         <Grid item xl={12}></Grid>
       </Grid>
     );
