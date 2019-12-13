@@ -25,9 +25,7 @@ class Header extends Component {
       width: "100%",
       height: "80px",
       backgroundSize: "cover",
-      // backgroundRepeat: "no-repeat",
       backgroundImage: `url(${this.props.logoPath})`
-      // height: auto;
     };
     return (
       <Container maxWidth="xl">
