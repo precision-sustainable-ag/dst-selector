@@ -2,16 +2,16 @@ import React from "react";
 import {
   Grid,
   Container,
-  Button,
-  List,
-  ListItem,
-  ListItemText,
-  Typography,
+  // Button,
+  // List,
+  // ListItem,
+  // ListItemText,
+  // Typography,
   Link,
   Box
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { width } from "@material-ui/system";
+// import { width } from "@material-ui/system";
 // import Helper from "./helper";
 
 const useStyles = makeStyles(theme => ({
@@ -32,7 +32,7 @@ const useStyles = makeStyles(theme => ({
 
 function Footer() {
   const classes = useStyles();
-  const year = new Date().getFullYear();
+  // const year = new Date().getFullYear();
   return (
     <footer className={classes.footer}>
       <Container maxWidth="xl">
