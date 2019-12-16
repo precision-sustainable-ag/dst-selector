@@ -304,9 +304,9 @@ export default class WellComponent extends Component {
 
                 {/* <p style={{ fontWeight: "bold" }}>asd</p> */}
                 <form noValidate autoComplete="off">
-                  <FormControl variant="outlined" style={{ width: "30%" }}>
+                  <FormControl variant="outlined" style={{ width: "40%" }}>
                     <InputLabel id="demo-simple-select-outlined-label" disabled>
-                      Zone
+                      Plant Hardiness Zone
                     </InputLabel>
                     <Select
                       labelId="demo-simple-select-outlined-label"
@@ -330,7 +330,7 @@ export default class WellComponent extends Component {
                     id="locationAddress"
                     label="Location"
                     variant="outlined"
-                    style={{ width: "30%" }}
+                    style={{ width: "40%" }}
                     onChange={this.handleAddressChangeByText}
                   />
                   {this.state.showAddressChangeBtn ? (
@@ -369,82 +369,6 @@ export default class WellComponent extends Component {
                 </Map>
               </GridListTile>
             </GridList>
-
-            <Grid container style={{ marginTop: "2%", width: "100%" }}>
-              <Grid item md={3}></Grid>
-              <Grid item md={6}>
-                <LightButton
-                  onClick={() => {
-                    this.setWellProgress(0);
-                  }}
-                >
-                  Back
-                </LightButton>
-                <LightButton
-                  onClick={() => {
-                    this.setWellProgress(2);
-                  }}
-                  style={{
-                    marginLeft: "5px"
-                  }}
-                >
-                  NEXT
-                </LightButton>
-              </Grid>
-              <Grid item md={3} style={{ textAlign: "right" }}>
-                <div className="progress">
-                  <div className="progress-track"></div>
-
-                  <div
-                    id="step1"
-                    className="progress-step"
-                    style={
-                      this.state.progress !== 1
-                        ? { backgroundColor: "gray", color: "black" }
-                        : { backgroundColor: "green" }
-                    }
-                  >
-                    Step One
-                  </div>
-
-                  <div
-                    id="step2"
-                    className="progress-step"
-                    style={
-                      this.state.progress !== 2
-                        ? { backgroundColor: "gray", color: "black" }
-                        : { backgroundColor: "green" }
-                    }
-                  >
-                    Step Two
-                  </div>
-
-                  <div
-                    id="step3"
-                    className="progress-step"
-                    style={
-                      this.state.progress !== 3
-                        ? { backgroundColor: "gray", color: "black" }
-                        : { backgroundColor: "green" }
-                    }
-                  >
-                    Step Three
-                  </div>
-
-                  <div
-                    id="step4"
-                    className="progress-step"
-                    style={
-                      this.state.progress !== 4
-                        ? { backgroundColor: "gray", color: "black" }
-                        : { backgroundColor: "green" }
-                    }
-                  >
-                    Last Step
-                  </div>
-                </div>
-              </Grid>
-            </Grid>
           </Grid>
         );
       case 2:
@@ -458,6 +382,86 @@ export default class WellComponent extends Component {
     return (
       <div style={{ width: "100%" }}>
         {this.renderProgress()}
+
+        {this.state.progress !== 0 ? (
+          <Grid container style={{ marginTop: "2%", width: "100%" }}>
+            <Grid item md={3}></Grid>
+            <Grid item md={6}>
+              <LightButton
+                onClick={() => {
+                  this.setWellProgress(this.state.progress - 1);
+                }}
+              >
+                Back
+              </LightButton>
+              <LightButton
+                onClick={() => {
+                  this.setWellProgress(this.state.progress + 1);
+                }}
+                style={{
+                  marginLeft: "5px"
+                }}
+              >
+                NEXT
+              </LightButton>
+            </Grid>
+            <Grid item md={3} style={{ textAlign: "right" }}>
+              <div className="progress">
+                <div className="progress-track"></div>
+
+                <div
+                  id="step1"
+                  className="progress-step"
+                  style={
+                    this.state.progress !== 1
+                      ? { backgroundColor: "gray", color: "black" }
+                      : { backgroundColor: "green" }
+                  }
+                >
+                  Step One
+                </div>
+
+                <div
+                  id="step2"
+                  className="progress-step"
+                  style={
+                    this.state.progress !== 2
+                      ? { backgroundColor: "gray", color: "black" }
+                      : { backgroundColor: "green" }
+                  }
+                >
+                  Step Two
+                </div>
+
+                <div
+                  id="step3"
+                  className="progress-step"
+                  style={
+                    this.state.progress !== 3
+                      ? { backgroundColor: "gray", color: "black" }
+                      : { backgroundColor: "green" }
+                  }
+                >
+                  Step Three
+                </div>
+
+                <div
+                  id="step4"
+                  className="progress-step"
+                  style={
+                    this.state.progress !== 4
+                      ? { backgroundColor: "gray", color: "black" }
+                      : { backgroundColor: "green" }
+                  }
+                >
+                  Last Step
+                </div>
+              </div>
+            </Grid>
+          </Grid>
+        ) : (
+          ""
+        )}
         <Snackbar
           anchorOrigin={{
             vertical: this.state.snackVertical,
