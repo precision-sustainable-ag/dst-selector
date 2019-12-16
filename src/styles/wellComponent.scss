@@ -1,0 +1,21 @@
+.progress {
+  display: flex;
+  direction: row;
+  color: #fff;
+  //   justify-content: space-evenly;
+
+  div:not(:first-child) {
+    background-color: green;
+    padding: 10px 5px 10px 5px;
+    border-right: 1px solid gray;
+  }
+  div:nth-child(2) {
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+  }
+  div:last-child {
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border-right: 0px;
+  }
+}

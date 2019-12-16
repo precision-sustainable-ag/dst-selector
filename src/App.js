@@ -2,26 +2,30 @@ import React from "react";
 // import logo from './logo.svg';
 import "./App.css";
 // import Header from "./components/Header/header";
-import Body from "./components/body";
-import Grid from "@material-ui/core/Grid";
-import Navigation from "./components/navigation";
+// import Body from "./components/body";
+import { Grid, Box } from "@material-ui/core";
+// import Navigation from "./components/navigation";
 import Footer from "./components/Footer/footer";
 import Header from "./components/Header/header";
-import { WellComponent } from "./components/Well/wellComponent";
+import WellComponent from "./components/Well/wellComponent";
 import { GreenBarComponent } from "./components/GreenBar/greenBarComponent";
+// import BodyComponent from "./components/body";
 
 const logoPath = "/images/neccc_wide_logo_color_web.jpg";
 
 function App() {
   // const isRootRoute = this.props.path == "/" ? true : false;
   return (
-    <Grid container>
+    <Box component="div">
       {/* Our header.js file exports the reusable Header component.
       It is just a simple Grid based header with logo on the left hand side and typography on the right  */}
 
       <Header logoPath={`${logoPath}`} />
+
       <GreenBarComponent />
+
       <WellComponent />
+      {/* <BodyComponent /> */}
       {/* {isRootRoute ? <Header logoPath={`${logoPath}`} /> : ""} */}
 
       {/*
@@ -39,7 +43,7 @@ function App() {
       {/* <Body /> */}
 
       <Footer />
-    </Grid>
+    </Box>
   );
 }
 

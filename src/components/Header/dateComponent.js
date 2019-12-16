@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import { Component } from "react";
 
 export class DateComponent extends Component {
   constructor() {
@@ -6,7 +6,7 @@ export class DateComponent extends Component {
 
     var today = new Date();
 
-    var month = new Array();
+    var month = [];
     month[0] = "January";
     month[1] = "February";
     month[2] = "March";
