@@ -49,4 +49,18 @@
 .MuiListItem-gutters:first-child {
   padding-left: 0px;
 }
+
+.listitemButton {
+  -webkit-transition: all 0.5s linear;
+  transition: all 0.5s linear;
+}
+
+.listitemButton:active {
+  padding-bottom: 0px;
+  /* text-align: center; */
+  background-color: #008000;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  color: #fff;
+}
 /*# sourceMappingURL=header.css.map */

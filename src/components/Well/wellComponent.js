@@ -3,8 +3,12 @@ import { Map, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import "../../styles/wellComponent.css";
-// import LCG from "leaflet-control-geocoder";
-// import icon from "leaflet/dist/images/marker-icon.png";
+
+/* Since we are not using redux here, all our state variables are local state variables by default ( local to the component).
+   we would be putting all the state data to our local storage once the steps are completed and access them when required
+   another benefit of this would be tha tif the user returns in the future, they might not need to fill up everything and we can 
+   show a button to skip all if this (as we would already have their data into the local storage)
+*/
 import {
   Button,
   Grid,
@@ -27,15 +31,6 @@ L.Icon.Default.mergeOptions({
   shadowUrl: require("leaflet/dist/images/marker-shadow.png")
 });
 
-// const useStyles = makeStyles(theme => ({
-//   formControl: {
-//     margin: theme.spacing(1),
-//     minWidth: 120
-//   },
-//   selectEmpty: {
-//     marginTop: theme.spacing(2)
-//   }
-// }));
 const LightButton = withStyles({
   root: {
     backgroundColor: "#e3f2f4",
@@ -49,17 +44,12 @@ const LightButton = withStyles({
   }
 })(Button);
 
-// const [state, setState] = React.useState({
-//   snackOpen: false,
-//   snackVertical: "top",
-//   snackHorizontal: "center"
-// });
-
 export default class WellComponent extends Component {
   myMap = React.createRef();
 
   constructor() {
     super();
+
     this.state = {
       progress: 0,
       address: "Enter Address",
@@ -74,7 +64,14 @@ export default class WellComponent extends Component {
     };
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    this.setLocalStorage("stepperState", this.state);
+    // set progress into local storage for the header
+  }
+
+  setLocalStorage(stateObj) {
+    localStorage.setItem("stepperState", JSON.stringify(stateObj));
+  }
 
   //   fetch(`https://httpbin.org/get`,{
   //     method: `GET`,
@@ -183,7 +180,8 @@ export default class WellComponent extends Component {
           this.setState({
             markers: [[data[0].lat, data[0].lon]],
             zoom: 15,
-            addressVerified: true
+            addressVerified: true,
+            address: data[0].display_name
           });
         } else {
           this.setState({
@@ -347,7 +345,7 @@ export default class WellComponent extends Component {
               </GridListTile>
               <GridListTile item md={6}>
                 <Map
-                  style={{ height: "100%" }}
+                  style={{ height: "100%", width: "100%" }}
                   center={this.state.markers[0]}
                   zoom={this.state.zoom}
                   minZoom={3}
@@ -372,7 +370,76 @@ export default class WellComponent extends Component {
           </Grid>
         );
       case 2:
-        return "Step 3";
+        return (
+          <div
+            style={{
+              marginTop: "5%",
+              backgroundColor: "rgba(255,255,255,1)",
+              boxShadow: "rgb(136, 136, 136) 0px 0px 1px",
+              width: "90%",
+              margin: "0 auto",
+              textAlign: "",
+              padding: "20px"
+            }}
+          >
+            <Grid
+              container
+              alignItems="center"
+              justify="left"
+              direction="row"
+              item
+              style={{}}
+              md={12}
+            >
+              <GridList item md={6} style={{ height: "170px" }} children={2}>
+                <GridListTile
+                  item
+                  md={3}
+                  style={{ height: "100%", width: "50%" }}
+                >
+                  <Map
+                    style={{ width: "100%", height: "100%" }}
+                    center={this.state.markers[0]}
+                    zoom={this.state.zoom}
+                    minZoom={14}
+                    maxZoom={20}
+                    onClick={this.addMarker}
+                    ref={this.myMap}
+                  >
+                    <TileLayer
+                      attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                      url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png?"
+                    />
+                    {this.state.markers.map((position, idx) => (
+                      <Marker key={`marker-${idx}`} position={position}>
+                        <Popup>
+                          <span>{this.state.address}</span>
+                        </Popup>
+                      </Marker>
+                    ))}
+                  </Map>
+                </GridListTile>
+                <GridListTile item md={9} style={{ width: "50%" }}>
+                  <h2>Location Details</h2>
+                  <p>
+                    Your cover crop recommendations will come from the Plant
+                    Hardiness Zone 6 NECCC Dataset
+                  </p>
+                </GridListTile>
+              </GridList>
+
+              <Grid item md={6}></Grid>
+            </Grid>
+            <Grid container>
+              <GridList children={1} style={{ marginTop: "20px" }}>
+                <GridListTile item md={12}>
+                  {/* Text input showing the address */}
+                  <TextField value={this.state.address} disabled></TextField>
+                </GridListTile>
+              </GridList>
+            </Grid>
+          </div>
+        );
       default:
         return "non handled case";
     }
@@ -384,12 +451,13 @@ export default class WellComponent extends Component {
         {this.renderProgress()}
 
         {this.state.progress !== 0 ? (
-          <Grid container style={{ marginTop: "2%", width: "80%" }}>
+          <Grid container style={{ marginTop: "2%", width: "90%" }}>
             <Grid item md={3}></Grid>
             <Grid item md={6}>
               <LightButton
                 onClick={() => {
                   this.setWellProgress(this.state.progress - 1);
+                  this.setLocalStorage(this.state);
                 }}
               >
                 Back
@@ -397,6 +465,7 @@ export default class WellComponent extends Component {
               <LightButton
                 onClick={() => {
                   this.setWellProgress(this.state.progress + 1);
+                  this.setLocalStorage(this.state);
                 }}
                 style={{
                   marginLeft: "5px"
@@ -450,7 +519,7 @@ export default class WellComponent extends Component {
                 ></div>
               </div>
             </Grid>
-            <Grid container style={{ width: "80%", margin: "0 auto" }}>
+            <Grid container style={{ width: "90%", margin: "0 auto" }}>
               <Grid item md={9}></Grid>
               {/* <Grid item md={6}></Grid> */}
               <Grid item md={3} style={{ textAlign: "center" }}>
