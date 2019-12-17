@@ -9,7 +9,8 @@
 .progress div:not(:first-child) {
   background-color: green;
   padding: 10px 5px 10px 5px;
-  border-right: 1px solid gray;
+  width: 100%;
+  border-right: 2px solid #fff;
 }
 
 .progress div:nth-child(2) {
