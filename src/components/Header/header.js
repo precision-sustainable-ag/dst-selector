@@ -20,6 +20,15 @@ const flexContainer = {
 };
 
 class Header extends Component {
+  index;
+  constructor() {
+    super();
+  }
+
+  componentDidMount() {
+    var a = setTimeout(localStorage.getItem("stepperState"), 3000);
+    console.log(a);
+  }
   render() {
     const logo = {
       width: "100%",
@@ -63,7 +72,7 @@ class Header extends Component {
         </Grid>
         <div style={{ height: "15px" }}></div>
         <List component="nav" style={flexContainer}>
-          <ListItem button>
+          <ListItem button className="listitemButton">
             <ListItemText
               disableTypography
               primary={
@@ -73,7 +82,7 @@ class Header extends Component {
               }
             />
           </ListItem>
-          <ListItem button>
+          <ListItem button className="listitemButton">
             <ListItemText
               disableTypography
               primary={
@@ -83,7 +92,7 @@ class Header extends Component {
               }
             />
           </ListItem>
-          <ListItem button>
+          <ListItem button className="listitemButton">
             <ListItemText
               disableTypography
               primary={
@@ -93,7 +102,7 @@ class Header extends Component {
               }
             />
           </ListItem>
-          <ListItem button>
+          <ListItem button className="listitemButton">
             <ListItemText
               disableTypography
               primary={
@@ -103,7 +112,7 @@ class Header extends Component {
               }
             />
           </ListItem>
-          <ListItem button>
+          <ListItem button className="listitemButton">
             <ListItemText
               disableTypography
               primary={
