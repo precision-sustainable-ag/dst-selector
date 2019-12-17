@@ -384,7 +384,7 @@ export default class WellComponent extends Component {
         {this.renderProgress()}
 
         {this.state.progress !== 0 ? (
-          <Grid container style={{ marginTop: "2%", width: "100%" }}>
+          <Grid container style={{ marginTop: "2%", width: "80%" }}>
             <Grid item md={3}></Grid>
             <Grid item md={6}>
               <LightButton
@@ -414,49 +414,48 @@ export default class WellComponent extends Component {
                   className="progress-step"
                   style={
                     this.state.progress !== 1
-                      ? { backgroundColor: "gray", color: "black" }
-                      : { backgroundColor: "green" }
+                      ? { backgroundColor: "#f0f7eb", color: "black" }
+                      : { backgroundColor: "#8abc62" }
                   }
-                >
-                  Step One
-                </div>
+                ></div>
 
                 <div
                   id="step2"
                   className="progress-step"
                   style={
                     this.state.progress !== 2
-                      ? { backgroundColor: "gray", color: "black" }
-                      : { backgroundColor: "green" }
+                      ? { backgroundColor: "#f0f7eb", color: "black" }
+                      : { backgroundColor: "#8abc62" }
                   }
-                >
-                  Step Two
-                </div>
+                ></div>
 
                 <div
                   id="step3"
                   className="progress-step"
                   style={
                     this.state.progress !== 3
-                      ? { backgroundColor: "gray", color: "black" }
-                      : { backgroundColor: "green" }
+                      ? { backgroundColor: "#f0f7eb", color: "black" }
+                      : { backgroundColor: "#8abc62" }
                   }
-                >
-                  Step Three
-                </div>
+                ></div>
 
                 <div
                   id="step4"
                   className="progress-step"
                   style={
                     this.state.progress !== 4
-                      ? { backgroundColor: "gray", color: "black" }
-                      : { backgroundColor: "green" }
+                      ? { backgroundColor: "#f0f7eb", color: "black" }
+                      : { backgroundColor: "#8abc62" }
                   }
-                >
-                  Last Step
-                </div>
+                ></div>
               </div>
+            </Grid>
+            <Grid container style={{ width: "80%", margin: "0 auto" }}>
+              <Grid item md={9}></Grid>
+              {/* <Grid item md={6}></Grid> */}
+              <Grid item md={3} style={{ textAlign: "center" }}>
+                Question {this.state.progress} of 4
+              </Grid>
             </Grid>
           </Grid>
         ) : (
