@@ -9,6 +9,12 @@ import "../../styles/wellComponent.css";
    another benefit of this would be tha tif the user returns in the future, they might not need to fill up everything and we can 
    show a button to skip all if this (as we would already have their data into the local storage)
 */
+
+/*
+Bug List:
+1. If user clicks the Map component and the lat,long from open street maps does not contain zip, our API calls break for getting zone info!
+2. ...
+*/
 import {
   Button,
   Grid,
@@ -23,8 +29,8 @@ import {
   SnackBarMessage
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
-delete L.Icon.Default.prototype._getIconUrl;
 
+delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: require("leaflet/dist/images/marker-icon-2x.png"),
   iconUrl: require("leaflet/dist/images/marker-icon.png"),
@@ -100,6 +106,9 @@ export default class WellComponent extends Component {
       })
       .then(data => {
         let latlng = data.display_name;
+        // console.log(data.address.postcode);
+        // check https://phzmapi.org/[zip].json to map zone with zip probably also restricting the zips?
+        this.setZoneState(data.address.postcode);
         this.setState({
           address: latlng,
           addressVerified: true
@@ -109,12 +118,55 @@ export default class WellComponent extends Component {
         // })
       });
   };
+
+  setZoneState = zip => {
+    console.log(zip);
+    fetch(`https://phzmapi.org/${zip}.json`, {
+      method: "GET"
+    })
+      .then(res => {
+        if (res.ok) {
+          return res.json();
+        }
+      })
+      .then(data => {
+        let zone = 0;
+        if (data !== null && data !== undefined) {
+          if (data.zone.length > 1) {
+            //  strip everything except the first char and covert it to int
+            zone = data.zone.charAt(0);
+          } else zone = data.zone;
+          return (zone = parseInt(zone));
+        } else {
+          return 7;
+        }
+      })
+      .then(zone => {
+        // check if zone is in the NECCC range else set a default
+        if (zone <= 7 && zone > 1) {
+          if (zone === 2 || zone === 3) {
+            this.setState({
+              zoneText: "Zone 2 & 3"
+            });
+          } else {
+            this.setState({
+              zoneText: `Zone ${zone}`
+            });
+          }
+        } else {
+          this.setState({
+            zoneText: "Zone 7"
+          });
+        }
+      });
+  };
+
   addMarker = e => {
     const { markers } = this.state;
     markers.pop();
     markers.push(e.latlng);
     this.setState({ markers });
-    console.log(markers[0]);
+    // console.log(markers[0]);
     let lon = markers[0].lng;
     let lat = markers[0].lat;
     this.queryGEORevAPI(lat, lon);
@@ -160,6 +212,7 @@ export default class WellComponent extends Component {
     });
   };
 
+  getZipByLatLong = () => {};
   updateAddressOnClick = () => {
     // update the new text address from state to map with a new marker!
 
@@ -177,6 +230,7 @@ export default class WellComponent extends Component {
       .then(data => {
         console.log(data);
         if (data.length === 1) {
+          // th;
           this.setState({
             markers: [[data[0].lat, data[0].lon]],
             zoom: 15,
@@ -185,8 +239,10 @@ export default class WellComponent extends Component {
           });
         } else {
           this.setState({
-            address: "Please complete the address",
-            addressVerified: false
+            address: "",
+            addressVerified: false,
+            snackOpen: true,
+            snackMessage: "Please complete the address"
           });
         }
 
@@ -215,7 +271,7 @@ export default class WellComponent extends Component {
             justify="center"
             direction="column"
             style={{
-              backgroundImage: `url(/images/cover-crop-field.jpg)`,
+              backgroundImage: `url(/images/cover-crop-field.png)`,
               backgroundSize: "cover",
               height: "75vh",
               backgroundRepeat: "no-repeat"
@@ -423,7 +479,11 @@ export default class WellComponent extends Component {
                   <h2>Location Details</h2>
                   <p>
                     Your cover crop recommendations will come from the Plant
-                    Hardiness Zone 6 NECCC Dataset
+                    Hardiness{" "}
+                    {this.state.zoneText !== undefined
+                      ? `${this.state.zoneText}`
+                      : ""}{" "}
+                    NECCC Dataset
                   </p>
                 </GridListTile>
               </GridList>
@@ -431,10 +491,18 @@ export default class WellComponent extends Component {
               <Grid item md={6}></Grid>
             </Grid>
             <Grid container>
-              <GridList children={1} style={{ marginTop: "20px" }}>
-                <GridListTile item md={12}>
+              <GridList
+                children={1}
+                style={{ marginTop: "20px", width: "100%" }}
+                spacing={32}
+              >
+                <GridListTile item md={12} style={{ width: "100%" }}>
                   {/* Text input showing the address */}
-                  <TextField value={this.state.address} disabled></TextField>
+                  <TextField
+                    value={this.state.address}
+                    style={{ width: "100%" }}
+                    disabled
+                  ></TextField>
                 </GridListTile>
               </GridList>
             </Grid>
@@ -445,108 +513,115 @@ export default class WellComponent extends Component {
     }
   };
 
+  progressBar = () => {
+    return (
+      <Grid container style={{ marginTop: "2%", width: "90%" }}>
+        <Grid item md={3}></Grid>
+        <Grid item md={6}>
+          <LightButton
+            onClick={() => {
+              this.setWellProgress(this.state.progress - 1);
+              this.setLocalStorage(this.state);
+            }}
+          >
+            Back
+          </LightButton>
+          <LightButton
+            onClick={() => {
+              this.setWellProgress(this.state.progress + 1);
+              this.setLocalStorage(this.state);
+            }}
+            style={{
+              marginLeft: "5px"
+            }}
+          >
+            NEXT
+          </LightButton>
+        </Grid>
+        <Grid item md={3} style={{ textAlign: "right" }}>
+          <div className="progress">
+            <div className="progress-track"></div>
+
+            <div
+              id="step1"
+              className="progress-step"
+              style={
+                this.state.progress !== 1
+                  ? { backgroundColor: "#f0f7eb", color: "black" }
+                  : { backgroundColor: "#8abc62" }
+              }
+            ></div>
+
+            <div
+              id="step2"
+              className="progress-step"
+              style={
+                this.state.progress !== 2
+                  ? { backgroundColor: "#f0f7eb", color: "black" }
+                  : { backgroundColor: "#8abc62" }
+              }
+            ></div>
+
+            <div
+              id="step3"
+              className="progress-step"
+              style={
+                this.state.progress !== 3
+                  ? { backgroundColor: "#f0f7eb", color: "black" }
+                  : { backgroundColor: "#8abc62" }
+              }
+            ></div>
+
+            <div
+              id="step4"
+              className="progress-step"
+              style={
+                this.state.progress !== 4
+                  ? { backgroundColor: "#f0f7eb", color: "black" }
+                  : { backgroundColor: "#8abc62" }
+              }
+            ></div>
+          </div>
+        </Grid>
+        <Grid container style={{ width: "90%", margin: "0 auto" }}>
+          <Grid item md={9}></Grid>
+          {/* <Grid item md={6}></Grid> */}
+          <Grid item md={3} style={{ textAlign: "center" }}>
+            Question {this.state.progress} of 4
+          </Grid>
+        </Grid>
+      </Grid>
+    );
+  };
+  snackBar = () => {
+    return (
+      <Snackbar
+        anchorOrigin={{
+          vertical: this.state.snackVertical,
+          horizontal: this.state.snackHorizontal
+        }}
+        key={{
+          vertical: this.state.snackVertical,
+          horizontal: this.state.snackHorizontal
+        }}
+        autoHideDuration={5000}
+        open={this.state.snackOpen}
+        onClose={this.handleSnackClose}
+        ContentProps={{
+          "aria-describedby": "message-id"
+        }}
+        message={this.state.snackMessage}
+      />
+    );
+  };
   render() {
     return (
       <div style={{ width: "100%" }}>
         {this.renderProgress()}
 
-        {this.state.progress !== 0 ? (
-          <Grid container style={{ marginTop: "2%", width: "90%" }}>
-            <Grid item md={3}></Grid>
-            <Grid item md={6}>
-              <LightButton
-                onClick={() => {
-                  this.setWellProgress(this.state.progress - 1);
-                  this.setLocalStorage(this.state);
-                }}
-              >
-                Back
-              </LightButton>
-              <LightButton
-                onClick={() => {
-                  this.setWellProgress(this.state.progress + 1);
-                  this.setLocalStorage(this.state);
-                }}
-                style={{
-                  marginLeft: "5px"
-                }}
-              >
-                NEXT
-              </LightButton>
-            </Grid>
-            <Grid item md={3} style={{ textAlign: "right" }}>
-              <div className="progress">
-                <div className="progress-track"></div>
+        {this.state.progress !== 0 ? this.progressBar() : ""}
 
-                <div
-                  id="step1"
-                  className="progress-step"
-                  style={
-                    this.state.progress !== 1
-                      ? { backgroundColor: "#f0f7eb", color: "black" }
-                      : { backgroundColor: "#8abc62" }
-                  }
-                ></div>
-
-                <div
-                  id="step2"
-                  className="progress-step"
-                  style={
-                    this.state.progress !== 2
-                      ? { backgroundColor: "#f0f7eb", color: "black" }
-                      : { backgroundColor: "#8abc62" }
-                  }
-                ></div>
-
-                <div
-                  id="step3"
-                  className="progress-step"
-                  style={
-                    this.state.progress !== 3
-                      ? { backgroundColor: "#f0f7eb", color: "black" }
-                      : { backgroundColor: "#8abc62" }
-                  }
-                ></div>
-
-                <div
-                  id="step4"
-                  className="progress-step"
-                  style={
-                    this.state.progress !== 4
-                      ? { backgroundColor: "#f0f7eb", color: "black" }
-                      : { backgroundColor: "#8abc62" }
-                  }
-                ></div>
-              </div>
-            </Grid>
-            <Grid container style={{ width: "90%", margin: "0 auto" }}>
-              <Grid item md={9}></Grid>
-              {/* <Grid item md={6}></Grid> */}
-              <Grid item md={3} style={{ textAlign: "center" }}>
-                Question {this.state.progress} of 4
-              </Grid>
-            </Grid>
-          </Grid>
-        ) : (
-          ""
-        )}
-        <Snackbar
-          anchorOrigin={{
-            vertical: this.state.snackVertical,
-            horizontal: this.state.snackHorizontal
-          }}
-          key={{
-            vertical: this.state.snackVertical,
-            horizontal: this.state.snackHorizontal
-          }}
-          autoHideDuration={5000}
-          open={this.state.snackOpen}
-          onClose={this.handleSnackClose}
-          ContentProps={{
-            "aria-describedby": "message-id"
-          }}
-          message={this.state.snackMessage}
-        />
+        {this.snackBar()}
       </div>
     );
   }
