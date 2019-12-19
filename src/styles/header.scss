@@ -60,12 +60,13 @@
 
 .listitemButton {
   transition: all 0.5s linear;
-  &:active {
-    padding-bottom: 0px;
-    /* text-align: center; */
-    background-color: #008000;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    color: #fff;
-  }
+}
+
+.active {
+  // padding-bottom: 0px !important;
+  /* text-align: center; */
+  background-color: #598444 !important;
+  border-top-left-radius: 10px !important;
+  border-top-right-radius: 10px !important;
+  color: #fff !important;
 }
