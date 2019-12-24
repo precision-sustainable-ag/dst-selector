@@ -23,4 +23,21 @@
   border-bottom-right-radius: 10px;
   border-right: 0px;
 }
+
+.progressContainer {
+  margin-top: 3em;
+}
+
+.secondStepContainer {
+  margin-top: 7em;
+  padding: 1em;
+  -webkit-box-shadow: #888888 0px 0px 1px;
+          box-shadow: #888888 0px 0px 1px;
+}
+
+@media only screen and (min-width: 320px) and (max-width: 640px) {
+  .secondStepContainer {
+    margin-top: 1.2em;
+  }
+}
 /*# sourceMappingURL=wellComponent.css.map */
