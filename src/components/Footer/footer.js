@@ -11,6 +11,7 @@ import {
   Box
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import { MDBCol, MDBContainer, MDBRow, MDBFooter } from "mdbreact";
 // import { width } from "@material-ui/system";
 // import Helper from "./helper";
 
@@ -34,10 +35,50 @@ function Footer() {
   const classes = useStyles();
   // const year = new Date().getFullYear();
   return (
-    <footer className={classes.footer}>
-      <Container maxWidth="xl">
-        <Grid container alignItems="center">
-          <Box flexGrow={1}>
+    // <footer className={classes.footer}>
+    //   <Container maxWidth="xl">
+    //     <Grid container alignItems="center">
+    //       <Box flexGrow={1}>
+    // <p>
+    // Disclaimer: Actual cover crop performance may vary. Consult an{" "}
+    // <a href="http://placehold.it/1000x1000" style={{ color: "#fff" }}>
+    //   NRCS Extension Educator
+    // </a>{" "}
+    // for detailed guidance.
+    // </p>
+    //       </Box>
+
+    //       <Box>
+    // <Link
+    //   href="https://open-source.org/"
+    //   style={{ paddingRight: "50px", color: "#000" }}
+    // >
+    //   OPEN SOURCE
+    // </Link>
+    // <Link
+    //   href="https://google.com/"
+    //   style={{ paddingRight: "50px", color: "#000" }}
+    // >
+    //   CONTACT US
+    // </Link>
+    // <Link
+    //   href="https://google.com"
+    //   style={{ paddingRight: "50px", color: "#000" }}
+    // >
+    //   2019
+    // </Link>
+    //       </Box>
+    //     </Grid>
+    //   </Container>
+    // </footer>
+    <MDBFooter
+      className="font-small pt-4 fixed-bottom"
+      style={{ backgroundColor: `#598445` }}
+    >
+      <MDBContainer fluid className="text-center text-md-left">
+        <MDBRow>
+          <MDBCol md="6">
+            {/* <h5 className="title">Footer Content</h5> */}
             <p>
               Disclaimer: Actual cover crop performance may vary. Consult an{" "}
               <a href="http://placehold.it/1000x1000" style={{ color: "#fff" }}>
@@ -45,9 +86,8 @@ function Footer() {
               </a>{" "}
               for detailed guidance.
             </p>
-          </Box>
-
-          <Box>
+          </MDBCol>
+          <MDBCol md="4" className="offset-md-2">
             <Link
               href="https://open-source.org/"
               style={{ paddingRight: "50px", color: "#000" }}
@@ -66,10 +106,16 @@ function Footer() {
             >
               2019
             </Link>
-          </Box>
-        </Grid>
-      </Container>
-    </footer>
+          </MDBCol>
+        </MDBRow>
+      </MDBContainer>
+      {/* <div className="footer-copyright text-center py-3">
+        <MDBContainer fluid>
+          &copy; {new Date().getFullYear()} Copyright:{" "}
+          <a href="https://www.MDBootstrap.com"> MDBootstrap.com </a>
+        </MDBContainer>
+      </div> */}
+    </MDBFooter>
   );
 }
 

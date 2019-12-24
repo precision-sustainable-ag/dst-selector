@@ -1,3 +1,14 @@
+a {
+  color: black !important;
+  font-weight: bolder;
+  -webkit-transition: font-weight 0.5s linear;
+  transition: font-weight 0.5s linear;
+}
+
+a:hover {
+  font-weight: bold;
+}
+
 .active {
   /* text-align: center; */
   background-color: #598444 !important;

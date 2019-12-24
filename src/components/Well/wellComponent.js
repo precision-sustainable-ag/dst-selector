@@ -3,7 +3,16 @@ import { Map, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import "../../styles/wellComponent.css";
-
+// import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
+import {
+  MDBContainer as Container,
+  MDBRow as Row,
+  MDBCol as Col,
+  MDBJumbotron,
+  MDBCardTitle,
+  MDBBtn,
+  MDBIcon
+} from "mdbreact";
 /* Since we are not using redux here, all our state variables are local state variables by default ( local to the component).
    we would be putting all the state data to our local storage once the steps are completed and access them when required
    another benefit of this would be tha tif the user returns in the future, they might not need to fill up everything and we can 
@@ -26,7 +35,9 @@ import {
   MenuItem,
   Select,
   Snackbar,
-  SnackBarMessage
+  ButtonGroup,
+  SnackBarMessage,
+  Popper
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 
@@ -59,7 +70,7 @@ export default class WellComponent extends Component {
     this.state = {
       progress: 0,
       address: "Enter Address",
-      markers: [[35.78658905, -78.67144915505475]],
+      markers: [[39.03, -76.92]],
       showAddressChangeBtn: false,
       zoom: 13,
       addressVerified: false,
@@ -265,66 +276,70 @@ export default class WellComponent extends Component {
     switch (this.state.progress) {
       case 0:
         return (
-          <Grid
-            container
-            align="center"
-            justify="center"
-            direction="column"
-            style={{
-              backgroundImage: `url(/images/cover-crop-field.png)`,
-              backgroundSize: "cover",
-              height: "75vh",
-              backgroundRepeat: "no-repeat"
-            }}
-          >
-            <Grid
-              item
-              style={{
-                backgroundColor: "rgba(240,247,235,0.8)",
-                width: "90%",
-                margin: "0 auto",
-                textAlign: "",
-                padding: "6%"
-              }}
-            >
-              <h1>Welcome to the NECCC Cover Crop Decision Support Tool </h1>
-              <p>
-                You are currently interacting with a Beta version of the Cover
-                Crop DSTs. The purpose of this interaction is so that we may
-                gather feedback about the usability and usefulness of these
-                tools.
-              </p>
-              <p>
-                The cover crop data you will see has been created by the NECCC
-                Data Verification Team of cover crop experts, the original MCCC
-                species selector tool, a seeding rate calculator developd by
-                NRCS NY, and several other data sources. Please note: these data
-                are still being finalized by NECCC teams for each of the plant
-                hardiness zones. The data shown are a preview and are yet to be
-                finalized.{" "}
-              </p>{" "}
-              <p style={{ fontWeight: "bold" }}>
-                {" "}
-                Thank you for your time and consideration. We look forward to
-                your feedback and hope to build a pleasant cover crop tool
-                experience for you to effectively select and manage your cover
-                crops.
-              </p>
-            </Grid>
-            <Grid container>
-              <Grid item md={4}></Grid>
-              <Grid item style={{ marginTop: "2%" }} md={4}>
-                <LightButton
-                  onClick={() => {
-                    this.setWellProgress(1);
-                  }}
-                >
-                  NEXT
-                </LightButton>
-              </Grid>
-              <Grid item md={4}></Grid>
-            </Grid>
-          </Grid>
+          <Container fluid className="pl-0 pr-0 pt-0 mt-0 vh-80">
+            <Row>
+              <Col>
+                <MDBJumbotron fluid style={{ padding: 0 }} className="mb-0">
+                  <Col
+                    className="text-white text-center"
+                    style={{
+                      backgroundImage: `url(/images/cover-crop-field.png)`,
+                      backgroundSize: "cover"
+                    }}
+                  >
+                    <Col className="py-5" style={{ height: "75vh" }}>
+                      <div
+                        style={{
+                          backgroundColor: "rgba(240,247,235,0.8)",
+                          width: "90%",
+                          margin: "0 auto",
+                          color: "black",
+                          padding: "2%"
+                        }}
+                      >
+                        <MDBCardTitle className="h1-responsive pt-3 m-5 font-bold">
+                          Welcome to the NECCC Cover Crop Decision Support Tool
+                        </MDBCardTitle>
+                        <p className="mb-5 text-left">
+                          You are currently interacting with a Beta version of
+                          the Cover Crop DSTs. The purpose of this interaction
+                          is so that we may gather feedback about the usability
+                          and usefulness of these tools.
+                        </p>
+                        <p className="mb-5 text-left">
+                          The cover crop data you will see has been created by
+                          the NECCC Data Verification Team of cover crop
+                          experts, the original MCCC species selector tool, a
+                          seeding rate calculator developd by NRCS NY, and
+                          several other data sources. Please note: these data
+                          are still being finalized by NECCC teams for each of
+                          the plant hardiness zones. The data shown are a
+                          preview and are yet to be finalized.
+                        </p>
+                        <p
+                          className="mb-5 text-left"
+                          style={{ fontWeight: "bold" }}
+                        >
+                          Thank you for your time and consideration. We look
+                          forward to your feedback and hope to build a pleasant
+                          cover crop tool experience for you to effectively
+                          select and manage your cover crops.
+                        </p>
+                      </div>
+                      <LightButton
+                        className="mb-5 mt-5"
+                        onClick={() => {
+                          this.setWellProgress(1);
+                        }}
+                      >
+                        NEXT
+                      </LightButton>
+                    </Col>
+                  </Col>
+                </MDBJumbotron>
+              </Col>
+            </Row>
+          </Container>
         );
       case 1:
         return (
@@ -427,170 +442,304 @@ export default class WellComponent extends Component {
         );
       case 2:
         return (
-          <div
-            style={{
-              marginTop: "5%",
-              backgroundColor: "rgba(255,255,255,1)",
-              boxShadow: "rgb(136, 136, 136) 0px 0px 1px",
-              width: "90%",
-              margin: "0 auto",
-              textAlign: "",
-              padding: "20px"
-            }}
-          >
-            <Grid
-              container
-              alignItems="center"
-              justify="left"
-              direction="row"
-              item
-              style={{}}
-              md={12}
-            >
-              <GridList item md={6} style={{ height: "170px" }} children={2}>
-                <GridListTile
-                  item
-                  md={3}
-                  style={{ height: "100%", width: "50%" }}
-                >
-                  <Map
-                    style={{ width: "100%", height: "100%" }}
-                    center={this.state.markers[0]}
-                    zoom={this.state.zoom}
-                    minZoom={14}
-                    maxZoom={20}
-                    onClick={this.addMarker}
-                    ref={this.myMap}
-                  >
-                    <TileLayer
-                      attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                      url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png?"
-                    />
-                    {this.state.markers.map((position, idx) => (
-                      <Marker key={`marker-${idx}`} position={position}>
-                        <Popup>
-                          <span>{this.state.address}</span>
-                        </Popup>
-                      </Marker>
-                    ))}
-                  </Map>
-                </GridListTile>
-                <GridListTile item md={9} style={{ width: "50%" }}>
-                  <h2>Location Details</h2>
-                  <p>
-                    Your cover crop recommendations will come from the Plant
-                    Hardiness{" "}
-                    {this.state.zoneText !== undefined
-                      ? `${this.state.zoneText}`
-                      : ""}{" "}
-                    NECCC Dataset
-                  </p>
-                </GridListTile>
-              </GridList>
+          <Container className="secondStepContainer">
+            <Row>
+              <Col md="6" sm="12">
+                {" "}
+                <Row className="case2FirstRow">
+                  {/* <MDBCol size="4">.col-4</MDBCol>
+              <MDBCol size="4">.col-4</MDBCol>
+              <MDBCol size="4">.col-4</MDBCol> */}
+                  <Col md="4" sm="12">
+                    <Map
+                      style={{ width: "100%", height: "100%" }}
+                      center={this.state.markers[0]}
+                      zoom={this.state.zoom}
+                      minZoom={14}
+                      maxZoom={20}
+                      onClick={this.addMarker}
+                      ref={this.myMap}
+                    >
+                      <TileLayer
+                        attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png?"
+                      />
+                      {this.state.markers.map((position, idx) => (
+                        <Marker key={`marker-${idx}`} position={position}>
+                          <Popup>
+                            <span>{this.state.address}</span>
+                          </Popup>
+                        </Marker>
+                      ))}
+                    </Map>
+                  </Col>
+                  <Col md="8" sm="12">
+                    <h2>Location Details</h2>
+                    <p>
+                      Your cover crop recommendations will come from the Plant
+                      Hardiness{" "}
+                      {this.state.zoneText !== undefined
+                        ? `${this.state.zoneText}`
+                        : "Zone 7"}
+                      &nbsp; &nbsp; NECCC Dataset
+                    </p>
+                  </Col>
+                  <Col size="12" className="mt-3">
+                    <TextField
+                      value={this.state.address}
+                      style={{ width: "100%" }}
+                      label="Location"
+                      variant="outlined"
+                      disabled
+                    ></TextField>
+                  </Col>
+                  <Col size="12" className="mt-3">
+                    <p>
+                      Disclaimer: Cover crop recommendations are based omn
+                      expert opitions. Your cover crop performance will vary
+                      based on location, management, cultivars, and many other
+                      variables. Consult an{" "}
+                      <a
+                        href="https://google.com"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        NRCS Extension Expert
+                      </a>{" "}
+                      for detailed guidance.
+                    </p>
+                  </Col>
+                </Row>
+              </Col>
+              <Col size="6">{/* TODO: Weather Data */}</Col>
+            </Row>
 
-              <Grid item md={6}></Grid>
-            </Grid>
-            <Grid container>
-              <GridList
-                children={1}
-                style={{ marginTop: "20px", width: "100%" }}
-                spacing={32}
-              >
-                <GridListTile item md={12} style={{ width: "100%" }}>
-                  {/* Text input showing the address */}
-                  <TextField
-                    value={this.state.address}
-                    style={{ width: "100%" }}
-                    disabled
-                  ></TextField>
-                </GridListTile>
-              </GridList>
-            </Grid>
-          </div>
+            {/* <article className="secondStepContainer">
+              <div className="mapContainer">
+                <Map
+                  style={{ width: "100%", height: "100%" }}
+                  center={this.state.markers[0]}
+                  zoom={this.state.zoom}
+                  minZoom={14}
+                  maxZoom={20}
+                  onClick={this.addMarker}
+                  ref={this.myMap}
+                >
+                  <TileLayer
+                    attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png?"
+                  />
+                  {this.state.markers.map((position, idx) => (
+                    <Marker key={`marker-${idx}`} position={position}>
+                      <Popup>
+                        <span>{this.state.address}</span>
+                      </Popup>
+                    </Marker>
+                  ))}
+                </Map>
+              </div>
+              <div className="locationDetailsContainer">
+                <h2>Location Details</h2>
+                <p>
+                  Your cover crop recommendations will come from the Plant
+                  Hardiness{" "}
+                  {this.state.zoneText !== undefined
+                    ? `${this.state.zoneText}`
+                    : "Zone 7"}
+                  &nbsp; &nbsp; NECCC Dataset
+                </p>
+              </div>
+              <div></div>
+            </article>
+            <article className="belowSecondStepContainer">
+              <TextField
+                value={this.state.address}
+                style={{}}
+                label="Location"
+                variant="outlined"
+                disabled
+              ></TextField>
+              <div>
+                <p>
+                  Disclaimer: Cover crop recommendations are based omn expert
+                  opitions. Your cover crop performance will vary based on
+                  location, management, cultivars, and many other variables.
+                  Consult an{" "}
+                  <a
+                    href="https://google.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    NRCS Extension Expert
+                  </a>{" "}
+                  for detailed guidance.
+                </p>
+              </div>
+            </article> */}
+          </Container>
         );
       default:
         return "non handled case";
     }
   };
+  // handleClose = event => {
+  //   const anchorRef = React.useRef(null);
+  //   if (anchorRef.current && anchorRef.current.contains(event.target)) {
+  //     return;
+  //   }
 
+  //   setOpen(false);
+  // };
   progressBar = () => {
     return (
-      <Grid container style={{ marginTop: "2%", width: "90%" }}>
-        <Grid item md={3}></Grid>
-        <Grid item md={6}>
-          <LightButton
-            onClick={() => {
-              this.setWellProgress(this.state.progress - 1);
-              this.setLocalStorage(this.state);
-            }}
-          >
-            Back
-          </LightButton>
-          <LightButton
-            onClick={() => {
-              this.setWellProgress(this.state.progress + 1);
-              this.setLocalStorage(this.state);
-            }}
-            style={{
-              marginLeft: "5px"
-            }}
-          >
-            NEXT
-          </LightButton>
-        </Grid>
-        <Grid item md={3} style={{ textAlign: "right" }}>
-          <div className="progress">
-            <div className="progress-track"></div>
+      <Container className="progressContainer">
+        <Row md="12">
+          <Col md="4">
+            <LightButton
+              onClick={() => {
+                this.setWellProgress(this.state.progress - 1);
+                this.setLocalStorage(this.state);
+              }}
+            >
+              Back
+            </LightButton>
+            <LightButton
+              style={{ marginLeft: "3px" }}
+              onClick={() => {
+                this.setWellProgress(this.state.progress + 1);
+                this.setLocalStorage(this.state);
+              }}
+            >
+              Next
+            </LightButton>
+          </Col>
+          <Col md="4" className="offset-md-4">
+            <div className="progress">
+              <div className="progress-track"></div>
+              <div
+                id="step1"
+                className="progress-step"
+                style={
+                  this.state.progress !== 1
+                    ? { backgroundColor: "#f0f7eb", color: "black" }
+                    : { backgroundColor: "#8abc62" }
+                }
+              ></div>
 
-            <div
-              id="step1"
-              className="progress-step"
-              style={
-                this.state.progress !== 1
-                  ? { backgroundColor: "#f0f7eb", color: "black" }
-                  : { backgroundColor: "#8abc62" }
-              }
-            ></div>
+              <div
+                id="step2"
+                className="progress-step"
+                style={
+                  this.state.progress !== 2
+                    ? { backgroundColor: "#f0f7eb", color: "black" }
+                    : { backgroundColor: "#8abc62" }
+                }
+              ></div>
 
-            <div
-              id="step2"
-              className="progress-step"
-              style={
-                this.state.progress !== 2
-                  ? { backgroundColor: "#f0f7eb", color: "black" }
-                  : { backgroundColor: "#8abc62" }
-              }
-            ></div>
+              <div
+                id="step3"
+                className="progress-step"
+                style={
+                  this.state.progress !== 3
+                    ? { backgroundColor: "#f0f7eb", color: "black" }
+                    : { backgroundColor: "#8abc62" }
+                }
+              ></div>
 
-            <div
-              id="step3"
-              className="progress-step"
-              style={
-                this.state.progress !== 3
-                  ? { backgroundColor: "#f0f7eb", color: "black" }
-                  : { backgroundColor: "#8abc62" }
-              }
-            ></div>
+              <div
+                id="step4"
+                className="progress-step"
+                style={
+                  this.state.progress !== 4
+                    ? { backgroundColor: "#f0f7eb", color: "black" }
+                    : { backgroundColor: "#8abc62" }
+                }
+              ></div>
+            </div>
+          </Col>
+        </Row>
+        <Row md="12">
+          <Col md="4" className="offset-md-8" style={{ textAlign: "center" }}>
+            <p>Question {this.state.progress} of 4</p>
+          </Col>
+        </Row>
+      </Container>
+      // <Grid container style={{ marginTop: "2%", width: "90%" }}>
+      //   <Grid item md={3}></Grid>
+      //   <Grid item md={6}>
+      //     <LightButton
+      //       onClick={() => {
+      //         this.setWellProgress(this.state.progress - 1);
+      //         this.setLocalStorage(this.state);
+      //       }}
+      //     >
+      //       Back
+      //     </LightButton>
+      //     <LightButton
+      //       onClick={() => {
+      //         this.setWellProgress(this.state.progress + 1);
+      //         this.setLocalStorage(this.state);
+      //       }}
+      //       style={{
+      //         marginLeft: "5px"
+      //       }}
+      //     >
+      //       NEXT
+      //     </LightButton>
+      //   </Grid>
+      //   <Grid item md={3} style={{ textAlign: "right" }}>
+      //     <div className="progress">
+      //       <div className="progress-track"></div>
 
-            <div
-              id="step4"
-              className="progress-step"
-              style={
-                this.state.progress !== 4
-                  ? { backgroundColor: "#f0f7eb", color: "black" }
-                  : { backgroundColor: "#8abc62" }
-              }
-            ></div>
-          </div>
-        </Grid>
-        <Grid container style={{ width: "90%", margin: "0 auto" }}>
-          <Grid item md={9}></Grid>
-          {/* <Grid item md={6}></Grid> */}
-          <Grid item md={3} style={{ textAlign: "center" }}>
-            Question {this.state.progress} of 4
-          </Grid>
-        </Grid>
-      </Grid>
+      // <div
+      //   id="step1"
+      //   className="progress-step"
+      //   style={
+      //     this.state.progress !== 1
+      //       ? { backgroundColor: "#f0f7eb", color: "black" }
+      //       : { backgroundColor: "#8abc62" }
+      //   }
+      // ></div>
+
+      // <div
+      //   id="step2"
+      //   className="progress-step"
+      //   style={
+      //     this.state.progress !== 2
+      //       ? { backgroundColor: "#f0f7eb", color: "black" }
+      //       : { backgroundColor: "#8abc62" }
+      //   }
+      // ></div>
+
+      // <div
+      //   id="step3"
+      //   className="progress-step"
+      //   style={
+      //     this.state.progress !== 3
+      //       ? { backgroundColor: "#f0f7eb", color: "black" }
+      //       : { backgroundColor: "#8abc62" }
+      //   }
+      // ></div>
+
+      // <div
+      //   id="step4"
+      //   className="progress-step"
+      //   style={
+      //     this.state.progress !== 4
+      //       ? { backgroundColor: "#f0f7eb", color: "black" }
+      //       : { backgroundColor: "#8abc62" }
+      //   }
+      // ></div>
+      //     </div>
+      //   </Grid>
+      //   <Grid container style={{ width: "90%", margin: "0 auto" }}>
+      //     <Grid item md={9}></Grid>
+      //     {/* <Grid item md={6}></Grid> */}
+      //     <Grid item md={3} style={{ textAlign: "center" }}>
+      //       Question {this.state.progress} of 4
+      //     </Grid>
+      //   </Grid>
+      // </Grid>
     );
   };
   snackBar = () => {
@@ -616,7 +765,7 @@ export default class WellComponent extends Component {
   };
   render() {
     return (
-      <div style={{ width: "100%" }}>
+      <div className="mh-100" style={{ width: "100%" }}>
         {this.renderProgress()}
 
         {this.state.progress !== 0 ? this.progressBar() : ""}
