@@ -28,16 +28,114 @@
   margin-top: 3em;
 }
 
-.secondStepContainer {
-  margin-top: 7em;
+.secondStepContainer,
+.thirdStepContainer {
+  margin-top: 5em;
   padding: 1em;
   -webkit-box-shadow: #888888 0px 0px 1px;
           box-shadow: #888888 0px 0px 1px;
+  width: 90% !important;
+}
+
+.thirdStepContainer div.row {
+  padding-left: 1.2em;
+  padding-right: 1.2em;
+}
+
+.thirdStepContainer div.row:first-of-type {
+  padding-top: 1.2em;
+}
+
+.thirdStepContainer .badge {
+  width: 100%;
+  padding: 2em;
+  margin-bottom: 3em;
+}
+
+.thirdStepContainer .chip {
+  background-color: #f0f7eb;
+  font-weight: bold;
+  margin-bottom: 2em;
+}
+
+.thirdStepContainer .chip.active {
+  border-radius: 16px !important;
+}
+
+.thirdStepContainer .chip.active > span {
+  color: white;
+}
+
+.thirdStepContainer .chip:hover {
+  background-color: #598445 !important;
+}
+
+.thirdStepContainer .chip:hover > span {
+  color: white;
+}
+
+.case3FirstRow h1 {
+  text-align: center;
+}
+
+.case3SecondRow p {
+  color: #598445;
+}
+
+.tooltipText {
+  max-width: none !important;
+  color: black;
+  border: none !important;
+  background-color: #f0f7eb;
+  padding: 1em;
+  font-size: 14px;
+  line-height: 16px;
+  text-align: justify;
+}
+
+.parentJumbotronCol {
+  max-height: 70vh;
+}
+
+div#mainJumbotronTextWrapper {
+  background-color: rgba(240, 247, 235, 0.8);
+  width: 90%;
+  margin: 0 auto;
+  color: black;
+  padding: 2%;
+  height: auto;
+}
+
+.zoneDrowdown {
+  display: inline-block;
 }
 
 @media only screen and (min-width: 320px) and (max-width: 640px) {
   .secondStepContainer {
-    margin-top: 1.2em;
+    margin-top: 0;
+  }
+  div#mainJumbotronTextWrapper {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+  }
+  div#mainJumbotronWrapper {
+    padding: 0;
+    padding-bottom: 0 !important;
+    padding-top: 0 !important;
+  }
+  .parentJumbotronRow {
+    padding-right: 0 !important;
+    padding-left: 0 !important;
+  }
+  .parentJumbotronCol {
+    padding-right: 0 !important;
+  }
+}
+
+@media only screen and (min-width: 641px) and (max-width: 1326px) {
+  div#mainJumbotronTextWrapper {
+    height: 100vh;
   }
 }
 /*# sourceMappingURL=wellComponent.css.map */

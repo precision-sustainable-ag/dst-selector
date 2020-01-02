@@ -1,9 +1,9 @@
-import React, { Component } from "react";
+import React, { Component, isValidElement } from "react";
 import { Map, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import "../../styles/wellComponent.css";
-// import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
+import DoneIcon from "@material-ui/icons/Done";
 import {
   MDBContainer as Container,
   MDBRow as Row,
@@ -11,8 +11,13 @@ import {
   MDBJumbotron,
   MDBCardTitle,
   MDBBtn,
-  MDBIcon
+  MDBIcon,
+  MDBDropdown,
+  MDBDropdownToggle,
+  MDBDropdownMenu,
+  MDBDropdownItem
 } from "mdbreact";
+
 /* Since we are not using redux here, all our state variables are local state variables by default ( local to the component).
    we would be putting all the state data to our local storage once the steps are completed and access them when required
    another benefit of this would be tha tif the user returns in the future, they might not need to fill up everything and we can 
@@ -37,9 +42,12 @@ import {
   Snackbar,
   ButtonGroup,
   SnackBarMessage,
-  Popper
+  Popper,
+  Chip,
+  Tooltip
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
+import { cloudIcon } from "../../shared/constants.js";
 
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -72,6 +80,8 @@ export default class WellComponent extends Component {
       address: "Enter Address",
       markers: [[39.03, -76.92]],
       showAddressChangeBtn: false,
+      allGoals: [],
+      selectedGoals: [],
       zoom: 13,
       addressVerified: false,
       snackOpen: false,
@@ -82,8 +92,57 @@ export default class WellComponent extends Component {
   }
 
   componentDidMount() {
-    this.setLocalStorage("stepperState", this.state);
     // set progress into local storage for the header
+    this.setLocalStorage("stepperState", this.state);
+    // connect to airtable api -- CURRENTLY USING JSONBIN!
+    // TODO: Change jsonbin api to a more stable api source
+
+    // const hdrs = new Headers();
+    // hdrs.append("Content-Type", "application/json");
+    // hdrs.append(
+    //   "secret-key",
+    //   "$2b$10$cB.vdtYXdwSORs8uKPq9.uWi1vLDspYmJoHamkfLZxiwvZHsswg4m"
+    // );
+
+    const hdr2 = new Headers();
+    hdr2.append("Authorization", "Bearer keywdZxSD9AC4vL6e");
+    // fetch('https://api.airtable.com/v0/appC47111lCOTaMYe/Cover%20Crops%20Data?api_key=keywdZxSD9AC4vL6e')
+    // .then((resp) => resp.json())
+    // .then(data => {
+    //   console.log(data);
+    // }
+    //     // this.setState({ items: data.records.crover }
+    //       );
+    // })
+
+    fetch(
+      "https://api.airtable.com/v0/appC47111lCOTaMYe/Cover%20Crop%20Goals?maxRecords=300",
+      {
+        headers: hdr2
+      }
+    )
+      .then(response => {
+        return response.json();
+      })
+      .then(data => {
+        // console.log(data.records.fields);
+        // console.log(data);
+        this.setState({
+          allGoals: data.records
+        });
+      });
+
+    // fetch("https://api.jsonbin.io/b/5daab0ecee19b1311aa10fcf/latest", {
+    //   headers: hdrs
+    // })
+    //   .then(resp => resp.json())
+
+    //   .then(result => {
+    //     console.log(result);
+    //     this.setState({
+    //       cropData: result.items
+    //     });
+    //   });
   }
 
   setLocalStorage(stateObj) {
@@ -224,6 +283,7 @@ export default class WellComponent extends Component {
   };
 
   getZipByLatLong = () => {};
+
   updateAddressOnClick = () => {
     // update the new text address from state to map with a new marker!
 
@@ -276,27 +336,19 @@ export default class WellComponent extends Component {
     switch (this.state.progress) {
       case 0:
         return (
-          <Container fluid className="pl-0 pr-0 pt-0 mt-0 vh-80">
+          <Container fluid className="pl-0 pr-0 pt-0 mt-0">
             <Row>
-              <Col>
+              <Col className="parentJumbotronRow" size="12">
                 <MDBJumbotron fluid style={{ padding: 0 }} className="mb-0">
                   <Col
-                    className="text-white text-center"
+                    className="text-white text-center parentJumbotronCol"
                     style={{
                       backgroundImage: `url(/images/cover-crop-field.png)`,
                       backgroundSize: "cover"
                     }}
                   >
-                    <Col className="py-5" style={{ height: "75vh" }}>
-                      <div
-                        style={{
-                          backgroundColor: "rgba(240,247,235,0.8)",
-                          width: "90%",
-                          margin: "0 auto",
-                          color: "black",
-                          padding: "2%"
-                        }}
-                      >
+                    <Col id="mainJumbotronWrapper" className="py-5" style={{}}>
+                      <div id="mainJumbotronTextWrapper" style={{}}>
                         <MDBCardTitle className="h1-responsive pt-3 m-5 font-bold">
                           Welcome to the NECCC Cover Crop Decision Support Tool
                         </MDBCardTitle>
@@ -347,7 +399,7 @@ export default class WellComponent extends Component {
             container
             alignItems="center"
             justify="center"
-            style={{ marginTop: "5%" }}
+            style={{ marginTop: "5em" }}
           >
             <GridList
               children={2}
@@ -442,7 +494,7 @@ export default class WellComponent extends Component {
         );
       case 2:
         return (
-          <Container className="secondStepContainer">
+          <Container fluid className="secondStepContainer">
             <Row>
               <Col md="6" sm="12">
                 {" "}
@@ -475,14 +527,26 @@ export default class WellComponent extends Component {
                   </Col>
                   <Col md="8" sm="12">
                     <h2>Location Details</h2>
-                    <p>
+                    <div>
                       Your cover crop recommendations will come from the Plant
                       Hardiness{" "}
-                      {this.state.zoneText !== undefined
-                        ? `${this.state.zoneText}`
-                        : "Zone 7"}
-                      &nbsp; &nbsp; NECCC Dataset
-                    </p>
+                      <MDBDropdown className="zoneDrowdown" size="sm">
+                        <MDBDropdownToggle caret color="primary">
+                          {this.state.zoneText !== undefined
+                            ? `${this.state.zoneText}`
+                            : "Zone 7"}
+                        </MDBDropdownToggle>
+                        <MDBDropdownMenu>
+                          <MDBDropdownItem header>Zones</MDBDropdownItem>
+                          <MDBDropdownItem>Zone 2 &amp; 3</MDBDropdownItem>
+                          <MDBDropdownItem>Zone 4</MDBDropdownItem>
+                          <MDBDropdownItem>Zone 5</MDBDropdownItem>
+                          <MDBDropdownItem>Zone 6</MDBDropdownItem>
+                          <MDBDropdownItem>Zone 7</MDBDropdownItem>
+                        </MDBDropdownMenu>
+                      </MDBDropdown>
+                      NECC Dataset
+                    </div>
                   </Col>
                   <Col size="12" className="mt-3">
                     <TextField
@@ -511,71 +575,97 @@ export default class WellComponent extends Component {
                   </Col>
                 </Row>
               </Col>
-              <Col size="6">{/* TODO: Weather Data */}</Col>
-            </Row>
+              <Col size="6">
+                {/* TODO: Weather Data */}
+                <h2>Weather Conditions? </h2>
 
-            {/* <article className="secondStepContainer">
-              <div className="mapContainer">
-                <Map
-                  style={{ width: "100%", height: "100%" }}
-                  center={this.state.markers[0]}
-                  zoom={this.state.zoom}
-                  minZoom={14}
-                  maxZoom={20}
-                  onClick={this.addMarker}
-                  ref={this.myMap}
-                >
-                  <TileLayer
-                    attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png?"
-                  />
-                  {this.state.markers.map((position, idx) => (
-                    <Marker key={`marker-${idx}`} position={position}>
-                      <Popup>
-                        <span>{this.state.address}</span>
-                      </Popup>
-                    </Marker>
-                  ))}
-                </Map>
-              </div>
-              <div className="locationDetailsContainer">
-                <h2>Location Details</h2>
-                <p>
-                  Your cover crop recommendations will come from the Plant
-                  Hardiness{" "}
-                  {this.state.zoneText !== undefined
-                    ? `${this.state.zoneText}`
-                    : "Zone 7"}
-                  &nbsp; &nbsp; NECCC Dataset
-                </p>
-              </div>
-              <div></div>
-            </article>
-            <article className="belowSecondStepContainer">
-              <TextField
-                value={this.state.address}
-                style={{}}
-                label="Location"
-                variant="outlined"
-                disabled
-              ></TextField>
-              <div>
-                <p>
-                  Disclaimer: Cover crop recommendations are based omn expert
-                  opitions. Your cover crop performance will vary based on
-                  location, management, cultivars, and many other variables.
-                  Consult an{" "}
-                  <a
-                    href="https://google.com"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    NRCS Extension Expert
-                  </a>{" "}
-                  for detailed guidance.
-                </p>
-              </div>
-            </article> */}
+                <p>{cloudIcon(20, 20)} Historical Weather Data</p>
+                <p>Average Frost Dates</p>
+                <p>Average Precipitation</p>
+                <p>Frost Free Days</p>
+              </Col>
+            </Row>
+          </Container>
+        );
+      case 3:
+        return (
+          <Container fluid className="thirdStepContainer">
+            <Row className="case3FirstRow" sm={12}>
+              <h1>What are your cover cropping goals</h1>
+            </Row>
+            <Row sm={12} className="case3SecondRow">
+              <p>Select upto three. Hover for more information</p>
+            </Row>
+            <Row className="case3ThirdRow mt-4 mb-4">
+              {this.state.allGoals.map((item, key) => {
+                // return chips for all goals that dont start with TBD
+                if (!item.fields["Cover Crop Goal"].startsWith("TBD")) {
+                  return (
+                    <Col size="auto">
+                      <Tooltip
+                        title={
+                          <div className="tooltipText">
+                            {item.fields["Description"]}
+                          </div>
+                        }
+                        interactive
+                        arrow
+                      >
+                        <Chip
+                          label={item.fields["Cover Crop Goal"].toUpperCase()}
+                          onClick={() => {
+                            // check if state array is empty
+                            // get a copy of selected goals
+                            const goals = [...this.state.selectedGoals];
+                            if (
+                              goals.indexOf(item.fields["Cover Crop Goal"]) ===
+                              -1
+                            ) {
+                              // does not exist
+
+                              // set state
+                              this.setState({
+                                selectedGoals: [
+                                  ...this.state.selectedGoals,
+                                  item.fields["Cover Crop Goal"]
+                                ]
+                              });
+
+                              // make it darker on the ui
+
+                              document
+                                .getElementById(`chip${key}`)
+                                .classList.add("active");
+                            } else {
+                              // exists, remove it from the state and update the state
+
+                              let index = goals.indexOf(
+                                item.fields["Cover Crop Goal"]
+                              );
+                              goals.splice(index, 1);
+                              this.setState({
+                                selectedGoals: goals
+                              });
+
+                              // make it lighter on the ui
+
+                              document
+                                .getElementById(`chip${key}`)
+                                .classList.remove("active");
+                            }
+                          }}
+                          clickable={true}
+                          variant="outlined"
+                          className={`chip`}
+                          id={`chip${key}`}
+                          size="medium"
+                        />
+                      </Tooltip>
+                    </Col>
+                  );
+                }
+              })}
+            </Row>
           </Container>
         );
       default:
@@ -590,6 +680,15 @@ export default class WellComponent extends Component {
 
   //   setOpen(false);
   // };
+  isValid = () => {
+    // check if it is progress no. 3
+    if (this.state.progress === 3) {
+      // check if atleast 3 goals have been selected
+      if (this.state.selectedGoals.length < 3) {
+        return true;
+      } else return false;
+    } else return false;
+  };
   progressBar = () => {
     return (
       <Container className="progressContainer">
@@ -604,6 +703,7 @@ export default class WellComponent extends Component {
               Back
             </LightButton>
             <LightButton
+              disabled={this.isValid()}
               style={{ marginLeft: "3px" }}
               onClick={() => {
                 this.setWellProgress(this.state.progress + 1);
@@ -765,7 +865,7 @@ export default class WellComponent extends Component {
   };
   render() {
     return (
-      <div className="mh-100" style={{ width: "100%" }}>
+      <div className="" style={{ width: "100%", minHeight: "50vh" }}>
         {this.renderProgress()}
 
         {this.state.progress !== 0 ? this.progressBar() : ""}
