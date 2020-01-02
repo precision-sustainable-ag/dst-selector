@@ -1,11 +1,11 @@
 @import "../../node_modules/sass-mediaqueries/media-queries";
-
-a {
-  color: black !important;
-  font-weight: bolder;
-  transition: font-weight 0.5s linear;
-  &:hover {
-    font-weight: bold;
+header {
+  // max-height: 25vh;
+  .topHeader {
+    max-height: 40px;
+  }
+  .bottomHeader {
+    max-height: 120px;
   }
 }
 // @include screen(320px, 640px) {
@@ -97,8 +97,15 @@ a {
       padding-bottom: 1.2em;
       padding-left: 1.2em;
       padding-right: 1.2em;
+
       a {
+        color: black !important;
+        font-weight: bolder;
         text-decoration: none;
+        transition: font-weight 0.5s linear;
+        &:hover {
+          font-weight: bold;
+        }
       }
     }
   }
@@ -122,7 +129,7 @@ a {
       // flex-grow: 2;
       img {
         // width: 50%;
-        height: 100px;
+        height: 80px;
       }
       // width: 43%;
 
@@ -218,5 +225,20 @@ a {
         }
       }
     }
+  }
+}
+
+// Footer style --> since we don't really have a seperate footer stylesheet!?
+.footerLink > a {
+  color: #fff;
+  &:hover {
+    text-decoration: underline;
+  }
+  .rightSideFooterLinks {
+  }
+}
+@include screen(320px, 640px) {
+  .primaryFooter {
+    position: relative !important;
   }
 }

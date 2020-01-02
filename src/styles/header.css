@@ -1,12 +1,9 @@
-a {
-  color: black !important;
-  font-weight: bolder;
-  -webkit-transition: font-weight 0.5s linear;
-  transition: font-weight 0.5s linear;
+header .topHeader {
+  max-height: 40px;
 }
 
-a:hover {
-  font-weight: bold;
+header .bottomHeader {
+  max-height: 120px;
 }
 
 .active {
@@ -49,7 +46,15 @@ a:hover {
 }
 
 .topHeader ul li a {
+  color: black !important;
+  font-weight: bolder;
   text-decoration: none;
+  -webkit-transition: font-weight 0.5s linear;
+  transition: font-weight 0.5s linear;
+}
+
+.topHeader ul li a:hover {
+  font-weight: bold;
 }
 
 .bottomHeader {
@@ -67,7 +72,7 @@ a:hover {
 }
 
 .bottomHeader section .logoContainer img {
-  height: 100px;
+  height: 80px;
 }
 
 .bottomHeader section div:not(:first-child) {
@@ -161,6 +166,20 @@ a:hover {
         -ms-flex-positive: 1;
             flex-grow: 1;
     padding: 1%;
+  }
+}
+
+.footerLink > a {
+  color: #fff;
+}
+
+.footerLink > a:hover {
+  text-decoration: underline;
+}
+
+@media only screen and (min-width: 320px) and (max-width: 640px) {
+  .primaryFooter {
+    position: relative !important;
   }
 }
 /*# sourceMappingURL=header.css.map */

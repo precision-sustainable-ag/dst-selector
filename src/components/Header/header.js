@@ -1,20 +1,9 @@
 import React, { Component } from "react";
-import Grid from "@material-ui/core/Grid";
+
 import "../../styles/header.css";
-import {
-  Container,
-  Typography,
-  Link,
-  List,
-  ListItem,
-  ListItemText,
-  AppBar,
-  Toolbar,
-  IconButton,
-  Button
-} from "@material-ui/core";
-import { MenuIcon } from "@material-ui/icons/Menu";
-import { makeStyles } from "@material-ui/core/styles";
+
+import { Button } from "@material-ui/core";
+
 import { DateComponent } from "./dateComponent";
 import { GreenBarComponent } from "../GreenBar/greenBarComponent";
 
