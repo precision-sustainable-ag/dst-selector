@@ -22,72 +22,112 @@
   }
 }
 
-// .secondStepContainer {
-//   // background-color: yellow;
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-//   padding: 2em;
-//   .secondStepContainerWrapper {
-//     padding: 5%;
-//     background-color: rgba(255, 255, 255, 1);
-//     box-shadow: rgb(136, 136, 136) 0px 0px 1px;
-//     // width: 90%;
-//     // margin: 0 auto;
-//   }
-// .centerGrid {
-//   display: grid;
-//   grid-template-columns: 10vw 80vw 10vw;
-//   grid-template-rows: 1fr 2fr 1fr;
-//   // grid-column-gap: 20px;
-//   // grid-row-gap: 20px;
-//   justify-items: stretch;
-//   align-items: stretch;
-//   article.secondStepContainer {
-//     display: grid;
-//     grid-template-columns: 20% 30% 1fr;
-//     grid-template-rows: 100%;
-//     grid-column-gap: 20px;
-//     grid-row-gap: 20px;
-//     justify-items: stretch;
-//     align-items: stretch;
-//     border-bottom: 0px;
-//     border: 1px solid #2d2d2d;
-//     border-bottom: none;
-//     padding: 2rem;
-//   }
-//   article.belowSecondStepContainer {
-//     display: grid;
-//     grid-template-rows: 50% 50%;
-//     grid-template-columns: 50% 50%;
-//     justify-items: stretch;
-//     align-items: stretch;
-//     border: 1px solid #2d2d2d;
-//     border-top: none;
-//     padding: 2rem;
-//     padding-top: 0px;
-//   }
-// }
-// .centerFlex {
-//   display: flex;
-//   min-height: 30em;
-//   flex-direction: column;
-//   align-items: center;
-//   justify-items: center;
-//   article:not(:first-child) {
-//   }
-// }
 .progressContainer {
   margin-top: 3em;
 }
-.secondStepContainer {
-  margin-top: 7em;
+.secondStepContainer,
+.thirdStepContainer {
+  margin-top: 5em;
   padding: 1em;
   box-shadow: rgb(136, 136, 136) 0px 0px 1px;
+  width: 90% !important;
+}
+.thirdStepContainer {
+  div.row {
+    padding-left: 1.2em;
+    padding-right: 1.2em;
+  }
+  div.row:first-of-type {
+    padding-top: 1.2em;
+  }
+  .badge {
+    width: 100%;
+
+    padding: 2em;
+    margin-bottom: 3em;
+  }
+  .chip {
+    background-color: #f0f7eb;
+    font-weight: bold;
+    margin-bottom: 2em;
+    &.active {
+      border-radius: 16px !important;
+      & > span {
+        color: white;
+      }
+    }
+  }
+  .chip:hover {
+    background-color: #598445 !important;
+    & > span {
+      color: white;
+    }
+  }
+}
+
+.case3FirstRow {
+  h1 {
+    text-align: center;
+  }
+}
+.case3SecondRow {
+  p {
+    color: #598445;
+  }
+}
+.tooltipText {
+  max-width: none !important;
+  color: black;
+  border: none !important;
+  background-color: rgba(240, 247, 235, 1);
+  padding: 1em;
+  font-size: 14px;
+  line-height: 16px;
+  text-align: justify;
+}
+
+.parentJumbotronCol {
+  max-height: 70vh;
+}
+
+div#mainJumbotronTextWrapper {
+  background-color: rgba(240, 247, 235, 0.8);
+  width: 90%;
+  margin: 0 auto;
+  color: black;
+  padding: 2%;
+  height: auto;
+}
+.zoneDrowdown {
+  display: inline-block;
 }
 
 @include screen(320px, 640px) {
   .secondStepContainer {
-    margin-top: 1.2em;
+    margin-top: 0;
+  }
+  div#mainJumbotronTextWrapper {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+  }
+  div#mainJumbotronWrapper {
+    // padding-top: 0;
+    padding: 0;
+    padding-bottom: 0 !important;
+    padding-top: 0 !important;
+  }
+  .parentJumbotronRow {
+    padding-right: 0 !important;
+    padding-left: 0 !important;
+  }
+  .parentJumbotronCol {
+    // padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+}
+@include screen(641px, 1326px) {
+  div#mainJumbotronTextWrapper {
+    height: 100vh;
   }
 }
