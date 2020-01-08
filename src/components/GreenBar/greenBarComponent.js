@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import Grid from "@material-ui/core/Grid";
-import { Typography, GridList, GridListTile, Button } from "@material-ui/core";
+// import Grid from "@material-ui/core/Grid";
+import { Button } from "@material-ui/core";
 import "../../styles/greenBar.css";
-import LocationOnIcon from "@material-ui/icons/LocationOn";
+// import LocationOnIcon from "@material-ui/icons/LocationOn";
 import { locationIcon, zoneIcon } from "../../shared/constants.js";
 
 export class GreenBarComponent extends Component {
@@ -26,7 +26,7 @@ export class GreenBarComponent extends Component {
     ) {
       // console.log(this.props.wellState);
       this.flag = false;
-      console.log(`address undefined`);
+      // console.log(`address undefined`);
     } else {
       this.flag = true;
     }

@@ -3,9 +3,9 @@ import React from "react";
 import "./App.css";
 // import Header from "./components/Header/header";
 // import Body from "./components/body";
-import { Grid, Box } from "@material-ui/core";
+import { Box } from "@material-ui/core";
 // import Navigation from "./components/navigation";
-import Footer from "./components/Footer/footer";
+// import Footer from "./components/Footer/footer";
 import Header from "./components/Header/header";
 import WellComponent from "./components/Well/wellComponent";
 // import { GreenBarComponent } from "./components/GreenBar/greenBarComponent";
@@ -41,7 +41,7 @@ function App() {
 
         {/* <Body /> */}
       </Box>
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 }

@@ -1,22 +1,33 @@
-import React, { Component, isValidElement } from "react";
+import React, { Component } from "react";
 import { Map, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import "../../styles/wellComponent.css";
-import DoneIcon from "@material-ui/icons/Done";
+// import DoneIcon from "@material-ui/icons/Done";
+import PictureAsPdfIcon from "@material-ui/icons/PictureAsPdf";
+import PhotoLibraryIcon from "@material-ui/icons/PhotoLibrary";
+import ListIcon from "@material-ui/icons/List";
+import PrintIcon from "@material-ui/icons/Print";
+import GroupWorkIcon from "@material-ui/icons/GroupWork";
 import {
   MDBContainer as Container,
   MDBRow as Row,
   MDBCol as Col,
   MDBJumbotron,
   MDBCardTitle,
-  MDBBtn,
-  MDBIcon,
+  // MDBBtn,
+  // MDBIcon,
   MDBDropdown,
   MDBDropdownToggle,
   MDBDropdownMenu,
-  MDBDropdownItem
+  MDBDropdownItem,
+  MDBDataTable,
+  MDBModal,
+  MDBModalHeader,
+  MDBModalBody
 } from "mdbreact";
+import "../../styles/listViewComponent.css";
+import { List, arrayMove } from "react-movable";
 
 /* Since we are not using redux here, all our state variables are local state variables by default ( local to the component).
    we would be putting all the state data to our local storage once the steps are completed and access them when required
@@ -40,14 +51,31 @@ import {
   MenuItem,
   Select,
   Snackbar,
-  ButtonGroup,
-  SnackBarMessage,
-  Popper,
+  // ButtonGroup,
+  // SnackBarMessage,
+  // Popper,
   Chip,
-  Tooltip
+  Tooltip,
+  ExpansionPanel,
+  ExpansionPanelSummary,
+  Typography,
+  ExpansionPanelDetails,
+  Card,
+  CardContent,
+  CardMedia,
+  Box
+  // Table,
+  // TableHead,
+  // TableRow,
+  // TableCell,
+  // TableBody
 } from "@material-ui/core";
-import { withStyles } from "@material-ui/core/styles";
+import { withStyles, makeStyles } from "@material-ui/core/styles";
 import { cloudIcon } from "../../shared/constants.js";
+// import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+// import DragSortableList from "react-drag-sortable";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+// import ListView from "./ListView/listViewComponent";
 
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -69,26 +97,57 @@ const LightButton = withStyles({
   }
 })(Button);
 
+// const [items, setItems] = React.useState(["Item 1", "Item 2", "Item 3"]);
+
 export default class WellComponent extends Component {
   myMap = React.createRef();
 
   constructor() {
     super();
+    //   https://api.airtable.com/v0/appC47111lCOTaMYe/Cover%20Crops%20Data?maxRecords=3&view=Taxonomy%20%26%20Listing" \
+    // -H "Authorization: Bearer ***REMOVED***
+    const hdr2 = new Headers();
+    hdr2.append("Authorization", "Bearer ***REMOVED***");
+    fetch(
+      "https://api.airtable.com/v0/appC47111lCOTaMYe/Cover%20Crops%20Data?maxRecords=300&filterByFormula=NOT(SWITCH({Cover Crop Name},'__Open Discussion Row','Ok hopefully he answers me soon.'))",
+      {
+        headers: hdr2
+      }
+    )
+      .then(response => {
+        return response.json();
+      })
+      .then(data => {
+        // console.log(data.records);
+        // console.log(data);
+
+        this.setState({
+          cropData: data.records
+        });
+      });
 
     this.state = {
-      progress: 0,
+      progress: 3,
       address: "Enter Address",
       markers: [[39.03, -76.92]],
       showAddressChangeBtn: false,
       allGoals: [],
+      cropData: [],
+      selectedCrops: [],
       selectedGoals: [],
       zoom: 13,
       addressVerified: false,
       snackOpen: false,
       snackVertical: "bottom",
       snackHorizontal: "center",
-      snackMessage: ""
+      snackMessage: "",
+      modalOpen: false,
+      modalSize: "lg", //sm,md,lg,fluid
+      modalBody: {},
+      addToCartBtnText: "add to list",
+      zoneText: "0"
     };
+    // this.onDragEnd = this.onDragEnd.bind(this);
   }
 
   componentDidMount() {
@@ -282,8 +341,6 @@ export default class WellComponent extends Component {
     });
   };
 
-  getZipByLatLong = () => {};
-
   updateAddressOnClick = () => {
     // update the new text address from state to map with a new marker!
 
@@ -330,6 +387,155 @@ export default class WellComponent extends Component {
           showAddressChangeBtn: false
         });
       });
+  };
+
+  addCropToBasket = (cropId, cropName, btnId) => {
+    let container = document.getElementById(btnId);
+    let selectedCrops = {};
+    let toAdd = false;
+    var cropArray = [];
+    selectedCrops["id"] = cropId;
+    selectedCrops["cropName"] = cropName;
+    selectedCrops["btnId"] = btnId;
+    cropArray = selectedCrops;
+    // change the UI
+    if (container.classList.contains("activeCartBtn")) {
+      // change text back to 'add to list' and remove element from state
+
+      if (document.getElementById(btnId).textContent === "ADDED") {
+        container.querySelector(".MuiButton-label").innerHTML = "ADD TO LIST";
+        container.classList.remove("activeCartBtn");
+        toAdd = false;
+      } else toAdd = true;
+
+      // this.state.selectedCrops.splice(x, 1);
+      // get index of the element
+    } else {
+      // change text to 'added' and add element to state
+      console.log(document.getElementById(btnId).textContent);
+      if (container.textContent === "ADD TO LIST") {
+        container.querySelector(".MuiButton-label").innerHTML = "ADDED";
+        container.classList.add("activeCartBtn");
+        toAdd = true;
+      } else toAdd = false;
+    }
+
+    // // check if crop id exists inside state, if yes then remove it
+
+    if (this.state.selectedCrops.length > 0) {
+      // let flag = null;
+      // let idx = 0;
+      var removeIndex = this.state.selectedCrops
+        .map(function(item) {
+          return item.btnId;
+        })
+        .indexOf(`${btnId}`);
+      if (removeIndex === -1) {
+        // element not in array
+        this.setState({
+          selectedCrops: [...this.state.selectedCrops, selectedCrops],
+          snackOpen: true,
+          snackMessage: `${cropName} Added`
+        });
+      } else {
+        // alert(removeIndex);
+        let selectedCropsCopy = this.state.selectedCrops;
+
+        selectedCropsCopy.splice(removeIndex, 1);
+        // console.log(selectedCropsCopy);
+        this.setState({
+          selectedCrops: selectedCropsCopy,
+          snackOpen: true,
+          snackMessage: `${cropName} Removed`
+        });
+        // this.state.selectedCrops.splice(removeIndex, 1);
+      }
+    } else {
+      //   // DONE: add the selected crop to state and change the state, show snackbar
+      this.setState({
+        selectedCrops: [cropArray],
+        snackOpen: true,
+        snackMessage: `${cropName} Added`
+      });
+    }
+
+    // this.setState({
+
+    // })
+  };
+
+  getRating = ratng => {
+    let rating = parseInt(ratng);
+    if (rating === 0) {
+      return (
+        <div className="rating-0">
+          <span></span>
+        </div>
+      );
+    } else if (rating === 1) {
+      return (
+        <div className="rating-1">
+          <span></span>
+        </div>
+      );
+    } else if (rating === 2) {
+      return (
+        <div className="rating-2">
+          <span></span>
+        </div>
+      );
+    } else if (rating === 3) {
+      return (
+        <div className="rating-3">
+          <span></span>
+        </div>
+      );
+    } else if (rating === 4) {
+      return (
+        <div className="rating-4">
+          <span></span>
+        </div>
+      );
+    } else if (rating === 5) {
+      return (
+        <div className="rating">
+          <span></span>
+        </div>
+      );
+    }
+  };
+
+  getCropImageFromAPI = query => {
+    // BUG: API call returns random image and is restricted to 200 calls per hour! Not useful!!
+
+    query = encodeURI(query);
+    const headers = new Headers();
+    headers.append(
+      "Authorization",
+      "563492ad6f91700001000001bad1d7b7cf55408ca4d272cea7c088da"
+    );
+    fetch(`https://api.pexels.com/v1/search?query=${query}&per_page=1&page=1`, {
+      headers: headers
+    })
+      .then(res => {
+        return res.json();
+      })
+      .then(data => {
+        console.log(data);
+      });
+  };
+  isExpansionExpanded = true;
+  updateSelectedGoals = (newGoalArr, oldIndex, newIndex) => {
+    let newGoals = arrayMove(newGoalArr, oldIndex, newIndex);
+    this.setState({
+      selectedGoals: newGoals,
+      snackOpen: true,
+      snackMessage: "Goal Priority Changed"
+    });
+    // this.setState({
+    //   snackOpen: true,
+    //   snackMessage: "Please select a valid address first!"
+    // });
   };
 
   renderProgress = () => {
@@ -653,6 +859,9 @@ export default class WellComponent extends Component {
                                 .getElementById(`chip${key}`)
                                 .classList.remove("active");
                             }
+                            // this.setState({
+                            //   sortableGoals: this.listGenerator()
+                            // });
                           }}
                           clickable={true}
                           variant="outlined"
@@ -663,11 +872,246 @@ export default class WellComponent extends Component {
                       </Tooltip>
                     </Col>
                   );
-                }
+                } else return "";
               })}
             </Row>
           </Container>
+          // TODO: Maintain styling for selectedGoals on prev/next click
         );
+      case 4:
+        return (
+          <div className="container-fluid">
+            <div className="row mt-5 mainWrapperRow1">
+              <div className="col-md-1 col-sm-12"></div>
+              <div className="col-md-10 col-sm-12 mainCol1">
+                {/* TODO: Ideal place for a list/grid view toggle */}
+              </div>
+              <div className="col-md-1 col-sm-12"></div>
+            </div>
+            <div className="row mt-5 mainWrapperRow2">
+              {/* <div className="col-lg-1 hidden-md"></div> */}
+              <div className="col-lg-12 col-md-12 mainCol2">
+                <div className="row">
+                  <div className="col-md-2">
+                    <div className="sidebarTitle">
+                      <Typography variant="h6">FILTER</Typography>
+                    </div>
+                    <div className="sidebarContents">
+                      <ExpansionPanel
+                        className="sideBar"
+                        defaultExpanded={this.isExpansionExpanded}
+                        onTouchEnd={() => {
+                          this.isExpansionExpanded = !this.isExpansionExpanded;
+                        }}
+                      >
+                        <ExpansionPanelSummary
+                          expandIcon={<ExpandMoreIcon />}
+                          aria-controls="panel1a-content"
+                          id="panel1a-header"
+                        >
+                          <Typography
+                            className="sidePanelCollapsibleHeading"
+                            variant="subtitle1"
+                          >
+                            COVER CROP GOALS
+                          </Typography>
+                        </ExpansionPanelSummary>
+                        <ExpansionPanelDetails>
+                          <div>
+                            <Typography variant="subtitle1" className="mb-2">
+                              Goal Priority Order
+                            </Typography>
+                            <List
+                              values={this.state.selectedGoals}
+                              onChange={({ oldIndex, newIndex }) =>
+                                this.updateSelectedGoals(
+                                  this.state.selectedGoals,
+                                  oldIndex,
+                                  newIndex
+                                )
+                              }
+                              renderList={({ children, props }) => (
+                                <ol className="goalsListFilter" {...props}>
+                                  {children}
+                                </ol>
+                              )}
+                              renderItem={({ value, props }) => (
+                                <li {...props}>{value.toUpperCase()}</li>
+                              )}
+                            />
+                            <Typography variant="subtitle1" className="mt-2">
+                              Drag to reorder
+                            </Typography>
+
+                            {/* ))} */}
+                            {/* </ul> */}
+                          </div>
+                        </ExpansionPanelDetails>
+                      </ExpansionPanel>
+                      <ExpansionPanel className="sideBar">
+                        <ExpansionPanelSummary
+                          expandIcon={<ExpandMoreIcon />}
+                          aria-controls="panel1b-content"
+                          id="panel1b-header"
+                        >
+                          <Typography className="sidePanelCollapsibleHeading">
+                            CASH CROP
+                          </Typography>
+                        </ExpansionPanelSummary>
+                        <ExpansionPanelDetails>
+                          Details for Cash Crops
+                        </ExpansionPanelDetails>
+                      </ExpansionPanel>
+                      <ExpansionPanel className="sideBar">
+                        <ExpansionPanelSummary
+                          expandIcon={<ExpandMoreIcon />}
+                          aria-controls="panel1c-content"
+                          id="panel1c-header"
+                        >
+                          <Typography className="sidePanelCollapsibleHeading">
+                            COVER CROP FILTERS
+                          </Typography>
+                        </ExpansionPanelSummary>
+                        <ExpansionPanelDetails>
+                          Cover Crop Filters Details
+                        </ExpansionPanelDetails>
+                      </ExpansionPanel>
+                    </div>
+                  </div>
+                  <div className="col-md-10 no-padding-left">
+                    <div className="table-responsive">
+                      <table className="table">
+                        <thead className="tableheadWrapper">
+                          <tr>
+                            <th>COVER CROP</th>
+                            {this.state.selectedGoals.length !== 0
+                              ? this.state.selectedGoals.map((goal, index) => (
+                                  <th>{goal.toUpperCase()}</th>
+                                ))
+                              : ""}
+                            <th>GROWTH WINDOW</th>
+                            <th>
+                              MY LIST
+                              <br />
+                              {`[${this.state.selectedCrops.length} CROPS]`}
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody className="tableBodyWrapper">
+                          {this.state.cropData.map((crop, index) => {
+                            if (
+                              !crop.fields["Cover Crop Name"].trim() !==
+                              "Ok hopefully he answers me soon.".trim()
+                            ) {
+                              return (
+                                <tr>
+                                  <td
+                                    style={{
+                                      display: "flex",
+                                      flexDirection: "row"
+                                    }}
+                                  >
+                                    {/* {this.getCropImageFromAPI(
+                                      crop.fields["Cover Crop Name"]
+                                    )} */}
+                                    <img
+                                      src="http://lorempixel.com/200/100/"
+                                      alt="placeholder"
+                                      style={{
+                                        flexBasis: "40%"
+                                      }}
+                                    />
+                                    <div
+                                      className="cropDetailsText"
+                                      style={{
+                                        display: "flex",
+                                        flexBasis: "60%",
+                                        flexDirection: "column",
+                                        paddingLeft: "2em"
+                                      }}
+                                    >
+                                      <span className="cropCategory">
+                                        {crop.fields["Family Common Name"]}
+                                      </span>
+                                      <span className="cropName">
+                                        {crop.fields["Cover Crop Name"]}
+                                      </span>
+                                      <span className="cropScientificName">
+                                        {crop.fields["Scientific Name"]}
+                                      </span>
+                                      <span className="cropDuration">
+                                        {crop.fields["Duration"]}
+                                      </span>
+                                    </div>
+                                  </td>
+                                  {this.state.selectedGoals.length !== 0
+                                    ? this.state.selectedGoals.map(
+                                        (goal, index) => (
+                                          <td>
+                                            {this.getRating(crop.fields[goal])}
+                                          </td>
+                                        )
+                                      )
+                                    : ""}
+                                  <td>GROWTH WINDOW</td>
+                                  <td style={{}}>
+                                    <div className="button1">
+                                      <LightButton
+                                        id={`cartBtn${index}`}
+                                        style={{
+                                          borderRadius: "0px",
+                                          width: "130px"
+                                        }}
+                                        onClick={() => {
+                                          this.addCropToBasket(
+                                            crop.id,
+                                            crop.fields["Cover Crop Name"],
+                                            `cartBtn${index}`
+                                          );
+                                        }}
+                                      >
+                                        ADD TO LIST
+                                      </LightButton>
+                                    </div>
+                                    <br />
+                                    <div className="button2">
+                                      <Button
+                                        size="small"
+                                        onClick={() => {
+                                          this.setState({
+                                            modalOpen: true,
+                                            modalBody: crop.fields
+                                          });
+                                        }}
+                                      >
+                                        View Crop Details
+                                      </Button>
+                                    </div>
+                                  </td>
+                                </tr>
+                              );
+                            } else return "";
+                          })}
+                        </tbody>
+                      </table>
+                      {/* <MDBDataTable striped hover data={this.data} /> */}
+                    </div>
+
+                    <div className="cropGoals"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {/* </div> */}
+            {/* <div className="col-lg-1 hidden-md"></div> */}
+          </div>
+          // </div>
+        );
+      // return (
+      //   <Container fluid className="fourthStepContainer">
+      //     <Row></Row>
+      //   </Container>
+      // );
       default:
         return "non handled case";
     }
@@ -683,8 +1127,9 @@ export default class WellComponent extends Component {
   isValid = () => {
     // check if it is progress no. 3
     if (this.state.progress === 3) {
-      // check if atleast 3 goals have been selected
-      if (this.state.selectedGoals.length < 3) {
+      // change logic from atleast to atmost
+      // check if a̶t̶l̶e̶a̶s̶t̶ atmost 3 goals have been selected
+      if (this.state.selectedGoals.length > 3) {
         return true;
       } else return false;
     } else return false;
@@ -764,82 +1209,6 @@ export default class WellComponent extends Component {
           </Col>
         </Row>
       </Container>
-      // <Grid container style={{ marginTop: "2%", width: "90%" }}>
-      //   <Grid item md={3}></Grid>
-      //   <Grid item md={6}>
-      //     <LightButton
-      //       onClick={() => {
-      //         this.setWellProgress(this.state.progress - 1);
-      //         this.setLocalStorage(this.state);
-      //       }}
-      //     >
-      //       Back
-      //     </LightButton>
-      //     <LightButton
-      //       onClick={() => {
-      //         this.setWellProgress(this.state.progress + 1);
-      //         this.setLocalStorage(this.state);
-      //       }}
-      //       style={{
-      //         marginLeft: "5px"
-      //       }}
-      //     >
-      //       NEXT
-      //     </LightButton>
-      //   </Grid>
-      //   <Grid item md={3} style={{ textAlign: "right" }}>
-      //     <div className="progress">
-      //       <div className="progress-track"></div>
-
-      // <div
-      //   id="step1"
-      //   className="progress-step"
-      //   style={
-      //     this.state.progress !== 1
-      //       ? { backgroundColor: "#f0f7eb", color: "black" }
-      //       : { backgroundColor: "#8abc62" }
-      //   }
-      // ></div>
-
-      // <div
-      //   id="step2"
-      //   className="progress-step"
-      //   style={
-      //     this.state.progress !== 2
-      //       ? { backgroundColor: "#f0f7eb", color: "black" }
-      //       : { backgroundColor: "#8abc62" }
-      //   }
-      // ></div>
-
-      // <div
-      //   id="step3"
-      //   className="progress-step"
-      //   style={
-      //     this.state.progress !== 3
-      //       ? { backgroundColor: "#f0f7eb", color: "black" }
-      //       : { backgroundColor: "#8abc62" }
-      //   }
-      // ></div>
-
-      // <div
-      //   id="step4"
-      //   className="progress-step"
-      //   style={
-      //     this.state.progress !== 4
-      //       ? { backgroundColor: "#f0f7eb", color: "black" }
-      //       : { backgroundColor: "#8abc62" }
-      //   }
-      // ></div>
-      //     </div>
-      //   </Grid>
-      //   <Grid container style={{ width: "90%", margin: "0 auto" }}>
-      //     <Grid item md={9}></Grid>
-      //     {/* <Grid item md={6}></Grid> */}
-      //     <Grid item md={3} style={{ textAlign: "center" }}>
-      //       Question {this.state.progress} of 4
-      //     </Grid>
-      //   </Grid>
-      // </Grid>
     );
   };
   snackBar = () => {
@@ -863,14 +1232,211 @@ export default class WellComponent extends Component {
       />
     );
   };
+
+  toggleModal = () => {
+    this.setState({ modalOpen: !this.state.modalOpen });
+  };
+  showModal = () => {
+    return (
+      <MDBModal
+        isOpen={this.state.modalOpen}
+        size={this.state.modalSize}
+        toggle={() => this.toggleModal()}
+      >
+        <MDBModalHeader
+          className="modalHeader"
+          toggle={() => this.toggleModal()}
+        ></MDBModalHeader>
+        <MDBModalBody className="col-12">
+          {Object.keys(this.state.modalBody).length > 0 ? (
+            <div className="modalBodyHeader">
+              <Box width="100%">
+                <Card style={{ display: "flex" }}>
+                  <div
+                    className="classDetails"
+                    style={{ display: "flex", flexDirection: "column" }}
+                  >
+                    <CardContent style={{ flex: "1 0 auto" }}>
+                      <Typography component="h5" variant="h5">
+                        {this.state.modalBody["Cover Crop Name"]}
+                      </Typography>
+                      <Typography variant="subtitle1" color="textSecondary">
+                        {this.state.modalBody["Family Common Name"]}
+                      </Typography>
+                      <Typography variant="subtitle2" color="textSecondary">
+                        {this.state.modalBody["Duration"]}
+                      </Typography>
+                    </CardContent>
+                    <div style={{}}></div>
+                  </div>
+                  <CardMedia
+                    style={{ width: 151 }}
+                    className=""
+                    image="/images/temp.jpg"
+                    title="Live from space album cover"
+                  />
+                  <CardMedia
+                    style={{ width: 151 }}
+                    className=""
+                    image="/images/temp.jpg"
+                    title="Live from space album cover"
+                  />
+                  <CardMedia
+                    style={{ width: 151 }}
+                    className=""
+                    image="/images/temp.jpg"
+                    title="Live from space album cover"
+                  />
+                </Card>
+                <div
+                  className="buttonStripe"
+                  style={{
+                    width: "100%",
+                    //height: "50px",
+                    backgroundColor: "#2d7b7b",
+                    display: "flex"
+                  }}
+                >
+                  {/* <div className="row"> */}
+                  {/* <div className="col-12"> */}
+                  {/* <div className="col-6"> */}
+                  <div className="leftSideModalBtns" style={{ flexGrow: 2 }}>
+                    <Button
+                      style={{
+                        backgroundColor: "transparent",
+                        border: "none",
+                        boxShadow: "none",
+                        color: "white"
+                      }}
+                      variant="contained"
+                      size="small"
+                      startIcon={<GroupWorkIcon />}
+                      aria-label={`Plant Hardiness Zone ${this.state.zoneText} Dataset`}
+                    >
+                      {`Plant Hardiness Zone ${this.state.zoneText} Dataset`}
+                    </Button>
+                  </div>
+                  <div className="midSideModalBtns" style={{ flexGrow: 0 }}>
+                    <Button
+                      style={{
+                        backgroundColor: "transparent",
+                        border: "none",
+                        boxShadow: "none",
+                        color: "white"
+                      }}
+                      variant="contained"
+                      size="small"
+                      startIcon={<PhotoLibraryIcon />}
+                      aria-label={`View Photos`}
+                    >
+                      {`View Photos`}
+                    </Button>
+                  </div>
+                  <div className="semiMidSideModalBtns" style={{ flexGrow: 1 }}>
+                    <Button
+                      style={{
+                        backgroundColor: "transparent",
+                        border: "none",
+                        boxShadow: "none",
+                        color: "white"
+                      }}
+                      variant="contained"
+                      size="small"
+                    >
+                      Download:
+                    </Button>
+                    <Button
+                      style={{
+                        backgroundColor: "transparent",
+                        border: "none",
+                        boxShadow: "none",
+                        color: "white"
+                      }}
+                      variant="contained"
+                      size="small"
+                      startIcon={<PictureAsPdfIcon />}
+                      aria-label={`Download as pdf`}
+                    >
+                      {`PDF`}
+                    </Button>
+                  </div>
+
+                  {/* </div> */}
+                  {/* </div> */}
+                  {/* </div> */}
+                </div>
+              </Box>
+              {/* <Card className={classes.card}>
+      <div className={classes.details}>
+        <CardContent className={classes.content}>
+          <Typography component="h5" variant="h5">
+            Live From Space
+          </Typography>
+          <Typography variant="subtitle1" color="textSecondary">
+            Mac Miller
+          </Typography>
+        </CardContent>
+        <div className={classes.controls}>
+          <IconButton aria-label="previous">
+            {theme.direction === 'rtl' ? <SkipNextIcon /> : <SkipPreviousIcon />}
+          </IconButton>
+          <IconButton aria-label="play/pause">
+            <PlayArrowIcon className={classes.playIcon} />
+          </IconButton>
+          <IconButton aria-label="next">
+            {theme.direction === 'rtl' ? <SkipPreviousIcon /> : <SkipNextIcon />}
+          </IconButton>
+        </div>
+      </div>
+      <CardMedia
+        className={classes.cover}
+        image="/static/images/cards/live-from-space.jpg"
+        title="Live from space album cover"
+      />
+    </Card> */}
+              {/* <div className="leftSide ">
+              <span className="cropCategory">
+                {this.state.modalBody["Family Common Name"]}
+              </span>
+              <span className="cropName">
+                {this.state.modalBody["Cover Crop Name"]}
+              </span>
+              <span className="cropScientificName">
+                {this.state.modalBody["Scientific Name"]}
+              </span>
+              <span className="cropDuration">
+                {this.state.modalBody["Duration"]}
+              </span>
+              </div> */}
+            </div>
+          ) : (
+            ":("
+          )}
+          {/* <div className="bodyHeader">
+            <span className="cropCategory">
+              {crop.fields["Family Common Name"]}
+            </span>
+            <span className="cropName">{crop.fields["Cover Crop Name"]}</span>
+            <span className="cropScientificName">
+              {crop.fields["Scientific Name"]}
+            </span>
+            <span className="cropDuration">{crop.fields["Duration"]}</span>
+          </div> */}
+        </MDBModalBody>
+      </MDBModal>
+    );
+  };
   render() {
     return (
       <div className="" style={{ width: "100%", minHeight: "50vh" }}>
         {this.renderProgress()}
 
-        {this.state.progress !== 0 ? this.progressBar() : ""}
+        {this.state.progress === 0 || this.state.progress >= 4
+          ? ""
+          : this.progressBar()}
 
         {this.snackBar()}
+        {this.showModal()}
       </div>
     );
   }
