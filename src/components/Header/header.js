@@ -7,17 +7,17 @@ import { Button } from "@material-ui/core";
 import { DateComponent } from "./dateComponent";
 import { GreenBarComponent } from "../GreenBar/greenBarComponent";
 
-const flexContainer = {
-  display: "flex",
-  flexDirection: "row",
-  padding: 0
-};
+// const flexContainer = {
+//   display: "flex",
+//   flexDirection: "row",
+//   padding: 0
+// };
 
 class Header extends Component {
   index;
-  constructor(props) {
-    super(props);
-  }
+  // constructor(props) {
+  //   super(props);
+  // }
 
   progressInterval;
   // BUG(Rohit Bandooni): Responsiveness, breakpoints have not been set
@@ -60,12 +60,12 @@ class Header extends Component {
     clearTimeout(this.progressInterval);
   }
   render() {
-    const logo = {
-      width: "100%",
-      height: "80px",
-      backgroundSize: "cover",
-      backgroundImage: `url(${this.props.logoPath})`
-    };
+    // const logo = {
+    //   width: "100%",
+    //   height: "80px",
+    //   backgroundSize: "cover",
+    //   backgroundImage: `url(${this.props.logoPath})`
+    // };
     return (
       // <header>
       //   <Grid container maxWidth="xl">
@@ -166,29 +166,29 @@ class Header extends Component {
         <div className="topHeader">
           <ul>
             <li>
-              <a href="">ABOUT</a>
+              <Button>ABOUT</Button>
             </li>
             <li>
-              <a href="">NECCC</a>
+              <Button>NECCC</Button>
             </li>
             <li>
-              <a href="">USDA NRCS</a>
+              <Button>USDA NRCS</Button>
             </li>
             <li>
-              <a href="">NE SARE</a>
+              <Button>NE SARE</Button>
             </li>
             <li>
-              <a href="">HELP</a>
+              <Button>HELP</Button>
             </li>
             <li>
-              <a href="">FEEDBACK</a>
+              <Button>FEEDBACK</Button>
             </li>
           </ul>
         </div>
         <div className="bottomHeader">
           <section>
             <div className="logoContainer">
-              <img src={this.props.logoPath}></img>
+              <img alt="Logo" src={this.props.logoPath}></img>
             </div>
             <div>
               <DateComponent />
