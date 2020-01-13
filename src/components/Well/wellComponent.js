@@ -64,18 +64,11 @@ import {
   CardContent,
   CardMedia,
   Box
-  // Table,
-  // TableHead,
-  // TableRow,
-  // TableCell,
-  // TableBody
 } from "@material-ui/core";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import { cloudIcon } from "../../shared/constants.js";
-// import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-// import DragSortableList from "react-drag-sortable";
+
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-// import ListView from "./ListView/listViewComponent";
 
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -97,15 +90,12 @@ const LightButton = withStyles({
   }
 })(Button);
 
-// const [items, setItems] = React.useState(["Item 1", "Item 2", "Item 3"]);
-
 export default class WellComponent extends Component {
   myMap = React.createRef();
 
   constructor() {
     super();
-    //   https://api.airtable.com/v0/appC47111lCOTaMYe/Cover%20Crops%20Data?maxRecords=3&view=Taxonomy%20%26%20Listing" \
-    // -H "Authorization: Bearer ***REMOVED***
+
     const hdr2 = new Headers();
     hdr2.append("Authorization", "Bearer ***REMOVED***");
     fetch(
@@ -127,13 +117,19 @@ export default class WellComponent extends Component {
       });
 
     this.state = {
-      progress: 3,
-      address: "Enter Address",
+      progress: 0,
+      address: "",
       markers: [[39.03, -76.92]],
+      // markers: [[35.76422, 78.69976]],
       showAddressChangeBtn: false,
       allGoals: [],
       cropData: [],
       selectedCrops: [],
+      // selectedGoals: [
+      //   "Lasting residue",
+      //   "Nitrogen scavenging",
+      //   "Prevent soil erosion"
+      // ],
       selectedGoals: [],
       zoom: 13,
       addressVerified: false,
@@ -294,6 +290,7 @@ export default class WellComponent extends Component {
     const { markers } = this.state;
     markers.pop();
     markers.push(e.latlng);
+
     this.setState({ markers });
     // console.log(markers[0]);
     let lon = markers[0].lng;
@@ -917,35 +914,40 @@ export default class WellComponent extends Component {
                           </Typography>
                         </ExpansionPanelSummary>
                         <ExpansionPanelDetails>
-                          <div>
-                            <Typography variant="subtitle1" className="mb-2">
-                              Goal Priority Order
-                            </Typography>
-                            <List
-                              values={this.state.selectedGoals}
-                              onChange={({ oldIndex, newIndex }) =>
-                                this.updateSelectedGoals(
-                                  this.state.selectedGoals,
-                                  oldIndex,
-                                  newIndex
-                                )
-                              }
-                              renderList={({ children, props }) => (
-                                <ol className="goalsListFilter" {...props}>
-                                  {children}
-                                </ol>
-                              )}
-                              renderItem={({ value, props }) => (
-                                <li {...props}>{value.toUpperCase()}</li>
-                              )}
-                            />
-                            <Typography variant="subtitle1" className="mt-2">
-                              Drag to reorder
-                            </Typography>
-
-                            {/* ))} */}
-                            {/* </ul> */}
-                          </div>
+                          {this.state.selectedGoals.length !== 0 ? (
+                            <div>
+                              <Typography variant="subtitle1" className="mb-2">
+                                Goal Priority Order
+                              </Typography>
+                              <List
+                                values={this.state.selectedGoals}
+                                onChange={({ oldIndex, newIndex }) =>
+                                  this.updateSelectedGoals(
+                                    this.state.selectedGoals,
+                                    oldIndex,
+                                    newIndex
+                                  )
+                                }
+                                renderList={({ children, props }) => (
+                                  <ol className="goalsListFilter" {...props}>
+                                    {children}
+                                  </ol>
+                                )}
+                                renderItem={({ value, props }) => (
+                                  <li {...props}>{value.toUpperCase()}</li>
+                                )}
+                              />
+                              <Typography variant="subtitle1" className="mt-2">
+                                Drag to reorder
+                              </Typography>
+                            </div>
+                          ) : (
+                            <div>
+                              <Typography variant="subtitle1" component="h4">
+                                <i>No Goals Selected</i>
+                              </Typography>
+                            </div>
+                          )}
                         </ExpansionPanelDetails>
                       </ExpansionPanel>
                       <ExpansionPanel className="sideBar">
@@ -1015,11 +1017,13 @@ export default class WellComponent extends Component {
                                       crop.fields["Cover Crop Name"]
                                     )} */}
                                     <img
-                                      src="http://lorempixel.com/200/100/"
+                                      src="//via.placeholder.com/200x100.pmg?text=Cover+Crop+Image"
                                       alt="placeholder"
-                                      style={{
-                                        flexBasis: "40%"
-                                      }}
+                                      style={
+                                        {
+                                          // flexBasis: "40%"
+                                        }
+                                      }
                                     />
                                     <div
                                       className="cropDetailsText"
@@ -1102,28 +1106,14 @@ export default class WellComponent extends Component {
                 </div>
               </div>
             </div>
-            {/* </div> */}
-            {/* <div className="col-lg-1 hidden-md"></div> */}
           </div>
-          // </div>
         );
-      // return (
-      //   <Container fluid className="fourthStepContainer">
-      //     <Row></Row>
-      //   </Container>
-      // );
+
       default:
         return "non handled case";
     }
   };
-  // handleClose = event => {
-  //   const anchorRef = React.useRef(null);
-  //   if (anchorRef.current && anchorRef.current.contains(event.target)) {
-  //     return;
-  //   }
 
-  //   setOpen(false);
-  // };
   isValid = () => {
     // check if it is progress no. 3
     if (this.state.progress === 3) {
@@ -1297,9 +1287,6 @@ export default class WellComponent extends Component {
                     display: "flex"
                   }}
                 >
-                  {/* <div className="row"> */}
-                  {/* <div className="col-12"> */}
-                  {/* <div className="col-6"> */}
                   <div className="leftSideModalBtns" style={{ flexGrow: 2 }}>
                     <Button
                       style={{
@@ -1359,69 +1346,198 @@ export default class WellComponent extends Component {
                     >
                       {`PDF`}
                     </Button>
+                    <Button
+                      style={{
+                        backgroundColor: "transparent",
+                        border: "none",
+                        boxShadow: "none",
+                        color: "white"
+                      }}
+                      variant="contained"
+                      size="small"
+                      startIcon={<ListIcon />}
+                      aria-label={`Download as spreadsheet`}
+                    >
+                      {`SPREADSHEET`}
+                    </Button>
+                  </div>
+                  <div className="rightSideModalBtns">
+                    <Button
+                      style={{
+                        backgroundColor: "transparent",
+                        border: "none",
+                        boxShadow: "none",
+                        color: "white"
+                      }}
+                      variant="contained"
+                      size="small"
+                      startIcon={<PrintIcon />}
+                      aria-label={`Print this information`}
+                    >
+                      {`PRINT`}
+                    </Button>
                   </div>
 
                   {/* </div> */}
                   {/* </div> */}
                   {/* </div> */}
                 </div>
+                <div className="mainModalContentWrapper row mt-4">
+                  <div className="col-6">
+                    <div className="mainModalContentWrapperLeftHead row">
+                      <div className="col-12">
+                        <div className="row modalBodyLeftHead">
+                          <div className="col-6">
+                            <Typography variant="h6">
+                              Cover Crop Uses
+                            </Typography>
+                          </div>
+                          <div
+                            className="col-6"
+                            style={{
+                              color: "#969696",
+                              textAlign: "right"
+                            }}
+                          >
+                            <Typography variant="caption">
+                              (Source : NRCS Plant Guide)
+                            </Typography>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="mainModalContentWrapperLeftBody row mt-4"></div>
+                    <div className="col-12">
+                      <Typography variant="body1">
+                        {this.state.modalBody[""]}
+                        <p>
+                          Lorem ipsum dolor sit amet, consectetur adipiscing
+                          elit. Quisque id accumsan turpis, at commodo lectus.
+                          Donec sit amet porta odio. Etiam tempus lacus enim,
+                          vitae euismod odio fermentum eget. Ut nisl quam,
+                          tincidunt ac tellus cursus, scelerisque feugiat quam.
+                          Integer faucibus porttitor ante, sed venenatis mi
+                          finibus in. Vestibulum ante ipsum primis in faucibus
+                          orci luctus et ultrices posuere cubilia Curae; Integer
+                          ac feugiat massa.
+                        </p>
+
+                        <p>
+                          Ut eu elit a lorem viverra efficitur. Mauris faucibus
+                          nulla vitae mi maximus ultrices. Ut aliquet augue quis
+                          ligula pellentesque tincidunt. Sed faucibus, lorem
+                          quis viverra fermentum, diam sapien tempor ex, vel
+                          auctor lacus orci quis nisi. Vestibulum et urna est.
+                          Praesent vel nibh tincidunt, finibus felis rhoncus,
+                          consequat metus. Class aptent taciti sociosqu ad
+                          litora torquent per conubia nostra, per inceptos
+                          himenaeos. Vestibulum faucibus, enim et faucibus
+                          fringilla, libero felis laoreet ex, id accumsan eros
+                          sem eu magna. Integer at eros ac mi dictum cursus.
+                        </p>
+                      </Typography>
+                    </div>
+                  </div>
+                  <div className="col-6">
+                    <ExpansionPanel className="modalSideBar">
+                      <ExpansionPanelSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        aria-controls="panel2a-content"
+                        id="panel2a-header"
+                      >
+                        <Typography className="modalSidePanelCollapsibleHeading">
+                          Agronimic
+                        </Typography>
+                      </ExpansionPanelSummary>
+                      <ExpansionPanelDetails>
+                        Agronomic data
+                      </ExpansionPanelDetails>
+                    </ExpansionPanel>
+                    <ExpansionPanel>
+                      <ExpansionPanelSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        aria-controls="panel2b-content"
+                        id="panel2b-header"
+                      >
+                        <Typography className="modalSidePanelCollapsibleHeading">
+                          Environmental Tolerance
+                        </Typography>
+                      </ExpansionPanelSummary>
+                      <ExpansionPanelDetails>
+                        Environmental Tolerance data
+                      </ExpansionPanelDetails>
+                    </ExpansionPanel>
+                    <ExpansionPanel>
+                      <ExpansionPanelSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        aria-controls="panel2c-content"
+                        id="panel2c-header"
+                      >
+                        <Typography className="modalSidePanelCollapsibleHeading">
+                          Soil Conditions
+                        </Typography>
+                      </ExpansionPanelSummary>
+                      <ExpansionPanelDetails>
+                        Soil Conditions data
+                      </ExpansionPanelDetails>
+                    </ExpansionPanel>
+                    <ExpansionPanel>
+                      <ExpansionPanelSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        aria-controls="panel2d-content"
+                        id="panel2d-header"
+                      >
+                        <Typography className="modalSidePanelCollapsibleHeading">
+                          Growth
+                        </Typography>
+                      </ExpansionPanelSummary>
+                      <ExpansionPanelDetails>Growth data</ExpansionPanelDetails>
+                    </ExpansionPanel>
+                    <ExpansionPanel>
+                      <ExpansionPanelSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        aria-controls="panel2e-content"
+                        id="panel2e-header"
+                      >
+                        <Typography className="modalSidePanelCollapsibleHeading">
+                          Planting &amp; Termination
+                        </Typography>
+                      </ExpansionPanelSummary>
+                      <ExpansionPanelDetails>
+                        Planting and termination data
+                      </ExpansionPanelDetails>
+                    </ExpansionPanel>
+                    <ExpansionPanel>
+                      <ExpansionPanelSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        aria-controls="panel2f-content"
+                        id="panel2f-header"
+                      >
+                        <Typography className="modalSidePanelCollapsibleHeading">
+                          Grazers &amp;Pollinators
+                        </Typography>
+                      </ExpansionPanelSummary>
+                      <ExpansionPanelDetails>data</ExpansionPanelDetails>
+                    </ExpansionPanel>
+                    <ExpansionPanel>
+                      <ExpansionPanelSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        aria-controls="panel2g-content"
+                        id="panel2g-header"
+                      >
+                        <Typography className="modalSidePanelCollapsibleHeading">
+                          Pests &amp; Disease
+                        </Typography>
+                      </ExpansionPanelSummary>
+                      <ExpansionPanelDetails>data</ExpansionPanelDetails>
+                    </ExpansionPanel>
+                  </div>
+                </div>
               </Box>
-              {/* <Card className={classes.card}>
-      <div className={classes.details}>
-        <CardContent className={classes.content}>
-          <Typography component="h5" variant="h5">
-            Live From Space
-          </Typography>
-          <Typography variant="subtitle1" color="textSecondary">
-            Mac Miller
-          </Typography>
-        </CardContent>
-        <div className={classes.controls}>
-          <IconButton aria-label="previous">
-            {theme.direction === 'rtl' ? <SkipNextIcon /> : <SkipPreviousIcon />}
-          </IconButton>
-          <IconButton aria-label="play/pause">
-            <PlayArrowIcon className={classes.playIcon} />
-          </IconButton>
-          <IconButton aria-label="next">
-            {theme.direction === 'rtl' ? <SkipPreviousIcon /> : <SkipNextIcon />}
-          </IconButton>
-        </div>
-      </div>
-      <CardMedia
-        className={classes.cover}
-        image="/static/images/cards/live-from-space.jpg"
-        title="Live from space album cover"
-      />
-    </Card> */}
-              {/* <div className="leftSide ">
-              <span className="cropCategory">
-                {this.state.modalBody["Family Common Name"]}
-              </span>
-              <span className="cropName">
-                {this.state.modalBody["Cover Crop Name"]}
-              </span>
-              <span className="cropScientificName">
-                {this.state.modalBody["Scientific Name"]}
-              </span>
-              <span className="cropDuration">
-                {this.state.modalBody["Duration"]}
-              </span>
-              </div> */}
             </div>
           ) : (
             ":("
           )}
-          {/* <div className="bodyHeader">
-            <span className="cropCategory">
-              {crop.fields["Family Common Name"]}
-            </span>
-            <span className="cropName">{crop.fields["Cover Crop Name"]}</span>
-            <span className="cropScientificName">
-              {crop.fields["Scientific Name"]}
-            </span>
-            <span className="cropDuration">{crop.fields["Duration"]}</span>
-          </div> */}
         </MDBModalBody>
       </MDBModal>
     );
