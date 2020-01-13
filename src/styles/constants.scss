@@ -1,0 +1,50 @@
+$darkGreen: #598444;
+
+// PROGRESSBUTTON
+$primaryProgressBtnColor: #49a8ab;
+$primaryProgressBtnBorderColor: #62b8bc;
+$secondaryProgressBtnColor: #e3f2f4;
+$secondaryProgressBtnBorderColor: #e3f2f4;
+$progressBtnRadius: 200px;
+
+// GOALBUTTON
+$primaryGoalBtnColor: #8abc62;
+$primaryGoalBtnBorderColor: #598445;
+$goalBtnRadius: 200px;
+$secondaryGoalBtnColor: #f0f7eb;
+$secondaryGoalBtnBorderColor: #598445;
+
+$addCropToListSquareUnselectedBtn: (
+  background: #e3f2f4,
+  border: 1px solid #62b8bc,
+  box-sizing: border-box,
+  border-radius: 0px
+);
+
+$addCropToListSquareSelectedBtn: (
+  background: #49a8ab,
+  border: 1px solid #62b8bc,
+  box-sizing: border-box,
+  border-radius: 0px
+);
+
+@mixin landingBar($active: true) {
+  @if $active {
+    background: #49a8ab;
+    height: 10px;
+    width: 100%;
+  } @else {
+    background: #fff;
+    height: 10px;
+    width: 100%;
+  }
+}
+
+.boxContainerRow {
+  background-color: rgba(255, 255, 255, 1);
+  box-shadow: rgb(136, 136, 136) 0px 0px 1px;
+  width: 95%;
+  margin: 0 auto;
+  text-align: center;
+  padding: 3em;
+}
