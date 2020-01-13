@@ -1,0 +1,74 @@
+import React, { useContext, Component } from "react";
+import { Context } from "../store/Store";
+import axios from "axios";
+
+export const UpdateLatLong = async (lat, lon) => {
+  const [state, dispatch] = useContext(Context);
+  const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`;
+  await axios
+    .get(url)
+    .then(response => {
+      let data = response.data;
+      let fullAddress = data.display_name;
+      console.log(data);
+
+      // check https://phzmapi.org/[zip].json to map zone with zip probably also restricting the zips?
+      SetZoneState(data.address.postcode);
+      return fullAddress;
+    })
+    .then(fullAddress => {
+      dispatch({
+        type: "CHANGE_ADDRESS",
+        data: { address: `${fullAddress}`, addressVerified: true }
+      });
+    });
+};
+const SetZoneState = async zip => {
+  const [state, dispatch] = useContext(Context);
+  await axios
+    .get(`https://phzmapi.org/${zip}.json`)
+    .then(response => {
+      let data = response.data;
+      let zone = 0;
+      if (data !== null && data !== undefined) {
+        if (data.zone.length > 1) {
+          //  strip everything except the first char and covert it to int
+          zone = data.zone.charAt(0);
+          // alert(zone);
+        } else zone = data.zone;
+        return (zone = parseInt(zone));
+      } else {
+        return 7;
+      }
+    })
+    .then(zone => {
+      // check if zone is in the NECCC range else set a default
+      if (zone <= 7 && zone > 1) {
+        if (zone === 2 || zone === 3) {
+          dispatch({
+            type: "UPDATE_ZONE_TEXT",
+            data: {
+              zoneText: "Zone 2 & 3",
+              zone: 2
+            }
+          });
+        } else {
+          dispatch({
+            type: "UPDATE_ZONE_TEXT",
+            data: {
+              zoneText: `Zone ${zone}`,
+              zone: parseInt(zone)
+            }
+          });
+        }
+      } else {
+        dispatch({
+          type: "UPDATE_ZONE_TEXT",
+          data: {
+            zoneText: "Zone 7",
+            zone: 7
+          }
+        });
+      }
+    });
+};

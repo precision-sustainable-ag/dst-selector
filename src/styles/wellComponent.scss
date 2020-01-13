@@ -150,6 +150,9 @@ div#mainJumbotronTextWrapper {
     }
     &:active {
       cursor: grabbing;
+      font-size: 9pt;
+      font-weight: bold;
+      color: #48a8ab !important;
     }
   }
 }
@@ -308,6 +311,11 @@ table {
 .modal-lg {
   max-width: 80vw !important;
 }
+
+.modalBodyLeftHead > div {
+  // border: 1px solid #8ec5c6;
+}
+
 @include screen(320px, 640px) {
   .cropNames .cell div {
     word-wrap: inherit;

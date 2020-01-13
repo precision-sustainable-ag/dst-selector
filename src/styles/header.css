@@ -1,26 +1,89 @@
+/*
+Logo components
+*/
+/*
+Header Data components, which include date and weather data
+*/
 header .topHeader {
-  max-height: 40px;
+  padding-top: 1px;
+  max-height: 16px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+  overflow: hidden;
+}
+
+header .topHeader div {
+  max-height: 16px;
+  font-size: 14px;
+  font-weight: bold;
+  padding-right: 1em;
+  padding-left: 1em;
+  border-right: 1px solid black;
+}
+
+header .topHeader div:last-child {
+  border-right: none;
+}
+
+header .midHeader {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding-left: 10px;
+}
+
+header .midHeader .logoContainer {
+  background-image: url("/images/neccc_wide_logo_color_web.jpg");
+  background-size: cover;
+  width: 215px;
+  max-width: 215px;
+  max-height: 65px;
+  height: 65px;
+  overflow: hidden;
+}
+
+header .midHeader .dataComponents {
+  max-width: 490px;
+  max-height: 30px;
+  height: 30px;
+  width: 490px;
+  padding-left: 9px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+header .midHeader .dataComponents span {
+  font-size: 16px;
+  padding-left: 7px;
+  padding-top: 4px;
+  padding-bottom: 2px;
+  font-weight: 400;
+}
+
+header .midHeader .dataComponents span:first-child {
+  letter-spacing: 0.15px;
+  font-size: 16px;
+  line-height: 24px;
 }
 
 header .bottomHeader {
-  max-height: 120px;
-}
-
-.active {
-  /* text-align: center; */
-  background-color: #598444 !important;
-  border-top-left-radius: 10px !important;
-  border-top-right-radius: 10px !important;
-  border-bottom-left-radius: 0px !important;
-  border-bottom-right-radius: 0px !important;
-  color: #fff !important;
-}
-
-.topHeader {
-  margin-bottom: 0px;
-}
-
-.topHeader ul {
+  max-height: 45px;
+  padding-left: 10px;
+  padding-right: 10px;
+  width: 100%;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -28,158 +91,126 @@ header .bottomHeader {
   -webkit-box-direction: normal;
       -ms-flex-direction: row;
           flex-direction: row;
-  -ms-flex-line-pack: end;
-      align-content: flex-end;
-  -webkit-box-pack: end;
-      -ms-flex-pack: end;
-          justify-content: flex-end;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
-}
-
-.topHeader ul li {
-  list-style: none;
-  display: block;
-  padding-bottom: 1.2em;
-  padding-left: 1.2em;
-  padding-right: 1.2em;
-}
-
-.topHeader ul li a {
-  color: black !important;
-  font-weight: bolder;
-  text-decoration: none;
-  -webkit-transition: font-weight 0.5s linear;
-  transition: font-weight 0.5s linear;
-}
-
-.topHeader ul li a:hover {
-  font-weight: bold;
-}
-
-.bottomHeader {
-  padding-left: 1em;
-  padding-right: 1em;
-}
-
-.bottomHeader section {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-}
-
-.bottomHeader section .logoContainer img {
-  height: 80px;
-}
-
-.bottomHeader section div:not(:first-child) {
-  padding-left: 20px;
-}
-
-.bottomHeader ul {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  padding-left: 0px;
-  margin-bottom: 0px;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
   -webkit-box-pack: justify;
       -ms-flex-pack: justify;
           justify-content: space-between;
+  padding-top: 15px;
 }
 
-.bottomHeader ul li {
-  list-style: none;
-  -webkit-box-flex: 1;
-      -ms-flex-positive: 1;
-          flex-grow: 1;
-  padding: 1%;
+header .bottomHeader div {
+  font-weight: 500;
+  height: 30px;
+  font-size: 20px;
+  cursor: pointer;
 }
 
-.bottomHeader ul li a {
-  text-decoration: none;
+header .greenBarWrapper {
+  background-color: #598444;
+  height: 50px;
+  max-height: 50px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  padding-left: 16px;
+  padding-right: 16px;
+  padding-top: 13px;
+  padding-bottom: 17px;
 }
 
-.bottomHeader ul li button {
-  -webkit-box-flex: 1;
-      -ms-flex-positive: 1;
-          flex-grow: 1;
-  padding: 1%;
+header .topBar {
+  background: #49a8ab;
+  height: 10px;
+  width: 100%;
+}
+
+header .topBarMuted {
+  background: #fff;
+  height: 10px;
+  width: 100%;
 }
 
 @media only screen and (min-width: 320px) and (max-width: 640px) {
-  .active {
-    /* text-align: center; */
-    background-color: #598444 !important;
-    color: #fff !important;
-  }
-  .bottomHeader {
-    padding-top: 1em;
-    padding-left: 1em;
-    padding-right: 1em;
-  }
-  .bottomHeader section {
-    display: -ms-grid;
-    display: grid;
-    -ms-grid-columns: 1fr;
-        grid-template-columns: 1fr;
-    grid-gap: 1em;
-    gap: 1em;
-    height: 100px;
-    width: 100%;
-    margin-bottom: 40px;
-    text-align: center;
-    -webkit-box-align: center;
-        -ms-flex-align: center;
-            align-items: center;
-  }
-  .bottomHeader .logoContainer {
-    background-size: cover;
-    width: 98%;
-  }
-  .bottomHeader ul {
+  header .topHeader {
+    padding-bottom: 10px;
+    padding-top: 1px;
+    max-height: 50px;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
+    -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+    -webkit-box-pack: left;
+        -ms-flex-pack: left;
+            justify-content: left;
+    overflow: scroll;
+  }
+  header .topHeader div {
+    max-height: 16px;
+    font-size: 14px;
+    font-weight: bold;
+    padding-right: 1em;
+    padding-left: 1em;
+    border-right: none;
+  }
+  header .topHeader div:last-child {
+    border-right: none;
+  }
+  header .midHeader {
+    display: block;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    padding-left: 10px;
+    margin: 0 auto;
+  }
+  header .midHeader .dataComponents {
     padding-left: 0px;
+  }
+  header .midHeader .dataComponents span {
+    font-weight: 400;
+    padding-left: 0px;
+    padding-top: 4px;
+    padding-bottom: 2px;
+  }
+  header .midHeader .dataComponents span:first-child {
+    letter-spacing: 0.15px;
+    font-size: 16px;
+    line-height: 24px;
+  }
+  header .bottomHeader {
+    max-height: 45px;
+    padding-left: 10px;
+    padding-right: 10px;
+    width: 100%;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
         -ms-flex-direction: column;
             flex-direction: column;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+    padding-top: 15px;
   }
-  .bottomHeader ul li {
-    list-style: none;
-    -webkit-box-flex: 1;
-        -ms-flex-positive: 1;
-            flex-grow: 1;
-    padding: 1%;
+  header .bottomHeader div {
+    font-weight: 500;
+    height: 30px;
+    font-size: 20px;
+    cursor: pointer;
   }
-  .bottomHeader ul li a {
-    text-decoration: none;
+  header .bottomHeader div::before {
+    content: "";
+    margin-right: 10px;
   }
-  .bottomHeader ul li button {
-    -webkit-box-flex: 1;
-        -ms-flex-positive: 1;
-            flex-grow: 1;
-    padding: 1%;
-  }
-}
-
-.footerLink > a {
-  color: #fff;
-}
-
-.footerLink > a:hover {
-  text-decoration: underline;
-}
-
-@media only screen and (min-width: 320px) and (max-width: 640px) {
-  .primaryFooter {
-    position: relative !important;
+  header .bottomHeader div:last-child {
+    padding-bottom: 10px;
+    border-bottom: 2px solid #eee;
   }
 }
 /*# sourceMappingURL=header.css.map */
