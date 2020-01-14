@@ -9,11 +9,20 @@ const Reducer = (state, action) => {
       }
     }
     case "CHANGE_ADDRESS_BY_TYPING": {
-      return {
-        ...state,
-        address: action.data.address,
-        showAddressChangeBtn: action.data.showAddressChangeBtn
-      };
+      if (action.data.markers) {
+        return {
+          ...state,
+          address: action.data.address,
+          showAddressChangeBtn: action.data.showAddressChangeBtn,
+          markers: action.data.markers
+        };
+      } else {
+        return {
+          ...state,
+          address: action.data.address,
+          showAddressChangeBtn: action.data.showAddressChangeBtn
+        };
+      }
     }
     case "UPDATE_ZONE_TEXT": {
       return {

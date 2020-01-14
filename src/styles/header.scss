@@ -130,240 +130,106 @@ header {
     width: 100%;
   }
 }
-// @include screen(320px, 640px) {
 
-// }
+// hamburgur
+.ham-navWrapper {
+  display: none;
+}
+.ham-nav {
+  padding: 1em;
+  li {
+    font-size: 1em;
+    font-weight: 400;
+    padding: 0.3em;
+    &.active {
+      background-color: #598443;
+      color: white;
+    }
+  }
+}
 
-// @include screen(641px, 1200px) {
+.navbar {
+  box-shadow: none !important;
+}
 
-// }
+@include screen(320px, 640px) {
+  .ham-navWrapper {
+    display: block;
+  }
 
-// @include min-screen(1201px) {
+  header {
+    .bottomHeader {
+      display: none !important;
+      visibility: hidden;
+    }
+  }
+}
 
-// }
+@include screen(641px, 1200px) {
+  .ham-navWrapper {
+    display: block;
+  }
 
-// #banner {
-//   vertical-align: middle;
-//   display: flex;
-//   align-items: center;
-//   justify-content: flex-end;
-//   height: 30px;
-//   ul {
-//     list-style: none;
-//     //   height: 30px;
-//     padding: 0;
-//     position: relative;
-//     li {
-//       float: left;
-//       margin: auto 0;
-//       height: 30px;
-//       line-height: 30px;
-//       width: 100px;
-//       text-align: center;
-//       a {
-//         font-size: 10pt;
-//         text-decoration: none;
-//         &:hover {
-//           text-decoration: underline;
-//         }
-//       }
-//       &:not(:last-child):after {
-//         content: "";
-//         display: inline-block;
-//         margin-left: 18px;
-//         border-right: 1px solid #aba;
-//         height: 20px;
-//         top: 5px;
-//         position: absolute;
-//       }
-//     }
-//   }
-// }
+  header {
+    .topHeader {
+      justify-content: center;
+      div {
+        border-right: none;
+        font-weight: normal;
+      }
+    }
+    .midHeader {
+      padding-top: 0.5em;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      .logoContainer {
+      }
+    }
+    .bottomHeader {
+      display: none;
+      visibility: hidden;
+    }
+  }
 
-// .logoGrid {
-//   margin-bottom: 2%;
-// }
+  // .ham-navWrapper {
+  //   display: block;
+  // }
+  // header {
+  //   .bottomHeader {
+  //     display: none !important;
+  //     visibility: hidden;
+  //   }
+  // }
+}
 
-// .MuiListItem-gutters:first-child {
-//   padding-left: 0px;
-// }
+@include mq($min-width: 1201px) {
+  .ham-navWrapper {
+    display: none !important;
+  }
 
-// .listitemButton {
-//   transition: all 0.5s linear;
-// }
+  header {
+    .bottomHeader {
+      display: flex;
+      visibility: visible;
+    }
+  }
+}
 
-// .active {
-//   // padding-bottom: 0px !important;
-//   /* text-align: center; */
-//   background-color: #598444 !important;
-//   border-top-left-radius: 10px !important;
-//   border-top-right-radius: 10px !important;
-//   border-bottom-left-radius: 0px !important;
-//   border-bottom-right-radius: 0px !important;
-//   color: #fff !important;
-// }
-
-// .topHeader {
-//   // float: right;
-//   margin-bottom: 0px;
-//   ul {
-//     display: flex;
-//     flex-direction: row;
-//     align-content: flex-end;
-//     justify-content: flex-end;
-//     flex-wrap: wrap;
-//     li {
-//       list-style: none;
-//       display: block;
-//       // float: left;
-//       padding-bottom: 1.2em;
-//       padding-left: 1.2em;
-//       padding-right: 1.2em;
-
-//       a {
-//         color: black !important;
-//         font-weight: bolder;
-//         text-decoration: none;
-//         transition: font-weight 0.5s linear;
-//         &:hover {
-//           font-weight: bold;
-//         }
-//       }
-//     }
-//   }
-// }
-
-// .bottomHeader {
-//   // padding-top: 1em;
-//   padding-left: 1em;
-//   padding-right: 1em;
-//   section {
-//     display: flex;
-//     // grid-template-columns: 1fr 2fr;
-//     // gap: 1em;
-//     // align-items: center;
-//     // justify-content: center;
-//     align-items: center;
-//     // align-content: space-between;
-//     .logoContainer {
-//       // background-size: cover;
-//       // height: 100px;
-//       // flex-grow: 2;
-//       img {
-//         // width: 50%;
-//         height: 80px;
-//       }
-//       // width: 43%;
-
-//       // f
-//     }
-//     div:not(:first-child) {
-//       padding-left: 20px;
-//       // flex-grow: 2;
-//     }
-//   }
-
-//   ul {
-//     display: flex;
-//     padding-left: 0px;
-//     margin-bottom: 0px;
-//     flex-wrap: wrap;
-//     justify-content: space-between;
-//     li {
-//       list-style: none;
-//       // display: block;
-//       // float: left;
-//       // padding: 2em;
-//       flex-grow: 1;
-//       padding: 1%;
-//       a {
-//         text-decoration: none;
-//       }
-//       button {
-//         flex-grow: 1;
-//         padding: 1%;
-//       }
-//     }
-//   }
-// }
-
-// // Responsive Styles Begin Here
-
-// @include screen(320px, 640px) {
-//   .active {
-//     // padding-bottom: 0px !important;
-//     /* text-align: center; */
-//     background-color: #598444 !important;
-//     // border-top-left-radius: 10px !important;
-//     // border-top-right-radius: 10px !important;
-//     color: #fff !important;
-//   }
-
-//   .bottomHeader {
-//     padding-top: 1em;
-//     padding-left: 1em;
-//     padding-right: 1em;
-//     section {
-//       display: grid;
-//       grid-template-columns: 1fr;
-//       grid-gap: 1em;
-//       gap: 1em;
-//       height: 100px;
-//       width: 100%;
-//       margin-bottom: 40px;
-//       text-align: center;
-//       align-items: center;
-//     }
-//     .logoContainer {
-//       background-size: cover;
-//       width: 98%;
-//       // height: 100px;
-//       // width: 43%;
-
-//       // flex-grow: 1;
-//     }
-//     // span {
-//     //   // margin-bottom: 10px;
-//     //   // flex-grow: 2;
-//     // }
-//     ul {
-//       display: flex;
-//       padding-left: 0px;
-//       flex-direction: column;
-//       // margin-bottom: 10px;
-//       li {
-//         list-style: none;
-//         // display: block;
-//         // float: left;
-//         // padding: 2em;
-//         flex-grow: 1;
-//         padding: 1%;
-//         a {
-//           text-decoration: none;
-//         }
-//         button {
-//           flex-grow: 1;
-//           padding: 1%;
-//         }
-//       }
-//     }
-//   }
-// }
-
-// // Footer style --> since we don't really have a seperate footer stylesheet!?
-// .footerLink > a {
-//   color: #fff;
-//   &:hover {
-//     text-decoration: underline;
-//   }
-//   .rightSideFooterLinks {
-//   }
-// }
-// @include screen(320px, 640px) {
-//   .primaryFooter {
-//     position: relative !important;
-//   }
-// }
+@include mq($max-width: 1200px) {
+  .boxContainerRow {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    flex-direction: column;
+    div {
+      &:last-of-type {
+        div.leaflet-container {
+          height: 400px !important;
+        }
+      }
+    }
+  }
+}
 
 @include screen(320px, 640px) {
   header {
@@ -391,12 +257,18 @@ header {
       }
     }
     .midHeader {
-      display: block;
+      // display: block !important;
+      // align-items: center;
+      // padding-left: 10px;
+      // margin: 0 auto;
+      flex-direction: column;
+      justify-content: center;
       align-items: center;
-      padding-left: 10px;
-      margin: 0 auto;
+      .logoContainer {
+      }
 
       .dataComponents {
+        text-align: center;
         padding-left: 0px;
         display: flex;
         flex-direction: column;
