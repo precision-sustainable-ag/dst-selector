@@ -4,9 +4,18 @@ import "../../styles/header.scss";
 import { DateComponent } from "./dateComponent";
 import Greenbar from "./Greenbar/Greenbar";
 import { cloudIcon } from "../../shared/constants";
+import {
+  MDBNavbar,
+  MDBContainer,
+  MDBHamburgerToggler,
+  MDBCollapse,
+  MDBNavbarNav,
+  MDBNavItem
+} from "mdbreact";
 // import { Link, Button } from "@material-ui/core";
 const Header = () => {
   const [state, dispatch] = useContext(Context);
+  const [collapse, setCollapse] = React.useState(false);
   let isActive = {};
 
   useEffect(() => {
@@ -18,8 +27,18 @@ const Header = () => {
       case 0:
         isActive["val"] = 0;
     }
-  });
 
+    // document.getElementsByClassName('.nav-toggle')[0].addEventListener
+  });
+  const toggleClass = (el, className) => el.classList.toggle(className);
+
+  const burgurClick = () => {
+    toggleClass(document.querySelector("body"), "nav-open");
+  };
+
+  const toggleSingleCollapse = () => {
+    setCollapse(!collapse);
+  };
   return (
     <header>
       <div className="topHeader">
@@ -57,6 +76,54 @@ const Header = () => {
           MY COVER CROP LIST
         </div>
       </div>
+      {/* <div className="ham-wrapper">
+        <div className="nav-toggle" onClick={() => burgurClick()}>
+          <div className="ham-icon"></div>
+        </div>
+        <div className={state.progress === 0 ? "active" : ""}>
+          COVER CROP EXPLORER
+        </div>
+        <div className={state.progress === 1 ? "active" : ""}>
+          SPECIES SELECTOR
+        </div>
+        <div className={state.progress === 2 ? "active" : ""}>MIX MAKER</div>
+        <div className={state.progress === 3 ? "active" : ""}>
+          SEED RATE CALCULATOR
+        </div>
+        <div className={state.progress === 4 ? "active" : ""}>
+          MY COVER CROP LIST
+        </div>
+      </div> */}
+      {/* <MDBContainer fluid> */}
+      <MDBNavbar light className="ham-navWrapper">
+        <MDBContainer fluid>
+          <MDBHamburgerToggler
+            color="#598443"
+            id="hamburger1"
+            onClick={() => toggleSingleCollapse()}
+          />
+          <MDBCollapse isOpen={collapse} navbar>
+            <MDBNavbarNav className="ham-nav">
+              <MDBNavItem active={state.progress === 0 ? true : false}>
+                COVER CROP EXPLORER
+              </MDBNavItem>
+              <MDBNavItem active={state.progress === 1 ? true : false}>
+                SPECIES SELECTOR
+              </MDBNavItem>
+              <MDBNavItem active={state.progress === 2 ? true : false}>
+                MIX MAKER
+              </MDBNavItem>
+              <MDBNavItem active={state.progress === 3 ? true : false}>
+                SEED RATE CALCULATOR
+              </MDBNavItem>
+              <MDBNavItem active={state.progress === 4 ? true : false}>
+                MY COVER CROP LIST
+              </MDBNavItem>
+            </MDBNavbarNav>
+          </MDBCollapse>
+        </MDBContainer>
+      </MDBNavbar>
+      {/* </MDBContainer> */}
       <Greenbar />
       {state.progress === 0 ? (
         <div className="topBar"></div>

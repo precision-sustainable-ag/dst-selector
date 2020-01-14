@@ -9,13 +9,22 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 import "bootstrap-css-only/css/bootstrap.min.css";
 import "mdbreact/dist/css/mdb.css";
 import "./styles/progressBar.css";
+import Footer from "./components/Footer/footer";
 
-ReactDOM.render(
+const withFooter = WrappedComponent => () => [
+  <WrappedComponent key="1" />,
+  <Footer key="2" />
+];
+
+const Wrapper = () => (
   <Store>
     <App />
-  </Store>,
-  document.getElementById("root")
+  </Store>
 );
+
+const WrapperWithFooter = withFooter(Wrapper);
+
+ReactDOM.render(<WrapperWithFooter />, document.getElementById("root"));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

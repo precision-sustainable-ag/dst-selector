@@ -1,10 +1,8 @@
 import React, { useEffect, useContext } from "react";
 import { Context } from "../../store/Store";
 import "../../styles/location.scss";
-import { Map, TileLayer, Marker, Popup } from "react-leaflet";
-import "leaflet/dist/leaflet.css";
-import L from "leaflet";
-import { cloudIcon } from "../../shared/constants";
+
+// import { cloudIcon } from "../../shared/constants";
 import {
   FormControl,
   InputLabel,
@@ -12,22 +10,14 @@ import {
   MenuItem,
   TextField,
   withStyles,
-  Button,
-  Switch,
-  FormControlLabel,
-  FormGroup
+  Button
 } from "@material-ui/core";
+import Autocomplete from "@material-ui/lab/Autocomplete";
 import axios from "axios";
 import MapComponent from "./Map";
 import LiveLocation from "./LiveLocation";
+import AutoComplete from "./AutoComplete";
 // import { Link, Button } from "@material-ui/core";
-
-delete L.Icon.Default.prototype._getIconUrl;
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: require("leaflet/dist/images/marker-icon-2x.png"),
-  iconUrl: require("leaflet/dist/images/marker-icon.png"),
-  shadowUrl: require("leaflet/dist/images/marker-shadow.png")
-});
 
 const LightButton = withStyles({
   root: {
@@ -152,9 +142,9 @@ const LocationComponent = () => {
     <div
       className="container-fluid mt-5"
       style={{
-        display: "flex"
-        // justifyContent: "center",
-        // alignItems: "center"
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center"
       }}
     >
       <div className="row boxContainerRow" style={{}}>
@@ -185,6 +175,9 @@ const LocationComponent = () => {
                   <Select
                     labelId="demo-simple-select-outlined-label"
                     id="demo-simple-select-outlined"
+                    style={{
+                      textAlign: "left"
+                    }}
                     onChange={event => {
                       //   console.log("evvt" + event.target.);
                       if (event.target.value === 2) {
@@ -253,7 +246,8 @@ const LocationComponent = () => {
                 </FormControl>
               </div>
               <div className="col-md-6 col-sm-12">
-                <TextField
+                <AutoComplete />
+                {/* <TextField
                   value={state.address}
                   id="locationAddress"
                   label="Location"
@@ -262,15 +256,15 @@ const LocationComponent = () => {
                   onChange={handleAddressChangeByText}
                 />
                 {state.showAddressChangeBtn ? (
-                  <button
+                  <LightButton
                     style={{ marginLeft: "15px", marginTop: "5px" }}
                     onClick={() => updateAddressOnClick}
                   >
                     Update
-                  </button>
+                  </LightButton>
                 ) : (
                   ""
-                )}
+                )} */}
               </div>
             </div>
             <div className="row">
@@ -287,7 +281,7 @@ const LocationComponent = () => {
           </div>
         </div>
         <div className="col-lg-6 col-sm-12">
-          <MapComponent width="100%" height="100%" minzoom={12} maxzoom={20} />
+          <MapComponent width="100%" height="100%" minzoom={4} maxzoom={20} />
         </div>
       </div>
     </div>

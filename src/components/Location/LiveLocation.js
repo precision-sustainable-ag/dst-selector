@@ -48,7 +48,11 @@ const LiveLocationComponent = () => {
                     }
                   });
                   // check https://phzmapi.org/[zip].json to map zone with zip probably also restricting the zips?
-                  SetZoneState(data.address.postcode);
+                  if (data.address.postcode !== undefined) {
+                    SetZoneState(data.address.postcode);
+                  }
+
+                  console.log("live location zip: ", data);
                   return fullAddress;
                 })
                 .then(fullAddress => {

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from "react";
-// import logo from './logo.svg';
+
 import "./App.css";
 // import Header from "./components/Header/header";
 // import Body from "./components/body";
@@ -7,14 +7,14 @@ import { Box, Snackbar } from "@material-ui/core";
 // import Navigation from "./components/navigation";
 // import Footer from "./components/Footer/footer";
 import Header from "./components/Header/header";
-import WellComponent from "./components/Well/wellComponent";
 
 import Landing from "./components/Landing/Landing";
-import Footer from "./components/Footer/footer";
+
 import { Context } from "./store/Store";
 import LocationComponent from "./components/Location/Location";
 import { loadProgressBar } from "axios-progress-bar";
-
+import ProgressButtons from "./shared/ProgressButtons";
+import ProgressBar from "./shared/ProgressBar";
 // import { GreenBarComponent } from "./components/GreenBar/greenBarComponent";
 // import BodyComponent from "./components/body";
 
@@ -49,10 +49,40 @@ const App = () => {
   };
 
   return (
-    <div>
+    <div className="contentWrapper">
       <Header logo="neccc_wide_logo_color_web.jpg" />
 
       {loadRelevantRoute(state.progress)}
+
+      <div className="row progressIndicatorWrapper mt-4">
+        <div
+          className="col-lg-12"
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center"
+          }}
+        >
+          <div
+            className="row"
+            style={{
+              width: "90%"
+            }}
+          >
+            <div className="col-lg-4">
+              <ProgressButtons />
+            </div>
+            <div
+              className="col-lg-8"
+              style={{
+                textAlign: "right"
+              }}
+            >
+              <ProgressBar />
+            </div>
+          </div>
+        </div>
+      </div>
       <div>
         <Snackbar
           anchorOrigin={{
@@ -72,7 +102,6 @@ const App = () => {
           message={state.snackMessage}
         />
       </div>
-      <Footer />
     </div>
   );
   // {

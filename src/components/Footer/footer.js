@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "@material-ui/core";
 import { MDBCol, MDBContainer, MDBRow, MDBFooter } from "mdbreact";
 // import "../../styles/header.css";
-import "../../styles/footer.css";
+import "../../styles/footer.scss";
 
 function Footer() {
   return (
