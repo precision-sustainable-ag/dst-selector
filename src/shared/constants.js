@@ -1,4 +1,5 @@
 import React from "react";
+import { withStyles, Button } from "@material-ui/core";
 
 export const locationIcon = (w, h) => {
   return (
@@ -49,3 +50,16 @@ export const cloudIcon = (w, h) => {
     </svg>
   );
 };
+
+export const LightButton = withStyles({
+  root: {
+    backgroundColor: "#e3f2f4",
+    borderRadius: "20px",
+    color: "#000",
+    padding: "10px 20px 10px 20px",
+    "&:hover": {
+      backgroundColor: "#48a8ab",
+      color: "#fff"
+    }
+  }
+})(Button);
