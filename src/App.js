@@ -27,7 +27,7 @@ const loadRelevantRoute = progress => {
     case 1:
       return <LocationComponent />;
     default:
-      return "";
+      return "Non handled case";
   }
 };
 
@@ -40,7 +40,7 @@ const App = () => {
   // const isRootRoute = this.props.path == "/" ? true : false;
   const handleSnackClose = () => {
     dispatch({
-      action: "SNACK",
+      type: "SNACK",
       data: {
         snackOpen: false,
         snackMessage: ""
@@ -73,7 +73,7 @@ const App = () => {
               <ProgressButtons />
             </div>
             <div
-              className="col-lg-8"
+              className="col-lg-4 offset-lg-4"
               style={{
                 textAlign: "right"
               }}
