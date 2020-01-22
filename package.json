@@ -23,7 +23,7 @@
     "react-leaflet": "^2.6.1",
     "react-movable": "^2.4.0",
     "react-router-dom": "^5.1.2",
-    "react-scripts": "3.2.0",
+    "react-scripts": "^3.3.0",
     "sass-mediaqueries": "^1.6.1",
     "starwars-names": "^1.6.0"
   },
