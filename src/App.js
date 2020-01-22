@@ -54,35 +54,40 @@ const App = () => {
 
       {loadRelevantRoute(state.progress)}
 
-      <div className="row progressIndicatorWrapper mt-4">
-        <div
-          className="col-lg-12"
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center"
-          }}
-        >
+      {state.progress !== 0 ? (
+        <div className="row progressIndicatorWrapper mt-4">
           <div
-            className="row"
+            className="col-lg-12"
             style={{
-              width: "90%"
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center"
             }}
           >
-            <div className="col-lg-4">
-              <ProgressButtons />
-            </div>
             <div
-              className="col-lg-4 offset-lg-4"
+              className="row"
               style={{
-                textAlign: "right"
+                width: "90%"
               }}
             >
-              <ProgressBar />
+              <div className="col-lg-4">
+                <ProgressButtons />
+              </div>
+              <div
+                className="col-lg-4 offset-lg-4"
+                style={{
+                  textAlign: "right"
+                }}
+              >
+                <ProgressBar />
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      ) : (
+        ""
+      )}
+
       <div>
         <Snackbar
           anchorOrigin={{

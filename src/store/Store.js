@@ -4,7 +4,7 @@ import Reducer from "./Reducer";
 // const StoreContext = createContext();
 
 const initialState = {
-  progress: 1,
+  progress: 0,
   address: "",
   markers: [[39.03, -76.92]],
   // markers: [[35.76422, 78.69976]],
