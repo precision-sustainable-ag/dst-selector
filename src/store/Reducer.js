@@ -59,10 +59,54 @@ const Reducer = (state, action) => {
         showAddressChangeBtn: action.data.showAddressChangeBtn
       };
     }
+    case "ADD_GOALS": {
+      return {
+        ...state,
+        allGoals: action.data
+      };
+    }
 
     case "SNACK": {
       return {
         ...state,
+        snackOpen: action.data.snackOpen,
+        snackMessage: action.data.snackMessage
+      };
+    }
+
+    case "UPDATE_SELECTED_GOALS": {
+      return {
+        ...state,
+        selectedGoals: action.data
+      };
+    }
+    case "ADD_SELECTED_GOALS": {
+      return {
+        ...state,
+        selectedGoals: [...state.selectedGoals, action.data]
+      };
+    }
+
+    case "DRAG_GOALS": {
+      return {
+        ...state,
+        selectedGoals: action.data.selectedGoals,
+        snackOpen: action.data.snackOpen,
+        snackMessage: action.data.snackMessage
+      };
+    }
+
+    case "PULL_CROP_DATA": {
+      return {
+        ...state,
+        cropData: action.data
+      };
+    }
+
+    case "SELECTED_CROPS_MODIFIER": {
+      return {
+        ...state,
+        selectedCrops: action.data.selectedCrops,
         snackOpen: action.data.snackOpen,
         snackMessage: action.data.snackMessage
       };

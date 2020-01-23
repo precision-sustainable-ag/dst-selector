@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from "react";
 
-import "./App.css";
+import "./App.scss";
 // import Header from "./components/Header/header";
 // import Body from "./components/body";
 import { Box, Snackbar } from "@material-ui/core";
@@ -15,17 +15,30 @@ import LocationComponent from "./components/Location/Location";
 import { loadProgressBar } from "axios-progress-bar";
 import ProgressButtons from "./shared/ProgressButtons";
 import ProgressBar from "./shared/ProgressBar";
+import GoalsSelector from "./components/GoalsSelector/GoalsSelector";
+import LocationConfirmation from "./components/Location/LocationConfirmation";
+import CropSelector from "./components/CropSelector/CropSelector";
 // import { GreenBarComponent } from "./components/GreenBar/greenBarComponent";
 // import BodyComponent from "./components/body";
 
 const logoPath = "/images/neccc_wide_logo_color_web.jpg";
 
 const loadRelevantRoute = progress => {
+  // TODO: Handle case 3 as cropselector vs soil sample selector
   switch (progress) {
     case 0:
       return <Landing bg="/images/cover-crop-field.png" />;
     case 1:
       return <LocationComponent />;
+    case 2:
+      return <LocationConfirmation />;
+    case 3:
+      return <LocationConfirmation />;
+    case 4:
+      return <GoalsSelector />;
+    case 5:
+      return <CropSelector />;
+
     default:
       return "Non handled case";
   }
@@ -54,7 +67,7 @@ const App = () => {
 
       {loadRelevantRoute(state.progress)}
 
-      {state.progress !== 0 ? (
+      {state.progress !== 0 && state.progress < 5 ? (
         <div className="row progressIndicatorWrapper mt-4">
           <div
             className="col-lg-12"

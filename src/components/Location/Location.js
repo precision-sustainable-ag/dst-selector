@@ -19,19 +19,6 @@ import LiveLocation from "./LiveLocation";
 import AutoComplete from "./AutoComplete";
 // import { Link, Button } from "@material-ui/core";
 
-const LightButton = withStyles({
-  root: {
-    backgroundColor: "#e3f2f4",
-    borderRadius: "20px",
-    color: "#000",
-    padding: "10px 20px 10px 20px",
-    "&:hover": {
-      backgroundColor: "#48a8ab",
-      color: "#fff"
-    }
-  }
-})(Button);
-
 const LocationComponent = () => {
   const [state, dispatch] = useContext(Context);
 
@@ -108,34 +95,6 @@ const LocationComponent = () => {
           }
         });
       });
-  };
-
-  const incrementProgress = incVal => {
-    incVal = parseInt(incVal);
-    if (incVal === 2) {
-      if (state.progress === 1) {
-        dispatch({
-          type: "UPDATE_PROGRESS",
-          data: {
-            type: "INCREMENT"
-          }
-        });
-      }
-    }
-  };
-
-  const decrementProgress = decVal => {
-    decVal = parseInt(decVal);
-    if (decVal === 2) {
-      if (state.progress === 1) {
-        dispatch({
-          type: "UPDATE_PROGRESS",
-          data: {
-            type: "DECREMENT"
-          }
-        });
-      }
-    }
   };
 
   return (
