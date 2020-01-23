@@ -1,3 +1,12 @@
+/*
+
+DEPRECATED
+
+Please refer to file src/header/greenbar
+
+
+*/
+
 import React, { Component } from "react";
 // import Grid from "@material-ui/core/Grid";
 import { Button } from "@material-ui/core";

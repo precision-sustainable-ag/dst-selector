@@ -1,7 +1,11 @@
 import React, { useEffect, useContext } from "react";
 import { Context } from "../../../store/Store";
 import "../../../styles/header.scss";
-import { locationIcon, zoneIcon } from "../../../shared/constants";
+import {
+  locationIcon,
+  zoneIcon,
+  GetMonthString
+} from "../../../shared/constants";
 import { Button, Menu, MenuItem } from "@material-ui/core";
 import FilterHdrIcon from "@material-ui/icons/FilterHdr";
 import CloudIcon from "@material-ui/icons/Cloud";
@@ -11,14 +15,18 @@ const Greenbar = () => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   useEffect(() => {
     console.log("---Greeenbar.js mounted---");
-  });
+  }, []);
   const getAddress = () => {
     if (state.address === "") {
       return "";
     } else {
       let address = state.address.split(",");
+      // address = address.split(" ");
       //console.log("address: " + address[1]);
       address = `${address[0]}${address[1]}`;
+
+      address = address.substr(0, 20);
+
       return (
         <Button>
           {locationIcon(14, 20)}
@@ -49,11 +57,11 @@ const Greenbar = () => {
       return "";
     } else
       return (
-        <span>
+        <Button>
           {<FilterHdrIcon />}
           &nbsp;{" "}
-          {`Soils: ${state.soilData.loam}, Silt Loam: ${state.soilData.siltLoam}`}
-        </span>
+          {`Soils: Loam (${state.soilData[0].loam}%), Silt Loam: (${state.soilData[0].siltLoam}%)`}
+        </Button>
       );
   };
 
@@ -98,16 +106,16 @@ const Greenbar = () => {
     let date = new Date();
     let month = date.getMonth();
     // TODO: convert month to string, currently returning int
-    let currentMonth = month;
+    let currentMonth = GetMonthString(month);
 
     if (state.weatherData.length === 0) return "";
     else
       return (
-        <span>
+        <Button>
           {<CloudIcon fontSize="small" />}
           &nbsp;{" "}
-          {`Average First Frost: ${state.soilData.loam} | Average Rain(${currentMonth}): ${state.soilData.siltLoam}`}
-        </span>
+          {`Average First Frost: ${state.weatherData[0].firstFrost} | Average Rain(${currentMonth}): ${state.weatherData[0].averageRain} in`}
+        </Button>
       );
   };
   return (

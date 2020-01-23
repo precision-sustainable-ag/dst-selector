@@ -29,7 +29,7 @@ const Header = () => {
     }
 
     // document.getElementsByClassName('.nav-toggle')[0].addEventListener
-  });
+  }, [state.progress]);
   const toggleClass = (el, className) => el.classList.toggle(className);
 
   const burgurClick = () => {
@@ -56,7 +56,7 @@ const Header = () => {
             <DateComponent />
           </span>
           <span>
-            Weather Today: {cloudIcon(14, 20)} 58 | 31 F
+            Forecast: {cloudIcon(14, 20)} 58 | 31 F
             <i className="fas fa-cloud-rain pl-2"></i> 0.25in
           </span>
         </div>

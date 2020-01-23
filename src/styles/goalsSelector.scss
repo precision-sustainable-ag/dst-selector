@@ -1,0 +1,54 @@
+@import "../../node_modules/sass-mediaqueries/media-queries";
+@import "../styles/constants.scss";
+
+.goalsContainer {
+  display: flex;
+  justify-content: left;
+  align-items: left;
+
+  .goalsBoxContainer {
+    text-align: left;
+    p {
+      color: $lighterGreen;
+    }
+    .goals {
+      // display: flex;
+      // flex-direction: row;
+      // flex-wrap: wrap;
+      .goal {
+        background-color: #f0f7eb;
+        font-weight: 600;
+        margin: 10px 10px;
+        transition: all 0.7s linear;
+        > span:first-of-type {
+          display: flex;
+          align-items: center;
+          flex-wrap: nowrap;
+          padding-left: 12px;
+          padding-right: 12px;
+        }
+        &:active {
+          background-color: $darkGreen;
+          color: white;
+        }
+        &.active {
+          background-color: $darkGreen;
+          color: white;
+        }
+        // font-size: 14pt;
+        // margin-bottom: 2em;
+      }
+    }
+  }
+}
+
+.tooltipTextContainer {
+  background-color: rgba($color: #eee, $alpha: 1);
+  color: black;
+  border: 0px;
+  font-size: 14pt;
+  //   min-height: 100px;
+  padding: 1em;
+  //   min-width: 100px;
+  line-height: 14pt;
+}

@@ -1,7 +1,8 @@
 import React, { useContext } from "react";
 import "../../styles/landing.scss";
 import { Context } from "../../store/Store";
-import { Typography, Button } from "@material-ui/core";
+// import { Typography, Button } from "@material-ui/core";
+import { LightButton } from "../../shared/constants";
 
 const setWrapperStyle = bg => {
   return {
@@ -64,7 +65,8 @@ const Landing = props => {
           </p>
         </aside>
         <div className="nextButton pt-4">
-          <button onClick={() => incrementProgress(1)}>NEXT</button>
+          {/* <button onClick={() => incrementProgress(1)}>NEXT</button> */}
+          <LightButton onClick={() => incrementProgress(1)}>NEXT</LightButton>
         </div>
       </div>
     </aside>

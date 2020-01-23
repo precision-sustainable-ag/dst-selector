@@ -1,10 +1,12 @@
 @import "../../node_modules/sass-mediaqueries/media-queries";
+@import "../styles/constants.scss";
 
 .gprogress {
   display: flex;
   flex-direction: column-reverse;
   //   justify-content: center;
   align-items: center;
+  max-width: 300px;
 
   //   color: #fff;
   //   justify-content: space-evenly;
@@ -15,9 +17,13 @@
     width: 100%;
     div {
       width: 100%;
+      background-color: $greenishWhite;
+      &.active {
+        background-color: $lightGreen;
+      }
     }
     div:not(:first-child) {
-      background-color: green;
+      // background-color: green;
       padding: 10px 5px 10px 5px;
       width: 100%;
       border-right: 2px solid #fff;

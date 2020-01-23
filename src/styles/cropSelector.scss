@@ -1,0 +1,26 @@
+@import "../../node_modules/sass-mediaqueries/media-queries";
+@import "../styles/constants.scss";
+
+ol.goalsListFilter {
+  li {
+    counter-increment: step-counter;
+    margin-bottom: 10px;
+    font-size: 9pt;
+    font-weight: 700;
+    color: #48a8ab;
+    cursor: -webkit-grab;
+    cursor: grab;
+  }
+}
+
+.sidebarTitle {
+  background-color: #abd08f;
+  padding: 1em;
+  text-align: center;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  height: 86px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
