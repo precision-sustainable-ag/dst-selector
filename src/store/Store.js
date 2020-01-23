@@ -4,7 +4,7 @@ import Reducer from "./Reducer";
 // const StoreContext = createContext();
 
 const initialState = {
-  progress: 0,
+  progress: 5,
   address: "",
   markers: [[39.03, -76.92]],
   // markers: [[35.76422, 78.69976]],
@@ -12,17 +12,17 @@ const initialState = {
   allGoals: [],
   cropData: [],
   selectedCrops: [],
-  // selectedGoals: [
-  //   "Lasting residue",
-  //   "Nitrogen scavenging",
-  //   "Prevent soil erosion"
-  // ],
-  selectedGoals: [],
+  selectedGoals: [
+    "Lasting residue",
+    "Nitrogen scavenging",
+    "Prevent soil erosion"
+  ],
+  // selectedGoals: [],
   zoom: 13,
   addressVerified: false,
   snackOpen: false,
   snackVertical: "bottom",
-  snackHorizontal: "center",
+  snackHorizontal: "right",
   snackMessage: "",
   modalOpen: false,
   modalSize: "lg", //sm,md,lg,fluid
@@ -30,8 +30,18 @@ const initialState = {
   addToCartBtnText: "add to list",
   zoneText: "0",
   zone: 0,
-  soilData: [],
-  weatherData: []
+  soilData: [
+    {
+      loam: 54,
+      siltLoam: 38
+    }
+  ],
+  weatherData: [
+    {
+      firstFrost: "Oct 13",
+      averageRain: 3.46
+    }
+  ]
 };
 
 const Store = ({ children }) => {

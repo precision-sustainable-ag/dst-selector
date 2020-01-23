@@ -1,3 +1,6 @@
+@import "./node_modules/sass-mediaqueries/media-queries";
+@import "./styles/constants.scss";
+
 body {
   font-family: "Roboto", sans-serif;
 }
@@ -48,3 +51,12 @@ footer {
   flex-direction: column;
   height: 100%;
 }
+
+// @include screen(100px, 640px) {
+//   .boxContainerRow {
+//     text-align: left;
+//     padding: 0px;
+//     width: 100%;
+//     box-shadow: none;
+//   }
+// }

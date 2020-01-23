@@ -1,8 +1,35 @@
-.primaryFooter {
+@import "../../node_modules/sass-mediaqueries/media-queries";
+@import "../styles/constants.scss";
+footer.primaryFooter {
   background-color: #598445;
-  // position: absolute;
-  // bottom: 0;
-  // right: 0;
-  // left: 0;
-  // max-height: 15vh;
+  height: 50px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  > .leftSideText {
+    display: inline;
+  }
+  padding: 1em;
+  font-weight: bolder;
+}
+@include screen(320px, 640px) {
+  footer.primaryFooter {
+    height: auto;
+    flex-wrap: wrap;
+  }
+}
+@include screen(861px, 1300px) {
+  footer.primaryFooter {
+    flex-wrap: wrap;
+    height: 75px;
+    justify-content: center;
+  }
+}
+@include screen(341px, 860px) {
+  footer.primaryFooter {
+    height: 95px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
 }

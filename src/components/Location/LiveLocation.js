@@ -4,6 +4,7 @@ import { Context } from "../../store/Store";
 import axios from "axios";
 import MapComponent from "./Map";
 import { UpdateLatLong } from "../../shared/Functions";
+import { GreenSwitch } from "../../shared/constants";
 
 const LiveLocationComponent = () => {
   const [state, dispatch] = useContext(Context);
@@ -143,7 +144,7 @@ const LiveLocationComponent = () => {
       <FormGroup row>
         <FormControlLabel
           control={
-            <Switch
+            <GreenSwitch
               checked={state.checkedL}
               onChange={handleLocationToggle("checkedL")}
               value="checkedL"

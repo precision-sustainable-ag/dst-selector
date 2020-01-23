@@ -1,5 +1,5 @@
 import React from "react";
-import { withStyles, Button } from "@material-ui/core";
+import { withStyles, Button, Switch } from "@material-ui/core";
 
 export const locationIcon = (w, h) => {
   return (
@@ -63,3 +63,39 @@ export const LightButton = withStyles({
     }
   }
 })(Button);
+
+export const GreenSwitch = withStyles({
+  thumb: {
+    backgroundColor: "rgb(138, 188, 98, 1)"
+  },
+  track: {
+    backgroundColor: "rgb(138, 188, 98, 0.5)"
+  },
+  input: {
+    "&:checked": {
+      color: "rgb(240, 247, 235)"
+    }
+  },
+  "&:checked": {
+    color: "rgb(240, 247, 235)"
+  }
+})(Switch);
+
+export const GetMonthString = month => {
+  let months = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sept",
+    "Oct",
+    "Nov",
+    "Dec"
+  ];
+
+  return months[month].toUpperCase();
+};

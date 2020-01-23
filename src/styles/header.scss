@@ -98,6 +98,7 @@ header {
     max-height: $greenBarHeight;
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     // padding-left: 16px;
     // padding-right: 16px;
     // padding-top: 13px;
@@ -313,10 +314,16 @@ header {
     }
     .greenBarWrapper {
       background-color: $darkGreen !important;
-      height: $greenBarSmallHeight !important;
-      max-height: $greenBarSmallHeight !important;
+      // height: $greenBarSmallHeight !important;
+      // max-height: $greenBarSmallHeight !important;
+      background-color: #598444 !important;
+      /* height: 30px !important; */
+      /* max-height: 30px !important; */
       display: flex;
-      flex-direction: row;
+      flex-direction: column;
+      flex-wrap: wrap;
+      max-height: 500px;
+      height: auto;
       // padding-left: 16px;
       // padding-right: 16px;
       // padding-top: 13px;
