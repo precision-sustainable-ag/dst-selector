@@ -1,9 +1,9 @@
-import React, { useEffect, useContext } from "react";
-import { FormGroup, FormControlLabel, Switch } from "@material-ui/core";
+import React, { useContext } from "react";
+import { FormGroup, FormControlLabel } from "@material-ui/core";
 import { Context } from "../../store/Store";
 import axios from "axios";
-import MapComponent from "./Map";
-import { UpdateLatLong } from "../../shared/Functions";
+// import MapComponent from "./Map";
+// import { UpdateLatLong } from "../../shared/Functions";
 import { GreenSwitch } from "../../shared/constants";
 
 const LiveLocationComponent = () => {

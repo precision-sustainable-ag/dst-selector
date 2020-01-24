@@ -17,10 +17,93 @@ ol.goalsListFilter {
   background-color: #abd08f;
   padding: 1em;
   text-align: center;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
   height: 86px;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.iconsWrapper {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  max-width: 150px;
+  justify-content: center;
+  align-items: center;
+  .iconToggle {
+    border: 1px solid #48a8ab;
+    border-radius: 5px;
+    &:first-of-type {
+      border-right: 0px;
+      border-top-right-radius: 0px;
+      border-bottom-right-radius: 0px;
+    }
+    &:last-of-type {
+      border-left: 0px;
+      border-top-left-radius: 0px;
+      border-bottom-left-radius: 0px;
+    }
+    .iconActive {
+      background-color: #48a8ab !important;
+      border-radius: 5px;
+    }
+  }
+}
+
+.coverCropFiltersWrapper {
+  padding-left: 2px !important;
+  ul {
+    // padding-left: 5px;
+    li {
+      list-style: none;
+      font-size: 10pt;
+      padding-left: 15px;
+      cursor: pointer;
+      color: #35999b;
+      font-weight: bold;
+      div {
+        height: 33px;
+        display: none;
+        visibility: hidden;
+        label {
+          span:last-of-type {
+            small {
+              color: black;
+              font-weight: 500;
+            }
+          }
+        }
+        &:last-of-type {
+          height: auto;
+        }
+      }
+      label {
+        &:hover {
+          // text-decoration: none !important;
+        }
+      }
+      &:hover {
+        // text-decoration: underline;
+      }
+      &:before {
+        content: "\2295"; /* FontAwesome Unicode */
+        // font-family: FontAwesome;
+        display: inline-block;
+        margin-left: -15px; /* same as padding-left set on li */
+        width: 15px; /* same as padding-left set on li */
+      }
+      &.active {
+        &:before {
+          content: "\2296";
+        }
+      }
+    }
+  }
+}
+
+div.show {
+  display: block !important;
+  visibility: visible !important;
 }

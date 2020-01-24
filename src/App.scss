@@ -52,6 +52,12 @@ footer {
   height: 100%;
 }
 
+button {
+  outline: none !important;
+}
+.modalContainer {
+}
+
 // @include screen(100px, 640px) {
 //   .boxContainerRow {
 //     text-align: left;

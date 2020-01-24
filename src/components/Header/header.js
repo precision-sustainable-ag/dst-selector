@@ -12,6 +12,7 @@ import {
   MDBNavbarNav,
   MDBNavItem
 } from "mdbreact";
+import { Button } from "@material-ui/core";
 // import { Link, Button } from "@material-ui/core";
 const Header = () => {
   const [state, dispatch] = useContext(Context);
@@ -39,6 +40,30 @@ const Header = () => {
   const toggleSingleCollapse = () => {
     setCollapse(!collapse);
   };
+  const setmyCoverCropActivationFlag = () => {
+    if (state.progress > 4) {
+      dispatch({
+        type: "ACTIVATE_MY_COVER_CROP_LIST_TILE",
+        data: {
+          myCoverCropActivationFlag: true,
+          speciesSelectorActivationFlag: false
+        }
+      });
+    }
+  };
+
+  const setSpeciesSelectorActivationFlag = () => {
+    // if (state.progress) {
+    dispatch({
+      type: "ACTIVATE_SPECIES_SELECTOR_TILE",
+      data: {
+        speciesSelectorActivationFlag: true,
+        myCoverCropActivationFlag: false
+      }
+    });
+    // }
+  };
+
   return (
     <header>
       <div className="topHeader">
@@ -62,19 +87,24 @@ const Header = () => {
         </div>
       </div>
       <div className="bottomHeader">
-        <div className={state.progress === 0 ? "active" : ""}>
-          COVER CROP EXPLORER
-        </div>
-        <div className={state.progress === 1 ? "active" : ""}>
+        <Button size="large">COVER CROP EXPLORER</Button>
+        <Button
+          className={state.speciesSelectorActivationFlag ? "active" : ""}
+          onClick={setSpeciesSelectorActivationFlag}
+          size="large"
+        >
           SPECIES SELECTOR
-        </div>
-        <div className={state.progress === 2 ? "active" : ""}>MIX MAKER</div>
-        <div className={state.progress === 3 ? "active" : ""}>
-          SEED RATE CALCULATOR
-        </div>
-        <div className={state.progress === 4 ? "active" : ""}>
+        </Button>
+        <Button size="large">MIX MAKER</Button>
+        {/* <Button className={state.progress === 3 ? "active" : ""}> */}
+        <Button size="large">SEED RATE CALCULATOR</Button>
+        <Button
+          size="large"
+          className={state.myCoverCropActivationFlag ? "active" : ""}
+          onClick={setmyCoverCropActivationFlag}
+        >
           MY COVER CROP LIST
-        </div>
+        </Button>
       </div>
       {/* <div className="ham-wrapper">
         <div className="nav-toggle" onClick={() => burgurClick()}>
@@ -116,7 +146,11 @@ const Header = () => {
               <MDBNavItem active={state.progress === 3 ? true : false}>
                 SEED RATE CALCULATOR
               </MDBNavItem>
-              <MDBNavItem active={state.progress === 4 ? true : false}>
+              <MDBNavItem
+                onClick={() => alert("hey")}
+                active={state.progress === 4 ? true : false}
+                className={state.myCoverCropActivationFlag ? "active" : ""}
+              >
                 MY COVER CROP LIST
               </MDBNavItem>
             </MDBNavbarNav>
