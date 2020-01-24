@@ -112,6 +112,22 @@ const Reducer = (state, action) => {
       };
     }
 
+    case "ACTIVATE_MY_COVER_CROP_LIST_TILE": {
+      return {
+        ...state,
+        myCoverCropActivationFlag: action.data.myCoverCropActivationFlag,
+        speciesSelectorActivationFlag: action.data.speciesSelectorActivationFlag
+      };
+    }
+
+    case "ACTIVATE_SPECIES_SELECTOR_TILE": {
+      return {
+        ...state,
+        myCoverCropActivationFlag: action.data.myCoverCropActivationFlag,
+        speciesSelectorActivationFlag: action.data.speciesSelectorActivationFlag
+      };
+    }
+
     default:
       return state;
   }

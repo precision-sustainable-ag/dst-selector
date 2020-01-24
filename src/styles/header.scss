@@ -77,7 +77,7 @@ header {
     }
   }
   .bottomHeader {
-    max-height: $bottomHeaderMax;
+    // max-height: $bottomHeaderMax;
     padding-left: 10px;
     padding-right: 10px;
     width: 100%;
@@ -85,11 +85,18 @@ header {
     flex-direction: row;
     justify-content: space-between;
     padding-top: 15px;
-    div {
+    button {
       font-weight: 500;
-      height: 30px;
-      font-size: 20px;
+      // height: 30px;
+      // font-size: 14pt;
       cursor: pointer;
+
+      &.active {
+        background-color: #598444;
+        color: white;
+        border-bottom-left-radius: 0px;
+        border-bottom-right-radius: 0px;
+      }
     }
   }
   .greenBarWrapper {
