@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, Fragment } from "react";
 import { Context } from "../../store/Store";
 import {
   Typography,
@@ -8,21 +8,34 @@ import {
   FormGroup,
   FormControl,
   FormControlLabel,
-  Checkbox
+  Checkbox,
+  // Button,
+  IconButton
 } from "@material-ui/core";
 import { List, arrayMove } from "react-movable";
 
-import { ExpandMore } from "@material-ui/icons";
+import { ExpandMore, CalendarToday } from "@material-ui/icons";
 
 import "../../styles/cropSelector.scss";
 import CropTableComponent from "./CropTable";
 import ListIcon from "@material-ui/icons/List";
+import MyCoverCropList from "../MyCoverCropList/MyCoverCropList";
+import CropCalendarViewComponent from "./CropCalendarViewComponent";
 
 const CropSelector = () => {
   const [state, dispatch] = useContext(Context);
-  let [isExpansionExpanded, setIsExpansionExpanded] = useState(true);
+  // let [isExpansionExpanded, setIsExpansionExpanded] = useState(true);
   let [showGrowthWindow, setShowGrowthWindow] = useState(true);
+  let [isListView, setIsListView] = useState(true);
 
+  // useEffect(() => {
+  //   if (state.speciesSelectorActivationFlag) {
+  //     setIsExpansionExpanded(false);
+  //   } else {
+  //     setIsExpansionExpanded(true);
+  //   }
+  //   // return isExpansionExpanded;
+  // }, [isExpansionExpanded]);
   const updateSelectedGoals = (newGoalArr, oldIndex, newIndex) => {
     let newGoals = arrayMove(newGoalArr, oldIndex, newIndex);
 
@@ -34,26 +47,92 @@ const CropSelector = () => {
         snackMessage: "Goal Priority Changed"
       }
     });
-    // this.setState({
-    //   selectedGoals: newGoals,
-    //   snackOpen: true,
-    //   snackMessage: "Goal Priority Changed"
-    // });
-    // this.setState({
-    //   snackOpen: true,
-    //   snackMessage: "Please select a valid address first!"
-    // });
   };
+
+  const expandCoverCropFilter = id => {
+    let listItemId = `cropFilterList${id}`;
+    let x = document.querySelectorAll(`#${listItemId} div`);
+    if (document.getElementById(listItemId).classList.contains("active")) {
+      document.getElementById(listItemId).classList.remove("active");
+      // hide dropdown
+      // document.querySelectorAll(`#${listItemId} div`).classList.remove("show");
+      for (var i = 0; i < x.length; i++) {
+        x[i].classList.remove("show");
+      }
+    } else {
+      document.getElementById(listItemId).classList.add("active");
+      // show dropdown
+
+      for (var j = 0; j < x.length; j++) {
+        if (!x[j].classList.contains("show")) {
+          x[j].classList.add("show");
+        }
+      }
+    }
+  };
+
+  const toggleListView = () => {
+    setIsListView(!isListView);
+  };
+  // const renderRelevantComponent = () => {
+  //   if (isListView) {
+
+  //   }
+  // };
   return (
-    <div className="container-fluid mt-5">
+    <div className="container-fluid mt-2">
       <div className="row toggleComparisonRow">
         <div className="col-lg-12">
-          <div className="iconsWrapper">
-            <ListIcon />
+          <div className="row">
+            <div className="col-lg-6 col-sm-12 pl-5">
+              <div className="iconsWrapper">
+                {state.myCoverCropActivationFlag ? (
+                  <Fragment>
+                    <div className="iconToggle">
+                      <IconButton
+                        className={isListView ? `iconActive` : ""}
+                        onClick={toggleListView}
+                      >
+                        <ListIcon style={{ fontSize: "larger" }} />
+                      </IconButton>
+                    </div>
+                    <div className="iconToggle">
+                      <IconButton
+                        className={isListView ? `` : `iconActive`}
+                        onClick={toggleListView}
+                      >
+                        <CalendarToday style={{ fontSize: "larger" }} />
+                      </IconButton>
+                    </div>
+                    <small>LIST VIEW</small>
+                  </Fragment>
+                ) : (
+                  <Fragment>
+                    <div className="iconToggle">
+                      <IconButton
+                        className={isListView ? `iconActive` : ""}
+                        onClick={toggleListView}
+                      >
+                        <ListIcon style={{ fontSize: "larger" }} />
+                      </IconButton>
+                    </div>
+                    <div className="iconToggle">
+                      <IconButton
+                        className={isListView ? `` : `iconActive`}
+                        onClick={toggleListView}
+                      >
+                        <CalendarToday style={{ fontSize: "larger" }} />
+                      </IconButton>
+                    </div>
+                    <small>LIST VIEW</small>
+                  </Fragment>
+                )}
+              </div>
+            </div>
           </div>
         </div>
       </div>
-      <div className="row cropSelectorRow mt-5">
+      <div className="row cropSelectorRow mt-2">
         <div className="col-lg-2">
           <div className="sidebarTitle">
             <Typography variant="body1">FILTER</Typography>
@@ -61,10 +140,10 @@ const CropSelector = () => {
           <div className="sidebarContents">
             <ExpansionPanel
               className="sideBar"
-              defaultExpanded={isExpansionExpanded}
-              onTouchEnd={() => {
-                setIsExpansionExpanded(!isExpansionExpanded);
-              }}
+              expanded={state.myCoverCropActivationFlag ? false : true}
+              // onTouchEnd={() => {
+              //   setIsExpansionExpanded(!isExpansionExpanded);
+              // }}
             >
               <ExpansionPanelSummary
                 expandIcon={<ExpandMore />}
@@ -154,7 +233,10 @@ const CropSelector = () => {
                 </div>
               </ExpansionPanelDetails>
             </ExpansionPanel>
-            <ExpansionPanel className="sideBar">
+            <ExpansionPanel
+              className="sideBar"
+              expanded={state.myCoverCropActivationFlag ? true : false}
+            >
               <ExpansionPanelSummary
                 expandIcon={<ExpandMore />}
                 aria-controls="panel1c-content"
@@ -164,14 +246,114 @@ const CropSelector = () => {
                   COVER CROP FILTERS
                 </Typography>
               </ExpansionPanelSummary>
-              <ExpansionPanelDetails>
-                Cover Crop Filters Details
+              <ExpansionPanelDetails className="coverCropFiltersWrapper">
+                <ul>
+                  <li
+                    onClick={() => expandCoverCropFilter(0)}
+                    id="cropFilterList0"
+                  >
+                    Agronomic
+                  </li>
+                  <li
+                    id="cropFilterList1"
+                    onClick={() => expandCoverCropFilter(1)}
+                    className="active"
+                  >
+                    Environmental Tolerance
+                    <div className="show">
+                      <FormControlLabel
+                        control={<Checkbox value="checkedC" />}
+                        label={<small>HEAT</small>}
+                      />
+                    </div>
+                    <div className="show">
+                      <FormControlLabel
+                        control={<Checkbox value="checkedC" />}
+                        label={<small>Drought</small>}
+                      />
+                    </div>
+                    <div className="show">
+                      <FormControlLabel
+                        control={<Checkbox value="checkedC" />}
+                        label={<small>Shade</small>}
+                      />
+                    </div>
+                    <div className="show">
+                      <FormControlLabel
+                        control={<Checkbox value="checkedC" />}
+                        label={<small>Flood</small>}
+                      />
+                    </div>
+                    <div className="show">
+                      <FormControlLabel
+                        control={<Checkbox value="checkedC" />}
+                        label={<small>Low Fertility</small>}
+                      />
+                    </div>
+                    <div className="show">
+                      <FormControlLabel
+                        control={<Checkbox value="checkedC" />}
+                        label={<small>Salinity</small>}
+                      />
+                    </div>
+                    <div className="show">
+                      <FormControlLabel
+                        control={<Checkbox value="checkedC" />}
+                        label={<small>Winter Survival</small>}
+                      />
+                    </div>
+                  </li>
+                  <li
+                    id="cropFilterList2"
+                    onClick={() => expandCoverCropFilter(2)}
+                  >
+                    Soil Conditions
+                  </li>
+                  <li
+                    id="cropFilterList3"
+                    onClick={() => expandCoverCropFilter(3)}
+                  >
+                    Growth
+                  </li>
+                  <li
+                    id="cropFilterList4"
+                    onClick={() => expandCoverCropFilter(4)}
+                  >
+                    Planting &amp; Termination
+                  </li>
+                  <li
+                    id="cropFilterList5"
+                    onClick={() => expandCoverCropFilter(5)}
+                  >
+                    Grazers &amp; Pollinators
+                  </li>
+                  <li
+                    id="cropFilterList6"
+                    onClick={() => expandCoverCropFilter(6)}
+                  >
+                    Pests &amp; Disease
+                  </li>
+                </ul>
               </ExpansionPanelDetails>
             </ExpansionPanel>
           </div>
         </div>
         <div className="col-lg-10">
-          <CropTableComponent />
+          {/* {renderRelevantComponent} */}
+          {/* {isListView ? (
+            state.myCoverCropActivationFlag ? (
+              <MyCoverCropList />
+            ) : (
+              <CropTableComponent />
+            )
+          ) : (
+            <CropCalendarViewComponent />
+          )} */}
+          {state.myCoverCropActivationFlag ? (
+            <MyCoverCropList />
+          ) : (
+            <CropTableComponent />
+          )}
         </div>
       </div>
     </div>

@@ -1,18 +1,18 @@
-import React, { useEffect, useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 import {
-  TextField,
-  Paper,
-  makeStyles,
-  InputBase,
-  IconButton,
-  Menu,
-  MenuItem,
-  Fade
+  TextField
+  // Paper,
+  // makeStyles,
+  // InputBase,
+  // IconButton,
+  // Menu,
+  // MenuItem,
+  // Fade
 } from "@material-ui/core";
 import { Context } from "../../store/Store";
 import axios from "axios";
-import Autocomplete from "@material-ui/lab/Autocomplete";
-import SearchIcon from "@material-ui/icons/Search";
+// import Autocomplete from "@material-ui/lab/Autocomplete";
+// import SearchIcon from "@material-ui/icons/Search";
 
 const AutoCompleteComponent = () => {
   const [state, dispatch] = useContext(Context);
