@@ -20,13 +20,16 @@ import "../../styles/cropSelector.scss";
 import CropTableComponent from "./CropTable";
 import ListIcon from "@material-ui/icons/List";
 import MyCoverCropList from "../MyCoverCropList/MyCoverCropList";
-import CropCalendarViewComponent from "./CropCalendarViewComponent";
+import CropCalendarViewComponent from "./CropCalendarView";
 
 const CropSelector = () => {
   const [state, dispatch] = useContext(Context);
   // let [isExpansionExpanded, setIsExpansionExpanded] = useState(true);
   let [showGrowthWindow, setShowGrowthWindow] = useState(true);
-  let [isListView, setIsListView] = useState(true);
+  // let [isListView, setIsListView] = useState(true);
+
+  // TODO: set list view as default. Calendar component is activated currently
+  let [isListView, setIsListView] = useState(false);
 
   // useEffect(() => {
   //   if (state.speciesSelectorActivationFlag) {
@@ -124,7 +127,9 @@ const CropSelector = () => {
                         <CalendarToday style={{ fontSize: "larger" }} />
                       </IconButton>
                     </div>
-                    <small>LIST VIEW</small>
+                    <small className="mt-2">
+                      {isListView ? "LIST VIEW" : "CALENDAR VIEW"}
+                    </small>
                   </Fragment>
                 )}
               </div>
@@ -339,6 +344,15 @@ const CropSelector = () => {
           </div>
         </div>
         <div className="col-lg-10">
+          {state.speciesSelectorActivationFlag ? (
+            isListView ? (
+              <CropTableComponent />
+            ) : (
+              <CropCalendarViewComponent />
+            )
+          ) : (
+            <MyCoverCropList />
+          )}
           {/* {renderRelevantComponent} */}
           {/* {isListView ? (
             state.myCoverCropActivationFlag ? (
@@ -349,11 +363,11 @@ const CropSelector = () => {
           ) : (
             <CropCalendarViewComponent />
           )} */}
-          {state.myCoverCropActivationFlag ? (
+          {/* {state.myCoverCropActivationFlag ? (
             <MyCoverCropList />
           ) : (
             <CropTableComponent />
-          )}
+          )} */}
         </div>
       </div>
     </div>

@@ -1,3 +1,4 @@
+// TODO: Goal tags are not responsive!
 import React, { useContext, useEffect } from "react";
 import { Context } from "../../store/Store";
 

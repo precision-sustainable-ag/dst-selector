@@ -80,10 +80,20 @@
   word-wrap: break-word;
   border-top-left-radius: 5px;
   border-bottom-left-radius: 5px;
+  tr {
+    border-radius: 15px;
+    th {
+    }
+  }
 }
 
 .cropTableModal.modalContainer {
   width: 80%;
   border: 0px;
   border-radius: 5px;
+}
+
+table {
+  // border-spacing: 0;
+  // border-collapse: separate;
 }
