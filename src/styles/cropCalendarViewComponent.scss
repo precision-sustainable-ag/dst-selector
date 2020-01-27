@@ -1,0 +1,68 @@
+$cashCropGrowthWindowColor: rgb(255, 12, 62);
+$frostSeedingPossibleColor: #2f80ed;
+$temperatureRiskToEstablishmentColor: #f2c94c;
+$reliableEstablishmentColor: #2d7b7b;
+$defaultLegendColor: #f0f7eb;
+
+.calendarViewTable {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.calendarViewTable {
+  tr {
+    // td:first-child {
+    //   border-right: 10px solid white;
+    // }
+    // border-top-left-radius: 10px;
+    // border-bottom-left-radius: 10px;
+    // border-radius: 10px;
+    td:nth-child(1),
+    td:nth-child(2) {
+      border-right: 10px solid white;
+    }
+    td:nth-child(1) {
+      border-top-left-radius: 15px;
+      border-bottom-left-radius: 15px;
+    }
+    td:last-child {
+      border-left: 10px solid white;
+      border-top-right-radius: 15px;
+      border-bottom-right-radius: 15px;
+    }
+    td:nth-child(3),
+    td:nth-child(4),
+    td:nth-child(5),
+    td:nth-child(6),
+    td:nth-child(7),
+    td:nth-child(8),
+    td:nth-child(9),
+    td:nth-child(10),
+    td:nth-child(11),
+    td:nth-child(12),
+    td:nth-child(13) {
+      border-right: 5px solid transparent;
+    }
+  }
+
+  tbody {
+    tr {
+      td.calendarTableCell {
+        padding-left: 0px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+
+        button {
+          > span {
+            text-transform: capitalize;
+          }
+        }
+      }
+      td.legendColor {
+        background-color: $defaultLegendColor;
+      }
+    }
+  }
+}

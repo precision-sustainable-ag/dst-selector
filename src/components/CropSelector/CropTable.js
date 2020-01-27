@@ -57,15 +57,14 @@ const CropTableComponent = () => {
   const handleModalClose = () => {
     setModalOpen(false);
   };
+  const url =
+    "https://api.airtable.com/v0/appC47111lCOTaMYe/Cover%20Crops%20Data?maxRecords=300&timeZone=America_NewYork&filterByFormula=NOT(SWITCH({Cover Crop Name},'__Open Discussion Row','Ok hopefully he answers me soon.'))";
   useEffect(() => {
     const headers = new Headers();
     headers.append("Authorization", "Bearer ***REMOVED***");
-    fetch(
-      "https://api.airtable.com/v0/appC47111lCOTaMYe/Cover%20Crops%20Data?maxRecords=300&filterByFormula=NOT(SWITCH({Cover Crop Name},'__Open Discussion Row','Ok hopefully he answers me soon.'))",
-      {
-        headers: headers
-      }
-    )
+    fetch(url, {
+      headers: headers
+    })
       .then(response => {
         return response.json();
       })
@@ -181,7 +180,7 @@ const CropTableComponent = () => {
           <thead className="tableHeadWrapper">
             <tr>
               <th>
-                <Typography variant="body1">COVER CROP</Typography>
+                <Typography variant="body1">COVER CROPS</Typography>
               </th>
               {state.selectedGoals.length !== 0
                 ? state.selectedGoals.map((goal, index) => (
@@ -231,7 +230,7 @@ const CropTableComponent = () => {
                       <div className="cropDetailsText" style={{}}>
                         <div className="part1_ut">
                           <span className="cropCategory text-uppercase">
-                            {crop.fields["Family Common Name"]}
+                            {crop.fields["Cover Crop Group"]}
                           </span>
                           <span className="cropName font-weight-lighter">
                             {crop.fields["Cover Crop Name"]}
@@ -339,7 +338,7 @@ const CropTableComponent = () => {
                   <div className="col-12">
                     <div className="row">
                       <div className="col mt-2">
-                        <div>{modalData.fields["Family Common Name"]}</div>
+                        <div>{modalData.fields["Cover Crop Group"]}</div>
                         <div className="font-weight-bold">
                           {modalData.fields["Cover Crop Name"]}
                         </div>
