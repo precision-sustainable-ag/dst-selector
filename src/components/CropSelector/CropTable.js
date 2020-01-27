@@ -221,7 +221,7 @@ const CropTableComponent = () => {
                           crop.fields["Cover Crop Name"]
                         )} */}
                       <img
-                        src="http://placehold.it/100x100"
+                        src="//placehold.it/100x100"
                         alt="placeholder"
                         style={{
                           flexBasis: "20%"
