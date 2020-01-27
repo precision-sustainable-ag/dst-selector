@@ -47,22 +47,47 @@ $defaultLegendColor: #f0f7eb;
 
   tbody {
     tr {
+      max-height: 3em;
       td.calendarTableCell {
+        // max-height: 30px;
         padding-left: 0px;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-
+        padding-bottom: 0px;
+        padding-right: 0px;
+        margin: 0;
+        // display: flex;
+        // flex-direction: row;
+        // align-items: center;
+        // justify-content: space-between;
+        .tdContainer {
+          max-height: 3em;
+          overflow: hidden;
+          border: 1px solid transparent;
+          border-radius: 10px;
+        }
         button {
           > span {
             text-transform: capitalize;
           }
         }
       }
-      td.legendColor {
-        background-color: $defaultLegendColor;
-      }
+      //   td.legendColor {
+      //     background-color: $defaultLegendColor;
+      //   }
+    }
+  }
+}
+
+td.growthWindowCell {
+  border-right: 0px !important;
+  //   background-color: $defaultLegendColor;
+  padding-right: 0px !important;
+  padding-left: 0px !important;
+  .legendContainer {
+    .earlyPart {
+      background-color: $defaultLegendColor;
+    }
+    .midPart {
+      background-color: $defaultLegendColor;
     }
   }
 }
