@@ -98,13 +98,15 @@ const CropCalendarViewComponent = () => {
     .monthsShort();
   const cropDataURL =
     "https://api.airtable.com/v0/appC47111lCOTaMYe/Cover%20Crops%20Data?maxRecords=300&timeZone=America_NewYork&filterByFormula=NOT(SWITCH({Cover Crop Name},'__Open Discussion Row','Ok hopefully he answers me soon.'))";
+
+  // const cropDataURL =
+  // "https://api.airtable.com/v0/appC47111lCOTaMYe/Cover%20Crops%20Data?maxRecords=300&timeZone=America_NewYork&filterByFormula=NOT(SWITCH({Zone Decision},'Exclude',''))";
+
   const allGoalsURL =
     "https://api.airtable.com/v0/appC47111lCOTaMYe/Cover%20Crop%20Goals?maxRecords=300";
   const headers = new Headers();
   headers.append("Authorization", "Bearer ***REMOVED***");
-  // useEffect(() => {
 
-  // });
   useEffect(() => {
     let initialized = fetchRecordsIfUnavailable();
     initialized.then(() => {
@@ -112,8 +114,6 @@ const CropCalendarViewComponent = () => {
 
       // putGoalValues();
     });
-    // fetchRecords.then(() => console.log(state.allGoals.length));
-    // putGoalValues();
   }, []);
 
   const putGoalValues = () => {
@@ -137,9 +137,10 @@ const CropCalendarViewComponent = () => {
         // get crop data
         let records = await fetch(cropDataURL, { headers: headers });
         let json = records.json();
+
         json
           .then(val => {
-            // console.log(val);
+            console.log(val);
             dispatch({
               type: "PULL_CROP_DATA",
               data: val.records
@@ -172,10 +173,10 @@ const CropCalendarViewComponent = () => {
   return (
     <Fragment>
       <div className="table-responsive">
-        <table className="table calendarViewTable">
+        <table className="table calendarViewTable table-sm table-borderless">
           <thead className="tableHeadWrapper">
             <tr>
-              <td>
+              <td style={{ width: "20%" }}>
                 <Typography variant="body1">COVER CROPS</Typography>
               </td>
               {/* {state.selectedGoals.length !== 0
@@ -187,17 +188,17 @@ const CropCalendarViewComponent = () => {
                   </th>
                 ))
               : ""} */}
-              <td>
+              <td style={{ width: "10%" }}>
                 <Typography variant="body1">AVERAGE GOAL RATING</Typography>
               </td>
 
               {allMonths.map((month, index) => (
-                <td key={`monthskey${index}`}>
+                <td key={`monthskey${index}`} style={{ width: "5%" }}>
                   <Typography variant="body1">{month}</Typography>
                 </td>
               ))}
 
-              <td>
+              <td style={{ width: "10%" }}>
                 <Typography variant="body1">MY LIST</Typography>
                 <Typography variant="subtitle1">
                   {/* <br /> */}
@@ -208,44 +209,50 @@ const CropCalendarViewComponent = () => {
           </thead>
           <tbody>
             {state.cropData
-              ? state.cropData.map((crop, index) => (
-                  <tr key={`cropRow${index}`}>
-                    <td className="calendarTableCell">
-                      <img src="//placehold.it/50x50" alt="Placeholder" />
-                      <Button>{crop.fields["Cover Crop Name"]}</Button>
-                    </td>
-                    <td>{/*average goal rating */}</td>
+              ? state.cropData.map((crop, index) => {
+                  if (crop.fields["Zone Decision"] === "Include")
+                    return (
+                      <tr key={`cropRow${index}`}>
+                        <td className="calendarTableCell">
+                          <div className="tdContainer d-flex justify-content-between flex-wrap">
+                            <img src="//placehold.it/50x50" alt="Placeholder" />
+                            <Button>{crop.fields["Cover Crop Name"]}</Button>
+                          </div>
+                        </td>
+                        <td>{/*average goal rating */}</td>
 
-                    {allMonths.map((month, index) => (
-                      <RenderGrowthWindowComponent
-                        data={crop.fields}
-                        month={month}
-                        key={index}
-                      />
-                    ))}
+                        {allMonths.map((month, index) => (
+                          <RenderGrowthWindowComponent
+                            data={crop.fields}
+                            month={month}
+                            key={index}
+                            id={`growthCell${index}`}
+                          />
+                        ))}
 
-                    <td>
-                      {" "}
-                      <LightButton
-                        id={`cartBtn${index}`}
-                        style={{
-                          borderRadius: "0px",
-                          width: "130px"
-                        }}
-                        onClick={() => {
-                          addCropToBasket(
-                            crop.id,
-                            crop.fields["Cover Crop Name"],
-                            `cartBtn${index}`,
-                            crop.fields
-                          );
-                        }}
-                      >
-                        ADD TO LIST
-                      </LightButton>
-                    </td>
-                  </tr>
-                ))
+                        <td>
+                          {" "}
+                          <LightButton
+                            id={`cartBtn${index}`}
+                            style={{
+                              borderRadius: "0px",
+                              width: "130px"
+                            }}
+                            onClick={() => {
+                              addCropToBasket(
+                                crop.id,
+                                crop.fields["Cover Crop Name"],
+                                `cartBtn${index}`,
+                                crop.fields
+                              );
+                            }}
+                          >
+                            ADD TO LIST
+                          </LightButton>
+                        </td>
+                      </tr>
+                    );
+                })
               : ""}
           </tbody>
         </table>
@@ -257,14 +264,80 @@ const CropCalendarViewComponent = () => {
 const RenderGrowthWindowComponent = props => {
   let cropData = props.data;
   let month = props.month;
-  let jan = cropData["January, Early"];
-  console.log(jan);
+  let id = props.id;
+  let cropLegendArray = [];
+
+  var fullMonth = moment()
+    .localeData()
+    .months();
+  // console.log(fullMonth[0]);
+
+  // for (let i = 0; i < 12; i++) {
+  //   for (let j = 0; j < 2; j++) {
+  //     if (j === 0) {
+  //       if (cropData[`${fullMonth[i]}, Early`])
+  //         cropLegendArray[i][j] = cropData[`${fullMonth[i]}, Early`];
+  //     } else {
+  //       if (cropData[`${fullMonth[i]}, Mid`])
+  //         cropLegendArray[i][j] = cropData[`${fullMonth[i]}, Mid`];
+  //     }
+  //   }
+  // }
+  // console.log(cropData);
+  // cropLegendArray[0][0] = cropData["January, Early"];
+  // cropLegendArray[0][1] = cropData["January, Mid"];
+
+  //  cropLegendArray[1][0] = cropData['February, Early'];
+  //  cropLegendArray[1][1] = cropData['February, Mid'];
+
+  //  cropLegendArray[2][0] = cropData['March, Early'];
+  //  cropLegendArray[2][1] = cropData['March, Mid'];
+
+  //  cropLegendArray[3][0] = cropData['April, Early'];
+  //  cropLegendArray[3][1] = cropData['April, Mid'];
+
+  //  cropLegendArray[4][0] = cropData['May, Early'];
+  //  cropLegendArray[4][1] = cropData['May, Mid'];
+
+  //  cropLegendArray[5][0] = cropData['June, Early'];
+  //  cropLegendArray[5][1] = cropData['June, Mid'];
+
+  //  cropLegendArray[2][0] = cropData['July, Early'];
+  //  cropLegendArray[2][0] = cropData['July, Mid'];
+
+  //  cropLegendArray[2][0] = cropData['August, Early'];
+  //  cropLegendArray[2][0] = cropData['August, Mid'];
+
+  //  cropLegendArray[2][0] = cropData['September, Early'];
+  //  cropLegendArray[2][0] = cropData['September, Mid'];
+
+  //  cropLegendArray[2][0] = cropData['October, Early'];
+  //  cropLegendArray[2][0] = cropData['October, Mid'];
+
+  //  cropLegendArray[2][0] = cropData['November, Early'];
+  //  cropLegendArray[2][0] = cropData['November, Mid'];
+
+  //  cropLegendArray[2][0] = cropData['December, Early'];
+  //  cropLegendArray[2][0] = cropData['December, Mid'];
+
+  // if(janEarly === undefined || janEarly === '') console
 
   useEffect(() => {
     console.log("total");
   }, []);
 
-  return <td className="legendColor">{month}</td>;
+  return (
+    <td className={`growthWindowCell ${id}`}>
+      {/* {month} */}
+      <div className="legendContainer legendColor d-flex flex-direction-row">
+        <div
+          className="earlyPart"
+          style={{ height: "30px", width: "50%" }}
+        ></div>
+        <div className="midPart" style={{ height: "30px", width: "50%" }}></div>
+      </div>
+    </td>
+  );
 };
 
 export default CropCalendarViewComponent;

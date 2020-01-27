@@ -1,3 +1,8 @@
+/* TODO: RENDER CROPS BY: 
+    1. Zone decision === include
+    2. ...
+
+*/
 import React, { useContext, Fragment, useEffect, useState } from "react";
 import { Context } from "../../store/Store";
 import { LightButton, zoneIcon } from "../../shared/constants";
@@ -176,7 +181,7 @@ const CropTableComponent = () => {
   return (
     <Fragment>
       <div className="table-responsive">
-        <table className="table">
+        <table className="table table-borderless table-sm">
           <thead className="tableHeadWrapper">
             <tr>
               <th>
@@ -209,83 +214,84 @@ const CropTableComponent = () => {
                 !crop.fields["Cover Crop Name"].trim() !==
                 "Ok hopefully he answers me soon.".trim()
               ) {
-                return (
-                  <tr key={`croprow${index}`}>
-                    <td
-                      style={{
-                        display: "flex",
-                        flexDirection: "row"
-                      }}
-                    >
-                      {/* {this.getCropImageFromAPI(
+                if (crop.fields["Zone Decision"] === "Include")
+                  return (
+                    <tr key={`croprow${index}`}>
+                      <td
+                        style={{
+                          display: "flex",
+                          flexDirection: "row"
+                        }}
+                      >
+                        {/* {this.getCropImageFromAPI(
                           crop.fields["Cover Crop Name"]
                         )} */}
-                      <img
-                        src="//placehold.it/100x100"
-                        alt="placeholder"
-                        style={{
-                          flexBasis: "20%"
-                        }}
-                      />
-                      <div className="cropDetailsText" style={{}}>
-                        <div className="part1_ut">
-                          <span className="cropCategory text-uppercase">
-                            {crop.fields["Cover Crop Group"]}
-                          </span>
-                          <span className="cropName font-weight-lighter">
-                            {crop.fields["Cover Crop Name"]}
-                          </span>
-                          <span className="cropScientificName">
-                            {crop.fields["Scientific Name"]}
-                          </span>
-                        </div>
-                        <div className="part2_lt">
-                          <span className="cropDuration text-uppercase font-weight-bold">
-                            {crop.fields["Duration"]}
-                          </span>
-                        </div>
-                      </div>
-                    </td>
-                    {state.selectedGoals.length !== 0
-                      ? state.selectedGoals.map((goal, index) => (
-                          <td key={`rating${index}`}>
-                            {getRating(crop.fields[goal])}
-                          </td>
-                        ))
-                      : ""}
-                    <td>GROWTH WINDOW</td>
-                    <td style={{}}>
-                      <div className="button1">
-                        <LightButton
-                          id={`cartBtn${index}`}
+                        <img
+                          src="//placehold.it/100x100"
+                          alt="placeholder"
                           style={{
-                            borderRadius: "0px",
-                            width: "130px"
+                            flexBasis: "20%"
                           }}
-                          onClick={() => {
-                            addCropToBasket(
-                              crop.id,
-                              crop.fields["Cover Crop Name"],
-                              `cartBtn${index}`,
-                              crop.fields
-                            );
-                          }}
-                        >
-                          ADD TO LIST
-                        </LightButton>
-                      </div>
-                      <br />
-                      <div className="button2">
-                        <Button
-                          size="small"
-                          onClick={() => handleModalOpen(crop)}
-                        >
-                          View Crop Details
-                        </Button>
-                      </div>
-                    </td>
-                  </tr>
-                );
+                        />
+                        <div className="cropDetailsText" style={{}}>
+                          <div className="part1_ut">
+                            <span className="cropCategory text-uppercase">
+                              {crop.fields["Cover Crop Group"]}
+                            </span>
+                            <span className="cropName font-weight-lighter">
+                              {crop.fields["Cover Crop Name"]}
+                            </span>
+                            <span className="cropScientificName">
+                              {crop.fields["Scientific Name"]}
+                            </span>
+                          </div>
+                          <div className="part2_lt">
+                            <span className="cropDuration text-uppercase font-weight-bold">
+                              {crop.fields["Duration"]}
+                            </span>
+                          </div>
+                        </div>
+                      </td>
+                      {state.selectedGoals.length !== 0
+                        ? state.selectedGoals.map((goal, index) => (
+                            <td key={`rating${index}`}>
+                              {getRating(crop.fields[goal])}
+                            </td>
+                          ))
+                        : ""}
+                      <td>GROWTH WINDOW</td>
+                      <td style={{}}>
+                        <div className="button1">
+                          <LightButton
+                            id={`cartBtn${index}`}
+                            style={{
+                              borderRadius: "0px",
+                              width: "130px"
+                            }}
+                            onClick={() => {
+                              addCropToBasket(
+                                crop.id,
+                                crop.fields["Cover Crop Name"],
+                                `cartBtn${index}`,
+                                crop.fields
+                              );
+                            }}
+                          >
+                            ADD TO LIST
+                          </LightButton>
+                        </div>
+                        <br />
+                        <div className="button2">
+                          <Button
+                            size="small"
+                            onClick={() => handleModalOpen(crop)}
+                          >
+                            View Crop Details
+                          </Button>
+                        </div>
+                      </td>
+                    </tr>
+                  );
               } else return "";
             })}
           </tbody>
