@@ -1,4 +1,4 @@
-$cashCropGrowthWindowColor: rgb(255, 12, 62);
+$cashCropGrowthWindowColor: rgba(255, 12, 62, 0.5);
 $frostSeedingPossibleColor: #2f80ed;
 $temperatureRiskToEstablishmentColor: #f2c94c;
 $reliableEstablishmentColor: #2d7b7b;
@@ -83,11 +83,34 @@ td.growthWindowCell {
   padding-right: 0px !important;
   padding-left: 0px !important;
   .legendContainer {
-    .earlyPart {
-      background-color: $defaultLegendColor;
+    &.cashCropLegendContainer {
+      div {
+        //   BUG: check
+        background-color: $cashCropGrowthWindowColor !important;
+        border-right: 1px solid white !important;
+      }
     }
+    .earlyPart,
     .midPart {
       background-color: $defaultLegendColor;
+      &.Reliable {
+        background-color: $reliableEstablishmentColor !important;
+        border-right: 0px !important;
+      }
+      &.Frost {
+        background-color: $frostSeedingPossibleColor !important;
+        border-right: 0px !important;
+      }
+      &.Temperature\/moisture {
+        background-color: $temperatureRiskToEstablishmentColor !important;
+        border-right: 0px !important;
+      }
     }
+    // .midPart {
+    //   background-color: $defaultLegendColor;
+    //   &.Reliable {
+    //     background-color: $reliableEstablishmentColor !important;
+    //   }
+    // }
   }
 }
