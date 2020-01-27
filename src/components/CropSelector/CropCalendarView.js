@@ -4,6 +4,7 @@ import moment from "moment";
 import { Typography, Button } from "@material-ui/core";
 import { LightButton } from "../../shared/constants";
 import "../../styles/cropCalendarViewComponent.scss";
+import GrowthWindowComponent from "./GrowthWindow";
 
 const CropCalendarViewComponent = () => {
   const [state, dispatch] = useContext(Context);
@@ -140,7 +141,7 @@ const CropCalendarViewComponent = () => {
 
         json
           .then(val => {
-            console.log(val);
+            // console.log(val);
             dispatch({
               type: "PULL_CROP_DATA",
               data: val.records
@@ -222,11 +223,11 @@ const CropCalendarViewComponent = () => {
                         <td>{/*average goal rating */}</td>
 
                         {allMonths.map((month, index) => (
-                          <RenderGrowthWindowComponent
+                          <GrowthWindowComponent
                             data={crop.fields}
-                            month={month}
                             key={index}
                             id={`growthCell${index}`}
+                            month={index}
                           />
                         ))}
 
@@ -258,85 +259,6 @@ const CropCalendarViewComponent = () => {
         </table>
       </div>
     </Fragment>
-  );
-};
-
-const RenderGrowthWindowComponent = props => {
-  let cropData = props.data;
-  let month = props.month;
-  let id = props.id;
-  let cropLegendArray = [];
-
-  var fullMonth = moment()
-    .localeData()
-    .months();
-  // console.log(fullMonth[0]);
-
-  // for (let i = 0; i < 12; i++) {
-  //   for (let j = 0; j < 2; j++) {
-  //     if (j === 0) {
-  //       if (cropData[`${fullMonth[i]}, Early`])
-  //         cropLegendArray[i][j] = cropData[`${fullMonth[i]}, Early`];
-  //     } else {
-  //       if (cropData[`${fullMonth[i]}, Mid`])
-  //         cropLegendArray[i][j] = cropData[`${fullMonth[i]}, Mid`];
-  //     }
-  //   }
-  // }
-  // console.log(cropData);
-  // cropLegendArray[0][0] = cropData["January, Early"];
-  // cropLegendArray[0][1] = cropData["January, Mid"];
-
-  //  cropLegendArray[1][0] = cropData['February, Early'];
-  //  cropLegendArray[1][1] = cropData['February, Mid'];
-
-  //  cropLegendArray[2][0] = cropData['March, Early'];
-  //  cropLegendArray[2][1] = cropData['March, Mid'];
-
-  //  cropLegendArray[3][0] = cropData['April, Early'];
-  //  cropLegendArray[3][1] = cropData['April, Mid'];
-
-  //  cropLegendArray[4][0] = cropData['May, Early'];
-  //  cropLegendArray[4][1] = cropData['May, Mid'];
-
-  //  cropLegendArray[5][0] = cropData['June, Early'];
-  //  cropLegendArray[5][1] = cropData['June, Mid'];
-
-  //  cropLegendArray[2][0] = cropData['July, Early'];
-  //  cropLegendArray[2][0] = cropData['July, Mid'];
-
-  //  cropLegendArray[2][0] = cropData['August, Early'];
-  //  cropLegendArray[2][0] = cropData['August, Mid'];
-
-  //  cropLegendArray[2][0] = cropData['September, Early'];
-  //  cropLegendArray[2][0] = cropData['September, Mid'];
-
-  //  cropLegendArray[2][0] = cropData['October, Early'];
-  //  cropLegendArray[2][0] = cropData['October, Mid'];
-
-  //  cropLegendArray[2][0] = cropData['November, Early'];
-  //  cropLegendArray[2][0] = cropData['November, Mid'];
-
-  //  cropLegendArray[2][0] = cropData['December, Early'];
-  //  cropLegendArray[2][0] = cropData['December, Mid'];
-
-  // if(janEarly === undefined || janEarly === '') console
-
-  useEffect(() => {
-    console.log("total");
-  }, []);
-
-  return (
-    <td className={`growthWindowCell ${id}`}>
-      {/* {month} */}
-      <div className="legendContainer legendColor d-flex flex-direction-row">
-        <div
-          className="earlyPart"
-          style={{ height: "30px", width: "50%" }}
-        ></div>
-        <div className="midPart" style={{ height: "30px", width: "50%" }}></div>
-      </div>
-    </td>
   );
 };
 
