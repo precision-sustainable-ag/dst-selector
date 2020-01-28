@@ -92,11 +92,20 @@ const Greenbar = () => {
         }
       });
     } else {
+      // console.log('update zone text non handled case')
+      let defaultZone = state.zone;
+      if (defaultZone === "" || isNaN(parseInt(defaultZone))) {
+        if (isNaN(parseInt(event.target.getAttribute("value")))) {
+          defaultZone = 7;
+        } else {
+          defaultZone = 7;
+        }
+      }
       dispatch({
         type: "UPDATE_ZONE_TEXT",
         data: {
           zoneText: "Zone 7",
-          zone: parseInt(event.target.getAttribute("value"))
+          zone: parseInt(defaultZone)
         }
       });
     }
