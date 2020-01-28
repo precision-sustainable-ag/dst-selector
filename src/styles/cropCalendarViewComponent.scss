@@ -80,6 +80,26 @@ $defaultLegendColor: #f0f7eb;
   }
 }
 
+.legendModalRow {
+  p {
+    > svg {
+      &.reliable {
+        color: $reliableEstablishmentColor;
+      }
+      &.temperatureRisk {
+        color: $temperatureRiskToEstablishmentColor;
+      }
+      &.frostPossible {
+        color: $frostSeedingPossibleColor;
+      }
+      &.cashCrop {
+        color: $cashCropGrowthWindowColor;
+      }
+    }
+    font-weight: 800;
+  }
+}
+
 td.growthWindowCell {
   border-right: 0px !important;
   //   background-color: $defaultLegendColor;
@@ -119,6 +139,13 @@ td.growthWindowCell {
 }
 
 @include mq($max-width: 1200px) {
+  // modalLegendPaper
+
+  .modalLegendPaper {
+    width: 80vw !important;
+  }
+
+  // table
   table.table.calendarViewTable {
     margin-top: 2em;
     thead.tableHeadWrapper {
