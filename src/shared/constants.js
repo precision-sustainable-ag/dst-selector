@@ -61,6 +61,9 @@ export const LightButton = withStyles({
       backgroundColor: "#48a8ab",
       color: "#fff"
     }
+  },
+  small: {
+    padding: "5px 15px 5px 15px"
   }
 })(Button);
 

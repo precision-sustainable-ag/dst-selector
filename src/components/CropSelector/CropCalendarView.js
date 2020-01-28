@@ -1,7 +1,7 @@
 import React, { useContext, Fragment, useEffect, useState } from "react";
 import { Context } from "../../store/Store";
 import moment from "moment";
-import { Typography, Button } from "@material-ui/core";
+import { Typography, Button, ButtonGroup } from "@material-ui/core";
 import { LightButton } from "../../shared/constants";
 import "../../styles/cropCalendarViewComponent.scss";
 import GrowthWindowComponent from "./GrowthWindow";
@@ -233,23 +233,25 @@ const CropCalendarViewComponent = () => {
 
                         <td>
                           {" "}
-                          <LightButton
-                            id={`cartBtn${index}`}
-                            style={{
-                              borderRadius: "0px",
-                              width: "130px"
-                            }}
-                            onClick={() => {
-                              addCropToBasket(
-                                crop.id,
-                                crop.fields["Cover Crop Name"],
-                                `cartBtn${index}`,
-                                crop.fields
-                              );
-                            }}
-                          >
-                            ADD TO LIST
-                          </LightButton>
+                          <ButtonGroup size="small">
+                            <LightButton
+                              id={`cartBtn${index}`}
+                              style={{
+                                borderRadius: "0px !important"
+                                // width: "100%"
+                              }}
+                              onClick={() => {
+                                addCropToBasket(
+                                  crop.id,
+                                  crop.fields["Cover Crop Name"],
+                                  `cartBtn${index}`,
+                                  crop.fields
+                                );
+                              }}
+                            >
+                              ADD TO LIST
+                            </LightButton>
+                          </ButtonGroup>
                         </td>
                       </tr>
                     );
