@@ -1,16 +1,48 @@
 import React, { useContext, Fragment, useEffect, useState } from "react";
 import { Context } from "../../store/Store";
 import moment from "moment";
-import { Typography, Button } from "@material-ui/core";
+import {
+  Typography,
+  Button,
+  makeStyles,
+  Modal,
+  Backdrop,
+  Fade
+} from "@material-ui/core";
 import { LightButton } from "../../shared/constants";
 import "../../styles/cropCalendarViewComponent.scss";
 import GrowthWindowComponent from "./GrowthWindow";
+import { AddCircle, FiberManualRecord, CloseRounded } from "@material-ui/icons";
+
+const useStyles = makeStyles(theme => ({
+  modal: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  paper: {
+    backgroundColor: theme.palette.background.paper,
+    border: "2px solid #000",
+    boxShadow: theme.shadows[5],
+    padding: "1em",
+    width: "30%"
+    // padding: theme.spacing(2, 4, 3)
+  },
+  textField: {
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
+    width: 200
+  }
+}));
 
 const CropCalendarViewComponent = () => {
+  const classes = useStyles();
   const [state, dispatch] = useContext(Context);
   const [goalRatings, setGoalRatings] = useState([]);
-  // get current year.
-  // TODO: Check year logic ? currently Juliet wants to return current year if month is before november
+  const [legendModal, setLegendModal] = useState(false);
+
+  // DONE: Check year logic ? currently Juliet wants to return current year if month is before november
+  // ref. useeffect();
   let currentYear = new Date().getFullYear();
   const addCropToBasket = (cropId, cropName, btnId, cropData) => {
     let container = document.getElementById(btnId);
@@ -108,9 +140,17 @@ const CropCalendarViewComponent = () => {
   const headers = new Headers();
   headers.append("Authorization", "Bearer ***REMOVED***");
 
+  const handleLegendModal = () => {
+    setLegendModal(!legendModal);
+  };
   useEffect(() => {
     let initialized = fetchRecordsIfUnavailable();
     initialized.then(() => {
+      let currentMonth = moment().format("MMM");
+      // console.log(currentMonth);
+      if (currentMonth === "Nov" || currentMonth === "Dec") {
+        currentYear = currentYear + 1;
+      }
       console.log("goal values set");
 
       // putGoalValues();
@@ -177,6 +217,43 @@ const CropCalendarViewComponent = () => {
         <table className="table calendarViewTable table-sm table-borderless">
           <thead className="tableHeadWrapper">
             <tr>
+              <td
+                colSpan="2"
+                style={{ width: "30%", backgroundColor: "white" }}
+              ></td>
+              <td
+                colSpan="12"
+                style={{
+                  width: "60%",
+                  borderRight: "0px",
+                  borderBottom: "5px solid white",
+                  borderTopLeftRadius: "10px",
+                  borderTopRightRadius: "10px"
+                }}
+              >
+                <Typography
+                  variant="body1"
+                  style={{
+                    width: "50%",
+                    display: "inline-block",
+                    textAlign: "right"
+                  }}
+                >
+                  {currentYear} COVER CROP GROWTH WINDOW
+                </Typography>
+                <Typography
+                  variant="body1"
+                  style={{ width: "50%", display: "inline-block" }}
+                >
+                  <Button startIcon={<AddCircle />} onClick={handleLegendModal}>
+                    {" "}
+                    <Typography variant="body1">Legend</Typography>
+                  </Button>
+                </Typography>
+              </td>
+              <td style={{ width: "10%", backgroundColor: "white" }}></td>
+            </tr>
+            <tr>
               <td style={{ width: "20%" }}>
                 <Typography variant="body1">COVER CROPS</Typography>
               </td>
@@ -217,7 +294,9 @@ const CropCalendarViewComponent = () => {
                         <td className="calendarTableCell">
                           <div className="tdContainer d-flex justify-content-between flex-wrap">
                             <img src="//placehold.it/50x50" alt="Placeholder" />
-                            <Button>{crop.fields["Cover Crop Name"]}</Button>
+                            <Button style={{ borderRadius: "0px" }}>
+                              {crop.fields["Cover Crop Name"]}
+                            </Button>
                           </div>
                         </td>
                         <td>{/*average goal rating */}</td>
@@ -258,6 +337,59 @@ const CropCalendarViewComponent = () => {
           </tbody>
         </table>
       </div>
+      <Modal
+        open={legendModal}
+        onClose={handleLegendModal}
+        BackdropComponent={Backdrop}
+        disableBackdropClick={false}
+        className={classes.modal}
+        BackdropProps={{
+          timeout: 500
+        }}
+      >
+        <Fade in={legendModal}>
+          <div className={`modalLegendPaper ${classes.paper}`}>
+            <div className="container-fluid">
+              <div className="row">
+                <div className="col-6">
+                  <Typography variant="h4">LEGEND</Typography>
+                </div>
+                <div className="col-6 text-right">
+                  <Button onClick={handleLegendModal}>
+                    <CloseRounded />
+                  </Button>
+                </div>
+              </div>
+              <div className="row mt-5">
+                <div className="col-12 legendModalRow">
+                  <Typography variant="body1">
+                    <FiberManualRecord className="reliable" />
+                    RELIABLE ESTABLISHMENT
+                  </Typography>
+                </div>
+                <div className="col-12 legendModalRow">
+                  <Typography variant="body1">
+                    <FiberManualRecord className="temperatureRisk" />
+                    TEMPERATURE RISK TO ESTABLISHMENT
+                  </Typography>
+                </div>
+                <div className="col-12 legendModalRow">
+                  <Typography variant="body1">
+                    <FiberManualRecord className="frostPossible" />
+                    FROST SEEDING POSSIBLE
+                  </Typography>
+                </div>
+                <div className="col-12 legendModalRow">
+                  <Typography variant="body1">
+                    <FiberManualRecord className="cashCrop" />
+                    CASH CROP GROWTH WINDOW
+                  </Typography>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Fade>
+      </Modal>
     </Fragment>
   );
 };
