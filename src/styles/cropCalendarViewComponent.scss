@@ -1,3 +1,6 @@
+@import "../../node_modules/sass-mediaqueries/media-queries";
+@import "../styles/constants.scss";
+
 $cashCropGrowthWindowColor: rgba(255, 12, 62, 0.5);
 $frostSeedingPossibleColor: #2f80ed;
 $temperatureRiskToEstablishmentColor: #f2c94c;
@@ -112,5 +115,40 @@ td.growthWindowCell {
     //     background-color: $reliableEstablishmentColor !important;
     //   }
     // }
+  }
+}
+
+@include mq($max-width: 1200px) {
+  table.table.calendarViewTable {
+    margin-top: 2em;
+    thead.tableHeadWrapper {
+      // > tr {
+      //   td:nth-child(1) {
+      //     width: 25% !important;
+      //   }
+      //   // td:nth-child(2) {
+      //   //   width: 15%;
+      //   // }
+      //   // td:nth-child(3) {
+
+      //   // }
+      //   td:last-of-type {
+      //     width: 10% !important;
+      //     max-width: 10% !important;
+      //   }
+    }
+    tbody {
+      tr {
+        td.calendarTableCell {
+          div.tdContainer {
+            max-height: inherit;
+            > img {
+              display: none;
+              visibility: hidden;
+            }
+          }
+        }
+      }
+    }
   }
 }
