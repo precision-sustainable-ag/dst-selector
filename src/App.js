@@ -18,6 +18,7 @@ import ProgressBar from "./shared/ProgressBar";
 import GoalsSelector from "./components/GoalsSelector/GoalsSelector";
 import LocationConfirmation from "./components/Location/LocationConfirmation";
 import CropSelector from "./components/CropSelector/CropSelector";
+import { Switch, Route } from "react-router-dom";
 // import { GreenBarComponent } from "./components/GreenBar/greenBarComponent";
 // import BodyComponent from "./components/body";
 

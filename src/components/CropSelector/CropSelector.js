@@ -26,6 +26,7 @@ const CropSelector = () => {
   const [state, dispatch] = useContext(Context);
   // let [isExpansionExpanded, setIsExpansionExpanded] = useState(true);
   let [showGrowthWindow, setShowGrowthWindow] = useState(true);
+
   // let [isListView, setIsListView] = useState(true);
 
   // TODO: set list view as default. Calendar component is activated currently

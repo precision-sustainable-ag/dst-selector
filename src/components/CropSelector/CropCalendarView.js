@@ -187,10 +187,11 @@ const CropCalendarViewComponent = () => {
               data: val.records
             });
           })
-          .then(() => {
+          .then(async () => {
             if (state.allGoals.length === 0) {
               // get all goals
-              let records = fetch(allGoalsURL, { headers: headers });
+              let records = await fetch(allGoalsURL, { headers: headers });
+              // console.log(records.json());
               let json = records.json();
               json
                 .then(val => {
