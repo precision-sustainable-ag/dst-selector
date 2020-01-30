@@ -10,6 +10,11 @@ import "bootstrap-css-only/css/bootstrap.min.css";
 import "mdbreact/dist/css/mdb.css";
 import "./styles/progressBar.css";
 import Footer from "./components/Footer/footer";
+import { BrowserRouter, Switch, Route } from "react-router-dom";
+import About from "./components/About/About";
+import SeedingRateCalculator from "./components/SeedingRateCalculator/SeedingRateCalculator";
+import MixMaker from "./components/MixMaker/MixMaker";
+import CoverCropExplorer from "./components/CoverCropExplorer/CoverCropExplorer";
 
 const withFooter = WrappedComponent => () => [
   <WrappedComponent key="1" />,
@@ -18,7 +23,25 @@ const withFooter = WrappedComponent => () => [
 
 const Wrapper = () => (
   <Store>
-    <App />
+    <BrowserRouter>
+      <Switch>
+        <Route path={`/`} component={App} exact />
+        <Route path={"/about"} component={About} exact />
+        <Route
+          path={"/seeding-rate-calculator"}
+          component={SeedingRateCalculator}
+          exact
+        />
+        <Route path={"/mix-maker"} component={MixMaker} exact />
+        <Route
+          path={"/cover-crop-explorer"}
+          component={CoverCropExplorer}
+          exact
+        />
+      </Switch>
+
+      {/* <App /> */}
+    </BrowserRouter>
   </Store>
 );
 
