@@ -1,7 +1,7 @@
 import React, { useContext, Fragment } from "react";
 import { Context } from "../../store/Store";
 import MyCoverCropCardsComponent from "./MyCoverCropCardsComponent";
-import { Button } from "@material-ui/core";
+import { Button, Typography } from "@material-ui/core";
 import { PictureAsPdf, ListAlt, Add } from "@material-ui/icons";
 
 const MyCoverCropList = () => {
@@ -19,7 +19,9 @@ const MyCoverCropList = () => {
   return (
     <div className="container-fluid">
       {state.selectedCrops.length === 0 ? (
-        "No Cover Crops Selected"
+        <Typography variant="body1">
+          Your list is empty. Use the Species Selector to add plants.
+        </Typography>
       ) : (
         <Fragment>
           <div className="row">

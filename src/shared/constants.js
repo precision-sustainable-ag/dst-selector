@@ -1,5 +1,11 @@
 import React from "react";
-import { withStyles, Button, Switch } from "@material-ui/core";
+import {
+  withStyles,
+  Button,
+  Switch,
+  Grid,
+  Typography
+} from "@material-ui/core";
 
 export const locationIcon = (w, h) => {
   return (
@@ -98,4 +104,21 @@ export const GetMonthString = month => {
   ];
 
   return months[month].toUpperCase();
+};
+
+export const UnderConstructionText = () => {
+  return (
+    <Grid
+      container
+      spacing={0}
+      direction="column"
+      alignItems="center"
+      justify="center"
+      style={{ minHeight: "100vh" }}
+    >
+      <Grid item xs={3}>
+        <Typography variant="h3">Under Construction</Typography>
+      </Grid>
+    </Grid>
+  );
 };

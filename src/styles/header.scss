@@ -98,6 +98,14 @@ header {
         border-bottom-right-radius: 0px;
       }
     }
+    a {
+      &.active {
+        background-color: #598444;
+        color: white;
+        border-bottom-left-radius: 0px;
+        border-bottom-right-radius: 0px;
+      }
+    }
   }
   .greenBarWrapper {
     background-color: $darkGreen;
