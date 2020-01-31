@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from "react";
+import React, { useEffect, useContext, Fragment } from "react";
 import { Context } from "../../../store/Store";
 import "../../../styles/header.scss";
 import {
@@ -40,12 +40,39 @@ const Greenbar = () => {
     if (state.zoneText === "" || parseInt(state.zoneText) === 0) {
       return "";
     } else
-      return (
-        <Button onClick={handleClick}>
-          {zoneIcon(20, 14)}
-          &nbsp;
-          {state.zone !== 2 ? `Zone ${state.zone}` : `Zone ${state.zone} & 3`}
-        </Button>
+      return state.address === "" ? (
+        ""
+      ) : (
+        <Fragment>
+          <Button onClick={handleClick}>
+            {zoneIcon(20, 14)}
+            &nbsp;
+            {state.zone !== 2 ? `Zone ${state.zone}` : `Zone ${state.zone} & 3`}
+          </Button>
+          <Menu
+            id="simple-menu"
+            anchorEl={anchorEl}
+            keepMounted
+            open={Boolean(anchorEl)}
+            onClose={handleZoneDropdownClose}
+          >
+            <MenuItem onClick={handleZoneDropdownClose} value={2} key={2}>
+              Zone 2 and 3
+            </MenuItem>
+            <MenuItem onClick={handleZoneDropdownClose} value={4} key={4}>
+              Zone 4
+            </MenuItem>
+            <MenuItem onClick={handleZoneDropdownClose} value={5} key={5}>
+              Zone 5
+            </MenuItem>
+            <MenuItem onClick={handleZoneDropdownClose} value={6} key={6}>
+              Zone 6
+            </MenuItem>
+            <MenuItem onClick={handleZoneDropdownClose} value={7} key={7}>
+              Zone 7
+            </MenuItem>
+          </Menu>
+        </Fragment>
       );
   };
   const handleClick = event => {
@@ -65,49 +92,72 @@ const Greenbar = () => {
       );
   };
 
-  const showZoneDropdown = () => {};
-  const handleClose = event => {
+  const handleZoneDropdownClose = event => {
     setAnchorEl(null);
     let zoneText = "";
+    console.log(event.target.getAttribute("value"));
+    let value = event.target.getAttribute("value");
 
-    if (event.target.getAttribute("value") === 2) {
-      zoneText = "Zone 2 & 3";
-    } else if (event.target.getAttribute("value") === 4) {
-      zoneText = "Zone 4";
-    } else if (event.target.getAttribute("value") === 5) {
-      zoneText = "";
-      dispatch({
-        type: "UPDATE_ZONE_TEXT",
-        data: {
-          zoneText: "Zone 5",
-          zone: parseInt(event.target.getAttribute("value"))
+    if (!isNaN(parseInt(value))) {
+      switch (parseInt(value)) {
+        case 2: {
+          zoneText = `Zone ${value} &amp; ${value + 1}`;
+          dispatch({
+            type: "UPDATE_ZONE_TEXT",
+            data: {
+              zoneText: zoneText,
+              zone: value
+            }
+          });
+          break;
         }
-      });
-    } else if (event.target.getAttribute("value") === 6) {
-      dispatch({
-        type: "UPDATE_ZONE_TEXT",
-        data: {
-          zoneText: "Zone 6",
-          zone: parseInt(event.target.getAttribute("value"))
+        case 4: {
+          zoneText = `Zone ${value}`;
+          dispatch({
+            type: "UPDATE_ZONE_TEXT",
+            data: {
+              zoneText: zoneText,
+              zone: value
+            }
+          });
+          break;
         }
-      });
-    } else {
-      // console.log('update zone text non handled case')
-      let defaultZone = state.zone;
-      if (defaultZone === "" || isNaN(parseInt(defaultZone))) {
-        if (isNaN(parseInt(event.target.getAttribute("value")))) {
-          defaultZone = 7;
-        } else {
-          defaultZone = 7;
+        case 5: {
+          zoneText = `Zone ${value}`;
+          dispatch({
+            type: "UPDATE_ZONE_TEXT",
+            data: {
+              zoneText: zoneText,
+              zone: value
+            }
+          });
+          break;
+        }
+        case 6: {
+          zoneText = `Zone ${value}`;
+          dispatch({
+            type: "UPDATE_ZONE_TEXT",
+            data: {
+              zoneText: zoneText,
+              zone: value
+            }
+          });
+          break;
+        }
+        case 7: {
+          zoneText = `Zone ${value}`;
+          dispatch({
+            type: "UPDATE_ZONE_TEXT",
+            data: {
+              zoneText: zoneText,
+              zone: value
+            }
+          });
+          break;
+        }
+        default: {
         }
       }
-      dispatch({
-        type: "UPDATE_ZONE_TEXT",
-        data: {
-          zoneText: "Zone 7",
-          zone: parseInt(defaultZone)
-        }
-      });
     }
   };
 
@@ -116,7 +166,8 @@ const Greenbar = () => {
     let month = date.getMonth();
     // TODO: convert month to string, currently returning int
     let currentMonth = GetMonthString(month);
-
+    // frost free days :-
+    // http://128.192.142.200:3000/hourly?location=raleigh%20nc&start=2015-01-01&end=2019-12-31&stats=count(date)/24/5&where=air_temperature%3E0&output=json
     if (state.weatherData.length === 0) return "";
     else
       return (
@@ -129,36 +180,13 @@ const Greenbar = () => {
   };
   return (
     <div className="greenBarWrapper">
-      <div className="addressBar">{getAddress()}</div>
+      <div className="addressBar">{state.progress > 0 ? getAddress() : ""}</div>
 
-      <div className="zoneBar">
-        {getZone()}
-        <Menu
-          id="simple-menu"
-          anchorEl={anchorEl}
-          keepMounted
-          open={Boolean(anchorEl)}
-          onClose={handleClose}
-        >
-          <MenuItem onClick={handleClose} value={2}>
-            Zone 2 and 3
-          </MenuItem>
-          <MenuItem onClick={handleClose} value={4}>
-            Zone 4
-          </MenuItem>
-          <MenuItem onClick={handleClose} value={5}>
-            Zone 5
-          </MenuItem>
-          <MenuItem onClick={handleClose} value={6} key={6}>
-            Zone 6
-          </MenuItem>
-          <MenuItem onClick={handleClose} value={7} key={7}>
-            Zone 7
-          </MenuItem>
-        </Menu>
+      <div className="zoneBar">{state.progress > 0 ? getZone() : ""}</div>
+      <div className="soilBar">{state.progress > 1 ? getSoil() : ""}</div>
+      <div className="weatherBar">
+        {state.progress > 1 ? getWeatherData() : ""}
       </div>
-      <div className="soilBar">{getSoil()}</div>
-      <div className="weatherBar">{getWeatherData()}</div>
     </div>
   );
 };
