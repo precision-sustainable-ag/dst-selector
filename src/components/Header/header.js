@@ -240,10 +240,15 @@ const Header = () => {
       </MDBNavbar>
       {/* </MDBContainer> */}
       <Greenbar />
-      {state.progress === 0 ? (
-        <div className="topBar"></div>
+
+      {window.location.pathname === "/" ? (
+        state.progress === 0 ? (
+          <div className="topBar"></div>
+        ) : (
+          <div className="topBarMuted"></div>
+        )
       ) : (
-        <div className="topBarMuted"></div>
+        <div className="topBar"></div>
       )}
     </header>
   );
