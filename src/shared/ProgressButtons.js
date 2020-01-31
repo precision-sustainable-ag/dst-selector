@@ -9,12 +9,12 @@ const ProgressButtons = () => {
 
   useEffect(() => {
     disableLogic();
-  }, [state.zone, state.selectedGoals]);
+  }, [state]);
   const disableLogic = () => {
     switch (state.progress) {
       case 1: {
         // location selection state
-        if (state.zone === 0 || isNaN(state.zone)) {
+        if (state.zone === 0 || isNaN(state.zone) || state.address === "") {
           setIsDisabled(true);
         } else {
           setIsDisabled(false);
