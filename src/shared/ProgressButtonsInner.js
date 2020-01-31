@@ -9,6 +9,10 @@ const ProgressButtonsInner = props => {
 
   const changeProgress = type => {
     if (type === "increment") {
+      // if progress = 1 (location stage), check if textfield has a value? then set state address to that value
+      // if(state.progress === 1) {
+      //   if(document.getElementById('google-map-autocompletebar').)
+      // }
       dispatch({
         type: "UPDATE_PROGRESS",
         data: {
