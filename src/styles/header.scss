@@ -29,6 +29,11 @@ header {
     flex-wrap: wrap;
     justify-content: flex-end;
     overflow: hidden;
+    a {
+      div:first-child {
+        border-right: 1px solid black;
+      }
+    }
     div {
       max-height: $topHeaderMax;
       font-size: 14px;
@@ -260,6 +265,11 @@ header {
       justify-content: left;
 
       overflow: scroll;
+      a {
+        div:first-child {
+          border-right: none;
+        }
+      }
       div {
         max-height: $topHeaderMax;
         font-size: 14px;
