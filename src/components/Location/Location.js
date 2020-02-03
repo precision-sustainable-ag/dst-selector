@@ -7,7 +7,8 @@ import {
   FormControl,
   InputLabel,
   Select,
-  MenuItem
+  MenuItem,
+  makeStyles
   // TextField,
   // withStyles,
   // Button
@@ -19,7 +20,18 @@ import LiveLocation from "./LiveLocation";
 import AutoComplete from "./AutoComplete";
 // import { Link, Button } from "@material-ui/core";
 
+const useStyles = makeStyles(theme => ({
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120
+  },
+  selectEmpty: {
+    marginTop: theme.spacing(2)
+  }
+}));
+
 const LocationComponent = () => {
+  const classes = useStyles();
   const [state, dispatch] = useContext(Context);
 
   useEffect(() => {
@@ -126,12 +138,14 @@ const LocationComponent = () => {
             </div>
             <div className="row">
               <div className="col-md-6 col-sm-12">
-                <FormControl variant="filled" style={{ width: "100%" }}>
-                  <InputLabel id="demo-simple-select-outlined-label">
-                    Plant Hardiness Zone
-                  </InputLabel>
-
+                <FormControl
+                  variant="filled"
+                  style={{ width: "100%" }}
+                  className={classes.formControl}
+                >
+                  <InputLabel>PLANT HARDINESS ZONE</InputLabel>
                   <Select
+                    variant="filled"
                     labelId="demo-simple-select-outlined-label"
                     id="demo-simple-select-outlined"
                     style={{
@@ -206,24 +220,6 @@ const LocationComponent = () => {
               </div>
               <div className="col-md-6 col-sm-12">
                 <AutoComplete />
-                {/* <TextField
-                  value={state.address}
-                  id="locationAddress"
-                  label="Location"
-                  variant="outlined"
-                  style={{ width: "100%" }}
-                  onChange={handleAddressChangeByText}
-                />
-                {state.showAddressChangeBtn ? (
-                  <LightButton
-                    style={{ marginLeft: "15px", marginTop: "5px" }}
-                    onClick={() => updateAddressOnClick}
-                  >
-                    Update
-                  </LightButton>
-                ) : (
-                  ""
-                )} */}
               </div>
             </div>
             <div className="row">
