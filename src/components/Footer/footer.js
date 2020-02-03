@@ -49,17 +49,13 @@ const Footer = () => {
       </div>
       <div className="rightSideText">
         <Link
-          href="https://opensource.org/"
+          href="https://opensource.org/docs/osd"
           style={{ paddingRight: "50px", color: "#000" }}
+          target="_blank"
         >
           OPEN SOURCE
         </Link>
-        <Link
-          href="https://google.com/"
-          style={{ paddingRight: "50px", color: "#000" }}
-        >
-          CONTACT US
-        </Link>
+        <Link style={{ paddingRight: "50px", color: "#000" }}>CONTACT US</Link>
         <Link style={{ paddingRight: "50px", color: "#000" }}>
           {currentYear}
         </Link>
