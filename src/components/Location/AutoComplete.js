@@ -1,160 +1,135 @@
-import React, { useContext, useState } from "react";
+// TODO: Autocomplete feature is not yet implemented
+// WHY: https://operations.osmfoundation.org/policies/nominatim/ Doesn't allow the API usage for building auto-complete
+// Lancaster, Pennsylvania as default for PASA
+
+import React, {
+  useState,
+  useEffect,
+  useContext,
+  useRef,
+  Fragment
+} from "react";
+
 import {
-  TextField
-  // Paper,
-  // makeStyles,
-  // InputBase,
-  // IconButton,
-  // Menu,
-  // MenuItem,
-  // Fade
+  TextField,
+  InputAdornment,
+  IconButton,
+  FormControl,
+  makeStyles,
+  Modal,
+  Backdrop,
+  Fade
 } from "@material-ui/core";
 import { Context } from "../../store/Store";
-import axios from "axios";
-// import Autocomplete from "@material-ui/lab/Autocomplete";
-// import SearchIcon from "@material-ui/icons/Search";
+import { Search } from "@material-ui/icons";
+
+const useStyles = makeStyles(theme => ({
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120
+  },
+  selectEmpty: {
+    marginTop: theme.spacing(2)
+  },
+  modal: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  paper: {
+    backgroundColor: theme.palette.background.paper,
+    border: "2px solid #000",
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3)
+  }
+}));
 
 const AutoCompleteComponent = () => {
+  const classes = useStyles();
   const [state, dispatch] = useContext(Context);
-  //   const [menuOpen, setMenuOpen] = React.useState(false);
-  //   const [addressSuggest, setAddressSuggest] = React.useState([]);
-  //   const [anchorEl, setAnchorEl] = React.useState(null);
-  //   const open = Boolean(anchorEl);
+  const [open, setOpen] = useState(false);
+  const [address, setAddress] = useState("");
 
-  const [autoCompleteState, setState] = useState({
-    addr: "",
-    suggestions: [],
-    suggestionText: "Enter atlease 4 characters"
-  });
-
-  const handleChange = e => {
-    // console.log(e.target.value);
-    let q = e.target.value;
-    const endpoint = `https://nominatim.openstreetmap.org/search/?q=${q}&format=json`;
-    setState({
-      addr: e.target.value
+  const handleToggle = () => {
+    handleOpen();
+    checkAddresses(address).then(data => {
+      console.log(data);
     });
-    // // console.log(`addr length: ${autoCompleteState.addr.length}`);
-    let addressLength = autoCompleteState.addr.length + 1;
-    if (addressLength >= 6) {
-      //   //   console.log(dat);
-      //   setMenuOpen(false);
-      //   setAnchorEl(e.currentTarget);
-      axios
-        .get(endpoint)
-        .then(resp => {
-          let results = resp.data;
-          let markers = [];
-          console.log(results.data);
-          if (results.length === 1) {
-            //         setMenuOpen(true);
-            // exactly 1 result
-            markers[0] = results[0].lat;
-            markers[1] = results[0].lon;
-            dispatch({
-              type: "CHANGE_ADDRESS_BY_TYPING",
-              data: {
-                address: results[0].display_name,
-                showAddressChangeBtn: false,
-                markers: [markers]
-              }
-            });
-            setState({
-              addr: results[0].display_name
-            });
-            return results;
-          } else {
-            return "many";
-          }
-        })
-        .then(results => {
-          if (results !== "many") {
-            let result = results[0];
-            console.log(result);
-            let lat = result.lat;
-            let lon = result.lon;
-            let reverseEndpoint = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`;
-            axios.get(reverseEndpoint).then(resp => {
-              console.log(resp);
-              let res = resp.data;
-              let zip = res.address.postcode;
-              dispatch({
-                type: "CHANGE_ADDRESS",
-                data: {
-                  address: autoCompleteState.addr,
-                  addressVerified: true
-                }
-              });
-              axios
-                .get(`https://phzmapi.org/${zip}.json`)
-                .then(res => {
-                  //   console.log(data);
-                  let zone = 0;
-                  let data = res.data;
-                  if (data !== null && data !== undefined) {
-                    if (data.zone.length > 1) {
-                      //  strip everything except the first char and covert it to int
-                      zone = data.zone.charAt(0);
-                    } else zone = data.zone;
-                    return (zone = parseInt(zone));
-                  } else {
-                    return 7;
-                  }
-                })
-                .then(zone => {
-                  // check if zone is in the NECCC range else set a default
-                  if (zone <= 7 && zone > 1) {
-                    if (zone === 2 || zone === 3) {
-                      dispatch({
-                        type: "UPDATE_ZONE_TEXT",
-                        data: {
-                          zoneText: "Zone 2 & 3",
-                          zone: parseInt(2)
-                        }
-                      });
-                    } else {
-                      dispatch({
-                        type: "UPDATE_ZONE_TEXT",
-                        data: {
-                          zoneText: `Zone ${zone}`,
-                          zone: parseInt(zone)
-                        }
-                      });
-                    }
-                  } else {
-                    dispatch({
-                      type: "UPDATE_ZONE_TEXT",
-                      data: {
-                        zoneText: `Zone 7`,
-                        zone: parseInt(7)
-                      }
-                    });
-                  }
-                });
-            });
-          }
-        });
-    }
+  };
+  const handleOpen = () => {
+    setOpen(true);
   };
 
-  const handleMenuClose = () => {
-    // setAnchorEl(null);
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const handleChange = event => {
+    setAddress(event.target.value);
+  };
+
+  const checkAddresses = async query => {
+    let url = `https://nominatim.openstreetmap.org/search?q=${query}&country=United%20States&format=json`;
+    let response = await fetch(url);
+    response = response.json();
+    return response;
   };
 
   return (
-    <div>
-      <TextField
-        // value={state.address === "" ? "" : state.address}
-        value={state.address === "" ? autoCompleteState.addr : state.address}
-        id="fieldAddress"
+    <Fragment>
+      <Modal
+        className={classes.modal}
+        open={open}
+        onClose={handleClose}
+        BackdropProps={{
+          timeout: 500
+        }}
+        BackdropComponent={Backdrop}
+      >
+        <Fade in={open}>
+          <div className={classes.paper}>
+            <h2 id="transition-modal-title">Suggested Locations</h2>
+            <div>
+              <ul>
+                <li>Address 1</li>
+                <li>Address 2</li>
+                <li>Address 3</li>
+              </ul>
+              <em>
+                If you don't find your location here, try typing a bit more
+              </em>
+            </div>
+          </div>
+        </Fade>
+      </Modal>
+      <FormControl
+        variant="filled"
         style={{ width: "100%" }}
-        autoComplete="new-password"
-        placeholder="Enter Address"
-        label="Location"
-        variant="outlined"
-        onChange={handleChange}
-      />
-    </div>
+        className={classes.formControl}
+      >
+        <TextField
+          aria-controls={open ? "menu-list-grow" : undefined}
+          label="LOCATION"
+          value={state.address !== "" ? state.address : address}
+          onChange={handleChange}
+          fullWidth
+          aria-haspopup="true"
+          variant="filled"
+          InputProps={
+            address.length > 5
+              ? {
+                  endAdornment: (
+                    <InputAdornment>
+                      <IconButton onClick={handleToggle}>
+                        <Search />
+                      </IconButton>
+                    </InputAdornment>
+                  )
+                }
+              : ""
+          }
+        ></TextField>
+      </FormControl>
+    </Fragment>
   );
 };
 
