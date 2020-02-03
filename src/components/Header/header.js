@@ -106,19 +106,19 @@ const Header = () => {
           {" "}
           <div>ABOUT</div>
         </Link>
-        <div onClick={() => window.open("//northeastcovercrops.com")}>
+        <div onClick={() => window.open("http://northeastcovercrops.com")}>
           NECCC
         </div>
         <div
           onClick={() =>
             window.open(
-              "//www.nrcs.usda.gov/wps/portal/nrcs/site/national/home/"
+              "http://www.nrcs.usda.gov/wps/portal/nrcs/site/national/home/"
             )
           }
         >
           USDA NRCS
         </div>
-        <div onClick={() => window.open("//www.northeastsare.org/")}>
+        <div onClick={() => window.open("http://www.northeastsare.org/")}>
           NE SARE
         </div>
         <div>HELP</div>
@@ -127,7 +127,7 @@ const Header = () => {
       <div className="midHeader">
         <div
           className="logoContainer"
-          onClick={() => window.open("//northeastcovercrops.com")}
+          onClick={() => window.open("http://northeastcovercrops.com")}
           style={{ cursor: "pointer" }}
         />
         <div className="dataComponents">
