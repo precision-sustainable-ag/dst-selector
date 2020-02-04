@@ -203,9 +203,9 @@ const Header = () => {
                 active={
                   isRoot
                     ? state.speciesSelectorActivationFlag
-                      ? "active"
-                      : ""
-                    : ""
+                      ? true
+                      : false
+                    : false
                 }
               >
                 SPECIES SELECTOR
@@ -214,7 +214,7 @@ const Header = () => {
               <MDBNavItem>SEED RATE CALCULATOR</MDBNavItem>
               <MDBNavItem
                 onClick={setmyCoverCropActivationFlag}
-                active={state.myCoverCropActivationFlag ? "active" : ""}
+                active={state.myCoverCropActivationFlag ? true : false}
               >
                 MY COVER CROP LIST
               </MDBNavItem>
