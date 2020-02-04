@@ -187,25 +187,7 @@ const Header = () => {
           MY COVER CROP LIST
         </Button>
       </div>
-      {/* <div className="ham-wrapper">
-        <div className="nav-toggle" onClick={() => burgurClick()}>
-          <div className="ham-icon"></div>
-        </div>
-        <div className={state.progress === 0 ? "active" : ""}>
-          COVER CROP EXPLORER
-        </div>
-        <div className={state.progress === 1 ? "active" : ""}>
-          SPECIES SELECTOR
-        </div>
-        <div className={state.progress === 2 ? "active" : ""}>MIX MAKER</div>
-        <div className={state.progress === 3 ? "active" : ""}>
-          SEED RATE CALCULATOR
-        </div>
-        <div className={state.progress === 4 ? "active" : ""}>
-          MY COVER CROP LIST
-        </div>
-      </div> */}
-      {/* <MDBContainer fluid> */}
+
       <MDBNavbar light className="ham-navWrapper">
         <MDBContainer fluid>
           <MDBHamburgerToggler
@@ -215,22 +197,24 @@ const Header = () => {
           />
           <MDBCollapse isOpen={collapse} navbar>
             <MDBNavbarNav className="ham-nav">
-              <MDBNavItem active={state.progress === 0 ? true : false}>
-                COVER CROP EXPLORER
-              </MDBNavItem>
-              <MDBNavItem active={state.progress === 1 ? true : false}>
+              <MDBNavItem>COVER CROP EXPLORER</MDBNavItem>
+              <MDBNavItem
+                onClick={setSpeciesSelectorActivationFlag}
+                active={
+                  isRoot
+                    ? state.speciesSelectorActivationFlag
+                      ? "active"
+                      : ""
+                    : ""
+                }
+              >
                 SPECIES SELECTOR
               </MDBNavItem>
-              <MDBNavItem active={state.progress === 2 ? true : false}>
-                MIX MAKER
-              </MDBNavItem>
-              <MDBNavItem active={state.progress === 3 ? true : false}>
-                SEED RATE CALCULATOR
-              </MDBNavItem>
+              <MDBNavItem>MIX MAKER</MDBNavItem>
+              <MDBNavItem>SEED RATE CALCULATOR</MDBNavItem>
               <MDBNavItem
-                onClick={() => alert("hey")}
-                active={state.progress === 4 ? true : false}
-                className={state.myCoverCropActivationFlag ? "active" : ""}
+                onClick={setmyCoverCropActivationFlag}
+                active={state.myCoverCropActivationFlag ? "active" : ""}
               >
                 MY COVER CROP LIST
               </MDBNavItem>
