@@ -1,32 +1,19 @@
-import { Component } from "react";
+import { useState, useEffect } from "react";
+import moment from "moment";
 
-export class DateComponent extends Component {
-  constructor() {
-    super();
+const DateComponent = () => {
+  const [date, setDate] = useState(null);
 
-    var today = new Date();
+  useEffect(() => {
+    setDate(setTodaysDate);
+  }, []);
 
-    var month = [];
-    month[0] = "January";
-    month[1] = "February";
-    month[2] = "March";
-    month[3] = "April";
-    month[4] = "May";
-    month[5] = "June";
-    month[6] = "July";
-    month[7] = "August";
-    month[8] = "September";
-    month[9] = "October";
-    month[10] = "November";
-    month[11] = "December";
-    var n = month[today.getMonth()];
+  return date;
+};
 
-    this.state = {
-      date: `${n} ${today.getDate()}, ${today.getFullYear()}`
-    };
-  }
+const setTodaysDate = () => {
+  let now = moment();
+  return now.format("LL");
+};
 
-  render() {
-    return this.state.date;
-  }
-}
+export default DateComponent;
