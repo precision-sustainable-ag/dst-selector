@@ -1,7 +1,7 @@
 import React, { useEffect, useContext } from "react";
 import { Context } from "../../store/Store";
 import "../../styles/header.scss";
-import { DateComponent } from "./dateComponent";
+import DateComponent from "./DateComponent";
 import Greenbar from "./Greenbar/Greenbar";
 import { cloudIcon } from "../../shared/constants";
 import {
@@ -14,6 +14,7 @@ import {
 } from "mdbreact";
 import { Button } from "@material-ui/core";
 import { Redirect, Link, useHistory, NavLink } from "react-router-dom";
+import ForecastComponent from "./ForecastComponent";
 // import { Link, Button } from "@material-ui/core";
 const Header = () => {
   let history = useHistory();
@@ -135,8 +136,7 @@ const Header = () => {
             <DateComponent />
           </span>
           <span>
-            Forecast: {cloudIcon(14, 20)} 58 | 31 F
-            <i className="fas fa-cloud-rain pl-2"></i> 0.25in
+            <ForecastComponent />
           </span>
         </div>
       </div>
