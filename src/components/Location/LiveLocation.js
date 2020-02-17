@@ -15,7 +15,7 @@ const LiveLocationComponent = () => {
   const handleLocationToggle = name => event => {
     if (event.target.checked) {
       let options = {
-        enableHighAccuracy: true,
+        enableHighAccuracy: false,
         maximumAge: 60000,
         timeout: 45000
       };
