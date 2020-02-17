@@ -179,3 +179,11 @@ td.growthWindowCell {
     }
   }
 }
+
+div.calendarViewTableWrapper.table-responsive {
+  .circularCentered {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}

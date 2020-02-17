@@ -7,7 +7,8 @@ import {
   makeStyles,
   Modal,
   Backdrop,
-  Fade
+  Fade,
+  CircularProgress
 } from "@material-ui/core";
 import { LightButton } from "../../shared/constants";
 import "../../styles/cropCalendarViewComponent.scss";
@@ -173,6 +174,10 @@ const CropCalendarViewComponent = () => {
   };
   const fetchRecordsIfUnavailable = () => {
     // get crop data if unavailable
+    dispatch({
+      type: "SET_AJAX_IN_PROGRESS",
+      data: true
+    });
     let _promise = new Promise(async function(resolve, reject) {
       if (state.cropData.length === 0) {
         // get crop data
@@ -206,6 +211,11 @@ const CropCalendarViewComponent = () => {
             } else resolve("worked");
           });
       } else resolve("worked");
+    }).then(() => {
+      dispatch({
+        type: "SET_AJAX_IN_PROGRESS",
+        data: false
+      });
     });
     // let isResolved = false;
 
@@ -214,129 +224,142 @@ const CropCalendarViewComponent = () => {
 
   return (
     <Fragment>
-      <div className="table-responsive">
-        <table className="table calendarViewTable table-sm table-borderless">
-          <thead className="tableHeadWrapper">
-            <tr>
-              <td
-                colSpan="2"
-                style={{ width: "30%", backgroundColor: "white" }}
-              ></td>
-              <td
-                colSpan="12"
-                style={{
-                  width: "60%",
-                  borderRight: "0px",
-                  borderBottom: "5px solid white",
-                  borderTopLeftRadius: "10px",
-                  borderTopRightRadius: "10px"
-                }}
-              >
-                <Typography
-                  variant="body1"
+      <div className="table-responsive calendarViewTableWrapper">
+        {state.ajaxInProgress ? (
+          <div className="circularCentered">
+            <CircularProgress size={"6em"} />
+          </div>
+        ) : (
+          <table className="table calendarViewTable table-sm table-borderless">
+            <thead className="tableHeadWrapper">
+              <tr>
+                <td
+                  colSpan="2"
+                  style={{ width: "30%", backgroundColor: "white" }}
+                ></td>
+                <td
+                  colSpan="12"
                   style={{
-                    width: "50%",
-                    display: "inline-block",
-                    textAlign: "right"
+                    width: "60%",
+                    borderRight: "0px",
+                    borderBottom: "5px solid white",
+                    borderTopLeftRadius: "10px",
+                    borderTopRightRadius: "10px"
                   }}
                 >
-                  {currentYear} COVER CROP GROWTH WINDOW
-                </Typography>
-                <Typography
-                  variant="body1"
-                  style={{ width: "50%", display: "inline-block" }}
-                >
-                  <Button startIcon={<AddCircle />} onClick={handleLegendModal}>
-                    {" "}
-                    <Typography variant="body1">Legend</Typography>
-                  </Button>
-                </Typography>
-              </td>
-              <td style={{ width: "10%", backgroundColor: "white" }}></td>
-            </tr>
-            <tr>
-              <td style={{ width: "20%" }}>
-                <Typography variant="body1">COVER CROPS</Typography>
-              </td>
-              {/* {state.selectedGoals.length !== 0
-              ? state.selectedGoals.map((goal, index) => (
-                  <th key={index}>
-                    <Typography variant="body1">
-                      {goal.toUpperCase()}
-                    </Typography>
-                  </th>
-                ))
-              : ""} */}
-              <td style={{ width: "10%" }}>
-                <Typography variant="body1">AVERAGE GOAL RATING</Typography>
-              </td>
-
-              {allMonths.map((month, index) => (
-                <td key={`monthskey${index}`} style={{ width: "5%" }}>
-                  <Typography variant="body1">{month}</Typography>
+                  <Typography
+                    variant="body1"
+                    style={{
+                      width: "50%",
+                      display: "inline-block",
+                      textAlign: "right"
+                    }}
+                  >
+                    {currentYear} COVER CROP GROWTH WINDOW
+                  </Typography>
+                  <Typography
+                    variant="body1"
+                    style={{ width: "50%", display: "inline-block" }}
+                  >
+                    <Button
+                      startIcon={<AddCircle />}
+                      onClick={handleLegendModal}
+                    >
+                      {" "}
+                      <Typography variant="body1">Legend</Typography>
+                    </Button>
+                  </Typography>
                 </td>
-              ))}
+                <td style={{ width: "10%", backgroundColor: "white" }}></td>
+              </tr>
+              <tr>
+                <td style={{ width: "20%" }}>
+                  <Typography variant="body1">COVER CROPS</Typography>
+                </td>
+                {/* {state.selectedGoals.length !== 0
+     ? state.selectedGoals.map((goal, index) => (
+         <th key={index}>
+           <Typography variant="body1">
+             {goal.toUpperCase()}
+           </Typography>
+         </th>
+       ))
+     : ""} */}
+                <td style={{ width: "10%" }}>
+                  <Typography variant="body1">AVERAGE GOAL RATING</Typography>
+                </td>
 
-              <td style={{ width: "10%" }}>
-                <Typography variant="body1">MY LIST</Typography>
-                <Typography variant="subtitle1">
-                  {/* <br /> */}
-                  {`[${state.selectedCrops.length} CROPS]`}
-                </Typography>
-              </td>
-            </tr>
-          </thead>
-          <tbody>
-            {state.cropData
-              ? state.cropData.map((crop, index) => {
-                  if (crop.fields["Zone Decision"] === "Include")
-                    return (
-                      <tr key={`cropRow${index}`}>
-                        <td className="calendarTableCell">
-                          <div className="tdContainer d-flex justify-content-between flex-wrap">
-                            <img src="//placehold.it/50x50" alt="Placeholder" />
-                            <Button style={{ borderRadius: "0px" }}>
-                              {crop.fields["Cover Crop Name"]}
-                            </Button>
-                          </div>
-                        </td>
-                        <td>{/*average goal rating */}</td>
+                {allMonths.map((month, index) => (
+                  <td key={`monthskey${index}`} style={{ width: "5%" }}>
+                    <Typography variant="body1">{month}</Typography>
+                  </td>
+                ))}
 
-                        {allMonths.map((month, index) => (
-                          <GrowthWindowComponent
-                            data={crop.fields}
-                            key={index}
-                            id={`growthCell${index}`}
-                            month={index}
-                          />
-                        ))}
+                <td style={{ width: "10%" }}>
+                  <Typography variant="body1">MY LIST</Typography>
+                  <Typography variant="subtitle1">
+                    {/* <br /> */}
+                    {`[${state.selectedCrops.length} CROPS]`}
+                  </Typography>
+                </td>
+              </tr>
+            </thead>
 
-                        <td>
-                          {" "}
-                          <LightButton
-                            id={`cartBtn${index}`}
-                            style={{
-                              borderRadius: "0px",
-                              width: "130px"
-                            }}
-                            onClick={() => {
-                              addCropToBasket(
-                                crop.id,
-                                crop.fields["Cover Crop Name"],
-                                `cartBtn${index}`,
-                                crop.fields
-                              );
-                            }}
-                          >
-                            ADD TO LIST
-                          </LightButton>
-                        </td>
-                      </tr>
-                    );
-                })
-              : ""}
-          </tbody>
-        </table>
+            <tbody>
+              {state.cropData
+                ? state.cropData.map((crop, index) => {
+                    if (crop.fields["Zone Decision"] === "Include")
+                      return (
+                        <tr key={`cropRow${index}`}>
+                          <td className="calendarTableCell">
+                            <div className="tdContainer d-flex justify-content-between flex-wrap">
+                              <img
+                                src="//placehold.it/50x50"
+                                alt="Placeholder"
+                              />
+                              <Button style={{ borderRadius: "0px" }}>
+                                {crop.fields["Cover Crop Name"]}
+                              </Button>
+                            </div>
+                          </td>
+                          <td>{/*average goal rating */}</td>
+
+                          {allMonths.map((month, index) => (
+                            <GrowthWindowComponent
+                              data={crop.fields}
+                              key={index}
+                              id={`growthCell${index}`}
+                              month={index}
+                            />
+                          ))}
+
+                          <td>
+                            {" "}
+                            <LightButton
+                              id={`cartBtn${index}`}
+                              style={{
+                                borderRadius: "0px",
+                                width: "130px"
+                              }}
+                              onClick={() => {
+                                addCropToBasket(
+                                  crop.id,
+                                  crop.fields["Cover Crop Name"],
+                                  `cartBtn${index}`,
+                                  crop.fields
+                                );
+                              }}
+                            >
+                              ADD TO LIST
+                            </LightButton>
+                          </td>
+                        </tr>
+                      );
+                  })
+                : ""}
+            </tbody>
+          </table>
+        )}
       </div>
       <Modal
         open={legendModal}

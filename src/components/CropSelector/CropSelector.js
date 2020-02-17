@@ -52,7 +52,32 @@ const CropSelector = () => {
       }
     });
   };
+  const changeProgressToGoals = () => {
+    changeProgress("decrement");
+  };
+  const changeProgress = type => {
+    if (type === "increment") {
+      // if progress = 1 (location stage), check if textfield has a value? then set state address to that value
+      // if(state.progress === 1) {
+      //   if(document.getElementById('google-map-autocompletebar').)
+      // }
+      dispatch({
+        type: "UPDATE_PROGRESS",
+        data: {
+          type: "INCREMENT"
+        }
+      });
+    }
 
+    if (type === "decrement") {
+      dispatch({
+        type: "UPDATE_PROGRESS",
+        data: {
+          type: "DECREMENT"
+        }
+      });
+    }
+  };
   const expandCoverCropFilter = id => {
     let listItemId = `cropFilterList${id}`;
     let x = document.querySelectorAll(`#${listItemId} div`);
@@ -157,6 +182,7 @@ const CropSelector = () => {
                 id="panel1a-header"
               >
                 <Typography
+                  onClick={changeProgressToGoals}
                   className="sidePanelCollapsibleHeading"
                   variant="subtitle1"
                 >
