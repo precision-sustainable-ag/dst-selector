@@ -1,14 +1,15 @@
 // TODO: Goal tags are not responsive!
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, Fragment, useState } from "react";
 import { Context } from "../../store/Store";
 
 import "../../styles/goalsSelector.scss";
-import { Tooltip, Chip } from "@material-ui/core";
+import { Tooltip, Chip, CircularProgress } from "@material-ui/core";
 
 import Skeleton from "@material-ui/lab/Skeleton";
 
 const GoalsSelector = () => {
   const [state, dispatch] = useContext(Context);
+
   const goalsURL =
     "https://api.airtable.com/v0/appC47111lCOTaMYe/Cover%20Crop%20Goals?maxRecords=300";
   const headers = new Headers();
@@ -45,18 +46,25 @@ const GoalsSelector = () => {
   };
 
   const fetchGoals = async () => {
+    dispatch({
+      type: "SET_AJAX_IN_PROGRESS",
+      data: true
+    });
     headers.append("Authorization", "Bearer ***REMOVED***");
     await fetch(goalsURL, { headers: headers })
       .then(response => {
-        // console.log(response);
         return response.json();
       })
       .then(response => {
-        // console.log(response);
-        // console.log(response.records);
         dispatch({
           type: "ADD_GOALS",
           data: response.records
+        });
+      })
+      .then(() => {
+        dispatch({
+          type: "SET_AJAX_IN_PROGRESS",
+          data: false
         });
       });
   };
@@ -70,43 +78,50 @@ const GoalsSelector = () => {
         <div className="col-lg-12">
           <p>Select upto three. Hover for more information</p>
         </div>
-        <div className="goals col-lg-12">
-          {state.allGoals.length > 0 ? (
-            state.allGoals.map((goal, key) =>
-              !goal.fields["Cover Crop Goal"].startsWith("TBD") ? (
-                <Tooltip
-                  interactive
-                  arrow
-                  title={
-                    <div className="tooltipTextContainer">
-                      <p>{goal.fields["Description"]}</p>
-                    </div>
-                  }
-                  key={`tooltip${key}`}
-                >
-                  <Chip
-                    label={goal.fields["Cover Crop Goal"].toUpperCase()}
-                    onClick={() => updateSelectedGoals(goal, key)}
-                    key={`chip${key}`}
-                    id={`chip${key}`}
-                    size="medium"
-                    variant="outlined"
-                    className="goal"
-                  />
-                </Tooltip>
-              ) : (
-                ""
+        {state.ajaxInProgress ? (
+          <div className="goals col-lg-12">
+            <CircularProgress />
+          </div>
+        ) : (
+          <div className="goals col-lg-12">
+            {state.allGoals.length > 0 ? (
+              state.allGoals.map((goal, key) =>
+                !goal.fields["Cover Crop Goal"].startsWith("TBD") ? (
+                  <Tooltip
+                    interactive
+                    arrow
+                    title={
+                      <div className="tooltipTextContainer">
+                        <p>{goal.fields["Description"]}</p>
+                      </div>
+                    }
+                    key={`tooltip${key}`}
+                  >
+                    <Chip
+                      disabled={false}
+                      label={goal.fields["Cover Crop Goal"].toUpperCase()}
+                      onClick={() => updateSelectedGoals(goal, key)}
+                      key={`chip${key}`}
+                      id={`chip${key}`}
+                      size="medium"
+                      variant="outlined"
+                      className="goal enabled"
+                    />
+                  </Tooltip>
+                ) : (
+                  ""
+                )
               )
-            )
-          ) : (
-            <Skeleton
-              animation="pulse"
-              height="100"
-              width="100"
-              variant="rect"
-            />
-          )}
-        </div>
+            ) : (
+              <Skeleton
+                animation="pulse"
+                height="100"
+                width="100"
+                variant="rect"
+              />
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

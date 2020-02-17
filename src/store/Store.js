@@ -451,14 +451,32 @@ const initialState = {
       siltLoam: 38
     }
   ],
-  weatherData: [
-    {
-      firstFrost: "Oct 13",
-      averageRain: 3.46
-    }
-  ],
+  // weatherData: [
+  //   {
+  //     firstFrost: "Oct 13",
+  //     averageRain: 3.46
+  //   }
+  // ],
+  weatherData: {
+    averageFrost: {
+      firstFrostDate: {
+        month: "Oct",
+        day: 13
+      },
+      lastFrostDate: {
+        month: "May",
+        day: 2
+      }
+    },
+    averagePrecipitation: {
+      thisMonth: 3.6, //inches
+      annual: 43 //inches
+    },
+    frostFreeDays: 173
+  },
   myCoverCropActivationFlag: false,
-  speciesSelectorActivationFlag: true
+  speciesSelectorActivationFlag: true,
+  ajaxInProgress: false
 };
 
 const Store = ({ children }) => {

@@ -128,6 +128,56 @@ const Reducer = (state, action) => {
       };
     }
 
+    case "UPDATE_WEATHER_CONDITIONS": {
+      return {
+        ...state,
+        weatherData: action.data.weatherData
+      };
+    }
+
+    case "UPDATE_FROST_FREE_DAYS": {
+      return {
+        ...state,
+        weatherData: {
+          ...state.weatherData,
+          frostFreeDays: action.data.frostFreeDays
+        }
+      };
+    }
+
+    case "UPDATE_AVERAGE_PRECIP_CURRENT_MONTH": {
+      return {
+        ...state,
+        weatherData: {
+          ...state.weatherData,
+          averagePrecipitation: {
+            ...state.weatherData.averagePrecipitation,
+            thisMonth: action.data.thisMonth
+          }
+        }
+      };
+    }
+
+    case "UPDATE_AVERAGE_PRECIP_ANNUAL": {
+      return {
+        ...state,
+        weatherData: {
+          ...state.weatherData,
+          averagePrecipitation: {
+            ...state.weatherData.averagePrecipitation,
+            annual: action.data.annual
+          }
+        }
+      };
+    }
+
+    case "SET_AJAX_IN_PROGRESS": {
+      return {
+        ...state,
+        ajaxInProgress: action.data
+      };
+    }
+
     default:
       return state;
   }

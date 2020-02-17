@@ -3,7 +3,7 @@ import { Context } from "../../store/Store";
 import "../../styles/header.scss";
 import DateComponent from "./DateComponent";
 import Greenbar from "./Greenbar/Greenbar";
-import { cloudIcon } from "../../shared/constants";
+import { cloudIcon, abbrRegion } from "../../shared/constants";
 import {
   MDBNavbar,
   MDBContainer,
@@ -15,6 +15,8 @@ import {
 import { Button } from "@material-ui/core";
 import { Redirect, Link, useHistory, NavLink } from "react-router-dom";
 import ForecastComponent from "./ForecastComponent";
+import Axios from "axios";
+import moment from "moment";
 // import { Link, Button } from "@material-ui/core";
 const Header = () => {
   let history = useHistory();
@@ -26,7 +28,122 @@ const Header = () => {
 
   useEffect(() => {
     console.log("---Header.js started---");
+    // since this updates with state; ideally, weather and soil info should be updated here
 
+    // get current lat long and get county, state and city
+    if (isRoot && state.progress < 4 && state.progress > 1) {
+      dispatch({
+        type: "SET_AJAX_IN_PROGRESS",
+        data: true
+      });
+      let { markers } = state;
+      let lat = markers[0][0];
+      let lon = markers[0][1];
+      let revAPIURL = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`;
+
+      // console.log(revAPIURL);
+
+      Axios.get(revAPIURL)
+        .then(async resp => {
+          let city = resp.data.locality.toLowerCase();
+          let zip = resp.data.postcode;
+          let state = abbrRegion(
+            resp.data.principalSubdivision,
+            "abbr"
+          ).toLowerCase();
+
+          // call weather API to fetch details
+
+          // Get: Frost Free Days
+          // Dynamic Dates not set!
+          let frostFreeDaysURL = `http://128.192.142.200:3000/hourly?location=${city}%20${state}&start=2015-01-01&end=2019-12-31&stats=count(date)/24/5&where=air_temperature%3e0&output=json`;
+          let frostFreeDays = 0;
+
+          await Axios.get(frostFreeDaysURL)
+            .then(resp => {
+              let frostFreeDaysObject = resp.data[0];
+              for (var key in frostFreeDaysObject) {
+                if (frostFreeDaysObject.hasOwnProperty(key)) {
+                  // alert(key);
+                  frostFreeDays = frostFreeDaysObject[key];
+                }
+              }
+              return { frostFreeDays: frostFreeDays, city: city, state: state };
+            })
+            .then(obj => {
+              dispatch({
+                type: "UPDATE_FROST_FREE_DAYS",
+                data: { frostFreeDays: obj.frostFreeDays }
+              });
+
+              return obj;
+            })
+            .then(async obj => {
+              let currentMonthInt = moment().month() + 1;
+
+              // What was the 5-year average rainfall for city st during the month of currentMonthInt?
+              //  Dynamic dates ?
+              let averageRainForAMonthURL = `http://128.192.142.200:3000/hourly?location=${obj.city}%20${obj.state}&start=2015-01-01&end=2019-12-31&stats=sum(precipitation)/5&where=month=${currentMonthInt}&output=json`;
+              // console.log(averageRainForAMonthURL);
+              // What was the 5-year average annual rainfall for city st?
+              let fiveYearAvgRainURL = `http://128.192.142.200:3000/hourly?location=${obj.city}%20${obj.state}&start=2015-01-01&end=2019-12-31&stats=sum(precipitation)/5&output=json`;
+              if (!state.ajaxInProgress) {
+                await Axios.get(averageRainForAMonthURL)
+                  .then(resp => {
+                    console.log(resp);
+                    let averagePrecipitationForCurrentMonth =
+                      resp.data[0]["sum(precipitation)/5"];
+                    averagePrecipitationForCurrentMonth = parseFloat(
+                      averagePrecipitationForCurrentMonth
+                    ).toFixed(2);
+                    dispatch({
+                      type: "UPDATE_AVERAGE_PRECIP_CURRENT_MONTH",
+                      data: { thisMonth: averagePrecipitationForCurrentMonth }
+                    });
+                  })
+                  .catch(error => {
+                    dispatch({
+                      type: "SNACK",
+                      data: {
+                        snackOpen: true,
+                        snackMessage: `Weather API error code: ${error.response.status} for getting 5 year average rainfall for this month`
+                      }
+                    });
+                  });
+
+                await Axios.get(fiveYearAvgRainURL)
+                  .then(resp => {
+                    let fiveYearAvgRainAnnual =
+                      resp.data[0]["sum(precipitation)/5"];
+                    fiveYearAvgRainAnnual = parseFloat(
+                      fiveYearAvgRainAnnual
+                    ).toFixed(2);
+                    dispatch({
+                      type: "UPDATE_AVERAGE_PRECIP_ANNUAL",
+                      data: { annual: fiveYearAvgRainAnnual }
+                    });
+                  })
+                  .catch(error => {
+                    dispatch({
+                      type: "SNACK",
+                      data: {
+                        snackOpen: true,
+                        snackMessage: `Weather API error code: ${
+                          error.response.status
+                        } for getting 5 year average rainfall for ${obj.city.toUpperCase()}, ${obj.state.toUpperCase()}`
+                      }
+                    });
+                  });
+              }
+            });
+        })
+        .then(() => {
+          dispatch({
+            type: "SET_AJAX_IN_PROGRESS",
+            data: false
+          });
+        });
+    }
     // check if isRoot
 
     if (window.location.pathname === "/") {
@@ -43,7 +160,7 @@ const Header = () => {
     }
 
     // document.getElementsByClassName('.nav-toggle')[0].addEventListener
-  }, [state.progress]);
+  }, [state.progress, state.markers, isRoot]);
   const toggleClass = (el, className) => el.classList.toggle(className);
 
   const burgurClick = () => {
