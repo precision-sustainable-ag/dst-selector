@@ -8,7 +8,7 @@ import { GreenSwitch } from "../../shared/constants";
 
 const LiveLocationComponent = () => {
   const [state, dispatch] = useContext(Context);
-  const [lstate, setState] = React.useState({
+  const [lstate, setlState] = React.useState({
     checkedL: false
   });
 
@@ -75,14 +75,14 @@ const LiveLocationComponent = () => {
             }
           },
           function() {
-            alert("Oops! An error occurred.");
+            alert("Oops! An error occurred. Please use the map");
           },
           options
         );
       }
     }
 
-    setState({ [name]: event.target.checked });
+    setlState({ [name]: event.target.checked });
   };
 
   const SetZoneState = async zip => {
