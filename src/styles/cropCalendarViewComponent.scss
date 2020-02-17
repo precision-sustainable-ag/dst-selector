@@ -148,22 +148,22 @@ td.growthWindowCell {
   // table
   table.table.calendarViewTable {
     margin-top: 2em;
-    thead.tableHeadWrapper {
-      // > tr {
-      //   td:nth-child(1) {
-      //     width: 25% !important;
-      //   }
-      //   // td:nth-child(2) {
-      //   //   width: 15%;
-      //   // }
-      //   // td:nth-child(3) {
+    // thead.tableHeadWrapper {
+    //   // > tr {
+    //   //   td:nth-child(1) {
+    //   //     width: 25% !important;
+    //   //   }
+    //   //   // td:nth-child(2) {
+    //   //   //   width: 15%;
+    //   //   // }
+    //   //   // td:nth-child(3) {
 
-      //   // }
-      //   td:last-of-type {
-      //     width: 10% !important;
-      //     max-width: 10% !important;
-      //   }
-    }
+    //   //   // }
+    //   //   td:last-of-type {
+    //   //     width: 10% !important;
+    //   //     max-width: 10% !important;
+    //   //   }
+    // }
     tbody {
       tr {
         td.calendarTableCell {
