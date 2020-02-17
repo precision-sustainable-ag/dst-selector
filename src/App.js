@@ -46,12 +46,12 @@ const loadRelevantRoute = progress => {
 };
 
 const App = () => {
+  const [state, dispatch] = useContext(Context);
   useEffect(() => {
     document.title = "Cover Crop Decision Support Tool";
     loadProgressBar();
-  });
+  }, [state.ajaxInProgress]);
 
-  const [state, dispatch] = useContext(Context);
   // const isRootRoute = this.props.path == "/" ? true : false;
   const handleSnackClose = () => {
     dispatch({

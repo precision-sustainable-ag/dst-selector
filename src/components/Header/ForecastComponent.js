@@ -7,6 +7,8 @@ const apiBaseURL_weather_gov =
   "https://api.weather.gov/points/39.7456,-97.0892";
 const apiKey = "99297824ab4835160bbe26208cff1d38";
 
+const geocodeAuth = "105463363432726e15946815x4512";
+
 // TODO: look at https://agromonitoring.com/ api
 
 const ForecastComponent = () => {
@@ -41,6 +43,7 @@ const ForecastComponent = () => {
     try {
       latlng = state.markers[0];
     } catch (e) {
+      setShow(false);
       latlng = [];
     }
 
@@ -69,6 +72,11 @@ const ForecastComponent = () => {
 
   const makeURLString = (url, params) => {
     return `${url}?lat=${params[0]}&lon=${params[1]}&appid=${apiKey}&units=imperial`;
+  };
+
+  const reverseGEO = () => {
+    let url = "https://geocode.xyz/41.3189957000,2.0746469000?json=1";
+    // let ltlng =
   };
 
   return show ? (

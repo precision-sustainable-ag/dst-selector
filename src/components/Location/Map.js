@@ -4,6 +4,7 @@ import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import { Context } from "../../store/Store";
 import axios from "axios";
+import StateAbbreviations from "./StateAbbreviations";
 
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -22,11 +23,11 @@ const MapComponent = ({ width, height, minzoom, maxzoom }) => {
     const { markers } = state;
     markers.pop();
     markers.push(e.latlng);
-    // console.log(e.latlng);
+    // console.log(markers);
     dispatch({
       type: "UPDATE_MARKER",
       data: {
-        markers: markers
+        markers: [[markers[0].lat, markers[0].lng]]
       }
     });
     // this.setState({ markers });
@@ -37,13 +38,20 @@ const MapComponent = ({ width, height, minzoom, maxzoom }) => {
   };
   const queryGEORevAPI = async (lat, lon) => {
     const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`;
+
     await axios
       .get(url)
       .then(response => {
         let data = response.data;
         let fullAddress = data.display_name;
-        console.log(data);
-        // console.log(data2);
+        console.log("geoorev", data);
+        // set county, state (abbr) and zip to global state
+        let county = data.address.county;
+        let state = data.address.state;
+        let zip = data.address.postcode;
+        let stateAbbreviation = new StateAbbreviations();
+        let abbr = stateAbbreviation.getAbbreviation(state);
+        console.log("Abbreviation: ", abbr);
         // console.log(data.address.postcode);
         // check https://phzmapi.org/[zip].json to map zone with zip probably also restricting the zips?
         setZoneState(data.address.postcode);
@@ -54,6 +62,9 @@ const MapComponent = ({ width, height, minzoom, maxzoom }) => {
           type: "CHANGE_ADDRESS",
           data: { address: `${fullAddress}`, addressVerified: true }
         });
+      })
+      .catch(error => {
+        console.log("nominatim error code", error.response.code);
       });
   };
 
@@ -101,6 +112,18 @@ const MapComponent = ({ width, height, minzoom, maxzoom }) => {
             data: {
               zoneText: "Zone 7",
               zone: 7
+            }
+          });
+        }
+      })
+      .catch(error => {
+        console.log("phzmapi.org error code: ", error.response.status);
+        if (error.response.status === 404) {
+          dispatch({
+            type: "SNACK",
+            data: {
+              snackOpen: true,
+              snackMessage: `Zone not found for ZIP: ${zip}`
             }
           });
         }

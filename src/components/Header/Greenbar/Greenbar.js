@@ -9,6 +9,7 @@ import {
 import { Button, Menu, MenuItem } from "@material-ui/core";
 import FilterHdrIcon from "@material-ui/icons/FilterHdr";
 import CloudIcon from "@material-ui/icons/Cloud";
+import moment from "moment";
 
 const Greenbar = () => {
   const [state, dispatch] = useContext(Context);
@@ -162,10 +163,9 @@ const Greenbar = () => {
   };
 
   const getWeatherData = () => {
-    let date = new Date();
-    let month = date.getMonth();
     // TODO: convert month to string, currently returning int
-    let currentMonth = GetMonthString(month);
+    // let currentMonth = GetMonthString(month);
+    let currentMonth = moment().format("MMM");
     // frost free days :-
     // http://128.192.142.200:3000/hourly?location=raleigh%20nc&start=2015-01-01&end=2019-12-31&stats=count(date)/24/5&where=air_temperature%3E0&output=json
     if (state.weatherData.length === 0) return "";
@@ -174,7 +174,7 @@ const Greenbar = () => {
         <Button>
           {<CloudIcon fontSize="small" />}
           &nbsp;{" "}
-          {`Average First Frost: ${state.weatherData[0].firstFrost} | Average Rain(${currentMonth}): ${state.weatherData[0].averageRain} in`}
+          {`Average First Frost: ${state.weatherData.averageFrost.firstFrostDate.month} ${state.weatherData.averageFrost.firstFrostDate.day} | Average Rain(${currentMonth}): ${state.weatherData.averagePrecipitation.thisMonth} in`}
         </Button>
       );
   };
