@@ -46,6 +46,7 @@ const WeatherConditions = () => {
   const classes = useStyles();
   const [months, setMonths] = useState([]);
   const [currentMonthFull, setCurrentMonthFull] = useState("NOVEMBER");
+
   const [firstFrostMonth, setFirstFrostMonth] = useState(
     state.weatherData.averageFrost.firstFrostDate.month
   );
@@ -112,7 +113,19 @@ const WeatherConditions = () => {
     setCurrentMonthFull(moment().format("MMMM"));
     // render monthsShort on the modal
     setMonths(moment.localeData().monthsShort());
-  }, []);
+
+    setFirstFrostMonth(state.weatherData.averageFrost.firstFrostDate.month);
+    setFirstFrostDay(state.weatherData.averageFrost.firstFrostDate.day);
+    setLastFrostDay(state.weatherData.averageFrost.lastFrostDate.day);
+    setLastFrostMonth(state.weatherData.averageFrost.lastFrostDate.month);
+
+    setAveragePrecipitation({
+      thisMonth: state.weatherData.averagePrecipitation.thisMonth,
+      annual: state.weatherData.averagePrecipitation.annual
+    });
+
+    setFrostFreeDays(state.weatherData.frostFreeDays);
+  }, [state.weatherData]);
   const [open, setOpen] = useState(false);
 
   const handleModalOpen = () => {
