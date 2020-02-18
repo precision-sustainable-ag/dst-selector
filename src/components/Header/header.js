@@ -96,6 +96,9 @@ const Header = () => {
                     averagePrecipitationForCurrentMonth = parseFloat(
                       averagePrecipitationForCurrentMonth
                     ).toFixed(2);
+                    averagePrecipitationForCurrentMonth = parseFloat(
+                      averagePrecipitationForCurrentMonth * 0.03937
+                    ).toFixed(2);
                     dispatch({
                       type: "UPDATE_AVERAGE_PRECIP_CURRENT_MONTH",
                       data: { thisMonth: averagePrecipitationForCurrentMonth }
@@ -117,6 +120,9 @@ const Header = () => {
                       resp.data[0]["sum(precipitation)/5"];
                     fiveYearAvgRainAnnual = parseFloat(
                       fiveYearAvgRainAnnual
+                    ).toFixed(2);
+                    fiveYearAvgRainAnnual = parseFloat(
+                      fiveYearAvgRainAnnual * 0.03937
                     ).toFixed(2);
                     dispatch({
                       type: "UPDATE_AVERAGE_PRECIP_ANNUAL",
