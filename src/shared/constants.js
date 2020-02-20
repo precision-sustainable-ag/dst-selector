@@ -225,3 +225,19 @@ export const abbrRegion = (input, to) => {
     }
   }
 };
+
+export const CustomStyles = () => {
+  return {
+    defaultFontSize: "1em",
+    lighterGreen: "#598445",
+    lightGreen: "#8abc62",
+    greenishWhite: "#f0f7eb",
+    primaryProgressBtnColor: "#49a8ab",
+    primaryProgressBtnBorderColor: "#62b8bc",
+    $secondaryProgressBtnColor: "#e3f2f4",
+    secondaryProgressBtnBorderColor: "#e3f2f4",
+    fullyRoundedRadius: "200px",
+    mildlyRoundedRadius: "5px",
+    nonRoundedRadius: "0px"
+  };
+};
