@@ -3,6 +3,17 @@ import React from "react";
 import { Context } from "../store/Store";
 import "../styles/progressIndicator.scss";
 
+const checkProgressStatus = (actualProgress, expectedProgress) => {
+  if (actualProgress === expectedProgress) {
+    // exact progress
+    return "progress-step active";
+  } else if (actualProgress > expectedProgress) {
+    return "progress-step active";
+  } else {
+    return "progress-step";
+  }
+};
+
 const ProgressBar = () => {
   const [state, dispatch] = React.useContext(Context);
   return (
@@ -11,30 +22,22 @@ const ProgressBar = () => {
       <div className="progress-diagram">
         <div
           id="step1"
-          className={
-            state.progress !== 1 ? `progress-step` : `progress-step active`
-          }
+          className={checkProgressStatus(state.progress, 1)}
         ></div>
 
         <div
           id="step2"
-          className={
-            state.progress !== 2 ? `progress-step` : `progress-step active`
-          }
+          className={checkProgressStatus(state.progress, 2)}
         ></div>
 
         <div
           id="step3"
-          className={
-            state.progress !== 3 ? `progress-step` : `progress-step active`
-          }
+          className={checkProgressStatus(state.progress, 3)}
         ></div>
 
         <div
           id="step4"
-          className={
-            state.progress !== 4 ? `progress-step` : `progress-step active`
-          }
+          className={checkProgressStatus(state.progress, 4)}
         ></div>
       </div>
     </div>
