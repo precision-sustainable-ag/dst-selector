@@ -34,10 +34,11 @@ const theme = createMuiTheme({
     MuiTooltip: {
       tooltip: {
         fontSize: CustomStyles().defaultFontSize,
-        backgroundColor: CustomStyles().$secondaryProgressBtnColor,
+        backgroundColor: CustomStyles().secondaryProgressBtnColor,
         color: "black",
         borderRadius: CustomStyles().mildlyRoundedRadius
-      }
+      },
+      arrow: {}
     }
   }
 });

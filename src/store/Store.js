@@ -4,7 +4,7 @@ import Reducer from "./Reducer";
 // const StoreContext = createContext();
 
 const initialState = {
-  progress: 0,
+  progress: 5,
   // progress: 5,
   // address: "",
   address: "Lancaster, PA",
