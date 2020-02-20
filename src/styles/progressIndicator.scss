@@ -22,7 +22,8 @@
         background-color: $lightGreen;
       }
     }
-    div:not(:first-child) {
+    // div:not(:first-child) {
+    div {
       // background-color: green;
       padding: 10px 5px 10px 5px;
       width: 100%;
