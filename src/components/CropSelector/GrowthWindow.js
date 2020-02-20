@@ -2,16 +2,6 @@ import React, { useEffect, useState, Fragment } from "react";
 import moment from "moment";
 import { Tooltip, withStyles, Typography } from "@material-ui/core";
 
-const HTMLTooltip = withStyles(theme => ({
-  tooltip: {
-    backgroundColor: "#f5f5f9",
-    color: "rgba(0, 0, 0, 0.87)",
-    maxWidth: 220,
-    fontSize: theme.typography.pxToRem(12),
-    border: "1px solid #dadde9"
-  }
-}))(Tooltip);
-
 const GrowthWindowComponent = props => {
   //   const [isCashCropMonth, setIsCashCropMonth] = useState(false);
   let isCashCropMonth = false;
@@ -131,7 +121,10 @@ const GrowthWindowComponent = props => {
   }, []);
 
   return (
-    <td className={`growthWindowCell ${id}`}>
+    <td
+      className={`growthWindowCell ${id}`}
+      style={month >= 11 ? { borderLeft: "none" } : {}}
+    >
       {/* {month} */}
       <div
         className={
@@ -142,7 +135,7 @@ const GrowthWindowComponent = props => {
             : "legendContainer legendColor d-flex flex-direction-row "
         }
       >
-        <HTMLTooltip
+        <Tooltip
           arrow
           title={
             <Fragment>
@@ -159,8 +152,8 @@ const GrowthWindowComponent = props => {
             className={`earlyPart ${cropLegendObj.Early}`}
             style={{ height: "30px", width: "50%" }}
           ></div>
-        </HTMLTooltip>
-        <HTMLTooltip
+        </Tooltip>
+        <Tooltip
           arrow
           title={
             <Fragment>
@@ -177,7 +170,7 @@ const GrowthWindowComponent = props => {
             className={`midPart ${cropLegendObj.Mid}`}
             style={{ height: "30px", width: "50%" }}
           ></div>
-        </HTMLTooltip>
+        </Tooltip>
       </div>
     </td>
   );

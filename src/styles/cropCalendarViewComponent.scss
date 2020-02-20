@@ -101,6 +101,7 @@ $defaultLegendColor: #f0f7eb;
 }
 
 td.growthWindowCell {
+  width: calc(100% / 12);
   border-right: 0px !important;
   //   background-color: $defaultLegendColor;
   padding-right: 0px !important;

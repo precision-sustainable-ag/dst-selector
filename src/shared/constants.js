@@ -6,6 +6,7 @@ import {
   Grid,
   Typography
 } from "@material-ui/core";
+import moment from "moment";
 
 export const locationIcon = (w, h) => {
   return (
@@ -56,19 +57,6 @@ export const cloudIcon = (w, h) => {
     </svg>
   );
 };
-
-export const LightButton = withStyles({
-  root: {
-    backgroundColor: "#e3f2f4",
-    borderRadius: "20px",
-    color: "#000",
-    padding: "10px 20px 10px 20px",
-    "&:hover": {
-      backgroundColor: "#48a8ab",
-      color: "#fff"
-    }
-  }
-})(Button);
 
 export const GreenSwitch = withStyles({
   thumb: {
@@ -234,10 +222,38 @@ export const CustomStyles = () => {
     greenishWhite: "#f0f7eb",
     primaryProgressBtnColor: "#49a8ab",
     primaryProgressBtnBorderColor: "#62b8bc",
-    $secondaryProgressBtnColor: "#e3f2f4",
+    secondaryProgressBtnColor: "#e3f2f4",
     secondaryProgressBtnBorderColor: "#e3f2f4",
     fullyRoundedRadius: "200px",
     mildlyRoundedRadius: "5px",
-    nonRoundedRadius: "0px"
+    nonRoundedRadius: "0px",
+    defaultButtonPadding: "10px 20px 10px 20px"
   };
 };
+
+export const LightButton = withStyles({
+  root: {
+    backgroundColor: CustomStyles().secondaryProgressBtnBorderColor,
+    borderRadius: CustomStyles().fullyRoundedRadius,
+    color: "#000",
+    padding: CustomStyles().defaultButtonPadding,
+    borderColor: CustomStyles().secondaryProgressBtnBorderColor,
+    "&:hover": {
+      borderColor: CustomStyles().primaryProgressBtnBorderColor,
+      backgroundColor: CustomStyles().primaryProgressBtnColor,
+      color: "#fff"
+    }
+  }
+})(Button);
+
+export const allMonths = moment()
+  .localeData()
+  .monthsShort();
+export const cropDataURL =
+  "https://api.airtable.com/v0/appC47111lCOTaMYe/Cover%20Crops%20Data?maxRecords=300&timeZone=America_NewYork&filterByFormula=NOT(SWITCH({Cover Crop Name},'__Open Discussion Row','Ok hopefully he answers me soon.'))";
+
+// const cropDataURL =
+// "https://api.airtable.com/v0/appC47111lCOTaMYe/Cover%20Crops%20Data?maxRecords=300&timeZone=America_NewYork&filterByFormula=NOT(SWITCH({Zone Decision},'Exclude',''))";
+
+export const allGoalsURL =
+  "https://api.airtable.com/v0/appC47111lCOTaMYe/Cover%20Crop%20Goals?maxRecords=300";
