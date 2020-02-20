@@ -476,7 +476,8 @@ const initialState = {
   },
   myCoverCropActivationFlag: false,
   speciesSelectorActivationFlag: true,
-  ajaxInProgress: false
+  ajaxInProgress: false,
+  cropDetailModal: false
 };
 
 const Store = ({ children }) => {
