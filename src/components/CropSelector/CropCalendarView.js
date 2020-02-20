@@ -10,7 +10,12 @@ import {
   Fade,
   CircularProgress
 } from "@material-ui/core";
-import { LightButton } from "../../shared/constants";
+import {
+  LightButton,
+  allMonths,
+  cropDataURL,
+  allGoalsURL
+} from "../../shared/constants";
 import "../../styles/cropCalendarViewComponent.scss";
 import GrowthWindowComponent from "./GrowthWindow";
 import { AddCircle, FiberManualRecord, CloseRounded } from "@material-ui/icons";
@@ -127,17 +132,6 @@ const CropCalendarViewComponent = () => {
     }
   };
 
-  var allMonths = moment()
-    .localeData()
-    .monthsShort();
-  const cropDataURL =
-    "https://api.airtable.com/v0/appC47111lCOTaMYe/Cover%20Crops%20Data?maxRecords=300&timeZone=America_NewYork&filterByFormula=NOT(SWITCH({Cover Crop Name},'__Open Discussion Row','Ok hopefully he answers me soon.'))";
-
-  // const cropDataURL =
-  // "https://api.airtable.com/v0/appC47111lCOTaMYe/Cover%20Crops%20Data?maxRecords=300&timeZone=America_NewYork&filterByFormula=NOT(SWITCH({Zone Decision},'Exclude',''))";
-
-  const allGoalsURL =
-    "https://api.airtable.com/v0/appC47111lCOTaMYe/Cover%20Crop%20Goals?maxRecords=300";
   const headers = new Headers();
   headers.append("Authorization", "Bearer ***REMOVED***");
 

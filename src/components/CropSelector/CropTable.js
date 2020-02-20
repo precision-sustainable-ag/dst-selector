@@ -5,7 +5,12 @@
 */
 import React, { useContext, Fragment, useEffect, useState } from "react";
 import { Context } from "../../store/Store";
-import { LightButton, zoneIcon } from "../../shared/constants";
+import {
+  LightButton,
+  zoneIcon,
+  CustomStyles,
+  allMonths
+} from "../../shared/constants";
 import {
   Button,
   Typography,
@@ -28,6 +33,8 @@ import {
   Close,
   ExpandMore
 } from "@material-ui/icons";
+import GrowthWindowComponent from "./GrowthWindow";
+import "../../styles/cropCalendarViewComponent.scss";
 const useStyles = makeStyles(theme => ({
   modal: {
     display: "flex",
@@ -259,13 +266,28 @@ const CropTableComponent = () => {
                             </td>
                           ))
                         : ""}
-                      <td>GROWTH WINDOW</td>
+                      <td>
+                        <table className="table calendarViewTable table-sm table-borderless">
+                          <tbody>
+                            <tr>
+                              {allMonths.map((month, index) => (
+                                <GrowthWindowComponent
+                                  data={crop.fields}
+                                  key={index}
+                                  id={`growthCell${index}`}
+                                  month={index}
+                                />
+                              ))}
+                            </tr>
+                          </tbody>
+                        </table>
+                      </td>
                       <td style={{}}>
                         <div className="button1">
                           <LightButton
                             id={`cartBtn${index}`}
                             style={{
-                              borderRadius: "0px",
+                              borderRadius: CustomStyles().nonRoundedRadius,
                               width: "130px"
                             }}
                             onClick={() => {
