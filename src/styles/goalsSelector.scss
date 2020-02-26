@@ -18,15 +18,17 @@
       .goal {
         background-color: #f0f7eb;
         font-weight: 600;
-        margin: 10px 10px;
+        // margin: 10px 10px;
+        padding-right: 10px;
+        width: 100%;
         transition: all 0.7s linear;
-        > span:first-of-type {
-          display: flex;
-          align-items: center;
-          flex-wrap: nowrap;
-          padding-left: 12px;
-          padding-right: 12px;
-        }
+        // > span:first-of-type {
+        //   display: flex;
+        //   align-items: center;
+        //   flex-wrap: nowrap;
+        //   padding-left: 12px;
+        //   padding-right: 12px;
+        // }
         &:active {
           background-color: $darkGreen;
           color: white;
