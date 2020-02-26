@@ -4,7 +4,7 @@ import Reducer from "./Reducer";
 // const StoreContext = createContext();
 
 const initialState = {
-  progress: 5,
+  progress: 4,
   // progress: 5,
   // address: "",
   address: "Lancaster, PA",
@@ -477,7 +477,8 @@ const initialState = {
   myCoverCropActivationFlag: false,
   speciesSelectorActivationFlag: true,
   ajaxInProgress: false,
-  cropDetailModal: false
+  cropDetailModal: false,
+  greenbarExpanded: false
 };
 
 const Store = ({ children }) => {
