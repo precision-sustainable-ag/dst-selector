@@ -15,6 +15,7 @@ const ForecastComponent = () => {
   const [state, dispatch] = useContext(Context);
   const [show, setShow] = useState(false);
   const [temp, setTemp] = useState({});
+  // const [loading, setLoading] = useState
 
   useEffect(() => {
     state.progress >= 2 ? setShowFeatures(true) : setShow(false);
@@ -81,11 +82,10 @@ const ForecastComponent = () => {
 
   return show ? (
     <Fragment>
-      <span>Forecast:</span>
-      <span>{cloudIcon(14, 20)}</span>
-      <span>
-        {temp.max} | {temp.min}&nbsp;{temp.unit}
-      </span>
+      Forecast:
+      {/* <span>{cloudIcon(14, 20)}</span> */}
+      <img width="50" height="50" src={temp.iconURL} />
+      {temp.max} | {temp.min}&nbsp;{temp.unit}
       {/* <span
         style={{
           width: "14px",
