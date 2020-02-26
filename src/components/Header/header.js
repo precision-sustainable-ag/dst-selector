@@ -12,7 +12,7 @@ import {
   MDBNavbarNav,
   MDBNavItem
 } from "mdbreact";
-import { Button } from "@material-ui/core";
+import { Button, Badge } from "@material-ui/core";
 import { Redirect, Link, useHistory, NavLink } from "react-router-dom";
 import ForecastComponent from "./ForecastComponent";
 import Axios from "axios";
@@ -307,13 +307,21 @@ const Header = () => {
         >
           SEEDING RATE CALCULATOR
         </Button>
-        <Button
-          size="large"
-          className={state.myCoverCropActivationFlag ? "active" : ""}
-          onClick={setmyCoverCropActivationFlag}
+        <Badge
+          badgeContent={
+            state.selectedCrops.length > 0 ? state.selectedCrops.length : 0
+          }
+          color={"secondary"}
+          fullWidth
         >
-          MY COVER CROP LIST
-        </Button>
+          <Button
+            size="large"
+            className={state.myCoverCropActivationFlag ? "active" : ""}
+            onClick={setmyCoverCropActivationFlag}
+          >
+            MY COVER CROP LIST
+          </Button>
+        </Badge>
       </div>
 
       <MDBNavbar light className="ham-navWrapper">
