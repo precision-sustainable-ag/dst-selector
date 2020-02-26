@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Badge, Chip, Tooltip, Avatar } from "@material-ui/core";
 import { Context } from "../../store/Store";
 
@@ -9,6 +9,18 @@ const GoalTag = props => {
   let goalTitle = props.goaltTitle;
   let key = props.id;
   let goal = props.goal;
+
+  //   useEffect(() => {
+  //     if (state.selectedGoals.length !== 0) {
+  //       for (let index = 0; index < state.selectedGoals.length; index++) {
+  //         document.getElementById(`chip${index}`).classList.add("active");
+  //       }
+
+  //       // state.selectedGoals.map((goalText, index) {
+  //       //     document.getElementById(`chip${key}`).classList.add("active");
+  //       // });
+  //     }
+  //   }, [state.progress]);
 
   const updateSelectedGoals = (item, key) => {
     const goals = [...state.selectedGoals];
@@ -67,7 +79,7 @@ const GoalTag = props => {
             ""
           )
         }
-        style={{ textAlign: "left" }}
+        // style={{ textAlign: "left" }}
         label={goalTitle.toUpperCase()}
         onClick={() => updateSelectedGoals(goal, key)}
         key={`chip${key}`}
