@@ -28,6 +28,7 @@ const Header = () => {
 
   useEffect(() => {
     console.log("---Header.js started---");
+
     // since this updates with state; ideally, weather and soil info should be updated here
 
     // get current lat long and get county, state and city
@@ -253,14 +254,18 @@ const Header = () => {
           className="logoContainer"
           onClick={() => window.open("http://northeastcovercrops.com")}
           style={{ cursor: "pointer" }}
-        />
+        >
+          {/* NECCCLOGO */}
+          {/* <img src={"/images/neccc_wide_logo_color_web.jpg"} /> */}
+        </div>
         <div className="dataComponents">
-          <span>
+          <div>
             <DateComponent />
-          </span>
-          <span>
+          </div>
+          <div>
             <ForecastComponent />
-          </span>
+          </div>
+          {/* <div></div> */}
         </div>
       </div>
       <div className="bottomHeader">
