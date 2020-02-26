@@ -50,6 +50,13 @@ const GoalTag = props => {
       key={`tooltip${key}`}
     >
       <Chip
+        disabled={
+          state.selectedGoals.length >= 3
+            ? state.selectedGoals.includes(goalTitle)
+              ? false
+              : true
+            : false
+        }
         avatar={
           state.selectedGoals.length !== 0 &&
           state.selectedGoals.includes(goalTitle) ? (
@@ -61,7 +68,6 @@ const GoalTag = props => {
           )
         }
         style={{ textAlign: "left" }}
-        disabled={false}
         label={goalTitle.toUpperCase()}
         onClick={() => updateSelectedGoals(goal, key)}
         key={`chip${key}`}
