@@ -10,14 +10,15 @@ $greenBarSmallHeight: 30px;
 Logo components
 */
 
-$maxLogoWidth: 215px;
+// $maxLogoWidth: 215px;
+$maxLogoWidth: 14em;
 $maxLogoHeight: 65px;
 
 /*
 Header Data components, which include date and weather data
 */
 $dataComponentMaxWidth: 490px;
-$dataComponentMaxHeight: 30px;
+$dataComponentMaxHeight: 50px;
 
 header {
   // max-height: 25vh;
@@ -50,20 +51,37 @@ header {
     display: flex;
     align-items: center;
     padding-left: 10px;
+    // .logoContainerz {
+    //   position: relative;
+    //   img {
+    //     position: absolute;
+    //     left: 0;
+    //     top: 0;
+    //     width: 100%;
+    //     height: 100%;
+    //   }
+    //   &:after {
+    //     display: block;
+    //     content: "";
+    //     /* 16:9 aspect ratio */
+    //     padding-bottom: 56.25%;
+    //   }
+    // }
     .logoContainer {
       background-image: url("/images/neccc_wide_logo_color_web.jpg");
       background-size: cover;
-      width: $maxLogoWidth;
+      width: 100%;
       max-width: $maxLogoWidth;
       max-height: $maxLogoHeight;
       height: $maxLogoHeight;
       overflow: hidden;
     }
     .dataComponents {
-      max-width: $dataComponentMaxWidth;
+      // max-width: $dataComponentMaxWidth;
+      width: 100%;
       max-height: $dataComponentMaxHeight;
       height: $dataComponentMaxHeight;
-      width: $dataComponentMaxWidth;
+      // width: $dataComponentMaxWidth;
       padding-left: 9px;
       display: flex;
       justify-content: space-between;
@@ -77,6 +95,15 @@ header {
           letter-spacing: 0.15px;
           font-size: 16px;
           line-height: 24px;
+        }
+      }
+      div {
+        &:first-child {
+          flex: 1 1 auto;
+          padding-top: 10px;
+        }
+        &:last-of-type {
+          flex: 2 1 auto;
         }
       }
     }
@@ -185,6 +212,28 @@ header {
     }
   }
 }
+
+.greenBarParent {
+  .greenBarExpansionPanel {
+    height: 0px;
+    background-color: $darkGreen;
+    width: 100%;
+    z-index: 1001;
+    position: absolute;
+    transition: height 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    // animation: min-height 3s linear;
+  }
+}
+
+/*
+
+
+
+
+Responsive Styles
+
+
+*/
 
 @include screen(641px, 1200px) {
   .ham-navWrapper {
