@@ -177,6 +177,12 @@ const Reducer = (state, action) => {
         ajaxInProgress: action.data
       };
     }
+    case "TOGGLE_CROP_DETAIL_MODAL": {
+      return {
+        ...state,
+        cropDetailModal: action.data.cropDetailModal
+      };
+    }
 
     default:
       return state;
