@@ -9,7 +9,8 @@ import {
   LightButton,
   zoneIcon,
   CustomStyles,
-  allMonths
+  allMonths,
+  getRating
 } from "../../shared/constants";
 import {
   Button,
@@ -20,7 +21,12 @@ import {
   makeStyles,
   ExpansionPanel,
   ExpansionPanelSummary,
-  ExpansionPanelDetails
+  ExpansionPanelDetails,
+  Table,
+  CircularProgress,
+  TableHead,
+  TableBody,
+  TableContainer
 } from "@material-ui/core";
 
 import "../../styles/cropTable.scss";
@@ -35,6 +41,7 @@ import {
 } from "@material-ui/icons";
 import GrowthWindowComponent from "./GrowthWindow";
 import "../../styles/cropCalendarViewComponent.scss";
+import CropDetailsModalComponent from "./CropDetailsModal";
 const useStyles = makeStyles(theme => ({
   modal: {
     display: "flex",
@@ -61,14 +68,14 @@ const CropTableComponent = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalData, setModalData] = useState({});
   const handleModalOpen = crop => {
-    setModalOpen(true);
+    // setModalOpen(true);
     // put data inside modal
     setModalData(crop);
   };
 
-  const handleModalClose = () => {
-    setModalOpen(false);
-  };
+  // const handleModalClose = () => {
+  //   setModalOpen(false);
+  // };
   const url =
     "https://api.airtable.com/v0/appC47111lCOTaMYe/Cover%20Crops%20Data?maxRecords=300&timeZone=America_NewYork&filterByFormula=NOT(SWITCH({Cover Crop Name},'__Open Discussion Row','Ok hopefully he answers me soon.'))";
   useEffect(() => {
@@ -85,9 +92,10 @@ const CropTableComponent = () => {
           type: "PULL_CROP_DATA",
           data: data.records
         });
+
         checkCropsAddedToCart();
       });
-  }, [state.cropData]);
+  }, [state.cropData, state.ajaxInProgress]);
 
   const checkCropsAddedToCart = () => {
     if (state.selectedCrops.length !== 0) {
@@ -186,457 +194,162 @@ const CropTableComponent = () => {
   };
 
   return (
-    <Fragment>
-      <div className="table-responsive">
-        <table className="table table-borderless table-sm">
-          <thead className="tableHeadWrapper">
-            <tr>
-              <th>
-                <Typography variant="body1">COVER CROPS</Typography>
-              </th>
-              {state.selectedGoals.length !== 0
-                ? state.selectedGoals.map((goal, index) => (
-                    <th key={index}>
-                      <Typography variant="body1">
-                        {goal.toUpperCase()}
-                      </Typography>
-                    </th>
-                  ))
-                : ""}
-              <th>
-                <Typography variant="body1">GROWTH WINDOW</Typography>
-              </th>
-              <th>
-                <Typography variant="body1">MY LIST</Typography>
-                <Typography variant="subtitle1">
-                  {/* <br /> */}
-                  {`[${state.selectedCrops.length} CROPS]`}
-                </Typography>
-              </th>
-            </tr>
-          </thead>
-          <tbody className="tableBodyWrapper">
-            {state.cropData.map((crop, index) => {
-              if (
-                !crop.fields["Cover Crop Name"].trim() !==
-                "Ok hopefully he answers me soon.".trim()
-              ) {
-                if (crop.fields["Zone Decision"] === "Include")
-                  return (
-                    <tr key={`croprow${index}`}>
-                      <td
-                        style={{
-                          display: "flex",
-                          flexDirection: "row"
-                        }}
-                      >
-                        {/* {this.getCropImageFromAPI(
+    <TableContainer>
+      <div className="table-responsive calendarViewTableWrapper">
+        {state.ajaxInProgress ? (
+          <div className="circularCentered">
+            <CircularProgress size={"6em"} />
+          </div>
+        ) : (
+          <Table className="table table-borderless table-sm">
+            {/* <EnhancedTableHead
+              classes={classes}
+              numSelected={selected.length}
+              order={order}
+              orderBy={orderBy}
+              onSelectAllClick={handleSelectAllClick}
+              onRequestSort={handleRequestSort}
+              rowCount={rows.length}
+            /> */}
+            <TableHead className="tableHeadWrapper">
+              <tr>
+                <th>
+                  <Typography variant="body1">COVER CROPS</Typography>
+                </th>
+                {state.selectedGoals.length !== 0
+                  ? state.selectedGoals.map((goal, index) => (
+                      <th key={index}>
+                        <Typography variant="body1">
+                          {goal.toUpperCase()}
+                        </Typography>
+                      </th>
+                    ))
+                  : ""}
+                <th>
+                  <Typography variant="body1">GROWTH WINDOW</Typography>
+                </th>
+                <th>
+                  <Typography variant="body1">MY LIST</Typography>
+                  <Typography variant="subtitle1">
+                    {/* <br /> */}
+                    {`[${state.selectedCrops.length} CROPS]`}
+                  </Typography>
+                </th>
+              </tr>
+            </TableHead>
+            <TableBody className="tableBodyWrapper">
+              {state.cropData.map((crop, index) => {
+                if (
+                  !crop.fields["Cover Crop Name"].trim() !==
+                  "Ok hopefully he answers me soon.".trim()
+                ) {
+                  if (crop.fields["Zone Decision"] === "Include")
+                    return (
+                      <tr key={`croprow${index}`}>
+                        <td
+                          style={{
+                            display: "flex",
+                            flexDirection: "row"
+                          }}
+                        >
+                          {/* {this.getCropImageFromAPI(
                           crop.fields["Cover Crop Name"]
                         )} */}
-                        <img
-                          src="//placehold.it/100x100"
-                          alt="placeholder"
-                          style={{
-                            flexBasis: "20%"
-                          }}
-                        />
-                        <div className="cropDetailsText" style={{}}>
-                          <div className="part1_ut">
-                            <span className="cropCategory text-uppercase">
-                              {crop.fields["Cover Crop Group"]}
-                            </span>
-                            <span className="cropName font-weight-lighter">
-                              {crop.fields["Cover Crop Name"]}
-                            </span>
-                            <span className="cropScientificName">
-                              {crop.fields["Scientific Name"]}
-                            </span>
-                          </div>
-                          <div className="part2_lt">
-                            <span className="cropDuration text-uppercase font-weight-bold">
-                              {crop.fields["Duration"]}
-                            </span>
-                          </div>
-                        </div>
-                      </td>
-                      {state.selectedGoals.length !== 0
-                        ? state.selectedGoals.map((goal, index) => (
-                            <td key={`rating${index}`}>
-                              {getRating(crop.fields[goal])}
-                            </td>
-                          ))
-                        : ""}
-                      <td>
-                        <table className="table calendarViewTable table-sm table-borderless">
-                          <tbody>
-                            <tr>
-                              {allMonths.map((month, index) => (
-                                <GrowthWindowComponent
-                                  data={crop.fields}
-                                  key={index}
-                                  id={`growthCell${index}`}
-                                  month={index}
-                                />
-                              ))}
-                            </tr>
-                          </tbody>
-                        </table>
-                      </td>
-                      <td style={{}}>
-                        <div className="button1">
-                          <LightButton
-                            id={`cartBtn${index}`}
+                          <img
+                            src="//placehold.it/100x100"
+                            alt="placeholder"
                             style={{
-                              borderRadius: CustomStyles().nonRoundedRadius,
-                              width: "130px"
+                              flexBasis: "20%"
                             }}
-                            onClick={() => {
-                              addCropToBasket(
-                                crop.id,
-                                crop.fields["Cover Crop Name"],
-                                `cartBtn${index}`,
-                                crop.fields
-                              );
-                            }}
-                          >
-                            ADD TO LIST
-                          </LightButton>
-                        </div>
-                        <br />
-                        <div className="button2">
-                          <Button
-                            size="small"
-                            onClick={() => handleModalOpen(crop)}
-                          >
-                            View Crop Details
-                          </Button>
-                        </div>
-                      </td>
-                    </tr>
-                  );
-              } else return "";
-            })}
-          </tbody>
-        </table>
+                          />
+                          <div className="cropDetailsText" style={{}}>
+                            <div className="part1_ut">
+                              <span className="cropCategory text-uppercase">
+                                {crop.fields["Cover Crop Group"]}
+                              </span>
+                              <span className="cropName font-weight-lighter">
+                                {crop.fields["Cover Crop Name"]}
+                              </span>
+                              <span className="cropScientificName">
+                                {crop.fields["Scientific Name"]}
+                              </span>
+                            </div>
+                            <div className="part2_lt">
+                              <span className="cropDuration text-uppercase font-weight-bold">
+                                {crop.fields["Duration"]}
+                              </span>
+                            </div>
+                          </div>
+                        </td>
+                        {state.selectedGoals.length !== 0
+                          ? state.selectedGoals.map((goal, index) => (
+                              <td key={`rating${index}`}>
+                                {getRating(crop.fields[goal])}
+                                <span className="d-none">
+                                  {crop.fields[goal]}
+                                </span>
+                              </td>
+                            ))
+                          : ""}
+                        <td>
+                          <table className="table calendarViewTable table-sm table-borderless">
+                            <tbody>
+                              <tr>
+                                {allMonths.map((month, index) => (
+                                  <GrowthWindowComponent
+                                    data={crop.fields}
+                                    key={index}
+                                    id={`growthCell${index}`}
+                                    month={index}
+                                  />
+                                ))}
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
+                        <td style={{}}>
+                          <div className="button1">
+                            <LightButton
+                              id={`cartBtn${index}`}
+                              style={{
+                                borderRadius: CustomStyles().nonRoundedRadius,
+                                width: "130px"
+                              }}
+                              onClick={() => {
+                                addCropToBasket(
+                                  crop.id,
+                                  crop.fields["Cover Crop Name"],
+                                  `cartBtn${index}`,
+                                  crop.fields
+                                );
+                              }}
+                            >
+                              ADD TO LIST
+                            </LightButton>
+                          </div>
+                          <br />
+                          <div className="button2">
+                            <Button
+                              size="small"
+                              onClick={() => handleModalOpen(crop)}
+                            >
+                              View Crop Details
+                            </Button>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                } else return "";
+              })}
+            </TableBody>
+          </Table>
+        )}
       </div>
 
       <div className="cropGoals"></div>
-      <Modal
-        aria-labelledby="transition-modal-title"
-        aria-describedby="ransition-modal-description"
-        className={classes.modal}
-        open={modalOpen}
-        onClose={handleModalClose}
-        closeAfterTransition
-        BackdropComponent={Backdrop}
-        BackdropProps={{
-          timeout: 500
-        }}
-        disableBackdropClick={true}
-      >
-        <Fade in={modalOpen}>
-          {modalData.fields ? (
-            <div className={`cropTableModal modalContainer ${classes.paper}`}>
-              <div className="container-fluid">
-                <div className="row">
-                  <div
-                    className="col-12"
-                    style={{
-                      background: "#2D7B7B",
-                      color: "white",
-                      height: "auto",
-                      borderTopLeftRadius: "5px",
-                      borderTopRightRadius: "5px"
-                    }}
-                  >
-                    <div className="row">
-                      <div className="col-2 offset-10 text-right">
-                        {" "}
-                        <Button
-                          style={{ color: "white" }}
-                          onClick={handleModalClose}
-                        >
-                          <Close />
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col-12">
-                    <div className="row">
-                      <div className="col mt-2">
-                        <div>{modalData.fields["Cover Crop Group"]}</div>
-                        <div className="font-weight-bold">
-                          {modalData.fields["Cover Crop Name"]}
-                        </div>
-                        <div>{modalData.fields["Scientific Name"]}</div>
-                      </div>
-                      <div
-                        className="col"
-                        style={{
-                          textAlign: "right",
-                          paddingRight: "0px",
-                          paddingLeft: "0px"
-                        }}
-                      >
-                        <img src="//placehold.it/100x100" />
-                        <img src="//placehold.it/100x100" />
-                        <img src="//placehold.it/100x100" />
-                        <img src="//placehold.it/100x100" />
-                        <img src="//placehold.it/100x100" />
-                        <img src="//placehold.it/100x100" />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="row">
-                  <div
-                    className="col-12"
-                    style={{ background: "#2D7B7B", color: "white" }}
-                  >
-                    <div className="row">
-                      <div className="col-4">
-                        <Button style={{ color: "white" }}>
-                          {zoneIcon(20, 20)}
-                          <span className="pl-2">
-                            Plant Hardiness Zone {state.zone} Dataset
-                          </span>
-                        </Button>
-                      </div>
-                      <div className="col-2">
-                        <Button style={{ color: "white" }}>
-                          <PhotoLibrary />{" "}
-                          <span className="pl-2">View Photos</span>
-                        </Button>
-                      </div>
-                      <div className="col-4">
-                        <Button style={{ color: "white" }}>Download :</Button>
-                        <Button style={{ color: "white" }}>
-                          <PictureAsPdf />
-                          <span className="pl-2">PDF</span>
-                        </Button>
-                        <Button style={{ color: "white" }}>
-                          <FormatListBulleted />
-                          <span className="pl-2">SPREADSHEET</span>
-                        </Button>
-                      </div>
-                      <div className="col-2 text-right">
-                        <Button style={{ color: "white" }}>
-                          <Print /> <span className="pl-2">PRINT</span>
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="row mt-4">
-                  <div className="col-8">
-                    <div className="row">
-                      <div className="col-6">
-                        <Typography variant="h6">Cover Crop Uses</Typography>
-                      </div>
-                      <div className="col-6 text-right">
-                        <small>
-                          (Source: NRCS Plant Guide{" "}
-                          <Info style={{ fontSize: "10pt" }} /> )
-                        </small>
-                      </div>
-
-                      <div className="col-12 mt-2">
-                        <p>
-                          Lorem ipsum dolor sit amet, consectetur adipiscing
-                          elit. Duis eu interdum elit, nec convallis ex. Sed in
-                          posuere ipsum. Vivamus eget scelerisque urna, at
-                          maximus mauris. Suspendisse potenti. Nullam eget
-                          vulputate nulla. Morbi eget suscipit libero. Phasellus
-                          eleifend velit vitae leo efficitur luctus. Donec
-                          euismod odio et urna elementum elementum. Curabitur
-                          quam nisi, blandit eu libero at, efficitur dignissim
-                          dui. Aenean viverra consectetur odio ac sodales. Nunc
-                          elit sem, tincidunt et ligula ac, volutpat venenatis
-                          ex. Sed feugiat suscipit lorem vitae efficitur. Morbi
-                          malesuada elit a urna ornare faucibus. Curabitur id
-                          varius enim. Praesent dui erat, faucibus quis
-                          consequat quis, condimentum eget diam. Phasellus
-                          efficitur sapien ac ex suscipit pretium. Quisque ut
-                          nisi fringilla, scelerisque purus sit amet, fermentum
-                          justo. Maecenas dignissim ornare lectus, eget congue
-                          elit vulputate vel. Quisque pellentesque quam eget
-                          ante commodo, a porta dolor interdum. Donec ut nisi
-                          ligula. Aenean eget cursus lectus, vel mattis enim.
-                          Nunc rutrum pulvinar imperdiet. In finibus nunc eu
-                          mattis semper. Nunc pharetra dui velit, eget
-                          pellentesque nulla molestie in. Ut gravida ac leo sit
-                          amet blandit. Duis sapien ipsum, volutpat quis nisl
-                          quis, ornare laoreet diam. Nunc sit amet eros vel ante
-                          rutrum ullamcorper a scelerisque magna. Etiam semper
-                          orci eget lorem dictum, in varius est laoreet.
-                          Curabitur enim velit, pharetra ut ullamcorper in,
-                          volutpat nec lacus. Cras sed nunc iaculis, dignissim
-                          enim id, elementum lectus. Fusce auctor turpis
-                        </p>{" "}
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-4">
-                    <ExpansionPanel
-                      className="modalSideBar"
-                      defaultExpanded={false}
-                    >
-                      <ExpansionPanelSummary
-                        expandIcon={<ExpandMore />}
-                        aria-controls="modal-side-panel-content"
-                      >
-                        <Typography variant="body1">Agronomic</Typography>
-                      </ExpansionPanelSummary>
-                      <ExpansionPanelDetails>
-                        <div></div>
-                      </ExpansionPanelDetails>
-                    </ExpansionPanel>
-                    <ExpansionPanel
-                      className="modalSideBar"
-                      defaultExpanded={false}
-                    >
-                      <ExpansionPanelSummary
-                        expandIcon={<ExpandMore />}
-                        aria-controls="modal-side-panel-content"
-                      >
-                        <Typography variant="body1">
-                          Environmental Tolerance
-                        </Typography>
-                      </ExpansionPanelSummary>
-                      <ExpansionPanelDetails>
-                        <div></div>
-                      </ExpansionPanelDetails>
-                    </ExpansionPanel>
-                    <ExpansionPanel
-                      className="modalSideBar"
-                      defaultExpanded={false}
-                    >
-                      <ExpansionPanelSummary
-                        expandIcon={<ExpandMore />}
-                        aria-controls="modal-side-panel-content"
-                      >
-                        <Typography variant="body1">Soil Conditions</Typography>
-                      </ExpansionPanelSummary>
-                      <ExpansionPanelDetails>
-                        <div></div>
-                      </ExpansionPanelDetails>
-                    </ExpansionPanel>
-                    <ExpansionPanel
-                      className="modalSideBar"
-                      defaultExpanded={false}
-                    >
-                      <ExpansionPanelSummary
-                        expandIcon={<ExpandMore />}
-                        aria-controls="modal-side-panel-content"
-                      >
-                        <Typography variant="body1">Growth</Typography>
-                      </ExpansionPanelSummary>
-                      <ExpansionPanelDetails>
-                        <div></div>
-                      </ExpansionPanelDetails>
-                    </ExpansionPanel>
-                    <ExpansionPanel
-                      className="modalSideBar"
-                      defaultExpanded={false}
-                    >
-                      <ExpansionPanelSummary
-                        expandIcon={<ExpandMore />}
-                        aria-controls="modal-side-panel-content"
-                      >
-                        <Typography variant="body1">
-                          Planting &amp; Termination
-                        </Typography>
-                      </ExpansionPanelSummary>
-                      <ExpansionPanelDetails>
-                        <div></div>
-                      </ExpansionPanelDetails>
-                    </ExpansionPanel>
-                    <ExpansionPanel
-                      className="modalSideBar"
-                      defaultExpanded={false}
-                    >
-                      <ExpansionPanelSummary
-                        expandIcon={<ExpandMore />}
-                        aria-controls="modal-side-panel-content"
-                      >
-                        <Typography variant="body1">
-                          Grazers &amp; Pollinators
-                        </Typography>
-                      </ExpansionPanelSummary>
-                      <ExpansionPanelDetails>
-                        <div></div>
-                      </ExpansionPanelDetails>
-                    </ExpansionPanel>
-                    <ExpansionPanel
-                      className="modalSideBar"
-                      defaultExpanded={false}
-                    >
-                      <ExpansionPanelSummary
-                        expandIcon={<ExpandMore />}
-                        aria-controls="modal-side-panel-content"
-                      >
-                        <Typography variant="body1">
-                          Pests &amp; Disease
-                        </Typography>
-                      </ExpansionPanelSummary>
-                      <ExpansionPanelDetails>
-                        <div></div>
-                      </ExpansionPanelDetails>
-                    </ExpansionPanel>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ) : (
-            <div></div>
-          )}
-        </Fade>
-      </Modal>
-    </Fragment>
+      <CropDetailsModalComponent crop={modalData} />
+    </TableContainer>
   );
-};
-
-const getRating = ratng => {
-  let rating = parseInt(ratng);
-  if (rating === 0) {
-    return (
-      <div className="rating-0">
-        <span></span>
-      </div>
-    );
-  } else if (rating === 1) {
-    return (
-      <div className="rating-1">
-        <span></span>
-      </div>
-    );
-  } else if (rating === 2) {
-    return (
-      <div className="rating-2">
-        <span></span>
-      </div>
-    );
-  } else if (rating === 3) {
-    return (
-      <div className="rating-3">
-        <span></span>
-      </div>
-    );
-  } else if (rating === 4) {
-    return (
-      <div className="rating-4">
-        <span></span>
-      </div>
-    );
-  } else if (rating === 5) {
-    return (
-      <div className="rating">
-        <span></span>
-      </div>
-    );
-  }
 };
 
 export default CropTableComponent;
