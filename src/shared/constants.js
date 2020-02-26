@@ -246,6 +246,47 @@ export const LightButton = withStyles({
   }
 })(Button);
 
+export const getRating = ratng => {
+  let rating = parseInt(ratng);
+  if (rating === 0) {
+    return (
+      <div className="rating-0">
+        <span></span>
+      </div>
+    );
+  } else if (rating === 1) {
+    return (
+      <div className="rating-1">
+        <span></span>
+      </div>
+    );
+  } else if (rating === 2) {
+    return (
+      <div className="rating-2">
+        <span></span>
+      </div>
+    );
+  } else if (rating === 3) {
+    return (
+      <div className="rating-3">
+        <span></span>
+      </div>
+    );
+  } else if (rating === 4) {
+    return (
+      <div className="rating-4">
+        <span></span>
+      </div>
+    );
+  } else if (rating === 5) {
+    return (
+      <div className="rating">
+        <span></span>
+      </div>
+    );
+  }
+};
+
 export const allMonths = moment()
   .localeData()
   .monthsShort();
