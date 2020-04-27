@@ -25,11 +25,20 @@ import LocationConfirmation from "./components/Location/LocationConfirmation";
 import CropSelector from "./components/CropSelector/CropSelector";
 import { Switch, Route } from "react-router-dom";
 import { CustomStyles } from "./shared/constants";
+import { SnackbarProvider } from "notistack";
 // import { GreenBarComponent } from "./components/GreenBar/greenBarComponent";
 // import BodyComponent from "./components/body";
 
 const logoPath = "/images/neccc_wide_logo_color_web.jpg";
 const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: CustomStyles().lightGreen
+    },
+    secondary: {
+      main: CustomStyles().lighterGreen
+    }
+  },
   overrides: {
     MuiTooltip: {
       tooltip: {
@@ -84,65 +93,73 @@ const App = () => {
 
   return (
     <MuiThemeProvider theme={theme}>
-      <div className="contentWrapper">
-        <Header logo="neccc_wide_logo_color_web.jpg" />
+      <SnackbarProvider
+        maxSnack={5}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "right"
+        }}
+      >
+        <div className="contentWrapper">
+          <Header logo="neccc_wide_logo_color_web.jpg" />
 
-        {loadRelevantRoute(state.progress)}
+          {loadRelevantRoute(state.progress)}
 
-        {state.progress !== 0 && state.progress < 5 ? (
-          <div className="row progressIndicatorWrapper mt-4">
-            <div
-              className="col-lg-12"
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center"
-              }}
-            >
+          {state.progress !== 0 && state.progress < 5 ? (
+            <div className="row progressIndicatorWrapper mt-4">
               <div
-                className="row"
+                className="col-lg-12"
                 style={{
-                  width: "90%"
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center"
                 }}
               >
-                <div className="col-lg-4">
-                  <ProgressButtons />
-                </div>
                 <div
-                  className="col-lg-4 offset-lg-4"
+                  className="row"
                   style={{
-                    textAlign: "right"
+                    width: "90%"
                   }}
                 >
-                  <ProgressBar />
+                  <div className="col-lg-4">
+                    <ProgressButtons />
+                  </div>
+                  <div
+                    className="col-lg-4 offset-lg-4"
+                    style={{
+                      textAlign: "right"
+                    }}
+                  >
+                    <ProgressBar />
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        ) : (
-          ""
-        )}
+          ) : (
+            ""
+          )}
 
-        <div>
-          <Snackbar
-            anchorOrigin={{
-              vertical: state.snackVertical,
-              horizontal: state.snackHorizontal
-            }}
-            key={{
-              vertical: state.snackVertical,
-              horizontal: state.snackHorizontal
-            }}
-            autoHideDuration={5000}
-            open={state.snackOpen}
-            onClose={handleSnackClose}
-            ContentProps={{
-              "aria-describedby": "message-id"
-            }}
-            message={state.snackMessage}
-          />
+          <div>
+            <Snackbar
+              anchorOrigin={{
+                vertical: state.snackVertical,
+                horizontal: state.snackHorizontal
+              }}
+              key={{
+                vertical: state.snackVertical,
+                horizontal: state.snackHorizontal
+              }}
+              autoHideDuration={5000}
+              open={state.snackOpen}
+              onClose={handleSnackClose}
+              ContentProps={{
+                "aria-describedby": "message-id"
+              }}
+              message={state.snackMessage}
+            />
+          </div>
         </div>
-      </div>
+      </SnackbarProvider>
     </MuiThemeProvider>
   );
 };

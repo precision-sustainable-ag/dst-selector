@@ -15,12 +15,39 @@ import {
   FormControl,
   InputLabel,
   Select,
-  CircularProgress
+  CircularProgress,
+  Tooltip
 } from "@material-ui/core";
 
 import { Context } from "../../store/Store";
 import moment from "moment";
 import WeatherModal from "./WeatherModal";
+
+const isEquivalent = (a, b) => {
+  // Create arrays of property names
+  var aProps = Object.getOwnPropertyNames(a);
+  var bProps = Object.getOwnPropertyNames(b);
+
+  // If number of properties is different,
+  // objects are not equivalent
+  if (aProps.length != bProps.length) {
+    return false;
+  }
+
+  for (var i = 0; i < aProps.length; i++) {
+    var propName = aProps[i];
+
+    // If values of same property are not equal,
+    // objects are not equivalent
+    if (a[propName] !== b[propName]) {
+      return false;
+    }
+  }
+
+  // If we made it this far, objects
+  // are considered equivalent
+  return true;
+};
 
 const useStyles = makeStyles(theme => ({
   modal: {
@@ -41,11 +68,14 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const WeatherConditions = () => {
+const WeatherConditions = props => {
   const [state, dispatch] = useContext(Context);
   const classes = useStyles();
   const [months, setMonths] = useState([]);
   const [currentMonthFull, setCurrentMonthFull] = useState("NOVEMBER");
+  const [didChange, setDidChange] = useState(false);
+
+  const [caller, setCaller] = React.useState("");
 
   const [firstFrostMonth, setFirstFrostMonth] = useState(
     state.weatherData.averageFrost.firstFrostDate.month
@@ -93,19 +123,27 @@ const WeatherConditions = () => {
       },
       frostFreeDays: frostFreeDays
     };
-
-    // boardcast and close modal
-
+    if (!isEquivalent(broadcastObject, state.weatherData)) {
+      // boardcast and close modal
+    }
+    setDidChange(true);
     dispatch({
       type: "UPDATE_WEATHER_CONDITIONS",
       data: { weatherData: broadcastObject }
     });
-
     setOpen(false);
 
     // data incorrect
 
     // show error on modal
+  };
+
+  const setDefaultWeatherValues = () => {
+    dispatch({
+      type: "WEATHER_DATA_RESET",
+      data: { weatherDataReset: !state.weatherDataReset }
+    });
+    setDidChange(!didChange);
   };
 
   useEffect(() => {
@@ -125,7 +163,14 @@ const WeatherConditions = () => {
     });
 
     setFrostFreeDays(state.weatherData.frostFreeDays);
-  }, [state.weatherData]);
+
+    if (props.caller) {
+      setCaller(props.caller);
+    } else {
+      setCaller("");
+    }
+  }, [state.weatherData, props.caller]);
+
   const [open, setOpen] = useState(false);
 
   const handleModalOpen = () => {
@@ -149,11 +194,62 @@ const WeatherConditions = () => {
       <div className="col-lg-12">
         <h1>Weather Conditions?</h1>
       </div>
-      <div className="col-lg-9 mt-2">
-        <h6 className="font-weight-bold text-uppercase">
-          <Cloud /> HISTORICAL WEATHER
-        </h6>
-        <div className="offset-lg-1 col-lg-11">
+      <div className="mt-2 row">
+        <div className="col-lg-5 pr-1">
+          <h6 className="font-weight-bold text-uppercase">
+            <Cloud />
+            &nbsp; HISTORICAL WEATHER &nbsp;
+            <Tooltip
+              title={
+                <div>
+                  Source{": "}
+                  <a
+                    href="#"
+                    // target="_blank"
+                    rel="noreferrer"
+                  >
+                    SSURGO
+                  </a>
+                </div>
+              }
+              interactive
+              arrow
+            >
+              <Info fontSize="small" />
+            </Tooltip>
+          </h6>
+        </div>
+        <div className="col-lg-7 pl-1 text-left row">
+          <div className="col-6 pr-0">
+            <Typography
+              variant="button"
+              className="font-weight-bold text-uppercase text-left"
+              onClick={handleModalOpen}
+              style={{ cursor: "pointer" }}
+            >
+              CLICK TO EDIT
+            </Typography>
+          </div>
+          <div className="col-6 pl-0 pr-0">
+            {didChange ? (
+              <p style={{ color: "red", fontSize: "0.8em" }}>
+                VALUES CHANGED&nbsp;&nbsp;
+                <span
+                  style={{ color: "black", cursor: "pointer" }}
+                  onClick={setDefaultWeatherValues}
+                >
+                  RESET
+                </span>
+              </p>
+            ) : (
+              ""
+            )}
+          </div>
+
+          {/* <Button onClick={renderModalWidget}>CLICK TO EDIT</Button> */}
+        </div>
+
+        <div className="offset-lg-1 col-lg-11 text-left">
           Average Frost Dates
           <div className="offset-lg-1">
             First Frost Date:{" "}
@@ -165,10 +261,27 @@ const WeatherConditions = () => {
             <b>{`${state.weatherData.averageFrost.lastFrostDate.month} ${state.weatherData.averageFrost.lastFrostDate.day}`}</b>
           </div>
           <div className="text-right font-size-small">
-            (source: NOAA <Info className="font-size-small" /> )
+            {/* <Tooltip
+              title={
+                <div>
+                  Source{": "}
+                  <a
+                    href="#"
+                    // target="_blank"
+                    rel="noreferrer"
+                  >
+                    NOAA
+                  </a>
+                </div>
+              }
+              interactive
+              arrow
+            >
+              <Info fontSize="small" />
+            </Tooltip> */}
           </div>
         </div>
-        <div className="offset-lg-1 col-lg-11">
+        <div className="offset-lg-1 col-lg-11 text-left">
           Average Precipitation
           <div className="offset-lg-1">
             {currentMonthFull}:{" "}
@@ -179,19 +292,50 @@ const WeatherConditions = () => {
             <b>{state.weatherData.averagePrecipitation.annual} inches</b>
           </div>
           <div className="text-right font-size-small">
-            (source: NOAA <Info className="font-size-small" /> )
+            {/* <Tooltip
+              title={
+                <div>
+                  Source{": "}
+                  <a
+                    href="#"
+                    // target="_blank"
+                    rel="noreferrer"
+                  >
+                    NOAA
+                  </a>
+                </div>
+              }
+              interactive
+              arrow
+            >
+              <Info fontSize="small" />
+            </Tooltip> */}
           </div>
         </div>
-        <div className="offset-lg-1 col-lg-11">
+        <div className="offset-lg-1 col-lg-11 text-left">
           Frost Free Days: <b>{state.weatherData.frostFreeDays}</b>
           <div className="text-right font-size-small">
-            (source: SSURGO <Info className="font-size-small" /> )
+            {/* <Tooltip
+              title={
+                <div>
+                  Source{": "}
+                  <a
+                    href="#"
+                    // target="_blank"
+                    rel="noreferrer"
+                  >
+                    SSURGO
+                  </a>
+                </div>
+              }
+              interactive
+              arrow
+            >
+              <Info fontSize="small" />
+            </Tooltip> */}
+            {/* (source: SSURGO <Info className="font-size-small" /> ) */}
           </div>
         </div>
-      </div>
-      <div className="col-lg-3 mt-2">
-        <Button onClick={handleModalOpen}>CLICK TO EDIT</Button>
-        {/* <Button onClick={renderModalWidget}>CLICK TO EDIT</Button> */}
       </div>
 
       <Modal
@@ -214,7 +358,7 @@ const WeatherConditions = () => {
                 <FormGroup>
                   <div className="row mt-4">
                     <div className="col-12">
-                      <Typography variant="h6">First Frost Data</Typography>
+                      <Typography variant="h6">Average Frost Dates</Typography>
                     </div>
                   </div>
                   <div className="row mt-4">
@@ -236,7 +380,9 @@ const WeatherConditions = () => {
                           }}
                         >
                           {months.map((val, key) => (
-                            <option value={val}>{val}</option>
+                            <option value={moment(val, "MMM").format("MMMM")}>
+                              {val}
+                            </option>
                           ))}
                         </Select>
                       </FormControl>
@@ -286,7 +432,9 @@ const WeatherConditions = () => {
                           }}
                         >
                           {months.map((val, key) => (
-                            <option value={val}>{val}</option>
+                            <option value={moment(val, "MMM").format("MMMM")}>
+                              {val}
+                            </option>
                           ))}
                         </Select>
                       </FormControl>

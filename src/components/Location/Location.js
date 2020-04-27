@@ -18,6 +18,7 @@ import axios from "axios";
 import MapComponent from "./Map";
 import LiveLocation from "./LiveLocation";
 import AutoComplete from "./AutoComplete";
+import LocationToggleComponent from "./LocationToggle";
 // import { Link, Button } from "@material-ui/core";
 
 const useStyles = makeStyles(theme => ({
@@ -217,18 +218,22 @@ const LocationComponent = () => {
                     </MenuItem>
                   </Select>
                 </FormControl>
+                <div className="col-md-12 row">
+                  <LiveLocation />
+                </div>
               </div>
-              <div className="col-md-6 col-sm-12">
+              <div className="col-md-6 col-sm-12 row">
                 <AutoComplete />
+                <div className="col-md-12 text-left">
+                  <LocationToggleComponent />
+                </div>
               </div>
             </div>
             <div className="row">
               <div
-                className="col-md-6 offset-md-6 col-sm-12"
+                className="col-md-6 offset-md-6 col-sm-12 row"
                 style={{ textAlign: "left" }}
-              >
-                <LiveLocation />
-              </div>
+              ></div>
             </div>
             <div className="row">
               <div className="col-md-6 offset-md-6 col-sm-12"></div>

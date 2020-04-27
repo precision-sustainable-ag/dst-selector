@@ -14,7 +14,8 @@ import {
   LightButton,
   allMonths,
   cropDataURL,
-  allGoalsURL
+  allGoalsURL,
+  getRating
 } from "../../shared/constants";
 import "../../styles/cropCalendarViewComponent.scss";
 import GrowthWindowComponent from "./GrowthWindow";
@@ -44,7 +45,7 @@ const useStyles = makeStyles(theme => ({
 const CropCalendarViewComponent = () => {
   const classes = useStyles();
   const [state, dispatch] = useContext(Context);
-  const [goalRatings, setGoalRatings] = useState([]);
+  const [goalRatings, setGoalRatings] = useState(0);
   const [legendModal, setLegendModal] = useState(false);
 
   // DONE: Check year logic ? currently Juliet wants to return current year if month is before november
@@ -150,7 +151,21 @@ const CropCalendarViewComponent = () => {
 
       // putGoalValues();
     });
+
+    // setGoalRatings(getAverageGoalRating(state.selectedGoals));
   }, []);
+
+  const getAverageGoalRating = (selectedGoals, crop) => {
+    // get goal rating for each crop and calculate+render rating
+    let goalRating = 0;
+    selectedGoals.map((goal, index) => {
+      if (crop.fields[goal]) {
+        goalRating += crop.fields[goal];
+      }
+    });
+
+    return getRating(goalRating / selectedGoals.length);
+  };
 
   const putGoalValues = () => {
     console.log(state.allGoals.length);
@@ -224,53 +239,58 @@ const CropCalendarViewComponent = () => {
             <CircularProgress size={"6em"} />
           </div>
         ) : (
-          <table className="table calendarViewTable table-sm table-borderless">
-            <thead className="tableHeadWrapper">
-              <tr>
-                <td
-                  colSpan="2"
-                  style={{ width: "30%", backgroundColor: "white" }}
-                ></td>
-                <td
-                  colSpan="12"
-                  style={{
-                    width: "60%",
-                    borderRight: "0px",
-                    borderBottom: "5px solid white",
-                    borderTopLeftRadius: "10px",
-                    borderTopRightRadius: "10px"
-                  }}
-                >
-                  <Typography
-                    variant="body1"
-                    style={{
-                      width: "50%",
-                      display: "inline-block",
-                      textAlign: "right"
-                    }}
-                  >
-                    {currentYear} COVER CROP GROWTH WINDOW
-                  </Typography>
-                  <Typography
-                    variant="body1"
-                    style={{ width: "50%", display: "inline-block" }}
-                  >
-                    <Button
-                      startIcon={<AddCircle />}
-                      onClick={handleLegendModal}
+          <div className="row">
+            <div className="col-md-12" style={{ lineHeight: "0.5" }}>
+              <table
+                className="table calendarViewTable table-sm table-borderless"
+                style={{}}
+              >
+                <thead className="tableHeadWrapper">
+                  <tr>
+                    <td
+                      colSpan="2"
+                      style={{ width: "30%", backgroundColor: "white" }}
+                    ></td>
+                    <td
+                      colSpan="12"
+                      style={{
+                        width: "60%",
+                        borderRight: "0px",
+                        borderBottom: "5px solid white",
+                        borderTopLeftRadius: "10px",
+                        borderTopRightRadius: "10px"
+                      }}
                     >
-                      {" "}
-                      <Typography variant="body1">Legend</Typography>
-                    </Button>
-                  </Typography>
-                </td>
-                <td style={{ width: "10%", backgroundColor: "white" }}></td>
-              </tr>
-              <tr>
-                <td style={{ width: "20%" }}>
-                  <Typography variant="body1">COVER CROPS</Typography>
-                </td>
-                {/* {state.selectedGoals.length !== 0
+                      <Typography
+                        variant="body1"
+                        style={{
+                          width: "50%",
+                          display: "inline-block",
+                          textAlign: "right"
+                        }}
+                      >
+                        {currentYear} COVER CROP GROWTH WINDOW
+                      </Typography>
+                      <Typography
+                        variant="body1"
+                        style={{ width: "50%", display: "inline-block" }}
+                      >
+                        <Button
+                          startIcon={<AddCircle />}
+                          onClick={handleLegendModal}
+                        >
+                          {" "}
+                          <Typography variant="body1">Legend</Typography>
+                        </Button>
+                      </Typography>
+                    </td>
+                    <td style={{ width: "10%", backgroundColor: "white" }}></td>
+                  </tr>
+                  <tr>
+                    <td style={{ width: "20%" }}>
+                      <Typography variant="body1">COVER CROPS</Typography>
+                    </td>
+                    {/* {state.selectedGoals.length !== 0
      ? state.selectedGoals.map((goal, index) => (
          <th key={index}>
            <Typography variant="body1">
@@ -279,80 +299,117 @@ const CropCalendarViewComponent = () => {
          </th>
        ))
      : ""} */}
-                <td style={{ width: "10%" }}>
-                  <Typography variant="body1">AVERAGE GOAL RATING</Typography>
-                </td>
+                    {state.selectedGoals.length === 0 ? (
+                      ""
+                    ) : (
+                      <td style={{ width: "10%" }}>
+                        <Typography variant="body1">
+                          AVERAGE GOAL RATING
+                        </Typography>
+                      </td>
+                    )}
 
-                {allMonths.map((month, index) => (
-                  <td key={`monthskey${index}`} style={{ width: "5%" }}>
-                    <Typography variant="body1">{month}</Typography>
-                  </td>
-                ))}
+                    {allMonths.map((month, index) => (
+                      <td key={`monthskey${index}`} style={{ width: "5%" }}>
+                        <Typography variant="body1">{month}</Typography>
+                      </td>
+                    ))}
 
-                <td style={{ width: "10%" }}>
-                  <Typography variant="body1">MY LIST</Typography>
-                  <Typography variant="subtitle1">
-                    {/* <br /> */}
-                    {`[${state.selectedCrops.length} CROPS]`}
-                  </Typography>
-                </td>
-              </tr>
-            </thead>
+                    <td style={{ width: "10%" }}>
+                      <Typography variant="body1">MY LIST</Typography>
+                      <Typography variant="subtitle1">
+                        {/* <br /> */}
+                        {`[${state.selectedCrops.length} CROPS]`}
+                      </Typography>
+                    </td>
+                  </tr>
+                </thead>
 
-            <tbody>
-              {state.cropData
-                ? state.cropData.map((crop, index) => {
-                    if (crop.fields["Zone Decision"] === "Include")
-                      return (
-                        <tr key={`cropRow${index}`}>
-                          <td className="calendarTableCell">
-                            <div className="tdContainer d-flex justify-content-between flex-wrap">
-                              <img
-                                src="//placehold.it/50x50"
-                                alt="Placeholder"
-                              />
-                              <Button style={{ borderRadius: "0px" }}>
-                                {crop.fields["Cover Crop Name"]}
-                              </Button>
-                            </div>
-                          </td>
-                          <td>{/*average goal rating */}</td>
+                <tbody>
+                  {state.cropData
+                    ? state.cropData.map((crop, index) => {
+                        if (crop.fields["Zone Decision"] === "Include")
+                          return (
+                            <tr key={`cropRow${index}`}>
+                              <td
+                                className="calendarTableCell"
+                                style={{
+                                  paddingTop: "0px",
+                                  paddingBottom: "0px"
+                                  // fontSize: '10px'
+                                }}
+                              >
+                                <div className="tdContainer d-flex justify-content-between flex-wrap">
+                                  <img
+                                    src="//placehold.it/50x50"
+                                    alt="Placeholder"
+                                  />
+                                  <Button style={{ borderRadius: "0px" }}>
+                                    {crop.fields["Cover Crop Name"]}
+                                  </Button>
+                                </div>
+                              </td>
+                              {state.selectedGoals.length === 0 ? (
+                                ""
+                              ) : (
+                                <td
+                                  style={{
+                                    paddingTop: "0px",
+                                    paddingBottom: "0px"
+                                    // fontSize: '10px'
+                                  }}
+                                >
+                                  {getAverageGoalRating(
+                                    state.selectedGoals,
+                                    crop
+                                  )}
+                                  {/*average goal rating */}
+                                </td>
+                              )}
 
-                          {allMonths.map((month, index) => (
-                            <GrowthWindowComponent
-                              data={crop.fields}
-                              key={index}
-                              id={`growthCell${index}`}
-                              month={index}
-                            />
-                          ))}
+                              {allMonths.map((month, index) => (
+                                <GrowthWindowComponent
+                                  from="calendar"
+                                  data={crop.fields}
+                                  key={index}
+                                  id={`growthCell${index}`}
+                                  month={index}
+                                />
+                              ))}
 
-                          <td>
-                            {" "}
-                            <LightButton
-                              id={`cartBtn${index}`}
-                              style={{
-                                borderRadius: "0px",
-                                width: "130px"
-                              }}
-                              onClick={() => {
-                                addCropToBasket(
-                                  crop.id,
-                                  crop.fields["Cover Crop Name"],
-                                  `cartBtn${index}`,
-                                  crop.fields
-                                );
-                              }}
-                            >
-                              ADD TO LIST
-                            </LightButton>
-                          </td>
-                        </tr>
-                      );
-                  })
-                : ""}
-            </tbody>
-          </table>
+                              <td
+                                style={{
+                                  paddingTop: "0px",
+                                  paddingBottom: "0px"
+                                }}
+                              >
+                                {" "}
+                                <LightButton
+                                  id={`cartBtn${index}`}
+                                  style={{
+                                    borderRadius: "0px",
+                                    width: "130px"
+                                  }}
+                                  onClick={() => {
+                                    addCropToBasket(
+                                      crop.id,
+                                      crop.fields["Cover Crop Name"],
+                                      `cartBtn${index}`,
+                                      crop.fields
+                                    );
+                                  }}
+                                >
+                                  ADD TO LIST
+                                </LightButton>
+                              </td>
+                            </tr>
+                          );
+                      })
+                    : ""}
+                </tbody>
+              </table>
+            </div>
+          </div>
         )}
       </div>
       <Modal
@@ -382,25 +439,27 @@ const CropCalendarViewComponent = () => {
                 <div className="col-12 legendModalRow">
                   <Typography variant="body1">
                     <FiberManualRecord className="reliable" />
-                    RELIABLE ESTABLISHMENT
+                    <span className="pl-3">{"Reliable Establishment"}</span>
                   </Typography>
                 </div>
                 <div className="col-12 legendModalRow">
                   <Typography variant="body1">
                     <FiberManualRecord className="temperatureRisk" />
-                    TEMPERATURE RISK TO ESTABLISHMENT
+                    <span className="pl-3">
+                      {"Temperature Risk To Establishment"}
+                    </span>
                   </Typography>
                 </div>
                 <div className="col-12 legendModalRow">
                   <Typography variant="body1">
                     <FiberManualRecord className="frostPossible" />
-                    FROST SEEDING POSSIBLE
+                    <span className="pl-3">{"Frost Seeding Possible"}</span>
                   </Typography>
                 </div>
                 <div className="col-12 legendModalRow">
                   <Typography variant="body1">
                     <FiberManualRecord className="cashCrop" />
-                    CASH CROP GROWTH WINDOW
+                    <span className="pl-3">{"Cash Crop Growth Window"}</span>
                   </Typography>
                 </div>
               </div>
