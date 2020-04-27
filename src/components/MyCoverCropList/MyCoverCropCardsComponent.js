@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { makeStyles } from "@material-ui/core";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
@@ -8,6 +8,7 @@ import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import { Context } from "../../store/Store";
+import CropDetailsModalComponent from "../CropSelector/CropDetailsModal";
 
 const useStyles = makeStyles({
   card: {
@@ -24,6 +25,17 @@ const MyCoverCropCardsComponent = props => {
   const data = props.data;
   const btnId = props.btnId;
   const classes = useStyles();
+
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalData, setModalData] = useState({});
+  const handleModalOpen = crop => {
+    // setModalOpen(true);
+    // put data inside modal
+    console.log(crop);
+    // setModalData(crop);
+
+    // setModalOpen(true);
+  };
 
   const removeCrop = () => {
     var removeIndex = state.selectedCrops
@@ -79,14 +91,23 @@ const MyCoverCropCardsComponent = props => {
           </CardContent>
         </CardActionArea>
         <CardActions>
-          <Button size="small" color="primary">
+          <Button
+            size="small"
+            color="secondary"
+            onClick={() => handleModalOpen(data)}
+          >
             View Crop Details
           </Button>
-          <Button size="small" color="primary" onClick={removeCrop}>
+          <Button size="small" color="seconday" onClick={removeCrop}>
             Remove
           </Button>
         </CardActions>
       </Card>
+      <CropDetailsModalComponent
+        modalOpen={modalOpen}
+        setModalOpen={setModalOpen}
+        crop={modalData}
+      />
     </div>
   );
 };

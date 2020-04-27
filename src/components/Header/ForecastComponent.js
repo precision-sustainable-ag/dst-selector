@@ -1,6 +1,8 @@
 import React, { Fragment, useContext, useEffect, useState } from "react";
 import { cloudIcon } from "../../shared/constants";
 import { Context } from "../../store/Store";
+import { InfoRounded, Info } from "@material-ui/icons";
+import { Tooltip } from "@material-ui/core";
 
 const apiBaseURL = "https://api.openweathermap.org/data/2.5/weather";
 const apiBaseURL_weather_gov =
@@ -14,11 +16,19 @@ const geocodeAuth = "***REMOVED***";
 const ForecastComponent = () => {
   const [state, dispatch] = useContext(Context);
   const [show, setShow] = useState(false);
-  const [temp, setTemp] = useState({});
+  const [temp, setTemp] = useState({
+    min: 0,
+    max: 0,
+    unit: "F",
+    iconURL: `https://placehold.it/20x20`,
+    iconDescription: "No Data"
+  });
   // const [loading, setLoading] = useState
 
   useEffect(() => {
-    state.progress >= 2 ? setShowFeatures(true) : setShow(false);
+    console.log("---forecastComponent---");
+    setShowFeatures();
+    // state.progress >= 1 ? setShowFeatures(true) : setShow(false);
     // fetchOldApi().then(data => {
     //   console.log(data);
     //   let url = data.properties.forecast;
@@ -26,7 +36,7 @@ const ForecastComponent = () => {
     //     console.log("forecast", data);
     //   });
     // });
-  }, [state.progress]);
+  }, [state.markers || state.progress]);
 
   //   const fetchOldApi = async () => {
   //     return (await fetch(apiBaseURL_weather_gov)).json();
@@ -37,32 +47,78 @@ const ForecastComponent = () => {
   //   };
 
   const setShowFeatures = () => {
-    setShow(true);
-
     // get lat long
     let latlng = [];
     try {
       latlng = state.markers[0];
     } catch (e) {
-      setShow(false);
+      console.trace("Forecast Component", e);
+
       latlng = [];
     }
 
     let apiCall = callWeatherApi(apiBaseURL, latlng);
 
     apiCall.then(data => {
-      //   console.log(data);
-      // icon:   http://openweathermap.org/img/w/04d.png
       let iconId = data.weather[0].icon;
+      let iconDescription = new String(data.weather[0].description);
 
       let tempObj = {
         min: data.main.temp_min,
         max: data.main.temp_max,
         unit: "F",
-        iconURL: `http://openweathermap.org/img/w/${iconId}.png`
+        iconURL: `https://openweathermap.org/img/w/${iconId}.png`,
+        iconDescription: iconDescription
       };
       setTemp(tempObj);
     });
+
+    let data = reverseGEO(latlng[0], latlng[1]);
+    data
+      .then(data => {
+        if (data.success === false) {
+          console.log(data);
+          if (data.error.code === "006") {
+            let delayInMs = 3500;
+            setTimeout(function() {
+              let data = reverseGEO(latlng[0], latlng[1]);
+              data
+                .then(data => {
+                  console.log(data);
+                  let addressString = ``;
+                  if (data.staddress) {
+                    addressString = `${data.staddress}, ${data.state}`;
+                  }
+                  dispatch({
+                    type: "CHANGE_ADDRESS",
+                    data: {
+                      address: addressString,
+                      addressVerified: true
+                    }
+                  });
+                })
+                .catch(e => {
+                  console.log("recursive error", e);
+                });
+            }, delayInMs);
+          }
+        } else {
+          let addressString = ``;
+          if (data.staddress) {
+            addressString = `${data.staddress}, ${data.state}`;
+          }
+          dispatch({
+            type: "CHANGE_ADDRESS",
+            data: {
+              address: addressString,
+              addressVerified: true
+            }
+          });
+        }
+      })
+      .catch(e => {
+        console.log("Geocode.xyz Catch", e);
+      });
   };
 
   const callWeatherApi = async (url, latlng) => {
@@ -75,28 +131,48 @@ const ForecastComponent = () => {
     return `${url}?lat=${params[0]}&lon=${params[1]}&appid=${apiKey}&units=imperial`;
   };
 
-  const reverseGEO = () => {
-    let url = "https://geocode.xyz/41.3189957000,2.0746469000?json=1";
+  const reverseGEO = async (lat, lng) => {
+    let url = `https://geocode.xyz/${lat},${lng}?json=1`;
+    let data = await fetch(url);
+    data = data.json();
+
+    return data;
     // let ltlng =
   };
 
-  return show ? (
+  return state.progress >= 1 ? (
     <Fragment>
       Forecast:
       {/* <span>{cloudIcon(14, 20)}</span> */}
-      <img width="50" height="50" src={temp.iconURL} />
-      {temp.max} | {temp.min}&nbsp;{temp.unit}
-      {/* <span
-        style={{
-          width: "14px",
-          height: "20px",
-          background: `url(${temp.iconURL})`
-        }}
-      > */}
-      {/* <i className="fas fa-cloud-rain pl-2"></i> */}
-      {/* {temp.iconURL ? <img src={temp.iconURL} /> : ""}{" "} */}
-      {/* </span> */}
-      {/* <span>0.25in</span> */}
+      <img
+        width="50"
+        height="50"
+        src={temp.iconURL}
+        alt={temp.iconDescription}
+        title={temp.iconDescription}
+      />
+      {Number(temp.max.toFixed(1))} | {Number(temp.min.toFixed(1))}&nbsp;
+      {temp.unit}
+      <span className="ml-2">
+        <Tooltip
+          title={
+            <div>
+              Source{": "}
+              <a
+                href="https://openweathermap.org/"
+                target="_blank"
+                rel="noreferrer"
+              >
+                openweathermap.org
+              </a>
+            </div>
+          }
+          interactive
+          arrow
+        >
+          <Info fontSize="small" />
+        </Tooltip>
+      </span>
     </Fragment>
   ) : (
     ""

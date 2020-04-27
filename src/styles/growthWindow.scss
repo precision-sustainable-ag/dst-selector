@@ -1,0 +1,35 @@
+td.tableGrowthCell {
+  padding: 0px !important;
+  //   min-width: calc(100% / 12);
+  div.tableGrowthWindow {
+    display: flex;
+    flex-direction: column;
+
+    div.cashCropWindow {
+      background-color: #f1f7eb;
+      height: 15px;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      width: 100%;
+
+      div.earlyPart,
+      div.midPart {
+        width: 50%;
+        height: 15px;
+      }
+    }
+
+    div.upperSection {
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+    }
+
+    div.lowerSection {
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+    }
+  }
+}

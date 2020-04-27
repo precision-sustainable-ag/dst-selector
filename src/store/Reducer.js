@@ -8,6 +8,9 @@ const Reducer = (state, action) => {
       } else {
       }
     }
+    case "WEATHER_DATA_RESET": {
+      return { ...state, weatherDataReset: action.data.weatherDataReset };
+    }
     case "CHANGE_ADDRESS_BY_TYPING": {
       if (action.data.markers) {
         return {
@@ -181,6 +184,39 @@ const Reducer = (state, action) => {
       return {
         ...state,
         cropDetailModal: action.data.cropDetailModal
+      };
+    }
+
+    case "TOGGLE_SOIL_LOADER": {
+      return {
+        ...state,
+        isSoilDataLoading: action.data.isSoilDataLoading
+      };
+    }
+
+    case "UPDATE_SOIL_DATA": {
+      return {
+        ...state,
+        soilData: {
+          ...state.soilData,
+          Map_Unit_Name: action.data.Map_Unit_Name,
+          Drainage_Class: action.data.Drainage_Class,
+          Flooding_Frequency: action.data.Flooding_Frequency,
+          Ponding_Frequency: action.data.Ponding_Frequency
+        }
+      };
+    }
+
+    case "UPDATE_DATE_RANGE": {
+      return {
+        ...state,
+        cashCropData: {
+          ...state.cashCropData,
+          dateRange: {
+            startDate: action.data.startDate,
+            endDate: action.data.endDate
+          }
+        }
       };
     }
 

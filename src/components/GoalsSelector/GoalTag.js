@@ -22,6 +22,15 @@ const GoalTag = props => {
   //     }
   //   }, [state.progress]);
 
+  useEffect(() => {
+    if (state.selectedGoals.length > 0) {
+      state.selectedGoals.forEach((val, index) => {
+        document
+          .getElementsByClassName(val.toUpperCase())[0]
+          .classList.add("active");
+      });
+    }
+  }, []);
   const updateSelectedGoals = (item, key) => {
     const goals = [...state.selectedGoals];
 
@@ -52,10 +61,12 @@ const GoalTag = props => {
   };
   return (
     <Tooltip
+      enterDelay={1000}
+      leaveDelay={300}
       interactive
       arrow
       title={
-        <div className="tooltipTextContainer">
+        <div className="tooltipTextContainer text-center">
           <p>{goalDescription}</p>
         </div>
       }
@@ -86,7 +97,8 @@ const GoalTag = props => {
         id={`chip${key}`}
         size="medium"
         variant="outlined"
-        className="goal enabled"
+        // color={"primary"}
+        className={`goal enabled ${goalTitle.toUpperCase()}`}
       />
     </Tooltip>
   );

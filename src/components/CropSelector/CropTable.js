@@ -1,10 +1,11 @@
 /* TODO: RENDER CROPS BY: 
     1. Zone decision === include
-    2. ...
+    2. sortBy default: First Selected Goal
 
 */
 import React, { useContext, Fragment, useEffect, useState } from "react";
 import { Context } from "../../store/Store";
+import { useSnackbar } from "notistack";
 import {
   LightButton,
   zoneIcon,
@@ -26,7 +27,10 @@ import {
   CircularProgress,
   TableHead,
   TableBody,
-  TableContainer
+  TableContainer,
+  TableRow,
+  TableCell,
+  IconButton
 } from "@material-ui/core";
 
 import "../../styles/cropTable.scss";
@@ -37,7 +41,9 @@ import {
   Print,
   Info,
   Close,
-  ExpandMore
+  ExpandMore,
+  ArrowUpward,
+  ArrowDownward
 } from "@material-ui/icons";
 import GrowthWindowComponent from "./GrowthWindow";
 import "../../styles/cropCalendarViewComponent.scss";
@@ -62,40 +68,52 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const CropTableComponent = () => {
+const CropTableComponent = props => {
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const classes = useStyles();
   const [state, dispatch] = useContext(Context);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalData, setModalData] = useState({});
+  
   const handleModalOpen = crop => {
     // setModalOpen(true);
     // put data inside modal
     setModalData(crop);
+
+    setModalOpen(true);
   };
+
+  const [showGrowthWindow, setShowGrowthWindow] = useState(true);
 
   // const handleModalClose = () => {
   //   setModalOpen(false);
   // };
-  const url =
-    "https://api.airtable.com/v0/appC47111lCOTaMYe/Cover%20Crops%20Data?maxRecords=300&timeZone=America_NewYork&filterByFormula=NOT(SWITCH({Cover Crop Name},'__Open Discussion Row','Ok hopefully he answers me soon.'))";
+  // zone7 appid = app2q3UaKHXutMQyt
+  // const url =
+  // "https://api.airtable.com/v0/appC47111lCOTaMYe/Cover%20Crops%20Data?maxRecords=300&timeZone=America_NewYork&filterByFormula=NOT(SWITCH({Cover Crop Name},'__Open Discussion Row','Ok hopefully he answers me soon.'))";
+  // const url = `https://api.airtable.com/v0/app2q3UaKHXutMQyt/Cover%20Crops%20Data?maxRecords=300&timeZone=America_NewYork&sort=[{field: ${state.selectedGoals[0]}, direction: "asc"}]&filterByFormula=NOT(SWITCH({Cover Crop Name},'__Open Discussion Row','Ok hopefully he answers me soon.'))`;
   useEffect(() => {
-    const headers = new Headers();
-    headers.append("Authorization", "Bearer ***REMOVED***");
-    fetch(url, {
-      headers: headers
-    })
-      .then(response => {
-        return response.json();
-      })
-      .then(data => {
-        dispatch({
-          type: "PULL_CROP_DATA",
-          data: data.records
-        });
-
-        checkCropsAddedToCart();
-      });
-  }, [state.cropData, state.ajaxInProgress]);
+    props.showGrowthWindow
+      ? setShowGrowthWindow(true)
+      : setShowGrowthWindow(false);
+    // if (state.cropData.length === 0) {
+    //   const headers = new Headers();
+    //   headers.append("Authorization", "Bearer ***REMOVED***");
+    //   fetch(url, {
+    //     headers: headers
+    //   })
+    //     .then(response => {
+    //       return response.json();
+    //     })
+    //     .then(data => {
+    //       dispatch({
+    //         type: "PULL_CROP_DATA",
+    //         data: data.records
+    //       });
+    //       checkCropsAddedToCart();
+    //     });
+    // }
+  }, [props]);
 
   const checkCropsAddedToCart = () => {
     if (state.selectedCrops.length !== 0) {
@@ -158,10 +176,11 @@ const CropTableComponent = () => {
           type: "SELECTED_CROPS_MODIFIER",
           data: {
             selectedCrops: [...state.selectedCrops, selectedCrops],
-            snackOpen: true,
+            snackOpen: false,
             snackMessage: `${cropName} Added`
           }
         });
+        enqueueSnackbar(`${cropName} Added`);
       } else {
         // alert(removeIndex);
         let selectedCropsCopy = state.selectedCrops;
@@ -172,10 +191,11 @@ const CropTableComponent = () => {
           type: "SELECTED_CROPS_MODIFIER",
           data: {
             selectedCrops: selectedCropsCopy,
-            snackOpen: true,
+            snackOpen: false,
             snackMessage: `${cropName} Removed`
           }
         });
+        enqueueSnackbar(`${cropName} Removed`);
 
         // this.state.selectedCrops.splice(removeIndex, 1);
       }
@@ -186,14 +206,145 @@ const CropTableComponent = () => {
         type: "SELECTED_CROPS_MODIFIER",
         data: {
           selectedCrops: [cropArray],
-          snackOpen: true,
+          snackOpen: false,
           snackMessage: `${cropName} Added`
         }
       });
+      enqueueSnackbar(`${cropName} Added`);
     }
   };
 
-  return (
+  const getCardFlex = (crop, indexKey) => {
+    let goalsLength = state.selectedGoals.length;
+
+    // state.selectedGoals.map((goal, index) => (
+    //   <td key={`rating${index}`}>
+    //     {getRating(crop.fields[goal])}
+    //     <span className="d-none">
+    //       {crop.fields[goal]}
+    //     </span>
+    //   </td>
+    // ))
+
+    return (
+      <td colSpan={goalsLength + 2}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-around"
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              flexWrap: "nowrap",
+              justifyContent: "space-around"
+            }}
+          >
+            {state.selectedGoals.map((goal, index) => (
+              <div key={`rating${index}`}>
+                {crop.fields[goal]
+                  ? getRating(crop.fields[goal])
+                  : getRating(0)}
+                <span className="d-none">{crop.fields[goal]}</span>
+              </div>
+            ))}
+            <div>
+              <table style={{ width: "188px", height: "40px" }}>
+                <tbody>
+                  <tr>
+                    {allMonths.map((month, index) => (
+                      <GrowthWindowComponent
+                        from="tableOnlyCashCropWindow"
+                        data={crop.fields}
+                        key={index}
+                        id={`growthCell${index}`}
+                        month={index}
+                      />
+                    ))}
+                  </tr>
+                  <tr>
+                    {allMonths.map((month, index) => (
+                      <GrowthWindowComponent
+                        from="tableAll"
+                        data={crop.fields}
+                        key={index}
+                        id={`growthCell${index}`}
+                        month={index}
+                      />
+                    ))}
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div className="button1">
+              <LightButton
+                id={`cartBtn${indexKey}`}
+                style={{
+                  borderRadius: CustomStyles().nonRoundedRadius,
+                  width: "130px"
+                }}
+                onClick={() => {
+                  addCropToBasket(
+                    crop.id,
+                    crop.fields["Cover Crop Name"],
+                    `cartBtn${indexKey}`,
+                    crop.fields
+                  );
+                }}
+              >
+                ADD TO LIST
+              </LightButton>
+            </div>
+          </div>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              flexWrap: "nowrap",
+              justifyContent: "space-around"
+            }}
+          >
+            <div>
+              <Typography variant="subtitle2" component="b">
+                C TO N RATIO:
+              </Typography>
+              <Typography variant="subtitle2" component="b">
+                {crop.fields["C to N Ratio"]}
+              </Typography>
+            </div>
+            <div>
+              <Typography variant="subtitle2" component="b">
+                N FIXED:
+              </Typography>
+              <Typography variant="subtitle2" component="b">
+                NONE
+              </Typography>
+            </div>
+            <div>
+              <Typography variant="subtitle2" component="b">
+                DRY MATTER:
+              </Typography>
+              <Typography variant="subtitle2" component="b">
+                {crop.fields["Dry Matter Min (lbs/A/y)"]}-
+                {crop.fields["Dry Matter Max (lbs/A/y)"]} LBS/A/Y
+              </Typography>
+            </div>
+
+            <div className="button2" style={{ display: "flex" }}>
+              <Button size="small" onClick={() => handleModalOpen(crop)}>
+                View Details
+              </Button>
+            </div>
+          </div>
+        </div>
+      </td>
+    );
+  };
+
+  return props.cropData.length !== 0 ? (
     <TableContainer>
       <div className="table-responsive calendarViewTableWrapper">
         {state.ajaxInProgress ? (
@@ -211,7 +362,98 @@ const CropTableComponent = () => {
               onRequestSort={handleRequestSort}
               rowCount={rows.length}
             /> */}
+
             <TableHead className="tableHeadWrapper">
+              <tr>
+                <th
+                  style={{
+                    backgroundColor: "white",
+                    borderTopLeftRadius: CustomStyles()._10pxRoundedRadius,
+                    borderTopRightRadius: CustomStyles()._10pxRoundedRadius
+                  }}
+                ></th>
+                <th
+                  colSpan={state.selectedGoals.length + 1}
+                  style={{
+                    borderTopLeftRadius: CustomStyles()._10pxRoundedRadius,
+                    borderTopRightRadius: CustomStyles()._10pxRoundedRadius,
+                    borderBottom: "2px solid white",
+                    borderRight: "5px solid white"
+                  }}
+                >
+                  <Typography variant="body2">
+                    {true ? (
+                      <IconButton size="small">
+                        <ArrowUpward fontSize="inherit" />
+                      </IconButton>
+                    ) : (
+                      <IconButton size="small">
+                        <ArrowUpward fontSize="inherit" />
+                      </IconButton>
+                    )}
+                    COVER CROPPING GOALS
+                  </Typography>
+                </th>
+                <th
+                  style={{
+                    borderTopLeftRadius: CustomStyles()._10pxRoundedRadius,
+                    borderTopRightRadius: CustomStyles()._10pxRoundedRadius
+                  }}
+                >
+                  <Typography variant="body2">LEGEND</Typography>
+                </th>
+                <th
+                  style={{
+                    backgroundColor: "white",
+                    borderTopLeftRadius: CustomStyles()._10pxRoundedRadius,
+                    borderTopRightRadius: CustomStyles()._10pxRoundedRadius
+                  }}
+                ></th>
+              </tr>
+              <tr>
+                <th>
+                  <Typography variant="body2">COVER CROPS</Typography>
+                </th>
+                <th
+                  colSpan={
+                    state.selectedGoals.length > 0
+                      ? state.selectedGoals.length + 2
+                      : 2
+                  }
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      flexWrap: "nowrap",
+                      justifyContent: "space-around"
+                    }}
+                  >
+                    {state.selectedGoals.length !== 0
+                      ? state.selectedGoals.map((goal, index) => (
+                          <div key={index}>
+                            <Typography variant="body2">
+                              {goal.toUpperCase()}
+                            </Typography>
+                          </div>
+                        ))
+                      : ""}
+                    {showGrowthWindow ? (
+                      <div>
+                        <Typography variant="body2">GROWTH WINDOW</Typography>
+                      </div>
+                    ) : (
+                      ""
+                    )}
+
+                    <div>
+                      <Typography variant="body2">MY LIST</Typography>
+                    </div>
+                  </div>
+                </th>
+              </tr>
+            </TableHead>
+            {/* <TableHead className="tableHeadWrapper">
               <tr>
                 <th>
                   <Typography variant="body1">COVER CROPS</Typography>
@@ -225,28 +467,30 @@ const CropTableComponent = () => {
                       </th>
                     ))
                   : ""}
-                <th>
-                  <Typography variant="body1">GROWTH WINDOW</Typography>
-                </th>
+                {showGrowthWindow ? (
+                  <th style={{ minWidth: "300px" }}>
+                    <Typography variant="body1">GROWTH WINDOW</Typography>
+                  </th>
+                ) : (
+                  ""
+                )}
+
                 <th>
                   <Typography variant="body1">MY LIST</Typography>
-                  <Typography variant="subtitle1">
-                    {/* <br /> */}
-                    {`[${state.selectedCrops.length} CROPS]`}
-                  </Typography>
+
                 </th>
               </tr>
-            </TableHead>
+            </TableHead> */}
             <TableBody className="tableBodyWrapper">
-              {state.cropData.map((crop, index) => {
+              {props.cropData.map((crop, index) => {
                 if (
                   !crop.fields["Cover Crop Name"].trim() !==
                   "Ok hopefully he answers me soon.".trim()
                 ) {
                   if (crop.fields["Zone Decision"] === "Include")
                     return (
-                      <tr key={`croprow${index}`}>
-                        <td
+                      <TableRow key={`croprow${index}`}>
+                        <TableCell
                           style={{
                             display: "flex",
                             flexDirection: "row"
@@ -255,13 +499,26 @@ const CropTableComponent = () => {
                           {/* {this.getCropImageFromAPI(
                           crop.fields["Cover Crop Name"]
                         )} */}
-                          <img
-                            src="//placehold.it/100x100"
-                            alt="placeholder"
-                            style={{
-                              flexBasis: "20%"
-                            }}
-                          />
+                          {crop.fields["Image"] ? (
+                            <img
+                              src={crop.fields["Image"][0].url}
+                              alt={crop.fields["Image"][0].filename}
+                              style={{
+                                maxWidth: "100px",
+                                maxHeight: "100px",
+                                flexBasis: "20%"
+                              }}
+                            />
+                          ) : (
+                            <img
+                              src="//placehold.it/100x100"
+                              alt="placeholder"
+                              style={{
+                                flexBasis: "20%"
+                              }}
+                            />
+                          )}
+
                           <div className="cropDetailsText" style={{}}>
                             <div className="part1_ut">
                               <span className="cropCategory text-uppercase">
@@ -280,35 +537,13 @@ const CropTableComponent = () => {
                               </span>
                             </div>
                           </div>
-                        </td>
+                        </TableCell>
                         {state.selectedGoals.length !== 0
-                          ? state.selectedGoals.map((goal, index) => (
-                              <td key={`rating${index}`}>
-                                {getRating(crop.fields[goal])}
-                                <span className="d-none">
-                                  {crop.fields[goal]}
-                                </span>
-                              </td>
-                            ))
+                          ? getCardFlex(crop, index)
                           : ""}
-                        <td>
-                          <table className="table calendarViewTable table-sm table-borderless">
-                            <tbody>
-                              <tr>
-                                {allMonths.map((month, index) => (
-                                  <GrowthWindowComponent
-                                    data={crop.fields}
-                                    key={index}
-                                    id={`growthCell${index}`}
-                                    month={index}
-                                  />
-                                ))}
-                              </tr>
-                            </tbody>
-                          </table>
-                        </td>
-                        <td style={{}}>
-                          <div className="button1">
+
+                        {/* <td style={{}}> */}
+                        {/* <div className="button1">
                             <LightButton
                               id={`cartBtn${index}`}
                               style={{
@@ -333,11 +568,11 @@ const CropTableComponent = () => {
                               size="small"
                               onClick={() => handleModalOpen(crop)}
                             >
-                              View Crop Details
+                              View Details
                             </Button>
-                          </div>
-                        </td>
-                      </tr>
+                          </div> */}
+                        {/* </td> */}
+                      </TableRow>
                     );
                 } else return "";
               })}
@@ -347,8 +582,14 @@ const CropTableComponent = () => {
       </div>
 
       <div className="cropGoals"></div>
-      <CropDetailsModalComponent crop={modalData} />
+      <CropDetailsModalComponent
+        modalOpen={modalOpen}
+        setModalOpen={setModalOpen}
+        crop={modalData}
+      />
     </TableContainer>
+  ) : (
+    ""
   );
 };
 

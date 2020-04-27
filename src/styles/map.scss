@@ -1,0 +1,12 @@
+.mapEditBtn {
+  position: absolute !important;
+  top: 0px;
+  right: 15px;
+  padding: 5px;
+  z-index: 400;
+  opacity: 0.5;
+  transition: opacity 0.3s linear !important;
+  &:hover {
+    opacity: 1;
+  }
+}

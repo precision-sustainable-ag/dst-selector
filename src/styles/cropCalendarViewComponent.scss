@@ -188,3 +188,9 @@ div.calendarViewTableWrapper.table-responsive {
     align-items: center;
   }
 }
+
+table.table td,
+table.table th {
+  padding-top: 0.2rem;
+  padding-bottom: 0.2rem;
+}

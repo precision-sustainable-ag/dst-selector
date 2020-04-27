@@ -4,11 +4,17 @@ import Reducer from "./Reducer";
 // const StoreContext = createContext();
 
 const initialState = {
-  progress: 4,
-  // progress: 5,
+  // progress: 3,
+  progress: 1,
   // address: "",
-  address: "Lancaster, PA",
-  markers: [[40.044437, -76.306229]],
+  address: "Beltsville Agriculture Research Center",
+  // markers: [[39.0255, -76.924]],
+  markers: [
+    [39.025872701277045, -76.919398766395],
+    [39.02453911720003, -76.92171701589375],
+    [39.02343889139721, -76.92030030786674],
+    [39.02518924258037, -76.9176171487247]
+  ],
   // markers: [[35.76422, 78.69976]],
   showAddressChangeBtn: false,
   allGoals: [],
@@ -428,8 +434,13 @@ const initialState = {
   //   }
   // ],
   // selectedGoals: [
-  //   "Lasting residue",
-  //   "Nitrogen scavenging",
+  //   "Forage Harvest Value",
+  //   "Good Grazing"
+  //   // "Prevent Soil Erosion"
+  // ],
+  // selectedGoals: [
+  //   "Improve Soil Organic Matter",
+  //   "Lasting Residue",
   //   "Prevent soil erosion"
   // ],
   selectedGoals: [],
@@ -445,12 +456,12 @@ const initialState = {
   addToCartBtnText: "add to list",
   zoneText: "Zone 7",
   zone: 7,
-  soilData: [
-    {
-      loam: 54,
-      siltLoam: 38
-    }
-  ],
+  soilData: {
+    Map_Unit_Name: "",
+    Drainage_Class: "",
+    Flooding_Frequency: "",
+    Ponding_Frequency: ""
+  },
   // weatherData: [
   //   {
   //     firstFrost: "Oct 13",
@@ -460,12 +471,12 @@ const initialState = {
   weatherData: {
     averageFrost: {
       firstFrostDate: {
-        month: "Oct",
-        day: 13
+        month: "October",
+        day: 21
       },
       lastFrostDate: {
-        month: "May",
-        day: 2
+        month: "April",
+        day: 20
       }
     },
     averagePrecipitation: {
@@ -478,7 +489,16 @@ const initialState = {
   speciesSelectorActivationFlag: true,
   ajaxInProgress: false,
   cropDetailModal: false,
-  greenbarExpanded: false
+  greenbarExpanded: false,
+  isSoilDataLoading: false,
+  cashCropData: {
+    name: "",
+    dateRange: {
+      startDate: "",
+      endDate: ""
+    }
+  },
+  weatherDataReset: false
 };
 
 const Store = ({ children }) => {

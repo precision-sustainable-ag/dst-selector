@@ -4,6 +4,7 @@ import { Context } from "../../store/Store";
 import AutoCompleteComponent from "./AutoComplete";
 import SoilConditions from "./SoilConditions";
 import WeatherConditions from "./WeatherConditions";
+import { TextField } from "@material-ui/core";
 
 const LocationConfirmation = () => {
   const [state, dispatch] = useContext(Context);
@@ -34,11 +35,22 @@ const LocationConfirmation = () => {
                   Your cover crop recommendations will come from the Plant
                   Hardiness Zone {state.zone} NECCC dataset.
                 </p>
+                <p className="pt-2 text-muted">
+                  {`${state.address.toString().substring(0, 35)}...`}
+                </p>
               </div>
             </div>
             <div className="row mt-3">
               <div className="col-lg-12">
-                <AutoCompleteComponent />
+                {/* <AutoCompleteComponent /> */}
+                {/* <TextField
+                  style={{ width: "100%" }}
+                  disabled
+                  id="filled-disabled-address"
+                  label="Location"
+                  value={state.address}
+                  variant="filled"
+                /> */}
               </div>
             </div>
             <div className="row mt-3">
