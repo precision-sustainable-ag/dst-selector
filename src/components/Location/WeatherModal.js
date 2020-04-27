@@ -140,7 +140,7 @@ const WeatherModal = props => {
               <FormGroup>
                 <div className="row mt-4">
                   <div className="col-12">
-                    <Typography variant="h6">First Frost Data</Typography>
+                    <Typography variant="h6">Average Frost Dates</Typography>
                   </div>
                 </div>
                 <div className="row mt-4">
@@ -162,7 +162,9 @@ const WeatherModal = props => {
                         }}
                       >
                         {months.map((val, key) => (
-                          <option value={val}>{val}</option>
+                          <option value={moment(val, "MMM").format("MMMM")}>
+                            {val}
+                          </option>
                         ))}
                       </Select>
                     </FormControl>

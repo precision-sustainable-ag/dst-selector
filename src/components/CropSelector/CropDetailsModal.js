@@ -46,7 +46,7 @@ const CropDetailsModalComponent = props => {
   let crop = props.crop;
   const classes = useStyles();
   const [state, dispatch] = useContext(Context);
-  const [modalOpen, setModalOpen] = useState(false);
+  // const [modalOpen, setModalOpen] = useState(true);
   const [modalData, setModalData] = useState({});
 
   useEffect(() => {
@@ -54,10 +54,11 @@ const CropDetailsModalComponent = props => {
   }, [crop]);
 
   const handleModalClose = () => {
-    dispatch({
-      type: "TOGGLE_CROP_DETAIL_MODAL",
-      data: { cropDetailModal: false }
-    });
+    props.setModalOpen(!props.modalOpen);
+    // dispatch({
+    //   type: "TOGGLE_CROP_DETAIL_MODAL",
+    //   data: { cropDetailModal: false }
+    // });
     // setModalOpen(false);
   };
 
@@ -66,7 +67,7 @@ const CropDetailsModalComponent = props => {
       aria-labelledby="transition-modal-title"
       aria-describedby="ransition-modal-description"
       className={classes.modal}
-      open={state.cropDetailModal}
+      open={props.modalOpen}
       onClose={handleModalClose}
       closeAfterTransition
       BackdropComponent={Backdrop}
@@ -75,7 +76,7 @@ const CropDetailsModalComponent = props => {
       }}
       disableBackdropClick={true}
     >
-      <Fade in={modalOpen}>
+      <Fade in={props.modalOpen}>
         {modalData.fields ? (
           <div className={`cropTableModal modalContainer ${classes.paper}`}>
             <div className="container-fluid">

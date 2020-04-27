@@ -1,4 +1,4 @@
-import React, { useContext, useState, Fragment } from "react";
+import React, { useContext, useState, Fragment, useEffect } from "react";
 import { Context } from "../../store/Store";
 import {
   Typography,
@@ -9,8 +9,9 @@ import {
   FormControl,
   FormControlLabel,
   Checkbox,
-  // Button,
-  IconButton
+  Button,
+  IconButton,
+  makeStyles
 } from "@material-ui/core";
 import { List, arrayMove } from "react-movable";
 
@@ -21,63 +22,53 @@ import CropTableComponent from "./CropTable";
 import ListIcon from "@material-ui/icons/List";
 import MyCoverCropList from "../MyCoverCropList/MyCoverCropList";
 import CropCalendarViewComponent from "./CropCalendarView";
+import CropSidebarComponent from "./CropSidebar";
+import CropCardViewComponent from "./CardView/CropCardView";
+
+const _ = require("lodash");
 
 const CropSelector = () => {
   const [state, dispatch] = useContext(Context);
   // let [isExpansionExpanded, setIsExpansionExpanded] = useState(true);
   let [showGrowthWindow, setShowGrowthWindow] = useState(true);
-
+  // sortAllGoals = false would mean default i.e.
+  const [sortAllGoals, setSortAllGoals] = useState(false);
   // let [isListView, setIsListView] = useState(true);
 
   // TODO: set list view as default. Calendar component is activated currently
   let [isListView, setIsListView] = useState(true);
 
-  // useEffect(() => {
-  //   if (state.speciesSelectorActivationFlag) {
-  //     setIsExpansionExpanded(false);
-  //   } else {
-  //     setIsExpansionExpanded(true);
-  //   }
-  //   // return isExpansionExpanded;
-  // }, [isExpansionExpanded]);
-  const updateSelectedGoals = (newGoalArr, oldIndex, newIndex) => {
-    let newGoals = arrayMove(newGoalArr, oldIndex, newIndex);
+  const [cropData, setCropData] = useState([]);
 
-    dispatch({
-      type: "DRAG_GOALS",
-      data: {
-        selectedGoals: newGoals,
-        snackOpen: true,
-        snackMessage: "Goal Priority Changed"
+  const sortEnvTolCropData = objData => {
+    if (cropData.length !== 0) {
+      let crop_data = cropData;
+
+      // console.log(objData);
+      const activeObjKeys = _.keys(_.pickBy(objData));
+      activeObjKeys.forEach((val, index) => {
+        //  Crop Data is inside cropData.fields
+        activeObjKeys[index] = `fields.${val}`;
+      });
+
+      if (activeObjKeys.length > 0) {
+        // some values are truthy
+        console.log(activeObjKeys);
+        // console.log(crop_data);
+        let updatedCropData = _.sortBy(crop_data, activeObjKeys);
+        console.log(updatedCropData[0].fields);
+        setCropData(updatedCropData);
+      } else {
+        // reset! none are true
+        setCropData(state.cropData);
       }
-    });
-  };
-  const changeProgressToGoals = () => {
-    changeProgress("decrement");
-  };
-  const changeProgress = type => {
-    if (type === "increment") {
-      // if progress = 1 (location stage), check if textfield has a value? then set state address to that value
-      // if(state.progress === 1) {
-      //   if(document.getElementById('google-map-autocompletebar').)
-      // }
-      dispatch({
-        type: "UPDATE_PROGRESS",
-        data: {
-          type: "INCREMENT"
-        }
-      });
     }
+  };
 
-    if (type === "decrement") {
-      dispatch({
-        type: "UPDATE_PROGRESS",
-        data: {
-          type: "DECREMENT"
-        }
-      });
-    }
-  };
+  useEffect(() => {
+    setCropData(state.cropData);
+  }, [state.cropData]);
+
   const expandCoverCropFilter = id => {
     let listItemId = `cropFilterList${id}`;
     let x = document.querySelectorAll(`#${listItemId} div`);
@@ -113,32 +104,42 @@ const CropSelector = () => {
       <div className="row toggleComparisonRow">
         <div className="col-lg-12">
           <div className="row">
-            <div className="col-lg-6 col-sm-12 pl-5">
-              <div className="iconsWrapper">
+            <div className="col-lg-12 col-sm-12">
+              {/* <div className="iconsWrapper"> */}
+              <div className="">
                 {state.myCoverCropActivationFlag ? (
                   <Fragment>
-                    <div className="iconToggle">
+                    {/* <div className="iconToggle">
                       <IconButton
                         className={isListView ? `iconActive` : ""}
                         onClick={toggleListView}
                       >
                         <ListIcon style={{ fontSize: "larger" }} />
                       </IconButton>
-                    </div>
+                    </div> */}
                     <div className="iconToggle">
-                      <IconButton
-                        className={isListView ? `` : `iconActive`}
-                        onClick={toggleListView}
-                      >
-                        <CalendarToday style={{ fontSize: "larger" }} />
-                      </IconButton>
-                    </div>
+                      <Typography component="div" variant="body1">
+                        <IconButton
+                          color={"secondary"}
+                          className={`iconActive`}
+                          onClick={toggleListView}
+                        >
+                          {isListView ? (
+                            <CalendarToday style={{ fontSize: "larger" }} />
+                          ) : (
+                            <ListIcon style={{ fontSize: "larger" }} />
+                          )}
+                        </IconButton>
+                        {isListView ? "CALENDAR VIEW" : "LIST VIEW"}
+                      </Typography>
+                    </div>{" "}
+                    <br />
                     <small>LIST VIEW</small>
                   </Fragment>
                 ) : (
                   <Fragment>
                     <div className="iconToggle">
-                      <IconButton
+                      {/* <IconButton
                         className={isListView ? `iconActive` : ""}
                         onClick={toggleListView}
                       >
@@ -151,11 +152,40 @@ const CropSelector = () => {
                         onClick={toggleListView}
                       >
                         <CalendarToday style={{ fontSize: "larger" }} />
-                      </IconButton>
+                      </IconButton> */}
+                      {/* <Typography component="div" variant="body1">
+                        <IconButton
+                          color={"secondary"}
+                          className={`iconActive`}
+                          onClick={toggleListView}
+                        >
+                          {isListView ? (
+                            <ListIcon style={{ fontSize: "larger" }} />
+                          ) : (
+                            <CalendarToday style={{ fontSize: "larger" }} />
+                          )}
+                        </IconButton>
+                        {isListView ? "LIST VIEW" : "CALENDAR VIEW"}
+                      </Typography> */}
+                      <Button
+                        variant="contained"
+                        onClick={toggleListView}
+                        size="large"
+                        color="secondary"
+                        startIcon={
+                          isListView ? (
+                            <CalendarToday style={{ fontSize: "larger" }} />
+                          ) : (
+                            <ListIcon style={{ fontSize: "larger" }} />
+                          )
+                        }
+                      >
+                        {isListView ? "CALENDAR VIEW" : "LIST VIEW"}
+                      </Button>
                     </div>
-                    <small className="mt-2">
+                    {/* <small className="mt-2">
                       {isListView ? "LIST VIEW" : "CALENDAR VIEW"}
-                    </small>
+                    </small> */}
                   </Fragment>
                 )}
               </div>
@@ -163,218 +193,27 @@ const CropSelector = () => {
           </div>
         </div>
       </div>
-      <div className="row cropSelectorRow mt-2">
-        <div className="col-lg-2">
-          <div className="sidebarTitle">
-            <Typography variant="body1">FILTER</Typography>
-          </div>
-          <div className="sidebarContents">
-            <ExpansionPanel
-              className="sideBar"
-              expanded={state.myCoverCropActivationFlag ? false : true}
-              // onTouchEnd={() => {
-              //   setIsExpansionExpanded(!isExpansionExpanded);
-              // }}
-            >
-              <ExpansionPanelSummary
-                expandIcon={<ExpandMore />}
-                aria-controls="panel1a-content"
-                id="panel1a-header"
-              >
-                <Typography
-                  onClick={changeProgressToGoals}
-                  className="sidePanelCollapsibleHeading"
-                  variant="subtitle1"
-                >
-                  COVER CROP GOALS
-                </Typography>
-              </ExpansionPanelSummary>
-              <ExpansionPanelDetails>
-                <div>
-                  <Typography variant="subtitle1" className="mb-2">
-                    {state.selectedGoals.length === 0
-                      ? ""
-                      : "Goal Priority Order"}
-                  </Typography>
-                  <List
-                    values={state.selectedGoals}
-                    onChange={({ oldIndex, newIndex }) =>
-                      updateSelectedGoals(
-                        state.selectedGoals,
-                        oldIndex,
-                        newIndex
-                      )
-                    }
-                    renderList={({ children, props }) => (
-                      <ol className="goalsListFilter" {...props}>
-                        {children}
-                      </ol>
-                    )}
-                    renderItem={({ value, props }) => (
-                      <li {...props}>{value.toUpperCase()}</li>
-                    )}
-                  />
-                  <Typography variant="subtitle1" className="mt-2">
-                    {state.selectedGoals.length === 0
-                      ? "No goals selected"
-                      : "Drag to reorder, click to edit"}
-                  </Typography>
-
-                  {/* ))} */}
-                  {/* </ul> */}
-                </div>
-              </ExpansionPanelDetails>
-            </ExpansionPanel>
-            <ExpansionPanel className="sideBar">
-              <ExpansionPanelSummary
-                expandIcon={<ExpandMore />}
-                aria-controls="panel1b-content"
-                id="panel1b-header"
-              >
-                <Typography className="sidePanelCollapsibleHeading">
-                  CASH CROP
-                </Typography>
-              </ExpansionPanelSummary>
-              <ExpansionPanelDetails
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  flexWrap: "wrap"
-                }}
-              >
-                <p>Details for Cash Crops</p>
-                <div>
-                  <FormControl>
-                    <FormGroup>
-                      <FormControlLabel
-                        value="yes"
-                        control={
-                          <Checkbox
-                            checked={showGrowthWindow}
-                            color="primary"
-                            onClick={() =>
-                              setShowGrowthWindow(!showGrowthWindow)
-                            }
-                          />
-                        }
-                        label="Show growth window"
-                        labelPlacement="end"
-                      />
-                    </FormGroup>
-                  </FormControl>
-                </div>
-              </ExpansionPanelDetails>
-            </ExpansionPanel>
-            <ExpansionPanel
-              className="sideBar"
-              expanded={state.myCoverCropActivationFlag ? true : false}
-            >
-              <ExpansionPanelSummary
-                expandIcon={<ExpandMore />}
-                aria-controls="panel1c-content"
-                id="panel1c-header"
-              >
-                <Typography className="sidePanelCollapsibleHeading">
-                  COVER CROP FILTERS
-                </Typography>
-              </ExpansionPanelSummary>
-              <ExpansionPanelDetails className="coverCropFiltersWrapper">
-                <ul>
-                  <li
-                    onClick={() => expandCoverCropFilter(0)}
-                    id="cropFilterList0"
-                  >
-                    Agronomic
-                  </li>
-                  <li
-                    id="cropFilterList1"
-                    onClick={() => expandCoverCropFilter(1)}
-                    className="active"
-                  >
-                    Environmental Tolerance
-                    <div className="show">
-                      <FormControlLabel
-                        control={<Checkbox value="checkedC" />}
-                        label={<small>HEAT</small>}
-                      />
-                    </div>
-                    <div className="show">
-                      <FormControlLabel
-                        control={<Checkbox value="checkedC" />}
-                        label={<small>Drought</small>}
-                      />
-                    </div>
-                    <div className="show">
-                      <FormControlLabel
-                        control={<Checkbox value="checkedC" />}
-                        label={<small>Shade</small>}
-                      />
-                    </div>
-                    <div className="show">
-                      <FormControlLabel
-                        control={<Checkbox value="checkedC" />}
-                        label={<small>Flood</small>}
-                      />
-                    </div>
-                    <div className="show">
-                      <FormControlLabel
-                        control={<Checkbox value="checkedC" />}
-                        label={<small>Low Fertility</small>}
-                      />
-                    </div>
-                    <div className="show">
-                      <FormControlLabel
-                        control={<Checkbox value="checkedC" />}
-                        label={<small>Salinity</small>}
-                      />
-                    </div>
-                    <div className="show">
-                      <FormControlLabel
-                        control={<Checkbox value="checkedC" />}
-                        label={<small>Winter Survival</small>}
-                      />
-                    </div>
-                  </li>
-                  <li
-                    id="cropFilterList2"
-                    onClick={() => expandCoverCropFilter(2)}
-                  >
-                    Soil Conditions
-                  </li>
-                  <li
-                    id="cropFilterList3"
-                    onClick={() => expandCoverCropFilter(3)}
-                  >
-                    Growth
-                  </li>
-                  <li
-                    id="cropFilterList4"
-                    onClick={() => expandCoverCropFilter(4)}
-                  >
-                    Planting &amp; Termination
-                  </li>
-                  <li
-                    id="cropFilterList5"
-                    onClick={() => expandCoverCropFilter(5)}
-                  >
-                    Grazers &amp; Pollinators
-                  </li>
-                  <li
-                    id="cropFilterList6"
-                    onClick={() => expandCoverCropFilter(6)}
-                  >
-                    Pests &amp; Disease
-                  </li>
-                </ul>
-              </ExpansionPanelDetails>
-            </ExpansionPanel>
-          </div>
+      <div className="row cropSelectorRow mt-3">
+        <div className="col-lg-2 col-sm-12">
+          <CropSidebarComponent
+            sortEnvTolCropData={sortEnvTolCropData}
+            setGrowthWindow={setShowGrowthWindow}
+          />
         </div>
+
         <div className="col-lg-10">
           {state.speciesSelectorActivationFlag ? (
             isListView ? (
-              <CropTableComponent />
+              <CropTableComponent
+                cropData={cropData}
+                showGrowthWindow={showGrowthWindow}
+                sortAllGoals={setSortAllGoals}
+              />
             ) : (
+              // <CropCardViewComponent
+              //   cropData={cropData}
+              //   showGrowthWindow={showGrowthWindow}
+              // />
               <CropCalendarViewComponent />
             )
           ) : (

@@ -18,7 +18,8 @@ import {
   makeStyles,
   Modal,
   Backdrop,
-  Fade
+  Fade,
+  Link
 } from "@material-ui/core";
 import { Context } from "../../store/Store";
 import { Search } from "@material-ui/icons";
@@ -48,13 +49,40 @@ const AutoCompleteComponent = () => {
   const classes = useStyles();
   const [state, dispatch] = useContext(Context);
   const [open, setOpen] = useState(false);
-  const [address, setAddress] = useState("");
+  const [address, setAddress] = useState(state.address);
+  const [suggestedAddress, setSuggestedAddress] = useState({});
+
+  useEffect(() => {
+    setAddress(state.address);
+  }, [state.address]);
+  const setBoundingBoxAndAddress = val => {
+    // set the polygon bounding box? OR lat long and address, then close the modal
+    dispatch({
+      type: "UPDATE_MARKER",
+      data: {
+        markers: [[parseFloat(val.lat), parseFloat(val.lon)]]
+      }
+    });
+    dispatch({
+      type: "CHANGE_ADDRESS",
+      data: {
+        address: val.display_name,
+        addressVerified: true
+      }
+    });
+    handleClose();
+    console.log(val);
+  };
 
   const handleToggle = () => {
-    handleOpen();
-    checkAddresses(address).then(data => {
-      console.log(data);
-    });
+    if (address.length > 3) {
+      handleOpen();
+      // setOpen(true);
+      checkAddresses(address).then(addressData => {
+        setSuggestedAddress(addressData);
+        console.log(addressData);
+      });
+    }
   };
   const handleOpen = () => {
     setOpen(true);
@@ -89,11 +117,30 @@ const AutoCompleteComponent = () => {
           <div className={classes.paper}>
             <h2 id="transition-modal-title">Suggested Locations</h2>
             <div>
-              <ul>
-                <li>Address 1</li>
-                <li>Address 2</li>
-                <li>Address 3</li>
-              </ul>
+              <p variant="body2">
+                Server suggested {suggestedAddress.length}{" "}
+                {suggestedAddress.length > 1 ? "addresses" : "address"}
+              </p>
+              {suggestedAddress.length > 0 ? (
+                <ul>
+                  {suggestedAddress.map((val, index) => (
+                    <li key={index}>
+                      {" "}
+                      <Link
+                        component="button"
+                        variant="body2"
+                        color="secondary"
+                        onClick={() => setBoundingBoxAndAddress(val)}
+                      >
+                        {val.display_name}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                ""
+              )}
+
               <em>
                 If you don't find your location here, try typing a bit more
               </em>
@@ -107,6 +154,23 @@ const AutoCompleteComponent = () => {
         className={classes.formControl}
       >
         <TextField
+          label="LOCATION"
+          value={address}
+          onChange={handleChange}
+          fullWidth
+          aria-haspopup={true}
+          variant="filled"
+          InputProps={{
+            endAdornment: (
+              <InputAdornment>
+                <IconButton onClick={handleToggle}>
+                  <Search />
+                </IconButton>
+              </InputAdornment>
+            )
+          }}
+        ></TextField>
+        {/* <TextField
           aria-controls={open ? "menu-list-grow" : undefined}
           label="LOCATION"
           value={state.address !== "" ? state.address : address}
@@ -127,7 +191,7 @@ const AutoCompleteComponent = () => {
                 }
               : ""
           }
-        ></TextField>
+        ></TextField> */}
       </FormControl>
     </Fragment>
   );

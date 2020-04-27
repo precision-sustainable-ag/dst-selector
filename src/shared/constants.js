@@ -8,6 +8,12 @@ import {
 } from "@material-ui/core";
 import moment from "moment";
 
+export const airtableAPIURL = {
+  Z5: "https://api.airtable.com/v0/appASoBfIRYbb8V7o",
+  Z7: "https://api.airtable.com/v0/app2q3UaKHXutMQyt",
+  Z6: "https://api.airtable.com/v0/appC47111lCOTaMYe"
+};
+
 export const locationIcon = (w, h) => {
   return (
     <svg
@@ -195,19 +201,19 @@ export const abbrRegion = (input, to) => {
   var regions = states.concat(provinces);
 
   var i; // Reusable loop variable
-  if (to == "abbr") {
+  if (to === "abbr") {
     input = input.replace(/\w\S*/g, function(txt) {
       return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
     });
     for (i = 0; i < regions.length; i++) {
-      if (regions[i][0] == input) {
+      if (regions[i][0] === input) {
         return regions[i][1];
       }
     }
-  } else if (to == "name") {
+  } else if (to === "name") {
     input = input.toUpperCase();
     for (i = 0; i < regions.length; i++) {
-      if (regions[i][1] == input) {
+      if (regions[i][1] === input) {
         return regions[i][0];
       }
     }
@@ -218,13 +224,16 @@ export const CustomStyles = () => {
   return {
     defaultFontSize: "1em",
     lighterGreen: "#598445",
-    lightGreen: "#8abc62",
+    lightGreen: "#add08f",
     greenishWhite: "#f0f7eb",
     primaryProgressBtnColor: "#49a8ab",
     primaryProgressBtnBorderColor: "#62b8bc",
     secondaryProgressBtnColor: "#e3f2f4",
     secondaryProgressBtnBorderColor: "#e3f2f4",
     fullyRoundedRadius: "200px",
+    semiRoundedRadius: "10px",
+    _10pxRoundedRadius: "10px",
+    _5pxRoundedRadius: "5px",
     mildlyRoundedRadius: "5px",
     nonRoundedRadius: "0px",
     defaultButtonPadding: "10px 20px 10px 20px"
@@ -298,3 +307,9 @@ export const cropDataURL =
 
 export const allGoalsURL =
   "https://api.airtable.com/v0/appC47111lCOTaMYe/Cover%20Crop%20Goals?maxRecords=300";
+
+export const greenBarExpansionPanelHeight = {
+  large: "600px",
+  medium: "600px",
+  small: "600px"
+};

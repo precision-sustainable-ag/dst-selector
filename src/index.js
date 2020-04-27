@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, Suspense } from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
@@ -24,21 +24,23 @@ const withFooter = WrappedComponent => () => [
 const Wrapper = () => (
   <Store>
     <BrowserRouter>
-      <Switch>
-        <Route path={`/`} component={App} exact />
-        <Route path={"/about"} component={About} exact />
-        <Route
-          path={"/seeding-rate-calculator"}
-          component={SeedingRateCalculator}
-          exact
-        />
-        <Route path={"/mix-maker"} component={MixMaker} exact />
-        <Route
-          path={"/cover-crop-explorer"}
-          component={CoverCropExplorer}
-          exact
-        />
-      </Switch>
+      <Suspense fallback={<div>Loading..</div>}>
+        <Switch>
+          <Route path={`/`} component={App} exact />
+          <Route path={"/about"} component={About} exact />
+          <Route
+            path={"/seeding-rate-calculator"}
+            component={SeedingRateCalculator}
+            exact
+          />
+          <Route path={"/mix-maker"} component={MixMaker} exact />
+          <Route
+            path={"/cover-crop-explorer"}
+            component={CoverCropExplorer}
+            exact
+          />
+        </Switch>
+      </Suspense>
 
       {/* <App /> */}
     </BrowserRouter>
@@ -52,4 +54,4 @@ ReactDOM.render(<WrapperWithFooter />, document.getElementById("root"));
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+serviceWorker.register();

@@ -23,7 +23,7 @@ const ProgressButtons = () => {
       }
       case 4: {
         // goals selection state
-        if (state.selectedGoals.length > 3) {
+        if (state.selectedGoals.length > 3 || state.selectedGoals.length < 1) {
           setIsDisabled(true);
         } else {
           setIsDisabled(false);

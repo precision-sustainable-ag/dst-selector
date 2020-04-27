@@ -3,7 +3,7 @@ import { Context } from "../../store/Store";
 import "../../styles/header.scss";
 import DateComponent from "./DateComponent";
 import Greenbar from "./Greenbar/Greenbar";
-import { cloudIcon, abbrRegion } from "../../shared/constants";
+import { cloudIcon, abbrRegion, airtableAPIURL } from "../../shared/constants";
 import {
   MDBNavbar,
   MDBContainer,
@@ -17,6 +17,8 @@ import { Redirect, Link, useHistory, NavLink } from "react-router-dom";
 import ForecastComponent from "./ForecastComponent";
 import Axios from "axios";
 import moment from "moment";
+
+var sentimentAnalysis = require("sentiment-analysis");
 // import { Link, Button } from "@material-ui/core";
 const Header = () => {
   let history = useHistory();
@@ -26,24 +28,162 @@ const Header = () => {
   const [redirectToRoot, setRedirectToRoot] = React.useState(false);
   let isActive = {};
 
-  useEffect(() => {
-    console.log("---Header.js started---");
+  const getAddressFromMarkers = async (lat, lon) => {
+    return (await fetch(`https://geocode.xyz/${lat},${lon}?geoit=json`)).json();
+  };
 
+  useEffect(() => {
+    console.log("---Header.js---");
+
+    // update address on marker change
+    // ref forecastComponent
+    let { markers } = state;
+    let lat = markers[0][0];
+    let lon = markers[0][1];
+
+    // let addressObjectPromise = getAddressFromMarkers(lat, lon);
+    // addressObjectPromise.then(data => {
+    //   console.log("addressObject", data);
+    // });
     // since this updates with state; ideally, weather and soil info should be updated here
 
     // get current lat long and get county, state and city
-    if (isRoot && state.progress < 4 && state.progress > 1) {
-      dispatch({
-        type: "SET_AJAX_IN_PROGRESS",
-        data: true
+    // if (isRoot && state.progress < 4 && state.progress > 1) {
+    if (state.progress >= 2 && state.markers.length > 0) {
+      let Map_Unit_Name, Drainage_Class, Flooding_Frequency, Ponding_Frequency;
+
+      let markersCopy = markers;
+      console.log("Inital: ", markers);
+
+      let longLatString = "";
+
+      markersCopy.map((val, i) => {
+        // get long lat formatted as requested by SSURGO (long lat, long lat, ...)
+        // saved as longLatString
+
+        if (i === markersCopy.length - 1) {
+          longLatString +=
+            markersCopy[i][1] + " " + markersCopy[i][0] + "," + lon + " " + lat;
+        } else {
+          longLatString += markersCopy[i][1] + " " + markersCopy[i][0] + ",";
+        }
       });
-      let { markers } = state;
-      let lat = markers[0][0];
-      let lon = markers[0][1];
+      // console.log(longLatString);
+
+      // let soilDataQuery = `SELECT mu.mukey AS MUKEY, mu.muname AS Map_Unit_Name, muag.drclassdcd AS Drainage_Class, muag.flodfreqdcd AS Flooding_Frequency, muag.pondfreqprs AS Ponding_Frequency, mp.mupolygonkey as MPKEY FROM mapunit AS mu INNER JOIN muaggatt AS muag ON muag.mukey = mu.mukey INNER JOIN mupolygon AS mp ON mp.mukey = mu.mukey WHERE mu.mukey IN (SELECT * from SDA_Get_Mukey_from_intersection_with_WktWgs84('polygon ((${longLatString}))')) AND mp.mupolygonkey IN  (SELECT * from SDA_Get_Mupolygonkey_from_intersection_with_WktWgs84('polygon ((${longLatString}))'))`;
+      let soilDataQuery = `SELECT mu.mukey AS MUKEY, mu.muname AS Map_Unit_Name, muag.drclassdcd AS Drainage_Class, muag.flodfreqdcd AS Flooding_Frequency, mp.mupolygonkey as MPKEY
+     FROM mapunit AS mu 
+     INNER JOIN muaggatt AS muag ON muag.mukey = mu.mukey
+     INNER JOIN mupolygon AS mp ON mp.mukey = mu.mukey
+     WHERE mu.mukey IN (SELECT * from SDA_Get_Mukey_from_intersection_with_WktWgs84('polygon ((${longLatString}))'))
+     AND
+     mp.mupolygonkey IN  (SELECT * from SDA_Get_Mupolygonkey_from_intersection_with_WktWgs84('polygon ((${longLatString}))'))`;
+      // console.log(soilDataQuery);
+      var myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+      var urlencoded = new URLSearchParams();
+      urlencoded.append("query", soilDataQuery);
+      urlencoded.append("format", "json+columnname");
+
+      var requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: urlencoded,
+        redirect: "follow"
+      };
+      if (markers.length > 1) {
+        dispatch({
+          type: "TOGGLE_SOIL_LOADER",
+          data: {
+            isSoilDataLoading: true
+          }
+        });
+
+        fetch(
+          "https://sdmdataaccess.sc.egov.usda.gov/Tabular/post.rest",
+          requestOptions
+        )
+          .then(response => response.json())
+          .then(result => {
+            // success
+            console.log("SSURGO: ", result);
+
+            if (result !== {}) {
+              // TODO: Sentiment check
+              // console.log(
+              //   "Sentiment for drainage_class",
+              //   sentimentAnalysis(Drainage_Class)
+              // );
+              Map_Unit_Name = result["Table"][1][1];
+              Drainage_Class = result["Table"][1][2];
+              Flooding_Frequency = result["Table"][1][3];
+              Ponding_Frequency = result["Table"][1][4];
+              let mapUnitString = "";
+              // result["Table"].forEach(element => {
+              //   console.log("From foreach: ", element);
+
+              // });
+
+              let stringSplit = [];
+
+              result["Table"].map((el, index) => {
+                if (index !== 0) {
+                  // if (index < result["Table"].length) {
+                  // mapUnitString += el[1].split(",") + ",";
+                  // } else {
+                  if (stringSplit.indexOf(el[1].split(",")[0]) === -1) {
+                    stringSplit.push(el[1].split(",")[0]);
+                  }
+                }
+                // }
+              });
+
+              // console.log(stringSplit);
+              const filteredArr = stringSplit.filter(elm => elm);
+              mapUnitString = filteredArr.join(", ");
+
+              let drainageClasses = [];
+              result["Table"].map((el, index) => {
+                if (index !== 0) {
+                  if (drainageClasses.indexOf(el[2]) === -1) {
+                    drainageClasses.push(el[2]);
+                  }
+                }
+              });
+              drainageClasses = drainageClasses.filter(function(el) {
+                return el != null;
+              });
+              console.log(drainageClasses);
+
+              dispatch({
+                type: "UPDATE_SOIL_DATA",
+                data: {
+                  Map_Unit_Name: mapUnitString,
+                  Drainage_Class: drainageClasses,
+                  Flooding_Frequency: Flooding_Frequency,
+                  Ponding_Frequency: Ponding_Frequency
+                }
+              });
+            }
+
+            dispatch({
+              type: "TOGGLE_SOIL_LOADER",
+              data: {
+                isSoilDataLoading: false
+              }
+            });
+          })
+          .catch(error => console.log("SSURGO ERROR", error));
+      }
+
       let revAPIURL = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`;
 
       // console.log(revAPIURL);
+      // if(!state.ajaxInProgress)
+      // {
 
+      // }
       Axios.get(revAPIURL)
         .then(async resp => {
           let city = resp.data.locality.toLowerCase();
@@ -72,6 +212,7 @@ const Header = () => {
               return { frostFreeDays: frostFreeDays, city: city, state: state };
             })
             .then(obj => {
+              // console.log(obj.frostFreeDays);
               dispatch({
                 type: "UPDATE_FROST_FREE_DAYS",
                 data: { frostFreeDays: obj.frostFreeDays }
@@ -89,9 +230,13 @@ const Header = () => {
               // What was the 5-year average annual rainfall for city st?
               let fiveYearAvgRainURL = `http://128.192.142.200:3000/hourly?location=${obj.city}%20${obj.state}&start=2015-01-01&end=2019-12-31&stats=sum(precipitation)/5&output=json`;
               if (!state.ajaxInProgress) {
+                dispatch({
+                  type: "SET_AJAX_IN_PROGRESS",
+                  data: true
+                });
                 await Axios.get(averageRainForAMonthURL)
                   .then(resp => {
-                    console.log(resp);
+                    // console.log(resp);
                     let averagePrecipitationForCurrentMonth =
                       resp.data[0]["sum(precipitation)/5"];
                     averagePrecipitationForCurrentMonth = parseFloat(
@@ -115,32 +260,46 @@ const Header = () => {
                     });
                   });
 
-                await Axios.get(fiveYearAvgRainURL)
-                  .then(resp => {
-                    let fiveYearAvgRainAnnual =
-                      resp.data[0]["sum(precipitation)/5"];
-                    fiveYearAvgRainAnnual = parseFloat(
-                      fiveYearAvgRainAnnual
-                    ).toFixed(2);
-                    fiveYearAvgRainAnnual = parseFloat(
-                      fiveYearAvgRainAnnual * 0.03937
-                    ).toFixed(2);
-                    dispatch({
-                      type: "UPDATE_AVERAGE_PRECIP_ANNUAL",
-                      data: { annual: fiveYearAvgRainAnnual }
-                    });
-                  })
-                  .catch(error => {
-                    dispatch({
-                      type: "SNACK",
-                      data: {
-                        snackOpen: true,
-                        snackMessage: `Weather API error code: ${
-                          error.response.status
-                        } for getting 5 year average rainfall for ${obj.city.toUpperCase()}, ${obj.state.toUpperCase()}`
-                      }
-                    });
+                if (!state.ajaxInProgress) {
+                  dispatch({
+                    type: "SET_AJAX_IN_PROGRESS",
+                    data: true
                   });
+                  await Axios.get(fiveYearAvgRainURL)
+                    .then(resp => {
+                      let fiveYearAvgRainAnnual =
+                        resp.data[0]["sum(precipitation)/5"];
+                      fiveYearAvgRainAnnual = parseFloat(
+                        fiveYearAvgRainAnnual
+                      ).toFixed(2);
+                      fiveYearAvgRainAnnual = parseFloat(
+                        fiveYearAvgRainAnnual * 0.03937
+                      ).toFixed(2);
+                      dispatch({
+                        type: "UPDATE_AVERAGE_PRECIP_ANNUAL",
+                        data: { annual: fiveYearAvgRainAnnual }
+                      });
+                      dispatch({
+                        type: "SET_AJAX_IN_PROGRESS",
+                        data: false
+                      });
+                    })
+                    .catch(error => {
+                      dispatch({
+                        type: "SNACK",
+                        data: {
+                          snackOpen: true,
+                          snackMessage: `Weather API error code: ${
+                            error.response.status
+                          } for getting 5 year average rainfall for ${obj.city.toUpperCase()}, ${obj.state.toUpperCase()}`
+                        }
+                      });
+                      dispatch({
+                        type: "SET_AJAX_IN_PROGRESS",
+                        data: false
+                      });
+                    });
+                }
               }
             });
         })
@@ -167,7 +326,94 @@ const Header = () => {
     }
 
     // document.getElementsByClassName('.nav-toggle')[0].addEventListener
-  }, [state.progress, state.markers, isRoot]);
+
+    if (state.progress > 4) {
+      if (
+        (state.cropData.length === 0 || state.progress === 5) &&
+        !state.ajaxInProgress
+      ) {
+        const headers = new Headers();
+        let airtableUrl = "";
+        let zone = parseInt(state.zone);
+
+        if (zone === 7) airtableUrl = airtableAPIURL.Z7;
+        else if (zone === 6) airtableUrl = airtableAPIURL.Z6;
+        else if (zone === 5) airtableUrl = airtableAPIURL.Z5;
+        else airtableUrl = airtableAPIURL.Z7;
+        console.log(`Zone ${zone} data loaded`);
+        // example of airtable 'and+or' logic
+        // IF(AND({Attending?} = 1, OR({Dietary Restrictions} = "Vegan", {Dietary Restrictions} = "Vegetarian")), "true")
+        // sort[0][field]=Cover+Crop+Name&sort[0][direction]=asc
+        // Cover%20Crop%20Goals?sort%5B0%5D%5Bfield%5D=Lasting+Residue&sort%5B0%5D%5Bdirection%5D=asc&sort%5B1%5D%5Bfield%5D=Shade+Tolerance&sort%5B1%5D%5Bdirection%5D=asc
+        if (state.selectedGoals.length !== 0) {
+          if (state.selectedGoals.length !== 1) {
+            if (state.selectedGoals.length == 2) {
+              airtableUrl = `${airtableUrl}/Cover%20Crops%20Data?sort%5B0%5D%5Bfield%5D=${state.selectedGoals[0]
+                .split(" ")
+                .join(
+                  "+"
+                )}&sort%5B0%5D%5Bdirection%5D=desc&sort%5B1%5D%5Bfield%5D=${state.selectedGoals[1]
+                .split(" ")
+                .join(
+                  "+"
+                )}&sort%5B1%5D%5Bdirection%5D=desc&filterByFormula=NOT(%7BZone+Decision%7D+%3D+'Exclude')`;
+            } else {
+              airtableUrl = `${airtableUrl}/Cover%20Crops%20Data?sort%5B0%5D%5Bfield%5D=${state.selectedGoals[0]
+                .split(" ")
+                .join(
+                  "+"
+                )}&sort%5B0%5D%5Bdirection%5D=desc&sort%5B1%5D%5Bfield%5D=${state.selectedGoals[1]
+                .split(" ")
+                .join(
+                  "+"
+                )}&sort%5B1%5D%5Bdirection%5D=desc&sort%5B2%5D%5Bfield%5D=${state.selectedGoals[2]
+                .split(" ")
+                .join(
+                  "+"
+                )}&sort%5B2%5D%5Bdirection%5D=desc&filterByFormula=NOT(%7BZone+Decision%7D+%3D+'Exclude')`;
+            }
+          } else {
+            airtableUrl = `${airtableUrl}/Cover%20Crops%20Data?sort%5B0%5D%5Bfield%5D=${state.selectedGoals[0]
+              .split(" ")
+              .join(
+                "+"
+              )}&sort%5B0%5D%5Bdirection%5D=desc&filterByFormula=NOT(%7BZone+Decision%7D+%3D+'Exclude')`;
+          }
+        } else {
+          airtableUrl = `${airtableUrl}/Cover%20Crops%20Data?filterByFormula=NOT(%7BZone+Decision%7D+%3D+'Exclude')`;
+        }
+        console.log(airtableUrl);
+        headers.append("Authorization", "Bearer ***REMOVED***");
+        headers.append("Content-Type", "application/json");
+
+        if (!state.ajaxInProgress) {
+          dispatch({
+            type: "SET_AJAX_IN_PROGRESS",
+            data: true
+          });
+
+          fetch(airtableUrl, {
+            headers: headers
+          })
+            .then(response => {
+              return response.json();
+            })
+            .then(data => {
+              dispatch({
+                type: "PULL_CROP_DATA",
+                data: data.records
+              });
+              dispatch({
+                type: "SET_AJAX_IN_PROGRESS",
+                data: false
+              });
+              // checkCropsAddedToCart();
+            });
+        }
+      }
+    }
+  }, [state.markers, state.progress, state.zone, state.weatherDataReset]);
+
   const toggleClass = (el, className) => el.classList.toggle(className);
 
   const burgurClick = () => {
@@ -312,7 +558,6 @@ const Header = () => {
             state.selectedCrops.length > 0 ? state.selectedCrops.length : 0
           }
           color={"secondary"}
-          fullWidth
         >
           <Button
             size="large"
