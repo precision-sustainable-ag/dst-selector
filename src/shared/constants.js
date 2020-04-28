@@ -4,14 +4,37 @@ import {
   Button,
   Switch,
   Grid,
-  Typography
+  Typography,
+  Tooltip
 } from "@material-ui/core";
 import moment from "moment";
+import { Info } from "@material-ui/icons";
 
 export const airtableAPIURL = {
   Z5: "https://api.airtable.com/v0/appASoBfIRYbb8V7o",
   Z7: "https://api.airtable.com/v0/app2q3UaKHXutMQyt",
   Z6: "https://api.airtable.com/v0/appC47111lCOTaMYe"
+};
+
+export const ReferenceTooltip = props => {
+  let sourceURL = props.url;
+  let sourceName = props.source;
+  return (
+    <Tooltip
+      title={
+        <div>
+          Source{": "}
+          <a href={sourceURL} target="_blank" rel="noreferrer">
+            {sourceName}
+          </a>
+        </div>
+      }
+      interactive
+      arrow
+    >
+      <Info fontSize="small" />
+    </Tooltip>
+  );
 };
 
 export const locationIcon = (w, h) => {
