@@ -198,10 +198,50 @@ const Header = () => {
           // Get: Frost Free Days
           // Dynamic Dates not set!
           let frostFreeDaysURL = `http://128.192.142.200:3000/hourly?location=${city}%20${state}&start=2015-01-01&end=2019-12-31&stats=count(date)/24/5&where=air_temperature%3e0&output=json`;
+          let frostFreeDatesURL = `http://128.192.142.200:3000/hourly?lat=${lat}&lon=${lon}&start=2014-07-01&end=2019-07-01&stats=min(date),max(date)&where=frost&group=growingyear&options=nomrms&output=json`;
+          // let frostFreeDaysURL = `http://128.192.142.200:3000/hourly?lat=${lat}&lon=${lon}&start=2014-07-01&end=2019-07-01&stats=min(date),max(date)&where=frost&group=growingyear&options=nomrms`;
           let frostFreeDays = 0;
 
           await Axios.get(frostFreeDaysURL)
             .then(resp => {
+              // console.log(resp);
+              Axios.get(frostFreeDatesURL).then(resp => {
+                // console.log(resp.data);
+                let totalYears = resp.data.length;
+                // get last years value
+                // TODO: Take all years data into account
+                let mostRecentYearData = resp.data[totalYears - 1];
+                console.log(mostRecentYearData);
+                let maxDate = mostRecentYearData["max(date)"];
+                let minDate = mostRecentYearData["min(date)"];
+                // console.log(maxDate);
+                // console.log();
+                // console.log();
+                let averageFrostObject = {
+                  firstFrostDate: {
+                    month: moment(minDate).format("MMMM"),
+                    day: parseInt(moment(minDate).format("D"))
+                  },
+                  lastFrostDate: {
+                    month: moment(maxDate).format("MMMM"),
+                    day: parseInt(moment(maxDate).format("D"))
+                  }
+                };
+                // firstFrostDate: {
+                //   month: "October",
+                //   day: 21
+                // },
+                // lastFrostDate: {
+                //   month: "April",
+                //   day: 20
+                // }
+                dispatch({
+                  type: "UPDATE_AVERAGE_FROST_DATES",
+                  data: {
+                    averageFrost: averageFrostObject
+                  }
+                });
+              });
               let frostFreeDaysObject = resp.data[0];
               for (var key in frostFreeDaysObject) {
                 if (frostFreeDaysObject.hasOwnProperty(key)) {
