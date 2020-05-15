@@ -5,7 +5,7 @@ import {
   Switch,
   Grid,
   Typography,
-  Tooltip
+  Tooltip,
 } from "@material-ui/core";
 import moment from "moment";
 import { Info } from "@material-ui/icons";
@@ -13,10 +13,10 @@ import { Info } from "@material-ui/icons";
 export const airtableAPIURL = {
   Z5: "https://api.airtable.com/v0/appASoBfIRYbb8V7o",
   Z7: "https://api.airtable.com/v0/app2q3UaKHXutMQyt",
-  Z6: "https://api.airtable.com/v0/appC47111lCOTaMYe"
+  Z6: "https://api.airtable.com/v0/appC47111lCOTaMYe",
 };
 
-export const ReferenceTooltip = props => {
+export const ReferenceTooltip = (props) => {
   let sourceURL = props.url;
   let sourceName = props.source;
   return (
@@ -89,22 +89,22 @@ export const cloudIcon = (w, h) => {
 
 export const GreenSwitch = withStyles({
   thumb: {
-    backgroundColor: "rgb(138, 188, 98, 1)"
+    backgroundColor: "rgb(138, 188, 98, 1)",
   },
   track: {
-    backgroundColor: "rgb(138, 188, 98, 0.5)"
+    backgroundColor: "rgb(138, 188, 98, 0.5)",
   },
   input: {
     "&:checked": {
-      color: "rgb(240, 247, 235)"
-    }
+      color: "rgb(240, 247, 235)",
+    },
   },
   "&:checked": {
-    color: "rgb(240, 247, 235)"
-  }
+    color: "rgb(240, 247, 235)",
+  },
 })(Switch);
 
-export const GetMonthString = month => {
+export const GetMonthString = (month) => {
   let months = [
     "Jan",
     "Feb",
@@ -117,7 +117,7 @@ export const GetMonthString = month => {
     "Sept",
     "Oct",
     "Nov",
-    "Dec"
+    "Dec",
   ];
 
   return months[month].toUpperCase();
@@ -201,7 +201,7 @@ export const abbrRegion = (input, to) => {
     ["Washington", "WA"],
     ["West Virginia", "WV"],
     ["Wisconsin", "WI"],
-    ["Wyoming", "WY"]
+    ["Wyoming", "WY"],
   ];
 
   // So happy that Canada and the US have distinct abbreviations
@@ -218,14 +218,14 @@ export const abbrRegion = (input, to) => {
     ["Prince Edward Island", "PE"],
     ["Quebec", "QC"],
     ["Saskatchewan", "SK"],
-    ["Yukon", "YT"]
+    ["Yukon", "YT"],
   ];
 
   var regions = states.concat(provinces);
 
   var i; // Reusable loop variable
   if (to === "abbr") {
-    input = input.replace(/\w\S*/g, function(txt) {
+    input = input.replace(/\w\S*/g, function (txt) {
       return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
     });
     for (i = 0; i < regions.length; i++) {
@@ -259,7 +259,7 @@ export const CustomStyles = () => {
     _5pxRoundedRadius: "5px",
     mildlyRoundedRadius: "5px",
     nonRoundedRadius: "0px",
-    defaultButtonPadding: "10px 20px 10px 20px"
+    defaultButtonPadding: "10px 20px 10px 20px",
   };
 };
 
@@ -273,12 +273,12 @@ export const LightButton = withStyles({
     "&:hover": {
       borderColor: CustomStyles().primaryProgressBtnBorderColor,
       backgroundColor: CustomStyles().primaryProgressBtnColor,
-      color: "#fff"
-    }
-  }
+      color: "#fff",
+    },
+  },
 })(Button);
 
-export const getRating = ratng => {
+export const getRating = (ratng) => {
   let rating = parseInt(ratng);
   if (rating === 0) {
     return (
@@ -319,9 +319,7 @@ export const getRating = ratng => {
   }
 };
 
-export const allMonths = moment()
-  .localeData()
-  .monthsShort();
+export const allMonths = moment().localeData().monthsShort();
 export const cropDataURL =
   "https://api.airtable.com/v0/appC47111lCOTaMYe/Cover%20Crops%20Data?maxRecords=300&timeZone=America_NewYork&filterByFormula=NOT(SWITCH({Cover Crop Name},'__Open Discussion Row','Ok hopefully he answers me soon.'))";
 
@@ -334,5 +332,15 @@ export const allGoalsURL =
 export const greenBarExpansionPanelHeight = {
   large: "600px",
   medium: "600px",
-  small: "600px"
+  small: "600px",
+};
+
+export const trimString = (stringFull, size) => {
+  if (!isNaN(size)) {
+    let postStr = "...";
+
+    return (
+      stringFull.substring(0, size) + `${stringFull.length > 25 ? "..." : ""}`
+    );
+  } else return stringFull;
 };
