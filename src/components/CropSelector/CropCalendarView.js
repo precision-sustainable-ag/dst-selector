@@ -8,38 +8,39 @@ import {
   Modal,
   Backdrop,
   Fade,
-  CircularProgress
+  CircularProgress,
 } from "@material-ui/core";
 import {
   LightButton,
   allMonths,
   cropDataURL,
   allGoalsURL,
-  getRating
+  getRating,
 } from "../../shared/constants";
 import "../../styles/cropCalendarViewComponent.scss";
 import GrowthWindowComponent from "./GrowthWindow";
 import { AddCircle, FiberManualRecord, CloseRounded } from "@material-ui/icons";
+import CropLegendModal from "./CropLegendModal";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   modal: {
     display: "flex",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   paper: {
     backgroundColor: theme.palette.background.paper,
     border: "2px solid #000",
     boxShadow: theme.shadows[5],
     padding: "1em",
-    width: "30%"
+    width: "30%",
     // padding: theme.spacing(2, 4, 3)
   },
   textField: {
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
-    width: 200
-  }
+    width: 200,
+  },
 }));
 
 const CropCalendarViewComponent = () => {
@@ -88,7 +89,7 @@ const CropCalendarViewComponent = () => {
     if (state.selectedCrops.length > 0) {
       // DONE: Remove crop from basket
       var removeIndex = state.selectedCrops
-        .map(function(item) {
+        .map(function (item) {
           return item.btnId;
         })
         .indexOf(`${btnId}`);
@@ -99,8 +100,8 @@ const CropCalendarViewComponent = () => {
           data: {
             selectedCrops: [...state.selectedCrops, selectedCrops],
             snackOpen: true,
-            snackMessage: `${cropName} Added`
-          }
+            snackMessage: `${cropName} Added`,
+          },
         });
       } else {
         // alert(removeIndex);
@@ -113,8 +114,8 @@ const CropCalendarViewComponent = () => {
           data: {
             selectedCrops: selectedCropsCopy,
             snackOpen: true,
-            snackMessage: `${cropName} Removed`
-          }
+            snackMessage: `${cropName} Removed`,
+          },
         });
 
         // this.state.selectedCrops.splice(removeIndex, 1);
@@ -127,8 +128,8 @@ const CropCalendarViewComponent = () => {
         data: {
           selectedCrops: [cropArray],
           snackOpen: true,
-          snackMessage: `${cropName} Added`
-        }
+          snackMessage: `${cropName} Added`,
+        },
       });
     }
   };
@@ -185,20 +186,20 @@ const CropCalendarViewComponent = () => {
     // get crop data if unavailable
     dispatch({
       type: "SET_AJAX_IN_PROGRESS",
-      data: true
+      data: true,
     });
-    let _promise = new Promise(async function(resolve, reject) {
+    let _promise = new Promise(async function (resolve, reject) {
       if (state.cropData.length === 0) {
         // get crop data
         let records = await fetch(cropDataURL, { headers: headers });
         let json = records.json();
 
         json
-          .then(val => {
+          .then((val) => {
             // console.log(val);
             dispatch({
               type: "PULL_CROP_DATA",
-              data: val.records
+              data: val.records,
             });
           })
           .then(async () => {
@@ -208,10 +209,10 @@ const CropCalendarViewComponent = () => {
               // console.log(records.json());
               let json = records.json();
               json
-                .then(val => {
+                .then((val) => {
                   dispatch({
                     type: "ADD_GOALS",
-                    data: val.records
+                    data: val.records,
                   });
                 })
                 .then(() => {
@@ -223,7 +224,7 @@ const CropCalendarViewComponent = () => {
     }).then(() => {
       dispatch({
         type: "SET_AJAX_IN_PROGRESS",
-        data: false
+        data: false,
       });
     });
     // let isResolved = false;
@@ -258,7 +259,7 @@ const CropCalendarViewComponent = () => {
                         borderRight: "0px",
                         borderBottom: "5px solid white",
                         borderTopLeftRadius: "10px",
-                        borderTopRightRadius: "10px"
+                        borderTopRightRadius: "10px",
                       }}
                     >
                       <Typography
@@ -266,7 +267,7 @@ const CropCalendarViewComponent = () => {
                         style={{
                           width: "50%",
                           display: "inline-block",
-                          textAlign: "right"
+                          textAlign: "right",
                         }}
                       >
                         {currentYear} COVER CROP GROWTH WINDOW
@@ -335,7 +336,7 @@ const CropCalendarViewComponent = () => {
                                 className="calendarTableCell"
                                 style={{
                                   paddingTop: "0px",
-                                  paddingBottom: "0px"
+                                  paddingBottom: "0px",
                                   // fontSize: '10px'
                                 }}
                               >
@@ -355,7 +356,7 @@ const CropCalendarViewComponent = () => {
                                 <td
                                   style={{
                                     paddingTop: "0px",
-                                    paddingBottom: "0px"
+                                    paddingBottom: "0px",
                                     // fontSize: '10px'
                                   }}
                                 >
@@ -380,7 +381,7 @@ const CropCalendarViewComponent = () => {
                               <td
                                 style={{
                                   paddingTop: "0px",
-                                  paddingBottom: "0px"
+                                  paddingBottom: "0px",
                                 }}
                               >
                                 {" "}
@@ -388,7 +389,7 @@ const CropCalendarViewComponent = () => {
                                   id={`cartBtn${index}`}
                                   style={{
                                     borderRadius: "0px",
-                                    width: "130px"
+                                    width: "130px",
                                   }}
                                   onClick={() => {
                                     addCropToBasket(
@@ -412,61 +413,11 @@ const CropCalendarViewComponent = () => {
           </div>
         )}
       </div>
-      <Modal
-        open={legendModal}
-        onClose={handleLegendModal}
-        BackdropComponent={Backdrop}
+      <CropLegendModal
+        legendModal={legendModal}
+        handleLegendModal={handleLegendModal}
         disableBackdropClick={false}
-        className={classes.modal}
-        BackdropProps={{
-          timeout: 500
-        }}
-      >
-        <Fade in={legendModal}>
-          <div className={`modalLegendPaper ${classes.paper}`}>
-            <div className="container-fluid">
-              <div className="row">
-                <div className="col-6">
-                  <Typography variant="h4">LEGEND</Typography>
-                </div>
-                <div className="col-6 text-right">
-                  <Button onClick={handleLegendModal}>
-                    <CloseRounded />
-                  </Button>
-                </div>
-              </div>
-              <div className="row mt-5">
-                <div className="col-12 legendModalRow">
-                  <Typography variant="body1">
-                    <FiberManualRecord className="reliable" />
-                    <span className="pl-3">{"Reliable Establishment"}</span>
-                  </Typography>
-                </div>
-                <div className="col-12 legendModalRow">
-                  <Typography variant="body1">
-                    <FiberManualRecord className="temperatureRisk" />
-                    <span className="pl-3">
-                      {"Temperature Risk To Establishment"}
-                    </span>
-                  </Typography>
-                </div>
-                <div className="col-12 legendModalRow">
-                  <Typography variant="body1">
-                    <FiberManualRecord className="frostPossible" />
-                    <span className="pl-3">{"Frost Seeding Possible"}</span>
-                  </Typography>
-                </div>
-                <div className="col-12 legendModalRow">
-                  <Typography variant="body1">
-                    <FiberManualRecord className="cashCrop" />
-                    <span className="pl-3">{"Cash Crop Growth Window"}</span>
-                  </Typography>
-                </div>
-              </div>
-            </div>
-          </div>
-        </Fade>
-      </Modal>
+      />
     </Fragment>
   );
 };
