@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
-import { LightButton } from "../../shared/constants";
+import { LightButton, ReferenceTooltip } from "../../shared/constants";
 // import Slider from "@material-ui/core/Slider";
 import { Cloud, Info } from "@material-ui/icons";
 import {
@@ -16,7 +16,7 @@ import {
   InputLabel,
   Select,
   CircularProgress,
-  Tooltip
+  Tooltip,
 } from "@material-ui/core";
 
 import { Context } from "../../store/Store";
@@ -49,26 +49,26 @@ const isEquivalent = (a, b) => {
   return true;
 };
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   modal: {
     display: "flex",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   paper: {
     backgroundColor: theme.palette.background.paper,
     border: "2px solid #000",
     boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3)
+    padding: theme.spacing(2, 4, 3),
   },
   textField: {
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
-    width: 200
-  }
+    width: 200,
+  },
 }));
 
-const WeatherConditions = props => {
+const WeatherConditions = (props) => {
   const [state, dispatch] = useContext(Context);
   const classes = useStyles();
   const [months, setMonths] = useState([]);
@@ -76,6 +76,16 @@ const WeatherConditions = props => {
   const [didChange, setDidChange] = useState(false);
 
   const [caller, setCaller] = React.useState("");
+
+  const [weatherDataShadow, setWeatherDataShadow] = React.useState(
+    state.weatherData
+  );
+
+  useEffect(() => {
+    if (!state.ajaxInProgress) {
+      setWeatherDataShadow(state.weatherData);
+    }
+  }, [state.ajaxInProgress]);
 
   const [firstFrostMonth, setFirstFrostMonth] = useState(
     state.weatherData.averageFrost.firstFrostDate.month
@@ -92,12 +102,13 @@ const WeatherConditions = props => {
 
   const [averagePrecipitation, setAveragePrecipitation] = useState({
     thisMonth: state.weatherData.averagePrecipitation.thisMonth,
-    annual: state.weatherData.averagePrecipitation.annual
+    annual: state.weatherData.averagePrecipitation.annual,
   });
 
   const [frostFreeDays, setFrostFreeDays] = useState(
     state.weatherData.frostFreeDays
   );
+  const [open, setOpen] = useState(false);
 
   const validateAndBroadcastModalData = () => {
     // validate existing data
@@ -110,26 +121,29 @@ const WeatherConditions = props => {
       averageFrost: {
         firstFrostDate: {
           month: firstFrostMonth,
-          day: firstFrostDay
+          day: firstFrostDay,
         },
         lastFrostDate: {
           month: lastFrostMonth,
-          day: lastFrostDay
-        }
+          day: lastFrostDay,
+        },
       },
       averagePrecipitation: {
         thisMonth: averagePrecipitation.thisMonth, //inches
-        annual: averagePrecipitation.annual //inches
+        annual: averagePrecipitation.annual, //inches
       },
-      frostFreeDays: frostFreeDays
+      frostFreeDays: frostFreeDays,
     };
-    if (!isEquivalent(broadcastObject, state.weatherData)) {
-      // boardcast and close modal
-    }
+    // if (!isEquivalent(broadcastObject, weatherDataShadow)) {
+    //   // boardcast and close modal
+    //   console.log("not same");
+    // } else {
+    //   console("same");
+    // }
     setDidChange(true);
     dispatch({
       type: "UPDATE_WEATHER_CONDITIONS",
-      data: { weatherData: broadcastObject }
+      data: { weatherData: broadcastObject },
     });
     setOpen(false);
 
@@ -141,7 +155,7 @@ const WeatherConditions = props => {
   const setDefaultWeatherValues = () => {
     dispatch({
       type: "WEATHER_DATA_RESET",
-      data: { weatherDataReset: !state.weatherDataReset }
+      data: { weatherDataReset: !state.weatherDataReset },
     });
     setDidChange(!didChange);
   };
@@ -159,7 +173,7 @@ const WeatherConditions = props => {
 
     setAveragePrecipitation({
       thisMonth: state.weatherData.averagePrecipitation.thisMonth,
-      annual: state.weatherData.averagePrecipitation.annual
+      annual: state.weatherData.averagePrecipitation.annual,
     });
 
     setFrostFreeDays(state.weatherData.frostFreeDays);
@@ -171,8 +185,6 @@ const WeatherConditions = props => {
     }
   }, [state.weatherData, props.caller]);
 
-  const [open, setOpen] = useState(false);
-
   const handleModalOpen = () => {
     setOpen(true);
   };
@@ -181,7 +193,7 @@ const WeatherConditions = props => {
     setOpen(false);
   };
 
-  const getPickerValue = value => {
+  const getPickerValue = (value) => {
     console.log(value);
   };
 
@@ -195,32 +207,18 @@ const WeatherConditions = props => {
         <h1>Weather Conditions?</h1>
       </div>
       <div className="mt-2 row">
-        <div className="col-lg-5 pr-1">
+        <div className="col-lg-12">
           <h6 className="font-weight-bold text-uppercase">
             <Cloud />
             &nbsp; HISTORICAL WEATHER &nbsp;
-            <Tooltip
-              title={
-                <div>
-                  Source{": "}
-                  <a
-                    href="#"
-                    // target="_blank"
-                    rel="noreferrer"
-                  >
-                    SSURGO
-                  </a>
-                </div>
-              }
-              interactive
-              arrow
-            >
-              <Info fontSize="small" />
-            </Tooltip>
+            {""}
+            <ReferenceTooltip source={"SSURGO"} url={"#"} />
           </h6>
         </div>
-        <div className="col-lg-7 pl-1 text-left row">
-          <div className="col-6 pr-0">
+        <div className="col-lg-12 mb-2 row">
+          <div className="col-xl-4 col-md-12 pr-0">
+            <Cloud style={{ color: "transparent" }} />
+            &nbsp;
             <Typography
               variant="button"
               className="font-weight-bold text-uppercase text-left"
@@ -230,20 +228,19 @@ const WeatherConditions = props => {
               CLICK TO EDIT
             </Typography>
           </div>
-          <div className="col-6 pl-0 pr-0">
-            {didChange ? (
-              <p style={{ color: "red", fontSize: "0.8em" }}>
-                VALUES CHANGED&nbsp;&nbsp;
-                <span
-                  style={{ color: "black", cursor: "pointer" }}
-                  onClick={setDefaultWeatherValues}
-                >
-                  RESET
-                </span>
-              </p>
+          <div className="col-xl-8 col-lg-12 pl-0 pr-0">
+            {/* {didChange ? (
+              <Typography
+                variant="button"
+                className="font-weight-bold text-danger text-uppercase text-left"
+                onClick={setDefaultWeatherValues}
+                style={{ cursor: "pointer" }}
+              >
+                Values changed, Reset ?
+              </Typography>
             ) : (
               ""
-            )}
+            )} */}
           </div>
 
           {/* <Button onClick={renderModalWidget}>CLICK TO EDIT</Button> */}
@@ -260,26 +257,7 @@ const WeatherConditions = props => {
             Last Frost Date:{" "}
             <b>{`${state.weatherData.averageFrost.lastFrostDate.month} ${state.weatherData.averageFrost.lastFrostDate.day}`}</b>
           </div>
-          <div className="text-right font-size-small">
-            {/* <Tooltip
-              title={
-                <div>
-                  Source{": "}
-                  <a
-                    href="#"
-                    // target="_blank"
-                    rel="noreferrer"
-                  >
-                    NOAA
-                  </a>
-                </div>
-              }
-              interactive
-              arrow
-            >
-              <Info fontSize="small" />
-            </Tooltip> */}
-          </div>
+          <div className="text-right font-size-small"></div>
         </div>
         <div className="offset-lg-1 col-lg-11 text-left">
           Average Precipitation
@@ -291,50 +269,11 @@ const WeatherConditions = props => {
             Annual:{" "}
             <b>{state.weatherData.averagePrecipitation.annual} inches</b>
           </div>
-          <div className="text-right font-size-small">
-            {/* <Tooltip
-              title={
-                <div>
-                  Source{": "}
-                  <a
-                    href="#"
-                    // target="_blank"
-                    rel="noreferrer"
-                  >
-                    NOAA
-                  </a>
-                </div>
-              }
-              interactive
-              arrow
-            >
-              <Info fontSize="small" />
-            </Tooltip> */}
-          </div>
+          <div className="text-right font-size-small"></div>
         </div>
         <div className="offset-lg-1 col-lg-11 text-left">
           Frost Free Days: <b>{state.weatherData.frostFreeDays}</b>
-          <div className="text-right font-size-small">
-            {/* <Tooltip
-              title={
-                <div>
-                  Source{": "}
-                  <a
-                    href="#"
-                    // target="_blank"
-                    rel="noreferrer"
-                  >
-                    SSURGO
-                  </a>
-                </div>
-              }
-              interactive
-              arrow
-            >
-              <Info fontSize="small" />
-            </Tooltip> */}
-            {/* (source: SSURGO <Info className="font-size-small" /> ) */}
-          </div>
+          <div className="text-right font-size-small"></div>
         </div>
       </div>
 
@@ -347,7 +286,7 @@ const WeatherConditions = props => {
         closeAfterTransition
         BackdropComponent={Backdrop}
         BackdropProps={{
-          timeout: 500
+          timeout: 500,
         }}
       >
         <Fade in={open}>
@@ -371,20 +310,39 @@ const WeatherConditions = props => {
                           label="First Frost Month"
                           native
                           value={firstFrostMonth}
-                          onChange={event => {
+                          onChange={(event) => {
                             setFirstFrostMonth(event.target.value);
                           }}
                           inputProps={{
                             name: "age",
-                            id: "age-native-simple"
+                            id: "age-native-simple",
                           }}
                         >
                           {months.map((val, key) => (
-                            <option value={moment(val, "MMM").format("MMMM")}>
+                            <option
+                              value={moment(val, "MMM").format("MMMM")}
+                              key={key}
+                            >
                               {val}
                             </option>
                           ))}
                         </Select>
+                        {firstFrostMonth !==
+                        weatherDataShadow.averageFrost.firstFrostDate.month ? (
+                          <Button
+                            size="small"
+                            onClick={() =>
+                              setFirstFrostMonth(
+                                weatherDataShadow.averageFrost.firstFrostDate
+                                  .month
+                              )
+                            }
+                          >
+                            Values changed, Reset ?
+                          </Button>
+                        ) : (
+                          ""
+                        )}
                       </FormControl>
                     </div>
                     <div className="col-6">
@@ -394,11 +352,11 @@ const WeatherConditions = props => {
                           type="number"
                           max="31"
                           min="1"
-                          multiLine={true}
+                          multiline={true}
                           maxLength={2}
                           id="margin-none"
                           value={firstFrostDay}
-                          onChange={event => {
+                          onChange={(event) => {
                             if (!isNaN(event.target.value)) {
                               if (event.target.value === "") {
                                 setFirstFrostDay("");
@@ -410,6 +368,26 @@ const WeatherConditions = props => {
                           }}
                           className={classes.textField}
                         />
+                        {parseInt(firstFrostDay) !==
+                        parseInt(
+                          weatherDataShadow.averageFrost.firstFrostDate.day
+                        ) ? (
+                          <Button
+                            size="small"
+                            onClick={() =>
+                              setFirstFrostDay(
+                                parseInt(
+                                  weatherDataShadow.averageFrost.firstFrostDate
+                                    .day
+                                )
+                              )
+                            }
+                          >
+                            Values changed, Reset ?
+                          </Button>
+                        ) : (
+                          ""
+                        )}
                       </FormControl>
                     </div>
                   </div>
@@ -423,20 +401,39 @@ const WeatherConditions = props => {
                           label="Last Frost Month"
                           native
                           value={lastFrostMonth}
-                          onChange={event => {
+                          onChange={(event) => {
                             setLastFrostMonth(event.target.value);
                           }}
                           inputProps={{
                             name: "last-frost-month",
-                            id: "last-frost-month"
+                            id: "last-frost-month",
                           }}
                         >
                           {months.map((val, key) => (
-                            <option value={moment(val, "MMM").format("MMMM")}>
+                            <option
+                              value={moment(val, "MMM").format("MMMM")}
+                              key={key}
+                            >
                               {val}
                             </option>
                           ))}
                         </Select>
+                        {lastFrostMonth !==
+                        weatherDataShadow.averageFrost.lastFrostDate.month ? (
+                          <Button
+                            size="small"
+                            onClick={() =>
+                              setLastFrostMonth(
+                                weatherDataShadow.averageFrost.lastFrostDate
+                                  .month
+                              )
+                            }
+                          >
+                            Values changed, Reset ?
+                          </Button>
+                        ) : (
+                          ""
+                        )}
                       </FormControl>
                     </div>
                     <div className="col-6">
@@ -446,10 +443,10 @@ const WeatherConditions = props => {
                           type="number"
                           max="31"
                           min="1"
-                          multiLine={true}
+                          multiline={true}
                           maxLength={2}
                           value={lastFrostDay}
-                          onChange={event => {
+                          onChange={(event) => {
                             if (!isNaN(event.target.value)) {
                               if (event.target.value === "") {
                                 setLastFrostDay("");
@@ -461,6 +458,26 @@ const WeatherConditions = props => {
                           }}
                           className={classes.textField}
                         />
+                        {parseInt(lastFrostDay) !==
+                        parseInt(
+                          weatherDataShadow.averageFrost.lastFrostDate.day
+                        ) ? (
+                          <Button
+                            size="small"
+                            onClick={() =>
+                              setLastFrostDay(
+                                parseInt(
+                                  weatherDataShadow.averageFrost.lastFrostDate
+                                    .day
+                                )
+                              )
+                            }
+                          >
+                            Values changed, Reset ?
+                          </Button>
+                        ) : (
+                          ""
+                        )}
                       </FormControl>
                     </div>
                   </div>
@@ -478,11 +495,11 @@ const WeatherConditions = props => {
                           label={currentMonthFull}
                           type="number"
                           step="0.01"
-                          multiLine={true}
+                          multiline={true}
                           maxLength={4}
                           helperText="Inches"
                           value={averagePrecipitation.thisMonth}
-                          onChange={event => {
+                          onChange={(event) => {
                             if (!isNaN(event.target.value)) {
                               if (event.target.value === "") {
                                 // setFirstFrostDay("");
@@ -492,24 +509,45 @@ const WeatherConditions = props => {
                                   thisMonth: parseFloat(
                                     state.weatherData.averagePrecipitation
                                       .thisMonth
-                                  )
+                                  ),
                                 });
                               } else
                                 setAveragePrecipitation({
                                   ...averagePrecipitation,
-                                  thisMonth: parseFloat(event.target.value)
+                                  thisMonth: parseFloat(event.target.value),
                                 });
                             } else {
                               setAveragePrecipitation(...averagePrecipitation, {
                                 thisMonth: parseFloat(
                                   state.weatherData.averagePrecipitation
                                     .thisMonth
-                                )
+                                ),
                               });
                             }
                           }}
                           className={classes.textField}
                         />
+                        {parseFloat(averagePrecipitation.thisMonth) !==
+                        parseFloat(
+                          weatherDataShadow.averagePrecipitation.thisMonth
+                        ) ? (
+                          <Button
+                            size="small"
+                            onClick={() =>
+                              setAveragePrecipitation({
+                                thisMonth: parseFloat(
+                                  weatherDataShadow.averagePrecipitation
+                                    .thisMonth
+                                ),
+                                annual: parseFloat(averagePrecipitation.annual),
+                              })
+                            }
+                          >
+                            Values changed, Reset ?
+                          </Button>
+                        ) : (
+                          ""
+                        )}
                       </FormControl>
                     </div>
                     <div className="col-6">
@@ -518,11 +556,11 @@ const WeatherConditions = props => {
                           label={"Annual"}
                           type="number"
                           step="0.01"
-                          multiLine={true}
+                          multiline={true}
                           maxLength={4}
                           helperText="Inches"
                           value={averagePrecipitation.annual}
-                          onChange={event => {
+                          onChange={(event) => {
                             if (!isNaN(event.target.value)) {
                               if (event.target.value === "") {
                                 setAveragePrecipitation({
@@ -530,23 +568,45 @@ const WeatherConditions = props => {
                                   annual: parseFloat(
                                     state.weatherData.averagePrecipitation
                                       .annual
-                                  )
+                                  ),
                                 });
                               } else
                                 setAveragePrecipitation({
                                   ...averagePrecipitation,
-                                  annual: parseFloat(event.target.value)
+                                  annual: parseFloat(event.target.value),
                                 });
                             } else {
                               setAveragePrecipitation(...averagePrecipitation, {
                                 annual: parseFloat(
                                   state.weatherData.averagePrecipitation.annual
-                                )
+                                ),
                               });
                             }
                           }}
                           className={classes.textField}
                         />
+                        {parseFloat(averagePrecipitation.annual) !==
+                        parseFloat(
+                          weatherDataShadow.averagePrecipitation.annual
+                        ) ? (
+                          <Button
+                            size="small"
+                            onClick={() =>
+                              setAveragePrecipitation({
+                                thisMonth: parseFloat(
+                                  averagePrecipitation.thisMonth
+                                ),
+                                annual: parseFloat(
+                                  weatherDataShadow.averagePrecipitation.annual
+                                ),
+                              })
+                            }
+                          >
+                            Values changed, Reset ?
+                          </Button>
+                        ) : (
+                          ""
+                        )}
                       </FormControl>
                     </div>
                   </div>
@@ -562,10 +622,10 @@ const WeatherConditions = props => {
                           label={"Frost Free Days"}
                           type="number"
                           step="0.01"
-                          multiLine={true}
+                          multiline={true}
                           maxLength={4}
                           value={frostFreeDays}
-                          onChange={event => {
+                          onChange={(event) => {
                             if (!isNaN(event.target.value)) {
                               if (event.target.value === "") {
                                 setFrostFreeDays(0);
@@ -577,6 +637,21 @@ const WeatherConditions = props => {
                           }}
                           className={classes.textField}
                         />
+                        {parseInt(frostFreeDays) !==
+                        parseInt(weatherDataShadow.frostFreeDays) ? (
+                          <Button
+                            size="small"
+                            onClick={() =>
+                              setFrostFreeDays(
+                                parseInt(weatherDataShadow.frostFreeDays)
+                              )
+                            }
+                          >
+                            Values changed, Reset ?
+                          </Button>
+                        ) : (
+                          ""
+                        )}
                       </FormControl>
                     </div>
                     <div className="col-6"></div>

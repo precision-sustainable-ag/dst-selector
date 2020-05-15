@@ -1,5 +1,9 @@
 import React, { Fragment, useContext, useEffect, useState } from "react";
-import { cloudIcon } from "../../shared/constants";
+import {
+  cloudIcon,
+  referenceTooltip,
+  ReferenceTooltip,
+} from "../../shared/constants";
 import { Context } from "../../store/Store";
 import { InfoRounded, Info } from "@material-ui/icons";
 import { Tooltip } from "@material-ui/core";
@@ -21,12 +25,13 @@ const ForecastComponent = () => {
     max: 0,
     unit: "F",
     iconURL: `https://placehold.it/20x20`,
-    iconDescription: "No Data"
+    iconDescription: "No Data",
   });
   // const [loading, setLoading] = useState
 
   useEffect(() => {
     console.log("---forecastComponent---");
+
     setShowFeatures();
     // state.progress >= 1 ? setShowFeatures(true) : setShow(false);
     // fetchOldApi().then(data => {
@@ -59,7 +64,7 @@ const ForecastComponent = () => {
 
     let apiCall = callWeatherApi(apiBaseURL, latlng);
 
-    apiCall.then(data => {
+    apiCall.then((data) => {
       let iconId = data.weather[0].icon;
       let iconDescription = new String(data.weather[0].description);
 
@@ -68,22 +73,22 @@ const ForecastComponent = () => {
         max: data.main.temp_max,
         unit: "F",
         iconURL: `https://openweathermap.org/img/w/${iconId}.png`,
-        iconDescription: iconDescription
+        iconDescription: iconDescription,
       };
       setTemp(tempObj);
     });
 
     let data = reverseGEO(latlng[0], latlng[1]);
     data
-      .then(data => {
+      .then((data) => {
         if (data.success === false) {
           console.log(data);
           if (data.error.code === "006") {
-            let delayInMs = 3500;
-            setTimeout(function() {
+            let delayInMs = 4000;
+            setTimeout(function () {
               let data = reverseGEO(latlng[0], latlng[1]);
               data
-                .then(data => {
+                .then((data) => {
                   console.log(data);
                   let addressString = ``;
                   if (data.staddress) {
@@ -93,11 +98,11 @@ const ForecastComponent = () => {
                     type: "CHANGE_ADDRESS",
                     data: {
                       address: addressString,
-                      addressVerified: true
-                    }
+                      addressVerified: true,
+                    },
                   });
                 })
-                .catch(e => {
+                .catch((e) => {
                   console.log("recursive error", e);
                 });
             }, delayInMs);
@@ -111,12 +116,12 @@ const ForecastComponent = () => {
             type: "CHANGE_ADDRESS",
             data: {
               address: addressString,
-              addressVerified: true
-            }
+              addressVerified: true,
+            },
           });
         }
       })
-      .catch(e => {
+      .catch((e) => {
         console.log("Geocode.xyz Catch", e);
       });
   };
@@ -154,24 +159,10 @@ const ForecastComponent = () => {
       {Number(temp.max.toFixed(1))} | {Number(temp.min.toFixed(1))}&nbsp;
       {temp.unit}
       <span className="ml-2">
-        <Tooltip
-          title={
-            <div>
-              Source{": "}
-              <a
-                href="https://openweathermap.org/"
-                target="_blank"
-                rel="noreferrer"
-              >
-                openweathermap.org
-              </a>
-            </div>
-          }
-          interactive
-          arrow
-        >
-          <Info fontSize="small" />
-        </Tooltip>
+        <ReferenceTooltip
+          source={"openweathermap.org"}
+          url={"https://openweathermap.org/"}
+        />
       </span>
     </Fragment>
   ) : (

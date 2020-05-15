@@ -41,29 +41,46 @@ const CropSelector = () => {
 
   const [cropData, setCropData] = useState([]);
 
-  const sortEnvTolCropData = (objData) => {
+  const sortEnvTolCropData = (objDataArr) => {
+    console.log(objDataArr);
     if (cropData.length !== 0) {
       let crop_data = cropData;
 
       // console.log(objData);
-      const activeObjKeys = _.keys(_.pickBy(objData));
+      // const activeObjKeys = _.keys(_.pickBy(objData));
       // console.log('activeObjKeys', activeObjKeys)
-      console.log("activeObjKeys", activeObjKeys);
-      activeObjKeys.forEach((val, index) => {
-        //  Crop Data is inside cropData.fields
-        activeObjKeys[index] = `fields.${val}`;
-      });
+      // console.log("activeObjKeys", activeObjKeys);
+      // let objData = objDataArr;
 
-      if (activeObjKeys.length > 0) {
+      let objData = objDataArr.map((obj) => {
+        return `fields.${obj}`;
+      });
+      // console.log(objData);
+
+      // console.log(objData);
+      if (objData.length > 0) {
         // some values are truthy
         // console.log(activeObjKeys);
         // console.log(crop_data);
-        let updatedCropData = _.sortBy(crop_data, activeObjKeys);
+        let updatedCropData = _.sortBy(crop_data, objData);
         // console.log(updatedCropData[0].fields);
         setCropData(updatedCropData);
       } else {
         // reset! none are true
-        setCropData(state.cropData);
+        const activeObjKeys = [];
+        let { selectedGoals } = state;
+        selectedGoals.forEach((val, index) => {
+          //  Crop Data is inside cropData.fields
+          activeObjKeys[index] = `fields.${val}`;
+        });
+        let updatedCropData = _.orderBy(crop_data, activeObjKeys, [
+          "desc",
+          "desc",
+          "desc",
+        ]);
+
+        setCropData(updatedCropData);
+        // setCropData(state.cropData);
       }
     }
   };
