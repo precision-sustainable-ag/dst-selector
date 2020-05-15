@@ -10,13 +10,14 @@ import {
   MDBHamburgerToggler,
   MDBCollapse,
   MDBNavbarNav,
-  MDBNavItem
+  MDBNavItem,
 } from "mdbreact";
 import { Button, Badge } from "@material-ui/core";
 import { Redirect, Link, useHistory, NavLink } from "react-router-dom";
 import ForecastComponent from "./ForecastComponent";
 import Axios from "axios";
 import moment from "moment";
+import { AirtableBearerKey } from "../../shared/keys";
 
 var sentimentAnalysis = require("sentiment-analysis");
 // import { Link, Button } from "@material-ui/core";
@@ -32,12 +33,77 @@ const Header = () => {
     return (await fetch(`https://geocode.xyz/${lat},${lon}?geoit=json`)).json();
   };
 
+  const getAverageFrostDates = async (url) => {
+    await Axios.get(url).then((resp) => {
+      // console.log(resp.data);
+      try {
+        let totalYears = resp.data.length;
+        // get last years value
+        // TODO: Take all years data into account
+        let mostRecentYearData = resp.data[totalYears - 1];
+        // console.log(mostRecentYearData);
+        let maxDate = mostRecentYearData["max(date)"];
+        let minDate = mostRecentYearData["min(date)"];
+        // console.log(maxDate);
+        // console.log();
+        // console.log();
+        let averageFrostObject = {
+          firstFrostDate: {
+            month: moment(minDate).format("MMMM"),
+            day: parseInt(moment(minDate).format("D")),
+          },
+          lastFrostDate: {
+            month: moment(maxDate).format("MMMM"),
+            day: parseInt(moment(maxDate).format("D")),
+          },
+        };
+        // firstFrostDate: {
+        //   month: "October",
+        //   day: 21
+        // },
+        // lastFrostDate: {
+        //   month: "April",
+        //   day: 20
+        // }
+        dispatch({
+          type: "UPDATE_AVERAGE_FROST_DATES",
+          data: {
+            averageFrost: averageFrostObject,
+          },
+        });
+      } catch (e) {
+        console.error("Average Frost Dates API::", e);
+      }
+    });
+  };
+
   useEffect(() => {
     console.log("---Header.js---");
+    let { markers } = state;
+
+    if (state.progress === 0) {
+      // landing page
+
+      // get user ip
+
+      //NOTE: SSL Unavailabe for free version
+      // maybe https://ip-location.icu/ ?
+      Axios.get("http://ip-api.com/json").then((resp) => {
+        // console.log(resp.data);
+        let ipData = resp.data;
+        let addressObjectPromise = getAddressFromMarkers(
+          ipData.lat,
+          ipData.lon
+        );
+        addressObjectPromise.then((data) => {
+          console.log("addressObject", data);
+        });
+      });
+    }
 
     // update address on marker change
     // ref forecastComponent
-    let { markers } = state;
+
     let lat = markers[0][0];
     let lon = markers[0][1];
 
@@ -90,22 +156,22 @@ const Header = () => {
         method: "POST",
         headers: myHeaders,
         body: urlencoded,
-        redirect: "follow"
+        redirect: "follow",
       };
       if (markers.length > 1) {
         dispatch({
           type: "TOGGLE_SOIL_LOADER",
           data: {
-            isSoilDataLoading: true
-          }
+            isSoilDataLoading: true,
+          },
         });
 
         fetch(
           "https://sdmdataaccess.sc.egov.usda.gov/Tabular/post.rest",
           requestOptions
         )
-          .then(response => response.json())
-          .then(result => {
+          .then((response) => response.json())
+          .then((result) => {
             // success
             console.log("SSURGO: ", result);
 
@@ -140,7 +206,7 @@ const Header = () => {
               });
 
               // console.log(stringSplit);
-              const filteredArr = stringSplit.filter(elm => elm);
+              const filteredArr = stringSplit.filter((elm) => elm);
               mapUnitString = filteredArr.join(", ");
 
               let drainageClasses = [];
@@ -151,7 +217,7 @@ const Header = () => {
                   }
                 }
               });
-              drainageClasses = drainageClasses.filter(function(el) {
+              drainageClasses = drainageClasses.filter(function (el) {
                 return el != null;
               });
               console.log(drainageClasses);
@@ -162,19 +228,19 @@ const Header = () => {
                   Map_Unit_Name: mapUnitString,
                   Drainage_Class: drainageClasses,
                   Flooding_Frequency: Flooding_Frequency,
-                  Ponding_Frequency: Ponding_Frequency
-                }
+                  Ponding_Frequency: Ponding_Frequency,
+                },
               });
             }
 
             dispatch({
               type: "TOGGLE_SOIL_LOADER",
               data: {
-                isSoilDataLoading: false
-              }
+                isSoilDataLoading: false,
+              },
             });
           })
-          .catch(error => console.log("SSURGO ERROR", error));
+          .catch((error) => console.log("SSURGO ERROR", error));
       }
 
       let revAPIURL = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`;
@@ -185,7 +251,7 @@ const Header = () => {
 
       // }
       Axios.get(revAPIURL)
-        .then(async resp => {
+        .then(async (resp) => {
           let city = resp.data.locality.toLowerCase();
           let zip = resp.data.postcode;
           let state = abbrRegion(
@@ -203,45 +269,9 @@ const Header = () => {
           let frostFreeDays = 0;
 
           await Axios.get(frostFreeDaysURL)
-            .then(resp => {
+            .then((resp) => {
               // console.log(resp);
-              Axios.get(frostFreeDatesURL).then(resp => {
-                // console.log(resp.data);
-                let totalYears = resp.data.length;
-                // get last years value
-                // TODO: Take all years data into account
-                let mostRecentYearData = resp.data[totalYears - 1];
-                console.log(mostRecentYearData);
-                let maxDate = mostRecentYearData["max(date)"];
-                let minDate = mostRecentYearData["min(date)"];
-                // console.log(maxDate);
-                // console.log();
-                // console.log();
-                let averageFrostObject = {
-                  firstFrostDate: {
-                    month: moment(minDate).format("MMMM"),
-                    day: parseInt(moment(minDate).format("D"))
-                  },
-                  lastFrostDate: {
-                    month: moment(maxDate).format("MMMM"),
-                    day: parseInt(moment(maxDate).format("D"))
-                  }
-                };
-                // firstFrostDate: {
-                //   month: "October",
-                //   day: 21
-                // },
-                // lastFrostDate: {
-                //   month: "April",
-                //   day: 20
-                // }
-                dispatch({
-                  type: "UPDATE_AVERAGE_FROST_DATES",
-                  data: {
-                    averageFrost: averageFrostObject
-                  }
-                });
-              });
+              getAverageFrostDates(frostFreeDatesURL);
               let frostFreeDaysObject = resp.data[0];
               for (var key in frostFreeDaysObject) {
                 if (frostFreeDaysObject.hasOwnProperty(key)) {
@@ -251,16 +281,16 @@ const Header = () => {
               }
               return { frostFreeDays: frostFreeDays, city: city, state: state };
             })
-            .then(obj => {
+            .then((obj) => {
               // console.log(obj.frostFreeDays);
               dispatch({
                 type: "UPDATE_FROST_FREE_DAYS",
-                data: { frostFreeDays: obj.frostFreeDays }
+                data: { frostFreeDays: obj.frostFreeDays },
               });
 
               return obj;
             })
-            .then(async obj => {
+            .then(async (obj) => {
               let currentMonthInt = moment().month() + 1;
 
               // What was the 5-year average rainfall for city st during the month of currentMonthInt?
@@ -272,10 +302,10 @@ const Header = () => {
               if (!state.ajaxInProgress) {
                 dispatch({
                   type: "SET_AJAX_IN_PROGRESS",
-                  data: true
+                  data: true,
                 });
                 await Axios.get(averageRainForAMonthURL)
-                  .then(resp => {
+                  .then((resp) => {
                     // console.log(resp);
                     let averagePrecipitationForCurrentMonth =
                       resp.data[0]["sum(precipitation)/5"];
@@ -287,26 +317,26 @@ const Header = () => {
                     ).toFixed(2);
                     dispatch({
                       type: "UPDATE_AVERAGE_PRECIP_CURRENT_MONTH",
-                      data: { thisMonth: averagePrecipitationForCurrentMonth }
+                      data: { thisMonth: averagePrecipitationForCurrentMonth },
                     });
                   })
-                  .catch(error => {
+                  .catch((error) => {
                     dispatch({
                       type: "SNACK",
                       data: {
                         snackOpen: true,
-                        snackMessage: `Weather API error code: ${error.response.status} for getting 5 year average rainfall for this month`
-                      }
+                        snackMessage: `Weather API error code: ${error.response.status} for getting 5 year average rainfall for this month`,
+                      },
                     });
                   });
 
                 if (!state.ajaxInProgress) {
                   dispatch({
                     type: "SET_AJAX_IN_PROGRESS",
-                    data: true
+                    data: true,
                   });
                   await Axios.get(fiveYearAvgRainURL)
-                    .then(resp => {
+                    .then((resp) => {
                       let fiveYearAvgRainAnnual =
                         resp.data[0]["sum(precipitation)/5"];
                       fiveYearAvgRainAnnual = parseFloat(
@@ -317,26 +347,26 @@ const Header = () => {
                       ).toFixed(2);
                       dispatch({
                         type: "UPDATE_AVERAGE_PRECIP_ANNUAL",
-                        data: { annual: fiveYearAvgRainAnnual }
+                        data: { annual: fiveYearAvgRainAnnual },
                       });
                       dispatch({
                         type: "SET_AJAX_IN_PROGRESS",
-                        data: false
+                        data: false,
                       });
                     })
-                    .catch(error => {
+                    .catch((error) => {
                       dispatch({
                         type: "SNACK",
                         data: {
                           snackOpen: true,
                           snackMessage: `Weather API error code: ${
                             error.response.status
-                          } for getting 5 year average rainfall for ${obj.city.toUpperCase()}, ${obj.state.toUpperCase()}`
-                        }
+                          } for getting 5 year average rainfall for ${obj.city.toUpperCase()}, ${obj.state.toUpperCase()}`,
+                        },
                       });
                       dispatch({
                         type: "SET_AJAX_IN_PROGRESS",
-                        data: false
+                        data: false,
                       });
                     });
                 }
@@ -346,7 +376,7 @@ const Header = () => {
         .then(() => {
           dispatch({
             type: "SET_AJAX_IN_PROGRESS",
-            data: false
+            data: false,
           });
         });
     }
@@ -423,29 +453,29 @@ const Header = () => {
           airtableUrl = `${airtableUrl}/Cover%20Crops%20Data?filterByFormula=NOT(%7BZone+Decision%7D+%3D+'Exclude')`;
         }
         console.log(airtableUrl);
-        headers.append("Authorization", "Bearer keywdZxSD9AC4vL6e");
+        headers.append("Authorization", `Bearer ${AirtableBearerKey}`);
         headers.append("Content-Type", "application/json");
 
         if (!state.ajaxInProgress) {
           dispatch({
             type: "SET_AJAX_IN_PROGRESS",
-            data: true
+            data: true,
           });
 
           fetch(airtableUrl, {
-            headers: headers
+            headers: headers,
           })
-            .then(response => {
+            .then((response) => {
               return response.json();
             })
-            .then(data => {
+            .then((data) => {
               dispatch({
                 type: "PULL_CROP_DATA",
-                data: data.records
+                data: data.records,
               });
               dispatch({
                 type: "SET_AJAX_IN_PROGRESS",
-                data: false
+                data: false,
               });
               // checkCropsAddedToCart();
             });
@@ -470,8 +500,8 @@ const Header = () => {
           type: "ACTIVATE_MY_COVER_CROP_LIST_TILE",
           data: {
             myCoverCropActivationFlag: true,
-            speciesSelectorActivationFlag: false
-          }
+            speciesSelectorActivationFlag: false,
+          },
         });
       }
     } else {
@@ -487,8 +517,8 @@ const Header = () => {
         type: "ACTIVATE_SPECIES_SELECTOR_TILE",
         data: {
           speciesSelectorActivationFlag: true,
-          myCoverCropActivationFlag: false
-        }
+          myCoverCropActivationFlag: false,
+        },
       });
     } else {
       // console.log("pathname", window.location.pathname);

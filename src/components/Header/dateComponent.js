@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import moment from "moment";
+import "moment-timezone";
 
 const DateComponent = () => {
   const [date, setDate] = useState(null);
@@ -13,7 +14,11 @@ const DateComponent = () => {
 
 const setTodaysDate = () => {
   let now = moment();
-  return now.format("LL");
+  let tzdata = moment.tz.guess();
+
+  //  = now.tz.toString();
+  console.log(tzdata);
+  return now.tz(tzdata).format("LL");
 };
 
 export default DateComponent;

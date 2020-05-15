@@ -179,34 +179,39 @@ const CropTableComponent = (props) => {
               </TableCell>
             ))
           : ""}
-        <TableCell style={goalsLength === 0 ? { width: "50%" } : {}}>
-          <table style={{ width: "100%", height: "40px" }}>
-            <tbody>
-              <tr>
-                {allMonths.map((month, index) => (
-                  <GrowthWindowComponent
-                    from="tableOnlyCashCropWindow"
-                    data={crop.fields}
-                    key={index}
-                    id={`growthCell${index}`}
-                    month={index}
-                  />
-                ))}
-              </tr>
-              <tr>
-                {allMonths.map((month, index) => (
-                  <GrowthWindowComponent
-                    from="tableAll"
-                    data={crop.fields}
-                    key={index}
-                    id={`growthCell${index}`}
-                    month={index}
-                  />
-                ))}
-              </tr>
-            </tbody>
-          </table>
-        </TableCell>
+        {showGrowthWindow ? (
+          <TableCell style={goalsLength === 0 ? { width: "50%" } : {}}>
+            <table style={{ width: "100%", height: "40px" }}>
+              <tbody>
+                <tr>
+                  {allMonths.map((month, index) => (
+                    <GrowthWindowComponent
+                      from="tableOnlyCashCropWindow"
+                      data={crop.fields}
+                      key={index}
+                      id={`growthCell${index}`}
+                      month={index}
+                    />
+                  ))}
+                </tr>
+                <tr>
+                  {allMonths.map((month, index) => (
+                    <GrowthWindowComponent
+                      from="tableAll"
+                      data={crop.fields}
+                      key={index}
+                      id={`growthCell${index}`}
+                      month={index}
+                    />
+                  ))}
+                </tr>
+              </tbody>
+            </table>
+          </TableCell>
+        ) : (
+          ""
+        )}
+
         <TableCell style={{ maxWidth: "150px", textAlign: "center" }}>
           <LightButton
             id={`cartBtn${indexKey}`}

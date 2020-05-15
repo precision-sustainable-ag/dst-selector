@@ -5,7 +5,7 @@ import Reducer from "./Reducer";
 
 const initialState = {
   // progress: 3,
-  progress: 5,
+  progress: 0,
   // address: "",
   address: "",
   addressSearchPreference: "address",
@@ -446,12 +446,12 @@ const initialState = {
   //   "Lasting Residue",
   //   "Prevent soil erosion"
   // ],
-  selectedGoals: [
-    "Reduces Subsurface Soil Compaction",
-    "Reduces Topsoil Compaction",
-    "Lasting Residue",
-  ],
-  // selectedGoals: [],
+  // selectedGoals: [
+  //   "Reduces Subsurface Soil Compaction",
+  //   "Reduces Topsoil Compaction",
+  //   "Lasting Residue",
+  // ],
+  selectedGoals: [],
   zoom: 13,
   addressVerified: false,
   snackOpen: false,

@@ -2,25 +2,13 @@ import React, { useContext, useState, useEffect } from "react";
 import { Badge, Chip, Tooltip, Avatar } from "@material-ui/core";
 import { Context } from "../../store/Store";
 
-const GoalTag = props => {
+const GoalTag = (props) => {
   const [state, dispatch] = useContext(Context);
 
   let goalDescription = props.goalDescription;
   let goalTitle = props.goaltTitle;
   let key = props.id;
   let goal = props.goal;
-
-  //   useEffect(() => {
-  //     if (state.selectedGoals.length !== 0) {
-  //       for (let index = 0; index < state.selectedGoals.length; index++) {
-  //         document.getElementById(`chip${index}`).classList.add("active");
-  //       }
-
-  //       // state.selectedGoals.map((goalText, index) {
-  //       //     document.getElementById(`chip${key}`).classList.add("active");
-  //       // });
-  //     }
-  //   }, [state.progress]);
 
   useEffect(() => {
     if (state.selectedGoals.length > 0) {
@@ -40,7 +28,7 @@ const GoalTag = props => {
       document.getElementById(`chip${key}`).classList.add("active");
       dispatch({
         type: "ADD_SELECTED_GOALS",
-        data: item.fields["Cover Crop Goal"]
+        data: item.fields["Cover Crop Goal"],
       });
 
       //   document.getElementById(`avatar${key}`).innerHTML =
@@ -55,7 +43,7 @@ const GoalTag = props => {
 
       dispatch({
         type: "UPDATE_SELECTED_GOALS",
-        data: goals
+        data: goals,
       });
     }
   };
@@ -87,7 +75,7 @@ const GoalTag = props => {
               {state.selectedGoals.indexOf(goalTitle) + 1}
             </Avatar>
           ) : (
-            ""
+            <Avatar className="d-none"></Avatar>
           )
         }
         // style={{ textAlign: "left" }}

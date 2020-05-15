@@ -10,33 +10,33 @@ import {
   Typography,
   FormControl,
   InputLabel,
-  Select
+  Select,
 } from "@material-ui/core";
 
 import moment from "moment";
 import { Context } from "../../store/Store";
 import { LightButton } from "../../shared/constants";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   modal: {
     display: "flex",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   paper: {
     backgroundColor: theme.palette.background.paper,
     border: "2px solid #000",
     boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3)
+    padding: theme.spacing(2, 4, 3),
   },
   textField: {
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
-    width: 200
-  }
+    width: 200,
+  },
 }));
 
-const WeatherModal = props => {
+const WeatherModal = (props) => {
   const classes = useStyles();
 
   const [state, dispatch] = useContext(Context);
@@ -59,7 +59,7 @@ const WeatherModal = props => {
 
   const [averagePrecipitation, setAveragePrecipitation] = useState({
     thisMonth: state.weatherData.averagePrecipitation.thisMonth,
-    annual: state.weatherData.averagePrecipitation.annual
+    annual: state.weatherData.averagePrecipitation.annual,
   });
 
   const [frostFreeDays, setFrostFreeDays] = useState(
@@ -77,25 +77,25 @@ const WeatherModal = props => {
       averageFrost: {
         firstFrostDate: {
           month: firstFrostMonth,
-          day: firstFrostDay
+          day: firstFrostDay,
         },
         lastFrostDate: {
           month: lastFrostMonth,
-          day: lastFrostDay
-        }
+          day: lastFrostDay,
+        },
       },
       averagePrecipitation: {
         thisMonth: averagePrecipitation.thisMonth, //inches
-        annual: averagePrecipitation.annual //inches
+        annual: averagePrecipitation.annual, //inches
       },
-      frostFreeDays: frostFreeDays
+      frostFreeDays: frostFreeDays,
     };
 
     // boardcast and close modal
 
     dispatch({
       type: "UPDATE_WEATHER_CONDITIONS",
-      data: { weatherData: broadcastObject }
+      data: { weatherData: broadcastObject },
     });
 
     setOpen(!open);
@@ -129,7 +129,7 @@ const WeatherModal = props => {
       closeAfterTransition
       BackdropComponent={Backdrop}
       BackdropProps={{
-        timeout: 500
+        timeout: 500,
       }}
     >
       <Fade in={open}>
@@ -153,12 +153,12 @@ const WeatherModal = props => {
                         label="First Frost Month"
                         native
                         value={firstFrostMonth}
-                        onChange={event => {
+                        onChange={(event) => {
                           setFirstFrostMonth(event.target.value);
                         }}
                         inputProps={{
                           name: "age",
-                          id: "age-native-simple"
+                          id: "age-native-simple",
                         }}
                       >
                         {months.map((val, key) => (
@@ -180,7 +180,7 @@ const WeatherModal = props => {
                         maxLength={2}
                         id="margin-none"
                         value={firstFrostDay}
-                        onChange={event => {
+                        onChange={(event) => {
                           if (!isNaN(event.target.value)) {
                             if (event.target.value === "") {
                               setFirstFrostDay("");
@@ -205,12 +205,12 @@ const WeatherModal = props => {
                         label="Last Frost Month"
                         native
                         value={lastFrostMonth}
-                        onChange={event => {
+                        onChange={(event) => {
                           setLastFrostMonth(event.target.value);
                         }}
                         inputProps={{
                           name: "last-frost-month",
-                          id: "last-frost-month"
+                          id: "last-frost-month",
                         }}
                       >
                         {months.map((val, key) => (
@@ -237,7 +237,7 @@ const WeatherModal = props => {
                         multiLine={true}
                         maxLength={2}
                         value={lastFrostDay}
-                        onChange={event => {
+                        onChange={(event) => {
                           if (!isNaN(event.target.value)) {
                             if (event.target.value === "") {
                               setLastFrostDay("");
@@ -275,7 +275,7 @@ const WeatherModal = props => {
                         maxLength={4}
                         helperText="Inches"
                         value={averagePrecipitation.thisMonth}
-                        onChange={event => {
+                        onChange={(event) => {
                           if (!isNaN(event.target.value)) {
                             if (event.target.value === "") {
                               // setFirstFrostDay("");
@@ -285,18 +285,18 @@ const WeatherModal = props => {
                                 thisMonth: parseFloat(
                                   state.weatherData.averagePrecipitation
                                     .thisMonth
-                                )
+                                ),
                               });
                             } else
                               setAveragePrecipitation({
                                 ...averagePrecipitation,
-                                thisMonth: parseFloat(event.target.value)
+                                thisMonth: parseFloat(event.target.value),
                               });
                           } else {
                             setAveragePrecipitation(...averagePrecipitation, {
                               thisMonth: parseFloat(
                                 state.weatherData.averagePrecipitation.thisMonth
-                              )
+                              ),
                             });
                           }
                         }}
@@ -321,7 +321,7 @@ const WeatherModal = props => {
                         maxLength={4}
                         helperText="Inches"
                         value={averagePrecipitation.annual}
-                        onChange={event => {
+                        onChange={(event) => {
                           if (!isNaN(event.target.value)) {
                             if (event.target.value === "") {
                               // setFirstFrostDay("");
@@ -330,18 +330,18 @@ const WeatherModal = props => {
                                 ...averagePrecipitation,
                                 annual: parseFloat(
                                   state.weatherData.averagePrecipitation.annual
-                                )
+                                ),
                               });
                             } else
                               setAveragePrecipitation({
                                 ...averagePrecipitation,
-                                annual: parseFloat(event.target.value)
+                                annual: parseFloat(event.target.value),
                               });
                           } else {
                             setAveragePrecipitation(...averagePrecipitation, {
                               annual: parseFloat(
                                 state.weatherData.averagePrecipitation.annual
-                              )
+                              ),
                             });
                           }
                         }}
@@ -373,7 +373,7 @@ const WeatherModal = props => {
                         multiLine={true}
                         maxLength={4}
                         value={frostFreeDays}
-                        onChange={event => {
+                        onChange={(event) => {
                           if (!isNaN(event.target.value)) {
                             if (event.target.value === "") {
                               // setFirstFrostDay("");

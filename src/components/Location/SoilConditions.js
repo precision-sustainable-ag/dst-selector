@@ -1,114 +1,121 @@
-import React from "react";
+import React, { Fragment } from "react";
 import TerrainIcon from "@material-ui/icons/Terrain";
 import Slider from "@material-ui/core/Slider";
 import { Context } from "../../store/Store";
 import { Typography } from "@material-ui/core";
 import { Waves, LocalDrink } from "@material-ui/icons";
+import { ReferenceTooltip } from "../../shared/constants";
 
-const SoilConditions = props => {
+const SoilConditions = (props) => {
   const [state, dispatch] = React.useContext(Context);
   const [drainageChange, setDrainageChange] = React.useState(false);
   const [floodingChange, setFloodingChange] = React.useState(false);
   const [caller, setCaller] = React.useState("");
   const [defaultDrainageMark, setDefaultDrainageMark] = React.useState([
     50,
-    100
+    100,
   ]);
   const [defaultFloodingMark, setDefaultFloodingMark] = React.useState([
     50,
-    100
+    100,
   ]);
   const [drainageValueCopy, setDrainageValueCopy] = React.useState({
     initial: 0,
-    final: 0
+    final: 0,
   });
   const [floodingValueCopy, setfloodingValueCopy] = React.useState({
     initial: 0,
-    final: 0
+    final: 0,
   });
   const [drainageMarkText, setDrainageMarkText] = React.useState(``);
 
   const getDrainageText = () => {
+    console.log("rendering...");
     let startObj = drainageDictionary.find(
-      obj => obj.value == defaultDrainageMark[0]
+      (obj) => obj.value === defaultDrainageMark[0]
     );
     // console.log("startObj", startObj);
     let endObj = drainageDictionary.find(
-      obj => obj.value == defaultDrainageMark[1]
+      (obj) => obj.value === defaultDrainageMark[defaultDrainageMark.length - 1]
     );
-
+    // console.log("DraingageText::StartObj", startObj);
+    // console.log(
+    //   "DraingageText::defaultDrainageMark[0]",
+    //   defaultDrainageMark[0]
+    // );
+    console.log(startObj, endObj);
     setDrainageMarkText(`Between ${startObj.label} and ${endObj.label}`);
     // setDrainageMarkText("hello");
   };
 
-  const drainageDictionary = [
+  const [drainageDictionary, setDrainageDictionary] = React.useState([
     {
       value: 12.5,
-      label: "Very poorly drained"
+      label: "Well drained muck",
     },
     {
       value: 25,
-      label: "Poorly drained"
+      label: "Saturated muck",
     },
     {
       value: 37.5,
-      label: "Somewhat poorly drained"
+      label: "Excessively drained",
     },
     {
       value: 50,
-      label: "Moderately well drained"
+      label: "Well drained",
     },
     {
       value: 62.5,
-      label: "Well drained"
+      label: "Moderately well drained",
     },
     {
       value: 75,
-      label: "Excessively drained"
+      label: "Somewhat poorly drained",
     },
     {
       value: 87.5,
-      label: "Saturated muck"
+      label: "Poorly drained",
     },
     {
       value: 100,
-      label: "Well drained muck"
-    }
-  ];
+      label: "Very poorly drained",
+    },
+  ]);
 
   const [drainageMarks, setDrainageMarks] = React.useState([
     {
-      value: 12.5
+      value: 12.5,
       // label: "Very poorly drained"
     },
     {
-      value: 25
+      value: 25,
       // label: "Poorly drained"
     },
     {
-      value: 37.5
+      value: 37.5,
       // label: "Somewhat poorly drained"
     },
     {
-      value: 50
+      value: 50,
       // label: "Moderately well drained"
     },
     {
-      value: 62.5
+      value: 62.5,
       // label: "Well drained"
     },
     {
-      value: 75
+      value: 75,
       // label: "Excessively drained"
     },
     {
-      value: 87.5
+      value: 87.5,
       // label: "Saturated muck"
     },
     {
-      value: 100
+      value: 100,
       // label: "Well drained muck"
-    }
+    },
   ]);
 
   React.useEffect(() => {
@@ -118,55 +125,64 @@ const SoilConditions = props => {
       setCaller("");
     }
 
-    if (state.soilData.Drainage_Class.length > 0) {
+    if (!drainageChange) {
+      if (state.soilData.Drainage_Class.length > 0) {
+        console.log(
+          "state.soilData.Drainage_Class[0]",
+          state.soilData.Drainage_Class[0]
+        );
+        // getDrainageText();
+        setDefaultDrainageMark([
+          drainageDictionary.find(
+            (obj) => obj.label === state.soilData.Drainage_Class[0]
+          ).value,
+          drainageDictionary.find(
+            (obj) =>
+              obj.label ===
+              state.soilData.Drainage_Class[
+                state.soilData.Drainage_Class.length - 1
+              ]
+          ).value,
+        ]);
+        setDrainageValueCopy({
+          initial: drainageDictionary.find(
+            (obj) => obj.label === state.soilData.Drainage_Class[0]
+          ).value,
+          final: drainageDictionary.find(
+            (obj) =>
+              obj.label ===
+              state.soilData.Drainage_Class[
+                state.soilData.Drainage_Class.length - 1
+              ]
+          ).value,
+        });
+        // if (drainageChange) {
+        getDrainageText();
+        // }
+      }
+    } else {
       getDrainageText();
-      setDefaultDrainageMark([
-        drainageDictionary.find(
-          obj => obj.label === state.soilData.Drainage_Class[0]
-        ).value,
-        drainageDictionary.find(
-          obj => obj.label === state.soilData.Drainage_Class[1]
-        ).value
-      ]);
-      setDrainageValueCopy({
-        initial: drainageDictionary.find(
-          obj => obj.label === state.soilData.Drainage_Class[0]
-        ).value,
-        final: drainageDictionary.find(
-          obj => obj.label === state.soilData.Drainage_Class[1]
-        ).value
-      });
     }
-  }, [props, drainageChange]);
 
-  // const drainageMarks = [
-  //   {
-  //     value: 0,
-  //     label: "Poorly drained"
-  //   },
-  //   {
-  //     value: 50,
-  //     label: "Moderately well drained"
-  //   },
-  //   {
-  //     value: 100,
-  //     label: "Well drained"
-  //   }
-  // ];
+    return () => {
+      setDrainageChange(false);
+      getDrainageText();
+    };
+  }, [props, drainageChange]);
 
   const floodingMarks = [
     {
       value: 0,
-      label: "Poor"
+      label: "Good",
     },
     {
       value: 50,
-      label: "Moderate"
+      label: "Moderate",
     },
     {
       value: 100,
-      label: "Good"
-    }
+      label: "Poor",
+    },
   ];
 
   return state.markers.length > 1 ? (
@@ -176,9 +192,10 @@ const SoilConditions = props => {
       </div>
       <div className="col-lg-12 mt-2">
         <h6 className="font-weight-bold text-uppercase text-left">
-          <TerrainIcon /> &nbsp;&nbsp;SOILS COMPOSITION
+          <TerrainIcon /> &nbsp;&nbsp;SOILS COMPOSITION &nbsp;{" "}
+          <ReferenceTooltip source={"SSURGO"} url={"#"} />
         </h6>
-        {caller == "greenbar" ? (
+        {caller === "greenbar" ? (
           <p className="col-lg-12 text-left">
             {state.isSoilDataLoading
               ? "Loading.."
@@ -193,29 +210,31 @@ const SoilConditions = props => {
         )}
       </div>
       <div className="col-lg-12 mt-2 row">
-        <h6 className="font-weight-bold text-uppercase text-left col-lg-4 pr-0">
-          <LocalDrink /> &nbsp;&nbsp;DRAINAGE CLASS
+        <h6 className="font-weight-bold text-uppercase text-left col-lg-12 pr-0">
+          <LocalDrink /> &nbsp;&nbsp;DRAINAGE CLASS &nbsp;
+          <ReferenceTooltip source={"SSURGO"} url={"#"} />
         </h6>
-        <div className="col-lg-8 pl-1">
+        <div className="col-lg-12">
           {drainageChange ? (
             defaultDrainageMark[0] !== drainageValueCopy.initial ||
             defaultDrainageMark[1] !== drainageValueCopy.final ? (
-              <h6 className="font-weight-bolder text-uppercase text-left">
-                {" "}
-                <span className="text-danger">VALUES CHANGED</span>&nbsp;&nbsp;
-                <span
-                  style={{ cursor: "pointer" }}
+              <Fragment>
+                <LocalDrink style={{ color: "transparent" }} /> &nbsp;&nbsp;
+                <Typography
+                  variant="button"
+                  className="font-weight-bold text-danger text-uppercase text-left"
                   onClick={() => {
                     setDefaultDrainageMark([
                       drainageValueCopy.initial,
-                      drainageValueCopy.final
+                      drainageValueCopy.final,
                     ]);
                     setDrainageChange(false);
                   }}
+                  style={{ cursor: "pointer" }}
                 >
-                  RESET
-                </span>
-              </h6>
+                  Values changed, Reset ?
+                </Typography>
+              </Fragment>
             ) : (
               ""
             )
@@ -223,7 +242,7 @@ const SoilConditions = props => {
             ""
           )}
         </div>
-        {caller == "greenbar" ? (
+        {caller === "greenbar" ? (
           //    <Slider
           //    value={value}
           //    onChange={handleChange}
@@ -234,7 +253,7 @@ const SoilConditions = props => {
           <div className="drainageSlider col-lg-12">
             <Slider
               color="secondary"
-              valueLabelDisplay="auto"
+              valueLabelDisplay={"off"}
               onChangeCommitted={(e, mark) => {
                 // console.log(mark);
 
@@ -266,9 +285,9 @@ const SoilConditions = props => {
           <div className="drainageSlider col-lg-11 offset-lg-1">
             <Slider
               color="secondary"
-              valueLabelDisplay="auto"
+              valueLabelDisplay="off"
               onChangeCommitted={(e, mark) => {
-                console.log(mark);
+                // console.log(mark);
 
                 setDrainageChange(true);
                 setDefaultDrainageMark(mark);
@@ -278,7 +297,7 @@ const SoilConditions = props => {
               value={defaultDrainageMark}
               marks={drainageMarks}
               min={drainageMarks[0].value}
-              max={drainageMarks[7].value}
+              max={drainageMarks[drainageMarks.length - 1].value}
               step={null}
             />
             <span>{drainageMarkText}</span>
@@ -287,17 +306,18 @@ const SoilConditions = props => {
       </div>
       <div className="col-lg-12 mt-2 row">
         <h6 className="font-weight-bold text-uppercase text-left col-lg-4 pr-0">
-          <Waves /> &nbsp;&nbsp;FLOODING
+          <Waves /> &nbsp;&nbsp;FLOODING &nbsp;{" "}
+          <ReferenceTooltip source={"SSURGO"} url={"#"} />
         </h6>
-        <div className="col-lg-8 pl-1">
+        <div className="col-lg-12">
           {floodingChange ? (
             defaultFloodingMark[0] !== floodingValueCopy.initial ||
             defaultFloodingMark[1] !== floodingValueCopy.final ? (
-              <h6 className="font-weight-bolder text-uppercase text-left">
-                {" "}
-                <span className="text-danger">VALUES CHANGED</span>&nbsp;&nbsp;
-                <span
-                  style={{ cursor: "pointer" }}
+              <Fragment>
+                <LocalDrink style={{ color: "transparent" }} /> &nbsp;&nbsp;
+                <Typography
+                  variant="button"
+                  className="font-weight-bold text-danger text-uppercase text-left"
                   onClick={() => {
                     // setDefaultFloodingMark([
                     //   floodingValueCopy.initial,
@@ -308,10 +328,11 @@ const SoilConditions = props => {
 
                     setFloodingChange(false);
                   }}
+                  style={{ cursor: "pointer" }}
                 >
-                  RESET
-                </span>
-              </h6>
+                  Values changed, Reset ?
+                </Typography>
+              </Fragment>
             ) : (
               ""
             )
@@ -319,12 +340,12 @@ const SoilConditions = props => {
             ""
           )}
         </div>
-        {caller == "greenbar" ? (
+        {caller === "greenbar" ? (
           <div className="floodingSlider col-lg-12">
             {/*TODO: invert doesnt work */}
             <Slider
               color="secondary"
-              valueLabelDisplay="auto"
+              valueLabelDisplay="off"
               onChangeCommitted={(e, mark) => {
                 console.log(mark);
                 setFloodingChange(true);
@@ -346,7 +367,7 @@ const SoilConditions = props => {
           <div className="floodingSlider col-lg-11 offset-lg-1">
             <Slider
               color="secondary"
-              valueLabelDisplay="auto"
+              valueLabelDisplay="off"
               onChangeCommitted={(e, mark) => {
                 console.log(mark);
                 setFloodingChange(true);
@@ -375,7 +396,7 @@ const SoilConditions = props => {
         <h6 className="font-weight-bold text-uppercase text-left">
           <TerrainIcon /> &nbsp;&nbsp;SOILS COMPOSITION
         </h6>
-        {caller == "greenbar" ? (
+        {caller === "greenbar" ? (
           <p className="col-lg-12 text-left">
             Please specify your Soil Conditions. For pre-populated soil
             conditions, go back to the location screen to click a point or draw
@@ -393,26 +414,27 @@ const SoilConditions = props => {
         <h6 className="font-weight-bold text-uppercase text-left col-lg-4 pr-0">
           <LocalDrink /> &nbsp;&nbsp;DRAINAGE CLASS
         </h6>
-        <div className="col-lg-8 pl-1">
+        <div className="col-lg-12">
           {drainageChange ? (
             defaultDrainageMark[0] !== drainageValueCopy.initial ||
             defaultDrainageMark[1] !== drainageValueCopy.final ? (
-              <h6 className="font-weight-bolder text-uppercase text-left">
-                {" "}
-                <span className="text-danger">VALUES CHANGED</span>&nbsp;&nbsp;
-                <span
-                  style={{ cursor: "pointer" }}
+              <Fragment>
+                <LocalDrink style={{ color: "transparent" }} /> &nbsp;&nbsp;
+                <Typography
+                  variant="button"
+                  className="font-weight-bold text-danger text-uppercase text-left"
                   onClick={() => {
                     setDefaultDrainageMark([
                       drainageValueCopy.initial,
-                      drainageValueCopy.final
+                      drainageValueCopy.final,
                     ]);
                     setDrainageChange(false);
                   }}
+                  style={{ cursor: "pointer" }}
                 >
-                  RESET
-                </span>
-              </h6>
+                  Values changed, Reset ?
+                </Typography>
+              </Fragment>
             ) : (
               ""
             )
@@ -420,8 +442,7 @@ const SoilConditions = props => {
             ""
           )}
         </div>
-        {caller == "greenbar" ? (
-
+        {caller === "greenbar" ? (
           <div className="drainageSlider col-lg-12">
             <Slider
               color="secondary"
@@ -441,7 +462,6 @@ const SoilConditions = props => {
               step={null}
             />
             <span>{drainageMarkText}</span>
-
           </div>
         ) : (
           <div className="drainageSlider col-lg-11 offset-lg-1">
@@ -453,6 +473,7 @@ const SoilConditions = props => {
 
                 setDrainageChange(true);
                 setDefaultDrainageMark(mark);
+                getDrainageText();
               }}
               aria-labelledby="drainange-slider"
               // getAriaValueText={state.soilData.Drainage_Class[0]}
@@ -470,15 +491,15 @@ const SoilConditions = props => {
         <h6 className="font-weight-bold text-uppercase text-left col-lg-4 pr-0">
           <Waves /> &nbsp;&nbsp;FLOODING
         </h6>
-        <div className="col-lg-8 pl-1">
+        <div className="col-lg-12">
           {floodingChange ? (
             defaultFloodingMark[0] !== floodingValueCopy.initial ||
             defaultFloodingMark[1] !== floodingValueCopy.final ? (
-              <h6 className="font-weight-bolder text-uppercase text-left">
-                {" "}
-                <span className="text-danger">VALUES CHANGED</span>&nbsp;&nbsp;
-                <span
-                  style={{ cursor: "pointer" }}
+              <Fragment>
+                <LocalDrink style={{ color: "transparent" }} /> &nbsp;&nbsp;
+                <Typography
+                  variant="button"
+                  className="font-weight-bold text-danger text-uppercase text-left"
                   onClick={() => {
                     // setDefaultFloodingMark([
                     //   floodingValueCopy.initial,
@@ -489,10 +510,11 @@ const SoilConditions = props => {
 
                     setFloodingChange(false);
                   }}
+                  style={{ cursor: "pointer" }}
                 >
-                  RESET
-                </span>
-              </h6>
+                  Values changed, Reset ?
+                </Typography>
+              </Fragment>
             ) : (
               ""
             )
@@ -500,7 +522,7 @@ const SoilConditions = props => {
             ""
           )}
         </div>
-        {caller == "greenbar" ? (
+        {caller === "greenbar" ? (
           <div className="floodingSlider col-lg-12">
             {/*TODO: invert doesnt work */}
             <Slider
