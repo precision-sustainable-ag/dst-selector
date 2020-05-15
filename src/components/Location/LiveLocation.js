@@ -50,7 +50,7 @@ const LiveLocationComponent = () => {
                   });
                   // check https://phzmapi.org/[zip].json to map zone with zip probably also restricting the zips?
                   if (data.address.postcode !== undefined) {
-                    SetZoneState(data.address.postcode);
+                    setZoneState(data.address.postcode);
                   }
 
                   console.log("live location zip: ", data);
@@ -85,7 +85,7 @@ const LiveLocationComponent = () => {
     setlState({ [name]: event.target.checked });
   };
 
-  const SetZoneState = async zip => {
+  const setZoneState = async zip => {
     await axios
       .get(`https://phzmapi.org/${zip}.json`)
       .then(response => {

@@ -7,7 +7,7 @@ import React, {
   useEffect,
   useContext,
   useRef,
-  Fragment
+  Fragment,
 } from "react";
 
 import {
@@ -19,30 +19,31 @@ import {
   Modal,
   Backdrop,
   Fade,
-  Link
+  Link,
 } from "@material-ui/core";
 import { Context } from "../../store/Store";
 import { Search } from "@material-ui/icons";
+import Axios from "axios";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   formControl: {
     margin: theme.spacing(1),
-    minWidth: 120
+    minWidth: 120,
   },
   selectEmpty: {
-    marginTop: theme.spacing(2)
+    marginTop: theme.spacing(2),
   },
   modal: {
     display: "flex",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   paper: {
     backgroundColor: theme.palette.background.paper,
     border: "2px solid #000",
     boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3)
-  }
+    padding: theme.spacing(2, 4, 3),
+  },
 }));
 
 const AutoCompleteComponent = () => {
@@ -53,35 +54,79 @@ const AutoCompleteComponent = () => {
   const [suggestedAddress, setSuggestedAddress] = useState({});
 
   useEffect(() => {
-    setAddress(state.address);
-  }, [state.address]);
-  const setBoundingBoxAndAddress = val => {
+    if (state.zip === 0) {
+      setAddress(state.address);
+    } else setAddress(state.zip);
+  }, [state.address, state.addressSearchPreference, state.zip]);
+  const setBoundingBoxAndAddress = (val) => {
     // set the polygon bounding box? OR lat long and address, then close the modal
     dispatch({
       type: "UPDATE_MARKER",
       data: {
-        markers: [[parseFloat(val.lat), parseFloat(val.lon)]]
-      }
+        markers: [[parseFloat(val.lat), parseFloat(val.lon)]],
+      },
     });
     dispatch({
       type: "CHANGE_ADDRESS",
       data: {
         address: val.display_name,
-        addressVerified: true
-      }
+        addressVerified: true,
+      },
     });
+
     handleClose();
     console.log(val);
   };
 
   const handleToggle = () => {
-    if (address.length > 3) {
-      handleOpen();
-      // setOpen(true);
-      checkAddresses(address).then(addressData => {
-        setSuggestedAddress(addressData);
-        console.log(addressData);
-      });
+    // check if zip or address
+
+    if (state.addressSearchPreference === "zip") {
+      if (isNaN(address)) {
+        alert("Invalid ZIP Code");
+      } else {
+        checkAddresses(address).then((data) => {
+          console.log(data[0]);
+          // let dataFloat = data[0].boundingbox.map((val) => {
+          //   return parseFloat(val);
+          // });
+
+          dispatch({
+            type: "UPDATE_ZIP_CODE",
+            data: {
+              zip: parseInt(address),
+            },
+          });
+          dispatch({
+            type: "UPDATE_MARKER",
+            data: {
+              markers: [[parseFloat(data[0].lat), parseFloat(data[0].lon)]],
+            },
+          });
+        });
+        // Axios.get(`https://geocode.xyz/${address}?geoit=json`).then(
+        //   (response) => {
+        //     console.log(response);
+        //     let val = response.data.standard;
+
+        //     // dispatch({
+        //     //   type: "UPDATE_MARKER",
+        //     //   data: {
+        //     //     markers: [[parseFloat(val.latt), parseFloat(val.lont)]],
+        //     //   },
+        //     // });
+        //   }
+        // );
+      }
+    } else {
+      if (address.length > 3) {
+        handleOpen();
+        // setOpen(true);
+        checkAddresses(address).then((addressData) => {
+          setSuggestedAddress(addressData);
+          console.log(addressData);
+        });
+      }
     }
   };
   const handleOpen = () => {
@@ -91,11 +136,11 @@ const AutoCompleteComponent = () => {
   const handleClose = () => {
     setOpen(false);
   };
-  const handleChange = event => {
+  const handleChange = (event) => {
     setAddress(event.target.value);
   };
 
-  const checkAddresses = async query => {
+  const checkAddresses = async (query) => {
     let url = `https://nominatim.openstreetmap.org/search?q=${query}&country=United%20States&format=json`;
     let response = await fetch(url);
     response = response.json();
@@ -109,7 +154,7 @@ const AutoCompleteComponent = () => {
         open={open}
         onClose={handleClose}
         BackdropProps={{
-          timeout: 500
+          timeout: 500,
         }}
         BackdropComponent={Backdrop}
       >
@@ -167,31 +212,9 @@ const AutoCompleteComponent = () => {
                   <Search />
                 </IconButton>
               </InputAdornment>
-            )
+            ),
           }}
         ></TextField>
-        {/* <TextField
-          aria-controls={open ? "menu-list-grow" : undefined}
-          label="LOCATION"
-          value={state.address !== "" ? state.address : address}
-          onChange={handleChange}
-          fullWidth
-          aria-haspopup="true"
-          variant="filled"
-          InputProps={
-            address.length > 5
-              ? {
-                  endAdornment: (
-                    <InputAdornment>
-                      <IconButton onClick={handleToggle}>
-                        <Search />
-                      </IconButton>
-                    </InputAdornment>
-                  )
-                }
-              : ""
-          }
-        ></TextField> */}
       </FormControl>
     </Fragment>
   );

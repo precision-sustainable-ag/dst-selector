@@ -14,7 +14,7 @@ import {
   IconButton,
   FormGroup,
   FormControlLabel,
-  Checkbox
+  Checkbox,
 } from "@material-ui/core";
 import {
   Send,
@@ -23,7 +23,7 @@ import {
   ExpandLess,
   ExpandMore,
   StarBorder,
-  CalendarTodayRounded
+  CalendarTodayRounded,
 } from "@material-ui/icons";
 import { CustomStyles } from "../../shared/constants";
 import { Context } from "../../store/Store";
@@ -31,14 +31,17 @@ import { List as ListMovable, arrayMove } from "react-movable";
 
 import {
   DateRangePicker,
-  DateRange
+  DateRange,
 } from "@matharumanpreet00/react-daterange-picker";
 import moment from "moment";
+import Axios from "axios";
+import { AirtableBearerKey } from "../../shared/keys";
+const _ = require("lodash");
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   listItemRoot: {
     borderTop: "0px",
-    border: "1px solid " + CustomStyles().primaryProgressBtnBorderColor
+    border: "1px solid " + CustomStyles().primaryProgressBtnBorderColor,
   },
   formControlLabel: {},
   listSubHeaderRoot: {
@@ -47,14 +50,14 @@ const useStyles = makeStyles(theme => ({
     textAlign: "center",
     height: "50px",
     borderTopLeftRadius: CustomStyles().semiRoundedRadius,
-    borderTopRightRadius: CustomStyles().semiRoundedRadius
+    borderTopRightRadius: CustomStyles().semiRoundedRadius,
   },
   nested: {
-    paddingLeft: theme.spacing(4)
-  }
+    paddingLeft: theme.spacing(4),
+  },
 }));
 
-const CropSidebarComponent = props => {
+const CropSidebarComponent = (props) => {
   const classes = useStyles();
   const [state, dispatch] = React.useContext(Context);
   const [cropFiltersOpen, setCropFiltersOpen] = React.useState(false);
@@ -64,8 +67,95 @@ const CropSidebarComponent = props => {
   const [dateRangeOpen, setDateRangeOpen] = React.useState(false);
   const [dateRange, setDateRange] = React.useState({
     startDate: null,
-    endDate: null
+    endDate: null,
   });
+
+  const [sidebarFiltersObj, setSidebarFiltersObj] = React.useState([{}]);
+  const [sidebarFilterVariables, setSidebarFilterVariables] = React.useState(
+    []
+  );
+
+  // const renderCheckBoxes = (arrayIndex) => {
+  //   console.log(sidebarFiltersObj[arrayIndex]);
+
+  //   return (
+  //     <div>
+  //       <div></div>
+  //     </div>
+  //   );
+  // };
+  React.useEffect(() => {
+    let url = getAirtableDictionaryURL(state.zone);
+
+    Axios({
+      url: url,
+      headers: {
+        Authorization: `Bearer ${AirtableBearerKey}`,
+      },
+    }).then((response) => {
+      let sidebarFiltersArr = [{}];
+      let sidebarFilterCategories = [];
+      let data = response.data;
+      sidebarFilterCategories = data.records.map((record, index) => {
+        // sidebarFiltersArr.push(record.fields["Category"])
+
+        return record.fields;
+      });
+
+      if (data.offset) {
+        // get more results
+        Axios({
+          url: url + `&offset=${data.offset}`,
+          headers: {
+            Authorization: `Bearer ${AirtableBearerKey}`,
+          },
+        })
+          .then((resp) => {
+            let offsetObj = [];
+            offsetObj = resp.data.records.map((record, index) => {
+              // sidebarFiltersArr.push(record.fields["Category"])
+
+              return record.fields;
+            });
+
+            return _.concat(sidebarFilterCategories, offsetObj);
+          })
+          .then((cats) => {
+            // console.log(cats);
+            // console.log("unionbycategory", _.unionBy(cats, "Category"));
+            let outObject = cats.reduce(function (a, e) {
+              // GROUP BY estimated key (estKey), well, may be a just plain key
+              // a -- Accumulator result object
+              // e -- sequentally checked Element, the Element that is tested just at this itaration
+
+              // new grouping name may be calculated, but must be based on real value of real field
+              let estKey = e["Category"];
+
+              if (e["Filter Field"]) {
+                // if(e["Information Sheet"]) {
+                (a[estKey] ? a[estKey] : (a[estKey] = null || [])).push(e);
+              }
+
+              return a;
+            }, {});
+            // let keysData = _.map(outObject, (val, index) => {
+            //   console.log(val);
+            //   return { index: false };
+            // });
+
+            outObject = _.map(outObject, (val, key) => {
+              return { category: key, data: val, open: false, active: false };
+            });
+            // setEnvTolData(keysData);
+            setSidebarFiltersObj(outObject);
+          });
+      }
+    });
+    // .then((cats) => {
+    //   // console.log([...new Set(cats)]);
+    //   console.log(cats);
+    // });
+  }, []);
 
   const [envTolData, setEnvTolData] = React.useState({
     "Heat Tolerance": false,
@@ -74,12 +164,32 @@ const CropSidebarComponent = props => {
     "Flood Tolerance": false,
     "Low Fertility Tolerance": false,
     "Salinity Tolerance": false,
-    "Winter Survival": false
+    "Winter Survival": false,
   });
   const [growthWindowVisible, setGrowthWindowVisible] = React.useState(true);
 
-  const [openEnvTol, setOpenEnvTol] = React.useState(false);
+  let [keysArray, setKeysArray] = React.useState([]);
+  const [keysArrChanged, setKeysArrChanges] = React.useState(false);
 
+  const getAirtableDictionaryURL = (zone) => {
+    switch (zone) {
+      case 2: {
+        break;
+      }
+      case 4: {
+        break;
+      }
+      case 5: {
+        break;
+      }
+      case 6: {
+        break;
+      }
+      case 7: {
+        return `https://api.airtable.com/v0/app2q3UaKHXutMQyt/tbl4l2aYdp6ra5nqH?filterByFormula=TRUE(%7BFilter+Field%7D)&sort%5B0%5D%5Bfield%5D=Category&sort%5B0%5D%5Bdirection%5D=asc`;
+      }
+    }
+  };
   const updateSelectedGoals = (newGoalArr, oldIndex, newIndex) => {
     let newGoals = arrayMove(newGoalArr, oldIndex, newIndex);
 
@@ -88,12 +198,12 @@ const CropSidebarComponent = props => {
       data: {
         selectedGoals: newGoals,
         snackOpen: true,
-        snackMessage: "Goal Priority Changed"
-      }
+        snackMessage: "Goal Priority Changed",
+      },
     });
   };
 
-  const changeProgress = type => {
+  const changeProgress = (type) => {
     if (type === "increment") {
       // if progress = 1 (location stage), check if textfield has a value? then set state address to that value
       // if(state.progress === 1) {
@@ -102,8 +212,8 @@ const CropSidebarComponent = props => {
       dispatch({
         type: "UPDATE_PROGRESS",
         data: {
-          type: "INCREMENT"
-        }
+          type: "INCREMENT",
+        },
       });
     }
 
@@ -111,13 +221,13 @@ const CropSidebarComponent = props => {
       dispatch({
         type: "UPDATE_PROGRESS",
         data: {
-          type: "DECREMENT"
-        }
+          type: "DECREMENT",
+        },
       });
     }
   };
 
-  const handleClick = index => {
+  const handleClick = (index) => {
     switch (index) {
       case 0:
         setGoalsOpen(!goalsOpen);
@@ -149,20 +259,24 @@ const CropSidebarComponent = props => {
           ).format("MM/DD"),
           endDate: moment(new Date(dateRange.endDate).toISOString()).format(
             "MM/DD"
-          )
-        }
+          ),
+        },
       });
     }
 
     props.setGrowthWindow(growthWindowVisible);
-    props.sortEnvTolCropData(envTolData);
+  }, [dateRange, growthWindowVisible]);
 
-    // if (envTolData.heat) {
-    //   props.sortCropData(envTolData);
-    // } else {
-    //   props.sortCropData(envTolData);
+  React.useEffect(() => {
+    // console.log(keysArray);
+    // if (keysArray.length ) {
+    props.sortEnvTolCropData(keysArray);
     // }
-  }, [dateRange, growthWindowVisible, envTolData]);
+    // return () => {
+    //   keysArray = [];
+    // };
+  }, [keysArrChanged]);
+
   return (
     <List
       component="nav"
@@ -183,6 +297,7 @@ const CropSidebarComponent = props => {
         <ListItemText primary="COVER CROP GOALS" />
         {goalsOpen ? <ExpandLess /> : <ExpandMore />}
       </ListItem>
+
       <Collapse in={goalsOpen} timeout="auto" unmountOnExit>
         {state.selectedGoals.length === 0 ? (
           <List component="div" disablePadding>
@@ -229,9 +344,6 @@ const CropSidebarComponent = props => {
         )}
       </Collapse>
       <ListItem button onClick={() => handleClick(1)}>
-        {/* <ListItemIcon>
-          <Inbox />
-        </ListItemIcon> */}
         <ListItemText primary="CASH CROP" />
         {cashCropOpen ? <ExpandLess /> : <ExpandMore />}
       </ListItem>
@@ -242,27 +354,15 @@ const CropSidebarComponent = props => {
               label="Cash Crop"
               id="outlined-margin-dense"
               defaultValue=""
-              //   className={classes.textField}
               helperText="Enter crop"
               margin="dense"
               variant="outlined"
             />
           </ListItem>
           <ListItem className={classes.nested}>
-            {/* <TextField
-              label="Planting to Harvest"
-              id="outlined-margin-dense"
-              defaultValue=""
-              //   className={classes.textField}
-              helperText="Enter dates"
-              margin="dense"
-              variant="outlined"
-            /> */}
             <TextField
               label="Planting to Harvest"
-              //   defaultValue={""}
               value={`${state.cashCropData.dateRange.startDate} - ${state.cashCropData.dateRange.endDate}`}
-              //   onChange={handleChange}
               fullWidth
               margin="dense"
               aria-haspopup="true"
@@ -278,14 +378,14 @@ const CropSidebarComponent = props => {
                       <CalendarTodayRounded />
                     </IconButton>
                   </InputAdornment>
-                )
+                ),
               }}
             />
           </ListItem>
           <ListItem style={{ zIndex: 99 }}>
             <DateRangePicker
               open={dateRangeOpen}
-              onChange={range => setDateRange(range)}
+              onChange={(range) => setDateRange(range)}
             />
           </ListItem>
           <ListItem className={classes.nested}>
@@ -310,200 +410,103 @@ const CropSidebarComponent = props => {
         </List>
       </Collapse>
       <ListItem button onClick={() => handleClick(2)}>
-        {/* <ListItemIcon>
-          <Inbox />
-        </ListItemIcon> */}
         <ListItemText primary="COVER CROP FILTERS" />
         {cropFiltersOpen ? <ExpandLess /> : <ExpandMore />}
       </ListItem>
       <Collapse in={cropFiltersOpen} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
-          <ListItem button className={classes.nested}>
-            <ListItemText
-              primary={<Typography variant="body2">Agronomic</Typography>}
-            />
-          </ListItem>
-          <ListItem
-            button
-            className={classes.nested}
-            onClick={() => setOpenEnvTol(!openEnvTol)}
-          >
-            <ListItemText
-              primary={
-                <Typography variant="body2">Environmental Tolerance</Typography>
-              }
-            />
-            {openEnvTol ? <ExpandLess /> : <ExpandMore />}
-          </ListItem>
-          <Collapse in={openEnvTol} timeout="auto" unmountOnExit>
-            <List component="div" disablePadding>
-              <ListItem button className={classes.nested}>
-                <div>
-                  <FormGroup>
-                    <FormControlLabel
-                      classes={{ root: classes.formControlLabel }}
-                      control={
-                        <Checkbox
-                          checked={envTolData["Heat Tolerance"]}
-                          onChange={() => {
-                            setEnvTolData({
-                              ...envTolData,
-                              "Heat Tolerance": !envTolData["Heat Tolerance"]
-                            });
-                          }}
-                          value="HEAT"
-                        />
-                      }
-                      label={<Typography variant="body2">HEAT</Typography>}
-                    />
-                    {/* </FormGroup>
-                  <FormGroup> */}
-                    <FormControlLabel
-                      classes={{ root: classes.formControlLabel }}
-                      control={
-                        <Checkbox
-                          checked={envTolData["Drought Tolerance"]}
-                          onChange={() => {
-                            setEnvTolData({
-                              ...envTolData,
-                              "Drought Tolerance": !envTolData[
-                                "Drought Tolerance"
-                              ]
-                            });
-                          }}
-                          value="DROUGHT"
-                        />
-                      }
-                      label={<Typography variant="body2">DROUGHT</Typography>}
-                    />
-                    {/* </FormGroup>
-                  <FormGroup> */}
-                    <FormControlLabel
-                      classes={{ root: classes.formControlLabel }}
-                      control={
-                        <Checkbox
-                          checked={envTolData["Shade Tolerance"]}
-                          onChange={() => {
-                            setEnvTolData({
-                              ...envTolData,
-                              "Shade Tolerance": !envTolData["Shade Tolerance"]
-                            });
-                          }}
-                          value="SHADE"
-                        />
-                      }
-                      label={<Typography variant="body2">SHADE</Typography>}
-                    />
-                    {/* </FormGroup>
-                  <FormGroup> */}
-                    <FormControlLabel
-                      classes={{ root: classes.formControlLabel }}
-                      control={
-                        <Checkbox
-                          checked={envTolData["Flood Tolerance"]}
-                          onChange={() => {
-                            setEnvTolData({
-                              ...envTolData,
-                              "Flood Tolerance": !envTolData["Flood Tolerance"]
-                            });
-                          }}
-                          value="FLOOD"
-                        />
-                      }
-                      label={<Typography variant="body2">FLOOD</Typography>}
-                    />
-                    {/* </FormGroup>
-                  <FormGroup> */}
-                    <FormControlLabel
-                      classes={{ root: classes.formControlLabel }}
-                      control={
-                        <Checkbox
-                          checked={envTolData["Low Fertility Tolerance"]}
-                          onChange={() => {
-                            setEnvTolData({
-                              ...envTolData,
-                              "Low Fertility Tolerance": !envTolData[
-                                "Low Fertility Tolerance"
-                              ]
-                            });
-                          }}
-                          value="LOW FERTILITY"
-                        />
-                      }
-                      label={
-                        <Typography variant="body2">LOW FERTILITY</Typography>
-                      }
-                    />
-                    <FormControlLabel
-                      classes={{ root: classes.formControlLabel }}
-                      control={
-                        <Checkbox
-                          checked={envTolData["Salinity Tolerance"]}
-                          onChange={() => {
-                            setEnvTolData({
-                              ...envTolData,
-                              "Salinity Tolerance": !envTolData[
-                                "Salinity Tolerance"
-                              ]
-                            });
-                          }}
-                          value="SALINITY"
-                        />
-                      }
-                      label={<Typography variant="body2">SALINITY</Typography>}
-                    />
-                    <FormControlLabel
-                      classes={{ root: classes.formControlLabel }}
-                      control={
-                        <Checkbox
-                          checked={envTolData["Winter Survival"]}
-                          onChange={() => {
-                            setEnvTolData({
-                              ...envTolData,
-                              "Winter Survival": !envTolData["Winter Survival"]
-                            });
-                          }}
-                          value="WINTER SURVIVAL"
-                        />
-                      }
-                      label={
-                        <Typography variant="body2">WINTER SURVIVAL</Typography>
-                      }
-                    />
-                  </FormGroup>
-                </div>
-              </ListItem>
-            </List>
-          </Collapse>
-          <ListItem button className={classes.nested}>
-            <ListItemText
-              primary={<Typography variant="body2">Soil Conditions</Typography>}
-            />
-          </ListItem>
-          <ListItem button className={classes.nested}>
-            <ListItemText
-              primary={<Typography variant="body2">Growth</Typography>}
-            />
-          </ListItem>
-          <ListItem button className={classes.nested}>
-            <ListItemText
-              primary={
-                <Typography variant="body2">Planting & Termination</Typography>
-              }
-            />
-          </ListItem>
-          <ListItem button className={classes.nested}>
-            <ListItemText
-              primary={
-                <Typography variant="body2">Grazers & Pollinators</Typography>
-              }
-            />
-          </ListItem>
-          <ListItem button className={classes.nested}>
-            <ListItemText
-              primary={<Typography variant="body2">Pests & Disease</Typography>}
-            />
-          </ListItem>
+          {sidebarFiltersObj.map((sidebarObj, index1) => {
+            return (
+              <Fragment>
+                <ListItem
+                  button
+                  className={classes.nested}
+                  key={index1}
+                  onClick={() => {
+                    const newState = sidebarFiltersObj.map((obj, index2) => {
+                      if (index2 === index1) return { ...obj, open: !obj.open };
+                      else return { ...obj };
+                    });
+                    setSidebarFiltersObj(newState);
+                  }}
+                >
+                  <ListItemText
+                    primary={
+                      <Typography variant="body2">
+                        {sidebarObj.category}
+                      </Typography>
+                    }
+                  />
+                  {sidebarObj.open ? <ExpandLess /> : <ExpandMore />}
+                </ListItem>
+                <Collapse in={sidebarObj.open} timeout="auto" unmountOnExit>
+                  <List component="div" disablePadding>
+                    <ListItem button className={classes.nested}>
+                      <div>
+                        <FormGroup>
+                          {sidebarObj.data
+                            ? sidebarObj.data.map((data, key) => {
+                                return (
+                                  <FormControlLabel
+                                    key={key}
+                                    classes={{ root: classes.formControlLabel }}
+                                    control={
+                                      <Checkbox
+                                        // checked={sidebarObj.active}
+                                        checked={
+                                          keysArray.includes(data.Variable)
+                                            ? true
+                                            : false
+                                        }
+                                        onChange={(e) => {
+                                          console.log(data.Variable);
+                                          const newState = sidebarFiltersObj.map(
+                                            (obj, index3) => {
+                                              if (index3 === index1)
+                                                return {
+                                                  ...obj,
+                                                  active: !obj.active,
+                                                };
+                                              else return { ...obj };
+                                            }
+                                          );
+                                          setSidebarFiltersObj(newState);
+                                          let keysArrayCopy = keysArray;
+                                          if (
+                                            keysArray.includes(e.target.value)
+                                          ) {
+                                            // value exists, remove it
+                                            keysArrayCopy = keysArray.filter(
+                                              (e) => e !== data.Variable
+                                            );
+                                            setKeysArray(keysArrayCopy);
+                                          } else {
+                                            // new value, add it
+                                            keysArrayCopy.push(e.target.value);
+                                            setKeysArray(keysArrayCopy);
+                                          }
+                                          setKeysArrChanges(!keysArrChanged);
+                                        }}
+                                        value={data.Variable}
+                                      />
+                                    }
+                                    label={
+                                      <Typography variant="body2">
+                                        {data.Variable}
+                                      </Typography>
+                                    }
+                                  />
+                                );
+                              })
+                            : ""}
+                        </FormGroup>
+                      </div>
+                    </ListItem>
+                  </List>
+                </Collapse>
+              </Fragment>
+            );
+          })}
         </List>
       </Collapse>
     </List>

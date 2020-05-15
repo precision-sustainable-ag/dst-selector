@@ -1,6 +1,6 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect, Fragment } from "react";
 import { Context } from "../../store/Store";
-import { zoneIcon } from "../../shared/constants";
+import { zoneIcon, getRating } from "../../shared/constants";
 import {
   Button,
   Typography,
@@ -11,7 +11,6 @@ import {
   ExpansionPanel,
   ExpansionPanelSummary,
   ExpansionPanelDetails,
-  CircularProgress
 } from "@material-ui/core";
 import {
   PhotoLibrary,
@@ -20,38 +19,165 @@ import {
   Print,
   Info,
   Close,
-  ExpandMore
+  ExpandMore,
 } from "@material-ui/icons";
-const useStyles = makeStyles(theme => ({
+import Axios from "axios";
+const useStyles = makeStyles((theme) => ({
   modal: {
     display: "flex",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   paper: {
     backgroundColor: theme.palette.background.paper,
     border: "2px solid #000",
     boxShadow: theme.shadows[5],
-    padding: "0px"
+    padding: "0px",
     // padding: theme.spacing(2, 4, 3)
   },
   textField: {
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
-    width: 200
-  }
+    width: 200,
+  },
 }));
 
-const CropDetailsModalComponent = props => {
+const CropDetailsModalComponent = (props) => {
   let crop = props.crop;
   const classes = useStyles();
   const [state, dispatch] = useContext(Context);
   // const [modalOpen, setModalOpen] = useState(true);
   const [modalData, setModalData] = useState({});
 
+  const [sideBarData, setSideBarData] = useState({
+    Taxonomy: [
+      "Cover Crop Name",
+      "Scientific Name",
+      "Synonyms",
+      "cv, var, or ssp to specify",
+      "Cover Crop Group",
+      "Family Common Name",
+      "Family Scientific Name",
+      "Origin",
+      "Notes: Taxonomy",
+    ],
+    Environmental: [
+      "Heat Tolerance",
+      "Drought Tolerance",
+      "Shade Tolerance",
+      "Flood Tolerance",
+      "Low Fertility Tolerance",
+      "Salinity Tolerance",
+      "Winter Survival",
+      "Notes: Environmental Tolerances",
+    ],
+    "Basic Agronomics": [
+      "Zone Use",
+      "Active Growth Period",
+      "Duration",
+      "Shape & Orientation",
+      "Hessian Fly-Free Date",
+      "C to N Ratio",
+      "Nitrogen Accumulation Min, Legumes (lbs/A/y)",
+      "Nitrogen Accumulation Max, Legumes (lbs/A/y)",
+      "Dry Matter Min (lbs/A/y)",
+      "Dry Matter Max (lbs/A/y)",
+      "Notes: Basic Agronomics",
+    ],
+    "Soil Conditions": [
+      "Soil Drainage",
+      "Flooding/Ponding Tolerance",
+      "Soil Textures",
+      "Minimum Tolerant Soil pH",
+      "Maximum Tolerant Soil pH",
+      "Soil Moisture Use",
+      "Loosens Subsurface Soil",
+      "Loosens Topsoil",
+      "Supports Mycorrhizae",
+      "Notes: Soil Conditions",
+    ],
+    Growth: [
+      "Ease of Establishment",
+      "Establishes Quickly",
+      "Early Spring Growth",
+      "Flowering Trigger",
+      "Growing Window",
+      "Root Architecture",
+      "Root Depth",
+      "Innoculant Type (Legumes Only)",
+      "Frees P & K",
+      "Notes: Growth, Roots, and Nutrients",
+    ],
+    Planting: [
+      "Seeds per Pound",
+      "Seed Price per Pound",
+      "Base Seeding Rate Min (lbs/A)",
+      "Base Seeding Rate Max (lbs/A)",
+      "Drilled Depth Min",
+      "Drilled Depth Max",
+      "Can Aerial Seed?",
+      "Broadcast Frost Seeding",
+      "Min Germination Temp (F)",
+      "Notes: Planting",
+    ],
+    Termination: [
+      "Tillage Termination at Vegetative",
+      "Tillage Termination at Flowering",
+      "Freezing Termination at Vegetative",
+      "Freezing Termination at Flowering",
+      "Chemical Termination at Vegetative",
+      "Chemical Termination at Flowering",
+      "Mow Termination at Flowering",
+      "Roller Crimp Termination at Flowering",
+      "Planting Green",
+      "Notes: Termination",
+    ],
+    "Grazers & Pollinators": [
+      "Harvestability",
+      "Grazing Tolerance",
+      "Grazing Value",
+      "Pollinator Food",
+      "Pollinator Habitat",
+      "Notes: Grazers & Pollinators",
+    ],
+    Weeds: [
+      "Volunteer Establishment",
+      "Hard Seededness",
+      "Outcompetes Weeds",
+      "Allelopathic to Weeds",
+      "Notes: Weeds",
+    ],
+    "Disease and Non-weed Pests": [
+      "Discourages Nematodes",
+      "Promotes Nematodes",
+      "Discourages Pest Insects",
+      "Promotes Pest Insects",
+      "Suppresses Cash Crop Disease",
+      "Promotes Cash Crop Disease",
+      "Notes: Disease and Non-weed Pests",
+    ],
+  });
+
+  const [images, setImages] = useState(["https://placehold.it/100x100"]);
+
   useEffect(() => {
     setModalData(crop);
+    // get 5 images related to crop
   }, [crop]);
+
+  // const getImages = async (cropName) => {
+  //   let cropNameFormatted = encodeURIComponent(cropName);
+  //   let requestBuffer = await Axios.get(
+  //     `https://api.qwant.com/api/search/images?count=5&q=${cropNameFormatted}Spring&t=images&safesearch=1&locale=en_US&uiv=4`,
+  //     {
+  //       headers: {
+  //         "User-Agent":
+  //           "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36",
+  //       },
+  //     }
+  //   );
+  //   return requestBuffer;
+  // };
 
   const handleModalClose = () => {
     props.setModalOpen(!props.modalOpen);
@@ -61,6 +187,20 @@ const CropDetailsModalComponent = props => {
     // });
     // setModalOpen(false);
   };
+
+  // const renderImages = (cropName) => {
+  //   // getImages(cropName).then((data) => {
+  //   //   console.log(data.data);
+  //   // });
+
+  //   return (
+  //     <Fragment>
+  //       {images.map((image, index) => (
+  //         <img key={index} src={image} alt={`${cropName} Image ${index + 1}`} />
+  //       ))}
+  //     </Fragment>
+  //   );
+  // };
 
   return (
     <Modal
@@ -72,7 +212,7 @@ const CropDetailsModalComponent = props => {
       closeAfterTransition
       BackdropComponent={Backdrop}
       BackdropProps={{
-        timeout: 500
+        timeout: 500,
       }}
       disableBackdropClick={true}
     >
@@ -88,7 +228,7 @@ const CropDetailsModalComponent = props => {
                     color: "white",
                     height: "auto",
                     borderTopLeftRadius: "5px",
-                    borderTopRightRadius: "5px"
+                    borderTopRightRadius: "5px",
                   }}
                 >
                   <div className="row">
@@ -119,15 +259,21 @@ const CropDetailsModalComponent = props => {
                       style={{
                         textAlign: "right",
                         paddingRight: "0px",
-                        paddingLeft: "0px"
+                        paddingLeft: "0px",
                       }}
                     >
-                      <img src="//placehold.it/100x100" />
-                      <img src="//placehold.it/100x100" />
-                      <img src="//placehold.it/100x100" />
-                      <img src="//placehold.it/100x100" />
-                      <img src="//placehold.it/100x100" />
-                      <img src="//placehold.it/100x100" />
+                      {crop.fields["Image"] ? (
+                        <img
+                          src={crop.fields["Image"][0].url}
+                          alt={crop.fields["Image"][0].filename}
+                          style={{
+                            height: "100px",
+                            width: "200px",
+                          }}
+                        />
+                      ) : (
+                        <img src="//placehold.it/100x100" alt="placeholder" />
+                      )}
                     </div>
                   </div>
                 </div>
@@ -172,7 +318,7 @@ const CropDetailsModalComponent = props => {
                 </div>
               </div>
               <div className="row mt-4">
-                <div className="col-8">
+                <div className="col-7">
                   <div className="row">
                     <div className="col-6">
                       <Typography variant="h6">Cover Crop Uses</Typography>
@@ -219,7 +365,7 @@ const CropDetailsModalComponent = props => {
                     </div>
                   </div>
                 </div>
-                <div className="col-4">
+                <div className="col-5">
                   <ExpansionPanel
                     className="modalSideBar"
                     defaultExpanded={false}
@@ -228,10 +374,26 @@ const CropDetailsModalComponent = props => {
                       expandIcon={<ExpandMore />}
                       aria-controls="modal-side-panel-content"
                     >
-                      <Typography variant="body1">Agronomic</Typography>
+                      <Typography variant="body1">Taxonomy</Typography>
                     </ExpansionPanelSummary>
                     <ExpansionPanelDetails>
-                      <div></div>
+                      <div className="container-fluid">
+                        <div className="row">
+                          {sideBarData.Taxonomy.map((sideBarVal, index) => (
+                            <div className="col-6" key={`taxonomy--${index}`}>
+                              <Typography
+                                variant="body1"
+                                className="font-weight-bold"
+                              >
+                                {sideBarVal}
+                              </Typography>
+                              <Typography variant="body2">
+                                {crop.fields[sideBarVal]}
+                              </Typography>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
                     </ExpansionPanelDetails>
                   </ExpansionPanel>
                   <ExpansionPanel
@@ -243,11 +405,76 @@ const CropDetailsModalComponent = props => {
                       aria-controls="modal-side-panel-content"
                     >
                       <Typography variant="body1">
-                        Environmental Tolerance
+                        {Object.keys(sideBarData)[1]}
                       </Typography>
                     </ExpansionPanelSummary>
                     <ExpansionPanelDetails>
-                      <div></div>
+                      <div className="container-fluid">
+                        <div className="row">
+                          {sideBarData["Environmental"].map(
+                            (sideBarVal, index) => (
+                              <div
+                                className="col-6"
+                                key={`environmental--${index}`}
+                              >
+                                <Typography
+                                  variant="body1"
+                                  className="font-weight-bold"
+                                  component="div"
+                                >
+                                  {sideBarVal}
+                                </Typography>
+                                <Typography variant="body2" component="div">
+                                  {sideBarVal === "Winter Survival"
+                                    ? getRating(0)
+                                    : sideBarVal ===
+                                      "Notes: Environmental Tolerances"
+                                    ? crop.fields[sideBarVal]
+                                    : getRating(
+                                        parseInt(crop.fields[sideBarVal])
+                                      )}
+                                </Typography>
+                              </div>
+                            )
+                          )}
+                        </div>
+                      </div>
+                    </ExpansionPanelDetails>
+                  </ExpansionPanel>
+                  <ExpansionPanel
+                    className="modalSideBar"
+                    defaultExpanded={false}
+                  >
+                    <ExpansionPanelSummary
+                      expandIcon={<ExpandMore />}
+                      aria-controls="modal-side-panel-content"
+                    >
+                      <Typography variant="body1">Basic Agronomics</Typography>
+                    </ExpansionPanelSummary>
+                    <ExpansionPanelDetails>
+                      <div className="container-fluid">
+                        <div className="row">
+                          {sideBarData["Basic Agronomics"].map(
+                            (sideBarVal, index) => (
+                              <div
+                                className="col-6"
+                                key={`basic-agronomics--${index}`}
+                              >
+                                <Typography
+                                  variant="body1"
+                                  className="font-weight-bold"
+                                  component="div"
+                                >
+                                  {sideBarVal}
+                                </Typography>
+                                <Typography variant="body2" component="div">
+                                  {crop.fields[sideBarVal]}
+                                </Typography>
+                              </div>
+                            )
+                          )}
+                        </div>
+                      </div>
                     </ExpansionPanelDetails>
                   </ExpansionPanel>
                   <ExpansionPanel
@@ -261,7 +488,29 @@ const CropDetailsModalComponent = props => {
                       <Typography variant="body1">Soil Conditions</Typography>
                     </ExpansionPanelSummary>
                     <ExpansionPanelDetails>
-                      <div></div>
+                      <div className="container-fluid">
+                        <div className="row">
+                          {sideBarData["Soil Conditions"].map(
+                            (sideBarVal, index) => (
+                              <div
+                                className="col-6"
+                                key={`soil-conditions--${index}`}
+                              >
+                                <Typography
+                                  variant="body1"
+                                  className="font-weight-bold"
+                                  component="div"
+                                >
+                                  {sideBarVal}
+                                </Typography>
+                                <Typography variant="body2" component="div">
+                                  {crop.fields[sideBarVal]}
+                                </Typography>
+                              </div>
+                            )
+                          )}
+                        </div>
+                      </div>
                     </ExpansionPanelDetails>
                   </ExpansionPanel>
                   <ExpansionPanel
@@ -275,7 +524,95 @@ const CropDetailsModalComponent = props => {
                       <Typography variant="body1">Growth</Typography>
                     </ExpansionPanelSummary>
                     <ExpansionPanelDetails>
-                      <div></div>
+                      <div className="container-fluid">
+                        <div className="row">
+                          {sideBarData.Growth.map((sideBarVal, index) => (
+                            <div className="col-6" key={`growth--${index}`}>
+                              <Typography
+                                variant="body1"
+                                className="font-weight-bold"
+                                component="div"
+                              >
+                                {sideBarVal}
+                              </Typography>
+                              <Typography variant="body2" component="div">
+                                {crop.fields[sideBarVal]}
+                              </Typography>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </ExpansionPanelDetails>
+                  </ExpansionPanel>
+                  <ExpansionPanel
+                    className="modalSideBar"
+                    defaultExpanded={false}
+                  >
+                    <ExpansionPanelSummary
+                      expandIcon={<ExpandMore />}
+                      aria-controls="modal-side-panel-content"
+                    >
+                      <Typography variant="body1">Planting</Typography>
+                    </ExpansionPanelSummary>
+                    <ExpansionPanelDetails>
+                      <div className="container-fluid">
+                        <div className="row">
+                          {sideBarData.Planting.map((sideBarVal, index) => (
+                            <div className="col-6" key={`planting--${index}`}>
+                              <Typography
+                                variant="body1"
+                                className="font-weight-bold"
+                                component="div"
+                              >
+                                {sideBarVal}
+                              </Typography>
+                              <Typography variant="body2" component="div">
+                                {crop.fields[sideBarVal]}
+                              </Typography>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </ExpansionPanelDetails>
+                  </ExpansionPanel>
+                  <ExpansionPanel
+                    className="modalSideBar"
+                    defaultExpanded={false}
+                  >
+                    <ExpansionPanelSummary
+                      expandIcon={<ExpandMore />}
+                      aria-controls="modal-side-panel-content"
+                    >
+                      <Typography variant="body1">Termination</Typography>
+                    </ExpansionPanelSummary>
+                    <ExpansionPanelDetails>
+                      <div className="container-fluid">
+                        <div className="row">
+                          {sideBarData.Termination.map((sideBarVal, index) => (
+                            <div
+                              className="col-6"
+                              key={`environmental--${index}`}
+                            >
+                              <Typography
+                                variant="body1"
+                                className="font-weight-bold"
+                                component="div"
+                              >
+                                {sideBarVal}
+                              </Typography>
+                              <Typography variant="body2" component="div">
+                                {sideBarVal === "Planting Green"
+                                  ? getRating(0)
+                                  : sideBarVal === "Notes: Termination"
+                                  ? crop.fields[sideBarVal]
+                                  : getRating(
+                                      parseInt(crop.fields[sideBarVal])
+                                    )}
+                              </Typography>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
                     </ExpansionPanelDetails>
                   </ExpansionPanel>
                   <ExpansionPanel
@@ -287,11 +624,64 @@ const CropDetailsModalComponent = props => {
                       aria-controls="modal-side-panel-content"
                     >
                       <Typography variant="body1">
-                        Planting &amp; Termination
+                        Grazers & Pollinators
                       </Typography>
                     </ExpansionPanelSummary>
                     <ExpansionPanelDetails>
-                      <div></div>
+                      <div className="container-fluid">
+                        <div className="row">
+                          {sideBarData["Grazers & Pollinators"].map(
+                            (sideBarVal, index) => (
+                              <div
+                                className="col-6"
+                                key={`grazers-and-pollinators--${index}`}
+                              >
+                                <Typography
+                                  variant="body1"
+                                  className="font-weight-bold"
+                                  component="div"
+                                >
+                                  {sideBarVal}
+                                </Typography>
+                                <Typography variant="body2" component="div">
+                                  {crop.fields[sideBarVal]}
+                                </Typography>
+                              </div>
+                            )
+                          )}
+                        </div>
+                      </div>
+                    </ExpansionPanelDetails>
+                  </ExpansionPanel>
+                  <ExpansionPanel
+                    className="modalSideBar"
+                    defaultExpanded={false}
+                  >
+                    <ExpansionPanelSummary
+                      expandIcon={<ExpandMore />}
+                      aria-controls="modal-side-panel-content"
+                    >
+                      <Typography variant="body1">Weeds</Typography>
+                    </ExpansionPanelSummary>
+                    <ExpansionPanelDetails>
+                      <div className="container-fluid">
+                        <div className="row">
+                          {sideBarData.Weeds.map((sideBarVal, index) => (
+                            <div className="col-6" key={`weeds--${index}`}>
+                              <Typography
+                                variant="body1"
+                                className="font-weight-bold"
+                                component="div"
+                              >
+                                {sideBarVal}
+                              </Typography>
+                              <Typography variant="body2" component="div">
+                                {crop.fields[sideBarVal]}
+                              </Typography>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
                     </ExpansionPanelDetails>
                   </ExpansionPanel>
                   <ExpansionPanel
@@ -303,27 +693,33 @@ const CropDetailsModalComponent = props => {
                       aria-controls="modal-side-panel-content"
                     >
                       <Typography variant="body1">
-                        Grazers &amp; Pollinators
+                        Disease & Non-weed Pests
                       </Typography>
                     </ExpansionPanelSummary>
                     <ExpansionPanelDetails>
-                      <div></div>
-                    </ExpansionPanelDetails>
-                  </ExpansionPanel>
-                  <ExpansionPanel
-                    className="modalSideBar"
-                    defaultExpanded={false}
-                  >
-                    <ExpansionPanelSummary
-                      expandIcon={<ExpandMore />}
-                      aria-controls="modal-side-panel-content"
-                    >
-                      <Typography variant="body1">
-                        Pests &amp; Disease
-                      </Typography>
-                    </ExpansionPanelSummary>
-                    <ExpansionPanelDetails>
-                      <div></div>
+                      <div className="container-fluid">
+                        <div className="row">
+                          {sideBarData["Disease and Non-weed Pests"].map(
+                            (sideBarVal, index) => (
+                              <div
+                                className="col-6"
+                                key={`disease-and-non-weed-pests--${index}`}
+                              >
+                                <Typography
+                                  variant="body1"
+                                  className="font-weight-bold"
+                                  component="div"
+                                >
+                                  {sideBarVal}
+                                </Typography>
+                                <Typography variant="body2" component="div">
+                                  {crop.fields[sideBarVal]}
+                                </Typography>
+                              </div>
+                            )
+                          )}
+                        </div>
+                      </div>
                     </ExpansionPanelDetails>
                   </ExpansionPanel>
                 </div>
