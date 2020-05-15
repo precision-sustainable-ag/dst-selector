@@ -11,7 +11,7 @@ import {
   Checkbox,
   Button,
   IconButton,
-  makeStyles
+  makeStyles,
 } from "@material-ui/core";
 import { List, arrayMove } from "react-movable";
 
@@ -33,6 +33,7 @@ const CropSelector = () => {
   let [showGrowthWindow, setShowGrowthWindow] = useState(true);
   // sortAllGoals = false would mean default i.e.
   const [sortAllGoals, setSortAllGoals] = useState(false);
+  const [sortPreference, setSortPreference] = useState("desc");
   // let [isListView, setIsListView] = useState(true);
 
   // TODO: set list view as default. Calendar component is activated currently
@@ -40,12 +41,14 @@ const CropSelector = () => {
 
   const [cropData, setCropData] = useState([]);
 
-  const sortEnvTolCropData = objData => {
+  const sortEnvTolCropData = (objData) => {
     if (cropData.length !== 0) {
       let crop_data = cropData;
 
       // console.log(objData);
       const activeObjKeys = _.keys(_.pickBy(objData));
+      // console.log('activeObjKeys', activeObjKeys)
+      console.log("activeObjKeys", activeObjKeys);
       activeObjKeys.forEach((val, index) => {
         //  Crop Data is inside cropData.fields
         activeObjKeys[index] = `fields.${val}`;
@@ -53,10 +56,10 @@ const CropSelector = () => {
 
       if (activeObjKeys.length > 0) {
         // some values are truthy
-        console.log(activeObjKeys);
+        // console.log(activeObjKeys);
         // console.log(crop_data);
         let updatedCropData = _.sortBy(crop_data, activeObjKeys);
-        console.log(updatedCropData[0].fields);
+        // console.log(updatedCropData[0].fields);
         setCropData(updatedCropData);
       } else {
         // reset! none are true
@@ -65,11 +68,61 @@ const CropSelector = () => {
     }
   };
 
+  const sortCropsBy = (orderBy) => {
+    if (state.cropData.length > 0) {
+      const { selectedGoals } = state;
+      if (selectedGoals.length > 0) {
+        let crop_data = cropData;
+        // console.log("cropdata", crop_data);
+        const activeObjKeys = [];
+        selectedGoals.forEach((val, index) => {
+          //  Crop Data is inside cropData.fields
+          activeObjKeys[index] = `fields.${val}`;
+        });
+        switch (orderBy) {
+          case "asc": {
+            let updatedCropData = _.orderBy(crop_data, activeObjKeys, [
+              "asc",
+              "asc",
+              "asc",
+            ]);
+            setCropData(updatedCropData);
+            setSortPreference("asc");
+            break;
+          }
+          case "desc": {
+            let updatedCropData = _.orderBy(crop_data, activeObjKeys, [
+              "desc",
+              "desc",
+              "desc",
+            ]);
+
+            setCropData(updatedCropData);
+            setSortPreference("desc");
+            break;
+          }
+          default: {
+            break;
+          }
+        }
+      }
+    }
+  };
+
   useEffect(() => {
-    setCropData(state.cropData);
+    if (state.cropData.length > 0) {
+      // sort crop data by goal priority
+      const { selectedGoals } = state;
+      if (selectedGoals.length > 0) {
+        let updatedCropData = _.sortBy(state.cropData, selectedGoals);
+        setCropData(updatedCropData);
+      } else {
+        setCropData(state.cropData);
+      }
+    }
   }, [state.cropData]);
 
-  const expandCoverCropFilter = id => {
+  const expandCoverCropFilter = (id) => {
     let listItemId = `cropFilterList${id}`;
     let x = document.querySelectorAll(`#${listItemId} div`);
     if (document.getElementById(listItemId).classList.contains("active")) {
@@ -208,6 +261,8 @@ const CropSelector = () => {
                 cropData={cropData}
                 showGrowthWindow={showGrowthWindow}
                 sortAllGoals={setSortAllGoals}
+                sortAllCrops={sortCropsBy}
+                sortPreference={sortPreference}
               />
             ) : (
               // <CropCardViewComponent
