@@ -34,6 +34,7 @@ const CropSelector = () => {
   // sortAllGoals = false would mean default i.e.
   const [sortAllGoals, setSortAllGoals] = useState(false);
   const [sortPreference, setSortPreference] = useState("desc");
+  const [disabledIds, setDisabledIds] = useState([]);
   // let [isListView, setIsListView] = useState(true);
 
   // TODO: set list view as default. Calendar component is activated currently
@@ -42,7 +43,7 @@ const CropSelector = () => {
   const [cropData, setCropData] = useState([]);
 
   const sortEnvTolCropData = (objDataArr) => {
-    console.log(objDataArr);
+    // console.log(objDataArr);
     if (cropData.length !== 0) {
       let crop_data = cropData;
 
@@ -60,10 +61,9 @@ const CropSelector = () => {
       // console.log(objData);
       if (objData.length > 0) {
         // some values are truthy
-        // console.log(activeObjKeys);
-        // console.log(crop_data);
+
         let updatedCropData = _.sortBy(crop_data, objData);
-        // console.log(updatedCropData[0].fields);
+
         setCropData(updatedCropData);
       } else {
         // reset! none are true
@@ -80,10 +80,109 @@ const CropSelector = () => {
         ]);
 
         setCropData(updatedCropData);
-        // setCropData(state.cropData);
       }
     }
   };
+
+  const filterByCheckboxValues = (keysArray) => {
+    let crop_data = cropData;
+    // list of keys that have "array" as values
+    // this list still does not include "month, mid/early" keys
+    const arrayKeys = [
+      "Active Growth Period",
+      "Active Growth Period-USDA PLANTS",
+      "Common Mixes",
+      "Duration",
+      "Flowering Trigger",
+      "Inoculant Type (Legumes Only)",
+      "Root Architecture",
+      "Shape & Orientation",
+      "Soil Drainage",
+      "Soil Textures",
+      "Winter Survival",
+    ];
+    // format == value~key
+
+    // to "filter", add opacity: 0.2 and disabled class to relevant "id"
+
+    let key = "";
+    let value = "";
+    // let obj = {};
+    var ids = [];
+    if (keysArray.length > 0) {
+      keysArray.forEach((element) => {
+        let wholeString = element.split("~");
+        key = wholeString[1];
+        value = wholeString[0];
+        // ids.push(value);
+        // obj[key] = value;
+
+        if (arrayKeys.includes(key)) {
+          // it is an array
+          let a = crop_data.filter((x) => {
+            if (x.fields[key] && x.fields["Zone Decision"] === "Include")
+              return !x.fields[key].indexOf(value);
+          });
+          a.forEach((ele) => {
+            // console.log(ele.id, ele.fields["Cover Crop Name"]);
+            // push id to ids array for resetting later
+            // if id is in not in array, add it else -> remove it
+            if (!ids.includes(ele.id)) ids.push(ele.id);
+            else ids = ids.filter((item) => item !== ele.id);
+            let el = document.getElementById(ele.id);
+            el.classList.add("disabled");
+            el.style.opacity = "0.2";
+          });
+
+          // a.map((i) => {
+          //   let el = document.getElementById(i.id);
+          //   el.classList.add("disabled");
+          //   el.style.opacity = "0.2";
+          // });
+        } else {
+          console.log("not array");
+        }
+        setDisabledIds(ids);
+      });
+
+      //  var a =  _.filter(crop_data, _.matches({ 'a': 4, 'c': 6 }));
+    } else {
+      // reset filter
+      // console.log("Disabled Ids", disabledIds);
+
+      // disabledIds.forEach((id) => {
+      //   let el = document.getElementById(id);
+      //   el.classList.remove("disabled");
+      //   el.style.opacity = "1";
+      // });
+      setDisabledIds([]);
+    }
+
+    // console.log(keysArray);
+  };
+
+  useEffect(() => {
+    // get all disabled ids and compare with the disabled ids array
+    let allIds = [
+      ...document.querySelectorAll(
+        ".calendarViewTableWrapper table > tbody > tr"
+      ),
+    ].map((x) => {
+      if (x.id !== "" || x.id !== undefined) return x.id;
+    });
+
+    let differenceIds = allIds.filter((x) => {
+      if (x !== "") return !disabledIds.includes(x);
+    });
+
+    if (differenceIds.length > 0) {
+      differenceIds.map((id) => {
+        let ele = document.getElementById(id);
+        ele.classList.remove("disabled");
+        ele.style.opacity = "1";
+      });
+    }
+  }, [disabledIds]);
 
   const sortCropsBy = (orderBy) => {
     if (state.cropData.length > 0) {
@@ -268,6 +367,7 @@ const CropSelector = () => {
           <CropSidebarComponent
             sortEnvTolCropData={sortEnvTolCropData}
             setGrowthWindow={setShowGrowthWindow}
+            filterByCheckboxValues={filterByCheckboxValues}
           />
         </div>
 
