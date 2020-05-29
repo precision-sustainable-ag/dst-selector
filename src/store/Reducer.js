@@ -213,6 +213,19 @@ const Reducer = (state, action) => {
         isSoilDataLoading: action.data.isSoilDataLoading,
       };
     }
+    case "UPDATE_SELCTED_CHECKBOXES": {
+      return {
+        ...state,
+        selectedCheckboxes: action.data.selectedCheckboxes,
+      };
+    }
+
+    case "UPDATE_SELECTED_STARS": {
+      return {
+        ...state,
+        selectedStars: action.data.selectedStars,
+      };
+    }
 
     case "UPDATE_SOIL_DATA": {
       return {

@@ -5,7 +5,7 @@ import { Context } from "../../store/Store";
 
 import "../../styles/growthWindow.scss";
 
-const GrowthWindowComponent = props => {
+const GrowthWindowComponent = (props) => {
   const [state, dispatch] = useContext(Context);
   //   const [isCashCropMonth, setIsCashCropMonth] = useState(false);
   let isCashCropMonth = false;
@@ -17,14 +17,12 @@ const GrowthWindowComponent = props => {
     Early: "",
     Mid: "",
     class: "",
-    isCashCropMonth: false
+    isCashCropMonth: false,
   };
 
-  var fullMonth = moment()
-    .localeData()
-    .months();
+  var fullMonth = moment().localeData().months();
 
-  const setMonthVals = id => {
+  const setMonthVals = (id) => {
     let cropDataLegendLabel_Early = cropData[`${fullMonth[id]}, Early`];
     let cropDataLegendLabel_Mid = cropData[`${fullMonth[id]}, Mid`];
 

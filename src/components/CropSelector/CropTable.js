@@ -66,22 +66,24 @@ const CropTableComponent = (props) => {
     props.showGrowthWindow
       ? setShowGrowthWindow(true)
       : setShowGrowthWindow(false);
+
+    // console.log(cropData);
   }, [props]);
 
-  const checkCropsAddedToCart = () => {
-    if (state.selectedCrops.length !== 0) {
-      try {
-        state.selectedCrops.map((crop, index) => {
-          let btnId = crop.btnId;
-          let container = document.getElementById(btnId);
-          container.querySelector(".MuiButton-label").innerHTML = "ADDED";
-          container.classList.add("activeCartBtn");
-        });
-      } catch (e) {
-        console.log(e);
-      }
-    }
-  };
+  // const checkCropsAddedToCart = () => {
+  //   if (state.selectedCrops.length !== 0) {
+  //     try {
+  //       state.selectedCrops.map((crop, index) => {
+  //         let btnId = crop.btnId;
+  //         let container = document.getElementById(btnId);
+  //         container.querySelector(".MuiButton-label").innerHTML = "ADDED";
+  //         container.classList.add("activeCartBtn");
+  //       });
+  //     } catch (e) {
+  //       console.log(e);
+  //     }
+  //   }
+  // };
   const addCropToBasket = (cropId, cropName, btnId, cropData) => {
     let container = document.getElementById(btnId);
     let selectedCrops = {};
@@ -485,7 +487,7 @@ const CropTableComponent = (props) => {
                 ) {
                   if (crop.fields["Zone Decision"] === "Include")
                     return (
-                      <TableRow key={`croprow${index}`}>
+                      <TableRow key={`croprow${index}`} id={crop.id}>
                         <TableCell
                           style={{
                             display: "flex",
