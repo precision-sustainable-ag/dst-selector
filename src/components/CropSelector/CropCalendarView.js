@@ -21,6 +21,7 @@ import "../../styles/cropCalendarViewComponent.scss";
 import GrowthWindowComponent from "./GrowthWindow";
 import { AddCircle, FiberManualRecord, CloseRounded } from "@material-ui/icons";
 import CropLegendModal from "./CropLegendModal";
+import { AirtableBearerKey } from "../../shared/keys";
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -135,7 +136,7 @@ const CropCalendarViewComponent = () => {
   };
 
   const headers = new Headers();
-  headers.append("Authorization", "Bearer ***REMOVED***");
+  headers.append("Authorization", `Bearer ${AirtableBearerKey}`);
 
   const handleLegendModal = () => {
     setLegendModal(!legendModal);
@@ -341,6 +342,29 @@ const CropCalendarViewComponent = () => {
                                 }}
                               >
                                 <div className="tdContainer d-flex justify-content-between flex-wrap">
+                                  {/* {crop.fields["Image"] ? (
+                            <img
+                              src={crop.fields["Image"][0].url}
+                              alt={crop.fields["Image"][0].filename}
+                              style={{
+                                width: "100px",
+                                height: "100px",
+                                maxWidth: "100px",
+                                maxHeight: "100px",
+                              }}
+                            />
+                          ) : (
+                            <img
+                              src="//placehold.it/100x100"
+                              alt="placeholder"
+                              style={{
+                                width: "100px",
+                                height: "100px",
+                                maxWidth: "100px",
+                                maxHeight: "100px",
+                              }}
+                            />
+                          )} */}
                                   <img
                                     src="//placehold.it/50x50"
                                     alt="Placeholder"
@@ -368,7 +392,15 @@ const CropCalendarViewComponent = () => {
                                 </td>
                               )}
 
+                              {/* {index === 0 ? (
+                                <td
+                                  colSpan="12"
+                                  rowSpan={state.cropData.length}
+                                >
+                                  <table style={{ width: "100%" }}>
+                                    <tbody> */}
                               {allMonths.map((month, index) => (
+                                // <tr>
                                 <GrowthWindowComponent
                                   from="calendar"
                                   data={crop.fields}
@@ -376,7 +408,15 @@ const CropCalendarViewComponent = () => {
                                   id={`growthCell${index}`}
                                   month={index}
                                 />
+                                // </tr>
+                                // <div>{month}</div>
                               ))}
+                              {/* </tbody>
+                                  </table>
+                                </td>
+                              ) : (
+                                ""
+                              )} */}
 
                               <td
                                 style={{

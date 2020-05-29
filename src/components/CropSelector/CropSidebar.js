@@ -36,6 +36,7 @@ import {
 import moment from "moment";
 import Axios from "axios";
 import { AirtableBearerKey } from "../../shared/keys";
+import CropSidebarFilters from "./CropSidebarFilters";
 const _ = require("lodash");
 
 const useStyles = makeStyles((theme) => ({
@@ -54,6 +55,9 @@ const useStyles = makeStyles((theme) => ({
   },
   nested: {
     paddingLeft: theme.spacing(4),
+  },
+  subNested: {
+    paddingLeft: theme.spacing(5),
   },
 }));
 
@@ -415,9 +419,24 @@ const CropSidebarComponent = (props) => {
       </ListItem>
       <Collapse in={cropFiltersOpen} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
+          <ListItem>
+            <FormControlLabel
+              classes={{ root: classes.formControlLabel }}
+              control={
+                <Checkbox
+                  checked={true}
+                  disabled={true}
+                  value="Show Growth Window"
+                />
+              }
+              label={
+                <Typography variant="body2">Zone Decision = Include</Typography>
+              }
+            />
+          </ListItem>
           {sidebarFiltersObj.map((sidebarObj, index1) => {
             return (
-              <Fragment>
+              <Fragment key={index1}>
                 <ListItem
                   button
                   className={classes.nested}
@@ -439,68 +458,21 @@ const CropSidebarComponent = (props) => {
                   />
                   {sidebarObj.open ? <ExpandLess /> : <ExpandMore />}
                 </ListItem>
-                <Collapse in={sidebarObj.open} timeout="auto" unmountOnExit>
+                <Collapse in={sidebarObj.open} timeout="auto">
                   <List component="div" disablePadding>
                     <ListItem button className={classes.nested}>
-                      <div>
-                        <FormGroup>
-                          {sidebarObj.data
-                            ? sidebarObj.data.map((data, key) => {
-                                return (
-                                  <FormControlLabel
-                                    key={key}
-                                    classes={{ root: classes.formControlLabel }}
-                                    control={
-                                      <Checkbox
-                                        // checked={sidebarObj.active}
-                                        checked={
-                                          keysArray.includes(data.Variable)
-                                            ? true
-                                            : false
-                                        }
-                                        onChange={(e) => {
-                                          console.log(data.Variable);
-                                          const newState = sidebarFiltersObj.map(
-                                            (obj, index3) => {
-                                              if (index3 === index1)
-                                                return {
-                                                  ...obj,
-                                                  active: !obj.active,
-                                                };
-                                              else return { ...obj };
-                                            }
-                                          );
-                                          setSidebarFiltersObj(newState);
-                                          let keysArrayCopy = keysArray;
-                                          if (
-                                            keysArray.includes(e.target.value)
-                                          ) {
-                                            // value exists, remove it
-                                            keysArrayCopy = keysArray.filter(
-                                              (e) => e !== data.Variable
-                                            );
-                                            setKeysArray(keysArrayCopy);
-                                          } else {
-                                            // new value, add it
-                                            keysArrayCopy.push(e.target.value);
-                                            setKeysArray(keysArrayCopy);
-                                          }
-                                          setKeysArrChanges(!keysArrChanged);
-                                        }}
-                                        value={data.Variable}
-                                      />
-                                    }
-                                    label={
-                                      <Typography variant="body2">
-                                        {data.Variable}
-                                      </Typography>
-                                    }
-                                  />
-                                );
-                              })
-                            : ""}
-                        </FormGroup>
-                      </div>
+                      <CropSidebarFilters
+                        sidebarObj={sidebarObj}
+                        classes={classes.formControlLabel}
+                        keysArray={keysArray}
+                        keysArrChanged={keysArrChanged}
+                        sidebarFiltersObj={sidebarFiltersObj}
+                        index={index1}
+                        setSidebarFiltersObj={setSidebarFiltersObj}
+                        setKeysArray={setKeysArray}
+                        setKeysArrChanges={setKeysArrChanges}
+                        filterByCheckboxValues={props.filterByCheckboxValues}
+                      />
                     </ListItem>
                   </List>
                 </Collapse>
