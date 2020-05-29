@@ -20,6 +20,8 @@ const initialState = {
   // ],
   // markers: [[35.76422, 78.69976]],
   showAddressChangeBtn: false,
+  selectedCheckboxes: [],
+  selectedStars: {},
   allGoals: [],
   // allGoals: [
   //   {
@@ -436,16 +438,7 @@ const initialState = {
   //     }
   //   }
   // ],
-  // selectedGoals: [
-  //   "Forage Harvest Value",
-  //   "Good Grazing"
-  //   // "Prevent Soil Erosion"
-  // ],
-  // selectedGoals: [
-  //   "Improve Soil Organic Matter",
-  //   "Lasting Residue",
-  //   "Prevent soil erosion"
-  // ],
+
   // selectedGoals: [
   //   "Reduces Subsurface Soil Compaction",
   //   "Reduces Topsoil Compaction",

@@ -35,6 +35,7 @@ const CropSelector = () => {
   const [sortAllGoals, setSortAllGoals] = useState(false);
   const [sortPreference, setSortPreference] = useState("desc");
   const [disabledIds, setDisabledIds] = useState([]);
+  const [filterByCheckBoxKeys, setfilterByCheckBoxKeys] = useState([]);
   // let [isListView, setIsListView] = useState(true);
 
   // TODO: set list view as default. Calendar component is activated currently
@@ -84,8 +85,76 @@ const CropSelector = () => {
     }
   };
 
+  // latest
+
+  const filterByStars = () => {
+    let { selectedStars } = state;
+    let crop_data = cropData;
+    // console.log(selectedStars);
+
+    for (let [key, value] of Object.entries(selectedStars)) {
+      // console.log(`------\n${key}: ${value}------\n`);
+      if (value === null) {
+        // reset that key i.e. pick its id and reset css
+        let newArr = [];
+        let zoneIncludeArr = crop_data.filter((x) => {
+          if (
+            x.fields["Zone Decision"] === "Include" &&
+            x.fields[key] !== undefined &&
+            x.fields[key] === value
+          )
+            return x.fields;
+        });
+
+        zoneIncludeArr.forEach((val) => {
+          newArr = disabledIds.filter((e) => e !== val.id);
+        });
+
+        setDisabledIds(newArr);
+      } else {
+        let ids = [];
+        let zoneIncludeArr = crop_data.filter((x) => {
+          if (
+            x.fields["Zone Decision"] === "Include" &&
+            x.fields[key] !== undefined
+          )
+            return x.fields;
+        });
+
+        zoneIncludeArr.forEach((val, index) => {
+          // console.log(
+          //   `${val.fields["Cover Crop Name"]} : ${val.fields[key]}, Expected: ${value}`
+          // );
+          if (val.fields[key] !== value) {
+            ids.push(val.id);
+            let el = document.getElementById(val.id);
+            el.classList.add("disabled");
+            el.style.opacity = "0.2";
+          }
+          // console.log(val);
+
+          // if()
+        });
+        setDisabledIds(ids);
+      }
+    }
+  };
+
+  useEffect(() => {
+    filterByStars();
+  }, [state.selectedStars]);
+
   const filterByCheckboxValues = (keysArray) => {
     let crop_data = cropData;
+    // console.log("keys", keysArray);
+    setfilterByCheckBoxKeys(keysArray);
+    // console.log(keysArray);
+    // let keysToBePushed = [];
+    // keysArray.forEach((k) => {
+    //   if (!filterByCheckBoxKeys.includes(k)) keysToBePushed.push(k);
+    // });
+    // setfilterByCheckBoxKeys(keysToBePushed);
+    // console.log("keysPushed", keysToBePushed);
     // list of keys that have "array" as values
     // this list still does not include "month, mid/early" keys
     const arrayKeys = [
@@ -109,8 +178,9 @@ const CropSelector = () => {
     let value = "";
     // let obj = {};
     var ids = [];
-    if (keysArray.length > 0) {
-      keysArray.forEach((element) => {
+    let namesA = [];
+    if (filterByCheckBoxKeys.length > 0) {
+      filterByCheckBoxKeys.forEach((element) => {
         let wholeString = element.split("~");
         key = wholeString[1];
         value = wholeString[0];
@@ -118,17 +188,27 @@ const CropSelector = () => {
         // obj[key] = value;
 
         if (arrayKeys.includes(key)) {
+          console.log(`${key} is in arrayKeys\n`);
+
           // it is an array
           let a = crop_data.filter((x) => {
             if (x.fields[key] && x.fields["Zone Decision"] === "Include")
-              return !x.fields[key].indexOf(value);
+              return x.fields[key].indexOf(value);
           });
           a.forEach((ele) => {
             // console.log(ele.id, ele.fields["Cover Crop Name"]);
             // push id to ids array for resetting later
             // if id is in not in array, add it else -> remove it
-            if (!ids.includes(ele.id)) ids.push(ele.id);
-            else ids = ids.filter((item) => item !== ele.id);
+            if (!ids.includes(ele.id)) {
+              ids.push(ele.id);
+              namesA.push(ele.fields["Cover Crop Name"]);
+            } else {
+              ids = ids.filter((item) => item !== ele.id);
+              namesA = namesA.filter(
+                (item) => item !== ele.fields["Cover Crop Name"]
+              );
+            }
+
             let el = document.getElementById(ele.id);
             el.classList.add("disabled");
             el.style.opacity = "0.2";
@@ -142,6 +222,7 @@ const CropSelector = () => {
         } else {
           console.log("not array");
         }
+        console.log("Array Names: ", namesA);
         setDisabledIds(ids);
       });
 
@@ -162,7 +243,7 @@ const CropSelector = () => {
   };
 
   useEffect(() => {
-    // get all disabled ids and compare with the disabled ids array
+    // get all ids and compare with the disabled ids array
     let allIds = [
       ...document.querySelectorAll(
         ".calendarViewTableWrapper table > tbody > tr"
