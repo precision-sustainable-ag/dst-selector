@@ -74,10 +74,14 @@ const CropSidebarComponent = (props) => {
     endDate: null,
   });
 
-  const [sidebarFiltersObj, setSidebarFiltersObj] = React.useState([{}]);
-  const [sidebarFilterVariables, setSidebarFilterVariables] = React.useState(
-    []
-  );
+  const [filtersObjectOpen, setFiltersObjectOpen] = React.useState({
+    taxonomy: false,
+  });
+
+  // const [sidebarFiltersObj, setSidebarFiltersObj] = React.useState([{}]);
+  // const [sidebarFilterVariables, setSidebarFilterVariables] = React.useState(
+  //   []
+  // );
 
   // const renderCheckBoxes = (arrayIndex) => {
   //   console.log(sidebarFiltersObj[arrayIndex]);
@@ -88,78 +92,80 @@ const CropSidebarComponent = (props) => {
   //     </div>
   //   );
   // };
-  React.useEffect(() => {
-    let url = getAirtableDictionaryURL(state.zone);
+  // React.useEffect(() => {
+  //   let url = getAirtableDictionaryURL(state.zone);
 
-    Axios({
-      url: url,
-      headers: {
-        Authorization: `Bearer ${AirtableBearerKey}`,
-      },
-    }).then((response) => {
-      let sidebarFiltersArr = [{}];
-      let sidebarFilterCategories = [];
-      let data = response.data;
-      sidebarFilterCategories = data.records.map((record, index) => {
-        // sidebarFiltersArr.push(record.fields["Category"])
+  //   Axios({
+  //     url: url,
+  //     headers: {
+  //       Authorization: `Bearer ${AirtableBearerKey}`,
+  //     },
+  //   }).then((response) => {
+  //     let sidebarFiltersArr = [{}];
+  //     let sidebarFilterCategories = [];
+  //     let data = response.data;
+  //     sidebarFilterCategories = data.records.map((record, index) => {
+  //       // sidebarFiltersArr.push(record.fields["Category"])
 
-        return record.fields;
-      });
+  //       return record.fields;
+  //     });
 
-      if (data.offset) {
-        // get more results
-        Axios({
-          url: url + `&offset=${data.offset}`,
-          headers: {
-            Authorization: `Bearer ${AirtableBearerKey}`,
-          },
-        })
-          .then((resp) => {
-            let offsetObj = [];
-            offsetObj = resp.data.records.map((record, index) => {
-              // sidebarFiltersArr.push(record.fields["Category"])
+  //     if (data.offset) {
+  //       // get more results
+  //       Axios({
+  //         url: url + `&offset=${data.offset}`,
+  //         headers: {
+  //           Authorization: `Bearer ${AirtableBearerKey}`,
+  //         },
+  //       })
+  //         .then((resp) => {
+  //           let offsetObj = [];
+  //           offsetObj = resp.data.records.map((record, index) => {
+  //             // sidebarFiltersArr.push(record.fields["Category"])
 
-              return record.fields;
-            });
+  //             return record.fields;
+  //           });
 
-            return _.concat(sidebarFilterCategories, offsetObj);
-          })
-          .then((cats) => {
-            // console.log(cats);
-            // console.log("unionbycategory", _.unionBy(cats, "Category"));
-            let outObject = cats.reduce(function (a, e) {
-              // GROUP BY estimated key (estKey), well, may be a just plain key
-              // a -- Accumulator result object
-              // e -- sequentally checked Element, the Element that is tested just at this itaration
+  //           return _.concat(sidebarFilterCategories, offsetObj);
+  //         })
+  //         .then((cats) => {
+  //           // console.log(cats);
+  //           // console.log("unionbycategory", _.unionBy(cats, "Category"));
+  //           let outObject = cats.reduce(function (a, e) {
+  //             // GROUP BY estimated key (estKey), well, may be a just plain key
+  //             // a -- Accumulator result object
+  //             // e -- sequentally checked Element, the Element that is tested just at this itaration
 
-              // new grouping name may be calculated, but must be based on real value of real field
-              let estKey = e["Category"];
+  //             // new grouping name may be calculated, but must be based on real value of real field
+  //             let estKey = e["Category"];
 
-              if (e["Filter Field"]) {
-                // if(e["Information Sheet"]) {
-                (a[estKey] ? a[estKey] : (a[estKey] = null || [])).push(e);
-              }
+  //             if (e["Filter Field"]) {
+  //               // if(e["Information Sheet"]) {
+  //               (a[estKey] ? a[estKey] : (a[estKey] = null || [])).push(e);
+  //             }
 
-              return a;
-            }, {});
-            // let keysData = _.map(outObject, (val, index) => {
-            //   console.log(val);
-            //   return { index: false };
-            // });
+  //             return a;
+  //           }, {});
+  //           // let keysData = _.map(outObject, (val, index) => {
+  //           //   console.log(val);
+  //           //   return { index: false };
+  //           // });
 
-            outObject = _.map(outObject, (val, key) => {
-              return { category: key, data: val, open: false, active: false };
-            });
-            // setEnvTolData(keysData);
-            setSidebarFiltersObj(outObject);
-          });
-      }
-    });
-    // .then((cats) => {
-    //   // console.log([...new Set(cats)]);
-    //   console.log(cats);
-    // });
-  }, []);
+  //           outObject = _.map(outObject, (val, key) => {
+  //             // return { category: key, data: val, open: false, active: false };
+  //             return { category: key, data: val };
+  //           });
+  //           console.log(outObject);
+  //           // setEnvTolData(keysData);
+  //           setSidebarFiltersObj(outObject);
+  //         });
+  //     }
+  //   });
+  // .then((cats) => {
+  //   // console.log([...new Set(cats)]);
+  //   console.log(cats);
+  // });
+  // }, []);
 
   const [envTolData, setEnvTolData] = React.useState({
     "Heat Tolerance": false,
@@ -271,15 +277,15 @@ const CropSidebarComponent = (props) => {
     props.setGrowthWindow(growthWindowVisible);
   }, [dateRange, growthWindowVisible]);
 
-  React.useEffect(() => {
-    // console.log(keysArray);
-    // if (keysArray.length ) {
-    props.sortEnvTolCropData(keysArray);
-    // }
-    // return () => {
-    //   keysArray = [];
-    // };
-  }, [keysArrChanged]);
+  // React.useEffect(() => {
+  //   // console.log(keysArray);
+  //   // if (keysArray.length ) {
+  //   props.sortEnvTolCropData(keysArray);
+  //   // }
+  //   // return () => {
+  //   //   keysArray = [];
+  //   // };
+  // }, [keysArrChanged]);
 
   return (
     <List
@@ -419,7 +425,8 @@ const CropSidebarComponent = (props) => {
       </ListItem>
       <Collapse in={cropFiltersOpen} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
-          <ListItem>
+          {/* Commented to remove dynamic data pulling feature and move towards hardcoding these filters */}
+          {/* <ListItem>
             <FormControlLabel
               classes={{ root: classes.formControlLabel }}
               control={
@@ -433,8 +440,9 @@ const CropSidebarComponent = (props) => {
                 <Typography variant="body2">Zone Decision = Include</Typography>
               }
             />
-          </ListItem>
-          {sidebarFiltersObj.map((sidebarObj, index1) => {
+          </ListItem> */}
+
+          {/* {sidebarFiltersObj.map((sidebarObj, index1) => {
             return (
               <Fragment key={index1}>
                 <ListItem
@@ -478,7 +486,8 @@ const CropSidebarComponent = (props) => {
                 </Collapse>
               </Fragment>
             );
-          })}
+          })} */}
+          <Collapse in={taxonomyOpen}></Collapse>
         </List>
       </Collapse>
     </List>
