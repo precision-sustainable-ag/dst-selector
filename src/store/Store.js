@@ -5,7 +5,7 @@ import Reducer from "./Reducer";
 
 const initialState = {
   // progress: 3,
-  progress: 0,
+  progress: 5,
   // address: "",
   address: "",
   addressSearchPreference: "address",
