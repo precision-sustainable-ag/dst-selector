@@ -37,6 +37,7 @@ import moment from "moment";
 import Axios from "axios";
 import { AirtableBearerKey } from "../../shared/keys";
 import CropSidebarFilters from "./CropSidebarFilters";
+import SidebarFilters from "./SidebarFilters";
 const _ = require("lodash");
 
 const useStyles = makeStyles((theme) => ({
@@ -505,9 +506,12 @@ const CropSidebarComponent = (props) => {
               })
             }
           >
-            <ListItemText primary={Object.keys(filtersObjectOpen)[0]} />
+            <ListItemText primary="Taxonomy" />
             {filtersObjectOpen.Taxonomy ? <ExpandLess /> : <ExpandMore />}
           </ListItem>
+          <Collapse in={filtersObjectOpen.Taxonomy}>
+            <SidebarFilters type={"Taxonomy"} />
+          </Collapse>
           <ListItem
             button
             onClick={() =>
@@ -517,13 +521,16 @@ const CropSidebarComponent = (props) => {
               })
             }
           >
-            <ListItemText primary={Object.keys(filtersObjectOpen)[1]} />
+            <ListItemText primary="Basic Agronomics" />
             {filtersObjectOpen["Basic Agronomics"] ? (
               <ExpandLess />
             ) : (
               <ExpandMore />
             )}
           </ListItem>
+          <Collapse in={filtersObjectOpen["Basic Agronomics"]}>
+            <SidebarFilters type={"Basic Agronomics"} />
+          </Collapse>
           <ListItem
             button
             onClick={() =>
@@ -535,13 +542,17 @@ const CropSidebarComponent = (props) => {
               })
             }
           >
-            <ListItemText primary={Object.keys(filtersObjectOpen)[2]} />
+            <ListItemText primary="Disease & Non-Weed Pests" />
             {filtersObjectOpen["Disease & Non-Weed Pests"] ? (
               <ExpandLess />
             ) : (
               <ExpandMore />
             )}
           </ListItem>
+          <Collapse in={filtersObjectOpen["Disease & Non-Weed Pests"]}>
+            <SidebarFilters type={"Disease & Non-Weed Pests"} />
+          </Collapse>
+
           <ListItem
             button
             onClick={() =>
@@ -553,13 +564,16 @@ const CropSidebarComponent = (props) => {
               })
             }
           >
-            <ListItemText primary={Object.keys(filtersObjectOpen)[3]} />
+            <ListItemText primary="Environmental Tolerances" />
             {filtersObjectOpen["Environmental Tolerances"] ? (
               <ExpandLess />
             ) : (
               <ExpandMore />
             )}
           </ListItem>
+          <Collapse in={filtersObjectOpen["Environmental Tolerances"]}>
+            <SidebarFilters type={"Environmental Tolerances"} />
+          </Collapse>
           <ListItem
             button
             onClick={() =>
@@ -571,13 +585,17 @@ const CropSidebarComponent = (props) => {
               })
             }
           >
-            <ListItemText primary={Object.keys(filtersObjectOpen)[4]} />
+            <ListItemText primary="Grazers & Pollinators" />
             {filtersObjectOpen["Grazers & Pollinators"] ? (
               <ExpandLess />
             ) : (
               <ExpandMore />
             )}
           </ListItem>
+          <Collapse in={filtersObjectOpen["Grazers & Pollinators"]}>
+            <SidebarFilters type={"Grazers & Pollinators"} />
+          </Collapse>
+
           <ListItem
             button
             onClick={() =>
@@ -587,9 +605,13 @@ const CropSidebarComponent = (props) => {
               })
             }
           >
-            <ListItemText primary={Object.keys(filtersObjectOpen)[5]} />
+            <ListItemText primary="Growth" />
             {filtersObjectOpen.Growth ? <ExpandLess /> : <ExpandMore />}
           </ListItem>
+          <Collapse in={filtersObjectOpen.Growth}>
+            <SidebarFilters type={"Growth"} />
+          </Collapse>
+
           <ListItem
             button
             onClick={() =>
@@ -599,9 +621,13 @@ const CropSidebarComponent = (props) => {
               })
             }
           >
-            <ListItemText primary={Object.keys(filtersObjectOpen)[6]} />
+            <ListItemText primary="Planting" />
             {filtersObjectOpen.Planting ? <ExpandLess /> : <ExpandMore />}
           </ListItem>
+          <Collapse in={filtersObjectOpen.Planting}>
+            <SidebarFilters type={"Planting"} />
+          </Collapse>
+
           <ListItem
             button
             onClick={() =>
@@ -611,13 +637,17 @@ const CropSidebarComponent = (props) => {
               })
             }
           >
-            <ListItemText primary={Object.keys(filtersObjectOpen)[7]} />
+            <ListItemText primary="Soil Conditions" />
             {filtersObjectOpen["Soil Conditions"] ? (
               <ExpandLess />
             ) : (
               <ExpandMore />
             )}
           </ListItem>
+          <Collapse in={filtersObjectOpen["Soil Conditions"]}>
+            <SidebarFilters type={"Soil Conditions"} />
+          </Collapse>
+
           <ListItem
             button
             onClick={() =>
@@ -627,9 +657,13 @@ const CropSidebarComponent = (props) => {
               })
             }
           >
-            <ListItemText primary={Object.keys(filtersObjectOpen)[8]} />
+            <ListItemText primary="Termination" />
             {filtersObjectOpen.Termination ? <ExpandLess /> : <ExpandMore />}
           </ListItem>
+          <Collapse in={filtersObjectOpen.Termination}>
+            <SidebarFilters type={"Termination"} />
+          </Collapse>
+
           <ListItem
             button
             onClick={() =>
@@ -639,26 +673,13 @@ const CropSidebarComponent = (props) => {
               })
             }
           >
-            <ListItemText primary={Object.keys(filtersObjectOpen)[9]} />
+            <ListItemText primary="Weeds" />
             {filtersObjectOpen.Weeds ? <ExpandLess /> : <ExpandMore />}
           </ListItem>
 
-          {/* COLLAPSES */}
-
-          <Collapse in={filtersObjectOpen.Taxonomy}></Collapse>
-          <Collapse in={filtersObjectOpen["Basic Agronomics"]}></Collapse>
-          <Collapse
-            in={filtersObjectOpen["Disease & Non-Weed Pests"]}
-          ></Collapse>
-          <Collapse
-            in={filtersObjectOpen["Environmental Tolerances"]}
-          ></Collapse>
-          <Collapse in={filtersObjectOpen["Grazers & Pollinators"]}></Collapse>
-          <Collapse in={filtersObjectOpen.Growth}></Collapse>
-          <Collapse in={filtersObjectOpen.Planting}></Collapse>
-          <Collapse in={filtersObjectOpen["Soil Conditions"]}></Collapse>
-          <Collapse in={filtersObjectOpen.Termination}></Collapse>
-          <Collapse in={filtersObjectOpen.Weeds}></Collapse>
+          <Collapse in={filtersObjectOpen.Weeds}>
+            <SidebarFilters type={"Weeds"} />
+          </Collapse>
         </List>
       </Collapse>
     </List>
