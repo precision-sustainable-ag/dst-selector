@@ -75,7 +75,16 @@ const CropSidebarComponent = (props) => {
   });
 
   const [filtersObjectOpen, setFiltersObjectOpen] = React.useState({
-    taxonomy: false,
+    Taxonomy: false,
+    "Environmental Tolerances": false,
+    "Basic Agronomics": false,
+    "Soil Conditions": false,
+    Growth: false,
+    Planting: false,
+    Termination: false,
+    "Grazers & Pollinators": false,
+    Weeds: false,
+    "Disease & Non-Weed Pests": false,
   });
 
   // const [sidebarFiltersObj, setSidebarFiltersObj] = React.useState([{}]);
@@ -487,7 +496,169 @@ const CropSidebarComponent = (props) => {
               </Fragment>
             );
           })} */}
-          <Collapse in={taxonomyOpen}></Collapse>
+          <ListItem
+            button
+            onClick={() =>
+              setFiltersObjectOpen({
+                ...filtersObjectOpen,
+                Taxonomy: !filtersObjectOpen.Taxonomy,
+              })
+            }
+          >
+            <ListItemText primary={Object.keys(filtersObjectOpen)[0]} />
+            {filtersObjectOpen.Taxonomy ? <ExpandLess /> : <ExpandMore />}
+          </ListItem>
+          <ListItem
+            button
+            onClick={() =>
+              setFiltersObjectOpen({
+                ...filtersObjectOpen,
+                "Basic Agronomics": !filtersObjectOpen["Basic Agronomics"],
+              })
+            }
+          >
+            <ListItemText primary={Object.keys(filtersObjectOpen)[1]} />
+            {filtersObjectOpen["Basic Agronomics"] ? (
+              <ExpandLess />
+            ) : (
+              <ExpandMore />
+            )}
+          </ListItem>
+          <ListItem
+            button
+            onClick={() =>
+              setFiltersObjectOpen({
+                ...filtersObjectOpen,
+                "Disease & Non-Weed Pests": !filtersObjectOpen[
+                  "Disease & Non-Weed Pests"
+                ],
+              })
+            }
+          >
+            <ListItemText primary={Object.keys(filtersObjectOpen)[2]} />
+            {filtersObjectOpen["Disease & Non-Weed Pests"] ? (
+              <ExpandLess />
+            ) : (
+              <ExpandMore />
+            )}
+          </ListItem>
+          <ListItem
+            button
+            onClick={() =>
+              setFiltersObjectOpen({
+                ...filtersObjectOpen,
+                "Environmental Tolerances": !filtersObjectOpen[
+                  "Environmental Tolerances"
+                ],
+              })
+            }
+          >
+            <ListItemText primary={Object.keys(filtersObjectOpen)[3]} />
+            {filtersObjectOpen["Environmental Tolerances"] ? (
+              <ExpandLess />
+            ) : (
+              <ExpandMore />
+            )}
+          </ListItem>
+          <ListItem
+            button
+            onClick={() =>
+              setFiltersObjectOpen({
+                ...filtersObjectOpen,
+                "Grazers & Pollinators": !filtersObjectOpen[
+                  "Grazers & Pollinators"
+                ],
+              })
+            }
+          >
+            <ListItemText primary={Object.keys(filtersObjectOpen)[4]} />
+            {filtersObjectOpen["Grazers & Pollinators"] ? (
+              <ExpandLess />
+            ) : (
+              <ExpandMore />
+            )}
+          </ListItem>
+          <ListItem
+            button
+            onClick={() =>
+              setFiltersObjectOpen({
+                ...filtersObjectOpen,
+                Growth: !filtersObjectOpen.Growth,
+              })
+            }
+          >
+            <ListItemText primary={Object.keys(filtersObjectOpen)[5]} />
+            {filtersObjectOpen.Growth ? <ExpandLess /> : <ExpandMore />}
+          </ListItem>
+          <ListItem
+            button
+            onClick={() =>
+              setFiltersObjectOpen({
+                ...filtersObjectOpen,
+                Planting: !filtersObjectOpen.Planting,
+              })
+            }
+          >
+            <ListItemText primary={Object.keys(filtersObjectOpen)[6]} />
+            {filtersObjectOpen.Planting ? <ExpandLess /> : <ExpandMore />}
+          </ListItem>
+          <ListItem
+            button
+            onClick={() =>
+              setFiltersObjectOpen({
+                ...filtersObjectOpen,
+                "Soil Conditions": !filtersObjectOpen["Soil Conditions"],
+              })
+            }
+          >
+            <ListItemText primary={Object.keys(filtersObjectOpen)[7]} />
+            {filtersObjectOpen["Soil Conditions"] ? (
+              <ExpandLess />
+            ) : (
+              <ExpandMore />
+            )}
+          </ListItem>
+          <ListItem
+            button
+            onClick={() =>
+              setFiltersObjectOpen({
+                ...filtersObjectOpen,
+                Termination: !filtersObjectOpen.Termination,
+              })
+            }
+          >
+            <ListItemText primary={Object.keys(filtersObjectOpen)[8]} />
+            {filtersObjectOpen.Termination ? <ExpandLess /> : <ExpandMore />}
+          </ListItem>
+          <ListItem
+            button
+            onClick={() =>
+              setFiltersObjectOpen({
+                ...filtersObjectOpen,
+                Weeds: !filtersObjectOpen.Weeds,
+              })
+            }
+          >
+            <ListItemText primary={Object.keys(filtersObjectOpen)[9]} />
+            {filtersObjectOpen.Weeds ? <ExpandLess /> : <ExpandMore />}
+          </ListItem>
+
+          {/* COLLAPSES */}
+
+          <Collapse in={filtersObjectOpen.Taxonomy}></Collapse>
+          <Collapse in={filtersObjectOpen["Basic Agronomics"]}></Collapse>
+          <Collapse
+            in={filtersObjectOpen["Disease & Non-Weed Pests"]}
+          ></Collapse>
+          <Collapse
+            in={filtersObjectOpen["Environmental Tolerances"]}
+          ></Collapse>
+          <Collapse in={filtersObjectOpen["Grazers & Pollinators"]}></Collapse>
+          <Collapse in={filtersObjectOpen.Growth}></Collapse>
+          <Collapse in={filtersObjectOpen.Planting}></Collapse>
+          <Collapse in={filtersObjectOpen["Soil Conditions"]}></Collapse>
+          <Collapse in={filtersObjectOpen.Termination}></Collapse>
+          <Collapse in={filtersObjectOpen.Weeds}></Collapse>
         </List>
       </Collapse>
     </List>
