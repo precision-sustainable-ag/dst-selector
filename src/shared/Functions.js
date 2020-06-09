@@ -7,7 +7,7 @@ export const UpdateLatLong = async (lat, lon) => {
   const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`;
   await axios
     .get(url)
-    .then(response => {
+    .then((response) => {
       let data = response.data;
       let fullAddress = data.display_name;
       console.log(data);
@@ -16,18 +16,18 @@ export const UpdateLatLong = async (lat, lon) => {
       SetZoneState(data.address.postcode);
       return fullAddress;
     })
-    .then(fullAddress => {
+    .then((fullAddress) => {
       dispatch({
         type: "CHANGE_ADDRESS",
-        data: { address: `${fullAddress}`, addressVerified: true }
+        data: { address: `${fullAddress}`, addressVerified: true },
       });
     });
 };
-const SetZoneState = async zip => {
+const SetZoneState = async (zip) => {
   const [state, dispatch] = useContext(Context);
   await axios
     .get(`https://phzmapi.org/${zip}.json`)
-    .then(response => {
+    .then((response) => {
       let data = response.data;
       let zone = 0;
       if (data !== null && data !== undefined) {
@@ -41,7 +41,7 @@ const SetZoneState = async zip => {
         return 7;
       }
     })
-    .then(zone => {
+    .then((zone) => {
       // check if zone is in the NECCC range else set a default
       if (zone <= 7 && zone > 1) {
         if (zone === 2 || zone === 3) {
@@ -49,16 +49,16 @@ const SetZoneState = async zip => {
             type: "UPDATE_ZONE_TEXT",
             data: {
               zoneText: "Zone 2 & 3",
-              zone: 2
-            }
+              zone: 2,
+            },
           });
         } else {
           dispatch({
             type: "UPDATE_ZONE_TEXT",
             data: {
               zoneText: `Zone ${zone}`,
-              zone: parseInt(zone)
-            }
+              zone: parseInt(zone),
+            },
           });
         }
       } else {
@@ -66,9 +66,34 @@ const SetZoneState = async zip => {
           type: "UPDATE_ZONE_TEXT",
           data: {
             zoneText: "Zone 7",
-            zone: 7
-          }
+            zone: 7,
+          },
         });
       }
     });
+};
+
+export const changeProgress = (type) => {
+  const [state, dispatch] = useContext(Context);
+  if (type === "increment") {
+    // if progress = 1 (location stage), check if textfield has a value? then set state address to that value
+    // if(state.progress === 1) {
+    //   if(document.getElementById('google-map-autocompletebar').)
+    // }
+    dispatch({
+      type: "UPDATE_PROGRESS",
+      data: {
+        type: "INCREMENT",
+      },
+    });
+  }
+
+  if (type === "decrement") {
+    dispatch({
+      type: "UPDATE_PROGRESS",
+      data: {
+        type: "DECREMENT",
+      },
+    });
+  }
 };
