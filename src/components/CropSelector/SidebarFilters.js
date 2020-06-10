@@ -10,6 +10,15 @@ import {
   Typography,
 } from "@material-ui/core";
 import { ExpandLess, ExpandMore } from "@material-ui/icons";
+import Taxonomy from "./Filters/Taxonomy";
+import EnvironmentalTolerances from "./Filters/EnvironmentalTolerances";
+import BasicAgronomics from "./Filters/BasicAgronomics";
+import SoilConditions from "./Filters/SoilConditions";
+import Growth from "./Filters/Growth";
+import Termination from "./Filters/Termination";
+import GrazersPollinators from "./Filters/GrazersPollinators";
+import DiseaseNonWeedPests from "./Filters/DiseaseNonWeedPests";
+import Weeds from "./Filters/Weeds";
 
 const getObjectDataFromCategory = (categoryName) => {
   let sidebarDataObj = sidebarFilters.filter(
@@ -21,10 +30,6 @@ const getObjectDataFromCategory = (categoryName) => {
 const SidebarFilters = (props) => {
   const filterType = props.type;
   const [filterData, setFilterData] = useState([]);
-  const [taxonomyOpen, setTaxonomyOpen] = useState({
-    0: false,
-    1: false,
-  });
 
   useEffect(() => {
     setFilterData(getObjectDataFromCategory(filterType));
@@ -35,40 +40,26 @@ const SidebarFilters = (props) => {
 
   switch (filterType) {
     case "Taxonomy": {
-      return (
-        <Fragment>
-          <ListItem
-            button
-            onClick={() =>
-              setTaxonomyOpen({ ...taxonomyOpen, 0: !taxonomyOpen[0] })
-            }
-          >
-            <ListItemText primary="Cover Crop Group" disableTypography />
-            {taxonomyOpen[0] ? <ExpandLess /> : <ExpandMore />}
-          </ListItem>
-          <Collapse in={taxonomyOpen[0]}>
-            <FormControlLabel
-              //   classes={{ root: classes.formControlLabel }}
-              control={<Checkbox value="Legume" />}
-              label={<Typography variant="body2">Legume</Typography>}
-            />
-          </Collapse>
-          <ListItem
-            button
-            onClick={() =>
-              setTaxonomyOpen({ ...taxonomyOpen, 1: !taxonomyOpen[1] })
-            }
-          >
-            <ListItemText primary="Family Common Name" disableTypography />
-            {taxonomyOpen[1] ? <ExpandLess /> : <ExpandMore />}
-          </ListItem>
-          <Collapse in={taxonomyOpen[1]}>Family Common Name</Collapse>
-        </Fragment>
-      );
-
-      break;
+      return <Taxonomy />;
     }
+    case "Environmental Tolerances":
+      return <EnvironmentalTolerances />;
+    case "Basic Agronomics":
+      return <BasicAgronomics />;
+    case "Soil Conditions":
+      return <SoilConditions />;
+    case "Growth":
+      return <Growth />;
+    case "Termination":
+      return <Termination />;
+    case "Grazers & Pollinators":
+      return <GrazersPollinators />;
+    case "Weeds":
+      return <Weeds />;
+    case "Disease & Non-Weed Pests":
+      return <DiseaseNonWeedPests />;
 
+    //   unhandled case would just return the name for now
     default:
       return (
         <div>
