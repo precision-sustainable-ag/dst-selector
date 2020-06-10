@@ -439,11 +439,7 @@ const initialState = {
   //   }
   // ],
 
-  // selectedGoals: [
-  //   "Reduces Subsurface Soil Compaction",
-  //   "Reduces Topsoil Compaction",
-  //   "Lasting Residue",
-  // ],
+  // selectedGoals: ["Good Grazing", "Penetrates Pow Pan", "Lasting Residue"],
   selectedGoals: [],
   zoom: 13,
   addressVerified: false,

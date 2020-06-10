@@ -307,14 +307,16 @@ const CropSelector = () => {
   };
 
   useEffect(() => {
-    if (state.cropData.length > 0) {
-      // sort crop data by goal priority
-      const { selectedGoals } = state;
-      if (selectedGoals.length > 0) {
-        let updatedCropData = _.sortBy(state.cropData, selectedGoals);
-        setCropData(updatedCropData);
-      } else {
-        setCropData(state.cropData);
+    if (state.cropData) {
+      if (state.cropData.length > 0) {
+        // sort crop data by goal priority
+        const { selectedGoals } = state;
+        if (selectedGoals.length > 0) {
+          let updatedCropData = _.sortBy(state.cropData, selectedGoals);
+          setCropData(updatedCropData);
+        } else {
+          setCropData(state.cropData);
+        }
       }
     }
   }, [state.cropData]);
