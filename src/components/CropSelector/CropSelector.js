@@ -319,6 +319,9 @@ const CropSelector = () => {
         }
       }
     }
+    return () => {
+      setCropData([]);
+    };
   }, [state.cropData]);
 
   const expandCoverCropFilter = (id) => {
@@ -358,7 +361,7 @@ const CropSelector = () => {
           <div className="row">
             <div className="col-lg-12 col-sm-12">
               {/* <div className="iconsWrapper"> */}
-              <div className="">
+              <div className="row">
                 {state.myCoverCropActivationFlag ? (
                   <Fragment>
                     {/* <div className="iconToggle">
@@ -369,7 +372,7 @@ const CropSelector = () => {
                         <ListIcon style={{ fontSize: "larger" }} />
                       </IconButton>
                     </div> */}
-                    <div className="iconToggle">
+                    <div className="iconToggle col-lg-3">
                       <Typography component="div" variant="body1">
                         <IconButton
                           color={"secondary"}
@@ -390,35 +393,7 @@ const CropSelector = () => {
                   </Fragment>
                 ) : (
                   <Fragment>
-                    <div className="iconToggle">
-                      {/* <IconButton
-                        className={isListView ? `iconActive` : ""}
-                        onClick={toggleListView}
-                      >
-                        <ListIcon style={{ fontSize: "larger" }} />
-                      </IconButton>
-                    </div>
-                    <div className="iconToggle">
-                      <IconButton
-                        className={isListView ? `` : `iconActive`}
-                        onClick={toggleListView}
-                      >
-                        <CalendarToday style={{ fontSize: "larger" }} />
-                      </IconButton> */}
-                      {/* <Typography component="div" variant="body1">
-                        <IconButton
-                          color={"secondary"}
-                          className={`iconActive`}
-                          onClick={toggleListView}
-                        >
-                          {isListView ? (
-                            <ListIcon style={{ fontSize: "larger" }} />
-                          ) : (
-                            <CalendarToday style={{ fontSize: "larger" }} />
-                          )}
-                        </IconButton>
-                        {isListView ? "LIST VIEW" : "CALENDAR VIEW"}
-                      </Typography> */}
+                    <div className="iconToggle col-lg-3">
                       <Button
                         variant="contained"
                         onClick={toggleListView}
@@ -435,11 +410,9 @@ const CropSelector = () => {
                         {isListView ? "CALENDAR VIEW" : "LIST VIEW"}
                       </Button>
                     </div>
-                    {/* <small className="mt-2">
-                      {isListView ? "LIST VIEW" : "CALENDAR VIEW"}
-                    </small> */}
                   </Fragment>
                 )}
+                <div className="col-lg-9">hello world</div>
               </div>
             </div>
           </div>
@@ -474,21 +447,6 @@ const CropSelector = () => {
           ) : (
             <MyCoverCropList />
           )}
-          {/* {renderRelevantComponent} */}
-          {/* {isListView ? (
-            state.myCoverCropActivationFlag ? (
-              <MyCoverCropList />
-            ) : (
-              <CropTableComponent />
-            )
-          ) : (
-            <CropCalendarViewComponent />
-          )} */}
-          {/* {state.myCoverCropActivationFlag ? (
-            <MyCoverCropList />
-          ) : (
-            <CropTableComponent />
-          )} */}
         </div>
       </div>
     </div>
