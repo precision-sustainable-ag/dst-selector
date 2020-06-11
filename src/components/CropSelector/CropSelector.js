@@ -144,9 +144,14 @@ const CropSelector = () => {
     filterByStars();
   }, [state.selectedStars]);
 
+  const [text, setText] = useState("");
+  const [differenceText, setDifferenceText] = useState("");
+  const [disabledIdsTextNodes, setDisabledIdsTextNodes] = useState("");
+  const [split_arr, setSplit_arr] = useState([]);
   const filterByCheckboxValues = (keysArray) => {
     let crop_data = cropData;
     // console.log("keys", keysArray);
+    setText(JSON.stringify(keysArray));
     setfilterByCheckBoxKeys(keysArray);
     // console.log(keysArray);
     // let keysToBePushed = [];
@@ -173,73 +178,136 @@ const CropSelector = () => {
     // format == value~key
 
     // to "filter", add opacity: 0.2 and disabled class to relevant "id"
+    // let disabledIdsArr = [];
+    if (keysArray.length > 0) {
+      // setDisabledIds("rec1KNI87iZslbLy2");
+      let key = "";
+      let value = "";
 
-    let key = "";
-    let value = "";
-    // let obj = {};
-    var ids = [];
-    let namesA = [];
-    if (filterByCheckBoxKeys.length > 0) {
-      filterByCheckBoxKeys.forEach((element) => {
-        let wholeString = element.split("~");
-        key = wholeString[1];
-        value = wholeString[0];
-        // ids.push(value);
-        // obj[key] = value;
-
-        if (arrayKeys.includes(key)) {
-          console.log(`${key} is in arrayKeys\n`);
-
-          // it is an array
-          let a = crop_data.filter((x) => {
-            if (x.fields[key] && x.fields["Zone Decision"] === "Include")
-              return x.fields[key].indexOf(value);
-          });
-          a.forEach((ele) => {
-            // console.log(ele.id, ele.fields["Cover Crop Name"]);
-            // push id to ids array for resetting later
-            // if id is in not in array, add it else -> remove it
-            if (!ids.includes(ele.id)) {
-              ids.push(ele.id);
-              namesA.push(ele.fields["Cover Crop Name"]);
-            } else {
-              ids = ids.filter((item) => item !== ele.id);
-              namesA = namesA.filter(
-                (item) => item !== ele.fields["Cover Crop Name"]
-              );
-            }
-
-            let el = document.getElementById(ele.id);
-            el.classList.add("disabled");
-            el.style.opacity = "0.2";
-          });
-
-          // a.map((i) => {
-          //   let el = document.getElementById(i.id);
-          //   el.classList.add("disabled");
-          //   el.style.opacity = "0.2";
-          // });
+      keysArray.forEach((keyString) => {
+        let splitString = keyString.split("~");
+        key = splitString[0];
+        value = splitString[1];
+        console.log("key,val", { key: key, val: value });
+        if (arrayKeys.includes(value)) {
+          if (split_arr.length === 0) {
+            let spl_arr = crop_data.filter((x) => {
+              if (x.fields["Zone Decision"] === "Include") {
+                if (!x.fields[value].includes(key)) {
+                  return x;
+                }
+              }
+            });
+            console.log("split", spl_arr);
+            setSplit_arr(spl_arr);
+          } else {
+            let spl_arr = split_arr.filter((x) => {
+              if (x.fields["Zone Decision"] === "Include") {
+                if (!x.fields[value].includes(key)) {
+                  return x;
+                }
+              }
+            });
+            console.log("split", spl_arr);
+            setSplit_arr(spl_arr);
+          }
         } else {
-          console.log("not array");
+          console.log(false);
         }
-        console.log("Array Names: ", namesA);
-        setDisabledIds(ids);
       });
 
-      //  var a =  _.filter(crop_data, _.matches({ 'a': 4, 'c': 6 }));
+      // console.log(crop_data);
+      // sort crop_data based on ids
+      let ids = [];
+      console.log("statesplit", split_arr);
+      split_arr.map((cropItem) => {
+        // if id is not in disabled ids array add it else remove it
+        if (!ids.includes(cropItem.id)) {
+          ids.push(cropItem.id);
+        } else {
+          let itemIndex = ids.indexOf(cropItem.id);
+          if (itemIndex > -1) {
+            ids.splice(itemIndex, 1);
+          }
+        }
+      });
+      setDisabledIds(ids);
     } else {
-      // reset filter
-      // console.log("Disabled Ids", disabledIds);
+      // reset all css for checkboxes
 
-      // disabledIds.forEach((id) => {
-      //   let el = document.getElementById(id);
-      //   el.classList.remove("disabled");
-      //   el.style.opacity = "1";
-      // });
       setDisabledIds([]);
+      setSplit_arr([]);
     }
+    // console.log(disabledIdsArr);
+    // if (keysArray.length > 0) {
 
-    // console.log(keysArray);
+    //   let key = "";
+    //   let value = "";
+    //   // let obj = {};
+    //   var ids = [];
+    //   let namesA = [];
+    //   if (filterByCheckBoxKeys.length > 0) {
+    //     filterByCheckBoxKeys.forEach((element) => {
+    //       let wholeString = element.split("~");
+    //       key = wholeString[1];
+    //       value = wholeString[0];
+    //       // ids.push(value);
+    //       // obj[key] = value;
+
+    //       if (arrayKeys.includes(key)) {
+    //         console.log(`${key} is in arrayKeys\n`);
+
+    //         // it is an array
+    //         let a = crop_data.filter((x) => {
+    //           if (x.fields[key] && x.fields["Zone Decision"] === "Include")
+    //             return x.fields[key].indexOf(value);
+    //         });
+    //         a.forEach((ele) => {
+    //           // console.log(ele.id, ele.fields["Cover Crop Name"]);
+    //           // push id to ids array for resetting later
+    //           // if id is in not in array, add it else -> remove it
+    //           if (!ids.includes(ele.id)) {
+    //             ids.push(ele.id);
+    //             namesA.push(ele.fields["Cover Crop Name"]);
+    //           } else {
+    //             ids = ids.filter((item) => item !== ele.id);
+    //             namesA = namesA.filter(
+    //               (item) => item !== ele.fields["Cover Crop Name"]
+    //             );
+    //           }
+
+    //           let el = document.getElementById(ele.id);
+    //           el.classList.add("disabled");
+    //           el.style.opacity = "0.2";
+    //         });
+
+    //         // a.map((i) => {
+    //         //   let el = document.getElementById(i.id);
+    //         //   el.classList.add("disabled");
+    //         //   el.style.opacity = "0.2";
+    //         // });
+    //       } else {
+    //         console.log("not array");
+    //       }
+    //       console.log("Array Names: ", namesA);
+    //       setDisabledIds(ids);
+    //     });
+
+    //     //  var a =  _.filter(crop_data, _.matches({ 'a': 4, 'c': 6 }));
+    //   } else {
+    //     // reset filter
+    //     // console.log("Disabled Ids", disabledIds);
+
+    //     // disabledIds.forEach((id) => {
+    //     //   let el = document.getElementById(id);
+    //     //   el.classList.remove("disabled");
+    //     //   el.style.opacity = "1";
+    //     // });
+    //     setDisabledIds([]);
+    //   }
+
+    //   // console.log(keysArray);
+    // }
   };
 
   useEffect(() => {
@@ -249,15 +317,55 @@ const CropSelector = () => {
         ".calendarViewTableWrapper table > tbody > tr"
       ),
     ].map((x) => {
-      if (x.id !== "" || x.id !== undefined) return x.id;
+      // if (x.id !== "") {
+      return x.id;
+      // }
     });
+    // filter empty nodes(strings) from above array
+    allIds = allIds.filter((x) => x !== "");
+    // console.log(allIds);
 
-    let differenceIds = allIds.filter((x) => {
-      if (x !== "") return !disabledIds.includes(x);
+    // if (disabledIds.length > 0) {
+    let disabledIdssTextNodes = disabledIds.map((val) => {
+      return document.querySelector(`#${val} div div span:nth-child(2)`)
+        .innerText;
     });
+    setDisabledIdsTextNodes(JSON.stringify(disabledIdssTextNodes));
+    // }
+    // setDisabledIdsTextNodes(JSON.stringify(disabledIds));
+    // let differenceIds = allIds.filter((x) => {
+    //   if (x !== "") return !disabledIds.includes(x);
+    // });
+    // let differenceNames = differenceIds.map((val) => {
+    //   return document.querySelector(`#${val} div div span:nth-child(2)`)
+    //     .innerText;
+    // });
+    // setDifferenceText(JSON.stringify(differenceNames));
 
-    if (differenceIds.length > 0) {
-      differenceIds.map((id) => {
+    // if (differenceIds.length > 0) {
+    //   differenceIds.map((id) => {
+    //     let ele = document.getElementById(id);
+    //     ele.classList.remove("disabled");
+    //     ele.style.opacity = "1";
+    //   });
+    // }
+
+    if (disabledIds.length > 0) {
+      allIds.map((id) => {
+        if (disabledIds.includes(id)) {
+          // need not be disabled
+          let ele = document.getElementById(id);
+          ele.classList.add("disabled");
+          ele.style.opacity = "0.2";
+        } else {
+          // disable
+          let ele = document.getElementById(id);
+          ele.classList.remove("disabled");
+          ele.style.opacity = "1";
+        }
+      });
+    } else {
+      allIds.map((id) => {
         let ele = document.getElementById(id);
         ele.classList.remove("disabled");
         ele.style.opacity = "1";
@@ -412,7 +520,20 @@ const CropSelector = () => {
                     </div>
                   </Fragment>
                 )}
-                <div className="col-lg-9">hello world</div>
+                <div className="col-lg-9">
+                  <div className="row">
+                    <div className="col-12">
+                      {text !== "" ? (
+                        <div className="alert alert-primary" role="alert">
+                          {text}
+                        </div>
+                      ) : (
+                        ""
+                      )}
+                    </div>
+                    <div className="col-12">{disabledIdsTextNodes}</div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
