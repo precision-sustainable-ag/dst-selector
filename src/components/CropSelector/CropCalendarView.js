@@ -51,10 +51,22 @@ const CropCalendarViewComponent = (props) => {
   const [state, dispatch] = useContext(Context);
   const [goalRatings, setGoalRatings] = useState(0);
   const [legendModal, setLegendModal] = useState(false);
+  const [selectedCropsIds, setSelectedCropsIds] = useState([]);
 
   // DONE: Check year logic ? currently Juliet wants to return current year if month is before november
   // ref. useeffect();
   let currentYear = new Date().getFullYear();
+
+  useEffect(() => {
+    if (state.selectedCrops.length > 0) {
+      let selectedIds = state.selectedCrops.map((crop) => {
+        return crop.id;
+      });
+
+      setSelectedCropsIds(selectedIds);
+    }
+  }, [state.progress]);
+
   const addCropToBasket = (cropId, cropName, btnId, cropData) => {
     let container = document.getElementById(btnId);
     let selectedCrops = {};
@@ -356,7 +368,7 @@ const CropCalendarViewComponent = (props) => {
                               <td
                                 className="calendarTableCell"
                                 style={{
-                                  paddingTop: "0px",
+                                  // paddingTop: "0px",
                                   paddingBottom: "0px",
                                   // fontSize: '10px'
                                 }}
@@ -409,7 +421,13 @@ const CropCalendarViewComponent = (props) => {
                                     />
                                   )}
 
-                                  <Button style={{ borderRadius: "0px" }}>
+                                  <Button
+                                    size="small"
+                                    style={{
+                                      borderRadius: "0px",
+                                      paddingTop: "0px",
+                                    }}
+                                  >
                                     {crop.fields["Cover Crop Name"]}
                                   </Button>
                                 </div>
@@ -419,7 +437,7 @@ const CropCalendarViewComponent = (props) => {
                               ) : (
                                 <td
                                   style={{
-                                    paddingTop: "0px",
+                                    // paddingTop: "0px",
                                     paddingBottom: "0px",
                                     textAlign: "center",
                                     // fontSize: '10px'
@@ -461,7 +479,7 @@ const CropCalendarViewComponent = (props) => {
 
                               <td
                                 style={{
-                                  paddingTop: "0px",
+                                  // paddingTop: "0px",
                                   paddingBottom: "0px",
                                 }}
                               >
@@ -472,6 +490,11 @@ const CropCalendarViewComponent = (props) => {
                                     borderRadius: "0px",
                                     width: "130px",
                                   }}
+                                  className={
+                                    selectedCropsIds.includes(crop.id)
+                                      ? "activeCartBtn"
+                                      : ""
+                                  }
                                   onClick={() => {
                                     addCropToBasket(
                                       crop.id,
@@ -481,7 +504,9 @@ const CropCalendarViewComponent = (props) => {
                                     );
                                   }}
                                 >
-                                  ADD TO LIST
+                                  {selectedCropsIds.includes(crop.id)
+                                    ? "ADDED"
+                                    : "ADD TO LIST"}
                                 </LightButton>
                               </td>
                             </tr>
