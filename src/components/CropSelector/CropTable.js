@@ -189,7 +189,7 @@ const CropTableComponent = (props) => {
           <TableCell style={goalsLength === 0 ? { width: "50%" } : {}}>
             <table style={{ width: "100%", height: "40px" }}>
               <tbody>
-                <tr className="overlay">
+                {/* <tr className="overlay">
                   {allMonths.map((month, index) => (
                     // <tr>
                     <RenderCashCropOverlay
@@ -212,7 +212,7 @@ const CropTableComponent = (props) => {
                       month={index}
                     />
                   ))}
-                </tr>
+                </tr> */}
                 <tr>
                   {allMonths.map((month, index) => (
                     <GrowthWindowComponent
@@ -223,6 +223,17 @@ const CropTableComponent = (props) => {
                       month={index}
                     />
                   ))}
+                </tr>
+                <tr>
+                  {state.selectedGoals.length === 0
+                    ? allMonths.map((month) => <td>{month}</td>)
+                    : allMonths.map((month) =>
+                        month === "Jan" || month === "Dec" ? (
+                          <td>{month}</td>
+                        ) : (
+                          <td></td>
+                        )
+                      )}
                 </tr>
               </tbody>
             </table>

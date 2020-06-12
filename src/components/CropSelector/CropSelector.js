@@ -43,7 +43,7 @@ const CropSelector = () => {
   // let [isListView, setIsListView] = useState(true);
 
   // TODO: set list view as default. Calendar component is activated currently
-  let [isListView, setIsListView] = useState(false);
+  let [isListView, setIsListView] = useState(true);
 
   const [cropData, setCropData] = useState([]);
 
@@ -805,7 +805,7 @@ const CropSelector = () => {
               //   cropData={cropData}
               //   showGrowthWindow={showGrowthWindow}
               // />
-              <CropCalendarViewComponent />
+              <CropCalendarViewComponent cropData={cropData} />
             )
           ) : (
             <MyCoverCropList />

@@ -133,7 +133,23 @@ const GrowthWindowComponent = (props) => {
 
   return from === "calendar" ? (
     <td
-      className={`growthWindowCell ${id}`}
+      className={
+        state.cashCropData.dateRange.startDate !== ""
+          ? month >=
+            moment(state.cashCropData.dateRange.startDate, "MM/dd").format(
+              "M"
+            ) -
+              1 //these two should come from sidebar dateRange
+            ? month <=
+              moment(state.cashCropData.dateRange.endDate, "MM/dd").format(
+                "M"
+              ) -
+                1
+              ? `growthWindowCell ${id} cashCropLegendContainer `
+              : `growthWindowCell ${id}`
+            : `growthWindowCell ${id}`
+          : `growthWindowCell ${id}`
+      }
       style={
         month >= 11
           ? { borderLeft: "none", paddingTop: "0px", paddingBottom: "0px" }
@@ -199,7 +215,25 @@ const GrowthWindowComponent = (props) => {
       </div>
     </td>
   ) : from === "tableOnlyCashCropWindow" ? (
-    <td className="tableGrowthCell growthWindowCell">
+    <td
+      className={
+        state.cashCropData.dateRange.startDate !== ""
+          ? month >=
+            moment(state.cashCropData.dateRange.startDate, "MM/dd").format(
+              "M"
+            ) -
+              1 //these two should come from sidebar dateRange
+            ? month <=
+              moment(state.cashCropData.dateRange.endDate, "MM/dd").format(
+                "M"
+              ) -
+                1
+              ? `growthWindowCell ${id} cashCropLegendContainer `
+              : `growthWindowCell ${id}`
+            : `growthWindowCell ${id}`
+          : `growthWindowCell ${id}`
+      }
+    >
       <div
         className={
           state.cashCropData.dateRange.startDate !== ""
@@ -234,7 +268,25 @@ const GrowthWindowComponent = (props) => {
       </div>
     </td>
   ) : (
-    <td className="tableGrowthCell growthWindowCell">
+    <td
+      className={
+        state.cashCropData.dateRange.startDate !== ""
+          ? month >=
+            moment(state.cashCropData.dateRange.startDate, "MM/dd").format(
+              "M"
+            ) -
+              1 //these two should come from sidebar dateRange
+            ? month <=
+              moment(state.cashCropData.dateRange.endDate, "MM/dd").format(
+                "M"
+              ) -
+                1
+              ? `growthWindowCell ${id} cashCropLegendContainer `
+              : `growthWindowCell ${id}`
+            : `growthWindowCell ${id}`
+          : `growthWindowCell ${id}`
+      }
+    >
       <div className="legendContainer legendColor d-flex flex-direction-row ">
         <Tooltip
           arrow

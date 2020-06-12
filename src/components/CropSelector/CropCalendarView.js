@@ -45,7 +45,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const CropCalendarViewComponent = () => {
+const CropCalendarViewComponent = (props) => {
+  const { cropData } = props;
   const classes = useStyles();
   const [state, dispatch] = useContext(Context);
   const [goalRatings, setGoalRatings] = useState(0);
@@ -174,7 +175,7 @@ const CropCalendarViewComponent = () => {
     console.log(state.allGoals.length);
     state.allGoals.map((goal, index) => {
       let goalName = goal.fields["Cover Crop Goal"];
-      state.cropData.map((crop, index2) => {
+      cropData.map((crop, index2) => {
         // let cropId =
 
         console.log(
@@ -186,13 +187,14 @@ const CropCalendarViewComponent = () => {
   };
   const fetchRecordsIfUnavailable = () => {
     // get crop data if unavailable
-    dispatch({
-      type: "SET_AJAX_IN_PROGRESS",
-      data: true,
-    });
+
     let _promise = new Promise(async function (resolve, reject) {
-      if (state.cropData.length === 0) {
+      if (cropData.length === 0) {
         // get crop data
+        dispatch({
+          type: "SET_AJAX_IN_PROGRESS",
+          data: true,
+        });
         let records = await fetch(cropDataURL, { headers: headers });
         let json = records.json();
 
@@ -254,12 +256,11 @@ const CropCalendarViewComponent = () => {
                   <tr>
                     <td
                       colSpan={state.selectedGoals.length === 0 ? 1 : 2}
-                      style={{ width: "30%", backgroundColor: "white" }}
+                      style={{ backgroundColor: "white" }}
                     ></td>
                     <td
                       colSpan="12"
                       style={{
-                        width: "60%",
                         borderRight: "0px",
                         borderBottom: "5px solid white",
                         // borderTopLeftRadius: "10px",
@@ -289,10 +290,10 @@ const CropCalendarViewComponent = () => {
                         </Button>
                       </Typography>
                     </td>
-                    <td style={{ width: "10%", backgroundColor: "white" }}></td>
+                    <td style={{ backgroundColor: "white" }}></td>
                   </tr>
                   <tr>
-                    <td style={{ width: "20%" }}>
+                    <td style={{ width: "16%" }}>
                       <Typography variant="body1">COVER CROPS</Typography>
                     </td>
                     {/* {state.selectedGoals.length !== 0
@@ -315,7 +316,7 @@ const CropCalendarViewComponent = () => {
                     )}
 
                     {allMonths.map((month, index) => (
-                      <td key={`monthskey${index}`} style={{ width: "5%" }}>
+                      <td key={`monthskey${index}`} style={{}}>
                         <Typography variant="body1">{month}</Typography>
                       </td>
                     ))}
@@ -331,7 +332,7 @@ const CropCalendarViewComponent = () => {
                 </thead>
 
                 <tbody>
-                  <tr className="overlay">
+                  {/* <tr className="overlay">
                     <td></td>
                     {state.selectedGoals.length > 0 ? <td></td> : ""}
                     {allMonths.map((month, index) => (
@@ -346,9 +347,9 @@ const CropCalendarViewComponent = () => {
                       // <div>{month}</div>
                     ))}
                     <td></td>
-                  </tr>
-                  {state.cropData
-                    ? state.cropData.map((crop, index) => {
+                  </tr> */}
+                  {cropData
+                    ? cropData.map((crop, index) => {
                         if (crop.fields["Zone Decision"] === "Include")
                           return (
                             <tr key={`cropRow${index}`}>
@@ -384,10 +385,30 @@ const CropCalendarViewComponent = () => {
                               }}
                             />
                           )} */}
-                                  <img
-                                    src="//placehold.it/50x50"
-                                    alt="Placeholder"
-                                  />
+                                  {crop.fields["Image"] ? (
+                                    <img
+                                      src={crop.fields["Image"][0].url}
+                                      alt={crop.fields["Image"][0].filename}
+                                      style={{
+                                        width: "50px",
+                                        height: "50px",
+                                        maxWidth: "50px",
+                                        maxHeight: "50px",
+                                      }}
+                                    />
+                                  ) : (
+                                    <img
+                                      src="//placehold.it/50x50"
+                                      alt="placeholder"
+                                      style={{
+                                        width: "50px",
+                                        height: "50px",
+                                        maxWidth: "50px",
+                                        maxHeight: "50px",
+                                      }}
+                                    />
+                                  )}
+
                                   <Button style={{ borderRadius: "0px" }}>
                                     {crop.fields["Cover Crop Name"]}
                                   </Button>
@@ -400,6 +421,7 @@ const CropCalendarViewComponent = () => {
                                   style={{
                                     paddingTop: "0px",
                                     paddingBottom: "0px",
+                                    textAlign: "center",
                                     // fontSize: '10px'
                                   }}
                                 >
