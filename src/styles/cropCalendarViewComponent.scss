@@ -31,6 +31,7 @@ $defaultLegendColor: #f0f7eb;
 
 .calendarViewTable {
   tr {
+    width: 100%;
     // td:first-child {
     //   border-right: 10px solid white;
     // }
@@ -39,16 +40,17 @@ $defaultLegendColor: #f0f7eb;
     // border-radius: 10px;
     td:nth-child(1),
     td:nth-child(2) {
-      border-right: 10px solid white;
+      // border-right: 5px solid transparent;
     }
     td:nth-child(1) {
-      border-top-left-radius: 15px;
-      border-bottom-left-radius: 15px;
+      // width: 100vw !important;
+      // border-top-left-radius: 15px;
+      // border-bottom-left-radius: 15px;
     }
     td:last-child {
-      border-left: 10px solid white;
-      border-top-right-radius: 15px;
-      border-bottom-right-radius: 15px;
+      // border-left: 10px solid white;
+      // border-top-right-radius: 15px;
+      // border-bottom-right-radius: 15px;
     }
     td:nth-child(3),
     td:nth-child(4),
@@ -61,7 +63,7 @@ $defaultLegendColor: #f0f7eb;
     td:nth-child(11),
     td:nth-child(12),
     td:nth-child(13) {
-      border-right: 5px solid transparent;
+      // border-right: 5px solid transparent;
     }
   }
 
@@ -110,10 +112,30 @@ $defaultLegendColor: #f0f7eb;
         color: $frostSeedingPossibleColor;
       }
       &.cashCrop {
-        color: $cashCropGrowthWindowColor;
+        // color: $cashCropGrowthWindowColor;
       }
     }
     font-weight: 800;
+  }
+}
+
+// td.overlayGrowthWindowCell {
+//   width: calc(100% / 12);
+//   &.overlayGrowthCell.cashCropLegendContainer {
+//     padding-top: 0px;
+//     padding-bottom: 0px;
+//     position: ABSOLUTE;
+//     z-index: 999;
+//     background: $cashCropGrowthWindowColor;
+//     width: calc(100% / 24);
+//     height: 100%;
+//     opacity: 0.3;
+//   }
+// }
+tr.overlay {
+  td.overlayGrowthWindowCell {
+    border-right: 0px;
+    position: absolute;
   }
 }
 
@@ -127,7 +149,7 @@ td.growthWindowCell {
     &.cashCropLegendContainer {
       div {
         //   BUG: check
-        background: $cashCropGrowthWindowColor !important;
+        // background: $cashCropGrowthWindowColor !important;
         border-right: 1px solid white !important;
       }
     }

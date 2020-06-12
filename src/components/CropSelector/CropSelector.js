@@ -43,7 +43,7 @@ const CropSelector = () => {
   // let [isListView, setIsListView] = useState(true);
 
   // TODO: set list view as default. Calendar component is activated currently
-  let [isListView, setIsListView] = useState(true);
+  let [isListView, setIsListView] = useState(false);
 
   const [cropData, setCropData] = useState([]);
 
@@ -152,6 +152,8 @@ const CropSelector = () => {
   const [differenceText, setDifferenceText] = useState("");
   const [disabledIdsTextNodes, setDisabledIdsTextNodes] = useState("");
   const [split_arr, setSplit_arr] = useState([]);
+  // Debug text
+  const [debug, setDebug] = useState(true);
 
   useEffect(() => {
     filterByCheckboxValues("checkboxes", state.selectedCheckboxes);
@@ -270,6 +272,13 @@ const CropSelector = () => {
             }
           }
 
+          // setCropData(crop_data);
+          // CHECK: to see if sorting can work by breaking the objects into active:inactive
+          var dif = _.differenceWith(cropData, crop_data, _.isEqual);
+          dif = dif.filter((val) => val.fields["Zone Decision"] === "Include");
+          console.log(dif);
+          setActiveCropData(dif);
+          setInactiveCropData(crop_data);
           let disableIds = crop_data.map((cd) => cd.id);
           console.log("disable: ", disableIds);
           setDisabledIds(disableIds);
@@ -747,16 +756,22 @@ const CropSelector = () => {
                 )}
                 <div className="col-lg-9">
                   <div className="row">
-                    <div className="col-12">
-                      {text !== "" ? (
-                        <div className="alert alert-primary" role="alert">
-                          {text}
+                    {debug ? (
+                      <Fragment>
+                        <div className="col-12">
+                          {text !== "" ? (
+                            <div className="alert alert-primary" role="alert">
+                              {text}
+                            </div>
+                          ) : (
+                            ""
+                          )}
                         </div>
-                      ) : (
-                        ""
-                      )}
-                    </div>
-                    <div className="col-12">{disabledIdsTextNodes}</div>
+                        <div className="col-12">{disabledIdsTextNodes}</div>
+                      </Fragment>
+                    ) : (
+                      ""
+                    )}
                   </div>
                 </div>
               </div>
@@ -778,6 +793,8 @@ const CropSelector = () => {
             isListView ? (
               <CropTableComponent
                 cropData={cropData}
+                activeCropData={activeCropData}
+                inactiveCropData={inactiveCropData}
                 showGrowthWindow={showGrowthWindow}
                 sortAllGoals={setSortAllGoals}
                 sortAllCrops={sortCropsBy}
