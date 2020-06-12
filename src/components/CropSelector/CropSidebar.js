@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect } from "react";
 
 import {
   makeStyles,
@@ -65,7 +65,9 @@ const useStyles = makeStyles((theme) => ({
 const CropSidebarComponent = (props) => {
   const classes = useStyles();
   const [state, dispatch] = React.useContext(Context);
-  const [cropFiltersOpen, setCropFiltersOpen] = React.useState(false);
+  const [cropFiltersOpen, setCropFiltersOpen] = React.useState(
+    props.isListView ? true : false
+  );
   const [cashCropOpen, setCashCropOpen] = React.useState(false);
   const [goalsOpen, setGoalsOpen] = React.useState(true);
 
@@ -79,6 +81,16 @@ const CropSidebarComponent = (props) => {
   const [sidebarFilterVariables, setSidebarFilterVariables] = React.useState(
     []
   );
+
+  useEffect(() => {
+    if (props.isListView) {
+      setCropFiltersOpen(true);
+      setCashCropOpen(false);
+    } else {
+      setCropFiltersOpen(false);
+      setCashCropOpen(true);
+    }
+  }, [props.isListView]);
 
   // const renderCheckBoxes = (arrayIndex) => {
   //   console.log(sidebarFiltersObj[arrayIndex]);

@@ -234,17 +234,25 @@ const CropSelector = () => {
     let keys = [];
     if (type === "checkboxes") {
       if (keysArray.length > 0) {
+        // check if its a boolean checkbox
+
         let keyValObj = keysArray.map((keyVal) => {
-          let splitString = keyVal.split("~");
-          let key = splitString[1];
-          keys.push(key);
-          let value = splitString[0];
-          if (key === "Soil Textures") {
-            value = value.toLowerCase();
+          if (keyVal.includes("~")) {
+            let splitString = keyVal.split("~");
+
+            let key = splitString[1];
+            keys.push(key);
+            let value = splitString[0];
+            if (key === "Soil Textures") {
+              value = value.toLowerCase();
+            }
+            return { [key]: value };
+          } else {
+            return { [keyVal]: true };
           }
-          return { [key]: value };
         });
-        let spl_arr = [];
+
+        console.log(keyValObj);
 
         let validKeysLength = 0;
 
@@ -263,8 +271,15 @@ const CropSelector = () => {
               crop_data = crop_data.filter((x) => {
                 for (const [key, value] of Object.entries(val)) {
                   if (x.fields["Zone Decision"] === "Include") {
-                    if (!x.fields[key].includes(value)) {
-                      return x;
+                    if (Array.isArray(x.fields[key])) {
+                      if (!x.fields[key].includes(value)) {
+                        return x;
+                      }
+                    } else {
+                      // boolean ?
+                      if (x.fields[key] !== value) {
+                        return x;
+                      }
                     }
                   }
                 }
@@ -284,6 +299,19 @@ const CropSelector = () => {
           setDisabledIds(disableIds);
         }
         //TODO: sort crop data based on filtered values
+      } else {
+        if (inactiveCropData.length > 0) {
+          // get id of all inactive crop data and reset css
+          inactiveCropData.map((crop) => {
+            let ele = document.getElementById(crop.id);
+
+            ele.classList.remove("disabled");
+            ele.style.opacity = "1";
+          });
+
+          setInactiveCropData([]);
+          setActiveCropData([]);
+        }
       }
     }
 
@@ -785,6 +813,7 @@ const CropSelector = () => {
             sortEnvTolCropData={sortEnvTolCropData}
             setGrowthWindow={setShowGrowthWindow}
             filterByCheckboxValues={filterByCheckboxValues}
+            isListView={isListView}
           />
         </div>
 
