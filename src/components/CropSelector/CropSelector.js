@@ -153,7 +153,7 @@ const CropSelector = () => {
   const [disabledIdsTextNodes, setDisabledIdsTextNodes] = useState("");
   const [split_arr, setSplit_arr] = useState([]);
   // Debug text
-  const [debug, setDebug] = useState(true);
+  const [debug, setDebug] = useState(false);
 
   useEffect(() => {
     filterByCheckboxValues("checkboxes", state.selectedCheckboxes);

@@ -5,7 +5,7 @@ import Reducer from "./Reducer";
 
 const initialState = {
   // progress: 3,
-  progress: 5,
+  progress: 0,
   // address: "",
   address: "",
   addressSearchPreference: "address",
@@ -439,8 +439,8 @@ const initialState = {
   //   }
   // ],
 
-  // selectedGoals: ["Good Grazing", "Penetrates Pow Pan", "Lasting Residue"],
-  selectedGoals: ["Good Grazing"],
+  // selectedGoals: ["Good Grazing"],
+  selectedGoals: [],
   zoom: 13,
   addressVerified: false,
   snackOpen: false,
