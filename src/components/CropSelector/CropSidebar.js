@@ -424,7 +424,7 @@ const CropSidebarComponent = (props) => {
       </ListItem>
       <Collapse in={cropFiltersOpen} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
-          <ListItem>
+          {/* <ListItem>
             <FormControlLabel
               classes={{ root: classes.formControlLabel }}
               control={
@@ -438,7 +438,7 @@ const CropSidebarComponent = (props) => {
                 <Typography variant="body2">Zone Decision = Include</Typography>
               }
             />
-          </ListItem>
+          </ListItem> */}
           {sidebarFiltersObj.map((sidebarObj, index1) => {
             return (
               <Fragment key={index1}>
