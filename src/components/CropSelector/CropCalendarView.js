@@ -22,6 +22,7 @@ import GrowthWindowComponent from "./GrowthWindow";
 import { AddCircle, FiberManualRecord, CloseRounded } from "@material-ui/icons";
 import CropLegendModal from "./CropLegendModal";
 import { AirtableBearerKey } from "../../shared/keys";
+import RenderCashCropOverlay from "./RenderCashCropOverlay";
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -243,6 +244,8 @@ const CropCalendarViewComponent = () => {
         ) : (
           <div className="row">
             <div className="col-md-12" style={{ lineHeight: "0.5" }}>
+              {/* <div className="table-overlay">
+                <span> */}
               <table
                 className="table calendarViewTable table-sm table-borderless"
                 style={{}}
@@ -250,7 +253,7 @@ const CropCalendarViewComponent = () => {
                 <thead className="tableHeadWrapper">
                   <tr>
                     <td
-                      colSpan="2"
+                      colSpan={state.selectedGoals.length === 0 ? 1 : 2}
                       style={{ width: "30%", backgroundColor: "white" }}
                     ></td>
                     <td
@@ -259,8 +262,8 @@ const CropCalendarViewComponent = () => {
                         width: "60%",
                         borderRight: "0px",
                         borderBottom: "5px solid white",
-                        borderTopLeftRadius: "10px",
-                        borderTopRightRadius: "10px",
+                        // borderTopLeftRadius: "10px",
+                        // borderTopRightRadius: "10px",
                       }}
                     >
                       <Typography
@@ -328,6 +331,22 @@ const CropCalendarViewComponent = () => {
                 </thead>
 
                 <tbody>
+                  <tr className="overlay">
+                    <td></td>
+                    {state.selectedGoals.length > 0 ? <td></td> : ""}
+                    {allMonths.map((month, index) => (
+                      // <tr>
+                      <RenderCashCropOverlay
+                        from="calendar"
+                        key={index}
+                        id={`overlayGrowthCell${index}`}
+                        month={index}
+                      />
+                      // </tr>
+                      // <div>{month}</div>
+                    ))}
+                    <td></td>
+                  </tr>
                   {state.cropData
                     ? state.cropData.map((crop, index) => {
                         if (crop.fields["Zone Decision"] === "Include")
@@ -449,6 +468,8 @@ const CropCalendarViewComponent = () => {
                     : ""}
                 </tbody>
               </table>
+              {/* </span>
+              </div> */}
             </div>
           </div>
         )}
