@@ -33,9 +33,13 @@ import GrowthWindowComponent from "./GrowthWindow";
 import "../../styles/cropCalendarViewComponent.scss";
 import CropDetailsModalComponent from "./CropDetailsModal";
 import CropLegendModal from "./CropLegendModal";
+import RenderCashCropOverlay from "./RenderCashCropOverlay";
 
 const CropTableComponent = (props) => {
   const cropData = props.cropData || [];
+  const inactiveCropData = props.inactiveCropData || [];
+  const activeCropData = props.activeCropData || [];
+
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   const [state, dispatch] = useContext(Context);
@@ -185,6 +189,19 @@ const CropTableComponent = (props) => {
           <TableCell style={goalsLength === 0 ? { width: "50%" } : {}}>
             <table style={{ width: "100%", height: "40px" }}>
               <tbody>
+                <tr className="overlay">
+                  {allMonths.map((month, index) => (
+                    // <tr>
+                    <RenderCashCropOverlay
+                      from="tableOnlyCashCropWindow"
+                      key={index}
+                      id={`overlayGrowthCell${index}`}
+                      month={index}
+                    />
+                    // </tr>
+                    // <div>{month}</div>
+                  ))}
+                </tr>
                 <tr>
                   {allMonths.map((month, index) => (
                     <GrowthWindowComponent
@@ -371,6 +388,323 @@ const CropTableComponent = (props) => {
     // );
   };
 
+  const activeCropPresent = () => {
+    if (activeCropData.length > 0) return true;
+    else return false;
+  };
+  const inactiveCropPresent = () => {
+    if (inactiveCropData.length > 0) return true;
+    else return false;
+  };
+
+  const RenderActiveInactiveCropData = () => {
+    return (
+      <Fragment>
+        <tr>
+          <td colSpan={4 + state.selectedGoals.length}>Active-Inactive</td>
+        </tr>
+        {activeCropPresent
+          ? activeCropData.map((crop, index) => {
+              if (
+                // !crop.fields["Cover Crop Name"].trim() !==
+                // "Ok hopefully he answers me soon.".trim()
+                true
+              ) {
+                if (crop.fields["Zone Decision"] === "Include")
+                  return (
+                    <TableRow key={`croprow${index}`} id={crop.id}>
+                      <TableCell
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                        }}
+                      >
+                        {/* {this.getCropImageFromAPI(
+                crop.fields["Cover Crop Name"]
+              )} */}
+                        {crop.fields["Image"] ? (
+                          <img
+                            src={crop.fields["Image"][0].url}
+                            alt={crop.fields["Image"][0].filename}
+                            style={{
+                              width: "100px",
+                              height: "100px",
+                              maxWidth: "100px",
+                              maxHeight: "100px",
+                            }}
+                          />
+                        ) : (
+                          <img
+                            src="//placehold.it/100x100"
+                            alt="placeholder"
+                            style={{
+                              width: "100px",
+                              height: "100px",
+                              maxWidth: "100px",
+                              maxHeight: "100px",
+                            }}
+                          />
+                        )}
+
+                        <div className="cropDetailsText" style={{}}>
+                          <div className="part1_ut">
+                            <span className="cropCategory text-uppercase">
+                              {crop.fields["Cover Crop Group"]}
+                            </span>
+                            <span className="cropName font-weight-lighter">
+                              {crop.fields["Cover Crop Name"]}
+                            </span>
+                            <span className="cropScientificName">
+                              {trimString(crop.fields["Scientific Name"], 25)}
+                            </span>
+                          </div>
+                          <div className="part2_lt">
+                            <span className="cropDuration text-uppercase font-weight-bold">
+                              {crop.fields["Duration"]}
+                            </span>
+                          </div>
+                        </div>
+                      </TableCell>
+                      <TableCell style={{ textAlign: "left" }}>
+                        <div>
+                          <Typography
+                            variant="subtitle2"
+                            component="b"
+                            className="font-weight-bold"
+                          >
+                            C TO N RATIO:{" "}
+                          </Typography>
+                          <Typography variant="subtitle2" component="b">
+                            {crop.fields["C to N Ratio"]}
+                          </Typography>
+                        </div>
+                        <div>
+                          <Typography
+                            variant="subtitle2"
+                            component="b"
+                            className="font-weight-bold"
+                          >
+                            N FIXED:{" "}
+                          </Typography>
+                          <Typography variant="subtitle2" component="b">
+                            {
+                              crop.fields[
+                                "Nitrogen Accumulation Min, Legumes (lbs/A/y)"
+                              ]
+                            }
+                            -
+                            {
+                              crop.fields[
+                                "Nitrogen Accumulation Max, Legumes (lbs/A/y)"
+                              ]
+                            }{" "}
+                            lbs/A/y
+                          </Typography>
+                        </div>
+                        <div>
+                          <Typography
+                            variant="subtitle2"
+                            component="b"
+                            className="font-weight-bold"
+                          >
+                            DRY MATTER:{" "}
+                          </Typography>
+                          <Typography variant="subtitle2" component="b">
+                            {crop.fields["Dry Matter Min (lbs/A/y)"]}-
+                            {crop.fields["Dry Matter Max (lbs/A/y)"]} lbs/A/y
+                          </Typography>
+                        </div>
+                      </TableCell>
+                      {getCardFlex(crop, index)}
+
+                      {/* <td style={{}}> */}
+                      {/* <div className="button1">
+                  <LightButton
+                    id={`cartBtn${index}`}
+                    style={{
+                      borderRadius: CustomStyles().nonRoundedRadius,
+                      width: "130px"
+                    }}
+                    onClick={() => {
+                      addCropToBasket(
+                        crop.id,
+                        crop.fields["Cover Crop Name"],
+                        `cartBtn${index}`,
+                        crop.fields
+                      );
+                    }}
+                  >
+                    ADD TO LIST
+                  </LightButton>
+                </div>
+                <br />
+                <div className="button2">
+                  <Button
+                    size="small"
+                    onClick={() => handleModalOpen(crop)}
+                  >
+                    View Details
+                  </Button>
+                </div> */}
+                      {/* </td> */}
+                    </TableRow>
+                  );
+              } else return "";
+            })
+          : ""}
+
+        {inactiveCropPresent
+          ? inactiveCropData.map((crop, index) => {
+              if (
+                // !crop.fields["Cover Crop Name"].trim() !==
+                // "Ok hopefully he answers me soon.".trim()
+                true
+              ) {
+                if (crop.fields["Zone Decision"] === "Include")
+                  return (
+                    <TableRow key={`croprow${index}`} id={crop.id}>
+                      <TableCell
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                        }}
+                      >
+                        {/* {this.getCropImageFromAPI(
+                crop.fields["Cover Crop Name"]
+              )} */}
+                        {crop.fields["Image"] ? (
+                          <img
+                            src={crop.fields["Image"][0].url}
+                            alt={crop.fields["Image"][0].filename}
+                            style={{
+                              width: "100px",
+                              height: "100px",
+                              maxWidth: "100px",
+                              maxHeight: "100px",
+                            }}
+                          />
+                        ) : (
+                          <img
+                            src="//placehold.it/100x100"
+                            alt="placeholder"
+                            style={{
+                              width: "100px",
+                              height: "100px",
+                              maxWidth: "100px",
+                              maxHeight: "100px",
+                            }}
+                          />
+                        )}
+
+                        <div className="cropDetailsText" style={{}}>
+                          <div className="part1_ut">
+                            <span className="cropCategory text-uppercase">
+                              {crop.fields["Cover Crop Group"]}
+                            </span>
+                            <span className="cropName font-weight-lighter">
+                              {crop.fields["Cover Crop Name"]}
+                            </span>
+                            <span className="cropScientificName">
+                              {trimString(crop.fields["Scientific Name"], 25)}
+                            </span>
+                          </div>
+                          <div className="part2_lt">
+                            <span className="cropDuration text-uppercase font-weight-bold">
+                              {crop.fields["Duration"]}
+                            </span>
+                          </div>
+                        </div>
+                      </TableCell>
+                      <TableCell style={{ textAlign: "left" }}>
+                        <div>
+                          <Typography
+                            variant="subtitle2"
+                            component="b"
+                            className="font-weight-bold"
+                          >
+                            C TO N RATIO:{" "}
+                          </Typography>
+                          <Typography variant="subtitle2" component="b">
+                            {crop.fields["C to N Ratio"]}
+                          </Typography>
+                        </div>
+                        <div>
+                          <Typography
+                            variant="subtitle2"
+                            component="b"
+                            className="font-weight-bold"
+                          >
+                            N FIXED:{" "}
+                          </Typography>
+                          <Typography variant="subtitle2" component="b">
+                            {
+                              crop.fields[
+                                "Nitrogen Accumulation Min, Legumes (lbs/A/y)"
+                              ]
+                            }
+                            -
+                            {
+                              crop.fields[
+                                "Nitrogen Accumulation Max, Legumes (lbs/A/y)"
+                              ]
+                            }{" "}
+                            lbs/A/y
+                          </Typography>
+                        </div>
+                        <div>
+                          <Typography
+                            variant="subtitle2"
+                            component="b"
+                            className="font-weight-bold"
+                          >
+                            DRY MATTER:{" "}
+                          </Typography>
+                          <Typography variant="subtitle2" component="b">
+                            {crop.fields["Dry Matter Min (lbs/A/y)"]}-
+                            {crop.fields["Dry Matter Max (lbs/A/y)"]} lbs/A/y
+                          </Typography>
+                        </div>
+                      </TableCell>
+                      {getCardFlex(crop, index)}
+
+                      {/* <td style={{}}> */}
+                      {/* <div className="button1">
+                  <LightButton
+                    id={`cartBtn${index}`}
+                    style={{
+                      borderRadius: CustomStyles().nonRoundedRadius,
+                      width: "130px"
+                    }}
+                    onClick={() => {
+                      addCropToBasket(
+                        crop.id,
+                        crop.fields["Cover Crop Name"],
+                        `cartBtn${index}`,
+                        crop.fields
+                      );
+                    }}
+                  >
+                    ADD TO LIST
+                  </LightButton>
+                </div>
+                <br />
+                <div className="button2">
+                  <Button
+                    size="small"
+                    onClick={() => handleModalOpen(crop)}
+                  >
+                    View Details
+                  </Button>
+                </div> */}
+                      {/* </td> */}
+                    </TableRow>
+                  );
+              } else return "";
+            })
+          : ""}
+      </Fragment>
+    );
+  };
   return cropData.length !== 0 ? (
     <TableContainer>
       <div className="table-responsive calendarViewTableWrapper">
@@ -479,6 +813,9 @@ const CropTableComponent = (props) => {
             </TableHead>
 
             <TableBody className="tableBodyWrapper">
+              {/* {activeCropData.length > 0 || inactiveCropData.length > 0 ? (
+                <RenderActiveInactiveCropData />
+              ) : ( */}
               {props.cropData.map((crop, index) => {
                 if (
                   // !crop.fields["Cover Crop Name"].trim() !==
