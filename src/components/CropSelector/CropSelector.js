@@ -24,6 +24,7 @@ import MyCoverCropList from "../MyCoverCropList/MyCoverCropList";
 import CropCalendarViewComponent from "./CropCalendarView";
 import CropSidebarComponent from "./CropSidebar";
 import CropCardViewComponent from "./CardView/CropCardView";
+import { keys } from "lodash";
 
 const _ = require("lodash");
 
@@ -35,7 +36,10 @@ const CropSelector = () => {
   const [sortAllGoals, setSortAllGoals] = useState(false);
   const [sortPreference, setSortPreference] = useState("desc");
   const [disabledIds, setDisabledIds] = useState([]);
-  const [filterByCheckBoxKeys, setfilterByCheckBoxKeys] = useState([]);
+  const [starDisabledIds, setStarDisabledIds] = useState([]);
+  const [activeCropData, setActiveCropData] = useState([]);
+  const [inactiveCropData, setInactiveCropData] = useState([]);
+  // const [filterByCheckBoxKeys, setfilterByCheckBoxKeys] = useState([]);
   // let [isListView, setIsListView] = useState(true);
 
   // TODO: set list view as default. Calendar component is activated currently
@@ -110,7 +114,7 @@ const CropSelector = () => {
           newArr = disabledIds.filter((e) => e !== val.id);
         });
 
-        setDisabledIds(newArr);
+        setStarDisabledIds(newArr);
       } else {
         let ids = [];
         let zoneIncludeArr = crop_data.filter((x) => {
@@ -135,24 +139,34 @@ const CropSelector = () => {
 
           // if()
         });
-        setDisabledIds(ids);
+        setStarDisabledIds(ids);
       }
     }
   };
 
-  useEffect(() => {
-    filterByStars();
-  }, [state.selectedStars]);
+  // useEffect(() => {
+  //   filterByStars();
+  // }, [state.selectedStars]);
 
   const [text, setText] = useState("");
   const [differenceText, setDifferenceText] = useState("");
   const [disabledIdsTextNodes, setDisabledIdsTextNodes] = useState("");
   const [split_arr, setSplit_arr] = useState([]);
-  const filterByCheckboxValues = (keysArray) => {
+
+  useEffect(() => {
+    filterByCheckboxValues("checkboxes", state.selectedCheckboxes);
+  }, [state.selectedCheckboxes]);
+
+  useEffect(() => {
+    filterByCheckboxValues("stars", state.selectedStars);
+  }, [state.selectedStars]);
+
+  const filterByCheckboxValues = (type, keysArray) => {
     let crop_data = cropData;
     // console.log("keys", keysArray);
     setText(JSON.stringify(keysArray));
-    setfilterByCheckBoxKeys(keysArray);
+    // setfilterByCheckBoxKeys(keysArray);
+
     // console.log(keysArray);
     // let keysToBePushed = [];
     // keysArray.forEach((k) => {
@@ -179,65 +193,201 @@ const CropSelector = () => {
 
     // to "filter", add opacity: 0.2 and disabled class to relevant "id"
     // let disabledIdsArr = [];
-    if (keysArray.length > 0) {
-      // setDisabledIds("rec1KNI87iZslbLy2");
-      let key = "";
-      let value = "";
 
-      keysArray.forEach((keyString) => {
-        let splitString = keyString.split("~");
-        key = splitString[0];
-        value = splitString[1];
-        console.log("key,val", { key: key, val: value });
-        if (arrayKeys.includes(value)) {
-          if (split_arr.length === 0) {
-            let spl_arr = crop_data.filter((x) => {
-              if (x.fields["Zone Decision"] === "Include") {
-                if (!x.fields[value].includes(key)) {
-                  return x;
-                }
-              }
-            });
-            console.log("split", spl_arr);
-            setSplit_arr(spl_arr);
-          } else {
-            let spl_arr = split_arr.filter((x) => {
-              if (x.fields["Zone Decision"] === "Include") {
-                if (!x.fields[value].includes(key)) {
-                  return x;
-                }
-              }
-            });
-            console.log("split", spl_arr);
-            setSplit_arr(spl_arr);
+    // attempt 3
+    console.log("ATT3KEYSARR", keysArray);
+
+    // let keys = [];
+    // let values = [];
+    // let keyValObj = {};
+
+    // for (let key in keysArray) {
+    //   console.log(keysArray[key]);
+    //   let splitString = keysArray[key].split("~");
+    //   keys.push(splitString[1]);
+    //   values.push(splitString[0]);
+
+    // }
+    // console.log("keys", keys);
+    // console.log("vals", values);
+
+    // let spl_arr = crop_data.filter((x) => {
+    //   if (keys.length > 1) {
+    //     let keysLength = [];
+    //       if (x.fields["Zone Decision"] === "Include") {
+    //         if (!x.fields[keys[i]].includes(values[i])) {
+    //           return x;
+    //         }
+    //       }
+
+    //   } else {
+    //     if (x.fields["Zone Decision"] === "Include") {
+    //       if (!x.fields[keys[0]].includes(values[0])) {
+    //         return x;
+    //       }
+    //     }
+    //   }
+    // });
+    // console.log(spl_arr);
+    let keys = [];
+    if (type === "checkboxes") {
+      if (keysArray.length > 0) {
+        let keyValObj = keysArray.map((keyVal) => {
+          let splitString = keyVal.split("~");
+          let key = splitString[1];
+          keys.push(key);
+          let value = splitString[0];
+          if (key === "Soil Textures") {
+            value = value.toLowerCase();
           }
-        } else {
-          console.log(false);
-        }
-      });
+          return { [key]: value };
+        });
+        let spl_arr = [];
 
-      // console.log(crop_data);
-      // sort crop_data based on ids
-      let ids = [];
-      console.log("statesplit", split_arr);
-      split_arr.map((cropItem) => {
-        // if id is not in disabled ids array add it else remove it
-        if (!ids.includes(cropItem.id)) {
-          ids.push(cropItem.id);
-        } else {
-          let itemIndex = ids.indexOf(cropItem.id);
-          if (itemIndex > -1) {
-            ids.splice(itemIndex, 1);
+        let validKeysLength = 0;
+
+        keys.forEach((key) => {
+          if (arrayKeys.includes(key)) {
+            validKeysLength += 1;
           }
-        }
-      });
-      setDisabledIds(ids);
-    } else {
-      // reset all css for checkboxes
+        });
 
-      setDisabledIds([]);
-      setSplit_arr([]);
+        if (validKeysLength === keys.length) {
+          // console.log(keyValObj);
+          keyValObj = Object.entries(keyValObj);
+          // console.log(keyValObj);
+          for (const [index, val] of keyValObj) {
+            if (crop_data.length > 0) {
+              crop_data = crop_data.filter((x) => {
+                for (const [key, value] of Object.entries(val)) {
+                  if (x.fields["Zone Decision"] === "Include") {
+                    if (!x.fields[key].includes(value)) {
+                      return x;
+                    }
+                  }
+                }
+              });
+            }
+          }
+
+          let disableIds = crop_data.map((cd) => cd.id);
+          console.log("disable: ", disableIds);
+          setDisabledIds(disableIds);
+        }
+        //TODO: sort crop data based on filtered values
+      }
     }
+
+    if (type === "stars") {
+      let selectedStars = keysArray;
+      for (let [key, value] of Object.entries(selectedStars)) {
+        // console.log(`------\n${key}: ${value}------\n`);
+        if (value === null) {
+          // reset that key i.e. pick its id and reset css
+          let newArr = [];
+          let zoneIncludeArr = crop_data.filter((x) => {
+            if (
+              x.fields["Zone Decision"] === "Include" &&
+              x.fields[key] !== undefined &&
+              x.fields[key] === value
+            )
+              return x.fields;
+          });
+
+          zoneIncludeArr.forEach((val) => {
+            newArr = starDisabledIds.filter((e) => e !== val.id);
+          });
+
+          setStarDisabledIds(newArr);
+          console.log("disabled:if ", newArr);
+        } else {
+          let ids = [];
+          let zoneIncludeArr = crop_data.filter((x) => {
+            if (
+              x.fields["Zone Decision"] === "Include" &&
+              x.fields[key] !== undefined
+            )
+              return x.fields;
+          });
+
+          zoneIncludeArr.forEach((val, index) => {
+            // console.log(
+            //   `${val.fields["Cover Crop Name"]} : ${val.fields[key]}, Expected: ${value}`
+            // );
+            if (val.fields[key] !== value) {
+              ids.push(val.id);
+              let el = document.getElementById(val.id);
+              el.classList.add("disabled");
+              el.style.opacity = "0.2";
+            }
+            // console.log(val);
+
+            // if()
+          });
+          console.log("disabled:else ", ids);
+          setStarDisabledIds(ids);
+        }
+      }
+    }
+    // if (keysArray.length > 0) {
+    //   // setDisabledIds("rec1KNI87iZslbLy2");
+    //   let key = "";
+    //   let value = "";
+
+    //   keysArray.forEach((keyString) => {
+    //     let splitString = keyString.split("~");
+    //     key = splitString[0];
+    //     value = splitString[1];
+    //     console.log("key,val", { key: key, val: value });
+    //     if (arrayKeys.includes(value)) {
+    //       if (split_arr.length === 0) {
+    //         let spl_arr = crop_data.filter((x) => {
+    //           if (x.fields["Zone Decision"] === "Include") {
+    //             if (!x.fields[value].includes(key)) {
+    //               return x;
+    //             }
+    //           }
+    //         });
+    //         console.log("split", spl_arr);
+    //         setSplit_arr(spl_arr);
+    //       } else {
+    //         let spl_arr = split_arr.filter((x) => {
+    //           if (x.fields["Zone Decision"] === "Include") {
+    //             if (!x.fields[value].includes(key)) {
+    //               return x;
+    //             }
+    //           }
+    //         });
+    //         console.log("split", spl_arr);
+    //         setSplit_arr(spl_arr);
+    //       }
+    //     } else {
+    //       console.log(false);
+    //     }
+    //   });
+
+    //   // console.log(crop_data);
+    //   // sort crop_data based on ids
+    //   let ids = [];
+    //   console.log("statesplit", split_arr);
+    //   split_arr.map((cropItem) => {
+    //     // if id is not in disabled ids array add it else remove it
+    //     if (!ids.includes(cropItem.id)) {
+    //       ids.push(cropItem.id);
+    //     } else {
+    //       let itemIndex = ids.indexOf(cropItem.id);
+    //       if (itemIndex > -1) {
+    //         ids.splice(itemIndex, 1);
+    //       }
+    //     }
+    //   });
+    //   setDisabledIds(ids);
+    // } else {
+    //   // reset all css for checkboxes
+
+    //   setDisabledIds([]);
+    //   setSplit_arr([]);
+    // }
     // console.log(disabledIdsArr);
     // if (keysArray.length > 0) {
 
@@ -352,7 +502,7 @@ const CropSelector = () => {
 
     if (disabledIds.length > 0) {
       allIds.map((id) => {
-        if (disabledIds.includes(id)) {
+        if (disabledIds.includes(id) || starDisabledIds.includes(id)) {
           // need not be disabled
           let ele = document.getElementById(id);
           ele.classList.add("disabled");
@@ -365,13 +515,88 @@ const CropSelector = () => {
         }
       });
     } else {
-      allIds.map((id) => {
-        let ele = document.getElementById(id);
-        ele.classList.remove("disabled");
-        ele.style.opacity = "1";
-      });
+      if (starDisabledIds.length === 0) {
+        allIds.map((id) => {
+          let ele = document.getElementById(id);
+          ele.classList.remove("disabled");
+          ele.style.opacity = "1";
+        });
+      } else {
+        allIds.map((id) => {
+          if (starDisabledIds.includes(id)) {
+            // need not be disabled
+            let ele = document.getElementById(id);
+            ele.classList.add("disabled");
+            ele.style.opacity = "0.2";
+          } else {
+            // disable
+            let ele = document.getElementById(id);
+            ele.classList.remove("disabled");
+            ele.style.opacity = "1";
+          }
+        });
+      }
     }
   }, [disabledIds]);
+
+  useEffect(() => {
+    // get all ids and compare with the disabled ids array
+    let allIds = [
+      ...document.querySelectorAll(
+        ".calendarViewTableWrapper table > tbody > tr"
+      ),
+    ].map((x) => {
+      // if (x.id !== "") {
+      return x.id;
+      // }
+    });
+    // filter empty nodes(strings) from above array
+    allIds = allIds.filter((x) => x !== "");
+    // console.log(allIds);
+
+    // if (disabledIds.length > 0) {
+    let disabledIdssTextNodes = disabledIds.map((val) => {
+      return document.querySelector(`#${val} div div span:nth-child(2)`)
+        .innerText;
+    });
+    if (starDisabledIds.length > 0) {
+      allIds.map((id) => {
+        if (disabledIds.includes(id) || starDisabledIds.includes(id)) {
+          // need not be disabled
+          let ele = document.getElementById(id);
+          ele.classList.add("disabled");
+          ele.style.opacity = "0.2";
+        } else {
+          // disable
+          let ele = document.getElementById(id);
+          ele.classList.remove("disabled");
+          ele.style.opacity = "1";
+        }
+      });
+    } else {
+      if (disabledIds.length === 0) {
+        allIds.map((id) => {
+          let ele = document.getElementById(id);
+          ele.classList.remove("disabled");
+          ele.style.opacity = "1";
+        });
+      } else {
+        allIds.map((id) => {
+          if (disabledIds.includes(id)) {
+            // need not be disabled
+            let ele = document.getElementById(id);
+            ele.classList.add("disabled");
+            ele.style.opacity = "0.2";
+          } else {
+            // disable
+            let ele = document.getElementById(id);
+            ele.classList.remove("disabled");
+            ele.style.opacity = "1";
+          }
+        });
+      }
+    }
+  }, [starDisabledIds]);
 
   const sortCropsBy = (orderBy) => {
     if (state.cropData.length > 0) {
