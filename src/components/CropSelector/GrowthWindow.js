@@ -152,8 +152,8 @@ const GrowthWindowComponent = (props) => {
       }
       style={
         month >= 11
-          ? { borderLeft: "none", paddingTop: "0px", paddingBottom: "0px" }
-          : { paddingTop: "0px", paddingBottom: "0px" }
+          ? { borderLeft: "none", paddingBottom: "0px" }
+          : { paddingBottom: "0px" }
       }
     >
       {/* {month} */}

@@ -30,6 +30,7 @@ const CropSidebarFilters = (props) => {
     title: "",
     text: "",
     checkboxesValues: [],
+    type: "",
   });
 
   // useEffect(() => {
@@ -59,18 +60,19 @@ const CropSidebarFilters = (props) => {
     setOpenModal(false);
   };
   const handleDataVariables = (type, data) => {
+    console.log(data);
     if (type === "multiCheckboxPopup") {
       setModalData({
         title: data.Variable,
-        text: "some random text",
+        type: "multi",
         checkboxes: true,
         checkboxesValues: data.valuesArray || [],
       });
     } else if (type === "singleCheckboxPopup") {
       setModalData({
         title: data.Variable,
-        text: "some random text",
-        checkboxes: false,
+        type: "single",
+        checkboxes: true,
         checkboxesValues: data.valuesArray || [],
       });
     } else {
@@ -86,6 +88,18 @@ const CropSidebarFilters = (props) => {
       // select one or many
       if (data["Units/Details"] === "select one") {
         //   disabled others if one is selected
+        let values = data.Values.slice(1, -1).split(",");
+        let tempArr = [];
+        values.forEach((v, i) => {
+          //   console.log(`Value: ${v} and v.indexof(" ") = ${v.indexOf(" ")}`);
+
+          if (v.indexOf(" ") === 0) tempArr.push(v.substr(1));
+          else tempArr.push(v);
+        });
+        data.valuesArray = tempArr;
+        data.valuesArray = data.valuesArray.map((val) => {
+          return `${val}~${data.Variable}`;
+        });
         return (
           <Grid item sm={12}>
             <Button
@@ -172,9 +186,124 @@ const CropSidebarFilters = (props) => {
         </Grid>
       );
     } else if (data.Type === "boolean") {
+      // console.log("bool data", data);
+      let values = data.Values.split(",");
+      let tempArr = [];
+      values.forEach((v, i) => {
+        //   console.log(`Value: ${v} and v.indexof(" ") = ${v.indexOf(" ")}`);
+
+        if (v.indexOf(" ") === 0) tempArr.push(v.substr(1));
+        else tempArr.push(v);
+      });
+      data.valuesArray = tempArr;
+      let choice = true;
+      data.valuesArray = data.valuesArray.map((val) => {
+        if (val === "Yes") {
+          choice = true;
+          return `${true}~${data.Variable}`;
+        } else if (val === "No") {
+          choice = false;
+          return `${false}~${data.Variable}`;
+        } else return `${val}~${data.Variable}`;
+      });
+      // console.log(data.valuesArray);
       return (
         <Grid item sm={12}>
-          <Typography variant="body2">{data.Variable} bool</Typography>
+          <FormControlLabel
+            value={`${data.Variable}`}
+            control={
+              <Checkbox
+                checked={
+                  state.selectedCheckboxes.includes(`${data.Variable}`)
+                    ? true
+                    : false
+                }
+                onChange={(e) => {
+                  console.log(e.target.value);
+                  if (state.selectedCheckboxes.includes(e.target.value)) {
+                    // value exists, remove it
+                    let newSelectedItems = state.selectedCheckboxes.filter(
+                      (el) => {
+                        return el !== e.target.value;
+                      }
+                    );
+                    //   setSeletedCheckboxItems(newSelectedItems);
+                    dispatch({
+                      type: "UPDATE_SELCTED_CHECKBOXES",
+                      data: {
+                        selectedCheckboxes: newSelectedItems,
+                      },
+                    });
+                  } else {
+                    let joined = state.selectedCheckboxes.concat(
+                      e.target.value
+                    );
+                    //   setSeletedCheckboxItems(joined);
+                    dispatch({
+                      type: "UPDATE_SELCTED_CHECKBOXES",
+                      data: {
+                        selectedCheckboxes: joined,
+                      },
+                    });
+                  }
+                }}
+                color="secondary"
+              />
+            }
+            // checked={
+            //state.selectedCheckboxes.includes(data.Variable) ? true : false
+            // }
+            label={<Typography variant="body2"> {data.Variable}</Typography>}
+            labelPlacement={"end"}
+          />
+          {/* <FormControlLabel
+                      value={val}
+                      control={
+                        <Checkbox
+                          
+                          checked={
+                            state.selectedCheckboxes.includes(val)
+                              ? true
+                              : false
+                          }
+                          color="secondary"
+                          onChange={(e) => {
+                            console.log(e.target.value);
+                            if (
+                              state.selectedCheckboxes.includes(e.target.value)
+                            ) {
+                              // value exists, remove it
+                              let newSelectedItems = state.selectedCheckboxes.filter(
+                                (el) => {
+                                  return el !== e.target.value;
+                                }
+                              );
+                              //   setSeletedCheckboxItems(newSelectedItems);
+                              dispatch({
+                                type: "UPDATE_SELCTED_CHECKBOXES",
+                                data: {
+                                  selectedCheckboxes: newSelectedItems,
+                                },
+                              });
+                            } else {
+                              let joined = state.selectedCheckboxes.concat(
+                                e.target.value
+                              );
+                              //   setSeletedCheckboxItems(joined);
+                              dispatch({
+                                type: "UPDATE_SELCTED_CHECKBOXES",
+                                data: {
+                                  selectedCheckboxes: joined,
+                                },
+                              });
+                            }
+                          }}
+                        />
+                      }
+                      label={getCheckBoxVal(val)}
+                      labelPlacement="end"
+                      name="multiCheckboxes"
+                    /> */}
         </Grid>
       );
     } else if (data.Type === "float") {
@@ -191,53 +320,6 @@ const CropSidebarFilters = (props) => {
         </Grid>
       );
     }
-    // if (checkBoxVariables.includes(data.Variable)) {
-    //   let values = data.Values.slice(1, -1).split(",");
-    //   let tempArr = [];
-    //   values.forEach((v, i) => {
-    //     console.log(`Value: ${v} and v.indexof(" ") = ${v.indexOf(" ")}`);
-
-    //     if (v.indexOf(" ") === 0) tempArr.push(v.substr(1));
-    //     else tempArr.push(v);
-    //   });
-
-    //   data.valuesArray = tempArr;
-    //   // console.log(values);
-    //   return (
-    //     <Grid item sm={12}>
-    //       <Button
-    //         size="small"
-    //         onClick={() => handleDataVariables("checkboxPopup", data)}
-    //       >
-    //         {data.Variable}
-    //       </Button>
-    //     </Grid>
-    //   );
-    // } else if (rangeSliderVariables.includes(data.Variable)) {
-    //   // render range slider
-    //   return (
-    //     <Grid item sm={12}>
-    //       <Typography gutterBottom>{data.Variable}</Typography>
-    //       <Slider
-    //         value={[0, 10]}
-    //         onChange={(e, val) => {
-    //           console.log("slider changed", val);
-    //         }}
-    //         valueLabelDisplay="auto"
-    //         aria-labelledby="range-slider"
-    //         //   getAriaValueText={valuetext}
-    //       />
-    //     </Grid>
-    //   );
-    // } else {
-    //   return (
-    //     <Grid item sm={12}>
-    //       <Button size="small" disabled>
-    //         {data.Variable}
-    //       </Button>
-    //     </Grid>
-    //   );
-    // }
   };
 
   return (
@@ -272,6 +354,13 @@ const CropSidebarFilters = (props) => {
                       value={val}
                       control={
                         <Checkbox
+                          disabled={
+                            state.selectedCheckboxes.includes(val)
+                              ? false
+                              : modalData.type === "single"
+                              ? true
+                              : false
+                          }
                           checked={
                             state.selectedCheckboxes.includes(val)
                               ? true
