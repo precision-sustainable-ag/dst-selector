@@ -32,15 +32,16 @@ const CropSidebarFilters = (props) => {
     checkboxesValues: [],
   });
 
-  useEffect(() => {
-    // if (selectedCheckboxItems.length > 0) {
-    // alert(selectedCheckboxItems);
-    // }
+  // useEffect(() => {
+  //   // if (selectedCheckboxItems.length > 0) {
+  //   // alert(selectedCheckboxItems);
+  //   // }
 
-    // console.log("selectedCheckboxItems: ", selectedCheckboxItems);
-    props.filterByCheckboxValues(state.selectedCheckboxes);
-    // console.log("huh");
-  }, [state.selectedCheckboxes]);
+  //   // console.log("selectedCheckboxItems: ", selectedCheckboxItems);
+  //   props.filterByCheckboxValues(state.selectedCheckboxes);
+  //   // console.log("huh");
+  // }, [state.selectedCheckboxes]);
+
   let sidebarObj = props.sidebarObj;
   let keysArray = props.keysArray;
   let sidebarFiltersObj = props.sidebarFiltersObj;
