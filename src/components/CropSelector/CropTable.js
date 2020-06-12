@@ -45,6 +45,7 @@ const CropTableComponent = (props) => {
   const [state, dispatch] = useContext(Context);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalData, setModalData] = useState({});
+  const [selectedCropsIds, setSelectedCropsIds] = useState([]);
 
   const handleModalOpen = (crop) => {
     // setModalOpen(true);
@@ -88,6 +89,17 @@ const CropTableComponent = (props) => {
   //     }
   //   }
   // };
+
+  useEffect(() => {
+    if (state.selectedCrops.length > 0) {
+      let selectedIds = state.selectedCrops.map((crop) => {
+        return crop.id;
+      });
+
+      setSelectedCropsIds(selectedIds);
+    }
+  }, [state.progress]);
+
   const addCropToBasket = (cropId, cropName, btnId, cropData) => {
     let container = document.getElementById(btnId);
     let selectedCrops = {};
@@ -256,6 +268,9 @@ const CropTableComponent = (props) => {
               borderRadius: CustomStyles().nonRoundedRadius,
               width: "150px",
             }}
+            className={
+              selectedCropsIds.includes(crop.id) ? "activeCartBtn" : ""
+            }
             onClick={() => {
               addCropToBasket(
                 crop.id,
@@ -265,7 +280,7 @@ const CropTableComponent = (props) => {
               );
             }}
           >
-            ADD TO LIST
+            {selectedCropsIds.includes(crop.id) ? "ADDED" : "ADD TO LIST"}
           </LightButton>{" "}
           <br />
           <Button size="small" onClick={() => handleModalOpen(crop)}>
