@@ -316,6 +316,12 @@ export const getRating = (ratng) => {
         <span></span>
       </div>
     );
+  } else {
+    return (
+      <div className="rating-0">
+        <span></span>
+      </div>
+    );
   }
 };
 

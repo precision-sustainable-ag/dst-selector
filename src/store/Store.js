@@ -440,7 +440,7 @@ const initialState = {
   // ],
 
   // selectedGoals: ["Good Grazing", "Penetrates Pow Pan", "Lasting Residue"],
-  selectedGoals: [],
+  selectedGoals: ["Good Grazing"],
   zoom: 13,
   addressVerified: false,
   snackOpen: false,
