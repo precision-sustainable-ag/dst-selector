@@ -226,12 +226,19 @@ const CropTableComponent = (props) => {
                 </tr>
                 <tr>
                   {state.selectedGoals.length === 0
-                    ? allMonths.map((month) => <td>{month}</td>)
-                    : allMonths.map((month) =>
+                    ? allMonths.map((month, index) => (
+                        <td key={index}>{month}</td>
+                      ))
+                    : allMonths.map((month, index) =>
                         month === "Jan" || month === "Dec" ? (
-                          <td>{month}</td>
+                          <td
+                            key={index}
+                            style={index === 11 ? { textAlign: "right" } : {}}
+                          >
+                            {month}
+                          </td>
                         ) : (
-                          <td></td>
+                          <td key={index}></td>
                         )
                       )}
                 </tr>
