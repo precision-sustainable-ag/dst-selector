@@ -19,7 +19,7 @@ const LocationConfirmation = () => {
       }}
     >
       <div className="row boxContainerRow" style={{ textAlign: "left" }}>
-        <div className="col-lg-6">
+        <div className="col-xl-6 col-lg-12">
           <div className="container-fluid">
             <div className="row">
               <div className="col-lg-6">
@@ -76,7 +76,7 @@ const LocationConfirmation = () => {
             </div>
           </div>
         </div>
-        <div className="col-lg-5 offset-lg-1">
+        <div className="col-xl-5 offset-xl-1 col-lg-12">
           <div className="container-fluid">
             {state.progress === 2 ? <SoilConditions /> : ""}
             {state.progress === 3 ? <WeatherConditions /> : ""}

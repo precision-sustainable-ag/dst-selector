@@ -110,10 +110,12 @@ const CropSidebarComponent = (props) => {
         Authorization: `Bearer ${AirtableBearerKey}`,
       },
     }).then((response) => {
+      console.log(response);
       let sidebarFiltersArr = [{}];
       let sidebarFilterCategories = [];
       let data = response.data;
       sidebarFilterCategories = data.records.map((record, index) => {
+        // sidebarFilterCategories = data.map((record, index) => {
         // sidebarFiltersArr.push(record.fields["Category"])
 
         return record.fields;
@@ -165,6 +167,7 @@ const CropSidebarComponent = (props) => {
             });
             // setEnvTolData(keysData);
             setSidebarFiltersObj(outObject);
+            console.log(outObject);
           });
       }
     });
@@ -188,6 +191,7 @@ const CropSidebarComponent = (props) => {
   let [keysArray, setKeysArray] = React.useState([]);
   const [keysArrChanged, setKeysArrChanges] = React.useState(false);
 
+  //TODO: these urls should be locally invoked
   const getAirtableDictionaryURL = (zone) => {
     switch (zone) {
       case 2: {
@@ -204,6 +208,7 @@ const CropSidebarComponent = (props) => {
       }
       case 7: {
         return `https://api.airtable.com/v0/app2q3UaKHXutMQyt/tbl4l2aYdp6ra5nqH?filterByFormula=TRUE(%7BFilter+Field%7D)&sort%5B0%5D%5Bfield%5D=Category&sort%5B0%5D%5Bdirection%5D=asc`;
+        // return `./json/data-dictionary7.json`;
       }
 
       default: {
