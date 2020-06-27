@@ -95,10 +95,10 @@ const GoalsSelector = () => {
   return (
     <div className="goalsContainer mt-5">
       <div className="row boxContainerRow goalsBoxContainer">
-        <div className="col-lg-12">
+        <div className="col-xl-12">
           <h1 className="text-center">What are your cover cropping goals</h1>
         </div>
-        <div className="col-lg-12">
+        <div className="col-xl-12">
           <p className="text-center">
             Select up to three. Hover for more information
           </p>
@@ -132,7 +132,7 @@ const GoalsSelector = () => {
             {state.allGoals.length > 0 ? (
               state.allGoals.map((goal, key) =>
                 !goal.fields["Cover Crop Goal"].startsWith("TBD") ? (
-                  <div key={key} className={classes.root}>
+                  <div key={key} className={`${classes.root} col`}>
                     <GoalTag
                       goal={goal}
                       id={key}

@@ -153,7 +153,7 @@ const CropSelector = () => {
   const [disabledIdsTextNodes, setDisabledIdsTextNodes] = useState("");
   const [split_arr, setSplit_arr] = useState([]);
   // Debug text
-  const [debug, setDebug] = useState(false);
+  const [debug, setDebug] = useState(true);
 
   useEffect(() => {
     filterByCheckboxValues("checkboxes", state.selectedCheckboxes);
@@ -742,7 +742,7 @@ const CropSelector = () => {
                         <ListIcon style={{ fontSize: "larger" }} />
                       </IconButton>
                     </div> */}
-                    <div className="iconToggle col-lg-3">
+                    <div className="iconToggle col-xl-3 col-lg-4">
                       <Typography component="div" variant="body1">
                         <IconButton
                           color={"secondary"}
@@ -763,7 +763,7 @@ const CropSelector = () => {
                   </Fragment>
                 ) : (
                   <Fragment>
-                    <div className="iconToggle col-lg-3">
+                    <div className="iconToggle col-xl-3 col-lg-4">
                       <Button
                         variant="contained"
                         onClick={toggleListView}
@@ -782,7 +782,7 @@ const CropSelector = () => {
                     </div>
                   </Fragment>
                 )}
-                <div className="col-lg-9">
+                <div className="col-xl-9 col-lg-8">
                   <div className="row">
                     {debug ? (
                       <Fragment>
@@ -808,7 +808,7 @@ const CropSelector = () => {
         </div>
       </div>
       <div className="row cropSelectorRow mt-3">
-        <div className="col-lg-2 col-sm-12">
+        <div className="col-xl-2 col-sm-12 col-lg-3">
           <CropSidebarComponent
             sortEnvTolCropData={sortEnvTolCropData}
             setGrowthWindow={setShowGrowthWindow}
@@ -817,7 +817,7 @@ const CropSelector = () => {
           />
         </div>
 
-        <div className="col-lg-10">
+        <div className="col-xl-10 col-lg-9">
           {state.speciesSelectorActivationFlag ? (
             isListView ? (
               <CropTableComponent

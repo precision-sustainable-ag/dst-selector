@@ -8,7 +8,7 @@ import {
   InputLabel,
   Select,
   MenuItem,
-  makeStyles
+  makeStyles,
   // TextField,
   // withStyles,
   // Button
@@ -21,14 +21,14 @@ import AutoComplete from "./AutoComplete";
 import LocationToggleComponent from "./LocationToggle";
 // import { Link, Button } from "@material-ui/core";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   formControl: {
     margin: theme.spacing(1),
-    minWidth: 120
+    minWidth: 120,
   },
   selectEmpty: {
-    marginTop: theme.spacing(2)
-  }
+    marginTop: theme.spacing(2),
+  },
 }));
 
 const LocationComponent = () => {
@@ -39,14 +39,14 @@ const LocationComponent = () => {
     console.log("---Location.js started---");
   });
 
-  const handleAddressChangeByText = event => {
+  const handleAddressChangeByText = (event) => {
     console.log(event.target.value);
     dispatch({
       type: "CHANGE_ADDRESS_BY_TYPING",
       data: {
         address: event.target.value,
-        showAddressChangeBtn: true
-      }
+        showAddressChangeBtn: true,
+      },
     });
   };
 
@@ -58,7 +58,7 @@ const LocationComponent = () => {
     // https://nominatim.openstreetmap.org/search/?q=1139%20crab%20orchard%20drive&format=json
     await axios
       .get(`https://nominatim.openstreetmap.org/search/?q=${q}&format=json`)
-      .then(response => {
+      .then((response) => {
         let data = response.data;
         // console.log(data);
         if (data.length === 1) {
@@ -70,8 +70,8 @@ const LocationComponent = () => {
               addressVerified: true,
               address: data[0].display_name,
               snackOpen: true,
-              snackMessage: "Address Updated"
-            }
+              snackMessage: "Address Updated",
+            },
           });
           // th;
           //   this.setState({
@@ -87,8 +87,8 @@ const LocationComponent = () => {
               address: "",
               addressVerified: false,
               snackOpen: true,
-              snackMessage: "Please complete the address"
-            }
+              snackMessage: "Please complete the address",
+            },
           });
         }
 
@@ -104,8 +104,8 @@ const LocationComponent = () => {
         dispatch({
           action: "TOGGLE_ADDRESS_CHANGE_BUTTON",
           data: {
-            showAddressChangeBtn: false
-          }
+            showAddressChangeBtn: false,
+          },
         });
       });
   };
@@ -116,11 +116,11 @@ const LocationComponent = () => {
       style={{
         display: "flex",
         justifyContent: "center",
-        alignItems: "center"
+        alignItems: "center",
       }}
     >
       <div className="row boxContainerRow" style={{}}>
-        <div className="col-lg-6 col-sm-12">
+        <div className="col-xl-6 col-lg-12">
           <div className="container-fluid">
             <div className="row">
               <div className="col-12">
@@ -150,49 +150,49 @@ const LocationComponent = () => {
                     labelId="demo-simple-select-outlined-label"
                     id="demo-simple-select-outlined"
                     style={{
-                      textAlign: "left"
+                      textAlign: "left",
                     }}
-                    onChange={event => {
+                    onChange={(event) => {
                       //   console.log("evvt" + event.target.);
                       if (event.target.value === 2) {
                         dispatch({
                           type: "UPDATE_ZONE_TEXT",
                           data: {
                             zoneText: "Zone 2 & 3",
-                            zone: parseInt(event.target.value)
-                          }
+                            zone: parseInt(event.target.value),
+                          },
                         });
                       } else if (event.target.value === 4) {
                         dispatch({
                           type: "UPDATE_ZONE_TEXT",
                           data: {
                             zoneText: "Zone 4",
-                            zone: parseInt(event.target.value)
-                          }
+                            zone: parseInt(event.target.value),
+                          },
                         });
                       } else if (event.target.value === 5) {
                         dispatch({
                           type: "UPDATE_ZONE_TEXT",
                           data: {
                             zoneText: "Zone 5",
-                            zone: parseInt(event.target.value)
-                          }
+                            zone: parseInt(event.target.value),
+                          },
                         });
                       } else if (event.target.value === 6) {
                         dispatch({
                           type: "UPDATE_ZONE_TEXT",
                           data: {
                             zoneText: "Zone 6",
-                            zone: parseInt(event.target.value)
-                          }
+                            zone: parseInt(event.target.value),
+                          },
                         });
                       } else {
                         dispatch({
                           type: "UPDATE_ZONE_TEXT",
                           data: {
                             zoneText: "Zone 7",
-                            zone: parseInt(event.target.value)
-                          }
+                            zone: parseInt(event.target.value),
+                          },
                         });
                       }
                     }}
@@ -240,7 +240,7 @@ const LocationComponent = () => {
             </div>
           </div>
         </div>
-        <div className="col-lg-6 col-sm-12">
+        <div className="col-xl-6 col-lg-12">
           <MapComponent width="100%" height="100%" minzoom={4} maxzoom={20} />
         </div>
       </div>
