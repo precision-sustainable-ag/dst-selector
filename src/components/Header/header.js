@@ -3,7 +3,7 @@ import { Context } from "../../store/Store";
 import "../../styles/header.scss";
 import DateComponent from "./DateComponent";
 import Greenbar from "./Greenbar/Greenbar";
-import { cloudIcon, abbrRegion, airtableAPIURL } from "../../shared/constants";
+import { abbrRegion, airtableAPIURL } from "../../shared/constants";
 import {
   MDBNavbar,
   MDBContainer,
@@ -19,7 +19,7 @@ import Axios from "axios";
 import moment from "moment";
 import { AirtableBearerKey } from "../../shared/keys";
 
-var sentimentAnalysis = require("sentiment-analysis");
+// var sentimentAnalysis = require("sentiment-analysis");
 // import { Link, Button } from "@material-ui/core";
 const Header = () => {
   let history = useHistory();
@@ -481,6 +481,18 @@ const Header = () => {
             });
         }
       }
+    }
+
+    // header contentWrapper padding for state.progess > 0
+
+    if (state.progress !== 0) {
+      document
+        .getElementsByClassName("contentWrapper")[0]
+        .classList.add("pb-5");
+    } else {
+      document
+        .getElementsByClassName("contentWrapper")[0]
+        .classList.remove("pb-5");
     }
   }, [state.markers, state.progress, state.zone, state.weatherDataReset]);
 

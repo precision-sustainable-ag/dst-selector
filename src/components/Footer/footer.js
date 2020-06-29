@@ -5,7 +5,7 @@ import { Link } from "@material-ui/core";
 import "../../styles/footer.scss";
 
 const Footer = () => {
-  let currentYear = new Date().getFullYear();
+  const currentYear = new Date().getFullYear();
   return (
     <footer className="primaryFooter">
       <div className="leftSideText">
@@ -14,7 +14,7 @@ const Footer = () => {
           className="footerLink"
           href="https://www.nrcs.usda.gov/wps/portal/nrcs/detailfull/national/programs/financial/csp/?&cid=nrcsdev11_000242"
           style={{
-            color: "#fff"
+            color: "#fff",
           }}
           target="_blank"
           rel="noopener noreferrer"
@@ -26,7 +26,7 @@ const Footer = () => {
           href="https://nifa.usda.gov/land-grant-colleges-and-universities-partner-website-directory"
           className="footerLink"
           style={{
-            color: "#fff"
+            color: "#fff",
           }}
           target="_blank"
           rel="noopener noreferrer"
@@ -38,7 +38,7 @@ const Footer = () => {
           href="https://www.nacdnet.org/general-resources/conservation-district-directory/"
           className="footerLink"
           style={{
-            color: "#fff"
+            color: "#fff",
           }}
           target="_blank"
           rel="noopener noreferrer"
