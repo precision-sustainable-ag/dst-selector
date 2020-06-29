@@ -237,16 +237,16 @@ Responsive Styles
 
 @include screen(641px, 1200px) {
   .ham-navWrapper {
-    display: block;
+    display: none !important;
+    visibility: hidden !important;
   }
-
+  header .midHeader .dataComponents div {
+    flex: none !important;
+  }
   header {
     .topHeader {
       justify-content: center;
-      div {
-        border-right: none;
-        font-weight: normal;
-      }
+      margin-bottom: 1rem;
     }
     .midHeader {
       padding-top: 0.5em;
@@ -257,8 +257,8 @@ Responsive Styles
       // }
     }
     .bottomHeader {
-      display: none;
-      visibility: hidden;
+      display: flex;
+      visibility: visible;
     }
   }
 

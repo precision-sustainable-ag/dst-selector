@@ -678,8 +678,8 @@ const Header = () => {
               >
                 SPECIES SELECTOR
               </MDBNavItem>
-              <MDBNavItem>MIX MAKER</MDBNavItem>
-              <MDBNavItem>SEED RATE CALCULATOR</MDBNavItem>
+              {/* <MDBNavItem>MIX MAKER</MDBNavItem>
+              <MDBNavItem>SEED RATE CALCULATOR</MDBNavItem> */}
               <MDBNavItem
                 onClick={setmyCoverCropActivationFlag}
                 active={state.myCoverCropActivationFlag ? true : false}
