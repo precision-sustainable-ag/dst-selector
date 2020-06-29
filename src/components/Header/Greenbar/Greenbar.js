@@ -7,7 +7,7 @@ import {
   GetMonthString,
   LightButton,
   greenBarExpansionPanelHeight,
-  CustomStyles
+  CustomStyles,
 } from "../../../shared/constants";
 import { Button, Menu, MenuItem } from "@material-ui/core";
 import FilterHdrIcon from "@material-ui/icons/FilterHdr";
@@ -20,21 +20,21 @@ import WeatherConditions from "../../Location/WeatherConditions";
 const expansionPanelBaseStyle = {
   display: "flex",
   justifyContent: "center",
-  alignItems: "center"
+  alignItems: "center",
 };
 
 const greenBarWrapperBackground = {
-  backgroundColor: CustomStyles().lighterGreen
+  backgroundColor: CustomStyles().lighterGreen,
 };
 
 const Greenbar = () => {
   const [state, dispatch] = useContext(Context);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [expansionPanelComponent, setExpansionPanelComponent] = React.useState({
-    component: ""
+    component: "",
   });
   useEffect(() => {
-    console.log("---Greeenbar.js mounted---");
+    // console.log("---Greeenbar.js mounted---");
 
     // check if 'greenbarExpanded' === true. If it is true, it should enable
     if (expansionPanelComponent.component !== "") {
@@ -42,7 +42,7 @@ const Greenbar = () => {
       // alternatively we can have a close button somewhere in the expanded green bar
     }
 
-    document.addEventListener("click", evt => {
+    document.addEventListener("click", (evt) => {
       const greenbarExpansionElement = document.getElementById(
         "greenBarExpansionPanel"
       );
@@ -144,10 +144,10 @@ const Greenbar = () => {
         </Fragment>
       );
   };
-  const handleClick = event => {
+  const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
-  const handleAddressBtnClick = evt => {
+  const handleAddressBtnClick = (evt) => {
     const greenbarExpansionElement = document.getElementById(
       "greenBarExpansionPanel"
     );
@@ -161,21 +161,21 @@ const Greenbar = () => {
       greenbarExpansionElement.style.transform = "translate(0px,0px)";
       greenbarExpansionElement.style.height = "0px";
       setExpansionPanelComponent({
-        component: ""
+        component: "",
       });
     } else {
       greenbarExpansionElement.style.transform = "translate(0px,0px)";
       greenbarExpansionElement.style.height =
         greenBarExpansionPanelHeight.large;
       setExpansionPanelComponent({
-        component: "location"
+        component: "location",
       });
     }
 
     // document.getElemen;
     // }
   };
-  const handleSoilBtnClick = evt => {
+  const handleSoilBtnClick = (evt) => {
     const greenbarExpansionElement = document.getElementById(
       "greenBarExpansionPanel"
     );
@@ -189,19 +189,19 @@ const Greenbar = () => {
       greenbarExpansionElement.style.transform = "translate(0px,0px)";
       greenbarExpansionElement.style.height = "0px";
       setExpansionPanelComponent({
-        component: ""
+        component: "",
       });
     } else {
       greenbarExpansionElement.style.transform = "translate(0px,0px)";
       greenbarExpansionElement.style.height =
         greenBarExpansionPanelHeight.large;
       setExpansionPanelComponent({
-        component: "soil"
+        component: "soil",
       });
     }
   };
 
-  const handleWeatherBtnClick = evt => {
+  const handleWeatherBtnClick = (evt) => {
     const greenbarExpansionElement = document.getElementById(
       "greenBarExpansionPanel"
     );
@@ -216,14 +216,14 @@ const Greenbar = () => {
       greenbarExpansionElement.style.transform = "translate(0px,0px)";
       greenbarExpansionElement.style.height = "0px";
       setExpansionPanelComponent({
-        component: ""
+        component: "",
       });
     } else {
       greenbarExpansionElement.style.transform = "translate(0px,0px)";
       greenbarExpansionElement.style.height =
         greenBarExpansionPanelHeight.large;
       setExpansionPanelComponent({
-        component: "weather"
+        component: "weather",
       });
     }
   };
@@ -241,7 +241,7 @@ const Greenbar = () => {
       );
   };
 
-  const handleZoneDropdownClose = event => {
+  const handleZoneDropdownClose = (event) => {
     setAnchorEl(null);
     let zoneText = "";
     console.log(event.target.getAttribute("value"));
@@ -255,8 +255,8 @@ const Greenbar = () => {
             type: "UPDATE_ZONE_TEXT",
             data: {
               zoneText: zoneText,
-              zone: value
-            }
+              zone: value,
+            },
           });
           break;
         }
@@ -266,8 +266,8 @@ const Greenbar = () => {
             type: "UPDATE_ZONE_TEXT",
             data: {
               zoneText: zoneText,
-              zone: value
-            }
+              zone: value,
+            },
           });
           break;
         }
@@ -277,8 +277,8 @@ const Greenbar = () => {
             type: "UPDATE_ZONE_TEXT",
             data: {
               zoneText: zoneText,
-              zone: value
-            }
+              zone: value,
+            },
           });
           break;
         }
@@ -288,8 +288,8 @@ const Greenbar = () => {
             type: "UPDATE_ZONE_TEXT",
             data: {
               zoneText: zoneText,
-              zone: value
-            }
+              zone: value,
+            },
           });
           break;
         }
@@ -299,8 +299,8 @@ const Greenbar = () => {
             type: "UPDATE_ZONE_TEXT",
             data: {
               zoneText: zoneText,
-              zone: value
-            }
+              zone: value,
+            },
           });
           break;
         }
