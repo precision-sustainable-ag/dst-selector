@@ -121,11 +121,11 @@ const App = () => {
                     width: "90%",
                   }}
                 >
-                  <div className="col-lg-4">
+                  <div className="col-lg-4 col-sm-4 col-md-4 pb-2">
                     <ProgressButtons />
                   </div>
                   <div
-                    className="col-lg-4 offset-lg-4"
+                    className="col-lg-4 offset-lg-4 col-md-6 offset-md-2 col-sm-8  pt-2"
                     style={{
                       textAlign: "right",
                     }}
