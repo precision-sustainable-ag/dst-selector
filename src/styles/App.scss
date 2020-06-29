@@ -1,5 +1,5 @@
 @import "./node_modules/sass-mediaqueries/media-queries";
-@import "./styles/constants.scss";
+@import "./constants.scss";
 
 body {
   font-family: "Roboto", sans-serif;
@@ -55,8 +55,8 @@ footer {
 button {
   outline: none !important;
 }
-.modalContainer {
-}
+// .modalContainer {
+// }
 
 // @include screen(100px, 640px) {
 //   .boxContainerRow {
@@ -65,4 +65,11 @@ button {
 //     width: 100%;
 //     box-shadow: none;
 //   }
+// }
+
+// ipads and other tablets
+// @include screen(641px, 1366px) {
+// div.contentWrapper {
+
+// }
 // }

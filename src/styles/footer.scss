@@ -13,23 +13,21 @@ footer.primaryFooter {
   padding: 1em;
   font-weight: bolder;
 }
+
+// feature phones
 @include screen(320px, 640px) {
   footer.primaryFooter {
     height: auto;
     flex-wrap: wrap;
-  }
-}
-@include screen(861px, 1300px) {
-  footer.primaryFooter {
-    flex-wrap: wrap;
-    height: 75px;
     justify-content: center;
   }
 }
-@include screen(341px, 860px) {
+
+// ipads and other tablets
+@include screen(641px, 1366px) {
   footer.primaryFooter {
-    height: 95px;
     flex-wrap: wrap;
+    height: 100px;
     justify-content: center;
   }
 }
