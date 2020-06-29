@@ -591,7 +591,7 @@ const Header = () => {
           {/* NECCCLOGO */}
           {/* <img src={"/images/neccc_wide_logo_color_web.jpg"} /> */}
         </div>
-        <div className="dataComponents row">
+        <div className="dataComponents">
           <div>
             <DateComponent />
           </div>
@@ -621,7 +621,7 @@ const Header = () => {
         >
           SPECIES SELECTOR
         </Button>
-        <Button
+        {/* <Button
           size="large"
           exact
           component={NavLink}
@@ -629,9 +629,9 @@ const Header = () => {
           activeClassName="active"
         >
           MIX MAKER
-        </Button>
+        </Button> */}
         {/* <Button className={state.progress === 3 ? "active" : ""}> */}
-        <Button
+        {/* <Button
           size="large"
           exact
           component={NavLink}
@@ -639,7 +639,7 @@ const Header = () => {
           activeClassName="active"
         >
           SEEDING RATE CALCULATOR
-        </Button>
+        </Button> */}
         <Badge
           badgeContent={
             state.selectedCrops.length > 0 ? state.selectedCrops.length : 0
