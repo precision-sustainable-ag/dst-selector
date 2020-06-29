@@ -18,10 +18,15 @@ import ForecastComponent from "./ForecastComponent";
 import Axios from "axios";
 import moment from "moment";
 import { AirtableBearerKey } from "../../shared/keys";
+import { useTheme } from "@material-ui/core/styles";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 // var sentimentAnalysis = require("sentiment-analysis");
 // import { Link, Button } from "@material-ui/core";
 const Header = () => {
+  const theme = useTheme();
+  const matchesLGUp = useMediaQuery(theme.breakpoints.up("lg"));
+  const matchesMDBelow = useMediaQuery(theme.breakpoints.between("xs", "sm"));
   let history = useHistory();
   const [state, dispatch] = useContext(Context);
   const [collapse, setCollapse] = React.useState(false);
@@ -577,7 +582,7 @@ const Header = () => {
         <div>HELP</div>
         <div>FEEDBACK</div>
       </div>
-      <div className="midHeader">
+      <div className="midHeader container-fluid">
         <div
           className="logoContainer"
           onClick={() => window.open("http://northeastcovercrops.com")}
@@ -586,7 +591,7 @@ const Header = () => {
           {/* NECCCLOGO */}
           {/* <img src={"/images/neccc_wide_logo_color_web.jpg"} /> */}
         </div>
-        <div className="dataComponents">
+        <div className="dataComponents row">
           <div>
             <DateComponent />
           </div>

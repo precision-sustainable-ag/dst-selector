@@ -387,10 +387,10 @@ Responsive Styles
       }
     }
     .greenBarWrapper {
-      background-color: $darkGreen !important;
+      // background-color: $darkGreen !important;
       // height: $greenBarSmallHeight !important;
       // max-height: $greenBarSmallHeight !important;
-      background-color: #598444 !important;
+      // background-color: #598444 !important;
       /* height: 30px !important; */
       /* max-height: 30px !important; */
       display: flex;
@@ -402,6 +402,43 @@ Responsive Styles
       // padding-right: 16px;
       // padding-top: 13px;
       // padding-bottom: 17px;
+    }
+  }
+}
+
+@include screen(641px, 1366px) {
+  header {
+    div.midHeader {
+      div.dataComponents {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        div {
+        }
+      }
+    }
+    div.greenBarParent {
+      div.greenBarWrapper {
+        height: auto;
+        max-height: max-content;
+        div {
+          width: 100%;
+          justify-content: flex-start;
+        }
+      }
+    }
+  }
+}
+
+@include screen(320px, 640px) {
+  div.greenBarParent {
+    div.greenBarWrapper {
+      height: auto;
+      max-height: max-content;
+      div {
+        width: 100%;
+        justify-content: flex-start;
+      }
     }
   }
 }
