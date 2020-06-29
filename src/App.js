@@ -1,13 +1,13 @@
 import React, { useContext, useEffect } from "react";
 
-import "./App.scss";
+import "./styles/App.scss";
 // import Header from "./components/Header/header";
 // import Body from "./components/body";
 import {
   Box,
   Snackbar,
   MuiThemeProvider,
-  createMuiTheme
+  createMuiTheme,
 } from "@material-ui/core";
 // import Navigation from "./components/navigation";
 // import Footer from "./components/Footer/footer";
@@ -33,11 +33,11 @@ const logoPath = "/images/neccc_wide_logo_color_web.jpg";
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: CustomStyles().lightGreen
+      main: CustomStyles().lightGreen,
     },
     secondary: {
-      main: CustomStyles().lighterGreen
-    }
+      main: CustomStyles().lighterGreen,
+    },
   },
   overrides: {
     MuiTooltip: {
@@ -45,14 +45,14 @@ const theme = createMuiTheme({
         fontSize: CustomStyles().defaultFontSize,
         backgroundColor: CustomStyles().secondaryProgressBtnColor,
         color: "black",
-        borderRadius: CustomStyles().mildlyRoundedRadius
+        borderRadius: CustomStyles().mildlyRoundedRadius,
       },
-      arrow: {}
-    }
-  }
+      arrow: {},
+    },
+  },
 });
 
-const loadRelevantRoute = progress => {
+const loadRelevantRoute = (progress) => {
   // TODO: Handle case 3 as cropselector vs soil sample selector
   switch (progress) {
     case 0:
@@ -86,8 +86,8 @@ const App = () => {
       type: "SNACK",
       data: {
         snackOpen: false,
-        snackMessage: ""
-      }
+        snackMessage: "",
+      },
     });
   };
 
@@ -97,7 +97,7 @@ const App = () => {
         maxSnack={5}
         anchorOrigin={{
           vertical: "bottom",
-          horizontal: "right"
+          horizontal: "right",
         }}
       >
         <div className="contentWrapper">
@@ -112,13 +112,13 @@ const App = () => {
                 style={{
                   display: "flex",
                   justifyContent: "center",
-                  alignItems: "center"
+                  alignItems: "center",
                 }}
               >
                 <div
                   className="row"
                   style={{
-                    width: "90%"
+                    width: "90%",
                   }}
                 >
                   <div className="col-lg-4">
@@ -127,7 +127,7 @@ const App = () => {
                   <div
                     className="col-lg-4 offset-lg-4"
                     style={{
-                      textAlign: "right"
+                      textAlign: "right",
                     }}
                   >
                     <ProgressBar />
@@ -143,17 +143,17 @@ const App = () => {
             <Snackbar
               anchorOrigin={{
                 vertical: state.snackVertical,
-                horizontal: state.snackHorizontal
+                horizontal: state.snackHorizontal,
               }}
               key={{
                 vertical: state.snackVertical,
-                horizontal: state.snackHorizontal
+                horizontal: state.snackHorizontal,
               }}
               autoHideDuration={5000}
               open={state.snackOpen}
               onClose={handleSnackClose}
               ContentProps={{
-                "aria-describedby": "message-id"
+                "aria-describedby": "message-id",
               }}
               message={state.snackMessage}
             />
