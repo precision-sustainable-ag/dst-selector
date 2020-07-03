@@ -6,29 +6,37 @@ import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import { Context } from "../../../store/Store";
 import "../../../styles/filters.scss";
 
-const Weeds = (props) => {
+const DiseaseAndNonWeedPests = (props) => {
   const [state, dispatch] = useContext(Context);
   const [selected, setSelected] = useState({
-    Weeds: {
-      "Volunteer Establishment": 0,
-      Persistence: 0,
+    "Disease & Non Weed Pests": {
+      "Discourages Nematodes": 0,
+      "Promotes Nematodes": 0,
+      "Discourages Pest Insects": 0,
+      "Promotes Pest Insectsy": 0,
+      "Suppresses Cash Crop Disease": 0,
+      "Promotes Cash Crop Disease": 0,
     },
   });
   useEffect(() => {
     //   BUG: IT will be helpful to rename these from the backend itself!
     const keyMap = {
-      "Volunteer Establishment": "Volunteer Establishment",
-      Persistence: "Persistence",
+      "Discourages Nematodes": "Discourages Nematodes",
+      "Promotes Nematodes": "Promotes Nematodes",
+      "Discourages Pest Insects": "Discourages Pest Insects",
+      "Promotes Pest Insects": "Promotes Pest Insects",
+      "Suppresses Cash Crop Disease": "Suppresses Cash Crop Disease",
+      "Promotes Cash Crop Disease": "Promotes Cash Crop Disease",
     };
 
     const mappedData = Object.keys(keyMap).reduce(
       (obj, k) =>
         Object.assign(obj, {
-          [keyMap[k]]: selected["Weeds"][k],
+          [keyMap[k]]: selected["Disease & Non Weed Pests"][k],
         }),
       {}
     );
-    console.log(mappedData);
+    // console.log(mappedData);
     props.setSidebarFilterOptions({
       ...props.sidebarFilterOptions,
       ...mappedData,
@@ -37,32 +45,35 @@ const Weeds = (props) => {
   const handleChange = (newValue, name) => {
     // console.log(newValue);
     // possible bug here as vals not resetting
-    if (newValue === null || newValue === selected["Weeds"][name]) {
+    if (
+      newValue === null ||
+      newValue === selected["Disease & Non Weed Pests"][name]
+    ) {
       setSelected({
         ...selected,
-        Weeds: {
-          ...selected["Weeds"],
+        "Disease & Non Weed Pests": {
+          ...selected["Disease & Non Weed Pests"],
           [name]: 0,
         },
       });
     } else {
-      // console.log("newval", newValue);
+      console.log("newval", newValue);
       const key = newValue.split("-")[0];
       const val = parseInt(newValue.split("-")[1]);
 
       if (selected[key] === val) {
         setSelected({
           ...selected,
-          Weeds: {
-            ...selected["Weeds"],
+          "Disease & Non Weed Pests": {
+            ...selected["Disease & Non Weed Pests"],
             [key]: 0,
           },
         });
       } else
         setSelected({
           ...selected,
-          Weeds: {
-            ...selected["Weeds"],
+          "Disease & Non Weed Pests": {
+            ...selected["Disease & Non Weed Pests"],
             [key]: val,
           },
         });
@@ -179,4 +190,4 @@ const Weeds = (props) => {
   );
 };
 
-export default Weeds;
+export default DiseaseAndNonWeedPests;

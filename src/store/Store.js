@@ -5,7 +5,7 @@ import Reducer from "./Reducer";
 
 const initialState = {
   // progress: 3,
-  progress: 0,
+  progress: 5,
   // address: "",
   address: "",
   addressSearchPreference: "address",
@@ -439,8 +439,8 @@ const initialState = {
   //   }
   // ],
 
-  // selectedGoals: ["Good Grazing"],
-  selectedGoals: [],
+  selectedGoals: ["Good Grazing"],
+  // selectedGoals: [],
   zoom: 13,
   addressVerified: false,
   snackOpen: false,
@@ -496,6 +496,7 @@ const initialState = {
     },
   },
   weatherDataReset: false,
+  filterString: "",
 };
 
 const Store = ({ children }) => {

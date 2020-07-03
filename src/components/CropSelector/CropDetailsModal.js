@@ -214,7 +214,9 @@ const CropDetailsModalComponent = (props) => {
       BackdropProps={{
         timeout: 500,
       }}
-      disableBackdropClick={true}
+      disableBackdropClick={false}
+      disableEscapeKeyDown={false}
+      style={{ overflow: "scroll", height: "100%" }}
     >
       <Fade in={props.modalOpen}>
         {modalData.fields ? (

@@ -197,7 +197,7 @@ const CropSelector = () => {
     // let disabledIdsArr = [];
 
     // attempt 3
-    console.log("ATT3KEYSARR", keysArray);
+    // console.log("ATT3KEYSARR", keysArray);
 
     // let keys = [];
     // let values = [];
@@ -787,13 +787,9 @@ const CropSelector = () => {
                     {debug ? (
                       <Fragment>
                         <div className="col-12">
-                          {text !== "" ? (
-                            <div className="alert alert-primary" role="alert">
-                              {text}
-                            </div>
-                          ) : (
-                            ""
-                          )}
+                          <div className="alert alert-primary" role="alert">
+                            {state.filterString}
+                          </div>
                         </div>
                         <div className="col-12">{disabledIdsTextNodes}</div>
                       </Fragment>
@@ -814,6 +810,13 @@ const CropSelector = () => {
             setGrowthWindow={setShowGrowthWindow}
             filterByCheckboxValues={filterByCheckboxValues}
             isListView={isListView}
+            cropData={cropData}
+            activeCropData={
+              activeCropData.length > 0 ? activeCropData : cropData
+            }
+            inactiveCropData={inactiveCropData}
+            setActiveCropData={setActiveCropData}
+            setInactiveCropData={setInactiveCropData}
           />
         </div>
 

@@ -5,6 +5,7 @@ $lighterGreen: #598445;
 $lightGreen: #8abc62;
 
 $greenishWhite: #f0f7eb;
+$progressColor: #2b7b79;
 
 // PROGRESSBUTTON
 $primaryProgressBtnColor: #49a8ab;
@@ -24,14 +25,14 @@ $addCropToListSquareUnselectedBtn: (
   background: #e3f2f4,
   border: 1px solid #62b8bc,
   box-sizing: border-box,
-  border-radius: 0px
+  border-radius: 0px,
 );
 
 $addCropToListSquareSelectedBtn: (
   background: #49a8ab,
   border: 1px solid #62b8bc,
   box-sizing: border-box,
-  border-radius: 0px
+  border-radius: 0px,
 );
 
 @mixin landingBar($active: true) {

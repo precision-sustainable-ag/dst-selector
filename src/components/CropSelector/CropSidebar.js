@@ -1,4 +1,5 @@
 import React, { Fragment, useEffect } from "react";
+import filterData from "../../shared/data-dictionary7-optimised.json";
 
 import {
   makeStyles,
@@ -16,6 +17,8 @@ import {
   FormGroup,
   FormControlLabel,
   Checkbox,
+  Tooltip,
+  Grid,
 } from "@material-ui/core";
 import {
   Send,
@@ -38,7 +41,19 @@ import moment from "moment";
 import Axios from "axios";
 import { AirtableBearerKey } from "../../shared/keys";
 import CropSidebarFilters from "./CropSidebarFilters";
+import Filters from "./Filters/Filters";
+import CoverCropType from "./Filters/CoverCropType";
+import EnvironmentalTolerance from "./Filters/EnvironmentalTolerance";
+import Seeds from "./Filters/Seeds";
+import SeedingMethods from "./Filters/SeedingMethods";
+import Growth from "./Filters/Growth";
+import TerminationMethods from "./Filters/TerminationMethods";
+import Beneficials from "./Filters/Beneficials";
+import Weeds from "./Filters/Weeds";
+import DiseaseAndNonWeedPests from "./Filters/DiseaseAndNonWeedPests";
+import Roots from "./Filters/Roots";
 const _ = require("lodash");
+const jslinq = require("jslinq");
 
 const useStyles = makeStyles((theme) => ({
   listItemRoot: {
@@ -55,10 +70,10 @@ const useStyles = makeStyles((theme) => ({
     borderTopRightRadius: CustomStyles().semiRoundedRadius,
   },
   nested: {
-    paddingLeft: theme.spacing(4),
+    paddingLeft: theme.spacing(3),
   },
   subNested: {
-    paddingLeft: theme.spacing(5),
+    paddingLeft: theme.spacing(4),
   },
 }));
 
@@ -77,10 +92,225 @@ const CropSidebarComponent = (props) => {
     endDate: null,
   });
 
-  const [sidebarFiltersObj, setSidebarFiltersObj] = React.useState([{}]);
-  const [sidebarFilterVariables, setSidebarFilterVariables] = React.useState(
-    []
-  );
+  const [sidebarFilters, setSidebarFilters] = React.useState([]);
+  const [sidebarFiltersOpen, setSidebarFiltersOpen] = React.useState([]);
+
+  const [sidebarFilterOptions, setSidebarFilterOptions] = React.useState({
+    "Cover Crop Group": [],
+    Roots: [],
+    "Environmental Tolerance": {},
+  });
+  const [resetFilters, setResetFilters] = React.useState(false);
+  useEffect(() => {
+    console.log(sidebarFilterOptions);
+    let crops = [];
+
+    let obj = jslinq([
+      { name: "one", price: 5 },
+      { name: "two", price: 2 },
+      { name: "three", price: 4 },
+      { name: "four", price: 12 },
+      { name: "five", price: 1 },
+    ]);
+
+    console.log(obj.count());
+
+    //   setSidebarFilterOptions({
+    //     "Cover Crop Group": [],
+    //     Roots: [],
+    //     "Environmental Tolerance": {},
+    //   });
+    // }, [resetFilters]);
+    // useEffect(() => {
+    //   console.log(sidebarFilterOptions);
+    //   if (
+    //     sidebarFilterOptions["Cover Crop Group"].length > 0 ||
+    //     Reflect.ownKeys(sidebarFilterOptions).length > 0
+    //   ) {
+    //     const { cropData } = state;
+    //     let crop_data = [];
+    //     let inactives = [];
+    //     let filtered = [];
+    //     let i = 0;
+
+    //     if (filtered.length === 0) {
+    //       filtered = cropData.filter((crop, index) => {
+    //         if (sidebarFilterOptions["Cover Crop Group"].length > 0) {
+    //           if (
+    //             sidebarFilterOptions["Cover Crop Group"].includes(
+    //               crop.fields["Cover Crop Group"]
+    //             )
+    //           ) {
+    //             return crop;
+    //           }
+    //         } else {
+    //           return crop;
+    //         }
+    //       });
+    //     } else {
+    //       filtered = filtered.filter((crop, index) => {
+    //         if (sidebarFilterOptions["Cover Crop Group"].length > 0) {
+    //           if (
+    //             sidebarFilterOptions["Cover Crop Group"].includes(
+    //               crop.fields["Cover Crop Group"]
+    //             )
+    //           ) {
+    //             return crop;
+    //           }
+    //         } else {
+    //           return crop;
+    //         }
+    //       });
+    //     }
+
+    //     for (let [key, value] of Object.entries(sidebarFilterOptions)) {
+    //       if (key == "Cover Crop Group" || key == "Environmental Tolerance") {
+    //       } else {
+    //         if (value !== 0) {
+    //           if (typeof value === "boolean") {
+    //             if (value) {
+    //               filtered = filtered.filter((crop, index) => {
+    //                 return crop.fields[key] === value;
+    //               });
+    //             } else {
+    //               filtered = filtered.filter((crop, index) => {
+    //                 return crop;
+    //               });
+    //             }
+    //           } else {
+    //             filtered = filtered.filter((crop, index) => {
+    //               return crop.fields[key] === value;
+    //             });
+    //           }
+    //         }
+    //       }
+    //     }
+
+    // for (let [key, value] of Object.entries(sidebarFilterOptions)) {
+    //   // console.log(key, value);
+
+    //   console.log(i++);
+    //   filtered = _.filter(filtered, (crop) => {
+    //     console.log(crop.fields[key]);
+    //     return crop.fields[key] === value;
+    //   });
+    // if (sidebarFilterOptions["Cover Crop Group"].length === 0) {
+    //   filtered = _.filter(filtered, (crop) => crop.fields[key] === value);
+    // } else {
+    //   filtered = _.filter(
+    //     filtered,
+    //     (crop) =>
+    //       crop.fields[key] === value &&
+    //       sidebarFilterOptions["Cover Crop Group"].includes(
+    //         crop.fields["Cover Crop Group"]
+    //       )
+    //   );
+    // }
+    // }
+    // inactives = props.cropData.filter((e) => !filtered.includes(e));
+    // console.log("total", cropData.length);
+    // console.log("filtered", filtered.length);
+
+    // props.setActiveCropData(filtered);
+    // props.setInactiveCropData(inactives);
+
+    // let filtered = _.filter(cropData, item => item[""] != 'loader' || item.element != 'button' );
+
+    // if (props.activeCropData.length > 0) {
+    //   crop_data = props.cropData.filter((x) => {
+    //     for (const [key, value] of Object.entries(sidebarFilterOptions)) {
+    //       if (x.fields["Zone Decision"] === "Include") {
+    //         if (Array.isArray(x.fields[key])) {
+    //           if (x.fields[key].includes(value)) {
+    //             return x;
+    //           }
+    //         } else if (
+    //           sidebarFilterOptions["Cover Crop Group"].includes(
+    //             x.fields["Cover Crop Group"]
+    //           )
+    //         ) {
+    //           return x;
+    //         } else {
+    //           if (x.fields[key] === value) {
+    //             return x;
+    //           }
+    //         }
+    //       }
+    //     }
+    //   });
+    //   inactives = props.cropData.filter((x) => {
+    //     for (const [key, value] of Object.entries(sidebarFilterOptions)) {
+    //       if (x.fields["Zone Decision"] === "Include") {
+    //         if (Array.isArray(x.fields[key])) {
+    //           if (!x.fields[key].includes(value)) {
+    //             return x;
+    //           }
+    //         } else if (
+    //           !sidebarFilterOptions["Cover Crop Group"].includes(
+    //             x.fields["Cover Crop Group"]
+    //           )
+    //         ) {
+    //           return x;
+    //         } else {
+    //           if (x.fields[key] !== value) {
+    //             return x;
+    //           }
+    //         }
+    //       }
+    //     }
+    //   });
+    // } else {
+    //   crop_data = cropData.filter((x) => {
+    //     for (const [key, value] of Object.entries(sidebarFilterOptions)) {
+    //       if (x.fields["Zone Decision"] === "Include") {
+    //         if (Array.isArray(x.fields[key])) {
+    //           if (x.fields[key].includes(value)) {
+    //             return x;
+    //           }
+    //         } else if (
+    //           sidebarFilterOptions["Cover Crop Group"].includes(
+    //             x.fields["Cover Crop Group"]
+    //           )
+    //         ) {
+    //           return x;
+    //         } else {
+    //           if (x.fields[key] === value) {
+    //             return x;
+    //           }
+    //         }
+    //       }
+    //     }
+    //   });
+    //   inactives = props.cropData.filter((x) => {
+    //     for (const [key, value] of Object.entries(sidebarFilterOptions)) {
+    //       if (x.fields["Zone Decision"] === "Include") {
+    //         if (Array.isArray(x.fields[key])) {
+    //           if (!x.fields[key].includes(value)) {
+    //             return x;
+    //           }
+    //         } else if (
+    //           !sidebarFilterOptions["Cover Crop Group"].includes(
+    //             x.fields["Cover Crop Group"]
+    //           )
+    //         ) {
+    //           return x;
+    //         } else {
+    //           if (x.fields[key] !== value) {
+    //             return x;
+    //           }
+    //         }
+    //       }
+    //     }
+    //   });
+    // }
+
+    // props.setActiveCropData(crop_data);
+    // props.setInactiveCropData(inactives);
+    // } else {
+    //   console.log("unhandled");
+    // }
+    // console.log(crop_data);
+  }, [sidebarFilterOptions]);
 
   useEffect(() => {
     if (props.isListView) {
@@ -92,6 +322,13 @@ const CropSidebarComponent = (props) => {
     }
   }, [props.isListView]);
 
+  const toggleSidebarFilterItems = (index) => {
+    const newSidebarFiltersOpen = sidebarFiltersOpen.map((obj, index2) => {
+      if (index2 === index) return { ...obj, open: !obj.open };
+      else return { ...obj };
+    });
+    setSidebarFiltersOpen(newSidebarFiltersOpen);
+  };
   // const renderCheckBoxes = (arrayIndex) => {
   //   console.log(sidebarFiltersObj[arrayIndex]);
 
@@ -101,80 +338,106 @@ const CropSidebarComponent = (props) => {
   //     </div>
   //   );
   // };
+  // React.useEffect(() => {
+  //   let url = getAirtableDictionaryURL(state.zone);
+
+  //   Axios({
+  //     url: url,
+  //     headers: {
+  //       Authorization: `Bearer ${AirtableBearerKey}`,
+  //     },
+  //   }).then((response) => {
+  //     console.log(response);
+  //     let sidebarFiltersArr = [{}];
+  //     let sidebarFilterCategories = [];
+  //     let data = response.data;
+  //     sidebarFilterCategories = data.records.map((record, index) => {
+  //       // sidebarFilterCategories = data.map((record, index) => {
+  //       // sidebarFiltersArr.push(record.fields["Category"])
+
+  //       return record.fields;
+  //     });
+
+  //     if (data.offset) {
+  //       // get more results
+  //       Axios({
+  //         url: url + `&offset=${data.offset}`,
+  //         headers: {
+  //           Authorization: `Bearer ${AirtableBearerKey}`,
+  //         },
+  //       })
+  //         .then((resp) => {
+  //           let offsetObj = [];
+  //           offsetObj = resp.data.records.map((record, index) => {
+  //             // sidebarFiltersArr.push(record.fields["Category"])
+
+  //             return record.fields;
+  //           });
+
+  //           return _.concat(sidebarFilterCategories, offsetObj);
+  //         })
+  //         .then((cats) => {
+  //           // console.log(cats);
+  //           // console.log("unionbycategory", _.unionBy(cats, "Category"));
+  //           let outObject = cats.reduce(function (a, e) {
+  //             // GROUP BY estimated key (estKey), well, may be a just plain key
+  //             // a -- Accumulator result object
+  //             // e -- sequentally checked Element, the Element that is tested just at this itaration
+
+  //             // new grouping name may be calculated, but must be based on real value of real field
+  //             let estKey = e["Category"];
+
+  //             if (e["Filter Field"]) {
+  //               // if(e["Information Sheet"]) {
+  //               (a[estKey] ? a[estKey] : (a[estKey] = null || [])).push(e);
+  //             }
+
+  //             return a;
+  //           }, {});
+  //           // let keysData = _.map(outObject, (val, index) => {
+  //           //   console.log(val);
+  //           //   return { index: false };
+  //           // });
+
+  //           outObject = _.map(outObject, (val, key) => {
+  //             return { category: key, data: val, open: false, active: false };
+  //           });
+  //           // setEnvTolData(keysData);
+  //           setSidebarFiltersObj(outObject);
+  //           console.log(outObject);
+  //         });
+  //     }
+  //   });
+  //   // .then((cats) => {
+  //   //   // console.log([...new Set(cats)]);
+  //   //   console.log(cats);
+  //   // });
+  // }, []);
+
+  const resetAllFilters = () => {
+    // set active,inactive = []
+
+    props.setActiveCropData([]);
+    props.setInactiveCropData([]);
+    setResetFilters(!resetFilters);
+  };
   React.useEffect(() => {
-    let url = getAirtableDictionaryURL(state.zone);
-
-    Axios({
-      url: url,
-      headers: {
-        Authorization: `Bearer ${AirtableBearerKey}`,
-      },
-    }).then((response) => {
-      console.log(response);
-      let sidebarFiltersArr = [{}];
-      let sidebarFilterCategories = [];
-      let data = response.data;
-      sidebarFilterCategories = data.records.map((record, index) => {
-        // sidebarFilterCategories = data.map((record, index) => {
-        // sidebarFiltersArr.push(record.fields["Category"])
-
-        return record.fields;
-      });
-
-      if (data.offset) {
-        // get more results
-        Axios({
-          url: url + `&offset=${data.offset}`,
-          headers: {
-            Authorization: `Bearer ${AirtableBearerKey}`,
-          },
-        })
-          .then((resp) => {
-            let offsetObj = [];
-            offsetObj = resp.data.records.map((record, index) => {
-              // sidebarFiltersArr.push(record.fields["Category"])
-
-              return record.fields;
-            });
-
-            return _.concat(sidebarFilterCategories, offsetObj);
-          })
-          .then((cats) => {
-            // console.log(cats);
-            // console.log("unionbycategory", _.unionBy(cats, "Category"));
-            let outObject = cats.reduce(function (a, e) {
-              // GROUP BY estimated key (estKey), well, may be a just plain key
-              // a -- Accumulator result object
-              // e -- sequentally checked Element, the Element that is tested just at this itaration
-
-              // new grouping name may be calculated, but must be based on real value of real field
-              let estKey = e["Category"];
-
-              if (e["Filter Field"]) {
-                // if(e["Information Sheet"]) {
-                (a[estKey] ? a[estKey] : (a[estKey] = null || [])).push(e);
-              }
-
-              return a;
-            }, {});
-            // let keysData = _.map(outObject, (val, index) => {
-            //   console.log(val);
-            //   return { index: false };
-            // });
-
-            outObject = _.map(outObject, (val, key) => {
-              return { category: key, data: val, open: false, active: false };
-            });
-            // setEnvTolData(keysData);
-            setSidebarFiltersObj(outObject);
-            console.log(outObject);
-          });
-      }
+    // console.log(filterData);
+    setSidebarFilters(filterData);
+    const filterTitles = filterData.map((filter) => {
+      return { name: filter.name, open: false };
     });
-    // .then((cats) => {
-    //   // console.log([...new Set(cats)]);
-    //   console.log(cats);
+    setSidebarFiltersOpen(filterTitles);
+    // console.log(filterTitles);
+    console.log(filterData);
+
+    // filterData.map((vals) => {
+    //   if(vals.type === "")
     // });
+    return () => {
+      setSidebarFilters([]);
+      setSidebarFiltersOpen([]);
+    };
   }, []);
 
   const [envTolData, setEnvTolData] = React.useState({
@@ -319,7 +582,18 @@ const CropSidebarComponent = (props) => {
       }
       className={classes.root}
     >
-      <ListItem button onClick={() => handleClick(0)}>
+      <ListItem
+        button
+        onClick={() => handleClick(0)}
+        style={
+          goalsOpen
+            ? {
+                backgroundColor: CustomStyles().lightGreen,
+                borderTop: "4px solid white",
+              }
+            : { backgroundColor: "inherit", borderTop: "4px solid white" }
+        }
+      >
         <ListItemText primary="COVER CROP GOALS" />
         {goalsOpen ? <ExpandLess /> : <ExpandMore />}
       </ListItem>
@@ -369,7 +643,15 @@ const CropSidebarComponent = (props) => {
           </Fragment>
         )}
       </Collapse>
-      <ListItem button onClick={() => handleClick(1)}>
+      <ListItem
+        button
+        onClick={() => handleClick(1)}
+        style={
+          cashCropOpen
+            ? { backgroundColor: CustomStyles().lightGreen }
+            : { backgroundColor: "inherit" }
+        }
+      >
         <ListItemText primary="CASH CROP" />
         {cashCropOpen ? <ExpandLess /> : <ExpandMore />}
       </ListItem>
@@ -435,27 +717,221 @@ const CropSidebarComponent = (props) => {
           </ListItem>
         </List>
       </Collapse>
-      <ListItem button onClick={() => handleClick(2)}>
+      <ListItem
+        button
+        onClick={() => handleClick(2)}
+        style={
+          cropFiltersOpen
+            ? { backgroundColor: CustomStyles().lightGreen }
+            : { backgroundColor: "inherit" }
+        }
+      >
         <ListItemText primary="COVER CROP FILTERS" />
         {cropFiltersOpen ? <ExpandLess /> : <ExpandMore />}
       </ListItem>
-      <Collapse in={cropFiltersOpen} timeout="auto" unmountOnExit>
+      <Collapse in={cropFiltersOpen} timeout="auto">
         <List component="div" disablePadding>
-          {/* <ListItem>
-            <FormControlLabel
-              classes={{ root: classes.formControlLabel }}
-              control={
-                <Checkbox
-                  checked={true}
-                  disabled={true}
-                  value="Show Growth Window"
-                />
-              }
-              label={
-                <Typography variant="body2">Zone Decision = Include</Typography>
-              }
-            />
-          </ListItem> */}
+          {props.activeCropData.length > 0 ? (
+            <ListItem onClick={() => {}}>
+              <ListItemText
+                primary={
+                  <small
+                    size="small"
+                    onClick={resetAllFilters}
+                    style={{ cursor: "pointer" }}
+                  >
+                    Reset Filters
+                  </small>
+                }
+              />
+            </ListItem>
+          ) : (
+            ""
+          )}
+
+          {sidebarFilters.map((filter, index) => (
+            <Fragment key={index}>
+              <ListItem
+                className={classes.nested}
+                button
+                onClick={() => toggleSidebarFilterItems(index)}
+              >
+                {filter.description !== null ? (
+                  <Tooltip
+                    enterDelay={3000}
+                    interactive
+                    arrow
+                    placement="right-start"
+                    title={
+                      <div className="tooltipTextContainer text-left">
+                        <p>{filter.description}</p>
+                      </div>
+                    }
+                    key={`tooltip${index}`}
+                  >
+                    <ListItemText
+                      primary={
+                        <Typography variant="body2">
+                          {filter.name.toUpperCase()}
+                        </Typography>
+                      }
+                    />
+                  </Tooltip>
+                ) : (
+                  <ListItemText
+                    primary={
+                      <Typography variant="body2">
+                        {filter.name.toUpperCase()}
+                      </Typography>
+                    }
+                  />
+                )}
+
+                {sidebarFiltersOpen[index].open ? (
+                  <ExpandLess />
+                ) : (
+                  <ExpandMore />
+                )}
+              </ListItem>
+
+              <Collapse in={sidebarFiltersOpen[index].open} timeout="auto">
+                <List component="div" disablePadding>
+                  <ListItem
+                    className={classes.subNested}
+                    // title={sidebarFilters[index].description}
+                    component="div"
+                  >
+                    {filter.name.toUpperCase() === "COVER CROP TYPE" ? (
+                      <CoverCropType
+                        filters={sidebarFilters[index]}
+                        sidebarFilterOptions={sidebarFilterOptions}
+                        setSidebarFilterOptions={setSidebarFilterOptions}
+                        resetAllFilters={resetAllFilters}
+                        {...props}
+                      />
+                    ) : (
+                      ""
+                    )}
+
+                    {filter.name.toUpperCase() ===
+                    "ENVIRONMENTAL TOLERANCES" ? (
+                      <EnvironmentalTolerance
+                        filters={sidebarFilters[index]}
+                        sidebarFilterOptions={sidebarFilterOptions}
+                        setSidebarFilterOptions={setSidebarFilterOptions}
+                        resetAllFilters={resetAllFilters}
+                        {...props}
+                      />
+                    ) : (
+                      ""
+                    )}
+
+                    {filter.name.toUpperCase() === "SEEDS" ? (
+                      <Seeds
+                        filters={sidebarFilters[index]}
+                        sidebarFilterOptions={sidebarFilterOptions}
+                        setSidebarFilterOptions={setSidebarFilterOptions}
+                        resetAllFilters={resetAllFilters}
+                        {...props}
+                      />
+                    ) : (
+                      ""
+                    )}
+                    {filter.name.toUpperCase() === "SEEDING METHODS" ? (
+                      <SeedingMethods
+                        filters={sidebarFilters[index]}
+                        sidebarFilterOptions={sidebarFilterOptions}
+                        setSidebarFilterOptions={setSidebarFilterOptions}
+                        resetAllFilters={resetAllFilters}
+                        {...props}
+                      />
+                    ) : (
+                      ""
+                    )}
+                    {filter.name.toUpperCase() === "GROWTH" ? (
+                      <Grid container spacing={1}>
+                        <Grid item>
+                          <Growth
+                            filters={sidebarFilters[index]}
+                            sidebarFilterOptions={sidebarFilterOptions}
+                            setSidebarFilterOptions={setSidebarFilterOptions}
+                            resetAllFilters={resetAllFilters}
+                            {...props}
+                          />
+                        </Grid>
+                      </Grid>
+                    ) : (
+                      ""
+                    )}
+                    {filter.name.toUpperCase() === "ROOTS" ? (
+                      <Grid container spacing={1}>
+                        <Grid item>
+                          <Roots
+                            filters={sidebarFilters[index]}
+                            sidebarFilterOptions={sidebarFilterOptions}
+                            setSidebarFilterOptions={setSidebarFilterOptions}
+                            resetAllFilters={resetAllFilters}
+                            {...props}
+                          />
+                        </Grid>
+                      </Grid>
+                    ) : (
+                      ""
+                    )}
+                    {filter.name.toUpperCase() === "TERMINATION METHODS" ? (
+                      <TerminationMethods
+                        filters={sidebarFilters[index]}
+                        sidebarFilterOptions={sidebarFilterOptions}
+                        setSidebarFilterOptions={setSidebarFilterOptions}
+                        resetAllFilters={resetAllFilters}
+                        {...props}
+                      />
+                    ) : (
+                      ""
+                    )}
+                    {filter.name.toUpperCase() === "BENEFICIALS" ? (
+                      <Beneficials
+                        filters={sidebarFilters[index]}
+                        sidebarFilterOptions={sidebarFilterOptions}
+                        setSidebarFilterOptions={setSidebarFilterOptions}
+                        resetAllFilters={resetAllFilters}
+                        {...props}
+                      />
+                    ) : (
+                      ""
+                    )}
+                    {filter.name.toUpperCase() === "WEEDS" ? (
+                      <Weeds
+                        filters={sidebarFilters[index]}
+                        sidebarFilterOptions={sidebarFilterOptions}
+                        setSidebarFilterOptions={setSidebarFilterOptions}
+                        resetAllFilters={resetAllFilters}
+                        {...props}
+                      />
+                    ) : (
+                      ""
+                    )}
+                    {filter.name.toUpperCase() ===
+                    "DISEASE & NON WEED PESTS" ? (
+                      <DiseaseAndNonWeedPests
+                        filters={sidebarFilters[index]}
+                        sidebarFilterOptions={sidebarFilterOptions}
+                        setSidebarFilterOptions={setSidebarFilterOptions}
+                        resetAllFilters={resetAllFilters}
+                        {...props}
+                      />
+                    ) : (
+                      ""
+                    )}
+
+                    {/* <Filters filters={sidebarFilters[index]} {...props} /> */}
+                  </ListItem>
+                </List>
+              </Collapse>
+            </Fragment>
+          ))}
+        </List>
+        {/* <List component="div" disablePadding>
           {sidebarFiltersObj.map((sidebarObj, index1) => {
             return (
               <Fragment key={index1}>
@@ -501,7 +977,7 @@ const CropSidebarComponent = (props) => {
               </Fragment>
             );
           })}
-        </List>
+        </List> */}
       </Collapse>
     </List>
   );
