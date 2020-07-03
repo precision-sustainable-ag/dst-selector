@@ -20,7 +20,7 @@ import moment from "moment";
 import { AirtableBearerKey } from "../../shared/keys";
 import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-
+import cropData from "../../shared/crop-data.json";
 // var sentimentAnalysis = require("sentiment-analysis");
 // import { Link, Button } from "@material-ui/core";
 const Header = () => {
@@ -403,88 +403,90 @@ const Header = () => {
     // document.getElementsByClassName('.nav-toggle')[0].addEventListener
 
     if (state.progress > 4) {
-      if (
-        (state.cropData.length === 0 || state.progress === 5) &&
-        !state.ajaxInProgress
-      ) {
-        const headers = new Headers();
-        let airtableUrl = "";
-        let zone = parseInt(state.zone);
+      if (state.cropData.length === 0) {
+        // load local json
+        dispatch({
+          type: "PULL_CROP_DATA",
+          data: cropData,
+        });
+        // const headers = new Headers();
+        // let airtableUrl = "";
+        // let zone = parseInt(state.zone);
 
-        if (zone === 7) airtableUrl = airtableAPIURL.Z7;
-        else if (zone === 6) airtableUrl = airtableAPIURL.Z6;
-        else if (zone === 5) airtableUrl = airtableAPIURL.Z5;
-        else airtableUrl = airtableAPIURL.Z7;
-        console.log(`Zone ${zone} data loaded`);
-        // example of airtable 'and+or' logic
-        // IF(AND({Attending?} = 1, OR({Dietary Restrictions} = "Vegan", {Dietary Restrictions} = "Vegetarian")), "true")
-        // sort[0][field]=Cover+Crop+Name&sort[0][direction]=asc
-        // Cover%20Crop%20Goals?sort%5B0%5D%5Bfield%5D=Lasting+Residue&sort%5B0%5D%5Bdirection%5D=asc&sort%5B1%5D%5Bfield%5D=Shade+Tolerance&sort%5B1%5D%5Bdirection%5D=asc
-        if (state.selectedGoals.length !== 0) {
-          if (state.selectedGoals.length !== 1) {
-            if (state.selectedGoals.length == 2) {
-              airtableUrl = `${airtableUrl}/Cover%20Crops%20Data?sort%5B0%5D%5Bfield%5D=${state.selectedGoals[0]
-                .split(" ")
-                .join(
-                  "+"
-                )}&sort%5B0%5D%5Bdirection%5D=desc&sort%5B1%5D%5Bfield%5D=${state.selectedGoals[1]
-                .split(" ")
-                .join(
-                  "+"
-                )}&sort%5B1%5D%5Bdirection%5D=desc&filterByFormula=NOT(%7BZone+Decision%7D+%3D+'Exclude')`;
-            } else {
-              airtableUrl = `${airtableUrl}/Cover%20Crops%20Data?sort%5B0%5D%5Bfield%5D=${state.selectedGoals[0]
-                .split(" ")
-                .join(
-                  "+"
-                )}&sort%5B0%5D%5Bdirection%5D=desc&sort%5B1%5D%5Bfield%5D=${state.selectedGoals[1]
-                .split(" ")
-                .join(
-                  "+"
-                )}&sort%5B1%5D%5Bdirection%5D=desc&sort%5B2%5D%5Bfield%5D=${state.selectedGoals[2]
-                .split(" ")
-                .join(
-                  "+"
-                )}&sort%5B2%5D%5Bdirection%5D=desc&filterByFormula=NOT(%7BZone+Decision%7D+%3D+'Exclude')`;
-            }
-          } else {
-            airtableUrl = `${airtableUrl}/Cover%20Crops%20Data?sort%5B0%5D%5Bfield%5D=${state.selectedGoals[0]
-              .split(" ")
-              .join(
-                "+"
-              )}&sort%5B0%5D%5Bdirection%5D=desc&filterByFormula=NOT(%7BZone+Decision%7D+%3D+'Exclude')`;
-          }
-        } else {
-          airtableUrl = `${airtableUrl}/Cover%20Crops%20Data?filterByFormula=NOT(%7BZone+Decision%7D+%3D+'Exclude')`;
-        }
-        console.log(airtableUrl);
-        headers.append("Authorization", `Bearer ${AirtableBearerKey}`);
-        headers.append("Content-Type", "application/json");
+        // if (zone === 7) airtableUrl = airtableAPIURL.Z7;
+        // else if (zone === 6) airtableUrl = airtableAPIURL.Z6;
+        // else if (zone === 5) airtableUrl = airtableAPIURL.Z5;
+        // else airtableUrl = airtableAPIURL.Z7;
+        // console.log(`Zone ${zone} data loaded`);
+        // // example of airtable 'and+or' logic
+        // // IF(AND({Attending?} = 1, OR({Dietary Restrictions} = "Vegan", {Dietary Restrictions} = "Vegetarian")), "true")
+        // // sort[0][field]=Cover+Crop+Name&sort[0][direction]=asc
+        // // Cover%20Crop%20Goals?sort%5B0%5D%5Bfield%5D=Lasting+Residue&sort%5B0%5D%5Bdirection%5D=asc&sort%5B1%5D%5Bfield%5D=Shade+Tolerance&sort%5B1%5D%5Bdirection%5D=asc
+        // if (state.selectedGoals.length !== 0) {
+        //   if (state.selectedGoals.length !== 1) {
+        //     if (state.selectedGoals.length == 2) {
+        //       airtableUrl = `${airtableUrl}/Cover%20Crops%20Data?sort%5B0%5D%5Bfield%5D=${state.selectedGoals[0]
+        //         .split(" ")
+        //         .join(
+        //           "+"
+        //         )}&sort%5B0%5D%5Bdirection%5D=desc&sort%5B1%5D%5Bfield%5D=${state.selectedGoals[1]
+        //         .split(" ")
+        //         .join(
+        //           "+"
+        //         )}&sort%5B1%5D%5Bdirection%5D=desc&filterByFormula=NOT(%7BZone+Decision%7D+%3D+'Exclude')`;
+        //     } else {
+        //       airtableUrl = `${airtableUrl}/Cover%20Crops%20Data?sort%5B0%5D%5Bfield%5D=${state.selectedGoals[0]
+        //         .split(" ")
+        //         .join(
+        //           "+"
+        //         )}&sort%5B0%5D%5Bdirection%5D=desc&sort%5B1%5D%5Bfield%5D=${state.selectedGoals[1]
+        //         .split(" ")
+        //         .join(
+        //           "+"
+        //         )}&sort%5B1%5D%5Bdirection%5D=desc&sort%5B2%5D%5Bfield%5D=${state.selectedGoals[2]
+        //         .split(" ")
+        //         .join(
+        //           "+"
+        //         )}&sort%5B2%5D%5Bdirection%5D=desc&filterByFormula=NOT(%7BZone+Decision%7D+%3D+'Exclude')`;
+        //     }
+        //   } else {
+        //     airtableUrl = `${airtableUrl}/Cover%20Crops%20Data?sort%5B0%5D%5Bfield%5D=${state.selectedGoals[0]
+        //       .split(" ")
+        //       .join(
+        //         "+"
+        //       )}&sort%5B0%5D%5Bdirection%5D=desc&filterByFormula=NOT(%7BZone+Decision%7D+%3D+'Exclude')`;
+        //   }
+        // } else {
+        //   airtableUrl = `${airtableUrl}/Cover%20Crops%20Data?filterByFormula=NOT(%7BZone+Decision%7D+%3D+'Exclude')`;
+        // }
+        // console.log(airtableUrl);
+        // headers.append("Authorization", `Bearer ${AirtableBearerKey}`);
+        // headers.append("Content-Type", "application/json");
 
-        if (!state.ajaxInProgress) {
-          dispatch({
-            type: "SET_AJAX_IN_PROGRESS",
-            data: true,
-          });
+        // if (!state.ajaxInProgress) {
+        //   dispatch({
+        //     type: "SET_AJAX_IN_PROGRESS",
+        //     data: true,
+        //   });
 
-          fetch(airtableUrl, {
-            headers: headers,
-          })
-            .then((response) => {
-              return response.json();
-            })
-            .then((data) => {
-              dispatch({
-                type: "PULL_CROP_DATA",
-                data: data.records,
-              });
-              dispatch({
-                type: "SET_AJAX_IN_PROGRESS",
-                data: false,
-              });
-              // checkCropsAddedToCart();
-            });
-        }
+        //   fetch(airtableUrl, {
+        //     headers: headers,
+        //   })
+        //     .then((response) => {
+        //       return response.json();
+        //     })
+        //     .then((data) => {
+        //       dispatch({
+        //         type: "PULL_CROP_DATA",
+        //         data: data.records,
+        //       });
+        //       dispatch({
+        //         type: "SET_AJAX_IN_PROGRESS",
+        //         data: false,
+        //       });
+        //       // checkCropsAddedToCart();
+        //     });
+        // }
       }
     }
 
