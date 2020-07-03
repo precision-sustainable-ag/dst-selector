@@ -34,6 +34,7 @@ import "../../styles/cropCalendarViewComponent.scss";
 import CropDetailsModalComponent from "./CropDetailsModal";
 import CropLegendModal from "./CropLegendModal";
 import RenderCashCropOverlay from "./RenderCashCropOverlay";
+import Axios from "axios";
 
 const CropTableComponent = (props) => {
   const cropData = props.cropData || [];
@@ -423,7 +424,9 @@ const CropTableComponent = (props) => {
 
   const activeCropPresent = () => {
     if (activeCropData.length > 0) return true;
-    else return false;
+    else {
+      return false;
+    }
   };
   const inactiveCropPresent = () => {
     if (inactiveCropData.length > 0) return true;
@@ -433,125 +436,103 @@ const CropTableComponent = (props) => {
   const RenderActiveInactiveCropData = () => {
     return (
       <Fragment>
-        <tr>
-          <td colSpan={4 + state.selectedGoals.length}>Active-Inactive</td>
-        </tr>
         {activeCropPresent
           ? activeCropData.map((crop, index) => {
-              if (
-                // !crop.fields["Cover Crop Name"].trim() !==
-                // "Ok hopefully he answers me soon.".trim()
-                true
-              ) {
-                if (crop.fields["Zone Decision"] === "Include")
-                  return (
-                    <TableRow key={`croprow${index}`} id={crop.id}>
-                      <TableCell
-                        style={{
-                          display: "flex",
-                          flexDirection: "row",
-                        }}
-                      >
-                        {/* {this.getCropImageFromAPI(
+              if (crop.fields["Zone Decision"] === "Include")
+                return (
+                  <TableRow key={`croprow${index}`} id={crop.id}>
+                    <TableCell
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                      }}
+                    >
+                      {/* {this.getCropImageFromAPI(
                 crop.fields["Cover Crop Name"]
               )} */}
-                        {crop.fields["Image"] ? (
-                          <img
-                            src={crop.fields["Image"][0].url}
-                            alt={crop.fields["Image"][0].filename}
-                            style={{
-                              width: "100px",
-                              height: "100px",
-                              maxWidth: "100px",
-                              maxHeight: "100px",
-                            }}
-                          />
-                        ) : (
-                          <img
-                            src="//placehold.it/100x100"
-                            alt="placeholder"
-                            style={{
-                              width: "100px",
-                              height: "100px",
-                              maxWidth: "100px",
-                              maxHeight: "100px",
-                            }}
-                          />
-                        )}
+                      {crop.fields["Image"] ? (
+                        <CropImage
+                          present={true}
+                          src={crop.fields["Image"][0].url}
+                          alt={crop.fields["Image"][0].filename}
+                        />
+                      ) : (
+                        <CropImage present={false} />
+                      )}
 
-                        <div className="cropDetailsText" style={{}}>
-                          <div className="part1_ut">
-                            <span className="cropCategory text-uppercase">
-                              {crop.fields["Cover Crop Group"]}
-                            </span>
-                            <span className="cropName font-weight-lighter">
-                              {crop.fields["Cover Crop Name"]}
-                            </span>
-                            <span className="cropScientificName">
-                              {trimString(crop.fields["Scientific Name"], 25)}
-                            </span>
-                          </div>
-                          <div className="part2_lt">
-                            <span className="cropDuration text-uppercase font-weight-bold">
-                              {crop.fields["Duration"]}
-                            </span>
-                          </div>
+                      <div className="cropDetailsText" style={{}}>
+                        <div className="part1_ut">
+                          <span className="cropCategory text-uppercase">
+                            {crop.fields["Cover Crop Group"]}
+                          </span>
+                          <span className="cropName font-weight-lighter">
+                            {crop.fields["Cover Crop Name"]}
+                          </span>
+                          <span className="cropScientificName">
+                            {trimString(crop.fields["Scientific Name"], 25)}
+                          </span>
                         </div>
-                      </TableCell>
-                      <TableCell style={{ textAlign: "left" }}>
-                        <div>
-                          <Typography
-                            variant="subtitle2"
-                            component="b"
-                            className="font-weight-bold"
-                          >
-                            C TO N RATIO:{" "}
-                          </Typography>
-                          <Typography variant="subtitle2" component="b">
-                            {crop.fields["C to N Ratio"]}
-                          </Typography>
+                        <div className="part2_lt">
+                          <span className="cropDuration text-uppercase font-weight-bold">
+                            {crop.fields["Duration"]}
+                          </span>
                         </div>
-                        <div>
-                          <Typography
-                            variant="subtitle2"
-                            component="b"
-                            className="font-weight-bold"
-                          >
-                            N FIXED:{" "}
-                          </Typography>
-                          <Typography variant="subtitle2" component="b">
-                            {
-                              crop.fields[
-                                "Nitrogen Accumulation Min, Legumes (lbs/A/y)"
-                              ]
-                            }
-                            -
-                            {
-                              crop.fields[
-                                "Nitrogen Accumulation Max, Legumes (lbs/A/y)"
-                              ]
-                            }{" "}
-                            lbs/A/y
-                          </Typography>
-                        </div>
-                        <div>
-                          <Typography
-                            variant="subtitle2"
-                            component="b"
-                            className="font-weight-bold"
-                          >
-                            DRY MATTER:{" "}
-                          </Typography>
-                          <Typography variant="subtitle2" component="b">
-                            {crop.fields["Dry Matter Min (lbs/A/y)"]}-
-                            {crop.fields["Dry Matter Max (lbs/A/y)"]} lbs/A/y
-                          </Typography>
-                        </div>
-                      </TableCell>
-                      {getCardFlex(crop, index)}
+                      </div>
+                    </TableCell>
+                    <TableCell style={{ textAlign: "left" }}>
+                      <div>
+                        <Typography
+                          variant="subtitle2"
+                          component="b"
+                          className="font-weight-bold"
+                        >
+                          C TO N RATIO:{" "}
+                        </Typography>
+                        <Typography variant="subtitle2" component="b">
+                          {crop.fields["C to N Ratio"]}
+                        </Typography>
+                      </div>
+                      <div>
+                        <Typography
+                          variant="subtitle2"
+                          component="b"
+                          className="font-weight-bold"
+                        >
+                          N FIXED:{" "}
+                        </Typography>
+                        <Typography variant="subtitle2" component="b">
+                          {
+                            crop.fields[
+                              "Nitrogen Accumulation Min, Legumes (lbs/A/y)"
+                            ]
+                          }
+                          -
+                          {
+                            crop.fields[
+                              "Nitrogen Accumulation Max, Legumes (lbs/A/y)"
+                            ]
+                          }{" "}
+                          lbs/A/y
+                        </Typography>
+                      </div>
+                      <div>
+                        <Typography
+                          variant="subtitle2"
+                          component="b"
+                          className="font-weight-bold"
+                        >
+                          DRY MATTER:{" "}
+                        </Typography>
+                        <Typography variant="subtitle2" component="b">
+                          {crop.fields["Dry Matter Min (lbs/A/y)"]}-
+                          {crop.fields["Dry Matter Max (lbs/A/y)"]} lbs/A/y
+                        </Typography>
+                      </div>
+                    </TableCell>
+                    {getCardFlex(crop, index)}
 
-                      {/* <td style={{}}> */}
-                      {/* <div className="button1">
+                    {/* <td style={{}}> */}
+                    {/* <div className="button1">
                   <LightButton
                     id={`cartBtn${index}`}
                     style={{
@@ -579,129 +560,127 @@ const CropTableComponent = (props) => {
                     View Details
                   </Button>
                 </div> */}
-                      {/* </td> */}
-                    </TableRow>
-                  );
-              } else return "";
+                    {/* </td> */}
+                  </TableRow>
+                );
             })
           : ""}
 
         {inactiveCropPresent
           ? inactiveCropData.map((crop, index) => {
-              if (
-                // !crop.fields["Cover Crop Name"].trim() !==
-                // "Ok hopefully he answers me soon.".trim()
-                true
-              ) {
-                if (crop.fields["Zone Decision"] === "Include")
-                  return (
-                    <TableRow key={`croprow${index}`} id={crop.id}>
-                      <TableCell
-                        style={{
-                          display: "flex",
-                          flexDirection: "row",
-                        }}
-                      >
-                        {/* {this.getCropImageFromAPI(
+              if (crop.fields["Zone Decision"] === "Include")
+                return (
+                  <TableRow
+                    key={`croprow${index}`}
+                    id={crop.id}
+                    style={{ opacity: "0.2" }}
+                  >
+                    <TableCell
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                      }}
+                    >
+                      {/* {this.getCropImageFromAPI(
                 crop.fields["Cover Crop Name"]
               )} */}
-                        {crop.fields["Image"] ? (
-                          <img
-                            src={crop.fields["Image"][0].url}
-                            alt={crop.fields["Image"][0].filename}
-                            style={{
-                              width: "100px",
-                              height: "100px",
-                              maxWidth: "100px",
-                              maxHeight: "100px",
-                            }}
-                          />
-                        ) : (
-                          <img
-                            src="//placehold.it/100x100"
-                            alt="placeholder"
-                            style={{
-                              width: "100px",
-                              height: "100px",
-                              maxWidth: "100px",
-                              maxHeight: "100px",
-                            }}
-                          />
-                        )}
+                      {crop.fields["Image"] ? (
+                        <img
+                          src={crop.fields["Image"][0].url}
+                          alt={crop.fields["Image"][0].filename}
+                          style={{
+                            width: "100px",
+                            height: "100px",
+                            maxWidth: "100px",
+                            maxHeight: "100px",
+                          }}
+                        />
+                      ) : (
+                        <img
+                          src="//placehold.it/100x100"
+                          alt="placeholder"
+                          style={{
+                            width: "100px",
+                            height: "100px",
+                            maxWidth: "100px",
+                            maxHeight: "100px",
+                          }}
+                        />
+                      )}
 
-                        <div className="cropDetailsText" style={{}}>
-                          <div className="part1_ut">
-                            <span className="cropCategory text-uppercase">
-                              {crop.fields["Cover Crop Group"]}
-                            </span>
-                            <span className="cropName font-weight-lighter">
-                              {crop.fields["Cover Crop Name"]}
-                            </span>
-                            <span className="cropScientificName">
-                              {trimString(crop.fields["Scientific Name"], 25)}
-                            </span>
-                          </div>
-                          <div className="part2_lt">
-                            <span className="cropDuration text-uppercase font-weight-bold">
-                              {crop.fields["Duration"]}
-                            </span>
-                          </div>
+                      <div className="cropDetailsText" style={{}}>
+                        <div className="part1_ut">
+                          <span className="cropCategory text-uppercase">
+                            {crop.fields["Cover Crop Group"]}
+                          </span>
+                          <span className="cropName font-weight-lighter">
+                            {crop.fields["Cover Crop Name"]}
+                          </span>
+                          <span className="cropScientificName">
+                            {trimString(crop.fields["Scientific Name"], 25)}
+                          </span>
                         </div>
-                      </TableCell>
-                      <TableCell style={{ textAlign: "left" }}>
-                        <div>
-                          <Typography
-                            variant="subtitle2"
-                            component="b"
-                            className="font-weight-bold"
-                          >
-                            C TO N RATIO:{" "}
-                          </Typography>
-                          <Typography variant="subtitle2" component="b">
-                            {crop.fields["C to N Ratio"]}
-                          </Typography>
+                        <div className="part2_lt">
+                          <span className="cropDuration text-uppercase font-weight-bold">
+                            {crop.fields["Duration"]}
+                          </span>
                         </div>
-                        <div>
-                          <Typography
-                            variant="subtitle2"
-                            component="b"
-                            className="font-weight-bold"
-                          >
-                            N FIXED:{" "}
-                          </Typography>
-                          <Typography variant="subtitle2" component="b">
-                            {
-                              crop.fields[
-                                "Nitrogen Accumulation Min, Legumes (lbs/A/y)"
-                              ]
-                            }
-                            -
-                            {
-                              crop.fields[
-                                "Nitrogen Accumulation Max, Legumes (lbs/A/y)"
-                              ]
-                            }{" "}
-                            lbs/A/y
-                          </Typography>
-                        </div>
-                        <div>
-                          <Typography
-                            variant="subtitle2"
-                            component="b"
-                            className="font-weight-bold"
-                          >
-                            DRY MATTER:{" "}
-                          </Typography>
-                          <Typography variant="subtitle2" component="b">
-                            {crop.fields["Dry Matter Min (lbs/A/y)"]}-
-                            {crop.fields["Dry Matter Max (lbs/A/y)"]} lbs/A/y
-                          </Typography>
-                        </div>
-                      </TableCell>
-                      {getCardFlex(crop, index)}
+                      </div>
+                    </TableCell>
+                    <TableCell style={{ textAlign: "left" }}>
+                      <div>
+                        <Typography
+                          variant="subtitle2"
+                          component="b"
+                          className="font-weight-bold"
+                        >
+                          C TO N RATIO:{" "}
+                        </Typography>
+                        <Typography variant="subtitle2" component="b">
+                          {crop.fields["C to N Ratio"]}
+                        </Typography>
+                      </div>
+                      <div>
+                        <Typography
+                          variant="subtitle2"
+                          component="b"
+                          className="font-weight-bold"
+                        >
+                          N FIXED:{" "}
+                        </Typography>
+                        <Typography variant="subtitle2" component="b">
+                          {
+                            crop.fields[
+                              "Nitrogen Accumulation Min, Legumes (lbs/A/y)"
+                            ]
+                          }
+                          -
+                          {
+                            crop.fields[
+                              "Nitrogen Accumulation Max, Legumes (lbs/A/y)"
+                            ]
+                          }{" "}
+                          lbs/A/y
+                        </Typography>
+                      </div>
+                      <div>
+                        <Typography
+                          variant="subtitle2"
+                          component="b"
+                          className="font-weight-bold"
+                        >
+                          DRY MATTER:{" "}
+                        </Typography>
+                        <Typography variant="subtitle2" component="b">
+                          {crop.fields["Dry Matter Min (lbs/A/y)"]}-
+                          {crop.fields["Dry Matter Max (lbs/A/y)"]} lbs/A/y
+                        </Typography>
+                      </div>
+                    </TableCell>
+                    {getCardFlex(crop, index)}
 
-                      {/* <td style={{}}> */}
-                      {/* <div className="button1">
+                    {/* <td style={{}}> */}
+                    {/* <div className="button1">
                   <LightButton
                     id={`cartBtn${index}`}
                     style={{
@@ -729,276 +708,247 @@ const CropTableComponent = (props) => {
                     View Details
                   </Button>
                 </div> */}
-                      {/* </td> */}
-                    </TableRow>
-                  );
-              } else return "";
+                    {/* </td> */}
+                  </TableRow>
+                );
             })
           : ""}
       </Fragment>
     );
   };
-  return cropData.length !== 0 ? (
+  const RenderDefaultCropData = () => {
+    return state.cropData.map((crop, index) => {
+      if (crop.fields["Zone Decision"] === "Include")
+        return (
+          <TableRow key={`croprow${index}`} id={crop.id}>
+            <TableCell
+              style={{
+                display: "flex",
+                flexDirection: "row",
+              }}
+            >
+              {/* {this.getCropImageFromAPI(
+          crop.fields["Cover Crop Name"]
+        )} */}
+              {crop.fields["Image"] ? (
+                <CropImage
+                  present={true}
+                  src={crop.fields["Image"][0].url}
+                  alt={crop.fields["Image"][0].filename}
+                />
+              ) : (
+                <CropImage present={false} />
+              )}
+
+              <div className="cropDetailsText" style={{}}>
+                <div className="part1_ut">
+                  <span className="cropCategory text-uppercase">
+                    {crop.fields["Cover Crop Group"]}
+                  </span>
+                  <span className="cropName font-weight-lighter">
+                    {crop.fields["Cover Crop Name"]}
+                  </span>
+                  <span className="cropScientificName">
+                    {trimString(crop.fields["Scientific Name"], 25)}
+                  </span>
+                </div>
+                <div className="part2_lt">
+                  <span className="cropDuration text-uppercase font-weight-bold">
+                    {crop.fields["Duration"]}
+                  </span>
+                </div>
+              </div>
+            </TableCell>
+            <TableCell style={{ textAlign: "left" }}>
+              <div>
+                <Typography
+                  variant="subtitle2"
+                  component="b"
+                  className="font-weight-bold"
+                >
+                  C TO N RATIO:{" "}
+                </Typography>
+                <Typography variant="subtitle2" component="b">
+                  {crop.fields["C to N Ratio"]}
+                </Typography>
+              </div>
+              <div>
+                <Typography
+                  variant="subtitle2"
+                  component="b"
+                  className="font-weight-bold"
+                >
+                  N FIXED:{" "}
+                </Typography>
+                <Typography variant="subtitle2" component="b">
+                  {crop.fields["Nitrogen Accumulation Min, Legumes (lbs/A/y)"]}-
+                  {crop.fields["Nitrogen Accumulation Max, Legumes (lbs/A/y)"]}{" "}
+                  lbs/A/y
+                </Typography>
+              </div>
+              <div>
+                <Typography
+                  variant="subtitle2"
+                  component="b"
+                  className="font-weight-bold"
+                >
+                  DRY MATTER:{" "}
+                </Typography>
+                <Typography variant="subtitle2" component="b">
+                  {crop.fields["Dry Matter Min (lbs/A/y)"]}-
+                  {crop.fields["Dry Matter Max (lbs/A/y)"]} lbs/A/y
+                </Typography>
+              </div>
+            </TableCell>
+            {getCardFlex(crop, index)}
+
+            {/* <td style={{}}> */}
+            {/* <div className="button1">
+            <LightButton
+              id={`cartBtn${index}`}
+              style={{
+                borderRadius: CustomStyles().nonRoundedRadius,
+                width: "130px"
+              }}
+              onClick={() => {
+                addCropToBasket(
+                  crop.id,
+                  crop.fields["Cover Crop Name"],
+                  `cartBtn${index}`,
+                  crop.fields
+                );
+              }}
+            >
+              ADD TO LIST
+            </LightButton>
+          </div>
+          <br />
+          <div className="button2">
+            <Button
+              size="small"
+              onClick={() => handleModalOpen(crop)}
+            >
+              View Details
+            </Button>
+          </div> */}
+            {/* </td> */}
+          </TableRow>
+        );
+    });
+  };
+  return state.cropData.length !== 0 ? (
     <TableContainer>
       <div className="table-responsive calendarViewTableWrapper">
-        {state.ajaxInProgress ? (
-          <div className="circularCentered">
-            <CircularProgress size={"6em"} />
-          </div>
-        ) : (
-          <Table className="table table-borderless table-sm">
-            <TableHead className="tableHeadWrapper">
-              <tr>
+        <Table className="table table-borderless table-sm">
+          <TableHead className="tableHeadWrapper">
+            <tr>
+              <th
+                style={{
+                  backgroundColor: "white",
+                  // borderTopLeftRadius: CustomStyles()._10pxRoundedRadius,
+                  // borderTopRightRadius: CustomStyles()._10pxRoundedRadius,
+                }}
+                colSpan="2"
+              ></th>
+
+              {state.selectedGoals.length > 0 ? (
                 <th
+                  colSpan={state.selectedGoals.length}
                   style={{
-                    backgroundColor: "white",
                     // borderTopLeftRadius: CustomStyles()._10pxRoundedRadius,
                     // borderTopRightRadius: CustomStyles()._10pxRoundedRadius,
+                    // borderBottom: "2px solid white",
+                    borderRight: "5px solid white",
                   }}
-                  colSpan="2"
-                ></th>
-
-                {state.selectedGoals.length > 0 ? (
-                  <th
-                    colSpan={state.selectedGoals.length}
-                    style={{
-                      // borderTopLeftRadius: CustomStyles()._10pxRoundedRadius,
-                      // borderTopRightRadius: CustomStyles()._10pxRoundedRadius,
-                      // borderBottom: "2px solid white",
-                      borderRight: "5px solid white",
-                    }}
-                  >
-                    <Typography variant="body2">
-                      <Button
-                        onClick={() => {
-                          console.log(props.sortPreference);
-                          props.sortAllCrops(
-                            props.sortPreference === "desc" ? "asc" : "desc"
-                          );
-                        }}
-                      >
-                        {props.sortPreference === "asc" ? (
-                          <ArrowDownward fontSize="inherit" />
-                        ) : (
-                          <ArrowUpward fontSize="inherit" />
-                        )}
-                        &nbsp; COVER CROPPING GOALS
-                      </Button>
-                    </Typography>
-                  </th>
-                ) : (
-                  ""
-                )}
-
-                <th
-                  style={
-                    {
-                      // borderTopLeftRadius: CustomStyles()._10pxRoundedRadius,
-                      // borderTopRightRadius: CustomStyles()._10pxRoundedRadius,
-                    }
-                  }
                 >
-                  <Button startIcon={<AddCircle />} onClick={handleLegendModal}>
-                    {" "}
-                    <Typography variant="body2">LEGEND</Typography>
-                  </Button>
+                  <Typography variant="body2">
+                    <Button
+                      onClick={() => {
+                        console.log(props.sortPreference);
+                        props.sortAllCrops(
+                          props.sortPreference === "desc" ? "asc" : "desc"
+                        );
+                      }}
+                    >
+                      {props.sortPreference === "asc" ? (
+                        <ArrowDownward fontSize="inherit" />
+                      ) : (
+                        <ArrowUpward fontSize="inherit" />
+                      )}
+                      &nbsp; COVER CROPPING GOALS
+                    </Button>
+                  </Typography>
                 </th>
-                <th
-                  style={{
-                    backgroundColor: "white",
+              ) : (
+                ""
+              )}
+
+              <th
+                style={
+                  {
                     // borderTopLeftRadius: CustomStyles()._10pxRoundedRadius,
                     // borderTopRightRadius: CustomStyles()._10pxRoundedRadius,
-                  }}
-                ></th>
-              </tr>
-              <tr>
-                <th style={{ width: "28%" }}>
-                  <Typography variant="body2">COVER CROPS</Typography>
-                </th>
-                <th style={{ width: "18%" }}>
-                  <Typography variant="body2">AGRONOMICS</Typography>
-                </th>
-                {state.selectedGoals.length > 0
-                  ? state.selectedGoals.map((goal, index) => (
-                      <th
-                        key={index}
-                        style={{ wordBreak: "break-word", maxWidth: "185px" }}
-                      >
-                        <Typography variant="body2">
-                          {goal.toUpperCase()}
-                        </Typography>
-                      </th>
-                    ))
-                  : ""}
+                  }
+                }
+              >
+                <Button startIcon={<AddCircle />} onClick={handleLegendModal}>
+                  {" "}
+                  <Typography variant="body2">LEGEND</Typography>
+                </Button>
+              </th>
+              <th
+                style={{
+                  backgroundColor: "white",
+                  // borderTopLeftRadius: CustomStyles()._10pxRoundedRadius,
+                  // borderTopRightRadius: CustomStyles()._10pxRoundedRadius,
+                }}
+              ></th>
+            </tr>
+            <tr>
+              <th style={{ width: "28%" }}>
+                <Typography variant="body2">COVER CROPS</Typography>
+              </th>
+              <th style={{ width: "18%" }}>
+                <Typography variant="body2">AGRONOMICS</Typography>
+              </th>
+              {state.selectedGoals.length > 0
+                ? state.selectedGoals.map((goal, index) => (
+                    <th
+                      key={index}
+                      style={{ wordBreak: "break-word", maxWidth: "185px" }}
+                    >
+                      <Typography variant="body2">
+                        {goal.toUpperCase()}
+                      </Typography>
+                    </th>
+                  ))
+                : ""}
 
-                {showGrowthWindow ? (
-                  <th>
-                    <Typography variant="body2">GROWTH WINDOW</Typography>
-                  </th>
-                ) : (
-                  ""
-                )}
-
+              {showGrowthWindow ? (
                 <th>
-                  <Typography variant="body2">MY LIST</Typography>
+                  <Typography variant="body2">GROWTH WINDOW</Typography>
                 </th>
-              </tr>
-            </TableHead>
+              ) : (
+                ""
+              )}
 
-            <TableBody className="tableBodyWrapper">
-              {/* {activeCropData.length > 0 || inactiveCropData.length > 0 ? (
+              <th>
+                <Typography variant="body2">MY LIST</Typography>
+              </th>
+            </tr>
+          </TableHead>
+
+          <TableBody className="tableBodyWrapper">
+            {/* {activeCropData.length > 0 || inactiveCropData.length > 0 ? (
                 <RenderActiveInactiveCropData />
               ) : ( */}
-              {props.cropData.map((crop, index) => {
-                if (
-                  // !crop.fields["Cover Crop Name"].trim() !==
-                  // "Ok hopefully he answers me soon.".trim()
-                  true
-                ) {
-                  if (crop.fields["Zone Decision"] === "Include")
-                    return (
-                      <TableRow key={`croprow${index}`} id={crop.id}>
-                        <TableCell
-                          style={{
-                            display: "flex",
-                            flexDirection: "row",
-                          }}
-                        >
-                          {/* {this.getCropImageFromAPI(
-                          crop.fields["Cover Crop Name"]
-                        )} */}
-                          {crop.fields["Image"] ? (
-                            <img
-                              src={crop.fields["Image"][0].url}
-                              alt={crop.fields["Image"][0].filename}
-                              style={{
-                                width: "100px",
-                                height: "100px",
-                                maxWidth: "100px",
-                                maxHeight: "100px",
-                              }}
-                            />
-                          ) : (
-                            <img
-                              src="//placehold.it/100x100"
-                              alt="placeholder"
-                              style={{
-                                width: "100px",
-                                height: "100px",
-                                maxWidth: "100px",
-                                maxHeight: "100px",
-                              }}
-                            />
-                          )}
-
-                          <div className="cropDetailsText" style={{}}>
-                            <div className="part1_ut">
-                              <span className="cropCategory text-uppercase">
-                                {crop.fields["Cover Crop Group"]}
-                              </span>
-                              <span className="cropName font-weight-lighter">
-                                {crop.fields["Cover Crop Name"]}
-                              </span>
-                              <span className="cropScientificName">
-                                {trimString(crop.fields["Scientific Name"], 25)}
-                              </span>
-                            </div>
-                            <div className="part2_lt">
-                              <span className="cropDuration text-uppercase font-weight-bold">
-                                {crop.fields["Duration"]}
-                              </span>
-                            </div>
-                          </div>
-                        </TableCell>
-                        <TableCell style={{ textAlign: "left" }}>
-                          <div>
-                            <Typography
-                              variant="subtitle2"
-                              component="b"
-                              className="font-weight-bold"
-                            >
-                              C TO N RATIO:{" "}
-                            </Typography>
-                            <Typography variant="subtitle2" component="b">
-                              {crop.fields["C to N Ratio"]}
-                            </Typography>
-                          </div>
-                          <div>
-                            <Typography
-                              variant="subtitle2"
-                              component="b"
-                              className="font-weight-bold"
-                            >
-                              N FIXED:{" "}
-                            </Typography>
-                            <Typography variant="subtitle2" component="b">
-                              {
-                                crop.fields[
-                                  "Nitrogen Accumulation Min, Legumes (lbs/A/y)"
-                                ]
-                              }
-                              -
-                              {
-                                crop.fields[
-                                  "Nitrogen Accumulation Max, Legumes (lbs/A/y)"
-                                ]
-                              }{" "}
-                              lbs/A/y
-                            </Typography>
-                          </div>
-                          <div>
-                            <Typography
-                              variant="subtitle2"
-                              component="b"
-                              className="font-weight-bold"
-                            >
-                              DRY MATTER:{" "}
-                            </Typography>
-                            <Typography variant="subtitle2" component="b">
-                              {crop.fields["Dry Matter Min (lbs/A/y)"]}-
-                              {crop.fields["Dry Matter Max (lbs/A/y)"]} lbs/A/y
-                            </Typography>
-                          </div>
-                        </TableCell>
-                        {getCardFlex(crop, index)}
-
-                        {/* <td style={{}}> */}
-                        {/* <div className="button1">
-                            <LightButton
-                              id={`cartBtn${index}`}
-                              style={{
-                                borderRadius: CustomStyles().nonRoundedRadius,
-                                width: "130px"
-                              }}
-                              onClick={() => {
-                                addCropToBasket(
-                                  crop.id,
-                                  crop.fields["Cover Crop Name"],
-                                  `cartBtn${index}`,
-                                  crop.fields
-                                );
-                              }}
-                            >
-                              ADD TO LIST
-                            </LightButton>
-                          </div>
-                          <br />
-                          <div className="button2">
-                            <Button
-                              size="small"
-                              onClick={() => handleModalOpen(crop)}
-                            >
-                              View Details
-                            </Button>
-                          </div> */}
-                        {/* </td> */}
-                      </TableRow>
-                    );
-                } else return "";
-              })}
-            </TableBody>
-          </Table>
-        )}
+            {activeCropData.length > 0 || inactiveCropData.length > 0 ? (
+              <RenderActiveInactiveCropData />
+            ) : (
+              <RenderDefaultCropData />
+            )}
+          </TableBody>
+        </Table>
       </div>
 
       <div className="cropGoals"></div>
@@ -1014,7 +964,28 @@ const CropTableComponent = (props) => {
       />
     </TableContainer>
   ) : (
-    ""
+    <div className="table-responsive calendarViewTableWrapper">
+      <div className="circularCentered">
+        <CircularProgress size={"6em"} />
+      </div>
+    </div>
+  );
+};
+
+const CropImage = (props) => {
+  const placeholder = "//placehold.it/100x100";
+
+  return (
+    <img
+      src={props.present ? props.src : placeholder}
+      alt={props.present ? props.alt : "Placeholder"}
+      style={{
+        width: "100px",
+        height: "100px",
+        maxWidth: "100px",
+        maxHeight: "100px",
+      }}
+    />
   );
 };
 

@@ -125,7 +125,7 @@ const App = () => {
                     <ProgressButtons />
                   </div>
                   <div
-                    className="col-lg-4 offset-lg-4 col-md-6 offset-md-2 col-sm-8  pt-2"
+                    className="col-lg-4 offset-lg-4 col-md-6 offset-md-2 col-sm-8 pt-2"
                     style={{
                       textAlign: "right",
                     }}

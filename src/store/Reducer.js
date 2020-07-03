@@ -267,6 +267,13 @@ const Reducer = (state, action) => {
       };
     }
 
+    case "UPDATE_FILTER_STRING": {
+      return {
+        ...state,
+        filterString: action.data.filterString,
+      };
+    }
+
     default:
       return state;
   }

@@ -6,29 +6,31 @@ import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import { Context } from "../../../store/Store";
 import "../../../styles/filters.scss";
 
-const Weeds = (props) => {
+const Beneficials = (props) => {
   const [state, dispatch] = useContext(Context);
   const [selected, setSelected] = useState({
-    Weeds: {
-      "Volunteer Establishment": 0,
-      Persistence: 0,
+    Beneficials: {
+      "Supports Mycorrhizae": 0,
+      "Pollinator Habitat": 0,
+      "Pollinator Food": 0,
     },
   });
   useEffect(() => {
     //   BUG: IT will be helpful to rename these from the backend itself!
     const keyMap = {
-      "Volunteer Establishment": "Volunteer Establishment",
-      Persistence: "Persistence",
+      "Supports Mycorrhizae": "Supports Mycorrhizae",
+      "Pollinator Habitat": "Pollinator Habitat",
+      "Pollinator Food": "Pollinator Food",
     };
 
     const mappedData = Object.keys(keyMap).reduce(
       (obj, k) =>
         Object.assign(obj, {
-          [keyMap[k]]: selected["Weeds"][k],
+          [keyMap[k]]: selected["Beneficials"][k],
         }),
       {}
     );
-    console.log(mappedData);
+    // console.log(mappedData);
     props.setSidebarFilterOptions({
       ...props.sidebarFilterOptions,
       ...mappedData,
@@ -37,32 +39,32 @@ const Weeds = (props) => {
   const handleChange = (newValue, name) => {
     // console.log(newValue);
     // possible bug here as vals not resetting
-    if (newValue === null || newValue === selected["Weeds"][name]) {
+    if (newValue === null || newValue === selected["Beneficials"][name]) {
       setSelected({
         ...selected,
-        Weeds: {
-          ...selected["Weeds"],
+        Beneficials: {
+          ...selected["Beneficials"],
           [name]: 0,
         },
       });
     } else {
-      // console.log("newval", newValue);
+      console.log("newval", newValue);
       const key = newValue.split("-")[0];
       const val = parseInt(newValue.split("-")[1]);
 
       if (selected[key] === val) {
         setSelected({
           ...selected,
-          Weeds: {
-            ...selected["Weeds"],
+          Beneficials: {
+            ...selected["Beneficials"],
             [key]: 0,
           },
         });
       } else
         setSelected({
           ...selected,
-          Weeds: {
-            ...selected["Weeds"],
+          Beneficials: {
+            ...selected["Beneficials"],
             [key]: val,
           },
         });
@@ -179,4 +181,4 @@ const Weeds = (props) => {
   );
 };
 
-export default Weeds;
+export default Beneficials;
