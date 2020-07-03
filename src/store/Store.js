@@ -1,5 +1,47 @@
 import React, { createContext, useReducer } from "react";
 import Reducer from "./Reducer";
+import crops from "../shared/crop-data.json";
+
+const tjson = crops;
+let tjs = tjson.map((val) => {
+  val.fields["Drought"] = val.fields["Drought Tolerance"];
+  val.fields["Flood"] = val.fields["Flood Tolerance"];
+  val.fields["Heat"] = val.fields["Heat Tolerance"];
+  val.fields["Low Fertility"] = val.fields["Low Fertility Tolerance"];
+  val.fields["Salinity"] = val.fields["Salinity Tolerance"];
+  val.fields["Shade"] = val.fields["Shade Tolerance"];
+  val.fields["Tillage at Vegetative"] =
+    val.fields["Tillage Termination at Vegetative"];
+  val.fields["Tillage at Flowering"] =
+    val.fields["Tillage Termination at Flowering"];
+  val.fields["Freezing at Vegetative"] =
+    val.fields["Freezing Termination at Vegetative"];
+  val.fields["Chemical at Vegetative"] =
+    val.fields["Chemical Termination at Vegetative"];
+  val.fields["Mow at Flowering"] = val.fields["Mow Termination at Flowering"];
+  val.fields["Roller Crimp at Flowering"] =
+    val.fields["Roller Crimp Tolerance at Flowering"];
+
+  if (!val.fields["Frost Seeding"]) {
+    val.fields["Frost Seeding"] = -999;
+  }
+  if (!val.fields["Aerial Seeding"]) {
+    val.fields["Aerial Seeding"] = -999;
+  }
+
+  // not mutating
+
+  // delete val.fields["Drought Tolerance"];
+  // delete val.fields["Flood Tolerance"];
+  // delete val.fields["Heat Tolerance"];
+  // delete val.fields["Low Fertility Tolerance"];
+  // delete val.fields["Salinity Tolerance"];
+  // delete val.fields["Shade Tolerance"];
+
+  return val;
+});
+
+// console.log(tjs);
 
 // const StoreContext = createContext();
 
@@ -295,7 +337,7 @@ const initialState = {
   //     createdTime: "2019-08-19T16:53:43.000Z"
   //   }
   // ],
-  cropData: [],
+  cropData: tjs,
   selectedCrops: [],
   // selectedCrops: [
   //   {
