@@ -1,0 +1,23 @@
+@import "../../node_modules/sass-mediaqueries/media-queries";
+@import "../styles/constants.scss";
+
+.starRatingParent {
+  button {
+    &.selected {
+      // background-color: $progressColor !important;
+      background-color: white !important;
+      color: black !important;
+      border-top: 1px solid #bbbac0;
+      border-bottom: 1px solid #bbbac0;
+    }
+    &.not-selected {
+      background-color: #e7f2f3 !important;
+      color: #1e8c99;
+      &:hover {
+        color: black;
+      }
+    }
+    border: 1px solid #1e8c99;
+    font-weight: bold;
+  }
+}

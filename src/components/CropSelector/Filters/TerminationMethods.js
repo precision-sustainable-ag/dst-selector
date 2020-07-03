@@ -6,29 +6,41 @@ import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import { Context } from "../../../store/Store";
 import "../../../styles/filters.scss";
 
-const Weeds = (props) => {
+const TerminationMethods = (props) => {
   const [state, dispatch] = useContext(Context);
   const [selected, setSelected] = useState({
-    Weeds: {
-      "Volunteer Establishment": 0,
-      Persistence: 0,
+    "Termination Methods": {
+      "Tillage at Vegetative": 0,
+      "Tillage at Flowering": 0,
+      "Freezing at Vegetative": 0,
+      "Low Fertility": 0,
+      "Chemical at Vegetative": 0,
+      "Chemical at Flowering": 0,
+      "Mow at Flowering": 0,
+      "Roller Crimp at Flowering": 0,
     },
   });
   useEffect(() => {
     //   BUG: IT will be helpful to rename these from the backend itself!
     const keyMap = {
-      "Volunteer Establishment": "Volunteer Establishment",
-      Persistence: "Persistence",
+      "Tillage at Vegetative": "Tillage Termination at Vegetative",
+      "Tillage at Flowering": "Tillage Termination at Flowering",
+      "Freezing at Vegetative": "Freezing Termination at Vegetative",
+      "Low Fertility": "Low Fertility Tolerance",
+      "Chemical at Vegetative": "Chemical Termination at Vegetative",
+      "Chemical at Flowering": "Chemical Termination at Flowering",
+      "Mow at Flowering": "Mow Termination at Flowering",
+      "Roller Crimp at Flowering": "Roller Crimp Tolerance at Flowering",
     };
 
     const mappedData = Object.keys(keyMap).reduce(
       (obj, k) =>
         Object.assign(obj, {
-          [keyMap[k]]: selected["Weeds"][k],
+          [keyMap[k]]: selected["Termination Methods"][k],
         }),
       {}
     );
-    console.log(mappedData);
+    // console.log(mappedData);
     props.setSidebarFilterOptions({
       ...props.sidebarFilterOptions,
       ...mappedData,
@@ -37,32 +49,35 @@ const Weeds = (props) => {
   const handleChange = (newValue, name) => {
     // console.log(newValue);
     // possible bug here as vals not resetting
-    if (newValue === null || newValue === selected["Weeds"][name]) {
+    if (
+      newValue === null ||
+      newValue === selected["Termination Methods"][name]
+    ) {
       setSelected({
         ...selected,
-        Weeds: {
-          ...selected["Weeds"],
+        "Termination Methods": {
+          ...selected["Termination Methods"],
           [name]: 0,
         },
       });
     } else {
-      // console.log("newval", newValue);
+      console.log("newval", newValue);
       const key = newValue.split("-")[0];
       const val = parseInt(newValue.split("-")[1]);
 
       if (selected[key] === val) {
         setSelected({
           ...selected,
-          Weeds: {
-            ...selected["Weeds"],
+          "Termination Methods": {
+            ...selected["Termination Methods"],
             [key]: 0,
           },
         });
       } else
         setSelected({
           ...selected,
-          Weeds: {
-            ...selected["Weeds"],
+          "Termination Methods": {
+            ...selected["Termination Methods"],
             [key]: val,
           },
         });
@@ -72,7 +87,9 @@ const Weeds = (props) => {
   return (
     <Grid container spacing={1}>
       {props.filters.values.map((val, index) => {
-        let groupBtnVal = `${val.name}-${props.sidebarFilterOptions[val.name]}`;
+        let groupBtnVal = `${val.name}-${
+          props.sidebarFilterOptions[val.name + " Tolerance"]
+        }`;
         return (
           <Fragment key={index}>
             <Grid item xs={12}>
@@ -104,7 +121,7 @@ const Weeds = (props) => {
                   value={`${val.name}-1`}
                   size="small"
                   className={
-                    props.sidebarFilterOptions[val.name] === 1
+                    props.sidebarFilterOptions[val.name + " Tolerance"] === 1
                       ? "selected"
                       : "not-selected"
                   }
@@ -119,7 +136,7 @@ const Weeds = (props) => {
                   value={`${val.name}-2`}
                   size="small"
                   className={
-                    props.sidebarFilterOptions[val.name] === 2
+                    props.sidebarFilterOptions[val.name + " Tolerance"] === 2
                       ? "selected"
                       : "not-selected"
                   }
@@ -131,7 +148,7 @@ const Weeds = (props) => {
                   value={`${val.name}-3`}
                   size="small"
                   className={
-                    props.sidebarFilterOptions[val.name] === 3
+                    props.sidebarFilterOptions[val.name + " Tolerance"] === 3
                       ? "selected"
                       : "not-selected"
                   }
@@ -143,7 +160,7 @@ const Weeds = (props) => {
                   value={`${val.name}-4`}
                   size="small"
                   className={
-                    props.sidebarFilterOptions[val.name] === 4
+                    props.sidebarFilterOptions[val.name + " Tolerance"] === 4
                       ? "selected"
                       : "not-selected"
                   }
@@ -160,7 +177,7 @@ const Weeds = (props) => {
                     borderBottomRightRadius: "20px",
                   }}
                   className={
-                    props.sidebarFilterOptions[val.name] === 5
+                    props.sidebarFilterOptions[val.name + " Tolerance"] === 5
                       ? "selected"
                       : "not-selected"
                   }
@@ -179,4 +196,4 @@ const Weeds = (props) => {
   );
 };
 
-export default Weeds;
+export default TerminationMethods;
