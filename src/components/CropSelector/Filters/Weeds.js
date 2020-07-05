@@ -9,70 +9,21 @@ import "../../../styles/filters.scss";
 const Weeds = (props) => {
   const [state, dispatch] = useContext(Context);
   const [selected, setSelected] = useState({
-    Weeds: {
-      "Volunteer Establishment": 0,
-      Persistence: 0,
-    },
+    "Volunteer Establishment": [],
+    Persistence: [],
   });
   useEffect(() => {
-    //   BUG: IT will be helpful to rename these from the backend itself!
-    const keyMap = {
-      "Volunteer Establishment": "Volunteer Establishment",
-      Persistence: "Persistence",
-    };
-
-    const mappedData = Object.keys(keyMap).reduce(
-      (obj, k) =>
-        Object.assign(obj, {
-          [keyMap[k]]: selected["Weeds"][k],
-        }),
-      {}
-    );
-    console.log(mappedData);
     props.setSidebarFilterOptions({
       ...props.sidebarFilterOptions,
-      ...mappedData,
+      ...selected,
     });
   }, [selected]);
   const handleChange = (newValue, name) => {
-    // console.log(newValue);
-    // possible bug here as vals not resetting
-    if (newValue === null || newValue === selected["Weeds"][name]) {
-      setSelected({
-        ...selected,
-        Weeds: {
-          ...selected["Weeds"],
-          [name]: 0,
-        },
-      });
-    } else {
-      // console.log("newval", newValue);
-      const key = newValue.split("-")[0];
-      const val = parseInt(newValue.split("-")[1]);
-
-      if (selected[key] === val) {
-        setSelected({
-          ...selected,
-          Weeds: {
-            ...selected["Weeds"],
-            [key]: 0,
-          },
-        });
-      } else
-        setSelected({
-          ...selected,
-          Weeds: {
-            ...selected["Weeds"],
-            [key]: val,
-          },
-        });
-    }
-    // console.log("selected", selected);
+    setSelected({ ...selected, [name]: newValue });
   };
   return (
     <Grid container spacing={1}>
       {props.filters.values.map((val, index) => {
-        let groupBtnVal = `${val.name}-${props.sidebarFilterOptions[val.name]}`;
         return (
           <Fragment key={index}>
             <Grid item xs={12}>
@@ -95,16 +46,15 @@ const Weeds = (props) => {
             </Grid>
             <Grid item xs={12}>
               <ToggleButtonGroup
-                value={groupBtnVal}
-                exclusive
+                value={selected[val.name]}
                 onChange={(evt, newVal) => handleChange(newVal, val.name)}
                 className="starRatingParent"
               >
                 <ToggleButton
-                  value={`${val.name}-1`}
+                  value={1}
                   size="small"
                   className={
-                    props.sidebarFilterOptions[val.name] === 1
+                    props.sidebarFilterOptions[val.name].includes(1)
                       ? "selected"
                       : "not-selected"
                   }
@@ -113,46 +63,43 @@ const Weeds = (props) => {
                     borderBottomLeftRadius: "20px",
                   }}
                 >
-                  {/* <span style={star}>&#x2606;</span> */}*
+                  &#x2605;
                 </ToggleButton>
                 <ToggleButton
-                  value={`${val.name}-2`}
+                  value={2}
                   size="small"
                   className={
-                    props.sidebarFilterOptions[val.name] === 2
+                    props.sidebarFilterOptions[val.name].includes(2)
                       ? "selected"
                       : "not-selected"
                   }
                 >
-                  {/* <span style={star}>&#x2606;&#x2606;</span> */}
-                  **
+                  &#x2605;
                 </ToggleButton>
                 <ToggleButton
-                  value={`${val.name}-3`}
+                  value={3}
                   size="small"
                   className={
-                    props.sidebarFilterOptions[val.name] === 3
+                    props.sidebarFilterOptions[val.name].includes(3)
                       ? "selected"
                       : "not-selected"
                   }
                 >
-                  {/* <span style={star}>&#x2606;&#x2606;&#x2606;</span> */}
-                  ***
+                  &#x2605;
                 </ToggleButton>
                 <ToggleButton
-                  value={`${val.name}-4`}
+                  value={4}
                   size="small"
                   className={
-                    props.sidebarFilterOptions[val.name] === 4
+                    props.sidebarFilterOptions[val.name].includes(4)
                       ? "selected"
                       : "not-selected"
                   }
                 >
-                  {/* <span style={star}>&#x2606;&#x2606;&#x2606;&#x2606;</span> */}
-                  ****
+                  &#x2605;
                 </ToggleButton>
                 <ToggleButton
-                  value={`${val.name}-5`}
+                  value={5}
                   size="small"
                   color="primary"
                   style={{
@@ -160,15 +107,12 @@ const Weeds = (props) => {
                     borderBottomRightRadius: "20px",
                   }}
                   className={
-                    props.sidebarFilterOptions[val.name] === 5
+                    props.sidebarFilterOptions[val.name].includes(5)
                       ? "selected"
                       : "not-selected"
                   }
                 >
-                  {/* <span style={star}>
-                  &#x2606;&#x2606;&#x2606;&#x2606;&#x2606;
-                </span> */}
-                  *****
+                  &#x2605;
                 </ToggleButton>
               </ToggleButtonGroup>
             </Grid>

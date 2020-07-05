@@ -9,84 +9,31 @@ import "../../../styles/filters.scss";
 const DiseaseAndNonWeedPests = (props) => {
   const [state, dispatch] = useContext(Context);
   const [selected, setSelected] = useState({
-    "Disease & Non Weed Pests": {
-      "Discourages Nematodes": 0,
-      "Promotes Nematodes": 0,
-      "Discourages Pest Insects": 0,
-      "Promotes Pest Insectsy": 0,
-      "Suppresses Cash Crop Disease": 0,
-      "Promotes Cash Crop Disease": 0,
-    },
+    "Discourages Nematodes": [], // int
+    "Promotes Nematodes": [], // int
+    "Discourages Pest Insects": [], // int
+    "Promotes Pest Insects": [], // int
+    "Suppresses Cash Crop Disease": [], // int
+    "Promotes Cash Crop Disease": [], // int
   });
   useEffect(() => {
-    //   BUG: IT will be helpful to rename these from the backend itself!
-    const keyMap = {
-      "Discourages Nematodes": "Discourages Nematodes",
-      "Promotes Nematodes": "Promotes Nematodes",
-      "Discourages Pest Insects": "Discourages Pest Insects",
-      "Promotes Pest Insects": "Promotes Pest Insects",
-      "Suppresses Cash Crop Disease": "Suppresses Cash Crop Disease",
-      "Promotes Cash Crop Disease": "Promotes Cash Crop Disease",
-    };
-
-    const mappedData = Object.keys(keyMap).reduce(
-      (obj, k) =>
-        Object.assign(obj, {
-          [keyMap[k]]: selected["Disease & Non Weed Pests"][k],
-        }),
-      {}
-    );
     // console.log(mappedData);
     props.setSidebarFilterOptions({
       ...props.sidebarFilterOptions,
-      ...mappedData,
+      ...selected,
     });
   }, [selected]);
   const handleChange = (newValue, name) => {
-    // console.log(newValue);
-    // possible bug here as vals not resetting
-    if (
-      newValue === null ||
-      newValue === selected["Disease & Non Weed Pests"][name]
-    ) {
-      setSelected({
-        ...selected,
-        "Disease & Non Weed Pests": {
-          ...selected["Disease & Non Weed Pests"],
-          [name]: 0,
-        },
-      });
-    } else {
-      console.log("newval", newValue);
-      const key = newValue.split("-")[0];
-      const val = parseInt(newValue.split("-")[1]);
-
-      if (selected[key] === val) {
-        setSelected({
-          ...selected,
-          "Disease & Non Weed Pests": {
-            ...selected["Disease & Non Weed Pests"],
-            [key]: 0,
-          },
-        });
-      } else
-        setSelected({
-          ...selected,
-          "Disease & Non Weed Pests": {
-            ...selected["Disease & Non Weed Pests"],
-            [key]: val,
-          },
-        });
-    }
-    // console.log("selected", selected);
+    setSelected({ ...selected, [name]: newValue });
   };
   return (
     <Grid container spacing={1}>
       {props.filters.values.map((val, index) => {
         let groupBtnVal = `${val.name}-${props.sidebarFilterOptions[val.name]}`;
+        let name = val.name;
         return (
           <Fragment key={index}>
-            <Grid item xs={12}>
+            <Grid item xs={12} style={{ marginTop: "1em" }}>
               <Tooltip
                 enterDelay={3000}
                 interactive
@@ -106,16 +53,15 @@ const DiseaseAndNonWeedPests = (props) => {
             </Grid>
             <Grid item xs={12}>
               <ToggleButtonGroup
-                value={groupBtnVal}
-                exclusive
+                value={selected[name]}
                 onChange={(evt, newVal) => handleChange(newVal, val.name)}
                 className="starRatingParent"
               >
                 <ToggleButton
-                  value={`${val.name}-1`}
+                  value={1}
                   size="small"
                   className={
-                    props.sidebarFilterOptions[val.name] === 1
+                    props.sidebarFilterOptions[val.name].includes(1)
                       ? "selected"
                       : "not-selected"
                   }
@@ -124,46 +70,43 @@ const DiseaseAndNonWeedPests = (props) => {
                     borderBottomLeftRadius: "20px",
                   }}
                 >
-                  {/* <span style={star}>&#x2606;</span> */}*
+                  &#x2605;
                 </ToggleButton>
                 <ToggleButton
-                  value={`${val.name}-2`}
+                  value={2}
                   size="small"
                   className={
-                    props.sidebarFilterOptions[val.name] === 2
+                    props.sidebarFilterOptions[val.name].includes(2)
                       ? "selected"
                       : "not-selected"
                   }
                 >
-                  {/* <span style={star}>&#x2606;&#x2606;</span> */}
-                  **
+                  &#x2605;
                 </ToggleButton>
                 <ToggleButton
-                  value={`${val.name}-3`}
+                  value={3}
                   size="small"
                   className={
-                    props.sidebarFilterOptions[val.name] === 3
+                    props.sidebarFilterOptions[val.name].includes(3)
                       ? "selected"
                       : "not-selected"
                   }
                 >
-                  {/* <span style={star}>&#x2606;&#x2606;&#x2606;</span> */}
-                  ***
+                  &#x2605;
                 </ToggleButton>
                 <ToggleButton
-                  value={`${val.name}-4`}
+                  value={4}
                   size="small"
                   className={
-                    props.sidebarFilterOptions[val.name] === 4
+                    props.sidebarFilterOptions[val.name].includes(4)
                       ? "selected"
                       : "not-selected"
                   }
                 >
-                  {/* <span style={star}>&#x2606;&#x2606;&#x2606;&#x2606;</span> */}
-                  ****
+                  &#x2605;
                 </ToggleButton>
                 <ToggleButton
-                  value={`${val.name}-5`}
+                  value={5}
                   size="small"
                   color="primary"
                   style={{
@@ -171,15 +114,12 @@ const DiseaseAndNonWeedPests = (props) => {
                     borderBottomRightRadius: "20px",
                   }}
                   className={
-                    props.sidebarFilterOptions[val.name] === 5
+                    props.sidebarFilterOptions[val.name].includes(5)
                       ? "selected"
                       : "not-selected"
                   }
                 >
-                  {/* <span style={star}>
-                  &#x2606;&#x2606;&#x2606;&#x2606;&#x2606;
-                </span> */}
-                  *****
+                  &#x2605;
                 </ToggleButton>
               </ToggleButtonGroup>
             </Grid>
