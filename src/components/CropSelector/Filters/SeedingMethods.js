@@ -2,51 +2,30 @@ import React, { useState, useEffect, Fragment } from "react";
 import { Grid, FormControlLabel, Checkbox, Tooltip } from "@material-ui/core";
 
 const SeedingMethods = (props) => {
-  const [selected, setSelected] = useState({});
+  const [selected, setSelected] = useState({
+    "Frost Seeding": [],
+    "Aerial Seeding": [],
+  });
 
   const checkIfSelected = (name) => {
-    // console.log(Reflect.ownKeys(selected).length);
-    if (Reflect.ownKeys(selected).length === 0) {
+    if (selected[name].length === 0) {
       return false;
     } else {
-      if (selected[name]) return true;
+      if (selected[name].includes("true")) return true;
       else return false;
     }
   };
   const handleChange = (event) => {
-    setSelected({ ...selected, [event.target.name]: event.target.checked });
+    if (event.target.checked) {
+      setSelected({ ...selected, [event.target.name]: ["true"] });
+    } else {
+      setSelected({ ...selected, [event.target.name]: [-999] });
+    }
   };
 
   useEffect(() => {
     let selections = selected;
-    // Object.keys(selections).forEach((key) => {
-    //   if (!selections[key]) delete selections[key];
-    // });
 
-    // if (Reflect.ownKeys(selections).length === 0) {
-    //   // remove the keys from sidebarfilerobj
-    //   // get a copy so as to not mutate the object!
-
-    //   let siderbarFilersCopy = props.sidebarFilterOptions;
-    //   let newSidebarObj = {};
-    //   for (let [keyy, value] of Object.entries(selected)) {
-    //     newSidebarObj = Object.keys(props.sidebarFilterOptions).reduce(
-    //       (object, key) => {
-    //         if (key !== keyy) {
-    //           object[key] = props.sidebarFilterOptions[key];
-    //         }
-    //         return object;
-    //       },
-    //       {}
-    //     );
-    //   }
-
-    //   console.log("copy", newSidebarObj);
-    //   props.setSidebarFilterOptions({
-    //     ...props.sidebarFilterOptions,
-    //     ...siderbarFilersCopy,
-    //   });
-    // } else {
     props.setSidebarFilterOptions({
       ...props.sidebarFilterOptions,
       ...selections,
