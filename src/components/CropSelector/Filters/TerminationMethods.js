@@ -9,87 +9,26 @@ import "../../../styles/filters.scss";
 const TerminationMethods = (props) => {
   const [state, dispatch] = useContext(Context);
   const [selected, setSelected] = useState({
-    "Termination Methods": {
-      "Tillage at Vegetative": 0,
-      "Tillage at Flowering": 0,
-      "Freezing at Vegetative": 0,
-      "Low Fertility": 0,
-      "Chemical at Vegetative": 0,
-      "Chemical at Flowering": 0,
-      "Mow at Flowering": 0,
-      "Roller Crimp at Flowering": 0,
-    },
+    "Tillage Termination at Vegetative": [], // int
+    "Tillage Termination at Flowering": [], // int
+    "Freezing Termination at Vegetative": [], // int
+    "Chemical Termination at Vegetative": [], // int
+    "Chemical Termination at Flowering": [], // int
+    "Mow Termination at Flowering": [], // int
+    "Roller Crimp Tolerance at Flowering": [], // int
   });
   useEffect(() => {
-    //   BUG: IT will be helpful to rename these from the backend itself!
-    const keyMap = {
-      "Tillage at Vegetative": "Tillage Termination at Vegetative",
-      "Tillage at Flowering": "Tillage Termination at Flowering",
-      "Freezing at Vegetative": "Freezing Termination at Vegetative",
-      "Low Fertility": "Low Fertility Tolerance",
-      "Chemical at Vegetative": "Chemical Termination at Vegetative",
-      "Chemical at Flowering": "Chemical Termination at Flowering",
-      "Mow at Flowering": "Mow Termination at Flowering",
-      "Roller Crimp at Flowering": "Roller Crimp Tolerance at Flowering",
-    };
-
-    const mappedData = Object.keys(keyMap).reduce(
-      (obj, k) =>
-        Object.assign(obj, {
-          [keyMap[k]]: selected["Termination Methods"][k],
-        }),
-      {}
-    );
-    // console.log(mappedData);
     props.setSidebarFilterOptions({
       ...props.sidebarFilterOptions,
-      ...mappedData,
+      ...selected,
     });
   }, [selected]);
   const handleChange = (newValue, name) => {
-    // console.log(newValue);
-    // possible bug here as vals not resetting
-    if (
-      newValue === null ||
-      newValue === selected["Termination Methods"][name]
-    ) {
-      setSelected({
-        ...selected,
-        "Termination Methods": {
-          ...selected["Termination Methods"],
-          [name]: 0,
-        },
-      });
-    } else {
-      console.log("newval", newValue);
-      const key = newValue.split("-")[0];
-      const val = parseInt(newValue.split("-")[1]);
-
-      if (selected[key] === val) {
-        setSelected({
-          ...selected,
-          "Termination Methods": {
-            ...selected["Termination Methods"],
-            [key]: 0,
-          },
-        });
-      } else
-        setSelected({
-          ...selected,
-          "Termination Methods": {
-            ...selected["Termination Methods"],
-            [key]: val,
-          },
-        });
-    }
-    // console.log("selected", selected);
+    setSelected({ ...selected, [name]: newValue });
   };
   return (
     <Grid container spacing={1}>
       {props.filters.values.map((val, index) => {
-        let groupBtnVal = `${val.name}-${
-          props.sidebarFilterOptions[val.name + " Tolerance"]
-        }`;
         return (
           <Fragment key={index}>
             <Grid item xs={12}>
@@ -112,16 +51,17 @@ const TerminationMethods = (props) => {
             </Grid>
             <Grid item xs={12}>
               <ToggleButtonGroup
-                value={groupBtnVal}
-                exclusive
-                onChange={(evt, newVal) => handleChange(newVal, val.name)}
+                value={selected[val.alternateName]}
+                onChange={(evt, newVal) =>
+                  handleChange(newVal, val.alternateName)
+                }
                 className="starRatingParent"
               >
                 <ToggleButton
-                  value={`${val.name}-1`}
+                  value={1}
                   size="small"
                   className={
-                    props.sidebarFilterOptions[val.name + " Tolerance"] === 1
+                    props.sidebarFilterOptions[val.alternateName].includes(1)
                       ? "selected"
                       : "not-selected"
                   }
@@ -130,46 +70,43 @@ const TerminationMethods = (props) => {
                     borderBottomLeftRadius: "20px",
                   }}
                 >
-                  {/* <span style={star}>&#x2606;</span> */}*
+                  &#x2605;
                 </ToggleButton>
                 <ToggleButton
-                  value={`${val.name}-2`}
+                  value={2}
                   size="small"
                   className={
-                    props.sidebarFilterOptions[val.name + " Tolerance"] === 2
+                    props.sidebarFilterOptions[val.alternateName].includes(2)
                       ? "selected"
                       : "not-selected"
                   }
                 >
-                  {/* <span style={star}>&#x2606;&#x2606;</span> */}
-                  **
+                  &#x2605;
                 </ToggleButton>
                 <ToggleButton
-                  value={`${val.name}-3`}
+                  value={3}
                   size="small"
                   className={
-                    props.sidebarFilterOptions[val.name + " Tolerance"] === 3
+                    props.sidebarFilterOptions[val.alternateName].includes(3)
                       ? "selected"
                       : "not-selected"
                   }
                 >
-                  {/* <span style={star}>&#x2606;&#x2606;&#x2606;</span> */}
-                  ***
+                  &#x2605;
                 </ToggleButton>
                 <ToggleButton
-                  value={`${val.name}-4`}
+                  value={4}
                   size="small"
                   className={
-                    props.sidebarFilterOptions[val.name + " Tolerance"] === 4
+                    props.sidebarFilterOptions[val.alternateName].includes(4)
                       ? "selected"
                       : "not-selected"
                   }
                 >
-                  {/* <span style={star}>&#x2606;&#x2606;&#x2606;&#x2606;</span> */}
-                  ****
+                  &#x2605;
                 </ToggleButton>
                 <ToggleButton
-                  value={`${val.name}-5`}
+                  value={5}
                   size="small"
                   color="primary"
                   style={{
@@ -177,15 +114,12 @@ const TerminationMethods = (props) => {
                     borderBottomRightRadius: "20px",
                   }}
                   className={
-                    props.sidebarFilterOptions[val.name + " Tolerance"] === 5
+                    props.sidebarFilterOptions[val.alternateName].includes(5)
                       ? "selected"
                       : "not-selected"
                   }
                 >
-                  {/* <span style={star}>
-                  &#x2606;&#x2606;&#x2606;&#x2606;&#x2606;
-                </span> */}
-                  *****
+                  &#x2605;
                 </ToggleButton>
               </ToggleButtonGroup>
             </Grid>

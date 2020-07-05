@@ -2,24 +2,27 @@ import React, { useState, useEffect, Fragment } from "react";
 import { Grid, Chip } from "@material-ui/core";
 
 const Roots = (props) => {
-  const [selected, setSelected] = useState({ roots: [] });
+  const [selected, setSelected] = useState({
+    "Root Architecture": [],
+    "Root Depth": [],
+  });
 
   const handleClick = (filtername, val) => {
-    console.log(filtername, val);
-    const combinedString = filtername + "-" + val;
-    if (selected.roots.includes(combinedString)) {
-      let filtered = selected.roots.filter((vals) => vals !== combinedString);
-      setSelected({ roots: filtered });
+    // console.log(filtername, val);
+    // const combinedString = filtername + "-" + val;
+    if (selected[filtername].includes(val)) {
+      let filtered = selected[filtername].filter((vals) => vals !== val);
+      setSelected({ ...selected, [filtername]: filtered });
     } else {
-      let roots = selected.roots;
-      roots.push(combinedString);
-      setSelected({ roots: roots });
+      let roots = selected[filtername];
+      roots.push(val);
+      setSelected({ ...selected, [filtername]: roots });
     }
   };
   useEffect(() => {
     props.setSidebarFilterOptions({
       ...props.sidebarFilterOptions,
-      Roots: selected.roots,
+      ...selected,
     });
   }, [selected]);
   return props.filters.values.map((subFilter, index) => (
@@ -35,7 +38,7 @@ const Roots = (props) => {
             size="medium"
             label={val}
             color={
-              props.sidebarFilterOptions["Cover Crop Group"].includes(val)
+              props.sidebarFilterOptions[subFilter.name].includes(val)
                 ? "primary"
                 : "default"
             }
