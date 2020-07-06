@@ -29,6 +29,13 @@ let tjs = tjson.map((val) => {
     val.fields["Aerial Seeding"] = -999;
   }
 
+  if (!val.fields["Pollinator Habitat"]) {
+    val.fields["Pollinator Habitat"] = 0;
+  }
+  if (!val.fields["Pollinator Food"]) {
+    val.fields["Pollinator Food"] = 0;
+  }
+
   // not mutating
 
   // delete val.fields["Drought Tolerance"];

@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment, useEffect, useRef } from "react";
 import filterData from "../../shared/data-dictionary7-optimised.json";
 
 import {
@@ -80,6 +80,7 @@ const useStyles = makeStyles((theme) => ({
 const CropSidebarComponent = (props) => {
   const classes = useStyles();
   const [state, dispatch] = React.useContext(Context);
+
   const [cropFiltersOpen, setCropFiltersOpen] = React.useState(
     props.isListView ? true : false
   );
@@ -95,26 +96,98 @@ const CropSidebarComponent = (props) => {
   const [sidebarFilters, setSidebarFilters] = React.useState([]);
   const [sidebarFiltersOpen, setSidebarFiltersOpen] = React.useState([]);
 
+  // make an exhaustive array of all params in array e.g. cover crop group and use includes in linq
   const [sidebarFilterOptions, setSidebarFilterOptions] = React.useState({
-    "Cover Crop Group": [],
-    Roots: [],
-    "Environmental Tolerance": {},
+    "Cover Crop Group": [], //string
+    "Drought Tolerance": [], //int
+    "Flood Tolerance": [], // int
+    "Heat Tolerance": [], // int
+    "Low Fertility Tolerance": [], // int
+    "Salinity Tolerance": [], // int
+    "Shade Tolerance": [], // int
+    "Seed Price per Pound": [], //int
+    "Frost Seeding": [], // -999 or true
+    "Aerial Seeding": [], // -999 or true
+    Duration: [], // array
+    "Active Growth Period": [], //array
+    "Growing Window": [], // string
+    "Establishes Quickly": [], // int
+    "Ease of Establishment": [], // int
+    "Winter Survival": [], // array
+    "Early Spring Growth": [], // int
+    "Flowering Trigger": [], // array
+    "Root Architecture": [], // array
+    "Root Depth": [], // string
+    "Tillage Termination at Vegetative": [], // int
+    "Tillage Termination at Flowering": [], // int
+    "Freezing Termination at Vegetative": [], // int
+    "Chemical Termination at Vegetative": [], // int
+    "Chemical Termination at Flowering": [], // int
+    "Mow Termination at Flowering": [], // int
+    "Roller Crimp Tolerance at Flowering": [], // int
+    "Supports Mycorrhizae": [], // int
+    "Pollinator Habitat": [], // int
+    "Pollinator Food": [], // int
+    "Volunteer Establishment": [], // int
+    Persistence: [], // int
+    "Discourages Nematodes": [], // int
+    "Promotes Nematodes": [], // int
+    "Discourages Pest Insects": [], // int
+    "Promotes Pest Insects": [], // int
+    "Suppresses Cash Crop Disease": [], // int
+    "Promotes Cash Crop Disease": [], // int
   });
   const [resetFilters, setResetFilters] = React.useState(false);
+  const firstUpdate = useRef(true);
   useEffect(() => {
-    console.log(sidebarFilterOptions);
-    let crops = [];
+    if (firstUpdate.current) {
+      firstUpdate.current = false;
+      return;
+    }
+    // console.log("Not the first update");
 
-    let obj = jslinq([
-      { name: "one", price: 5 },
-      { name: "two", price: 2 },
-      { name: "three", price: 4 },
-      { name: "four", price: 12 },
-      { name: "five", price: 1 },
-    ]);
+    // console.log(sidebarFilterOptions);
+    const crop_data = props.cropData.filter(
+      (crop) => crop.fields["Zone Decision"] === "Include"
+    );
+    // for each update, take the entire dataset and match with filters to filter active and inactive crops
 
-    console.log(obj.count());
+    // const activeFilters = Object.entries(sidebarFilterOptions).filter(
+    //   (entry) => entry[1].length > 0
+    // );
+    const sidebarKeys = Object.keys(sidebarFilterOptions);
+    console.log(sidebarKeys);
 
+    const nonZeroKeys = sidebarKeys.filter(function (key) {
+      return sidebarFilterOptions[key].length > 0;
+    });
+    // var matchingKeys = myKeys.filter(function (key) {
+    //   return key.indexOf(myString) !== -1;
+    // });
+
+    if (nonZeroKeys.length > 0) {
+      // nonZeroKeys.forEach((val, index) => {
+
+      // });
+      // let filtered = getFilteredObjects(crop_data, nonZeroKeys);
+      let filtered = getFilteredObjects(crop_data, nonZeroKeys);
+
+      const inactives = crop_data.filter((e) => !filtered.includes(e));
+
+      // if(!firstUpdate){
+      props.setActiveCropData(filtered);
+      props.setInactiveCropData(inactives);
+      // }
+      console.log("total", crop_data.length);
+      console.log("active", filtered.length);
+      console.log("inactive", inactives.length);
+      //
+    } else {
+      props.setActiveCropData(crop_data);
+      props.setInactiveCropData([]);
+    }
+
+    // console.log(b);
     //   setSidebarFilterOptions({
     //     "Cover Crop Group": [],
     //     Roots: [],
@@ -312,6 +385,77 @@ const CropSidebarComponent = (props) => {
     // console.log(crop_data);
   }, [sidebarFilterOptions]);
 
+  function filterArray(array, filters) {
+    const filterKeys = Object.keys(filters);
+    return array.filter((crop) => {
+      // validates all filter criteria
+      return filterKeys.every((key) => {
+        // ignores non-function predicates
+        if (typeof filters[key] !== "function") return true;
+        // return filters[key](item[key]);
+        else if (
+          findCommonElements(crop.fields[key], sidebarFilterOptions[key]) &&
+          crop.fields["Zone Decision"] === "Include"
+        ) {
+          return true;
+        } else if (
+          typeof crop.fields[key] === "boolean" &&
+          crop.fields["Zone Decision"] === "Include"
+        ) {
+          if (crop.fields[key] !== -999 && sidebarFilterOptions[key] !== -999)
+            return true;
+          else return false;
+        } else if (
+          sidebarFilterOptions[key].includes(crop.fields[key]) &&
+          crop.fields["Zone Decision"] === "Include"
+        ) {
+          return true;
+        } else {
+          return false;
+        }
+      });
+    });
+  }
+  const getFilteredObjects = (data = [], keys = []) => {
+    // let filterObj = jslinq(data);
+    // console.log(keys);
+    // console.log(data);
+    return data.filter((crop) => {
+      return keys.every((key) => {
+        if (Array.isArray(crop.fields[key])) {
+          if (
+            findCommonElements(crop.fields[key], sidebarFilterOptions[key]) &&
+            crop.fields["Zone Decision"] === "Include"
+          )
+            return true;
+          else return false;
+        } else if (
+          typeof crop.fields[key] === "boolean" &&
+          crop.fields["Zone Decision"] === "Include"
+        ) {
+          if (crop.fields[key] !== -999 && sidebarFilterOptions[key] !== -999)
+            return true;
+          else return false;
+        } else if (
+          sidebarFilterOptions[key].includes(crop.fields[key]) &&
+          crop.fields["Zone Decision"] === "Include"
+        ) {
+          return true;
+        } else {
+          return false;
+        }
+      });
+    });
+
+    // let filtered = filterObj
+    // .where(function (item) {
+    //   return sidebarFilterOptions["Cover Crop Group"].includes(
+    //     item.fields["Cover Crop Group"] ||
+    //       sidebarFilterOptions === item.fields
+    //   );
+    // }).
+    // .toList();
+  };
   useEffect(() => {
     if (props.isListView) {
       setCropFiltersOpen(true);
@@ -429,7 +573,7 @@ const CropSidebarComponent = (props) => {
     });
     setSidebarFiltersOpen(filterTitles);
     // console.log(filterTitles);
-    console.log(filterData);
+    // console.log(filterData);
 
     // filterData.map((vals) => {
     //   if(vals.type === "")
@@ -454,7 +598,7 @@ const CropSidebarComponent = (props) => {
   let [keysArray, setKeysArray] = React.useState([]);
   const [keysArrChanged, setKeysArrChanges] = React.useState(false);
 
-  //TODO: these urls should be locally invoked
+  //DONE: this method is not unused
   const getAirtableDictionaryURL = (zone) => {
     switch (zone) {
       case 2: {
@@ -981,6 +1125,14 @@ const CropSidebarComponent = (props) => {
       </Collapse>
     </List>
   );
+};
+
+const findCommonElements = (arr1 = [], arr2 = []) => {
+  // Iterate through each element in the
+  // first array and if some of them
+  // include the elements in the second
+  // array then return true.
+  return arr1.some((item) => arr2.includes(item));
 };
 
 export default CropSidebarComponent;

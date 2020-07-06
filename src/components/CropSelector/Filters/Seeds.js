@@ -63,7 +63,7 @@ const Seeds = (props) => {
                     : "not-selected"
                 }
               >
-                &#36;
+                &#36;&#36;
               </ToggleButton>
               <ToggleButton
                 value={3}
@@ -74,7 +74,7 @@ const Seeds = (props) => {
                     : "not-selected last-btn"
                 }
               >
-                &#36;
+                &#36;&#36;&#36;
               </ToggleButton>
             </ToggleButtonGroup>
           </Grid>
