@@ -825,7 +825,9 @@ const CropSelector = () => {
             isListView ? (
               <CropTableComponent
                 cropData={cropData}
-                activeCropData={activeCropData}
+                activeCropData={
+                  activeCropData.length > 0 ? activeCropData : cropData
+                }
                 inactiveCropData={inactiveCropData}
                 showGrowthWindow={showGrowthWindow}
                 sortAllGoals={setSortAllGoals}
