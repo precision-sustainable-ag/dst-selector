@@ -56,7 +56,7 @@ const loadRelevantRoute = (progress) => {
   // TODO: Handle case 3 as cropselector vs soil sample selector
   switch (progress) {
     case 0:
-      return <Landing bg="/images/cover-crop-field.png" />;
+      return <Landing bg="/images/cover-crop-field.webp" />;
     case 1:
       return <LocationComponent />;
     case 2:
