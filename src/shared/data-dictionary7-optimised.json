@@ -17,36 +17,42 @@
     "values": [
       {
         "name": "Drought",
+        "alternateName": "Drought Tolerance",
         "maxSize": 5,
         "symbol": "star",
         "description": "Ability to tolerate drought relative to other species"
       },
       {
         "name": "Flood",
+        "alternateName": "Flood Tolerance",
         "maxSize": 5,
         "symbol": "star",
         "description": "Ability to tolerate flood relative to other species"
       },
       {
         "name": "Heat",
+        "alternateName": "Heat Tolerance",
         "maxSize": 5,
         "symbol": "star",
         "description": "Ability to tolerate heat relative to other species"
       },
       {
         "name": "Low Fertility",
+        "alternateName": "Low Fertility Tolerance",
         "maxSize": 5,
         "symbol": "star",
         "description": "Ability to tolerate poor fertility in general (an amalgamation of low pH soils and/or below-optimum soil tests for N, P, and/or K, sandy soil)"
       },
       {
         "name": "Salinity",
+        "alternateName": "Salinity Tolerance",
         "maxSize": 5,
         "symbol": "star",
         "description": "Ability to tolerate high salinity relative to other species. Scale 1-5"
       },
       {
         "name": "Shade",
+        "alternateName": "Shade Tolerance",
         "maxSize": 5,
         "symbol": "star",
         "description": "Ability to tolerate shade relative to other species"
@@ -180,42 +186,49 @@
     "values": [
       {
         "name": "Tillage at Vegetative",
+        "alternateName": "Tillage Termination at Vegetative",
         "maxSize": 5,
         "symbol": "star",
         "description": "Likelihood that tillage (i.e. destructive mechanical operations that disturb the soil, as with disking or rotovating) will successfully terminate the cover crop while it is in the vegetative stage. The expert group premises that all cover crops can be terminated with tillage, but that 1 represents hard to terminate with tillage and requires an aggressive technique, whereas 5 is easy to terminate with tillage and requires the least aggressive technique. The techniques are categorized as follows: <br/><br/>5-light disk<br/>4-heavy disk<br/>3-chisel plow<br/>2-rototill<br/>1-moldboard"
       },
       {
         "name": "Tillage at Flowering",
+        "alternateName": "Tillage Termination at Flowering",
         "maxSize": 5,
         "symbol": "star",
         "description": "Likelihood that tillage (i.e. destructive mechanical operations that disturb the soil, as with disking or rotovating) will successfully terminate the cover crop while it is in the flowering stage. The expert group premises that all cover crops can be terminated with tillage, but that 1 represents hard to terminate with tillage and requires an aggressive technique, whereas 5 is easy to terminate with tillage and requires the least aggressive technique. The techniques are categorized as follows: <br/><br/>5-light disk<br/>4-heavy disk<br/>3-chisel plow<br/>2-rototill<br/>1-moldboard"
       },
       {
         "name": "Freezing at Vegetative",
+        "alternateName": "Freezing Termination at Vegetative",
         "maxSize": 5,
         "symbol": "star",
         "description": "Likelihood that freezing weather conditions will successfully terminate the cover crop while it is in the vegetative stage.<br/><br/>5 - Likely to terminate in mild freez<br/>1 - Requires a very significant freeze to terminat"
       },
       {
         "name": "Chemical at Vegetative",
+        "alternateName": "Chemical Termination at Vegetative",
         "maxSize": 5,
         "symbol": "star",
         "description": "Likelihood that herbicide application will successfully terminate the cover crop while it is in the vegetative stage"
       },
       {
         "name": "Chemical at Flowering",
+        "alternateName": "Chemical Termination at Flowering",
         "maxSize": 5,
         "symbol": "star",
         "description": "Likelihood that herbicide application will successfully terminate the cover crop while it is in the flowering stage"
       },
       {
         "name": "Mow at Flowering",
+        "alternateName": "Mow Termination at Flowering",
         "maxSize": 5,
         "symbol": "star",
         "description": "Likelihood that mowing (i.e. destructive mechanical operations that do not disturb the soil) will successfully terminate the cover crop while it is in the flowering stage"
       },
       {
         "name": "Roller Crimp at Flowering",
+        "alternateName": "Roller Crimp Tolerance at Flowering",
         "maxSize": 5,
         "symbol": "star",
         "description": "Likelihood that roller-crimping will successfully terminate the cover crop while it is in the flowering stage. Termination is most successful at higher crop densities (3+ tons of dry matter per acre). Roller crimping is usually used in tandem with chemical termination outside of organic systems"
