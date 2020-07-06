@@ -54,7 +54,7 @@ let tjs = tjson.map((val) => {
 
 const initialState = {
   // progress: 3,
-  progress: 5,
+  progress: 0,
   // address: "",
   address: "",
   addressSearchPreference: "address",
