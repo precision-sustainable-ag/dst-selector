@@ -682,7 +682,18 @@ const CropSelector = () => {
         // sort crop data by goal priority
         const { selectedGoals } = state;
         if (selectedGoals.length > 0) {
-          let updatedCropData = _.sortBy(state.cropData, selectedGoals);
+          // let updatedCropData = _.orderBy(state.cropData, selectedGoals);
+
+          let updatedCropData = state.cropData.sort((crops1, crops2) => {
+            let result = 0;
+            for (let i = 0; i < selectedGoals.length; i++) {
+              result =
+                crops2.fields[selectedGoals[i]] -
+                crops1.fields[selectedGoals[i]];
+            }
+            return result;
+          });
+
           setCropData(updatedCropData);
         } else {
           setCropData(state.cropData);
@@ -719,11 +730,7 @@ const CropSelector = () => {
   const toggleListView = () => {
     setIsListView(!isListView);
   };
-  // const renderRelevantComponent = () => {
-  //   if (isListView) {
 
-  //   }
-  // };
   return (
     <div className="container-fluid mt-2">
       <div className="row toggleComparisonRow">
