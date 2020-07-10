@@ -14,6 +14,9 @@ import {
   ExpansionPanel,
   ExpansionPanelDetails,
   ExpansionPanelSummary,
+  Dialog,
+  useMediaQuery,
+  useTheme,
 } from "@material-ui/core";
 import MuiAccordion from "@material-ui/core/Accordion";
 import MuiAccordionSummary from "@material-ui/core/AccordionSummary";
@@ -103,8 +106,8 @@ const CropDetailsModalComponent = (props) => {
   const [state, dispatch] = useContext(Context);
   // const [modalOpen, setModalOpen] = useState(true);
   const [modalData, setModalData] = useState({});
-  const [expanded, setExpanded] = React.useState("panel2");
-
+  const [expanded, setExpanded] = useState("panel2");
+  const [print, setPrint] = useState(false);
   const handleAccordionChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
   };
@@ -217,7 +220,8 @@ const CropDetailsModalComponent = (props) => {
   });
 
   const [images, setImages] = useState(["https://placehold.it/100x100"]);
-
+  const theme = useTheme();
+  const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
   useEffect(() => {
     setModalData(crop);
     // get 5 images related to crop
@@ -227,8 +231,15 @@ const CropDetailsModalComponent = (props) => {
     props.setModalOpen(!props.modalOpen);
   };
 
+  const setPrintContents = () => {
+    // setPrint(true);
+    // setPrint(!print);
+    let printconf = window.print();
+    console.log(printconf);
+  };
   return (
-    <Modal
+    <Dialog
+      fullScreen={fullScreen}
       aria-labelledby="transition-modal-title"
       aria-describedby="ransition-modal-description"
       className={classes.modal}
@@ -342,6 +353,7 @@ const CropDetailsModalComponent = (props) => {
                     <div className="col-2 text-right">
                       <Button
                         style={{ color: "white" }}
+                        onClick={setPrintContents}
                         // onClick={() => printDiv("coverCropModalPrimary")}
                       >
                         <Print /> <span className="pl-2">PRINT</span>
@@ -351,7 +363,7 @@ const CropDetailsModalComponent = (props) => {
                 </div>
               </div>
               <div className="row mt-4 pb-4">
-                <div className="col-7">
+                <div className={print ? "col-12" : "col-7"}>
                   <div className="row">
                     <div className="col-6">
                       <Typography variant="h6">
@@ -376,10 +388,12 @@ const CropDetailsModalComponent = (props) => {
                     </div>
                   </div>
                 </div>
-                <div className="col-5">
+                <div className={print ? "col-12" : "col-5"}>
                   <Accordion
                     square
-                    expanded={expanded === "panel1"}
+                    expanded={
+                      print ? true : expanded === "panel1" ? true : false
+                    }
                     onChange={handleAccordionChange("panel1")}
                     className="accordion"
                   >
@@ -429,7 +443,9 @@ const CropDetailsModalComponent = (props) => {
                   </Accordion>
                   <Accordion
                     square
-                    expanded={expanded === "panel2"}
+                    expanded={
+                      print ? true : expanded === "panel2" ? true : false
+                    }
                     onChange={handleAccordionChange("panel2")}
                     className="accordion"
                   >
@@ -481,7 +497,9 @@ const CropDetailsModalComponent = (props) => {
                   </Accordion>
                   <Accordion
                     square
-                    expanded={expanded === "panel3"}
+                    expanded={
+                      print ? true : expanded === "panel3" ? true : false
+                    }
                     onChange={handleAccordionChange("panel3")}
                     className="accordion"
                   >
@@ -535,7 +553,9 @@ const CropDetailsModalComponent = (props) => {
 
                   <Accordion
                     square
-                    expanded={expanded === "panel4"}
+                    expanded={
+                      print ? true : expanded === "panel4" ? true : false
+                    }
                     onChange={handleAccordionChange("panel4")}
                     className="accordion"
                   >
@@ -588,7 +608,9 @@ const CropDetailsModalComponent = (props) => {
 
                   <Accordion
                     square
-                    expanded={expanded === "panel5"}
+                    expanded={
+                      print ? true : expanded === "panel5" ? true : false
+                    }
                     onChange={handleAccordionChange("panel5")}
                     className="accordion"
                   >
@@ -655,7 +677,9 @@ const CropDetailsModalComponent = (props) => {
 
                   <Accordion
                     square
-                    expanded={expanded === "panel6"}
+                    expanded={
+                      print ? true : expanded === "panel6" ? true : false
+                    }
                     onChange={handleAccordionChange("panel6")}
                     className="accordion"
                   >
@@ -706,7 +730,9 @@ const CropDetailsModalComponent = (props) => {
 
                   <Accordion
                     square
-                    expanded={expanded === "panel7"}
+                    expanded={
+                      print ? true : expanded === "panel7" ? true : false
+                    }
                     onChange={handleAccordionChange("panel7")}
                     className="accordion"
                   >
@@ -782,7 +808,7 @@ const CropDetailsModalComponent = (props) => {
           <div></div>
         )}
       </Fade>
-    </Modal>
+    </Dialog>
   );
 };
 function printDiv(divName) {
