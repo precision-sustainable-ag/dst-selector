@@ -14,9 +14,6 @@ import {
   ExpansionPanel,
   ExpansionPanelDetails,
   ExpansionPanelSummary,
-  Dialog,
-  useMediaQuery,
-  useTheme,
 } from "@material-ui/core";
 import MuiAccordion from "@material-ui/core/Accordion";
 import MuiAccordionSummary from "@material-ui/core/AccordionSummary";
@@ -37,14 +34,12 @@ import {
 import Axios from "axios";
 const useStyles = makeStyles((theme) => ({
   modal: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
     position: "absolute",
     top: "10%",
     left: "10%",
     overflow: "scroll",
     height: "100%",
+    display: "block",
     // display: "block",
   },
   paper: {
@@ -220,8 +215,7 @@ const CropDetailsModalComponent = (props) => {
   });
 
   const [images, setImages] = useState(["https://placehold.it/100x100"]);
-  const theme = useTheme();
-  const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
+
   useEffect(() => {
     setModalData(crop);
     // get 5 images related to crop
@@ -233,13 +227,25 @@ const CropDetailsModalComponent = (props) => {
 
   const setPrintContents = () => {
     // setPrint(true);
-    // setPrint(!print);
-    let printconf = window.print();
-    console.log(printconf);
+    setPrint(!print);
+    // console.log(divId);
+    // let innerContents = document.getElementById(`modal-` + divId);
+    // let newWindow = window.open(
+    //   "",
+    //   "mywindow",
+    //   "status=1,width=350,height=150"
+    // );
+    // newWindow.document.write(innerContents);
+
+    // let printconf = window.print();
+    // console.log(printconf);
   };
+
+  useEffect(() => {
+    console.log("run");
+  });
   return (
-    <Dialog
-      fullScreen={fullScreen}
+    <Modal
       aria-labelledby="transition-modal-title"
       aria-describedby="ransition-modal-description"
       className={classes.modal}
@@ -252,6 +258,7 @@ const CropDetailsModalComponent = (props) => {
       }}
       disableBackdropClick={false}
       disableEscapeKeyDown={false}
+      // id={`modal-${props.crop.fields["id"]}`}
     >
       <Fade in={props.modalOpen}>
         {modalData.fields ? (
@@ -353,7 +360,7 @@ const CropDetailsModalComponent = (props) => {
                     <div className="col-2 text-right">
                       <Button
                         style={{ color: "white" }}
-                        onClick={setPrintContents}
+                        onClick={() => setPrintContents()}
                         // onClick={() => printDiv("coverCropModalPrimary")}
                       >
                         <Print /> <span className="pl-2">PRINT</span>
@@ -379,11 +386,13 @@ const CropDetailsModalComponent = (props) => {
 
                     <div className="col-12 mt-2">
                       <p>
-                        {
-                          cropDesc[`${crop.fields["Cover Crop Name"]}`][
-                            "Topic Details"
-                          ]
-                        }
+                        {cropDesc[`${crop.fields["Cover Crop Name"]}`][
+                          "Topic Details"
+                        ]
+                          ? cropDesc[`${crop.fields["Cover Crop Name"]}`][
+                              "Topic Details"
+                            ]
+                          : "No Data"}
                       </p>
                     </div>
                   </div>
@@ -808,7 +817,7 @@ const CropDetailsModalComponent = (props) => {
           <div></div>
         )}
       </Fade>
-    </Dialog>
+    </Modal>
   );
 };
 function printDiv(divName) {
