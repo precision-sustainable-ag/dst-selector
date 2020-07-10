@@ -61,13 +61,7 @@ const CropTableComponent = (props) => {
   const handleLegendModal = () => {
     setLegendModal(!legendModal);
   };
-  // const handleModalClose = () => {
-  //   setModalOpen(false);
-  // };
-  // zone7 appid = app2q3UaKHXutMQyt
-  // const url =
-  // "https://api.airtable.com/v0/appC47111lCOTaMYe/Cover%20Crops%20Data?maxRecords=300&timeZone=America_NewYork&filterByFormula=NOT(SWITCH({Cover Crop Name},'__Open Discussion Row','Ok hopefully he answers me soon.'))";
-  // const url = `https://api.airtable.com/v0/app2q3UaKHXutMQyt/Cover%20Crops%20Data?maxRecords=300&timeZone=America_NewYork&sort=[{field: ${state.selectedGoals[0]}, direction: "asc"}]&filterByFormula=NOT(SWITCH({Cover Crop Name},'__Open Discussion Row','Ok hopefully he answers me soon.'))`;
+
   useEffect(() => {
     props.showGrowthWindow
       ? setShowGrowthWindow(true)
@@ -76,25 +70,10 @@ const CropTableComponent = (props) => {
     // console.log(cropData);
   }, [props]);
 
-  // const checkCropsAddedToCart = () => {
-  //   if (state.selectedCrops.length !== 0) {
-  //     try {
-  //       state.selectedCrops.map((crop, index) => {
-  //         let btnId = crop.btnId;
-  //         let container = document.getElementById(btnId);
-  //         container.querySelector(".MuiButton-label").innerHTML = "ADDED";
-  //         container.classList.add("activeCartBtn");
-  //       });
-  //     } catch (e) {
-  //       console.log(e);
-  //     }
-  //   }
-  // };
-
   useEffect(() => {
     if (state.selectedCrops.length > 0) {
       let selectedIds = state.selectedCrops.map((crop) => {
-        return crop.id;
+        return crop["id"];
       });
 
       setSelectedCropsIds(selectedIds);
@@ -115,7 +94,7 @@ const CropTableComponent = (props) => {
     if (container.classList.contains("activeCartBtn")) {
       // change text back to 'add to list' and remove element from state
 
-      if (document.getElementById(btnId).textContent === "ADDED") {
+      if (container.textContent === "ADDED") {
         container.querySelector(".MuiButton-label").innerHTML = "ADD TO LIST";
         container.classList.remove("activeCartBtn");
         toAdd = false;
@@ -125,7 +104,7 @@ const CropTableComponent = (props) => {
       // get index of the element
     } else {
       // change text to 'added' and add element to state
-      console.log(document.getElementById(btnId).textContent);
+
       if (container.textContent === "ADD TO LIST") {
         container.querySelector(".MuiButton-label").innerHTML = "ADDED";
         container.classList.add("activeCartBtn");
@@ -168,12 +147,8 @@ const CropTableComponent = (props) => {
           },
         });
         enqueueSnackbar(`${cropName} Removed`);
-
-        // this.state.selectedCrops.splice(removeIndex, 1);
       }
     } else {
-      // DONE: add the selected crop to state and change the state, show snackbar
-
       dispatch({
         type: "SELECTED_CROPS_MODIFIER",
         data: {
@@ -202,30 +177,6 @@ const CropTableComponent = (props) => {
           <TableCell style={goalsLength === 0 ? { width: "50%" } : {}}>
             <table style={{ width: "100%", height: "40px" }}>
               <tbody>
-                {/* <tr className="overlay">
-                  {allMonths.map((month, index) => (
-                    // <tr>
-                    <RenderCashCropOverlay
-                      from="tableOnlyCashCropWindow"
-                      key={index}
-                      id={`overlayGrowthCell${index}`}
-                      month={index}
-                    />
-                    // </tr>
-                    // <div>{month}</div>
-                  ))}
-                </tr>
-                <tr>
-                  {allMonths.map((month, index) => (
-                    <GrowthWindowComponent
-                      from="tableOnlyCashCropWindow"
-                      data={crop.fields}
-                      key={index}
-                      id={`growthCell${index}`}
-                      month={index}
-                    />
-                  ))}
-                </tr> */}
                 <tr>
                   {allMonths.map((month, index) => (
                     <GrowthWindowComponent
@@ -270,18 +221,22 @@ const CropTableComponent = (props) => {
               width: "150px",
             }}
             className={
-              selectedCropsIds.includes(crop.id) ? "activeCartBtn" : ""
+              selectedCropsIds.includes(crop.fields["id"])
+                ? "activeCartBtn"
+                : "inactiveCartBtn"
             }
             onClick={() => {
               addCropToBasket(
-                crop.id,
+                crop.fields["id"],
                 crop.fields["Cover Crop Name"],
                 `cartBtn${indexKey}`,
                 crop.fields
               );
             }}
           >
-            {selectedCropsIds.includes(crop.id) ? "ADDED" : "ADD TO LIST"}
+            {selectedCropsIds.includes(crop.fields["id"])
+              ? "ADDED"
+              : "ADD TO LIST"}
           </LightButton>{" "}
           <br />
           <Button size="small" onClick={() => handleModalOpen(crop)}>
@@ -290,136 +245,6 @@ const CropTableComponent = (props) => {
         </TableCell>
       </Fragment>
     );
-
-    // state.selectedGoals.map((goal, index) => (
-    //   <td key={`rating${index}`}>
-    //     {getRating(crop.fields[goal])}
-    //     <span className="d-none">
-    //       {crop.fields[goal]}
-    //     </span>
-    //   </td>
-    // ))
-
-    // return (
-    //   <td colSpan={goalsLength}>
-    //     <div
-    //       style={{
-    //         display: "flex",
-    //         flexDirection: "column",
-    //         justifyContent: "space-around",
-    //       }}
-    //     >
-    //       <div
-    //         style={{
-    //           display: "flex",
-    //           flexDirection: "row",
-    //           flexWrap: "nowrap",
-    //           justifyContent: "space-around",
-    //         }}
-    //       >
-    //         {state.selectedGoals.length > 0 ? (
-    //           state.selectedGoals.map((goal, index) => (
-    //             <div key={`rating${index}`}>
-    //               {crop.fields[goal]
-    //                 ? getRating(crop.fields[goal])
-    //                 : getRating(0)}
-    //               <span className="d-none">{crop.fields[goal]}</span>
-    //             </div>
-    //           ))
-    //         ) : (
-    //           <div></div>
-    //         )}
-    //         <div>
-    //           <table style={{ width: "188px", height: "40px" }}>
-    //             <tbody>
-    //               <tr>
-    //                 {allMonths.map((month, index) => (
-    //                   <GrowthWindowComponent
-    //                     from="tableOnlyCashCropWindow"
-    //                     data={crop.fields}
-    //                     key={index}
-    //                     id={`growthCell${index}`}
-    //                     month={index}
-    //                   />
-    //                 ))}
-    //               </tr>
-    //               <tr>
-    //                 {allMonths.map((month, index) => (
-    //                   <GrowthWindowComponent
-    //                     from="tableAll"
-    //                     data={crop.fields}
-    //                     key={index}
-    //                     id={`growthCell${index}`}
-    //                     month={index}
-    //                   />
-    //                 ))}
-    //               </tr>
-    //             </tbody>
-    //           </table>
-    //         </div>
-    //         <div className="button1">
-    // <LightButton
-    //   id={`cartBtn${indexKey}`}
-    //   style={{
-    //     borderRadius: CustomStyles().nonRoundedRadius,
-    //     width: "130px",
-    //   }}
-    //   onClick={() => {
-    //     addCropToBasket(
-    //       crop.id,
-    //       crop.fields["Cover Crop Name"],
-    //       `cartBtn${indexKey}`,
-    //       crop.fields
-    //     );
-    //   }}
-    // >
-    //   ADD TO LIST
-    // </LightButton>
-    //         </div>
-    //       </div>
-    //       <div
-    //         style={{
-    //           display: "flex",
-    //           flexDirection: "row",
-    //           flexWrap: "nowrap",
-    //           justifyContent: "space-around",
-    //         }}
-    //       >
-    // <div>
-    //   <Typography variant="subtitle2" component="b">
-    //     C TO N RATIO:
-    //   </Typography>
-    //   <Typography variant="subtitle2" component="b">
-    //     {crop.fields["C to N Ratio"]}
-    //   </Typography>
-    // </div>
-    // <div>
-    //   <Typography variant="subtitle2" component="b">
-    //     N FIXED:
-    //   </Typography>
-    //   <Typography variant="subtitle2" component="b">
-    //     NONE
-    //   </Typography>
-    // </div>
-    // <div>
-    //   <Typography variant="subtitle2" component="b">
-    //     DRY MATTER:
-    //   </Typography>
-    //   <Typography variant="subtitle2" component="b">
-    //     {crop.fields["Dry Matter Min (lbs/A/y)"]}-
-    //     {crop.fields["Dry Matter Max (lbs/A/y)"]} LBS/A/Y
-    //   </Typography>
-    // </div>
-
-    //         <div className="button2" style={{ display: "flex" }}>
-    //           <Button size="small" onClick={() => handleModalOpen(crop)}>
-    //             View Details
-    //           </Button>
-    //         </div>
-    //       </div>
-    //     </div>
-    //   </td>
-    // );
   };
 
   const activeCropPresent = () => {
@@ -440,7 +265,7 @@ const CropTableComponent = (props) => {
           ? activeCropData.map((crop, index) => {
               if (crop.fields["Zone Decision"] === "Include")
                 return (
-                  <TableRow key={`croprow${index}`} id={crop.id}>
+                  <TableRow key={`croprow${index}`} id={crop.fields["id"]}>
                     <TableCell
                       style={{
                         display: "flex",
@@ -572,7 +397,7 @@ const CropTableComponent = (props) => {
                 return (
                   <TableRow
                     key={`croprow${index}`}
-                    id={crop.id}
+                    id={crop.fields["id"]}
                     style={{ opacity: "0.2" }}
                   >
                     <TableCell
@@ -720,7 +545,7 @@ const CropTableComponent = (props) => {
     return state.cropData.map((crop, index) => {
       if (crop.fields["Zone Decision"] === "Include")
         return (
-          <TableRow key={`croprow${index}`} id={crop.id}>
+          <TableRow key={`croprow${index}`} id={crop.fields["id"]}>
             <TableCell
               style={{
                 display: "flex",

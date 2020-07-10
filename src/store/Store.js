@@ -3,7 +3,11 @@ import Reducer from "./Reducer";
 import crops from "../shared/crop-data.json";
 
 const tjson = crops;
-let tjs = tjson.map((val) => {
+let tjs = tjson.map((crop) => {
+  // val["fields"] = val;
+  let val = { fields: crop };
+  // console.log(val);
+  val.fields["id"] = val.fields["__id"];
   val.fields["Drought"] = val.fields["Drought Tolerance"];
   val.fields["Flood"] = val.fields["Flood Tolerance"];
   val.fields["Heat"] = val.fields["Heat Tolerance"];
@@ -54,7 +58,7 @@ let tjs = tjson.map((val) => {
 
 const initialState = {
   // progress: 3,
-  progress: 0,
+  progress: 5,
   // address: "",
   address: "",
   addressSearchPreference: "address",
@@ -347,8 +351,8 @@ const initialState = {
   cropData: tjs,
   selectedCrops: [],
 
-  // selectedGoals: ["Good Grazing"],
-  selectedGoals: [],
+  selectedGoals: ["Good Grazing"],
+  // selectedGoals: [],
   zoom: 13,
   addressVerified: false,
   snackOpen: false,
