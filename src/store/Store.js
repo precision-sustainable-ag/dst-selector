@@ -7,6 +7,8 @@ let tjs = tjson.map((crop) => {
   // val["fields"] = val;
   let val = { fields: crop };
   // console.log(val);
+
+  val.fields["Discourages Nematodes"] = val.fields["Disoucrages Nematodes"];
   val.fields["id"] = val.fields["__id"];
   val.fields["Drought"] = val.fields["Drought Tolerance"];
   val.fields["Flood"] = val.fields["Flood Tolerance"];
