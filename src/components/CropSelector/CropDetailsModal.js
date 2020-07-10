@@ -377,47 +377,27 @@ const CropDetailsModalComponent = (props) => {
                   </div>
                 </div>
                 <div className="col-5">
-                  {/* <ExpansionPanel
-                    className="modalSideBar"
-                    defaultExpanded={false}
+                  <Accordion
+                    square
+                    expanded={expanded === "panel1"}
+                    onChange={handleAccordionChange("panel1")}
+                    className="accordion"
                   >
-                    <ExpansionPanelSummary
-                      expandIcon={<ExpandMore />}
-                      aria-controls="modal-side-panel-content"
+                    <AccordionSummary
+                      aria-controls="panel1d-content"
+                      id="panel1d-header"
+                      // expandIcon={<ExpandLessOutlined />}
                     >
-                      <Typography variant="body1">Taxonomy</Typography>
-                    </ExpansionPanelSummary>
-                    <ExpansionPanelDetails>
-                      <div className="container-fluid">
-                        <div className="row">
-                          {sideBarData.Taxonomy.map((sideBarVal, index) => (
-                            <div className="col-6" key={`taxonomy--${index}`}>
-                              <Typography
-                                variant="body1"
-                                className="font-weight-bold"
-                              >
-                                {sideBarVal}
-                              </Typography>
-                              <Typography variant="body2">
-                                {crop.fields[sideBarVal]}
-                              </Typography>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    </ExpansionPanelDetails>
-                  </ExpansionPanel> */}
-                  <ExpansionPanel
-                    className="modalSideBar"
-                    defaultExpanded={false}
-                  >
-                    <ExpansionPanelSummary
-                      expandIcon={<ExpandMore />}
-                      aria-controls="modal-side-panel-content"
-                    >
-                      <Typography variant="body1">Agronomics</Typography>
-                    </ExpansionPanelSummary>
-                    <ExpansionPanelDetails>
+                      <Typography>
+                        {expanded === "panel1" ? (
+                          <RemoveCircleOutline />
+                        ) : (
+                          <AddCircleOutline />
+                        )}{" "}
+                        Agronomics
+                      </Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
                       <div className="container-fluid">
                         <div className="row">
                           {sideBarData["Basic Agronomics"].map(
@@ -445,21 +425,28 @@ const CropDetailsModalComponent = (props) => {
                           )}
                         </div>
                       </div>
-                    </ExpansionPanelDetails>
-                  </ExpansionPanel>
-                  <ExpansionPanel
-                    className="modalSideBar"
-                    defaultExpanded={true}
+                    </AccordionDetails>
+                  </Accordion>
+                  <Accordion
+                    square
+                    expanded={expanded === "panel2"}
+                    onChange={handleAccordionChange("panel2")}
+                    className="accordion"
                   >
-                    <ExpansionPanelSummary
-                      expandIcon={<ExpandMore />}
-                      aria-controls="modal-side-panel-content"
+                    <AccordionSummary
+                      aria-controls="panel2d-content"
+                      id="panel2d-header"
                     >
-                      <Typography variant="body1">
-                        {Object.keys(sideBarData)[1]} Tolerance
+                      <Typography>
+                        {expanded === "panel2" ? (
+                          <RemoveCircleOutline />
+                        ) : (
+                          <AddCircleOutline />
+                        )}{" "}
+                        Environmental Tolerance
                       </Typography>
-                    </ExpansionPanelSummary>
-                    <ExpansionPanelDetails>
+                    </AccordionSummary>
+                    <AccordionDetails>
                       <div className="container-fluid">
                         <div className="row">
                           {sideBarData["Environmental"].map(
@@ -490,20 +477,29 @@ const CropDetailsModalComponent = (props) => {
                           )}
                         </div>
                       </div>
-                    </ExpansionPanelDetails>
-                  </ExpansionPanel>
-
-                  <ExpansionPanel
-                    className="modalSideBar"
-                    defaultExpanded={false}
+                    </AccordionDetails>
+                  </Accordion>
+                  <Accordion
+                    square
+                    expanded={expanded === "panel3"}
+                    onChange={handleAccordionChange("panel3")}
+                    className="accordion"
                   >
-                    <ExpansionPanelSummary
-                      expandIcon={<ExpandMore />}
-                      aria-controls="modal-side-panel-content"
+                    <AccordionSummary
+                      aria-controls="panel3d-content"
+                      id="panel3d-header"
                     >
-                      <Typography variant="body1">Soil Conditions</Typography>
-                    </ExpansionPanelSummary>
-                    <ExpansionPanelDetails>
+                      <Typography>
+                        {" "}
+                        {expanded === "panel3" ? (
+                          <RemoveCircleOutline />
+                        ) : (
+                          <AddCircleOutline />
+                        )}{" "}
+                        Soil Conditions
+                      </Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
                       <div className="container-fluid">
                         <div className="row">
                           {sideBarData["Soil Conditions"].map(
@@ -534,19 +530,30 @@ const CropDetailsModalComponent = (props) => {
                           )}
                         </div>
                       </div>
-                    </ExpansionPanelDetails>
-                  </ExpansionPanel>
-                  <ExpansionPanel
-                    className="modalSideBar"
-                    defaultExpanded={false}
+                    </AccordionDetails>
+                  </Accordion>
+
+                  <Accordion
+                    square
+                    expanded={expanded === "panel4"}
+                    onChange={handleAccordionChange("panel4")}
+                    className="accordion"
                   >
-                    <ExpansionPanelSummary
-                      expandIcon={<ExpandMore />}
-                      aria-controls="modal-side-panel-content"
+                    <AccordionSummary
+                      aria-controls="panel4d-content"
+                      id="panel4d-header"
                     >
-                      <Typography variant="body1">Growth</Typography>
-                    </ExpansionPanelSummary>
-                    <ExpansionPanelDetails>
+                      <Typography>
+                        {" "}
+                        {expanded === "panel4" ? (
+                          <RemoveCircleOutline />
+                        ) : (
+                          <AddCircleOutline />
+                        )}{" "}
+                        Growth
+                      </Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
                       <div className="container-fluid">
                         <div className="row">
                           {sideBarData.Growth.map((sideBarVal, index) => (
@@ -576,21 +583,30 @@ const CropDetailsModalComponent = (props) => {
                           ))}
                         </div>
                       </div>
-                    </ExpansionPanelDetails>
-                  </ExpansionPanel>
-                  <ExpansionPanel
-                    className="modalSideBar"
-                    defaultExpanded={false}
+                    </AccordionDetails>
+                  </Accordion>
+
+                  <Accordion
+                    square
+                    expanded={expanded === "panel5"}
+                    onChange={handleAccordionChange("panel5")}
+                    className="accordion"
                   >
-                    <ExpansionPanelSummary
-                      expandIcon={<ExpandMore />}
-                      aria-controls="modal-side-panel-content"
+                    <AccordionSummary
+                      aria-controls="panel5d-content"
+                      id="panel5d-header"
                     >
-                      <Typography variant="body1">
+                      <Typography>
+                        {" "}
+                        {expanded === "panel5" ? (
+                          <RemoveCircleOutline />
+                        ) : (
+                          <AddCircleOutline />
+                        )}{" "}
                         Planting & Termination
                       </Typography>
-                    </ExpansionPanelSummary>
-                    <ExpansionPanelDetails>
+                    </AccordionSummary>
+                    <AccordionDetails>
                       <div className="container-fluid">
                         <div className="row">
                           {sideBarData.Planting.map((sideBarVal, index) => (
@@ -634,21 +650,30 @@ const CropDetailsModalComponent = (props) => {
                           ))}
                         </div>
                       </div>
-                    </ExpansionPanelDetails>
-                  </ExpansionPanel>
-                  <ExpansionPanel
-                    className="modalSideBar"
-                    defaultExpanded={false}
+                    </AccordionDetails>
+                  </Accordion>
+
+                  <Accordion
+                    square
+                    expanded={expanded === "panel6"}
+                    onChange={handleAccordionChange("panel6")}
+                    className="accordion"
                   >
-                    <ExpansionPanelSummary
-                      expandIcon={<ExpandMore />}
-                      aria-controls="modal-side-panel-content"
+                    <AccordionSummary
+                      aria-controls="panel6d-content"
+                      id="panel6d-header"
                     >
-                      <Typography variant="body1">
+                      <Typography>
+                        {" "}
+                        {expanded === "panel6" ? (
+                          <RemoveCircleOutline />
+                        ) : (
+                          <AddCircleOutline />
+                        )}{" "}
                         Grazers & Pollinators
                       </Typography>
-                    </ExpansionPanelSummary>
-                    <ExpansionPanelDetails>
+                    </AccordionSummary>
+                    <AccordionDetails>
                       <div className="container-fluid">
                         <div className="row">
                           {sideBarData["Grazers & Pollinators"].map(
@@ -676,20 +701,30 @@ const CropDetailsModalComponent = (props) => {
                           )}
                         </div>
                       </div>
-                    </ExpansionPanelDetails>
-                  </ExpansionPanel>
+                    </AccordionDetails>
+                  </Accordion>
 
-                  <ExpansionPanel
-                    className="modalSideBar"
-                    defaultExpanded={false}
+                  <Accordion
+                    square
+                    expanded={expanded === "panel7"}
+                    onChange={handleAccordionChange("panel7")}
+                    className="accordion"
                   >
-                    <ExpansionPanelSummary
-                      expandIcon={<ExpandMore />}
-                      aria-controls="modal-side-panel-content"
+                    <AccordionSummary
+                      aria-controls="panel7d-content"
+                      id="panel7d-header"
                     >
-                      <Typography variant="body1">Pests & Disease</Typography>
-                    </ExpansionPanelSummary>
-                    <ExpansionPanelDetails>
+                      <Typography>
+                        {" "}
+                        {expanded === "panel7" ? (
+                          <RemoveCircleOutline />
+                        ) : (
+                          <AddCircleOutline />
+                        )}{" "}
+                        Pests & Disease
+                      </Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
                       <div className="container-fluid">
                         <div className="row">
                           {sideBarData["Disease and Non-weed Pests"].map(
@@ -737,8 +772,8 @@ const CropDetailsModalComponent = (props) => {
                           ))}
                         </div>
                       </div>
-                    </ExpansionPanelDetails>
-                  </ExpansionPanel>
+                    </AccordionDetails>
+                  </Accordion>
                 </div>
               </div>
             </div>
