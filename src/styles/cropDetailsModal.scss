@@ -1,0 +1,14 @@
+@import "../styles/constants.scss";
+.accordion {
+  div.MuiAccordionSummary-root {
+    background-color: white;
+  }
+  border-color: $progressColor !important;
+}
+.modalSideBar {
+  //   box-shadow: 0px 2px 1px -1px $progressColor, 0px 1px 1px 0px $progressColor,
+  //     0px 1px 3px 0px $progressColor !important;
+  box-shadow: none;
+  border-color: $progressColor !important;
+  border: 1px solid;
+}
