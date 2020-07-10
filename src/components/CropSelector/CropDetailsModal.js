@@ -1,6 +1,8 @@
 import React, { useState, useContext, useEffect, Fragment } from "react";
 import { Context } from "../../store/Store";
 import { zoneIcon, getRating } from "../../shared/constants";
+import cropDesc from "../../shared/crop-descriptions.json";
+import "../../styles/cropDetailsModal.scss";
 import {
   Button,
   Typography,
@@ -8,10 +10,14 @@ import {
   Fade,
   Backdrop,
   makeStyles,
+  withStyles,
   ExpansionPanel,
-  ExpansionPanelSummary,
   ExpansionPanelDetails,
+  ExpansionPanelSummary,
 } from "@material-ui/core";
+import MuiAccordion from "@material-ui/core/Accordion";
+import MuiAccordionSummary from "@material-ui/core/AccordionSummary";
+import MuiAccordionDetails from "@material-ui/core/AccordionDetails";
 import {
   PhotoLibrary,
   PictureAsPdf,
@@ -19,6 +25,10 @@ import {
   Print,
   Info,
   Close,
+  ExpandMoreOutlined,
+  ExpandLessOutlined,
+  AddCircleOutline,
+  RemoveCircleOutline,
   ExpandMore,
 } from "@material-ui/icons";
 import Axios from "axios";
@@ -27,6 +37,12 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+    position: "absolute",
+    top: "10%",
+    left: "10%",
+    overflow: "scroll",
+    height: "100%",
+    // display: "block",
   },
   paper: {
     backgroundColor: theme.palette.background.paper,
@@ -41,14 +57,57 @@ const useStyles = makeStyles((theme) => ({
     width: 200,
   },
 }));
+const Accordion = withStyles({
+  root: {
+    border: "1px solid rgba(0, 0, 0, .125)",
+    boxShadow: "none",
+    "&:not(:last-child)": {
+      borderBottom: 0,
+    },
+    "&:before": {
+      display: "none",
+    },
+    "&$expanded": {
+      margin: "auto",
+    },
+  },
+  expanded: {},
+})(MuiAccordion);
 
+const AccordionSummary = withStyles({
+  root: {
+    backgroundColor: "rgba(0, 0, 0, .03)",
+    borderBottom: "1px solid rgba(0, 0, 0, .125)",
+    marginBottom: -1,
+    minHeight: 56,
+    "&$expanded": {
+      minHeight: 56,
+    },
+  },
+  content: {
+    "&$expanded": {
+      margin: "12px 0",
+    },
+  },
+  expanded: {},
+})(MuiAccordionSummary);
+
+const AccordionDetails = withStyles((theme) => ({
+  root: {
+    padding: theme.spacing(2),
+  },
+}))(MuiAccordionDetails);
 const CropDetailsModalComponent = (props) => {
   let crop = props.crop;
   const classes = useStyles();
   const [state, dispatch] = useContext(Context);
   // const [modalOpen, setModalOpen] = useState(true);
   const [modalData, setModalData] = useState({});
+  const [expanded, setExpanded] = React.useState("panel2");
 
+  const handleAccordionChange = (panel) => (event, newExpanded) => {
+    setExpanded(newExpanded ? panel : false);
+  };
   const [sideBarData, setSideBarData] = useState({
     Taxonomy: [
       "Cover Crop Name",
@@ -62,13 +121,12 @@ const CropDetailsModalComponent = (props) => {
       "Notes: Taxonomy",
     ],
     Environmental: [
-      "Heat Tolerance",
       "Drought Tolerance",
-      "Shade Tolerance",
       "Flood Tolerance",
+      "Heat Tolerance",
       "Low Fertility Tolerance",
       "Salinity Tolerance",
-      "Winter Survival",
+      "Shade Tolerance",
       "Notes: Environmental Tolerances",
     ],
     "Basic Agronomics": [
@@ -86,7 +144,6 @@ const CropDetailsModalComponent = (props) => {
     ],
     "Soil Conditions": [
       "Soil Drainage",
-      "Flooding/Ponding Tolerance",
       "Soil Textures",
       "Minimum Tolerant Soil pH",
       "Maximum Tolerant Soil pH",
@@ -135,13 +192,14 @@ const CropDetailsModalComponent = (props) => {
     "Grazers & Pollinators": [
       "Harvestability",
       "Grazing Tolerance",
-      "Grazing Value",
+      "Good Grazing",
       "Pollinator Food",
       "Pollinator Habitat",
       "Notes: Grazers & Pollinators",
     ],
     Weeds: [
       "Volunteer Establishment",
+      "Persistence",
       "Hard Seededness",
       "Outcompetes Weeds",
       "Allelopathic to Weeds",
@@ -165,42 +223,9 @@ const CropDetailsModalComponent = (props) => {
     // get 5 images related to crop
   }, [crop]);
 
-  // const getImages = async (cropName) => {
-  //   let cropNameFormatted = encodeURIComponent(cropName);
-  //   let requestBuffer = await Axios.get(
-  //     `https://api.qwant.com/api/search/images?count=5&q=${cropNameFormatted}Spring&t=images&safesearch=1&locale=en_US&uiv=4`,
-  //     {
-  //       headers: {
-  //         "User-Agent":
-  //           "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36",
-  //       },
-  //     }
-  //   );
-  //   return requestBuffer;
-  // };
-
   const handleModalClose = () => {
     props.setModalOpen(!props.modalOpen);
-    // dispatch({
-    //   type: "TOGGLE_CROP_DETAIL_MODAL",
-    //   data: { cropDetailModal: false }
-    // });
-    // setModalOpen(false);
   };
-
-  // const renderImages = (cropName) => {
-  //   // getImages(cropName).then((data) => {
-  //   //   console.log(data.data);
-  //   // });
-
-  //   return (
-  //     <Fragment>
-  //       {images.map((image, index) => (
-  //         <img key={index} src={image} alt={`${cropName} Image ${index + 1}`} />
-  //       ))}
-  //     </Fragment>
-  //   );
-  // };
 
   return (
     <Modal
@@ -216,7 +241,6 @@ const CropDetailsModalComponent = (props) => {
       }}
       disableBackdropClick={false}
       disableEscapeKeyDown={false}
-      style={{ overflow: "scroll", height: "100%" }}
     >
       <Fade in={props.modalOpen}>
         {modalData.fields ? (
@@ -246,7 +270,7 @@ const CropDetailsModalComponent = (props) => {
                   </div>
                 </div>
               </div>
-              <div className="row">
+              <div className="row" id="coverCropModalPrimary">
                 <div className="col-12">
                   <div className="row">
                     <div className="col mt-2">
@@ -302,7 +326,11 @@ const CropDetailsModalComponent = (props) => {
                     </div>
                     <div className="col-4">
                       <Button style={{ color: "white" }}>Download :</Button>
-                      <Button style={{ color: "white" }}>
+                      <Button
+                        href={`/information-sheets/${crop.fields["Cover Crop Name"]}.pdf`}
+                        style={{ color: "white" }}
+                        download={`${crop.fields["Cover Crop Name"]}`}
+                      >
                         <PictureAsPdf />
                         <span className="pl-2">PDF</span>
                       </Button>
@@ -312,18 +340,23 @@ const CropDetailsModalComponent = (props) => {
                       </Button>
                     </div>
                     <div className="col-2 text-right">
-                      <Button style={{ color: "white" }}>
+                      <Button
+                        style={{ color: "white" }}
+                        // onClick={() => printDiv("coverCropModalPrimary")}
+                      >
                         <Print /> <span className="pl-2">PRINT</span>
                       </Button>
                     </div>
                   </div>
                 </div>
               </div>
-              <div className="row mt-4">
+              <div className="row mt-4 pb-4">
                 <div className="col-7">
                   <div className="row">
                     <div className="col-6">
-                      <Typography variant="h6">Cover Crop Uses</Typography>
+                      <Typography variant="h6">
+                        Cover Crop Description
+                      </Typography>
                     </div>
                     <div className="col-6 text-right">
                       <small>
@@ -334,41 +367,17 @@ const CropDetailsModalComponent = (props) => {
 
                     <div className="col-12 mt-2">
                       <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                        Duis eu interdum elit, nec convallis ex. Sed in posuere
-                        ipsum. Vivamus eget scelerisque urna, at maximus mauris.
-                        Suspendisse potenti. Nullam eget vulputate nulla. Morbi
-                        eget suscipit libero. Phasellus eleifend velit vitae leo
-                        efficitur luctus. Donec euismod odio et urna elementum
-                        elementum. Curabitur quam nisi, blandit eu libero at,
-                        efficitur dignissim dui. Aenean viverra consectetur odio
-                        ac sodales. Nunc elit sem, tincidunt et ligula ac,
-                        volutpat venenatis ex. Sed feugiat suscipit lorem vitae
-                        efficitur. Morbi malesuada elit a urna ornare faucibus.
-                        Curabitur id varius enim. Praesent dui erat, faucibus
-                        quis consequat quis, condimentum eget diam. Phasellus
-                        efficitur sapien ac ex suscipit pretium. Quisque ut nisi
-                        fringilla, scelerisque purus sit amet, fermentum justo.
-                        Maecenas dignissim ornare lectus, eget congue elit
-                        vulputate vel. Quisque pellentesque quam eget ante
-                        commodo, a porta dolor interdum. Donec ut nisi ligula.
-                        Aenean eget cursus lectus, vel mattis enim. Nunc rutrum
-                        pulvinar imperdiet. In finibus nunc eu mattis semper.
-                        Nunc pharetra dui velit, eget pellentesque nulla
-                        molestie in. Ut gravida ac leo sit amet blandit. Duis
-                        sapien ipsum, volutpat quis nisl quis, ornare laoreet
-                        diam. Nunc sit amet eros vel ante rutrum ullamcorper a
-                        scelerisque magna. Etiam semper orci eget lorem dictum,
-                        in varius est laoreet. Curabitur enim velit, pharetra ut
-                        ullamcorper in, volutpat nec lacus. Cras sed nunc
-                        iaculis, dignissim enim id, elementum lectus. Fusce
-                        auctor turpis
-                      </p>{" "}
+                        {
+                          cropDesc[`${crop.fields["Cover Crop Name"]}`][
+                            "Topic Details"
+                          ]
+                        }
+                      </p>
                     </div>
                   </div>
                 </div>
                 <div className="col-5">
-                  <ExpansionPanel
+                  {/* <ExpansionPanel
                     className="modalSideBar"
                     defaultExpanded={false}
                   >
@@ -397,7 +406,7 @@ const CropDetailsModalComponent = (props) => {
                         </div>
                       </div>
                     </ExpansionPanelDetails>
-                  </ExpansionPanel>
+                  </ExpansionPanel> */}
                   <ExpansionPanel
                     className="modalSideBar"
                     defaultExpanded={false}
@@ -406,8 +415,48 @@ const CropDetailsModalComponent = (props) => {
                       expandIcon={<ExpandMore />}
                       aria-controls="modal-side-panel-content"
                     >
+                      <Typography variant="body1">Agronomics</Typography>
+                    </ExpansionPanelSummary>
+                    <ExpansionPanelDetails>
+                      <div className="container-fluid">
+                        <div className="row">
+                          {sideBarData["Basic Agronomics"].map(
+                            (sideBarVal, index) => (
+                              <div
+                                className="col-6"
+                                key={`basic-agronomics--${index}`}
+                              >
+                                <Typography
+                                  variant="body1"
+                                  className="font-weight-bold"
+                                  component="div"
+                                >
+                                  {sideBarVal}
+                                </Typography>
+                                <Typography variant="body2" component="div">
+                                  {sideBarVal === "C to N Ratio"
+                                    ? getRating(
+                                        parseInt(crop.fields[sideBarVal])
+                                      )
+                                    : crop.fields[sideBarVal]}
+                                </Typography>
+                              </div>
+                            )
+                          )}
+                        </div>
+                      </div>
+                    </ExpansionPanelDetails>
+                  </ExpansionPanel>
+                  <ExpansionPanel
+                    className="modalSideBar"
+                    defaultExpanded={true}
+                  >
+                    <ExpansionPanelSummary
+                      expandIcon={<ExpandMore />}
+                      aria-controls="modal-side-panel-content"
+                    >
                       <Typography variant="body1">
-                        {Object.keys(sideBarData)[1]}
+                        {Object.keys(sideBarData)[1]} Tolerance
                       </Typography>
                     </ExpansionPanelSummary>
                     <ExpansionPanelDetails>
@@ -428,7 +477,7 @@ const CropDetailsModalComponent = (props) => {
                                 </Typography>
                                 <Typography variant="body2" component="div">
                                   {sideBarVal === "Winter Survival"
-                                    ? getRating(0)
+                                    ? crop.fields[sideBarVal].toString()
                                     : sideBarVal ===
                                       "Notes: Environmental Tolerances"
                                     ? crop.fields[sideBarVal]
@@ -443,42 +492,7 @@ const CropDetailsModalComponent = (props) => {
                       </div>
                     </ExpansionPanelDetails>
                   </ExpansionPanel>
-                  <ExpansionPanel
-                    className="modalSideBar"
-                    defaultExpanded={false}
-                  >
-                    <ExpansionPanelSummary
-                      expandIcon={<ExpandMore />}
-                      aria-controls="modal-side-panel-content"
-                    >
-                      <Typography variant="body1">Basic Agronomics</Typography>
-                    </ExpansionPanelSummary>
-                    <ExpansionPanelDetails>
-                      <div className="container-fluid">
-                        <div className="row">
-                          {sideBarData["Basic Agronomics"].map(
-                            (sideBarVal, index) => (
-                              <div
-                                className="col-6"
-                                key={`basic-agronomics--${index}`}
-                              >
-                                <Typography
-                                  variant="body1"
-                                  className="font-weight-bold"
-                                  component="div"
-                                >
-                                  {sideBarVal}
-                                </Typography>
-                                <Typography variant="body2" component="div">
-                                  {crop.fields[sideBarVal]}
-                                </Typography>
-                              </div>
-                            )
-                          )}
-                        </div>
-                      </div>
-                    </ExpansionPanelDetails>
-                  </ExpansionPanel>
+
                   <ExpansionPanel
                     className="modalSideBar"
                     defaultExpanded={false}
@@ -506,7 +520,14 @@ const CropDetailsModalComponent = (props) => {
                                   {sideBarVal}
                                 </Typography>
                                 <Typography variant="body2" component="div">
-                                  {crop.fields[sideBarVal]}
+                                  {sideBarVal === "Soil Drainage" ||
+                                  sideBarVal === "Soil Textures"
+                                    ? crop.fields[sideBarVal].toString()
+                                    : sideBarVal === "Notes: Soil Conditions"
+                                    ? crop.fields[sideBarVal]
+                                    : getRating(
+                                        parseInt(crop.fields[sideBarVal])
+                                      )}
                                 </Typography>
                               </div>
                             )
@@ -538,7 +559,18 @@ const CropDetailsModalComponent = (props) => {
                                 {sideBarVal}
                               </Typography>
                               <Typography variant="body2" component="div">
-                                {crop.fields[sideBarVal]}
+                                {sideBarVal === "Flowering Trigger" ||
+                                sideBarVal === "Growing Window" ||
+                                sideBarVal === "Root Depth" ||
+                                sideBarVal === "Root Architecture" ||
+                                sideBarVal === "Inoculant Type (Legumes Only)"
+                                  ? crop.fields[sideBarVal].toString()
+                                  : sideBarVal ===
+                                    "Notes: Growth, Roots, and Nutrients"
+                                  ? crop.fields[sideBarVal]
+                                  : getRating(
+                                      parseInt(crop.fields[sideBarVal])
+                                    )}
                               </Typography>
                             </div>
                           ))}
@@ -554,7 +586,9 @@ const CropDetailsModalComponent = (props) => {
                       expandIcon={<ExpandMore />}
                       aria-controls="modal-side-panel-content"
                     >
-                      <Typography variant="body1">Planting</Typography>
+                      <Typography variant="body1">
+                        Planting & Termination
+                      </Typography>
                     </ExpansionPanelSummary>
                     <ExpansionPanelDetails>
                       <div className="container-fluid">
@@ -574,21 +608,6 @@ const CropDetailsModalComponent = (props) => {
                             </div>
                           ))}
                         </div>
-                      </div>
-                    </ExpansionPanelDetails>
-                  </ExpansionPanel>
-                  <ExpansionPanel
-                    className="modalSideBar"
-                    defaultExpanded={false}
-                  >
-                    <ExpansionPanelSummary
-                      expandIcon={<ExpandMore />}
-                      aria-controls="modal-side-panel-content"
-                    >
-                      <Typography variant="body1">Termination</Typography>
-                    </ExpansionPanelSummary>
-                    <ExpansionPanelDetails>
-                      <div className="container-fluid">
                         <div className="row">
                           {sideBarData.Termination.map((sideBarVal, index) => (
                             <div
@@ -646,7 +665,11 @@ const CropDetailsModalComponent = (props) => {
                                   {sideBarVal}
                                 </Typography>
                                 <Typography variant="body2" component="div">
-                                  {crop.fields[sideBarVal]}
+                                  {sideBarVal === "Notes: Grazers & Pollinators"
+                                    ? crop.fields[sideBarVal]
+                                    : getRating(
+                                        parseInt(crop.fields[sideBarVal])
+                                      )}
                                 </Typography>
                               </div>
                             )
@@ -655,6 +678,7 @@ const CropDetailsModalComponent = (props) => {
                       </div>
                     </ExpansionPanelDetails>
                   </ExpansionPanel>
+
                   <ExpansionPanel
                     className="modalSideBar"
                     defaultExpanded={false}
@@ -663,40 +687,7 @@ const CropDetailsModalComponent = (props) => {
                       expandIcon={<ExpandMore />}
                       aria-controls="modal-side-panel-content"
                     >
-                      <Typography variant="body1">Weeds</Typography>
-                    </ExpansionPanelSummary>
-                    <ExpansionPanelDetails>
-                      <div className="container-fluid">
-                        <div className="row">
-                          {sideBarData.Weeds.map((sideBarVal, index) => (
-                            <div className="col-6" key={`weeds--${index}`}>
-                              <Typography
-                                variant="body1"
-                                className="font-weight-bold"
-                                component="div"
-                              >
-                                {sideBarVal}
-                              </Typography>
-                              <Typography variant="body2" component="div">
-                                {crop.fields[sideBarVal]}
-                              </Typography>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    </ExpansionPanelDetails>
-                  </ExpansionPanel>
-                  <ExpansionPanel
-                    className="modalSideBar"
-                    defaultExpanded={false}
-                  >
-                    <ExpansionPanelSummary
-                      expandIcon={<ExpandMore />}
-                      aria-controls="modal-side-panel-content"
-                    >
-                      <Typography variant="body1">
-                        Disease & Non-weed Pests
-                      </Typography>
+                      <Typography variant="body1">Pests & Disease</Typography>
                     </ExpansionPanelSummary>
                     <ExpansionPanelDetails>
                       <div className="container-fluid">
@@ -715,11 +706,35 @@ const CropDetailsModalComponent = (props) => {
                                   {sideBarVal}
                                 </Typography>
                                 <Typography variant="body2" component="div">
-                                  {crop.fields[sideBarVal]}
+                                  {sideBarVal ===
+                                  "Notes: Disease and Non-weed Pests"
+                                    ? crop.fields[sideBarVal]
+                                    : getRating(
+                                        parseInt(crop.fields[sideBarVal])
+                                      )}
                                 </Typography>
                               </div>
                             )
                           )}
+
+                          {sideBarData.Weeds.map((sideBarVal, index) => (
+                            <div className="col-6" key={`weeds--${index}`}>
+                              <Typography
+                                variant="body1"
+                                className="font-weight-bold"
+                                component="div"
+                              >
+                                {sideBarVal}
+                              </Typography>
+                              <Typography variant="body2" component="div">
+                                {sideBarVal === "Notes: Weeds"
+                                  ? crop.fields[sideBarVal]
+                                  : getRating(
+                                      parseInt(crop.fields[sideBarVal])
+                                    )}
+                              </Typography>
+                            </div>
+                          ))}
                         </div>
                       </div>
                     </ExpansionPanelDetails>
@@ -735,5 +750,16 @@ const CropDetailsModalComponent = (props) => {
     </Modal>
   );
 };
+function printDiv(divName) {
+  if (document.getElementById(divName)) {
+    var printContents = document.getElementById(divName).innerHTML;
+    var originalContents = document.body.innerHTML;
 
+    document.body.innerHTML = printContents;
+
+    window.print();
+
+    document.body.innerHTML = originalContents;
+  }
+}
 export default CropDetailsModalComponent;
