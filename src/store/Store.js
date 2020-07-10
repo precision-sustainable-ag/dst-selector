@@ -60,7 +60,7 @@ let tjs = tjson.map((crop) => {
 
 const initialState = {
   // progress: 3,
-  progress: 5,
+  progress: 0,
   // address: "",
   address: "",
   addressSearchPreference: "address",
@@ -353,8 +353,8 @@ const initialState = {
   cropData: tjs,
   selectedCrops: [],
 
-  selectedGoals: ["Good Grazing"],
-  // selectedGoals: [],
+  // selectedGoals: ["Good Grazing"],
+  selectedGoals: [],
   zoom: 13,
   addressVerified: false,
   snackOpen: false,

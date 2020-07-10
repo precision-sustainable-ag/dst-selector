@@ -88,12 +88,17 @@
 }
 
 .cropTableModal.modalContainer {
-  width: 80%;
+  width: 90%;
   border: 0px;
+  margin: 0 auto;
   border-radius: 5px;
+  position: absolute;
+  display: block;
+  top: 5%;
+  left: 5%;
 }
 
-table {
-  // border-spacing: 0;
-  // border-collapse: separate;
-}
+// table {
+//   // border-spacing: 0;
+//   // border-collapse: separate;
+// }
