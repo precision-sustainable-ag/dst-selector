@@ -126,11 +126,6 @@ const GrowthWindowComponent = (props) => {
     }
   }
 
-  // useEffect(() => {
-  //   // console.log(`isCashCropMonth ? `, cropLegendObj.isCashCropMonth);
-  //   // console.log(cropLegendObj);
-  // }, []);
-
   return from === "calendar" ? (
     <td
       className={
@@ -228,7 +223,7 @@ const GrowthWindowComponent = (props) => {
                 "M"
               ) -
                 1
-              ? `growthWindowCell ${id} cashCropLegendContainer `
+              ? `growthWindowCell ${id} cashCropLegendContainer`
               : `growthWindowCell ${id}`
             : `growthWindowCell ${id}`
           : `growthWindowCell ${id}`
@@ -281,7 +276,7 @@ const GrowthWindowComponent = (props) => {
                 "M"
               ) -
                 1
-              ? `growthWindowCell ${id} cashCropLegendContainer `
+              ? `growthWindowCell ${id} cashCropLegendContainer linear`
               : `growthWindowCell ${id}`
             : `growthWindowCell ${id}`
           : `growthWindowCell ${id}`
