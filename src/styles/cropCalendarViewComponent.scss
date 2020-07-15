@@ -38,33 +38,33 @@ $defaultLegendColor: #f0f7eb;
     // border-top-left-radius: 10px;
     // border-bottom-left-radius: 10px;
     // border-radius: 10px;
-    td:nth-child(1),
-    td:nth-child(2) {
-      // border-right: 5px solid transparent;
-    }
-    td:nth-child(1) {
-      // width: 100vw !important;
-      // border-top-left-radius: 15px;
-      // border-bottom-left-radius: 15px;
-    }
-    td:last-child {
-      // border-left: 10px solid white;
-      // border-top-right-radius: 15px;
-      // border-bottom-right-radius: 15px;
-    }
-    td:nth-child(3),
-    td:nth-child(4),
-    td:nth-child(5),
-    td:nth-child(6),
-    td:nth-child(7),
-    td:nth-child(8),
-    td:nth-child(9),
-    td:nth-child(10),
-    td:nth-child(11),
-    td:nth-child(12),
-    td:nth-child(13) {
-      // border-right: 5px solid transparent;
-    }
+    // td:nth-child(1),
+    // td:nth-child(2) {
+    //   // border-right: 5px solid transparent;
+    // }
+    // td:nth-child(1) {
+    //   // width: 100vw !important;
+    //   // border-top-left-radius: 15px;
+    //   // border-bottom-left-radius: 15px;
+    // }
+    // td:last-child {
+    //   // border-left: 10px solid white;
+    //   // border-top-right-radius: 15px;
+    //   // border-bottom-right-radius: 15px;
+    // }
+    // td:nth-child(3),
+    // td:nth-child(4),
+    // td:nth-child(5),
+    // td:nth-child(6),
+    // td:nth-child(7),
+    // td:nth-child(8),
+    // td:nth-child(9),
+    // td:nth-child(10),
+    // td:nth-child(11),
+    // td:nth-child(12),
+    // td:nth-child(13) {
+    //   // border-right: 5px solid transparent;
+    // }
   }
 
   tbody {
@@ -111,9 +111,9 @@ $defaultLegendColor: #f0f7eb;
       &.frostPossible {
         color: $frostSeedingPossibleColor;
       }
-      &.cashCrop {
-        // color: $cashCropGrowthWindowColor;
-      }
+      // &.cashCrop {
+      //   // color: $cashCropGrowthWindowColor;
+      // }
     }
     font-weight: 800;
   }
@@ -142,6 +142,37 @@ tr.overlay {
 td.growthWindowCell {
   position: relative;
   &.cashCropLegendContainer {
+    &.linear {
+      div.legendContainer {
+        div.Reliable:after {
+          // background-color: transparent !important;
+          // opacity: 0.4;
+          z-index: -1;
+        }
+        div.Frost:after {
+          z-index: -1;
+        }
+        div.Temperature\/moisture:after {
+          z-index: -1;
+        }
+        div:after {
+          position: absolute;
+          content: "";
+          // top: 0;
+          // left: 0;
+          // width: 100%;
+          // height: 100%;
+          // background-image: url("/images/icons/window-point.jpg");
+          // opacity: 0.4;
+          background-size: cover;
+          background-repeat: no-repeat;
+          height: 20px;
+          width: 50%;
+
+          background-color: $cashCropGrowthWindowColor;
+        }
+      }
+    }
     div.legendContainer {
       div.Reliable:after {
         // background-color: transparent !important;
