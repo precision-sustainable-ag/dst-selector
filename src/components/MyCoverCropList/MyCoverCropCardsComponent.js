@@ -13,14 +13,14 @@ import CropDetailsModalComponent from "../CropSelector/CropDetailsModal";
 const useStyles = makeStyles({
   card: {
     maxWidth: 345,
-    width: 230
+    width: 230,
   },
   media: {
-    height: 140
-  }
+    height: 140,
+  },
 });
 
-const MyCoverCropCardsComponent = props => {
+const MyCoverCropCardsComponent = (props) => {
   const [state, dispatch] = useContext(Context);
   const data = props.data;
   const btnId = props.btnId;
@@ -28,18 +28,17 @@ const MyCoverCropCardsComponent = props => {
 
   const [modalOpen, setModalOpen] = useState(false);
   const [modalData, setModalData] = useState({});
-  const handleModalOpen = crop => {
+  const handleModalOpen = (crop) => {
     // setModalOpen(true);
     // put data inside modal
-    console.log(crop);
+    // console.log(crop);
     // setModalData(crop);
-
     // setModalOpen(true);
   };
 
   const removeCrop = () => {
     var removeIndex = state.selectedCrops
-      .map(function(item) {
+      .map(function (item) {
         return item.btnId;
       })
       .indexOf(`${btnId}`);
@@ -58,8 +57,8 @@ const MyCoverCropCardsComponent = props => {
         data: {
           selectedCrops: selectedCropsCopy,
           snackOpen: true,
-          snackMessage: `Removed`
-        }
+          snackMessage: `Removed`,
+        },
       });
 
       // this.state.selectedCrops.splice(removeIndex, 1);

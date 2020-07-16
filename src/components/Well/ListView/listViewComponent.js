@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+// import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import "../../../styles/listViewComponent.css";
 
 export default class ListView extends Component {
