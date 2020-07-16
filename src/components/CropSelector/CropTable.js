@@ -21,7 +21,14 @@ import {
 } from "@material-ui/core";
 
 import "../../styles/cropTable.scss";
-import { ArrowUpward, ArrowDownward, AddCircle } from "@material-ui/icons";
+import {
+  ArrowUpward,
+  ArrowDownward,
+  AddCircle,
+  FiberManualRecord,
+  CloseRounded,
+  RemoveCircle,
+} from "@material-ui/icons";
 import GrowthWindowComponent from "./GrowthWindow";
 import "../../styles/cropCalendarViewComponent.scss";
 import CropDetailsModalComponent from "./CropDetailsModal";
@@ -478,95 +485,13 @@ const CropTableComponent = (props) => {
       </Fragment>
     );
   };
-  // const RenderDefaultCropData = () => {
-  //   return state.cropData.map((crop, index) => {
-  //     if (crop.fields["Zone Decision"] === "Include")
-  //       return (
-  //         <TableRow key={`croprow${index}`} id={crop.fields["id"]}>
-  //           <TableCell
-  //             style={{
-  //               display: "flex",
-  //               flexDirection: "row",
-  //             }}
-  //           >
-  //             {crop.fields["Image"] ? (
-  //               <CropImage
-  //                 present={true}
-  //                 src={crop.fields["Image"][0].url}
-  //                 alt={crop.fields["Image"][0].filename}
-  //               />
-  //             ) : (
-  //               <CropImage present={false} />
-  //             )}
 
-  //             <div className="cropDetailsText" style={{}}>
-  //               <div className="part1_ut">
-  //                 <span className="cropCategory text-uppercase">
-  //                   {crop.fields["Cover Crop Group"]}
-  //                 </span>
-  //                 <span className="cropName font-weight-lighter">
-  //                   {crop.fields["Cover Crop Name"]}
-  //                 </span>
-  //                 <span className="cropScientificName">
-  //                   {trimString(crop.fields["Scientific Name"], 25)}
-  //                 </span>
-  //               </div>
-  //               <div className="part2_lt">
-  //                 <span className="cropDuration text-uppercase font-weight-bold">
-  //                   {crop.fields["Duration"]}
-  //                 </span>
-  //               </div>
-  //             </div>
-  //           </TableCell>
-  //           <TableCell style={{ textAlign: "left" }}>
-  //             <div>
-  //               <Typography
-  //                 variant="subtitle2"
-  //                 component="b"
-  //                 className="font-weight-bold"
-  //               >
-  //                 C TO N RATIO:{" "}
-  //               </Typography>
-  //               <Typography variant="subtitle2" component="b">
-  //                 {crop.fields["C to N Ratio"]}
-  //               </Typography>
-  //             </div>
-  //             <div>
-  //               <Typography
-  //                 variant="subtitle2"
-  //                 component="b"
-  //                 className="font-weight-bold"
-  //               >
-  //                 N FIXED:{" "}
-  //               </Typography>
-  //               <Typography variant="subtitle2" component="b">
-  //                 {crop.fields["Nitrogen Accumulation Min, Legumes (lbs/A/y)"]}-
-  //                 {crop.fields["Nitrogen Accumulation Max, Legumes (lbs/A/y)"]}{" "}
-  //                 lbs/A/y
-  //               </Typography>
-  //             </div>
-  //             <div>
-  //               <Typography
-  //                 variant="subtitle2"
-  //                 component="b"
-  //                 className="font-weight-bold"
-  //               >
-  //                 DRY MATTER:{" "}
-  //               </Typography>
-  //               <Typography variant="subtitle2" component="b">
-  //                 {crop.fields["Dry Matter Min (lbs/A/y)"]}-
-  //                 {crop.fields["Dry Matter Max (lbs/A/y)"]} lbs/A/y
-  //               </Typography>
-  //             </div>
-  //           </TableCell>
-  //           {getCardFlex(crop, index)}
-  //         </TableRow>
-  //       );
-  //   });
-  // };
   return state.cropData.length !== 0 ? (
-    <TableContainer>
-      <div className="table-responsive calendarViewTableWrapper">
+    <Fragment>
+      <TableContainer
+        className="table-responsive calendarViewTableWrapper"
+        component="div"
+      >
         <Table className="table table-borderless table-sm">
           <TableHead className="tableHeadWrapper">
             <tr>
@@ -619,10 +544,88 @@ const CropTableComponent = (props) => {
                   }
                 }
               >
-                <Button startIcon={<AddCircle />} onClick={handleLegendModal}>
+                <Button
+                  startIcon={<AddCircle />}
+                  onClick={() => {
+                    const ele = document.getElementById("legendWrapper");
+                    if (ele.classList.contains("d-none")) {
+                      ele.classList.remove("d-none");
+                    } else {
+                      ele.classList.add("d-none");
+                    }
+                  }}
+                >
                   {" "}
                   <Typography variant="body2">LEGEND</Typography>
                 </Button>
+                <div
+                  id="legendWrapper"
+                  className="d-none"
+                  style={{
+                    position: "fixed",
+                    backgroundColor: "rgba(171, 208, 143, 0.8)",
+                    bottom: 0,
+                    zIndex: 999,
+                    textAlign: "left",
+                  }}
+                >
+                  <div className={`modalLegendPaper`}>
+                    <div className="container-fluid">
+                      <div className="row">
+                        <div className="col-6">
+                          <Typography variant="h5">LEGEND</Typography>
+                        </div>
+
+                        <div className="col-6 text-right">
+                          <Button
+                            onClick={() => {
+                              const ele = document.getElementById(
+                                "legendWrapper"
+                              );
+                              ele.classList.add("d-none");
+                            }}
+                          >
+                            <CloseRounded />
+                          </Button>
+                        </div>
+                      </div>
+                      <div className="row mt-2">
+                        <div className="col-12 legendModalRow">
+                          <Typography variant="body1">
+                            <FiberManualRecord className="reliable" />
+                            <span className="pl-3">
+                              {"Reliable Establishment"}
+                            </span>
+                          </Typography>
+                        </div>
+                        <div className="col-12 legendModalRow">
+                          <Typography variant="body1">
+                            <FiberManualRecord className="temperatureRisk" />
+                            <span className="pl-3">
+                              {"Temperature Risk To Establishment"}
+                            </span>
+                          </Typography>
+                        </div>
+                        <div className="col-12 legendModalRow">
+                          <Typography variant="body1">
+                            <FiberManualRecord className="frostPossible" />
+                            <span className="pl-3">
+                              {"Frost Seeding Possible"}
+                            </span>
+                          </Typography>
+                        </div>
+                        <div className="col-12 legendModalRow">
+                          <Typography variant="body1">
+                            <FiberManualRecord className="cashCrop" />
+                            <span className="pl-3">
+                              {"Cash Crop Growth Window"}
+                            </span>
+                          </Typography>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </th>
               <th
                 style={{
@@ -654,7 +657,7 @@ const CropTableComponent = (props) => {
 
               {showGrowthWindow ? (
                 <th>
-                  <Typography variant="body2">GROWTH WINDOW</Typography>
+                  <Typography variant="body2">PLANTING WINDOW</Typography>
                 </th>
               ) : (
                 ""
@@ -680,7 +683,7 @@ const CropTableComponent = (props) => {
             )}
           </TableBody>
         </Table>
-      </div>
+      </TableContainer>
 
       <div className="cropGoals"></div>
       <CropDetailsModalComponent
@@ -693,7 +696,7 @@ const CropTableComponent = (props) => {
         handleLegendModal={handleLegendModal}
         disableBackdropClick={false}
       />
-    </TableContainer>
+    </Fragment>
   ) : (
     <div className="table-responsive calendarViewTableWrapper">
       <div className="circularCentered">
