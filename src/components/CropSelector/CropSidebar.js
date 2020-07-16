@@ -156,7 +156,7 @@ const CropSidebarComponent = (props) => {
     //   (entry) => entry[1].length > 0
     // );
     const sidebarKeys = Object.keys(sidebarFilterOptions);
-    console.log(sidebarKeys);
+    // console.log(sidebarKeys);
 
     const nonZeroKeys = sidebarKeys.filter(function (key) {
       return sidebarFilterOptions[key].length > 0;
@@ -416,6 +416,20 @@ const CropSidebarComponent = (props) => {
       });
     });
   }
+
+  const [filtersSelected, setFiltersSelected] = React.useState(false);
+  useEffect(() => {
+    const sidebarKeys = Object.keys(sidebarFilterOptions);
+    // console.log(sidebarKeys);
+
+    const nonZeroKeys = sidebarKeys.filter(function (key) {
+      return sidebarFilterOptions[key].length > 0;
+    });
+    console.log(nonZeroKeys);
+    if (nonZeroKeys.length === 0) setFiltersSelected(false);
+    else setFiltersSelected(true);
+  }, [sidebarFilterOptions]);
+
   const getFilteredObjects = (data = [], keys = []) => {
     // let filterObj = jslinq(data);
     // console.log(keys);
@@ -915,7 +929,7 @@ const CropSidebarComponent = (props) => {
       </ListItem>
       <Collapse in={cropFiltersOpen} timeout="auto">
         <List component="div" disablePadding>
-          {props.activeCropData.length > 0 ? (
+          {filtersSelected ? (
             <ListItem onClick={() => {}}>
               <ListItemText
                 primary={
