@@ -17,19 +17,18 @@ import Landing from "./components/Landing/Landing";
 
 import { Context } from "./store/Store";
 import LocationComponent from "./components/Location/Location";
-import { loadProgressBar } from "axios-progress-bar";
+// import { loadProgressBar } from "axios-progress-bar";
 import ProgressButtons from "./shared/ProgressButtons";
 import ProgressBar from "./shared/ProgressBar";
 import GoalsSelector from "./components/GoalsSelector/GoalsSelector";
 import LocationConfirmation from "./components/Location/LocationConfirmation";
 import CropSelector from "./components/CropSelector/CropSelector";
-import { Switch, Route } from "react-router-dom";
 import { CustomStyles } from "./shared/constants";
 import { SnackbarProvider } from "notistack";
 // import { GreenBarComponent } from "./components/GreenBar/greenBarComponent";
 // import BodyComponent from "./components/body";
 
-const logoPath = "/images/neccc_wide_logo_color_web.jpg";
+// const logoPath = "/images/neccc_wide_logo_color_web.jpg";
 const theme = createMuiTheme({
   palette: {
     primary: {
@@ -69,16 +68,28 @@ const loadRelevantRoute = (progress) => {
       return <CropSelector />;
 
     default:
-      return "Non handled case";
+      return <RouteNotFound />;
   }
+};
+
+const RouteNotFound = () => {
+  return (
+    <div className="container">
+      <div className="row">
+        <div className="col-4 offset-4">
+          <h3>Unknown Route</h3>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 const App = () => {
   const [state, dispatch] = useContext(Context);
-  useEffect(() => {
-    document.title = "Cover Crop Decision Support Tool";
-    loadProgressBar();
-  }, [state.ajaxInProgress]);
+  // useEffect(() => {
+  //   document.title = "Cover Crop Decision Support Tool";
+  //   loadProgressBar();
+  // }, [state.ajaxInProgress]);
 
   // const isRootRoute = this.props.path == "/" ? true : false;
   const handleSnackClose = () => {

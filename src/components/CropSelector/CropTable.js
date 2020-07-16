@@ -3,7 +3,13 @@
     2. sortBy default: First Selected Goal
 
 */
-import React, { useContext, Fragment, useEffect, useState } from "react";
+import React, {
+  useContext,
+  Fragment,
+  useEffect,
+  useState,
+  useMemo,
+} from "react";
 import { Context } from "../../store/Store";
 import { useSnackbar } from "notistack";
 import {
@@ -25,6 +31,7 @@ import {
   TableRow,
   TableCell,
   IconButton,
+  TextField,
 } from "@material-ui/core";
 
 import "../../styles/cropTable.scss";
@@ -272,9 +279,6 @@ const CropTableComponent = (props) => {
                         flexDirection: "row",
                       }}
                     >
-                      {/* {this.getCropImageFromAPI(
-                crop.fields["Cover Crop Name"]
-              )} */}
                       {crop.fields["Image"] ? (
                         <CropImage
                           present={true}
@@ -355,37 +359,6 @@ const CropTableComponent = (props) => {
                       </div>
                     </TableCell>
                     {getCardFlex(crop, index)}
-
-                    {/* <td style={{}}> */}
-                    {/* <div className="button1">
-                  <LightButton
-                    id={`cartBtn${index}`}
-                    style={{
-                      borderRadius: CustomStyles().nonRoundedRadius,
-                      width: "130px"
-                    }}
-                    onClick={() => {
-                      addCropToBasket(
-                        crop.id,
-                        crop.fields["Cover Crop Name"],
-                        `cartBtn${index}`,
-                        crop.fields
-                      );
-                    }}
-                  >
-                    ADD TO LIST
-                  </LightButton>
-                </div>
-                <br />
-                <div className="button2">
-                  <Button
-                    size="small"
-                    onClick={() => handleModalOpen(crop)}
-                  >
-                    View Details
-                  </Button>
-                </div> */}
-                    {/* </td> */}
                   </TableRow>
                 );
             })
@@ -503,37 +476,6 @@ const CropTableComponent = (props) => {
                       </div>
                     </TableCell>
                     {getCardFlex(crop, index)}
-
-                    {/* <td style={{}}> */}
-                    {/* <div className="button1">
-                  <LightButton
-                    id={`cartBtn${index}`}
-                    style={{
-                      borderRadius: CustomStyles().nonRoundedRadius,
-                      width: "130px"
-                    }}
-                    onClick={() => {
-                      addCropToBasket(
-                        crop.id,
-                        crop.fields["Cover Crop Name"],
-                        `cartBtn${index}`,
-                        crop.fields
-                      );
-                    }}
-                  >
-                    ADD TO LIST
-                  </LightButton>
-                </div>
-                <br />
-                <div className="button2">
-                  <Button
-                    size="small"
-                    onClick={() => handleModalOpen(crop)}
-                  >
-                    View Details
-                  </Button>
-                </div> */}
-                    {/* </td> */}
                   </TableRow>
                 );
             })
@@ -552,9 +494,6 @@ const CropTableComponent = (props) => {
                 flexDirection: "row",
               }}
             >
-              {/* {this.getCropImageFromAPI(
-          crop.fields["Cover Crop Name"]
-        )} */}
               {crop.fields["Image"] ? (
                 <CropImage
                   present={true}
@@ -626,37 +565,6 @@ const CropTableComponent = (props) => {
               </div>
             </TableCell>
             {getCardFlex(crop, index)}
-
-            {/* <td style={{}}> */}
-            {/* <div className="button1">
-            <LightButton
-              id={`cartBtn${index}`}
-              style={{
-                borderRadius: CustomStyles().nonRoundedRadius,
-                width: "130px"
-              }}
-              onClick={() => {
-                addCropToBasket(
-                  crop.id,
-                  crop.fields["Cover Crop Name"],
-                  `cartBtn${index}`,
-                  crop.fields
-                );
-              }}
-            >
-              ADD TO LIST
-            </LightButton>
-          </div>
-          <br />
-          <div className="button2">
-            <Button
-              size="small"
-              onClick={() => handleModalOpen(crop)}
-            >
-              View Details
-            </Button>
-          </div> */}
-            {/* </td> */}
           </TableRow>
         );
     });
@@ -770,7 +678,10 @@ const CropTableComponent = (props) => {
             {activeCropData.length > 0 || inactiveCropData.length > 0 ? (
               <RenderActiveInactiveCropData />
             ) : (
-              <RenderDefaultCropData />
+              // <RenderDefaultCropData />
+              <TableRow>
+                <TableCell>Loading</TableCell>
+              </TableRow>
             )}
           </TableBody>
         </Table>

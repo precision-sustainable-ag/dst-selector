@@ -5,7 +5,7 @@ import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import Store, { Context } from "./store/Store";
 import "leaflet-control-geocoder/dist/Control.Geocoder.js";
-import "@fortawesome/fontawesome-free/css/all.min.css";
+// import "@fortawesome/fontawesome-free/css/all.min.css";
 import "bootstrap-css-only/css/bootstrap.min.css";
 import "mdbreact/dist/css/mdb.css";
 import "./styles/progressBar.css";
@@ -16,10 +16,38 @@ import SeedingRateCalculator from "./components/SeedingRateCalculator/SeedingRat
 import MixMaker from "./components/MixMaker/MixMaker";
 import CoverCropExplorer from "./components/CoverCropExplorer/CoverCropExplorer";
 
-const withFooter = WrappedComponent => () => [
+const withFooter = (WrappedComponent) => () => [
   <WrappedComponent key="1" />,
-  <Footer key="2" />
+  <Footer key="2" />,
 ];
+
+const RouteNotFound = () => {
+  return (
+    <section className="page_404">
+      <div className="container-fluid">
+        <div className="row">
+          <div className="col-sm-12">
+            <div className="col-sm-12 text-center">
+              <div className="four_zero_four_bg">
+                <h1 className="text-center ">404</h1>
+              </div>
+
+              <div className="contant_box_404">
+                <h3 className="h2">Look like you're lost</h3>
+
+                <p>The page you are looking for is not available!</p>
+
+                <a href="/" className="link_404">
+                  Go Home
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
 
 const Wrapper = () => (
   <Store>
@@ -39,6 +67,7 @@ const Wrapper = () => (
             component={CoverCropExplorer}
             exact
           />
+          <Route component={RouteNotFound} />
         </Switch>
       </Suspense>
 

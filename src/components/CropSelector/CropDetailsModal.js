@@ -25,13 +25,11 @@ import {
   Print,
   Info,
   Close,
-  ExpandMoreOutlined,
-  ExpandLessOutlined,
   AddCircleOutline,
   RemoveCircleOutline,
-  ExpandMore,
 } from "@material-ui/icons";
-import Axios from "axios";
+// import Axios from "axios";
+// import html2canvas from "html2canvas";
 const useStyles = makeStyles((theme) => ({
   modal: {
     position: "absolute",
@@ -225,25 +223,62 @@ const CropDetailsModalComponent = (props) => {
     props.setModalOpen(!props.modalOpen);
   };
 
-  const setPrintContents = () => {
-    // setPrint(true);
-    setPrint(!print);
-    // console.log(divId);
-    // let innerContents = document.getElementById(`modal-` + divId);
-    // let newWindow = window.open(
-    //   "",
-    //   "mywindow",
-    //   "status=1,width=350,height=150"
-    // );
-    // newWindow.document.write(innerContents);
+  // const setPrintContents = (id) => {
+  //   // setPrint(true);
+  //   setPrint(!print);
+  //   html2canvas(document.getElementById(`cropDetailModal-${id}`))
+  //     .then((canvas) => {
+  //       // document.body.appendChild(canvas)
+  //       const dataUrl = canvas.toDataURL();
+  //       let windowContent = "<!DOCTYPE html>";
+  //       windowContent += "<html>";
+  //       windowContent += "<head><title>Print View</title></head>";
+  //       windowContent += "<body>";
+  //       windowContent += '<img src="' + dataUrl + '">';
+  //       windowContent += "</body>";
+  //       windowContent += "</html>";
 
-    // let printconf = window.print();
-    // console.log(printconf);
-  };
+  //       const printWin = window.open(
+  //         "",
+  //         "",
+  //         "width=" +
+  //           window.screen.availWidth +
+  //           ",height=" +
+  //           window.screen.availHeight
+  //       );
+  //       printWin.document.open();
+  //       printWin.document.write(windowContent);
 
-  useEffect(() => {
-    console.log("run");
-  });
+  //       printWin.document.addEventListener(
+  //         "load",
+  //         function () {
+  //           printWin.focus();
+  //           // printWin.print();
+  //           // printWin.document.close();
+  //           // printWin.close();
+  //         },
+  //         true
+  //       );
+  //     })
+  //     .then(() => {
+  //       setPrint(!print);
+  //     });
+  //   // console.log(divId);
+  //   // let innerContents = document.getElementById(`modal-` + divId);
+  //   // let newWindow = window.open(
+  //   //   "",
+  //   //   "mywindow",
+  //   //   "status=1,width=350,height=150"
+  //   // );
+  //   // newWindow.document.write(innerContents);
+
+  //   // let printconf = window.print();
+  //   // console.log(printconf);
+  // };
+
+  // useEffect(() => {
+  //   console.log("run");
+  // });
   return (
     <Modal
       aria-labelledby="transition-modal-title"
@@ -262,7 +297,10 @@ const CropDetailsModalComponent = (props) => {
     >
       <Fade in={props.modalOpen}>
         {modalData.fields ? (
-          <div className={`cropTableModal modalContainer ${classes.paper}`}>
+          <div
+            className={`cropTableModal modalContainer ${classes.paper}`}
+            id={`cropDetailModal-${modalData.fields["id"]}`}
+          >
             <div className="container-fluid">
               <div className="row">
                 <div
@@ -352,7 +390,11 @@ const CropDetailsModalComponent = (props) => {
                         <PictureAsPdf />
                         <span className="pl-2">PDF</span>
                       </Button>
-                      <Button style={{ color: "white" }}>
+                      <Button
+                        style={{ color: "white" }}
+                        href={`/csv/${crop.fields["Cover Crop Name"]}.csv`}
+                        download={`${crop.fields["Cover Crop Name"]}`}
+                      >
                         <FormatListBulleted />
                         <span className="pl-2">SPREADSHEET</span>
                       </Button>
@@ -360,8 +402,10 @@ const CropDetailsModalComponent = (props) => {
                     <div className="col-2 text-right">
                       <Button
                         style={{ color: "white" }}
-                        onClick={() => setPrintContents()}
-                        // onClick={() => printDiv("coverCropModalPrimary")}
+                        href={`http://covercrop.tools/information-sheets/${encodeURIComponent(
+                          crop.fields["Cover Crop Name"]
+                        )}.pdf`}
+                        target="_blank"
                       >
                         <Print /> <span className="pl-2">PRINT</span>
                       </Button>
