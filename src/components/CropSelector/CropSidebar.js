@@ -561,8 +561,48 @@ const CropSidebarComponent = (props) => {
   const resetAllFilters = () => {
     // set active,inactive = []
 
-    props.setActiveCropData([]);
+    props.setActiveCropData(state.cropData);
     props.setInactiveCropData([]);
+    setSidebarFilterOptions({
+      "Cover Crop Group": [], //string
+      "Drought Tolerance": [], //int
+      "Flood Tolerance": [], // int
+      "Heat Tolerance": [], // int
+      "Low Fertility Tolerance": [], // int
+      "Salinity Tolerance": [], // int
+      "Shade Tolerance": [], // int
+      "Seed Price per Pound": [], //int
+      "Frost Seeding": [], // -999 or true
+      "Aerial Seeding": [], // -999 or true
+      Duration: [], // array
+      "Active Growth Period": [], //array
+      "Growing Window": [], // string
+      "Establishes Quickly": [], // int
+      "Ease of Establishment": [], // int
+      "Winter Survival": [], // array
+      "Early Spring Growth": [], // int
+      "Flowering Trigger": [], // array
+      "Root Architecture": [], // array
+      "Root Depth": [], // string
+      "Tillage Termination at Vegetative": [], // int
+      "Tillage Termination at Flowering": [], // int
+      "Freezing Termination at Vegetative": [], // int
+      "Chemical Termination at Vegetative": [], // int
+      "Chemical Termination at Flowering": [], // int
+      "Mow Termination at Flowering": [], // int
+      "Roller Crimp Tolerance at Flowering": [], // int
+      "Supports Mycorrhizae": [], // int
+      "Pollinator Habitat": [], // int
+      "Pollinator Food": [], // int
+      "Volunteer Establishment": [], // int
+      Persistence: [], // int
+      "Discourages Nematodes": [], // int
+      "Promotes Nematodes": [], // int
+      "Discourages Pest Insects": [], // int
+      "Promotes Pest Insects": [], // int
+      "Suppresses Cash Crop Disease": [], // int
+      "Promotes Cash Crop Disease": [], // int
+    });
     setResetFilters(!resetFilters);
   };
   React.useEffect(() => {
@@ -896,7 +936,7 @@ const CropSidebarComponent = (props) => {
           {sidebarFilters.map((filter, index) => (
             <Fragment key={index}>
               <ListItem
-                className={classes.nested}
+                // className={classes.nested}
                 button
                 onClick={() => toggleSidebarFilterItems(index)}
               >
@@ -941,7 +981,7 @@ const CropSidebarComponent = (props) => {
               <Collapse in={sidebarFiltersOpen[index].open} timeout="auto">
                 <List component="div" disablePadding>
                   <ListItem
-                    className={classes.subNested}
+                    // className={classes.subNested}
                     // title={sidebarFilters[index].description}
                     component="div"
                   >
