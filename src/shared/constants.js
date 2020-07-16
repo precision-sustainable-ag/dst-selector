@@ -9,6 +9,9 @@ import {
 } from "@material-ui/core";
 import moment from "moment";
 import { Info } from "@material-ui/icons";
+const JSZip = require("jszip");
+const JSZipUtils = require("jszip-utils");
+const saveAs = require("save-as");
 
 export const airtableAPIURL = {
   Z5: "https://api.airtable.com/v0/appASoBfIRYbb8V7o",
@@ -1245,3 +1248,44 @@ export const sidebarFilters = [
     ],
   },
 ];
+
+export const downloadAllPDF = (selectedCropNames) => {
+  let zip = new JSZip();
+  let count = 0;
+  var zipFilename = "Information-Sheets.zip";
+  selectedCropNames.forEach((val) => {
+    let filename = val.name + ".pdf";
+    JSZipUtils.getBinaryContent(val.pdf, (err, data) => {
+      if (err) {
+        throw err; // or handle the error
+      }
+      zip.file(filename, data, { binary: true });
+      count++;
+      if (count === selectedCropNames.length) {
+        zip.generateAsync({ type: "blob" }).then(function (content) {
+          saveAs.saveAs(content, zipFilename);
+        });
+      }
+    });
+  });
+};
+export const downloadAllCSV = (selectedCropNames) => {
+  let zip = new JSZip();
+  let count = 0;
+  var zipFilename = "Information-Sheets-CSV.zip";
+  selectedCropNames.forEach((val) => {
+    let filename = val.name + ".csv";
+    JSZipUtils.getBinaryContent(val.csv, (err, data) => {
+      if (err) {
+        throw err; // or handle the error
+      }
+      zip.file(filename, data, { binary: true });
+      count++;
+      if (count === selectedCropNames.length) {
+        zip.generateAsync({ type: "blob" }).then(function (content) {
+          saveAs.saveAs(content, zipFilename);
+        });
+      }
+    });
+  });
+};
