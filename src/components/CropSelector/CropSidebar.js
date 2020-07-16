@@ -52,8 +52,9 @@ import Beneficials from "./Filters/Beneficials";
 import Weeds from "./Filters/Weeds";
 import DiseaseAndNonWeedPests from "./Filters/DiseaseAndNonWeedPests";
 import Roots from "./Filters/Roots";
-const _ = require("lodash");
-const jslinq = require("jslinq");
+import "../../styles/cropSidebar.scss";
+// const _ = require("lodash");
+// const jslinq = require("jslinq");
 
 const useStyles = makeStyles((theme) => ({
   listItemRoot: {
@@ -425,7 +426,7 @@ const CropSidebarComponent = (props) => {
     const nonZeroKeys = sidebarKeys.filter(function (key) {
       return sidebarFilterOptions[key].length > 0;
     });
-    console.log(nonZeroKeys);
+
     if (nonZeroKeys.length === 0) setFiltersSelected(false);
     else setFiltersSelected(true);
   }, [sidebarFilterOptions]);
@@ -928,7 +929,7 @@ const CropSidebarComponent = (props) => {
         {cropFiltersOpen ? <ExpandLess /> : <ExpandMore />}
       </ListItem>
       <Collapse in={cropFiltersOpen} timeout="auto">
-        <List component="div" disablePadding>
+        <List component="div" disablePadding className="cropFilters">
           {filtersSelected ? (
             <ListItem onClick={() => {}}>
               <ListItemText
@@ -944,13 +945,16 @@ const CropSidebarComponent = (props) => {
               />
             </ListItem>
           ) : (
-            ""
+            <ListItem></ListItem>
           )}
 
           {sidebarFilters.map((filter, index) => (
             <Fragment key={index}>
               <ListItem
                 // className={classes.nested}
+                className={
+                  sidebarFiltersOpen[index].open ? "filterOpen" : "filterClose"
+                }
                 button
                 onClick={() => toggleSidebarFilterItems(index)}
               >
@@ -1121,61 +1125,12 @@ const CropSidebarComponent = (props) => {
                     ) : (
                       ""
                     )}
-
-                    {/* <Filters filters={sidebarFilters[index]} {...props} /> */}
                   </ListItem>
                 </List>
               </Collapse>
             </Fragment>
           ))}
         </List>
-        {/* <List component="div" disablePadding>
-          {sidebarFiltersObj.map((sidebarObj, index1) => {
-            return (
-              <Fragment key={index1}>
-                <ListItem
-                  button
-                  className={classes.nested}
-                  key={index1}
-                  onClick={() => {
-                    const newState = sidebarFiltersObj.map((obj, index2) => {
-                      if (index2 === index1) return { ...obj, open: !obj.open };
-                      else return { ...obj };
-                    });
-                    setSidebarFiltersObj(newState);
-                  }}
-                >
-                  <ListItemText
-                    primary={
-                      <Typography variant="body2">
-                        {sidebarObj.category}
-                      </Typography>
-                    }
-                  />
-                  {sidebarObj.open ? <ExpandLess /> : <ExpandMore />}
-                </ListItem>
-                <Collapse in={sidebarObj.open} timeout="auto">
-                  <List component="div" disablePadding>
-                    <ListItem button className={classes.nested}>
-                      <CropSidebarFilters
-                        sidebarObj={sidebarObj}
-                        classes={classes.formControlLabel}
-                        keysArray={keysArray}
-                        keysArrChanged={keysArrChanged}
-                        sidebarFiltersObj={sidebarFiltersObj}
-                        index={index1}
-                        setSidebarFiltersObj={setSidebarFiltersObj}
-                        setKeysArray={setKeysArray}
-                        setKeysArrChanges={setKeysArrChanges}
-                        filterByCheckboxValues={props.filterByCheckboxValues}
-                      />
-                    </ListItem>
-                  </List>
-                </Collapse>
-              </Fragment>
-            );
-          })}
-        </List> */}
       </Collapse>
     </List>
   );
