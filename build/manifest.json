@@ -1,6 +1,6 @@
 {
-  "short_name": "Cover Crop DST",
-  "name": "NECCC Cover Crop Decision Support Tools",
+  "short_name": "DST",
+  "name": "Cover Crop Decision Support Tool",
   "icons": [
     {
       "src": "favicon.ico",
