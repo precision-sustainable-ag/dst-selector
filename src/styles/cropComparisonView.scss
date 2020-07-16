@@ -1,0 +1,10 @@
+div.comparisonContainer > .row {
+  overflow-x: auto;
+  white-space: nowrap;
+  flex-wrap: nowrap;
+  min-height: 80vh;
+}
+// div.comparisonContainer > .row > .col-xs-4 {
+//   display: inline-block;
+//   float: none;
+// }
