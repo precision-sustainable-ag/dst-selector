@@ -58,7 +58,7 @@ const SeedingMethods = (props) => {
                   color="primary"
                 />
               }
-              label={val.name}
+              label={<small>{val.name}</small>}
             />
           </Tooltip>
         </Grid>
