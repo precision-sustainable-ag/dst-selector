@@ -939,7 +939,7 @@ const CropSidebarComponent = (props) => {
                     onClick={resetAllFilters}
                     style={{ cursor: "pointer" }}
                   >
-                    Reset Filters
+                    CLEAR FILTERS
                   </small>
                 }
               />
