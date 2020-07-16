@@ -37,6 +37,18 @@ export const ReferenceTooltip = (props) => {
   );
 };
 
+export const DataTooltip = ({ data }) => {
+  return (
+    <Tooltip
+      title={<div className="text-center">{data}</div>}
+      interactive
+      arrow
+    >
+      <Info fontSize="small" />
+    </Tooltip>
+  );
+};
+
 export const locationIcon = (w, h) => {
   return (
     <svg
@@ -280,48 +292,50 @@ export const LightButton = withStyles({
 
 export const getRating = (ratng) => {
   let rating = parseInt(ratng);
-  if (rating === 0) {
-    return (
-      <div className="rating-0">
-        <span></span>
-      </div>
-    );
-  } else if (rating === 1) {
-    return (
-      <div className="rating-1">
-        <span></span>
-      </div>
-    );
-  } else if (rating === 2) {
-    return (
-      <div className="rating-2">
-        <span></span>
-      </div>
-    );
-  } else if (rating === 3) {
-    return (
-      <div className="rating-3">
-        <span></span>
-      </div>
-    );
-  } else if (rating === 4) {
-    return (
-      <div className="rating-4">
-        <span></span>
-      </div>
-    );
-  } else if (rating === 5) {
-    return (
-      <div className="rating">
-        <span></span>
-      </div>
-    );
-  } else {
-    return (
-      <div className="rating-0">
-        <span></span>
-      </div>
-    );
+
+  switch (rating) {
+    case 0:
+      return (
+        <div className="rating-0">
+          <span></span>
+        </div>
+      );
+    case 1:
+      return (
+        <div className="rating-1">
+          <span></span>
+        </div>
+      );
+    case 2:
+      return (
+        <div className="rating-2">
+          <span></span>
+        </div>
+      );
+    case 3:
+      return (
+        <div className="rating-3">
+          <span></span>
+        </div>
+      );
+    case 4:
+      return (
+        <div className="rating-4">
+          <span></span>
+        </div>
+      );
+    case 5:
+      return (
+        <div className="rating">
+          <span></span>
+        </div>
+      );
+    default:
+      return (
+        <div className="rating-0">
+          <span></span>
+        </div>
+      );
   }
 };
 
