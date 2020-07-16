@@ -934,14 +934,11 @@ const CropSidebarComponent = (props) => {
             <ListItem onClick={() => {}}>
               <ListItemText
                 primary={
-                  <small
-                    size="small"
-                    onClick={resetAllFilters}
-                    style={{ cursor: "pointer" }}
-                    className="text-danger"
-                  >
-                    CLEAR FILTERS
-                  </small>
+                  <Button size="small" onClick={resetAllFilters}>
+                    <small className="text-danger font-weight-bold">
+                      CLEAR FILTERS
+                    </small>
+                  </Button>
                 }
               />
             </ListItem>
