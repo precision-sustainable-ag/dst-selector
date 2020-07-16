@@ -4,6 +4,7 @@ import MyCoverCropCardsComponent from "./MyCoverCropCardsComponent";
 import { Button, Typography } from "@material-ui/core";
 import { PictureAsPdf, ListAlt, Add } from "@material-ui/icons";
 import MyCoverCropComparisonComponent from "./MyCoverCropComparisonComponent";
+import { downloadAllPDF, downloadAllCSV } from "../../shared/constants";
 
 const MyCoverCropList = (props) => {
   const [state, dispatch] = useContext(Context);
@@ -19,38 +20,54 @@ const MyCoverCropList = (props) => {
     });
   };
 
-  const TopBar = () => (
-    <div className="row">
-      <div
-        className="col-12 myCoverCropsBlueBar"
-        style={{
-          backgroundColor: "#35999b",
-          height: "40px",
-          borderTopLeftRadius: "5px",
-          borderTopRightRadius: "5px",
-        }}
-      >
-        <div className="row">
-          <div className="col-8">
-            <Button style={{ color: "white" }}>Download:</Button>
-            <Button style={{ color: "white" }}>
-              <PictureAsPdf /> <span className="pl-2">PDF</span>
-            </Button>
-            <Button style={{ color: "white" }}>
-              <ListAlt /> <span className="pl-2">SPREADSHEET</span>
-            </Button>
-            <Button
-              style={{ color: "white" }}
-              onClick={redirectToSpeciesSelector}
-            >
-              <Add /> <span className="pl-2">ADD A CROP</span>
-            </Button>
+  const TopBar = () => {
+    const { selectedCrops } = state;
+    const selectedCropNames = selectedCrops.map((crop) => {
+      return {
+        name: crop.cropName,
+        pdf: `/information-sheets/${crop.cropName}.pdf`,
+        csv: `/csv/${crop.cropName}.csv`,
+      };
+    });
+    return (
+      <div className="row">
+        <div
+          className="col-12 myCoverCropsBlueBar"
+          style={{
+            backgroundColor: "#35999b",
+            height: "40px",
+            borderTopLeftRadius: "5px",
+            borderTopRightRadius: "5px",
+          }}
+        >
+          <div className="row">
+            <div className="col-8">
+              <Button style={{ color: "white" }}>Download:</Button>
+              <Button
+                style={{ color: "white" }}
+                onClick={() => downloadAllPDF(selectedCropNames)}
+              >
+                <PictureAsPdf /> <span className="pl-2">PDF</span>
+              </Button>
+              <Button
+                style={{ color: "white" }}
+                onClick={() => downloadAllCSV(selectedCropNames)}
+              >
+                <ListAlt /> <span className="pl-2">SPREADSHEET</span>
+              </Button>
+              <Button
+                style={{ color: "white" }}
+                onClick={redirectToSpeciesSelector}
+              >
+                <Add /> <span className="pl-2">ADD A CROP</span>
+              </Button>
+            </div>
+            <div className="col-6"></div>
           </div>
-          <div className="col-6"></div>
         </div>
       </div>
-    </div>
-  );
+    );
+  };
   return (
     <div className="container-fluid">
       {state.selectedCrops.length === 0 ? (

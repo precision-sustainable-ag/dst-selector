@@ -66,12 +66,17 @@ const MyCoverCropCardsComponent = (props) => {
   };
   return (
     //   {state.selectedCrops.length === 1 ? "<div>" : "<div className='pl-5'>"}
-    <div className={props.itemNo > 0 ? "pl-5" : ""}>
+    // <div className={props.itemNo > 0 ? "pl-5" : ""}>
+    <div className="col-3 mt-2">
       <Card className={classes.card}>
         <CardActionArea>
           <CardMedia
+            image={
+              data["Image"]
+                ? data["Image"][0].url
+                : "https://placehold.it/100x100"
+            }
             className={classes.media}
-            image="https://placehold.it/230x140"
             title={data["Cover Crop Name"]}
           />
           <CardContent>
@@ -97,7 +102,7 @@ const MyCoverCropCardsComponent = (props) => {
           >
             View Crop Details
           </Button>
-          <Button size="small" color="seconday" onClick={removeCrop}>
+          <Button size="small" color="inherit" onClick={removeCrop}>
             Remove
           </Button>
         </CardActions>
