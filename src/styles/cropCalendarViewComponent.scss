@@ -18,12 +18,6 @@
 // $reliableEstablishmentColor: #2d7b7b;
 // $defaultLegendColor: #f0f7eb;
 
-$cashCropGrowthWindowColor: rgba(255, 12, 62, 0.2);
-$frostSeedingPossibleColor: #2f80ed;
-$temperatureRiskToEstablishmentColor: #f2c94c;
-$reliableEstablishmentColor: #2d7b7b;
-$defaultLegendColor: #f0f7eb;
-
 .calendarViewTable {
   border-collapse: separate;
   border-spacing: 0;
@@ -111,9 +105,9 @@ $defaultLegendColor: #f0f7eb;
       &.frostPossible {
         color: $frostSeedingPossibleColor;
       }
-      // &.cashCrop {
-      //   // color: $cashCropGrowthWindowColor;
-      // }
+      &.cashCrop {
+        color: $cashCropGrowthWindowColor;
+      }
     }
     font-weight: 800;
   }
@@ -166,10 +160,14 @@ td.growthWindowCell {
           // opacity: 0.4;
           background-size: cover;
           background-repeat: no-repeat;
-          height: 20px;
+          // height: 20px;
+          height: 120px;
           width: 50%;
 
           background-color: $cashCropGrowthWindowColor;
+          &.lastOfType {
+            height: 20px;
+          }
         }
       }
     }
