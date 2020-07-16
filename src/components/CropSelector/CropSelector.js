@@ -1,21 +1,15 @@
 import React, { useContext, useState, Fragment, useEffect } from "react";
 import { Context } from "../../store/Store";
-import {
-  Typography,
-  ExpansionPanel,
-  ExpansionPanelSummary,
-  ExpansionPanelDetails,
-  FormGroup,
-  FormControl,
-  FormControlLabel,
-  Checkbox,
-  Button,
-  IconButton,
-  makeStyles,
-} from "@material-ui/core";
-import { List, arrayMove } from "react-movable";
+import { Typography, Button, IconButton, TextField } from "@material-ui/core";
 
-import { ExpandMore, CalendarToday } from "@material-ui/icons";
+import {
+  CalendarToday,
+  PictureAsPdf,
+  FormatListBulleted,
+  Print,
+  Compare,
+  Add,
+} from "@material-ui/icons";
 
 import "../../styles/cropSelector.scss";
 import CropTableComponent from "./CropTable";
@@ -23,8 +17,7 @@ import ListIcon from "@material-ui/icons/List";
 import MyCoverCropList from "../MyCoverCropList/MyCoverCropList";
 import CropCalendarViewComponent from "./CropCalendarView";
 import CropSidebarComponent from "./CropSidebar";
-import CropCardViewComponent from "./CardView/CropCardView";
-import { keys } from "lodash";
+import { zoneIcon } from "../../shared/constants";
 
 const _ = require("lodash");
 
@@ -39,11 +32,14 @@ const CropSelector = () => {
   const [starDisabledIds, setStarDisabledIds] = useState([]);
   const [activeCropData, setActiveCropData] = useState([]);
   const [inactiveCropData, setInactiveCropData] = useState([]);
+  const [coverCropName, setCoverCropName] = useState("");
   // const [filterByCheckBoxKeys, setfilterByCheckBoxKeys] = useState([]);
   // let [isListView, setIsListView] = useState(true);
 
   // TODO: set list view as default. Calendar component is activated currently
   let [isListView, setIsListView] = useState(true);
+
+  const [comparisonView, setComparisonView] = useState(true);
 
   const [cropData, setCropData] = useState([]);
 
@@ -153,7 +149,7 @@ const CropSelector = () => {
   const [disabledIdsTextNodes, setDisabledIdsTextNodes] = useState("");
   const [split_arr, setSplit_arr] = useState([]);
   // Debug text
-  const [debug, setDebug] = useState(true);
+  const [debug, setDebug] = useState(false);
 
   useEffect(() => {
     filterByCheckboxValues("checkboxes", state.selectedCheckboxes);
@@ -705,6 +701,11 @@ const CropSelector = () => {
     };
   }, [state.cropData]);
 
+  // useEffect(() => {
+  //   window.localStorage.setItem("actives", JSON.stringify(activeCropData));
+  //   window.localStorage.setItem("inactives", JSON.stringify(inactiveCropData));
+  // }, [activeCropData, inactiveCropData]);
+
   const expandCoverCropFilter = (id) => {
     let listItemId = `cropFilterList${id}`;
     let x = document.querySelectorAll(`#${listItemId} div`);
@@ -731,25 +732,142 @@ const CropSelector = () => {
     setIsListView(!isListView);
   };
 
+  const toggleComparisonView = () => {
+    setComparisonView(!comparisonView);
+  };
+
+  const covercropsNamesFilter = (e) => {
+    setCoverCropName(e.target.value);
+
+    if (e.target.value === "") {
+      setActiveCropData(cropData);
+      setInactiveCropData([]);
+    } else {
+      const newActives = activeCropData.filter((crops) =>
+        crops.fields["Cover Crop Name"].toLowerCase().startsWith(e.target.value)
+      );
+      const newInactives = inactiveCropData.filter((crops) =>
+        crops.fields["Cover Crop Name"].toLowerCase().startsWith(e.target.value)
+      );
+      setActiveCropData(newActives);
+      setInactiveCropData(newInactives);
+    }
+  };
   return (
     <div className="container-fluid mt-2">
-      <div className="row toggleComparisonRow">
+      <div className="row mt-3">
+        <div className="col-xl-2 col-sm-12 col-lg-3">
+          {state.myCoverCropActivationFlag ? (
+            <Fragment>
+              <div className="iconToggle">
+                <Button
+                  variant="contained"
+                  onClick={toggleComparisonView}
+                  size="large"
+                  color="secondary"
+                  startIcon={
+                    comparisonView ? (
+                      <Compare style={{ fontSize: "larger" }} />
+                    ) : (
+                      <ListIcon style={{ fontSize: "larger" }} />
+                    )
+                  }
+                >
+                  {comparisonView ? "COMPARISON VIEW" : "LIST VIEW"}
+                </Button>
+              </div>
+            </Fragment>
+          ) : (
+            <Fragment>
+              <div className="iconToggle">
+                <Button
+                  variant="contained"
+                  onClick={toggleListView}
+                  size="large"
+                  color="secondary"
+                  startIcon={
+                    isListView ? (
+                      <CalendarToday style={{ fontSize: "larger" }} />
+                    ) : (
+                      <ListIcon style={{ fontSize: "larger" }} />
+                    )
+                  }
+                >
+                  {isListView ? "CALENDAR VIEW" : "LIST VIEW"}
+                </Button>
+              </div>
+            </Fragment>
+          )}
+        </div>
+        <div className="col-xl-10 col-lg-9">
+          {state.speciesSelectorActivationFlag ? (
+            <Fragment>
+              <div className="col-4">
+                <TextField
+                  fullWidth
+                  color="secondary"
+                  label="Search Cover Crop Name"
+                  value={coverCropName}
+                  onInput={covercropsNamesFilter}
+                />
+              </div>
+              <div className="col-8"></div>
+            </Fragment>
+          ) : (
+            // <div className="cropListTopBar row">
+            //   <div
+            //     className="col-12"
+            //     style={{ background: "rgb(89, 132, 69)", color: "white" }}
+            //   >
+            //     <div className="row">
+            //       <div className="col-4">
+            //         <Button style={{ color: "white" }}>
+            //           {zoneIcon(20, 20)}
+            //           <span className="pl-2">
+            //             Plant Hardiness Zone {state.zone} Dataset
+            //           </span>
+            //         </Button>
+            //       </div>
+            //       <div className="col-4">
+            //         <Button style={{ color: "white" }}>Download :</Button>
+            //         <Button
+            //           // href={`/information-sheets/${crop.fields["Cover Crop Name"]}.pdf`}
+            //           style={{ color: "white" }}
+            //           // download={`${crop.fields["Cover Crop Name"]}`}
+            //         >
+            //           <PictureAsPdf />
+            //           <span className="pl-2">PDF</span>
+            //         </Button>
+            //         <Button
+            //           style={{ color: "white" }}
+            //           // href={`/csv/${crop.fields["Cover Crop Name"]}.csv`}
+            //           // download={`${crop.fields["Cover Crop Name"]}`}
+            //         >
+            //           <FormatListBulleted />
+            //           <span className="pl-2">SPREADSHEET</span>
+            //         </Button>
+            //       </div>
+            //       <div className="col-4 text-right">
+            //         <Button style={{ color: "white" }}>
+            //           <Add /> <span className="pl-2">ADD A CROP</span>
+            //         </Button>
+            //       </div>
+            //     </div>
+            //   </div>
+            // </div>
+            ""
+          )}
+        </div>
+      </div>
+      {/* <div className="row toggleComparisonRow">
         <div className="col-lg-12">
           <div className="row">
             <div className="col-lg-12 col-sm-12">
-              {/* <div className="iconsWrapper"> */}
+            
               <div className="row">
                 {state.myCoverCropActivationFlag ? (
                   <Fragment>
-                    {/* <div className="iconToggle">
-                      <IconButton
-                        className={isListView ? `iconActive` : ""}
-                        onClick={toggleListView}
-                      >
-                        <ListIcon style={{ fontSize: "larger" }} />
-                      </IconButton>
-                    </div> */}
-                    <div className="iconToggle col-xl-3 col-lg-4">
+                    <div className="iconToggle col-xl-3 col-lg-3">
                       <Typography component="div" variant="body1">
                         <IconButton
                           color={"secondary"}
@@ -770,7 +888,7 @@ const CropSelector = () => {
                   </Fragment>
                 ) : (
                   <Fragment>
-                    <div className="iconToggle col-xl-3 col-lg-4">
+                    <div className="iconToggle col-xl-3 col-lg-3">
                       <Button
                         variant="contained"
                         onClick={toggleListView}
@@ -789,7 +907,7 @@ const CropSelector = () => {
                     </div>
                   </Fragment>
                 )}
-                <div className="col-xl-9 col-lg-8">
+                <div className="col-xl-9 col-lg-9">
                   <div className="row">
                     {debug ? (
                       <Fragment>
@@ -803,13 +921,22 @@ const CropSelector = () => {
                     ) : (
                       ""
                     )}
+                    <div className="col-12">
+                      <TextField
+                        fullWidth
+                        color="secondary"
+                        label="Cover Crop Name"
+                        value={coverCropName}
+                        onInput={covercropsNamesFilter}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
       <div className="row cropSelectorRow mt-3">
         <div className="col-xl-2 col-sm-12 col-lg-3">
           <CropSidebarComponent
@@ -849,7 +976,7 @@ const CropSelector = () => {
               <CropCalendarViewComponent cropData={cropData} />
             )
           ) : (
-            <MyCoverCropList />
+            <MyCoverCropList comparisonView={comparisonView} />
           )}
         </div>
       </div>
