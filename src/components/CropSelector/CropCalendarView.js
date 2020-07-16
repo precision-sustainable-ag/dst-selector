@@ -52,6 +52,9 @@ const CropCalendarViewComponent = (props) => {
   const [goalRatings, setGoalRatings] = useState(0);
   const [legendModal, setLegendModal] = useState(false);
   const [selectedCropsIds, setSelectedCropsIds] = useState([]);
+  const selectedBtns = state.selectedCrops.map((crop) => {
+    return crop.btnId;
+  });
 
   // DONE: Check year logic ? currently Juliet wants to return current year if month is before november
   // ref. useeffect();
@@ -491,9 +494,9 @@ const CropCalendarViewComponent = (props) => {
                                     width: "130px",
                                   }}
                                   className={
-                                    selectedCropsIds.includes(crop.id)
+                                    selectedBtns.includes(`cartBtn${index}`)
                                       ? "activeCartBtn"
-                                      : ""
+                                      : "inactiveCartBtn"
                                   }
                                   onClick={() => {
                                     addCropToBasket(
@@ -504,7 +507,7 @@ const CropCalendarViewComponent = (props) => {
                                     );
                                   }}
                                 >
-                                  {selectedCropsIds.includes(crop.id)
+                                  {selectedBtns.includes(`cartBtn${index}`)
                                     ? "ADDED"
                                     : "ADD TO LIST"}
                                 </LightButton>
