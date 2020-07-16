@@ -938,6 +938,7 @@ const CropSidebarComponent = (props) => {
                     size="small"
                     onClick={resetAllFilters}
                     style={{ cursor: "pointer" }}
+                    className="text-danger"
                   >
                     CLEAR FILTERS
                   </small>
