@@ -35,6 +35,13 @@ import CropDetailsModalComponent from "./CropDetailsModal";
 import CropLegendModal from "./CropLegendModal";
 
 const CropTableComponent = (props) => {
+  // let cropTableElement = document.getElementById("#primaryCropTable");
+  // cropTableElement.addEventListener("scroll", (e) => {
+  //   let tableHead = document.querySelector("thead");
+  //   let scrollTop = cropTableElement.scrollTop;
+  //   tableHead.style.transform = "translateY(" + scrollTop + "px)";
+  // });
+
   const cropData = props.cropData || [];
   const inactiveCropData = props.inactiveCropData || [];
   const activeCropData = props.activeCropData || [];
@@ -80,14 +87,6 @@ const CropTableComponent = (props) => {
       setSelectedCropsIds(selectedIds);
     }
   }, [state.progress]);
-
-  // useEffect(() => {
-  //   if (state.selectedCrops.length > 0) {
-  //     let selectedIds = state.selectedCrops.map((crop) => {
-  //       return crop["id"];
-  //     });
-
-  // },[state.selectedCrops]);
 
   const addCropToBasket = (cropId, cropName, btnId, cropData) => {
     let container = document.getElementById(btnId);
@@ -492,7 +491,10 @@ const CropTableComponent = (props) => {
         className="table-responsive calendarViewTableWrapper"
         component="div"
       >
-        <Table className="table table-borderless table-sm">
+        <Table
+          className="table table-borderless table-sm"
+          id="primaryCropTable"
+        >
           <TableHead className="tableHeadWrapper">
             <tr>
               <th
