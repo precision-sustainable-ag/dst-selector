@@ -743,14 +743,23 @@ const CropSelector = () => {
       setActiveCropData(cropData);
       setInactiveCropData([]);
     } else {
-      const newActives = activeCropData.filter((crops) =>
-        crops.fields["Cover Crop Name"].toLowerCase().startsWith(e.target.value)
+      const newActives = activeCropData.filter(
+        (crops) =>
+          crops.fields["Cover Crop Name"]
+            .toLowerCase()
+            .includes(e.target.value) ||
+          crops.fields["Scientific Name"].toLowerCase().includes(e.target.value)
       );
-      const newInactives = inactiveCropData.filter((crops) =>
-        crops.fields["Cover Crop Name"].toLowerCase().startsWith(e.target.value)
+      const newInactives = inactiveCropData.filter(
+        (crops) =>
+          crops.fields["Cover Crop Name"]
+            .toLowerCase()
+            .includes(e.target.value) ||
+          crops.fields["Scientific Name"].toLowerCase().includes(e.target.value)
       );
       setActiveCropData(newActives);
       setInactiveCropData(newInactives);
+      // setCropData(newActives);
     }
   };
   return (
