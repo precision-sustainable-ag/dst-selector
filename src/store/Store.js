@@ -1,12 +1,89 @@
 import React, { createContext, useReducer } from "react";
 import Reducer from "./Reducer";
 import crops from "../shared/crop-data.json";
+import moment from "moment-timezone";
+
+const setPlantingDates = (plantingLabel, val, placement) => {
+  let date = moment(val.fields[plantingLabel], "YYYY-MM-DD").toDate();
+  let month = date.getMonth();
+  let day = date.getDate();
+
+  switch (month) {
+    case 0: {
+      val.fields["January, " + placement] = plantingLabel;
+      break;
+    }
+    case 1: {
+      val.fields["February, " + placement] = plantingLabel;
+      break;
+    }
+    case 2: {
+      val.fields["March, " + placement] = plantingLabel;
+      break;
+    }
+    case 3: {
+      val.fields["April, " + placement] = plantingLabel;
+      break;
+    }
+    case 4: {
+      val.fields["May, " + placement] = plantingLabel;
+      break;
+    }
+    case 5: {
+      val.fields["June, " + placement] = plantingLabel;
+      break;
+    }
+    case 6: {
+      val.fields["July, " + placement] = plantingLabel;
+      break;
+    }
+    case 7: {
+      val.fields["August, " + placement] = plantingLabel;
+      break;
+    }
+    case 8: {
+      val.fields["September, " + placement] = plantingLabel;
+      break;
+    }
+    case 9: {
+      val.fields["October," + placement] = plantingLabel;
+      break;
+    }
+    case 10: {
+      val.fields["November, " + placement] = plantingLabel;
+      break;
+    }
+    case 11: {
+      val.fields["December, " + placement] = plantingLabel;
+      break;
+    }
+  }
+  return val;
+};
 
 const tjson = crops;
 let tjs = tjson.map((crop) => {
   // val["fields"] = val;
   let val = { fields: crop };
   // console.log(val);
+  // if (val.fields["Temperature/Moisture Risk to Establishment End"]) {
+
+  //   val = setPlantingDates("Temperature/Moisture Risk to Establishment End", val, "End");
+  // }
+  // if(val.fields["Temperature/Moisture Risk to Establishment Start"])
+
+  //   Frost Seeding Start: Blue
+  // Frost Seeding End: Blue
+  // Reliable Establishment Start: Green
+  // Reliable Establishment End: Green
+  // Second Reliable Establishment Start: Green
+  // Second Reliable Establishment End: Green
+  // Temperature/Moisture Risk to Establishment Start: Yellow
+  // Temperature/Moisture Risk to Establishment End: Yellow
+  // Second Temperature/Moisture Risk to Establishment Start: Yellow
+  // Second Temperature/Moisture Risk to Establishment End: Yellow
+
+  console.log();
 
   val.fields["Discourages Nematodes"] = val.fields["Disoucrages Nematodes"];
   val.fields["id"] = val.fields["__id"];
@@ -35,6 +112,7 @@ let tjs = tjson.map((crop) => {
     val.fields["Aerial Seeding"] = -999;
   }
 
+  //TODO: not using anymore
   if (!val.fields["Pollinator Habitat"]) {
     val.fields["Pollinator Habitat"] = 0;
   }
@@ -59,8 +137,8 @@ let tjs = tjson.map((crop) => {
 // const StoreContext = createContext();
 
 const initialState = {
-  progress: 0,
-  // progress: 5,
+  // progress: 0,
+  progress: 5,
   address: "",
   addressSearchPreference: "address",
   zip: 0,
@@ -352,8 +430,8 @@ const initialState = {
   cropData: tjs,
   selectedCrops: [],
 
-  // selectedGoals: ["Good Grazing"],
-  selectedGoals: [],
+  selectedGoals: ["Good Grazing"],
+  // selectedGoals: [],
   zoom: 13,
   addressVerified: false,
   snackOpen: false,
@@ -405,6 +483,7 @@ const initialState = {
   },
   weatherDataReset: false,
   filterString: "",
+  filterKeys: [],
 };
 
 const Store = ({ children }) => {
