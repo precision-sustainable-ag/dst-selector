@@ -1,5 +1,11 @@
 import React, { useState, useEffect, Fragment, useContext } from "react";
-import { Card, CardMedia, CardContent, Button } from "@material-ui/core";
+import {
+  Card,
+  CardMedia,
+  CardContent,
+  Button,
+  Typography,
+} from "@material-ui/core";
 import "../../styles/cropComparisonView.scss";
 import { DataTooltip, getRating } from "../../shared/constants";
 import { MonetizationOn } from "@material-ui/icons";
@@ -26,6 +32,8 @@ const lightBG = {
   minHeight: "36px",
 };
 const MyCoverCropComparisonComponent = (props) => {
+  const [state, dispatch] = useContext(Context);
+  const { filterKeys } = state;
   return (
     <div className="container-fluid comparisonContainer">
       <div className="row">
@@ -72,65 +80,27 @@ const MyCoverCropComparisonComponent = (props) => {
             </CardContent>
             <hr style={{ borderTop: "1px solid rgba(0,0,0,0)" }} />
             <CardContent style={{ paddingRight: "0px", paddingLeft: "0px" }}>
+              {filterKeys.map((keys, index) => (
+                <div style={lightBorder} key={index}>
+                  <span>
+                    <DataTooltip data={"Info"} />
+                  </span>
+                  <span>
+                    <Typography variant="body2">
+                      {keys === "Cover Crop Group"
+                        ? "COVER CROP TYPE"
+                        : keys.toUpperCase()}
+                    </Typography>
+                  </span>
+                </div>
+              ))}
               <div style={lightBorder}>
                 <span>
                   <DataTooltip data={"Info"} />
                 </span>
-                <span>DRY MATTER</span>
-              </div>
-              <div style={lightBorder}>
                 <span>
-                  <DataTooltip data={"Info"} />
+                  <Typography variant="body2">AVERAGE GOAL RATING</Typography>
                 </span>
-                <span>GROWING WINDOW</span>
-              </div>
-              <div style={lightBorder}>
-                <span>
-                  <DataTooltip data={"Info"} />
-                </span>
-                <span>C TO N RATIO</span>
-              </div>
-              <div style={lightBorder}>
-                <span>
-                  <DataTooltip data={"Info"} />
-                </span>
-                <span>SOIL MOISTURE USE</span>
-              </div>
-              <div style={lightBorder}>
-                <span>
-                  <DataTooltip data={"Info"} />
-                </span>
-                <span>FLOWERING TRIGGER</span>
-              </div>
-              <div style={lightBorder}>
-                <span>
-                  <DataTooltip data={"Info"} />
-                </span>
-                <span>SEED PRICE PER POUND</span>
-              </div>
-              <div style={lightBorder}>
-                <span>
-                  <DataTooltip data={"Info"} />
-                </span>
-                <span>EASE OF ESTABLISHMENT</span>
-              </div>
-              <div style={lightBorder}>
-                <span>
-                  <DataTooltip data={"Info"} />
-                </span>
-                <span>ESTABLISHES QUICKLY</span>
-              </div>
-              <div style={lightBorder}>
-                <span>
-                  <DataTooltip data={"Info"} />
-                </span>
-                <span>EARLY SPRING GROWTH</span>
-              </div>
-              <div style={lightBorder}>
-                <span>
-                  <DataTooltip data={"Info"} />
-                </span>
-                <span>AVERAGE GOAL RATING</span>
               </div>
             </CardContent>
           </Card>
@@ -177,7 +147,15 @@ const MyCoverCropComparisonComponent = (props) => {
               </CardContent>
               <hr />
               <CardContent style={{ paddingRight: "0px", paddingLeft: "0px" }}>
-                <div style={lightBG}>
+                {filterKeys.map((filterKey, index) => (
+                  <RenderRelevantData
+                    key={index}
+                    filterKey={filterKey}
+                    data={crop.data}
+                    index={index}
+                  />
+                ))}
+                {/* <div style={lightBG}>
                   {(parseInt(crop.data["Dry Matter Max (lbs/A/y)"]) +
                     parseInt(crop.data["Dry Matter Min (lbs/A/y)"])) /
                     2}{" "}
@@ -212,7 +190,7 @@ const MyCoverCropComparisonComponent = (props) => {
                 </div>
                 <div style={lightBG}>
                   {getRating(crop.data["Early Spring Growth"])}
-                </div>
+                </div> */}
                 <div style={lightBG}>
                   <GetAverageGoalRating crop={crop} />
                 </div>
@@ -245,6 +223,37 @@ const RenderGrowthWindow = ({ window }) => {
   }
 };
 
+const RenderRelevantData = ({ filterKey = "", data = [], index = 0 }) => {
+  if (typeof data[filterKey] === "number") {
+    if (data[filterKey].toString().length === 1) {
+      if (filterKey === "Seed Price per Pound") {
+        return (
+          <div style={lightBG}>
+            <RenderSeedPriceIcons val={data["Seed Price per Pound"]} />
+          </div>
+        );
+      } else return <div style={lightBG}>{getRating(data[filterKey])}</div>;
+    } else {
+      return <div style={lightBG}>{data[filterKey]}</div>;
+    }
+  } else {
+    if (filterKey === "Frost Seeding" || filterKey === "Aerial Seeding") {
+      return (
+        <div style={lightBG}>
+          <RenderSeedingData data={data} filterKey={filterKey} />
+        </div>
+      );
+    } else return <div style={lightBG}>{data[filterKey].toString()}</div>;
+  }
+};
+
+const RenderSeedingData = ({ filterKey, data }) => {
+  if (data[filterKey].toString() !== "-999") {
+    return <div style={lightBG}>{data[filterKey]}</div>;
+  } else {
+    return <div style={lightBG}>N/A</div>;
+  }
+};
 const GetAverageGoalRating = ({ crop }) => {
   const [state, dispatch] = useContext(Context);
   let goalRating = 0;
@@ -255,7 +264,7 @@ const GetAverageGoalRating = ({ crop }) => {
       }
     });
   }
-
+  // console.log(goalRating);
   return getRating(goalRating / state.selectedGoals.length);
 };
 const RenderSeedPriceIcons = ({ val }) => {
