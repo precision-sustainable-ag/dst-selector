@@ -166,6 +166,12 @@ const CropSidebarComponent = (props) => {
     //   return key.indexOf(myString) !== -1;
     // });
 
+    dispatch({
+      type: "UPDATE_FILTER_KEYS",
+      data: {
+        filterKeys: nonZeroKeys,
+      },
+    });
     if (nonZeroKeys.length > 0) {
       // nonZeroKeys.forEach((val, index) => {
 
