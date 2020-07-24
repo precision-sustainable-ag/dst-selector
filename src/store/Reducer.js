@@ -273,6 +273,12 @@ const Reducer = (state, action) => {
         filterString: action.data.filterString,
       };
     }
+    case "UPDATE_FILTER_KEYS": {
+      return {
+        ...state,
+        filterKeys: action.data.filterKeys,
+      };
+    }
 
     default:
       return state;
