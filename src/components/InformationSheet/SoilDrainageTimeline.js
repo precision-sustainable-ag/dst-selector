@@ -34,7 +34,7 @@ const SoilDrainageTimeline = ({ drainage = [] }) => {
                   }}
                 />
               ) : (
-                <TimelineDot />
+                ""
               )}
               {index === fullLength - 1 ? "" : <TimelineConnector />}
             </TimelineSeparator>
