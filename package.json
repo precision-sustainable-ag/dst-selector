@@ -6,7 +6,7 @@
   "dependencies": {
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.5.1",
-    "@material-ui/lab": "^4.0.0-alpha.40",
+    "@material-ui/lab": "^4.0.0-alpha.56",
     "@matharumanpreet00/react-daterange-picker": "^1.0.5",
     "axios": "^0.19.1",
     "jslinq": "^1.0.22",
