@@ -15,11 +15,16 @@
     border-radius: 10px;
     text-align: center;
     width: 100px;
-    height: 20px;
+    max-height: 30px;
     display: inline-block;
     box-shadow: inset 0px 0px 0 1px $secondaryProgressBtnColor;
     overflow: hidden;
     position: relative;
+    &.no-bg {
+      background-color: transparent;
+      height: auto;
+      box-shadow: none;
+    }
 
     // &.bordered {
     //   &:after {
