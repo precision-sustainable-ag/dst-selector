@@ -1,0 +1,87 @@
+@import "../../node_modules/sass-mediaqueries/media-queries";
+@import "../styles/constants.scss";
+
+* {
+  -webkit-print-color-adjust: exact !important; /* Chrome, Safari */
+  color-adjust: exact !important; /*Firefox*/
+}
+
+@media screen, print {
+  @page {
+    size: letter;
+  }
+  .blue-bg {
+    background-color: $secondaryProgressBtnColor;
+    border-radius: 10px;
+    text-align: center;
+    width: 100px;
+    height: 20px;
+    display: inline-block;
+    box-shadow: inset 0px 0px 0 1px $secondaryProgressBtnColor;
+    overflow: hidden;
+    position: relative;
+
+    // &.bordered {
+    //   &:after {
+    //     border-top: 1px solid $progressColor;
+    //     border-left: 1px solid $progressColor;
+    //     content: "";
+    //     display: block;
+    //     width: 100%;
+    //   }
+    // }
+  }
+  div.row.otherRows {
+    & > div.col-6 {
+      & > div.col-12.otherHeaderRow {
+        h6 {
+          text-transform: uppercase;
+          border: 1px solid $progressColor;
+        }
+      }
+    }
+  }
+  div.row.middleGreenStrip {
+    background-color: $progressColor;
+    height: 40px;
+    color: white;
+    align-items: center;
+    font-weight: bolder;
+  }
+  div.row.coverCropDescriptionWrapper,
+  div.row.coverCropGoalsWrapper {
+    padding: 1em;
+    & > div.col-12 {
+      border: 1px solid $progressColor;
+      & > h6 {
+        border-bottom: 2px solid $progressColor;
+      }
+    }
+  }
+  header {
+    &.greenHeader {
+      background-color: $progressColor;
+      color: white;
+      font-weight: bolder;
+
+      align-items: center;
+
+      height: 50px;
+    }
+  }
+
+  div.coverCropNames {
+    padding: 3em;
+  }
+
+  div.coverCropImagesWrapper {
+    justify-content: flex-end;
+    height: auto;
+  }
+
+  div.coverCropGroup {
+    p {
+      letter-spacing: 2px;
+    }
+  }
+}
