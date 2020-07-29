@@ -6,6 +6,7 @@ import TimelineConnector from "@material-ui/lab/TimelineConnector";
 import TimelineContent from "@material-ui/lab/TimelineContent";
 import TimelineDot from "@material-ui/lab/TimelineDot";
 import { CustomStyles } from "../../shared/constants";
+import { Typography } from "@material-ui/core";
 
 const SoilDrainageTimeline = ({ drainage = [] }) => {
   const drainageClasses = [
@@ -22,12 +23,12 @@ const SoilDrainageTimeline = ({ drainage = [] }) => {
   //   console.log(classIntersection);
   return (
     <Timeline align="right">
-      {drainageClasses.map((classes, index) => {
+      {drainageClasses.map((drainageClass, index) => {
         const fullLength = drainageClasses.length;
         return (
           <TimelineItem key={index}>
             <TimelineSeparator>
-              {drainage.includes(classes) ? (
+              {drainage.includes(drainageClass) ? (
                 <TimelineDot
                   style={{
                     backgroundColor: CustomStyles().progressColor,
@@ -39,15 +40,15 @@ const SoilDrainageTimeline = ({ drainage = [] }) => {
               {index === fullLength - 1 ? "" : <TimelineConnector />}
             </TimelineSeparator>
 
-            {drainage.includes(classes) ? (
-              <TimelineContent className="text-capitalize font-weight-bold">
-                {classes}
-              </TimelineContent>
-            ) : (
-              <TimelineContent className="text-capitalize">
-                {classes}
-              </TimelineContent>
-            )}
+            <TimelineContent className="text-capitalize">
+              {drainage.includes(drainageClass) ? (
+                <Typography variant="body1" className="font-weight-bold">
+                  {drainageClass}
+                </Typography>
+              ) : (
+                <Typography variant="body1">{drainageClass}</Typography>
+              )}
+            </TimelineContent>
           </TimelineItem>
         );
       })}
