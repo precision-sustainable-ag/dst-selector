@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Fragment } from "react";
-import { Grid, Chip } from "@material-ui/core";
+import { Grid, Chip, Tooltip } from "@material-ui/core";
 
 const Roots = (props) => {
   const [selected, setSelected] = useState({
@@ -28,7 +28,21 @@ const Roots = (props) => {
   return props.filters.values.map((subFilter, index) => (
     <Grid container key={index} spacing={1}>
       <Grid item xs={12}>
-        <small>{subFilter.name}</small>
+        <Tooltip
+          interactive
+          arrow
+          placement="right"
+          title={
+            <div className="tooltipTextContainer text-center">
+              <p
+                dangerouslySetInnerHTML={{ __html: subFilter.description }}
+              ></p>
+            </div>
+          }
+          key={`tooltip${index}`}
+        >
+          <small>{subFilter.name}</small>
+        </Tooltip>
       </Grid>
       {subFilter.values.map((val, index2) => (
         <Grid item key={index2}>

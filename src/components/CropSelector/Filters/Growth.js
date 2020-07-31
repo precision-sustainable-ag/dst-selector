@@ -57,7 +57,19 @@ const Growth = (props) => {
       {val.type === "chip" ? (
         <Fragment key={index}>
           <Grid item xs={12} style={{ marginTop: "1em" }}>
-            <small>{val.name}</small>
+            <Tooltip
+              interactive
+              arrow
+              placement="right"
+              title={
+                <div className="tooltipTextContainer text-center">
+                  <p dangerouslySetInnerHTML={{ __html: val.description }}></p>
+                </div>
+              }
+              key={`tooltip${index}`}
+            >
+              <small>{val.name}</small>
+            </Tooltip>
           </Grid>
           <RenderChips
             sidebarFilterOptions={props.sidebarFilterOptions}
