@@ -69,7 +69,6 @@ const Growth = (props) => {
         <Fragment key={index}>
           <Grid item xs={12} style={{ marginTop: "1em" }}>
             <Tooltip
-              enterDelay={3000}
               interactive
               arrow
               placement="right"
