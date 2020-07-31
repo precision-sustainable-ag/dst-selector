@@ -36,7 +36,6 @@ const EnvironmentalTolerance = (props) => {
           <Fragment key={index}>
             <Grid item xs={12}>
               <Tooltip
-                enterDelay={3000}
                 interactive
                 arrow
                 placement="right"
