@@ -38,7 +38,6 @@ const SeedingMethods = (props) => {
       {props.filters.values.map((val, index) => (
         <Grid item xs={12} key={index}>
           <Tooltip
-            enterDelay={3000}
             interactive
             arrow
             placement="right"
