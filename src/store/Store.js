@@ -3,74 +3,52 @@ import Reducer from "./Reducer";
 import crops from "../shared/crop-data.json";
 import moment from "moment-timezone";
 
-const setPlantingDates = (plantingLabel, val, placement) => {
-  let date = moment(val.fields[plantingLabel], "YYYY-MM-DD").toDate();
-  let month = date.getMonth();
-  let day = date.getDate();
+const monthStringBuilder = (vals) => {
+  const params = [
+    "Reliable Establishment/Growth",
+    "Temperature/Moisture Risk to Establishment",
+    "Late Fall/Winter Planting Date",
+    "Early Fall/ Winter Seeding Rate",
+    "Second Reliable Establishment/Growth",
+    "Standard Fall/Winter Seeding Rate Date",
+    "Standard Spring Seeding Rate Date",
+  ];
+  let val = vals;
+  params.forEach((param) => {
+    if (val.fields[param + " Start"]) {
+      const valStart = moment(val.fields[param + " Start"], "YYYY-MM-DD");
+      const valEnd = val.fields[param + " End"]
+        ? moment(val.fields[param + " End"], "YYYY-MM-DD")
+        : moment(val.fields[param + " Stop"], "YYYY-MM-DD");
+      let str = "";
+      let valuesArray = [];
+      while (valStart.isSameOrBefore(valEnd)) {
+        let val = [];
+        if (valStart.get("D") <= 15 && valStart.get("D") >= 1) {
+          str = "Early";
+        } else {
+          str = "Mid";
+        }
 
-  switch (month) {
-    case 0: {
-      val.fields["January, " + placement] = plantingLabel;
-      break;
+        valuesArray.push([`${valStart.format("MMMM")}, ${str}`]);
+        valStart.add("15", "days");
+      }
+
+      valuesArray.forEach((key) => {
+        const prev = val.fields[key] || [];
+        prev.push(param);
+        val.fields[key] = prev;
+      });
     }
-    case 1: {
-      val.fields["February, " + placement] = plantingLabel;
-      break;
-    }
-    case 2: {
-      val.fields["March, " + placement] = plantingLabel;
-      break;
-    }
-    case 3: {
-      val.fields["April, " + placement] = plantingLabel;
-      break;
-    }
-    case 4: {
-      val.fields["May, " + placement] = plantingLabel;
-      break;
-    }
-    case 5: {
-      val.fields["June, " + placement] = plantingLabel;
-      break;
-    }
-    case 6: {
-      val.fields["July, " + placement] = plantingLabel;
-      break;
-    }
-    case 7: {
-      val.fields["August, " + placement] = plantingLabel;
-      break;
-    }
-    case 8: {
-      val.fields["September, " + placement] = plantingLabel;
-      break;
-    }
-    case 9: {
-      val.fields["October," + placement] = plantingLabel;
-      break;
-    }
-    case 10: {
-      val.fields["November, " + placement] = plantingLabel;
-      break;
-    }
-    case 11: {
-      val.fields["December, " + placement] = plantingLabel;
-      break;
-    }
-  }
+  });
   return val;
 };
-
 const tjson = crops;
 let tjs = tjson.map((crop) => {
   // val["fields"] = val;
   let val = { fields: crop };
-  // console.log(val);
-  // if (val.fields["Temperature/Moisture Risk to Establishment End"]) {
 
-  //   val = setPlantingDates("Temperature/Moisture Risk to Establishment End", val, "End");
-  // }
-  // if(val.fields["Temperature/Moisture Risk to Establishment Start"])
+  val = monthStringBuilder(val);
 
   //   Frost Seeding Start: Blue
   // Frost Seeding End: Blue
@@ -82,8 +60,6 @@ let tjs = tjson.map((crop) => {
   // Temperature/Moisture Risk to Establishment End: Yellow
   // Second Temperature/Moisture Risk to Establishment Start: Yellow
   // Second Temperature/Moisture Risk to Establishment End: Yellow
-
-  console.log();
 
   val.fields["Discourages Nematodes"] = val.fields["Disoucrages Nematodes"];
   val.fields["id"] = val.fields["__id"];
@@ -97,10 +73,17 @@ let tjs = tjson.map((crop) => {
     val.fields["Tillage Termination at Vegetative"];
   val.fields["Tillage at Flowering"] =
     val.fields["Tillage Termination at Flowering"];
+
+  val.fields["Freezing at Flowering"] =
+    val.fields["Freezing Termination at Flowering"];
+
   val.fields["Freezing at Vegetative"] =
     val.fields["Freezing Termination at Vegetative"];
   val.fields["Chemical at Vegetative"] =
     val.fields["Chemical Termination at Vegetative"];
+  val.fields["Chemical at Flowering"] =
+    val.fields["Chemical Termination at Flowering"];
+
   val.fields["Mow at Flowering"] = val.fields["Mow Termination at Flowering"];
   val.fields["Roller Crimp at Flowering"] =
     val.fields["Roller Crimp Tolerance at Flowering"];
