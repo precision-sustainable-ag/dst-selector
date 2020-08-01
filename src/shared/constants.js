@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, Fragment } from "react";
 import {
   withStyles,
   Button,
@@ -8,7 +8,7 @@ import {
   Tooltip,
 } from "@material-ui/core";
 import moment from "moment";
-import { Info } from "@material-ui/icons";
+import { Info, MonetizationOn } from "@material-ui/icons";
 const JSZip = require("jszip");
 const JSZipUtils = require("jszip-utils");
 const saveAs = require("save-as");
@@ -260,6 +260,7 @@ export const abbrRegion = (input, to) => {
 
 export const CustomStyles = () => {
   return {
+    progressColor: "#2b7b79",
     defaultFontSize: "1em",
     lighterGreen: "#598445",
     lightGreen: "#add08f",
@@ -1288,4 +1289,51 @@ export const downloadAllCSV = (selectedCropNames) => {
       }
     });
   });
+};
+
+export const RenderSeedPriceIcons = ({ val }) => {
+  switch (parseInt(val)) {
+    case 1:
+      return (
+        <Fragment>
+          <span style={{ color: "#35999b" }}>
+            <MonetizationOn />
+          </span>
+          <span style={{ color: "#35999b", opacity: 0.2 }}>
+            <MonetizationOn />
+          </span>
+          <span style={{ color: "#35999b", opacity: 0.2 }}>
+            <MonetizationOn />
+          </span>
+        </Fragment>
+      );
+    case 2:
+      return (
+        <Fragment>
+          <span style={{ color: "#35999b" }}>
+            <MonetizationOn />
+          </span>
+          <span style={{ color: "#35999b" }}>
+            <MonetizationOn />
+          </span>
+          <span style={{ color: "#35999b", opacity: 0.2 }}>
+            <MonetizationOn />
+          </span>
+        </Fragment>
+      );
+    case 3:
+      return (
+        <Fragment>
+          <span style={{ color: "#35999b" }}>
+            <MonetizationOn />
+          </span>
+          <span style={{ color: "#35999b" }}>
+            <MonetizationOn />
+          </span>
+          <span style={{ color: "#35999b" }}>
+            <MonetizationOn />
+          </span>
+        </Fragment>
+      );
+  }
 };
