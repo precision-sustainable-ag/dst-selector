@@ -1,0 +1,266 @@
+{
+  "Wheat, Winter": {
+    "Cover Crop": "Wheat, Winter",
+    "Key Thumbnail": "Wheat_spring_mature_Ackroyd_2020.JPG",
+    "Notes": "In Wheat, Spring Directory",
+    "Directory": "Wheat, Spring"
+  },
+  "Wheat, Spring": {
+    "Cover Crop": "Wheat, Spring",
+    "Key Thumbnail": "Wheat_spring_mature_Ackroyd_2020.JPG",
+    "Notes": null,
+    "Directory": "Wheat, Spring"
+  },
+  "Vetch, Hairy": {
+    "Cover Crop": "Vetch, Hairy",
+    "Key Thumbnail": "Vetch_hairy_flowering_Ackroyd_2020.JPG",
+    "Notes": null,
+    "Directory": "Vetch, Hairy"
+  },
+  "Turnip, Purple Top": {
+    "Cover Crop": "Turnip, Purple Top",
+    "Key Thumbnail": "Turnip_Purple_Top_mature_Bjorkman_2020.jpg",
+    "Notes": null,
+    "Directory": "Turnip, Purple Top"
+  },
+  "Turnip, Forage": {
+    "Cover Crop": "Turnip, Forage",
+    "Key Thumbnail": "Turnip_flowering_Bjorkman_2020.jpg",
+    "Notes": null,
+    "Directory": "Turnip, Forage"
+  },
+  "Triticale, Winter": {
+    "Cover Crop": "Triticale, Winter",
+    "Key Thumbnail": "Triticale_mature_Salon_2020.JPG",
+    "Notes": null,
+    "Directory": "Triticale, Winter"
+  },
+  "Triticale, Spring": {
+    "Cover Crop": "Triticale, Spring",
+    "Key Thumbnail": "Triticale_mature_Salon_2020.JPG",
+    "Notes": "In Triticale, Winter Directory",
+    "Directory": "Triticale, Winter"
+  },
+  "Teff": {
+    "Cover Crop": "Teff",
+    "Key Thumbnail": "Teff_mature_Brown_2020.jpg",
+    "Notes": null,
+    "Directory": "Teff"
+  },
+  "Sweetclover, Yellow": {
+    "Cover Crop": "Sweetclover, Yellow",
+    "Key Thumbnail": null,
+    "Notes": "Need image with flower",
+    "Directory": "Sweetclover, Yellow"
+  },
+  "Sunn Hemp": {
+    "Cover Crop": "Sunn Hemp",
+    "Key Thumbnail": "Sunn_hemp_flowering_Larson_2020.JPG",
+    "Notes": null,
+    "Directory": "Sunn Hemp"
+  },
+  "Sunflower": {
+    "Cover Crop": "Sunflower",
+    "Key Thumbnail": "Sunflower_flowering_Ackroyd_2020a.JPG",
+    "Notes": null,
+    "Directory": "Sunflower"
+  },
+  "Sudangrass": {
+    "Cover Crop": "Sudangrass",
+    "Key Thumbnail": "Sudangrass_mature_Ziegler_2020b.jpg",
+    "Notes": null,
+    "Directory": "Sudangrass"
+  },
+  "Soybeans": {
+    "Cover Crop": "Soybeans",
+    "Key Thumbnail": null,
+    "Notes": "Need Closer Image",
+    "Directory": "Soybeans"
+  },
+  "Sorghum Sudangrass": {
+    "Cover Crop": "Sorghum Sudangrass",
+    "Key Thumbnail": "Sorghum sudangrass_mature_Larson_2020.JPG",
+    "Notes": null,
+    "Directory": "Sorghum Sudangrass"
+  },
+  "Sorghum": {
+    "Cover Crop": "Sorghum",
+    "Key Thumbnail": "Sorghum_flowering_Eagen_2020.jpg",
+    "Notes": null,
+    "Directory": "Sorghum"
+  },
+  "Ryegrass, Perennial": {
+    "Cover Crop": "Ryegrass, Perennial",
+    "Key Thumbnail": null,
+    "Notes": "Need more mature image",
+    "Directory": "Ryegrass, Perennial"
+  },
+  "Ryegrass, Annual": {
+    "Cover Crop": "Ryegrass, Annual",
+    "Key Thumbnail": "Annual_ryegrass_mature_Ackroyd_2020b.JPG",
+    "Notes": null,
+    "Directory": "Ryegrass, Annual"
+  },
+  "Rapeseed": {
+    "Cover Crop": "Rapeseed",
+    "Key Thumbnail": "Rapeseed_flowering_Bjorkman_2020.jpg",
+    "Notes": null,
+    "Directory": "Rapeseed"
+  },
+  "Radish, Oilseed": {
+    "Cover Crop": "Radish, Oilseed",
+    "Key Thumbnail": "Radish_mature_Ackroyd_2020b.jpg",
+    "Notes": null,
+    "Directory": "Radish, Oilseed"
+  },
+  "Radish, Forage": {
+    "Cover Crop": "Radish, Forage",
+    "Key Thumbnail": "Radish_mature_Weil_2020a.jpg",
+    "Notes": null,
+    "Directory": "Radish, Forage"
+  },
+  "Phacelia": {
+    "Cover Crop": "Phacelia",
+    "Key Thumbnail": "Phacelia_flowering_pollinator_NancyLeeAdamson_2020",
+    "Notes": null,
+    "Directory": "Phacelia"
+  },
+  "Pea, Winter": {
+    "Cover Crop": "Pea, Winter",
+    "Key Thumbnail": "Pea_winter_flowering_Mirsky_lab_2020b.JPG",
+    "Notes": null,
+    "Directory": "Pea, Winter"
+  },
+  "Pea, Spring": {
+    "Cover Crop": "Pea, Spring",
+    "Key Thumbnail": "Spring_pea_flowering_Brown_2020.JPG",
+    "Notes": null,
+    "Directory": "Pea, Spring"
+  },
+  "Oats, Winter": {
+    "Cover Crop": "Oats, Winter",
+    "Key Thumbnail": "Oats_mature_Bjorkman_2020.jpg",
+    "Notes": "In Oats Directory",
+    "Directory": "Oats"
+  },
+  "Oats, Spring": {
+    "Cover Crop": "Oats, Spring",
+    "Key Thumbnail": "Oats_mature_Bjorkman_2020.jpg",
+    "Notes": "In Oats Directory",
+    "Directory": "Oats"
+  },
+  "Oats, Black": {
+    "Cover Crop": "Oats, Black",
+    "Key Thumbnail": null,
+    "Notes": "Need closer image",
+    "Directory": "Oats, Black"
+  },
+  "Mustard": {
+    "Cover Crop": "Mustard",
+    "Key Thumbnail": "Mustard_flowering_Bjorkman_2020b.jpg",
+    "Notes": null,
+    "Directory": "Mustard"
+  },
+  "Millet, Pearl": {
+    "Cover Crop": "Millet, Pearl",
+    "Key Thumbnail": "Millet_pearl_flowering_Larson_2020.JPG",
+    "Notes": null,
+    "Directory": "Millet, Pearl"
+  },
+  "Milled, Japanese": {
+    "Cover Crop": "Milled, Japanese",
+    "Key Thumbnail": "Millet_Japanese_flowering_Brown_2020.jpg",
+    "Notes": null,
+    "Directory": "Milled, Japanese"
+  },
+  "Cowpea": {
+    "Cover Crop": "Cowpea",
+    "Key Thumbnail": "Cowpea_mature_Ackroyd_2020.JPG",
+    "Notes": null,
+    "Directory": "Cowpea"
+  },
+  "Corn": {
+    "Cover Crop": "Corn",
+    "Key Thumbnail": "Corn_young_Mirsky_lab_2020.JPG",
+    "Notes": null,
+    "Directory": "Corn"
+  },
+  "Clover, White": {
+    "Cover Crop": "Clover, White",
+    "Key Thumbnail": "Clover_white_flowering_Ackroyd_2020.JPG",
+    "Notes": null,
+    "Directory": "Clover, White"
+  },
+  "Clover, Red": {
+    "Cover Crop": "Clover, Red",
+    "Key Thumbnail": "Clover_red_flowering_Ackroyd_2020_crop.JPG",
+    "Notes": null,
+    "Directory": "Clover, Red"
+  },
+  "Clover Crimson": {
+    "Cover Crop": "Clover Crimson",
+    "Key Thumbnail": "Clover_crimson_flowering_Mirsky_lab_2020.JPG",
+    "Notes": null,
+    "Directory": "Clover Crimson"
+  },
+  "Clover, Berseem": {
+    "Cover Crop": "Clover, Berseem",
+    "Key Thumbnail": "Clover_Berseem_flowering_Ziegler_2020.JPG",
+    "Notes": null,
+    "Directory": "Clover, Berseem"
+  },
+  "Clover, Balansa": {
+    "Cover Crop": "Clover, Balansa",
+    "Key Thumbnail": null,
+    "Notes": "Need Closer Image, With Flower",
+    "Directory": "Clover, Balansa"
+  },
+  "Clover, Alsike": {
+    "Cover Crop": "Clover, Alsike",
+    "Key Thumbnail": null,
+    "Notes": "MISSING",
+    "Directory": "Clover, Alsike"
+  },
+  "Cereal Rye, Winter": {
+    "Cover Crop": "Cereal Rye, Winter",
+    "Key Thumbnail": "Cereal_rye_mature_Bjorkman_2020.jpg",
+    "Notes": null,
+    "Directory": "Cereal Rye, Winter"
+  },
+  "Cereal Rye, Spring": {
+    "Cover Crop": "Cereal Rye, Spring",
+    "Key Thumbnail": "Cereal_rye_mature_Bjorkman_2020.jpg",
+    "Notes": "In Cereal Rye, Winter Directory",
+    "Directory": "Cereal Rye, Winter"
+  },
+  "Canola": {
+    "Cover Crop": "Canola",
+    "Key Thumbnail": null,
+    "Notes": "Need Closer Image",
+    "Directory": "Canola"
+  },
+  "Buckwheat": {
+    "Cover Crop": "Buckwheat",
+    "Key Thumbnail": "Buckwheat_flowering_pollinator_Kelly Gill_2020.jpg",
+    "Notes": null,
+    "Directory": "Buckwheat"
+  },
+  "Brassica, Forage": {
+    "Cover Crop": "Brassica, Forage",
+    "Key Thumbnail": "Barley_flowering_Eagen_2020.jpg",
+    "Notes": null,
+    "Directory": "Brassica, Forage"
+  },
+  "Barley, Spring": {
+    "Cover Crop": "Barley, Spring",
+    "Key Thumbnail": "Barley_flowering_Raubenstein_2020.jPG",
+    "Notes": null,
+    "Directory": "Barley, Spring"
+  },
+  "Alfalfa": {
+    "Cover Crop": "Alfalfa",
+    "Key Thumbnail": null,
+    "Notes": "Need a close image that is not blurry",
+    "Directory": "Alfalfa"
+  }
+}
