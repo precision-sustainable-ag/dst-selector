@@ -2,6 +2,7 @@ import React, { createContext, useReducer } from "react";
 import Reducer from "./Reducer";
 import crops from "../shared/crop-data.json";
 import moment from "moment-timezone";
+import img from "../shared/image-dictionary.json";
 
 const monthStringBuilder = (vals) => {
   const params = [
@@ -49,6 +50,8 @@ let tjs = tjson.map((crop) => {
   let val = { fields: crop };
 
   val = monthStringBuilder(val);
+
+  val.fields["Image Data"] = img[val.fields["Cover Crop Name"]];
 
   //   Frost Seeding Start: Blue
   // Frost Seeding End: Blue
