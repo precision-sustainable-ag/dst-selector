@@ -499,30 +499,29 @@ const CropTableComponent = (props) => {
       <TableContainer
         className="table-responsive calendarViewTableWrapper"
         component="div"
+        style={{ maxHeight: 850 }}
       >
         <Table
+          stickyHeader
           className="table table-borderless table-sm"
           id="primaryCropTable"
         >
           <TableHead className="tableHeadWrapper">
-            <tr>
-              <th
+            <TableRow className="theadFirst">
+              <TableCell
                 style={{
                   backgroundColor: "white",
-                  // borderTopLeftRadius: CustomStyles()._10pxRoundedRadius,
-                  // borderTopRightRadius: CustomStyles()._10pxRoundedRadius,
                 }}
                 colSpan="2"
-              ></th>
+              ></TableCell>
 
               {state.selectedGoals.length > 0 ? (
-                <th
+                <TableCell
                   colSpan={state.selectedGoals.length}
                   style={{
-                    // borderTopLeftRadius: CustomStyles()._10pxRoundedRadius,
-                    // borderTopRightRadius: CustomStyles()._10pxRoundedRadius,
-                    // borderBottom: "2px solid white",
                     borderRight: "5px solid white",
+                    backgroundColor: "#abd08f",
+                    textAlign: "center",
                   }}
                 >
                   <Typography variant="body2">
@@ -542,18 +541,13 @@ const CropTableComponent = (props) => {
                       &nbsp; COVER CROPPING GOALS
                     </Button>
                   </Typography>
-                </th>
+                </TableCell>
               ) : (
                 ""
               )}
 
-              <th
-                style={
-                  {
-                    // borderTopLeftRadius: CustomStyles()._10pxRoundedRadius,
-                    // borderTopRightRadius: CustomStyles()._10pxRoundedRadius,
-                  }
-                }
+              <TableCell
+                style={{ backgroundColor: "#abd08f", textAlign: "center" }}
               >
                 <Button
                   startIcon={<AddCircle />}
@@ -637,47 +631,54 @@ const CropTableComponent = (props) => {
                     </div>
                   </div>
                 </div>
-              </th>
-              <th
+              </TableCell>
+              <TableCell
                 style={{
                   backgroundColor: "white",
-                  // borderTopLeftRadius: CustomStyles()._10pxRoundedRadius,
-                  // borderTopRightRadius: CustomStyles()._10pxRoundedRadius,
                 }}
-              ></th>
-            </tr>
-            <tr>
-              <th style={{ width: "28%" }}>
+              ></TableCell>
+            </TableRow>
+            <TableRow className="theadSecond">
+              <TableCell style={{ width: "28%", backgroundColor: "#abd08f" }}>
                 <Typography variant="body2">COVER CROPS</Typography>
-              </th>
-              <th style={{ width: "18%" }}>
+              </TableCell>
+              <TableCell style={{ width: "18%", backgroundColor: "#abd08f" }}>
                 <Typography variant="body2">AGRONOMICS</Typography>
-              </th>
+              </TableCell>
               {state.selectedGoals.length > 0
                 ? state.selectedGoals.map((goal, index) => (
-                    <th
+                    <TableCell
                       key={index}
-                      style={{ wordBreak: "break-word", maxWidth: "185px" }}
+                      style={{
+                        wordBreak: "break-word",
+                        maxWidth: "185px",
+                        backgroundColor: "#abd08f",
+                        textAlign: "center",
+                      }}
                     >
                       <Typography variant="body2">
                         {goal.toUpperCase()}
                       </Typography>
-                    </th>
+                    </TableCell>
                   ))
                 : ""}
 
               {showGrowthWindow ? (
-                <th>
+                <TableCell
+                  style={{ backgroundColor: "#abd08f", textAlign: "center" }}
+                >
                   <Typography variant="body2">PLANTING WINDOW</Typography>
-                </th>
+                </TableCell>
               ) : (
                 ""
               )}
 
-              <th>
+              <TableCell
+                style={{ backgroundColor: "#abd08f", textAlign: "center" }}
+              >
                 <Typography variant="body2">MY LIST</Typography>
-              </th>
-            </tr>
+              </TableCell>
+            </TableRow>
           </TableHead>
 
           <TableBody className="tableBodyWrapper">
