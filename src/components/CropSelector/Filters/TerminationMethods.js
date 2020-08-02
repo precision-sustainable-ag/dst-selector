@@ -7,7 +7,7 @@ import { Context } from "../../../store/Store";
 import "../../../styles/filters.scss";
 
 const TerminationMethods = (props) => {
-  const [state, dispatch] = useContext(Context);
+  // const [state, dispatch] = useContext(Context);
   const [selected, setSelected] = useState({
     "Tillage Termination at Vegetative": [], // int
     "Tillage Termination at Flowering": [], // int
@@ -17,11 +17,14 @@ const TerminationMethods = (props) => {
     "Mow Termination at Flowering": [], // int
     "Roller Crimp Tolerance at Flowering": [], // int
   });
-  useEffect(() => {
+  const setProps = (selected) => {
     props.setSidebarFilterOptions({
       ...props.sidebarFilterOptions,
       ...selected,
     });
+  };
+  useEffect(() => {
+    setProps(selected);
   }, [selected]);
   const handleChange = (newValue, name) => {
     setSelected({ ...selected, [name]: newValue });
