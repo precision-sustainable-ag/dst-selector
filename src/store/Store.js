@@ -3,6 +3,7 @@ import Reducer from "./Reducer";
 import crops from "../shared/crop-data.json";
 import moment from "moment-timezone";
 import img from "../shared/image-dictionary.json";
+import desc from "../shared/crop-descriptions.json";
 
 const monthStringBuilder = (vals) => {
   const params = [
@@ -44,6 +45,10 @@ const monthStringBuilder = (vals) => {
   });
   return val;
 };
+
+const loremText = () => {
+  return "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Sed egestas egestas fringilla phasellus faucibus scelerisque eleifend donec pretium. At imperdiet dui accumsan sit. Adipiscing tristique risus nec feugiat in fermentum posuere urna. Porta non pulvinar neque laoreet suspendisse interdum. Malesuada fames ac turpis egestas integer eget. Eget arcu dictum varius duis at consectetur lorem donec massa. Congue nisi vitae suscipit tellus mauris a diam maecenas sed. Posuere urna nec tincidunt praesent semper feugiat nibh sed pulvinar. Enim praesent elementum facilisis leo vel fringilla est ullamcorper. Neque viverra justo nec ultrices dui sapien eget mi proin. Egestas maecenas pharetra convallis posuere. Tortor condimentum lacinia quis vel eros donec. Ultricies integer quis auctor elit sed. Nisi scelerisque eu ultrices vitae auctor eu. Eget felis eget nunc lobortis mattis aliquam faucibus. Mattis aliquam faucibus purus in massa tempor nec.";
+};
 const tjson = crops;
 let tjs = tjson.map((crop) => {
   // val["fields"] = val;
@@ -53,6 +58,9 @@ let tjs = tjson.map((crop) => {
 
   val.fields["Image Data"] = img[val.fields["Cover Crop Name"]];
 
+  val.fields["Crop Description"] = desc[val.fields["Cover Crop Name"]]
+    ? desc[val.fields["Cover Crop Name"]]
+    : loremText;
   //   Frost Seeding Start: Blue
   // Frost Seeding End: Blue
   // Reliable Establishment Start: Green
