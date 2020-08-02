@@ -1,48 +1,138 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, Fragment } from "react";
 import "../../styles/InformationSheet.scss";
 import {
   PictureAsPdf,
   FormatListBulleted,
   Print,
   Close,
-  InfoOutlined,
   Info,
   PhotoLibrary,
 } from "@material-ui/icons";
-import { Typography } from "@material-ui/core";
-import { zoneIcon, getRating } from "../../shared/constants";
+import { Typography, Button } from "@material-ui/core";
+import {
+  zoneIcon,
+  getRating,
+  RenderSeedPriceIcons,
+} from "../../shared/constants";
 import { Context } from "../../store/Store";
 import SoilDrainageTimeline from "./SoilDrainageTimeline";
+import moment from "moment";
+import Pdf from "react-to-pdf";
+import html2canvas from "html2canvas";
+import * as JSPDF from "jspdf";
+import { saveAs } from "file-saver";
+import InformationSheetContent from "./InformationSheetContent";
+
+const removeHeaderContent = () => {
+  document.querySelector(".row.greenHeader > .col-9").classList.add("d-none");
+  document.querySelector(".row.greenHeader > .col-2").classList.add("d-none");
+  document.querySelector(".row.greenHeader > .col-1").classList.add("d-none");
+};
 
 const InformationSheet = (props) => {
-  const [state, dispatch] = useContext(Context);
-  const [crop, setCrop] = useState(props.crop || BasicCrop);
+  const [state] = useContext(Context);
+  //   check if crop data is passed as crop
+  //   elseif, check if localstorage has infosheet data else use default crop data
+  const [referrer, setReferrer] = useState("direct");
+  const [crop] = useState(
+    props.crop
+      ? props.crop
+      : window.localStorage.getItem("infosheet") !== null
+      ? JSON.parse(window.localStorage.getItem("infosheet"))
+      : BasicCrop
+  );
+  const ref = React.createRef();
+  const from = props.from || "direct";
 
   useEffect(() => {
     document.getElementsByTagName("footer")[0].style.display = "none";
+
+    if (window.localStorage.getItem("infosheet") !== null) {
+      removeHeaderContent();
+      document.title = crop["Cover Crop Name"];
+      window.print();
+    }
+
+    // delete localstorage
+    window.localStorage.removeItem("infosheet");
+
+    // if (props.modal) {
+    //   // component being invoked from modal
+    //   setReferrer("modal");
+    //   document
+    //     .querySelector(".row.greenHeader > .col-1")
+    //     .classList.remove("d-none");
+    // } else {
+    //   document
+    //     .querySelector(".row.greenHeader > .col-1")
+    //     .classList.add("d-none");
+    //   setReferrer("direct");
+    // }
   }, []);
 
+  const exportToPdf = (filename) => {
+    const input = document.body;
+    // const h = input.clientHeight;
+    const h = input.offsetHeight;
+    // const w = input.clientWidth;
+    const w = input.offsetWidth;
+
+    // const ratio = divHeight / divWidth;
+    html2canvas(input, { scale: 2, scrollY: -window.scrollY }).then(function (
+      canvas
+    ) {
+      var img = canvas.toDataURL("image/jpeg", 1);
+      saveAs(img, filename + ".jpg");
+      //   var doc = new JSPDF("L", "px", [w, h]);
+      //   doc.addImage(img, "JPEG", 0, 0, w, h);
+      //   doc.save(filename + ".pdf");
+    });
+    // html2canvas(input, { scale: "1" }).then((canvas) => {
+    //   const imgData = canvas.toDataURL("image/jpeg");
+    //   saveAs(imgData, "image.png");
+    //   const pdfDOC = new JSPDF("l", "mm", "a4"); //  use a4 for smaller page
+
+    //   const width = pdfDOC.internal.pageSize.getWidth();
+    //   let height = pdfDOC.internal.pageSize.getHeight();
+    //   height = ratio * width;
+
+    //   pdfDOC.addImage(imgData, "JPEG", 0, 0, width - 20, height - 10);
+    //   pdfDOC.save("summary.pdf"); //Download the rendered PDF.
+    // });
+  };
+
   return (
-    <div className="wrapper container-fluid">
+    <div className="wrapper container-fluid" ref={ref}>
       <header className="row greenHeader">
         <div className="col-9">
           <span className="pr-4">DOWNLOAD:</span>
           <span className="pr-2">
-            <PictureAsPdf /> PDF
+            <Button
+              style={{ color: "white" }}
+              onClick={() => exportToPdf(crop["Cover Crop Name"])}
+            >
+              <PictureAsPdf /> &nbsp; PDF
+            </Button>
           </span>
           <span className="pr-2">
-            <FormatListBulleted /> SPREADSHEET
+            <Button
+              href={`/csv/${crop["Cover Crop Name"]}.csv`}
+              style={{ color: "white" }}
+            >
+              <FormatListBulleted />
+              &nbsp; SPREADSHEET
+            </Button>
           </span>
         </div>
-        <div className="col-3">
-          <div>
-            <Print /> PRINT
-          </div>
+        <div className="col-2">
+          <Button onClick={window.print} style={{ color: "white" }}>
+            <Print /> &nbsp;PRINT
+          </Button>
         </div>
         <div className="col-1 text-right">
-          <div>
+          <Button onClick={props.closeModal} style={{ color: "white" }}>
             <Close />
-          </div>
+          </Button>
         </div>
       </header>
       <div className="row">
@@ -117,392 +207,13 @@ const InformationSheet = (props) => {
           <PhotoLibrary /> <span className="pl-2">View Photos</span>
         </div>
       </div>
-      <div className="row coverCropDescriptionWrapper">
-        <div className="col-12 p-0">
-          <Typography variant="h6" className="text-uppercase px-3 py-2">
-            Cover Crop Description
-          </Typography>
-          {crop["Description"] ? (
-            <Typography variant="body1" className="p-3">
-              {crop["Description"]}
-            </Typography>
-          ) : (
-            <Typography variant="body1" className="p-3">
-              <DummyText />{" "}
-            </Typography>
-          )}
-        </div>
-      </div>
-      <div className="row mt-2 coverCropGoalsWrapper">
-        <div className="col-12 p-0">
-          <Typography variant="h6" className="text-uppercase px-3 py-2">
-            Goals
-          </Typography>
-          <div className="row col-12 py-4 text-right">
-            <div className="col-6 mb-2 row">
-              <span className="col">
-                <Typography variant="body1">Growing Window</Typography>
-              </span>
-              <span className="col-3">{crop["Growing Window"]}</span>
-            </div>
-            <div className="col-6 mb-2 row">
-              <span className="col">
-                <Typography variant="body1">Penetrates Plow Pan</Typography>
-              </span>
-              <span className="col-3">
-                {getRating(crop["Penetrates Plow Pan"])}
-              </span>
-            </div>
-            <div className="col-6 mb-2 row">
-              <span className="col">
-                <Typography variant="body1">Nitrogen Scavenging</Typography>
-              </span>
-              <span className="col-3">
-                {getRating(crop["Nitrogen Scavenging"])}
-              </span>
-            </div>
-            <div className="col-6 mb-2 row">
-              <span className="col">
-                <Typography variant="body1">
-                  Reduces Topsoil Compaction
-                </Typography>
-              </span>
-              <span className="col-3">
-                {getRating(crop["Reduces Topsoil Compaction"])}
-              </span>
-            </div>
-            <div className="col-6 mb-2 row">
-              <span className="col">
-                <Typography variant="body1">Lasting Residue</Typography>
-              </span>
-              <span className="col-3">
-                {getRating(crop["Lasting Residue"])}
-              </span>
-            </div>
-            <div className="col-6 mb-2 row">
-              <span className="col">
-                <Typography variant="body1">
-                  Improve Soil Organic Matter
-                </Typography>
-              </span>
-              <span className="col-3">
-                {getRating(crop["Improve Soil Organic Matter"])}
-              </span>
-            </div>
-            <div className="col-6 mb-2 row">
-              <span className="col">
-                <Typography variant="body1">
-                  Prevent Fall Soil Erosion
-                </Typography>
-              </span>
-              <span className="col-3">
-                {getRating(crop["Prevent Fall Soil Erosion"])}
-              </span>
-            </div>
-            <div className="col-6 mb-2 row">
-              <span className="col">
-                <Typography variant="body1">
-                  Increase Soil Aggregation
-                </Typography>
-              </span>
-              <span className="col-3">
-                {getRating(crop["Increase Soil Aggregation"])}
-              </span>
-            </div>
-            <div className="col-6 mb-2 row">
-              <span className="col">
-                <Typography variant="body1">
-                  Prevent Spring Soil Erosion
-                </Typography>
-              </span>
-              <span className="col-3">
-                {getRating(crop["Prevent Spring Soil Erosion"])}
-              </span>
-            </div>
-            <div className="col-6 mb-2 row">
-              <span className="col">
-                <Typography variant="body1">Supports Mycorrhizae</Typography>
-              </span>
-              <span className="col-3">
-                {getRating(crop["Supports Mycorrhizae"])}
-              </span>
-            </div>
-            <div className="col-6 mb-2 row">
-              <span className="col">
-                <Typography variant="body1">Promote Water Quality</Typography>
-              </span>
-              <span className="col-3">
-                {getRating(crop["Promote Water Quality"])}
-              </span>
-            </div>
-            <div className="col-6 mb-2 row">
-              <span className="col">
-                <Typography variant="body1">Good Grazing</Typography>
-              </span>
-              <span className="col-3">{getRating(crop["Good Grazing"])}</span>
-            </div>
-            <div className="col-6 mb-2 row">
-              <span className="col">
-                <Typography variant="body1">Forage Harvest Value</Typography>
-              </span>
-              <span className="col-3">
-                {getRating(crop["Forage Harvest Value"])}
-              </span>
-            </div>
-            <div className="col-6 mb-2 row">
-              <span className="col">
-                <Typography variant="body1">Pollinator Food</Typography>
-              </span>
-              <span className="col-3">
-                {getRating(crop["Pollinator Food"])}
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="row otherRows">
-        <div className="col-6 weedsRowWrapper">
-          <div className="col-12 otherHeaderRow p-0">
-            <Typography variant="h6" className="px-3 py-2">
-              Weeds
-            </Typography>
-          </div>
-          <div className="row col-12 py-4 text-right">
-            <div className="col-9 mb-2">
-              <Typography variant="body1">
-                Residue Suppresses Summer Annual Weeds
-              </Typography>
-            </div>
-            <div className="col-3 mb-2">
-              {getRating(crop["Residue Suppresses Summer Annual Weeds"])}
-            </div>
-            <div className="col-9 mb-2">
-              <Typography variant="body1">
-                Outcompetes Summer Annual Weeds
-              </Typography>
-            </div>
-            <div className="col-3 mb-2">
-              {getRating(crop["Outcompetes Summer Annual Weeds"])}
-            </div>
-            <div className="col-9 mb-2">
-              <Typography variant="body1">
-                Suppresses Winter Annual Weeds
-              </Typography>
-            </div>
-            <div className="col-3 mb-2">
-              {getRating(crop["Suppresses Winter Annual Weeds"])}
-            </div>
-            <div className="col-9 mb-2">
-              <Typography variant="body1">Persistence</Typography>
-            </div>
-            <div className="col-3 mb-2">{getRating(crop["Persistence"])}</div>
-            <div className="col-9 mb-2">
-              <Typography variant="body1">Volunteer Establishment</Typography>
-            </div>
-            <div className="col-3 mb-2">
-              {getRating(crop["Volunteer Establishment"])}
-            </div>
-          </div>
-        </div>
-        <div className="col-6 envTolWrapper">
-          <div className="col-12 otherHeaderRow p-0">
-            <Typography variant="h6" className="px-3 py-2">
-              Environmental Tolerances
-            </Typography>
-          </div>
-          <div className="row col-12 py-4 text-right">
-            <div className="col-9 mb-2">
-              <Typography variant="body1">Winter Survival</Typography>
-            </div>
-            {/* <div className="col-3 mb-2">
-              {getRating(crop["Winter Survival"].toString())}
-            </div> */}
-            <div className="col-3 mb-2">
-              <div className="blue-bg">
-                <Typography variant="body1">
-                  {crop["Winter Survival"]}
-                </Typography>
-              </div>
-            </div>
-            <div className="col-9 mb-2">
-              <Typography variant="body1">Low Fertility</Typography>
-            </div>
-            <div className="col-3 mb-2">{getRating(crop["Low Fertility"])}</div>
-            <div className="col-9 mb-2">
-              <Typography variant="body1">Drought</Typography>
-            </div>
-            <div className="col-3 mb-2">{getRating(crop["Drought"])}</div>
-            <div className="col-9 mb-2">
-              <Typography variant="body1">Heat</Typography>
-            </div>
-            <div className="col-3 mb-2">{getRating(crop["Heat"])}</div>
-            <div className="col-9 mb-2">
-              <Typography variant="body1">Shade</Typography>
-            </div>
-            <div className="col-3 mb-2">{getRating(crop["Shade"])}</div>
-            <div className="col-9 mb-2">
-              <Typography variant="body1">Flood</Typography>
-            </div>
-            <div className="col-3 mb-2">{getRating(crop["Flood"])}</div>
-            <div className="col-9 mb-2">
-              <Typography variant="body1">Salinity</Typography>
-            </div>
-            <div className="col-3 mb-2">{getRating(crop["Salinity"])}</div>
-          </div>
-        </div>
-        <div className="col-6 basicAgWrapper">
-          <div className="col-12 otherHeaderRow p-0">
-            <Typography variant="h6" className="px-3 py-2">
-              Basic Agronomics
-            </Typography>
-            <div className="row col-12 py-4 text-right">
-              <div className="col-9 mb-2">
-                <Typography variant="body1">Duration</Typography>
-              </div>
-              <div className="col-3 mb-2">
-                <div className="blue-bg">
-                  <Typography variant="body1">{crop["Duration"]}</Typography>
-                </div>
-              </div>
-              <div className="col-9 mb-2">
-                <Typography variant="body1">Zone Use</Typography>
-              </div>
-              <div className="col-3 mb-2">
-                <div className="blue-bg">
-                  <Typography variant="body1">{crop["Zone Use"]}</Typography>
-                </div>
-              </div>
-              <div className="col-9 mb-2">
-                <Typography variant="body1">Shape And Orientation</Typography>
-              </div>
-              <div className="col-3 mb-2">
-                {crop["Shape & Orientation"].map((val, index) => (
-                  <div className="blue-bg bordered" key={index}>
-                    <Typography variant="body1">{val}</Typography>
-                  </div>
-                ))}
-              </div>
-              <div className="col-9 mb-2">
-                <Typography variant="body1">Active Growth Period</Typography>
-              </div>
-              <div className="col-3 mb-2">
-                {crop["Active Growth Period"].map((val, index) => (
-                  <div className="blue-bg bordered" key={index}>
-                    <Typography variant="body1">{val}</Typography>
-                  </div>
-                ))}
-              </div>
-              <div className="col-9 mb-2">
-                <Typography variant="body1">C:N</Typography>
-              </div>
-              <div className="col-3 mb-2">
-                {getRating(crop["C to N Ratio"])}
-              </div>
-              <div className="col-9 mb-2">
-                <Typography variant="body1">Dry Matter (Lbs/A/Yr)</Typography>
-              </div>
-              <div className="col-3 mb-2">
-                <div className="blue-bg">
-                  <Typography variant="body1">
-                    {" "}
-                    {`${crop["Dry Matter Min (lbs/A/y)"]} - ${crop["Dry Matter Max (lbs/A/y)"]}`}
-                  </Typography>
-                </div>
-              </div>
-              <div className="col-9 mb-2">
-                <Typography variant="body1">Soil Texture</Typography>
-              </div>
-              <div className="col-3 mb-2 text-capitalize">
-                {crop["Soil Textures"].map((val, index) => (
-                  <div className="blue-bg bordered" key={index}>
-                    <Typography variant="body1">{val}</Typography>
-                  </div>
-                ))}
-              </div>
-              <div className="col-9 mb-2">
-                <Typography variant="body1">Soil PH</Typography>
-              </div>
-              <div className="col-3 mb-2">
-                <div className="blue-bg">
-                  <Typography variant="body1">
-                    {" "}
-                    {`${crop["Minimum Tolerant Soil pH"]} - ${crop["Maximum Tolerant Soil pH"]}`}
-                  </Typography>
-                </div>
-              </div>
-              <div className="col-9 mb-2">
-                <Typography variant="body1">Soil Moisture Use</Typography>
-              </div>
-              <div className="col-3 mb-2">
-                <div className="blue-bg">
-                  <Typography variant="body1">
-                    {crop["Soil Moisture Use"]}
-                  </Typography>
-                </div>
-              </div>
-              <div className="col-9 mb-2">
-                <Typography variant="body1">Hessian Fly Free Date?</Typography>
-              </div>
-              <div className="col-3 mb-2">
-                <div className="blue-bg">
-                  <Typography variant="body1">
-                    {crop["Hessian Fly Free Date"]
-                      ? crop["Hessian Fly Free Date"]
-                      : "No"}
-                  </Typography>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="col-6 basicAgWrapper">
-          <div className="col-12 otherHeaderRow p-0">
-            <Typography variant="h6" className="px-3 py-2">
-              Soil Drainage
-            </Typography>
-            <div className="col-12 py-4 text-right">
-              <SoilDrainageTimeline drainage={crop["Soil Drainage"]} />
-            </div>
-          </div>
-        </div>
-        <div className="col-6 basicAgWrapper">
-          <div className="col-12 otherHeaderRow p-0">
-            <Typography variant="h6" className="px-3 py-2">
-              Growth
-            </Typography>
-          </div>
-        </div>
-        <div className="col-6 basicAgWrapper">
-          <div className="col-12 otherHeaderRow p-0">
-            <Typography variant="h6" className="px-3 py-2">
-              Planting
-            </Typography>
-          </div>
-        </div>
-        <div className="col-6 basicAgWrapper">
-          <div className="col-12 otherHeaderRow p-0">
-            <Typography variant="h6" className="px-3 py-2">
-              Termination
-            </Typography>
-          </div>
-        </div>
-        <div className="col-6 basicAgWrapper">
-          <div className="col-12 otherHeaderRow p-0">
-            <Typography variant="h6" className="px-3 py-2">
-              Planting Dates
-            </Typography>
-          </div>
-        </div>
-      </div>
+
+      <InformationSheetContent crop={crop} />
     </div>
   );
 };
 
 export default InformationSheet;
-
-const DummyText = () => {
-  return "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Sed egestas egestas fringilla phasellus faucibus scelerisque eleifend donec pretium. At imperdiet dui accumsan sit. Adipiscing tristique risus nec feugiat in fermentum posuere urna. Porta non pulvinar neque laoreet suspendisse interdum. Malesuada fames ac turpis egestas integer eget. Eget arcu dictum varius duis at consectetur lorem donec massa. Congue nisi vitae suscipit tellus mauris a diam maecenas sed. Posuere urna nec tincidunt praesent semper feugiat nibh sed pulvinar. Enim praesent elementum facilisis leo vel fringilla est ullamcorper. Neque viverra justo nec ultrices dui sapien eget mi proin. Egestas maecenas pharetra convallis posuere. Tortor condimentum lacinia quis vel eros donec. Ultricies integer quis auctor elit sed. Nisi scelerisque eu ultrices vitae auctor eu. Eget felis eget nunc lobortis mattis aliquam faucibus. Mattis aliquam faucibus purus in massa tempor nec.";
-};
 
 const BasicCrop = () => {
   return {
@@ -578,7 +289,9 @@ const BasicCrop = () => {
     "Tillage Termination at Flowering": 4,
     "Freezing Termination at Vegetative": 2,
     "Freezing Termination at Flowering": 5,
+    "Freezing at Flowering": 5,
     "Chemical Termination at Flowering": 5,
+    "Chemical at Flowering": 5,
     "Mow Termination at Flowering": 5,
     "Chemical Termination at Vegetative": 5,
     "Mow Tolerance at Vegetative": 5,
