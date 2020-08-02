@@ -86,12 +86,31 @@ const MapComponent = ({ width, height, minzoom, maxzoom }) => {
     //   map.removeLayer(layer);
     //   // console.log(layer);
     // });
-    // Set up the OSM layer
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      attribution:
-        'Data © <a href="http://osm.org/copyright">OpenStreetMap</a>',
-      maxZoom: 18,
-    }).addTo(map);
+    // Set up the ESRI layer
+
+    // L.tileLayer("http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}", {
+    //   maxZoom: 20,
+    //   subdomains: ["mt0", "mt1", "mt2", "mt3"],
+    //   attribution: "Google",
+    // }).addTo(map);
+
+    var mapLink = '<a href="http://www.esri.com/">Esri</a>';
+    var wholink =
+      "i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community";
+
+    L.tileLayer(
+      "http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+      {
+        attribution: "&copy; " + mapLink + ", " + wholink,
+        maxZoom: 18,
+      }
+    ).addTo(map);
+
+    // L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    //   attribution:
+    //     'Data © <a href="http://osm.org/copyright">OpenStreetMap</a>',
+    //   maxZoom: 18,
+    // }).addTo(map);
 
     // add a default marker in the given location
     // let marker = L.marker(center).addTo(map);
