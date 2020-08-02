@@ -7,7 +7,11 @@ import {
   Typography,
 } from "@material-ui/core";
 import "../../styles/cropComparisonView.scss";
-import { DataTooltip, getRating } from "../../shared/constants";
+import {
+  DataTooltip,
+  getRating,
+  RenderSeedPriceIcons,
+} from "../../shared/constants";
 import { MonetizationOn } from "@material-ui/icons";
 import { Context } from "../../store/Store";
 
@@ -266,52 +270,6 @@ const GetAverageGoalRating = ({ crop }) => {
   }
   // console.log(goalRating);
   return getRating(goalRating / state.selectedGoals.length);
-};
-const RenderSeedPriceIcons = ({ val }) => {
-  switch (parseInt(val)) {
-    case 1:
-      return (
-        <Fragment>
-          <span style={{ color: "#35999b" }}>
-            <MonetizationOn />
-          </span>
-          <span style={{ color: "#35999b", opacity: 0.2 }}>
-            <MonetizationOn />
-          </span>
-          <span style={{ color: "#35999b", opacity: 0.2 }}>
-            <MonetizationOn />
-          </span>
-        </Fragment>
-      );
-    case 2:
-      return (
-        <Fragment>
-          <span style={{ color: "#35999b" }}>
-            <MonetizationOn />
-          </span>
-          <span style={{ color: "#35999b" }}>
-            <MonetizationOn />
-          </span>
-          <span style={{ color: "#35999b", opacity: 0.2 }}>
-            <MonetizationOn />
-          </span>
-        </Fragment>
-      );
-    case 3:
-      return (
-        <Fragment>
-          <span style={{ color: "#35999b" }}>
-            <MonetizationOn />
-          </span>
-          <span style={{ color: "#35999b" }}>
-            <MonetizationOn />
-          </span>
-          <span style={{ color: "#35999b" }}>
-            <MonetizationOn />
-          </span>
-        </Fragment>
-      );
-  }
 };
 
 const RenderCtoNRatioText = ({ ratio }) => {

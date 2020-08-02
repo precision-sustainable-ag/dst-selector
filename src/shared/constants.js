@@ -1337,3 +1337,34 @@ export const RenderSeedPriceIcons = ({ val }) => {
       );
   }
 };
+
+export const CropImage = ({
+  present = true,
+  src = "",
+  alt = "",
+  view = "",
+}) => {
+  const placeholder = "//placehold.it/100x100";
+  const imageStyle =
+    view === "calendar"
+      ? {
+          width: "50px",
+          height: "50px",
+          maxWidth: "50px",
+          maxHeight: "50px",
+        }
+      : {
+          width: "100px",
+          height: "100px",
+          maxWidth: "100px",
+          maxHeight: "100px",
+        };
+
+  return (
+    <img
+      src={present ? src : placeholder}
+      alt={present ? alt : "Placeholder"}
+      style={imageStyle}
+    />
+  );
+};

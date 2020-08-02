@@ -23,8 +23,13 @@ const GrowthWindowComponent = (props) => {
   var fullMonth = moment().localeData().months();
 
   const setMonthVals = (id) => {
-    let cropDataLegendLabel_Early = cropData[`${fullMonth[id]}, Early`];
-    let cropDataLegendLabel_Mid = cropData[`${fullMonth[id]}, Mid`];
+    let cropDataLegendLabel_Early = cropData[`${fullMonth[id]}, Early`]
+      ? cropData[`${fullMonth[id]}, Early`]
+      : [];
+
+    let cropDataLegendLabel_Mid = cropData[`${fullMonth[id]}, Mid`]
+      ? cropData[`${fullMonth[id]}, Mid`]
+      : [];
 
     if (
       state.cashCropData.dateRange.startDate !== "" &&
@@ -55,8 +60,6 @@ const GrowthWindowComponent = (props) => {
       cropLegendObj.Early = "";
       cropLegendObj.Mid = "";
     }
-
-    // console.log("Month", id);
   };
 
   const sanitizeLabels = () => {
@@ -178,14 +181,16 @@ const GrowthWindowComponent = (props) => {
               <Typography color="secondary">
                 {fullMonth[month].toUpperCase()}, EARLY
               </Typography>
-              <em>
-                <Typography variant="body1">{cropLegendObj.Early}</Typography>
-              </em>
+              {cropLegendObj.Early.map((v, i) => (
+                <em key={i}>
+                  <Typography variant="body1">{v}</Typography>
+                </em>
+              ))}
             </Fragment>
           }
         >
           <div
-            className={`earlyPart ${cropLegendObj.Early}`}
+            className={`earlyPart ${cropLegendObj.Early.join(" ")}`}
             style={{ height: "30px", width: "50%" }}
           ></div>
         </Tooltip>

@@ -27,7 +27,10 @@ import {
   Close,
   AddCircleOutline,
   RemoveCircleOutline,
+  ExpandMore,
+  AddCircle,
 } from "@material-ui/icons";
+import InformationSheetContent from "../InformationSheet/InformationSheetContent";
 // import Axios from "axios";
 // import html2canvas from "html2canvas";
 const useStyles = makeStyles((theme) => ({
@@ -51,6 +54,11 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
     width: 200,
+  },
+  AccordionSummaryIcon: {
+    "& div.MuiAccordionSummary-expandIcon.Mui-expanded": {
+      transform: "rotate(45deg)",
+    },
   },
 }));
 const Accordion = withStyles({
@@ -93,6 +101,7 @@ const AccordionDetails = withStyles((theme) => ({
     padding: theme.spacing(2),
   },
 }))(MuiAccordionDetails);
+
 const CropDetailsModalComponent = (props) => {
   let crop = props.crop;
   const classes = useStyles();
@@ -402,10 +411,17 @@ const CropDetailsModalComponent = (props) => {
                     <div className="col-2 text-right">
                       <Button
                         style={{ color: "white" }}
-                        href={`http://covercrop.tools/information-sheets/${encodeURIComponent(
-                          crop.fields["Cover Crop Name"]
-                        )}.pdf`}
-                        target="_blank"
+                        // href={`http://covercrop.tools/information-sheets/${encodeURIComponent(
+                        //   crop.fields["Cover Crop Name"]
+                        // )}.pdf`}
+                        // target="_blank"
+                        onClick={() => {
+                          window.localStorage.setItem(
+                            "infosheet",
+                            JSON.stringify(crop.fields)
+                          );
+                          window.open("/information-sheet", "_blank");
+                        }}
                       >
                         <Print /> <span className="pl-2">PRINT</span>
                       </Button>
@@ -413,7 +429,10 @@ const CropDetailsModalComponent = (props) => {
                   </div>
                 </div>
               </div>
-              <div className="row mt-4 pb-4">
+              <div className="">
+                <InformationSheetContent crop={crop.fields} from="modal" />
+              </div>
+              {/* <div className="row mt-4 pb-4">
                 <div className={print ? "col-12" : "col-7"}>
                   <div className="row">
                     <div className="col-6">
@@ -441,28 +460,15 @@ const CropDetailsModalComponent = (props) => {
                     </div>
                   </div>
                 </div>
-                <div className={print ? "col-12" : "col-5"}>
-                  <Accordion
-                    square
-                    expanded={
-                      print ? true : expanded === "panel1" ? true : false
-                    }
-                    onChange={handleAccordionChange("panel1")}
-                    className="accordion"
-                  >
+                <div className={print ? "col-12" : "col-12"}>
+                  <Accordion defaultExpanded className="accordion">
                     <AccordionSummary
+                      expandIcon={<AddCircleOutline />}
+                      className={classes.AccordionSummaryIcon}
                       aria-controls="panel1d-content"
                       id="panel1d-header"
-                      // expandIcon={<ExpandLessOutlined />}
                     >
-                      <Typography>
-                        {expanded === "panel1" ? (
-                          <RemoveCircleOutline />
-                        ) : (
-                          <AddCircleOutline />
-                        )}{" "}
-                        Agronomics
-                      </Typography>
+                      <Typography>Agronomics</Typography>
                     </AccordionSummary>
                     <AccordionDetails>
                       <div className="container-fluid">
@@ -494,26 +500,14 @@ const CropDetailsModalComponent = (props) => {
                       </div>
                     </AccordionDetails>
                   </Accordion>
-                  <Accordion
-                    square
-                    expanded={
-                      print ? true : expanded === "panel2" ? true : false
-                    }
-                    onChange={handleAccordionChange("panel2")}
-                    className="accordion"
-                  >
+                  <Accordion defaultExpanded className="accordion">
                     <AccordionSummary
+                      expandIcon={<AddCircleOutline />}
+                      className={classes.AccordionSummaryIcon}
                       aria-controls="panel2d-content"
                       id="panel2d-header"
                     >
-                      <Typography>
-                        {expanded === "panel2" ? (
-                          <RemoveCircleOutline />
-                        ) : (
-                          <AddCircleOutline />
-                        )}{" "}
-                        Environmental Tolerance
-                      </Typography>
+                      <Typography>Environmental Tolerance</Typography>
                     </AccordionSummary>
                     <AccordionDetails>
                       <div className="container-fluid">
@@ -548,27 +542,14 @@ const CropDetailsModalComponent = (props) => {
                       </div>
                     </AccordionDetails>
                   </Accordion>
-                  <Accordion
-                    square
-                    expanded={
-                      print ? true : expanded === "panel3" ? true : false
-                    }
-                    onChange={handleAccordionChange("panel3")}
-                    className="accordion"
-                  >
+                  <Accordion defaultExpanded className="accordion">
                     <AccordionSummary
+                      expandIcon={<AddCircleOutline />}
+                      className={classes.AccordionSummaryIcon}
                       aria-controls="panel3d-content"
                       id="panel3d-header"
                     >
-                      <Typography>
-                        {" "}
-                        {expanded === "panel3" ? (
-                          <RemoveCircleOutline />
-                        ) : (
-                          <AddCircleOutline />
-                        )}{" "}
-                        Soil Conditions
-                      </Typography>
+                      <Typography>Soil Conditions</Typography>
                     </AccordionSummary>
                     <AccordionDetails>
                       <div className="container-fluid">
@@ -604,27 +585,14 @@ const CropDetailsModalComponent = (props) => {
                     </AccordionDetails>
                   </Accordion>
 
-                  <Accordion
-                    square
-                    expanded={
-                      print ? true : expanded === "panel4" ? true : false
-                    }
-                    onChange={handleAccordionChange("panel4")}
-                    className="accordion"
-                  >
+                  <Accordion defaultExpanded className="accordion">
                     <AccordionSummary
+                      expandIcon={<AddCircleOutline />}
+                      className={classes.AccordionSummaryIcon}
                       aria-controls="panel4d-content"
                       id="panel4d-header"
                     >
-                      <Typography>
-                        {" "}
-                        {expanded === "panel4" ? (
-                          <RemoveCircleOutline />
-                        ) : (
-                          <AddCircleOutline />
-                        )}{" "}
-                        Growth
-                      </Typography>
+                      <Typography>Growth</Typography>
                     </AccordionSummary>
                     <AccordionDetails>
                       <div className="container-fluid">
@@ -659,27 +627,14 @@ const CropDetailsModalComponent = (props) => {
                     </AccordionDetails>
                   </Accordion>
 
-                  <Accordion
-                    square
-                    expanded={
-                      print ? true : expanded === "panel5" ? true : false
-                    }
-                    onChange={handleAccordionChange("panel5")}
-                    className="accordion"
-                  >
+                  <Accordion defaultExpanded className="accordion">
                     <AccordionSummary
+                      expandIcon={<AddCircleOutline />}
+                      className={classes.AccordionSummaryIcon}
                       aria-controls="panel5d-content"
                       id="panel5d-header"
                     >
-                      <Typography>
-                        {" "}
-                        {expanded === "panel5" ? (
-                          <RemoveCircleOutline />
-                        ) : (
-                          <AddCircleOutline />
-                        )}{" "}
-                        Planting & Termination
-                      </Typography>
+                      <Typography>Planting & Termination</Typography>
                     </AccordionSummary>
                     <AccordionDetails>
                       <div className="container-fluid">
@@ -728,27 +683,14 @@ const CropDetailsModalComponent = (props) => {
                     </AccordionDetails>
                   </Accordion>
 
-                  <Accordion
-                    square
-                    expanded={
-                      print ? true : expanded === "panel6" ? true : false
-                    }
-                    onChange={handleAccordionChange("panel6")}
-                    className="accordion"
-                  >
+                  <Accordion defaultExpanded className="accordion">
                     <AccordionSummary
+                      expandIcon={<AddCircleOutline />}
+                      className={classes.AccordionSummaryIcon}
                       aria-controls="panel6d-content"
                       id="panel6d-header"
                     >
-                      <Typography>
-                        {" "}
-                        {expanded === "panel6" ? (
-                          <RemoveCircleOutline />
-                        ) : (
-                          <AddCircleOutline />
-                        )}{" "}
-                        Grazers & Pollinators
-                      </Typography>
+                      <Typography>Grazers & Pollinators</Typography>
                     </AccordionSummary>
                     <AccordionDetails>
                       <div className="container-fluid">
@@ -781,27 +723,14 @@ const CropDetailsModalComponent = (props) => {
                     </AccordionDetails>
                   </Accordion>
 
-                  <Accordion
-                    square
-                    expanded={
-                      print ? true : expanded === "panel7" ? true : false
-                    }
-                    onChange={handleAccordionChange("panel7")}
-                    className="accordion"
-                  >
+                  <Accordion defaultExpanded className="accordion">
                     <AccordionSummary
+                      expandIcon={<AddCircleOutline />}
+                      className={classes.AccordionSummaryIcon}
                       aria-controls="panel7d-content"
                       id="panel7d-header"
                     >
-                      <Typography>
-                        {" "}
-                        {expanded === "panel7" ? (
-                          <RemoveCircleOutline />
-                        ) : (
-                          <AddCircleOutline />
-                        )}{" "}
-                        Pests & Disease
-                      </Typography>
+                      <Typography>Pests & Disease</Typography>
                     </AccordionSummary>
                     <AccordionDetails>
                       <div className="container-fluid">
@@ -854,7 +783,7 @@ const CropDetailsModalComponent = (props) => {
                     </AccordionDetails>
                   </Accordion>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         ) : (
