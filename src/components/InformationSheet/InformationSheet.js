@@ -13,6 +13,7 @@ import {
   zoneIcon,
   getRating,
   RenderSeedPriceIcons,
+  CropImage,
 } from "../../shared/constants";
 import { Context } from "../../store/Store";
 import SoilDrainageTimeline from "./SoilDrainageTimeline";
@@ -31,6 +32,7 @@ const removeHeaderContent = () => {
 
 const InformationSheet = (props) => {
   const [state] = useContext(Context);
+
   //   check if crop data is passed as crop
   //   elseif, check if localstorage has infosheet data else use default crop data
   const [referrer, setReferrer] = useState("direct");
@@ -173,25 +175,19 @@ const InformationSheet = (props) => {
         </div>
         <div className="col-6">
           <div className="row coverCropImagesWrapper">
-            {crop["Image"] ? (
-              crop["Image"].map((image, index) => (
-                <img
-                  key={index}
-                  src={image.url}
-                  alt={image.filename}
-                  style={{
-                    height: "250px",
-                    width: "250px",
-                  }}
-                />
-              ))
-            ) : (
-              <img
-                src="//placehold.it/250x250?text=Placeholder%20Image"
-                alt="placeholder"
-                width="250"
-                height="250"
+            {crop["Image Data"] ? (
+              <CropImage
+                present={true}
+                view={"information-sheet"}
+                src={
+                  crop["Image Data"]["Key Thumbnail"]
+                    ? `/images/Cover Crop Photos/${crop["Image Data"]["Directory"]}/${crop["Image Data"]["Key Thumbnail"]}`
+                    : "https://placehold.it/100x100"
+                }
+                alt={crop["Cover Crop Name"]}
               />
+            ) : (
+              <CropImage present={false} view={"information-sheet"} />
             )}
           </div>
         </div>
@@ -218,7 +214,7 @@ export default InformationSheet;
 const BasicCrop = () => {
   return {
     _id: {
-      $oid: "5f0607732241843e7da82c03",
+      $oid: "5f24456fe695147b85dd78fe",
     },
     "Cover Crop Name": "Pea, Spring",
     "Scientific Name": "Pisum sativum",
@@ -280,18 +276,18 @@ const BasicCrop = () => {
     "Loosens Subsurface Soil": 1,
     "Supports Mycorrhizae": 3,
     "Early Spring Growth": 3,
-    "Flowering Trigger": ["Based on plant size"],
+    "Flowering Trigger": ["Plant Size"],
     "Establishes Quickly": 2,
     "Root Architecture": ["Tap"],
     "Root Depth": "Shallow",
     "Notes: Growth, Roots, and Nutrients": "Minimum Germination Temp. ~ 41˚F",
     "Tillage Termination at Vegetative": 4,
+    "Pollinator Habitat": 4,
+    "Pollinator Food": 2,
     "Tillage Termination at Flowering": 4,
     "Freezing Termination at Vegetative": 2,
     "Freezing Termination at Flowering": 5,
-    "Freezing at Flowering": 5,
     "Chemical Termination at Flowering": 5,
-    "Chemical at Flowering": 5,
     "Mow Termination at Flowering": 5,
     "Chemical Termination at Vegetative": 5,
     "Mow Tolerance at Vegetative": 5,
@@ -313,11 +309,33 @@ const BasicCrop = () => {
     "Dry Matter Max (lbs/A/y)": 2500,
     "Drilled Depth Max": 1.5,
     "Reduces Topsoil Compaction": 2,
-    "March, Early": ["Reliable establishment/growth"],
-    "March, Mid": ["Reliable establishment/growth"],
-    "April, Early": ["Reliable establishment/growth"],
-    "April, Mid": ["Reliable establishment/growth"],
-    "May, Early": ["Reliable establishment/growth"],
+    "March, Early": [
+      "Reliable establishment/growth",
+      "Reliable Establishment/Growth",
+      "Standard Spring Seeding Rate Date",
+    ],
+    "March, Mid": [
+      "Reliable establishment/growth",
+      "Reliable Establishment/Growth",
+      "Reliable Establishment/Growth",
+      "Standard Spring Seeding Rate Date",
+      "Standard Spring Seeding Rate Date",
+    ],
+    "April, Early": [
+      "Reliable establishment/growth",
+      "Reliable Establishment/Growth",
+      "Standard Spring Seeding Rate Date",
+    ],
+    "April, Mid": [
+      "Reliable establishment/growth",
+      "Reliable Establishment/Growth",
+      "Standard Spring Seeding Rate Date",
+    ],
+    "May, Early": [
+      "Reliable establishment/growth",
+      "Reliable Establishment/Growth",
+      "Standard Spring Seeding Rate Date",
+    ],
     "May, Mid": ["Reliable establishment/growth"],
     "August, Early": ["Reliable establishment/growth", "Early seeding rate"],
     "August, Mid": ["Reliable establishment/growth", "Standard seeding rate"],
@@ -334,7 +352,7 @@ const BasicCrop = () => {
     "Residue Suppresses Summer Annual Weeds": 2,
     "Outcompetes Summer Annual Weeds": 3,
     "Disoucrages Nematodes": 2,
-    "Promotes Nematodes": 1,
+    "Promotes Nematodes": 3,
     "Discourages Pest Insects": 2,
     "Promotes Pest Insects": 1,
     "Notes: Disease & Non-Weed Pests":
@@ -350,7 +368,23 @@ const BasicCrop = () => {
       "Best mixed with cereals to prevent lodging. Less competitive against summer annual weeds in hot-summer areas (such as Contintental hardiness zone 6).",
     "Reliable Establishment/Growth Start": "2020-02-15",
     "Reliable Establishment/Growth End": "2020-05-15",
+    "Notes: Pollinators":
+      "Self-pollinated so not particularly useful for pollinators compared to other legumes",
+    "Notes: Nematodes":
+      "Some cultivars, nematode resistant. Poor host for soybean cyst nematode.  Host for root knot nematode, Penetrans Root-Lesion Nematode and sugarbeet cyst nematode. ",
     __id: "rec1KNI87iZslbLy2",
+    "February, Early": [
+      "Reliable Establishment/Growth",
+      "Standard Spring Seeding Rate Date",
+    ],
+    "Image Data": {
+      "Cover Crop": "Pea, Spring",
+      "Key Thumbnail": "Spring_pea_flowering_Brown_2020.JPG",
+      Notes: null,
+      Directory: "Pea, Spring",
+    },
+    "Crop Description":
+      "Also known as Yellow Pea or Canadian Spring Pea. Winter-kills if planted in fall. Excellent spring cover crop. Plant early for lush growth; fast-growing varieties are available. Inoculate the seed with appropriate Rhizobium spp. Cross inoculates vetch. Mixes well with spring oat, forage radish. Lower biomass and total N fixation compared to overwintered peas.",
     "Discourages Nematodes": 2,
     id: "rec1KNI87iZslbLy2",
     Drought: 3,
@@ -361,13 +395,13 @@ const BasicCrop = () => {
     Shade: 2,
     "Tillage at Vegetative": 4,
     "Tillage at Flowering": 4,
+    "Freezing at Flowering": 5,
     "Freezing at Vegetative": 2,
     "Chemical at Vegetative": 5,
+    "Chemical at Flowering": 5,
     "Mow at Flowering": 5,
     "Roller Crimp at Flowering": 3,
     "Frost Seeding": -999,
     "Aerial Seeding": -999,
-    "Pollinator Habitat": 0,
-    "Pollinator Food": 0,
   };
 };
