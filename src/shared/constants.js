@@ -1,4 +1,4 @@
-import React, { useContext, Fragment } from "react";
+import React, { useContext, Fragment, Suspense } from "react";
 import {
   withStyles,
   Button,
@@ -1345,6 +1345,7 @@ export const CropImage = ({
   view = "",
 }) => {
   const placeholder = "//placehold.it/100x100";
+  const lazyHeight = view === "calendar" ? 50 : 100;
   const imageStyle =
     view === "calendar"
       ? {
@@ -1361,10 +1362,21 @@ export const CropImage = ({
         };
 
   return (
-    <img
-      src={present ? src : placeholder}
-      alt={present ? alt : "Placeholder"}
-      style={imageStyle}
-    />
+    <Suspense
+      fallback={
+        <img
+          height={lazyHeight}
+          width={lazyHeight}
+          src={placeholder}
+          alt={"Placeholder image"}
+        />
+      }
+    >
+      <img
+        src={present ? src : placeholder}
+        alt={present ? alt : "Placeholder"}
+        style={imageStyle}
+      />
+    </Suspense>
   );
 };
