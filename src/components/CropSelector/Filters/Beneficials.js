@@ -7,17 +7,20 @@ import { Context } from "../../../store/Store";
 import "../../../styles/filters.scss";
 
 const Beneficials = (props) => {
-  const [state, dispatch] = useContext(Context);
+  // const [state, dispatch] = useContext(Context);
   const [selected, setSelected] = useState({
     "Supports Mycorrhizae": [],
     "Pollinator Habitat": [],
     "Pollinator Food": [],
   });
-  useEffect(() => {
+  const setProps = (selected) => {
     props.setSidebarFilterOptions({
       ...props.sidebarFilterOptions,
       ...selected,
     });
+  };
+  useEffect(() => {
+    setProps(selected);
   }, [selected]);
   const handleChange = (newValue, name) => {
     setSelected({ ...selected, [name]: newValue });
