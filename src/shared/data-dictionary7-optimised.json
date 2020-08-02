@@ -144,17 +144,6 @@
         "maxSize": 5,
         "values": [],
         "description": "Speed in the spring at which the cover crop breaks dormancy and grows. No star means that early spring growth is not applicable"
-      },
-      {
-        "name": "Flowering Trigger",
-        "type": "chip",
-        "maxSize": 5,
-        "values": [
-          "Requires vernalization (spring)",
-          "Intermediate day (11-13 hrs)",
-          "Long day (>14 hrs)",
-          "Based on plant size"
-        ]
       }
     ]
   },
@@ -245,18 +234,6 @@
         "maxSize": 5,
         "symbol": "star",
         "description": "Cover crop ability to promote relative activity of mycorrhizal fungi in the rhizosphere"
-      },
-      {
-        "name": "Pollinator Habitat",
-        "maxSize": 5,
-        "symbol": "star",
-        "description": "Extent to which the cover crop can serve as habitat for pollinators"
-      },
-      {
-        "name": "Pollinator Food",
-        "maxSize": 5,
-        "symbol": "star",
-        "description": "Extent to which the cover crop provides food (i.e. leaves, nectar, pollen) for pollinators"
       }
     ]
   },

@@ -16,6 +16,7 @@ import {
   cropDataURL,
   allGoalsURL,
   getRating,
+  CropImage,
 } from "../../shared/constants";
 import "../../styles/cropCalendarViewComponent.scss";
 import GrowthWindowComponent from "./GrowthWindow";
@@ -371,56 +372,27 @@ const CropCalendarViewComponent = (props) => {
                               <td
                                 className="calendarTableCell"
                                 style={{
-                                  // paddingTop: "0px",
                                   paddingBottom: "0px",
-                                  // fontSize: '10px'
                                 }}
                               >
                                 <div className="tdContainer d-flex justify-content-between flex-wrap">
-                                  {/* {crop.fields["Image"] ? (
-                            <img
-                              src={crop.fields["Image"][0].url}
-                              alt={crop.fields["Image"][0].filename}
-                              style={{
-                                width: "100px",
-                                height: "100px",
-                                maxWidth: "100px",
-                                maxHeight: "100px",
-                              }}
-                            />
-                          ) : (
-                            <img
-                              src="//placehold.it/100x100"
-                              alt="placeholder"
-                              style={{
-                                width: "100px",
-                                height: "100px",
-                                maxWidth: "100px",
-                                maxHeight: "100px",
-                              }}
-                            />
-                          )} */}
-                                  {crop.fields["Image"] ? (
-                                    <img
-                                      src={crop.fields["Image"][0].url}
-                                      alt={crop.fields["Image"][0].filename}
-                                      style={{
-                                        width: "50px",
-                                        height: "50px",
-                                        maxWidth: "50px",
-                                        maxHeight: "50px",
-                                      }}
+                                  {crop.fields["Image Data"] ? (
+                                    <CropImage
+                                      view={"calendar"}
+                                      present={true}
+                                      src={
+                                        crop.fields["Image Data"][
+                                          "Key Thumbnail"
+                                        ]
+                                          ? `/images/Cover Crop Photos/${crop.fields["Image Data"]["Directory"]}/${crop.fields["Image Data"]["Key Thumbnail"]}`
+                                          : "https://placehold.it/100x100"
+                                      }
+                                      alt={crop.fields["Cover Crop Name"]}
                                     />
                                   ) : (
-                                    <img
-                                      src="//placehold.it/50x50"
-                                      alt="placeholder"
-                                      style={{
-                                        width: "50px",
-                                        height: "50px",
-                                        maxWidth: "50px",
-                                        maxHeight: "50px",
-                                      }}
+                                    <CropImage
+                                      view={"calendar"}
+                                      present={false}
                                     />
                                   )}
 
@@ -440,29 +412,18 @@ const CropCalendarViewComponent = (props) => {
                               ) : (
                                 <td
                                   style={{
-                                    // paddingTop: "0px",
                                     paddingBottom: "0px",
                                     textAlign: "center",
-                                    // fontSize: '10px'
                                   }}
                                 >
                                   {getAverageGoalRating(
                                     state.selectedGoals,
                                     crop
                                   )}
-                                  {/*average goal rating */}
                                 </td>
                               )}
 
-                              {/* {index === 0 ? (
-                                <td
-                                  colSpan="12"
-                                  rowSpan={state.cropData.length}
-                                >
-                                  <table style={{ width: "100%" }}>
-                                    <tbody> */}
                               {allMonths.map((month, index) => (
-                                // <tr>
                                 <GrowthWindowComponent
                                   from="calendar"
                                   data={crop.fields}
@@ -470,19 +431,10 @@ const CropCalendarViewComponent = (props) => {
                                   id={`growthCell${index}`}
                                   month={index}
                                 />
-                                // </tr>
-                                // <div>{month}</div>
                               ))}
-                              {/* </tbody>
-                                  </table>
-                                </td>
-                              ) : (
-                                ""
-                              )} */}
 
                               <td
                                 style={{
-                                  // paddingTop: "0px",
                                   paddingBottom: "0px",
                                 }}
                               >
@@ -518,8 +470,6 @@ const CropCalendarViewComponent = (props) => {
                     : ""}
                 </tbody>
               </table>
-              {/* </span>
-              </div> */}
             </div>
           </div>
         )}

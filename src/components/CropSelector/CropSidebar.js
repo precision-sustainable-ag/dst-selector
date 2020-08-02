@@ -177,7 +177,12 @@ const CropSidebarComponent = (props) => {
 
       // });
       // let filtered = getFilteredObjects(crop_data, nonZeroKeys);
-      let filtered = getFilteredObjects(crop_data, nonZeroKeys);
+      let filtered = [];
+      if (props.activeCropData.length > 0) {
+        filtered = getFilteredObjects(props.activeCropData, nonZeroKeys);
+      } else {
+        filtered = getFilteredObjects(crop_data, nonZeroKeys);
+      }
 
       const inactives = crop_data.filter((e) => !filtered.includes(e));
 

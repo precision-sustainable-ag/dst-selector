@@ -7,6 +7,7 @@ import {
   allMonths,
   getRating,
   trimString,
+  CropImage,
 } from "../../shared/constants";
 import {
   Button,
@@ -280,11 +281,15 @@ const CropTableComponent = (props) => {
                         flexDirection: "row",
                       }}
                     >
-                      {crop.fields["Image"] ? (
+                      {crop.fields["Image Data"] ? (
                         <CropImage
                           present={true}
-                          src={crop.fields["Image"][0].url}
-                          alt={crop.fields["Image"][0].filename}
+                          src={
+                            crop.fields["Image Data"]["Key Thumbnail"]
+                              ? `/images/Cover Crop Photos/${crop.fields["Image Data"]["Directory"]}/${crop.fields["Image Data"]["Key Thumbnail"]}`
+                              : "https://placehold.it/100x100"
+                          }
+                          alt={crop.fields["Cover Crop Name"]}
                         />
                       ) : (
                         <CropImage present={false} />
@@ -383,9 +388,13 @@ const CropTableComponent = (props) => {
                       {/* {this.getCropImageFromAPI(
                 crop.fields["Cover Crop Name"]
               )} */}
-                      {crop.fields["Image"] ? (
+                      {crop.fields["Image Data"] ? (
                         <img
-                          src={crop.fields["Image"][0].url}
+                          src={
+                            crop.fields["Image Data"]["Key Thumbnail"]
+                              ? `/images/Cover Crop Photos/${crop.fields["Image Data"]["Directory"]}/${crop.fields["Image Data"]["Key Thumbnail"]}`
+                              : "https://placehold.it/100x100"
+                          }
                           alt={crop.fields["Image"][0].filename}
                           style={{
                             width: "100px",
@@ -705,23 +714,6 @@ const CropTableComponent = (props) => {
         <CircularProgress size={"6em"} />
       </div>
     </div>
-  );
-};
-
-const CropImage = (props) => {
-  const placeholder = "//placehold.it/100x100";
-
-  return (
-    <img
-      src={props.present ? props.src : placeholder}
-      alt={props.present ? props.alt : "Placeholder"}
-      style={{
-        width: "100px",
-        height: "100px",
-        maxWidth: "100px",
-        maxHeight: "100px",
-      }}
-    />
   );
 };
 
