@@ -1,12 +1,16 @@
-import React, { useState, useEffect, Fragment, useContext } from "react";
+import React, {
+  useState,
+  useEffect,
+  Fragment,
+  forwardRef,
+  useImperativeHandle,
+} from "react";
 import { Grid, Tooltip } from "@material-ui/core";
 import ToggleButton from "@material-ui/lab/ToggleButton";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
-
-import { Context } from "../../../store/Store";
 import "../../../styles/filters.scss";
 
-const TerminationMethods = (props) => {
+const TerminationMethods = forwardRef((props, ref) => {
   const [selected, setSelected] = useState({
     "Tillage Termination at Vegetative": [], // int
     "Tillage Termination at Flowering": [], // int
@@ -26,22 +30,19 @@ const TerminationMethods = (props) => {
     setProps(selected);
   }, [selected]);
 
-  const { filterKeys } = useContext(Context);
-  useEffect(() => {
-    if (filterKeys) {
-      if (filterKeys.length === 0) {
-        setSelected({
-          "Tillage Termination at Vegetative": [], // int
-          "Tillage Termination at Flowering": [], // int
-          "Freezing Termination at Vegetative": [], // int
-          "Chemical Termination at Vegetative": [], // int
-          "Chemical Termination at Flowering": [], // int
-          "Mow Termination at Flowering": [], // int
-          "Roller Crimp Tolerance at Flowering": [], // int
-        });
-      }
-    }
-  }, [filterKeys]);
+  useImperativeHandle(ref, () => ({
+    resetFilters() {
+      setSelected({
+        "Tillage Termination at Vegetative": [], // int
+        "Tillage Termination at Flowering": [], // int
+        "Freezing Termination at Vegetative": [], // int
+        "Chemical Termination at Vegetative": [], // int
+        "Chemical Termination at Flowering": [], // int
+        "Mow Termination at Flowering": [], // int
+        "Roller Crimp Tolerance at Flowering": [], // int
+      });
+    },
+  }));
 
   const handleChange = (newValue, name) => {
     setSelected({ ...selected, [name]: newValue });
@@ -147,6 +148,6 @@ const TerminationMethods = (props) => {
       })}
     </Grid>
   );
-};
+});
 
 export default TerminationMethods;

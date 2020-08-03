@@ -1,17 +1,22 @@
-import React, { useState, useEffect, Fragment } from "react";
+import React, {
+  useState,
+  useEffect,
+  forwardRef,
+  useImperativeHandle,
+} from "react";
 import { Grid, FormControlLabel, Checkbox, Tooltip } from "@material-ui/core";
 
-const SeedingMethods = (props) => {
+const SeedingMethods = forwardRef((props, ref) => {
   const [selected, setSelected] = useState({
-    "Frost Seeding": [],
-    "Aerial Seeding": [],
+    "Frost Seeding": props.sidebarFilterOptions["Frost Seeding"],
+    "Aerial Seeding": props.sidebarFilterOptions["Aerial Seeding"],
   });
 
   const checkIfSelected = (name) => {
-    if (selected[name].length === 0) {
+    if (props.sidebarFilterOptions[name].length === 0) {
       return false;
     } else {
-      if (selected[name].includes("true")) return true;
+      if (props.sidebarFilterOptions[name].includes("true")) return true;
       else return false;
     }
   };
@@ -19,9 +24,15 @@ const SeedingMethods = (props) => {
     if (event.target.checked) {
       setSelected({ ...selected, [event.target.name]: ["true"] });
     } else {
-      setSelected({ ...selected, [event.target.name]: [-999] });
+      setSelected({ ...selected, [event.target.name]: [] });
     }
   };
+
+  useImperativeHandle(ref, () => ({
+    resetFilters() {
+      setSelected({ "Frost Seeding": [], "Aerial Seeding": [] });
+    },
+  }));
 
   useEffect(() => {
     let selections = selected;
@@ -30,17 +41,7 @@ const SeedingMethods = (props) => {
       ...props.sidebarFilterOptions,
       ...selections,
     });
-    // }
   }, [selected]);
-
-  // useEffect(() => {
-  //   if (props.selectedFilterKeys.length === 0) {
-  //     setSelected({
-  //       "Frost Seeding": [],
-  //       "Aerial Seeding": [],
-  //     });
-  //   }
-  // }, [props.selectedFilterKeys]);
 
   return (
     <Grid container spacing={1}>
@@ -73,7 +74,7 @@ const SeedingMethods = (props) => {
       ))}
     </Grid>
   );
-};
+});
 
 const objFilter = (obj, predicate) => {
   let result = {},

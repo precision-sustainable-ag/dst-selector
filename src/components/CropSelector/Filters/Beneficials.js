@@ -1,13 +1,16 @@
-import React, { useState, useEffect, Fragment, useContext } from "react";
+import React, {
+  useState,
+  useEffect,
+  Fragment,
+  forwardRef,
+  useImperativeHandle,
+} from "react";
 import { Grid, Tooltip } from "@material-ui/core";
 import ToggleButton from "@material-ui/lab/ToggleButton";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
-
-import { Context } from "../../../store/Store";
 import "../../../styles/filters.scss";
 
-const Beneficials = (props) => {
-  // const [state, dispatch] = useContext(Context);
+const Beneficials = forwardRef((props, ref) => {
   const [selected, setSelected] = useState({
     "Supports Mycorrhizae": [],
     "Pollinator Habitat": [],
@@ -23,18 +26,15 @@ const Beneficials = (props) => {
     setProps(selected);
   }, [selected]);
 
-  const { filterKeys } = useContext(Context);
-  useEffect(() => {
-    if (filterKeys) {
-      if (filterKeys.length === 0) {
-        setSelected({
-          "Supports Mycorrhizae": [],
-          "Pollinator Habitat": [],
-          "Pollinator Food": [],
-        });
-      }
-    }
-  }, [filterKeys]);
+  useImperativeHandle(ref, () => ({
+    resetFilters() {
+      setSelected({
+        "Supports Mycorrhizae": [],
+        "Pollinator Habitat": [],
+        "Pollinator Food": [],
+      });
+    },
+  }));
 
   const handleChange = (newValue, name) => {
     setSelected({ ...selected, [name]: newValue });
@@ -138,6 +138,6 @@ const Beneficials = (props) => {
       })}
     </Grid>
   );
-};
+});
 
 export default Beneficials;
