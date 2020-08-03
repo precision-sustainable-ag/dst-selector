@@ -1,5 +1,6 @@
 import React, { useState, useEffect, Fragment, useContext } from "react";
 import { Chip, List, ListItem, Grid, Typography } from "@material-ui/core";
+import { Context } from "../../../store/Store";
 
 const CoverCropType = (props) => {
   const [selected, setSelected] = useState({ "Cover Crop Group": [] });
@@ -10,6 +11,15 @@ const CoverCropType = (props) => {
       ...selected,
     });
   }, [selected]);
+
+  const { filterKeys } = useContext(Context);
+  useEffect(() => {
+    if (filterKeys) {
+      if (filterKeys.length === 0) {
+        setSelected({ "Cover Crop Group": [] });
+      }
+    }
+  }, [filterKeys]);
 
   const handleClick = (name, val) => {
     if (selected["Cover Crop Group"].includes(val)) {

@@ -22,6 +22,20 @@ const Beneficials = (props) => {
   useEffect(() => {
     setProps(selected);
   }, [selected]);
+
+  const { filterKeys } = useContext(Context);
+  useEffect(() => {
+    if (filterKeys) {
+      if (filterKeys.length === 0) {
+        setSelected({
+          "Supports Mycorrhizae": [],
+          "Pollinator Habitat": [],
+          "Pollinator Food": [],
+        });
+      }
+    }
+  }, [filterKeys]);
+
   const handleChange = (newValue, name) => {
     setSelected({ ...selected, [name]: newValue });
   };

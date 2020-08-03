@@ -1,5 +1,6 @@
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Grid, Chip, Tooltip } from "@material-ui/core";
+import { Context } from "../../../store/Store";
 
 const Roots = (props) => {
   const [selected, setSelected] = useState({
@@ -25,6 +26,19 @@ const Roots = (props) => {
       ...selected,
     });
   }, [selected]);
+
+  const { filterKeys } = useContext(Context);
+  useEffect(() => {
+    if (filterKeys) {
+      if (filterKeys.length === 0) {
+        setSelected({
+          "Root Architecture": [],
+          "Root Depth": [],
+        });
+      }
+    }
+  }, [filterKeys]);
+
   return props.filters.values.map((subFilter, index) => (
     <Grid container key={index} spacing={1}>
       <Grid item xs={12}>
