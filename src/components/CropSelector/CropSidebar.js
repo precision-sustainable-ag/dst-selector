@@ -53,7 +53,7 @@ import Weeds from "./Filters/Weeds";
 import DiseaseAndNonWeedPests from "./Filters/DiseaseAndNonWeedPests";
 import Roots from "./Filters/Roots";
 import "../../styles/cropSidebar.scss";
-// const _ = require("lodash");
+const _ = require("lodash");
 // const jslinq = require("jslinq");
 
 const useStyles = makeStyles((theme) => ({
@@ -216,7 +216,8 @@ const CropSidebarComponent = (props) => {
           const vals = keyObject[key];
           if (areCommonElements(arrayKeys, key)) {
             // Handle array type havlues
-            if (vals.includes(crop.fields[key].toString())) {
+
+            if (_.intersection(vals, crop.fields[key]).length > 0) {
               i++;
             }
           } else if (areCommonElements(booleanKeys, key)) {
