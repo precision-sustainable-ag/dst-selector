@@ -100,10 +100,14 @@ let tjs = tjson.map((crop) => {
     val.fields["Roller Crimp Tolerance at Flowering"];
 
   if (!val.fields["Frost Seeding"]) {
-    val.fields["Frost Seeding"] = -999;
+    val.fields["Frost Seeding"] = false;
+  } else {
+    val.fields["Frost Seeding"] = true;
   }
-  if (!val.fields["Aerial Seeding"]) {
-    val.fields["Aerial Seeding"] = -999;
+  if (!val.fields["Can Aerial Seed"]) {
+    val.fields["Aerial Seeding"] = false;
+  } else {
+    val.fields["Aerial Seeding"] = true;
   }
 
   //TODO: not using anymore
