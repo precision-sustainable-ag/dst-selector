@@ -145,26 +145,16 @@ const CropSidebarComponent = (props) => {
       firstUpdate.current = false;
       return;
     }
-    // console.log("Not the first update");
 
-    // console.log(sidebarFilterOptions);
     const crop_data = props.cropData.filter(
       (crop) => crop.fields["Zone Decision"] === "Include"
     );
-    // for each update, take the entire dataset and match with filters to filter active and inactive crops
 
-    // const activeFilters = Object.entries(sidebarFilterOptions).filter(
-    //   (entry) => entry[1].length > 0
-    // );
     const sidebarKeys = Object.keys(sidebarFilterOptions);
-    // console.log(sidebarKeys);
 
     const nonZeroKeys = sidebarKeys.filter(function (key) {
       return sidebarFilterOptions[key].length > 0;
     });
-    // var matchingKeys = myKeys.filter(function (key) {
-    //   return key.indexOf(myString) !== -1;
-    // });
 
     dispatch({
       type: "UPDATE_FILTER_KEYS",
@@ -173,16 +163,7 @@ const CropSidebarComponent = (props) => {
       },
     });
     if (nonZeroKeys.length > 0) {
-      // nonZeroKeys.forEach((val, index) => {
-
-      // });
-      // let filtered = getFilteredObjects(crop_data, nonZeroKeys);
-      let filtered = [];
-      if (props.activeCropData.length > 0) {
-        filtered = getFilteredObjects(props.activeCropData, nonZeroKeys);
-      } else {
-        filtered = getFilteredObjects(crop_data, nonZeroKeys);
-      }
+      const filtered = getFilteredObjects(crop_data, nonZeroKeys);
 
       const inactives = crop_data.filter((e) => !filtered.includes(e));
 
@@ -198,203 +179,6 @@ const CropSidebarComponent = (props) => {
       props.setActiveCropData(crop_data);
       props.setInactiveCropData([]);
     }
-
-    // console.log(b);
-    //   setSidebarFilterOptions({
-    //     "Cover Crop Group": [],
-    //     Roots: [],
-    //     "Environmental Tolerance": {},
-    //   });
-    // }, [resetFilters]);
-    // useEffect(() => {
-    //   console.log(sidebarFilterOptions);
-    //   if (
-    //     sidebarFilterOptions["Cover Crop Group"].length > 0 ||
-    //     Reflect.ownKeys(sidebarFilterOptions).length > 0
-    //   ) {
-    //     const { cropData } = state;
-    //     let crop_data = [];
-    //     let inactives = [];
-    //     let filtered = [];
-    //     let i = 0;
-
-    //     if (filtered.length === 0) {
-    //       filtered = cropData.filter((crop, index) => {
-    //         if (sidebarFilterOptions["Cover Crop Group"].length > 0) {
-    //           if (
-    //             sidebarFilterOptions["Cover Crop Group"].includes(
-    //               crop.fields["Cover Crop Group"]
-    //             )
-    //           ) {
-    //             return crop;
-    //           }
-    //         } else {
-    //           return crop;
-    //         }
-    //       });
-    //     } else {
-    //       filtered = filtered.filter((crop, index) => {
-    //         if (sidebarFilterOptions["Cover Crop Group"].length > 0) {
-    //           if (
-    //             sidebarFilterOptions["Cover Crop Group"].includes(
-    //               crop.fields["Cover Crop Group"]
-    //             )
-    //           ) {
-    //             return crop;
-    //           }
-    //         } else {
-    //           return crop;
-    //         }
-    //       });
-    //     }
-
-    //     for (let [key, value] of Object.entries(sidebarFilterOptions)) {
-    //       if (key == "Cover Crop Group" || key == "Environmental Tolerance") {
-    //       } else {
-    //         if (value !== 0) {
-    //           if (typeof value === "boolean") {
-    //             if (value) {
-    //               filtered = filtered.filter((crop, index) => {
-    //                 return crop.fields[key] === value;
-    //               });
-    //             } else {
-    //               filtered = filtered.filter((crop, index) => {
-    //                 return crop;
-    //               });
-    //             }
-    //           } else {
-    //             filtered = filtered.filter((crop, index) => {
-    //               return crop.fields[key] === value;
-    //             });
-    //           }
-    //         }
-    //       }
-    //     }
-
-    // for (let [key, value] of Object.entries(sidebarFilterOptions)) {
-    //   // console.log(key, value);
-
-    //   console.log(i++);
-    //   filtered = _.filter(filtered, (crop) => {
-    //     console.log(crop.fields[key]);
-    //     return crop.fields[key] === value;
-    //   });
-    // if (sidebarFilterOptions["Cover Crop Group"].length === 0) {
-    //   filtered = _.filter(filtered, (crop) => crop.fields[key] === value);
-    // } else {
-    //   filtered = _.filter(
-    //     filtered,
-    //     (crop) =>
-    //       crop.fields[key] === value &&
-    //       sidebarFilterOptions["Cover Crop Group"].includes(
-    //         crop.fields["Cover Crop Group"]
-    //       )
-    //   );
-    // }
-    // }
-    // inactives = props.cropData.filter((e) => !filtered.includes(e));
-    // console.log("total", cropData.length);
-    // console.log("filtered", filtered.length);
-
-    // props.setActiveCropData(filtered);
-    // props.setInactiveCropData(inactives);
-
-    // let filtered = _.filter(cropData, item => item[""] != 'loader' || item.element != 'button' );
-
-    // if (props.activeCropData.length > 0) {
-    //   crop_data = props.cropData.filter((x) => {
-    //     for (const [key, value] of Object.entries(sidebarFilterOptions)) {
-    //       if (x.fields["Zone Decision"] === "Include") {
-    //         if (Array.isArray(x.fields[key])) {
-    //           if (x.fields[key].includes(value)) {
-    //             return x;
-    //           }
-    //         } else if (
-    //           sidebarFilterOptions["Cover Crop Group"].includes(
-    //             x.fields["Cover Crop Group"]
-    //           )
-    //         ) {
-    //           return x;
-    //         } else {
-    //           if (x.fields[key] === value) {
-    //             return x;
-    //           }
-    //         }
-    //       }
-    //     }
-    //   });
-    //   inactives = props.cropData.filter((x) => {
-    //     for (const [key, value] of Object.entries(sidebarFilterOptions)) {
-    //       if (x.fields["Zone Decision"] === "Include") {
-    //         if (Array.isArray(x.fields[key])) {
-    //           if (!x.fields[key].includes(value)) {
-    //             return x;
-    //           }
-    //         } else if (
-    //           !sidebarFilterOptions["Cover Crop Group"].includes(
-    //             x.fields["Cover Crop Group"]
-    //           )
-    //         ) {
-    //           return x;
-    //         } else {
-    //           if (x.fields[key] !== value) {
-    //             return x;
-    //           }
-    //         }
-    //       }
-    //     }
-    //   });
-    // } else {
-    //   crop_data = cropData.filter((x) => {
-    //     for (const [key, value] of Object.entries(sidebarFilterOptions)) {
-    //       if (x.fields["Zone Decision"] === "Include") {
-    //         if (Array.isArray(x.fields[key])) {
-    //           if (x.fields[key].includes(value)) {
-    //             return x;
-    //           }
-    //         } else if (
-    //           sidebarFilterOptions["Cover Crop Group"].includes(
-    //             x.fields["Cover Crop Group"]
-    //           )
-    //         ) {
-    //           return x;
-    //         } else {
-    //           if (x.fields[key] === value) {
-    //             return x;
-    //           }
-    //         }
-    //       }
-    //     }
-    //   });
-    //   inactives = props.cropData.filter((x) => {
-    //     for (const [key, value] of Object.entries(sidebarFilterOptions)) {
-    //       if (x.fields["Zone Decision"] === "Include") {
-    //         if (Array.isArray(x.fields[key])) {
-    //           if (!x.fields[key].includes(value)) {
-    //             return x;
-    //           }
-    //         } else if (
-    //           !sidebarFilterOptions["Cover Crop Group"].includes(
-    //             x.fields["Cover Crop Group"]
-    //           )
-    //         ) {
-    //           return x;
-    //         } else {
-    //           if (x.fields[key] !== value) {
-    //             return x;
-    //           }
-    //         }
-    //       }
-    //     }
-    //   });
-    // }
-
-    // props.setActiveCropData(crop_data);
-    // props.setInactiveCropData(inactives);
-    // } else {
-    //   console.log("unhandled");
-    // }
-    // console.log(crop_data);
   }, [sidebarFilterOptions]);
 
   function filterArray(array, filters) {
@@ -499,94 +283,8 @@ const CropSidebarComponent = (props) => {
     });
     setSidebarFiltersOpen(newSidebarFiltersOpen);
   };
-  // const renderCheckBoxes = (arrayIndex) => {
-  //   console.log(sidebarFiltersObj[arrayIndex]);
-
-  //   return (
-  //     <div>
-  //       <div></div>
-  //     </div>
-  //   );
-  // };
-  // React.useEffect(() => {
-  //   let url = getAirtableDictionaryURL(state.zone);
-
-  //   Axios({
-  //     url: url,
-  //     headers: {
-  //       Authorization: `Bearer ${AirtableBearerKey}`,
-  //     },
-  //   }).then((response) => {
-  //     console.log(response);
-  //     let sidebarFiltersArr = [{}];
-  //     let sidebarFilterCategories = [];
-  //     let data = response.data;
-  //     sidebarFilterCategories = data.records.map((record, index) => {
-  //       // sidebarFilterCategories = data.map((record, index) => {
-  //       // sidebarFiltersArr.push(record.fields["Category"])
-
-  //       return record.fields;
-  //     });
-
-  //     if (data.offset) {
-  //       // get more results
-  //       Axios({
-  //         url: url + `&offset=${data.offset}`,
-  //         headers: {
-  //           Authorization: `Bearer ${AirtableBearerKey}`,
-  //         },
-  //       })
-  //         .then((resp) => {
-  //           let offsetObj = [];
-  //           offsetObj = resp.data.records.map((record, index) => {
-  //             // sidebarFiltersArr.push(record.fields["Category"])
-
-  //             return record.fields;
-  //           });
-
-  //           return _.concat(sidebarFilterCategories, offsetObj);
-  //         })
-  //         .then((cats) => {
-  //           // console.log(cats);
-  //           // console.log("unionbycategory", _.unionBy(cats, "Category"));
-  //           let outObject = cats.reduce(function (a, e) {
-  //             // GROUP BY estimated key (estKey), well, may be a just plain key
-  //             // a -- Accumulator result object
-  //             // e -- sequentally checked Element, the Element that is tested just at this itaration
-
-  //             // new grouping name may be calculated, but must be based on real value of real field
-  //             let estKey = e["Category"];
-
-  //             if (e["Filter Field"]) {
-  //               // if(e["Information Sheet"]) {
-  //               (a[estKey] ? a[estKey] : (a[estKey] = null || [])).push(e);
-  //             }
-
-  //             return a;
-  //           }, {});
-  //           // let keysData = _.map(outObject, (val, index) => {
-  //           //   console.log(val);
-  //           //   return { index: false };
-  //           // });
-
-  //           outObject = _.map(outObject, (val, key) => {
-  //             return { category: key, data: val, open: false, active: false };
-  //           });
-  //           // setEnvTolData(keysData);
-  //           setSidebarFiltersObj(outObject);
-  //           console.log(outObject);
-  //         });
-  //     }
-  //   });
-  //   // .then((cats) => {
-  //   //   // console.log([...new Set(cats)]);
-  //   //   console.log(cats);
-  //   // });
-  // }, []);
 
   const resetAllFilters = () => {
-    // set active,inactive = []
-
     props.setActiveCropData(state.cropData);
     props.setInactiveCropData([]);
     setSidebarFilterOptions({
@@ -632,18 +330,12 @@ const CropSidebarComponent = (props) => {
     setResetFilters(!resetFilters);
   };
   React.useEffect(() => {
-    // console.log(filterData);
     setSidebarFilters(filterData);
     const filterTitles = filterData.map((filter) => {
       return { name: filter.name, open: false };
     });
     setSidebarFiltersOpen(filterTitles);
-    // console.log(filterTitles);
-    // console.log(filterData);
 
-    // filterData.map((vals) => {
-    //   if(vals.type === "")
-    // });
     return () => {
       setSidebarFilters([]);
       setSidebarFiltersOpen([]);
@@ -664,7 +356,7 @@ const CropSidebarComponent = (props) => {
   let [keysArray, setKeysArray] = React.useState([]);
   const [keysArrChanged, setKeysArrChanges] = React.useState(false);
 
-  //DONE: this method is not unused
+  //DONE: this method is not being used
   const getAirtableDictionaryURL = (zone) => {
     switch (zone) {
       case 2: {
@@ -744,10 +436,6 @@ const CropSidebarComponent = (props) => {
 
   React.useEffect(() => {
     if (dateRange.startDate !== null && dateRange.endDate !== null) {
-      //   setFormattedDateRange({
-      //     startDate: moment(dateRange.startDate).format("MM/DD"),
-      //     endDate: moment(dateRange.endDate).format("MM/DD")
-      //   });
       console.log(new Date(dateRange.startDate).toISOString());
       dispatch({
         type: "UPDATE_DATE_RANGE",
@@ -767,13 +455,7 @@ const CropSidebarComponent = (props) => {
   }, [dateRange, growthWindowVisible]);
 
   React.useEffect(() => {
-    // console.log(keysArray);
-    // if (keysArray.length ) {
     props.sortEnvTolCropData(keysArray);
-    // }
-    // return () => {
-    //   keysArray = [];
-    // };
   }, [keysArrChanged]);
 
   return (
