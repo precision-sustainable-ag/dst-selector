@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect, Fragment } from "react";
 import { Context } from "../../store/Store";
-import { zoneIcon, getRating } from "../../shared/constants";
+import { zoneIcon, getRating, CropImage } from "../../shared/constants";
 import cropDesc from "../../shared/crop-descriptions.json";
 import "../../styles/cropDetailsModal.scss";
 import {
@@ -353,17 +353,18 @@ const CropDetailsModalComponent = (props) => {
                         paddingLeft: "0px",
                       }}
                     >
-                      {crop.fields["Image"] ? (
-                        <img
-                          src={crop.fields["Image"][0].url}
-                          alt={crop.fields["Image"][0].filename}
-                          style={{
-                            height: "100px",
-                            width: "200px",
-                          }}
+                      {crop.fields["Image Data"] ? (
+                        <CropImage
+                          present={true}
+                          src={
+                            crop.fields["Image Data"]["Key Thumbnail"]
+                              ? `/images/Cover Crop Photos/${crop.fields["Image Data"]["Directory"]}/${crop.fields["Image Data"]["Key Thumbnail"]}`
+                              : "https://placehold.it/100x100"
+                          }
+                          alt={crop.fields["Cover Crop Name"]}
                         />
                       ) : (
-                        <img src="//placehold.it/100x100" alt="placeholder" />
+                        <CropImage present={false} />
                       )}
                     </div>
                   </div>
