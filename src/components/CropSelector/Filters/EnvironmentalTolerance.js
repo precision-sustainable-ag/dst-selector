@@ -7,8 +7,6 @@ import { Context } from "../../../store/Store";
 import "../../../styles/filters.scss";
 
 const EnvironmentalTolerance = (props) => {
-  //   console.log(props);
-  const [state, dispatch] = useContext(Context);
   const [selected, setSelected] = useState({
     "Drought Tolerance": [], //int
     "Flood Tolerance": [], // int
@@ -24,6 +22,22 @@ const EnvironmentalTolerance = (props) => {
       ...selected,
     });
   }, [selected]);
+
+  const { filterKeys } = useContext(Context);
+  useEffect(() => {
+    if (filterKeys) {
+      if (filterKeys.length === 0) {
+        setSelected({
+          "Drought Tolerance": [], //int
+          "Flood Tolerance": [], // int
+          "Heat Tolerance": [], // int
+          "Low Fertility Tolerance": [], // int
+          "Salinity Tolerance": [], // int
+          "Shade Tolerance": [], // int
+        });
+      }
+    }
+  }, [filterKeys]);
 
   const handleChange = (newValue, name) => {
     setSelected({ ...selected, [name]: newValue });

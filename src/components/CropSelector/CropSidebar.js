@@ -256,15 +256,6 @@ const CropSidebarComponent = (props) => {
         }
       });
     });
-
-    // let filtered = filterObj
-    // .where(function (item) {
-    //   return sidebarFilterOptions["Cover Crop Group"].includes(
-    //     item.fields["Cover Crop Group"] ||
-    //       sidebarFilterOptions === item.fields
-    //   );
-    // }).
-    // .toList();
   };
   useEffect(() => {
     if (props.isListView) {

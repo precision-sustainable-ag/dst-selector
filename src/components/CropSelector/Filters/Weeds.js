@@ -7,7 +7,6 @@ import { Context } from "../../../store/Store";
 import "../../../styles/filters.scss";
 
 const Weeds = (props) => {
-  // const [state, dispatch] = useContext(Context);
   const [selected, setSelected] = useState({
     "Volunteer Establishment": [],
     Persistence: [],
@@ -21,6 +20,19 @@ const Weeds = (props) => {
   useEffect(() => {
     setProps(selected);
   }, [selected]);
+
+  const { filterKeys } = useContext(Context);
+  useEffect(() => {
+    if (filterKeys) {
+      if (filterKeys.length === 0) {
+        setSelected({
+          "Volunteer Establishment": [],
+          Persistence: [],
+        });
+      }
+    }
+  }, [filterKeys]);
+
   const handleChange = (newValue, name) => {
     setSelected({ ...selected, [name]: newValue });
   };

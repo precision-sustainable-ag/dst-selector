@@ -1,7 +1,8 @@
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useState, useEffect, Fragment, useContext } from "react";
 import { Grid, Tooltip } from "@material-ui/core";
 import ToggleButton from "@material-ui/lab/ToggleButton";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
+import { Context } from "../../../store/Store";
 
 const Seeds = (props) => {
   const [selected, setSelected] = useState({ "Seed Price per Pound": [] });
@@ -17,6 +18,14 @@ const Seeds = (props) => {
     });
   }, [selected]);
 
+  const { filterKeys } = useContext(Context);
+  useEffect(() => {
+    if (filterKeys) {
+      if (filterKeys.length === 0) {
+        setSelected({ "Seed Price per Pound": [] });
+      }
+    }
+  }, [filterKeys]);
   return (
     <Grid container spacing={1}>
       {props.filters.values.map((val, index) => (

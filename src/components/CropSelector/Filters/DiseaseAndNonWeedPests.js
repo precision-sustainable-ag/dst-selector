@@ -7,7 +7,6 @@ import { Context } from "../../../store/Store";
 import "../../../styles/filters.scss";
 
 const DiseaseAndNonWeedPests = (props) => {
-  // const [state, dispatch] = useContext(Context);
   const [selected, setSelected] = useState({
     "Discourages Nematodes": [], // int
     "Promotes Nematodes": [], // int
@@ -25,6 +24,23 @@ const DiseaseAndNonWeedPests = (props) => {
   useEffect(() => {
     setProps(selected);
   }, [selected]);
+
+  const { filterKeys } = useContext(Context);
+  useEffect(() => {
+    if (filterKeys) {
+      if (filterKeys.length === 0) {
+        setSelected({
+          "Discourages Nematodes": [], // int
+          "Promotes Nematodes": [], // int
+          "Discourages Pest Insects": [], // int
+          "Promotes Pest Insects": [], // int
+          "Suppresses Cash Crop Disease": [], // int
+          "Promotes Cash Crop Disease": [], // int
+        });
+      }
+    }
+  }, [filterKeys]);
+
   const handleChange = (newValue, name) => {
     setSelected({ ...selected, [name]: newValue });
   };
