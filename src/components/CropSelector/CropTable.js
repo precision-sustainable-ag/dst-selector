@@ -19,6 +19,7 @@ import {
   TableContainer,
   TableRow,
   TableCell,
+  ButtonBase,
 } from "@material-ui/core";
 
 import "../../styles/cropTable.scss";
@@ -535,20 +536,23 @@ const CropTableComponent = (props) => {
               <TableCell
                 style={{ backgroundColor: "#abd08f", textAlign: "center" }}
               >
-                <Button
-                  startIcon={<AddCircle />}
-                  onClick={() => {
-                    const ele = document.getElementById("legendWrapper");
-                    if (ele.classList.contains("d-none")) {
-                      ele.classList.remove("d-none");
-                    } else {
-                      ele.classList.add("d-none");
-                    }
-                  }}
-                >
-                  {" "}
-                  <Typography variant="body2">LEGEND</Typography>
-                </Button>
+                <Typography variant="body2">
+                  <Button
+                    startIcon={<AddCircle />}
+                    onClick={() => {
+                      const ele = document.getElementById("legendWrapper");
+                      if (ele.classList.contains("d-none")) {
+                        ele.classList.remove("d-none");
+                      } else {
+                        ele.classList.add("d-none");
+                      }
+                    }}
+                  >
+                    {" "}
+                    LEGEND
+                  </Button>
+                </Typography>
+
                 <div
                   id="legendWrapper"
                   className="d-none"
@@ -626,10 +630,15 @@ const CropTableComponent = (props) => {
             </TableRow>
             <TableRow className="theadSecond">
               <TableCell style={{ width: "28%", backgroundColor: "#abd08f" }}>
-                <Typography variant="body2">COVER CROPS</Typography>
+                <Typography variant="body1">
+                  <Button>COVER CROPS</Button>
+                </Typography>
               </TableCell>
               <TableCell style={{ width: "18%", backgroundColor: "#abd08f" }}>
-                <Typography variant="body2">AGRONOMICS</Typography>
+                <Typography variant="body1">
+                  {" "}
+                  <Button>AGRONOMICS</Button>
+                </Typography>
               </TableCell>
               {state.selectedGoals.length > 0
                 ? state.selectedGoals.map((goal, index) => (
@@ -642,8 +651,8 @@ const CropTableComponent = (props) => {
                         textAlign: "center",
                       }}
                     >
-                      <Typography variant="body2">
-                        {goal.toUpperCase()}
+                      <Typography variant="body1">
+                        <Button>{goal.toUpperCase()}</Button>
                       </Typography>
                     </TableCell>
                   ))
@@ -653,7 +662,10 @@ const CropTableComponent = (props) => {
                 <TableCell
                   style={{ backgroundColor: "#abd08f", textAlign: "center" }}
                 >
-                  <Typography variant="body2">PLANTING WINDOW</Typography>
+                  <Typography variant="body1">
+                    {" "}
+                    <Button>PLANTING WINDOW</Button>
+                  </Typography>
                 </TableCell>
               ) : (
                 ""
@@ -662,7 +674,10 @@ const CropTableComponent = (props) => {
               <TableCell
                 style={{ backgroundColor: "#abd08f", textAlign: "center" }}
               >
-                <Typography variant="body2">MY LIST</Typography>
+                <Typography variant="body1">
+                  {" "}
+                  <Button>MY LIST</Button>
+                </Typography>
               </TableCell>
             </TableRow>
           </TableHead>
