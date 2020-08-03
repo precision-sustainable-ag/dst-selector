@@ -9,29 +9,35 @@ import {
 import SoilDrainageTimeline from "./SoilDrainageTimeline";
 import moment from "moment";
 import { ExpandMore } from "@material-ui/icons";
+import Axios from "axios";
+import PhotoComponent from "./PhotoComponent";
 const InformationSheetContent = (props) => {
   const crop = props.crop;
   const from = props.from || "direct";
   return from === "direct" ? (
     <Fragment>
-      <div className="d-flex mt-2 mb-2 photosWrapper">
-        <PhotoComponent images={crop["Image"]} />
-      </div>
       <div className="row coverCropDescriptionWrapper">
         <div className="col-12 p-0">
           <Typography variant="h6" className="text-uppercase px-3 py-2">
             Cover Crop Description
           </Typography>
-          {crop["Description"] ? (
-            <Typography variant="body1" className="p-3">
-              {crop["Description"]}
-            </Typography>
-          ) : (
-            <Typography variant="body1" className="p-3">
-              <DummyText />{" "}
-            </Typography>
-          )}
+
+          <Typography variant="body1" className="p-3">
+            {crop["Crop Description"]}
+          </Typography>
         </div>
+      </div>
+      <div
+        className="d-flex justify-content-center mt-1 mb-1 photosWrapper"
+        style={{
+          overflowX: "auto",
+          whiteSpace: "nowrap",
+          flexWrap: "nowrap",
+        }}
+      >
+        <PhotoComponent
+          imageData={crop["Image Data"] ? crop["Image Data"] : null}
+        />
       </div>
       <div className="row mt-2 coverCropGoalsWrapper">
         <div className="col-12 p-0">
@@ -681,24 +687,28 @@ const InformationSheetContent = (props) => {
     </Fragment>
   ) : (
     <Fragment>
-      <div className="d-flex mt-2 mb-2 photosWrapper">
-        <PhotoComponent images={crop["Image"]} />
-      </div>
       <div className="row coverCropDescriptionWrapper">
         <div className="col-12 p-0">
           <Typography variant="h6" className="text-uppercase px-3 py-2">
             Cover Crop Description
           </Typography>
-          {crop["Description"] ? (
-            <Typography variant="body1" className="p-3">
-              {crop["Description"]}
-            </Typography>
-          ) : (
-            <Typography variant="body1" className="p-3">
-              <DummyText />{" "}
-            </Typography>
-          )}
+
+          <Typography variant="body1" className="p-3">
+            {crop["Crop Description"]}
+          </Typography>
         </div>
+      </div>
+      <div
+        className="d-flex justify-content-center mt-2 mb-2 photosWrapper"
+        style={{
+          overflowX: "auto",
+          whiteSpace: "nowrap",
+          flexWrap: "nowrap",
+        }}
+      >
+        <PhotoComponent
+          imageData={crop["Image Data"] ? crop["Image Data"] : null}
+        />
       </div>
       <div className="row mt-2 coverCropGoalsWrapper">
         <div className="col-12 p-0">
@@ -714,7 +724,14 @@ const InformationSheetContent = (props) => {
                   <span className="col">
                     <Typography variant="body1">Growing Window</Typography>
                   </span>
-                  <span className="col-3">{crop["Growing Window"]}</span>
+                  {/* <span className="col-3">{crop["Growing Window"]}</span> */}
+                  <span className="col-3 mb-2">
+                    <div className="blue-bg">
+                      <Typography variant="body1">
+                        {crop["Growing Window"]}
+                      </Typography>
+                    </div>
+                  </span>
                 </div>
                 <div className="col-6 mb-2 row">
                   <span className="col">
@@ -1463,24 +1480,4 @@ const getMonthDayString = (type = "", crop = {}) => {
     default:
       return "";
   }
-};
-
-const PhotoComponent = ({ images = [] }) => {
-  return (
-    <Fragment>
-      {images.map((image, index) => (
-        <div key={index}>
-          <img
-            key={index}
-            src={image.url}
-            alt={image.filename}
-            style={{
-              height: "250px",
-              width: "250px",
-            }}
-          />
-        </div>
-      ))}
-    </Fragment>
-  );
 };

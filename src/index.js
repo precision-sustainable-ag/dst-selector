@@ -63,6 +63,11 @@ const Wrapper = () => (
             exact
           />
           <Route
+            path={"/information-sheet/:cropName"}
+            component={InformationSheet}
+            exact
+          />
+          <Route
             path={"/seeding-rate-calculator"}
             component={SeedingRateCalculator}
             exact
