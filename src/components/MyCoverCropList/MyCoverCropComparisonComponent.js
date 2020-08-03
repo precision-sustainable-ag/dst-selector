@@ -5,6 +5,8 @@ import {
   CardContent,
   Button,
   Typography,
+  CardActionArea,
+  CardActions,
 } from "@material-ui/core";
 import "../../styles/cropComparisonView.scss";
 import {
@@ -12,8 +14,10 @@ import {
   getRating,
   RenderSeedPriceIcons,
 } from "../../shared/constants";
-import { MonetizationOn } from "@material-ui/icons";
+import { MonetizationOn, Cancel } from "@material-ui/icons";
 import { Context } from "../../store/Store";
+
+import "../../styles/MyCoverCropComparisonComponent.scss";
 
 const lightBorder = {
   border: "1px solid #35999b",
@@ -39,169 +43,176 @@ const MyCoverCropComparisonComponent = (props) => {
   const [state, dispatch] = useContext(Context);
   const { filterKeys } = state;
   return (
-    <div className="container-fluid comparisonContainer">
+    <div className="container-fluid">
       <div className="row">
-        <div className="col-xl-3 col-lg-4">
-          <Card style={{ width: "100%", boxShadow: "none" }}>
-            <CardMedia
-              children={
-                <img
-                  src="https://placehold.it/100x100"
-                  style={{ opacity: 0 }}
+        <div className="col-xl-3 col-lg-4 col-md-4">
+          <div className="row pt-3">
+            <div className="col-12">
+              <Card style={{ width: "100%", boxShadow: "none" }}>
+                <CardMedia
+                  children={
+                    <img
+                      src="https://via.placeholder.com/10/FFFFFF/FFFFFF"
+                      style={{ opacity: 0 }}
+                    />
+                  }
+                  style={{ width: "100%", height: "100px" }}
                 />
-              }
-              style={{ width: "100%", height: "100px" }}
-            />
-            <CardContent>
-              <div
-                className="font-weight-bold text-uppercase"
-                style={{ fontSize: "10pt", color: "white" }}
-              >
-                {"Family Common Name"}
-              </div>
-              <div
-                className="font-weight-bold "
-                style={{ fontSize: "16pt", color: "white" }}
-              >
-                {"Cover Crop Name"}
-              </div>
-              <small className="font-italic" style={{ color: "white" }}>
-                {"Scientific Name"}
-              </small>
-              <div>
-                <small className="text-muted">
-                  <a
-                    style={{
-                      textDecoration: "underline",
-                      color: "white",
-                    }}
-                    onClick={() => {}}
+                <CardContent>
+                  <div
+                    className="font-weight-bold text-uppercase"
+                    style={{ fontSize: "10pt", color: "white" }}
                   >
-                    View Crop Details
-                  </a>
-                </small>
-              </div>
-            </CardContent>
-            <hr style={{ borderTop: "1px solid rgba(0,0,0,0)" }} />
-            <CardContent style={{ paddingRight: "0px", paddingLeft: "0px" }}>
-              {filterKeys.map((keys, index) => (
-                <div style={lightBorder} key={index}>
-                  <span>
-                    <DataTooltip data={"Info"} />
-                  </span>
-                  <span>
-                    <Typography variant="body2">
-                      {keys === "Cover Crop Group"
-                        ? "COVER CROP TYPE"
-                        : keys.toUpperCase()}
-                    </Typography>
-                  </span>
-                </div>
-              ))}
-              <div style={lightBorder}>
-                <span>
-                  <DataTooltip data={"Info"} />
-                </span>
-                <span>
-                  <Typography variant="body2">AVERAGE GOAL RATING</Typography>
-                </span>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-        {props.selectedCrops.map((crop, index) => (
-          <div className="col-xl-2 col-lg-4" key={index}>
-            <Card style={{ width: "100%" }}>
-              <CardMedia
-                image={
-                  crop.data["Image"]
-                    ? crop.data["Image"][0].url
-                    : "https://placehold.it/100x100"
-                }
-                // image="https://placehold.it/100x100"
-                title={crop.cropName}
-                style={{ width: "100%", height: "100px" }}
-              />
-              <CardContent>
-                <div
-                  className="font-weight-bold text-muted text-uppercase"
-                  style={{ fontSize: "10pt" }}
-                >
-                  {crop.data["Family Common Name"]}
-                </div>
-                <div className="font-weight-bold " style={{ fontSize: "16pt" }}>
-                  {crop.data["Cover Crop Name"]}
-                </div>
-                <small className="font-italic text-muted">
-                  {crop.data["Scientific Name"]}
-                </small>
-                <div>
-                  <small className="text-muted">
-                    <a
-                      style={{
-                        textDecoration: "underline",
-                        color: "rgb(53, 153, 155)",
-                      }}
-                      onClick={() => {}}
-                    >
-                      View Crop Details
-                    </a>
+                    {"Family Common Name"}
+                  </div>
+                  <div
+                    className="font-weight-bold "
+                    style={{ fontSize: "16pt", color: "white" }}
+                  >
+                    {"Cover Crop Name"}
+                  </div>
+                  <small className="font-italic" style={{ color: "white" }}>
+                    {"Scientific Name"}
                   </small>
-                </div>
-              </CardContent>
-              <hr />
-              <CardContent style={{ paddingRight: "0px", paddingLeft: "0px" }}>
-                {filterKeys.map((filterKey, index) => (
-                  <RenderRelevantData
-                    key={index}
-                    filterKey={filterKey}
-                    data={crop.data}
-                    index={index}
-                  />
-                ))}
-                {/* <div style={lightBG}>
-                  {(parseInt(crop.data["Dry Matter Max (lbs/A/y)"]) +
-                    parseInt(crop.data["Dry Matter Min (lbs/A/y)"])) /
-                    2}{" "}
-                  LBS/A/Y
-                </div>
-                <div style={lightBG}>
-                  <RenderGrowthWindow window={crop.data["Growing Window"]} />
-                </div>
-                <div style={lightBG}>
-                  <RenderCtoNRatioText
-                    ratio={crop.data["C to N Ratio - 3 stars"]}
-                  />
-                </div>
-                <div style={lightBG}>
-                  {crop.data["Soil Moisture Use"].toUpperCase()}
-                </div>
-                <div style={lightBG}>
-                  {crop.data["Flowering Trigger"]
-                    ? crop.data["Flowering Trigger"].toString()
-                    : "NO DATA"}
-                </div>
-                <div style={lightBG}>
-                  <RenderSeedPriceIcons
-                    val={crop.data["Seed Price per Pound"]}
-                  />
-                </div>
-                <div style={lightBG}>
-                  {getRating(crop.data["Ease of Establishment"])}
-                </div>
-                <div style={lightBG}>
-                  {getRating(crop.data["Establishes Quickly"])}
-                </div>
-                <div style={lightBG}>
-                  {getRating(crop.data["Early Spring Growth"])}
-                </div> */}
-                <div style={lightBG}>
-                  <GetAverageGoalRating crop={crop} />
-                </div>
-              </CardContent>
-            </Card>
+                  <div>
+                    <small className="text-muted">
+                      <a
+                        style={{
+                          textDecoration: "underline",
+                          color: "white",
+                        }}
+                        onClick={() => {}}
+                      >
+                        View Crop Details
+                      </a>
+                    </small>
+                  </div>
+                </CardContent>
+                <hr style={{ borderTop: "1px solid rgba(0,0,0,0)" }} />
+                <CardContent
+                  style={{ paddingRight: "0px", paddingLeft: "0px" }}
+                >
+                  {filterKeys.map((keys, index) => (
+                    <div style={lightBorder} key={index}>
+                      <span>
+                        <DataTooltip data={"Info"} />
+                      </span>
+                      <span>
+                        <Typography variant="body2" className="text-capitalize">
+                          {keys === "Cover Crop Group"
+                            ? "Cover Crop Type"
+                            : keys}
+                        </Typography>
+                      </span>
+                    </div>
+                  ))}
+                  <div style={lightBorder}>
+                    <span>
+                      <DataTooltip data={"Info"} />
+                    </span>
+                    <span>
+                      <Typography variant="body2">
+                        Average Goal Rating
+                      </Typography>
+                    </span>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
           </div>
-        ))}
+        </div>
+        <div className="col-xl-9 col-lg-8 col-md-8 comparisonContainer">
+          <div className="row pt-3">
+            {props.selectedCrops.map((crop, index) => (
+              <div className="col-xl-3 col-lg-5" key={index}>
+                <Card className="mainComparisonCard" style={{ width: "100%" }}>
+                  <span onClick={() => {}} className="cardCloseIcon">
+                    <Cancel titleAccess="Remove Crop" />
+                  </span>
+                  <CardMedia
+                    image={
+                      crop.data["Image Data"]["Key Thumbnail"]
+                        ? `/images/Cover Crop Photos/${crop.data["Image Data"]["Directory"]}/${crop.data["Image Data"]["Key Thumbnail"]}`
+                        : "https://placehold.it/100x100?text=Placeholder"
+                    }
+                    // image="https://placehold.it/100x100"
+                    title={crop.cropName}
+                    style={{ width: "100%", height: "100px" }}
+                  />
+                  <CardContent>
+                    <div
+                      className="font-weight-bold text-muted text-uppercase"
+                      style={{ fontSize: "10pt" }}
+                    >
+                      {crop.data["Family Common Name"]}
+                    </div>
+                    <div
+                      className="font-weight-bold "
+                      style={{ fontSize: "16pt" }}
+                    >
+                      {crop.data["Cover Crop Name"]}
+                    </div>
+                    <small className="font-italic text-muted">
+                      {crop.data["Scientific Name"]}
+                    </small>
+                    <div>
+                      <small className="text-muted">
+                        <a
+                          style={{
+                            textDecoration: "underline",
+                            color: "rgb(53, 153, 155)",
+                          }}
+                          onClick={() => {}}
+                        >
+                          View Crop Details
+                        </a>
+                      </small>
+                    </div>
+                  </CardContent>
+                  <hr />
+                  <CardContent
+                    style={{
+                      paddingRight: "0px",
+                      paddingLeft: "0px",
+                      paddingBottom: "0px",
+                    }}
+                  >
+                    {filterKeys.map((filterKey, index) => (
+                      <RenderRelevantData
+                        key={index}
+                        filterKey={filterKey}
+                        data={crop.data}
+                        index={index}
+                      />
+                    ))}
+                    <div style={lightBG}>
+                      <GetAverageGoalRating crop={crop} />
+                    </div>
+                  </CardContent>
+                  <CardActionArea
+                    style={{
+                      backgroundColor: "#e3f2f4",
+                      textAlign: "center",
+                      padding: "0.5em",
+                    }}
+                    onClick={() => console.log("remove crop")}
+                  >
+                    <Typography
+                      variant="body2"
+                      className="text-uppercase"
+                      style={{
+                        color: "black",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      REMOVE
+                    </Typography>
+                  </CardActionArea>
+                </Card>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -238,7 +249,11 @@ const RenderRelevantData = ({ filterKey = "", data = [], index = 0 }) => {
         );
       } else return <div style={lightBG}>{getRating(data[filterKey])}</div>;
     } else {
-      return <div style={lightBG}>{data[filterKey]}</div>;
+      return (
+        <div style={lightBG}>
+          <Typography variant="body2">{data[filterKey]}</Typography>
+        </div>
+      );
     }
   } else {
     if (filterKey === "Frost Seeding" || filterKey === "Aerial Seeding") {
@@ -247,15 +262,20 @@ const RenderRelevantData = ({ filterKey = "", data = [], index = 0 }) => {
           <RenderSeedingData data={data} filterKey={filterKey} />
         </div>
       );
-    } else return <div style={lightBG}>{data[filterKey].toString()}</div>;
+    } else
+      return (
+        <div style={lightBG}>
+          <Typography variant="body2">{data[filterKey].toString()}</Typography>
+        </div>
+      );
   }
 };
 
 const RenderSeedingData = ({ filterKey, data }) => {
-  if (data[filterKey].toString() !== "-999") {
-    return <div style={lightBG}>{data[filterKey]}</div>;
+  if (data[filterKey]) {
+    return <Typography variant="body2">Yes</Typography>;
   } else {
-    return <div style={lightBG}>N/A</div>;
+    return <Typography variant="body2">N/A</Typography>;
   }
 };
 const GetAverageGoalRating = ({ crop }) => {
