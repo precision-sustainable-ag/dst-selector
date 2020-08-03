@@ -1,2 +1,32 @@
-_id._bsontype,_id.id.0,_id.id.1,_id.id.2,_id.id.3,_id.id.4,_id.id.5,_id.id.6,_id.id.7,_id.id.8,_id.id.9,_id.id.10,_id.id.11,Cover Crop Name,Scientific Name,Synonyms,"cv, var, or ssp to specify",Origin,Drought Tolerance,Shade Tolerance,Flood Tolerance,Low Fertility Tolerance,Salinity Tolerance,Winter Survival,Notes: Environmental Tolerances,Active Growth Period,Duration,Shape & Orientation,Review Status,Soil Drainage,Min Germination Temp (F),Seeds per Pound,Inoculant Type (Legumes Only),Seeding Rate: Broadcast (w/cultivation) (lbs/A),Seeding Rate: Drilled (lbs/A),Seeding Rate: Aerial (lbs/A),Drilled Depth Min,Loosens Topsoil,Frees P & K,Growing Window,Ease of Establishment,Family Common Name,Family Scientific Name,Soil Textures,Minimum Tolerant Soil pH,Maximum Tolerant Soil pH,Soil Moisture Use,Cover Crop Group,Heat Tolerance,Seed Price per Pound,USDA Symbol,Zone Decision,Zone Use,Shape & Orientation-USDA PLANTS,Flooding Tolerance,"Nitrogen Accumulation Min, Legumes (lbs/A/y)",Dry Matter Min (lbs/A/y),C to N Ratio,Active Growth Period-USDA PLANTS,Loosens Subsurface Soil,Supports Mycorrhizae,Flowering Trigger,Establishes Quickly,Root Architecture,Root Depth,"Notes: Growth, Roots, and Nutrients",Tillage Termination at Vegetative,Tillage Termination at Flowering,Freezing Termination at Vegetative,Freezing Termination at Flowering,Chemical Termination at Flowering,Mow Termination at Flowering,Chemical Termination at Vegetative,Mow Tolerance at Vegetative,Roller Crimp Tolerance at Flowering,Roller Crimp Tolerance at Vegetative,Persistence,Notes: Weeds,Seed price per acre: Drilled/Cultipack and Cultivation,Seed price per acre: Broadcast (w/cultivation),Improve Soil Organic Matter,Increase Soil Aggregation,Lasting Residue,Penetrates Plow Pan,Base Seeding Rate Min (lbs/A),Base Seeding Rate Max (lbs/A),"Nitrogen Accumulation Max, Legumes (lbs/A/y)",Dry Matter Max (lbs/A/y),Drilled Depth Max,Reduces Topsoil Compaction,"May, Early","May, Mid","June, Early","June, Mid","July, Early","July, Mid","August, Early",Prevent Fall Soil Erosion,Prevent Spring Soil Erosion,Promote Water Quality,Nitrogen Scavenging,Good Grazing,Forage Harvest Value,Image,C to N Ratio - 3 stars,Residue Suppresses Summer Annual Weeds,Outcompetes Summer Annual Weeds,Disoucrages Nematodes,Promotes Nematodes,Discourages Pest Insects,Promotes Pest Insects,Suppresses Cash Crop Disease,Promotes Cash Crop Disease,Standard Summer Seeding Rate Date Start,Standard Summer Seeding Rate Date End,Late Summer Seeding Rate Date Start,Late Summer Seeding Rate Date End,Suppresses Winter Annual Weeds,Notes,Reliable Establishment/Growth Start,Reliable Establishment/Growth End,__id
-ObjectID,95,6,7,115,34,65,132,62,125,168,44,22,Sorghum-sudangrass,Sorghum bicolor x Sorghum bicolor var. Sudanense,Sudex,non BMR varieties,MCCC Species tool,5,1,3,4,2,"[""Never""]",Does very poorly under low-N conditions like most grasses.,"[""Summer""]","[""Annual""]","[""Erect""]",Zone Team Start,"[""Somewhat poorly drained"",""Moderately well drained"",""Well drained"",""Excessively drained"",""Well drained muck""]",65,15000,"[""none""]",17-55,15-35,Not Recommended,0.5,4,2,Short,3,Grass family,Poaceae,"[""coarse"",""medium"",""fine""]",5,8,High,Grass,5,1,SOBI5,Include,Common,Erect,Poor,0,4000,5,"[""Summer""]",3,4,"[""Based on plant size""]",4,"[""Fibrous""]",Medium,Minimum Germination Temp. ~ 62-65˚F,1,1,5,5,5,5,5,2,1,1,2,"Mature, frost-killed plants become quite woody",1,1,5,5,5,2,15,35,0,8000,1.5,5,"[""Temperature/moisture risk to establishment/growth""]","[""Reliable establishment/growth""]","[""Reliable establishment/growth"",""Early seeding rate""]","[""Reliable establishment/growth"",""Early seeding rate""]","[""Reliable establishment/growth"",""Early seeding rate""]","[""Reliable establishment/growth"",""Standard seeding rate""]","[""Late seeding rate""]",5,3,4,4,4,5,"[{""id"":""attl9w9fdkwFYa0hy"",""url"":""https://dl.airtable.com/.attachments/6f16c1978e21ed1c477e58c441a49199/122052bc/Rolledsudex-Eagen.jpg"",""filename"":""Rolled sudex - Eagen.jpg"",""size"":791115,""type"":""image/jpeg"",""thumbnails"":{""small"":{""url"":""https://dl.airtable.com/.attachmentThumbnails/c2f2e54d59c6d4cb2265ed676cc57a54/d8d0d53c"",""width"":14,""height"":36},""large"":{""url"":""https://dl.airtable.com/.attachmentThumbnails/0093ae533af1fd7671a9006ab7fc4574/c19d93ef"",""width"":512,""height"":1349},""full"":{""url"":""https://dl.airtable.com/.attachmentThumbnails/8eec68a36bc1045f40ab060d75145ff3/298854bc"",""width"":3000,""height"":3000}}}]",3,2,5,3,3,3,3,3,4,2020-05-15,2020-08-01,2020-08-01,2020-08-10,2,Excellent forage; not as winterhardy as other perennial forage grasses but establishes quickly so may still be useful as a cover crop.,2020-05-15,2020-08-01,recSIs3MatpAf0Jdx
+Category,Attribute,Value
+Environmental Tolerance,Drought Tolerance,5
+Environmental Tolerance,Shade Tolerance,1
+Environmental Tolerance,Flood Tolerance,3
+Environmental Tolerance,Low Fertility Tolerance,4
+Environmental Tolerance,Salinity Tolerance,2
+Growth,Winter Survival,Never
+Growth,Active Growth Period,Summer
+Growth,Duration,Annual
+Growth,Growing Window,Short
+Growth,Ease of Establishment,3
+Cover Crop Type,,Grass
+Environmental Tolerance,Heat Tolerance,5
+Seeds,Seed Price per Pound,1
+Beneficials,Supports Mycorrhizae,4
+Growth,Establishes Quickly,4
+Roots,Root Architecture,Fibrous
+Roots,Root Depth,Medium
+Termination Methods,Tillage Termination at Vegetative,1
+Termination Methods,Tillage Termination at Flowering,1
+Termination Methods,Freezing Termination at Vegetative,5
+Termination Methods,Chemical Termination at Flowering,5
+Termination Methods,Mow Termination at Flowering,5
+Termination Methods,Chemical Termination at Vegetative,5
+Termination Methods,Roller Crimp Tolerance at Flowering,1
+Weeds,Persistence,2
+Disease & Non Weed Pests,Disoucrages Nematodes,3
+Disease & Non Weed Pests,Promotes Nematodes,3
+Disease & Non Weed Pests,Discourages Pest Insects,3
+Disease & Non Weed Pests,Promotes Pest Insects,3
+Disease & Non Weed Pests,Suppresses Cash Crop Disease,3
+Disease & Non Weed Pests,Promotes Cash Crop Disease,4
