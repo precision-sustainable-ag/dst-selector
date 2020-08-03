@@ -5,6 +5,17 @@
   -webkit-print-color-adjust: exact !important; /* Chrome, Safari */
   color-adjust: exact !important; /*Firefox*/
 }
+.lum-lightbox.lum-open {
+  z-index: 9999 !important;
+}
+
+// img.Photo {
+//   transition: transform 1s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+//   z-index: 9999 !important;
+//   &:hover {
+//     transform: scale(2);
+//   }
+// }
 
 @media screen, print {
   @page {
