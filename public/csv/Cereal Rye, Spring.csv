@@ -1,2 +1,33 @@
-_id._bsontype,_id.id.0,_id.id.1,_id.id.2,_id.id.3,_id.id.4,_id.id.5,_id.id.6,_id.id.7,_id.id.8,_id.id.9,_id.id.10,_id.id.11,Cover Crop Name,Scientific Name,"cv, var, or ssp to specify",Origin,Common Mixes,Drought Tolerance,Shade Tolerance,Flood Tolerance,Low Fertility Tolerance,Salinity Tolerance,Winter Survival,Notes: Environmental Tolerances,Active Growth Period,Duration,Shape & Orientation,Review Status,Soil Drainage,Min Germination Temp (F),Seeds per Pound,Inoculant Type (Legumes Only),Seeding Rate: Broadcast (w/cultivation) (lbs/A),Seeding Rate: Drilled (lbs/A),Seeding Rate: Aerial (lbs/A),Drilled Depth Min,Loosens Topsoil,Frees P & K,Growing Window,Ease of Establishment,Family Common Name,Family Scientific Name,Soil Textures,Minimum Tolerant Soil pH,Maximum Tolerant Soil pH,Soil Moisture Use,Cover Crop Group,Heat Tolerance,Seed Price per Pound,USDA Symbol,Zone Decision,Zone Use,Shape & Orientation-USDA PLANTS,Flooding Tolerance,"Nitrogen Accumulation Min, Legumes (lbs/A/y)",Dry Matter Min (lbs/A/y),C to N Ratio,Active Growth Period-USDA PLANTS,Notes: Termination [Goal: Method: Timing],Loosens Subsurface Soil,Supports Mycorrhizae,Establishes Quickly,Root Architecture,Root Depth,Tillage Termination at Vegetative,Tillage Termination at Flowering,Freezing Termination at Vegetative,Freezing Termination at Flowering,Chemical Termination at Flowering,Mow Termination at Flowering,Chemical Termination at Vegetative,Mow Tolerance at Vegetative,Roller Crimp Tolerance at Flowering,Roller Crimp Tolerance at Vegetative,Volunteer Establishment,Persistence,Notes: Weeds,Termination Rules: IF (goal) KILL (timing) VIA (methods),Seed price per acre: Drilled/Cultipack and Cultivation,Seed price per acre: Broadcast (w/cultivation),Seed price per acre: Aerial,Improve Soil Organic Matter,Increase Soil Aggregation,Lasting Residue,Penetrates Plow Pan,Base Seeding Rate Min (lbs/A),Base Seeding Rate Max (lbs/A),"Nitrogen Accumulation Max, Legumes (lbs/A/y)",Dry Matter Max (lbs/A/y),Drilled Depth Max,Reduces Topsoil Compaction,"March, Early","March, Mid","April, Early","April, Mid","May, Early","August, Mid","September, Early","September, Mid","October, Early",Prevent Fall Soil Erosion,Prevent Spring Soil Erosion,Promote Water Quality,Nitrogen Scavenging,Good Grazing,Forage Harvest Value,Image,C to N Ratio - 3 stars,Residue Suppresses Summer Annual Weeds,Outcompetes Summer Annual Weeds,Disoucrages Nematodes,Promotes Nematodes,Discourages Pest Insects,Promotes Pest Insects,Suppresses Cash Crop Disease,Promotes Cash Crop Disease,Early Fall/Winter Seeding Rate Start,Early Fall/ Winter Seeding Rate Stop,Standard Fall/Winter Seeding Rate Date Start,Standard Fall/Winter Seeding Rate Date End,Early Spring Seeding Rate Date Start,Early Spring Seeding Rate Date End,Standard Spring Seeding Rate Date Start,Suppresses Winter Annual Weeds,Reliable Establishment/Growth Start,Reliable Establishment/Growth End,Second Reliable Establishment/Growth Start,Second Reliable Establishment/Growth End,__id
-ObjectID,95,6,7,115,34,65,132,62,125,168,44,18,"Cereal Rye, Spring",Secale cereale,Spring cultivars,MCCC Species tool,"[""recopw6BgCK0wPYRI""]",4,3,3,4,2,"[""Seldom""]",Does very poorly under low-N conditions like most grasses.,"[""Spring"",""Summer""]","[""Annual""]","[""Erect""]",Zone Team Start,"[""Somewhat poorly drained"",""Moderately well drained"",""Well drained"",""Saturated muck"",""Well drained muck""]",34,18160,"[""none""]",55-100,50-90,60-108,0.75,5,2,Medium,5,Grass family,Poaceae,"[""coarse"",""medium"",""fine""]",4.5,8.2,High,Grass,4,1,SECE,Include,Emerging,Erect,Moderate,0,1000,4,"[""Spring"",""Summer"",""Fall""]",Other notes free form here,3,5,3,"[""Fibrous""]",Medium,1,1,3,5,5,4,5,4,5,3,5,1,Can become a weed if tilled at wrong stage;  Best if killed early; Not recommended before corn; Mow-kills after heading,"[""If goal = Increase SOM kill <stem elongation viachemical/mow/till"",""If goal = N fixation kill at boot stage via roller crimp"",""If next crop = soybean kill >lignified via roller crimp""]",2,2,2,3,4,4,3,40,90,0,4000,1.5,5,"[""Reliable establishment/growth""]","[""Reliable establishment/growth""]","[""Reliable establishment/growth""]","[""Reliable establishment/growth""]","[""Reliable establishment/growth""]","[""Reliable establishment/growth""]","[""Reliable establishment/growth""]","[""Reliable establishment/growth""]","[""Reliable establishment/growth""]",4,4,4,4,4,3,"[{""id"":""attmenUj5GUWbydLE"",""url"":""https://dl.airtable.com/.attachments/dba9e46ca929cdfe7ec1b152fb306bba/9d66733a/Cerealrye-young-field-Ackroyd.JPG"",""filename"":""Cereal rye - young - field - Ackroyd.JPG"",""size"":2296335,""type"":""image/jpeg"",""thumbnails"":{""small"":{""url"":""https://dl.airtable.com/.attachmentThumbnails/b91e3c0356589face73d515af5749657/98c7c45e"",""width"":53,""height"":36},""large"":{""url"":""https://dl.airtable.com/.attachmentThumbnails/56955b304b7179706e2cf1df0936039a/691ce443"",""width"":760,""height"":512},""full"":{""url"":""https://dl.airtable.com/.attachmentThumbnails/335e3d42bacccce939219236ef4dd5b9/024f3684"",""width"":3000,""height"":3000}}}]",3,4,4,4,1,4,1,2,3,2020-08-01,2020-08-21,2020-08-21,2020-09-15,2020-03-15,2020-06-01,2020-02-28,4,2020-02-28,2020-05-15,2020-08-21,2020-09-15,recJvXboNpiURmrSU
+Category,Attribute,Value
+Environmental Tolerance,Drought Tolerance,4
+Environmental Tolerance,Shade Tolerance,3
+Environmental Tolerance,Flood Tolerance,3
+Environmental Tolerance,Low Fertility Tolerance,4
+Environmental Tolerance,Salinity Tolerance,2
+Growth,Winter Survival,Seldom
+Growth,Active Growth Period,Spring and Summer
+Growth,Duration,Annual
+Growth,Growing Window,Medium
+Growth,Ease of Establishment,5
+Cover Crop Type,,Grass
+Environmental Tolerance,Heat Tolerance,4
+Seeds,Seed Price per Pound,1
+Beneficials,Supports Mycorrhizae,5
+Growth,Establishes Quickly,3
+Roots,Root Architecture,Fibrous
+Roots,Root Depth,Medium
+Termination Methods,Tillage Termination at Vegetative,1
+Termination Methods,Tillage Termination at Flowering,1
+Termination Methods,Freezing Termination at Vegetative,3
+Termination Methods,Chemical Termination at Flowering,5
+Termination Methods,Mow Termination at Flowering,4
+Termination Methods,Chemical Termination at Vegetative,5
+Termination Methods,Roller Crimp Tolerance at Flowering,5
+Weeds,Volunteer Establishment,5
+Weeds,Persistence,1
+Disease & Non Weed Pests,Disoucrages Nematodes,4
+Disease & Non Weed Pests,Promotes Nematodes,1
+Disease & Non Weed Pests,Discourages Pest Insects,4
+Disease & Non Weed Pests,Promotes Pest Insects,1
+Disease & Non Weed Pests,Suppresses Cash Crop Disease,2
+Disease & Non Weed Pests,Promotes Cash Crop Disease,3

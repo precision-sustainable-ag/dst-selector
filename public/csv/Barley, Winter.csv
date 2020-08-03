@@ -1,2 +1,35 @@
-_id._bsontype,_id.id.0,_id.id.1,_id.id.2,_id.id.3,_id.id.4,_id.id.5,_id.id.6,_id.id.7,_id.id.8,_id.id.9,_id.id.10,_id.id.11,Cover Crop Name,Scientific Name,"cv, var, or ssp to specify",Origin,Drought Tolerance,Shade Tolerance,Flood Tolerance,Low Fertility Tolerance,Salinity Tolerance,Winter Survival,Notes: Environmental Tolerances,Active Growth Period,Duration,Shape & Orientation,Review Status,Soil Drainage,Min Germination Temp (F),Seeds per Pound,Inoculant Type (Legumes Only),Seeding Rate: Broadcast (w/cultivation) (lbs/A),Planting green,Seeding Rate: Drilled (lbs/A),Seeding Rate: Aerial (lbs/A),Drilled Depth Min,Loosens Topsoil,Frees P & K,Growing Window,Ease of Establishment,Family Common Name,Family Scientific Name,Soil Textures,Minimum Tolerant Soil pH,Maximum Tolerant Soil pH,Soil Moisture Use,Cover Crop Group,Heat Tolerance,Seed Price per Pound,Can Aerial Seed,USDA Symbol,Zone Decision,Zone Use,Shape & Orientation-USDA PLANTS,Flooding Tolerance,"Nitrogen Accumulation Min, Legumes (lbs/A/y)",Dry Matter Min (lbs/A/y),C to N Ratio,Active Growth Period-USDA PLANTS,Loosens Subsurface Soil,Supports Mycorrhizae,Early Spring Growth,Flowering Trigger,Establishes Quickly,Root Architecture,Root Depth,"Notes: Growth, Roots, and Nutrients",Tillage Termination at Vegetative,Tillage Termination at Flowering,Freezing Termination at Vegetative,Freezing Termination at Flowering,Chemical Termination at Flowering,Mow Termination at Flowering,Chemical Termination at Vegetative,Mow Tolerance at Vegetative,Roller Crimp Tolerance at Flowering,Roller Crimp Tolerance at Vegetative,Volunteer Establishment,Persistence,Seed price per acre: Drilled/Cultipack and Cultivation,Seed price per acre: Broadcast (w/cultivation),Seed price per acre: Aerial,Improve Soil Organic Matter,Increase Soil Aggregation,Lasting Residue,Penetrates Plow Pan,Base Seeding Rate Min (lbs/A),Base Seeding Rate Max (lbs/A),"Nitrogen Accumulation Max, Legumes (lbs/A/y)",Dry Matter Max (lbs/A/y),Drilled Depth Max,Reduces Topsoil Compaction,"August, Early","August, Mid","September, Early","September, Mid","October, Early","October, Mid",Prevent Fall Soil Erosion,Prevent Spring Soil Erosion,Promote Water Quality,Nitrogen Scavenging,Good Grazing,Forage Harvest Value,Image,C to N Ratio - 3 stars,Residue Suppresses Summer Annual Weeds,Outcompetes Summer Annual Weeds,Disoucrages Nematodes,Promotes Nematodes,Discourages Pest Insects,Promotes Pest Insects,Suppresses Cash Crop Disease,Promotes Cash Crop Disease,Early Fall/Winter Seeding Rate Start,Early Fall/ Winter Seeding Rate Stop,Standard Fall/Winter Seeding Rate Date Start,Standard Fall/Winter Seeding Rate Date End,Late Fall/Winter Planting Date Start,Late Fall/Winter Planting Date End,Can Interseed Start,Can Interseed End,Suppresses Winter Annual Weeds,Notes,Reliable Establishment/Growth Start,Reliable Establishment/Growth End,Temperature/Moisture Risk to Establishment Start,Temperature/Moisture Risk to Establishment End,__id
-ObjectID,95,6,7,115,34,65,132,62,125,168,44,14,"Barley, Winter",Hordeum vulgare,Winter cultivars,MCCC Species tool,3,3,3,4,3,"[""Expected""]",Does very poorly under low-N conditions like most grasses.,"[""Fall"",""Spring""]","[""Annual""]","[""Erect""]",Zone Team Start,"[""Moderately well drained"",""Well drained"",""Excessively drained"",""Well drained muck""]",38,13600,"[""none""]",55-85,"Utilizing a roller-crimper is suggested when planting corn into material greater than 12"" tall as un-rolled cover may impact emergence.",60-120,60-90,0.75,5,2,Medium,3,Grass family,Poaceae,"[""medium"",""coarse"",""fine""]",6,8.5,Medium,Grass,3,1,true,HOVU,Include,Common,Erect,Moderate,0,2000,4,"[""Winter"",""Spring"",""Fall""]",3,3,4,"[""Requires vernalization (spring)""]",3,"[""Fibrous""]",Medium,Minimum Germination Temp. ~ 38˚F,1,1,2,3,5,5,5,5,5,2,5,2,2,2,2,4,3,4,2,60,100,0,5000,1.5,5,"[""Early seeding rate""]","[""Early seeding rate""]","[""Reliable establishment/growth"",""Standard seeding rate""]","[""Reliable establishment/growth"",""Standard seeding rate""]","[""Reliable establishment/growth"",""Standard seeding rate""]","[""Temperature/moisture risk to establishment/growth"",""Late seeding rate""]",5,5,3,4,3,4,"[{""id"":""att66nCYrow7h5xU5"",""url"":""https://dl.airtable.com/.attachments/70896bd7c396556e6ef1e71f512e9184/88d2c4ff/Barley-Eagen.jpg"",""filename"":""Barley - Eagen.jpg"",""size"":1243521,""type"":""image/jpeg"",""thumbnails"":{""small"":{""url"":""https://dl.airtable.com/.attachmentThumbnails/c4e915b52008b028277d858e85dd9a5b/1c1bdaa4"",""width"":48,""height"":36},""large"":{""url"":""https://dl.airtable.com/.attachmentThumbnails/e1db7fad0df7f81bb1813b25b045875d/c84cf65f"",""width"":683,""height"":512},""full"":{""url"":""https://dl.airtable.com/.attachmentThumbnails/5e54c000c6309bf05211508c9911fc2e/cd2215e2"",""width"":3000,""height"":3000}}}]",3,4,3,1,1,1,1,1,1,2020-09-01,2020-09-15,2020-09-21,2020-11-01,2020-11-01,2020-11-15,2020-09-01,2020-09-21,4,"Failure to overwinter reliably in USDA hardiness zones 5 and colder means biomass production may be low, which potentially limits grazing/forage harvest value.",2020-09-21,2020-11-01,2020-11-01,2020-11-15,receWL8eg6dSrjLky
+Category,Attribute,Value
+Environmental Tolerance,Drought Tolerance,3
+Environmental Tolerance,Shade Tolerance,3
+Environmental Tolerance,Flood Tolerance,3
+Environmental Tolerance,Low Fertility Tolerance,4
+Environmental Tolerance,Salinity Tolerance,3
+Growth,Winter Survival,Expected
+Growth,Active Growth Period,Fall and Spring
+Growth,Duration,Annual
+Growth,Growing Window,Medium
+Growth,Ease of Establishment,3
+Cover Crop Type,,Grass
+Environmental Tolerance,Heat Tolerance,3
+Seeds,Seed Price per Pound,1
+Seeding Methods,Aerial Seeding, Yes
+Beneficials,Supports Mycorrhizae,3
+Growth,Early Spring Growth,4
+Growth,Establishes Quickly,3
+Roots,Root Architecture,Fibrous
+Roots,Root Depth,Medium
+Termination Methods,Tillage Termination at Vegetative,1
+Termination Methods,Tillage Termination at Flowering,1
+Termination Methods,Freezing Termination at Vegetative,2
+Termination Methods,Chemical Termination at Flowering,5
+Termination Methods,Mow Termination at Flowering,5
+Termination Methods,Chemical Termination at Vegetative,5
+Termination Methods,Roller Crimp Tolerance at Flowering,5
+Weeds,Volunteer Establishment,5
+Weeds,Persistence,2
+Disease & Non Weed Pests,Disoucrages Nematodes,1
+Disease & Non Weed Pests,Promotes Nematodes,1
+Disease & Non Weed Pests,Discourages Pest Insects,1
+Disease & Non Weed Pests,Promotes Pest Insects,1
+Disease & Non Weed Pests,Suppresses Cash Crop Disease,1
+Disease & Non Weed Pests,Promotes Cash Crop Disease,1
