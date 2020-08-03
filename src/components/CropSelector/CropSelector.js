@@ -960,6 +960,7 @@ const CropSelector = () => {
             inactiveCropData={inactiveCropData}
             setActiveCropData={setActiveCropData}
             setInactiveCropData={setInactiveCropData}
+            comparisonView={comparisonView}
           />
         </div>
 
@@ -979,10 +980,6 @@ const CropSelector = () => {
                 sortPreference={sortPreference}
               />
             ) : (
-              // <CropCardViewComponent
-              //   cropData={cropData}
-              //   showGrowthWindow={showGrowthWindow}
-              // />
               <CropCalendarViewComponent cropData={cropData} />
             )
           ) : (
