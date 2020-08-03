@@ -138,6 +138,17 @@ const CropSidebarComponent = (props) => {
     "Suppresses Cash Crop Disease": [], // int
     "Promotes Cash Crop Disease": [], // int
   });
+  const seedingMethodRef = useRef();
+  const beneficialsRef = useRef();
+  const coverCropTypeRef = useRef();
+  const diseaseRef = useRef();
+  const growthRef = useRef();
+  const rootsRef = useRef();
+  const seedsRef = useRef();
+  const weedsRef = useRef();
+  const terminationRef = useRef();
+  const envTolRef = useRef();
+
   const [resetFilters, setResetFilters] = React.useState(false);
   const firstUpdate = useRef(true);
   useEffect(() => {
@@ -172,12 +183,12 @@ const CropSidebarComponent = (props) => {
 
     const nonZeroKeys = nonZeroKeys2.map((obj) => {
       // console.log(obj)
-      console.log(Object.keys(obj));
+      // console.log(Object.keys(obj));
       return Object.keys(obj).toString();
     });
 
     // console.log(nonZeroKeys)
-
+    localStorage.setItem("filterKeys", JSON.stringify(nonZeroKeys));
     dispatch({
       type: "UPDATE_FILTER_KEYS",
       data: {
@@ -187,24 +198,39 @@ const CropSidebarComponent = (props) => {
     if (nonZeroKeys.length > 0) {
       // const filtered = getFilteredObjects(crop_data, nonZeroKeys);
 
+      const arrayKeys = [
+        "Duration",
+        "Active Growth Period",
+        "Winter Survival",
+        "Flowering Trigger",
+        "Root Architecture",
+      ];
+      const booleanKeys = ["Aerial Seeding", "Frost Seeding"];
+      const aerialOrFrost = [""];
       const filtered = crop_data.filter((crop) => {
         const totalActiveFilters = Object.keys(nonZeroKeys2).length;
         let i = 0;
         nonZeroKeys2.forEach((keyObject) => {
           const key = Object.keys(keyObject);
+          // console.log(key);
           const vals = keyObject[key];
-
-          // console.log({[key]: vals})
-          // if(keyObject[key])
-
-          // console.log('expected', vals);
-          // console.log('got', crop.fields[key])
-          if (vals.includes(crop.fields[key])) {
-            // console.log('yay')
-            i++;
+          if (areCommonElements(arrayKeys, key)) {
+            // Handle array type havlues
+            if (vals.includes(crop.fields[key].toString())) {
+              i++;
+            }
+          } else if (areCommonElements(booleanKeys, key)) {
+            //  Handle boolean types
+            if (crop.fields[key]) {
+              i++;
+            }
+          } else {
+            if (vals.includes(crop.fields[key])) {
+              i++;
+            }
           }
         });
-        // console.log(i)
+
         if (i === totalActiveFilters) return true;
       });
 
@@ -223,6 +249,11 @@ const CropSidebarComponent = (props) => {
       props.setInactiveCropData([]);
     }
   }, [sidebarFilterOptions]);
+
+  const areCommonElements = (arr1, arr2) => {
+    const arr2Set = new Set(arr2);
+    return arr1.some((el) => arr2Set.has(el));
+  };
 
   function filterArray(array, filters) {
     const filterKeys = Object.keys(filters);
@@ -316,6 +347,16 @@ const CropSidebarComponent = (props) => {
   };
 
   const resetAllFilters = () => {
+    beneficialsRef.current.resetFilters();
+    coverCropTypeRef.current.resetFilters();
+    diseaseRef.current.resetFilters();
+    envTolRef.current.resetFilters();
+    growthRef.current.resetFilters();
+    rootsRef.current.resetFilters();
+    seedingMethodRef.current.resetFilters();
+    seedsRef.current.resetFilters();
+    terminationRef.current.resetFilters();
+    weedsRef.current.resetFilters();
     props.setActiveCropData(state.cropData);
     props.setInactiveCropData([]);
     setSidebarFilterOptions({
@@ -727,6 +768,7 @@ const CropSidebarComponent = (props) => {
                   >
                     {filter.name.toUpperCase() === "COVER CROP TYPE" ? (
                       <CoverCropType
+                        ref={coverCropTypeRef}
                         filters={sidebarFilters[index]}
                         sidebarFilterOptions={sidebarFilterOptions}
                         setSidebarFilterOptions={setSidebarFilterOptions}
@@ -740,6 +782,7 @@ const CropSidebarComponent = (props) => {
                     {filter.name.toUpperCase() ===
                     "ENVIRONMENTAL TOLERANCES" ? (
                       <EnvironmentalTolerance
+                        ref={envTolRef}
                         filters={sidebarFilters[index]}
                         sidebarFilterOptions={sidebarFilterOptions}
                         setSidebarFilterOptions={setSidebarFilterOptions}
@@ -752,6 +795,7 @@ const CropSidebarComponent = (props) => {
 
                     {filter.name.toUpperCase() === "SEEDS" ? (
                       <Seeds
+                        ref={seedsRef}
                         filters={sidebarFilters[index]}
                         sidebarFilterOptions={sidebarFilterOptions}
                         setSidebarFilterOptions={setSidebarFilterOptions}
@@ -763,6 +807,7 @@ const CropSidebarComponent = (props) => {
                     )}
                     {filter.name.toUpperCase() === "SEEDING METHODS" ? (
                       <SeedingMethods
+                        ref={seedingMethodRef}
                         filters={sidebarFilters[index]}
                         sidebarFilterOptions={sidebarFilterOptions}
                         setSidebarFilterOptions={setSidebarFilterOptions}
@@ -776,6 +821,7 @@ const CropSidebarComponent = (props) => {
                       <Grid container spacing={1}>
                         <Grid item>
                           <Growth
+                            ref={growthRef}
                             filters={sidebarFilters[index]}
                             sidebarFilterOptions={sidebarFilterOptions}
                             setSidebarFilterOptions={setSidebarFilterOptions}
@@ -791,6 +837,7 @@ const CropSidebarComponent = (props) => {
                       <Grid container spacing={1}>
                         <Grid item>
                           <Roots
+                            ref={rootsRef}
                             filters={sidebarFilters[index]}
                             sidebarFilterOptions={sidebarFilterOptions}
                             setSidebarFilterOptions={setSidebarFilterOptions}
@@ -804,6 +851,7 @@ const CropSidebarComponent = (props) => {
                     )}
                     {filter.name.toUpperCase() === "TERMINATION METHODS" ? (
                       <TerminationMethods
+                        ref={terminationRef}
                         filters={sidebarFilters[index]}
                         sidebarFilterOptions={sidebarFilterOptions}
                         setSidebarFilterOptions={setSidebarFilterOptions}
@@ -815,6 +863,7 @@ const CropSidebarComponent = (props) => {
                     )}
                     {filter.name.toUpperCase() === "BENEFICIALS" ? (
                       <Beneficials
+                        ref={beneficialsRef}
                         filters={sidebarFilters[index]}
                         sidebarFilterOptions={sidebarFilterOptions}
                         setSidebarFilterOptions={setSidebarFilterOptions}
@@ -826,6 +875,7 @@ const CropSidebarComponent = (props) => {
                     )}
                     {filter.name.toUpperCase() === "WEEDS" ? (
                       <Weeds
+                        ref={weedsRef}
                         filters={sidebarFilters[index]}
                         sidebarFilterOptions={sidebarFilterOptions}
                         setSidebarFilterOptions={setSidebarFilterOptions}
@@ -838,6 +888,7 @@ const CropSidebarComponent = (props) => {
                     {filter.name.toUpperCase() ===
                     "DISEASE & NON WEED PESTS" ? (
                       <DiseaseAndNonWeedPests
+                        ref={diseaseRef}
                         filters={sidebarFilters[index]}
                         sidebarFilterOptions={sidebarFilterOptions}
                         setSidebarFilterOptions={setSidebarFilterOptions}
