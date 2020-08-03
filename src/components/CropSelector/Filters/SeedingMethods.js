@@ -33,6 +33,15 @@ const SeedingMethods = (props) => {
     // }
   }, [selected]);
 
+  // useEffect(() => {
+  //   if (props.selectedFilterKeys.length === 0) {
+  //     setSelected({
+  //       "Frost Seeding": [],
+  //       "Aerial Seeding": [],
+  //     });
+  //   }
+  // }, [props.selectedFilterKeys]);
+
   return (
     <Grid container spacing={1}>
       {props.filters.values.map((val, index) => (

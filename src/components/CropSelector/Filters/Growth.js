@@ -1,7 +1,8 @@
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useState, useEffect, Fragment, useContext } from "react";
 import { Chip, Grid, Tooltip } from "@material-ui/core";
 import ToggleButton from "@material-ui/lab/ToggleButton";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
+import { Context } from "../../../store/Store";
 const Growth = (props) => {
   const [selected, setSelected] = useState({
     Duration: [], // array
@@ -33,6 +34,24 @@ const Growth = (props) => {
       ...selected,
     });
   }, [selected]);
+
+  const { filterKeys } = useContext(Context);
+  useEffect(() => {
+    if (filterKeys) {
+      if (filterKeys.length === 0) {
+        setSelected({
+          Duration: [], // array
+          "Active Growth Period": [], //array
+          "Growing Window": [], // string
+          "Establishes Quickly": [], // int
+          "Ease of Establishment": [], // int
+          "Winter Survival": [], // array
+          "Early Spring Growth": [], // int
+          "Flowering Trigger": [], // array
+        });
+      }
+    }
+  }, [filterKeys]);
 
   const RenderChips = (props) => {
     return props.subFilter.values.map((val, index) => (
