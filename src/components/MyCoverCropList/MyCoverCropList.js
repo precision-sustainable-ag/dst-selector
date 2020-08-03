@@ -25,7 +25,7 @@ const MyCoverCropList = (props) => {
     const selectedCropNames = selectedCrops.map((crop) => {
       return {
         name: crop.cropName,
-        pdf: `/information-sheets/${crop.cropName}.pdf`,
+        pdf: `/pdf/${crop.cropName}.pdf`,
         csv: `/csv/${crop.cropName}.csv`,
       };
     });
@@ -49,12 +49,7 @@ const MyCoverCropList = (props) => {
               >
                 <PictureAsPdf /> <span className="pl-2">PDF</span>
               </Button>
-              <Button
-                style={{ color: "white" }}
-                onClick={() => downloadAllCSV(selectedCropNames)}
-              >
-                <ListAlt /> <span className="pl-2">SPREADSHEET</span>
-              </Button>
+
               <Button
                 style={{ color: "white" }}
                 onClick={redirectToSpeciesSelector}
@@ -87,7 +82,7 @@ const MyCoverCropList = (props) => {
       ) : (
         <Fragment>
           <TopBar />
-          <div className="row mt-2">
+          <div className="d-flex flex-wrap mt-2">
             {state.selectedCrops.map((crop, index) => (
               <MyCoverCropCardsComponent
                 key={index}

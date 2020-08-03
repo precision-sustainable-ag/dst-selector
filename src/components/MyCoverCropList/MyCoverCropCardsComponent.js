@@ -65,47 +65,64 @@ const MyCoverCropCardsComponent = (props) => {
     }
   };
   return (
-    //   {state.selectedCrops.length === 1 ? "<div>" : "<div className='pl-5'>"}
-    // <div className={props.itemNo > 0 ? "pl-5" : ""}>
-    <div className="col-3 mt-2">
+    <div className="p-2">
       <Card className={classes.card}>
-        <CardActionArea>
-          <CardMedia
-            image={
-              data["Image"]
-                ? data["Image"][0].url
-                : "https://placehold.it/100x100"
-            }
-            className={classes.media}
-            title={data["Cover Crop Name"]}
-          />
-          <CardContent>
-            <div
-              className="font-weight-bold text-muted text-uppercase"
-              style={{ fontSize: "10pt" }}
-            >
-              {data["Family Common Name"]}
-            </div>
-            <div className="font-weight-bold " style={{ fontSize: "16pt" }}>
-              {data["Cover Crop Name"]}
-            </div>
-            <small className="font-italic text-muted">
-              {data["Scientific Name"]}
-            </small>
-          </CardContent>
-        </CardActionArea>
-        <CardActions>
-          <Button
-            size="small"
-            color="secondary"
-            onClick={() => handleModalOpen(data)}
+        <CardMedia
+          image={
+            data["Image Data"]["Key Thumbnail"]
+              ? `/images/Cover Crop Photos/${data["Image Data"]["Directory"]}/${data["Image Data"]["Key Thumbnail"]}`
+              : "https://placehold.it/100x100?text=Placeholder"
+          }
+          className={classes.media}
+          title={data["Cover Crop Name"]}
+        />
+        <CardContent>
+          <div
+            className="font-weight-bold text-muted text-uppercase"
+            style={{ fontSize: "10pt" }}
           >
-            View Crop Details
-          </Button>
-          <Button size="small" color="inherit" onClick={removeCrop}>
-            Remove
-          </Button>
-        </CardActions>
+            {data["Family Common Name"]}
+          </div>
+          <div className="font-weight-bold " style={{ fontSize: "16pt" }}>
+            {data["Cover Crop Name"]}
+          </div>
+          <small className="font-italic text-muted">
+            {data["Scientific Name"]}
+          </small>
+          <div>
+            <small className="text-muted">
+              <a
+                style={{
+                  textDecoration: "underline",
+                  color: "rgb(53, 153, 155)",
+                }}
+                onClick={() => {}}
+              >
+                View Crop Details
+              </a>
+            </small>
+          </div>
+        </CardContent>
+
+        <CardActionArea
+          style={{
+            backgroundColor: "#e3f2f4",
+            textAlign: "center",
+            padding: "0.5em",
+          }}
+          onClick={removeCrop}
+        >
+          <Typography
+            variant="body2"
+            className="text-uppercase"
+            style={{
+              color: "black",
+              fontWeight: "bold",
+            }}
+          >
+            REMOVE
+          </Typography>
+        </CardActionArea>
       </Card>
       <CropDetailsModalComponent
         modalOpen={modalOpen}
