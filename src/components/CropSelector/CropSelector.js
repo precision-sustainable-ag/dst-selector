@@ -810,142 +810,27 @@ const CropSelector = () => {
         </div>
         <div className="col-xl-10 col-lg-9">
           {state.speciesSelectorActivationFlag ? (
-            <Fragment>
-              <div className="col-4">
-                <TextField
-                  fullWidth
-                  color="secondary"
-                  label="Search Cover Crop Name"
-                  value={coverCropName}
-                  onInput={covercropsNamesFilter}
-                />
-              </div>
-              <div className="col-8"></div>
-            </Fragment>
+            isListView ? (
+              <Fragment>
+                <div className="col-4">
+                  <TextField
+                    fullWidth
+                    color="secondary"
+                    label="Search Cover Crop Name"
+                    value={coverCropName}
+                    onInput={covercropsNamesFilter}
+                  />
+                </div>
+                <div className="col-8"></div>
+              </Fragment>
+            ) : (
+              ""
+            )
           ) : (
-            // <div className="cropListTopBar row">
-            //   <div
-            //     className="col-12"
-            //     style={{ background: "rgb(89, 132, 69)", color: "white" }}
-            //   >
-            //     <div className="row">
-            //       <div className="col-4">
-            //         <Button style={{ color: "white" }}>
-            //           {zoneIcon(20, 20)}
-            //           <span className="pl-2">
-            //             Plant Hardiness Zone {state.zone} Dataset
-            //           </span>
-            //         </Button>
-            //       </div>
-            //       <div className="col-4">
-            //         <Button style={{ color: "white" }}>Download :</Button>
-            //         <Button
-            //           // href={`/information-sheets/${crop.fields["Cover Crop Name"]}.pdf`}
-            //           style={{ color: "white" }}
-            //           // download={`${crop.fields["Cover Crop Name"]}`}
-            //         >
-            //           <PictureAsPdf />
-            //           <span className="pl-2">PDF</span>
-            //         </Button>
-            //         <Button
-            //           style={{ color: "white" }}
-            //           // href={`/csv/${crop.fields["Cover Crop Name"]}.csv`}
-            //           // download={`${crop.fields["Cover Crop Name"]}`}
-            //         >
-            //           <FormatListBulleted />
-            //           <span className="pl-2">SPREADSHEET</span>
-            //         </Button>
-            //       </div>
-            //       <div className="col-4 text-right">
-            //         <Button style={{ color: "white" }}>
-            //           <Add /> <span className="pl-2">ADD A CROP</span>
-            //         </Button>
-            //       </div>
-            //     </div>
-            //   </div>
-            // </div>
             ""
           )}
         </div>
       </div>
-      {/* <div className="row toggleComparisonRow">
-        <div className="col-lg-12">
-          <div className="row">
-            <div className="col-lg-12 col-sm-12">
-            
-              <div className="row">
-                {state.myCoverCropActivationFlag ? (
-                  <Fragment>
-                    <div className="iconToggle col-xl-3 col-lg-3">
-                      <Typography component="div" variant="body1">
-                        <IconButton
-                          color={"secondary"}
-                          className={`iconActive`}
-                          onClick={toggleListView}
-                        >
-                          {isListView ? (
-                            <CalendarToday style={{ fontSize: "larger" }} />
-                          ) : (
-                            <ListIcon style={{ fontSize: "larger" }} />
-                          )}
-                        </IconButton>
-                        {isListView ? "CALENDAR VIEW" : "LIST VIEW"}
-                      </Typography>
-                    </div>{" "}
-                    <br />
-                    <small>LIST VIEW</small>
-                  </Fragment>
-                ) : (
-                  <Fragment>
-                    <div className="iconToggle col-xl-3 col-lg-3">
-                      <Button
-                        variant="contained"
-                        onClick={toggleListView}
-                        size="large"
-                        color="secondary"
-                        startIcon={
-                          isListView ? (
-                            <CalendarToday style={{ fontSize: "larger" }} />
-                          ) : (
-                            <ListIcon style={{ fontSize: "larger" }} />
-                          )
-                        }
-                      >
-                        {isListView ? "CALENDAR VIEW" : "LIST VIEW"}
-                      </Button>
-                    </div>
-                  </Fragment>
-                )}
-                <div className="col-xl-9 col-lg-9">
-                  <div className="row">
-                    {debug ? (
-                      <Fragment>
-                        <div className="col-12">
-                          <div className="alert alert-primary" role="alert">
-                            {state.filterString}
-                          </div>
-                        </div>
-                        <div className="col-12">{disabledIdsTextNodes}</div>
-                      </Fragment>
-                    ) : (
-                      ""
-                    )}
-                    <div className="col-12">
-                      <TextField
-                        fullWidth
-                        color="secondary"
-                        label="Cover Crop Name"
-                        value={coverCropName}
-                        onInput={covercropsNamesFilter}
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div> */}
       <div className="row cropSelectorRow mt-3">
         <div className="col-xl-2 col-sm-12 col-lg-3">
           <CropSidebarComponent
