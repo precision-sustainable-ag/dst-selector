@@ -1,9 +1,11 @@
 import React, { useState, useEffect, Fragment, Suspense } from "react";
 import Axios from "axios";
-import { CropImage } from "../../shared/constants";
+// import { CropImage } from "../../shared/constants";
 // import Carousel, { Modal, ModalGateway } from "react-images";
 import { LuminousGallery } from "luminous-lightbox";
 import "../../../node_modules/luminous-lightbox/dist/luminous-basic.css";
+import { Typography } from "@material-ui/core";
+
 const PhotoComponent = ({
   imageData = {
     Directory: "",
@@ -45,6 +47,9 @@ const PhotoComponent = ({
 
         var luminousOpts = {
           // These options have the same defaults and potential values as the Luminous class.
+          caption: (trigger) => {
+            return trigger.dataset.caption;
+          },
         };
         new LuminousGallery(
           document.querySelectorAll(".Photo"),
@@ -60,15 +65,28 @@ const PhotoComponent = ({
   return imageData !== null && imageList.length !== 0 ? (
     <Suspense fallback={<div className="col">Loading..</div>}>
       {imageList.map((url, index) => (
-        <div className="p-2" key={`Photo${index}`}>
-          <a className="Photo" href={`/${url}`}>
+        <div
+          className="p-2 d-flex flex-column align-items-center justify-content-center"
+          key={`Photo${index}`}
+        >
+          <a
+            className="Photo"
+            href={`/${url}`}
+            data-caption={getPhotoCredits(url, imageData["Cover Crop"])}
+          >
             <img
               alt={`Photo ${index}`}
               src={`/${url}`}
-              height="250"
-              width="250"
+              height="125"
+              width="200"
             />
           </a>
+
+          <div>
+            <Typography variant="caption">
+              {getPhotoCredits(url, imageData["Cover Crop"])}
+            </Typography>
+          </div>
         </div>
       ))}
     </Suspense>
@@ -78,3 +96,29 @@ const PhotoComponent = ({
 };
 
 export default PhotoComponent;
+
+const getPhotoCredits = (url = "", cropName = "") => {
+  // get base file name
+  let fileName = baseName(url);
+
+  let fileNameArray = fileName.split("_");
+
+  // get last value of array
+  const {
+    length,
+    [length - 1]: last,
+    [length - 2]: secondLast,
+  } = fileNameArray;
+  const year = parseInt(last);
+
+  return `${cropName} - ${secondLast} [${year}]`;
+};
+
+const baseName = (path = "") => {
+  let separator = "/";
+  const windowsSeparator = "\\";
+  if (path.includes(windowsSeparator)) {
+    separator = windowsSeparator;
+  }
+  return path.slice(path.lastIndexOf(separator) + 1);
+};

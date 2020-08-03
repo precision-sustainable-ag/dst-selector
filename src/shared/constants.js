@@ -1343,23 +1343,44 @@ export const CropImage = ({
   src = "",
   alt = "",
   view = "",
+  className = "",
+  onClick = () => {},
 }) => {
   const placeholder = "//placehold.it/100x100";
-  const lazyHeight = view === "calendar" ? 50 : 100;
-  const imageStyle =
-    view === "calendar"
-      ? {
-          width: "50px",
-          height: "50px",
-          maxWidth: "50px",
-          maxHeight: "50px",
-        }
-      : {
-          width: "100px",
-          height: "100px",
-          maxWidth: "100px",
-          maxHeight: "100px",
-        };
+  const lazyHeight =
+    view === "calendar" ? 50 : view === "information-sheet" ? 250 : 100;
+
+  let imageStyle = {};
+
+  switch (view) {
+    case "calendar":
+      imageStyle = {
+        width: "50px",
+        height: "50px",
+        maxWidth: "50px",
+        maxHeight: "50px",
+      };
+      break;
+    case "information-sheet":
+      imageStyle = {
+        width: "255px",
+        height: "250px",
+      };
+      break;
+    case "photo-grid":
+      imageStyle = {
+        width: "200px",
+        height: "200px",
+      };
+      break;
+    default:
+      imageStyle = {
+        width: "100px",
+        height: "100px",
+        maxWidth: "100px",
+        maxHeight: "100px",
+      };
+  }
 
   return (
     <Suspense
@@ -1373,6 +1394,8 @@ export const CropImage = ({
       }
     >
       <img
+        className={className ? className : `image-for-${alt}`}
+        onClick={onClick}
         src={present ? src : placeholder}
         alt={present ? alt : "Placeholder"}
         style={imageStyle}
