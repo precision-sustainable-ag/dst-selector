@@ -100,7 +100,7 @@
         "name": "Duration",
         "type": "chip",
         "maxSize": null,
-        "values": ["Annual", "Biennial", "Short-Lived Perennial", "Perennial"],
+        "values": ["Annual", "Biennial", "Short-lived Perennial", "Perennial"],
         "description": "Length of time during which the cover crop's entire lifecycle is completed in the selected zone. Cover crops that have different Durations depending on environment or location are reported in order of increasing longevity in nature"
       },
       {
