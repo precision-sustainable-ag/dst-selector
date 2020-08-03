@@ -33,15 +33,26 @@ const removeHeaderContent = () => {
 const InformationSheet = (props) => {
   const [state] = useContext(Context);
 
+  const name = props.match.params.cropName
+    ? props.match.params.cropName
+    : "none";
+
+  const cropData = props.match.params.cropName
+    ? state.cropData.find(
+        (crop) => crop.fields["Cover Crop Name"] === props.match.params.cropName
+      )
+    : "none";
   //   check if crop data is passed as crop
   //   elseif, check if localstorage has infosheet data else use default crop data
   const [referrer, setReferrer] = useState("direct");
   const [crop] = useState(
-    props.crop
+    name === "none"
       ? props.crop
-      : window.localStorage.getItem("infosheet") !== null
-      ? JSON.parse(window.localStorage.getItem("infosheet"))
-      : BasicCrop
+        ? props.crop
+        : window.localStorage.getItem("infosheet") !== null
+        ? JSON.parse(window.localStorage.getItem("infosheet"))
+        : BasicCrop
+      : cropData.fields
   );
   const ref = React.createRef();
   const from = props.from || "direct";
