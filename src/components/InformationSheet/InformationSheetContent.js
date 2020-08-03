@@ -33,6 +33,7 @@ const InformationSheetContent = (props) => {
           overflowX: "auto",
           whiteSpace: "nowrap",
           flexWrap: "nowrap",
+          WebkitOverflowScrolling: "touch",
         }}
       >
         <PhotoComponent
@@ -535,7 +536,7 @@ const InformationSheetContent = (props) => {
               <div className="col-3 mb-2">
                 <div className="blue-bg">
                   <Typography variant="body1">
-                    {crop["Aerial Seeding"] !== -999 ? "Yes" : "No"}
+                    {crop["Aerial Seeding"] ? "Yes" : "No"}
                   </Typography>
                 </div>
               </div>
@@ -545,7 +546,7 @@ const InformationSheetContent = (props) => {
               <div className="col-3 mb-2">
                 <div className="blue-bg">
                   <Typography variant="body1">
-                    {crop["Frost Seeding"] !== -999 ? "Yes" : "No"}
+                    {crop["Frost Seeding"] ? "Yes" : "No"}
                   </Typography>
                 </div>
               </div>
@@ -635,7 +636,7 @@ const InformationSheetContent = (props) => {
               <div className="col-3 mb-2">
                 <div className="blue-bg">
                   <Typography variant="body1">
-                    {crop["Frost Seeding"] !== -999
+                    {crop["Frost Seeding"]
                       ? `${moment(crop["Frost Seeding Start"], "YYYY-MM-DD")
                           .format("MM/DD")
                           .toString()} - ${moment(
@@ -704,6 +705,7 @@ const InformationSheetContent = (props) => {
           overflowX: "auto",
           whiteSpace: "nowrap",
           flexWrap: "nowrap",
+          WebkitOverflowScrolling: "touch",
         }}
       >
         <PhotoComponent
@@ -1180,11 +1182,13 @@ const InformationSheetContent = (props) => {
                     <Typography variant="body1">Root Architecture</Typography>
                   </div>
                   <div className="col-3 mb-2">
-                    <div className="blue-bg">
-                      <Typography variant="body1">
-                        {crop["Root Architecture"]}
-                      </Typography>
-                    </div>
+                    {crop["Root Architecture"].map((val, index) => (
+                      <div className="blue-bg bordered" key={index}>
+                        <Typography variant="body1" className="text-capitalize">
+                          {val}
+                        </Typography>
+                      </div>
+                    ))}
                   </div>
                   <div className="col-9 mb-2">
                     <Typography variant="body1">Root Depth</Typography>
@@ -1282,7 +1286,7 @@ const InformationSheetContent = (props) => {
                   <div className="col-3 mb-2">
                     <div className="blue-bg">
                       <Typography variant="body1">
-                        {crop["Aerial Seeding"] !== -999 ? "Yes" : "No"}
+                        {crop["Aerial Seeding"] ? "Yes" : "No"}
                       </Typography>
                     </div>
                   </div>
@@ -1292,7 +1296,7 @@ const InformationSheetContent = (props) => {
                   <div className="col-3 mb-2">
                     <div className="blue-bg">
                       <Typography variant="body1">
-                        {crop["Frost Seeding"] !== -999 ? "Yes" : "No"}
+                        {crop["Frost Seeding"] ? "Yes" : "No"}
                       </Typography>
                     </div>
                   </div>
@@ -1402,7 +1406,7 @@ const InformationSheetContent = (props) => {
               <div className="col-3 mb-2">
                 <div className="blue-bg">
                   <Typography variant="body1">
-                    {crop["Frost Seeding"] !== -999
+                    {crop["Frost Seeding"]
                       ? `${moment(crop["Frost Seeding Start"], "YYYY-MM-DD")
                           .format("MM/DD")
                           .toString()} - ${moment(

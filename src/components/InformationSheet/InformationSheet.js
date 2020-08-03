@@ -6,19 +6,11 @@ import {
   Print,
   Close,
   Info,
-  PhotoLibrary,
 } from "@material-ui/icons";
 import { Typography, Button } from "@material-ui/core";
-import {
-  zoneIcon,
-  getRating,
-  RenderSeedPriceIcons,
-  CropImage,
-} from "../../shared/constants";
+import { zoneIcon, CropImage } from "../../shared/constants";
 import { Context } from "../../store/Store";
-import SoilDrainageTimeline from "./SoilDrainageTimeline";
-import moment from "moment";
-import Pdf from "react-to-pdf";
+
 import html2canvas from "html2canvas";
 import * as JSPDF from "jspdf";
 import { saveAs } from "file-saver";
@@ -117,12 +109,14 @@ const InformationSheet = (props) => {
   return (
     <div className="wrapper container-fluid" ref={ref}>
       <header className="row greenHeader">
-        <div className="col-9">
+        <div className="col-10">
           <span className="pr-4">DOWNLOAD:</span>
           <span className="pr-2">
             <Button
               style={{ color: "white" }}
-              onClick={() => exportToPdf(crop["Cover Crop Name"])}
+              href={`/pdf/${crop["Cover Crop Name"]}.pdf`}
+              target="_blank"
+              rel="noreferer"
             >
               <PictureAsPdf /> &nbsp; PDF
             </Button>
@@ -137,7 +131,7 @@ const InformationSheet = (props) => {
             </Button>
           </span>
         </div>
-        <div className="col-2">
+        <div className="col-1">
           <Button onClick={window.print} style={{ color: "white" }}>
             <Print /> &nbsp;PRINT
           </Button>
@@ -211,7 +205,7 @@ const InformationSheet = (props) => {
           </span>
         </div>
         <div className="col-6 text-right">
-          <PhotoLibrary /> <span className="pl-2">View Photos</span>
+          {/* <PhotoLibrary /> <span className="pl-2">View Photos</span> */}
         </div>
       </div>
 
