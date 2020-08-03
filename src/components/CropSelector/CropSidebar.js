@@ -150,33 +150,11 @@ const CropSidebarComponent = (props) => {
       (crop) => crop.fields["Zone Decision"] === "Include"
     );
 
-    // const sidebarKeys = Object.keys(sidebarFilterOptions);
+    const sidebarKeys = Object.keys(sidebarFilterOptions);
 
-    // const nonZeroKeys = sidebarKeys.filter(function (key) {
-    //   return sidebarFilterOptions[key].length > 0;
-    // });
-
-    // const nonZeroes = Object.keys(filterKeys).map((key) => {
-    //   if(filterKeys[key].length !== 0) {
-    //     return {[key]: filterKeys[key]}
-    //   } else return ""
-    // })
-    // let nonZeroKeys = nonZeroes.filter(val => val !== "");
-
-    const nonZeroes = Object.keys(sidebarFilterOptions).map((key) => {
-      if (sidebarFilterOptions[key].length !== 0) {
-        return { [key]: sidebarFilterOptions[key] };
-      } else return "";
+    const nonZeroKeys = sidebarKeys.filter(function (key) {
+      return sidebarFilterOptions[key].length > 0;
     });
-    const nonZeroKeys2 = nonZeroes.filter((val) => val !== "");
-
-    const nonZeroKeys = nonZeroKeys2.map((obj) => {
-      // console.log(obj)
-      console.log(Object.keys(obj));
-      return Object.keys(obj).toString();
-    });
-
-    // console.log(nonZeroKeys)
 
     dispatch({
       type: "UPDATE_FILTER_KEYS",
@@ -185,28 +163,7 @@ const CropSidebarComponent = (props) => {
       },
     });
     if (nonZeroKeys.length > 0) {
-      // const filtered = getFilteredObjects(crop_data, nonZeroKeys);
-
-      const filtered = crop_data.filter((crop) => {
-        const totalActiveFilters = Object.keys(nonZeroKeys2).length;
-        let i = 0;
-        nonZeroKeys2.forEach((keyObject) => {
-          const key = Object.keys(keyObject);
-          const vals = keyObject[key];
-
-          // console.log({[key]: vals})
-          // if(keyObject[key])
-
-          // console.log('expected', vals);
-          // console.log('got', crop.fields[key])
-          if (vals.includes(crop.fields[key])) {
-            // console.log('yay')
-            i++;
-          }
-        });
-        // console.log(i)
-        if (i === totalActiveFilters) return true;
-      });
+      const filtered = getFilteredObjects(crop_data, nonZeroKeys);
 
       const inactives = crop_data.filter((e) => !filtered.includes(e));
 
@@ -214,9 +171,9 @@ const CropSidebarComponent = (props) => {
       props.setActiveCropData(filtered);
       props.setInactiveCropData(inactives);
       // }
-      // console.log("total", crop_data.length);
-      // console.log("active", filtered.length);
-      // console.log("inactive", inactives.length);
+      console.log("total", crop_data.length);
+      console.log("active", filtered.length);
+      console.log("inactive", inactives.length);
       //
     } else {
       props.setActiveCropData(crop_data);
@@ -270,6 +227,9 @@ const CropSidebarComponent = (props) => {
   }, [sidebarFilterOptions]);
 
   const getFilteredObjects = (data = [], keys = []) => {
+    // let filterObj = jslinq(data);
+    // console.log(keys);
+    // console.log(data);
     return data.filter((crop) => {
       return keys.every((key) => {
         if (Array.isArray(crop.fields[key])) {
@@ -297,7 +257,6 @@ const CropSidebarComponent = (props) => {
       });
     });
   };
-
   useEffect(() => {
     if (props.isListView) {
       setCropFiltersOpen(true);
