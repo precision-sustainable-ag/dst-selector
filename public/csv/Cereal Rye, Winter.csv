@@ -1,2 +1,35 @@
-_id._bsontype,_id.id.0,_id.id.1,_id.id.2,_id.id.3,_id.id.4,_id.id.5,_id.id.6,_id.id.7,_id.id.8,_id.id.9,_id.id.10,_id.id.11,Cover Crop Name,Scientific Name,"cv, var, or ssp to specify",Origin,Common Mixes,Drought Tolerance,Shade Tolerance,Flood Tolerance,Low Fertility Tolerance,Salinity Tolerance,Winter Survival,Notes: Environmental Tolerances,Active Growth Period,Duration,Shape & Orientation,Review Status,Soil Drainage,Min Germination Temp (F),Seeds per Pound,Inoculant Type (Legumes Only),Seeding Rate: Broadcast (w/cultivation) (lbs/A),Planting green,Seeding Rate: Drilled (lbs/A),Seeding Rate: Aerial (lbs/A),Drilled Depth Min,Notes: Planting,Loosens Topsoil,Frees P & K,Growing Window,Ease of Establishment,Family Common Name,Family Scientific Name,Soil Textures,Minimum Tolerant Soil pH,Maximum Tolerant Soil pH,Soil Moisture Use,Cover Crop Group,Heat Tolerance,Seed Price per Pound,Can Aerial Seed,USDA Symbol,Zone Decision,Zone Use,Shape & Orientation-USDA PLANTS,Flooding Tolerance,"Nitrogen Accumulation Min, Legumes (lbs/A/y)",Dry Matter Min (lbs/A/y),C to N Ratio,Active Growth Period-USDA PLANTS,Loosens Subsurface Soil,Supports Mycorrhizae,Early Spring Growth,Flowering Trigger,Establishes Quickly,Root Architecture,Root Depth,"Notes: Growth, Roots, and Nutrients",Tillage Termination at Vegetative,Tillage Termination at Flowering,Freezing Termination at Vegetative,Freezing Termination at Flowering,Chemical Termination at Flowering,Mow Termination at Flowering,Chemical Termination at Vegetative,Mow Tolerance at Vegetative,Roller Crimp Tolerance at Flowering,Roller Crimp Tolerance at Vegetative,Volunteer Establishment,Persistence,Notes: Weeds,Seed price per acre: Drilled/Cultipack and Cultivation,Seed price per acre: Broadcast (w/cultivation),Seed price per acre: Aerial,Improve Soil Organic Matter,Increase Soil Aggregation,Lasting Residue,Penetrates Plow Pan,Base Seeding Rate Min (lbs/A),Base Seeding Rate Max (lbs/A),"Nitrogen Accumulation Max, Legumes (lbs/A/y)",Dry Matter Max (lbs/A/y),Drilled Depth Max,Reduces Topsoil Compaction,"August, Early","August, Mid","September, Early","September, Mid","October, Early","October, Mid","November, Early","November, Mid","December, Early","December, Mid",Prevent Fall Soil Erosion,Prevent Spring Soil Erosion,Promote Water Quality,Nitrogen Scavenging,Good Grazing,Forage Harvest Value,Image,C to N Ratio - 3 stars,Residue Suppresses Summer Annual Weeds,Outcompetes Summer Annual Weeds,Disoucrages Nematodes,Promotes Nematodes,Discourages Pest Insects,Promotes Pest Insects,Suppresses Cash Crop Disease,Promotes Cash Crop Disease,Early Fall/Winter Seeding Rate Start,Early Fall/ Winter Seeding Rate Stop,Standard Fall/Winter Seeding Rate Date Start,Standard Fall/Winter Seeding Rate Date End,Late Fall/Winter Planting Date Start,Late Fall/Winter Planting Date End,Can Interseed Start,Can Interseed End,Suppresses Winter Annual Weeds,Notes,Reliable Establishment/Growth Start,Reliable Establishment/Growth End,Temperature/Moisture Risk to Establishment Start,Temperature/Moisture Risk to Establishment End,__id
-ObjectID,95,6,7,115,34,65,132,62,125,168,44,19,"Cereal Rye, Winter",Secale cereale,Winter cultivars,MCCC Species tool,"[""recopw6BgCK0wPYRI"",""recazjIkURftIEMrh"",""recYVvnzarw6FnLvt"",""rec5tiJWkaZ6CWAMX""]",4,3,3,4,2,"[""Expected""]",Does very poorly under low-N conditions like most grasses.,"[""Fall"",""Spring""]","[""Annual""]","[""Erect""]",Zone Team Start,"[""Somewhat poorly drained"",""Moderately well drained"",""Well drained"",""Saturated muck"",""Well drained muck""]",34,18160,"[""none""]",55-100,"Utilizing a roller-crimper is suggested when planting corn into material greater than 12"" tall as un-rolled cover may impact emergence.",50-120,60-108,0.75,If you are planning to use as a killed cover crop mulch for following crop you need to seed at higher rate - up to 150 lbs/acre,5,2,Long,5,Grass family,Poaceae,"[""coarse"",""medium"",""fine""]",4.5,8.2,High,Grass,4,1,true,SECE,Include,Common,Erect,Moderate,0,1000,4,"[""Spring"",""Summer"",""Fall""]",3,5,5,"[""Requires vernalization (spring)""]",4,"[""Fibrous""]",Medium,Deep rooting to recover nitrogen requires earlier planting than plantings for winter erosion  protection,1,1,1,3,5,4,5,4,5,3,5,1,Can become a weed if tilled at wrong stage;  Best if killed early; Not recommended before corn; Mow-kills after heading,2,2,2,5,5,5,3,40,90,0,8000,1.5,5,"[""Early seeding rate""]","[""Reliable establishment/growth"",""Early seeding rate""]","[""Reliable establishment/growth"",""Early seeding rate""]","[""Reliable establishment/growth"",""Standard seeding rate""]","[""Reliable establishment/growth"",""Standard seeding rate""]","[""Reliable establishment/growth"",""Late seeding rate""]","[""Reliable establishment/growth""]","[""Reliable establishment/growth""]","[""Temperature/moisture risk to establishment/growth""]","[""Temperature/moisture risk to establishment/growth""]",5,5,4,5,4,5,"[{""id"":""attWGHM8JoGNB0yhv"",""url"":""https://dl.airtable.com/.attachments/3bda658bc0fea1318dbfde265003d419/d2d86893/Cerealrye-flowering-Ackroyd.JPG"",""filename"":""Cereal rye - flowering - Ackroyd.JPG"",""size"":1024767,""type"":""image/jpeg"",""thumbnails"":{""small"":{""url"":""https://dl.airtable.com/.attachmentThumbnails/f5f0e61e864b68906f5107c74b138a10/9f218c40"",""width"":31,""height"":36},""large"":{""url"":""https://dl.airtable.com/.attachmentThumbnails/d98ea674003cc16c260e3eb21e53996e/151986f2"",""width"":512,""height"":597},""full"":{""url"":""https://dl.airtable.com/.attachmentThumbnails/7d478ecc65339f407b89bcc1d3a74ea1/43f72388"",""width"":3000,""height"":3000}}}]",3,5,3,4,1,4,1,2,3,2020-08-01,2020-09-20,2020-09-21,2020-11-15,2020-11-15,2020-12-01,2020-09-01,2020-09-21,5,"Can be lightly grazed in the fall and again in the spring, or harvested in the spring as ryelage.",2020-09-21,2020-11-15,2020-11-15,2020-12-01,recCrEq5YQ9yLsxeN
+Category,Attribute,Value
+Environmental Tolerance,Drought Tolerance,4
+Environmental Tolerance,Shade Tolerance,3
+Environmental Tolerance,Flood Tolerance,3
+Environmental Tolerance,Low Fertility Tolerance,4
+Environmental Tolerance,Salinity Tolerance,2
+Growth,Winter Survival,Expected
+Growth,Active Growth Period,Fall and Spring
+Growth,Duration,Annual
+Growth,Growing Window,Long
+Growth,Ease of Establishment,5
+Cover Crop Type,,Grass
+Environmental Tolerance,Heat Tolerance,4
+Seeds,Seed Price per Pound,1
+Seeding Methods,Aerial Seeding, Yes
+Beneficials,Supports Mycorrhizae,5
+Growth,Early Spring Growth,5
+Growth,Establishes Quickly,4
+Roots,Root Architecture,Fibrous
+Roots,Root Depth,Medium
+Termination Methods,Tillage Termination at Vegetative,1
+Termination Methods,Tillage Termination at Flowering,1
+Termination Methods,Freezing Termination at Vegetative,1
+Termination Methods,Chemical Termination at Flowering,5
+Termination Methods,Mow Termination at Flowering,4
+Termination Methods,Chemical Termination at Vegetative,5
+Termination Methods,Roller Crimp Tolerance at Flowering,5
+Weeds,Volunteer Establishment,5
+Weeds,Persistence,1
+Disease & Non Weed Pests,Disoucrages Nematodes,4
+Disease & Non Weed Pests,Promotes Nematodes,1
+Disease & Non Weed Pests,Discourages Pest Insects,4
+Disease & Non Weed Pests,Promotes Pest Insects,1
+Disease & Non Weed Pests,Suppresses Cash Crop Disease,2
+Disease & Non Weed Pests,Promotes Cash Crop Disease,3
