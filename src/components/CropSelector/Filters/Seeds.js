@@ -1,10 +1,15 @@
-import React, { useState, useEffect, Fragment, useContext } from "react";
+import React, {
+  useState,
+  useEffect,
+  Fragment,
+  forwardRef,
+  useImperativeHandle,
+} from "react";
 import { Grid, Tooltip } from "@material-ui/core";
 import ToggleButton from "@material-ui/lab/ToggleButton";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
-import { Context } from "../../../store/Store";
 
-const Seeds = (props) => {
+const Seeds = forwardRef((props, ref) => {
   const [selected, setSelected] = useState({ "Seed Price per Pound": [] });
 
   const handleChange = (newValue, name) => {
@@ -18,14 +23,11 @@ const Seeds = (props) => {
     });
   }, [selected]);
 
-  const { filterKeys } = useContext(Context);
-  useEffect(() => {
-    if (filterKeys) {
-      if (filterKeys.length === 0) {
-        setSelected({ "Seed Price per Pound": [] });
-      }
-    }
-  }, [filterKeys]);
+  useImperativeHandle(ref, () => ({
+    resetFilters() {
+      setSelected({ "Seed Price per Pound": [] });
+    },
+  }));
   return (
     <Grid container spacing={1}>
       {props.filters.values.map((val, index) => (
@@ -90,6 +92,6 @@ const Seeds = (props) => {
       ))}
     </Grid>
   );
-};
+});
 
 export default Seeds;

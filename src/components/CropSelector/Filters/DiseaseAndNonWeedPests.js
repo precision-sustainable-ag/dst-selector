@@ -1,12 +1,17 @@
-import React, { useState, useEffect, Fragment, useContext } from "react";
+import React, {
+  useState,
+  useEffect,
+  Fragment,
+  forwardRef,
+  useImperativeHandle,
+} from "react";
 import { Grid, Tooltip } from "@material-ui/core";
 import ToggleButton from "@material-ui/lab/ToggleButton";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 
-import { Context } from "../../../store/Store";
 import "../../../styles/filters.scss";
 
-const DiseaseAndNonWeedPests = (props) => {
+const DiseaseAndNonWeedPests = forwardRef((props, ref) => {
   const [selected, setSelected] = useState({
     "Discourages Nematodes": [], // int
     "Promotes Nematodes": [], // int
@@ -25,21 +30,18 @@ const DiseaseAndNonWeedPests = (props) => {
     setProps(selected);
   }, [selected]);
 
-  const { filterKeys } = useContext(Context);
-  useEffect(() => {
-    if (filterKeys) {
-      if (filterKeys.length === 0) {
-        setSelected({
-          "Discourages Nematodes": [], // int
-          "Promotes Nematodes": [], // int
-          "Discourages Pest Insects": [], // int
-          "Promotes Pest Insects": [], // int
-          "Suppresses Cash Crop Disease": [], // int
-          "Promotes Cash Crop Disease": [], // int
-        });
-      }
-    }
-  }, [filterKeys]);
+  useImperativeHandle(ref, () => ({
+    resetFilters() {
+      setSelected({
+        "Discourages Nematodes": [], // int
+        "Promotes Nematodes": [], // int
+        "Discourages Pest Insects": [], // int
+        "Promotes Pest Insects": [], // int
+        "Suppresses Cash Crop Disease": [], // int
+        "Promotes Cash Crop Disease": [], // int
+      });
+    },
+  }));
 
   const handleChange = (newValue, name) => {
     setSelected({ ...selected, [name]: newValue });
@@ -145,6 +147,6 @@ const DiseaseAndNonWeedPests = (props) => {
       })}
     </Grid>
   );
-};
+});
 
 export default DiseaseAndNonWeedPests;

@@ -1,8 +1,12 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, {
+  useState,
+  useEffect,
+  forwardRef,
+  useImperativeHandle,
+} from "react";
 import { Grid, Chip, Tooltip } from "@material-ui/core";
-import { Context } from "../../../store/Store";
 
-const Roots = (props) => {
+const Roots = forwardRef((props, ref) => {
   const [selected, setSelected] = useState({
     "Root Architecture": [],
     "Root Depth": [],
@@ -27,17 +31,14 @@ const Roots = (props) => {
     });
   }, [selected]);
 
-  const { filterKeys } = useContext(Context);
-  useEffect(() => {
-    if (filterKeys) {
-      if (filterKeys.length === 0) {
-        setSelected({
-          "Root Architecture": [],
-          "Root Depth": [],
-        });
-      }
-    }
-  }, [filterKeys]);
+  useImperativeHandle(ref, () => ({
+    resetFilters() {
+      setSelected({
+        "Root Architecture": [],
+        "Root Depth": [],
+      });
+    },
+  }));
 
   return props.filters.values.map((subFilter, index) => (
     <Grid container key={index} spacing={1}>
@@ -75,6 +76,6 @@ const Roots = (props) => {
       ))}
     </Grid>
   ));
-};
+});
 
 export default Roots;

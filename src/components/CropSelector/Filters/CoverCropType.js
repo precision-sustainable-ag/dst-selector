@@ -1,8 +1,12 @@
-import React, { useState, useEffect, Fragment, useContext } from "react";
-import { Chip, List, ListItem, Grid, Typography } from "@material-ui/core";
-import { Context } from "../../../store/Store";
+import React, {
+  useState,
+  useEffect,
+  forwardRef,
+  useImperativeHandle,
+} from "react";
+import { Chip, Grid } from "@material-ui/core";
 
-const CoverCropType = (props) => {
+const CoverCropType = forwardRef((props, ref) => {
   const [selected, setSelected] = useState({ "Cover Crop Group": [] });
 
   useEffect(() => {
@@ -12,14 +16,11 @@ const CoverCropType = (props) => {
     });
   }, [selected]);
 
-  const { filterKeys } = useContext(Context);
-  useEffect(() => {
-    if (filterKeys) {
-      if (filterKeys.length === 0) {
-        setSelected({ "Cover Crop Group": [] });
-      }
-    }
-  }, [filterKeys]);
+  useImperativeHandle(ref, () => ({
+    resetFilters() {
+      setSelected({ "Cover Crop Group": [] });
+    },
+  }));
 
   const handleClick = (name, val) => {
     if (selected["Cover Crop Group"].includes(val)) {
@@ -54,6 +55,6 @@ const CoverCropType = (props) => {
       ))}
     </Grid>
   );
-};
+});
 
 export default CoverCropType;

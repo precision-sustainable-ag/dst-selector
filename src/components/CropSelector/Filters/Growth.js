@@ -1,9 +1,14 @@
-import React, { useState, useEffect, Fragment, useContext } from "react";
+import React, {
+  useState,
+  useEffect,
+  Fragment,
+  forwardRef,
+  useImperativeHandle,
+} from "react";
 import { Chip, Grid, Tooltip } from "@material-ui/core";
 import ToggleButton from "@material-ui/lab/ToggleButton";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
-import { Context } from "../../../store/Store";
-const Growth = (props) => {
+const Growth = forwardRef((props, ref) => {
   const [selected, setSelected] = useState({
     Duration: [], // array
     "Active Growth Period": [], //array
@@ -35,23 +40,20 @@ const Growth = (props) => {
     });
   }, [selected]);
 
-  const { filterKeys } = useContext(Context);
-  useEffect(() => {
-    if (filterKeys) {
-      if (filterKeys.length === 0) {
-        setSelected({
-          Duration: [], // array
-          "Active Growth Period": [], //array
-          "Growing Window": [], // string
-          "Establishes Quickly": [], // int
-          "Ease of Establishment": [], // int
-          "Winter Survival": [], // array
-          "Early Spring Growth": [], // int
-          "Flowering Trigger": [], // array
-        });
-      }
-    }
-  }, [filterKeys]);
+  useImperativeHandle(ref, () => ({
+    resetFilters() {
+      setSelected({
+        Duration: [], // array
+        "Active Growth Period": [], //array
+        "Growing Window": [], // string
+        "Establishes Quickly": [], // int
+        "Ease of Establishment": [], // int
+        "Winter Survival": [], // array
+        "Early Spring Growth": [], // int
+        "Flowering Trigger": [], // array
+      });
+    },
+  }));
 
   const RenderChips = (props) => {
     return props.subFilter.values.map((val, index) => (
@@ -190,6 +192,6 @@ const Growth = (props) => {
       {/* {subFilter.values.map((val, index2) => subFilter.type)} */}
     </Grid>
   ));
-};
+});
 
 export default Growth;
