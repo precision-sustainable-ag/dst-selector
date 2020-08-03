@@ -156,14 +156,14 @@
         "name": "Root Architecture",
         "type": "chip",
         "maxSize": null,
-        "values": ["Shallow", "Medium", "Deep"],
+        "values": ["Tap", "Fibrous"],
         "description": "Primary root structure: tap or fibrous"
       },
       {
         "name": "Root Depth",
         "type": "chip",
         "maxSize": null,
-        "values": ["Tap", "Fibrous"],
+        "values": ["Shallow", "Medium", "Deep"],
         "description": "Depth to which the cover crop roots? Considers the relative ability of the roots to grow deeper than the previous crop (to reach residual nitrogen)"
       }
     ]
