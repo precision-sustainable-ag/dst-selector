@@ -155,6 +155,12 @@
     "Notes": "In Oats Directory",
     "Directory": "Oats"
   },
+  "Oats": {
+    "Cover Crop": "Oats, Spring",
+    "Key Thumbnail": "Oats_mature_Bjorkman_2020.jpg",
+    "Notes": "In Oats Directory",
+    "Directory": "Oats"
+  },
   "Oats, Black": {
     "Cover Crop": "Oats, Black",
     "Key Thumbnail": null,
@@ -203,11 +209,11 @@
     "Notes": null,
     "Directory": "Clover, Red"
   },
-  "Clover Crimson": {
-    "Cover Crop": "Clover Crimson",
+  "Clover, Crimson": {
+    "Cover Crop": "Clover, Crimson",
     "Key Thumbnail": "Clover_crimson_flowering_Mirsky_lab_2020.JPG",
     "Notes": null,
-    "Directory": "Clover Crimson"
+    "Directory": "Clover, Crimson"
   },
   "Clover, Berseem": {
     "Cover Crop": "Clover, Berseem",
