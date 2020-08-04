@@ -279,6 +279,12 @@ const Reducer = (state, action) => {
         filterKeys: action.data.filterKeys,
       };
     }
+    case "UPDATE_ACTIVE_GROWTH_PERIOD": {
+      return {
+        ...state,
+        activeGrowthPeriod: action.data.activeGrowthPeriod,
+      };
+    }
 
     default:
       return state;

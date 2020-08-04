@@ -231,6 +231,16 @@ const CropCalendarViewComponent = (props) => {
     return _promise;
   };
 
+  const checkIfGrowthMonth = (month) => {
+    const { activeGrowthPeriod } = state;
+
+    if (activeGrowthPeriod.length !== 0) {
+      if (activeGrowthPeriod.includes(month)) return true;
+      else return false;
+    } else {
+      return false;
+    }
+  };
   return (
     <Fragment>
       {/* <div className="table-responsive calendarViewTableWrapper"> */}
@@ -253,50 +263,166 @@ const CropCalendarViewComponent = (props) => {
             <TableHead className="tableHeadWrapper">
               <TableRow>
                 <TableCell
-                  colSpan={state.selectedGoals.length === 0 ? 1 : 2}
+                  colSpan={state.activeGrowthPeriod.length === 0 ? 2 : 1}
                   style={{ backgroundColor: "white" }}
                 ></TableCell>
-                <TableCell
-                  colSpan="12"
-                  style={{
-                    borderRight: "0px",
-                    borderBottom: "5px solid white",
-                    // borderTopLeftRadius: "10px",
-                    // borderTopRightRadius: "10px",
-                  }}
-                >
-                  <Typography
-                    variant="body1"
+                {state.activeGrowthPeriod.length === 0 ? (
+                  <TableCell
+                    colSpan="12"
                     style={{
-                      width: "50%",
-                      display: "inline-block",
-                      textAlign: "right",
+                      borderBottom: "5px solid white",
                     }}
                   >
-                    {currentYear} COVER CROP GROWTH WINDOW
-                  </Typography>
-                </TableCell>
+                    <Typography variant="body1">
+                      {currentYear} COVER CROP GROWTH WINDOW
+                    </Typography>
+                  </TableCell>
+                ) : (
+                  <Fragment>
+                    <TableCell
+                      colSpan="1"
+                      style={{
+                        borderBottom: "5px solid white",
+                      }}
+                    >
+                      <Typography variant="body1">
+                        ACTIVE GROWTH PERIOD
+                      </Typography>
+                    </TableCell>
+
+                    {state.activeGrowthPeriod.includes("Jan") ? (
+                      <TableCell
+                        style={{
+                          borderBottom: "5px solid #598444",
+                          backgroundColor: "#598444",
+                          borderRight: "1px solid black",
+                        }}
+                        colSpan="2"
+                      >
+                        <Typography variant="body1">WINTER</Typography>
+                      </TableCell>
+                    ) : (
+                      <TableCell
+                        style={{ borderBottom: "5px solid white" }}
+                        colSpan="2"
+                      ></TableCell>
+                    )}
+
+                    {state.activeGrowthPeriod.includes("Mar") ? (
+                      <TableCell
+                        style={{
+                          borderBottom: "5px solid #598444",
+                          backgroundColor: "#598444",
+                          borderRight: "1px solid black",
+                        }}
+                        colSpan="3"
+                      >
+                        <Typography variant="body1">SPRING</Typography>
+                      </TableCell>
+                    ) : (
+                      <TableCell
+                        style={{ borderBottom: "5px solid white" }}
+                        colSpan="3"
+                      ></TableCell>
+                    )}
+
+                    {state.activeGrowthPeriod.includes("Jun") ? (
+                      <TableCell
+                        style={{
+                          borderBottom: "5px solid #598444",
+                          backgroundColor: "#598444",
+                          borderRight: "1px solid black",
+                        }}
+                        colSpan="3"
+                      >
+                        <Typography variant="body1">SUMMER</Typography>
+                      </TableCell>
+                    ) : (
+                      <TableCell
+                        style={{ borderBottom: "5px solid white" }}
+                        colSpan="3"
+                      ></TableCell>
+                    )}
+
+                    {state.activeGrowthPeriod.includes("Sep") ? (
+                      <TableCell
+                        style={{
+                          borderBottom: "5px solid #598444",
+                          backgroundColor: "#598444",
+                          borderRight: "1px solid black",
+                        }}
+                        colSpan="3"
+                      >
+                        <Typography variant="body1">FALL</Typography>
+                      </TableCell>
+                    ) : (
+                      <TableCell
+                        style={{ borderBottom: "5px solid white" }}
+                        colSpan="3"
+                      ></TableCell>
+                    )}
+                    {state.activeGrowthPeriod.includes("Dec") ? (
+                      <TableCell
+                        style={{
+                          borderBottom: "5px solid #598444",
+                          backgroundColor: "#598444",
+                          borderRight: "1px solid black",
+                        }}
+                        colSpan="1"
+                      ></TableCell>
+                    ) : (
+                      <TableCell
+                        style={{ borderBottom: "5px solid white" }}
+                        colSpan="1"
+                      ></TableCell>
+                    )}
+                  </Fragment>
+                )}
+
                 <TableCell style={{ backgroundColor: "white" }}></TableCell>
               </TableRow>
               <TableRow>
-                <TableCell style={{ width: "16%" }}>
+                <TableCell
+                  style={{ width: "16%", borderRight: "5px solid white" }}
+                >
                   <Typography variant="body1">COVER CROPS</Typography>
                 </TableCell>
                 {state.selectedGoals.length === 0 ? (
                   ""
                 ) : (
-                  <TableCell style={{ width: "10%" }}>
+                  <TableCell
+                    style={{ width: "10%", borderRight: "5px solid white" }}
+                  >
                     <Typography variant="body1">AVERAGE GOAL RATING</Typography>
                   </TableCell>
                 )}
 
-                {allMonths.map((month, index) => (
-                  <TableCell key={`monthskey${index}`} style={{}}>
-                    <Typography variant="body1">{month}</Typography>
-                  </TableCell>
-                ))}
+                {allMonths.map((month, index) => {
+                  const growthMonth = checkIfGrowthMonth(month);
+                  const growthMonthSeparator = growthMonth
+                    ? month === "Feb" ||
+                      month === "May" ||
+                      month === "Aug" ||
+                      month === "Nov"
+                      ? true
+                      : false
+                    : false;
 
-                <TableCell style={{ width: "10%" }}>
+                  return (
+                    <TableCell
+                      key={`monthskey${index}`}
+                      className={`calendarSecondHeadMonth ${
+                        growthMonth ? `activeGrowthMonth` : ``
+                      } ${growthMonthSeparator ? `growthMonthSeparator` : ``}`}
+                    >
+                      <Typography variant="body1">{month}</Typography>
+                    </TableCell>
+                  );
+                })}
+
+                <TableCell
+                  style={{ width: "10%", borderLeft: "5px solid white" }}
+                >
                   <Typography variant="body1">MY LIST</Typography>
                   <Typography variant="subtitle1">
                     {/* <br /> */}
