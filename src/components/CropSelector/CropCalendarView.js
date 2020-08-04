@@ -23,6 +23,7 @@ import {
   allGoalsURL,
   getRating,
   CropImage,
+  CustomStyles,
 } from "../../shared/constants";
 import "../../styles/cropCalendarViewComponent.scss";
 import GrowthWindowComponent from "./GrowthWindow";
@@ -293,8 +294,8 @@ const CropCalendarViewComponent = (props) => {
                     {state.activeGrowthPeriod.includes("Jan") ? (
                       <TableCell
                         style={{
-                          borderBottom: "5px solid #598444",
-                          backgroundColor: "#598444",
+                          borderBottom: "5px solid " + CustomStyles().darkGreen,
+                          backgroundColor: CustomStyles().darkGreen,
                           borderRight: "1px solid black",
                         }}
                         colSpan="2"
@@ -311,8 +312,8 @@ const CropCalendarViewComponent = (props) => {
                     {state.activeGrowthPeriod.includes("Mar") ? (
                       <TableCell
                         style={{
-                          borderBottom: "5px solid #598444",
-                          backgroundColor: "#598444",
+                          borderBottom: "5px solid " + CustomStyles().darkGreen,
+                          backgroundColor: CustomStyles().darkGreen,
                           borderRight: "1px solid black",
                         }}
                         colSpan="3"
@@ -329,8 +330,8 @@ const CropCalendarViewComponent = (props) => {
                     {state.activeGrowthPeriod.includes("Jun") ? (
                       <TableCell
                         style={{
-                          borderBottom: "5px solid #598444",
-                          backgroundColor: "#598444",
+                          borderBottom: "5px solid " + CustomStyles().darkGreen,
+                          backgroundColor: CustomStyles().darkGreen,
                           borderRight: "1px solid black",
                         }}
                         colSpan="3"
@@ -347,8 +348,8 @@ const CropCalendarViewComponent = (props) => {
                     {state.activeGrowthPeriod.includes("Sep") ? (
                       <TableCell
                         style={{
-                          borderBottom: "5px solid #598444",
-                          backgroundColor: "#598444",
+                          borderBottom: "5px solid " + CustomStyles().darkGreen,
+                          backgroundColor: CustomStyles().darkGreen,
                           borderRight: "1px solid black",
                         }}
                         colSpan="3"
@@ -364,8 +365,8 @@ const CropCalendarViewComponent = (props) => {
                     {state.activeGrowthPeriod.includes("Dec") ? (
                       <TableCell
                         style={{
-                          borderBottom: "5px solid #598444",
-                          backgroundColor: "#598444",
+                          borderBottom: "5px solid " + CustomStyles().darkGreen,
+                          backgroundColor: CustomStyles().darkGreen,
                           borderRight: "1px solid black",
                         }}
                         colSpan="1"

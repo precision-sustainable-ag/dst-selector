@@ -261,6 +261,7 @@ export const abbrRegion = (input, to) => {
 export const CustomStyles = () => {
   return {
     progressColor: "#2b7b79",
+    darkGreen: "#598444",
     defaultFontSize: "1em",
     lighterGreen: "#598445",
     lightGreen: "#add08f",
