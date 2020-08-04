@@ -23,9 +23,10 @@ $dataComponentMaxHeight: 50px;
 header {
   // max-height: 25vh;
   .topHeader {
-    padding-top: 1px;
+    padding-top: 2px;
+    padding-bottom: 2px;
     // width: 574px;
-    max-height: $topHeaderMax;
+    // max-height: $topHeaderMax;
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-end;
@@ -33,6 +34,9 @@ header {
     a {
       div:first-child {
         border-right: 1px solid black;
+      }
+      &:hover {
+        text-decoration: underline;
       }
     }
     div {
@@ -44,6 +48,10 @@ header {
       border-right: 1px solid black;
       &:last-child {
         border-right: none;
+      }
+      &:hover {
+        text-decoration: underline;
+        cursor: pointer;
       }
     }
   }
@@ -70,10 +78,10 @@ header {
     .logoContainer {
       background-image: url("/images/neccc_wide_logo_color_web.jpg");
       background-size: cover;
-      width: 100%;
-      max-width: $maxLogoWidth;
-      max-height: $maxLogoHeight;
-      height: $maxLogoHeight;
+      width: 319px;
+      // max-width: $maxLogoWidth;
+      // max-height: $maxLogoHeight;
+      height: 80px;
       overflow: hidden;
     }
     .dataComponents {
@@ -308,7 +316,7 @@ Responsive Styles
       padding-bottom: 10px;
       padding-top: 1px;
       // width: 574px;
-      max-height: 50px;
+      // max-height: 50px;
       display: flex;
       flex-wrap: wrap;
       justify-content: left;
