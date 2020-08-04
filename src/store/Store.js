@@ -482,6 +482,7 @@ const initialState = {
   weatherDataReset: false,
   filterString: "",
   filterKeys: [],
+  activeGrowthPeriod: [],
 };
 
 const Store = ({ children }) => {
