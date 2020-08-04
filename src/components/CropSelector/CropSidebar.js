@@ -6,7 +6,6 @@ import {
   List,
   ListSubheader,
   ListItem,
-  ListItemIcon,
   ListItemText,
   Collapse,
   Typography,
@@ -21,27 +20,17 @@ import {
   Grid,
 } from "@material-ui/core";
 import {
-  Send,
-  Drafts,
-  Inbox,
   ExpandLess,
   ExpandMore,
-  StarBorder,
   CalendarTodayRounded,
 } from "@material-ui/icons";
 import { CustomStyles } from "../../shared/constants";
 import { Context } from "../../store/Store";
 import { List as ListMovable, arrayMove } from "react-movable";
 
-import {
-  DateRangePicker,
-  DateRange,
-} from "@matharumanpreet00/react-daterange-picker";
+import { DateRangePicker } from "@matharumanpreet00/react-daterange-picker";
 import moment from "moment";
-import Axios from "axios";
-import { AirtableBearerKey } from "../../shared/keys";
-import CropSidebarFilters from "./CropSidebarFilters";
-import Filters from "./Filters/Filters";
+
 import CoverCropType from "./Filters/CoverCropType";
 import EnvironmentalTolerance from "./Filters/EnvironmentalTolerance";
 import Seeds from "./Filters/Seeds";
