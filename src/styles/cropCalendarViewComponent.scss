@@ -331,8 +331,32 @@ thead.tableHeadWrapper {
       text-align: center;
       background-color: rgb(171, 208, 143);
       vertical-align: middle;
+      p {
+        font-weight: 400;
+      }
     }
     td {
     }
+  }
+}
+
+th.calendarSecondHeadMonth.activeGrowthMonth {
+  &.growthMonthSeparator {
+    &::after {
+      border-right: 1px solid black;
+    }
+  }
+  &::after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    content: "";
+    height: 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: 100%;
+    background-color: $darkGreen;
+    // opacity: 0.8;
+    z-index: -99;
   }
 }

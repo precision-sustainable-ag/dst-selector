@@ -189,13 +189,52 @@ const CropSidebarComponent = (props) => {
     });
 
     // console.log(nonZeroKeys)
-    localStorage.setItem("filterKeys", JSON.stringify(nonZeroKeys));
+    // localStorage.setItem("filterKeys", JSON.stringify(nonZeroKeys));
     dispatch({
       type: "UPDATE_FILTER_KEYS",
       data: {
         filterKeys: nonZeroKeys,
       },
     });
+    if (sidebarFilterOptions["Active Growth Period"].length > 0) {
+      let growthArray = [];
+
+      if (sidebarFilterOptions["Active Growth Period"].includes("Fall")) {
+        growthArray.push("Sep");
+        growthArray.push("Oct");
+        growthArray.push("Nov");
+      }
+      if (sidebarFilterOptions["Active Growth Period"].includes("Winter")) {
+        growthArray.push("Dec");
+        growthArray.push("Jan");
+        growthArray.push("Feb");
+      }
+      if (sidebarFilterOptions["Active Growth Period"].includes("Spring")) {
+        growthArray.push("Mar");
+        growthArray.push("Apr");
+        growthArray.push("May");
+      }
+      if (sidebarFilterOptions["Active Growth Period"].includes("Summer")) {
+        growthArray.push("Jun");
+        growthArray.push("Jul");
+        growthArray.push("Aug");
+      }
+
+      dispatch({
+        type: "UPDATE_ACTIVE_GROWTH_PERIOD",
+        data: {
+          activeGrowthPeriod: growthArray,
+        },
+      });
+    } else {
+      dispatch({
+        type: "UPDATE_ACTIVE_GROWTH_PERIOD",
+        data: {
+          activeGrowthPeriod: [],
+        },
+      });
+    }
+
     if (nonZeroKeys.length > 0) {
       // const filtered = getFilteredObjects(crop_data, nonZeroKeys);
 
