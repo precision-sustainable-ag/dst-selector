@@ -20,7 +20,7 @@ const MyCoverCropList = (props) => {
     });
   };
 
-  const TopBar = () => {
+  const TopBar = ({ comparisonView }) => {
     const { selectedCrops } = state;
     const selectedCropNames = selectedCrops.map((crop) => {
       return {
@@ -41,22 +41,34 @@ const MyCoverCropList = (props) => {
           }}
         >
           <div className="row">
-            <div className="col-8">
-              <Button style={{ color: "white" }}>Download:</Button>
-              <Button
-                style={{ color: "white" }}
-                onClick={() => downloadAllPDF(selectedCropNames)}
-              >
-                <PictureAsPdf /> <span className="pl-2">PDF</span>
-              </Button>
+            {comparisonView ? (
+              <div className="col-8">
+                <Button style={{ color: "white" }}>Download:</Button>
+                <Button
+                  style={{ color: "white" }}
+                  onClick={() => downloadAllPDF(selectedCropNames)}
+                >
+                  <PictureAsPdf /> <span className="pl-2">PDF</span>
+                </Button>
 
-              <Button
-                style={{ color: "white" }}
-                onClick={redirectToSpeciesSelector}
-              >
-                <Add /> <span className="pl-2">ADD A CROP</span>
-              </Button>
-            </div>
+                <Button
+                  style={{ color: "white" }}
+                  onClick={redirectToSpeciesSelector}
+                >
+                  <Add /> <span className="pl-2">ADD A CROP</span>
+                </Button>
+              </div>
+            ) : (
+              <div className="col-8">
+                <Button
+                  style={{ color: "white" }}
+                  onClick={redirectToSpeciesSelector}
+                >
+                  <Add /> <span className="pl-2">ADD A CROP</span>
+                </Button>
+              </div>
+            )}
+
             <div className="col-6"></div>
           </div>
         </div>
@@ -72,7 +84,7 @@ const MyCoverCropList = (props) => {
         </Typography>
       ) : comparisonView ? (
         <Fragment>
-          <TopBar />
+          <TopBar comparisonView={comparisonView} />
           <div className="row mt-2">
             <MyCoverCropComparisonComponent
               selectedCrops={state.selectedCrops}
@@ -81,7 +93,7 @@ const MyCoverCropList = (props) => {
         </Fragment>
       ) : (
         <Fragment>
-          <TopBar />
+          <TopBar comparisonView={comparisonView} />
           <div className="d-flex flex-wrap mt-2">
             {state.selectedCrops.map((crop, index) => (
               <MyCoverCropCardsComponent
