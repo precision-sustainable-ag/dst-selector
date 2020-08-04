@@ -313,11 +313,11 @@ table.table th {
 
 tbody.calendarTableBodyWrapper {
   tr {
-    &:first-child {
-      td {
-        // padding-top: 5px;
-      }
-    }
+    // &:first-child {
+    //   td {
+    //     // padding-top: 5px;
+    //   }
+    // }
     td {
       padding-bottom: 0px !important;
       vertical-align: middle;
@@ -335,8 +335,8 @@ thead.tableHeadWrapper {
         font-weight: 400;
       }
     }
-    td {
-    }
+    // td {
+    // }
   }
 }
 
