@@ -23,8 +23,8 @@ $dataComponentMaxHeight: 50px;
 header {
   // max-height: 25vh;
   .topHeader {
-    padding-top: 2px;
-    padding-bottom: 2px;
+    padding: 2px;
+    padding-top: 0;
     // width: 574px;
     // max-height: $topHeaderMax;
     display: flex;
@@ -32,28 +32,64 @@ header {
     justify-content: flex-end;
     overflow: hidden;
     a {
-      div:first-child {
-        border-right: 1px solid black;
+      color: black;
+      font-weight: bold;
+      font-size: 14px;
+      padding-right: 1.2em;
+      padding-left: 1.2em;
+      display: inline-block;
+      position: relative;
+      &.active {
+        background-color: $primaryProgressBtnColor;
+        color: white;
       }
+
       &:hover {
         text-decoration: underline;
       }
-    }
-    div {
-      max-height: $topHeaderMax;
-      font-size: 14px;
-      font-weight: bold;
-      padding-right: 1em;
-      padding-left: 1em;
-      border-right: 1px solid black;
-      &:last-child {
+      &::after {
+        content: "";
+        position: absolute;
+        right: 0;
+        margin-top: 2px;
+        margin-left: 2px;
+        border-right: 1px solid black;
+        width: 1px;
+        height: 80%;
+
+        // height: $topHeaderMax;
+      }
+      &::before {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        width: 1px;
+        height: 200%;
+        // border-right: 1px solid black;
+        background-image: linear-gradient(#000, #000);
+        background-size: 2px 100%;
+        background-repeat: no-repeat;
+        background-position: center center;
+      }
+      &:last-of-type::after {
         border-right: none;
       }
-      &:hover {
-        text-decoration: underline;
-        cursor: pointer;
-      }
     }
+    // div {
+    //   max-height: $topHeaderMax;
+    //   font-size: 14px;
+    //   font-weight: bold;
+    //   padding-right: 1em;
+    //   padding-left: 1em;
+    //   // border-right: 1px solid black;
+    //   &:last-child {
+    //     // border-right: none;
+    //   }
+    //   &:hover {
+    //     text-decoration: underline;
+    //     cursor: pointer;
+    //   }
+    // }
   }
   .midHeader {
     display: flex;
@@ -87,8 +123,8 @@ header {
     .dataComponents {
       // max-width: $dataComponentMaxWidth;
       width: 100%;
-      max-height: $dataComponentMaxHeight;
-      height: $dataComponentMaxHeight;
+      // max-height: $dataComponentMaxHeight;
+      // height: $dataComponentMaxHeight;
       // width: $dataComponentMaxWidth;
       padding-left: 9px;
       display: flex;
@@ -106,9 +142,14 @@ header {
         }
       }
       div {
+        &.firstData {
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-start;
+        }
         &:first-child {
           flex: 1 1 auto;
-          padding-top: 10px;
+          // padding-top: 10px;
         }
         &:last-of-type {
           flex: 2 1 auto;
@@ -123,7 +164,7 @@ header {
     width: 100%;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: flex-start;
     padding-top: 15px;
     button {
       font-weight: 500;
@@ -176,7 +217,7 @@ header {
     }
   }
   .topBar {
-    background: #49a8ab;
+    background: $primaryProgressBtnColor;
     height: 10px;
     width: 100%;
   }

@@ -5,6 +5,8 @@ const Reducer = (state, action) => {
         return { ...state, progress: state.progress + 1 };
       } else if (action.data.type === "DECREMENT") {
         return { ...state, progress: state.progress - 1 };
+      } else if (action.data.type === "HOME") {
+        return { ...state, progress: 0 };
       } else {
         break;
       }
