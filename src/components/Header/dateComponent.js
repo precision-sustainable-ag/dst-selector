@@ -15,9 +15,6 @@ const DateComponent = () => {
 const setTodaysDate = () => {
   let now = moment();
   let tzdata = moment.tz.guess();
-
-  //  = now.tz.toString();
-  console.log(tzdata);
   return now.tz(tzdata).format("LL");
 };
 

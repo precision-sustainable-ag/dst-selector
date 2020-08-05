@@ -19,7 +19,7 @@ const geocodeAuth = "105463363432726e15946815x4512";
 
 const ForecastComponent = () => {
   const [state, dispatch] = useContext(Context);
-  const [show, setShow] = useState(false);
+  const [showTempIcon, setShowTempIcon] = useState(true);
   const [temp, setTemp] = useState({
     min: 0,
     max: 0,
@@ -30,7 +30,7 @@ const ForecastComponent = () => {
   // const [loading, setLoading] = useState
 
   useEffect(() => {
-    console.log("---forecastComponent---");
+    // console.log("---forecastComponent---");
 
     setShowFeatures();
     // state.progress >= 1 ? setShowFeatures(true) : setShow(false);
@@ -76,20 +76,21 @@ const ForecastComponent = () => {
         iconDescription: iconDescription,
       };
       setTemp(tempObj);
+      setShowTempIcon(false);
     });
 
     let data = reverseGEO(latlng[0], latlng[1]);
     data
       .then((data) => {
         if (data.success === false) {
-          console.log(data);
+          // console.log(data);
           if (data.error.code === "006") {
             let delayInMs = 4000;
             setTimeout(function () {
               let data = reverseGEO(latlng[0], latlng[1]);
               data
                 .then((data) => {
-                  console.log(data);
+                  // console.log(data);
                   let addressString = ``;
                   if (data.staddress) {
                     addressString = `${data.staddress}, ${data.state}`;
@@ -103,7 +104,7 @@ const ForecastComponent = () => {
                   });
                 })
                 .catch((e) => {
-                  console.log("recursive error", e);
+                  console.error("recursive error", e);
                 });
             }, delayInMs);
           }
@@ -122,7 +123,7 @@ const ForecastComponent = () => {
         }
       })
       .catch((e) => {
-        console.log("Geocode.xyz Catch", e);
+        console.error("Geocode.xyz:", e);
       });
   };
 
@@ -146,25 +147,32 @@ const ForecastComponent = () => {
   };
 
   return state.progress >= 1 ? (
-    <Fragment>
-      Forecast:
-      {/* <span>{cloudIcon(14, 20)}</span> */}
-      <img
-        width="50"
-        height="50"
-        src={temp.iconURL}
-        alt={temp.iconDescription}
-        title={temp.iconDescription}
-      />
-      {Number(temp.max.toFixed(1))} | {Number(temp.min.toFixed(1))}&nbsp;
-      {temp.unit}
-      <span className="ml-2">
-        <ReferenceTooltip
-          source={"openweathermap.org"}
-          url={"https://openweathermap.org/"}
+    showTempIcon ? (
+      <Fragment>
+        Forecast:
+        {cloudIcon(14, 20)}
+        Loading..
+      </Fragment>
+    ) : (
+      <Fragment>
+        Forecast:
+        <img
+          width="50"
+          height="50"
+          src={temp.iconURL}
+          alt={temp.iconDescription}
+          title={temp.iconDescription}
         />
-      </span>
-    </Fragment>
+        {Number(temp.max.toFixed(1))} | {Number(temp.min.toFixed(1))}&nbsp;
+        {temp.unit}
+        <span className="ml-2">
+          <ReferenceTooltip
+            source={"openweathermap.org"}
+            url={"https://openweathermap.org/"}
+          />
+        </span>
+      </Fragment>
+    )
   ) : (
     ""
   );

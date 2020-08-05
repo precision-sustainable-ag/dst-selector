@@ -16,6 +16,8 @@ import SeedingRateCalculator from "./components/SeedingRateCalculator/SeedingRat
 import MixMaker from "./components/MixMaker/MixMaker";
 import CoverCropExplorer from "./components/CoverCropExplorer/CoverCropExplorer";
 import InformationSheet from "./components/InformationSheet/InformationSheet";
+import HelpComponent from "./components/Help/Help";
+import FeedbackComponent from "./components/Feedback/Feedback";
 
 const withFooter = (WrappedComponent) => () => [
   <WrappedComponent key="1" />,
@@ -57,6 +59,8 @@ const Wrapper = () => (
         <Switch>
           <Route path={`/`} component={App} exact />
           <Route path={"/about"} component={About} exact />
+          <Route path={"/help"} component={HelpComponent} exact />
+          <Route path={"/feedback"} component={FeedbackComponent} exact />
           <Route
             path={"/information-sheet"}
             component={InformationSheet}

@@ -12,12 +12,12 @@ import {
   MDBNavbarNav,
   MDBNavItem,
 } from "mdbreact";
-import { Button, Badge } from "@material-ui/core";
+import { Button, Badge, Typography } from "@material-ui/core";
 import { Redirect, Link, useHistory, NavLink } from "react-router-dom";
 import ForecastComponent from "./ForecastComponent";
 import Axios from "axios";
 import moment from "moment";
-import { AirtableBearerKey } from "../../shared/keys";
+// import { AirtableBearerKey } from "../../shared/keys";
 import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import cropData from "../../shared/crop-data.json";
@@ -40,18 +40,15 @@ const Header = () => {
 
   const getAverageFrostDates = async (url) => {
     await Axios.get(url).then((resp) => {
-      // console.log(resp.data);
       try {
         let totalYears = resp.data.length;
         // get last years value
         // TODO: Take all years data into account
         let mostRecentYearData = resp.data[totalYears - 1];
-        // console.log(mostRecentYearData);
+
         let maxDate = mostRecentYearData["max(date)"];
         let minDate = mostRecentYearData["min(date)"];
-        // console.log(maxDate);
-        // console.log();
-        // console.log();
+
         let averageFrostObject = {
           firstFrostDate: {
             month: moment(minDate).format("MMMM"),
@@ -83,27 +80,23 @@ const Header = () => {
   };
 
   useEffect(() => {
-    console.log("---Header.js---");
     let { markers } = state;
 
     if (state.progress === 0) {
       // landing page
-
       // get user ip
-
       //NOTE: SSL Unavailabe for free version
       // maybe https://ip-location.icu/ ?
-      Axios.get("http://ip-api.com/json").then((resp) => {
-        // console.log(resp.data);
-        let ipData = resp.data;
-        let addressObjectPromise = getAddressFromMarkers(
-          ipData.lat,
-          ipData.lon
-        );
-        addressObjectPromise.then((data) => {
-          console.log("addressObject", data);
-        });
-      });
+      // Axios.get("http://ip-api.com/json").then((resp) => {
+      //   let ipData = resp.data;
+      //   let addressObjectPromise = getAddressFromMarkers(
+      //     ipData.lat,
+      //     ipData.lon
+      //   );
+      //   addressObjectPromise.then((data) => {
+      //     console.log("addressObject", data);
+      //   });
+      // });
     }
 
     // update address on marker change
@@ -124,7 +117,7 @@ const Header = () => {
       let Map_Unit_Name, Drainage_Class, Flooding_Frequency, Ponding_Frequency;
 
       let markersCopy = markers;
-      console.log("Inital: ", markers);
+      // console.log("Inital: ", markers);
 
       let longLatString = "";
 
@@ -178,7 +171,7 @@ const Header = () => {
           .then((response) => response.json())
           .then((result) => {
             // success
-            console.log("SSURGO: ", result);
+            // console.log("SSURGO: ", result);
 
             if (result !== {}) {
               // TODO: Sentiment check
@@ -225,7 +218,7 @@ const Header = () => {
               drainageClasses = drainageClasses.filter(function (el) {
                 return el != null;
               });
-              console.log(drainageClasses);
+              // console.log(drainageClasses);
 
               dispatch({
                 type: "UPDATE_SOIL_DATA",
@@ -245,7 +238,7 @@ const Header = () => {
               },
             });
           })
-          .catch((error) => console.log("SSURGO ERROR", error));
+          .catch((error) => console.error("SSURGO ERROR", error));
       }
 
       let revAPIURL = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`;
@@ -492,15 +485,19 @@ const Header = () => {
 
     // header contentWrapper padding for state.progess > 0
 
-    if (state.progress !== 0) {
-      document
-        .getElementsByClassName("contentWrapper")[0]
-        .classList.add("pb-5");
-    } else {
-      document
-        .getElementsByClassName("contentWrapper")[0]
-        .classList.remove("pb-5");
-    }
+    // if (state.progress !== 0) {
+    //   if (document.getElementsByClassName("contentWrapper")) {
+    //     document
+    //       .getElementsByClassName("contentWrapper")[0]
+    //       .classList.add("pb-5");
+    //   }
+    // } else {
+    //   if (document.getElementsByClassName("contentWrapper")) {
+    //     document
+    //       .getElementsByClassName("contentWrapper")[0]
+    //       .classList.remove("pb-5");
+    //   }
+    // }
   }, [state.markers, state.progress, state.zone, state.weatherDataReset]);
 
   const toggleClass = (el, className) => el.classList.toggle(className);
@@ -531,7 +528,7 @@ const Header = () => {
   const setSpeciesSelectorActivationFlag = () => {
     // if (state.progress) {
     if (window.location.pathname === "/") {
-      console.log("pathname", "/");
+      // console.log("pathname", "/");
       dispatch({
         type: "ACTIVATE_SPECIES_SELECTOR_TILE",
         data: {
@@ -562,40 +559,47 @@ const Header = () => {
   ) : (
     <header>
       <div className="topHeader">
-        <Link to="/about" style={{ color: "black" }}>
-          {" "}
-          <div>ABOUT</div>
-        </Link>
-        <div onClick={() => window.open("http://northeastcovercrops.com")}>
-          NECCC
-        </div>
-        <div
-          onClick={() =>
-            window.open(
-              "http://www.nrcs.usda.gov/wps/portal/nrcs/site/national/home/"
-            )
-          }
-        >
-          USDA NRCS
-        </div>
-        <div onClick={() => window.open("http://www.northeastsare.org/")}>
-          NE SARE
-        </div>
-        <div>HELP</div>
-        <div>FEEDBACK</div>
+        <NavLink to="/about" activeClassName={`active`}>
+          ABOUT
+        </NavLink>
+        <NavLink to="/help" activeClassName={`active`}>
+          HELP
+        </NavLink>
+        <NavLink to="/feedback" activeClassName={`active`}>
+          FEEDBACK
+        </NavLink>
       </div>
       <div className="midHeader container-fluid">
         <div
           className="logoContainer"
-          onClick={() => window.open("http://northeastcovercrops.com")}
+          // onClick={() => window.open("http://northeastcovercrops.com")}
+          onClick={() => {
+            dispatch({
+              type: "UPDATE_PROGRESS",
+              data: {
+                type: "HOME",
+              },
+            });
+            setRedirectToRoot(!redirectToRoot);
+          }}
           style={{ cursor: "pointer" }}
         >
           {/* NECCCLOGO */}
           {/* <img src={"/images/neccc_wide_logo_color_web.jpg"} /> */}
         </div>
         <div className="dataComponents">
-          <div>
-            <DateComponent />
+          <div className="firstData">
+            <div>
+              <Typography variant="body1">
+                Cover Crop Decision Support Tools
+              </Typography>
+            </div>
+            <div>
+              <Typography variant="body1">
+                {" "}
+                <DateComponent />
+              </Typography>
+            </div>
           </div>
           <div>
             <ForecastComponent />
@@ -621,41 +625,27 @@ const Header = () => {
           onClick={setSpeciesSelectorActivationFlag}
           size="large"
         >
-          SPECIES SELECTOR
+          SPECIES SELECTOR TOOL
         </Button>
-        {/* <Button
-          size="large"
-          exact
-          component={NavLink}
-          to={"/mix-maker"}
-          activeClassName="active"
-        >
-          MIX MAKER
-        </Button> */}
-        {/* <Button className={state.progress === 3 ? "active" : ""}> */}
-        {/* <Button
-          size="large"
-          exact
-          component={NavLink}
-          to={"/seeding-rate-calculator"}
-          activeClassName="active"
-        >
-          SEEDING RATE CALCULATOR
-        </Button> */}
-        <Badge
-          badgeContent={
-            state.selectedCrops.length > 0 ? state.selectedCrops.length : 0
-          }
-          color={"secondary"}
-        >
-          <Button
-            size="large"
-            className={state.myCoverCropActivationFlag ? "active" : ""}
-            onClick={setmyCoverCropActivationFlag}
+
+        {state.progress >= 5 ? (
+          <Badge
+            badgeContent={
+              state.selectedCrops.length > 0 ? state.selectedCrops.length : 0
+            }
+            color={"error"}
           >
-            MY COVER CROP LIST
-          </Button>
-        </Badge>
+            <Button
+              size="large"
+              className={state.myCoverCropActivationFlag ? "active" : ""}
+              onClick={setmyCoverCropActivationFlag}
+            >
+              MY COVER CROP LIST
+            </Button>
+          </Badge>
+        ) : (
+          ""
+        )}
       </div>
 
       <MDBNavbar light className="ham-navWrapper">
@@ -678,16 +668,18 @@ const Header = () => {
                     : false
                 }
               >
-                SPECIES SELECTOR
+                SPECIES SELECTOR TOOL
               </MDBNavItem>
-              {/* <MDBNavItem>MIX MAKER</MDBNavItem>
-              <MDBNavItem>SEED RATE CALCULATOR</MDBNavItem> */}
-              <MDBNavItem
-                onClick={setmyCoverCropActivationFlag}
-                active={state.myCoverCropActivationFlag ? true : false}
-              >
-                MY COVER CROP LIST
-              </MDBNavItem>
+              {state.progress >= 5 ? (
+                <MDBNavItem
+                  onClick={setmyCoverCropActivationFlag}
+                  active={state.myCoverCropActivationFlag ? true : false}
+                >
+                  MY COVER CROP LIST
+                </MDBNavItem>
+              ) : (
+                ""
+              )}
             </MDBNavbarNav>
           </MDBCollapse>
         </MDBContainer>
@@ -695,14 +687,12 @@ const Header = () => {
       {/* </MDBContainer> */}
       <Greenbar />
 
-      {window.location.pathname === "/" ? (
-        state.progress === 0 ? (
-          <div className="topBar"></div>
-        ) : (
-          <div className="topBarMuted"></div>
-        )
-      ) : (
+      {window.location.pathname === "/about" ||
+      window.location.pathname === "/help" ||
+      window.location.pathname === "/feedback" ? (
         <div className="topBar"></div>
+      ) : (
+        ""
       )}
     </header>
   );
