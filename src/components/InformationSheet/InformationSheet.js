@@ -53,7 +53,7 @@ const InformationSheet = (props) => {
     document.getElementsByTagName("footer")[0].style.display = "none";
 
     if (window.localStorage.getItem("infosheet") !== null) {
-      removeHeaderContent();
+      // removeHeaderContent();
       document.title = crop["Cover Crop Name"];
       window.print();
     }

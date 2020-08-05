@@ -35,19 +35,6 @@ const GoalsSelector = () => {
 
   const headers = new Headers();
 
-  useEffect(() => {
-    // if (state.allGoals.length === 0) {
-    console.log("fetching goals..");
-
-    // }
-    let zone = parseInt(state.zone);
-
-    if (zone === 7) fetchGoals(airtableAPIURL.Z7);
-    else if (zone === 6) fetchGoals(airtableAPIURL.Z6);
-    else if (zone === 5) fetchGoals(airtableAPIURL.Z5);
-    else fetchGoals(airtableAPIURL.Z7);
-  }, [state.zone]);
-
   const fetchGoals = async (apiBase) => {
     let finalGoalsURL = apiBase + goalsURL;
     // console.log(finalGoalsURL);
@@ -96,35 +83,29 @@ const GoalsSelector = () => {
             Select up to three. Hover for more information
           </p>
         </div>
-        {state.ajaxInProgress ? (
-          state.allGoals.length > 0 ? (
-            <div className="goals col-lg-12">
-              {/* <Typography variant="h5">Refreshing..</Typography> */}
-              <div className="row">
-                <div className="col-3">
-                  <Skeleton style={goalSkeletonStyle} />
-                </div>
-                <div className="col-3">
-                  <Skeleton style={goalSkeletonStyle} />
-                </div>
-                <div className="col-3">
-                  <Skeleton style={goalSkeletonStyle} />
-                </div>
-                <div className="col-3">
-                  <Skeleton style={goalSkeletonStyle} />
-                </div>
+        {state.allGoals.length === 0 ? (
+          <div className="goals col-lg-12">
+            {/* <Typography variant="h5">Refreshing..</Typography> */}
+            <div className="row">
+              <div className="col-3">
+                <Skeleton style={goalSkeletonStyle} />
+              </div>
+              <div className="col-3">
+                <Skeleton style={goalSkeletonStyle} />
+              </div>
+              <div className="col-3">
+                <Skeleton style={goalSkeletonStyle} />
+              </div>
+              <div className="col-3">
+                <Skeleton style={goalSkeletonStyle} />
               </div>
             </div>
-          ) : (
-            <div className="goals col-lg-12">
-              <CircularProgress />
-            </div>
-          )
+          </div>
         ) : (
           <div className="goals row" style={{ justifyContent: "center" }}>
             {state.allGoals.length > 0 ? (
               state.allGoals.map((goal, key) =>
-                !goal.fields["Cover Crop Goal"].startsWith("TBD") ? (
+                goal.fields["Include"] ? (
                   <div key={key} className={`${classes.root} col`}>
                     <GoalTag
                       goal={goal}

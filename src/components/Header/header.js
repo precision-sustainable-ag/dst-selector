@@ -20,7 +20,10 @@ import moment from "moment";
 // import { AirtableBearerKey } from "../../shared/keys";
 import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-import cropData from "../../shared/crop-data.json";
+// import cropData from "../../shared/crop-data.json";
+import zone7Goal from "../../shared/json/zone7/crop-goals.json";
+import zone6Goal from "../../shared/json/zone6/crop-goals.json";
+import zone5Goal from "../../shared/json/zone5/crop-goals.json";
 // var sentimentAnalysis = require("sentiment-analysis");
 // import { Link, Button } from "@material-ui/core";
 const Header = () => {
@@ -391,97 +394,10 @@ const Header = () => {
     switch (state.progress) {
       case 0:
         isActive["val"] = 0;
+        break;
     }
 
     // document.getElementsByClassName('.nav-toggle')[0].addEventListener
-
-    if (state.progress > 4) {
-      if (state.cropData.length === 0) {
-        // load local json
-        dispatch({
-          type: "PULL_CROP_DATA",
-          data: cropData,
-        });
-        // const headers = new Headers();
-        // let airtableUrl = "";
-        // let zone = parseInt(state.zone);
-
-        // if (zone === 7) airtableUrl = airtableAPIURL.Z7;
-        // else if (zone === 6) airtableUrl = airtableAPIURL.Z6;
-        // else if (zone === 5) airtableUrl = airtableAPIURL.Z5;
-        // else airtableUrl = airtableAPIURL.Z7;
-        // console.log(`Zone ${zone} data loaded`);
-        // // example of airtable 'and+or' logic
-        // // IF(AND({Attending?} = 1, OR({Dietary Restrictions} = "Vegan", {Dietary Restrictions} = "Vegetarian")), "true")
-        // // sort[0][field]=Cover+Crop+Name&sort[0][direction]=asc
-        // // Cover%20Crop%20Goals?sort%5B0%5D%5Bfield%5D=Lasting+Residue&sort%5B0%5D%5Bdirection%5D=asc&sort%5B1%5D%5Bfield%5D=Shade+Tolerance&sort%5B1%5D%5Bdirection%5D=asc
-        // if (state.selectedGoals.length !== 0) {
-        //   if (state.selectedGoals.length !== 1) {
-        //     if (state.selectedGoals.length == 2) {
-        //       airtableUrl = `${airtableUrl}/Cover%20Crops%20Data?sort%5B0%5D%5Bfield%5D=${state.selectedGoals[0]
-        //         .split(" ")
-        //         .join(
-        //           "+"
-        //         )}&sort%5B0%5D%5Bdirection%5D=desc&sort%5B1%5D%5Bfield%5D=${state.selectedGoals[1]
-        //         .split(" ")
-        //         .join(
-        //           "+"
-        //         )}&sort%5B1%5D%5Bdirection%5D=desc&filterByFormula=NOT(%7BZone+Decision%7D+%3D+'Exclude')`;
-        //     } else {
-        //       airtableUrl = `${airtableUrl}/Cover%20Crops%20Data?sort%5B0%5D%5Bfield%5D=${state.selectedGoals[0]
-        //         .split(" ")
-        //         .join(
-        //           "+"
-        //         )}&sort%5B0%5D%5Bdirection%5D=desc&sort%5B1%5D%5Bfield%5D=${state.selectedGoals[1]
-        //         .split(" ")
-        //         .join(
-        //           "+"
-        //         )}&sort%5B1%5D%5Bdirection%5D=desc&sort%5B2%5D%5Bfield%5D=${state.selectedGoals[2]
-        //         .split(" ")
-        //         .join(
-        //           "+"
-        //         )}&sort%5B2%5D%5Bdirection%5D=desc&filterByFormula=NOT(%7BZone+Decision%7D+%3D+'Exclude')`;
-        //     }
-        //   } else {
-        //     airtableUrl = `${airtableUrl}/Cover%20Crops%20Data?sort%5B0%5D%5Bfield%5D=${state.selectedGoals[0]
-        //       .split(" ")
-        //       .join(
-        //         "+"
-        //       )}&sort%5B0%5D%5Bdirection%5D=desc&filterByFormula=NOT(%7BZone+Decision%7D+%3D+'Exclude')`;
-        //   }
-        // } else {
-        //   airtableUrl = `${airtableUrl}/Cover%20Crops%20Data?filterByFormula=NOT(%7BZone+Decision%7D+%3D+'Exclude')`;
-        // }
-        // console.log(airtableUrl);
-        // headers.append("Authorization", `Bearer ${AirtableBearerKey}`);
-        // headers.append("Content-Type", "application/json");
-
-        // if (!state.ajaxInProgress) {
-        //   dispatch({
-        //     type: "SET_AJAX_IN_PROGRESS",
-        //     data: true,
-        //   });
-
-        //   fetch(airtableUrl, {
-        //     headers: headers,
-        //   })
-        //     .then((response) => {
-        //       return response.json();
-        //     })
-        //     .then((data) => {
-        //       dispatch({
-        //         type: "PULL_CROP_DATA",
-        //         data: data.records,
-        //       });
-        //       dispatch({
-        //         type: "SET_AJAX_IN_PROGRESS",
-        //         data: false,
-        //       });
-        //       // checkCropsAddedToCart();
-        //     });
-        // }
-      }
-    }
 
     // header contentWrapper padding for state.progess > 0
 
@@ -499,6 +415,69 @@ const Header = () => {
     //   }
     // }
   }, [state.markers, state.progress, state.zone, state.weatherDataReset]);
+
+  useEffect(() => {
+    const z7Formattedgoal = zone7Goal.map((goal) => {
+      return { fields: goal };
+    });
+    const z6Formattedgoal = zone6Goal.map((goal) => {
+      return { fields: goal };
+    });
+    const z5Formattedgoal = zone5Goal.map((goal) => {
+      return { fields: goal };
+    });
+
+    switch (parseInt(state.zone)) {
+      case 7: {
+        dispatch({
+          type: "PULL_CROP_DATA",
+          data: state.zone7CropData,
+        });
+        dispatch({
+          type: "ADD_GOALS",
+          data: z7Formattedgoal,
+        });
+        console.log("z7 data dispatched");
+        break;
+      }
+      case 6: {
+        dispatch({
+          type: "PULL_CROP_DATA",
+          data: state.zone6CropData,
+        });
+        dispatch({
+          type: "ADD_GOALS",
+          data: z6Formattedgoal,
+        });
+        console.log("z6 data dispatched");
+        break;
+      }
+      case 5: {
+        dispatch({
+          type: "PULL_CROP_DATA",
+          data: state.zone5CropData,
+        });
+        dispatch({
+          type: "ADD_GOALS",
+          data: z5Formattedgoal,
+        });
+        console.log("z5 data dispatched");
+        break;
+      }
+      default: {
+        dispatch({
+          type: "PULL_CROP_DATA",
+          data: state.zone7CropData,
+        });
+        dispatch({
+          type: "ADD_GOALS",
+          data: z7Formattedgoal,
+        });
+        console.log("default data dispatched");
+        break;
+      }
+    }
+  }, [state.zone]);
 
   const toggleClass = (el, className) => el.classList.toggle(className);
 
@@ -562,9 +541,11 @@ const Header = () => {
         <NavLink to="/about" activeClassName={`active`}>
           ABOUT
         </NavLink>
+        <span className="line"></span>
         <NavLink to="/help" activeClassName={`active`}>
           HELP
         </NavLink>
+        <span className="line"></span>
         <NavLink to="/feedback" activeClassName={`active`}>
           FEEDBACK
         </NavLink>
