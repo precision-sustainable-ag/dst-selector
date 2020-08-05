@@ -150,7 +150,7 @@ const CropSelector = () => {
   const [split_arr, setSplit_arr] = useState([]);
   // Debug text
   const [debug, setDebug] = useState(false);
-
+  const [cropDataChanged, setCropDataChanged] = useState(false);
   useEffect(() => {
     filterByCheckboxValues("checkboxes", state.selectedCheckboxes);
   }, [state.selectedCheckboxes]);
@@ -158,6 +158,12 @@ const CropSelector = () => {
   useEffect(() => {
     filterByCheckboxValues("stars", state.selectedStars);
   }, [state.selectedStars]);
+
+  useEffect(() => {
+    setActiveCropData(state.cropData);
+    setInactiveCropData([]);
+    setCropDataChanged(!cropDataChanged);
+  }, [state.cropData]);
 
   const filterByCheckboxValues = (type, keysArray) => {
     let crop_data = cropData;
@@ -845,7 +851,9 @@ const CropSelector = () => {
             inactiveCropData={inactiveCropData}
             setActiveCropData={setActiveCropData}
             setInactiveCropData={setInactiveCropData}
+            cropDataChanged={cropDataChanged}
             comparisonView={comparisonView}
+            from={"table"}
           />
         </div>
 

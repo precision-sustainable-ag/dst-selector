@@ -77,8 +77,27 @@ const CropSidebarComponent = (props) => {
     props.isListView ? true : false
   );
   const [showFilters, setShowFilters] = React.useState(
-    state.speciesSelectorActivationFlag ? true : comparisonView ? true : false
+    props.from === "table"
+      ? state.speciesSelectorActivationFlag
+        ? true
+        : comparisonView
+        ? true
+        : false
+      : true
   );
+  useEffect(() => {
+    if (props.from === "table") {
+      if (state.speciesSelectorActivationFlag) {
+        setShowFilters(true);
+      } else {
+        if (comparisonView) {
+          setShowFilters(true);
+        } else {
+          setShowFilters(false);
+        }
+      }
+    } else setShowFilters(true);
+  }, [props.from]);
 
   useEffect(() => {
     setShowFilters(
@@ -247,6 +266,7 @@ const CropSidebarComponent = (props) => {
       ];
       const booleanKeys = ["Aerial Seeding", "Frost Seeding"];
       const aerialOrFrost = [""];
+
       const filtered = crop_data.filter((crop) => {
         const totalActiveFilters = Object.keys(nonZeroKeys2).length;
         let i = 0;
@@ -281,9 +301,10 @@ const CropSidebarComponent = (props) => {
       props.setActiveCropData(filtered);
       props.setInactiveCropData(inactives);
       // }
-      // console.log("total", crop_data.length);
-      // console.log("active", filtered.length);
-      // console.log("inactive", inactives.length);
+      console.log("total", crop_data.length);
+      console.log("active", filtered.length);
+      console.log("first", filtered);
+      console.log("inactive", inactives.length);
       //
     } else {
       props.setActiveCropData(crop_data);
@@ -455,15 +476,12 @@ const CropSidebarComponent = (props) => {
     };
   }, []);
 
-  const [envTolData, setEnvTolData] = React.useState({
-    "Heat Tolerance": false,
-    "Drought Tolerance": false,
-    "Shade Tolerance": false,
-    "Flood Tolerance": false,
-    "Low Fertility Tolerance": false,
-    "Salinity Tolerance": false,
-    "Winter Survival": false,
-  });
+  React.useMemo(() => {
+    if (beneficialsRef.current) {
+      resetAllFilters();
+    }
+  }, [props.cropDataChanged]);
+
   const [growthWindowVisible, setGrowthWindowVisible] = React.useState(true);
 
   let [keysArray, setKeysArray] = React.useState([]);
@@ -548,27 +566,31 @@ const CropSidebarComponent = (props) => {
   };
 
   React.useEffect(() => {
-    if (dateRange.startDate !== null && dateRange.endDate !== null) {
-      console.log(new Date(dateRange.startDate).toISOString());
-      dispatch({
-        type: "UPDATE_DATE_RANGE",
-        data: {
-          startDate: moment(
-            new Date(dateRange.startDate).toISOString(),
-            "YYYY-MM-DD"
-          ).format("MM/DD"),
-          endDate: moment(new Date(dateRange.endDate).toISOString()).format(
-            "MM/DD"
-          ),
-        },
-      });
-    }
+    if (props.from === "table") {
+      if (dateRange.startDate !== null && dateRange.endDate !== null) {
+        console.log(new Date(dateRange.startDate).toISOString());
+        dispatch({
+          type: "UPDATE_DATE_RANGE",
+          data: {
+            startDate: moment(
+              new Date(dateRange.startDate).toISOString(),
+              "YYYY-MM-DD"
+            ).format("MM/DD"),
+            endDate: moment(new Date(dateRange.endDate).toISOString()).format(
+              "MM/DD"
+            ),
+          },
+        });
+      }
 
-    props.setGrowthWindow(growthWindowVisible);
-  }, [dateRange, growthWindowVisible]);
+      props.setGrowthWindow(growthWindowVisible);
+    }
+  }, [dateRange, growthWindowVisible, props.from]);
 
   React.useEffect(() => {
-    props.sortEnvTolCropData(keysArray);
+    if (props.from === "table") {
+      props.sortEnvTolCropData(keysArray);
+    }
   }, [keysArrChanged]);
 
   return (
@@ -587,150 +609,161 @@ const CropSidebarComponent = (props) => {
       }
       className={classes.root}
     >
-      <ListItem
-        button
-        onClick={() => handleClick(0)}
-        style={
-          goalsOpen
-            ? {
-                backgroundColor: CustomStyles().lightGreen,
-                borderTop: "4px solid white",
-              }
-            : { backgroundColor: "inherit", borderTop: "4px solid white" }
-        }
-      >
-        <ListItemText primary="COVER CROP GOALS" />
-        {goalsOpen ? <ExpandLess /> : <ExpandMore />}
-      </ListItem>
+      {props.from === "table" ? (
+        <Fragment>
+          <ListItem
+            button
+            onClick={() => handleClick(0)}
+            style={
+              goalsOpen
+                ? {
+                    backgroundColor: CustomStyles().lightGreen,
+                    borderTop: "4px solid white",
+                  }
+                : { backgroundColor: "inherit", borderTop: "4px solid white" }
+            }
+          >
+            <ListItemText primary="COVER CROP GOALS" />
+            {goalsOpen ? <ExpandLess /> : <ExpandMore />}
+          </ListItem>
 
-      <Collapse in={goalsOpen} timeout="auto" unmountOnExit>
-        {state.selectedGoals.length === 0 ? (
-          <List component="div" disablePadding>
-            <ListItem button className={classes.nested}>
-              <ListItemText primary="No Goals Selected" />
-            </ListItem>
-            <ListItem className={classes.nested}>
-              <Button onClick={() => changeProgress("decrement")}>
-                click to edit
-              </Button>
-            </ListItem>
-          </List>
-        ) : (
-          <Fragment>
-            <List component="div" disablePadding>
+          <Collapse in={goalsOpen} timeout="auto" unmountOnExit>
+            {state.selectedGoals.length === 0 ? (
+              <List component="div" disablePadding>
+                <ListItem button className={classes.nested}>
+                  <ListItemText primary="No Goals Selected" />
+                </ListItem>
+                <ListItem className={classes.nested}>
+                  <Button onClick={() => changeProgress("decrement")}>
+                    click to edit
+                  </Button>
+                </ListItem>
+              </List>
+            ) : (
+              <Fragment>
+                <List component="div" disablePadding>
+                  <ListItem className={classes.nested}>
+                    <ListItemText primary="Goal Priority Order" />
+                  </ListItem>
+                </List>
+                <ListMovable
+                  values={state.selectedGoals}
+                  onChange={({ oldIndex, newIndex }) =>
+                    updateSelectedGoals(state.selectedGoals, oldIndex, newIndex)
+                  }
+                  renderList={({ children, props }) => (
+                    <ol className="goalsListFilter" {...props}>
+                      {children}
+                    </ol>
+                  )}
+                  renderItem={({ value, props }) => (
+                    <li {...props}>{value.toUpperCase()}</li>
+                  )}
+                />
+                <List component="div" disablePadding>
+                  <ListItem
+                    button
+                    className={classes.nested}
+                    onClick={() => changeProgress("decrement")}
+                  >
+                    <ListItemText primary="Drag to reorder, click to edit" />
+                  </ListItem>
+                </List>
+              </Fragment>
+            )}
+          </Collapse>
+          <ListItem
+            button
+            onClick={() => handleClick(1)}
+            style={
+              cashCropOpen
+                ? { backgroundColor: CustomStyles().lightGreen }
+                : { backgroundColor: "inherit" }
+            }
+          >
+            <ListItemText primary="CASH CROP" />
+            {cashCropOpen ? <ExpandLess /> : <ExpandMore />}
+          </ListItem>
+          <Collapse in={cashCropOpen} timeout="auto" unmountOnExit>
+            <List component="div">
               <ListItem className={classes.nested}>
-                <ListItemText primary="Goal Priority Order" />
+                <TextField
+                  label="Cash Crop"
+                  id="outlined-margin-dense"
+                  defaultValue=""
+                  helperText="Enter crop"
+                  margin="dense"
+                  variant="outlined"
+                />
               </ListItem>
-            </List>
-            <ListMovable
-              values={state.selectedGoals}
-              onChange={({ oldIndex, newIndex }) =>
-                updateSelectedGoals(state.selectedGoals, oldIndex, newIndex)
-              }
-              renderList={({ children, props }) => (
-                <ol className="goalsListFilter" {...props}>
-                  {children}
-                </ol>
-              )}
-              renderItem={({ value, props }) => (
-                <li {...props}>{value.toUpperCase()}</li>
-              )}
-            />
-            <List component="div" disablePadding>
-              <ListItem
-                button
-                className={classes.nested}
-                onClick={() => changeProgress("decrement")}
-              >
-                <ListItemText primary="Drag to reorder, click to edit" />
+              <ListItem className={classes.nested}>
+                <TextField
+                  label="Planting to Harvest"
+                  value={`${state.cashCropData.dateRange.startDate} - ${state.cashCropData.dateRange.endDate}`}
+                  fullWidth
+                  margin="dense"
+                  aria-haspopup="true"
+                  variant="outlined"
+                  InputProps={{
+                    readOnly: true,
+                    endAdornment: (
+                      <InputAdornment>
+                        <IconButton
+                          size="small"
+                          onClick={() => setDateRangeOpen(!dateRangeOpen)}
+                        >
+                          <CalendarTodayRounded />
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
+                />
               </ListItem>
-            </List>
-          </Fragment>
-        )}
-      </Collapse>
-      <ListItem
-        button
-        onClick={() => handleClick(1)}
-        style={
-          cashCropOpen
-            ? { backgroundColor: CustomStyles().lightGreen }
-            : { backgroundColor: "inherit" }
-        }
-      >
-        <ListItemText primary="CASH CROP" />
-        {cashCropOpen ? <ExpandLess /> : <ExpandMore />}
-      </ListItem>
-      <Collapse in={cashCropOpen} timeout="auto" unmountOnExit>
-        <List component="div">
-          <ListItem className={classes.nested}>
-            <TextField
-              label="Cash Crop"
-              id="outlined-margin-dense"
-              defaultValue=""
-              helperText="Enter crop"
-              margin="dense"
-              variant="outlined"
-            />
-          </ListItem>
-          <ListItem className={classes.nested}>
-            <TextField
-              label="Planting to Harvest"
-              value={`${state.cashCropData.dateRange.startDate} - ${state.cashCropData.dateRange.endDate}`}
-              fullWidth
-              margin="dense"
-              aria-haspopup="true"
-              variant="outlined"
-              InputProps={{
-                readOnly: true,
-                endAdornment: (
-                  <InputAdornment>
-                    <IconButton
-                      size="small"
-                      onClick={() => setDateRangeOpen(!dateRangeOpen)}
-                    >
-                      <CalendarTodayRounded />
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-            />
-          </ListItem>
-          <ListItem style={{ zIndex: 99 }}>
-            <DateRangePicker
-              open={dateRangeOpen}
-              onChange={(range) => setDateRange(range)}
-            />
-          </ListItem>
-          <ListItem className={classes.nested}>
-            <FormGroup>
-              <FormControlLabel
-                classes={{ root: classes.formControlLabel }}
-                control={
-                  <Checkbox
-                    checked={growthWindowVisible}
-                    onChange={() => {
-                      setGrowthWindowVisible(!growthWindowVisible);
-                    }}
-                    value="Show Growth Window"
+              <ListItem style={{ zIndex: 99 }}>
+                <DateRangePicker
+                  open={dateRangeOpen}
+                  onChange={(range) => setDateRange(range)}
+                />
+              </ListItem>
+              <ListItem className={classes.nested}>
+                <FormGroup>
+                  <FormControlLabel
+                    classes={{ root: classes.formControlLabel }}
+                    control={
+                      <Checkbox
+                        checked={growthWindowVisible}
+                        onChange={() => {
+                          setGrowthWindowVisible(!growthWindowVisible);
+                        }}
+                        value="Show Growth Window"
+                      />
+                    }
+                    label={
+                      <Typography variant="body2">
+                        Show Growth Window
+                      </Typography>
+                    }
                   />
-                }
-                label={
-                  <Typography variant="body2">Show Growth Window</Typography>
-                }
-              />
-            </FormGroup>
-          </ListItem>
-        </List>
-      </Collapse>
+                </FormGroup>
+              </ListItem>
+            </List>
+          </Collapse>
+        </Fragment>
+      ) : (
+        ""
+      )}
+
       {showFilters ? (
         <Fragment>
           <ListItem
             button
             onClick={() => handleClick(2)}
             style={
-              cropFiltersOpen
-                ? { backgroundColor: CustomStyles().lightGreen }
-                : { backgroundColor: "inherit" }
+              props.from === "table"
+                ? cropFiltersOpen
+                  ? { backgroundColor: CustomStyles().lightGreen }
+                  : { backgroundColor: "inherit" }
+                : { backgroundColor: CustomStyles().lightGreen }
             }
           >
             <ListItemText primary="COVER CROP FILTERS" />
