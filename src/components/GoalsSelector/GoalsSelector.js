@@ -1,16 +1,9 @@
 // TODO: Goal tags are not responsive!
-import React, { useContext, useEffect, Fragment, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import { Context } from "../../store/Store";
 
 import "../../styles/goalsSelector.scss";
-import {
-  Tooltip,
-  Chip,
-  CircularProgress,
-  Badge,
-  makeStyles,
-  Typography,
-} from "@material-ui/core";
+import { CircularProgress, makeStyles } from "@material-ui/core";
 
 import Skeleton from "@material-ui/lab/Skeleton";
 import GoalTag from "./GoalTag";
@@ -96,7 +89,7 @@ const GoalsSelector = () => {
     <div className="goalsContainer mt-5">
       <div className="row boxContainerRow goalsBoxContainer">
         <div className="col-xl-12">
-          <h1 className="text-center">What are your cover cropping goals</h1>
+          <h1 className="text-center">What are your cover cropping goals?</h1>
         </div>
         <div className="col-xl-12">
           <p className="text-center">

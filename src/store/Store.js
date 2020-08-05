@@ -136,7 +136,7 @@ let tjs = tjson.map((crop) => {
 
 const initialState = {
   // progress: 0,
-  progress: 5,
+  progress: 4,
   address: "",
   addressSearchPreference: "address",
   zip: 0,

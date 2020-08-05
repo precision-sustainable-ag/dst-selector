@@ -1,11 +1,15 @@
 import React from "react";
-import { Link } from "@material-ui/core";
-
+import moment from "moment-timezone";
 // import "../../styles/header.css";
 import "../../styles/footer.scss";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
-  const currentYear = new Date().getFullYear();
+  const now = moment();
+  const tzdata = moment.tz.guess();
+
+  const currentMonthYear = now.tz(tzdata).format("MM/YYYY");
+
   return (
     <footer className="primaryFooter">
       <div className="leftSideText">
@@ -13,9 +17,6 @@ const Footer = () => {
         <a
           className="footerLink"
           href="https://www.nrcs.usda.gov/wps/portal/nrcs/detailfull/national/programs/financial/csp/?&cid=nrcsdev11_000242"
-          style={{
-            color: "#fff",
-          }}
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -25,9 +26,6 @@ const Footer = () => {
         <a
           href="https://nifa.usda.gov/land-grant-colleges-and-universities-partner-website-directory"
           className="footerLink"
-          style={{
-            color: "#fff",
-          }}
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -37,9 +35,6 @@ const Footer = () => {
         <a
           href="https://www.nacdnet.org/general-resources/conservation-district-directory/"
           className="footerLink"
-          style={{
-            color: "#fff",
-          }}
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -48,17 +43,17 @@ const Footer = () => {
         for detailed guidance.
       </div>
       <div className="rightSideText">
-        <Link
+        {/* <Link
           href="https://opensource.org/docs/osd"
-          style={{ paddingRight: "50px", color: "#000" }}
+          style={{ paddingRight: "50px" }}
           target="_blank"
         >
           OPEN SOURCE
-        </Link>
-        <Link style={{ paddingRight: "50px", color: "#000" }}>CONTACT US</Link>
-        <Link style={{ paddingRight: "50px", color: "#000" }}>
-          {currentYear}
-        </Link>
+        </Link> */}
+        <a href="/about" style={{ paddingRight: "50px" }}>
+          CONTACT US
+        </a>
+        <a style={{ paddingRight: "50px" }}>Last Updated {currentMonthYear}</a>
       </div>
     </footer>
   );
