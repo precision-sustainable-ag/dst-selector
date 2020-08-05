@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, Fragment } from "react";
 
 import "./styles/App.scss";
 // import Header from "./components/Header/header";
@@ -23,33 +23,8 @@ import ProgressBar from "./shared/ProgressBar";
 import GoalsSelector from "./components/GoalsSelector/GoalsSelector";
 import LocationConfirmation from "./components/Location/LocationConfirmation";
 import CropSelector from "./components/CropSelector/CropSelector";
-import { CustomStyles } from "./shared/constants";
+// import { CustomStyles } from "./shared/constants";
 import { SnackbarProvider } from "notistack";
-// import { GreenBarComponent } from "./components/GreenBar/greenBarComponent";
-// import BodyComponent from "./components/body";
-
-// const logoPath = "/images/neccc_wide_logo_color_web.jpg";
-const theme = createMuiTheme({
-  palette: {
-    primary: {
-      main: CustomStyles().lightGreen,
-    },
-    secondary: {
-      main: CustomStyles().lighterGreen,
-    },
-  },
-  overrides: {
-    MuiTooltip: {
-      tooltip: {
-        fontSize: CustomStyles().defaultFontSize,
-        backgroundColor: CustomStyles().secondaryProgressBtnColor,
-        color: "black",
-        borderRadius: CustomStyles().mildlyRoundedRadius,
-      },
-      arrow: {},
-    },
-  },
-});
 
 const loadRelevantRoute = (progress) => {
   // TODO: Handle case 3 as cropselector vs soil sample selector
@@ -74,7 +49,7 @@ const loadRelevantRoute = (progress) => {
 
 const RouteNotFound = () => {
   return (
-    <div className="container">
+    <div className="container mt-4">
       <div className="row">
         <div className="col-4 offset-4">
           <h3>Unknown Route</h3>
@@ -102,76 +77,116 @@ const App = () => {
     });
   };
 
+  // useEffect(() => {
+  //   switch (parseInt(state.zone)) {
+  //     case 7: {
+  //       dispatch({
+  //         type: "PULL_CROP_DATA",
+  //         data: state.zone7CropData,
+  //       });
+  //       console.log("z7 data dispatched");
+  //       break;
+  //     }
+  //     case 6: {
+  //       dispatch({
+  //         type: "PULL_CROP_DATA",
+  //         data: state.zone6CropData,
+  //       });
+  //       console.log("z6 data dispatched");
+  //       break;
+  //     }
+  //     case 5: {
+  //       dispatch({
+  //         type: "PULL_CROP_DATA",
+  //         data: state.zone5CropData,
+  //       });
+  //       console.log("z5 data dispatched");
+  //       break;
+  //     }
+  //     default: {
+  //       dispatch({
+  //         type: "PULL_CROP_DATA",
+  //         data: state.zone7CropData,
+  //       });
+  //       console.log("default data dispatched");
+  //       break;
+  //     }
+  //   }
+  // }, [
+  //   state.zone,
+  //   state.zone7CropData,
+  //   state.zone6CropData,
+  //   state.zone5CropData,
+  // ]);
+
   return (
-    <MuiThemeProvider theme={theme}>
-      <SnackbarProvider
-        maxSnack={5}
-        anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "right",
-        }}
-      >
-        <div className="contentWrapper">
-          <Header logo="neccc_wide_logo_color_web.jpg" />
+    <SnackbarProvider
+      maxSnack={5}
+      anchorOrigin={{
+        vertical: "bottom",
+        horizontal: "right",
+      }}
+    >
+      <div className="contentWrapper">
+        <Header logo="neccc_wide_logo_color_web.jpg" />
 
-          {loadRelevantRoute(state.progress)}
+        {loadRelevantRoute(state.progress)}
 
-          {state.progress !== 0 && state.progress < 5 ? (
-            <div className="row progressIndicatorWrapper mt-4">
+        {state.progress !== 0 && state.progress < 5 ? (
+          <div className="row progressIndicatorWrapper mt-4">
+            <div
+              className="col-lg-12"
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
               <div
-                className="col-lg-12"
+                className="row"
                 style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
+                  width: "90%",
                 }}
               >
+                <div className="col-lg-4 col-sm-4 col-md-4 pb-2">
+                  <ProgressButtons />
+                </div>
                 <div
-                  className="row"
+                  className="col-lg-4 offset-lg-4 col-md-6 offset-md-2 col-sm-8 pt-2"
                   style={{
-                    width: "90%",
+                    textAlign: "right",
                   }}
                 >
-                  <div className="col-lg-4 col-sm-4 col-md-4 pb-2">
-                    <ProgressButtons />
-                  </div>
-                  <div
-                    className="col-lg-4 offset-lg-4 col-md-6 offset-md-2 col-sm-8 pt-2"
-                    style={{
-                      textAlign: "right",
-                    }}
-                  >
-                    <ProgressBar />
-                  </div>
+                  <ProgressBar />
                 </div>
               </div>
             </div>
-          ) : (
-            ""
-          )}
-
-          <div>
-            <Snackbar
-              anchorOrigin={{
-                vertical: state.snackVertical,
-                horizontal: state.snackHorizontal,
-              }}
-              key={{
-                vertical: state.snackVertical,
-                horizontal: state.snackHorizontal,
-              }}
-              autoHideDuration={5000}
-              open={state.snackOpen}
-              onClose={handleSnackClose}
-              ContentProps={{
-                "aria-describedby": "message-id",
-              }}
-              message={state.snackMessage}
-            />
           </div>
+        ) : (
+          ""
+        )}
+
+        <div>
+          <Snackbar
+            anchorOrigin={{
+              vertical: state.snackVertical,
+              horizontal: state.snackHorizontal,
+            }}
+            key={{
+              vertical: state.snackVertical,
+              horizontal: state.snackHorizontal,
+            }}
+            autoHideDuration={5000}
+            open={state.snackOpen}
+            onClose={handleSnackClose}
+            ContentProps={{
+              "aria-describedby": "message-id",
+            }}
+            message={state.snackMessage}
+          />
         </div>
-      </SnackbarProvider>
-    </MuiThemeProvider>
+      </div>
+    </SnackbarProvider>
   );
 };
 

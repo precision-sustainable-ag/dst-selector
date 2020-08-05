@@ -129,16 +129,29 @@ const MyCoverCropComparisonComponent = (props) => {
                   <span onClick={() => {}} className="cardCloseIcon">
                     <Cancel titleAccess="Remove Crop" />
                   </span>
-                  <CardMedia
-                    image={
-                      crop.data["Image Data"]["Key Thumbnail"]
-                        ? `/images/Cover Crop Photos/${crop.data["Image Data"]["Directory"]}/${crop.data["Image Data"]["Key Thumbnail"]}`
-                        : "https://placehold.it/100x100?text=Placeholder"
-                    }
-                    // image="https://placehold.it/100x100"
-                    title={crop.cropName}
-                    style={{ width: "100%", height: "100px" }}
-                  />
+                  {crop.data["Image Data"] ? (
+                    <CardMedia
+                      image={
+                        crop.data["Image Data"]["Key Thumbnail"]
+                          ? `/images/Cover Crop Photos/${crop.data["Image Data"]["Directory"]}/${crop.data["Image Data"]["Key Thumbnail"]}`
+                          : "https://placehold.it/100x100?text=Placeholder"
+                      }
+                      // image="https://placehold.it/100x100"
+                      title={crop.cropName}
+                      style={{ width: "100%", height: "100px" }}
+                    />
+                  ) : (
+                    <CardMedia
+                      children={
+                        <img
+                          src="https://via.placeholder.com/100/?text=Placeholder"
+                          style={{ width: "100%", height: "100px" }}
+                          alt="Placeholder"
+                        />
+                      }
+                    />
+                  )}
+
                   <CardContent>
                     <div
                       className="font-weight-bold text-muted text-uppercase"

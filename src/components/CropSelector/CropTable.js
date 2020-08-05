@@ -78,7 +78,7 @@ const CropTableComponent = (props) => {
       : setShowGrowthWindow(false);
 
     // console.log(cropData);
-  }, [props]);
+  }, [props.showGrowthWindow]);
 
   useEffect(() => {
     if (state.selectedCrops.length > 0) {
@@ -481,7 +481,7 @@ const CropTableComponent = (props) => {
     );
   };
 
-  return state.cropData.length !== 0 ? (
+  return cropData.length !== 0 ? (
     <Fragment>
       <TableContainer
         className="table-responsive calendarViewTableWrapper"

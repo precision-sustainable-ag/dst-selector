@@ -106,43 +106,38 @@ const Greenbar = () => {
   };
 
   const getZone = () => {
-    if (state.zoneText === "" || parseInt(state.zoneText) === 0) {
-      return "";
-    } else
-      return state.address === "" ? (
-        ""
-      ) : (
-        <Fragment>
-          <Button onClick={handleClick}>
-            {zoneIcon(20, 14)}
-            &nbsp;
-            {state.zone !== 2 ? `Zone ${state.zone}` : `Zone ${state.zone} & 3`}
-          </Button>
-          <Menu
-            id="simple-menu"
-            anchorEl={anchorEl}
-            keepMounted
-            open={Boolean(anchorEl)}
-            onClose={handleZoneDropdownClose}
-          >
-            <MenuItem onClick={handleZoneDropdownClose} value={2} key={2}>
-              Zone 2 and 3
-            </MenuItem>
-            <MenuItem onClick={handleZoneDropdownClose} value={4} key={4}>
-              Zone 4
-            </MenuItem>
-            <MenuItem onClick={handleZoneDropdownClose} value={5} key={5}>
-              Zone 5
-            </MenuItem>
-            <MenuItem onClick={handleZoneDropdownClose} value={6} key={6}>
-              Zone 6
-            </MenuItem>
-            <MenuItem onClick={handleZoneDropdownClose} value={7} key={7}>
-              Zone 7
-            </MenuItem>
-          </Menu>
-        </Fragment>
-      );
+    return (
+      <Fragment>
+        <Button onClick={handleClick}>
+          {zoneIcon(20, 14)}
+          &nbsp;
+          {state.zone !== 2 ? `Zone ${state.zone}` : `Zone ${state.zone} & 3`}
+        </Button>
+        <Menu
+          id="simple-menu"
+          anchorEl={anchorEl}
+          keepMounted
+          open={Boolean(anchorEl)}
+          onClose={handleZoneDropdownClose}
+        >
+          <MenuItem onClick={handleZoneDropdownClose} value={2} key={2}>
+            Zone 2 and 3
+          </MenuItem>
+          <MenuItem onClick={handleZoneDropdownClose} value={4} key={4}>
+            Zone 4
+          </MenuItem>
+          <MenuItem onClick={handleZoneDropdownClose} value={5} key={5}>
+            Zone 5
+          </MenuItem>
+          <MenuItem onClick={handleZoneDropdownClose} value={6} key={6}>
+            Zone 6
+          </MenuItem>
+          <MenuItem onClick={handleZoneDropdownClose} value={7} key={7}>
+            Zone 7
+          </MenuItem>
+        </Menu>
+      </Fragment>
+    );
   };
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
