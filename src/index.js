@@ -20,6 +20,7 @@ import HelpComponent from "./components/Help/Help";
 import FeedbackComponent from "./components/Feedback/Feedback";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core";
 import { CustomStyles } from "./shared/constants";
+import InformationSheetDictionary from "./components/InformationSheet/InformationSheetDictionary";
 
 const withFooter = (WrappedComponent) => () => [
   <WrappedComponent key="1" />,
@@ -97,6 +98,11 @@ const Wrapper = () => (
             <Route
               path={"/seeding-rate-calculator"}
               component={SeedingRateCalculator}
+              exact
+            />
+            <Route
+              path={"/data-dictionary"}
+              component={InformationSheetDictionary}
               exact
             />
             <Route path={"/mix-maker"} component={MixMaker} exact />

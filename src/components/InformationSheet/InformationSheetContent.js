@@ -1,5 +1,9 @@
 import React, { useState, useEffect, Fragment } from "react";
-import { getRating, RenderSeedPriceIcons } from "../../shared/constants";
+import {
+  getRating,
+  RenderSeedPriceIcons,
+  allMonths,
+} from "../../shared/constants";
 import {
   Typography,
   Accordion,
@@ -7,13 +11,19 @@ import {
   AccordionDetails,
 } from "@material-ui/core";
 import SoilDrainageTimeline from "./SoilDrainageTimeline";
-import moment from "moment";
-import { ExpandMore } from "@material-ui/icons";
-import Axios from "axios";
+
+import { ExpandMore, FiberManualRecord } from "@material-ui/icons";
 import PhotoComponent from "./PhotoComponent";
+import InformationSheetDictionary from "./InformationSheetDictionary";
+import GrowthWindowComponent from "../CropSelector/GrowthWindow";
+import moment from "moment-timezone";
 const InformationSheetContent = (props) => {
   const crop = props.crop;
   const from = props.from || "direct";
+  useEffect(() => {
+    document.title = `Information Sheet for ${crop["Cover Crop Name"]}`;
+  }, []);
+
   return from === "direct" ? (
     <Fragment>
       <div className="row coverCropDescriptionWrapper">
@@ -681,10 +691,117 @@ const InformationSheetContent = (props) => {
                   </Typography>
                 </div>
               </div>
+              <div className="col-9 mb-2">
+                <Typography variant="body1">Winter Survival</Typography>
+              </div>
+              <div className="col-3 mb-2">
+                <div className="blue-bg">
+                  <Typography variant="body1">
+                    {crop["Winter Survival"]}
+                  </Typography>
+                </div>
+              </div>
+              <div className="col-9 mb-2">
+                <Typography variant="body1">Active Growth Period</Typography>
+              </div>
+              <div className="col-3 mb-2">
+                {crop["Active Growth Period"].map((val, index) => (
+                  <div className="blue-bg bordered" key={index}>
+                    <Typography variant="body1">{val}</Typography>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="row col-12 text-right">
+              <div className="col-12">
+                <table style={{ width: "100%", height: "40px" }}>
+                  <tbody>
+                    <tr>
+                      {allMonths.map((month, index) => (
+                        <GrowthWindowComponent
+                          from="tableAll"
+                          data={crop}
+                          key={index}
+                          id={`growthCell${index}`}
+                          month={index}
+                        />
+                      ))}
+                    </tr>
+                    <tr>
+                      {allMonths.map((month, index) => (
+                        <td key={index}>{month}</td>
+                      ))}
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div className="col-12 row d-none d-print-block text-left">
+                {/* <div className="col-12 text-left"> */}
+                <div className="col-12 legendModalRow">
+                  <Typography variant="body1">
+                    <FiberManualRecord className="reliable" />
+                    <span className="pl-3">{"Reliable Establishment"}</span>
+                  </Typography>
+                </div>
+                <div className="col-12 legendModalRow">
+                  <Typography variant="body1">
+                    <FiberManualRecord className="temperatureRisk" />
+                    <span className="pl-3">
+                      {"Temperature Risk To Establishment"}
+                    </span>
+                  </Typography>
+                </div>
+                <div className="col-12 legendModalRow">
+                  <Typography variant="body1">
+                    <FiberManualRecord className="frostPossible" />
+                    <span className="pl-3">{"Frost Seeding Possible"}</span>
+                  </Typography>
+                </div>
+                <div className="col-12 legendModalRow">
+                  <Typography variant="body1">
+                    <FiberManualRecord className="cashCrop" />
+                    <span className="pl-3">{"Cash Crop Growth Window"}</span>
+                  </Typography>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
+      <div className="row coverCropDescriptionWrapper">
+        <div className="col-12 p-0">
+          <Typography variant="h6" className="text-uppercase px-3 py-2">
+            Extended Comments
+          </Typography>
+          {crop["Notes: Goals"] ? (
+            <Typography variant="body1" className="p-3">
+              {" "}
+              <b>Goals:</b> {crop["Notes: Goals"]}
+            </Typography>
+          ) : (
+            ""
+          )}
+
+          {crop["Notes: Weeds"] ? (
+            <Typography variant="body1" className="p-3">
+              {" "}
+              <b>Weeds:</b> {crop["Notes: Weeds"]}
+            </Typography>
+          ) : (
+            ""
+          )}
+
+          {crop["Notes: Planting"] ? (
+            <Typography variant="body1" className="p-3">
+              {" "}
+              <b>Weeds:</b> {crop["Notes: Planting"]}
+            </Typography>
+          ) : (
+            ""
+          )}
+        </div>
+      </div>
+      <InformationSheetDictionary />
     </Fragment>
   ) : (
     <Fragment>
@@ -1451,6 +1568,28 @@ const InformationSheetContent = (props) => {
                   </Typography>
                 </div>
               </div>
+            </div>
+            <div className="row col-12 py-4 text-right">
+              <table style={{ width: "100%", height: "40px" }}>
+                <tbody>
+                  <tr>
+                    {allMonths.map((month, index) => (
+                      <GrowthWindowComponent
+                        from="tableAll"
+                        data={crop}
+                        key={index}
+                        id={`growthCell${index}`}
+                        month={index}
+                      />
+                    ))}
+                  </tr>
+                  <tr>
+                    {allMonths.map((month, index) => (
+                      <td key={index}>{month}</td>
+                    ))}
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>

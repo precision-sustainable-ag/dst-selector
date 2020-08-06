@@ -3,29 +3,25 @@ import Header from "../Header/header";
 import { Typography } from "@material-ui/core";
 
 const HelpComponent = (props) => {
+  const resizeIframe = (obj) => {
+    obj.style.height =
+      obj.contentWindow.document.documentElement.scrollHeight + "px";
+  };
   return (
     <div className="contentWrapper">
       <Header />
       <div className="container-fluid pt-4" style={{ minHeight: "70vh" }}>
         <div className="row">
-          <div className="col-12 text-left">
-            <Typography variant="h5">
-              How to Use the Northeast Cover Crop Species Selector Tool
-            </Typography>
-          </div>
-        </div>
-
-        <div className="row pt-4">
-          <div className="col-12 text-left">
-            <ol>
-              <li>Start with the Species Selector Wizard</li>
-              <li>
-                <ol>
-                  <li>Define your location:</li>
-                </ol>
-              </li>
-            </ol>
-          </div>
+          <iframe
+            src="https://docs.google.com/document/d/e/2PACX-1vTZ-K1pVoaJLtlUV0m24VLcJzaaPHGVbC5pABnClERFTD_YcWrgSOVg7SJ6Rr_2ab90Md_Am8MQBAFc/pub?embedded=true"
+            frameBorder="none"
+            width="100%"
+            height="400px"
+            style={{
+              minHeight: "80vh",
+            }}
+            // onLoad={resizeIframe}
+          />
         </div>
       </div>
     </div>
