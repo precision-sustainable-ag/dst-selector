@@ -61,7 +61,18 @@
         h6 {
           text-transform: uppercase;
           border: 1px solid $progressColor;
+          padding: 5px;
         }
+      }
+    }
+  }
+  div.row.dictionaryContentWrapper {
+    & > div.col-12 {
+      // border: 1px solid $progressColor;
+      h6 {
+        text-transform: uppercase;
+        border: 1px solid $progressColor;
+        padding: 5px;
       }
     }
   }

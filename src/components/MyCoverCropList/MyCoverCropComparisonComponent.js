@@ -18,6 +18,9 @@ import { MonetizationOn, Cancel } from "@material-ui/icons";
 import { Context } from "../../store/Store";
 
 import "../../styles/MyCoverCropComparisonComponent.scss";
+import sidebarDefinitionsz7 from "../../shared/json/zone7/data-dictionary.json";
+import sidebarDefinitionsz6 from "../../shared/json/zone6/data-dictionary.json";
+import sidebarDefinitionsz5 from "../../shared/json/zone5/data-dictionary.json";
 
 const lightBorder = {
   border: "1px solid #35999b",
@@ -41,7 +44,68 @@ const lightBG = {
 };
 const MyCoverCropComparisonComponent = (props) => {
   const [state, dispatch] = useContext(Context);
-  const { filterKeys } = state;
+  const { filterKeys, zone } = state;
+  const [sidebarDefs, setSidebarDefs] = useState(sidebarDefinitionsz7);
+
+  useEffect(() => {
+    switch (parseInt(zone)) {
+      case 7: {
+        setSidebarDefs(sidebarDefinitionsz7);
+        break;
+      }
+      case 6: {
+        setSidebarDefs(sidebarDefinitionsz6);
+        break;
+      }
+      case 5: {
+        setSidebarDefs(sidebarDefinitionsz5);
+        break;
+      }
+      default: {
+        setSidebarDefs(sidebarDefinitionsz7);
+        break;
+      }
+    }
+  }, [zone]);
+
+  const removeCrop = (btnId) => {
+    var removeIndex = state.selectedCrops
+      .map(function (item) {
+        return item.btnId;
+      })
+      .indexOf(`${btnId}`);
+
+    if (removeIndex === -1) {
+      // element not in array
+      // not possible ?
+    } else {
+      // alert(removeIndex);
+      let selectedCropsCopy = state.selectedCrops;
+
+      selectedCropsCopy.splice(removeIndex, 1);
+      // console.log(selectedCropsCopy);
+      dispatch({
+        type: "SELECTED_CROPS_MODIFIER",
+        data: {
+          selectedCrops: selectedCropsCopy,
+          snackOpen: true,
+          snackMessage: `Removed`,
+        },
+      });
+
+      // this.state.selectedCrops.splice(removeIndex, 1);
+    }
+  };
+
+  const getTooltipData = (keyName = "") => {
+    const exactObject = sidebarDefs.find((keys) => keys.Variable === keyName);
+
+    if (exactObject) {
+      return exactObject.Description;
+    } else {
+      return "No Data";
+    }
+  };
   return (
     <div className="container-fluid">
       <div className="row">
@@ -95,7 +159,11 @@ const MyCoverCropComparisonComponent = (props) => {
                   {filterKeys.map((keys, index) => (
                     <div style={lightBorder} key={index}>
                       <span>
-                        <DataTooltip data={"Info"} />
+                        <DataTooltip
+                          data={getTooltipData(keys)}
+                          interactive={false}
+                          placement="top-start"
+                        />
                       </span>
                       <span>
                         <Typography variant="body2" className="text-capitalize">
@@ -108,7 +176,11 @@ const MyCoverCropComparisonComponent = (props) => {
                   ))}
                   <div style={lightBorder}>
                     <span>
-                      <DataTooltip data={"Info"} />
+                      <DataTooltip
+                        data={"Average rating of all selected goals"}
+                        interactive={false}
+                        placement="top-start"
+                      />
                     </span>
                     <span>
                       <Typography variant="body2">
@@ -126,7 +198,10 @@ const MyCoverCropComparisonComponent = (props) => {
             {props.selectedCrops.map((crop, index) => (
               <div className="col-xl-3 col-lg-5" key={index}>
                 <Card className="mainComparisonCard" style={{ width: "100%" }}>
-                  <span onClick={() => {}} className="cardCloseIcon">
+                  <span
+                    onClick={() => removeCrop(crop.btnId)}
+                    className="cardCloseIcon"
+                  >
                     <Cancel titleAccess="Remove Crop" />
                   </span>
                   {crop.data["Image Data"] ? (
@@ -175,7 +250,9 @@ const MyCoverCropComparisonComponent = (props) => {
                             textDecoration: "underline",
                             color: "rgb(53, 153, 155)",
                           }}
-                          onClick={() => {}}
+                          href={`/information-sheet/${crop.data["Cover Crop Name"]}`}
+                          target="_blank"
+                          rel="noopener"
                         >
                           View Crop Details
                         </a>
@@ -208,7 +285,7 @@ const MyCoverCropComparisonComponent = (props) => {
                       textAlign: "center",
                       padding: "0.5em",
                     }}
-                    onClick={() => console.log("remove crop")}
+                    onClick={() => removeCrop(crop.btnId)}
                   >
                     <Typography
                       variant="body2"

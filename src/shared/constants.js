@@ -40,11 +40,16 @@ export const ReferenceTooltip = (props) => {
   );
 };
 
-export const DataTooltip = ({ data }) => {
+export const DataTooltip = ({
+  data,
+  interactive = true,
+  placement = "top-start",
+}) => {
   return (
     <Tooltip
       title={<div className="text-center">{data}</div>}
-      interactive
+      interactive={interactive}
+      placement={placement}
       arrow
     >
       <Info fontSize="small" />

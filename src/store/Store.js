@@ -8,6 +8,10 @@ import moment from "moment-timezone";
 import img from "../shared/image-dictionary.json";
 import desc from "../shared/crop-descriptions.json";
 
+import z7Dict from "../shared/json/zone7/data-dictionary.json";
+import z6Dict from "../shared/json/zone6/data-dictionary.json";
+import z5Dict from "../shared/json/zone6/data-dictionary.json";
+
 const cropDataFormatter = (cropData = [{}]) => {
   let tjson = cropData.filter((crop) => {
     if (
@@ -167,9 +171,9 @@ const initialState = {
   selectedCheckboxes: [],
   selectedStars: {},
   allGoals: [],
-  cropData: [],
+  cropData: z7CropData,
   selectedCrops: [],
-  selectedGoals: ["Good Grazing"],
+  selectedGoals: [],
   zoom: 13,
   addressVerified: false,
   snackOpen: false,
@@ -222,6 +226,9 @@ const initialState = {
   zone7CropData: z7CropData,
   zone6CropData: z6CropData,
   zone5CropData: z5CropData,
+  zone7Dictionary: z7Dict,
+  zone6Dictionary: z6Dict,
+  zone5Dictionary: z5Dict,
   weatherDataReset: false,
   filterString: "",
   filterKeys: [],

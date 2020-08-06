@@ -23,27 +23,6 @@ const ExplorerCardView = (props) => {
   const classes = useStyles();
   return (
     <Fragment>
-      <div
-        className="row"
-        style={{
-          backgroundColor: "#35999b",
-          height: "40px",
-          borderTopLeftRadius: "5px",
-          borderTopRightRadius: "5px",
-        }}
-      >
-        <div className="col-8">
-          <Button style={{ color: "white" }}>Download:</Button>
-          <Button style={{ color: "white" }} onClick={() => {}}>
-            <PictureAsPdf /> <span className="pl-2">PDF</span>
-          </Button>
-
-          <Button href={`/csv/`} style={{ color: "white" }}>
-            <FormatListBulleted />
-            &nbsp; SPREADSHEET
-          </Button>
-        </div>
-      </div>
       <div className="d-flex flex-wrap pt-4 ">
         {props.activeCropData.map((crop, index) => (
           <div className="p-2" key={index}>
@@ -77,7 +56,9 @@ const ExplorerCardView = (props) => {
                         textDecoration: "underline",
                         color: "rgb(53, 153, 155)",
                       }}
-                      onClick={() => {}}
+                      href={`/information-sheet/${crop.fields["Cover Crop Name"]}`}
+                      target="_blank"
+                      rel="noopener"
                     >
                       View Crop Details
                     </a>

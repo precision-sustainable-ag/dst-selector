@@ -36,7 +36,7 @@ const InformationSheet = (props) => {
     : "none";
   //   check if crop data is passed as crop
   //   elseif, check if localstorage has infosheet data else use default crop data
-  const [referrer, setReferrer] = useState("direct");
+  // const [referrer, setReferrer] = useState("direct");
   const [crop] = useState(
     name === "none"
       ? props.crop
@@ -45,6 +45,8 @@ const InformationSheet = (props) => {
         ? JSON.parse(window.localStorage.getItem("infosheet"))
         : BasicCrop
       : cropData.fields
+      ? cropData.fields
+      : ""
   );
   const ref = React.createRef();
   const from = props.from || "direct";
