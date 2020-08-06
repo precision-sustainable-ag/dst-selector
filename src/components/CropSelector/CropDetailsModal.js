@@ -23,14 +23,10 @@ import {
   PictureAsPdf,
   FormatListBulleted,
   Print,
-  Info,
   Close,
-  AddCircleOutline,
-  RemoveCircleOutline,
-  ExpandMore,
-  AddCircle,
 } from "@material-ui/icons";
 import InformationSheetContent from "../InformationSheet/InformationSheetContent";
+
 // import Axios from "axios";
 // import html2canvas from "html2canvas";
 const useStyles = makeStyles((theme) => ({
@@ -288,6 +284,7 @@ const CropDetailsModalComponent = (props) => {
   // useEffect(() => {
   //   console.log("run");
   // });
+
   return (
     <Modal
       aria-labelledby="transition-modal-title"
@@ -377,7 +374,13 @@ const CropDetailsModalComponent = (props) => {
                 >
                   <div className="row">
                     <div className="col-4">
-                      <Button style={{ color: "white" }}>
+                      <Button
+                        style={{ color: "white" }}
+                        className="dataDict"
+                        onClick={() => {
+                          window.open("/data-dictionary", "_blank");
+                        }}
+                      >
                         {zoneIcon(20, 20)}
                         <span className="pl-2">
                           Plant Hardiness Zone {state.zone} Dataset
