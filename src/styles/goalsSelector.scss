@@ -2,12 +2,7 @@
 @import "../styles/constants.scss";
 
 .goalsContainer {
-  display: flex;
-  justify-content: left;
-  align-items: left;
-
   .goalsBoxContainer {
-    text-align: left;
     p {
       color: $lighterGreen;
     }
