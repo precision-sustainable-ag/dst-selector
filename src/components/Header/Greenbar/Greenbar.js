@@ -1,6 +1,5 @@
 import React, { useEffect, useContext, Fragment } from "react";
 import { Context } from "../../../store/Store";
-import "../../../styles/header.scss";
 import {
   locationIcon,
   zoneIcon,
@@ -325,13 +324,29 @@ const Greenbar = () => {
     <div className="greenBarParent" id="greenBarParent">
       <div className="greenBarWrapper" style={greenBarWrapperBackground}>
         <div className="addressBar">
-          {state.progress > 0 ? getAddress() : ""}
+          {state.progress > 0 &&
+          (window.location.pathname === "/" || state.progress > 4)
+            ? getAddress()
+            : ""}
         </div>
 
-        <div className="zoneBar">{state.progress > 0 ? getZone() : ""}</div>
-        <div className="soilBar">{state.progress > 1 ? getSoil() : ""}</div>
+        <div className="zoneBar">
+          {state.progress > 0 &&
+          (window.location.pathname === "/" || state.progress > 4)
+            ? getZone()
+            : ""}
+        </div>
+        <div className="soilBar">
+          {state.progress > 1 &&
+          (window.location.pathname === "/" || state.progress > 4)
+            ? getSoil()
+            : ""}
+        </div>
         <div className="weatherBar">
-          {state.progress > 1 ? getWeatherData() : ""}
+          {state.progress > 1 &&
+          (window.location.pathname === "/" || state.progress > 4)
+            ? getWeatherData()
+            : ""}
         </div>
       </div>
       <div className="greenBarExpansionPanel" id="greenBarExpansionPanel">
