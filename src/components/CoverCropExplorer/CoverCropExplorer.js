@@ -40,7 +40,9 @@ const CoverCropExplorer = () => {
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
-
+  useEffect(() => {
+    document.title = "Cover Crop Explorer";
+  }, []);
   const handleClose = (zone) => {
     if (typeof zone === "number") {
       let zoneText = `Zone ${zone}`;
