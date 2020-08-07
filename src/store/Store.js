@@ -160,13 +160,21 @@ const z5CropData = cropDataFormatter(z5AllCrops);
 // const StoreContext = createContext();
 
 const initialState = {
-  // progress: 0,
-  progress: 5,
+  progress: 0,
+  // progress: 5,
   address: "",
   addressSearchPreference: "address",
   zip: 0,
   markersCopy: [],
   markers: [[39.0255, -76.924]],
+  // markers: [
+  //   [42.43893008983507, -71.6220123358556],
+  //   [42.437694893227764, -71.6226775236913],
+  //   [42.4370772857936, -71.62188358982289],
+  //   [42.43746131164466, -71.62125058849537],
+  //   [42.438162053781895, -71.621003825266],
+  //   [42.4387044307342, -71.62120767315113],
+  // ],
   showAddressChangeBtn: false,
   selectedCheckboxes: [],
   selectedStars: {},
