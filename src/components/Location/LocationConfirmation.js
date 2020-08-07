@@ -5,6 +5,7 @@ import { Context } from "../../store/Store";
 import SoilConditions from "./SoilConditions";
 import WeatherConditions from "./WeatherConditions";
 import { CustomStyles } from "../../shared/constants";
+import MapContext from "./MapContext";
 // import { TextField } from "@material-ui/core";
 
 const LocationConfirmation = () => {
@@ -18,16 +19,27 @@ const LocationConfirmation = () => {
         alignItems: "center",
       }}
     >
-      <div className="row boxContainerRow" style={{ textAlign: "left" }}>
+      <div
+        className="row boxContainerRow"
+        style={{ textAlign: "left", height: "480px" }}
+      >
         <div className="col-xl-6 col-lg-12">
           <div className="container-fluid">
             <div className="row">
               <div className="col-lg-6">
-                <MapComponent
+                {/* <MapComponent
                   width="100%"
                   height="100%"
                   minzoom={4}
                   maxzoom={20}
+                  
+                /> */}
+                <MapContext
+                  width="100%"
+                  height="200px"
+                  minzoom={4}
+                  maxzoom={20}
+                  from="confirmation"
                 />
               </div>
               <div className="col-lg-6">
