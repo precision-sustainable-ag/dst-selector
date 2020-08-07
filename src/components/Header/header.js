@@ -520,17 +520,6 @@ const Header = () => {
       history.push("/");
       // return <Redirect to="/" />;
     }
-
-    // console.log(window.location.pathname);
-    // if (window.location.pathname !== "/") {
-    //   setIsRoot(false);
-    //   setRedirectToRoot(true);
-    //   // return <Redirect to="/" />;
-    // } else {
-    //   setIsRoot(true);
-    //   setRedirectToRoot(false);
-    // }
-    // }
   };
 
   return redirectToRoot ? (
@@ -550,42 +539,47 @@ const Header = () => {
           FEEDBACK
         </NavLink>
       </div>
-      <div className="midHeader container-fluid">
-        <div
-          className="logoContainer"
-          // onClick={() => window.open("http://northeastcovercrops.com")}
-          onClick={() => {
-            dispatch({
-              type: "UPDATE_PROGRESS",
-              data: {
-                type: "HOME",
-              },
-            });
-            setRedirectToRoot(!redirectToRoot);
-          }}
-          style={{ cursor: "pointer" }}
-        >
-          {/* NECCCLOGO */}
-          {/* <img src={"/images/neccc_wide_logo_color_web.jpg"} /> */}
-        </div>
-        <div className="dataComponents">
-          <div className="firstData">
-            <div>
-              <Typography variant="body1">
-                Cover Crop Decision Support Tools
-              </Typography>
+
+      <div className="container-fluid">
+        <div className="row">
+          <div className="col-lg-2 col-12">
+            <img
+              src="/images/neccc_wide_logo_color_web.jpg"
+              alt="NECCC Logo"
+              width="100%"
+              onContextMenu={() => {
+                return false;
+              }}
+              onClick={() => {
+                dispatch({
+                  type: "UPDATE_PROGRESS",
+                  data: {
+                    type: "HOME",
+                  },
+                });
+                // setRedirectToRoot(!redirectToRoot);
+              }}
+              style={{ cursor: "pointer" }}
+            />
+          </div>
+          <div className="col-12 col-lg-10 col-sm-12 row">
+            <div className="col-lg-4 col-12 d-flex align-items-center text-left">
+              <div>
+                <Typography variant="body1">
+                  Cover Crop Decision Support Tools
+                </Typography>
+
+                <Typography variant="body1">
+                  <DateComponent />
+                </Typography>
+              </div>
             </div>
-            <div>
-              <Typography variant="body1">
-                {" "}
-                <DateComponent />
-              </Typography>
+            <div className="col-lg-8 col-12 d-flex align-items-center">
+              <div>
+                <ForecastComponent />
+              </div>
             </div>
           </div>
-          <div>
-            <ForecastComponent />
-          </div>
-          {/* <div></div> */}
         </div>
       </div>
       <div className="bottomHeader">
@@ -665,12 +659,13 @@ const Header = () => {
           </MDBCollapse>
         </MDBContainer>
       </MDBNavbar>
-      {/* </MDBContainer> */}
+
       <Greenbar />
 
       {window.location.pathname === "/about" ||
       window.location.pathname === "/help" ||
-      window.location.pathname === "/feedback" ? (
+      window.location.pathname === "/feedback" ||
+      state.progress === 0 ? (
         <div className="topBar"></div>
       ) : (
         ""
