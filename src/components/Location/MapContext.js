@@ -73,7 +73,7 @@ const MapContext = ({ width, height, minzoom, maxzoom, from }) => {
       <div className="col-12">
         <Map
           minZoom={minzoom}
-          zoom={13}
+          zoom={15}
           maxZoom={maxzoom}
           center={mapCenter}
           style={{ width: width, height: height }}
