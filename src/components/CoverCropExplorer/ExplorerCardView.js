@@ -190,13 +190,17 @@ const ExplorerCardView = (props) => {
               >
                 <Typography
                   variant="body2"
-                  className="text-uppercase"
+                  className={`text-uppercase ${
+                    selectedBtns.includes(`cartBtn${index}`) ? "text-white" : ""
+                  }`}
                   style={{
                     color: "black",
                     fontWeight: "bold",
                   }}
                 >
-                  ADD TO LIST
+                  {selectedBtns.includes(`cartBtn${index}`)
+                    ? "ADDED"
+                    : "ADD TO LIST"}
                 </Typography>
               </CardActionArea>
             </Card>
