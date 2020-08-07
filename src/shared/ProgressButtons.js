@@ -9,7 +9,7 @@ const ProgressButtons = () => {
 
   useEffect(() => {
     disableLogic();
-  }, [state]);
+  }, [state.progress, state.selectedGoals]);
   const disableLogic = () => {
     switch (state.progress) {
       case 1: {
@@ -28,6 +28,10 @@ const ProgressButtons = () => {
         } else {
           setIsDisabled(false);
         }
+        break;
+      }
+      default: {
+        setIsDisabled(false);
       }
     }
   };
