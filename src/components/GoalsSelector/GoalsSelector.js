@@ -3,7 +3,7 @@ import React, { useContext, useEffect } from "react";
 import { Context } from "../../store/Store";
 
 import "../../styles/goalsSelector.scss";
-import { CircularProgress, makeStyles } from "@material-ui/core";
+import { CircularProgress, makeStyles, Typography } from "@material-ui/core";
 
 import Skeleton from "@material-ui/lab/Skeleton";
 import GoalTag from "./GoalTag";
@@ -73,64 +73,144 @@ const GoalsSelector = () => {
   };
 
   return (
-    <div className="goalsContainer mt-5">
-      <div className="row boxContainerRow goalsBoxContainer">
-        <div className="col-xl-12">
-          <h1 className="text-center">What are your cover cropping goals?</h1>
-        </div>
-        <div className="col-xl-12">
-          <p className="text-center">
+    <div
+      className="container-fluid mt-5"
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <div
+        className="row boxContainerRow goalsContainer"
+        style={{ height: "480px" }}
+      >
+        <div className="col-12 goalsBoxContainer">
+          <Typography variant="h4" gutterBottom>
+            What are your cover cropping goals?
+          </Typography>
+          <Typography
+            variant="body2"
+            align="center"
+            color="secondary"
+            gutterBottom
+          >
             Select up to three. Hover for more information
-          </p>
-        </div>
-        {state.allGoals.length === 0 ? (
-          <div className="goals col-lg-12">
-            {/* <Typography variant="h5">Refreshing..</Typography> */}
-            <div className="row">
-              <div className="col-3">
-                <Skeleton style={goalSkeletonStyle} />
-              </div>
-              <div className="col-3">
-                <Skeleton style={goalSkeletonStyle} />
-              </div>
-              <div className="col-3">
-                <Skeleton style={goalSkeletonStyle} />
-              </div>
-              <div className="col-3">
-                <Skeleton style={goalSkeletonStyle} />
+          </Typography>
+          {state.allGoals.length === 0 ? (
+            <div className="goals col-lg-12">
+              <div className="row">
+                <div className="col-3">
+                  <Skeleton style={goalSkeletonStyle} />
+                </div>
+                <div className="col-3">
+                  <Skeleton style={goalSkeletonStyle} />
+                </div>
+                <div className="col-3">
+                  <Skeleton style={goalSkeletonStyle} />
+                </div>
+                <div className="col-3">
+                  <Skeleton style={goalSkeletonStyle} />
+                </div>
               </div>
             </div>
-          </div>
-        ) : (
-          <div className="goals row" style={{ justifyContent: "center" }}>
-            {state.allGoals.length > 0 ? (
-              state.allGoals.map((goal, key) =>
-                goal.fields["Include"] ? (
-                  <div key={key} className={`${classes.root} col`}>
-                    <GoalTag
-                      goal={goal}
-                      id={key}
-                      goaltTitle={goal.fields["Cover Crop Goal"]}
-                      goalDescription={goal.fields["Description"]}
-                    />
-                  </div>
-                ) : (
-                  ""
+          ) : (
+            <div
+              className="goals row pt-4"
+              style={{ justifyContent: "center" }}
+            >
+              {state.allGoals.length > 0 ? (
+                state.allGoals.map((goal, key) =>
+                  goal.fields["Include"] ? (
+                    <div key={key} className={`${classes.root} col`}>
+                      <GoalTag
+                        goal={goal}
+                        id={key}
+                        goaltTitle={goal.fields["Cover Crop Goal"]}
+                        goalDescription={goal.fields["Description"]}
+                      />
+                    </div>
+                  ) : (
+                    ""
+                  )
                 )
-              )
-            ) : (
-              <Skeleton
-                animation="pulse"
-                height="100"
-                width="100"
-                variant="rect"
-              />
-            )}
-          </div>
-        )}
+              ) : (
+                <Skeleton
+                  animation="pulse"
+                  height="100"
+                  width="100"
+                  variant="rect"
+                />
+              )}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
 };
 
 export default GoalsSelector;
+
+{
+  /* <div className="goalsContainer mt-5">
+<div
+  className="row boxContainerRow goalsBoxContainer"
+  style={{ height: "480px" }}
+>
+  <div className="col-xl-12">
+    <h1 className="text-center">What are your cover cropping goals?</h1>
+  </div>
+  <div className="col-xl-12">
+    <p className="text-center">
+      Select up to three. Hover for more information
+    </p>
+  </div>
+  {state.allGoals.length === 0 ? (
+    <div className="goals col-lg-12">
+
+      <div className="row">
+        <div className="col-3">
+          <Skeleton style={goalSkeletonStyle} />
+        </div>
+        <div className="col-3">
+          <Skeleton style={goalSkeletonStyle} />
+        </div>
+        <div className="col-3">
+          <Skeleton style={goalSkeletonStyle} />
+        </div>
+        <div className="col-3">
+          <Skeleton style={goalSkeletonStyle} />
+        </div>
+      </div>
+    </div>
+  ) : (
+    <div className="goals row" style={{ justifyContent: "center" }}>
+      {state.allGoals.length > 0 ? (
+        state.allGoals.map((goal, key) =>
+          goal.fields["Include"] ? (
+            <div key={key} className={`${classes.root} col`}>
+              <GoalTag
+                goal={goal}
+                id={key}
+                goaltTitle={goal.fields["Cover Crop Goal"]}
+                goalDescription={goal.fields["Description"]}
+              />
+            </div>
+          ) : (
+            ""
+          )
+        )
+      ) : (
+        <Skeleton
+          animation="pulse"
+          height="100"
+          width="100"
+          variant="rect"
+        />
+      )}
+    </div>
+  )}
+</div>
+</div> */
+}
