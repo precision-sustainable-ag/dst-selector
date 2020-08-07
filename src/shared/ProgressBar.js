@@ -2,6 +2,7 @@ import React from "react";
 // import { LightButton } from "./constants";
 import { Context } from "../store/Store";
 import "../styles/progressIndicator.scss";
+import { Typography } from "@material-ui/core";
 
 const checkProgressStatus = (actualProgress, expectedProgress) => {
   if (actualProgress === expectedProgress) {
@@ -18,7 +19,9 @@ const ProgressBar = () => {
   const [state, dispatch] = React.useContext(Context);
   return (
     <div className="gprogress">
-      <div className="progress-track">Question {state.progress} of 4</div>
+      <Typography variant="body1" className="progress-track" component="div">
+        Question {state.progress} of 4
+      </Typography>
       <div className="progress-diagram">
         <div
           id="step1"
