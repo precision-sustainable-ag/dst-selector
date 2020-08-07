@@ -24,7 +24,6 @@ import GoalsSelector from "./components/GoalsSelector/GoalsSelector";
 import LocationConfirmation from "./components/Location/LocationConfirmation";
 import CropSelector from "./components/CropSelector/CropSelector";
 // import { CustomStyles } from "./shared/constants";
-import { SnackbarProvider } from "notistack";
 
 const loadRelevantRoute = (progress) => {
   // TODO: Handle case 3 as cropselector vs soil sample selector
@@ -61,12 +60,7 @@ const RouteNotFound = () => {
 
 const App = () => {
   const [state, dispatch] = useContext(Context);
-  // useEffect(() => {
-  //   document.title = "Cover Crop Decision Support Tool";
-  //   loadProgressBar();
-  // }, [state.ajaxInProgress]);
 
-  // const isRootRoute = this.props.path == "/" ? true : false;
   const handleSnackClose = () => {
     dispatch({
       type: "SNACK",
@@ -77,116 +71,48 @@ const App = () => {
     });
   };
 
-  // useEffect(() => {
-  //   switch (parseInt(state.zone)) {
-  //     case 7: {
-  //       dispatch({
-  //         type: "PULL_CROP_DATA",
-  //         data: state.zone7CropData,
-  //       });
-  //       console.log("z7 data dispatched");
-  //       break;
-  //     }
-  //     case 6: {
-  //       dispatch({
-  //         type: "PULL_CROP_DATA",
-  //         data: state.zone6CropData,
-  //       });
-  //       console.log("z6 data dispatched");
-  //       break;
-  //     }
-  //     case 5: {
-  //       dispatch({
-  //         type: "PULL_CROP_DATA",
-  //         data: state.zone5CropData,
-  //       });
-  //       console.log("z5 data dispatched");
-  //       break;
-  //     }
-  //     default: {
-  //       dispatch({
-  //         type: "PULL_CROP_DATA",
-  //         data: state.zone7CropData,
-  //       });
-  //       console.log("default data dispatched");
-  //       break;
-  //     }
-  //   }
-  // }, [
-  //   state.zone,
-  //   state.zone7CropData,
-  //   state.zone6CropData,
-  //   state.zone5CropData,
-  // ]);
-
   return (
-    <SnackbarProvider
-      maxSnack={5}
-      anchorOrigin={{
-        vertical: "bottom",
-        horizontal: "right",
-      }}
-    >
-      <div className="contentWrapper">
-        <Header logo="neccc_wide_logo_color_web.jpg" />
+    <div className="contentWrapper">
+      <Header logo="neccc_wide_logo_color_web.jpg" />
 
-        {loadRelevantRoute(state.progress)}
+      {loadRelevantRoute(state.progress)}
 
-        {state.progress !== 0 && state.progress < 5 ? (
-          <div className="row progressIndicatorWrapper mt-4">
-            <div
-              className="col-lg-12"
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <div
-                className="row"
-                style={{
-                  width: "90%",
-                }}
-              >
-                <div className="col-lg-4 col-sm-4 col-md-4 pb-2">
-                  <ProgressButtons />
-                </div>
-                <div
-                  className="col-lg-4 offset-lg-4 col-md-6 offset-md-2 col-sm-8 pt-2"
-                  style={{
-                    textAlign: "right",
-                  }}
-                >
-                  <ProgressBar />
-                </div>
-              </div>
+      {state.progress !== 0 && state.progress < 5 ? (
+        <div className="container-fluid mt-5 mb-5">
+          <div className="row" style={{ width: "95%", margin: "0 auto" }}>
+            <div className="col-lg-5 col-12"></div>
+            <div className="col-lg-5 col-12">
+              <ProgressButtons />
+            </div>
+            <div className="col-lg-2 pr-0 col-12">
+              <ProgressBar />
             </div>
           </div>
-        ) : (
-          ""
-        )}
-
-        <div>
-          <Snackbar
-            anchorOrigin={{
-              vertical: state.snackVertical,
-              horizontal: state.snackHorizontal,
-            }}
-            key={{
-              vertical: state.snackVertical,
-              horizontal: state.snackHorizontal,
-            }}
-            autoHideDuration={5000}
-            open={state.snackOpen}
-            onClose={handleSnackClose}
-            ContentProps={{
-              "aria-describedby": "message-id",
-            }}
-            message={state.snackMessage}
-          />
         </div>
+      ) : (
+        ""
+      )}
+
+      <div>
+        <Snackbar
+          anchorOrigin={{
+            vertical: state.snackVertical,
+            horizontal: state.snackHorizontal,
+          }}
+          key={{
+            vertical: state.snackVertical,
+            horizontal: state.snackHorizontal,
+          }}
+          autoHideDuration={3000}
+          open={state.snackOpen}
+          onClose={handleSnackClose}
+          ContentProps={{
+            "aria-describedby": "message-id",
+          }}
+          message={state.snackMessage}
+        />
       </div>
-    </SnackbarProvider>
+    </div>
   );
 };
 
