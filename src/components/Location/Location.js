@@ -9,6 +9,7 @@ import {
   Select,
   MenuItem,
   makeStyles,
+  Typography,
   // TextField,
   // withStyles,
   // Button
@@ -19,6 +20,7 @@ import MapComponent from "./Map";
 import LiveLocation from "./LiveLocation";
 import AutoComplete from "./AutoComplete";
 import LocationToggleComponent from "./LocationToggle";
+import MapContext from "./MapContext";
 // import { Link, Button } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
@@ -34,10 +36,6 @@ const useStyles = makeStyles((theme) => ({
 const LocationComponent = () => {
   const classes = useStyles();
   const [state, dispatch] = useContext(Context);
-
-  useEffect(() => {
-    console.log("---Location.js started---");
-  });
 
   const handleAddressChangeByText = (event) => {
     console.log(event.target.value);
@@ -119,7 +117,7 @@ const LocationComponent = () => {
         alignItems: "center",
       }}
     >
-      <div className="row boxContainerRow" style={{}}>
+      <div className="row boxContainerRow" style={{ height: "480px" }}>
         <div className="col-xl-6 col-lg-12">
           <div className="container-fluid">
             <div className="row">
@@ -127,18 +125,21 @@ const LocationComponent = () => {
                 <h1>Where is your field located?</h1>
               </div>
             </div>
-            <div className="row">
+            <div className="row pt-3">
               <div className="col-12">
-                <p style={{ fontSize: "18px" }}>
+                <Typography variant="body1">
                   Select plant hardiness zone for least site specific results.
                   Enter address or zip code for county-level specificity. For
                   more specific results, mark out your field boundary in the
                   map.
-                </p>
+                </Typography>
+                {/* <p style={{ fontSize: "18px" }}>
+                  
+                </p> */}
               </div>
             </div>
-            <div className="row">
-              <div className="col-md-6 col-sm-12">
+            <div className="row pt-3 mt-4">
+              <div className="col-md-6 col-12">
                 <FormControl
                   variant="filled"
                   style={{ width: "100%" }}
@@ -241,7 +242,14 @@ const LocationComponent = () => {
           </div>
         </div>
         <div className="col-xl-6 col-lg-12">
-          <MapComponent width="100%" height="100%" minzoom={4} maxzoom={20} />
+          {/* <MapComponent width="100%" height="100%" minzoom={4} maxzoom={20} /> */}
+          <MapContext
+            width="100%"
+            height="400px"
+            minzoom={4}
+            maxzoom={20}
+            from="location"
+          />
         </div>
       </div>
     </div>
