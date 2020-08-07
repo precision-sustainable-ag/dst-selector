@@ -77,33 +77,40 @@ const CropSidebarComponent = (props) => {
     props.isListView ? true : false
   );
   const [showFilters, setShowFilters] = React.useState(
-    props.from === "table"
-      ? state.speciesSelectorActivationFlag
-        ? true
-        : comparisonView
-        ? true
-        : false
+    window.location.pathname === "/"
+      ? props.from === "table"
+        ? state.speciesSelectorActivationFlag
+          ? true
+          : comparisonView
+          ? true
+          : false
+        : true
       : true
   );
   useEffect(() => {
-    if (props.from === "table") {
-      if (state.speciesSelectorActivationFlag) {
-        setShowFilters(true);
-      } else {
-        if (comparisonView) {
+    if (window.location.pathname !== "/") {
+      setShowFilters(true);
+    } else {
+      if (props.from === "table") {
+        if (state.speciesSelectorActivationFlag) {
           setShowFilters(true);
         } else {
-          setShowFilters(false);
+          if (comparisonView) {
+            setShowFilters(true);
+          } else {
+            setShowFilters(false);
+          }
         }
+      } else {
+        setShowFilters(true);
       }
-    } else setShowFilters(true);
-  }, [props.from]);
-
-  useEffect(() => {
-    setShowFilters(
-      state.speciesSelectorActivationFlag ? true : comparisonView ? true : false
-    );
-  }, [state.speciesSelectorActivationFlag, comparisonView]);
+    }
+  }, [
+    window.location.pathname,
+    state.speciesSelectorActivationFlag,
+    props.from,
+    comparisonView,
+  ]);
 
   const [cashCropOpen, setCashCropOpen] = React.useState(false);
   const [goalsOpen, setGoalsOpen] = React.useState(true);
