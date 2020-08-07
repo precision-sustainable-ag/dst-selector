@@ -20,6 +20,11 @@ Header Data components, which include date and weather data
 $dataComponentMaxWidth: 490px;
 $dataComponentMaxHeight: 50px;
 
+body,
+html {
+  height: 100%;
+}
+
 header {
   // max-height: 25vh;
   .topHeader {
@@ -133,6 +138,7 @@ header {
       background-image: url("/images/neccc_wide_logo_color_web.jpg");
       background-size: cover;
       width: 319px;
+
       // max-width: $maxLogoWidth;
       // max-height: $maxLogoHeight;
       height: 80px;
