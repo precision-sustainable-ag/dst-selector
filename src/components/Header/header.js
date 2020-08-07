@@ -525,7 +525,7 @@ const Header = () => {
   return redirectToRoot ? (
     <Redirect to="/" />
   ) : (
-    <header>
+    <header className="d-print-none">
       <div className="topHeader">
         <NavLink to="/about" activeClassName={`active`}>
           ABOUT
