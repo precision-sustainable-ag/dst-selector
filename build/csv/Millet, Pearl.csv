@@ -1,2 +1,32 @@
-_id._bsontype,_id.id.0,_id.id.1,_id.id.2,_id.id.3,_id.id.4,_id.id.5,_id.id.6,_id.id.7,_id.id.8,_id.id.9,_id.id.10,_id.id.11,Cover Crop Name,Scientific Name,Notes: Taxonomy,Origin,Drought Tolerance,Shade Tolerance,Flood Tolerance,Low Fertility Tolerance,Salinity Tolerance,Winter Survival,Notes: Environmental Tolerances,Active Growth Period,Duration,Shape & Orientation,Review Status,Soil Drainage,Min Germination Temp (F),Seeds per Pound,Inoculant Type (Legumes Only),Seeding Rate: Broadcast (w/cultivation) (lbs/A),Seeding Rate: Drilled (lbs/A),Seeding Rate: Aerial (lbs/A),Drilled Depth Min,Loosens Topsoil,Frees P & K,Growing Window,Ease of Establishment,Family Common Name,Family Scientific Name,Soil Textures,Minimum Tolerant Soil pH,Maximum Tolerant Soil pH,Soil Moisture Use,Cover Crop Group,Heat Tolerance,Seed Price per Pound,USDA Symbol,Zone Decision,Zone Use,Shape & Orientation-USDA PLANTS,Flooding Tolerance,"Nitrogen Accumulation Min, Legumes (lbs/A/y)",Dry Matter Min (lbs/A/y),C to N Ratio,Active Growth Period-USDA PLANTS,Loosens Subsurface Soil,Supports Mycorrhizae,Flowering Trigger,Establishes Quickly,Root Architecture,Root Depth,Tillage Termination at Vegetative,Tillage Termination at Flowering,Freezing Termination at Vegetative,Freezing Termination at Flowering,Chemical Termination at Flowering,Mow Termination at Flowering,Chemical Termination at Vegetative,Mow Tolerance at Vegetative,Roller Crimp Tolerance at Flowering,Roller Crimp Tolerance at Vegetative,Persistence,Seed price per acre: Drilled/Cultipack and Cultivation,Seed price per acre: Broadcast (w/cultivation),Improve Soil Organic Matter,Increase Soil Aggregation,Lasting Residue,Penetrates Plow Pan,Base Seeding Rate Min (lbs/A),Base Seeding Rate Max (lbs/A),"Nitrogen Accumulation Max, Legumes (lbs/A/y)",Dry Matter Max (lbs/A/y),Drilled Depth Max,Reduces Topsoil Compaction,"May, Early","May, Mid","June, Early","June, Mid","July, Early","July, Mid","August, Early",Prevent Fall Soil Erosion,Prevent Spring Soil Erosion,Promote Water Quality,Nitrogen Scavenging,Good Grazing,Forage Harvest Value,C to N Ratio - 3 stars,Residue Suppresses Summer Annual Weeds,Outcompetes Summer Annual Weeds,Disoucrages Nematodes,Promotes Nematodes,Discourages Pest Insects,Promotes Pest Insects,Suppresses Cash Crop Disease,Promotes Cash Crop Disease,Standard Summer Seeding Rate Date Start,Standard Summer Seeding Rate Date End,Suppresses Winter Annual Weeds,Reliable Establishment/Growth Start,Reliable Establishment/Growth End,__id
-ObjectID,95,6,7,115,34,65,132,62,125,168,44,20,"Millet, Pearl",Pennisetum glaucum,ITIS name conflict: Cenchrus americanus,MCCC Species tool,5,1,2,4,2,"[""Never""]",Does very poorly under low-N conditions like most grasses.,"[""Summer""]","[""Annual""]","[""Erect""]",Zone Team Start,"[""Somewhat poorly drained"",""Moderately well drained"",""Well drained"",""Saturated muck"",""Well drained muck"",""Excessively drained""]",65,82320,"[""none""]",11-17,10-15,Not Recommended,0.5,2,3,Short,3,Grass family,Poaceae,"[""coarse"",""medium"",""fine""]",4.5,8,Low,Grass,5,2,PEGL2,Include,Emerging,Erect,Moderate,0,3000,5,"[""Summer""]",2,3,"[""Based on plant size""]",4,"[""Fibrous""]",Medium,2,2,5,5,5,5,5,3,5,1,3,1,1,3,4,3,2,10,15,0,7000,1,5,"[""Reliable establishment/growth""]","[""Reliable establishment/growth""]","[""Reliable establishment/growth"",""Early seeding rate""]","[""Reliable establishment/growth"",""Early seeding rate""]","[""Reliable establishment/growth"",""Early seeding rate""]","[""Reliable establishment/growth"",""Standard seeding rate""]","[""Reliable establishment/growth"",""Late seeding rate""]",4,2,3,3,4,5,2,2,5,3,3,3,3,3,4,2020-05-15,2020-08-01,2,2020-05-15,2020-08-01,recS1BrVtJtgt5RTz
+Category,Attribute,Value
+Environmental Tolerance,Drought Tolerance,5
+Environmental Tolerance,Shade Tolerance,1
+Environmental Tolerance,Flood Tolerance,2
+Environmental Tolerance,Low Fertility Tolerance,4
+Environmental Tolerance,Salinity Tolerance,2
+Growth,Winter Survival,Never
+Growth,Active Growth Period,Summer
+Growth,Duration,Annual
+Growth,Growing Window,Short
+Growth,Ease of Establishment,3
+Cover Crop Type,,Grass
+Environmental Tolerance,Heat Tolerance,5
+Seeds,Seed Price per Pound,2
+Beneficials,Supports Mycorrhizae,3
+Growth,Establishes Quickly,4
+Roots,Root Architecture,Fibrous
+Roots,Root Depth,Medium
+Termination Methods,Tillage Termination at Vegetative,2
+Termination Methods,Tillage Termination at Flowering,2
+Termination Methods,Freezing Termination at Vegetative,5
+Termination Methods,Chemical Termination at Flowering,5
+Termination Methods,Mow Termination at Flowering,5
+Termination Methods,Chemical Termination at Vegetative,5
+Termination Methods,Roller Crimp Tolerance at Flowering,5
+Weeds,Persistence,3
+Disease & Non Weed Pests,Disoucrages Nematodes,3
+Disease & Non Weed Pests,Promotes Nematodes,2
+Disease & Non Weed Pests,Discourages Pest Insects,3
+Disease & Non Weed Pests,Promotes Pest Insects,3
+Disease & Non Weed Pests,Suppresses Cash Crop Disease,3
+Disease & Non Weed Pests,Promotes Cash Crop Disease,4

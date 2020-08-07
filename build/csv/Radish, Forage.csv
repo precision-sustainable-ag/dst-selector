@@ -1,2 +1,35 @@
-_id._bsontype,_id.id.0,_id.id.1,_id.id.2,_id.id.3,_id.id.4,_id.id.5,_id.id.6,_id.id.7,_id.id.8,_id.id.9,_id.id.10,_id.id.11,Cover Crop Name,Scientific Name,"cv, var, or ssp to specify",Origin,Common Mixes,Drought Tolerance,Shade Tolerance,Flood Tolerance,Low Fertility Tolerance,Salinity Tolerance,Winter Survival,Notes: Environmental Tolerances,Active Growth Period,Duration,Shape & Orientation,Review Status,Soil Drainage,Notes: Soil Conditions,Min Germination Temp (F),Seeds per Pound,Inoculant Type (Legumes Only),Seeding Rate: Broadcast (w/cultivation) (lbs/A),Seeding Rate: Drilled (lbs/A),Seeding Rate: Aerial (lbs/A),Drilled Depth Min,Loosens Topsoil,Frees P & K,Growing Window,Ease of Establishment,Family Common Name,Family Scientific Name,Soil Textures,Minimum Tolerant Soil pH,Maximum Tolerant Soil pH,Soil Moisture Use,Cover Crop Group,Heat Tolerance,Seed Price per Pound,Can Aerial Seed,USDA Symbol,Zone Decision,Zone Use,Shape & Orientation-USDA PLANTS,Flooding Tolerance,"Nitrogen Accumulation Min, Legumes (lbs/A/y)",Dry Matter Min (lbs/A/y),C to N Ratio,Active Growth Period-USDA PLANTS,Notes: Termination [Goal: Method: Timing],Loosens Subsurface Soil,Supports Mycorrhizae,Early Spring Growth,Flowering Trigger,Establishes Quickly,Root Architecture,Root Depth,"Notes: Growth, Roots, and Nutrients",Tillage Termination at Vegetative,Tillage Termination at Flowering,Freezing Termination at Vegetative,Freezing Termination at Flowering,Chemical Termination at Flowering,Mow Termination at Flowering,Chemical Termination at Vegetative,Mow Tolerance at Vegetative,Roller Crimp Tolerance at Flowering,Roller Crimp Tolerance at Vegetative,Volunteer Establishment,Persistence,Seed price per acre: Drilled/Cultipack and Cultivation,Seed price per acre: Broadcast (w/cultivation),Seed price per acre: Aerial,Improve Soil Organic Matter,Increase Soil Aggregation,Lasting Residue,Penetrates Plow Pan,Base Seeding Rate Min (lbs/A),Base Seeding Rate Max (lbs/A),"Nitrogen Accumulation Max, Legumes (lbs/A/y)",Dry Matter Max (lbs/A/y),Drilled Depth Max,Reduces Topsoil Compaction,"March, Early","March, Mid","April, Early","April, Mid","May, Early","May, Mid","June, Early","June, Mid","July, Early","July, Mid","August, Early","August, Mid","September, Early","September, Mid","October, Early",Prevent Fall Soil Erosion,Prevent Spring Soil Erosion,Promote Water Quality,Nitrogen Scavenging,Good Grazing,Forage Harvest Value,Image,C to N Ratio - 3 stars,Residue Suppresses Summer Annual Weeds,Outcompetes Summer Annual Weeds,Disoucrages Nematodes,Promotes Nematodes,Discourages Pest Insects,Promotes Pest Insects,Suppresses Cash Crop Disease,Promotes Cash Crop Disease,Standard Fall/Winter Seeding Rate Date Start,Standard Fall/Winter Seeding Rate Date End,Late Fall/Winter Planting Date Start,Late Fall/Winter Planting Date End,Early Spring Seeding Rate Date Start,Early Spring Seeding Rate Date End,Suppresses Winter Annual Weeds,Notes,Reliable Establishment/Growth Start,Reliable Establishment/Growth End,Temperature/Moisture Risk to Establishment Start,Temperature/Moisture Risk to Establishment End,__id
-ObjectID,95,6,7,115,34,65,132,62,125,168,44,23,"Radish, Forage",Raphanus sativus,Forage (CCS-779),MCCC Species tool,"[""rec2lOtMp89DPlVk5"",""recud4Z1zxGdrNxbU""]",2,3,2,2,1,"[""Seldom""]",Does very poorly under low-N conditions like most grasses.,"[""Fall"",""Spring""]","[""Annual""]","[""Erect""]",Zone Team Start,"[""Poorly drained"",""Somewhat poorly drained"",""Moderately well drained"",""Well drained"",""Well drained muck""]","Forage radish, if planted early, is excellent for decreasing soil compaction (0-6"").",45,20000,"[""none""]",5.5-11,5-12,6-12,0.25,3,3,Short,4,Mustard family,Brassicaceae,"[""coarse"",""medium"",""fine""]",6,8,Medium,Brassica,3,2,true,RASA2,Include,Common,Semi-Erect,Poor,0,1200,2,"[""Spring"",""Summer"",""Fall""]",More likely to survive if frost occurs prior to formation of storage root.,5,1,1,"[""Long day (>14 hours)""]",5,"[""Tap""]",Deep,Minimum Germination Temp. ~ 45˚F,3,3,4,5,3,5,3,5,1,1,2,2,1,1,1,3,3,1,5,5,12,0,3000,0.75,3,"[""Reliable establishment/growth""]","[""Reliable establishment/growth""]","[""Reliable establishment/growth""]","[""Reliable establishment/growth""]","[""Reliable establishment/growth""]","[""Reliable establishment/growth""]","[""Can interseed""]","[""Can interseed""]","[""Can interseed""]","[""Early seeding rate""]","[""Reliable establishment/growth"",""Early seeding rate""]","[""Reliable establishment/growth"",""Standard seeding rate""]","[""Reliable establishment/growth"",""Late seeding rate""]","[""Reliable establishment/growth""]","[""Temperature/moisture risk to establishment/growth""]",3,1,4,4,4,2,"[{""id"":""attivi5bjSmw4Y98C"",""url"":""https://dl.airtable.com/.attachments/22fe20ed7728b79b7b83c0df88ee5656/597a99e8/Radish-close-up-Ackroyd.jpg"",""filename"":""Radish - close-up - Ackroyd.jpg"",""size"":1977383,""type"":""image/jpeg"",""thumbnails"":{""small"":{""url"":""https://dl.airtable.com/.attachmentThumbnails/df0bd6ac5034450918896ca228fa1290/69482019"",""width"":50,""height"":36},""large"":{""url"":""https://dl.airtable.com/.attachmentThumbnails/f4f7dc887131f5cb3078baad34092a59/6fdeb424"",""width"":717,""height"":512},""full"":{""url"":""https://dl.airtable.com/.attachmentThumbnails/17cf19b275e746bc1e22c58835890850/264386fa"",""width"":3000,""height"":3000}}}]",1,1,4,3,3,3,3,3,4,2020-08-10,2020-09-01,2020-09-01,2020-09-07,2020-06-01,2020-07-15,4,"Brassicas are excellent N scavengers but will winter-kill and release N potentially long before a cash crop is present. If N scavenging is goal, plant in mix with species that overwinters. Bloat risk and other animal health risks associated with brassicas.  ",2020-08-10,2020-09-01,2020-09-01,2020-09-07,recqBgK1yinaXNVEn
+Category,Attribute,Value
+Environmental Tolerance,Drought Tolerance,2
+Environmental Tolerance,Shade Tolerance,3
+Environmental Tolerance,Flood Tolerance,2
+Environmental Tolerance,Low Fertility Tolerance,2
+Environmental Tolerance,Salinity Tolerance,1
+Growth,Winter Survival,Seldom
+Growth,Active Growth Period,Fall and Spring
+Growth,Duration,Annual
+Growth,Growing Window,Short
+Growth,Ease of Establishment,4
+Cover Crop Type,,Brassica
+Environmental Tolerance,Heat Tolerance,3
+Seeds,Seed Price per Pound,2
+Seeding Methods,Aerial Seeding, Yes
+Beneficials,Supports Mycorrhizae,1
+Growth,Early Spring Growth,1
+Growth,Establishes Quickly,5
+Roots,Root Architecture,Tap
+Roots,Root Depth,Deep
+Termination Methods,Tillage Termination at Vegetative,3
+Termination Methods,Tillage Termination at Flowering,3
+Termination Methods,Freezing Termination at Vegetative,4
+Termination Methods,Chemical Termination at Flowering,3
+Termination Methods,Mow Termination at Flowering,5
+Termination Methods,Chemical Termination at Vegetative,3
+Termination Methods,Roller Crimp Tolerance at Flowering,1
+Weeds,Volunteer Establishment,2
+Weeds,Persistence,2
+Disease & Non Weed Pests,Disoucrages Nematodes,3
+Disease & Non Weed Pests,Promotes Nematodes,3
+Disease & Non Weed Pests,Discourages Pest Insects,3
+Disease & Non Weed Pests,Promotes Pest Insects,3
+Disease & Non Weed Pests,Suppresses Cash Crop Disease,3
+Disease & Non Weed Pests,Promotes Cash Crop Disease,4
