@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, Fragment } from "react";
+import React, { useContext, useEffect, Fragment, useState } from "react";
 
 import "./styles/App.scss";
 // import Header from "./components/Header/header";
@@ -25,11 +25,11 @@ import LocationConfirmation from "./components/Location/LocationConfirmation";
 import CropSelector from "./components/CropSelector/CropSelector";
 // import { CustomStyles } from "./shared/constants";
 
-const loadRelevantRoute = (progress) => {
+const loadRelevantRoute = (progress, calcHeight) => {
   // TODO: Handle case 3 as cropselector vs soil sample selector
   switch (progress) {
     case 0:
-      return <Landing bg="/images/cover-crop-field.webp" />;
+      return <Landing height={calcHeight} bg="/images/cover-crop-field.webp" />;
     case 1:
       return <LocationComponent />;
     case 2:
@@ -60,7 +60,7 @@ const RouteNotFound = () => {
 
 const App = () => {
   const [state, dispatch] = useContext(Context);
-
+  const [calcHeight, setCalcHeight] = useState(0);
   const handleSnackClose = () => {
     dispatch({
       type: "SNACK",
@@ -71,11 +71,23 @@ const App = () => {
     });
   };
 
+  useEffect(() => {
+    let parentDocHeight = document
+      .getElementById("mainContentWrapper")
+      .getBoundingClientRect().height;
+    let headerHeight = document.querySelector("header").getBoundingClientRect()
+      .height;
+
+    let calculatedHeight = parentDocHeight - headerHeight;
+
+    setCalcHeight(calculatedHeight);
+  }, []);
+
   return (
-    <div className="contentWrapper">
+    <div className="contentWrapper" id="mainContentWrapper">
       <Header logo="neccc_wide_logo_color_web.jpg" />
 
-      {loadRelevantRoute(state.progress)}
+      {loadRelevantRoute(state.progress, calcHeight)}
 
       {state.progress !== 0 && state.progress < 5 ? (
         <div className="container-fluid mt-5 mb-5">
