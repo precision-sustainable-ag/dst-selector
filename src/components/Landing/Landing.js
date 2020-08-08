@@ -7,6 +7,7 @@ import { Typography, Box } from "@material-ui/core";
 
 const Landing = (props) => {
   const [state, dispatch] = useContext(Context);
+  const height = props.height;
   const backgroundWrapper = {
     background: `url(${props.bg})`,
     backgroundSize: "cover",
@@ -42,7 +43,7 @@ const Landing = (props) => {
       style={{
         background: `url(${props.bg})`,
         backgroundSize: "cover",
-        height: "690px",
+        height: `${height}px`,
         overflow: "hidden",
       }}
     >
