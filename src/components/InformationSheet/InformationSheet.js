@@ -8,7 +8,7 @@ import {
   Info,
 } from "@material-ui/icons";
 import { Typography, Button } from "@material-ui/core";
-import { zoneIcon, CropImage } from "../../shared/constants";
+import { zoneIcon, CropImage, flipCoverCropName } from "../../shared/constants";
 import { Context } from "../../store/Store";
 
 import html2canvas from "html2canvas";
@@ -29,15 +29,18 @@ const InformationSheet = (props) => {
     ? props.match.params.cropName
     : "none";
 
-  const cropData = props.match.params.cropName
-    ? state.cropData.find(
-        (crop) => crop.fields["Cover Crop Name"] === props.match.params.cropName
-      )
-    : "none";
+  const [cropData, setCropData] = useState(
+    props.match.params.cropName
+      ? state.cropData.find(
+          (crop) =>
+            crop.fields["Cover Crop Name"] === props.match.params.cropName
+        )
+      : []
+  );
   //   check if crop data is passed as crop
   //   elseif, check if localstorage has infosheet data else use default crop data
   // const [referrer, setReferrer] = useState("direct");
-  const [crop] = useState(
+  const [crop, setCrop] = useState(
     name === "none"
       ? props.crop
         ? props.crop
@@ -50,6 +53,28 @@ const InformationSheet = (props) => {
   );
   const ref = React.createRef();
   const from = props.from || "direct";
+
+  useEffect(() => {
+    setCropData(
+      props.match.params.cropName
+        ? state.cropData.find(
+            (crop) =>
+              crop.fields["Cover Crop Name"] === props.match.params.cropName
+          )
+        : []
+    );
+    setCrop(
+      name === "none"
+        ? props.crop
+          ? props.crop
+          : window.localStorage.getItem("infosheet") !== null
+          ? JSON.parse(window.localStorage.getItem("infosheet"))
+          : BasicCrop
+        : cropData.fields
+        ? cropData.fields
+        : ""
+    );
+  }, [state, props]);
 
   useEffect(() => {
     document.getElementsByTagName("footer")[0].style.display = "none";
@@ -157,7 +182,7 @@ const InformationSheet = (props) => {
             </div>
             <div className="col-12 coverCropName">
               <Typography variant="h5" className="pr-3" display="inline">
-                {crop["Cover Crop Name"]}
+                {flipCoverCropName(crop["Cover Crop Name"])}
               </Typography>
 
               <Typography
