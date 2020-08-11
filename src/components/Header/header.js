@@ -138,13 +138,36 @@ const Header = () => {
       // console.log(longLatString);
 
       // let soilDataQuery = `SELECT mu.mukey AS MUKEY, mu.muname AS Map_Unit_Name, muag.drclassdcd AS Drainage_Class, muag.flodfreqdcd AS Flooding_Frequency, muag.pondfreqprs AS Ponding_Frequency, mp.mupolygonkey as MPKEY FROM mapunit AS mu INNER JOIN muaggatt AS muag ON muag.mukey = mu.mukey INNER JOIN mupolygon AS mp ON mp.mukey = mu.mukey WHERE mu.mukey IN (SELECT * from SDA_Get_Mukey_from_intersection_with_WktWgs84('polygon ((${longLatString}))')) AND mp.mupolygonkey IN  (SELECT * from SDA_Get_Mupolygonkey_from_intersection_with_WktWgs84('polygon ((${longLatString}))'))`;
-      let soilDataQuery = `SELECT mu.mukey AS MUKEY, mu.muname AS Map_Unit_Name, muag.drclassdcd AS Drainage_Class, muag.flodfreqdcd AS Flooding_Frequency, mp.mupolygonkey as MPKEY
-     FROM mapunit AS mu 
-     INNER JOIN muaggatt AS muag ON muag.mukey = mu.mukey
-     INNER JOIN mupolygon AS mp ON mp.mukey = mu.mukey
-     WHERE mu.mukey IN (SELECT * from SDA_Get_Mukey_from_intersection_with_WktWgs84('polygon ((${longLatString}))'))
-     AND
-     mp.mupolygonkey IN  (SELECT * from SDA_Get_Mupolygonkey_from_intersection_with_WktWgs84('polygon ((${longLatString}))'))`;
+      let soilDataQuery = "";
+
+      if (markersCopy.length > 1) {
+        // polygon
+        // soilDataQuery = `SELECT mu.mukey AS MUKEY, mu.muname AS Map_Unit_Name, muag.drclassdcd AS Drainage_Class, muag.flodfreqdcd AS Flooding_Frequency, mp.mupolygonkey as MPKEY
+        // FROM mapunit AS mu
+        // INNER JOIN muaggatt AS muag ON muag.mukey = mu.mukey
+        // INNER JOIN mupolygon AS mp ON mp.mukey = mu.mukey
+        // WHERE mu.mukey IN (SELECT * from SDA_Get_Mukey_from_intersection_with_WktWgs84('polygon ((${longLatString}))'))
+        // AND
+        // mp.mupolygonkey IN  (SELECT * from SDA_Get_Mupolygonkey_from_intersection_with_WktWgs84('polygon ((${longLatString}))'))`;
+
+        soilDataQuery = `SELECT mu.mukey AS MUKEY, mu.muname AS Map_Unit_Name, muag.drclassdcd AS Drainage_Class, muag.flodfreqdcd AS Flooding_Frequency, mp.mupolygonkey as MPKEY
+      FROM mapunit AS mu 
+      INNER JOIN muaggatt AS muag ON muag.mukey = mu.mukey
+      INNER JOIN mupolygon AS mp ON mp.mukey = mu.mukey
+      WHERE mu.mukey IN (SELECT * from SDA_Get_Mukey_from_intersection_with_WktWgs84('polygon ((${longLatString}))'))
+      AND
+      mp.mupolygonkey IN  (SELECT * from SDA_Get_Mupolygonkey_from_intersection_with_WktWgs84('polygon ((${longLatString}))'))`;
+      } else {
+        // point
+        soilDataQuery = `SELECT mu.mukey AS MUKEY, mu.muname AS Map_Unit_Name, muag.drclassdcd AS Drainage_Class, muag.flodfreqdcd AS Flooding_Frequency, mp.mupolygonkey as MPKEY
+        FROM mapunit AS mu 
+        INNER JOIN muaggatt AS muag ON muag.mukey = mu.mukey
+        INNER JOIN mupolygon AS mp ON mp.mukey = mu.mukey
+        WHERE mu.mukey IN (SELECT * from SDA_Get_Mukey_from_intersection_with_WktWgs84('point (${lon} ${lat})'))
+        AND
+        mp.mupolygonkey IN  (SELECT * from SDA_Get_Mupolygonkey_from_intersection_with_WktWgs84('point (${lon} ${lat})'))`;
+      }
+
       // console.log(soilDataQuery);
       var myHeaders = new Headers();
       myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
@@ -159,7 +182,7 @@ const Header = () => {
         body: urlencoded,
         redirect: "follow",
       };
-      if (markers.length > 1) {
+      if (markers.length >= 1) {
         dispatch({
           type: "TOGGLE_SOIL_LOADER",
           data: {
