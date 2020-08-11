@@ -92,6 +92,25 @@
     ]
   },
   {
+    "name": "Soil Conditions",
+    "description": null,
+    "type": "checkbox-only",
+    "values": [
+      {
+        "name": "Soil Drainage",
+        "maxSize": 1,
+        "symbol": null,
+        "description": ""
+      },
+      {
+        "name": "Flooding Tolerance",
+        "maxSize": 1,
+        "symbol": null,
+        "description": ""
+      }
+    ]
+  },
+  {
     "name": "Growth",
     "description": "This data is based on expert opinion",
     "type": "chips-rating",

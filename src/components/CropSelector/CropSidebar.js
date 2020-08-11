@@ -42,6 +42,7 @@ import Weeds from "./Filters/Weeds";
 import DiseaseAndNonWeedPests from "./Filters/DiseaseAndNonWeedPests";
 import Roots from "./Filters/Roots";
 import "../../styles/cropSidebar.scss";
+import SoilConditions from "./Filters/SoilConditions";
 const _ = require("lodash");
 // const jslinq = require("jslinq");
 
@@ -184,22 +185,13 @@ const CropSidebarComponent = (props) => {
       return;
     }
 
+    filterSidebarItems();
+  }, [sidebarFilterOptions]);
+
+  const filterSidebarItems = () => {
     const crop_data = props.cropData.filter(
       (crop) => crop.fields["Zone Decision"] === "Include"
     );
-
-    // const sidebarKeys = Object.keys(sidebarFilterOptions);
-
-    // const nonZeroKeys = sidebarKeys.filter(function (key) {
-    //   return sidebarFilterOptions[key].length > 0;
-    // });
-
-    // const nonZeroes = Object.keys(filterKeys).map((key) => {
-    //   if(filterKeys[key].length !== 0) {
-    //     return {[key]: filterKeys[key]}
-    //   } else return ""
-    // })
-    // let nonZeroKeys = nonZeroes.filter(val => val !== "");
 
     const nonZeroes = Object.keys(sidebarFilterOptions).map((key) => {
       if (sidebarFilterOptions[key].length !== 0) {
@@ -317,8 +309,7 @@ const CropSidebarComponent = (props) => {
       props.setActiveCropData(crop_data);
       props.setInactiveCropData([]);
     }
-  }, [sidebarFilterOptions]);
-
+  };
   const areCommonElements = (arr1, arr2) => {
     const arr2Set = new Set(arr2);
     return arr1.some((el) => arr2Set.has(el));
@@ -423,6 +414,7 @@ const CropSidebarComponent = (props) => {
     growthRef.current.resetFilters();
     rootsRef.current.resetFilters();
     seedingMethodRef.current.resetFilters();
+
     seedsRef.current.resetFilters();
     terminationRef.current.resetFilters();
     weedsRef.current.resetFilters();
@@ -902,6 +894,20 @@ const CropSidebarComponent = (props) => {
                         ) : (
                           ""
                         )}
+
+                        {filter.name.toUpperCase() === "SOIL CONDITIONS" ? (
+                          <SoilConditions
+                            filters={sidebarFilters[index]}
+                            sidebarFilterOptions={sidebarFilterOptions}
+                            setSidebarFilterOptions={setSidebarFilterOptions}
+                            resetAllFilters={resetAllFilters}
+                            filterSidebarItems={filterSidebarItems}
+                            {...props}
+                          />
+                        ) : (
+                          ""
+                        )}
+
                         {filter.name.toUpperCase() === "GROWTH" ? (
                           <Grid container spacing={1}>
                             <Grid item>
