@@ -12,6 +12,7 @@ import {
 import { downloadAllPDF, trimString } from "../../shared/constants";
 import { useSnackbar } from "notistack";
 import { Context } from "../../store/Store";
+import CropDetailsModalComponent from "../CropSelector/CropDetailsModal";
 const useStyles = makeStyles({
   card: {
     maxWidth: 345,
@@ -23,17 +24,22 @@ const useStyles = makeStyles({
 });
 const ExplorerCardView = (props) => {
   const [state, dispatch] = useContext(Context);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalData, setModalData] = useState({});
   const classes = useStyles();
 
-  const [selectedBtns, setSelectedBtns] = useState([]);
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
-  useEffect(() => {
-    const selectedBtns = state.selectedCrops.map((crop) => {
+  const [selectedBtns, setSelectedBtns] = useState(
+    state.selectedCrops.map((crop) => {
       return crop.id;
-    });
-    setSelectedBtns(selectedBtns);
-  }, [state.selectedCrops]);
+    })
+  );
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const handleModalOpen = (crop) => {
+    // put data inside modal
+    setModalData(crop);
 
+    setModalOpen(true);
+  };
   const addCropToBasket = (cropId, cropName, btnId, cropData) => {
     let container = document.getElementById(btnId);
     let selectedCrops = {};
@@ -157,9 +163,10 @@ const ExplorerCardView = (props) => {
                         textDecoration: "underline",
                         color: "rgb(53, 153, 155)",
                       }}
-                      href={`/information-sheet/${crop.fields["Cover Crop Name"]}`}
+                      // href={`/information-sheet/${crop.fields["Cover Crop Name"]}`}
                       target="_blank"
                       rel="noopener"
+                      onClick={() => handleModalOpen(crop)}
                     >
                       View Crop Details
                     </a>
@@ -207,6 +214,11 @@ const ExplorerCardView = (props) => {
           </div>
         ))}
       </div>
+      <CropDetailsModalComponent
+        modalOpen={modalOpen}
+        setModalOpen={setModalOpen}
+        crop={modalData}
+      />
     </Fragment>
   );
 };
