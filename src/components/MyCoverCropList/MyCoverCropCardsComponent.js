@@ -28,12 +28,12 @@ const MyCoverCropCardsComponent = (props) => {
 
   const [modalOpen, setModalOpen] = useState(false);
   const [modalData, setModalData] = useState({});
-  const handleModalOpen = (crop) => {
-    // setModalOpen(true);
+  const handleModalOpen = () => {
     // put data inside modal
-    // console.log(crop);
-    // setModalData(crop);
-    // setModalOpen(true);
+
+    setModalData({ fields: data });
+
+    setModalOpen(true);
   };
 
   const removeCrop = () => {
@@ -96,7 +96,7 @@ const MyCoverCropCardsComponent = (props) => {
                   textDecoration: "underline",
                   color: "rgb(53, 153, 155)",
                 }}
-                onClick={() => {}}
+                onClick={() => handleModalOpen()}
               >
                 View Crop Details
               </a>

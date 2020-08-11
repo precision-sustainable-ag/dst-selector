@@ -21,6 +21,7 @@ import "../../styles/MyCoverCropComparisonComponent.scss";
 import sidebarDefinitionsz7 from "../../shared/json/zone7/data-dictionary.json";
 import sidebarDefinitionsz6 from "../../shared/json/zone6/data-dictionary.json";
 import sidebarDefinitionsz5 from "../../shared/json/zone5/data-dictionary.json";
+import CropDetailsModalComponent from "../CropSelector/CropDetailsModal";
 
 const lightBorder = {
   border: "1px solid #35999b",
@@ -46,6 +47,15 @@ const MyCoverCropComparisonComponent = (props) => {
   const [state, dispatch] = useContext(Context);
   const { filterKeys, zone } = state;
   const [sidebarDefs, setSidebarDefs] = useState(sidebarDefinitionsz7);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalData, setModalData] = useState({});
+  const handleModalOpen = (crop) => {
+    // put data inside modal
+
+    setModalData(crop);
+
+    setModalOpen(true);
+  };
 
   useEffect(() => {
     switch (parseInt(zone)) {
@@ -250,7 +260,8 @@ const MyCoverCropComparisonComponent = (props) => {
                             textDecoration: "underline",
                             color: "rgb(53, 153, 155)",
                           }}
-                          href={`/information-sheet/${crop.data["Cover Crop Name"]}`}
+                          // href={`/information-sheet/${crop.data["Cover Crop Name"]}`}
+                          onClick={() => handleModalOpen({ fields: crop.data })}
                           target="_blank"
                           rel="noopener"
                         >
@@ -304,6 +315,11 @@ const MyCoverCropComparisonComponent = (props) => {
           </div>
         </div>
       </div>
+      <CropDetailsModalComponent
+        modalOpen={modalOpen}
+        setModalOpen={setModalOpen}
+        crop={modalData}
+      />
     </div>
   );
 };
