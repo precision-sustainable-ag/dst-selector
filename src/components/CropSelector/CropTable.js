@@ -56,7 +56,7 @@ const CropTableComponent = (props) => {
   const [modalData, setModalData] = useState({});
   const [selectedCropsIds, setSelectedCropsIds] = useState([]);
   const selectedBtns = state.selectedCrops.map((crop) => {
-    return crop.btnId;
+    return crop.id;
   });
 
   const handleModalOpen = (crop) => {
@@ -232,7 +232,7 @@ const CropTableComponent = (props) => {
               width: "150px",
             }}
             className={
-              selectedBtns.includes(`cartBtn${indexKey}`)
+              selectedBtns.includes(crop.fields.id)
                 ? "activeCartBtn"
                 : "inactiveCartBtn"
             }
@@ -245,9 +245,7 @@ const CropTableComponent = (props) => {
               );
             }}
           >
-            {selectedBtns.includes(`cartBtn${indexKey}`)
-              ? "ADDED"
-              : "ADD TO LIST"}
+            {selectedBtns.includes(crop.fields.id) ? "ADDED" : "ADD TO LIST"}
           </LightButton>{" "}
           <br />
           <Button size="small" onClick={() => handleModalOpen(crop)}>
