@@ -8,6 +8,7 @@ import {
   getRating,
   trimString,
   CropImage,
+  flipCoverCropName,
 } from "../../shared/constants";
 import {
   Button,
@@ -302,7 +303,7 @@ const CropTableComponent = (props) => {
                             {crop.fields["Cover Crop Group"]}
                           </span>
                           <span className="cropName font-weight-lighter">
-                            {crop.fields["Cover Crop Name"]}
+                            {flipCoverCropName(crop.fields["Cover Crop Name"])}
                           </span>
                           <span className="cropScientificName">
                             {trimString(crop.fields["Scientific Name"], 25)}
