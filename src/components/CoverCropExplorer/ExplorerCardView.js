@@ -29,7 +29,7 @@ const ExplorerCardView = (props) => {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   useEffect(() => {
     const selectedBtns = state.selectedCrops.map((crop) => {
-      return crop.btnId;
+      return crop.id;
     });
     setSelectedBtns(selectedBtns);
   }, [state.selectedCrops]);
@@ -175,7 +175,7 @@ const ExplorerCardView = (props) => {
                   padding: "0.5em",
                 }}
                 className={
-                  selectedBtns.includes(`cartBtn${index}`)
+                  selectedBtns.includes(crop.fields.id)
                     ? "activeCartBtn"
                     : "inactiveCartBtn"
                 }
@@ -191,14 +191,14 @@ const ExplorerCardView = (props) => {
                 <Typography
                   variant="body2"
                   className={`text-uppercase ${
-                    selectedBtns.includes(`cartBtn${index}`) ? "text-white" : ""
+                    selectedBtns.includes(crop.fields.id) ? "text-white" : ""
                   }`}
                   style={{
                     color: "black",
                     fontWeight: "bold",
                   }}
                 >
-                  {selectedBtns.includes(`cartBtn${index}`)
+                  {selectedBtns.includes(crop.fields.id)
                     ? "ADDED"
                     : "ADD TO LIST"}
                 </Typography>
