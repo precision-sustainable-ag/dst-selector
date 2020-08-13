@@ -169,17 +169,7 @@ const CropSelector = () => {
     let crop_data = cropData;
     // console.log("keys", keysArray);
     setText(JSON.stringify(keysArray));
-    // setfilterByCheckBoxKeys(keysArray);
 
-    // console.log(keysArray);
-    // let keysToBePushed = [];
-    // keysArray.forEach((k) => {
-    //   if (!filterByCheckBoxKeys.includes(k)) keysToBePushed.push(k);
-    // });
-    // setfilterByCheckBoxKeys(keysToBePushed);
-    // console.log("keysPushed", keysToBePushed);
-    // list of keys that have "array" as values
-    // this list still does not include "month, mid/early" keys
     const arrayKeys = [
       "Active Growth Period",
       "Active Growth Period-USDA PLANTS",
@@ -193,46 +183,7 @@ const CropSelector = () => {
       "Soil Textures",
       "Winter Survival",
     ];
-    // format == value~key
 
-    // to "filter", add opacity: 0.2 and disabled class to relevant "id"
-    // let disabledIdsArr = [];
-
-    // attempt 3
-    // console.log("ATT3KEYSARR", keysArray);
-
-    // let keys = [];
-    // let values = [];
-    // let keyValObj = {};
-
-    // for (let key in keysArray) {
-    //   console.log(keysArray[key]);
-    //   let splitString = keysArray[key].split("~");
-    //   keys.push(splitString[1]);
-    //   values.push(splitString[0]);
-
-    // }
-    // console.log("keys", keys);
-    // console.log("vals", values);
-
-    // let spl_arr = crop_data.filter((x) => {
-    //   if (keys.length > 1) {
-    //     let keysLength = [];
-    //       if (x.fields["Zone Decision"] === "Include") {
-    //         if (!x.fields[keys[i]].includes(values[i])) {
-    //           return x;
-    //         }
-    //       }
-
-    //   } else {
-    //     if (x.fields["Zone Decision"] === "Include") {
-    //       if (!x.fields[keys[0]].includes(values[0])) {
-    //         return x;
-    //       }
-    //     }
-    //   }
-    // });
-    // console.log(spl_arr);
     let keys = [];
     if (type === "checkboxes") {
       if (keysArray.length > 0) {
@@ -320,9 +271,7 @@ const CropSelector = () => {
     if (type === "stars") {
       let selectedStars = keysArray;
       for (let [key, value] of Object.entries(selectedStars)) {
-        // console.log(`------\n${key}: ${value}------\n`);
         if (value === null) {
-          // reset that key i.e. pick its id and reset css
           let newArr = [];
           let zoneIncludeArr = crop_data.filter((x) => {
             if (
@@ -350,153 +299,18 @@ const CropSelector = () => {
           });
 
           zoneIncludeArr.forEach((val, index) => {
-            // console.log(
-            //   `${val.fields["Cover Crop Name"]} : ${val.fields[key]}, Expected: ${value}`
-            // );
             if (val.fields[key] !== value) {
               ids.push(val.id);
               let el = document.getElementById(val.id);
               el.classList.add("disabled");
               el.style.opacity = "0.2";
             }
-            // console.log(val);
-
-            // if()
           });
           console.log("disabled:else ", ids);
           setStarDisabledIds(ids);
         }
       }
     }
-    // if (keysArray.length > 0) {
-    //   // setDisabledIds("rec1KNI87iZslbLy2");
-    //   let key = "";
-    //   let value = "";
-
-    //   keysArray.forEach((keyString) => {
-    //     let splitString = keyString.split("~");
-    //     key = splitString[0];
-    //     value = splitString[1];
-    //     console.log("key,val", { key: key, val: value });
-    //     if (arrayKeys.includes(value)) {
-    //       if (split_arr.length === 0) {
-    //         let spl_arr = crop_data.filter((x) => {
-    //           if (x.fields["Zone Decision"] === "Include") {
-    //             if (!x.fields[value].includes(key)) {
-    //               return x;
-    //             }
-    //           }
-    //         });
-    //         console.log("split", spl_arr);
-    //         setSplit_arr(spl_arr);
-    //       } else {
-    //         let spl_arr = split_arr.filter((x) => {
-    //           if (x.fields["Zone Decision"] === "Include") {
-    //             if (!x.fields[value].includes(key)) {
-    //               return x;
-    //             }
-    //           }
-    //         });
-    //         console.log("split", spl_arr);
-    //         setSplit_arr(spl_arr);
-    //       }
-    //     } else {
-    //       console.log(false);
-    //     }
-    //   });
-
-    //   // console.log(crop_data);
-    //   // sort crop_data based on ids
-    //   let ids = [];
-    //   console.log("statesplit", split_arr);
-    //   split_arr.map((cropItem) => {
-    //     // if id is not in disabled ids array add it else remove it
-    //     if (!ids.includes(cropItem.id)) {
-    //       ids.push(cropItem.id);
-    //     } else {
-    //       let itemIndex = ids.indexOf(cropItem.id);
-    //       if (itemIndex > -1) {
-    //         ids.splice(itemIndex, 1);
-    //       }
-    //     }
-    //   });
-    //   setDisabledIds(ids);
-    // } else {
-    //   // reset all css for checkboxes
-
-    //   setDisabledIds([]);
-    //   setSplit_arr([]);
-    // }
-    // console.log(disabledIdsArr);
-    // if (keysArray.length > 0) {
-
-    //   let key = "";
-    //   let value = "";
-    //   // let obj = {};
-    //   var ids = [];
-    //   let namesA = [];
-    //   if (filterByCheckBoxKeys.length > 0) {
-    //     filterByCheckBoxKeys.forEach((element) => {
-    //       let wholeString = element.split("~");
-    //       key = wholeString[1];
-    //       value = wholeString[0];
-    //       // ids.push(value);
-    //       // obj[key] = value;
-
-    //       if (arrayKeys.includes(key)) {
-    //         console.log(`${key} is in arrayKeys\n`);
-
-    //         // it is an array
-    //         let a = crop_data.filter((x) => {
-    //           if (x.fields[key] && x.fields["Zone Decision"] === "Include")
-    //             return x.fields[key].indexOf(value);
-    //         });
-    //         a.forEach((ele) => {
-    //           // console.log(ele.id, ele.fields["Cover Crop Name"]);
-    //           // push id to ids array for resetting later
-    //           // if id is in not in array, add it else -> remove it
-    //           if (!ids.includes(ele.id)) {
-    //             ids.push(ele.id);
-    //             namesA.push(ele.fields["Cover Crop Name"]);
-    //           } else {
-    //             ids = ids.filter((item) => item !== ele.id);
-    //             namesA = namesA.filter(
-    //               (item) => item !== ele.fields["Cover Crop Name"]
-    //             );
-    //           }
-
-    //           let el = document.getElementById(ele.id);
-    //           el.classList.add("disabled");
-    //           el.style.opacity = "0.2";
-    //         });
-
-    //         // a.map((i) => {
-    //         //   let el = document.getElementById(i.id);
-    //         //   el.classList.add("disabled");
-    //         //   el.style.opacity = "0.2";
-    //         // });
-    //       } else {
-    //         console.log("not array");
-    //       }
-    //       console.log("Array Names: ", namesA);
-    //       setDisabledIds(ids);
-    //     });
-
-    //     //  var a =  _.filter(crop_data, _.matches({ 'a': 4, 'c': 6 }));
-    //   } else {
-    //     // reset filter
-    //     // console.log("Disabled Ids", disabledIds);
-
-    //     // disabledIds.forEach((id) => {
-    //     //   let el = document.getElementById(id);
-    //     //   el.classList.remove("disabled");
-    //     //   el.style.opacity = "1";
-    //     // });
-    //     setDisabledIds([]);
-    //   }
-
-    //   // console.log(keysArray);
-    // }
   };
 
   useEffect(() => {
