@@ -1,7 +1,14 @@
 import React, { useContext, useState, useEffect } from "react";
 import { LightButton, ReferenceTooltip } from "../../shared/constants";
 // import Slider from "@material-ui/core/Slider";
-import { Cloud, Info } from "@material-ui/icons";
+import {
+  Cloud,
+  Info,
+  Opacity,
+  AcUnit,
+  WbSunny,
+  WbSunnyOutlined,
+} from "@material-ui/icons";
 import {
   Button,
   Modal,
@@ -17,6 +24,7 @@ import {
   Select,
   CircularProgress,
   Tooltip,
+  Link,
 } from "@material-ui/core";
 
 import { Context } from "../../store/Store";
@@ -134,12 +142,7 @@ const WeatherConditions = (props) => {
       },
       frostFreeDays: frostFreeDays,
     };
-    // if (!isEquivalent(broadcastObject, weatherDataShadow)) {
-    //   // boardcast and close modal
-    //   console.log("not same");
-    // } else {
-    //   console("same");
-    // }
+
     setDidChange(true);
     dispatch({
       type: "UPDATE_WEATHER_CONDITIONS",
@@ -193,90 +196,94 @@ const WeatherConditions = (props) => {
     setOpen(false);
   };
 
-  const getPickerValue = (value) => {
-    console.log(value);
-  };
-
   const [modalBtnDisabled, setModalBtnDisabled] = useState(false);
 
-  return state.ajaxInProgress ? (
-    <CircularProgress />
-  ) : (
+  return (
     <div className="row">
-      <div className="col-lg-12">
-        <h1>Weather Conditions?</h1>
+      <div className="col-12">
+        <Typography variant="h3">Weather Conditions?</Typography>
       </div>
-      <div className="mt-2 row">
-        <div className="col-lg-12">
-          <h6 className="font-weight-bold text-uppercase">
-            <Cloud />
-            &nbsp; HISTORICAL WEATHER &nbsp;
-            {""}
+      <div className="mt-2 col-12">
+        <Typography
+          variant="button"
+          className="font-weight-bold text-uppercase text-left"
+          onClick={handleModalOpen}
+          style={{ cursor: "pointer" }}
+        >
+          &nbsp;Click To Edit
+        </Typography>
+      </div>
+      <div className="mt-3 col-12 row">
+        <div className="col-12">
+          <Typography
+            variant="body1"
+            className="font-weight-bold text-uppercase text-left"
+          >
+            <Opacity />
+            &nbsp; Average Precipitation &nbsp;{" "}
             <ReferenceTooltip source={"SSURGO"} url={"#"} />
-          </h6>
+          </Typography>
         </div>
-        <div className="col-lg-12 mb-2 row">
-          <div className="col-xl-4 col-md-12 pr-0">
-            <Cloud style={{ color: "transparent" }} />
+        <div className="col-12">
+          <Typography variant="body1" className="text-left">
+            <Opacity style={{ color: "transparent" }} />
+            &nbsp;{" "}
+            <p className="d-inline text-uppercase">{currentMonthFull}:</p>{" "}
             &nbsp;
-            <Typography
-              variant="button"
-              className="font-weight-bold text-uppercase text-left"
-              onClick={handleModalOpen}
-              style={{ cursor: "pointer" }}
-            >
-              CLICK TO EDIT
-            </Typography>
-          </div>
-          <div className="col-xl-8 col-lg-12 pl-0 pr-0">
-            {/* {didChange ? (
-              <Typography
-                variant="button"
-                className="font-weight-bold text-danger text-uppercase text-left"
-                onClick={setDefaultWeatherValues}
-                style={{ cursor: "pointer" }}
-              >
-                Values changed, Reset ?
-              </Typography>
-            ) : (
-              ""
-            )} */}
-          </div>
-
-          {/* <Button onClick={renderModalWidget}>CLICK TO EDIT</Button> */}
-        </div>
-
-        <div className="offset-lg-1 col-lg-11 text-left">
-          Average Frost Dates
-          <div className="offset-lg-1">
-            First Frost Date:{" "}
-            <b>{`${state.weatherData.averageFrost.firstFrostDate.month} ${state.weatherData.averageFrost.firstFrostDate.day}`}</b>
-          </div>
-          <div className="offset-lg-1">
-            {" "}
-            Last Frost Date:{" "}
-            <b>{`${state.weatherData.averageFrost.lastFrostDate.month} ${state.weatherData.averageFrost.lastFrostDate.day}`}</b>
-          </div>
-          <div className="text-right font-size-small"></div>
-        </div>
-        <div className="offset-lg-1 col-lg-11 text-left">
-          Average Precipitation
-          <div className="offset-lg-1">
-            {currentMonthFull}:{" "}
-            <b>{state.weatherData.averagePrecipitation.thisMonth} inches</b>
-          </div>
-          <div className="offset-lg-1">
-            Annual:{" "}
-            <b>{state.weatherData.averagePrecipitation.annual} inches</b>
-          </div>
-          <div className="text-right font-size-small"></div>
-        </div>
-        <div className="offset-lg-1 col-lg-11 text-left">
-          Frost Free Days: <b>{state.weatherData.frostFreeDays}</b>
-          <div className="text-right font-size-small"></div>
+            {state.weatherData.averagePrecipitation.thisMonth} inches
+          </Typography>
+          <Typography variant="body1" className="text-left">
+            <Opacity style={{ color: "transparent" }} />
+            &nbsp; <p className="d-inline">{"Annual"}:</p> &nbsp;
+            {state.weatherData.averagePrecipitation.annual} inches
+          </Typography>
         </div>
       </div>
+      <div className="mt-3 col-12 row">
+        <div className="col-12">
+          <Typography
+            variant="body1"
+            className="font-weight-bold text-uppercase text-left"
+          >
+            <AcUnit />
+            &nbsp; Average Frost Dates &nbsp;{" "}
+            <ReferenceTooltip source={"SSURGO"} url={"#"} />
+          </Typography>
+        </div>
 
+        <div className="col-12">
+          <Typography variant="body1" className="text-left">
+            <Opacity style={{ color: "transparent" }} />
+            &nbsp; <p className="d-inline">{"First Frost Date"}:</p> &nbsp;
+            {`${state.weatherData.averageFrost.firstFrostDate.month} ${state.weatherData.averageFrost.firstFrostDate.day}`}
+          </Typography>
+          <Typography variant="body1" className="text-left">
+            <Opacity style={{ color: "transparent" }} />
+            &nbsp; <p className="d-inline">{"Last Frost Date"}:</p> &nbsp;
+            {`${state.weatherData.averageFrost.lastFrostDate.month} ${state.weatherData.averageFrost.lastFrostDate.day}`}
+          </Typography>
+        </div>
+      </div>
+      <div className="mt-3 col-12 row">
+        <div className="col-12">
+          <Typography
+            variant="body1"
+            className="font-weight-bold text-uppercase text-left"
+          >
+            <WbSunnyOutlined />
+            &nbsp; Average Frost Free Days &nbsp;{" "}
+            <ReferenceTooltip source={"SSURGO"} url={"#"} />
+          </Typography>
+        </div>
+
+        <div className="col-12">
+          <Typography variant="body1" className="text-left">
+            <Opacity style={{ color: "transparent" }} />
+            &nbsp; <p className="d-inline">{"Frost Free Days"}:</p> &nbsp;
+            {state.weatherData.frostFreeDays}
+          </Typography>
+        </div>
+      </div>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="ransition-modal-description"
