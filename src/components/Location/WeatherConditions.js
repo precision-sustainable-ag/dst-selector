@@ -221,20 +221,23 @@ const WeatherConditions = (props) => {
           >
             <Opacity />
             &nbsp; Average Precipitation &nbsp;{" "}
-            <ReferenceTooltip source={"SSURGO"} url={"#"} />
+            <ReferenceTooltip
+              type="text"
+              content={
+                "Five-year average monthly and annual precipitation from University of Georgia’s Weather App."
+              }
+            />
           </Typography>
         </div>
         <div className="col-12">
           <Typography variant="body1" className="text-left">
             <Opacity style={{ color: "transparent" }} />
-            &nbsp;{" "}
-            <p className="d-inline text-uppercase">{currentMonthFull}:</p>{" "}
-            &nbsp;
+            &nbsp; <span>{currentMonthFull.toUpperCase()}:</span> &nbsp;
             {state.weatherData.averagePrecipitation.thisMonth} inches
           </Typography>
           <Typography variant="body1" className="text-left">
             <Opacity style={{ color: "transparent" }} />
-            &nbsp; <p className="d-inline">{"Annual"}:</p> &nbsp;
+            &nbsp; <span>{"Annual"}:</span> &nbsp;
             {state.weatherData.averagePrecipitation.annual} inches
           </Typography>
         </div>
@@ -247,19 +250,24 @@ const WeatherConditions = (props) => {
           >
             <AcUnit />
             &nbsp; Average Frost Dates &nbsp;{" "}
-            <ReferenceTooltip source={"SSURGO"} url={"#"} />
+            <ReferenceTooltip
+              type="text"
+              content={
+                "Average dates of the first and last frosts for your location, based on frost dates for the last five years from University of Georgia’s Weather App; you may manually change this input."
+              }
+            />
           </Typography>
         </div>
 
         <div className="col-12">
           <Typography variant="body1" className="text-left">
             <Opacity style={{ color: "transparent" }} />
-            &nbsp; <p className="d-inline">{"First Frost Date"}:</p> &nbsp;
+            &nbsp; <span>{"First Frost Date"}:</span> &nbsp;
             {`${state.weatherData.averageFrost.firstFrostDate.month} ${state.weatherData.averageFrost.firstFrostDate.day}`}
           </Typography>
           <Typography variant="body1" className="text-left">
             <Opacity style={{ color: "transparent" }} />
-            &nbsp; <p className="d-inline">{"Last Frost Date"}:</p> &nbsp;
+            &nbsp; <span>{"Last Frost Date"}:</span> &nbsp;
             {`${state.weatherData.averageFrost.lastFrostDate.month} ${state.weatherData.averageFrost.lastFrostDate.day}`}
           </Typography>
         </div>
@@ -272,14 +280,19 @@ const WeatherConditions = (props) => {
           >
             <WbSunnyOutlined />
             &nbsp; Average Frost Free Days &nbsp;{" "}
-            <ReferenceTooltip source={"SSURGO"} url={"#"} />
+            <ReferenceTooltip
+              type={"text"}
+              content={
+                "Number of days in your growing season, based on average first and last frost dates for the last five years from University of Georgia’s Weather App"
+              }
+            />
           </Typography>
         </div>
 
         <div className="col-12">
           <Typography variant="body1" className="text-left">
             <Opacity style={{ color: "transparent" }} />
-            &nbsp; <p className="d-inline">{"Frost Free Days"}:</p> &nbsp;
+            &nbsp; <span>{"Frost Free Days"}:</span> &nbsp;
             {state.weatherData.frostFreeDays}
           </Typography>
         </div>
