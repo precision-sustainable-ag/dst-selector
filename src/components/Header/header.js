@@ -460,7 +460,7 @@ const Header = () => {
           type: "ADD_GOALS",
           data: z7Formattedgoal,
         });
-        console.log("z7 data dispatched");
+        // console.log("z7 data dispatched");
         break;
       }
       case 6: {
@@ -472,7 +472,7 @@ const Header = () => {
           type: "ADD_GOALS",
           data: z6Formattedgoal,
         });
-        console.log("z6 data dispatched");
+        // console.log("z6 data dispatched");
         break;
       }
       case 5: {
@@ -484,7 +484,7 @@ const Header = () => {
           type: "ADD_GOALS",
           data: z5Formattedgoal,
         });
-        console.log("z5 data dispatched");
+        // console.log("z5 data dispatched");
         break;
       }
       default: {
@@ -496,7 +496,7 @@ const Header = () => {
           type: "ADD_GOALS",
           data: z7Formattedgoal,
         });
-        console.log("default data dispatched");
+        // console.log("default data dispatched");
         break;
       }
     }
@@ -588,7 +588,7 @@ const Header = () => {
           <div className="col-12 col-lg-10 col-sm-12 row">
             <div className="col-lg-4 col-12 d-flex align-items-center text-left">
               <div>
-                <Typography variant="body1">
+                <Typography variant="body1" className="font-weight-bold">
                   Cover Crop Decision Support Tools
                 </Typography>
 
