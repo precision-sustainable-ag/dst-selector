@@ -85,9 +85,12 @@ const WeatherConditions = (props) => {
 
   const [caller, setCaller] = React.useState("");
 
-  const [weatherDataShadow, setWeatherDataShadow] = React.useState(
-    state.weatherData
-  );
+  const [weatherDataShadow, setWeatherDataShadow] = useState(state.weatherData);
+
+  const [lastFrostDayHelper, setLastFrostDayHelper] = useState("");
+  const [firstFrostDayHelper, setFirstFrostDayHelper] = useState("");
+  const [firstFrostDayError, setFirstFrostDayError] = useState(false);
+  const [lastFrostDayError, setLastFrostDayError] = useState(false);
 
   useEffect(() => {
     if (!state.ajaxInProgress) {
@@ -124,6 +127,10 @@ const WeatherConditions = (props) => {
     // TODO: Validate Modal Data
 
     // data correct
+    setFirstFrostDayError(false);
+    setLastFrostDayError(false);
+    setFirstFrostDayHelper("");
+    setLastFrostDayHelper("");
 
     let broadcastObject = {
       averageFrost: {
@@ -143,12 +150,20 @@ const WeatherConditions = (props) => {
       frostFreeDays: frostFreeDays,
     };
 
-    setDidChange(true);
-    dispatch({
-      type: "UPDATE_WEATHER_CONDITIONS",
-      data: { weatherData: broadcastObject },
-    });
-    setOpen(false);
+    if (firstFrostDay > 31 || firstFrostDay <= 0) {
+      setFirstFrostDayError(true);
+      setFirstFrostDayHelper("Invalid Day");
+    } else if (lastFrostDay > 31 || lastFrostDay <= 0) {
+      setLastFrostDayError(true);
+      setLastFrostDayHelper("Invalid Day");
+    } else {
+      setDidChange(true);
+      dispatch({
+        type: "UPDATE_WEATHER_CONDITIONS",
+        data: { weatherData: broadcastObject },
+      });
+      setOpen(false);
+    }
 
     // data incorrect
 
@@ -361,7 +376,9 @@ const WeatherConditions = (props) => {
                             Values changed, Reset ?
                           </Button>
                         ) : (
-                          ""
+                          <Typography variant="body2">
+                            5 Year Average
+                          </Typography>
                         )}
                       </FormControl>
                     </div>
@@ -373,6 +390,8 @@ const WeatherConditions = (props) => {
                           max="31"
                           min="1"
                           multiline={true}
+                          helperText={firstFrostDayHelper}
+                          error={firstFrostDayError}
                           maxLength={2}
                           id="margin-none"
                           value={firstFrostDay}
@@ -406,7 +425,12 @@ const WeatherConditions = (props) => {
                             Values changed, Reset ?
                           </Button>
                         ) : (
-                          ""
+                          <Typography
+                            variant="body2"
+                            style={{ marginLeft: "8px" }}
+                          >
+                            5 Year Average
+                          </Typography>
                         )}
                       </FormControl>
                     </div>
@@ -452,7 +476,9 @@ const WeatherConditions = (props) => {
                             Values changed, Reset ?
                           </Button>
                         ) : (
-                          ""
+                          <Typography variant="body2">
+                            5 Year Average
+                          </Typography>
                         )}
                       </FormControl>
                     </div>
@@ -463,6 +489,8 @@ const WeatherConditions = (props) => {
                           type="number"
                           max="31"
                           min="1"
+                          helperText={lastFrostDayHelper}
+                          error={lastFrostDayError}
                           multiline={true}
                           maxLength={2}
                           value={lastFrostDay}
@@ -496,7 +524,12 @@ const WeatherConditions = (props) => {
                             Values changed, Reset ?
                           </Button>
                         ) : (
-                          ""
+                          <Typography
+                            variant="body2"
+                            style={{ marginLeft: "8px" }}
+                          >
+                            5 Year Average
+                          </Typography>
                         )}
                       </FormControl>
                     </div>
@@ -514,36 +547,18 @@ const WeatherConditions = (props) => {
                         <TextField
                           label={currentMonthFull}
                           type="number"
-                          step="0.01"
-                          multiline={true}
+                          inputProps={{ min: "1", max: "100", step: "0.01" }}
                           maxLength={4}
                           helperText="Inches"
                           value={averagePrecipitation.thisMonth}
                           onChange={(event) => {
-                            if (!isNaN(event.target.value)) {
-                              if (event.target.value === "") {
-                                // setFirstFrostDay("");
-
-                                setAveragePrecipitation({
-                                  ...averagePrecipitation,
-                                  thisMonth: parseFloat(
-                                    state.weatherData.averagePrecipitation
-                                      .thisMonth
-                                  ),
-                                });
-                              } else
-                                setAveragePrecipitation({
-                                  ...averagePrecipitation,
-                                  thisMonth: parseFloat(event.target.value),
-                                });
-                            } else {
-                              setAveragePrecipitation(...averagePrecipitation, {
-                                thisMonth: parseFloat(
-                                  state.weatherData.averagePrecipitation
-                                    .thisMonth
-                                ),
-                              });
-                            }
+                            setAveragePrecipitation({
+                              ...averagePrecipitation,
+                              thisMonth:
+                                event.target.value === ""
+                                  ? 0
+                                  : event.target.value,
+                            });
                           }}
                           className={classes.textField}
                         />
@@ -566,7 +581,12 @@ const WeatherConditions = (props) => {
                             Values changed, Reset ?
                           </Button>
                         ) : (
-                          ""
+                          <Typography
+                            variant="body2"
+                            style={{ marginLeft: "8px" }}
+                          >
+                            5 Year Average
+                          </Typography>
                         )}
                       </FormControl>
                     </div>
@@ -575,33 +595,18 @@ const WeatherConditions = (props) => {
                         <TextField
                           label={"Annual"}
                           type="number"
-                          step="0.01"
-                          multiline={true}
+                          inputProps={{ min: "1", max: "100", step: "0.01" }}
                           maxLength={4}
                           helperText="Inches"
                           value={averagePrecipitation.annual}
                           onChange={(event) => {
-                            if (!isNaN(event.target.value)) {
-                              if (event.target.value === "") {
-                                setAveragePrecipitation({
-                                  ...averagePrecipitation,
-                                  annual: parseFloat(
-                                    state.weatherData.averagePrecipitation
-                                      .annual
-                                  ),
-                                });
-                              } else
-                                setAveragePrecipitation({
-                                  ...averagePrecipitation,
-                                  annual: parseFloat(event.target.value),
-                                });
-                            } else {
-                              setAveragePrecipitation(...averagePrecipitation, {
-                                annual: parseFloat(
-                                  state.weatherData.averagePrecipitation.annual
-                                ),
-                              });
-                            }
+                            setAveragePrecipitation({
+                              ...averagePrecipitation,
+                              annual:
+                                event.target.value === ""
+                                  ? 0
+                                  : parseFloat(event.target.value),
+                            });
                           }}
                           className={classes.textField}
                         />
@@ -625,7 +630,12 @@ const WeatherConditions = (props) => {
                             Values changed, Reset ?
                           </Button>
                         ) : (
-                          ""
+                          <Typography
+                            variant="body2"
+                            style={{ marginLeft: "8px" }}
+                          >
+                            5 Year Average
+                          </Typography>
                         )}
                       </FormControl>
                     </div>
@@ -670,7 +680,12 @@ const WeatherConditions = (props) => {
                             Values changed, Reset ?
                           </Button>
                         ) : (
-                          ""
+                          <Typography
+                            variant="body2"
+                            style={{ marginLeft: "8px" }}
+                          >
+                            5 Year Average
+                          </Typography>
                         )}
                       </FormControl>
                     </div>
