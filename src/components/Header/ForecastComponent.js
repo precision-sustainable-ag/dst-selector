@@ -79,52 +79,55 @@ const ForecastComponent = () => {
       setShowTempIcon(false);
     });
 
-    let data = reverseGEO(latlng[0], latlng[1]);
-    data
-      .then((data) => {
-        if (data.success === false) {
-          // console.log(data);
-          if (data.error.code === "006") {
-            let delayInMs = 4000;
-            setTimeout(function () {
-              let data = reverseGEO(latlng[0], latlng[1]);
-              data
-                .then((data) => {
-                  // console.log(data);
-                  let addressString = ``;
-                  if (data.staddress) {
-                    addressString = `${data.staddress}, ${data.state}`;
-                  }
-                  dispatch({
-                    type: "CHANGE_ADDRESS",
-                    data: {
-                      address: addressString,
-                      addressVerified: true,
-                    },
+    if (state.address === "") {
+      let data = reverseGEO(latlng[0], latlng[1]);
+      data
+        .then((data) => {
+          if (data.success === false) {
+            // console.log(data);
+            if (data.error.code === "006") {
+              let delayInMs = 5000;
+              setTimeout(function () {
+                let data = reverseGEO(latlng[0], latlng[1]);
+                data
+                  .then((data) => {
+                    // console.log(data);
+                    let addressString = ``;
+                    if (data.staddress) {
+                      addressString = `${data.staddress}, ${data.state}`;
+                    }
+                    dispatch({
+                      type: "CHANGE_ADDRESS",
+                      data: {
+                        address: addressString,
+                        addressVerified: true,
+                      },
+                    });
+                  })
+                  .catch((e) => {
+                    console.error("recursive error", e);
                   });
-                })
-                .catch((e) => {
-                  console.error("recursive error", e);
-                });
-            }, delayInMs);
+              }, delayInMs);
+            }
+          } else {
+            let addressString = ``;
+            if (data.staddress) {
+              addressString = `${data.staddress}, ${data.state}`;
+            }
+
+            dispatch({
+              type: "CHANGE_ADDRESS",
+              data: {
+                address: addressString,
+                addressVerified: true,
+              },
+            });
           }
-        } else {
-          let addressString = ``;
-          if (data.staddress) {
-            addressString = `${data.staddress}, ${data.state}`;
-          }
-          dispatch({
-            type: "CHANGE_ADDRESS",
-            data: {
-              address: addressString,
-              addressVerified: true,
-            },
-          });
-        }
-      })
-      .catch((e) => {
-        console.error("Geocode.xyz:", e);
-      });
+        })
+        .catch((e) => {
+          console.error("Geocode.xyz:", e);
+        });
+    }
   };
 
   const callWeatherApi = async (url, latlng) => {
@@ -149,9 +152,8 @@ const ForecastComponent = () => {
   return state.progress >= 1 ? (
     showTempIcon ? (
       <Fragment>
-        Forecast:
-        {cloudIcon(14, 20)}
-        Loading..
+        Forecast:&nbsp;
+        {cloudIcon(14, 20)}&nbsp; Loading..
       </Fragment>
     ) : (
       <Fragment>

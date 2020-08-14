@@ -216,9 +216,11 @@ const WeatherConditions = (props) => {
   return (
     <div className="row">
       <div className="col-12">
-        <Typography variant="h3">Weather Conditions?</Typography>
+        <Typography variant="h3" align="left">
+          Weather Conditions?
+        </Typography>
       </div>
-      <div className="mt-2 col-12">
+      <div className="mt-2 col-12 text-left">
         <Typography
           variant="button"
           className="font-weight-bold text-uppercase text-left"

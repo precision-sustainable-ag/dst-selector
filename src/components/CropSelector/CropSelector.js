@@ -33,10 +33,7 @@ const CropSelector = () => {
   const [activeCropData, setActiveCropData] = useState([]);
   const [inactiveCropData, setInactiveCropData] = useState([]);
   const [coverCropName, setCoverCropName] = useState("");
-  // const [filterByCheckBoxKeys, setfilterByCheckBoxKeys] = useState([]);
-  // let [isListView, setIsListView] = useState(true);
 
-  // TODO: set list view as default. Calendar component is activated currently
   let [isListView, setIsListView] = useState(true);
 
   const [comparisonView, setComparisonView] = useState(true);
@@ -85,233 +82,20 @@ const CropSelector = () => {
     }
   };
 
-  // latest
-
-  const filterByStars = () => {
-    let { selectedStars } = state;
-    let crop_data = cropData;
-    // console.log(selectedStars);
-
-    for (let [key, value] of Object.entries(selectedStars)) {
-      // console.log(`------\n${key}: ${value}------\n`);
-      if (value === null) {
-        // reset that key i.e. pick its id and reset css
-        let newArr = [];
-        let zoneIncludeArr = crop_data.filter((x) => {
-          if (
-            x.fields["Zone Decision"] === "Include" &&
-            x.fields[key] !== undefined &&
-            x.fields[key] === value
-          )
-            return x.fields;
-        });
-
-        zoneIncludeArr.forEach((val) => {
-          newArr = disabledIds.filter((e) => e !== val.id);
-        });
-
-        setStarDisabledIds(newArr);
-      } else {
-        let ids = [];
-        let zoneIncludeArr = crop_data.filter((x) => {
-          if (
-            x.fields["Zone Decision"] === "Include" &&
-            x.fields[key] !== undefined
-          )
-            return x.fields;
-        });
-
-        zoneIncludeArr.forEach((val, index) => {
-          // console.log(
-          //   `${val.fields["Cover Crop Name"]} : ${val.fields[key]}, Expected: ${value}`
-          // );
-          if (val.fields[key] !== value) {
-            ids.push(val.id);
-            let el = document.getElementById(val.id);
-            el.classList.add("disabled");
-            el.style.opacity = "0.2";
-          }
-          // console.log(val);
-
-          // if()
-        });
-        setStarDisabledIds(ids);
-      }
-    }
-  };
-
-  // useEffect(() => {
-  //   filterByStars();
-  // }, [state.selectedStars]);
-
-  const [text, setText] = useState("");
-  const [differenceText, setDifferenceText] = useState("");
+  // const [text, setText] = useState("");
+  // const [differenceText, setDifferenceText] = useState("");
   const [disabledIdsTextNodes, setDisabledIdsTextNodes] = useState("");
-  const [split_arr, setSplit_arr] = useState([]);
+  // const [split_arr, setSplit_arr] = useState([]);
   // Debug text
-  const [debug, setDebug] = useState(false);
+  // const [debug, setDebug] = useState(false);
   const [cropDataChanged, setCropDataChanged] = useState(false);
-  useEffect(() => {
-    filterByCheckboxValues("checkboxes", state.selectedCheckboxes);
-  }, [state.selectedCheckboxes]);
 
   useEffect(() => {
-    filterByCheckboxValues("stars", state.selectedStars);
-  }, [state.selectedStars]);
-
-  useEffect(() => {
-    setActiveCropData(state.cropData);
-    setInactiveCropData([]);
+    // setActiveCropData(state.cropData);
+    // setInactiveCropData([]);
+    // sortCropsBy("asc");
     setCropDataChanged(!cropDataChanged);
   }, [state.cropData]);
-
-  const filterByCheckboxValues = (type, keysArray) => {
-    let crop_data = cropData;
-    // console.log("keys", keysArray);
-    setText(JSON.stringify(keysArray));
-
-    const arrayKeys = [
-      "Active Growth Period",
-      "Active Growth Period-USDA PLANTS",
-      "Common Mixes",
-      "Duration",
-      "Flowering Trigger",
-      "Inoculant Type (Legumes Only)",
-      "Root Architecture",
-      "Shape & Orientation",
-      "Soil Drainage",
-      "Soil Textures",
-      "Winter Survival",
-    ];
-
-    let keys = [];
-    if (type === "checkboxes") {
-      if (keysArray.length > 0) {
-        // check if its a boolean checkbox
-
-        let keyValObj = keysArray.map((keyVal) => {
-          if (keyVal.includes("~")) {
-            let splitString = keyVal.split("~");
-
-            let key = splitString[1];
-            keys.push(key);
-            let value = splitString[0];
-            if (key === "Soil Textures") {
-              value = value.toLowerCase();
-            }
-            return { [key]: value };
-          } else {
-            return { [keyVal]: true };
-          }
-        });
-
-        console.log(keyValObj);
-
-        let validKeysLength = 0;
-
-        keys.forEach((key) => {
-          if (arrayKeys.includes(key)) {
-            validKeysLength += 1;
-          }
-        });
-
-        if (validKeysLength === keys.length) {
-          // console.log(keyValObj);
-          keyValObj = Object.entries(keyValObj);
-          // console.log(keyValObj);
-          for (const [index, val] of keyValObj) {
-            if (crop_data.length > 0) {
-              crop_data = crop_data.filter((x) => {
-                for (const [key, value] of Object.entries(val)) {
-                  if (x.fields["Zone Decision"] === "Include") {
-                    if (Array.isArray(x.fields[key])) {
-                      if (!x.fields[key].includes(value)) {
-                        return x;
-                      }
-                    } else {
-                      // boolean ?
-                      if (x.fields[key] !== value) {
-                        return x;
-                      }
-                    }
-                  }
-                }
-              });
-            }
-          }
-
-          // setCropData(crop_data);
-          // CHECK: to see if sorting can work by breaking the objects into active:inactive
-          var dif = _.differenceWith(cropData, crop_data, _.isEqual);
-          dif = dif.filter((val) => val.fields["Zone Decision"] === "Include");
-          console.log(dif);
-          setActiveCropData(dif);
-          setInactiveCropData(crop_data);
-          let disableIds = crop_data.map((cd) => cd.id);
-          console.log("disable: ", disableIds);
-          setDisabledIds(disableIds);
-        }
-        //TODO: sort crop data based on filtered values
-      } else {
-        if (inactiveCropData.length > 0) {
-          // get id of all inactive crop data and reset css
-          inactiveCropData.map((crop) => {
-            let ele = document.getElementById(crop.id);
-
-            ele.classList.remove("disabled");
-            ele.style.opacity = "1";
-          });
-
-          setInactiveCropData([]);
-          setActiveCropData([]);
-        }
-      }
-    }
-
-    if (type === "stars") {
-      let selectedStars = keysArray;
-      for (let [key, value] of Object.entries(selectedStars)) {
-        if (value === null) {
-          let newArr = [];
-          let zoneIncludeArr = crop_data.filter((x) => {
-            if (
-              x.fields["Zone Decision"] === "Include" &&
-              x.fields[key] !== undefined &&
-              x.fields[key] === value
-            )
-              return x.fields;
-          });
-
-          zoneIncludeArr.forEach((val) => {
-            newArr = starDisabledIds.filter((e) => e !== val.id);
-          });
-
-          setStarDisabledIds(newArr);
-          console.log("disabled:if ", newArr);
-        } else {
-          let ids = [];
-          let zoneIncludeArr = crop_data.filter((x) => {
-            if (
-              x.fields["Zone Decision"] === "Include" &&
-              x.fields[key] !== undefined
-            )
-              return x.fields;
-          });
-
-          zoneIncludeArr.forEach((val, index) => {
-            if (val.fields[key] !== value) {
-              ids.push(val.id);
-              let el = document.getElementById(val.id);
-              el.classList.add("disabled");
-              el.style.opacity = "0.2";
-            }
-          });
-          console.log("disabled:else ", ids);
-          setStarDisabledIds(ids);
-        }
-      }
-    }
-  };
 
   useEffect(() => {
     // get all ids and compare with the disabled ids array
@@ -455,32 +239,58 @@ const CropSelector = () => {
     if (state.cropData.length > 0) {
       const { selectedGoals } = state;
       if (selectedGoals.length > 0) {
-        let crop_data = cropData;
+        let crop_data = state.cropData;
+        let activeCropDataCopy =
+          activeCropData.length > 0 ? activeCropData : state.cropData;
+        let inactiveCropDataCopy =
+          inactiveCropData.length > 0 ? inactiveCropData : [];
         // console.log("cropdata", crop_data);
-        const activeObjKeys = [];
+        let activeObjKeys = [];
         selectedGoals.forEach((val, index) => {
           //  Crop Data is inside cropData.fields
           activeObjKeys[index] = `fields.${val}`;
         });
+        console.log(activeObjKeys);
         switch (orderBy) {
           case "asc": {
-            let updatedCropData = _.orderBy(crop_data, activeObjKeys, [
-              "asc",
-              "asc",
-              "asc",
-            ]);
-            setCropData(updatedCropData);
+            if (activeCropDataCopy.length > 0) {
+              let updatedCropData = _.orderBy(
+                activeCropDataCopy,
+                activeObjKeys,
+                ["asc", "asc", "asc"]
+              );
+              setActiveCropData(updatedCropData);
+            }
+            if (inactiveCropDataCopy.length > 0) {
+              let updatedInactives = _.orderBy(
+                inactiveCropDataCopy,
+                activeObjKeys,
+                ["asc", "asc", "asc"]
+              );
+              setInactiveCropData(updatedInactives);
+            }
+            // setCropData(updatedCropData);
             setSortPreference("asc");
             break;
           }
           case "desc": {
-            let updatedCropData = _.orderBy(crop_data, activeObjKeys, [
-              "desc",
-              "desc",
-              "desc",
-            ]);
-
-            setCropData(updatedCropData);
+            if (activeCropDataCopy.length > 0) {
+              let updatedCropData = _.orderBy(
+                activeCropDataCopy,
+                activeObjKeys,
+                ["desc", "desc", "desc"]
+              );
+              setActiveCropData(updatedCropData);
+            }
+            if (inactiveCropDataCopy.length > 0) {
+              let updatedInactives = _.orderBy(
+                inactiveCropDataCopy,
+                activeObjKeys,
+                ["desc", "desc", "desc"]
+              );
+              setInactiveCropData(updatedInactives);
+            }
+            // setCropData(updatedCropData);
             setSortPreference("desc");
             break;
           }
@@ -656,7 +466,7 @@ const CropSelector = () => {
           <CropSidebarComponent
             sortEnvTolCropData={sortEnvTolCropData}
             setGrowthWindow={setShowGrowthWindow}
-            filterByCheckboxValues={filterByCheckboxValues}
+            // filterByCheckboxValues={filterByCheckboxValues}
             isListView={isListView}
             cropData={cropData}
             activeCropData={

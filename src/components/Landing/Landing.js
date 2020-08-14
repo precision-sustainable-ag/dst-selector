@@ -16,6 +16,8 @@ const Landing = (props) => {
     alignItems: "center",
     height: "100%",
     flexDirection: "column",
+    paddingLeft: "0px",
+    paddingRight: "0px",
   };
   const boxWrapper = {
     paddingBottom: "0px",

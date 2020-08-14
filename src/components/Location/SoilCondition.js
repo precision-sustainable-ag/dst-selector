@@ -258,7 +258,7 @@ const SoilCondition = (props) => {
   };
   const RenderFloodingOptions = ({ flooding = "" }) => {
     return (
-      <div>
+      <div className="text-left">
         <Chip
           label="None"
           color={flooding === "None" ? "primary" : "secondary"}
@@ -312,7 +312,7 @@ const SoilCondition = (props) => {
   };
   const RenderDrainageClasses = ({ drainage = [""] }) => {
     return (
-      <div>
+      <div className="text-left">
         <Chip
           label="Very Poorly Drained"
           color={
@@ -392,7 +392,9 @@ const SoilCondition = (props) => {
   return (
     <div className="row">
       <div className="col-12">
-        <Typography variant="h3">Soil Conditions?</Typography>
+        <Typography variant="h3" align="left">
+          Soil Conditions?
+        </Typography>
       </div>
       <div className="col-12 pt-2 row">
         <div className="col-12">
@@ -426,6 +428,7 @@ const SoilCondition = (props) => {
             <Typography
               variant="body1"
               style={{ color: CustomStyles().primaryProgressBtnColor }}
+              align="left"
             >
               {soilData.Map_Unit_Name}
             </Typography>

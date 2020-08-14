@@ -13,8 +13,10 @@ import FilterHdrIcon from "@material-ui/icons/FilterHdr";
 import CloudIcon from "@material-ui/icons/Cloud";
 import moment from "moment";
 import LocationComponent from "../../Location/Location";
-import SoilConditions from "../../Location/SoilConditions";
 import WeatherConditions from "../../Location/WeatherConditions";
+import SoilCondition from "../../Location/SoilCondition";
+import { LocationOn } from "@material-ui/icons";
+import "../../../styles/greenBar.scss";
 
 const expansionPanelBaseStyle = {
   display: "flex",
@@ -32,6 +34,7 @@ const Greenbar = () => {
   const [expansionPanelComponent, setExpansionPanelComponent] = React.useState({
     component: "",
   });
+
   useEffect(() => {
     // console.log("---Greeenbar.js mounted---");
 
@@ -96,9 +99,30 @@ const Greenbar = () => {
       address = address.substr(0, 20);
 
       return (
-        <Button onClick={handleAddressBtnClick}>
-          {locationIcon(14, 20)}
-          &nbsp; {address}
+        <Button
+          className="greenbarBtn"
+          onClick={handleAddressBtnClick}
+          style={
+            expansionPanelComponent.component === "location"
+              ? {
+                  background: "white",
+                }
+              : {}
+          }
+        >
+          <span
+            style={
+              expansionPanelComponent.component === "location"
+                ? {
+                    color: "black",
+                  }
+                : {}
+            }
+          >
+            <LocationOn />
+            &nbsp;Zone: {state.zone}
+            &nbsp; {address}
+          </span>
         </Button>
       );
     }
@@ -107,10 +131,10 @@ const Greenbar = () => {
   const getZone = () => {
     return (
       <Fragment>
-        <Button onClick={handleClick}>
+        <Button onClick={handleClick} className="greenbarBtn">
           {zoneIcon(20, 14)}
           &nbsp;
-          {state.zone !== 2 ? `Zone ${state.zone}` : `Zone ${state.zone} & 3`}
+          {state.zone !== 3 ? `Zone ${state.zone}` : `Zone 3`}
         </Button>
         <Menu
           id="simple-menu"
@@ -119,8 +143,8 @@ const Greenbar = () => {
           open={Boolean(anchorEl)}
           onClose={handleZoneDropdownClose}
         >
-          <MenuItem onClick={handleZoneDropdownClose} value={2} key={2}>
-            Zone 2 and 3
+          <MenuItem onClick={handleZoneDropdownClose} value={3} key={3}>
+            Zone 3
           </MenuItem>
           <MenuItem onClick={handleZoneDropdownClose} value={4} key={4}>
             Zone 4
@@ -222,15 +246,37 @@ const Greenbar = () => {
     }
   };
   const getSoil = () => {
-    if (state.soilData.length === 0) {
+    if (state.soilData.Flooding_Frequency === null) {
       return "";
     } else
       return (
-        <Button onClick={handleSoilBtnClick}>
-          {<FilterHdrIcon />}
-          &nbsp;{" "}
-          {/* {`Soils: Map Unit Name (${state.soilData.Map_Unit_Name}%), Drainage Class: ${state.soilData.Drainage_Class}})`} */}
-          {`Soils: Drainage Class: ${state.soilData.Drainage_Class}`}
+        <Button
+          className="greenbarBtn"
+          onClick={handleSoilBtnClick}
+          style={
+            expansionPanelComponent.component === "soil"
+              ? {
+                  background: "white",
+                }
+              : {}
+          }
+        >
+          <span
+            style={
+              expansionPanelComponent.component === "soil"
+                ? {
+                    color: "black",
+                  }
+                : {}
+            }
+          >
+            {<FilterHdrIcon />}
+            &nbsp;{" "}
+            {/* {`Soils: Map Unit Name (${state.soilData.Map_Unit_Name}%), Drainage Class: ${state.soilData.Drainage_Class}})`} */}
+            {`Soils: Drainage Class: ${state.soilData.Drainage_Class.toString()
+              .split(",")
+              .join(", ")}`}
+          </span>
         </Button>
       );
   };
@@ -243,8 +289,8 @@ const Greenbar = () => {
 
     if (!isNaN(parseInt(value))) {
       switch (parseInt(value)) {
-        case 2: {
-          zoneText = `Zone ${value} &amp; ${value + 1}`;
+        case 3: {
+          zoneText = `Zone ${value}`;
           dispatch({
             type: "UPDATE_ZONE_TEXT",
             data: {
@@ -313,10 +359,30 @@ const Greenbar = () => {
     if (state.weatherData.length === 0) return "";
     else
       return (
-        <Button onClick={handleWeatherBtnClick}>
-          {<CloudIcon fontSize="small" />}
-          &nbsp;{" "}
-          {`Average First Frost: ${state.weatherData.averageFrost.firstFrostDate.month} ${state.weatherData.averageFrost.firstFrostDate.day} | Average Rain(${currentMonth}): ${state.weatherData.averagePrecipitation.thisMonth} in`}
+        <Button
+          className="greenbarBtn"
+          onClick={handleWeatherBtnClick}
+          style={
+            expansionPanelComponent.component === "weather"
+              ? {
+                  background: "white",
+                }
+              : {}
+          }
+        >
+          <span
+            style={
+              expansionPanelComponent.component === "weather"
+                ? {
+                    color: "black",
+                  }
+                : {}
+            }
+          >
+            {<CloudIcon fontSize="small" />}
+            &nbsp;{" "}
+            {`Avg First Frost: ${state.weatherData.averageFrost.firstFrostDate.month} ${state.weatherData.averageFrost.firstFrostDate.day} | Average Rain(${currentMonth}): ${state.weatherData.averagePrecipitation.thisMonth} in`}
+          </span>
         </Button>
       );
   };
@@ -330,12 +396,12 @@ const Greenbar = () => {
             : ""}
         </div>
 
-        <div className="zoneBar">
+        {/* <div className="zoneBar">
           {state.progress > 0 &&
           (window.location.pathname === "/" || state.progress > 4)
             ? getZone()
             : ""}
-        </div>
+        </div> */}
         <div className="soilBar">
           {state.progress > 1 &&
           (window.location.pathname === "/" || state.progress > 4)
@@ -343,7 +409,7 @@ const Greenbar = () => {
             : ""}
         </div>
         <div className="weatherBar">
-          {state.progress > 1 &&
+          {state.progress > 2 &&
           (window.location.pathname === "/" || state.progress > 4)
             ? getWeatherData()
             : ""}
@@ -357,7 +423,7 @@ const Greenbar = () => {
         ) : expansionPanelComponent.component === "soil" ? (
           <div className="container mt-5" style={expansionPanelBaseStyle}>
             <div className="boxContainerRow">
-              <SoilConditions caller="greenbar" />
+              <SoilCondition caller="greenbar" />
             </div>
           </div>
         ) : expansionPanelComponent.component == "weather" ? (

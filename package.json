@@ -36,6 +36,7 @@
     "react-lazyload": "^3.0.0",
     "react-leaflet": "^2.7.0",
     "react-leaflet-draw": "^0.19.0",
+    "react-leaflet-search": "^1.0.3",
     "react-movable": "^2.4.0",
     "react-router-dom": "^5.1.2",
     "react-scripts": "^3.4.1",

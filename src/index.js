@@ -35,6 +35,11 @@ const theme = createMuiTheme({
     secondary: {
       main: CustomStyles().lighterGreen,
     },
+
+    // text: {
+    //   primary: CustomStyles().lighterGreen,
+    //   secondary: CustomStyles().primaryProgressBtnColor,
+    // },
   },
   overrides: {
     MuiTooltip: {
@@ -45,6 +50,18 @@ const theme = createMuiTheme({
         borderRadius: CustomStyles().mildlyRoundedRadius,
       },
       arrow: {},
+    },
+    MuiChip: {
+      colorSecondary: {
+        backgroundColor: CustomStyles().secondaryProgressBtnColor,
+        color: "rgba(0,0,0,0.5)",
+        fontWeight: 500,
+      },
+      colorPrimary: {
+        backgroundColor: CustomStyles().primaryProgressBtnBorderColor,
+        color: "rgba(0,0,0,1)",
+        fontWeight: 500,
+      },
     },
   },
 });
