@@ -160,11 +160,13 @@ const z5CropData = cropDataFormatter(z5AllCrops);
 // const StoreContext = createContext();
 
 const initialState = {
+  // progress: 2,
   progress: 0,
   // progress: 5,
   address: "",
   addressSearchPreference: "address",
   zip: 0,
+  zipCode: 0,
   markersCopy: [],
   markers: [[39.0255, -76.924]],
   // markers: [
@@ -182,6 +184,11 @@ const initialState = {
   cropData: z7CropData,
   selectedCrops: [],
   selectedGoals: [],
+  // selectedGoals: [
+  //   "Improve Soil Organic Matter",
+  //   "Increase Soil Aggregation",
+  //   "Lasting Residue",
+  // ],
   zoom: 13,
   addressVerified: false,
   snackOpen: false,
@@ -196,7 +203,13 @@ const initialState = {
   zone: 7,
   soilData: {
     Map_Unit_Name: "",
-    Drainage_Class: "",
+    Drainage_Class: [],
+    Flooding_Frequency: "",
+    Ponding_Frequency: "",
+  },
+  soilDataOriginal: {
+    Map_Unit_Name: "",
+    Drainage_Class: [],
     Flooding_Frequency: "",
     Ponding_Frequency: "",
   },

@@ -43,7 +43,7 @@ const SoilConditions = (props) => {
     //   "DraingageText::defaultDrainageMark[0]",
     //   defaultDrainageMark[0]
     // );
-    console.log(startObj, endObj);
+    // console.log(startObj, endObj);
     setDrainageMarkText(`Between ${startObj.label} and ${endObj.label}`);
     // setDrainageMarkText("hello");
   };

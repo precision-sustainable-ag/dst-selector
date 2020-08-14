@@ -38,6 +38,13 @@ const Reducer = (state, action) => {
         selectedGoals: [],
       };
     }
+    case "UPDATE_ZONE": {
+      return {
+        ...state,
+        zoneText: action.data.zoneText,
+        zone: action.data.zone,
+      };
+    }
     case "CHANGE_ADDRESS": {
       return {
         ...state,
@@ -238,6 +245,20 @@ const Reducer = (state, action) => {
           Drainage_Class: action.data.Drainage_Class,
           Flooding_Frequency: action.data.Flooding_Frequency,
           Ponding_Frequency: action.data.Ponding_Frequency,
+          for: action.data.for,
+        },
+      };
+    }
+    case "UPDATE_SOIL_DATA_ORIGINAL": {
+      return {
+        ...state,
+        soilDataOriginal: {
+          ...state.soilDataOriginal,
+          Map_Unit_Name: action.data.Map_Unit_Name,
+          Drainage_Class: action.data.Drainage_Class,
+          Flooding_Frequency: action.data.Flooding_Frequency,
+          Ponding_Frequency: action.data.Ponding_Frequency,
+          for: action.data.for,
         },
       };
     }
@@ -265,7 +286,7 @@ const Reducer = (state, action) => {
     case "UPDATE_ZIP_CODE": {
       return {
         ...state,
-        zip: action.data.zip,
+        zipCode: action.data.zipCode,
       };
     }
 
@@ -285,6 +306,26 @@ const Reducer = (state, action) => {
       return {
         ...state,
         activeGrowthPeriod: action.data.activeGrowthPeriod,
+      };
+    }
+
+    case "UPDATE_DRAINAGE_CLASS": {
+      return {
+        ...state,
+        soilData: {
+          ...state.soilData,
+          Drainage_Class: action.data,
+        },
+      };
+    }
+
+    case "UPDATE_FLOODING_FREQUENCY": {
+      return {
+        ...state,
+        soilData: {
+          ...state.soilData,
+          Flooding_Frequency: action.data,
+        },
       };
     }
 

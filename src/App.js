@@ -8,6 +8,7 @@ import {
   Snackbar,
   MuiThemeProvider,
   createMuiTheme,
+  Button,
 } from "@material-ui/core";
 // import Navigation from "./components/navigation";
 // import Footer from "./components/Footer/footer";
@@ -87,23 +88,65 @@ const App = () => {
     <div className="contentWrapper" id="mainContentWrapper">
       <Header logo="neccc_wide_logo_color_web.jpg" />
 
-      {loadRelevantRoute(state.progress, calcHeight)}
+      <div className="container-fluid pl-0 pr-0">
+        <div
+          className="contentContainer"
+          style={
+            {
+              // height: calcHeight,
+              // width: "100%",
+              // position: "absolute",
+              // top: "50%",
+              // left: "50%",
+              // transform: "translate(-50%, -50%)",
+            }
+          }
+        >
+          {state.progress <= 4 && state.progress > 0 ? (
+            <div className="row">
+              <div className="col-10"></div>
+              <div className="col-2 mt-2">
+                <Button
+                  onClick={() => {
+                    dispatch({
+                      type: "UPDATE_PROGRESS",
+                      data: {
+                        type: "HOME",
+                      },
+                    });
+                  }}
+                >
+                  reset
+                </Button>
+              </div>
+            </div>
+          ) : (
+            ""
+          )}
 
-      {state.progress !== 0 && state.progress < 5 ? (
-        <div className="container-fluid mt-5 mb-5">
-          <div className="row" style={{ width: "95%", margin: "0 auto" }}>
-            <div className="col-lg-5 col-12"></div>
-            <div className="col-lg-5 col-12">
-              <ProgressButtons />
-            </div>
-            <div className="col-lg-2 pr-0 col-12">
-              <ProgressBar />
-            </div>
+          <div
+            className="col-12"
+            style={{ paddingLeft: "0px", paddingRight: "0px" }}
+          >
+            {loadRelevantRoute(state.progress, calcHeight)}
+            {state.progress !== 0 && state.progress < 5 ? (
+              <div className="container-fluid mt-5 mb-5">
+                <div className="row" style={{ width: "95%", margin: "0 auto" }}>
+                  <div className="col-lg-5 col-12"></div>
+                  <div className="col-lg-5 col-12">
+                    <ProgressButtons />
+                  </div>
+                  <div className="col-lg-2 pr-0 col-12">
+                    <ProgressBar />
+                  </div>
+                </div>
+              </div>
+            ) : (
+              ""
+            )}
           </div>
         </div>
-      ) : (
-        ""
-      )}
+      </div>
 
       <div>
         <Snackbar

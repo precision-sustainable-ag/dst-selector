@@ -13,10 +13,12 @@ import {
   Tooltip,
 } from "react-leaflet";
 import { EditControl } from "react-leaflet-draw";
+import Search from "react-leaflet-search";
 
 import { Context } from "../../store/Store";
-import { CustomStyles } from "../../shared/constants";
-const { BaseLayer, Overlay } = LayersControl;
+
+import "leaflet-draw/dist/leaflet.draw.css";
+import "../../styles/map.scss";
 
 const MapContext = ({ width, height, minzoom, maxzoom, from }) => {
   const [state, dispatch] = useContext(Context);
@@ -67,6 +69,42 @@ const MapContext = ({ width, height, minzoom, maxzoom, from }) => {
       setIsPoly(true);
     }
   }, [state.markers]);
+  const [editableFG, setEditableFG] = useState(null);
+  const onFeatureGroupReady = (reactFGref) => {
+    // store the featureGroup ref for future access to content
+    setEditableFG(reactFGref);
+  };
+  const onCreated = (e) => {
+    const drawnItems = editableFG.leafletElement._layers;
+    // if the number of layers is bigger than 1 then delete the first
+    if (Object.keys(drawnItems).length > 1) {
+      Object.keys(drawnItems).forEach((layerid, index) => {
+        if (index > 0) return;
+        const layer = drawnItems[layerid];
+        editableFG.leafletElement.removeLayer(layer);
+      });
+      if (e.layerType === "marker") {
+        const lat = e.layer._latlng.lat;
+        const lng = e.layer._latlng.lng;
+        // console.log([lat, lng]);
+        updateGlobalMarkers([[lat, lng]], "marker");
+      } else if (e.layerType === "polygon") {
+        const latlngs = e.layer._latlngs;
+        let markers = [];
+        latlngs.map((latlngArr, index) => {
+          latlngArr.map((latlng, index) => {
+            // console.log(latlng);
+            markers.push([latlng.lat, latlng.lng]);
+          });
+        });
+        // console.log(markers);
+        updateGlobalMarkers(markers, "poly");
+      } else {
+      }
+    }
+
+    // // setNewDraw(!newDraw);
+  };
 
   return mapCenter.length > 0 ? (
     <div className="row">
@@ -78,33 +116,31 @@ const MapContext = ({ width, height, minzoom, maxzoom, from }) => {
           center={isPoly ? getPolyCenter(state.markers) : mapCenter}
           style={{ width: width, height: height }}
         >
-          <FeatureGroup>
+          {showEditControl ? (
+            <Search
+              className="custom-search-box"
+              position="topleft"
+              provider="OpenStreetMap"
+              providerOptions={{ region: "us" }}
+              closeResultsOnClick={true}
+            />
+          ) : (
+            ""
+          )}
+
+          <FeatureGroup
+            ref={(featureGroupRef) => {
+              onFeatureGroupReady(featureGroupRef);
+            }}
+          >
             {showEditControl ? (
               <EditControl
-                position="topright"
+                edit={{ edit: false }}
+                position="bottomleft"
                 onEdited={(e) => {
                   //   console.log("edited", e);
                 }}
-                onCreated={(e) => {
-                  if (e.layerType === "marker") {
-                    const lat = e.layer._latlng.lat;
-                    const lng = e.layer._latlng.lng;
-                    // console.log([lat, lng]);
-                    updateGlobalMarkers([[lat, lng]], "marker");
-                  } else if (e.layerType === "polygon") {
-                    const latlngs = e.layer._latlngs;
-                    let markers = [];
-                    latlngs.map((latlngArr, index) => {
-                      latlngArr.map((latlng, index) => {
-                        // console.log(latlng);
-                        markers.push([latlng.lat, latlng.lng]);
-                      });
-                    });
-                    // console.log(markers);
-                    updateGlobalMarkers(markers, "poly");
-                  } else {
-                  }
-                }}
+                onCreated={onCreated}
                 onDeleted={(e) => {
                   console.log("deleted", e);
                 }}
@@ -113,8 +149,13 @@ const MapContext = ({ width, height, minzoom, maxzoom, from }) => {
                   circle: false,
                   circlemarker: false,
                   line: false,
-                  polygon: true,
+                  polygon: {
+                    allowIntersection: false,
+                    showArea: true,
+                    metric: false,
+                  },
                   polyline: false,
+                  allowIntersection: false,
                 }}
               />
             ) : (
@@ -123,11 +164,11 @@ const MapContext = ({ width, height, minzoom, maxzoom, from }) => {
 
             {isPoly ? (
               <Polygon positions={state.markers}>
-                <Tooltip>your field</Tooltip>
+                <Tooltip>Your Field</Tooltip>
               </Polygon>
             ) : (
               <Marker position={state.markers[0]}>
-                <Tooltip>your field</Tooltip>
+                <Tooltip>Your Field</Tooltip>
               </Marker>
             )}
           </FeatureGroup>

@@ -110,28 +110,48 @@ const LocationComponent = () => {
 
   return (
     <div
-      className="container-fluid mt-5"
+      className="container-fluid pt-2"
       style={{
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
       }}
     >
-      <div className="row boxContainerRow" style={{ height: "480px" }}>
+      <div className="row boxContainerRow" style={{ minHeight: "480px" }}>
         <div className="col-xl-6 col-lg-12">
           <div className="container-fluid">
             <div className="row">
               <div className="col-12">
-                <h1>Where is your field located?</h1>
+                <Typography variant="h3">
+                  Where is your field located?
+                </Typography>
               </div>
             </div>
             <div className="row pt-3">
               <div className="col-12">
-                <Typography variant="body1">
-                  Select plant hardiness zone for least site specific results.
-                  Enter address or zip code for county-level specificity. For
-                  more specific results, mark out your field boundary in the
-                  map.
+                <Typography variant="body1" align="left">
+                  Enter your USDA plant hardiness zone, address or zip code to
+                  determine your location. Then click
+                  <img
+                    height="20"
+                    width="20"
+                    src="/images/icons/pentagon.png"
+                  />
+                  {/* <span
+                    style={{
+                      background: `url('/static/media/spritesheet.fd5728f2.svg')`,
+                      backgroundPosition: "-77px -2px",
+                      width: "26px",
+                      height: "26px",
+                      display: "inline-block",
+                    }}
+                  ></span> */}
+                  to draw your field boundary on the map.
+                </Typography>
+                <Typography variant="body1" align="left" className="pt-2">
+                  Plant hardiness zone, zip code, or address will return the
+                  most general recommendations, whereas drawing your field on
+                  the map will return the most site-specific recommendations
                 </Typography>
                 {/* <p style={{ fontSize: "18px" }}>
                   
@@ -139,7 +159,7 @@ const LocationComponent = () => {
               </div>
             </div>
             <div className="row pt-3 mt-4">
-              <div className="col-md-6 col-12">
+              <div className="col-md-6 col-lg-6 col-sm-12 col-12">
                 <FormControl
                   variant="filled"
                   style={{ width: "100%" }}
@@ -148,18 +168,18 @@ const LocationComponent = () => {
                   <InputLabel>PLANT HARDINESS ZONE</InputLabel>
                   <Select
                     variant="filled"
-                    labelId="demo-simple-select-outlined-label"
-                    id="demo-simple-select-outlined"
+                    labelId="plant-hardiness-zone-dropdown-select"
+                    id="plant-hardiness-zone-dropdown-select"
                     style={{
                       textAlign: "left",
                     }}
                     onChange={(event) => {
                       //   console.log("evvt" + event.target.);
-                      if (event.target.value === 2) {
+                      if (event.target.value === 3) {
                         dispatch({
                           type: "UPDATE_ZONE_TEXT",
                           data: {
-                            zoneText: "Zone 2 & 3",
+                            zoneText: "Zone 3",
                             zone: parseInt(event.target.value),
                           },
                         });
@@ -202,8 +222,8 @@ const LocationComponent = () => {
                     <MenuItem value={0}>
                       <em>None</em>
                     </MenuItem>
-                    <MenuItem value={2} key={2}>
-                      Zone 2 and 3
+                    <MenuItem value={3} key={3}>
+                      Zone 3
                     </MenuItem>
                     <MenuItem value={4} key={4}>
                       Zone 4

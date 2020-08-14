@@ -9,19 +9,19 @@ import { GreenSwitch } from "../../shared/constants";
 const LiveLocationComponent = () => {
   const [state, dispatch] = useContext(Context);
   const [lstate, setlState] = React.useState({
-    checkedL: false
+    checkedL: false,
   });
 
-  const handleLocationToggle = name => event => {
+  const handleLocationToggle = (name) => (event) => {
     if (event.target.checked) {
       let options = {
         enableHighAccuracy: false,
         maximumAge: 60000,
-        timeout: 45000
+        timeout: 45000,
       };
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
-          function(position) {
+          function (position) {
             let lat = position.coords.latitude;
             let long = position.coords.longitude;
             if (isUndefined(lat) || isUndefined(long)) return false;
@@ -29,7 +29,7 @@ const LiveLocationComponent = () => {
               const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${long}&format=json`;
               axios
                 .get(url)
-                .then(response => {
+                .then((response) => {
                   let data = response.data;
                   let fullAddress = data.display_name;
                   // console.log(data);
@@ -45,8 +45,8 @@ const LiveLocationComponent = () => {
                   dispatch({
                     type: "UPDATE_MARKER",
                     data: {
-                      markers: [mrkrArr]
-                    }
+                      markers: [mrkrArr],
+                    },
                   });
                   // check https://phzmapi.org/[zip].json to map zone with zip probably also restricting the zips?
                   if (data.address.postcode !== undefined) {
@@ -56,10 +56,10 @@ const LiveLocationComponent = () => {
                   console.log("live location zip: ", data);
                   return fullAddress;
                 })
-                .then(fullAddress => {
+                .then((fullAddress) => {
                   dispatch({
                     type: "CHANGE_ADDRESS",
-                    data: { address: `${fullAddress}`, addressVerified: true }
+                    data: { address: `${fullAddress}`, addressVerified: true },
                   });
 
                   // markers.push(mrkrArr);
@@ -74,7 +74,7 @@ const LiveLocationComponent = () => {
                 .then(() => {});
             }
           },
-          function() {
+          function () {
             alert("Oops! An error occurred. Please use the map");
           },
           options
@@ -85,10 +85,10 @@ const LiveLocationComponent = () => {
     setlState({ [name]: event.target.checked });
   };
 
-  const setZoneState = async zip => {
+  const setZoneState = async (zip) => {
     await axios
-      .get(`https://phzmapi.org/${zip}.json`)
-      .then(response => {
+      .get(`//covercrop.tools/zone.php?zip=${zip}`)
+      .then((response) => {
         let data = response.data;
         let zone = 0;
         if (data !== null && data !== undefined) {
@@ -102,7 +102,7 @@ const LiveLocationComponent = () => {
           return 7;
         }
       })
-      .then(zone => {
+      .then((zone) => {
         // check if zone is in the NECCC range else set a default
         if (zone <= 7 && zone > 1) {
           if (zone === 2 || zone === 3) {
@@ -110,16 +110,16 @@ const LiveLocationComponent = () => {
               type: "UPDATE_ZONE_TEXT",
               data: {
                 zoneText: "Zone 2 & 3",
-                zone: 2
-              }
+                zone: 2,
+              },
             });
           } else {
             dispatch({
               type: "UPDATE_ZONE_TEXT",
               data: {
                 zoneText: `Zone ${zone}`,
-                zone: parseInt(zone)
-              }
+                zone: parseInt(zone),
+              },
             });
           }
         } else {
@@ -127,14 +127,14 @@ const LiveLocationComponent = () => {
             type: "UPDATE_ZONE_TEXT",
             data: {
               zoneText: "Zone 7",
-              zone: 7
-            }
+              zone: 7,
+            },
           });
         }
       });
   };
 
-  const isUndefined = val => {
+  const isUndefined = (val) => {
     if (val === undefined || val === "" || val === null) return true;
     else return false;
   };
@@ -153,7 +153,9 @@ const LiveLocationComponent = () => {
           label={lstate.checkedL ? "Yes" : "No"}
         />
       </FormGroup>
-      <small>Use Current Location</small>
+      <small style={{ display: "block", marginTop: "-10px" }}>
+        Use Current Location
+      </small>
     </div>
   );
 };
