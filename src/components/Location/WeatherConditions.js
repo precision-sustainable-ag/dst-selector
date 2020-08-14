@@ -373,7 +373,7 @@ const WeatherConditions = (props) => {
                               )
                             }
                           >
-                            Values changed, Reset ?
+                            Values changed, Reset?
                           </Button>
                         ) : (
                           <Typography variant="body2">
@@ -422,7 +422,7 @@ const WeatherConditions = (props) => {
                               )
                             }
                           >
-                            Values changed, Reset ?
+                            Values changed, Reset?
                           </Button>
                         ) : (
                           <Typography
@@ -473,7 +473,7 @@ const WeatherConditions = (props) => {
                               )
                             }
                           >
-                            Values changed, Reset ?
+                            Values changed, Reset?
                           </Button>
                         ) : (
                           <Typography variant="body2">
@@ -521,7 +521,7 @@ const WeatherConditions = (props) => {
                               )
                             }
                           >
-                            Values changed, Reset ?
+                            Values changed, Reset?
                           </Button>
                         ) : (
                           <Typography
@@ -578,7 +578,7 @@ const WeatherConditions = (props) => {
                               })
                             }
                           >
-                            Values changed, Reset ?
+                            Values changed, Reset?
                           </Button>
                         ) : (
                           <Typography
@@ -627,7 +627,7 @@ const WeatherConditions = (props) => {
                               })
                             }
                           >
-                            Values changed, Reset ?
+                            Values changed, Reset?
                           </Button>
                         ) : (
                           <Typography
@@ -677,7 +677,7 @@ const WeatherConditions = (props) => {
                               )
                             }
                           >
-                            Values changed, Reset ?
+                            Values changed, Reset?
                           </Button>
                         ) : (
                           <Typography
