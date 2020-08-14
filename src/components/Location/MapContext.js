@@ -75,7 +75,7 @@ const MapContext = ({ width, height, minzoom, maxzoom, from }) => {
           minZoom={minzoom}
           zoom={15}
           maxZoom={maxzoom}
-          center={mapCenter}
+          center={isPoly ? getPolyCenter(state.markers) : mapCenter}
           style={{ width: width, height: height }}
         >
           <FeatureGroup>
@@ -144,3 +144,14 @@ const MapContext = ({ width, height, minzoom, maxzoom, from }) => {
 };
 
 export default MapContext;
+
+// Compute and return center of a polygon
+// accepts [[number][number]...[number]]
+// returns [number, number]
+const getPolyCenter = (arr) => {
+  var x = arr.map((x) => x[0]);
+  var y = arr.map((x) => x[1]);
+  var cx = (Math.min(...x) + Math.max(...x)) / 2;
+  var cy = (Math.min(...y) + Math.max(...y)) / 2;
+  return [cx, cy];
+};
