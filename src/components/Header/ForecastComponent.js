@@ -31,7 +31,7 @@ const ForecastComponent = () => {
 
   useEffect(() => {
     // console.log("---forecastComponent---");
-
+    console.log("new features");
     setShowFeatures();
     // state.progress >= 1 ? setShowFeatures(true) : setShow(false);
     // fetchOldApi().then(data => {
@@ -41,7 +41,7 @@ const ForecastComponent = () => {
     //     console.log("forecast", data);
     //   });
     // });
-  }, [state.markers || state.progress]);
+  }, [state.markers, state.progress]);
 
   //   const fetchOldApi = async () => {
   //     return (await fetch(apiBaseURL_weather_gov)).json();
@@ -79,55 +79,70 @@ const ForecastComponent = () => {
       setShowTempIcon(false);
     });
 
-    if (state.address === "") {
-      let data = reverseGEO(latlng[0], latlng[1]);
-      data
-        .then((data) => {
-          if (data.success === false) {
-            // console.log(data);
-            if (data.error.code === "006") {
-              let delayInMs = 5000;
-              setTimeout(function () {
-                let data = reverseGEO(latlng[0], latlng[1]);
-                data
-                  .then((data) => {
-                    // console.log(data);
-                    let addressString = ``;
-                    if (data.staddress) {
-                      addressString = `${data.staddress}, ${data.state}`;
-                    }
-                    dispatch({
-                      type: "CHANGE_ADDRESS",
-                      data: {
-                        address: addressString,
-                        addressVerified: true,
-                      },
-                    });
-                  })
-                  .catch((e) => {
-                    console.error("recursive error", e);
-                  });
-              }, delayInMs);
-            }
-          } else {
-            let addressString = ``;
-            if (data.staddress) {
-              addressString = `${data.staddress}, ${data.state}`;
-            }
+    // if (state.address === "") {
+    let data = reverseGEO(latlng[0], latlng[1]);
+    data
+      .then((data) => {
+        // if (data.success === false) {
+        //   // console.log(data);
+        //   if (data.error.code === "006") {
+        //     let delayInMs = 5000;
+        //     setTimeout(function () {
+        //       let data = reverseGEO(latlng[0], latlng[1]);
+        //       data
+        //         .then((data) => {
+        //           // console.log(data);
+        //           let addressString = ``;
+        //           if (data.staddress) {
+        //             addressString = `${data.staddress}, ${data.state}`;
+        //           }
+        //           dispatch({
+        //             type: "CHANGE_ADDRESS",
+        //             data: {
+        //               address: addressString,
+        //               addressVerified: true,
+        //             },
+        //           });
+        //         })
+        //         .catch((e) => {
+        //           console.error("recursive error", e);
+        //         });
+        //     }, delayInMs);
+        //   }
+        console.log(data);
+        // } else {
 
-            dispatch({
-              type: "CHANGE_ADDRESS",
-              data: {
-                address: addressString,
-                addressVerified: true,
-              },
-            });
-          }
-        })
-        .catch((e) => {
-          console.error("Geocode.xyz:", e);
-        });
-    }
+        if (data.localityInfo.informative) {
+          let lastInfo =
+            data.localityInfo.informative[
+              data.localityInfo.informative.length - 1
+            ];
+          console.log(lastInfo);
+          // let addressString = ``;
+          let addressString = `${lastInfo.name}, ${data.city}`;
+          dispatch({
+            type: "CHANGE_ADDRESS",
+            data: {
+              address: addressString,
+              addressVerified: true,
+            },
+          });
+        }
+        if (data.postcode) {
+          dispatch({
+            type: "UPDATE_ZIP_CODE",
+            data: {
+              zipCode: parseInt(data.postcode),
+            },
+          });
+        }
+      })
+      // }
+      // )
+      .catch((e) => {
+        console.error("Geocode.xyz:", e);
+      });
+    // }
   };
 
   const callWeatherApi = async (url, latlng) => {
@@ -141,7 +156,8 @@ const ForecastComponent = () => {
   };
 
   const reverseGEO = async (lat, lng) => {
-    let url = `https://geocode.xyz/${lat},${lng}?json=1`;
+    // let url = `https://geocode.xyz/${lat},${lng}?json=1;
+    let url = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lng}&localityLanguage=en`;
     let data = await fetch(url);
     data = data.json();
 

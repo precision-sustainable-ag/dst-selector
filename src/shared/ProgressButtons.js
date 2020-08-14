@@ -23,19 +23,20 @@ const ProgressButtons = () => {
         }
         break;
       }
-      case 2: {
-        if (
-          soilData.Drainage_Class.length === 0 ||
-          soilData.Drainage_Class === "" ||
-          soilData.Flooding_Frequency === null ||
-          soilData.Flooding_Frequency.length === 0 ||
-          soilData.Flooding_Frequency === ""
-        ) {
-          setIsDisabled(true);
-        } else {
-          setIsDisabled(false);
-        }
-      }
+      // case 2: {
+      //   if (
+      //     // soilData.Drainage_Class.length === 0 ||
+      //     // soilData.Drainage_Class === "" ||
+      //     // soilData.Flooding_Frequency === null ||
+      //     // soilData.Flooding_Frequency.length === 0 ||
+      //     // soilData.Flooding_Frequency === ""
+      //     false
+      //   ) {
+      //     setIsDisabled(true);
+      //   } else {
+      //     setIsDisabled(false);
+      //   }
+      // }
       case 4: {
         // goals selection state
         if (goalsLength > 3 || goalsLength < 1) {
