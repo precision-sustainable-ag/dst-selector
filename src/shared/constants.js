@@ -22,7 +22,10 @@ export const airtableAPIURL = {
 export const ReferenceTooltip = (props) => {
   let sourceURL = props.url;
   let sourceName = props.source;
-  return (
+  let type = props.type || "link";
+  let content = props.content || "";
+  let hasLink = props.hasLink ? true : false;
+  return type === "link" ? (
     <Tooltip
       title={
         <div>
@@ -33,6 +36,22 @@ export const ReferenceTooltip = (props) => {
         </div>
       }
       interactive
+      arrow
+    >
+      <Info fontSize="small" />
+    </Tooltip>
+  ) : hasLink ? (
+    <Tooltip title={props.title} placement="right" interactive arrow>
+      <Info fontSize="small" />
+    </Tooltip>
+  ) : (
+    <Tooltip
+      title={
+        <div>
+          <Typography variant="body1">{content}</Typography>
+        </div>
+      }
+      placement="right"
       arrow
     >
       <Info fontSize="small" />
@@ -360,7 +379,7 @@ export const allGoalsURL =
   "https://api.airtable.com/v0/appC47111lCOTaMYe/Cover%20Crop%20Goals?maxRecords=300";
 
 export const greenBarExpansionPanelHeight = {
-  large: "600px",
+  large: "70vh",
   medium: "600px",
   small: "600px",
 };

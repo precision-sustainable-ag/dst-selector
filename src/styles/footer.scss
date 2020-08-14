@@ -1,6 +1,9 @@
 @import "../../node_modules/sass-mediaqueries/media-queries";
 @import "../styles/constants.scss";
 footer.primaryFooter {
+  position: fixed;
+  bottom: 0;
+  z-index: 9999 !important;
   background-color: #598445;
   height: 50px;
   width: 100%;

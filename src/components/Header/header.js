@@ -37,9 +37,38 @@ const Header = () => {
   const [redirectToRoot, setRedirectToRoot] = React.useState(false);
   let isActive = {};
 
-  const getAddressFromMarkers = async (lat, lon) => {
-    return (await fetch(`https://geocode.xyz/${lat},${lon}?geoit=json`)).json();
+  // const getAddressFromMarkers = async (lat, lon) => {
+  //   return (await fetch(`https://geocode.xyz/${lat},${lon}?geoit=json`)).json();
+  // };
+  const getUSDAZone = async (zip) => {
+    return await fetch(`//covercrop.tools/zone.php?zip=` + zip);
   };
+
+  useEffect(() => {
+    if (state.zipCode !== 0) {
+      getUSDAZone(state.zipCode)
+        .then((response) => {
+          let data = response.json();
+          data.then((data) => {
+            let zipCode = data.zip;
+            let zone = data.zone;
+
+            if (state.zipCode === parseInt(zipCode)) {
+              dispatch({
+                type: "UPDATE_ZONE",
+                data: {
+                  zoneText: `Zone ${zone}`,
+                  zone: parseInt(zone),
+                },
+              });
+            }
+          });
+        })
+        .catch((e) => {
+          console.error(e);
+        });
+    }
+  }, [state.zipCode]);
 
   const getAverageFrostDates = async (url) => {
     await Axios.get(url).then((resp) => {
@@ -117,156 +146,6 @@ const Header = () => {
     // get current lat long and get county, state and city
     // if (isRoot && state.progress < 4 && state.progress > 1) {
     if (state.progress >= 2 && state.markers.length > 0) {
-      let Map_Unit_Name, Drainage_Class, Flooding_Frequency, Ponding_Frequency;
-
-      let markersCopy = markers;
-      // console.log("Inital: ", markers);
-
-      let longLatString = "";
-
-      markersCopy.map((val, i) => {
-        // get long lat formatted as requested by SSURGO (long lat, long lat, ...)
-        // saved as longLatString
-
-        if (i === markersCopy.length - 1) {
-          longLatString +=
-            markersCopy[i][1] + " " + markersCopy[i][0] + "," + lon + " " + lat;
-        } else {
-          longLatString += markersCopy[i][1] + " " + markersCopy[i][0] + ",";
-        }
-      });
-      // console.log(longLatString);
-
-      // let soilDataQuery = `SELECT mu.mukey AS MUKEY, mu.muname AS Map_Unit_Name, muag.drclassdcd AS Drainage_Class, muag.flodfreqdcd AS Flooding_Frequency, muag.pondfreqprs AS Ponding_Frequency, mp.mupolygonkey as MPKEY FROM mapunit AS mu INNER JOIN muaggatt AS muag ON muag.mukey = mu.mukey INNER JOIN mupolygon AS mp ON mp.mukey = mu.mukey WHERE mu.mukey IN (SELECT * from SDA_Get_Mukey_from_intersection_with_WktWgs84('polygon ((${longLatString}))')) AND mp.mupolygonkey IN  (SELECT * from SDA_Get_Mupolygonkey_from_intersection_with_WktWgs84('polygon ((${longLatString}))'))`;
-      let soilDataQuery = "";
-
-      if (markersCopy.length > 1) {
-        // polygon
-        // soilDataQuery = `SELECT mu.mukey AS MUKEY, mu.muname AS Map_Unit_Name, muag.drclassdcd AS Drainage_Class, muag.flodfreqdcd AS Flooding_Frequency, mp.mupolygonkey as MPKEY
-        // FROM mapunit AS mu
-        // INNER JOIN muaggatt AS muag ON muag.mukey = mu.mukey
-        // INNER JOIN mupolygon AS mp ON mp.mukey = mu.mukey
-        // WHERE mu.mukey IN (SELECT * from SDA_Get_Mukey_from_intersection_with_WktWgs84('polygon ((${longLatString}))'))
-        // AND
-        // mp.mupolygonkey IN  (SELECT * from SDA_Get_Mupolygonkey_from_intersection_with_WktWgs84('polygon ((${longLatString}))'))`;
-
-        soilDataQuery = `SELECT mu.mukey AS MUKEY, mu.muname AS Map_Unit_Name, muag.drclassdcd AS Drainage_Class, muag.flodfreqdcd AS Flooding_Frequency, mp.mupolygonkey as MPKEY
-      FROM mapunit AS mu 
-      INNER JOIN muaggatt AS muag ON muag.mukey = mu.mukey
-      INNER JOIN mupolygon AS mp ON mp.mukey = mu.mukey
-      WHERE mu.mukey IN (SELECT * from SDA_Get_Mukey_from_intersection_with_WktWgs84('polygon ((${longLatString}))'))
-      AND
-      mp.mupolygonkey IN  (SELECT * from SDA_Get_Mupolygonkey_from_intersection_with_WktWgs84('polygon ((${longLatString}))'))`;
-      } else {
-        // point
-        soilDataQuery = `SELECT mu.mukey AS MUKEY, mu.muname AS Map_Unit_Name, muag.drclassdcd AS Drainage_Class, muag.flodfreqdcd AS Flooding_Frequency, mp.mupolygonkey as MPKEY
-        FROM mapunit AS mu 
-        INNER JOIN muaggatt AS muag ON muag.mukey = mu.mukey
-        INNER JOIN mupolygon AS mp ON mp.mukey = mu.mukey
-        WHERE mu.mukey IN (SELECT * from SDA_Get_Mukey_from_intersection_with_WktWgs84('point (${lon} ${lat})'))
-        AND
-        mp.mupolygonkey IN  (SELECT * from SDA_Get_Mupolygonkey_from_intersection_with_WktWgs84('point (${lon} ${lat})'))`;
-      }
-
-      // console.log(soilDataQuery);
-      var myHeaders = new Headers();
-      myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
-
-      var urlencoded = new URLSearchParams();
-      urlencoded.append("query", soilDataQuery);
-      urlencoded.append("format", "json+columnname");
-
-      var requestOptions = {
-        method: "POST",
-        headers: myHeaders,
-        body: urlencoded,
-        redirect: "follow",
-      };
-      if (markers.length >= 1) {
-        dispatch({
-          type: "TOGGLE_SOIL_LOADER",
-          data: {
-            isSoilDataLoading: true,
-          },
-        });
-
-        fetch(
-          "https://sdmdataaccess.sc.egov.usda.gov/Tabular/post.rest",
-          requestOptions
-        )
-          .then((response) => response.json())
-          .then((result) => {
-            // success
-            // console.log("SSURGO: ", result);
-
-            if (result !== {}) {
-              // TODO: Sentiment check
-              // console.log(
-              //   "Sentiment for drainage_class",
-              //   sentimentAnalysis(Drainage_Class)
-              // );
-              Map_Unit_Name = result["Table"][1][1];
-              Drainage_Class = result["Table"][1][2];
-              Flooding_Frequency = result["Table"][1][3];
-              Ponding_Frequency = result["Table"][1][4];
-              let mapUnitString = "";
-              // result["Table"].forEach(element => {
-              //   console.log("From foreach: ", element);
-
-              // });
-
-              let stringSplit = [];
-
-              result["Table"].map((el, index) => {
-                if (index !== 0) {
-                  // if (index < result["Table"].length) {
-                  // mapUnitString += el[1].split(",") + ",";
-                  // } else {
-                  if (stringSplit.indexOf(el[1].split(",")[0]) === -1) {
-                    stringSplit.push(el[1].split(",")[0]);
-                  }
-                }
-                // }
-              });
-
-              // console.log(stringSplit);
-              const filteredArr = stringSplit.filter((elm) => elm);
-              mapUnitString = filteredArr.join(", ");
-
-              let drainageClasses = [];
-              result["Table"].map((el, index) => {
-                if (index !== 0) {
-                  if (drainageClasses.indexOf(el[2]) === -1) {
-                    drainageClasses.push(el[2]);
-                  }
-                }
-              });
-              drainageClasses = drainageClasses.filter(function (el) {
-                return el != null;
-              });
-              // console.log(drainageClasses);
-
-              dispatch({
-                type: "UPDATE_SOIL_DATA",
-                data: {
-                  Map_Unit_Name: mapUnitString,
-                  Drainage_Class: drainageClasses,
-                  Flooding_Frequency: Flooding_Frequency,
-                  Ponding_Frequency: Ponding_Frequency,
-                },
-              });
-            }
-
-            dispatch({
-              type: "TOGGLE_SOIL_LOADER",
-              data: {
-                isSoilDataLoading: false,
-              },
-            });
-          })
-          .catch((error) => console.error("SSURGO ERROR", error));
-      }
-
       let revAPIURL = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`;
 
       // console.log(revAPIURL);
@@ -282,6 +161,15 @@ const Header = () => {
             resp.data.principalSubdivision,
             "abbr"
           ).toLowerCase();
+
+          if (resp.data.postcode) {
+            dispatch({
+              type: "UPDATE_ZIP_CODE",
+              data: {
+                zipCode: parseInt(resp.data.postcode),
+              },
+            });
+          }
 
           // call weather API to fetch details
 
@@ -626,7 +514,7 @@ const Header = () => {
           SPECIES SELECTOR TOOL
         </Button>
 
-        {state.progress >= 5 ? (
+        {state.progress >= 5 || state.selectedCrops.length > 0 ? (
           <Badge
             badgeContent={
               state.selectedCrops.length > 0 ? state.selectedCrops.length : 0
@@ -687,7 +575,8 @@ const Header = () => {
 
       {window.location.pathname === "/about" ||
       window.location.pathname === "/help" ||
-      window.location.pathname === "/feedback" ||
+      (window.location.pathname === "/feedback" &&
+        window.location.pathname !== "/cover-crop-explorer") ||
       state.progress === 0 ? (
         <div className="topBar"></div>
       ) : (

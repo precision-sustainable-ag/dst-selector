@@ -6,6 +6,8 @@ import SoilConditions from "./SoilConditions";
 import WeatherConditions from "./WeatherConditions";
 import { CustomStyles } from "../../shared/constants";
 import MapContext from "./MapContext";
+import { Typography } from "@material-ui/core";
+import SoilCondition from "./SoilCondition";
 // import { TextField } from "@material-ui/core";
 
 const LocationConfirmation = () => {
@@ -21,7 +23,7 @@ const LocationConfirmation = () => {
     >
       <div
         className="row boxContainerRow"
-        style={{ textAlign: "left", height: "480px" }}
+        style={{ textAlign: "left", minHeight: "480px" }}
       >
         <div className="col-xl-6 col-lg-12">
           <div className="container-fluid">
@@ -43,21 +45,28 @@ const LocationConfirmation = () => {
                 />
               </div>
               <div className="col-lg-6">
-                <h1>Location Details</h1>
-                <p>
-                  Your cover crop recommendations will come from the Plant
-                  Hardiness Zone {state.zone} NECCC dataset.
-                </p>
-                <p
-                  className="pt-2 font-weight-bold"
-                  style={{
-                    color: CustomStyles().lighterGreen,
-                  }}
-                >
-                  {state.address.length > 0
-                    ? `${state.address.toString().substring(0, 35)}...`
-                    : "Loading..."}
-                </p>
+                <div className="col-12">
+                  <Typography variant="h3">Location Details</Typography>
+                </div>
+                <div className="col-12 pt-2">
+                  <Typography variant="body1">
+                    Your cover crop recommendations will come from the Plant
+                    Hardiness Zone {state.zone} NECCC dataset.
+                  </Typography>
+                </div>
+                <div className="col-12">
+                  <Typography
+                    variant="body1"
+                    className="pt-2 font-weight-bold"
+                    style={{
+                      color: CustomStyles().lighterGreen,
+                    }}
+                  >
+                    {state.address.length > 0
+                      ? `${state.address.toString().substring(0, 35)}...`
+                      : "Loading..."}
+                  </Typography>
+                </div>
               </div>
             </div>
             <div className="row mt-3">
@@ -65,7 +74,7 @@ const LocationConfirmation = () => {
             </div>
             <div className="row mt-3">
               <div className="col-lg-12">
-                <p>
+                <Typography variant="body1">
                   Disclaimer: Cover crop recommendations are based on expert
                   opinions. Your cover crop performance and seeding rates will
                   vary based on location, management, cultivars, and many other
@@ -83,14 +92,14 @@ const LocationConfirmation = () => {
                   and planting and termination dates. Consult your program
                   contact to ensure your plans complyent, cultivars, and many
                   other variables.
-                </p>
+                </Typography>
               </div>
             </div>
           </div>
         </div>
         <div className="col-xl-5 offset-xl-1 col-lg-12">
           <div className="container-fluid">
-            {state.progress === 2 ? <SoilConditions /> : ""}
+            {state.progress === 2 ? <SoilCondition /> : ""}
             {state.progress === 3 ? <WeatherConditions /> : ""}
           </div>
         </div>
