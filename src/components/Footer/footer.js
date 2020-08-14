@@ -1,18 +1,38 @@
-import React from "react";
-import moment from "moment-timezone";
-// import "../../styles/header.css";
+import React, { useEffect, useState } from "react";
+
 import "../../styles/footer.scss";
 import { Link } from "react-router-dom";
+import Axios from "axios";
+import { owner, repo, accessToken } from "../../shared/keys";
 
 const Footer = () => {
-  const now = moment();
-  const tzdata = moment.tz.guess();
+  // let currentMonthYear = now.tz(tzdata).format("MM/YYYY");
+  const [monthYear, setMonthYear] = useState("");
 
-  const currentMonthYear = now.tz(tzdata).format("MM/YYYY");
-
+  const fetchDate = async () => {
+    return await Axios({
+      url: `https://api.github.com/repos/${owner}/${repo}/commits?path=build&page=1&per_page=1`,
+      method: "GET",
+      auth: {
+        username: "rbandooni",
+        password: accessToken,
+      },
+    });
+  };
+  useEffect(() => {
+    fetchDate().then((resp) => {
+      let lastCommitDate = resp.data[0].commit.committer.date;
+      let lastCommitDateFormatted = new Date(lastCommitDate);
+      setMonthYear(
+        `${("0" + (lastCommitDateFormatted.getMonth() + 1)).slice(
+          -2
+        )}/${lastCommitDateFormatted.getFullYear()}`
+      );
+    });
+  }, []);
   return (
     <footer className="primaryFooter">
-      <div className="leftSideText">
+      <div className="leftSideText" style={{ color: "black" }}>
         Disclaimer: Actual cover crop performance may vary. Consult your local{" "}
         <a
           className="footerLink"
@@ -42,18 +62,11 @@ const Footer = () => {
         </a>{" "}
         for detailed guidance.
       </div>
-      <div className="rightSideText">
-        {/* <Link
-          href="https://opensource.org/docs/osd"
-          style={{ paddingRight: "50px" }}
-          target="_blank"
-        >
-          OPEN SOURCE
-        </Link> */}
+      <div className="rightSideText" style={{ color: "black" }}>
         <a href="/about" style={{ paddingRight: "50px" }}>
           CONTACT US
         </a>
-        <a style={{ paddingRight: "50px" }}>Last Updated {currentMonthYear}</a>
+        <a style={{ paddingRight: "50px" }}>Last Updated {monthYear}</a>
       </div>
     </footer>
   );
