@@ -138,9 +138,9 @@ export const GreenSwitch = withStyles({
       color: "rgb(240, 247, 235)",
     },
   },
-  "&:checked": {
-    color: "rgb(240, 247, 235)",
-  },
+  // "&:checked": {
+  //   color: "rgb(240, 247, 235)",
+  // },
 })(Switch);
 
 export const GetMonthString = (month) => {
