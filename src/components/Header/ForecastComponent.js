@@ -31,7 +31,7 @@ const ForecastComponent = () => {
 
   useEffect(() => {
     // console.log("---forecastComponent---");
-    console.log("new features");
+    // console.log("new features");
     setShowFeatures();
     // state.progress >= 1 ? setShowFeatures(true) : setShow(false);
     // fetchOldApi().then(data => {
