@@ -19,9 +19,11 @@ import { Context } from "../../store/Store";
 
 import "leaflet-draw/dist/leaflet.draw.css";
 import "../../styles/map.scss";
+const { BaseLayer, Overlay } = LayersControl;
 
 const MapContext = ({ width, height, minzoom, maxzoom, from }) => {
   const [state, dispatch] = useContext(Context);
+  const [show, setShow] = useState(true);
   const [mapCenter, setMapCenter] = useState([]);
   const [isPoly, setIsPoly] = useState(false);
   const [showEditControl, setShowEditControl] = useState(true);
@@ -77,11 +79,14 @@ const MapContext = ({ width, height, minzoom, maxzoom, from }) => {
   const onCreated = (e) => {
     const drawnItems = editableFG.leafletElement._layers;
     // if the number of layers is bigger than 1 then delete the first
+    // console.log(drawnItems);
     if (Object.keys(drawnItems).length > 1) {
       Object.keys(drawnItems).forEach((layerid, index) => {
         if (index > 0) return;
+
         const layer = drawnItems[layerid];
         editableFG.leafletElement.removeLayer(layer);
+        setShow(false);
       });
       if (e.layerType === "marker") {
         const lat = e.layer._latlng.lat;
@@ -116,7 +121,7 @@ const MapContext = ({ width, height, minzoom, maxzoom, from }) => {
           center={isPoly ? getPolyCenter(state.markers) : mapCenter}
           style={{ width: width, height: height }}
         >
-          {showEditControl ? (
+          {/* {showEditControl ? (
             <Search
               className="custom-search-box"
               position="topleft"
@@ -126,7 +131,7 @@ const MapContext = ({ width, height, minzoom, maxzoom, from }) => {
             />
           ) : (
             ""
-          )}
+          )} */}
 
           <FeatureGroup
             ref={(featureGroupRef) => {
@@ -161,15 +166,18 @@ const MapContext = ({ width, height, minzoom, maxzoom, from }) => {
             ) : (
               ""
             )}
-
-            {isPoly ? (
-              <Polygon positions={state.markers}>
-                <Tooltip>Your Field</Tooltip>
-              </Polygon>
+            {show ? (
+              isPoly ? (
+                <Polygon positions={state.markers}>
+                  <Tooltip>Your Field</Tooltip>
+                </Polygon>
+              ) : (
+                <Marker position={state.markers[0]}>
+                  <Tooltip>Your Field</Tooltip>
+                </Marker>
+              )
             ) : (
-              <Marker position={state.markers[0]}>
-                <Tooltip>Your Field</Tooltip>
-              </Marker>
+              ""
             )}
           </FeatureGroup>
           <TileLayer
