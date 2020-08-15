@@ -109,7 +109,7 @@ const ForecastComponent = () => {
         //         });
         //     }, delayInMs);
         //   }
-        console.log(data);
+        // console.log(data);
         // } else {
 
         if (data.localityInfo.informative) {
@@ -117,7 +117,7 @@ const ForecastComponent = () => {
             data.localityInfo.informative[
               data.localityInfo.informative.length - 1
             ];
-          console.log(lastInfo);
+          // console.log(lastInfo);
           // let addressString = ``;
           let addressString = `${lastInfo.name}, ${data.city}`;
           dispatch({
