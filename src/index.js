@@ -110,11 +110,11 @@ const Wrapper = () => (
               <Route path={"/about"} component={About} exact />
               <Route path={"/help"} component={HelpComponent} exact />
               <Route path={"/feedback"} component={FeedbackComponent} exact />
-              <Route
+              {/* <Route
                 path={"/information-sheet"}
                 component={InformationSheet}
                 exact
-              />
+              /> */}
               <Route
                 path={"/information-sheet/:cropName"}
                 component={InformationSheet}
