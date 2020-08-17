@@ -62,11 +62,8 @@ const Footer = () => {
         </a>{" "}
         for detailed guidance.
       </div>
-      <div className="rightSideText" style={{ color: "black" }}>
-        <a href="/about" style={{ paddingRight: "50px" }}>
-          CONTACT US
-        </a>
-        <a style={{ paddingRight: "50px" }}>Last Updated {monthYear}</a>
+      <div className="rightSideText">
+        <span style={{ color: "black" }}>Last Updated {monthYear}</span>
       </div>
     </footer>
   );
