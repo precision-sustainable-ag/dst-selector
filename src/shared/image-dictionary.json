@@ -49,8 +49,8 @@
   },
   "Sweetclover, Yellow": {
     "Cover Crop": "Sweetclover, Yellow",
-    "Key Thumbnail": null,
-    "Notes": "Need image with flower",
+    "Key Thumbnail": "Sweetclover_Yellow_flowering_PublicDomain_2017.jpg",
+    "Notes": "public domain, https://www.flickr.com/photos/archesnps/34868758793/ ",
     "Directory": "Sweetclover, Yellow"
   },
   "Sunn Hemp": {
@@ -73,8 +73,8 @@
   },
   "Soybeans": {
     "Cover Crop": "Soybeans",
-    "Key Thumbnail": null,
-    "Notes": "Need Closer Image",
+    "Key Thumbnail": "Soybean_mature_Ackroyd_2020.jpg",
+    "Notes": null,
     "Directory": "Soybeans"
   },
   "Sorghum Sudangrass": {
@@ -97,8 +97,8 @@
   },
   "Ryegrass, Perennial": {
     "Cover Crop": "Ryegrass, Perennial",
-    "Key Thumbnail": null,
-    "Notes": "Need more mature image",
+    "Key Thumbnail": "Ryegrass_perennial_flowering_Ziegler_2020.jpg",
+    "Notes": null,
     "Directory": "Ryegrass, Perennial"
   },
   "Ryegrass, Annual": {
@@ -127,7 +127,7 @@
   },
   "Phacelia": {
     "Cover Crop": "Phacelia",
-    "Key Thumbnail": "Phacelia_flowering_pollinator_NancyLeeAdamson_2020.jpg",
+    "Key Thumbnail": "Phacelia_flowering_pollinator_NancyLeeAdamson_2020",
     "Notes": null,
     "Directory": "Phacelia"
   },
@@ -163,8 +163,8 @@
   },
   "Oats, Black": {
     "Cover Crop": "Oats, Black",
-    "Key Thumbnail": null,
-    "Notes": "Need closer image",
+    "Key Thumbnail": "Oats_black_mature_Eagen_2020.jpg",
+    "Notes": "New uploads were out of focus/grainy. Still need to find close-up that looks good.",
     "Directory": "Oats, Black"
   },
   "Mustard": {
@@ -209,11 +209,11 @@
     "Notes": null,
     "Directory": "Clover, Red"
   },
-  "Clover, Crimson": {
-    "Cover Crop": "Clover, Crimson",
+  "Clover Crimson": {
+    "Cover Crop": "Clover Crimson",
     "Key Thumbnail": "Clover_crimson_flowering_Mirsky_lab_2020.JPG",
     "Notes": null,
-    "Directory": "Clover, Crimson"
+    "Directory": "Clover Crimson"
   },
   "Clover, Berseem": {
     "Cover Crop": "Clover, Berseem",
@@ -223,14 +223,14 @@
   },
   "Clover, Balansa": {
     "Cover Crop": "Clover, Balansa",
-    "Key Thumbnail": null,
-    "Notes": "Need Closer Image, With Flower",
+    "Key Thumbnail": "Clover_balansa_flowering_WikimediaCommons_2008.JPG",
+    "Notes": "CC license 3.0: https://commons.wikimedia.org/wiki/File:Trifolium_michelianum_Savi_cultivar_Paradana.JPG",
     "Directory": "Clover, Balansa"
   },
   "Clover, Alsike": {
     "Cover Crop": "Clover, Alsike",
-    "Key Thumbnail": null,
-    "Notes": "MISSING",
+    "Key Thumbnail": "Clover_alsike_flowering_Ziegler_2020.jpg",
+    "Notes": null,
     "Directory": "Clover, Alsike"
   },
   "Cereal Rye, Winter": {
@@ -247,8 +247,8 @@
   },
   "Canola": {
     "Cover Crop": "Canola",
-    "Key Thumbnail": null,
-    "Notes": "Need Closer Image",
+    "Key Thumbnail": "Rapeseed_flowering_Raubenstein_2020.jpg",
+    "Notes": null,
     "Directory": "Canola"
   },
   "Buckwheat": {
@@ -265,14 +265,20 @@
   },
   "Barley, Spring": {
     "Cover Crop": "Barley, Spring",
-    "Key Thumbnail": "Barley_flowering_Raubenstein_2020.jPG",
+    "Key Thumbnail": "Barley_flowering_Brouillette_2020.jpg",
     "Notes": null,
     "Directory": "Barley, Spring"
   },
+  "Alfalfa": {
+    "Cover Crop": "Alfalfa",
+    "Key Thumbnail": "Alfalfa_mature_Ziegler_2020.jpg",
+    "Notes": null,
+    "Directory": "Alfalfa"
+  },
   "Alfalfa, Dormant": {
     "Cover Crop": "Alfalfa",
-    "Key Thumbnail": null,
-    "Notes": "Need a close image that is not blurry",
+    "Key Thumbnail": "Alfalfa_mature_Ziegler_2020.jpg",
+    "Notes": null,
     "Directory": "Alfalfa"
   }
 }
