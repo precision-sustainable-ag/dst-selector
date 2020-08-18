@@ -1,10 +1,7 @@
 import React, { useEffect, useContext, Fragment, useState } from "react";
 import { Context } from "../../../store/Store";
 import {
-  locationIcon,
   zoneIcon,
-  GetMonthString,
-  LightButton,
   greenBarExpansionPanelHeight,
   CustomStyles,
 } from "../../../shared/constants";
@@ -13,7 +10,6 @@ import {
   Menu,
   MenuItem,
   Dialog,
-  DialogTitle,
   DialogContent,
   DialogActions,
   Typography,
@@ -84,7 +80,8 @@ const Greenbar = () => {
       } while (targetElement);
 
       // This is a click outside.
-      // console.log("Clicked outside!");
+      console.log("Clicked outside!");
+      closeExpansionPanel();
       // close the expansion panel
       // slideToggle.slideToggle(greenbarExpansionElement, 300);
       // can we have a close button somewhere ?
@@ -170,6 +167,16 @@ const Greenbar = () => {
       </Fragment>
     );
   };
+  const closeExpansionPanel = () => {
+    const greenbarExpansionElement = document.getElementById(
+      "greenBarExpansionPanel"
+    );
+    greenbarExpansionElement.style.transform = "translate(0px,0px)";
+    greenbarExpansionElement.style.height = "0px";
+    setExpansionPanelComponent({
+      component: "",
+    });
+  };
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -184,11 +191,7 @@ const Greenbar = () => {
     ) {
       // toggle
       console.log("toggled");
-      greenbarExpansionElement.style.transform = "translate(0px,0px)";
-      greenbarExpansionElement.style.height = "0px";
-      setExpansionPanelComponent({
-        component: "",
-      });
+      closeExpansionPanel();
     } else {
       greenbarExpansionElement.style.transform = "translate(0px,0px)";
       greenbarExpansionElement.style.height =
@@ -212,11 +215,7 @@ const Greenbar = () => {
     ) {
       // toggle
       console.log("toggled");
-      greenbarExpansionElement.style.transform = "translate(0px,0px)";
-      greenbarExpansionElement.style.height = "0px";
-      setExpansionPanelComponent({
-        component: "",
-      });
+      closeExpansionPanel();
     } else {
       greenbarExpansionElement.style.transform = "translate(0px,0px)";
       greenbarExpansionElement.style.height =
@@ -239,11 +238,7 @@ const Greenbar = () => {
     ) {
       // toggle
       console.log("toggled");
-      greenbarExpansionElement.style.transform = "translate(0px,0px)";
-      greenbarExpansionElement.style.height = "0px";
-      setExpansionPanelComponent({
-        component: "",
-      });
+      closeExpansionPanel();
     } else {
       greenbarExpansionElement.style.transform = "translate(0px,0px)";
       greenbarExpansionElement.style.height =
@@ -416,7 +411,7 @@ const Greenbar = () => {
           >
             {<CloudIcon fontSize="small" />}
             &nbsp;{" "}
-            {`Avg First Frost: ${state.weatherData.averageFrost.firstFrostDate.month} ${state.weatherData.averageFrost.firstFrostDate.day} | Average Rain(${currentMonth}): ${state.weatherData.averagePrecipitation.thisMonth} in`}
+            {`Avg First Frost: ${state.weatherData.averageFrost.firstFrostDate.month} ${state.weatherData.averageFrost.firstFrostDate.day} | Avg Rain(${currentMonth}): ${state.weatherData.averagePrecipitation.thisMonth} in`}
           </span>
         </Button>
       );
@@ -447,6 +442,7 @@ const Greenbar = () => {
           <div className="restartBtnWrapper">
             <Button
               onClick={() => {
+                closeExpansionPanel();
                 if (state.selectedCrops.length > 0) {
                   handleRestartBtn();
                 } else {
@@ -461,27 +457,37 @@ const Greenbar = () => {
           ""
         )}
       </div>
-      <div className="greenBarExpansionPanel" id="greenBarExpansionPanel">
-        {/* <Button>Close</Button> */}
-
-        {expansionPanelComponent.component === "location" ? (
-          <LocationComponent />
-        ) : expansionPanelComponent.component === "soil" ? (
-          <div className="container mt-5" style={expansionPanelBaseStyle}>
-            <div className="boxContainerRow">
-              <SoilCondition caller="greenbar" />
-            </div>
+      <div
+        className="greenBarExpansionPanel container-fluid"
+        id="greenBarExpansionPanel"
+      >
+        <div className="row justify-content-center">
+          <div
+            className={
+              expansionPanelComponent.component === "location"
+                ? `col-10`
+                : `col-6`
+            }
+          >
+            {expansionPanelComponent.component === "location" ? (
+              <LocationComponent />
+            ) : expansionPanelComponent.component === "soil" ? (
+              <div className="container mt-5" style={expansionPanelBaseStyle}>
+                <div className="boxContainerRow">
+                  <SoilCondition caller="greenbar" />
+                </div>
+              </div>
+            ) : expansionPanelComponent.component == "weather" ? (
+              <div className="container mt-5" style={expansionPanelBaseStyle}>
+                <div className="boxContainerRow">
+                  <WeatherConditions caller="greenbar" />
+                </div>
+              </div>
+            ) : (
+              ""
+            )}
           </div>
-        ) : expansionPanelComponent.component == "weather" ? (
-          <div className="container mt-5" style={expansionPanelBaseStyle}>
-            <div className="boxContainerRow">
-              <WeatherConditions caller="greenbar" />
-            </div>
-          </div>
-        ) : (
-          ""
-        )}
-        {/* <LightButton>CLOSE</LightButton> */}
+        </div>
       </div>
 
       <Dialog disableBackdropClick disableEscapeKeyDown open={confirmationOpen}>
