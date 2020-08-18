@@ -102,28 +102,6 @@ const App = () => {
             }
           }
         >
-          {state.progress <= 4 && state.progress > 0 ? (
-            <div className="row">
-              <div className="col-10"></div>
-              <div className="col-2 mt-2">
-                <Button
-                  onClick={() => {
-                    dispatch({
-                      type: "UPDATE_PROGRESS",
-                      data: {
-                        type: "HOME",
-                      },
-                    });
-                  }}
-                >
-                  reset
-                </Button>
-              </div>
-            </div>
-          ) : (
-            ""
-          )}
-
           <div
             className="col-12"
             style={{ paddingLeft: "0px", paddingRight: "0px" }}
@@ -132,11 +110,11 @@ const App = () => {
             {state.progress !== 0 && state.progress < 5 ? (
               <div className="container-fluid mt-5 mb-5">
                 <div className="row" style={{ width: "95%", margin: "0 auto" }}>
-                  <div className="col-lg-5 col-12"></div>
-                  <div className="col-lg-5 col-12">
+                  <div className="col-lg-5 col-12 col-md-5"></div>
+                  <div className="col-lg-5 col-12 col-md-5">
                     <ProgressButtons />
                   </div>
-                  <div className="col-lg-2 pr-0 col-12">
+                  <div className="col-lg-2 pr-0 col-12 col-md-2">
                     <ProgressBar />
                   </div>
                 </div>
