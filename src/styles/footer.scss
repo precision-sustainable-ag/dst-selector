@@ -29,9 +29,11 @@ footer.primaryFooter {
 // ipads and other tablets
 @include screen(641px, 1366px) {
   footer.primaryFooter {
+    position: relative;
     flex-wrap: wrap;
     height: 100px;
     justify-content: center;
+    text-align: center;
   }
 }
 
