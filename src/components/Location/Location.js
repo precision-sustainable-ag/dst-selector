@@ -21,6 +21,7 @@ import LiveLocation from "./LiveLocation";
 import AutoComplete from "./AutoComplete";
 import LocationToggleComponent from "./LocationToggle";
 import MapContext from "./MapContext";
+import { Search } from "@material-ui/icons";
 // import { Link, Button } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
@@ -130,8 +131,8 @@ const LocationComponent = () => {
             <div className="row pt-3">
               <div className="col-12">
                 <Typography variant="body1" align="left">
-                  Enter your USDA plant hardiness zone, address or zip code to
-                  determine your location. Then click
+                  Enter your USDA plant hardiness zone, address, or zipcode and
+                  hit <Search /> to determine your location. Then click
                   <img
                     height="20"
                     width="20"
