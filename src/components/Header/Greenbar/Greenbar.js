@@ -129,8 +129,7 @@ const Greenbar = () => {
             }
           >
             <LocationOn />
-            &nbsp;Zone: {state.zone}
-            &nbsp; {address}
+            &nbsp;Zone {state.zone}: {address}
           </span>
         </Button>
       );
