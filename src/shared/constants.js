@@ -367,7 +367,7 @@ export const getRating = (ratng) => {
       );
   }
 };
-
+export const weatherApiURL = "https://weather.aesl.ces.uga.edu";
 export const allMonths = moment().localeData().monthsShort();
 export const cropDataURL =
   "https://api.airtable.com/v0/appC47111lCOTaMYe/Cover%20Crops%20Data?maxRecords=300&timeZone=America_NewYork&filterByFormula=NOT(SWITCH({Cover Crop Name},'__Open Discussion Row','Ok hopefully he answers me soon.'))";
@@ -379,7 +379,7 @@ export const allGoalsURL =
   "https://api.airtable.com/v0/appC47111lCOTaMYe/Cover%20Crop%20Goals?maxRecords=300";
 
 export const greenBarExpansionPanelHeight = {
-  large: "70vh",
+  large: "600px",
   medium: "600px",
   small: "600px",
 };
