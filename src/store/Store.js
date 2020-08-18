@@ -160,8 +160,8 @@ const z5CropData = cropDataFormatter(z5AllCrops);
 // const StoreContext = createContext();
 
 const initialState = {
-  // progress: 2,
-  progress: 0,
+  progress: 3,
+  // progress: 0,
   // progress: 5,
   address: "",
   addressSearchPreference: "address",
