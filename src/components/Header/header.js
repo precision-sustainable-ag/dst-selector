@@ -577,7 +577,7 @@ const Header = () => {
       window.location.pathname === "/help" ||
       (window.location.pathname === "/feedback" &&
         window.location.pathname !== "/cover-crop-explorer") ||
-      state.progress === 0 ? (
+      state.progress < 0 ? (
         <div className="topBar"></div>
       ) : (
         ""
