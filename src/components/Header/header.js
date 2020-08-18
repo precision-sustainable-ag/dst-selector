@@ -3,7 +3,7 @@ import { Context } from "../../store/Store";
 import "../../styles/header.scss";
 import DateComponent from "./DateComponent";
 import Greenbar from "./Greenbar/Greenbar";
-import { abbrRegion, airtableAPIURL } from "../../shared/constants";
+import { abbrRegion, weatherApiURL } from "../../shared/constants";
 import {
   MDBNavbar,
   MDBContainer,
@@ -17,15 +17,13 @@ import { Redirect, Link, useHistory, NavLink } from "react-router-dom";
 import ForecastComponent from "./ForecastComponent";
 import Axios from "axios";
 import moment from "moment";
-// import { AirtableBearerKey } from "../../shared/keys";
 import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-// import cropData from "../../shared/crop-data.json";
+
 import zone7Goal from "../../shared/json/zone7/crop-goals.json";
 import zone6Goal from "../../shared/json/zone6/crop-goals.json";
 import zone5Goal from "../../shared/json/zone5/crop-goals.json";
-// var sentimentAnalysis = require("sentiment-analysis");
-// import { Link, Button } from "@material-ui/core";
+
 const Header = () => {
   const theme = useTheme();
   const matchesLGUp = useMediaQuery(theme.breakpoints.up("lg"));
@@ -175,8 +173,8 @@ const Header = () => {
 
           // Get: Frost Free Days
           // Dynamic Dates not set!
-          let frostFreeDaysURL = `http://128.192.142.200:3000/hourly?location=${city}%20${state}&start=2015-01-01&end=2019-12-31&stats=count(date)/24/5&where=air_temperature%3e0&output=json`;
-          let frostFreeDatesURL = `http://128.192.142.200:3000/hourly?lat=${lat}&lon=${lon}&start=2014-07-01&end=2019-07-01&stats=min(date),max(date)&where=frost&group=growingyear&options=nomrms&output=json`;
+          let frostFreeDaysURL = `${weatherApiURL}/hourly?location=${city}%20${state}&start=2015-01-01&end=2019-12-31&stats=count(date)/24/5&where=air_temperature%3e0&output=json`;
+          let frostFreeDatesURL = `${weatherApiURL}/hourly?lat=${lat}&lon=${lon}&start=2014-07-01&end=2019-07-01&stats=min(date),max(date)&where=frost&group=growingyear&options=nomrms&output=json`;
           // let frostFreeDaysURL = `http://128.192.142.200:3000/hourly?lat=${lat}&lon=${lon}&start=2014-07-01&end=2019-07-01&stats=min(date),max(date)&where=frost&group=growingyear&options=nomrms`;
           let frostFreeDays = 0;
 
@@ -207,10 +205,10 @@ const Header = () => {
 
               // What was the 5-year average rainfall for city st during the month of currentMonthInt?
               //  Dynamic dates ?
-              let averageRainForAMonthURL = `http://128.192.142.200:3000/hourly?location=${obj.city}%20${obj.state}&start=2015-01-01&end=2019-12-31&stats=sum(precipitation)/5&where=month=${currentMonthInt}&output=json`;
+              let averageRainForAMonthURL = `${weatherApiURL}/hourly?location=${obj.city}%20${obj.state}&start=2015-01-01&end=2019-12-31&stats=sum(precipitation)/5&where=month=${currentMonthInt}&output=json`;
               // console.log(averageRainForAMonthURL);
               // What was the 5-year average annual rainfall for city st?
-              let fiveYearAvgRainURL = `http://128.192.142.200:3000/hourly?location=${obj.city}%20${obj.state}&start=2015-01-01&end=2019-12-31&stats=sum(precipitation)/5&output=json`;
+              let fiveYearAvgRainURL = `${weatherApiURL}/hourly?location=${obj.city}%20${obj.state}&start=2015-01-01&end=2019-12-31&stats=sum(precipitation)/5&output=json`;
               if (!state.ajaxInProgress) {
                 dispatch({
                   type: "SET_AJAX_IN_PROGRESS",
