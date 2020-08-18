@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, Fragment } from "react";
+import React, { useEffect, useContext, Fragment, useState } from "react";
 import { Context } from "../../../store/Store";
 import {
   locationIcon,
@@ -8,7 +8,16 @@ import {
   greenBarExpansionPanelHeight,
   CustomStyles,
 } from "../../../shared/constants";
-import { Button, Menu, MenuItem } from "@material-ui/core";
+import {
+  Button,
+  Menu,
+  MenuItem,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Typography,
+} from "@material-ui/core";
 import FilterHdrIcon from "@material-ui/icons/FilterHdr";
 import CloudIcon from "@material-ui/icons/Cloud";
 import moment from "moment";
@@ -30,8 +39,8 @@ const greenBarWrapperBackground = {
 
 const Greenbar = () => {
   const [state, dispatch] = useContext(Context);
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [expansionPanelComponent, setExpansionPanelComponent] = React.useState({
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [expansionPanelComponent, setExpansionPanelComponent] = useState({
     component: "",
   });
 
@@ -350,6 +359,33 @@ const Greenbar = () => {
     }
   };
 
+  const handleConfirmationChoice = (clearCoverCrops = false) => {
+    const defaultMarkers = [[39.0255, -76.924]];
+
+    if (clearCoverCrops) {
+      dispatch({
+        type: "RESET",
+        data: {
+          markers: defaultMarkers,
+          selectedCrops: [],
+        },
+      });
+    } else {
+      dispatch({
+        type: "RESET",
+        data: {
+          markers: defaultMarkers,
+          selectedCrops: state.selectedCrops,
+        },
+      });
+    }
+
+    setConfirmationOpen(false);
+  };
+  const handleRestartBtn = () => {
+    setConfirmationOpen(true);
+  };
+  const [confirmationOpen, setConfirmationOpen] = useState(false);
   const getWeatherData = () => {
     // TODO: convert month to string, currently returning int
     // let currentMonth = GetMonthString(month);
@@ -396,12 +432,6 @@ const Greenbar = () => {
             : ""}
         </div>
 
-        {/* <div className="zoneBar">
-          {state.progress > 0 &&
-          (window.location.pathname === "/" || state.progress > 4)
-            ? getZone()
-            : ""}
-        </div> */}
         <div className="soilBar">
           {state.progress > 1 &&
           (window.location.pathname === "/" || state.progress > 4)
@@ -414,6 +444,23 @@ const Greenbar = () => {
             ? getWeatherData()
             : ""}
         </div>
+        {state.progress > 0 && window.location.pathname === "/" ? (
+          <div className="restartBtnWrapper">
+            <Button
+              onClick={() => {
+                if (state.selectedCrops.length > 0) {
+                  handleRestartBtn();
+                } else {
+                  handleConfirmationChoice(true);
+                }
+              }}
+            >
+              Restart
+            </Button>
+          </div>
+        ) : (
+          ""
+        )}
       </div>
       <div className="greenBarExpansionPanel" id="greenBarExpansionPanel">
         {/* <Button>Close</Button> */}
@@ -437,6 +484,30 @@ const Greenbar = () => {
         )}
         {/* <LightButton>CLOSE</LightButton> */}
       </div>
+
+      <Dialog disableBackdropClick disableEscapeKeyDown open={confirmationOpen}>
+        {/* <DialogTitle>Clear My Cover Crop List?</DialogTitle> */}
+        <DialogContent dividers>
+          <Typography variant="body1">
+            Would you also like to clear 'My Cover Crop List'?
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            autoFocus
+            onClick={() => handleConfirmationChoice(false)}
+            color="secondary"
+          >
+            No
+          </Button>
+          <Button
+            onClick={() => handleConfirmationChoice(true)}
+            color="secondary"
+          >
+            Yes
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };
