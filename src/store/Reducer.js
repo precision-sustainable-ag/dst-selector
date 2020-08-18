@@ -52,6 +52,59 @@ const Reducer = (state, action) => {
         addressVerified: action.data.addressVerified,
       };
     }
+    case "RESET": {
+      return {
+        ...state,
+        progress: 0,
+        address: "",
+        markers: action.data.markers,
+        addressVerified: false,
+        markersCopy: [],
+        zipCode: 0,
+        addressSearchPreference: "address",
+        selectedCrops: action.data.selectedCrops,
+        selectedGoals: [],
+        soilData: {
+          Map_Unit_Name: "",
+          Drainage_Class: [],
+          Flooding_Frequency: "",
+          Ponding_Frequency: "",
+        },
+        soilDataOriginal: {
+          Map_Unit_Name: "",
+          Drainage_Class: [],
+          Flooding_Frequency: "",
+          Ponding_Frequency: "",
+        },
+        weatherData: {
+          averageFrost: {
+            firstFrostDate: {
+              month: "October",
+              day: 21,
+            },
+            lastFrostDate: {
+              month: "April",
+              day: 20,
+            },
+          },
+          averagePrecipitation: {
+            thisMonth: 3.6, //inches
+            annual: 43, //inches
+          },
+          frostFreeDays: 173,
+        },
+        myCoverCropActivationFlag: false,
+        speciesSelectorActivationFlag: true,
+        cashCropData: {
+          name: "",
+          dateRange: {
+            startDate: "",
+            endDate: "",
+          },
+        },
+      };
+    }
+
     case "UPDATE_MARKER": {
       return {
         ...state,
