@@ -30,7 +30,7 @@ const loadRelevantRoute = (progress, calcHeight) => {
   // TODO: Handle case 3 as cropselector vs soil sample selector
   switch (progress) {
     case 0:
-      return <Landing height={calcHeight} bg="/images/cover-crop-field.webp" />;
+      return <Landing height={calcHeight} bg="/images/cover-crop-field.png" />;
     case 1:
       return <LocationComponent />;
     case 2:
