@@ -480,12 +480,29 @@ const CropTableComponent = (props) => {
     );
   };
 
+  const [maxTableHeight, setMaxTableHeight] = useState(850);
+
+  const [tbodyHeight, setTbodyHeight] = useState(0);
+  const [theadHeight, setTheadHeight] = useState(0);
+
+  useEffect(() => {
+    if (document.querySelector("thead.MuiTableHead-root.tableHeadWrapper")) {
+      const theadComputedHeight = document
+        .querySelector("thead.MuiTableHead-root.tableHeadWrapper")
+        .getBoundingClientRect().height;
+
+      setTbodyHeight(maxTableHeight - theadComputedHeight);
+      setTheadHeight(theadComputedHeight);
+    }
+    // console.log(tbodyHeight);
+  });
+
   return cropData.length !== 0 ? (
     <Fragment>
       <TableContainer
         className="table-responsive calendarViewTableWrapper"
         component="div"
-        style={{ maxHeight: 850 }}
+        style={{ maxHeight: maxTableHeight }}
       >
         <Table
           stickyHeader
@@ -497,9 +514,12 @@ const CropTableComponent = (props) => {
               <TableCell
                 style={{
                   backgroundColor: "white",
+                  color: "white",
                 }}
                 colSpan="2"
-              ></TableCell>
+              >
+                blank
+              </TableCell>
 
               {state.selectedGoals.length > 0 ? (
                 <TableCell
@@ -538,14 +558,15 @@ const CropTableComponent = (props) => {
                 <Typography variant="body2">
                   <Button
                     startIcon={<AddCircle />}
-                    onClick={() => {
-                      const ele = document.getElementById("legendWrapper");
-                      if (ele.classList.contains("d-none")) {
-                        ele.classList.remove("d-none");
-                      } else {
-                        ele.classList.add("d-none");
-                      }
-                    }}
+                    onClick={handleLegendModal}
+                    // onClick={() => {
+                    //   const ele = document.getElementById("legendWrapper");
+                    //   if (ele.classList.contains("d-none")) {
+                    //     ele.classList.remove("d-none");
+                    //   } else {
+                    //     ele.classList.add("d-none");
+                    //   }
+                    // }}
                   >
                     {" "}
                     LEGEND
@@ -624,8 +645,11 @@ const CropTableComponent = (props) => {
               <TableCell
                 style={{
                   backgroundColor: "white",
+                  color: "white",
                 }}
-              ></TableCell>
+              >
+                blank
+              </TableCell>
             </TableRow>
             <TableRow className="theadSecond">
               <TableCell style={{ width: "28%", backgroundColor: "#abd08f" }}>
@@ -636,7 +660,7 @@ const CropTableComponent = (props) => {
               <TableCell style={{ width: "18%", backgroundColor: "#abd08f" }}>
                 <Typography variant="body1">
                   {" "}
-                  <Button>AGRONOMICS</Button>
+                  <Button>Growth Traits</Button>
                 </Typography>
               </TableCell>
               {state.selectedGoals.length > 0
@@ -686,7 +710,62 @@ const CropTableComponent = (props) => {
                 <RenderActiveInactiveCropData />
               ) : ( */}
             {activeCropData.length > 0 || inactiveCropData.length > 0 ? (
-              <RenderActiveInactiveCropData />
+              <Fragment>
+                {activeCropData.length === 0 ? (
+                  <TableRow>
+                    <TableCell colSpan={42}>
+                      <div
+                        style={{
+                          width: "100%",
+                          height: tbodyHeight,
+                          position: "absolute",
+                          top: theadHeight,
+                          backgroundColor: "rgba(255,255,255, 0.1)",
+                          zIndex: 1,
+                          display: "flex",
+                          flexDirection: "column",
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}
+                      >
+                        <div
+                          style={{
+                            backgroundColor: "rgba(171, 208, 143, 1)",
+                            minHeight: "100px",
+                            zIndex: 2,
+                          }}
+                          className="px-5 py-3"
+                        >
+                          <Typography
+                            variant="body1"
+                            gutterBottom
+                            className="pb-2"
+                          >
+                            No cover crops match your selected Cover Crop
+                            Property filters.
+                          </Typography>
+                          <Typography
+                            variant="body1"
+                            gutterBottom
+                            className="pb-2"
+                          >
+                            Consider expanding your Cover Crop Property filter
+                            criteria.
+                          </Typography>
+                          <Typography variant="body1" gutterBottom className="">
+                            Alternatively, clear all Cover Crop Property
+                            filters.
+                          </Typography>
+                        </div>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ) : (
+                  ""
+                )}
+
+                <RenderActiveInactiveCropData />
+              </Fragment>
             ) : (
               // <RenderDefaultCropData />
               <TableRow>
