@@ -132,7 +132,8 @@ const LocationComponent = () => {
               <div className="col-12">
                 <Typography variant="body1" align="left">
                   Enter your USDA plant hardiness zone, address, or zipcode and
-                  hit <Search /> to determine your location. Then click
+                  hit <Search fontSize="inherit" /> to determine your location.
+                  Then click
                   <img
                     height="20"
                     width="20"
@@ -240,9 +241,9 @@ const LocationComponent = () => {
                     </MenuItem>
                   </Select>
                 </FormControl>
-                <div className="col-md-12 row">
+                {/* <div className="col-md-12 row">
                   <LiveLocation />
-                </div>
+                </div> */}
               </div>
               <div className="col-md-6 col-sm-12 row">
                 <AutoComplete />
