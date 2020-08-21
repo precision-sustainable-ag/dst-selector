@@ -69,7 +69,7 @@ const Roots = forwardRef((props, ref) => {
             color={
               props.sidebarFilterOptions[subFilter.name].includes(val)
                 ? "primary"
-                : "default"
+                : "secondary"
             }
           />
         </Grid>

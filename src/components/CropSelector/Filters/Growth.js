@@ -66,7 +66,7 @@ const Growth = forwardRef((props, ref) => {
           color={
             props.sidebarFilterOptions[props.subFilter.name].includes(val)
               ? "primary"
-              : "default"
+              : "secondary"
           }
         />
       </Grid>

@@ -340,10 +340,47 @@ thead.tableHeadWrapper {
   }
 }
 
+table.calendarViewTable {
+  thead.tableHeadWrapper {
+    & > tr.calFirstHeadRow {
+      th {
+        &.growthMonthSeparator.activeGrowthMonth {
+          &::after {
+            border-right: 5px solid white;
+            border-bottom: 5px solid white;
+            background-color: $darkGreen;
+            // border-right: 1px solid black;
+          }
+          &:nth-last-child(2) {
+            &::after {
+              border-right: 0px;
+            }
+          }
+        }
+        &::after {
+          position: absolute;
+          top: 0;
+          left: 0;
+          content: "";
+          height: 100%;
+          background-size: cover;
+          background-repeat: no-repeat;
+          width: 100%;
+
+          // opacity: 0.8;
+          z-index: -99;
+        }
+      }
+    }
+  }
+}
+
 th.calendarSecondHeadMonth.activeGrowthMonth {
   &.growthMonthSeparator {
+    // border-top: 5px solid white;
     &::after {
-      border-right: 1px solid black;
+      border-right: 5px solid white;
+      // border-right: 1px solid black;
     }
   }
   &::after {
