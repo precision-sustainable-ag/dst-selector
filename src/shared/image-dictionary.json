@@ -265,19 +265,19 @@
   },
   "Barley, Spring": {
     "Cover Crop": "Barley, Spring",
-    "Key Thumbnail": "Barley_flowering_Brouillette_2020.jpg",
+    "Key Thumbnail": "Barley_flowering_Brouillette_2020_thumb.jpg",
     "Notes": null,
     "Directory": "Barley, Spring"
   },
   "Alfalfa": {
     "Cover Crop": "Alfalfa",
-    "Key Thumbnail": "Alfalfa_mature_Ziegler_2020.jpg",
+    "Key Thumbnail": "Alfalfa_mature_Ziegler_2020_thumb.jpg",
     "Notes": null,
     "Directory": "Alfalfa"
   },
   "Alfalfa, Dormant": {
     "Cover Crop": "Alfalfa",
-    "Key Thumbnail": "Alfalfa_mature_Ziegler_2020.jpg",
+    "Key Thumbnail": "Alfalfa_mature_Ziegler_2020_thumb.jpg",
     "Notes": null,
     "Directory": "Alfalfa"
   }

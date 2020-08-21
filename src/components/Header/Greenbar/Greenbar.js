@@ -20,7 +20,7 @@ import moment from "moment";
 import LocationComponent from "../../Location/Location";
 import WeatherConditions from "../../Location/WeatherConditions";
 import SoilCondition from "../../Location/SoilCondition";
-import { LocationOn } from "@material-ui/icons";
+import { LocationOn, Refresh } from "@material-ui/icons";
 import "../../../styles/greenBar.scss";
 
 const expansionPanelBaseStyle = {
@@ -48,13 +48,12 @@ const Greenbar = () => {
       // click anywhere outside the body of a div should close it
       // alternatively we can have a close button somewhere in the expanded green bar
     }
-
+    const greenBarParent = document.getElementById("greenBarParent");
+    const greenbarExpansionElement = document.getElementById(
+      "greenBarExpansionPanel"
+    );
     document.addEventListener("click", (evt) => {
-      const greenbarExpansionElement = document.getElementById(
-        "greenBarExpansionPanel"
-      );
       // const muiPopover = document.getElementsByClassName("MuiPopover-root")[0];
-      const greenBarParent = document.getElementById("greenBarParent");
 
       let targetElement = evt.target;
       // console.log(
@@ -78,10 +77,13 @@ const Greenbar = () => {
         // }
         // console.log(targetElement);
       } while (targetElement);
-
+      // console.log(greenbarExpansionElement.getBoundingClientRect().height);
+      // if (greenbarExpansionElement.getBoundingClientRect().height) {
+      //   closeExpansionPanel();
+      // }
       // This is a click outside.
-      console.log("Clicked outside!");
-      closeExpansionPanel();
+      // console.log("Clicked outside!", targetElement);
+      // closeExpansionPanel();
       // close the expansion panel
       // slideToggle.slideToggle(greenbarExpansionElement, 300);
       // can we have a close button somewhere ?
@@ -91,19 +93,16 @@ const Greenbar = () => {
       //   component: ""
       // });
     });
+
+    return () => {
+      closeExpansionPanel();
+    };
   }, []);
 
   const getAddress = () => {
     if (state.address === "") {
       return "";
     } else {
-      let address = state.address.split(",");
-      // address = address.split(" ");
-      //console.log("address: " + address[1]);
-      address = `${address[0]}${address[1]}`;
-
-      address = address.substr(0, 20);
-
       return (
         <Button
           className="greenbarBtn"
@@ -126,7 +125,7 @@ const Greenbar = () => {
             }
           >
             <LocationOn />
-            &nbsp;Zone {state.zone}: {address}
+            &nbsp;Zone {state.zone}: {state.address}
           </span>
         </Button>
       );
@@ -172,7 +171,7 @@ const Greenbar = () => {
       "greenBarExpansionPanel"
     );
     greenbarExpansionElement.style.transform = "translate(0px,0px)";
-    greenbarExpansionElement.style.height = "0px";
+    greenbarExpansionElement.style.minHeight = "0px";
     setExpansionPanelComponent({
       component: "",
     });
@@ -186,7 +185,7 @@ const Greenbar = () => {
     );
     if (
       expansionPanelComponent.component === "location" &&
-      greenbarExpansionElement.style.height ===
+      greenbarExpansionElement.style.minHeight ===
         greenBarExpansionPanelHeight.large
     ) {
       // toggle
@@ -194,7 +193,7 @@ const Greenbar = () => {
       closeExpansionPanel();
     } else {
       greenbarExpansionElement.style.transform = "translate(0px,0px)";
-      greenbarExpansionElement.style.height =
+      greenbarExpansionElement.style.minHeight =
         greenBarExpansionPanelHeight.large;
       setExpansionPanelComponent({
         component: "location",
@@ -210,7 +209,7 @@ const Greenbar = () => {
     );
     if (
       expansionPanelComponent.component === "soil" &&
-      greenbarExpansionElement.style.height ===
+      greenbarExpansionElement.style.minHeight ===
         greenBarExpansionPanelHeight.large
     ) {
       // toggle
@@ -218,7 +217,7 @@ const Greenbar = () => {
       closeExpansionPanel();
     } else {
       greenbarExpansionElement.style.transform = "translate(0px,0px)";
-      greenbarExpansionElement.style.height =
+      greenbarExpansionElement.style.minHeight =
         greenBarExpansionPanelHeight.large;
       setExpansionPanelComponent({
         component: "soil",
@@ -233,7 +232,7 @@ const Greenbar = () => {
 
     if (
       expansionPanelComponent.component === "weather" &&
-      greenbarExpansionElement.style.height ===
+      greenbarExpansionElement.style.minHeight ===
         greenBarExpansionPanelHeight.large
     ) {
       // toggle
@@ -241,7 +240,7 @@ const Greenbar = () => {
       closeExpansionPanel();
     } else {
       greenbarExpansionElement.style.transform = "translate(0px,0px)";
-      greenbarExpansionElement.style.height =
+      greenbarExpansionElement.style.minHeight =
         greenBarExpansionPanelHeight.large;
       setExpansionPanelComponent({
         component: "weather",
@@ -441,6 +440,7 @@ const Greenbar = () => {
         {state.progress > 0 && window.location.pathname === "/" ? (
           <div className="restartBtnWrapper">
             <Button
+              className="greenbarBtn"
               onClick={() => {
                 closeExpansionPanel();
                 if (state.selectedCrops.length > 0) {
@@ -450,7 +450,8 @@ const Greenbar = () => {
                 }
               }}
             >
-              Restart
+              <Refresh />
+              &nbsp; Restart
             </Button>
           </div>
         ) : (
@@ -458,8 +459,9 @@ const Greenbar = () => {
         )}
       </div>
       <div
-        className="greenBarExpansionPanel container-fluid"
+        className="greenBarExpansionPanel container-fluid pl-0 pr-0"
         id="greenBarExpansionPanel"
+        style={{}}
       >
         <div className="row justify-content-center">
           <div
@@ -487,6 +489,33 @@ const Greenbar = () => {
               ""
             )}
           </div>
+        </div>
+        <div
+          className="d-flex justify-content-center"
+          style={
+            expansionPanelComponent.component === ""
+              ? { height: "0px" }
+              : { height: "50px" }
+          }
+        >
+          {expansionPanelComponent.component !== "" ? (
+            <div
+              className="pt-2 pb-2"
+              style={{
+                position: "absolute",
+                bottom: "-30px",
+                textAlign: "center",
+                width: "100%",
+                background: "linear-gradient(to top, #506147, #598344)",
+              }}
+            >
+              <Button variant="contained" onClick={closeExpansionPanel}>
+                Close
+              </Button>
+            </div>
+          ) : (
+            ""
+          )}
         </div>
       </div>
 
@@ -518,3 +547,7 @@ const Greenbar = () => {
 };
 
 export default Greenbar;
+
+function timeout(delay = 0) {
+  return new Promise((res) => setTimeout(res, delay));
+}

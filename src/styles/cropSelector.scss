@@ -1,18 +1,6 @@
 @import "../../node_modules/sass-mediaqueries/media-queries";
 @import "../styles/constants.scss";
 
-ol.goalsListFilter {
-  li {
-    counter-increment: step-counter;
-    margin-bottom: 10px;
-    font-size: 9pt;
-    font-weight: 700;
-    color: #48a8ab;
-    cursor: -webkit-grab;
-    cursor: grab;
-  }
-}
-
 .sidebarTitle {
   background-color: #abd08f;
   padding: 1em;

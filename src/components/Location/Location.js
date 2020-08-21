@@ -110,15 +110,8 @@ const LocationComponent = () => {
   };
 
   return (
-    <div
-      className="container-fluid pt-2"
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <div className="row boxContainerRow" style={{ minHeight: "480px" }}>
+    <div className="container-fluid mt-5">
+      <div className="row boxContainerRow" style={{ minHeight: "520px" }}>
         <div className="col-xl-6 col-lg-12">
           <div className="container-fluid">
             <div className="row">

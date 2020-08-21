@@ -31,6 +31,8 @@ const cropDataFormatter = (cropData = [{}]) => {
 
     val = monthStringBuilder(val);
 
+    val.fields["inBasket"] = false;
+
     val.fields["Image Data"] = img[val.fields["Cover Crop Name"]]
       ? img[val.fields["Cover Crop Name"]]
       : {
@@ -160,9 +162,9 @@ const z5CropData = cropDataFormatter(z5AllCrops);
 // const StoreContext = createContext();
 
 const initialState = {
-  progress: 3,
-  // progress: 0,
-  // progress: 5,
+  // progress: 1,
+  // progress: 4,
+  progress: 5,
   address: "",
   addressSearchPreference: "address",
   zip: 0,
@@ -183,12 +185,12 @@ const initialState = {
   allGoals: [],
   cropData: z7CropData,
   selectedCrops: [],
-  selectedGoals: [],
-  // selectedGoals: [
-  //   "Improve Soil Organic Matter",
-  //   "Increase Soil Aggregation",
-  //   "Lasting Residue",
-  // ],
+  // selectedGoals: [],
+  selectedGoals: [
+    "Improve Soil Organic Matter",
+    "Increase Soil Aggregation",
+    "Lasting Residue",
+  ],
   zoom: 13,
   addressVerified: false,
   snackOpen: false,

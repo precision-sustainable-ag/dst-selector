@@ -120,7 +120,7 @@ const SoilConditions = (props) => {
             arrow
             placement="right"
             title={
-              <div className="tooltipTextContainer text-left">
+              <div className="filterTooltip">
                 <p
                   dangerouslySetInnerHTML={{
                     __html:

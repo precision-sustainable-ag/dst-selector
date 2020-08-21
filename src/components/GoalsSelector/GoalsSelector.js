@@ -73,17 +73,10 @@ const GoalsSelector = () => {
   };
 
   return (
-    <div
-      className="container-fluid mt-5"
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
+    <div className="container-fluid mt-5">
       <div
         className="row boxContainerRow goalsContainer"
-        style={{ height: "480px" }}
+        style={{ height: "520px" }}
       >
         <div className="col-12 goalsBoxContainer">
           <Typography variant="h4" gutterBottom>
