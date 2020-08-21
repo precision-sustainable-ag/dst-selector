@@ -48,7 +48,7 @@ const CoverCropType = forwardRef((props, ref) => {
             color={
               props.sidebarFilterOptions["Cover Crop Group"].includes(val.name)
                 ? "primary"
-                : "default"
+                : "secondary"
             }
           />
         </Grid>

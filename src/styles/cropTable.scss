@@ -35,7 +35,7 @@
 }
 
 .activeCartBtn {
-  background-color: #2b7b79 !important;
+  background-color: $progressColor !important;
   color: white !important;
 }
 
@@ -51,7 +51,7 @@
   text-indent: -9999px;
   text-align: left;
   // box-shadow: inset 0px 0px 0 3px white;
-  box-shadow: inset 0px 0px 0 1px #e3f2f4;
+  // box-shadow: inset 0px 0px 0 1px #e3f2f4;
   width: 100px;
   height: 20px;
   border-radius: 10px;
@@ -85,6 +85,61 @@
     border-radius: 15px;
     // th {
     // }
+  }
+}
+
+table#primaryCropTable {
+  tbody.tableBodyWrapper {
+    tr.MuiTableRow-root {
+      // box-shadow: 0 0 5px #598344;
+      td {
+        // margin-top: 1em;
+        // border: 2px solid black;
+        border-top: 2px solid #598344;
+        border-bottom: 2px solid #598344;
+        display: table-cell;
+        vertical-align: middle;
+        &.goalCells {
+          > div {
+            position: relative;
+            top: -17px;
+          }
+        }
+
+        table tbody {
+          tr td {
+            border: 0px !important;
+            padding-top: 0px !important;
+          }
+        }
+
+        &:first-child {
+          // border-top: 0px;
+          border-left: 2px solid #598344;
+          display: flex;
+          vertical-align: auto;
+          // border-right: 0px !important;
+        }
+        &:nth-child(2) {
+          vertical-align: top;
+        }
+
+        &:last-child {
+          border-right: 2px solid #598344;
+          // remove line below to vertically align!
+          vertical-align: top;
+        }
+        &:nth-last-child(2) {
+        }
+      }
+      &:first-child td {
+        border-top: 0px;
+        border-bottom: 0px;
+      }
+      &:nth-child(2n + 1) td {
+        border: 0px;
+      }
+    }
   }
 }
 

@@ -503,10 +503,10 @@ const SoilCondition = (props) => {
       </div>
 
       {[
-        "Well drained",
-        "Somewhat excessively drained",
-        "Excessively drained",
-      ].every((e) => soilData.Drainage_Class.includes(e)) ? (
+        "Very poorly drained",
+        "Poorly drained",
+        "Somewhat poorly drained",
+      ].some((e) => soilData.Drainage_Class.includes(e)) ? (
         <div className="col-12 pt-2 mt-2 row">
           <div className="col-12">
             <Typography variant="body1" className="soilConditionSubHeader">
@@ -528,6 +528,154 @@ const SoilCondition = (props) => {
               <Switch
                 checked={tilingCheck}
                 onChange={(e) => {
+                  let soilDrainCopy = soilData.Drainage_Class;
+
+                  let drainSet = new Set(soilDrainCopy);
+                  // console.log(e.target.checked);
+                  if (e.target.checked) {
+                    // if(drainSet.has('Very poorly drained')) {
+                    //   drainSet.delete('Very poorly drained');
+                    //   drainSet.add('Poorly drained');
+                    // }
+                    // if(drainSet.has(''))
+                    if (
+                      drainSet.has("Very poorly drained") &&
+                      drainSet.has("Poorly drained") &&
+                      drainSet.has("Somewhat poorly drained")
+                    ) {
+                      drainSet.delete("Very poorly drained");
+                      drainSet.add("Moderately well drained");
+                    } else {
+                      if (
+                        drainSet.has("Very poorly drained") &&
+                        drainSet.has("Poorly drained")
+                      ) {
+                        drainSet.delete("Very poorly drained");
+                        drainSet.add("Somewhat poorly drained");
+                      } else if (
+                        drainSet.has("Poorly drained") &&
+                        drainSet.has("Somewhat poorly drained")
+                      ) {
+                        drainSet.delete("Poorly drained");
+                        drainSet.add("Moderately well drained");
+                      } else if (
+                        drainSet.has("Very poorly drained") &&
+                        drainSet.has("Somewhat poorly drained")
+                      ) {
+                        drainSet.delete("Very poorly drained");
+                        drainSet.delete("Somewhat poorly drained");
+                        drainSet.add("Poorly drained");
+                        drainSet.add("Moderately well drained");
+                      } else if (drainSet.has("Very poorly drained")) {
+                        drainSet.delete("Very poorly drained");
+                        drainSet.add("Poorly drained");
+                      } else if (drainSet.has("Poorly drained")) {
+                        drainSet.delete("Poorly drained");
+                        drainSet.add("Somewhat poorly drained");
+                      } else if (drainSet.has("Somewhat poorly drained")) {
+                        drainSet.delete("Somewhat poorly drained");
+                        drainSet.add("Moderately well drained");
+                      } else {
+                        drainSet.delete("Very poorly drained");
+                        drainSet.delete("Poorly drained");
+                        drainSet.delete("Somewhat poorly drained");
+                        drainSet.add("Moderately well drained");
+                      }
+                    }
+                    // console.log(drainSet);
+                    dispatch({
+                      type: "UPDATE_DRAINAGE_CLASS",
+                      data: [...drainSet],
+                    });
+                  } else {
+                    dispatch({
+                      type: "UPDATE_DRAINAGE_CLASS",
+                      data: soilDataOriginal.Drainage_Class,
+                    });
+                  }
+                  // if (e.target.checked) {
+                  //   if (soilDrainCopy.indexOf("Very poorly drained") === -1) {
+                  //     // does not exist
+                  //   } else {
+                  //     // remove this and select next item
+                  //     soilDrainCopy.splice(
+                  //       soilDrainCopy.indexOf("Very poorly drained"),
+                  //       1
+                  //     );
+                  //     dispatch({
+                  //       type: "UPDATE_DRAINAGE_CLASS",
+                  //       data: soilDrainCopy,
+                  //     });
+                  //     if (soilDrainCopy.indexOf("Poorly drained") === -1) {
+                  //       // select this
+                  //       soilDrainCopy.push("Poorly drained");
+                  //     } else {
+                  //       // do nothing
+                  //     }
+                  //     dispatch({
+                  //       type: "UPDATE_DRAINAGE_CLASS",
+                  //       data: soilDrainCopy,
+                  //     });
+                  //   }
+                  //   if (soilDrainCopy.indexOf("Poorly drained") === -1) {
+                  //     // does not exist
+                  //   } else {
+                  //     // remove this and select next item
+                  //     soilDrainCopy.splice(
+                  //       soilDrainCopy.indexOf("Poorly drained"),
+                  //       1
+                  //     );
+                  //     dispatch({
+                  //       type: "UPDATE_DRAINAGE_CLASS",
+                  //       data: soilDrainCopy,
+                  //     });
+                  //     if (
+                  //       soilDrainCopy.indexOf("Somewhat poorly drained") === -1
+                  //     ) {
+                  //       // select this
+                  //       soilDrainCopy.push("Somewhat poorly drained");
+                  //     } else {
+                  //       // do nothing
+                  //     }
+                  //     dispatch({
+                  //       type: "UPDATE_DRAINAGE_CLASS",
+                  //       data: soilDrainCopy,
+                  //     });
+                  //   }
+
+                  //   if (
+                  //     soilDrainCopy.indexOf("Somewhat poorly drained") === -1
+                  //   ) {
+                  //     // does not exist
+                  //   } else {
+                  //     // remove this and select next item
+                  //     soilDrainCopy.splice(
+                  //       soilDrainCopy.indexOf("Somewhat poorly drained"),
+                  //       1
+                  //     );
+                  //     dispatch({
+                  //       type: "UPDATE_DRAINAGE_CLASS",
+                  //       data: soilDrainCopy,
+                  //     });
+                  //     if (
+                  //       soilDrainCopy.indexOf("Moderately well drained") === -1
+                  //     ) {
+                  //       // select this
+                  //       soilDrainCopy.push("Moderately well drained");
+                  //     } else {
+                  //       // do nothing
+                  //     }
+                  //     dispatch({
+                  //       type: "UPDATE_DRAINAGE_CLASS",
+                  //       data: soilDrainCopy,
+                  //     });
+                  //   }
+                  // } else {
+                  //   dispatch({
+                  //     type: "UPDATE_DRAINAGE_CLASS",
+                  //     data: soilDataOriginal.Drainage_Class,
+                  //   });
+                  // }
                   setTilingCheck(e.target.checked);
                 }}
                 name="checkedC"

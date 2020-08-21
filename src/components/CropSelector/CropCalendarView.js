@@ -28,19 +28,24 @@ import {
 import "../../styles/cropCalendarViewComponent.scss";
 import GrowthWindowComponent from "./GrowthWindow";
 // import { AddCircle, FiberManualRecord, CloseRounded } from "@material-ui/icons";
-// import CropLegendModal from "./CropLegendModal";
+import CropLegendModal from "./CropLegendModal";
 import { AirtableBearerKey } from "../../shared/keys";
+import { AddCircle } from "@material-ui/icons";
+import CropDetailsModalComponent from "./CropDetailsModal";
 // import RenderCashCropOverlay from "./RenderCashCropOverlay";
 
 const CropCalendarViewComponent = (props) => {
   const { cropData } = props;
-
   const [state, dispatch] = useContext(Context);
-
+  const [legendModal, setLegendModal] = useState(false);
   const [selectedCropsIds, setSelectedCropsIds] = useState([]);
   const selectedBtns = state.selectedCrops.map((crop) => {
     return crop.btnId;
   });
+
+  const handleLegendModal = () => {
+    setLegendModal(!legendModal);
+  };
 
   // DONE: Check year logic ? currently Juliet wants to return current year if month is before november
   // ref. useeffect();
@@ -242,6 +247,8 @@ const CropCalendarViewComponent = (props) => {
       return false;
     }
   };
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalData, setModalData] = useState([{}]);
   return (
     <Fragment>
       {/* <div className="table-responsive calendarViewTableWrapper"> */}
@@ -262,7 +269,7 @@ const CropCalendarViewComponent = (props) => {
             style={{}}
           >
             <TableHead className="tableHeadWrapper">
-              <TableRow>
+              <TableRow className="calFirstHeadRow">
                 <TableCell
                   colSpan={state.activeGrowthPeriod.length === 0 ? 2 : 1}
                   style={{ backgroundColor: "white" }}
@@ -274,9 +281,27 @@ const CropCalendarViewComponent = (props) => {
                       borderBottom: "5px solid white",
                     }}
                   >
-                    <Typography variant="body1">
-                      {currentYear} COVER CROP GROWTH WINDOW
-                    </Typography>
+                    <div className="container-fluid">
+                      <div className="row">
+                        <div className="col-6">
+                          <Typography variant="body1">
+                            <Button>
+                              {currentYear} COVER CROP GROWTH WINDOW
+                            </Button>
+                          </Typography>
+                        </div>
+                        <div className="col-6">
+                          <Typography variant="body1">
+                            <Button
+                              startIcon={<AddCircle />}
+                              onClick={handleLegendModal}
+                            >
+                              Legend
+                            </Button>
+                          </Typography>
+                        </div>
+                      </div>
+                    </div>
                   </TableCell>
                 ) : (
                   <Fragment>
@@ -284,19 +309,20 @@ const CropCalendarViewComponent = (props) => {
                       colSpan="1"
                       style={{
                         borderBottom: "5px solid white",
+                        borderRight: "5px solid white",
                       }}
                     >
-                      <Typography variant="body1">
+                      <Typography variant="body1" style={{ fontSize: "1.1em" }}>
                         ACTIVE GROWTH PERIOD
                       </Typography>
                     </TableCell>
 
                     {state.activeGrowthPeriod.includes("Jan") ? (
                       <TableCell
+                        className="activeGrowthMonth growthMonthSeparator"
                         style={{
-                          borderBottom: "5px solid " + CustomStyles().darkGreen,
+                          // borderBottom: "5px solid " + CustomStyles().darkGreen,
                           backgroundColor: CustomStyles().darkGreen,
-                          borderRight: "1px solid black",
                         }}
                         colSpan="2"
                       >
@@ -311,10 +337,10 @@ const CropCalendarViewComponent = (props) => {
 
                     {state.activeGrowthPeriod.includes("Mar") ? (
                       <TableCell
+                        className="activeGrowthMonth growthMonthSeparator"
                         style={{
-                          borderBottom: "5px solid " + CustomStyles().darkGreen,
+                          // borderBottom: "5px solid " + CustomStyles().darkGreen,
                           backgroundColor: CustomStyles().darkGreen,
-                          borderRight: "1px solid black",
                         }}
                         colSpan="3"
                       >
@@ -329,10 +355,10 @@ const CropCalendarViewComponent = (props) => {
 
                     {state.activeGrowthPeriod.includes("Jun") ? (
                       <TableCell
+                        className="activeGrowthMonth growthMonthSeparator"
                         style={{
-                          borderBottom: "5px solid " + CustomStyles().darkGreen,
+                          // borderBottom: "5px solid " + CustomStyles().darkGreen,
                           backgroundColor: CustomStyles().darkGreen,
-                          borderRight: "1px solid black",
                         }}
                         colSpan="3"
                       >
@@ -347,10 +373,10 @@ const CropCalendarViewComponent = (props) => {
 
                     {state.activeGrowthPeriod.includes("Sep") ? (
                       <TableCell
+                        className="activeGrowthMonth growthMonthSeparator"
                         style={{
-                          borderBottom: "5px solid " + CustomStyles().darkGreen,
+                          // borderBottom: "5px solid " + CustomStyles().darkGreen,
                           backgroundColor: CustomStyles().darkGreen,
-                          borderRight: "1px solid black",
                         }}
                         colSpan="3"
                       >
@@ -364,10 +390,10 @@ const CropCalendarViewComponent = (props) => {
                     )}
                     {state.activeGrowthPeriod.includes("Dec") ? (
                       <TableCell
+                        className="activeGrowthMonth growthMonthSeparator"
                         style={{
-                          borderBottom: "5px solid " + CustomStyles().darkGreen,
+                          // borderBottom: "5px solid " + CustomStyles().darkGreen,
                           backgroundColor: CustomStyles().darkGreen,
-                          borderRight: "1px solid black",
                         }}
                         colSpan="1"
                       ></TableCell>
@@ -379,12 +405,31 @@ const CropCalendarViewComponent = (props) => {
                     )}
                   </Fragment>
                 )}
-
-                <TableCell style={{ backgroundColor: "white" }}></TableCell>
+                {state.activeGrowthPeriod.length > 0 ? (
+                  <TableCell
+                    style={{
+                      borderLeft: "5px solid white",
+                      borderBottom: "5px solid white",
+                    }}
+                  >
+                    <div className="col-12">
+                      <Typography variant="body1">
+                        <Button
+                          startIcon={<AddCircle />}
+                          onClick={handleLegendModal}
+                        >
+                          Legend
+                        </Button>
+                      </Typography>
+                    </div>
+                  </TableCell>
+                ) : (
+                  <TableCell style={{ backgroundColor: "white" }}></TableCell>
+                )}
               </TableRow>
-              <TableRow>
+              <TableRow className="calSecondHeadRow">
                 <TableCell
-                  style={{ width: "16%", borderRight: "5px solid white" }}
+                  style={{ width: "17%", borderRight: "5px solid white" }}
                 >
                   <Typography variant="body1">COVER CROPS</Typography>
                 </TableCell>
@@ -447,18 +492,37 @@ const CropCalendarViewComponent = (props) => {
                           >
                             <div className="tdContainer d-flex justify-content-between flex-wrap">
                               {crop.fields["Image Data"] ? (
-                                <CropImage
-                                  view={"calendar"}
-                                  present={true}
-                                  src={
-                                    crop.fields["Image Data"]["Key Thumbnail"]
-                                      ? `/images/Cover Crop Photos/${crop.fields["Image Data"]["Directory"]}/${crop.fields["Image Data"]["Key Thumbnail"]}`
-                                      : "https://placehold.it/100x100"
-                                  }
-                                  alt={crop.fields["Cover Crop Name"]}
-                                />
+                                <Button
+                                  size="small"
+                                  onClick={() => {
+                                    setModalData(crop);
+                                    setModalOpen(!modalOpen);
+                                  }}
+                                >
+                                  <CropImage
+                                    view={"calendar"}
+                                    present={true}
+                                    src={
+                                      crop.fields["Image Data"]["Key Thumbnail"]
+                                        ? `/images/Cover Crop Photos/${crop.fields["Image Data"]["Directory"]}/${crop.fields["Image Data"]["Key Thumbnail"]}`
+                                        : "https://placehold.it/100x100"
+                                    }
+                                    alt={crop.fields["Cover Crop Name"]}
+                                  />
+                                </Button>
                               ) : (
-                                <CropImage view={"calendar"} present={false} />
+                                <Button
+                                  size="small"
+                                  onClick={() => {
+                                    setModalData(crop);
+                                    setModalOpen(!modalOpen);
+                                  }}
+                                >
+                                  <CropImage
+                                    view={"calendar"}
+                                    present={false}
+                                  />
+                                </Button>
                               )}
 
                               <Button
@@ -466,6 +530,10 @@ const CropCalendarViewComponent = (props) => {
                                 style={{
                                   borderRadius: "0px",
                                   paddingTop: "0px",
+                                }}
+                                onClick={() => {
+                                  setModalData(crop);
+                                  setModalOpen(!modalOpen);
                                 }}
                               >
                                 {crop.fields["Cover Crop Name"]}
@@ -535,6 +603,16 @@ const CropCalendarViewComponent = (props) => {
         </TableContainer>
         // </div>
       )}
+      <CropLegendModal
+        legendModal={legendModal}
+        handleLegendModal={handleLegendModal}
+        disableBackdropClick={false}
+      />
+      <CropDetailsModalComponent
+        modalOpen={modalOpen}
+        setModalOpen={setModalOpen}
+        crop={modalData}
+      />
     </Fragment>
   );
 };

@@ -55,13 +55,13 @@ const theme = createMuiTheme({
     MuiChip: {
       colorSecondary: {
         backgroundColor: CustomStyles().greenishWhite,
-        color: "rgba(0,0,0,0.5)",
-        fontWeight: 500,
+        color: "rgba(0,0,0,0.9)",
+        fontWeight: "normal",
       },
       colorPrimary: {
         backgroundColor: CustomStyles().darkGreen,
         color: "rgba(0,0,0,1)",
-        fontWeight: 500,
+        fontWeight: "normal",
       },
     },
   },
