@@ -219,12 +219,15 @@ header {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+
+    justify-content: space-between;
     // padding-left: 16px;
     // padding-right: 16px;
     // padding-top: 13px;
     // padding-bottom: 17px;
 
     // justify-content: space-evenly;
+
     div {
       min-width: 200px;
       color: white;
@@ -233,6 +236,7 @@ header {
       align-items: center;
 
       button {
+        width: 100%;
         span:first-child {
           color: white;
         }
@@ -283,18 +287,6 @@ header {
       display: none !important;
       visibility: hidden;
     }
-  }
-}
-
-.greenBarParent {
-  .greenBarExpansionPanel {
-    height: 0px;
-    background-color: $darkGreen;
-    width: 100%;
-    z-index: 1001;
-    position: absolute;
-    transition: height 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    // animation: min-height 3s linear;
   }
 }
 
@@ -468,6 +460,7 @@ Responsive Styles
       /* max-height: 30px !important; */
       display: flex;
       flex-direction: column;
+      width: 100%;
       flex-wrap: wrap;
       max-height: 500px;
       height: auto;

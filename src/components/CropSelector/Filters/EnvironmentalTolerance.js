@@ -55,7 +55,7 @@ const EnvironmentalTolerance = forwardRef((props, ref) => {
                 arrow
                 placement="right"
                 title={
-                  <div className="tooltipTextContainer text-center">
+                  <div className="filterTooltip">
                     <p
                       dangerouslySetInnerHTML={{ __html: val.description }}
                     ></p>

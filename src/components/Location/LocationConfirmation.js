@@ -23,19 +23,12 @@ const LocationConfirmation = () => {
     >
       <div
         className="row boxContainerRow"
-        style={{ textAlign: "left", minHeight: "480px" }}
+        style={{ textAlign: "left", minHeight: "520px" }}
       >
         <div className="col-xl-6 col-lg-12">
           <div className="container-fluid">
             <div className="row">
               <div className="col-lg-6">
-                {/* <MapComponent
-                  width="100%"
-                  height="100%"
-                  minzoom={4}
-                  maxzoom={20}
-                  
-                /> */}
                 <MapContext
                   width="100%"
                   height="200px"

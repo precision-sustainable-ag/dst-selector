@@ -309,18 +309,23 @@ const CropSelector = () => {
         const { selectedGoals } = state;
         if (selectedGoals.length > 0) {
           // let updatedCropData = _.orderBy(state.cropData, selectedGoals);
-
-          let updatedCropData = state.cropData.sort((crops1, crops2) => {
-            let result = 0;
-            for (let i = 0; i < selectedGoals.length; i++) {
-              result =
-                crops2.fields[selectedGoals[i]] -
-                crops1.fields[selectedGoals[i]];
-            }
-            return result;
-          });
-
-          setCropData(updatedCropData);
+          let activeCropDataShadow = state.cropData;
+          selectedGoals
+            .slice()
+            .reverse()
+            .forEach((goal) => {
+              activeCropDataShadow.sort((a, b) => {
+                if (a.fields[goal] && b.fields[goal]) {
+                  if (a.fields[goal] > b.fields[goal]) {
+                    return -1;
+                  } else {
+                    return 1;
+                  }
+                }
+                return 0;
+              });
+            });
+          setCropData(activeCropDataShadow);
         } else {
           setCropData(state.cropData);
         }
@@ -394,79 +399,11 @@ const CropSelector = () => {
   };
   return (
     <div className="container-fluid mt-2">
-      <div className="row mt-3">
-        <div className="col-xl-2 col-sm-12 col-lg-3">
-          {state.myCoverCropActivationFlag ? (
-            <Fragment>
-              <div className="iconToggle">
-                <Button
-                  variant="contained"
-                  onClick={toggleComparisonView}
-                  size="large"
-                  color="secondary"
-                  startIcon={
-                    comparisonView ? (
-                      <Compare style={{ fontSize: "larger" }} />
-                    ) : (
-                      <ListIcon style={{ fontSize: "larger" }} />
-                    )
-                  }
-                >
-                  {comparisonView ? "COMPARISON VIEW" : "LIST VIEW"}
-                </Button>
-              </div>
-            </Fragment>
-          ) : (
-            <Fragment>
-              <div className="iconToggle">
-                <Button
-                  variant="contained"
-                  onClick={toggleListView}
-                  size="large"
-                  color="secondary"
-                  startIcon={
-                    isListView ? (
-                      <CalendarToday style={{ fontSize: "larger" }} />
-                    ) : (
-                      <ListIcon style={{ fontSize: "larger" }} />
-                    )
-                  }
-                >
-                  {isListView ? "CALENDAR VIEW" : "LIST VIEW"}
-                </Button>
-              </div>
-            </Fragment>
-          )}
-        </div>
-        <div className="col-xl-10 col-lg-9">
-          {state.speciesSelectorActivationFlag ? (
-            isListView ? (
-              <Fragment>
-                <div className="col-4">
-                  <TextField
-                    fullWidth
-                    color="secondary"
-                    label="Search Cover Crop Name"
-                    value={coverCropName}
-                    onInput={covercropsNamesFilter}
-                  />
-                </div>
-                <div className="col-8"></div>
-              </Fragment>
-            ) : (
-              ""
-            )
-          ) : (
-            ""
-          )}
-        </div>
-      </div>
       <div className="row cropSelectorRow mt-3">
         <div className="col-xl-2 col-sm-12 col-lg-3">
           <CropSidebarComponent
             sortEnvTolCropData={sortEnvTolCropData}
             setGrowthWindow={setShowGrowthWindow}
-            // filterByCheckboxValues={filterByCheckboxValues}
             isListView={isListView}
             cropData={cropData}
             activeCropData={
@@ -477,6 +414,12 @@ const CropSelector = () => {
             setInactiveCropData={setInactiveCropData}
             cropDataChanged={cropDataChanged}
             comparisonView={comparisonView}
+            coverCropName={coverCropName}
+            covercropsNamesFilter={covercropsNamesFilter}
+            toggleComparisonView={toggleComparisonView}
+            toggleListView={toggleListView}
+            comparisonView={comparisonView}
+            isListView={isListView}
             from={"table"}
           />
         </div>
@@ -490,7 +433,9 @@ const CropSelector = () => {
                 //   activeCropData.length > 0 ? activeCropData : cropData
                 // }
                 activeCropData={activeCropData}
+                setActiveCropData={setActiveCropData}
                 inactiveCropData={inactiveCropData}
+                setInactiveCropData={setInactiveCropData}
                 showGrowthWindow={showGrowthWindow}
                 sortAllGoals={setSortAllGoals}
                 sortAllCrops={sortCropsBy}

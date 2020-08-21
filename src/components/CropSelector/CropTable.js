@@ -21,6 +21,7 @@ import {
   TableRow,
   TableCell,
   ButtonBase,
+  Tooltip,
 } from "@material-ui/core";
 
 import "../../styles/cropTable.scss";
@@ -102,38 +103,46 @@ const CropTableComponent = (props) => {
     selectedCrops["data"] = cropData;
     cropArray = selectedCrops;
     // change the UI
-    if (container.classList.contains("activeCartBtn")) {
-      // change text back to 'add to list' and remove element from state
+    // if (container.classList.contains("activeCartBtn")) {
+    //   // change text back to 'add to list' and remove element from state
 
-      if (container.textContent === "ADDED") {
-        container.querySelector(".MuiButton-label").innerHTML = "ADD TO LIST";
-        container.classList.remove("activeCartBtn");
-        toAdd = false;
-      } else toAdd = true;
+    //   if (container.textContent === "ADDED") {
+    //     container.querySelector(".MuiButton-label").innerHTML = "ADD TO LIST";
+    //     container.classList.remove("activeCartBtn");
+    //     toAdd = false;
+    //   } else toAdd = true;
 
-      // this.state.selectedCrops.splice(x, 1);
-      // get index of the element
-    } else {
-      // change text to 'added' and add element to state
+    //   // this.state.selectedCrops.splice(x, 1);
+    //   // get index of the element
+    // } else {
+    //   // change text to 'added' and add element to state
 
-      if (container.textContent === "ADD TO LIST") {
-        container.querySelector(".MuiButton-label").innerHTML = "ADDED";
-        container.classList.add("activeCartBtn");
-        toAdd = true;
-      } else toAdd = false;
-    }
+    //   if (container.textContent === "ADD TO LIST") {
+    //     container.querySelector(".MuiButton-label").innerHTML = "ADDED";
+    //     container.classList.add("activeCartBtn");
+    //     toAdd = true;
+    //   } else toAdd = false;
+    // }
 
     // // check if crop id exists inside state, if yes then remove it
 
     if (state.selectedCrops.length > 0) {
-      // DONE: Remove crop from basket
       var removeIndex = state.selectedCrops
         .map(function (item) {
-          return item.btnId;
+          return item.id;
         })
-        .indexOf(`${btnId}`);
+        .indexOf(`${cropId}`);
       if (removeIndex === -1) {
-        // element not in array
+        // Element not in array, add new
+        // let newActives = props.activeCropData.map((crop) => {
+        //   if (crop.fields.id === cropId) {
+        //     crop.fields["inBasket"] = true;
+        //   } else {
+        //     crop.fields["inBasket"] = false;
+        //   }
+        // });
+
+        // props.setActiveCropData(newActives);
         dispatch({
           type: "SELECTED_CROPS_MODIFIER",
           data: {
@@ -144,11 +153,18 @@ const CropTableComponent = (props) => {
         });
         enqueueSnackbar(`${cropName} Added`);
       } else {
-        // alert(removeIndex);
+        // element exists, remove
         let selectedCropsCopy = state.selectedCrops;
 
         selectedCropsCopy.splice(removeIndex, 1);
         // console.log(selectedCropsCopy);
+        // let newActives = props.activeCropData.map((crop) => {
+        //   if (crop.fields.id === cropId) {
+        //     crop.fields["inBasket"] = false;
+        //   }
+        // });
+
+        // props.setActiveCropData(newActives);
         dispatch({
           type: "SELECTED_CROPS_MODIFIER",
           data: {
@@ -497,6 +513,225 @@ const CropTableComponent = (props) => {
     // console.log(tbodyHeight);
   });
 
+  const [nameSortFlag, setNameSortFlag] = useState(true);
+  const [selectedCropsSortFlag, setSelectedCropsSortFlag] = useState(true);
+  const sortBySelectedCrops = () => {
+    let selectedCropsShadow = state.selectedCrops;
+    let activeCropDataShadow = props.activeCropData;
+    let inactiveCropDataShadow = props.inactiveCropData;
+    if (selectedCropsSortFlag) {
+      if (selectedCropsShadow.length > 0) {
+        let selectedCropIds = [];
+        selectedCropsShadow.forEach((crop) => {
+          selectedCropIds.push(crop.id);
+        });
+        let newActiveShadow = activeCropDataShadow.map((crop) => {
+          if (selectedCropIds.includes(crop.fields.id)) {
+            crop["inCart"] = true;
+          } else {
+            crop["inCart"] = false;
+          }
+          return crop;
+        });
+
+        if (inactiveCropDataShadow.length > 0) {
+          let newInactiveShadow = inactiveCropDataShadow.map((crop) => {
+            if (selectedCropIds.includes(crop.fields.id)) {
+              crop["inCart"] = true;
+            } else {
+              crop["inCart"] = false;
+            }
+            return crop;
+          });
+          newInactiveShadow.sort((a) => {
+            if (a.inCart) {
+              return -1;
+            } else {
+              return 1;
+            }
+          });
+          props.setInactiveCropData(newInactiveShadow);
+        }
+
+        // console.log(newActiveShadow);
+        // console.log(selectedCropIds);
+
+        if (newActiveShadow.length > 0) {
+          newActiveShadow.sort((a) => {
+            if (a.inCart) {
+              return -1;
+            } else {
+              return 1;
+            }
+          });
+
+          props.setActiveCropData(newActiveShadow);
+        }
+
+        // if(inactiveCropDataShadow.length > 0) {
+
+        // }
+      }
+    } else {
+      // sort back to original values
+
+      const { selectedGoals } = state;
+
+      selectedGoals
+        .slice()
+        .reverse()
+        .forEach((goal) => {
+          activeCropDataShadow.sort((a, b) => {
+            if (a.fields[goal] && b.fields[goal]) {
+              if (a.fields[goal] > b.fields[goal]) {
+                return -1;
+              } else {
+                return 1;
+              }
+            }
+            return 0;
+          });
+          if (inactiveCropDataShadow.length > 0) {
+            inactiveCropDataShadow.sort((a, b) => {
+              if (a.fields[goal] && b.fields[goal]) {
+                if (a.fields[goal] > b.fields[goal]) {
+                  return -1;
+                } else {
+                  return 1;
+                }
+              }
+              return 0;
+            });
+          }
+        });
+
+      props.setActiveCropData(activeCropDataShadow);
+      if (inactiveCropDataShadow.length > 0) {
+        props.setInactiveCropData(inactiveCropDataShadow);
+      }
+    }
+    setSelectedCropsSortFlag(!selectedCropsSortFlag);
+  };
+  const sortCropsByName = () => {
+    let activeCropDataShadow = props.activeCropData;
+    let inactiveCropDataShadow = props.inactiveCropData;
+    // alert(`${activeCropDataShadow.length}, ${inactiveCropDataShadow.length}`);
+    if (nameSortFlag) {
+      if (activeCropDataShadow.length > 0) {
+        activeCropDataShadow.sort((a, b) => {
+          var firstCropName = flipCoverCropName(
+            a.fields["Cover Crop Name"].toLowerCase()
+          );
+          var secondCropName = flipCoverCropName(
+            b.fields["Cover Crop Name"].toLowerCase()
+          );
+          if (firstCropName < secondCropName) {
+            return -1;
+          }
+          if (firstCropName > secondCropName) {
+            return 1;
+          }
+          return 0;
+        });
+        props.setActiveCropData(activeCropDataShadow);
+      }
+
+      if (inactiveCropDataShadow.length > 0) {
+        inactiveCropDataShadow.sort((a, b) => {
+          var firstCropName = flipCoverCropName(
+            a.fields["Cover Crop Name"].toLowerCase()
+          );
+          var secondCropName = flipCoverCropName(
+            b.fields["Cover Crop Name"].toLowerCase()
+          );
+          if (firstCropName < secondCropName) {
+            return -1;
+          }
+          if (firstCropName > secondCropName) {
+            return 1;
+          }
+          return 0;
+        });
+        props.setInactiveCropData(inactiveCropDataShadow);
+      }
+    } else {
+      // if (activeCropDataShadow.length > 0) {
+      //   activeCropDataShadow.sort((a, b) => {
+      //     var firstCropName = flipCoverCropName(
+      //       a.fields["Cover Crop Name"].toLowerCase()
+      //     );
+      //     var secondCropName = flipCoverCropName(
+      //       b.fields["Cover Crop Name"].toLowerCase()
+      //     );
+      //     if (firstCropName < secondCropName) {
+      //       return 1;
+      //     }
+      //     if (firstCropName > secondCropName) {
+      //       return -1;
+      //     }
+      //     return 0;
+      //   });
+      //   props.setActiveCropData(activeCropDataShadow);
+      // }
+
+      // if (inactiveCropDataShadow.length > 0) {
+      //   inactiveCropDataShadow.sort((a, b) => {
+      //     var firstCropName = flipCoverCropName(
+      //       a.fields["Cover Crop Name"].toLowerCase()
+      //     );
+      //     var secondCropName = flipCoverCropName(
+      //       b.fields["Cover Crop Name"].toLowerCase()
+      //     );
+      //     if (firstCropName < secondCropName) {
+      //       return 1;
+      //     }
+      //     if (firstCropName > secondCropName) {
+      //       return -1;
+      //     }
+      //     return 0;
+      //   });
+      //   props.setInactiveCropData(inactiveCropDataShadow);
+      // }
+
+      // reset to default
+      const { selectedGoals } = state;
+
+      selectedGoals
+        .slice()
+        .reverse()
+        .forEach((goal) => {
+          activeCropDataShadow.sort((a, b) => {
+            if (a.fields[goal] && b.fields[goal]) {
+              if (a.fields[goal] > b.fields[goal]) {
+                return -1;
+              } else {
+                return 1;
+              }
+            }
+            return 0;
+          });
+          if (inactiveCropDataShadow.length > 0) {
+            inactiveCropDataShadow.sort((a, b) => {
+              if (a.fields[goal] && b.fields[goal]) {
+                if (a.fields[goal] > b.fields[goal]) {
+                  return -1;
+                } else {
+                  return 1;
+                }
+              }
+              return 0;
+            });
+          }
+        });
+      props.setActiveCropData(activeCropDataShadow);
+      if (inactiveCropDataShadow.length > 0) {
+        props.setInactiveCropData(inactiveCropDataShadow);
+      }
+    }
+
+    setNameSortFlag(!nameSortFlag);
+  };
+
   return cropData.length !== 0 ? (
     <Fragment>
       <TableContainer
@@ -654,7 +889,7 @@ const CropTableComponent = (props) => {
             <TableRow className="theadSecond">
               <TableCell style={{ width: "28%", backgroundColor: "#abd08f" }}>
                 <Typography variant="body1">
-                  <Button>COVER CROPS</Button>
+                  <Button onClick={sortCropsByName}>COVER CROPS</Button>
                 </Typography>
               </TableCell>
               <TableCell style={{ width: "18%", backgroundColor: "#abd08f" }}>
@@ -675,7 +910,18 @@ const CropTableComponent = (props) => {
                       }}
                     >
                       <Typography variant="body1">
-                        <Button>{goal.toUpperCase()}</Button>
+                        {/* <Button>{goal.toUpperCase()}</Button> */}
+                        <Tooltip
+                          placement="bottom"
+                          arrow
+                          title={
+                            <div className="filterTooltip text-capitalize">
+                              <p>{goal}</p>
+                            </div>
+                          }
+                        >
+                          <Button>{`Goal ${index + 1}`}</Button>
+                        </Tooltip>
                       </Typography>
                     </TableCell>
                   ))
@@ -699,7 +945,7 @@ const CropTableComponent = (props) => {
               >
                 <Typography variant="body1">
                   {" "}
-                  <Button>MY LIST</Button>
+                  <Button onClick={sortBySelectedCrops}>MY LIST</Button>
                 </Typography>
               </TableCell>
             </TableRow>

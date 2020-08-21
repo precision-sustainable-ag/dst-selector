@@ -44,6 +44,7 @@ const theme = createMuiTheme({
   overrides: {
     MuiTooltip: {
       tooltip: {
+        fontWeight: "normal",
         fontSize: CustomStyles().defaultFontSize,
         backgroundColor: CustomStyles().secondaryProgressBtnColor,
         color: "black",
@@ -53,12 +54,12 @@ const theme = createMuiTheme({
     },
     MuiChip: {
       colorSecondary: {
-        backgroundColor: CustomStyles().secondaryProgressBtnColor,
+        backgroundColor: CustomStyles().greenishWhite,
         color: "rgba(0,0,0,0.5)",
         fontWeight: 500,
       },
       colorPrimary: {
-        backgroundColor: CustomStyles().primaryProgressBtnBorderColor,
+        backgroundColor: CustomStyles().darkGreen,
         color: "rgba(0,0,0,1)",
         fontWeight: 500,
       },
