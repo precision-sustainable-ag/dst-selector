@@ -71,7 +71,7 @@ const About = (props) => {
           <div className="container-fluid">
             <div className="row">
               <div className="col-12 pb-2">
-                <Typography variant="h3" align="center">
+                <Typography variant="h4" align="center">
                   About
                 </Typography>
               </div>

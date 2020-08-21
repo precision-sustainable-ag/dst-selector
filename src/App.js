@@ -1,62 +1,34 @@
 import React, { useContext, useEffect, Fragment, useState } from "react";
-
 import "./styles/App.scss";
-// import Header from "./components/Header/header";
-// import Body from "./components/body";
-import {
-  Box,
-  Snackbar,
-  MuiThemeProvider,
-  createMuiTheme,
-  Button,
-} from "@material-ui/core";
-// import Navigation from "./components/navigation";
-// import Footer from "./components/Footer/footer";
+import { Snackbar } from "@material-ui/core";
 import Header from "./components/Header/header";
-
 import Landing from "./components/Landing/Landing";
-
 import { Context } from "./store/Store";
 import LocationComponent from "./components/Location/Location";
-// import { loadProgressBar } from "axios-progress-bar";
 import ProgressButtons from "./shared/ProgressButtons";
 import ProgressBar from "./shared/ProgressBar";
 import GoalsSelector from "./components/GoalsSelector/GoalsSelector";
 import LocationConfirmation from "./components/Location/LocationConfirmation";
 import CropSelector from "./components/CropSelector/CropSelector";
-// import { CustomStyles } from "./shared/constants";
 
-const loadRelevantRoute = (progress, calcHeight) => {
-  // TODO: Handle case 3 as cropselector vs soil sample selector
+const LoadRelevantRoute = ({ progress, calcHeight }) => {
   switch (progress) {
     case 0:
       return <Landing height={calcHeight} bg="/images/cover-crop-field.png" />;
     case 1:
-      return <LocationComponent />;
+      return <LocationComponent height={calcHeight} />;
     case 2:
-      return <LocationConfirmation />;
+      return <LocationConfirmation height={calcHeight} />;
     case 3:
-      return <LocationConfirmation />;
+      return <LocationConfirmation height={calcHeight} />;
     case 4:
-      return <GoalsSelector />;
+      return <GoalsSelector height={calcHeight} />;
     case 5:
-      return <CropSelector />;
+      return <CropSelector height={calcHeight} />;
 
     default:
-      return <RouteNotFound />;
+      return <RouteNotFound height={calcHeight} />;
   }
-};
-
-const RouteNotFound = () => {
-  return (
-    <div className="container mt-4">
-      <div className="row">
-        <div className="col-4 offset-4">
-          <h3>Unknown Route</h3>
-        </div>
-      </div>
-    </div>
-  );
 };
 
 const App = () => {
@@ -104,9 +76,15 @@ const App = () => {
         >
           <div
             className="col-12"
-            style={{ paddingLeft: "0px", paddingRight: "0px" }}
+            style={{
+              paddingLeft: "0px",
+              paddingRight: "0px",
+            }}
           >
-            {loadRelevantRoute(state.progress, calcHeight)}
+            <LoadRelevantRoute
+              progress={state.progress}
+              calcHeight={calcHeight}
+            />
             {state.progress !== 0 && state.progress < 5 ? (
               <div className="container-fluid mt-5 mb-5">
                 <div className="row" style={{ width: "95%", margin: "0 auto" }}>
@@ -150,3 +128,15 @@ const App = () => {
 };
 
 export default App;
+
+const RouteNotFound = () => {
+  return (
+    <div className="container mt-4">
+      <div className="row">
+        <div className="col-4 offset-4">
+          <h3>Unknown Route</h3>
+        </div>
+      </div>
+    </div>
+  );
+};

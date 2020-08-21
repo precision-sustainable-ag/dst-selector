@@ -4,6 +4,7 @@ import { Context } from "../../store/Store";
 // import { Typography, Button } from "@material-ui/core";
 import { LightButton } from "../../shared/constants";
 import { Typography, Box } from "@material-ui/core";
+import { Link } from "react-router-dom";
 
 const Landing = (props) => {
   const [state, dispatch] = useContext(Context);
@@ -55,7 +56,7 @@ const Landing = (props) => {
             <div className="container-fluid">
               <div className="row">
                 <div className="col-12">
-                  <Typography variant="h5" align="center">
+                  <Typography variant="h4" align="center">
                     Welcome to the Northeast Cover Crop Species Selector Tool
                   </Typography>
                 </div>
@@ -66,11 +67,14 @@ const Landing = (props) => {
                       gutterBottom
                       style={{ paddingBottom: "1em" }}
                     >
-                      You are currently interacting with the Beta version of the
-                      Northeast Cover Crop Species Selector Tool. We seek
-                      feedback about the usability and usefulness of this tool.
-                      Our goal is to encourage and support the use of cover
-                      crops in the Northeast US.
+                      You are currently interacting with the Northeast Cover
+                      Crop Species Selector Tool, beta version. We seek feedback
+                      about the usability and usefulness of this tool. Our goal
+                      is to encourage and support the use of cover crops in the
+                      Northeast US. You can learn more about the cover crop data
+                      and design of this tool <Link to={"/about"}> here</Link>.
+                      If you need assistance, consult the{" "}
+                      <Link to={"/help"}>help page</Link>.
                     </Typography>
 
                     <Typography
@@ -78,14 +82,11 @@ const Landing = (props) => {
                       gutterBottom
                       style={{ paddingBottom: "1em" }}
                     >
-                      The cover crop data you will see built upon information
-                      found in the Midwest Cover Crops Council (MCCC) species
-                      selector tool, the USDA PLANTS database, and a seeding
-                      rate calculator developed by USDA NRCS in NY. These
-                      initial data have been reviewed, modified, and greatly
-                      expanded upon by cover crop experts in the Northeast in
-                      each USDA plant hardiness zone to best match the cropping
-                      system types, goals, and constraints found in our region.
+                      In the future, this platform will host a variety of tools
+                      including a cover crop mixture and seeding rate calculator
+                      and an economics calculator. Our ultimate goal is to
+                      provide a suite of interconnected tools that function
+                      together seamlessly.
                     </Typography>
                     <Typography
                       variant="body1"
@@ -104,9 +105,9 @@ const Landing = (props) => {
                       align="left"
                       gutterBottom
                     >
-                      Thank you for your time and consideration. We look forward
-                      to your feedback. You may provide input by visiting our
-                      Feedback page.
+                      Thank you for your time and consideration. You may provide
+                      input by visiting our Feedback page. We look forward to
+                      your hearing about your experience.
                     </Typography>
                   </div>
                 </div>

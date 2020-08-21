@@ -83,7 +83,7 @@ const Growth = forwardRef((props, ref) => {
               arrow
               placement="right"
               title={
-                <div className="tooltipTextContainer text-center">
+                <div className="filterTooltip">
                   <p dangerouslySetInnerHTML={{ __html: val.description }}></p>
                 </div>
               }
@@ -106,7 +106,7 @@ const Growth = forwardRef((props, ref) => {
               arrow
               placement="right"
               title={
-                <div className="tooltipTextContainer text-left">
+                <div className="filterTooltip">
                   <p dangerouslySetInnerHTML={{ __html: val.description }}></p>
                 </div>
               }

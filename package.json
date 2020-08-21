@@ -7,6 +7,7 @@
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.5.1",
     "@material-ui/lab": "^4.0.0-alpha.56",
+    "@material-ui/pickers": "^3.2.10",
     "@matharumanpreet00/react-daterange-picker": "^1.0.5",
     "axios": "^0.19.1",
     "file-saver": "^2.0.2",

@@ -56,6 +56,31 @@ const CoverCropExplorer = () => {
     }
     setAnchorEl(null);
   };
+  const handleSearchChange = (e) => {
+    setCropName(e.target.value);
+    // console.log(e.target.value.length);
+    let { cropData } = state;
+    const crop_data = cropData.filter((crop) => {
+      let crop_name = crop.fields["Cover Crop Name"]
+        .split(",")
+        .join("")
+        .toLowerCase();
+      let scientific_name = crop.fields["Scientific Name"]
+        .split(",")
+        .join("")
+        .toLowerCase();
+      if (
+        crop_name.includes(e.target.value.toLowerCase()) ||
+        scientific_name.includes(e.target.value.toLowerCase())
+      ) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+    console.log(crop_data);
+    setActiveCropData(crop_data);
+  };
   return (
     <div className="contentWrapper">
       <Header logo="neccc_wide_logo_color_web.jpg" />
@@ -66,31 +91,7 @@ const CoverCropExplorer = () => {
             <div className="col-4">
               <TextField
                 fullWidth
-                onChange={(e) => {
-                  setCropName(e.target.value);
-                  // console.log(e.target.value.length);
-                  let { cropData } = state;
-                  const crop_data = cropData.filter((crop) => {
-                    let crop_name = crop.fields["Cover Crop Name"]
-                      .split(",")
-                      .join("")
-                      .toLowerCase();
-                    let scientific_name = crop.fields["Scientific Name"]
-                      .split(",")
-                      .join("")
-                      .toLowerCase();
-                    if (
-                      crop_name.includes(e.target.value.toLowerCase()) ||
-                      scientific_name.includes(e.target.value.toLowerCase())
-                    ) {
-                      return true;
-                    } else {
-                      return false;
-                    }
-                  });
-                  console.log(crop_data);
-                  setActiveCropData(crop_data);
-                }}
+                onChange={(e) => {}}
                 value={cropName}
                 color="secondary"
                 InputProps={{
@@ -122,6 +123,8 @@ const CoverCropExplorer = () => {
               inactiveCropData={inactiveCropData}
               setInactiveCropData={setInactiveCropData}
               isListView={true}
+              handleSearchChange={handleSearchChange}
+              searchValue={cropName}
             />
           </div>
           <div className="col-10">
