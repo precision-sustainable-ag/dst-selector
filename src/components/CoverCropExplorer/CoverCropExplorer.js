@@ -85,31 +85,6 @@ const CoverCropExplorer = () => {
     <div className="contentWrapper">
       <Header logo="neccc_wide_logo_color_web.jpg" />
       <div className="container-fluid mt-4">
-        <div className="row">
-          <div className="col-2"></div>
-          <div className="col-10 row">
-            <div className="col-4">
-              <TextField
-                fullWidth
-                onChange={(e) => {}}
-                value={cropName}
-                color="secondary"
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <Search />
-                    </InputAdornment>
-                  ),
-                }}
-                inputMode="search"
-                title="Cover Crop Name Search"
-                placeholder="Cover Crop Name Search"
-                // label="Cover Crop Name Search"
-              />
-            </div>
-            <div className="col-8"></div>
-          </div>
-        </div>
         <div className="row mt-3">
           <div className="col-2">
             <CropSidebarComponent
