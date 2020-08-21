@@ -182,9 +182,9 @@ const GrowthWindowComponent = (props) => {
                 {fullMonth[month].toUpperCase()}, EARLY
               </Typography>
               {cropLegendObj.Early.map((v, i) => (
-                <em key={i}>
-                  <Typography variant="body1">{v}</Typography>
-                </em>
+                <Typography variant="body1" key={i} gutterBottom>
+                  {v}
+                </Typography>
               ))}
             </Fragment>
           }
@@ -201,9 +201,11 @@ const GrowthWindowComponent = (props) => {
               <Typography color="secondary">
                 {fullMonth[month].toUpperCase()}, MID
               </Typography>
-              <em>
-                <Typography variant="body1">{cropLegendObj.Mid}</Typography>
-              </em>
+              {cropLegendObj.Mid.map((v, i) => (
+                <Typography variant="body1" key={i} gutterBottom>
+                  {v}
+                </Typography>
+              ))}
             </Fragment>
           }
         >
@@ -295,9 +297,9 @@ const GrowthWindowComponent = (props) => {
               <Typography color="secondary">
                 {fullMonth[month].toUpperCase()}, EARLY
               </Typography>
-              <em>
+              <div>
                 <Typography variant="body1">{cropLegendObj.Early}</Typography>
-              </em>
+              </div>
             </Fragment>
           }
         >
@@ -313,9 +315,9 @@ const GrowthWindowComponent = (props) => {
               <Typography color="secondary">
                 {fullMonth[month].toUpperCase()}, MID
               </Typography>
-              <em>
+              <div>
                 <Typography variant="body1">{cropLegendObj.Mid}</Typography>
-              </em>
+              </div>
             </Fragment>
           }
         >
