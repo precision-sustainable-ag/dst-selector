@@ -125,7 +125,6 @@ const monthStringBuilder = (vals) => {
       let str = "";
       let valuesArray = [];
       while (valStart.isSameOrBefore(valEnd)) {
-        let val = [];
         if (valStart.get("D") <= 15 && valStart.get("D") >= 1) {
           str = "Early";
         } else {
@@ -138,7 +137,14 @@ const monthStringBuilder = (vals) => {
 
       valuesArray.forEach((key) => {
         const prev = val.fields[key] || [];
-        prev.push(param);
+        if (param.split(" ")[0] === "Second") {
+          // console.log(param.split(" ")[0]);
+
+          prev.push(param.split(" ").splice(1).join(" "));
+        } else {
+          // console.log(param.split(" ")[0]);
+          prev.push(param);
+        }
         val.fields[key] = prev;
       });
     }
@@ -162,7 +168,7 @@ const z5CropData = cropDataFormatter(z5AllCrops);
 // const StoreContext = createContext();
 
 const initialState = {
-  // progress: 1,
+  // progress: 3,
   // progress: 4,
   progress: 5,
   address: "",
@@ -170,6 +176,7 @@ const initialState = {
   zip: 0,
   zipCode: 0,
   markersCopy: [],
+  // markers: [],
   markers: [[39.0255, -76.924]],
   // markers: [
   //   [42.43893008983507, -71.6220123358556],
@@ -206,13 +213,13 @@ const initialState = {
   soilData: {
     Map_Unit_Name: "",
     Drainage_Class: [],
-    Flooding_Frequency: "",
+    Flooding_Frequency: [],
     Ponding_Frequency: "",
   },
   soilDataOriginal: {
     Map_Unit_Name: "",
     Drainage_Class: [],
-    Flooding_Frequency: "",
+    Flooding_Frequency: [],
     Ponding_Frequency: "",
   },
 

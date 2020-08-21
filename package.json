@@ -9,6 +9,7 @@
     "@material-ui/lab": "^4.0.0-alpha.56",
     "@material-ui/pickers": "^3.2.10",
     "@matharumanpreet00/react-daterange-picker": "^1.0.5",
+    "@reach/observe-rect": "^1.2.0",
     "axios": "^0.19.1",
     "file-saver": "^2.0.2",
     "html2canvas": "^1.0.0-rc.5",
@@ -40,7 +41,10 @@
     "react-leaflet-search": "^1.0.3",
     "react-movable": "^2.4.0",
     "react-router-dom": "^5.1.2",
+    "react-router-hash-link": "^2.0.0",
     "react-scripts": "^3.4.1",
+    "react-scroll-agent": "^0.8.0",
+    "react-scrollspy": "^3.4.3",
     "react-to-pdf": "0.0.11",
     "sass-mediaqueries": "^1.6.1",
     "save-as": "^0.1.8"
