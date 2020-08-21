@@ -238,12 +238,30 @@ const WeatherConditions = (props) => {
           >
             <Opacity />
             &nbsp; Average Precipitation &nbsp;{" "}
-            <ReferenceTooltip
-              type="text"
-              content={
-                "Five-year average monthly and annual precipitation from University of Georgia’s Weather App."
+            <Tooltip
+              arrow
+              interactive
+              placement="right"
+              title={
+                <div>
+                  Five-year average monthly and annual precipitation from the
+                  Precision Sustainable Agriculture Weather API powered by{" "}
+                  <a
+                    href="https://www.nssl.noaa.gov/projects/mrms/"
+                    target="_blank"
+                  >
+                    NSSL MRMS
+                  </a>{" "}
+                  and{" "}
+                  <a href="" target="_blank">
+                    NASA NLDAS-2
+                  </a>{" "}
+                  weather data.
+                </div>
               }
-            />
+            >
+              <Info fontSize="small" />
+            </Tooltip>
           </Typography>
         </div>
         <div className="col-12">
@@ -267,12 +285,41 @@ const WeatherConditions = (props) => {
           >
             <AcUnit />
             &nbsp; Average Frost Dates &nbsp;{" "}
-            <ReferenceTooltip
-              type="text"
-              content={
+            {/* <Tooltip
+              dangerouslySetInnerHTML={
                 "Average dates of the first and last frosts for your location, based on frost dates for the last five years from University of Georgia’s Weather App; you may manually change this input."
               }
-            />
+            ></Tooltip> */}
+            <Tooltip
+              interactive
+              arrow
+              placement="right"
+              title={
+                <div>
+                  Average dates of the first and last frosts for your location,
+                  based on frost dates for the last five years from the
+                  Precision Sustainable Agriculture Weather API powered by{" "}
+                  <a
+                    href="https://www.nssl.noaa.gov/projects/mrms/"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    NSSL MRMS{" "}
+                  </a>{" "}
+                  and{" "}
+                  <a
+                    href="https://ldas.gsfc.nasa.gov/nldas/"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    NASA NLDAS-2
+                  </a>{" "}
+                  weather data; you may manually change this input.
+                </div>
+              }
+            >
+              <Info fontSize="small" />
+            </Tooltip>
           </Typography>
         </div>
 
@@ -297,12 +344,31 @@ const WeatherConditions = (props) => {
           >
             <WbSunnyOutlined />
             &nbsp; Average Frost Free Days &nbsp;{" "}
-            <ReferenceTooltip
-              type={"text"}
-              content={
-                "Number of days in your growing season, based on average first and last frost dates for the last five years from University of Georgia’s Weather App"
+            <Tooltip
+              arrow
+              interactive
+              placement="right"
+              title={
+                <div>
+                  Number of days in your growing season, based on average first
+                  and last frost dates for the last five years from the
+                  Precision Sustainable Agriculture Weather API powered by{" "}
+                  <a
+                    href="https://www.nssl.noaa.gov/projects/mrms/"
+                    target="_blank"
+                  >
+                    NSSL MRMS
+                  </a>{" "}
+                  and{" "}
+                  <a href="" target="_blank">
+                    NASA NLDAS-2
+                  </a>{" "}
+                  weather data.
+                </div>
               }
-            />
+            >
+              <Info fontSize="small" />
+            </Tooltip>
           </Typography>
         </div>
 

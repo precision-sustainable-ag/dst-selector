@@ -124,29 +124,20 @@ const LocationComponent = () => {
             <div className="row pt-3">
               <div className="col-12">
                 <Typography variant="body1" align="left">
-                  Enter your USDA plant hardiness zone, address, or zipcode and
+                  Enter your USDA plant hardiness zone, address, or zip code and
                   hit <Search fontSize="inherit" /> to determine your location.
-                  Then click
+                  Then click{" "}
                   <img
                     height="20"
                     width="20"
                     src="/images/icons/pentagon.png"
-                  />
-                  {/* <span
-                    style={{
-                      background: `url('/static/media/spritesheet.fd5728f2.svg')`,
-                      backgroundPosition: "-77px -2px",
-                      width: "26px",
-                      height: "26px",
-                      display: "inline-block",
-                    }}
-                  ></span> */}
+                  />{" "}
                   to draw your field boundary on the map.
                 </Typography>
                 <Typography variant="body1" align="left" className="pt-2">
-                  Plant hardiness zone, zip code, or address will return the
+                  Plant hardiness zone, address, or zip code will return the
                   most general recommendations, whereas drawing your field on
-                  the map will return the most site-specific recommendations
+                  the map will return the most site-specific recommendations.
                 </Typography>
                 {/* <p style={{ fontSize: "18px" }}>
                   

@@ -52,97 +52,98 @@ const ForecastComponent = () => {
   //   };
 
   const setShowFeatures = () => {
-    // get lat long
-    let latlng = [];
-    try {
-      latlng = state.markers[0];
-    } catch (e) {
-      console.trace("Forecast Component", e);
+    if (state.markers.length > 0) {
+      let latlng = [];
+      try {
+        latlng = state.markers[0];
+      } catch (e) {
+        console.trace("Forecast Component", e);
 
-      latlng = [];
-    }
+        latlng = [];
+      }
 
-    let apiCall = callWeatherApi(apiBaseURL, latlng);
+      let apiCall = callWeatherApi(apiBaseURL, latlng);
 
-    apiCall.then((data) => {
-      let iconId = data.weather[0].icon;
-      let iconDescription = new String(data.weather[0].description);
+      apiCall.then((data) => {
+        let iconId = data.weather[0].icon;
+        let iconDescription = new String(data.weather[0].description);
 
-      let tempObj = {
-        min: data.main.temp_min,
-        max: data.main.temp_max,
-        unit: "F",
-        iconURL: `https://openweathermap.org/img/w/${iconId}.png`,
-        iconDescription: iconDescription,
-      };
-      setTemp(tempObj);
-      setShowTempIcon(false);
-    });
-
-    // if (state.address === "") {
-    let data = reverseGEO(latlng[0], latlng[1]);
-    data
-      .then((data) => {
-        // if (data.success === false) {
-        //   // console.log(data);
-        //   if (data.error.code === "006") {
-        //     let delayInMs = 5000;
-        //     setTimeout(function () {
-        //       let data = reverseGEO(latlng[0], latlng[1]);
-        //       data
-        //         .then((data) => {
-        //           // console.log(data);
-        //           let addressString = ``;
-        //           if (data.staddress) {
-        //             addressString = `${data.staddress}, ${data.state}`;
-        //           }
-        //           dispatch({
-        //             type: "CHANGE_ADDRESS",
-        //             data: {
-        //               address: addressString,
-        //               addressVerified: true,
-        //             },
-        //           });
-        //         })
-        //         .catch((e) => {
-        //           console.error("recursive error", e);
-        //         });
-        //     }, delayInMs);
-        //   }
-        // console.log(data);
-        // } else {
-
-        if (data.localityInfo.informative) {
-          let lastInfo =
-            data.localityInfo.informative[
-              data.localityInfo.informative.length - 1
-            ];
-          // console.log(lastInfo);
-          // let addressString = ``;
-          let addressString = `${lastInfo.name}, ${data.city}`;
-          dispatch({
-            type: "CHANGE_ADDRESS",
-            data: {
-              address: addressString,
-              addressVerified: true,
-            },
-          });
-        }
-        if (data.postcode) {
-          dispatch({
-            type: "UPDATE_ZIP_CODE",
-            data: {
-              zipCode: parseInt(data.postcode),
-            },
-          });
-        }
-      })
-      // }
-      // )
-      .catch((e) => {
-        console.error("Geocode.xyz:", e);
+        let tempObj = {
+          min: data.main.temp_min,
+          max: data.main.temp_max,
+          unit: "F",
+          iconURL: `https://openweathermap.org/img/w/${iconId}.png`,
+          iconDescription: iconDescription,
+        };
+        setTemp(tempObj);
+        setShowTempIcon(false);
       });
-    // }
+
+      // if (state.address === "") {
+      let data = reverseGEO(latlng[0], latlng[1]);
+      data
+        .then((data) => {
+          // if (data.success === false) {
+          //   // console.log(data);
+          //   if (data.error.code === "006") {
+          //     let delayInMs = 5000;
+          //     setTimeout(function () {
+          //       let data = reverseGEO(latlng[0], latlng[1]);
+          //       data
+          //         .then((data) => {
+          //           // console.log(data);
+          //           let addressString = ``;
+          //           if (data.staddress) {
+          //             addressString = `${data.staddress}, ${data.state}`;
+          //           }
+          //           dispatch({
+          //             type: "CHANGE_ADDRESS",
+          //             data: {
+          //               address: addressString,
+          //               addressVerified: true,
+          //             },
+          //           });
+          //         })
+          //         .catch((e) => {
+          //           console.error("recursive error", e);
+          //         });
+          //     }, delayInMs);
+          //   }
+          // console.log(data);
+          // } else {
+
+          if (data.localityInfo.informative) {
+            let lastInfo =
+              data.localityInfo.informative[
+                data.localityInfo.informative.length - 1
+              ];
+            // console.log(lastInfo);
+            // let addressString = ``;
+            let addressString = `${lastInfo.name}, ${data.city}`;
+            dispatch({
+              type: "CHANGE_ADDRESS",
+              data: {
+                address: addressString,
+                addressVerified: true,
+              },
+            });
+          }
+          if (data.postcode) {
+            dispatch({
+              type: "UPDATE_ZIP_CODE",
+              data: {
+                zipCode: parseInt(data.postcode),
+              },
+            });
+          }
+        })
+        // }
+        // )
+        .catch((e) => {
+          console.error("Geocode.xyz:", e);
+        });
+      // }
+    }
   };
 
   const callWeatherApi = async (url, latlng) => {
