@@ -141,7 +141,7 @@ const MapContext = ({ width, height, minzoom, maxzoom, from }) => {
             {showEditControl ? (
               <EditControl
                 edit={{ edit: false }}
-                position="bottomleft"
+                position="topleft"
                 onEdited={(e) => {
                   //   console.log("edited", e);
                 }}

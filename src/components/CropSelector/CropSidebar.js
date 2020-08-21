@@ -117,6 +117,7 @@ const CropSidebarComponent = (props) => {
   ]);
 
   const [cashCropOpen, setCashCropOpen] = React.useState(false);
+  const [cashCropVisible, setCashCropVisible] = React.useState(true);
   const [goalsOpen, setGoalsOpen] = React.useState(true);
 
   const [dateRangeOpen, setDateRangeOpen] = React.useState(false);
@@ -593,6 +594,15 @@ const CropSidebarComponent = (props) => {
     }
   });
 
+  useEffect(() => {
+    if (state.cashCropData.dateRange.startDate !== "") {
+      window.localStorage.setItem(
+        "cashCropDateRange",
+        JSON.stringify(state.cashCropData.dateRange)
+      );
+    }
+  }, [state.cashCropData.dateRange]);
+
   return (
     <div className="row">
       {state.myCoverCropActivationFlag && props.from === "table" ? (
@@ -806,6 +816,7 @@ const CropSidebarComponent = (props) => {
                 <List component="div">
                   <ListItem className={classes.nested}>
                     <TextField
+                      fullWidth
                       label="Cash Crop"
                       id="outlined-margin-dense"
                       defaultValue=""
@@ -824,6 +835,7 @@ const CropSidebarComponent = (props) => {
                       label="Planting to Harvest"
                       value={`${state.cashCropData.dateRange.startDate} - ${state.cashCropData.dateRange.endDate}`}
                       fullWidth
+                      onClick={() => setDateRangeOpen(!dateRangeOpen)}
                       margin="dense"
                       aria-haspopup="true"
                       variant="outlined"
@@ -842,28 +854,56 @@ const CropSidebarComponent = (props) => {
                       }}
                     />
                   </ListItem>
-                  <ListItem style={{ zIndex: 99 }}>
-                    <DateRangePicker
-                      open={dateRangeOpen}
-                      onChange={(range) => setDateRange(range)}
-                    />
-                  </ListItem>
+                  {dateRangeOpen ? (
+                    <ListItem style={{ zIndex: 99 }}>
+                      <DateRangePicker
+                        open={dateRangeOpen}
+                        onChange={(range) => setDateRange(range)}
+                      />
+                    </ListItem>
+                  ) : (
+                    ""
+                  )}
+
                   <ListItem className={classes.nested}>
                     <FormGroup>
                       <FormControlLabel
                         classes={{ root: classes.formControlLabel }}
                         control={
                           <Checkbox
-                            checked={growthWindowVisible}
-                            onChange={() => {
-                              setGrowthWindowVisible(!growthWindowVisible);
+                            checked={cashCropVisible}
+                            onChange={(e) => {
+                              // setGrowthWindowVisible(!growthWindowVisible);
+                              if (e.target.checked) {
+                                let cashCropDateRange = JSON.parse(
+                                  window.localStorage.getItem(
+                                    "cashCropDateRange"
+                                  )
+                                );
+                                dispatch({
+                                  type: "UPDATE_DATE_RANGE",
+                                  data: {
+                                    startDate: cashCropDateRange.startDate,
+                                    endDate: cashCropDateRange.endDate,
+                                  },
+                                });
+                              } else {
+                                dispatch({
+                                  type: "UPDATE_DATE_RANGE",
+                                  data: {
+                                    startDate: "",
+                                    endDate: "",
+                                  },
+                                });
+                              }
+                              setCashCropVisible(!cashCropVisible);
                             }}
                             value="Show Cash Crop Growth Window"
                           />
                         }
                         label={
                           <Typography variant="body2">
-                            Show Growth Window
+                            Show Cash Crop Growth Window
                           </Typography>
                         }
                       />

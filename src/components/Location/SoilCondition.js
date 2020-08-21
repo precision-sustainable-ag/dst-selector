@@ -148,6 +148,7 @@ const SoilCondition = (props) => {
         if (result !== {}) {
           //   let Map_Unit_Name = result["Table"][1][1];
           //   let Drainage_Class = result["Table"][1][2];
+          // if(result["Table"][1] !)
           let Flooding_Frequency = result["Table"][1][3];
           let Ponding_Frequency = result["Table"][1][4];
           let mapUnitString = "";
@@ -170,6 +171,16 @@ const SoilCondition = (props) => {
           const filteredArr = stringSplit.filter((elm) => elm);
           mapUnitString = filteredArr.join(", ");
 
+          let floodingClasses = [];
+          result["Table"].map((el, index) => {
+            if (index === 0 || el.indexOf("Water") === 1) {
+            } else {
+              if (floodingClasses.indexOf(el[3]) === -1) {
+                floodingClasses.push(el[3]);
+              }
+            }
+          });
+
           let drainageClasses = [];
           result["Table"].map((el, index) => {
             if (index !== 0) {
@@ -188,7 +199,7 @@ const SoilCondition = (props) => {
             data: {
               Map_Unit_Name: mapUnitString,
               Drainage_Class: drainageClasses,
-              Flooding_Frequency: Flooding_Frequency,
+              Flooding_Frequency: floodingClasses,
               Ponding_Frequency: Ponding_Frequency,
               for: { lat: lat, lon: lon },
             },
@@ -198,7 +209,7 @@ const SoilCondition = (props) => {
             data: {
               Map_Unit_Name: mapUnitString,
               Drainage_Class: drainageClasses,
-              Flooding_Frequency: Flooding_Frequency,
+              Flooding_Frequency: floodingClasses,
               Ponding_Frequency: Ponding_Frequency,
               for: { lat: lat, lon: lon },
             },
@@ -237,10 +248,24 @@ const SoilCondition = (props) => {
   };
 
   const updateFloodingFrequency = (label = "") => {
-    dispatch({
-      type: "UPDATE_FLOODING_FREQUENCY",
-      data: label,
-    });
+    let floodings = [...state.soilData.Flooding_Frequency];
+    if (floodings.indexOf(label) === -1) {
+      // does not exist, dispatch to state
+      floodings.push(label);
+      dispatch({
+        type: "UPDATE_FLOODING_FREQUENCY",
+        data: floodings,
+      });
+    } else {
+      // exists, remove it from state
+      let index = floodings.indexOf(label);
+      floodings.splice(index, 1);
+
+      dispatch({
+        type: "UPDATE_FLOODING_FREQUENCY",
+        data: floodings,
+      });
+    }
   };
 
   const resetFloodingOptions = () => {
@@ -256,12 +281,12 @@ const SoilCondition = (props) => {
       data: soilDataOriginal.Drainage_Class,
     });
   };
-  const RenderFloodingOptions = ({ flooding = "" }) => {
+  const RenderFloodingOptions = ({ flooding = [""] }) => {
     return (
       <div className="text-left">
         <Chip
           label="None"
-          color={flooding === "None" ? "primary" : "secondary"}
+          color={flooding.includes("None") ? "primary" : "secondary"}
           className="m-2 drainageTag"
           onClick={() => {
             updateFloodingFrequency("None");
@@ -269,7 +294,7 @@ const SoilCondition = (props) => {
         />
         <Chip
           label="Very Rare"
-          color={flooding === "Very rare" ? "primary" : "secondary"}
+          color={flooding.includes("Very rare") ? "primary" : "secondary"}
           className="m-2 drainageTag"
           onClick={() => {
             updateFloodingFrequency("Very rare");
@@ -277,7 +302,7 @@ const SoilCondition = (props) => {
         />
         <Chip
           label="Rare"
-          color={flooding === "Rare" ? "primary" : "secondary"}
+          color={flooding.includes("Rare") ? "primary" : "secondary"}
           className="m-2 drainageTag"
           onClick={() => {
             updateFloodingFrequency("Rare");
@@ -285,7 +310,7 @@ const SoilCondition = (props) => {
         />
         <Chip
           label="Occasional"
-          color={flooding === "Occasional" ? "primary" : "secondary"}
+          color={flooding.includes("Occasional") ? "primary" : "secondary"}
           className="m-2 drainageTag"
           onClick={() => {
             updateFloodingFrequency("Occasional");
@@ -293,7 +318,7 @@ const SoilCondition = (props) => {
         />
         <Chip
           label="Frequent"
-          color={flooding === "Frequent" ? "primary" : "secondary"}
+          color={flooding.includes("Frequent") ? "primary" : "secondary"}
           className="m-2 drainageTag"
           onClick={() => {
             updateFloodingFrequency("Frequent");
@@ -301,7 +326,7 @@ const SoilCondition = (props) => {
         />
         <Chip
           label="Very Frequent"
-          color={flooding === "Very frequent" ? "primary" : "secondary"}
+          color={flooding.includes("Very frequent") ? "primary" : "secondary"}
           className="m-2 drainageTag"
           onClick={() => {
             updateFloodingFrequency("Very frequent");
@@ -427,7 +452,8 @@ const SoilCondition = (props) => {
           <div className="col-12">
             <Typography
               variant="body1"
-              style={{ color: CustomStyles().primaryProgressBtnColor }}
+              className="font-weight-bold"
+              style={{ color: "rgb(89, 132, 69)" }}
               align="left"
             >
               {soilData.Map_Unit_Name}
@@ -741,7 +767,11 @@ const SoilCondition = (props) => {
             />
           </Typography>
         </div>
-        {soilData.Flooding_Frequency === soilDataOriginal.Flooding_Frequency ? (
+
+        {arrayEquals(
+          soilData.Flooding_Frequency,
+          soilDataOriginal.Flooding_Frequency
+        ) ? (
           ""
         ) : (
           <div className="col-12 pt-2">

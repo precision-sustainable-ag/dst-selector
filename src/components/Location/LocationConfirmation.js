@@ -71,7 +71,7 @@ const LocationConfirmation = () => {
                   Disclaimer: Cover crop recommendations are based on expert
                   opinions. Your cover crop performance and seeding rates will
                   vary based on location, management, cultivars, and many other
-                  variables. Consult an{" "}
+                  variables. Consult your local{" "}
                   <a
                     href="https://www.nrcs.usda.gov/wps/portal/nrcs/detailfull/national/programs/financial/csp/?&cid=nrcsdev11_000242"
                     title="click to consult an nrcs extension expert"
@@ -79,12 +79,28 @@ const LocationConfirmation = () => {
                     rel="noopener noreferrer"
                   >
                     NRCS Extension Expert
+                  </a>
+                  ,{" "}
+                  <a
+                    href="https://nifa.usda.gov/land-grant-colleges-and-universities-partner-website-directory"
+                    title="Link to Cooperative Extension Service office"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Cooperative Extension Service office
+                  </a>
+                  , or{" "}
+                  <a
+                    href="https://www.nacdnet.org/general-resources/conservation-district-directory/"
+                    target="_blank"
+                    rel="noreferrer noopener"
+                  >
+                    Conservation District
                   </a>{" "}
-                  for detailed guidance for detailed guidance. Cover crop
-                  incentive programs may dictate seeding rate ranges and methods
-                  and planting and termination dates. Consult your program
-                  contact to ensure your plans complyent, cultivars, and many
-                  other variables.
+                  for detailed guidance. Cover crop incentive programs may
+                  dictate seeding rate ranges and methods, and planting and
+                  termination dates. Consult your program contact to ensure your
+                  plans comply.
                 </Typography>
               </div>
             </div>

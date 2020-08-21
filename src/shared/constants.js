@@ -40,6 +40,11 @@ export const ReferenceTooltip = (props) => {
     >
       <Info fontSize="small" />
     </Tooltip>
+  ) : type === "html" ? (
+    <Tooltip interactive arrow dangerouslySetInnerHTML={props.content}>
+      {" "}
+      <Info fontSize="small" />
+    </Tooltip>
   ) : hasLink ? (
     <Tooltip title={props.title} placement="right" interactive arrow>
       <Info fontSize="small" />
