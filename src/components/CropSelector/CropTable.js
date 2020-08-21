@@ -889,7 +889,14 @@ const CropTableComponent = (props) => {
             <TableRow className="theadSecond">
               <TableCell style={{ width: "28%", backgroundColor: "#abd08f" }}>
                 <Typography variant="body1">
-                  <Button onClick={sortCropsByName}>COVER CROPS</Button>
+                  <Button onClick={sortCropsByName}>
+                    {nameSortFlag ? (
+                      <ArrowUpward fontSize="inherit" />
+                    ) : (
+                      <ArrowDownward fontSize="inherit" />
+                    )}
+                    &nbsp; COVER CROPS
+                  </Button>
                 </Typography>
               </TableCell>
               <TableCell style={{ width: "18%", backgroundColor: "#abd08f" }}>
@@ -944,8 +951,14 @@ const CropTableComponent = (props) => {
                 style={{ backgroundColor: "#abd08f", textAlign: "center" }}
               >
                 <Typography variant="body1">
-                  {" "}
-                  <Button onClick={sortBySelectedCrops}>MY LIST</Button>
+                  <Button onClick={sortBySelectedCrops}>
+                    {selectedCropsSortFlag ? (
+                      <ArrowUpward fontSize="inherit" />
+                    ) : (
+                      <ArrowDownward fontSize="inherit" />
+                    )}
+                    &nbsp;MY LIST
+                  </Button>
                 </Typography>
               </TableCell>
             </TableRow>
