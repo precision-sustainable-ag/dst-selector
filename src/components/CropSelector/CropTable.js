@@ -22,6 +22,9 @@ import {
   TableCell,
   ButtonBase,
   Tooltip,
+  Zoom,
+  makeStyles,
+  Fab,
 } from "@material-ui/core";
 
 import "../../styles/cropTable.scss";
@@ -32,11 +35,50 @@ import {
   FiberManualRecord,
   CloseRounded,
   RemoveCircle,
+  KeyboardArrowUp,
 } from "@material-ui/icons";
 import GrowthWindowComponent from "./GrowthWindow";
 import "../../styles/cropCalendarViewComponent.scss";
 import CropDetailsModalComponent from "./CropDetailsModal";
+import useScrollTrigger from "@material-ui/core/useScrollTrigger";
 import CropLegendModal from "./CropLegendModal";
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    position: "fixed",
+    bottom: theme.spacing(2),
+    right: theme.spacing(2),
+  },
+}));
+
+const ScrollTop = (props) => {
+  const { children, window } = props;
+  const classes = useStyles();
+  const trigger = useScrollTrigger({
+    disableHysteresis: true,
+    threshold: 180,
+  });
+  const handleBackToTopClick = (event) => {
+    const anchor = (event.target.ownerDocument || document).querySelector(
+      ".topHeader"
+    );
+    console.log(event.target.ownerDocument);
+    if (anchor) {
+      anchor.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  };
+  return (
+    <Zoom in={trigger}>
+      <div
+        onClick={handleBackToTopClick}
+        role="presentation"
+        className={classes.root}
+      >
+        {children}
+      </div>
+    </Zoom>
+  );
+};
 
 const CropTableComponent = (props) => {
   // let cropTableElement = document.getElementById("#primaryCropTable");
@@ -885,7 +927,7 @@ const CropTableComponent = (props) => {
       <TableContainer
         className="table-responsive calendarViewTableWrapper"
         component="div"
-        style={{ maxHeight: maxTableHeight }}
+        // style={{ maxHeight: maxTableHeight }}
       >
         <Table
           stickyHeader
@@ -1231,6 +1273,11 @@ const CropTableComponent = (props) => {
         handleLegendModal={handleLegendModal}
         disableBackdropClick={false}
       />
+      <ScrollTop {...props}>
+        <Fab color="secondary" size="small" aria-label="scroll back to top">
+          <KeyboardArrowUp />
+        </Fab>
+      </ScrollTop>
     </Fragment>
   ) : (
     <div className="table-responsive calendarViewTableWrapper">
