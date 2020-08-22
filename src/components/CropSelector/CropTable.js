@@ -62,7 +62,7 @@ const ScrollTop = (props) => {
     const anchor = (event.target.ownerDocument || document).querySelector(
       ".topHeader"
     );
-    console.log(event.target.ownerDocument);
+    // console.log(event.target.ownerDocument);
     if (anchor) {
       anchor.scrollIntoView({ behavior: "smooth", block: "center" });
     }
@@ -373,7 +373,7 @@ const CropTableComponent = (props) => {
                             </span>
                             <span
                               className="cropScientificName"
-                              style={{ color: "gray" }}
+                              style={{ color: "gray", fontWeight: "normal" }}
                             >
                               {trimString(crop.fields["Scientific Name"], 25)}
                             </span>
@@ -1274,7 +1274,7 @@ const CropTableComponent = (props) => {
         disableBackdropClick={false}
       />
       <ScrollTop {...props}>
-        <Fab color="secondary" size="small" aria-label="scroll back to top">
+        <Fab color="secondary" size="medium" aria-label="scroll back to top">
           <KeyboardArrowUp />
         </Fab>
       </ScrollTop>
