@@ -1438,7 +1438,7 @@ export const flipCoverCropName = (cropName = "") => {
   let cropNames = cropName.split(",");
 
   if (cropNames.length > 1) {
-    return `${cropNames[1]}, ${cropNames[0]}`;
+    return `${cropNames[1]} ${cropNames[0]}`;
   } else {
     return cropName;
   }
