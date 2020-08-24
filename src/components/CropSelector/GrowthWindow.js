@@ -289,7 +289,7 @@ const GrowthWindowComponent = (props) => {
           : `growthWindowCell ${id}`
       }
     >
-      <div className="legendContainer legendColor d-flex flex-direction-row ">
+      <div className="legendContainer legendColor d-flex flex-direction-row w-100">
         <Tooltip
           arrow
           title={
