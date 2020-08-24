@@ -36,49 +36,13 @@ import {
   CloseRounded,
   RemoveCircle,
   KeyboardArrowUp,
+  Sort,
 } from "@material-ui/icons";
 import GrowthWindowComponent from "./GrowthWindow";
 import "../../styles/cropCalendarViewComponent.scss";
 import CropDetailsModalComponent from "./CropDetailsModal";
 import useScrollTrigger from "@material-ui/core/useScrollTrigger";
 import CropLegendModal from "./CropLegendModal";
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    position: "fixed",
-    bottom: theme.spacing(2),
-    right: theme.spacing(2),
-  },
-}));
-
-const ScrollTop = (props) => {
-  const { children, window } = props;
-  const classes = useStyles();
-  const trigger = useScrollTrigger({
-    disableHysteresis: true,
-    threshold: 180,
-  });
-  const handleBackToTopClick = (event) => {
-    const anchor = (event.target.ownerDocument || document).querySelector(
-      ".topHeader"
-    );
-    // console.log(event.target.ownerDocument);
-    if (anchor) {
-      anchor.scrollIntoView({ behavior: "smooth", block: "center" });
-    }
-  };
-  return (
-    <Zoom in={trigger}>
-      <div
-        onClick={handleBackToTopClick}
-        role="presentation"
-        className={classes.root}
-      >
-        {children}
-      </div>
-    </Zoom>
-  );
-};
 
 const CropTableComponent = (props) => {
   // let cropTableElement = document.getElementById("#primaryCropTable");
@@ -940,6 +904,7 @@ const CropTableComponent = (props) => {
                 style={{
                   backgroundColor: "white",
                   color: "white",
+                  visibility: "hidden",
                 }}
                 colSpan="2"
               >
@@ -975,9 +940,15 @@ const CropTableComponent = (props) => {
                         }}
                       >
                         {props.sortPreference === "asc" ? (
-                          <ArrowDownward fontSize="inherit" />
+                          <Sort
+                            style={{ color: CustomStyles().progressColor }}
+                          />
                         ) : (
-                          <ArrowUpward fontSize="inherit" />
+                          <Sort
+                            style={{
+                              color: CustomStyles().secondaryProgressBtnColor,
+                            }}
+                          />
                         )}
                         &nbsp; COVER CROPPING GOALS
                       </Button>
@@ -1087,6 +1058,7 @@ const CropTableComponent = (props) => {
                 style={{
                   backgroundColor: "white",
                   color: "white",
+                  visibility: "hidden",
                 }}
               >
                 blank
@@ -1103,9 +1075,17 @@ const CropTableComponent = (props) => {
                 <Typography variant="body1">
                   <Button onClick={sortCropsByName}>
                     {nameSortFlag ? (
-                      <ArrowUpward fontSize="inherit" />
+                      <Sort
+                        style={{
+                          color: CustomStyles().secondaryProgressBtnColor,
+                        }}
+                      />
                     ) : (
-                      <ArrowDownward fontSize="inherit" />
+                      <Sort
+                        style={{
+                          color: CustomStyles().progressColor,
+                        }}
+                      />
                     )}
                     &nbsp; COVER CROPS
                   </Button>
@@ -1180,9 +1160,17 @@ const CropTableComponent = (props) => {
                 <Typography variant="body1">
                   <Button onClick={sortBySelectedCrops}>
                     {selectedCropsSortFlag ? (
-                      <ArrowUpward fontSize="inherit" />
+                      <Sort
+                        style={{
+                          color: CustomStyles().secondaryProgressBtnColor,
+                        }}
+                      />
                     ) : (
-                      <ArrowDownward fontSize="inherit" />
+                      <Sort
+                        style={{
+                          color: CustomStyles().progressColor,
+                        }}
+                      />
                     )}
                     &nbsp;MY LIST
                   </Button>
@@ -1273,11 +1261,6 @@ const CropTableComponent = (props) => {
         handleLegendModal={handleLegendModal}
         disableBackdropClick={false}
       />
-      <ScrollTop {...props}>
-        <Fab color="secondary" size="medium" aria-label="scroll back to top">
-          <KeyboardArrowUp />
-        </Fab>
-      </ScrollTop>
     </Fragment>
   ) : (
     <div className="table-responsive calendarViewTableWrapper">
