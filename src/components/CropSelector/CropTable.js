@@ -236,7 +236,7 @@ const CropTableComponent = (props) => {
                             key={index}
                             style={index === 11 ? { textAlign: "right" } : {}}
                           >
-                            {month}
+                            <Typography variant="body1">{month}</Typography>
                           </td>
                         ) : (
                           <td key={index}></td>
