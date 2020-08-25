@@ -796,8 +796,8 @@ const CropSidebarComponent = (props) => {
                                 <Tooltip
                                   arrow
                                   title={
-                                    <div className="filterTooltip">
-                                      <p>{value.toUpperCase()}</p>
+                                    <div className="filterTooltip text-capitalize">
+                                      <p>{value}</p>
                                     </div>
                                   }
                                   placement="right"
@@ -817,14 +817,6 @@ const CropSidebarComponent = (props) => {
                                   >{`Goal ${index + 1}`}</Typography>
                                 </Tooltip>
                               </div>
-                              {/* <Typography
-                                variant="body1"
-                                style={{
-                                  cursor: isDragged ? "grabbing" : "grab",
-                                }}
-                              >
-                                <DragHandle />
-                              </Typography> */}
                             </div>
                           </li>
                         );
@@ -871,12 +863,6 @@ const CropSidebarComponent = (props) => {
                     />
                   </ListItem>
                   <ListItem className={classes.nested}>
-                    {/* <DatePicker
-        label="Start Date"
-        value={state.cashCropData.dateRange.startDate}
-        onChange={handleDateChange}
-        animateYearScrolling
-      /> */}
                     <TextField
                       label="Planting to Harvest"
                       value={`${state.cashCropData.dateRange.startDate} - ${state.cashCropData.dateRange.endDate}`}
@@ -980,21 +966,7 @@ const CropSidebarComponent = (props) => {
                 ""
               )}
 
-              <ListItem
-                button
-                onClick={() => handleClick(2)}
-                style={
-                  props.from === "table"
-                    ? cropFiltersOpen
-                      ? { backgroundColor: CustomStyles().lightGreen }
-                      : { backgroundColor: "inherit" }
-                    : { backgroundColor: CustomStyles().lightGreen }
-                }
-              >
-                <ListItemText primary="COVER CROP PROPERTIES" />
-                {cropFiltersOpen ? <ExpandLess /> : <ExpandMore />}
-              </ListItem>
-              <Collapse in={cropFiltersOpen} timeout="auto">
+              {props.from === "explorer" ? (
                 <List component="div" disablePadding className="cropFilters">
                   {filtersSelected ? (
                     <ListItem onClick={() => {}}>
@@ -1269,7 +1241,325 @@ const CropSidebarComponent = (props) => {
                     }
                   })}
                 </List>
-              </Collapse>
+              ) : (
+                <Fragment>
+                  <ListItem
+                    button
+                    onClick={() => handleClick(2)}
+                    style={
+                      props.from === "table"
+                        ? cropFiltersOpen
+                          ? { backgroundColor: CustomStyles().lightGreen }
+                          : { backgroundColor: "inherit" }
+                        : { backgroundColor: CustomStyles().lightGreen }
+                    }
+                  >
+                    <ListItemText primary="COVER CROP PROPERTIES" />
+                    {cropFiltersOpen ? <ExpandLess /> : <ExpandMore />}
+                  </ListItem>
+                  <Collapse in={cropFiltersOpen} timeout="auto">
+                    <List
+                      component="div"
+                      disablePadding
+                      className="cropFilters"
+                    >
+                      {filtersSelected ? (
+                        <ListItem onClick={() => {}}>
+                          <ListItemText
+                            primary={
+                              <Typography
+                                variant="button"
+                                className="text-uppercase text-left text-danger font-weight-bold"
+                                onClick={resetAllFilters}
+                                style={{ cursor: "pointer" }}
+                              >
+                                Clear Filters
+                              </Typography>
+                            }
+                          />
+                        </ListItem>
+                      ) : (
+                        <ListItem></ListItem>
+                      )}
+
+                      {sidebarFilters.map((filter, index) => {
+                        if (
+                          filter.name !== "Soil Conditions" &&
+                          filter.name !== "Disease & Non Weed Pests"
+                        ) {
+                          // if (true) {
+                          return (
+                            <Fragment key={index}>
+                              {filter.description !== null ? (
+                                <Tooltip
+                                  interactive
+                                  arrow
+                                  placement="right-start"
+                                  title={
+                                    <div className="filterTooltip">
+                                      <p>{filter.description}</p>
+                                    </div>
+                                  }
+                                  key={`tooltip${index}`}
+                                >
+                                  <ListItem
+                                    // className={classes.nested}
+                                    className={
+                                      sidebarFiltersOpen[index].open
+                                        ? "filterOpen"
+                                        : "filterClose"
+                                    }
+                                    component="div"
+                                    onClick={() =>
+                                      toggleSidebarFilterItems(index)
+                                    }
+                                  >
+                                    <ListItemText
+                                      primary={
+                                        <Typography variant="body2">
+                                          {filter.name.toUpperCase()}
+                                        </Typography>
+                                      }
+                                    />
+                                    {sidebarFiltersOpen[index].open ? (
+                                      <ExpandLess />
+                                    ) : (
+                                      <ExpandMore />
+                                    )}
+                                  </ListItem>
+                                </Tooltip>
+                              ) : (
+                                <ListItem
+                                  // className={classes.nested}
+                                  className={
+                                    sidebarFiltersOpen[index].open
+                                      ? "filterOpen"
+                                      : "filterClose"
+                                  }
+                                  component="div"
+                                  onClick={() =>
+                                    toggleSidebarFilterItems(index)
+                                  }
+                                >
+                                  <ListItemText
+                                    primary={
+                                      <Typography variant="body2">
+                                        {filter.name.toUpperCase()}
+                                      </Typography>
+                                    }
+                                  />
+                                  {sidebarFiltersOpen[index].open ? (
+                                    <ExpandLess />
+                                  ) : (
+                                    <ExpandMore />
+                                  )}
+                                </ListItem>
+                              )}
+
+                              <Collapse
+                                in={sidebarFiltersOpen[index].open}
+                                timeout="auto"
+                              >
+                                <List component="div" disablePadding>
+                                  <ListItem
+                                    // className={classes.subNested}
+                                    // title={sidebarFilters[index].description}
+                                    component="div"
+                                  >
+                                    {filter.name.toUpperCase() ===
+                                    "COVER CROP TYPE" ? (
+                                      <CoverCropType
+                                        ref={coverCropTypeRef}
+                                        filters={sidebarFilters[index]}
+                                        sidebarFilterOptions={
+                                          sidebarFilterOptions
+                                        }
+                                        setSidebarFilterOptions={
+                                          setSidebarFilterOptions
+                                        }
+                                        resetAllFilters={resetAllFilters}
+                                        {...props}
+                                      />
+                                    ) : (
+                                      ""
+                                    )}
+
+                                    {filter.name.toUpperCase() ===
+                                    "ENVIRONMENTAL TOLERANCES" ? (
+                                      <EnvironmentalTolerance
+                                        ref={envTolRef}
+                                        filters={sidebarFilters[index]}
+                                        sidebarFilterOptions={
+                                          sidebarFilterOptions
+                                        }
+                                        setSidebarFilterOptions={
+                                          setSidebarFilterOptions
+                                        }
+                                        resetAllFilters={resetAllFilters}
+                                        {...props}
+                                      />
+                                    ) : (
+                                      ""
+                                    )}
+
+                                    {filter.name.toUpperCase() === "SEEDS" ? (
+                                      <Seeds
+                                        ref={seedsRef}
+                                        filters={sidebarFilters[index]}
+                                        sidebarFilterOptions={
+                                          sidebarFilterOptions
+                                        }
+                                        setSidebarFilterOptions={
+                                          setSidebarFilterOptions
+                                        }
+                                        resetAllFilters={resetAllFilters}
+                                        {...props}
+                                      />
+                                    ) : (
+                                      ""
+                                    )}
+                                    {filter.name.toUpperCase() ===
+                                    "SEEDING METHODS" ? (
+                                      <SeedingMethods
+                                        ref={seedingMethodRef}
+                                        filters={sidebarFilters[index]}
+                                        sidebarFilterOptions={
+                                          sidebarFilterOptions
+                                        }
+                                        setSidebarFilterOptions={
+                                          setSidebarFilterOptions
+                                        }
+                                        resetAllFilters={resetAllFilters}
+                                        {...props}
+                                      />
+                                    ) : (
+                                      ""
+                                    )}
+
+                                    {filter.name.toUpperCase() ===
+                                    "SOIL CONDITIONS" ? (
+                                      <SoilConditions
+                                        filters={sidebarFilters[index]}
+                                        sidebarFilterOptions={
+                                          sidebarFilterOptions
+                                        }
+                                        setSidebarFilterOptions={
+                                          setSidebarFilterOptions
+                                        }
+                                        resetAllFilters={resetAllFilters}
+                                        filterSidebarItems={filterSidebarItems}
+                                        {...props}
+                                      />
+                                    ) : (
+                                      ""
+                                    )}
+
+                                    {filter.name.toUpperCase() === "GROWTH" ? (
+                                      <Grid container spacing={1}>
+                                        <Grid item>
+                                          <Growth
+                                            ref={growthRef}
+                                            filters={sidebarFilters[index]}
+                                            sidebarFilterOptions={
+                                              sidebarFilterOptions
+                                            }
+                                            setSidebarFilterOptions={
+                                              setSidebarFilterOptions
+                                            }
+                                            resetAllFilters={resetAllFilters}
+                                            {...props}
+                                          />
+                                        </Grid>
+                                      </Grid>
+                                    ) : (
+                                      ""
+                                    )}
+                                    {filter.name.toUpperCase() === "ROOTS" ? (
+                                      <Grid container spacing={1}>
+                                        <Grid item>
+                                          <Roots
+                                            ref={rootsRef}
+                                            filters={sidebarFilters[index]}
+                                            sidebarFilterOptions={
+                                              sidebarFilterOptions
+                                            }
+                                            setSidebarFilterOptions={
+                                              setSidebarFilterOptions
+                                            }
+                                            resetAllFilters={resetAllFilters}
+                                            {...props}
+                                          />
+                                        </Grid>
+                                      </Grid>
+                                    ) : (
+                                      ""
+                                    )}
+                                    {filter.name.toUpperCase() ===
+                                    "TERMINATION METHODS" ? (
+                                      <TerminationMethods
+                                        ref={terminationRef}
+                                        filters={sidebarFilters[index]}
+                                        sidebarFilterOptions={
+                                          sidebarFilterOptions
+                                        }
+                                        setSidebarFilterOptions={
+                                          setSidebarFilterOptions
+                                        }
+                                        resetAllFilters={resetAllFilters}
+                                        {...props}
+                                      />
+                                    ) : (
+                                      ""
+                                    )}
+                                    {filter.name.toUpperCase() ===
+                                    "BENEFICIALS" ? (
+                                      <Beneficials
+                                        ref={beneficialsRef}
+                                        filters={sidebarFilters[index]}
+                                        sidebarFilterOptions={
+                                          sidebarFilterOptions
+                                        }
+                                        setSidebarFilterOptions={
+                                          setSidebarFilterOptions
+                                        }
+                                        resetAllFilters={resetAllFilters}
+                                        {...props}
+                                      />
+                                    ) : (
+                                      ""
+                                    )}
+                                    {filter.name.toUpperCase() === "WEEDS" ? (
+                                      <Weeds
+                                        ref={weedsRef}
+                                        filters={sidebarFilters[index]}
+                                        sidebarFilterOptions={
+                                          sidebarFilterOptions
+                                        }
+                                        setSidebarFilterOptions={
+                                          setSidebarFilterOptions
+                                        }
+                                        resetAllFilters={resetAllFilters}
+                                        {...props}
+                                      />
+                                    ) : (
+                                      ""
+                                    )}
+                                    {/* code at end of page */}
+                                    {filter.name.toUpperCase() ===
+                                    "DISEASE & NON WEED PESTS"
+                                      ? ""
+                                      : ""}
+                                  </ListItem>
+                                </List>
+                              </Collapse>
+                            </Fragment>
+                          );
+                        }
+                      })}
+                    </List>
+                  </Collapse>
+                </Fragment>
+              )}
             </Fragment>
           ) : (
             ""
