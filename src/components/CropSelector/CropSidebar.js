@@ -25,6 +25,7 @@ import {
   CalendarTodayRounded,
   CalendarToday,
   Compare,
+  DragHandle,
 } from "@material-ui/icons";
 import ListIcon from "@material-ui/icons/List";
 import { CustomStyles } from "../../shared/constants";
@@ -622,13 +623,13 @@ const CropSidebarComponent = (props) => {
             color="secondary"
             startIcon={
               props.comparisonView ? (
-                <Compare style={{ fontSize: "larger" }} />
-              ) : (
                 <ListIcon style={{ fontSize: "larger" }} />
+              ) : (
+                <Compare style={{ fontSize: "larger" }} />
               )
             }
           >
-            {props.comparisonView ? "COMPARISON VIEW" : "LIST VIEW"}
+            {props.comparisonView ? "LIST VIEW" : "COMPARISON VIEW"}
           </Button>
         </div>
       ) : props.from === "table" ? (
@@ -730,7 +731,29 @@ const CropSidebarComponent = (props) => {
                   <Fragment>
                     <List component="div" disablePadding>
                       <ListItem className={classes.nested}>
-                        <ListItemText primary="Goal Priority Order" />
+                        <ListItemText
+                          primary={
+                            <div>
+                              <div>
+                                <Typography variant="body1">
+                                  {" "}
+                                  Goal Priority Order
+                                </Typography>
+                              </div>
+                              <div>
+                                <Typography
+                                  variant="body2"
+                                  style={{
+                                    fontWeight: "normal",
+                                    fontSize: "10pt",
+                                  }}
+                                >
+                                  Click & drag to reorder
+                                </Typography>
+                              </div>
+                            </div>
+                          }
+                        />
                       </ListItem>
                     </List>
                     <ListMovable
@@ -753,43 +776,66 @@ const CropSidebarComponent = (props) => {
                           {children}
                         </ol>
                       )}
-                      renderItem={({ value, props, isDragged, isSelected }) => (
-                        <li
-                          {...props}
-                          style={{
-                            ...props.style,
-                            cursor: isDragged ? "grabbing" : "grab",
-                            fontSize: "10pt",
-                            fontWeight:
-                              isDragged || isSelected ? "700" : "normal",
-                            color: "#48a8ab",
-                          }}
-                        >
-                          {value.toUpperCase()}
-                        </li>
-                      )}
+                      renderItem={({
+                        value,
+                        props,
+                        isDragged,
+                        isSelected,
+                        index,
+                      }) => {
+                        let i = 1;
+                        return (
+                          <li
+                            {...props}
+                            style={{
+                              ...props.style,
+                            }}
+                          >
+                            <div className="d-flex w-100 flex-row justify-content-between align-items-center">
+                              <div>
+                                <Tooltip
+                                  arrow
+                                  title={
+                                    <div className="filterTooltip">
+                                      <p>{value.toUpperCase()}</p>
+                                    </div>
+                                  }
+                                  placement="right"
+                                >
+                                  <Typography
+                                    variant="body1"
+                                    style={{
+                                      cursor: isDragged ? "grabbing" : "grab",
+                                      fontSize: "10pt",
+                                      fontWeight:
+                                        isDragged || isSelected
+                                          ? "700"
+                                          : "normal",
+                                      color: "#48a8ab",
+                                      width: "100%",
+                                    }}
+                                  >{`Goal ${index + 1}`}</Typography>
+                                </Tooltip>
+                              </div>
+                              {/* <Typography
+                                variant="body1"
+                                style={{
+                                  cursor: isDragged ? "grabbing" : "grab",
+                                }}
+                              >
+                                <DragHandle />
+                              </Typography> */}
+                            </div>
+                          </li>
+                        );
+                      }}
                     />
-
-                    <ListItem className={classes.nested}>
-                      <ListItemText
-                        primary="Click & drag to reorder"
-                        style={{
-                          fontWeight: "normal",
-                          fontSize: "10pt",
-                        }}
-                        disableTypography
-                      />
-                    </ListItem>
-
-                    {/* <Button onClick={() => changeProgress("decrement")}>
-                      Click to edit
-                    </Button> */}
 
                     <ListItem className={classes.nested}>
                       <ListItemText disableTypography>
                         <Typography
                           variant="button"
-                          className="font-weight-bold text-uppercase text-left"
+                          className="text-uppercase text-left text-danger font-weight-bold"
                           onClick={() => changeProgress("decrement")}
                           style={{ cursor: "pointer" }}
                         >
@@ -954,11 +1000,14 @@ const CropSidebarComponent = (props) => {
                     <ListItem onClick={() => {}}>
                       <ListItemText
                         primary={
-                          <Button size="small" onClick={resetAllFilters}>
-                            <small className="text-danger font-weight-bold">
-                              CLEAR FILTERS
-                            </small>
-                          </Button>
+                          <Typography
+                            variant="button"
+                            className="text-uppercase text-left text-danger font-weight-bold"
+                            onClick={resetAllFilters}
+                            style={{ cursor: "pointer" }}
+                          >
+                            Clear Filters
+                          </Typography>
                         }
                       />
                     </ListItem>
@@ -967,7 +1016,10 @@ const CropSidebarComponent = (props) => {
                   )}
 
                   {sidebarFilters.map((filter, index) => {
-                    if (filter.name !== "Soil Conditions") {
+                    if (
+                      filter.name !== "Soil Conditions" &&
+                      filter.name !== "Disease & Non Weed Pests"
+                    ) {
                       // if (true) {
                       return (
                         <Fragment key={index}>
