@@ -52,10 +52,10 @@ const GoalTag = (props) => {
       enterDelay={1000}
       enterNextDelay={1000}
       id={`tooltip-${props.id}`}
-      placement="top-end"
+      placement="top"
       arrow
       title={
-        <div className="tooltipTextContainer text-center">
+        <div className="filterTooltip">
           <p>{goalDescription}</p>
         </div>
       }
