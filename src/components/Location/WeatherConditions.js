@@ -82,7 +82,7 @@ const WeatherConditions = (props) => {
   const [months, setMonths] = useState([]);
   const [currentMonthFull, setCurrentMonthFull] = useState("NOVEMBER");
   const [didChange, setDidChange] = useState(false);
-
+  const [anyValuesChanged, setAnyValuesChanged] = useState(false);
   const [caller, setCaller] = React.useState("");
 
   const [weatherDataShadow, setWeatherDataShadow] = useState(state.weatherData);
@@ -212,7 +212,42 @@ const WeatherConditions = (props) => {
   };
 
   const [modalBtnDisabled, setModalBtnDisabled] = useState(false);
+  const checkIfAnythingChanged = () => {
+    if (
+      firstFrostMonth === weatherDataShadow.averageFrost.firstFrostDate.month &&
+      parseInt(firstFrostDay) ===
+        parseInt(weatherDataShadow.averageFrost.firstFrostDate.day) &&
+      lastFrostMonth === weatherDataShadow.averageFrost.lastFrostDate.month &&
+      lastFrostDay === weatherDataShadow.averageFrost.lastFrostDate.day &&
+      parseFloat(averagePrecipitation.thisMonth) ===
+        parseFloat(weatherDataShadow.averagePrecipitation.thisMonth) &&
+      parseFloat(averagePrecipitation.annual) ===
+        parseFloat(weatherDataShadow.averagePrecipitation.annual) &&
+      parseInt(frostFreeDays) === parseInt(weatherDataShadow.frostFreeDays)
+    ) {
+      // return false;
+      setAnyValuesChanged(false);
+    } else {
+      // return true;
+      setAnyValuesChanged(true);
+    }
+  };
 
+  useEffect(() => {
+    // console.log(_.isEqual(state.weatherData, weatherDataShadow));
+    if (!state.ajaxInProgress) {
+      checkIfAnythingChanged();
+    }
+  }, [
+    weatherDataShadow,
+    state.ajaxInProgress,
+    firstFrostDay,
+    firstFrostMonth,
+    lastFrostDay,
+    lastFrostMonth,
+    averagePrecipitation,
+    frostFreeDays,
+  ]);
   return (
     <div className="row">
       <div className="col-12">
@@ -223,11 +258,14 @@ const WeatherConditions = (props) => {
       <div className="mt-2 col-12 text-left">
         <Typography
           variant="button"
-          className="font-weight-bold text-uppercase text-left"
+          className={`font-weight-bold text-uppercase text-left ${
+            anyValuesChanged ? `text-danger` : ``
+          }`}
           onClick={handleModalOpen}
           style={{ cursor: "pointer" }}
         >
           &nbsp;Click To Edit
+          {anyValuesChanged ? `, values changed` : ""}
         </Typography>
       </div>
       <div className="mt-3 col-12 row">
@@ -433,6 +471,7 @@ const WeatherConditions = (props) => {
                         {firstFrostMonth !==
                         weatherDataShadow.averageFrost.firstFrostDate.month ? (
                           <Button
+                            className="text-danger"
                             size="small"
                             onClick={() =>
                               setFirstFrostMonth(
@@ -480,6 +519,7 @@ const WeatherConditions = (props) => {
                           weatherDataShadow.averageFrost.firstFrostDate.day
                         ) ? (
                           <Button
+                            className="text-danger"
                             size="small"
                             onClick={() =>
                               setFirstFrostDay(
@@ -533,6 +573,7 @@ const WeatherConditions = (props) => {
                         {lastFrostMonth !==
                         weatherDataShadow.averageFrost.lastFrostDate.month ? (
                           <Button
+                            className="text-danger"
                             size="small"
                             onClick={() =>
                               setLastFrostMonth(
@@ -579,6 +620,7 @@ const WeatherConditions = (props) => {
                           weatherDataShadow.averageFrost.lastFrostDate.day
                         ) ? (
                           <Button
+                            className="text-danger"
                             size="small"
                             onClick={() =>
                               setLastFrostDay(
@@ -635,6 +677,7 @@ const WeatherConditions = (props) => {
                           weatherDataShadow.averagePrecipitation.thisMonth
                         ) ? (
                           <Button
+                            className="text-danger"
                             size="small"
                             onClick={() =>
                               setAveragePrecipitation({
@@ -683,6 +726,7 @@ const WeatherConditions = (props) => {
                           weatherDataShadow.averagePrecipitation.annual
                         ) ? (
                           <Button
+                            className="text-danger"
                             size="small"
                             onClick={() =>
                               setAveragePrecipitation({
@@ -738,6 +782,7 @@ const WeatherConditions = (props) => {
                         {parseInt(frostFreeDays) !==
                         parseInt(weatherDataShadow.frostFreeDays) ? (
                           <Button
+                            className="text-danger"
                             size="small"
                             onClick={() =>
                               setFrostFreeDays(
@@ -780,3 +825,16 @@ const WeatherConditions = (props) => {
 };
 
 export default WeatherConditions;
+
+const isObject = (v) => v && typeof v === "object";
+
+function getDifference(a, b) {
+  return Object.assign(
+    ...Array.from(new Set([...Object.keys(a), ...Object.keys(b)]), (k) => ({
+      [k]:
+        isObject(a[k]) && isObject(b[k])
+          ? getDifference(a[k], b[k])
+          : a[k] === b[k],
+    }))
+  );
+}
