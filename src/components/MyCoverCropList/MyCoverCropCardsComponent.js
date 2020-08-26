@@ -9,6 +9,7 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import { Context } from "../../store/Store";
 import CropDetailsModalComponent from "../CropSelector/CropDetailsModal";
+import { useSnackbar } from "notistack";
 
 const useStyles = makeStyles({
   card: {
@@ -28,6 +29,7 @@ const MyCoverCropCardsComponent = (props) => {
 
   const [modalOpen, setModalOpen] = useState(false);
   const [modalData, setModalData] = useState({});
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const handleModalOpen = () => {
     // put data inside modal
 
@@ -36,7 +38,7 @@ const MyCoverCropCardsComponent = (props) => {
     setModalOpen(true);
   };
 
-  const removeCrop = () => {
+  const removeCrop = (cropName) => {
     var removeIndex = state.selectedCrops
       .map(function (item) {
         return item.btnId;
@@ -56,10 +58,11 @@ const MyCoverCropCardsComponent = (props) => {
         type: "SELECTED_CROPS_MODIFIER",
         data: {
           selectedCrops: selectedCropsCopy,
-          snackOpen: true,
+          snackOpen: false,
           snackMessage: `Removed`,
         },
       });
+      enqueueSnackbar(`${cropName} Removed`);
 
       // this.state.selectedCrops.splice(removeIndex, 1);
     }
@@ -110,7 +113,7 @@ const MyCoverCropCardsComponent = (props) => {
             textAlign: "center",
             padding: "0.5em",
           }}
-          onClick={removeCrop}
+          onClick={() => removeCrop(data["Cover Crop Name"])}
         >
           <Typography
             variant="body2"
