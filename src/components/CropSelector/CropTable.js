@@ -249,34 +249,34 @@ const CropTableComponent = (props) => {
         ) : (
           ""
         )}
-
         <TableCell style={{ maxWidth: "150px", textAlign: "center" }}>
-          <LightButton
-            id={`cartBtn${indexKey}`}
-            style={{
-              borderRadius: CustomStyles().nonRoundedRadius,
-              width: "150px",
-            }}
-            className={
-              selectedBtns.includes(crop.fields.id)
-                ? "activeCartBtn"
-                : "inactiveCartBtn"
-            }
-            onClick={() => {
-              addCropToBasket(
-                crop.fields["id"],
-                crop.fields["Cover Crop Name"],
-                `cartBtn${indexKey}`,
-                crop.fields
-              );
-            }}
-          >
-            {selectedBtns.includes(crop.fields.id) ? "ADDED" : "ADD TO LIST"}
-          </LightButton>{" "}
-          <br />
-          <Button size="small" onClick={() => handleModalOpen(crop)}>
-            View Details
-          </Button>
+          <div className="d-flex w-100 justify-content-center align-items-center flex-column">
+            <LightButton
+              id={`cartBtn${indexKey}`}
+              style={{
+                borderRadius: CustomStyles().nonRoundedRadius,
+                width: "150px",
+              }}
+              className={
+                selectedBtns.includes(crop.fields.id)
+                  ? "activeCartBtn"
+                  : "inactiveCartBtn"
+              }
+              onClick={() => {
+                addCropToBasket(
+                  crop.fields["id"],
+                  crop.fields["Cover Crop Name"],
+                  `cartBtn${indexKey}`,
+                  crop.fields
+                );
+              }}
+            >
+              {selectedBtns.includes(crop.fields.id) ? "ADDED" : "ADD TO LIST"}
+            </LightButton>{" "}
+            <Button size="small" onClick={() => handleModalOpen(crop)}>
+              View Details
+            </Button>
+          </div>
         </TableCell>
       </Fragment>
     );
@@ -300,68 +300,85 @@ const CropTableComponent = (props) => {
           ? activeCropData.map((crop, index) => {
               if (crop.fields["Zone Decision"] === "Include")
                 return (
-                  <Fragment>
+                  <Fragment key={index}>
                     <TableRow>
                       <TableCell colSpan={42}></TableCell>
                     </TableRow>
                     <TableRow key={`croprow${index}`} id={crop.fields["id"]}>
                       <TableCell
                         style={{
-                          display: "flex",
-                          flexDirection: "row",
+                          height:
+                            crop.fields["Cover Crop Group"].toLowerCase() ===
+                            "legume"
+                              ? `146px`
+                              : `auto`,
                         }}
                       >
-                        {crop.fields["Image Data"] ? (
-                          <CropImage
-                            present={true}
-                            src={
-                              crop.fields["Image Data"]["Key Thumbnail"]
-                                ? `/images/Cover Crop Photos/${crop.fields["Image Data"]["Directory"]}/${crop.fields["Image Data"]["Key Thumbnail"]}`
-                                : "https://placehold.it/100x100"
-                            }
-                            alt={crop.fields["Cover Crop Name"]}
-                          />
-                        ) : (
-                          <CropImage present={false} />
-                        )}
-
-                        <div className="cropDetailsText" style={{}}>
-                          <div className="part1_ut">
-                            <span className="cropName font-weight-lighter">
-                              <Typography variant="h6">
-                                {" "}
-                                {flipCoverCropName(
-                                  crop.fields["Cover Crop Name"]
-                                )}
-                              </Typography>
-                            </span>
-                            <span
-                              className="cropScientificName"
-                              style={{ color: "gray", fontWeight: "normal" }}
-                            >
-                              {trimString(crop.fields["Scientific Name"], 25)}
-                            </span>
-                            <span
-                              className="cropCategory text-uppercase"
-                              style={{ color: "gray" }}
-                            >
-                              {crop.fields["Cover Crop Group"]}
-                            </span>
+                        <div className="container-fluid">
+                          <div className="row">
+                            <div className="col-12 col-md-4 pr-md-0 pl-md-1">
+                              {crop.fields["Image Data"] ? (
+                                <CropImage
+                                  present={true}
+                                  src={
+                                    crop.fields["Image Data"]["Key Thumbnail"]
+                                      ? `/images/Cover Crop Photos/Thumbs/${crop.fields["Image Data"]["Directory"]}/${crop.fields["Image Data"]["Key Thumbnail"]}`
+                                      : "https://placehold.it/100x100"
+                                  }
+                                  alt={crop.fields["Cover Crop Name"]}
+                                />
+                              ) : (
+                                <CropImage present={false} />
+                              )}
+                            </div>
+                            <div className="col-12 col-md-8 row pl-md-0 pr-md-1">
+                              <div className="col-12 p-md-0">
+                                <Typography variant="h6">
+                                  {flipCoverCropName(
+                                    crop.fields["Cover Crop Name"]
+                                  )}
+                                </Typography>
+                              </div>
+                              <div className="col-12 p-md-0">
+                                <Typography
+                                  variant="body1"
+                                  style={{
+                                    color: "gray",
+                                    fontWeight: "normal",
+                                    fontStyle: "italic",
+                                    fontSize: "small",
+                                  }}
+                                >
+                                  {trimString(
+                                    crop.fields["Scientific Name"],
+                                    25
+                                  )}
+                                </Typography>
+                              </div>
+                              <div className="col-12 p-md-0">
+                                <Typography
+                                  variant="subtitle2"
+                                  className="text-uppercase"
+                                  style={{ color: "gray" }}
+                                >
+                                  {crop.fields["Cover Crop Group"]}
+                                </Typography>
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </TableCell>
-                      {/* <TableCell style={{ textAlign: "left" }}>
-                        <div>
-                          <table>
+                      <TableCell style={{ textAlign: "left" }}>
+                        <table>
+                          <tbody>
                             <tr>
                               <td>
-                                {" "}
                                 <Typography
                                   variant="subtitle2"
                                   component="b"
-                                  className="font-weight-bold"
+                                  className=""
                                 >
-                                  C TO N RATIO:
+                                  C to N Ratio:
                                 </Typography>
                               </td>
                               <td>
@@ -370,31 +387,11 @@ const CropTableComponent = (props) => {
                                 </Typography>
                               </td>
                             </tr>
-                          </table>
-                        </div>
-                      </TableCell> */}
-                      <TableCell style={{ textAlign: "left" }}>
-                        <div className="container-fluid">
-                          <div className="row">
-                            <div className="col-5 p-0">
-                              <Typography
-                                variant="subtitle2"
-                                component="b"
-                                className=""
-                              >
-                                C to N Ratio:
-                              </Typography>
-                            </div>
-                            <div className="col-7 p-0">
-                              <Typography variant="subtitle2" component="b">
-                                {crop.fields["C to N Ratio"]}
-                              </Typography>
-                            </div>
 
                             {crop.fields["Cover Crop Group"].toLowerCase() ===
                             "legume" ? (
-                              <Fragment>
-                                <div className="col-5 p-0">
+                              <tr>
+                                <td>
                                   <Typography
                                     variant="subtitle2"
                                     component="b"
@@ -402,8 +399,8 @@ const CropTableComponent = (props) => {
                                   >
                                     N FIXED:
                                   </Typography>
-                                </div>
-                                <div className="col-7 p-0">
+                                </td>
+                                <td>
                                   <Tooltip
                                     arrow
                                     placement="right"
@@ -426,53 +423,61 @@ const CropTableComponent = (props) => {
                                       }
                                     </Typography>
                                   </Tooltip>
-                                </div>
-                              </Fragment>
+                                </td>
+                              </tr>
                             ) : (
                               ""
                             )}
-
-                            <div className="col-5 p-0">
-                              <Typography
-                                variant="subtitle2"
-                                component="b"
-                                className=""
-                              >
-                                DRY MATTER:
-                              </Typography>
-                            </div>
-                            <div className="col-7 p-0">
-                              <Tooltip arrow placement="right" title="lbs/A/y">
-                                <Typography variant="subtitle2" component="b">
-                                  {crop.fields["Dry Matter Min (lbs/A/y)"]}-
-                                  {crop.fields["Dry Matter Max (lbs/A/y)"]}
+                            <tr>
+                              <td>
+                                {" "}
+                                <Typography
+                                  variant="subtitle2"
+                                  component="b"
+                                  className=""
+                                >
+                                  DRY MATTER:
                                 </Typography>
-                              </Tooltip>
-                            </div>
-                            <div className="col-5 p-0">
-                              <Typography
-                                variant="subtitle2"
-                                component="b"
-                                className=""
-                              >
-                                DURATION:
-                              </Typography>
-                            </div>
-                            <div className="col-7 p-0">
-                              <Typography
-                                variant="subtitle2"
-                                component="b"
-                                className="text-uppercase"
-                              >
-                                {crop.fields["Duration"]
-                                  .toString()
-                                  .toLowerCase() === "short-lived perennial"
-                                  ? "Perennial"
-                                  : crop.fields["Duration"].toString()}
-                              </Typography>
-                            </div>
-                          </div>
-                        </div>
+                              </td>
+                              <td>
+                                <Tooltip
+                                  arrow
+                                  placement="right"
+                                  title="lbs/A/y"
+                                >
+                                  <Typography variant="subtitle2" component="b">
+                                    {crop.fields["Dry Matter Min (lbs/A/y)"]}-
+                                    {crop.fields["Dry Matter Max (lbs/A/y)"]}
+                                  </Typography>
+                                </Tooltip>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <Typography
+                                  variant="subtitle2"
+                                  component="b"
+                                  className=""
+                                >
+                                  DURATION:
+                                </Typography>
+                              </td>
+                              <td>
+                                <Typography
+                                  variant="subtitle2"
+                                  component="b"
+                                  className="text-uppercase"
+                                >
+                                  {crop.fields["Duration"]
+                                    .toString()
+                                    .toLowerCase() === "short-lived perennial"
+                                    ? "Perennial"
+                                    : crop.fields["Duration"].toString()}
+                                </Typography>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </TableCell>
                       {getCardFlex(crop, index)}
                     </TableRow>
@@ -485,11 +490,12 @@ const CropTableComponent = (props) => {
           ? inactiveCropData.map((crop, index) => {
               if (crop.fields["Zone Decision"] === "Include")
                 return (
-                  <Fragment>
-                    <TableRow>
+                  <Fragment key={index}>
+                    <TableRow className="inactiveCropRow">
                       <TableCell colSpan={42}></TableCell>
                     </TableRow>
                     <TableRow
+                      className="inactiveCropRow"
                       key={`croprow${index}`}
                       id={crop.fields["id"]}
                       style={{ opacity: "0.2" }}
@@ -505,7 +511,7 @@ const CropTableComponent = (props) => {
                             present={true}
                             src={
                               crop.fields["Image Data"]["Key Thumbnail"]
-                                ? `/images/Cover Crop Photos/${crop.fields["Image Data"]["Directory"]}/${crop.fields["Image Data"]["Key Thumbnail"]}`
+                                ? `/images/Cover Crop Photos/Thumbs/${crop.fields["Image Data"]["Directory"]}/${crop.fields["Image Data"]["Key Thumbnail"]}`
                                 : "https://placehold.it/100x100"
                             }
                             alt={crop.fields["Cover Crop Name"]}
@@ -1067,7 +1073,7 @@ const CropTableComponent = (props) => {
             <TableRow className="theadSecond">
               <TableCell
                 style={{
-                  width: "28%",
+                  width: "30%",
                   backgroundColor: "#abd08f",
                   borderRight: "5px solid white",
                 }}
@@ -1093,7 +1099,7 @@ const CropTableComponent = (props) => {
               </TableCell>
               <TableCell
                 style={{
-                  width: "18%",
+                  maxWidth: "250px",
                   backgroundColor: "#abd08f",
                   borderRight: "5px solid white",
                 }}
@@ -1143,6 +1149,7 @@ const CropTableComponent = (props) => {
                     backgroundColor: "#abd08f",
                     textAlign: "center",
                     borderRight: "5px solid white",
+                    width: "180px",
                   }}
                 >
                   <Typography variant="body1">
@@ -1155,7 +1162,11 @@ const CropTableComponent = (props) => {
               )}
 
               <TableCell
-                style={{ backgroundColor: "#abd08f", textAlign: "center" }}
+                style={{
+                  backgroundColor: "#abd08f",
+                  textAlign: "center",
+                  width: "165px",
+                }}
               >
                 <Typography variant="body1">
                   <Button onClick={sortBySelectedCrops}>
@@ -1180,9 +1191,6 @@ const CropTableComponent = (props) => {
           </TableHead>
 
           <TableBody className="tableBodyWrapper">
-            {/* {activeCropData.length > 0 || inactiveCropData.length > 0 ? (
-                <RenderActiveInactiveCropData />
-              ) : ( */}
             {activeCropData.length > 0 || inactiveCropData.length > 0 ? (
               <Fragment>
                 {activeCropData.length === 0 ? (
@@ -1208,28 +1216,34 @@ const CropTableComponent = (props) => {
                             minHeight: "100px",
                             zIndex: 2,
                           }}
-                          className="px-5 py-3"
+                          className="px-5 py-5 d-flex justify-content-center align-items-center text-center"
                         >
-                          <Typography
-                            variant="body1"
-                            gutterBottom
-                            className="pb-2"
-                          >
-                            No cover crops match your selected Cover Crop
-                            Property filters.
-                          </Typography>
-                          <Typography
-                            variant="body1"
-                            gutterBottom
-                            className="pb-2"
-                          >
-                            Consider expanding your Cover Crop Property filter
-                            criteria.
-                          </Typography>
-                          <Typography variant="body1" gutterBottom className="">
-                            Alternatively, clear all Cover Crop Property
-                            filters.
-                          </Typography>
+                          <div>
+                            <Typography
+                              variant="body1"
+                              gutterBottom
+                              className="pb-2"
+                            >
+                              No cover crops match your selected Cover Crop
+                              Property filters.
+                            </Typography>
+                            <Typography
+                              variant="body1"
+                              gutterBottom
+                              className="pb-2"
+                            >
+                              Consider expanding your Cover Crop Property filter
+                              criteria.
+                            </Typography>
+                            <Typography
+                              variant="body1"
+                              gutterBottom
+                              className=""
+                            >
+                              Alternatively, clear all Cover Crop Property
+                              filters.
+                            </Typography>
+                          </div>
                         </div>
                       </div>
                     </TableCell>

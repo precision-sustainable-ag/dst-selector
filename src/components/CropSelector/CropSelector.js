@@ -1,27 +1,53 @@
-import React, { useContext, useState, Fragment, useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Context } from "../../store/Store";
-import { Typography, Button, IconButton, TextField } from "@material-ui/core";
-
-import {
-  CalendarToday,
-  PictureAsPdf,
-  FormatListBulleted,
-  Print,
-  Compare,
-  Add,
-} from "@material-ui/icons";
-
+import { makeStyles, useScrollTrigger, Zoom, Fab } from "@material-ui/core";
+import { KeyboardArrowUp } from "@material-ui/icons";
 import "../../styles/cropSelector.scss";
 import CropTableComponent from "./CropTable";
-import ListIcon from "@material-ui/icons/List";
 import MyCoverCropList from "../MyCoverCropList/MyCoverCropList";
 import CropCalendarViewComponent from "./CropCalendarView";
 import CropSidebarComponent from "./CropSidebar";
-import { zoneIcon } from "../../shared/constants";
 
 const _ = require("lodash");
 
-const CropSelector = () => {
+const useStyles = makeStyles((theme) => ({
+  root: {
+    position: "fixed",
+    bottom: theme.spacing(2),
+    right: theme.spacing(2),
+  },
+}));
+
+const ScrollTop = (props) => {
+  const { children, window } = props;
+  const classes = useStyles();
+  const trigger = useScrollTrigger({
+    disableHysteresis: true,
+    threshold: 180,
+  });
+  const handleBackToTopClick = (event) => {
+    const anchor = (event.target.ownerDocument || document).querySelector(
+      ".topHeader"
+    );
+    // console.log(event.target.ownerDocument);
+    if (anchor) {
+      anchor.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  };
+  return (
+    <Zoom in={trigger}>
+      <div
+        onClick={handleBackToTopClick}
+        role="presentation"
+        className={classes.root}
+      >
+        {children}
+      </div>
+    </Zoom>
+  );
+};
+
+const CropSelector = (props) => {
   const [state, dispatch] = useContext(Context);
   // let [isExpansionExpanded, setIsExpansionExpanded] = useState(true);
   let [showGrowthWindow, setShowGrowthWindow] = useState(true);
@@ -36,7 +62,7 @@ const CropSelector = () => {
 
   let [isListView, setIsListView] = useState(true);
 
-  const [comparisonView, setComparisonView] = useState(true);
+  const [comparisonView, setComparisonView] = useState(false);
 
   const [cropData, setCropData] = useState([]);
 
@@ -397,6 +423,17 @@ const CropSelector = () => {
       // setCropData(newActives);
     }
   };
+  useEffect(() => {
+    if (state.selectedGoals.length === 0) {
+      dispatch({
+        type: "UPDATE_PROGRESS",
+        data: {
+          type: "DECREMENT",
+        },
+      });
+    }
+  }, [state.selectedGoals]);
+
   return (
     <div className="container-fluid mt-2">
       <div className="row cropSelectorRow mt-3">
@@ -448,6 +485,11 @@ const CropSelector = () => {
             <MyCoverCropList comparisonView={comparisonView} />
           )}
         </div>
+        <ScrollTop {...props}>
+          <Fab color="secondary" size="medium" aria-label="scroll back to top">
+            <KeyboardArrowUp />
+          </Fab>
+        </ScrollTop>
       </div>
     </div>
   );
