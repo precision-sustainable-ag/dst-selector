@@ -90,7 +90,7 @@
 
 table#primaryCropTable {
   tbody.tableBodyWrapper {
-    tr.MuiTableRow-root {
+    tr.MuiTableRow-root:not(.inactiveCropRow) {
       // box-shadow: 0 0 5px #598344;
       td {
         // margin-top: 1em;
@@ -162,28 +162,3 @@ table#primaryCropTable {
     vertical-align: middle;
   }
 }
-
-// #primaryCropTable {
-//   height: 100%;
-//   border-collapse: collapse;
-//   width: 100%;
-//   margin: 10px;
-//   font-size: 0.8em;
-//   thead.tableHeadWrapper {
-//     tr.theadFirst {
-//       th,
-//       td {
-//         position: sticky;
-//         position: -webkit-sticky; /* Safari */
-//         top: 0;
-//       }
-//     }
-//     tr.theadSecond {
-//       th,
-//       td {
-//         position: sticky;
-//         position: -webkit-sticky; /* Safari */
-//       }
-//     }
-//   }
-// }
