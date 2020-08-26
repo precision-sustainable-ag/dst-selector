@@ -15,6 +15,7 @@ import {
   TableBody,
   TableRow,
   TableCell,
+  Tooltip,
 } from "@material-ui/core";
 import {
   LightButton,
@@ -30,10 +31,18 @@ import GrowthWindowComponent from "./GrowthWindow";
 // import { AddCircle, FiberManualRecord, CloseRounded } from "@material-ui/icons";
 import CropLegendModal from "./CropLegendModal";
 import { AirtableBearerKey } from "../../shared/keys";
-import { AddCircle } from "@material-ui/icons";
+import {
+  AddCircle,
+  Eco,
+  WbSunny,
+  LocalFlorist,
+  AcUnit,
+} from "@material-ui/icons";
 import CropDetailsModalComponent from "./CropDetailsModal";
 // import RenderCashCropOverlay from "./RenderCashCropOverlay";
-
+const growthIcon = {
+  color: "white",
+};
 const CropCalendarViewComponent = (props) => {
   const { cropData } = props;
   const [state, dispatch] = useContext(Context);
@@ -261,7 +270,7 @@ const CropCalendarViewComponent = (props) => {
         <TableContainer
           component="div"
           className="table-responsive calendarTableViewWrapper"
-          style={{ lineHeight: "0.5", maxHeight: 850 }}
+          style={{ lineHeight: "0.5" }}
         >
           <Table
             stickyHeader
@@ -318,16 +327,20 @@ const CropCalendarViewComponent = (props) => {
                     </TableCell>
 
                     {state.activeGrowthPeriod.includes("Jan") ? (
-                      <TableCell
-                        className="activeGrowthMonth growthMonthSeparator"
-                        style={{
-                          // borderBottom: "5px solid " + CustomStyles().darkGreen,
-                          backgroundColor: CustomStyles().darkGreen,
-                        }}
-                        colSpan="2"
-                      >
-                        <Typography variant="body1">WINTER</Typography>
-                      </TableCell>
+                      <Tooltip placement="top" title="Winter">
+                        <TableCell
+                          className="activeGrowthMonth growthMonthSeparator"
+                          style={{
+                            // borderBottom: "5px solid " + CustomStyles().darkGreen,
+                            backgroundColor: CustomStyles().darkGreen,
+                          }}
+                          colSpan="2"
+                        >
+                          <Typography variant="body1">
+                            <AcUnit style={growthIcon} />
+                          </Typography>
+                        </TableCell>
+                      </Tooltip>
                     ) : (
                       <TableCell
                         style={{ borderBottom: "5px solid white" }}
@@ -336,16 +349,20 @@ const CropCalendarViewComponent = (props) => {
                     )}
 
                     {state.activeGrowthPeriod.includes("Mar") ? (
-                      <TableCell
-                        className="activeGrowthMonth growthMonthSeparator"
-                        style={{
-                          // borderBottom: "5px solid " + CustomStyles().darkGreen,
-                          backgroundColor: CustomStyles().darkGreen,
-                        }}
-                        colSpan="3"
-                      >
-                        <Typography variant="body1">SPRING</Typography>
-                      </TableCell>
+                      <Tooltip placement="top" title="Spring">
+                        <TableCell
+                          className="activeGrowthMonth growthMonthSeparator"
+                          style={{
+                            // borderBottom: "5px solid " + CustomStyles().darkGreen,
+                            backgroundColor: CustomStyles().darkGreen,
+                          }}
+                          colSpan="3"
+                        >
+                          <Typography variant="body1">
+                            <LocalFlorist style={growthIcon} />
+                          </Typography>
+                        </TableCell>
+                      </Tooltip>
                     ) : (
                       <TableCell
                         style={{ borderBottom: "5px solid white" }}
@@ -354,16 +371,20 @@ const CropCalendarViewComponent = (props) => {
                     )}
 
                     {state.activeGrowthPeriod.includes("Jun") ? (
-                      <TableCell
-                        className="activeGrowthMonth growthMonthSeparator"
-                        style={{
-                          // borderBottom: "5px solid " + CustomStyles().darkGreen,
-                          backgroundColor: CustomStyles().darkGreen,
-                        }}
-                        colSpan="3"
-                      >
-                        <Typography variant="body1">SUMMER</Typography>
-                      </TableCell>
+                      <Tooltip placement="top" title="Summer">
+                        <TableCell
+                          className="activeGrowthMonth growthMonthSeparator"
+                          style={{
+                            // borderBottom: "5px solid " + CustomStyles().darkGreen,
+                            backgroundColor: CustomStyles().darkGreen,
+                          }}
+                          colSpan="3"
+                        >
+                          <Typography variant="body1">
+                            <WbSunny style={growthIcon} />
+                          </Typography>
+                        </TableCell>
+                      </Tooltip>
                     ) : (
                       <TableCell
                         style={{ borderBottom: "5px solid white" }}
@@ -372,16 +393,20 @@ const CropCalendarViewComponent = (props) => {
                     )}
 
                     {state.activeGrowthPeriod.includes("Sep") ? (
-                      <TableCell
-                        className="activeGrowthMonth growthMonthSeparator"
-                        style={{
-                          // borderBottom: "5px solid " + CustomStyles().darkGreen,
-                          backgroundColor: CustomStyles().darkGreen,
-                        }}
-                        colSpan="3"
-                      >
-                        <Typography variant="body1">FALL</Typography>
-                      </TableCell>
+                      <Tooltip placement="top" title="Fall">
+                        <TableCell
+                          className="activeGrowthMonth growthMonthSeparator"
+                          style={{
+                            // borderBottom: "5px solid " + CustomStyles().darkGreen,
+                            backgroundColor: CustomStyles().darkGreen,
+                          }}
+                          colSpan="3"
+                        >
+                          <Typography variant="body1">
+                            <Eco style={growthIcon} />
+                          </Typography>
+                        </TableCell>
+                      </Tooltip>
                     ) : (
                       <TableCell
                         style={{ borderBottom: "5px solid white" }}
@@ -389,14 +414,20 @@ const CropCalendarViewComponent = (props) => {
                       ></TableCell>
                     )}
                     {state.activeGrowthPeriod.includes("Dec") ? (
-                      <TableCell
-                        className="activeGrowthMonth growthMonthSeparator"
-                        style={{
-                          // borderBottom: "5px solid " + CustomStyles().darkGreen,
-                          backgroundColor: CustomStyles().darkGreen,
-                        }}
-                        colSpan="1"
-                      ></TableCell>
+                      <Tooltip placement="top" title="Winter">
+                        <TableCell
+                          className="activeGrowthMonth growthMonthSeparator"
+                          style={{
+                            // borderBottom: "5px solid " + CustomStyles().darkGreen,
+                            backgroundColor: CustomStyles().darkGreen,
+                          }}
+                          colSpan="1"
+                        >
+                          <Typography variant="body1">
+                            <AcUnit style={growthIcon} />
+                          </Typography>
+                        </TableCell>
+                      </Tooltip>
                     ) : (
                       <TableCell
                         style={{ borderBottom: "5px solid white" }}
