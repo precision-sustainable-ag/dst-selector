@@ -86,7 +86,7 @@ const CoverCropExplorer = () => {
       <Header logo="neccc_wide_logo_color_web.jpg" />
       <div className="container-fluid mt-4">
         <div className="row mt-3">
-          <div className="col-2">
+          <div className="col-md-12 col-lg-3 col-xl-2 col-12">
             <CropSidebarComponent
               from={"explorer"}
               cropDataChanged={cropDataChanged}
@@ -102,7 +102,7 @@ const CoverCropExplorer = () => {
               searchValue={cropName}
             />
           </div>
-          <div className="col-10">
+          <div className="col-md-12 col-lg-9 col-xl-10 col-12">
             <div
               className="row"
               style={{
@@ -112,8 +112,8 @@ const CoverCropExplorer = () => {
                 borderTopRightRadius: "5px",
               }}
             >
-              <div className="col-8">
-                <Button style={{ color: "white" }}>Download:</Button>
+              {/*<div className="col-8">
+                 <Button style={{ color: "white" }}>Download:</Button>
                 <Button
                   style={{ color: "white" }}
                   onClick={() => window.print()}
@@ -124,9 +124,9 @@ const CoverCropExplorer = () => {
                 <Button href={`/csv/`} style={{ color: "white" }}>
                   <FormatListBulleted />
                   &nbsp; SPREADSHEET
-                </Button>
-              </div>
-              <div className="col-4">
+                </Button> 
+              </div>*/}
+              <div className="col-12 offset-md-8 col-md-4 text-right">
                 <Button
                   aria-controls="zone-selector"
                   aria-haspopup="true"
