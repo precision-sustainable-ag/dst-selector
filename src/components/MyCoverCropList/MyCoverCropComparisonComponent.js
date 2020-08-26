@@ -22,6 +22,7 @@ import sidebarDefinitionsz7 from "../../shared/json/zone7/data-dictionary.json";
 import sidebarDefinitionsz6 from "../../shared/json/zone6/data-dictionary.json";
 import sidebarDefinitionsz5 from "../../shared/json/zone5/data-dictionary.json";
 import CropDetailsModalComponent from "../CropSelector/CropDetailsModal";
+import { useSnackbar } from "notistack";
 
 const lightBorder = {
   border: "1px solid #35999b",
@@ -45,6 +46,7 @@ const lightBG = {
 };
 const MyCoverCropComparisonComponent = (props) => {
   const [state, dispatch] = useContext(Context);
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const { filterKeys, zone } = state;
   const [sidebarDefs, setSidebarDefs] = useState(sidebarDefinitionsz7);
   const [modalOpen, setModalOpen] = useState(false);
@@ -78,7 +80,7 @@ const MyCoverCropComparisonComponent = (props) => {
     }
   }, [zone]);
 
-  const removeCrop = (btnId) => {
+  const removeCrop = (btnId, cropName) => {
     var removeIndex = state.selectedCrops
       .map(function (item) {
         return item.btnId;
@@ -98,10 +100,11 @@ const MyCoverCropComparisonComponent = (props) => {
         type: "SELECTED_CROPS_MODIFIER",
         data: {
           selectedCrops: selectedCropsCopy,
-          snackOpen: true,
+          snackOpen: false,
           snackMessage: `Removed`,
         },
       });
+      enqueueSnackbar(`${cropName} Removed`);
 
       // this.state.selectedCrops.splice(removeIndex, 1);
     }
@@ -209,7 +212,7 @@ const MyCoverCropComparisonComponent = (props) => {
               <div className="col-xl-3 col-lg-5" key={index}>
                 <Card className="mainComparisonCard" style={{ width: "100%" }}>
                   <span
-                    onClick={() => removeCrop(crop.btnId)}
+                    onClick={() => removeCrop(crop.btnId, crop.cropName)}
                     className="cardCloseIcon"
                   >
                     <Cancel titleAccess="Remove Crop" />
@@ -296,7 +299,7 @@ const MyCoverCropComparisonComponent = (props) => {
                       textAlign: "center",
                       padding: "0.5em",
                     }}
-                    onClick={() => removeCrop(crop.btnId)}
+                    onClick={() => removeCrop(crop.btnId, crop.cropName)}
                   >
                     <Typography
                       variant="body2"
