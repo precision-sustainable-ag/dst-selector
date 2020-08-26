@@ -74,11 +74,11 @@ const LocationConfirmation = () => {
                   variables. Consult your local{" "}
                   <a
                     href="https://www.nrcs.usda.gov/wps/portal/nrcs/detailfull/national/programs/financial/csp/?&cid=nrcsdev11_000242"
-                    title="click to consult an nrcs extension expert"
+                    title="click to consult your local nrcs service center"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    NRCS Extension Expert
+                    NRCS Service Center
                   </a>
                   ,{" "}
                   <a
