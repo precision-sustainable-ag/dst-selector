@@ -1,5 +1,5 @@
 // TODO: Goal tags are not responsive!
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../../store/Store";
 
 import "../../styles/goalsSelector.scss";
@@ -7,7 +7,7 @@ import { CircularProgress, makeStyles, Typography } from "@material-ui/core";
 
 import Skeleton from "@material-ui/lab/Skeleton";
 import GoalTag from "./GoalTag";
-import { airtableAPIURL } from "../../shared/constants";
+// import { airtableAPIURL } from "../../shared/constants";
 import { AirtableBearerKey } from "../../shared/keys";
 
 const useStyles = makeStyles((theme) => ({
@@ -30,6 +30,7 @@ const goalSkeletonStyle = {
 const GoalsSelector = () => {
   const [state, dispatch] = useContext(Context);
   const classes = useStyles();
+  const [allGoals, setAllGoals] = useState([{}]);
 
   const goalsURL = "/Cover%20Crop%20Goals?maxRecords=300";
 
@@ -71,6 +72,11 @@ const GoalsSelector = () => {
         });
       });
   };
+  useEffect(() => {
+    if (state.allGoals.length > 0) {
+      setAllGoals(state.allGoals);
+    }
+  }, [state.allGoals]);
 
   return (
     <div className="container-fluid mt-5">
@@ -90,7 +96,7 @@ const GoalsSelector = () => {
           >
             Select up to three. Hover for more information
           </Typography>
-          {state.allGoals.length === 0 ? (
+          {allGoals.length === 0 ? (
             <div className="goals col-lg-12">
               <div className="row">
                 <div className="col-3">
@@ -112,29 +118,35 @@ const GoalsSelector = () => {
               className="goals row pt-4"
               style={{ justifyContent: "center" }}
             >
-              {state.allGoals.length > 0 ? (
-                state.allGoals.map((goal, key) =>
-                  goal.fields["Include"] ? (
-                    <div key={key} className={`${classes.root} col`}>
-                      <GoalTag
-                        goal={goal}
-                        id={key}
-                        goaltTitle={goal.fields["Cover Crop Goal"]}
-                        goalDescription={goal.fields["Description"]}
-                      />
-                    </div>
-                  ) : (
-                    ""
-                  )
-                )
+              {allGoals[0].fields ? (
+                allGoals.map((goal, key) => (
+                  <div key={key} className={`${classes.root} col`}>
+                    <GoalTag
+                      goal={goal}
+                      id={key}
+                      goaltTitle={goal.fields["Cover Crop Goal"]}
+                      goalDescription={goal.fields["Description"]}
+                    />
+                  </div>
+                ))
               ) : (
-                <Skeleton
-                  animation="pulse"
-                  height="100"
-                  width="100"
-                  variant="rect"
-                />
+                <Skeleton style={goalSkeletonStyle} />
               )}
+
+              {/* {allGoals.map((goal, key) =>
+                goal.fields["Include"] ? (
+                  <div key={key} className={`${classes.root} col`}>
+                    <GoalTag
+                      goal={goal}
+                      id={key}
+                      goaltTitle={goal.fields["Cover Crop Goal"]}
+                      goalDescription={goal.fields["Description"]}
+                    />
+                  </div>
+                ) : (
+                  ""
+                )
+              )} */}
             </div>
           )}
         </div>
