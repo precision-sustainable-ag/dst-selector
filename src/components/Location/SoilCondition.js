@@ -280,6 +280,11 @@ const SoilCondition = (props) => {
       type: "UPDATE_DRAINAGE_CLASS",
       data: soilDataOriginal.Drainage_Class,
     });
+    window.localStorage.setItem(
+      "drainage",
+      JSON.stringify(soilDataOriginal.Drainage_Class)
+    );
+    setTilingCheck(false);
   };
   const RenderFloodingOptions = ({ flooding = [""] }) => {
     return (
@@ -414,6 +419,23 @@ const SoilCondition = (props) => {
     );
   };
 
+  const [showTiling, setShowTiling] = useState(false);
+  useEffect(() => {
+    const checkArray = [
+      "Very poorly drained",
+      "Poorly drained",
+      "Somewhat poorly drained",
+    ];
+    if (checkArray.some((e) => soilData.Drainage_Class.includes(e))) {
+      setShowTiling(true);
+
+      // setTilingCheck(false);
+    }
+    window.localStorage.setItem(
+      "drainage",
+      JSON.stringify(soilData.Drainage_Class)
+    );
+  }, [soilData.Drainage_Class]);
   return (
     <div className="row">
       <div className="col-12">
@@ -505,7 +527,7 @@ const SoilCondition = (props) => {
         ) : (
           <div className="col-12 pt-2">
             <div className="col-12 row">
-              <div className="col">
+              <div className="col text-left">
                 <Button
                   size="small"
                   onClick={() => {
@@ -528,11 +550,7 @@ const SoilCondition = (props) => {
         </div>
       </div>
 
-      {[
-        "Very poorly drained",
-        "Poorly drained",
-        "Somewhat poorly drained",
-      ].some((e) => soilData.Drainage_Class.includes(e)) ? (
+      {showTiling ? (
         <div className="col-12 pt-2 mt-2 row">
           <div className="col-12">
             <Typography variant="body1" className="soilConditionSubHeader">
@@ -541,13 +559,13 @@ const SoilCondition = (props) => {
               <ReferenceTooltip
                 type="text"
                 content={
-                  "Indicate if the field of interest has tile installed. Selecting “yes” increases your drainage class by one factor."
+                  "Indicate if the field of interest has tile installed. If you have selected very poorly to somewhat poorly drained soils, selecting “yes” will increase your drainage class by one factor."
                 }
               />
             </Typography>
           </div>
           <div className="col-12 pt-2">
-            <div className="pl-1">
+            <div className="pl-1 text-left">
               <Typography variant="body1" display="inline">
                 NO
               </Typography>
@@ -609,100 +627,26 @@ const SoilCondition = (props) => {
                       }
                     }
                     // console.log(drainSet);
-                    dispatch({
-                      type: "UPDATE_DRAINAGE_CLASS",
-                      data: [...drainSet],
-                    });
+                    // dispatch({
+                    //   type: "UPDATE_DRAINAGE_CLASS",
+                    //   data: [...drainSet],
+                    // });
+                    window.localStorage.setItem(
+                      "drainage",
+                      JSON.stringify([...drainSet])
+                    );
                   } else {
-                    dispatch({
-                      type: "UPDATE_DRAINAGE_CLASS",
-                      data: soilDataOriginal.Drainage_Class,
-                    });
+                    // dispatch({
+                    //   type: "UPDATE_DRAINAGE_CLASS",
+                    //   data: soilDataOriginal.Drainage_Class,
+                    // });
+                    window.localStorage.setItem(
+                      "drainage",
+                      JSON.stringify(soilDataOriginal.Drainage_Class)
+                    );
                   }
-                  // if (e.target.checked) {
-                  //   if (soilDrainCopy.indexOf("Very poorly drained") === -1) {
-                  //     // does not exist
-                  //   } else {
-                  //     // remove this and select next item
-                  //     soilDrainCopy.splice(
-                  //       soilDrainCopy.indexOf("Very poorly drained"),
-                  //       1
-                  //     );
-                  //     dispatch({
-                  //       type: "UPDATE_DRAINAGE_CLASS",
-                  //       data: soilDrainCopy,
-                  //     });
-                  //     if (soilDrainCopy.indexOf("Poorly drained") === -1) {
-                  //       // select this
-                  //       soilDrainCopy.push("Poorly drained");
-                  //     } else {
-                  //       // do nothing
-                  //     }
-                  //     dispatch({
-                  //       type: "UPDATE_DRAINAGE_CLASS",
-                  //       data: soilDrainCopy,
-                  //     });
-                  //   }
-                  //   if (soilDrainCopy.indexOf("Poorly drained") === -1) {
-                  //     // does not exist
-                  //   } else {
-                  //     // remove this and select next item
-                  //     soilDrainCopy.splice(
-                  //       soilDrainCopy.indexOf("Poorly drained"),
-                  //       1
-                  //     );
-                  //     dispatch({
-                  //       type: "UPDATE_DRAINAGE_CLASS",
-                  //       data: soilDrainCopy,
-                  //     });
-                  //     if (
-                  //       soilDrainCopy.indexOf("Somewhat poorly drained") === -1
-                  //     ) {
-                  //       // select this
-                  //       soilDrainCopy.push("Somewhat poorly drained");
-                  //     } else {
-                  //       // do nothing
-                  //     }
-                  //     dispatch({
-                  //       type: "UPDATE_DRAINAGE_CLASS",
-                  //       data: soilDrainCopy,
-                  //     });
-                  //   }
 
-                  //   if (
-                  //     soilDrainCopy.indexOf("Somewhat poorly drained") === -1
-                  //   ) {
-                  //     // does not exist
-                  //   } else {
-                  //     // remove this and select next item
-                  //     soilDrainCopy.splice(
-                  //       soilDrainCopy.indexOf("Somewhat poorly drained"),
-                  //       1
-                  //     );
-                  //     dispatch({
-                  //       type: "UPDATE_DRAINAGE_CLASS",
-                  //       data: soilDrainCopy,
-                  //     });
-                  //     if (
-                  //       soilDrainCopy.indexOf("Moderately well drained") === -1
-                  //     ) {
-                  //       // select this
-                  //       soilDrainCopy.push("Moderately well drained");
-                  //     } else {
-                  //       // do nothing
-                  //     }
-                  //     dispatch({
-                  //       type: "UPDATE_DRAINAGE_CLASS",
-                  //       data: soilDrainCopy,
-                  //     });
-                  //   }
-                  // } else {
-                  //   dispatch({
-                  //     type: "UPDATE_DRAINAGE_CLASS",
-                  //     data: soilDataOriginal.Drainage_Class,
-                  //   });
-                  // }
-                  setTilingCheck(e.target.checked);
+                  setTilingCheck(!tilingCheck);
                 }}
                 name="checkedC"
               />
@@ -710,21 +654,6 @@ const SoilCondition = (props) => {
                 YES
               </Typography>
             </div>
-            {/* <Typography component="div">
-              <Grid component="label" container alignItems="center" spacing={1}>
-                <Grid item>Off</Grid>
-                <Grid item>
-                  <AntSwitch
-                    checked={tilingCheck}
-                    onChange={(e) => {
-                      setTilingCheck(e.target.checked);
-                    }}
-                    name="checkedC"
-                  />
-                </Grid>
-                <Grid item>On</Grid>
-              </Grid>
-            </Typography> */}
           </div>
         </div>
       ) : (
@@ -776,7 +705,7 @@ const SoilCondition = (props) => {
         ) : (
           <div className="col-12 pt-2">
             <div className="col-12 row">
-              <div className="col">
+              <div className="col text-left">
                 <Button
                   size="small"
                   onClick={() => {
