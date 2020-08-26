@@ -52,7 +52,7 @@ const Footer = () => {
             rel="noopener noreferrer"
           >
             Cooperative Extension Service office
-          </a>{" "}
+          </a>
           , or{" "}
           <a
             href="https://www.nacdnet.org/general-resources/conservation-district-directory/"
