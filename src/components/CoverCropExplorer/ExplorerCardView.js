@@ -16,7 +16,7 @@ import CropDetailsModalComponent from "../CropSelector/CropDetailsModal";
 const useStyles = makeStyles({
   card: {
     maxWidth: 345,
-    width: 230,
+    width: 250,
   },
   media: {
     height: 140,
@@ -130,9 +130,9 @@ const ExplorerCardView = (props) => {
 
   return (
     <Fragment>
-      <div className="d-flex flex-wrap pt-4 ">
+      <div className="row pt-4 ">
         {props.activeCropData.map((crop, index) => (
-          <div className="p-2" key={index}>
+          <div className="col-auto pb-4" key={index}>
             <Card className={classes.card}>
               <CardMedia
                 image={
@@ -151,9 +151,11 @@ const ExplorerCardView = (props) => {
                   {crop.fields["Cover Crop Group"]}
                 </div>
                 <div className="font-weight-bold " style={{ fontSize: "16pt" }}>
-                  {crop.fields["Cover Crop Name"]}
+                  <Typography variant="h6" className="text-truncate">
+                    {crop.fields["Cover Crop Name"]}
+                  </Typography>
                 </div>
-                <small className="font-italic text-muted">
+                <small className="font-italic text-muted d-inline-block text-truncate">
                   {trimString(crop.fields["Scientific Name"], 25)}
                 </small>
                 <div>
