@@ -12,10 +12,6 @@ import RenderFilters from "./RenderFilters";
 import RenderGoals from "./RenderGoals";
 
 const ComparisonBar = (props) => {
-  const [state, dispatch] = useContext(Context);
-  const [filtersActive, setFiltersActive] = useState(false);
-  const [sidebarFilters, setSidebarFilters] = useState([]);
-  const [sidebarFiltersOpen, setSidebarFiltersOpen] = useState([]);
   const [filterValues, setFilterValues] = useState([]);
   const [goalsOpen, setGoalsOpen] = useState(false);
   const [goals, setGoals] = useState([]);
@@ -56,6 +52,7 @@ const ComparisonBar = (props) => {
       //   setSidebarFiltersOpen([]);
     };
   }, []);
+
   const toggleSidebarFilterItems = (index) => {
     const newSidebarFilterVals = filterValues.map((obj, index2) => {
       if (index2 === index) return { ...obj, open: !obj.open };
@@ -63,7 +60,16 @@ const ComparisonBar = (props) => {
     });
     setFilterValues(newSidebarFilterVals);
   };
-  const resetAllFilters = () => {};
+  const resetAllFilters = () => {
+    if (props.comparisonKeys.length > 0) {
+      props.dispatch({
+        type: "UPDATE_COMPARISON_KEYS",
+        data: {
+          comparisonKeys: [],
+        },
+      });
+    }
+  };
   return (
     <List
       component="nav"
@@ -80,7 +86,7 @@ const ComparisonBar = (props) => {
       }
       className={props.classes.root}
     >
-      {filtersActive ? (
+      {props.comparisonKeys.length > 0 ? (
         <ListItem onClick={() => {}}>
           <ListItemText
             primary={
@@ -90,7 +96,7 @@ const ComparisonBar = (props) => {
                 onClick={resetAllFilters}
                 style={{ cursor: "pointer" }}
               >
-                Clear Filters
+                Clear Variables
               </Typography>
             }
           />
