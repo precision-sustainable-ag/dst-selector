@@ -37,7 +37,7 @@ const SoilDrainageTimeline = ({ drainage = [] }) => {
               ) : (
                 ""
               )}
-              {index === fullLength - 1 ? "" : <TimelineConnector />}
+              {index === fullLength ? "" : <TimelineConnector />}
             </TimelineSeparator>
 
             <TimelineContent className="text-capitalize">

@@ -47,7 +47,7 @@ const lightBG = {
 const MyCoverCropComparisonComponent = (props) => {
   const [state, dispatch] = useContext(Context);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
-  const { filterKeys, zone } = state;
+  const { comparisonKeys, zone } = state;
   const [sidebarDefs, setSidebarDefs] = useState(sidebarDefinitionsz7);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalData, setModalData] = useState({});
@@ -169,7 +169,7 @@ const MyCoverCropComparisonComponent = (props) => {
                 <CardContent
                   style={{ paddingRight: "0px", paddingLeft: "0px" }}
                 >
-                  {filterKeys.map((keys, index) => (
+                  {comparisonKeys.map((keys, index) => (
                     <div style={lightBorder} key={index}>
                       <span>
                         <DataTooltip
@@ -281,7 +281,7 @@ const MyCoverCropComparisonComponent = (props) => {
                       paddingBottom: "0px",
                     }}
                   >
-                    {filterKeys.map((filterKey, index) => (
+                    {comparisonKeys.map((filterKey, index) => (
                       <RenderRelevantData
                         key={index}
                         filterKey={filterKey}

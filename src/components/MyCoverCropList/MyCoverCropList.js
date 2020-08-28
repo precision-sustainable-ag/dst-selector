@@ -43,13 +43,13 @@ const MyCoverCropList = (props) => {
           <div className="row">
             {comparisonView ? (
               <div className="col-8">
-                <Button style={{ color: "white" }}>Download:</Button>
+                {/* <Button style={{ color: "white" }}>Download:</Button>
                 <Button
                   style={{ color: "white" }}
                   onClick={() => downloadAllPDF(selectedCropNames)}
                 >
                   <PictureAsPdf /> <span className="pl-2">PDF</span>
-                </Button>
+                </Button> */}
 
                 <Button
                   style={{ color: "white" }}
@@ -94,15 +94,18 @@ const MyCoverCropList = (props) => {
       ) : (
         <Fragment>
           <TopBar comparisonView={comparisonView} />
-          <div className="d-flex flex-wrap mt-2">
-            {state.selectedCrops.map((crop, index) => (
-              <MyCoverCropCardsComponent
-                key={index}
-                data={crop.data}
-                btnId={crop.btnId}
-                itemNo={index}
-              />
-            ))}
+          <div className="row">
+            <div className="d-flex flex-wrap mt-2">
+              {state.selectedCrops.map((crop, index) => (
+                <MyCoverCropCardsComponent
+                  key={index}
+                  cardNo={index + 1}
+                  data={crop.data}
+                  btnId={crop.btnId}
+                  itemNo={index}
+                />
+              ))}
+            </div>
           </div>
         </Fragment>
       )}

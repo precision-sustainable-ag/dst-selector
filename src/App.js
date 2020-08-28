@@ -13,8 +13,6 @@ import CropSelector from "./components/CropSelector/CropSelector";
 
 const LoadRelevantRoute = ({ progress, calcHeight }) => {
   switch (progress) {
-    case 0:
-      return <Landing height={calcHeight} bg="/images/cover-crop-field.png" />;
     case 1:
       return <LocationComponent height={calcHeight} />;
     case 2:
@@ -74,33 +72,40 @@ const App = () => {
             }
           }
         >
-          <div
-            className="col-12"
-            style={{
-              paddingLeft: "0px",
-              paddingRight: "0px",
-            }}
-          >
-            <LoadRelevantRoute
-              progress={state.progress}
-              calcHeight={calcHeight}
-            />
-            {state.progress !== 0 && state.progress < 5 ? (
-              <div className="container-fluid mt-5 mb-5">
-                <div className="row" style={{ width: "95%", margin: "0 auto" }}>
-                  <div className="col-lg-5 col-12 col-md-5"></div>
-                  <div className="col-lg-5 col-12 col-md-5">
-                    <ProgressButtons />
-                  </div>
-                  <div className="col-lg-2 pr-0 col-12 col-md-2">
-                    <ProgressBar />
+          {state.progress === 0 ? (
+            <Landing height={calcHeight} bg="/images/cover-crop-field.png" />
+          ) : (
+            <div
+              className="col-12"
+              style={{
+                paddingLeft: "0px",
+                paddingRight: "0px",
+              }}
+            >
+              <LoadRelevantRoute
+                progress={state.progress}
+                calcHeight={calcHeight}
+              />
+              {state.progress > 0 && state.progress < 5 ? (
+                <div className="container-fluid mt-5 mb-5">
+                  <div
+                    className="row"
+                    style={{ width: "95%", margin: "0 auto" }}
+                  >
+                    <div className="col-lg-5 col-12 col-md-5"></div>
+                    <div className="col-lg-5 col-12 col-md-5">
+                      <ProgressButtons />
+                    </div>
+                    <div className="col-lg-2 pr-0 col-12 col-md-2">
+                      <ProgressBar />
+                    </div>
                   </div>
                 </div>
-              </div>
-            ) : (
-              ""
-            )}
-          </div>
+              ) : (
+                ""
+              )}
+            </div>
+          )}
         </div>
       </div>
 

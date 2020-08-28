@@ -113,20 +113,6 @@ const Header = () => {
     let { markers } = state;
 
     if (state.progress === 0) {
-      // landing page
-      // get user ip
-      //NOTE: SSL Unavailabe for free version
-      // maybe https://ip-location.icu/ ?
-      // Axios.get("http://ip-api.com/json").then((resp) => {
-      //   let ipData = resp.data;
-      //   let addressObjectPromise = getAddressFromMarkers(
-      //     ipData.lat,
-      //     ipData.lon
-      //   );
-      //   addressObjectPromise.then((data) => {
-      //     console.log("addressObject", data);
-      //   });
-      // });
     }
 
     // update address on marker change
@@ -135,14 +121,10 @@ const Header = () => {
     let lat = markers[0][0];
     let lon = markers[0][1];
 
-    // let addressObjectPromise = getAddressFromMarkers(lat, lon);
-    // addressObjectPromise.then(data => {
-    //   console.log("addressObject", data);
-    // });
     // since this updates with state; ideally, weather and soil info should be updated here
 
     // get current lat long and get county, state and city
-    // if (isRoot && state.progress < 4 && state.progress > 1) {
+
     if (state.progress >= 2 && state.markers.length > 0) {
       let revAPIURL = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`;
 
@@ -305,36 +287,21 @@ const Header = () => {
         isActive["val"] = 0;
         break;
     }
-
-    // document.getElementsByClassName('.nav-toggle')[0].addEventListener
-
-    // header contentWrapper padding for state.progess > 0
-
-    // if (state.progress !== 0) {
-    //   if (document.getElementsByClassName("contentWrapper")) {
-    //     document
-    //       .getElementsByClassName("contentWrapper")[0]
-    //       .classList.add("pb-5");
-    //   }
-    // } else {
-    //   if (document.getElementsByClassName("contentWrapper")) {
-    //     document
-    //       .getElementsByClassName("contentWrapper")[0]
-    //       .classList.remove("pb-5");
-    //   }
-    // }
   }, [state.markers, state.progress, state.zone, state.weatherDataReset]);
 
   useEffect(() => {
-    const z7Formattedgoal = zone7Goal.map((goal) => {
+    let z7Formattedgoal = zone7Goal.map((goal) => {
       return { fields: goal };
     });
-    const z6Formattedgoal = zone6Goal.map((goal) => {
+    let z6Formattedgoal = zone6Goal.map((goal) => {
       return { fields: goal };
     });
-    const z5Formattedgoal = zone5Goal.map((goal) => {
+    let z5Formattedgoal = zone5Goal.map((goal) => {
       return { fields: goal };
     });
+    z7Formattedgoal = z7Formattedgoal.filter((goal) => goal.fields.Include);
+    z6Formattedgoal = z6Formattedgoal.filter((goal) => goal.fields.Include);
+    z5Formattedgoal = z5Formattedgoal.filter((goal) => goal.fields.Include);
 
     switch (parseInt(state.zone)) {
       case 7: {
@@ -346,7 +313,7 @@ const Header = () => {
           type: "ADD_GOALS",
           data: z7Formattedgoal,
         });
-        // console.log("z7 data dispatched");
+        console.log("z7 data dispatched");
         break;
       }
       case 6: {
@@ -358,7 +325,7 @@ const Header = () => {
           type: "ADD_GOALS",
           data: z6Formattedgoal,
         });
-        // console.log("z6 data dispatched");
+        console.log("z6 data dispatched");
         break;
       }
       case 5: {
@@ -370,7 +337,7 @@ const Header = () => {
           type: "ADD_GOALS",
           data: z5Formattedgoal,
         });
-        // console.log("z5 data dispatched");
+        console.log("z5 data dispatched");
         break;
       }
       default: {
@@ -382,7 +349,7 @@ const Header = () => {
           type: "ADD_GOALS",
           data: z7Formattedgoal,
         });
-        // console.log("default data dispatched");
+        console.log("default data dispatched");
         break;
       }
     }
@@ -415,21 +382,40 @@ const Header = () => {
 
   const setSpeciesSelectorActivationFlag = () => {
     // if (state.progress) {
-    if (window.location.pathname === "/") {
-      // console.log("pathname", "/");
-      dispatch({
-        type: "ACTIVATE_SPECIES_SELECTOR_TILE",
-        data: {
-          speciesSelectorActivationFlag: true,
-          myCoverCropActivationFlag: false,
-        },
-      });
-    } else {
-      // console.log("pathname", window.location.pathname);
+    // if (window.location.pathname === "/") {
+    // console.log("pathname", "/");
+    dispatch({
+      type: "ACTIVATE_SPECIES_SELECTOR_TILE",
+      data: {
+        speciesSelectorActivationFlag: true,
+        myCoverCropActivationFlag: false,
+      },
+    });
+    if (window.location.pathname !== "/") {
       history.push("/");
-      // return <Redirect to="/" />;
     }
   };
+
+  // useEffect(() => {
+  //   let localDrainageVal = window.localStorage.getItem("drainage");
+  //   let localDrainageClasses = JSON.parse(localDrainageVal);
+  //   // console.log(state.cropData.length);
+  //   // $reactTemp1.filter((crop) => crop.fields["Soil Drainage"].includes("Poorly drained"))
+  //   function arraysContainSame(a, b) {
+  //     a = Array.isArray(a) ? a : [];
+  //     b = Array.isArray(b) ? b : [];
+  //     return a.length === b.length && a.every((el) => b.includes(el));
+  //   }
+  //   if (state.cropData.length > 0 && localDrainageClasses.length > 0) {
+  //     // sta.filter((crop) => )
+  //     const culledCrops = state.cropData.filter((crop) => {
+  //       if (arraysContainSame(crop.fields["Soil Data"], localDrainageClasses))
+  //         return true;
+  //       else return false;
+  //     });
+  //     console.log(culledCrops.length);
+  //   }
+  // }, [window.localStorage.getItem("drainage"), state.cropData]);
 
   return redirectToRoot ? (
     <Redirect to="/" />
@@ -453,6 +439,7 @@ const Header = () => {
         <div className="row">
           <div className="col-lg-2 col-12">
             <img
+              className="img-fluid"
               src="/images/neccc_wide_logo_color_web.jpg"
               alt="NECCC Logo"
               width="100%"
@@ -521,7 +508,12 @@ const Header = () => {
           >
             <Button
               size="large"
-              className={state.myCoverCropActivationFlag ? "active" : ""}
+              className={
+                state.myCoverCropActivationFlag &&
+                window.location.pathname === "/"
+                  ? "active"
+                  : ""
+              }
               onClick={setmyCoverCropActivationFlag}
             >
               MY COVER CROP LIST
@@ -557,7 +549,12 @@ const Header = () => {
               {state.progress >= 5 ? (
                 <MDBNavItem
                   onClick={setmyCoverCropActivationFlag}
-                  active={state.myCoverCropActivationFlag ? true : false}
+                  active={
+                    state.myCoverCropActivationFlag &&
+                    window.location.pathname === "/"
+                      ? true
+                      : false
+                  }
                 >
                   MY COVER CROP LIST
                 </MDBNavItem>
