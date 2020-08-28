@@ -21,16 +21,50 @@
   @page {
     size: letter;
   }
+
+  div.blueBgFlex.borderWrapped {
+    display: inline-block;
+    width: 102px;
+    border: 1px solid $progressColor;
+    // margin-right: 5px;
+    &.wd-112 {
+      width: 112px;
+    }
+  }
+
   .blue-bg {
     background-color: $secondaryProgressBtnColor;
     border-radius: 10px;
     text-align: center;
     width: 100px;
+    height: 20px;
     max-height: 30px;
-    display: inline-block;
+    // display: inline-block;
+    float: right;
+    display: block;
     box-shadow: inset 0px 0px 0 1px $secondaryProgressBtnColor;
     overflow: hidden;
     position: relative;
+    margin: 5px;
+    margin-right: 0px;
+    &.shrt_perennial {
+      height: auto;
+      overflow: visible;
+      max-height: none;
+      & > p {
+        height: auto;
+      }
+      &.wd-110 {
+        width: 110px;
+      }
+    }
+    & > p {
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-overflow: ellipsis;
+    }
     &.no-bg {
       background-color: transparent;
       height: auto;

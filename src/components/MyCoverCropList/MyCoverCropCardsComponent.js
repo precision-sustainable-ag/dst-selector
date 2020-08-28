@@ -10,6 +10,7 @@ import Typography from "@material-ui/core/Typography";
 import { Context } from "../../store/Store";
 import CropDetailsModalComponent from "../CropSelector/CropDetailsModal";
 import { useSnackbar } from "notistack";
+import { trimString } from "../../shared/constants";
 
 const useStyles = makeStyles({
   card: {
@@ -68,7 +69,7 @@ const MyCoverCropCardsComponent = (props) => {
     }
   };
   return (
-    <div className="p-2">
+    <div className={`${props.cardNo === 1 ? `pl-0 pr-2 pt-2 pb-2` : `p-2`}`}>
       <Card className={classes.card}>
         <CardMedia
           image={
@@ -86,11 +87,14 @@ const MyCoverCropCardsComponent = (props) => {
           >
             {data["Family Common Name"]}
           </div>
-          <div className="font-weight-bold " style={{ fontSize: "16pt" }}>
+          <Typography
+            variant="h6"
+            className="font-weight-bold text-capitalize text-truncate"
+          >
             {data["Cover Crop Name"]}
-          </div>
+          </Typography>
           <small className="font-italic text-muted">
-            {data["Scientific Name"]}
+            {trimString(data["Scientific Name"], 25)}
           </small>
           <div>
             <small className="text-muted">

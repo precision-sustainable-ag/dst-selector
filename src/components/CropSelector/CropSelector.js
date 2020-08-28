@@ -63,6 +63,7 @@ const CropSelector = (props) => {
   let [isListView, setIsListView] = useState(true);
 
   const [comparisonView, setComparisonView] = useState(false);
+  // reset back to false
 
   const [cropData, setCropData] = useState([]);
 

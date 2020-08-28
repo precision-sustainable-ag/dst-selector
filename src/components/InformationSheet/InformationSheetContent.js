@@ -1,27 +1,91 @@
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useState, useEffect, Fragment, useContext } from "react";
 import {
   getRating,
   RenderSeedPriceIcons,
   allMonths,
 } from "../../shared/constants";
-import {
-  Typography,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
-} from "@material-ui/core";
+import { Typography, AccordionDetails, makeStyles } from "@material-ui/core";
 import SoilDrainageTimeline from "./SoilDrainageTimeline";
-
-import { ExpandMore, FiberManualRecord } from "@material-ui/icons";
+import { withStyles } from "@material-ui/core/styles";
+import MuiAccordion from "@material-ui/core/Accordion";
+import MuiAccordionSummary from "@material-ui/core/AccordionSummary";
+import {
+  ExpandMore,
+  FiberManualRecord,
+  CheckBoxOutlineBlankOutlined,
+} from "@material-ui/icons";
 import PhotoComponent from "./PhotoComponent";
 import InformationSheetDictionary from "./InformationSheetDictionary";
 import GrowthWindowComponent from "../CropSelector/GrowthWindow";
+import sources from "./sources.json";
 import moment from "moment-timezone";
+import { Context } from "../../store/Store";
+
+const Accordion = withStyles({
+  root: {
+    // border: "1px solid rgba(0, 0, 0, .125)",
+    boxShadow: "none",
+    "&:not(:last-child)": {
+      borderBottom: 0,
+    },
+    "&:before": {
+      display: "none",
+    },
+    "&$expanded": {
+      margin: "auto",
+    },
+  },
+  expanded: {},
+})(MuiAccordion);
+
+const AccordionSummary = withStyles({
+  root: {
+    // backgroundColor: "rgba(0, 0, 0, .03)",
+    borderBottom: "1px solid #2b7b79",
+    marginBottom: -1,
+    minHeight: 56,
+    "&$expanded": {
+      minHeight: 56,
+    },
+  },
+  content: {
+    "&$expanded": {
+      margin: "4px 0",
+    },
+  },
+  expanded: {},
+})(MuiAccordionSummary);
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    width: "100%",
+  },
+  heading: {
+    fontSize: theme.typography.pxToRem(15),
+    fontWeight: theme.typography.fontWeightRegular,
+  },
+  expanded: {
+    "&$expanded": {
+      margin: "4px 0",
+    },
+  },
+}));
+
 const InformationSheetContent = (props) => {
+  const [state] = useContext(Context);
+  const { zone } = state;
   const crop = props.crop;
   const from = props.from || "direct";
+  const classes = useStyles();
   useEffect(() => {
     document.title = `Information Sheet for ${crop["Cover Crop Name"]}`;
+
+    // var filteredSources = Object.keys(sources).reduce(function(r, e) {
+    //   if(parseInt())
+
+    //   if (acceptedValues.includes(myObject[e])) r[e] = myObject[e]
+    //   return r;
+    // }, {})
   }, []);
 
   return from === "direct" ? (
@@ -55,13 +119,13 @@ const InformationSheetContent = (props) => {
           <Typography variant="h6" className="text-uppercase px-3 py-2">
             Goals
           </Typography>
-          <div className="row col-12 py-4 text-right">
+          <div className="row col-12 text-right">
             <div className="col-6 mb-2 row">
               <span className="col">
                 <Typography variant="body1">Growing Window</Typography>
               </span>
 
-              <span className="col-3 mb-2">
+              <span className="col-3">
                 <div className="blue-bg">
                   <Typography variant="body1">
                     {crop["Growing Window"]}
@@ -291,15 +355,23 @@ const InformationSheetContent = (props) => {
         <div className="col-6 basicAgWrapper">
           <div className="col-12 otherHeaderRow p-0">
             <Typography variant="h6" className="px-3 py-2">
-              Basic Agronomics
+              Growth Traits
             </Typography>
             <div className="row col-12 py-4 text-right">
               <div className="col-9 mb-2">
                 <Typography variant="body1">Duration</Typography>
               </div>
               <div className="col-3 mb-2">
-                <div className="blue-bg">
-                  <Typography variant="body1">{crop["Duration"]}</Typography>
+                <div
+                  className={`blue-bg ${
+                    crop["Duration"].includes("Short-lived Perennial")
+                      ? `shrt_perennial`
+                      : ``
+                  }`}
+                >
+                  <Typography variant="body1">
+                    {crop["Duration"].toString()}
+                  </Typography>
                 </div>
               </div>
               <div className="col-9 mb-2">
@@ -314,21 +386,37 @@ const InformationSheetContent = (props) => {
                 <Typography variant="body1">Shape And Orientation</Typography>
               </div>
               <div className="col-3 mb-2">
-                {crop["Shape & Orientation"].map((val, index) => (
-                  <div className="blue-bg bordered" key={index}>
-                    <Typography variant="body1">{val}</Typography>
-                  </div>
-                ))}
+                <div
+                  className={`blueBgFlex ${
+                    crop["Shape & Orientation"].length > 1
+                      ? `borderWrapped`
+                      : ``
+                  }`}
+                >
+                  {crop["Shape & Orientation"].map((val, index) => (
+                    <div className="blue-bg bordered" key={index}>
+                      <Typography variant="body1">{val}</Typography>
+                    </div>
+                  ))}
+                </div>
               </div>
               <div className="col-9 mb-2">
                 <Typography variant="body1">Active Growth Period</Typography>
               </div>
               <div className="col-3 mb-2">
-                {crop["Active Growth Period"].map((val, index) => (
-                  <div className="blue-bg bordered" key={index}>
-                    <Typography variant="body1">{val}</Typography>
-                  </div>
-                ))}
+                <div
+                  className={`blueBgFlex ${
+                    crop["Active Growth Period"].length > 1
+                      ? `borderWrapped`
+                      : ``
+                  }`}
+                >
+                  {crop["Active Growth Period"].map((val, index) => (
+                    <div className="blue-bg bordered" key={index}>
+                      <Typography variant="body1">{val}</Typography>
+                    </div>
+                  ))}
+                </div>
               </div>
               <div className="col-9 mb-2">
                 <Typography variant="body1">C:N</Typography>
@@ -351,11 +439,17 @@ const InformationSheetContent = (props) => {
                 <Typography variant="body1">Soil Texture</Typography>
               </div>
               <div className="col-3 mb-2 text-capitalize">
-                {crop["Soil Textures"].map((val, index) => (
-                  <div className="blue-bg bordered" key={index}>
-                    <Typography variant="body1">{val}</Typography>
-                  </div>
-                ))}
+                <div
+                  className={`blueBgFlex ${
+                    crop["Soil Textures"].length > 1 ? `borderWrapped` : ``
+                  }`}
+                >
+                  {crop["Soil Textures"].map((val, index) => (
+                    <div className="blue-bg bordered" key={index}>
+                      <Typography variant="body1">{val}</Typography>
+                    </div>
+                  ))}
+                </div>
               </div>
               <div className="col-9 mb-2">
                 <Typography variant="body1">Soil PH</Typography>
@@ -455,7 +549,7 @@ const InformationSheetContent = (props) => {
                   </Typography>
                 </div>
               </div>
-              <div className="col-9 mb-2">
+              {/* <div className="col-9 mb-2">
                 <Typography variant="body1">Root Architecture</Typography>
               </div>
               <div className="col-3 mb-2">
@@ -464,7 +558,7 @@ const InformationSheetContent = (props) => {
                     {crop["Root Architecture"]}
                   </Typography>
                 </div>
-              </div>
+              </div> */}
               <div className="col-9 mb-2">
                 <Typography variant="body1">Root Depth</Typography>
               </div>
@@ -479,13 +573,26 @@ const InformationSheetContent = (props) => {
                     <Typography variant="body1">Inoculant Type</Typography>
                   </div>
                   <div className="col-3 mb-2">
-                    {crop["Inoculant Type (Legumes Only)"].map((val, index) => (
-                      <div className="blue-bg bordered" key={index}>
-                        <Typography variant="body1" className="text-capitalize">
-                          {val}
-                        </Typography>
-                      </div>
-                    ))}
+                    <div
+                      className={`blueBgFlex ${
+                        crop["Inoculant Type (Legumes Only)"].length > 1
+                          ? `borderWrapped`
+                          : ``
+                      }`}
+                    >
+                      {crop["Inoculant Type (Legumes Only)"].map(
+                        (val, index) => (
+                          <div className="blue-bg bordered" key={index}>
+                            <Typography
+                              variant="body1"
+                              className="text-capitalize"
+                            >
+                              {val}
+                            </Typography>
+                          </div>
+                        )
+                      )}
+                    </div>
                   </div>
                 </Fragment>
               ) : (
@@ -637,7 +744,7 @@ const InformationSheetContent = (props) => {
         <div className="col-6 basicAgWrapper">
           <div className="col-12 otherHeaderRow p-0">
             <Typography variant="h6" className="px-3 py-2">
-              Planting Dates
+              Planting and Growth Windows
             </Typography>
             <div className="row col-12 py-4 text-right">
               <div className="col-9 mb-2">
@@ -705,11 +812,19 @@ const InformationSheetContent = (props) => {
                 <Typography variant="body1">Active Growth Period</Typography>
               </div>
               <div className="col-3 mb-2">
-                {crop["Active Growth Period"].map((val, index) => (
-                  <div className="blue-bg bordered" key={index}>
-                    <Typography variant="body1">{val}</Typography>
-                  </div>
-                ))}
+                <div
+                  className={`blueBgFlex ${
+                    crop["Active Growth Period"].length > 1
+                      ? `borderWrapped`
+                      : ``
+                  }`}
+                >
+                  {crop["Active Growth Period"].map((val, index) => (
+                    <div className="blue-bg bordered" key={index}>
+                      <Typography variant="body1">{val}</Typography>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
             <div className="row col-12 text-right">
@@ -831,23 +946,35 @@ const InformationSheetContent = (props) => {
       <div className="row mt-2 coverCropGoalsWrapper">
         <div className="col-12 p-0">
           <Accordion defaultExpanded>
-            <AccordionSummary expandIcon={<ExpandMore />}>
+            <AccordionSummary
+              expandIcon={<ExpandMore />}
+              classes={{ expanded: classes.expanded }}
+            >
               <Typography variant="h6" className="text-uppercase px-3 py-2">
                 Goals
               </Typography>
             </AccordionSummary>
             <AccordionDetails>
-              <div className="row col-12 py-4 text-right">
+              <div className="row col-12 text-right">
                 <div className="col-6 mb-2 row">
                   <span className="col">
                     <Typography variant="body1">Growing Window</Typography>
                   </span>
                   {/* <span className="col-3">{crop["Growing Window"]}</span> */}
-                  <span className="col-3 mb-2">
+                  <span className="col-3">
                     <div className="blue-bg">
-                      <Typography variant="body1">
-                        {crop["Growing Window"]}
-                      </Typography>
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          height: "20px",
+                        }}
+                      >
+                        <Typography variant="body1">
+                          {crop["Growing Window"]}
+                        </Typography>
+                      </div>
                     </div>
                   </span>
                 </div>
@@ -992,18 +1119,21 @@ const InformationSheetContent = (props) => {
           </Accordion>
         </div>
       </div>
-      <div className="row otherRows pb-5">
+      <div className="row otherRows mb-4">
         <div className="col-6 weedsRowWrapper">
           <Accordion defaultExpanded style={{ border: "1px solid #2b7b79" }}>
-            <AccordionSummary expandIcon={<ExpandMore />}>
+            <AccordionSummary
+              expandIcon={<ExpandMore />}
+              classes={{ expanded: classes.expanded }}
+            >
               <div className="col-12 otherHeaderRow p-0">
-                <Typography variant="h6" className="px-3 py-2">
+                <Typography variant="h6" className="px-3 py-2 text-uppercase">
                   Weeds
                 </Typography>
               </div>
             </AccordionSummary>
             <AccordionDetails>
-              <div className="row col-12 py-4 text-right">
+              <div className="row col-12 text-right">
                 <div className="col-9 mb-2">
                   <Typography variant="body1">
                     Residue Suppresses Summer Annual Weeds
@@ -1048,25 +1178,18 @@ const InformationSheetContent = (props) => {
         </div>
         <div className="col-6 envTolWrapper">
           <Accordion defaultExpanded style={{ border: "1px solid #2b7b79" }}>
-            <AccordionSummary expandIcon={<ExpandMore />}>
+            <AccordionSummary
+              expandIcon={<ExpandMore />}
+              classes={{ expanded: classes.expanded }}
+            >
               <div className="col-12 otherHeaderRow p-0">
-                <Typography variant="h6" className="px-3 py-2">
+                <Typography variant="h6" className="px-3 py-2 text-uppercase">
                   Environmental Tolerances
                 </Typography>
               </div>
             </AccordionSummary>
             <AccordionDetails>
-              <div className="row col-12 py-4 text-right">
-                <div className="col-9 mb-2">
-                  <Typography variant="body1">Winter Survival</Typography>
-                </div>
-                <div className="col-3 mb-2">
-                  <div className="blue-bg">
-                    <Typography variant="body1">
-                      {crop["Winter Survival"]}
-                    </Typography>
-                  </div>
-                </div>
+              <div className="row col-12 text-right">
                 <div className="col-9 mb-2">
                   <Typography variant="body1">Low Fertility</Typography>
                 </div>
@@ -1103,24 +1226,33 @@ const InformationSheetContent = (props) => {
             style={{ marginTop: "1em" }}
           >
             <Accordion defaultExpanded style={{ border: "1px solid #2b7b79" }}>
-              <AccordionSummary expandIcon={<ExpandMore />}>
+              <AccordionSummary
+                expandIcon={<ExpandMore />}
+                classes={{ expanded: classes.expanded }}
+              >
                 <Typography
                   variant="h6"
                   className="px-3 py-2"
                   style={{ border: "0px" }}
                 >
-                  Basic Agronomics
+                  Growth Traits
                 </Typography>
               </AccordionSummary>
               <AccordionDetails>
-                <div className="row col-12 py-4 text-right">
+                <div className="row col-12 text-right">
                   <div className="col-9 mb-2">
                     <Typography variant="body1">Duration</Typography>
                   </div>
                   <div className="col-3 mb-2">
-                    <div className="blue-bg">
+                    <div
+                      className={`blue-bg ${
+                        crop["Duration"].includes("Short-lived Perennial")
+                          ? `shrt_perennial`
+                          : ``
+                      }`}
+                    >
                       <Typography variant="body1">
-                        {crop["Duration"]}
+                        {crop["Duration"].toString()}
                       </Typography>
                     </div>
                   </div>
@@ -1140,24 +1272,21 @@ const InformationSheetContent = (props) => {
                     </Typography>
                   </div>
                   <div className="col-3 mb-2">
-                    {crop["Shape & Orientation"].map((val, index) => (
-                      <div className="blue-bg bordered" key={index}>
-                        <Typography variant="body1">{val}</Typography>
-                      </div>
-                    ))}
+                    <div
+                      className={`blueBgFlex ${
+                        crop["Shape & Orientation"].length > 1
+                          ? `borderWrapped`
+                          : ``
+                      }`}
+                    >
+                      {crop["Shape & Orientation"].map((val, index) => (
+                        <div className="blue-bg bordered" key={index}>
+                          <Typography variant="body1">{val}</Typography>
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                  <div className="col-9 mb-2">
-                    <Typography variant="body1">
-                      Active Growth Period
-                    </Typography>
-                  </div>
-                  <div className="col-3 mb-2">
-                    {crop["Active Growth Period"].map((val, index) => (
-                      <div className="blue-bg bordered" key={index}>
-                        <Typography variant="body1">{val}</Typography>
-                      </div>
-                    ))}
-                  </div>
+
                   <div className="col-9 mb-2">
                     <Typography variant="body1">C:N</Typography>
                   </div>
@@ -1181,11 +1310,17 @@ const InformationSheetContent = (props) => {
                     <Typography variant="body1">Soil Texture</Typography>
                   </div>
                   <div className="col-3 mb-2 text-capitalize">
-                    {crop["Soil Textures"].map((val, index) => (
-                      <div className="blue-bg bordered" key={index}>
-                        <Typography variant="body1">{val}</Typography>
-                      </div>
-                    ))}
+                    <div
+                      className={`blueBgFlex ${
+                        crop["Soil Textures"].length > 1 ? `borderWrapped` : ``
+                      }`}
+                    >
+                      {crop["Soil Textures"].map((val, index) => (
+                        <div className="blue-bg bordered" key={index}>
+                          <Typography variant="body1">{val}</Typography>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                   <div className="col-9 mb-2">
                     <Typography variant="body1">Soil PH</Typography>
@@ -1240,51 +1375,7 @@ const InformationSheetContent = (props) => {
                   ) : (
                     ""
                   )}
-                </div>
-              </AccordionDetails>
-            </Accordion>
-          </div>
-        </div>
-        <div className="col-6 basicAgWrapper">
-          <div
-            className="col-12 otherHeaderRow p-0"
-            style={{ marginTop: "1em" }}
-          >
-            <Accordion defaultExpanded style={{ border: "1px solid #2b7b79" }}>
-              <AccordionSummary expandIcon={<ExpandMore />}>
-                <Typography
-                  variant="h6"
-                  className="px-3 py-2"
-                  style={{ border: "0px" }}
-                >
-                  Soil Drainage
-                </Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                <div className="col-12 py-4 text-right">
-                  <SoilDrainageTimeline drainage={crop["Soil Drainage"]} />
-                </div>
-              </AccordionDetails>
-            </Accordion>
-          </div>
-        </div>
-        <div className="col-6 basicAgWrapper">
-          <div
-            className="col-12 otherHeaderRow p-0"
-            style={{ marginTop: "1em" }}
-          >
-            <Accordion defaultExpanded style={{ border: "1px solid #2b7b79" }}>
-              <AccordionSummary expandIcon={<ExpandMore />}>
-                <Typography
-                  variant="h6"
-                  className="px-3 py-2"
-                  style={{ border: "0px" }}
-                >
-                  Growth
-                </Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                <div className="row col-12 py-4 text-right">
+
                   <div className="col-9 mb-2">
                     <Typography variant="body1">
                       Ease Of Establishment
@@ -1315,18 +1406,29 @@ const InformationSheetContent = (props) => {
                       </Typography>
                     </div>
                   </div>
-                  <div className="col-9 mb-2">
+                  {/* <div className="col-9 mb-2">
                     <Typography variant="body1">Root Architecture</Typography>
                   </div>
                   <div className="col-3 mb-2">
-                    {crop["Root Architecture"].map((val, index) => (
-                      <div className="blue-bg bordered" key={index}>
-                        <Typography variant="body1" className="text-capitalize">
-                          {val}
-                        </Typography>
-                      </div>
-                    ))}
-                  </div>
+                    <div
+                      className={`blueBgFlex ${
+                        crop["Root Architecture"].length > 1
+                          ? `borderWrapped`
+                          : ``
+                      }`}
+                    >
+                      {crop["Root Architecture"].map((val, index) => (
+                        <div className="blue-bg bordered" key={index}>
+                          <Typography
+                            variant="body1"
+                            className="text-capitalize"
+                          >
+                            {val}
+                          </Typography>
+                        </div>
+                      ))}
+                    </div>
+                  </div> */}
                   <div className="col-9 mb-2">
                     <Typography variant="body1">Root Depth</Typography>
                   </div>
@@ -1343,18 +1445,26 @@ const InformationSheetContent = (props) => {
                         <Typography variant="body1">Inoculant Type</Typography>
                       </div>
                       <div className="col-3 mb-2">
-                        {crop["Inoculant Type (Legumes Only)"].map(
-                          (val, index) => (
-                            <div className="blue-bg bordered" key={index}>
-                              <Typography
-                                variant="body1"
-                                className="text-capitalize"
-                              >
-                                {val}
-                              </Typography>
-                            </div>
-                          )
-                        )}
+                        <div
+                          className={`blueBgFlex ${
+                            crop["Inoculant Type (Legumes Only)"].length > 1
+                              ? `borderWrapped`
+                              : ``
+                          }`}
+                        >
+                          {crop["Inoculant Type (Legumes Only)"].map(
+                            (val, index) => (
+                              <div className="blue-bg bordered" key={index}>
+                                <Typography
+                                  variant="body1"
+                                  className="text-capitalize"
+                                >
+                                  {val}
+                                </Typography>
+                              </div>
+                            )
+                          )}
+                        </div>
                       </div>
                     </Fragment>
                   ) : (
@@ -1371,7 +1481,37 @@ const InformationSheetContent = (props) => {
             style={{ marginTop: "1em" }}
           >
             <Accordion defaultExpanded style={{ border: "1px solid #2b7b79" }}>
-              <AccordionSummary expandIcon={<ExpandMore />}>
+              <AccordionSummary
+                expandIcon={<ExpandMore />}
+                classes={{ expanded: classes.expanded }}
+              >
+                <Typography
+                  variant="h6"
+                  className="px-3 py-2"
+                  style={{ border: "0px" }}
+                >
+                  Soil Drainage
+                </Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <div className="col-12 text-right">
+                  <SoilDrainageTimeline drainage={crop["Soil Drainage"]} />
+                </div>
+              </AccordionDetails>
+            </Accordion>
+          </div>
+        </div>
+
+        <div className="col-6 basicAgWrapper">
+          <div
+            className="col-12 otherHeaderRow p-0"
+            style={{ marginTop: "1em" }}
+          >
+            <Accordion defaultExpanded style={{ border: "1px solid #2b7b79" }}>
+              <AccordionSummary
+                expandIcon={<ExpandMore />}
+                classes={{ expanded: classes.expanded }}
+              >
                 <Typography
                   variant="h6"
                   className="px-3 py-2"
@@ -1381,7 +1521,7 @@ const InformationSheetContent = (props) => {
                 </Typography>
               </AccordionSummary>
               <AccordionDetails>
-                <div className="row col-12 py-4 text-right">
+                <div className="row col-12 text-right">
                   <div className="col-9 mb-2">
                     <Typography variant="body1">Seeds Per Lb</Typography>
                   </div>
@@ -1467,7 +1607,10 @@ const InformationSheetContent = (props) => {
             style={{ marginTop: "1em" }}
           >
             <Accordion defaultExpanded style={{ border: "1px solid #2b7b79" }}>
-              <AccordionSummary expandIcon={<ExpandMore />}>
+              <AccordionSummary
+                expandIcon={<ExpandMore />}
+                classes={{ expanded: classes.expanded }}
+              >
                 <Typography
                   variant="h6"
                   className="px-3 py-2"
@@ -1477,7 +1620,7 @@ const InformationSheetContent = (props) => {
                 </Typography>
               </AccordionSummary>
               <AccordionDetails>
-                <div className="row col-12 py-4 text-right">
+                <div className="row col-12 text-right">
                   <div className="col-9 mb-2">
                     <Typography variant="body1">
                       Tillage At Vegetative
@@ -1551,22 +1694,28 @@ const InformationSheetContent = (props) => {
             style={{ marginTop: "1em" }}
           >
             <Accordion defaultExpanded style={{ border: "1px solid #2b7b79" }}>
-              <AccordionSummary expandIcon={<ExpandMore />}>
+              <AccordionSummary
+                expandIcon={<ExpandMore />}
+                classes={{ expanded: classes.expanded }}
+              >
                 <Typography
                   variant="h6"
                   className="px-3 py-2"
                   style={{ border: "0px" }}
                 >
-                  Planting Dates
+                  Planting and Growth Windows
                 </Typography>
               </AccordionSummary>
               <AccordionDetails>
-                <div className="row col-12 py-4 text-right">
+                <div className="row col-12 text-right">
                   <div className="col-9 mb-2">
-                    <Typography variant="body1">Frost Seeding</Typography>
+                    <Typography variant="body1">
+                      <FiberManualRecord style={{ color: "#2f80ed" }} />
+                      &nbsp;Frost Seeding
+                    </Typography>
                   </div>
                   <div className="col-3 mb-2">
-                    <div className="blue-bg">
+                    <div className="blue-bg shrt_perennial wd-110">
                       <Typography variant="body1">
                         {crop["Frost Seeding"]
                           ? `${moment(crop["Frost Seeding Start"], "YYYY-MM-DD")
@@ -1583,25 +1732,99 @@ const InformationSheetContent = (props) => {
                   </div>
                   <div className="col-9 mb-2">
                     <Typography variant="body1">
-                      Reliable Establishment
+                      <FiberManualRecord style={{ color: "#2d7b7b" }} />
+                      &nbsp;Reliable Establishment
                     </Typography>
                   </div>
                   <div className="col-3 mb-2">
-                    <div className="blue-bg">
-                      <Typography variant="body1">
-                        {getMonthDayString("reliable", crop)}
-                      </Typography>
-                    </div>
+                    {crop["Second Reliable Establishment/Growth Start"] &&
+                    crop["Second Reliable Establishment/Growth End"] ? (
+                      <div className="blueBgFlex borderWrapped wd-112">
+                        <div className="blue-bg shrt_perennial wd-110">
+                          <Typography variant="body1">
+                            {getMonthDayString("reliable", crop)}
+                          </Typography>
+                        </div>
+                        <div className="blue-bg shrt_perennial wd-110">
+                          <Typography variant="body1">
+                            {getMonthDayString("reliable-second", crop)}
+                          </Typography>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="blue-bg shrt_perennial wd-110">
+                        <Typography variant="body1">
+                          {getMonthDayString("reliable", crop)}
+                        </Typography>
+                      </div>
+                    )}
                   </div>
                   <div className="col-9 mb-2">
                     <Typography variant="body1">
-                      Temperature/Moisture Risk
+                      <FiberManualRecord style={{ color: "#f2c94c" }} />
+                      &nbsp;Temperature/Moisture Risk
                     </Typography>
+                  </div>
+                  <div className="col-3 mb-2">
+                    {/* <div className="blue-bg">
+                      <Typography variant="body1">
+                        {getMonthDayString("temperature", crop)}
+                      </Typography>
+                    </div> */}
+                    {crop[
+                      "Second Temperature/Moisture Risk to Establishment Start"
+                    ] &&
+                    crop[
+                      "Second Temperature/Moisture Risk to Establishment End"
+                    ] ? (
+                      <div className="blueBgFlex borderWrapped wd-112">
+                        <div className="blue-bg shrt_perennial wd-110">
+                          <Typography variant="body1">
+                            {getMonthDayString("temperature", crop)}
+                          </Typography>
+                        </div>
+                        <div className="blue-bg shrt_perennial wd-110">
+                          <Typography variant="body1">
+                            {getMonthDayString("temperature-second", crop)}
+                          </Typography>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="blue-bg shrt_perennial wd-110">
+                        <Typography variant="body1">
+                          {getMonthDayString("temperature", crop)}
+                        </Typography>
+                      </div>
+                    )}
+                  </div>
+                  <div className="col-9 mb-2">
+                    <Typography variant="body1">
+                      <FiberManualRecord style={{ color: "#598445" }} />
+                      &nbsp;Active Growth Period
+                    </Typography>
+                  </div>
+                  <div className="col-3 mb-2">
+                    <div
+                      className={`blueBgFlex ${
+                        crop["Active Growth Period"].length > 1
+                          ? `borderWrapped`
+                          : ``
+                      }`}
+                    >
+                      {crop["Active Growth Period"].map((val, index) => (
+                        <div className="blue-bg bordered" key={index}>
+                          <Typography variant="body1">{val}</Typography>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="col-9 mb-2">
+                    <Typography variant="body1">Winter Survival</Typography>
                   </div>
                   <div className="col-3 mb-2">
                     <div className="blue-bg">
                       <Typography variant="body1">
-                        {getMonthDayString("temperature", crop)}
+                        {crop["Winter Survival"]}
                       </Typography>
                     </div>
                   </div>
@@ -1609,34 +1832,179 @@ const InformationSheetContent = (props) => {
                     <Typography variant="body1">Can Interseed</Typography>
                   </div>
                   <div className="col-3 mb-2">
-                    <div className="blue-bg">
+                    <div className="blue-bg shrt_perennial wd-110">
                       <Typography variant="body1">
                         {crop["Interseed possible"] ? "Yes" : "N/A"}
                       </Typography>
                     </div>
                   </div>
-                  <table style={{ width: "100%", height: "40px" }}>
-                    <tbody>
-                      <tr>
-                        {allMonths.map((month, index) => (
-                          <GrowthWindowComponent
-                            from="tableAll"
-                            data={crop}
-                            key={index}
-                            id={`growthCell${index}`}
-                            month={index}
-                          />
-                        ))}
-                      </tr>
-                      <tr>
-                        {allMonths.map((month, index) => (
-                          <td key={index}>{month}</td>
-                        ))}
-                      </tr>
-                    </tbody>
-                  </table>
+                  <div className="col-12 pt-4">
+                    <table style={{ width: "100%", height: "40px" }}>
+                      <tbody>
+                        <tr>
+                          {allMonths.map((month, index) => {
+                            let summerMonths = ["Jun", "Jul", "Aug"];
+                            let winterMonths = ["Dec", "Jan", "Feb"];
+                            let springMonths = ["Mar", "Apr", "May"];
+                            let fallMonths = ["Sep", "Oct", "Nov"];
+                            let activeMonths = [];
+
+                            const getBackground = () => {
+                              if (
+                                crop["Active Growth Period"].includes("Winter")
+                              ) {
+                                activeMonths.push("Dec");
+                                activeMonths.push("Jan");
+                                activeMonths.push("Feb");
+                              }
+                              if (
+                                crop["Active Growth Period"].includes("Summer")
+                              ) {
+                                activeMonths.push("Jun");
+                                activeMonths.push("Jul");
+                                activeMonths.push("Aug");
+                              }
+
+                              if (
+                                crop["Active Growth Period"].includes("Fall")
+                              ) {
+                                activeMonths.push("Sep");
+                                activeMonths.push("Oct");
+                                activeMonths.push("Nov");
+                              }
+
+                              if (
+                                crop["Active Growth Period"].includes("Spring")
+                              ) {
+                                activeMonths.push("Mar");
+                                activeMonths.push("Apr");
+                                activeMonths.push("May");
+                              }
+                              return activeMonths;
+                            };
+                            return (
+                              <td
+                                style={{
+                                  background: getBackground().includes(month)
+                                    ? `#598445`
+                                    : `#f0f7eb`,
+                                  // width: "100%",
+                                  height: "20px",
+                                  borderRight: `${
+                                    month !== "Dec" ? `2px solid white` : ``
+                                  }`,
+                                }}
+                                key={`growth-${index}`}
+                              ></td>
+                            );
+                          })}
+                        </tr>
+                        <tr>
+                          {allMonths.map((month, index) => (
+                            <GrowthWindowComponent
+                              from="infosheet"
+                              data={crop}
+                              key={index}
+                              id={`growthCell${index}`}
+                              month={index}
+                            />
+                          ))}
+                        </tr>
+                        <tr>
+                          {allMonths.map((month, index) => {
+                            return (
+                              <td
+                                key={index}
+                                className={`${
+                                  month === "Jan" || month === "Dec"
+                                    ? month === "Jan"
+                                      ? `text-center`
+                                      : `text-center`
+                                    : `text-center`
+                                }`}
+                              >
+                                <Typography variant="body1">{month}</Typography>
+                              </td>
+                            );
+                          })}
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               </AccordionDetails>
+            </Accordion>
+          </div>
+        </div>
+
+        <div className="col-12 basicAgWrapper">
+          <div
+            className="col-12 otherHeaderRow p-0"
+            style={{ marginTop: "1em" }}
+          >
+            <Accordion defaultExpanded style={{ border: "1px solid #2b7b79" }}>
+              <AccordionSummary
+                expandIcon={<ExpandMore />}
+                classes={{ expanded: classes.expanded }}
+              >
+                <Typography
+                  variant="h6"
+                  className="px-3 py-2"
+                  style={{ border: "0px" }}
+                >
+                  Extended Comments
+                </Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                {crop["Notes: Goals"] ? (
+                  <Typography variant="body1" className="p-3">
+                    {" "}
+                    <b>Goals:</b> {crop["Notes: Goals"]}
+                  </Typography>
+                ) : (
+                  ""
+                )}
+
+                {crop["Notes: Weeds"] ? (
+                  <Typography variant="body1" className="p-3">
+                    {" "}
+                    <b>Weeds:</b> {crop["Notes: Weeds"]}
+                  </Typography>
+                ) : (
+                  ""
+                )}
+
+                {crop["Notes: Planting"] ? (
+                  <Typography variant="body1" className="p-3">
+                    {" "}
+                    <b>Weeds:</b> {crop["Notes: Planting"]}
+                  </Typography>
+                ) : (
+                  ""
+                )}
+              </AccordionDetails>
+            </Accordion>
+          </div>
+        </div>
+        <div className="col-12 basicAgWrapper">
+          <div
+            className="col-12 otherHeaderRow p-0"
+            style={{ marginTop: "1em" }}
+          >
+            <Accordion defaultExpanded style={{ border: "1px solid #2b7b79" }}>
+              <AccordionSummary
+                expandIcon={<ExpandMore />}
+                classes={{ expanded: classes.expanded }}
+              >
+                <Typography
+                  variant="h6"
+                  className="px-3 py-2"
+                  style={{ border: "0px" }}
+                >
+                  References & Sources
+                </Typography>
+              </AccordionSummary>
+              <AccordionDetails></AccordionDetails>
             </Accordion>
           </div>
         </div>
@@ -1664,8 +2032,46 @@ const getMonthDayString = (type = "", crop = {}) => {
 
       return `${startDate.format("MM/DD")} - ${endDate.format("MM/DD")}`;
     }
+    case "reliable-second": {
+      const startDate = moment(
+        crop["Second Reliable Establishment/Growth Start"],
+        "YYYY-MM-DD"
+      );
+      const endDate = moment(
+        crop["Second Reliable Establishment/Growth End"],
+        "YYYY-MM-DD"
+      );
+
+      return `${startDate.format("MM/DD")} - ${endDate.format("MM/DD")}`;
+    }
     case "temperature": {
-      return "N/A";
+      if (
+        crop["Temperature/Moisture Risk to Establishment Start"] &&
+        crop["Temperature/Moisture Risk to Establishment End"]
+      ) {
+        const startDate = moment(
+          crop["Temperature/Moisture Risk to Establishment Start"],
+          "YYYY-MM-DD"
+        );
+        const endDate = moment(
+          crop["Temperature/Moisture Risk to Establishment End"],
+          "YYYY-MM-DD"
+        );
+        return `${startDate.format("MM/DD")} - ${endDate.format("MM/DD")}`;
+      } else {
+        return "N/A";
+      }
+    }
+    case "temperature-second": {
+      const startDate = moment(
+        crop["Second Temperature/Moisture Risk to Establishment Start"],
+        "YYYY-MM-DD"
+      );
+      const endDate = moment(
+        crop["Second Temperature/Moisture Risk to Establishment End"],
+        "YYYY-MM-DD"
+      );
+      return `${startDate.format("MM/DD")} - ${endDate.format("MM/DD")}`;
     }
     default:
       return "";

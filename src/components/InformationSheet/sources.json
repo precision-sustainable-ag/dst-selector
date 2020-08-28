@@ -1,0 +1,625 @@
+{
+  "Planting Flowers for Bees in Connecticut": {
+    "Institution or Author": "Connecticut Agricultural Experiment Station",
+    "URL": "http://northeastcovercrops.com/wp-content/uploads/2018/03/Planting-Flowers-For-Bees-in-Connecticut.pdf",
+    "Cover Crops": "\"Clover, Red\",\"Clover, White\",\"Clover, Crimson\",\"Clover, Alsike\",\"Vetch, Hairy\",\"Alfalfa, Dormant\",Buckwheat",
+    "State": "Connecticut",
+    "Zone": "Zone 5, Zone 6, Zone 7"
+  },
+  "Use of Cover Crops and Green Manures to Attract Beneficial Insects": {
+    "Institution or Author": "University of Connecticut Integrated Pest Management Program",
+    "URL": "http://ipm.uconn.edu/documents/raw2/Use%20of%20Cover%20Crops%20and%20Green%20Manures%20to%20Attract%20Beneficial%20Insects/Use%20of%20Cover%20Crops%20and%20Green%20Manures%20to%20Attract%20Beneficial%20Insects.php?display=print",
+    "Cover Crops": "Buckwheat,\"Vetch, Hairy\",\"Cereal Rye, Spring\",\"Cereal Rye, Winter\",\"Clover, Alsike\",\"Clover, Balansa \",\"Clover, Berseem \",\"Clover, Crimson\",\"Clover, Red\",\"Clover, White\",\"Sweetclover, Yellow\",\"Wheat, Spring\",\"Wheat, Winter\",\"Barley, Spring\",\"Barley, Winter\",Oats,\"Oats, Black\",\"Oats, Spring\"",
+    "State": "Connecticut",
+    "Zone": "Zone 5, Zone 6, Zone 7"
+  },
+  "Multiple Purpose Cover Crops": {
+    "Institution or Author": "Northeast Organic Farming Association of Connecticut",
+    "URL": "http://ctnofa1982.blogspot.com/2016/09/multiple-purpose-cover-crops.html",
+    "Cover Crops": "\"Cereal Rye, Spring\",\"Cereal Rye, Winter\",\"Clover, Crimson\",\"Clover, Red\",\"Clover, White\",\"Sweetclover, Yellow\",\"Vetch, Hairy\",\"Radish, Forage\",Oats,\"Oats, Spring\",\"Oats, Black\"",
+    "State": "Connecticut",
+    "Zone": "Zone 5, Zone 6, Zone 7"
+  },
+  "Fall Cover Crops": {
+    "Institution or Author": "University of Delaware Cooperative Extension",
+    "URL": "http://northeastcovercrops.com/wp-content/uploads/2018/03/Fall-Cover-Crops.pdf",
+    "Cover Crops": "\"Cereal Rye, Spring\",\"Cereal Rye, Winter\",\"Wheat, Spring\",\"Wheat, Winter\",\"Triticale, Spring\",\"Triticale, Winter\",Oats,\"Oats, Black\",\"Oats, Spring\",\"Barley, Spring\",\"Barley, Winter\",\"Clover, Crimson\",\"Clover, Red\",\"Vetch, Hairy\",\"Pea, Spring\",\"Pea, Winter\",\"Radish, Forage\",\"Rapeseed, Forage\",\"Rape, Oilseed, Spring\",\"Rape, Oilseed, Winter\"",
+    "State": "Delaware",
+    "Zone": "Zone 7, Zone 6"
+  },
+  "Spring Planted Cover Crops for Vegetable Rotations": {
+    "Institution or Author": "University of Delaware Cooperative Extension",
+    "URL": "https://sites.udel.edu/weeklycropupdate/?p=11480",
+    "Cover Crops": "Oats,\"Oats, Spring\",\"Ryegrass, Annual\",\"Pea, Spring\",\"Pea, Winter\",Mustard,\"Rapeseed, Forage\",\"Rape, Oilseed, Spring\",\"Rape, Oilseed, Winter\",\"Radish, Forage\",\"Radish, Oilseed\"",
+    "State": "Delaware",
+    "Zone": "Zone 7, Zone 6"
+  },
+  "Forage Species Adapted to the Northeast": {
+    "Institution or Author": "West Virginia University Extension Service",
+    "URL": "http://northeastcovercrops.com/wp-content/uploads/2018/03/Forage-Species-Adapted-to-the-Northeast.pdf",
+    "Cover Crops": "\"Ryegrass, Annual\",\"Ryegrass, Perennial\",\"Clover, Alsike\",\"Clover, Red\",\"Clover, White\",\"Alfalfa, Dormant\"",
+    "State": "West Virginia",
+    "Zone": "Zone 5, Zone 6, Zone 7"
+  },
+  "Forage Varieties for West Virginia": {
+    "Institution or Author": "West Virginia University Extension Service",
+    "URL": "http://northeastcovercrops.com/wp-content/uploads/2018/03/Forage-Varieties-for-West-Virginia.pdf",
+    "Cover Crops": "\"Clover, Red\",\"Clover, White\"",
+    "State": "West Virginia",
+    "Zone": "Zone 5, Zone 6, Zone 7"
+  },
+  "Walk-In Seedings": {
+    "Institution or Author": "West Virginia University Extension Service",
+    "URL": "http://northeastcovercrops.com/wp-content/uploads/2018/03/Walk-In-Seedings.pdf",
+    "Cover Crops": "\"Clover, Red\",\"Clover, White\"",
+    "State": "West Virginia",
+    "Zone": "Zone 5, Zone 6, Zone 7"
+  },
+  "Pasture and Hay Seeding Rates": {
+    "Institution or Author": "West Virginia University Extension Service",
+    "URL": "http://northeastcovercrops.com/wp-content/uploads/2018/03/Pasture-and-Hay-Seeding-Rates.pdf",
+    "Cover Crops": "\"Clover, Red\",\"Clover, White\",\"Ryegrass, Annual\",\"Ryegrass, Perennial\",\"Clover, Alsike\",\"Alfalfa, Dormant\"",
+    "State": "West Virginia",
+    "Zone": "Zone 5, Zone 6, Zone 7"
+  },
+  "Frost Seedings": {
+    "Institution or Author": "West Virginia University Extension Service",
+    "URL": "http://northeastcovercrops.com/wp-content/uploads/2018/03/Frost-Seedings.pdf",
+    "Cover Crops": "\"Clover, Red\",\"Clover, White\",\"Clover, Alsike\"",
+    "State": "West Virginia",
+    "Zone": "Zone 5, Zone 6, Zone 7"
+  },
+  "Combining Forage Species in a Seeding Mixture": {
+    "Institution or Author": "West Virginia University Extension Service",
+    "URL": "http://northeastcovercrops.com/wp-content/uploads/2018/03/Combining-Forage-Species-in-a-Seeding-Mixture.pdf",
+    "Cover Crops": "\"Clover, Red\",\"Clover, Alsike\",\"Alfalfa, Dormant\"",
+    "State": "West Virginia",
+    "Zone": "Zone 5, Zone 6, Zone 7"
+  },
+  "Pasture and Hay Seeding Mixtures": {
+    "Institution or Author": "West Virginia University Extension Service",
+    "URL": "http://northeastcovercrops.com/wp-content/uploads/2018/03/Pasture-and-Hay-Seeding-Mixtures.pdf",
+    "Cover Crops": "\"Clover, Red\",\"Clover, White\",\"Alfalfa, Dormant\"",
+    "State": "West Virginia",
+    "Zone": "Zone 5, Zone 6, Zone 7"
+  },
+  "Cover Crops and Green Manures": {
+    "Institution or Author": "University of Vermont Extension",
+    "URL": "https://www.uvm.edu/vtvegandberry/factsheets/covercrops.html",
+    "Cover Crops": "\"Cereal Rye, Winter\",\"Ryegrass, Annual\",Oats,Sudangrass,Sorghum-sudangrass,\"Millet, Japanese\",\"Vetch, Hairy\",\"Clover, Red\",\"Clover, White\",\"Sweetclover, Yellow\",\"Pea, Spring\",\"Pea, Winter\",Cowpea,\"Alfalfa, Dormant\",\"Radish, Forage\",\"Radish, Oilseed\",Buckwheat,Soybeans",
+    "State": "Vermont",
+    "Zone": "Zone 4, Zone 5"
+  },
+  "2016 Cover Crop Mix in Corn Silage Trial": {
+    "Institution or Author": "University of Vermont Extension",
+    "URL": "http://northeastcovercrops.com/wp-content/uploads/2018/02/2016-Cover-Crop-Mix-in-Corn-Silage-Trial.pdf",
+    "Cover Crops": "\"Cereal Rye, Winter\",\"Ryegrass, Annual\",Oats,\"Turnip, Forage\",\"Triticale, Winter\",\"Clover, Red\",\"Clover, Crimson\",\"Pea, Winter\",\"Radish, Forage\",\"Radish, Oilseed\",\"Rapeseed, Forage\"",
+    "State": "Vermont",
+    "Zone": "Zone 4, Zone 5"
+  },
+  "2015 Cover Crop Mix in Corn Silage Trial": {
+    "Institution or Author": "University of Vermont Extension",
+    "URL": "http://northeastcovercrops.com/wp-content/uploads/2018/02/2015-Cover-Crop-Mix-in-Corn-Silage-Trial.pdf",
+    "Cover Crops": "\"Cereal Rye, Winter\",\"Ryegrass, Annual\",Oats,\"Turnip, Forage\",\"Triticale, Winter\",\"Clover, Red\",\"Clover, Crimson\",\"Pea, Winter\",\"Radish, Forage\",\"Radish, Oilseed\",\"Rapeseed, Forage\",\"Wheat, Winter\",Sudangrass,\"Sweetclover, Yellow\",\"Clover, White\",\"Vetch, Hairy\",Sunn Hemp,Sunflower,Buckwheat",
+    "State": "Vermont",
+    "Zone": "Zone 4, Zone 5"
+  },
+  "2014 Summer Cover Crop Mix": {
+    "Institution or Author": "University of Vermont Extension",
+    "URL": "http://northeastcovercrops.com/wp-content/uploads/2018/02/2014-Summer-Cover-Crop-Mix.pdf",
+    "Cover Crops": "\"Cereal Rye, Winter\",\"Ryegrass, Annual\",Oats,\"Wheat, Winter\",\"Triticale, Winter\",\"Clover, Crimson\",\"Clover, White\",\"Vetch, Hairy\",\"Radish, Oilseed\",\"Radish, Forage\",\"Rapeseed, Forage\"",
+    "State": "Vermont",
+    "Zone": "Zone 4, Zone 5"
+  },
+  "2012 Cover Crop Termination and Reduced Tillage Trial": {
+    "Institution or Author": "University of Vermont Extension",
+    "URL": "http://northeastcovercrops.com/wp-content/uploads/2018/02/2012-Cover-Crop-Termination-and-Reduced-Tillage-Trial.pdf",
+    "Cover Crops": "\"Cereal Rye, Winter\"",
+    "State": "Vermont",
+    "Zone": "Zone 4, Zone 5"
+  },
+  "2010 Cover Crop Termination Trial": {
+    "Institution or Author": "University of Vermont Extension",
+    "URL": "http://northeastcovercrops.com/wp-content/uploads/2018/02/2010-Cover-Crop-Termination-Trial.pdf",
+    "Cover Crops": "\"Cereal Rye, Winter\"",
+    "State": "Vermont",
+    "Zone": "Zone 4, Zone 5"
+  },
+  "2014 Early Fall Cover Crop Trial": {
+    "Institution or Author": "University of Vermont Extension",
+    "URL": "http://northeastcovercrops.com/wp-content/uploads/2018/02/2014-Early-Fall-Cover-Crop-Trial.pdf",
+    "Cover Crops": "\"Ryegrass, Annual\",\"Triticale, Winter\",Oats,\"Pea, Winter\",\"Vetch, Hairy\",\"Radish, Forage\",\"Radish, Oilseed\",\"Rape, Oilseed, Winter\"",
+    "State": "Vermont",
+    "Zone": "Zone 4, Zone 5"
+  },
+  "2014 Late Summer Cover Crop Trial": {
+    "Institution or Author": "University of Vermont Extension",
+    "URL": "http://northeastcovercrops.com/wp-content/uploads/2018/02/2014-Late-Summer-Cover-Crop-Trial.pdf",
+    "Cover Crops": "\"Ryegrass, Annual\",Oats,\"Pea, Winter\"",
+    "State": "Vermont",
+    "Zone": "Zone 4, Zone 5"
+  },
+  "2013 Cover Crop Planting Date x Seeding Rate Trial": {
+    "Institution or Author": "University of Vermont Extension",
+    "URL": "http://northeastcovercrops.com/wp-content/uploads/2018/02/2013-Cover-Crop-Planting-Date-x-Seeding-Rate-Trial.pdf",
+    "Cover Crops": "\"Cereal Rye, Winter\"",
+    "State": "Vermont",
+    "Zone": "Zone 4, Zone 5"
+  },
+  "2012 Cover Crop Planting Date x Seeding Rate Trial": {
+    "Institution or Author": "University of Vermont Extension",
+    "URL": "http://northeastcovercrops.com/wp-content/uploads/2018/02/2012-Cover-Crop-Planting-Date-x-Seeding-Rate-Trial.pdf",
+    "Cover Crops": "\"Cereal Rye, Winter\"",
+    "State": "Vermont",
+    "Zone": "Zone 4, Zone 5"
+  },
+  "2011 Cover Crop Planting Date Trial": {
+    "Institution or Author": "University of Vermont Extension",
+    "URL": "http://northeastcovercrops.com/wp-content/uploads/2018/02/2011-Cover-Crop-Planting-Date-Trial.pdf",
+    "Cover Crops": "\"Cereal Rye, Winter\"",
+    "State": "Vermont",
+    "Zone": "Zone 4, Zone 5"
+  },
+  "2011 Cover Crop Planting Date x Seeding Rate Trial": {
+    "Institution or Author": "University of Vermont Extension",
+    "URL": "http://northeastcovercrops.com/wp-content/uploads/2018/02/2011-Cover-Crop-Planting-Date-x-Seeding-Rate-Trial.pdf",
+    "Cover Crops": "\"Cereal Rye, Winter\"",
+    "State": "Vermont",
+    "Zone": "Zone 4, Zone 5"
+  },
+  "2010 Cover Crop Planting Date x Seeding Rate Trial": {
+    "Institution or Author": "University of Vermont Extension",
+    "URL": "http://northeastcovercrops.com/wp-content/uploads/2018/02/2010-Cover-Crop-Planting-Date-x-Seeding-Rate-Trial.pdf",
+    "Cover Crops": "\"Cereal Rye, Winter\"",
+    "State": "Vermont",
+    "Zone": "Zone 4, Zone 5"
+  },
+  "Cover Cropping Costs and Benefits": {
+    "Institution or Author": "University of Vermont Extension",
+    "URL": "http://northeastcovercrops.com/wp-content/uploads/2018/02/Cover-Cropping-Costs-and-Benefits.pdf",
+    "Cover Crops": "\"Cereal Rye, Winter\",\"Triticale, Winter\",\"Ryegrass, Annual\"",
+    "State": "Vermont",
+    "Zone": "Zone 4, Zone 5"
+  },
+  "Under Cover – Integrating Cover Crops into Silage Corn Systems": {
+    "Institution or Author": "University of Vermont Extension",
+    "URL": "http://northeastcovercrops.com/wp-content/uploads/2018/02/Under-Cover-Integrating-Cover-Crops-into-Silage-Corn-Systems.pdf",
+    "Cover Crops": "\"Cereal Rye, Winter\",\"Triticale, Winter\",\"Wheat, Winter\",\"Oats, Black\",\"Barley, Winter\",\"Ryegrass, Annual\",\"Clover, Red\",\"Clover, White\",\"Clover, Alsike\",\"Vetch, Hairy\",\"Radish, Forage\",\"Radish, Oilseed\",Mustard",
+    "State": "Vermont",
+    "Zone": "Zone 4, Zone 5"
+  },
+  "Cover Crop Research at the University of Rhode Island": {
+    "Institution or Author": "University of Rhode Island Cooperative Extension",
+    "URL": "http://northeastcovercrops.com/wp-content/uploads/2018/03/Cover-Crop-Research-at-the-University-of-Rhode-Island.pdf",
+    "Cover Crops": "\"Cereal Rye, Winter\",Teff,\"Millet, Japanese\",Sunn Hemp,Buckwheat",
+    "State": "Rhode Island",
+    "Zone": "Zone 6, Zone 7"
+  },
+  "Conservation Cover for Pollinators": {
+    "Institution or Author": "Xerces Society for Invertebrate Conservation",
+    "URL": "http://northeastcovercrops.com/wp-content/uploads/2018/03/Conservation-Cover-for-Pollinators.pdf",
+    "Cover Crops": "\"Clover, Red\",\"Clover, Alsike\",\"Sweetclover, Yellow\",\"Vetch, Hairy\",Phacelia,\"Alfalfa, Dormant\",Buckwheat",
+    "State": "New Jersey,Pennsylvania",
+    "Zone": "Zone 6, Zone 7, Zone 5, Zone 6, Zone 7"
+  },
+  "Cover Crops and Green Manure Crops – Benefits, Selection, and Use": {
+    "Institution or Author": "Rutgers Cooperative Research and Extension",
+    "URL": "http://northeastcovercrops.com/wp-content/uploads/2018/03/Cover-Crops-and-Green-Manure-Crops-Benefits-Selection-and-Use.pdf",
+    "Cover Crops": "Buckwheat,\"Alfalfa, Dormant\",\"Vetch, Hairy\",\"Sweetclover, Yellow\",\"Clover, Alsike\",\"Clover, Crimson\",\"Clover, White\",\"Clover, Red\",\"Ryegrass, Annual\",\"Ryegrass, Perennial\",Oats,\"Wheat, Winter\",\"Barley, Winter\",Sudangrass,\"Cereal Rye, Winter\",\"Millet, Pearl\"",
+    "State": "New Jersey",
+    "Zone": "Zone 6, Zone 7"
+  },
+  "Pasture Production of Selected Forage Species": {
+    "Institution or Author": "University of New Hampshire Cooperative Extension",
+    "URL": "http://northeastcovercrops.com/wp-content/uploads/2018/03/Pasture-Production-of-Selected-Forage-Species-2.pdf",
+    "Cover Crops": "\"Cereal Rye, Winter\",\"Wheat, Winter\",\"Triticale, Winter\",Oats,\"Barley, Winter\",\"Ryegrass, Annual\",Sorghum-sudangrass,\"Clover, White\",\"Brassica, Forage\",\"Turnip, Forage\",\"Millet, Japanese\"",
+    "State": "New Hampshire",
+    "Zone": "Zone 4, Zone 5, Zone 6"
+  },
+  "Aerial Seeding Helps Farmers Plant Cover Crops in the Northeast": {
+    "Institution or Author": "Lancaster Farming",
+    "URL": "https://www.lancasterfarming.com/news/northern_edition/aerial-seeding-helps-farmers-plant-cover-crops-in-northeast/article_1d4fbe53-e72e-5c37-ae24-98ce2ca8b2bb.html",
+    "Cover Crops": "\"Ryegrass, Annual\"",
+    "State": "New Hampshire",
+    "Zone": "Zone 4, Zone 5, Zone 6"
+  },
+  "UNH Researchers Find Forage Radish is the Cream of Cover Crops": {
+    "Institution or Author": "University of New Hampshire Ag Experiment Station",
+    "URL": "https://colsa.unh.edu/nhaes/article/2016/05/covercrops",
+    "Cover Crops": "\"Ryegrass, Annual\",\"Cereal Rye, Winter\",\"Clover, Crimson\",\"Clover, White\",\"Vetch, Hairy\",Soybeans,\"Alfalfa, Dormant\",\"Radish, Forage\"",
+    "State": "New Hampshire",
+    "Zone": "Zone 4, Zone 5, Zone 6"
+  },
+  "Cover Crops": {
+    "Institution or Author": "University of Maryland Extension",
+    "URL": "http://northeastcovercrops.com/wp-content/uploads/2018/03/Cover-Crops.pdf",
+    "Cover Crops": "\"Wheat, Winter\",Oats,\"Clover, Crimson\",\"Radish, Forage\",Buckwheat",
+    "State": "Maryland",
+    "Zone": "Zone 5, Zone 6, Zone 7"
+  },
+  "Cover Crops and Green Manures (New England Vegetable Management Guide)": {
+    "Institution or Author": "University of Massachusetts Extension",
+    "URL": "https://nevegetable.org/cultural-practices/cover-crops-and-green-manures",
+    "Cover Crops": "\"Cereal Rye, Winter\",Oats,\"Millet, Japanese\",\"Ryegrass, Annual\",Teff,Sorghum-sudangrass,\"Clover, Red\",\"Clover, White\",\"Sweetclover, Yellow\",\"Vetch, Hairy\",Soybeans,Cowpea,\"Alfalfa, Dormant\",\"Radish, Forage\",Mustard,Buckwheat",
+    "State": "Massachusetts",
+    "Zone": "Zone 5, Zone 6, Zone 7"
+  },
+  "Choosing Cover Crops": {
+    "Institution or Author": "University of Massachusetts Extension",
+    "URL": "https://ag.umass.edu/vegetable/fact-sheets/cover-crops-choosing",
+    "Cover Crops": "\"Cereal Rye, Winter\",\"Wheat, Winter\",Sudangrass,\"Clover, Crimson\",\"Clover, Red\",\"Sweetclover, Yellow\",\"Vetch, Hairy\",Cowpea,Buckwheat,\"Radish, Forage\"",
+    "State": "Massachusetts",
+    "Zone": "Zone 5, Zone 6, Zone 7"
+  },
+  "Summer Cover Crops": {
+    "Institution or Author": "Penn State Extension",
+    "URL": "https://extension.psu.edu/summer-cover-crops?",
+    "Cover Crops": "Sunn Hemp,\"Millet, Pearl\",Sudangrass,Buckwheat",
+    "State": "Pennsylvania",
+    "Zone": "Zone 5, Zone 6, Zone 7"
+  },
+  "Late Season Cover Crops": {
+    "Institution or Author": "University of Massachusetts Extension",
+    "URL": "https://ag.umass.edu/vegetable/fact-sheets/cover-crops-late-season",
+    "Cover Crops": "\"Cereal Rye, Winter\",\"Wheat, Winter\",Oats,\"Ryegrass, Annual\",Sorghum-sudangrass,\"Clover, Red\",\"Vetch, Hairy\",Buckwheat",
+    "State": "Massachusetts",
+    "Zone": "Zone 5, Zone 6, Zone 7"
+  },
+  "Cover Crops, Hairy Vetch": {
+    "Institution or Author": "University of Massachusetts Extension",
+    "URL": "https://ag.umass.edu/vegetable/fact-sheets/cover-crop-hairy-vetch",
+    "Cover Crops": "\"Vetch, Hairy\"",
+    "State": "Massachusetts",
+    "Zone": "Zone 5, Zone 6, Zone 7"
+  },
+  "Cover Crops, Brassicas": {
+    "Institution or Author": "University of Massachusetts Extension",
+    "URL": "https://ag.umass.edu/vegetable/fact-sheets/cover-crops-brassicas",
+    "Cover Crops": "\"Radish, Oilseed\",\"Radish, Forage\",Mustard,\"Turnip, Purple Top\",\"Turnip, Forage\",\"Rapeseed, Forage\",\"Rape, Oilseed, Winter\"",
+    "State": "Massachusetts",
+    "Zone": "Zone 5, Zone 6, Zone 7"
+  },
+  "Cover Crops, Buckwheat": {
+    "Institution or Author": "University of Massachusetts Extension",
+    "URL": "https://ag.umass.edu/vegetable/fact-sheets/cover-crops-buckwheat",
+    "Cover Crops": "Buckwheat",
+    "State": "Massachusetts",
+    "Zone": "Zone 5, Zone 6, Zone 7"
+  },
+  "Plant Cover Crops": {
+    "Institution or Author": "USDA NRCS",
+    "URL": "https://www.nrcs.usda.gov/wps/portal/nrcs/detail/pa/soils/health/?cid=nrcseprd1188208",
+    "Cover Crops": "\"Cereal Rye, Winter\",\"Radish, Forage\",\"Radish, Oilseed\"",
+    "State": "Pennsylvania",
+    "Zone": "Zone 5, Zone 6, Zone 7"
+  },
+  "Forage Radish – New Multi-Purpose Cover Crop for the Mid-Atlantic": {
+    "Institution or Author": "University of Maryland Extension",
+    "URL": "http://northeastcovercrops.com/wp-content/uploads/2018/03/Forage-Radish-New-Multi-Purpose-Cover-Crop-for-the-Mid-Atlantic.pdf",
+    "Cover Crops": "\"Radish, Forage\"",
+    "State": "Maryland",
+    "Zone": "Zone 5, Zone 6, Zone 7"
+  },
+  "Cover Cropping for Success": {
+    "Institution or Author": "University of Maine Cooperative Extension",
+    "URL": "http://northeastcovercrops.com/wp-content/uploads/2018/03/Cover-Cropping-for-Success.pdf",
+    "Cover Crops": "\"Cereal Rye, Winter\",\"Triticale, Winter\",Sorghum-sudangrass,\"Millet, Japanese\",Oats,\"Ryegrass, Annual\",\"Clover, Red\",\"Alfalfa, Dormant\",\"Pea, Winter\",\"Vetch, Hairy\",\"Radish, Forage\",\"Radish, Oilseed\",Mustard,Buckwheat,\"Rapeseed, Forage\"",
+    "State": "Maine",
+    "Zone": "Zone 4, Zone 5, Zone 6"
+  },
+  "Cover Crops for Home Gardens": {
+    "Institution or Author": "University of Maine Cooperative Extension",
+    "URL": "http://northeastcovercrops.com/wp-content/uploads/2018/03/Cover-Crops-for-Home-Gardens.pdf",
+    "Cover Crops": "\"Cereal Rye, Winter\",Oats,\"Ryegrass, Annual\",Sudangrass,\"Millet, Japanese\",\"Clover, Berseem \",\"Clover, Crimson\",\"Clover, Red\",\"Vetch, Hairy\",\"Alfalfa, Dormant\",Buckwheat",
+    "State": "Maine",
+    "Zone": "Zone 4, Zone 5, Zone 6"
+  },
+  "Using Green Manures": {
+    "Institution or Author": "Maine Organic Farmers and Gardeners Association",
+    "URL": "http://northeastcovercrops.com/wp-content/uploads/2018/03/Using-Green-Manures.pdf",
+    "Cover Crops": "\"Cereal Rye, Spring\",Oats,\"Ryegrass, Annual\",Sorghum-sudangrass,\"Millet, Japanese\",\"Clover, Crimson\",\"Sweetclover, Yellow\",\"Vetch, Hairy\",\"Alfalfa, Dormant\",Cowpea,Buckwheat",
+    "State": "Maine",
+    "Zone": "Zone 4, Zone 5, Zone 6"
+  },
+  "Selected Green Manures and Cover Crops for Maine": {
+    "Institution or Author": "University of Maine",
+    "URL": "http://northeastcovercrops.com/wp-content/uploads/2018/03/Selected-Green-Manures-and-Cover-Crops-for-Maine.pdf",
+    "Cover Crops": "\"Cereal Rye, Winter\",Oats,\"Ryegrass, Annual\",Sorghum-sudangrass,\"Clover, Berseem \",\"Clover, Crimson\",\"Clover, Red\",\"Vetch, Hairy\",Buckwheat",
+    "State": "Maine",
+    "Zone": "Zone 4, Zone 5, Zone 6"
+  },
+  "Selecting Forage Crops for Your Farm": {
+    "Institution or Author": "University of Maine Cooperative Extension",
+    "URL": "http://northeastcovercrops.com/wp-content/uploads/2018/03/Selecting-Forage-Crops-for-Your-Farm.pdf",
+    "Cover Crops": "\"Ryegrass, Perennial\",\"Clover, Red\",\"Clover, White\",\"Alfalfa, Dormant\"",
+    "State": "Maine",
+    "Zone": "Zone 4, Zone 5, Zone 6"
+  },
+  "Growing Forage Legumes in Maine": {
+    "Institution or Author": "University of Maine Cooperative Extension",
+    "URL": "http://northeastcovercrops.com/wp-content/uploads/2018/03/Growing-Forage-Legumes-in-Maine.pdf",
+    "Cover Crops": "\"Clover, Red\",\"Clover, White\",\"Clover, Alsike\",\"Alfalfa, Dormant\"",
+    "State": "Maine",
+    "Zone": "Zone 4, Zone 5, Zone 6"
+  },
+  "Green Manures/Cover Crops": {
+    "Institution or Author": "Maine Organic Farmers and Gardeners Association",
+    "URL": "http://www.mofga.org/Publications/MaineOrganicFarmerGardener/Fall2015/GreenManuresCoverCrops/tabid/3041/Default.aspx",
+    "Cover Crops": "Oats,\"Millet, Japanese\",Buckwheat",
+    "State": "Maine",
+    "Zone": "Zone 4, Zone 5, Zone 6"
+  },
+  "Cover Crops – What a Difference a Few Weeks Makes": {
+    "Institution or Author": "Cornell University Cooperative Extension",
+    "URL": "http://northeastcovercrops.com/wp-content/uploads/2018/03/Cover-Crops-What-a-Difference-a-Few-Weeks-Makes.pdf",
+    "Cover Crops": "\"Cereal Rye, Winter\",\"Clover, Red\",\"Clover, Crimson\",\"Vetch, Hairy\",Buckwheat",
+    "State": "New York",
+    "Zone": "Zone 4, Zone 5, Zone 6, Zone 7"
+  },
+  "Spring Management of Overwintering Cover Crops – Don’t Wait!": {
+    "Institution or Author": "Cornell University Cooperative Extension",
+    "URL": "http://northeastcovercrops.com/wp-content/uploads/2018/03/Spring-Management-of-Overwintering-Cover-Crops-Dont-Wait.pdf",
+    "Cover Crops": "\"Cereal Rye, Winter\",\"Wheat, Winter\",\"Triticale, Winter\",\"Ryegrass, Annual\",\"Vetch, Hairy\",Mustard,\"Turnip, Forage\",\"Radish, Forage\",\"Radish, Oilseed\"",
+    "State": "New York",
+    "Zone": "Zone 4, Zone 5, Zone 6, Zone 7"
+  },
+  "Rye": {
+    "Institution or Author": "Cornell University Cooperative Extension",
+    "URL": "http://northeastcovercrops.com/wp-content/uploads/2018/03/Rye.pdf",
+    "Cover Crops": "\"Cereal Rye, Winter\"",
+    "State": "New York",
+    "Zone": "Zone 4, Zone 5, Zone 6, Zone 7"
+  },
+  "Oats": {
+    "Institution or Author": "Cornell University Cooperative Extension",
+    "URL": "http://northeastcovercrops.com/wp-content/uploads/2018/03/Oats.pdf",
+    "Cover Crops": "Oats",
+    "State": "New York",
+    "Zone": "Zone 4, Zone 5, Zone 6, Zone 7"
+  },
+  "Wheat and Spelt, Triticale": {
+    "Institution or Author": "Cornell University Cooperative Extension",
+    "URL": "http://northeastcovercrops.com/wp-content/uploads/2018/03/Wheat-and-Spelt-Triticale.pdf",
+    "Cover Crops": "\"Wheat, Winter\",\"Triticale, Winter\"",
+    "State": "New York",
+    "Zone": "Zone 4, Zone 5, Zone 6, Zone 7"
+  },
+  "Annual Ryegrass": {
+    "Institution or Author": "Cornell University Cooperative Extension",
+    "URL": "http://northeastcovercrops.com/wp-content/uploads/2018/03/Annual-Ryegrass.pdf",
+    "Cover Crops": "\"Ryegrass, Annual\"",
+    "State": "New York",
+    "Zone": "Zone 4, Zone 5, Zone 6, Zone 7"
+  },
+  "Teff": {
+    "Institution or Author": "Cornell University Cooperative Extension",
+    "URL": "http://northeastcovercrops.com/wp-content/uploads/2018/03/Teff.pdf",
+    "Cover Crops": "Teff",
+    "State": "New York",
+    "Zone": "Zone 4, Zone 5, Zone 6, Zone 7"
+  },
+  "Sudangrass and Sorghum-Sudangrass": {
+    "Institution or Author": "Cornell University Cooperative Extension",
+    "URL": "http://northeastcovercrops.com/wp-content/uploads/2018/03/Sudangrass-and-Sorghum-Sudangrass.pdf",
+    "Cover Crops": "Sudangrass,Sorghum-sudangrass",
+    "State": "New York",
+    "Zone": "Zone 4, Zone 5, Zone 6, Zone 7"
+  },
+  "Dutch White Clover": {
+    "Institution or Author": "Cornell University Cooperative Extension",
+    "URL": "http://northeastcovercrops.com/wp-content/uploads/2018/03/Dutch-White-Clover.pdf",
+    "Cover Crops": "\"Clover, White\"",
+    "State": "New York",
+    "Zone": "Zone 4, Zone 5, Zone 6, Zone 7"
+  },
+  "Medium Red Clover": {
+    "Institution or Author": "Cornell University Cooperative Extension",
+    "URL": "http://northeastcovercrops.com/wp-content/uploads/2018/03/Medium-Red-Clover.pdf",
+    "Cover Crops": "\"Clover, Red\"",
+    "State": "New York",
+    "Zone": "Zone 4, Zone 5, Zone 6, Zone 7"
+  },
+  "Hairy Vetch": {
+    "Institution or Author": "Cornell University Cooperative Extension",
+    "URL": "http://northeastcovercrops.com/wp-content/uploads/2018/03/Hairy-Vetch.pdf",
+    "Cover Crops": "\"Vetch, Hairy\"",
+    "State": "New York",
+    "Zone": "Zone 4, Zone 5, Zone 6, Zone 7"
+  },
+  "Canadian Field Peas": {
+    "Institution or Author": "Cornell University Cooperative Extension",
+    "URL": "http://northeastcovercrops.com/wp-content/uploads/2018/03/Canadian-Field-Peas.pdf",
+    "Cover Crops": "\"Pea, Winter\"",
+    "State": "New York",
+    "Zone": "Zone 4, Zone 5, Zone 6, Zone 7"
+  },
+  "Forage Turnip and Rapeseed": {
+    "Institution or Author": "Cornell University Cooperative Extension",
+    "URL": "http://northeastcovercrops.com/wp-content/uploads/2018/03/Forage-Turnip-and-Rapeseed.pdf",
+    "Cover Crops": "\"Turnip, Forage\",\"Rape, Oilseed, Spring\",\"Rape, Oilseed, Winter\",\"Rapeseed, Forage\"",
+    "State": "New York",
+    "Zone": "Zone 4, Zone 5, Zone 6, Zone 7"
+  },
+  "Fall Mustard": {
+    "Institution or Author": "Cornell University Cooperative Extension",
+    "URL": "http://northeastcovercrops.com/wp-content/uploads/2018/03/Fall-Mustard.pdf",
+    "Cover Crops": "Mustard",
+    "State": "New York",
+    "Zone": "Zone 4, Zone 5, Zone 6, Zone 7"
+  },
+  "Buckwheat": {
+    "Institution or Author": "Cornell University Cooperative Extension",
+    "URL": "http://northeastcovercrops.com/wp-content/uploads/2018/03/Buckwheat.pdf",
+    "Cover Crops": "Buckwheat",
+    "State": "New York",
+    "Zone": "Zone 4, Zone 5, Zone 6, Zone 7"
+  },
+  "Early Spring Seasonal Cover Crops": {
+    "Institution or Author": "Cornell University Cooperative Extension",
+    "URL": "http://covercrop.org/main-page/newsletter-articles/early-spring",
+    "Cover Crops": "\"Ryegrass, Annual\",\"Cereal Rye, Winter\",\"Clover, Red\",\"Radish, Forage\",\"Radish, Oilseed\",Mustard,\"Turnip, Forage\",\"Turnip, Purple Top\"",
+    "State": "New York",
+    "Zone": "Zone 4, Zone 5, Zone 6, Zone 7"
+  },
+  "Early Summer Seasonal Cover Crops": {
+    "Institution or Author": "Cornell University Cooperative Extension",
+    "URL": "http://covercrop.org/main-page/newsletter-articles/early-summer",
+    "Cover Crops": "Sudangrass,Buckwheat",
+    "State": "New York",
+    "Zone": "Zone 4, Zone 5, Zone 6, Zone 7"
+  },
+  "Mid and Late Summer Seasonal Cover Crops": {
+    "Institution or Author": "Cornell University Cooperative Extension",
+    "URL": "http://covercrop.org/main-page/newsletter-articles/mid-and-late-summer",
+    "Cover Crops": "\"Ryegrass, Annual\",Buckwheat,Sudangrass",
+    "State": "New York",
+    "Zone": "Zone 4, Zone 5, Zone 6, Zone 7"
+  },
+  "Late Summer Legumes": {
+    "Institution or Author": "Cornell University Cooperative Extension",
+    "URL": "http://covercrop.org/main-page/newsletter-articles/late-summer-legumes",
+    "Cover Crops": "\"Clover, Red\",\"Vetch, Hairy\"",
+    "State": "New York",
+    "Zone": "Zone 4, Zone 5, Zone 6, Zone 7"
+  },
+  "Late Summer Crucifers": {
+    "Institution or Author": "Cornell University Cooperative Extension",
+    "URL": "http://covercrop.org/main-page/newsletter-articles/late-summer-crucifers",
+    "Cover Crops": "\"Radish, Forage\",\"Radish, Oilseed\",Mustard,\"Turnip, Forage\",\"Turnip, Purple Top\",\"Rape, Oilseed, Spring\",\"Rape, Oilseed, Winter\",\"Rapeseed, Forage\"",
+    "State": "New York",
+    "Zone": "Zone 4, Zone 5, Zone 6, Zone 7"
+  },
+  "Early Fall Seasonal Cover Crops": {
+    "Institution or Author": "Cornell University Cooperative Extension",
+    "URL": "http://covercrop.org/main-page/newsletter-articles/early-fall",
+    "Cover Crops": "\"Cereal Rye, Winter\",\"Wheat, Winter\",Oats",
+    "State": "New York",
+    "Zone": "Zone 4, Zone 5, Zone 6, Zone 7"
+  },
+  "Fall Seasonal Cover Crops": {
+    "Institution or Author": "Cornell University Cooperative Extension",
+    "URL": "http://covercrop.org/main-page/newsletter-articles/fall",
+    "Cover Crops": "\"Cereal Rye, Winter\",\"Wheat, Winter\"",
+    "State": "New York",
+    "Zone": "Zone 4, Zone 5, Zone 6, Zone 7"
+  },
+  "Spring Mustard": {
+    "Institution or Author": "Cornell University Cooperative Extension",
+    "URL": "http://covercrop.org/cover-crop-information/mustard-spring",
+    "Cover Crops": "Mustard",
+    "State": "New York",
+    "Zone": "Zone 4, Zone 5, Zone 6, Zone 7"
+  },
+  "Hairy Vetch as a Cover Crop": {
+    "Institution or Author": "Penn State Extension",
+    "URL": "http://northeastcovercrops.com/wp-content/uploads/2017/05/Hairy-Vetch-as-a-Cover-Crop.pdf",
+    "Cover Crops": "\"Vetch, Hairy\"",
+    "State": "Pennsylvania",
+    "Zone": "Zone 5, Zone 6, Zone 7"
+  },
+  "Cover Crops for Conservation Tillage Systems": {
+    "Institution or Author": "Penn State Extension",
+    "URL": "http://northeastcovercrops.com/wp-content/uploads/2018/04/Cover-Crops-for-Conservation-Tillage-Systems.pdf",
+    "Cover Crops": "Buckwheat,\"Rapeseed, Forage\",\"Brassica, Forage\",\"Radish, Forage\",\"Radish, Oilseed\",\"Pea, Winter\",\"Clover, Red\",\"Clover, White\",\"Vetch, Hairy\",\"Clover, Crimson\",\"Cereal Rye, Winter\",\"Ryegrass, Annual\",Oats",
+    "State": "Pennsylvania",
+    "Zone": "Zone 5, Zone 6, Zone 7"
+  },
+  "Cover Crop Interseeder – Potential for Injury from Corn Herbicides": {
+    "Institution or Author": "Penn State Extension",
+    "URL": "http://northeastcovercrops.com/wp-content/uploads/2018/04/Cover-Crop-Interseeder-Potential-for-Injury-from-Corn-Herbicides.pdf",
+    "Cover Crops": "\"Ryegrass, Annual\",\"Clover, Red\"",
+    "State": "Pennsylvania",
+    "Zone": "Zone 5, Zone 6, Zone 7"
+  },
+  "Suppressing Weeds Using Cover Crops in Pennsylvania": {
+    "Institution or Author": "Penn State Extension",
+    "URL": "http://northeastcovercrops.com/wp-content/uploads/2018/04/Suppressing-Weeds-Using-Cover-Crops-in-Pennsylvania.pdf",
+    "Cover Crops": "\"Cereal Rye, Winter\",\"Wheat, Winter\",Oats,\"Clover, Red\",\"Radish, Forage\",\"Vetch, Hairy\"",
+    "State": "Pennsylvania",
+    "Zone": "Zone 5, Zone 6, Zone 7"
+  },
+  "Management of Red Clover as a Cover Crop": {
+    "Institution or Author": "Penn State Extension",
+    "URL": "http://northeastcovercrops.com/wp-content/uploads/2018/04/Management-of-Red-Clover-as-a-Cover-Crop.pdf",
+    "Cover Crops": "\"Clover, Red\"",
+    "State": "Pennsylvania",
+    "Zone": "Zone 5, Zone 6, Zone 7"
+  },
+  "White Clover": {
+    "Institution or Author": "Penn State Extension",
+    "URL": "http://northeastcovercrops.com/wp-content/uploads/2018/04/White-Clover.pdf",
+    "Cover Crops": "\"Clover, White\"",
+    "State": "Pennsylvania",
+    "Zone": "Zone 5, Zone 6, Zone 7"
+  },
+  "Ryegrass": {
+    "Institution or Author": "Penn State Extension",
+    "URL": "http://northeastcovercrops.com/wp-content/uploads/2018/04/Ryegrass.pdf",
+    "Cover Crops": "\"Ryegrass, Annual\",\"Ryegrass, Perennial\",\"Alfalfa, Dormant\"",
+    "State": "Pennsylvania",
+    "Zone": "Zone 5, Zone 6, Zone 7"
+  },
+  "Winter Canola in Pennsylvania – Production and Agronomic Recommendations": {
+    "Institution or Author": "Penn State Extension",
+    "URL": "http://northeastcovercrops.com/wp-content/uploads/2018/04/Winter-Canola-in-Pennsylvania-Production-and-Agronomic-Recommendations.pdf",
+    "Cover Crops": "\"Rape, Oilseed, Winter\"",
+    "State": "Pennsylvania",
+    "Zone": "Zone 5, Zone 6, Zone 7"
+  },
+  "Spring Canola in Pennsylvania – Production and Agronomic Recommendations": {
+    "Institution or Author": "Penn State Extension",
+    "URL": "http://northeastcovercrops.com/wp-content/uploads/2018/04/Spring-Canola-in-Pennsylvania-Production-and-Agronomic-Recommendations.pdf",
+    "Cover Crops": "\"Rape, Oilseed, Spring\"",
+    "State": "Pennsylvania",
+    "Zone": "Zone 5, Zone 6, Zone 7"
+  },
+  "Using Flowering Cover Crops for Native Pollinating Bee Conservation": {
+    "Institution or Author": "Penn State Extension",
+    "URL": "https://extension.psu.edu/using-flowering-cover-crops-for-native-pollinating-bee-conservation",
+    "Cover Crops": "\"Clover, Red\",\"Clover, Crimson\",\"Vetch, Hairy\",\"Pea, Spring\",\"Pea, Winter\",Mustard,\"Rapeseed, Forage\",\"Rape, Oilseed, Winter\",\"Rape, Oilseed, Spring\",Buckwheat",
+    "State": "Pennsylvania",
+    "Zone": "Zone 5, Zone 6, Zone 7"
+  },
+  "Cover Crops in Home Gardens Improve Soil and Reduce Erosion": {
+    "Institution or Author": "Penn State Extension",
+    "URL": "https://extension.psu.edu/cover-crops-in-home-gardens-improve-soil-and-reduce-erosion",
+    "Cover Crops": "\"Cereal Rye, Winter\",\"Wheat, Winter\",Buckwheat,Oats",
+    "State": "Pennsylvania",
+    "Zone": "Zone 5, Zone 6, Zone 7"
+  },
+  "Cover Crop Interseeder – Impacts on Corn Yield": {
+    "Institution or Author": "Penn State Extension",
+    "URL": "https://extension.psu.edu/cover-crop-interseeder-impacts-on-corn-yield",
+    "Cover Crops": "\"Ryegrass, Annual\"",
+    "State": "Pennsylvania",
+    "Zone": "Zone 5, Zone 6, Zone 7"
+  },
+  "This Isn’t Your Father’s Cereal Rye": {
+    "Institution or Author": "Penn State Extension",
+    "URL": "https://extension.psu.edu/this-isnt-your-fathers-cereal-rye",
+    "Cover Crops": "\"Cereal Rye, Winter\"",
+    "State": "Pennsylvania",
+    "Zone": "Zone 5, Zone 6, Zone 7"
+  },
+  "Special Cover Crop Control Considerations": {
+    "Institution or Author": "Penn State Extension",
+    "URL": "https://extension.psu.edu/special-cover-crop-control-considerations",
+    "Cover Crops": "\"Wheat, Winter\",\"Ryegrass, Annual\",\"Clover, Red\",\"Clover, White\",\"Vetch, Hairy\",\"Clover, Crimson\",\"Rape, Oilseed, Winter\",\"Rapeseed, Forage\"",
+    "State": "Pennsylvania",
+    "Zone": "Zone 5, Zone 6, Zone 7"
+  },
+  "Planting Green – A New Cover Crop Management Technique": {
+    "Institution or Author": "Penn State Extension",
+    "URL": "https://extension.psu.edu/planting-green-a-new-cover-crop-management-technique",
+    "Cover Crops": "\"Cereal Rye, Winter\"",
+    "State": "Pennsylvania",
+    "Zone": "Zone 5, Zone 6, Zone 7"
+  },
+  "Cover Crop Rollers for Northeastern Grain Production": {
+    "Institution or Author": "Penn State Extension",
+    "URL": "https://extension.psu.edu/cover-crop-rollers-for-northeastern-grain-production",
+    "Cover Crops": "\"Cereal Rye, Winter\",\"Vetch, Hairy\"",
+    "State": "Pennsylvania",
+    "Zone": "Zone 5, Zone 6, Zone 7"
+  }
+}

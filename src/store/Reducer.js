@@ -67,13 +67,13 @@ const Reducer = (state, action) => {
         soilData: {
           Map_Unit_Name: "",
           Drainage_Class: [],
-          Flooding_Frequency: "",
+          Flooding_Frequency: [],
           Ponding_Frequency: "",
         },
         soilDataOriginal: {
           Map_Unit_Name: "",
           Drainage_Class: [],
-          Flooding_Frequency: "",
+          Flooding_Frequency: [],
           Ponding_Frequency: "",
         },
         weatherData: {
@@ -379,6 +379,13 @@ const Reducer = (state, action) => {
           ...state.soilData,
           Flooding_Frequency: action.data,
         },
+      };
+    }
+
+    case "UPDATE_COMPARISON_KEYS": {
+      return {
+        ...state,
+        comparisonKeys: action.data.comparisonKeys,
       };
     }
 
