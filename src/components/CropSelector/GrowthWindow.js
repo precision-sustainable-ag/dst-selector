@@ -283,7 +283,7 @@ const GrowthWindowComponent = (props) => {
                 "M"
               ) -
                 1
-              ? `growthWindowCell noBorderRightCond ${id} cashCropLegendContainer linear`
+              ? `growthWindowCell noBorderRightCond ${id}`
               : `growthWindowCell noBorderRightCond ${id}`
             : `growthWindowCell noBorderRightCond ${id}`
           : `growthWindowCell noBorderRightCond ${id}`
