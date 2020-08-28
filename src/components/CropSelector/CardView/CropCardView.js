@@ -4,10 +4,10 @@ import "../../../styles/cropCardView/cropCardView.scss";
 import { CustomStyles } from "../../../shared/constants";
 import CropCardComponent from "./CropCard";
 
-const CropCardViewComponent = props => {
+const CropCardViewComponent = (props) => {
   const [state, dispatch] = useContext(Context);
 
-  const computeWidth = elClassName => {
+  const computeWidth = (elClassName) => {
     let ele = document.getElementsByClassName(elClassName);
     let computedWidth = 0;
     for (let i = 0, len = ele.length; i < len; i++) {
@@ -18,7 +18,7 @@ const CropCardViewComponent = props => {
     return parseFloat(computedWidth);
   };
 
-  const getElementWidth = elClassName => {
+  const getElementWidth = (elClassName) => {
     console.log(computeWidth(elClassName));
   };
 
@@ -28,7 +28,7 @@ const CropCardViewComponent = props => {
 
   const cardStyle = {
     width: "100%",
-    height: "150px"
+    height: "150px",
   };
   const cardHeader = {
     top: {
@@ -42,22 +42,22 @@ const CropCardViewComponent = props => {
         width: `${computeWidth("cvrCropsHrd")}px`,
         backgroundColor: "white",
         backgroundClip: "content-box",
-        height: "30px"
+        height: "30px",
       },
       goals: {
         width: `${computeWidth("goalsDiv")}px`,
         backgroundColor: CustomStyles().lightGreen,
         backgroundClip: "content-box",
         height: "30px",
-        borderTopLeftRadius: CustomStyles().semiRoundedRadius
+        borderTopLeftRadius: CustomStyles().semiRoundedRadius,
       },
       legend: {
         width: `${computeWidth("grwthWindow")}px`,
         backgroundColor: CustomStyles().lightGreen,
         backgroundClip: "content-box",
         height: "30px",
-        borderTopRightRadius: CustomStyles().semiRoundedRadius
-      }
+        borderTopRightRadius: CustomStyles().semiRoundedRadius,
+      },
     },
     bottom: {
       height: "50px",
@@ -68,17 +68,17 @@ const CropCardViewComponent = props => {
       each: {
         backgroundColor: CustomStyles().lightGreen,
         backgroundClip: "content-box",
-        height: "50px"
+        height: "50px",
       },
       first: {
         borderTopLeftRadius: CustomStyles().semiRoundedRadius,
-        borderBottomLeftRadius: CustomStyles().semiRoundedRadius
+        borderBottomLeftRadius: CustomStyles().semiRoundedRadius,
       },
       last: {
         borderTopRightRadius: CustomStyles().semiRoundedRadius,
-        borderBottomRightRadius: CustomStyles().semiRoundedRadius
-      }
-    }
+        borderBottomRightRadius: CustomStyles().semiRoundedRadius,
+      },
+    },
   };
 
   return (

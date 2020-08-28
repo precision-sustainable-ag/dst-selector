@@ -57,7 +57,7 @@ const ProgressButtons = () => {
 };
 
 const renderProgressButtons = (progress, isDisabled) => {
-  if (progress === 0) return "";
+  if (progress < 0) return "";
   else {
     return (
       <div>

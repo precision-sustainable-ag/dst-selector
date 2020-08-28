@@ -70,7 +70,7 @@ const ComparisonBar = (props) => {
       });
     }
   };
-  return (
+  return props.comparisonView ? (
     <List
       component="nav"
       classes={{ root: props.classes.listRoot }}
@@ -126,6 +126,8 @@ const ComparisonBar = (props) => {
         dispatch={props.dispatch}
       />
     </List>
+  ) : (
+    ""
   );
 };
 

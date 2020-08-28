@@ -1,7 +1,7 @@
 import React, { useState, useEffect, Fragment, useMemo } from "react";
 import { Typography } from "@material-ui/core";
 
-const DictionaryContent = ({ dictData = [{}] }) => {
+const DictionaryContent = ({ dictData = [{}], from = "" }) => {
   const [groupedCats, setGroupedCats] = useState({});
 
   const groupBy = (arr, property) => {
@@ -28,7 +28,16 @@ const DictionaryContent = ({ dictData = [{}] }) => {
     const catOptions = Object.keys(groupedCats).map((key, index) => (
       <div className="row col-12" key={index}>
         <div className="col-12">
-          <Typography variant="h6"> {key}</Typography>
+          <Typography
+            variant="h6"
+            style={
+              from === "help"
+                ? { border: "0px", borderBottom: "1px solid gray" }
+                : {}
+            }
+          >
+            {key}
+          </Typography>
         </div>
         {groupedCats[key].map((innerCat, index2) => (
           <div className="col-6" key={index2}>
@@ -44,7 +53,9 @@ const DictionaryContent = ({ dictData = [{}] }) => {
   };
 
   return (
-    <div className="row pt-4 dictionaryContentWrapper">
+    <div
+      className={`row ${from === "help" ? `` : `dictionaryContentWrapper p-4`}`}
+    >
       {Object.keys(groupedCats).length > 0 ? <RenderCats /> : ""}
     </div>
   );

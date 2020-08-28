@@ -353,7 +353,7 @@ const Greenbar = () => {
   };
 
   const handleConfirmationChoice = (clearCoverCrops = false) => {
-    const defaultMarkers = [[39.0255, -76.924]];
+    const defaultMarkers = [[40.78489145, -74.80733626930342]];
 
     if (clearCoverCrops) {
       dispatch({
@@ -415,25 +415,23 @@ const Greenbar = () => {
         </Button>
       );
   };
+  const [restartPrompt2, setRestartPrompt2] = useState(false);
   return (
     <div className="greenBarParent" id="greenBarParent">
       <div className="greenBarWrapper" style={greenBarWrapperBackground}>
         <div className="addressBar">
-          {state.progress > 0 &&
-          (window.location.pathname === "/" || state.progress > 4)
+          {state.progress > 0 && window.location.pathname === "/"
             ? getAddress()
             : ""}
         </div>
 
         <div className="soilBar">
-          {state.progress > 1 &&
-          (window.location.pathname === "/" || state.progress > 4)
+          {state.progress > 1 && window.location.pathname === "/"
             ? getSoil()
             : ""}
         </div>
         <div className="weatherBar">
-          {state.progress > 2 &&
-          (window.location.pathname === "/" || state.progress > 4)
+          {state.progress > 2 && window.location.pathname === "/"
             ? getWeatherData()
             : ""}
         </div>
@@ -443,11 +441,7 @@ const Greenbar = () => {
               className="greenbarBtn"
               onClick={() => {
                 closeExpansionPanel();
-                if (state.selectedCrops.length > 0) {
-                  handleRestartBtn();
-                } else {
-                  handleConfirmationChoice(true);
-                }
+                setConfirmationOpen(true);
               }}
             >
               <Refresh />
@@ -463,25 +457,31 @@ const Greenbar = () => {
         id="greenBarExpansionPanel"
         style={{}}
       >
-        <div className="row justify-content-center">
+        <div className="row justify-content-center align-items-center">
           <div
             className={
               expansionPanelComponent.component === "location"
-                ? `col-10`
-                : `col-6`
+                ? `col-md-10`
+                : `col-md-6`
             }
           >
             {expansionPanelComponent.component === "location" ? (
               <LocationComponent />
             ) : expansionPanelComponent.component === "soil" ? (
               <div className="container mt-5" style={expansionPanelBaseStyle}>
-                <div className="boxContainerRow">
+                <div
+                  className="row boxContainerRow"
+                  style={{ minHeight: "526px" }}
+                >
                   <SoilCondition caller="greenbar" />
                 </div>
               </div>
             ) : expansionPanelComponent.component == "weather" ? (
               <div className="container mt-5" style={expansionPanelBaseStyle}>
-                <div className="boxContainerRow">
+                <div
+                  className="row boxContainerRow"
+                  style={{ minHeight: "526px" }}
+                >
                   <WeatherConditions caller="greenbar" />
                 </div>
               </div>
@@ -518,8 +518,7 @@ const Greenbar = () => {
           )}
         </div>
       </div>
-
-      <Dialog disableBackdropClick disableEscapeKeyDown open={confirmationOpen}>
+      <Dialog disableBackdropClick disableEscapeKeyDown open={restartPrompt2}>
         {/* <DialogTitle>Clear My Cover Crop List?</DialogTitle> */}
         <DialogContent dividers>
           <Typography variant="body1">
@@ -529,13 +528,50 @@ const Greenbar = () => {
         <DialogActions>
           <Button
             autoFocus
-            onClick={() => handleConfirmationChoice(false)}
+            onClick={() => {
+              setRestartPrompt2(false);
+            }}
             color="secondary"
           >
             No
           </Button>
           <Button
-            onClick={() => handleConfirmationChoice(true)}
+            onClick={() => {
+              handleConfirmationChoice(true);
+              setRestartPrompt2(false);
+            }}
+            color="secondary"
+          >
+            Yes
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog disableBackdropClick disableEscapeKeyDown open={confirmationOpen}>
+        <DialogContent dividers>
+          <Typography variant="body1">
+            Are you sure you want to restart?
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            autoFocus
+            onClick={() => {
+              setConfirmationOpen(false);
+            }}
+            color="secondary"
+          >
+            No
+          </Button>
+          <Button
+            onClick={() => {
+              // if (state.selectedCrops.length > 0) {
+              //   setRestartPrompt2(true);
+              // } else {
+              //   setRestartPrompt2(false);
+              //   handleConfirmationChoice(false);
+              // }
+              handleConfirmationChoice(true);
+            }}
             color="secondary"
           >
             Yes

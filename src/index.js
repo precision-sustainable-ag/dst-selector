@@ -18,7 +18,11 @@ import CoverCropExplorer from "./components/CoverCropExplorer/CoverCropExplorer"
 import InformationSheet from "./components/InformationSheet/InformationSheet";
 import HelpComponent from "./components/Help/Help";
 import FeedbackComponent from "./components/Feedback/Feedback";
-import { createMuiTheme, MuiThemeProvider } from "@material-ui/core";
+import {
+  createMuiTheme,
+  MuiThemeProvider,
+  responsiveFontSizes,
+} from "@material-ui/core";
 import { CustomStyles } from "./shared/constants";
 import { SnackbarProvider } from "notistack";
 import InformationSheetDictionary from "./components/InformationSheet/InformationSheetDictionary";
@@ -35,11 +39,6 @@ const theme = createMuiTheme({
     secondary: {
       main: CustomStyles().lighterGreen,
     },
-
-    // text: {
-    //   primary: CustomStyles().lighterGreen,
-    //   secondary: CustomStyles().primaryProgressBtnColor,
-    // },
   },
   overrides: {
     MuiTooltip: {
@@ -94,8 +93,12 @@ const RouteNotFound = () => {
   );
 };
 
+const responsiveFontSizesTheme = responsiveFontSizes(theme, {
+  breakpoints: ["xs", "sm", "md", "lg", "xl"],
+});
+
 const Wrapper = () => (
-  <MuiThemeProvider theme={theme}>
+  <MuiThemeProvider theme={responsiveFontSizesTheme}>
     <SnackbarProvider
       maxSnack={5}
       anchorOrigin={{

@@ -9,7 +9,9 @@ import DictionaryContent from "./DictionaryContent";
 
 const InformationSheetDictionary = (props) => {
   const [dictionary, setDictionary] = useState([]);
-  const { zone } = useContext(Context);
+  const [state] = useContext(Context);
+
+  const zone = props.zone ? props.zone : state.zone;
 
   useEffect(() => {
     document.title = "Data Dictionary";
@@ -33,7 +35,9 @@ const InformationSheetDictionary = (props) => {
     }
   }, [zone]);
 
-  return (
+  return props.from === "help" ? (
+    <DictionaryContent dictData={dictionary} from="help" />
+  ) : (
     <Fragment>
       <div className="row pt-4">
         <div

@@ -269,6 +269,68 @@ const GrowthWindowComponent = (props) => {
         ></div>
       </div>
     </td>
+  ) : from === "infosheet" ? (
+    <td
+      className={
+        state.cashCropData.dateRange.startDate !== ""
+          ? month >=
+            moment(state.cashCropData.dateRange.startDate, "MM/dd").format(
+              "M"
+            ) -
+              1 //these two should come from sidebar dateRange
+            ? month <=
+              moment(state.cashCropData.dateRange.endDate, "MM/dd").format(
+                "M"
+              ) -
+                1
+              ? `growthWindowCell noBorderRightCond ${id} cashCropLegendContainer linear`
+              : `growthWindowCell noBorderRightCond ${id}`
+            : `growthWindowCell noBorderRightCond ${id}`
+          : `growthWindowCell noBorderRightCond ${id}`
+      }
+      style={{
+        borderRight: `${month !== "Dec" ? `2px solid white` : ``}`,
+      }}
+    >
+      <div className="legendContainer legendColor d-flex flex-direction-row w-100">
+        <Tooltip
+          arrow
+          title={
+            <Fragment>
+              <Typography color="secondary">
+                {fullMonth[month].toUpperCase()}, EARLY
+              </Typography>
+              <div>
+                <Typography variant="body1">{cropLegendObj.Early}</Typography>
+              </div>
+            </Fragment>
+          }
+        >
+          <div
+            className={`earlyPart ${cropLegendObj.Early}`}
+            style={{ height: "20px", width: "50%" }}
+          ></div>
+        </Tooltip>
+        <Tooltip
+          arrow
+          title={
+            <Fragment>
+              <Typography color="secondary">
+                {fullMonth[month].toUpperCase()}, MID
+              </Typography>
+              <div>
+                <Typography variant="body1">{cropLegendObj.Mid}</Typography>
+              </div>
+            </Fragment>
+          }
+        >
+          <div
+            className={`earlyPart ${cropLegendObj.Mid}`}
+            style={{ height: "20px", width: "50%" }}
+          ></div>
+        </Tooltip>
+      </div>
+    </td>
   ) : (
     <td
       className={

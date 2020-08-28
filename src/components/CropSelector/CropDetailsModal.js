@@ -1,23 +1,10 @@
 import React, { useState, useContext, useEffect, Fragment } from "react";
 import { Context } from "../../store/Store";
 import { zoneIcon, getRating, CropImage } from "../../shared/constants";
-import cropDesc from "../../shared/crop-descriptions.json";
+// import cropDesc from "../../shared/crop-descriptions.json";
 import "../../styles/cropDetailsModal.scss";
-import {
-  Button,
-  Typography,
-  Modal,
-  Fade,
-  Backdrop,
-  makeStyles,
-  withStyles,
-  ExpansionPanel,
-  ExpansionPanelDetails,
-  ExpansionPanelSummary,
-} from "@material-ui/core";
-import MuiAccordion from "@material-ui/core/Accordion";
-import MuiAccordionSummary from "@material-ui/core/AccordionSummary";
-import MuiAccordionDetails from "@material-ui/core/AccordionDetails";
+import { Button, Modal, Fade, Backdrop, makeStyles } from "@material-ui/core";
+
 import {
   PhotoLibrary,
   PictureAsPdf,
@@ -57,46 +44,6 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 }));
-const Accordion = withStyles({
-  root: {
-    border: "1px solid rgba(0, 0, 0, .125)",
-    boxShadow: "none",
-    "&:not(:last-child)": {
-      borderBottom: 0,
-    },
-    "&:before": {
-      display: "none",
-    },
-    "&$expanded": {
-      margin: "auto",
-    },
-  },
-  expanded: {},
-})(MuiAccordion);
-
-const AccordionSummary = withStyles({
-  root: {
-    backgroundColor: "rgba(0, 0, 0, .03)",
-    borderBottom: "1px solid rgba(0, 0, 0, .125)",
-    marginBottom: -1,
-    minHeight: 56,
-    "&$expanded": {
-      minHeight: 56,
-    },
-  },
-  content: {
-    "&$expanded": {
-      margin: "12px 0",
-    },
-  },
-  expanded: {},
-})(MuiAccordionSummary);
-
-const AccordionDetails = withStyles((theme) => ({
-  root: {
-    padding: theme.spacing(2),
-  },
-}))(MuiAccordionDetails);
 
 const CropDetailsModalComponent = (props) => {
   let crop = props.crop;
@@ -221,69 +168,11 @@ const CropDetailsModalComponent = (props) => {
 
   useEffect(() => {
     setModalData(crop);
-    // get 5 images related to crop
   }, [crop]);
 
   const handleModalClose = () => {
     props.setModalOpen(!props.modalOpen);
   };
-
-  // const setPrintContents = (id) => {
-  //   // setPrint(true);
-  //   setPrint(!print);
-  //   html2canvas(document.getElementById(`cropDetailModal-${id}`))
-  //     .then((canvas) => {
-  //       // document.body.appendChild(canvas)
-  //       const dataUrl = canvas.toDataURL();
-  //       let windowContent = "<!DOCTYPE html>";
-  //       windowContent += "<html>";
-  //       windowContent += "<head><title>Print View</title></head>";
-  //       windowContent += "<body>";
-  //       windowContent += '<img src="' + dataUrl + '">';
-  //       windowContent += "</body>";
-  //       windowContent += "</html>";
-
-  //       const printWin = window.open(
-  //         "",
-  //         "",
-  //         "width=" +
-  //           window.screen.availWidth +
-  //           ",height=" +
-  //           window.screen.availHeight
-  //       );
-  //       printWin.document.open();
-  //       printWin.document.write(windowContent);
-
-  //       printWin.document.addEventListener(
-  //         "load",
-  //         function () {
-  //           printWin.focus();
-  //           // printWin.print();
-  //           // printWin.document.close();
-  //           // printWin.close();
-  //         },
-  //         true
-  //       );
-  //     })
-  //     .then(() => {
-  //       setPrint(!print);
-  //     });
-  //   // console.log(divId);
-  //   // let innerContents = document.getElementById(`modal-` + divId);
-  //   // let newWindow = window.open(
-  //   //   "",
-  //   //   "mywindow",
-  //   //   "status=1,width=350,height=150"
-  //   // );
-  //   // newWindow.document.write(innerContents);
-
-  //   // let printconf = window.print();
-  //   // console.log(printconf);
-  // };
-
-  // useEffect(() => {
-  //   console.log("run");
-  // });
 
   return (
     <Modal
@@ -303,98 +192,99 @@ const CropDetailsModalComponent = (props) => {
     >
       <Fade in={props.modalOpen}>
         {modalData.fields ? (
-          <div
-            className={`cropTableModal modalContainer ${classes.paper}`}
-            id={`cropDetailModal-${modalData.fields["id"]}`}
-          >
-            <div className="container-fluid">
-              <div className="row">
-                <div
-                  className="col-12"
-                  style={{
-                    background: "#2D7B7B",
-                    color: "white",
-                    height: "auto",
-                    borderTopLeftRadius: "5px",
-                    borderTopRightRadius: "5px",
-                  }}
-                >
-                  <div className="row">
-                    <div className="col-2 offset-10 text-right">
-                      {" "}
-                      <Button
-                        style={{ color: "white" }}
-                        onClick={handleModalClose}
-                      >
-                        <Close />
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="row" id="coverCropModalPrimary">
-                <div className="col-12">
-                  <div className="row">
-                    <div className="col mt-2">
-                      <div>{modalData.fields["Cover Crop Group"]}</div>
-                      <div className="font-weight-bold">
-                        {modalData.fields["Cover Crop Name"]}
+          <div className="modalParentWrapper">
+            <div
+              className={`cropTableModal modalContainer ${classes.paper}`}
+              id={`cropDetailModal-${modalData.fields["id"]}`}
+            >
+              <div className="container-fluid">
+                <div className="row">
+                  <div
+                    className="col-12"
+                    style={{
+                      background: "#2D7B7B",
+                      color: "white",
+                      height: "auto",
+                      borderTopLeftRadius: "5px",
+                      borderTopRightRadius: "5px",
+                    }}
+                  >
+                    <div className="row">
+                      <div className="col-2 offset-10 text-right">
+                        {" "}
+                        <Button
+                          style={{ color: "white" }}
+                          onClick={handleModalClose}
+                        >
+                          <Close />
+                        </Button>
                       </div>
-                      <div>{modalData.fields["Scientific Name"]}</div>
-                    </div>
-                    <div
-                      className="col"
-                      style={{
-                        textAlign: "right",
-                        paddingRight: "0px",
-                        paddingLeft: "0px",
-                      }}
-                    >
-                      {crop.fields["Image Data"] ? (
-                        <CropImage
-                          present={true}
-                          src={
-                            crop.fields["Image Data"]["Key Thumbnail"]
-                              ? `/images/Cover Crop Photos/${crop.fields["Image Data"]["Directory"]}/${crop.fields["Image Data"]["Key Thumbnail"]}`
-                              : "https://placehold.it/100x100"
-                          }
-                          alt={crop.fields["Cover Crop Name"]}
-                        />
-                      ) : (
-                        <CropImage present={false} />
-                      )}
                     </div>
                   </div>
                 </div>
-              </div>
-              <div className="row">
-                <div
-                  className="col-12"
-                  style={{ background: "#2D7B7B", color: "white" }}
-                >
-                  <div className="row">
-                    <div className="col-4">
-                      <Button
-                        style={{ color: "white" }}
-                        className="dataDict"
-                        onClick={() => {
-                          window.open("/data-dictionary", "_blank");
+                <div className="row" id="coverCropModalPrimary">
+                  <div className="col-12">
+                    <div className="row">
+                      <div className="col mt-2">
+                        <div>{modalData.fields["Cover Crop Group"]}</div>
+                        <div className="font-weight-bold">
+                          {modalData.fields["Cover Crop Name"]}
+                        </div>
+                        <div>{modalData.fields["Scientific Name"]}</div>
+                      </div>
+                      <div
+                        className="col"
+                        style={{
+                          textAlign: "right",
+                          paddingRight: "0px",
+                          paddingLeft: "0px",
                         }}
                       >
-                        {zoneIcon(20, 20)}
-                        <span className="pl-2">
-                          Plant Hardiness Zone {state.zone} Dataset
-                        </span>
-                      </Button>
+                        {crop.fields["Image Data"] ? (
+                          <CropImage
+                            present={true}
+                            src={
+                              crop.fields["Image Data"]["Key Thumbnail"]
+                                ? `/images/Cover Crop Photos/100x100/${crop.fields["Image Data"]["Directory"]}/${crop.fields["Image Data"]["Key Thumbnail"]}`
+                                : "https://placehold.it/100x100"
+                            }
+                            alt={crop.fields["Cover Crop Name"]}
+                          />
+                        ) : (
+                          <CropImage present={false} />
+                        )}
+                      </div>
                     </div>
-                    <div className="col-2">
-                      <Button style={{ color: "white" }}>
+                  </div>
+                </div>
+                <div className="row">
+                  <div
+                    className="col-12"
+                    style={{ background: "#2D7B7B", color: "white" }}
+                  >
+                    <div className="row">
+                      <div className="col-4">
+                        <Button
+                          style={{ color: "white" }}
+                          className="dataDict"
+                          onClick={() => {
+                            window.open("/data-dictionary", "_blank");
+                          }}
+                        >
+                          {zoneIcon(20, 20)}
+                          <span className="pl-2">
+                            Plant Hardiness Zone {state.zone} Dataset
+                          </span>
+                        </Button>
+                      </div>
+                      <div className="col-2">
+                        {/* <Button style={{ color: "white" }}>
                         <PhotoLibrary />{" "}
                         <span className="pl-2">View Photos</span>
-                      </Button>
-                    </div>
-                    <div className="col-4">
-                      <Button style={{ color: "white" }}>Download :</Button>
+                      </Button> */}
+                      </div>
+                      <div className="col-4">
+                        {/* <Button style={{ color: "white" }}>Download :</Button>
                       <Button
                         href={`/information-sheets/${crop.fields["Cover Crop Name"]}.pdf`}
                         style={{ color: "white" }}
@@ -410,10 +300,10 @@ const CropDetailsModalComponent = (props) => {
                       >
                         <FormatListBulleted />
                         <span className="pl-2">SPREADSHEET</span>
-                      </Button>
-                    </div>
-                    <div className="col-2 text-right">
-                      <Button
+                      </Button> */}
+                      </div>
+                      <div className="col-2 text-right">
+                        {/* <Button
                         style={{ color: "white" }}
                         // href={`http://covercrop.tools/information-sheets/${encodeURIComponent(
                         //   crop.fields["Cover Crop Name"]
@@ -428,13 +318,14 @@ const CropDetailsModalComponent = (props) => {
                         }}
                       >
                         <Print /> <span className="pl-2">PRINT</span>
-                      </Button>
+                      </Button> */}
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div className="">
-                <InformationSheetContent crop={crop.fields} from="modal" />
+                <div className="">
+                  <InformationSheetContent crop={crop.fields} from="modal" />
+                </div>
               </div>
             </div>
           </div>

@@ -218,6 +218,9 @@ td.growthWindowCell {
 
 td.growthWindowCell {
   // width: calc(100% / 12);
+  &.noBorderRightCond {
+    border-right: 2px solid white !important;
+  }
   border-right: 0px !important;
   //   background-color: $defaultLegendColor;
   padding-right: 0px !important;

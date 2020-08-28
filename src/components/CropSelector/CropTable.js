@@ -206,7 +206,19 @@ const CropTableComponent = (props) => {
                 key={index}
                 className="goalCells"
               >
-                <div>{getRating(crop.fields[goal])}</div>
+                <div>
+                  <Tooltip
+                    arrow
+                    placement="bottom"
+                    title={
+                      <div className="filterTooltip text-capitalize">
+                        <p>{goal}</p>
+                      </div>
+                    }
+                  >
+                    {getRating(crop.fields[goal])}
+                  </Tooltip>
+                </div>
               </TableCell>
             ))
           : ""}
@@ -322,7 +334,7 @@ const CropTableComponent = (props) => {
                                   present={true}
                                   src={
                                     crop.fields["Image Data"]["Key Thumbnail"]
-                                      ? `/images/Cover Crop Photos/Thumbs/${crop.fields["Image Data"]["Directory"]}/${crop.fields["Image Data"]["Key Thumbnail"]}`
+                                      ? `/images/Cover Crop Photos/100x100/${crop.fields["Image Data"]["Directory"]}/${crop.fields["Image Data"]["Key Thumbnail"]}`
                                       : "https://placehold.it/100x100"
                                   }
                                   alt={crop.fields["Cover Crop Name"]}
@@ -511,7 +523,7 @@ const CropTableComponent = (props) => {
                             present={true}
                             src={
                               crop.fields["Image Data"]["Key Thumbnail"]
-                                ? `/images/Cover Crop Photos/Thumbs/${crop.fields["Image Data"]["Directory"]}/${crop.fields["Image Data"]["Key Thumbnail"]}`
+                                ? `/images/Cover Crop Photos/100x100/${crop.fields["Image Data"]["Directory"]}/${crop.fields["Image Data"]["Key Thumbnail"]}`
                                 : "https://placehold.it/100x100"
                             }
                             alt={crop.fields["Cover Crop Name"]}
@@ -546,27 +558,29 @@ const CropTableComponent = (props) => {
                         </div>
                       </TableCell>
                       <TableCell style={{ textAlign: "left" }}>
-                        <div className="container-fluid">
-                          <div className="row">
-                            <div className="col-5 p-0">
-                              <Typography
-                                variant="subtitle2"
-                                component="b"
-                                className=""
-                              >
-                                C to N Ratio:
-                              </Typography>
-                            </div>
-                            <div className="col-7 p-0">
-                              <Typography variant="subtitle2" component="b">
-                                {crop.fields["C to N Ratio"]}
-                              </Typography>
-                            </div>
+                        <table>
+                          <tbody>
+                            <tr>
+                              <td>
+                                <Typography
+                                  variant="subtitle2"
+                                  component="b"
+                                  className=""
+                                >
+                                  C to N Ratio:
+                                </Typography>
+                              </td>
+                              <td>
+                                <Typography variant="subtitle2" component="b">
+                                  {crop.fields["C to N Ratio"]}
+                                </Typography>
+                              </td>
+                            </tr>
 
                             {crop.fields["Cover Crop Group"].toLowerCase() ===
                             "legume" ? (
-                              <Fragment>
-                                <div className="col-5 p-0">
+                              <tr>
+                                <td>
                                   <Typography
                                     variant="subtitle2"
                                     component="b"
@@ -574,8 +588,8 @@ const CropTableComponent = (props) => {
                                   >
                                     N FIXED:
                                   </Typography>
-                                </div>
-                                <div className="col-7 p-0">
+                                </td>
+                                <td>
                                   <Tooltip
                                     arrow
                                     placement="right"
@@ -598,53 +612,61 @@ const CropTableComponent = (props) => {
                                       }
                                     </Typography>
                                   </Tooltip>
-                                </div>
-                              </Fragment>
+                                </td>
+                              </tr>
                             ) : (
                               ""
                             )}
-
-                            <div className="col-5 p-0">
-                              <Typography
-                                variant="subtitle2"
-                                component="b"
-                                className=""
-                              >
-                                DRY MATTER:
-                              </Typography>
-                            </div>
-                            <div className="col-7 p-0">
-                              <Tooltip arrow placement="right" title="lbs/A/y">
-                                <Typography variant="subtitle2" component="b">
-                                  {crop.fields["Dry Matter Min (lbs/A/y)"]}-
-                                  {crop.fields["Dry Matter Max (lbs/A/y)"]}
+                            <tr>
+                              <td>
+                                {" "}
+                                <Typography
+                                  variant="subtitle2"
+                                  component="b"
+                                  className=""
+                                >
+                                  DRY MATTER:
                                 </Typography>
-                              </Tooltip>
-                            </div>
-                            <div className="col-5 p-0">
-                              <Typography
-                                variant="subtitle2"
-                                component="b"
-                                className=""
-                              >
-                                DURATION:
-                              </Typography>
-                            </div>
-                            <div className="col-7 p-0">
-                              <Typography
-                                variant="subtitle2"
-                                component="b"
-                                className="text-uppercase"
-                              >
-                                {crop.fields["Duration"]
-                                  .toString()
-                                  .toLowerCase() === "short-lived perennial"
-                                  ? "Perennial"
-                                  : crop.fields["Duration"].toString()}
-                              </Typography>
-                            </div>
-                          </div>
-                        </div>
+                              </td>
+                              <td>
+                                <Tooltip
+                                  arrow
+                                  placement="right"
+                                  title="lbs/A/y"
+                                >
+                                  <Typography variant="subtitle2" component="b">
+                                    {crop.fields["Dry Matter Min (lbs/A/y)"]}-
+                                    {crop.fields["Dry Matter Max (lbs/A/y)"]}
+                                  </Typography>
+                                </Tooltip>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <Typography
+                                  variant="subtitle2"
+                                  component="b"
+                                  className=""
+                                >
+                                  DURATION:
+                                </Typography>
+                              </td>
+                              <td>
+                                <Typography
+                                  variant="subtitle2"
+                                  component="b"
+                                  className="text-uppercase"
+                                >
+                                  {crop.fields["Duration"]
+                                    .toString()
+                                    .toLowerCase() === "short-lived perennial"
+                                    ? "Perennial"
+                                    : crop.fields["Duration"].toString()}
+                                </Typography>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </TableCell>
                       {getCardFlex(crop, index)}
                     </TableRow>

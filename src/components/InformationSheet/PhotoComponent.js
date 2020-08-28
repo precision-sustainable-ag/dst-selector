@@ -4,6 +4,7 @@ import Axios from "axios";
 // import Carousel, { Modal, ModalGateway } from "react-images";
 import { LuminousGallery } from "luminous-lightbox";
 import "../../../node_modules/luminous-lightbox/dist/luminous-basic.css";
+import "../../styles/photoComponent.scss";
 import { Typography } from "@material-ui/core";
 
 const PhotoComponent = ({
@@ -64,34 +65,44 @@ const PhotoComponent = ({
 
   return imageData !== null && imageList.length !== 0 ? (
     <Suspense fallback={<div className="col">Loading..</div>}>
-      {imageList.map((url, index) => (
-        <div
-          className="p-2 d-flex flex-column align-items-center justify-content-center"
-          key={`Photo${index}`}
-        >
-          <a
-            className="Photo"
-            href={`/${url}`}
-            data-caption={getPhotoCredits(url, imageData["Cover Crop"])}
+      {imageList.map((url, index) => {
+        let strippedUrl = "";
+        if (url.startsWith("images/Cover Crop Photos")) {
+          let strippedUrlArray = url.split("images/Cover Crop Photos");
+          strippedUrl =
+            "/images/Cover Crop Photos/200x125" + strippedUrlArray[1];
+        }
+        return (
+          <div
+            className="p-2 d-flex flex-column align-items-center justify-content-center"
+            key={`Photo${index}`}
           >
-            <img
-              alt={`Photo ${index}`}
-              src={`/${url}`}
-              height="125"
-              width="200"
-            />
-          </a>
+            <a
+              className="Photo rounded"
+              href={`/${url}`}
+              data-caption={getPhotoCredits(url, imageData["Cover Crop"])}
+            >
+              <img
+                className="img rounded"
+                alt={`Photo ${index}`}
+                // src={`/${url}`}
+                src={strippedUrl}
+                height="125"
+                width="200"
+              />
+            </a>
 
-          <div>
-            <Typography variant="caption">
-              {getPhotoCredits(url, imageData["Cover Crop"])}
-            </Typography>
+            <div>
+              <Typography variant="caption">
+                {getPhotoCredits(url, imageData["Cover Crop"])}
+              </Typography>
+            </div>
           </div>
-        </div>
-      ))}
+        );
+      })}
     </Suspense>
   ) : (
-    ""
+    "Loading.."
   );
 };
 
