@@ -93,12 +93,31 @@ const RouteNotFound = () => {
   );
 };
 
-const responsiveFontSizesTheme = responsiveFontSizes(theme, {
+const csTheme = responsiveFontSizes(theme, {
   breakpoints: ["xs", "sm", "md", "lg", "xl"],
 });
 
+csTheme.typography.body1 = {
+  fontSize: "1rem",
+  [theme.breakpoints.up("xl")]: {
+    fontSize: "1.8rem !important",
+  },
+};
+
+csTheme.typography.h6 = {
+  [theme.breakpoints.up("xl")]: {
+    fontSize: "2rem !important",
+  },
+};
+
+csTheme.typography.h4 = {
+  [theme.breakpoints.up("xl")]: {
+    fontSize: "3rem !important",
+  },
+};
+
 const Wrapper = () => (
-  <MuiThemeProvider theme={responsiveFontSizesTheme}>
+  <MuiThemeProvider theme={csTheme}>
     <SnackbarProvider
       maxSnack={5}
       anchorOrigin={{
