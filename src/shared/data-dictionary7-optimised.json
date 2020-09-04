@@ -172,13 +172,6 @@
     "type": "chips-rating",
     "values": [
       {
-        "name": "Root Architecture",
-        "type": "chip",
-        "maxSize": null,
-        "values": ["Tap", "Fibrous"],
-        "description": "Primary root structure: tap or fibrous"
-      },
-      {
         "name": "Root Depth",
         "type": "chip",
         "maxSize": null,
@@ -240,19 +233,6 @@
         "maxSize": 5,
         "symbol": "star",
         "description": "Likelihood that roller-crimping will successfully terminate the cover crop while it is in the flowering stage. Termination is most successful at higher crop densities (3+ tons of dry matter per acre). Roller crimping is usually used in tandem with chemical termination outside of organic systems"
-      }
-    ]
-  },
-  {
-    "name": "Beneficials",
-    "description": "This data is based on expert opinion",
-    "type": "rating-only",
-    "values": [
-      {
-        "name": "Supports Mycorrhizae",
-        "maxSize": 5,
-        "symbol": "star",
-        "description": "Cover crop ability to promote relative activity of mycorrhizal fungi in the rhizosphere"
       }
     ]
   },
