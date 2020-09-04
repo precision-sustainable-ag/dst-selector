@@ -87,7 +87,8 @@ const InformationSheetContent = (props) => {
       let zones = source.Zone.split(",").map((item) => item.trim());
       const coverCrops = source["Cover Crops"]
         .split(regex)
-        .map((item) => item.replace(removeDoubleQuotes, "$1"));
+        .map((item) => item.replace(removeDoubleQuotes, "$1"))
+        .map((item) => item.trim());
 
       if (zones.includes(`Zone ${zone}`)) {
         if (coverCrops.includes(crop["Cover Crop Name"])) {
@@ -97,6 +98,7 @@ const InformationSheetContent = (props) => {
     });
 
     setCurrentSources(relevantZones);
+    console.log(relevantZones);
   }, []);
 
   return from === "direct" ? (
