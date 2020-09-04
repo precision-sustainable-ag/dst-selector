@@ -103,7 +103,7 @@ const CoverCropExplorer = () => {
             />
           </div>
           <div className="col-md-12 col-lg-9 col-xl-10 col-12">
-            <div
+            {/* <div
               className="row"
               style={{
                 backgroundColor: "#35999b",
@@ -112,7 +112,7 @@ const CoverCropExplorer = () => {
                 borderTopRightRadius: "5px",
               }}
             >
-              {/*<div className="col-8">
+              <div className="col-8">
                  <Button style={{ color: "white" }}>Download:</Button>
                 <Button
                   style={{ color: "white" }}
@@ -125,7 +125,7 @@ const CoverCropExplorer = () => {
                   <FormatListBulleted />
                   &nbsp; SPREADSHEET
                 </Button> 
-              </div>*/}
+              </div>
               <div className="col-12 offset-md-8 col-md-4 text-right">
                 <Button
                   aria-controls="zone-selector"
@@ -152,7 +152,7 @@ const CoverCropExplorer = () => {
                   <MenuItem onClick={() => handleClose(7)}>Zone 7</MenuItem>
                 </Menu>
               </div>
-            </div>
+            </div> */}
             <ExplorerCardView
               cropDataChanged={cropDataChanged}
               cropData={state.cropData}
