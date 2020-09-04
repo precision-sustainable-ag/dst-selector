@@ -1,11 +1,29 @@
 import React, { useState, useEffect, Fragment } from "react";
 import Header from "../Header/header";
-import { Typography, Button } from "@material-ui/core";
+import {
+  Typography,
+  Button,
+  useTheme,
+  isWidthDown,
+  isWidthUp,
+} from "@material-ui/core";
 import { Link } from "react-router-dom";
 import InformationSheetDictionary from "../InformationSheet/InformationSheetDictionary";
 import { CustomStyles } from "../../shared/constants";
 
 const HelpComponent = (props) => {
+  // const theme = useTheme();
+  // const styles = theme =>({
+  //   boxContainerStyle:{
+  //   minHeight: "520px",
+  //   [theme.breakpoints.down("md")]: {
+  //     width: "100%",
+  //     margin: "auto",
+  //     padding: "initial",
+  //   },
+  // }
+  // });
+  // console.log(isWidthUp("xl"));
   const resizeIframe = (obj) => {
     obj.style.height =
       obj.contentWindow.document.documentElement.scrollHeight + "px";
@@ -19,9 +37,17 @@ const HelpComponent = (props) => {
     <div className="contentWrapper">
       <Header />
       <div className="container-fluid mt-5">
-        <div className="row boxContainerRow" style={{ minHeight: "520px" }}>
+        <div
+          className="row boxContainerRow"
+          style={
+            // isWidthDown("md")
+            // ? { minHeight: "520px", width: "100%", padding: "initial" }
+            // : { minHeight: "520px" }
+            { minHeight: "520px" }
+          }
+        >
           <div className="col-12 row">
-            <div className="col-md-3 col-12 pr-0">
+            <div className="col-lg-4 col-12 px-0">
               <div
                 className="d-flex flex-column pb-2"
                 style={{
@@ -40,7 +66,7 @@ const HelpComponent = (props) => {
                   variant={value === 0 ? `contained` : `text`}
                   color={value === 0 ? `secondary` : `default`}
                 >
-                  How to Use the NECCC Tool
+                  How to Use the NECCC Species Selector Tool
                 </Button>
                 <Button
                   style={{
@@ -84,7 +110,7 @@ const HelpComponent = (props) => {
               </div>
             </div>
             <div
-              className="col-md-9 col-12 p-2"
+              className="col-lg-8 col-12 p-2"
               style={{
                 overflow: "hidden",
                 border: `1px solid ${CustomStyles().darkGreen}`,
