@@ -18,6 +18,7 @@ import {
   Checkbox,
   Tooltip,
   Grid,
+  Chip,
 } from "@material-ui/core";
 import {
   ExpandLess,
@@ -33,6 +34,14 @@ import { Context } from "../../store/Store";
 import { List as ListMovable, arrayMove } from "react-movable";
 
 import { DateRangePicker } from "@matharumanpreet00/react-daterange-picker";
+// import {
+//   DateRangePicker,
+//   SingleDatePicker,
+//   DayPickerRangeController,
+// } from "react-dates";
+// import { DateRangePicker } from "react-date-range";
+// import "react-date-range/dist/styles.css"; // main style file
+// import "react-date-range/dist/theme/default.css"; // theme css file
 import moment from "moment";
 
 import CoverCropType from "./Filters/CoverCropType";
@@ -488,6 +497,25 @@ const CropSidebarComponent = (props) => {
     }
   }, [props.cropDataChanged]);
 
+  const [zoneToggle, setZoneToggle] = React.useState(true);
+
+  const handleZoneToggle = () => {
+    setZoneToggle(!zoneToggle);
+  };
+
+  const handleZone = (zone = 7) => {
+    if (typeof zone === "number") {
+      let zoneText = `Zone ${zone}`;
+      dispatch({
+        type: "UPDATE_ZONE_TEXT",
+        data: {
+          zoneText: zoneText,
+          zone: parseInt(zone),
+        },
+      });
+    }
+  };
+
   const [growthWindowVisible, setGrowthWindowVisible] = React.useState(true);
 
   let [keysArray, setKeysArray] = React.useState([]);
@@ -619,6 +647,10 @@ const CropSidebarComponent = (props) => {
     }
   }, [comparisonView, state.myCoverCropActivationFlag]);
 
+  // const [focusedInput, setFocusedInput] = React.useState(null);
+  const [dateRanges, setDateRanges] = React.useState([
+    { startDate: new Date(), endDate: new Date(), key: "selection" },
+  ]);
   return (
     <div className="row">
       {state.myCoverCropActivationFlag && props.from === "table" ? (
@@ -908,6 +940,7 @@ const CropSidebarComponent = (props) => {
                     {dateRangeOpen ? (
                       <ListItem style={{ zIndex: 99 }}>
                         <DateRangePicker
+                          definedRanges={[]}
                           open={dateRangeOpen}
                           onChange={(range) => setDateRange(range)}
                         />
@@ -970,17 +1003,57 @@ const CropSidebarComponent = (props) => {
             {showFilters ? (
               <Fragment>
                 {props.from === "explorer" ? (
-                  <ListItem>
-                    <ListItemText>
-                      <TextField
-                        fullWidth
-                        color="secondary"
-                        label="Search Cover Crop Name"
-                        value={props.searchValue}
-                        onChange={props.handleSearchChange}
-                      />
-                    </ListItemText>
-                  </ListItem>
+                  <Fragment>
+                    <List component="div" disablePadding>
+                      <ListItem button onClick={handleZoneToggle}>
+                        <ListItemText
+                          primary={
+                            <Typography
+                              variant="body2"
+                              className="text-uppercase"
+                            >
+                              Plant Hardiness Zone
+                            </Typography>
+                          }
+                        />
+                        {zoneToggle ? <ExpandLess /> : <ExpandMore />}
+                      </ListItem>
+                    </List>
+                    <Collapse in={zoneToggle}>
+                      <List component="div" disablePadding>
+                        <ListItem component="div">
+                          <Grid container spacing={1}>
+                            {[4, 5, 6, 7].map((zone, index) => (
+                              <Grid item key={index}>
+                                <Chip
+                                  onClick={() => handleZone(zone)}
+                                  component="li"
+                                  size="medium"
+                                  label={`Zone ${zone}`}
+                                  color={
+                                    parseInt(state.zone) === zone
+                                      ? "primary"
+                                      : "secondary"
+                                  }
+                                />
+                              </Grid>
+                            ))}
+                          </Grid>
+                        </ListItem>
+                      </List>
+                    </Collapse>
+                    <ListItem>
+                      <ListItemText>
+                        <TextField
+                          fullWidth
+                          color="secondary"
+                          label="Search Cover Crop Name"
+                          value={props.searchValue}
+                          onChange={props.handleSearchChange}
+                        />
+                      </ListItemText>
+                    </ListItem>
+                  </Fragment>
                 ) : (
                   ""
                 )}
