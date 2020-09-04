@@ -212,7 +212,11 @@ const CropTableComponent = (props) => {
                     placement="bottom"
                     title={
                       <div className="filterTooltip text-capitalize">
-                        <p>{goal}</p>
+                        <p>
+                          {`Goal ${index + 1}`}
+                          {": "}
+                          {goal}
+                        </p>
                       </div>
                     }
                   >
@@ -383,23 +387,6 @@ const CropTableComponent = (props) => {
                       <TableCell style={{ textAlign: "left" }}>
                         <table>
                           <tbody>
-                            <tr>
-                              <td>
-                                <Typography
-                                  variant="subtitle2"
-                                  component="b"
-                                  className=""
-                                >
-                                  C to N Ratio:
-                                </Typography>
-                              </td>
-                              <td>
-                                <Typography variant="subtitle2" component="b">
-                                  {crop.fields["C to N Ratio"]}
-                                </Typography>
-                              </td>
-                            </tr>
-
                             {crop.fields["Cover Crop Group"].toLowerCase() ===
                             "legume" ? (
                               <tr>
@@ -409,7 +396,7 @@ const CropTableComponent = (props) => {
                                     component="b"
                                     className=""
                                   >
-                                    N FIXED:
+                                    TOTAL N:
                                   </Typography>
                                 </td>
                                 <td>
@@ -560,23 +547,6 @@ const CropTableComponent = (props) => {
                       <TableCell style={{ textAlign: "left" }}>
                         <table>
                           <tbody>
-                            <tr>
-                              <td>
-                                <Typography
-                                  variant="subtitle2"
-                                  component="b"
-                                  className=""
-                                >
-                                  C to N Ratio:
-                                </Typography>
-                              </td>
-                              <td>
-                                <Typography variant="subtitle2" component="b">
-                                  {crop.fields["C to N Ratio"]}
-                                </Typography>
-                              </td>
-                            </tr>
-
                             {crop.fields["Cover Crop Group"].toLowerCase() ===
                             "legume" ? (
                               <tr>
@@ -586,7 +556,7 @@ const CropTableComponent = (props) => {
                                     component="b"
                                     className=""
                                   >
-                                    N FIXED:
+                                    TOTAL N:
                                   </Typography>
                                 </td>
                                 <td>
@@ -969,12 +939,14 @@ const CropTableComponent = (props) => {
                       >
                         {props.sortPreference === "asc" ? (
                           <Sort
-                            style={{ color: CustomStyles().progressColor }}
+                            style={{
+                              color: CustomStyles().secondaryProgressBtnColor,
+                            }}
                           />
                         ) : (
                           <Sort
                             style={{
-                              color: CustomStyles().secondaryProgressBtnColor,
+                              color: CustomStyles().progressColor,
                             }}
                           />
                         )}
