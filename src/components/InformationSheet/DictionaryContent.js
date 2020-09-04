@@ -39,13 +39,27 @@ const DictionaryContent = ({ dictData = [{}], from = "" }) => {
             {key}
           </Typography>
         </div>
-        {groupedCats[key].map((innerCat, index2) => (
-          <div className="col-6" key={index2}>
-            <Typography variant="body1" className="p-3">
-              <b>{innerCat["Variable"]}:</b> {innerCat["Description"]}
-            </Typography>
-          </div>
-        ))}
+        {groupedCats[key].map((innerCat, index2) => {
+          if (from === "help") {
+            if (!innerCat["Variable"].startsWith("Notes")) {
+              return (
+                <div className="col-6" key={index2}>
+                  <Typography variant="body1" className="p-3">
+                    <b>{innerCat["Variable"]}:</b> {innerCat["Description"]}
+                  </Typography>
+                </div>
+              );
+            }
+          } else {
+            return (
+              <div className="col-6" key={index2}>
+                <Typography variant="body1" className="p-3">
+                  <b>{innerCat["Variable"]}:</b> {innerCat["Description"]}
+                </Typography>
+              </div>
+            );
+          }
+        })}
       </div>
     ));
 
