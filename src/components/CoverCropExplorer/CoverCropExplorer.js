@@ -32,6 +32,7 @@ const CoverCropExplorer = () => {
   const [activeCropData, setActiveCropData] = useState([]);
   const [inactiveCropData, setInactiveCropData] = useState([]);
   const [cropName, setCropName] = useState("");
+  const [cropData, setCropData] = useState([]);
 
   useEffect(() => {
     setCropDataChanged(!cropDataChanged);
@@ -81,7 +82,28 @@ const CoverCropExplorer = () => {
     console.log(crop_data);
     setActiveCropData(crop_data);
   };
-  return (
+
+  // useEffect(() => {
+  //   switch (state.zone) {
+  //     case 7: {
+  //       setCropData(state.zone7CropData);
+  //       break;
+  //     }
+  //     case 6: {
+  //       setCropData(state.zone6CropData);
+  //       break;
+  //     }
+  //     case 5: {
+  //       setCropData(state.zone5CropData);
+  //       break;
+  //     }
+  //     default: {
+  //       setCropData(state.zone7CropData);
+  //       break;
+  //     }
+  //   }
+  // }, [state.zone]);
+  return cropData.length === 0 ? (
     <div className="contentWrapper">
       <Header logo="neccc_wide_logo_color_web.jpg" />
       <div className="container-fluid mt-4">
@@ -112,20 +134,6 @@ const CoverCropExplorer = () => {
                 borderTopRightRadius: "5px",
               }}
             >
-              <div className="col-8">
-                 <Button style={{ color: "white" }}>Download:</Button>
-                <Button
-                  style={{ color: "white" }}
-                  onClick={() => window.print()}
-                >
-                  <PictureAsPdf /> <span className="pl-2">PDF</span>
-                </Button>
-
-                <Button href={`/csv/`} style={{ color: "white" }}>
-                  <FormatListBulleted />
-                  &nbsp; SPREADSHEET
-                </Button> 
-              </div>
               <div className="col-12 offset-md-8 col-md-4 text-right">
                 <Button
                   aria-controls="zone-selector"
@@ -151,8 +159,8 @@ const CoverCropExplorer = () => {
                   <MenuItem onClick={() => handleClose(6)}>Zone 6</MenuItem>
                   <MenuItem onClick={() => handleClose(7)}>Zone 7</MenuItem>
                 </Menu>
-              </div>
-            </div> */}
+              </div> 
+            </div>*/}
             <ExplorerCardView
               cropDataChanged={cropDataChanged}
               cropData={state.cropData}
@@ -167,6 +175,8 @@ const CoverCropExplorer = () => {
         </div>
       </div>
     </div>
+  ) : (
+    ""
   );
 };
 

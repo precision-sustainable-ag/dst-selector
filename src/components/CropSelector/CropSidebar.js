@@ -491,11 +491,11 @@ const CropSidebarComponent = (props) => {
     };
   }, []);
 
-  // React.useMemo(() => {
-  //   if (beneficialsRef.current) {
-  //     resetAllFilters();
-  //   }
-  // }, [props.cropDataChanged]);
+  React.useMemo(() => {
+    if (envTolRef.current) {
+      resetAllFilters();
+    }
+  }, [props.cropDataChanged]);
 
   const [zoneToggle, setZoneToggle] = React.useState(true);
 
@@ -505,11 +505,10 @@ const CropSidebarComponent = (props) => {
 
   const handleZone = (zone = 7) => {
     if (typeof zone === "number") {
-      let zoneText = `Zone ${zone}`;
       dispatch({
-        type: "UPDATE_ZONE_TEXT",
+        type: "UPDATE_ZONE",
         data: {
-          zoneText: zoneText,
+          zoneText: `Zone ${zone}`,
           zone: parseInt(zone),
         },
       });
