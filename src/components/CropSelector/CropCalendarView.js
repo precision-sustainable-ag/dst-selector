@@ -25,6 +25,8 @@ import {
   getRating,
   CropImage,
   CustomStyles,
+  flipCoverCropName,
+  trimString,
 } from "../../shared/constants";
 import "../../styles/cropCalendarViewComponent.scss";
 import GrowthWindowComponent from "./GrowthWindow";
@@ -321,9 +323,7 @@ const CropCalendarViewComponent = (props) => {
                         borderRight: "5px solid white",
                       }}
                     >
-                      <Typography variant="body1" style={{ fontSize: "1.1em" }}>
-                        ACTIVE GROWTH PERIOD
-                      </Typography>
+                      <Button>ACTIVE GROWTH PERIOD</Button>
                     </TableCell>
 
                     {state.activeGrowthPeriod.includes("Jan") ? (
@@ -462,15 +462,15 @@ const CropCalendarViewComponent = (props) => {
                 <TableCell
                   style={{ width: "17%", borderRight: "5px solid white" }}
                 >
-                  <Typography variant="body1">COVER CROPS</Typography>
+                  <Button>COVER CROPS</Button>
                 </TableCell>
                 {state.selectedGoals.length === 0 ? (
                   ""
                 ) : (
                   <TableCell
-                    style={{ width: "10%", borderRight: "5px solid white" }}
+                    style={{ width: "13%", borderRight: "5px solid white" }}
                   >
-                    <Typography variant="body1">AVERAGE GOAL RATING</Typography>
+                    <Button>AVERAGE GOAL RATING</Button>
                   </TableCell>
                 )}
 
@@ -492,7 +492,7 @@ const CropCalendarViewComponent = (props) => {
                         growthMonth ? `activeGrowthMonth` : ``
                       } ${growthMonthSeparator ? `growthMonthSeparator` : ``}`}
                     >
-                      <Typography variant="body1">{month}</Typography>
+                      <Button>{month}</Button>
                     </TableCell>
                   );
                 })}
@@ -500,11 +500,20 @@ const CropCalendarViewComponent = (props) => {
                 <TableCell
                   style={{ width: "10%", borderLeft: "5px solid white" }}
                 >
-                  <Typography variant="body1">MY LIST</Typography>
-                  <Typography variant="subtitle1">
-                    {/* <br /> */}
+                  <Button
+                    onClick={() => {
+                      dispatch({
+                        type: "ACTIVATE_MY_COVER_CROP_LIST_TILE",
+                        data: {
+                          myCoverCropActivationFlag: true,
+                          speciesSelectorActivationFlag: false,
+                        },
+                      });
+                    }}
+                  >
+                    MY LIST <br />
                     {`[${state.selectedCrops.length} CROPS]`}
-                  </Typography>
+                  </Button>
                 </TableCell>
               </TableRow>
             </TableHead>
@@ -521,7 +530,7 @@ const CropCalendarViewComponent = (props) => {
                               paddingBottom: "0px",
                             }}
                           >
-                            <div className="tdContainer d-flex justify-content-between flex-wrap">
+                            <div className="tdContainer d-flex justify-content-between flex-nowrap">
                               {crop.fields["Image Data"] ? (
                                 <Button
                                   size="small"
@@ -558,16 +567,28 @@ const CropCalendarViewComponent = (props) => {
 
                               <Button
                                 size="small"
-                                style={{
-                                  borderRadius: "0px",
-                                  paddingTop: "0px",
-                                }}
+                                style={
+                                  {
+                                    // borderRadius: "0px",
+                                    // paddingTop: "0px",
+                                  }
+                                }
                                 onClick={() => {
                                   setModalData(crop);
                                   setModalOpen(!modalOpen);
                                 }}
                               >
-                                {crop.fields["Cover Crop Name"]}
+                                {crop.fields["Cover Crop Name"] !==
+                                "Sorghum-sudangrass"
+                                  ? flipCoverCropName(
+                                      crop.fields["Cover Crop Name"]
+                                    )
+                                  : trimString(
+                                      flipCoverCropName(
+                                        crop.fields["Cover Crop Name"]
+                                      ),
+                                      15
+                                    )}
                               </Button>
                             </div>
                           </TableCell>
