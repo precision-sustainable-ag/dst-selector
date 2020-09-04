@@ -77,15 +77,26 @@ const InformationSheetContent = (props) => {
   const crop = props.crop;
   const from = props.from || "direct";
   const classes = useStyles();
+  const [currentSources, setCurrentSources] = useState([{}]);
+
   useEffect(() => {
     document.title = `Information Sheet for ${crop["Cover Crop Name"]}`;
+    const regex = /(?!\B"[^"]*),(?![^"]*"\B)/g;
+    const removeDoubleQuotes = /^"(.+(?="$))"$/;
+    const relevantZones = sources.filter((source, index) => {
+      let zones = source.Zone.split(",").map((item) => item.trim());
+      const coverCrops = source["Cover Crops"]
+        .split(regex)
+        .map((item) => item.replace(removeDoubleQuotes, "$1"));
 
-    // var filteredSources = Object.keys(sources).reduce(function(r, e) {
-    //   if(parseInt())
+      if (zones.includes(`Zone ${zone}`)) {
+        if (coverCrops.includes(crop["Cover Crop Name"])) {
+          return true;
+        } else return false;
+      } else return false;
+    });
 
-    //   if (acceptedValues.includes(myObject[e])) r[e] = myObject[e]
-    //   return r;
-    // }, {})
+    setCurrentSources(relevantZones);
   }, []);
 
   return from === "direct" ? (
@@ -207,14 +218,14 @@ const InformationSheetContent = (props) => {
                 {getRating(crop["Prevent Spring Soil Erosion"])}
               </span>
             </div>
-            <div className="col-6 mb-2 row">
+            {/* <div className="col-6 mb-2 row">
               <span className="col">
                 <Typography variant="body1">Supports Mycorrhizae</Typography>
               </span>
               <span className="col-3">
                 {getRating(crop["Supports Mycorrhizae"])}
               </span>
-            </div>
+            </div> */}
             <div className="col-6 mb-2 row">
               <span className="col">
                 <Typography variant="body1">Promote Water Quality</Typography>
@@ -418,12 +429,12 @@ const InformationSheetContent = (props) => {
                   ))}
                 </div>
               </div>
-              <div className="col-9 mb-2">
+              {/* <div className="col-9 mb-2">
                 <Typography variant="body1">C:N</Typography>
               </div>
               <div className="col-3 mb-2">
                 {getRating(crop["C to N Ratio"])}
-              </div>
+              </div> */}
               <div className="col-9 mb-2">
                 <Typography variant="body1">Dry Matter (Lbs/A/Yr)</Typography>
               </div>
@@ -1052,7 +1063,7 @@ const InformationSheetContent = (props) => {
                     {getRating(crop["Prevent Spring Soil Erosion"])}
                   </span>
                 </div>
-                <div className="col-6 mb-2 row">
+                {/* <div className="col-6 mb-2 row">
                   <span className="col">
                     <Typography variant="body1">
                       Supports Mycorrhizae
@@ -1061,7 +1072,7 @@ const InformationSheetContent = (props) => {
                   <span className="col-3">
                     {getRating(crop["Supports Mycorrhizae"])}
                   </span>
-                </div>
+                </div> */}
                 <div className="col-6 mb-2 row">
                   <span className="col">
                     <Typography variant="body1">
@@ -1287,12 +1298,12 @@ const InformationSheetContent = (props) => {
                     </div>
                   </div>
 
-                  <div className="col-9 mb-2">
+                  {/* <div className="col-9 mb-2">
                     <Typography variant="body1">C:N</Typography>
                   </div>
                   <div className="col-3 mb-2">
                     {getRating(crop["C to N Ratio"])}
-                  </div>
+                  </div> */}
                   <div className="col-9 mb-2">
                     <Typography variant="body1">
                       Dry Matter (Lbs/A/Yr)
@@ -2001,10 +2012,32 @@ const InformationSheetContent = (props) => {
                   className="px-3 py-2"
                   style={{ border: "0px" }}
                 >
-                  References & Sources
+                  References & Resources
                 </Typography>
               </AccordionSummary>
-              <AccordionDetails></AccordionDetails>
+              <AccordionDetails>
+                <Typography variant="body1" className="p-3">
+                  {currentSources.length > 0
+                    ? currentSources.map((source, index) => (
+                        <Fragment key={index}>
+                          <a
+                            style={{
+                              textDecoration: "underline",
+                              color: "black",
+                              fontWeight: "bolder",
+                            }}
+                            href={source["URL"]}
+                            target="_blank"
+                          >
+                            {source["Resource Name"]}
+                          </a>
+                          , {source["Institution or Author"]}
+                          <br />
+                        </Fragment>
+                      ))
+                    : ""}
+                </Typography>
+              </AccordionDetails>
             </Accordion>
           </div>
         </div>
