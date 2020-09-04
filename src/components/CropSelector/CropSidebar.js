@@ -422,7 +422,7 @@ const CropSidebarComponent = (props) => {
 
   const resetAllFilters = (withRef = true) => {
     if (withRef) {
-      beneficialsRef.current.resetFilters();
+      // beneficialsRef.current.resetFilters();
       coverCropTypeRef.current.resetFilters();
       // diseaseRef.current.resetFilters();
       envTolRef.current.resetFilters();
@@ -491,11 +491,11 @@ const CropSidebarComponent = (props) => {
     };
   }, []);
 
-  React.useMemo(() => {
-    if (beneficialsRef.current) {
-      resetAllFilters();
-    }
-  }, [props.cropDataChanged]);
+  // React.useMemo(() => {
+  //   if (beneficialsRef.current) {
+  //     resetAllFilters();
+  //   }
+  // }, [props.cropDataChanged]);
 
   const [zoneToggle, setZoneToggle] = React.useState(true);
 
@@ -1306,23 +1306,9 @@ const CropSidebarComponent = (props) => {
                                   ) : (
                                     ""
                                   )}
-                                  {filter.name.toUpperCase() ===
-                                  "BENEFICIALS" ? (
-                                    <Beneficials
-                                      ref={beneficialsRef}
-                                      filters={sidebarFilters[index]}
-                                      sidebarFilterOptions={
-                                        sidebarFilterOptions
-                                      }
-                                      setSidebarFilterOptions={
-                                        setSidebarFilterOptions
-                                      }
-                                      resetAllFilters={resetAllFilters}
-                                      {...props}
-                                    />
-                                  ) : (
-                                    ""
-                                  )}
+                                  {filter.name.toUpperCase() === "BENEFICIALS"
+                                    ? ""
+                                    : ""}
                                   {filter.name.toUpperCase() === "WEEDS" ? (
                                     <Weeds
                                       ref={weedsRef}
@@ -1626,22 +1612,9 @@ const CropSidebarComponent = (props) => {
                                         ""
                                       )}
                                       {filter.name.toUpperCase() ===
-                                      "BENEFICIALS" ? (
-                                        <Beneficials
-                                          ref={beneficialsRef}
-                                          filters={sidebarFilters[index]}
-                                          sidebarFilterOptions={
-                                            sidebarFilterOptions
-                                          }
-                                          setSidebarFilterOptions={
-                                            setSidebarFilterOptions
-                                          }
-                                          resetAllFilters={resetAllFilters}
-                                          {...props}
-                                        />
-                                      ) : (
-                                        ""
-                                      )}
+                                      "BENEFICIALS"
+                                        ? ""
+                                        : ""}
                                       {filter.name.toUpperCase() === "WEEDS" ? (
                                         <Weeds
                                           ref={weedsRef}
