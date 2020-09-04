@@ -62,6 +62,9 @@ const theme = createMuiTheme({
         color: "rgba(0,0,0,1)",
         fontWeight: "normal",
       },
+      sizeSmall: {
+        fontSize: "1.2rem",
+      },
     },
   },
 });
@@ -95,26 +98,39 @@ const RouteNotFound = () => {
 
 const csTheme = responsiveFontSizes(theme, {
   breakpoints: ["xs", "sm", "md", "lg", "xl"],
+  // variants: ["body1", "body2", "h1", "h2", "h3", "h4", "h5", "h6", "button", "caption", "subtitle1", "subtitle2"]
 });
 
-csTheme.typography.body1 = {
-  fontSize: "1rem",
-  [theme.breakpoints.up("xl")]: {
-    fontSize: "1.8rem !important",
-  },
-};
+// csTheme.typography.body1 = {
+//   fontSize: "1rem",
+//   [theme.breakpoints.up("xl")]: {
+//     fontSize: "1.5rem !important",
+//   },
+// };
+// csTheme.typography.body2 = {
+//   fontSize: "1rem",
+//   [theme.breakpoints.up("xl")]: {
+//     fontSize: "1.5rem !important",
+//   },
+// };
 
-csTheme.typography.h6 = {
-  [theme.breakpoints.up("xl")]: {
-    fontSize: "2rem !important",
-  },
-};
+// csTheme.typography.h6 = {
+//   [theme.breakpoints.up("xl")]: {
+//     fontSize: "2rem !important",
+//   },
+// };
 
-csTheme.typography.h4 = {
-  [theme.breakpoints.up("xl")]: {
-    fontSize: "3rem !important",
-  },
-};
+// csTheme.typography.h4 = {
+//   [theme.breakpoints.up("xl")]: {
+//     fontSize: "3rem !important",
+//   },
+// };
+// csTheme.typography.button = {
+//   [theme.breakpoints.up("xl")]: {
+//     ...csTheme.typography.button,
+//     fontSize: "1.5rem !important",
+//   },
+// };
 
 const Wrapper = () => (
   <MuiThemeProvider theme={csTheme}>
