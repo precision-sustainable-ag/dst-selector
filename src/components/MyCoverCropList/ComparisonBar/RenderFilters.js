@@ -39,9 +39,12 @@ const RenderFilters = ({
 
   return filterValues.map((filter, index) => {
     if (
-      filter.name !== "Soil Conditions" &&
-      filter.name !== "Disease & Non Weed Pests"
+      filter.name === "Soil Conditions" ||
+      filter.name === "Disease & Non Weed Pests" ||
+      filter.name === "Beneficials"
     ) {
+      return null;
+    } else {
       return (
         <Fragment key={`filters-outer-${index}`}>
           {filter.description !== null ? (
@@ -182,8 +185,6 @@ const RenderFilters = ({
           </Collapse>
         </Fragment>
       );
-    } else {
-      return null;
     }
   });
 };
