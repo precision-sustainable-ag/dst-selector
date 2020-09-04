@@ -130,7 +130,7 @@ const ExplorerCardView = (props) => {
 
   return (
     <Fragment>
-      <div className="row pt-4 ">
+      <div className="row">
         {props.activeCropData.map((crop, index) => (
           <div className="col-auto pb-4" key={index}>
             <Card className={classes.card}>
