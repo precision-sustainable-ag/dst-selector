@@ -124,6 +124,7 @@ const monthStringBuilder = (vals) => {
         : moment(val.fields[param + " Stop"], "YYYY-MM-DD");
       let str = "";
       let valuesArray = [];
+
       while (valStart.isSameOrBefore(valEnd)) {
         if (valStart.get("D") <= 15 && valStart.get("D") >= 1) {
           str = "Early";
@@ -149,6 +150,22 @@ const monthStringBuilder = (vals) => {
       });
     }
   });
+  // console.log(val.fields['']);
+  // if (val.fields["Cover Crop Name"] === "Vetch, Hairy") {
+  // this is temporary, needs to be replaced with wither a fix to calendar growth window component or exporting of json from airtable
+  Object.keys(val.fields).forEach((item, index) => {
+    if (item.endsWith("Early") || item.endsWith("Mid")) {
+      // console.log(item);
+      let uniq = [...new Set(val.fields[item])];
+      // console.log(uniq);
+      let removedOldVals = uniq.filter((item) => !item.endsWith("growth"));
+      // console.log(removedOldVals);
+      val.fields[item] = removedOldVals;
+    }
+  });
+
+  // console.log(val);
+  // }
   return val;
 };
 

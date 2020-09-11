@@ -85,7 +85,7 @@ const AutoCompleteComponent = () => {
       if (isNaN(address)) {
         alert("Invalid ZIP Code");
       } else {
-        checkAddresses(address).then((data) => {
+        checkAddresses(address, "zip").then((data) => {
           console.log(data[0]);
           // let dataFloat = data[0].boundingbox.map((val) => {
           //   return parseFloat(val);
@@ -122,7 +122,7 @@ const AutoCompleteComponent = () => {
       if (address.length > 3) {
         handleOpen();
         // setOpen(true);
-        checkAddresses(address).then((addressData) => {
+        checkAddresses(address, "address").then((addressData) => {
           setSuggestedAddress(addressData);
           console.log(addressData);
         });
@@ -140,8 +140,8 @@ const AutoCompleteComponent = () => {
     setAddress(event.target.value);
   };
 
-  const checkAddresses = async (query) => {
-    let url = `https://nominatim.openstreetmap.org/search?q=${query}&country=United%20States&format=json`;
+  const checkAddresses = async (query, type) => {
+    let url = `https://nominatim.openstreetmap.org/search?q=${query}&country=United%20States&format=json&countrycodes=us,ca&limit=10`;
     let response = await fetch(url);
     response = response.json();
     return response;

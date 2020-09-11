@@ -326,7 +326,7 @@ const CropTableComponent = (props) => {
                           height:
                             crop.fields["Cover Crop Group"].toLowerCase() ===
                             "legume"
-                              ? `146px`
+                              ? `auto`
                               : `auto`,
                         }}
                       >
@@ -384,7 +384,9 @@ const CropTableComponent = (props) => {
                           </div>
                         </div>
                       </TableCell>
-                      <TableCell style={{ textAlign: "left" }}>
+                      <TableCell
+                        style={{ textAlign: "left", verticalAlign: "middle" }}
+                      >
                         <table>
                           <tbody>
                             {crop.fields["Cover Crop Group"].toLowerCase() ===
@@ -544,7 +546,9 @@ const CropTableComponent = (props) => {
                           </div>
                         </div>
                       </TableCell>
-                      <TableCell style={{ textAlign: "left" }}>
+                      <TableCell
+                        style={{ textAlign: "left", verticalAlign: "middle" }}
+                      >
                         <table>
                           <tbody>
                             {crop.fields["Cover Crop Group"].toLowerCase() ===

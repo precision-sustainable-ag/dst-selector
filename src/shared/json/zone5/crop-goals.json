@@ -1,1 +1,347 @@
-[{"_id":{"$oid":"5f2a3349c570132255af59a3"},"Cover Crop Goal":"Improve soil organic matter","Description":"Rates a cover crop’s ability to produce organic matter and improve soil structure. The ratings assume that you plan to use cover crops regularly in your cropping system to provide ongoing additions to soil organic matter. Think quality and quantity. Assumes straw is not harvested/removed.","Constituent Variables (defined in DataDictionary)":["recHDZqkRaFC6r2pP","recK7RNrVSB0FLOzS","recWBuBjFVaxxVUo0"],"Include":true,"DataDictionary":["recrOU4jUA1it5o9g","rec3VIEUUu4tMPmNc","recsaQgeFQxMJHxVu"],"__id":"rectZp7ROItQw8tyS"},{"_id":{"$oid":"5f2a3349c570132255af59a4"},"Cover Crop Goal":"Increase soil aggregation","Description":"Stability rather high turnover.","Constituent Variables (defined in DataDictionary)":["recv0WBvLybzGCHJJ","recTzs9sv599SbU8N"],"Include":true,"DataDictionary":["recINdHbXq2h9QI6z","recQHF6t1P93ePSGq","rec3RCXQPhfl4JmyU","recnYMOqTNeqsWh3Q"],"__id":"recuydxG4EjDntm1S"},{"_id":{"$oid":"5f2a3349c570132255af59a5"},"Cover Crop Goal":"Lasting Residue","Description":"Rates the effectiveness of the cover crop in providing a long-lasting mulch.","Constituent Variables (defined in DataDictionary)":["recHDZqkRaFC6r2pP","recK7RNrVSB0FLOzS","recWBuBjFVaxxVUo0"],"Include":true,"DataDictionary":["recrOU4jUA1it5o9g","rec3VIEUUu4tMPmNc","recsaQgeFQxMJHxVu"],"__id":"rec2ztuoi9MsYAl6V"},{"_id":{"$oid":"5f2a3349c570132255af59a6"},"Cover Crop Goal":"Prevent Fall Soil Erosion","Description":"Rates how extensive and how quickly a root system develops, how well it holds soil against sheet and water erosion and the influence the growth habit may have on fighting water erosion. September - December.","Constituent Variables (defined in DataDictionary)":["recHV0W4Z8c7ue8Mc","recK7RNrVSB0FLOzS","recWBuBjFVaxxVUo0","recmplNWO9uwVagjg","recTzs9sv599SbU8N"],"Include":true,"DataDictionary":["rec3VIEUUu4tMPmNc","recsaQgeFQxMJHxVu","recl0UuDLBoVLaq61","recbcGoIJibyTMSmU","recQHF6t1P93ePSGq"],"__id":"recpNg5BACTE7d2mX"},{"_id":{"$oid":"5f2a3349c570132255af59a7"},"Cover Crop Goal":"Prevent Spring Soil Erosion","Description":"Rates how extensive and how quickly a root system develops, how well it holds soil against sheet and water erosion and the influence the growth habit may have on fighting water erosion.","Constituent Variables (defined in DataDictionary)":["recwAA55AgCUHt4x7","recHV0W4Z8c7ue8Mc","recHDZqkRaFC6r2pP","recK7RNrVSB0FLOzS","recWBuBjFVaxxVUo0","recFhUrxKDFXSxWRt","recTzs9sv599SbU8N"],"Include":true,"DataDictionary":["recU4W8Grhk68ztDY","recrOU4jUA1it5o9g","rec3VIEUUu4tMPmNc","recsaQgeFQxMJHxVu","recl0UuDLBoVLaq61","recjzkalJ7XefLSYU","recQHF6t1P93ePSGq"],"__id":"rec0aesGgVuUnaLog"},{"_id":{"$oid":"5f2a3349c570132255af59a8"},"Cover Crop Goal":"Promote Water Quality","Description":"Improve or maintain water quality.","Constituent Variables (defined in DataDictionary)":["recwAA55AgCUHt4x7","recHV0W4Z8c7ue8Mc","recHDZqkRaFC6r2pP","recK7RNrVSB0FLOzS","recWBuBjFVaxxVUo0","recv0WBvLybzGCHJJ","recmplNWO9uwVagjg","recFhUrxKDFXSxWRt","rec7jfop7zeFOJaAU","recTzs9sv599SbU8N","reccq7bPeiB7tUNHF"],"Include":true,"DataDictionary":["recU4W8Grhk68ztDY","recrOU4jUA1it5o9g","rec3VIEUUu4tMPmNc","recsaQgeFQxMJHxVu","recl0UuDLBoVLaq61","recINdHbXq2h9QI6z","recjzkalJ7XefLSYU","recbcGoIJibyTMSmU","recLvOYQosnzt1sJx","recQHF6t1P93ePSGq","recoHZ9TzQVwj5Er4"],"__id":"recl25AK2pxrLYTmM"},{"_id":{"$oid":"5f2a3349c570132255af59a9"},"Cover Crop Goal":"Reduces Crusting","Description":"Reduces physical crusting resulting from structural degradation of the surface soil and may be classified as structural or depositional.","Constituent Variables (defined in DataDictionary)":["recJ9csJzuBJX5Y85","rec4EbRl3HK8PKsQz"],"Include":true,"__id":"recdcklunuHvAGdZz"},{"_id":{"$oid":"5f2a3349c570132255af59aa"},"Cover Crop Goal":"Reduces Surface Compaction","Description":"Reduces compaction above the Ap horizon. Better aggregation in clay than sandy soil. Does not necessarily refer to prevention of crusting (use residue, soil aggregation, plant structure to derive). Crusting is only an issue in full tillage systems.","Constituent Variables (defined in DataDictionary)":["recJ9csJzuBJX5Y85","rec4EbRl3HK8PKsQz"],"Include":true,"__id":"recssWCh3xD02r7pB"},{"_id":{"$oid":"5f2a3349c570132255af59ab"},"Cover Crop Goal":"Penetrates Plow Pan","Description":"Capable of reducing compaction by penetrating plow pan. Some CCs grow sideways move readily than others (rank highest those that grow down). Generally assumes cover crop is growing when soil is \"softer\" for best results. Plow pans/tillage pans; also caused by field equipment moving through fields.","Constituent Variables (defined in DataDictionary)":["recJ9csJzuBJX5Y85","rec4EbRl3HK8PKsQz","recTzs9sv599SbU8N","reccq7bPeiB7tUNHF"],"Include":true,"DataDictionary":["recQHF6t1P93ePSGq","recoHZ9TzQVwj5Er4","rechELMI8KQInjrHA"],"__id":"reciWxoOXqVbByvSn"},{"_id":{"$oid":"5f2a3349c570132255af59ac"},"Cover Crop Goal":"Nitrogen Fixation","Description":"Rates cover crops for their ability to fix N. Limited to Legumes. Caveat: under high residual N conditions, more of N will come from soil than atmosphere.","Constituent Variables (defined in DataDictionary)":["rec7DzlmGPoR4UoQR","rec2XH6Mz5YRDwyXu","recvqqLoPooSY6vEJ","recK7RNrVSB0FLOzS","recWBuBjFVaxxVUo0","recFhUrxKDFXSxWRt"],"Include":true,"DataDictionary":["recp5oYCHNVjfFgE1","rec3VIEUUu4tMPmNc","recsaQgeFQxMJHxVu","recmqlIR47eun5OeY","recNPZMkCfZTcdkuS","recjzkalJ7XefLSYU"],"__id":"recPzeN6cD189Rln7"},{"_id":{"$oid":"5f2a3349c570132255af59ad"},"Cover Crop Goal":"Nitrogen Scavenging","Description":"Rates a cover crop’s ability to take up and store excess nitrogen. Bear in mind that the sooner you plant a cover after main crop harvest—or overseed a cover into the standing crop—the more N it will be able to absorb.\n\nInvolves both scavenging and holding N (vigorous + overwintering is best).","Constituent Variables (defined in DataDictionary)":["recvqqLoPooSY6vEJ","recK7RNrVSB0FLOzS","recWBuBjFVaxxVUo0","recmplNWO9uwVagjg","recFhUrxKDFXSxWRt","reccq7bPeiB7tUNHF"],"Include":true,"DataDictionary":["recp5oYCHNVjfFgE1","rec3VIEUUu4tMPmNc","recsaQgeFQxMJHxVu","recjzkalJ7XefLSYU","recbcGoIJibyTMSmU","recoHZ9TzQVwj5Er4"],"__id":"rec5mj8px342vGskM"},{"_id":{"$oid":"5f2a3349c570132255af59ae"},"Cover Crop Goal":"Good Grazing","Description":"Suitability for grazing. 1= worst, 5=best","Constituent Variables (defined in DataDictionary)":["recqBDEMPSK6FKIFg","recuDKoz9vVCqcnB9","recmplNWO9uwVagjg"],"Include":true,"DataDictionary":["recbcGoIJibyTMSmU","rec8YKVZ7Y992m4VE","recLvD2BlPPW3K4KP"],"__id":"recbGRWZbp6WtaFux"},{"_id":{"$oid":"5f2a3349c570132255af59af"},"Cover Crop Goal":"Forage Harvest Value","Description":"Suitability as harvested forage (e.g., haylage). 1= worst, 5=best","Constituent Variables (defined in DataDictionary)":["recFPJ7nWLzcDnA3A","recuDKoz9vVCqcnB9"],"Include":true,"DataDictionary":["recLvD2BlPPW3K4KP","reccfkS58rEPpgAZB"],"__id":"recACj5afXUiIfAf2"},{"_id":{"$oid":"5f2a3349c570132255af59b0"},"Cover Crop Goal":"Pollinator Food","Description":"Extent to which the cover crop provides food (i.e. leaves, nectar, pollen) for pollinators.","Constituent Variables (defined in DataDictionary)":["recuDvxVL1GPS60Ng","rechKuSt6ULq3Yllk"],"Include":true,"DataDictionary":["recrxiFLfd8jT6YxK"],"__id":"recLDQzO409ZBomJl"},{"_id":{"$oid":"5f2a3349c570132255af59b1"},"Cover Crop Goal":"Residue Suppresses Summer Annual Weeds","Description":"Rates how well the cover crop residue smothers summer annual weeds.","Include":true,"__id":"recRfj1P6U9ARmeMx"},{"_id":{"$oid":"5f2a3349c570132255af59b2"},"Cover Crop Goal":"Outcompetes Summer Annual Weeds","Description":"Ability of the cover crop to compete with weeds while living for space/nutrients/light/water assuming optimal planting time. Assumes the cover crop is planted early enough in its optimal planting window to generate a dense stand.\n\n1=not competitive, 5=extremely competitive.","Include":true,"__id":"recmWrcr1DB45mxl7"},{"_id":{"$oid":"5f2a3349c570132255af59b3"},"Cover Crop Goal":"Suppresses Winter Annual Weeds","Description":"Rates how well the cover crop competition + residue + allelopathy suppress winter annual weeds.","Include":true,"__id":"recOzh29jWyj5f5eK"},{"_id":{"$oid":"5f2a3349c570132255af59b4"},"Cover Crop Goal":"Weed suppression","Description":"Rates how well the cover crop out-competes weeds by any means through its life cycle, including killed residue. || opposite description: \n[Risk that a cover crop could become a weed, either due to hard seed or due to flowering/setting seed that volunteers in later seasons; made worse when herbicide resistance is a known feature of the cover crop species/cultivar]","Notes":"Not used in current version - Broken into: Residue Suppresses Summer Annual Weeds, Outcomepetes Summer Annual Weeds, Suppresses Winter Annual Weeds","__id":"rechEVIBkhtUk3Epg"},{"_id":{"$oid":"5f2a3349c570132255af59b5"},"Cover Crop Goal":"TBD- Suppress pest (non-weed) & diseases","Description":"Rates how well the cover crop suppresses diseases, insects, slugs, and other non-weed pests.","__id":"rec7eblQAAn5Tq43y"},{"_id":{"$oid":"5f2a3349c570132255af59b6"},"Cover Crop Goal":"TBD- Hinder crops (anti-goal)","Description":"Rates how likely the CC is to interfere with the cash crop (e.g., through creating a poor seed bed, immobilizing soil N, etc.)","__id":"recg3L4BUz6zmSD3D"},{"_id":{"$oid":"5f2a3349c570132255af59b7"},"Cover Crop Goal":"Suppress Weeds","Constituent Variables (defined in DataDictionary)":["recHV0W4Z8c7ue8Mc","recHDZqkRaFC6r2pP","recK7RNrVSB0FLOzS","recWBuBjFVaxxVUo0","recmplNWO9uwVagjg"],"DataDictionary":["recrOU4jUA1it5o9g","rec3VIEUUu4tMPmNc","recsaQgeFQxMJHxVu","recl0UuDLBoVLaq61","recbcGoIJibyTMSmU"],"__id":"recLSWDQJc2cq0JOL"},{"_id":{"$oid":"5f2a3349c570132255af59b8"},"Cover Crop Goal":"Hinder Crops","Constituent Variables (defined in DataDictionary)":["recHDZqkRaFC6r2pP","recK7RNrVSB0FLOzS","recWBuBjFVaxxVUo0"],"DataDictionary":["recrOU4jUA1it5o9g","rec3VIEUUu4tMPmNc","recsaQgeFQxMJHxVu"],"__id":"rec5vEqhchnj9lNOz"},{"_id":{"$oid":"5f2a3349c570132255af59b9"},"Cover Crop Goal":"Reduces Topsoil Compaction","Constituent Variables (defined in DataDictionary)":["recTzs9sv599SbU8N","reccq7bPeiB7tUNHF"],"DataDictionary":["recQHF6t1P93ePSGq","recoHZ9TzQVwj5Er4","recrEgKr2NRqW7mxL"],"__id":"rec5O6Dql3MFksVZU"}]
+[
+  {
+    "_id": { "$oid": "5f2a3349c570132255af59a3" },
+    "Cover Crop Goal": "Improve soil organic matter",
+    "Description": "Rates a cover crop’s ability to produce organic matter and improve soil structure. The ratings assume that you plan to use cover crops regularly in your cropping system to provide ongoing additions to soil organic matter. Think quality and quantity. Assumes straw is not harvested/removed.",
+    "Constituent Variables (defined in DataDictionary)": [
+      "recHDZqkRaFC6r2pP",
+      "recK7RNrVSB0FLOzS",
+      "recWBuBjFVaxxVUo0"
+    ],
+    "Include": true,
+    "DataDictionary": [
+      "recrOU4jUA1it5o9g",
+      "rec3VIEUUu4tMPmNc",
+      "recsaQgeFQxMJHxVu"
+    ],
+    "__id": "rectZp7ROItQw8tyS"
+  },
+  {
+    "_id": { "$oid": "5f2a3349c570132255af59a4" },
+    "Cover Crop Goal": "Increase soil aggregation",
+    "Description": "Stability rather high turnover.",
+    "Constituent Variables (defined in DataDictionary)": [
+      "recv0WBvLybzGCHJJ",
+      "recTzs9sv599SbU8N"
+    ],
+    "Include": true,
+    "DataDictionary": [
+      "recINdHbXq2h9QI6z",
+      "recQHF6t1P93ePSGq",
+      "rec3RCXQPhfl4JmyU",
+      "recnYMOqTNeqsWh3Q"
+    ],
+    "__id": "recuydxG4EjDntm1S"
+  },
+  {
+    "_id": { "$oid": "5f2a3349c570132255af59a5" },
+    "Cover Crop Goal": "Lasting Residue",
+    "Description": "Rates the effectiveness of the cover crop in providing a long-lasting mulch.",
+    "Constituent Variables (defined in DataDictionary)": [
+      "recHDZqkRaFC6r2pP",
+      "recK7RNrVSB0FLOzS",
+      "recWBuBjFVaxxVUo0"
+    ],
+    "Include": true,
+    "DataDictionary": [
+      "recrOU4jUA1it5o9g",
+      "rec3VIEUUu4tMPmNc",
+      "recsaQgeFQxMJHxVu"
+    ],
+    "__id": "rec2ztuoi9MsYAl6V"
+  },
+  {
+    "_id": { "$oid": "5f2a3349c570132255af59a6" },
+    "Cover Crop Goal": "Prevent Fall Soil Erosion",
+    "Description": "Rates how extensive and how quickly a root system develops, how well it holds soil against sheet and water erosion and the influence the growth habit may have on fighting water erosion. September - December.",
+    "Constituent Variables (defined in DataDictionary)": [
+      "recHV0W4Z8c7ue8Mc",
+      "recK7RNrVSB0FLOzS",
+      "recWBuBjFVaxxVUo0",
+      "recmplNWO9uwVagjg",
+      "recTzs9sv599SbU8N"
+    ],
+    "Include": true,
+    "DataDictionary": [
+      "rec3VIEUUu4tMPmNc",
+      "recsaQgeFQxMJHxVu",
+      "recl0UuDLBoVLaq61",
+      "recbcGoIJibyTMSmU",
+      "recQHF6t1P93ePSGq"
+    ],
+    "__id": "recpNg5BACTE7d2mX"
+  },
+  {
+    "_id": { "$oid": "5f2a3349c570132255af59a7" },
+    "Cover Crop Goal": "Prevent Spring Soil Erosion",
+    "Description": "Rates how extensive and how quickly a root system develops, how well it holds soil against sheet and water erosion and the influence the growth habit may have on fighting water erosion.",
+    "Constituent Variables (defined in DataDictionary)": [
+      "recwAA55AgCUHt4x7",
+      "recHV0W4Z8c7ue8Mc",
+      "recHDZqkRaFC6r2pP",
+      "recK7RNrVSB0FLOzS",
+      "recWBuBjFVaxxVUo0",
+      "recFhUrxKDFXSxWRt",
+      "recTzs9sv599SbU8N"
+    ],
+    "Include": true,
+    "DataDictionary": [
+      "recU4W8Grhk68ztDY",
+      "recrOU4jUA1it5o9g",
+      "rec3VIEUUu4tMPmNc",
+      "recsaQgeFQxMJHxVu",
+      "recl0UuDLBoVLaq61",
+      "recjzkalJ7XefLSYU",
+      "recQHF6t1P93ePSGq"
+    ],
+    "__id": "rec0aesGgVuUnaLog"
+  },
+  {
+    "_id": { "$oid": "5f2a3349c570132255af59a8" },
+    "Cover Crop Goal": "Promote Water Quality",
+    "Description": "Improve or maintain water quality.",
+    "Constituent Variables (defined in DataDictionary)": [
+      "recwAA55AgCUHt4x7",
+      "recHV0W4Z8c7ue8Mc",
+      "recHDZqkRaFC6r2pP",
+      "recK7RNrVSB0FLOzS",
+      "recWBuBjFVaxxVUo0",
+      "recv0WBvLybzGCHJJ",
+      "recmplNWO9uwVagjg",
+      "recFhUrxKDFXSxWRt",
+      "rec7jfop7zeFOJaAU",
+      "recTzs9sv599SbU8N",
+      "reccq7bPeiB7tUNHF"
+    ],
+    "Include": true,
+    "DataDictionary": [
+      "recU4W8Grhk68ztDY",
+      "recrOU4jUA1it5o9g",
+      "rec3VIEUUu4tMPmNc",
+      "recsaQgeFQxMJHxVu",
+      "recl0UuDLBoVLaq61",
+      "recINdHbXq2h9QI6z",
+      "recjzkalJ7XefLSYU",
+      "recbcGoIJibyTMSmU",
+      "recLvOYQosnzt1sJx",
+      "recQHF6t1P93ePSGq",
+      "recoHZ9TzQVwj5Er4"
+    ],
+    "__id": "recl25AK2pxrLYTmM"
+  },
+  {
+    "_id": { "$oid": "5f2a3349c570132255af59a9" },
+    "Cover Crop Goal": "Reduces Crusting",
+    "Description": "Reduces physical crusting resulting from structural degradation of the surface soil and may be classified as structural or depositional.",
+    "Constituent Variables (defined in DataDictionary)": [
+      "recJ9csJzuBJX5Y85",
+      "rec4EbRl3HK8PKsQz"
+    ],
+    "Include": true,
+    "__id": "recdcklunuHvAGdZz"
+  },
+  {
+    "_id": { "$oid": "5f2a3349c570132255af59aa" },
+    "Cover Crop Goal": "Reduces Surface Compaction",
+    "Description": "Reduces compaction above the Ap horizon. Better aggregation in clay than sandy soil. Does not necessarily refer to prevention of crusting (use residue, soil aggregation, plant structure to derive). Crusting is only an issue in full tillage systems.",
+    "Constituent Variables (defined in DataDictionary)": [
+      "recJ9csJzuBJX5Y85",
+      "rec4EbRl3HK8PKsQz"
+    ],
+    "Include": true,
+    "__id": "recssWCh3xD02r7pB"
+  },
+  {
+    "_id": { "$oid": "5f2a3349c570132255af59ab" },
+    "Cover Crop Goal": "Penetrates Plow Pan",
+    "Description": "Capable of reducing compaction by penetrating plow pan. Some CCs grow sideways move readily than others (rank highest those that grow down). Generally assumes cover crop is growing when soil is \"softer\" for best results. Plow pans/tillage pans; also caused by field equipment moving through fields.",
+    "Constituent Variables (defined in DataDictionary)": [
+      "recJ9csJzuBJX5Y85",
+      "rec4EbRl3HK8PKsQz",
+      "recTzs9sv599SbU8N",
+      "reccq7bPeiB7tUNHF"
+    ],
+    "Include": true,
+    "DataDictionary": [
+      "recQHF6t1P93ePSGq",
+      "recoHZ9TzQVwj5Er4",
+      "rechELMI8KQInjrHA"
+    ],
+    "__id": "reciWxoOXqVbByvSn"
+  },
+  {
+    "_id": { "$oid": "5f2a3349c570132255af59ac" },
+    "Cover Crop Goal": "Nitrogen Fixation",
+    "Description": "Rates cover crops for their ability to fix N. Limited to Legumes. Caveat: under high residual N conditions, more of N will come from soil than atmosphere.",
+    "Constituent Variables (defined in DataDictionary)": [
+      "rec7DzlmGPoR4UoQR",
+      "rec2XH6Mz5YRDwyXu",
+      "recvqqLoPooSY6vEJ",
+      "recK7RNrVSB0FLOzS",
+      "recWBuBjFVaxxVUo0",
+      "recFhUrxKDFXSxWRt"
+    ],
+    "Include": true,
+    "DataDictionary": [
+      "recp5oYCHNVjfFgE1",
+      "rec3VIEUUu4tMPmNc",
+      "recsaQgeFQxMJHxVu",
+      "recmqlIR47eun5OeY",
+      "recNPZMkCfZTcdkuS",
+      "recjzkalJ7XefLSYU"
+    ],
+    "__id": "recPzeN6cD189Rln7"
+  },
+  {
+    "_id": { "$oid": "5f2a3349c570132255af59ad" },
+    "Cover Crop Goal": "Nitrogen Scavenging",
+    "Description": "Rates a cover crop’s ability to take up and store excess nitrogen. Bear in mind that the sooner you plant a cover after main crop harvest—or overseed a cover into the standing crop—the more N it will be able to absorb.\n\nInvolves both scavenging and holding N (vigorous + overwintering is best).",
+    "Constituent Variables (defined in DataDictionary)": [
+      "recvqqLoPooSY6vEJ",
+      "recK7RNrVSB0FLOzS",
+      "recWBuBjFVaxxVUo0",
+      "recmplNWO9uwVagjg",
+      "recFhUrxKDFXSxWRt",
+      "reccq7bPeiB7tUNHF"
+    ],
+    "Include": true,
+    "DataDictionary": [
+      "recp5oYCHNVjfFgE1",
+      "rec3VIEUUu4tMPmNc",
+      "recsaQgeFQxMJHxVu",
+      "recjzkalJ7XefLSYU",
+      "recbcGoIJibyTMSmU",
+      "recoHZ9TzQVwj5Er4"
+    ],
+    "__id": "rec5mj8px342vGskM"
+  },
+  {
+    "_id": { "$oid": "5f2a3349c570132255af59ae" },
+    "Cover Crop Goal": "Good Grazing",
+    "Description": "Suitability for grazing. 1= worst, 5=best",
+    "Constituent Variables (defined in DataDictionary)": [
+      "recqBDEMPSK6FKIFg",
+      "recuDKoz9vVCqcnB9",
+      "recmplNWO9uwVagjg"
+    ],
+    "Include": true,
+    "DataDictionary": [
+      "recbcGoIJibyTMSmU",
+      "rec8YKVZ7Y992m4VE",
+      "recLvD2BlPPW3K4KP"
+    ],
+    "__id": "recbGRWZbp6WtaFux"
+  },
+  {
+    "_id": { "$oid": "5f2a3349c570132255af59af" },
+    "Cover Crop Goal": "Forage Harvest Value",
+    "Description": "Suitability as harvested forage (e.g., haylage). 1= worst, 5=best",
+    "Constituent Variables (defined in DataDictionary)": [
+      "recFPJ7nWLzcDnA3A",
+      "recuDKoz9vVCqcnB9"
+    ],
+    "Include": true,
+    "DataDictionary": ["recLvD2BlPPW3K4KP", "reccfkS58rEPpgAZB"],
+    "__id": "recACj5afXUiIfAf2"
+  },
+  {
+    "_id": { "$oid": "5f2a3349c570132255af59b0" },
+    "Cover Crop Goal": "Pollinator Food",
+    "Description": "Extent to which the cover crop provides food (i.e. leaves, nectar, pollen) for pollinators.",
+    "Constituent Variables (defined in DataDictionary)": [
+      "recuDvxVL1GPS60Ng",
+      "rechKuSt6ULq3Yllk"
+    ],
+    "Include": true,
+    "DataDictionary": ["recrxiFLfd8jT6YxK"],
+    "__id": "recLDQzO409ZBomJl"
+  },
+  {
+    "_id": { "$oid": "5f2a3349c570132255af59b1" },
+    "Cover Crop Goal": "Residue Suppresses Summer Annual Weeds",
+    "Description": "Rates how well the cover crop residue smothers summer annual weeds.",
+    "Include": true,
+    "__id": "recRfj1P6U9ARmeMx"
+  },
+  {
+    "_id": { "$oid": "5f2a3349c570132255af59b2" },
+    "Cover Crop Goal": "Outcompetes Summer Annual Weeds",
+    "Description": "Ability of the cover crop to compete with weeds while living for space/nutrients/light/water assuming optimal planting time. Assumes the cover crop is planted early enough in its optimal planting window to generate a dense stand.\n\n1=not competitive, 5=extremely competitive.",
+    "Include": true,
+    "__id": "recmWrcr1DB45mxl7"
+  },
+  {
+    "_id": { "$oid": "5f2a3349c570132255af59b3" },
+    "Cover Crop Goal": "Suppresses Winter Annual Weeds",
+    "Description": "Rates how well the cover crop competition + residue + allelopathy suppress winter annual weeds.",
+    "Include": true,
+    "__id": "recOzh29jWyj5f5eK"
+  },
+  {
+    "_id": { "$oid": "5f2a3349c570132255af59b4" },
+    "Cover Crop Goal": "Weed suppression",
+    "Description": "Rates how well the cover crop out-competes weeds by any means through its life cycle, including killed residue. || opposite description: \n[Risk that a cover crop could become a weed, either due to hard seed or due to flowering/setting seed that volunteers in later seasons; made worse when herbicide resistance is a known feature of the cover crop species/cultivar]",
+    "Notes": "Not used in current version - Broken into: Residue Suppresses Summer Annual Weeds, Outcomepetes Summer Annual Weeds, Suppresses Winter Annual Weeds",
+    "__id": "rechEVIBkhtUk3Epg"
+  },
+  {
+    "_id": { "$oid": "5f2a3349c570132255af59b5" },
+    "Cover Crop Goal": "TBD- Suppress pest (non-weed) & diseases",
+    "Description": "Rates how well the cover crop suppresses diseases, insects, slugs, and other non-weed pests.",
+    "__id": "rec7eblQAAn5Tq43y"
+  },
+  {
+    "_id": { "$oid": "5f2a3349c570132255af59b6" },
+    "Cover Crop Goal": "TBD- Hinder crops (anti-goal)",
+    "Description": "Rates how likely the CC is to interfere with the cash crop (e.g., through creating a poor seed bed, immobilizing soil N, etc.)",
+    "__id": "recg3L4BUz6zmSD3D"
+  },
+  {
+    "_id": { "$oid": "5f2a3349c570132255af59b7" },
+    "Cover Crop Goal": "Suppress Weeds",
+    "Constituent Variables (defined in DataDictionary)": [
+      "recHV0W4Z8c7ue8Mc",
+      "recHDZqkRaFC6r2pP",
+      "recK7RNrVSB0FLOzS",
+      "recWBuBjFVaxxVUo0",
+      "recmplNWO9uwVagjg"
+    ],
+    "DataDictionary": [
+      "recrOU4jUA1it5o9g",
+      "rec3VIEUUu4tMPmNc",
+      "recsaQgeFQxMJHxVu",
+      "recl0UuDLBoVLaq61",
+      "recbcGoIJibyTMSmU"
+    ],
+    "__id": "recLSWDQJc2cq0JOL"
+  },
+  {
+    "_id": { "$oid": "5f2a3349c570132255af59b8" },
+    "Cover Crop Goal": "Hinder Crops",
+    "Constituent Variables (defined in DataDictionary)": [
+      "recHDZqkRaFC6r2pP",
+      "recK7RNrVSB0FLOzS",
+      "recWBuBjFVaxxVUo0"
+    ],
+    "DataDictionary": [
+      "recrOU4jUA1it5o9g",
+      "rec3VIEUUu4tMPmNc",
+      "recsaQgeFQxMJHxVu"
+    ],
+    "__id": "rec5vEqhchnj9lNOz"
+  },
+  {
+    "_id": { "$oid": "5f2a3349c570132255af59b9" },
+    "Cover Crop Goal": "Reduces Topsoil Compaction",
+    "Constituent Variables (defined in DataDictionary)": [
+      "recTzs9sv599SbU8N",
+      "reccq7bPeiB7tUNHF"
+    ],
+    "DataDictionary": [
+      "recQHF6t1P93ePSGq",
+      "recoHZ9TzQVwj5Er4",
+      "recrEgKr2NRqW7mxL"
+    ],
+    "__id": "rec5O6Dql3MFksVZU"
+  }
+]

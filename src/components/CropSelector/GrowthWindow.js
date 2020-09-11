@@ -190,7 +190,9 @@ const GrowthWindowComponent = (props) => {
           }
         >
           <div
-            className={`earlyPart ${cropLegendObj.Early.join(" ")}`}
+            className={`earlyPart ${cropLegendObj.Early.toString()
+              .split(",")
+              .join(" ")}`}
             style={{ height: "30px", width: "50%" }}
           ></div>
         </Tooltip>
@@ -210,7 +212,9 @@ const GrowthWindowComponent = (props) => {
           }
         >
           <div
-            className={`midPart ${cropLegendObj.Mid}`}
+            className={`midPart ${cropLegendObj.Mid.toString()
+              .split(",")
+              .join(" ")}`}
             style={{ height: "30px", width: "50%" }}
           ></div>
         </Tooltip>
@@ -359,14 +363,18 @@ const GrowthWindowComponent = (props) => {
               <Typography color="secondary">
                 {fullMonth[month].toUpperCase()}, EARLY
               </Typography>
-              <div>
-                <Typography variant="body1">{cropLegendObj.Early}</Typography>
-              </div>
+              {cropLegendObj.Early.map((v, i) => (
+                <Typography variant="body1" key={i} gutterBottom>
+                  {v}
+                </Typography>
+              ))}
             </Fragment>
           }
         >
           <div
-            className={`earlyPart ${cropLegendObj.Early}`}
+            className={`earlyPart ${cropLegendObj.Early.toString()
+              .split(",")
+              .join(" ")}`}
             style={{ height: "20px", width: "50%" }}
           ></div>
         </Tooltip>
@@ -377,14 +385,18 @@ const GrowthWindowComponent = (props) => {
               <Typography color="secondary">
                 {fullMonth[month].toUpperCase()}, MID
               </Typography>
-              <div>
-                <Typography variant="body1">{cropLegendObj.Mid}</Typography>
-              </div>
+              {cropLegendObj.Mid.map((v, i) => (
+                <Typography variant="body1" key={i} gutterBottom>
+                  {v}
+                </Typography>
+              ))}
             </Fragment>
           }
         >
           <div
-            className={`earlyPart ${cropLegendObj.Mid}`}
+            className={`earlyPart ${cropLegendObj.Mid.toString()
+              .split(",")
+              .join(" ")}`}
             style={{ height: "20px", width: "50%" }}
           ></div>
         </Tooltip>
