@@ -1,1 +1,363 @@
-[{"_id":{"$oid":"5f2a3349c570132255af5979"},"Cover Crop Goal":"Improve Soil Organic Matter","Description":"Rates a cover crop’s ability to produce organic matter and improve soil structure. The ratings assume that you plan to use cover crops regularly in your cropping system to provide ongoing additions to soil organic matter. Think quality and quantity. Assumes straw is not harvested/removed.","Constituent Variables (defined in DataDictionary)":["rec9bEJfT0EVo5XQU","reccFw6mXIAjXpJ0X","rec2cFl8tzN12TY2C"],"Rules":"there needs to be enough nitrogen for the microbes to break down so it is IN the soil. 5: high c:n, high dry matter, 4: high c:n low dry, 3: low c:n high dry, 2: low c:n, low dry","Thinking about Rules":"5 stars: Dry matter = 3, C to N ratio = 2; 4 stars: Dry matter = 3 and C to N ratio = 3, or Dry matter = 2 and C to N ratio = 2; 3 stars: Dry matter = 2 and C to N ratio = 3;  2 stars: Dry matter = 2 and C to N ratio = 1; 1 star: Dry matter = 1 and C to N ratio = 1","Notes":"Convert dry matter to a rating. C to N is currently a 3 star rating.","Include":true,"DataDictionary_":["recvV1LGkQThGpSIp","recuqHL0hNd3vpD0N","recoFEEXOnA0LhjxM"],"__id":"recVx4qMQys9OMoZX"},{"_id":{"$oid":"5f2a3349c570132255af597a"},"Cover Crop Goal":"Increase Soil Aggregation","Description":"Stability rather high turnover. Better aggregation in clay than sandy soil.","Constituent Variables (defined in DataDictionary)":["recXyBUqNoaSYgCaO","recl77snxV8saPPzS"],"Rules":"high for supports mycorrhizae, fiberous root architecture, no moldboard plowing or rototill","Thinking about Rules":"Supports Mycorrhizae - high (4 and 5 stars), root architecture - fibrous","Include":true,"DataDictionary_":["recflhK3QKRyp2Z0W","recYEAQ0NpxXqSUV3","rec9KyIxY1hQqxN1E","recXfbNzPcMHGQKDk"],"__id":"recu78NjkZLLgegx0"},{"_id":{"$oid":"5f2a3349c570132255af597b"},"Cover Crop Goal":"Lasting Residue","Description":"Rates the effectiveness of the cover crop in providing a long-lasting mulch. Assumes cover crop was planted in optimum window in order to be able to put on biomass. Grasses before boot stage will have less persistent residue than grasses terminated after heading.","Constituent Variables (defined in DataDictionary)":["rec9bEJfT0EVo5XQU","reccFw6mXIAjXpJ0X","rec2cFl8tzN12TY2C"],"Rules":"if c to n is high then the lasting residue is high. high dry matter makes it even higher? Use same logic as improve soil organic matter... 5: high c:n, high dry matter, 4: high c:n low dry, 3: low c:n high dry, 2: low c:n, low dry","Thinking about Rules":"Dry matter - high, C to N ratio - high (3 star)","Notes":"Since this has the same consituent variables as Improve soil organic matter, could they be lumped together some how?","Include":true,"DataDictionary_":["recvV1LGkQThGpSIp","recuqHL0hNd3vpD0N","recoFEEXOnA0LhjxM"],"__id":"recW6SQB6uiWF7hsX"},{"_id":{"$oid":"5f2a3349c570132255af597c"},"Cover Crop Goal":"Prevent Fall Soil Erosion","Description":"Rates how extensive and how quickly a root system develops, how well it holds soil against sheet and water erosion and the influence the growth habit may have on fighting water erosion. For time period Oct.-Dec. (By default includes Jan. - Mar.)","Constituent Variables (defined in DataDictionary)":["rec9tFfZ1YbqMS3dh","reccFw6mXIAjXpJ0X","rec2cFl8tzN12TY2C","recOX06RQZtPdObKl","recl77snxV8saPPzS"],"Rules":"Establishes quickly, high dry matter, broadleaf is better than upright and narrow, fiberous more better. First sort by establishes quickly, then sort equally by the others.","Thinking about Rules":"Dry matter - high, growing window - long, C to N - high, winter survival - expected, shape and orientation -?, root architecture - fibrous","Include":true,"DataDictionary_":["recuqHL0hNd3vpD0N","recoFEEXOnA0LhjxM","recZYA6TeFRynF4jf","rec5fGSQMjrFvI5S6","recYEAQ0NpxXqSUV3"],"__id":"recRlVowCsSXpRXN2"},{"_id":{"$oid":"5f2a3349c570132255af597d"},"Cover Crop Goal":"Prevent Spring Soil Erosion","Description":"Rates how extensive and how quickly a root system develops, how long residue persists, how well it holds soil against sheet and water erosion and the influence the growth habit may have on fighting water erosion. For summer annuals, we're considering the residue in the following spring.\nAssumes no tillage since cover crop establishment and solid establishment (timely planting, etc.). Will also reduce crusting.","Constituent Variables (defined in DataDictionary)":["recY8fo0C6BdZ7ZYc","rec9tFfZ1YbqMS3dh","rec9bEJfT0EVo5XQU","reccFw6mXIAjXpJ0X","rec2cFl8tzN12TY2C","rec7PzKsMtEgabRiy","recl77snxV8saPPzS"],"Rules":"Winter survival then Early spring growth, shape and orientation (broadleafs) and root architecture (fiberous) are on the same plane, and then dry matter (high), then c:n (high)","Thinking about Rules":"Dry matter - high, growing window - long, C to N - high, winter survival - expected, shape and orientation -?, root architecture - fibrous","Notes":" (Jan-April)","Include":true,"DataDictionary_":["rec6GxL7LRNEWqKt8","recvV1LGkQThGpSIp","recuqHL0hNd3vpD0N","recoFEEXOnA0LhjxM","recZYA6TeFRynF4jf","recryHGxQbWhHwJ82","recYEAQ0NpxXqSUV3"],"__id":"reccbLXAvA9tM3TT1"},{"_id":{"$oid":"5f2a3349c570132255af597e"},"Cover Crop Goal":"Promote Water Quality","Description":"Improve or maintain water quality. Traits taken into account: N and P scavenging, erosion prevention.","Constituent Variables (defined in DataDictionary)":["reczRUHk9pdY6n51Z","recY8fo0C6BdZ7ZYc","recXyBUqNoaSYgCaO","rec9tFfZ1YbqMS3dh","rec9bEJfT0EVo5XQU","reccFw6mXIAjXpJ0X","rec2cFl8tzN12TY2C","recOX06RQZtPdObKl","rec7PzKsMtEgabRiy","recl77snxV8saPPzS","recEYMuKg8AqLyI8K"],"Rules":"ASK PAUL","Thinking about Rules":"Dry matter - high, early spring growth - high (4-5 stars) , establishes quickly - high (4-5 stars), Supports Mycorrhizae - high (4 and 5 stars), [goals: nitrogen scavenging, prevents soil erosion]","Include":true,"DataDictionary_":["rec6GxL7LRNEWqKt8","recvV1LGkQThGpSIp","recuqHL0hNd3vpD0N","recoFEEXOnA0LhjxM","recZYA6TeFRynF4jf","recflhK3QKRyp2Z0W","recryHGxQbWhHwJ82","rec5fGSQMjrFvI5S6","recF0sFRxffVNhJgA","recYEAQ0NpxXqSUV3","recfsKGZ3gpB1VM8n"],"__id":"recNAKTF4fwK3CONR"},{"_id":{"$oid":"5f2a3349c570132255af597f"},"Cover Crop Goal":"Reduces Surface Compaction","Description":"Reduces compaction above the Ap horizon. Better aggregation in clay than sandy soil. Does not necessarily refer to prevention of crusting (use residue, soil aggregation, plant structure to derive). Crusting is only an issue in full tillage systems.","Constituent Variables (defined in DataDictionary)":["recbHRLEBkA2fJTza","recl77snxV8saPPzS","recEYMuKg8AqLyI8K"],"Rules":"first sort by loosens topsoil, then on depth with preference for shallow, third on architecture with fiberous preferable","Thinking about Rules":"loosens topsoil - high (4-5 stars), root depth - deep, root architecture - fibrous","Notes":"do cover crops need to be rated high on loosens subsurface and top soil? or just one? or the other? Also, doesnt' that impact which root architecture matters? There seems to be a bit of nuance to this.","Include":true,"DataDictionary_":["recYEAQ0NpxXqSUV3","recfsKGZ3gpB1VM8n","recAhyG2C5hjOZMqE"],"__id":"recPxyjmEenzGEvZj"},{"_id":{"$oid":"5f2a3349c570132255af5980"},"Cover Crop Goal":"Penetrates Plow Pan","Description":"Reduces compaction below the Ap horizon (i.e. below plow pan). Capable of reducing compaction by penetrating plow pan. ","Constituent Variables (defined in DataDictionary)":["recwcQag5xJr7onhE","recl77snxV8saPPzS","recEYMuKg8AqLyI8K"],"Rules":"first sort by loosens subsurface soil, second sort on depth, third is on architecture tap preferable then fiberous, ","Thinking about Rules":"loosens subsurface soil - high (4-5 stars), root depth - deep, root architecture - tap","Notes":"do cover crops need to be rated high on loosens subsurface and top soil? or just one? or the other? Also, doesnt' that impact which root architecture matters? There seems to be a bit of nuance to this.","Include":true,"DataDictionary_":["recYEAQ0NpxXqSUV3","recfsKGZ3gpB1VM8n","rec8ErelBkJchPPcu"],"__id":"recFKZEppkGOSk8qE"},{"_id":{"$oid":"5f2a3349c570132255af5981"},"Cover Crop Goal":"Nitrogen Fixation","Description":"Rates legume cover crops for their ability to fix N by 50% bloom, which will vary by year and proximity to water/altitude.","Rules":"Legumes get 5 and non legumes get zero... this is too dependent on management","Thinking about Rules":"total N fixed - high (4-5 stars), dry matter - high (4-5 stars), early spring growth - high (4-5 stars); exclude plants that are not legumes","Notes":"total N fixed needs to be converted to a rating","Include":true,"DataDictionary_":["recDd7Qs9Iwz5jrnH","recuqHL0hNd3vpD0N","recoFEEXOnA0LhjxM","recqwZosC3d6FuKCw","recp1Re70oV9A5UpH","recryHGxQbWhHwJ82"],"__id":"rech7T61et0rrvgOc"},{"_id":{"$oid":"5f2a3349c570132255af5982"},"Cover Crop Goal":"Nitrogen Scavenging","Description":"Rates a cover crop’s ability to take up and store excess nitrogen. Bear in mind that the sooner you plant a cover after main crop harvest—or overseed a cover into the standing crop—the more N it will be able to absorb.","Constituent Variables (defined in DataDictionary)":["recXY54jRenbgKq5O","reccFw6mXIAjXpJ0X","rec2cFl8tzN12TY2C","recOX06RQZtPdObKl","rec7PzKsMtEgabRiy","recEYMuKg8AqLyI8K"],"Rules":"cover crop group (grasses 5, brassicas 4, broadleaves 3, legumes 2), establishes quickly and early spring growth, then sort on dry matter -- more the better, deeper roots scavange more, ","Thinking about Rules":"Dry matter - high, early spring growth - high (4-5 stars) , establishes quickly - high (4-5 stars), root depth - deep","Notes":"In areas where precip falls as rain for most of the winter, water will percolate causing N to move more; early planting is key to scavenging in such areas (as opposed to where ground freezes hard or snow cover is mostly present.)","Include":true,"DataDictionary_":["recDd7Qs9Iwz5jrnH","recuqHL0hNd3vpD0N","recoFEEXOnA0LhjxM","recryHGxQbWhHwJ82","rec5fGSQMjrFvI5S6","recfsKGZ3gpB1VM8n"],"__id":"recxUYrkzT3lNknLR"},{"_id":{"$oid":"5f2a3349c570132255af5983"},"Cover Crop Goal":"Good Grazing","Description":"Suitability for grazing.","Constituent Variables (defined in DataDictionary)":["recWbpHublUVIQi2e","recS9iXHRIJpXoD6l","recOX06RQZtPdObKl"],"Thinking about Rules":"grazing value - high (4-5 stars), grazing tolerance - high (4-5 stars), establishes quickly - high (4-5 stars)","Include":true,"DataDictionary_":["rec5fGSQMjrFvI5S6","rectWKou9zngXxVpT","recarbYiLvFgOAeY0"],"__id":"recDewfUdf5fLOAVC"},{"_id":{"$oid":"5f2a3349c570132255af5984"},"Cover Crop Goal":"Forage Harvest Value","Description":"Suitability as harvested forage (e.g., haylage).","Constituent Variables (defined in DataDictionary)":["recWbpHublUVIQi2e","rec7noqiYByvV1vuF"],"Thinking about Rules":"grazing value - high (4-5 stars), harvestability - high (4-5 stars)","DataDictionary_":["recarbYiLvFgOAeY0","recOwEqE27rRq1xTS"],"__id":"rec2aYo5hNTB0TvG7"},{"_id":{"$oid":"5f2a3349c570132255af5985"},"Cover Crop Goal":"Pollinator Food","Description":"Extent to which the cover crop provides food (i.e. leaves, nectar, pollen) for pollinators.","Constituent Variables (defined in DataDictionary)":["recJi9bo8KKJlCgMp","recWbaQQNRF8aKVel"],"Thinking about Rules":"pollinator habitat - high (4-5 stars), pollinator food - high (4-5 stars)","Include":true,"DataDictionary_":["recBPK2KGd9LRnveJ","recp6WevVfKTBxPPp"],"__id":"recdbvSJ6Q8iT2haq"},{"_id":{"$oid":"5f2a3349c570132255af5986"},"Cover Crop Goal":"Residue Suppresses Summer Annual Weeds","Description":"Rates how well the cover crop residue smothers summer annual weeds.","Include":true,"__id":"recJuBuudQf9DjSTv"},{"_id":{"$oid":"5f2a3349c570132255af5987"},"Cover Crop Goal":"Outcompetes Summer Annual Weeds","Description":"Ability of the cover crop to compete with weeds while living for space/nutrients/light/water assuming optimal planting time. Assumes the cover crop is planted early enough in its optimal planting window to generate a dense stand.\n\n1=not competitive, 5=extremely competitive.","Include":true,"__id":"recf13FvYuMETy3bI"},{"_id":{"$oid":"5f2a3349c570132255af5988"},"Cover Crop Goal":"Suppresses Winter Annual Weeds","Description":"Rates how well the cover crop competition + residue + allelopathy suppress winter annual weeds.","Include":true,"__id":"recwwf9nrRMwRn6Pk"},{"_id":{"$oid":"5f2a3349c570132255af5989"},"Cover Crop Goal":"Weed Suppression","Description":"Rates how well the cover crop out-competes weeds by any means through its life cycle, including killed residue. || opposite description: \n[Risk that a cover crop could become a weed, either due to hard seed or due to flowering/setting seed that volunteers in later seasons; made worse when herbicide resistance is a known feature of the cover crop species/cultivar]","Thinking about Rules":"Dry matter - high,  C to N - high, establishes quickly - high (4-5 stars), shape and orientation - ?","Notes":"Not used in current version - Broken into: Residue Suppresses Summer Annual Weeds, Outcomepetes Summer Annual Weeds, Suppresses Winter Annual Weeds","__id":"recJcA1wm7sdCHzQl"},{"_id":{"$oid":"5f2a3349c570132255af598a"},"Cover Crop Goal":"TBD- Suppress Pest (Non-weed) & Diseases","Description":"Rates how well the cover crop suppresses diseases, insects, slugs, and other non-weed pests.","__id":"reczMQELCqmob4ZuD"},{"_id":{"$oid":"5f2a3349c570132255af598b"},"Cover Crop Goal":"TBD- Hinder Crops (anti-goal)","Description":"Rates how likely the CC is to interfere with the cash crop (e.g., through creating a poor seed bed, immobilizing soil N, etc.)","Thinking about Rules":"Dry matter - low, C to N ratio - high (5 star)","__id":"recIBqnwWp5SEwyuI"},{"_id":{"$oid":"5f2a3349c570132255af598c"},"Cover Crop Goal":"Nitrogen Fixation","Constituent Variables (defined in DataDictionary)":["recXY54jRenbgKq5O","reczbeEhIFnamyjhW","recyw86Of22YTO6vF","reccFw6mXIAjXpJ0X","rec2cFl8tzN12TY2C","rec7PzKsMtEgabRiy"],"__id":"recOdlkjNp7UMqN5n"},{"_id":{"$oid":"5f2a3349c570132255af598d"},"Cover Crop Goal":"Suppress Weeds","Constituent Variables (defined in DataDictionary)":["rec9tFfZ1YbqMS3dh","rec9bEJfT0EVo5XQU","reccFw6mXIAjXpJ0X","rec2cFl8tzN12TY2C","recOX06RQZtPdObKl"],"DataDictionary_":["recvV1LGkQThGpSIp","recuqHL0hNd3vpD0N","recoFEEXOnA0LhjxM","recZYA6TeFRynF4jf","rec5fGSQMjrFvI5S6"],"__id":"rec6bQu7WMkijvfyt"},{"_id":{"$oid":"5f2a3349c570132255af598e"},"Cover Crop Goal":"Hinder Crops","Constituent Variables (defined in DataDictionary)":["rec9bEJfT0EVo5XQU","reccFw6mXIAjXpJ0X","rec2cFl8tzN12TY2C"],"DataDictionary_":["recvV1LGkQThGpSIp","recuqHL0hNd3vpD0N","recoFEEXOnA0LhjxM"],"__id":"recg2GckvMQwE8AZ8"}]
+[
+  {
+    "_id": { "$oid": "5f2a3349c570132255af5979" },
+    "Cover Crop Goal": "Improve Soil Organic Matter",
+    "Description": "Rates a cover crop’s ability to produce organic matter and improve soil structure. The ratings assume that you plan to use cover crops regularly in your cropping system to provide ongoing additions to soil organic matter. Think quality and quantity. Assumes straw is not harvested/removed.",
+    "Constituent Variables (defined in DataDictionary)": [
+      "rec9bEJfT0EVo5XQU",
+      "reccFw6mXIAjXpJ0X",
+      "rec2cFl8tzN12TY2C"
+    ],
+    "Rules": "there needs to be enough nitrogen for the microbes to break down so it is IN the soil. 5: high c:n, high dry matter, 4: high c:n low dry, 3: low c:n high dry, 2: low c:n, low dry",
+    "Thinking about Rules": "5 stars: Dry matter = 3, C to N ratio = 2; 4 stars: Dry matter = 3 and C to N ratio = 3, or Dry matter = 2 and C to N ratio = 2; 3 stars: Dry matter = 2 and C to N ratio = 3;  2 stars: Dry matter = 2 and C to N ratio = 1; 1 star: Dry matter = 1 and C to N ratio = 1",
+    "Notes": "Convert dry matter to a rating. C to N is currently a 3 star rating.",
+    "Include": true,
+    "DataDictionary_": [
+      "recvV1LGkQThGpSIp",
+      "recuqHL0hNd3vpD0N",
+      "recoFEEXOnA0LhjxM"
+    ],
+    "__id": "recVx4qMQys9OMoZX"
+  },
+  {
+    "_id": { "$oid": "5f2a3349c570132255af597a" },
+    "Cover Crop Goal": "Increase Soil Aggregation",
+    "Description": "Stability rather high turnover. Better aggregation in clay than sandy soil.",
+    "Constituent Variables (defined in DataDictionary)": [
+      "recXyBUqNoaSYgCaO",
+      "recl77snxV8saPPzS"
+    ],
+    "Rules": "high for supports mycorrhizae, fiberous root architecture, no moldboard plowing or rototill",
+    "Thinking about Rules": "Supports Mycorrhizae - high (4 and 5 stars), root architecture - fibrous",
+    "Include": true,
+    "DataDictionary_": [
+      "recflhK3QKRyp2Z0W",
+      "recYEAQ0NpxXqSUV3",
+      "rec9KyIxY1hQqxN1E",
+      "recXfbNzPcMHGQKDk"
+    ],
+    "__id": "recu78NjkZLLgegx0"
+  },
+  {
+    "_id": { "$oid": "5f2a3349c570132255af597b" },
+    "Cover Crop Goal": "Lasting Residue",
+    "Description": "Rates the effectiveness of the cover crop in providing a long-lasting mulch. Assumes cover crop was planted in optimum window in order to be able to put on biomass. Grasses before boot stage will have less persistent residue than grasses terminated after heading.",
+    "Constituent Variables (defined in DataDictionary)": [
+      "rec9bEJfT0EVo5XQU",
+      "reccFw6mXIAjXpJ0X",
+      "rec2cFl8tzN12TY2C"
+    ],
+    "Rules": "if c to n is high then the lasting residue is high. high dry matter makes it even higher? Use same logic as improve soil organic matter... 5: high c:n, high dry matter, 4: high c:n low dry, 3: low c:n high dry, 2: low c:n, low dry",
+    "Thinking about Rules": "Dry matter - high, C to N ratio - high (3 star)",
+    "Notes": "Since this has the same consituent variables as Improve soil organic matter, could they be lumped together some how?",
+    "Include": true,
+    "DataDictionary_": [
+      "recvV1LGkQThGpSIp",
+      "recuqHL0hNd3vpD0N",
+      "recoFEEXOnA0LhjxM"
+    ],
+    "__id": "recW6SQB6uiWF7hsX"
+  },
+  {
+    "_id": { "$oid": "5f2a3349c570132255af597c" },
+    "Cover Crop Goal": "Prevent Fall Soil Erosion",
+    "Description": "Rates how extensive and how quickly a root system develops, how well it holds soil against sheet and water erosion and the influence the growth habit may have on fighting water erosion. For time period Oct.-Dec. (By default includes Jan. - Mar.)",
+    "Constituent Variables (defined in DataDictionary)": [
+      "rec9tFfZ1YbqMS3dh",
+      "reccFw6mXIAjXpJ0X",
+      "rec2cFl8tzN12TY2C",
+      "recOX06RQZtPdObKl",
+      "recl77snxV8saPPzS"
+    ],
+    "Rules": "Establishes quickly, high dry matter, broadleaf is better than upright and narrow, fiberous more better. First sort by establishes quickly, then sort equally by the others.",
+    "Thinking about Rules": "Dry matter - high, growing window - long, C to N - high, winter survival - expected, shape and orientation -?, root architecture - fibrous",
+    "Include": true,
+    "DataDictionary_": [
+      "recuqHL0hNd3vpD0N",
+      "recoFEEXOnA0LhjxM",
+      "recZYA6TeFRynF4jf",
+      "rec5fGSQMjrFvI5S6",
+      "recYEAQ0NpxXqSUV3"
+    ],
+    "__id": "recRlVowCsSXpRXN2"
+  },
+  {
+    "_id": { "$oid": "5f2a3349c570132255af597d" },
+    "Cover Crop Goal": "Prevent Spring Soil Erosion",
+    "Description": "Rates how extensive and how quickly a root system develops, how long residue persists, how well it holds soil against sheet and water erosion and the influence the growth habit may have on fighting water erosion. For summer annuals, we're considering the residue in the following spring.\nAssumes no tillage since cover crop establishment and solid establishment (timely planting, etc.). Will also reduce crusting.",
+    "Constituent Variables (defined in DataDictionary)": [
+      "recY8fo0C6BdZ7ZYc",
+      "rec9tFfZ1YbqMS3dh",
+      "rec9bEJfT0EVo5XQU",
+      "reccFw6mXIAjXpJ0X",
+      "rec2cFl8tzN12TY2C",
+      "rec7PzKsMtEgabRiy",
+      "recl77snxV8saPPzS"
+    ],
+    "Rules": "Winter survival then Early spring growth, shape and orientation (broadleafs) and root architecture (fiberous) are on the same plane, and then dry matter (high), then c:n (high)",
+    "Thinking about Rules": "Dry matter - high, growing window - long, C to N - high, winter survival - expected, shape and orientation -?, root architecture - fibrous",
+    "Notes": " (Jan-April)",
+    "Include": true,
+    "DataDictionary_": [
+      "rec6GxL7LRNEWqKt8",
+      "recvV1LGkQThGpSIp",
+      "recuqHL0hNd3vpD0N",
+      "recoFEEXOnA0LhjxM",
+      "recZYA6TeFRynF4jf",
+      "recryHGxQbWhHwJ82",
+      "recYEAQ0NpxXqSUV3"
+    ],
+    "__id": "reccbLXAvA9tM3TT1"
+  },
+  {
+    "_id": { "$oid": "5f2a3349c570132255af597e" },
+    "Cover Crop Goal": "Promote Water Quality",
+    "Description": "Improve or maintain water quality. Traits taken into account: N and P scavenging, erosion prevention.",
+    "Constituent Variables (defined in DataDictionary)": [
+      "reczRUHk9pdY6n51Z",
+      "recY8fo0C6BdZ7ZYc",
+      "recXyBUqNoaSYgCaO",
+      "rec9tFfZ1YbqMS3dh",
+      "rec9bEJfT0EVo5XQU",
+      "reccFw6mXIAjXpJ0X",
+      "rec2cFl8tzN12TY2C",
+      "recOX06RQZtPdObKl",
+      "rec7PzKsMtEgabRiy",
+      "recl77snxV8saPPzS",
+      "recEYMuKg8AqLyI8K"
+    ],
+    "Rules": "ASK PAUL",
+    "Thinking about Rules": "Dry matter - high, early spring growth - high (4-5 stars) , establishes quickly - high (4-5 stars), Supports Mycorrhizae - high (4 and 5 stars), [goals: nitrogen scavenging, prevents soil erosion]",
+    "Include": true,
+    "DataDictionary_": [
+      "rec6GxL7LRNEWqKt8",
+      "recvV1LGkQThGpSIp",
+      "recuqHL0hNd3vpD0N",
+      "recoFEEXOnA0LhjxM",
+      "recZYA6TeFRynF4jf",
+      "recflhK3QKRyp2Z0W",
+      "recryHGxQbWhHwJ82",
+      "rec5fGSQMjrFvI5S6",
+      "recF0sFRxffVNhJgA",
+      "recYEAQ0NpxXqSUV3",
+      "recfsKGZ3gpB1VM8n"
+    ],
+    "__id": "recNAKTF4fwK3CONR"
+  },
+  {
+    "_id": { "$oid": "5f2a3349c570132255af597f" },
+    "Cover Crop Goal": "Reduces Surface Compaction",
+    "Description": "Reduces compaction above the Ap horizon. Better aggregation in clay than sandy soil. Does not necessarily refer to prevention of crusting (use residue, soil aggregation, plant structure to derive). Crusting is only an issue in full tillage systems.",
+    "Constituent Variables (defined in DataDictionary)": [
+      "recbHRLEBkA2fJTza",
+      "recl77snxV8saPPzS",
+      "recEYMuKg8AqLyI8K"
+    ],
+    "Rules": "first sort by loosens topsoil, then on depth with preference for shallow, third on architecture with fiberous preferable",
+    "Thinking about Rules": "loosens topsoil - high (4-5 stars), root depth - deep, root architecture - fibrous",
+    "Notes": "do cover crops need to be rated high on loosens subsurface and top soil? or just one? or the other? Also, doesnt' that impact which root architecture matters? There seems to be a bit of nuance to this.",
+    "Include": true,
+    "DataDictionary_": [
+      "recYEAQ0NpxXqSUV3",
+      "recfsKGZ3gpB1VM8n",
+      "recAhyG2C5hjOZMqE"
+    ],
+    "__id": "recPxyjmEenzGEvZj"
+  },
+  {
+    "_id": { "$oid": "5f2a3349c570132255af5980" },
+    "Cover Crop Goal": "Penetrates Plow Pan",
+    "Description": "Reduces compaction below the Ap horizon (i.e. below plow pan). Capable of reducing compaction by penetrating plow pan. ",
+    "Constituent Variables (defined in DataDictionary)": [
+      "recwcQag5xJr7onhE",
+      "recl77snxV8saPPzS",
+      "recEYMuKg8AqLyI8K"
+    ],
+    "Rules": "first sort by loosens subsurface soil, second sort on depth, third is on architecture tap preferable then fiberous, ",
+    "Thinking about Rules": "loosens subsurface soil - high (4-5 stars), root depth - deep, root architecture - tap",
+    "Notes": "do cover crops need to be rated high on loosens subsurface and top soil? or just one? or the other? Also, doesnt' that impact which root architecture matters? There seems to be a bit of nuance to this.",
+    "Include": true,
+    "DataDictionary_": [
+      "recYEAQ0NpxXqSUV3",
+      "recfsKGZ3gpB1VM8n",
+      "rec8ErelBkJchPPcu"
+    ],
+    "__id": "recFKZEppkGOSk8qE"
+  },
+  {
+    "_id": { "$oid": "5f2a3349c570132255af5981" },
+    "Cover Crop Goal": "Nitrogen Fixation",
+    "Description": "Rates legume cover crops for their ability to fix N by 50% bloom, which will vary by year and proximity to water/altitude.",
+    "Rules": "Legumes get 5 and non legumes get zero... this is too dependent on management",
+    "Thinking about Rules": "total N fixed - high (4-5 stars), dry matter - high (4-5 stars), early spring growth - high (4-5 stars); exclude plants that are not legumes",
+    "Notes": "total N fixed needs to be converted to a rating",
+    "Include": true,
+    "DataDictionary_": [
+      "recDd7Qs9Iwz5jrnH",
+      "recuqHL0hNd3vpD0N",
+      "recoFEEXOnA0LhjxM",
+      "recqwZosC3d6FuKCw",
+      "recp1Re70oV9A5UpH",
+      "recryHGxQbWhHwJ82"
+    ],
+    "__id": "rech7T61et0rrvgOc"
+  },
+  {
+    "_id": { "$oid": "5f2a3349c570132255af5982" },
+    "Cover Crop Goal": "Nitrogen Scavenging",
+    "Description": "Rates a cover crop’s ability to take up and store excess nitrogen. Bear in mind that the sooner you plant a cover after main crop harvest—or overseed a cover into the standing crop—the more N it will be able to absorb.",
+    "Constituent Variables (defined in DataDictionary)": [
+      "recXY54jRenbgKq5O",
+      "reccFw6mXIAjXpJ0X",
+      "rec2cFl8tzN12TY2C",
+      "recOX06RQZtPdObKl",
+      "rec7PzKsMtEgabRiy",
+      "recEYMuKg8AqLyI8K"
+    ],
+    "Rules": "cover crop group (grasses 5, brassicas 4, broadleaves 3, legumes 2), establishes quickly and early spring growth, then sort on dry matter -- more the better, deeper roots scavange more, ",
+    "Thinking about Rules": "Dry matter - high, early spring growth - high (4-5 stars) , establishes quickly - high (4-5 stars), root depth - deep",
+    "Notes": "In areas where precip falls as rain for most of the winter, water will percolate causing N to move more; early planting is key to scavenging in such areas (as opposed to where ground freezes hard or snow cover is mostly present.)",
+    "Include": true,
+    "DataDictionary_": [
+      "recDd7Qs9Iwz5jrnH",
+      "recuqHL0hNd3vpD0N",
+      "recoFEEXOnA0LhjxM",
+      "recryHGxQbWhHwJ82",
+      "rec5fGSQMjrFvI5S6",
+      "recfsKGZ3gpB1VM8n"
+    ],
+    "__id": "recxUYrkzT3lNknLR"
+  },
+  {
+    "_id": { "$oid": "5f2a3349c570132255af5983" },
+    "Cover Crop Goal": "Good Grazing",
+    "Description": "Suitability for grazing.",
+    "Constituent Variables (defined in DataDictionary)": [
+      "recWbpHublUVIQi2e",
+      "recS9iXHRIJpXoD6l",
+      "recOX06RQZtPdObKl"
+    ],
+    "Thinking about Rules": "grazing value - high (4-5 stars), grazing tolerance - high (4-5 stars), establishes quickly - high (4-5 stars)",
+    "Include": true,
+    "DataDictionary_": [
+      "rec5fGSQMjrFvI5S6",
+      "rectWKou9zngXxVpT",
+      "recarbYiLvFgOAeY0"
+    ],
+    "__id": "recDewfUdf5fLOAVC"
+  },
+  {
+    "_id": { "$oid": "5f2a3349c570132255af5984" },
+    "Cover Crop Goal": "Forage Harvest Value",
+    "Description": "Suitability as harvested forage (e.g., haylage).",
+    "Constituent Variables (defined in DataDictionary)": [
+      "recWbpHublUVIQi2e",
+      "rec7noqiYByvV1vuF"
+    ],
+    "Thinking about Rules": "grazing value - high (4-5 stars), harvestability - high (4-5 stars)",
+    "DataDictionary_": ["recarbYiLvFgOAeY0", "recOwEqE27rRq1xTS"],
+    "__id": "rec2aYo5hNTB0TvG7"
+  },
+  {
+    "_id": { "$oid": "5f2a3349c570132255af5985" },
+    "Cover Crop Goal": "Pollinator Food",
+    "Description": "Extent to which the cover crop provides food (i.e. leaves, nectar, pollen) for pollinators.",
+    "Constituent Variables (defined in DataDictionary)": [
+      "recJi9bo8KKJlCgMp",
+      "recWbaQQNRF8aKVel"
+    ],
+    "Thinking about Rules": "pollinator habitat - high (4-5 stars), pollinator food - high (4-5 stars)",
+    "Include": true,
+    "DataDictionary_": ["recBPK2KGd9LRnveJ", "recp6WevVfKTBxPPp"],
+    "__id": "recdbvSJ6Q8iT2haq"
+  },
+  {
+    "_id": { "$oid": "5f2a3349c570132255af5986" },
+    "Cover Crop Goal": "Residue Suppresses Summer Annual Weeds",
+    "Description": "Rates how well the cover crop residue smothers summer annual weeds.",
+    "Include": true,
+    "__id": "recJuBuudQf9DjSTv"
+  },
+  {
+    "_id": { "$oid": "5f2a3349c570132255af5987" },
+    "Cover Crop Goal": "Outcompetes Summer Annual Weeds",
+    "Description": "Ability of the cover crop to compete with weeds while living for space/nutrients/light/water assuming optimal planting time. Assumes the cover crop is planted early enough in its optimal planting window to generate a dense stand.\n\n1=not competitive, 5=extremely competitive.",
+    "Include": true,
+    "__id": "recf13FvYuMETy3bI"
+  },
+  {
+    "_id": { "$oid": "5f2a3349c570132255af5988" },
+    "Cover Crop Goal": "Suppresses Winter Annual Weeds",
+    "Description": "Rates how well the cover crop competition + residue + allelopathy suppress winter annual weeds.",
+    "Include": true,
+    "__id": "recwwf9nrRMwRn6Pk"
+  },
+  {
+    "_id": { "$oid": "5f2a3349c570132255af5989" },
+    "Cover Crop Goal": "Weed Suppression",
+    "Description": "Rates how well the cover crop out-competes weeds by any means through its life cycle, including killed residue. || opposite description: \n[Risk that a cover crop could become a weed, either due to hard seed or due to flowering/setting seed that volunteers in later seasons; made worse when herbicide resistance is a known feature of the cover crop species/cultivar]",
+    "Thinking about Rules": "Dry matter - high,  C to N - high, establishes quickly - high (4-5 stars), shape and orientation - ?",
+    "Notes": "Not used in current version - Broken into: Residue Suppresses Summer Annual Weeds, Outcomepetes Summer Annual Weeds, Suppresses Winter Annual Weeds",
+    "__id": "recJcA1wm7sdCHzQl"
+  },
+  {
+    "_id": { "$oid": "5f2a3349c570132255af598a" },
+    "Cover Crop Goal": "TBD- Suppress Pest (Non-weed) & Diseases",
+    "Description": "Rates how well the cover crop suppresses diseases, insects, slugs, and other non-weed pests.",
+    "__id": "reczMQELCqmob4ZuD"
+  },
+  {
+    "_id": { "$oid": "5f2a3349c570132255af598b" },
+    "Cover Crop Goal": "TBD- Hinder Crops (anti-goal)",
+    "Description": "Rates how likely the CC is to interfere with the cash crop (e.g., through creating a poor seed bed, immobilizing soil N, etc.)",
+    "Thinking about Rules": "Dry matter - low, C to N ratio - high (5 star)",
+    "__id": "recIBqnwWp5SEwyuI"
+  },
+  {
+    "_id": { "$oid": "5f2a3349c570132255af598c" },
+    "Cover Crop Goal": "Nitrogen Fixation",
+    "Constituent Variables (defined in DataDictionary)": [
+      "recXY54jRenbgKq5O",
+      "reczbeEhIFnamyjhW",
+      "recyw86Of22YTO6vF",
+      "reccFw6mXIAjXpJ0X",
+      "rec2cFl8tzN12TY2C",
+      "rec7PzKsMtEgabRiy"
+    ],
+    "__id": "recOdlkjNp7UMqN5n"
+  },
+  {
+    "_id": { "$oid": "5f2a3349c570132255af598d" },
+    "Cover Crop Goal": "Suppress Weeds",
+    "Constituent Variables (defined in DataDictionary)": [
+      "rec9tFfZ1YbqMS3dh",
+      "rec9bEJfT0EVo5XQU",
+      "reccFw6mXIAjXpJ0X",
+      "rec2cFl8tzN12TY2C",
+      "recOX06RQZtPdObKl"
+    ],
+    "DataDictionary_": [
+      "recvV1LGkQThGpSIp",
+      "recuqHL0hNd3vpD0N",
+      "recoFEEXOnA0LhjxM",
+      "recZYA6TeFRynF4jf",
+      "rec5fGSQMjrFvI5S6"
+    ],
+    "__id": "rec6bQu7WMkijvfyt"
+  },
+  {
+    "_id": { "$oid": "5f2a3349c570132255af598e" },
+    "Cover Crop Goal": "Hinder Crops",
+    "Constituent Variables (defined in DataDictionary)": [
+      "rec9bEJfT0EVo5XQU",
+      "reccFw6mXIAjXpJ0X",
+      "rec2cFl8tzN12TY2C"
+    ],
+    "DataDictionary_": [
+      "recvV1LGkQThGpSIp",
+      "recuqHL0hNd3vpD0N",
+      "recoFEEXOnA0LhjxM"
+    ],
+    "__id": "recg2GckvMQwE8AZ8"
+  }
+]
