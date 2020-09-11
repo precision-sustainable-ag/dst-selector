@@ -480,7 +480,17 @@ const CropSelector = (props) => {
                 sortPreference={sortPreference}
               />
             ) : (
-              <CropCalendarViewComponent cropData={cropData} />
+              <CropCalendarViewComponent
+                cropData={cropData}
+                activeCropData={activeCropData}
+                setActiveCropData={setActiveCropData}
+                inactiveCropData={inactiveCropData}
+                setInactiveCropData={setInactiveCropData}
+                showGrowthWindow={showGrowthWindow}
+                sortAllGoals={setSortAllGoals}
+                sortAllCrops={sortCropsBy}
+                sortPreference={sortPreference}
+              />
             )
           ) : (
             <MyCoverCropList comparisonView={comparisonView} />
