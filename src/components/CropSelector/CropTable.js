@@ -332,7 +332,7 @@ const CropTableComponent = (props) => {
                       >
                         <div className="container-fluid">
                           <div className="row">
-                            <div className="col-12 col-md-4 pr-md-0 pl-md-1">
+                            <div className="col-auto pl-md-0">
                               {crop.fields["Image Data"] ? (
                                 <CropImage
                                   present={true}
@@ -347,7 +347,7 @@ const CropTableComponent = (props) => {
                                 <CropImage present={false} />
                               )}
                             </div>
-                            <div className="col-12 col-md-8 row pl-md-0 pr-md-1">
+                            <div className="col-auto pl-md-0">
                               <div className="col-12 p-md-0">
                                 <Typography variant="h6">
                                   {flipCoverCropName(
