@@ -116,7 +116,7 @@ const LocationComponent = () => {
           <div className="container-fluid">
             <div className="row">
               <div className="col-12">
-                <Typography variant="h3">
+                <Typography variant="h4">
                   Where is your field located?
                 </Typography>
               </div>
