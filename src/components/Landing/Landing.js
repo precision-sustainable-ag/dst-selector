@@ -1,14 +1,14 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useLayoutEffect } from "react";
 import "../../styles/landing.scss";
 import { Context } from "../../store/Store";
 // import { Typography, Button } from "@material-ui/core";
 import { LightButton } from "../../shared/constants";
-import { Typography, Box } from "@material-ui/core";
+import { Typography, Box, Grid } from "@material-ui/core";
 import { Link } from "react-router-dom";
 
 const Landing = (props) => {
   const [state, dispatch] = useContext(Context);
-  const height = props.height;
+  const height = props.height - 45;
   const backgroundWrapper = {
     background: `url(${props.bg})`,
     backgroundSize: "cover",
@@ -23,7 +23,7 @@ const Landing = (props) => {
   const bgImage = {
     background: `url(${props.bg})`,
     backgroundSize: "cover",
-    height: `${height}px`,
+    minHeight: `${height}px`,
   };
   const boxWrapper = {
     paddingBottom: "0px",
@@ -48,21 +48,64 @@ const Landing = (props) => {
     }
   };
 
+  useLayoutEffect(() => {
+    function updateSize() {
+      let documentHeight = document
+        .getElementsByTagName("html")[0]
+        .getBoundingClientRect().height;
+
+      let headerHeight = document
+        .getElementsByTagName("header")[0]
+        .getBoundingClientRect().height;
+
+      let footerHeight = document
+        .getElementsByClassName("primaryFooter")[0]
+        .getBoundingClientRect().height;
+
+      let containerHeight = documentHeight - (headerHeight + footerHeight) + 7;
+      document.getElementById("landingWrapper").style.minHeight =
+        containerHeight + "px";
+    }
+    window.addEventListener("resize", updateSize);
+    updateSize();
+
+    return () => window.removeEventListener("resize", updateSize);
+  }, []);
+
   return (
-    <div className="container-fluid pt-5" style={bgImage}>
-      <div className="row boxContainerRow" style={boxWrapper}>
-        <div className="col-12">
-          <Typography variant="h4" gutterBottom>
+    <div
+      id="landingWrapper"
+      className="d-flex flex-column justify-content-center align-items-center"
+      style={{
+        minHeight: height,
+        background: `url(${props.bg})`,
+        backgroundSize: "cover",
+      }}
+    >
+      <Grid
+        className="p-2"
+        spacing={2}
+        container
+        justify="center"
+        alignItems="center"
+        style={{
+          width: "90%",
+          backgroundColor: "rgba(240,247,235,.8)",
+          borderRadius: "10px",
+          border: "1px solid #598445",
+        }}
+      >
+        <Grid item>
+          <Typography variant="h4" gutterBottom align="center">
             Welcome to the Northeast Cover Crop Species Selector Tool
           </Typography>
-        </div>
-
-        <div className="col-12">
+        </Grid>
+        <Grid item>
           <Typography
             variant="body1"
             gutterBottom
             align="left"
-            style={{ paddingBottom: "1em" }}
+            // style={{ paddingBottom: "1em" }}
           >
             You are currently interacting with the Northeast Cover Crop Species
             Selector Tool, beta version. We seek feedback about the usability
@@ -72,7 +115,8 @@ const Landing = (props) => {
             <Link to={"/about"}> here</Link>. If you need assistance, consult
             the <Link to={"/help"}>help page</Link>.
           </Typography>
-
+        </Grid>
+        <Grid item>
           <Typography
             align="left"
             variant="body1"
@@ -105,13 +149,96 @@ const Landing = (props) => {
             visiting our <Link to="/feedback">Feedback</Link> page. We look
             forward to your hearing about your experience.
           </Typography>
-        </div>
-      </div>
-      <div className="d-flex justify-content-center align-items-center">
-        <LightButton onClick={() => incrementProgress(1)}>NEXT</LightButton>
-      </div>
+          <Typography
+            variant="body1"
+            gutterBottom
+            align="left"
+            className="font-weight-bold"
+          >
+            Click Next to enter the Species Selector.
+          </Typography>
+        </Grid>
+      </Grid>
+      <Grid container justify="center" alignItems="center" className="pt-4">
+        <Grid item>
+          <LightButton onClick={() => incrementProgress(1)}>NEXT</LightButton>
+        </Grid>
+      </Grid>
     </div>
   );
+
+  // return (
+  //   <div className="container-fluid pt-5 pb-5" style={bgImage}>
+  //     <div className="row boxContainerRow" style={boxWrapper}>
+  //       <div className="col-12">
+  //         <Typography variant="h4" gutterBottom>
+  //           Welcome to the Northeast Cover Crop Species Selector Tool
+  //         </Typography>
+  //       </div>
+
+  //       <div className="col-12">
+  // <Typography
+  //   variant="body1"
+  //   gutterBottom
+  //   align="left"
+  //   style={{ paddingBottom: "1em" }}
+  // >
+  //   You are currently interacting with the Northeast Cover Crop Species
+  //   Selector Tool, beta version. We seek feedback about the usability
+  //   and usefulness of this tool. Our goal is to encourage and support
+  //   the use of cover crops in the Northeast US. You can learn more about
+  //   the cover crop data and design of this tool{" "}
+  //   <Link to={"/about"}> here</Link>. If you need assistance, consult
+  //   the <Link to={"/help"}>help page</Link>.
+  // </Typography>
+
+  // <Typography
+  //   align="left"
+  //   variant="body1"
+  //   gutterBottom
+  //   style={{ paddingBottom: "1em" }}
+  // >
+  //   In the future, this platform will host a variety of tools including
+  //   a cover crop mixture and seeding rate calculator and an economics
+  //   calculator. Our ultimate goal is to provide a suite of
+  //   interconnected tools that function together seamlessly.
+  // </Typography>
+  // <Typography
+  //   align="left"
+  //   variant="body1"
+  //   gutterBottom
+  //   style={{ paddingBottom: "1em" }}
+  // >
+  //   This tool is currently undergoing beta testing. This means that we
+  //   are double checking the data and the underlying decision logic.
+  //   Please do not use this tool for actual cover crop planning and
+  //   consult your cover crop advisor at this stage.
+  // </Typography>
+  // <Typography
+  //   variant="body1"
+  //   style={{ fontWeight: "bold", paddingBottom: "1em" }}
+  //   align="left"
+  //   gutterBottom
+  // >
+  //   Thank you for your time and consideration. You may provide input by
+  //   visiting our <Link to="/feedback">Feedback</Link> page. We look
+  //   forward to your hearing about your experience.
+  // </Typography>
+  // <Typography
+  //   variant="body1"
+  //   gutterBottom
+  //   align="left"
+  //   className="font-weight-bold"
+  // >
+  //   Click Next to enter the Species Selector.
+  // </Typography>
+  //       </div>
+  //     </div>
+  //     <div className="d-flex justify-content-center align-items-center">
+  //       <LightButton onClick={() => incrementProgress(1)}>NEXT</LightButton>
+  //     </div>
+  //   </div>
+  // );
 
   // return (
   //   <Box
