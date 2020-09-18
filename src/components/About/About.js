@@ -7,8 +7,9 @@ import {
   makeStyles,
   Tab,
   Button,
+  useTheme,
 } from "@material-ui/core";
-import PropTypes from "prop-types";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { CustomStyles } from "../../shared/constants";
 const tableStyles = {
   td: {
@@ -59,49 +60,22 @@ const About = (props) => {
 
     setCalcHeight(calculatedHeight);
   }, []);
+
   const classes = useStyles();
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up("sm"));
   const [value, setValue] = React.useState(0);
 
   const handleChange = (newValue) => {
     setValue(newValue);
   };
-  // function a11yProps(index) {
-  //   return {
-  //     id: `vertical-tab-${index}`,
-  //     "aria-controls": `vertical-tabpanel-${index}`,
-  //   };
-  // }
-  // function TabPanel(props) {
-  //   const { children, value, index, ...other } = props;
-
-  //   return (
-  //     <div
-  //       role="tabpanel"
-  //       hidden={value !== index}
-  //       id={`vertical-tabpanel-${index}`}
-  //       aria-labelledby={`vertical-tab-${index}`}
-  //       {...other}
-  //     >
-  //       {value === index && (
-  //         <Box p={3}>
-  //           <Typography variant="body1">{children}</Typography>
-  //         </Box>
-  //       )}
-  //     </div>
-  //   );
-  // }
-  // TabPanel.propTypes = {
-  //   children: PropTypes.node,
-  //   index: PropTypes.any.isRequired,
-  //   value: PropTypes.any.isRequired,
-  // };
   return (
     <div className="contentWrapper" id="mainContentWrapper">
       <Header logo="neccc_wide_logo_color_web.jpg" />
       <div className="container-fluid mt-5">
         <div className="row boxContainerRow" style={{ minHeight: "520px" }}>
           <div className="col-12 row">
-            <div className="col-md-3 col-12 pr-0">
+            <div className="col-md-5 col-lg-4 col-xl-4 col-12 pr-0">
               <div
                 className="d-flex flex-column"
                 style={{
@@ -216,7 +190,7 @@ const About = (props) => {
               </div>
             </div>
             <div
-              className="col-md-9 col-12 p-2"
+              className="col-md-7 col-lg-8 col-xl-8 col-12 p-2"
               style={{ border: `1px solid ${CustomStyles().darkGreen}` }}
             >
               <div>

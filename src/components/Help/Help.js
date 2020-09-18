@@ -134,6 +134,9 @@ const RenderContent = ({ value = 0 }) => {
     case 0:
       return (
         <Fragment>
+          <Typography variant="h4" gutterBottom>
+            How to Use The Tool
+          </Typography>
           <Typography component="div" variant="body1" align="left">
             <ol>
               <li className="font-weight-bold">
@@ -249,6 +252,9 @@ const RenderContent = ({ value = 0 }) => {
     case 1:
       return (
         <Fragment>
+          <Typography variant="h4" gutterBottom>
+            Frequently Asked Questions
+          </Typography>
           <Typography component="div" variant="body1" align="left">
             <ol>
               <li className="font-weight-bold">
@@ -433,12 +439,18 @@ const RenderContent = ({ value = 0 }) => {
     case 2:
       return (
         <div className="text-left pl-4">
+          <Typography variant="h4" gutterBottom align="center">
+            Data Dictionary
+          </Typography>
           <InformationSheetDictionary zone={6} from="help" />
         </div>
       );
     case 3:
       return (
         <Fragment>
+          <Typography variant="h4" gutterBottom align="center">
+            Information Sheets
+          </Typography>
           <Typography component="div" variant="body1" align="left">
             <ol>
               <li className="font-weight-bold">Cover Crops and Pollinators</li>
