@@ -39,7 +39,7 @@ const LocationConfirmation = () => {
               </div>
               <div className="col-lg-6">
                 <div className="col-12">
-                  <Typography variant="h3">Location Details</Typography>
+                  <Typography variant="h4">Location Details</Typography>
                 </div>
                 <div className="col-12 pt-2">
                   <Typography variant="body1">

@@ -439,7 +439,7 @@ const SoilCondition = (props) => {
   return (
     <div className="row">
       <div className="col-12">
-        <Typography variant="h3" align="left">
+        <Typography variant="h4" align="left">
           Soil Conditions?
         </Typography>
       </div>
