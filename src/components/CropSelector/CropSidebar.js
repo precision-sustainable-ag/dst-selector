@@ -937,12 +937,14 @@ const CropSidebarComponent = (props) => {
                       />
                     </ListItem>
                     {dateRangeOpen ? (
-                      <ListItem style={{ zIndex: 99 }}>
-                        <DateRangePicker
-                          definedRanges={[]}
-                          open={dateRangeOpen}
-                          onChange={(range) => setDateRange(range)}
-                        />
+                      <ListItem>
+                        <div style={{ zIndex: 999 }}>
+                          <DateRangePicker
+                            definedRanges={[]}
+                            open={dateRangeOpen}
+                            onChange={(range) => setDateRange(range)}
+                          />
+                        </div>
                       </ListItem>
                     ) : (
                       ""
