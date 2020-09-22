@@ -165,7 +165,9 @@ const monthStringBuilder = (vals) => {
   });
 
   // console.log(val);
-  // }
+  // console.log(val.fields["August, Early"]);
+  // console.log(val.fields["September, Mid"]);
+  // };
   return val;
 };
 
