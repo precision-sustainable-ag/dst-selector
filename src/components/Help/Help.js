@@ -12,6 +12,10 @@ import InformationSheetDictionary from "../InformationSheet/InformationSheetDict
 import { CustomStyles } from "../../shared/constants";
 
 const HelpComponent = (props) => {
+  useEffect(() => {
+    document.title = "Help Page";
+  }, []);
+
   // const theme = useTheme();
   // const styles = theme =>({
   //   boxContainerStyle:{
