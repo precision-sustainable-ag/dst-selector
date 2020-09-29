@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useLayoutEffect } from "react";
+import React, { useContext, useEffect, useLayoutEffect, useState } from "react";
 import "../../styles/landing.scss";
 import { Context } from "../../store/Store";
 // import { Typography, Button } from "@material-ui/core";
@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 const Landing = (props) => {
   const [state, dispatch] = useContext(Context);
   const height = props.height - 45;
+  const [containerHeight, setContainerHeight] = useState(props.height);
   const backgroundWrapper = {
     background: `url(${props.bg})`,
     backgroundSize: "cover",
@@ -48,7 +49,8 @@ const Landing = (props) => {
     }
   };
 
-  useLayoutEffect(() => {
+  useEffect(() => {
+    console.log("loaded");
     function updateSize() {
       let documentHeight = document
         .getElementsByTagName("html")[0]
@@ -65,6 +67,7 @@ const Landing = (props) => {
       let containerHeight = documentHeight - (headerHeight + footerHeight) + 7;
       document.getElementById("landingWrapper").style.minHeight =
         containerHeight + "px";
+      setContainerHeight(containerHeight);
     }
     window.addEventListener("resize", updateSize);
     updateSize();
@@ -77,7 +80,7 @@ const Landing = (props) => {
       id="landingWrapper"
       className="d-flex flex-column justify-content-center align-items-center"
       style={{
-        minHeight: height,
+        minHeight: containerHeight,
         background: `url(${props.bg})`,
         backgroundSize: "cover",
       }}
