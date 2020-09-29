@@ -50,6 +50,8 @@ const About = (props) => {
     paddingRight: "0px",
   };
   useEffect(() => {
+    document.title = "About Page";
+
     let parentDocHeight = document
       .getElementById("mainContentWrapper")
       .getBoundingClientRect().height;
@@ -69,6 +71,7 @@ const About = (props) => {
   const handleChange = (newValue) => {
     setValue(newValue);
   };
+
   return (
     <div className="contentWrapper" id="mainContentWrapper">
       <Header logo="neccc_wide_logo_color_web.jpg" />
