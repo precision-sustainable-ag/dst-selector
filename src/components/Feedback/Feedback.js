@@ -2,9 +2,6 @@ import React, { useState, useEffect } from "react";
 import Header from "../Header/header";
 
 const FeedbackComponent = (props) => {
-  useEffect(() => {
-    document.title = "Feedback";
-  }, []);
   return (
     <div className="contentWrapper">
       <Header />
