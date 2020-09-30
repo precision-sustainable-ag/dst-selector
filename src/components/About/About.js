@@ -213,172 +213,204 @@ const RenderContent = ({ value = 0 }) => {
   switch (value) {
     case 0:
       return (
-        <div className="col-12">
-          <Typography variant="body1" align="left">
-            A diverse group of stakeholders including farmers, researchers, and
-            personnel from agribusinesses and NGOs united in 2016 to form the{" "}
-            <a href="http://northeastcovercrops.com" target="_blank">
-              Northeast Cover Crops Council
-            </a>{" "}
-            (NECCC). Our mission is to support and promote the adoption of cover
-            crops and foster the exchange of information, inspiration, and
-            outcome-based research. Decision support tools are an excellent way
-            to integrate the complexity of climate, soil, and management into
-            recommendation systems. Therefore, we first targeted the development
-            of a species selection tool. This tool provides cover crop species
-            recommendations based on grower USDA hardiness zone and cropping
-            system specifics. Our species selection tool was adapted from the
-            Midwest Cover Crop Council and modified and expanded to target needs
-            of producers in the Northeast. This initiative led to the formation
-            of a Species Selector product team consisting of agronomists,
-            informatics researchers, and developers, as well as four Cover Crop
-            Data Verification teams, consisting of approximately 35 NECCC
-            members.
-          </Typography>
-        </div>
+        <>
+          <div className="col-12">
+            <Typography variant="h4" gutterBottom>
+              History and Purpose
+            </Typography>
+          </div>
+          <div className="col-12">
+            <Typography variant="body1" align="left">
+              A diverse group of stakeholders including farmers, researchers,
+              and personnel from agribusinesses and NGOs united in 2016 to form
+              the{" "}
+              <a href="http://northeastcovercrops.com" target="_blank">
+                Northeast Cover Crops Council
+              </a>{" "}
+              (NECCC). Our mission is to support and promote the adoption of
+              cover crops and foster the exchange of information, inspiration,
+              and outcome-based research. Decision support tools are an
+              excellent way to integrate the complexity of climate, soil, and
+              management into recommendation systems. Therefore, we first
+              targeted the development of a species selection tool. This tool
+              provides cover crop species recommendations based on grower USDA
+              hardiness zone and cropping system specifics. Our species
+              selection tool was adapted from the Midwest Cover Crop Council and
+              modified and expanded to target needs of producers in the
+              Northeast. This initiative led to the formation of a Species
+              Selector product team consisting of agronomists, informatics
+              researchers, and developers, as well as four Cover Crop Data
+              Verification teams, consisting of approximately 35 NECCC members.
+            </Typography>
+          </div>
+        </>
       );
     case 1:
       return (
-        <div className="col-12">
-          <Typography variant="body1" align="left" className="pb-4">
-            The data featured in this tool are based on expert opinion. These
-            data represent the collective knowledge and experience of cover crop
-            experts in the Northeast US. Experts, grouped by their USDA
-            hardiness zone, evaluated each cover crop property in the dataset
-            via deliberative discussions in over 70 teleconferences. The zones’
-            decisions on cover crop characteristics, notes regarding nuances and
-            edge/special cases, and framing of ratings were recorded in an
-            online database. A comparative analysis of the data across zones
-            identified areas of inconsistencies which were then addressed in a
-            deliberative intra-regional discussion. This process, in conjunction
-            with feedback from users on the website, ensures the quality and
-            improvement of the data that powers the NECCC Species Selector. You
-            can learn more about the{" "}
-            <a
-              href="https://aginformaticslab.org/cover-crop-decision-tools/"
-              target="_blank"
-            >
-              cover crop data verification process here
-            </a>
-            .
-          </Typography>
-          <Typography variant="body1" align="left" className="pb-4">
-            <b>Data Sources:</b> The cover crop data were adapted from the{" "}
-            <a href="http://mccc.msu.edu" target="_blank">
-              Midwest Cover Crops Council (MCCC) species selector tool
-            </a>
-            . These initial data have been reviewed, modified, and greatly
-            expanded upon by cover crop experts in the Northeast in each{" "}
-            <a
-              href="https://planthardiness.ars.usda.gov/PHZMWeb/"
-              target="_blank"
-            >
-              USDA plant hardiness zone
-            </a>{" "}
-            to best match the cropping system types, goals, and constraints
-            found in our region. Additional data sources adapted for this tool
-            include the{" "}
-            <a href="https://plants.sc.egov.usda.gov/java/" target="_blank">
-              USDA PLANTS database
-            </a>{" "}
-            and a seeding rate calculator developed by USDA NRCS. These data are
-            supplemented by soils data available via{" "}
-            <a href="https://sdmdataaccess.nrcs.usda.gov/" target="_blank">
-              USDA NRCS Soil Data Access
-            </a>
-            , and weather data made available through an API, constructed by the
-            Precision Sustainable Agriculture team, serving{" "}
-            <a href="https://www.nssl.noaa.gov/projects/mrms/" target="_blank">
-              NSSL MRMS
-            </a>{" "}
-            and{" "}
-            <a href="https://ldas.gsfc.nasa.gov/nldas/" target="_blank">
-              NASA NLDAS-2
-            </a>{" "}
-            weather data.
-          </Typography>
-          <Typography variant="body1" align="left" className="pb-4">
-            <b>Data Availability:</b> We are in the process of making our data
-            publicly available via a few mechanisms once we have completed
-            beta-testing and finalized data quality checks. In addition to
-            accessing this data via the NECCC Species Selector Tool, users will
-            be able to download the raw data (spreadsheets) and Species
-            Information Sheets (PDFs).
-          </Typography>
-        </div>
+        <>
+          <div className="col-12">
+            <Typography variant="h4" gutterBottom>
+              Cover Crop Data
+            </Typography>
+          </div>
+          <div className="col-12">
+            <Typography variant="body1" align="left" className="pb-4">
+              The data featured in this tool are based on expert opinion. These
+              data represent the collective knowledge and experience of cover
+              crop experts in the Northeast US. Experts, grouped by their USDA
+              hardiness zone, evaluated each cover crop property in the dataset
+              via deliberative discussions in over 70 teleconferences. The
+              zones’ decisions on cover crop characteristics, notes regarding
+              nuances and edge/special cases, and framing of ratings were
+              recorded in an online database. A comparative analysis of the data
+              across zones identified areas of inconsistencies which were then
+              addressed in a deliberative intra-regional discussion. This
+              process, in conjunction with feedback from users on the website,
+              ensures the quality and improvement of the data that powers the
+              NECCC Species Selector. You can learn more about the{" "}
+              <a
+                href="https://aginformaticslab.org/cover-crop-decision-tools/"
+                target="_blank"
+              >
+                cover crop data verification process here
+              </a>
+              .
+            </Typography>
+            <Typography variant="body1" align="left" className="pb-4">
+              <b>Data Sources:</b> The cover crop data were adapted from the{" "}
+              <a href="http://mccc.msu.edu" target="_blank">
+                Midwest Cover Crops Council (MCCC) species selector tool
+              </a>
+              . These initial data have been reviewed, modified, and greatly
+              expanded upon by cover crop experts in the Northeast in each{" "}
+              <a
+                href="https://planthardiness.ars.usda.gov/PHZMWeb/"
+                target="_blank"
+              >
+                USDA plant hardiness zone
+              </a>{" "}
+              to best match the cropping system types, goals, and constraints
+              found in our region. Additional data sources adapted for this tool
+              include the{" "}
+              <a href="https://plants.sc.egov.usda.gov/java/" target="_blank">
+                USDA PLANTS database
+              </a>{" "}
+              and a seeding rate calculator developed by USDA NRCS. These data
+              are supplemented by soils data available via{" "}
+              <a href="https://sdmdataaccess.nrcs.usda.gov/" target="_blank">
+                USDA NRCS Soil Data Access
+              </a>
+              , and weather data made available through an API, constructed by
+              the Precision Sustainable Agriculture team, serving{" "}
+              <a
+                href="https://www.nssl.noaa.gov/projects/mrms/"
+                target="_blank"
+              >
+                NSSL MRMS
+              </a>{" "}
+              and{" "}
+              <a href="https://ldas.gsfc.nasa.gov/nldas/" target="_blank">
+                NASA NLDAS-2
+              </a>{" "}
+              weather data.
+            </Typography>
+            <Typography variant="body1" align="left" className="pb-4">
+              <b>Data Availability:</b> We are in the process of making our data
+              publicly available via a few mechanisms once we have completed
+              beta-testing and finalized data quality checks. In addition to
+              accessing this data via the NECCC Species Selector Tool, users
+              will be able to download the raw data (spreadsheets) and Species
+              Information Sheets (PDFs).
+            </Typography>
+          </div>
+        </>
       );
 
     case 2:
       return (
-        <div className="col-12">
-          <Typography variant="body1" className="pb-4" align="left">
-            The NECCC tool is a result of a design collaboration between the{" "}
-            <a href="http://www.aginformaticslab.org" target="_blank">
-              Agricultural Informatics Lab
-            </a>
-            , the{" "}
-            <a href="http://www.precisionsustainableag.org" target="_blank">
-              Precision Sustainable Agriculture
-            </a>{" "}
-            team, and the NECCC. We took a user-centered approach to the design
-            of software. In November 2019, we conducted a{" "}
-            <a href="https://aginformaticslab.org/cover-crop-decision-tools/">
-              distributed design sprint to develop a prototype of the user
-              interface
-            </a>{" "}
-            (shown below). This interface was initially tested with 24 potential
-            users at the NECCC annual conference. The tool was subsequently
-            refined and tested with a second round of 20 potential users at the
-            Pennsylvania Association for Sustainable Agriculture Conference in
-            February 2020. This design was ultimately refined over the course of
-            the 2020 development period, and resulted in the tool you now see on
-            this website. We will be conducting user tests this upcoming fall in
-            conjunction with the train-the trainer sessions run by the NECCC (
-            <a href="http://www.northeastcovercrops.com" target="_blank">
-              www.northeastcovercrops.com
-            </a>
-            ).
-          </Typography>
-          <div className="d-flex justify-content-center pb-4">
-            <div className="imageGif">
-              <img
-                style={{ width: "50%" }}
-                src="/images/mockup.gif"
-                alt="Decision Support Tool Mockup"
-              />
-            </div>
+        <>
+          <div className="col-12">
+            <Typography variant="h4" gutterBottom>
+              Tool Design Process
+            </Typography>
           </div>
+          <div className="col-12">
+            <Typography variant="body1" className="pb-4" align="left">
+              The NECCC tool is a result of a design collaboration between the{" "}
+              <a href="http://www.aginformaticslab.org" target="_blank">
+                Agricultural Informatics Lab
+              </a>
+              , the{" "}
+              <a href="http://www.precisionsustainableag.org" target="_blank">
+                Precision Sustainable Agriculture
+              </a>{" "}
+              team, and the NECCC. We took a user-centered approach to the
+              design of software. In November 2019, we conducted a{" "}
+              <a href="https://aginformaticslab.org/cover-crop-decision-tools/">
+                distributed design sprint to develop a prototype of the user
+                interface
+              </a>{" "}
+              (shown below). This interface was initially tested with 24
+              potential users at the NECCC annual conference. The tool was
+              subsequently refined and tested with a second round of 20
+              potential users at the Pennsylvania Association for Sustainable
+              Agriculture Conference in February 2020. This design was
+              ultimately refined over the course of the 2020 development period,
+              and resulted in the tool you now see on this website. We will be
+              conducting user tests this upcoming fall in conjunction with the
+              train-the trainer sessions run by the NECCC (
+              <a href="http://www.northeastcovercrops.com" target="_blank">
+                www.northeastcovercrops.com
+              </a>
+              ).
+            </Typography>
+            <div className="d-flex justify-content-center pb-4">
+              <div className="imageGif">
+                <img
+                  style={{
+                    width: "70%",
+                    boxShadow: "0 0 5px rgb(89, 132, 68)",
+                    borderRadius: "5px",
+                    padding: "1%",
+                  }}
+                  src="/images/mockup.gif"
+                  alt="Decision Support Tool Mockup"
+                />
+              </div>
+            </div>
 
-          <Typography variant="body1" className="pb-4" align="left">
-            <b>Reusability:</b> We designed the user interface components of the
-            Cover Crop Species Selector Tool to be reusable. Each user interface
-            component is composed of smaller components that can be duplicated
-            and used in a variety and multiple contexts. For example the
-            location component is used in two parts of the species selector: the
-            wizard -- the place the user first selects their location, and the
-            green bar -- the place the user can update their location. The
-            location component is made of other small components, including a
-            map, buttons, menus, and input fields. These smaller components are
-            also used in other components. For example, the zone selection menu
-            is used in the location component and in the Cover Crop Explorer. By
-            creating and utilizing reusable components, we have created a
-            consistent user experience and user interface that can be carried
-            over to future Decision Support Tools designed by this team.
-          </Typography>
-          <Typography variant="body1" className="pb-4" align="left">
-            <b>Open Source:</b> Once we have completed beta-testing, any
-            developer creating open source agricultural technologies requiring
-            functionality that is currently featured in the NECCC Species
-            Selector will be able to download our code from GitHub,{" "}
-            <a
-              href="https://aginformaticslab.org/cover-crop-decision-tools/"
-              target="_blank"
-            >
-              as described here
-            </a>
-            , and utilize these components in their projects.
-          </Typography>
-        </div>
+            <Typography variant="body1" className="pb-4" align="left">
+              <b>Reusability:</b> We designed the user interface components of
+              the Cover Crop Species Selector Tool to be reusable. Each user
+              interface component is composed of smaller components that can be
+              duplicated and used in a variety and multiple contexts. For
+              example the location component is used in two parts of the species
+              selector: the wizard -- the place the user first selects their
+              location, and the green bar -- the place the user can update their
+              location. The location component is made of other small
+              components, including a map, buttons, menus, and input fields.
+              These smaller components are also used in other components. For
+              example, the zone selection menu is used in the location component
+              and in the Cover Crop Explorer. By creating and utilizing reusable
+              components, we have created a consistent user experience and user
+              interface that can be carried over to future Decision Support
+              Tools designed by this team.
+            </Typography>
+            <Typography variant="body1" className="pb-4" align="left">
+              <b>Open Source:</b> Once we have completed beta-testing, any
+              developer creating open source agricultural technologies requiring
+              functionality that is currently featured in the NECCC Species
+              Selector will be able to download our code from GitHub,{" "}
+              <a
+                href="https://aginformaticslab.org/cover-crop-decision-tools/"
+                target="_blank"
+              >
+                as described here
+              </a>
+              , and utilize these components in their projects.
+            </Typography>
+          </div>
+        </>
       );
     case 3:
       return (
@@ -413,38 +445,57 @@ const RenderContent = ({ value = 0 }) => {
 
     case 5:
       return (
-        <div className="col-12">
-          <Typography variant="body1" align="left" className="pb-4">
-            This material is based upon work supported by the National Institute
-            of Food and Agriculture, U.S. Department of Agriculture, through the
-            Northeast Sustainable Agriculture Research and Education program
-            under subaward number ENE 16-144. This work has also been supported
-            by a USDA NIFA postdoctoral fellowship (grant # 2016-67012-24711),
-            NIFA SAS CAP grant (project # NC09873), USDA ARS and NRCS, and
-            Purdue University.
-          </Typography>
-        </div>
+        <>
+          <div className="col-12">
+            <Typography variant="h4" gutterBottom>
+              Many Thanks to Our Funders
+            </Typography>
+          </div>
+          <div className="col-12">
+            <Typography variant="body1" align="left" className="pb-4">
+              This material is based upon work supported by the National
+              Institute of Food and Agriculture, U.S. Department of Agriculture,
+              through the Northeast Sustainable Agriculture Research and
+              Education program under subaward number ENE 16-144. This work has
+              also been supported by a USDA NIFA postdoctoral fellowship (grant
+              # 2016-67012-24711), NIFA SAS CAP grant (project # NC09873), USDA
+              ARS and NRCS, and Purdue University.
+            </Typography>
+          </div>
+        </>
       );
 
     case 6:
       return (
-        <div className="col-12 pb-4">
-          <Typography variant="body1" align="left" gutterBottom>
-            For information about the NECCC, the NECCC species selection tool
-            use and data, contact: Victoria Ackroyd, NECCC Program Manager,
-            northeastcovercrops AT gmail DOT com.
-          </Typography>
-          <Typography variant="body1" align="left" gutterBottom>
-            For information about decision support tool design and development
-            of the species selector tool, contact: aginformaticslab AT gmail DOT
-            com.
-          </Typography>
-        </div>
+        <>
+          <div className="col-12">
+            <Typography variant="h4" gutterBottom>
+              Contact Us
+            </Typography>
+          </div>
+          <div className="col-12 pb-4">
+            <Typography variant="body1" align="left" gutterBottom>
+              For information about the NECCC, the NECCC species selection tool
+              use and data, contact: Victoria Ackroyd, NECCC Program Manager,
+              northeastcovercrops AT gmail DOT com.
+            </Typography>
+            <Typography variant="body1" align="left" gutterBottom>
+              For information about decision support tool design and development
+              of the species selector tool, contact: aginformaticslab AT gmail
+              DOT com.
+            </Typography>
+          </div>
+        </>
       );
 
     case 7:
       return (
         <Fragment>
+          <div className="col-12">
+            <Typography variant="h4" gutterBottom>
+              About The Experts
+            </Typography>
+          </div>
           <div className="col-12 pb-4">
             <Typography variant="body1" align="left" className="pb-4">
               The cover crop data in the Species Selector are brought to you by
