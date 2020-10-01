@@ -9,20 +9,23 @@ header('Access-Control-Allow-Methods: GET, POST');
 header("Access-Control-Allow-Headers: X-Requested-With");
 header('Content-Type: application/json');
 $file="csv/phm_us_zipcode.csv";
-$csv= file_get_contents($file);
-$array = array_map("str_getcsv", explode("\n", $csv));
-$data = [];
 
-for($i = 1; $i < count($array); $i++) {
+$fh = fopen($file, "r");
+$zip = intval($_GET['zip']);
 
-    if(intval($array[$i][0]) === intval($_GET['zip'])) {
-        $data['zip'] = $array[$i][0];
-        $data['zone'] = intval($array[$i][1]);
+$csvData = array();
+
+while(($row = fgetcsv($fh, 0, ',')) !== FALSE) {
+
+    if($zip == intval($row[0]) && $row[0] !== "zipcode") {
+
+        $csvData['zip'] = (int) $row[0];
+        $csvData['zone'] = (int) $row[1];
+        break;
     }
 
+
 }
-$json = json_encode($data);
-print_r($json);
 
-
-// print_r($dataArray);
+echo json_encode($csvData);
+?>
