@@ -28,7 +28,16 @@ div.modalParentWrapper {
     display: block;
     top: 5%;
     left: 5%;
-    max-height: 85%;
-    overflow: scroll;
+    // max-height: 85%;
+    // overflow: hidden;
   }
+}
+// Fixed header and scrollable content
+#cover-crop-modal-description {
+  background-color: white;
+  // position: absolute;
+  display: block;
+  max-height: 70vh;
+  width: 100%;
+  overflow: scroll;
 }
