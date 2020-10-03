@@ -11,8 +11,10 @@ import {
 import "../../styles/cropComparisonView.scss";
 import {
   DataTooltip,
+  flipCoverCropName,
   getRating,
   RenderSeedPriceIcons,
+  trimString,
 } from "../../shared/constants";
 import { MonetizationOn, Cancel } from "@material-ui/icons";
 import { Context } from "../../store/Store";
@@ -51,6 +53,10 @@ const MyCoverCropComparisonComponent = (props) => {
   const [sidebarDefs, setSidebarDefs] = useState(sidebarDefinitionsz7);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalData, setModalData] = useState({});
+  const selectedCrops = props.selectedCrops
+    ? props.selectedCrops
+    : state.selectedCrops;
+
   const handleModalOpen = (crop) => {
     // put data inside modal
 
@@ -208,7 +214,7 @@ const MyCoverCropComparisonComponent = (props) => {
         </div>
         <div className="col-xl-9 col-lg-8 col-md-8 comparisonContainer">
           <div className="row pt-3">
-            {props.selectedCrops.map((crop, index) => (
+            {selectedCrops.map((crop, index) => (
               <div className="col-xl-3 col-lg-5" key={index}>
                 <Card className="mainComparisonCard" style={{ width: "100%" }}>
                   <span
@@ -221,7 +227,7 @@ const MyCoverCropComparisonComponent = (props) => {
                     <CardMedia
                       image={
                         crop.data["Image Data"]["Key Thumbnail"]
-                          ? `/images/Cover Crop Photos/${crop.data["Image Data"]["Directory"]}/${crop.data["Image Data"]["Key Thumbnail"]}`
+                          ? `/images/Cover Crop Photos/250/${crop.data["Image Data"]["Key Thumbnail"]}`
                           : "https://placehold.it/100x100?text=Placeholder"
                       }
                       // image="https://placehold.it/100x100"
@@ -251,10 +257,10 @@ const MyCoverCropComparisonComponent = (props) => {
                       className="font-weight-bold "
                       style={{ fontSize: "16pt" }}
                     >
-                      {crop.data["Cover Crop Name"]}
+                      {flipCoverCropName(crop.data["Cover Crop Name"])}
                     </div>
                     <small className="font-italic text-muted">
-                      {crop.data["Scientific Name"]}
+                      {trimString(crop.data["Scientific Name"], 25)}
                     </small>
                     <div>
                       <small className="text-muted">
