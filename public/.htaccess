@@ -9,3 +9,10 @@
   RewriteRule . /index.html [L]
 
 </IfModule>
+
+
+# Add Type JPG
+RewriteEngine On
+RewriteMap  lc int:tolower
+RewriteCond %{REQUEST_URI}\.JPG -f
+RewriteRule ^(.*)\.JPG$ $1.jpg
