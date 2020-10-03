@@ -5,11 +5,13 @@ import { Button, Typography } from "@material-ui/core";
 import { PictureAsPdf, ListAlt, Add } from "@material-ui/icons";
 import MyCoverCropComparisonComponent from "./MyCoverCropComparisonComponent";
 import { downloadAllPDF, downloadAllCSV } from "../../shared/constants";
+import { useHistory } from "react-router-dom";
 
 const MyCoverCropList = (props) => {
   const [state, dispatch] = useContext(Context);
-  const comparisonView = props.comparisonView;
-
+  const comparisonView = props.comparisonView ? props.comparisonView : false;
+  const from = props.from ? props.from : "state";
+  const history = useHistory();
   const redirectToSpeciesSelector = () => {
     dispatch({
       type: "ACTIVATE_SPECIES_SELECTOR_TILE",
@@ -18,6 +20,10 @@ const MyCoverCropList = (props) => {
         myCoverCropActivationFlag: false,
       },
     });
+  };
+
+  const redirectToExplorer = () => {
+    history.replace("/cover-crop-explorer");
   };
 
   const TopBar = ({ comparisonView }) => {
@@ -53,7 +59,11 @@ const MyCoverCropList = (props) => {
 
                 <Button
                   style={{ color: "white" }}
-                  onClick={redirectToSpeciesSelector}
+                  onClick={
+                    from === "myCoverCropListStatic"
+                      ? redirectToExplorer
+                      : redirectToSpeciesSelector
+                  }
                 >
                   <Add /> <span className="pl-2">ADD A CROP</span>
                 </Button>
@@ -62,7 +72,11 @@ const MyCoverCropList = (props) => {
               <div className="col-8">
                 <Button
                   style={{ color: "white" }}
-                  onClick={redirectToSpeciesSelector}
+                  onClick={
+                    from === "myCoverCropListStatic"
+                      ? redirectToExplorer
+                      : redirectToSpeciesSelector
+                  }
                 >
                   <Add /> <span className="pl-2">ADD A CROP</span>
                 </Button>
@@ -80,7 +94,15 @@ const MyCoverCropList = (props) => {
       {state.selectedCrops.length === 0 ? (
         <Typography variant="body1">
           Your list is empty.{" "}
-          <Button onClick={redirectToSpeciesSelector}>Add Crops</Button>
+          <Button
+            onClick={
+              from === "myCoverCropListStatic"
+                ? redirectToExplorer
+                : redirectToSpeciesSelector
+            }
+          >
+            Add Crops
+          </Button>
         </Typography>
       ) : comparisonView ? (
         <Fragment>
