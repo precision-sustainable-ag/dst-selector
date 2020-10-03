@@ -137,7 +137,7 @@ const ExplorerCardView = (props) => {
               <CardMedia
                 image={
                   crop.fields["Image Data"]["Key Thumbnail"]
-                    ? `/images/Cover Crop Photos/${crop.fields["Image Data"]["Directory"]}/${crop.fields["Image Data"]["Key Thumbnail"]}`
+                    ? `/images/Cover Crop Photos/250/${crop.fields["Image Data"]["Key Thumbnail"]}`
                     : "https://placehold.it/100x100?text=Placeholder"
                 }
                 className={classes.media}
