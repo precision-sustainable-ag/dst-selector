@@ -46,21 +46,32 @@ const Header = () => {
     if (state.zipCode !== 0) {
       getUSDAZone(state.zipCode)
         .then((response) => {
-          let data = response.json();
-          data.then((data) => {
-            let zipCode = data.zip;
-            let zone = data.zone;
+          if (response.ok) {
+            let data = response.json();
+            data.then((data) => {
+              let zipCode = data.zip;
+              let zone = data.zone;
 
-            if (state.zipCode === parseInt(zipCode)) {
-              dispatch({
-                type: "UPDATE_ZONE",
-                data: {
-                  zoneText: `Zone ${zone}`,
-                  zone: parseInt(zone),
-                },
-              });
-            }
-          });
+              if (state.zipCode === parseInt(zipCode)) {
+                if (zone <= 7 && zone >= 4) {
+                  dispatch({
+                    type: "UPDATE_ZONE",
+                    data: {
+                      zoneText: `Zone ${zone}`,
+                      zone: parseInt(zone),
+                    },
+                  });
+                } else {
+                  alert(
+                    "Error: Zones 8-11 do not occur in the Northeast US and so are not supported by this tool. If you wish to explore the data, we suggest loading Zone 7."
+                  );
+                }
+              } else {
+              }
+            });
+          } else {
+            console.error(response);
+          }
         })
         .catch((e) => {
           console.error(e);
@@ -376,6 +387,21 @@ const Header = () => {
         });
       }
     } else {
+      // if (state.selectedCrops.length > 0) {
+      //   dispatch({
+      //     type: "ACTIVATE_MY_COVER_CROP_LIST_TILE",
+      //     data: {
+      //       myCoverCropActivationFlag: true,
+      //       speciesSelectorActivationFlag: false,
+      //     },
+      //   });
+      //   dispatch({
+      //     type: "JUMP_SPECIES_PROGRESS",
+      //   });
+      //   history.push("/");
+      // } else {
+      //   history.push("/");
+      // }
       history.push("/");
     }
   };
@@ -416,7 +442,25 @@ const Header = () => {
   //     console.log(culledCrops.length);
   //   }
   // }, [window.localStorage.getItem("drainage"), state.cropData]);
-
+  const RenderMyCoverCropListButtons = () => {
+    return (
+      <Badge
+        badgeContent={
+          state.selectedCrops.length > 0 ? state.selectedCrops.length : 0
+        }
+        color={"error"}
+      >
+        <Button
+          className={
+            window.location.pathname === "/my-cover-crop-list" ? "active" : ""
+          }
+          onClick={() => history.push("/my-cover-crop-list")}
+        >
+          My Cover Crop List
+        </Button>
+      </Badge>
+    );
+  };
   return redirectToRoot ? (
     <Redirect to="/" />
   ) : (
@@ -499,7 +543,9 @@ const Header = () => {
           SPECIES SELECTOR TOOL
         </Button>
 
-        {state.progress >= 5 || state.selectedCrops.length > 0 ? (
+        {window.location.pathname === "/" &&
+        state.selectedCrops.length > 0 &&
+        state.progress >= 5 ? (
           <Badge
             badgeContent={
               state.selectedCrops.length > 0 ? state.selectedCrops.length : 0
@@ -522,6 +568,45 @@ const Header = () => {
         ) : (
           ""
         )}
+        {/* My Cover Crop List As A Separate Component/Route  */}
+        {window.location.pathname !== "/" ? (
+          state.progress.length < 5 ? (
+            state.selectedCrops.length > 0 ? (
+              <RenderMyCoverCropListButtons />
+            ) : (
+              ""
+            )
+          ) : state.selectedCrops.length > 0 ? (
+            <RenderMyCoverCropListButtons />
+          ) : (
+            ""
+          )
+        ) : (
+          ""
+        )}
+        {/* {window.location.pathname !== "/" &&
+        state.selectedCrops.length > 0 &&
+        state.progress < 5 ? (
+          <Badge
+            badgeContent={
+              state.selectedCrops.length > 0 ? state.selectedCrops.length : 0
+            }
+            color={"error"}
+          >
+            <Button
+              className={
+                window.location.pathname === "/my-cover-crop-list"
+                  ? "active"
+                  : ""
+              }
+              onClick={() => history.push("/my-cover-crop-list")}
+            >
+              My Cover Crop List
+            </Button>
+          </Badge>
+        ) : (
+          ""
+        )} */}
       </div>
 
       <MDBNavbar light className="ham-navWrapper">
