@@ -50,7 +50,7 @@ const Landing = (props) => {
   };
 
   useEffect(() => {
-    console.log("loaded");
+    document.title = props.title;
     function updateSize() {
       let documentHeight = document
         .getElementsByTagName("html")[0]
