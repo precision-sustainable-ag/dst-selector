@@ -1435,11 +1435,15 @@ export const CropImage = ({
 };
 
 export const flipCoverCropName = (cropName = "") => {
-  let cropNames = cropName.split(",");
-
-  if (cropNames.length > 1) {
-    return `${cropNames[1]} ${cropNames[0]}`;
+  if (cropName.toLowerCase() === "Sorghum-sudangrass".toLowerCase()) {
+    return "Sudex";
   } else {
-    return cropName;
+    let cropNames = cropName.split(",");
+
+    if (cropNames.length > 1) {
+      return `${cropNames[1]} ${cropNames[0]}`;
+    } else {
+      return cropName;
+    }
   }
 };
