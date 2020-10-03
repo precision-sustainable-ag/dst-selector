@@ -50,26 +50,9 @@ footer {
   display: flex;
   flex-direction: column;
   height: 100%;
+  justify-content: space-between;
 }
 
 button {
   outline: none !important;
 }
-// .modalContainer {
-// }
-
-// @include screen(100px, 640px) {
-//   .boxContainerRow {
-//     text-align: left;
-//     padding: 0px;
-//     width: 100%;
-//     box-shadow: none;
-//   }
-// }
-
-// ipads and other tablets
-// @include screen(641px, 1366px) {
-// div.contentWrapper {
-
-// }
-// }
