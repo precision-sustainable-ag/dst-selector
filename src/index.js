@@ -27,6 +27,7 @@ import {
 import { CustomStyles } from "./shared/constants";
 import { SnackbarProvider } from "notistack";
 import InformationSheetDictionary from "./components/InformationSheet/InformationSheetDictionary";
+import MyCoverCropListWrapper from "./components/MyCoverCropList/MyCoverCropListWrapper";
 
 const withFooter = (WrappedComponent) => () => [
   <WrappedComponent key="1" />,
@@ -99,39 +100,7 @@ const RouteNotFound = () => {
 
 const csTheme = responsiveFontSizes(theme, {
   breakpoints: ["xs", "sm", "md", "lg", "xl"],
-  // variants: ["body1", "body2", "h1", "h2", "h3", "h4", "h5", "h6", "button", "caption", "subtitle1", "subtitle2"]
 });
-
-// csTheme.typography.body1 = {
-//   fontSize: "1rem",
-//   [theme.breakpoints.up("xl")]: {
-//     fontSize: "1.5rem !important",
-//   },
-// };
-// csTheme.typography.body2 = {
-//   fontSize: "1rem",
-//   [theme.breakpoints.up("xl")]: {
-//     fontSize: "1.5rem !important",
-//   },
-// };
-
-// csTheme.typography.h6 = {
-//   [theme.breakpoints.up("xl")]: {
-//     fontSize: "2rem !important",
-//   },
-// };
-
-// csTheme.typography.h4 = {
-//   [theme.breakpoints.up("xl")]: {
-//     fontSize: "3rem !important",
-//   },
-// };
-// csTheme.typography.button = {
-//   [theme.breakpoints.up("xl")]: {
-//     ...csTheme.typography.button,
-//     fontSize: "1.5rem !important",
-//   },
-// };
 
 const Wrapper = () => (
   <MuiThemeProvider theme={csTheme}>
@@ -150,6 +119,11 @@ const Wrapper = () => (
               <Route path={"/about"} component={About} exact />
               <Route path={"/help"} component={HelpComponent} exact />
               <Route path={"/feedback"} component={FeedbackComponent} exact />
+              <Route
+                path={"/my-cover-crop-list"}
+                component={MyCoverCropListWrapper}
+                exact
+              />
               {/* <Route
                 path={"/information-sheet"}
                 component={InformationSheet}
