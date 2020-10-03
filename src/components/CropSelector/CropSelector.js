@@ -438,7 +438,7 @@ const CropSelector = (props) => {
   return (
     <div className="container-fluid mt-2">
       <div className="row cropSelectorRow mt-3">
-        <div className="col-xl-3 col-lg-3 col-md-4 col-sm-12 col-lg-3">
+        <div className="col-md-2 col-sm-12">
           <CropSidebarComponent
             sortEnvTolCropData={sortEnvTolCropData}
             setGrowthWindow={setShowGrowthWindow}
@@ -462,7 +462,7 @@ const CropSelector = (props) => {
           />
         </div>
 
-        <div className="col-xl-9 col-lg-9 col-md-8 col-sm-12 col-lg-9">
+        <div className="col-md-10 col-sm-12">
           {state.speciesSelectorActivationFlag ? (
             isListView ? (
               <CropTableComponent
