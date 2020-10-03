@@ -34,9 +34,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const LocationComponent = () => {
+const LocationComponent = ({ title }) => {
   const classes = useStyles();
   const [state, dispatch] = useContext(Context);
+
+  useEffect(() => {
+    document.title = title;
+  }, [title]);
 
   const handleAddressChangeByText = (event) => {
     console.log(event.target.value);
