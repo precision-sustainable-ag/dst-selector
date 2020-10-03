@@ -104,32 +104,46 @@ const LiveLocationComponent = () => {
       })
       .then((zone) => {
         // check if zone is in the NECCC range else set a default
-        if (zone <= 7 && zone > 1) {
-          if (zone === 2 || zone === 3) {
-            dispatch({
-              type: "UPDATE_ZONE_TEXT",
-              data: {
-                zoneText: "Zone 2 & 3",
-                zone: 2,
-              },
-            });
-          } else {
-            dispatch({
-              type: "UPDATE_ZONE_TEXT",
-              data: {
-                zoneText: `Zone ${zone}`,
-                zone: parseInt(zone),
-              },
-            });
-          }
-        } else {
+        // if (zone <= 7 && zone > 1) {
+        //   if (zone === 2 || zone === 3) {
+        //     dispatch({
+        //       type: "UPDATE_ZONE_TEXT",
+        //       data: {
+        //         zoneText: "Zone 2 & 3",
+        //         zone: 2,
+        //       },
+        //     });
+        //   } else {
+        //     dispatch({
+        //       type: "UPDATE_ZONE_TEXT",
+        //       data: {
+        //         zoneText: `Zone ${zone}`,
+        //         zone: parseInt(zone),
+        //       },
+        //     });
+        //   }
+        // } else {
+        //   dispatch({
+        //     type: "UPDATE_ZONE_TEXT",
+        //     data: {
+        //       zoneText: "Zone 7",
+        //       zone: 7,
+        //     },
+        //   });
+        // }
+
+        if (zone <= 7 && zone >= 4) {
           dispatch({
-            type: "UPDATE_ZONE_TEXT",
+            type: "UPDATE_ZONE",
             data: {
-              zoneText: "Zone 7",
-              zone: 7,
+              zoneText: `Zone ${zone}`,
+              zone: parseInt(zone),
             },
           });
+        } else {
+          alert(
+            "Error: Zones 8-11 do not occur in the Northeast US and so are not supported by this tool. If you wish to explore the data, we suggest loading Zone 7."
+          );
         }
       });
   };
