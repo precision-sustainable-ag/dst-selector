@@ -10,7 +10,7 @@ import Typography from "@material-ui/core/Typography";
 import { Context } from "../../store/Store";
 import CropDetailsModalComponent from "../CropSelector/CropDetailsModal";
 import { useSnackbar } from "notistack";
-import { trimString } from "../../shared/constants";
+import { flipCoverCropName, trimString } from "../../shared/constants";
 
 const useStyles = makeStyles({
   card: {
@@ -74,7 +74,7 @@ const MyCoverCropCardsComponent = (props) => {
         <CardMedia
           image={
             data["Image Data"]["Key Thumbnail"]
-              ? `/images/Cover Crop Photos/${data["Image Data"]["Directory"]}/${data["Image Data"]["Key Thumbnail"]}`
+              ? `/images/Cover Crop Photos/250/${data["Image Data"]["Key Thumbnail"]}`
               : "https://placehold.it/100x100?text=Placeholder"
           }
           className={classes.media}
@@ -91,7 +91,7 @@ const MyCoverCropCardsComponent = (props) => {
             variant="h6"
             className="font-weight-bold text-capitalize text-truncate"
           >
-            {data["Cover Crop Name"]}
+            {flipCoverCropName(data["Cover Crop Name"])}
           </Typography>
           <small className="font-italic text-muted">
             {trimString(data["Scientific Name"], 25)}
