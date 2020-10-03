@@ -14,15 +14,40 @@ import CropSelector from "./components/CropSelector/CropSelector";
 const LoadRelevantRoute = ({ progress, calcHeight }) => {
   switch (progress) {
     case 1:
-      return <LocationComponent height={calcHeight} />;
+      return (
+        <LocationComponent
+          height={calcHeight}
+          title="Species Selector Tool | Decision Support Tool"
+        />
+      );
     case 2:
-      return <LocationConfirmation height={calcHeight} />;
+      return (
+        <LocationConfirmation
+          height={calcHeight}
+          title="Species Selector Tool | Decision Support Tool"
+        />
+      );
     case 3:
-      return <LocationConfirmation height={calcHeight} />;
+      return (
+        <LocationConfirmation
+          height={calcHeight}
+          title="Species Selector Tool | Decision Support Tool"
+        />
+      );
     case 4:
-      return <GoalsSelector height={calcHeight} />;
+      return (
+        <GoalsSelector
+          height={calcHeight}
+          title="Species Selector Tool | Decision Support Tool"
+        />
+      );
     case 5:
-      return <CropSelector height={calcHeight} />;
+      return (
+        <CropSelector
+          height={calcHeight}
+          title="Species Selector Tool | Decision Support Tool"
+        />
+      );
 
     default:
       return <RouteNotFound height={calcHeight} />;
@@ -73,7 +98,11 @@ const App = () => {
           }
         >
           {state.progress === 0 ? (
-            <Landing height={calcHeight} bg="/images/cover-crop-field.png" />
+            <Landing
+              title="Decision Support Tool"
+              height={calcHeight}
+              bg="/images/cover-crop-field.png"
+            />
           ) : (
             <div
               className="col-12"
