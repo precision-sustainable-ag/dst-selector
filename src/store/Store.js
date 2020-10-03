@@ -196,6 +196,7 @@ const initialState = {
   zipCode: 0,
   markersCopy: [],
   markers: [[40.78489145, -74.80733626930342]],
+  // markers: [[]],
   // markers: [[39.0255, -76.924]],
   // markers: [
   //   [42.43893008983507, -71.6220123358556],

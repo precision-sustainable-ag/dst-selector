@@ -11,6 +11,9 @@ const Reducer = (state, action) => {
         break;
       }
     }
+    case "JUMP_SPECIES_PROGRESS": {
+      return { ...state, progress: 5 };
+    }
     case "WEATHER_DATA_RESET": {
       return { ...state, weatherDataReset: action.data.weatherDataReset };
     }
