@@ -18,10 +18,10 @@ import InformationSheetContent from "../InformationSheet/InformationSheetContent
 // import html2canvas from "html2canvas";
 const useStyles = makeStyles((theme) => ({
   modal: {
-    position: "absolute",
-    top: "10%",
-    left: "10%",
-    overflow: "scroll",
+    // position: "absolute",
+    // top: "10%",
+    // left: "10%",
+    // overflow: "",
     height: "100%",
     display: "block",
     // display: "block",
@@ -176,8 +176,8 @@ const CropDetailsModalComponent = (props) => {
 
   return (
     <Modal
-      aria-labelledby="transition-modal-title"
-      aria-describedby="ransition-modal-description"
+      aria-labelledby="coover-crop-modal-title"
+      aria-describedby="cover-crop-modal-description"
       className={classes.modal}
       open={props.modalOpen}
       onClose={handleModalClose}
@@ -188,6 +188,7 @@ const CropDetailsModalComponent = (props) => {
       }}
       disableBackdropClick={false}
       disableEscapeKeyDown={false}
+
       // id={`modal-${props.crop.fields["id"]}`}
     >
       <Fade in={props.modalOpen}>
@@ -227,7 +228,10 @@ const CropDetailsModalComponent = (props) => {
                     <div className="row">
                       <div className="col mt-2">
                         <div>{modalData.fields["Cover Crop Group"]}</div>
-                        <div className="font-weight-bold">
+                        <div
+                          className="font-weight-bold"
+                          id="cover-crop-modal-title"
+                        >
                           {modalData.fields["Cover Crop Name"]}
                         </div>
                         <div>{modalData.fields["Scientific Name"]}</div>
@@ -323,7 +327,7 @@ const CropDetailsModalComponent = (props) => {
                     </div>
                   </div>
                 </div>
-                <div className="">
+                <div className="" id="cover-crop-modal-description">
                   <InformationSheetContent crop={crop.fields} from="modal" />
                 </div>
               </div>
