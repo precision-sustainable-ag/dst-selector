@@ -5,6 +5,12 @@
     "Notes": null,
     "Directory": "Alfalfa"
   },
+  "Alfalfa, Dormant": {
+    "Cover Crop": "Alfalfa",
+    "Key Thumbnail": "Alfalfa_mature_Ziegler_2020.jpg",
+    "Notes": null,
+    "Directory": "Alfalfa"
+  },
   "Barley, Spring": {
     "Cover Crop": "Barley, Spring",
     "Key Thumbnail": "Barley_flowering_Brouillette_2020.jpg",
@@ -132,6 +138,12 @@
     "Directory": "Oats"
   },
   "Oats, Winter": {
+    "Cover Crop": "Oats, Winter",
+    "Key Thumbnail": "Oats_mature_Bjorkman_2020.jpg",
+    "Notes": "In Oats Directory",
+    "Directory": "Oats"
+  },
+  "Oats": {
     "Cover Crop": "Oats, Winter",
     "Key Thumbnail": "Oats_mature_Bjorkman_2020.jpg",
     "Notes": "In Oats Directory",
