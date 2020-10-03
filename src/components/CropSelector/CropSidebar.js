@@ -650,7 +650,43 @@ const CropSidebarComponent = (props) => {
   const [dateRanges, setDateRanges] = React.useState([
     { startDate: new Date(), endDate: new Date(), key: "selection" },
   ]);
-  return (
+  return props.from === "myCoverCropListStatic" ? (
+    <div className="row">
+      <div className="col-12 mb-3">
+        <Button
+          className="dynamicToggleBtn"
+          fullWidth
+          variant="contained"
+          onClick={props.toggleComparisonView}
+          size="large"
+          color="secondary"
+          startIcon={
+            props.comparisonView ? (
+              <ListIcon style={{ fontSize: "larger" }} />
+            ) : (
+              <Compare style={{ fontSize: "larger" }} />
+            )
+          }
+        >
+          {props.comparisonView ? "LIST VIEW" : "COMPARISON VIEW"}
+        </Button>
+      </div>
+      {props.comparisonView ? (
+        <div className="col-12">
+          <ComparisonBar
+            {...props}
+            classes={classes}
+            filterData={filterData}
+            goals={state.selectedGoals.length > 0 ? state.selectedGoals : []}
+            comparisonKeys={state.comparisonKeys}
+            dispatch={dispatch}
+          />
+        </div>
+      ) : (
+        ""
+      )}
+    </div>
+  ) : (
     <div className="row">
       {state.myCoverCropActivationFlag && props.from === "table" ? (
         <div
@@ -740,7 +776,8 @@ const CropSidebarComponent = (props) => {
                       <TextField
                         fullWidth
                         color="secondary"
-                        label="Search Cover Crop Name"
+                        label="Cover Crop Name"
+                        helperText="Search by cover crop name"
                         value={props.coverCropName}
                         onInput={props.covercropsNamesFilter}
                       />
@@ -938,7 +975,7 @@ const CropSidebarComponent = (props) => {
                     </ListItem>
                     {dateRangeOpen ? (
                       <ListItem>
-                        <div style={{ zIndex: 999 }}>
+                        <div className="z-999">
                           <DateRangePicker
                             definedRanges={[]}
                             open={dateRangeOpen}
@@ -1048,7 +1085,8 @@ const CropSidebarComponent = (props) => {
                         <TextField
                           fullWidth
                           color="secondary"
-                          label="Search Cover Crop Name"
+                          label="Cover Crop Name"
+                          helperText="Search by cover crop name"
                           value={props.searchValue}
                           onChange={props.handleSearchChange}
                         />
