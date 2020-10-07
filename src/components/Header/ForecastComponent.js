@@ -66,20 +66,24 @@ const ForecastComponent = () => {
 
       let apiCall = callWeatherApi(apiBaseURL, latlng);
 
-      apiCall.then((data) => {
-        let iconId = data.weather[0].icon;
-        let iconDescription = new String(data.weather[0].description);
+      apiCall
+        .then((data) => {
+          let iconId = data.weather[0].icon;
+          let iconDescription = new String(data.weather[0].description);
 
-        let tempObj = {
-          min: data.main.temp_min,
-          max: data.main.temp_max,
-          unit: "F",
-          iconURL: `https://openweathermap.org/img/w/${iconId}.png`,
-          iconDescription: iconDescription,
-        };
-        setTemp(tempObj);
-        setShowTempIcon(false);
-      });
+          let tempObj = {
+            min: data.main.temp_min,
+            max: data.main.temp_max,
+            unit: "F",
+            iconURL: `https://openweathermap.org/img/w/${iconId}.png`,
+            iconDescription: iconDescription,
+          };
+          setTemp(tempObj);
+          setShowTempIcon(false);
+        })
+        .catch((e) => {
+          console.error(e);
+        });
 
       // if (state.address === "") {
       let data = reverseGEO(latlng[0], latlng[1]);
