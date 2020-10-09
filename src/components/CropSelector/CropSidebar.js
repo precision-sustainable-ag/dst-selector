@@ -583,9 +583,9 @@ const CropSidebarComponent = (props) => {
             startDate: moment(
               new Date(dateRange.startDate).toISOString(),
               "YYYY-MM-DD"
-            ).format("MM/DD"),
+            ).format("YYYY-MM-DD"),
             endDate: moment(new Date(dateRange.endDate).toISOString()).format(
-              "MM/DD"
+              "YYYY-MM-DD"
             ),
           },
         });
@@ -952,7 +952,19 @@ const CropSidebarComponent = (props) => {
                     <ListItem className={classes.nested}>
                       <TextField
                         label="Planting to Harvest"
-                        value={`${state.cashCropData.dateRange.startDate} - ${state.cashCropData.dateRange.endDate}`}
+                        value={`${
+                          state.cashCropData.dateRange.startDate
+                            ? moment(
+                                state.cashCropData.dateRange.startDate
+                              ).format("MM/D")
+                            : ""
+                        } - ${
+                          state.cashCropData.dateRange.endDate
+                            ? moment(
+                                state.cashCropData.dateRange.endDate
+                              ).format("MM/D")
+                            : ""
+                        }`}
                         fullWidth
                         onClick={() => setDateRangeOpen(!dateRangeOpen)}
                         margin="dense"
