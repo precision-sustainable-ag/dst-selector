@@ -13,12 +13,12 @@ const GrowthWindowComponent = (props) => {
   let cropData = props.data;
   let month = props.month;
   let id = props.id;
-  let cropLegendObj = {
-    Early: "",
-    Mid: "",
+  const [cropLegendObj, setCropLegendObj] = useState({
+    Early: [],
+    Mid: [],
     class: "",
     isCashCropMonth: false,
-  };
+  });
 
   var fullMonth = moment().localeData().months();
 
@@ -31,6 +31,11 @@ const GrowthWindowComponent = (props) => {
       ? cropData[`${fullMonth[id]}, Mid`]
       : [];
 
+    // debug
+    if (cropData["Cover Crop Name"] === "Oats, Spring") {
+      console.log(cropData[`${fullMonth[id]}, Early`]);
+    }
+
     if (
       state.cashCropData.dateRange.startDate !== "" &&
       state.cashCropData.dateRange.endDate !== ""
@@ -39,26 +44,35 @@ const GrowthWindowComponent = (props) => {
         id >= state.cashCropData.dateRange.startDate - 1 ||
         id <= state.cashCropData.dateRange.endDate - 1
       ) {
-        cropLegendObj.isCashCropMonth = true;
+        // cropLegendObj.isCashCropMonth = true;
+        setCropLegendObj({ ...cropLegendObj, isCashCropMonth: true });
       } else {
-        cropLegendObj.isCashCropMonth = false;
+        // cropLegendObj.isCashCropMonth = false;
+        setCropLegendObj({ ...cropLegendObj, isCashCropMonth: false });
       }
     }
 
     if (cropDataLegendLabel_Early || cropDataLegendLabel_Mid) {
       if (cropDataLegendLabel_Early) {
-        cropLegendObj.Early = cropDataLegendLabel_Early;
+        // cropLegendObj.Early = cropDataLegendLabel_Early;
+        setCropLegendObj({
+          ...cropLegendObj,
+          Early: cropDataLegendLabel_Early,
+        });
       } else {
         cropLegendObj.Early = "";
       }
       if (cropDataLegendLabel_Mid) {
-        cropLegendObj.Mid = cropDataLegendLabel_Mid;
+        // cropLegendObj.Mid = cropDataLegendLabel_Mid;
+        setCropLegendObj({ ...cropLegendObj, Mid: cropDataLegendLabel_Mid });
       } else {
         cropLegendObj.Mid = "";
       }
     } else {
-      cropLegendObj.Early = "";
-      cropLegendObj.Mid = "";
+      // cropLegendObj.Early = "";
+      // cropLegendObj.Mid = "";
+      setCropLegendObj({ ...cropLegendObj, Early: cropDataLegendLabel_Early });
+      setCropLegendObj({ ...cropLegendObj, Mid: cropDataLegendLabel_Mid });
     }
   };
 
@@ -74,60 +88,68 @@ const GrowthWindowComponent = (props) => {
     }
   };
 
-  switch (month) {
-    case 0: {
-      setMonthVals(0);
+  useEffect(() => {
+    if (props.data["Cover Crop Name"] === "Oats, Spring") {
+      console.log(cropLegendObj);
+    }
+  }, [cropLegendObj]);
 
-      break;
+  useEffect(() => {
+    switch (month) {
+      case 0: {
+        setMonthVals(0);
+
+        break;
+      }
+      case 1: {
+        setMonthVals(1);
+        break;
+      }
+      case 2: {
+        setMonthVals(2);
+        break;
+      }
+      case 3: {
+        setMonthVals(3);
+        break;
+      }
+      case 4: {
+        setMonthVals(4);
+        break;
+      }
+      case 5: {
+        setMonthVals(5);
+        break;
+      }
+      case 6: {
+        setMonthVals(6);
+        break;
+      }
+      case 7: {
+        setMonthVals(7);
+        break;
+      }
+      case 8: {
+        setMonthVals(8);
+      }
+      case 9: {
+        setMonthVals(9);
+        break;
+      }
+      case 10: {
+        setMonthVals(10);
+        break;
+      }
+      case 11: {
+        setMonthVals(11);
+        break;
+      }
+      default: {
+        setMonthVals(0);
+        break;
+      }
     }
-    case 1: {
-      setMonthVals(1);
-      break;
-    }
-    case 2: {
-      setMonthVals(2);
-      break;
-    }
-    case 3: {
-      setMonthVals(3);
-      break;
-    }
-    case 4: {
-      setMonthVals(4);
-      break;
-    }
-    case 5: {
-      setMonthVals(5);
-      break;
-    }
-    case 6: {
-      setMonthVals(6);
-      break;
-    }
-    case 7: {
-      setMonthVals(7);
-      break;
-    }
-    case 8: {
-      setMonthVals(8);
-    }
-    case 9: {
-      setMonthVals(9);
-      break;
-    }
-    case 10: {
-      setMonthVals(10);
-      break;
-    }
-    case 11: {
-      setMonthVals(11);
-      break;
-    }
-    default: {
-      setMonthVals(0);
-      break;
-    }
-  }
+  }, []);
 
   return from === "calendar" ? (
     <td
