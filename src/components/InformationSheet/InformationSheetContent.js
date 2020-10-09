@@ -3,6 +3,7 @@ import {
   getRating,
   RenderSeedPriceIcons,
   allMonths,
+  getActiveCropMonths,
 } from "../../shared/constants";
 import { Typography, AccordionDetails, makeStyles } from "@material-ui/core";
 import SoilDrainageTimeline from "./SoilDrainageTimeline";
@@ -20,6 +21,7 @@ import GrowthWindowComponent from "../CropSelector/GrowthWindow";
 import sources from "./sources.json";
 import moment from "moment-timezone";
 import { Context } from "../../store/Store";
+import CropSelectorCalendarView from "../CropSelector/CropSelectorCalendarView";
 
 const Accordion = withStyles({
   root: {
@@ -842,7 +844,7 @@ const InformationSheetContent = (props) => {
             </div>
             <div className="row col-12 text-right">
               <div className="col-12">
-                <table style={{ width: "100%", height: "40px" }}>
+                {/* <table style={{ width: "100%", height: "40px" }}>
                   <tbody>
                     <tr>
                       {allMonths.map((month, index) => (
@@ -861,7 +863,8 @@ const InformationSheetContent = (props) => {
                       ))}
                     </tr>
                   </tbody>
-                </table>
+                </table> */}
+                <CropSelectorCalendarView data={crop} from={"infosheet"} />
               </div>
               <div className="col-12 row d-none d-print-block text-left">
                 <div className="col-12 legendModalRow">
@@ -1855,65 +1858,26 @@ const InformationSheetContent = (props) => {
                     <table style={{ width: "100%", height: "40px" }}>
                       <tbody>
                         <tr>
-                          {allMonths.map((month, index) => {
-                            let summerMonths = ["Jun", "Jul", "Aug"];
-                            let winterMonths = ["Dec", "Jan", "Feb"];
-                            let springMonths = ["Mar", "Apr", "May"];
-                            let fallMonths = ["Sep", "Oct", "Nov"];
-                            let activeMonths = [];
-
-                            const getBackground = () => {
-                              if (
-                                crop["Active Growth Period"].includes("Winter")
-                              ) {
-                                activeMonths.push("Dec");
-                                activeMonths.push("Jan");
-                                activeMonths.push("Feb");
-                              }
-                              if (
-                                crop["Active Growth Period"].includes("Summer")
-                              ) {
-                                activeMonths.push("Jun");
-                                activeMonths.push("Jul");
-                                activeMonths.push("Aug");
-                              }
-
-                              if (
-                                crop["Active Growth Period"].includes("Fall")
-                              ) {
-                                activeMonths.push("Sep");
-                                activeMonths.push("Oct");
-                                activeMonths.push("Nov");
-                              }
-
-                              if (
-                                crop["Active Growth Period"].includes("Spring")
-                              ) {
-                                activeMonths.push("Mar");
-                                activeMonths.push("Apr");
-                                activeMonths.push("May");
-                              }
-                              return activeMonths;
-                            };
-                            return (
-                              <td
-                                style={{
-                                  background: getBackground().includes(month)
-                                    ? `#598445`
-                                    : `#f0f7eb`,
-                                  // width: "100%",
-                                  height: "20px",
-                                  borderRight: `${
-                                    month !== "Dec" ? `2px solid white` : ``
-                                  }`,
-                                }}
-                                key={`growth-${index}`}
-                              ></td>
-                            );
-                          })}
-                        </tr>
-                        <tr>
                           {allMonths.map((month, index) => (
+                            <td
+                              style={{
+                                background: getActiveCropMonths(crop).includes(
+                                  month
+                                )
+                                  ? `#598445`
+                                  : `#f0f7eb`,
+                                // width: "100%",
+                                height: "20px",
+                                borderRight: `${
+                                  month !== "Dec" ? `2px solid white` : ``
+                                }`,
+                              }}
+                              key={`growth-${index}`}
+                            ></td>
+                          ))}
+                        </tr>
+                        <tr style={{ borderTop: "2px solid white" }}>
+                          {/* {allMonths.map((month, index) => (
                             <GrowthWindowComponent
                               from="infosheet"
                               data={crop}
@@ -1921,7 +1885,11 @@ const InformationSheetContent = (props) => {
                               id={`growthCell${index}`}
                               month={index}
                             />
-                          ))}
+                          ))} */}
+                          <CropSelectorCalendarView
+                            data={{ fields: crop }}
+                            from={"infosheet"}
+                          />
                         </tr>
                         <tr>
                           {allMonths.map((month, index) => {

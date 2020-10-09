@@ -41,6 +41,7 @@ import {
   AcUnit,
 } from "@material-ui/icons";
 import CropDetailsModalComponent from "./CropDetailsModal";
+import CropSelectorCalendarView from "./CropSelectorCalendarView";
 // import RenderCashCropOverlay from "./RenderCashCropOverlay";
 const growthIcon = {
   color: "white",
@@ -342,7 +343,7 @@ const CropCalendarViewComponent = (props) => {
               </TableCell>
             )}
 
-            {allMonths.map((month, index) => (
+            {/* {allMonths.map((month, index) => (
               <GrowthWindowComponent
                 from="calendar"
                 data={crop.fields}
@@ -350,7 +351,10 @@ const CropCalendarViewComponent = (props) => {
                 id={`growthCell${index}`}
                 month={index}
               />
-            ))}
+            ))} */}
+            <TableCell colSpan="12">
+              <CropSelectorCalendarView from="calendar" data={crop} />
+            </TableCell>
 
             <TableCell
               style={{
