@@ -38,11 +38,12 @@ import {
   KeyboardArrowUp,
   Sort,
 } from "@material-ui/icons";
-import GrowthWindowComponent from "./GrowthWindow";
+// import GrowthWindowComponent from "./GrowthWindow";
 import "../../styles/cropCalendarViewComponent.scss";
 import CropDetailsModalComponent from "./CropDetailsModal";
-import useScrollTrigger from "@material-ui/core/useScrollTrigger";
+// import useScrollTrigger from "@material-ui/core/useScrollTrigger";
 import CropLegendModal from "./CropLegendModal";
+import CropSelectorCalendarView from "./CropSelectorCalendarView";
 
 const CropTableComponent = (props) => {
   // let cropTableElement = document.getElementById("#primaryCropTable");
@@ -228,39 +229,7 @@ const CropTableComponent = (props) => {
           : ""}
         {showGrowthWindow ? (
           <TableCell style={goalsLength === 0 ? { width: "50%" } : {}}>
-            <table style={{ width: "100%", height: "40px" }}>
-              <tbody>
-                <tr>
-                  {allMonths.map((month, index) => (
-                    <GrowthWindowComponent
-                      from="tableAll"
-                      data={crop.fields}
-                      key={index}
-                      id={`growthCell${index}`}
-                      month={index}
-                    />
-                  ))}
-                </tr>
-                <tr>
-                  {state.selectedGoals.length === 0
-                    ? allMonths.map((month, index) => (
-                        <td key={index}>{month}</td>
-                      ))
-                    : allMonths.map((month, index) =>
-                        month === "Jan" || month === "Dec" ? (
-                          <td
-                            key={index}
-                            style={index === 11 ? { textAlign: "right" } : {}}
-                          >
-                            <Typography variant="body1">{month}</Typography>
-                          </td>
-                        ) : (
-                          <td key={index}></td>
-                        )
-                      )}
-                </tr>
-              </tbody>
-            </table>
+            <CropSelectorCalendarView data={crop} from={"listView"} />
           </TableCell>
         ) : (
           ""
