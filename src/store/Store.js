@@ -108,12 +108,14 @@ const cropDataFormatter = (cropData = [{}]) => {
 const monthStringBuilder = (vals) => {
   const params = [
     "Reliable Establishment/Growth",
+    "Second Reliable Establishment/Growth",
     "Temperature/Moisture Risk to Establishment",
+    "Second Temperature/Mositure Risk to Establishment",
     "Late Fall/Winter Planting Date",
     "Early Fall/ Winter Seeding Rate",
-    "Second Reliable Establishment/Growth",
     "Standard Fall/Winter Seeding Rate Date",
     "Standard Spring Seeding Rate Date",
+    "Frost Seeding",
   ];
   let val = vals;
   params.forEach((param) => {
@@ -126,26 +128,28 @@ const monthStringBuilder = (vals) => {
       let valuesArray = [];
 
       while (valStart.isSameOrBefore(valEnd)) {
-        if (valStart.get("D") <= 15 && valStart.get("D") >= 1) {
+        if (valStart.get("D") <= 15) {
           str = "Early";
         } else {
           str = "Mid";
         }
 
         valuesArray.push([`${valStart.format("MMMM")}, ${str}`]);
-        valStart.add("15", "days");
+        valStart.add("14", "days");
       }
-
+      // if (val.fields["Cover Crop Name"] === "Oats, Spring") {
+      //   console.log(valuesArray);
+      // }
       valuesArray.forEach((key) => {
         const prev = val.fields[key] || [];
-        if (param.split(" ")[0] === "Second") {
-          // console.log(param.split(" ")[0]);
+        // if (param.split(" ")[0] === "Second") {
+        // console.log(param.split(" ")[0]);
 
-          prev.push(param.split(" ").splice(1).join(" "));
-        } else {
-          // console.log(param.split(" ")[0]);
-          prev.push(param);
-        }
+        // prev.push(param.split(" ").splice(1).join(" "));
+        // } else {
+        // console.log(param.split(" ")[0]);
+        prev.push(param);
+        // }
         val.fields[key] = prev;
       });
     }
@@ -195,7 +199,8 @@ const initialState = {
   zip: 0,
   zipCode: 0,
   markersCopy: [],
-  markers: [[40.78489145, -74.80733626930342]],
+  // markers: [[40.78489145, -74.80733626930342]],
+  markers: [[35.764221, -78.69976]],
   // markers: [[]],
   // markers: [[39.0255, -76.924]],
   // markers: [

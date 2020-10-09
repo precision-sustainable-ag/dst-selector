@@ -60,6 +60,7 @@ const CropSelector = (props) => {
   const [inactiveCropData, setInactiveCropData] = useState([]);
   const [coverCropName, setCoverCropName] = useState("");
 
+  // toggles list view and calendar view
   let [isListView, setIsListView] = useState(true);
 
   const [comparisonView, setComparisonView] = useState(false);
