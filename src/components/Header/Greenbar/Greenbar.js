@@ -384,6 +384,7 @@ const Greenbar = () => {
     // let currentMonth = GetMonthString(month);
     let currentMonth = moment().format("MMM");
     // frost free days :-
+    // NOTE: IP has been permanently changed to a URL. check constants
     // http://128.192.142.200:3000/hourly?location=raleigh%20nc&start=2015-01-01&end=2019-12-31&stats=count(date)/24/5&where=air_temperature%3E0&output=json
     if (state.weatherData.length === 0) return "";
     else
