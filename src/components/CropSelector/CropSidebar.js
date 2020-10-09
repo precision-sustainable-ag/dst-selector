@@ -57,6 +57,7 @@ import Roots from "./Filters/Roots";
 import "../../styles/cropSidebar.scss";
 import SoilConditions from "./Filters/SoilConditions";
 import ComparisonBar from "../MyCoverCropList/ComparisonBar/ComparisonBar";
+import DateRangeDialog from "./DateRangeDialog";
 const _ = require("lodash");
 
 const useStyles = makeStyles((theme) => ({
@@ -138,6 +139,10 @@ const CropSidebarComponent = (props) => {
 
   const [sidebarFilters, setSidebarFilters] = React.useState([]);
   const [sidebarFiltersOpen, setSidebarFiltersOpen] = React.useState([]);
+
+  const dateRangeModalOpen = () => {
+    setDateRangeOpen(true);
+  };
 
   // make an exhaustive array of all params in array e.g. cover crop group and use includes in linq
   const [sidebarFilterOptions, setSidebarFilterOptions] = React.useState({
@@ -966,7 +971,7 @@ const CropSidebarComponent = (props) => {
                             : ""
                         }`}
                         fullWidth
-                        onClick={() => setDateRangeOpen(!dateRangeOpen)}
+                        onClick={() => dateRangeModalOpen()}
                         margin="dense"
                         aria-haspopup="true"
                         variant="outlined"
@@ -976,7 +981,7 @@ const CropSidebarComponent = (props) => {
                             <InputAdornment>
                               <IconButton
                                 size="small"
-                                onClick={() => setDateRangeOpen(!dateRangeOpen)}
+                                onClick={() => dateRangeModalOpen()}
                               >
                                 <CalendarTodayRounded />
                               </IconButton>
@@ -985,7 +990,7 @@ const CropSidebarComponent = (props) => {
                         }}
                       />
                     </ListItem>
-                    {dateRangeOpen ? (
+                    {/* {dateRangeOpen ? (
                       <ListItem>
                         <div className="z-999">
                           <DateRangePicker
@@ -997,7 +1002,7 @@ const CropSidebarComponent = (props) => {
                       </ListItem>
                     ) : (
                       ""
-                    )}
+                    )} */}
 
                     <ListItem className={classes.nested}>
                       <FormGroup>
@@ -1045,6 +1050,16 @@ const CropSidebarComponent = (props) => {
                     </ListItem>
                   </List>
                 </Collapse>
+                {dateRangeOpen ? (
+                  <DateRangeDialog
+                    open={dateRangeOpen}
+                    close={() => setDateRangeOpen(!dateRangeOpen)}
+                    onChange={(range) => setDateRange(range)}
+                    range={[]}
+                  />
+                ) : (
+                  ""
+                )}
               </Fragment>
             ) : (
               ""
