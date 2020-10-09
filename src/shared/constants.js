@@ -1447,3 +1447,30 @@ export const flipCoverCropName = (cropName = "") => {
     }
   }
 };
+
+export const getActiveCropMonths = (crop = {}) => {
+  let activeMonths = [];
+  if (crop["Active Growth Period"].includes("Winter")) {
+    activeMonths.push("Dec");
+    activeMonths.push("Jan");
+    activeMonths.push("Feb");
+  }
+  if (crop["Active Growth Period"].includes("Summer")) {
+    activeMonths.push("Jun");
+    activeMonths.push("Jul");
+    activeMonths.push("Aug");
+  }
+
+  if (crop["Active Growth Period"].includes("Fall")) {
+    activeMonths.push("Sep");
+    activeMonths.push("Oct");
+    activeMonths.push("Nov");
+  }
+
+  if (crop["Active Growth Period"].includes("Spring")) {
+    activeMonths.push("Mar");
+    activeMonths.push("Apr");
+    activeMonths.push("May");
+  }
+  return activeMonths;
+};
