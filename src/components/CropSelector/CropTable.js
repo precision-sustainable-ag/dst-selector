@@ -740,24 +740,18 @@ const CropTableComponent = (props) => {
   const sortCropsByName = () => {
     let activeCropDataShadow = props.activeCropData;
     let inactiveCropDataShadow = props.inactiveCropData;
-    // alert(`${activeCropDataShadow.length}, ${inactiveCropDataShadow.length}`);
     if (nameSortFlag) {
       if (activeCropDataShadow.length > 0) {
         activeCropDataShadow.sort((a, b) => {
           var firstCropName = flipCoverCropName(
             a.fields["Cover Crop Name"].toLowerCase()
-          );
+          ).replace(/\s+/g, "");
           var secondCropName = flipCoverCropName(
             b.fields["Cover Crop Name"].toLowerCase()
-          );
-          if (firstCropName < secondCropName) {
-            return -1;
-          }
-          if (firstCropName > secondCropName) {
-            return 1;
-          }
-          return 0;
+          ).replace(/\s+/g, "");
+          return firstCropName.localeCompare(secondCropName);
         });
+
         props.setActiveCropData(activeCropDataShadow);
       }
 
@@ -1040,7 +1034,7 @@ const CropTableComponent = (props) => {
             <TableRow className="theadSecond">
               <TableCell
                 style={{
-                  width: "30%",
+                  minWidth: "320px",
                   backgroundColor: "#abd08f",
                   borderRight: "5px solid white",
                 }}
@@ -1066,7 +1060,7 @@ const CropTableComponent = (props) => {
               </TableCell>
               <TableCell
                 style={{
-                  maxWidth: "250px",
+                  minWidth: "240px",
                   backgroundColor: "#abd08f",
                   borderRight: "5px solid white",
                 }}
@@ -1132,7 +1126,7 @@ const CropTableComponent = (props) => {
                 style={{
                   backgroundColor: "#abd08f",
                   textAlign: "center",
-                  width: "165px",
+                  minWidth: "165px",
                 }}
               >
                 <Typography variant="body1">
