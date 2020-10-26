@@ -36,6 +36,7 @@ const GoalsSelector = () => {
 
   const headers = new Headers();
 
+  // Fetch goals from Airtable : Deprecated
   const fetchGoals = async (apiBase) => {
     let finalGoalsURL = apiBase + goalsURL;
     // console.log(finalGoalsURL);
@@ -74,7 +75,12 @@ const GoalsSelector = () => {
   };
   useEffect(() => {
     if (state.allGoals.length > 0) {
-      setAllGoals(state.allGoals);
+      const filteredGoals = state.allGoals.filter(
+        (goal) =>
+          goal.fields["Cover Crop Goal"].toLowerCase() !==
+          "promote water quality"
+      );
+      setAllGoals(filteredGoals);
     }
   }, [state.allGoals]);
 
@@ -156,66 +162,3 @@ const GoalsSelector = () => {
 };
 
 export default GoalsSelector;
-
-{
-  /* <div className="goalsContainer mt-5">
-<div
-  className="row boxContainerRow goalsBoxContainer"
-  style={{ height: "480px" }}
->
-  <div className="col-xl-12">
-    <h1 className="text-center">What are your cover cropping goals?</h1>
-  </div>
-  <div className="col-xl-12">
-    <p className="text-center">
-      Select up to three. Hover for more information
-    </p>
-  </div>
-  {state.allGoals.length === 0 ? (
-    <div className="goals col-lg-12">
-
-      <div className="row">
-        <div className="col-3">
-          <Skeleton style={goalSkeletonStyle} />
-        </div>
-        <div className="col-3">
-          <Skeleton style={goalSkeletonStyle} />
-        </div>
-        <div className="col-3">
-          <Skeleton style={goalSkeletonStyle} />
-        </div>
-        <div className="col-3">
-          <Skeleton style={goalSkeletonStyle} />
-        </div>
-      </div>
-    </div>
-  ) : (
-    <div className="goals row" style={{ justifyContent: "center" }}>
-      {state.allGoals.length > 0 ? (
-        state.allGoals.map((goal, key) =>
-          goal.fields["Include"] ? (
-            <div key={key} className={`${classes.root} col`}>
-              <GoalTag
-                goal={goal}
-                id={key}
-                goaltTitle={goal.fields["Cover Crop Goal"]}
-                goalDescription={goal.fields["Description"]}
-              />
-            </div>
-          ) : (
-            ""
-          )
-        )
-      ) : (
-        <Skeleton
-          animation="pulse"
-          height="100"
-          width="100"
-          variant="rect"
-        />
-      )}
-    </div>
-  )}
-</div>
-</div> */
-}
