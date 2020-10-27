@@ -4,6 +4,8 @@ import crops from "../shared/crop-data.json";
 import z7crops from "../shared/json/zone7/crop-data.json";
 import z6crops from "../shared/json/zone6/crop-data.json";
 import z5crops from "../shared/json/zone5/crop-data.json";
+import z4crops from "../shared/json/zone4/crop-data.json";
+
 import moment from "moment-timezone";
 import img from "../shared/image-dictionary.json";
 import desc from "../shared/crop-descriptions.json";
@@ -12,15 +14,20 @@ import z7Dict from "../shared/json/zone7/data-dictionary.json";
 import z6Dict from "../shared/json/zone6/data-dictionary.json";
 import z5Dict from "../shared/json/zone6/data-dictionary.json";
 
-const cropDataFormatter = (cropData = [{}]) => {
+const cropDataFormatter = (cropData = [{}], zone = 7) => {
+  const excludedCropZoneDecisionKeys = ["Exclude", "Up and Coming", "Discuss"];
   let tjson = cropData.filter((crop) => {
     if (
-      crop["Zone Decision"] !== "Include" ||
+      excludedCropZoneDecisionKeys.includes(crop["Zone Decision"]) ||
       crop["Cover Crop Name"] === "__Open Discussion Row"
     ) {
       return false;
     } else return true;
   });
+
+  // if (zone === 6) {
+  //   console.log("store filer:", cropData.length);
+  // }
 
   return tjson.map((crop) => {
     // val["fields"] = val;
@@ -45,6 +52,10 @@ const cropDataFormatter = (cropData = [{}]) => {
     val.fields["Crop Description"] = desc[val.fields["Cover Crop Name"]]
       ? desc[val.fields["Cover Crop Name"]]
       : loremText();
+
+    if (!val.fields["Nitrogen Fixation"]) {
+      val.fields["Nitrogen Fixation"] = 0;
+    }
 
     val.fields["Discourages Nematodes"] = val.fields["Disoucrages Nematodes"];
     val.fields["id"] = val.fields["__id"];
@@ -181,12 +192,14 @@ const loremText = () => {
 const z7AllCrops = z7crops;
 const z6AllCrops = z6crops;
 const z5AllCrops = z5crops;
+const z4AllCrops = z4crops;
 
-const z7CropData = cropDataFormatter(z7AllCrops);
-const z6CropData = cropDataFormatter(z6AllCrops);
-const z5CropData = cropDataFormatter(z5AllCrops);
+const z7CropData = cropDataFormatter(z7AllCrops, 7);
+const z6CropData = cropDataFormatter(z6AllCrops, 6);
+const z5CropData = cropDataFormatter(z5AllCrops, 5);
+const z4CropData = cropDataFormatter(z4AllCrops, 4);
 
-// console.log(tjs);
+// console.log("store:", z6CropData.length);
 
 // const StoreContext = createContext();
 
@@ -199,8 +212,8 @@ const initialState = {
   zip: 0,
   zipCode: 0,
   markersCopy: [],
-  // markers: [[40.78489145, -74.80733626930342]],
-  markers: [[35.764221, -78.69976]],
+  markers: [[40.78489145, -74.80733626930342]],
+  // markers: [[35.764221, -78.69976]],
   // markers: [[]],
   // markers: [[39.0255, -76.924]],
   // markers: [
@@ -1157,6 +1170,7 @@ const initialState = {
   zone7CropData: z7CropData,
   zone6CropData: z6CropData,
   zone5CropData: z5CropData,
+  zone4CropData: z4CropData,
   zone7Dictionary: z7Dict,
   zone6Dictionary: z6Dict,
   zone5Dictionary: z5Dict,
