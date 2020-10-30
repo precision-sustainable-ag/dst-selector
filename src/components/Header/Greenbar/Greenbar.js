@@ -550,7 +550,10 @@ const Greenbar = () => {
       <Dialog disableBackdropClick disableEscapeKeyDown open={confirmationOpen}>
         <DialogContent dividers>
           <Typography variant="body1">
-            Are you sure you want to restart?
+            {state.selectedCrops.length > 0
+              ? `Restarting will remove all cover crops added to your list. Are you
+            sure you want to restart?`
+              : `Are you sure you want to restart?`}
           </Typography>
         </DialogContent>
         <DialogActions>
