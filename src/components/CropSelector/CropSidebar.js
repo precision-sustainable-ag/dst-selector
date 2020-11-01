@@ -600,11 +600,11 @@ const CropSidebarComponent = (props) => {
     }
   }, [dateRange, growthWindowVisible, props.from]);
 
-  useEffect(() => {
-    if (props.from === "table") {
-      props.sortEnvTolCropData(keysArray);
-    }
-  }, [keysArrChanged]);
+  // useEffect(() => {
+  //   if (props.from === "table") {
+  //     props.sortEnvTolCropData(keysArray);
+  //   }
+  // }, [keysArrChanged]);
 
   const [tableHeight, setTableHeight] = React.useState(0);
 
@@ -939,7 +939,7 @@ const CropSidebarComponent = (props) => {
                       : { backgroundColor: "inherit" }
                   }
                 >
-                  <ListItemText primary="CASH CROP" />
+                  <ListItemText primary="PREVIOUS CASH CROP" />
                   {cashCropOpen ? <ExpandLess /> : <ExpandMore />}
                 </ListItem>
                 <Collapse in={cashCropOpen} timeout="auto" unmountOnExit>
@@ -947,7 +947,7 @@ const CropSidebarComponent = (props) => {
                     <ListItem className={classes.nested}>
                       <TextField
                         fullWidth
-                        label="Cash Crop"
+                        label="Previous Cash Crop"
                         id="outlined-margin-dense"
                         defaultValue=""
                         margin="dense"
@@ -1042,7 +1042,7 @@ const CropSidebarComponent = (props) => {
                           }
                           label={
                             <Typography variant="body2">
-                              Show Cash Crop Growth Window
+                              Show Previous Cash Crop Growth Window
                             </Typography>
                           }
                         />
