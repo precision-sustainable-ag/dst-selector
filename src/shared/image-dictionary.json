@@ -55,7 +55,7 @@
   },
   "Clover, Crimson": {
     "Cover Crop": "Clover Crimson",
-    "Key Thumbnail": "Clover_crimson_flowering_Mirsky_lab_2020.JPG",
+    "Key Thumbnail": "Clover_crimson_flowering_Mirsky_lab_2020.jpg",
     "Notes": null,
     "Directory": "Clover, Crimson"
   },
@@ -67,37 +67,37 @@
   },
   "Clover, Balansa": {
     "Cover Crop": "Clover, Balansa",
-    "Key Thumbnail": "Clover_balansa_flowering_WikimediaCommons_2008.JPG",
+    "Key Thumbnail": "Clover_balansa_flowering_WikimediaCommons_2008.jpg",
     "Notes": "CC license 3.0: https://commons.wikimedia.org/wiki/File:Trifolium_michelianum_Savi_cultivar_Paradana.JPG",
     "Directory": "Clover, Balansa"
   },
   "Clover, Berseem": {
     "Cover Crop": "Clover, Berseem",
-    "Key Thumbnail": "Clover_Berseem_flowering_Ziegler_2020.JPG",
+    "Key Thumbnail": "Clover_Berseem_flowering_Ziegler_2020.jpg",
     "Notes": null,
     "Directory": "Clover, Berseem"
   },
   "Clover, Red": {
     "Cover Crop": "Clover, Red",
-    "Key Thumbnail": "Clover_red_flowering_Ackroyd_2020_crop.JPG",
+    "Key Thumbnail": "Clover_red_flowering_Ackroyd_2020_crop.jpg",
     "Notes": null,
     "Directory": "Clover, Red"
   },
   "Clover, White": {
     "Cover Crop": "Clover, White",
-    "Key Thumbnail": "Clover_white_flowering_Ackroyd_2020.JPG",
+    "Key Thumbnail": "Clover_white_flowering_Ackroyd_2020.jpg",
     "Notes": null,
     "Directory": "Clover, White"
   },
   "Corn": {
     "Cover Crop": "Corn",
-    "Key Thumbnail": "Corn_young_Mirsky_lab_2020.JPG",
+    "Key Thumbnail": "Corn_young_Mirsky_lab_2020.jpg",
     "Notes": null,
     "Directory": "Corn"
   },
   "Cowpea": {
     "Cover Crop": "Cowpea",
-    "Key Thumbnail": "Cowpea_mature_Ackroyd_2020.JPG",
+    "Key Thumbnail": "Cowpea_mature_Ackroyd_2020.jpg",
     "Notes": null,
     "Directory": "Cowpea"
   },
@@ -115,7 +115,7 @@
   },
   "Millet, Pearl": {
     "Cover Crop": "Millet, Pearl",
-    "Key Thumbnail": "Millet_pearl_flowering_Larson_2020.JPG",
+    "Key Thumbnail": "Millet_pearl_flowering_Larson_2020.jpg",
     "Notes": null,
     "Directory": "Millet, Pearl"
   },
@@ -151,19 +151,19 @@
   },
   "Pea, Spring": {
     "Cover Crop": "Pea, Spring",
-    "Key Thumbnail": "Spring_pea_flowering_Brown_2020.JPG",
+    "Key Thumbnail": "Spring_pea_flowering_Brown_2020.jpg",
     "Notes": null,
     "Directory": "Pea, Spring"
   },
   "Pea, Winter": {
     "Cover Crop": "Pea, Winter",
-    "Key Thumbnail": "Pea_winter_flowering_Mirsky_lab_2020b.JPG",
+    "Key Thumbnail": "Pea_winter_flowering_Mirsky_lab_2020b.jpg",
     "Notes": null,
     "Directory": "Pea, Winter"
   },
   "Phacelia": {
     "Cover Crop": "Phacelia",
-    "Key Thumbnail": "Phacelia_flowering_pollinator_NancyLeeAdamson_2020.JPG",
+    "Key Thumbnail": "Phacelia_flowering_pollinator_NancyLeeAdamson_2020.jpg",
     "Notes": null,
     "Directory": "Phacelia"
   },
@@ -193,7 +193,7 @@
   },
   "Ryegrass, Annual": {
     "Cover Crop": "Ryegrass, Annual",
-    "Key Thumbnail": "Annual_ryegrass_mature_Ackroyd_2020b.JPG",
+    "Key Thumbnail": "Annual_ryegrass_mature_Ackroyd_2020b.jpg",
     "Notes": null,
     "Directory": "Ryegrass, Annual"
   },
@@ -211,13 +211,13 @@
   },
   "Sorghum Sudangrass": {
     "Cover Crop": "Sorghum Sudangrass",
-    "Key Thumbnail": "Sorghum sudangrass_mature_Larson_2020.JPG",
+    "Key Thumbnail": "Sorghum sudangrass_mature_Larson_2020.jpg",
     "Notes": null,
     "Directory": "Sorghum Sudangrass"
   },
   "Sorghum-sudangrass": {
     "Cover Crop": "Sorghum Sudangrass",
-    "Key Thumbnail": "Sorghum sudangrass_mature_Larson_2020.JPG",
+    "Key Thumbnail": "Sorghum sudangrass_mature_Larson_2020.jpg",
     "Notes": null,
     "Directory": "Sorghum Sudangrass"
   },
@@ -235,13 +235,13 @@
   },
   "Sunflower": {
     "Cover Crop": "Sunflower",
-    "Key Thumbnail": "Sunflower_flowering_Ackroyd_2020a.JPG",
+    "Key Thumbnail": "Sunflower_flowering_Ackroyd_2020a.jpg",
     "Notes": null,
     "Directory": "Sunflower"
   },
   "Sunn Hemp": {
     "Cover Crop": "Sunn Hemp",
-    "Key Thumbnail": "Sunn_hemp_flowering_Larson_2020.JPG",
+    "Key Thumbnail": "Sunn_hemp_flowering_Larson_2020.jpg",
     "Notes": null,
     "Directory": "Sunn Hemp"
   },
@@ -259,13 +259,13 @@
   },
   "Triticale, Spring": {
     "Cover Crop": "Triticale, Spring",
-    "Key Thumbnail": "Triticale_mature_Salon_2020.JPG",
+    "Key Thumbnail": "Triticale_mature_Salon_2020.jpg",
     "Notes": "In Triticale, Winter Directory",
     "Directory": "Triticale, Winter"
   },
   "Triticale, Winter": {
     "Cover Crop": "Triticale, Winter",
-    "Key Thumbnail": "Triticale_mature_Salon_2020.JPG",
+    "Key Thumbnail": "Triticale_mature_Salon_2020.jpg",
     "Notes": null,
     "Directory": "Triticale, Winter"
   },
@@ -283,19 +283,19 @@
   },
   "Vetch, Hairy": {
     "Cover Crop": "Vetch, Hairy",
-    "Key Thumbnail": "Vetch_hairy_flowering_Ackroyd_2020.JPG",
+    "Key Thumbnail": "Vetch_hairy_flowering_Ackroyd_2020.jpg",
     "Notes": null,
     "Directory": "Vetch, Hairy"
   },
   "Wheat, Spring": {
     "Cover Crop": "Wheat, Spring",
-    "Key Thumbnail": "Wheat_spring_mature_Ackroyd_2020.JPG",
+    "Key Thumbnail": "Wheat_spring_mature_Ackroyd_2020.jpg",
     "Notes": null,
     "Directory": "Wheat, Spring"
   },
   "Wheat, Winter": {
     "Cover Crop": "Wheat, Winter",
-    "Key Thumbnail": "Wheat_spring_mature_Ackroyd_2020.JPG",
+    "Key Thumbnail": "Wheat_spring_mature_Ackroyd_2020.jpg",
     "Notes": "In Wheat, Spring Directory",
     "Directory": "Wheat, Spring"
   }
