@@ -228,7 +228,7 @@ const InformationSheet = (props) => {
         <div className="col-6">
           {zoneIcon(20, 20)}
           <span className="pl-2">
-            Plant Hardiness Zone {state.zone} Dataset
+            Plant Hardiness Zone {crop.Zone ? crop.Zone : state.zone} Dataset
           </span>
         </div>
         <div className="col-6 text-right">
