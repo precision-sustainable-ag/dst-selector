@@ -110,6 +110,7 @@ const Wrapper = () => (
         vertical: "bottom",
         horizontal: "right",
       }}
+      autoHideDuration={15000}
     >
       <Store>
         <BrowserRouter>
