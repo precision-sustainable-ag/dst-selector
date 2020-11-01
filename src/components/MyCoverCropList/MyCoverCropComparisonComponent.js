@@ -146,6 +146,12 @@ const MyCoverCropComparisonComponent = (props) => {
                     className="font-weight-bold text-uppercase"
                     style={{ fontSize: "10pt", color: "white" }}
                   >
+                    {`Zone`}
+                  </div>
+                  <div
+                    className="font-weight-bold text-uppercase"
+                    style={{ fontSize: "10pt", color: "white" }}
+                  >
                     {"Family Common Name"}
                   </div>
                   <div
@@ -247,6 +253,12 @@ const MyCoverCropComparisonComponent = (props) => {
                   )}
 
                   <CardContent>
+                    <div
+                      className="font-weight-bold text-muted text-uppercase"
+                      style={{ fontSize: "10pt" }}
+                    >
+                      {`Zone ${crop.data["Zone"]}`}
+                    </div>
                     <div
                       className="font-weight-bold text-muted text-uppercase"
                       style={{ fontSize: "10pt" }}
