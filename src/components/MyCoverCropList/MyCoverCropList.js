@@ -123,7 +123,7 @@ const MyCoverCropList = (props) => {
                   key={index}
                   cardNo={index + 1}
                   data={crop.data}
-                  btnId={crop.btnId}
+                  btnId={crop.id}
                   itemNo={index}
                 />
               ))}
