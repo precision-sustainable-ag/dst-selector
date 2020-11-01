@@ -338,7 +338,6 @@ const CropSelector = (props) => {
         if (selectedGoals.length > 0) {
           // let updatedCropData = _.orderBy(state.cropData, selectedGoals);
           let activeCropDataShadow = state.cropData;
-
           selectedGoals
             .slice()
             .reverse()
