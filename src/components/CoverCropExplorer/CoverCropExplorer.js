@@ -79,30 +79,10 @@ const CoverCropExplorer = () => {
         return false;
       }
     });
-    console.log(crop_data);
+    // console.log(crop_data);
     setActiveCropData(crop_data);
   };
 
-  // useEffect(() => {
-  //   switch (state.zone) {
-  //     case 7: {
-  //       setCropData(state.zone7CropData);
-  //       break;
-  //     }
-  //     case 6: {
-  //       setCropData(state.zone6CropData);
-  //       break;
-  //     }
-  //     case 5: {
-  //       setCropData(state.zone5CropData);
-  //       break;
-  //     }
-  //     default: {
-  //       setCropData(state.zone7CropData);
-  //       break;
-  //     }
-  //   }
-  // }, [state.zone]);
   return cropData.length === 0 ? (
     <div className="contentWrapper">
       <Header logo="neccc_wide_logo_color_web.jpg" />
@@ -125,52 +105,26 @@ const CoverCropExplorer = () => {
             />
           </div>
           <div className="col-md-12 col-lg-9 col-xl-10 col-12">
-            {/* <div
-              className="row"
-              style={{
-                backgroundColor: "#35999b",
-                height: "40px",
-                borderTopLeftRadius: "5px",
-                borderTopRightRadius: "5px",
-              }}
-            >
-              <div className="col-12 offset-md-8 col-md-4 text-right">
-                <Button
-                  aria-controls="zone-selector"
-                  aria-haspopup="true"
-                  onClick={handleClick}
-                  style={{ color: "white" }}
-                >
-                  Zone {state.zone}&nbsp;{" "}
-                  {!Boolean(anchorEl) ? (
-                    <KeyboardArrowDown />
-                  ) : (
-                    <KeyboardArrowUp />
-                  )}
-                </Button>
-                <Menu
-                  id="simple-menu"
-                  anchorEl={anchorEl}
-                  keepMounted
-                  open={Boolean(anchorEl)}
-                  onClose={handleClose}
-                >
-                  <MenuItem onClick={() => handleClose(5)}>Zone 5</MenuItem>
-                  <MenuItem onClick={() => handleClose(6)}>Zone 6</MenuItem>
-                  <MenuItem onClick={() => handleClose(7)}>Zone 7</MenuItem>
-                </Menu>
-              </div> 
-            </div>*/}
-            <ExplorerCardView
-              cropDataChanged={cropDataChanged}
-              cropData={state.cropData}
-              activeCropData={
-                activeCropData.length > 0 ? activeCropData : state.cropData
-              }
-              setActiveCropData={setActiveCropData}
-              inactiveCropData={inactiveCropData}
-              setInactiveCropData={setInactiveCropData}
-            />
+            {state.zone === "" ? (
+              <Grid container>
+                <Grid item xs={12} alignItems="center" justify="center">
+                  <Typography variant="h5" align="center">
+                    Please choose a zone from the sidebar
+                  </Typography>
+                </Grid>
+              </Grid>
+            ) : (
+              <ExplorerCardView
+                cropDataChanged={cropDataChanged}
+                cropData={state.cropData}
+                activeCropData={
+                  activeCropData.length > 0 ? activeCropData : state.cropData
+                }
+                setActiveCropData={setActiveCropData}
+                inactiveCropData={inactiveCropData}
+                setInactiveCropData={setInactiveCropData}
+              />
+            )}
           </div>
         </div>
       </div>
