@@ -42,7 +42,7 @@ const MyCoverCropCardsComponent = (props) => {
   const removeCrop = (cropName) => {
     var removeIndex = state.selectedCrops
       .map(function (item) {
-        return item.btnId;
+        return item.id;
       })
       .indexOf(`${btnId}`);
 
