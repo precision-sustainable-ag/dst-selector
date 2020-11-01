@@ -20,6 +20,11 @@ import {
   Backdrop,
   Fade,
   Link,
+  Dialog,
+  DialogContent,
+  DialogActions,
+  Button,
+  Typography,
 } from "@material-ui/core";
 import { Context } from "../../store/Store";
 import { Search } from "@material-ui/icons";
@@ -46,12 +51,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const AutoCompleteComponent = () => {
+const AutoCompleteComponent = ({ from }) => {
   const classes = useStyles();
   const [state, dispatch] = useContext(Context);
   const [open, setOpen] = useState(false);
   const [address, setAddress] = useState(state.address);
   const [suggestedAddress, setSuggestedAddress] = useState({});
+  const [showRestartPrompt, setShowRestartPrompt] = useState(false);
+  const [restartAccept, setRestartAccept] = useState(false);
 
   useEffect(() => {
     if (state.zip === 0) {
@@ -81,6 +88,15 @@ const AutoCompleteComponent = () => {
   const handleToggle = () => {
     // check if zip or address
 
+    if (from === "greenbar") {
+      // addressSet();
+      setShowRestartPrompt(true);
+    } else {
+      addressSet();
+    }
+  };
+
+  const addressSet = () => {
     if (state.addressSearchPreference === "zip") {
       if (isNaN(address)) {
         alert("Invalid ZIP Code");
@@ -104,19 +120,6 @@ const AutoCompleteComponent = () => {
             },
           });
         });
-        // Axios.get(`https://geocode.xyz/${address}?geoit=json`).then(
-        //   (response) => {
-        //     console.log(response);
-        //     let val = response.data.standard;
-
-        //     // dispatch({
-        //     //   type: "UPDATE_MARKER",
-        //     //   data: {
-        //     //     markers: [[parseFloat(val.latt), parseFloat(val.lont)]],
-        //     //   },
-        //     // });
-        //   }
-        // );
       }
     } else {
       if (address.length > 3) {
@@ -146,6 +149,12 @@ const AutoCompleteComponent = () => {
     response = response.json();
     return response;
   };
+
+  useEffect(() => {
+    if (restartAccept) {
+      addressSet();
+    }
+  }, [restartAccept]);
 
   return (
     <Fragment>
@@ -216,6 +225,39 @@ const AutoCompleteComponent = () => {
           }}
         ></TextField>
       </FormControl>
+      <Dialog
+        disableBackdropClick
+        disableEscapeKeyDown
+        open={showRestartPrompt}
+      >
+        <DialogContent dividers>
+          <Typography variant="body1">
+            Restarting will remove all cover crops added to your list. Are you
+            sure you want to restart?
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            autoFocus
+            onClick={() => {
+              setShowRestartPrompt(false);
+              setRestartAccept(false);
+            }}
+            color="secondary"
+          >
+            No
+          </Button>
+          <Button
+            onClick={() => {
+              setShowRestartPrompt(false);
+              setRestartAccept(true);
+            }}
+            color="secondary"
+          >
+            Yes
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Fragment>
   );
 };

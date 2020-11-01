@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import { Context } from "../../store/Store";
 import "../../styles/location.scss";
 
@@ -10,6 +10,10 @@ import {
   MenuItem,
   makeStyles,
   Typography,
+  Dialog,
+  DialogContent,
+  DialogActions,
+  Button,
   // TextField,
   // withStyles,
   // Button
@@ -22,6 +26,7 @@ import AutoComplete from "./AutoComplete";
 import LocationToggleComponent from "./LocationToggle";
 import MapContext from "./MapContext";
 import { Search } from "@material-ui/icons";
+import { RestartPrompt } from "../../shared/constants";
 // import { Link, Button } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
@@ -34,12 +39,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const LocationComponent = ({ title }) => {
+const LocationComponent = ({ title, caller }) => {
   const classes = useStyles();
   const [state, dispatch] = useContext(Context);
-
+  const [showRestartPrompt, setShowRestartPrompt] = useState(false);
+  const [restartAccept, setRestartAccept] = useState(false);
+  const [zoneSelection, setZoneSelection] = useState(7);
   useEffect(() => {
-    document.title = title;
+    document.title = title ? title : "Decision Support Tool";
   }, [title]);
 
   const handleAddressChangeByText = (event) => {
@@ -113,6 +120,49 @@ const LocationComponent = ({ title }) => {
       });
   };
 
+  useEffect(() => {
+    if (zoneSelection === 3) {
+      dispatch({
+        type: "UPDATE_ZONE_TEXT",
+        data: {
+          zoneText: "Zone 7",
+          zone: parseInt(7),
+        },
+      });
+    } else if (zoneSelection === 4) {
+      dispatch({
+        type: "UPDATE_ZONE_TEXT",
+        data: {
+          zoneText: "Zone 4",
+          zone: parseInt(zoneSelection),
+        },
+      });
+    } else if (zoneSelection === 5) {
+      dispatch({
+        type: "UPDATE_ZONE_TEXT",
+        data: {
+          zoneText: "Zone 5",
+          zone: parseInt(zoneSelection),
+        },
+      });
+    } else if (zoneSelection === 6) {
+      dispatch({
+        type: "UPDATE_ZONE_TEXT",
+        data: {
+          zoneText: "Zone 6",
+          zone: parseInt(zoneSelection),
+        },
+      });
+    } else {
+      dispatch({
+        type: "UPDATE_ZONE_TEXT",
+        data: {
+          zoneText: "Zone 7",
+          zone: parseInt(7),
+        },
+      });
+    }
+  }, [restartAccept]);
   return (
     <div className="container-fluid mt-5">
       <div className="row boxContainerRow" style={{ minHeight: "520px" }}>
@@ -143,9 +193,6 @@ const LocationComponent = ({ title }) => {
                   most general recommendations, whereas drawing your field on
                   the map will return the most site-specific recommendations.
                 </Typography>
-                {/* <p style={{ fontSize: "18px" }}>
-                  
-                </p> */}
               </div>
             </div>
             <div className="row pt-3 mt-4">
@@ -165,46 +212,51 @@ const LocationComponent = ({ title }) => {
                     }}
                     onChange={(event) => {
                       //   console.log("evvt" + event.target.);
-                      if (event.target.value === 3) {
-                        dispatch({
-                          type: "UPDATE_ZONE_TEXT",
-                          data: {
-                            zoneText: "Zone 3",
-                            zone: parseInt(event.target.value),
-                          },
-                        });
-                      } else if (event.target.value === 4) {
-                        dispatch({
-                          type: "UPDATE_ZONE_TEXT",
-                          data: {
-                            zoneText: "Zone 4",
-                            zone: parseInt(event.target.value),
-                          },
-                        });
-                      } else if (event.target.value === 5) {
-                        dispatch({
-                          type: "UPDATE_ZONE_TEXT",
-                          data: {
-                            zoneText: "Zone 5",
-                            zone: parseInt(event.target.value),
-                          },
-                        });
-                      } else if (event.target.value === 6) {
-                        dispatch({
-                          type: "UPDATE_ZONE_TEXT",
-                          data: {
-                            zoneText: "Zone 6",
-                            zone: parseInt(event.target.value),
-                          },
-                        });
+                      if (caller === "greenbar") {
+                        setShowRestartPrompt(true);
+                        setZoneSelection(event.target.value);
                       } else {
-                        dispatch({
-                          type: "UPDATE_ZONE_TEXT",
-                          data: {
-                            zoneText: "Zone 7",
-                            zone: parseInt(event.target.value),
-                          },
-                        });
+                        if (event.target.value === 3) {
+                          dispatch({
+                            type: "UPDATE_ZONE_TEXT",
+                            data: {
+                              zoneText: "Zone 7",
+                              zone: parseInt(7),
+                            },
+                          });
+                        } else if (event.target.value === 4) {
+                          dispatch({
+                            type: "UPDATE_ZONE_TEXT",
+                            data: {
+                              zoneText: "Zone 4",
+                              zone: parseInt(event.target.value),
+                            },
+                          });
+                        } else if (event.target.value === 5) {
+                          dispatch({
+                            type: "UPDATE_ZONE_TEXT",
+                            data: {
+                              zoneText: "Zone 5",
+                              zone: parseInt(event.target.value),
+                            },
+                          });
+                        } else if (event.target.value === 6) {
+                          dispatch({
+                            type: "UPDATE_ZONE_TEXT",
+                            data: {
+                              zoneText: "Zone 6",
+                              zone: parseInt(event.target.value),
+                            },
+                          });
+                        } else {
+                          dispatch({
+                            type: "UPDATE_ZONE_TEXT",
+                            data: {
+                              zoneText: "Zone 7",
+                              zone: parseInt(7),
+                            },
+                          });
+                        }
                       }
                     }}
                     value={state.zone}
@@ -234,7 +286,9 @@ const LocationComponent = ({ title }) => {
                 </div> */}
               </div>
               <div className="col-md-6 col-sm-12 row">
-                <AutoComplete />
+                <AutoComplete
+                  from={caller === "greenbar" ? "greenbar" : "component"}
+                />
                 <div className="col-md-12 text-left">
                   <LocationToggleComponent />
                 </div>
@@ -262,6 +316,39 @@ const LocationComponent = ({ title }) => {
           />
         </div>
       </div>
+      <Dialog
+        disableBackdropClick
+        disableEscapeKeyDown
+        open={showRestartPrompt}
+      >
+        <DialogContent dividers>
+          <Typography variant="body1">
+            Restarting will remove all cover crops added to your list. Are you
+            sure you want to restart?
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            autoFocus
+            onClick={() => {
+              setShowRestartPrompt(false);
+              setRestartAccept(false);
+            }}
+            color="secondary"
+          >
+            No
+          </Button>
+          <Button
+            onClick={() => {
+              setShowRestartPrompt(false);
+              setRestartAccept(true);
+            }}
+            color="secondary"
+          >
+            Yes
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };
