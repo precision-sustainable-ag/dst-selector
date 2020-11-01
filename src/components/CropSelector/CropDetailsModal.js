@@ -277,7 +277,7 @@ const CropDetailsModalComponent = (props) => {
                         >
                           {zoneIcon(20, 20)}
                           <span className="pl-2">
-                            Plant Hardiness Zone {state.zone} Dataset
+                            Plant Hardiness Zone {crop.fields.Zone} Dataset
                           </span>
                         </Button>
                       </div>
