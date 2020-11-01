@@ -86,12 +86,12 @@ const MyCoverCropComparisonComponent = (props) => {
     }
   }, [zone]);
 
-  const removeCrop = (btnId, cropName) => {
+  const removeCrop = (id, cropName) => {
     var removeIndex = state.selectedCrops
       .map(function (item) {
-        return item.btnId;
+        return item.id;
       })
-      .indexOf(`${btnId}`);
+      .indexOf(`${id}`);
 
     if (removeIndex === -1) {
       // element not in array
@@ -224,7 +224,7 @@ const MyCoverCropComparisonComponent = (props) => {
               <div className="col-xl-3 col-lg-5" key={index}>
                 <Card className="mainComparisonCard" style={{ width: "100%" }}>
                   <span
-                    onClick={() => removeCrop(crop.btnId, crop.cropName)}
+                    onClick={() => removeCrop(crop.id, crop.cropName)}
                     className="cardCloseIcon"
                   >
                     <Cancel titleAccess="Remove Crop" />
@@ -317,7 +317,7 @@ const MyCoverCropComparisonComponent = (props) => {
                       textAlign: "center",
                       padding: "0.5em",
                     }}
-                    onClick={() => removeCrop(crop.btnId, crop.cropName)}
+                    onClick={() => removeCrop(crop.id, crop.cropName)}
                   >
                     <Typography
                       variant="body2"
