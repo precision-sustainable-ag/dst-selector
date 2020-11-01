@@ -76,7 +76,9 @@ const CropLegendModal = (props) => {
               <div className="col-12 legendModalRow">
                 <Typography variant="body1">
                   <FiberManualRecord className="cashCrop" />
-                  <span className="pl-3">{"Cash Crop Growth Window"}</span>
+                  <span className="pl-3">
+                    {"Previous Cash Crop Growth Window"}
+                  </span>
                 </Typography>
               </div>
             </div>
