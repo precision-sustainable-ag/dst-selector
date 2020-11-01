@@ -10,6 +10,7 @@
     "@material-ui/pickers": "^3.2.10",
     "@matharumanpreet00/react-daterange-picker": "^1.0.5",
     "@reach/observe-rect": "^1.2.0",
+    "@types/moment-timezone": "^0.5.30",
     "axios": "^0.19.1",
     "bootstrap": "^4.5.2",
     "date-fns": "^2.16.1",
