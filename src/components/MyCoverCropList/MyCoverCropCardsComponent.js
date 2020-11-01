@@ -85,6 +85,12 @@ const MyCoverCropCardsComponent = (props) => {
             className="font-weight-bold text-muted text-uppercase"
             style={{ fontSize: "10pt" }}
           >
+            {`Zone ${data["Zone"]}`}
+          </div>
+          <div
+            className="font-weight-bold text-muted text-uppercase"
+            style={{ fontSize: "10pt" }}
+          >
             {data["Family Common Name"]}
           </div>
           <Typography
