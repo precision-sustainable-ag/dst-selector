@@ -467,7 +467,7 @@ const Greenbar = () => {
             }
           >
             {expansionPanelComponent.component === "location" ? (
-              <LocationComponent />
+              <LocationComponent caller="greenbar" title={"Location"} />
             ) : expansionPanelComponent.component === "soil" ? (
               <div className="container mt-5" style={expansionPanelBaseStyle}>
                 <div
@@ -568,12 +568,6 @@ const Greenbar = () => {
           </Button>
           <Button
             onClick={() => {
-              // if (state.selectedCrops.length > 0) {
-              //   setRestartPrompt2(true);
-              // } else {
-              //   setRestartPrompt2(false);
-              //   handleConfirmationChoice(false);
-              // }
               handleConfirmationChoice(true);
             }}
             color="secondary"

@@ -23,6 +23,7 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 import zone7Goal from "../../shared/json/zone7/crop-goals.json";
 import zone6Goal from "../../shared/json/zone6/crop-goals.json";
 import zone5Goal from "../../shared/json/zone5/crop-goals.json";
+import { useSnackbar } from "notistack";
 
 const Header = () => {
   const theme = useTheme();
@@ -33,6 +34,7 @@ const Header = () => {
   const [collapse, setCollapse] = React.useState(false);
   const [isRoot, setIsRoot] = React.useState(false);
   const [redirectToRoot, setRedirectToRoot] = React.useState(false);
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   let isActive = {};
 
   // const getAddressFromMarkers = async (lat, lon) => {
@@ -44,6 +46,8 @@ const Header = () => {
 
   useEffect(() => {
     if (state.zipCode !== 0) {
+      // New if condition to accommodate multi-zone feature rev.
+      // if (state.progress !== 0) {
       getUSDAZone(state.zipCode)
         .then((response) => {
           if (response.ok) {
@@ -62,8 +66,21 @@ const Header = () => {
                     },
                   });
                 } else {
-                  alert(
-                    "Error: Zones 8-11 do not occur in the Northeast US and so are not supported by this tool. If you wish to explore the data, we suggest loading Zone 7."
+                  enqueueSnackbar(
+                    "Error: Zones 8-11 do not occur in the Northeast US and so are not supported by this tool. If you wish to explore the data, we suggest loading Zone 7.",
+                    {
+                      persist: true,
+                      action: (
+                        <Button
+                          style={{ color: "white" }}
+                          onClick={() => {
+                            closeSnackbar();
+                          }}
+                        >
+                          Close
+                        </Button>
+                      ),
+                    }
                   );
                 }
               } else {
@@ -76,6 +93,7 @@ const Header = () => {
         .catch((e) => {
           console.error(e);
         });
+      // }
     }
   }, [state.zipCode]);
 
@@ -122,7 +140,7 @@ const Header = () => {
 
   useEffect(() => {
     let { markers } = state;
-
+    console.log("weather call");
     if (state.progress === 0) {
     }
 
@@ -257,6 +275,7 @@ const Header = () => {
                         data: false,
                       });
                     })
+                    .then(() => {})
                     .catch((error) => {
                       dispatch({
                         type: "SNACK",
@@ -298,7 +317,9 @@ const Header = () => {
         isActive["val"] = 0;
         break;
     }
-  }, [state.markers, state.progress, state.zone, state.weatherDataReset]);
+  }, [state.markers, state.zone, state.weatherDataReset]);
+
+  useEffect(() => {}, [state.weatherDataReset, state.zone, state.markers]);
 
   useEffect(() => {
     let z7Formattedgoal = zone7Goal.map((goal) => {
@@ -332,6 +353,7 @@ const Header = () => {
           type: "PULL_CROP_DATA",
           data: state.zone6CropData,
         });
+        // console.log(state.zone6CropData.length);
         dispatch({
           type: "ADD_GOALS",
           data: z6Formattedgoal,
