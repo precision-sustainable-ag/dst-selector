@@ -6,6 +6,9 @@ import {
   Grid,
   Typography,
   Tooltip,
+  Dialog,
+  DialogContent,
+  DialogActions,
 } from "@material-ui/core";
 import moment from "moment";
 import { Info, MonetizationOn } from "@material-ui/icons";
@@ -1413,24 +1416,13 @@ export const CropImage = ({
   }
 
   return (
-    <Suspense
-      fallback={
-        <img
-          height={lazyHeight}
-          width={lazyHeight}
-          src={placeholder}
-          alt={"Placeholder image"}
-        />
-      }
-    >
-      <img
-        className={className ? className : `image-for-${alt}`}
-        onClick={onClick}
-        src={present ? src : placeholder}
-        alt={present ? alt : "Placeholder"}
-        style={imageStyle}
-      />
-    </Suspense>
+    <img
+      className={className ? className : `image-for-${alt}`}
+      onClick={onClick}
+      src={present ? src : placeholder}
+      alt={present ? alt : "Placeholder"}
+      style={imageStyle}
+    />
   );
 };
 
@@ -1473,4 +1465,43 @@ export const getActiveCropMonths = (crop = {}) => {
     activeMonths.push("May");
   }
   return activeMonths;
+};
+
+export const RestartPrompt = ({
+  open = false,
+  selectedCrops = [],
+  setOpen = () => {},
+  onAccept = () => {},
+}) => {
+  return (
+    <Dialog disableBackdropClick disableEscapeKeyDown open={open}>
+      <DialogContent dividers>
+        <Typography variant="body1">
+          {selectedCrops.length > 0
+            ? `Restarting will remove all cover crops added to your list. Are you
+        sure you want to restart?`
+            : `Are you sure you want to restart?`}
+        </Typography>
+      </DialogContent>
+      <DialogActions>
+        <Button
+          autoFocus
+          onClick={() => {
+            setOpen(false);
+          }}
+          color="secondary"
+        >
+          No
+        </Button>
+        <Button
+          onClick={() => {
+            onAccept(true);
+          }}
+          color="secondary"
+        >
+          Yes
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
 };
