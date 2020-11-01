@@ -338,6 +338,7 @@ const CropSelector = (props) => {
         if (selectedGoals.length > 0) {
           // let updatedCropData = _.orderBy(state.cropData, selectedGoals);
           let activeCropDataShadow = state.cropData;
+
           selectedGoals
             .slice()
             .reverse()
@@ -468,6 +469,7 @@ const CropSelector = (props) => {
             isListView ? (
               <CropTableComponent
                 cropData={cropData}
+                setCropData={setCropData}
                 // activeCropData={
                 //   activeCropData.length > 0 ? activeCropData : cropData
                 // }
