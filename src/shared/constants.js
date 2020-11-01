@@ -1488,6 +1488,7 @@ export const RestartPrompt = ({
           autoFocus
           onClick={() => {
             setOpen(false);
+            onAccept(false);
           }}
           color="secondary"
         >
