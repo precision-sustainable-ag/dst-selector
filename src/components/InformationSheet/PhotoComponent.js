@@ -86,10 +86,12 @@ const PhotoComponent = ({
               <img
                 className="img rounded"
                 alt={`Photo ${index}`}
-                // src={`/${url}`}
                 src={strippedUrl}
-                height="125"
-                width="200"
+                style={{
+                  height: "125px",
+                  maxWidth: "200px",
+                }}
+                // width="200"
               />
             </a>
 
