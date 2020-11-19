@@ -6,6 +6,7 @@ import { LuminousGallery } from "luminous-lightbox";
 import "../../../node_modules/luminous-lightbox/dist/luminous-basic.css";
 import "../../styles/photoComponent.scss";
 import { Typography } from "@material-ui/core";
+import { ucFirst } from "../../shared/constants";
 
 const PhotoComponent = ({
   imageData = {
@@ -119,10 +120,15 @@ const getPhotoCredits = (url = "", cropName = "") => {
     length,
     [length - 1]: last,
     [length - 2]: secondLast,
+    [length - 3]: thirdLast,
   } = fileNameArray;
   const year = parseInt(last);
-
-  return `${cropName} - ${secondLast} [${year}]`;
+  if (thirdLast.toLowerCase().includes("mirsky")) {
+    let mirskyLabString = ucFirst(thirdLast + " " + secondLast);
+    return `${cropName} - ${mirskyLabString} [${year}]`;
+  } else {
+    return `${cropName} - ${secondLast} [${year}]`;
+  }
 };
 
 const baseName = (path = "") => {
