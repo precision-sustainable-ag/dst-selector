@@ -100,7 +100,7 @@ const InformationSheetContent = (props) => {
     });
 
     setCurrentSources(relevantZones);
-    console.log(relevantZones);
+    // console.log(relevantZones);
   }, []);
 
   return from === "direct" ? (
@@ -112,7 +112,7 @@ const InformationSheetContent = (props) => {
           </Typography>
 
           <Typography variant="body1" className="p-3">
-            {crop["Crop Description"]}
+            {crop["Cover Crop Description"]}
           </Typography>
         </div>
       </div>
@@ -933,7 +933,7 @@ const InformationSheetContent = (props) => {
       </div>
       <InformationSheetDictionary />
     </Fragment>
-  ) : (
+  ) : Object.keys(crop).length > 0 ? (
     <Fragment>
       <div className="row coverCropDescriptionWrapper">
         <div className="col-12 p-0">
@@ -942,7 +942,9 @@ const InformationSheetContent = (props) => {
           </Typography>
 
           <Typography variant="body1" className="p-3">
-            {crop["Crop Description"]}
+            {crop["Cover Crop Description"]
+              ? crop["Cover Crop Description"]
+              : crop["Crop Description"]}
           </Typography>
         </div>
       </div>
@@ -2013,6 +2015,8 @@ const InformationSheetContent = (props) => {
         </div>
       </div>
     </Fragment>
+  ) : (
+    ""
   );
 };
 
