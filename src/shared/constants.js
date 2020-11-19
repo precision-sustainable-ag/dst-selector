@@ -1396,7 +1396,7 @@ export const CropImage = ({
       break;
     case "information-sheet":
       imageStyle = {
-        width: "255px",
+        // width: "255px",
         height: "250px",
       };
       break;
@@ -1408,10 +1408,10 @@ export const CropImage = ({
       break;
     default:
       imageStyle = {
-        width: "100px",
+        // width: "100px",
         height: "100px",
-        maxWidth: "100px",
-        maxHeight: "100px",
+        maxWidth: "200px",
+        // maxHeight: "100px",
       };
   }
 
