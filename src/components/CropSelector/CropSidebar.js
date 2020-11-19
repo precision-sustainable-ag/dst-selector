@@ -27,6 +27,8 @@ import {
   CalendarToday,
   Compare,
   DragHandle,
+  Backspace,
+  Clear,
 } from "@material-ui/icons";
 import ListIcon from "@material-ui/icons/List";
 import { CustomStyles } from "../../shared/constants";
@@ -334,37 +336,37 @@ const CropSidebarComponent = (props) => {
     return arr1.some((el) => arr2Set.has(el));
   };
 
-  function filterArray(array, filters) {
-    const filterKeys = Object.keys(filters);
-    return array.filter((crop) => {
-      // validates all filter criteria
-      return filterKeys.every((key) => {
-        // ignores non-function predicates
-        if (typeof filters[key] !== "function") return true;
-        // return filters[key](item[key]);
-        else if (
-          findCommonElements(crop.fields[key], sidebarFilterOptions[key]) &&
-          crop.fields["Zone Decision"] === "Include"
-        ) {
-          return true;
-        } else if (
-          typeof crop.fields[key] === "boolean" &&
-          crop.fields["Zone Decision"] === "Include"
-        ) {
-          if (crop.fields[key] !== -999 && sidebarFilterOptions[key] !== -999)
-            return true;
-          else return false;
-        } else if (
-          sidebarFilterOptions[key].includes(crop.fields[key]) &&
-          crop.fields["Zone Decision"] === "Include"
-        ) {
-          return true;
-        } else {
-          return false;
-        }
-      });
-    });
-  }
+  // function filterArray(array, filters) {
+  //   const filterKeys = Object.keys(filters);
+  //   return array.filter((crop) => {
+  //     // validates all filter criteria
+  //     return filterKeys.every((key) => {
+  //       // ignores non-function predicates
+  //       if (typeof filters[key] !== "function") return true;
+  //       // return filters[key](item[key]);
+  //       else if (
+  //         findCommonElements(crop.fields[key], sidebarFilterOptions[key]) &&
+  //         crop.fields["Zone Decision"] === "Include"
+  //       ) {
+  //         return true;
+  //       } else if (
+  //         typeof crop.fields[key] === "boolean" &&
+  //         crop.fields["Zone Decision"] === "Include"
+  //       ) {
+  //         if (crop.fields[key] !== -999 && sidebarFilterOptions[key] !== -999)
+  //           return true;
+  //         else return false;
+  //       } else if (
+  //         sidebarFilterOptions[key].includes(crop.fields[key]) &&
+  //         crop.fields["Zone Decision"] === "Include"
+  //       ) {
+  //         return true;
+  //       } else {
+  //         return false;
+  //       }
+  //     });
+  //   });
+  // }
 
   const [filtersSelected, setFiltersSelected] = React.useState(false);
   useEffect(() => {
@@ -785,6 +787,22 @@ const CropSidebarComponent = (props) => {
                         helperText="Search by cover crop name"
                         value={props.coverCropName}
                         onInput={props.covercropsNamesFilter}
+                        InputProps={{
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              <IconButton
+                                onClick={props.clearCoverCropSearch}
+                                size="small"
+                              >
+                                {props.coverCropName.length > 1 ? (
+                                  <Clear fontSize="inherit" />
+                                ) : (
+                                  ""
+                                )}
+                              </IconButton>
+                            </InputAdornment>
+                          ),
+                        }}
                       />
                     </ListItemText>
                   </ListItem>
