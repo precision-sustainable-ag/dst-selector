@@ -1425,6 +1425,13 @@ export const CropImage = ({
     />
   );
 };
+export const ucFirst = (text = "") => {
+  return text
+    .toLowerCase()
+    .split(" ")
+    .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
+    .join(" ");
+};
 
 export const flipCoverCropName = (cropName = "") => {
   if (cropName.toLowerCase() === "Sorghum-sudangrass".toLowerCase()) {
