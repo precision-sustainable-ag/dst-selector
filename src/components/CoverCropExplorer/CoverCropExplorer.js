@@ -106,8 +106,8 @@ const CoverCropExplorer = () => {
           </div>
           <div className="col-md-12 col-lg-9 col-xl-10 col-12">
             {state.zone === "" ? (
-              <Grid container>
-                <Grid item xs={12} alignItems="center" justify="center">
+              <Grid container alignItems="center" justify="center">
+                <Grid item xs={12}>
                   <Typography variant="h5" align="center">
                     Please choose a zone from the sidebar
                   </Typography>
