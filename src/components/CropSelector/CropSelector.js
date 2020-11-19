@@ -7,6 +7,7 @@ import CropTableComponent from "./CropTable";
 import MyCoverCropList from "../MyCoverCropList/MyCoverCropList";
 import CropCalendarViewComponent from "./CropCalendarView";
 import CropSidebarComponent from "./CropSidebar";
+import { flipCoverCropName } from "../../shared/constants";
 
 const _ = require("lodash");
 
@@ -398,31 +399,51 @@ const CropSelector = (props) => {
   const toggleComparisonView = () => {
     setComparisonView(!comparisonView);
   };
+  const clearCoverCropNameSearch = () => {
+    setCoverCropName("");
+    setActiveCropData(cropData);
+    setInactiveCropData([]);
+  };
 
   const covercropsNamesFilter = (e) => {
+    let value = e.target.value;
+    value = value.split(" ").join("").toLowerCase();
     setCoverCropName(e.target.value);
 
     if (e.target.value === "") {
       setActiveCropData(cropData);
       setInactiveCropData([]);
     } else {
-      const newActives = activeCropData.filter(
-        (crops) =>
-          crops.fields["Cover Crop Name"]
-            .toLowerCase()
-            .includes(e.target.value) ||
-          crops.fields["Scientific Name"].toLowerCase().includes(e.target.value)
-      );
-      const newInactives = inactiveCropData.filter(
-        (crops) =>
-          crops.fields["Cover Crop Name"]
-            .toLowerCase()
-            .includes(e.target.value) ||
-          crops.fields["Scientific Name"].toLowerCase().includes(e.target.value)
-      );
+      const newActives = activeCropData.filter((crops) => {
+        let cropName = flipCoverCropName(crops.fields["Cover Crop Name"])
+          .split(" ")
+          .join("")
+          .toLowerCase();
+
+        return (
+          cropName.includes(value) ||
+          crops.fields["Scientific Name"].toLowerCase().includes(value)
+        );
+      });
+      const newInactives = inactiveCropData.filter((crops) => {
+        let cropName = flipCoverCropName(crops.fields["Cover Crop Name"])
+          .split(" ")
+          .join("")
+          .toLowerCase();
+
+        return (
+          cropName.includes(value) ||
+          crops.fields["Scientific Name"].toLowerCase().includes(value)
+        );
+      });
+
+      // setCropData(newActives);
+      // console.log("Keyword: ", e.target.value);
+      // console.log("Total: ", cropData.length);
+      // console.log("Active: ", activeCropData.length);
+      // console.log("Inactive: ", inactiveCropData.length);
       setActiveCropData(newActives);
       setInactiveCropData(newInactives);
-      // setCropData(newActives);
     }
   };
   useEffect(() => {
@@ -455,6 +476,7 @@ const CropSelector = (props) => {
             comparisonView={comparisonView}
             coverCropName={coverCropName}
             covercropsNamesFilter={covercropsNamesFilter}
+            clearCoverCropSearch={clearCoverCropNameSearch}
             toggleComparisonView={toggleComparisonView}
             toggleListView={toggleListView}
             comparisonView={comparisonView}
