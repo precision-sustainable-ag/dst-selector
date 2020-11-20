@@ -163,7 +163,7 @@ const RenderContent = ({ value = 0 }) => {
                 <li>Refine your soils data:</li>
                 <ul>
                   <li>
-                    Review your local soils data, populated from the USGS Web
+                    Review your local soils data, populated from the NRCS Web
                     Soil Survey, or provide your own data if you did not draw an
                     outline of your field.
                   </li>
