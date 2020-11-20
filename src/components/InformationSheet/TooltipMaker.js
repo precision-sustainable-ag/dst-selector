@@ -25,7 +25,7 @@ const TooltipMaker = ({ children, zone, variable }) => {
 
   return (
     <Tooltip
-      placement="top"
+      placement="top-end"
       title={
         <div className="filterTooltip">
           <p>{desc}</p>
