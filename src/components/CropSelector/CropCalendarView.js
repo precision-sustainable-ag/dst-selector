@@ -52,7 +52,7 @@ const CropCalendarViewComponent = (props) => {
   const [legendModal, setLegendModal] = useState(false);
   const [selectedCropsIds, setSelectedCropsIds] = useState([]);
   const selectedBtns = state.selectedCrops.map((crop) => {
-    return crop.btnId;
+    return crop.id;
   });
 
   const handleLegendModal = () => {
@@ -369,20 +369,20 @@ const CropCalendarViewComponent = (props) => {
                   width: "130px",
                 }}
                 className={
-                  selectedBtns.includes(`cartBtn${index}`)
+                  selectedBtns.includes(crop.fields.id)
                     ? "activeCartBtn"
                     : "inactiveCartBtn"
                 }
                 onClick={() => {
                   addCropToBasket(
-                    crop.id,
+                    crop.fields["id"],
                     crop.fields["Cover Crop Name"],
                     `cartBtn${index}`,
                     crop.fields
                   );
                 }}
               >
-                {selectedBtns.includes(`cartBtn${index}`)
+                {selectedBtns.includes(crop.fields.id)
                   ? "ADDED"
                   : "ADD TO LIST"}
               </LightButton>
