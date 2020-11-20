@@ -1408,7 +1408,7 @@ export const CropImage = ({
       break;
     default:
       imageStyle = {
-        // width: "100px",
+        width: "100px",
         height: "100px",
         maxWidth: "200px",
         // maxHeight: "100px",
