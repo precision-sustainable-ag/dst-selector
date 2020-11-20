@@ -264,9 +264,6 @@ const LocationComponent = ({ title, caller }) => {
                     <MenuItem value={0}>
                       <em>None</em>
                     </MenuItem>
-                    <MenuItem value={3} key={3}>
-                      Zone 3
-                    </MenuItem>
                     <MenuItem value={4} key={4}>
                       Zone 4
                     </MenuItem>
