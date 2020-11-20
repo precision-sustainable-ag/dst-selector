@@ -22,6 +22,7 @@ import sources from "./sources.json";
 import moment from "moment-timezone";
 import { Context } from "../../store/Store";
 import CropSelectorCalendarView from "../CropSelector/CropSelectorCalendarView";
+import TooltipMaker from "./TooltipMaker";
 
 const Accordion = withStyles({
   root: {
@@ -146,7 +147,9 @@ const InformationSheetContent = (props) => {
               <div className="row col-12 text-right">
                 <div className="col-6 mb-2 row">
                   <span className="col">
-                    <Typography variant="body1">Growing Window</Typography>
+                    <TooltipMaker variable="Growing Window" zone={crop["Zone"]}>
+                      <Typography variant="body1">Growing Window</Typography>
+                    </TooltipMaker>
                   </span>
                   {/* <span className="col-3">{crop["Growing Window"]}</span> */}
                   <span className="col-3">
@@ -168,7 +171,14 @@ const InformationSheetContent = (props) => {
                 </div>
                 <div className="col-6 mb-2 row">
                   <span className="col">
-                    <Typography variant="body1">Penetrates Plow Pan</Typography>
+                    <TooltipMaker
+                      variable="Penetrates Plow Pan"
+                      zone={crop["Zone"]}
+                    >
+                      <Typography variant="body1">
+                        Penetrates Plow Pan
+                      </Typography>
+                    </TooltipMaker>
                   </span>
                   <span className="col-3">
                     {getRating(crop["Penetrates Plow Pan"])}
@@ -176,7 +186,14 @@ const InformationSheetContent = (props) => {
                 </div>
                 <div className="col-6 mb-2 row">
                   <span className="col">
-                    <Typography variant="body1">Nitrogen Scavenging</Typography>
+                    <TooltipMaker
+                      variable="Nitrogen Scavenging"
+                      zone={crop["Zone"]}
+                    >
+                      <Typography variant="body1">
+                        Nitrogen Scavenging
+                      </Typography>
+                    </TooltipMaker>
                   </span>
                   <span className="col-3">
                     {getRating(crop["Nitrogen Scavenging"])}
@@ -184,17 +201,27 @@ const InformationSheetContent = (props) => {
                 </div>
                 <div className="col-6 mb-2 row">
                   <span className="col">
-                    <Typography variant="body1">
-                      Reduces Topsoil Compaction
-                    </Typography>
+                    <TooltipMaker
+                      variable="Reduces Surface Compaction"
+                      zone={crop["Zone"]}
+                    >
+                      <Typography variant="body1">
+                        Reduces Surface Compaction
+                      </Typography>
+                    </TooltipMaker>
                   </span>
                   <span className="col-3">
-                    {getRating(crop["Reduces Topsoil Compaction"])}
+                    {getRating(crop["Reduces Surface Compaction"])}
                   </span>
                 </div>
                 <div className="col-6 mb-2 row">
                   <span className="col">
-                    <Typography variant="body1">Lasting Residue</Typography>
+                    <TooltipMaker
+                      variable="Lasting Residue"
+                      zone={crop["Zone"]}
+                    >
+                      <Typography variant="body1">Lasting Residue</Typography>
+                    </TooltipMaker>
                   </span>
                   <span className="col-3">
                     {getRating(crop["Lasting Residue"])}
@@ -202,9 +229,14 @@ const InformationSheetContent = (props) => {
                 </div>
                 <div className="col-6 mb-2 row">
                   <span className="col">
-                    <Typography variant="body1">
-                      Improve Soil Organic Matter
-                    </Typography>
+                    <TooltipMaker
+                      variable="Improve Soil Organic Matter"
+                      zone={crop["Zone"]}
+                    >
+                      <Typography variant="body1">
+                        Improve Soil Organic Matter
+                      </Typography>
+                    </TooltipMaker>
                   </span>
                   <span className="col-3">
                     {getRating(crop["Improve Soil Organic Matter"])}
@@ -212,9 +244,14 @@ const InformationSheetContent = (props) => {
                 </div>
                 <div className="col-6 mb-2 row">
                   <span className="col">
-                    <Typography variant="body1">
-                      Prevent Fall Soil Erosion
-                    </Typography>
+                    <TooltipMaker
+                      variable="Prevent Fall Soil Erosion"
+                      zone={crop["Zone"]}
+                    >
+                      <Typography variant="body1">
+                        Prevent Fall Soil Erosion
+                      </Typography>
+                    </TooltipMaker>
                   </span>
                   <span className="col-3">
                     {getRating(crop["Prevent Fall Soil Erosion"])}
@@ -222,19 +259,31 @@ const InformationSheetContent = (props) => {
                 </div>
                 <div className="col-6 mb-2 row">
                   <span className="col">
-                    <Typography variant="body1">
-                      Increase Soil Aggregation
-                    </Typography>
+                    <TooltipMaker
+                      variable="Increase Soil Aggregation"
+                      zone={crop["Zone"]}
+                    >
+                      <Typography variant="body1">
+                        Increase Soil Aggregation
+                      </Typography>
+                    </TooltipMaker>
                   </span>
                   <span className="col-3">
-                    {getRating(crop["Increase Soil Aggregation"])}
+                    {crop["Increase Soil Aggregation"]
+                      ? getRating(crop["Increase Soil Aggregation"])
+                      : getRating(crop["Improve Soil Aggregation"])}
                   </span>
                 </div>
                 <div className="col-6 mb-2 row">
                   <span className="col">
-                    <Typography variant="body1">
-                      Prevent Spring Soil Erosion
-                    </Typography>
+                    <TooltipMaker
+                      variable="Prevent Spring Soil Erosion"
+                      zone={crop["Zone"]}
+                    >
+                      <Typography variant="body1">
+                        Prevent Spring Soil Erosion
+                      </Typography>
+                    </TooltipMaker>
                   </span>
                   <span className="col-3">
                     {getRating(crop["Prevent Spring Soil Erosion"])}
@@ -250,7 +299,7 @@ const InformationSheetContent = (props) => {
                     {getRating(crop["Supports Mycorrhizae"])}
                   </span>
                 </div> */}
-                <div className="col-6 mb-2 row">
+                {/* <div className="col-6 mb-2 row">
                   <span className="col">
                     <Typography variant="body1">
                       Promote Water Quality
@@ -259,10 +308,12 @@ const InformationSheetContent = (props) => {
                   <span className="col-3">
                     {getRating(crop["Promote Water Quality"])}
                   </span>
-                </div>
+                </div> */}
                 <div className="col-6 mb-2 row">
                   <span className="col">
-                    <Typography variant="body1">Good Grazing</Typography>
+                    <TooltipMaker variable="Good Grazing" zone={crop["Zone"]}>
+                      <Typography variant="body1">Good Grazing</Typography>
+                    </TooltipMaker>
                   </span>
                   <span className="col-3">
                     {getRating(crop["Good Grazing"])}
@@ -270,9 +321,14 @@ const InformationSheetContent = (props) => {
                 </div>
                 <div className="col-6 mb-2 row">
                   <span className="col">
-                    <Typography variant="body1">
-                      Forage Harvest Value
-                    </Typography>
+                    <TooltipMaker
+                      variable="Forage Harvest Value"
+                      zone={crop["Zone"]}
+                    >
+                      <Typography variant="body1">
+                        Forage Harvest Value
+                      </Typography>
+                    </TooltipMaker>
                   </span>
                   <span className="col-3">
                     {getRating(crop["Forage Harvest Value"])}
@@ -280,7 +336,12 @@ const InformationSheetContent = (props) => {
                 </div>
                 <div className="col-6 mb-2 row">
                   <span className="col">
-                    <Typography variant="body1">Pollinator Food</Typography>
+                    <TooltipMaker
+                      variable="Pollinator Food"
+                      zone={crop["Zone"]}
+                    >
+                      <Typography variant="body1">Pollinator Food</Typography>
+                    </TooltipMaker>
                   </span>
                   <span className="col-3">
                     {getRating(crop["Pollinator Food"])}
@@ -290,9 +351,14 @@ const InformationSheetContent = (props) => {
                   <Fragment>
                     <div className="col-6 mb-2 row">
                       <span className="col">
-                        <Typography variant="body1">
-                          Nitrogen Fixation
-                        </Typography>
+                        <TooltipMaker
+                          variable="Nitrogen Fixation"
+                          zone={crop["Zone"]}
+                        >
+                          <Typography variant="body1">
+                            Nitrogen Fixation
+                          </Typography>
+                        </TooltipMaker>
                       </span>
                       <span className="col-3">
                         {getRating(crop["Nitrogen Fixation"])}
@@ -323,39 +389,61 @@ const InformationSheetContent = (props) => {
             <AccordionDetails>
               <div className="row col-12 text-right">
                 <div className="col-9 mb-2">
-                  <Typography variant="body1">
-                    Residue Suppresses Summer Annual Weeds
-                  </Typography>
+                  <TooltipMaker
+                    variable="Residue Suppresses Summer Annual Weeds"
+                    zone={crop["Zone"]}
+                  >
+                    <Typography variant="body1">
+                      Residue Suppresses Summer Annual Weeds
+                    </Typography>
+                  </TooltipMaker>
                 </div>
                 <div className="col-3 mb-2">
                   {getRating(crop["Residue Suppresses Summer Annual Weeds"])}
                 </div>
                 <div className="col-9 mb-2">
-                  <Typography variant="body1">
-                    Outcompetes Summer Annual Weeds
-                  </Typography>
+                  <TooltipMaker
+                    variable="Outcompetes Summer Annual Weeds"
+                    zone={crop["Zone"]}
+                  >
+                    <Typography variant="body1">
+                      Outcompetes Summer Annual Weeds
+                    </Typography>
+                  </TooltipMaker>
                 </div>
                 <div className="col-3 mb-2">
                   {getRating(crop["Outcompetes Summer Annual Weeds"])}
                 </div>
                 <div className="col-9 mb-2">
-                  <Typography variant="body1">
-                    Suppresses Winter Annual Weeds
-                  </Typography>
+                  <TooltipMaker
+                    variable="Suppresses Winter Annual Weeds"
+                    zone={crop["Zone"]}
+                  >
+                    <Typography variant="body1">
+                      Suppresses Winter Annual Weeds
+                    </Typography>
+                  </TooltipMaker>
                 </div>
                 <div className="col-3 mb-2">
                   {getRating(crop["Suppresses Winter Annual Weeds"])}
                 </div>
                 <div className="col-9 mb-2">
-                  <Typography variant="body1">Persistence</Typography>
+                  <TooltipMaker variable="Persistence" zone={crop["Zone"]}>
+                    <Typography variant="body1">Persistence</Typography>
+                  </TooltipMaker>
                 </div>
                 <div className="col-3 mb-2">
                   {getRating(crop["Persistence"])}
                 </div>
                 <div className="col-9 mb-2">
-                  <Typography variant="body1">
-                    Volunteer Establishment
-                  </Typography>
+                  <TooltipMaker
+                    variable="Volunteer Establishment"
+                    zone={crop["Zone"]}
+                  >
+                    <Typography variant="body1">
+                      Volunteer Establishment
+                    </Typography>
+                  </TooltipMaker>
                 </div>
                 <div className="col-3 mb-2">
                   {getRating(crop["Volunteer Establishment"])}
@@ -379,29 +467,50 @@ const InformationSheetContent = (props) => {
             <AccordionDetails>
               <div className="row col-12 text-right">
                 <div className="col-9 mb-2">
-                  <Typography variant="body1">Low Fertility</Typography>
+                  <TooltipMaker
+                    variable="Low Fertility Tolerance"
+                    zone={crop["Zone"]}
+                  >
+                    <Typography variant="body1">Low Fertility</Typography>
+                  </TooltipMaker>
                 </div>
                 <div className="col-3 mb-2">
                   {getRating(crop["Low Fertility"])}
                 </div>
                 <div className="col-9 mb-2">
-                  <Typography variant="body1">Drought</Typography>
+                  <TooltipMaker
+                    variable="Drought Tolerance"
+                    zone={crop["Zone"]}
+                  >
+                    <Typography variant="body1">Drought</Typography>
+                  </TooltipMaker>
                 </div>
                 <div className="col-3 mb-2">{getRating(crop["Drought"])}</div>
                 <div className="col-9 mb-2">
-                  <Typography variant="body1">Heat</Typography>
+                  <TooltipMaker variable="Heat Tolerance" zone={crop["Zone"]}>
+                    <Typography variant="body1">Heat</Typography>
+                  </TooltipMaker>
                 </div>
                 <div className="col-3 mb-2">{getRating(crop["Heat"])}</div>
                 <div className="col-9 mb-2">
-                  <Typography variant="body1">Shade</Typography>
+                  <TooltipMaker variable="Shade Tolerance" zone={crop["Zone"]}>
+                    <Typography variant="body1">Shade</Typography>
+                  </TooltipMaker>
                 </div>
                 <div className="col-3 mb-2">{getRating(crop["Shade"])}</div>
                 <div className="col-9 mb-2">
-                  <Typography variant="body1">Flood</Typography>
+                  <TooltipMaker variable="Flood Tolerance" zone={crop["Zone"]}>
+                    <Typography variant="body1">Flood</Typography>
+                  </TooltipMaker>
                 </div>
                 <div className="col-3 mb-2">{getRating(crop["Flood"])}</div>
                 <div className="col-9 mb-2">
-                  <Typography variant="body1">Salinity</Typography>
+                  <TooltipMaker
+                    variable="Salinity Tolerance"
+                    zone={crop["Zone"]}
+                  >
+                    <Typography variant="body1">Salinity</Typography>
+                  </TooltipMaker>
                 </div>
                 <div className="col-3 mb-2">{getRating(crop["Salinity"])}</div>
               </div>
@@ -429,7 +538,9 @@ const InformationSheetContent = (props) => {
               <AccordionDetails>
                 <div className="row col-12 text-right">
                   <div className="col-9 mb-2">
-                    <Typography variant="body1">Duration</Typography>
+                    <TooltipMaker variable="Duration" zone={crop["Zone"]}>
+                      <Typography variant="body1">Duration</Typography>
+                    </TooltipMaker>
                   </div>
                   <div className="col-3 mb-2">
                     <div
@@ -445,7 +556,9 @@ const InformationSheetContent = (props) => {
                     </div>
                   </div>
                   <div className="col-9 mb-2">
-                    <Typography variant="body1">Zone Use</Typography>
+                    <TooltipMaker variable="Zone Use" zone={crop["Zone"]}>
+                      <Typography variant="body1">Zone Use</Typography>
+                    </TooltipMaker>
                   </div>
                   <div className="col-3 mb-2">
                     <div className="blue-bg">
@@ -455,9 +568,14 @@ const InformationSheetContent = (props) => {
                     </div>
                   </div>
                   <div className="col-9 mb-2">
-                    <Typography variant="body1">
-                      Shape And Orientation
-                    </Typography>
+                    <TooltipMaker
+                      variable="Shape & Orientation"
+                      zone={crop["Zone"]}
+                    >
+                      <Typography variant="body1">
+                        Shape And Orientation
+                      </Typography>
+                    </TooltipMaker>
                   </div>
                   <div className="col-3 mb-2">
                     <div
@@ -489,13 +607,14 @@ const InformationSheetContent = (props) => {
                   <div className="col-3 mb-2">
                     <div className="blue-bg">
                       <Typography variant="body1">
-                        {" "}
                         {`${crop["Dry Matter Min (lbs/A/y)"]} - ${crop["Dry Matter Max (lbs/A/y)"]}`}
                       </Typography>
                     </div>
                   </div>
                   <div className="col-9 mb-2">
-                    <Typography variant="body1">Soil Texture</Typography>
+                    <TooltipMaker variable="Soil Textures" zone={crop["Zone"]}>
+                      <Typography variant="body1">Soil Texture</Typography>
+                    </TooltipMaker>
                   </div>
                   <div className="col-3 mb-2 text-capitalize">
                     <div
@@ -516,13 +635,17 @@ const InformationSheetContent = (props) => {
                   <div className="col-3 mb-2">
                     <div className="blue-bg">
                       <Typography variant="body1">
-                        {" "}
                         {`${crop["Minimum Tolerant Soil pH"]} - ${crop["Maximum Tolerant Soil pH"]}`}
                       </Typography>
                     </div>
                   </div>
                   <div className="col-9 mb-2">
-                    <Typography variant="body1">Soil Moisture Use</Typography>
+                    <TooltipMaker
+                      variable="Soil Moisture Use"
+                      zone={crop["Zone"]}
+                    >
+                      <Typography variant="body1">Soil Moisture Use</Typography>
+                    </TooltipMaker>
                   </div>
                   <div className="col-3 mb-2">
                     <div className="blue-bg">
@@ -532,9 +655,14 @@ const InformationSheetContent = (props) => {
                     </div>
                   </div>
                   <div className="col-9 mb-2">
-                    <Typography variant="body1">
-                      Hessian Fly Free Date?
-                    </Typography>
+                    <TooltipMaker
+                      variable="Hessian Fly-Free Date"
+                      zone={crop["Zone"]}
+                    >
+                      <Typography variant="body1">
+                        Hessian Fly Free Date?
+                      </Typography>
+                    </TooltipMaker>
                   </div>
                   <div className="col-3 mb-2">
                     <div className="blue-bg">
@@ -565,27 +693,51 @@ const InformationSheetContent = (props) => {
                   )}
 
                   <div className="col-9 mb-2">
-                    <Typography variant="body1">
-                      Ease Of Establishment
-                    </Typography>
+                    <TooltipMaker
+                      variable="Ease of Establishment"
+                      zone={crop["Zone"]}
+                    >
+                      <Typography variant="body1">
+                        Ease Of Establishment
+                      </Typography>
+                    </TooltipMaker>
                   </div>
                   <div className="col-3 mb-2">
                     {getRating(crop["Ease of Establishment"])}
                   </div>
                   <div className="col-9 mb-2">
-                    <Typography variant="body1">Establishes Quickly</Typography>
+                    <TooltipMaker
+                      variable="Establishes Quickly"
+                      zone={crop["Zone"]}
+                    >
+                      <Typography variant="body1">
+                        Establishes Quickly
+                      </Typography>
+                    </TooltipMaker>
                   </div>
                   <div className="col-3 mb-2">
                     {getRating(crop["Establishes Quickly"])}
                   </div>
                   <div className="col-9 mb-2">
-                    <Typography variant="body1">Early Spring Growth</Typography>
+                    <TooltipMaker
+                      variable="Early Spring Growth"
+                      zone={crop["Zone"]}
+                    >
+                      <Typography variant="body1">
+                        Early Spring Growth
+                      </Typography>
+                    </TooltipMaker>
                   </div>
                   <div className="col-3 mb-2">
                     {getRating(crop["Early Spring Growth"])}
                   </div>
                   <div className="col-9 mb-2">
-                    <Typography variant="body1">Flowering Trigger</Typography>
+                    <TooltipMaker
+                      variable="Flowering Trigger"
+                      zone={crop["Zone"]}
+                    >
+                      <Typography variant="body1">Flowering Trigger</Typography>
+                    </TooltipMaker>
                   </div>
                   <div className="col-3 mb-2">
                     <div className="blue-bg">
@@ -618,7 +770,9 @@ const InformationSheetContent = (props) => {
                     </div>
                   </div> */}
                   <div className="col-9 mb-2">
-                    <Typography variant="body1">Root Depth</Typography>
+                    <TooltipMaker variable="Root Depth" zone={crop["Zone"]}>
+                      <Typography variant="body1">Root Depth</Typography>
+                    </TooltipMaker>
                   </div>
                   <div className="col-3 mb-2">
                     <div className="blue-bg">
@@ -627,31 +781,40 @@ const InformationSheetContent = (props) => {
                       </Typography>
                     </div>
                   </div>
-                  {crop["Inoculant Type (Legumes Only)"] ? (
+                  {crop["Inoculant Type"][0] !== "none" ? (
                     <Fragment>
                       <div className="col-9 mb-2">
-                        <Typography variant="body1">Inoculant Type</Typography>
+                        <TooltipMaker
+                          variable="Innoculant Type"
+                          zone={crop["Zone"]}
+                        >
+                          <Typography variant="body1">
+                            Inoculant Type
+                          </Typography>
+                        </TooltipMaker>
                       </div>
                       <div className="col-3 mb-2">
                         <div
                           className={`blueBgFlex ${
-                            crop["Inoculant Type (Legumes Only)"].length > 1
+                            crop["Inoculant Type"].length > 1
                               ? `borderWrapped`
                               : ``
                           }`}
                         >
-                          {crop["Inoculant Type (Legumes Only)"].map(
-                            (val, index) => (
-                              <div className="blue-bg bordered" key={index}>
-                                <Typography
-                                  variant="body1"
-                                  className="text-capitalize"
-                                >
-                                  {val}
-                                </Typography>
-                              </div>
-                            )
-                          )}
+                          {crop["Inoculant Type"].map((val, index) => (
+                            <div
+                              className="blue-bg bordered"
+                              key={index}
+                              style={{ height: "auto", maxHeight: "auto" }}
+                            >
+                              <Typography
+                                variant="body2"
+                                className="text-capitalize"
+                              >
+                                {val}
+                              </Typography>
+                            </div>
+                          ))}
                         </div>
                       </div>
                     </Fragment>
@@ -711,7 +874,12 @@ const InformationSheetContent = (props) => {
               <AccordionDetails>
                 <div className="row col-12 text-right">
                   <div className="col-9 mb-2">
-                    <Typography variant="body1">Seeds Per Lb</Typography>
+                    <TooltipMaker
+                      variable="Seeds per Pound"
+                      zone={crop["Zone"]}
+                    >
+                      <Typography variant="body1">Seeds Per Lb</Typography>
+                    </TooltipMaker>
                   </div>
                   <div className="col-3 mb-2">
                     <div className="blue-bg">
@@ -721,7 +889,12 @@ const InformationSheetContent = (props) => {
                     </div>
                   </div>
                   <div className="col-9 mb-2">
-                    <Typography variant="body1">Seed Price Per Lb</Typography>
+                    <TooltipMaker
+                      variable="Seed Price per Pound"
+                      zone={crop["Zone"]}
+                    >
+                      <Typography variant="body1">Seed Price Per Lb</Typography>
+                    </TooltipMaker>
                   </div>
                   <div className="col-3 mb-2">
                     <div className="blue-bg no-bg">
@@ -753,7 +926,12 @@ const InformationSheetContent = (props) => {
                     </div>
                   </div>
                   <div className="col-9 mb-2">
-                    <Typography variant="body1">Can Aerial Seed?</Typography>
+                    <TooltipMaker
+                      variable="Can Aerial Seed?"
+                      zone={crop["Zone"]}
+                    >
+                      <Typography variant="body1">Can Aerial Seed?</Typography>
+                    </TooltipMaker>
                   </div>
                   <div className="col-3 mb-2">
                     <div className="blue-bg">
@@ -763,7 +941,9 @@ const InformationSheetContent = (props) => {
                     </div>
                   </div>
                   <div className="col-9 mb-2">
-                    <Typography variant="body1">Can Frost Seed?</Typography>
+                    <TooltipMaker variable="Frost Seeding" zone={crop["Zone"]}>
+                      <Typography variant="body1">Can Frost Seed?</Typography>
+                    </TooltipMaker>
                   </div>
                   <div className="col-3 mb-2">
                     <div className="blue-bg">
@@ -773,9 +953,14 @@ const InformationSheetContent = (props) => {
                     </div>
                   </div>
                   <div className="col-9 mb-2">
-                    <Typography variant="body1">
-                      Min Germination Temp (&deg;F)
-                    </Typography>
+                    <TooltipMaker
+                      variable="Min Germination Temp (F)"
+                      zone={crop["Zone"]}
+                    >
+                      <Typography variant="body1">
+                        Min Germination Temp (&deg;F)
+                      </Typography>
+                    </TooltipMaker>
                   </div>
                   <div className="col-3 mb-2">
                     <div className="blue-bg">
@@ -810,66 +995,106 @@ const InformationSheetContent = (props) => {
               <AccordionDetails>
                 <div className="row col-12 text-right">
                   <div className="col-9 mb-2">
-                    <Typography variant="body1">
-                      Tillage At Vegetative
-                    </Typography>
+                    <TooltipMaker
+                      variable="Tillage Termination at Vegetative"
+                      zone={crop["Zone"]}
+                    >
+                      <Typography variant="body1">
+                        Tillage At Vegetative
+                      </Typography>
+                    </TooltipMaker>
                   </div>
                   <div className="col-3 mb-2">
                     {getRating(crop["Tillage at Vegetative"])}
                   </div>
                   <div className="col-9 mb-2">
-                    <Typography variant="body1">
-                      Tillage At Flowering
-                    </Typography>
+                    <TooltipMaker
+                      variable="Tillage Termination at Flowering"
+                      zone={crop["Zone"]}
+                    >
+                      <Typography variant="body1">
+                        Tillage At Flowering
+                      </Typography>
+                    </TooltipMaker>
                   </div>
                   <div className="col-3 mb-2">
                     {getRating(crop["Tillage at Flowering"])}
                   </div>
                   <div className="col-9 mb-2">
-                    <Typography variant="body1">
-                      Freezing At Vegetative
-                    </Typography>
+                    <TooltipMaker
+                      variable="Freezing Termination at Vegetative"
+                      zone={crop["Zone"]}
+                    >
+                      <Typography variant="body1">
+                        Freezing At Vegetative
+                      </Typography>
+                    </TooltipMaker>
                   </div>
                   <div className="col-3 mb-2">
                     {getRating(crop["Freezing at Vegetative"])}
                   </div>
                   <div className="col-9 mb-2">
-                    <Typography variant="body1">
-                      Freezing At Flowering
-                    </Typography>
+                    <TooltipMaker
+                      variable="Freezing Termination at Flowering"
+                      zone={crop["Zone"]}
+                    >
+                      <Typography variant="body1">
+                        Freezing At Flowering
+                      </Typography>
+                    </TooltipMaker>
                   </div>
                   <div className="col-3 mb-2">
                     {getRating(crop["Freezing at Flowering"])}
                   </div>
                   <div className="col-9 mb-2">
-                    <Typography variant="body1">
-                      Chemical At Vegetative
-                    </Typography>
+                    <TooltipMaker
+                      variable="Chemical Termination at Vegetative"
+                      zone={crop["Zone"]}
+                    >
+                      <Typography variant="body1">
+                        Chemical At Vegetative
+                      </Typography>
+                    </TooltipMaker>
                   </div>
                   <div className="col-3 mb-2">
                     {getRating(crop["Chemical at Vegetative"])}
                   </div>
                   <div className="col-9 mb-2">
-                    <Typography variant="body1">
-                      Chemical At Flowering
-                    </Typography>
+                    <TooltipMaker
+                      variable="Chemical Termination at Flowering"
+                      zone={crop["Zone"]}
+                    >
+                      <Typography variant="body1">
+                        Chemical At Flowering
+                      </Typography>
+                    </TooltipMaker>
                   </div>
                   <div className="col-3 mb-2">
                     {getRating(crop["Chemical at Flowering"])}
                   </div>
                   <div className="col-9 mb-2">
-                    <Typography variant="body1">Mow At Flowering</Typography>
+                    <TooltipMaker
+                      variable="Mow Termination at Flowering"
+                      zone={crop["Zone"]}
+                    >
+                      <Typography variant="body1">Mow At Flowering</Typography>
+                    </TooltipMaker>
                   </div>
                   <div className="col-3 mb-2">
                     {getRating(crop["Mow at Flowering"])}
                   </div>
                   <div className="col-9 mb-2">
-                    <Typography variant="body1">
-                      Roller-Crimp At Flowering
-                    </Typography>
+                    <TooltipMaker
+                      variable="Roller Crimp Termination at Flowering"
+                      zone={crop["Zone"]}
+                    >
+                      <Typography variant="body1">
+                        Roller-Crimp At Flowering
+                      </Typography>
+                    </TooltipMaker>
                   </div>
                   <div className="col-3 mb-2">
-                    {getRating(crop["Roller Crimp at Flowering"])}
+                    {getRating(crop["Roller Crimp Termination at Flowering"])}
                   </div>
                 </div>
               </AccordionDetails>
@@ -1167,9 +1392,6 @@ const InformationSheetContent = (props) => {
 
 export default InformationSheetContent;
 
-const DummyText = () => {
-  return "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Sed egestas egestas fringilla phasellus faucibus scelerisque eleifend donec pretium. At imperdiet dui accumsan sit. Adipiscing tristique risus nec feugiat in fermentum posuere urna. Porta non pulvinar neque laoreet suspendisse interdum. Malesuada fames ac turpis egestas integer eget. Eget arcu dictum varius duis at consectetur lorem donec massa. Congue nisi vitae suscipit tellus mauris a diam maecenas sed. Posuere urna nec tincidunt praesent semper feugiat nibh sed pulvinar. Enim praesent elementum facilisis leo vel fringilla est ullamcorper. Neque viverra justo nec ultrices dui sapien eget mi proin. Egestas maecenas pharetra convallis posuere. Tortor condimentum lacinia quis vel eros donec. Ultricies integer quis auctor elit sed. Nisi scelerisque eu ultrices vitae auctor eu. Eget felis eget nunc lobortis mattis aliquam faucibus. Mattis aliquam faucibus purus in massa tempor nec.";
-};
 const getMonthDayString = (type = "", crop = {}) => {
   switch (type) {
     case "reliable": {
