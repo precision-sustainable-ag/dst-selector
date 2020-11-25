@@ -6,6 +6,7 @@ import {
   ListItem,
   ListItemText,
   Typography,
+  Button,
 } from "@material-ui/core";
 
 import RenderFilters from "./RenderFilters";
@@ -70,6 +71,66 @@ const ComparisonBar = (props) => {
       });
     }
   };
+  const showAllVariables = () => {
+    setGoalsOpen(true);
+    let allGoals = [];
+    allGoals.push("Cover Crop Group");
+    const filteredGoals = props.goals.map((goal) => {
+      return {
+        name: goal,
+        selected: true,
+      };
+    });
+    const filteredVals = props.filterData.map((filter) => {
+      const vals = filter.values.map((val) => {
+        return {
+          ...val,
+          selected: true,
+        };
+      });
+      return {
+        name: filter.name,
+        description: filter.description || null,
+        open: true,
+        values: vals,
+      };
+    });
+    // console.log(filteredVals);
+    console.error("Roller Crimp filter bug");
+    const filterKeysAppend = filteredVals.map((val, index) => {
+      if (
+        index !== 0 &&
+        val.name !== "Soil Conditions" &&
+        val.name !== "Disease & Non Weed Pests" &&
+        val.name !== "Beneficials" &&
+        val.name !== "Disease & Non Weed Pests"
+      ) {
+        return val.values.map((v) => {
+          if (v.name != "Roller Crimp at Flowering") {
+            return v.alternateName ? v.alternateName : v.name;
+          } else return [];
+        });
+      } else return [];
+    });
+    // console.log(filterKeysAppend);
+
+    const filterGoalsAppend = filteredGoals.map((v) => v.name);
+
+    // console.log(filterKeys);
+    // console.log(filterKeysAppend.flat());
+    allGoals.push(filterKeysAppend.flat(2));
+    allGoals.push(filterGoalsAppend.flat());
+    // console.log(allGoals.flat(2));
+    setFilterValues(filteredVals);
+    setGoals(filteredGoals);
+
+    props.dispatch({
+      type: "UPDATE_COMPARISON_KEYS",
+      data: {
+        comparisonKeys: allGoals.flat(2),
+      },
+    });
+  };
   return props.comparisonView ? (
     <List
       component="nav"
@@ -104,6 +165,19 @@ const ComparisonBar = (props) => {
       ) : (
         <ListItem></ListItem>
       )}
+      <ListItem>
+        <ListItemText
+          primary={
+            <Button
+              size="small"
+              className="text-uppercase text-left"
+              onClick={showAllVariables}
+            >
+              Show All
+            </Button>
+          }
+        />
+      </ListItem>
       {goals.length > 0 ? (
         <RenderGoals
           goals={goals}
