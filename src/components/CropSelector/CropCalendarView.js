@@ -259,6 +259,197 @@ const CropCalendarViewComponent = (props) => {
       return false;
     }
   };
+  const sortReset = (from = "cropName") => {
+    setActiveSortType("goals");
+    // reset to default
+    const { selectedGoals } = state;
+    let activeCropDataShadow = props.activeCropData;
+    let inactiveCropDataShadow = props.inactiveCropData;
+    selectedGoals
+      .slice()
+      .reverse()
+      .forEach((goal) => {
+        activeCropDataShadow.sort((a, b) => {
+          if (a.fields[goal] && b.fields[goal]) {
+            if (a.fields[goal] > b.fields[goal]) {
+              return -1;
+            } else {
+              return 1;
+            }
+          }
+          return 0;
+        });
+        if (inactiveCropDataShadow.length > 0) {
+          inactiveCropDataShadow.sort((a, b) => {
+            if (a.fields[goal] && b.fields[goal]) {
+              if (a.fields[goal] > b.fields[goal]) {
+                return -1;
+              } else {
+                return 1;
+              }
+            }
+            return 0;
+          });
+        }
+      });
+    props.setActiveCropData(activeCropDataShadow);
+    if (inactiveCropDataShadow.length > 0) {
+      props.setInactiveCropData(inactiveCropDataShadow);
+    }
+  };
+  const sortCropsByName = () => {
+    let activeCropDataShadow = props.activeCropData;
+    let inactiveCropDataShadow = props.inactiveCropData;
+    sortReset("cropName");
+    setActiveSortType("selectedCrops");
+
+    if (nameSortFlag) {
+      if (activeCropDataShadow.length > 0) {
+        activeCropDataShadow.sort((a, b) => {
+          var firstCropName = flipCoverCropName(
+            a.fields["Cover Crop Name"].toLowerCase()
+          ).replace(/\s+/g, "");
+          var secondCropName = flipCoverCropName(
+            b.fields["Cover Crop Name"].toLowerCase()
+          ).replace(/\s+/g, "");
+          return firstCropName.localeCompare(secondCropName);
+        });
+
+        props.setActiveCropData(activeCropDataShadow);
+      }
+
+      if (inactiveCropDataShadow.length > 0) {
+        inactiveCropDataShadow.sort((a, b) => {
+          var firstCropName = flipCoverCropName(
+            a.fields["Cover Crop Name"].toLowerCase()
+          );
+          var secondCropName = flipCoverCropName(
+            b.fields["Cover Crop Name"].toLowerCase()
+          );
+          if (firstCropName < secondCropName) {
+            return -1;
+          }
+          if (firstCropName > secondCropName) {
+            return 1;
+          }
+          return 0;
+        });
+        props.setInactiveCropData(inactiveCropDataShadow);
+      }
+    } else {
+      // sortReset("cropName");
+      if (activeCropDataShadow.length > 0) {
+        activeCropDataShadow.sort((a, b) => {
+          var firstCropName = flipCoverCropName(
+            a.fields["Cover Crop Name"].toLowerCase()
+          ).replace(/\s+/g, "");
+          var secondCropName = flipCoverCropName(
+            b.fields["Cover Crop Name"].toLowerCase()
+          ).replace(/\s+/g, "");
+          // return firstCropName.localeCompare(secondCropName);
+          if (firstCropName < secondCropName) {
+            return 1;
+          }
+          if (firstCropName > secondCropName) {
+            return -1;
+          }
+          return 0;
+        });
+
+        props.setActiveCropData(activeCropDataShadow);
+      }
+
+      if (inactiveCropDataShadow.length > 0) {
+        inactiveCropDataShadow.sort((a, b) => {
+          var firstCropName = flipCoverCropName(
+            a.fields["Cover Crop Name"].toLowerCase()
+          ).replace(/\s+/g, "");
+          var secondCropName = flipCoverCropName(
+            b.fields["Cover Crop Name"].toLowerCase()
+          ).replace(/\s+/g, "");
+          if (firstCropName < secondCropName) {
+            return 1;
+          }
+          if (firstCropName > secondCropName) {
+            return -1;
+          }
+          return 0;
+        });
+        props.setInactiveCropData(inactiveCropDataShadow);
+      }
+    }
+
+    setNameSortFlag(!nameSortFlag);
+  };
+
+  const sortBySelectedCrops = () => {
+    sortReset("selectedCrops");
+    setActiveSortType("selectedCrops");
+    let selectedCropsShadow = state.selectedCrops;
+    let activeCropDataShadow = props.activeCropData;
+    let inactiveCropDataShadow = props.inactiveCropData;
+    if (selectedCropsSortFlag) {
+      if (selectedCropsShadow.length > 0) {
+        let selectedCropIds = [];
+        selectedCropsShadow.forEach((crop) => {
+          selectedCropIds.push(crop.id);
+        });
+        let newActiveShadow = activeCropDataShadow.map((crop) => {
+          if (selectedCropIds.includes(crop.fields.id)) {
+            crop["inCart"] = true;
+          } else {
+            crop["inCart"] = false;
+          }
+          return crop;
+        });
+
+        if (inactiveCropDataShadow.length > 0) {
+          let newInactiveShadow = inactiveCropDataShadow.map((crop) => {
+            if (selectedCropIds.includes(crop.fields.id)) {
+              crop["inCart"] = true;
+            } else {
+              crop["inCart"] = false;
+            }
+            return crop;
+          });
+          newInactiveShadow.sort((a) => {
+            if (a.inCart) {
+              return -1;
+            } else {
+              return 1;
+            }
+          });
+          props.setInactiveCropData(newInactiveShadow);
+        }
+
+        // console.log(newActiveShadow);
+        // console.log(selectedCropIds);
+
+        if (newActiveShadow.length > 0) {
+          newActiveShadow.sort((a) => {
+            if (a.inCart) {
+              return -1;
+            } else {
+              return 1;
+            }
+          });
+
+          props.setActiveCropData(newActiveShadow);
+        }
+
+        // if(inactiveCropDataShadow.length > 0) {
+
+        // }
+      }
+    } else {
+      // sort back to original values
+      sortReset("selectedCrops");
+    }
+    setSelectedCropsSortFlag(!selectedCropsSortFlag);
+  };
+  const [activeSortType, setActiveSortType] = useState("goals");
+  const [nameSortFlag, setNameSortFlag] = useState(true);
+  const [selectedCropsSortFlag, setSelectedCropsSortFlag] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalData, setModalData] = useState([{}]);
 
@@ -593,7 +784,7 @@ const CropCalendarViewComponent = (props) => {
                 <TableCell
                   style={{ width: "17%", borderRight: "5px solid white" }}
                 >
-                  <Button>COVER CROPS</Button>
+                  <Button onClick={sortCropsByName}>COVER CROPS</Button>
                 </TableCell>
                 {state.selectedGoals.length === 0 ? (
                   ""
@@ -601,7 +792,7 @@ const CropCalendarViewComponent = (props) => {
                   <TableCell
                     style={{ width: "13%", borderRight: "5px solid white" }}
                   >
-                    <Button>AVERAGE GOAL RATING</Button>
+                    <Button onClick={sortReset}>AVERAGE GOAL RATING</Button>
                   </TableCell>
                 )}
 
@@ -632,15 +823,16 @@ const CropCalendarViewComponent = (props) => {
                   style={{ width: "10%", borderLeft: "5px solid white" }}
                 >
                   <Button
-                    onClick={() => {
-                      dispatch({
-                        type: "ACTIVATE_MY_COVER_CROP_LIST_TILE",
-                        data: {
-                          myCoverCropActivationFlag: true,
-                          speciesSelectorActivationFlag: false,
-                        },
-                      });
-                    }}
+                    // onClick={() => {
+                    //   dispatch({
+                    //     type: "ACTIVATE_MY_COVER_CROP_LIST_TILE",
+                    //     data: {
+                    //       myCoverCropActivationFlag: true,
+                    //       speciesSelectorActivationFlag: false,
+                    //     },
+                    //   });
+                    // }}
+                    onClick={sortBySelectedCrops}
                   >
                     MY LIST <br />
                     {`[${state.selectedCrops.length} CROPS]`}
