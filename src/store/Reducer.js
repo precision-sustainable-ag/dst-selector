@@ -11,6 +11,15 @@ const Reducer = (state, action) => {
         break;
       }
     }
+    case "UPDATE_LOCATION": {
+      return {
+        ...state,
+        address: action.data.address,
+        markers: [[action.data.latitude, action.data.longitude]],
+        zip: action.data.zip,
+        zipCode: action.data.zip,
+      };
+    }
     case "JUMP_SPECIES_PROGRESS": {
       return { ...state, progress: 5 };
     }
