@@ -12,7 +12,7 @@ import desc from "../shared/crop-descriptions.json";
 
 import z7Dict from "../shared/json/zone7/data-dictionary.json";
 import z6Dict from "../shared/json/zone6/data-dictionary.json";
-import z5Dict from "../shared/json/zone6/data-dictionary.json";
+import z5Dict from "../shared/json/zone5/data-dictionary.json";
 
 const cropDataFormatter = (cropData = [{}], zone = 7) => {
   const excludedCropZoneDecisionKeys = ["Exclude", "Up and Coming", "Discuss"];
@@ -82,7 +82,7 @@ const cropDataFormatter = (cropData = [{}], zone = 7) => {
 
     val.fields["Mow at Flowering"] = val.fields["Mow Termination at Flowering"];
     val.fields["Roller Crimp at Flowering"] =
-      val.fields["Roller Crimp Tolerance at Flowering"];
+      val.fields["Roller Crimp Termination at Flowering"];
 
     if (!val.fields["Frost Seeding"]) {
       val.fields["Frost Seeding"] = false;
@@ -205,6 +205,7 @@ const z4CropData = cropDataFormatter(z4AllCrops, 4);
 
 const initialState = {
   progress: 0,
+  // progress: 1,
   // progress: 4,
   // progress: 5,
   address: "",
