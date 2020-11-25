@@ -8,6 +8,7 @@ import {
   Typography,
   CardContent,
   makeStyles,
+  Grid,
 } from "@material-ui/core";
 import { downloadAllPDF, trimString } from "../../shared/constants";
 import { useSnackbar } from "notistack";
@@ -108,13 +109,13 @@ const ExplorerCardView = (props) => {
 
   return (
     <Fragment>
-      <div className="row">
+      <Grid container spacing={3}>
         {props.activeCropData.length > 0
           ? props.activeCropData.map((crop, index) => {
               // console.log("crop.fields.Zone", crop.fields.Zone);
               // console.log("state.zone", state.zone);
               return (
-                <div className="col-auto pb-4" key={index}>
+                <Grid item key={index}>
                   <Card className={classes.card}>
                     <CardMedia
                       image={
@@ -203,11 +204,12 @@ const ExplorerCardView = (props) => {
                       </Typography>
                     </CardActionArea>
                   </Card>
-                </div>
+                </Grid>
               );
             })
           : "Loading.."}
-      </div>
+      </Grid>
+
       <CropDetailsModalComponent
         modalOpen={modalOpen}
         setModalOpen={setModalOpen}
