@@ -27,11 +27,13 @@ import LocationToggleComponent from "./LocationToggle";
 import MapContext from "./MapContext";
 import { Search } from "@material-ui/icons";
 import { RestartPrompt } from "../../shared/constants";
+import GoogleMaps from "./GoogleMaps";
+import GoogleAutocomplete from "./GoogleAutocomplete";
 // import { Link, Button } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
-    margin: theme.spacing(1),
+    // margin: theme.spacing(1),
     minWidth: 120,
   },
   selectEmpty: {
@@ -163,6 +165,71 @@ const LocationComponent = ({ title, caller }) => {
       });
     }
   }, [restartAccept]);
+  const handleZoneChange = (event) => {
+    if (caller === "greenbar") {
+      setShowRestartPrompt(true);
+      setZoneSelection(event.target.value);
+    } else {
+      if (event.target.value === 3) {
+        dispatch({
+          type: "UPDATE_ZONE_TEXT",
+          data: {
+            zoneText: "Zone 7",
+            zone: parseInt(7),
+          },
+        });
+      } else if (event.target.value === 4) {
+        dispatch({
+          type: "UPDATE_ZONE_TEXT",
+          data: {
+            zoneText: "Zone 4",
+            zone: parseInt(event.target.value),
+          },
+        });
+      } else if (event.target.value === 5) {
+        dispatch({
+          type: "UPDATE_ZONE_TEXT",
+          data: {
+            zoneText: "Zone 5",
+            zone: parseInt(event.target.value),
+          },
+        });
+      } else if (event.target.value === 6) {
+        dispatch({
+          type: "UPDATE_ZONE_TEXT",
+          data: {
+            zoneText: "Zone 6",
+            zone: parseInt(event.target.value),
+          },
+        });
+      } else {
+        dispatch({
+          type: "UPDATE_ZONE_TEXT",
+          data: {
+            zoneText: "Zone 7",
+            zone: parseInt(7),
+          },
+        });
+      }
+    }
+  };
+  const [selectedToEditSite, setSelectedToEditSite] = useState({});
+  useEffect(() => {
+    console.log("return", selectedToEditSite);
+    let { latitude, longitude, county, address, zipCode } = selectedToEditSite;
+    // console.log(address);
+    if (Object.keys(selectedToEditSite).length === 5) {
+      dispatch({
+        type: "UPDATE_LOCATION",
+        data: {
+          address: address,
+          latitude: latitude,
+          longitude: longitude,
+          zip: zipCode,
+        },
+      });
+    }
+  }, [selectedToEditSite]);
   return (
     <div className="container-fluid mt-5">
       <div className="row boxContainerRow" style={{ minHeight: "520px" }}>
@@ -180,23 +247,35 @@ const LocationComponent = ({ title, caller }) => {
                 <Typography variant="body1" align="left">
                   Enter your USDA plant hardiness zone, address, or zip code and
                   hit <Search fontSize="inherit" /> to determine your location.
-                  Then click{" "}
+                  {/* Then click{" "}
                   <img
                     height="20"
                     width="20"
                     src="/images/icons/pentagon.png"
                   />{" "}
-                  to draw your field boundary on the map.
+                  to draw your field boundary on the map. */}
                 </Typography>
-                <Typography variant="body1" align="left" className="pt-2">
+                {/* <Typography variant="body1" align="left" className="pt-2">
                   Plant hardiness zone, address, or zip code will return the
                   most general recommendations, whereas drawing your field on
                   the map will return the most site-specific recommendations.
-                </Typography>
+                </Typography> */}
               </div>
             </div>
             <div className="row pt-3 mt-4">
-              <div className="col-md-6 col-lg-6 col-sm-12 col-12">
+              <div className="col-md-9 col-lg-8 col-sm-12 row">
+                {/* <AutoComplete
+                  from={caller === "greenbar" ? "greenbar" : "component"}
+                /> */}
+                <GoogleAutocomplete
+                  selectedToEditSite={selectedToEditSite}
+                  setSelectedToEditSite={setSelectedToEditSite}
+                />
+                {/* <div className="col-md-12 text-left">
+                  <LocationToggleComponent />
+                </div> */}
+              </div>
+              <div className="col-md-3 col-lg-4 col-sm-12 col-12">
                 <FormControl
                   variant="filled"
                   style={{ width: "100%" }}
@@ -210,60 +289,9 @@ const LocationComponent = ({ title, caller }) => {
                     style={{
                       textAlign: "left",
                     }}
-                    onChange={(event) => {
-                      //   console.log("evvt" + event.target.);
-                      if (caller === "greenbar") {
-                        setShowRestartPrompt(true);
-                        setZoneSelection(event.target.value);
-                      } else {
-                        if (event.target.value === 3) {
-                          dispatch({
-                            type: "UPDATE_ZONE_TEXT",
-                            data: {
-                              zoneText: "Zone 7",
-                              zone: parseInt(7),
-                            },
-                          });
-                        } else if (event.target.value === 4) {
-                          dispatch({
-                            type: "UPDATE_ZONE_TEXT",
-                            data: {
-                              zoneText: "Zone 4",
-                              zone: parseInt(event.target.value),
-                            },
-                          });
-                        } else if (event.target.value === 5) {
-                          dispatch({
-                            type: "UPDATE_ZONE_TEXT",
-                            data: {
-                              zoneText: "Zone 5",
-                              zone: parseInt(event.target.value),
-                            },
-                          });
-                        } else if (event.target.value === 6) {
-                          dispatch({
-                            type: "UPDATE_ZONE_TEXT",
-                            data: {
-                              zoneText: "Zone 6",
-                              zone: parseInt(event.target.value),
-                            },
-                          });
-                        } else {
-                          dispatch({
-                            type: "UPDATE_ZONE_TEXT",
-                            data: {
-                              zoneText: "Zone 7",
-                              zone: parseInt(7),
-                            },
-                          });
-                        }
-                      }
-                    }}
+                    onChange={handleZoneChange}
                     value={state.zone}
                   >
-                    <MenuItem value={0}>
-                      <em>None</em>
-                    </MenuItem>
                     <MenuItem value={4} key={4}>
                       Zone 4
                     </MenuItem>
@@ -282,14 +310,6 @@ const LocationComponent = ({ title, caller }) => {
                   <LiveLocation />
                 </div> */}
               </div>
-              <div className="col-md-6 col-sm-12 row">
-                <AutoComplete
-                  from={caller === "greenbar" ? "greenbar" : "component"}
-                />
-                <div className="col-md-12 text-left">
-                  <LocationToggleComponent />
-                </div>
-              </div>
             </div>
             <div className="row">
               <div
@@ -304,13 +324,14 @@ const LocationComponent = ({ title, caller }) => {
         </div>
         <div className="col-xl-6 col-lg-12">
           {/* <MapComponent width="100%" height="100%" minzoom={4} maxzoom={20} /> */}
-          <MapContext
+          {/* <MapContext
             width="100%"
             height="400px"
             minzoom={4}
             maxzoom={20}
             from="location"
-          />
+          /> */}
+          <GoogleMaps />
         </div>
       </div>
       <Dialog
