@@ -175,7 +175,7 @@ const Header = () => {
             dispatch({
               type: "UPDATE_ZIP_CODE",
               data: {
-                zipCode: parseInt(resp.data.postcode),
+                zipCode: parseInt(zip),
               },
             });
           }
@@ -304,7 +304,7 @@ const Header = () => {
     }
     // check if isRoot
 
-    if (window.location.pathname === "/") {
+    if (window.location.pathname === "/species-selector") {
       setIsRoot(true);
       // setRedirectToRoot(true);
     } else {
@@ -398,7 +398,7 @@ const Header = () => {
     setCollapse(!collapse);
   };
   const setmyCoverCropActivationFlag = () => {
-    if (window.location.pathname === "/") {
+    if (window.location.pathname === "/species-selector") {
       if (state.progress > 4) {
         dispatch({
           type: "ACTIVATE_MY_COVER_CROP_LIST_TILE",
@@ -439,8 +439,8 @@ const Header = () => {
         myCoverCropActivationFlag: false,
       },
     });
-    if (window.location.pathname !== "/") {
-      history.push("/");
+    if (window.location.pathname !== "/species-selector") {
+      history.push("/species-selector");
     }
   };
 
@@ -549,7 +549,7 @@ const Header = () => {
           size="large"
           component={NavLink}
           exact
-          to={"/cover-crop-explorer"}
+          to={"/"}
           activeClassName="active"
         >
           COVER CROP EXPLORER
@@ -565,7 +565,7 @@ const Header = () => {
           SPECIES SELECTOR TOOL
         </Button>
 
-        {window.location.pathname === "/" &&
+        {window.location.pathname === "/species-selector" &&
         state.selectedCrops.length > 0 &&
         state.progress >= 5 ? (
           <Badge
@@ -578,7 +578,7 @@ const Header = () => {
               size="large"
               className={
                 state.myCoverCropActivationFlag &&
-                window.location.pathname === "/"
+                window.location.pathname === "/species-selector"
                   ? "active"
                   : ""
               }
@@ -591,7 +591,7 @@ const Header = () => {
           ""
         )}
         {/* My Cover Crop List As A Separate Component/Route  */}
-        {window.location.pathname !== "/" ? (
+        {window.location.pathname !== "/species-selector" ? (
           state.progress.length < 5 ? (
             state.selectedCrops.length > 0 ? (
               <RenderMyCoverCropListButtons />

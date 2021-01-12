@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
+import L from "leaflet";
 import {
   Circle,
   FeatureGroup,
@@ -14,11 +15,25 @@ import {
 } from "react-leaflet";
 import { EditControl } from "react-leaflet-draw";
 import Search from "react-leaflet-search";
+import ReactLeafletGoogleLayer from "react-leaflet-google-layer";
 
 import { Context } from "../../store/Store";
 
 import "leaflet-draw/dist/leaflet.draw.css";
 import "../../styles/map.scss";
+import { googleApiKey } from "../../shared/keys";
+import { result } from "lodash";
+// work around broken icons when using webpack, see https://github.com/PaulLeCam/react-leaflet/issues/255
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl:
+    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.0/images/marker-icon.png",
+  iconUrl:
+    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.0/images/marker-icon.png",
+  shadowUrl:
+    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.0/images/marker-shadow.png",
+});
+
 const { BaseLayer, Overlay } = LayersControl;
 
 const MapContext = ({ width, height, minzoom, maxzoom, from }) => {
@@ -52,6 +67,7 @@ const MapContext = ({ width, height, minzoom, maxzoom, from }) => {
         markers: markersArray,
       },
     });
+
     dispatch({
       type: "SNACK",
       data: {
@@ -76,8 +92,29 @@ const MapContext = ({ width, height, minzoom, maxzoom, from }) => {
     // store the featureGroup ref for future access to content
     setEditableFG(reactFGref);
   };
+
+  const setAddress = (latLng) => {
+    // console.log("address");
+    let geocoder = new window.google.maps.Geocoder();
+    geocoder.geocode({ location: latLng }, (results, status) => {
+      console.log(results);
+      if (status === "OK") {
+        dispatch({
+          type: "CHANGE_ADDRESS_VIA_MAP",
+          data: {
+            address: results[0].formatted_address.split(",")[0],
+            fullAddress: results[0].formatted_address,
+            addressVerified: true,
+          },
+        });
+      } else {
+        console.error("API fetch error", results);
+      }
+    });
+  };
   const onCreated = (e) => {
     const drawnItems = editableFG.leafletElement._layers;
+
     // if the number of layers is bigger than 1 then delete the first
     // console.log(drawnItems);
     if (Object.keys(drawnItems).length > 1) {
@@ -91,11 +128,20 @@ const MapContext = ({ width, height, minzoom, maxzoom, from }) => {
       if (e.layerType === "marker") {
         const lat = e.layer._latlng.lat;
         const lng = e.layer._latlng.lng;
-        // console.log([lat, lng]);
+        const latLng = { lat: lat, lng: lng };
+        // reverse geocode
+        console.log("marker");
+        setAddress(latLng);
+
         updateGlobalMarkers([[lat, lng]], "marker");
       } else if (e.layerType === "polygon") {
         const latlngs = e.layer._latlngs;
+        console.log(e.layer);
         let markers = [];
+        const firstLatLng = { lat: latlngs[0][0].lat, lng: latlngs[0][0].lng };
+        // reverse geocode
+        setAddress(firstLatLng);
+
         latlngs.map((latlngArr, index) => {
           latlngArr.map((latlng, index) => {
             // console.log(latlng);
@@ -180,9 +226,17 @@ const MapContext = ({ width, height, minzoom, maxzoom, from }) => {
               ""
             )}
           </FeatureGroup>
-          <TileLayer
+          {/* <TileLayer
             attribution="Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community"
             url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+          /> */}
+          <ReactLeafletGoogleLayer
+            googleMapsLoaderConf={{
+              KEY: googleApiKey,
+              LIBRARIES: ["places", "geometry"],
+              REGION: "US",
+            }}
+            type={"hybrid"}
           />
         </Map>
       </div>

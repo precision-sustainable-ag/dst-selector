@@ -1,7 +1,14 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Context } from "../../store/Store";
-import { makeStyles, useScrollTrigger, Zoom, Fab } from "@material-ui/core";
-import { KeyboardArrowUp } from "@material-ui/icons";
+import {
+  makeStyles,
+  useScrollTrigger,
+  Zoom,
+  Fab,
+  Button,
+  IconButton,
+} from "@material-ui/core";
+import { Close, KeyboardArrowUp, Menu } from "@material-ui/icons";
 import "../../styles/cropSelector.scss";
 import CropTableComponent from "./CropTable";
 import MyCoverCropList from "../MyCoverCropList/MyCoverCropList";
@@ -456,11 +463,28 @@ const CropSelector = (props) => {
       });
     }
   }, [state.selectedGoals]);
-
+  const [showSidebar, setShowSidebar] = useState(true);
   return (
     <div className="container-fluid mt-2">
       <div className="row cropSelectorRow mt-3">
-        <div className="col-md-2 col-sm-12">
+        <div className="col-12">
+          <IconButton
+            title="Toggle Sidebar"
+            aria-label="toggle-sidebar"
+            onClick={() => setShowSidebar(!showSidebar)}
+          >
+            {!showSidebar ? <Menu /> : <Close />}
+          </IconButton>
+        </div>
+
+        <div
+          className={`col-md-2 col-sm-12`}
+          style={
+            showSidebar
+              ? { display: "block", visibility: "visible" }
+              : { display: "none", visibility: "hidden" }
+          }
+        >
           <CropSidebarComponent
             sortEnvTolCropData={sortEnvTolCropData}
             setGrowthWindow={setShowGrowthWindow}
@@ -485,7 +509,11 @@ const CropSelector = (props) => {
           />
         </div>
 
-        <div className="col-md-10 col-sm-12">
+        <div
+          className={
+            showSidebar ? `col-md-10 col-sm-12` : `col-md-12 col-sm-12`
+          }
+        >
           {state.speciesSelectorActivationFlag ? (
             isListView ? (
               <CropTableComponent

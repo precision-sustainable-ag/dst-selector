@@ -116,7 +116,8 @@ const Wrapper = () => (
         <BrowserRouter>
           <Suspense fallback={<div>Loading..</div>}>
             <Switch>
-              <Route path={`/`} component={App} exact />
+              <Route path={`/species-selector`} component={App} exact />
+              <Route path={"/"} component={CoverCropExplorer} exact />
               <Route path={"/about"} component={About} exact />
               <Route path={"/help"} component={HelpComponent} exact />
               <Route path={"/feedback"} component={FeedbackComponent} exact />
@@ -146,11 +147,7 @@ const Wrapper = () => (
                 exact
               />
               <Route path={"/mix-maker"} component={MixMaker} exact />
-              <Route
-                path={"/cover-crop-explorer"}
-                component={CoverCropExplorer}
-                exact
-              />
+
               <Route component={RouteNotFound} />
             </Switch>
           </Suspense>

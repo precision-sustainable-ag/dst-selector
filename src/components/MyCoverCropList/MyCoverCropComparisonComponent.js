@@ -128,6 +128,7 @@ const MyCoverCropComparisonComponent = (props) => {
   return (
     <div className="container-fluid">
       <div className="row">
+        {/* Placeholder for empty white space */}
         <div className="col-xl-3 col-lg-4 col-md-4">
           <div className="row pt-3">
             <div className="col-12">
@@ -199,25 +200,32 @@ const MyCoverCropComparisonComponent = (props) => {
                       </span>
                     </div>
                   ))}
-                  <div style={lightBorder}>
-                    <span>
-                      <DataTooltip
-                        data={"Average rating of all selected goals"}
-                        interactive={false}
-                        placement="top-start"
-                      />
-                    </span>
-                    <span>
-                      <Typography variant="body2">
-                        Average Goal Rating
-                      </Typography>
-                    </span>
-                  </div>
+
+                  {/* Average Goal Rating: Show only if goals are selected */}
+                  {state.selectedGoals.length > 0 ? (
+                    <div style={lightBorder}>
+                      <span>
+                        <DataTooltip
+                          data={"Average rating of all selected goals"}
+                          interactive={false}
+                          placement="top-start"
+                        />
+                      </span>
+                      <span>
+                        <Typography variant="body2">
+                          Average Goal Rating
+                        </Typography>
+                      </span>
+                    </div>
+                  ) : (
+                    ""
+                  )}
                 </CardContent>
               </Card>
             </div>
           </div>
         </div>
+        {/* Actual crops show up from here */}
         <div className="col-xl-9 col-lg-8 col-md-8 comparisonContainer">
           <div className="row pt-3">
             {selectedCrops.map((crop, index) => (
@@ -307,9 +315,14 @@ const MyCoverCropComparisonComponent = (props) => {
                         index={index}
                       />
                     ))}
-                    <div style={lightBG}>
-                      <GetAverageGoalRating crop={crop} />
-                    </div>
+                    {/* Show Goal Rating Only IF Goals > 0 */}
+                    {state.selectedGoals.length > 0 ? (
+                      <div style={lightBG}>
+                        <GetAverageGoalRating crop={crop} />
+                      </div>
+                    ) : (
+                      ""
+                    )}
                   </CardContent>
                   <CardActionArea
                     style={{
@@ -345,26 +358,6 @@ const MyCoverCropComparisonComponent = (props) => {
   );
 };
 
-const RenderGrowthWindow = ({ window }) => {
-  const growingWindows = ["Very Short", "Short", "Medium", "Long", "Very Long"];
-  const index = growingWindows.indexOf(window);
-
-  switch (index) {
-    case 0:
-      return getRating(1);
-    case 1:
-      return getRating(2);
-    case 2:
-      return getRating(3);
-    case 3:
-      return getRating(4);
-    case 4:
-      return getRating(5);
-    default:
-      return getRating(0);
-  }
-};
-
 const RenderRelevantData = ({ filterKey = "", data = [], index = 0 }) => {
   if (typeof data[filterKey] === "number") {
     if (data[filterKey].toString().length === 1) {
@@ -389,12 +382,15 @@ const RenderRelevantData = ({ filterKey = "", data = [], index = 0 }) => {
           <RenderSeedingData data={data} filterKey={filterKey} />
         </div>
       );
-    } else
+    } else if (data[filterKey]) {
       return (
         <div style={lightBG}>
           <Typography variant="body2">{data[filterKey].toString()}</Typography>
         </div>
       );
+    } else {
+      return <div></div>;
+    }
   }
 };
 
@@ -419,17 +415,39 @@ const GetAverageGoalRating = ({ crop }) => {
   return getRating(goalRating / state.selectedGoals.length);
 };
 
-const RenderCtoNRatioText = ({ ratio }) => {
-  switch (parseInt(ratio)) {
-    case 1:
-      return "LOW";
-    case 2:
-      return "MEDIUM";
-    case 3:
-      return "HIGH";
-    default:
-      return "NO DATA";
-  }
-};
-
 export default MyCoverCropComparisonComponent;
+
+// Deprecated
+
+// const RenderGrowthWindow = ({ window }) => {
+//   const growingWindows = ["Very Short", "Short", "Medium", "Long", "Very Long"];
+//   const index = growingWindows.indexOf(window);
+
+//   switch (index) {
+//     case 0:
+//       return getRating(1);
+//     case 1:
+//       return getRating(2);
+//     case 2:
+//       return getRating(3);
+//     case 3:
+//       return getRating(4);
+//     case 4:
+//       return getRating(5);
+//     default:
+//       return getRating(0);
+//   }
+// };
+
+// const RenderCtoNRatioText = ({ ratio }) => {
+//   switch (parseInt(ratio)) {
+//     case 1:
+//       return "LOW";
+//     case 2:
+//       return "MEDIUM";
+//     case 3:
+//       return "HIGH";
+//     default:
+//       return "NO DATA";
+//   }
+// };
