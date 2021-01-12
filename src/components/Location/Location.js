@@ -324,14 +324,14 @@ const LocationComponent = ({ title, caller }) => {
         </div>
         <div className="col-xl-6 col-lg-12">
           {/* <MapComponent width="100%" height="100%" minzoom={4} maxzoom={20} /> */}
-          {/* <MapContext
+          <MapContext
             width="100%"
             height="400px"
             minzoom={4}
             maxzoom={20}
             from="location"
-          /> */}
-          <GoogleMaps />
+          />
+          {/* <GoogleMaps /> */}
         </div>
       </div>
       <Dialog

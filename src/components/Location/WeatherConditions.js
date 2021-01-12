@@ -252,7 +252,7 @@ const WeatherConditions = (props) => {
     <div className="row">
       <div className="col-12">
         <Typography variant="h4" align="left">
-          Weather Conditions?
+          Climate Conditions?
         </Typography>
       </div>
       <div className="mt-2 col-12 text-left">
@@ -432,7 +432,7 @@ const WeatherConditions = (props) => {
       >
         <Fade in={open}>
           <div className={`modalContainer ${classes.paper}`}>
-            <h2 id="transition-modal-title">Edit Weather Data</h2>
+            <h2 id="transition-modal-title">Edit Climate Data</h2>
             <div id="transition-modal-description">
               <div className="container-fluid">
                 <FormGroup>
@@ -812,6 +812,7 @@ const WeatherConditions = (props) => {
                       >
                         update
                       </LightButton>
+                      <Button onClick={() => setOpen(false)}>cancel</Button>
                     </div>
                   </div>
                 </FormGroup>

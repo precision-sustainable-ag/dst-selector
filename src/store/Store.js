@@ -210,6 +210,8 @@ const initialState = {
   // progress: 5,
   address: "",
   addressSearchPreference: "address",
+  addressChangedViaMap: false,
+  fullAddress: "",
   zip: 0,
   zipCode: 0,
   markersCopy: [],

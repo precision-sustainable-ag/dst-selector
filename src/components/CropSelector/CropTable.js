@@ -9,6 +9,7 @@ import {
   trimString,
   CropImage,
   flipCoverCropName,
+  sudoButtonStyle,
 } from "../../shared/constants";
 import {
   Button,
@@ -1299,8 +1300,7 @@ const CropTableComponent = (props) => {
                 }}
               >
                 <Typography variant="body1">
-                  {" "}
-                  <Button>Growth Traits</Button>
+                  <div style={sudoButtonStyle}>Growth Traits</div>
                 </Typography>
               </TableCell>
               {state.selectedGoals.length > 0
@@ -1329,7 +1329,9 @@ const CropTableComponent = (props) => {
                               </div>
                             }
                           >
-                            <Button>{`Goal ${index + 1}`}</Button>
+                            <div style={sudoButtonStyle}>{`Goal ${
+                              index + 1
+                            }`}</div>
                           </Tooltip>
                         </Typography>
                       </TableCell>
@@ -1348,7 +1350,7 @@ const CropTableComponent = (props) => {
                 >
                   <Typography variant="body1">
                     {" "}
-                    <Button>PLANTING WINDOW</Button>
+                    <div style={sudoButtonStyle}>PLANTING WINDOW</div>
                   </Typography>
                 </TableCell>
               ) : (

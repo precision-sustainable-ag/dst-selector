@@ -117,15 +117,17 @@ const ExplorerCardView = (props) => {
               return (
                 <Grid item key={index}>
                   <Card className={classes.card}>
-                    <CardMedia
-                      image={
-                        crop.fields["Image Data"]["Key Thumbnail"]
-                          ? `/images/Cover Crop Photos/250/${crop.fields["Image Data"]["Key Thumbnail"]}`
-                          : "https://placehold.it/100x100?text=Placeholder"
-                      }
-                      className={classes.media}
-                      title={crop.fields["Cover Crop Name"]}
-                    />
+                    <CardActionArea onClick={() => handleModalOpen(crop)}>
+                      <CardMedia
+                        image={
+                          crop.fields["Image Data"]["Key Thumbnail"]
+                            ? `/images/Cover Crop Photos/250/${crop.fields["Image Data"]["Key Thumbnail"]}`
+                            : "https://placehold.it/100x100?text=Placeholder"
+                        }
+                        className={classes.media}
+                        title={crop.fields["Cover Crop Name"]}
+                      />
+                    </CardActionArea>
                     <CardContent>
                       <div
                         className="font-weight-bold text-muted text-uppercase"
