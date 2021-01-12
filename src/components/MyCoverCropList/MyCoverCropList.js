@@ -13,6 +13,7 @@ const MyCoverCropList = (props) => {
   const from = props.from ? props.from : "state";
   const history = useHistory();
   const redirectToSpeciesSelector = () => {
+    history.replace("/species-selector");
     dispatch({
       type: "ACTIVATE_SPECIES_SELECTOR_TILE",
       data: {
@@ -23,7 +24,7 @@ const MyCoverCropList = (props) => {
   };
 
   const redirectToExplorer = () => {
-    history.replace("/cover-crop-explorer");
+    history.replace("/");
   };
 
   const TopBar = ({ comparisonView }) => {

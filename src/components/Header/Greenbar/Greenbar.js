@@ -23,6 +23,8 @@ import SoilCondition from "../../Location/SoilCondition";
 import { LocationOn, Refresh } from "@material-ui/icons";
 import "../../../styles/greenBar.scss";
 
+const speciesSelectorToolName = "species-selector";
+
 const expansionPanelBaseStyle = {
   display: "flex",
   justifyContent: "center",
@@ -421,22 +423,26 @@ const Greenbar = () => {
     <div className="greenBarParent" id="greenBarParent">
       <div className="greenBarWrapper" style={greenBarWrapperBackground}>
         <div className="addressBar">
-          {state.progress > 0 && window.location.pathname === "/"
+          {state.progress > 0 &&
+          window.location.pathname === "/" + speciesSelectorToolName
             ? getAddress()
             : ""}
         </div>
 
         <div className="soilBar">
-          {state.progress > 1 && window.location.pathname === "/"
+          {state.progress > 1 &&
+          window.location.pathname === "/" + speciesSelectorToolName
             ? getSoil()
             : ""}
         </div>
         <div className="weatherBar">
-          {state.progress > 2 && window.location.pathname === "/"
+          {state.progress > 2 &&
+          window.location.pathname === "/" + speciesSelectorToolName
             ? getWeatherData()
             : ""}
         </div>
-        {state.progress > 0 && window.location.pathname === "/" ? (
+        {state.progress > 0 &&
+        window.location.pathname === "/" + speciesSelectorToolName ? (
           <div className="restartBtnWrapper">
             <Button
               className="greenbarBtn"

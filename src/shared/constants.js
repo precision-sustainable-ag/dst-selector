@@ -1513,3 +1513,20 @@ export const RestartPrompt = ({
     </Dialog>
   );
 };
+
+export const sudoButtonStyle = {
+  fontWeight: "500",
+  lineHeight: "1.75",
+  letterSpacing: "0.02857em",
+  textTransform: "uppercase",
+  fontSize: "0.875rem",
+};
+
+export const sudoButtonStyleWithPadding = {
+  padding: "6px 8px",
+  fontWeight: "500",
+  lineHeight: "1.75",
+  letterSpacing: "0.02857em",
+  textTransform: "uppercase",
+  fontSize: "0.875rem",
+};

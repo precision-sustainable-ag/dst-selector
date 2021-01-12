@@ -58,29 +58,34 @@ const DateRangeDialog = ({
       aria-labelledby="planting-to-harvest-title"
     >
       <DialogTitle id="planting-to-harvest-title">
-        Planting to Harvest Range
+        Cash Crop Growth Window
       </DialogTitle>
       <DialogContent>
-        <DialogContentText>
-          {/* <DateRangePicker definedRanges={[]} open={open} onChange={onChange} /> */}
-          <DateRangePicker
-            firstOfWeek={1}
-            numberOfCalendars={2}
-            selectionType="range"
-            // minimumDate={new Date()}
-            stateDefinitions={stateDefinitions}
-            // dateStates={dateRanges}
-            defaultState="available"
-            // showLegend={true}
-            value={null}
-            onSelect={(e) => {
-              let startDate = e.start.format("YYYY-MM-DD").toString();
-              let endDate = e.end.format("YYYY-MM-DD").toString();
-              onChange({ startDate: startDate, endDate: endDate });
-              close();
-            }}
-          />
-        </DialogContentText>
+        <Typography variant="body1">
+          Specify the Cash Crop Growth Window by selecting the Cash Crop
+          Planting Date then selecting its Harvest Date.
+        </Typography>
+      </DialogContent>
+      <DialogContent>
+        {/* <DateRangePicker definedRanges={[]} open={open} onChange={onChange} /> */}
+        <DateRangePicker
+          firstOfWeek={1}
+          numberOfCalendars={2}
+          selectionType="range"
+          // minimumDate={new Date()}
+          stateDefinitions={stateDefinitions}
+          // dateStates={dateRanges}
+          defaultState="available"
+          // showLegend={true}
+          value={null}
+          onSelect={(e) => {
+            let startDate = e.start.format("YYYY-MM-DD").toString();
+            let endDate = e.end.format("YYYY-MM-DD").toString();
+            onChange({ startDate: startDate, endDate: endDate });
+            close();
+          }}
+        />
+
         <DialogActions>
           <Button onClick={close}>Close</Button>
         </DialogActions>

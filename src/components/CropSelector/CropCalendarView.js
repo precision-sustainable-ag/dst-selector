@@ -27,6 +27,8 @@ import {
   CustomStyles,
   flipCoverCropName,
   trimString,
+  sudoButtonStyle,
+  sudoButtonStyleWithPadding,
 } from "../../shared/constants";
 import "../../styles/cropCalendarViewComponent.scss";
 import GrowthWindowComponent from "./GrowthWindow";
@@ -618,9 +620,9 @@ const CropCalendarViewComponent = (props) => {
                       <div className="row">
                         <div className="col-6">
                           <Typography variant="body1">
-                            <Button>
-                              {currentYear} COVER CROP GROWTH WINDOW
-                            </Button>
+                            <div style={sudoButtonStyleWithPadding}>
+                              COVER CROP GROWTH WINDOW
+                            </div>
                           </Typography>
                         </div>
                         <div className="col-6">
@@ -645,7 +647,9 @@ const CropCalendarViewComponent = (props) => {
                         borderRight: "5px solid white",
                       }}
                     >
-                      <Button>ACTIVE GROWTH PERIOD</Button>
+                      <div style={sudoButtonStyleWithPadding}>
+                        ACTIVE GROWTH PERIOD
+                      </div>
                     </TableCell>
 
                     {state.activeGrowthPeriod.includes("Jan") ? (
@@ -814,7 +818,7 @@ const CropCalendarViewComponent = (props) => {
                         growthMonth ? `activeGrowthMonth` : ``
                       } ${growthMonthSeparator ? `growthMonthSeparator` : ``}`}
                     >
-                      <Button>{month}</Button>
+                      <div style={sudoButtonStyle}>{month}</div>
                     </TableCell>
                   );
                 })}

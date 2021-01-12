@@ -64,6 +64,15 @@ const Reducer = (state, action) => {
         addressVerified: action.data.addressVerified,
       };
     }
+    case "CHANGE_ADDRESS_VIA_MAP": {
+      return {
+        ...state,
+        address: action.data.address,
+        fullAddress: action.data.fullAddress,
+        addressVerified: action.data.addressVerified,
+        addressChangedViaMap: true,
+      };
+    }
     case "RESET": {
       return {
         ...state,

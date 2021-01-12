@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
@@ -7,6 +7,7 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import parse from "autosuggest-highlight/parse";
 import throttle from "lodash/throttle";
+import { Context } from "../../store/Store";
 // import { googleApiKey } from "../utils/api_secret";
 
 const autocompleteService = { current: null };
@@ -31,6 +32,7 @@ export default function GoogleAutocomplete({
   selectedToEditSite,
   setSelectedToEditSite,
 }) {
+  const [state] = useContext(Context);
   const classes = useStyles();
   const [value, setValue] = React.useState(null);
   const [inputValue, setInputValue] = React.useState("");
@@ -44,6 +46,15 @@ export default function GoogleAutocomplete({
   useEffect(() => {
     // console.log(inputValue);
   }, [inputValue]);
+  useEffect(() => {
+    if (state.addressChangedViaMap) {
+      setValue(state.fullAddress);
+    }
+  }, [state.addressChangedViaMap]);
+
+  useEffect(() => {
+    setValue(state.fullAddress);
+  }, [state.fullAddress]);
 
   //   if (typeof window !== "undefined" && !loaded.current) {
   //     if (!document.querySelector("#google-maps")) {
@@ -92,6 +103,7 @@ export default function GoogleAutocomplete({
         const zipCode = results[0].address_components.filter(
           (e) => e.types[0] === "postal_code"
         );
+        // console.log(zipCode);
 
         if (county.length !== 0) {
           // If google is able to find the county, pick the first preference!
@@ -104,15 +116,34 @@ export default function GoogleAutocomplete({
       }
     },
     fetchGeocode: (results, county, main_text, zipCode) => {
-      //   console.log(results);
-      setSelectedToEditSite({
-        ...selectedToEditSite,
-        latitude: results[0].geometry.location.lat(),
-        longitude: results[0].geometry.location.lng(),
-        county: county[0].long_name,
-        address: main_text,
-        zipCode: parseInt(zipCode[0].long_name),
-      });
+      // console.log(results);
+      if (zipCode.length === 0) {
+        setSelectedToEditSite({
+          ...selectedToEditSite,
+          latitude: results[0].geometry.location.lat(),
+          longitude: results[0].geometry.location.lng(),
+          county: county[0].long_name,
+          address: main_text,
+          zipCode: 0,
+        });
+      } else {
+        setSelectedToEditSite({
+          ...selectedToEditSite,
+          latitude: results[0].geometry.location.lat(),
+          longitude: results[0].geometry.location.lng(),
+          county: county[0].long_name,
+          address: main_text,
+          zipCode: parseInt(zipCode[0].long_name),
+        });
+      }
+      // setSelectedToEditSite({
+      //   ...selectedToEditSite,
+      //   latitude: results[0].geometry.location.lat(),
+      //   longitude: results[0].geometry.location.lng(),
+      //   county: county[0].long_name,
+      //   address: main_text,
+      //   zipCode: parseInt(zipCode[0].long_name),
+      // });
     },
   };
 
