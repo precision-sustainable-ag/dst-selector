@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useState } from "react";
-import Header from "../Header/header";
+import Header from "../Header/Header";
 import {
   Box,
   Typography,

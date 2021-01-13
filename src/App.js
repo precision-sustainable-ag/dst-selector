@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, Fragment, useState } from "react";
 import "./styles/App.scss";
 import { Snackbar } from "@material-ui/core";
-import Header from "./components/Header/header";
+import Header from "./components/Header/Header";
 import Landing from "./components/Landing/Landing";
 import { Context } from "./store/Store";
 import LocationComponent from "./components/Location/Location";

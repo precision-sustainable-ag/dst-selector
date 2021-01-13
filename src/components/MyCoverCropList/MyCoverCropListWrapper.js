@@ -1,7 +1,7 @@
 import { Box, Button, Grid } from "@material-ui/core";
 import React, { useState, useEffect } from "react";
 import CropSidebarComponent from "../CropSelector/CropSidebar";
-import Header from "../Header/header";
+import Header from "../Header/Header";
 import MyCoverCropComparisonComponent from "./MyCoverCropComparisonComponent";
 import MyCoverCropList from "./MyCoverCropList";
 
