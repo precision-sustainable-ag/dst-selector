@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import GoogleMapReact from "google-map-react";
 import { googleApiKey } from "../../shared/keys";
 import { Context } from "../../store/Store";
-import "../../styles/GoogleMaps.scss";
+import "../../styles/googleMaps.scss";
 import { Room } from "@material-ui/icons";
 import { CustomStyles } from "../../shared/constants";
 

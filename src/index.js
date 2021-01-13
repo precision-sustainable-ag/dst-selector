@@ -10,7 +10,7 @@ import "leaflet-control-geocoder/dist/Control.Geocoder.js";
 import "./styles/parent.scss";
 import "mdbreact/dist/css/mdb.css";
 import "./styles/progressBar.css";
-import Footer from "./components/Footer/footer";
+import Footer from "./components/Footer/Footer";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import About from "./components/About/About";
 import SeedingRateCalculator from "./components/SeedingRateCalculator/SeedingRateCalculator";
