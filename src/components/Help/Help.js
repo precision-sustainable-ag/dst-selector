@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Fragment } from "react";
-import Header from "../Header/header";
+import Header from "../Header/Header";
 import {
   Typography,
   Button,

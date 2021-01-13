@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect, useMemo, useRef } from "react";
-import Header from "../Header/header";
+import Header from "../Header/Header";
 import {
   Box,
   Grid,
