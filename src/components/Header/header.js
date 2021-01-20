@@ -95,7 +95,7 @@ const Header = () => {
         });
       // }
     }
-  }, [state.zipCode]);
+  }, [state.zipCode, state.fullAddress]);
 
   const getAverageFrostDates = async (url) => {
     await Axios.get(url).then((resp) => {

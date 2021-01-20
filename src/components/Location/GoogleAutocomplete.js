@@ -241,12 +241,16 @@ export default function GoogleAutocomplete({
       }}
       renderOption={(option) => {
         // console.log(option);
-        const matches =
-          option.structured_formatting.main_text_matched_substrings;
-        const parts = parse(
-          option.structured_formatting.main_text,
-          matches.map((match) => [match.offset, match.offset + match.length])
-        );
+        let matches = [];
+        let parts = [];
+        if (option.structured_formatting) {
+          matches = option.structured_formatting.main_text_matched_substrings;
+
+          parts = parse(
+            option.structured_formatting.main_text,
+            matches.map((match) => [match.offset, match.offset + match.length])
+          );
+        }
 
         return (
           <Grid container alignItems="center">
@@ -264,7 +268,9 @@ export default function GoogleAutocomplete({
               ))}
 
               <Typography variant="body2" color="textSecondary">
-                {option.structured_formatting.secondary_text}
+                {option.structured_formatting
+                  ? option.structured_formatting.secondary_text
+                  : ""}
               </Typography>
             </Grid>
           </Grid>
