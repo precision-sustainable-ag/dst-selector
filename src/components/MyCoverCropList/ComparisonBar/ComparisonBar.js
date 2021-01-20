@@ -96,7 +96,7 @@ const ComparisonBar = (props) => {
       };
     });
     // console.log(filteredVals);
-    console.error("Roller Crimp filter bug");
+    // console.error("Roller Crimp filter bug");
     const filterKeysAppend = filteredVals.map((val, index) => {
       if (
         index !== 0 &&

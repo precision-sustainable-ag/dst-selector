@@ -32,10 +32,12 @@ export default function GoogleAutocomplete({
   selectedToEditSite,
   setSelectedToEditSite,
 }) {
-  const [state] = useContext(Context);
+  const [state, dispatch] = useContext(Context);
   const classes = useStyles();
   const [value, setValue] = React.useState(null);
-  const [inputValue, setInputValue] = React.useState("");
+  const [inputValue, setInputValue] = React.useState(
+    state.fullAddress ? state.fullAddress : ""
+  );
   const [options, setOptions] = React.useState([]);
   const [locationDetails, setLocationDetails] = React.useState({
     lat: 0,
@@ -117,6 +119,14 @@ export default function GoogleAutocomplete({
     },
     fetchGeocode: (results, county, main_text, zipCode) => {
       // console.log(results);
+      dispatch({
+        type: "CHANGE_ADDRESS_VIA_MAP",
+        data: {
+          address: results[0].formatted_address.split(",")[0],
+          fullAddress: results[0].formatted_address,
+          addressVerified: true,
+        },
+      });
       if (zipCode.length === 0) {
         setSelectedToEditSite({
           ...selectedToEditSite,
@@ -136,28 +146,21 @@ export default function GoogleAutocomplete({
           zipCode: parseInt(zipCode[0].long_name),
         });
       }
-      // setSelectedToEditSite({
-      //   ...selectedToEditSite,
-      //   latitude: results[0].geometry.location.lat(),
-      //   longitude: results[0].geometry.location.lng(),
-      //   county: county[0].long_name,
-      //   address: main_text,
-      //   zipCode: parseInt(zipCode[0].long_name),
-      // });
     },
   };
 
   const fetchLocationDetails = ({ place_id, structured_formatting }) => {
     if (place_id) {
-      const placeRequest = {
-        placeId: place_id,
-        fields: ["name", "geometry", "types", "formatted_address", "icon"],
-        region: "en-US",
-      };
-      const geoRequest = {
-        placeId: place_id,
-        region: "en-US",
-      };
+      // deprecated objects
+      // const placeRequest = {
+      //   placeId: place_id,
+      //   fields: ["name", "geometry", "types", "formatted_address", "icon"],
+      //   region: "en-US",
+      // };
+      // const geoRequest = {
+      //   placeId: place_id,
+      //   region: "en-US",
+      // };
 
       fetchLocalData.load(place_id, structured_formatting.main_text);
     }
@@ -201,6 +204,7 @@ export default function GoogleAutocomplete({
 
   return (
     <Autocomplete
+      style={{ zIndex: 1000003 }}
       id="google-map-demo"
       fullWidth
       getOptionLabel={(option) =>
@@ -236,6 +240,7 @@ export default function GoogleAutocomplete({
         );
       }}
       renderOption={(option) => {
+        // console.log(option);
         const matches =
           option.structured_formatting.main_text_matched_substrings;
         const parts = parse(

@@ -56,3 +56,8 @@ footer {
 button {
   outline: none !important;
 }
+
+// Overrides zIndex for google map attribution
+.gmnoprint {
+  z-index: 999 !important;
+}
