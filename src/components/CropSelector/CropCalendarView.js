@@ -250,12 +250,15 @@ const CropCalendarViewComponent = (props) => {
 
     return _promise;
   };
-
+  const [activeGrowthPeriodState, setActiveGrowthPeriodState] = useState(
+    state.activeGrowthPeriod
+  );
+  useEffect(() => {
+    setActiveGrowthPeriodState(state.activeGrowthPeriod);
+  }, [state]);
   const checkIfGrowthMonth = (month) => {
-    const { activeGrowthPeriod } = state;
-
-    if (activeGrowthPeriod.length !== 0) {
-      if (activeGrowthPeriod.includes(month)) return true;
+    if (activeGrowthPeriodState.length !== 0) {
+      if (activeGrowthPeriodState.includes(month)) return true;
       else return false;
     } else {
       return false;
@@ -652,12 +655,18 @@ const CropCalendarViewComponent = (props) => {
                       </div>
                     </TableCell>
 
+                    {/* {state.activeGrowthPeriod.map((growthMonth, index) => {
+
+
+
+
+return();
+})} */}
                     {state.activeGrowthPeriod.includes("Jan") ? (
                       <Tooltip placement="top" title="Winter">
                         <TableCell
                           className="activeGrowthMonth growthMonthSeparator"
                           style={{
-                            // borderBottom: "5px solid " + CustomStyles().darkGreen,
                             backgroundColor: CustomStyles().darkGreen,
                           }}
                           colSpan="2"
@@ -679,7 +688,6 @@ const CropCalendarViewComponent = (props) => {
                         <TableCell
                           className="activeGrowthMonth growthMonthSeparator"
                           style={{
-                            // borderBottom: "5px solid " + CustomStyles().darkGreen,
                             backgroundColor: CustomStyles().darkGreen,
                           }}
                           colSpan="3"
@@ -701,7 +709,6 @@ const CropCalendarViewComponent = (props) => {
                         <TableCell
                           className="activeGrowthMonth growthMonthSeparator"
                           style={{
-                            // borderBottom: "5px solid " + CustomStyles().darkGreen,
                             backgroundColor: CustomStyles().darkGreen,
                           }}
                           colSpan="3"
@@ -723,7 +730,6 @@ const CropCalendarViewComponent = (props) => {
                         <TableCell
                           className="activeGrowthMonth growthMonthSeparator"
                           style={{
-                            // borderBottom: "5px solid " + CustomStyles().darkGreen,
                             backgroundColor: CustomStyles().darkGreen,
                           }}
                           colSpan="3"
@@ -744,7 +750,6 @@ const CropCalendarViewComponent = (props) => {
                         <TableCell
                           className="activeGrowthMonth growthMonthSeparator"
                           style={{
-                            // borderBottom: "5px solid " + CustomStyles().darkGreen,
                             backgroundColor: CustomStyles().darkGreen,
                           }}
                           colSpan="1"

@@ -86,7 +86,7 @@ const CoverCropExplorer = () => {
   return cropData.length === 0 ? (
     <div className="contentWrapper">
       <Header logo="neccc_wide_logo_color_web.jpg" />
-      <div className="container-fluid mt-4">
+      <div className="container-fluid mt-4 mb-4">
         <div className="row mt-3">
           <div className="col-md-12 col-lg-3 col-xl-2 col-12">
             <CropSidebarComponent
@@ -117,9 +117,7 @@ const CoverCropExplorer = () => {
               <ExplorerCardView
                 cropDataChanged={cropDataChanged}
                 cropData={state.cropData}
-                activeCropData={
-                  activeCropData.length > 0 ? activeCropData : state.cropData
-                }
+                activeCropData={activeCropData}
                 setActiveCropData={setActiveCropData}
                 inactiveCropData={inactiveCropData}
                 setInactiveCropData={setInactiveCropData}

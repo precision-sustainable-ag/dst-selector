@@ -8,7 +8,13 @@ import {
   Button,
   IconButton,
 } from "@material-ui/core";
-import { Close, KeyboardArrowUp, Menu } from "@material-ui/icons";
+import {
+  ArrowBack,
+  ArrowForward,
+  Close,
+  KeyboardArrowUp,
+  Menu,
+} from "@material-ui/icons";
 import "../../styles/cropSelector.scss";
 import CropTableComponent from "./CropTable";
 import MyCoverCropList from "../MyCoverCropList/MyCoverCropList";
@@ -463,19 +469,56 @@ const CropSelector = (props) => {
       });
     }
   }, [state.selectedGoals]);
+  function useWindowSize() {
+    // Initialize state with undefined width/height so server and client renders match
+    // Learn more here: https://joshwcomeau.com/react/the-perils-of-rehydration/
+    const [windowSize, setWindowSize] = useState({
+      width: undefined,
+      height: undefined,
+    });
+
+    useEffect(() => {
+      // Handler to call on window resize
+      function handleResize() {
+        // Set window width/height to state
+        setWindowSize({
+          width: window.innerWidth,
+          height: window.innerHeight,
+        });
+      }
+
+      // Add event listener
+      window.addEventListener("resize", handleResize);
+
+      // Call handler right away so state gets updated with initial window size
+      handleResize();
+
+      // Remove event listener on cleanup
+      return () => window.removeEventListener("resize", handleResize);
+    }, []);
+
+    return windowSize;
+  }
+  const size = useWindowSize();
   const [showSidebar, setShowSidebar] = useState(true);
   return (
     <div className="container-fluid mt-2">
       <div className="row cropSelectorRow mt-3">
-        <div className="col-12">
-          <IconButton
-            title="Toggle Sidebar"
-            aria-label="toggle-sidebar"
-            onClick={() => setShowSidebar(!showSidebar)}
-          >
-            {!showSidebar ? <Menu /> : <Close />}
-          </IconButton>
-        </div>
+        {/* {Shows Collapsible icon for screen width < 1680px } */}
+        {size.width < 1680 ? (
+          <div className="col-12 mb-2">
+            <Button
+              startIcon={!showSidebar ? <ArrowForward /> : <ArrowBack />}
+              title="Toggle Sidebar"
+              aria-label="toggle-sidebar"
+              onClick={() => setShowSidebar(!showSidebar)}
+            >
+              {!showSidebar ? "Show Sidebar" : "Hide Sidebar"}
+            </Button>
+          </div>
+        ) : (
+          ""
+        )}
 
         <div
           className={`col-md-2 col-sm-12`}
