@@ -215,7 +215,7 @@ const LocationComponent = ({ title, caller }) => {
   };
   const [selectedToEditSite, setSelectedToEditSite] = useState({});
   useEffect(() => {
-    console.log("return", selectedToEditSite);
+    // console.log("return", selectedToEditSite);
     let { latitude, longitude, county, address, zipCode } = selectedToEditSite;
     // console.log(address);
     if (Object.keys(selectedToEditSite).length === 5) {

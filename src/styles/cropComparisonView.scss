@@ -8,3 +8,24 @@ div.comparisonContainer > .row {
 //   display: inline-block;
 //   float: none;
 // }
+
+div.comparisonContainer {
+  div.arrowRightContainer {
+    z-index: 1;
+    display: inline-block;
+    position: absolute;
+    right: -19px;
+    top: 116px;
+    transition: all 0.1s linear;
+    // &:hover {
+    //   background-color: ;
+    // }
+  }
+  div.arrowLeftContainer {
+    z-index: 1;
+    display: inline-block;
+    position: absolute;
+    left: -19px;
+    top: 116px;
+  }
+}

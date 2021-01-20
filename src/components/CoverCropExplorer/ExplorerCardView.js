@@ -110,106 +110,114 @@ const ExplorerCardView = (props) => {
   return (
     <Fragment>
       <Grid container spacing={3}>
-        {props.activeCropData.length > 0
-          ? props.activeCropData.map((crop, index) => {
-              // console.log("crop.fields.Zone", crop.fields.Zone);
-              // console.log("state.zone", state.zone);
-              return (
-                <Grid item key={index}>
-                  <Card className={classes.card}>
-                    <CardActionArea onClick={() => handleModalOpen(crop)}>
-                      <CardMedia
-                        image={
-                          crop.fields["Image Data"]["Key Thumbnail"]
-                            ? `/images/Cover Crop Photos/250/${crop.fields["Image Data"]["Key Thumbnail"]}`
-                            : "https://placehold.it/100x100?text=Placeholder"
-                        }
-                        className={classes.media}
-                        title={crop.fields["Cover Crop Name"]}
-                      />
-                    </CardActionArea>
-                    <CardContent>
-                      <div
-                        className="font-weight-bold text-muted text-uppercase"
-                        style={{ fontSize: "10pt" }}
-                      >
-                        {crop.fields["Cover Crop Group"]}
-                      </div>
-                      <div
-                        className="font-weight-bold "
-                        style={{ fontSize: "16pt" }}
-                      >
-                        <Typography variant="h6" className="text-truncate">
-                          {crop.fields["Cover Crop Name"]}
-                        </Typography>
-                      </div>
-                      <small className="font-italic text-muted d-inline-block text-truncate">
-                        {trimString(crop.fields["Scientific Name"], 25)}
+        {props.activeCropData.length > 0 ? (
+          props.activeCropData.map((crop, index) => {
+            // console.log("crop.fields.Zone", crop.fields.Zone);
+            // console.log("state.zone", state.zone);
+            return (
+              <Grid item key={index}>
+                <Card className={classes.card}>
+                  <CardActionArea onClick={() => handleModalOpen(crop)}>
+                    <CardMedia
+                      image={
+                        crop.fields["Image Data"]["Key Thumbnail"]
+                          ? `/images/Cover Crop Photos/250/${crop.fields["Image Data"]["Key Thumbnail"]}`
+                          : "https://placehold.it/100x100?text=Placeholder"
+                      }
+                      className={classes.media}
+                      title={crop.fields["Cover Crop Name"]}
+                    />
+                  </CardActionArea>
+                  <CardContent>
+                    <div
+                      className="font-weight-bold text-muted text-uppercase"
+                      style={{ fontSize: "10pt" }}
+                    >
+                      {crop.fields["Cover Crop Group"]}
+                    </div>
+                    <div
+                      className="font-weight-bold "
+                      style={{ fontSize: "16pt" }}
+                    >
+                      <Typography variant="h6" className="text-truncate">
+                        {crop.fields["Cover Crop Name"]}
+                      </Typography>
+                    </div>
+                    <small className="font-italic text-muted d-inline-block text-truncate">
+                      {trimString(crop.fields["Scientific Name"], 25)}
+                    </small>
+                    <div>
+                      <small className="text-muted">
+                        <a
+                          style={{
+                            textDecoration: "underline",
+                            color: "rgb(53, 153, 155)",
+                          }}
+                          // href={`/information-sheet/${crop.fields["Cover Crop Name"]}`}
+                          target="_blank"
+                          rel="noopener"
+                          onClick={() => handleModalOpen(crop)}
+                        >
+                          View Crop Details
+                        </a>
                       </small>
-                      <div>
-                        <small className="text-muted">
-                          <a
-                            style={{
-                              textDecoration: "underline",
-                              color: "rgb(53, 153, 155)",
-                            }}
-                            // href={`/information-sheet/${crop.fields["Cover Crop Name"]}`}
-                            target="_blank"
-                            rel="noopener"
-                            onClick={() => handleModalOpen(crop)}
-                          >
-                            View Crop Details
-                          </a>
-                        </small>
-                      </div>
-                    </CardContent>
+                    </div>
+                  </CardContent>
 
-                    <CardActionArea
-                      id={`cartBtn${index}`}
-                      style={{
-                        backgroundColor: "#e3f2f4",
-                        textAlign: "center",
-                        padding: "0.5em",
-                      }}
-                      className={
+                  <CardActionArea
+                    id={`cartBtn${index}`}
+                    style={{
+                      backgroundColor: "#e3f2f4",
+                      textAlign: "center",
+                      padding: "0.5em",
+                    }}
+                    className={
+                      selectedBtns.includes(crop.fields.id) &&
+                      parseInt(state.zone) === crop.fields.Zone
+                        ? "activeCartBtn"
+                        : "inactiveCartBtn"
+                    }
+                    onClick={() => {
+                      addCropToBasket(
+                        crop.fields["id"],
+                        crop.fields["Cover Crop Name"],
+                        `cartBtn${index}`,
+                        crop.fields
+                      );
+                    }}
+                  >
+                    <Typography
+                      variant="body2"
+                      className={`text-uppercase ${
                         selectedBtns.includes(crop.fields.id) &&
                         parseInt(state.zone) === crop.fields.Zone
-                          ? "activeCartBtn"
-                          : "inactiveCartBtn"
-                      }
-                      onClick={() => {
-                        addCropToBasket(
-                          crop.fields["id"],
-                          crop.fields["Cover Crop Name"],
-                          `cartBtn${index}`,
-                          crop.fields
-                        );
+                          ? "text-white"
+                          : ""
+                      }`}
+                      style={{
+                        color: "black",
+                        fontWeight: "bold",
                       }}
                     >
-                      <Typography
-                        variant="body2"
-                        className={`text-uppercase ${
-                          selectedBtns.includes(crop.fields.id) &&
-                          parseInt(state.zone) === crop.fields.Zone
-                            ? "text-white"
-                            : ""
-                        }`}
-                        style={{
-                          color: "black",
-                          fontWeight: "bold",
-                        }}
-                      >
-                        {selectedBtns.includes(crop.fields.id) &&
-                        parseInt(state.zone) === crop.fields.Zone
-                          ? "ADDED"
-                          : "ADD TO LIST"}
-                      </Typography>
-                    </CardActionArea>
-                  </Card>
-                </Grid>
-              );
-            })
-          : "Loading.."}
+                      {selectedBtns.includes(crop.fields.id) &&
+                      parseInt(state.zone) === crop.fields.Zone
+                        ? "ADDED"
+                        : "ADD TO LIST"}
+                    </Typography>
+                  </CardActionArea>
+                </Card>
+              </Grid>
+            );
+          })
+        ) : state.cropData.length > 0 ? (
+          <Grid item>
+            <Typography variant="body1" align="center">
+              No cover crops match your selected Cover Crop Property filters.
+            </Typography>
+          </Grid>
+        ) : (
+          "Loading.."
+        )}
       </Grid>
 
       <CropDetailsModalComponent
