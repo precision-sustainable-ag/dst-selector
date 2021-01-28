@@ -1,3 +1,8 @@
+/*
+  This file contains the TerminationMethods component
+  The TerminationMethods filters crops based on termination methods
+*/
+
 import React, {
   useState,
   useEffect,

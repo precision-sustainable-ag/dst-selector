@@ -1,3 +1,9 @@
+/*
+  This file contains the CropSelector and it's styles
+  The CropSelector is the top level component for the crop selector tool and allows users to choose crops based on their needs
+  Styles are created using makeStyles
+*/
+
 import React, { useContext, useState, useEffect } from "react";
 import { Context } from "../../store/Store";
 import {

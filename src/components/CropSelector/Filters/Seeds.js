@@ -1,3 +1,8 @@
+/*
+  This file contains the Seeds component
+  The Seeds filters crops based on seeds
+*/
+
 import React, {
   useState,
   useEffect,

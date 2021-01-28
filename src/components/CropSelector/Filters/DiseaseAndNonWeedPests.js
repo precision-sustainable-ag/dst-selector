@@ -1,3 +1,8 @@
+/*
+  This file contains the DiseaseAndNonWeedPests component
+  The DiseaseAndNonWeedPests filters crops based on diseases and weeds
+*/
+
 import React, {
   useState,
   useEffect,

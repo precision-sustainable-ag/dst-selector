@@ -1,3 +1,8 @@
+/*
+  This file contains the SeedingMethods component
+  The SeedingMethods filters crops based on seeding methods
+*/
+
 import React, {
   useState,
   useEffect,

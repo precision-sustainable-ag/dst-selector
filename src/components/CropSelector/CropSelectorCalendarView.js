@@ -1,3 +1,8 @@
+/*
+  This file contains the CropCalendarViewComponent  
+  The CropCalendarViewComponent shows the crops in calendar format
+*/
+
 import { Tooltip, Typography } from "@material-ui/core";
 import React, { useState, useEffect, useContext, Fragment } from "react";
 import { allMonths, getActiveCropMonths } from "../../shared/constants";

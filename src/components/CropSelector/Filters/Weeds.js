@@ -1,3 +1,8 @@
+/*
+  This file contains the Weeds component
+  The Weeds filters crops based on weeds
+*/
+
 import React, {
   useState,
   useEffect,

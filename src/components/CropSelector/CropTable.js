@@ -1,3 +1,10 @@
+/*
+  This file contains the CropTable component
+  The CropTable is the 
+  addCropToBasket manages adding crops to cart
+  Styles are created using makeStyles
+*/
+
 import React, { useContext, Fragment, useEffect, useState } from "react";
 import { Context } from "../../store/Store";
 import { useSnackbar } from "notistack";
