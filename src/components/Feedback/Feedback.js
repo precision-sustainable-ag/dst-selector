@@ -1,3 +1,8 @@
+/*
+  This file contains the FeedbackComponent component, helper functions, and styles
+  The FeedbackComponent page is a static page that shows an airtable form
+*/
+
 import React, { useState, useEffect } from "react";
 import Header from "../Header/header";
 

@@ -1,3 +1,8 @@
+/*
+  This file contains the Roots component
+  The Roots filters crops based on roots
+*/
+
 import React, {
   useState,
   useEffect,

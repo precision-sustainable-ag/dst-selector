@@ -1,3 +1,8 @@
+/*
+  This file contains the EnvironmentalTolerance component
+  The EnvironmentalTolerance filters crops based on environmental tolerances
+*/
+
 import React, {
   useState,
   useEffect,

@@ -1,3 +1,9 @@
+/*
+  This file contains the Footer component
+  The Footer page contains the disclaimer, links to external resources, and the last updated widget
+  styles are made in footer.scss
+*/
+
 import React, { useEffect, useState } from "react";
 
 import "../../styles/footer.scss";
