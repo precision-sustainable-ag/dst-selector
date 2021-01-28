@@ -131,6 +131,7 @@ const GrowthWindowComponent = (props) => {
       }
       case 8: {
         setMonthVals(8);
+        break;
       }
       case 9: {
         setMonthVals(9);
