@@ -1,3 +1,8 @@
+/*
+  This file contains the CropCardComponent component
+  The CropCardComponent component is the card that contains a single crop in the crop selector
+*/
+
 import React, { useContext } from "react";
 import {
   getRating,

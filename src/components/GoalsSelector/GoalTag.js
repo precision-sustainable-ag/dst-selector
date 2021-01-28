@@ -1,3 +1,9 @@
+/*
+  This file contains the GoalsSelector component, helper functions, and styles
+  The GoalsSelector is the window where the user selects their goals
+  Styles are created using makeStyles
+*/
+
 import React, { useContext, useState, useEffect } from "react";
 import { Badge, Chip, Tooltip, Avatar } from "@material-ui/core";
 import { Context } from "../../store/Store";
