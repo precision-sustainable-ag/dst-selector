@@ -1,3 +1,8 @@
+/* 
+  Unused 
+*/
+
+
 import React, { Component } from "react";
 
 export default class GetLocationComponent extends Component {

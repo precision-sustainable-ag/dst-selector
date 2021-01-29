@@ -1,3 +1,13 @@
+/*
+  handles autocomplete for the location component
+
+  setBoundingBoxAndAddress sets the polygon bounding box OR lat long and address, then close the modal
+
+  styled using makeStyles
+
+  checkAddresses fetches autocomplete data from API
+*/
+
 // TODO: Autocomplete feature is not yet implemented
 // WHY: https://operations.osmfoundation.org/policies/nominatim/ Doesn't allow the API usage for building auto-complete
 // Lancaster, Pennsylvania as default for PASA

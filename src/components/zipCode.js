@@ -1,3 +1,8 @@
+/*
+  This file contains the Zipcode component
+  The Zipcode allows the user to enter their zipcode to fetch their plant hardiness zone
+*/
+
 import React, { Component, useState } from 'react';
 import TextField from '@material-ui/core/TextField';
 

@@ -1,3 +1,8 @@
+/*
+  This file contains the Header component, helper functions
+  The Header shows the header for all the pages
+*/
+
 import React, { useEffect, useContext } from "react";
 import { Context } from "../../store/Store";
 import "../../styles/header.scss";

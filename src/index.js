@@ -1,3 +1,7 @@
+/*
+  Index.js is the top level component
+*/
+
 import React, { useEffect, Suspense } from "react";
 import ReactDOM from "react-dom";
 import "./index.css";

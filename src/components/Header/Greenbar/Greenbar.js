@@ -1,3 +1,9 @@
+/*
+  This file contains the Greenbar component, helper functions, and styles
+  The Greenbar page is the bar in the header that contains the location, soil drainage info, temperature, and restart button
+  Styles are created using makeStyles
+*/
+
 import React, { useEffect, useContext, Fragment, useState } from "react";
 import { Context } from "../../../store/Store";
 import {

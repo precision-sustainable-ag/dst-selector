@@ -1,3 +1,8 @@
+/*
+  Static component listed in help page
+  fetches data from DictionaryContent
+*/
+
 import React, { useState, useEffect, Fragment, useContext } from "react";
 import { Typography } from "@material-ui/core";
 import { Info } from "@material-ui/icons";
