@@ -28,6 +28,7 @@ import { CustomStyles } from "./shared/constants";
 import { SnackbarProvider } from "notistack";
 import InformationSheetDictionary from "./components/InformationSheet/InformationSheetDictionary";
 import MyCoverCropListWrapper from "./components/MyCoverCropList/MyCoverCropListWrapper";
+import License from "./components/License/License";
 
 const withFooter = (WrappedComponent) => () => [
   <WrappedComponent key="1" />,
@@ -66,6 +67,11 @@ const theme = createMuiTheme({
       },
       sizeSmall: {
         fontSize: "1.2rem",
+      },
+    },
+    MuiDialog: {
+      root: {
+        zIndex: 1000003,
       },
     },
   },
@@ -144,6 +150,16 @@ const Wrapper = () => (
               <Route
                 path={"/data-dictionary"}
                 component={InformationSheetDictionary}
+                exact
+              />
+              <Route
+                path={"/license"}
+                component={() => <License licenseType="MIT" />}
+                exact
+              />
+              <Route
+                path={"/ag-informatics-license"}
+                component={() => <License licenseType="AgInformatics" />}
                 exact
               />
               <Route path={"/mix-maker"} component={MixMaker} exact />

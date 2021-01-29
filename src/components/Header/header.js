@@ -95,7 +95,7 @@ const Header = () => {
         });
       // }
     }
-  }, [state.zipCode]);
+  }, [state.zipCode, state.fullAddress]);
 
   const getAverageFrostDates = async (url) => {
     await Axios.get(url).then((resp) => {
@@ -140,7 +140,7 @@ const Header = () => {
 
   useEffect(() => {
     let { markers } = state;
-    console.log("weather call");
+    // console.log("weather call");
     if (state.progress === 0) {
     }
 
@@ -345,7 +345,7 @@ const Header = () => {
           type: "ADD_GOALS",
           data: z7Formattedgoal,
         });
-        console.log("z7 data dispatched");
+        // console.log("z7 data dispatched");
         break;
       }
       case 6: {
@@ -358,7 +358,7 @@ const Header = () => {
           type: "ADD_GOALS",
           data: z6Formattedgoal,
         });
-        console.log("z6 data dispatched");
+        // console.log("z6 data dispatched");
         break;
       }
       case 5: {
@@ -370,7 +370,7 @@ const Header = () => {
           type: "ADD_GOALS",
           data: z5Formattedgoal,
         });
-        console.log("z5 data dispatched");
+        // console.log("z5 data dispatched");
         break;
       }
       default: {
@@ -382,7 +382,7 @@ const Header = () => {
           type: "ADD_GOALS",
           data: z7Formattedgoal,
         });
-        console.log("default data dispatched");
+        // console.log("default data dispatched");
         break;
       }
     }

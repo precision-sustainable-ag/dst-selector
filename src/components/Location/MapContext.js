@@ -97,13 +97,21 @@ const MapContext = ({ width, height, minzoom, maxzoom, from }) => {
     // console.log("address");
     let geocoder = new window.google.maps.Geocoder();
     geocoder.geocode({ location: latLng }, (results, status) => {
-      console.log(results);
+      // console.log(results);
       if (status === "OK") {
+        let formattedAddressArray = results[0].formatted_address.split(",");
+        let formattedAddressLength = formattedAddressArray.length;
+        let zipString = formattedAddressArray[formattedAddressLength - 2].split(
+          " "
+        );
+        let zipArray = zipString.filter((a) => parseInt(a));
+
         dispatch({
           type: "CHANGE_ADDRESS_VIA_MAP",
           data: {
             address: results[0].formatted_address.split(",")[0],
             fullAddress: results[0].formatted_address,
+            zip: parseInt(zipArray[0]),
             addressVerified: true,
           },
         });
@@ -130,13 +138,13 @@ const MapContext = ({ width, height, minzoom, maxzoom, from }) => {
         const lng = e.layer._latlng.lng;
         const latLng = { lat: lat, lng: lng };
         // reverse geocode
-        console.log("marker");
+        // console.log("marker");
         setAddress(latLng);
 
         updateGlobalMarkers([[lat, lng]], "marker");
       } else if (e.layerType === "polygon") {
         const latlngs = e.layer._latlngs;
-        console.log(e.layer);
+        // console.log(e.layer);
         let markers = [];
         const firstLatLng = { lat: latlngs[0][0].lat, lng: latlngs[0][0].lng };
         // reverse geocode

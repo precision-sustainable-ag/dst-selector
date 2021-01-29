@@ -141,6 +141,17 @@ const RenderContent = ({ value = 0 }) => {
           <Typography variant="h4" gutterBottom>
             How to Use The Tool
           </Typography>
+          <Typography component="div" variant="body1" align="left" gutterBottom>
+            <iframe
+              src="https://docs.google.com/presentation/d/e/2PACX-1vQbP5BcX8_u7bEfHjmAyUoSGeO3yVJkwbEveqSCh2xMn2M_f_EFp6kTi_5kvtp4S7zLITHXdkHEftPC/embed?start=false&loop=false&delayms=60000"
+              frameborder="0"
+              width="100%"
+              height="474"
+              allowfullscreen="true"
+              mozallowfullscreen="true"
+              webkitallowfullscreen="true"
+            ></iframe>
+          </Typography>
           <Typography component="div" variant="body1" align="left">
             <ol>
               <li className="font-weight-bold">
