@@ -1,3 +1,9 @@
+/*
+  This file contains the ProgressBar component
+  The ProgressBar shows the user what step they are on in the goal selection process
+*/
+
+
 import React from "react";
 // import { LightButton } from "./constants";
 import { Context } from "../store/Store";

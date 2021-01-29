@@ -1,3 +1,9 @@
+/*
+  This file contains the HelpComponent, helper functions, and styles
+  The HelpComponent is a static  help page that has FAQ, how to use, data dictionary, and information sheets
+  RenderContent contains all the text listed in the about section
+*/
+
 import React, { useState, useEffect, Fragment } from "react";
 import Header from "../Header/header";
 import {

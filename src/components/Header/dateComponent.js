@@ -1,3 +1,8 @@
+/*
+  This file contains the DateComponent component, helper functions, and styles
+  The DateComponent shows the date in the header
+*/
+
 import { useState, useEffect } from "react";
 import moment from "moment";
 import "moment-timezone";

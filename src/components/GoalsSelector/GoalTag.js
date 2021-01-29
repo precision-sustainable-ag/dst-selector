@@ -1,6 +1,6 @@
 /*
-  This file contains the GoalsSelector component, helper functions, and styles
-  The GoalsSelector is the window where the user selects their goals
+  This file contains the GoalTag component, helper functions, and styles
+  The GoalTag is individual goal tag inside the goal selector window
   Styles are created using makeStyles
 */
 
