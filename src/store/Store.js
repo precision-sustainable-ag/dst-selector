@@ -1,6 +1,6 @@
 import React, { createContext, useReducer } from "react";
 import Reducer from "./Reducer";
-import crops from "../shared/crop-data.json";
+// import crops from "../shared/crop-data.json";
 import z7crops from "../shared/json/zone7/crop-data.json";
 import z6crops from "../shared/json/zone6/crop-data.json";
 import z5crops from "../shared/json/zone5/crop-data.json";
@@ -16,6 +16,7 @@ import z5Dict from "../shared/json/zone5/data-dictionary.json";
 
 const cropDataFormatter = (cropData = [{}], zone = 7) => {
   const excludedCropZoneDecisionKeys = ["Exclude", "Up and Coming", "Discuss"];
+  // Filter unwanted rows
   let tjson = cropData.filter((crop) => {
     if (
       excludedCropZoneDecisionKeys.includes(crop["Zone Decision"]) ||
@@ -55,6 +56,10 @@ const cropDataFormatter = (cropData = [{}], zone = 7) => {
 
     if (!val.fields["Nitrogen Fixation"]) {
       val.fields["Nitrogen Fixation"] = 0;
+    }
+
+    if (!val.fields["Early Spring Growth"]) {
+      val.fields["Early Spring Growth"] = 0;
     }
 
     val.fields["Discourages Nematodes"] = val.fields["Disoucrages Nematodes"];
@@ -187,7 +192,8 @@ const monthStringBuilder = (vals) => {
 };
 
 const loremText = () => {
-  return "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Sed egestas egestas fringilla phasellus faucibus scelerisque eleifend donec pretium. At imperdiet dui accumsan sit. Adipiscing tristique risus nec feugiat in fermentum posuere urna. Porta non pulvinar neque laoreet suspendisse interdum. Malesuada fames ac turpis egestas integer eget. Eget arcu dictum varius duis at consectetur lorem donec massa. Congue nisi vitae suscipit tellus mauris a diam maecenas sed. Posuere urna nec tincidunt praesent semper feugiat nibh sed pulvinar. Enim praesent elementum facilisis leo vel fringilla est ullamcorper. Neque viverra justo nec ultrices dui sapien eget mi proin. Egestas maecenas pharetra convallis posuere. Tortor condimentum lacinia quis vel eros donec. Ultricies integer quis auctor elit sed. Nisi scelerisque eu ultrices vitae auctor eu. Eget felis eget nunc lobortis mattis aliquam faucibus. Mattis aliquam faucibus purus in massa tempor nec.";
+  return "Description for this cover crop is currently unavailable.";
+  // return "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Sed egestas egestas fringilla phasellus faucibus scelerisque eleifend donec pretium. At imperdiet dui accumsan sit. Adipiscing tristique risus nec feugiat in fermentum posuere urna. Porta non pulvinar neque laoreet suspendisse interdum. Malesuada fames ac turpis egestas integer eget. Eget arcu dictum varius duis at consectetur lorem donec massa. Congue nisi vitae suscipit tellus mauris a diam maecenas sed. Posuere urna nec tincidunt praesent semper feugiat nibh sed pulvinar. Enim praesent elementum facilisis leo vel fringilla est ullamcorper. Neque viverra justo nec ultrices dui sapien eget mi proin. Egestas maecenas pharetra convallis posuere. Tortor condimentum lacinia quis vel eros donec. Ultricies integer quis auctor elit sed. Nisi scelerisque eu ultrices vitae auctor eu. Eget felis eget nunc lobortis mattis aliquam faucibus. Mattis aliquam faucibus purus in massa tempor nec.";
 };
 const z7AllCrops = z7crops;
 const z6AllCrops = z6crops;
@@ -233,6 +239,7 @@ const initialState = {
   allGoals: [],
   cropData: z7CropData,
   selectedCrops: [],
+
   // selectedCrops: [
   //   {
   //     id: "recsmwaDr74UFoFDi",
@@ -1103,6 +1110,160 @@ const initialState = {
   //       "Chemical at Flowering": 5,
   //       "Mow at Flowering": 3,
   //       "Aerial Seeding": false,
+  //     },
+  //   },
+  //   {
+  //     id: "recJwVagZyMa413au",
+  //     cropName: "Teff",
+  //     data: {
+  //       _id: {
+  //         $oid: "60018841f898350f5b517a0e",
+  //       },
+  //       "Cover Crop Name": "Teff",
+  //       "Scientific Name": "Eragrostis tef",
+  //       "cv, var, or ssp to specify": "'Descartes', 'Tiffany'",
+  //       Origin: "MCCC Species tool",
+  //       "Drought Tolerance": 5,
+  //       "Shade Tolerance": 2,
+  //       "Flood Tolerance": 4,
+  //       "Low Fertility Tolerance": 3,
+  //       "Salinity Tolerance": 3,
+  //       "Winter Survival": ["Never"],
+  //       "Active Growth Period": ["Summer"],
+  //       Duration: ["Annual"],
+  //       "Shape & Orientation": ["Erect"],
+  //       "Notes: Basic Agronomics":
+  //         "Dry matter highly dependent on planting and termination date and precipitation. Caution with grazing due to shallow root system.",
+  //       "Soil Drainage": [
+  //         "Somewhat poorly drained",
+  //         "Moderately well drained",
+  //         "Well drained",
+  //         "Excessively drained",
+  //         "Well drained muck",
+  //         "Somewhat Excessively Drained",
+  //       ],
+  //       "Min Germination Temp (F)": 65,
+  //       "Seeds per Pound": 1300000,
+  //       "Inoculant Type": ["none"],
+  //       "Drilled Depth Min": 0.125,
+  //       "Notes: Planting":
+  //         "Seeding rates are for pelleted seed; if using unpelleted seed drop rate to 3 lbs/A. Daylength sensitive; plan before mid-July to maximize biomass production.",
+  //       "Growing Window": "Short",
+  //       "Ease of Establishment": 1,
+  //       "Family Common Name": "Grass family",
+  //       "Family Scientific Name": "Poaceae",
+  //       "Soil Textures": ["Coarse", "Medium", "Fine"],
+  //       "Minimum Tolerant Soil pH": 6,
+  //       "Maximum Tolerant Soil pH": 8,
+  //       "Soil Moisture Use": "Low",
+  //       "Cover Crop Group": "Grass",
+  //       "Heat Tolerance": 5,
+  //       "Seed Price per Pound": 3,
+  //       "USDA Symbol": "ERTE",
+  //       "Zone Decision": "Include",
+  //       "Zone Use": "Emerging",
+  //       "Flooding Frequency Tolerance": "Poor",
+  //       "Nitrogen Accumulation Min, Legumes (lbs/A/y)": 0,
+  //       "Dry Matter Min (lbs/A/y)": 200,
+  //       "C to N Ratio": 3,
+  //       "Notes: Termination":
+  //         "Can effectively terminate by mowing in fall only. Roller-crimper not effective.",
+  //       "Supports Mycorrhizae": 3,
+  //       "Flowering Trigger": ["Intermediate Day"],
+  //       "Establishes Quickly": 4,
+  //       "Root Architecture": ["Fibrous"],
+  //       "Root Depth": "Medium",
+  //       "Notes: Growth, Roots, and Nutrients":
+  //         "Needs to be seeded shallowly. Extremely fine seed may require modification of planting equipment. Very firm seedbed.",
+  //       "Tillage Termination at Vegetative": 1,
+  //       "Pollinator Food": 1,
+  //       "Notes: Forage and Grazing":
+  //         "In theory should be good forage, but may not perform reliably in cool summer areas.",
+  //       "Tillage Termination at Flowering": 1,
+  //       "Freezing Termination at Vegetative": 5,
+  //       "Freezing Termination at Flowering": 5,
+  //       "Chemical Termination at Flowering": 5,
+  //       "Mow Termination at Flowering": 2,
+  //       "Chemical Termination at Vegetative": 5,
+  //       "Roller Crimp Termination at Flowering": 1,
+  //       Persistence: 2,
+  //       "Reliable Establishment/Growth Start": "2020-05-15",
+  //       "Reliable Establishment/Growth End": "2020-07-31",
+  //       "Temperature/Moisture Risk to Establishment Start": "2020-05-01",
+  //       "Temperature/Moisture Risk to Establishment End": "2020-05-15",
+  //       "Second Temperature/Moisture Risk to Establishment Start": "2020-08-01",
+  //       "Second Temperature/Moisture Risk to Establishment End": "2020-08-31",
+  //       "Nitrogen Accumulation Max, Legumes (lbs/A/y)": 0,
+  //       "Dry Matter Max (lbs/A/y)": 5000,
+  //       "Drilled Depth Max": 0.25,
+  //       "Notes: Disease":
+  //         "Information too limited to rate P and K effect and Nematodes or Disease. Teff is difficult to get established especially without intense tillage, limiting weed suppression. Once established it should produce lot of biomass and suppress weeds. Information too limited to rate disadvantages to Nematodes or Disease.",
+  //       "Outcompetes Summer Annual Weeds": 5,
+  //       "Standard Summer Seeding Rate Start": "2020-05-15",
+  //       "Standard Summer Seeding Rate End": "2020-07-15",
+  //       "Improve Soil Organic Matter": 4,
+  //       "Lasting Residue": 4,
+  //       "Increase Soil Aggregation": 5,
+  //       "Prevent Fall Soil Erosion": 4,
+  //       "Prevent Spring Soil Erosion": 3,
+  //       "Penetrates Plow Pan": 1,
+  //       "Reduces Surface Compaction": 5,
+  //       "Nitrogen Scavenging": 3,
+  //       "Good Grazing": 3,
+  //       "Forage Harvest Value": 4,
+  //       "Residue Suppresses Summer Annual Weeds": 2,
+  //       "Suppresses Winter Annual Weeds": 3,
+  //       "Volunteer Establishment": 1,
+  //       "Cover Crop Description":
+  //         "Warm-season annual native to Africa. High heat and drought tolerance. Needs heat to grow well. Excellent weed suppressor, fine foliage leaves a clean field for a following crop. Good for forage/hay. Low risk of setting seed, so unlikely to become a volunteer problem. All seed sold is coated due to tiny seed size.\n",
+  //       "Notes: Nematodes":
+  //         "Supports reproduction of some root-knot nematode species/races.",
+  //       "Zone Inclusion": ["Zone 6", "Zone 5", "Zone 4"],
+  //       "Base Seeding Rate Min (lbs/A)": 5,
+  //       "Base Seeding Rate Max (lbs/A)": 10,
+  //       Zone: 6,
+  //       "Search Synonyms": "annual bunch grass, Williams lovegrass",
+  //       License:
+  //         "Copyright © 2021 Northeast Cover Crop Council, northeastcovercrops.com\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.",
+  //       __id: "recJwVagZyMa413au",
+  //       "May, Early": [
+  //         "Reliable Establishment/Growth",
+  //         "Temperature/Moisture Risk to Establishment",
+  //       ],
+  //       "May, Mid": ["Reliable Establishment/Growth"],
+  //       "June, Early": ["Reliable Establishment/Growth"],
+  //       "June, Mid": ["Reliable Establishment/Growth"],
+  //       "July, Early": ["Reliable Establishment/Growth"],
+  //       "July, Mid": ["Reliable Establishment/Growth"],
+  //       inBasket: false,
+  //       "Image Data": {
+  //         "Cover Crop": "Teff",
+  //         "Key Thumbnail": "Teff_mature_Brown_2020.jpg",
+  //         Notes: null,
+  //         Directory: "Teff",
+  //       },
+  //       "Crop Description":
+  //         "Description for this cover crop is currently unavailable.",
+  //       "Nitrogen Fixation": 0,
+  //       "Early Spring Growth": 0,
+  //       id: "recJwVagZyMa413au",
+  //       Drought: 5,
+  //       Flood: 4,
+  //       Heat: 5,
+  //       "Low Fertility": 3,
+  //       Salinity: 3,
+  //       Shade: 2,
+  //       "Tillage at Vegetative": 1,
+  //       "Tillage at Flowering": 1,
+  //       "Freezing at Flowering": 5,
+  //       "Freezing at Vegetative": 5,
+  //       "Chemical at Vegetative": 5,
+  //       "Chemical at Flowering": 5,
+  //       "Mow at Flowering": 2,
+  //       "Roller Crimp at Flowering": 1,
+  //       "Frost Seeding": false,
+  //       "Aerial Seeding": false,
+  //       "Pollinator Habitat": 0,
   //     },
   //   },
   // ],

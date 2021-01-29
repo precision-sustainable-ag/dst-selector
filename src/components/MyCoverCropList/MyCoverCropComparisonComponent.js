@@ -7,6 +7,7 @@ import {
   Typography,
   CardActionArea,
   CardActions,
+  IconButton,
 } from "@material-ui/core";
 import "../../styles/cropComparisonView.scss";
 import {
@@ -16,7 +17,12 @@ import {
   RenderSeedPriceIcons,
   trimString,
 } from "../../shared/constants";
-import { MonetizationOn, Cancel } from "@material-ui/icons";
+import {
+  MonetizationOn,
+  Cancel,
+  KeyboardArrowRight,
+  KeyboardArrowLeft,
+} from "@material-ui/icons";
 import { Context } from "../../store/Store";
 
 import "../../styles/MyCoverCropComparisonComponent.scss";
@@ -125,6 +131,16 @@ const MyCoverCropComparisonComponent = (props) => {
       return "No Data";
     }
   };
+  const [showScrollArrows, setShowScrollArrow] = useState(false);
+  const [showLeftScrollArrow, setShowLeftScrollArrow] = useState(false);
+  const scrollContainer = (direction = "right", amount = 100) => {
+    let parent = document.getElementById("scrollContainer");
+    if (direction === "right") {
+      parent.scrollLeft += amount;
+    } else {
+      parent.scrollLeft -= amount;
+    }
+  };
   return (
     <div className="container-fluid">
       <div className="row">
@@ -145,23 +161,38 @@ const MyCoverCropComparisonComponent = (props) => {
                 <CardContent>
                   <div
                     className="font-weight-bold text-uppercase"
-                    style={{ fontSize: "10pt", color: "white" }}
+                    style={{
+                      fontSize: "10pt",
+                      color: "white",
+                      visibility: "hidden",
+                    }}
                   >
                     {`Zone`}
                   </div>
                   <div
                     className="font-weight-bold text-uppercase"
-                    style={{ fontSize: "10pt", color: "white" }}
+                    style={{
+                      fontSize: "10pt",
+                      color: "white",
+                      visibility: "hidden",
+                    }}
                   >
                     {"Family Common Name"}
                   </div>
                   <div
                     className="font-weight-bold "
-                    style={{ fontSize: "16pt", color: "white" }}
+                    style={{
+                      fontSize: "16pt",
+                      color: "white",
+                      visibility: "hidden",
+                    }}
                   >
                     {"Cover Crop Name"}
                   </div>
-                  <small className="font-italic" style={{ color: "white" }}>
+                  <small
+                    className="font-italic"
+                    style={{ color: "white", visibility: "hidden" }}
+                  >
                     {"Scientific Name"}
                   </small>
                   <div>
@@ -170,36 +201,50 @@ const MyCoverCropComparisonComponent = (props) => {
                         style={{
                           textDecoration: "underline",
                           color: "white",
+                          visibility: "hidden",
                         }}
-                        onClick={() => {}}
                       >
                         View Crop Details
                       </a>
                     </small>
                   </div>
                 </CardContent>
-                <hr style={{ borderTop: "1px solid rgba(0,0,0,0)" }} />
+                <hr
+                  style={{
+                    borderTop: "1px solid rgba(0,0,0,0)",
+                    visibility: "hidden",
+                  }}
+                />
                 <CardContent
                   style={{ paddingRight: "0px", paddingLeft: "0px" }}
                 >
-                  {comparisonKeys.map((keys, index) => (
-                    <div style={lightBorder} key={index}>
-                      <span>
-                        <DataTooltip
-                          data={getTooltipData(keys)}
-                          interactive={false}
-                          placement="top-start"
-                        />
-                      </span>
-                      <span>
-                        <Typography variant="body2" className="text-capitalize">
-                          {keys === "Cover Crop Group"
-                            ? "Cover Crop Type"
-                            : keys}
-                        </Typography>
-                      </span>
-                    </div>
-                  ))}
+                  {comparisonKeys.map((keys, index) => {
+                    return (
+                      <div
+                        style={lightBorder}
+                        key={index}
+                        id={`comparisonLabel-${keys.split(" ").join("")}`}
+                      >
+                        <span>
+                          <DataTooltip
+                            data={getTooltipData(keys)}
+                            interactive={false}
+                            placement="top-start"
+                          />
+                        </span>
+                        <span>
+                          <Typography
+                            variant="body2"
+                            className="text-capitalize"
+                          >
+                            {keys === "Cover Crop Group"
+                              ? "Cover Crop Type"
+                              : keys}
+                          </Typography>
+                        </span>
+                      </div>
+                    );
+                  })}
 
                   {/* Average Goal Rating: Show only if goals are selected */}
                   {state.selectedGoals.length > 0 ? (
@@ -227,7 +272,52 @@ const MyCoverCropComparisonComponent = (props) => {
         </div>
         {/* Actual crops show up from here */}
         <div className="col-xl-9 col-lg-8 col-md-8 comparisonContainer">
-          <div className="row pt-3">
+          {showScrollArrows || selectedCrops.length > 4 ? (
+            <>
+              {showLeftScrollArrow ? (
+                <div className="arrowLeftContainer">
+                  <IconButton
+                    size="medium"
+                    title="Scroll Left"
+                    aria-label="Scroll Left"
+                    onClick={() => scrollContainer("left", 150)}
+                  >
+                    <KeyboardArrowLeft fontSize="large" />
+                  </IconButton>
+                </div>
+              ) : (
+                ""
+              )}
+
+              <div className="arrowRightContainer">
+                <IconButton
+                  size="medium"
+                  title="Scroll Right"
+                  aria-label="Scroll Right"
+                  onClick={() => scrollContainer("right", 150)}
+                >
+                  <KeyboardArrowRight fontSize="large" />
+                </IconButton>
+              </div>
+            </>
+          ) : (
+            ""
+          )}
+
+          <div
+            className="row pt-3"
+            id="scrollContainer"
+            onScroll={() => {
+              // show arrows
+              setShowScrollArrow(true);
+              let a = document.getElementById("scrollContainer").scrollLeft;
+              if (a === 0) {
+                setShowLeftScrollArrow(false);
+              } else {
+                setShowLeftScrollArrow(true);
+              }
+            }}
+          >
             {selectedCrops.map((crop, index) => (
               <div className="col-xl-3 col-lg-5" key={index}>
                 <Card className="mainComparisonCard" style={{ width: "100%" }}>

@@ -131,6 +131,7 @@ const WeatherModal = (props) => {
       BackdropProps={{
         timeout: 500,
       }}
+      style={{ zIndex: 1000003 }}
     >
       <Fade in={open}>
         <div className={`modalContainer ${classes.paper}`}>
