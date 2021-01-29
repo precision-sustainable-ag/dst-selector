@@ -1,3 +1,7 @@
+/*
+  Contains photo component used to view crop photo
+*/
+
 import React, { useState, useEffect, Fragment, Suspense } from "react";
 import Axios from "axios";
 // import { CropImage } from "../../shared/constants";

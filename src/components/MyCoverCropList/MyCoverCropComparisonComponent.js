@@ -1,3 +1,17 @@
+/* 
+  Contains the comparison tool for my cover crop list
+
+  removeCrop handles removing a crop from the list
+
+  TopBar contains the blue bar for adding crops
+
+  RenderRelevantData updates the filtered values
+
+  RenderSeedingData updates seeding data
+
+  GetAverageGoalRating calculates the average of all the scores 
+*/
+
 import React, { useState, useEffect, Fragment, useContext } from "react";
 import {
   Card,

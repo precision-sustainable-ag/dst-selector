@@ -1,3 +1,10 @@
+/*
+  This file contains the UpdateLatLong, SetZoneState, changeProgress components
+  The UpdateLatLong allows the user to change their latitude and longitude
+  The SetZoneState allows the user change their zone
+  The changeProgress allows the user to change the progress they are at in the goal selection process
+*/
+
 import React, { useContext, Component } from "react";
 import { Context } from "../store/Store";
 import axios from "axios";

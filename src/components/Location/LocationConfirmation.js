@@ -1,3 +1,7 @@
+/*
+  Shows the location selected, which zone the user is in, and shows a disclaimer
+*/
+
 import React, { useContext } from "react";
 import MapComponent from "./Map";
 import { Context } from "../../store/Store";

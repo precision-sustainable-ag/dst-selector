@@ -1,3 +1,7 @@
+/*
+  Contains the soil drainage timeline component in the information sheet
+*/
+
 import React from "react";
 import Timeline from "@material-ui/lab/Timeline";
 import TimelineItem from "@material-ui/lab/TimelineItem";

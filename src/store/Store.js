@@ -1,3 +1,16 @@
+/*
+  Store is the first component to run, it sets all the global state variables and is used in almost all other components
+    it sets the state using the Reducer and the initial state
+
+  monthStringBuilder parses all the data to find entries which end with "start" or "end"
+    it then determines if the day is before or after the 15th of that month
+    if it is before the 15th it gets a value of early, if after a value of mid
+    this is used in the calendar view
+
+  loremText is used to fill crops descriptions with dummy text if they do not have a description
+    if lorem text is in a crop then airtable does not have a description for that crop
+*/
+
 import React, { createContext, useReducer } from "react";
 import Reducer from "./Reducer";
 // import crops from "../shared/crop-data.json";

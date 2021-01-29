@@ -1,3 +1,9 @@
+/* 
+  Contains the individual crops in a component
+
+  removeCrop handles removing a crop from the list
+*/
+
 import React, { useContext, useState } from "react";
 import { makeStyles } from "@material-ui/core";
 import Card from "@material-ui/core/Card";

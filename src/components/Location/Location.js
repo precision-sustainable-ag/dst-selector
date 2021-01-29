@@ -1,3 +1,7 @@
+/*
+  Unused
+*/
+
 import React, { useEffect, useContext, useState } from "react";
 import { Context } from "../../store/Store";
 import "../../styles/location.scss";
