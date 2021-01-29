@@ -238,6 +238,149 @@ const CropSidebarComponent = (props) => {
     if (sidebarFilterOptions["Active Growth Period"].length > 0) {
       let growthArray = [];
 
+      // switch (state.zone) {
+      //   case 7: {
+      //     if (sidebarFilterOptions["Active Growth Period"].includes("Fall")) {
+      //       growthArray.push("Oct");
+      //       // growthArray.push("Oct-Mid");
+      //       // growthArray.push("Nov-Early");
+      //       growthArray.push("Nov");
+      //     }
+      //     if (sidebarFilterOptions["Active Growth Period"].includes("Winter")) {
+      //       growthArray.push("Dec");
+      //       // growthArray.push("Dec-Mid");
+      //       growthArray.push("Jan");
+      //       // growthArray.push("Jan-Mid");
+      //       // growthArray.push("Feb-Early");
+      //       growthArray.push("Feb");
+      //     }
+      //     if (sidebarFilterOptions["Active Growth Period"].includes("Spring")) {
+      //       growthArray.push("Mar");
+      //       // growthArray.push("Mar-Mid");
+      //       growthArray.push("Apr");
+      //     }
+      //     if (sidebarFilterOptions["Active Growth Period"].includes("Summer")) {
+      //       // growthArray.push("Apr-Mid");
+      //       growthArray.push("May");
+      //       // growthArray.push("May-Mid");
+      //       growthArray.push("Jun");
+      //       // growthArray.push("Jun-Mid");
+      //       growthArray.push("Jul");
+      //       // growthArray.push("Jul-Mid");
+      //       growthArray.push("Aug");
+      //       // growthArray.push("Aug-Mid");
+      //       // growthArray.push("Sep-Early");
+      //       growthArray.push("Sep");
+      //     }
+      //     break;
+      //   }
+      //   case 6: {
+      //     if (sidebarFilterOptions["Active Growth Period"].includes("Fall")) {
+      //       growthArray.push("Sep");
+      //       growthArray.push("Oct");
+      //       // growthArray.push("Oct-Mid");
+      //       growthArray.push("Nov");
+      //     }
+      //     if (sidebarFilterOptions["Active Growth Period"].includes("Winter")) {
+      //       // growthArray.push("Nov-Mid");
+      //       growthArray.push("Dec");
+      //       // growthArray.push("Dec-Mid");
+      //       growthArray.push("Jan");
+      //       growthArray.push("Jan");
+      //       // growthArray.push("Feb-Early");
+      //       growthArray.push("Feb");
+      //     }
+      //     if (sidebarFilterOptions["Active Growth Period"].includes("Spring")) {
+      //       growthArray.push("Mar");
+      //       // growthArray.push("Mar-Mid");
+      //       growthArray.push("Apr");
+      //       // growthArray.push("Apr-Mid");
+      //       growthArray.push("May");
+      //     }
+      //     if (sidebarFilterOptions["Active Growth Period"].includes("Summer")) {
+      //       // growthArray.push("May-Mid");
+      //       growthArray.push("Jun");
+      //       // growthArray.push("Jun-Mid");
+      //       growthArray.push("Jul");
+      //       // growthArray.push("Jul-Mid");
+      //       growthArray.push("Aug");
+      //       // growthArray.push("Aug-Mid");
+      //       // growthArray.push("Sep-Early");
+      //     }
+      //     break;
+      //   }
+      //   case 5: {
+      //     if (sidebarFilterOptions["Active Growth Period"].includes("Fall")) {
+      //       growthArray.push("Sep");
+      //       // growthArray.push("Sep-Mid");
+      //       growthArray.push("Oct");
+      //       // growthArray.push("Oct-Mid");
+      //       // growthArray.push("Nov-Early");
+      //     }
+      //     if (sidebarFilterOptions["Active Growth Period"].includes("Winter")) {
+      //       growthArray.push("Nov");
+      //       growthArray.push("Dec");
+      //       // growthArray.push("Dec-Mid");
+      //       growthArray.push("Jan");
+      //       // growthArray.push("Jan-Mid");
+      //       growthArray.push("Feb");
+      //       // growthArray.push("Feb-Mid");
+      //       // growthArray.push("Mar-Early");
+      //     }
+      //     if (sidebarFilterOptions["Active Growth Period"].includes("Spring")) {
+      //       growthArray.push("Mar");
+      //       growthArray.push("Apr");
+      //       // growthArray.push("Apr-Mid");
+      //       growthArray.push("May");
+      //     }
+      //     if (sidebarFilterOptions["Active Growth Period"].includes("Summer")) {
+      //       // growthArray.push("May-Mid");
+      //       growthArray.push("Jun");
+      //       // growthArray.push("Jun-Mid");
+      //       growthArray.push("Jul");
+      //       // growthArray.push("Jul-Mid");
+      //       growthArray.push("Aug");
+      //       // growthArray.push("Aug-Mid");
+      //     }
+      //     break;
+      //   }
+      //   case 4: {
+      //     if (sidebarFilterOptions["Active Growth Period"].includes("Fall")) {
+      //       growthArray.push("Sep");
+      //       // growthArray.push("Sep-Mid");
+      //       growthArray.push("Oct");
+      //     }
+      //     if (sidebarFilterOptions["Active Growth Period"].includes("Winter")) {
+      //       // growthArray.push("Oct-Mid");
+      //       growthArray.push("Nov");
+      //       // growthArray.push("Nov-Mid");
+      //       growthArray.push("Dec");
+      //       // growthArray.push("Dec-Mid");
+      //       growthArray.push("Jan");
+      //       // growthArray.push("Jan-Mid");
+      //       growthArray.push("Feb");
+      //       // growthArray.push("Feb-Mid");
+      //       growthArray.push("Mar");
+      //       // growthArray.push("Mar-Mid");
+      //     }
+      //     if (sidebarFilterOptions["Active Growth Period"].includes("Spring")) {
+      //       growthArray.push("Apr");
+      //       // growthArray.push("Apr-Mid");
+      //       // growthArray.push("May-Early");
+      //       growthArray.push("May");
+      //     }
+      //     if (sidebarFilterOptions["Active Growth Period"].includes("Summer")) {
+      //       growthArray.push("Jun");
+      //       // growthArray.push("Jun-Mid");
+      //       growthArray.push("Jul");
+      //       // growthArray.push("Jul-Mid");
+      //       growthArray.push("Aug");
+      //       // growthArray.push("Aug-Mid");
+      //     }
+      //     break;
+      //   }
+      // }
+
       if (sidebarFilterOptions["Active Growth Period"].includes("Fall")) {
         growthArray.push("Sep");
         growthArray.push("Oct");

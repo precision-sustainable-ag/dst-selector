@@ -1,3 +1,7 @@
+/*
+  allows the user to select their location by zip code or address
+*/
+
 import React, { useEffect, useContext, useState } from "react";
 import { Context } from "../../store/Store";
 import "../../styles/location.scss";
@@ -215,7 +219,7 @@ const LocationComponent = ({ title, caller }) => {
   };
   const [selectedToEditSite, setSelectedToEditSite] = useState({});
   useEffect(() => {
-    console.log("return", selectedToEditSite);
+    // console.log("return", selectedToEditSite);
     let { latitude, longitude, county, address, zipCode } = selectedToEditSite;
     // console.log(address);
     if (Object.keys(selectedToEditSite).length === 5) {

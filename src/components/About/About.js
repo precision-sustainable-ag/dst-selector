@@ -11,6 +11,8 @@ import {
 } from "@material-ui/core";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { CustomStyles } from "../../shared/constants";
+import MITLicenseText from "../License/MITLicenseText";
+import AgInformaticsLicenseText from "../License/AgInformaticsLicenseText";
 const tableStyles = {
   td: {
     fontSize: "1em",
@@ -274,7 +276,7 @@ const RenderContent = ({ value = 0 }) => {
               >
                 cover crop data verification process here
               </a>
-              .
+              . <b>This work was made possible by the USDA</b>
             </Typography>
             <Typography variant="body1" align="left" className="pb-4">
               <b>Data Sources:</b> The cover crop data were adapted from the{" "}
@@ -322,6 +324,9 @@ const RenderContent = ({ value = 0 }) => {
               will be able to download the raw data (spreadsheets) and Species
               Information Sheets (PDFs).
             </Typography>
+            <Typography variant="body1" align="left" className="pb-4">
+              <MITLicenseText styles={false} aboutPage={true} />
+            </Typography>
           </div>
         </>
       );
@@ -344,8 +349,9 @@ const RenderContent = ({ value = 0 }) => {
               <a href="http://www.precisionsustainableag.org" target="_blank">
                 Precision Sustainable Agriculture
               </a>{" "}
-              team, and the NECCC. We took a user-centered approach to the
-              design of software. In November 2019, we conducted a{" "}
+              team, the NECCC <b>and the USDA</b>. We took a user-centered
+              approach to the design of software. In November 2019, we conducted
+              a{" "}
               <a href="https://aginformaticslab.org/cover-crop-decision-tools/">
                 distributed design sprint to develop a prototype of the user
                 interface
@@ -378,7 +384,6 @@ const RenderContent = ({ value = 0 }) => {
                 />
               </div>
             </div>
-
             <Typography variant="body1" className="pb-4" align="left">
               <b>Reusability:</b> We designed the user interface components of
               the Cover Crop Species Selector Tool to be reusable. Each user
@@ -409,6 +414,9 @@ const RenderContent = ({ value = 0 }) => {
               </a>
               , and utilize these components in their projects.
             </Typography>
+            {/* Copyright info commented out  <Typography variant="body1" className="pb-4" align="left">
+              <AgInformaticsLicenseText aboutPage={true} style={false} />
+            </Typography> */}
           </div>
         </>
       );
@@ -453,13 +461,12 @@ const RenderContent = ({ value = 0 }) => {
           </div>
           <div className="col-12">
             <Typography variant="body1" align="left" className="pb-4">
-              This material is based upon work supported by the National
-              Institute of Food and Agriculture, U.S. Department of Agriculture,
-              through the Northeast Sustainable Agriculture Research and
-              Education program under subaward number ENE 16-144. This work has
-              also been supported by a USDA NIFA postdoctoral fellowship (grant
-              # 2016-67012-24711), NIFA SAS CAP grant (project # NC09873), USDA
-              ARS and NRCS, and Purdue University.
+              This material is based upon work supported by the Northeast
+              Sustainable Agriculture Research and Education program (subaward #
+              ENE 16-144), a USDA NIFA postdoctoral fellowship (grant #
+              2016-67012-24711), a NIFA SAS CAP grant (project # NC09873), a
+              NIFA OREI grant (project # MD.W-2015-07406), USDA ARS and NRCS,
+              and Purdue University.
             </Typography>
           </div>
         </>
@@ -477,7 +484,7 @@ const RenderContent = ({ value = 0 }) => {
             <Typography variant="body1" align="left" gutterBottom>
               For information about the NECCC, the NECCC species selection tool
               use and data, contact: Victoria Ackroyd, NECCC Program Manager,
-              northeastcovercrops AT gmail DOT com.
+              vackroyd AT umd DOT edu.
             </Typography>
             <Typography variant="body1" align="left" gutterBottom>
               For information about decision support tool design and development

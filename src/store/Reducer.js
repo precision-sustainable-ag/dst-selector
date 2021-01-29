@@ -69,6 +69,8 @@ const Reducer = (state, action) => {
         ...state,
         address: action.data.address,
         fullAddress: action.data.fullAddress,
+        zip: action.data.zip,
+        zipCode: action.data.zip,
         addressVerified: action.data.addressVerified,
         addressChangedViaMap: true,
       };
