@@ -1,5 +1,6 @@
 /*
   Shows the location selected, which zone the user is in, and shows a disclaimer
+  styled using CustomStyles from ../../shared/constants
 */
 
 import React, { useContext } from "react";

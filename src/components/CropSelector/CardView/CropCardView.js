@@ -1,6 +1,7 @@
 /*
   This file contains the CropCardViewComponent component 
   The CropCardViewComponent component is the container that holds each CropCard
+  styles fetched from CustomStyles in ../../../shared/constants
 */
 
 import React, { useContext, useEffect } from "react";

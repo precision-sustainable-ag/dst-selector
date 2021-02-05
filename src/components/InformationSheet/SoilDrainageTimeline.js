@@ -1,5 +1,6 @@
 /*
-  Contains the soil drainage timeline component in the information sheet
+  Contains the soil drainage timeline component in the information 
+  styled using CustomStyles from ../../shared/constants
 */
 
 import React from "react";

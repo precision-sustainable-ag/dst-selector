@@ -1,5 +1,7 @@
 /*
-  Unused
+  google maps component which leaflet is wrapped around
+  fetchLocationDetails fetches location data
+  styled using makeStyles
 */
 
 import React, { useContext, useEffect } from "react";

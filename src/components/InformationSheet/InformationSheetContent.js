@@ -1,11 +1,9 @@
 /*
   Contains the top level information sheet popup 
-
   BasicCrop contains the default crop
-
   getMonthDayString gets the start and end dates used in the info sheet
-
   RenderExtendedComments returns the extended notes for a crop if they exist
+  styled using makeStyles and withStyles
 */
 
 

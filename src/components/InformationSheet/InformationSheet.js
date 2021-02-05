@@ -1,7 +1,7 @@
 /*
   Contains the top level information sheet popup 
-
   BasicCrop contains the default crop
+  styled from ../../styles/InformationSheet.scss
 */
 
 import React, { useState, useEffect, useContext, Fragment } from "react";
