@@ -1,5 +1,6 @@
 /*
   Creates popups inside info sheet
+  styled using ../../styles/tooltipMaker.scss
 */
 
 import { Tooltip } from "@material-ui/core";

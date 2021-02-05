@@ -1,6 +1,7 @@
 /*
   This file contains the CropCalendarViewComponent  
   The CropCalendarViewComponent shows the crops in calendar format
+  Styles are created using makeStyles
 */
 
 import React, { useContext, Fragment, useEffect, useState } from "react";

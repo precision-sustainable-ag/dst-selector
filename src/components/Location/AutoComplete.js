@@ -1,10 +1,7 @@
 /*
   handles autocomplete for the location component
-
   setBoundingBoxAndAddress sets the polygon bounding box OR lat long and address, then close the modal
-
   styled using makeStyles
-
   checkAddresses fetches autocomplete data from API
 */
 

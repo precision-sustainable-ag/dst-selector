@@ -1,6 +1,7 @@
 /*
   This file contains the Header component, helper functions
   The Header shows the header for all the pages
+  styled using ../../styles/header.scss
 */
 
 import React, { useEffect, useContext } from "react";

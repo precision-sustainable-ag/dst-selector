@@ -1,5 +1,5 @@
 /*
-  This file contains the FeedbackComponent component, helper functions, and styles
+  This file contains the FeedbackComponent component, helper functions
   The FeedbackComponent page is a static page that shows an airtable form
 */
 

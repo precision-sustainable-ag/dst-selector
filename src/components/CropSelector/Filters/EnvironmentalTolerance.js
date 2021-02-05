@@ -1,6 +1,7 @@
 /*
   This file contains the EnvironmentalTolerance component
   The EnvironmentalTolerance filters crops based on environmental tolerances
+  styles are fetched from ../../../styles/filters.scss
 */
 
 import React, {

@@ -1,5 +1,5 @@
 /*
-  This file contains the AutoCompleteCropName component, helper functions, and styles
+  This file contains the AutoCompleteCropName component
   The AutoCompleteCropName autocopletes the crop the user is searching
 */
 

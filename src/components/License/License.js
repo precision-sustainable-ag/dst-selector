@@ -1,5 +1,5 @@
 /*
-  This file contains the License component, helper functions, and styles
+  This file contains the License component, helper functions
   The License page contains the license which is made of the MIT license text and Agriculture Informatics license
 */
 

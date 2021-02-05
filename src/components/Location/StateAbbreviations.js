@@ -1,6 +1,5 @@
 /*
   statesObject contains the states used and their abbreviation
-  
   StateAbbreviations returns the abbreviation of the state
 */
 
