@@ -1,6 +1,7 @@
 /*
   contains the popup for confirming or altering your soil conditions
   getDrainageText fetches the drainage info for the crop
+  styled using ../../styles/soilConditions.scss
 */
 
 import React, { useState, useEffect, useContext, useMemo } from "react";

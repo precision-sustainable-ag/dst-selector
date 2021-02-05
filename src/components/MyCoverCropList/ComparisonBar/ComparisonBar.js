@@ -1,14 +1,9 @@
 /* 
   Shows the comparison bar in the crop list component 
-
   filteredGoals shows which goals are selected
-
   filteredVals shows the other filters that are selected
-
   toggleSidebarFilterItems toggles the vlaue of a specific filter item
-
   resetAllFilters resets all selected items in the sidebar
-
   showAllVariables selects all filters
 */
 

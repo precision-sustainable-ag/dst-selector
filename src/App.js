@@ -1,5 +1,6 @@
 /*
   App is the species selector tool
+  styled using ./styles/App.scss
 */
 
 import React, { useContext, useEffect, Fragment, useState } from "react";

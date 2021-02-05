@@ -1,6 +1,7 @@
 /*
   This file contains the DiseaseAndNonWeedPests component
   The DiseaseAndNonWeedPests filters crops based on diseases and weeds
+  styles are fetched from ../../../styles/filters.scss
 */
 
 import React, {

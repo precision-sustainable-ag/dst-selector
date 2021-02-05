@@ -1,3 +1,11 @@
+/*
+  Allows drawing a polygon over the map component 
+  updateGlobalMarkers handles the snackbar notifying the user their location is saved
+  setAddress sets the address in google maps based on lat/long
+  onCreated sets up the map
+  styled using ../../styles/map.scss
+*/
+
 import React, { useState, useEffect, useContext } from "react";
 import L from "leaflet";
 import {
