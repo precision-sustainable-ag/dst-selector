@@ -1,3 +1,9 @@
+/* 
+  Top level wrapper for the cover crop list
+  Contains the CoverCropList component and the CropSidebar component
+*/
+
+
 import { Box, Button, Grid } from "@material-ui/core";
 import React, { useState, useEffect } from "react";
 import CropSidebarComponent from "../CropSelector/CropSidebar";

@@ -1,3 +1,8 @@
+/*
+  This is the main location widget component
+  styled using ../../styles/location.scss
+*/
+
 import React, { useEffect, useContext, useState } from "react";
 import { Context } from "../../store/Store";
 import "../../styles/location.scss";

@@ -1,3 +1,8 @@
+/*
+  Handles the popup on hovering over one of the goal rankings in the crop selector
+  Styles are created using makeStyles
+*/
+
 import React, { useState, useContext, useEffect, Fragment } from "react";
 import { Context } from "../../store/Store";
 import { zoneIcon, getRating, CropImage } from "../../shared/constants";

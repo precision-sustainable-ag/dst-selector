@@ -1,3 +1,8 @@
+/*
+  This file contains the AutoCompleteCropName component
+  The AutoCompleteCropName autocopletes the crop the user is searching
+*/
+
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import TextField from '@material-ui/core/TextField';

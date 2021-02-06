@@ -1,3 +1,9 @@
+/*
+  The actual map component and tools to draw polygon
+  drawPluginOptions sets the variables for the polygon tool
+  setZoneState updates the map to the zip code entered by the user
+*/
+
 import React, { useEffect, useContext, useState, Fragment } from "react";
 import {
   Map,

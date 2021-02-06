@@ -1,3 +1,9 @@
+/*
+  This file contains the GrowthWindowComponent component
+  The GrowthWindowComponent is the that shows the growth window view in the calendar
+  Styles are created using growthWindow.scss
+*/
+
 import React, { useEffect, useState, Fragment, useContext } from "react";
 import moment from "moment";
 import { Tooltip, withStyles, Typography } from "@material-ui/core";

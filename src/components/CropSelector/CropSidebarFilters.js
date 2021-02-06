@@ -1,3 +1,10 @@
+/*
+  This file contains the CropSidebarFilters component
+  The CropSidebarFilters is the sidebar which contains functions used to filter the crops
+  RenderSidebarFilterElements renders the sidebar 
+  Styles are created using makeStyles
+*/
+
 import React, { Fragment, useEffect, useContext } from "react";
 import {
   FormGroup,
