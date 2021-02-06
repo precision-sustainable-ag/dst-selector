@@ -1,3 +1,9 @@
+/*
+  This file contains the TerminationMethods component
+  The TerminationMethods filters crops based on termination methods
+  styles are fetched from ../../../styles/filters.scss
+*/
+
 import React, {
   useState,
   useEffect,

@@ -1,3 +1,9 @@
+/*
+  This file contains the CoverCropExplorer component
+  The CoverCropExplorer component allows users to look at a list of all the cover crops for their zone 
+  styled from from CustomStyles in ../../../shared/constants
+*/
+
 import React, { useState, useContext, useEffect, useMemo, useRef } from "react";
 import Header from "../Header/header";
 import {

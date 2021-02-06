@@ -1,3 +1,7 @@
+/*
+  toggles between zip and address
+*/
+
 import React, { useState, useContext } from "react";
 import { ToggleButton, ToggleButtonGroup } from "@material-ui/lab";
 import { GreenSwitch } from "../../shared/constants";

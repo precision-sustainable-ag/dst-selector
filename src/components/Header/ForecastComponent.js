@@ -1,3 +1,8 @@
+/*
+  This file contains the ForecastComponent component, helper functions
+  The ForecastComponent shows the forecast in the header
+*/
+
 import React, { Fragment, useContext, useEffect, useState } from "react";
 import {
   cloudIcon,
