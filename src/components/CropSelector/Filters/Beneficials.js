@@ -1,3 +1,9 @@
+/*
+  This file contains the Beneficials component
+  The Beneficials sorts crops based on what it is beneficial to (pollinators, mycorrhizae)
+  styles are fetched from ../../../styles/filters.scss
+*/
+
 import React, {
   useState,
   useEffect,

@@ -1,3 +1,8 @@
+/*
+  This file contains the Growth component
+  The Growth filters crops based on growth
+*/
+
 import React, {
   useState,
   useEffect,

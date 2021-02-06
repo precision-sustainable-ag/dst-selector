@@ -1,3 +1,9 @@
+/*
+  This file contains the DateRangeDialog component
+  The DateRangeDialog is the component that handles the calendar dialogue
+  Styles are created using makeStyles
+*/
+
 import {
   Button,
   Dialog,

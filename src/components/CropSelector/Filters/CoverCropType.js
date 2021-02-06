@@ -1,3 +1,8 @@
+/*
+  This file contains the CoverCropType component component
+  The CoverCropType component filters crops based type
+*/
+
 import React, {
   useState,
   useEffect,

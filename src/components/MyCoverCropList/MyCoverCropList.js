@@ -1,3 +1,10 @@
+/* 
+  Contains the list of crops that the user selected
+  redirectToExplorer is used to handle sending user back to the home page
+  TopBar contains the blue bar for adding crops
+*/
+
+
 import React, { useContext, Fragment } from "react";
 import { Context } from "../../store/Store";
 import MyCoverCropCardsComponent from "./MyCoverCropCardsComponent";

@@ -1,3 +1,9 @@
+/*
+  This file contains the Weeds component
+  The Weeds filters crops based on weeds
+  styles are fetched from ../../../styles/filters.scss
+*/
+
 import React, {
   useState,
   useEffect,

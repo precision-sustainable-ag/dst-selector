@@ -1,3 +1,7 @@
+/*
+  Unused
+*/
+
 import React, { useContext } from "react";
 import { FormGroup, FormControlLabel } from "@material-ui/core";
 import { Context } from "../../store/Store";
