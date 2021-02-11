@@ -1,3 +1,8 @@
+/*
+  This file contains the AgInformaticsLicenseText component, helper functions, and styles
+  The AgInformaticsLicenseText page contains the Agriculture Informatics license text
+*/
+
 import React from "react";
 import { Grid, Typography } from "@material-ui/core";
 import { Link } from "react-router-dom";

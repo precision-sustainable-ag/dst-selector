@@ -1,3 +1,9 @@
+/*
+  This file contains the CropSidebar and it's styles
+  The CropSidebar is the sidebar which contains the filtering and calendar view components
+  Styles are created using makeStyles
+*/
+
 import React, { Fragment, useEffect, useRef } from "react";
 import filterData from "../../shared/data-dictionary7-optimised.json";
 

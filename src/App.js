@@ -1,3 +1,8 @@
+/*
+  App is the species selector tool
+  styled using ./styles/App.scss
+*/
+
 import React, { useContext, useEffect, Fragment, useState } from "react";
 import "./styles/App.scss";
 import { Snackbar } from "@material-ui/core";

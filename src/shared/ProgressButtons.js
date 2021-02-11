@@ -1,3 +1,8 @@
+/*
+  This file contains the ProgressButtons component
+  The ProgressButtons allow the user to navigate steps
+*/
+
 import React, { useContext, useState, useEffect } from "react";
 import { LightButton } from "./constants";
 import { Context } from "../store/Store";

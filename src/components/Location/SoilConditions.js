@@ -1,3 +1,8 @@
+/*
+  contains the popup for confirming or altering your soil conditions
+  getDrainageText fetches the drainage info for the crop
+*/
+
 import React, { Fragment } from "react";
 import TerrainIcon from "@material-ui/icons/Terrain";
 import Slider from "@material-ui/core/Slider";
