@@ -1,4 +1,6 @@
-// DEPRECATED
+/*
+  Unused
+*/
 import React, { useEffect, useState, Fragment } from "react";
 import { sidebarFilters } from "../../shared/constants";
 import {

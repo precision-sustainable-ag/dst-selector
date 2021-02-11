@@ -1,3 +1,9 @@
+/*
+  This file contains the ExplorerCardView component, and styles
+  The ExplorerCardView component is the card that contains a single crop in the crop explorer
+  Styles are created using makeStyles
+*/
+
 import React, { useState, useEffect, Fragment, useContext } from "react";
 import { PictureAsPdf, Add, FormatListBulleted } from "@material-ui/icons";
 import {

@@ -1,3 +1,8 @@
+/*
+  This file contains the License component, helper functions
+  The License page contains the license which is made of the MIT license text and Agriculture Informatics license
+*/
+
 import { Grid } from "@material-ui/core";
 import React, { useEffect } from "react";
 import Header from "../Header/header";

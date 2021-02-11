@@ -1,3 +1,8 @@
+/*
+  Creates popups inside info sheet
+  styled using ../../styles/tooltipMaker.scss
+*/
+
 import { Tooltip } from "@material-ui/core";
 import React, { useState, useEffect, useContext } from "react";
 import { Context } from "../../store/Store";
