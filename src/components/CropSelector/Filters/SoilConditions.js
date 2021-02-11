@@ -1,3 +1,8 @@
+/*
+  This file contains the SoilConditions component
+  The SoilConditions filters crops based on soil conditions
+*/
+
 import React, {
   useState,
   useEffect,

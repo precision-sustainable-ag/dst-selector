@@ -1,3 +1,9 @@
+/*
+  This file contains the GoalTag component, helper functions, and styles
+  The GoalTag is individual goal tag inside the goal selector window
+  Styles are created using makeStyles
+*/
+
 import React, { useContext, useState, useEffect } from "react";
 import { Badge, Chip, Tooltip, Avatar } from "@material-ui/core";
 import { Context } from "../../store/Store";

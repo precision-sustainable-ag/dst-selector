@@ -1,3 +1,8 @@
+/*
+  This file contains the MITLicenseText component, helper functions, and styles
+  The MITLicenseText page contains the MIT license text
+*/
+
 import { Grid, Typography } from "@material-ui/core";
 import React from "react";
 import { Link } from "react-router-dom";

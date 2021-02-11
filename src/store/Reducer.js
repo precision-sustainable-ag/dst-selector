@@ -1,3 +1,7 @@
+/*
+  Reducer determines the next state in Store.js
+*/
+
 const Reducer = (state, action) => {
   switch (action.type) {
     case "UPDATE_PROGRESS": {

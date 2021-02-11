@@ -1,5 +1,6 @@
 /*
-  allows the user to select their location by zip code or address
+  This is the main location widget component
+  styled using ../../styles/location.scss
 */
 
 import React, { useEffect, useContext, useState } from "react";

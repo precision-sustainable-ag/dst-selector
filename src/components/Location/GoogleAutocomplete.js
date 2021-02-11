@@ -1,3 +1,9 @@
+/*
+  google maps component which leaflet is wrapped around
+  fetchLocationDetails fetches location data
+  styled using makeStyles
+*/
+
 import React, { useContext, useEffect } from "react";
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
