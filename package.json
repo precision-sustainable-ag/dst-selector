@@ -1,6 +1,6 @@
 {
   "name": "decision-support-tool",
-  "version": "1",
+  "version": "1.0.0",
   "private": true,
   "homepage": "http://covercrop.tools",
   "dependencies": {
