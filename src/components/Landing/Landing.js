@@ -117,12 +117,12 @@ const Landing = (props) => {
             // style={{ paddingBottom: "1em" }}
           >
             You are currently interacting with the Northeast Cover Crop Species
-            Selector Tool, beta version. We seek feedback about the usability
-            and usefulness of this tool. Our goal is to encourage and support
-            the use of cover crops in the Northeast US. You can learn more about
-            the cover crop data and design of this tool{" "}
-            <Link to={"/about"}> here</Link>. If you need assistance, consult
-            the <Link to={"/help"}>help page</Link>.
+            Selector Tool. We seek feedback about the usability and usefulness
+            of this tool. Our goal is to encourage and support the use of cover
+            crops in the Northeast US. You can learn more about the cover crop
+            data and design of this tool <Link to={"/about"}> here</Link>. If
+            you need assistance, consult the <Link to={"/help"}>help page</Link>
+            .
           </Typography>
         </Grid>
         <Grid item>
@@ -136,17 +136,6 @@ const Landing = (props) => {
             a cover crop mixture and seeding rate calculator and an economics
             calculator. Our ultimate goal is to provide a suite of
             interconnected tools that function together seamlessly.
-          </Typography>
-          <Typography
-            align="left"
-            variant="body1"
-            gutterBottom
-            style={{ paddingBottom: "1em" }}
-          >
-            This tool is currently undergoing beta testing. This means that we
-            are double checking the data and the underlying decision logic.
-            Please do not use this tool for actual cover crop planning and
-            consult your cover crop advisor at this stage.
           </Typography>
           <Typography
             variant="body1"
