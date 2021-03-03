@@ -4,7 +4,7 @@
 */
 
 import React, { useState, useEffect } from "react";
-import Header from "../Header/header";
+import Header from "../Header/Header";
 
 const FeedbackComponent = (props) => {
   useEffect(() => {
