@@ -5,7 +5,7 @@
 
 import { Grid } from "@material-ui/core";
 import React, { useEffect } from "react";
-import Header from "../Header/header";
+import Header from "../Header/Header";
 import AgInformaticsLicenseText from "./AgInformaticsLicenseText";
 import MITLicenseText from "./MITLicenseText";
 
