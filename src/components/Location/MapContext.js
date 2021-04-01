@@ -22,15 +22,12 @@ import {
   Tooltip,
 } from "react-leaflet";
 import { EditControl } from "react-leaflet-draw";
-// import Search from "react-leaflet-search";
-// import ReactLeafletGoogleLayer from "react-leaflet-google-layer";
 
 import { Context } from "../../store/Store";
 
 import "leaflet-draw/dist/leaflet.draw.css";
 import "../../styles/map.scss";
-import { googleApiKey } from "../../shared/keys";
-import { result } from "lodash";
+
 // work around broken icons when using webpack, see https://github.com/PaulLeCam/react-leaflet/issues/255
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -59,9 +56,6 @@ const MapContext = ({ width, height, minzoom, maxzoom, from }) => {
     }
   }, [from]);
 
-  const clearMarkers = () => {
-    // default the markers
-  };
   const updateGlobalMarkers = (markersArray, type = "") => {
     // console.log(markersArray);
     if (type === "marker") {
@@ -185,7 +179,7 @@ const MapContext = ({ width, height, minzoom, maxzoom, from }) => {
         >
           <TileLayer
             subdomains={["mt0", "mt1", "mt2", "mt3"]}
-            attribution="Google @ 2021"
+            attribution={`Map data &copy; <a target="attr" href="http://googlemaps.com">Google</a>`}
             url="http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}"
           />
           <FeatureGroup
@@ -238,14 +232,6 @@ const MapContext = ({ width, height, minzoom, maxzoom, from }) => {
           {/* <TileLayer
             attribution="Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community"
             url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
-          /> */}
-          {/* <ReactLeafletGoogleLayer
-            googleMapsLoaderConf={{
-              KEY: googleApiKey,
-              LIBRARIES: ["places", "geometry"],
-              REGION: "US",
-            }}
-            type={"hybrid"}
           /> */}
         </Map>
       </div>
