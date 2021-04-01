@@ -14,7 +14,20 @@ import { makeStyles } from "@material-ui/core/styles";
 import parse from "autosuggest-highlight/parse";
 import throttle from "lodash/throttle";
 import { Context } from "../../store/Store";
+import { googleApiKey } from "../../shared/keys";
 // import { googleApiKey } from "../utils/api_secret";
+
+function loadScript(src, position, id) {
+  if (!position) {
+    return;
+  }
+
+  const script = document.createElement("script");
+  script.setAttribute("async", "");
+  script.setAttribute("id", id);
+  script.src = src;
+  position.appendChild(script);
+}
 
 const autocompleteService = { current: null };
 const placeService = { current: null };
@@ -49,7 +62,7 @@ export default function GoogleAutocomplete({
     lat: 0,
     lng: 0,
   });
-  //   const loaded = React.useRef(false);
+  const loaded = React.useRef(false);
 
   useEffect(() => {
     // console.log(inputValue);
@@ -64,17 +77,17 @@ export default function GoogleAutocomplete({
     setValue(state.fullAddress);
   }, [state.fullAddress]);
 
-  //   if (typeof window !== "undefined" && !loaded.current) {
-  //     if (!document.querySelector("#google-maps")) {
-  //       loadScript(
-  //         `https://maps.googleapis.com/maps/api/js?key=${googleApiKey}&libraries=places`,
-  //         document.querySelector("head"),
-  //         "google-maps"
-  //       );
-  //     }
+  if (typeof window !== "undefined" && !loaded.current) {
+    if (!document.querySelector("#google-maps")) {
+      loadScript(
+        `https://maps.googleapis.com/maps/api/js?key=${googleApiKey}&libraries=places`,
+        document.querySelector("head"),
+        "google-maps"
+      );
+    }
 
-  //     loaded.current = true;
-  //   }
+    loaded.current = true;
+  }
 
   const fetch = React.useMemo(
     () =>
