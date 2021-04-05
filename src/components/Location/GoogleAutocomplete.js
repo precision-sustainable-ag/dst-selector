@@ -14,7 +14,23 @@ import { makeStyles } from "@material-ui/core/styles";
 import parse from "autosuggest-highlight/parse";
 import throttle from "lodash/throttle";
 import { Context } from "../../store/Store";
-// import { googleApiKey } from "../utils/api_secret";
+import { googleApiKey } from "../../shared/keys";
+
+const isNum = (val) => {
+  return /^\d+$/.test(val);
+};
+
+function loadScript(src, position, id) {
+  if (!position) {
+    return;
+  }
+
+  const script = document.createElement("script");
+  script.setAttribute("async", "");
+  script.setAttribute("id", id);
+  script.src = src;
+  position.appendChild(script);
+}
 
 const autocompleteService = { current: null };
 const placeService = { current: null };
@@ -49,7 +65,7 @@ export default function GoogleAutocomplete({
     lat: 0,
     lng: 0,
   });
-  //   const loaded = React.useRef(false);
+  const loaded = React.useRef(false);
 
   useEffect(() => {
     // console.log(inputValue);
@@ -64,25 +80,28 @@ export default function GoogleAutocomplete({
     setValue(state.fullAddress);
   }, [state.fullAddress]);
 
-  //   if (typeof window !== "undefined" && !loaded.current) {
-  //     if (!document.querySelector("#google-maps")) {
-  //       loadScript(
-  //         `https://maps.googleapis.com/maps/api/js?key=${googleApiKey}&libraries=places`,
-  //         document.querySelector("head"),
-  //         "google-maps"
-  //       );
-  //     }
+  if (typeof window !== "undefined" && !loaded.current) {
+    if (!document.querySelector("#google-maps")) {
+      loadScript(
+        `https://maps.googleapis.com/maps/api/js?key=${googleApiKey}&libraries=places`,
+        document.querySelector("head"),
+        "google-maps"
+      );
+    }
 
-  //     loaded.current = true;
-  //   }
+    loaded.current = true;
+  }
 
-  const fetch = React.useMemo(
+  const fetchData = React.useMemo(
     () =>
       throttle((request, callback) => {
         autocompleteService.current.getPlacePredictions(request, callback);
       }, 200),
     []
   );
+  // const fetchZipCodes = React.useMemo(() => throttle((request, callback) => {
+
+  // }, 200), []);
 
   const fetchLocalData = {
     load: (place_id, main_text) => {
@@ -111,7 +130,6 @@ export default function GoogleAutocomplete({
         const zipCode = results[0].address_components.filter(
           (e) => e.types[0] === "postal_code"
         );
-        // console.log(zipCode);
 
         if (county.length !== 0) {
           // If google is able to find the county, pick the first preference!
@@ -124,7 +142,6 @@ export default function GoogleAutocomplete({
       }
     },
     fetchGeocode: (results, county, main_text, zipCode) => {
-      // console.log(results);
       dispatch({
         type: "CHANGE_ADDRESS_VIA_MAP",
         data: {
@@ -157,17 +174,6 @@ export default function GoogleAutocomplete({
 
   const fetchLocationDetails = ({ place_id, structured_formatting }) => {
     if (place_id) {
-      // deprecated objects
-      // const placeRequest = {
-      //   placeId: place_id,
-      //   fields: ["name", "geometry", "types", "formatted_address", "icon"],
-      //   region: "en-US",
-      // };
-      // const geoRequest = {
-      //   placeId: place_id,
-      //   region: "en-US",
-      // };
-
       fetchLocalData.load(place_id, structured_formatting.main_text);
     }
   };
@@ -187,26 +193,59 @@ export default function GoogleAutocomplete({
       return undefined;
     }
 
-    fetch({ input: inputValue }, (results) => {
-      if (active) {
-        let newOptions = [];
+    if (isNum(inputValue) && inputValue.length >= 3) {
+      //  probably a zip code?
+      fetchData(
+        {
+          input: inputValue,
+          types: ["(regions)"],
+          componentRestrictions: { country: "US" },
+        },
+        (results) => {
+          if (active) {
+            let newOptions = [];
 
-        if (value) {
-          newOptions = [value];
+            if (value) {
+              newOptions = [value];
+            }
+
+            if (results) {
+              newOptions = [...newOptions, ...results];
+            }
+
+            setOptions(newOptions);
+          }
         }
+      );
+    } else {
+      fetchData(
+        {
+          input: inputValue,
 
-        if (results) {
-          newOptions = [...newOptions, ...results];
+          componentRestrictions: { country: "US" },
+        },
+        (results) => {
+          if (active) {
+            let newOptions = [];
+
+            if (value) {
+              newOptions = [value];
+            }
+
+            if (results) {
+              newOptions = [...newOptions, ...results];
+            }
+
+            setOptions(newOptions);
+          }
         }
-
-        setOptions(newOptions);
-      }
-    });
+      );
+    }
 
     return () => {
       active = false;
     };
-  }, [value, inputValue, fetch]);
+  }, [value, inputValue, fetchData]);
 
   return (
     <Autocomplete
@@ -234,8 +273,6 @@ export default function GoogleAutocomplete({
         setInputValue(newInputValue);
       }}
       renderInput={(params) => {
-        // params.inputProps.autoComplete = "new-password";
-        // params.inputProps.form = { autoComplete: "off" };
         return (
           <TextField
             {...params}
@@ -246,7 +283,6 @@ export default function GoogleAutocomplete({
         );
       }}
       renderOption={(option) => {
-        // console.log(option);
         let matches = [];
         let parts = [];
         if (option.structured_formatting) {
