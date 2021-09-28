@@ -63,29 +63,28 @@ const CoverCropExplorer = () => {
     }
     setAnchorEl(null);
   };
+
   const handleSearchChange = (e) => {
     setCropName(e.target.value);
-    // console.log(e.target.value.length);
     let { cropData } = state;
+
+    let search = e.target.value
+                  .toLowerCase()
+                  .match(/\w+/g);
+    
     const crop_data = cropData.filter((crop) => {
-      let crop_name = crop.fields["Cover Crop Name"]
-        .split(",")
-        .join("")
-        .toLowerCase();
-      let scientific_name = crop.fields["Scientific Name"]
-        .split(",")
-        .join("")
-        .toLowerCase();
-      if (
-        crop_name.includes(e.target.value.toLowerCase()) ||
-        scientific_name.includes(e.target.value.toLowerCase())
-      ) {
-        return true;
-      } else {
-        return false;
+      const match = (parm) => {
+        const m = crop.fields[parm]
+                    .toLowerCase()
+                    .match(/\w+/g);
+  
+        return !search ||
+               search.every(s => m.some(t => t.includes(s)));
       }
+
+      return match('Cover Crop Name') || match('Scientific Name');
     });
-    // console.log(crop_data);
+    
     setActiveCropData(crop_data);
   };
 
