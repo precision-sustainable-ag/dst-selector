@@ -103,6 +103,18 @@ export default function GoogleAutocomplete({
 
   // }, 200), []);
 
+  const fetchZipFromLatLng = (lat, lng) => {
+    const geocoder = new window.google.maps.Geocoder();
+    const latlng = new window.google.maps.LatLng(lat, lng);
+    // let centerZip = "";
+
+    return geocoder.geocode({'latLng': latlng})
+  }
+
+  const getResult = async (lat, lng) => {
+    return await fetchZipFromLatLng(lat, lng);
+  }
+
   const fetchLocalData = {
     load: (place_id, main_text) => {
       fetchLocalData.fetchPlaces(place_id).then((res) => {
@@ -121,17 +133,62 @@ export default function GoogleAutocomplete({
         })
       );
     },
-    setData: ({ results, status }, main_text) => {
+    // fetchZipFromLatLng: async (lat, lng) => {
+    //   const geocoder = new window.google.maps.Geocoder();
+    //   const latlng = new window.google.maps.LatLng(lat, lng);
+    //   let centerZip = "";
+
+    //   await geocoder.geocode({'latLng': latlng}, function(results, status) {
+    //       if (status === window.google.maps.GeocoderStatus.OK) {
+    //           if (results[0]) {
+    //               for (let j = 0; j < results[0].address_components.length; j++) {
+    //                   if (results[0].address_components[j].types[0] == 'postal_code'){
+    //                     console.log(results[0].address_components[j]);
+    //                     centerZip = results[0].address_components[j];
+    //                   }
+    //               }
+    //           }
+    //       } else {
+    //           console.log("Geocoder failed due to: " + status);
+    //       }
+    //   }).then(() => {
+    //     // console.log("hello", centerZip);
+    //     return centerZip;
+    //   });
+    // },
+    setData: async ({ results, status }, main_text) => {
+      // console.log(results)
       if (status === "OK") {
         // setAddress(results.formatted_address);
         const county = results[0].address_components.filter(
           (e) => e.types[0] === "administrative_area_level_2"
         );
-        const zipCode = results[0].address_components.filter(
+        let zipCode = results[0].address_components.filter(
           (e) => e.types[0] === "postal_code"
         );
 
-        if (county.length !== 0) {
+        if(zipCode.length === 0){
+          const lonBounds = results[0].geometry.bounds.Hb
+          const lonCenter = (lonBounds.g + lonBounds.i) / 2
+          const latBounds = results[0].geometry.bounds.tc
+          const latCenter = (latBounds.g + latBounds.i) / 2
+
+          getResult(latCenter, lonCenter).then((zip) => {
+            console.log("myzip", zip);
+            let zipCode = zip.results[0].address_components.filter(
+              (e) => e.types[0] === "postal_code"
+            );
+            console.log("myzip", zipCode);
+            if (county.length !== 0) {
+              // If google is able to find the county, pick the first preference!
+              fetchLocalData.fetchGeocode(results, county, main_text, zipCode);
+            } else {
+              fetchLocalData.fetchGeocode(results, "", main_text, zipCode);
+            }
+          })
+        }
+
+        else if (county.length !== 0) {
           // If google is able to find the county, pick the first preference!
           fetchLocalData.fetchGeocode(results, county, main_text, zipCode);
         } else {
