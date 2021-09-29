@@ -99,21 +99,6 @@ export default function GoogleAutocomplete({
       }, 200),
     []
   );
-  // const fetchZipCodes = React.useMemo(() => throttle((request, callback) => {
-
-  // }, 200), []);
-
-  const fetchZipFromLatLng = (lat, lng) => {
-    const geocoder = new window.google.maps.Geocoder();
-    const latlng = new window.google.maps.LatLng(lat, lng);
-    // let centerZip = "";
-
-    return geocoder.geocode({'latLng': latlng})
-  }
-
-  const getResult = async (lat, lng) => {
-    return await fetchZipFromLatLng(lat, lng);
-  }
 
   const fetchLocalData = {
     load: (place_id, main_text) => {
@@ -133,33 +118,14 @@ export default function GoogleAutocomplete({
         })
       );
     },
-    // fetchZipFromLatLng: async (lat, lng) => {
-    //   const geocoder = new window.google.maps.Geocoder();
-    //   const latlng = new window.google.maps.LatLng(lat, lng);
-    //   let centerZip = "";
-
-    //   await geocoder.geocode({'latLng': latlng}, function(results, status) {
-    //       if (status === window.google.maps.GeocoderStatus.OK) {
-    //           if (results[0]) {
-    //               for (let j = 0; j < results[0].address_components.length; j++) {
-    //                   if (results[0].address_components[j].types[0] == 'postal_code'){
-    //                     console.log(results[0].address_components[j]);
-    //                     centerZip = results[0].address_components[j];
-    //                   }
-    //               }
-    //           }
-    //       } else {
-    //           console.log("Geocoder failed due to: " + status);
-    //       }
-    //   }).then(() => {
-    //     // console.log("hello", centerZip);
-    //     return centerZip;
-    //   });
-    // },
+    fetchZipFromLatLng: async (lat, lng) => {
+      const geocoder = new window.google.maps.Geocoder();
+      const latlng = new window.google.maps.LatLng(lat, lng);
+  
+      return geocoder.geocode({'latLng': latlng})
+    },
     setData: async ({ results, status }, main_text) => {
-      // console.log(results)
       if (status === "OK") {
-        // setAddress(results.formatted_address);
         const county = results[0].address_components.filter(
           (e) => e.types[0] === "administrative_area_level_2"
         );
@@ -173,12 +139,10 @@ export default function GoogleAutocomplete({
           const latBounds = results[0].geometry.bounds.tc
           const latCenter = (latBounds.g + latBounds.i) / 2
 
-          getResult(latCenter, lonCenter).then((zip) => {
-            console.log("myzip", zip);
+          fetchLocalData.fetchZipFromLatLng(latCenter, lonCenter).then((zip) => {
             let zipCode = zip.results[0].address_components.filter(
               (e) => e.types[0] === "postal_code"
             );
-            console.log("myzip", zipCode);
             if (county.length !== 0) {
               // If google is able to find the county, pick the first preference!
               fetchLocalData.fetchGeocode(results, county, main_text, zipCode);
