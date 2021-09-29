@@ -99,9 +99,6 @@ export default function GoogleAutocomplete({
       }, 200),
     []
   );
-  // const fetchZipCodes = React.useMemo(() => throttle((request, callback) => {
-
-  // }, 200), []);
 
   const fetchLocalData = {
     load: (place_id, main_text) => {
@@ -121,17 +118,41 @@ export default function GoogleAutocomplete({
         })
       );
     },
-    setData: ({ results, status }, main_text) => {
+    fetchZipFromLatLng: async (lat, lng) => {
+      const geocoder = new window.google.maps.Geocoder();
+      const latlng = new window.google.maps.LatLng(lat, lng);
+  
+      return geocoder.geocode({'latLng': latlng})
+    },
+    setData: async ({ results, status }, main_text) => {
       if (status === "OK") {
-        // setAddress(results.formatted_address);
         const county = results[0].address_components.filter(
           (e) => e.types[0] === "administrative_area_level_2"
         );
-        const zipCode = results[0].address_components.filter(
+        let zipCode = results[0].address_components.filter(
           (e) => e.types[0] === "postal_code"
         );
 
-        if (county.length !== 0) {
+        if(zipCode.length === 0){
+          const lonBounds = results[0].geometry.bounds.Hb
+          const lonCenter = (lonBounds.g + lonBounds.i) / 2
+          const latBounds = results[0].geometry.bounds.tc
+          const latCenter = (latBounds.g + latBounds.i) / 2
+
+          fetchLocalData.fetchZipFromLatLng(latCenter, lonCenter).then((zip) => {
+            let zipCode = zip.results[0].address_components.filter(
+              (e) => e.types[0] === "postal_code"
+            );
+            if (county.length !== 0) {
+              // If google is able to find the county, pick the first preference!
+              fetchLocalData.fetchGeocode(results, county, main_text, zipCode);
+            } else {
+              fetchLocalData.fetchGeocode(results, "", main_text, zipCode);
+            }
+          })
+        }
+
+        else if (county.length !== 0) {
           // If google is able to find the county, pick the first preference!
           fetchLocalData.fetchGeocode(results, county, main_text, zipCode);
         } else {
