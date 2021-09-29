@@ -179,6 +179,18 @@
     "Notes": null,
     "Directory": "Radish, Oilseed"
   },
+  "Rape, Oilseed, Spring": {
+    "Cover Crop": "Rape, Oilseed, Spring",
+    "Key Thumbnail": "Rapeseed_flowering_Bjorkman_2020.jpg",
+    "Notes": null,
+    "Directory": "Rape, Oilseed, Spring"
+  },
+  "Rape, Oilseed, Winter": {
+    "Cover Crop": "Rape, Oilseed, Winter",
+    "Key Thumbnail": "Rapeseed_flowering_Bjorkman_2020.jpg",
+    "Notes": null,
+    "Directory": "Rape, Oilseed, Winter"
+  },
   "Rapeseed": {
     "Cover Crop": "Rapeseed",
     "Key Thumbnail": "Rapeseed_flowering_Bjorkman_2020.jpg",
