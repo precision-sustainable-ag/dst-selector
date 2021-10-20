@@ -4,10 +4,10 @@
     "description": "Common name for categories of cover crops",
     "type": "chips-only",
     "values": [
-      { "name": "Broadleaf" },
-      { "name": "Brassica" },
-      { "name": "Grass" },
-      { "name": "Legume" }
+      { "name": "Broadleaf"},
+      { "name": "Brassica"},
+      { "name": "Grass"},
+      { "name": "Legume"}
     ]
   },
   {
@@ -75,16 +75,18 @@
   {
     "name": "Seeding Methods",
     "description": null,
-    "type": "checkbox-only",
+    "type": "chips-only",
     "values": [
       {
         "name": "Frost Seeding",
+        "values": ["Frost Seeding"],
         "maxSize": 1,
         "symbol": null,
         "description": "Cover crop can be seeded when ground is frozen"
       },
       {
         "name": "Aerial Seeding",
+        "values": ["Aerial Seeding"],
         "maxSize": 1,
         "symbol": null,
         "description": "Can aerial seeding methods be used for this crop?"
