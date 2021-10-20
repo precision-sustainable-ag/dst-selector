@@ -11,9 +11,14 @@ import React, {
 } from "react";
 import { Chip, Grid } from "@material-ui/core";
 
-const CoverCropType = forwardRef((props, ref) => {
-  const [selected, setSelected] = useState({ "Cover Crop Group": [] });
+// import { Filters } from "./Filters";  // TODO
 
+const CoverCropType = forwardRef((props, ref) => {
+  // return <Filters props={props} ref={ref} />  // TODO
+
+  const prop = "Cover Crop Group";
+  const [selected, setSelected] = useState({ [prop]: [] });
+  
   useEffect(() => {
     props.setSidebarFilterOptions({
       ...props.sidebarFilterOptions,
@@ -23,21 +28,21 @@ const CoverCropType = forwardRef((props, ref) => {
 
   useImperativeHandle(ref, () => ({
     resetFilters() {
-      setSelected({ "Cover Crop Group": [] });
+      setSelected({ [prop]: [] });
     },
   }));
 
-  const handleClick = (name, val) => {
-    if (selected["Cover Crop Group"].includes(val)) {
-      const removed = selected["Cover Crop Group"].filter(
+  const handleClick = (_, val) => {
+    if (selected[prop].includes(val)) {
+      const removed = selected[prop].filter(
         (chipVals) => chipVals !== val
       );
-      setSelected({ ...selected, "Cover Crop Group": removed });
+      setSelected({ ...selected, [prop]: removed });
     } else {
-      const added = selected["Cover Crop Group"];
+      const added = selected[prop];
       added.push(val);
 
-      setSelected({ ...selected, "Cover Crop Group": added });
+      setSelected({ ...selected, [prop]: added });
     }
   };
 
@@ -51,7 +56,7 @@ const CoverCropType = forwardRef((props, ref) => {
             size="medium"
             label={val.name}
             color={
-              props.sidebarFilterOptions["Cover Crop Group"].includes(val.name)
+              props.sidebarFilterOptions[prop].includes(val.name)
                 ? "primary"
                 : "secondary"
             }
