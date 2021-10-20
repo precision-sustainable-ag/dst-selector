@@ -1,131 +1,180 @@
-/*
-  Unused 
-*/
+import React, { useState, useEffect, useImperativeHandle, forwardRef } from "react";
+import { Grid, Tooltip, Chip } from "@material-ui/core";
 
-import React, { useState, useEffect, Fragment, useContext } from "react";
-import { Chip, List, ListItem, Grid, Typography } from "@material-ui/core";
-import ToggleButton from "@material-ui/lab/ToggleButton";
-import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
-import { Context } from "../../../store/Store";
-const _ = require("lodash");
+const DollarsAndRatings = ({data, filter, handleChange}) => {
+  return (
+    new Array(filter.maxSize).fill(0).map((_, i) => i + 1).map(i => {
+      const selected = data.includes(i);
+      return (
+        <Chip
+          label={filter.symbol === 'dollar' ? '$'.repeat(i) : i + ' \u2605'}
 
-const Filters = (props) => {
-  const filters = props.filters;
-  const [state, dispatch] = useContext(Context);
-  const [activeFilters, setActiveFilters] = useState({});
-  const [selectedVars, setSelectedVars] = useState({
-    "chips-only": [],
-    mixed: [{}],
-    "rating-only": [{}],
-  });
+          color={
+            selected
+              ? "primary"
+              : "secondary"
+          }
+
+          style={{
+            marginRight: 3,
+          }}
+
+          onClick={() => {
+            if (filter.symbol === 'dollar') {
+              if (selected) {
+                data = data.filter(d => d !== i);
+              } else {
+                data.push(i);
+              }
+              handleChange(data, filter.alternateName || filter.name);
+            } else {
+              if (selected) {
+                data = data.filter(j => j != i);
+              } else {
+                for (let j = i; j <= filter.maxSize; j++) {
+                  if (!data.includes(j)) {
+                    data.push(j);
+                  }
+                }
+              }
+              handleChange(data.sort(), filter.alternateName || filter.name);
+            }
+          }}
+        />
+      )
+    })
+  )
+} // DollarsAndRatings
+
+const Chips = ({props, filter, handleChange}) => { 
+  return (
+    filter.values.map((val) => (
+      <Chip
+        onClick={() => handleChange(filter.name, val)}
+        component="li"
+        size="medium"
+        label={val}
+        style={{
+          marginRight: 3,
+        }}
+
+        color={
+          props.sidebarFilterOptions[filter.name].includes(val)
+            ? "primary"
+            : "secondary"
+        }
+      />
+    ))
+  )
+} // Chips
+
+const Tip = ({filter, omitHeading}) => {
+  let [open, setOpen] = useState(false);
+ 
+  return (
+    <Tooltip
+      interactive
+      arrow
+      placement="right"
+      disableFocusListener
+      disableHoverListener
+      disableTouchListener
+      open={open}
+      onClick={() => setOpen(!open)}
+      onMouseOut={() => setOpen(false)}
+      title={
+        <div className="filterTooltip">
+          <p
+            dangerouslySetInnerHTML={{ __html: filter.description }}
+          />
+        </div>
+      }
+    >
+      <span>
+        {omitHeading || <small>{filter.name}</small>}
+        &nbsp;
+        <strong style={{cursor: "pointer"}}>&#x1F6C8;</strong>
+      </span>
+    </Tooltip>
+  )
+} // Tip
+
+const Filters = forwardRef(({props}, ref) => {
+  const options = props.filters.values.reduce(function(acc, cur, i) {
+    acc[cur.alternateName || cur.name] = [];
+    return acc;
+  }, {});
+
+  const [selected, setSelected] = useState(options);
+
+  const setProps = (selected) => {
+    props.setSidebarFilterOptions({
+      ...props.sidebarFilterOptions,
+      ...selected,
+    });
+  };
 
   useEffect(() => {
-    // console.log(filters);
-    // setActiveFilters({...activeFilters, activeFiltersObj});
-    // return() => {
-    //     setActiveFilters
-    // console.log(filters);
-    // const defaultProp = [];
-    // if (filters.type === "rating-only") {
-    //   filters.values.map((vals) => {
-    //     defaultProp.push({ name: vals.name, value: 0 });
-    //   });
-    //   //    setSelectedVars({...selectedVars, "rating-only": })
-    //   setSelectedVars({ ...selectedVars, "rating-only": defaultProp });
-    // }
-    // }
-  }, []);
+    setProps(selected);
+  }, [selected]);
 
-  const handleChipOnlyClick = (name, val) => {
-    // console.log(name, val);
-    // remove from selectedChips if exists else ass
-    // console.log(val);
-    if (selectedVars["chips-only"].includes(val)) {
-      const removed = selectedVars["chips-only"].filter(
-        (chipVals) => chipVals !== val
-      );
-      setSelectedVars({ ...selectedVars, "chips-only": removed });
-    } else {
-      const added = selectedVars["chips-only"];
-      added.push(val);
+  useImperativeHandle(ref, () => ({
+    resetFilters() {
+      setSelected(options);
+    },
+  }));
 
-      setSelectedVars({ ...selectedVars, "chips-only": added });
-    }
+  const dollarsAndRatingsChange = (newValue, name) => {
+    setSelected({ ...selected, [name]: newValue });
   };
-  const RenderRelevantFilterComponent_OLD = (props) => {
-    switch (props.filters.type) {
-      case "chips-only": {
-        const chips = props.filters.values.map((val, index) => (
-          <Grid item key={index}>
-            <Chip
-              onClick={() => handleChipOnlyClick(props.filters.name, val)}
-              component="li"
-              size="medium"
-              label={val}
-              color={
-                selectedVars["chips-only"].includes(val) ? "primary" : "default"
-              }
-            />
-          </Grid>
-        ));
 
-        return (
-          <Grid container spacing={1}>
-            {chips}
-          </Grid>
-        );
-      }
-      case "rating-only": {
-        // console.log("rating-only-name", props.filters.values);
-        return (
-          <Grid container spacing={1}>
-            {props.filters.values.map((filter, index) => (
-              <Fragment key={index}>
-                <Grid item xs={12}>
-                  <p>{filter.name}</p>
-                </Grid>
-                <Grid item xs={12}>
-                  <ToggleButtonGroup
-                    value={selectedVars["rating-only"]}
-                    exclusive
-                    onChange={() => {}}
-                    aria-label={`rating-${filter.name}`}
-                  >
-                    <ToggleButton value="1" aria-label="rating-1">
-                      *
-                    </ToggleButton>
-                    <ToggleButton value="2" aria-label="rating-2">
-                      **
-                    </ToggleButton>
-                    <ToggleButton value="3" aria-label="rating-3">
-                      ***
-                    </ToggleButton>
-                    <ToggleButton value="4" aria-label="rating-4">
-                      ****
-                    </ToggleButton>
-                    <ToggleButton value="5" aria-label="rating-5">
-                      *****
-                    </ToggleButton>
-                  </ToggleButtonGroup>
-                </Grid>
-              </Fragment>
-            ))}
-          </Grid>
-        );
-      }
-
-      default:
-        return <div>unhandled</div>;
+  const chipChange = (filtername, val) => {
+    if (selected[filtername].includes(val)) {
+      let filtered = selected[filtername].filter((vals) => vals !== val);
+      setSelected({ ...selected, [filtername]: filtered });
+    } else {
+      let added = selected[filtername];
+      added.push(val);
+      setSelected({ ...selected, [filtername]: added });
     }
   };
 
   return (
-    <Fragment>
-      {/* <RenderRelevantFilterComponent {...props} /> */}
+    <Grid container spacing={2} style={{lineHeight: 2.5}}>
+      {props.filters.values.map((filter) => {
+        if (filter.type === 'chip' || props.filters.type === 'chips-only') {
+          if (filter.values && filter.values.length === 1) {
+            return (
+              <Grid item>
+                <Chips filter={filter} props={props} handleChange={chipChange} />
+                <Tip filter={filter} omitHeading={true} />
+              </Grid>
+            )
+          } else {
+            return (
+              <Grid item>
+                <Tip filter={filter} />
+                <br/>
+                <Chips filter={filter} props={props} handleChange={chipChange} />
+              </Grid>
+            )
+          }
+        } else {
+          let data = props.sidebarFilterOptions[filter.alternateName || filter.name];
 
-      {/* {props.filters.type === "chips-only" ? "hello" : "no"} */}
-    </Fragment>
+          return (
+            <Grid item xs={12}>
+              <Tip filter={filter} />
+              <br/>
+              <DollarsAndRatings filter={filter} data={data} handleChange={dollarsAndRatingsChange} />
+            </Grid>
+          )}
+        }
+      )}
+    </Grid>
   );
-};
+}); // Filters
 
-export default Filters;
+export {
+  Filters,
+}
