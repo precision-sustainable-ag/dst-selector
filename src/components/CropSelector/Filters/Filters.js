@@ -94,7 +94,7 @@ const Tip = ({filter, omitHeading}) => {
       <span>
         {omitHeading || <small>{filter.name}</small>}
         &nbsp;
-        <HelpOutlineIcon style={{cursor: "pointer", zoom: "0.7"}} />
+        <HelpOutlineIcon style={{cursor: "pointer", transform: "scale(0.7)" }} />
       </span>
     </Tooltip>
   )
