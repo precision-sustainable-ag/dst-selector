@@ -62,7 +62,7 @@ const theme = createTheme({
     },
     MuiChip: {
       root: {
-        border: "1px solid #777"
+        border: "1px solid #777",
       },
       colorSecondary: {
         "&, &&:hover, &&:focus": {
@@ -71,7 +71,7 @@ const theme = createTheme({
           fontWeight: "normal",
         },
         "&&:hover": {
-          outline: "1px solid black",
+          boxShadow: "0 0 3px 0 black"
         },
       },
       colorPrimary: {
@@ -81,7 +81,7 @@ const theme = createTheme({
           fontWeight: "normal",
         },
         "&&:hover": {
-          outline: "1px solid black",
+          boxShadow: "0 0 3px 0 black"
         },
       },
       sizeSmall: {

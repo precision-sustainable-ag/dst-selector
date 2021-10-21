@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useImperativeHandle, forwardRef } from "react";
 import { Grid, Tooltip, Chip } from "@material-ui/core";
+import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
 
 const DollarsAndRatings = ({data, filter, handleChange}) => {
   return (
@@ -93,7 +94,7 @@ const Tip = ({filter, omitHeading}) => {
       <span>
         {omitHeading || <small>{filter.name}</small>}
         &nbsp;
-        <strong style={{cursor: "pointer"}}>&#x1F6C8;</strong>
+        <HelpOutlineIcon style={{cursor: "pointer", zoom: "0.7"}} />
       </span>
     </Tooltip>
   )
