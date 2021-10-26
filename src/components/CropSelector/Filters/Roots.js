@@ -3,84 +3,11 @@
   The Roots filters crops based on roots
 */
 
-import React, {
-  useState,
-  useEffect,
-  forwardRef,
-  useImperativeHandle,
-} from "react";
-import { Grid, Chip, Tooltip } from "@material-ui/core";
+import React, {forwardRef} from "react";
+import { Filters } from "./Filters";
 
-const Roots = forwardRef((props, ref) => {
-  const [selected, setSelected] = useState({
-    "Root Architecture": [],
-    "Root Depth": [],
-  });
-
-  const handleClick = (filtername, val) => {
-    // console.log(filtername, val);
-    // const combinedString = filtername + "-" + val;
-    if (selected[filtername].includes(val)) {
-      let filtered = selected[filtername].filter((vals) => vals !== val);
-      setSelected({ ...selected, [filtername]: filtered });
-    } else {
-      let roots = selected[filtername];
-      roots.push(val);
-      setSelected({ ...selected, [filtername]: roots });
-    }
-  };
-  useEffect(() => {
-    props.setSidebarFilterOptions({
-      ...props.sidebarFilterOptions,
-      ...selected,
-    });
-  }, [selected]);
-
-  useImperativeHandle(ref, () => ({
-    resetFilters() {
-      setSelected({
-        "Root Architecture": [],
-        "Root Depth": [],
-      });
-    },
-  }));
-
-  return props.filters.values.map((subFilter, index) => (
-    <Grid container key={index} spacing={1}>
-      <Grid item xs={12}>
-        <Tooltip
-          interactive
-          arrow
-          placement="right"
-          title={
-            <div className="filterTooltip">
-              <p
-                dangerouslySetInnerHTML={{ __html: subFilter.description }}
-              ></p>
-            </div>
-          }
-          key={`tooltip${index}`}
-        >
-          <small>{subFilter.name}</small>
-        </Tooltip>
-      </Grid>
-      {subFilter.values.map((val, index2) => (
-        <Grid item key={index2}>
-          <Chip
-            onClick={() => handleClick(subFilter.name, val)}
-            component="li"
-            size="medium"
-            label={val}
-            color={
-              props.sidebarFilterOptions[subFilter.name].includes(val)
-                ? "primary"
-                : "secondary"
-            }
-          />
-        </Grid>
-      ))}
-    </Grid>
-  ));
-});
+const Roots = forwardRef((props, ref) => (
+  <Filters props={props} ref={ref} />
+));
 
 export default Roots;
