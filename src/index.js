@@ -3,12 +3,12 @@
   styled using ./styles/parent.scss, ./styles/progressBar.css, CustomStyles from ./shared/constants
 */
 
-import React, { useEffect, Suspense } from "react";
+import React, { Suspense } from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
-import Store, { Context } from "./store/Store";
+import Store from "./store/Store";
 import "leaflet-control-geocoder/dist/Control.Geocoder.js";
 // import "@fortawesome/fontawesome-free/css/all.min.css";
 // import "bootstrap-css-only/css/bootstrap.min.css";
@@ -25,7 +25,6 @@ import InformationSheet from "./components/InformationSheet/InformationSheet";
 import HelpComponent from "./components/Help/Help";
 import FeedbackComponent from "./components/Feedback/Feedback";
 import {
-  createMuiTheme,
   MuiThemeProvider,
   responsiveFontSizes,
 } from "@material-ui/core";
@@ -34,12 +33,14 @@ import { SnackbarProvider } from "notistack";
 import InformationSheetDictionary from "./components/InformationSheet/InformationSheetDictionary";
 import MyCoverCropListWrapper from "./components/MyCoverCropList/MyCoverCropListWrapper";
 import License from "./components/License/License";
+import { createTheme } from "@material-ui/core/styles";
 
 const withFooter = (WrappedComponent) => () => [
   <WrappedComponent key="1" />,
   <Footer key="2" />,
 ];
-const theme = createMuiTheme({
+
+const theme = createTheme({
   palette: {
     primary: {
       main: CustomStyles().lightGreen,
@@ -60,15 +61,28 @@ const theme = createMuiTheme({
       arrow: {},
     },
     MuiChip: {
+      root: {
+        border: "1px solid #777",
+      },
       colorSecondary: {
-        backgroundColor: CustomStyles().greenishWhite,
-        color: "rgba(0,0,0,0.9)",
-        fontWeight: "normal",
+        "&, &&:hover, &&:focus": {
+          backgroundColor: CustomStyles().greenishWhite,
+          color: "rgba(0,0,0,0.9)",
+          fontWeight: "normal",
+        },
+        "&&:hover": {
+          boxShadow: "0 0 3px 0 black"
+        },
       },
       colorPrimary: {
-        backgroundColor: CustomStyles().darkGreen,
-        color: "rgba(0,0,0,1)",
-        fontWeight: "normal",
+        "&, &&:hover, &&:focus": {
+          backgroundColor: CustomStyles().darkGreen,
+          color: "white",
+          fontWeight: "normal",
+        },
+        "&&:hover": {
+          boxShadow: "0 0 3px 0 black"
+        },
       },
       sizeSmall: {
         fontSize: "1.2rem",
