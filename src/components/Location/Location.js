@@ -286,7 +286,7 @@ const LocationComponent = ({ title, caller }) => {
                   style={{ width: "100%" }}
                   className={classes.formControl}
                 >
-                  <InputLabel>PLANT HARDINESS ZONEz</InputLabel>
+                  <InputLabel>PLANT HARDINESS ZONE</InputLabel>
                   <Select
                     variant="filled"
                     labelId="plant-hardiness-zone-dropdown-select"
