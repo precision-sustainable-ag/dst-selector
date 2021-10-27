@@ -21,7 +21,6 @@ const Footer = () => {
       url: `https://api.github.com/repos/${owner}/${repo}/commits?path=build&page=1&per_page=1`,
       method: "GET",
       auth: {
-        username: "rbandooni",
         password: accessToken,
       },
     });
