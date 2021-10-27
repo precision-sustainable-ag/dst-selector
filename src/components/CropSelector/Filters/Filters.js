@@ -10,16 +10,12 @@ const DollarsAndRatings = ({data, filter, handleChange}) => {
         <Chip
           label={filter.symbol === 'dollar' ? '$'.repeat(i) : i + ' \u2605'}
 
-          color={
-            selected
-              ? "primary"
-              : "secondary"
-          }
-
           style={{
             marginRight: 3,
-            marginBottom: 3
+            marginBottom: 3,
           }}
+
+          className={selected ? 'activeCartBtn' : 'inactiveCartBtn' }
 
           onClick={() => {
             if (filter.symbol === 'dollar') {
@@ -50,24 +46,23 @@ const DollarsAndRatings = ({data, filter, handleChange}) => {
 
 const Chips = ({props, filter, handleChange}) => { 
   return (
-    filter.values.map((val) => (
-      <Chip
-        onClick={() => handleChange(filter.name, val)}
-        component="li"
-        size="medium"
-        label={val}
-        style={{
-          marginRight: 3,
-          marginBottom: 3
-        }}
+    filter.values.map(val => {
+      const selected = props.sidebarFilterOptions[filter.name].includes(val);
+      return (
+        <Chip
+          onClick={() => handleChange(filter.name, val)}
+          component="li"
+          size="medium"
+          label={val}
+          style={{
+            marginRight: 3,
+            marginBottom: 3
+          }}
 
-        color={
-          props.sidebarFilterOptions[filter.name].includes(val)
-            ? "primary"
-            : "secondary"
-        }
-      />
-    ))
+          className={selected ? 'activeCartBtn' : 'inactiveCartBtn' }
+        />
+      )
+    })
   )
 } // Chips
 
@@ -93,11 +88,10 @@ const Tip = ({filter, omitHeading}) => {
         </div>
       }
     >
-      <span>
-        {omitHeading || <small>{filter.name}</small>}
-        &nbsp;
+      <small style={{whiteSpace: 'nowrap'}}>
+        {omitHeading ? '' : filter.name}
         <HelpOutlineIcon style={{cursor: "pointer", transform: "scale(0.7)" }} />
-      </span>
+      </small>
     </Tooltip>
   )
 } // Tip

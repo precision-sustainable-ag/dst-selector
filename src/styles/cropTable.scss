@@ -37,6 +37,13 @@
 .activeCartBtn {
   background-color: $progressColor !important;
   color: white !important;
+  font-weight: bold;
+}
+
+.inactiveCartBtn {
+  background-color: #e3f2f4 !important;
+  color: black;
+  font-weight: bold;
 }
 
 .rating,

@@ -1262,11 +1262,7 @@ const CropSidebarComponent = (props) => {
                                   component="li"
                                   size="medium"
                                   label={`Zone ${zone}`}
-                                  color={
-                                    parseInt(state.zone) === zone
-                                      ? "primary"
-                                      : "secondary"
-                                  }
+                                  className={state.zone === zone ? 'activeCartBtn' : 'inactiveCartBtn'}
                                 />
                               </Grid>
                             ))}
