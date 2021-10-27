@@ -62,6 +62,9 @@ const theme = createTheme({
     },
     MuiChip: {
       root: {
+        "&&:hover": {
+          boxShadow: "0 0 3px 0 black"
+        },
         border: "1px solid #777",
       },
       colorSecondary: {
@@ -70,18 +73,12 @@ const theme = createTheme({
           color: "rgba(0,0,0,0.9)",
           fontWeight: "normal",
         },
-        "&&:hover": {
-          boxShadow: "0 0 3px 0 black"
-        },
       },
       colorPrimary: {
         "&, &&:hover, &&:focus": {
           backgroundColor: CustomStyles().darkGreen,
           color: "white",
           fontWeight: "normal",
-        },
-        "&&:hover": {
-          boxShadow: "0 0 3px 0 black"
         },
       },
       sizeSmall: {
