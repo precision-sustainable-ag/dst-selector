@@ -3,44 +3,56 @@ import { Grid, Tooltip, Chip } from "@material-ui/core";
 import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
 
 const DollarsAndRatings = ({data, filter, handleChange}) => {
+  let style = filter.symbol === 'dollar' ? {}
+              :
+              {
+                transform: 'scale(0.8)',
+                transformOrigin: 'top left',
+                width: '150%',
+              }
+
   return (
-    new Array(filter.maxSize).fill(0).map((_, i) => i + 1).map(i => {
-      const selected = data.includes(i);
-      return (
-        <Chip
-          label={filter.symbol === 'dollar' ? '$'.repeat(i) : i + ' \u2605'}
+    <div style={style}>
+      {
+        new Array(filter.maxSize).fill(0).map((_, i) => i + 1).map(i => {
+          const selected = data.includes(i);
+          return (
+            <Chip
+              label={filter.symbol === 'dollar' ? '$'.repeat(i) : i + ' \u2605'}
 
-          style={{
-            marginRight: 3,
-            marginBottom: 3,
-          }}
+              style={{
+                marginRight: 2,
+                marginBottom: 3,
+              }}
 
-          className={selected ? 'activeCartBtn' : 'inactiveCartBtn' }
+              color={selected ? "primary" : "secondary"}
 
-          onClick={() => {
-            if (filter.symbol === 'dollar') {
-              if (selected) {
-                data = data.filter(d => d !== i);
-              } else {
-                data.push(i);
-              }
-              handleChange(data, filter.alternateName || filter.name);
-            } else {
-              if (selected) {
-                data = data.filter(j => j != i);
-              } else {
-                for (let j = i; j <= filter.maxSize; j++) {
-                  if (!data.includes(j)) {
-                    data.push(j);
+              onClick={() => {
+                if (filter.symbol === 'dollar') {
+                  if (selected) {
+                    data = data.filter(d => d !== i);
+                  } else {
+                    data.push(i);
                   }
+                  handleChange(data, filter.alternateName || filter.name);
+                } else {
+                  if (selected) {
+                    data = data.filter(j => j != i);
+                  } else {
+                    for (let j = i; j <= filter.maxSize; j++) {
+                      if (!data.includes(j)) {
+                        data.push(j);
+                      }
+                    }
+                  }
+                  handleChange(data.sort(), filter.alternateName || filter.name);
                 }
-              }
-              handleChange(data.sort(), filter.alternateName || filter.name);
-            }
-          }}
-        />
-      )
-    })
+              }}
+            />
+          )
+        })
+      }
+    </div>
   )
 } // DollarsAndRatings
 
@@ -59,7 +71,7 @@ const Chips = ({props, filter, handleChange}) => {
             marginBottom: 3
           }}
 
-          className={selected ? 'activeCartBtn' : 'inactiveCartBtn' }
+          color={selected ? "primary" : "secondary"}
         />
       )
     })
