@@ -55,7 +55,11 @@ const CoverCropType = forwardRef((props, ref) => {
             component="li"
             size="medium"
             label={val.name}
-            className={props.sidebarFilterOptions[prop].includes(val.name) ? 'activeCartBtn' : 'inactiveCartBtn'}
+            color={
+              props.sidebarFilterOptions[prop].includes(val.name)
+                ? "primary"
+                : "secondary"
+            }
           />
         </Grid>
       ))}
