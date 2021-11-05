@@ -7,7 +7,6 @@
 import React, { useState, useEffect, Fragment, useContext } from "react";
 import { PictureAsPdf, Add, FormatListBulleted } from "@material-ui/icons";
 import {
-  Button,
   Card,
   CardMedia,
   CardActionArea,
@@ -56,9 +55,7 @@ const ExplorerCardView = (props) => {
     setModalOpen(true);
   };
   const addCropToBasket = (cropId, cropName, btnId, cropData) => {
-    let container = document.getElementById(btnId);
     let selectedCrops = {};
-    let toAdd = false;
     var cropArray = [];
     selectedCrops["id"] = cropId;
     selectedCrops["cropName"] = cropName;

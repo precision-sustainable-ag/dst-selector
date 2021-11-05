@@ -22,7 +22,6 @@ import MuiAccordionSummary from "@material-ui/core/AccordionSummary";
 import {
   ExpandMore,
   FiberManualRecord,
-  CheckBoxOutlineBlankOutlined,
 } from "@material-ui/icons";
 import PhotoComponent from "./PhotoComponent";
 import InformationSheetDictionary from "./InformationSheetDictionary";
@@ -87,7 +86,6 @@ const InformationSheetContent = (props) => {
   const [state] = useContext(Context);
   const { zone } = state;
   const crop = props.crop;
-  const from = props.from || "direct";
   const classes = useStyles();
   const [currentSources, setCurrentSources] = useState([{}]);
 

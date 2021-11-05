@@ -9,7 +9,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../../store/Store";
 
 import "../../styles/goalsSelector.scss";
-import { CircularProgress, makeStyles, Typography } from "@material-ui/core";
+import {makeStyles, Typography } from "@material-ui/core";
 
 import Skeleton from "@material-ui/lab/Skeleton";
 import GoalTag from "./GoalTag";

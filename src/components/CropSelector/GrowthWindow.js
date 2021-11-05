@@ -14,7 +14,6 @@ import "../../styles/growthWindow.scss";
 const GrowthWindowComponent = (props) => {
   const [state, dispatch] = useContext(Context);
   //   const [isCashCropMonth, setIsCashCropMonth] = useState(false);
-  let isCashCropMonth = false;
   let from = props.from;
   let cropData = props.data;
   let month = props.month;
@@ -79,18 +78,6 @@ const GrowthWindowComponent = (props) => {
       // cropLegendObj.Mid = "";
       setCropLegendObj({ ...cropLegendObj, Early: cropDataLegendLabel_Early });
       setCropLegendObj({ ...cropLegendObj, Mid: cropDataLegendLabel_Mid });
-    }
-  };
-
-  const sanitizeLabels = () => {
-    // IF: check if cropLegendObj values are same ? or different.
-    // Reliable establishment/growth : className = "reliableEstablishment"
-    // Temperature/moisture risk to establishment/growth: "t_mRiskToEstablishment"
-    // Frost Seeding: "frostSeeding"
-
-    if (cropLegendObj.Early === cropLegendObj.Mid) {
-      // good to go
-    } else {
     }
   };
 

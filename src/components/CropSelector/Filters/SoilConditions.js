@@ -6,8 +6,6 @@
 import React, {
   useState,
   useEffect,
-  forwardRef,
-  useImperativeHandle,
   useContext,
 } from "react";
 import { Grid, FormControlLabel, Checkbox, Tooltip } from "@material-ui/core";
@@ -16,12 +14,8 @@ import { Context } from "../../../store/Store";
 const SoilConditions = (props) => {
   const [state, dispatch] = useContext(Context);
   const { Flooding_Frequency, Drainage_Class } = state.soilData;
-  const [activeCropDataCopy, setActiveCropDataCopy] = useState(
-    props.activeCropData
-  );
   const {
     activeCropData,
-    inactiveCropData,
     setActiveCropData,
     setInactiveCropData,
     cropData,

@@ -3,7 +3,7 @@
   styled using ./styles/App.scss
 */
 
-import React, { useContext, useEffect, Fragment, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./styles/App.scss";
 import { Snackbar } from "@material-ui/core";
 import Header from "./components/Header/Header";

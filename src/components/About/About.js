@@ -8,24 +8,16 @@
 import React, { Fragment, useEffect, useState } from "react";
 import Header from "../Header/Header";
 import {
-  Box,
   Typography,
-  Tabs,
   makeStyles,
-  Tab,
   Button,
   useTheme,
 } from "@material-ui/core";
+import AgInformaticsLicenseText from "../License/AgInformaticsLicenseText";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { CustomStyles } from "../../shared/constants";
 import MITLicenseText from "../License/MITLicenseText";
-import AgInformaticsLicenseText from "../License/AgInformaticsLicenseText";
-const tableStyles = {
-  td: {
-    fontSize: "1em",
-    padding: "0.1em",
-  },
-};
+
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -37,13 +29,7 @@ const useStyles = makeStyles((theme) => ({
     borderRight: `1px solid ${theme.palette.divider}`,
   },
 }));
-const boxWrapper = {
-  paddingBottom: "0px",
-  marginBottom: "50px",
-  backgroundColor: "rgba(240,247,235,.8)",
-  borderRadius: "10px",
-  border: "1px solid #598445",
-};
+
 const About = (props) => {
   // const [state, dispatch] = useContext(Context);
   const [calcHeight, setCalcHeight] = useState(0);
