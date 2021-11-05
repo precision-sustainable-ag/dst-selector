@@ -2,7 +2,7 @@
   Handles rendering the goals and updating them when selected
 */
 
-import React, { useState, useEffect, Fragment } from "react";
+import React, { Fragment } from "react";
 import {
   ListItem,
   ListItemText,

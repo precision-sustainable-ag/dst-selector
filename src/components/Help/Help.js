@@ -5,7 +5,7 @@
   styled using CustomStyles from ../../shared/constants
 */
 
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useEffect, Fragment } from "react";
 import Header from "../Header/Header";
 import {
   Typography,
@@ -35,10 +35,6 @@ const HelpComponent = (props) => {
   // }
   // });
   // console.log(isWidthUp("xl"));
-  const resizeIframe = (obj) => {
-    obj.style.height =
-      obj.contentWindow.document.documentElement.scrollHeight + "px";
-  };
   const [value, setValue] = React.useState(0);
 
   const handleChange = (newValue) => {

@@ -16,44 +16,6 @@ const GoogleMaps = ({
 }) => {
   const [state, dispatch] = useContext(Context);
 
-  const getMapOptions = (maps) => {
-    return {
-      streetViewControl: false,
-      scaleControl: true,
-      fullscreenControl: false,
-      styles: [
-        {
-          featureType: "all",
-          elementType: "labels",
-          stylers: [
-            {
-              visibility: "on",
-            },
-          ],
-        },
-      ],
-      gestureHandling: "greedy",
-      disableDoubleClickZoom: true,
-      minZoom: 11,
-      maxZoom: 18,
-
-      mapTypeControl: true,
-      mapTypeId: maps.MapTypeId.SATELLITE,
-      mapTypeControlOptions: {
-        style: maps.MapTypeControlStyle.VERTICAL_BAR,
-        position: maps.ControlPosition.TOP_LEFT,
-        mapTypeIds: [
-          maps.MapTypeId.ROADMAP,
-          maps.MapTypeId.SATELLITE,
-          maps.MapTypeId.HYBRID,
-        ],
-      },
-
-      zoomControl: true,
-      clickableIcons: false,
-    };
-  };
-
   const [showMarker, setShowMarker] = useState(false);
 
   useEffect(() => {

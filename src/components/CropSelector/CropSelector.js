@@ -12,14 +12,11 @@ import {
   Zoom,
   Fab,
   Button,
-  IconButton,
 } from "@material-ui/core";
 import {
   ArrowBack,
   ArrowForward,
-  Close,
   KeyboardArrowUp,
-  Menu,
 } from "@material-ui/icons";
 import "../../styles/cropSelector.scss";
 import CropTableComponent from "./CropTable";

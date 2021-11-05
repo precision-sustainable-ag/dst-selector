@@ -4,7 +4,6 @@
 */
 
 import React, { useContext, useState, useEffect } from "react";
-import { LightButton } from "./constants";
 import { Context } from "../store/Store";
 import ProgressButtonsInner from "./ProgressButtonsInner";
 
