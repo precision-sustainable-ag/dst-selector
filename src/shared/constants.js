@@ -1,4 +1,4 @@
-import React, { useContext, Fragment, Suspense } from "react";
+import React, { Fragment } from "react";
 import {
   withStyles,
   Button,
@@ -394,8 +394,6 @@ export const greenBarExpansionPanelHeight = {
 
 export const trimString = (stringFull, size) => {
   if (!isNaN(size)) {
-    let postStr = "...";
-
     return (
       stringFull.substring(0, size) + `${stringFull.length > 25 ? "..." : ""}`
     );
@@ -1380,8 +1378,6 @@ export const CropImage = ({
   onClick = () => {},
 }) => {
   const placeholder = "//placehold.it/100x100";
-  const lazyHeight =
-    view === "calendar" ? 50 : view === "information-sheet" ? 250 : 100;
 
   let imageStyle = {};
 

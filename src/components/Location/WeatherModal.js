@@ -4,7 +4,6 @@
 
 import React, { useState, useContext, useEffect } from "react";
 import {
-  Button,
   Modal,
   makeStyles,
   Fade,
@@ -107,9 +106,6 @@ const WeatherModal = (props) => {
     // data incorrect
 
     // show error on modal
-  };
-  const handleModalOpen = () => {
-    setOpen(!open);
   };
 
   const handleModalClose = () => {

@@ -11,7 +11,6 @@ import { useSnackbar } from "notistack";
 import {
   LightButton,
   CustomStyles,
-  allMonths,
   getRating,
   trimString,
   CropImage,
@@ -28,22 +27,15 @@ import {
   TableContainer,
   TableRow,
   TableCell,
-  ButtonBase,
   Tooltip,
-  Zoom,
   makeStyles,
-  Fab,
 } from "@material-ui/core";
 
 import "../../styles/cropTable.scss";
 import {
-  ArrowUpward,
-  ArrowDownward,
   AddCircle,
   FiberManualRecord,
   CloseRounded,
-  RemoveCircle,
-  KeyboardArrowUp,
   Sort,
 } from "@material-ui/icons";
 // import GrowthWindowComponent from "./GrowthWindow";

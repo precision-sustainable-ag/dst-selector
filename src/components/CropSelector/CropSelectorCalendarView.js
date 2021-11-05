@@ -4,12 +4,12 @@
 */
 
 import { Tooltip, Typography } from "@material-ui/core";
-import React, { useState, useEffect, useContext, Fragment } from "react";
+import React, { useState, useContext, Fragment } from "react";
 import { allMonths, getActiveCropMonths } from "../../shared/constants";
 import { Context } from "../../store/Store";
 import "../../styles/cropSelectorCalendarView.scss";
-import moment from "moment";
 import { BorderRight } from "@material-ui/icons";
+import moment from "moment";
 // import Header from "../Header/header";
 
 const CropSelectorCalendarView = ({ from = "calendar", data = [] }) => {

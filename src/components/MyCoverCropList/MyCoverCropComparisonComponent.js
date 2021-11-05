@@ -8,15 +8,13 @@
   styled using ../../styles/cropComparisonView.scss
 */
 
-import React, { useState, useEffect, Fragment, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   Card,
   CardMedia,
   CardContent,
-  Button,
   Typography,
   CardActionArea,
-  CardActions,
   IconButton,
 } from "@material-ui/core";
 import "../../styles/cropComparisonView.scss";

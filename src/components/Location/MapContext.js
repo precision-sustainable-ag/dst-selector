@@ -9,14 +9,10 @@
 import React, { useState, useEffect, useContext } from "react";
 import L from "leaflet";
 import {
-  Circle,
   FeatureGroup,
-  LayerGroup,
   LayersControl,
   Map,
   Marker,
-  Popup,
-  Rectangle,
   Polygon,
   TileLayer,
   Tooltip,
