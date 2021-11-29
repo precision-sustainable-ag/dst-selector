@@ -50,7 +50,7 @@
     "react-leaflet-search": "^1.0.3",
     "react-movable": "^2.4.0",
     "react-router-dom": "^5.1.2",
-    "react-scripts": "^3.4.3",
+    "react-scripts": "^3.4.4",
     "sass-mediaqueries": "^1.6.1",
     "save-as": "^0.1.8"
   },
