@@ -29,6 +29,8 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 import zone7Goal from "../../shared/json/zone7/crop-goals.json";
 import zone6Goal from "../../shared/json/zone6/crop-goals.json";
 import zone5Goal from "../../shared/json/zone5/crop-goals.json";
+// import zone4Goal from "../../shared/json/zone4/crop-goals.json";
+
 import { useSnackbar } from "notistack";
 
 const Header = () => {
@@ -337,9 +339,13 @@ const Header = () => {
     let z5Formattedgoal = zone5Goal.map((goal) => {
       return { fields: goal };
     });
+    // let z4Formattedgoal = zone4Goal.map((goal) => {
+    //   return { fields: goal };
+    // });
     z7Formattedgoal = z7Formattedgoal.filter((goal) => goal.fields.Include);
     z6Formattedgoal = z6Formattedgoal.filter((goal) => goal.fields.Include);
     z5Formattedgoal = z5Formattedgoal.filter((goal) => goal.fields.Include);
+    // z4Formattedgoal = z4Formattedgoal.filter((goal) => goal.fields.Include);
 
     switch (parseInt(state.zone)) {
       case 7: {
@@ -376,6 +382,18 @@ const Header = () => {
           type: "ADD_GOALS",
           data: z5Formattedgoal,
         });
+        // console.log("z5 data dispatched");
+        break;
+      }
+      case 4: {
+        dispatch({
+          type: "PULL_CROP_DATA",
+          data: state.zone4CropData,
+        });
+        // dispatch({
+        //   type: "ADD_GOALS",
+        //   data: z4Formattedgoal,
+        // });
         // console.log("z5 data dispatched");
         break;
       }
