@@ -1,0 +1,167 @@
+[
+  {
+    "_id": { "$oid": "619e81b7b2a0151b3a9a9f01" },
+    "Constituent Variables (defined in DataDictionary)": [
+      "recfegjqawVV6W3tA",
+      "reciI8GxeeRjFgPDD",
+      "recFX3GLPlpOGxjqQ"
+    ],
+    "Cover Crop Goal": "Improve soil organic matter",
+    "Description": "Rates a cover crop’s ability to produce organic matter and improve soil structure. The ratings assume that you plan to use cover crops regularly in your cropping system to provide ongoing additions to soil organic matter. Think quality and quantity.",
+    "__id": "rec1AG0X74J9wDuCD"
+  },
+  {
+    "_id": { "$oid": "619e81b7b2a0151b3a9a9f02" },
+    "Constituent Variables (defined in DataDictionary)": [
+      "recraJ2yOrpsSGVcy",
+      "rec3BduB4UrSG7INu"
+    ],
+    "Cover Crop Goal": "Increase soil aggregation",
+    "Description": "Stability rather high turnover.",
+    "__id": "rec29uqMn0zWnYn5D"
+  },
+  {
+    "_id": { "$oid": "619e81b7b2a0151b3a9a9f03" },
+    "Constituent Variables (defined in DataDictionary)": [
+      "recfegjqawVV6W3tA",
+      "reciI8GxeeRjFgPDD",
+      "recFX3GLPlpOGxjqQ"
+    ],
+    "Cover Crop Goal": "Lasting residue",
+    "Description": "Rates the effectiveness of the cover crop in providing a long-lasting mulch.",
+    "__id": "recAaKnuBv2LY5maG"
+  },
+  {
+    "_id": { "$oid": "619e81b7b2a0151b3a9a9f04" },
+    "Constituent Variables (defined in DataDictionary)": [
+      "recraJ2yOrpsSGVcy",
+      "recfwhPaiusquJ9QX",
+      "rec4bRYbTCSdHY5BS",
+      "recfegjqawVV6W3tA",
+      "recFUwhvqVuYOebEF",
+      "reciI8GxeeRjFgPDD",
+      "recFX3GLPlpOGxjqQ"
+    ],
+    "Cover Crop Goal": "Prevent soil erosion",
+    "Description": "Rates how extensive and how quickly a root system develops, how well it holds soil against sheet and water erosion and the influence the growth habit may have on fighting water erosion.",
+    "__id": "recXoxYHTY9X7I3qI"
+  },
+  {
+    "_id": { "$oid": "619e81b7b2a0151b3a9a9f05" },
+    "Constituent Variables (defined in DataDictionary)": [
+      "recK1o4VxERqtpOLq",
+      "recraJ2yOrpsSGVcy",
+      "rec4bRYbTCSdHY5BS",
+      "recfegjqawVV6W3tA",
+      "recFUwhvqVuYOebEF",
+      "recfwhPaiusquJ9QX",
+      "rec3BduB4UrSG7INu",
+      "recU0CG27vKPVFhn1",
+      "recdSbkD3ZVgS2XVe",
+      "reciI8GxeeRjFgPDD",
+      "recFX3GLPlpOGxjqQ"
+    ],
+    "Cover Crop Goal": "Promote water quality",
+    "Description": "Improve or maintain water quality.",
+    "__id": "recTDmtQlLNKLtUqx"
+  },
+  {
+    "_id": { "$oid": "619e81b7b2a0151b3a9a9f06" },
+    "Constituent Variables (defined in DataDictionary)": [
+      "recraJ2yOrpsSGVcy",
+      "recK1o4VxERqtpOLq",
+      "rechKtlPSQR2XAZcQ",
+      "recCfsKrm30rPftUk"
+    ],
+    "Cover Crop Goal": "Reduces compaction",
+    "Description": "Reduces compaction in the top 0-6\" and/or 6-12\" of soil.",
+    "__id": "recLNBeAGQXOAbe3k"
+  },
+  {
+    "_id": { "$oid": "619e81b7b2a0151b3a9a9f07" },
+    "Constituent Variables (defined in DataDictionary)": [
+      "recdSbkD3ZVgS2XVe",
+      "reciI8GxeeRjFgPDD",
+      "recFeQesZbEa4ppUC",
+      "recQgruEhqvgmKtpf",
+      "recFX3GLPlpOGxjqQ"
+    ],
+    "Cover Crop Goal": "Nitrogen source",
+    "Description": "Rates cover crops for their relative ability to supply N. Limited to Legumes.",
+    "__id": "recnavGcvZhr9mmrS"
+  },
+  {
+    "_id": { "$oid": "619e81b7b2a0151b3a9a9f08" },
+    "Constituent Variables (defined in DataDictionary)": [
+      "recdSbkD3ZVgS2XVe",
+      "recU0CG27vKPVFhn1",
+      "recK1o4VxERqtpOLq",
+      "reciI8GxeeRjFgPDD",
+      "recFX3GLPlpOGxjqQ"
+    ],
+    "Cover Crop Goal": "Nitrogen scavenging",
+    "Description": "Rates a cover crop’s ability to take up and store excess nitrogen. Bear in mind that the sooner you plant a cover after main crop harvest—or overseed a cover into the standing crop—the more N it will be able to absorb.",
+    "__id": "recDXA1vQpklvbtox"
+  },
+  {
+    "_id": { "$oid": "619e81b7b2a0151b3a9a9f09" },
+    "Constituent Variables (defined in DataDictionary)": [
+      "recU0CG27vKPVFhn1",
+      "recYcUxS8e0pFfJJ1",
+      "rec2e1hFsRbVqHoFU"
+    ],
+    "Cover Crop Goal": "Good grazing",
+    "Description": "Suitability for grazing.",
+    "__id": "recJh8P5uLmftFGyi"
+  },
+  {
+    "_id": { "$oid": "619e81b7b2a0151b3a9a9f0a" },
+    "Constituent Variables (defined in DataDictionary)": [
+      "recdq00tf7PvDSB7l",
+      "rec2e1hFsRbVqHoFU"
+    ],
+    "Cover Crop Goal": "Forage harvest value",
+    "Description": "Suitability as harvested forage (e.g., haylage).",
+    "__id": "rec8dAYgyjaBIKBjN"
+  },
+  {
+    "_id": { "$oid": "619e81b7b2a0151b3a9a9f0b" },
+    "Constituent Variables (defined in DataDictionary)": [
+      "rec2eMq14nW8SB1R1",
+      "recPlLLzpg1J3tmp5"
+    ],
+    "Cover Crop Goal": "Pollinator support",
+    "Description": "Ability to provide resources needed by beneficials (e.g., shelter, nectar)",
+    "__id": "recje7sUnmpiBTnN6"
+  },
+  {
+    "_id": { "$oid": "619e81b7b2a0151b3a9a9f0c" },
+    "Constituent Variables (defined in DataDictionary)": [
+      "recfegjqawVV6W3tA",
+      "recfwhPaiusquJ9QX",
+      "recU0CG27vKPVFhn1",
+      "reciI8GxeeRjFgPDD",
+      "recFX3GLPlpOGxjqQ"
+    ],
+    "Cover Crop Goal": "Weed suppression",
+    "Description": "Rates how well the cover crop out-competes weeds by any means through its life cycle, including killed residue. || opposite description: \n[Risk that a cover crop could become a weed, either due to hard seed or due to flowering/setting seed that volunteers in later seasons; made worse when herbicide resistance is a known feature of the cover crop species/cultivar]",
+    "__id": "recPfcBHDDJdkyFt1"
+  },
+  {
+    "_id": { "$oid": "619e81b7b2a0151b3a9a9f0d" },
+    "Cover Crop Goal": "TBD- Suppress pest (non-weed) & diseases",
+    "Description": "Rates how well the cover crop suppresses diseases, insects, slugs, and other non-weed pests.",
+    "__id": "recFPseWTWDoTV57j"
+  },
+  {
+    "_id": { "$oid": "619e81b7b2a0151b3a9a9f0e" },
+    "Constituent Variables (defined in DataDictionary)": [
+      "recfegjqawVV6W3tA",
+      "reciI8GxeeRjFgPDD",
+      "recFX3GLPlpOGxjqQ"
+    ],
+    "Cover Crop Goal": "TBD- Hinder crops (anti-goal)",
+    "Description": "Rates how likely the CC is to interfere with the cash crop (e.g., through creating a poor seed bed, immobilizing soil N, etc.)",
+    "__id": "recOE2XHdVmSmnE7o"
+  }
+]

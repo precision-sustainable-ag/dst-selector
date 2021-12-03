@@ -14,7 +14,11 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
+<<<<<<< HEAD
   "/precache-manifest.0d69e4be8dcd2374ffdf17187920796c.js"
+=======
+  "/precache-manifest.a9b7b3deacbcc72564627293f5b1aa93.js"
+>>>>>>> issue-#133/Displaying-units
 );
 
 self.addEventListener('message', (event) => {
