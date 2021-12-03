@@ -46,6 +46,7 @@ const GoalsSelector = () => {
   const fetchGoals = async (apiBase) => {
     let finalGoalsURL = apiBase + goalsURL;
     // console.log(finalGoalsURL);
+
     dispatch({
       type: "SET_AJAX_IN_PROGRESS",
       data: true,
@@ -80,12 +81,14 @@ const GoalsSelector = () => {
       });
   };
   useEffect(() => {
+    console.log(state);
     if (state.allGoals.length > 0) {
       const filteredGoals = state.allGoals.filter(
         (goal) =>
           goal.fields["Cover Crop Goal"].toLowerCase() !==
           "promote water quality"
       );
+      console.log(filteredGoals);
       setAllGoals(filteredGoals);
     }
   }, [state.allGoals]);
