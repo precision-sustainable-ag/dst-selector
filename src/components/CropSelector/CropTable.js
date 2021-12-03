@@ -5,9 +5,10 @@
   Styles are created using makeStyles
 */
 
-import React, { useContext, Fragment, useEffect, useState } from "react";
-import { Context } from "../../store/Store";
-import { useSnackbar } from "notistack";
+import React, { useContext, Fragment, useEffect, useState } from 'react';
+import { Context } from '../../store/Store';
+import { useSnackbar } from 'notistack';
+
 import {
   LightButton,
   CustomStyles,
@@ -16,7 +17,8 @@ import {
   CropImage,
   flipCoverCropName,
   sudoButtonStyle,
-} from "../../shared/constants";
+} from '../../shared/constants';
+
 import {
   Button,
   Typography,
@@ -28,22 +30,30 @@ import {
   TableRow,
   TableCell,
   Tooltip,
+<<<<<<< HEAD
   makeStyles,
 } from "@material-ui/core";
+=======
+} from '@material-ui/core';
+>>>>>>> issue-#133/Displaying-units
 
-import "../../styles/cropTable.scss";
+import '../../styles/cropTable.scss';
 import {
   AddCircle,
   FiberManualRecord,
   CloseRounded,
   Sort,
-} from "@material-ui/icons";
-// import GrowthWindowComponent from "./GrowthWindow";
-import "../../styles/cropCalendarViewComponent.scss";
-import CropDetailsModalComponent from "./CropDetailsModal";
-// import useScrollTrigger from "@material-ui/core/useScrollTrigger";
-import CropLegendModal from "./CropLegendModal";
-import CropSelectorCalendarView from "./CropSelectorCalendarView";
+} from '@material-ui/icons';
+
+// import GrowthWindowComponent from './GrowthWindow';
+
+import '../../styles/cropCalendarViewComponent.scss';
+import CropDetailsModalComponent from './CropDetailsModal';
+
+// import useScrollTrigger from '@material-ui/core/useScrollTrigger';
+
+import CropLegendModal from './CropLegendModal';
+import CropSelectorCalendarView from './CropSelectorCalendarView';
 
 const CropTableComponent = (props) => {
   // let cropTableElement = document.getElementById("#primaryCropTable");
@@ -63,7 +73,7 @@ const CropTableComponent = (props) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalData, setModalData] = useState({});
   const [selectedCropsIds, setSelectedCropsIds] = useState([]);
-  const [activeSortType, setActiveSortType] = useState("goals");
+  const [activeSortType, setActiveSortType] = useState('goals');
   const selectedBtns = state.selectedCrops.map((crop) => {
     return crop.id;
   });
@@ -93,7 +103,7 @@ const CropTableComponent = (props) => {
   useEffect(() => {
     if (state.selectedCrops.length > 0) {
       let selectedIds = state.selectedCrops.map((crop) => {
-        return crop["id"];
+        return crop.id;
       });
 
       setSelectedCropsIds(selectedIds);
@@ -105,10 +115,10 @@ const CropTableComponent = (props) => {
     let selectedCrops = {};
     let toAdd = false;
     var cropArray = [];
-    selectedCrops["id"] = cropId;
-    selectedCrops["cropName"] = cropName;
-    selectedCrops["btnId"] = btnId;
-    selectedCrops["data"] = cropData;
+    selectedCrops.id = cropId;
+    selectedCrops.cropName = cropName;
+    selectedCrops.btnId = btnId;
+    selectedCrops.data = cropData;
     cropArray = selectedCrops;
     // change the UI
     // if (container.classList.contains("activeCartBtn")) {
@@ -152,7 +162,7 @@ const CropTableComponent = (props) => {
 
         // props.setActiveCropData(newActives);
         dispatch({
-          type: "SELECTED_CROPS_MODIFIER",
+          type: 'SELECTED_CROPS_MODIFIER',
           data: {
             selectedCrops: [...state.selectedCrops, selectedCrops],
             snackOpen: false,
@@ -174,7 +184,7 @@ const CropTableComponent = (props) => {
 
         // props.setActiveCropData(newActives);
         dispatch({
-          type: "SELECTED_CROPS_MODIFIER",
+          type: 'SELECTED_CROPS_MODIFIER',
           data: {
             selectedCrops: selectedCropsCopy,
             snackOpen: false,
@@ -185,7 +195,7 @@ const CropTableComponent = (props) => {
       }
     } else {
       dispatch({
-        type: "SELECTED_CROPS_MODIFIER",
+        type: 'SELECTED_CROPS_MODIFIER',
         data: {
           selectedCrops: [cropArray],
           snackOpen: false,
@@ -204,7 +214,7 @@ const CropTableComponent = (props) => {
         {goalsLength > 0
           ? state.selectedGoals.map((goal, index) => (
               <TableCell
-                style={{ textAlign: "center" }}
+                style={{ textAlign: 'center' }}
                 key={index}
                 className="goalCells"
               >
@@ -216,7 +226,7 @@ const CropTableComponent = (props) => {
                       <div className="filterTooltip text-capitalize">
                         <p>
                           {`Goal ${index + 1}`}
-                          {": "}
+                          {': '}
                           {goal}
                         </p>
                       </div>
@@ -227,38 +237,38 @@ const CropTableComponent = (props) => {
                 </div>
               </TableCell>
             ))
-          : ""}
+          : ''}
         {showGrowthWindow ? (
-          <TableCell style={goalsLength === 0 ? { width: "50%" } : {}}>
-            <CropSelectorCalendarView data={crop} from={"listView"} />
+          <TableCell style={goalsLength === 0 ? { width: '50%' } : {}}>
+            <CropSelectorCalendarView data={crop} from={'listView'} />
           </TableCell>
         ) : (
           ""
         )}
-        <TableCell style={{ maxWidth: "150px", textAlign: "center" }}>
+        <TableCell style={{ maxWidth: '150px', textAlign: 'center' }}>
           <div className="d-flex w-100 justify-content-center align-items-center flex-column">
             <LightButton
               id={`cartBtn${indexKey}`}
               style={{
                 borderRadius: CustomStyles().nonRoundedRadius,
-                width: "150px",
+                width: '150px',
               }}
               className={
                 selectedBtns.includes(crop.fields.id)
-                  ? "activeCartBtn"
-                  : "inactiveCartBtn"
+                  ? 'activeCartBtn'
+                  : 'inactiveCartBtn'
               }
               onClick={() => {
                 addCropToBasket(
-                  crop.fields["id"],
-                  crop.fields["Cover Crop Name"],
+                  crop.fields['id'],
+                  crop.fields['Cover Crop Name'],
                   `cartBtn${indexKey}`,
                   crop.fields
                 );
               }}
             >
-              {selectedBtns.includes(crop.fields.id) ? "ADDED" : "ADD TO LIST"}
-            </LightButton>{" "}
+              {selectedBtns.includes(crop.fields.id) ? 'ADDED' : 'ADD TO LIST'}
+            </LightButton>{' '}
             <Button size="small" onClick={() => handleModalOpen(crop)}>
               View Details
             </Button>
@@ -269,22 +279,17 @@ const CropTableComponent = (props) => {
   };
 
   const activeCropPresent = () => {
-    if (activeCropData.length > 0) return true;
-    else {
-      return false;
-    }
+    return activeCropData.length > 0;
   };
+
   const inactiveCropPresent = () => {
-    if (inactiveCropData.length > 0) return true;
-    else return false;
+    return inactiveCropData.length > 0;
   };
 
   const hasGoalRatingTwoOrLess = (crop = []) => {
     const { selectedGoals } = state;
 
-    if (selectedGoals.every((rating) => crop.fields[rating] <= 2)) {
-      return true;
-    } else return false;
+    return selectedGoals.every((rating) => crop.fields[rating] <= 2)
   };
 
   const RenderActiveInactiveCropData = () => {
@@ -293,32 +298,32 @@ const CropTableComponent = (props) => {
         {activeCropPresent
           ? activeCropData.map((crop, index) => {
               if (
-                crop.fields["Zone Decision"] === "Include" &&
+                crop.fields['Zone Decision'] === 'Include' &&
                 !hasGoalRatingTwoOrLess(crop)
               )
                 return (
                   <Fragment key={index}>
                     <TableRow
                       className={
-                        hasGoalRatingTwoOrLess(crop) ? `inactiveCropRow` : ""
+                        hasGoalRatingTwoOrLess(crop) ? 'inactiveCropRow' : ''
                       }
                     >
                       <TableCell colSpan={42}></TableCell>
                     </TableRow>
                     <TableRow
                       className={
-                        hasGoalRatingTwoOrLess(crop) ? `inactiveCropRow` : ""
+                        hasGoalRatingTwoOrLess(crop) ? 'inactiveCropRow' : ''
                       }
                       key={`croprow${index}`}
-                      id={crop.fields["id"]}
+                      id={crop.fields.id}
                       style={
-                        hasGoalRatingTwoOrLess(crop) ? { opacity: "0.2" } : {}
+                        hasGoalRatingTwoOrLess(crop) ? { opacity: '0.2' } : {}
                       }
                     >
                       <TableCell
                         style={{
                           height:
-                            crop.fields["Cover Crop Group"].toLowerCase() ===
+                            crop.fields['Cover Crop Group'].toLowerCase() ===
                             "legume"
                               ? `auto`
                               : `auto`,
@@ -327,15 +332,15 @@ const CropTableComponent = (props) => {
                         <div className="container-fluid">
                           <div className="row">
                             <div className="col-auto pl-md-0">
-                              {crop.fields["Image Data"] ? (
+                              {crop.fields['Image Data'] ? (
                                 <CropImage
                                   present={true}
                                   src={
-                                    crop.fields["Image Data"]["Key Thumbnail"]
-                                      ? `/images/Cover Crop Photos/100x100/${crop.fields["Image Data"]["Directory"]}/${crop.fields["Image Data"]["Key Thumbnail"]}`
-                                      : "https://placehold.it/100x100"
+                                    crop.fields['Image Data']['Key Thumbnail']
+                                      ? `/images/Cover Crop Photos/100x100/${crop.fields['Image Data']['Directory']}/${crop.fields['Image Data']['Key Thumbnail']}`
+                                      : 'https://placehold.it/100x100'
                                   }
-                                  alt={crop.fields["Cover Crop Name"]}
+                                  alt={crop.fields['Cover Crop Name']}
                                 />
                               ) : (
                                 <CropImage present={false} />
@@ -345,7 +350,7 @@ const CropTableComponent = (props) => {
                               <div className="col-12 p-md-0">
                                 <Typography variant="h6">
                                   {flipCoverCropName(
-                                    crop.fields["Cover Crop Name"]
+                                    crop.fields['Cover Crop Name']
                                   )}
                                 </Typography>
                               </div>
@@ -353,14 +358,14 @@ const CropTableComponent = (props) => {
                                 <Typography
                                   variant="body1"
                                   style={{
-                                    color: "gray",
-                                    fontWeight: "normal",
-                                    fontStyle: "italic",
-                                    fontSize: "small",
+                                    color: 'gray',
+                                    fontWeight: 'normal',
+                                    fontStyle: 'italic',
+                                    fontSize: 'small',
                                   }}
                                 >
                                   {trimString(
-                                    crop.fields["Scientific Name"],
+                                    crop.fields['Scientific Name'],
                                     25
                                   )}
                                 </Typography>
@@ -369,9 +374,9 @@ const CropTableComponent = (props) => {
                                 <Typography
                                   variant="subtitle2"
                                   className="text-uppercase"
-                                  style={{ color: "gray" }}
+                                  style={{ color: 'gray' }}
                                 >
-                                  {crop.fields["Cover Crop Group"]}
+                                  {crop.fields['Cover Crop Group']}
                                 </Typography>
                               </div>
                             </div>
@@ -379,12 +384,12 @@ const CropTableComponent = (props) => {
                         </div>
                       </TableCell>
                       <TableCell
-                        style={{ textAlign: "left", verticalAlign: "middle" }}
+                        style={{ textAlign: 'left', verticalAlign: 'middle' }}
                       >
                         <table>
                           <tbody>
-                            {crop.fields["Cover Crop Group"].toLowerCase() ===
-                            "legume" ? (
+                            {crop.fields['Cover Crop Group'].toLowerCase() ===
+                            'legume' ? (
                               <tr>
                                 <td>
                                   <Typography
@@ -396,28 +401,23 @@ const CropTableComponent = (props) => {
                                   </Typography>
                                 </td>
                                 <td>
-                                  <Tooltip
-                                    arrow
-                                    placement="right"
-                                    title="lbs/A/y"
+                                  <Typography
+                                    variant="subtitle2"
+                                    component="b"
                                   >
-                                    <Typography
-                                      variant="subtitle2"
-                                      component="b"
-                                    >
-                                      {
-                                        crop.fields[
-                                          "Nitrogen Accumulation Min, Legumes (lbs/A/y)"
-                                        ]
-                                      }
-                                      -
-                                      {
-                                        crop.fields[
-                                          "Nitrogen Accumulation Max, Legumes (lbs/A/y)"
-                                        ]
-                                      }
-                                    </Typography>
-                                  </Tooltip>
+                                    {
+                                      crop.fields[
+                                        'Nitrogen Accumulation Min, Legumes (lbs/A/y)'
+                                      ]
+                                    }
+                                    -
+                                    {
+                                      crop.fields[
+                                        'Nitrogen Accumulation Max, Legumes (lbs/A/y)'
+                                      ]
+                                    }
+                                    &nbsp;lbs/A/y
+                                  </Typography>
                                 </td>
                               </tr>
                             ) : (
@@ -425,7 +425,7 @@ const CropTableComponent = (props) => {
                             )}
                             <tr>
                               <td>
-                                {" "}
+                                {' '}
                                 <Typography
                                   variant="subtitle2"
                                   component="b"
@@ -435,16 +435,11 @@ const CropTableComponent = (props) => {
                                 </Typography>
                               </td>
                               <td>
-                                <Tooltip
-                                  arrow
-                                  placement="right"
-                                  title="lbs/A/y"
-                                >
-                                  <Typography variant="subtitle2" component="b">
-                                    {crop.fields["Dry Matter Min (lbs/A/y)"]}-
-                                    {crop.fields["Dry Matter Max (lbs/A/y)"]}
-                                  </Typography>
-                                </Tooltip>
+                                <Typography variant="subtitle2" component="b">
+                                  {crop.fields['Dry Matter Min (lbs/A/y)']}-
+                                  {crop.fields['Dry Matter Max (lbs/A/y)']}
+                                  &nbsp;lbs/A/y
+                                </Typography>
                               </td>
                             </tr>
                             <tr>
@@ -463,11 +458,11 @@ const CropTableComponent = (props) => {
                                   component="b"
                                   className="text-uppercase"
                                 >
-                                  {crop.fields["Duration"]
+                                  {crop.fields['Duration']
                                     .toString()
-                                    .toLowerCase() === "short-lived perennial"
+                                    .toLowerCase() === 'short-lived perennial'
                                     ? "Perennial"
-                                    : crop.fields["Duration"].toString()}
+                                    : crop.fields['Duration'].toString()}
                                 </Typography>
                               </td>
                             </tr>
@@ -479,14 +474,14 @@ const CropTableComponent = (props) => {
                   </Fragment>
                 );
               else {
-                return "";
+                return '';
               }
             })
-          : ""}
+          : ''}
 
         {inactiveCropPresent
           ? inactiveCropData.map((crop, index) => {
-              if (crop.fields["Zone Decision"] === "Include")
+              if (crop.fields['Zone Decision'] === 'Include')
                 return (
                   <Fragment key={index}>
                     <TableRow className="inactiveCropRow">
@@ -495,24 +490,24 @@ const CropTableComponent = (props) => {
                     <TableRow
                       className="inactiveCropRow"
                       key={`croprow${index}`}
-                      id={crop.fields["id"]}
-                      style={{ opacity: "0.2" }}
+                      id={crop.fields['id']}
+                      style={{ opacity: '0.2' }}
                     >
                       <TableCell
                         style={{
-                          display: "flex",
-                          flexDirection: "row",
+                          display: 'flex',
+                          flexDirection: 'row',
                         }}
                       >
-                        {crop.fields["Image Data"] ? (
+                        {crop.fields['Image Data'] ? (
                           <CropImage
                             present={true}
                             src={
-                              crop.fields["Image Data"]["Key Thumbnail"]
-                                ? `/images/Cover Crop Photos/100x100/${crop.fields["Image Data"]["Directory"]}/${crop.fields["Image Data"]["Key Thumbnail"]}`
-                                : "https://placehold.it/100x100"
+                              crop.fields['Image Data']['Key Thumbnail']
+                                ? `/images/Cover Crop Photos/100x100/${crop.fields['Image Data']['Directory']}/${crop.fields['Image Data']['Key Thumbnail']}`
+                                : 'https://placehold.it/100x100'
                             }
-                            alt={crop.fields["Cover Crop Name"]}
+                            alt={crop.fields['Cover Crop Name']}
                           />
                         ) : (
                           <CropImage present={false} />
@@ -522,34 +517,34 @@ const CropTableComponent = (props) => {
                           <div className="part1_ut">
                             <span className="cropName font-weight-lighter">
                               <Typography variant="h6">
-                                {" "}
+                                {' '}
                                 {flipCoverCropName(
-                                  crop.fields["Cover Crop Name"]
+                                  crop.fields['Cover Crop Name']
                                 )}
                               </Typography>
                             </span>
                             <span
                               className="cropScientificName"
-                              style={{ color: "gray" }}
+                              style={{ color: 'gray' }}
                             >
-                              {trimString(crop.fields["Scientific Name"], 25)}
+                              {trimString(crop.fields['Scientific Name'], 25)}
                             </span>
                             <span
                               className="cropCategory text-uppercase"
-                              style={{ color: "gray" }}
+                              style={{ color: 'gray' }}
                             >
-                              {crop.fields["Cover Crop Group"]}
+                              {crop.fields['Cover Crop Group']}
                             </span>
                           </div>
                         </div>
                       </TableCell>
                       <TableCell
-                        style={{ textAlign: "left", verticalAlign: "middle" }}
+                        style={{ textAlign: 'left', verticalAlign: 'middle' }}
                       >
                         <table>
                           <tbody>
-                            {crop.fields["Cover Crop Group"].toLowerCase() ===
-                            "legume" ? (
+                            {crop.fields['Cover Crop Group'].toLowerCase() ===
+                            'legume' ? (
                               <tr>
                                 <td>
                                   <Typography
@@ -561,36 +556,31 @@ const CropTableComponent = (props) => {
                                   </Typography>
                                 </td>
                                 <td>
-                                  <Tooltip
-                                    arrow
-                                    placement="right"
-                                    title="lbs/A/y"
+                                  <Typography
+                                    variant="subtitle2"
+                                    component="b"
                                   >
-                                    <Typography
-                                      variant="subtitle2"
-                                      component="b"
-                                    >
-                                      {
-                                        crop.fields[
-                                          "Nitrogen Accumulation Min, Legumes (lbs/A/y)"
-                                        ]
-                                      }
-                                      -
-                                      {
-                                        crop.fields[
-                                          "Nitrogen Accumulation Max, Legumes (lbs/A/y)"
-                                        ]
-                                      }
-                                    </Typography>
-                                  </Tooltip>
+                                    {
+                                      crop.fields[
+                                        'Nitrogen Accumulation Min, Legumes (lbs/A/y)'
+                                      ]
+                                    }
+                                    -
+                                    {
+                                      crop.fields[
+                                        'Nitrogen Accumulation Max, Legumes (lbs/A/y)'
+                                      ]
+                                    }
+                                    &nbsp;lbs/A/y
+                                  </Typography>
                                 </td>
                               </tr>
                             ) : (
-                              ""
+                              ''
                             )}
                             <tr>
                               <td>
-                                {" "}
+                                {' '}
                                 <Typography
                                   variant="subtitle2"
                                   component="b"
@@ -600,16 +590,11 @@ const CropTableComponent = (props) => {
                                 </Typography>
                               </td>
                               <td>
-                                <Tooltip
-                                  arrow
-                                  placement="right"
-                                  title="lbs/A/y"
-                                >
-                                  <Typography variant="subtitle2" component="b">
-                                    {crop.fields["Dry Matter Min (lbs/A/y)"]}-
-                                    {crop.fields["Dry Matter Max (lbs/A/y)"]}
-                                  </Typography>
-                                </Tooltip>
+                                <Typography variant="subtitle2" component="b">
+                                  {crop.fields['Dry Matter Min (lbs/A/y)']}-
+                                  {crop.fields['Dry Matter Max (lbs/A/y)']}
+                                  &nbsp;lbs/A/y
+                                </Typography>
                               </td>
                             </tr>
                             <tr>
@@ -628,11 +613,11 @@ const CropTableComponent = (props) => {
                                   component="b"
                                   className="text-uppercase"
                                 >
-                                  {crop.fields["Duration"]
+                                  {crop.fields['Duration']
                                     .toString()
-                                    .toLowerCase() === "short-lived perennial"
-                                    ? "Perennial"
-                                    : crop.fields["Duration"].toString()}
+                                    .toLowerCase() === 'short-lived perennial'
+                                    ? 'Perennial'
+                                    : crop.fields['Duration'].toString()}
                                 </Typography>
                               </td>
                             </tr>
@@ -644,53 +629,53 @@ const CropTableComponent = (props) => {
                   </Fragment>
                 );
             })
-          : ""}
+          : ''}
         {activeCropPresent
           ? activeCropData.map((crop, index) => {
               if (
-                crop.fields["Zone Decision"] === "Include" &&
+                crop.fields['Zone Decision'] === 'Include' &&
                 hasGoalRatingTwoOrLess(crop)
               ) {
                 return (
                   <Fragment key={index}>
                     <TableRow
                       className={
-                        hasGoalRatingTwoOrLess(crop) ? `inactiveCropRow` : ""
+                        hasGoalRatingTwoOrLess(crop) ? 'inactiveCropRow' : ''
                       }
                     >
                       <TableCell colSpan={42}></TableCell>
                     </TableRow>
                     <TableRow
                       className={
-                        hasGoalRatingTwoOrLess(crop) ? `inactiveCropRow` : ""
+                        hasGoalRatingTwoOrLess(crop) ? 'inactiveCropRow' : ''
                       }
                       key={`croprow${index}`}
-                      id={crop.fields["id"]}
+                      id={crop.fields['id']}
                       style={
-                        hasGoalRatingTwoOrLess(crop) ? { opacity: "0.2" } : {}
+                        hasGoalRatingTwoOrLess(crop) ? { opacity: '0.2' } : {}
                       }
                     >
                       <TableCell
                         style={{
                           height:
-                            crop.fields["Cover Crop Group"].toLowerCase() ===
-                            "legume"
-                              ? `auto`
-                              : `auto`,
+                            crop.fields['Cover Crop Group'].toLowerCase() ===
+                            'legume'
+                              ? 'auto'
+                              : 'auto',
                         }}
                       >
                         <div className="container-fluid">
                           <div className="row">
                             <div className="col-auto pl-md-0">
-                              {crop.fields["Image Data"] ? (
+                              {crop.fields['Image Data'] ? (
                                 <CropImage
                                   present={true}
                                   src={
-                                    crop.fields["Image Data"]["Key Thumbnail"]
-                                      ? `/images/Cover Crop Photos/100x100/${crop.fields["Image Data"]["Directory"]}/${crop.fields["Image Data"]["Key Thumbnail"]}`
-                                      : "https://placehold.it/100x100"
+                                    crop.fields['Image Data']['Key Thumbnail']
+                                      ? `/images/Cover Crop Photos/100x100/${crop.fields['Image Data']['Directory']}/${crop.fields['Image Data']['Key Thumbnail']}`
+                                      : 'https://placehold.it/100x100'
                                   }
-                                  alt={crop.fields["Cover Crop Name"]}
+                                  alt={crop.fields['Cover Crop Name']}
                                 />
                               ) : (
                                 <CropImage present={false} />
@@ -700,7 +685,7 @@ const CropTableComponent = (props) => {
                               <div className="col-12 p-md-0">
                                 <Typography variant="h6">
                                   {flipCoverCropName(
-                                    crop.fields["Cover Crop Name"]
+                                    crop.fields['Cover Crop Name']
                                   )}
                                 </Typography>
                               </div>
@@ -708,14 +693,14 @@ const CropTableComponent = (props) => {
                                 <Typography
                                   variant="body1"
                                   style={{
-                                    color: "gray",
-                                    fontWeight: "normal",
-                                    fontStyle: "italic",
-                                    fontSize: "small",
+                                    color: 'gray',
+                                    fontWeight: 'normal',
+                                    fontStyle: 'italic',
+                                    fontSize: 'small',
                                   }}
                                 >
                                   {trimString(
-                                    crop.fields["Scientific Name"],
+                                    crop.fields['Scientific Name'],
                                     25
                                   )}
                                 </Typography>
@@ -724,9 +709,9 @@ const CropTableComponent = (props) => {
                                 <Typography
                                   variant="subtitle2"
                                   className="text-uppercase"
-                                  style={{ color: "gray" }}
+                                  style={{ color: 'gray' }}
                                 >
-                                  {crop.fields["Cover Crop Group"]}
+                                  {crop.fields['Cover Crop Group']}
                                 </Typography>
                               </div>
                             </div>
@@ -734,12 +719,12 @@ const CropTableComponent = (props) => {
                         </div>
                       </TableCell>
                       <TableCell
-                        style={{ textAlign: "left", verticalAlign: "middle" }}
+                        style={{ textAlign: 'left', verticalAlign: 'middle' }}
                       >
                         <table>
                           <tbody>
-                            {crop.fields["Cover Crop Group"].toLowerCase() ===
-                            "legume" ? (
+                            {crop.fields['Cover Crop Group'].toLowerCase() ===
+                            'legume' ? (
                               <tr>
                                 <td>
                                   <Typography
@@ -751,28 +736,23 @@ const CropTableComponent = (props) => {
                                   </Typography>
                                 </td>
                                 <td>
-                                  <Tooltip
-                                    arrow
-                                    placement="right"
-                                    title="lbs/A/y"
+                                  <Typography
+                                    variant="subtitle2"
+                                    component="b"
                                   >
-                                    <Typography
-                                      variant="subtitle2"
-                                      component="b"
-                                    >
-                                      {
-                                        crop.fields[
-                                          "Nitrogen Accumulation Min, Legumes (lbs/A/y)"
-                                        ]
-                                      }
-                                      -
-                                      {
-                                        crop.fields[
-                                          "Nitrogen Accumulation Max, Legumes (lbs/A/y)"
-                                        ]
-                                      }
-                                    </Typography>
-                                  </Tooltip>
+                                    {
+                                      crop.fields[
+                                        'Nitrogen Accumulation Min, Legumes (lbs/A/y)'
+                                      ]
+                                    }
+                                    -
+                                    {
+                                      crop.fields[
+                                        'Nitrogen Accumulation Max, Legumes (lbs/A/y)'
+                                      ]
+                                    }
+                                    &nbsp;lbs/A/y
+                                  </Typography>
                                 </td>
                               </tr>
                             ) : (
@@ -780,7 +760,7 @@ const CropTableComponent = (props) => {
                             )}
                             <tr>
                               <td>
-                                {" "}
+                                {' '}
                                 <Typography
                                   variant="subtitle2"
                                   component="b"
@@ -790,16 +770,11 @@ const CropTableComponent = (props) => {
                                 </Typography>
                               </td>
                               <td>
-                                <Tooltip
-                                  arrow
-                                  placement="right"
-                                  title="lbs/A/y"
-                                >
-                                  <Typography variant="subtitle2" component="b">
-                                    {crop.fields["Dry Matter Min (lbs/A/y)"]}-
-                                    {crop.fields["Dry Matter Max (lbs/A/y)"]}
-                                  </Typography>
-                                </Tooltip>
+                                <Typography variant="subtitle2" component="b">
+                                  {crop.fields['Dry Matter Min (lbs/A/y)']}-
+                                  {crop.fields['Dry Matter Max (lbs/A/y)']}
+                                  &nbsp;lbs/A/y
+                                </Typography>
                               </td>
                             </tr>
                             <tr>
@@ -818,11 +793,11 @@ const CropTableComponent = (props) => {
                                   component="b"
                                   className="text-uppercase"
                                 >
-                                  {crop.fields["Duration"]
+                                  {crop.fields['Duration']
                                     .toString()
-                                    .toLowerCase() === "short-lived perennial"
+                                    .toLowerCase() === 'short-lived perennial'
                                     ? "Perennial"
-                                    : crop.fields["Duration"].toString()}
+                                    : crop.fields['Duration'].toString()}
                                 </Typography>
                               </td>
                             </tr>
@@ -835,7 +810,7 @@ const CropTableComponent = (props) => {
                 );
               }
             })
-          : ""}
+          : ''}
       </Fragment>
     );
   };
@@ -860,8 +835,8 @@ const CropTableComponent = (props) => {
   const [nameSortFlag, setNameSortFlag] = useState(true);
   const [selectedCropsSortFlag, setSelectedCropsSortFlag] = useState(true);
   const sortBySelectedCrops = () => {
-    sortReset("selectedCrops");
-    setActiveSortType("selectedCrops");
+    sortReset('selectedCrops');
+    setActiveSortType('selectedCrops');
     let selectedCropsShadow = state.selectedCrops;
     let activeCropDataShadow = props.activeCropData;
     let inactiveCropDataShadow = props.inactiveCropData;
@@ -872,21 +847,13 @@ const CropTableComponent = (props) => {
           selectedCropIds.push(crop.id);
         });
         let newActiveShadow = activeCropDataShadow.map((crop) => {
-          if (selectedCropIds.includes(crop.fields.id)) {
-            crop["inCart"] = true;
-          } else {
-            crop["inCart"] = false;
-          }
+          crop['inCart'] = selectedCropIds.includes(crop.fields.id);
           return crop;
         });
 
         if (inactiveCropDataShadow.length > 0) {
           let newInactiveShadow = inactiveCropDataShadow.map((crop) => {
-            if (selectedCropIds.includes(crop.fields.id)) {
-              crop["inCart"] = true;
-            } else {
-              crop["inCart"] = false;
-            }
+            crop['inCart'] = selectedCropIds.includes(crop.fields.id);
             return crop;
           });
           newInactiveShadow.sort((a) => {
@@ -920,13 +887,13 @@ const CropTableComponent = (props) => {
       }
     } else {
       // sort back to original values
-      sortReset("selectedCrops");
+      sortReset('selectedCrops');
     }
     setSelectedCropsSortFlag(!selectedCropsSortFlag);
   };
 
-  const sortReset = (from = "cropName") => {
-    setActiveSortType("goals");
+  const sortReset = (from = 'cropName') => {
+    setActiveSortType('goals');
     // reset to default
     // if (from === "cropName") {
     //   if (selectedCropsSortFlag && nameSortFlag)
@@ -1000,18 +967,18 @@ const CropTableComponent = (props) => {
   const sortCropsByName = () => {
     let activeCropDataShadow = props.activeCropData;
     let inactiveCropDataShadow = props.inactiveCropData;
-    sortReset("cropName");
-    setActiveSortType("selectedCrops");
+    sortReset('cropName');
+    setActiveSortType('selectedCrops');
 
     if (nameSortFlag) {
       if (activeCropDataShadow.length > 0) {
         activeCropDataShadow.sort((a, b) => {
           var firstCropName = flipCoverCropName(
-            a.fields["Cover Crop Name"].toLowerCase()
-          ).replace(/\s+/g, "");
+            a.fields['Cover Crop Name'].toLowerCase()
+          ).replace(/\s+/g, '');
           var secondCropName = flipCoverCropName(
-            b.fields["Cover Crop Name"].toLowerCase()
-          ).replace(/\s+/g, "");
+            b.fields['Cover Crop Name'].toLowerCase()
+          ).replace(/\s+/g, '');
           return firstCropName.localeCompare(secondCropName);
         });
 
@@ -1021,10 +988,10 @@ const CropTableComponent = (props) => {
       if (inactiveCropDataShadow.length > 0) {
         inactiveCropDataShadow.sort((a, b) => {
           var firstCropName = flipCoverCropName(
-            a.fields["Cover Crop Name"].toLowerCase()
+            a.fields['Cover Crop Name'].toLowerCase()
           );
           var secondCropName = flipCoverCropName(
-            b.fields["Cover Crop Name"].toLowerCase()
+            b.fields['Cover Crop Name'].toLowerCase()
           );
           if (firstCropName < secondCropName) {
             return -1;
@@ -1041,11 +1008,11 @@ const CropTableComponent = (props) => {
       if (activeCropDataShadow.length > 0) {
         activeCropDataShadow.sort((a, b) => {
           var firstCropName = flipCoverCropName(
-            a.fields["Cover Crop Name"].toLowerCase()
-          ).replace(/\s+/g, "");
+            a.fields['Cover Crop Name'].toLowerCase()
+          ).replace(/\s+/g, '');
           var secondCropName = flipCoverCropName(
-            b.fields["Cover Crop Name"].toLowerCase()
-          ).replace(/\s+/g, "");
+            b.fields['Cover Crop Name'].toLowerCase()
+          ).replace(/\s+/g, '');
           // return firstCropName.localeCompare(secondCropName);
           if (firstCropName < secondCropName) {
             return 1;
@@ -1062,11 +1029,11 @@ const CropTableComponent = (props) => {
       if (inactiveCropDataShadow.length > 0) {
         inactiveCropDataShadow.sort((a, b) => {
           var firstCropName = flipCoverCropName(
-            a.fields["Cover Crop Name"].toLowerCase()
-          ).replace(/\s+/g, "");
+            a.fields['Cover Crop Name'].toLowerCase()
+          ).replace(/\s+/g, '');
           var secondCropName = flipCoverCropName(
-            b.fields["Cover Crop Name"].toLowerCase()
-          ).replace(/\s+/g, "");
+            b.fields['Cover Crop Name'].toLowerCase()
+          ).replace(/\s+/g, '');
           if (firstCropName < secondCropName) {
             return 1;
           }
@@ -1098,9 +1065,9 @@ const CropTableComponent = (props) => {
             <TableRow className="theadFirst">
               <TableCell
                 style={{
-                  backgroundColor: "white",
-                  color: "white",
-                  visibility: "hidden",
+                  backgroundColor: 'white',
+                  color: 'white',
+                  visibility: 'hidden',
                 }}
                 colSpan="2"
               >
@@ -1111,9 +1078,9 @@ const CropTableComponent = (props) => {
                 <TableCell
                   colSpan={state.selectedGoals.length}
                   style={{
-                    borderBottom: "5px solid white",
-                    backgroundColor: "#abd08f",
-                    textAlign: "center",
+                    borderBottom: '5px solid white',
+                    backgroundColor: '#abd08f',
+                    textAlign: 'center',
                   }}
                 >
                   <Tooltip
@@ -1131,11 +1098,11 @@ const CropTableComponent = (props) => {
                         onClick={() => {
                           console.log(props.sortPreference);
                           props.sortAllCrops(
-                            props.sortPreference === "desc" ? "asc" : "desc"
+                            props.sortPreference === 'desc' ? 'asc' : 'desc'
                           );
                         }}
                       >
-                        {props.sortPreference === "asc" ? (
+                        {props.sortPreference === 'asc' ? (
                           <Sort
                             style={{
                               color: CustomStyles().secondaryProgressBtnColor,
@@ -1145,7 +1112,7 @@ const CropTableComponent = (props) => {
                           <Sort
                             style={{
                               color: CustomStyles().progressColor,
-                              transform: "rotate(180deg)",
+                              transform: 'rotate(180deg)',
                             }}
                           />
                         )}
@@ -1155,15 +1122,15 @@ const CropTableComponent = (props) => {
                   </Tooltip>
                 </TableCell>
               ) : (
-                ""
+                ''
               )}
 
               <TableCell
                 style={{
-                  backgroundColor: "#abd08f",
-                  textAlign: "center",
-                  borderRight: "5px solid white",
-                  borderBottom: "5px solid white",
+                  backgroundColor: '#abd08f',
+                  textAlign: 'center',
+                  borderRight: '5px solid white',
+                  borderBottom: '5px solid white',
                 }}
               >
                 <Typography variant="body2">
@@ -1179,7 +1146,7 @@ const CropTableComponent = (props) => {
                     //   }
                     // }}
                   >
-                    {" "}
+                    {' '}
                     LEGEND
                   </Button>
                 </Typography>
@@ -1188,11 +1155,11 @@ const CropTableComponent = (props) => {
                   id="legendWrapper"
                   className="d-none"
                   style={{
-                    position: "fixed",
-                    backgroundColor: "rgba(171, 208, 143, 0.8)",
+                    position: 'fixed',
+                    backgroundColor: 'rgba(171, 208, 143, 0.8)',
                     bottom: 0,
                     zIndex: 999,
-                    textAlign: "left",
+                    textAlign: 'left',
                   }}
                 >
                   <div className={`modalLegendPaper`}>
@@ -1205,10 +1172,8 @@ const CropTableComponent = (props) => {
                         <div className="col-6 text-right">
                           <Button
                             onClick={() => {
-                              const ele = document.getElementById(
-                                "legendWrapper"
-                              );
-                              ele.classList.add("d-none");
+                              const ele = document.getElementById('legendWrapper');
+                              ele.classList.add('d-none');
                             }}
                           >
                             <CloseRounded />
@@ -1220,7 +1185,7 @@ const CropTableComponent = (props) => {
                           <Typography variant="body1">
                             <FiberManualRecord className="reliable" />
                             <span className="pl-3">
-                              {"Reliable Establishment"}
+                              Reliable Establishment
                             </span>
                           </Typography>
                         </div>
@@ -1228,7 +1193,7 @@ const CropTableComponent = (props) => {
                           <Typography variant="body1">
                             <FiberManualRecord className="temperatureRisk" />
                             <span className="pl-3">
-                              {"Temperature Risk To Establishment"}
+                              Temperature Risk To Establishment
                             </span>
                           </Typography>
                         </div>
@@ -1236,7 +1201,7 @@ const CropTableComponent = (props) => {
                           <Typography variant="body1">
                             <FiberManualRecord className="frostPossible" />
                             <span className="pl-3">
-                              {"Frost Seeding Possible"}
+                              Frost Seeding Possible
                             </span>
                           </Typography>
                         </div>
@@ -1244,7 +1209,7 @@ const CropTableComponent = (props) => {
                           <Typography variant="body1">
                             <FiberManualRecord className="cashCrop" />
                             <span className="pl-3">
-                              {"Previous Cash Crop Growth Window"}
+                              Previous Cash Crop Growth Window
                             </span>
                           </Typography>
                         </div>
@@ -1255,9 +1220,9 @@ const CropTableComponent = (props) => {
               </TableCell>
               <TableCell
                 style={{
-                  backgroundColor: "white",
-                  color: "white",
-                  visibility: "hidden",
+                  backgroundColor: 'white',
+                  color: 'white',
+                  visibility: 'hidden',
                 }}
               >
                 blank
@@ -1266,9 +1231,9 @@ const CropTableComponent = (props) => {
             <TableRow className="theadSecond">
               <TableCell
                 style={{
-                  minWidth: "320px",
-                  backgroundColor: "#abd08f",
-                  borderRight: "5px solid white",
+                  minWidth: '320px',
+                  backgroundColor: '#abd08f',
+                  borderRight: '5px solid white',
                 }}
               >
                 <Typography variant="body1">
@@ -1283,7 +1248,7 @@ const CropTableComponent = (props) => {
                       <Sort
                         style={{
                           color: CustomStyles().progressColor,
-                          transform: "rotate(180deg)",
+                          transform: 'rotate(180deg)',
                         }}
                       />
                     )}
@@ -1293,9 +1258,9 @@ const CropTableComponent = (props) => {
               </TableCell>
               <TableCell
                 style={{
-                  minWidth: "240px",
-                  backgroundColor: "#abd08f",
-                  borderRight: "5px solid white",
+                  minWidth: '240px',
+                  backgroundColor: '#abd08f',
+                  borderRight: '5px solid white',
                 }}
               >
                 <Typography variant="body1">
@@ -1309,12 +1274,12 @@ const CropTableComponent = (props) => {
                       <TableCell
                         key={index}
                         style={{
-                          wordBreak: "break-word",
-                          maxWidth: "185px",
-                          backgroundColor: "#abd08f",
-                          textAlign: "center",
+                          wordBreak: 'break-word',
+                          maxWidth: '185px',
+                          backgroundColor: '#abd08f',
+                          textAlign: 'center',
                           borderRight:
-                            index === lastIndex ? "5px solid white" : "none",
+                            index === lastIndex ? '5px solid white' : 'none',
                         }}
                       >
                         <Typography variant="body1">
@@ -1336,31 +1301,31 @@ const CropTableComponent = (props) => {
                       </TableCell>
                     );
                   })
-                : ""}
+                : ''}
 
               {showGrowthWindow ? (
                 <TableCell
                   style={{
-                    backgroundColor: "#abd08f",
-                    textAlign: "center",
-                    borderRight: "5px solid white",
-                    width: "180px",
+                    backgroundColor: '#abd08f',
+                    textAlign: 'center',
+                    borderRight: '5px solid white',
+                    width: '180px',
                   }}
                 >
                   <Typography variant="body1">
-                    {" "}
+                    {' '}
                     <div style={sudoButtonStyle}>PLANTING WINDOW</div>
                   </Typography>
                 </TableCell>
               ) : (
-                ""
+                ''
               )}
 
               <TableCell
                 style={{
-                  backgroundColor: "#abd08f",
-                  textAlign: "center",
-                  minWidth: "165px",
+                  backgroundColor: '#abd08f',
+                  textAlign: 'center',
+                  minWidth: '165px',
                 }}
               >
                 <Typography variant="body1">
@@ -1375,7 +1340,7 @@ const CropTableComponent = (props) => {
                       <Sort
                         style={{
                           color: CustomStyles().progressColor,
-                          transform: "rotate(180deg)",
+                          transform: 'rotate(180deg)',
                         }}
                       />
                     )}
@@ -1394,22 +1359,22 @@ const CropTableComponent = (props) => {
                     <TableCell colSpan={42}>
                       <div
                         style={{
-                          width: "100%",
+                          width: '100%',
                           height: tbodyHeight,
-                          position: "absolute",
+                          position: 'absolute',
                           top: theadHeight,
-                          backgroundColor: "rgba(255,255,255, 0.1)",
+                          backgroundColor: 'rgba(255,255,255, 0.1)',
                           zIndex: 1,
-                          display: "flex",
-                          flexDirection: "column",
-                          justifyContent: "center",
-                          alignItems: "center",
+                          display: 'flex',
+                          flexDirection: 'column',
+                          justifyContent: 'center',
+                          alignItems: 'center',
                         }}
                       >
                         <div
                           style={{
-                            backgroundColor: "rgba(171, 208, 143, 1)",
-                            minHeight: "100px",
+                            backgroundColor: 'rgba(171, 208, 143, 1)',
+                            minHeight: '100px',
                             zIndex: 2,
                           }}
                           className="px-5 py-5 d-flex justify-content-center align-items-center text-center"
@@ -1445,7 +1410,7 @@ const CropTableComponent = (props) => {
                     </TableCell>
                   </TableRow>
                 ) : (
-                  ""
+                  ''
                 )}
 
                 <RenderActiveInactiveCropData />
@@ -1475,7 +1440,7 @@ const CropTableComponent = (props) => {
   ) : (
     <div className="table-responsive calendarViewTableWrapper">
       <div className="circularCentered">
-        <CircularProgress size={"6em"} />
+        <CircularProgress size={'6em'} />
       </div>
     </div>
   );
