@@ -39,6 +39,7 @@ import "../../styles/MyCoverCropComparisonComponent.scss";
 import sidebarDefinitionsz7 from "../../shared/json/zone7/data-dictionary.json";
 import sidebarDefinitionsz6 from "../../shared/json/zone6/data-dictionary.json";
 import sidebarDefinitionsz5 from "../../shared/json/zone5/data-dictionary.json";
+import sidebarDefinitionsz4 from "../../shared/json/zone4/data-dictionary.json";
 import CropDetailsModalComponent from "../CropSelector/CropDetailsModal";
 import { useSnackbar } from "notistack";
 
@@ -93,6 +94,10 @@ const MyCoverCropComparisonComponent = (props) => {
       }
       case 5: {
         setSidebarDefs(sidebarDefinitionsz5);
+        break;
+      }
+      case 4: {
+        setSidebarDefs(sidebarDefinitionsz4);
         break;
       }
       default: {

@@ -339,13 +339,16 @@ const Header = () => {
     let z5Formattedgoal = zone5Goal.map((goal) => {
       return { fields: goal };
     });
+    console.log(zone4Goal);
     let z4Formattedgoal = zone4Goal.map((goal) => {
       return { fields: goal };
     });
     z7Formattedgoal = z7Formattedgoal.filter((goal) => goal.fields.Include);
     z6Formattedgoal = z6Formattedgoal.filter((goal) => goal.fields.Include);
     z5Formattedgoal = z5Formattedgoal.filter((goal) => goal.fields.Include);
-    z4Formattedgoal = z4Formattedgoal.filter((goal) => goal.fields.Include);
+    console.log(z4Formattedgoal);
+    // z4Formattedgoal = z4Formattedgoal.filter((goal) => goal.fields.Include);
+    console.log(z4Formattedgoal);
 
     switch (parseInt(state.zone)) {
       case 7: {
@@ -357,7 +360,7 @@ const Header = () => {
           type: "ADD_GOALS",
           data: z7Formattedgoal,
         });
-        // console.log("z7 data dispatched");
+        console.log("z7 data dispatched");
         break;
       }
       case 6: {
@@ -365,12 +368,12 @@ const Header = () => {
           type: "PULL_CROP_DATA",
           data: state.zone6CropData,
         });
-        // console.log(state.zone6CropData.length);
+        console.log(state.zone6CropData.length);
         dispatch({
           type: "ADD_GOALS",
           data: z6Formattedgoal,
         });
-        // console.log("z6 data dispatched");
+        console.log("z6 data dispatched");
         break;
       }
       case 5: {
@@ -382,10 +385,11 @@ const Header = () => {
           type: "ADD_GOALS",
           data: z5Formattedgoal,
         });
-        // console.log("z5 data dispatched");
+        console.log("z5 data dispatched");
         break;
       }
       case 4: {
+        console.log(z4Formattedgoal);
         dispatch({
           type: "PULL_CROP_DATA",
           data: state.zone4CropData,
@@ -394,19 +398,10 @@ const Header = () => {
           type: "ADD_GOALS",
           data: z4Formattedgoal,
         });
-        // console.log("z5 data dispatched");
+        console.log("z4 data dispatched");
         break;
       }
       default: {
-        dispatch({
-          type: "PULL_CROP_DATA",
-          data: state.zone7CropData,
-        });
-        dispatch({
-          type: "ADD_GOALS",
-          data: z7Formattedgoal,
-        });
-        // console.log("default data dispatched");
         break;
       }
     }
