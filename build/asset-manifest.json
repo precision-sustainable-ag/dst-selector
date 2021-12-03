@@ -1,27 +1,5 @@
 {
   "files": {
-<<<<<<< HEAD
-    "main.css": "/static/css/main.28bc4128.chunk.css",
-    "main.js": "/static/js/main.8e192cd5.chunk.js",
-    "main.js.map": "/static/js/main.8e192cd5.chunk.js.map",
-    "runtime-main.js": "/static/js/runtime-main.9258acd2.js",
-    "runtime-main.js.map": "/static/js/runtime-main.9258acd2.js.map",
-    "static/css/2.b1ffe393.chunk.css": "/static/css/2.b1ffe393.chunk.css",
-    "static/js/2.0b267d18.chunk.js": "/static/js/2.0b267d18.chunk.js",
-    "static/js/2.0b267d18.chunk.js.map": "/static/js/2.0b267d18.chunk.js.map",
-    "static/js/3.a81379a7.chunk.js": "/static/js/3.a81379a7.chunk.js",
-    "static/js/3.a81379a7.chunk.js.map": "/static/js/3.a81379a7.chunk.js.map",
-    "static/js/4.fcf279cc.chunk.js": "/static/js/4.fcf279cc.chunk.js",
-    "static/js/4.fcf279cc.chunk.js.map": "/static/js/4.fcf279cc.chunk.js.map",
-    "index.html": "/index.html",
-    "precache-manifest.0d69e4be8dcd2374ffdf17187920796c.js": "/precache-manifest.0d69e4be8dcd2374ffdf17187920796c.js",
-    "service-worker.js": "/service-worker.js",
-    "static/css/2.b1ffe393.chunk.css.map": "/static/css/2.b1ffe393.chunk.css.map",
-    "static/css/main.28bc4128.chunk.css.map": "/static/css/main.28bc4128.chunk.css.map",
-    "static/js/2.0b267d18.chunk.js.LICENSE.txt": "/static/js/2.0b267d18.chunk.js.LICENSE.txt",
-    "static/js/3.a81379a7.chunk.js.LICENSE.txt": "/static/js/3.a81379a7.chunk.js.LICENSE.txt",
-    "static/js/4.fcf279cc.chunk.js.LICENSE.txt": "/static/js/4.fcf279cc.chunk.js.LICENSE.txt",
-=======
     "main.css": "/static/css/main.ea7b19ec.chunk.css",
     "main.js": "/static/js/main.5b53e718.chunk.js",
     "main.js.map": "/static/js/main.5b53e718.chunk.js.map",
@@ -42,23 +20,14 @@
     "static/js/2.9abeab47.chunk.js.LICENSE.txt": "/static/js/2.9abeab47.chunk.js.LICENSE.txt",
     "static/js/3.f0cc06e1.chunk.js.LICENSE.txt": "/static/js/3.f0cc06e1.chunk.js.LICENSE.txt",
     "static/js/4.54ec67d0.chunk.js.LICENSE.txt": "/static/js/4.54ec67d0.chunk.js.LICENSE.txt",
->>>>>>> issue-#133/Displaying-units
     "static/media/mdb.css": "/static/media/arrow_right.8ef6a08c.svg",
     "static/media/leaflet.draw.css": "/static/media/spritesheet.fd5728f2.svg"
   },
   "entrypoints": [
-<<<<<<< HEAD
-    "static/js/runtime-main.9258acd2.js",
-    "static/css/2.b1ffe393.chunk.css",
-    "static/js/2.0b267d18.chunk.js",
-    "static/css/main.28bc4128.chunk.css",
-    "static/js/main.8e192cd5.chunk.js"
-=======
     "static/js/runtime-main.80b3dd65.js",
     "static/css/2.687d8e71.chunk.css",
     "static/js/2.9abeab47.chunk.js",
     "static/css/main.ea7b19ec.chunk.css",
     "static/js/main.5b53e718.chunk.js"
->>>>>>> issue-#133/Displaying-units
   ]
 }
