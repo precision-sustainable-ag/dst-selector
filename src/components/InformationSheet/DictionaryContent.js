@@ -3,8 +3,8 @@
   RenderCats renders the categories
 */
 
-import React, { useState, useEffect, Fragment, useMemo } from "react";
 import { Typography } from "@material-ui/core";
+import React, { useEffect, useMemo, useState } from "react";
 
 const DictionaryContent = ({ dictData = [{}], from = "" }) => {
   const [groupedCats, setGroupedCats] = useState({});

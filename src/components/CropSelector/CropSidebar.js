@@ -4,44 +4,34 @@
   Styles are created using makeStyles
 */
 
-import React, { Fragment, useEffect, useRef } from "react";
-import filterData from "../../shared/sidebar-dictionary.json";
-
 import {
-  makeStyles,
+  Button,
+  Checkbox,
+  Chip,
+  Collapse,
+  FormControlLabel,
+  FormGroup,
+  Grid,
+  IconButton,
+  InputAdornment,
   List,
-  ListSubheader,
   ListItem,
   ListItemText,
-  Collapse,
-  Typography,
-  Button,
+  ListSubheader,
+  makeStyles,
   TextField,
-  InputAdornment,
-  IconButton,
-  FormGroup,
-  FormControlLabel,
-  Checkbox,
   Tooltip,
-  Grid,
-  Chip,
+  Typography,
 } from "@material-ui/core";
 import {
+  CalendarToday,
+  CalendarTodayRounded,
+  Clear,
+  Compare,
   ExpandLess,
   ExpandMore,
-  CalendarTodayRounded,
-  CalendarToday,
-  Compare,
-  DragHandle,
-  Backspace,
-  Clear,
 } from "@material-ui/icons";
 import ListIcon from "@material-ui/icons/List";
-import { CustomStyles } from "../../shared/constants";
-import { Context } from "../../store/Store";
-import { List as ListMovable, arrayMove } from "react-movable";
-
-import { DateRangePicker } from "@matharumanpreet00/react-daterange-picker";
 // import {
 //   DateRangePicker,
 //   SingleDatePicker,
@@ -51,21 +41,25 @@ import { DateRangePicker } from "@matharumanpreet00/react-daterange-picker";
 // import "react-date-range/dist/styles.css"; // main style file
 // import "react-date-range/dist/theme/default.css"; // theme css file
 import moment from "moment";
-
-import CoverCropType from "./Filters/CoverCropType";
-import EnvironmentalTolerance from "./Filters/EnvironmentalTolerance";
-import Seeds from "./Filters/Seeds";
-import SeedingMethods from "./Filters/SeedingMethods";
-import Growth from "./Filters/Growth";
-import TerminationMethods from "./Filters/TerminationMethods";
-import Beneficials from "./Filters/Beneficials";
-import Weeds from "./Filters/Weeds";
-// import DiseaseAndNonWeedPests from "./Filters/DiseaseAndNonWeedPests";
-import Roots from "./Filters/Roots";
+import React, { Fragment, useEffect, useRef } from "react";
+import { arrayMove, List as ListMovable } from "react-movable";
+import { CustomStyles } from "../../shared/constants";
+import filterData from "../../shared/sidebar-dictionary.json";
+import { Context } from "../../store/Store";
 import "../../styles/cropSidebar.scss";
-import SoilConditions from "./Filters/SoilConditions";
 import ComparisonBar from "../MyCoverCropList/ComparisonBar/ComparisonBar";
 import DateRangeDialog from "./DateRangeDialog";
+import CoverCropType from "./Filters/CoverCropType";
+import EnvironmentalTolerance from "./Filters/EnvironmentalTolerance";
+import Growth from "./Filters/Growth";
+// import DiseaseAndNonWeedPests from "./Filters/DiseaseAndNonWeedPests";
+import Roots from "./Filters/Roots";
+import SeedingMethods from "./Filters/SeedingMethods";
+import Seeds from "./Filters/Seeds";
+import SoilConditions from "./Filters/SoilConditions";
+import TerminationMethods from "./Filters/TerminationMethods";
+import Weeds from "./Filters/Weeds";
+
 const _ = require("lodash");
 
 const useStyles = makeStyles((theme) => ({

@@ -2,24 +2,22 @@
   Unused
 */
 
-import React, { useState, useContext, useEffect } from "react";
 import {
-  Button,
-  Modal,
-  makeStyles,
-  Fade,
   Backdrop,
+  Fade,
+  FormControl,
   FormGroup,
+  InputLabel,
+  makeStyles,
+  Modal,
+  Select,
   TextField,
   Typography,
-  FormControl,
-  InputLabel,
-  Select,
 } from "@material-ui/core";
-
 import moment from "moment";
-import { Context } from "../../store/Store";
+import React, { useContext, useEffect, useState } from "react";
 import { LightButton } from "../../shared/constants";
+import { Context } from "../../store/Store";
 
 const useStyles = makeStyles((theme) => ({
   modal: {

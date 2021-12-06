@@ -4,29 +4,15 @@
   setZoneState updates the map to the zip code entered by the user
 */
 
-import React, { useEffect, useContext, useState, Fragment } from "react";
-import {
-  Map,
-  TileLayer,
-  Marker,
-  Popup,
-  Polygon,
-  FeatureGroup,
-  Circle,
-  LayersControl,
-  LayerGroup,
-} from "react-leaflet";
+import axios from "axios";
+import L from "leaflet";
 // import { EditControl } from "react-leaflet-draw";
 import "leaflet/dist/leaflet.css";
-import L from "leaflet";
-import { Context } from "../../store/Store";
-import axios from "axios";
-import StateAbbreviations from "./StateAbbreviations";
-import { EditControl } from "react-leaflet-draw";
-import { Button } from "@material-ui/core";
-
-import "../../styles/map.scss";
+import React, { useContext, useEffect } from "react";
 import { CustomStyles } from "../../shared/constants";
+import { Context } from "../../store/Store";
+import "../../styles/map.scss";
+import StateAbbreviations from "./StateAbbreviations";
 
 // work around broken icons when using webpack, see https://github.com/PaulLeCam/react-leaflet/issues/255
 

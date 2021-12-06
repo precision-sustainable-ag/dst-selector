@@ -4,20 +4,18 @@
   Styles are created using makeStyles
 */
 
-import React, { useState, useEffect, Fragment, useContext } from "react";
-import { PictureAsPdf, Add, FormatListBulleted } from "@material-ui/icons";
 import {
-  Button,
   Card,
-  CardMedia,
   CardActionArea,
-  Typography,
   CardContent,
-  makeStyles,
+  CardMedia,
   Grid,
+  makeStyles,
+  Typography,
 } from "@material-ui/core";
-import { downloadAllPDF, trimString } from "../../shared/constants";
 import { useSnackbar } from "notistack";
+import React, { Fragment, useContext, useEffect, useState } from "react";
+import { trimString } from "../../shared/constants";
 import { Context } from "../../store/Store";
 import CropDetailsModalComponent from "../CropSelector/CropDetailsModal";
 const useStyles = makeStyles({

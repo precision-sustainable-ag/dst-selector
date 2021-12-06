@@ -4,14 +4,8 @@
 */
 
 import React, { Fragment, useContext, useEffect, useState } from "react";
-import {
-  cloudIcon,
-  referenceTooltip,
-  ReferenceTooltip,
-} from "../../shared/constants";
+import { cloudIcon, ReferenceTooltip } from "../../shared/constants";
 import { Context } from "../../store/Store";
-import { InfoRounded, Info } from "@material-ui/icons";
-import { Tooltip } from "@material-ui/core";
 
 const apiBaseURL = "https://api.openweathermap.org/data/2.5/weather";
 const apiBaseURL_weather_gov =

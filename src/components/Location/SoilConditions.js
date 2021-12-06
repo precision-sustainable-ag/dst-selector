@@ -3,13 +3,13 @@
   getDrainageText fetches the drainage info for the crop
 */
 
-import React, { Fragment } from "react";
-import TerrainIcon from "@material-ui/icons/Terrain";
-import Slider from "@material-ui/core/Slider";
-import { Context } from "../../store/Store";
 import { Typography } from "@material-ui/core";
-import { Waves, LocalDrink } from "@material-ui/icons";
+import Slider from "@material-ui/core/Slider";
+import { LocalDrink, Waves } from "@material-ui/icons";
+import TerrainIcon from "@material-ui/icons/Terrain";
+import React, { Fragment } from "react";
 import { ReferenceTooltip } from "../../shared/constants";
+import { Context } from "../../store/Store";
 
 const SoilConditions = (props) => {
   const [state, dispatch] = React.useContext(Context);
@@ -17,12 +17,10 @@ const SoilConditions = (props) => {
   const [floodingChange, setFloodingChange] = React.useState(false);
   const [caller, setCaller] = React.useState("");
   const [defaultDrainageMark, setDefaultDrainageMark] = React.useState([
-    50,
-    100,
+    50, 100,
   ]);
   const [defaultFloodingMark, setDefaultFloodingMark] = React.useState([
-    50,
-    100,
+    50, 100,
   ]);
   const [drainageValueCopy, setDrainageValueCopy] = React.useState({
     initial: 0,

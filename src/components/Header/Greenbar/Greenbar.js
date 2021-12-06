@@ -4,30 +4,30 @@
   Styles are created using CustomStyles from ../../../shared/constants and ../../../styles/greenBar.scss
 */
 
-import React, { useEffect, useContext, Fragment, useState } from "react";
-import { Context } from "../../../store/Store";
-import {
-  zoneIcon,
-  greenBarExpansionPanelHeight,
-  CustomStyles,
-} from "../../../shared/constants";
 import {
   Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
   Menu,
   MenuItem,
-  Dialog,
-  DialogContent,
-  DialogActions,
   Typography,
 } from "@material-ui/core";
-import FilterHdrIcon from "@material-ui/icons/FilterHdr";
-import CloudIcon from "@material-ui/icons/Cloud";
-import moment from "moment";
-import LocationComponent from "../../Location/Location";
-import WeatherConditions from "../../Location/WeatherConditions";
-import SoilCondition from "../../Location/SoilCondition";
 import { LocationOn, Refresh } from "@material-ui/icons";
+import CloudIcon from "@material-ui/icons/Cloud";
+import FilterHdrIcon from "@material-ui/icons/FilterHdr";
+import moment from "moment";
+import React, { Fragment, useContext, useEffect, useState } from "react";
+import {
+  CustomStyles,
+  greenBarExpansionPanelHeight,
+  zoneIcon,
+} from "../../../shared/constants";
+import { Context } from "../../../store/Store";
 import "../../../styles/greenBar.scss";
+import LocationComponent from "../../Location/Location";
+import SoilCondition from "../../Location/SoilCondition";
+import WeatherConditions from "../../Location/WeatherConditions";
 
 const speciesSelectorToolName = "species-selector";
 

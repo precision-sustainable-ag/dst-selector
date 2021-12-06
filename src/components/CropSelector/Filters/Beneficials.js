@@ -4,16 +4,16 @@
   styles are fetched from ../../../styles/filters.scss
 */
 
-import React, {
-  useState,
-  useEffect,
-  Fragment,
-  forwardRef,
-  useImperativeHandle,
-} from "react";
 import { Grid, Tooltip } from "@material-ui/core";
 import ToggleButton from "@material-ui/lab/ToggleButton";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
+import React, {
+  forwardRef,
+  Fragment,
+  useEffect,
+  useImperativeHandle,
+  useState,
+} from "react";
 import "../../../styles/filters.scss";
 
 const Beneficials = forwardRef((props, ref) => {

@@ -4,7 +4,7 @@
 */
 
 import { Tooltip } from "@material-ui/core";
-import React, { useState, useEffect, useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../../store/Store";
 import "../../styles/tooltipMaker.scss";
 

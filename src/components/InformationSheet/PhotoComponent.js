@@ -3,15 +3,15 @@
   styled using ../../styles/photoComponent.scss
 */
 
-import React, { useState, useEffect, Fragment, Suspense } from "react";
+import { Typography } from "@material-ui/core";
 import Axios from "axios";
 // import { CropImage } from "../../shared/constants";
 // import Carousel, { Modal, ModalGateway } from "react-images";
 import { LuminousGallery } from "luminous-lightbox";
+import React, { Suspense, useEffect, useState } from "react";
 import "../../../node_modules/luminous-lightbox/dist/luminous-basic.css";
-import "../../styles/photoComponent.scss";
-import { Typography } from "@material-ui/core";
 import { ucFirst } from "../../shared/constants";
+import "../../styles/photoComponent.scss";
 
 const PhotoComponent = ({
   imageData = {

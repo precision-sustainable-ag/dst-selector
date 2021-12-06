@@ -3,13 +3,13 @@
   The CoverCropType component filters crops based type
 */
 
-import React, {
-  useState,
-  useEffect,
-  forwardRef,
-  useImperativeHandle,
-} from "react";
 import { Chip, Grid } from "@material-ui/core";
+import React, {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useState,
+} from "react";
 
 // import { Filters } from "./Filters";  // TODO
 
@@ -18,7 +18,7 @@ const CoverCropType = forwardRef((props, ref) => {
 
   const prop = "Cover Crop Group";
   const [selected, setSelected] = useState({ [prop]: [] });
-  
+
   useEffect(() => {
     props.setSidebarFilterOptions({
       ...props.sidebarFilterOptions,
@@ -34,9 +34,7 @@ const CoverCropType = forwardRef((props, ref) => {
 
   const handleClick = (_, val) => {
     if (selected[prop].includes(val)) {
-      const removed = selected[prop].filter(
-        (chipVals) => chipVals !== val
-      );
+      const removed = selected[prop].filter((chipVals) => chipVals !== val);
       setSelected({ ...selected, [prop]: removed });
     } else {
       const added = selected[prop];

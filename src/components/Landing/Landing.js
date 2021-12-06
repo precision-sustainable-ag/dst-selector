@@ -4,13 +4,13 @@
   styled using ../../styles/landing.scss
 */
 
-import React, { useContext, useEffect, useLayoutEffect, useState } from "react";
-import "../../styles/landing.scss";
-import { Context } from "../../store/Store";
+import { Grid, Typography } from "@material-ui/core";
+import React, { useContext, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 // import { Typography, Button } from "@material-ui/core";
 import { LightButton } from "../../shared/constants";
-import { Typography, Box, Grid } from "@material-ui/core";
-import { Link } from "react-router-dom";
+import { Context } from "../../store/Store";
+import "../../styles/landing.scss";
 
 const Landing = (props) => {
   const [state, dispatch] = useContext(Context);

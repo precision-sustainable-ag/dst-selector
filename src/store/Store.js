@@ -11,22 +11,20 @@
     if lorem text is in a crop then airtable does not have a description for that crop
 */
 
+import moment from "moment-timezone";
 import React, { createContext, useReducer } from "react";
-import Reducer from "./Reducer";
+import desc from "../shared/crop-descriptions.json";
+import img from "../shared/image-dictionary.json";
+import z4crops from "../shared/json/zone4/crop-data.json";
+import z4Dict from "../shared/json/zone4/data-dictionary.json";
+import z5crops from "../shared/json/zone5/crop-data.json";
+import z5Dict from "../shared/json/zone5/data-dictionary.json";
+import z6crops from "../shared/json/zone6/crop-data.json";
+import z6Dict from "../shared/json/zone6/data-dictionary.json";
 // import crops from "../shared/crop-data.json";
 import z7crops from "../shared/json/zone7/crop-data.json";
-import z6crops from "../shared/json/zone6/crop-data.json";
-import z5crops from "../shared/json/zone5/crop-data.json";
-import z4crops from "../shared/json/zone4/crop-data.json";
-
-import moment from "moment-timezone";
-import img from "../shared/image-dictionary.json";
-import desc from "../shared/crop-descriptions.json";
-
 import z7Dict from "../shared/json/zone7/data-dictionary.json";
-import z6Dict from "../shared/json/zone6/data-dictionary.json";
-import z5Dict from "../shared/json/zone5/data-dictionary.json";
-import z4Dict from "../shared/json/zone4/data-dictionary.json";
+import Reducer from "./Reducer";
 
 const cropDataFormatter = (cropData = [{}], zone = 7) => {
   const excludedCropZoneDecisionKeys = ["Exclude", "Up and Coming", "Discuss"];

@@ -9,17 +9,15 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
   DialogTitle,
   Typography,
   useMediaQuery,
   useTheme,
 } from "@material-ui/core";
+import React, { useState } from "react";
 // import { DateRangePicker } from "@matharumanpreet00/react-daterange-picker";
 import DateRangePicker from "react-daterange-picker";
 import "react-daterange-picker/dist/css/react-calendar.css";
-import moment from "moment";
-import React, { useState, useEffect } from "react";
 import { CustomStyles } from "../../shared/constants";
 
 const stateDefinitions = {

@@ -2,9 +2,9 @@
   Under construction
 */
 
-import React, { Component } from "react";
-import { AppBar, Paper, Tabs, Tab, Typography, Box } from "@material-ui/core";
+import { AppBar, Box, Paper, Tab, Tabs, Typography } from "@material-ui/core";
 import PropTypes from "prop-types";
+import React from "react";
 
 export default function Navigation() {
   const [value, setValue] = React.useState(0);
@@ -63,5 +63,5 @@ function TabPanel(props) {
 TabPanel.propTypes = {
   children: PropTypes.node,
   index: PropTypes.any.isRequired,
-  value: PropTypes.any.isRequired
+  value: PropTypes.any.isRequired,
 };

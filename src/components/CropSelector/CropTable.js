@@ -5,49 +5,39 @@
   Styles are created using makeStyles
 */
 
-import React, { useContext, Fragment, useEffect, useState } from "react";
-import { Context } from "../../store/Store";
-import { useSnackbar } from "notistack";
-import {
-  LightButton,
-  CustomStyles,
-  allMonths,
-  getRating,
-  trimString,
-  CropImage,
-  flipCoverCropName,
-  sudoButtonStyle,
-} from "../../shared/constants";
 import {
   Button,
-  Typography,
-  Table,
   CircularProgress,
-  TableHead,
+  Table,
   TableBody,
-  TableContainer,
-  TableRow,
   TableCell,
-  ButtonBase,
+  TableContainer,
+  TableHead,
+  TableRow,
   Tooltip,
-  Zoom,
-  makeStyles,
-  Fab,
+  Typography,
 } from "@material-ui/core";
-
-import "../../styles/cropTable.scss";
 import {
-  ArrowUpward,
-  ArrowDownward,
   AddCircle,
-  FiberManualRecord,
   CloseRounded,
-  RemoveCircle,
-  KeyboardArrowUp,
+  FiberManualRecord,
   Sort,
 } from "@material-ui/icons";
+import { useSnackbar } from "notistack";
+import React, { Fragment, useContext, useEffect, useState } from "react";
+import {
+  CropImage,
+  CustomStyles,
+  flipCoverCropName,
+  getRating,
+  LightButton,
+  sudoButtonStyle,
+  trimString,
+} from "../../shared/constants";
+import { Context } from "../../store/Store";
 // import GrowthWindowComponent from "./GrowthWindow";
 import "../../styles/cropCalendarViewComponent.scss";
+import "../../styles/cropTable.scss";
 import CropDetailsModalComponent from "./CropDetailsModal";
 // import useScrollTrigger from "@material-ui/core/useScrollTrigger";
 import CropLegendModal from "./CropLegendModal";
@@ -1213,9 +1203,8 @@ const CropTableComponent = (props) => {
                         <div className="col-6 text-right">
                           <Button
                             onClick={() => {
-                              const ele = document.getElementById(
-                                "legendWrapper"
-                              );
+                              const ele =
+                                document.getElementById("legendWrapper");
                               ele.classList.add("d-none");
                             }}
                           >

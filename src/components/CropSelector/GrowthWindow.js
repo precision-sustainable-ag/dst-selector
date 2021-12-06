@@ -4,11 +4,10 @@
   Styles are created using growthWindow.scss
 */
 
-import React, { useEffect, useState, Fragment, useContext } from "react";
+import { Tooltip, Typography } from "@material-ui/core";
 import moment from "moment";
-import { Tooltip, withStyles, Typography } from "@material-ui/core";
+import React, { Fragment, useContext, useEffect, useState } from "react";
 import { Context } from "../../store/Store";
-
 import "../../styles/growthWindow.scss";
 
 const GrowthWindowComponent = (props) => {
