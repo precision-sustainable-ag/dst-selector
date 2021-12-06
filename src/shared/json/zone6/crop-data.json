@@ -1,13 +1,15 @@
-[
-  {
-    "_id": { "$oid": "619e81c533f2091c28edd4b8" },
+[{
+    "_id": {
+        "$oid": "61ae210a5bbad01ce2b09ec7"
+    },
     "Cover Crop Name": "__Open Discussion Row",
     "Zone Decision": "Include",
     "Zone": 6,
     "__id": "recj5AeWfvNreD4vl"
-  },
-  {
-    "_id": { "$oid": "619e81c533f2091c28edd4b9" },
+}, {
+    "_id": {
+        "$oid": "61ae210a5bbad01ce2b09ec8"
+    },
     "Cover Crop Name": "Barley, Spring",
     "Scientific Name": "Hordeum vulgare",
     "cv, var, or ssp to specify": "Spring",
@@ -22,13 +24,7 @@
     "Duration": ["Annual"],
     "Shape & Orientation": ["Erect"],
     "Notes: Basic Agronomics": "Dry matter highly dependent on planting and termination date and precipitation. Tolerates moderately alkaline conditions but does poorly in acid soil < pH 6.0. Bloat potential that is easily managed. Consult herbicide label for herbicides used prior to/during cover crop for grazing restrictions.",
-    "Soil Drainage": [
-      "Moderately well drained",
-      "Well drained",
-      "Excessively drained",
-      "Well drained muck",
-      "Somewhat Excessively Drained"
-    ],
+    "Soil Drainage": ["Moderately well drained", "Well drained", "Excessively drained", "Well drained muck", "Somewhat Excessively Drained"],
     "Min Germination Temp (F)": 35,
     "Seeds per Pound": 13600,
     "Inoculant Type": ["none"],
@@ -106,9 +102,10 @@
     "License": "Copyright © 2021 Northeast Cover Crop Council, northeastcovercrops.com\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.",
     "ITIS TSN": 40874,
     "__id": "recPNa0fnmEn2BkES"
-  },
-  {
-    "_id": { "$oid": "619e81c533f2091c28edd4ba" },
+}, {
+    "_id": {
+        "$oid": "61ae210a5bbad01ce2b09ec9"
+    },
     "Cover Crop Name": "Barley, Winter",
     "Scientific Name": "Hordeum vulgare",
     "cv, var, or ssp to specify": "Winter",
@@ -123,13 +120,7 @@
     "Duration": ["Annual"],
     "Shape & Orientation": ["Erect"],
     "Notes: Basic Agronomics": "More commonly grown south of the Mason-Dixon line and in SE PA.",
-    "Soil Drainage": [
-      "Moderately well drained",
-      "Well drained",
-      "Excessively drained",
-      "Well drained muck",
-      "Somewhat Excessively Drained"
-    ],
+    "Soil Drainage": ["Moderately well drained", "Well drained", "Excessively drained", "Well drained muck", "Somewhat Excessively Drained"],
     "Min Germination Temp (F)": 38,
     "Seeds per Pound": 13600,
     "Inoculant Type": ["none"],
@@ -208,9 +199,10 @@
     "License": "Copyright © 2021 Northeast Cover Crop Council, northeastcovercrops.com\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.",
     "ITIS TSN": 40874,
     "__id": "recOAPf5xKScRHHKj"
-  },
-  {
-    "_id": { "$oid": "619e81c533f2091c28edd4bb" },
+}, {
+    "_id": {
+        "$oid": "61ae210a5bbad01ce2b09eca"
+    },
     "Cover Crop Name": "Brassica, Forage",
     "Scientific Name": "Brassica oleracea",
     "Synonyms": "Brassica napus",
@@ -226,12 +218,7 @@
     "Duration": ["Annual"],
     "Shape & Orientation": ["Erect"],
     "Notes: Basic Agronomics": "Dry matter highly dependent on planting and termination date and precipitation. Scavenges sulfur. For grazing purposes, restrict to 75% of total ration or mixing with a grass is recommended. High glucosinolates interfer with mineral metabolism. Nitrate poisoning is possible if fed to livestock.",
-    "Soil Drainage": [
-      "Moderately well drained",
-      "Well drained",
-      "Well drained muck",
-      "Somewhat Excessively Drained"
-    ],
+    "Soil Drainage": ["Moderately well drained", "Well drained", "Well drained muck", "Somewhat Excessively Drained"],
     "Min Germination Temp (F)": 40,
     "Seeds per Pound": 100000,
     "Inoculant Type": ["none"],
@@ -312,9 +299,10 @@
     "License": "Copyright © 2021 Northeast Cover Crop Council, northeastcovercrops.com\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.",
     "ITIS TSN": 23062,
     "__id": "recJYCC0Jxk555rVR"
-  },
-  {
-    "_id": { "$oid": "619e81c533f2091c28edd4bc" },
+}, {
+    "_id": {
+        "$oid": "61ae210a5bbad01ce2b09ecb"
+    },
     "Cover Crop Name": "Buckwheat",
     "Scientific Name": "Fagopyrum esculentum",
     "Origin": "MCCC Species tool",
@@ -328,12 +316,7 @@
     "Duration": ["Annual"],
     "Shape & Orientation": ["Erect", "Semi-Erect"],
     "Notes: Basic Agronomics": "will self-seed if not terminated early in flowering",
-    "Soil Drainage": [
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Well drained muck"
-    ],
+    "Soil Drainage": ["Somewhat poorly drained", "Moderately well drained", "Well drained", "Well drained muck"],
     "Min Germination Temp (F)": 50,
     "Seeds per Pound": 20000,
     "Inoculant Type": ["none"],
@@ -412,9 +395,10 @@
     "License": "Copyright © 2021 Northeast Cover Crop Council, northeastcovercrops.com\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.",
     "ITIS TSN": 502589,
     "__id": "recwAnfyl4RgTKxkU"
-  },
-  {
-    "_id": { "$oid": "619e81c533f2091c28edd4bd" },
+}, {
+    "_id": {
+        "$oid": "61ae210a5bbad01ce2b09ecc"
+    },
     "Cover Crop Name": "Cereal Rye, Spring",
     "Scientific Name": "Secale cereale",
     "cv, var, or ssp to specify": "Spring",
@@ -428,14 +412,7 @@
     "Active Growth Period": ["Spring", "Summer"],
     "Duration": ["Annual"],
     "Shape & Orientation": ["Erect"],
-    "Soil Drainage": [
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Saturated muck",
-      "Well drained muck",
-      "Somewhat Excessively Drained"
-    ],
+    "Soil Drainage": ["Somewhat poorly drained", "Moderately well drained", "Well drained", "Saturated muck", "Well drained muck", "Somewhat Excessively Drained"],
     "Min Germination Temp (F)": 34,
     "Seeds per Pound": 18200,
     "Inoculant Type": ["none"],
@@ -512,9 +489,10 @@
     "License": "Copyright © 2021 Northeast Cover Crop Council, northeastcovercrops.com\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.",
     "ITIS TSN": 42090,
     "__id": "recj91if43XehKniF"
-  },
-  {
-    "_id": { "$oid": "619e81c533f2091c28edd4be" },
+}, {
+    "_id": {
+        "$oid": "61ae210a5bbad01ce2b09ecd"
+    },
     "Cover Crop Name": "Cereal Rye, Winter",
     "Scientific Name": "Secale cereale",
     "cv, var, or ssp to specify": "Winter",
@@ -528,14 +506,7 @@
     "Active Growth Period": ["Fall", "Spring"],
     "Duration": ["Annual"],
     "Shape & Orientation": ["Erect"],
-    "Soil Drainage": [
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Saturated muck",
-      "Well drained muck",
-      "Somewhat Excessively Drained"
-    ],
+    "Soil Drainage": ["Somewhat poorly drained", "Moderately well drained", "Well drained", "Saturated muck", "Well drained muck", "Somewhat Excessively Drained"],
     "Min Germination Temp (F)": 34,
     "Seeds per Pound": 18200,
     "Inoculant Type": ["none"],
@@ -617,9 +588,10 @@
     "License": "Copyright © 2021 Northeast Cover Crop Council, northeastcovercrops.com\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.",
     "ITIS TSN": 42090,
     "__id": "recc5IxWfuOSbQtEy"
-  },
-  {
-    "_id": { "$oid": "619e81c533f2091c28edd4bf" },
+}, {
+    "_id": {
+        "$oid": "61ae210a5bbad01ce2b09ece"
+    },
     "Cover Crop Name": "Clover, Balansa",
     "Scientific Name": "Trifolium michelianum",
     "cv, var, or ssp to specify": "ssp. balansae",
@@ -634,11 +606,7 @@
     "Duration": ["Annual"],
     "Shape & Orientation": ["Erect"],
     "Frost Seeding": true,
-    "Soil Drainage": [
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained"
-    ],
+    "Soil Drainage": ["Somewhat poorly drained", "Moderately well drained", "Well drained"],
     "Min Germination Temp (F)": 42,
     "Seeds per Pound": 500000,
     "Inoculant Type": ["berseem clover", "crimson clover"],
@@ -719,9 +687,10 @@
     "License": "Copyright © 2021 Northeast Cover Crop Council, northeastcovercrops.com\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.",
     "ITIS TSN": 506276,
     "__id": "recedKK2FsRvndWOh"
-  },
-  {
-    "_id": { "$oid": "619e81c533f2091c28edd4c0" },
+}, {
+    "_id": {
+        "$oid": "61ae210a5bbad01ce2b09ecf"
+    },
     "Cover Crop Name": "Clover, Berseem",
     "Scientific Name": "Trifolium alexandrinum",
     "Synonyms": "Egyptian Clover",
@@ -735,11 +704,7 @@
     "Active Growth Period": ["Winter", "Summer"],
     "Duration": ["Annual"],
     "Shape & Orientation": ["Erect"],
-    "Soil Drainage": [
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained"
-    ],
+    "Soil Drainage": ["Somewhat poorly drained", "Moderately well drained", "Well drained"],
     "Min Germination Temp (F)": 42,
     "Seeds per Pound": 206900,
     "Inoculant Type": ["berseem clover", "crimson clover"],
@@ -813,9 +778,10 @@
     "License": "Copyright © 2021 Northeast Cover Crop Council, northeastcovercrops.com\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.",
     "ITIS TSN": 26210,
     "__id": "reczCE7wvI3jm0A5N"
-  },
-  {
-    "_id": { "$oid": "619e81c533f2091c28edd4c1" },
+}, {
+    "_id": {
+        "$oid": "61ae210a5bbad01ce2b09ed0"
+    },
     "Cover Crop Name": "Clover, Crimson",
     "Scientific Name": "Trifolium incarnatum",
     "cv, var, or ssp to specify": "Dixie, Auburn, Autauga",
@@ -830,12 +796,7 @@
     "Duration": ["Annual"],
     "Shape & Orientation": ["Erect", "Semi-Erect"],
     "Frost Seeding": true,
-    "Soil Drainage": [
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Well drained muck"
-    ],
+    "Soil Drainage": ["Somewhat poorly drained", "Moderately well drained", "Well drained", "Well drained muck"],
     "Min Germination Temp (F)": 42,
     "Seeds per Pound": 149800,
     "Inoculant Type": ["crimson clover", "berseem clover"],
@@ -922,9 +883,10 @@
     "License": "Copyright © 2021 Northeast Cover Crop Council, northeastcovercrops.com\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.",
     "ITIS TSN": 26262,
     "__id": "rec4fZwNwgC0bDbnU"
-  },
-  {
-    "_id": { "$oid": "619e81c533f2091c28edd4c2" },
+}, {
+    "_id": {
+        "$oid": "61ae210a5bbad01ce2b09ed1"
+    },
     "Cover Crop Name": "Clover, Red",
     "Scientific Name": "Trifolium pratense",
     "cv, var, or ssp to specify": "Medium red clover",
@@ -939,12 +901,7 @@
     "Duration": ["Short-lived Perennial"],
     "Shape & Orientation": ["Erect"],
     "Frost Seeding": true,
-    "Soil Drainage": [
-      "Poorly drained",
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained"
-    ],
+    "Soil Drainage": ["Poorly drained", "Somewhat poorly drained", "Moderately well drained", "Well drained"],
     "Min Germination Temp (F)": 41,
     "Seeds per Pound": 272200,
     "Inoculant Type": ["red clover", "white clover"],
@@ -1033,9 +990,10 @@
     "License": "Copyright © 2021 Northeast Cover Crop Council, northeastcovercrops.com\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.",
     "ITIS TSN": 26313,
     "__id": "recKtaYjD61VgzVlZ"
-  },
-  {
-    "_id": { "$oid": "619e81c533f2091c28edd4c3" },
+}, {
+    "_id": {
+        "$oid": "61ae210a5bbad01ce2b09ed2"
+    },
     "Cover Crop Name": "Cowpea",
     "Scientific Name": "Vigna unguiculata",
     "cv, var, or ssp to specify": "'Iron Clay', 'Red Ripper'",
@@ -1050,13 +1008,7 @@
     "Active Growth Period": ["Summer"],
     "Duration": ["Annual"],
     "Shape & Orientation": ["Semi-Erect", "Climbing"],
-    "Soil Drainage": [
-      "Moderately well drained",
-      "Well drained",
-      "Well drained muck",
-      "Excessively drained",
-      "Somewhat Excessively Drained"
-    ],
+    "Soil Drainage": ["Moderately well drained", "Well drained", "Well drained muck", "Excessively drained", "Somewhat Excessively Drained"],
     "Min Germination Temp (F)": 58,
     "Seeds per Pound": 3600,
     "Inoculant Type": ["cowpea", "lespedeza"],
@@ -1136,9 +1088,10 @@
     "License": "Copyright © 2021 Northeast Cover Crop Council, northeastcovercrops.com\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.",
     "ITIS TSN": 27018,
     "__id": "rec90P1BZhTps3Wom"
-  },
-  {
-    "_id": { "$oid": "619e81c533f2091c28edd4c4" },
+}, {
+    "_id": {
+        "$oid": "61ae210a5bbad01ce2b09ed3"
+    },
     "Cover Crop Name": "Millet, Japanese",
     "Scientific Name": "Echinochloa esculenta",
     "Notes: Taxonomy": "vs Echinochloa frumentacea ",
@@ -1153,15 +1106,7 @@
     "Duration": ["Annual"],
     "Shape & Orientation": ["Erect"],
     "Notes: Basic Agronomics": "we have gotten up to 4 tons/acre dry matter in RI by seeding at 30-40 lbs/acre. Really responds to nitrogen!",
-    "Soil Drainage": [
-      "Poorly drained",
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Saturated muck",
-      "Well drained muck",
-      "Well drained",
-      "Very poorly drained"
-    ],
+    "Soil Drainage": ["Poorly drained", "Somewhat poorly drained", "Moderately well drained", "Saturated muck", "Well drained muck", "Well drained", "Very poorly drained"],
     "Min Germination Temp (F)": 65,
     "Seeds per Pound": 155000,
     "Inoculant Type": ["none"],
@@ -1232,9 +1177,10 @@
     "License": "Copyright © 2021 Northeast Cover Crop Council, northeastcovercrops.com\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.",
     "ITIS TSN": 506954,
     "__id": "reccgWtSF6zvE48y3"
-  },
-  {
-    "_id": { "$oid": "619e81c533f2091c28edd4c5" },
+}, {
+    "_id": {
+        "$oid": "61ae210a5bbad01ce2b09ed4"
+    },
     "Cover Crop Name": "Millet, Pearl",
     "Scientific Name": "Pennisetum glaucum ",
     "Notes: Taxonomy": "ITIS name conflict: Cenchrus americanus Use BMR forage varieteis for grazing or baleage, use cheaper non-BMR varieties (slightly more lignified)  for cover crop use.",
@@ -1249,15 +1195,7 @@
     "Active Growth Period": ["Summer"],
     "Duration": ["Annual"],
     "Shape & Orientation": ["Erect"],
-    "Soil Drainage": [
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Saturated muck",
-      "Well drained muck",
-      "Excessively drained",
-      "Somewhat Excessively Drained"
-    ],
+    "Soil Drainage": ["Somewhat poorly drained", "Moderately well drained", "Well drained", "Saturated muck", "Well drained muck", "Excessively drained", "Somewhat Excessively Drained"],
     "Min Germination Temp (F)": 65,
     "Seeds per Pound": 82300,
     "Inoculant Type": ["none"],
@@ -1327,9 +1265,10 @@
     "License": "Copyright © 2021 Northeast Cover Crop Council, northeastcovercrops.com\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.",
     "ITIS TSN": 508150,
     "__id": "recsFFyMKn8ATtNjk"
-  },
-  {
-    "_id": { "$oid": "619e81c533f2091c28edd4c6" },
+}, {
+    "_id": {
+        "$oid": "61ae210a5bbad01ce2b09ed5"
+    },
     "Cover Crop Name": "Mustard",
     "Scientific Name": "Brassica juncea",
     "Synonyms": "Brown Mustard, Sinapis alba (\"white mustard\")",
@@ -1345,13 +1284,7 @@
     "Duration": ["Annual"],
     "Shape & Orientation": ["Erect"],
     "Notes: Basic Agronomics": "Dry matter highly dependent on planting and termination date and precipitation. For grazing purposes, restrict to 75% of total ration or mixing with a grass is recommended. High glucosinolates interfer with mineral metabolism. Nitrate poisoning is possible if fed to livestock.",
-    "Soil Drainage": [
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Well drained muck",
-      "Somewhat Excessively Drained"
-    ],
+    "Soil Drainage": ["Somewhat poorly drained", "Moderately well drained", "Well drained", "Well drained muck", "Somewhat Excessively Drained"],
     "Min Germination Temp (F)": 40,
     "Seeds per Pound": 283000,
     "Inoculant Type": ["none"],
@@ -1434,9 +1367,10 @@
     "License": "Copyright © 2021 Northeast Cover Crop Council, northeastcovercrops.com\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.",
     "ITIS TSN": 23059,
     "__id": "rectQj4DniZRgDVas"
-  },
-  {
-    "_id": { "$oid": "619e81c533f2091c28edd4c7" },
+}, {
+    "_id": {
+        "$oid": "61ae210a5bbad01ce2b09ed6"
+    },
     "Cover Crop Name": "Oats",
     "Scientific Name": "Avena sativa",
     "cv, var, or ssp to specify": "Winter",
@@ -1450,14 +1384,7 @@
     "Active Growth Period": ["Fall", "Spring"],
     "Duration": ["Annual"],
     "Shape & Orientation": ["Erect"],
-    "Soil Drainage": [
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Excessively drained",
-      "Well drained muck",
-      "Somewhat Excessively Drained"
-    ],
+    "Soil Drainage": ["Somewhat poorly drained", "Moderately well drained", "Well drained", "Excessively drained", "Well drained muck", "Somewhat Excessively Drained"],
     "Min Germination Temp (F)": 38,
     "Seeds per Pound": 19400,
     "Inoculant Type": ["none"],
@@ -1534,9 +1461,10 @@
     "License": "Copyright © 2021 Northeast Cover Crop Council, northeastcovercrops.com\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.",
     "ITIS TSN": 41459,
     "__id": "rec9EstkBd2GzVExf"
-  },
-  {
-    "_id": { "$oid": "619e81c533f2091c28edd4c8" },
+}, {
+    "_id": {
+        "$oid": "61ae210a5bbad01ce2b09ed7"
+    },
     "Cover Crop Name": "Oats, Black",
     "Scientific Name": "Avena strigosa",
     "Notes: Taxonomy": "Does it grow in the north?",
@@ -1551,14 +1479,7 @@
     "Duration": ["Annual"],
     "Shape & Orientation": ["Erect"],
     "Notes: Basic Agronomics": "Used more in the south, some southeastern PA use. Dry matter highly dependent on planting and termination date and precipitation.  Prone to lodging in N-rich soil;  decomposition depends on maturity at kill. When planted in September will grow faster than rye. If planted early enough (e.g. after peas), it creates a very good lasting residue. Bloat potential that is easily managed. Nitrate testing of forage is recommended.",
-    "Soil Drainage": [
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Excessively drained",
-      "Well drained muck",
-      "Somewhat Excessively Drained"
-    ],
+    "Soil Drainage": ["Somewhat poorly drained", "Moderately well drained", "Well drained", "Excessively drained", "Well drained muck", "Somewhat Excessively Drained"],
     "Min Germination Temp (F)": 38,
     "Seeds per Pound": 19000,
     "Inoculant Type": ["none"],
@@ -1631,9 +1552,10 @@
     "License": "Copyright © 2021 Northeast Cover Crop Council, northeastcovercrops.com\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.",
     "ITIS TSN": 193431,
     "__id": "recz5CjYgdEQUgGcL"
-  },
-  {
-    "_id": { "$oid": "619e81c533f2091c28edd4c9" },
+}, {
+    "_id": {
+        "$oid": "61ae210a5bbad01ce2b09ed8"
+    },
     "Cover Crop Name": "Oats, Spring",
     "Scientific Name": "Avena sativa",
     "cv, var, or ssp to specify": "Spring",
@@ -1648,14 +1570,7 @@
     "Duration": ["Annual"],
     "Shape & Orientation": ["Erect"],
     "Notes: Basic Agronomics": "Dry matter highly dependent on planting and termination date and precipitation.  Prone to lodging in N-rich soil;  decomposition depends on maturity at kill. When planted in September will grow faster than rye. If planted early enough (e.g. after peas), it creates a very good lasting residue. Bloat potential that is easily managed. Nitrate testing of forage is recommended.",
-    "Soil Drainage": [
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Excessively drained",
-      "Well drained muck",
-      "Somewhat Excessively Drained"
-    ],
+    "Soil Drainage": ["Somewhat poorly drained", "Moderately well drained", "Well drained", "Excessively drained", "Well drained muck", "Somewhat Excessively Drained"],
     "Min Germination Temp (F)": 38,
     "Seeds per Pound": 19400,
     "Inoculant Type": ["none"],
@@ -1732,9 +1647,10 @@
     "License": "Copyright © 2021 Northeast Cover Crop Council, northeastcovercrops.com\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.",
     "ITIS TSN": 41459,
     "__id": "reccwdumf76mRV5P6"
-  },
-  {
-    "_id": { "$oid": "619e81c533f2091c28edd4ca" },
+}, {
+    "_id": {
+        "$oid": "61ae210a5bbad01ce2b09ed9"
+    },
     "Cover Crop Name": "Pea, Spring",
     "Scientific Name": "Pisum sativum",
     "Synonyms": "Garden Pea",
@@ -1751,14 +1667,7 @@
     "Duration": ["Annual"],
     "Shape & Orientation": ["Semi-Erect", "Climbing"],
     "Notes: Basic Agronomics": "Dry matter highly dependent on planting and termination date and precipitation. Season length, habit vary by cultivar. Biomass breaks down quickly; early planting and termination reduces winter survival. Mixes well with grains when grown for forage. Bloat potential that is easily managed. Seed vigor highly variable. For grazing purposes, restrict to 30% of total ration or mixing with a grass is recommended.",
-    "Soil Drainage": [
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Excessively drained",
-      "Well drained muck",
-      "Somewhat Excessively Drained"
-    ],
+    "Soil Drainage": ["Somewhat poorly drained", "Moderately well drained", "Well drained", "Excessively drained", "Well drained muck", "Somewhat Excessively Drained"],
     "Min Germination Temp (F)": 42,
     "Seeds per Pound": 3500,
     "Inoculant Type": ["pea/vetch"],
@@ -1835,9 +1744,10 @@
     "License": "Copyright © 2021 Northeast Cover Crop Council, northeastcovercrops.com\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.",
     "ITIS TSN": 26867,
     "__id": "recBoRPZoWEMLzHYN"
-  },
-  {
-    "_id": { "$oid": "619e81c533f2091c28edd4cb" },
+}, {
+    "_id": {
+        "$oid": "61ae210a5bbad01ce2b09eda"
+    },
     "Cover Crop Name": "Pea, Winter",
     "Scientific Name": "Pisum sativum",
     "Synonyms": "Field Pea",
@@ -1854,14 +1764,7 @@
     "Duration": ["Annual"],
     "Shape & Orientation": ["Semi-Erect", "Climbing"],
     "Notes: Basic Agronomics": "Dry matter highly dependent on planting and termination date and precipitation. Season length, habit vary by cultivar. Biomass breaks down quickly; early planting and termination reduces winter survival. Mixes well with grains when grown for forage. Bloat potential that is easily managed. Seed vigor highly variable. For grazing purposes, restrict to 30% of total ration or mixing with a grass is recommended.",
-    "Soil Drainage": [
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Excessively drained",
-      "Well drained muck",
-      "Somewhat Excessively Drained"
-    ],
+    "Soil Drainage": ["Somewhat poorly drained", "Moderately well drained", "Well drained", "Excessively drained", "Well drained muck", "Somewhat Excessively Drained"],
     "Min Germination Temp (F)": 42,
     "Seeds per Pound": 4000,
     "Inoculant Type": ["pea/vetch"],
@@ -1949,9 +1852,10 @@
     "License": "Copyright © 2021 Northeast Cover Crop Council, northeastcovercrops.com\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.",
     "ITIS TSN": 26867,
     "__id": "recHB7FeYZuS4Jxz0"
-  },
-  {
-    "_id": { "$oid": "619e81c533f2091c28edd4cc" },
+}, {
+    "_id": {
+        "$oid": "61ae210a5bbad01ce2b09edb"
+    },
     "Cover Crop Name": "Phacelia",
     "Scientific Name": "Phacelia tanacetifolia",
     "Origin": "MCCC Species tool",
@@ -1964,15 +1868,7 @@
     "Active Growth Period": ["Fall", "Spring"],
     "Duration": ["Annual"],
     "Shape & Orientation": ["Erect"],
-    "Soil Drainage": [
-      "Poorly drained",
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Excessively drained",
-      "Well drained muck",
-      "Somewhat Excessively Drained"
-    ],
+    "Soil Drainage": ["Poorly drained", "Somewhat poorly drained", "Moderately well drained", "Well drained", "Excessively drained", "Well drained muck", "Somewhat Excessively Drained"],
     "Min Germination Temp (F)": 38,
     "Seeds per Pound": 245000,
     "Inoculant Type": ["none"],
@@ -2048,9 +1944,10 @@
     "License": "Copyright © 2021 Northeast Cover Crop Council, northeastcovercrops.com\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.",
     "ITIS TSN": 31602,
     "__id": "recrFb1tZJ8UvPRTr"
-  },
-  {
-    "_id": { "$oid": "619e81c533f2091c28edd4cd" },
+}, {
+    "_id": {
+        "$oid": "61ae210a5bbad01ce2b09edc"
+    },
     "Cover Crop Name": "Radish, Forage",
     "Scientific Name": "Raphanus sativus",
     "cv, var, or ssp to specify": "Forage (CCS-779)",
@@ -2065,14 +1962,7 @@
     "Duration": ["Annual"],
     "Shape & Orientation": ["Erect"],
     "Frost Seeding": true,
-    "Soil Drainage": [
-      "Poorly drained",
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Well drained muck",
-      "Somewhat Excessively Drained"
-    ],
+    "Soil Drainage": ["Poorly drained", "Somewhat poorly drained", "Moderately well drained", "Well drained", "Well drained muck", "Somewhat Excessively Drained"],
     "Min Germination Temp (F)": 45,
     "Seeds per Pound": 20000,
     "Inoculant Type": ["none"],
@@ -2160,9 +2050,10 @@
     "License": "Copyright © 2021 Northeast Cover Crop Council, northeastcovercrops.com\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.",
     "ITIS TSN": 23290,
     "__id": "rec0fkRSPW2unbR48"
-  },
-  {
-    "_id": { "$oid": "619e81c533f2091c28edd4ce" },
+}, {
+    "_id": {
+        "$oid": "61ae210a5bbad01ce2b09edd"
+    },
     "Cover Crop Name": "Rapeseed, Forage",
     "Scientific Name": "Brassica napus",
     "cv, var, or ssp to specify": "'Dwarf Essex', spring + winter canola",
@@ -2177,13 +2068,7 @@
     "Duration": ["Annual"],
     "Shape & Orientation": ["Erect"],
     "Frost Seeding": true,
-    "Soil Drainage": [
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Well drained muck",
-      "Somewhat Excessively Drained"
-    ],
+    "Soil Drainage": ["Somewhat poorly drained", "Moderately well drained", "Well drained", "Well drained muck", "Somewhat Excessively Drained"],
     "Min Germination Temp (F)": 41,
     "Seeds per Pound": 157000,
     "Inoculant Type": ["none"],
@@ -2266,9 +2151,10 @@
     "License": "Copyright © 2021 Northeast Cover Crop Council, northeastcovercrops.com\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.",
     "ITIS TSN": 23060,
     "__id": "recXC9kSNB8npGaAv"
-  },
-  {
-    "_id": { "$oid": "619e81c533f2091c28edd4cf" },
+}, {
+    "_id": {
+        "$oid": "61ae210a5bbad01ce2b09ede"
+    },
     "Cover Crop Name": "Ryegrass, Annual",
     "Scientific Name": "Lolium multiflorum",
     "cv, var, or ssp to specify": "Italian Ryegrass",
@@ -2284,14 +2170,7 @@
     "Duration": ["Annual"],
     "Shape & Orientation": ["Erect"],
     "Frost Seeding": true,
-    "Soil Drainage": [
-      "Poorly drained",
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Saturated muck",
-      "Well drained muck"
-    ],
+    "Soil Drainage": ["Poorly drained", "Somewhat poorly drained", "Moderately well drained", "Well drained", "Saturated muck", "Well drained muck"],
     "Min Germination Temp (F)": 40,
     "Seeds per Pound": 230000,
     "Inoculant Type": ["none"],
@@ -2380,9 +2259,10 @@
     "License": "Copyright © 2021 Northeast Cover Crop Council, northeastcovercrops.com\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.",
     "ITIS TSN": 40892,
     "__id": "recdDJ15oYmMBFO68"
-  },
-  {
-    "_id": { "$oid": "619e81c533f2091c28edd4d0" },
+}, {
+    "_id": {
+        "$oid": "61ae210a5bbad01ce2b09edf"
+    },
     "Cover Crop Name": "Ryegrass, Perennial",
     "Scientific Name": "Lolium perenne",
     "Origin": "MCCC Species tool",
@@ -2397,14 +2277,7 @@
     "Shape & Orientation": ["Erect", "Semi-Erect"],
     "Frost Seeding": true,
     "Notes: Basic Agronomics": "best seeded spring or fall. May die out over summer. Can be used in perennial conservation cover crop mixes to hold banks and quick cover of disturbed soils.",
-    "Soil Drainage": [
-      "Poorly drained",
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Saturated muck",
-      "Well drained muck"
-    ],
+    "Soil Drainage": ["Poorly drained", "Somewhat poorly drained", "Moderately well drained", "Well drained", "Saturated muck", "Well drained muck"],
     "Min Germination Temp (F)": 40,
     "Seeds per Pound": 240000,
     "Inoculant Type": ["none"],
@@ -2485,9 +2358,10 @@
     "License": "Copyright © 2021 Northeast Cover Crop Council, northeastcovercrops.com\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.",
     "ITIS TSN": 40893,
     "__id": "recVhxnKuxWUINr9N"
-  },
-  {
-    "_id": { "$oid": "619e81c533f2091c28edd4d1" },
+}, {
+    "_id": {
+        "$oid": "61ae210a5bbad01ce2b09ee0"
+    },
     "Cover Crop Name": "Sorghum-sudangrass",
     "Scientific Name": "Sorghum bicolor x Sorghum bicolor var. Sudanense",
     "Synonyms": "Sudex",
@@ -2502,14 +2376,7 @@
     "Active Growth Period": ["Summer"],
     "Duration": ["Annual"],
     "Shape & Orientation": ["Erect"],
-    "Soil Drainage": [
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Excessively drained",
-      "Well drained muck",
-      "Somewhat Excessively Drained"
-    ],
+    "Soil Drainage": ["Somewhat poorly drained", "Moderately well drained", "Well drained", "Excessively drained", "Well drained muck", "Somewhat Excessively Drained"],
     "Min Germination Temp (F)": 65,
     "Seeds per Pound": 15000,
     "Inoculant Type": ["none"],
@@ -2583,9 +2450,10 @@
     "Search Synonyms": "Sudex, brown midrib sorghum sudangrass",
     "License": "Copyright © 2021 Northeast Cover Crop Council, northeastcovercrops.com\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.",
     "__id": "recsmwaDr74UFoFDi"
-  },
-  {
-    "_id": { "$oid": "619e81c533f2091c28edd4d2" },
+}, {
+    "_id": {
+        "$oid": "61ae210a5bbad01ce2b09ee1"
+    },
     "Cover Crop Name": "Soybeans",
     "Scientific Name": "Glycine max",
     "cv, var, or ssp to specify": "non GMO varities",
@@ -2600,14 +2468,7 @@
     "Duration": ["Annual"],
     "Shape & Orientation": ["Erect"],
     "Notes: Basic Agronomics": "Dry matter highly dependent on planting and termination date and precipitation.Good seed value if a short season cultivar is used and the crop is managed properly to obtain decent quality seed. Best forage value at R6/R7. For grazing purposes, restrict to 30% of total ration or mixing with a grass is recommended.",
-    "Soil Drainage": [
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Excessively drained",
-      "Well drained muck",
-      "Somewhat Excessively Drained"
-    ],
+    "Soil Drainage": ["Somewhat poorly drained", "Moderately well drained", "Well drained", "Excessively drained", "Well drained muck", "Somewhat Excessively Drained"],
     "Min Germination Temp (F)": 50,
     "Seeds per Pound": 4900,
     "Inoculant Type": ["soybean"],
@@ -2685,9 +2546,10 @@
     "License": "Copyright © 2021 Northeast Cover Crop Council, northeastcovercrops.com\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.",
     "ITIS TSN": 26716,
     "__id": "rechU5ZuZcrrC3HAE"
-  },
-  {
-    "_id": { "$oid": "619e81c533f2091c28edd4d3" },
+}, {
+    "_id": {
+        "$oid": "61ae210a5bbad01ce2b09ee2"
+    },
     "Cover Crop Name": "Sudangrass",
     "Scientific Name": "Sorghum X drummondii",
     "cv, var, or ssp to specify": "Use non BMR (less expensive) varieties in summer cover crop mixes, use BMR varieties for feed/forage properties.",
@@ -2701,14 +2563,7 @@
     "Active Growth Period": ["Summer"],
     "Duration": ["Annual"],
     "Shape & Orientation": ["Erect"],
-    "Soil Drainage": [
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Excessively drained",
-      "Well drained muck",
-      "Somewhat Excessively Drained"
-    ],
+    "Soil Drainage": ["Somewhat poorly drained", "Moderately well drained", "Well drained", "Excessively drained", "Well drained muck", "Somewhat Excessively Drained"],
     "Min Germination Temp (F)": 65,
     "Seeds per Pound": 44200,
     "Inoculant Type": ["none"],
@@ -2779,9 +2634,10 @@
     "License": "Copyright © 2021 Northeast Cover Crop Council, northeastcovercrops.com\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.",
     "ITIS TSN": 506626,
     "__id": "recHxsFkhn7kEhF1r"
-  },
-  {
-    "_id": { "$oid": "619e81c533f2091c28edd4d4" },
+}, {
+    "_id": {
+        "$oid": "61ae210a5bbad01ce2b09ee3"
+    },
     "Cover Crop Name": "Sunflower",
     "Scientific Name": "Helianthus annuus",
     "cv, var, or ssp to specify": "Black Oil",
@@ -2796,14 +2652,7 @@
     "Duration": ["Annual"],
     "Shape & Orientation": ["Erect"],
     "Notes: Basic Agronomics": "Dry matter highly dependent on planting and termination date (due to photoperiod sensitivity)and precipitation. Plant before mid July for greatest biomass.",
-    "Soil Drainage": [
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Excessively drained",
-      "Well drained muck",
-      "Somewhat Excessively Drained"
-    ],
+    "Soil Drainage": ["Somewhat poorly drained", "Moderately well drained", "Well drained", "Excessively drained", "Well drained muck", "Somewhat Excessively Drained"],
     "Min Germination Temp (F)": 65,
     "Seeds per Pound": 46900,
     "Inoculant Type": ["none"],
@@ -2875,9 +2724,10 @@
     "License": "Copyright © 2021 Northeast Cover Crop Council, northeastcovercrops.com\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.",
     "ITIS TSN": 36616,
     "__id": "recs1ytrxi1vlN0JD"
-  },
-  {
-    "_id": { "$oid": "619e81c533f2091c28edd4d5" },
+}, {
+    "_id": {
+        "$oid": "61ae210a5bbad01ce2b09ee4"
+    },
     "Cover Crop Name": "Sunn Hemp",
     "Scientific Name": "Crotalaria juncea",
     "cv, var, or ssp to specify": "(look up Steve Groff's CV that does well here)",
@@ -2892,14 +2742,7 @@
     "Duration": ["Annual"],
     "Shape & Orientation": ["Erect"],
     "Notes: Basic Agronomics": "Dry matter highly dependent on planting and termination date and precipitation. Seeds are toxic to livestock. Bloat potential that is easily managed. For grazing purposes, restrict to 30% of total ration or mixing with a grass is recommended.",
-    "Soil Drainage": [
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Excessively drained",
-      "Well drained muck",
-      "Somewhat Excessively Drained"
-    ],
+    "Soil Drainage": ["Somewhat poorly drained", "Moderately well drained", "Well drained", "Excessively drained", "Well drained muck", "Somewhat Excessively Drained"],
     "Min Germination Temp (F)": 68,
     "Seeds per Pound": 15000,
     "Inoculant Type": ["peanut", "lima bean"],
@@ -2976,9 +2819,10 @@
     "License": "Copyright © 2021 Northeast Cover Crop Council, northeastcovercrops.com\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.",
     "ITIS TSN": 501804,
     "__id": "rec6dunwstUBAedgx"
-  },
-  {
-    "_id": { "$oid": "619e81c533f2091c28edd4d6" },
+}, {
+    "_id": {
+        "$oid": "61ae210a5bbad01ce2b09ee5"
+    },
     "Cover Crop Name": "Sweetclover, Yellow",
     "Scientific Name": "Melilotus officinalis",
     "Synonyms": "Fabales",
@@ -2994,14 +2838,7 @@
     "Duration": ["Biennial", "Annual"],
     "Shape & Orientation": ["Erect"],
     "Frost Seeding": true,
-    "Soil Drainage": [
-      "Poorly drained",
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Well drained muck",
-      "Somewhat Excessively Drained"
-    ],
+    "Soil Drainage": ["Poorly drained", "Somewhat poorly drained", "Moderately well drained", "Well drained", "Well drained muck", "Somewhat Excessively Drained"],
     "Min Germination Temp (F)": 42,
     "Seeds per Pound": 259000,
     "Inoculant Type": ["alfalfa", "sweetclover"],
@@ -3084,9 +2921,10 @@
     "License": "Copyright © 2021 Northeast Cover Crop Council, northeastcovercrops.com\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.",
     "ITIS TSN": 26150,
     "__id": "recdvzgZaUGGMLRVE"
-  },
-  {
-    "_id": { "$oid": "619e81c533f2091c28edd4d7" },
+}, {
+    "_id": {
+        "$oid": "61ae210a5bbad01ce2b09ee6"
+    },
     "Cover Crop Name": "Teff",
     "Scientific Name": "Eragrostis tef",
     "cv, var, or ssp to specify": "'Descartes', 'Tiffany'",
@@ -3101,14 +2939,7 @@
     "Duration": ["Annual"],
     "Shape & Orientation": ["Erect"],
     "Notes: Basic Agronomics": "Dry matter highly dependent on planting and termination date and precipitation. Caution with grazing due to shallow root system.",
-    "Soil Drainage": [
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Excessively drained",
-      "Well drained muck",
-      "Somewhat Excessively Drained"
-    ],
+    "Soil Drainage": ["Somewhat poorly drained", "Moderately well drained", "Well drained", "Excessively drained", "Well drained muck", "Somewhat Excessively Drained"],
     "Min Germination Temp (F)": 65,
     "Seeds per Pound": 1300000,
     "Inoculant Type": ["none"],
@@ -3186,9 +3017,10 @@
     "License": "Copyright © 2021 Northeast Cover Crop Council, northeastcovercrops.com\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.",
     "ITIS TSN": 40738,
     "__id": "recJwVagZyMa413au"
-  },
-  {
-    "_id": { "$oid": "619e81c533f2091c28edd4d8" },
+}, {
+    "_id": {
+        "$oid": "61ae210a5bbad01ce2b09ee7"
+    },
     "Cover Crop Name": "Triticale, Spring",
     "Scientific Name": "X Triticosecale",
     "cv, var, or ssp to specify": "Spring",
@@ -3203,14 +3035,7 @@
     "Duration": ["Annual"],
     "Shape & Orientation": ["Erect"],
     "Notes: Basic Agronomics": "Dry matter highly dependent on planting and termination date and precipitation.",
-    "Soil Drainage": [
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Excessively drained",
-      "Well drained muck",
-      "Somewhat Excessively Drained"
-    ],
+    "Soil Drainage": ["Somewhat poorly drained", "Moderately well drained", "Well drained", "Excessively drained", "Well drained muck", "Somewhat Excessively Drained"],
     "Min Germination Temp (F)": 38,
     "Seeds per Pound": 12000,
     "Inoculant Type": ["none"],
@@ -3284,9 +3109,10 @@
     "License": "Copyright © 2021 Northeast Cover Crop Council, northeastcovercrops.com\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.",
     "ITIS TSN": 781315,
     "__id": "recnFiV37QILbMxC0"
-  },
-  {
-    "_id": { "$oid": "619e81c533f2091c28edd4d9" },
+}, {
+    "_id": {
+        "$oid": "61ae210a5bbad01ce2b09ee8"
+    },
     "Cover Crop Name": "Triticale, Winter",
     "Scientific Name": "X Triticosecale",
     "cv, var, or ssp to specify": "Winter",
@@ -3300,13 +3126,7 @@
     "Active Growth Period": ["Winter"],
     "Duration": ["Annual"],
     "Shape & Orientation": ["Erect"],
-    "Soil Drainage": [
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Well drained muck",
-      "Somewhat Excessively Drained"
-    ],
+    "Soil Drainage": ["Somewhat poorly drained", "Moderately well drained", "Well drained", "Well drained muck", "Somewhat Excessively Drained"],
     "Min Germination Temp (F)": 38,
     "Seeds per Pound": 12000,
     "Inoculant Type": ["none"],
@@ -3383,9 +3203,10 @@
     "License": "Copyright © 2021 Northeast Cover Crop Council, northeastcovercrops.com\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.",
     "ITIS TSN": 781315,
     "__id": "recTvoW3IW6QsNWQd"
-  },
-  {
-    "_id": { "$oid": "619e81c533f2091c28edd4da" },
+}, {
+    "_id": {
+        "$oid": "61ae210a5bbad01ce2b09ee9"
+    },
     "Cover Crop Name": "Turnip, Forage",
     "Scientific Name": "Brassica rapa",
     "cv, var, or ssp to specify": "Forage -- 'Pasja' or 'Appin'",
@@ -3400,12 +3221,7 @@
     "Duration": ["Annual"],
     "Shape & Orientation": ["Erect"],
     "Frost Seeding": true,
-    "Soil Drainage": [
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Well drained muck"
-    ],
+    "Soil Drainage": ["Somewhat poorly drained", "Moderately well drained", "Well drained", "Well drained muck"],
     "Min Germination Temp (F)": 45,
     "Seeds per Pound": 192800,
     "Inoculant Type": ["none"],
@@ -3484,9 +3300,10 @@
     "License": "Copyright © 2021 Northeast Cover Crop Council, northeastcovercrops.com\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.",
     "ITIS TSN": 23063,
     "__id": "recznqlaY4zPA8q3E"
-  },
-  {
-    "_id": { "$oid": "619e81c533f2091c28edd4db" },
+}, {
+    "_id": {
+        "$oid": "61ae210a5bbad01ce2b09eea"
+    },
     "Cover Crop Name": "Turnip, Purple Top",
     "Scientific Name": "Brassica rapa",
     "cv, var, or ssp to specify": "'Purple Top'",
@@ -3501,12 +3318,7 @@
     "Duration": ["Annual"],
     "Shape & Orientation": ["Erect"],
     "Frost Seeding": true,
-    "Soil Drainage": [
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Well drained muck"
-    ],
+    "Soil Drainage": ["Somewhat poorly drained", "Moderately well drained", "Well drained", "Well drained muck"],
     "Min Germination Temp (F)": 45,
     "Seeds per Pound": 192800,
     "Inoculant Type": ["none"],
@@ -3586,9 +3398,10 @@
     "License": "Copyright © 2021 Northeast Cover Crop Council, northeastcovercrops.com\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.",
     "ITIS TSN": 23063,
     "__id": "recYFBeOrCJbrsvMW"
-  },
-  {
-    "_id": { "$oid": "619e81c533f2091c28edd4dc" },
+}, {
+    "_id": {
+        "$oid": "61ae210a5bbad01ce2b09eeb"
+    },
     "Cover Crop Name": "Vetch, Hairy",
     "Scientific Name": "Vicia villosa",
     "Synonyms": "Winter Vetch",
@@ -3602,13 +3415,7 @@
     "Active Growth Period": ["Winter", "Fall", "Spring"],
     "Duration": ["Annual"],
     "Shape & Orientation": ["Climbing"],
-    "Soil Drainage": [
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Well drained muck",
-      "Somewhat Excessively Drained"
-    ],
+    "Soil Drainage": ["Somewhat poorly drained", "Moderately well drained", "Well drained", "Well drained muck", "Somewhat Excessively Drained"],
     "Min Germination Temp (F)": 50,
     "Seeds per Pound": 16300,
     "Inoculant Type": ["pea/vetch"],
@@ -3691,9 +3498,10 @@
     "License": "Copyright © 2021 Northeast Cover Crop Council, northeastcovercrops.com\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.",
     "ITIS TSN": 26360,
     "__id": "recB4FMXwyUMlyE66"
-  },
-  {
-    "_id": { "$oid": "619e81c533f2091c28edd4dd" },
+}, {
+    "_id": {
+        "$oid": "61ae210a5bbad01ce2b09eec"
+    },
     "Cover Crop Name": "Wheat, Spring",
     "Scientific Name": "Triticum aestivum",
     "cv, var, or ssp to specify": "Spring",
@@ -3708,14 +3516,7 @@
     "Duration": ["Annual"],
     "Shape & Orientation": ["Erect"],
     "Hessian Fly-Free Date": true,
-    "Soil Drainage": [
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Excessively drained",
-      "Well drained muck",
-      "Somewhat Excessively Drained"
-    ],
+    "Soil Drainage": ["Somewhat poorly drained", "Moderately well drained", "Well drained", "Excessively drained", "Well drained muck", "Somewhat Excessively Drained"],
     "Min Germination Temp (F)": 38,
     "Seeds per Pound": 11400,
     "Inoculant Type": ["none"],
@@ -3793,9 +3594,10 @@
     "License": "Copyright © 2021 Northeast Cover Crop Council, northeastcovercrops.com\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.",
     "ITIS TSN": 42237,
     "__id": "recIVPjKBaYNfxykd"
-  },
-  {
-    "_id": { "$oid": "619e81c533f2091c28edd4de" },
+}, {
+    "_id": {
+        "$oid": "61ae210a5bbad01ce2b09eed"
+    },
     "Cover Crop Name": "Wheat, Winter",
     "Scientific Name": "Triticum aestivum",
     "cv, var, or ssp to specify": "Winter ",
@@ -3810,13 +3612,7 @@
     "Duration": ["Annual"],
     "Shape & Orientation": ["Erect"],
     "Hessian Fly-Free Date": true,
-    "Soil Drainage": [
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Excessively drained",
-      "Somewhat Excessively Drained"
-    ],
+    "Soil Drainage": ["Somewhat poorly drained", "Moderately well drained", "Well drained", "Excessively drained", "Somewhat Excessively Drained"],
     "Min Germination Temp (F)": 38,
     "Seeds per Pound": 11400,
     "Inoculant Type": ["none"],
@@ -3895,5 +3691,4 @@
     "License": "Copyright © 2021 Northeast Cover Crop Council, northeastcovercrops.com\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.",
     "ITIS TSN": 42237,
     "__id": "recDna1plwKbI8DVg"
-  }
-]
+}]

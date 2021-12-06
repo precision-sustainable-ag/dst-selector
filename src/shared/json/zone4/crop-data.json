@@ -1,6 +1,7 @@
-[
-  {
-    "_id": { "$oid": "619e81b7b2a0151b3a9a9e4d" },
+[{
+    "_id": {
+        "$oid": "61ae20f86683631be3b03c9e"
+    },
     "Reduces Surface Compaction": 3,
     "Nitrogen Scavenging": 3,
     "Inoculant Type": ["none"],
@@ -24,7 +25,7 @@
     "Supresses Winter Annual Weeds": 3,
     "Tillage Termination at Vegetative": 2,
     "Freezing Termination at Vegetative": 3,
-    "Mow Tolerance at Flowering": 5,
+    "Mow Termination at Flowering": 5,
     "Flood Tolerance": 2,
     "Prevent Fall Soil Erosion": 2,
     "Shade Tolerance": 2,
@@ -34,19 +35,13 @@
     "Root Architecture": ["Fibrous"],
     "Drilled Depth Min": 0.75,
     "Salinity Tolerance": 3,
-    "Roller Crimp Tolerance at Flowering": 5,
+    "Roller Crimp Termination at Flowering": 5,
     "Standard Summer Seeding Rate End": "2020-07-31",
     "Reliable Establishment/Growth End": "2020-07-31",
     "ITIS TSN": 40874,
     "Persistence": 1,
     "Nitrogen Accumulation Min, Legumes (lbs/A/y)": 0,
-    "Soil Drainage": [
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Excessively drained",
-      "Well drained muck"
-    ],
+    "Soil Drainage": ["Somewhat poorly drained", "Moderately well drained", "Well drained", "Excessively drained", "Well drained muck"],
     "Cover Crop Group": "Grass",
     "Flooding Frequency Tolerance": "Moderate",
     "Residue Supresses Summer Annual Weeds": 3,
@@ -92,9 +87,10 @@
     "Establishes Quickly": 4,
     "USDA Symbol": "HOVU",
     "__id": "reclcItzneg3k4uRN"
-  },
-  {
-    "_id": { "$oid": "619e81b7b2a0151b3a9a9e4e" },
+}, {
+    "_id": {
+        "$oid": "61ae20f86683631be3b03c9f"
+    },
     "Reduces Surface Compaction": 5,
     "Nitrogen Scavenging": 3,
     "Inoculant Type": ["none"],
@@ -116,7 +112,7 @@
     "Supresses Winter Annual Weeds": 4,
     "Tillage Termination at Vegetative": 4,
     "Freezing Termination at Vegetative": 3,
-    "Mow Tolerance at Flowering": 5,
+    "Mow Termination at Flowering": 5,
     "Flood Tolerance": 2,
     "Prevent Fall Soil Erosion": 5,
     "Shade Tolerance": 3,
@@ -127,18 +123,13 @@
     "Root Architecture": ["Fibrous"],
     "Drilled Depth Min": 0.75,
     "Salinity Tolerance": 3,
-    "Roller Crimp Tolerance at Flowering": 3,
+    "Roller Crimp Termination at Flowering": 3,
     "Reliable Establishment/Growth End": "2020-09-15",
     "Notes: Insects": "Terminating barley early or late showed no impact on arthropod (pest or beneficial) numbers in a subsequent soybean crop",
     "ITIS TSN": 40874,
     "Persistence": 2,
     "Nitrogen Accumulation Min, Legumes (lbs/A/y)": 0,
-    "Soil Drainage": [
-      "Moderately well drained",
-      "Well drained",
-      "Excessively drained",
-      "Well drained muck"
-    ],
+    "Soil Drainage": ["Moderately well drained", "Well drained", "Excessively drained", "Well drained muck"],
     "Cover Crop Group": "Grass",
     "Flooding Frequency Tolerance": "Poor",
     "Residue Supresses Summer Annual Weeds": 4,
@@ -183,9 +174,10 @@
     "Establishes Quickly": 4,
     "USDA Symbol": "HOVU",
     "__id": "reckZnIpxCuS9aRXe"
-  },
-  {
-    "_id": { "$oid": "619e81b7b2a0151b3a9a9e4f" },
+}, {
+    "_id": {
+        "$oid": "61ae20f86683631be3b03ca0"
+    },
     "Reduces Surface Compaction": 3,
     "Nitrogen Scavenging": 2,
     "Inoculant Type": ["none"],
@@ -206,7 +198,7 @@
     "Supresses Winter Annual Weeds": 2,
     "Tillage Termination at Vegetative": 5,
     "Freezing Termination at Vegetative": 5,
-    "Mow Tolerance at Flowering": 4,
+    "Mow Termination at Flowering": 4,
     "Flood Tolerance": 2,
     "Prevent Fall Soil Erosion": 1,
     "Shade Tolerance": 2,
@@ -216,20 +208,14 @@
     "Root Architecture": ["Fibrous"],
     "Drilled Depth Min": 0.5,
     "Salinity Tolerance": 2,
-    "Roller Crimp Tolerance at Flowering": 3,
+    "Roller Crimp Termination at Flowering": 3,
     "Standard Summer Seeding Rate End": "2020-08-15",
     "Reliable Establishment/Growth End": "2020-08-15",
     "Notes: Insects": "Can be combined with sunn hemp as summer cover crop. No obvious insect issues noticed through casual observation",
     "ITIS TSN": 502589,
     "Persistence": 1,
     "Nitrogen Accumulation Min, Legumes (lbs/A/y)": 0,
-    "Soil Drainage": [
-      "Poorly drained",
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Well drained muck"
-    ],
+    "Soil Drainage": ["Poorly drained", "Somewhat poorly drained", "Moderately well drained", "Well drained", "Well drained muck"],
     "Cover Crop Group": "Broadleaf",
     "Flooding Frequency Tolerance": "Poor",
     "Residue Supresses Summer Annual Weeds": 1,
@@ -275,9 +261,10 @@
     "Notes: Pollinators": "Potential honey income. Top-rated cover crop for bees, along with phacelia.",
     "USDA Symbol": "FAES2",
     "__id": "rec2ZVISlWtWbdHxP"
-  },
-  {
-    "_id": { "$oid": "619e81b7b2a0151b3a9a9e50" },
+}, {
+    "_id": {
+        "$oid": "61ae20f86683631be3b03ca1"
+    },
     "Reduces Surface Compaction": 5,
     "Nitrogen Scavenging": 5,
     "Inoculant Type": ["none"],
@@ -301,7 +288,7 @@
     "Supresses Winter Annual Weeds": 5,
     "Tillage Termination at Vegetative": 2,
     "Freezing Termination at Vegetative": 1,
-    "Mow Tolerance at Flowering": 4,
+    "Mow Termination at Flowering": 4,
     "Flood Tolerance": 3,
     "Prevent Fall Soil Erosion": 5,
     "Shade Tolerance": 3,
@@ -313,22 +300,14 @@
     "Drilled Depth Min": 0.75,
     "Temperature/Moisture Risk to Establishment Start": "2020-10-01",
     "Salinity Tolerance": 2,
-    "Roller Crimp Tolerance at Flowering": 5,
+    "Roller Crimp Termination at Flowering": 5,
     "Temperature/Moisture Risk to Establishment End": "2020-10-15",
     "Reliable Establishment/Growth End": "2020-09-30",
     "Notes: Insects": "Use as a winter crop and terminated in early or late spring has no impact on arthropods in a subsequent soybean crop",
     "ITIS TSN": 42090,
     "Persistence": 1,
     "Nitrogen Accumulation Min, Legumes (lbs/A/y)": 0,
-    "Soil Drainage": [
-      "Poorly drained",
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Saturated muck",
-      "Well drained muck",
-      "Excessively drained"
-    ],
+    "Soil Drainage": ["Poorly drained", "Somewhat poorly drained", "Moderately well drained", "Well drained", "Saturated muck", "Well drained muck", "Excessively drained"],
     "Cover Crop Group": "Grass",
     "Flooding Frequency Tolerance": "Moderate",
     "Residue Supresses Summer Annual Weeds": 5,
@@ -377,9 +356,10 @@
     "USDA Symbol": "SECE",
     "Notes: Termination": "Roller-crimping is less effective on sparse stands. ",
     "__id": "recIug0gfmqytjDRt"
-  },
-  {
-    "_id": { "$oid": "619e81b7b2a0151b3a9a9e51" },
+}, {
+    "_id": {
+        "$oid": "61ae20f86683631be3b03ca2"
+    },
     "Reduces Surface Compaction": 3,
     "Nitrogen Scavenging": 1,
     "Inoculant Type": ["berseem clover", "crimson clover"],
@@ -401,7 +381,7 @@
     "Supresses Winter Annual Weeds": 2,
     "Tillage Termination at Vegetative": 3,
     "Freezing Termination at Vegetative": 1,
-    "Mow Tolerance at Flowering": 3,
+    "Mow Termination at Flowering": 3,
     "Flood Tolerance": 4,
     "Prevent Fall Soil Erosion": 3,
     "Shade Tolerance": 2,
@@ -411,18 +391,13 @@
     "Root Architecture": ["Tap"],
     "Drilled Depth Min": 0.25,
     "Salinity Tolerance": 1,
-    "Roller Crimp Tolerance at Flowering": 1,
+    "Roller Crimp Termination at Flowering": 1,
     "Reliable Establishment/Growth End": "2020-05-31",
     "Notes: Insects": "Only recently started evaluating its potential as an interplanted living mulch but casual observation suggest interplanting it with cantaloupe does not result in increased herbivore numbers in canataloupe",
     "ITIS TSN": 26261,
     "Persistence": 3,
     "Nitrogen Accumulation Min, Legumes (lbs/A/y)": 70,
-    "Soil Drainage": [
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Poorly drained"
-    ],
+    "Soil Drainage": ["Somewhat poorly drained", "Moderately well drained", "Well drained", "Poorly drained"],
     "Cover Crop Group": "Legume",
     "Flooding Frequency Tolerance": "Moderate",
     "Residue Supresses Summer Annual Weeds": 1,
@@ -469,9 +444,10 @@
     "USDA Symbol": "TRHY",
     "Notes: Termination": "If using herbicides to terminate use a tank mixture (e.g., glyphosate + dicamba or 2,4-d)",
     "__id": "recJ68QZAtIAPDHfi"
-  },
-  {
-    "_id": { "$oid": "619e81b7b2a0151b3a9a9e52" },
+}, {
+    "_id": {
+        "$oid": "61ae20f86683631be3b03ca3"
+    },
     "Reduces Surface Compaction": 2,
     "Nitrogen Scavenging": 1,
     "Inoculant Type": ["berseem clover", "crimson clover"],
@@ -492,7 +468,7 @@
     "Supresses Winter Annual Weeds": 2,
     "Tillage Termination at Vegetative": 5,
     "Freezing Termination at Vegetative": 5,
-    "Mow Tolerance at Flowering": 3,
+    "Mow Termination at Flowering": 3,
     "Flood Tolerance": 2,
     "Prevent Fall Soil Erosion": 1,
     "Shade Tolerance": 3,
@@ -502,17 +478,13 @@
     "Root Architecture": ["Tap"],
     "Drilled Depth Min": 0.25,
     "Salinity Tolerance": 1,
-    "Roller Crimp Tolerance at Flowering": 1,
+    "Roller Crimp Termination at Flowering": 1,
     "Standard Summer Seeding Rate End": "2020-07-31",
     "Reliable Establishment/Growth End": "2020-07-31",
     "ITIS TSN": 26210,
     "Persistence": 3,
     "Nitrogen Accumulation Min, Legumes (lbs/A/y)": 70,
-    "Soil Drainage": [
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained"
-    ],
+    "Soil Drainage": ["Somewhat poorly drained", "Moderately well drained", "Well drained"],
     "Cover Crop Group": "Legume",
     "Flooding Frequency Tolerance": "Poor",
     "Residue Supresses Summer Annual Weeds": 1,
@@ -560,9 +532,10 @@
     "USDA Symbol": "TRAL6",
     "Notes: Termination": "If using herbicides to terminate use a tank mixture (e.g., glyphosate + dicamba or 2,4-d)",
     "__id": "rec51cAQvAFZEtKiI"
-  },
-  {
-    "_id": { "$oid": "619e81b7b2a0151b3a9a9e53" },
+}, {
+    "_id": {
+        "$oid": "61ae20f86683631be3b03ca4"
+    },
     "Reduces Surface Compaction": 3,
     "Nitrogen Scavenging": 1,
     "Inoculant Type": ["crimson clover", "berseem clover"],
@@ -584,7 +557,7 @@
     "Supresses Winter Annual Weeds": 2,
     "Tillage Termination at Vegetative": 4,
     "Freezing Termination at Vegetative": 5,
-    "Mow Tolerance at Flowering": 3,
+    "Mow Termination at Flowering": 3,
     "Flood Tolerance": 2,
     "Prevent Fall Soil Erosion": 3,
     "Shade Tolerance": 3,
@@ -595,7 +568,7 @@
     "Drilled Depth Min": 0.25,
     "Temperature/Moisture Risk to Establishment Start": "2020-08-01",
     "Salinity Tolerance": 1,
-    "Roller Crimp Tolerance at Flowering": 3,
+    "Roller Crimp Termination at Flowering": 3,
     "Standard Summer Seeding Rate End": "2020-07-31",
     "Temperature/Moisture Risk to Establishment End": "2020-08-15",
     "Reliable Establishment/Growth End": "2020-07-31",
@@ -603,13 +576,7 @@
     "ITIS TSN": 26262,
     "Persistence": 1,
     "Nitrogen Accumulation Min, Legumes (lbs/A/y)": 70,
-    "Soil Drainage": [
-      "Poorly drained",
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Well drained muck"
-    ],
+    "Soil Drainage": ["Poorly drained", "Somewhat poorly drained", "Moderately well drained", "Well drained", "Well drained muck"],
     "Cover Crop Group": "Legume",
     "Flooding Frequency Tolerance": "Poor",
     "Residue Supresses Summer Annual Weeds": 1,
@@ -662,9 +629,10 @@
     "USDA Symbol": "TRIN3",
     "Notes: Termination": "If using herbicides to terminate use a tank mixture (e.g., glyphosate + dicamba or 2,4-d). Roller crimping as a termination method has not been studied in zone 5.",
     "__id": "recAExZ7w8eGt6lAP"
-  },
-  {
-    "_id": { "$oid": "619e81b7b2a0151b3a9a9e54" },
+}, {
+    "_id": {
+        "$oid": "61ae20f86683631be3b03ca5"
+    },
     "Reduces Surface Compaction": 3,
     "Nitrogen Scavenging": 2,
     "Inoculant Type": ["red clover", "white clover"],
@@ -687,7 +655,7 @@
     "Supresses Winter Annual Weeds": 3,
     "Tillage Termination at Vegetative": 1,
     "Freezing Termination at Vegetative": 1,
-    "Mow Tolerance at Flowering": 1,
+    "Mow Termination at Flowering": 1,
     "Frost Seeding Start": "2020-03-01",
     "Flood Tolerance": 3,
     "Prevent Fall Soil Erosion": 3,
@@ -701,19 +669,14 @@
     "Drilled Depth Min": 0.25,
     "Temperature/Moisture Risk to Establishment Start": "2020-09-01",
     "Salinity Tolerance": 1,
-    "Roller Crimp Tolerance at Flowering": 1,
+    "Roller Crimp Termination at Flowering": 1,
     "Temperature/Moisture Risk to Establishment End": "2020-09-07",
     "Reliable Establishment/Growth End": "2020-05-31",
     "Notes: Insects": "Reduced stripped cucumber beetle and melon aphid numbers when interplanted with cucumber and resulted in greater number of Orius, Geocoris and lady beetles in interplanted compared to cuke monoculture.  Interplanted with bell pepper resulted in lower percentage of European corn borer infested fruit",
     "ITIS TSN": 26313,
     "Persistence": 5,
     "Nitrogen Accumulation Min, Legumes (lbs/A/y)": 70,
-    "Soil Drainage": [
-      "Poorly drained",
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained"
-    ],
+    "Soil Drainage": ["Poorly drained", "Somewhat poorly drained", "Moderately well drained", "Well drained"],
     "Cover Crop Group": "Legume",
     "Flooding Frequency Tolerance": "Moderate",
     "Residue Supresses Summer Annual Weeds": 2,
@@ -768,9 +731,10 @@
     "USDA Symbol": "TRPR2",
     "Notes: Termination": "If using herbicides to terminate use a tank mixture (e.g., glyphosate + dicamba or 2,4-d)",
     "__id": "recgSIrDDYDBy25yU"
-  },
-  {
-    "_id": { "$oid": "619e81b7b2a0151b3a9a9e55" },
+}, {
+    "_id": {
+        "$oid": "61ae20f86683631be3b03ca6"
+    },
     "Reduces Surface Compaction": 3,
     "Nitrogen Scavenging": 1,
     "Inoculant Type": ["white clover"],
@@ -796,7 +760,7 @@
     "Supresses Winter Annual Weeds": 2,
     "Tillage Termination at Vegetative": 2,
     "Freezing Termination at Vegetative": 1,
-    "Mow Tolerance at Flowering": 1,
+    "Mow Termination at Flowering": 1,
     "Frost Seeding Start": "2020-03-01",
     "Flood Tolerance": 4,
     "Prevent Fall Soil Erosion": 2,
@@ -807,18 +771,12 @@
     "Root Architecture": ["Tap"],
     "Drilled Depth Min": 0.25,
     "Salinity Tolerance": 1,
-    "Roller Crimp Tolerance at Flowering": 1,
+    "Roller Crimp Termination at Flowering": 1,
     "Reliable Establishment/Growth End": "2020-05-31",
     "ITIS TSN": 26206,
     "Persistence": 4,
     "Nitrogen Accumulation Min, Legumes (lbs/A/y)": 70,
-    "Soil Drainage": [
-      "Poorly drained",
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Very poorly drained"
-    ],
+    "Soil Drainage": ["Poorly drained", "Somewhat poorly drained", "Moderately well drained", "Well drained", "Very poorly drained"],
     "Cover Crop Group": "Legume",
     "Flooding Frequency Tolerance": "Good",
     "Residue Supresses Summer Annual Weeds": 1,
@@ -870,9 +828,10 @@
     "USDA Symbol": "TRRE3",
     "Notes: Termination": "If using herbicides to terminate use a tank mixture (e.g., glyphosate + dicamba or 2,4-d). More tolerant to herbicides than red clover.",
     "__id": "recGcqqG9iakThMNR"
-  },
-  {
-    "_id": { "$oid": "619e81b7b2a0151b3a9a9e56" },
+}, {
+    "_id": {
+        "$oid": "61ae20f86683631be3b03ca7"
+    },
     "Reduces Surface Compaction": 2,
     "Nitrogen Scavenging": 1,
     "Inoculant Type": ["cowpea", "lespedeza"],
@@ -893,7 +852,7 @@
     "Supresses Winter Annual Weeds": 2,
     "Tillage Termination at Vegetative": 5,
     "Freezing Termination at Vegetative": 5,
-    "Mow Tolerance at Flowering": 5,
+    "Mow Termination at Flowering": 5,
     "Flood Tolerance": 2,
     "Prevent Fall Soil Erosion": 1,
     "Shade Tolerance": 3,
@@ -903,18 +862,13 @@
     "Root Architecture": ["Tap"],
     "Drilled Depth Min": 1,
     "Salinity Tolerance": 2,
-    "Roller Crimp Tolerance at Flowering": 1,
+    "Roller Crimp Termination at Flowering": 1,
     "Standard Summer Seeding Rate End": "2020-07-31",
     "Reliable Establishment/Growth End": "2020-07-31",
     "ITIS TSN": 27018,
     "Persistence": 2,
     "Nitrogen Accumulation Min, Legumes (lbs/A/y)": 40,
-    "Soil Drainage": [
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Well drained muck"
-    ],
+    "Soil Drainage": ["Somewhat poorly drained", "Moderately well drained", "Well drained", "Well drained muck"],
     "Cover Crop Group": "Legume",
     "Flooding Frequency Tolerance": "Poor",
     "Residue Supresses Summer Annual Weeds": 1,
@@ -961,9 +915,10 @@
     "Notes: Pollinators": "Has an extra-floral nectary that is attractive to pollinators and beneficial insects. Cowpea does not need to be in active flowering for pollinators to access this extra-floral nectary.",
     "USDA Symbol": "VIUN",
     "__id": "recFpnuVZ9v5Kw6Bh"
-  },
-  {
-    "_id": { "$oid": "619e81b7b2a0151b3a9a9e57" },
+}, {
+    "_id": {
+        "$oid": "61ae20f86683631be3b03ca8"
+    },
     "Reduces Surface Compaction": 3,
     "Nitrogen Scavenging": 3,
     "Inoculant Type": ["none"],
@@ -983,7 +938,7 @@
     "Supresses Winter Annual Weeds": 2,
     "Tillage Termination at Vegetative": 2,
     "Freezing Termination at Vegetative": 5,
-    "Mow Tolerance at Flowering": 5,
+    "Mow Termination at Flowering": 5,
     "Flood Tolerance": 3,
     "Prevent Fall Soil Erosion": 2,
     "Shade Tolerance": 1,
@@ -994,20 +949,14 @@
     "Drilled Depth Min": 0.5,
     "Temperature/Moisture Risk to Establishment Start": "2020-05-15",
     "Salinity Tolerance": 2,
-    "Roller Crimp Tolerance at Flowering": 5,
+    "Roller Crimp Termination at Flowering": 5,
     "Standard Summer Seeding Rate End": "2020-07-15",
     "Temperature/Moisture Risk to Establishment End": "2020-05-31",
     "Reliable Establishment/Growth End": "2020-07-15",
     "ITIS TSN": 506954,
     "Persistence": 2,
     "Nitrogen Accumulation Min, Legumes (lbs/A/y)": 0,
-    "Soil Drainage": [
-      "Poorly drained",
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Saturated muck",
-      "Well drained muck"
-    ],
+    "Soil Drainage": ["Poorly drained", "Somewhat poorly drained", "Moderately well drained", "Saturated muck", "Well drained muck"],
     "Cover Crop Group": "Grass",
     "Flooding Frequency Tolerance": "Moderate",
     "Residue Supresses Summer Annual Weeds": 2,
@@ -1053,9 +1002,10 @@
     "Establishes Quickly": 4,
     "USDA Symbol": "ECES",
     "__id": "recIFuWcFYbbWxiLY"
-  },
-  {
-    "_id": { "$oid": "619e81b7b2a0151b3a9a9e58" },
+}, {
+    "_id": {
+        "$oid": "61ae20f86683631be3b03ca9"
+    },
     "Reduces Surface Compaction": 4,
     "Nitrogen Scavenging": 4,
     "Inoculant Type": ["none"],
@@ -1075,7 +1025,7 @@
     "Supresses Winter Annual Weeds": 2,
     "Tillage Termination at Vegetative": 2,
     "Freezing Termination at Vegetative": 5,
-    "Mow Tolerance at Flowering": 5,
+    "Mow Termination at Flowering": 5,
     "Flood Tolerance": 2,
     "Prevent Fall Soil Erosion": 3,
     "Shade Tolerance": 1,
@@ -1085,20 +1035,14 @@
     "Root Architecture": ["Fibrous"],
     "Drilled Depth Min": 0.5,
     "Salinity Tolerance": 2,
-    "Roller Crimp Tolerance at Flowering": 5,
+    "Roller Crimp Termination at Flowering": 5,
     "Standard Summer Seeding Rate End": "2020-07-31",
     "Reliable Establishment/Growth End": "2020-07-31",
     "Notes: Insects": "Proso millet (Panicum miliaceum L.) can attract the parasitoids Trichogrammatidae, Scelionidae, Ceraphronidae",
     "ITIS TSN": 508150,
     "Persistence": 3,
     "Nitrogen Accumulation Min, Legumes (lbs/A/y)": 0,
-    "Soil Drainage": [
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Saturated muck",
-      "Well drained muck"
-    ],
+    "Soil Drainage": ["Somewhat poorly drained", "Moderately well drained", "Well drained", "Saturated muck", "Well drained muck"],
     "Cover Crop Group": "Grass",
     "Flooding Frequency Tolerance": "Poor",
     "Residue Supresses Summer Annual Weeds": 2,
@@ -1144,9 +1088,10 @@
     "Establishes Quickly": 4,
     "USDA Symbol": "PEGL2",
     "__id": "recY4d16KfKgbWXwf"
-  },
-  {
-    "_id": { "$oid": "619e81b7b2a0151b3a9a9e59" },
+}, {
+    "_id": {
+        "$oid": "61ae20f86683631be3b03caa"
+    },
     "Reduces Surface Compaction": 3,
     "Nitrogen Scavenging": 3,
     "Inoculant Type": ["none"],
@@ -1171,7 +1116,7 @@
     "Supresses Winter Annual Weeds": 5,
     "Tillage Termination at Vegetative": 5,
     "Freezing Termination at Vegetative": 5,
-    "Mow Tolerance at Flowering": 5,
+    "Mow Termination at Flowering": 5,
     "Flood Tolerance": 2,
     "Prevent Fall Soil Erosion": 3,
     "Shade Tolerance": 3,
@@ -1183,19 +1128,14 @@
     "Drilled Depth Min": 0.25,
     "Temperature/Moisture Risk to Establishment Start": "2020-09-01",
     "Salinity Tolerance": 2,
-    "Roller Crimp Tolerance at Flowering": 3,
+    "Roller Crimp Termination at Flowering": 3,
     "Standard Summer Seeding Rate End": "2020-07-31",
     "Temperature/Moisture Risk to Establishment End": "2020-09-15",
     "Reliable Establishment/Growth End": "2020-08-31",
     "ITIS TSN": 23059,
     "Persistence": 1,
     "Nitrogen Accumulation Min, Legumes (lbs/A/y)": 0,
-    "Soil Drainage": [
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Well drained muck"
-    ],
+    "Soil Drainage": ["Somewhat poorly drained", "Moderately well drained", "Well drained", "Well drained muck"],
     "Cover Crop Group": "Brassica",
     "Flooding Frequency Tolerance": "Poor",
     "Residue Supresses Summer Annual Weeds": 1,
@@ -1248,9 +1188,10 @@
     "USDA Symbol": "BRJU",
     "Notes: Termination": "If using as biofumigant terminate at pod fill (seed formed but still green) by flail mowing followed immediately by incorporation; use as a biofumigant is less advisable in cold areas like zone 4.",
     "__id": "recZfRxXnaBxy65nn"
-  },
-  {
-    "_id": { "$oid": "619e81b7b2a0151b3a9a9e5a" },
+}, {
+    "_id": {
+        "$oid": "61ae20f86683631be3b03cab"
+    },
     "Reduces Surface Compaction": 4,
     "Nitrogen Scavenging": 4,
     "Inoculant Type": ["none"],
@@ -1272,7 +1213,7 @@
     "Supresses Winter Annual Weeds": 3,
     "Tillage Termination at Vegetative": 2,
     "Freezing Termination at Vegetative": 5,
-    "Mow Tolerance at Flowering": 5,
+    "Mow Termination at Flowering": 5,
     "Flood Tolerance": 4,
     "Prevent Fall Soil Erosion": 5,
     "Shade Tolerance": 3,
@@ -1284,20 +1225,14 @@
     "Drilled Depth Min": 0.75,
     "Temperature/Moisture Risk to Establishment Start": "2020-09-01",
     "Salinity Tolerance": 2,
-    "Roller Crimp Tolerance at Flowering": 3,
+    "Roller Crimp Termination at Flowering": 3,
     "Standard Summer Seeding Rate End": "2020-07-31",
     "Temperature/Moisture Risk to Establishment End": "2020-09-07",
     "Reliable Establishment/Growth End": "2020-08-30",
     "ITIS TSN": 41459,
     "Persistence": 1,
     "Nitrogen Accumulation Min, Legumes (lbs/A/y)": 0,
-    "Soil Drainage": [
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Excessively drained",
-      "Well drained muck"
-    ],
+    "Soil Drainage": ["Somewhat poorly drained", "Moderately well drained", "Well drained", "Excessively drained", "Well drained muck"],
     "Cover Crop Group": "Grass",
     "Flooding Frequency Tolerance": "Moderate",
     "Residue Supresses Summer Annual Weeds": 4,
@@ -1346,9 +1281,10 @@
     "Establishes Quickly": 5,
     "USDA Symbol": "AVSA",
     "__id": "recF30WEB5EmRoOKa"
-  },
-  {
-    "_id": { "$oid": "619e81b7b2a0151b3a9a9e5b" },
+}, {
+    "_id": {
+        "$oid": "61ae20f86683631be3b03cac"
+    },
     "Reduces Surface Compaction": 2,
     "Nitrogen Scavenging": 1,
     "Inoculant Type": ["pea/vetch"],
@@ -1373,7 +1309,7 @@
     "Supresses Winter Annual Weeds": 2,
     "Tillage Termination at Vegetative": 4,
     "Freezing Termination at Vegetative": 5,
-    "Mow Tolerance at Flowering": 5,
+    "Mow Termination at Flowering": 5,
     "Flood Tolerance": 2,
     "Prevent Fall Soil Erosion": 1,
     "Shade Tolerance": 2,
@@ -1384,19 +1320,14 @@
     "Drilled Depth Min": 1,
     "Temperature/Moisture Risk to Establishment Start": "2020-08-16",
     "Salinity Tolerance": 1,
-    "Roller Crimp Tolerance at Flowering": 3,
+    "Roller Crimp Termination at Flowering": 3,
     "Standard Summer Seeding Rate End": "2020-08-15",
     "Temperature/Moisture Risk to Establishment End": "2020-08-31",
     "Reliable Establishment/Growth End": "2020-08-15",
     "ITIS TSN": 26867,
     "Persistence": 1,
     "Nitrogen Accumulation Min, Legumes (lbs/A/y)": 40,
-    "Soil Drainage": [
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Well drained muck"
-    ],
+    "Soil Drainage": ["Somewhat poorly drained", "Moderately well drained", "Well drained", "Well drained muck"],
     "Cover Crop Group": "Legume",
     "Notes: Disease": "Susceptible to sclerotinia in the East.",
     "Flooding Frequency Tolerance": "Poor",
@@ -1451,9 +1382,10 @@
     "USDA Symbol": "PISA6",
     "Notes: Termination": "If using herbicides to terminate use a tank mixture (e.g., glyphosate + dicamba or 2,4-d)",
     "__id": "rec7NpijoOgs32RbI"
-  },
-  {
-    "_id": { "$oid": "619e81b7b2a0151b3a9a9e5c" },
+}, {
+    "_id": {
+        "$oid": "61ae20f86683631be3b03cad"
+    },
     "Reduces Surface Compaction": 2,
     "Nitrogen Scavenging": 1,
     "Inoculant Type": ["pea/vetch"],
@@ -1480,7 +1412,7 @@
     "Supresses Winter Annual Weeds": 2,
     "Tillage Termination at Vegetative": 4,
     "Freezing Termination at Vegetative": 2,
-    "Mow Tolerance at Flowering": 5,
+    "Mow Termination at Flowering": 5,
     "Flood Tolerance": 2,
     "Prevent Fall Soil Erosion": 1,
     "Shade Tolerance": 2,
@@ -1493,18 +1425,13 @@
     "Drilled Depth Min": 1,
     "Temperature/Moisture Risk to Establishment Start": "2020-08-16",
     "Salinity Tolerance": 1,
-    "Roller Crimp Tolerance at Flowering": 3,
+    "Roller Crimp Termination at Flowering": 3,
     "Temperature/Moisture Risk to Establishment End": "2020-08-31",
     "Reliable Establishment/Growth End": "2020-05-31",
     "ITIS TSN": 26867,
     "Persistence": 1,
     "Nitrogen Accumulation Min, Legumes (lbs/A/y)": 40,
-    "Soil Drainage": [
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Well drained muck"
-    ],
+    "Soil Drainage": ["Somewhat poorly drained", "Moderately well drained", "Well drained", "Well drained muck"],
     "Cover Crop Group": "Legume",
     "Notes: Disease": "Susceptible to sclerotinia in the East.",
     "Flooding Frequency Tolerance": "Poor",
@@ -1558,9 +1485,10 @@
     "USDA Symbol": "PISA6",
     "Notes: Termination": "If using herbicides to terminate use a tank mixture (e.g., glyphosate + dicamba or 2,4-d)",
     "__id": "recd0F8yYR6ymcHMV"
-  },
-  {
-    "_id": { "$oid": "619e81b7b2a0151b3a9a9e5d" },
+}, {
+    "_id": {
+        "$oid": "61ae20f86683631be3b03cae"
+    },
     "Reduces Surface Compaction": 4,
     "Nitrogen Scavenging": 4,
     "Inoculant Type": ["none"],
@@ -1583,7 +1511,7 @@
     "Supresses Winter Annual Weeds": 5,
     "Tillage Termination at Vegetative": 3,
     "Freezing Termination at Vegetative": 4,
-    "Mow Tolerance at Flowering": 5,
+    "Mow Termination at Flowering": 5,
     "Flood Tolerance": 1,
     "Prevent Fall Soil Erosion": 3,
     "Shade Tolerance": 3,
@@ -1595,7 +1523,7 @@
     "Drilled Depth Min": 0.25,
     "Temperature/Moisture Risk to Establishment Start": "2020-09-01",
     "Salinity Tolerance": 1,
-    "Roller Crimp Tolerance at Flowering": 1,
+    "Roller Crimp Termination at Flowering": 1,
     "Standard Summer Seeding Rate End": "2020-07-31",
     "Temperature/Moisture Risk to Establishment End": "2020-09-15",
     "Reliable Establishment/Growth End": "2020-08-31",
@@ -1604,12 +1532,7 @@
     "Persistence": 3,
     "Nitrogen Accumulation Min, Legumes (lbs/A/y)": 0,
     "Notes: Soil Conditions": "We noted that a plow pan causes poor drainage in soil classes with inherently better drainage. Radishes are often used to correct that condition.",
-    "Soil Drainage": [
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Well drained muck"
-    ],
+    "Soil Drainage": ["Somewhat poorly drained", "Moderately well drained", "Well drained", "Well drained muck"],
     "Cover Crop Group": "Brassica",
     "Flooding Frequency Tolerance": "Poor",
     "Residue Supresses Summer Annual Weeds": 1,
@@ -1661,9 +1584,10 @@
     "Notes: Pollinators": "Attracts earthworms.",
     "USDA Symbol": "RASA2",
     "__id": "recwESkcPOEaFE1h3"
-  },
-  {
-    "_id": { "$oid": "619e81b7b2a0151b3a9a9e5e" },
+}, {
+    "_id": {
+        "$oid": "61ae20f86683631be3b03caf"
+    },
     "Reduces Surface Compaction": 4,
     "Nitrogen Scavenging": 4,
     "Inoculant Type": ["none"],
@@ -1686,7 +1610,7 @@
     "Supresses Winter Annual Weeds": 5,
     "Tillage Termination at Vegetative": 5,
     "Freezing Termination at Vegetative": 4,
-    "Mow Tolerance at Flowering": 5,
+    "Mow Termination at Flowering": 5,
     "Flood Tolerance": 1,
     "Prevent Fall Soil Erosion": 1,
     "Shade Tolerance": 3,
@@ -1698,19 +1622,14 @@
     "Drilled Depth Min": 0.25,
     "Temperature/Moisture Risk to Establishment Start": "2020-09-01",
     "Salinity Tolerance": 1,
-    "Roller Crimp Tolerance at Flowering": 1,
+    "Roller Crimp Termination at Flowering": 1,
     "Standard Summer Seeding Rate End": "2020-07-31",
     "Temperature/Moisture Risk to Establishment End": "2020-09-15",
     "Reliable Establishment/Growth End": "2020-08-31",
     "ITIS TSN": 23290,
     "Persistence": 3,
     "Nitrogen Accumulation Min, Legumes (lbs/A/y)": 0,
-    "Soil Drainage": [
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Well drained muck"
-    ],
+    "Soil Drainage": ["Somewhat poorly drained", "Moderately well drained", "Well drained", "Well drained muck"],
     "Cover Crop Group": "Brassica",
     "Flooding Frequency Tolerance": "Poor",
     "Residue Supresses Summer Annual Weeds": 1,
@@ -1760,9 +1679,10 @@
     "Notes: Pollinators": "Attracts earthworms.",
     "USDA Symbol": "RASA2",
     "__id": "recL6IiMqfhyKdQ3j"
-  },
-  {
-    "_id": { "$oid": "619e81b7b2a0151b3a9a9e5f" },
+}, {
+    "_id": {
+        "$oid": "61ae20f86683631be3b03cb0"
+    },
     "Reduces Surface Compaction": 3,
     "Nitrogen Scavenging": 3,
     "Inoculant Type": ["none"],
@@ -1786,7 +1706,7 @@
     "Supresses Winter Annual Weeds": 2,
     "Tillage Termination at Vegetative": 5,
     "Freezing Termination at Vegetative": 4,
-    "Mow Tolerance at Flowering": 5,
+    "Mow Termination at Flowering": 5,
     "Flood Tolerance": 2,
     "Prevent Fall Soil Erosion": 2,
     "Shade Tolerance": 3,
@@ -1796,17 +1716,12 @@
     "Root Architecture": ["Fibrous"],
     "Drilled Depth Min": 0.25,
     "Salinity Tolerance": 1,
-    "Roller Crimp Tolerance at Flowering": 1,
+    "Roller Crimp Termination at Flowering": 1,
     "Reliable Establishment/Growth End": "2020-05-31",
     "ITIS TSN": 23060,
     "Persistence": 1,
     "Nitrogen Accumulation Min, Legumes (lbs/A/y)": 0,
-    "Soil Drainage": [
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Well drained muck"
-    ],
+    "Soil Drainage": ["Somewhat poorly drained", "Moderately well drained", "Well drained", "Well drained muck"],
     "Cover Crop Group": "Brassica",
     "Flooding Frequency Tolerance": "Poor",
     "Residue Supresses Summer Annual Weeds": 1,
@@ -1853,9 +1768,10 @@
     "Notes: Pollinators": "Attracts honeybees and smaller native bees that are active in the spring.",
     "USDA Symbol": "BRNA",
     "__id": "rect1HNcNtK3H9kNq"
-  },
-  {
-    "_id": { "$oid": "619e81b7b2a0151b3a9a9e60" },
+}, {
+    "_id": {
+        "$oid": "61ae20f86683631be3b03cb1"
+    },
     "Reduces Surface Compaction": 3,
     "Nitrogen Scavenging": 4,
     "Inoculant Type": ["none"],
@@ -1880,7 +1796,7 @@
     "Supresses Winter Annual Weeds": 5,
     "Tillage Termination at Vegetative": 5,
     "Freezing Termination at Vegetative": 2,
-    "Mow Tolerance at Flowering": 5,
+    "Mow Termination at Flowering": 5,
     "Flood Tolerance": 2,
     "Prevent Fall Soil Erosion": 2,
     "Shade Tolerance": 3,
@@ -1892,19 +1808,14 @@
     "Drilled Depth Min": 0.25,
     "Temperature/Moisture Risk to Establishment Start": "2020-09-01",
     "Salinity Tolerance": 2,
-    "Roller Crimp Tolerance at Flowering": 1,
+    "Roller Crimp Termination at Flowering": 1,
     "Standard Summer Seeding Rate End": "2020-07-31",
     "Temperature/Moisture Risk to Establishment End": "2020-09-15",
     "Reliable Establishment/Growth End": "2020-08-31",
     "ITIS TSN": 23060,
     "Persistence": 1,
     "Nitrogen Accumulation Min, Legumes (lbs/A/y)": 0,
-    "Soil Drainage": [
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Well drained muck"
-    ],
+    "Soil Drainage": ["Somewhat poorly drained", "Moderately well drained", "Well drained", "Well drained muck"],
     "Cover Crop Group": "Brassica",
     "Flooding Frequency Tolerance": "Poor",
     "Residue Supresses Summer Annual Weeds": 1,
@@ -1954,9 +1865,10 @@
     "Notes: Pollinators": "Attracts honeybees and smaller native bees that are active in the spring.",
     "USDA Symbol": "BRNA",
     "__id": "recnnRjKc9slDRKLF"
-  },
-  {
-    "_id": { "$oid": "619e81b7b2a0151b3a9a9e61" },
+}, {
+    "_id": {
+        "$oid": "61ae20f86683631be3b03cb2"
+    },
     "Reduces Surface Compaction": 5,
     "Nitrogen Scavenging": 4,
     "Inoculant Type": ["none"],
@@ -1981,7 +1893,7 @@
     "Supresses Winter Annual Weeds": 5,
     "Tillage Termination at Vegetative": 2,
     "Freezing Termination at Vegetative": 4,
-    "Mow Tolerance at Flowering": 3,
+    "Mow Termination at Flowering": 3,
     "Flood Tolerance": 4,
     "Prevent Fall Soil Erosion": 5,
     "Shade Tolerance": 4,
@@ -1992,22 +1904,14 @@
     "Root Architecture": ["Fibrous"],
     "Drilled Depth Min": 0.25,
     "Salinity Tolerance": 2,
-    "Roller Crimp Tolerance at Flowering": 1,
+    "Roller Crimp Termination at Flowering": 1,
     "Standard Summer Seeding Rate End": "2020-07-31",
     "Hessian fly-free date": true,
     "Reliable Establishment/Growth End": "2020-09-15",
     "ITIS TSN": 40892,
     "Persistence": 1,
     "Nitrogen Accumulation Min, Legumes (lbs/A/y)": 0,
-    "Soil Drainage": [
-      "Very poorly drained",
-      "Poorly drained",
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Saturated muck",
-      "Well drained muck",
-      "Well drained"
-    ],
+    "Soil Drainage": ["Very poorly drained", "Poorly drained", "Somewhat poorly drained", "Moderately well drained", "Saturated muck", "Well drained muck", "Well drained"],
     "Cover Crop Group": "Grass",
     "Flooding Frequency Tolerance": "Good",
     "Residue Supresses Summer Annual Weeds": 2,
@@ -2059,9 +1963,10 @@
     "USDA Symbol": "LOMU",
     "Notes: Termination": "Herbicide resistance has been documented in annual ryegrass, see Tech Note under Resources section. If using tillage, multiple passes may be necessary.",
     "__id": "recJ2hupoQYsT8Yj3"
-  },
-  {
-    "_id": { "$oid": "619e81b7b2a0151b3a9a9e62" },
+}, {
+    "_id": {
+        "$oid": "61ae20f86683631be3b03cb3"
+    },
     "Reduces Surface Compaction": 4,
     "Nitrogen Scavenging": 4,
     "Inoculant Type": ["none"],
@@ -2083,7 +1988,7 @@
     "Supresses Winter Annual Weeds": 5,
     "Tillage Termination at Vegetative": 2,
     "Freezing Termination at Vegetative": 2,
-    "Mow Tolerance at Flowering": 2,
+    "Mow Termination at Flowering": 2,
     "Flood Tolerance": 4,
     "Prevent Fall Soil Erosion": 5,
     "Shade Tolerance": 4,
@@ -2095,22 +2000,14 @@
     "Drilled Depth Min": 0.25,
     "Temperature/Moisture Risk to Establishment Start": "2020-09-01",
     "Salinity Tolerance": 3,
-    "Roller Crimp Tolerance at Flowering": 1,
+    "Roller Crimp Termination at Flowering": 1,
     "Standard Summer Seeding Rate End": "2020-07-31",
     "Temperature/Moisture Risk to Establishment End": "2020-09-15",
     "Reliable Establishment/Growth End": "2020-08-31",
     "ITIS TSN": 40893,
     "Persistence": 3,
     "Nitrogen Accumulation Min, Legumes (lbs/A/y)": 0,
-    "Soil Drainage": [
-      "Very poorly drained",
-      "Poorly drained",
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Saturated muck",
-      "Well drained muck"
-    ],
+    "Soil Drainage": ["Very poorly drained", "Poorly drained", "Somewhat poorly drained", "Moderately well drained", "Well drained", "Saturated muck", "Well drained muck"],
     "Cover Crop Group": "Grass",
     "Flooding Frequency Tolerance": "Good",
     "Residue Supresses Summer Annual Weeds": 2,
@@ -2161,9 +2058,10 @@
     "Establishes Quickly": 3,
     "USDA Symbol": "LOPE",
     "__id": "recrG5Q4upyA0gBmI"
-  },
-  {
-    "_id": { "$oid": "619e81b7b2a0151b3a9a9e63" },
+}, {
+    "_id": {
+        "$oid": "61ae20f86683631be3b03cb4"
+    },
     "Reduces Surface Compaction": 4,
     "Nitrogen Scavenging": 4,
     "Inoculant Type": ["none"],
@@ -2185,7 +2083,7 @@
     "Supresses Winter Annual Weeds": 3,
     "Tillage Termination at Vegetative": 1,
     "Freezing Termination at Vegetative": 5,
-    "Mow Tolerance at Flowering": 5,
+    "Mow Termination at Flowering": 5,
     "Flood Tolerance": 2,
     "Prevent Fall Soil Erosion": 3,
     "Shade Tolerance": 1,
@@ -2195,19 +2093,13 @@
     "Root Architecture": ["Fibrous"],
     "Drilled Depth Min": 0.5,
     "Salinity Tolerance": 2,
-    "Roller Crimp Tolerance at Flowering": 1,
+    "Roller Crimp Termination at Flowering": 1,
     "Standard Summer Seeding Rate End": "2020-07-31",
     "Reliable Establishment/Growth End": "2020-07-31",
     "ITIS TSN": 42108,
     "Persistence": 2,
     "Nitrogen Accumulation Min, Legumes (lbs/A/y)": 0,
-    "Soil Drainage": [
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Excessively drained",
-      "Well drained muck"
-    ],
+    "Soil Drainage": ["Somewhat poorly drained", "Moderately well drained", "Well drained", "Excessively drained", "Well drained muck"],
     "Cover Crop Group": "Grass",
     "Flooding Frequency Tolerance": "Poor",
     "Residue Supresses Summer Annual Weeds": 2,
@@ -2252,9 +2144,10 @@
     "Establishes Quickly": 4,
     "USDA Symbol": "SOBI2",
     "__id": "recSLHTNNl0PCgsxU"
-  },
-  {
-    "_id": { "$oid": "619e81b7b2a0151b3a9a9e64" },
+}, {
+    "_id": {
+        "$oid": "61ae20f86683631be3b03cb5"
+    },
     "Reduces Surface Compaction": 4,
     "Nitrogen Scavenging": 4,
     "Inoculant Type": ["none"],
@@ -2279,7 +2172,7 @@
     "Supresses Winter Annual Weeds": 3,
     "Tillage Termination at Vegetative": 1,
     "Freezing Termination at Vegetative": 5,
-    "Mow Tolerance at Flowering": 3,
+    "Mow Termination at Flowering": 3,
     "Flood Tolerance": 2,
     "Prevent Fall Soil Erosion": 3,
     "Shade Tolerance": 1,
@@ -2290,19 +2183,13 @@
     "Drilled Depth Min": 0.5,
     "Temperature/Moisture Risk to Establishment Start": "2020-05-15",
     "Salinity Tolerance": 2,
-    "Roller Crimp Tolerance at Flowering": 1,
+    "Roller Crimp Termination at Flowering": 1,
     "Standard Summer Seeding Rate End": "2020-07-31",
     "Temperature/Moisture Risk to Establishment End": "2020-05-31",
     "Reliable Establishment/Growth End": "2020-07-31",
     "Persistence": 2,
     "Nitrogen Accumulation Min, Legumes (lbs/A/y)": 0,
-    "Soil Drainage": [
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Excessively drained",
-      "Well drained muck"
-    ],
+    "Soil Drainage": ["Somewhat poorly drained", "Moderately well drained", "Well drained", "Excessively drained", "Well drained muck"],
     "Cover Crop Group": "Grass",
     "Flooding Frequency Tolerance": "Poor",
     "Residue Supresses Summer Annual Weeds": 2,
@@ -2347,9 +2234,10 @@
     "Establishes Quickly": 4,
     "USDA Symbol": "SOBI5",
     "__id": "recYL4DXrZGAXRPQd"
-  },
-  {
-    "_id": { "$oid": "619e81b7b2a0151b3a9a9e65" },
+}, {
+    "_id": {
+        "$oid": "61ae20f86683631be3b03cb6"
+    },
     "Reduces Surface Compaction": 2,
     "Nitrogen Scavenging": 1,
     "Inoculant Type": ["soybean"],
@@ -2373,7 +2261,7 @@
     "Supresses Winter Annual Weeds": 1,
     "Tillage Termination at Vegetative": 4,
     "Freezing Termination at Vegetative": 5,
-    "Mow Tolerance at Flowering": 5,
+    "Mow Termination at Flowering": 5,
     "Flood Tolerance": 2,
     "Prevent Fall Soil Erosion": 1,
     "Shade Tolerance": 3,
@@ -2383,20 +2271,14 @@
     "Root Architecture": ["Tap"],
     "Drilled Depth Min": 1,
     "Salinity Tolerance": 2,
-    "Roller Crimp Tolerance at Flowering": 1,
+    "Roller Crimp Termination at Flowering": 1,
     "Standard Summer Seeding Rate End": "2020-07-31",
     "Reliable Establishment/Growth End": "2020-07-31",
     "Notes: Insects": "Serve as host for various stinkbug species but will also attract their parasitoids",
     "ITIS TSN": 26716,
     "Persistence": 1,
     "Nitrogen Accumulation Min, Legumes (lbs/A/y)": 30,
-    "Soil Drainage": [
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Excessively drained",
-      "Well drained muck"
-    ],
+    "Soil Drainage": ["Somewhat poorly drained", "Moderately well drained", "Well drained", "Excessively drained", "Well drained muck"],
     "Cover Crop Group": "Legume",
     "Flooding Frequency Tolerance": "Moderate",
     "Residue Supresses Summer Annual Weeds": 1,
@@ -2443,9 +2325,10 @@
     "Notes: Pollinators": "Attractiveness to bees varies widely based on flower color and crop variety.",
     "USDA Symbol": "GLMA4",
     "__id": "recNjDsOZ437UwRNz"
-  },
-  {
-    "_id": { "$oid": "619e81b7b2a0151b3a9a9e66" },
+}, {
+    "_id": {
+        "$oid": "61ae20f86683631be3b03cb7"
+    },
     "Reduces Surface Compaction": 4,
     "Nitrogen Scavenging": 4,
     "Inoculant Type": ["none"],
@@ -2466,7 +2349,7 @@
     "Supresses Winter Annual Weeds": 3,
     "Tillage Termination at Vegetative": 1,
     "Freezing Termination at Vegetative": 5,
-    "Mow Tolerance at Flowering": 3,
+    "Mow Termination at Flowering": 3,
     "Flood Tolerance": 2,
     "Prevent Fall Soil Erosion": 3,
     "Shade Tolerance": 1,
@@ -2477,20 +2360,14 @@
     "Drilled Depth Min": 0.5,
     "Temperature/Moisture Risk to Establishment Start": "2020-05-15",
     "Salinity Tolerance": 2,
-    "Roller Crimp Tolerance at Flowering": 1,
+    "Roller Crimp Termination at Flowering": 1,
     "Standard Summer Seeding Rate End": "2020-07-31",
     "Temperature/Moisture Risk to Establishment End": "2020-05-31",
     "Reliable Establishment/Growth End": "2020-07-31",
     "ITIS TSN": 506626,
     "Persistence": 2,
     "Nitrogen Accumulation Min, Legumes (lbs/A/y)": 0,
-    "Soil Drainage": [
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Excessively drained",
-      "Well drained muck"
-    ],
+    "Soil Drainage": ["Somewhat poorly drained", "Moderately well drained", "Well drained", "Excessively drained", "Well drained muck"],
     "Cover Crop Group": "Grass",
     "Flooding Frequency Tolerance": "Poor",
     "Residue Supresses Summer Annual Weeds": 2,
@@ -2535,9 +2412,10 @@
     "Establishes Quickly": 4,
     "USDA Symbol": "SOBID",
     "__id": "recdW08EhfJ0WKPem"
-  },
-  {
-    "_id": { "$oid": "619e81b7b2a0151b3a9a9e67" },
+}, {
+    "_id": {
+        "$oid": "61ae20f86683631be3b03cb8"
+    },
     "Reduces Surface Compaction": 3,
     "Nitrogen Scavenging": 3,
     "Inoculant Type": ["none"],
@@ -2559,7 +2437,7 @@
     "Supresses Winter Annual Weeds": 1,
     "Tillage Termination at Vegetative": 1,
     "Freezing Termination at Vegetative": 5,
-    "Mow Tolerance at Flowering": 5,
+    "Mow Termination at Flowering": 5,
     "Flood Tolerance": 2,
     "Prevent Fall Soil Erosion": 2,
     "Shade Tolerance": 1,
@@ -2569,20 +2447,14 @@
     "Root Architecture": ["Tap"],
     "Drilled Depth Min": 1,
     "Salinity Tolerance": 2,
-    "Roller Crimp Tolerance at Flowering": 1,
+    "Roller Crimp Termination at Flowering": 1,
     "Standard Summer Seeding Rate End": "2020-07-31",
     "Reliable Establishment/Growth End": "2020-07-31",
     "Notes: Insects": "Serve as host for BMSB but could be beneficial if used as a trap crop",
     "ITIS TSN": 36616,
     "Persistence": 3,
     "Nitrogen Accumulation Min, Legumes (lbs/A/y)": 0,
-    "Soil Drainage": [
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Excessively drained",
-      "Well drained muck"
-    ],
+    "Soil Drainage": ["Somewhat poorly drained", "Moderately well drained", "Well drained", "Excessively drained", "Well drained muck"],
     "Cover Crop Group": "Broadleaf",
     "Flooding Frequency Tolerance": "Poor",
     "Residue Supresses Summer Annual Weeds": 1,
@@ -2628,9 +2500,10 @@
     "Notes: Pollinators": "Be wary of insecticide-treated seeds if value to pollinators is of interest. Hollow stems left as residue provide pollinator nest sites. ",
     "USDA Symbol": "HEAN3",
     "__id": "recYq6WLxaDbDgaWy"
-  },
-  {
-    "_id": { "$oid": "619e81b7b2a0151b3a9a9e68" },
+}, {
+    "_id": {
+        "$oid": "61ae20f86683631be3b03cb9"
+    },
     "Reduces Surface Compaction": 3,
     "Nitrogen Scavenging": 1,
     "Inoculant Type": ["peanut", "lima bean"],
@@ -2653,7 +2526,7 @@
     "Supresses Winter Annual Weeds": 2,
     "Tillage Termination at Vegetative": 1,
     "Freezing Termination at Vegetative": 5,
-    "Mow Tolerance at Flowering": 3,
+    "Mow Termination at Flowering": 3,
     "Flood Tolerance": 2,
     "Prevent Fall Soil Erosion": 2,
     "Shade Tolerance": 2,
@@ -2663,20 +2536,14 @@
     "Root Architecture": ["Tap"],
     "Drilled Depth Min": 0.5,
     "Salinity Tolerance": 2,
-    "Roller Crimp Tolerance at Flowering": 1,
+    "Roller Crimp Termination at Flowering": 1,
     "Standard Summer Seeding Rate End": "2020-07-14",
     "Reliable Establishment/Growth End": "2020-07-14",
     "Notes: Insects": "Interplanted with zucchini can reduce stripped and spotted cucumber numbers and result in greater spider numbers. However, if not kept at the right height can be too competitive with the crop",
     "ITIS TSN": 501804,
     "Persistence": 4,
     "Nitrogen Accumulation Min, Legumes (lbs/A/y)": 60,
-    "Soil Drainage": [
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Excessively drained",
-      "Well drained muck"
-    ],
+    "Soil Drainage": ["Somewhat poorly drained", "Moderately well drained", "Well drained", "Excessively drained", "Well drained muck"],
     "Cover Crop Group": "Legume",
     "Flooding Frequency Tolerance": "Poor",
     "Residue Supresses Summer Annual Weeds": 2,
@@ -2722,9 +2589,10 @@
     "Establishes Quickly": 3,
     "USDA Symbol": "CRJU",
     "__id": "recCC2QQslwhSHnts"
-  },
-  {
-    "_id": { "$oid": "619e81b7b2a0151b3a9a9e69" },
+}, {
+    "_id": {
+        "$oid": "61ae20f86683631be3b03cba"
+    },
     "Reduces Surface Compaction": 4,
     "Nitrogen Scavenging": 1,
     "Inoculant Type": ["alfalfa", "sweetclover"],
@@ -2748,7 +2616,7 @@
     "Supresses Winter Annual Weeds": 3,
     "Tillage Termination at Vegetative": 1,
     "Freezing Termination at Vegetative": 1,
-    "Mow Tolerance at Flowering": 2,
+    "Mow Termination at Flowering": 2,
     "Flood Tolerance": 3,
     "Prevent Fall Soil Erosion": 2,
     "Shade Tolerance": 3,
@@ -2758,19 +2626,13 @@
     "Root Architecture": ["Tap"],
     "Drilled Depth Min": 0.25,
     "Salinity Tolerance": 3,
-    "Roller Crimp Tolerance at Flowering": 1,
+    "Roller Crimp Termination at Flowering": 1,
     "Standard Summer Seeding Rate End": "2020-08-15",
     "Reliable Establishment/Growth End": "2020-08-15",
     "ITIS TSN": 26150,
     "Persistence": 1,
     "Nitrogen Accumulation Min, Legumes (lbs/A/y)": 90,
-    "Soil Drainage": [
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Well drained muck",
-      "Excessively drained"
-    ],
+    "Soil Drainage": ["Somewhat poorly drained", "Moderately well drained", "Well drained", "Well drained muck", "Excessively drained"],
     "Cover Crop Group": "Legume",
     "Flooding Frequency Tolerance": "Poor",
     "Residue Supresses Summer Annual Weeds": 2,
@@ -2820,9 +2682,10 @@
     "USDA Symbol": "MEOF",
     "Notes: Termination": "If using herbicides to terminate use a tank mixture (e.g., glyphosate + dicamba or 2,4-d)",
     "__id": "recJU7JjaMim4e18z"
-  },
-  {
-    "_id": { "$oid": "619e81b7b2a0151b3a9a9e6a" },
+}, {
+    "_id": {
+        "$oid": "61ae20f86683631be3b03cbb"
+    },
     "Reduces Surface Compaction": 3,
     "Nitrogen Scavenging": 2,
     "Inoculant Type": ["none"],
@@ -2846,7 +2709,7 @@
     "Supresses Winter Annual Weeds": 2,
     "Tillage Termination at Vegetative": 1,
     "Freezing Termination at Vegetative": 5,
-    "Mow Tolerance at Flowering": 1,
+    "Mow Termination at Flowering": 1,
     "Flood Tolerance": 4,
     "Prevent Fall Soil Erosion": 3,
     "Shade Tolerance": 2,
@@ -2857,20 +2720,14 @@
     "Drilled Depth Min": 0.125,
     "Temperature/Moisture Risk to Establishment Start": "2020-05-15",
     "Salinity Tolerance": 3,
-    "Roller Crimp Tolerance at Flowering": 1,
+    "Roller Crimp Termination at Flowering": 1,
     "Standard Summer Seeding Rate End": "2020-07-31",
     "Temperature/Moisture Risk to Establishment End": "2020-05-31",
     "Reliable Establishment/Growth End": "2020-07-31",
     "ITIS TSN": 40738,
     "Persistence": 3,
     "Nitrogen Accumulation Min, Legumes (lbs/A/y)": 0,
-    "Soil Drainage": [
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Excessively drained",
-      "Well drained muck"
-    ],
+    "Soil Drainage": ["Somewhat poorly drained", "Moderately well drained", "Well drained", "Excessively drained", "Well drained muck"],
     "Cover Crop Group": "Grass",
     "Flooding Frequency Tolerance": "Poor",
     "Residue Supresses Summer Annual Weeds": 2,
@@ -2917,9 +2774,10 @@
     "USDA Symbol": "ERTE",
     "Notes: Termination": "can effectively terminate by mowing in fall only. Roller-crimper not effective.",
     "__id": "recfVtDAZqoQmudnp"
-  },
-  {
-    "_id": { "$oid": "619e81b7b2a0151b3a9a9e6b" },
+}, {
+    "_id": {
+        "$oid": "61ae20f86683631be3b03cbc"
+    },
     "Reduces Surface Compaction": 4,
     "Nitrogen Scavenging": 3,
     "Inoculant Type": ["none"],
@@ -2942,7 +2800,7 @@
     "Supresses Winter Annual Weeds": 3,
     "Tillage Termination at Vegetative": 3,
     "Freezing Termination at Vegetative": 3,
-    "Mow Tolerance at Flowering": 5,
+    "Mow Termination at Flowering": 5,
     "Flood Tolerance": 2,
     "Prevent Fall Soil Erosion": 4,
     "Shade Tolerance": 3,
@@ -2952,18 +2810,12 @@
     "Root Architecture": ["Fibrous"],
     "Drilled Depth Min": 0.75,
     "Salinity Tolerance": 2,
-    "Roller Crimp Tolerance at Flowering": 3,
+    "Roller Crimp Termination at Flowering": 3,
     "Reliable Establishment/Growth End": "2020-05-31",
     "ITIS TSN": 781315,
     "Persistence": 1,
     "Nitrogen Accumulation Min, Legumes (lbs/A/y)": 0,
-    "Soil Drainage": [
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Excessively drained",
-      "Well drained muck"
-    ],
+    "Soil Drainage": ["Somewhat poorly drained", "Moderately well drained", "Well drained", "Excessively drained", "Well drained muck"],
     "Cover Crop Group": "Grass",
     "Flooding Frequency Tolerance": "Moderate",
     "Residue Supresses Summer Annual Weeds": 4,
@@ -3007,9 +2859,10 @@
     "Establishes Quickly": 4,
     "USDA Symbol": "TRITI2",
     "__id": "recT4Qon7IkrtfHPV"
-  },
-  {
-    "_id": { "$oid": "619e81b7b2a0151b3a9a9e6c" },
+}, {
+    "_id": {
+        "$oid": "61ae20f86683631be3b03cbd"
+    },
     "Reduces Surface Compaction": 5,
     "Nitrogen Scavenging": 5,
     "Inoculant Type": ["none"],
@@ -3030,7 +2883,7 @@
     "Supresses Winter Annual Weeds": 5,
     "Tillage Termination at Vegetative": 2,
     "Freezing Termination at Vegetative": 1,
-    "Mow Tolerance at Flowering": 5,
+    "Mow Termination at Flowering": 5,
     "Flood Tolerance": 2,
     "Prevent Fall Soil Erosion": 5,
     "Shade Tolerance": 3,
@@ -3042,21 +2895,14 @@
     "Drilled Depth Min": 0.75,
     "Temperature/Moisture Risk to Establishment Start": "2020-10-01",
     "Salinity Tolerance": 2,
-    "Roller Crimp Tolerance at Flowering": 3,
+    "Roller Crimp Termination at Flowering": 3,
     "Temperature/Moisture Risk to Establishment End": "2020-10-15",
     "Hessian fly-free date": true,
     "Reliable Establishment/Growth End": "2020-09-30",
     "ITIS TSN": 781315,
     "Persistence": 1,
     "Nitrogen Accumulation Min, Legumes (lbs/A/y)": 0,
-    "Soil Drainage": [
-      "Poorly drained",
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Well drained muck",
-      "Excessively drained"
-    ],
+    "Soil Drainage": ["Poorly drained", "Somewhat poorly drained", "Moderately well drained", "Well drained", "Well drained muck", "Excessively drained"],
     "Cover Crop Group": "Grass",
     "Flooding Frequency Tolerance": "Moderate",
     "Residue Supresses Summer Annual Weeds": 5,
@@ -3103,9 +2949,10 @@
     "Establishes Quickly": 4,
     "USDA Symbol": "TRITI2",
     "__id": "recpUWpnIOIwKg638"
-  },
-  {
-    "_id": { "$oid": "619e81b7b2a0151b3a9a9e6d" },
+}, {
+    "_id": {
+        "$oid": "61ae20f86683631be3b03cbe"
+    },
     "Reduces Surface Compaction": 2,
     "Nitrogen Scavenging": 5,
     "Inoculant Type": ["none"],
@@ -3128,7 +2975,7 @@
     "Supresses Winter Annual Weeds": 4,
     "Tillage Termination at Vegetative": 3,
     "Freezing Termination at Vegetative": 3,
-    "Mow Tolerance at Flowering": 5,
+    "Mow Termination at Flowering": 5,
     "Flood Tolerance": 2,
     "Prevent Fall Soil Erosion": 1,
     "Shade Tolerance": 3,
@@ -3141,18 +2988,13 @@
     "Drilled Depth Min": 0.25,
     "Temperature/Moisture Risk to Establishment Start": "2020-09-01",
     "Salinity Tolerance": 2,
-    "Roller Crimp Tolerance at Flowering": 1,
+    "Roller Crimp Termination at Flowering": 1,
     "Temperature/Moisture Risk to Establishment End": "2020-09-15",
     "Reliable Establishment/Growth End": "2020-05-31",
     "ITIS TSN": 23063,
     "Persistence": 2,
     "Nitrogen Accumulation Min, Legumes (lbs/A/y)": 0,
-    "Soil Drainage": [
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Well drained muck"
-    ],
+    "Soil Drainage": ["Somewhat poorly drained", "Moderately well drained", "Well drained", "Well drained muck"],
     "Cover Crop Group": "Brassica",
     "Flooding Frequency Tolerance": "Poor",
     "Residue Supresses Summer Annual Weeds": 1,
@@ -3204,9 +3046,10 @@
     "Establishes Quickly": 4,
     "USDA Symbol": "BRRA",
     "__id": "rec5MYOuYWbvSBAgz"
-  },
-  {
-    "_id": { "$oid": "619e81b7b2a0151b3a9a9e6e" },
+}, {
+    "_id": {
+        "$oid": "61ae20f86683631be3b03cbf"
+    },
     "Reduces Surface Compaction": 3,
     "Nitrogen Scavenging": 1,
     "Inoculant Type": ["pea/vetch"],
@@ -3231,7 +3074,7 @@
     "Supresses Winter Annual Weeds": 4,
     "Tillage Termination at Vegetative": 1,
     "Freezing Termination at Vegetative": 1,
-    "Mow Tolerance at Flowering": 4,
+    "Mow Termination at Flowering": 4,
     "Flood Tolerance": 2,
     "Prevent Fall Soil Erosion": 2,
     "Shade Tolerance": 3,
@@ -3244,19 +3087,14 @@
     "Drilled Depth Min": 0.5,
     "Temperature/Moisture Risk to Establishment Start": "2020-09-15",
     "Salinity Tolerance": 1,
-    "Roller Crimp Tolerance at Flowering": 5,
+    "Roller Crimp Termination at Flowering": 5,
     "Standard Summer Seeding Rate End": "2020-08-15",
     "Temperature/Moisture Risk to Establishment End": "2020-09-21",
     "Reliable Establishment/Growth End": "2020-06-15",
     "ITIS TSN": 26360,
     "Persistence": 5,
     "Nitrogen Accumulation Min, Legumes (lbs/A/y)": 90,
-    "Soil Drainage": [
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Well drained muck"
-    ],
+    "Soil Drainage": ["Somewhat poorly drained", "Moderately well drained", "Well drained", "Well drained muck"],
     "Cover Crop Group": "Legume",
     "Flooding Frequency Tolerance": "Poor",
     "Residue Supresses Summer Annual Weeds": 3,
@@ -3310,9 +3148,10 @@
     "USDA Symbol": "VIVI",
     "Notes: Termination": "If using herbicides to terminate use a tank mixture (e.g., glyphosate + dicamba or 2,4-d)",
     "__id": "rec7tdfhwqwsD1Oj1"
-  },
-  {
-    "_id": { "$oid": "619e81b7b2a0151b3a9a9e6f" },
+}, {
+    "_id": {
+        "$oid": "61ae20f86683631be3b03cc0"
+    },
     "Reduces Surface Compaction": 3,
     "Nitrogen Scavenging": 3,
     "Inoculant Type": ["none"],
@@ -3335,7 +3174,7 @@
     "Supresses Winter Annual Weeds": 3,
     "Tillage Termination at Vegetative": 3,
     "Freezing Termination at Vegetative": 4,
-    "Mow Tolerance at Flowering": 5,
+    "Mow Termination at Flowering": 5,
     "Flood Tolerance": 1,
     "Prevent Fall Soil Erosion": 3,
     "Shade Tolerance": 2,
@@ -3347,7 +3186,7 @@
     "Drilled Depth Min": 0.75,
     "Temperature/Moisture Risk to Establishment Start": "2020-09-01",
     "Salinity Tolerance": 2,
-    "Roller Crimp Tolerance at Flowering": 3,
+    "Roller Crimp Termination at Flowering": 3,
     "Standard Summer Seeding Rate End": "2020-07-31",
     "Temperature/Moisture Risk to Establishment End": "2020-09-07",
     "Hessian fly-free date": true,
@@ -3355,14 +3194,7 @@
     "ITIS TSN": 42237,
     "Persistence": 1,
     "Nitrogen Accumulation Min, Legumes (lbs/A/y)": 0,
-    "Soil Drainage": [
-      "Poorly drained",
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Excessively drained",
-      "Well drained muck"
-    ],
+    "Soil Drainage": ["Poorly drained", "Somewhat poorly drained", "Moderately well drained", "Well drained", "Excessively drained", "Well drained muck"],
     "Cover Crop Group": "Grass",
     "Notes: Disease": "May reduce sclerotinia. If planted in rotation with other small grains within a year there can be disease problems (especially with tan spot). If alfalfa is to be planted after the small grain, kill small grain volunteer plants with an herbicide.",
     "Flooding Frequency Tolerance": "Poor",
@@ -3411,9 +3243,10 @@
     "Establishes Quickly": 4,
     "USDA Symbol": "TRAE",
     "__id": "receknM4B2Atx0Ix8"
-  },
-  {
-    "_id": { "$oid": "619e81b7b2a0151b3a9a9e70" },
+}, {
+    "_id": {
+        "$oid": "61ae20f86683631be3b03cc1"
+    },
     "Reduces Surface Compaction": 5,
     "Nitrogen Scavenging": 4,
     "Inoculant Type": ["none"],
@@ -3435,7 +3268,7 @@
     "Supresses Winter Annual Weeds": 5,
     "Tillage Termination at Vegetative": 2,
     "Freezing Termination at Vegetative": 1,
-    "Mow Tolerance at Flowering": 5,
+    "Mow Termination at Flowering": 5,
     "Flood Tolerance": 1,
     "Prevent Fall Soil Erosion": 5,
     "Shade Tolerance": 3,
@@ -3447,21 +3280,14 @@
     "Drilled Depth Min": 0.75,
     "Temperature/Moisture Risk to Establishment Start": "2020-10-01",
     "Salinity Tolerance": 2,
-    "Roller Crimp Tolerance at Flowering": 3,
+    "Roller Crimp Termination at Flowering": 3,
     "Temperature/Moisture Risk to Establishment End": "2020-10-07",
     "Hessian fly-free date": true,
     "Reliable Establishment/Growth End": "2020-09-15",
     "ITIS TSN": 42237,
     "Persistence": 1,
     "Nitrogen Accumulation Min, Legumes (lbs/A/y)": 0,
-    "Soil Drainage": [
-      "Poorly drained",
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Excessively drained",
-      "Well drained muck"
-    ],
+    "Soil Drainage": ["Poorly drained", "Somewhat poorly drained", "Moderately well drained", "Well drained", "Excessively drained", "Well drained muck"],
     "Cover Crop Group": "Grass",
     "Flooding Frequency Tolerance": "Poor",
     "Residue Supresses Summer Annual Weeds": 4,
@@ -3509,5 +3335,4 @@
     "Establishes Quickly": 4,
     "USDA Symbol": "TRAE",
     "__id": "rec9MIuJlomR0BN8b"
-  }
-]
+}]
