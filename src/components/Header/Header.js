@@ -26,10 +26,10 @@ import moment from "moment";
 import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 
-import zone7Goal from "../../shared/json/zone7/crop-goals.json";
-import zone6Goal from "../../shared/json/zone6/crop-goals.json";
-import zone5Goal from "../../shared/json/zone5/crop-goals.json";
-import zone4Goal from "../../shared/json/zone4/crop-goals.json";
+import zone7DataDictionary from "../../shared/json/zone7/data-dictionary.json";
+import zone6DataDictionary from "../../shared/json/zone6/data-dictionary.json";
+import zone5DataDictionary from "../../shared/json/zone5/data-dictionary.json";
+import zone4DataDictionary from "../../shared/json/zone4/data-dictionary.json";
 
 import { useSnackbar } from "notistack";
 
@@ -330,25 +330,34 @@ const Header = () => {
   useEffect(() => {}, [state.weatherDataReset, state.zone, state.markers]);
 
   useEffect(() => {
-    let z7Formattedgoal = zone7Goal.map((goal) => {
-      return { fields: goal };
-    });
-    let z6Formattedgoal = zone6Goal.map((goal) => {
-      return { fields: goal };
-    });
-    let z5Formattedgoal = zone5Goal.map((goal) => {
-      return { fields: goal };
-    });
-    console.log(zone4Goal);
-    let z4Formattedgoal = zone4Goal.map((goal) => {
-      return { fields: goal };
-    });
-    z7Formattedgoal = z7Formattedgoal.filter((goal) => goal.fields.Include);
-    z6Formattedgoal = z6Formattedgoal.filter((goal) => goal.fields.Include);
-    z5Formattedgoal = z5Formattedgoal.filter((goal) => goal.fields.Include);
+    let z7Formattedgoal = zone7DataDictionary.filter(
+      (data) => data.Category === "Goals" && data.Variable !== "Notes: Goals"
+    );
+    let z6Formattedgoal = zone6DataDictionary.filter(
+      (data) => data.Category === "Goals" && data.Variable !== "Notes: Goals"
+    );
+    let z5Formattedgoal = zone5DataDictionary.filter(
+      (data) => data.Category === "Goals" && data.Variable !== "Notes: Goals"
+    );
+    let z4Formattedgoal = zone4DataDictionary.filter(
+      (data) => data.Category === "Goals" && data.Variable !== "Notes: Goals"
+    );
+
     console.log(z4Formattedgoal);
-    // z4Formattedgoal = z4Formattedgoal.filter((goal) => goal.fields.Include);
-    console.log(z4Formattedgoal);
+
+    z7Formattedgoal = z7Formattedgoal.map((goal) => {
+      return { fields: goal };
+    });
+    z6Formattedgoal = z6Formattedgoal.map((goal) => {
+      return { fields: goal };
+    });
+    z5Formattedgoal = z5Formattedgoal.map((goal) => {
+      return { fields: goal };
+    });
+    // console.log(zone4Goal);
+    z4Formattedgoal = z4Formattedgoal.map((goal) => {
+      return { fields: goal };
+    });
 
     switch (parseInt(state.zone)) {
       case 7: {
