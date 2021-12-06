@@ -7,18 +7,15 @@
   showAllVariables selects all filters
 */
 
-
-import React, { useState, useEffect, useContext, Fragment } from "react";
-import { Context } from "../../../store/Store";
 import {
+  Button,
   List,
-  ListSubheader,
   ListItem,
   ListItemText,
+  ListSubheader,
   Typography,
-  Button,
 } from "@material-ui/core";
-
+import React, { useEffect, useState } from "react";
 import RenderFilters from "./RenderFilters";
 import RenderGoals from "./RenderGoals";
 

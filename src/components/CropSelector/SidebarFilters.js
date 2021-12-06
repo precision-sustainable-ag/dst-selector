@@ -1,26 +1,16 @@
 /*
   Unused
 */
-import React, { useEffect, useState, Fragment } from "react";
+import React, { useEffect, useState } from "react";
 import { sidebarFilters } from "../../shared/constants";
-import {
-  ListItem,
-  List,
-  ListItemText,
-  Collapse,
-  FormControlLabel,
-  Checkbox,
-  Typography,
-} from "@material-ui/core";
-import { ExpandLess, ExpandMore } from "@material-ui/icons";
-import Taxonomy from "./Filters/Taxonomy";
-import EnvironmentalTolerances from "./Filters/EnvironmentalTolerances";
 import BasicAgronomics from "./Filters/BasicAgronomics";
-import SoilConditions from "./Filters/SoilConditions";
-import Growth from "./Filters/Growth";
-import Termination from "./Filters/Termination";
-import GrazersPollinators from "./Filters/GrazersPollinators";
 import DiseaseNonWeedPests from "./Filters/DiseaseNonWeedPests";
+import EnvironmentalTolerances from "./Filters/EnvironmentalTolerances";
+import GrazersPollinators from "./Filters/GrazersPollinators";
+import Growth from "./Filters/Growth";
+import SoilConditions from "./Filters/SoilConditions";
+import Taxonomy from "./Filters/Taxonomy";
+import Termination from "./Filters/Termination";
 import Weeds from "./Filters/Weeds";
 
 const getObjectDataFromCategory = (categoryName) => {

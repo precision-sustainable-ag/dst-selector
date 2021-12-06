@@ -4,29 +4,22 @@
   Styles are created using makeStyles
 */
 
-import React, { useContext, useState, useEffect } from "react";
-import { Context } from "../../store/Store";
 import {
+  Button,
+  Fab,
   makeStyles,
   useScrollTrigger,
   Zoom,
-  Fab,
-  Button,
-  IconButton,
 } from "@material-ui/core";
-import {
-  ArrowBack,
-  ArrowForward,
-  Close,
-  KeyboardArrowUp,
-  Menu,
-} from "@material-ui/icons";
+import { ArrowBack, ArrowForward, KeyboardArrowUp } from "@material-ui/icons";
+import React, { useContext, useEffect, useState } from "react";
+import { flipCoverCropName } from "../../shared/constants";
+import { Context } from "../../store/Store";
 import "../../styles/cropSelector.scss";
-import CropTableComponent from "./CropTable";
 import MyCoverCropList from "../MyCoverCropList/MyCoverCropList";
 import CropCalendarViewComponent from "./CropCalendarView";
 import CropSidebarComponent from "./CropSidebar";
-import { flipCoverCropName } from "../../shared/constants";
+import CropTableComponent from "./CropTable";
 
 const _ = require("lodash");
 

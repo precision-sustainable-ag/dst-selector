@@ -2,19 +2,19 @@
   Handles rendering the goals and updating them when selected
 */
 
-import React, { useState, useEffect, Fragment } from "react";
 import {
+  Checkbox,
+  Collapse,
+  FormControlLabel,
+  Grid,
+  List,
   ListItem,
   ListItemText,
-  Typography,
-  Collapse,
-  List,
-  Grid,
   Tooltip,
-  FormControlLabel,
-  Checkbox,
+  Typography,
 } from "@material-ui/core";
 import { ExpandLess, ExpandMore } from "@material-ui/icons";
+import React, { Fragment } from "react";
 const RenderFilters = ({
   filterValues = [],
   setFilterValues = () => {},
@@ -116,9 +116,8 @@ const RenderFilters = ({
                           //   onChange={handleChange}
                           onChange={() => {
                             let comparisonKeysCopy = comparisonKeys;
-                            let indexOfValue = comparisonKeysCopy.indexOf(
-                              "Cover Crop Group"
-                            );
+                            let indexOfValue =
+                              comparisonKeysCopy.indexOf("Cover Crop Group");
                             if (indexOfValue === -1) {
                               // doesn't exist
                               comparisonKeysCopy.push("Cover Crop Group");

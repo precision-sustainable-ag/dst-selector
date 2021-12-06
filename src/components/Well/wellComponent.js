@@ -2,83 +2,79 @@
   Unused 
 */
 
-import React, { Component } from "react";
-import { Map, TileLayer, Marker, Popup } from "react-leaflet";
-import "leaflet/dist/leaflet.css";
-import L from "leaflet";
-import "../../styles/wellComponent.css";
-// import DoneIcon from "@material-ui/icons/Done";
-import PictureAsPdfIcon from "@material-ui/icons/PictureAsPdf";
-import PhotoLibraryIcon from "@material-ui/icons/PhotoLibrary";
-import ListIcon from "@material-ui/icons/List";
-import PrintIcon from "@material-ui/icons/Print";
-import GroupWorkIcon from "@material-ui/icons/GroupWork";
-import {
-  MDBContainer as Container,
-  MDBRow as Row,
-  MDBCol as Col,
-  MDBJumbotron,
-  MDBCardTitle,
-  // MDBBtn,
-  // MDBIcon,
-  MDBDropdown,
-  MDBDropdownToggle,
-  MDBDropdownMenu,
-  MDBDropdownItem,
-  MDBDataTable,
-  MDBModal,
-  MDBModalHeader,
-  MDBModalBody
-} from "mdbreact";
-import "../../styles/listViewComponent.css";
-import { List, arrayMove } from "react-movable";
-
 /* Since we are not using redux here, all our state variables are local state variables by default ( local to the component).
    we would be putting all the state data to our local storage once the steps are completed and access them when required
-   another benefit of this would be tha tif the user returns in the future, they might not need to fill up everything and we can 
+   another benefit of this would be tha tif the user returns in the future, they might not need to fill up everything and we can
    show a button to skip all if this (as we would already have their data into the local storage)
 */
-
 /*
 Bug List:
 1. If user clicks the Map component and the lat,long from open street maps does not contain zip, our API calls break for getting zone info!
 2. ...
 */
 import {
+  Box,
   Button,
-  Grid,
-  GridList,
-  GridListTile,
-  TextField,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  Snackbar,
+  Card,
+  CardContent,
+  CardMedia,
   // ButtonGroup,
   // SnackBarMessage,
   // Popper,
   Chip,
-  Tooltip,
   ExpansionPanel,
-  ExpansionPanelSummary,
-  Typography,
   ExpansionPanelDetails,
-  Card,
-  CardContent,
-  CardMedia,
-  Box
+  ExpansionPanelSummary,
+  FormControl,
+  Grid,
+  GridList,
+  GridListTile,
+  InputLabel,
+  MenuItem,
+  Select,
+  Snackbar,
+  TextField,
+  Tooltip,
+  Typography,
 } from "@material-ui/core";
-import { withStyles, makeStyles } from "@material-ui/core/styles";
-import { cloudIcon } from "../../shared/constants.js";
-
+import { withStyles } from "@material-ui/core/styles";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import GroupWorkIcon from "@material-ui/icons/GroupWork";
+import ListIcon from "@material-ui/icons/List";
+import PhotoLibraryIcon from "@material-ui/icons/PhotoLibrary";
+// import DoneIcon from "@material-ui/icons/Done";
+import PictureAsPdfIcon from "@material-ui/icons/PictureAsPdf";
+import PrintIcon from "@material-ui/icons/Print";
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
+import {
+  MDBCardTitle,
+  MDBCol as Col,
+  MDBContainer as Container,
+  // MDBBtn,
+  // MDBIcon,
+  MDBDropdown,
+  MDBDropdownItem,
+  MDBDropdownMenu,
+  MDBDropdownToggle,
+  MDBJumbotron,
+  MDBModal,
+  MDBModalBody,
+  MDBModalHeader,
+  MDBRow as Row,
+} from "mdbreact";
+import React, { Component } from "react";
+import { Map, Marker, Popup, TileLayer } from "react-leaflet";
+import { arrayMove, List } from "react-movable";
+import { cloudIcon } from "../../shared/constants.js";
+import "../../styles/listViewComponent.css";
+import "../../styles/wellComponent.css";
 
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: require("leaflet/dist/images/marker-icon-2x.png"),
   iconUrl: require("leaflet/dist/images/marker-icon.png"),
-  shadowUrl: require("leaflet/dist/images/marker-shadow.png")
+  shadowUrl: require("leaflet/dist/images/marker-shadow.png"),
 });
 
 const LightButton = withStyles({
@@ -89,9 +85,9 @@ const LightButton = withStyles({
     padding: "10px 20px 10px 20px",
     "&:hover": {
       backgroundColor: "#48a8ab",
-      color: "#fff"
-    }
-  }
+      color: "#fff",
+    },
+  },
 })(Button);
 
 export default class WellComponent extends Component {
@@ -105,18 +101,18 @@ export default class WellComponent extends Component {
     fetch(
       "https://api.airtable.com/v0/appC47111lCOTaMYe/Cover%20Crops%20Data?maxRecords=300&filterByFormula=NOT(SWITCH({Cover Crop Name},'__Open Discussion Row','Ok hopefully he answers me soon.'))",
       {
-        headers: hdr2
+        headers: hdr2,
       }
     )
-      .then(response => {
+      .then((response) => {
         return response.json();
       })
-      .then(data => {
+      .then((data) => {
         // console.log(data.records);
         // console.log(data);
 
         this.setState({
-          cropData: data.records
+          cropData: data.records,
         });
       });
 
@@ -145,7 +141,7 @@ export default class WellComponent extends Component {
       modalSize: "lg", //sm,md,lg,fluid
       modalBody: {},
       addToCartBtnText: "add to list",
-      zoneText: "0"
+      zoneText: "0",
     };
     // this.onDragEnd = this.onDragEnd.bind(this);
   }
@@ -177,17 +173,17 @@ export default class WellComponent extends Component {
     fetch(
       "https://api.airtable.com/v0/appC47111lCOTaMYe/Cover%20Crop%20Goals?maxRecords=300",
       {
-        headers: hdr2
+        headers: hdr2,
       }
     )
-      .then(response => {
+      .then((response) => {
         return response.json();
       })
-      .then(data => {
+      .then((data) => {
         // console.log(data.records.fields);
         // console.log(data);
         this.setState({
-          allGoals: data.records
+          allGoals: data.records,
         });
       });
 
@@ -225,22 +221,22 @@ export default class WellComponent extends Component {
     fetch(
       `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`,
       {
-        method: "GET"
+        method: "GET",
       }
     )
-      .then(ret => {
+      .then((ret) => {
         if (ret.ok) {
           return ret.json();
         }
       })
-      .then(data => {
+      .then((data) => {
         let latlng = data.display_name;
         // console.log(data.address.postcode);
         // check https://phzmapi.org/[zip].json to map zone with zip probably also restricting the zips?
         this.setZoneState(data.address.postcode);
         this.setState({
           address: latlng,
-          addressVerified: true
+          addressVerified: true,
         });
         // let latlng = data.results.map((latlng) => {
 
@@ -248,17 +244,17 @@ export default class WellComponent extends Component {
       });
   };
 
-  setZoneState = zip => {
+  setZoneState = (zip) => {
     console.log(zip);
     fetch(`https://phzmapi.org/${zip}.json`, {
-      method: "GET"
+      method: "GET",
     })
-      .then(res => {
+      .then((res) => {
         if (res.ok) {
           return res.json();
         }
       })
-      .then(data => {
+      .then((data) => {
         let zone = 0;
         if (data !== null && data !== undefined) {
           if (data.zone.length > 1) {
@@ -270,27 +266,27 @@ export default class WellComponent extends Component {
           return 7;
         }
       })
-      .then(zone => {
+      .then((zone) => {
         // check if zone is in the NECCC range else set a default
         if (zone <= 7 && zone > 1) {
           if (zone === 2 || zone === 3) {
             this.setState({
-              zoneText: "Zone 2 & 3"
+              zoneText: "Zone 2 & 3",
             });
           } else {
             this.setState({
-              zoneText: `Zone ${zone}`
+              zoneText: `Zone ${zone}`,
             });
           }
         } else {
           this.setState({
-            zoneText: "Zone 7"
+            zoneText: "Zone 7",
           });
         }
       });
   };
 
-  addMarker = e => {
+  addMarker = (e) => {
     const { markers } = this.state;
     markers.pop();
     markers.push(e.latlng);
@@ -310,17 +306,17 @@ export default class WellComponent extends Component {
       if (this.state.addressVerified) {
         // if address has been verified then go to next step else throw error
         this.setState({
-          progress: index
+          progress: index,
         });
       } else {
         this.setState({
           snackOpen: true,
-          snackMessage: "Please select a valid address first!"
+          snackMessage: "Please select a valid address first!",
         });
       }
     } else {
       this.setState({
-        progress: index
+        progress: index,
       });
     }
 
@@ -330,15 +326,15 @@ export default class WellComponent extends Component {
     if (this.state.progress === 0) return true;
     else return false;
   }
-  handleMapClick = event => {
+  handleMapClick = (event) => {
     const { lat, long } = event.latlng;
     console.log(`Clicked at ${lat}, ${long}`);
   };
 
-  handleAddressChangeByText = event => {
+  handleAddressChangeByText = (event) => {
     this.setState({
       address: event.target.value,
-      showAddressChangeBtn: true
+      showAddressChangeBtn: true,
     });
   };
 
@@ -349,14 +345,14 @@ export default class WellComponent extends Component {
     var q = this.state.address;
     // https://nominatim.openstreetmap.org/search/?q=1139%20crab%20orchard%20drive&format=json
     fetch(`https://nominatim.openstreetmap.org/search/?q=${q}&format=json`, {
-      method: "GET"
+      method: "GET",
     })
-      .then(ret => {
+      .then((ret) => {
         if (ret.ok) {
           return ret.json();
         }
       })
-      .then(data => {
+      .then((data) => {
         console.log(data);
         if (data.length === 1) {
           // th;
@@ -364,14 +360,14 @@ export default class WellComponent extends Component {
             markers: [[data[0].lat, data[0].lon]],
             zoom: 15,
             addressVerified: true,
-            address: data[0].display_name
+            address: data[0].display_name,
           });
         } else {
           this.setState({
             address: "",
             addressVerified: false,
             snackOpen: true,
-            snackMessage: "Please complete the address"
+            snackMessage: "Please complete the address",
           });
         }
 
@@ -385,7 +381,7 @@ export default class WellComponent extends Component {
       })
       .then(() => {
         this.setState({
-          showAddressChangeBtn: false
+          showAddressChangeBtn: false,
         });
       });
   };
@@ -427,7 +423,7 @@ export default class WellComponent extends Component {
       // let flag = null;
       // let idx = 0;
       var removeIndex = this.state.selectedCrops
-        .map(function(item) {
+        .map(function (item) {
           return item.btnId;
         })
         .indexOf(`${btnId}`);
@@ -436,7 +432,7 @@ export default class WellComponent extends Component {
         this.setState({
           selectedCrops: [...this.state.selectedCrops, selectedCrops],
           snackOpen: true,
-          snackMessage: `${cropName} Added`
+          snackMessage: `${cropName} Added`,
         });
       } else {
         // alert(removeIndex);
@@ -447,7 +443,7 @@ export default class WellComponent extends Component {
         this.setState({
           selectedCrops: selectedCropsCopy,
           snackOpen: true,
-          snackMessage: `${cropName} Removed`
+          snackMessage: `${cropName} Removed`,
         });
         // this.state.selectedCrops.splice(removeIndex, 1);
       }
@@ -456,7 +452,7 @@ export default class WellComponent extends Component {
       this.setState({
         selectedCrops: [cropArray],
         snackOpen: true,
-        snackMessage: `${cropName} Added`
+        snackMessage: `${cropName} Added`,
       });
     }
 
@@ -465,7 +461,7 @@ export default class WellComponent extends Component {
     // })
   };
 
-  getRating = ratng => {
+  getRating = (ratng) => {
     let rating = parseInt(ratng);
     if (rating === 0) {
       return (
@@ -506,7 +502,7 @@ export default class WellComponent extends Component {
     }
   };
 
-  getCropImageFromAPI = query => {
+  getCropImageFromAPI = (query) => {
     // BUG: API call returns random image and is restricted to 200 calls per hour! Not useful!!
 
     query = encodeURI(query);
@@ -516,12 +512,12 @@ export default class WellComponent extends Component {
       "563492ad6f91700001000001bad1d7b7cf55408ca4d272cea7c088da"
     );
     fetch(`https://api.pexels.com/v1/search?query=${query}&per_page=1&page=1`, {
-      headers: headers
+      headers: headers,
     })
-      .then(res => {
+      .then((res) => {
         return res.json();
       })
-      .then(data => {
+      .then((data) => {
         console.log(data);
       });
   };
@@ -531,7 +527,7 @@ export default class WellComponent extends Component {
     this.setState({
       selectedGoals: newGoals,
       snackOpen: true,
-      snackMessage: "Goal Priority Changed"
+      snackMessage: "Goal Priority Changed",
     });
     // this.setState({
     //   snackOpen: true,
@@ -551,7 +547,7 @@ export default class WellComponent extends Component {
                     className="text-white text-center parentJumbotronCol"
                     style={{
                       backgroundImage: `url(/images/cover-crop-field.png)`,
-                      backgroundSize: "cover"
+                      backgroundSize: "cover",
                     }}
                   >
                     <Col id="mainJumbotronWrapper" className="py-5" style={{}}>
@@ -618,7 +614,7 @@ export default class WellComponent extends Component {
                 width: "90%",
                 margin: "0 auto",
                 textAlign: "",
-                padding: "20px"
+                padding: "20px",
               }}
             >
               <GridListTile item md={6}>
@@ -834,8 +830,8 @@ export default class WellComponent extends Component {
                               this.setState({
                                 selectedGoals: [
                                   ...this.state.selectedGoals,
-                                  item.fields["Cover Crop Goal"]
-                                ]
+                                  item.fields["Cover Crop Goal"],
+                                ],
                               });
 
                               // make it darker on the ui
@@ -851,7 +847,7 @@ export default class WellComponent extends Component {
                               );
                               goals.splice(index, 1);
                               this.setState({
-                                selectedGoals: goals
+                                selectedGoals: goals,
                               });
 
                               // make it lighter on the ui
@@ -1014,7 +1010,7 @@ export default class WellComponent extends Component {
                                   <td
                                     style={{
                                       display: "flex",
-                                      flexDirection: "row"
+                                      flexDirection: "row",
                                     }}
                                   >
                                     {/* {this.getCropImageFromAPI(
@@ -1035,7 +1031,7 @@ export default class WellComponent extends Component {
                                         display: "flex",
                                         flexBasis: "60%",
                                         flexDirection: "column",
-                                        paddingLeft: "2em"
+                                        paddingLeft: "2em",
                                       }}
                                     >
                                       <span className="cropCategory">
@@ -1068,7 +1064,7 @@ export default class WellComponent extends Component {
                                         id={`cartBtn${index}`}
                                         style={{
                                           borderRadius: "0px",
-                                          width: "130px"
+                                          width: "130px",
                                         }}
                                         onClick={() => {
                                           this.addCropToBasket(
@@ -1088,7 +1084,7 @@ export default class WellComponent extends Component {
                                         onClick={() => {
                                           this.setState({
                                             modalOpen: true,
-                                            modalBody: crop.fields
+                                            modalBody: crop.fields,
                                           });
                                         }}
                                       >
@@ -1210,17 +1206,17 @@ export default class WellComponent extends Component {
       <Snackbar
         anchorOrigin={{
           vertical: this.state.snackVertical,
-          horizontal: this.state.snackHorizontal
+          horizontal: this.state.snackHorizontal,
         }}
         key={{
           vertical: this.state.snackVertical,
-          horizontal: this.state.snackHorizontal
+          horizontal: this.state.snackHorizontal,
         }}
         autoHideDuration={5000}
         open={this.state.snackOpen}
         onClose={this.handleSnackClose}
         ContentProps={{
-          "aria-describedby": "message-id"
+          "aria-describedby": "message-id",
         }}
         message={this.state.snackMessage}
       />
@@ -1288,7 +1284,7 @@ export default class WellComponent extends Component {
                     width: "100%",
                     //height: "50px",
                     backgroundColor: "#2d7b7b",
-                    display: "flex"
+                    display: "flex",
                   }}
                 >
                   <div className="leftSideModalBtns" style={{ flexGrow: 2 }}>
@@ -1297,7 +1293,7 @@ export default class WellComponent extends Component {
                         backgroundColor: "transparent",
                         border: "none",
                         boxShadow: "none",
-                        color: "white"
+                        color: "white",
                       }}
                       variant="contained"
                       size="small"
@@ -1313,7 +1309,7 @@ export default class WellComponent extends Component {
                         backgroundColor: "transparent",
                         border: "none",
                         boxShadow: "none",
-                        color: "white"
+                        color: "white",
                       }}
                       variant="contained"
                       size="small"
@@ -1329,7 +1325,7 @@ export default class WellComponent extends Component {
                         backgroundColor: "transparent",
                         border: "none",
                         boxShadow: "none",
-                        color: "white"
+                        color: "white",
                       }}
                       variant="contained"
                       size="small"
@@ -1341,7 +1337,7 @@ export default class WellComponent extends Component {
                         backgroundColor: "transparent",
                         border: "none",
                         boxShadow: "none",
-                        color: "white"
+                        color: "white",
                       }}
                       variant="contained"
                       size="small"
@@ -1355,7 +1351,7 @@ export default class WellComponent extends Component {
                         backgroundColor: "transparent",
                         border: "none",
                         boxShadow: "none",
-                        color: "white"
+                        color: "white",
                       }}
                       variant="contained"
                       size="small"
@@ -1371,7 +1367,7 @@ export default class WellComponent extends Component {
                         backgroundColor: "transparent",
                         border: "none",
                         boxShadow: "none",
-                        color: "white"
+                        color: "white",
                       }}
                       variant="contained"
                       size="small"
@@ -1400,7 +1396,7 @@ export default class WellComponent extends Component {
                             className="col-6"
                             style={{
                               color: "#969696",
-                              textAlign: "right"
+                              textAlign: "right",
                             }}
                           >
                             <Typography variant="caption">

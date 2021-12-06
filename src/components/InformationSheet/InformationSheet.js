@@ -4,22 +4,20 @@
   styled from ../../styles/InformationSheet.scss
 */
 
-import React, { useState, useEffect, useContext, Fragment } from "react";
-import "../../styles/InformationSheet.scss";
+import { Button, Typography } from "@material-ui/core";
 import {
-  PictureAsPdf,
-  FormatListBulleted,
-  Print,
   Close,
+  FormatListBulleted,
   Info,
+  PictureAsPdf,
+  Print,
 } from "@material-ui/icons";
-import { Typography, Button } from "@material-ui/core";
-import { zoneIcon, CropImage, flipCoverCropName } from "../../shared/constants";
-import { Context } from "../../store/Store";
-
-import html2canvas from "html2canvas";
-import * as JSPDF from "jspdf";
 import { saveAs } from "file-saver";
+import html2canvas from "html2canvas";
+import React, { useContext, useEffect, useState } from "react";
+import { CropImage, flipCoverCropName, zoneIcon } from "../../shared/constants";
+import { Context } from "../../store/Store";
+import "../../styles/InformationSheet.scss";
 import InformationSheetContent from "./InformationSheetContent";
 
 const removeHeaderContent = () => {

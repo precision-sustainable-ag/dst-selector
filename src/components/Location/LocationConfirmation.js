@@ -3,16 +3,13 @@
   styled using CustomStyles from ../../shared/constants
 */
 
-import React, { useContext } from "react";
-import MapComponent from "./Map";
-import { Context } from "../../store/Store";
-// import AutoCompleteComponent from "./AutoComplete";
-import SoilConditions from "./SoilConditions";
-import WeatherConditions from "./WeatherConditions";
-import { CustomStyles } from "../../shared/constants";
-import MapContext from "./MapContext";
 import { Typography } from "@material-ui/core";
+import React, { useContext } from "react";
+import { CustomStyles } from "../../shared/constants";
+import { Context } from "../../store/Store";
+import MapContext from "./MapContext";
 import SoilCondition from "./SoilCondition";
+import WeatherConditions from "./WeatherConditions";
 // import { TextField } from "@material-ui/core";
 
 const LocationConfirmation = () => {

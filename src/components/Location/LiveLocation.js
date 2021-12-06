@@ -2,13 +2,13 @@
   Unused
 */
 
-import React, { useContext } from "react";
-import { FormGroup, FormControlLabel } from "@material-ui/core";
-import { Context } from "../../store/Store";
+import { FormControlLabel, FormGroup } from "@material-ui/core";
 import axios from "axios";
+import React, { useContext } from "react";
 // import MapComponent from "./Map";
 // import { UpdateLatLong } from "../../shared/Functions";
 import { GreenSwitch } from "../../shared/constants";
+import { Context } from "../../store/Store";
 
 const LiveLocationComponent = () => {
   const [state, dispatch] = useContext(Context);

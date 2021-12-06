@@ -4,16 +4,16 @@
   Styles are created using makeStyles
 */
 
-import React from "react";
 import {
-  Modal,
   Backdrop,
-  Fade,
   Button,
-  Typography,
+  Fade,
   makeStyles,
+  Modal,
+  Typography,
 } from "@material-ui/core";
 import { CloseRounded, FiberManualRecord } from "@material-ui/icons";
+import React from "react";
 
 const useStyles = makeStyles((theme) => ({
   modal: {

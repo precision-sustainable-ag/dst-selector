@@ -6,31 +6,24 @@
   styled using makeStyles and withStyles
 */
 
-
-import React, { useState, useEffect, Fragment, useContext } from "react";
-import {
-  getRating,
-  RenderSeedPriceIcons,
-  allMonths,
-  getActiveCropMonths,
-} from "../../shared/constants";
-import { Typography, AccordionDetails, makeStyles } from "@material-ui/core";
-import SoilDrainageTimeline from "./SoilDrainageTimeline";
-import { withStyles } from "@material-ui/core/styles";
+import { AccordionDetails, makeStyles, Typography } from "@material-ui/core";
 import MuiAccordion from "@material-ui/core/Accordion";
 import MuiAccordionSummary from "@material-ui/core/AccordionSummary";
-import {
-  ExpandMore,
-  FiberManualRecord,
-  CheckBoxOutlineBlankOutlined,
-} from "@material-ui/icons";
-import PhotoComponent from "./PhotoComponent";
-import InformationSheetDictionary from "./InformationSheetDictionary";
-import GrowthWindowComponent from "../CropSelector/GrowthWindow";
-import sources from "./sources.json";
+import { withStyles } from "@material-ui/core/styles";
+import { ExpandMore, FiberManualRecord } from "@material-ui/icons";
 import moment from "moment-timezone";
+import React, { Fragment, useContext, useEffect, useState } from "react";
+import {
+  allMonths,
+  getActiveCropMonths,
+  getRating,
+  RenderSeedPriceIcons,
+} from "../../shared/constants";
 import { Context } from "../../store/Store";
 import CropSelectorCalendarView from "../CropSelector/CropSelectorCalendarView";
+import PhotoComponent from "./PhotoComponent";
+import SoilDrainageTimeline from "./SoilDrainageTimeline";
+import sources from "./sources.json";
 import TooltipMaker from "./TooltipMaker";
 
 const Accordion = withStyles({

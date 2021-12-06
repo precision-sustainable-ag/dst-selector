@@ -6,26 +6,20 @@
   styled using ../../styles/map.scss
 */
 
-import React, { useState, useEffect, useContext } from "react";
 import L from "leaflet";
+import "leaflet-draw/dist/leaflet.draw.css";
+import React, { useContext, useEffect, useState } from "react";
 import {
-  Circle,
   FeatureGroup,
-  LayerGroup,
   LayersControl,
   Map,
   Marker,
-  Popup,
-  Rectangle,
   Polygon,
   TileLayer,
   Tooltip,
 } from "react-leaflet";
 import { EditControl } from "react-leaflet-draw";
-
 import { Context } from "../../store/Store";
-
-import "leaflet-draw/dist/leaflet.draw.css";
 import "../../styles/map.scss";
 
 // work around broken icons when using webpack, see https://github.com/PaulLeCam/react-leaflet/issues/255
@@ -103,9 +97,8 @@ const MapContext = ({ width, height, minzoom, maxzoom, from }) => {
       if (status === "OK") {
         let formattedAddressArray = results[0].formatted_address.split(",");
         let formattedAddressLength = formattedAddressArray.length;
-        let zipString = formattedAddressArray[formattedAddressLength - 2].split(
-          " "
-        );
+        let zipString =
+          formattedAddressArray[formattedAddressLength - 2].split(" ");
         let zipArray = zipString.filter((a) => parseInt(a));
 
         dispatch({

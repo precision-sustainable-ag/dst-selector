@@ -4,8 +4,8 @@
   Styles are created using makeStyles
 */
 
+import { Avatar, Chip, Tooltip } from "@material-ui/core";
 import React, { useContext, useEffect } from "react";
-import { Chip, Tooltip, Avatar } from "@material-ui/core";
 import { Context } from "../../store/Store";
 
 const GoalTag = (props) => {

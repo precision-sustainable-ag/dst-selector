@@ -4,30 +4,12 @@
   styled from from CustomStyles in ../../../shared/constants
 */
 
-import React, { useState, useContext, useEffect, useMemo, useRef } from "react";
-import Header from "../Header/Header";
-import {
-  Box,
-  Grid,
-  Typography,
-  TextField,
-  InputAdornment,
-  createMuiTheme,
-  Button,
-  Menu,
-  MenuItem,
-} from "@material-ui/core";
-import { UnderConstructionText, CustomStyles } from "../../shared/constants";
-import {
-  Search,
-  PictureAsPdf,
-  FormatListBulleted,
-  KeyboardArrowDown,
-  KeyboardArrowUp,
-} from "@material-ui/icons";
+import { Grid, Typography } from "@material-ui/core";
+import React, { useContext, useEffect, useRef, useState } from "react";
+import { Context } from "../../store/Store";
 // import CropExplorerFilters from "./CropExplorerFilters";
 import CropSidebarComponent from "../CropSelector/CropSidebar";
-import { Context } from "../../store/Store";
+import Header from "../Header/Header";
 import ExplorerCardView from "./ExplorerCardView";
 
 const CoverCropExplorer = () => {
@@ -68,23 +50,18 @@ const CoverCropExplorer = () => {
     setCropName(e.target.value);
     let { cropData } = state;
 
-    let search = e.target.value
-                  .toLowerCase()
-                  .match(/\w+/g);
-    
+    let search = e.target.value.toLowerCase().match(/\w+/g);
+
     const crop_data = cropData.filter((crop) => {
       const match = (parm) => {
-        const m = crop.fields[parm]
-                    .toLowerCase()
-                    .match(/\w+/g);
-  
-        return !search ||
-               search.every(s => m.some(t => t.includes(s)));
-      }
+        const m = crop.fields[parm].toLowerCase().match(/\w+/g);
 
-      return match('Cover Crop Name') || match('Scientific Name');
+        return !search || search.every((s) => m.some((t) => t.includes(s)));
+      };
+
+      return match("Cover Crop Name") || match("Scientific Name");
     });
-    
+
     setActiveCropData(crop_data);
   };
 

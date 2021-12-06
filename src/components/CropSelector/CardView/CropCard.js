@@ -4,18 +4,18 @@
   styles fetched from CustomStyles in ../../../shared/constants
 */
 
+import { useSnackbar } from "notistack";
 import React, { useContext } from "react";
 import {
-  getRating,
   allMonths,
+  CustomStyles,
+  getRating,
   LightButton,
-  CustomStyles
 } from "../../../shared/constants";
-import GrowthWindowComponent from "../GrowthWindow";
 import { Context } from "../../../store/Store";
-import { useSnackbar } from "notistack";
+import GrowthWindowComponent from "../GrowthWindow";
 
-const CropCardComponent = props => {
+const CropCardComponent = (props) => {
   const [state, dispatch] = useContext(Context);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
@@ -56,7 +56,7 @@ const CropCardComponent = props => {
     if (state.selectedCrops.length > 0) {
       // DONE: Remove crop from basket
       var removeIndex = state.selectedCrops
-        .map(function(item) {
+        .map(function (item) {
           return item.btnId;
         })
         .indexOf(`${btnId}`);
@@ -67,8 +67,8 @@ const CropCardComponent = props => {
           data: {
             selectedCrops: [...state.selectedCrops, selectedCrops],
             snackOpen: false,
-            snackMessage: `${cropName} Added`
-          }
+            snackMessage: `${cropName} Added`,
+          },
         });
         enqueueSnackbar(`${cropName} Added`);
       } else {
@@ -82,8 +82,8 @@ const CropCardComponent = props => {
           data: {
             selectedCrops: selectedCropsCopy,
             snackOpen: false,
-            snackMessage: `${cropName} Removed`
-          }
+            snackMessage: `${cropName} Removed`,
+          },
         });
         enqueueSnackbar(`${cropName} Removed`);
 
@@ -97,13 +97,13 @@ const CropCardComponent = props => {
         data: {
           selectedCrops: [cropArray],
           snackOpen: false,
-          snackMessage: `${cropName} Added`
-        }
+          snackMessage: `${cropName} Added`,
+        },
       });
       enqueueSnackbar(`${cropName} Added`);
     }
   };
-  const cropImagePresent = field => {
+  const cropImagePresent = (field) => {
     if (field["Image"]) return true;
     else return false;
   };
@@ -186,7 +186,7 @@ const CropCardComponent = props => {
                 id={`cartBtn${index}`}
                 style={{
                   borderRadius: CustomStyles().nonRoundedRadius,
-                  width: "130px"
+                  width: "130px",
                 }}
                 onClick={() => {
                   addCropToBasket(

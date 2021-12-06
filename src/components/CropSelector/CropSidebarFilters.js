@@ -5,26 +5,21 @@
   Styles are created using makeStyles
 */
 
-import React, { Fragment, useEffect, useContext } from "react";
 import {
-  FormGroup,
-  FormControlLabel,
-  Typography,
-  makeStyles,
-  Checkbox,
-  Grid,
-  List,
-  ListItem,
   Button,
+  Checkbox,
   Dialog,
-  DialogTitle,
-  DialogContent,
   DialogActions,
-  DialogContentText,
-  Slider,
+  DialogContent,
+  DialogTitle,
+  FormControlLabel,
+  FormGroup,
+  Grid,
   Radio,
+  Typography,
 } from "@material-ui/core";
 import Rating from "@material-ui/lab/Rating";
+import React, { Fragment, useContext } from "react";
 import { Context } from "../../store/Store";
 
 const CropSidebarFilters = (props) => {
@@ -380,11 +375,10 @@ const CropSidebarFilters = (props) => {
                               state.selectedCheckboxes.includes(e.target.value)
                             ) {
                               // value exists, remove it
-                              let newSelectedItems = state.selectedCheckboxes.filter(
-                                (el) => {
+                              let newSelectedItems =
+                                state.selectedCheckboxes.filter((el) => {
                                   return el !== e.target.value;
-                                }
-                              );
+                                });
                               //   setSeletedCheckboxItems(newSelectedItems);
                               dispatch({
                                 type: "UPDATE_SELCTED_CHECKBOXES",

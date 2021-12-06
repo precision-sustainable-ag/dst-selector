@@ -5,27 +5,13 @@
   Styles are created using makeStyles
 */
 
-import React, { Fragment, useEffect, useState } from "react";
-import Header from "../Header/Header";
-import {
-  Box,
-  Typography,
-  Tabs,
-  makeStyles,
-  Tab,
-  Button,
-  useTheme,
-} from "@material-ui/core";
+import { Button, makeStyles, Typography, useTheme } from "@material-ui/core";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
+import React, { Fragment, useEffect, useState } from "react";
 import { CustomStyles } from "../../shared/constants";
+import Header from "../Header/Header";
 import MITLicenseText from "../License/MITLicenseText";
-import AgInformaticsLicenseText from "../License/AgInformaticsLicenseText";
-const tableStyles = {
-  td: {
-    fontSize: "1em",
-    padding: "0.1em",
-  },
-};
+
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -64,8 +50,9 @@ const About = (props) => {
     let parentDocHeight = document
       .getElementById("mainContentWrapper")
       .getBoundingClientRect().height;
-    let headerHeight = document.querySelector("header").getBoundingClientRect()
-      .height;
+    let headerHeight = document
+      .querySelector("header")
+      .getBoundingClientRect().height;
 
     let calculatedHeight = parentDocHeight - headerHeight;
 
