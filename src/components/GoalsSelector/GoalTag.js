@@ -4,8 +4,8 @@
   Styles are created using makeStyles
 */
 
-import React, { useContext, useState, useEffect } from "react";
-import { Badge, Chip, Tooltip, Avatar } from "@material-ui/core";
+import React, { useContext, useEffect } from "react";
+import { Chip, Tooltip, Avatar } from "@material-ui/core";
 import { Context } from "../../store/Store";
 
 const GoalTag = (props) => {
@@ -25,22 +25,23 @@ const GoalTag = (props) => {
       });
     }
   }, []);
+
   const updateSelectedGoals = (item, key) => {
     const goals = [...state.selectedGoals];
 
-    if (goals.indexOf(item.fields["Cover Crop Goal"]) === -1) {
+    if (goals.indexOf(item.fields["Variable"]) === -1) {
       // does not exist, dispatch to state and add to local state
 
       document.getElementById(`chip${key}`).classList.add("active");
       dispatch({
         type: "ADD_SELECTED_GOALS",
-        data: item.fields["Cover Crop Goal"],
+        data: item.fields["Variable"],
       });
 
       //   document.getElementById(`avatar${key}`).innerHTML =
     } else {
       // exists, remove it from the state and update the state
-      let index = goals.indexOf(item.fields["Cover Crop Goal"]);
+      let index = goals.indexOf(item.fields["Variable"]);
       goals.splice(index, 1);
 
       // make it lighter on the ui

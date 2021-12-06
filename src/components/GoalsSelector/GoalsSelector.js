@@ -85,8 +85,7 @@ const GoalsSelector = () => {
     if (state.allGoals.length > 0) {
       const filteredGoals = state.allGoals.filter(
         (goal) =>
-          goal.fields["Cover Crop Goal"].toLowerCase() !==
-          "promote water quality"
+          goal.fields["Variable"].toLowerCase() !== "promote water quality"
       );
       console.log(filteredGoals);
       setAllGoals(filteredGoals);
@@ -139,7 +138,7 @@ const GoalsSelector = () => {
                     <GoalTag
                       goal={goal}
                       id={key}
-                      goaltTitle={goal.fields["Cover Crop Goal"]}
+                      goaltTitle={goal.fields["Variable"]}
                       goalDescription={goal.fields["Description"]}
                     />
                   </div>
