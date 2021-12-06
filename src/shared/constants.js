@@ -1,4 +1,4 @@
-import React, { useContext, Fragment, Suspense } from "react";
+import React, { Fragment } from "react";
 import {
   withStyles,
   Button,
@@ -15,12 +15,6 @@ import { Info, MonetizationOn } from "@material-ui/icons";
 const JSZip = require("jszip");
 const JSZipUtils = require("jszip-utils");
 const saveAs = require("save-as");
-
-export const airtableAPIURL = {
-  Z5: "https://api.airtable.com/v0/appASoBfIRYbb8V7o",
-  Z7: "https://api.airtable.com/v0/app2q3UaKHXutMQyt",
-  Z6: "https://api.airtable.com/v0/appC47111lCOTaMYe",
-};
 
 export const ReferenceTooltip = (props) => {
   let sourceURL = props.url;
