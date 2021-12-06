@@ -1,12 +1,14 @@
-[
-  {
-    "_id": { "$oid": "619e81be4d73191bb1880069" },
+[{
+    "_id": {
+        "$oid": "61ae21025293a01c5a491af5"
+    },
     "Cover Crop Name": "__Open Discussion Row",
     "Zone Decision": "Include",
     "__id": "rechTROaW19OwBdEv"
-  },
-  {
-    "_id": { "$oid": "619e81be4d73191bb188006a" },
+}, {
+    "_id": {
+        "$oid": "61ae21025293a01c5a491af6"
+    },
     "Cover Crop Name": "Alfalfa, Dormant",
     "Scientific Name": "Medicago sativa",
     "Synonyms": "Fabales",
@@ -23,12 +25,7 @@
     "Active Growth Period": ["Spring", "Summer", "Fall"],
     "Duration": ["Perennial"],
     "Shape & Orientation": ["Erect"],
-    "Soil Drainage": [
-      "Moderately well drained",
-      "Well drained",
-      "Somewhat poorly drained",
-      "Somewhat excessively drained"
-    ],
+    "Soil Drainage": ["Moderately well drained", "Well drained", "Somewhat poorly drained", "Somewhat excessively drained"],
     "Min Germination Temp (F)": 34,
     "Seeds per Pound": 226800,
     "Inoculant Type": ["alfalfa", "sweetclover"],
@@ -106,9 +103,10 @@
     "Zone": 5,
     "ITIS TSN": 183623,
     "__id": "rec636OB8B9EQhUnn"
-  },
-  {
-    "_id": { "$oid": "619e81be4d73191bb188006b" },
+}, {
+    "_id": {
+        "$oid": "61ae21025293a01c5a491af7"
+    },
     "Cover Crop Name": "Barley, Spring",
     "Scientific Name": "Hordeum vulgare",
     "cv, var, or ssp to specify": "Spring",
@@ -124,13 +122,7 @@
     "Duration": ["Annual"],
     "Shape & Orientation": ["Erect"],
     "Notes: Basic Agronomics": "Dry matter highly dependent on planting and termination date and precipitation. Tolerates moderately alkaline conditions but does poorly in acid soil < pH 6.0. Bloat potential that is easily managed. Consult herbicide label for herbicides used prior to/during cover crop for grazing restrictions.",
-    "Soil Drainage": [
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Excessively drained",
-      "Well drained muck"
-    ],
+    "Soil Drainage": ["Somewhat poorly drained", "Moderately well drained", "Well drained", "Excessively drained", "Well drained muck"],
     "Min Germination Temp (F)": 35,
     "Seeds per Pound": 13600,
     "Inoculant Type": ["none"],
@@ -195,9 +187,10 @@
     "Zone": 5,
     "ITIS TSN": 40874,
     "__id": "recNBrAt4S0KkztN2"
-  },
-  {
-    "_id": { "$oid": "619e81be4d73191bb188006c" },
+}, {
+    "_id": {
+        "$oid": "61ae21025293a01c5a491af8"
+    },
     "Cover Crop Name": "Barley, Winter",
     "Scientific Name": "Hordeum vulgare",
     "cv, var, or ssp to specify": "Winter",
@@ -212,13 +205,7 @@
     "Active Growth Period": ["Fall", "Spring"],
     "Duration": ["Annual"],
     "Shape & Orientation": ["Erect"],
-    "Soil Drainage": [
-      "Moderately well drained",
-      "Well drained",
-      "Excessively drained",
-      "Well drained muck",
-      "Somewhat excessively drained"
-    ],
+    "Soil Drainage": ["Moderately well drained", "Well drained", "Excessively drained", "Well drained muck", "Somewhat excessively drained"],
     "Min Germination Temp (F)": 38,
     "Seeds per Pound": 13600,
     "Inoculant Type": ["none"],
@@ -293,9 +280,10 @@
     "Zone": 5,
     "ITIS TSN": 40874,
     "__id": "recMo6Pjegez9FQTt"
-  },
-  {
-    "_id": { "$oid": "619e81be4d73191bb188006d" },
+}, {
+    "_id": {
+        "$oid": "61ae21025293a01c5a491af9"
+    },
     "Cover Crop Name": "Brassica, Forage",
     "Scientific Name": "Brassica oleracea",
     "cv, var, or ssp to specify": "Collard, Kale (exclude cash crop types), forage rapeseed hybrids",
@@ -310,12 +298,7 @@
     "Duration": ["Annual"],
     "Shape & Orientation": ["Erect"],
     "Notes: Basic Agronomics": "Dry matter highly dependent on planting and termination date and precipitation. For grazing purposes, restrict to 75% of total ration or mixing with a grass is recommended. High glucosinolates interfer with mineral metabolism. Nitrate poisoning is possible if fed to livestock.",
-    "Soil Drainage": [
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Well drained muck"
-    ],
+    "Soil Drainage": ["Somewhat poorly drained", "Moderately well drained", "Well drained", "Well drained muck"],
     "Min Germination Temp (F)": 40,
     "Seeds per Pound": 100000,
     "Inoculant Type": ["none"],
@@ -383,9 +366,10 @@
     "Search Synonym": "collard, kale, rapeseed, radish, turnip, swede",
     "ITIS TSN": 23062,
     "__id": "recHMTceq3Gsn3A41"
-  },
-  {
-    "_id": { "$oid": "619e81be4d73191bb188006e" },
+}, {
+    "_id": {
+        "$oid": "61ae21025293a01c5a491afa"
+    },
     "Cover Crop Name": "Buckwheat",
     "Scientific Name": "Fagopyrum esculentum",
     "Origin": "MCCC Species tool",
@@ -398,12 +382,7 @@
     "Active Growth Period": ["Summer"],
     "Duration": ["Annual"],
     "Shape & Orientation": ["Erect", "Semi-Erect"],
-    "Soil Drainage": [
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Well drained muck"
-    ],
+    "Soil Drainage": ["Somewhat poorly drained", "Moderately well drained", "Well drained", "Well drained muck"],
     "Min Germination Temp (F)": 50,
     "Seeds per Pound": 15000,
     "Inoculant Type": ["none"],
@@ -480,9 +459,10 @@
     "Zone": 5,
     "ITIS TSN": 502589,
     "__id": "recuoEPM2AdDbIGt4"
-  },
-  {
-    "_id": { "$oid": "619e81be4d73191bb188006f" },
+}, {
+    "_id": {
+        "$oid": "61ae21025293a01c5a491afb"
+    },
     "Cover Crop Name": "Cereal Rye, Spring",
     "Scientific Name": "Secale cereale",
     "cv, var, or ssp to specify": "Spring",
@@ -496,15 +476,7 @@
     "Active Growth Period": ["Fall", "Spring", "Summer"],
     "Duration": ["Annual"],
     "Shape & Orientation": ["Erect"],
-    "Soil Drainage": [
-      "Very poorly drained",
-      "Poorly drained",
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Saturated muck",
-      "Well drained muck"
-    ],
+    "Soil Drainage": ["Very poorly drained", "Poorly drained", "Somewhat poorly drained", "Moderately well drained", "Well drained", "Saturated muck", "Well drained muck"],
     "Min Germination Temp (F)": 34,
     "Seeds per Pound": 18160,
     "Inoculant Type": ["none"],
@@ -568,9 +540,10 @@
     "Zone": 5,
     "ITIS TSN": 42090,
     "__id": "rechXiStLzjBzIwrP"
-  },
-  {
-    "_id": { "$oid": "619e81be4d73191bb1880070" },
+}, {
+    "_id": {
+        "$oid": "61ae21025293a01c5a491afc"
+    },
     "Cover Crop Name": "Cereal Rye, Winter",
     "Scientific Name": "Secale cereale",
     "cv, var, or ssp to specify": "Winter",
@@ -585,16 +558,7 @@
     "Duration": ["Annual"],
     "Shape & Orientation": ["Erect"],
     "Notes: Basic Agronomics": "Depends on fall planting date as well as spring termination date. ",
-    "Soil Drainage": [
-      "Poorly drained",
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Saturated muck",
-      "Well drained muck",
-      "Excessively drained",
-      "Somewhat excessively drained"
-    ],
+    "Soil Drainage": ["Poorly drained", "Somewhat poorly drained", "Moderately well drained", "Well drained", "Saturated muck", "Well drained muck", "Excessively drained", "Somewhat excessively drained"],
     "Min Germination Temp (F)": 34,
     "Seeds per Pound": 18200,
     "Inoculant Type": ["none"],
@@ -674,9 +638,10 @@
     "Zone": 5,
     "ITIS TSN": 42090,
     "__id": "recaTZ7aW0aftOCNI"
-  },
-  {
-    "_id": { "$oid": "619e81be4d73191bb1880071" },
+}, {
+    "_id": {
+        "$oid": "61ae21025293a01c5a491afd"
+    },
     "Cover Crop Name": "Clover, Balansa",
     "Scientific Name": "Trifolium michelianum",
     "cv, var, or ssp to specify": "ssp. balansae",
@@ -690,11 +655,7 @@
     "Active Growth Period": ["Spring", "Fall"],
     "Duration": ["Annual"],
     "Shape & Orientation": ["Erect"],
-    "Soil Drainage": [
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained"
-    ],
+    "Soil Drainage": ["Somewhat poorly drained", "Moderately well drained", "Well drained"],
     "Min Germination Temp (F)": 42,
     "Seeds per Pound": 500000,
     "Inoculant Type": ["berseem clover", "crimson clover"],
@@ -772,9 +733,10 @@
     "Zone": 5,
     "ITIS TSN": 506276,
     "__id": "recc11kgmYdSFb5Xr"
-  },
-  {
-    "_id": { "$oid": "619e81be4d73191bb1880072" },
+}, {
+    "_id": {
+        "$oid": "61ae21025293a01c5a491afe"
+    },
     "Cover Crop Name": "Clover, Berseem",
     "Scientific Name": "Trifolium alexandrinum",
     "Synonyms": "Egyptian Clover",
@@ -791,11 +753,7 @@
     "Active Growth Period": ["Summer"],
     "Duration": ["Annual"],
     "Shape & Orientation": ["Erect"],
-    "Soil Drainage": [
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained"
-    ],
+    "Soil Drainage": ["Somewhat poorly drained", "Moderately well drained", "Well drained"],
     "Min Germination Temp (F)": 42,
     "Seeds per Pound": 206880,
     "Inoculant Type": ["berseem clover", "crimson clover"],
@@ -860,9 +818,10 @@
     "Search Synonym": "Egyptian clover",
     "ITIS TSN": 26210,
     "__id": "recxqVHKcepGEYJeX"
-  },
-  {
-    "_id": { "$oid": "619e81be4d73191bb1880073" },
+}, {
+    "_id": {
+        "$oid": "61ae21025293a01c5a491aff"
+    },
     "Cover Crop Name": "Clover, Crimson",
     "Scientific Name": "Trifolium incarnatum",
     "cv, var, or ssp to specify": "Dixie, Auburn, Autauga",
@@ -878,13 +837,7 @@
     "Duration": ["Annual"],
     "Shape & Orientation": ["Erect", "Semi-Erect"],
     "Notes: Basic Agronomics": "Planting by early August will produce highest biomass before winter termination. ",
-    "Soil Drainage": [
-      "Poorly drained",
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Well drained muck"
-    ],
+    "Soil Drainage": ["Poorly drained", "Somewhat poorly drained", "Moderately well drained", "Well drained", "Well drained muck"],
     "Min Germination Temp (F)": 42,
     "Seeds per Pound": 149800,
     "Inoculant Type": ["crimson clover", "berseem clover"],
@@ -967,9 +920,10 @@
     "Zone": 5,
     "ITIS TSN": 26262,
     "__id": "rec23g61dMYntBkw4"
-  },
-  {
-    "_id": { "$oid": "619e81be4d73191bb1880074" },
+}, {
+    "_id": {
+        "$oid": "61ae21025293a01c5a491b00"
+    },
     "Cover Crop Name": "Clover, Red",
     "Scientific Name": "Trifolium pratense",
     "cv, var, or ssp to specify": "Medium red clover",
@@ -985,12 +939,7 @@
     "Shape & Orientation": ["Erect"],
     "Frost Seeding": true,
     "Notes: Basic Agronomics": "Planting and harvest dates impact the amount of biomass. If being used as an anuual cover crop or perennial will also influence biomass accumulation. ",
-    "Soil Drainage": [
-      "Poorly drained",
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained"
-    ],
+    "Soil Drainage": ["Poorly drained", "Somewhat poorly drained", "Moderately well drained", "Well drained"],
     "Min Germination Temp (F)": 41,
     "Seeds per Pound": 272200,
     "Inoculant Type": ["red clover", "white clover"],
@@ -1077,9 +1026,10 @@
     "Zone": 5,
     "ITIS TSN": 26313,
     "__id": "recIhryxkCniyx4u9"
-  },
-  {
-    "_id": { "$oid": "619e81be4d73191bb1880075" },
+}, {
+    "_id": {
+        "$oid": "61ae21025293a01c5a491b01"
+    },
     "Cover Crop Name": "Clover, White",
     "Scientific Name": "Trifolium repens",
     "cv, var, or ssp to specify": "Dutch white clover",
@@ -1095,13 +1045,7 @@
     "Shape & Orientation": ["Erect", "Prostrate"],
     "Frost Seeding": true,
     "Notes: Basic Agronomics": "Dry matter highly dependent on planting and termination date and precipitation.May cause bloat in cattle/sheep. Excellent as greenchop, less impressive as dry harvested forage. Total N (lb/A) derived primarily from formula that relies on dry matter (lb/A/yr) numbers. N depends on when terminating",
-    "Soil Drainage": [
-      "Poorly drained",
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Very poorly drained"
-    ],
+    "Soil Drainage": ["Poorly drained", "Somewhat poorly drained", "Moderately well drained", "Well drained", "Very poorly drained"],
     "Notes: Soil Conditions": "Paul will look into data about white clover using more soil moisture than red clover",
     "Min Germination Temp (F)": 42,
     "Seeds per Pound": 711900,
@@ -1185,9 +1129,10 @@
     "Search Synonym": "Dutch clover, Ladino clover",
     "ITIS TSN": 26206,
     "__id": "rec8B9xAQWU1TMLJ6"
-  },
-  {
-    "_id": { "$oid": "619e81be4d73191bb1880076" },
+}, {
+    "_id": {
+        "$oid": "61ae21025293a01c5a491b02"
+    },
     "Cover Crop Name": "Corn",
     "Scientific Name": "Zea mays",
     "Synonyms": "maize",
@@ -1202,15 +1147,7 @@
     "Active Growth Period": ["Summer"],
     "Duration": ["Annual"],
     "Shape & Orientation": ["Erect"],
-    "Soil Drainage": [
-      "Moderately well drained",
-      "Well drained",
-      "Well drained muck",
-      "Somewhat poorly drained",
-      "Poorly drained",
-      "Somewhat excessively drained",
-      "Excessively drained"
-    ],
+    "Soil Drainage": ["Moderately well drained", "Well drained", "Well drained muck", "Somewhat poorly drained", "Poorly drained", "Somewhat excessively drained", "Excessively drained"],
     "Min Germination Temp (F)": 50,
     "Seeds per Pound": 2000,
     "Inoculant Type": ["none"],
@@ -1283,9 +1220,10 @@
     "Zone": 5,
     "ITIS TSN": 42269,
     "__id": "recLdd6iWdvzeqLJu"
-  },
-  {
-    "_id": { "$oid": "619e81be4d73191bb1880077" },
+}, {
+    "_id": {
+        "$oid": "61ae21025293a01c5a491b03"
+    },
     "Cover Crop Name": "Cowpea",
     "Scientific Name": "Vigna unguiculata",
     "Origin": "MCCC Species tool",
@@ -1298,12 +1236,7 @@
     "Active Growth Period": ["Summer"],
     "Duration": ["Annual"],
     "Shape & Orientation": ["Semi-Erect", "Climbing"],
-    "Soil Drainage": [
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Well drained muck"
-    ],
+    "Soil Drainage": ["Somewhat poorly drained", "Moderately well drained", "Well drained", "Well drained muck"],
     "Min Germination Temp (F)": 58,
     "Seeds per Pound": 3600,
     "Inoculant Type": ["cowpea", "lespedeza"],
@@ -1378,9 +1311,10 @@
     "Zone": 5,
     "ITIS TSN": 27018,
     "__id": "rec7O6BPGNfMK15xw"
-  },
-  {
-    "_id": { "$oid": "619e81be4d73191bb1880078" },
+}, {
+    "_id": {
+        "$oid": "61ae21025293a01c5a491b04"
+    },
     "Cover Crop Name": "Millet, Japanese",
     "Scientific Name": "Echinochloa esculenta",
     "Notes: Taxonomy": "vs Echinochloa frumentacea ",
@@ -1394,13 +1328,7 @@
     "Active Growth Period": ["Summer"],
     "Duration": ["Annual"],
     "Shape & Orientation": ["Erect"],
-    "Soil Drainage": [
-      "Poorly drained",
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Saturated muck",
-      "Well drained muck"
-    ],
+    "Soil Drainage": ["Poorly drained", "Somewhat poorly drained", "Moderately well drained", "Saturated muck", "Well drained muck"],
     "Min Germination Temp (F)": 65,
     "Seeds per Pound": 155000,
     "Inoculant Type": ["none"],
@@ -1474,9 +1402,10 @@
     "Zone": 5,
     "ITIS TSN": 506954,
     "__id": "reca4d36mCVSW2hHd"
-  },
-  {
-    "_id": { "$oid": "619e81be4d73191bb1880079" },
+}, {
+    "_id": {
+        "$oid": "61ae21025293a01c5a491b05"
+    },
     "Cover Crop Name": "Millet, Pearl",
     "Scientific Name": "Pennisetum glaucum",
     "cv, var, or ssp to specify": "Cover crop variety, e.g. KingFisher",
@@ -1492,14 +1421,7 @@
     "Duration": ["Annual"],
     "Shape & Orientation": ["Erect"],
     "Notes: Basic Agronomics": "production somewhat dependent on planting date but mostly dependent on the variety and season. ",
-    "Soil Drainage": [
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Saturated muck",
-      "Well drained muck",
-      "Somewhat excessively drained"
-    ],
+    "Soil Drainage": ["Somewhat poorly drained", "Moderately well drained", "Well drained", "Saturated muck", "Well drained muck", "Somewhat excessively drained"],
     "Min Germination Temp (F)": 65,
     "Seeds per Pound": 82300,
     "Inoculant Type": ["none"],
@@ -1572,9 +1494,10 @@
     "Zone": 5,
     "ITIS TSN": 508150,
     "__id": "recqtW80rTuXbrWsu"
-  },
-  {
-    "_id": { "$oid": "619e81be4d73191bb188007a" },
+}, {
+    "_id": {
+        "$oid": "61ae21025293a01c5a491b06"
+    },
     "Cover Crop Name": "Mustard",
     "Scientific Name": "Brassica juncea",
     "Synonyms": "Brown Mustard",
@@ -1591,13 +1514,7 @@
     "Shape & Orientation": ["Erect"],
     "Frost Seeding": true,
     "Notes: Basic Agronomics": "Dry matter highly dependent on planting and termination date and precipitation. For grazing purposes, restrict to 75% of total ration or mixing with a grass is recommended. High glucosinolates interfer with mineral metabolism. Nitrate poisoning is possible if fed to livestock.",
-    "Soil Drainage": [
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Well drained muck",
-      "Somewhat excessively drained"
-    ],
+    "Soil Drainage": ["Somewhat poorly drained", "Moderately well drained", "Well drained", "Well drained muck", "Somewhat excessively drained"],
     "Min Germination Temp (F)": 40,
     "Seeds per Pound": 283000,
     "Inoculant Type": ["none"],
@@ -1680,9 +1597,10 @@
     "Search Synonym": "yellow mustard, brown mustard, white mustard",
     "ITIS TSN": 23059,
     "__id": "recrEAER4OleyB4jC"
-  },
-  {
-    "_id": { "$oid": "619e81be4d73191bb188007b" },
+}, {
+    "_id": {
+        "$oid": "61ae21025293a01c5a491b07"
+    },
     "Cover Crop Name": "Oats",
     "Scientific Name": "Avena sativa",
     "cv, var, or ssp to specify": "Winter",
@@ -1696,14 +1614,7 @@
     "Active Growth Period": ["Fall", "Spring"],
     "Duration": ["Annual"],
     "Shape & Orientation": ["Erect"],
-    "Soil Drainage": [
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Excessively drained",
-      "Well drained muck",
-      "Somewhat excessively drained"
-    ],
+    "Soil Drainage": ["Somewhat poorly drained", "Moderately well drained", "Well drained", "Excessively drained", "Well drained muck", "Somewhat excessively drained"],
     "Min Germination Temp (F)": 38,
     "Seeds per Pound": 19400,
     "Inoculant Type": ["none"],
@@ -1779,9 +1690,10 @@
     "Zone": 5,
     "ITIS TSN": 41459,
     "__id": "rec7sJ3yiJo3RTNGp"
-  },
-  {
-    "_id": { "$oid": "619e81be4d73191bb188007c" },
+}, {
+    "_id": {
+        "$oid": "61ae21025293a01c5a491b08"
+    },
     "Cover Crop Name": "Oats, Black",
     "Scientific Name": "Avena strigosa",
     "Origin": "MCCC Species tool",
@@ -1795,13 +1707,7 @@
     "Duration": ["Annual"],
     "Shape & Orientation": ["Erect"],
     "Notes: Basic Agronomics": "Dry matter highly dependent on planting and termination date and precipitation.  Prone to lodging in N-rich soil;  decomposition depends on maturity at kill. When planted in September will grow faster than rye. If planted early enough (e.g. after peas), it creates a very good lasting residue. Bloat potential that is easily managed. Nitrate testing of forage is recommended.",
-    "Soil Drainage": [
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Excessively drained",
-      "Well drained muck"
-    ],
+    "Soil Drainage": ["Somewhat poorly drained", "Moderately well drained", "Well drained", "Excessively drained", "Well drained muck"],
     "Min Germination Temp (F)": 38,
     "Seeds per Pound": 19000,
     "Inoculant Type": ["none"],
@@ -1865,9 +1771,10 @@
     "Zone": 5,
     "ITIS TSN": 41459,
     "__id": "recxTTTcXJ0dcePlV"
-  },
-  {
-    "_id": { "$oid": "619e81be4d73191bb188007d" },
+}, {
+    "_id": {
+        "$oid": "61ae21025293a01c5a491b09"
+    },
     "Cover Crop Name": "Pea, Spring",
     "Scientific Name": "Pisum sativum",
     "Synonyms": "Garden Pea",
@@ -1884,12 +1791,7 @@
     "Duration": ["Annual"],
     "Shape & Orientation": ["Semi-Erect", "Climbing"],
     "Notes: Basic Agronomics": "Dry matter highly dependent on planting and termination date and precipitation. Season length, habit vary by cultivar. Biomass breaks down quickly; early planting and termination reduces winter survival. Mixes well with grains when grown for forage. Bloat potential that is easily managed. Seed vigor highly variable. For grazing purposes, restrict to 30% of total ration or mixing with a grass is recommended.",
-    "Soil Drainage": [
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Well drained muck"
-    ],
+    "Soil Drainage": ["Somewhat poorly drained", "Moderately well drained", "Well drained", "Well drained muck"],
     "Min Germination Temp (F)": 42,
     "Seeds per Pound": 3500,
     "Inoculant Type": ["pea/vetch"],
@@ -1971,9 +1873,10 @@
     "Zone": 5,
     "ITIS TSN": 26867,
     "__id": "reczc8pd5s093xQ7X"
-  },
-  {
-    "_id": { "$oid": "619e81be4d73191bb188007e" },
+}, {
+    "_id": {
+        "$oid": "61ae21025293a01c5a491b0a"
+    },
     "Cover Crop Name": "Pea, Winter",
     "Scientific Name": "Pisum sativum",
     "Synonyms": "Field Pea",
@@ -1990,12 +1893,7 @@
     "Duration": ["Annual"],
     "Shape & Orientation": ["Semi-Erect", "Climbing"],
     "Notes: Basic Agronomics": "Dry matter highly dependent on planting and termination date and precipitation. Season length, habit vary by cultivar. Biomass breaks down quickly; early planting and termination reduces winter survival. Mixes well with grains when grown for forage. Bloat potential that is easily managed. Seed vigor highly variable. For grazing purposes, restrict to 30% of total ration or mixing with a grass is recommended.",
-    "Soil Drainage": [
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Well drained muck"
-    ],
+    "Soil Drainage": ["Somewhat poorly drained", "Moderately well drained", "Well drained", "Well drained muck"],
     "Min Germination Temp (F)": 42,
     "Seeds per Pound": 4000,
     "Inoculant Type": ["pea/vetch"],
@@ -2080,9 +1978,10 @@
     "Search Synonym": "field pea, Austrian winter pea",
     "ITIS TSN": 26867,
     "__id": "recFpofsFvQfmHGIa"
-  },
-  {
-    "_id": { "$oid": "619e81be4d73191bb188007f" },
+}, {
+    "_id": {
+        "$oid": "61ae21025293a01c5a491b0b"
+    },
     "Cover Crop Name": "Phacelia",
     "Scientific Name": "Phacelia tanacetifolia",
     "Synonyms": "Scoprion Weed",
@@ -2096,15 +1995,7 @@
     "Active Growth Period": ["Fall", "Spring"],
     "Duration": ["Annual"],
     "Shape & Orientation": ["Erect"],
-    "Soil Drainage": [
-      "Poorly drained",
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Excessively drained",
-      "Well drained muck",
-      "Somewhat excessively drained"
-    ],
+    "Soil Drainage": ["Poorly drained", "Somewhat poorly drained", "Moderately well drained", "Well drained", "Excessively drained", "Well drained muck", "Somewhat excessively drained"],
     "Min Germination Temp (F)": 38,
     "Seeds per Pound": 245000,
     "Inoculant Type": ["none"],
@@ -2179,9 +2070,10 @@
     "Zone": 5,
     "ITIS TSN": 31602,
     "__id": "recptsBHGfuhNN02B"
-  },
-  {
-    "_id": { "$oid": "619e81be4d73191bb1880080" },
+}, {
+    "_id": {
+        "$oid": "61ae21025293a01c5a491b0c"
+    },
     "Cover Crop Name": "Radish, Forage",
     "Scientific Name": "Raphanus sativus",
     "cv, var, or ssp to specify": "Tillage, GroundHog, Sodbuster, BioTill, EcoTill, Forage (CCS-779)",
@@ -2197,13 +2089,7 @@
     "Duration": ["Annual"],
     "Shape & Orientation": ["Erect"],
     "Notes: Basic Agronomics": "Planting date critical to aboveground biomass",
-    "Soil Drainage": [
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Well drained muck",
-      "Somewhat excessively drained"
-    ],
+    "Soil Drainage": ["Somewhat poorly drained", "Moderately well drained", "Well drained", "Well drained muck", "Somewhat excessively drained"],
     "Notes: Soil Conditions": "We noted that a plow pan causes poor drainage in soil classes with inherently better drainage. Radishes are often used to correct that condition.",
     "Min Germination Temp (F)": 45,
     "Seeds per Pound": 20000,
@@ -2284,9 +2170,10 @@
     "Search Synonym": "tillage radish, daikon radish, Japanese radish, oilseed radish",
     "ITIS TSN": 23290,
     "__id": "recY3Br6wsoRF90di"
-  },
-  {
-    "_id": { "$oid": "619e81be4d73191bb1880081" },
+}, {
+    "_id": {
+        "$oid": "61ae21025293a01c5a491b0d"
+    },
     "Cover Crop Name": "Radish, Oilseed",
     "Scientific Name": "Raphanus sativus",
     "cv, var, or ssp to specify": "Oilseed",
@@ -2300,13 +2187,7 @@
     "Active Growth Period": ["Fall", "Spring"],
     "Duration": ["Annual"],
     "Shape & Orientation": ["Erect"],
-    "Soil Drainage": [
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Well drained muck",
-      "Somewhat excessively drained"
-    ],
+    "Soil Drainage": ["Somewhat poorly drained", "Moderately well drained", "Well drained", "Well drained muck", "Somewhat excessively drained"],
     "Min Germination Temp (F)": 45,
     "Seeds per Pound": 20000,
     "Inoculant Type": ["none"],
@@ -2382,9 +2263,10 @@
     "Search Synonym": "tillage radish, daikon radish, Japanese radish, forage radish",
     "ITIS TSN": 23290,
     "__id": "recdvrpG7T1fKIPZy"
-  },
-  {
-    "_id": { "$oid": "619e81be4d73191bb1880082" },
+}, {
+    "_id": {
+        "$oid": "61ae21025293a01c5a491b0e"
+    },
     "Cover Crop Name": "Rape, Oilseed, Spring",
     "Scientific Name": "Brassica napus",
     "cv, var, or ssp to specify": "cvs. Spring",
@@ -2399,13 +2281,7 @@
     "Duration": ["Annual"],
     "Shape & Orientation": ["Erect"],
     "Notes: Basic Agronomics": "Dry matter highly dependent on planting and termination date and precipitation. For grazing purposes, restrict to 75% of total ration or mixing with a grass is recommended. High glucosinolates interfer with mineral metabolism. Nitrate poisoning is possible if fed to livestock.",
-    "Soil Drainage": [
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Well drained muck",
-      "Somewhat excessively drained"
-    ],
+    "Soil Drainage": ["Somewhat poorly drained", "Moderately well drained", "Well drained", "Well drained muck", "Somewhat excessively drained"],
     "Min Germination Temp (F)": 40,
     "Seeds per Pound": 157000,
     "Inoculant Type": ["none"],
@@ -2484,9 +2360,10 @@
     "Search Synonym": "canola, forage rapeseed",
     "ITIS TSN": 23060,
     "__id": "rechozGdmAWWRe6LK"
-  },
-  {
-    "_id": { "$oid": "619e81be4d73191bb1880083" },
+}, {
+    "_id": {
+        "$oid": "61ae21025293a01c5a491b0f"
+    },
     "Cover Crop Name": "Rape, Oilseed, Winter",
     "Scientific Name": "Brassica napus",
     "cv, var, or ssp to specify": "cvs. Winter, Dwarf Essex is example cultivar",
@@ -2502,13 +2379,7 @@
     "Duration": ["Annual"],
     "Shape & Orientation": ["Erect"],
     "Notes: Basic Agronomics": "Dry matter highly dependent on planting and termination date and precipitation. For grazing purposes, restrict to 75% of total ration or mixing with a grass is recommended. High glucosinolates interfer with mineral metabolism. Nitrate poisoning is possible if fed to livestock.",
-    "Soil Drainage": [
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Well drained muck",
-      "Somewhat excessively drained"
-    ],
+    "Soil Drainage": ["Somewhat poorly drained", "Moderately well drained", "Well drained", "Well drained muck", "Somewhat excessively drained"],
     "Min Germination Temp (F)": 40,
     "Seeds per Pound": 157000,
     "Inoculant Type": ["none"],
@@ -2586,9 +2457,10 @@
     "Search Synonym": "canola",
     "ITIS TSN": 23060,
     "__id": "recYSOtwa6z8fWEJu"
-  },
-  {
-    "_id": { "$oid": "619e81be4d73191bb1880084" },
+}, {
+    "_id": {
+        "$oid": "61ae21025293a01c5a491b10"
+    },
     "Cover Crop Name": "Ryegrass, Annual",
     "Scientific Name": "Lolium multiflorum",
     "cv, var, or ssp to specify": "Italian Ryegrass",
@@ -2604,15 +2476,7 @@
     "Duration": ["Annual"],
     "Shape & Orientation": ["Erect"],
     "Hessian Fly-Free Date": true,
-    "Soil Drainage": [
-      "Very poorly drained",
-      "Poorly drained",
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Saturated muck",
-      "Well drained muck",
-      "Well drained"
-    ],
+    "Soil Drainage": ["Very poorly drained", "Poorly drained", "Somewhat poorly drained", "Moderately well drained", "Saturated muck", "Well drained muck", "Well drained"],
     "Min Germination Temp (F)": 40,
     "Seeds per Pound": 230000,
     "Inoculant Type": ["none"],
@@ -2701,9 +2565,10 @@
     "Search Synonym": "Italian ryegrass",
     "ITIS TSN": 40892,
     "__id": "recbr0Bj5uI9TDXfi"
-  },
-  {
-    "_id": { "$oid": "619e81be4d73191bb1880085" },
+}, {
+    "_id": {
+        "$oid": "61ae21025293a01c5a491b11"
+    },
     "Cover Crop Name": "Ryegrass, Perennial",
     "Scientific Name": "Lolium perenne",
     "Origin": "MCCC Species tool",
@@ -2717,15 +2582,7 @@
     "Active Growth Period": ["Fall", "Spring", "Summer"],
     "Duration": ["Perennial"],
     "Shape & Orientation": ["Erect"],
-    "Soil Drainage": [
-      "Very poorly drained",
-      "Poorly drained",
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Saturated muck",
-      "Well drained muck"
-    ],
+    "Soil Drainage": ["Very poorly drained", "Poorly drained", "Somewhat poorly drained", "Moderately well drained", "Well drained", "Saturated muck", "Well drained muck"],
     "Min Germination Temp (F)": 40,
     "Seeds per Pound": 240400,
     "Inoculant Type": ["none"],
@@ -2796,9 +2653,10 @@
     "Zone": 5,
     "ITIS TSN": 40893,
     "__id": "recT5OXYb3ih0LAiX"
-  },
-  {
-    "_id": { "$oid": "619e81be4d73191bb1880086" },
+}, {
+    "_id": {
+        "$oid": "61ae21025293a01c5a491b12"
+    },
     "Cover Crop Name": "Sorghum",
     "Scientific Name": "Sorghum bicolor",
     "cv, var, or ssp to specify": "Dwarf Forage, BMR",
@@ -2812,14 +2670,7 @@
     "Active Growth Period": ["Summer"],
     "Duration": ["Annual"],
     "Shape & Orientation": ["Erect"],
-    "Soil Drainage": [
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Excessively drained",
-      "Well drained muck",
-      "Somewhat excessively drained"
-    ],
+    "Soil Drainage": ["Somewhat poorly drained", "Moderately well drained", "Well drained", "Excessively drained", "Well drained muck", "Somewhat excessively drained"],
     "Min Germination Temp (F)": 65,
     "Seeds per Pound": 15000,
     "Inoculant Type": ["none"],
@@ -2892,9 +2743,10 @@
     "Zone": 5,
     "ITIS TSN": 42108,
     "__id": "reckaq0HuZKwCLrt9"
-  },
-  {
-    "_id": { "$oid": "619e81be4d73191bb1880087" },
+}, {
+    "_id": {
+        "$oid": "61ae21025293a01c5a491b13"
+    },
     "Cover Crop Name": "Sorghum-sudangrass",
     "Scientific Name": "Sorghum bicolor x Sorghum bicolor var. Sudanense",
     "Synonyms": "Sudex",
@@ -2909,14 +2761,7 @@
     "Active Growth Period": ["Summer"],
     "Duration": ["Annual"],
     "Shape & Orientation": ["Erect"],
-    "Soil Drainage": [
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Excessively drained",
-      "Well drained muck",
-      "Somewhat excessively drained"
-    ],
+    "Soil Drainage": ["Somewhat poorly drained", "Moderately well drained", "Well drained", "Excessively drained", "Well drained muck", "Somewhat excessively drained"],
     "Min Germination Temp (F)": 65,
     "Seeds per Pound": 15000,
     "Inoculant Type": ["none"],
@@ -2992,9 +2837,10 @@
     "Zone": 5,
     "Search Synonym": "Sudex, brown midrib sorghum sudangrass",
     "__id": "recqaNKR8DqhXmOMs"
-  },
-  {
-    "_id": { "$oid": "619e81be4d73191bb1880088" },
+}, {
+    "_id": {
+        "$oid": "61ae21025293a01c5a491b14"
+    },
     "Cover Crop Name": "Soybeans",
     "Scientific Name": "Glycine max",
     "cv, var, or ssp to specify": "non GMO varieites",
@@ -3009,14 +2855,7 @@
     "Duration": ["Annual"],
     "Shape & Orientation": ["Erect"],
     "Notes: Basic Agronomics": "Dry matter highly dependent on planting and termination date and precipitation.Good seed value if a short season cultivar is used and the crop is managed properly to obtain decent quality seed. Best forage value at R6/R7. For grazing purposes, restrict to 30% of total ration or mixing with a grass is recommended.",
-    "Soil Drainage": [
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Excessively drained",
-      "Well drained muck",
-      "Somewhat excessively drained"
-    ],
+    "Soil Drainage": ["Somewhat poorly drained", "Moderately well drained", "Well drained", "Excessively drained", "Well drained muck", "Somewhat excessively drained"],
     "Min Germination Temp (F)": 50,
     "Seeds per Pound": 4900,
     "Inoculant Type": ["soybean"],
@@ -3092,9 +2931,10 @@
     "Zone": 5,
     "ITIS TSN": 26716,
     "__id": "recfImzIGINOU1QJO"
-  },
-  {
-    "_id": { "$oid": "619e81be4d73191bb1880089" },
+}, {
+    "_id": {
+        "$oid": "61ae21025293a01c5a491b15"
+    },
     "Cover Crop Name": "Sudangrass",
     "Scientific Name": "Sorghum X drummondii",
     "cv, var, or ssp to specify": "non-BMR, BMR",
@@ -3109,14 +2949,7 @@
     "Duration": ["Annual"],
     "Shape & Orientation": ["Erect"],
     "Notes: Basic Agronomics": "Variety, planting date, and termination strategies impact biomass",
-    "Soil Drainage": [
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Excessively drained",
-      "Well drained muck",
-      "Somewhat excessively drained"
-    ],
+    "Soil Drainage": ["Somewhat poorly drained", "Moderately well drained", "Well drained", "Excessively drained", "Well drained muck", "Somewhat excessively drained"],
     "Min Germination Temp (F)": 65,
     "Seeds per Pound": 30000,
     "Inoculant Type": ["none"],
@@ -3190,9 +3023,10 @@
     "Zone": 5,
     "ITIS TSN": 506626,
     "__id": "recFlJfyYTtHWfOaB"
-  },
-  {
-    "_id": { "$oid": "619e81be4d73191bb188008a" },
+}, {
+    "_id": {
+        "$oid": "61ae21025293a01c5a491b16"
+    },
     "Cover Crop Name": "Sunflower",
     "Scientific Name": "Helianthus annuus",
     "cv, var, or ssp to specify": "Black Oil",
@@ -3207,14 +3041,7 @@
     "Duration": ["Annual"],
     "Shape & Orientation": ["Erect"],
     "Notes: Basic Agronomics": "Dry matter highly dependent on planting and termination date and precipitation.",
-    "Soil Drainage": [
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Excessively drained",
-      "Well drained muck",
-      "Somewhat excessively drained"
-    ],
+    "Soil Drainage": ["Somewhat poorly drained", "Moderately well drained", "Well drained", "Excessively drained", "Well drained muck", "Somewhat excessively drained"],
     "Min Germination Temp (F)": 65,
     "Seeds per Pound": 7500,
     "Inoculant Type": ["none"],
@@ -3289,9 +3116,10 @@
     "Search Synonym": "black oil sunflower",
     "ITIS TSN": 36616,
     "__id": "recqPP3FeOnSDL9SN"
-  },
-  {
-    "_id": { "$oid": "619e81be4d73191bb188008b" },
+}, {
+    "_id": {
+        "$oid": "61ae21025293a01c5a491b17"
+    },
     "Cover Crop Name": "Sunn Hemp",
     "Scientific Name": "Crotalaria juncea",
     "cv, var, or ssp to specify": "(look up Steve Groff's CV that does well here)",
@@ -3306,14 +3134,7 @@
     "Duration": ["Annual"],
     "Shape & Orientation": ["Erect"],
     "Notes: Basic Agronomics": "Dry matter highly dependent on planting and termination date and precipitation. Seeds are toxic to livestock. Bloat potential that is easily managed. For grazing purposes, restrict to 30% of total ration or mixing with a grass is recommended.",
-    "Soil Drainage": [
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Excessively drained",
-      "Well drained muck",
-      "Somewhat excessively drained"
-    ],
+    "Soil Drainage": ["Somewhat poorly drained", "Moderately well drained", "Well drained", "Excessively drained", "Well drained muck", "Somewhat excessively drained"],
     "Min Germination Temp (F)": 68,
     "Seeds per Pound": 15000,
     "Inoculant Type": ["peanut", "lima bean"],
@@ -3390,9 +3211,10 @@
     "Search Synonym": "brown hemp, Indian hemp",
     "ITIS TSN": 501804,
     "__id": "rec41LXK9ZgYScmpH"
-  },
-  {
-    "_id": { "$oid": "619e81be4d73191bb188008c" },
+}, {
+    "_id": {
+        "$oid": "61ae21025293a01c5a491b18"
+    },
     "Cover Crop Name": "Sweetclover, Yellow",
     "Scientific Name": "Melilotus officinalis",
     "Synonyms": "Fabales",
@@ -3408,14 +3230,7 @@
     "Duration": ["Biennial"],
     "Shape & Orientation": ["Erect"],
     "Notes: Basic Agronomics": "kill before bud stage for best nitrogen release",
-    "Soil Drainage": [
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Well drained muck",
-      "Excessively drained",
-      "Somewhat excessively drained"
-    ],
+    "Soil Drainage": ["Somewhat poorly drained", "Moderately well drained", "Well drained", "Well drained muck", "Excessively drained", "Somewhat excessively drained"],
     "Min Germination Temp (F)": 42,
     "Seeds per Pound": 259000,
     "Inoculant Type": ["alfalfa", "sweetclover"],
@@ -3498,9 +3313,10 @@
     "Search Synonym": "white sweetclover",
     "ITIS TSN": 26150,
     "__id": "recbjQQdRq234J04O"
-  },
-  {
-    "_id": { "$oid": "619e81be4d73191bb188008d" },
+}, {
+    "_id": {
+        "$oid": "61ae21025293a01c5a491b19"
+    },
     "Cover Crop Name": "Teff",
     "Scientific Name": "Eragrostis tef",
     "cv, var, or ssp to specify": "'Descartes', 'Tiffany'",
@@ -3515,14 +3331,7 @@
     "Duration": ["Annual"],
     "Shape & Orientation": ["Erect"],
     "Notes: Basic Agronomics": "Dry matter highly dependent on planting and termination date and precipitation. Caution with grazing due to shallow root system.",
-    "Soil Drainage": [
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Excessively drained",
-      "Well drained muck",
-      "Somewhat excessively drained"
-    ],
+    "Soil Drainage": ["Somewhat poorly drained", "Moderately well drained", "Well drained", "Excessively drained", "Well drained muck", "Somewhat excessively drained"],
     "Min Germination Temp (F)": 65,
     "Seeds per Pound": 1300000,
     "Inoculant Type": ["none"],
@@ -3598,9 +3407,10 @@
     "Search Synonym": "annual bunch grass, Williams lovegrass",
     "ITIS TSN": 40738,
     "__id": "recHkcKuG48xmZcjE"
-  },
-  {
-    "_id": { "$oid": "619e81be4d73191bb188008e" },
+}, {
+    "_id": {
+        "$oid": "61ae21025293a01c5a491b1a"
+    },
     "Cover Crop Name": "Triticale, Spring",
     "Scientific Name": "X Triticosecale",
     "cv, var, or ssp to specify": "Spring",
@@ -3615,13 +3425,7 @@
     "Duration": ["Annual"],
     "Shape & Orientation": ["Erect"],
     "Notes: Basic Agronomics": "Dry matter highly dependent on planting and termination date and precipitation.",
-    "Soil Drainage": [
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Excessively drained",
-      "Well drained muck"
-    ],
+    "Soil Drainage": ["Somewhat poorly drained", "Moderately well drained", "Well drained", "Excessively drained", "Well drained muck"],
     "Min Germination Temp (F)": 38,
     "Seeds per Pound": 12000,
     "Inoculant Type": ["none"],
@@ -3685,9 +3489,10 @@
     "Zone": 5,
     "ITIS TSN": 781315,
     "__id": "recltzvhOm48tKGLa"
-  },
-  {
-    "_id": { "$oid": "619e81be4d73191bb188008f" },
+}, {
+    "_id": {
+        "$oid": "61ae21025293a01c5a491b1b"
+    },
     "Cover Crop Name": "Triticale, Winter",
     "Scientific Name": "X Triticosecale",
     "cv, var, or ssp to specify": "Winter",
@@ -3703,15 +3508,7 @@
     "Shape & Orientation": ["Erect"],
     "Hessian Fly-Free Date": true,
     "Notes: Basic Agronomics": "Biomass if driven by terminaton timing. ",
-    "Soil Drainage": [
-      "Poorly drained",
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Well drained muck",
-      "Excessively drained",
-      "Somewhat excessively drained"
-    ],
+    "Soil Drainage": ["Poorly drained", "Somewhat poorly drained", "Moderately well drained", "Well drained", "Well drained muck", "Excessively drained", "Somewhat excessively drained"],
     "Min Germination Temp (F)": 38,
     "Seeds per Pound": 12000,
     "Inoculant Type": ["none"],
@@ -3785,9 +3582,10 @@
     "Zone": 5,
     "ITIS TSN": 781315,
     "__id": "recRjFwhpssdKL5Zn"
-  },
-  {
-    "_id": { "$oid": "619e81be4d73191bb1880090" },
+}, {
+    "_id": {
+        "$oid": "61ae21025293a01c5a491b1c"
+    },
     "Cover Crop Name": "Turnip, Forage",
     "Scientific Name": "Brassica rapa",
     "cv, var, or ssp to specify": "Hybrid forage -- 'Pasja' or 'Appin'",
@@ -3802,13 +3600,7 @@
     "Duration": ["Annual"],
     "Shape & Orientation": ["Erect"],
     "Notes: Basic Agronomics": "This is only aboveground biomass does not include the turnip.",
-    "Soil Drainage": [
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Well drained muck",
-      "Somewhat excessively drained"
-    ],
+    "Soil Drainage": ["Somewhat poorly drained", "Moderately well drained", "Well drained", "Well drained muck", "Somewhat excessively drained"],
     "Min Germination Temp (F)": 45,
     "Seeds per Pound": 192800,
     "Inoculant Type": ["none"],
@@ -3887,9 +3679,10 @@
     "Zone": 5,
     "ITIS TSN": 23063,
     "__id": "recxbHVoFAVcS6zcO"
-  },
-  {
-    "_id": { "$oid": "619e81be4d73191bb1880091" },
+}, {
+    "_id": {
+        "$oid": "61ae21025293a01c5a491b1d"
+    },
     "Cover Crop Name": "Vetch, Hairy",
     "Scientific Name": "Vicia villosa",
     "Synonyms": "Winter Vetch",
@@ -3904,13 +3697,7 @@
     "Active Growth Period": ["Fall", "Spring"],
     "Duration": ["Annual"],
     "Shape & Orientation": ["Climbing"],
-    "Soil Drainage": [
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Well drained muck",
-      "Somewhat excessively drained"
-    ],
+    "Soil Drainage": ["Somewhat poorly drained", "Moderately well drained", "Well drained", "Well drained muck", "Somewhat excessively drained"],
     "Min Germination Temp (F)": 50,
     "Seeds per Pound": 16300,
     "Inoculant Type": ["pea/vetch"],
@@ -3992,9 +3779,10 @@
     "Zone": 5,
     "ITIS TSN": 26360,
     "__id": "reczSWmbd4g9DwNfg"
-  },
-  {
-    "_id": { "$oid": "619e81be4d73191bb1880092" },
+}, {
+    "_id": {
+        "$oid": "61ae21025293a01c5a491b1e"
+    },
     "Cover Crop Name": "Wheat, Spring",
     "Scientific Name": "Triticum aestivum",
     "cv, var, or ssp to specify": "Spring",
@@ -4010,15 +3798,7 @@
     "Shape & Orientation": ["Erect"],
     "Hessian Fly-Free Date": true,
     "Notes: Basic Agronomics": "Hessian fly free date is a proxy for cereal rust date as well (after which cereal rust is less of a risk).",
-    "Soil Drainage": [
-      "Poorly drained",
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Excessively drained",
-      "Well drained muck",
-      "Somewhat excessively drained"
-    ],
+    "Soil Drainage": ["Poorly drained", "Somewhat poorly drained", "Moderately well drained", "Well drained", "Excessively drained", "Well drained muck", "Somewhat excessively drained"],
     "Min Germination Temp (F)": 38,
     "Seeds per Pound": 11400,
     "Inoculant Type": ["none"],
@@ -4095,9 +3875,10 @@
     "Zone": 5,
     "ITIS TSN": 42237,
     "__id": "recGJ6TYiGkaxvHtn"
-  },
-  {
-    "_id": { "$oid": "619e81be4d73191bb1880093" },
+}, {
+    "_id": {
+        "$oid": "61ae21025293a01c5a491b1f"
+    },
     "Cover Crop Name": "Wheat, Winter",
     "Scientific Name": "Triticum aestivum",
     "cv, var, or ssp to specify": "Winter ",
@@ -4113,15 +3894,7 @@
     "Shape & Orientation": ["Erect"],
     "Hessian Fly-Free Date": true,
     "Notes: Basic Agronomics": "C:N ratio increases at/after boot stage.",
-    "Soil Drainage": [
-      "Poorly drained",
-      "Somewhat poorly drained",
-      "Moderately well drained",
-      "Well drained",
-      "Excessively drained",
-      "Well drained muck",
-      "Somewhat excessively drained"
-    ],
+    "Soil Drainage": ["Poorly drained", "Somewhat poorly drained", "Moderately well drained", "Well drained", "Excessively drained", "Well drained muck", "Somewhat excessively drained"],
     "Min Germination Temp (F)": 38,
     "Seeds per Pound": 11400,
     "Inoculant Type": ["none"],
@@ -4196,5 +3969,4 @@
     "Zone": 5,
     "ITIS TSN": 42237,
     "__id": "recBbrBD226y06M4q"
-  }
-]
+}]
