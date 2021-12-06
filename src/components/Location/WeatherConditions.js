@@ -4,38 +4,27 @@
   styled using makeStyles
 */
 
-import React, { useContext, useState, useEffect } from "react";
-import { LightButton, ReferenceTooltip } from "../../shared/constants";
-// import Slider from "@material-ui/core/Slider";
 import {
-  Cloud,
-  Info,
-  Opacity,
-  AcUnit,
-  WbSunny,
-  WbSunnyOutlined,
-} from "@material-ui/icons";
-import {
-  Button,
-  Modal,
-  makeStyles,
-  Fade,
   Backdrop,
+  Button,
+  Fade,
+  FormControl,
   FormGroup,
+  InputLabel,
+  makeStyles,
+  Modal,
+  Select,
   TextField,
+  Tooltip,
   //   FormControlLabel,
   Typography,
-  FormControl,
-  InputLabel,
-  Select,
-  CircularProgress,
-  Tooltip,
-  Link,
 } from "@material-ui/core";
-
-import { Context } from "../../store/Store";
+// import Slider from "@material-ui/core/Slider";
+import { AcUnit, Info, Opacity, WbSunnyOutlined } from "@material-ui/icons";
 import moment from "moment";
-import WeatherModal from "./WeatherModal";
+import React, { useContext, useEffect, useState } from "react";
+import { LightButton } from "../../shared/constants";
+import { Context } from "../../store/Store";
 
 const isEquivalent = (a, b) => {
   // Create arrays of property names

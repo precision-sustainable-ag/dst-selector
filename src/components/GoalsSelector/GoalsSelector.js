@@ -5,16 +5,14 @@
 */
 
 // TODO: Goal tags are not responsive!
-import React, { useContext, useEffect, useState } from "react";
-import { Context } from "../../store/Store";
-
-import "../../styles/goalsSelector.scss";
-import { CircularProgress, makeStyles, Typography } from "@material-ui/core";
-
+import { makeStyles, Typography } from "@material-ui/core";
 import Skeleton from "@material-ui/lab/Skeleton";
-import GoalTag from "./GoalTag";
+import React, { useContext, useEffect, useState } from "react";
 // import { airtableAPIURL } from "../../shared/constants";
 import { AirtableBearerKey } from "../../shared/keys";
+import { Context } from "../../store/Store";
+import "../../styles/goalsSelector.scss";
+import GoalTag from "./GoalTag";
 
 const useStyles = makeStyles((theme) => ({
   root: {

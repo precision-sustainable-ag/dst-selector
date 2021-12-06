@@ -4,15 +4,13 @@
   TopBar contains the blue bar for adding crops
 */
 
-
-import React, { useContext, Fragment } from "react";
+import { Button, Typography } from "@material-ui/core";
+import { Add } from "@material-ui/icons";
+import React, { Fragment, useContext } from "react";
+import { useHistory } from "react-router-dom";
 import { Context } from "../../store/Store";
 import MyCoverCropCardsComponent from "./MyCoverCropCardsComponent";
-import { Button, Typography } from "@material-ui/core";
-import { PictureAsPdf, ListAlt, Add } from "@material-ui/icons";
 import MyCoverCropComparisonComponent from "./MyCoverCropComparisonComponent";
-import { downloadAllPDF, downloadAllCSV } from "../../shared/constants";
-import { useHistory } from "react-router-dom";
 
 const MyCoverCropList = (props) => {
   const [state, dispatch] = useContext(Context);

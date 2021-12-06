@@ -2,46 +2,35 @@
   Unused
 */
 
-import React, { Fragment } from "react";
 import {
-  makeStyles,
-  List,
-  ListSubheader,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  Collapse,
-  Typography,
   Button,
-  TextField,
-  InputAdornment,
-  IconButton,
-  FormGroup,
-  FormControlLabel,
   Checkbox,
+  Collapse,
+  FormControlLabel,
+  FormGroup,
+  IconButton,
+  InputAdornment,
+  List,
+  ListItem,
+  ListItemText,
+  ListSubheader,
+  makeStyles,
+  TextField,
+  Typography,
 } from "@material-ui/core";
 import {
-  Send,
-  Drafts,
-  Inbox,
+  CalendarTodayRounded,
   ExpandLess,
   ExpandMore,
-  StarBorder,
-  CalendarTodayRounded,
 } from "@material-ui/icons";
+import { DateRangePicker } from "@matharumanpreet00/react-daterange-picker";
+import moment from "moment";
+import React, { Fragment } from "react";
+import { arrayMove, List as ListMovable } from "react-movable";
 import { CustomStyles } from "../../shared/constants";
 import { Context } from "../../store/Store";
-import { List as ListMovable, arrayMove } from "react-movable";
-
-import {
-  DateRangePicker,
-  DateRange,
-} from "@matharumanpreet00/react-daterange-picker";
-import moment from "moment";
-import Axios from "axios";
-import { AirtableBearerKey } from "../../shared/keys";
-import CropSidebarFilters from "./CropSidebarFilters";
 import SidebarFilters from "./SidebarFilters";
+
 const _ = require("lodash");
 
 const useStyles = makeStyles((theme) => ({
@@ -540,9 +529,8 @@ const CropSidebarComponent = (props) => {
             onClick={() =>
               setFiltersObjectOpen({
                 ...filtersObjectOpen,
-                "Disease & Non-Weed Pests": !filtersObjectOpen[
-                  "Disease & Non-Weed Pests"
-                ],
+                "Disease & Non-Weed Pests":
+                  !filtersObjectOpen["Disease & Non-Weed Pests"],
               })
             }
           >
@@ -562,9 +550,8 @@ const CropSidebarComponent = (props) => {
             onClick={() =>
               setFiltersObjectOpen({
                 ...filtersObjectOpen,
-                "Environmental Tolerances": !filtersObjectOpen[
-                  "Environmental Tolerances"
-                ],
+                "Environmental Tolerances":
+                  !filtersObjectOpen["Environmental Tolerances"],
               })
             }
           >
@@ -583,9 +570,8 @@ const CropSidebarComponent = (props) => {
             onClick={() =>
               setFiltersObjectOpen({
                 ...filtersObjectOpen,
-                "Grazers & Pollinators": !filtersObjectOpen[
-                  "Grazers & Pollinators"
-                ],
+                "Grazers & Pollinators":
+                  !filtersObjectOpen["Grazers & Pollinators"],
               })
             }
           >

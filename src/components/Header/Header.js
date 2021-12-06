@@ -4,34 +4,32 @@
   styled using ../../styles/header.scss
 */
 
-import React, { useEffect, useContext } from "react";
-import { Context } from "../../store/Store";
-import "../../styles/header.scss";
-import DateComponent from "./DateComponent";
-import Greenbar from "./Greenbar/Greenbar";
-import { abbrRegion, weatherApiURL } from "../../shared/constants";
+import { Badge, Button, Typography } from "@material-ui/core";
+import { useTheme } from "@material-ui/core/styles";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+import Axios from "axios";
 import {
-  MDBNavbar,
+  MDBCollapse,
   MDBContainer,
   MDBHamburgerToggler,
-  MDBCollapse,
+  MDBNavbar,
   MDBNavbarNav,
   MDBNavItem,
 } from "mdbreact";
-import { Button, Badge, Typography } from "@material-ui/core";
-import { Redirect, Link, useHistory, NavLink } from "react-router-dom";
-import ForecastComponent from "./ForecastComponent";
-import Axios from "axios";
 import moment from "moment";
-import { useTheme } from "@material-ui/core/styles";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
-
-import zone7DataDictionary from "../../shared/json/zone7/data-dictionary.json";
-import zone6DataDictionary from "../../shared/json/zone6/data-dictionary.json";
-import zone5DataDictionary from "../../shared/json/zone5/data-dictionary.json";
-import zone4DataDictionary from "../../shared/json/zone4/data-dictionary.json";
-
 import { useSnackbar } from "notistack";
+import React, { useContext, useEffect } from "react";
+import { NavLink, Redirect, useHistory } from "react-router-dom";
+import { abbrRegion, weatherApiURL } from "../../shared/constants";
+import zone4DataDictionary from "../../shared/json/zone4/data-dictionary.json";
+import zone5DataDictionary from "../../shared/json/zone5/data-dictionary.json";
+import zone6DataDictionary from "../../shared/json/zone6/data-dictionary.json";
+import zone7DataDictionary from "../../shared/json/zone7/data-dictionary.json";
+import { Context } from "../../store/Store";
+import "../../styles/header.scss";
+import DateComponent from "./DateComponent";
+import ForecastComponent from "./ForecastComponent";
+import Greenbar from "./Greenbar/Greenbar";
 
 const Header = () => {
   const theme = useTheme();

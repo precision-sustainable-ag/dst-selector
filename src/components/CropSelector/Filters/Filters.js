@@ -1,43 +1,48 @@
-import React, { useState, useEffect, useImperativeHandle, forwardRef } from "react";
-import { Grid, Tooltip, Chip } from "@material-ui/core";
-import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
+import { Chip, Grid, Tooltip } from "@material-ui/core";
+import HelpOutlineIcon from "@material-ui/icons/HelpOutline";
+import React, {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useState,
+} from "react";
 
-const DollarsAndRatings = ({data, filter, handleChange}) => {
-  let style = filter.symbol === 'dollar' ? {}
-              :
-              {
-                transform: 'scale(0.8)',
-                transformOrigin: 'top left',
-                width: '150%',
-              }
+const DollarsAndRatings = ({ data, filter, handleChange }) => {
+  let style =
+    filter.symbol === "dollar"
+      ? {}
+      : {
+          transform: "scale(0.8)",
+          transformOrigin: "top left",
+          width: "150%",
+        };
 
   return (
     <div style={style}>
-      {
-        new Array(filter.maxSize).fill(0).map((_, i) => i + 1).map(i => {
+      {new Array(filter.maxSize)
+        .fill(0)
+        .map((_, i) => i + 1)
+        .map((i) => {
           const selected = data.includes(i);
           return (
             <Chip
-              label={filter.symbol === 'dollar' ? '$'.repeat(i) : i + ' \u2605'}
-
+              label={filter.symbol === "dollar" ? "$".repeat(i) : i + " \u2605"}
               style={{
                 marginRight: 2,
                 marginBottom: 3,
               }}
-
               color={selected ? "primary" : "secondary"}
-
               onClick={() => {
-                if (filter.symbol === 'dollar') {
+                if (filter.symbol === "dollar") {
                   if (selected) {
-                    data = data.filter(d => d !== i);
+                    data = data.filter((d) => d !== i);
                   } else {
                     data.push(i);
                   }
                   handleChange(data, filter.alternateName || filter.name);
                 } else {
                   if (selected) {
-                    data = data.filter(j => j != i);
+                    data = data.filter((j) => j != i);
                   } else {
                     for (let j = i; j <= filter.maxSize; j++) {
                       if (!data.includes(j)) {
@@ -45,42 +50,41 @@ const DollarsAndRatings = ({data, filter, handleChange}) => {
                       }
                     }
                   }
-                  handleChange(data.sort(), filter.alternateName || filter.name);
+                  handleChange(
+                    data.sort(),
+                    filter.alternateName || filter.name
+                  );
                 }
               }}
             />
-          )
-        })
-      }
+          );
+        })}
     </div>
-  )
-} // DollarsAndRatings
+  );
+}; // DollarsAndRatings
 
-const Chips = ({props, filter, handleChange}) => { 
-  return (
-    filter.values.map(val => {
-      const selected = props.sidebarFilterOptions[filter.name].includes(val);
-      return (
-        <Chip
-          onClick={() => handleChange(filter.name, val)}
-          component="li"
-          size="medium"
-          label={val}
-          style={{
-            marginRight: 3,
-            marginBottom: 3
-          }}
+const Chips = ({ props, filter, handleChange }) => {
+  return filter.values.map((val) => {
+    const selected = props.sidebarFilterOptions[filter.name].includes(val);
+    return (
+      <Chip
+        onClick={() => handleChange(filter.name, val)}
+        component="li"
+        size="medium"
+        label={val}
+        style={{
+          marginRight: 3,
+          marginBottom: 3,
+        }}
+        color={selected ? "primary" : "secondary"}
+      />
+    );
+  });
+}; // Chips
 
-          color={selected ? "primary" : "secondary"}
-        />
-      )
-    })
-  )
-} // Chips
-
-const Tip = ({filter, omitHeading}) => {
+const Tip = ({ filter, omitHeading }) => {
   let [open, setOpen] = useState(false);
- 
+
   return (
     <Tooltip
       interactive
@@ -94,22 +98,22 @@ const Tip = ({filter, omitHeading}) => {
       onMouseOut={() => setOpen(false)}
       title={
         <div className="filterTooltip">
-          <p
-            dangerouslySetInnerHTML={{ __html: filter.description }}
-          />
+          <p dangerouslySetInnerHTML={{ __html: filter.description }} />
         </div>
       }
     >
-      <small style={{whiteSpace: 'nowrap'}}>
-        {omitHeading ? '' : filter.name}
-        <HelpOutlineIcon style={{cursor: "pointer", transform: "scale(0.7)" }} />
+      <small style={{ whiteSpace: "nowrap" }}>
+        {omitHeading ? "" : filter.name}
+        <HelpOutlineIcon
+          style={{ cursor: "pointer", transform: "scale(0.7)" }}
+        />
       </small>
     </Tooltip>
-  )
-} // Tip
+  );
+}; // Tip
 
-const Filters = forwardRef(({props}, ref) => {
-  const options = props.filters.values.reduce(function(acc, cur, i) {
+const Filters = forwardRef(({ props }, ref) => {
+  const options = props.filters.values.reduce(function (acc, cur, i) {
     acc[cur.alternateName || cur.name] = [];
     return acc;
   }, {});
@@ -149,41 +153,52 @@ const Filters = forwardRef(({props}, ref) => {
   };
 
   return (
-    <Grid container spacing={2} >
+    <Grid container spacing={2}>
       {props.filters.values.map((filter) => {
-        if (filter.type === 'chip' || props.filters.type === 'chips-only') {
+        if (filter.type === "chip" || props.filters.type === "chips-only") {
           if (filter.values && filter.values.length === 1) {
             return (
               <Grid item>
-                <Chips filter={filter} props={props} handleChange={chipChange}/>
+                <Chips
+                  filter={filter}
+                  props={props}
+                  handleChange={chipChange}
+                />
                 <Tip filter={filter} omitHeading={true} />
               </Grid>
-            )
+            );
           } else {
             return (
               <Grid item>
                 <Tip filter={filter} />
-                <br/>
-                <Chips filter={filter} props={props} handleChange={chipChange}/>
+                <br />
+                <Chips
+                  filter={filter}
+                  props={props}
+                  handleChange={chipChange}
+                />
               </Grid>
-            )
+            );
           }
         } else {
-          let data = props.sidebarFilterOptions[filter.alternateName || filter.name];
+          let data =
+            props.sidebarFilterOptions[filter.alternateName || filter.name];
 
           return (
             <Grid item xs={12}>
               <Tip filter={filter} />
-              <br/>
-              <DollarsAndRatings filter={filter} data={data} handleChange={dollarsAndRatingsChange} />
+              <br />
+              <DollarsAndRatings
+                filter={filter}
+                data={data}
+                handleChange={dollarsAndRatingsChange}
+              />
             </Grid>
-          )}
+          );
         }
-      )}
+      })}
     </Grid>
   );
 }); // Filters
 
-export {
-  Filters,
-}
+export { Filters };

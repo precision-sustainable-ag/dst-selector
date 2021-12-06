@@ -5,9 +5,9 @@
   The changeProgress allows the user to change the progress they are at in the goal selection process
 */
 
-import React, { useContext, Component } from "react";
-import { Context } from "../store/Store";
 import axios from "axios";
+import { useContext } from "react";
+import { Context } from "../store/Store";
 
 export const UpdateLatLong = async (lat, lon) => {
   const [state, dispatch] = useContext(Context);

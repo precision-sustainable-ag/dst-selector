@@ -8,18 +8,21 @@
   styled using ../../styles/cropComparisonView.scss
 */
 
-import React, { useState, useEffect, Fragment, useContext } from "react";
 import {
   Card,
-  CardMedia,
-  CardContent,
-  Button,
-  Typography,
   CardActionArea,
-  CardActions,
+  CardContent,
+  CardMedia,
   IconButton,
+  Typography,
 } from "@material-ui/core";
-import "../../styles/cropComparisonView.scss";
+import {
+  Cancel,
+  KeyboardArrowLeft,
+  KeyboardArrowRight,
+} from "@material-ui/icons";
+import { useSnackbar } from "notistack";
+import React, { useContext, useEffect, useState } from "react";
 import {
   DataTooltip,
   flipCoverCropName,
@@ -27,21 +30,14 @@ import {
   RenderSeedPriceIcons,
   trimString,
 } from "../../shared/constants";
-import {
-  MonetizationOn,
-  Cancel,
-  KeyboardArrowRight,
-  KeyboardArrowLeft,
-} from "@material-ui/icons";
-import { Context } from "../../store/Store";
-
-import "../../styles/MyCoverCropComparisonComponent.scss";
-import sidebarDefinitionsz7 from "../../shared/json/zone7/data-dictionary.json";
-import sidebarDefinitionsz6 from "../../shared/json/zone6/data-dictionary.json";
-import sidebarDefinitionsz5 from "../../shared/json/zone5/data-dictionary.json";
 import sidebarDefinitionsz4 from "../../shared/json/zone4/data-dictionary.json";
+import sidebarDefinitionsz5 from "../../shared/json/zone5/data-dictionary.json";
+import sidebarDefinitionsz6 from "../../shared/json/zone6/data-dictionary.json";
+import sidebarDefinitionsz7 from "../../shared/json/zone7/data-dictionary.json";
+import { Context } from "../../store/Store";
+import "../../styles/cropComparisonView.scss";
+import "../../styles/MyCoverCropComparisonComponent.scss";
 import CropDetailsModalComponent from "../CropSelector/CropDetailsModal";
-import { useSnackbar } from "notistack";
 
 const lightBorder = {
   border: "1px solid #35999b",

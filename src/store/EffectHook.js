@@ -2,9 +2,9 @@
   Unused 
 */
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
-const useFetch = url => {
+const useFetch = (url) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   //   if (url !== "") {

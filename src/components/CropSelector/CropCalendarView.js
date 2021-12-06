@@ -4,51 +4,46 @@
   Styles are created using makeStyles
 */
 
-import React, { useContext, Fragment, useEffect, useState } from "react";
-import { Context } from "../../store/Store";
-import moment from "moment";
 import {
-  Typography,
   Button,
-  makeStyles,
-  Modal,
-  Backdrop,
-  Fade,
   CircularProgress,
   Table,
-  TableHead,
-  TableContainer,
   TableBody,
-  TableRow,
   TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
   Tooltip,
+  Typography,
 } from "@material-ui/core";
 import {
-  LightButton,
+  AcUnit,
+  AddCircle,
+  Eco,
+  LocalFlorist,
+  WbSunny,
+} from "@material-ui/icons";
+import moment from "moment";
+import React, { Fragment, useContext, useEffect, useState } from "react";
+import {
+  allGoalsURL,
   allMonths,
   cropDataURL,
-  allGoalsURL,
-  getRating,
   CropImage,
   CustomStyles,
   flipCoverCropName,
-  trimString,
+  getRating,
+  LightButton,
   sudoButtonStyle,
   sudoButtonStyleWithPadding,
+  trimString,
 } from "../../shared/constants";
+import { AirtableBearerKey } from "../../shared/keys";
+import { Context } from "../../store/Store";
 import "../../styles/cropCalendarViewComponent.scss";
-import GrowthWindowComponent from "./GrowthWindow";
+import CropDetailsModalComponent from "./CropDetailsModal";
 // import { AddCircle, FiberManualRecord, CloseRounded } from "@material-ui/icons";
 import CropLegendModal from "./CropLegendModal";
-import { AirtableBearerKey } from "../../shared/keys";
-import {
-  AddCircle,
-  Eco,
-  WbSunny,
-  LocalFlorist,
-  AcUnit,
-} from "@material-ui/icons";
-import CropDetailsModalComponent from "./CropDetailsModal";
 import CropSelectorCalendarView from "./CropSelectorCalendarView";
 // import RenderCashCropOverlay from "./RenderCashCropOverlay";
 const growthIcon = {

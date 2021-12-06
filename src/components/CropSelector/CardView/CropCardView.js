@@ -5,9 +5,9 @@
 */
 
 import React, { useContext, useEffect } from "react";
+import { CustomStyles } from "../../../shared/constants";
 import { Context } from "../../../store/Store";
 import "../../../styles/cropCardView/cropCardView.scss";
-import { CustomStyles } from "../../../shared/constants";
 import CropCardComponent from "./CropCard";
 
 const CropCardViewComponent = (props) => {

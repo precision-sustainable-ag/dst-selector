@@ -3,20 +3,13 @@
   Styles are created using makeStyles
 */
 
-import React, { useState, useContext, useEffect, Fragment } from "react";
+import { Backdrop, Button, Fade, makeStyles, Modal } from "@material-ui/core";
+import { Close } from "@material-ui/icons";
+import React, { useContext, useEffect, useState } from "react";
+import { CropImage, zoneIcon } from "../../shared/constants";
 import { Context } from "../../store/Store";
-import { zoneIcon, getRating, CropImage } from "../../shared/constants";
 // import cropDesc from "../../shared/crop-descriptions.json";
 import "../../styles/cropDetailsModal.scss";
-import { Button, Modal, Fade, Backdrop, makeStyles } from "@material-ui/core";
-
-import {
-  PhotoLibrary,
-  PictureAsPdf,
-  FormatListBulleted,
-  Print,
-  Close,
-} from "@material-ui/icons";
 import InformationSheetContent from "../InformationSheet/InformationSheetContent";
 
 // import Axios from "axios";

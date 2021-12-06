@@ -3,14 +3,8 @@
   The SoilConditions filters crops based on soil conditions
 */
 
-import React, {
-  useState,
-  useEffect,
-  forwardRef,
-  useImperativeHandle,
-  useContext,
-} from "react";
-import { Grid, FormControlLabel, Checkbox, Tooltip } from "@material-ui/core";
+import { Checkbox, FormControlLabel, Grid, Tooltip } from "@material-ui/core";
+import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../../../store/Store";
 
 const SoilConditions = (props) => {

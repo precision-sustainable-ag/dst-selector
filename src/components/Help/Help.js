@@ -5,18 +5,12 @@
   styled using CustomStyles from ../../shared/constants
 */
 
-import React, { useState, useEffect, Fragment } from "react";
-import Header from "../Header/Header";
-import {
-  Typography,
-  Button,
-  useTheme,
-  isWidthDown,
-  isWidthUp,
-} from "@material-ui/core";
+import { Button, Typography } from "@material-ui/core";
+import React, { Fragment, useEffect } from "react";
 import { Link } from "react-router-dom";
-import InformationSheetDictionary from "../InformationSheet/InformationSheetDictionary";
 import { CustomStyles } from "../../shared/constants";
+import Header from "../Header/Header";
+import InformationSheetDictionary from "../InformationSheet/InformationSheetDictionary";
 
 const HelpComponent = (props) => {
   useEffect(() => {

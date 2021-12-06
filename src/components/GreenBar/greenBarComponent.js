@@ -7,12 +7,12 @@ Please refer to file src/header/greenbar
 
 */
 
-import React, { Component } from "react";
 // import Grid from "@material-ui/core/Grid";
 import { Button } from "@material-ui/core";
-import "../../styles/greenBar.css";
+import React, { Component } from "react";
 // import LocationOnIcon from "@material-ui/icons/LocationOn";
 import { locationIcon, zoneIcon } from "../../shared/constants.js";
+import "../../styles/greenBar.css";
 
 export class GreenBarComponent extends Component {
   constructor(props) {

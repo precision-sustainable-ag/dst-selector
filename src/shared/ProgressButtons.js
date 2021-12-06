@@ -3,8 +3,7 @@
   The ProgressButtons allow the user to navigate steps
 */
 
-import React, { useContext, useState, useEffect } from "react";
-import { LightButton } from "./constants";
+import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/Store";
 import ProgressButtonsInner from "./ProgressButtonsInner";
 

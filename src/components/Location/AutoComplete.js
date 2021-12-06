@@ -9,33 +9,25 @@
 // WHY: https://operations.osmfoundation.org/policies/nominatim/ Doesn't allow the API usage for building auto-complete
 // Lancaster, Pennsylvania as default for PASA
 
-import React, {
-  useState,
-  useEffect,
-  useContext,
-  useRef,
-  Fragment,
-} from "react";
-
 import {
-  TextField,
-  InputAdornment,
-  IconButton,
+  Backdrop,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  Fade,
   FormControl,
+  IconButton,
+  InputAdornment,
+  Link,
   makeStyles,
   Modal,
-  Backdrop,
-  Fade,
-  Link,
-  Dialog,
-  DialogContent,
-  DialogActions,
-  Button,
+  TextField,
   Typography,
 } from "@material-ui/core";
-import { Context } from "../../store/Store";
 import { Search } from "@material-ui/icons";
-import Axios from "axios";
+import React, { Fragment, useContext, useEffect, useState } from "react";
+import { Context } from "../../store/Store";
 
 const useStyles = makeStyles((theme) => ({
   formControl: {

@@ -3,37 +3,28 @@
   styled using ../../styles/location.scss
 */
 
-import React, { useEffect, useContext, useState } from "react";
-import { Context } from "../../store/Store";
-import "../../styles/location.scss";
-
 // import { cloudIcon } from "../../shared/constants";
 import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
   FormControl,
   InputLabel,
-  Select,
-  MenuItem,
   makeStyles,
+  MenuItem,
+  Select,
   Typography,
-  Dialog,
-  DialogContent,
-  DialogActions,
-  Button,
-  // TextField,
-  // withStyles,
-  // Button
 } from "@material-ui/core";
+import { Search } from "@material-ui/icons";
 // import Autocomplete from "@material-ui/lab/Autocomplete";
 import axios from "axios";
-import MapComponent from "./Map";
-import LiveLocation from "./LiveLocation";
-import AutoComplete from "./AutoComplete";
-import LocationToggleComponent from "./LocationToggle";
-import MapContext from "./MapContext";
-import { Search } from "@material-ui/icons";
-import { RestartPrompt } from "../../shared/constants";
-import GoogleMaps from "./GoogleMaps";
+import React, { useContext, useEffect, useState } from "react";
+import { Context } from "../../store/Store";
+import "../../styles/location.scss";
 import GoogleAutocomplete from "./GoogleAutocomplete";
+import MapContext from "./MapContext";
+
 // import { Link, Button } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({

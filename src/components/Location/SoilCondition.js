@@ -4,22 +4,21 @@
   styled using ../../styles/soilConditions.scss
 */
 
-import React, { useState, useEffect, useContext, useMemo } from "react";
 import {
-  Typography,
-  Chip,
   Button,
-  Grid,
-  withStyles,
+  Chip,
   Switch,
+  Typography,
+  withStyles,
 } from "@material-ui/core";
 import {
-  Terrain,
-  LocalDrinkOutlined,
   InvertColors,
+  LocalDrinkOutlined,
+  Terrain,
   WavesOutlined,
 } from "@material-ui/icons";
-import { ReferenceTooltip, CustomStyles } from "../../shared/constants";
+import React, { useContext, useEffect, useState } from "react";
+import { ReferenceTooltip } from "../../shared/constants";
 import { Context } from "../../store/Store";
 import "../../styles/soilConditions.scss";
 

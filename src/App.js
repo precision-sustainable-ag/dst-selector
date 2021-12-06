@@ -3,18 +3,18 @@
   styled using ./styles/App.scss
 */
 
-import React, { useContext, useEffect, Fragment, useState } from "react";
-import "./styles/App.scss";
 import { Snackbar } from "@material-ui/core";
+import React, { useContext, useEffect, useState } from "react";
+import CropSelector from "./components/CropSelector/CropSelector";
+import GoalsSelector from "./components/GoalsSelector/GoalsSelector";
 import Header from "./components/Header/Header";
 import Landing from "./components/Landing/Landing";
-import { Context } from "./store/Store";
 import LocationComponent from "./components/Location/Location";
-import ProgressButtons from "./shared/ProgressButtons";
-import ProgressBar from "./shared/ProgressBar";
-import GoalsSelector from "./components/GoalsSelector/GoalsSelector";
 import LocationConfirmation from "./components/Location/LocationConfirmation";
-import CropSelector from "./components/CropSelector/CropSelector";
+import ProgressBar from "./shared/ProgressBar";
+import ProgressButtons from "./shared/ProgressButtons";
+import { Context } from "./store/Store";
+import "./styles/App.scss";
 
 const LoadRelevantRoute = ({ progress, calcHeight }) => {
   switch (progress) {
@@ -76,8 +76,9 @@ const App = () => {
     let parentDocHeight = document
       .getElementById("mainContentWrapper")
       .getBoundingClientRect().height;
-    let headerHeight = document.querySelector("header").getBoundingClientRect()
-      .height;
+    let headerHeight = document
+      .querySelector("header")
+      .getBoundingClientRect().height;
 
     let calculatedHeight = parentDocHeight - headerHeight;
 

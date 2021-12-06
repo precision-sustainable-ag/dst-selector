@@ -2,8 +2,7 @@
   Unused 
 */
 
-
-import React, { Component } from "react";
+import { Component } from "react";
 // import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import "../../../styles/listViewComponent.css";
 
