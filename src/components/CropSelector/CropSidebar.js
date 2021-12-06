@@ -5,7 +5,7 @@
 */
 
 import React, { Fragment, useEffect, useRef } from "react";
-import filterData from "../../shared/data-dictionary7-optimised.json";
+import filterData from "../../shared/sidebar-dictionary.json";
 
 import {
   makeStyles,
