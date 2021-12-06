@@ -160,7 +160,6 @@ const Reducer = (state, action) => {
       };
     }
     case "ADD_GOALS": {
-      console.log(action.data);
       return {
         ...state,
         allGoals: action.data,
