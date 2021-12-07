@@ -10,12 +10,12 @@ import { Context } from "../../../store/Store";
 const SoilConditions = (props) => {
   const [state, dispatch] = useContext(Context);
   const { Flooding_Frequency, Drainage_Class } = state.soilData;
-  const [activeCropDataCopy, setActiveCropDataCopy] = useState(
-    props.activeCropData
-  );
+  // const [activeCropDataCopy, setActiveCropDataCopy] = useState(
+  //   props.activeCropData
+  // );
   const {
     activeCropData,
-    inactiveCropData,
+    // inactiveCropData,
     setActiveCropData,
     setInactiveCropData,
     cropData,

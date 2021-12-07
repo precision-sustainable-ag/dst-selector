@@ -42,7 +42,7 @@ const DollarsAndRatings = ({ data, filter, handleChange }) => {
                   handleChange(data, filter.alternateName || filter.name);
                 } else {
                   if (selected) {
-                    data = data.filter((j) => j != i);
+                    data = data.filter((j) => j !== i);
                   } else {
                     for (let j = i; j <= filter.maxSize; j++) {
                       if (!data.includes(j)) {

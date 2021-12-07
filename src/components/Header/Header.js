@@ -5,8 +5,6 @@
 */
 
 import { Badge, Button, Typography } from "@material-ui/core";
-import { useTheme } from "@material-ui/core/styles";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
 import Axios from "axios";
 import {
   MDBCollapse,
@@ -32,9 +30,9 @@ import ForecastComponent from "./ForecastComponent";
 import Greenbar from "./Greenbar/Greenbar";
 
 const Header = () => {
-  const theme = useTheme();
-  const matchesLGUp = useMediaQuery(theme.breakpoints.up("lg"));
-  const matchesMDBelow = useMediaQuery(theme.breakpoints.between("xs", "sm"));
+  // const theme = useTheme();
+  // const matchesLGUp = useMediaQuery(theme.breakpoints.up("lg"));
+  // const matchesMDBelow = useMediaQuery(theme.breakpoints.between("xs", "sm"));
   let history = useHistory();
   const [state, dispatch] = useContext(Context);
   const [collapse, setCollapse] = React.useState(false);
@@ -322,6 +320,8 @@ const Header = () => {
       case 0:
         isActive["val"] = 0;
         break;
+      default:
+        break;
     }
   }, [state.markers, state.zone, state.weatherDataReset]);
 
@@ -341,7 +341,7 @@ const Header = () => {
       (data) => data.Category === "Goals" && data.Variable !== "Notes: Goals"
     );
 
-    console.log(z4Formattedgoal);
+    // console.log(z4Formattedgoal);
 
     z7Formattedgoal = z7Formattedgoal.map((goal) => {
       return { fields: goal };

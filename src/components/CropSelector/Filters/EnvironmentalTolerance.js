@@ -5,8 +5,8 @@
 */
 
 import React, { forwardRef } from "react";
-import "../../../styles/filters.scss";
 import { Filters } from "./Filters";
+import "../../../styles/filters.scss";
 
 const EnvironmentalTolerance = forwardRef((props, ref) => (
   <Filters props={props} ref={ref} />

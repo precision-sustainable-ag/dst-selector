@@ -9,19 +9,16 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  Menu,
-  MenuItem,
   Typography,
 } from "@material-ui/core";
 import { LocationOn, Refresh } from "@material-ui/icons";
 import CloudIcon from "@material-ui/icons/Cloud";
 import FilterHdrIcon from "@material-ui/icons/FilterHdr";
 import moment from "moment";
-import React, { Fragment, useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   CustomStyles,
   greenBarExpansionPanelHeight,
-  zoneIcon,
 } from "../../../shared/constants";
 import { Context } from "../../../store/Store";
 import "../../../styles/greenBar.scss";
@@ -57,9 +54,9 @@ const Greenbar = () => {
       // alternatively we can have a close button somewhere in the expanded green bar
     }
     const greenBarParent = document.getElementById("greenBarParent");
-    const greenbarExpansionElement = document.getElementById(
-      "greenBarExpansionPanel"
-    );
+    // const greenbarExpansionElement = document.getElementById(
+    //   "greenBarExpansionPanel"
+    // );
     document.addEventListener("click", (evt) => {
       // const muiPopover = document.getElementsByClassName("MuiPopover-root")[0];
 
@@ -70,7 +67,7 @@ const Greenbar = () => {
       do {
         // console.log("inside do while");
         // console.log(targetElement);
-        if (targetElement == greenBarParent) {
+        if (targetElement === greenBarParent) {
           // This is a click inside. Do nothing, just return.
           // console.log("Clicked inside!.. do nothing");
           return;
@@ -140,40 +137,41 @@ const Greenbar = () => {
     }
   };
 
-  const getZone = () => {
-    return (
-      <Fragment>
-        <Button onClick={handleClick} className="greenbarBtn">
-          {zoneIcon(20, 14)}
-          &nbsp;
-          {state.zone !== 3 ? `Zone ${state.zone}` : `Zone 3`}
-        </Button>
-        <Menu
-          id="simple-menu"
-          anchorEl={anchorEl}
-          keepMounted
-          open={Boolean(anchorEl)}
-          onClose={handleZoneDropdownClose}
-        >
-          <MenuItem onClick={handleZoneDropdownClose} value={3} key={3}>
-            Zone 3
-          </MenuItem>
-          <MenuItem onClick={handleZoneDropdownClose} value={4} key={4}>
-            Zone 4
-          </MenuItem>
-          <MenuItem onClick={handleZoneDropdownClose} value={5} key={5}>
-            Zone 5
-          </MenuItem>
-          <MenuItem onClick={handleZoneDropdownClose} value={6} key={6}>
-            Zone 6
-          </MenuItem>
-          <MenuItem onClick={handleZoneDropdownClose} value={7} key={7}>
-            Zone 7
-          </MenuItem>
-        </Menu>
-      </Fragment>
-    );
-  };
+  // const getZone = () => {
+  //   return (
+  //     <Fragment>
+  //       <Button onClick={handleClick} className="greenbarBtn">
+  //         {zoneIcon(20, 14)}
+  //         &nbsp;
+  //         {state.zone !== 3 ? `Zone ${state.zone}` : `Zone 3`}
+  //       </Button>
+  //       <Menu
+  //         id="simple-menu"
+  //         anchorEl={anchorEl}
+  //         keepMounted
+  //         open={Boolean(anchorEl)}
+  //         onClose={handleZoneDropdownClose}
+  //       >
+  //         <MenuItem onClick={handleZoneDropdownClose} value={3} key={3}>
+  //           Zone 3
+  //         </MenuItem>
+  //         <MenuItem onClick={handleZoneDropdownClose} value={4} key={4}>
+  //           Zone 4
+  //         </MenuItem>
+  //         <MenuItem onClick={handleZoneDropdownClose} value={5} key={5}>
+  //           Zone 5
+  //         </MenuItem>
+  //         <MenuItem onClick={handleZoneDropdownClose} value={6} key={6}>
+  //           Zone 6
+  //         </MenuItem>
+  //         <MenuItem onClick={handleZoneDropdownClose} value={7} key={7}>
+  //           Zone 7
+  //         </MenuItem>
+  //       </Menu>
+  //     </Fragment>
+  //   );
+  // };
+
   const closeExpansionPanel = () => {
     const greenbarExpansionElement = document.getElementById(
       "greenBarExpansionPanel"
@@ -184,9 +182,9 @@ const Greenbar = () => {
       component: "",
     });
   };
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
+  // const handleClick = (event) => {
+  //   setAnchorEl(event.currentTarget);
+  // };
   const handleAddressBtnClick = (evt) => {
     const greenbarExpansionElement = document.getElementById(
       "greenBarExpansionPanel"
@@ -291,74 +289,74 @@ const Greenbar = () => {
       );
   };
 
-  const handleZoneDropdownClose = (event) => {
-    setAnchorEl(null);
-    let zoneText = "";
-    console.log(event.target.getAttribute("value"));
-    let value = event.target.getAttribute("value");
+  // const handleZoneDropdownClose = (event) => {
+  //   setAnchorEl(null);
+  //   let zoneText = "";
+  //   console.log(event.target.getAttribute("value"));
+  //   let value = event.target.getAttribute("value");
 
-    if (!isNaN(parseInt(value))) {
-      switch (parseInt(value)) {
-        case 3: {
-          zoneText = `Zone ${value}`;
-          dispatch({
-            type: "UPDATE_ZONE_TEXT",
-            data: {
-              zoneText: zoneText,
-              zone: value,
-            },
-          });
-          break;
-        }
-        case 4: {
-          zoneText = `Zone ${value}`;
-          dispatch({
-            type: "UPDATE_ZONE_TEXT",
-            data: {
-              zoneText: zoneText,
-              zone: value,
-            },
-          });
-          break;
-        }
-        case 5: {
-          zoneText = `Zone ${value}`;
-          dispatch({
-            type: "UPDATE_ZONE_TEXT",
-            data: {
-              zoneText: zoneText,
-              zone: value,
-            },
-          });
-          break;
-        }
-        case 6: {
-          zoneText = `Zone ${value}`;
-          dispatch({
-            type: "UPDATE_ZONE_TEXT",
-            data: {
-              zoneText: zoneText,
-              zone: value,
-            },
-          });
-          break;
-        }
-        case 7: {
-          zoneText = `Zone ${value}`;
-          dispatch({
-            type: "UPDATE_ZONE_TEXT",
-            data: {
-              zoneText: zoneText,
-              zone: value,
-            },
-          });
-          break;
-        }
-        default: {
-        }
-      }
-    }
-  };
+  //   if (!isNaN(parseInt(value))) {
+  //     switch (parseInt(value)) {
+  //       case 3: {
+  //         zoneText = `Zone ${value}`;
+  //         dispatch({
+  //           type: "UPDATE_ZONE_TEXT",
+  //           data: {
+  //             zoneText: zoneText,
+  //             zone: value,
+  //           },
+  //         });
+  //         break;
+  //       }
+  //       case 4: {
+  //         zoneText = `Zone ${value}`;
+  //         dispatch({
+  //           type: "UPDATE_ZONE_TEXT",
+  //           data: {
+  //             zoneText: zoneText,
+  //             zone: value,
+  //           },
+  //         });
+  //         break;
+  //       }
+  //       case 5: {
+  //         zoneText = `Zone ${value}`;
+  //         dispatch({
+  //           type: "UPDATE_ZONE_TEXT",
+  //           data: {
+  //             zoneText: zoneText,
+  //             zone: value,
+  //           },
+  //         });
+  //         break;
+  //       }
+  //       case 6: {
+  //         zoneText = `Zone ${value}`;
+  //         dispatch({
+  //           type: "UPDATE_ZONE_TEXT",
+  //           data: {
+  //             zoneText: zoneText,
+  //             zone: value,
+  //           },
+  //         });
+  //         break;
+  //       }
+  //       case 7: {
+  //         zoneText = `Zone ${value}`;
+  //         dispatch({
+  //           type: "UPDATE_ZONE_TEXT",
+  //           data: {
+  //             zoneText: zoneText,
+  //             zone: value,
+  //           },
+  //         });
+  //         break;
+  //       }
+  //       default: {
+  //       }
+  //     }
+  //   }
+  // };
 
   const handleConfirmationChoice = (clearCoverCrops = false) => {
     const defaultMarkers = [[40.78489145, -74.80733626930342]];
@@ -383,9 +381,9 @@ const Greenbar = () => {
 
     setConfirmationOpen(false);
   };
-  const handleRestartBtn = () => {
-    setConfirmationOpen(true);
-  };
+  // const handleRestartBtn = () => {
+  //   setConfirmationOpen(true);
+  // };
   const [confirmationOpen, setConfirmationOpen] = useState(false);
   const getWeatherData = () => {
     // TODO: convert month to string, currently returning int
@@ -489,7 +487,7 @@ const Greenbar = () => {
                   <SoilCondition caller="greenbar" />
                 </div>
               </div>
-            ) : expansionPanelComponent.component == "weather" ? (
+            ) : expansionPanelComponent.component === "weather" ? (
               <div className="container mt-5" style={expansionPanelBaseStyle}>
                 <div
                   className="row boxContainerRow"
@@ -594,6 +592,6 @@ const Greenbar = () => {
 
 export default Greenbar;
 
-function timeout(delay = 0) {
-  return new Promise((res) => setTimeout(res, delay));
-}
+// function timeout(delay = 0) {
+//   return new Promise((res) => setTimeout(res, delay));
+// }

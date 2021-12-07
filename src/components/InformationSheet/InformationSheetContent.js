@@ -80,7 +80,7 @@ const InformationSheetContent = (props) => {
   const [state] = useContext(Context);
   const { zone } = state;
   const crop = props.crop;
-  const from = props.from || "direct";
+  // const from = props.from || "direct";
   const classes = useStyles();
   const [currentSources, setCurrentSources] = useState([{}]);
 
