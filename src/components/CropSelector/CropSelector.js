@@ -280,7 +280,7 @@ const CropSelector = (props) => {
     if (state.cropData.length > 0) {
       const { selectedGoals } = state;
       if (selectedGoals.length > 0) {
-        let crop_data = state.cropData;
+        // let crop_data = state.cropData;
         let activeCropDataCopy =
           activeCropData.length > 0 ? activeCropData : state.cropData;
         let inactiveCropDataCopy =

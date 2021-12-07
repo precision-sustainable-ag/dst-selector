@@ -5,7 +5,7 @@
 */
 
 import { Grid, Typography } from "@material-ui/core";
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../../store/Store";
 // import CropExplorerFilters from "./CropExplorerFilters";
 import CropSidebarComponent from "../CropSelector/CropSidebar";
@@ -14,7 +14,7 @@ import ExplorerCardView from "./ExplorerCardView";
 
 const CoverCropExplorer = () => {
   const [state, dispatch] = useContext(Context);
-  const cardViewRef = useRef();
+  // const cardViewRef = useRef();
   const [anchorEl, setAnchorEl] = useState(null);
   const [cropDataChanged, setCropDataChanged] = useState(false);
   const [activeCropData, setActiveCropData] = useState([]);
@@ -26,25 +26,25 @@ const CoverCropExplorer = () => {
     setCropDataChanged(!cropDataChanged);
   }, [state.zone]);
 
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
+  // const handleClick = (event) => {
+  //   setAnchorEl(event.currentTarget);
+  // };
   useEffect(() => {
     document.title = "Cover Crop Explorer";
   }, []);
-  const handleClose = (zone) => {
-    if (typeof zone === "number") {
-      let zoneText = `Zone ${zone}`;
-      dispatch({
-        type: "UPDATE_ZONE_TEXT",
-        data: {
-          zoneText: zoneText,
-          zone: parseInt(zone),
-        },
-      });
-    }
-    setAnchorEl(null);
-  };
+  // const handleClose = (zone) => {
+  //   if (typeof zone === "number") {
+  //     let zoneText = `Zone ${zone}`;
+  //     dispatch({
+  //       type: "UPDATE_ZONE_TEXT",
+  //       data: {
+  //         zoneText: zoneText,
+  //         zone: parseInt(zone),
+  //       },
+  //     });
+  //   }
+  //   setAnchorEl(null);
+  // };
 
   const handleSearchChange = (e) => {
     setCropName(e.target.value);

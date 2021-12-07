@@ -113,7 +113,7 @@ const ComparisonBar = (props) => {
         val.name !== "Disease & Non Weed Pests"
       ) {
         return val.values.map((v) => {
-          if (v.name != "Roller Crimp at Flowering") {
+          if (v.name !== "Roller Crimp at Flowering") {
             return v.alternateName ? v.alternateName : v.name;
           } else return [];
         });

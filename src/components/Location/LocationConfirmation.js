@@ -10,6 +10,7 @@ import { Context } from "../../store/Store";
 import MapContext from "./MapContext";
 import SoilCondition from "./SoilCondition";
 import WeatherConditions from "./WeatherConditions";
+import "leaflet/dist/leaflet.css";
 // import { TextField } from "@material-ui/core";
 
 const LocationConfirmation = () => {
