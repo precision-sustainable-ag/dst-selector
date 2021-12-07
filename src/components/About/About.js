@@ -5,45 +5,44 @@
   Styles are created using makeStyles
 */
 
-import { Button, makeStyles, Typography, useTheme } from "@material-ui/core";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
+import { Button, Typography, useTheme } from "@material-ui/core";
 import React, { Fragment, useEffect, useState } from "react";
 import { CustomStyles } from "../../shared/constants";
 import Header from "../Header/Header";
 import MITLicenseText from "../License/MITLicenseText";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-    backgroundColor: theme.palette.background.paper,
-    display: "flex",
-    // height: 224,
-  },
-  tabs: {
-    borderRight: `1px solid ${theme.palette.divider}`,
-  },
-}));
-const boxWrapper = {
-  paddingBottom: "0px",
-  marginBottom: "50px",
-  backgroundColor: "rgba(240,247,235,.8)",
-  borderRadius: "10px",
-  border: "1px solid #598445",
-};
+// const useStyles = makeStyles((theme) => ({
+//   root: {
+//     flexGrow: 1,
+//     backgroundColor: theme.palette.background.paper,
+//     display: "flex",
+//     // height: 224,
+//   },
+//   tabs: {
+//     borderRight: `1px solid ${theme.palette.divider}`,
+//   },
+// }));
+// const boxWrapper = {
+//   paddingBottom: "0px",
+//   marginBottom: "50px",
+//   backgroundColor: "rgba(240,247,235,.8)",
+//   borderRadius: "10px",
+//   border: "1px solid #598445",
+// };
 const About = (props) => {
   // const [state, dispatch] = useContext(Context);
   const [calcHeight, setCalcHeight] = useState(0);
-  const backgroundWrapper = {
-    background: `url(${props.bg})`,
-    backgroundSize: "cover",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    height: "100%",
-    flexDirection: "column",
-    paddingLeft: "0px",
-    paddingRight: "0px",
-  };
+  // const backgroundWrapper = {
+  //   background: `url(${props.bg})`,
+  //   backgroundSize: "cover",
+  //   display: "flex",
+  //   justifyContent: "center",
+  //   alignItems: "center",
+  //   height: "100%",
+  //   flexDirection: "column",
+  //   paddingLeft: "0px",
+  //   paddingRight: "0px",
+  // };
   useEffect(() => {
     document.title = "About Page";
 
@@ -59,9 +58,9 @@ const About = (props) => {
     setCalcHeight(calculatedHeight);
   }, []);
 
-  const classes = useStyles();
+  // const classes = useStyles();
   const theme = useTheme();
-  const matches = useMediaQuery(theme.breakpoints.up("sm"));
+  // const matches = useMediaQuery(theme.breakpoints.up("sm"));
   const [value, setValue] = React.useState(0);
 
   const handleChange = (newValue) => {

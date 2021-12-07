@@ -5,9 +5,8 @@
 
 import { Backdrop, Button, Fade, makeStyles, Modal } from "@material-ui/core";
 import { Close } from "@material-ui/icons";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { CropImage, zoneIcon } from "../../shared/constants";
-import { Context } from "../../store/Store";
 // import cropDesc from "../../shared/crop-descriptions.json";
 import "../../styles/cropDetailsModal.scss";
 import InformationSheetContent from "../InformationSheet/InformationSheetContent";
@@ -46,123 +45,123 @@ const useStyles = makeStyles((theme) => ({
 const CropDetailsModalComponent = (props) => {
   let crop = props.crop;
   const classes = useStyles();
-  const [state, dispatch] = useContext(Context);
+  // const [state, dispatch] = useContext(Context);
   // const [modalOpen, setModalOpen] = useState(true);
   const [modalData, setModalData] = useState({});
   const [expanded, setExpanded] = useState("panel2");
-  const [print, setPrint] = useState(false);
-  const handleAccordionChange = (panel) => (event, newExpanded) => {
-    setExpanded(newExpanded ? panel : false);
-  };
-  const [sideBarData, setSideBarData] = useState({
-    Taxonomy: [
-      "Cover Crop Name",
-      "Scientific Name",
-      "Synonyms",
-      "cv, var, or ssp to specify",
-      "Cover Crop Group",
-      "Family Common Name",
-      "Family Scientific Name",
-      "Origin",
-      "Notes: Taxonomy",
-    ],
-    Environmental: [
-      "Drought Tolerance",
-      "Flood Tolerance",
-      "Heat Tolerance",
-      "Low Fertility Tolerance",
-      "Salinity Tolerance",
-      "Shade Tolerance",
-      "Notes: Environmental Tolerances",
-    ],
-    "Basic Agronomics": [
-      "Zone Use",
-      "Active Growth Period",
-      "Duration",
-      "Shape & Orientation",
-      "Hessian Fly-Free Date",
-      "C to N Ratio",
-      "Nitrogen Accumulation Min, Legumes (lbs/A/y)",
-      "Nitrogen Accumulation Max, Legumes (lbs/A/y)",
-      "Dry Matter Min (lbs/A/y)",
-      "Dry Matter Max (lbs/A/y)",
-      "Notes: Basic Agronomics",
-    ],
-    "Soil Conditions": [
-      "Soil Drainage",
-      "Soil Textures",
-      "Minimum Tolerant Soil pH",
-      "Maximum Tolerant Soil pH",
-      "Soil Moisture Use",
-      "Loosens Subsurface Soil",
-      "Loosens Topsoil",
-      "Supports Mycorrhizae",
-      "Notes: Soil Conditions",
-    ],
-    Growth: [
-      "Ease of Establishment",
-      "Establishes Quickly",
-      "Early Spring Growth",
-      "Flowering Trigger",
-      "Growing Window",
-      "Root Architecture",
-      "Root Depth",
-      "Innoculant Type (Legumes Only)",
-      "Frees P & K",
-      "Notes: Growth, Roots, and Nutrients",
-    ],
-    Planting: [
-      "Seeds per Pound",
-      "Seed Price per Pound",
-      "Base Seeding Rate Min (lbs/A)",
-      "Base Seeding Rate Max (lbs/A)",
-      "Drilled Depth Min",
-      "Drilled Depth Max",
-      "Can Aerial Seed?",
-      "Broadcast Frost Seeding",
-      "Min Germination Temp (F)",
-      "Notes: Planting",
-    ],
-    Termination: [
-      "Tillage Termination at Vegetative",
-      "Tillage Termination at Flowering",
-      "Freezing Termination at Vegetative",
-      "Freezing Termination at Flowering",
-      "Chemical Termination at Vegetative",
-      "Chemical Termination at Flowering",
-      "Mow Termination at Flowering",
-      "Roller Crimp Termination at Flowering",
-      "Planting Green",
-      "Notes: Termination",
-    ],
-    "Grazers & Pollinators": [
-      "Harvestability",
-      "Grazing Tolerance",
-      "Good Grazing",
-      "Pollinator Food",
-      "Pollinator Habitat",
-      "Notes: Grazers & Pollinators",
-    ],
-    Weeds: [
-      "Volunteer Establishment",
-      "Persistence",
-      "Hard Seededness",
-      "Outcompetes Weeds",
-      "Allelopathic to Weeds",
-      "Notes: Weeds",
-    ],
-    "Disease and Non-weed Pests": [
-      "Discourages Nematodes",
-      "Promotes Nematodes",
-      "Discourages Pest Insects",
-      "Promotes Pest Insects",
-      "Suppresses Cash Crop Disease",
-      "Promotes Cash Crop Disease",
-      "Notes: Disease and Non-weed Pests",
-    ],
-  });
+  // const [print, setPrint] = useState(false);
+  // const handleAccordionChange = (panel) => (event, newExpanded) => {
+  //   setExpanded(newExpanded ? panel : false);
+  // };
+  // const [sideBarData, setSideBarData] = useState({
+  //   Taxonomy: [
+  //     "Cover Crop Name",
+  //     "Scientific Name",
+  //     "Synonyms",
+  //     "cv, var, or ssp to specify",
+  //     "Cover Crop Group",
+  //     "Family Common Name",
+  //     "Family Scientific Name",
+  //     "Origin",
+  //     "Notes: Taxonomy",
+  //   ],
+  //   Environmental: [
+  //     "Drought Tolerance",
+  //     "Flood Tolerance",
+  //     "Heat Tolerance",
+  //     "Low Fertility Tolerance",
+  //     "Salinity Tolerance",
+  //     "Shade Tolerance",
+  //     "Notes: Environmental Tolerances",
+  //   ],
+  //   "Basic Agronomics": [
+  //     "Zone Use",
+  //     "Active Growth Period",
+  //     "Duration",
+  //     "Shape & Orientation",
+  //     "Hessian Fly-Free Date",
+  //     "C to N Ratio",
+  //     "Nitrogen Accumulation Min, Legumes (lbs/A/y)",
+  //     "Nitrogen Accumulation Max, Legumes (lbs/A/y)",
+  //     "Dry Matter Min (lbs/A/y)",
+  //     "Dry Matter Max (lbs/A/y)",
+  //     "Notes: Basic Agronomics",
+  //   ],
+  //   "Soil Conditions": [
+  //     "Soil Drainage",
+  //     "Soil Textures",
+  //     "Minimum Tolerant Soil pH",
+  //     "Maximum Tolerant Soil pH",
+  //     "Soil Moisture Use",
+  //     "Loosens Subsurface Soil",
+  //     "Loosens Topsoil",
+  //     "Supports Mycorrhizae",
+  //     "Notes: Soil Conditions",
+  //   ],
+  //   Growth: [
+  //     "Ease of Establishment",
+  //     "Establishes Quickly",
+  //     "Early Spring Growth",
+  //     "Flowering Trigger",
+  //     "Growing Window",
+  //     "Root Architecture",
+  //     "Root Depth",
+  //     "Innoculant Type (Legumes Only)",
+  //     "Frees P & K",
+  //     "Notes: Growth, Roots, and Nutrients",
+  //   ],
+  //   Planting: [
+  //     "Seeds per Pound",
+  //     "Seed Price per Pound",
+  //     "Base Seeding Rate Min (lbs/A)",
+  //     "Base Seeding Rate Max (lbs/A)",
+  //     "Drilled Depth Min",
+  //     "Drilled Depth Max",
+  //     "Can Aerial Seed?",
+  //     "Broadcast Frost Seeding",
+  //     "Min Germination Temp (F)",
+  //     "Notes: Planting",
+  //   ],
+  //   Termination: [
+  //     "Tillage Termination at Vegetative",
+  //     "Tillage Termination at Flowering",
+  //     "Freezing Termination at Vegetative",
+  //     "Freezing Termination at Flowering",
+  //     "Chemical Termination at Vegetative",
+  //     "Chemical Termination at Flowering",
+  //     "Mow Termination at Flowering",
+  //     "Roller Crimp Termination at Flowering",
+  //     "Planting Green",
+  //     "Notes: Termination",
+  //   ],
+  //   "Grazers & Pollinators": [
+  //     "Harvestability",
+  //     "Grazing Tolerance",
+  //     "Good Grazing",
+  //     "Pollinator Food",
+  //     "Pollinator Habitat",
+  //     "Notes: Grazers & Pollinators",
+  //   ],
+  //   Weeds: [
+  //     "Volunteer Establishment",
+  //     "Persistence",
+  //     "Hard Seededness",
+  //     "Outcompetes Weeds",
+  //     "Allelopathic to Weeds",
+  //     "Notes: Weeds",
+  //   ],
+  //   "Disease and Non-weed Pests": [
+  //     "Discourages Nematodes",
+  //     "Promotes Nematodes",
+  //     "Discourages Pest Insects",
+  //     "Promotes Pest Insects",
+  //     "Suppresses Cash Crop Disease",
+  //     "Promotes Cash Crop Disease",
+  //     "Notes: Disease and Non-weed Pests",
+  //   ],
+  // });
 
-  const [images, setImages] = useState(["https://placehold.it/100x100"]);
+  // const [images, setImages] = useState(["https://placehold.it/100x100"]);
 
   useEffect(() => {
     setModalData(crop);
@@ -338,16 +337,16 @@ const CropDetailsModalComponent = (props) => {
     </Modal>
   );
 };
-function printDiv(divName) {
-  if (document.getElementById(divName)) {
-    var printContents = document.getElementById(divName).innerHTML;
-    var originalContents = document.body.innerHTML;
+// function printDiv(divName) {
+//   if (document.getElementById(divName)) {
+//     var printContents = document.getElementById(divName).innerHTML;
+//     var originalContents = document.body.innerHTML;
 
-    document.body.innerHTML = printContents;
+//     document.body.innerHTML = printContents;
 
-    window.print();
+//     window.print();
 
-    document.body.innerHTML = originalContents;
-  }
-}
+//     document.body.innerHTML = originalContents;
+//   }
+// }
 export default CropDetailsModalComponent;

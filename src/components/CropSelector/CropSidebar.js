@@ -188,7 +188,7 @@ const CropSidebarComponent = (props) => {
     "Promotes Cash Crop Disease": [], // int
   });
   const seedingMethodRef = useRef();
-  const beneficialsRef = useRef();
+  // const beneficialsRef = useRef();
   const coverCropTypeRef = useRef();
   // const diseaseRef = useRef();
   const growthRef = useRef();
@@ -428,7 +428,7 @@ const CropSidebarComponent = (props) => {
         "Root Architecture",
       ];
       const booleanKeys = ["Aerial Seeding", "Frost Seeding"];
-      const aerialOrFrost = [""];
+      // const aerialOrFrost = [""];
 
       const filtered = crop_data.filter((crop) => {
         const totalActiveFilters = Object.keys(nonZeroKeys2).length;
@@ -524,34 +524,34 @@ const CropSidebarComponent = (props) => {
     else setFiltersSelected(true);
   }, [sidebarFilterOptions]);
 
-  const getFilteredObjects = (data = [], keys = []) => {
-    return data.filter((crop) => {
-      return keys.every((key) => {
-        if (Array.isArray(crop.fields[key])) {
-          if (
-            findCommonElements(crop.fields[key], sidebarFilterOptions[key]) &&
-            crop.fields["Zone Decision"] === "Include"
-          )
-            return true;
-          else return false;
-        } else if (
-          typeof crop.fields[key] === "boolean" &&
-          crop.fields["Zone Decision"] === "Include"
-        ) {
-          if (crop.fields[key] !== -999 && sidebarFilterOptions[key] !== -999)
-            return true;
-          else return false;
-        } else if (
-          sidebarFilterOptions[key].includes(crop.fields[key]) &&
-          crop.fields["Zone Decision"] === "Include"
-        ) {
-          return true;
-        } else {
-          return false;
-        }
-      });
-    });
-  };
+  // const getFilteredObjects = (data = [], keys = []) => {
+  //   return data.filter((crop) => {
+  //     return keys.every((key) => {
+  //       if (Array.isArray(crop.fields[key])) {
+  //         if (
+  //           findCommonElements(crop.fields[key], sidebarFilterOptions[key]) &&
+  //           crop.fields["Zone Decision"] === "Include"
+  //         )
+  //           return true;
+  //         else return false;
+  //       } else if (
+  //         typeof crop.fields[key] === "boolean" &&
+  //         crop.fields["Zone Decision"] === "Include"
+  //       ) {
+  //         if (crop.fields[key] !== -999 && sidebarFilterOptions[key] !== -999)
+  //           return true;
+  //         else return false;
+  //       } else if (
+  //         sidebarFilterOptions[key].includes(crop.fields[key]) &&
+  //         crop.fields["Zone Decision"] === "Include"
+  //       ) {
+  //         return true;
+  //       } else {
+  //         return false;
+  //       }
+  //     });
+  //   });
+  // };
   useEffect(() => {
     if (props.isListView) {
       setCropFiltersOpen(true);
@@ -667,8 +667,8 @@ const CropSidebarComponent = (props) => {
 
   const [growthWindowVisible, setGrowthWindowVisible] = React.useState(true);
 
-  let [keysArray, setKeysArray] = React.useState([]);
-  const [keysArrChanged, setKeysArrChanges] = React.useState(false);
+  // let [keysArray, setKeysArray] = React.useState([]);
+  // const [keysArrChanged, setKeysArrChanges] = React.useState(false);
 
   const updateSelectedGoals = (newGoalArr, oldIndex, newIndex) => {
     let newGoals = arrayMove(newGoalArr, oldIndex, newIndex);
@@ -797,9 +797,9 @@ const CropSidebarComponent = (props) => {
   }, [comparisonView, state.myCoverCropActivationFlag]);
 
   // const [focusedInput, setFocusedInput] = React.useState(null);
-  const [dateRanges, setDateRanges] = React.useState([
-    { startDate: new Date(), endDate: new Date(), key: "selection" },
-  ]);
+  // const [dateRanges, setDateRanges] = React.useState([
+  //   { startDate: new Date(), endDate: new Date(), key: "selection" },
+  // ]);
   return props.from === "myCoverCropListStatic" ? (
     <div className="row">
       <div className="col-12 mb-3">

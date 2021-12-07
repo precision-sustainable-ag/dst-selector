@@ -165,6 +165,7 @@ const MyCoverCropComparisonComponent = (props) => {
                     <img
                       src="https://via.placeholder.com/10/FFFFFF/FFFFFF"
                       style={{ opacity: 0 }}
+                      alt="placeholder"
                     />
                   }
                   style={{ width: "100%", height: "100px" }}

@@ -187,20 +187,20 @@ const CropCalendarViewComponent = (props) => {
     return getRating(goalRating / selectedGoals.length);
   };
 
-  const putGoalValues = () => {
-    console.log(state.allGoals.length);
-    state.allGoals.map((goal, index) => {
-      let goalName = goal.fields["Cover Crop Goal"];
-      cropData.map((crop, index2) => {
-        // let cropId =
+  // const putGoalValues = () => {
+  //   console.log(state.allGoals.length);
+  //   state.allGoals.map((goal, index) => {
+  //     let goalName = goal.fields["Cover Crop Goal"];
+  //     cropData.map((crop, index2) => {
+  //       // let cropId =
 
-        console.log(
-          goalName + " for " + crop.fields["Cover Crop Name"],
-          crop.fields[goalName]
-        );
-      });
-    });
-  };
+  //       console.log(
+  //         goalName + " for " + crop.fields["Cover Crop Name"],
+  //         crop.fields[goalName]
+  //       );
+  //     });
+  //   });
+  // };
   const fetchRecordsIfUnavailable = () => {
     // get crop data if unavailable
 

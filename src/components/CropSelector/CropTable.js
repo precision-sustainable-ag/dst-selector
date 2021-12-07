@@ -99,9 +99,9 @@ const CropTableComponent = (props) => {
   }, [state.progress]);
 
   const addCropToBasket = (cropId, cropName, btnId, cropData) => {
-    let container = document.getElementById(btnId);
+    // let container = document.getElementById(btnId);
     let selectedCrops = {};
-    let toAdd = false;
+    // let toAdd = false;
     var cropArray = [];
     selectedCrops["id"] = cropId;
     selectedCrops["cropName"] = cropName;

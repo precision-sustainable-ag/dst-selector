@@ -33,7 +33,7 @@ L.Icon.Default.mergeOptions({
     "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.0/images/marker-shadow.png",
 });
 
-const { BaseLayer, Overlay } = LayersControl;
+// const { BaseLayer, Overlay } = LayersControl;
 
 const MapContext = ({ width, height, minzoom, maxzoom, from }) => {
   const [state, dispatch] = useContext(Context);
