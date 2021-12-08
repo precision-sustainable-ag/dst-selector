@@ -21,6 +21,7 @@ const CoverCropExplorer = () => {
   useEffect(() => {
     setCropDataChanged(!cropDataChanged);
   }, [state.zone]);
+
   useEffect(() => {
     document.title = "Cover Crop Explorer";
   }, []);
@@ -67,7 +68,7 @@ const CoverCropExplorer = () => {
           </div>
           <div className="col-md-12 col-lg-9 col-xl-10 col-12">
             {state.zone === "" ? (
-              <Grid container alignItems="center" justify="center">
+              <Grid container alignItems="center" justifyContent="center">
                 <Grid item xs={12}>
                   <Typography variant="h5" align="center">
                     Please choose a zone from the sidebar

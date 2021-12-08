@@ -61,7 +61,7 @@ const WeatherConditions = (props) => {
     if (!state.ajaxInProgress) {
       setWeatherDataShadow(state.weatherData);
     }
-  }, [state.ajaxInProgress]);
+  }, [state.ajaxInProgress, state.weatherData]);
 
   const [firstFrostMonth, setFirstFrostMonth] = useState(
     state.weatherData.averageFrost.firstFrostDate.month

@@ -83,7 +83,7 @@ const LocationComponent = ({ title, caller }) => {
         },
       });
     }
-  }, [restartAccept]);
+  }, [restartAccept, dispatch, zoneSelection]);
 
   const handleZoneChange = (event) => {
     if (caller === "greenbar") {
@@ -147,7 +147,7 @@ const LocationComponent = ({ title, caller }) => {
         },
       });
     }
-  }, [selectedToEditSite]);
+  }, [selectedToEditSite, dispatch]);
   return (
     <div className="container-fluid mt-5">
       <div className="row boxContainerRow" style={{ minHeight: "520px" }}>

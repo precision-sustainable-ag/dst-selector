@@ -33,7 +33,14 @@ import {
 } from "@material-ui/icons";
 import ListIcon from "@material-ui/icons/List";
 import moment from "moment";
-import React, { Fragment, useEffect, useRef } from "react";
+import React, {
+  Fragment,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  useContext,
+} from "react";
 import { arrayMove, List as ListMovable } from "react-movable";
 import { CustomStyles } from "../../shared/constants";
 import filterData from "../../shared/sidebar-dictionary.json";
@@ -74,17 +81,33 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const CropSidebarComponent = (props) => {
+  let {
+    comparisonView,
+    isListView,
+    from,
+    cropData,
+    setActiveCropData,
+    setInactiveCropData,
+    cropDataChanged,
+    setGrowthWindow,
+    toggleComparisonView,
+    toggleListView,
+    coverCropName,
+    covercropsNamesFilter,
+    clearCoverCropSearch,
+    style,
+    searchValue,
+    handleSearchChange,
+  } = props;
   const classes = useStyles();
-  const [state, dispatch] = React.useContext(Context);
+  const [state, dispatch] = useContext(Context);
 
-  const comparisonView = props.comparisonView;
-
-  const [cropFiltersOpen, setCropFiltersOpen] = React.useState(
-    props.isListView ? true : false
+  const [cropFiltersOpen, setCropFiltersOpen] = useState(
+    isListView ? true : false
   );
-  const [showFilters, setShowFilters] = React.useState(
+  const [showFilters, setShowFilters] = useState(
     window.location.pathname === "/"
-      ? props.from === "table"
+      ? from === "table"
         ? state.speciesSelectorActivationFlag
           ? true
           : comparisonView
@@ -97,7 +120,7 @@ const CropSidebarComponent = (props) => {
     if (window.location.pathname !== "/") {
       setShowFilters(true);
     } else {
-      if (props.from === "table") {
+      if (from === "table") {
         if (state.speciesSelectorActivationFlag) {
           setShowFilters(true);
         } else {
@@ -111,32 +134,27 @@ const CropSidebarComponent = (props) => {
         setShowFilters(true);
       }
     }
-  }, [
-    window.location.pathname,
-    state.speciesSelectorActivationFlag,
-    props.from,
-    comparisonView,
-  ]);
+  }, [state.speciesSelectorActivationFlag, from, comparisonView]);
 
-  const [cashCropOpen, setCashCropOpen] = React.useState(false);
-  const [cashCropVisible, setCashCropVisible] = React.useState(true);
-  const [goalsOpen, setGoalsOpen] = React.useState(true);
+  const [cashCropOpen, setCashCropOpen] = useState(false);
+  const [cashCropVisible, setCashCropVisible] = useState(true);
+  const [goalsOpen, setGoalsOpen] = useState(true);
 
-  const [dateRangeOpen, setDateRangeOpen] = React.useState(false);
-  const [dateRange, setDateRange] = React.useState({
+  const [dateRangeOpen, setDateRangeOpen] = useState(false);
+  const [dateRange, setDateRange] = useState({
     startDate: null,
     endDate: null,
   });
 
-  const [sidebarFilters, setSidebarFilters] = React.useState([]);
-  const [sidebarFiltersOpen, setSidebarFiltersOpen] = React.useState([]);
+  const [sidebarFilters, setSidebarFilters] = useState([]);
+  const [sidebarFiltersOpen, setSidebarFiltersOpen] = useState([]);
 
   const dateRangeModalOpen = () => {
     setDateRangeOpen(true);
   };
 
   // make an exhaustive array of all params in array e.g. cover crop group and use includes in linq
-  const [sidebarFilterOptions, setSidebarFilterOptions] = React.useState({
+  const [sidebarFilterOptions, setSidebarFilterOptions] = useState({
     "Cover Crop Group": [], //string
     "Drought Tolerance": [], //int
     "Flood Tolerance": [], // int
@@ -185,8 +203,9 @@ const CropSidebarComponent = (props) => {
   const terminationRef = useRef();
   const envTolRef = useRef();
 
-  const [resetFilters, setResetFilters] = React.useState(false);
+  const [resetFilters, setResetFilters] = useState(false);
   const firstUpdate = useRef(true);
+
   useEffect(() => {
     if (firstUpdate.current) {
       firstUpdate.current = false;
@@ -197,7 +216,7 @@ const CropSidebarComponent = (props) => {
   }, [sidebarFilterOptions]);
 
   const filterSidebarItems = () => {
-    const crop_data = props.cropData.filter(
+    const crop_data = cropData.filter(
       (crop) => crop.fields["Zone Decision"] === "Include"
     );
 
@@ -296,11 +315,11 @@ const CropSidebarComponent = (props) => {
 
       const inactives = crop_data.filter((e) => !filtered.includes(e));
 
-      props.setActiveCropData(filtered);
-      props.setInactiveCropData(inactives);
+      setActiveCropData(filtered);
+      setInactiveCropData(inactives);
     } else {
-      props.setActiveCropData(crop_data);
-      props.setInactiveCropData([]);
+      setActiveCropData(crop_data);
+      setInactiveCropData([]);
     }
   };
   const areCommonElements = (arr1, arr2) => {
@@ -308,7 +327,7 @@ const CropSidebarComponent = (props) => {
     return arr1.some((el) => arr2Set.has(el));
   };
 
-  const [filtersSelected, setFiltersSelected] = React.useState(false);
+  const [filtersSelected, setFiltersSelected] = useState(false);
   useEffect(() => {
     const sidebarKeys = Object.keys(sidebarFilterOptions);
 
@@ -321,14 +340,14 @@ const CropSidebarComponent = (props) => {
   }, [sidebarFilterOptions]);
 
   useEffect(() => {
-    if (props.isListView) {
+    if (isListView) {
       setCropFiltersOpen(true);
       setCashCropOpen(false);
     } else {
       setCropFiltersOpen(false);
       setCashCropOpen(true);
     }
-  }, [props.isListView]);
+  }, [isListView]);
 
   const toggleSidebarFilterItems = (index) => {
     const newSidebarFiltersOpen = sidebarFiltersOpen.map((obj, index2) => {
@@ -349,8 +368,8 @@ const CropSidebarComponent = (props) => {
       seedsRef.current.resetFilters();
       terminationRef.current.resetFilters();
       weedsRef.current.resetFilters();
-      props.setActiveCropData(state.cropData);
-      props.setInactiveCropData([]);
+      setActiveCropData(state.cropData);
+      setInactiveCropData([]);
     }
     setSidebarFilterOptions({
       "Cover Crop Group": [], //string
@@ -407,13 +426,13 @@ const CropSidebarComponent = (props) => {
     };
   }, []);
 
-  React.useMemo(() => {
+  useMemo(() => {
     if (envTolRef.current) {
       resetAllFilters();
     }
-  }, [props.cropDataChanged]);
+  }, [cropDataChanged]);
 
-  const [zoneToggle, setZoneToggle] = React.useState(true);
+  const [zoneToggle, setZoneToggle] = useState(true);
 
   const handleZoneToggle = () => {
     setZoneToggle(!zoneToggle);
@@ -481,7 +500,7 @@ const CropSidebarComponent = (props) => {
   };
 
   useEffect(() => {
-    if (props.from === "table") {
+    if (from === "table") {
       if (dateRange.startDate !== null && dateRange.endDate !== null) {
         console.log(new Date(dateRange.startDate).toISOString());
         dispatch({
@@ -498,11 +517,11 @@ const CropSidebarComponent = (props) => {
         });
       }
 
-      props.setGrowthWindow(true);
+      setGrowthWindow(true);
     }
-  }, [dateRange, props.from]);
+  }, [dateRange, from]);
 
-  const [tableHeight, setTableHeight] = React.useState(0);
+  const [tableHeight, setTableHeight] = useState(0);
 
   useEffect(() => {
     if (firstUpdate.current) {
@@ -522,9 +541,8 @@ const CropSidebarComponent = (props) => {
       const ht = totalHt - btnHt;
 
       setTableHeight(ht);
-    } else {
     }
-  });
+  }, []);
 
   useEffect(() => {
     if (state.cashCropData.dateRange.startDate !== "") {
@@ -545,28 +563,28 @@ const CropSidebarComponent = (props) => {
     }
   }, [comparisonView, state.myCoverCropActivationFlag]);
 
-  return props.from === "myCoverCropListStatic" ? (
+  return from === "myCoverCropListStatic" ? (
     <div className="row">
       <div className="col-12 mb-3">
         <Button
           className="dynamicToggleBtn"
           fullWidth
           variant="contained"
-          onClick={props.toggleComparisonView}
+          onClick={toggleComparisonView}
           size="large"
           color="secondary"
           startIcon={
-            props.comparisonView ? (
+            comparisonView ? (
               <ListIcon style={{ fontSize: "larger" }} />
             ) : (
               <Compare style={{ fontSize: "larger" }} />
             )
           }
         >
-          {props.comparisonView ? "LIST VIEW" : "COMPARISON VIEW"}
+          {comparisonView ? "LIST VIEW" : "COMPARISON VIEW"}
         </Button>
       </div>
-      {props.comparisonView ? (
+      {comparisonView ? (
         <div className="col-12">
           <ComparisonBar
             {...props}
@@ -583,7 +601,7 @@ const CropSidebarComponent = (props) => {
     </div>
   ) : (
     <div className="row">
-      {state.myCoverCropActivationFlag && props.from === "table" ? (
+      {state.myCoverCropActivationFlag && from === "table" ? (
         <div
           className={`col-12 ${
             !state.speciesSelectorActivationFlag ? `mb-3` : ``
@@ -601,21 +619,21 @@ const CropSidebarComponent = (props) => {
             className="dynamicToggleBtn"
             fullWidth
             variant="contained"
-            onClick={props.toggleComparisonView}
+            onClick={toggleComparisonView}
             size="large"
             color="secondary"
             startIcon={
-              props.comparisonView ? (
+              comparisonView ? (
                 <ListIcon style={{ fontSize: "larger" }} />
               ) : (
                 <Compare style={{ fontSize: "larger" }} />
               )
             }
           >
-            {props.comparisonView ? "LIST VIEW" : "COMPARISON VIEW"}
+            {comparisonView ? "LIST VIEW" : "COMPARISON VIEW"}
           </Button>
         </div>
-      ) : props.from === "table" ? (
+      ) : from === "table" ? (
         <div
           className="col-12"
           style={{
@@ -626,25 +644,25 @@ const CropSidebarComponent = (props) => {
             className="dynamicToggleBtn"
             fullWidth
             variant="contained"
-            onClick={props.toggleListView}
+            onClick={toggleListView}
             size="large"
             color="secondary"
             startIcon={
-              props.isListView ? (
+              isListView ? (
                 <CalendarToday style={{ fontSize: "larger" }} />
               ) : (
                 <ListIcon style={{ fontSize: "larger" }} />
               )
             }
           >
-            {props.isListView ? "CALENDAR VIEW" : "LIST VIEW"}
+            {isListView ? "CALENDAR VIEW" : "LIST VIEW"}
           </Button>
         </div>
       ) : (
         ""
       )}
 
-      {state.speciesSelectorActivationFlag || props.from === "explorer" ? (
+      {state.speciesSelectorActivationFlag || from === "explorer" ? (
         <div className="col-12">
           <List
             component="nav"
@@ -661,11 +679,11 @@ const CropSidebarComponent = (props) => {
             }
             className={classes.root}
           >
-            {props.from === "table" ? (
+            {from === "table" ? (
               <Fragment>
                 {showFilters &&
                 state.speciesSelectorActivationFlag &&
-                props.isListView ? (
+                isListView ? (
                   <ListItem>
                     <ListItemText>
                       <TextField
@@ -673,16 +691,16 @@ const CropSidebarComponent = (props) => {
                         color="secondary"
                         label="Cover Crop Name"
                         helperText="Search by cover crop name"
-                        value={props.coverCropName}
-                        onInput={props.covercropsNamesFilter}
+                        value={coverCropName}
+                        onInput={covercropsNamesFilter}
                         InputProps={{
                           endAdornment: (
                             <InputAdornment position="end">
                               <IconButton
-                                onClick={props.clearCoverCropSearch}
+                                onClick={clearCoverCropSearch}
                                 size="small"
                               >
-                                {props.coverCropName.length > 1 ? (
+                                {coverCropName.length > 1 ? (
                                   <Clear fontSize="inherit" />
                                 ) : (
                                   ""
@@ -698,7 +716,7 @@ const CropSidebarComponent = (props) => {
                   ""
                 )}
 
-                {props.isListView ? (
+                {isListView ? (
                   <Fragment>
                     {" "}
                     <ListItem
@@ -790,7 +808,7 @@ const CropSidebarComponent = (props) => {
                               <li
                                 {...props}
                                 style={{
-                                  ...props.style,
+                                  ...style,
                                 }}
                               >
                                 <div className="d-flex w-100 flex-row justify-content-between align-items-center">
@@ -958,7 +976,7 @@ const CropSidebarComponent = (props) => {
 
             {showFilters ? (
               <Fragment>
-                {props.from === "explorer" ? (
+                {from === "explorer" ? (
                   <Fragment>
                     <List component="div" disablePadding>
                       <ListItem button onClick={handleZoneToggle}>
@@ -1005,8 +1023,8 @@ const CropSidebarComponent = (props) => {
                           color="secondary"
                           label="Cover Crop Name"
                           helperText="Search by cover crop name"
-                          value={props.searchValue}
-                          onChange={props.handleSearchChange}
+                          value={searchValue}
+                          onChange={handleSearchChange}
                         />
                       </ListItemText>
                     </ListItem>
@@ -1015,7 +1033,7 @@ const CropSidebarComponent = (props) => {
                   ""
                 )}
 
-                {props.from === "explorer" ? (
+                {from === "explorer" ? (
                   <List component="div" disablePadding className="cropFilters">
                     {filtersSelected ? (
                       <ListItem onClick={() => {}}>
@@ -1301,7 +1319,7 @@ const CropSidebarComponent = (props) => {
                       button
                       onClick={() => handleClick(2)}
                       style={
-                        props.from === "table"
+                        from === "table"
                           ? cropFiltersOpen
                             ? { backgroundColor: CustomStyles().lightGreen }
                             : { backgroundColor: "inherit" }

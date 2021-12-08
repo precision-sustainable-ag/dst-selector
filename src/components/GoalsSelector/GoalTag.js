@@ -24,7 +24,7 @@ const GoalTag = (props) => {
           .classList.add("active");
       });
     }
-  }, []);
+  }, [state.selectedGoals]);
 
   const updateSelectedGoals = (item, key) => {
     const goals = [...state.selectedGoals];

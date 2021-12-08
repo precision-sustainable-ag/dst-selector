@@ -12,12 +12,13 @@ import React, {
 } from "react";
 
 const CoverCropType = forwardRef((props, ref) => {
+  let { setSidebarFilterOptions, sidebarFilterOptions, filters } = props;
   const prop = "Cover Crop Group";
   const [selected, setSelected] = useState({ [prop]: [] });
 
   useEffect(() => {
-    props.setSidebarFilterOptions({
-      ...props.sidebarFilterOptions,
+    setSidebarFilterOptions({
+      ...sidebarFilterOptions,
       ...selected,
     });
   }, [selected]);
@@ -42,15 +43,15 @@ const CoverCropType = forwardRef((props, ref) => {
 
   return (
     <Grid container spacing={1}>
-      {props.filters.values.map((val, index) => (
+      {filters.values.map((val, index) => (
         <Grid item key={index}>
           <Chip
-            onClick={() => handleClick(props.filters.name, val.name)}
+            onClick={() => handleClick(filters.name, val.name)}
             component="li"
             size="medium"
             label={val.name}
             color={
-              props.sidebarFilterOptions[prop].includes(val.name)
+              sidebarFilterOptions[prop].includes(val.name)
                 ? "primary"
                 : "secondary"
             }

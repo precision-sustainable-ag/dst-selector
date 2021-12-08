@@ -291,8 +291,6 @@ const Header = () => {
     }
   }, [state.markers, state.zone, state.weatherDataReset]);
 
-  useEffect(() => {}, [state.weatherDataReset, state.zone, state.markers]);
-
   useEffect(() => {
     let z7Formattedgoal = zone7DataDictionary.filter(
       (data) => data.Category === "Goals" && data.Variable !== "Notes: Goals"
@@ -375,7 +373,14 @@ const Header = () => {
         break;
       }
     }
-  }, [state.zone]);
+  }, [
+    state.zone,
+    state.zone4CropData,
+    state.zone5CropData,
+    state.zone6CropData,
+    state.zone7CropData,
+    dispatch,
+  ]);
 
   const toggleSingleCollapse = () => {
     setCollapse(!collapse);
