@@ -137,8 +137,8 @@ const MapContext = ({ width, height, minzoom, maxzoom, from }) => {
         // reverse geocode
         setAddress(firstLatLng);
 
-        latlngs.map((latlngArr, index) => {
-          latlngArr.map((latlng, index) => {
+        latlngs.forEach((latlngArr) => {
+          latlngArr.forEach((latlng) => {
             markers.push([latlng.lat, latlng.lng]);
           });
         });

@@ -4,7 +4,7 @@
 */
 
 import { Typography } from "@material-ui/core";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState, Fragment } from "react";
 
 const DictionaryContent = ({ dictData = [{}], from = "" }) => {
   const [groupedCats, setGroupedCats] = useState({});
@@ -53,7 +53,7 @@ const DictionaryContent = ({ dictData = [{}], from = "" }) => {
                   </Typography>
                 </div>
               );
-            }
+            } else return <Fragment />;
           } else {
             return (
               <div className="col-6" key={index2}>

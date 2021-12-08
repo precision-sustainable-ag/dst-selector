@@ -43,7 +43,7 @@ const SoilCondition = (props) => {
 
     let longLatString = "";
 
-    markersCopy.map((val, i) => {
+    markersCopy.forEach((val, i) => {
       // get long lat formatted as requested by SSURGO (long lat, long lat, ...)
       // saved as longLatString
       if (i === markersCopy.length - 1) {
@@ -108,7 +108,7 @@ const SoilCondition = (props) => {
 
           let stringSplit = [];
 
-          result["Table"].map((el, index) => {
+          result["Table"].forEach((el, index) => {
             if (index !== 0) {
               if (stringSplit.indexOf(el[1].split(",")[0]) === -1) {
                 stringSplit.push(el[1].split(",")[0]);
@@ -120,7 +120,7 @@ const SoilCondition = (props) => {
           mapUnitString = filteredArr.join(", ");
 
           let floodingClasses = [];
-          result["Table"].map((el, index) => {
+          result["Table"].forEach((el, index) => {
             if (index === 0 || el.indexOf("Water") === 1) {
             } else {
               if (floodingClasses.indexOf(el[3]) === -1) {
@@ -130,7 +130,7 @@ const SoilCondition = (props) => {
           });
 
           let drainageClasses = [];
-          result["Table"].map((el, index) => {
+          result["Table"].forEach((el, index) => {
             if (index !== 0) {
               if (drainageClasses.indexOf(el[2]) === -1) {
                 drainageClasses.push(el[2]);

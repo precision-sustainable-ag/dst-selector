@@ -12,12 +12,11 @@ import Header from "../Header/Header";
 import ExplorerCardView from "./ExplorerCardView";
 
 const CoverCropExplorer = () => {
-  const [state, dispatch] = useContext(Context);
+  const [state] = useContext(Context);
   const [cropDataChanged, setCropDataChanged] = useState(false);
   const [activeCropData, setActiveCropData] = useState([]);
   const [inactiveCropData, setInactiveCropData] = useState([]);
   const [cropName, setCropName] = useState("");
-  const [cropData, setCropData] = useState([]);
 
   useEffect(() => {
     setCropDataChanged(!cropDataChanged);
@@ -45,7 +44,7 @@ const CoverCropExplorer = () => {
     setActiveCropData(crop_data);
   };
 
-  return cropData.length === 0 ? (
+  return (
     <div className="contentWrapper">
       <Header logo="neccc_wide_logo_color_web.jpg" />
       <div className="container-fluid mt-4 mb-4">
@@ -89,8 +88,6 @@ const CoverCropExplorer = () => {
         </div>
       </div>
     </div>
-  ) : (
-    ""
   );
 };
 

@@ -8,7 +8,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../../../store/Store";
 
 const SoilConditions = (props) => {
-  const [state, dispatch] = useContext(Context);
+  const [state] = useContext(Context);
   const { Flooding_Frequency, Drainage_Class } = state.soilData;
   const {
     activeCropData,
