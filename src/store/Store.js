@@ -26,6 +26,7 @@ import desc from "../shared/crop-descriptions.json";
 import z7Dict from "../shared/json/zone7/data-dictionary.json";
 import z6Dict from "../shared/json/zone6/data-dictionary.json";
 import z5Dict from "../shared/json/zone5/data-dictionary.json";
+import z4Dict from "../shared/json/zone4/data-dictionary.json";
 
 const cropDataFormatter = (cropData = [{}], zone = 7) => {
   const excludedCropZoneDecisionKeys = ["Exclude", "Up and Coming", "Discuss"];
@@ -1351,6 +1352,7 @@ const initialState = {
   zone7Dictionary: z7Dict,
   zone6Dictionary: z6Dict,
   zone5Dictionary: z5Dict,
+  zone4Dictionary: z4Dict,
   weatherDataReset: false,
   filterString: "",
   filterKeys: [],
