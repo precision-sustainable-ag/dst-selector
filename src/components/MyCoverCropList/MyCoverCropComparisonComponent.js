@@ -114,11 +114,9 @@ const MyCoverCropComparisonComponent = (props) => {
       // element not in array
       // not possible ?
     } else {
-      // alert(removeIndex);
       let selectedCropsCopy = state.selectedCrops;
 
       selectedCropsCopy.splice(removeIndex, 1);
-      // console.log(selectedCropsCopy);
       dispatch({
         type: "SELECTED_CROPS_MODIFIER",
         data: {
@@ -128,8 +126,6 @@ const MyCoverCropComparisonComponent = (props) => {
         },
       });
       enqueueSnackbar(`${cropName} Removed`);
-
-      // this.state.selectedCrops.splice(removeIndex, 1);
     }
   };
 
@@ -346,7 +342,6 @@ const MyCoverCropComparisonComponent = (props) => {
                           ? `/images/Cover Crop Photos/250/${crop.data["Image Data"]["Key Thumbnail"]}`
                           : "https://placehold.it/100x100?text=Placeholder"
                       }
-                      // image="https://placehold.it/100x100"
                       title={crop.cropName}
                       style={{ width: "100%", height: "100px" }}
                     />
@@ -391,10 +386,9 @@ const MyCoverCropComparisonComponent = (props) => {
                             textDecoration: "underline",
                             color: "rgb(53, 153, 155)",
                           }}
-                          // href={`/information-sheet/${crop.data["Cover Crop Name"]}`}
                           onClick={() => handleModalOpen({ fields: crop.data })}
                           target="_blank"
-                          rel="noopener"
+                          rel="noopener noreferrer"
                         >
                           View Crop Details
                         </a>
@@ -513,43 +507,7 @@ const GetAverageGoalRating = ({ crop }) => {
       }
     });
   }
-  // console.log(goalRating);
   return getRating(goalRating / state.selectedGoals.length);
 };
 
 export default MyCoverCropComparisonComponent;
-
-// Deprecated
-
-// const RenderGrowthWindow = ({ window }) => {
-//   const growingWindows = ["Very Short", "Short", "Medium", "Long", "Very Long"];
-//   const index = growingWindows.indexOf(window);
-
-//   switch (index) {
-//     case 0:
-//       return getRating(1);
-//     case 1:
-//       return getRating(2);
-//     case 2:
-//       return getRating(3);
-//     case 3:
-//       return getRating(4);
-//     case 4:
-//       return getRating(5);
-//     default:
-//       return getRating(0);
-//   }
-// };
-
-// const RenderCtoNRatioText = ({ ratio }) => {
-//   switch (parseInt(ratio)) {
-//     case 1:
-//       return "LOW";
-//     case 2:
-//       return "MEDIUM";
-//     case 3:
-//       return "HIGH";
-//     default:
-//       return "NO DATA";
-//   }
-// };

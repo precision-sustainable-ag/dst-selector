@@ -33,14 +33,6 @@ const MyCoverCropList = (props) => {
   };
 
   const TopBar = ({ comparisonView }) => {
-    const { selectedCrops } = state;
-    const selectedCropNames = selectedCrops.map((crop) => {
-      return {
-        name: crop.cropName,
-        pdf: `/pdf/${crop.cropName}.pdf`,
-        csv: `/csv/${crop.cropName}.csv`,
-      };
-    });
     return (
       <div className="row">
         <div
@@ -55,14 +47,6 @@ const MyCoverCropList = (props) => {
           <div className="row">
             {comparisonView ? (
               <div className="col-8">
-                {/* <Button style={{ color: "white" }}>Download:</Button>
-                <Button
-                  style={{ color: "white" }}
-                  onClick={() => downloadAllPDF(selectedCropNames)}
-                >
-                  <PictureAsPdf /> <span className="pl-2">PDF</span>
-                </Button> */}
-
                 <Button
                   style={{ color: "white" }}
                   onClick={

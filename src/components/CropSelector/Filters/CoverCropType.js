@@ -11,11 +11,7 @@ import React, {
   useState,
 } from "react";
 
-// import { Filters } from "./Filters";  // TODO
-
 const CoverCropType = forwardRef((props, ref) => {
-  // return <Filters props={props} ref={ref} />  // TODO
-
   const prop = "Cover Crop Group";
   const [selected, setSelected] = useState({ [prop]: [] });
 

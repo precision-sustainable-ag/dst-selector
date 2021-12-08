@@ -27,7 +27,7 @@ export const ReferenceTooltip = (props) => {
       title={
         <div>
           Source{": "}
-          <a href={sourceURL} target="_blank" rel="noreferrer">
+          <a href={sourceURL} target="_blank" rel="noopener noreferrer">
             {sourceName}
           </a>
         </div>
@@ -388,8 +388,6 @@ export const greenBarExpansionPanelHeight = {
 
 export const trimString = (stringFull, size) => {
   if (!isNaN(size)) {
-    let postStr = "...";
-
     return (
       stringFull.substring(0, size) + `${stringFull.length > 25 ? "..." : ""}`
     );
@@ -1362,6 +1360,8 @@ export const RenderSeedPriceIcons = ({ val }) => {
           </span>
         </Fragment>
       );
+    default:
+      break;
   }
 };
 
@@ -1374,9 +1374,6 @@ export const CropImage = ({
   onClick = () => {},
 }) => {
   const placeholder = "//placehold.it/100x100";
-  const lazyHeight =
-    view === "calendar" ? 50 : view === "information-sheet" ? 250 : 100;
-
   let imageStyle = {};
 
   switch (view) {

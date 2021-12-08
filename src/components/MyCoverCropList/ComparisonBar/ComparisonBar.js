@@ -24,11 +24,6 @@ const ComparisonBar = (props) => {
   const [goalsOpen, setGoalsOpen] = useState(false);
   const [goals, setGoals] = useState([]);
   useEffect(() => {
-    // setSidebarFilters(props.filterData);
-    // const filterTitles = props.filterData.map((filter) => {
-    //   return { name: filter.name, open: false };
-    // });
-
     const filteredVals = props.filterData.map((filter) => {
       const vals = filter.values.map((val) => {
         return {
@@ -49,16 +44,10 @@ const ComparisonBar = (props) => {
         selected: false,
       };
     });
-    // console.log(filteredVals);
     setFilterValues(filteredVals);
     setGoals(filteredGoals);
 
-    // setSidebarFiltersOpen(filterTitles);
-
-    return () => {
-      //   setSidebarFilters([]);
-      //   setSidebarFiltersOpen([]);
-    };
+    return () => {};
   }, []);
 
   const toggleSidebarFilterItems = (index) => {
@@ -102,8 +91,7 @@ const ComparisonBar = (props) => {
         values: vals,
       };
     });
-    // console.log(filteredVals);
-    // console.error("Roller Crimp filter bug");
+
     const filterKeysAppend = filteredVals.map((val, index) => {
       if (
         index !== 0 &&
@@ -119,15 +107,11 @@ const ComparisonBar = (props) => {
         });
       } else return [];
     });
-    // console.log(filterKeysAppend);
 
     const filterGoalsAppend = filteredGoals.map((v) => v.name);
 
-    // console.log(filterKeys);
-    // console.log(filterKeysAppend.flat());
     allGoals.push(filterKeysAppend.flat(2));
     allGoals.push(filterGoalsAppend.flat());
-    // console.log(allGoals.flat(2));
     setFilterValues(filteredVals);
     setGoals(filteredGoals);
 

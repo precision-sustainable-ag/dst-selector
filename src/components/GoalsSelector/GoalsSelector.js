@@ -8,8 +8,6 @@
 import { makeStyles, Typography } from "@material-ui/core";
 import Skeleton from "@material-ui/lab/Skeleton";
 import React, { useContext, useEffect, useState } from "react";
-// import { airtableAPIURL } from "../../shared/constants";
-import { AirtableBearerKey } from "../../shared/keys";
 import { Context } from "../../store/Store";
 import "../../styles/goalsSelector.scss";
 import GoalTag from "./GoalTag";
@@ -36,56 +34,12 @@ const GoalsSelector = () => {
   const classes = useStyles();
   const [allGoals, setAllGoals] = useState([{}]);
 
-  const goalsURL = "/Cover%20Crop%20Goals?maxRecords=300";
-
-  const headers = new Headers();
-
-  // Fetch goals from Airtable : Deprecated
-  const fetchGoals = async (apiBase) => {
-    let finalGoalsURL = apiBase + goalsURL;
-    // console.log(finalGoalsURL);
-
-    dispatch({
-      type: "SET_AJAX_IN_PROGRESS",
-      data: true,
-    });
-    headers.append("Authorization", `Bearer ${AirtableBearerKey}`);
-    await fetch(finalGoalsURL, { headers: headers })
-      .then((response) => {
-        return response.json();
-      })
-      .then((response) => {
-        let fields = response.records;
-        let records = [];
-        for (let index in fields) {
-          if (fields[index].fields["Include"]) {
-            // console.log(fields[index].fields);
-            records.push(fields[index]);
-          }
-        }
-        // if (response.records.fields["Include"]) {
-
-        // }
-        dispatch({
-          type: "ADD_GOALS",
-          data: records,
-        });
-      })
-      .then(() => {
-        dispatch({
-          type: "SET_AJAX_IN_PROGRESS",
-          data: false,
-        });
-      });
-  };
   useEffect(() => {
-    console.log(state);
     if (state.allGoals.length > 0) {
       const filteredGoals = state.allGoals.filter(
         (goal) =>
           goal.fields["Variable"].toLowerCase() !== "promote water quality"
       );
-      console.log(filteredGoals);
       setAllGoals(filteredGoals);
     }
   }, [state.allGoals]);
@@ -144,21 +98,6 @@ const GoalsSelector = () => {
               ) : (
                 <Skeleton style={goalSkeletonStyle} />
               )}
-
-              {/* {allGoals.map((goal, key) =>
-                goal.fields["Include"] ? (
-                  <div key={key} className={`${classes.root} col`}>
-                    <GoalTag
-                      goal={goal}
-                      id={key}
-                      goaltTitle={goal.fields["Cover Crop Goal"]}
-                      goalDescription={goal.fields["Description"]}
-                    />
-                  </div>
-                ) : (
-                  ""
-                )
-              )} */}
             </div>
           )}
         </div>

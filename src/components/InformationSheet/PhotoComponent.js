@@ -5,8 +5,6 @@
 
 import { Typography } from "@material-ui/core";
 import Axios from "axios";
-// import { CropImage } from "../../shared/constants";
-// import Carousel, { Modal, ModalGateway } from "react-images";
 import { LuminousGallery } from "luminous-lightbox";
 import React, { Suspense, useEffect, useState } from "react";
 import "../../../node_modules/luminous-lightbox/dist/luminous-basic.css";
@@ -39,7 +37,6 @@ const PhotoComponent = ({
       .then((response) => {
         if (response.data.result === "success") {
           if (response.data.data.length !== 0) {
-            // response.data.data.forEach((url) => {});
           } else {
             setImageList([]);
           }
@@ -90,13 +87,12 @@ const PhotoComponent = ({
             >
               <img
                 className="img rounded"
-                alt={`Photo ${index}`}
+                alt={`${index}`}
                 src={strippedUrl}
                 style={{
                   height: "125px",
                   maxWidth: "200px",
                 }}
-                // width="200"
               />
             </a>
 

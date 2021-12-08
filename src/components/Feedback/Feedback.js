@@ -22,6 +22,7 @@ const FeedbackComponent = (props) => {
             className="airtable-embed"
             src="https://airtable.com/embed/shr1UBoR7bqCbNhvW?backgroundColor=yellow"
             frameBorder="0"
+            title="iframe"
             style={{
               background: "transparent",
               border: "1px solid #ccc",

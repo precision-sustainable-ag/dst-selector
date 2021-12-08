@@ -8,13 +8,7 @@ import { cloudIcon, ReferenceTooltip } from "../../shared/constants";
 import { Context } from "../../store/Store";
 
 const apiBaseURL = "https://api.openweathermap.org/data/2.5/weather";
-const apiBaseURL_weather_gov =
-  "https://api.weather.gov/points/39.7456,-97.0892";
 const apiKey = "99297824ab4835160bbe26208cff1d38";
-
-const geocodeAuth = "105463363432726e15946815x4512";
-
-// TODO: look at https://agromonitoring.com/ api
 
 const ForecastComponent = () => {
   const [state, dispatch] = useContext(Context);
@@ -26,31 +20,12 @@ const ForecastComponent = () => {
     iconURL: `https://placehold.it/20x20`,
     iconDescription: "No Data",
   });
-  // const [loading, setLoading] = useState
 
   useEffect(() => {
-    // console.log("---forecastComponent---");
-    // console.log("new features");
     if (state.markers[0].length > 0) {
       setShowFeatures();
     }
-    // state.progress >= 1 ? setShowFeatures(true) : setShow(false);
-    // fetchOldApi().then(data => {
-    //   console.log(data);
-    //   let url = data.properties.forecast;
-    //   fetchOldApiRecords(url).then(data => {
-    //     console.log("forecast", data);
-    //   });
-    // });
   }, [state.markers, state.progress]);
-
-  //   const fetchOldApi = async () => {
-  //     return (await fetch(apiBaseURL_weather_gov)).json();
-  //   };
-
-  //   const fetchOldApiRecords = async url => {
-  //     return (await fetch(url, { cache: "no-cache", mode: "no-cors" })).json();
-  //   };
 
   const setShowFeatures = () => {
     if (state.markers.length > 0) {
@@ -93,8 +68,6 @@ const ForecastComponent = () => {
                 data.localityInfo.informative[
                   data.localityInfo.informative.length - 1
                 ];
-              // console.log(lastInfo);
-              // let addressString = ``;
               let addressString = `${lastInfo.name}, ${data.city}`;
               dispatch({
                 type: "CHANGE_ADDRESS",
@@ -113,8 +86,6 @@ const ForecastComponent = () => {
               });
             }
           })
-          // }
-          // )
           .catch((e) => {
             console.error("Geocode.xyz:", e);
           });
@@ -133,13 +104,11 @@ const ForecastComponent = () => {
   };
 
   const reverseGEO = async (lat, lng) => {
-    // let url = `https://geocode.xyz/${lat},${lng}?json=1;
     let url = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lng}&localityLanguage=en`;
     let data = await fetch(url);
     data = data.json();
 
     return data;
-    // let ltlng =
   };
 
   return state.progress >= 1 ? (

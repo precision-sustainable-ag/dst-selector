@@ -34,7 +34,6 @@ function loadScript(src, position, id) {
 
 const autocompleteService = { current: null };
 const placeService = { current: null };
-const geocodeService = { current: null };
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -61,15 +60,8 @@ export default function GoogleAutocomplete({
     state.fullAddress ? state.fullAddress : ""
   );
   const [options, setOptions] = React.useState([]);
-  const [locationDetails, setLocationDetails] = React.useState({
-    lat: 0,
-    lng: 0,
-  });
   const loaded = React.useRef(false);
 
-  useEffect(() => {
-    // console.log(inputValue);
-  }, [inputValue]);
   useEffect(() => {
     if (state.addressChangedViaMap) {
       setValue(state.fullAddress);
