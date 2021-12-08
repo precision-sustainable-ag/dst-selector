@@ -53,7 +53,7 @@ const Landing = (props) => {
     updateSize();
 
     return () => window.removeEventListener("resize", updateSize);
-  }, []);
+  }, [props.title]);
 
   return (
     <div
@@ -69,7 +69,7 @@ const Landing = (props) => {
         className="p-2"
         spacing={2}
         container
-        justify="center"
+        justifyContent="center"
         alignItems="center"
         style={{
           width: "90%",
@@ -126,7 +126,12 @@ const Landing = (props) => {
           </Typography>
         </Grid>
       </Grid>
-      <Grid container justify="center" alignItems="center" className="pt-4">
+      <Grid
+        container
+        justifyContent="center"
+        alignItems="center"
+        className="pt-4"
+      >
         <Grid item>
           <LightButton onClick={() => incrementProgress(1)}>NEXT</LightButton>
         </Grid>

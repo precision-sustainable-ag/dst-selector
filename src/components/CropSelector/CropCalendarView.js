@@ -62,7 +62,7 @@ const CropCalendarViewComponent = (props) => {
   };
 
   // DONE: Check year logic ? currently Juliet wants to return current year if month is before november
-  let currentYear = new Date().getFullYear();
+  const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
 
   const addCropToBasket = (cropId, cropName, btnId, cropData) => {
     let selectedCrops = {};
@@ -74,7 +74,6 @@ const CropCalendarViewComponent = (props) => {
     cropArray = selectedCrops;
 
     // // check if crop id exists inside state, if yes then remove it
-
     if (state.selectedCrops.length > 0) {
       // DONE: Remove crop from basket
       var removeIndex = state.selectedCrops
@@ -120,17 +119,6 @@ const CropCalendarViewComponent = (props) => {
 
   const headers = new Headers();
   headers.append("Authorization", `Bearer ${AirtableBearerKey}`);
-
-  useEffect(() => {
-    let initialized = fetchRecordsIfUnavailable();
-    initialized.then(() => {
-      let currentMonth = moment().format("MMM");
-      if (currentMonth === "Nov" || currentMonth === "Dec") {
-        currentYear = currentYear + 1;
-      }
-      console.log("goal values set");
-    });
-  }, []);
 
   const getAverageGoalRating = (selectedGoals, crop) => {
     // get goal rating for each crop and calculate+render rating

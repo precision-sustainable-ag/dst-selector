@@ -68,7 +68,7 @@ const InformationSheet = (props) => {
         ? cropData.fields
         : ""
     );
-  }, [state, props]);
+  }, [state, props, cropData.fields, name]);
 
   useEffect(() => {
     document.getElementsByTagName("footer")[0].style.display = "none";
@@ -81,7 +81,7 @@ const InformationSheet = (props) => {
 
     // delete localstorage
     window.localStorage.removeItem("infosheet");
-  }, []);
+  }, [crop]);
 
   return (
     <div className="wrapper container-fluid" ref={ref}>

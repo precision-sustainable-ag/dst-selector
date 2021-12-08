@@ -53,16 +53,12 @@ const SoilConditions = (props) => {
     } else {
       setSelected({ ...selected, "Soil Drainage": false });
     }
-  }, [state.soilData]);
+  }, [Drainage_Class, Flooding_Frequency, selected, state.soilData]);
 
   useEffect(() => {
     if (selected["Soil Drainage"]) {
       const newActives = activeCropData.filter((crop) => {
-        if (areCommonElements(crop.fields["Soil Drainage"], Drainage_Class)) {
-          return true;
-        } else {
-          return false;
-        }
+        return areCommonElements(crop.fields["Soil Drainage"], Drainage_Class);
       });
 
       const newInactives = cropData.filter((e) => !newActives.includes(e));
@@ -75,11 +71,7 @@ const SoilConditions = (props) => {
 
     if (selected["Flooding Tolerance"]) {
       const newActives = activeCropData.filter((crop) => {
-        if (crop.fields["Flooding Tolerance"] === Flooding_Frequency) {
-          return true;
-        } else {
-          return false;
-        }
+        return crop.fields["Flooding Tolerance"] === Flooding_Frequency;
       });
 
       const newInactives = cropData.filter((e) => !newActives.includes(e));
@@ -89,7 +81,16 @@ const SoilConditions = (props) => {
     } else {
       filterSidebarItems();
     }
-  }, [selected]);
+  }, [
+    Drainage_Class,
+    Flooding_Frequency,
+    activeCropData,
+    cropData,
+    filterSidebarItems,
+    selected,
+    setActiveCropData,
+    setInactiveCropData,
+  ]);
 
   return (
     <Grid container spacing={1}>
