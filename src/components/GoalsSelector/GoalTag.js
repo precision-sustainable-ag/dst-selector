@@ -37,15 +37,12 @@ const GoalTag = (props) => {
         type: "ADD_SELECTED_GOALS",
         data: item.fields["Variable"],
       });
-
-      //   document.getElementById(`avatar${key}`).innerHTML =
     } else {
       // exists, remove it from the state and update the state
       let index = goals.indexOf(item.fields["Variable"]);
       goals.splice(index, 1);
 
       // make it lighter on the ui
-
       document.getElementById(`chip${key}`).classList.remove("active");
 
       dispatch({

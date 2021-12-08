@@ -42,13 +42,13 @@ import { AirtableBearerKey } from "../../shared/keys";
 import { Context } from "../../store/Store";
 import "../../styles/cropCalendarViewComponent.scss";
 import CropDetailsModalComponent from "./CropDetailsModal";
-// import { AddCircle, FiberManualRecord, CloseRounded } from "@material-ui/icons";
 import CropLegendModal from "./CropLegendModal";
 import CropSelectorCalendarView from "./CropSelectorCalendarView";
-// import RenderCashCropOverlay from "./RenderCashCropOverlay";
+
 const growthIcon = {
   color: "white",
 };
+
 const CropCalendarViewComponent = (props) => {
   const { cropData, activeCropData, inactiveCropData } = props;
   const [state, dispatch] = useContext(Context);
@@ -63,7 +63,6 @@ const CropCalendarViewComponent = (props) => {
   };
 
   // DONE: Check year logic ? currently Juliet wants to return current year if month is before november
-  // ref. useeffect();
   let currentYear = new Date().getFullYear();
 
   useEffect(() => {
@@ -77,36 +76,13 @@ const CropCalendarViewComponent = (props) => {
   }, [state.progress]);
 
   const addCropToBasket = (cropId, cropName, btnId, cropData) => {
-    let container = document.getElementById(btnId);
     let selectedCrops = {};
-    let toAdd = false;
     var cropArray = [];
     selectedCrops["id"] = cropId;
     selectedCrops["cropName"] = cropName;
     selectedCrops["btnId"] = btnId;
     selectedCrops["data"] = cropData;
     cropArray = selectedCrops;
-    // change the UI
-    if (container.classList.contains("activeCartBtn")) {
-      // change text back to 'add to list' and remove element from state
-
-      if (document.getElementById(btnId).textContent === "ADDED") {
-        container.querySelector(".MuiButton-label").innerHTML = "ADD TO LIST";
-        container.classList.remove("activeCartBtn");
-        toAdd = false;
-      } else toAdd = true;
-
-      // this.state.selectedCrops.splice(x, 1);
-      // get index of the element
-    } else {
-      // change text to 'added' and add element to state
-      console.log(document.getElementById(btnId).textContent);
-      if (container.textContent === "ADD TO LIST") {
-        container.querySelector(".MuiButton-label").innerHTML = "ADDED";
-        container.classList.add("activeCartBtn");
-        toAdd = true;
-      } else toAdd = false;
-    }
 
     // // check if crop id exists inside state, if yes then remove it
 
@@ -128,11 +104,8 @@ const CropCalendarViewComponent = (props) => {
           },
         });
       } else {
-        // alert(removeIndex);
         let selectedCropsCopy = state.selectedCrops;
-
         selectedCropsCopy.splice(removeIndex, 1);
-        // console.log(selectedCropsCopy);
         dispatch({
           type: "SELECTED_CROPS_MODIFIER",
           data: {
@@ -141,8 +114,6 @@ const CropCalendarViewComponent = (props) => {
             snackMessage: `${cropName} Removed`,
           },
         });
-
-        // this.state.selectedCrops.splice(removeIndex, 1);
       }
     } else {
       // DONE: add the selected crop to state and change the state, show snackbar
@@ -165,13 +136,10 @@ const CropCalendarViewComponent = (props) => {
     let initialized = fetchRecordsIfUnavailable();
     initialized.then(() => {
       let currentMonth = moment().format("MMM");
-      // console.log(currentMonth);
       if (currentMonth === "Nov" || currentMonth === "Dec") {
         currentYear = currentYear + 1;
       }
       console.log("goal values set");
-
-      // putGoalValues();
     });
   }, []);
 
@@ -187,20 +155,6 @@ const CropCalendarViewComponent = (props) => {
     return getRating(goalRating / selectedGoals.length);
   };
 
-  // const putGoalValues = () => {
-  //   console.log(state.allGoals.length);
-  //   state.allGoals.map((goal, index) => {
-  //     let goalName = goal.fields["Cover Crop Goal"];
-  //     cropData.map((crop, index2) => {
-  //       // let cropId =
-
-  //       console.log(
-  //         goalName + " for " + crop.fields["Cover Crop Name"],
-  //         crop.fields[goalName]
-  //       );
-  //     });
-  //   });
-  // };
   const fetchRecordsIfUnavailable = () => {
     // get crop data if unavailable
 
@@ -216,7 +170,6 @@ const CropCalendarViewComponent = (props) => {
 
         json
           .then((val) => {
-            // console.log(val);
             dispatch({
               type: "PULL_CROP_DATA",
               data: val.records,
@@ -226,7 +179,6 @@ const CropCalendarViewComponent = (props) => {
             if (state.allGoals.length === 0) {
               // get all goals
               let records = await fetch(allGoalsURL, { headers: headers });
-              // console.log(records.json());
               let json = records.json();
               json
                 .then((val) => {
@@ -247,16 +199,17 @@ const CropCalendarViewComponent = (props) => {
         data: false,
       });
     });
-    // let isResolved = false;
 
     return _promise;
   };
   const [activeGrowthPeriodState, setActiveGrowthPeriodState] = useState(
     state.activeGrowthPeriod
   );
+
   useEffect(() => {
     setActiveGrowthPeriodState(state.activeGrowthPeriod);
   }, [state]);
+
   const checkIfGrowthMonth = (month) => {
     if (activeGrowthPeriodState.length !== 0) {
       if (activeGrowthPeriodState.includes(month)) return true;
@@ -265,6 +218,7 @@ const CropCalendarViewComponent = (props) => {
       return false;
     }
   };
+
   const sortReset = (from = "cropName") => {
     setActiveSortType("goals");
     // reset to default
@@ -343,7 +297,6 @@ const CropCalendarViewComponent = (props) => {
         props.setInactiveCropData(inactiveCropDataShadow);
       }
     } else {
-      // sortReset("cropName");
       if (activeCropDataShadow.length > 0) {
         activeCropDataShadow.sort((a, b) => {
           var firstCropName = flipCoverCropName(
@@ -352,7 +305,6 @@ const CropCalendarViewComponent = (props) => {
           var secondCropName = flipCoverCropName(
             b.fields["Cover Crop Name"].toLowerCase()
           ).replace(/\s+/g, "");
-          // return firstCropName.localeCompare(secondCropName);
           if (firstCropName < secondCropName) {
             return 1;
           }
@@ -428,9 +380,6 @@ const CropCalendarViewComponent = (props) => {
           props.setInactiveCropData(newInactiveShadow);
         }
 
-        // console.log(newActiveShadow);
-        // console.log(selectedCropIds);
-
         if (newActiveShadow.length > 0) {
           newActiveShadow.sort((a) => {
             if (a.inCart) {
@@ -442,10 +391,6 @@ const CropCalendarViewComponent = (props) => {
 
           props.setActiveCropData(newActiveShadow);
         }
-
-        // if(inactiveCropDataShadow.length > 0) {
-
-        // }
       }
     } else {
       // sort back to original values
@@ -507,12 +452,6 @@ const CropCalendarViewComponent = (props) => {
 
                 <Button
                   size="small"
-                  style={
-                    {
-                      // borderRadius: "0px",
-                      // paddingTop: "0px",
-                    }
-                  }
                   onClick={() => {
                     setModalData(crop);
                     setModalOpen(!modalOpen);
@@ -539,16 +478,6 @@ const CropCalendarViewComponent = (props) => {
                 {getAverageGoalRating(state.selectedGoals, crop)}
               </TableCell>
             )}
-
-            {/* {allMonths.map((month, index) => (
-              <GrowthWindowComponent
-                from="calendar"
-                data={crop.fields}
-                key={index}
-                id={`growthCell${index}`}
-                month={index}
-              />
-            ))} */}
             <TableCell colSpan="12">
               <CropSelectorCalendarView from="calendar" data={crop} />
             </TableCell>
@@ -590,13 +519,11 @@ const CropCalendarViewComponent = (props) => {
   };
   return (
     <Fragment>
-      {/* <div className="table-responsive calendarViewTableWrapper"> */}
       {state.ajaxInProgress ? (
         <div className="circularCentered">
           <CircularProgress size={"6em"} />
         </div>
       ) : (
-        // <div className="row">
         <TableContainer
           component="div"
           className="table-responsive calendarTableViewWrapper"
@@ -655,14 +582,6 @@ const CropCalendarViewComponent = (props) => {
                         ACTIVE GROWTH PERIOD
                       </div>
                     </TableCell>
-
-                    {/* {state.activeGrowthPeriod.map((growthMonth, index) => {
-
-
-
-
-return();
-})} */}
                     {state.activeGrowthPeriod.includes("Jan") ? (
                       <Tooltip placement="top" title="Winter">
                         <TableCell
@@ -683,7 +602,6 @@ return();
                         colSpan="2"
                       ></TableCell>
                     )}
-
                     {state.activeGrowthPeriod.includes("Mar") ? (
                       <Tooltip placement="top" title="Spring">
                         <TableCell
@@ -704,7 +622,6 @@ return();
                         colSpan="3"
                       ></TableCell>
                     )}
-
                     {state.activeGrowthPeriod.includes("Jun") ? (
                       <Tooltip placement="top" title="Summer">
                         <TableCell
@@ -725,7 +642,6 @@ return();
                         colSpan="3"
                       ></TableCell>
                     )}
-
                     {state.activeGrowthPeriod.includes("Sep") ? (
                       <Tooltip placement="top" title="Fall">
                         <TableCell
@@ -832,18 +748,7 @@ return();
                 <TableCell
                   style={{ width: "10%", borderLeft: "5px solid white" }}
                 >
-                  <Button
-                    // onClick={() => {
-                    //   dispatch({
-                    //     type: "ACTIVATE_MY_COVER_CROP_LIST_TILE",
-                    //     data: {
-                    //       myCoverCropActivationFlag: true,
-                    //       speciesSelectorActivationFlag: false,
-                    //     },
-                    //   });
-                    // }}
-                    onClick={sortBySelectedCrops}
-                  >
+                  <Button onClick={sortBySelectedCrops}>
                     MY LIST <br />
                     {`[${state.selectedCrops.length} CROPS]`}
                   </Button>

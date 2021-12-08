@@ -24,8 +24,6 @@ const SoilDrainageTimeline = ({ drainage = [] }) => {
     "Saturated muck",
     "Well drained muck",
   ];
-  //   const classIntersection = drainageClasses.filter((x) => drainage.includes(x));
-  //   console.log(classIntersection);
   return (
     <Timeline align="right">
       {drainageClasses.map((drainageClass, index) => {

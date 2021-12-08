@@ -30,9 +30,6 @@ import ForecastComponent from "./ForecastComponent";
 import Greenbar from "./Greenbar/Greenbar";
 
 const Header = () => {
-  // const theme = useTheme();
-  // const matchesLGUp = useMediaQuery(theme.breakpoints.up("lg"));
-  // const matchesMDBelow = useMediaQuery(theme.breakpoints.between("xs", "sm"));
   let history = useHistory();
   const [state, dispatch] = useContext(Context);
   const [collapse, setCollapse] = React.useState(false);
@@ -41,17 +38,12 @@ const Header = () => {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   let isActive = {};
 
-  // const getAddressFromMarkers = async (lat, lon) => {
-  //   return (await fetch(`https://geocode.xyz/${lat},${lon}?geoit=json`)).json();
-  // };
   const getUSDAZone = async (zip) => {
     return await fetch(`//covercrop.tools/zone.php?zip=` + zip);
   };
 
   useEffect(() => {
     if (state.zipCode !== 0) {
-      // New if condition to accommodate multi-zone feature rev.
-      // if (state.progress !== 0) {
       getUSDAZone(state.zipCode)
         .then((response) => {
           if (response.ok) {
@@ -87,7 +79,6 @@ const Header = () => {
                     }
                   );
                 }
-              } else {
               }
             });
           } else {
@@ -97,7 +88,6 @@ const Header = () => {
         .catch((e) => {
           console.error(e);
         });
-      // }
     }
   }, [state.zipCode, state.fullAddress]);
 
@@ -122,14 +112,6 @@ const Header = () => {
             day: parseInt(moment(maxDate).format("D")),
           },
         };
-        // firstFrostDate: {
-        //   month: "October",
-        //   day: 21
-        // },
-        // lastFrostDate: {
-        //   month: "April",
-        //   day: 20
-        // }
         dispatch({
           type: "UPDATE_AVERAGE_FROST_DATES",
           data: {
@@ -144,9 +126,6 @@ const Header = () => {
 
   useEffect(() => {
     let { markers } = state;
-    // console.log("weather call");
-    if (state.progress === 0) {
-    }
 
     // update address on marker change
     // ref forecastComponent
@@ -161,11 +140,6 @@ const Header = () => {
     if (state.progress >= 2 && state.markers.length > 0) {
       let revAPIURL = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`;
 
-      // console.log(revAPIURL);
-      // if(!state.ajaxInProgress)
-      // {
-
-      // }
       Axios.get(revAPIURL)
         .then(async (resp) => {
           let city = resp.data.locality.toLowerCase();
@@ -190,24 +164,20 @@ const Header = () => {
           // Dynamic Dates not set!
           let frostFreeDaysURL = `${weatherApiURL}/hourly?location=${city}%20${state}&start=2015-01-01&end=2019-12-31&stats=count(date)/24/5&where=air_temperature%3e0&output=json`;
           let frostFreeDatesURL = `${weatherApiURL}/hourly?lat=${lat}&lon=${lon}&start=2014-07-01&end=2019-07-01&stats=min(date),max(date)&where=frost&group=growingyear&options=nomrms&output=json`;
-          // let frostFreeDaysURL = `http://128.192.142.200:3000/hourly?lat=${lat}&lon=${lon}&start=2014-07-01&end=2019-07-01&stats=min(date),max(date)&where=frost&group=growingyear&options=nomrms`;
           let frostFreeDays = 0;
 
           await Axios.get(frostFreeDaysURL)
             .then((resp) => {
-              // console.log(resp);
               getAverageFrostDates(frostFreeDatesURL);
               let frostFreeDaysObject = resp.data[0];
               for (var key in frostFreeDaysObject) {
                 if (frostFreeDaysObject.hasOwnProperty(key)) {
-                  // alert(key);
                   frostFreeDays = frostFreeDaysObject[key];
                 }
               }
               return { frostFreeDays: frostFreeDays, city: city, state: state };
             })
             .then((obj) => {
-              // console.log(obj.frostFreeDays);
               dispatch({
                 type: "UPDATE_FROST_FREE_DAYS",
                 data: { frostFreeDays: obj.frostFreeDays },
@@ -221,7 +191,6 @@ const Header = () => {
               // What was the 5-year average rainfall for city st during the month of currentMonthInt?
               //  Dynamic dates ?
               let averageRainForAMonthURL = `${weatherApiURL}/hourly?location=${obj.city}%20${obj.state}&start=2015-01-01&end=2019-12-31&stats=sum(precipitation)/5&where=month=${currentMonthInt}&output=json`;
-              // console.log(averageRainForAMonthURL);
               // What was the 5-year average annual rainfall for city st?
               let fiveYearAvgRainURL = `${weatherApiURL}/hourly?location=${obj.city}%20${obj.state}&start=2015-01-01&end=2019-12-31&stats=sum(precipitation)/5&output=json`;
               if (!state.ajaxInProgress) {
@@ -231,7 +200,6 @@ const Header = () => {
                 });
                 await Axios.get(averageRainForAMonthURL)
                   .then((resp) => {
-                    // console.log(resp);
                     let averagePrecipitationForCurrentMonth =
                       resp.data[0]["sum(precipitation)/5"];
                     averagePrecipitationForCurrentMonth = parseFloat(
@@ -310,7 +278,6 @@ const Header = () => {
 
     if (window.location.pathname === "/species-selector") {
       setIsRoot(true);
-      // setRedirectToRoot(true);
     } else {
       setIsRoot(false);
     }
@@ -341,8 +308,6 @@ const Header = () => {
       (data) => data.Category === "Goals" && data.Variable !== "Notes: Goals"
     );
 
-    // console.log(z4Formattedgoal);
-
     z7Formattedgoal = z7Formattedgoal.map((goal) => {
       return { fields: goal };
     });
@@ -352,7 +317,6 @@ const Header = () => {
     z5Formattedgoal = z5Formattedgoal.map((goal) => {
       return { fields: goal };
     });
-    // console.log(zone4Goal);
     z4Formattedgoal = z4Formattedgoal.map((goal) => {
       return { fields: goal };
     });
@@ -414,12 +378,6 @@ const Header = () => {
     }
   }, [state.zone]);
 
-  const toggleClass = (el, className) => el.classList.toggle(className);
-
-  const burgurClick = () => {
-    toggleClass(document.querySelector("body"), "nav-open");
-  };
-
   const toggleSingleCollapse = () => {
     setCollapse(!collapse);
   };
@@ -435,29 +393,11 @@ const Header = () => {
         });
       }
     } else {
-      // if (state.selectedCrops.length > 0) {
-      //   dispatch({
-      //     type: "ACTIVATE_MY_COVER_CROP_LIST_TILE",
-      //     data: {
-      //       myCoverCropActivationFlag: true,
-      //       speciesSelectorActivationFlag: false,
-      //     },
-      //   });
-      //   dispatch({
-      //     type: "JUMP_SPECIES_PROGRESS",
-      //   });
-      //   history.push("/");
-      // } else {
-      //   history.push("/");
-      // }
       history.push("/");
     }
   };
 
   const setSpeciesSelectorActivationFlag = () => {
-    // if (state.progress) {
-    // if (window.location.pathname === "/") {
-    // console.log("pathname", "/");
     dispatch({
       type: "ACTIVATE_SPECIES_SELECTOR_TILE",
       data: {
@@ -469,27 +409,6 @@ const Header = () => {
       history.push("/species-selector");
     }
   };
-
-  // useEffect(() => {
-  //   let localDrainageVal = window.localStorage.getItem("drainage");
-  //   let localDrainageClasses = JSON.parse(localDrainageVal);
-  //   // console.log(state.cropData.length);
-  //   // $reactTemp1.filter((crop) => crop.fields["Soil Drainage"].includes("Poorly drained"))
-  //   function arraysContainSame(a, b) {
-  //     a = Array.isArray(a) ? a : [];
-  //     b = Array.isArray(b) ? b : [];
-  //     return a.length === b.length && a.every((el) => b.includes(el));
-  //   }
-  //   if (state.cropData.length > 0 && localDrainageClasses.length > 0) {
-  //     // sta.filter((crop) => )
-  //     const culledCrops = state.cropData.filter((crop) => {
-  //       if (arraysContainSame(crop.fields["Soil Data"], localDrainageClasses))
-  //         return true;
-  //       else return false;
-  //     });
-  //     console.log(culledCrops.length);
-  //   }
-  // }, [window.localStorage.getItem("drainage"), state.cropData]);
   const RenderMyCoverCropListButtons = () => {
     return (
       <Badge
@@ -545,7 +464,6 @@ const Header = () => {
                     type: "HOME",
                   },
                 });
-                // setRedirectToRoot(!redirectToRoot);
               }}
               style={{ cursor: "pointer" }}
             />
@@ -581,7 +499,6 @@ const Header = () => {
           COVER CROP EXPLORER
         </Button>
         <Button
-          // className={state.speciesSelectorActivationFlag ? "active" : ""}
           className={
             isRoot ? (state.speciesSelectorActivationFlag ? "active" : "") : ""
           }
@@ -632,29 +549,6 @@ const Header = () => {
         ) : (
           ""
         )}
-        {/* {window.location.pathname !== "/" &&
-        state.selectedCrops.length > 0 &&
-        state.progress < 5 ? (
-          <Badge
-            badgeContent={
-              state.selectedCrops.length > 0 ? state.selectedCrops.length : 0
-            }
-            color={"error"}
-          >
-            <Button
-              className={
-                window.location.pathname === "/my-cover-crop-list"
-                  ? "active"
-                  : ""
-              }
-              onClick={() => history.push("/my-cover-crop-list")}
-            >
-              My Cover Crop List
-            </Button>
-          </Badge>
-        ) : (
-          ""
-        )} */}
       </div>
 
       <MDBNavbar light className="ham-navWrapper">

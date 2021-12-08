@@ -19,8 +19,7 @@ const DictionaryContent = ({ dictData = [{}], from = "" }) => {
   const allCats = useMemo(() => {
     return dictData.filter(
       (dict) =>
-        dict["Information Sheet"] === "checked" ||
-        dict["Infromation Sheet"] === "checked"
+        dict["Information Sheet"] === true || dict["Infromation Sheet"] === true
     );
   }, [dictData]);
 
@@ -30,7 +29,7 @@ const DictionaryContent = ({ dictData = [{}], from = "" }) => {
   }, [allCats]);
 
   const RenderCats = () => {
-    const catOptions = Object.keys(groupedCats).map((key, index) => (
+    return Object.keys(groupedCats).map((key, index) => (
       <div className="row col-12" key={index}>
         <div className="col-12">
           <Typography
@@ -68,7 +67,7 @@ const DictionaryContent = ({ dictData = [{}], from = "" }) => {
       </div>
     ));
 
-    return catOptions;
+    // return catOptions;
   };
 
   return (

@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ScrollTop = (props) => {
-  const { children, window } = props;
+  const { children } = props;
   const classes = useStyles();
   const trigger = useScrollTrigger({
     disableHysteresis: true,
@@ -42,7 +42,6 @@ const ScrollTop = (props) => {
     const anchor = (event.target.ownerDocument || document).querySelector(
       ".topHeader"
     );
-    // console.log(event.target.ownerDocument);
     if (anchor) {
       anchor.scrollIntoView({ behavior: "smooth", block: "center" });
     }
@@ -62,9 +61,7 @@ const ScrollTop = (props) => {
 
 const CropSelector = (props) => {
   const [state, dispatch] = useContext(Context);
-  // let [isExpansionExpanded, setIsExpansionExpanded] = useState(true);
   let [showGrowthWindow, setShowGrowthWindow] = useState(true);
-  // sortAllGoals = false would mean default i.e.
   const [sortAllGoals, setSortAllGoals] = useState(false);
   const [sortPreference, setSortPreference] = useState("desc");
   const [disabledIds, setDisabledIds] = useState([]);
@@ -82,27 +79,16 @@ const CropSelector = (props) => {
   const [cropData, setCropData] = useState([]);
 
   const sortEnvTolCropData = (objDataArr) => {
-    // console.log(objDataArr);
     if (cropData.length !== 0) {
       let crop_data = cropData;
-
-      // console.log(objData);
-      // const activeObjKeys = _.keys(_.pickBy(objData));
-      // console.log('activeObjKeys', activeObjKeys)
-      // console.log("activeObjKeys", activeObjKeys);
-      // let objData = objDataArr;
 
       let objData = objDataArr.map((obj) => {
         return `fields.${obj}`;
       });
-      // console.log(objData);
 
-      // console.log(objData);
       if (objData.length > 0) {
         // some values are truthy
-
         let updatedCropData = _.sortBy(crop_data, objData);
-
         setCropData(updatedCropData);
       } else {
         // reset! none are true
@@ -123,18 +109,10 @@ const CropSelector = (props) => {
     }
   };
 
-  // const [text, setText] = useState("");
-  // const [differenceText, setDifferenceText] = useState("");
   const [disabledIdsTextNodes, setDisabledIdsTextNodes] = useState("");
-  // const [split_arr, setSplit_arr] = useState([]);
-  // Debug text
-  // const [debug, setDebug] = useState(false);
   const [cropDataChanged, setCropDataChanged] = useState(false);
 
   useEffect(() => {
-    // setActiveCropData(state.cropData);
-    // setInactiveCropData([]);
-    // sortCropsBy("asc");
     setCropDataChanged(!cropDataChanged);
   }, [state.cropData]);
 
@@ -145,38 +123,15 @@ const CropSelector = (props) => {
         ".calendarViewTableWrapper table > tbody > tr"
       ),
     ].map((x) => {
-      // if (x.id !== "") {
       return x.id;
-      // }
     });
     // filter empty nodes(strings) from above array
     allIds = allIds.filter((x) => x !== "");
-    // console.log(allIds);
-
-    // if (disabledIds.length > 0) {
     let disabledIdssTextNodes = disabledIds.map((val) => {
       return document.querySelector(`#${val} div div span:nth-child(2)`)
         .innerText;
     });
     setDisabledIdsTextNodes(JSON.stringify(disabledIdssTextNodes));
-    // }
-    // setDisabledIdsTextNodes(JSON.stringify(disabledIds));
-    // let differenceIds = allIds.filter((x) => {
-    //   if (x !== "") return !disabledIds.includes(x);
-    // });
-    // let differenceNames = differenceIds.map((val) => {
-    //   return document.querySelector(`#${val} div div span:nth-child(2)`)
-    //     .innerText;
-    // });
-    // setDifferenceText(JSON.stringify(differenceNames));
-
-    // if (differenceIds.length > 0) {
-    //   differenceIds.map((id) => {
-    //     let ele = document.getElementById(id);
-    //     ele.classList.remove("disabled");
-    //     ele.style.opacity = "1";
-    //   });
-    // }
 
     if (disabledIds.length > 0) {
       allIds.map((id) => {
@@ -224,19 +179,11 @@ const CropSelector = (props) => {
         ".calendarViewTableWrapper table > tbody > tr"
       ),
     ].map((x) => {
-      // if (x.id !== "") {
       return x.id;
-      // }
     });
     // filter empty nodes(strings) from above array
     allIds = allIds.filter((x) => x !== "");
-    // console.log(allIds);
 
-    // if (disabledIds.length > 0) {
-    let disabledIdssTextNodes = disabledIds.map((val) => {
-      return document.querySelector(`#${val} div div span:nth-child(2)`)
-        .innerText;
-    });
     if (starDisabledIds.length > 0) {
       allIds.map((id) => {
         if (disabledIds.includes(id) || starDisabledIds.includes(id)) {
@@ -280,12 +227,10 @@ const CropSelector = (props) => {
     if (state.cropData.length > 0) {
       const { selectedGoals } = state;
       if (selectedGoals.length > 0) {
-        // let crop_data = state.cropData;
         let activeCropDataCopy =
           activeCropData.length > 0 ? activeCropData : state.cropData;
         let inactiveCropDataCopy =
           inactiveCropData.length > 0 ? inactiveCropData : [];
-        // console.log("cropdata", crop_data);
         let activeObjKeys = [];
         selectedGoals.forEach((val, index) => {
           //  Crop Data is inside cropData.fields
@@ -310,7 +255,6 @@ const CropSelector = (props) => {
               );
               setInactiveCropData(updatedInactives);
             }
-            // setCropData(updatedCropData);
             setSortPreference("asc");
             break;
           }
@@ -331,7 +275,6 @@ const CropSelector = (props) => {
               );
               setInactiveCropData(updatedInactives);
             }
-            // setCropData(updatedCropData);
             setSortPreference("desc");
             break;
           }
@@ -349,7 +292,6 @@ const CropSelector = (props) => {
         // sort crop data by goal priority
         const { selectedGoals } = state;
         if (selectedGoals.length > 0) {
-          // let updatedCropData = _.orderBy(state.cropData, selectedGoals);
           let activeCropDataShadow = state.cropData;
           selectedGoals
             .slice()
@@ -376,33 +318,6 @@ const CropSelector = (props) => {
       setCropData([]);
     };
   }, [state.cropData]);
-
-  // useEffect(() => {
-  //   window.localStorage.setItem("actives", JSON.stringify(activeCropData));
-  //   window.localStorage.setItem("inactives", JSON.stringify(inactiveCropData));
-  // }, [activeCropData, inactiveCropData]);
-
-  const expandCoverCropFilter = (id) => {
-    let listItemId = `cropFilterList${id}`;
-    let x = document.querySelectorAll(`#${listItemId} div`);
-    if (document.getElementById(listItemId).classList.contains("active")) {
-      document.getElementById(listItemId).classList.remove("active");
-      // hide dropdown
-      // document.querySelectorAll(`#${listItemId} div`).classList.remove("show");
-      for (var i = 0; i < x.length; i++) {
-        x[i].classList.remove("show");
-      }
-    } else {
-      document.getElementById(listItemId).classList.add("active");
-      // show dropdown
-
-      for (var j = 0; j < x.length; j++) {
-        if (!x[j].classList.contains("show")) {
-          x[j].classList.add("show");
-        }
-      }
-    }
-  };
 
   const toggleListView = () => {
     setIsListView(!isListView);
@@ -449,11 +364,6 @@ const CropSelector = (props) => {
         );
       });
 
-      // setCropData(newActives);
-      // console.log("Keyword: ", e.target.value);
-      // console.log("Total: ", cropData.length);
-      // console.log("Active: ", activeCropData.length);
-      // console.log("Inactive: ", inactiveCropData.length);
       setActiveCropData(newActives);
       setInactiveCropData(newInactives);
     }
@@ -468,6 +378,7 @@ const CropSelector = (props) => {
       });
     }
   }, [state.selectedGoals]);
+
   function useWindowSize() {
     // Initialize state with undefined width/height so server and client renders match
     // Learn more here: https://joshwcomeau.com/react/the-perils-of-rehydration/
@@ -545,8 +456,6 @@ const CropSelector = (props) => {
             clearCoverCropSearch={clearCoverCropNameSearch}
             toggleComparisonView={toggleComparisonView}
             toggleListView={toggleListView}
-            comparisonView={comparisonView}
-            isListView={isListView}
             from={"table"}
           />
         </div>
@@ -561,9 +470,6 @@ const CropSelector = (props) => {
               <CropTableComponent
                 cropData={cropData}
                 setCropData={setCropData}
-                // activeCropData={
-                //   activeCropData.length > 0 ? activeCropData : cropData
-                // }
                 activeCropData={activeCropData}
                 setActiveCropData={setActiveCropData}
                 inactiveCropData={inactiveCropData}

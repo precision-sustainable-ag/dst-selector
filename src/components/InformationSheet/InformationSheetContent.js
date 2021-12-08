@@ -28,7 +28,6 @@ import TooltipMaker from "./TooltipMaker";
 
 const Accordion = withStyles({
   root: {
-    // border: "1px solid rgba(0, 0, 0, .125)",
     boxShadow: "none",
     "&:not(:last-child)": {
       borderBottom: 0,
@@ -45,7 +44,6 @@ const Accordion = withStyles({
 
 const AccordionSummary = withStyles({
   root: {
-    // backgroundColor: "rgba(0, 0, 0, .03)",
     borderBottom: "1px solid #2b7b79",
     marginBottom: -1,
     minHeight: 56,
@@ -80,7 +78,6 @@ const InformationSheetContent = (props) => {
   const [state] = useContext(Context);
   const { zone } = state;
   const crop = props.crop;
-  // const from = props.from || "direct";
   const classes = useStyles();
   const [currentSources, setCurrentSources] = useState([{}]);
 
@@ -103,7 +100,6 @@ const InformationSheetContent = (props) => {
     });
 
     setCurrentSources(relevantZones);
-    // console.log(relevantZones);
   }, []);
 
   return Object.keys(crop).length > 0 ? (
@@ -1181,11 +1177,6 @@ const InformationSheetContent = (props) => {
                     </Typography>
                   </div>
                   <div className="col-3 mb-2">
-                    {/* <div className="blue-bg">
-                      <Typography variant="body1">
-                        {getMonthDayString("temperature", crop)}
-                      </Typography>
-                    </div> */}
                     {crop[
                       "Second Temperature/Moisture Risk to Establishment Start"
                     ] &&
@@ -1372,6 +1363,7 @@ const InformationSheetContent = (props) => {
                             }}
                             href={source["URL"]}
                             target="_blank"
+                            rel="noopener noreferrer"
                           >
                             {source["Resource Name"]}
                           </a>

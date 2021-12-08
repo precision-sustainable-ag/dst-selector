@@ -16,41 +16,13 @@ import {
   Select,
   TextField,
   Tooltip,
-  //   FormControlLabel,
   Typography,
 } from "@material-ui/core";
-// import Slider from "@material-ui/core/Slider";
 import { AcUnit, Info, Opacity, WbSunnyOutlined } from "@material-ui/icons";
 import moment from "moment";
 import React, { useContext, useEffect, useState } from "react";
 import { LightButton } from "../../shared/constants";
 import { Context } from "../../store/Store";
-
-const isEquivalent = (a, b) => {
-  // Create arrays of property names
-  var aProps = Object.getOwnPropertyNames(a);
-  var bProps = Object.getOwnPropertyNames(b);
-
-  // If number of properties is different,
-  // objects are not equivalent
-  if (aProps.length != bProps.length) {
-    return false;
-  }
-
-  for (var i = 0; i < aProps.length; i++) {
-    var propName = aProps[i];
-
-    // If values of same property are not equal,
-    // objects are not equivalent
-    if (a[propName] !== b[propName]) {
-      return false;
-    }
-  }
-
-  // If we made it this far, objects
-  // are considered equivalent
-  return true;
-};
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -165,14 +137,6 @@ const WeatherConditions = (props) => {
     // show error on modal
   };
 
-  const setDefaultWeatherValues = () => {
-    dispatch({
-      type: "WEATHER_DATA_RESET",
-      data: { weatherDataReset: !state.weatherDataReset },
-    });
-    setDidChange(!didChange);
-  };
-
   useEffect(() => {
     // get current month in long form
     setCurrentMonthFull(moment().format("MMMM"));
@@ -229,7 +193,6 @@ const WeatherConditions = (props) => {
   };
 
   useEffect(() => {
-    // console.log(_.isEqual(state.weatherData, weatherDataShadow));
     if (!state.ajaxInProgress) {
       checkIfAnythingChanged();
     }
@@ -282,11 +245,12 @@ const WeatherConditions = (props) => {
                   <a
                     href="https://www.nssl.noaa.gov/projects/mrms/"
                     target="_blank"
+                    rel="noopener noreferrer"
                   >
                     NSSL MRMS
                   </a>{" "}
                   and{" "}
-                  <a href="" target="_blank">
+                  <a href="" target="_blank" rel="noopener noreferrer">
                     NASA NLDAS-2
                   </a>{" "}
                   weather data.
@@ -335,7 +299,7 @@ const WeatherConditions = (props) => {
                   <a
                     href="https://www.nssl.noaa.gov/projects/mrms/"
                     target="_blank"
-                    rel="noreferrer"
+                    rel="noopener noreferrer"
                   >
                     NSSL MRMS{" "}
                   </a>{" "}
@@ -343,7 +307,7 @@ const WeatherConditions = (props) => {
                   <a
                     href="https://ldas.gsfc.nasa.gov/nldas/"
                     target="_blank"
-                    rel="noreferrer"
+                    rel="noopener noreferrer"
                   >
                     NASA NLDAS-2
                   </a>{" "}
@@ -388,12 +352,12 @@ const WeatherConditions = (props) => {
                   Precision Sustainable Agriculture Weather API powered by{" "}
                   <a
                     href="https://www.nssl.noaa.gov/projects/mrms/"
-                    target="_blank"
+                    rel="noopener noreferrer"
                   >
                     NSSL MRMS
                   </a>{" "}
                   and{" "}
-                  <a href="" target="_blank">
+                  <a href="" target="_blank" rel="noopener noreferrer">
                     NASA NLDAS-2
                   </a>{" "}
                   weather data.
@@ -821,16 +785,3 @@ const WeatherConditions = (props) => {
 };
 
 export default WeatherConditions;
-
-const isObject = (v) => v && typeof v === "object";
-
-function getDifference(a, b) {
-  return Object.assign(
-    ...Array.from(new Set([...Object.keys(a), ...Object.keys(b)]), (k) => ({
-      [k]:
-        isObject(a[k]) && isObject(b[k])
-          ? getDifference(a[k], b[k])
-          : a[k] === b[k],
-    }))
-  );
-}

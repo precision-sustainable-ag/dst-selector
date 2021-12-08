@@ -12,19 +12,11 @@ import {
   PictureAsPdf,
   Print,
 } from "@material-ui/icons";
-import { saveAs } from "file-saver";
-import html2canvas from "html2canvas";
 import React, { useContext, useEffect, useState } from "react";
 import { CropImage, flipCoverCropName, zoneIcon } from "../../shared/constants";
 import { Context } from "../../store/Store";
 import "../../styles/InformationSheet.scss";
 import InformationSheetContent from "./InformationSheetContent";
-
-const removeHeaderContent = () => {
-  document.querySelector(".row.greenHeader > .col-9").classList.add("d-none");
-  document.querySelector(".row.greenHeader > .col-2").classList.add("d-none");
-  document.querySelector(".row.greenHeader > .col-1").classList.add("d-none");
-};
 
 const InformationSheet = (props) => {
   const [state] = useContext(Context);
@@ -43,7 +35,6 @@ const InformationSheet = (props) => {
   );
   //   check if crop data is passed as crop
   //   elseif, check if localstorage has infosheet data else use default crop data
-  // const [referrer, setReferrer] = useState("direct");
   const [crop, setCrop] = useState(
     name === "none"
       ? props.crop
@@ -56,7 +47,6 @@ const InformationSheet = (props) => {
       : ""
   );
   const ref = React.createRef();
-  const from = props.from || "direct";
 
   useEffect(() => {
     setCropData(
@@ -91,51 +81,7 @@ const InformationSheet = (props) => {
 
     // delete localstorage
     window.localStorage.removeItem("infosheet");
-
-    // if (props.modal) {
-    //   // component being invoked from modal
-    //   setReferrer("modal");
-    //   document
-    //     .querySelector(".row.greenHeader > .col-1")
-    //     .classList.remove("d-none");
-    // } else {
-    //   document
-    //     .querySelector(".row.greenHeader > .col-1")
-    //     .classList.add("d-none");
-    //   setReferrer("direct");
-    // }
   }, []);
-
-  const exportToPdf = (filename) => {
-    const input = document.body;
-    // const h = input.clientHeight;
-    const h = input.offsetHeight;
-    // const w = input.clientWidth;
-    const w = input.offsetWidth;
-
-    // const ratio = divHeight / divWidth;
-    html2canvas(input, { scale: 2, scrollY: -window.scrollY }).then(function (
-      canvas
-    ) {
-      var img = canvas.toDataURL("image/jpeg", 1);
-      saveAs(img, filename + ".jpg");
-      //   var doc = new JSPDF("L", "px", [w, h]);
-      //   doc.addImage(img, "JPEG", 0, 0, w, h);
-      //   doc.save(filename + ".pdf");
-    });
-    // html2canvas(input, { scale: "1" }).then((canvas) => {
-    //   const imgData = canvas.toDataURL("image/jpeg");
-    //   saveAs(imgData, "image.png");
-    //   const pdfDOC = new JSPDF("l", "mm", "a4"); //  use a4 for smaller page
-
-    //   const width = pdfDOC.internal.pageSize.getWidth();
-    //   let height = pdfDOC.internal.pageSize.getHeight();
-    //   height = ratio * width;
-
-    //   pdfDOC.addImage(imgData, "JPEG", 0, 0, width - 20, height - 10);
-    //   pdfDOC.save("summary.pdf"); //Download the rendered PDF.
-    // });
-  };
 
   return (
     <div className="wrapper container-fluid" ref={ref}>
@@ -147,7 +93,7 @@ const InformationSheet = (props) => {
               style={{ color: "white" }}
               href={`/pdf/${crop["Cover Crop Name"]}.pdf`}
               target="_blank"
-              rel="noreferer"
+              rel="noopener noreferrer"
             >
               <PictureAsPdf /> &nbsp; PDF
             </Button>

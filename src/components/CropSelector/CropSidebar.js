@@ -32,14 +32,6 @@ import {
   ExpandMore,
 } from "@material-ui/icons";
 import ListIcon from "@material-ui/icons/List";
-// import {
-//   DateRangePicker,
-//   SingleDatePicker,
-//   DayPickerRangeController,
-// } from "react-dates";
-// import { DateRangePicker } from "react-date-range";
-// import "react-date-range/dist/styles.css"; // main style file
-// import "react-date-range/dist/theme/default.css"; // theme css file
 import moment from "moment";
 import React, { Fragment, useEffect, useRef } from "react";
 import { arrayMove, List as ListMovable } from "react-movable";
@@ -52,7 +44,6 @@ import DateRangeDialog from "./DateRangeDialog";
 import CoverCropType from "./Filters/CoverCropType";
 import EnvironmentalTolerance from "./Filters/EnvironmentalTolerance";
 import Growth from "./Filters/Growth";
-// import DiseaseAndNonWeedPests from "./Filters/DiseaseAndNonWeedPests";
 import Roots from "./Filters/Roots";
 import SeedingMethods from "./Filters/SeedingMethods";
 import Seeds from "./Filters/Seeds";
@@ -73,8 +64,6 @@ const useStyles = makeStyles((theme) => ({
     color: "black",
     textAlign: "center",
     height: "50px",
-    // borderTopLeftRadius: CustomStyles().semiRoundedRadius,
-    // borderTopRightRadius: CustomStyles().semiRoundedRadius,
   },
   nested: {
     paddingLeft: theme.spacing(3),
@@ -188,9 +177,7 @@ const CropSidebarComponent = (props) => {
     "Promotes Cash Crop Disease": [], // int
   });
   const seedingMethodRef = useRef();
-  // const beneficialsRef = useRef();
   const coverCropTypeRef = useRef();
-  // const diseaseRef = useRef();
   const growthRef = useRef();
   const rootsRef = useRef();
   const seedsRef = useRef();
@@ -222,13 +209,9 @@ const CropSidebarComponent = (props) => {
     const nonZeroKeys2 = nonZeroes.filter((val) => val !== "");
 
     const nonZeroKeys = nonZeroKeys2.map((obj) => {
-      // console.log(obj)
-      // console.log(Object.keys(obj));
       return Object.keys(obj).toString();
     });
 
-    // console.log(nonZeroKeys)
-    // localStorage.setItem("filterKeys", JSON.stringify(nonZeroKeys));
     dispatch({
       type: "UPDATE_FILTER_KEYS",
       data: {
@@ -237,149 +220,6 @@ const CropSidebarComponent = (props) => {
     });
     if (sidebarFilterOptions["Active Growth Period"].length > 0) {
       let growthArray = [];
-
-      // switch (state.zone) {
-      //   case 7: {
-      //     if (sidebarFilterOptions["Active Growth Period"].includes("Fall")) {
-      //       growthArray.push("Oct");
-      //       // growthArray.push("Oct-Mid");
-      //       // growthArray.push("Nov-Early");
-      //       growthArray.push("Nov");
-      //     }
-      //     if (sidebarFilterOptions["Active Growth Period"].includes("Winter")) {
-      //       growthArray.push("Dec");
-      //       // growthArray.push("Dec-Mid");
-      //       growthArray.push("Jan");
-      //       // growthArray.push("Jan-Mid");
-      //       // growthArray.push("Feb-Early");
-      //       growthArray.push("Feb");
-      //     }
-      //     if (sidebarFilterOptions["Active Growth Period"].includes("Spring")) {
-      //       growthArray.push("Mar");
-      //       // growthArray.push("Mar-Mid");
-      //       growthArray.push("Apr");
-      //     }
-      //     if (sidebarFilterOptions["Active Growth Period"].includes("Summer")) {
-      //       // growthArray.push("Apr-Mid");
-      //       growthArray.push("May");
-      //       // growthArray.push("May-Mid");
-      //       growthArray.push("Jun");
-      //       // growthArray.push("Jun-Mid");
-      //       growthArray.push("Jul");
-      //       // growthArray.push("Jul-Mid");
-      //       growthArray.push("Aug");
-      //       // growthArray.push("Aug-Mid");
-      //       // growthArray.push("Sep-Early");
-      //       growthArray.push("Sep");
-      //     }
-      //     break;
-      //   }
-      //   case 6: {
-      //     if (sidebarFilterOptions["Active Growth Period"].includes("Fall")) {
-      //       growthArray.push("Sep");
-      //       growthArray.push("Oct");
-      //       // growthArray.push("Oct-Mid");
-      //       growthArray.push("Nov");
-      //     }
-      //     if (sidebarFilterOptions["Active Growth Period"].includes("Winter")) {
-      //       // growthArray.push("Nov-Mid");
-      //       growthArray.push("Dec");
-      //       // growthArray.push("Dec-Mid");
-      //       growthArray.push("Jan");
-      //       growthArray.push("Jan");
-      //       // growthArray.push("Feb-Early");
-      //       growthArray.push("Feb");
-      //     }
-      //     if (sidebarFilterOptions["Active Growth Period"].includes("Spring")) {
-      //       growthArray.push("Mar");
-      //       // growthArray.push("Mar-Mid");
-      //       growthArray.push("Apr");
-      //       // growthArray.push("Apr-Mid");
-      //       growthArray.push("May");
-      //     }
-      //     if (sidebarFilterOptions["Active Growth Period"].includes("Summer")) {
-      //       // growthArray.push("May-Mid");
-      //       growthArray.push("Jun");
-      //       // growthArray.push("Jun-Mid");
-      //       growthArray.push("Jul");
-      //       // growthArray.push("Jul-Mid");
-      //       growthArray.push("Aug");
-      //       // growthArray.push("Aug-Mid");
-      //       // growthArray.push("Sep-Early");
-      //     }
-      //     break;
-      //   }
-      //   case 5: {
-      //     if (sidebarFilterOptions["Active Growth Period"].includes("Fall")) {
-      //       growthArray.push("Sep");
-      //       // growthArray.push("Sep-Mid");
-      //       growthArray.push("Oct");
-      //       // growthArray.push("Oct-Mid");
-      //       // growthArray.push("Nov-Early");
-      //     }
-      //     if (sidebarFilterOptions["Active Growth Period"].includes("Winter")) {
-      //       growthArray.push("Nov");
-      //       growthArray.push("Dec");
-      //       // growthArray.push("Dec-Mid");
-      //       growthArray.push("Jan");
-      //       // growthArray.push("Jan-Mid");
-      //       growthArray.push("Feb");
-      //       // growthArray.push("Feb-Mid");
-      //       // growthArray.push("Mar-Early");
-      //     }
-      //     if (sidebarFilterOptions["Active Growth Period"].includes("Spring")) {
-      //       growthArray.push("Mar");
-      //       growthArray.push("Apr");
-      //       // growthArray.push("Apr-Mid");
-      //       growthArray.push("May");
-      //     }
-      //     if (sidebarFilterOptions["Active Growth Period"].includes("Summer")) {
-      //       // growthArray.push("May-Mid");
-      //       growthArray.push("Jun");
-      //       // growthArray.push("Jun-Mid");
-      //       growthArray.push("Jul");
-      //       // growthArray.push("Jul-Mid");
-      //       growthArray.push("Aug");
-      //       // growthArray.push("Aug-Mid");
-      //     }
-      //     break;
-      //   }
-      //   case 4: {
-      //     if (sidebarFilterOptions["Active Growth Period"].includes("Fall")) {
-      //       growthArray.push("Sep");
-      //       // growthArray.push("Sep-Mid");
-      //       growthArray.push("Oct");
-      //     }
-      //     if (sidebarFilterOptions["Active Growth Period"].includes("Winter")) {
-      //       // growthArray.push("Oct-Mid");
-      //       growthArray.push("Nov");
-      //       // growthArray.push("Nov-Mid");
-      //       growthArray.push("Dec");
-      //       // growthArray.push("Dec-Mid");
-      //       growthArray.push("Jan");
-      //       // growthArray.push("Jan-Mid");
-      //       growthArray.push("Feb");
-      //       // growthArray.push("Feb-Mid");
-      //       growthArray.push("Mar");
-      //       // growthArray.push("Mar-Mid");
-      //     }
-      //     if (sidebarFilterOptions["Active Growth Period"].includes("Spring")) {
-      //       growthArray.push("Apr");
-      //       // growthArray.push("Apr-Mid");
-      //       // growthArray.push("May-Early");
-      //       growthArray.push("May");
-      //     }
-      //     if (sidebarFilterOptions["Active Growth Period"].includes("Summer")) {
-      //       growthArray.push("Jun");
-      //       // growthArray.push("Jun-Mid");
-      //       growthArray.push("Jul");
-      //       // growthArray.push("Jul-Mid");
-      //       growthArray.push("Aug");
-      //       // growthArray.push("Aug-Mid");
-      //     }
-      //     break;
-      //   }
-      // }
 
       if (sidebarFilterOptions["Active Growth Period"].includes("Fall")) {
         growthArray.push("Sep");
@@ -418,8 +258,6 @@ const CropSidebarComponent = (props) => {
     }
 
     if (nonZeroKeys.length > 0) {
-      // const filtered = getFilteredObjects(crop_data, nonZeroKeys);
-
       const arrayKeys = [
         "Duration",
         "Active Growth Period",
@@ -428,14 +266,12 @@ const CropSidebarComponent = (props) => {
         "Root Architecture",
       ];
       const booleanKeys = ["Aerial Seeding", "Frost Seeding"];
-      // const aerialOrFrost = [""];
 
       const filtered = crop_data.filter((crop) => {
         const totalActiveFilters = Object.keys(nonZeroKeys2).length;
         let i = 0;
         nonZeroKeys2.forEach((keyObject) => {
           const key = Object.keys(keyObject);
-          // console.log(key);
           const vals = keyObject[key];
           if (areCommonElements(arrayKeys, key)) {
             // Handle array type havlues
@@ -462,13 +298,6 @@ const CropSidebarComponent = (props) => {
 
       props.setActiveCropData(filtered);
       props.setInactiveCropData(inactives);
-
-      // debug
-      // console.log("total", crop_data.length);
-      // console.log("active", filtered.length);
-      // console.log("first", filtered);
-      // console.log("inactive", inactives.length);
-      //
     } else {
       props.setActiveCropData(crop_data);
       props.setInactiveCropData([]);
@@ -479,42 +308,9 @@ const CropSidebarComponent = (props) => {
     return arr1.some((el) => arr2Set.has(el));
   };
 
-  // function filterArray(array, filters) {
-  //   const filterKeys = Object.keys(filters);
-  //   return array.filter((crop) => {
-  //     // validates all filter criteria
-  //     return filterKeys.every((key) => {
-  //       // ignores non-function predicates
-  //       if (typeof filters[key] !== "function") return true;
-  //       // return filters[key](item[key]);
-  //       else if (
-  //         findCommonElements(crop.fields[key], sidebarFilterOptions[key]) &&
-  //         crop.fields["Zone Decision"] === "Include"
-  //       ) {
-  //         return true;
-  //       } else if (
-  //         typeof crop.fields[key] === "boolean" &&
-  //         crop.fields["Zone Decision"] === "Include"
-  //       ) {
-  //         if (crop.fields[key] !== -999 && sidebarFilterOptions[key] !== -999)
-  //           return true;
-  //         else return false;
-  //       } else if (
-  //         sidebarFilterOptions[key].includes(crop.fields[key]) &&
-  //         crop.fields["Zone Decision"] === "Include"
-  //       ) {
-  //         return true;
-  //       } else {
-  //         return false;
-  //       }
-  //     });
-  //   });
-  // }
-
   const [filtersSelected, setFiltersSelected] = React.useState(false);
   useEffect(() => {
     const sidebarKeys = Object.keys(sidebarFilterOptions);
-    // console.log(sidebarKeys);
 
     const nonZeroKeys = sidebarKeys.filter(function (key) {
       return sidebarFilterOptions[key].length > 0;
@@ -524,34 +320,6 @@ const CropSidebarComponent = (props) => {
     else setFiltersSelected(true);
   }, [sidebarFilterOptions]);
 
-  // const getFilteredObjects = (data = [], keys = []) => {
-  //   return data.filter((crop) => {
-  //     return keys.every((key) => {
-  //       if (Array.isArray(crop.fields[key])) {
-  //         if (
-  //           findCommonElements(crop.fields[key], sidebarFilterOptions[key]) &&
-  //           crop.fields["Zone Decision"] === "Include"
-  //         )
-  //           return true;
-  //         else return false;
-  //       } else if (
-  //         typeof crop.fields[key] === "boolean" &&
-  //         crop.fields["Zone Decision"] === "Include"
-  //       ) {
-  //         if (crop.fields[key] !== -999 && sidebarFilterOptions[key] !== -999)
-  //           return true;
-  //         else return false;
-  //       } else if (
-  //         sidebarFilterOptions[key].includes(crop.fields[key]) &&
-  //         crop.fields["Zone Decision"] === "Include"
-  //       ) {
-  //         return true;
-  //       } else {
-  //         return false;
-  //       }
-  //     });
-  //   });
-  // };
   useEffect(() => {
     if (props.isListView) {
       setCropFiltersOpen(true);
@@ -572,9 +340,7 @@ const CropSidebarComponent = (props) => {
 
   const resetAllFilters = (withRef = true) => {
     if (withRef) {
-      // beneficialsRef.current.resetFilters();
       coverCropTypeRef.current.resetFilters();
-      // diseaseRef.current.resetFilters();
       envTolRef.current.resetFilters();
       growthRef.current.resetFilters();
       rootsRef.current.resetFilters();
@@ -667,9 +433,6 @@ const CropSidebarComponent = (props) => {
 
   const [growthWindowVisible, setGrowthWindowVisible] = React.useState(true);
 
-  // let [keysArray, setKeysArray] = React.useState([]);
-  // const [keysArrChanged, setKeysArrChanges] = React.useState(false);
-
   const updateSelectedGoals = (newGoalArr, oldIndex, newIndex) => {
     let newGoals = arrayMove(newGoalArr, oldIndex, newIndex);
 
@@ -685,10 +448,6 @@ const CropSidebarComponent = (props) => {
 
   const changeProgress = (type) => {
     if (type === "increment") {
-      // if progress = 1 (location stage), check if textfield has a value? then set state address to that value
-      // if(state.progress === 1) {
-      //   if(document.getElementById('google-map-autocompletebar').)
-      // }
       dispatch({
         type: "UPDATE_PROGRESS",
         data: {
@@ -745,12 +504,6 @@ const CropSidebarComponent = (props) => {
     }
   }, [dateRange, growthWindowVisible, props.from]);
 
-  // useEffect(() => {
-  //   if (props.from === "table") {
-  //     props.sortEnvTolCropData(keysArray);
-  //   }
-  // }, [keysArrChanged]);
-
   const [tableHeight, setTableHeight] = React.useState(0);
 
   useEffect(() => {
@@ -772,7 +525,6 @@ const CropSidebarComponent = (props) => {
 
       setTableHeight(ht);
     } else {
-      // console.log("no table");
     }
   });
 
@@ -788,7 +540,6 @@ const CropSidebarComponent = (props) => {
   useEffect(() => {
     if (state.myCoverCropActivationFlag) {
       if (comparisonView) {
-        // resetAllFilters();
         if (filtersSelected) {
           resetAllFilters(false);
         }
@@ -796,10 +547,6 @@ const CropSidebarComponent = (props) => {
     }
   }, [comparisonView, state.myCoverCropActivationFlag]);
 
-  // const [focusedInput, setFocusedInput] = React.useState(null);
-  // const [dateRanges, setDateRanges] = React.useState([
-  //   { startDate: new Date(), endDate: new Date(), key: "selection" },
-  // ]);
   return props.from === "myCoverCropListStatic" ? (
     <div className="row">
       <div className="col-12 mb-3">
@@ -1151,20 +898,6 @@ const CropSidebarComponent = (props) => {
                         }}
                       />
                     </ListItem>
-                    {/* {dateRangeOpen ? (
-                      <ListItem>
-                        <div className="z-999">
-                          <DateRangePicker
-                            definedRanges={[]}
-                            open={dateRangeOpen}
-                            onChange={(range) => setDateRange(range)}
-                          />
-                        </div>
-                      </ListItem>
-                    ) : (
-                      ""
-                    )} */}
-
                     <ListItem className={classes.nested}>
                       <FormGroup>
                         <FormControlLabel
@@ -1173,7 +906,6 @@ const CropSidebarComponent = (props) => {
                             <Checkbox
                               checked={cashCropVisible}
                               onChange={(e) => {
-                                // setGrowthWindowVisible(!growthWindowVisible);
                                 if (e.target.checked) {
                                   let cashCropDateRange = JSON.parse(
                                     window.localStorage.getItem(
@@ -1654,7 +1386,6 @@ const CropSidebarComponent = (props) => {
                                   </Tooltip>
                                 ) : (
                                   <ListItem
-                                    // className={classes.nested}
                                     className={
                                       sidebarFiltersOpen[index].open
                                         ? "filterOpen"
@@ -1896,23 +1627,4 @@ const CropSidebarComponent = (props) => {
   );
 };
 
-const findCommonElements = (arr1 = [], arr2 = []) => {
-  // Iterate through each element in the
-  // first array and if some of them
-  // include the elements in the second
-  // array then return true.
-  return arr1.some((item) => arr2.includes(item));
-};
-
 export default CropSidebarComponent;
-
-// <DiseaseAndNonWeedPests
-//   ref={diseaseRef}
-//   filters={sidebarFilters[index]}
-//   sidebarFilterOptions={sidebarFilterOptions}
-//   setSidebarFilterOptions={
-//     setSidebarFilterOptions
-//   }
-//   resetAllFilters={resetAllFilters}
-//   {...props}
-// />
