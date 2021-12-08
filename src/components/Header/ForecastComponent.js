@@ -43,7 +43,7 @@ const ForecastComponent = () => {
       apiCall
         .then((data) => {
           let iconId = data.weather[0].icon;
-          let iconDescription = new String(data.weather[0].description);
+          let iconDescription = data.weather[0].description;
 
           let tempObj = {
             min: data.main.temp_min,

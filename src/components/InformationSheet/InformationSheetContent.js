@@ -92,15 +92,14 @@ const InformationSheetContent = (props) => {
         .map((item) => item.replace(removeDoubleQuotes, "$1"))
         .map((item) => item.trim());
 
-      if (zones.includes(`Zone ${zone}`)) {
-        if (coverCrops.includes(crop["Cover Crop Name"])) {
-          return true;
-        } else return false;
-      } else return false;
+      return (
+        zones.includes(`Zone ${zone}`) &&
+        coverCrops.includes(crop["Cover Crop Name"])
+      );
     });
 
     setCurrentSources(relevantZones);
-  }, []);
+  }, [crop, zone]);
 
   return Object.keys(crop).length > 0 ? (
     <Fragment>

@@ -66,6 +66,7 @@ const CropSelector = (props) => {
   const [activeCropData, setActiveCropData] = useState([]);
   const [inactiveCropData, setInactiveCropData] = useState([]);
   const [coverCropName, setCoverCropName] = useState("");
+  const { selectedGoals } = state;
 
   // toggles list view and calendar view
   let [isListView, setIsListView] = useState(true);
@@ -109,12 +110,12 @@ const CropSelector = (props) => {
   const [cropDataChanged, setCropDataChanged] = useState(false);
 
   useEffect(() => {
-    setCropDataChanged(!cropDataChanged);
+    setCropDataChanged((c) => !c);
   }, [state.cropData]);
 
   const sortCropsBy = (orderBy) => {
     if (state.cropData.length > 0) {
-      const { selectedGoals } = state;
+      // const { selectedGoals } = state;
       if (selectedGoals.length > 0) {
         let activeCropDataCopy =
           activeCropData.length > 0 ? activeCropData : state.cropData;
@@ -179,7 +180,7 @@ const CropSelector = (props) => {
     if (state.cropData) {
       if (state.cropData.length > 0) {
         // sort crop data by goal priority
-        const { selectedGoals } = state;
+
         if (selectedGoals.length > 0) {
           let activeCropDataShadow = state.cropData;
           selectedGoals
@@ -206,7 +207,7 @@ const CropSelector = (props) => {
     return () => {
       setCropData([]);
     };
-  }, [state.cropData]);
+  }, [state.cropData, selectedGoals]);
 
   const toggleListView = () => {
     setIsListView(!isListView);
@@ -266,7 +267,7 @@ const CropSelector = (props) => {
         },
       });
     }
-  }, [state.selectedGoals]);
+  }, [state.selectedGoals, dispatch]);
 
   function useWindowSize() {
     // Initialize state with undefined width/height so server and client renders match

@@ -66,7 +66,7 @@ export default function GoogleAutocomplete({
     if (state.addressChangedViaMap) {
       setValue(state.fullAddress);
     }
-  }, [state.addressChangedViaMap]);
+  }, [state.addressChangedViaMap, state.fullAddress]);
 
   useEffect(() => {
     setValue(state.fullAddress);
