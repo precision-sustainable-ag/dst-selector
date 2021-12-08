@@ -17,7 +17,6 @@ import { ExpandLess, ExpandMore } from "@material-ui/icons";
 import React, { Fragment } from "react";
 const RenderFilters = ({
   filterValues = [],
-  setFilterValues = () => {},
   toggleSidebarFilterItems = () => {},
   classes = {},
   comparisonKeys = [],
@@ -65,7 +64,6 @@ const RenderFilters = ({
             >
               <ListItem
                 button
-                // className={classes.nested}
                 className={
                   filterValues[index].open ? "filterOpen" : "filterClose"
                 }
@@ -85,7 +83,6 @@ const RenderFilters = ({
           ) : (
             <ListItem
               button
-              // className={classes.nested}
               className={
                 filterValues[index].open ? "filterOpen" : "filterClose"
               }
@@ -165,7 +162,6 @@ const RenderFilters = ({
                                       ? val.alternateName
                                       : val.name
                                   )}
-                                  //   onChange={handleChange}
                                   onChange={() => {
                                     updateCheckboxStatus(
                                       val.alternateName

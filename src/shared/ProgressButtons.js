@@ -16,7 +16,6 @@ const ProgressButtons = () => {
   }, [state]);
 
   const disableLogic = (progress, goalsLength, soilData) => {
-    // console.log(parseInt(progress));
     switch (parseInt(progress)) {
       case 1: {
         // location selection state
@@ -27,20 +26,6 @@ const ProgressButtons = () => {
         }
         break;
       }
-      // case 2: {
-      //   if (
-      //     // soilData.Drainage_Class.length === 0 ||
-      //     // soilData.Drainage_Class === "" ||
-      //     // soilData.Flooding_Frequency === null ||
-      //     // soilData.Flooding_Frequency.length === 0 ||
-      //     // soilData.Flooding_Frequency === ""
-      //     false
-      //   ) {
-      //     setIsDisabled(true);
-      //   } else {
-      //     setIsDisabled(false);
-      //   }
-      // }
       case 4: {
         // goals selection state
         if (goalsLength > 3 || goalsLength < 1) {

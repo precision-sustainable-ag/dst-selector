@@ -4,13 +4,7 @@
   styled using ../../styles/soilConditions.scss
 */
 
-import {
-  Button,
-  Chip,
-  Switch,
-  Typography,
-  withStyles,
-} from "@material-ui/core";
+import { Button, Chip, Switch, Typography } from "@material-ui/core";
 import {
   InvertColors,
   LocalDrinkOutlined,
@@ -22,46 +16,12 @@ import { ReferenceTooltip } from "../../shared/constants";
 import { Context } from "../../store/Store";
 import "../../styles/soilConditions.scss";
 
-const AntSwitch = withStyles((theme) => ({
-  root: {
-    width: 28,
-    height: 16,
-    padding: 0,
-    display: "flex",
-  },
-  switchBase: {
-    padding: 2,
-    color: theme.palette.grey[500],
-    "&$checked": {
-      transform: "translateX(12px)",
-      color: theme.palette.common.white,
-      "& + $track": {
-        opacity: 1,
-        backgroundColor: theme.palette.primary.main,
-        borderColor: theme.palette.primary.main,
-      },
-    },
-  },
-  thumb: {
-    width: 12,
-    height: 12,
-    boxShadow: "none",
-  },
-  track: {
-    border: `1px solid ${theme.palette.grey[500]}`,
-    borderRadius: 16 / 2,
-    opacity: 1,
-    backgroundColor: theme.palette.common.white,
-  },
-  checked: {},
-}))(Switch);
 const SoilCondition = (props) => {
   const [state, dispatch] = useContext(Context);
   const { soilData, soilDataOriginal, markers } = state;
   const [tilingCheck, setTilingCheck] = useState(false);
 
   useEffect(() => {
-    // console.log("from soil file");
     let lat = markers[0][0];
     let lon = markers[0][1];
 
@@ -70,27 +30,22 @@ const SoilCondition = (props) => {
         soilDataOriginal.for.lat === lat &&
         soilDataOriginal.for.lon === lon
       ) {
-        // console.log("soil data exists");
       } else {
-        // console.log("markers changed");
         getSSURGOData(lat, lon);
       }
     } else {
-      //   console.log("no previous data");
       getSSURGOData(lat, lon);
     }
   }, [markers]);
 
   const getSSURGOData = (lat, lon) => {
     let markersCopy = markers;
-    // console.log("Inital: ", markers);
 
     let longLatString = "";
 
     markersCopy.map((val, i) => {
       // get long lat formatted as requested by SSURGO (long lat, long lat, ...)
       // saved as longLatString
-
       if (i === markersCopy.length - 1) {
         longLatString +=
           markersCopy[i][1] + " " + markersCopy[i][0] + "," + lon + " " + lat;
@@ -147,14 +102,7 @@ const SoilCondition = (props) => {
     )
       .then((response) => response.json())
       .then((result) => {
-        // success
-        // console.log("SSURGO: ", result);
-
         if (result !== {}) {
-          //   let Map_Unit_Name = result["Table"][1][1];
-          //   let Drainage_Class = result["Table"][1][2];
-          // if(result["Table"][1] !)
-          let Flooding_Frequency = result["Table"][1][3];
           let Ponding_Frequency = result["Table"][1][4];
           let mapUnitString = "";
 
@@ -162,17 +110,12 @@ const SoilCondition = (props) => {
 
           result["Table"].map((el, index) => {
             if (index !== 0) {
-              // if (index < result["Table"].length) {
-              // mapUnitString += el[1].split(",") + ",";
-              // } else {
               if (stringSplit.indexOf(el[1].split(",")[0]) === -1) {
                 stringSplit.push(el[1].split(",")[0]);
               }
             }
-            // }
           });
 
-          // console.log(stringSplit);
           const filteredArr = stringSplit.filter((elm) => elm);
           mapUnitString = filteredArr.join(", ");
 
@@ -197,7 +140,6 @@ const SoilCondition = (props) => {
           drainageClasses = drainageClasses.filter(function (el) {
             return el != null;
           });
-          // console.log(drainageClasses);
 
           dispatch({
             type: "UPDATE_SOIL_DATA",
@@ -433,8 +375,6 @@ const SoilCondition = (props) => {
     ];
     if (checkArray.some((e) => soilData.Drainage_Class.includes(e))) {
       setShowTiling(true);
-
-      // setTilingCheck(false);
     }
     window.localStorage.setItem(
       "drainage",
@@ -465,6 +405,7 @@ const SoilCondition = (props) => {
                     <a
                       href="https://websoilsurvey.sc.egov.usda.gov/App/HomePage.htm"
                       target="_blank"
+                      rel="noopener noreferrer"
                     >
                       USDA NRCS Web Soil Survey
                     </a>
@@ -505,6 +446,7 @@ const SoilCondition = (props) => {
                     <a
                       href="https://websoilsurvey.sc.egov.usda.gov/App/HomePage.htm"
                       target="_blank"
+                      rel="noopener noreferrer"
                     >
                       USDA NRCS Web Soil Survey
                     </a>{" "}
@@ -513,6 +455,7 @@ const SoilCondition = (props) => {
                     <a
                       href="https://www.nrcs.usda.gov/wps/portal/nrcs/detail/soils/ref/?cid=nrcs142p2_054253"
                       target="_blank"
+                      rel="noopener noreferrer"
                     >
                       {" "}
                       Definitions of values found here
@@ -580,13 +523,7 @@ const SoilCondition = (props) => {
                   let soilDrainCopy = soilData.Drainage_Class;
 
                   let drainSet = new Set(soilDrainCopy);
-                  // console.log(e.target.checked);
                   if (e.target.checked) {
-                    // if(drainSet.has('Very poorly drained')) {
-                    //   drainSet.delete('Very poorly drained');
-                    //   drainSet.add('Poorly drained');
-                    // }
-                    // if(drainSet.has(''))
                     if (
                       drainSet.has("Very poorly drained") &&
                       drainSet.has("Poorly drained") &&
@@ -631,20 +568,11 @@ const SoilCondition = (props) => {
                         drainSet.add("Moderately well drained");
                       }
                     }
-                    // console.log(drainSet);
-                    // dispatch({
-                    //   type: "UPDATE_DRAINAGE_CLASS",
-                    //   data: [...drainSet],
-                    // });
                     window.localStorage.setItem(
                       "drainage",
                       JSON.stringify([...drainSet])
                     );
                   } else {
-                    // dispatch({
-                    //   type: "UPDATE_DRAINAGE_CLASS",
-                    //   data: soilDataOriginal.Drainage_Class,
-                    // });
                     window.localStorage.setItem(
                       "drainage",
                       JSON.stringify(soilDataOriginal.Drainage_Class)
@@ -680,6 +608,7 @@ const SoilCondition = (props) => {
                     <a
                       href="https://websoilsurvey.sc.egov.usda.gov/App/HomePage.htm"
                       target="_blank"
+                      rel="noopener noreferrer"
                     >
                       USDA NRCS Web Soil Survey
                     </a>
@@ -690,6 +619,7 @@ const SoilCondition = (props) => {
                     <a
                       href="https://www.nrcs.usda.gov/wps/portal/nrcs/detail/soils/ref/?cid=nrcs142p2_054253"
                       target="_blank"
+                      rel="noopener noreferrer"
                     >
                       {" "}
                       Definitions of values found here

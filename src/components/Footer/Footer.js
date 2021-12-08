@@ -11,7 +11,6 @@ import { accessToken, owner, repo } from "../../shared/keys";
 import "../../styles/footer.scss";
 
 const Footer = () => {
-  // let currentMonthYear = now.tz(tzdata).format("MM/YYYY");
   const [monthYear, setMonthYear] = useState("");
 
   const fetchDate = async () => {

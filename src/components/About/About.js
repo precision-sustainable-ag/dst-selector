@@ -5,62 +5,13 @@
   Styles are created using makeStyles
 */
 
-import { Button, Typography, useTheme } from "@material-ui/core";
-import React, { Fragment, useEffect, useState } from "react";
+import { Button, Typography } from "@material-ui/core";
+import React, { Fragment } from "react";
 import { CustomStyles } from "../../shared/constants";
 import Header from "../Header/Header";
 import MITLicenseText from "../License/MITLicenseText";
 
-// const useStyles = makeStyles((theme) => ({
-//   root: {
-//     flexGrow: 1,
-//     backgroundColor: theme.palette.background.paper,
-//     display: "flex",
-//     // height: 224,
-//   },
-//   tabs: {
-//     borderRight: `1px solid ${theme.palette.divider}`,
-//   },
-// }));
-// const boxWrapper = {
-//   paddingBottom: "0px",
-//   marginBottom: "50px",
-//   backgroundColor: "rgba(240,247,235,.8)",
-//   borderRadius: "10px",
-//   border: "1px solid #598445",
-// };
-const About = (props) => {
-  // const [state, dispatch] = useContext(Context);
-  const [calcHeight, setCalcHeight] = useState(0);
-  // const backgroundWrapper = {
-  //   background: `url(${props.bg})`,
-  //   backgroundSize: "cover",
-  //   display: "flex",
-  //   justifyContent: "center",
-  //   alignItems: "center",
-  //   height: "100%",
-  //   flexDirection: "column",
-  //   paddingLeft: "0px",
-  //   paddingRight: "0px",
-  // };
-  useEffect(() => {
-    document.title = "About Page";
-
-    let parentDocHeight = document
-      .getElementById("mainContentWrapper")
-      .getBoundingClientRect().height;
-    let headerHeight = document
-      .querySelector("header")
-      .getBoundingClientRect().height;
-
-    let calculatedHeight = parentDocHeight - headerHeight;
-
-    setCalcHeight(calculatedHeight);
-  }, []);
-
-  // const classes = useStyles();
-  const theme = useTheme();
-  // const matches = useMediaQuery(theme.breakpoints.up("sm"));
+const About = () => {
   const [value, setValue] = React.useState(0);
 
   const handleChange = (newValue) => {
@@ -159,32 +110,6 @@ const About = (props) => {
                 >
                   About the Experts
                 </Button>
-                {/* <Button
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    justifyContent: "flex-start",
-                    borderRadius: "0px",
-                  }}
-                  onClick={() => handleChange(3)}
-                  variant={value === 3 ? `contained` : `text`}
-                  color={value === 3 ? `secondary` : `default`}
-                >
-                  Acknowledgements
-                </Button>
-                <Button
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    justifyContent: "flex-start",
-                    borderRadius: "0px",
-                  }}
-                  onClick={() => handleChange(4)}
-                  variant={value === 4 ? `contained` : `text`}
-                  color={value === 4 ? `secondary` : `default`}
-                >
-                  About the Experts
-                </Button> */}
               </div>
             </div>
             <div
@@ -219,7 +144,11 @@ const RenderContent = ({ value = 0 }) => {
               A diverse group of stakeholders including farmers, researchers,
               and personnel from agribusinesses and NGOs united in 2016 to form
               the{" "}
-              <a href="http://northeastcovercrops.com" target="_blank">
+              <a
+                href="http://northeastcovercrops.com"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 Northeast Cover Crops Council
               </a>{" "}
               (NECCC). Our mission is to support and promote the adoption of
@@ -266,6 +195,7 @@ const RenderContent = ({ value = 0 }) => {
               <a
                 href="https://aginformaticslab.org/cover-crop-decision-tools/"
                 target="_blank"
+                rel="noopener noreferrer"
               >
                 cover crop data verification process here
               </a>
@@ -273,7 +203,11 @@ const RenderContent = ({ value = 0 }) => {
             </Typography>
             <Typography variant="body1" align="left" className="pb-4">
               <b>Data Sources:</b> The cover crop data were adapted from the{" "}
-              <a href="http://mccc.msu.edu" target="_blank">
+              <a
+                href="http://mccc.msu.edu"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 Midwest Cover Crops Council (MCCC) species selector tool
               </a>
               . These initial data have been reviewed, modified, and greatly
@@ -281,18 +215,27 @@ const RenderContent = ({ value = 0 }) => {
               <a
                 href="https://planthardiness.ars.usda.gov/PHZMWeb/"
                 target="_blank"
+                rel="noopener noreferrer"
               >
                 USDA plant hardiness zone
               </a>{" "}
               to best match the cropping system types, goals, and constraints
               found in our region. Additional data sources adapted for this tool
               include the{" "}
-              <a href="https://plants.sc.egov.usda.gov/java/" target="_blank">
+              <a
+                href="https://plants.sc.egov.usda.gov/java/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 USDA PLANTS database
               </a>{" "}
               and a seeding rate calculator developed by USDA NRCS. These data
               are supplemented by soils data available via{" "}
-              <a href="https://sdmdataaccess.nrcs.usda.gov/" target="_blank">
+              <a
+                href="https://sdmdataaccess.nrcs.usda.gov/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 USDA NRCS Soil Data Access
               </a>
               , and weather data made available through an API, constructed by
@@ -300,11 +243,16 @@ const RenderContent = ({ value = 0 }) => {
               <a
                 href="https://www.nssl.noaa.gov/projects/mrms/"
                 target="_blank"
+                rel="noopener noreferrer"
               >
                 NSSL MRMS
               </a>{" "}
               and{" "}
-              <a href="https://ldas.gsfc.nasa.gov/nldas/" target="_blank">
+              <a
+                href="https://ldas.gsfc.nasa.gov/nldas/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 NASA NLDAS-2
               </a>{" "}
               weather data.
@@ -335,11 +283,19 @@ const RenderContent = ({ value = 0 }) => {
           <div className="col-12">
             <Typography variant="body1" className="pb-4" align="left">
               The NECCC tool is a result of a design collaboration between the{" "}
-              <a href="http://www.aginformaticslab.org" target="_blank">
+              <a
+                href="http://www.aginformaticslab.org"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 Agricultural Informatics Lab
               </a>
               , the{" "}
-              <a href="http://www.precisionsustainableag.org" target="_blank">
+              <a
+                href="http://www.precisionsustainableag.org"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 Precision Sustainable Agriculture
               </a>{" "}
               team, the NECCC <b>and the USDA</b>. We took a user-centered
@@ -358,7 +314,11 @@ const RenderContent = ({ value = 0 }) => {
               and resulted in the tool you now see on this website. We will be
               conducting user tests this upcoming fall in conjunction with the
               train-the trainer sessions run by the NECCC (
-              <a href="http://www.northeastcovercrops.com" target="_blank">
+              <a
+                href="http://www.northeastcovercrops.com"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 www.northeastcovercrops.com
               </a>
               ).
@@ -402,14 +362,12 @@ const RenderContent = ({ value = 0 }) => {
               <a
                 href="https://aginformaticslab.org/cover-crop-decision-tools/"
                 target="_blank"
+                rel="noopener noreferrer"
               >
                 as described here
               </a>
               , and utilize these components in their projects.
             </Typography>
-            {/* Copyright info commented out  <Typography variant="body1" className="pb-4" align="left">
-              <AgInformaticsLicenseText aboutPage={true} style={false} />
-            </Typography> */}
           </div>
         </>
       );
@@ -790,7 +748,11 @@ const RenderContent = ({ value = 0 }) => {
               <p>
                 <strong>Ankita Raturi </strong>is an Assistant Professor in
                 Agricultural Engineering at Purdue University. She runs the{" "}
-                <a href="http://sudokita.com" target="_blank" rel="noopener">
+                <a
+                  href="http://sudokita.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   Agricultural Informatics Lab
                 </a>
                 , with research focused on human-centered design, information

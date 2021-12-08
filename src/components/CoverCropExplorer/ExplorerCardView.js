@@ -54,9 +54,7 @@ const ExplorerCardView = (props) => {
     setModalOpen(true);
   };
   const addCropToBasket = (cropId, cropName, btnId, cropData) => {
-    let container = document.getElementById(btnId);
     let selectedCrops = {};
-    let toAdd = false;
     var cropArray = [];
     selectedCrops["id"] = cropId;
     selectedCrops["cropName"] = cropName;
@@ -83,11 +81,9 @@ const ExplorerCardView = (props) => {
         });
         enqueueSnackbar(`${cropName} Added`);
       } else {
-        // alert(removeIndex);
         let selectedCropsCopy = state.selectedCrops;
 
         selectedCropsCopy.splice(removeIndex, 1);
-        // console.log(selectedCropsCopy);
         dispatch({
           type: "SELECTED_CROPS_MODIFIER",
           data: {
@@ -116,8 +112,6 @@ const ExplorerCardView = (props) => {
       <Grid container spacing={3}>
         {props.activeCropData.length > 0 ? (
           props.activeCropData.map((crop, index) => {
-            // console.log("crop.fields.Zone", crop.fields.Zone);
-            // console.log("state.zone", state.zone);
             return (
               <Grid item key={index}>
                 <Card className={classes.card}>
@@ -157,9 +151,8 @@ const ExplorerCardView = (props) => {
                             textDecoration: "underline",
                             color: "rgb(53, 153, 155)",
                           }}
-                          // href={`/information-sheet/${crop.fields["Cover Crop Name"]}`}
                           target="_blank"
-                          rel="noopener"
+                          rel="noopener noreferrer"
                           onClick={() => handleModalOpen(crop)}
                         >
                           View Crop Details

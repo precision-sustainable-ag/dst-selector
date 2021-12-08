@@ -10,12 +10,8 @@ import { Context } from "../../../store/Store";
 const SoilConditions = (props) => {
   const [state, dispatch] = useContext(Context);
   const { Flooding_Frequency, Drainage_Class } = state.soilData;
-  // const [activeCropDataCopy, setActiveCropDataCopy] = useState(
-  //   props.activeCropData
-  // );
   const {
     activeCropData,
-    // inactiveCropData,
     setActiveCropData,
     setInactiveCropData,
     cropData,
@@ -95,21 +91,6 @@ const SoilConditions = (props) => {
     }
   }, [selected]);
 
-  //   useImperativeHandle(ref, () => ({
-  //     resetFilters() {
-  //       setSelected({ "Soil Drainage": [], "Flooding Tolerance": [] });
-  //     },
-  //   }));
-
-  //   useEffect(() => {
-  //     let selections = selected;
-
-  //     props.setSidebarFilterOptions({
-  //       ...props.sidebarFilterOptions,
-  //       ...selections,
-  //     });
-  //   }, [selected]);
-
   return (
     <Grid container spacing={1}>
       {props.filters.values.map((val, index) => (
@@ -150,21 +131,9 @@ const SoilConditions = (props) => {
   );
 };
 
-// const objFilter = (obj, predicate) => {
-//   let result = {},
-//     key;
-
-//   for (key in obj) {
-//     if (obj.hasOwnProperty(key) && !predicate(obj[key])) {
-//       result[key] = obj[key];
-//     }
-//   }
-
-//   return result;
-// };
-
 const areCommonElements = (arr1, arr2) => {
   const arr2Set = new Set(arr2);
   return arr1.some((el) => arr2Set.has(el));
 };
+
 export default SoilConditions;

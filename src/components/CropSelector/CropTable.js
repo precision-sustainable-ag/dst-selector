@@ -35,22 +35,13 @@ import {
   trimString,
 } from "../../shared/constants";
 import { Context } from "../../store/Store";
-// import GrowthWindowComponent from "./GrowthWindow";
 import "../../styles/cropCalendarViewComponent.scss";
 import "../../styles/cropTable.scss";
 import CropDetailsModalComponent from "./CropDetailsModal";
-// import useScrollTrigger from "@material-ui/core/useScrollTrigger";
 import CropLegendModal from "./CropLegendModal";
 import CropSelectorCalendarView from "./CropSelectorCalendarView";
 
 const CropTableComponent = (props) => {
-  // let cropTableElement = document.getElementById("#primaryCropTable");
-  // cropTableElement.addEventListener("scroll", (e) => {
-  //   let tableHead = document.querySelector("thead");
-  //   let scrollTop = cropTableElement.scrollTop;
-  //   tableHead.style.transform = "translateY(" + scrollTop + "px)";
-  // });
-
   const cropData = props.cropData || [];
   let inactiveCropData = props.inactiveCropData || [];
   let activeCropData = props.activeCropData || [];
@@ -67,10 +58,7 @@ const CropTableComponent = (props) => {
   });
 
   const handleModalOpen = (crop) => {
-    // setModalOpen(true);
-    // put data inside modal
     setModalData(crop);
-
     setModalOpen(true);
   };
 
@@ -84,8 +72,6 @@ const CropTableComponent = (props) => {
     props.showGrowthWindow
       ? setShowGrowthWindow(true)
       : setShowGrowthWindow(false);
-
-    // console.log(cropData);
   }, [props.showGrowthWindow]);
 
   useEffect(() => {
@@ -99,37 +85,13 @@ const CropTableComponent = (props) => {
   }, [state.progress]);
 
   const addCropToBasket = (cropId, cropName, btnId, cropData) => {
-    // let container = document.getElementById(btnId);
     let selectedCrops = {};
-    // let toAdd = false;
     var cropArray = [];
     selectedCrops["id"] = cropId;
     selectedCrops["cropName"] = cropName;
     selectedCrops["btnId"] = btnId;
     selectedCrops["data"] = cropData;
     cropArray = selectedCrops;
-    // change the UI
-    // if (container.classList.contains("activeCartBtn")) {
-    //   // change text back to 'add to list' and remove element from state
-
-    //   if (container.textContent === "ADDED") {
-    //     container.querySelector(".MuiButton-label").innerHTML = "ADD TO LIST";
-    //     container.classList.remove("activeCartBtn");
-    //     toAdd = false;
-    //   } else toAdd = true;
-
-    //   // this.state.selectedCrops.splice(x, 1);
-    //   // get index of the element
-    // } else {
-    //   // change text to 'added' and add element to state
-
-    //   if (container.textContent === "ADD TO LIST") {
-    //     container.querySelector(".MuiButton-label").innerHTML = "ADDED";
-    //     container.classList.add("activeCartBtn");
-    //     toAdd = true;
-    //   } else toAdd = false;
-    // }
-
     // // check if crop id exists inside state, if yes then remove it
 
     if (state.selectedCrops.length > 0) {
@@ -139,16 +101,6 @@ const CropTableComponent = (props) => {
         })
         .indexOf(`${cropId}`);
       if (removeIndex === -1) {
-        // Element not in array, add new
-        // let newActives = props.activeCropData.map((crop) => {
-        //   if (crop.fields.id === cropId) {
-        //     crop.fields["inBasket"] = true;
-        //   } else {
-        //     crop.fields["inBasket"] = false;
-        //   }
-        // });
-
-        // props.setActiveCropData(newActives);
         dispatch({
           type: "SELECTED_CROPS_MODIFIER",
           data: {
@@ -163,14 +115,7 @@ const CropTableComponent = (props) => {
         let selectedCropsCopy = state.selectedCrops;
 
         selectedCropsCopy.splice(removeIndex, 1);
-        // console.log(selectedCropsCopy);
-        // let newActives = props.activeCropData.map((crop) => {
-        //   if (crop.fields.id === cropId) {
-        //     crop.fields["inBasket"] = false;
-        //   }
-        // });
 
-        // props.setActiveCropData(newActives);
         dispatch({
           type: "SELECTED_CROPS_MODIFIER",
           data: {
@@ -852,7 +797,6 @@ const CropTableComponent = (props) => {
       setTbodyHeight(maxTableHeight - theadComputedHeight);
       setTheadHeight(theadComputedHeight);
     }
-    // console.log(tbodyHeight);
   });
 
   const [nameSortFlag, setNameSortFlag] = useState(true);
@@ -897,9 +841,6 @@ const CropTableComponent = (props) => {
           props.setInactiveCropData(newInactiveShadow);
         }
 
-        // console.log(newActiveShadow);
-        // console.log(selectedCropIds);
-
         if (newActiveShadow.length > 0) {
           newActiveShadow.sort((a) => {
             if (a.inCart) {
@@ -911,10 +852,6 @@ const CropTableComponent = (props) => {
 
           props.setActiveCropData(newActiveShadow);
         }
-
-        // if(inactiveCropDataShadow.length > 0) {
-
-        // }
       }
     } else {
       // sort back to original values
@@ -925,14 +862,6 @@ const CropTableComponent = (props) => {
 
   const sortReset = (from = "cropName") => {
     setActiveSortType("goals");
-    // reset to default
-    // if (from === "cropName") {
-    //   if (selectedCropsSortFlag && nameSortFlag)
-    //     setSelectedCropsSortFlag(false);
-    // }
-    // if (from === "selectedCrops") {
-    //   if (nameSortFlag && selectedCropsSortFlag) setNameSortFlag(false);
-    // }
     const { selectedGoals } = state;
     let activeCropDataShadow = props.activeCropData;
     let inactiveCropDataShadow = props.inactiveCropData;
@@ -968,32 +897,6 @@ const CropTableComponent = (props) => {
       props.setInactiveCropData(inactiveCropDataShadow);
     }
   };
-  // useEffect(() => {
-  //   console.log("props for active inactive changed");
-  //   activeCropData = props.activeCropData;
-  //   inactiveCropData = props.inactiveCropData;
-  //   let activeCropDataShadow = props.cropData;
-  //   const { selectedGoals } = state;
-  //   console.log("cropdata", activeCropDataShadow.length);
-  //   console.log("actives", activeCropData.length);
-  //   console.log("inactives", inactiveCropData.length);
-
-  //   const newActives = activeCropDataShadow.filter((crops) => {
-  //     if (selectedGoals.every((rating) => crops.fields[rating] <= 2)) {
-  //       return false;
-  //     } else return true;
-  //   });
-  //   const newInactives = activeCropDataShadow.filter((crops) => {
-  //     if (selectedGoals.every((rating) => crops.fields[rating] <= 2)) {
-  //       return true;
-  //     } else return false;
-  //   });
-  //   props.setInactiveCropData(newInactives);
-  //   props.setActiveCropData(newActives);
-  //   console.log("cropdata", activeCropDataShadow.length);
-  //   console.log("newactives", newActives.length);
-  //   console.log("newinactives", newInactives.length);
-  // }, [props.cropData]);
 
   const sortCropsByName = () => {
     let activeCropDataShadow = props.activeCropData;
@@ -1035,7 +938,6 @@ const CropTableComponent = (props) => {
         props.setInactiveCropData(inactiveCropDataShadow);
       }
     } else {
-      // sortReset("cropName");
       if (activeCropDataShadow.length > 0) {
         activeCropDataShadow.sort((a, b) => {
           var firstCropName = flipCoverCropName(
@@ -1044,7 +946,6 @@ const CropTableComponent = (props) => {
           var secondCropName = flipCoverCropName(
             b.fields["Cover Crop Name"].toLowerCase()
           ).replace(/\s+/g, "");
-          // return firstCropName.localeCompare(secondCropName);
           if (firstCropName < secondCropName) {
             return 1;
           }
@@ -1165,18 +1066,7 @@ const CropTableComponent = (props) => {
                 }}
               >
                 <Typography variant="body2">
-                  <Button
-                    startIcon={<AddCircle />}
-                    onClick={handleLegendModal}
-                    // onClick={() => {
-                    //   const ele = document.getElementById("legendWrapper");
-                    //   if (ele.classList.contains("d-none")) {
-                    //     ele.classList.remove("d-none");
-                    //   } else {
-                    //     ele.classList.add("d-none");
-                    //   }
-                    // }}
-                  >
+                  <Button startIcon={<AddCircle />} onClick={handleLegendModal}>
                     {" "}
                     LEGEND
                   </Button>
@@ -1448,7 +1338,6 @@ const CropTableComponent = (props) => {
                 <RenderActiveInactiveCropData />
               </Fragment>
             ) : (
-              // <RenderDefaultCropData />
               <TableRow>
                 <TableCell>Loading</TableCell>
               </TableRow>

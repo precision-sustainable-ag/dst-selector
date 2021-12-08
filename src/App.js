@@ -90,19 +90,7 @@ const App = () => {
       <Header logo="neccc_wide_logo_color_web.jpg" />
 
       <div className="container-fluid pl-0 pr-0">
-        <div
-          className="contentContainer"
-          style={
-            {
-              // height: calcHeight,
-              // width: "100%",
-              // position: "absolute",
-              // top: "50%",
-              // left: "50%",
-              // transform: "translate(-50%, -50%)",
-            }
-          }
-        >
+        <div className="contentContainer">
           {state.progress === 0 ? (
             <Landing
               title="Decision Support Tool"

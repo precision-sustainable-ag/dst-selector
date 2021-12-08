@@ -19,18 +19,30 @@ const AgInformaticsLicenseText = ({
         {footerPage ? (
           <Typography variant="body2">
             Copyright © {currentYear}{" "}
-            <a href="http://northeastcovercrops.com/" target="_blank">
+            <a
+              href="http://northeastcovercrops.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               Northeast Cover Crop Council
             </a>
             ,{" "}
-            <a href="http://aginformaticslab.org/" target="_blank">
+            <a
+              href="http://aginformaticslab.org/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               Agricultural Informatics Lab
             </a>
           </Typography>
         ) : (
           <Typography variant={footerPage ? "body2" : "body1"} gutterBottom>
             Copyright © {currentYear} Agricultural Informatics Lab, &nbsp;
-            <a href="http://aginformaticslab.org/" target="_blank">
+            <a
+              href="http://aginformaticslab.org/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               aginformaticslab.org
             </a>
           </Typography>

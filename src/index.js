@@ -10,8 +10,6 @@ import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import Store from "./store/Store";
 import "leaflet-control-geocoder/dist/Control.Geocoder.js";
-// import "@fortawesome/fontawesome-free/css/all.min.css";
-// import "bootstrap-css-only/css/bootstrap.min.css";
 import "./styles/parent.scss";
 import "mdbreact/dist/css/mdb.css";
 import "./styles/progressBar.css";
@@ -143,11 +141,6 @@ const Wrapper = () => (
                 component={MyCoverCropListWrapper}
                 exact
               />
-              {/* <Route
-                path={"/information-sheet"}
-                component={InformationSheet}
-                exact
-              /> */}
               <Route
                 path={"/information-sheet/:cropName"}
                 component={InformationSheet}

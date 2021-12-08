@@ -54,11 +54,9 @@ const MyCoverCropCardsComponent = (props) => {
       // element not in array
       // not possible ?
     } else {
-      // alert(removeIndex);
       let selectedCropsCopy = state.selectedCrops;
 
       selectedCropsCopy.splice(removeIndex, 1);
-      // console.log(selectedCropsCopy);
       dispatch({
         type: "SELECTED_CROPS_MODIFIER",
         data: {
@@ -68,8 +66,6 @@ const MyCoverCropCardsComponent = (props) => {
         },
       });
       enqueueSnackbar(`${cropName} Removed`);
-
-      // this.state.selectedCrops.splice(removeIndex, 1);
     }
   };
   return (

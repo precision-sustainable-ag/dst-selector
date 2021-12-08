@@ -5,7 +5,6 @@
 
 import { Typography } from "@material-ui/core";
 import React from "react";
-// import { LightButton } from "./constants";
 import { Context } from "../store/Store";
 import "../styles/progressIndicator.scss";
 
