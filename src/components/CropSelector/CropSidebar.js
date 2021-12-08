@@ -291,7 +291,7 @@ const CropSidebarComponent = (props) => {
           }
         });
 
-        if (i === totalActiveFilters) return true;
+        return i === totalActiveFilters;
       });
 
       const inactives = crop_data.filter((e) => !filtered.includes(e));
@@ -431,8 +431,6 @@ const CropSidebarComponent = (props) => {
     }
   };
 
-  const [growthWindowVisible, setGrowthWindowVisible] = React.useState(true);
-
   const updateSelectedGoals = (newGoalArr, oldIndex, newIndex) => {
     let newGoals = arrayMove(newGoalArr, oldIndex, newIndex);
 
@@ -500,9 +498,9 @@ const CropSidebarComponent = (props) => {
         });
       }
 
-      props.setGrowthWindow(growthWindowVisible);
+      props.setGrowthWindow(true);
     }
-  }, [dateRange, growthWindowVisible, props.from]);
+  }, [dateRange, props.from]);
 
   const [tableHeight, setTableHeight] = React.useState(0);
 
@@ -1294,7 +1292,7 @@ const CropSidebarComponent = (props) => {
                             </Collapse>
                           </Fragment>
                         );
-                      }
+                      } else return <Fragment />;
                     })}
                   </List>
                 ) : (
@@ -1599,6 +1597,8 @@ const CropSidebarComponent = (props) => {
                                 </Collapse>
                               </Fragment>
                             );
+                          } else {
+                            return <Fragment />;
                           }
                         })}
                       </List>

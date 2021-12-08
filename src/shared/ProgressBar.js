@@ -4,7 +4,7 @@
 */
 
 import { Typography } from "@material-ui/core";
-import React from "react";
+import React, { useContext } from "react";
 import { Context } from "../store/Store";
 import "../styles/progressIndicator.scss";
 
@@ -20,7 +20,7 @@ const checkProgressStatus = (actualProgress, expectedProgress) => {
 };
 
 const ProgressBar = () => {
-  const [state, dispatch] = React.useContext(Context);
+  const [state] = useContext(Context);
   return (
     <div className="gprogress">
       <Typography variant="body1" className="progress-track" component="div">

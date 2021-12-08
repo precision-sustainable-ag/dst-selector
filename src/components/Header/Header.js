@@ -17,7 +17,7 @@ import {
 import moment from "moment";
 import { useSnackbar } from "notistack";
 import React, { useContext, useEffect } from "react";
-import { NavLink, Redirect, useHistory } from "react-router-dom";
+import { NavLink, useHistory } from "react-router-dom";
 import { abbrRegion, weatherApiURL } from "../../shared/constants";
 import zone4DataDictionary from "../../shared/json/zone4/data-dictionary.json";
 import zone5DataDictionary from "../../shared/json/zone5/data-dictionary.json";
@@ -34,7 +34,6 @@ const Header = () => {
   const [state, dispatch] = useContext(Context);
   const [collapse, setCollapse] = React.useState(false);
   const [isRoot, setIsRoot] = React.useState(false);
-  const [redirectToRoot, setRedirectToRoot] = React.useState(false);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   let isActive = {};
 
@@ -428,9 +427,7 @@ const Header = () => {
       </Badge>
     );
   };
-  return redirectToRoot ? (
-    <Redirect to="/" />
-  ) : (
+  return (
     <header className="d-print-none">
       <div className="topHeader">
         <NavLink to="/about" activeClassName={`active`}>

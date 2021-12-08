@@ -10,7 +10,7 @@ import { LightButton } from "./constants";
 const ProgressButtonsInner = (props) => {
   let isDisabled = props.disabled;
 
-  const [state, dispatch] = useContext(Context);
+  const [, dispatch] = useContext(Context);
 
   const changeProgress = (type) => {
     if (type === "increment") {

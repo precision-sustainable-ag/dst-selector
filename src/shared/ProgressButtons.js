@@ -8,7 +8,7 @@ import { Context } from "../store/Store";
 import ProgressButtonsInner from "./ProgressButtonsInner";
 
 const ProgressButtons = () => {
-  const [state, dispatch] = useContext(Context);
+  const [state] = useContext(Context);
   const [isDisabled, setIsDisabled] = useState(false);
 
   useEffect(() => {

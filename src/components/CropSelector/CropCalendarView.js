@@ -53,7 +53,6 @@ const CropCalendarViewComponent = (props) => {
   const { cropData, activeCropData, inactiveCropData } = props;
   const [state, dispatch] = useContext(Context);
   const [legendModal, setLegendModal] = useState(false);
-  const [selectedCropsIds, setSelectedCropsIds] = useState([]);
   const selectedBtns = state.selectedCrops.map((crop) => {
     return crop.id;
   });
@@ -64,16 +63,6 @@ const CropCalendarViewComponent = (props) => {
 
   // DONE: Check year logic ? currently Juliet wants to return current year if month is before november
   let currentYear = new Date().getFullYear();
-
-  useEffect(() => {
-    if (state.selectedCrops.length > 0) {
-      let selectedIds = state.selectedCrops.map((crop) => {
-        return crop.id;
-      });
-
-      setSelectedCropsIds(selectedIds);
-    }
-  }, [state.progress]);
 
   const addCropToBasket = (cropId, cropName, btnId, cropData) => {
     let selectedCrops = {};
@@ -146,7 +135,7 @@ const CropCalendarViewComponent = (props) => {
   const getAverageGoalRating = (selectedGoals, crop) => {
     // get goal rating for each crop and calculate+render rating
     let goalRating = 0;
-    selectedGoals.map((goal, index) => {
+    selectedGoals.forEach((goal) => {
       if (crop.fields[goal]) {
         goalRating += crop.fields[goal];
       }
@@ -220,7 +209,6 @@ const CropCalendarViewComponent = (props) => {
   };
 
   const sortReset = (from = "cropName") => {
-    setActiveSortType("goals");
     // reset to default
     const { selectedGoals } = state;
     let activeCropDataShadow = props.activeCropData;
@@ -261,7 +249,6 @@ const CropCalendarViewComponent = (props) => {
     let activeCropDataShadow = props.activeCropData;
     let inactiveCropDataShadow = props.inactiveCropData;
     sortReset("cropName");
-    setActiveSortType("selectedCrops");
 
     if (nameSortFlag) {
       if (activeCropDataShadow.length > 0) {
@@ -342,7 +329,6 @@ const CropCalendarViewComponent = (props) => {
 
   const sortBySelectedCrops = () => {
     sortReset("selectedCrops");
-    setActiveSortType("selectedCrops");
     let selectedCropsShadow = state.selectedCrops;
     let activeCropDataShadow = props.activeCropData;
     let inactiveCropDataShadow = props.inactiveCropData;
@@ -398,7 +384,6 @@ const CropCalendarViewComponent = (props) => {
     }
     setSelectedCropsSortFlag(!selectedCropsSortFlag);
   };
-  const [activeSortType, setActiveSortType] = useState("goals");
   const [nameSortFlag, setNameSortFlag] = useState(true);
   const [selectedCropsSortFlag, setSelectedCropsSortFlag] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
@@ -515,6 +500,7 @@ const CropCalendarViewComponent = (props) => {
             </TableCell>
           </TableRow>
         );
+      else return <Fragment />;
     });
   };
   return (
