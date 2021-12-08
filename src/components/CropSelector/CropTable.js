@@ -75,10 +75,10 @@ const CropTableComponent = (props) => {
   const addCropToBasket = (cropId, cropName, btnId, cropData) => {
     let selectedCrops = {};
     var cropArray = [];
-    selectedCrops["id"] = cropId;
-    selectedCrops["cropName"] = cropName;
-    selectedCrops["btnId"] = btnId;
-    selectedCrops["data"] = cropData;
+    selectedCrops.id = cropId;
+    selectedCrops.cropName = cropName;
+    selectedCrops.btnId = btnId;
+    selectedCrops.data = cropData;
     cropArray = selectedCrops;
     // // check if crop id exists inside state, if yes then remove it
 
@@ -200,22 +200,17 @@ const CropTableComponent = (props) => {
   };
 
   const activeCropPresent = () => {
-    if (activeCropData.length > 0) return true;
-    else {
-      return false;
-    }
+    return activeCropData.length > 0;
   };
+
   const inactiveCropPresent = () => {
-    if (inactiveCropData.length > 0) return true;
-    else return false;
+    return inactiveCropData.length > 0;
   };
 
   const hasGoalRatingTwoOrLess = (crop = []) => {
     const { selectedGoals } = state;
 
-    if (selectedGoals.every((rating) => crop.fields[rating] <= 2)) {
-      return true;
-    } else return false;
+    return selectedGoals.every((rating) => crop.fields[rating] <= 2);
   };
 
   const RenderActiveInactiveCropData = () => {
@@ -484,28 +479,20 @@ const CropTableComponent = (props) => {
                                   </Typography>
                                 </td>
                                 <td>
-                                  <Tooltip
-                                    arrow
-                                    placement="right"
-                                    title="lbs/A/y"
-                                  >
-                                    <Typography
-                                      variant="subtitle2"
-                                      component="b"
-                                    >
-                                      {
-                                        crop.fields[
-                                          "Nitrogen Accumulation Min, Legumes (lbs/A/y)"
-                                        ]
-                                      }
-                                      -
-                                      {
-                                        crop.fields[
-                                          "Nitrogen Accumulation Max, Legumes (lbs/A/y)"
-                                        ]
-                                      }
-                                    </Typography>
-                                  </Tooltip>
+                                  <Typography variant="subtitle2" component="b">
+                                    {
+                                      crop.fields[
+                                        "Nitrogen Accumulation Min, Legumes (lbs/A/y)"
+                                      ]
+                                    }
+                                    -
+                                    {
+                                      crop.fields[
+                                        "Nitrogen Accumulation Max, Legumes (lbs/A/y)"
+                                      ]
+                                    }
+                                    &nbsp;lbs/A/y
+                                  </Typography>
                                 </td>
                               </tr>
                             ) : (
@@ -523,16 +510,11 @@ const CropTableComponent = (props) => {
                                 </Typography>
                               </td>
                               <td>
-                                <Tooltip
-                                  arrow
-                                  placement="right"
-                                  title="lbs/A/y"
-                                >
-                                  <Typography variant="subtitle2" component="b">
-                                    {crop.fields["Dry Matter Min (lbs/A/y)"]}-
-                                    {crop.fields["Dry Matter Max (lbs/A/y)"]}
-                                  </Typography>
-                                </Tooltip>
+                                <Typography variant="subtitle2" component="b">
+                                  {crop.fields["Dry Matter Min (lbs/A/y)"]}-
+                                  {crop.fields["Dry Matter Max (lbs/A/y)"]}
+                                  &nbsp;lbs/A/y
+                                </Typography>
                               </td>
                             </tr>
                             <tr>
@@ -579,14 +561,14 @@ const CropTableComponent = (props) => {
                   <Fragment key={index}>
                     <TableRow
                       className={
-                        hasGoalRatingTwoOrLess(crop) ? `inactiveCropRow` : ""
+                        hasGoalRatingTwoOrLess(crop) ? "inactiveCropRow" : ""
                       }
                     >
                       <TableCell colSpan={42}></TableCell>
                     </TableRow>
                     <TableRow
                       className={
-                        hasGoalRatingTwoOrLess(crop) ? `inactiveCropRow` : ""
+                        hasGoalRatingTwoOrLess(crop) ? "inactiveCropRow" : ""
                       }
                       key={`croprow${index}`}
                       id={crop.fields["id"]}
@@ -599,8 +581,8 @@ const CropTableComponent = (props) => {
                           height:
                             crop.fields["Cover Crop Group"].toLowerCase() ===
                             "legume"
-                              ? `auto`
-                              : `auto`,
+                              ? "auto"
+                              : "auto",
                         }}
                       >
                         <div className="container-fluid">
@@ -675,28 +657,20 @@ const CropTableComponent = (props) => {
                                   </Typography>
                                 </td>
                                 <td>
-                                  <Tooltip
-                                    arrow
-                                    placement="right"
-                                    title="lbs/A/y"
-                                  >
-                                    <Typography
-                                      variant="subtitle2"
-                                      component="b"
-                                    >
-                                      {
-                                        crop.fields[
-                                          "Nitrogen Accumulation Min, Legumes (lbs/A/y)"
-                                        ]
-                                      }
-                                      -
-                                      {
-                                        crop.fields[
-                                          "Nitrogen Accumulation Max, Legumes (lbs/A/y)"
-                                        ]
-                                      }
-                                    </Typography>
-                                  </Tooltip>
+                                  <Typography variant="subtitle2" component="b">
+                                    {
+                                      crop.fields[
+                                        "Nitrogen Accumulation Min, Legumes (lbs/A/y)"
+                                      ]
+                                    }
+                                    -
+                                    {
+                                      crop.fields[
+                                        "Nitrogen Accumulation Max, Legumes (lbs/A/y)"
+                                      ]
+                                    }
+                                    &nbsp;lbs/A/y
+                                  </Typography>
                                 </td>
                               </tr>
                             ) : (
@@ -714,16 +688,11 @@ const CropTableComponent = (props) => {
                                 </Typography>
                               </td>
                               <td>
-                                <Tooltip
-                                  arrow
-                                  placement="right"
-                                  title="lbs/A/y"
-                                >
-                                  <Typography variant="subtitle2" component="b">
-                                    {crop.fields["Dry Matter Min (lbs/A/y)"]}-
-                                    {crop.fields["Dry Matter Max (lbs/A/y)"]}
-                                  </Typography>
-                                </Tooltip>
+                                <Typography variant="subtitle2" component="b">
+                                  {crop.fields["Dry Matter Min (lbs/A/y)"]}-
+                                  {crop.fields["Dry Matter Max (lbs/A/y)"]}
+                                  &nbsp;lbs/A/y
+                                </Typography>
                               </td>
                             </tr>
                             <tr>
@@ -792,21 +761,13 @@ const CropTableComponent = (props) => {
           selectedCropIds.push(crop.id);
         });
         let newActiveShadow = activeCropDataShadow.map((crop) => {
-          if (selectedCropIds.includes(crop.fields.id)) {
-            crop["inCart"] = true;
-          } else {
-            crop["inCart"] = false;
-          }
+          crop["inCart"] = selectedCropIds.includes(crop.fields.id);
           return crop;
         });
 
         if (inactiveCropDataShadow.length > 0) {
           let newInactiveShadow = inactiveCropDataShadow.map((crop) => {
-            if (selectedCropIds.includes(crop.fields.id)) {
-              crop["inCart"] = true;
-            } else {
-              crop["inCart"] = false;
-            }
+            crop["inCart"] = selectedCropIds.includes(crop.fields.id);
             return crop;
           });
           newInactiveShadow.sort((a) => {
@@ -1081,32 +1042,28 @@ const CropTableComponent = (props) => {
                         <div className="col-12 legendModalRow">
                           <Typography variant="body1">
                             <FiberManualRecord className="reliable" />
-                            <span className="pl-3">
-                              {"Reliable Establishment"}
-                            </span>
+                            <span className="pl-3">Reliable Establishment</span>
                           </Typography>
                         </div>
                         <div className="col-12 legendModalRow">
                           <Typography variant="body1">
                             <FiberManualRecord className="temperatureRisk" />
                             <span className="pl-3">
-                              {"Temperature Risk To Establishment"}
+                              Temperature Risk To Establishment
                             </span>
                           </Typography>
                         </div>
                         <div className="col-12 legendModalRow">
                           <Typography variant="body1">
                             <FiberManualRecord className="frostPossible" />
-                            <span className="pl-3">
-                              {"Frost Seeding Possible"}
-                            </span>
+                            <span className="pl-3">Frost Seeding Possible</span>
                           </Typography>
                         </div>
                         <div className="col-12 legendModalRow">
                           <Typography variant="body1">
                             <FiberManualRecord className="cashCrop" />
                             <span className="pl-3">
-                              {"Previous Cash Crop Growth Window"}
+                              Previous Cash Crop Growth Window
                             </span>
                           </Typography>
                         </div>

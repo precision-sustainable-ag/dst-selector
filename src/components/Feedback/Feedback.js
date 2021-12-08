@@ -6,7 +6,7 @@
 import React, { useEffect } from "react";
 import Header from "../Header/Header";
 
-const FeedbackComponent = (props) => {
+const FeedbackComponent = () => {
   useEffect(() => {
     document.title = "Feedback";
   }, []);
