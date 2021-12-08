@@ -13,7 +13,7 @@ import WeatherConditions from "./WeatherConditions";
 import "leaflet/dist/leaflet.css";
 
 const LocationConfirmation = () => {
-  const [state, dispatch] = useContext(Context);
+  const [state] = useContext(Context);
   return (
     <div
       className="container-fluid mt-5"

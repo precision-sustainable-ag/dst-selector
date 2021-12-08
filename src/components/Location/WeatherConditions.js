@@ -48,9 +48,7 @@ const WeatherConditions = (props) => {
   const classes = useStyles();
   const [months, setMonths] = useState([]);
   const [currentMonthFull, setCurrentMonthFull] = useState("NOVEMBER");
-  const [didChange, setDidChange] = useState(false);
   const [anyValuesChanged, setAnyValuesChanged] = useState(false);
-  const [caller, setCaller] = React.useState("");
 
   const [weatherDataShadow, setWeatherDataShadow] = useState(state.weatherData);
 
@@ -124,7 +122,6 @@ const WeatherConditions = (props) => {
       setLastFrostDayError(true);
       setLastFrostDayHelper("Invalid Day");
     } else {
-      setDidChange(true);
       dispatch({
         type: "UPDATE_WEATHER_CONDITIONS",
         data: { weatherData: broadcastObject },
@@ -154,12 +151,6 @@ const WeatherConditions = (props) => {
     });
 
     setFrostFreeDays(state.weatherData.frostFreeDays);
-
-    if (props.caller) {
-      setCaller(props.caller);
-    } else {
-      setCaller("");
-    }
   }, [state.weatherData, props.caller]);
 
   const handleModalOpen = () => {
@@ -170,7 +161,6 @@ const WeatherConditions = (props) => {
     setOpen(false);
   };
 
-  const [modalBtnDisabled, setModalBtnDisabled] = useState(false);
   const checkIfAnythingChanged = () => {
     if (
       firstFrostMonth === weatherDataShadow.averageFrost.firstFrostDate.month &&
@@ -250,7 +240,7 @@ const WeatherConditions = (props) => {
                     NSSL MRMS
                   </a>{" "}
                   and{" "}
-                  <a href="" target="_blank" rel="noopener noreferrer">
+                  <a target="_blank" rel="noopener noreferrer" href="/#">
                     NASA NLDAS-2
                   </a>{" "}
                   weather data.
@@ -357,7 +347,7 @@ const WeatherConditions = (props) => {
                     NSSL MRMS
                   </a>{" "}
                   and{" "}
-                  <a href="" target="_blank" rel="noopener noreferrer">
+                  <a href="/#" target="_blank" rel="noopener noreferrer">
                     NASA NLDAS-2
                   </a>{" "}
                   weather data.
@@ -766,7 +756,7 @@ const WeatherConditions = (props) => {
                   <div className="row mt-4">
                     <div className="col-6">
                       <LightButton
-                        disabled={modalBtnDisabled}
+                        disabled={false}
                         onClick={validateAndBroadcastModalData}
                       >
                         update

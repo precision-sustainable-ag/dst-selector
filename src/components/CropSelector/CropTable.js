@@ -46,13 +46,11 @@ const CropTableComponent = (props) => {
   let inactiveCropData = props.inactiveCropData || [];
   let activeCropData = props.activeCropData || [];
 
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar();
 
   const [state, dispatch] = useContext(Context);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalData, setModalData] = useState({});
-  const [selectedCropsIds, setSelectedCropsIds] = useState([]);
-  const [activeSortType, setActiveSortType] = useState("goals");
   const selectedBtns = state.selectedCrops.map((crop) => {
     return crop.id;
   });
@@ -73,16 +71,6 @@ const CropTableComponent = (props) => {
       ? setShowGrowthWindow(true)
       : setShowGrowthWindow(false);
   }, [props.showGrowthWindow]);
-
-  useEffect(() => {
-    if (state.selectedCrops.length > 0) {
-      let selectedIds = state.selectedCrops.map((crop) => {
-        return crop["id"];
-      });
-
-      setSelectedCropsIds(selectedIds);
-    }
-  }, [state.progress]);
 
   const addCropToBasket = (cropId, cropName, btnId, cropData) => {
     let selectedCrops = {};
@@ -586,6 +574,7 @@ const CropTableComponent = (props) => {
                     </TableRow>
                   </Fragment>
                 );
+              else return <Fragment />;
             })
           : ""}
         {activeCropPresent
@@ -776,14 +765,12 @@ const CropTableComponent = (props) => {
                     </TableRow>
                   </Fragment>
                 );
-              }
+              } else return <Fragment />;
             })
           : ""}
       </Fragment>
     );
   };
-
-  const [maxTableHeight, setMaxTableHeight] = useState(850);
 
   const [tbodyHeight, setTbodyHeight] = useState(0);
   const [theadHeight, setTheadHeight] = useState(0);
@@ -794,7 +781,7 @@ const CropTableComponent = (props) => {
         .querySelector("thead.MuiTableHead-root.tableHeadWrapper")
         .getBoundingClientRect().height;
 
-      setTbodyHeight(maxTableHeight - theadComputedHeight);
+      setTbodyHeight(850 - theadComputedHeight);
       setTheadHeight(theadComputedHeight);
     }
   });
@@ -803,7 +790,6 @@ const CropTableComponent = (props) => {
   const [selectedCropsSortFlag, setSelectedCropsSortFlag] = useState(true);
   const sortBySelectedCrops = () => {
     sortReset("selectedCrops");
-    setActiveSortType("selectedCrops");
     let selectedCropsShadow = state.selectedCrops;
     let activeCropDataShadow = props.activeCropData;
     let inactiveCropDataShadow = props.inactiveCropData;
@@ -861,7 +847,6 @@ const CropTableComponent = (props) => {
   };
 
   const sortReset = (from = "cropName") => {
-    setActiveSortType("goals");
     const { selectedGoals } = state;
     let activeCropDataShadow = props.activeCropData;
     let inactiveCropDataShadow = props.inactiveCropData;
@@ -902,7 +887,6 @@ const CropTableComponent = (props) => {
     let activeCropDataShadow = props.activeCropData;
     let inactiveCropDataShadow = props.inactiveCropData;
     sortReset("cropName");
-    setActiveSortType("selectedCrops");
 
     if (nameSortFlag) {
       if (activeCropDataShadow.length > 0) {
@@ -986,7 +970,6 @@ const CropTableComponent = (props) => {
       <TableContainer
         className="table-responsive calendarViewTableWrapper"
         component="div"
-        // style={{ maxHeight: maxTableHeight }}
       >
         <Table
           stickyHeader

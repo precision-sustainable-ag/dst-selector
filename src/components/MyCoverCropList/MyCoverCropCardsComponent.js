@@ -34,7 +34,7 @@ const MyCoverCropCardsComponent = (props) => {
 
   const [modalOpen, setModalOpen] = useState(false);
   const [modalData, setModalData] = useState({});
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar();
   const handleModalOpen = () => {
     // put data inside modal
 
@@ -110,6 +110,7 @@ const MyCoverCropCardsComponent = (props) => {
                   color: "rgb(53, 153, 155)",
                 }}
                 onClick={() => handleModalOpen()}
+                href="/#"
               >
                 View Crop Details
               </a>

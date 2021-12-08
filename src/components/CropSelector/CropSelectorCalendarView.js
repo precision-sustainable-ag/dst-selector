@@ -5,25 +5,21 @@
 
 import { Tooltip, Typography } from "@material-ui/core";
 import moment from "moment";
-import React, { Fragment, useContext, useState } from "react";
+import React, { Fragment, useContext } from "react";
 import { allMonths, getActiveCropMonths } from "../../shared/constants";
 import { Context } from "../../store/Store";
 import "../../styles/cropSelectorCalendarView.scss";
 
 const CropSelectorCalendarView = ({ from = "calendar", data = [] }) => {
-  const [state, dispatch] = useContext(Context);
-  const [cashCropStartDate, setCashCropStartDate] = useState(
+  const [state] = useContext(Context);
+  const cashCropStartDate =
     state.cashCropData.dateRange.startDate === ""
       ? null
-      : moment(state.cashCropData.dateRange.startDate).toISOString()
-  );
-
-  const [cashCropEndDate, setCashCropEndDate] = useState(
+      : moment(state.cashCropData.dateRange.startDate).toISOString();
+  const cashCropEndDate =
     state.cashCropData.dateRange.endDate === ""
       ? null
-      : moment(state.cashCropData.dateRange.endDate).toISOString()
-  );
-
+      : moment(state.cashCropData.dateRange.endDate).toISOString();
   const months = [
     "January",
     "February",

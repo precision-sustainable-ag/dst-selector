@@ -46,7 +46,8 @@ const ExplorerCardView = (props) => {
     console.log("selected btns", newSelectedBtns);
   }, [state.zone, state.selectedCrops.length]);
 
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar();
+
   const handleModalOpen = (crop) => {
     // put data inside modal
     setModalData(crop);
@@ -154,6 +155,7 @@ const ExplorerCardView = (props) => {
                           target="_blank"
                           rel="noopener noreferrer"
                           onClick={() => handleModalOpen(crop)}
+                          href="/#"
                         >
                           View Crop Details
                         </a>

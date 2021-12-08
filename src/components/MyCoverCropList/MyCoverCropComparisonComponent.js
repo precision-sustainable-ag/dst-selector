@@ -61,7 +61,7 @@ const lightBG = {
 };
 const MyCoverCropComparisonComponent = (props) => {
   const [state, dispatch] = useContext(Context);
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar();
   const { comparisonKeys, zone } = state;
   const [sidebarDefs, setSidebarDefs] = useState(sidebarDefinitionsz7);
   const [modalOpen, setModalOpen] = useState(false);
@@ -211,6 +211,7 @@ const MyCoverCropComparisonComponent = (props) => {
                           color: "white",
                           visibility: "hidden",
                         }}
+                        href="/#"
                       >
                         View Crop Details
                       </a>
@@ -389,6 +390,7 @@ const MyCoverCropComparisonComponent = (props) => {
                           onClick={() => handleModalOpen({ fields: crop.data })}
                           target="_blank"
                           rel="noopener noreferrer"
+                          href="/#"
                         >
                           View Crop Details
                         </a>
@@ -498,10 +500,10 @@ const RenderSeedingData = ({ filterKey, data }) => {
   }
 };
 const GetAverageGoalRating = ({ crop }) => {
-  const [state, dispatch] = useContext(Context);
+  const [state] = useContext(Context);
   let goalRating = 0;
   if (state.selectedGoals.length > 0) {
-    state.selectedGoals.map((goal) => {
+    state.selectedGoals.forEach((goal) => {
       if (crop.data[goal]) {
         goalRating += crop.data[goal];
       }

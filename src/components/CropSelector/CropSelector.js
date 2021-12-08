@@ -62,10 +62,7 @@ const ScrollTop = (props) => {
 const CropSelector = (props) => {
   const [state, dispatch] = useContext(Context);
   let [showGrowthWindow, setShowGrowthWindow] = useState(true);
-  const [sortAllGoals, setSortAllGoals] = useState(false);
   const [sortPreference, setSortPreference] = useState("desc");
-  const [disabledIds, setDisabledIds] = useState([]);
-  const [starDisabledIds, setStarDisabledIds] = useState([]);
   const [activeCropData, setActiveCropData] = useState([]);
   const [inactiveCropData, setInactiveCropData] = useState([]);
   const [coverCropName, setCoverCropName] = useState("");
@@ -109,119 +106,11 @@ const CropSelector = (props) => {
     }
   };
 
-  const [disabledIdsTextNodes, setDisabledIdsTextNodes] = useState("");
   const [cropDataChanged, setCropDataChanged] = useState(false);
 
   useEffect(() => {
     setCropDataChanged(!cropDataChanged);
   }, [state.cropData]);
-
-  useEffect(() => {
-    // get all ids and compare with the disabled ids array
-    let allIds = [
-      ...document.querySelectorAll(
-        ".calendarViewTableWrapper table > tbody > tr"
-      ),
-    ].map((x) => {
-      return x.id;
-    });
-    // filter empty nodes(strings) from above array
-    allIds = allIds.filter((x) => x !== "");
-    let disabledIdssTextNodes = disabledIds.map((val) => {
-      return document.querySelector(`#${val} div div span:nth-child(2)`)
-        .innerText;
-    });
-    setDisabledIdsTextNodes(JSON.stringify(disabledIdssTextNodes));
-
-    if (disabledIds.length > 0) {
-      allIds.map((id) => {
-        if (disabledIds.includes(id) || starDisabledIds.includes(id)) {
-          // need not be disabled
-          let ele = document.getElementById(id);
-          ele.classList.add("disabled");
-          ele.style.opacity = "0.2";
-        } else {
-          // disable
-          let ele = document.getElementById(id);
-          ele.classList.remove("disabled");
-          ele.style.opacity = "1";
-        }
-      });
-    } else {
-      if (starDisabledIds.length === 0) {
-        allIds.map((id) => {
-          let ele = document.getElementById(id);
-          ele.classList.remove("disabled");
-          ele.style.opacity = "1";
-        });
-      } else {
-        allIds.map((id) => {
-          if (starDisabledIds.includes(id)) {
-            // need not be disabled
-            let ele = document.getElementById(id);
-            ele.classList.add("disabled");
-            ele.style.opacity = "0.2";
-          } else {
-            // disable
-            let ele = document.getElementById(id);
-            ele.classList.remove("disabled");
-            ele.style.opacity = "1";
-          }
-        });
-      }
-    }
-  }, [disabledIds]);
-
-  useEffect(() => {
-    // get all ids and compare with the disabled ids array
-    let allIds = [
-      ...document.querySelectorAll(
-        ".calendarViewTableWrapper table > tbody > tr"
-      ),
-    ].map((x) => {
-      return x.id;
-    });
-    // filter empty nodes(strings) from above array
-    allIds = allIds.filter((x) => x !== "");
-
-    if (starDisabledIds.length > 0) {
-      allIds.map((id) => {
-        if (disabledIds.includes(id) || starDisabledIds.includes(id)) {
-          // need not be disabled
-          let ele = document.getElementById(id);
-          ele.classList.add("disabled");
-          ele.style.opacity = "0.2";
-        } else {
-          // disable
-          let ele = document.getElementById(id);
-          ele.classList.remove("disabled");
-          ele.style.opacity = "1";
-        }
-      });
-    } else {
-      if (disabledIds.length === 0) {
-        allIds.map((id) => {
-          let ele = document.getElementById(id);
-          ele.classList.remove("disabled");
-          ele.style.opacity = "1";
-        });
-      } else {
-        allIds.map((id) => {
-          if (disabledIds.includes(id)) {
-            // need not be disabled
-            let ele = document.getElementById(id);
-            ele.classList.add("disabled");
-            ele.style.opacity = "0.2";
-          } else {
-            // disable
-            let ele = document.getElementById(id);
-            ele.classList.remove("disabled");
-            ele.style.opacity = "1";
-          }
-        });
-      }
-    }
-  }, [starDisabledIds]);
 
   const sortCropsBy = (orderBy) => {
     if (state.cropData.length > 0) {
@@ -475,7 +364,6 @@ const CropSelector = (props) => {
                 inactiveCropData={inactiveCropData}
                 setInactiveCropData={setInactiveCropData}
                 showGrowthWindow={showGrowthWindow}
-                sortAllGoals={setSortAllGoals}
                 sortAllCrops={sortCropsBy}
                 sortPreference={sortPreference}
               />
@@ -487,7 +375,6 @@ const CropSelector = (props) => {
                 inactiveCropData={inactiveCropData}
                 setInactiveCropData={setInactiveCropData}
                 showGrowthWindow={showGrowthWindow}
-                sortAllGoals={setSortAllGoals}
                 sortAllCrops={sortCropsBy}
                 sortPreference={sortPreference}
               />
