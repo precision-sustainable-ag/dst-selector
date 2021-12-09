@@ -519,7 +519,7 @@ const CropSidebarComponent = (props) => {
 
       setGrowthWindow(true);
     }
-  }, [dateRange, from]);
+  }, [dateRange, from, setGrowthWindow, dispatch]);
 
   const [tableHeight, setTableHeight] = useState(0);
 

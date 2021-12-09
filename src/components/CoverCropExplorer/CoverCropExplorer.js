@@ -19,7 +19,7 @@ const CoverCropExplorer = () => {
   const [cropName, setCropName] = useState("");
 
   useEffect(() => {
-    setCropDataChanged(!cropDataChanged);
+    setCropDataChanged((c) => !c);
   }, [state.zone]);
 
   useEffect(() => {
