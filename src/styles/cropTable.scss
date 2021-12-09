@@ -86,23 +86,21 @@
   word-wrap: break-word;
   border-top-left-radius: 5px;
   border-bottom-left-radius: 5px;
-  tr {
-    border-radius: 15px;
-    // th {
-    // }
-  }
 }
 
 table#primaryCropTable {
+  border-spacing: 0 8px;
+
+  th {
+    padding: 0;
+  }
+
   tbody.tableBodyWrapper {
     tr.MuiTableRow-root:not(.inactiveCropRow) {
-      // box-shadow: 0 0 5px #598344;
+      outline: 2px solid #598344;
+      
       td {
-        // margin-top: 1em;
-        // border: 2px solid black;
-        border-top: 2px solid #598344;
-        border-bottom: 2px solid #598344;
-        display: table-cell;
+        padding: 0.3em;
         vertical-align: middle;
         &.goalCells {
           > div {
@@ -113,18 +111,16 @@ table#primaryCropTable {
 
         table tbody {
           tr td {
-            border: 0px !important;
-            padding-top: 0px !important;
+            border: 0 !important;
+            zpadding: 0.4em;
           }
         }
 
         &:first-child {
-          // border-top: 0px;
           border-left: 2px solid #598344;
-          display: flex;
           vertical-align: auto;
-          // border-right: 0px !important;
         }
+
         &:nth-child(2) {
           vertical-align: top;
         }
@@ -134,15 +130,6 @@ table#primaryCropTable {
           // remove line below to vertically align!
           vertical-align: top;
         }
-        &:nth-last-child(2) {
-        }
-      }
-      &:first-child td {
-        border-top: 0px;
-        border-bottom: 0px;
-      }
-      &:nth-child(2n + 1) td {
-        border: 0px;
       }
     }
   }
@@ -161,4 +148,8 @@ table#primaryCropTable {
   color: #999;
   margin-left: 0.5em;
   font-size: 90%;
+}
+
+table.w-100 ~ table {  /* clunky fix to get Dec right-aligned (rh) */
+  width: 100%;
 }
