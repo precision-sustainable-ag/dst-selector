@@ -4,17 +4,17 @@
   styled using makeStyles
 */
 
-import Grid from "@material-ui/core/Grid";
-import { makeStyles } from "@material-ui/core/styles";
+import React, { useContext, useEffect } from "react";
 import TextField from "@material-ui/core/TextField";
-import Typography from "@material-ui/core/Typography";
-import LocationOnIcon from "@material-ui/icons/LocationOn";
 import Autocomplete from "@material-ui/lab/Autocomplete";
+import LocationOnIcon from "@material-ui/icons/LocationOn";
+import Grid from "@material-ui/core/Grid";
+import Typography from "@material-ui/core/Typography";
+import { makeStyles } from "@material-ui/core/styles";
 import parse from "autosuggest-highlight/parse";
 import throttle from "lodash/throttle";
-import React, { useContext, useEffect } from "react";
-import { googleApiKey } from "../../shared/keys";
 import { Context } from "../../store/Store";
+import { googleApiKey } from "../../shared/keys";
 
 const isNum = (val) => {
   return /^\d+$/.test(val);
@@ -34,6 +34,7 @@ function loadScript(src, position, id) {
 
 const autocompleteService = { current: null };
 const placeService = { current: null };
+const geocodeService = { current: null };
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -60,13 +61,20 @@ export default function GoogleAutocomplete({
     state.fullAddress ? state.fullAddress : ""
   );
   const [options, setOptions] = React.useState([]);
+  const [locationDetails, setLocationDetails] = React.useState({
+    lat: 0,
+    lng: 0,
+  });
   const loaded = React.useRef(false);
 
+  useEffect(() => {
+    // console.log(inputValue);
+  }, [inputValue]);
   useEffect(() => {
     if (state.addressChangedViaMap) {
       setValue(state.fullAddress);
     }
-  }, [state.addressChangedViaMap, state.fullAddress]);
+  }, [state.addressChangedViaMap]);
 
   useEffect(() => {
     setValue(state.fullAddress);
@@ -113,8 +121,8 @@ export default function GoogleAutocomplete({
     fetchZipFromLatLng: async (lat, lng) => {
       const geocoder = new window.google.maps.Geocoder();
       const latlng = new window.google.maps.LatLng(lat, lng);
-
-      return geocoder.geocode({ latLng: latlng });
+  
+      return geocoder.geocode({'latLng': latlng})
     },
     setData: async ({ results, status }, main_text) => {
       if (status === "OK") {
@@ -125,31 +133,26 @@ export default function GoogleAutocomplete({
           (e) => e.types[0] === "postal_code"
         );
 
-        if (zipCode.length === 0) {
-          const lonBounds = results[0].geometry.bounds.Hb;
-          const lonCenter = (lonBounds.g + lonBounds.i) / 2;
-          const latBounds = results[0].geometry.bounds.tc;
-          const latCenter = (latBounds.g + latBounds.i) / 2;
+        if(zipCode.length === 0){
+          const lonBounds = results[0].geometry.bounds.Hb
+          const lonCenter = (lonBounds.g + lonBounds.i) / 2
+          const latBounds = results[0].geometry.bounds.tc
+          const latCenter = (latBounds.g + latBounds.i) / 2
 
-          fetchLocalData
-            .fetchZipFromLatLng(latCenter, lonCenter)
-            .then((zip) => {
-              let zipCode = zip.results[0].address_components.filter(
-                (e) => e.types[0] === "postal_code"
-              );
-              if (county.length !== 0) {
-                // If google is able to find the county, pick the first preference!
-                fetchLocalData.fetchGeocode(
-                  results,
-                  county,
-                  main_text,
-                  zipCode
-                );
-              } else {
-                fetchLocalData.fetchGeocode(results, "", main_text, zipCode);
-              }
-            });
-        } else if (county.length !== 0) {
+          fetchLocalData.fetchZipFromLatLng(latCenter, lonCenter).then((zip) => {
+            let zipCode = zip.results[0].address_components.filter(
+              (e) => e.types[0] === "postal_code"
+            );
+            if (county.length !== 0) {
+              // If google is able to find the county, pick the first preference!
+              fetchLocalData.fetchGeocode(results, county, main_text, zipCode);
+            } else {
+              fetchLocalData.fetchGeocode(results, "", main_text, zipCode);
+            }
+          })
+        }
+
+        else if (county.length !== 0) {
           // If google is able to find the county, pick the first preference!
           fetchLocalData.fetchGeocode(results, county, main_text, zipCode);
         } else {
@@ -200,8 +203,7 @@ export default function GoogleAutocomplete({
     let active = true;
 
     if (!autocompleteService.current && window.google) {
-      autocompleteService.current =
-        new window.google.maps.places.AutocompleteService();
+      autocompleteService.current = new window.google.maps.places.AutocompleteService();
     }
     if (!autocompleteService.current) {
       return undefined;
