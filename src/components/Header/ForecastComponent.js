@@ -22,82 +22,82 @@ const ForecastComponent = () => {
   });
 
   useEffect(() => {
+    const callWeatherApi = async (url, latlng) => {
+      let fetchData = await fetch(makeURLString(url, latlng));
+      let jsonData = await fetchData.json();
+      return jsonData;
+    };
+
+    const setShowFeatures = () => {
+      if (state.markers.length > 0) {
+        let latlng = [];
+        try {
+          latlng = state.markers[0];
+        } catch (e) {
+          console.trace("Forecast Component", e);
+
+          latlng = [];
+        }
+
+        let apiCall = callWeatherApi(apiBaseURL, latlng);
+
+        apiCall
+          .then((data) => {
+            let iconId = data.weather[0].icon;
+            let iconDescription = data.weather[0].description;
+
+            let tempObj = {
+              min: data.main.temp_min,
+              max: data.main.temp_max,
+              unit: "F",
+              iconURL: `https://openweathermap.org/img/w/${iconId}.png`,
+              iconDescription: iconDescription,
+            };
+            setTemp(tempObj);
+            setShowTempIcon(false);
+          })
+          .catch((e) => {
+            console.error(e);
+          });
+
+        if (state.address === "") {
+          let data = reverseGEO(latlng[0], latlng[1]);
+          data
+            .then((data) => {
+              if (data.localityInfo.informative) {
+                let lastInfo =
+                  data.localityInfo.informative[
+                    data.localityInfo.informative.length - 1
+                  ];
+                let addressString = `${lastInfo.name}, ${data.city}`;
+                dispatch({
+                  type: "CHANGE_ADDRESS",
+                  data: {
+                    address: addressString,
+                    addressVerified: true,
+                  },
+                });
+              }
+              if (data.postcode) {
+                dispatch({
+                  type: "UPDATE_ZIP_CODE",
+                  data: {
+                    zipCode: parseInt(data.postcode),
+                  },
+                });
+              }
+            })
+            .catch((e) => {
+              console.error("Geocode.xyz:", e);
+            });
+        }
+      }
+    };
+
     if (state.markers[0].length > 0) {
       setShowFeatures();
     }
-  }, [state.markers, state.progress]);
-
-  const setShowFeatures = () => {
-    if (state.markers.length > 0) {
-      let latlng = [];
-      try {
-        latlng = state.markers[0];
-      } catch (e) {
-        console.trace("Forecast Component", e);
-
-        latlng = [];
-      }
-
-      let apiCall = callWeatherApi(apiBaseURL, latlng);
-
-      apiCall
-        .then((data) => {
-          let iconId = data.weather[0].icon;
-          let iconDescription = data.weather[0].description;
-
-          let tempObj = {
-            min: data.main.temp_min,
-            max: data.main.temp_max,
-            unit: "F",
-            iconURL: `https://openweathermap.org/img/w/${iconId}.png`,
-            iconDescription: iconDescription,
-          };
-          setTemp(tempObj);
-          setShowTempIcon(false);
-        })
-        .catch((e) => {
-          console.error(e);
-        });
-
-      if (state.address === "") {
-        let data = reverseGEO(latlng[0], latlng[1]);
-        data
-          .then((data) => {
-            if (data.localityInfo.informative) {
-              let lastInfo =
-                data.localityInfo.informative[
-                  data.localityInfo.informative.length - 1
-                ];
-              let addressString = `${lastInfo.name}, ${data.city}`;
-              dispatch({
-                type: "CHANGE_ADDRESS",
-                data: {
-                  address: addressString,
-                  addressVerified: true,
-                },
-              });
-            }
-            if (data.postcode) {
-              dispatch({
-                type: "UPDATE_ZIP_CODE",
-                data: {
-                  zipCode: parseInt(data.postcode),
-                },
-              });
-            }
-          })
-          .catch((e) => {
-            console.error("Geocode.xyz:", e);
-          });
-      }
-    }
-  };
-
-  const callWeatherApi = async (url, latlng) => {
-    let fetchData = await fetch(makeURLString(url, latlng));
-    let jsonData = await fetchData.json();
-    return jsonData;
-  };
+  }, [dispatch, state.address, state.markers, state.progress]);
 
   const makeURLString = (url, params) => {
     return `${url}?lat=${params[0]}&lon=${params[1]}&appid=${apiKey}&units=imperial`;

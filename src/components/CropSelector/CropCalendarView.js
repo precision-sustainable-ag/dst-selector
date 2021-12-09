@@ -23,12 +23,9 @@ import {
   LocalFlorist,
   WbSunny,
 } from "@material-ui/icons";
-import moment from "moment";
 import React, { Fragment, useContext, useEffect, useState } from "react";
 import {
-  allGoalsURL,
   allMonths,
-  cropDataURL,
   CropImage,
   CustomStyles,
   flipCoverCropName,
@@ -50,7 +47,7 @@ const growthIcon = {
 };
 
 const CropCalendarViewComponent = (props) => {
-  const { cropData, activeCropData, inactiveCropData } = props;
+  const { activeCropData, inactiveCropData } = props;
   const [state, dispatch] = useContext(Context);
   const [legendModal, setLegendModal] = useState(false);
   const selectedBtns = state.selectedCrops.map((crop) => {
@@ -60,9 +57,6 @@ const CropCalendarViewComponent = (props) => {
   const handleLegendModal = () => {
     setLegendModal(!legendModal);
   };
-
-  // DONE: Check year logic ? currently Juliet wants to return current year if month is before november
-  const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
 
   const addCropToBasket = (cropId, cropName, btnId, cropData) => {
     let selectedCrops = {};
@@ -132,53 +126,6 @@ const CropCalendarViewComponent = (props) => {
     return getRating(goalRating / selectedGoals.length);
   };
 
-  const fetchRecordsIfUnavailable = () => {
-    // get crop data if unavailable
-
-    let _promise = new Promise(async function (resolve, reject) {
-      if (cropData.length === 0) {
-        // get crop data
-        dispatch({
-          type: "SET_AJAX_IN_PROGRESS",
-          data: true,
-        });
-        let records = await fetch(cropDataURL, { headers: headers });
-        let json = records.json();
-
-        json
-          .then((val) => {
-            dispatch({
-              type: "PULL_CROP_DATA",
-              data: val.records,
-            });
-          })
-          .then(async () => {
-            if (state.allGoals.length === 0) {
-              // get all goals
-              let records = await fetch(allGoalsURL, { headers: headers });
-              let json = records.json();
-              json
-                .then((val) => {
-                  dispatch({
-                    type: "ADD_GOALS",
-                    data: val.records,
-                  });
-                })
-                .then(() => {
-                  resolve("worked");
-                });
-            } else resolve("worked");
-          });
-      } else resolve("worked");
-    }).then(() => {
-      dispatch({
-        type: "SET_AJAX_IN_PROGRESS",
-        data: false,
-      });
-    });
-
-    return _promise;
-  };
   const [activeGrowthPeriodState, setActiveGrowthPeriodState] = useState(
     state.activeGrowthPeriod
   );

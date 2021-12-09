@@ -64,8 +64,9 @@ const DollarsAndRatings = ({ data, filter, handleChange }) => {
 }; // DollarsAndRatings
 
 const Chips = ({ props, filter, handleChange }) => {
+  let { sidebarFilterOptions } = props;
   return filter.values.map((val) => {
-    const selected = props.sidebarFilterOptions[filter.name].includes(val);
+    const selected = sidebarFilterOptions[filter.name].includes(val);
     return (
       <Chip
         onClick={() => handleChange(filter.name, val)}
@@ -113,7 +114,8 @@ const Tip = ({ filter, omitHeading }) => {
 }; // Tip
 
 const Filters = forwardRef(({ props }, ref) => {
-  const options = props.filters.values.reduce(function (acc, cur, i) {
+  let { filters, setSidebarFilterOptions, sidebarFilterOptions } = props;
+  const options = filters.values.reduce(function (acc, cur, i) {
     acc[cur.alternateName || cur.name] = [];
     return acc;
   }, {});
@@ -121,8 +123,8 @@ const Filters = forwardRef(({ props }, ref) => {
   const [selected, setSelected] = useState(options);
 
   const setProps = (selected) => {
-    props.setSidebarFilterOptions({
-      ...props.sidebarFilterOptions,
+    setSidebarFilterOptions({
+      ...sidebarFilterOptions,
       ...selected,
     });
   };
@@ -154,8 +156,8 @@ const Filters = forwardRef(({ props }, ref) => {
 
   return (
     <Grid container spacing={2}>
-      {props.filters.values.map((filter) => {
-        if (filter.type === "chip" || props.filters.type === "chips-only") {
+      {filters.values.map((filter) => {
+        if (filter.type === "chip" || filters.type === "chips-only") {
           if (filter.values && filter.values.length === 1) {
             return (
               <Grid item>
@@ -181,8 +183,7 @@ const Filters = forwardRef(({ props }, ref) => {
             );
           }
         } else {
-          let data =
-            props.sidebarFilterOptions[filter.alternateName || filter.name];
+          let data = sidebarFilterOptions[filter.alternateName || filter.name];
 
           return (
             <Grid item xs={12}>

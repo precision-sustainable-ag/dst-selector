@@ -161,28 +161,29 @@ const WeatherConditions = (props) => {
     setOpen(false);
   };
 
-  const checkIfAnythingChanged = () => {
-    if (
-      firstFrostMonth === weatherDataShadow.averageFrost.firstFrostDate.month &&
-      parseInt(firstFrostDay) ===
-        parseInt(weatherDataShadow.averageFrost.firstFrostDate.day) &&
-      lastFrostMonth === weatherDataShadow.averageFrost.lastFrostDate.month &&
-      lastFrostDay === weatherDataShadow.averageFrost.lastFrostDate.day &&
-      parseFloat(averagePrecipitation.thisMonth) ===
-        parseFloat(weatherDataShadow.averagePrecipitation.thisMonth) &&
-      parseFloat(averagePrecipitation.annual) ===
-        parseFloat(weatherDataShadow.averagePrecipitation.annual) &&
-      parseInt(frostFreeDays) === parseInt(weatherDataShadow.frostFreeDays)
-    ) {
-      // return false;
-      setAnyValuesChanged(false);
-    } else {
-      // return true;
-      setAnyValuesChanged(true);
-    }
-  };
-
   useEffect(() => {
+    const checkIfAnythingChanged = () => {
+      if (
+        firstFrostMonth ===
+          weatherDataShadow.averageFrost.firstFrostDate.month &&
+        parseInt(firstFrostDay) ===
+          parseInt(weatherDataShadow.averageFrost.firstFrostDate.day) &&
+        lastFrostMonth === weatherDataShadow.averageFrost.lastFrostDate.month &&
+        lastFrostDay === weatherDataShadow.averageFrost.lastFrostDate.day &&
+        parseFloat(averagePrecipitation.thisMonth) ===
+          parseFloat(weatherDataShadow.averagePrecipitation.thisMonth) &&
+        parseFloat(averagePrecipitation.annual) ===
+          parseFloat(weatherDataShadow.averagePrecipitation.annual) &&
+        parseInt(frostFreeDays) === parseInt(weatherDataShadow.frostFreeDays)
+      ) {
+        // return false;
+        setAnyValuesChanged(false);
+      } else {
+        // return true;
+        setAnyValuesChanged(true);
+      }
+    };
+
     if (!state.ajaxInProgress) {
       checkIfAnythingChanged();
     }

@@ -88,42 +88,48 @@ const Header = () => {
           console.error(e);
         });
     }
-  }, [state.zipCode, state.fullAddress]);
-
-  const getAverageFrostDates = async (url) => {
-    await Axios.get(url).then((resp) => {
-      try {
-        let totalYears = resp.data.length;
-        // get last years value
-        // TODO: Take all years data into account
-        let mostRecentYearData = resp.data[totalYears - 1];
-
-        let maxDate = mostRecentYearData["max(date)"];
-        let minDate = mostRecentYearData["min(date)"];
-
-        let averageFrostObject = {
-          firstFrostDate: {
-            month: moment(minDate).format("MMMM"),
-            day: parseInt(moment(minDate).format("D")),
-          },
-          lastFrostDate: {
-            month: moment(maxDate).format("MMMM"),
-            day: parseInt(moment(maxDate).format("D")),
-          },
-        };
-        dispatch({
-          type: "UPDATE_AVERAGE_FROST_DATES",
-          data: {
-            averageFrost: averageFrostObject,
-          },
-        });
-      } catch (e) {
-        console.error("Average Frost Dates API::", e);
-      }
-    });
-  };
+  }, [
+    state.zipCode,
+    state.fullAddress,
+    dispatch,
+    enqueueSnackbar,
+    closeSnackbar,
+  ]);
 
   useEffect(() => {
+    const getAverageFrostDates = async (url) => {
+      await Axios.get(url).then((resp) => {
+        try {
+          let totalYears = resp.data.length;
+          // get last years value
+          // TODO: Take all years data into account
+          let mostRecentYearData = resp.data[totalYears - 1];
+
+          let maxDate = mostRecentYearData["max(date)"];
+          let minDate = mostRecentYearData["min(date)"];
+
+          let averageFrostObject = {
+            firstFrostDate: {
+              month: moment(minDate).format("MMMM"),
+              day: parseInt(moment(minDate).format("D")),
+            },
+            lastFrostDate: {
+              month: moment(maxDate).format("MMMM"),
+              day: parseInt(moment(maxDate).format("D")),
+            },
+          };
+          dispatch({
+            type: "UPDATE_AVERAGE_FROST_DATES",
+            data: {
+              averageFrost: averageFrostObject,
+            },
+          });
+        } catch (e) {
+          console.error("Average Frost Dates API::", e);
+        }
+      });
+    };
+
     let { markers } = state;
 
     // update address on marker change

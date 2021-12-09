@@ -22,156 +22,154 @@ const SoilCondition = (props) => {
   const [tilingCheck, setTilingCheck] = useState(false);
 
   useEffect(() => {
+    const getSSURGOData = (lat, lon) => {
+      let markersCopy = markers;
+
+      let longLatString = "";
+
+      markersCopy.forEach((val, i) => {
+        // get long lat formatted as requested by SSURGO (long lat, long lat, ...)
+        // saved as longLatString
+        if (i === markersCopy.length - 1) {
+          longLatString +=
+            markersCopy[i][1] + " " + markersCopy[i][0] + "," + lon + " " + lat;
+        } else {
+          longLatString += markersCopy[i][1] + " " + markersCopy[i][0] + ",";
+        }
+      });
+      let soilDataQuery = "";
+
+      if (markersCopy.length > 1) {
+        soilDataQuery = `SELECT mu.mukey AS MUKEY, mu.muname AS Map_Unit_Name, muag.drclassdcd AS Drainage_Class, muag.flodfreqdcd AS Flooding_Frequency, mp.mupolygonkey as MPKEY
+      FROM mapunit AS mu 
+      INNER JOIN muaggatt AS muag ON muag.mukey = mu.mukey
+      INNER JOIN mupolygon AS mp ON mp.mukey = mu.mukey
+      WHERE mu.mukey IN (SELECT * from SDA_Get_Mukey_from_intersection_with_WktWgs84('polygon ((${longLatString}))'))
+      AND
+      mp.mupolygonkey IN  (SELECT * from SDA_Get_Mupolygonkey_from_intersection_with_WktWgs84('polygon ((${longLatString}))'))`;
+      } else {
+        // point
+        soilDataQuery = `SELECT mu.mukey AS MUKEY, mu.muname AS Map_Unit_Name, muag.drclassdcd AS Drainage_Class, muag.flodfreqdcd AS Flooding_Frequency, mp.mupolygonkey as MPKEY
+        FROM mapunit AS mu 
+        INNER JOIN muaggatt AS muag ON muag.mukey = mu.mukey
+        INNER JOIN mupolygon AS mp ON mp.mukey = mu.mukey
+        WHERE mu.mukey IN (SELECT * from SDA_Get_Mukey_from_intersection_with_WktWgs84('point (${lon} ${lat})'))
+        AND
+        mp.mupolygonkey IN  (SELECT * from SDA_Get_Mupolygonkey_from_intersection_with_WktWgs84('point (${lon} ${lat})'))`;
+      }
+
+      // console.log(soilDataQuery);
+      var myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+      var urlencoded = new URLSearchParams();
+      urlencoded.append("query", soilDataQuery);
+      urlencoded.append("format", "json+columnname");
+
+      var requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: urlencoded,
+        redirect: "follow",
+      };
+
+      dispatch({
+        type: "TOGGLE_SOIL_LOADER",
+        data: {
+          isSoilDataLoading: true,
+        },
+      });
+
+      fetch(
+        "https://sdmdataaccess.sc.egov.usda.gov/Tabular/post.rest",
+        requestOptions
+      )
+        .then((response) => response.json())
+        .then((result) => {
+          if (result !== {}) {
+            let Ponding_Frequency = result["Table"][1][4];
+            let mapUnitString = "";
+
+            let stringSplit = [];
+
+            result["Table"].forEach((el, index) => {
+              if (index !== 0) {
+                if (stringSplit.indexOf(el[1].split(",")[0]) === -1) {
+                  stringSplit.push(el[1].split(",")[0]);
+                }
+              }
+            });
+
+            const filteredArr = stringSplit.filter((elm) => elm);
+            mapUnitString = filteredArr.join(", ");
+
+            let floodingClasses = [];
+            result["Table"].forEach((el, index) => {
+              if (index === 0 || el.indexOf("Water") === 1) {
+              } else {
+                if (floodingClasses.indexOf(el[3]) === -1) {
+                  floodingClasses.push(el[3]);
+                }
+              }
+            });
+
+            let drainageClasses = [];
+            result["Table"].forEach((el, index) => {
+              if (index !== 0) {
+                if (drainageClasses.indexOf(el[2]) === -1) {
+                  drainageClasses.push(el[2]);
+                }
+              }
+            });
+            drainageClasses = drainageClasses.filter(function (el) {
+              return el != null;
+            });
+
+            dispatch({
+              type: "UPDATE_SOIL_DATA",
+              data: {
+                Map_Unit_Name: mapUnitString,
+                Drainage_Class: drainageClasses,
+                Flooding_Frequency: floodingClasses,
+                Ponding_Frequency: Ponding_Frequency,
+                for: { lat: lat, lon: lon },
+              },
+            });
+            dispatch({
+              type: "UPDATE_SOIL_DATA_ORIGINAL",
+              data: {
+                Map_Unit_Name: mapUnitString,
+                Drainage_Class: drainageClasses,
+                Flooding_Frequency: floodingClasses,
+                Ponding_Frequency: Ponding_Frequency,
+                for: { lat: lat, lon: lon },
+              },
+            });
+          }
+
+          dispatch({
+            type: "TOGGLE_SOIL_LOADER",
+            data: {
+              isSoilDataLoading: false,
+            },
+          });
+        })
+        .catch((error) => console.error("SSURGO FETCH ERROR", error));
+    };
+
     let lat = markers[0][0];
     let lon = markers[0][1];
 
     if (soilDataOriginal.for) {
       if (
-        soilDataOriginal.for.lat === lat &&
-        soilDataOriginal.for.lon === lon
+        !(soilDataOriginal.for.lat === lat && soilDataOriginal.for.lon === lon)
       ) {
-      } else {
         getSSURGOData(lat, lon);
       }
     } else {
       getSSURGOData(lat, lon);
     }
-  }, [markers]);
-
-  const getSSURGOData = (lat, lon) => {
-    let markersCopy = markers;
-
-    let longLatString = "";
-
-    markersCopy.forEach((val, i) => {
-      // get long lat formatted as requested by SSURGO (long lat, long lat, ...)
-      // saved as longLatString
-      if (i === markersCopy.length - 1) {
-        longLatString +=
-          markersCopy[i][1] + " " + markersCopy[i][0] + "," + lon + " " + lat;
-      } else {
-        longLatString += markersCopy[i][1] + " " + markersCopy[i][0] + ",";
-      }
-    });
-    let soilDataQuery = "";
-
-    if (markersCopy.length > 1) {
-      soilDataQuery = `SELECT mu.mukey AS MUKEY, mu.muname AS Map_Unit_Name, muag.drclassdcd AS Drainage_Class, muag.flodfreqdcd AS Flooding_Frequency, mp.mupolygonkey as MPKEY
-    FROM mapunit AS mu 
-    INNER JOIN muaggatt AS muag ON muag.mukey = mu.mukey
-    INNER JOIN mupolygon AS mp ON mp.mukey = mu.mukey
-    WHERE mu.mukey IN (SELECT * from SDA_Get_Mukey_from_intersection_with_WktWgs84('polygon ((${longLatString}))'))
-    AND
-    mp.mupolygonkey IN  (SELECT * from SDA_Get_Mupolygonkey_from_intersection_with_WktWgs84('polygon ((${longLatString}))'))`;
-    } else {
-      // point
-      soilDataQuery = `SELECT mu.mukey AS MUKEY, mu.muname AS Map_Unit_Name, muag.drclassdcd AS Drainage_Class, muag.flodfreqdcd AS Flooding_Frequency, mp.mupolygonkey as MPKEY
-      FROM mapunit AS mu 
-      INNER JOIN muaggatt AS muag ON muag.mukey = mu.mukey
-      INNER JOIN mupolygon AS mp ON mp.mukey = mu.mukey
-      WHERE mu.mukey IN (SELECT * from SDA_Get_Mukey_from_intersection_with_WktWgs84('point (${lon} ${lat})'))
-      AND
-      mp.mupolygonkey IN  (SELECT * from SDA_Get_Mupolygonkey_from_intersection_with_WktWgs84('point (${lon} ${lat})'))`;
-    }
-
-    // console.log(soilDataQuery);
-    var myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
-
-    var urlencoded = new URLSearchParams();
-    urlencoded.append("query", soilDataQuery);
-    urlencoded.append("format", "json+columnname");
-
-    var requestOptions = {
-      method: "POST",
-      headers: myHeaders,
-      body: urlencoded,
-      redirect: "follow",
-    };
-
-    dispatch({
-      type: "TOGGLE_SOIL_LOADER",
-      data: {
-        isSoilDataLoading: true,
-      },
-    });
-
-    fetch(
-      "https://sdmdataaccess.sc.egov.usda.gov/Tabular/post.rest",
-      requestOptions
-    )
-      .then((response) => response.json())
-      .then((result) => {
-        if (result !== {}) {
-          let Ponding_Frequency = result["Table"][1][4];
-          let mapUnitString = "";
-
-          let stringSplit = [];
-
-          result["Table"].forEach((el, index) => {
-            if (index !== 0) {
-              if (stringSplit.indexOf(el[1].split(",")[0]) === -1) {
-                stringSplit.push(el[1].split(",")[0]);
-              }
-            }
-          });
-
-          const filteredArr = stringSplit.filter((elm) => elm);
-          mapUnitString = filteredArr.join(", ");
-
-          let floodingClasses = [];
-          result["Table"].forEach((el, index) => {
-            if (index === 0 || el.indexOf("Water") === 1) {
-            } else {
-              if (floodingClasses.indexOf(el[3]) === -1) {
-                floodingClasses.push(el[3]);
-              }
-            }
-          });
-
-          let drainageClasses = [];
-          result["Table"].forEach((el, index) => {
-            if (index !== 0) {
-              if (drainageClasses.indexOf(el[2]) === -1) {
-                drainageClasses.push(el[2]);
-              }
-            }
-          });
-          drainageClasses = drainageClasses.filter(function (el) {
-            return el != null;
-          });
-
-          dispatch({
-            type: "UPDATE_SOIL_DATA",
-            data: {
-              Map_Unit_Name: mapUnitString,
-              Drainage_Class: drainageClasses,
-              Flooding_Frequency: floodingClasses,
-              Ponding_Frequency: Ponding_Frequency,
-              for: { lat: lat, lon: lon },
-            },
-          });
-          dispatch({
-            type: "UPDATE_SOIL_DATA_ORIGINAL",
-            data: {
-              Map_Unit_Name: mapUnitString,
-              Drainage_Class: drainageClasses,
-              Flooding_Frequency: floodingClasses,
-              Ponding_Frequency: Ponding_Frequency,
-              for: { lat: lat, lon: lon },
-            },
-          });
-        }
-
-        dispatch({
-          type: "TOGGLE_SOIL_LOADER",
-          data: {
-            isSoilDataLoading: false,
-          },
-        });
-      })
-      .catch((error) => console.error("SSURGO FETCH ERROR", error));
-  };
+  }, [dispatch, markers, soilDataOriginal.for]);
 
   const updateDrainageClass = (label = "") => {
     let drainages = [...state.soilData.Drainage_Class];

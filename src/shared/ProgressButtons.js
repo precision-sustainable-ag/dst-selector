@@ -12,35 +12,35 @@ const ProgressButtons = () => {
   const [isDisabled, setIsDisabled] = useState(false);
 
   useEffect(() => {
-    disableLogic(state.progress, state.selectedGoals.length, state.soilData);
-  }, [state]);
+    const disableLogic = (progress, goalsLength) => {
+      switch (parseInt(progress)) {
+        case 1: {
+          // location selection state
+          if (state.zone === 0 || state.address === "") {
+            setIsDisabled(true);
+          } else {
+            setIsDisabled(false);
+          }
+          break;
+        }
+        case 4: {
+          // goals selection state
+          if (goalsLength > 3 || goalsLength < 1) {
+            setIsDisabled(true);
+          } else {
+            setIsDisabled(false);
+          }
+          break;
+        }
+        default: {
+          setIsDisabled(false);
+          break;
+        }
+      }
+    };
 
-  const disableLogic = (progress, goalsLength, soilData) => {
-    switch (parseInt(progress)) {
-      case 1: {
-        // location selection state
-        if (state.zone === 0 || state.address === "") {
-          setIsDisabled(true);
-        } else {
-          setIsDisabled(false);
-        }
-        break;
-      }
-      case 4: {
-        // goals selection state
-        if (goalsLength > 3 || goalsLength < 1) {
-          setIsDisabled(true);
-        } else {
-          setIsDisabled(false);
-        }
-        break;
-      }
-      default: {
-        setIsDisabled(false);
-        break;
-      }
-    }
-  };
+    disableLogic(state.progress, state.selectedGoals.length);
+  }, [state]);
 
   return renderProgressButtons(state.progress, isDisabled);
 };
