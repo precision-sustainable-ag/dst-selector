@@ -3,22 +3,25 @@
   The CoverCropType component filters crops based type
 */
 
-import { Chip, Grid } from "@material-ui/core";
 import React, {
-  forwardRef,
-  useEffect,
-  useImperativeHandle,
   useState,
+  useEffect,
+  forwardRef,
+  useImperativeHandle,
 } from "react";
+import { Chip, Grid } from "@material-ui/core";
+
+// import { Filters } from "./Filters";  // TODO
 
 const CoverCropType = forwardRef((props, ref) => {
-  let { setSidebarFilterOptions, sidebarFilterOptions, filters } = props;
+  // return <Filters props={props} ref={ref} />  // TODO
+
   const prop = "Cover Crop Group";
   const [selected, setSelected] = useState({ [prop]: [] });
-
+  
   useEffect(() => {
-    setSidebarFilterOptions({
-      ...sidebarFilterOptions,
+    props.setSidebarFilterOptions({
+      ...props.sidebarFilterOptions,
       ...selected,
     });
   }, [selected]);
@@ -31,7 +34,9 @@ const CoverCropType = forwardRef((props, ref) => {
 
   const handleClick = (_, val) => {
     if (selected[prop].includes(val)) {
-      const removed = selected[prop].filter((chipVals) => chipVals !== val);
+      const removed = selected[prop].filter(
+        (chipVals) => chipVals !== val
+      );
       setSelected({ ...selected, [prop]: removed });
     } else {
       const added = selected[prop];
@@ -43,15 +48,15 @@ const CoverCropType = forwardRef((props, ref) => {
 
   return (
     <Grid container spacing={1}>
-      {filters.values.map((val, index) => (
+      {props.filters.values.map((val, index) => (
         <Grid item key={index}>
           <Chip
-            onClick={() => handleClick(filters.name, val.name)}
+            onClick={() => handleClick(props.filters.name, val.name)}
             component="li"
             size="medium"
             label={val.name}
             color={
-              sidebarFilterOptions[prop].includes(val.name)
+              props.sidebarFilterOptions[prop].includes(val.name)
                 ? "primary"
                 : "secondary"
             }

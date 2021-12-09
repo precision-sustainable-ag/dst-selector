@@ -3,15 +3,15 @@
   styled using CustomStyles from ../../shared/constants
 */
 
-import { Typography } from "@material-ui/core";
+import React from "react";
 import Timeline from "@material-ui/lab/Timeline";
+import TimelineItem from "@material-ui/lab/TimelineItem";
+import TimelineSeparator from "@material-ui/lab/TimelineSeparator";
 import TimelineConnector from "@material-ui/lab/TimelineConnector";
 import TimelineContent from "@material-ui/lab/TimelineContent";
 import TimelineDot from "@material-ui/lab/TimelineDot";
-import TimelineItem from "@material-ui/lab/TimelineItem";
-import TimelineSeparator from "@material-ui/lab/TimelineSeparator";
-import React from "react";
 import { CustomStyles } from "../../shared/constants";
+import { Typography } from "@material-ui/core";
 
 const SoilDrainageTimeline = ({ drainage = [] }) => {
   const drainageClasses = [
@@ -24,6 +24,8 @@ const SoilDrainageTimeline = ({ drainage = [] }) => {
     "Saturated muck",
     "Well drained muck",
   ];
+  //   const classIntersection = drainageClasses.filter((x) => drainage.includes(x));
+  //   console.log(classIntersection);
   return (
     <Timeline align="right">
       {drainageClasses.map((drainageClass, index) => {

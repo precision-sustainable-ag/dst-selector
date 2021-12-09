@@ -4,13 +4,15 @@
   TopBar contains the blue bar for adding crops
 */
 
-import { Button, Typography } from "@material-ui/core";
-import { Add } from "@material-ui/icons";
-import React, { Fragment, useContext } from "react";
-import { useHistory } from "react-router-dom";
+
+import React, { useContext, Fragment } from "react";
 import { Context } from "../../store/Store";
 import MyCoverCropCardsComponent from "./MyCoverCropCardsComponent";
+import { Button, Typography } from "@material-ui/core";
+import { PictureAsPdf, ListAlt, Add } from "@material-ui/icons";
 import MyCoverCropComparisonComponent from "./MyCoverCropComparisonComponent";
+import { downloadAllPDF, downloadAllCSV } from "../../shared/constants";
+import { useHistory } from "react-router-dom";
 
 const MyCoverCropList = (props) => {
   const [state, dispatch] = useContext(Context);
@@ -33,6 +35,14 @@ const MyCoverCropList = (props) => {
   };
 
   const TopBar = ({ comparisonView }) => {
+    const { selectedCrops } = state;
+    const selectedCropNames = selectedCrops.map((crop) => {
+      return {
+        name: crop.cropName,
+        pdf: `/pdf/${crop.cropName}.pdf`,
+        csv: `/csv/${crop.cropName}.csv`,
+      };
+    });
     return (
       <div className="row">
         <div
@@ -47,6 +57,14 @@ const MyCoverCropList = (props) => {
           <div className="row">
             {comparisonView ? (
               <div className="col-8">
+                {/* <Button style={{ color: "white" }}>Download:</Button>
+                <Button
+                  style={{ color: "white" }}
+                  onClick={() => downloadAllPDF(selectedCropNames)}
+                >
+                  <PictureAsPdf /> <span className="pl-2">PDF</span>
+                </Button> */}
+
                 <Button
                   style={{ color: "white" }}
                   onClick={

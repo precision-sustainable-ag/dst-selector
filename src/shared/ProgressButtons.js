@@ -3,44 +3,59 @@
   The ProgressButtons allow the user to navigate steps
 */
 
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Context } from "../store/Store";
 import ProgressButtonsInner from "./ProgressButtonsInner";
 
 const ProgressButtons = () => {
-  const [state] = useContext(Context);
+  const [state, dispatch] = useContext(Context);
   const [isDisabled, setIsDisabled] = useState(false);
 
   useEffect(() => {
-    const disableLogic = (progress, goalsLength) => {
-      switch (parseInt(progress)) {
-        case 1: {
-          // location selection state
-          if (state.zone === 0 || state.address === "") {
-            setIsDisabled(true);
-          } else {
-            setIsDisabled(false);
-          }
-          break;
-        }
-        case 4: {
-          // goals selection state
-          if (goalsLength > 3 || goalsLength < 1) {
-            setIsDisabled(true);
-          } else {
-            setIsDisabled(false);
-          }
-          break;
-        }
-        default: {
-          setIsDisabled(false);
-          break;
-        }
-      }
-    };
-
-    disableLogic(state.progress, state.selectedGoals.length);
+    disableLogic(state.progress, state.selectedGoals.length, state.soilData);
   }, [state]);
+
+  const disableLogic = (progress, goalsLength, soilData) => {
+    // console.log(parseInt(progress));
+    switch (parseInt(progress)) {
+      case 1: {
+        // location selection state
+        if (state.zone === 0 || state.address === "") {
+          setIsDisabled(true);
+        } else {
+          setIsDisabled(false);
+        }
+        break;
+      }
+      // case 2: {
+      //   if (
+      //     // soilData.Drainage_Class.length === 0 ||
+      //     // soilData.Drainage_Class === "" ||
+      //     // soilData.Flooding_Frequency === null ||
+      //     // soilData.Flooding_Frequency.length === 0 ||
+      //     // soilData.Flooding_Frequency === ""
+      //     false
+      //   ) {
+      //     setIsDisabled(true);
+      //   } else {
+      //     setIsDisabled(false);
+      //   }
+      // }
+      case 4: {
+        // goals selection state
+        if (goalsLength > 3 || goalsLength < 1) {
+          setIsDisabled(true);
+        } else {
+          setIsDisabled(false);
+        }
+        break;
+      }
+      default: {
+        setIsDisabled(false);
+        break;
+      }
+    }
+  };
 
   return renderProgressButtons(state.progress, isDisabled);
 };

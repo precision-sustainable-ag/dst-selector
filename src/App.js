@@ -3,18 +3,18 @@
   styled using ./styles/App.scss
 */
 
-import { Snackbar } from "@material-ui/core";
 import React, { useContext, useEffect, useState } from "react";
-import CropSelector from "./components/CropSelector/CropSelector";
-import GoalsSelector from "./components/GoalsSelector/GoalsSelector";
+import "./styles/App.scss";
+import { Snackbar } from "@material-ui/core";
 import Header from "./components/Header/Header";
 import Landing from "./components/Landing/Landing";
-import LocationComponent from "./components/Location/Location";
-import LocationConfirmation from "./components/Location/LocationConfirmation";
-import ProgressBar from "./shared/ProgressBar";
-import ProgressButtons from "./shared/ProgressButtons";
 import { Context } from "./store/Store";
-import "./styles/App.scss";
+import LocationComponent from "./components/Location/Location";
+import ProgressButtons from "./shared/ProgressButtons";
+import ProgressBar from "./shared/ProgressBar";
+import GoalsSelector from "./components/GoalsSelector/GoalsSelector";
+import LocationConfirmation from "./components/Location/LocationConfirmation";
+import CropSelector from "./components/CropSelector/CropSelector";
 
 const LoadRelevantRoute = ({ progress, calcHeight }) => {
   switch (progress) {
@@ -76,9 +76,8 @@ const App = () => {
     let parentDocHeight = document
       .getElementById("mainContentWrapper")
       .getBoundingClientRect().height;
-    let headerHeight = document
-      .querySelector("header")
-      .getBoundingClientRect().height;
+    let headerHeight = document.querySelector("header").getBoundingClientRect()
+      .height;
 
     let calculatedHeight = parentDocHeight - headerHeight;
 
@@ -90,7 +89,19 @@ const App = () => {
       <Header logo="neccc_wide_logo_color_web.jpg" />
 
       <div className="container-fluid pl-0 pr-0">
-        <div className="contentContainer">
+        <div
+          className="contentContainer"
+          style={
+            {
+              // height: calcHeight,
+              // width: "100%",
+              // position: "absolute",
+              // top: "50%",
+              // left: "50%",
+              // transform: "translate(-50%, -50%)",
+            }
+          }
+        >
           {state.progress === 0 ? (
             <Landing
               title="Decision Support Tool"

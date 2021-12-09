@@ -4,18 +4,19 @@
   Styles are created using makeStyles
 */
 
+import React, { useState, useEffect, Fragment, useContext } from "react";
+import { PictureAsPdf, Add, FormatListBulleted } from "@material-ui/icons";
 import {
   Card,
-  CardActionArea,
-  CardContent,
   CardMedia,
-  Grid,
-  makeStyles,
+  CardActionArea,
   Typography,
+  CardContent,
+  makeStyles,
+  Grid,
 } from "@material-ui/core";
+import { downloadAllPDF, trimString } from "../../shared/constants";
 import { useSnackbar } from "notistack";
-import React, { Fragment, useContext, useEffect, useState } from "react";
-import { trimString } from "../../shared/constants";
 import { Context } from "../../store/Store";
 import CropDetailsModalComponent from "../CropSelector/CropDetailsModal";
 const useStyles = makeStyles({
@@ -44,10 +45,9 @@ const ExplorerCardView = (props) => {
     });
     setSelectedBtns(newSelectedBtns);
     console.log("selected btns", newSelectedBtns);
-  }, [state.zone, state.selectedCrops]);
+  }, [state.zone, state.selectedCrops.length]);
 
-  const { enqueueSnackbar } = useSnackbar();
-
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const handleModalOpen = (crop) => {
     // put data inside modal
     setModalData(crop);
@@ -82,9 +82,11 @@ const ExplorerCardView = (props) => {
         });
         enqueueSnackbar(`${cropName} Added`);
       } else {
+        // alert(removeIndex);
         let selectedCropsCopy = state.selectedCrops;
 
         selectedCropsCopy.splice(removeIndex, 1);
+        // console.log(selectedCropsCopy);
         dispatch({
           type: "SELECTED_CROPS_MODIFIER",
           data: {
@@ -113,6 +115,8 @@ const ExplorerCardView = (props) => {
       <Grid container spacing={3}>
         {props.activeCropData.length > 0 ? (
           props.activeCropData.map((crop, index) => {
+            // console.log("crop.fields.Zone", crop.fields.Zone);
+            // console.log("state.zone", state.zone);
             return (
               <Grid item key={index}>
                 <Card className={classes.card}>
@@ -152,10 +156,10 @@ const ExplorerCardView = (props) => {
                             textDecoration: "underline",
                             color: "rgb(53, 153, 155)",
                           }}
+                          // href={`/information-sheet/${crop.fields["Cover Crop Name"]}`}
                           target="_blank"
-                          rel="noopener noreferrer"
+                          rel="noopener"
                           onClick={() => handleModalOpen(crop)}
-                          href="/#"
                         >
                           View Crop Details
                         </a>
