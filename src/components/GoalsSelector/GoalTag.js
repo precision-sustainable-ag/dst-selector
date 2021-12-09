@@ -4,8 +4,8 @@
   Styles are created using makeStyles
 */
 
-import { Avatar, Chip, Tooltip } from "@material-ui/core";
 import React, { useContext, useEffect } from "react";
+import { Chip, Tooltip, Avatar } from "@material-ui/core";
 import { Context } from "../../store/Store";
 
 const GoalTag = (props) => {
@@ -24,7 +24,7 @@ const GoalTag = (props) => {
           .classList.add("active");
       });
     }
-  }, [state.selectedGoals]);
+  }, []);
 
   const updateSelectedGoals = (item, key) => {
     const goals = [...state.selectedGoals];
@@ -37,12 +37,15 @@ const GoalTag = (props) => {
         type: "ADD_SELECTED_GOALS",
         data: item.fields["Variable"],
       });
+
+      //   document.getElementById(`avatar${key}`).innerHTML =
     } else {
       // exists, remove it from the state and update the state
       let index = goals.indexOf(item.fields["Variable"]);
       goals.splice(index, 1);
 
       // make it lighter on the ui
+
       document.getElementById(`chip${key}`).classList.remove("active");
 
       dispatch({

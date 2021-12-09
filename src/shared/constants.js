@@ -27,7 +27,7 @@ export const ReferenceTooltip = (props) => {
       title={
         <div>
           Source{": "}
-          <a href={sourceURL} target="_blank" rel="noopener noreferrer">
+          <a href={sourceURL} target="_blank" rel="noreferrer">
             {sourceName}
           </a>
         </div>
@@ -171,7 +171,7 @@ export const UnderConstructionText = () => {
       spacing={0}
       direction="column"
       alignItems="center"
-      justifyContent="center"
+      justify="center"
       style={{ minHeight: "100vh" }}
     >
       <Grid item xs={3}>
@@ -1360,8 +1360,6 @@ export const RenderSeedPriceIcons = ({ val }) => {
           </span>
         </Fragment>
       );
-    default:
-      break;
   }
 };
 
@@ -1374,6 +1372,7 @@ export const CropImage = ({
   onClick = () => {},
 }) => {
   const placeholder = "//placehold.it/100x100";
+
   let imageStyle = {};
 
   switch (view) {

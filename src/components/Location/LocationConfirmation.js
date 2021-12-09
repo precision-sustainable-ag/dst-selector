@@ -3,17 +3,20 @@
   styled using CustomStyles from ../../shared/constants
 */
 
-import { Typography } from "@material-ui/core";
 import React, { useContext } from "react";
-import { CustomStyles } from "../../shared/constants";
+import MapComponent from "./Map";
 import { Context } from "../../store/Store";
-import MapContext from "./MapContext";
-import SoilCondition from "./SoilCondition";
+// import AutoCompleteComponent from "./AutoComplete";
+import SoilConditions from "./SoilConditions";
 import WeatherConditions from "./WeatherConditions";
-import "leaflet/dist/leaflet.css";
+import { CustomStyles } from "../../shared/constants";
+import MapContext from "./MapContext";
+import { Typography } from "@material-ui/core";
+import SoilCondition from "./SoilCondition";
+// import { TextField } from "@material-ui/core";
 
 const LocationConfirmation = () => {
-  const [state] = useContext(Context);
+  const [state, dispatch] = useContext(Context);
   return (
     <div
       className="container-fluid mt-5"

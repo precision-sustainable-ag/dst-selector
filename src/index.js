@@ -10,6 +10,8 @@ import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import Store from "./store/Store";
 import "leaflet-control-geocoder/dist/Control.Geocoder.js";
+// import "@fortawesome/fontawesome-free/css/all.min.css";
+// import "bootstrap-css-only/css/bootstrap.min.css";
 import "./styles/parent.scss";
 import "mdbreact/dist/css/mdb.css";
 import "./styles/progressBar.css";
@@ -22,7 +24,10 @@ import CoverCropExplorer from "./components/CoverCropExplorer/CoverCropExplorer"
 import InformationSheet from "./components/InformationSheet/InformationSheet";
 import HelpComponent from "./components/Help/Help";
 import FeedbackComponent from "./components/Feedback/Feedback";
-import { MuiThemeProvider, responsiveFontSizes } from "@material-ui/core";
+import {
+  MuiThemeProvider,
+  responsiveFontSizes,
+} from "@material-ui/core";
 import { CustomStyles } from "./shared/constants";
 import { SnackbarProvider } from "notistack";
 import InformationSheetDictionary from "./components/InformationSheet/InformationSheetDictionary";
@@ -30,8 +35,10 @@ import MyCoverCropListWrapper from "./components/MyCoverCropList/MyCoverCropList
 import License from "./components/License/License";
 import { createTheme } from "@material-ui/core/styles";
 
-const withFooter = (WrappedComponent) => () =>
-  [<WrappedComponent key="1" />, <Footer key="2" />];
+const withFooter = (WrappedComponent) => () => [
+  <WrappedComponent key="1" />,
+  <Footer key="2" />,
+];
 
 const theme = createTheme({
   palette: {
@@ -56,7 +63,7 @@ const theme = createTheme({
     MuiChip: {
       root: {
         "&&:hover": {
-          boxShadow: "0 0 3px 0 black",
+          boxShadow: "0 0 3px 0 black"
         },
         border: "1px solid #777",
       },
@@ -141,6 +148,11 @@ const Wrapper = () => (
                 component={MyCoverCropListWrapper}
                 exact
               />
+              {/* <Route
+                path={"/information-sheet"}
+                component={InformationSheet}
+                exact
+              /> */}
               <Route
                 path={"/information-sheet/:cropName"}
                 component={InformationSheet}

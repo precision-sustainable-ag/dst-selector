@@ -4,172 +4,233 @@
   styled using ../../styles/soilConditions.scss
 */
 
-import { Button, Chip, Switch, Typography } from "@material-ui/core";
+import React, { useState, useEffect, useContext, useMemo } from "react";
 import {
-  InvertColors,
-  LocalDrinkOutlined,
+  Typography,
+  Chip,
+  Button,
+  Grid,
+  withStyles,
+  Switch,
+} from "@material-ui/core";
+import {
   Terrain,
+  LocalDrinkOutlined,
+  InvertColors,
   WavesOutlined,
 } from "@material-ui/icons";
-import React, { useContext, useEffect, useState } from "react";
-import { ReferenceTooltip } from "../../shared/constants";
+import { ReferenceTooltip, CustomStyles } from "../../shared/constants";
 import { Context } from "../../store/Store";
 import "../../styles/soilConditions.scss";
 
+const AntSwitch = withStyles((theme) => ({
+  root: {
+    width: 28,
+    height: 16,
+    padding: 0,
+    display: "flex",
+  },
+  switchBase: {
+    padding: 2,
+    color: theme.palette.grey[500],
+    "&$checked": {
+      transform: "translateX(12px)",
+      color: theme.palette.common.white,
+      "& + $track": {
+        opacity: 1,
+        backgroundColor: theme.palette.primary.main,
+        borderColor: theme.palette.primary.main,
+      },
+    },
+  },
+  thumb: {
+    width: 12,
+    height: 12,
+    boxShadow: "none",
+  },
+  track: {
+    border: `1px solid ${theme.palette.grey[500]}`,
+    borderRadius: 16 / 2,
+    opacity: 1,
+    backgroundColor: theme.palette.common.white,
+  },
+  checked: {},
+}))(Switch);
 const SoilCondition = (props) => {
   const [state, dispatch] = useContext(Context);
   const { soilData, soilDataOriginal, markers } = state;
   const [tilingCheck, setTilingCheck] = useState(false);
 
   useEffect(() => {
-    const getSSURGOData = (lat, lon) => {
-      let markersCopy = markers;
-
-      let longLatString = "";
-
-      markersCopy.forEach((val, i) => {
-        // get long lat formatted as requested by SSURGO (long lat, long lat, ...)
-        // saved as longLatString
-        if (i === markersCopy.length - 1) {
-          longLatString +=
-            markersCopy[i][1] + " " + markersCopy[i][0] + "," + lon + " " + lat;
-        } else {
-          longLatString += markersCopy[i][1] + " " + markersCopy[i][0] + ",";
-        }
-      });
-      let soilDataQuery = "";
-
-      if (markersCopy.length > 1) {
-        soilDataQuery = `SELECT mu.mukey AS MUKEY, mu.muname AS Map_Unit_Name, muag.drclassdcd AS Drainage_Class, muag.flodfreqdcd AS Flooding_Frequency, mp.mupolygonkey as MPKEY
-      FROM mapunit AS mu 
-      INNER JOIN muaggatt AS muag ON muag.mukey = mu.mukey
-      INNER JOIN mupolygon AS mp ON mp.mukey = mu.mukey
-      WHERE mu.mukey IN (SELECT * from SDA_Get_Mukey_from_intersection_with_WktWgs84('polygon ((${longLatString}))'))
-      AND
-      mp.mupolygonkey IN  (SELECT * from SDA_Get_Mupolygonkey_from_intersection_with_WktWgs84('polygon ((${longLatString}))'))`;
-      } else {
-        // point
-        soilDataQuery = `SELECT mu.mukey AS MUKEY, mu.muname AS Map_Unit_Name, muag.drclassdcd AS Drainage_Class, muag.flodfreqdcd AS Flooding_Frequency, mp.mupolygonkey as MPKEY
-        FROM mapunit AS mu 
-        INNER JOIN muaggatt AS muag ON muag.mukey = mu.mukey
-        INNER JOIN mupolygon AS mp ON mp.mukey = mu.mukey
-        WHERE mu.mukey IN (SELECT * from SDA_Get_Mukey_from_intersection_with_WktWgs84('point (${lon} ${lat})'))
-        AND
-        mp.mupolygonkey IN  (SELECT * from SDA_Get_Mupolygonkey_from_intersection_with_WktWgs84('point (${lon} ${lat})'))`;
-      }
-
-      // console.log(soilDataQuery);
-      var myHeaders = new Headers();
-      myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
-
-      var urlencoded = new URLSearchParams();
-      urlencoded.append("query", soilDataQuery);
-      urlencoded.append("format", "json+columnname");
-
-      var requestOptions = {
-        method: "POST",
-        headers: myHeaders,
-        body: urlencoded,
-        redirect: "follow",
-      };
-
-      dispatch({
-        type: "TOGGLE_SOIL_LOADER",
-        data: {
-          isSoilDataLoading: true,
-        },
-      });
-
-      fetch(
-        "https://sdmdataaccess.sc.egov.usda.gov/Tabular/post.rest",
-        requestOptions
-      )
-        .then((response) => response.json())
-        .then((result) => {
-          if (result !== {}) {
-            let Ponding_Frequency = result["Table"][1][4];
-            let mapUnitString = "";
-
-            let stringSplit = [];
-
-            result["Table"].forEach((el, index) => {
-              if (index !== 0) {
-                if (stringSplit.indexOf(el[1].split(",")[0]) === -1) {
-                  stringSplit.push(el[1].split(",")[0]);
-                }
-              }
-            });
-
-            const filteredArr = stringSplit.filter((elm) => elm);
-            mapUnitString = filteredArr.join(", ");
-
-            let floodingClasses = [];
-            result["Table"].forEach((el, index) => {
-              if (index === 0 || el.indexOf("Water") === 1) {
-              } else {
-                if (floodingClasses.indexOf(el[3]) === -1) {
-                  floodingClasses.push(el[3]);
-                }
-              }
-            });
-
-            let drainageClasses = [];
-            result["Table"].forEach((el, index) => {
-              if (index !== 0) {
-                if (drainageClasses.indexOf(el[2]) === -1) {
-                  drainageClasses.push(el[2]);
-                }
-              }
-            });
-            drainageClasses = drainageClasses.filter(function (el) {
-              return el != null;
-            });
-
-            dispatch({
-              type: "UPDATE_SOIL_DATA",
-              data: {
-                Map_Unit_Name: mapUnitString,
-                Drainage_Class: drainageClasses,
-                Flooding_Frequency: floodingClasses,
-                Ponding_Frequency: Ponding_Frequency,
-                for: { lat: lat, lon: lon },
-              },
-            });
-            dispatch({
-              type: "UPDATE_SOIL_DATA_ORIGINAL",
-              data: {
-                Map_Unit_Name: mapUnitString,
-                Drainage_Class: drainageClasses,
-                Flooding_Frequency: floodingClasses,
-                Ponding_Frequency: Ponding_Frequency,
-                for: { lat: lat, lon: lon },
-              },
-            });
-          }
-
-          dispatch({
-            type: "TOGGLE_SOIL_LOADER",
-            data: {
-              isSoilDataLoading: false,
-            },
-          });
-        })
-        .catch((error) => console.error("SSURGO FETCH ERROR", error));
-    };
-
+    // console.log("from soil file");
     let lat = markers[0][0];
     let lon = markers[0][1];
 
     if (soilDataOriginal.for) {
       if (
-        !(soilDataOriginal.for.lat === lat && soilDataOriginal.for.lon === lon)
+        soilDataOriginal.for.lat === lat &&
+        soilDataOriginal.for.lon === lon
       ) {
+        // console.log("soil data exists");
+      } else {
+        // console.log("markers changed");
         getSSURGOData(lat, lon);
       }
     } else {
+      //   console.log("no previous data");
       getSSURGOData(lat, lon);
     }
-  }, [dispatch, markers, soilDataOriginal.for]);
+  }, [markers]);
+
+  const getSSURGOData = (lat, lon) => {
+    let markersCopy = markers;
+    // console.log("Inital: ", markers);
+
+    let longLatString = "";
+
+    markersCopy.map((val, i) => {
+      // get long lat formatted as requested by SSURGO (long lat, long lat, ...)
+      // saved as longLatString
+
+      if (i === markersCopy.length - 1) {
+        longLatString +=
+          markersCopy[i][1] + " " + markersCopy[i][0] + "," + lon + " " + lat;
+      } else {
+        longLatString += markersCopy[i][1] + " " + markersCopy[i][0] + ",";
+      }
+    });
+    let soilDataQuery = "";
+
+    if (markersCopy.length > 1) {
+      soilDataQuery = `SELECT mu.mukey AS MUKEY, mu.muname AS Map_Unit_Name, muag.drclassdcd AS Drainage_Class, muag.flodfreqdcd AS Flooding_Frequency, mp.mupolygonkey as MPKEY
+    FROM mapunit AS mu 
+    INNER JOIN muaggatt AS muag ON muag.mukey = mu.mukey
+    INNER JOIN mupolygon AS mp ON mp.mukey = mu.mukey
+    WHERE mu.mukey IN (SELECT * from SDA_Get_Mukey_from_intersection_with_WktWgs84('polygon ((${longLatString}))'))
+    AND
+    mp.mupolygonkey IN  (SELECT * from SDA_Get_Mupolygonkey_from_intersection_with_WktWgs84('polygon ((${longLatString}))'))`;
+    } else {
+      // point
+      soilDataQuery = `SELECT mu.mukey AS MUKEY, mu.muname AS Map_Unit_Name, muag.drclassdcd AS Drainage_Class, muag.flodfreqdcd AS Flooding_Frequency, mp.mupolygonkey as MPKEY
+      FROM mapunit AS mu 
+      INNER JOIN muaggatt AS muag ON muag.mukey = mu.mukey
+      INNER JOIN mupolygon AS mp ON mp.mukey = mu.mukey
+      WHERE mu.mukey IN (SELECT * from SDA_Get_Mukey_from_intersection_with_WktWgs84('point (${lon} ${lat})'))
+      AND
+      mp.mupolygonkey IN  (SELECT * from SDA_Get_Mupolygonkey_from_intersection_with_WktWgs84('point (${lon} ${lat})'))`;
+    }
+
+    // console.log(soilDataQuery);
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+    var urlencoded = new URLSearchParams();
+    urlencoded.append("query", soilDataQuery);
+    urlencoded.append("format", "json+columnname");
+
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: urlencoded,
+      redirect: "follow",
+    };
+
+    dispatch({
+      type: "TOGGLE_SOIL_LOADER",
+      data: {
+        isSoilDataLoading: true,
+      },
+    });
+
+    fetch(
+      "https://sdmdataaccess.sc.egov.usda.gov/Tabular/post.rest",
+      requestOptions
+    )
+      .then((response) => response.json())
+      .then((result) => {
+        // success
+        // console.log("SSURGO: ", result);
+
+        if (result !== {}) {
+          //   let Map_Unit_Name = result["Table"][1][1];
+          //   let Drainage_Class = result["Table"][1][2];
+          // if(result["Table"][1] !)
+          let Flooding_Frequency = result["Table"][1][3];
+          let Ponding_Frequency = result["Table"][1][4];
+          let mapUnitString = "";
+
+          let stringSplit = [];
+
+          result["Table"].map((el, index) => {
+            if (index !== 0) {
+              // if (index < result["Table"].length) {
+              // mapUnitString += el[1].split(",") + ",";
+              // } else {
+              if (stringSplit.indexOf(el[1].split(",")[0]) === -1) {
+                stringSplit.push(el[1].split(",")[0]);
+              }
+            }
+            // }
+          });
+
+          // console.log(stringSplit);
+          const filteredArr = stringSplit.filter((elm) => elm);
+          mapUnitString = filteredArr.join(", ");
+
+          let floodingClasses = [];
+          result["Table"].map((el, index) => {
+            if (index === 0 || el.indexOf("Water") === 1) {
+            } else {
+              if (floodingClasses.indexOf(el[3]) === -1) {
+                floodingClasses.push(el[3]);
+              }
+            }
+          });
+
+          let drainageClasses = [];
+          result["Table"].map((el, index) => {
+            if (index !== 0) {
+              if (drainageClasses.indexOf(el[2]) === -1) {
+                drainageClasses.push(el[2]);
+              }
+            }
+          });
+          drainageClasses = drainageClasses.filter(function (el) {
+            return el != null;
+          });
+          // console.log(drainageClasses);
+
+          dispatch({
+            type: "UPDATE_SOIL_DATA",
+            data: {
+              Map_Unit_Name: mapUnitString,
+              Drainage_Class: drainageClasses,
+              Flooding_Frequency: floodingClasses,
+              Ponding_Frequency: Ponding_Frequency,
+              for: { lat: lat, lon: lon },
+            },
+          });
+          dispatch({
+            type: "UPDATE_SOIL_DATA_ORIGINAL",
+            data: {
+              Map_Unit_Name: mapUnitString,
+              Drainage_Class: drainageClasses,
+              Flooding_Frequency: floodingClasses,
+              Ponding_Frequency: Ponding_Frequency,
+              for: { lat: lat, lon: lon },
+            },
+          });
+        }
+
+        dispatch({
+          type: "TOGGLE_SOIL_LOADER",
+          data: {
+            isSoilDataLoading: false,
+          },
+        });
+      })
+      .catch((error) => console.error("SSURGO FETCH ERROR", error));
+  };
 
   const updateDrainageClass = (label = "") => {
     let drainages = [...state.soilData.Drainage_Class];
@@ -373,6 +434,8 @@ const SoilCondition = (props) => {
     ];
     if (checkArray.some((e) => soilData.Drainage_Class.includes(e))) {
       setShowTiling(true);
+
+      // setTilingCheck(false);
     }
     window.localStorage.setItem(
       "drainage",
@@ -403,7 +466,6 @@ const SoilCondition = (props) => {
                     <a
                       href="https://websoilsurvey.sc.egov.usda.gov/App/HomePage.htm"
                       target="_blank"
-                      rel="noopener noreferrer"
                     >
                       USDA NRCS Web Soil Survey
                     </a>
@@ -444,7 +506,6 @@ const SoilCondition = (props) => {
                     <a
                       href="https://websoilsurvey.sc.egov.usda.gov/App/HomePage.htm"
                       target="_blank"
-                      rel="noopener noreferrer"
                     >
                       USDA NRCS Web Soil Survey
                     </a>{" "}
@@ -453,7 +514,6 @@ const SoilCondition = (props) => {
                     <a
                       href="https://www.nrcs.usda.gov/wps/portal/nrcs/detail/soils/ref/?cid=nrcs142p2_054253"
                       target="_blank"
-                      rel="noopener noreferrer"
                     >
                       {" "}
                       Definitions of values found here
@@ -521,7 +581,13 @@ const SoilCondition = (props) => {
                   let soilDrainCopy = soilData.Drainage_Class;
 
                   let drainSet = new Set(soilDrainCopy);
+                  // console.log(e.target.checked);
                   if (e.target.checked) {
+                    // if(drainSet.has('Very poorly drained')) {
+                    //   drainSet.delete('Very poorly drained');
+                    //   drainSet.add('Poorly drained');
+                    // }
+                    // if(drainSet.has(''))
                     if (
                       drainSet.has("Very poorly drained") &&
                       drainSet.has("Poorly drained") &&
@@ -566,11 +632,20 @@ const SoilCondition = (props) => {
                         drainSet.add("Moderately well drained");
                       }
                     }
+                    // console.log(drainSet);
+                    // dispatch({
+                    //   type: "UPDATE_DRAINAGE_CLASS",
+                    //   data: [...drainSet],
+                    // });
                     window.localStorage.setItem(
                       "drainage",
                       JSON.stringify([...drainSet])
                     );
                   } else {
+                    // dispatch({
+                    //   type: "UPDATE_DRAINAGE_CLASS",
+                    //   data: soilDataOriginal.Drainage_Class,
+                    // });
                     window.localStorage.setItem(
                       "drainage",
                       JSON.stringify(soilDataOriginal.Drainage_Class)
@@ -606,7 +681,6 @@ const SoilCondition = (props) => {
                     <a
                       href="https://websoilsurvey.sc.egov.usda.gov/App/HomePage.htm"
                       target="_blank"
-                      rel="noopener noreferrer"
                     >
                       USDA NRCS Web Soil Survey
                     </a>
@@ -617,7 +691,6 @@ const SoilCondition = (props) => {
                     <a
                       href="https://www.nrcs.usda.gov/wps/portal/nrcs/detail/soils/ref/?cid=nrcs142p2_054253"
                       target="_blank"
-                      rel="noopener noreferrer"
                     >
                       {" "}
                       Definitions of values found here
