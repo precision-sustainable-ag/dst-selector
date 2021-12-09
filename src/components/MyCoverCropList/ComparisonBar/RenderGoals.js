@@ -2,18 +2,18 @@
   Handles rendering the goals and updating them when selected
 */
 
-import React, { Fragment } from "react";
 import {
+  Checkbox,
+  Collapse,
+  FormControlLabel,
+  Grid,
+  List,
   ListItem,
   ListItemText,
   Typography,
-  Collapse,
-  List,
-  FormControlLabel,
-  Checkbox,
-  Grid,
 } from "@material-ui/core";
 import { ExpandLess, ExpandMore } from "@material-ui/icons";
+import React, { Fragment } from "react";
 const RenderGoals = ({
   goals = [],
   setGoals = () => {},

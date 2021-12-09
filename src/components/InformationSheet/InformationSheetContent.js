@@ -6,35 +6,28 @@
   styled using makeStyles and withStyles
 */
 
-
-import React, { useState, useEffect, Fragment, useContext } from "react";
-import {
-  getRating,
-  RenderSeedPriceIcons,
-  allMonths,
-  getActiveCropMonths,
-} from "../../shared/constants";
-import { Typography, AccordionDetails, makeStyles } from "@material-ui/core";
-import SoilDrainageTimeline from "./SoilDrainageTimeline";
-import { withStyles } from "@material-ui/core/styles";
+import { AccordionDetails, makeStyles, Typography } from "@material-ui/core";
 import MuiAccordion from "@material-ui/core/Accordion";
 import MuiAccordionSummary from "@material-ui/core/AccordionSummary";
-import {
-  ExpandMore,
-  FiberManualRecord,
-} from "@material-ui/icons";
-import PhotoComponent from "./PhotoComponent";
-import InformationSheetDictionary from "./InformationSheetDictionary";
-import GrowthWindowComponent from "../CropSelector/GrowthWindow";
-import sources from "./sources.json";
+import { withStyles } from "@material-ui/core/styles";
+import { ExpandMore, FiberManualRecord } from "@material-ui/icons";
 import moment from "moment-timezone";
+import React, { Fragment, useContext, useEffect, useState } from "react";
+import {
+  allMonths,
+  getActiveCropMonths,
+  getRating,
+  RenderSeedPriceIcons,
+} from "../../shared/constants";
 import { Context } from "../../store/Store";
 import CropSelectorCalendarView from "../CropSelector/CropSelectorCalendarView";
+import PhotoComponent from "./PhotoComponent";
+import SoilDrainageTimeline from "./SoilDrainageTimeline";
+import sources from "./sources.json";
 import TooltipMaker from "./TooltipMaker";
 
 const Accordion = withStyles({
   root: {
-    // border: "1px solid rgba(0, 0, 0, .125)",
     boxShadow: "none",
     "&:not(:last-child)": {
       borderBottom: 0,
@@ -51,7 +44,6 @@ const Accordion = withStyles({
 
 const AccordionSummary = withStyles({
   root: {
-    // backgroundColor: "rgba(0, 0, 0, .03)",
     borderBottom: "1px solid #2b7b79",
     marginBottom: -1,
     minHeight: 56,
@@ -100,16 +92,14 @@ const InformationSheetContent = (props) => {
         .map((item) => item.replace(removeDoubleQuotes, "$1"))
         .map((item) => item.trim());
 
-      if (zones.includes(`Zone ${zone}`)) {
-        if (coverCrops.includes(crop["Cover Crop Name"])) {
-          return true;
-        } else return false;
-      } else return false;
+      return (
+        zones.includes(`Zone ${zone}`) &&
+        coverCrops.includes(crop["Cover Crop Name"])
+      );
     });
 
     setCurrentSources(relevantZones);
-    // console.log(relevantZones);
-  }, []);
+  }, [crop, zone]);
 
   return Object.keys(crop).length > 0 ? (
     <Fragment>
@@ -1186,11 +1176,6 @@ const InformationSheetContent = (props) => {
                     </Typography>
                   </div>
                   <div className="col-3 mb-2">
-                    {/* <div className="blue-bg">
-                      <Typography variant="body1">
-                        {getMonthDayString("temperature", crop)}
-                      </Typography>
-                    </div> */}
                     {crop[
                       "Second Temperature/Moisture Risk to Establishment Start"
                     ] &&
@@ -1377,6 +1362,7 @@ const InformationSheetContent = (props) => {
                             }}
                             href={source["URL"]}
                             target="_blank"
+                            rel="noopener noreferrer"
                           >
                             {source["Resource Name"]}
                           </a>

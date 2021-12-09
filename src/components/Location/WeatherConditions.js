@@ -4,38 +4,25 @@
   styled using makeStyles
 */
 
-import React, { useContext, useState, useEffect } from "react";
-import { LightButton, ReferenceTooltip } from "../../shared/constants";
-// import Slider from "@material-ui/core/Slider";
 import {
-  Cloud,
-  Info,
-  Opacity,
-  AcUnit,
-  WbSunny,
-  WbSunnyOutlined,
-} from "@material-ui/icons";
-import {
-  Button,
-  Modal,
-  makeStyles,
-  Fade,
   Backdrop,
-  FormGroup,
-  TextField,
-  //   FormControlLabel,
-  Typography,
+  Button,
+  Fade,
   FormControl,
+  FormGroup,
   InputLabel,
+  makeStyles,
+  Modal,
   Select,
-  CircularProgress,
+  TextField,
   Tooltip,
-  Link,
+  Typography,
 } from "@material-ui/core";
-
-import { Context } from "../../store/Store";
+import { AcUnit, Info, Opacity, WbSunnyOutlined } from "@material-ui/icons";
 import moment from "moment";
-import WeatherModal from "./WeatherModal";
+import React, { useContext, useEffect, useState } from "react";
+import { LightButton } from "../../shared/constants";
+import { Context } from "../../store/Store";
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -61,9 +48,7 @@ const WeatherConditions = (props) => {
   const classes = useStyles();
   const [months, setMonths] = useState([]);
   const [currentMonthFull, setCurrentMonthFull] = useState("NOVEMBER");
-  const [didChange, setDidChange] = useState(false);
   const [anyValuesChanged, setAnyValuesChanged] = useState(false);
-  const [caller, setCaller] = React.useState("");
 
   const [weatherDataShadow, setWeatherDataShadow] = useState(state.weatherData);
 
@@ -76,7 +61,7 @@ const WeatherConditions = (props) => {
     if (!state.ajaxInProgress) {
       setWeatherDataShadow(state.weatherData);
     }
-  }, [state.ajaxInProgress]);
+  }, [state.ajaxInProgress, state.weatherData]);
 
   const [firstFrostMonth, setFirstFrostMonth] = useState(
     state.weatherData.averageFrost.firstFrostDate.month
@@ -137,7 +122,6 @@ const WeatherConditions = (props) => {
       setLastFrostDayError(true);
       setLastFrostDayHelper("Invalid Day");
     } else {
-      setDidChange(true);
       dispatch({
         type: "UPDATE_WEATHER_CONDITIONS",
         data: { weatherData: broadcastObject },
@@ -148,14 +132,6 @@ const WeatherConditions = (props) => {
     // data incorrect
 
     // show error on modal
-  };
-
-  const setDefaultWeatherValues = () => {
-    dispatch({
-      type: "WEATHER_DATA_RESET",
-      data: { weatherDataReset: !state.weatherDataReset },
-    });
-    setDidChange(!didChange);
   };
 
   useEffect(() => {
@@ -175,12 +151,6 @@ const WeatherConditions = (props) => {
     });
 
     setFrostFreeDays(state.weatherData.frostFreeDays);
-
-    if (props.caller) {
-      setCaller(props.caller);
-    } else {
-      setCaller("");
-    }
   }, [state.weatherData, props.caller]);
 
   const handleModalOpen = () => {
@@ -191,30 +161,29 @@ const WeatherConditions = (props) => {
     setOpen(false);
   };
 
-  const [modalBtnDisabled, setModalBtnDisabled] = useState(false);
-  const checkIfAnythingChanged = () => {
-    if (
-      firstFrostMonth === weatherDataShadow.averageFrost.firstFrostDate.month &&
-      parseInt(firstFrostDay) ===
-        parseInt(weatherDataShadow.averageFrost.firstFrostDate.day) &&
-      lastFrostMonth === weatherDataShadow.averageFrost.lastFrostDate.month &&
-      lastFrostDay === weatherDataShadow.averageFrost.lastFrostDate.day &&
-      parseFloat(averagePrecipitation.thisMonth) ===
-        parseFloat(weatherDataShadow.averagePrecipitation.thisMonth) &&
-      parseFloat(averagePrecipitation.annual) ===
-        parseFloat(weatherDataShadow.averagePrecipitation.annual) &&
-      parseInt(frostFreeDays) === parseInt(weatherDataShadow.frostFreeDays)
-    ) {
-      // return false;
-      setAnyValuesChanged(false);
-    } else {
-      // return true;
-      setAnyValuesChanged(true);
-    }
-  };
-
   useEffect(() => {
-    // console.log(_.isEqual(state.weatherData, weatherDataShadow));
+    const checkIfAnythingChanged = () => {
+      if (
+        firstFrostMonth ===
+          weatherDataShadow.averageFrost.firstFrostDate.month &&
+        parseInt(firstFrostDay) ===
+          parseInt(weatherDataShadow.averageFrost.firstFrostDate.day) &&
+        lastFrostMonth === weatherDataShadow.averageFrost.lastFrostDate.month &&
+        lastFrostDay === weatherDataShadow.averageFrost.lastFrostDate.day &&
+        parseFloat(averagePrecipitation.thisMonth) ===
+          parseFloat(weatherDataShadow.averagePrecipitation.thisMonth) &&
+        parseFloat(averagePrecipitation.annual) ===
+          parseFloat(weatherDataShadow.averagePrecipitation.annual) &&
+        parseInt(frostFreeDays) === parseInt(weatherDataShadow.frostFreeDays)
+      ) {
+        // return false;
+        setAnyValuesChanged(false);
+      } else {
+        // return true;
+        setAnyValuesChanged(true);
+      }
+    };
+
     if (!state.ajaxInProgress) {
       checkIfAnythingChanged();
     }
@@ -267,11 +236,12 @@ const WeatherConditions = (props) => {
                   <a
                     href="https://www.nssl.noaa.gov/projects/mrms/"
                     target="_blank"
+                    rel="noopener noreferrer"
                   >
                     NSSL MRMS
                   </a>{" "}
                   and{" "}
-                  <a href="" target="_blank">
+                  <a target="_blank" rel="noopener noreferrer" href="/#">
                     NASA NLDAS-2
                   </a>{" "}
                   weather data.
@@ -320,7 +290,7 @@ const WeatherConditions = (props) => {
                   <a
                     href="https://www.nssl.noaa.gov/projects/mrms/"
                     target="_blank"
-                    rel="noreferrer"
+                    rel="noopener noreferrer"
                   >
                     NSSL MRMS{" "}
                   </a>{" "}
@@ -328,7 +298,7 @@ const WeatherConditions = (props) => {
                   <a
                     href="https://ldas.gsfc.nasa.gov/nldas/"
                     target="_blank"
-                    rel="noreferrer"
+                    rel="noopener noreferrer"
                   >
                     NASA NLDAS-2
                   </a>{" "}
@@ -373,12 +343,12 @@ const WeatherConditions = (props) => {
                   Precision Sustainable Agriculture Weather API powered by{" "}
                   <a
                     href="https://www.nssl.noaa.gov/projects/mrms/"
-                    target="_blank"
+                    rel="noopener noreferrer"
                   >
                     NSSL MRMS
                   </a>{" "}
                   and{" "}
-                  <a href="" target="_blank">
+                  <a href="/#" target="_blank" rel="noopener noreferrer">
                     NASA NLDAS-2
                   </a>{" "}
                   weather data.
@@ -787,7 +757,7 @@ const WeatherConditions = (props) => {
                   <div className="row mt-4">
                     <div className="col-6">
                       <LightButton
-                        disabled={modalBtnDisabled}
+                        disabled={false}
                         onClick={validateAndBroadcastModalData}
                       >
                         update
@@ -806,4 +776,3 @@ const WeatherConditions = (props) => {
 };
 
 export default WeatherConditions;
-

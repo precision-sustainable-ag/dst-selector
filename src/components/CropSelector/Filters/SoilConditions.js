@@ -3,16 +3,12 @@
   The SoilConditions filters crops based on soil conditions
 */
 
-import React, {
-  useState,
-  useEffect,
-  useContext,
-} from "react";
-import { Grid, FormControlLabel, Checkbox, Tooltip } from "@material-ui/core";
+import { Checkbox, FormControlLabel, Grid, Tooltip } from "@material-ui/core";
+import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../../../store/Store";
 
 const SoilConditions = (props) => {
-  const [state, dispatch] = useContext(Context);
+  const [state] = useContext(Context);
   const { Flooding_Frequency, Drainage_Class } = state.soilData;
   const {
     activeCropData,
@@ -57,16 +53,12 @@ const SoilConditions = (props) => {
     } else {
       setSelected({ ...selected, "Soil Drainage": false });
     }
-  }, [state.soilData]);
+  }, [Drainage_Class, Flooding_Frequency, selected, state.soilData]);
 
   useEffect(() => {
     if (selected["Soil Drainage"]) {
       const newActives = activeCropData.filter((crop) => {
-        if (areCommonElements(crop.fields["Soil Drainage"], Drainage_Class)) {
-          return true;
-        } else {
-          return false;
-        }
+        return areCommonElements(crop.fields["Soil Drainage"], Drainage_Class);
       });
 
       const newInactives = cropData.filter((e) => !newActives.includes(e));
@@ -79,11 +71,7 @@ const SoilConditions = (props) => {
 
     if (selected["Flooding Tolerance"]) {
       const newActives = activeCropData.filter((crop) => {
-        if (crop.fields["Flooding Tolerance"] === Flooding_Frequency) {
-          return true;
-        } else {
-          return false;
-        }
+        return crop.fields["Flooding Tolerance"] === Flooding_Frequency;
       });
 
       const newInactives = cropData.filter((e) => !newActives.includes(e));
@@ -93,22 +81,16 @@ const SoilConditions = (props) => {
     } else {
       filterSidebarItems();
     }
-  }, [selected]);
-
-  //   useImperativeHandle(ref, () => ({
-  //     resetFilters() {
-  //       setSelected({ "Soil Drainage": [], "Flooding Tolerance": [] });
-  //     },
-  //   }));
-
-  //   useEffect(() => {
-  //     let selections = selected;
-
-  //     props.setSidebarFilterOptions({
-  //       ...props.sidebarFilterOptions,
-  //       ...selections,
-  //     });
-  //   }, [selected]);
+  }, [
+    Drainage_Class,
+    Flooding_Frequency,
+    activeCropData,
+    cropData,
+    filterSidebarItems,
+    selected,
+    setActiveCropData,
+    setInactiveCropData,
+  ]);
 
   return (
     <Grid container spacing={1}>
@@ -150,21 +132,9 @@ const SoilConditions = (props) => {
   );
 };
 
-// const objFilter = (obj, predicate) => {
-//   let result = {},
-//     key;
-
-//   for (key in obj) {
-//     if (obj.hasOwnProperty(key) && !predicate(obj[key])) {
-//       result[key] = obj[key];
-//     }
-//   }
-
-//   return result;
-// };
-
 const areCommonElements = (arr1, arr2) => {
   const arr2Set = new Set(arr2);
   return arr1.some((el) => arr2Set.has(el));
 };
+
 export default SoilConditions;
