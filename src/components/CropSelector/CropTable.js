@@ -169,7 +169,7 @@ const CropTableComponent = (props) => {
             <CropSelectorCalendarView data={crop} from={"listView"} />
           </TableCell>
         ) : (
-          <tr></tr>
+          null
         )}
         <TableCell style={{ maxWidth: '150px', textAlign: 'center' }}>
           <div className="d-flex w-100 justify-content-center align-items-center flex-column">
@@ -228,13 +228,6 @@ const CropTableComponent = (props) => {
             )
               return (
                 <Fragment key={index}>
-                  <TableRow
-                    className={
-                      hasGoalRatingTwoOrLess(crop) ? `inactiveCropRow` : ''
-                    }
-                  >
-                    <TableCell colSpan={42}></TableCell>
-                  </TableRow>
                   <TableRow
                     className={
                       hasGoalRatingTwoOrLess(crop) ? `inactiveCropRow` : ''
@@ -319,16 +312,16 @@ const CropTableComponent = (props) => {
                                 <Typography variant="subtitle2" component="b">
                                   {crop.fields['Nitrogen Accumulation Min, Legumes (lbs/A/y)']}-
                                   {crop.fields['Nitrogen Accumulation Max, Legumes (lbs/A/y)']}
-                                  <span class="units">lbs/A/y</span>
+                                  <span className="units">lbs/A/y</span>
                                 </Typography>
                               </td>
                             </tr>
                           ) : (
-                            <tr></tr>
+                            null
                           )}
                           <tr>
                             <td>
-                              {" "}
+                              {' '}
                               <Typography
                                 variant="subtitle2"
                                 component="b"
@@ -341,7 +334,7 @@ const CropTableComponent = (props) => {
                               <Typography variant="subtitle2" component="b">
                                 {crop.fields['Dry Matter Min (lbs/A/y)']}-
                                 {crop.fields['Dry Matter Max (lbs/A/y)']}
-                                <span class="units">lbs/A/y</span>
+                                <span className="units">lbs/A/y</span>
                               </Typography>
                             </td>
                           </tr>
@@ -381,7 +374,7 @@ const CropTableComponent = (props) => {
             }
           })
         ) : (
-          <tr></tr>
+          null
         )}
 
         {inactiveCropPresent
@@ -389,9 +382,6 @@ const CropTableComponent = (props) => {
               if (crop.fields['Zone Decision'] === 'Include')
                 return (
                   <Fragment key={index}>
-                    <TableRow className="inactiveCropRow">
-                      <TableCell colSpan={42}></TableCell>
-                    </TableRow>
                     <TableRow
                       className="inactiveCropRow"
                       key={`croprow${index}`}
@@ -422,7 +412,7 @@ const CropTableComponent = (props) => {
                           <div className="part1_ut">
                             <span className="cropName font-weight-lighter">
                               <Typography variant="h6">
-                                {" "}
+                                {' '}
                                 {flipCoverCropName(
                                   crop.fields['Cover Crop Name']
                                 )}
@@ -463,7 +453,7 @@ const CropTableComponent = (props) => {
                                   <Typography variant="subtitle2" component="b">
                                     {crop.fields['Nitrogen Accumulation Min, Legumes (lbs/A/y)']}-
                                     {crop.fields['Nitrogen Accumulation Max, Legumes (lbs/A/y)']}
-                                    <span class="units">lbs/A/y</span>
+                                    <span className="units">lbs/A/y</span>
                                   </Typography>
                                 </td>
                               </tr>
@@ -472,7 +462,7 @@ const CropTableComponent = (props) => {
                             )}
                             <tr>
                               <td>
-                                {" "}
+                                {' '}
                                 <Typography
                                   variant="subtitle2"
                                   component="b"
@@ -485,7 +475,7 @@ const CropTableComponent = (props) => {
                                 <Typography variant="subtitle2" component="b">
                                   {crop.fields['Dry Matter Min (lbs/A/y)']}-
                                   {crop.fields['Dry Matter Max (lbs/A/y)']}
-                                  <span class="units">lbs/A/y</span>
+                                  <span className="units">lbs/A/y</span>
                                 </Typography>
                               </td>
                             </tr>
@@ -531,13 +521,6 @@ const CropTableComponent = (props) => {
               ) {
                 return (
                   <Fragment key={index}>
-                    <TableRow
-                      className={
-                        hasGoalRatingTwoOrLess(crop) ? 'inactiveCropRow' : ''
-                      }
-                    >
-                      <TableCell colSpan={42}></TableCell>
-                    </TableRow>
                     <TableRow
                       className={
                         hasGoalRatingTwoOrLess(crop) ? 'inactiveCropRow' : ''
@@ -625,16 +608,16 @@ const CropTableComponent = (props) => {
                                   <Typography variant="subtitle2" component="b">
                                     {crop.fields['Nitrogen Accumulation Min, Legumes (lbs/A/y)']}-
                                     {crop.fields['Nitrogen Accumulation Max, Legumes (lbs/A/y)']}
-                                    <span class="units">lbs/A/y</span>
+                                    <span className="units">lbs/A/y</span>
                                   </Typography>
                                 </td>
                               </tr>
                             ) : (
-                              <tr></tr>
+                              null
                             )}
                             <tr>
                               <td>
-                                {" "}
+                                {' '}
                                 <Typography
                                   variant="subtitle2"
                                   component="b"
@@ -647,7 +630,7 @@ const CropTableComponent = (props) => {
                                 <Typography variant="subtitle2" component="b">
                                   {crop.fields['Dry Matter Min (lbs/A/y)']}-
                                   {crop.fields['Dry Matter Max (lbs/A/y)']}
-                                  <span class="units">lbs/A/y</span>
+                                  <span className="units">lbs/A/y</span>
                                 </Typography>
                               </td>
                             </tr>
@@ -902,7 +885,6 @@ const CropTableComponent = (props) => {
                 <TableCell
                   colSpan={state.selectedGoals.length}
                   style={{
-                    borderBottom: '5px solid white',
                     backgroundColor: '#abd08f',
                     textAlign: 'center',
                   }}
@@ -946,7 +928,7 @@ const CropTableComponent = (props) => {
                   </Tooltip>
                 </TableCell>
               ) : (
-                <tr></tr>
+                null
               )}
 
               <TableCell
@@ -954,7 +936,6 @@ const CropTableComponent = (props) => {
                   backgroundColor: '#abd08f',
                   textAlign: 'center',
                   borderRight: '5px solid white',
-                  borderBottom: '5px solid white',
                 }}
               >
                 <Typography variant="body2">
@@ -1110,7 +1091,7 @@ const CropTableComponent = (props) => {
                   );
                 })
               ) : (
-                <tr></tr>
+                null
               )}
 
               {showGrowthWindow ? (
@@ -1128,7 +1109,7 @@ const CropTableComponent = (props) => {
                   </Typography>
                 </TableCell>
               ) : (
-                <tr></tr>
+                null
               )}
 
               <TableCell
@@ -1195,24 +1176,21 @@ const CropTableComponent = (props) => {
                               gutterBottom
                               className="pb-2"
                             >
-                              No cover crops match your selected Cover Crop
-                              Property filters.
+                              No cover crops match your selected Cover Crop Property filters.
                             </Typography>
                             <Typography
                               variant="body1"
                               gutterBottom
                               className="pb-2"
                             >
-                              Consider expanding your Cover Crop Property filter
-                              criteria.
+                              Consider expanding your Cover Crop Property filter criteria.
                             </Typography>
                             <Typography
                               variant="body1"
                               gutterBottom
                               className=""
                             >
-                              Alternatively, clear all Cover Crop Property
-                              filters.
+                              Alternatively, clear all Cover Crop Property filters.
                             </Typography>
                           </div>
                         </div>
@@ -1220,7 +1198,7 @@ const CropTableComponent = (props) => {
                     </TableCell>
                   </TableRow>
                 ) : (
-                  <tr></tr>
+                  null
                 )}
                 <RenderActiveInactiveCropData />
               </Fragment>
