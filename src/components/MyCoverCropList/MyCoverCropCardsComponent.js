@@ -4,17 +4,17 @@
   styled using makeStyles
 */
 
-import React, { useContext, useState } from "react";
 import { makeStyles } from "@material-ui/core";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
+import { useSnackbar } from "notistack";
+import React, { useContext, useState } from "react";
+import { flipCoverCropName, trimString } from "../../shared/constants";
 import { Context } from "../../store/Store";
 import CropDetailsModalComponent from "../CropSelector/CropDetailsModal";
-import { useSnackbar } from "notistack";
-import { flipCoverCropName, trimString } from "../../shared/constants";
 
 const useStyles = makeStyles({
   card: {
@@ -34,7 +34,7 @@ const MyCoverCropCardsComponent = (props) => {
 
   const [modalOpen, setModalOpen] = useState(false);
   const [modalData, setModalData] = useState({});
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar();
   const handleModalOpen = () => {
     // put data inside modal
 
@@ -54,11 +54,9 @@ const MyCoverCropCardsComponent = (props) => {
       // element not in array
       // not possible ?
     } else {
-      // alert(removeIndex);
       let selectedCropsCopy = state.selectedCrops;
 
       selectedCropsCopy.splice(removeIndex, 1);
-      // console.log(selectedCropsCopy);
       dispatch({
         type: "SELECTED_CROPS_MODIFIER",
         data: {
@@ -68,8 +66,6 @@ const MyCoverCropCardsComponent = (props) => {
         },
       });
       enqueueSnackbar(`${cropName} Removed`);
-
-      // this.state.selectedCrops.splice(removeIndex, 1);
     }
   };
   return (
@@ -114,6 +110,7 @@ const MyCoverCropCardsComponent = (props) => {
                   color: "rgb(53, 153, 155)",
                 }}
                 onClick={() => handleModalOpen()}
+                href="/#"
               >
                 View Crop Details
               </a>
