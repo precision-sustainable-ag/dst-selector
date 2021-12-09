@@ -5,7 +5,7 @@
   styled using CustomStyles from ../../shared/constants
 */
 
-import React, { useEffect, Fragment } from "react";
+import React, { useEffect, Fragment, useContext } from "react";
 import Header from "../Header/Header";
 import {
   Typography,
@@ -17,6 +17,7 @@ import {
 import { Link } from "react-router-dom";
 import InformationSheetDictionary from "../InformationSheet/InformationSheetDictionary";
 import { CustomStyles } from "../../shared/constants";
+import { Context } from "../../store/Store";
 
 const HelpComponent = (props) => {
   useEffect(() => {
@@ -137,6 +138,8 @@ const HelpComponent = (props) => {
 export default HelpComponent;
 
 const RenderContent = ({ value = 0 }) => {
+  const [state] = useContext(Context);
+
   switch (value) {
     case 0:
       return (
@@ -460,7 +463,7 @@ const RenderContent = ({ value = 0 }) => {
           <Typography variant="h4" gutterBottom align="center">
             Data Dictionary
           </Typography>
-          <InformationSheetDictionary zone={6} from="help" />
+          <InformationSheetDictionary zone={state.zone} from="help" />
         </div>
       );
     case 3:
