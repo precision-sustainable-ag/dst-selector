@@ -3,12 +3,15 @@
   styled using ../../styles/photoComponent.scss
 */
 
-import { Typography } from "@material-ui/core";
+import React, { useState, useEffect, Suspense } from "react";
 import Axios from "axios";
-import React, { Suspense, useEffect, useState } from "react";
+// import { CropImage } from "../../shared/constants";
+// import Carousel, { Modal, ModalGateway } from "react-images";
+import { LuminousGallery } from "luminous-lightbox";
 import "../../../node_modules/luminous-lightbox/dist/luminous-basic.css";
-import { ucFirst } from "../../shared/constants";
 import "../../styles/photoComponent.scss";
+import { Typography } from "@material-ui/core";
+import { ucFirst } from "../../shared/constants";
 
 const PhotoComponent = ({
   imageData = {
@@ -23,28 +26,48 @@ const PhotoComponent = ({
     : null;
   const [imageList, setImageList] = useState([]);
 
-  useEffect(() => {
-    const getImages = async () => {
-      return await Axios({
-        url: imagesApiUrl,
-        method: "get",
-      });
-    };
+  const getImages = async () => {
+    return await Axios({
+      url: imagesApiUrl,
+      method: "get",
+    });
+  };
 
+  useEffect(() => {
     let imagePromise = getImages();
     imagePromise
       .then((response) => {
         if (response.data.result === "success") {
-          if (response.data.data.length === 0) {
+          if (response.data.data.length !== 0) {
+            // response.data.data.forEach((url) => {});
+          } else {
             setImageList([]);
           }
           setImageList(response.data.data);
         }
       })
+      .then(() => {
+        var galleryOpts = {
+          // Whether pressing the arrow keys should move to the next/previous slide.
+          arrowNavigation: true,
+        };
+
+        var luminousOpts = {
+          // These options have the same defaults and potential values as the Luminous class.
+          caption: (trigger) => {
+            return trigger.dataset.caption;
+          },
+        };
+        new LuminousGallery(
+          document.querySelectorAll(".Photo"),
+          galleryOpts,
+          luminousOpts
+        );
+      })
       .catch((e) => {
         console.error(e);
       });
-  }, [imagesApiUrl]);
+  }, []);
 
   return imageData !== null && imageList.length !== 0 ? (
     <Suspense fallback={<div className="col">Loading..</div>}>
@@ -67,12 +90,13 @@ const PhotoComponent = ({
             >
               <img
                 className="img rounded"
-                alt={`${index}`}
+                alt={`Photo ${index}`}
                 src={strippedUrl}
                 style={{
                   height: "125px",
                   maxWidth: "200px",
                 }}
+                // width="200"
               />
             </a>
 

@@ -4,22 +4,28 @@
 */
 
 import { Tooltip, Typography } from "@material-ui/core";
-import moment from "moment";
-import React, { Fragment, useContext } from "react";
+import React, { useState, useContext, Fragment } from "react";
 import { allMonths, getActiveCropMonths } from "../../shared/constants";
 import { Context } from "../../store/Store";
 import "../../styles/cropSelectorCalendarView.scss";
+import { BorderRight } from "@material-ui/icons";
+import moment from "moment";
+// import Header from "../Header/header";
 
 const CropSelectorCalendarView = ({ from = "calendar", data = [] }) => {
-  const [state] = useContext(Context);
-  const cashCropStartDate =
+  const [state, dispatch] = useContext(Context);
+  const [cashCropStartDate, setCashCropStartDate] = useState(
     state.cashCropData.dateRange.startDate === ""
       ? null
-      : moment(state.cashCropData.dateRange.startDate).toISOString();
-  const cashCropEndDate =
+      : moment(state.cashCropData.dateRange.startDate).toISOString()
+  );
+
+  const [cashCropEndDate, setCashCropEndDate] = useState(
     state.cashCropData.dateRange.endDate === ""
       ? null
-      : moment(state.cashCropData.dateRange.endDate).toISOString();
+      : moment(state.cashCropData.dateRange.endDate).toISOString()
+  );
+  //   const months = allMonths();
   const months = [
     "January",
     "February",
@@ -43,9 +49,14 @@ const CropSelectorCalendarView = ({ from = "calendar", data = [] }) => {
       console.log("Start", cashCropStartDate);
       let start = moment(cashCropStartDate);
       let end = moment(cashCropEndDate);
-
+      //   if (start.isBefore(end)) {
+      //     console.log("correct");
+      //   } else {
+      //     console.log("incorrect");
+      //   }
       while (start.isBefore(end)) {
         result.add(start.format("MMMM"));
+        // result.push(cashCropStartDate.format("YYYY-MM-"));
 
         start.add(moment.duration(1, "month"));
       }
@@ -99,6 +110,9 @@ const CropSelectorCalendarView = ({ from = "calendar", data = [] }) => {
       let earlyStr = `${month}, Early`;
       let midStr = `${month}, Mid`;
 
+      //   let earlyStrData = data.fields[earlyStr] ? data.fields[earlyStr] : null;
+      //   let midStrData = data.fields[midStr] ? data.fields[midStr] : null;
+      // console.log(earlyStrData);
       return (
         <td
           key={index}
@@ -225,6 +239,8 @@ const PaintGrowthChart = ({
               let earlyStr = `${month}, Early`;
               let midStr = `${month}, Mid`;
 
+              let earlyStrData = data.fields[earlyStr];
+              // console.log(earlyStrData);
               return (
                 <td
                   key={index}
@@ -322,6 +338,8 @@ const PaintGrowthChart = ({
               let earlyStr = `${month}, Early`;
               let midStr = `${month}, Mid`;
 
+              let earlyStrData = data.fields[earlyStr];
+              // console.log(earlyStrData);
               return (
                 <td
                   key={index}

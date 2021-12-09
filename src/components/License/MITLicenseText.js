@@ -14,11 +14,7 @@ const MITLicenseText = ({ styles = true, aboutPage = false }) => {
       <Grid item xs={12}>
         <Typography variant="body1" gutterBottom>
           Copyright © {currentYear} Northeast Cover Crop Council,&nbsp;
-          <a
-            href="http://northeastcovercrops.com/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+          <a href="http://northeastcovercrops.com/" target="_blank">
             northeastcovercrops.com
           </a>
         </Typography>
