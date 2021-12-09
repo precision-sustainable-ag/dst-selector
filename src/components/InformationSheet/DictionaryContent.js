@@ -19,8 +19,7 @@ const DictionaryContent = ({ dictData = [{}], from = "" }) => {
   const allCats = useMemo(() => {
     return dictData.filter(
       (dict) =>
-        dict["Information Sheet"] === "checked" ||
-        dict["Infromation Sheet"] === "checked"
+        dict["Information Sheet"] === true || dict["Infromation Sheet"] === true
     );
   }, [dictData]);
 
