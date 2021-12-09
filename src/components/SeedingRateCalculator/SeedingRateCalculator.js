@@ -2,10 +2,11 @@
   Under Construction 
 */
 
-import { Box } from "@material-ui/core";
+
 import React from "react";
-import { UnderConstructionText } from "../../shared/constants";
 import Header from "../Header/Header";
+import { Box } from "@material-ui/core";
+import { UnderConstructionText } from "../../shared/constants";
 
 const SeedingRateCalculator = () => {
   return (

@@ -4,22 +4,30 @@
   styled from from CustomStyles in ../../../shared/constants
 */
 
-import { Grid, Typography } from "@material-ui/core";
-import React, { useContext, useEffect, useState } from "react";
-import { Context } from "../../store/Store";
-import CropSidebarComponent from "../CropSelector/CropSidebar";
+import React, { useState, useContext, useEffect } from "react";
 import Header from "../Header/Header";
+import {
+  Grid,
+  Typography,
+} from "@material-ui/core";
+
+import { UnderConstructionText, CustomStyles } from "../../shared/constants";
+
+// import CropExplorerFilters from "./CropExplorerFilters";
+import CropSidebarComponent from "../CropSelector/CropSidebar";
+import { Context } from "../../store/Store";
 import ExplorerCardView from "./ExplorerCardView";
 
 const CoverCropExplorer = () => {
-  const [state] = useContext(Context);
+  const [state, dispatch] = useContext(Context);
   const [cropDataChanged, setCropDataChanged] = useState(false);
   const [activeCropData, setActiveCropData] = useState([]);
   const [inactiveCropData, setInactiveCropData] = useState([]);
   const [cropName, setCropName] = useState("");
+  const [cropData, setCropData] = useState([]);
 
   useEffect(() => {
-    setCropDataChanged((c) => !c);
+    setCropDataChanged(!cropDataChanged);
   }, [state.zone]);
 
   useEffect(() => {
@@ -30,22 +38,27 @@ const CoverCropExplorer = () => {
     setCropName(e.target.value);
     let { cropData } = state;
 
-    let search = e.target.value.toLowerCase().match(/\w+/g);
-
+    let search = e.target.value
+                  .toLowerCase()
+                  .match(/\w+/g);
+    
     const crop_data = cropData.filter((crop) => {
       const match = (parm) => {
-        const m = crop.fields[parm].toLowerCase().match(/\w+/g);
+        const m = crop.fields[parm]
+                    .toLowerCase()
+                    .match(/\w+/g);
+  
+        return !search ||
+               search.every(s => m.some(t => t.includes(s)));
+      }
 
-        return !search || search.every((s) => m.some((t) => t.includes(s)));
-      };
-
-      return match("Cover Crop Name") || match("Scientific Name");
+      return match('Cover Crop Name') || match('Scientific Name');
     });
-
+    
     setActiveCropData(crop_data);
   };
 
-  return (
+  return cropData.length === 0 ? (
     <div className="contentWrapper">
       <Header logo="neccc_wide_logo_color_web.jpg" />
       <div className="container-fluid mt-4 mb-4">
@@ -68,7 +81,7 @@ const CoverCropExplorer = () => {
           </div>
           <div className="col-md-12 col-lg-9 col-xl-10 col-12">
             {state.zone === "" ? (
-              <Grid container alignItems="center" justifyContent="center">
+              <Grid container alignItems="center" justify="center">
                 <Grid item xs={12}>
                   <Typography variant="h5" align="center">
                     Please choose a zone from the sidebar
@@ -89,6 +102,8 @@ const CoverCropExplorer = () => {
         </div>
       </div>
     </div>
+  ) : (
+    ""
   );
 };
 
