@@ -4,9 +4,9 @@
   styles are fetched from ../../../styles/filters.scss
 */
 
-import React, {forwardRef} from "react";
-import {Filters} from "./Filters";
+import React, { forwardRef } from "react";
 import "../../../styles/filters.scss";
+import { Filters } from "./Filters";
 
 const TerminationMethods = forwardRef((props, ref) => (
   <Filters props={props} ref={ref} />

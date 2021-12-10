@@ -4,8 +4,8 @@
   styles are fetched from ../../../styles/filters.scss
 */
 
-import React, {forwardRef} from "react";
-import {Filters} from "./Filters";
+import React, { forwardRef } from "react";
+import { Filters } from "./Filters";
 import "../../../styles/filters.scss";
 
 const EnvironmentalTolerance = forwardRef((props, ref) => (
