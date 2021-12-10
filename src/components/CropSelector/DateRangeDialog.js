@@ -9,7 +9,6 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
   DialogTitle,
   Typography,
   useMediaQuery,
@@ -19,7 +18,7 @@ import {
 import DateRangePicker from "react-daterange-picker";
 import "react-daterange-picker/dist/css/react-calendar.css";
 import moment from "moment";
-import React, { useState, useEffect } from "react";
+import React, { useState} from "react";
 import { CustomStyles } from "../../shared/constants";
 
 const stateDefinitions = {
@@ -54,6 +53,7 @@ const DateRangeDialog = ({
   const handleMaxWidthChange = (event) => {
     setMaxWidth(event.target.value);
   };
+  
   return (
     <Dialog
       maxWidth={"md"}

@@ -3,10 +3,10 @@
   The FeedbackComponent page is a static page that shows an airtable form
 */
 
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import Header from "../Header/Header";
 
-const FeedbackComponent = (props) => {
+const FeedbackComponent = () => {
   useEffect(() => {
     document.title = "Feedback";
   }, []);

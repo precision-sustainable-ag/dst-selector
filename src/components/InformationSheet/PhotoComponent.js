@@ -3,7 +3,7 @@
   styled using ../../styles/photoComponent.scss
 */
 
-import React, { useState, useEffect, Fragment, Suspense } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import Axios from "axios";
 // import { CropImage } from "../../shared/constants";
 // import Carousel, { Modal, ModalGateway } from "react-images";
