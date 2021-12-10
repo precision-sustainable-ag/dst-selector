@@ -3,13 +3,14 @@
   fetches data from DictionaryContent
 */
 
-import React, { useState, useEffect, Fragment, useContext } from "react";
 import { Typography } from "@material-ui/core";
 import { Info } from "@material-ui/icons";
-import { Context } from "../../store/Store";
-import z7Dict from "../../shared/json/zone7/data-dictionary.json";
+import React, { Fragment, useContext, useEffect, useState } from "react";
+import z4Dict from "../../shared/json/zone4/data-dictionary.json";
+import z5Dict from "../../shared/json/zone5/data-dictionary.json";
 import z6Dict from "../../shared/json/zone6/data-dictionary.json";
-import z5Dict from "../../shared/json/zone6/data-dictionary.json";
+import z7Dict from "../../shared/json/zone7/data-dictionary.json";
+import { Context } from "../../store/Store";
 import DictionaryContent from "./DictionaryContent";
 
 const InformationSheetDictionary = (props) => {
@@ -31,6 +32,10 @@ const InformationSheetDictionary = (props) => {
       }
       case 5: {
         setDictionary(z5Dict);
+        break;
+      }
+      case 4: {
+        setDictionary(z4Dict);
         break;
       }
       default: {

@@ -3,7 +3,7 @@
   RenderCats renders the categories
 */
 
-import React, { useState, useEffect, Fragment, useMemo } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { Typography } from "@material-ui/core";
 
 const DictionaryContent = ({ dictData = [{}], from = "" }) => {
@@ -19,8 +19,7 @@ const DictionaryContent = ({ dictData = [{}], from = "" }) => {
   const allCats = useMemo(() => {
     return dictData.filter(
       (dict) =>
-        dict["Information Sheet"] === "checked" ||
-        dict["Infromation Sheet"] === "checked"
+        dict["Information Sheet"] === true || dict["Infromation Sheet"] === true
     );
   }, [dictData]);
 

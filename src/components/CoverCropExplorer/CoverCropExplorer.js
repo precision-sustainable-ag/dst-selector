@@ -4,27 +4,15 @@
   styled from from CustomStyles in ../../../shared/constants
 */
 
-import React, { useState, useContext, useEffect, useMemo, useRef } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import Header from "../Header/Header";
 import {
-  Box,
   Grid,
   Typography,
-  TextField,
-  InputAdornment,
-  createMuiTheme,
-  Button,
-  Menu,
-  MenuItem,
 } from "@material-ui/core";
+
 import { UnderConstructionText, CustomStyles } from "../../shared/constants";
-import {
-  Search,
-  PictureAsPdf,
-  FormatListBulleted,
-  KeyboardArrowDown,
-  KeyboardArrowUp,
-} from "@material-ui/icons";
+
 // import CropExplorerFilters from "./CropExplorerFilters";
 import CropSidebarComponent from "../CropSelector/CropSidebar";
 import { Context } from "../../store/Store";
@@ -32,8 +20,6 @@ import ExplorerCardView from "./ExplorerCardView";
 
 const CoverCropExplorer = () => {
   const [state, dispatch] = useContext(Context);
-  const cardViewRef = useRef();
-  const [anchorEl, setAnchorEl] = useState(null);
   const [cropDataChanged, setCropDataChanged] = useState(false);
   const [activeCropData, setActiveCropData] = useState([]);
   const [inactiveCropData, setInactiveCropData] = useState([]);
@@ -44,25 +30,9 @@ const CoverCropExplorer = () => {
     setCropDataChanged(!cropDataChanged);
   }, [state.zone]);
 
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
   useEffect(() => {
     document.title = "Cover Crop Explorer";
   }, []);
-  const handleClose = (zone) => {
-    if (typeof zone === "number") {
-      let zoneText = `Zone ${zone}`;
-      dispatch({
-        type: "UPDATE_ZONE_TEXT",
-        data: {
-          zoneText: zoneText,
-          zone: parseInt(zone),
-        },
-      });
-    }
-    setAnchorEl(null);
-  };
 
   const handleSearchChange = (e) => {
     setCropName(e.target.value);

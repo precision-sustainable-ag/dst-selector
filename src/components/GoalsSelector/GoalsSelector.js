@@ -9,7 +9,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../../store/Store";
 
 import "../../styles/goalsSelector.scss";
-import { CircularProgress, makeStyles, Typography } from "@material-ui/core";
+import {makeStyles, Typography } from "@material-ui/core";
 
 import Skeleton from "@material-ui/lab/Skeleton";
 import GoalTag from "./GoalTag";
@@ -46,6 +46,7 @@ const GoalsSelector = () => {
   const fetchGoals = async (apiBase) => {
     let finalGoalsURL = apiBase + goalsURL;
     // console.log(finalGoalsURL);
+
     dispatch({
       type: "SET_AJAX_IN_PROGRESS",
       data: true,
@@ -80,12 +81,13 @@ const GoalsSelector = () => {
       });
   };
   useEffect(() => {
+    console.log(state);
     if (state.allGoals.length > 0) {
       const filteredGoals = state.allGoals.filter(
         (goal) =>
-          goal.fields["Cover Crop Goal"].toLowerCase() !==
-          "promote water quality"
+          goal.fields["Variable"].toLowerCase() !== "promote water quality"
       );
+      console.log(filteredGoals);
       setAllGoals(filteredGoals);
     }
   }, [state.allGoals]);
@@ -136,7 +138,7 @@ const GoalsSelector = () => {
                     <GoalTag
                       goal={goal}
                       id={key}
-                      goaltTitle={goal.fields["Cover Crop Goal"]}
+                      goaltTitle={goal.fields["Variable"]}
                       goalDescription={goal.fields["Description"]}
                     />
                   </div>
