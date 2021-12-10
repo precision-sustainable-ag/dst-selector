@@ -5,7 +5,7 @@
 */
 
 import React, { Fragment, useEffect, useRef } from "react";
-import filterData from "../../shared/data-dictionary7-optimised.json";
+import filterData from "../../shared/sidebar-dictionary.json";
 
 import {
   makeStyles,
@@ -32,16 +32,14 @@ import {
   CalendarTodayRounded,
   CalendarToday,
   Compare,
-  DragHandle,
-  Backspace,
   Clear,
 } from "@material-ui/icons";
 import ListIcon from "@material-ui/icons/List";
 import { CustomStyles } from "../../shared/constants";
 import { Context } from "../../store/Store";
 import { List as ListMovable, arrayMove } from "react-movable";
-
 import { DateRangePicker } from "@matharumanpreet00/react-daterange-picker";
+
 // import {
 //   DateRangePicker,
 //   SingleDatePicker,
@@ -57,8 +55,8 @@ import EnvironmentalTolerance from "./Filters/EnvironmentalTolerance";
 import Seeds from "./Filters/Seeds";
 import SeedingMethods from "./Filters/SeedingMethods";
 import Growth from "./Filters/Growth";
-import TerminationMethods from "./Filters/TerminationMethods";
 import Beneficials from "./Filters/Beneficials";
+import TerminationMethods from "./Filters/TerminationMethods";
 import Weeds from "./Filters/Weeds";
 // import DiseaseAndNonWeedPests from "./Filters/DiseaseAndNonWeedPests";
 import Roots from "./Filters/Roots";
@@ -434,7 +432,6 @@ const CropSidebarComponent = (props) => {
         "Root Architecture",
       ];
       const booleanKeys = ["Aerial Seeding", "Frost Seeding"];
-      const aerialOrFrost = [""];
 
       const filtered = crop_data.filter((crop) => {
         const totalActiveFilters = Object.keys(nonZeroKeys2).length;
