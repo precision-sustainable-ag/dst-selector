@@ -211,7 +211,7 @@ const MyCoverCropComparisonComponent = (props) => {
                           color: "white",
                           visibility: "hidden",
                         }}
-                        href="/#"
+                        // href="/#"
                       >
                         View Crop Details
                       </a>
@@ -390,7 +390,7 @@ const MyCoverCropComparisonComponent = (props) => {
                           onClick={() => handleModalOpen({ fields: crop.data })}
                           target="_blank"
                           rel="noopener noreferrer"
-                          href="/#"
+                          // href="/#"
                         >
                           View Crop Details
                         </a>

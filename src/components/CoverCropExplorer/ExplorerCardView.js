@@ -155,7 +155,7 @@ const ExplorerCardView = (props) => {
                           target="_blank"
                           rel="noopener noreferrer"
                           onClick={() => handleModalOpen(crop)}
-                          href="/#"
+                          // href="/#"
                         >
                           View Crop Details
                         </a>
