@@ -4,10 +4,12 @@
   styles are fetched from ../../../styles/filters.scss
 */
 
-import React, { forwardRef } from "react";
+import React, {forwardRef} from "react";
+import {Filters} from "./Filters";
 import "../../../styles/filters.scss";
-import { Filters } from "./Filters";
 
-const Weeds = forwardRef((props, ref) => <Filters props={props} ref={ref} />);
+const Weeds = forwardRef((props, ref) => (
+  <Filters props={props} ref={ref} />
+));
 
 export default Weeds;
