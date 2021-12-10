@@ -110,7 +110,7 @@ const MyCoverCropCardsComponent = (props) => {
                   color: "rgb(53, 153, 155)",
                 }}
                 onClick={() => handleModalOpen()}
-                href="/#"
+                // href="/#"
               >
                 View Crop Details
               </a>
