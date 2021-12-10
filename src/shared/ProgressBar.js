@@ -3,10 +3,12 @@
   The ProgressBar shows the user what step they are on in the goal selection process
 */
 
-import { Typography } from "@material-ui/core";
-import React, { useContext } from "react";
+
+import React from "react";
+// import { LightButton } from "./constants";
 import { Context } from "../store/Store";
 import "../styles/progressIndicator.scss";
+import { Typography } from "@material-ui/core";
 
 const checkProgressStatus = (actualProgress, expectedProgress) => {
   if (actualProgress === expectedProgress) {
@@ -20,7 +22,7 @@ const checkProgressStatus = (actualProgress, expectedProgress) => {
 };
 
 const ProgressBar = () => {
-  const [state] = useContext(Context);
+  const [state, dispatch] = React.useContext(Context);
   return (
     <div className="gprogress">
       <Typography variant="body1" className="progress-track" component="div">

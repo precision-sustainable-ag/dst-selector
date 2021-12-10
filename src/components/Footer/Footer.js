@@ -4,13 +4,16 @@
   styles are made in ../../styles/footer.scss
 */
 
-import { Typography } from "@material-ui/core";
-import Axios from "axios";
 import React, { useEffect, useState } from "react";
-import { accessToken, owner, repo } from "../../shared/keys";
+
 import "../../styles/footer.scss";
+import { Link } from "react-router-dom";
+import Axios from "axios";
+import { owner, repo, accessToken } from "../../shared/keys";
+import { Typography } from "@material-ui/core";
 
 const Footer = () => {
+  // let currentMonthYear = now.tz(tzdata).format("MM/YYYY");
   const [monthYear, setMonthYear] = useState("");
 
   const fetchDate = async () => {

@@ -14,9 +14,11 @@ import {
   useMediaQuery,
   useTheme,
 } from "@material-ui/core";
-import React from "react";
+// import { DateRangePicker } from "@matharumanpreet00/react-daterange-picker";
 import DateRangePicker from "react-daterange-picker";
 import "react-daterange-picker/dist/css/react-calendar.css";
+import moment from "moment";
+import React, { useState} from "react";
 import { CustomStyles } from "../../shared/constants";
 
 const stateDefinitions = {
@@ -28,18 +30,34 @@ const stateDefinitions = {
     color: CustomStyles().lightGreen,
     label: "Selected",
   },
+  //   enquire: {
+  //     color: "#ffd200",
+  //     label: "Enquire",
+  //   },
+  //   unavailable: {
+  //     selectable: false,
+  //     color: "#78818b",
+  //     label: "Unavailable",
+  //   },
 };
 
 const DateRangeDialog = ({
+  range = [],
   open = false,
   onChange = () => {},
   close = () => {},
 }) => {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
+  const [maxWidth, setMaxWidth] = useState("sm");
+  const handleMaxWidthChange = (event) => {
+    setMaxWidth(event.target.value);
+  };
+  
   return (
     <Dialog
       maxWidth={"md"}
+      //   fullWidth={true}
       fullScreen={fullScreen}
       open={open}
       onClose={close}
@@ -55,12 +73,16 @@ const DateRangeDialog = ({
         </Typography>
       </DialogContent>
       <DialogContent>
+        {/* <DateRangePicker definedRanges={[]} open={open} onChange={onChange} /> */}
         <DateRangePicker
           firstOfWeek={1}
           numberOfCalendars={2}
           selectionType="range"
+          // minimumDate={new Date()}
           stateDefinitions={stateDefinitions}
+          // dateStates={dateRanges}
           defaultState="available"
+          // showLegend={true}
           value={null}
           onSelect={(e) => {
             let startDate = e.start.format("YYYY-MM-DD").toString();

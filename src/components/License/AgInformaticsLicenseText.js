@@ -3,8 +3,8 @@
   The AgInformaticsLicenseText page contains the Agriculture Informatics license text
 */
 
-import { Grid, Typography } from "@material-ui/core";
 import React from "react";
+import { Grid, Typography } from "@material-ui/core";
 import { Link } from "react-router-dom";
 
 const AgInformaticsLicenseText = ({
@@ -19,30 +19,18 @@ const AgInformaticsLicenseText = ({
         {footerPage ? (
           <Typography variant="body2">
             Copyright © {currentYear}{" "}
-            <a
-              href="http://northeastcovercrops.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+            <a href="http://northeastcovercrops.com/" target="_blank">
               Northeast Cover Crop Council
             </a>
             ,{" "}
-            <a
-              href="http://aginformaticslab.org/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+            <a href="http://aginformaticslab.org/" target="_blank">
               Agricultural Informatics Lab
             </a>
           </Typography>
         ) : (
           <Typography variant={footerPage ? "body2" : "body1"} gutterBottom>
             Copyright © {currentYear} Agricultural Informatics Lab, &nbsp;
-            <a
-              href="http://aginformaticslab.org/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+            <a href="http://aginformaticslab.org/" target="_blank">
               aginformaticslab.org
             </a>
           </Typography>
