@@ -8,16 +8,21 @@
   styled using ../../styles/cropComparisonView.scss
 */
 
-import React, { useState, useEffect, useContext } from "react";
 import {
   Card,
-  CardMedia,
-  CardContent,
-  Typography,
   CardActionArea,
+  CardContent,
+  CardMedia,
   IconButton,
+  Typography,
 } from "@material-ui/core";
-import "../../styles/cropComparisonView.scss";
+import {
+  Cancel,
+  KeyboardArrowLeft,
+  KeyboardArrowRight,
+} from "@material-ui/icons";
+import { useSnackbar } from "notistack";
+import React, { useContext, useEffect, useState } from "react";
 import {
   DataTooltip,
   flipCoverCropName,
@@ -25,21 +30,14 @@ import {
   RenderSeedPriceIcons,
   trimString,
 } from "../../shared/constants";
-import {
-  MonetizationOn,
-  Cancel,
-  KeyboardArrowRight,
-  KeyboardArrowLeft,
-} from "@material-ui/icons";
-import { Context } from "../../store/Store";
-
-import "../../styles/MyCoverCropComparisonComponent.scss";
-import sidebarDefinitionsz7 from "../../shared/json/zone7/data-dictionary.json";
-import sidebarDefinitionsz6 from "../../shared/json/zone6/data-dictionary.json";
-import sidebarDefinitionsz5 from "../../shared/json/zone5/data-dictionary.json";
 import sidebarDefinitionsz4 from "../../shared/json/zone4/data-dictionary.json";
+import sidebarDefinitionsz5 from "../../shared/json/zone5/data-dictionary.json";
+import sidebarDefinitionsz6 from "../../shared/json/zone6/data-dictionary.json";
+import sidebarDefinitionsz7 from "../../shared/json/zone7/data-dictionary.json";
+import { Context } from "../../store/Store";
+import "../../styles/cropComparisonView.scss";
+import "../../styles/MyCoverCropComparisonComponent.scss";
 import CropDetailsModalComponent from "../CropSelector/CropDetailsModal";
-import { useSnackbar } from "notistack";
 
 const lightBorder = {
   border: "1px solid #35999b",
@@ -63,7 +61,7 @@ const lightBG = {
 };
 const MyCoverCropComparisonComponent = (props) => {
   const [state, dispatch] = useContext(Context);
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar();
   const { comparisonKeys, zone } = state;
   const [sidebarDefs, setSidebarDefs] = useState(sidebarDefinitionsz7);
   const [modalOpen, setModalOpen] = useState(false);
@@ -116,11 +114,9 @@ const MyCoverCropComparisonComponent = (props) => {
       // element not in array
       // not possible ?
     } else {
-      // alert(removeIndex);
       let selectedCropsCopy = state.selectedCrops;
 
       selectedCropsCopy.splice(removeIndex, 1);
-      // console.log(selectedCropsCopy);
       dispatch({
         type: "SELECTED_CROPS_MODIFIER",
         data: {
@@ -130,8 +126,6 @@ const MyCoverCropComparisonComponent = (props) => {
         },
       });
       enqueueSnackbar(`${cropName} Removed`);
-
-      // this.state.selectedCrops.splice(removeIndex, 1);
     }
   };
 
@@ -167,6 +161,7 @@ const MyCoverCropComparisonComponent = (props) => {
                     <img
                       src="https://via.placeholder.com/10/FFFFFF/FFFFFF"
                       style={{ opacity: 0 }}
+                      alt="placeholder"
                     />
                   }
                   style={{ width: "100%", height: "100px" }}
@@ -348,7 +343,6 @@ const MyCoverCropComparisonComponent = (props) => {
                           ? `/images/Cover Crop Photos/250/${crop.data["Image Data"]["Key Thumbnail"]}`
                           : "https://placehold.it/100x100?text=Placeholder"
                       }
-                      // image="https://placehold.it/100x100"
                       title={crop.cropName}
                       style={{ width: "100%", height: "100px" }}
                     />
@@ -393,7 +387,6 @@ const MyCoverCropComparisonComponent = (props) => {
                             textDecoration: "underline",
                             color: "rgb(53, 153, 155)",
                           }}
-                          // href={`/information-sheet/${crop.data["Cover Crop Name"]}`}
                           onClick={() => handleModalOpen({ fields: crop.data })}
                           target="_blank"
                           rel="noopener noreferrer"
@@ -507,52 +500,16 @@ const RenderSeedingData = ({ filterKey, data }) => {
   }
 };
 const GetAverageGoalRating = ({ crop }) => {
-  const [state, dispatch] = useContext(Context);
+  const [state] = useContext(Context);
   let goalRating = 0;
   if (state.selectedGoals.length > 0) {
-    state.selectedGoals.map((goal) => {
+    state.selectedGoals.forEach((goal) => {
       if (crop.data[goal]) {
         goalRating += crop.data[goal];
       }
     });
   }
-  // console.log(goalRating);
   return getRating(goalRating / state.selectedGoals.length);
 };
 
 export default MyCoverCropComparisonComponent;
-
-// Deprecated
-
-// const RenderGrowthWindow = ({ window }) => {
-//   const growingWindows = ["Very Short", "Short", "Medium", "Long", "Very Long"];
-//   const index = growingWindows.indexOf(window);
-
-//   switch (index) {
-//     case 0:
-//       return getRating(1);
-//     case 1:
-//       return getRating(2);
-//     case 2:
-//       return getRating(3);
-//     case 3:
-//       return getRating(4);
-//     case 4:
-//       return getRating(5);
-//     default:
-//       return getRating(0);
-//   }
-// };
-
-// const RenderCtoNRatioText = ({ ratio }) => {
-//   switch (parseInt(ratio)) {
-//     case 1:
-//       return "LOW";
-//     case 2:
-//       return "MEDIUM";
-//     case 3:
-//       return "HIGH";
-//     default:
-//       return "NO DATA";
-//   }
-// };

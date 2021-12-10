@@ -6,11 +6,11 @@
   styled using ../../styles/map.scss
 */
 
-import React, { useState, useEffect, useContext } from "react";
 import L from "leaflet";
+import "leaflet-draw/dist/leaflet.draw.css";
+import React, { useContext, useEffect, useState } from "react";
 import {
   FeatureGroup,
-  LayersControl,
   Map,
   Marker,
   Polygon,
@@ -18,10 +18,7 @@ import {
   Tooltip,
 } from "react-leaflet";
 import { EditControl } from "react-leaflet-draw";
-
 import { Context } from "../../store/Store";
-
-import "leaflet-draw/dist/leaflet.draw.css";
 import "../../styles/map.scss";
 
 // work around broken icons when using webpack, see https://github.com/PaulLeCam/react-leaflet/issues/255
@@ -34,8 +31,6 @@ L.Icon.Default.mergeOptions({
   shadowUrl:
     "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.0/images/marker-shadow.png",
 });
-
-const { BaseLayer, Overlay } = LayersControl;
 
 const MapContext = ({ width, height, minzoom, maxzoom, from }) => {
   const [state, dispatch] = useContext(Context);
@@ -53,7 +48,6 @@ const MapContext = ({ width, height, minzoom, maxzoom, from }) => {
   }, [from]);
 
   const updateGlobalMarkers = (markersArray, type = "") => {
-    // console.log(markersArray);
     if (type === "marker") {
       setIsPoly(false);
     } else {
@@ -92,16 +86,13 @@ const MapContext = ({ width, height, minzoom, maxzoom, from }) => {
   };
 
   const setAddress = (latLng) => {
-    // console.log("address");
     let geocoder = new window.google.maps.Geocoder();
     geocoder.geocode({ location: latLng }, (results, status) => {
-      // console.log(results);
       if (status === "OK") {
         let formattedAddressArray = results[0].formatted_address.split(",");
         let formattedAddressLength = formattedAddressArray.length;
-        let zipString = formattedAddressArray[formattedAddressLength - 2].split(
-          " "
-        );
+        let zipString =
+          formattedAddressArray[formattedAddressLength - 2].split(" ");
         let zipArray = zipString.filter((a) => parseInt(a));
 
         dispatch({
@@ -136,31 +127,24 @@ const MapContext = ({ width, height, minzoom, maxzoom, from }) => {
         const lng = e.layer._latlng.lng;
         const latLng = { lat: lat, lng: lng };
         // reverse geocode
-        // console.log("marker");
         setAddress(latLng);
 
         updateGlobalMarkers([[lat, lng]], "marker");
       } else if (e.layerType === "polygon") {
         const latlngs = e.layer._latlngs;
-        // console.log(e.layer);
         let markers = [];
         const firstLatLng = { lat: latlngs[0][0].lat, lng: latlngs[0][0].lng };
         // reverse geocode
         setAddress(firstLatLng);
 
-        latlngs.map((latlngArr, index) => {
-          latlngArr.map((latlng, index) => {
-            // console.log(latlng);
+        latlngs.forEach((latlngArr) => {
+          latlngArr.forEach((latlng) => {
             markers.push([latlng.lat, latlng.lng]);
           });
         });
-        // console.log(markers);
         updateGlobalMarkers(markers, "poly");
-      } else {
       }
     }
-
-    // // setNewDraw(!newDraw);
   };
 
   return mapCenter.length > 0 ? (
