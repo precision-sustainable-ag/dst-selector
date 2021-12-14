@@ -5,7 +5,9 @@ import React, {
   useEffect,
   useImperativeHandle,
   useState,
+  useContext,
 } from "react";
+import { Context } from "../../../store/Store";
 
 const DollarsAndRatings = ({ data, filter, handleChange }) => {
   let style =
@@ -85,6 +87,59 @@ const Chips = ({ props, filter, handleChange }) => {
 
 const Tip = ({ filter, omitHeading }) => {
   let [open, setOpen] = useState(false);
+  // const [state] = useContext(Context);
+  // const [valuesDescription, setValuesDescription] = useState("");
+
+  // useEffect(() => {
+  //   let dictionary;
+  //   switch (state.zone) {
+  //     case 7:
+  //       dictionary = state.zone7Dictionary.filter(
+  //         (val) => val.Variable === filter.name
+  //       );
+  //       break;
+  //     case 6:
+  //       dictionary = state.zone6Dictionary.filter(
+  //         (val) => val.Variable === filter.name
+  //       );
+  //       break;
+  //     case 5:
+  //       dictionary = state.zone5Dictionary.filter(
+  //         (val) => val.Variable === filter.name
+  //       );
+  //       break;
+  //     case 4:
+  //       dictionary = state.zone4Dictionary.filter(
+  //         (val) => val.Variable === filter.name
+  //       );
+  //       break;
+  //     default:
+  //       dictionary = state.zone7Dictionary.filter(
+  //         (val) => val.Variable === filter.name
+  //       );
+  //       break;
+  //   }
+
+  //   // setValuesDescription(
+  //   //   `${filter.description} ${
+  //   //     dictionary[0] ? dictionary[0]["Values Description"] : ""
+  //   //   }`
+  //   // );
+
+  //   setValuesDescription(`${filter.description}`);
+
+  //   console.log(valuesDescription);
+  //   // console.log(dictionary[0]["Values Description"]);
+  //   // setDict(dictionary);
+  // }, [
+  //   filter.description,
+  //   filter.name,
+  //   state.zone,
+  //   state.zone4Dictionary,
+  //   state.zone5Dictionary,
+  //   state.zone6Dictionary,
+  //   state.zone7Dictionary,
+  // ]);
 
   return (
     <Tooltip
