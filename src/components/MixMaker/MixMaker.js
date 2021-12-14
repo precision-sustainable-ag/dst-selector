@@ -2,10 +2,10 @@
   Under construction
 */
 
-import React from "react";
-import Header from "../Header/Header";
 import { Box } from "@material-ui/core";
+import React from "react";
 import { UnderConstructionText } from "../../shared/constants";
+import Header from "../Header/Header";
 
 const MixMaker = () => {
   return (

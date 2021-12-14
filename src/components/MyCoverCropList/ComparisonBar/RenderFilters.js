@@ -2,22 +2,21 @@
   Handles rendering the goals and updating them when selected
 */
 
-import React, { Fragment } from "react";
 import {
+  Checkbox,
+  Collapse,
+  FormControlLabel,
+  Grid,
+  List,
   ListItem,
   ListItemText,
-  Typography,
-  Collapse,
-  List,
-  Grid,
   Tooltip,
-  FormControlLabel,
-  Checkbox,
+  Typography,
 } from "@material-ui/core";
 import { ExpandLess, ExpandMore } from "@material-ui/icons";
+import React, { Fragment } from "react";
 const RenderFilters = ({
   filterValues = [],
-  setFilterValues = () => {},
   toggleSidebarFilterItems = () => {},
   classes = {},
   comparisonKeys = [],
@@ -65,7 +64,6 @@ const RenderFilters = ({
             >
               <ListItem
                 button
-                // className={classes.nested}
                 className={
                   filterValues[index].open ? "filterOpen" : "filterClose"
                 }
@@ -85,7 +83,6 @@ const RenderFilters = ({
           ) : (
             <ListItem
               button
-              // className={classes.nested}
               className={
                 filterValues[index].open ? "filterOpen" : "filterClose"
               }
@@ -116,9 +113,8 @@ const RenderFilters = ({
                           //   onChange={handleChange}
                           onChange={() => {
                             let comparisonKeysCopy = comparisonKeys;
-                            let indexOfValue = comparisonKeysCopy.indexOf(
-                              "Cover Crop Group"
-                            );
+                            let indexOfValue =
+                              comparisonKeysCopy.indexOf("Cover Crop Group");
                             if (indexOfValue === -1) {
                               // doesn't exist
                               comparisonKeysCopy.push("Cover Crop Group");
@@ -166,7 +162,6 @@ const RenderFilters = ({
                                       ? val.alternateName
                                       : val.name
                                   )}
-                                  //   onChange={handleChange}
                                   onChange={() => {
                                     updateCheckboxStatus(
                                       val.alternateName
