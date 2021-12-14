@@ -15,6 +15,7 @@ const GoalTag = (props) => {
   let goalTitle = props.goaltTitle;
   let key = props.id;
   let goal = props.goal;
+  let valuesDescriptions = props.valuesDescriptions;
 
   useEffect(() => {
     if (state.selectedGoals.length > 0) {
@@ -60,7 +61,7 @@ const GoalTag = (props) => {
       arrow
       title={
         <div className="filterTooltip">
-          <p>{goalDescription}</p>
+          <p>{goalDescription + " " + valuesDescriptions}</p>
         </div>
       }
       key={`tooltip${key}`}

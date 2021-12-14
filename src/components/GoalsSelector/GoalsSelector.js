@@ -92,6 +92,7 @@ const GoalsSelector = () => {
                       id={key}
                       goaltTitle={goal.fields["Variable"]}
                       goalDescription={goal.fields["Description"]}
+                      valuesDescriptions={goal.fields["Values Description"]}
                     />
                   </div>
                 ))
