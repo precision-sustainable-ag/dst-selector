@@ -3,12 +3,10 @@
   Contains the CoverCropList component and the CropSidebar component
 */
 
-
 import { Box } from "@material-ui/core";
 import React, { useState } from "react";
 import CropSidebarComponent from "../CropSelector/CropSidebar";
 import Header from "../Header/Header";
-import MyCoverCropComparisonComponent from "./MyCoverCropComparisonComponent";
 import MyCoverCropList from "./MyCoverCropList";
 
 const MyCoverCropListWrapper = (props) => {
