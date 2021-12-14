@@ -3,9 +3,9 @@
   The DateComponent shows the date in the header
 */
 
-import { useState, useEffect } from "react";
 import moment from "moment";
 import "moment-timezone";
+import { useEffect, useState } from "react";
 
 const DateComponent = () => {
   const [date, setDate] = useState(null);

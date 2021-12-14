@@ -5,37 +5,18 @@
   styled using CustomStyles from ../../shared/constants
 */
 
-import React, { useEffect, Fragment, useContext } from "react";
-import Header from "../Header/Header";
-import {
-  Typography,
-  Button,
-  useTheme,
-  isWidthDown,
-  isWidthUp,
-} from "@material-ui/core";
+import { Button, Typography } from "@material-ui/core";
+import React, { Fragment, useEffect } from "react";
 import { Link } from "react-router-dom";
-import InformationSheetDictionary from "../InformationSheet/InformationSheetDictionary";
 import { CustomStyles } from "../../shared/constants";
-import { Context } from "../../store/Store";
+import Header from "../Header/Header";
+import InformationSheetDictionary from "../InformationSheet/InformationSheetDictionary";
 
-const HelpComponent = (props) => {
+const HelpComponent = () => {
   useEffect(() => {
     document.title = "Help Page";
   }, []);
 
-  // const theme = useTheme();
-  // const styles = theme =>({
-  //   boxContainerStyle:{
-  //   minHeight: "520px",
-  //   [theme.breakpoints.down("md")]: {
-  //     width: "100%",
-  //     margin: "auto",
-  //     padding: "initial",
-  //   },
-  // }
-  // });
-  // console.log(isWidthUp("xl"));
   const [value, setValue] = React.useState(0);
 
   const handleChange = (newValue) => {
@@ -45,15 +26,7 @@ const HelpComponent = (props) => {
     <div className="contentWrapper">
       <Header />
       <div className="container-fluid mt-5">
-        <div
-          className="row boxContainerRow"
-          style={
-            // isWidthDown("md")
-            // ? { minHeight: "520px", width: "100%", padding: "initial" }
-            // : { minHeight: "520px" }
-            { minHeight: "520px" }
-          }
-        >
+        <div className="row boxContainerRow" style={{ minHeight: "520px" }}>
           <div className="col-12 row">
             <div className="col-lg-4 col-12 px-0">
               <div
@@ -138,8 +111,6 @@ const HelpComponent = (props) => {
 export default HelpComponent;
 
 const RenderContent = ({ value = 0 }) => {
-  const [state] = useContext(Context);
-
   switch (value) {
     case 0:
       return (
@@ -150,12 +121,13 @@ const RenderContent = ({ value = 0 }) => {
           <Typography component="div" variant="body1" align="left" gutterBottom>
             <iframe
               src="https://docs.google.com/presentation/d/e/2PACX-1vQbP5BcX8_u7bEfHjmAyUoSGeO3yVJkwbEveqSCh2xMn2M_f_EFp6kTi_5kvtp4S7zLITHXdkHEftPC/embed?start=false&loop=false&delayms=60000"
-              frameborder="0"
+              frameBorder="0"
               width="100%"
               height="474"
-              allowfullscreen="true"
+              allowFullScreen={true}
               mozallowfullscreen="true"
               webkitallowfullscreen="true"
+              title="iframe"
             ></iframe>
           </Typography>
           <Typography component="div" variant="body1" align="left">
@@ -259,6 +231,7 @@ const RenderContent = ({ value = 0 }) => {
                   <a
                     href="https://planthardiness.ars.usda.gov/PHZMWeb/"
                     target="_blank"
+                    rel="noopener noreferrer"
                   >
                     hardiness zone
                   </a>{" "}
@@ -463,7 +436,7 @@ const RenderContent = ({ value = 0 }) => {
           <Typography variant="h4" gutterBottom align="center">
             Data Dictionary
           </Typography>
-          <InformationSheetDictionary zone={state.zone} from="help" />
+          <InformationSheetDictionary zone={6} from="help" />
         </div>
       );
     case 3:
@@ -483,6 +456,7 @@ const RenderContent = ({ value = 0 }) => {
                   <a
                     href="https://extension.psu.edu/using-flowering-cover-crops-for-native-pollinating-bee-conservation"
                     target="_blank"
+                    rel="noopener noreferrer"
                   >
                     https://extension.psu.edu/using-flowering-cover-crops-for-native-pollinating-bee-conservation
                   </a>
@@ -494,6 +468,7 @@ const RenderContent = ({ value = 0 }) => {
                   <a
                     href="http://northeastcovercrops.com/wp-content/uploads/2018/03/Conservation-Cover-for-Pollinators.pdf"
                     target="_blank"
+                    rel="noopener noreferrer"
                   >
                     http://northeastcovercrops.com/wp-content/uploads/2018/03/Conservation-Cover-for-Pollinators.pdf
                   </a>
@@ -505,6 +480,7 @@ const RenderContent = ({ value = 0 }) => {
                   <a
                     href="http://northeastcovercrops.com/wp-content/uploads/2018/03/Planting-Flowers-For-Bees-in-Connecticut.pdf"
                     target="_blank"
+                    rel="noopener noreferrer"
                   >
                     http://northeastcovercrops.com/wp-content/uploads/2018/03/Planting-Flowers-For-Bees-in-Connecticut.pdf
                   </a>
@@ -517,6 +493,7 @@ const RenderContent = ({ value = 0 }) => {
                   <a
                     href="http://ipm.uconn.edu/documents/raw2/Use%20of%20Cover%20Crops%20and%20Green%20Manures%20to%20Attract%20Beneficial%20Insects/Use%20of%20Cover%20Crops%20and%20Green%20Manures%20to%20Attract%20Beneficial%20Insects.php?display=print"
                     target="_blank"
+                    rel="noopener noreferrer"
                   >
                     http://ipm.uconn.edu/documents/raw2/Use%20of%20Cover%20Crops%20and%20Green%20Manures%20to%20Attract%20Beneficial%20Insects/Use%20of%20Cover%20Crops%20and%20Green%20Manures%20to%20Attract%20Beneficial%20Insects.php?display=print
                   </a>
@@ -533,6 +510,7 @@ const RenderContent = ({ value = 0 }) => {
                   <a
                     href="http://northeastcovercrops.com/wp-content/uploads/2018/04/Suppressing-Weeds-Using-Cover-Crops-in-Pennsylvania.pdf"
                     target="_blank"
+                    rel="noopener noreferrer"
                   >
                     http://northeastcovercrops.com/wp-content/uploads/2018/04/Suppressing-Weeds-Using-Cover-Crops-in-Pennsylvania.pdf
                   </a>
@@ -540,7 +518,11 @@ const RenderContent = ({ value = 0 }) => {
                 <li>
                   Cover Crops as a Weed Management Tool, Getting Rid of Weeds,
                   <br />
-                  <a href="https://growiwm.org/cover-crops" target="_blank">
+                  <a
+                    href="https://growiwm.org/cover-crops"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     https://growiwm.org/cover-crops
                   </a>
                 </li>
@@ -556,6 +538,7 @@ const RenderContent = ({ value = 0 }) => {
                   <a
                     href="https://nhvegfruitnews.wordpress.com/2016/06/27/between-two-rows-cover-crops-for-perennial-plants/"
                     target="_blank"
+                    rel="noopener noreferrer"
                   >
                     https://nhvegfruitnews.wordpress.com/2016/06/27/between-two-rows-cover-crops-for-perennial-plants/
                   </a>
@@ -566,6 +549,7 @@ const RenderContent = ({ value = 0 }) => {
                   <br />
                   <a
                     target="_blank"
+                    rel="noopener noreferrer"
                     href="https://extension.udel.edu/weeklycropupdate/?p=9950"
                   >
                     https://extension.udel.edu/weeklycropupdate/?p=9950
@@ -577,6 +561,7 @@ const RenderContent = ({ value = 0 }) => {
                   <br />
                   <a
                     target="_blank"
+                    rel="noopener noreferrer"
                     href="https://nevegetable.org/cultural-practices/cover-crops-and-green-manures"
                   >
                     https://nevegetable.org/cultural-practices/cover-crops-and-green-manures
@@ -590,6 +575,7 @@ const RenderContent = ({ value = 0 }) => {
                   <br />
                   <a
                     target="_blank"
+                    rel="noopener noreferrer"
                     href="http://northeastcovercrops.com/wp-content/uploads/2018/03/NH-340-Cover-Crop-Planting-Specification-Guide-2.pdf"
                   >
                     http://northeastcovercrops.com/wp-content/uploads/2018/03/NH-340-Cover-Crop-Planting-Specification-Guide-2.pdf
@@ -601,6 +587,7 @@ const RenderContent = ({ value = 0 }) => {
                   <br />
                   <a
                     target="_blank"
+                    rel="noopener noreferrer"
                     href="http://northeastcovercrops.com/wp-content/uploads/2018/02/Tips-for-Interseeding-Cover-Crops.pdf"
                   >
                     http://northeastcovercrops.com/wp-content/uploads/2018/02/Tips-for-Interseeding-Cover-Crops.pdf
@@ -612,6 +599,7 @@ const RenderContent = ({ value = 0 }) => {
                   <br />
                   <a
                     target="_blank"
+                    rel="noopener noreferrer"
                     href="http://www.lancasterfarming.com/news/northern_edition/aerial-seeding-helps-farmers-plant-cover-crops-in-northeast/article_1d4fbe53-e72e-5c37-ae24-98ce2ca8b2bb.html"
                   >
                     http://www.lancasterfarming.com/news/northern_edition/aerial-seeding-helps-farmers-plant-cover-crops-in-northeast/article_1d4fbe53-e72e-5c37-ae24-98ce2ca8b2bb.html
@@ -628,6 +616,7 @@ const RenderContent = ({ value = 0 }) => {
                   <br />
                   <a
                     target="_blank"
+                    rel="noopener noreferrer"
                     href="http://northeastcovercrops.com/wp-content/uploads/2018/04/Cover-Crop-Interseeder-Potential-for-Injury-from-Corn-Herbicides.pdf"
                   >
                     http://northeastcovercrops.com/wp-content/uploads/2018/04/Cover-Crop-Interseeder-Potential-for-Injury-from-Corn-Herbicides.pdf
@@ -639,6 +628,7 @@ const RenderContent = ({ value = 0 }) => {
                   <br />
                   <a
                     target="_blank"
+                    rel="noopener noreferrer"
                     href="https://extension.psu.edu/herbicides-persistence-and-rotation-to-cover-crops"
                   >
                     https://extension.psu.edu/herbicides-persistence-and-rotation-to-cover-crops
@@ -650,6 +640,7 @@ const RenderContent = ({ value = 0 }) => {
                   <br />
                   <a
                     target="_blank"
+                    rel="noopener noreferrer"
                     href="https://extension.psu.edu/herbicide-considerations-for-cover-and-forage-crops"
                   >
                     https://extension.psu.edu/herbicide-considerations-for-cover-and-forage-crops
@@ -664,6 +655,7 @@ const RenderContent = ({ value = 0 }) => {
                   <br />
                   <a
                     target="_blank"
+                    rel="noopener noreferrer"
                     href="https://extension.psu.edu/special-cover-crop-control-considerations"
                   >
                     https://extension.psu.edu/special-cover-crop-control-considerations
@@ -675,6 +667,7 @@ const RenderContent = ({ value = 0 }) => {
                   <br />
                   <a
                     target="_blank"
+                    rel="noopener noreferrer"
                     href="https://extension.psu.edu/cover-crop-rollers-for-northeastern-grain-production"
                   >
                     https://extension.psu.edu/cover-crop-rollers-for-northeastern-grain-production
@@ -685,6 +678,7 @@ const RenderContent = ({ value = 0 }) => {
                   <br />
                   <a
                     target="_blank"
+                    rel="noopener noreferrer"
                     href="https://growiwm.org/cover-crop-termination-options/"
                   >
                     https://growiwm.org/cover-crop-termination-options/
@@ -699,6 +693,7 @@ const RenderContent = ({ value = 0 }) => {
                   <br />
                   <a
                     target="_blank"
+                    rel="noopener noreferrer"
                     href="https://extension.psu.edu/planting-green-a-new-cover-crop-management-technique"
                   >
                     https://extension.psu.edu/planting-green-a-new-cover-crop-management-technique
