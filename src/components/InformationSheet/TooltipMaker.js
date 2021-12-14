@@ -15,15 +15,49 @@ const TooltipMaker = ({ children, variable }) => {
   const [dict, setDict] = useState([]);
 
   useEffect(() => {
-    const dictionary = state.zone7Dictionary.filter(
-      (val) => val.Variable === variable
-    );
+    let dictionary;
+    switch (state.zone) {
+      case 7:
+        dictionary = state.zone7Dictionary.filter(
+          (val) => val.Variable === variable
+        );
+        break;
+      case 6:
+        dictionary = state.zone6Dictionary.filter(
+          (val) => val.Variable === variable
+        );
+        break;
+      case 5:
+        dictionary = state.zone5Dictionary.filter(
+          (val) => val.Variable === variable
+        );
+        break;
+      case 4:
+        dictionary = state.zone4Dictionary.filter(
+          (val) => val.Variable === variable
+        );
+        break;
+      default:
+        dictionary = state.zone7Dictionary.filter(
+          (val) => val.Variable === variable
+        );
+        break;
+    }
+
+    console.log(dictionary);
     setDict(dictionary);
-  }, [state.zone7Dictionary, variable]);
+  }, [
+    state.zone,
+    state.zone4Dictionary,
+    state.zone5Dictionary,
+    state.zone6Dictionary,
+    state.zone7Dictionary,
+    variable,
+  ]);
 
   useEffect(() => {
     if (dict.length === 1) {
-      setDesc(dict[0].Description);
+      setDesc(dict[0].Description + " " + dict[0]["Values Description"]);
     } else {
       setDesc("No Data");
     }
