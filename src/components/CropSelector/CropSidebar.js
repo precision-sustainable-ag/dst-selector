@@ -413,6 +413,66 @@ const CropSidebarComponent = (props) => {
     });
     setResetFilters(!resetFilters);
   };
+
+  useEffect(() => {
+    let dictionary = [];
+    switch (state.zone) {
+      case 7:
+        dictionary = state.zone7Dictionary.filter(
+          (val) => val["Filter Field"] === true
+        );
+        break;
+      case 6:
+        dictionary = state.zone6Dictionary.filter(
+          (val) => val["Filter Field"] === true
+        );
+        break;
+      case 5:
+        dictionary = state.zone5Dictionary.filter(
+          (val) => val["Filter Field"] === true
+        );
+        break;
+      case 4:
+        dictionary = state.zone4Dictionary.filter(
+          (val) => val["Filter Field"] === true
+        );
+        break;
+      default:
+        dictionary = state.zone7Dictionary.filter(
+          (val) => val["Filter Field"] === true
+        );
+        break;
+    }
+    dictionary.push({
+      name: "Cover Crop Type",
+      description: "Common name for categories of cover crops",
+      type: "chips-only",
+      values: [
+        {
+          name: "Broadleaf",
+        },
+        {
+          name: "Brassica",
+        },
+        {
+          name: "Grass",
+        },
+        {
+          name: "Legume",
+        },
+      ],
+    });
+    console.log(dictionary);
+
+    
+  }, [
+    state.zone,
+    state.zone4Dictionary,
+    state.zone5Dictionary,
+    state.zone6Dictionary,
+    state.zone7Dictionary,
+  ]);
+
   useEffect(() => {
     setSidebarFilters(filterData);
     const filterTitles = filterData.map((filter) => {
