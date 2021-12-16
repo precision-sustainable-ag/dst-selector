@@ -1,7 +1,7 @@
 [
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f13"
+            "$oid": "61bb905e5bb6d76096c8b049"
         },
         "Variable": "Active Growth Period",
         "Category": "Basic Agronomics",
@@ -15,7 +15,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f14"
+            "$oid": "61bb905e5bb6d76096c8b04a"
         },
         "Variable": "Base Seeding Rate Max (lbs/A)",
         "Category": "Planting",
@@ -27,7 +27,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f15"
+            "$oid": "61bb905e5bb6d76096c8b04b"
         },
         "Variable": "Base Seeding Rate Min (lbs/A)",
         "Category": "Planting",
@@ -39,7 +39,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f16"
+            "$oid": "61bb905e5bb6d76096c8b04c"
         },
         "Variable": "C to N Ratio",
         "Category": "Basic Agronomics",
@@ -62,7 +62,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f17"
+            "$oid": "61bb905e5bb6d76096c8b04d"
         },
         "Variable": "Can Aerial Seed?",
         "Category": "Planting",
@@ -76,7 +76,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f18"
+            "$oid": "61bb905e5bb6d76096c8b04e"
         },
         "Variable": "Can Interseed End",
         "Category": "Planting Dates",
@@ -86,7 +86,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f19"
+            "$oid": "61bb905e5bb6d76096c8b04f"
         },
         "Variable": "Can Interseed Start",
         "Category": "Planting Dates",
@@ -96,7 +96,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f1a"
+            "$oid": "61bb905e5bb6d76096c8b050"
         },
         "Variable": "Chemical Termination at Flowering",
         "Category": "Termination",
@@ -110,7 +110,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f1b"
+            "$oid": "61bb905e5bb6d76096c8b051"
         },
         "Variable": "Chemical Termination at Vegetative",
         "Category": "Termination",
@@ -124,7 +124,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f1c"
+            "$oid": "61bb905e5bb6d76096c8b052"
         },
         "Variable": "Cover Crop Description",
         "Category": "Taxonomy",
@@ -135,7 +135,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f1d"
+            "$oid": "61bb905e5bb6d76096c8b053"
         },
         "Variable": "Cover Crop Group",
         "Category": "Taxonomy",
@@ -153,7 +153,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f1e"
+            "$oid": "61bb905e5bb6d76096c8b054"
         },
         "Variable": "Cover Crop Name",
         "Category": "Taxonomy",
@@ -164,7 +164,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f1f"
+            "$oid": "61bb905e5bb6d76096c8b055"
         },
         "Variable": "cv, var, or ssp to specify",
         "Category": "Taxonomy",
@@ -175,7 +175,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f20"
+            "$oid": "61bb905e5bb6d76096c8b056"
         },
         "Variable": "Drilled Depth Max",
         "Category": "Planting",
@@ -187,7 +187,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f21"
+            "$oid": "61bb905e5bb6d76096c8b057"
         },
         "Variable": "Drilled Depth Min",
         "Category": "Planting",
@@ -199,7 +199,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f22"
+            "$oid": "61bb905e5bb6d76096c8b058"
         },
         "Variable": "Drought Tolerance",
         "Category": "Environmental Tolerances",
@@ -214,7 +214,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f23"
+            "$oid": "61bb905e5bb6d76096c8b059"
         },
         "Variable": "Dry Matter Max (lbs/A/y)",
         "Category": "Basic Agronomics",
@@ -238,7 +238,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f24"
+            "$oid": "61bb905e5bb6d76096c8b05a"
         },
         "Variable": "Dry Matter Min (lbs/A/y)",
         "Category": "Basic Agronomics",
@@ -262,7 +262,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f25"
+            "$oid": "61bb905e5bb6d76096c8b05b"
         },
         "Variable": "Duration",
         "Category": "Basic Agronomics",
@@ -276,7 +276,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f26"
+            "$oid": "61bb905e5bb6d76096c8b05c"
         },
         "Variable": "Early Spring Growth",
         "Category": "Growth",
@@ -296,7 +296,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f27"
+            "$oid": "61bb905e5bb6d76096c8b05d"
         },
         "Variable": "Ease of Establishment",
         "Category": "Growth",
@@ -310,7 +310,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f28"
+            "$oid": "61bb905e5bb6d76096c8b05e"
         },
         "Variable": "Establishes Quickly",
         "Category": "Growth",
@@ -331,7 +331,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f29"
+            "$oid": "61bb905e5bb6d76096c8b05f"
         },
         "Variable": "Family Common Name",
         "Category": "Taxonomy",
@@ -343,7 +343,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f2a"
+            "$oid": "61bb905e5bb6d76096c8b060"
         },
         "Variable": "Family Scientific Name",
         "Category": "Taxonomy",
@@ -356,7 +356,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f2b"
+            "$oid": "61bb905e5bb6d76096c8b061"
         },
         "Variable": "Flood Tolerance",
         "Category": "Environmental Tolerances",
@@ -371,7 +371,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f2c"
+            "$oid": "61bb905e5bb6d76096c8b062"
         },
         "Variable": "Flooding Frequency Tolerance",
         "Category": "Soil Conditions",
@@ -383,7 +383,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f2d"
+            "$oid": "61bb905e5bb6d76096c8b063"
         },
         "Variable": "Flowering Trigger",
         "Category": "Growth",
@@ -396,7 +396,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f2e"
+            "$oid": "61bb905e5bb6d76096c8b064"
         },
         "Variable": "Forage Harvest Value",
         "Category": "Goals",
@@ -409,7 +409,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f2f"
+            "$oid": "61bb905e5bb6d76096c8b065"
         },
         "Variable": "Freezing Termination at Flowering",
         "Category": "Termination",
@@ -422,7 +422,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f30"
+            "$oid": "61bb905e5bb6d76096c8b066"
         },
         "Variable": "Freezing Termination at Vegetative",
         "Category": "Termination",
@@ -437,7 +437,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f31"
+            "$oid": "61bb905e5bb6d76096c8b067"
         },
         "Variable": "Frost Seeding",
         "Category": "Planting",
@@ -451,7 +451,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f32"
+            "$oid": "61bb905e5bb6d76096c8b068"
         },
         "Variable": "Frost Seeding End",
         "Category": "Planting Dates",
@@ -462,7 +462,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f33"
+            "$oid": "61bb905e5bb6d76096c8b069"
         },
         "Variable": "Frost Seeding Start",
         "Category": "Planting Dates",
@@ -473,7 +473,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f34"
+            "$oid": "61bb905e5bb6d76096c8b06a"
         },
         "Variable": "Good Grazing",
         "Category": "Goals",
@@ -486,7 +486,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f35"
+            "$oid": "61bb905e5bb6d76096c8b06b"
         },
         "Variable": "Growing Window",
         "Category": "Growth",
@@ -503,7 +503,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f36"
+            "$oid": "61bb905e5bb6d76096c8b06c"
         },
         "Variable": "Heat Tolerance",
         "Category": "Environmental Tolerances",
@@ -518,7 +518,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f37"
+            "$oid": "61bb905e5bb6d76096c8b06d"
         },
         "Variable": "Hessian Fly-Free Date",
         "Category": "Basic Agronomics",
@@ -531,7 +531,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f38"
+            "$oid": "61bb905e5bb6d76096c8b06e"
         },
         "Variable": "Improve Soil Organic Matter",
         "Category": "Goals",
@@ -544,7 +544,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f39"
+            "$oid": "61bb905e5bb6d76096c8b06f"
         },
         "Variable": "Increase Soil Aggregation",
         "Category": "Goals",
@@ -557,7 +557,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f3a"
+            "$oid": "61bb905e5bb6d76096c8b070"
         },
         "Variable": "Innoculant Type",
         "Category": "Growth",
@@ -570,7 +570,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f3b"
+            "$oid": "61bb905e5bb6d76096c8b071"
         },
         "Variable": "Lasting Residue",
         "Category": "Goals",
@@ -583,7 +583,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f3c"
+            "$oid": "61bb905e5bb6d76096c8b072"
         },
         "Variable": "Low Fertility Tolerance",
         "Category": "Environmental Tolerances",
@@ -598,7 +598,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f3d"
+            "$oid": "61bb905e5bb6d76096c8b073"
         },
         "Variable": "Maximum Tolerant Soil pH",
         "Category": "Soil Conditions",
@@ -610,7 +610,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f3e"
+            "$oid": "61bb905e5bb6d76096c8b074"
         },
         "Variable": "Min Germination Temp (F)",
         "Category": "Planting",
@@ -622,7 +622,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f3f"
+            "$oid": "61bb905e5bb6d76096c8b075"
         },
         "Variable": "Minimum Tolerant Soil pH",
         "Category": "Soil Conditions",
@@ -634,7 +634,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f40"
+            "$oid": "61bb905e5bb6d76096c8b076"
         },
         "Variable": "Mow Termination at Flowering",
         "Category": "Termination",
@@ -648,7 +648,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f41"
+            "$oid": "61bb905e5bb6d76096c8b077"
         },
         "Variable": "Nitrogen Accumulation Max (lbs/A/y)",
         "Category": "Basic Agronomics",
@@ -664,7 +664,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f42"
+            "$oid": "61bb905e5bb6d76096c8b078"
         },
         "Variable": "Nitrogen Accumulation Min (lbs/A/y)",
         "Category": "Basic Agronomics",
@@ -680,7 +680,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f43"
+            "$oid": "61bb905e5bb6d76096c8b079"
         },
         "Variable": "Nitrogen Fixation",
         "Category": "Goals",
@@ -693,7 +693,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f44"
+            "$oid": "61bb905e5bb6d76096c8b07a"
         },
         "Variable": "Nitrogen Scavenging",
         "Category": "Goals",
@@ -706,7 +706,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f45"
+            "$oid": "61bb905e5bb6d76096c8b07b"
         },
         "Variable": "Notes: Basic Agronomics",
         "Category": "Basic Agronomics",
@@ -717,7 +717,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f46"
+            "$oid": "61bb905e5bb6d76096c8b07c"
         },
         "Variable": "Notes: Disease",
         "Category": "Disease and Non-Weed Pests",
@@ -728,7 +728,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f47"
+            "$oid": "61bb905e5bb6d76096c8b07d"
         },
         "Variable": "Notes: Environmental Tolerances",
         "Category": "Environmental Tolerances",
@@ -739,7 +739,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f48"
+            "$oid": "61bb905e5bb6d76096c8b07e"
         },
         "Variable": "Notes: Forage and Grazing",
         "Category": "Pollinators",
@@ -750,7 +750,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f49"
+            "$oid": "61bb905e5bb6d76096c8b07f"
         },
         "Variable": "Notes: Goals",
         "Category": "Goals",
@@ -761,7 +761,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f4a"
+            "$oid": "61bb905e5bb6d76096c8b080"
         },
         "Variable": "Notes: Growth, Roots, and Nutrients",
         "Category": "Growth",
@@ -772,7 +772,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f4b"
+            "$oid": "61bb905e5bb6d76096c8b081"
         },
         "Variable": "Notes: Insects",
         "Category": "Disease and Non-Weed Pests",
@@ -782,7 +782,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f4c"
+            "$oid": "61bb905e5bb6d76096c8b082"
         },
         "Variable": "Notes: Nematodes",
         "Category": "Disease and Non-Weed Pests",
@@ -793,7 +793,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f4d"
+            "$oid": "61bb905e5bb6d76096c8b083"
         },
         "Variable": "Notes: Planting",
         "Category": "Planting",
@@ -804,7 +804,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f4e"
+            "$oid": "61bb905e5bb6d76096c8b084"
         },
         "Variable": "Notes: Pollinators",
         "Category": "Pollinators",
@@ -815,7 +815,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f4f"
+            "$oid": "61bb905e5bb6d76096c8b085"
         },
         "Variable": "Notes: Soil Conditions",
         "Category": "Soil Conditions",
@@ -827,7 +827,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f50"
+            "$oid": "61bb905e5bb6d76096c8b086"
         },
         "Variable": "Notes: Taxonomy",
         "Category": "Taxonomy",
@@ -838,7 +838,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f51"
+            "$oid": "61bb905e5bb6d76096c8b087"
         },
         "Variable": "Notes: Termination",
         "Category": "Termination",
@@ -849,7 +849,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f52"
+            "$oid": "61bb905e5bb6d76096c8b088"
         },
         "Variable": "Notes: Weeds",
         "Category": "Weeds",
@@ -860,7 +860,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f53"
+            "$oid": "61bb905e5bb6d76096c8b089"
         },
         "Variable": "Origin",
         "Category": "Taxonomy",
@@ -870,7 +870,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f54"
+            "$oid": "61bb905e5bb6d76096c8b08a"
         },
         "Variable": "Outcompetes Summer Annual Weeds",
         "Category": "Goals",
@@ -883,7 +883,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f55"
+            "$oid": "61bb905e5bb6d76096c8b08b"
         },
         "Variable": "Penetrates Plow Pan",
         "Category": "Goals",
@@ -896,7 +896,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f56"
+            "$oid": "61bb905e5bb6d76096c8b08c"
         },
         "Variable": "Persistence",
         "Category": "Weeds",
@@ -910,7 +910,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f57"
+            "$oid": "61bb905e5bb6d76096c8b08d"
         },
         "Variable": "Pollinator Food",
         "Category": "Goals",
@@ -927,7 +927,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f58"
+            "$oid": "61bb905e5bb6d76096c8b08e"
         },
         "Variable": "Prevent Fall Soil Erosion",
         "Category": "Goals",
@@ -940,7 +940,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f59"
+            "$oid": "61bb905e5bb6d76096c8b08f"
         },
         "Variable": "Prevent Spring Soil Erosion",
         "Category": "Goals",
@@ -953,7 +953,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f5a"
+            "$oid": "61bb905e5bb6d76096c8b090"
         },
         "Variable": "Reduces Surface Compaction",
         "Category": "Goals",
@@ -966,7 +966,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f5b"
+            "$oid": "61bb905e5bb6d76096c8b091"
         },
         "Variable": "Reliable Establishment End",
         "Category": "Planting Dates",
@@ -976,7 +976,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f5c"
+            "$oid": "61bb905e5bb6d76096c8b092"
         },
         "Variable": "Reliable Establishment Start",
         "Category": "Planting Dates",
@@ -986,7 +986,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f5d"
+            "$oid": "61bb905e5bb6d76096c8b093"
         },
         "Variable": "Residue Suppresses Summer Annual Weeds",
         "Category": "Goals",
@@ -999,7 +999,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f5e"
+            "$oid": "61bb905e5bb6d76096c8b094"
         },
         "Variable": "Roller Crimp Termination at Flowering",
         "Category": "Termination",
@@ -1013,7 +1013,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f5f"
+            "$oid": "61bb905e5bb6d76096c8b095"
         },
         "Variable": "Root Architecture",
         "Category": "Growth",
@@ -1036,7 +1036,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f60"
+            "$oid": "61bb905e5bb6d76096c8b096"
         },
         "Variable": "Root Depth",
         "Category": "Growth",
@@ -1057,7 +1057,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f61"
+            "$oid": "61bb905e5bb6d76096c8b097"
         },
         "Variable": "Salinity Tolerance",
         "Category": "Environmental Tolerances",
@@ -1072,7 +1072,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f62"
+            "$oid": "61bb905e5bb6d76096c8b098"
         },
         "Variable": "Scientific Name",
         "Category": "Taxonomy",
@@ -1083,7 +1083,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f63"
+            "$oid": "61bb905e5bb6d76096c8b099"
         },
         "Variable": "Second Reliable Establishment End",
         "Category": "Planting Dates",
@@ -1093,7 +1093,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f64"
+            "$oid": "61bb905e5bb6d76096c8b09a"
         },
         "Variable": "Second Reliable Establishment Start",
         "Category": "Planting Dates",
@@ -1103,7 +1103,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f65"
+            "$oid": "61bb905e5bb6d76096c8b09b"
         },
         "Variable": "Second Temperature/Moisture Risk to Establishment End",
         "Category": "Planting Dates",
@@ -1113,7 +1113,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f66"
+            "$oid": "61bb905e5bb6d76096c8b09c"
         },
         "Variable": "Second Temperature/Moisture Risk to Establishment Start",
         "Category": "Planting Dates",
@@ -1123,7 +1123,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f67"
+            "$oid": "61bb905e5bb6d76096c8b09d"
         },
         "Variable": "Seed Price per Pound",
         "Category": "Planting",
@@ -1137,7 +1137,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f68"
+            "$oid": "61bb905e5bb6d76096c8b09e"
         },
         "Variable": "Seeds per Pound",
         "Category": "Planting",
@@ -1149,7 +1149,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f69"
+            "$oid": "61bb905e5bb6d76096c8b09f"
         },
         "Variable": "Shade Tolerance",
         "Category": "Environmental Tolerances",
@@ -1164,7 +1164,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f6a"
+            "$oid": "61bb905e5bb6d76096c8b0a0"
         },
         "Variable": "Shape & Orientation",
         "Category": "Basic Agronomics",
@@ -1183,7 +1183,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f6b"
+            "$oid": "61bb905e5bb6d76096c8b0a1"
         },
         "Variable": "Soil Drainage",
         "Category": "Soil Conditions",
@@ -1196,7 +1196,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f6c"
+            "$oid": "61bb905e5bb6d76096c8b0a2"
         },
         "Variable": "Soil Moisture Use",
         "Category": "Soil Conditions",
@@ -1209,7 +1209,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f6d"
+            "$oid": "61bb905e5bb6d76096c8b0a3"
         },
         "Variable": "Soil Textures",
         "Category": "Soil Conditions",
@@ -1222,7 +1222,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f6e"
+            "$oid": "61bb905e5bb6d76096c8b0a4"
         },
         "Variable": "Supports Mycorrhizae",
         "Category": "Soil Conditions",
@@ -1240,7 +1240,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f6f"
+            "$oid": "61bb905e5bb6d76096c8b0a5"
         },
         "Variable": "Suppresses Winter Annual Weeds",
         "Category": "Goals",
@@ -1253,7 +1253,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f70"
+            "$oid": "61bb905e5bb6d76096c8b0a6"
         },
         "Variable": "Synonyms",
         "Category": "Taxonomy",
@@ -1265,7 +1265,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f71"
+            "$oid": "61bb905e5bb6d76096c8b0a7"
         },
         "Variable": "Temperature/Moisture Risk to Establishment End",
         "Category": "Planting Dates",
@@ -1275,7 +1275,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f72"
+            "$oid": "61bb905e5bb6d76096c8b0a8"
         },
         "Variable": "Temperature/Moisture Risk to Establishment Start",
         "Category": "Planting Dates",
@@ -1285,7 +1285,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f73"
+            "$oid": "61bb905e5bb6d76096c8b0a9"
         },
         "Variable": "Tillage Termination at Flowering",
         "Category": "Termination",
@@ -1303,7 +1303,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f74"
+            "$oid": "61bb905e5bb6d76096c8b0aa"
         },
         "Variable": "Tillage Termination at Vegetative",
         "Category": "Termination",
@@ -1321,7 +1321,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f75"
+            "$oid": "61bb905e5bb6d76096c8b0ab"
         },
         "Variable": "Volunteer Establishment",
         "Category": "Weeds",
@@ -1335,7 +1335,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f76"
+            "$oid": "61bb905e5bb6d76096c8b0ac"
         },
         "Variable": "Winter Survival",
         "Category": "Environmental Tolerances",
@@ -1353,7 +1353,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f77"
+            "$oid": "61bb905e5bb6d76096c8b0ad"
         },
         "Variable": "Zone Cover Crop Description",
         "Category": "Taxonomy",
@@ -1364,7 +1364,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f78"
+            "$oid": "61bb905e5bb6d76096c8b0ae"
         },
         "Variable": "Zone Decision",
         "Category": "Taxonomy",
@@ -1376,7 +1376,7 @@
     },
     {
         "_id": {
-            "$oid": "61b8bb809c58d73ff3f01f79"
+            "$oid": "61bb905e5bb6d76096c8b0af"
         },
         "Variable": "Zone Use",
         "Category": "Basic Agronomics",
