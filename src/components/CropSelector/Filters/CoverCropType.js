@@ -16,14 +16,7 @@ const CoverCropType = forwardRef((props, ref) => {
   const prop = "Cover Crop Group";
   const [selected, setSelected] = useState({ [prop]: [] });
 
-  // console.log(filters);
-
   useEffect(() => {
-    console.log({
-      ...sidebarFilterOptions,
-      ...selected,
-    });
-
     setSidebarFilterOptions({
       ...sidebarFilterOptions,
       ...selected,
@@ -47,8 +40,6 @@ const CoverCropType = forwardRef((props, ref) => {
       setSelected({ ...selected, [prop]: added });
     }
   };
-
-  // console.log(sidebarFilterOptions, prop);
 
   return (
     <Grid container spacing={1}>

@@ -161,48 +161,8 @@ const CropSidebarComponent = (props) => {
   const [sidebarFilterOptions, setSidebarFilterOptions] = useState(() => {
     const sidebarStarter = {};
     sidebarFiltersData.forEach((row) => (sidebarStarter[row.name] = []));
-    // console.log(sidebarStarter);
     return sidebarStarter;
   });
-  //   "Cover Crop Group": [], //string
-  //   "Drought Tolerance": [], //int
-  //   "Flood Tolerance": [], // int
-  //   "Heat Tolerance": [], // int
-  //   "Low Fertility Tolerance": [], // int
-  //   "Salinity Tolerance": [], // int
-  //   "Shade Tolerance": [], // int
-  //   "Seed Price per Pound": [], //int
-  //   "Frost Seeding": [], // -999 or true
-  //   "Aerial Seeding": [], // -999 or true
-  //   Duration: [], // array
-  //   "Active Growth Period": [], //array
-  //   "Growing Window": [], // string
-  //   "Establishes Quickly": [], // int
-  //   "Ease of Establishment": [], // int
-  //   "Winter Survival": [], // array
-  //   "Early Spring Growth": [], // int
-  //   "Flowering Trigger": [], // array
-  //   "Root Architecture": [], // array
-  //   "Root Depth": [], // string
-  //   "Tillage Termination at Vegetative": [], // int
-  //   "Tillage Termination at Flowering": [], // int
-  //   "Freezing Termination at Vegetative": [], // int
-  //   "Chemical Termination at Vegetative": [], // int
-  //   "Chemical Termination at Flowering": [], // int
-  //   "Mow Termination at Flowering": [], // int
-  //   "Roller Crimp Tolerance at Flowering": [], // int
-  //   "Supports Mycorrhizae": [], // int
-  //   "Pollinator Habitat": [], // int
-  //   "Pollinator Food": [], // int
-  //   "Volunteer Establishment": [], // int
-  //   Persistence: [], // int
-  //   "Discourages Nematodes": [], // int
-  //   "Promotes Nematodes": [], // int
-  //   "Discourages Pest Insects": [], // int
-  //   "Promotes Pest Insects": [], // int
-  //   "Suppresses Cash Crop Disease": [], // int
-  //   "Promotes Cash Crop Disease": [], // int
-  // });
   const seedingMethodRef = useRef();
   const coverCropTypeRef = useRef();
   const growthRef = useRef();
@@ -453,9 +413,9 @@ const CropSidebarComponent = (props) => {
               const description = field[0]["Description"];
               const valuesDescription = field[0]["Values Description"];
 
-              obj["description"] = `${description} ${
-                valuesDescription ? "<br><br>" : ""
-              } ${valuesDescription ? valuesDescription : ""}`;
+              obj["description"] = `${description}${
+                valuesDescription ? " <br><br>" : ""
+              }${valuesDescription ? valuesDescription : ""}`;
               return obj;
             });
             break;
@@ -494,9 +454,9 @@ const CropSidebarComponent = (props) => {
                 const description = field[0]["Description"];
                 const valuesDescription = field[0]["Values Description"];
 
-                obj["description"] = `${description} ${
+                obj["description"] = `${description}${
                   valuesDescription ? "<br><br>" : ""
-                } ${valuesDescription ? valuesDescription : ""}`;
+                }${valuesDescription ? valuesDescription : ""}`;
                 return obj;
               });
             }
@@ -514,11 +474,7 @@ const CropSidebarComponent = (props) => {
               };
 
               if (data.type === "chip") {
-                obj["values"] = data.values
-                  .split(/\s+/)
-                  .join("")
-                  .split(",")
-                  .map((val) => val);
+                obj["values"] = data.values.split(",").map((val) => val.trim());
               } else if (data.type === "rating") {
                 obj["values"] = [];
                 obj["maxSize"] = data.maxSize;
@@ -531,9 +487,9 @@ const CropSidebarComponent = (props) => {
               const description = field[0]["Description"];
               const valuesDescription = field[0]["Values Description"];
 
-              obj["description"] = `${description} <br><br> ${
-                valuesDescription ? valuesDescription : ""
-              }`;
+              obj["description"] = `${description}${
+                valuesDescription ? "<br><br>" : ""
+              }${valuesDescription ? valuesDescription : ""}`;
               return obj;
             });
             break;
@@ -546,13 +502,11 @@ const CropSidebarComponent = (props) => {
     };
 
     const setData = async () => {
-      // console.log(dictionary);
       setSidebarFilters(dictionary);
       const filterTitles = dictionary.map((filter) => {
         return { name: filter.name, open: false };
       });
       setSidebarFiltersOpen(filterTitles);
-      // console.log(sidebarFiltersOpen);
     };
 
     switch (state.zone) {
@@ -591,8 +545,6 @@ const CropSidebarComponent = (props) => {
     state.zone6Dictionary,
     state.zone7Dictionary,
   ]);
-
-  if (!loading) console.log(sidebarFilters);
 
   useMemo(() => {
     if (envTolRef.current) {
@@ -670,7 +622,6 @@ const CropSidebarComponent = (props) => {
   useEffect(() => {
     if (from === "table") {
       if (dateRange.startDate !== null && dateRange.endDate !== null) {
-        // console.log(new Date(dateRange.startDate).toISOString());
         dispatch({
           type: "UPDATE_DATE_RANGE",
           data: {
