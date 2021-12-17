@@ -5,12 +5,9 @@ import React, {
   useEffect,
   useImperativeHandle,
   useState,
-  useContext,
 } from "react";
-import { Context } from "../../../store/Store";
 
 const DollarsAndRatings = ({ data, filter, handleChange }) => {
-  // if (!data) console.log(filter, data);
   let style =
     filter.symbol === "dollar"
       ? {}
@@ -20,8 +17,6 @@ const DollarsAndRatings = ({ data, filter, handleChange }) => {
           width: "150%",
         };
 
-  // if (data.length > 0) console.log(data);
-
   return (
     <div style={style}>
       {new Array(filter.maxSize)
@@ -29,7 +24,6 @@ const DollarsAndRatings = ({ data, filter, handleChange }) => {
         .map((_, i) => i + 1)
         .map((i) => {
           const selected = data.includes(i);
-          // console.log(selected);
           return (
             <Chip
               label={filter.symbol === "dollar" ? "$".repeat(i) : i + " \u2605"}
@@ -56,7 +50,6 @@ const DollarsAndRatings = ({ data, filter, handleChange }) => {
                       }
                     }
                   }
-                  // console.log(data);
                   handleChange(
                     data.sort(),
                     filter.name || filter.alternateName
@@ -73,13 +66,11 @@ const DollarsAndRatings = ({ data, filter, handleChange }) => {
 const Chips = ({ props, filter, handleChange }) => {
   let { sidebarFilterOptions } = props;
 
-  // console.log(filter);
   return filter.values.map((val) => {
     const selected = sidebarFilterOptions[filter.name].includes(val);
-    console.log(filter.alternateName);
     return (
       <Chip
-        onClick={() => handleChange(filter.alternateName, val)}
+        onClick={() => handleChange(filter.name, val)}
         component="li"
         size="medium"
         label={val}
@@ -126,11 +117,9 @@ const Tip = ({ filter, omitHeading }) => {
 const Filters = forwardRef(({ props }, ref) => {
   let { filters, setSidebarFilterOptions, sidebarFilterOptions } = props;
   const options = filters.values.reduce(function (acc, cur, i) {
-    acc[cur.alternateName || cur.name] = [];
+    acc[cur.name || cur.alternateName] = [];
     return acc;
   }, {});
-
-  // console.log(props.filters);
 
   const [selected, setSelected] = useState(options);
 
@@ -152,12 +141,10 @@ const Filters = forwardRef(({ props }, ref) => {
   }));
 
   const dollarsAndRatingsChange = (newValue, name) => {
-    console.log(newValue, name);
     setSelected({ ...selected, [name]: newValue });
   };
 
   const chipChange = (filtername, val) => {
-    console.log(filtername, selected, val);
     if (selected[filtername].includes(val)) {
       let filtered = selected[filtername].filter((vals) => vals !== val);
       setSelected({ ...selected, [filtername]: filtered });
@@ -167,8 +154,6 @@ const Filters = forwardRef(({ props }, ref) => {
       setSelected({ ...selected, [filtername]: added });
     }
   };
-
-  // console.log(sidebarFilterOptions);
 
   return (
     <Grid container spacing={2}>
@@ -200,7 +185,6 @@ const Filters = forwardRef(({ props }, ref) => {
           }
         } else {
           let data = sidebarFilterOptions[filter.name || filter.alternateName];
-          // console.log(data, filter.name || filter.alternateName);
 
           return (
             <Grid item xs={12}>
