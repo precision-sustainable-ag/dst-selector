@@ -39,7 +39,7 @@ const DollarsAndRatings = ({ data, filter, handleChange }) => {
                   } else {
                     data.push(i);
                   }
-                  handleChange(data, filter.alternateName || filter.name);
+                  handleChange(data, filter.name || filter.alternateName);
                 } else {
                   if (selected) {
                     data = data.filter((j) => j !== i);
@@ -52,7 +52,7 @@ const DollarsAndRatings = ({ data, filter, handleChange }) => {
                   }
                   handleChange(
                     data.sort(),
-                    filter.alternateName || filter.name
+                    filter.name || filter.alternateName
                   );
                 }
               }}
@@ -65,6 +65,7 @@ const DollarsAndRatings = ({ data, filter, handleChange }) => {
 
 const Chips = ({ props, filter, handleChange }) => {
   let { sidebarFilterOptions } = props;
+
   return filter.values.map((val) => {
     const selected = sidebarFilterOptions[filter.name].includes(val);
     return (
@@ -116,7 +117,7 @@ const Tip = ({ filter, omitHeading }) => {
 const Filters = forwardRef(({ props }, ref) => {
   let { filters, setSidebarFilterOptions, sidebarFilterOptions } = props;
   const options = filters.values.reduce(function (acc, cur, i) {
-    acc[cur.alternateName || cur.name] = [];
+    acc[cur.name || cur.alternateName] = [];
     return acc;
   }, {});
 
@@ -183,7 +184,7 @@ const Filters = forwardRef(({ props }, ref) => {
             );
           }
         } else {
-          let data = sidebarFilterOptions[filter.alternateName || filter.name];
+          let data = sidebarFilterOptions[filter.name || filter.alternateName];
 
           return (
             <Grid item xs={12}>

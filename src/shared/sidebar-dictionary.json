@@ -4,10 +4,18 @@
     "description": "Common name for categories of cover crops",
     "type": "chips-only",
     "values": [
-      { "name": "Broadleaf"},
-      { "name": "Brassica"},
-      { "name": "Grass"},
-      { "name": "Legume"}
+      {
+        "name": "Broadleaf"
+      },
+      {
+        "name": "Brassica"
+      },
+      {
+        "name": "Grass"
+      },
+      {
+        "name": "Legume"
+      }
     ]
   },
   {
@@ -20,42 +28,42 @@
         "alternateName": "Drought Tolerance",
         "maxSize": 5,
         "symbol": "star",
-        "description": "Ability to tolerate drought relative to other species"
+        "description": "Ability to tolerate drought relative to other species. <br><br>1 = intolerant <br>5 = high tolerance"
       },
       {
         "name": "Flood",
         "alternateName": "Flood Tolerance",
         "maxSize": 5,
         "symbol": "star",
-        "description": "Ability to tolerate flood relative to other species"
+        "description": "Ability to tolerate flood relative to other species. <br><br>1 = intolerant <br>5 = high tolerance"
       },
       {
         "name": "Heat",
         "alternateName": "Heat Tolerance",
         "maxSize": 5,
         "symbol": "star",
-        "description": "Ability to tolerate heat relative to other species"
+        "description": "Ability to tolerate heat relative to other species. <br><br>1 = intolerant <br>5 = high tolerance"
       },
       {
         "name": "Low Fertility",
         "alternateName": "Low Fertility Tolerance",
         "maxSize": 5,
         "symbol": "star",
-        "description": "Ability to tolerate poor fertility in general (an amalgamation of low pH soils and/or below-optimum soil tests for N, P, and/or K, sandy soil)"
+        "description": "Ability to tolerate poor fertility in general (an amalgamation of low pH soils and/or below-optimum soil tests for N, P, and/or K, sandy soil). <br><br>1 = intolerant <br>5 = high tolerance"
       },
       {
         "name": "Salinity",
         "alternateName": "Salinity Tolerance",
         "maxSize": 5,
         "symbol": "star",
-        "description": "Ability to tolerate high salinity relative to other species. Scale 1-5"
+        "description": "Ability to tolerate high salinity relative to other species.. <br><br>1 = intolerant <br>5 = high tolerance"
       },
       {
         "name": "Shade",
         "alternateName": "Shade Tolerance",
         "maxSize": 5,
         "symbol": "star",
-        "description": "Ability to tolerate shade relative to other species"
+        "description": "Ability to tolerate shade relative to other species. <br><br>1 = intolerant <br>5 = high tolerance"
       }
     ]
   },
@@ -79,14 +87,18 @@
     "values": [
       {
         "name": "Frost Seeding",
-        "values": ["Frost Seeding"],
+        "values": [
+          "Frost Seeding"
+        ],
         "maxSize": 1,
         "symbol": null,
         "description": "Cover crop can be seeded when ground is frozen"
       },
       {
         "name": "Aerial Seeding",
-        "values": ["Aerial Seeding"],
+        "values": [
+          "Aerial Seeding"
+        ],
         "maxSize": 1,
         "symbol": null,
         "description": "Can aerial seeding methods be used for this crop?"
@@ -121,21 +133,37 @@
         "name": "Duration",
         "type": "chip",
         "maxSize": null,
-        "values": ["Annual", "Biennial", "Short-lived Perennial", "Perennial"],
+        "values": [
+          "Annual",
+          "Biennial",
+          "Short-lived Perennial",
+          "Perennial"
+        ],
         "description": "Length of time during which the cover crop's entire lifecycle is completed in the selected zone. Cover crops that have different Durations depending on environment or location are reported in order of increasing longevity in nature"
       },
       {
         "name": "Active Growth Period",
         "type": "chip",
         "maxSize": null,
-        "values": ["Fall", "Winter", "Spring", "Summer"],
+        "values": [
+          "Fall",
+          "Winter",
+          "Spring",
+          "Summer"
+        ],
         "description": "Season in which plants have active growth"
       },
       {
         "name": "Growing Window",
         "type": "chip",
         "maxSize": null,
-        "values": ["Very Short", "Short", "Medium", "Long", "Very Long"],
+        "values": [
+          "Very Short",
+          "Short",
+          "Medium",
+          "Long",
+          "Very Long"
+        ],
         "description": "Relative length of time that is suitable for growing and terminating a cover crop. For example, cover crops with a very short growing window may be planted and terminated during a very short period (e.g., 6-8 weeks) between cash crops"
       },
       {
@@ -156,7 +184,11 @@
         "name": "Winter Survival",
         "type": "chip",
         "maxSize": null,
-        "values": ["Never", "Seldom", "Expected"],
+        "values": [
+          "Never",
+          "Seldom",
+          "Expected"
+        ],
         "description": "Likelihood of cover crop survival over the winter"
       },
       {
@@ -164,7 +196,7 @@
         "type": "rating",
         "maxSize": 5,
         "values": [],
-        "description": "Speed in the spring at which the cover crop breaks dormancy and grows. No star means that early spring growth is not applicable"
+        "description": "Speed in the spring at which the cover crop breaks dormancy and grows. No star means that early spring growth is not applicable. <br><br>1= slow, 5 = fast. No star means that early spring growth is not applicable."
       }
     ]
   },
@@ -177,7 +209,11 @@
         "name": "Root Depth",
         "type": "chip",
         "maxSize": null,
-        "values": ["Shallow", "Medium", "Deep"],
+        "values": [
+          "Shallow",
+          "Medium",
+          "Deep"
+        ],
         "description": "Depth to which the cover crop roots? Considers the relative ability of the roots to grow deeper than the previous crop (to reach residual nitrogen)"
       }
     ]
@@ -206,35 +242,35 @@
         "alternateName": "Freezing Termination at Vegetative",
         "maxSize": 5,
         "symbol": "star",
-        "description": "Likelihood that freezing weather conditions will successfully terminate the cover crop while it is in the vegetative stage.<br/><br/>5 - Likely to terminate in mild freez<br/>1 - Requires a very significant freeze to terminat"
+        "description": "Likelihood that freezing weather conditions will successfully terminate the cover crop while it is in the vegetative stage.<br/><br/>5 - Likely to terminate in mild freeze<br/>1 - Requires a very significant freeze to terminate"
       },
       {
         "name": "Chemical at Vegetative",
         "alternateName": "Chemical Termination at Vegetative",
         "maxSize": 5,
         "symbol": "star",
-        "description": "Likelihood that herbicide application will successfully terminate the cover crop while it is in the vegetative stage"
+        "description": "Likelihood that herbicide application will successfully terminate the cover crop while it is in the vegetative stage. <br><br>1 = unlikely to terminate <br>5 = likely to terminate"
       },
       {
         "name": "Chemical at Flowering",
         "alternateName": "Chemical Termination at Flowering",
         "maxSize": 5,
         "symbol": "star",
-        "description": "Likelihood that herbicide application will successfully terminate the cover crop while it is in the flowering stage"
+        "description": "Likelihood that herbicide application will successfully terminate the cover crop while it is in the flowering stage. <br><br>1 = unlikely to terminate <br>5 = likely to terminate"
       },
       {
         "name": "Mow at Flowering",
         "alternateName": "Mow Termination at Flowering",
         "maxSize": 5,
         "symbol": "star",
-        "description": "Likelihood that mowing (i.e. destructive mechanical operations that do not disturb the soil) will successfully terminate the cover crop while it is in the flowering stage"
+        "description": "Likelihood that mowing (i.e. destructive mechanical operations that do not disturb the soil) will successfully terminate the cover crop while it is in the flowering stage . <br><br>1 = unlikely to terminate <br>5 = likely to terminate"
       },
       {
         "name": "Roller Crimp at Flowering",
         "alternateName": "Roller Crimp Tolerance at Flowering",
         "maxSize": 5,
         "symbol": "star",
-        "description": "Likelihood that roller-crimping will successfully terminate the cover crop while it is in the flowering stage. Termination is most successful at higher crop densities (3+ tons of dry matter per acre). Roller crimping is usually used in tandem with chemical termination outside of organic systems"
+        "description": "Likelihood that roller-crimping will successfully terminate the cover crop while it is in the flowering stage. Termination is most successful at higher crop densities (3+ tons of dry matter per acre). Roller crimping is usually used in tandem with chemical termination outside of organic systems. <br><br>1 = unlikely to terminate <br>5 = likely to terminate"
       }
     ]
   },
