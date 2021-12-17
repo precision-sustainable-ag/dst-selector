@@ -1,7 +1,7 @@
 [
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed9416b6"
+            "$oid": "61bb9058f76c366024833324"
         },
         "Filter Field": true,
         "Type": "string",
@@ -17,13 +17,14 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed9416b7"
+            "$oid": "61bb9058f76c366024833325"
         },
         "Type": "integer",
         "Description": "The base seeding rate (PLS)  represents optimal planting time, optimal termination time, optimal planting method (drilled/cultivate and cultipack), conventional tillage method, no planting green, and no interseeding in a monoculture context. Upper limit (Max) is for intensive activity such as weed suppression or forage.",
         "Units/Details": "lbs/Acre/year",
         "Category": "Planting",
         "Information Sheet": true,
+        "Values Details": "\n",
         "Data Source": [
             "Zone Team"
         ],
@@ -32,13 +33,14 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed9416b8"
+            "$oid": "61bb9058f76c366024833326"
         },
         "Type": "integer",
         "Description": "The base seeding rate (PLS) represents optimal planting time, optimal termination time, optimal planting method (drilled/cultivate and cultipack), conventional tillage method, no planting green, and no interseeding in a monoculture context. Lower limit (Min) represents least amount of seed that needs to be planted to achieve the low end of acceptable cover crop performance in a normal to good year (I.e. the cover crop is planted in a timely fashion and there is adequate rainfall and warmth). ",
         "Units/Details": "lbs/Acre/year",
         "Category": "Planting",
         "Information Sheet": true,
+        "Values Details": "\n",
         "Data Source": [
             "Zone Team"
         ],
@@ -47,13 +49,14 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed9416b9"
+            "$oid": "61bb9058f76c366024833327"
         },
         "Type": "integer",
         "Description": "C:N ratio is the percentage of organic carbon divided by the percentage of total nitrogen in organic material. Note that the C:N ratio of grasses (warm season annuals) is lower in the vegetative state then in the flowering state.",
         "Units/Details": "rating 1-5",
         "Category": "Basic Agronomics",
         "Information Sheet": true,
+        "Values Details": "1 = Lowest C:N Ratio, 5= Highest C:N Ratio\n",
         "Data Source": [
             "USDA PLANTS"
         ],
@@ -62,7 +65,7 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed9416ba"
+            "$oid": "61bb9058f76c366024833328"
         },
         "Filter Field": true,
         "Type": "boolean",
@@ -70,6 +73,7 @@
         "Units/Details": "checkbox",
         "Category": "Planting",
         "Information Sheet": true,
+        "Values Details": "\n",
         "Data Source": [
             "Paul Salon"
         ],
@@ -78,7 +82,7 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed9416bb"
+            "$oid": "61bb9058f76c366024833329"
         },
         "Type": "date",
         "Description": "Ending date when cover crop be planted into standing cash crop.",
@@ -88,7 +92,7 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed9416bc"
+            "$oid": "61bb9058f76c36602483332a"
         },
         "Type": "date",
         "Description": "Starting date when cover crop be planted into standing cash crop.",
@@ -98,7 +102,7 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed9416bd"
+            "$oid": "61bb9058f76c36602483332b"
         },
         "Filter Field": true,
         "Type": "integer",
@@ -106,6 +110,7 @@
         "Units/Details": "rating 1-5",
         "Category": "Termination",
         "Information Sheet": true,
+        "Values Details": "1 = unlikely to terminate, 5 = likely to terminate\n",
         "Data Source": [
             "Zone Team",
             "ZTL Team"
@@ -115,7 +120,7 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed9416be"
+            "$oid": "61bb9058f76c36602483332c"
         },
         "Filter Field": true,
         "Type": "integer",
@@ -123,6 +128,7 @@
         "Units/Details": "rating 1-5",
         "Category": "Termination",
         "Information Sheet": true,
+        "Values Details": "1 = unlikely to terminate, 5 = likely to terminate\n",
         "Data Source": [
             "Zone Team",
             "ZTL Team"
@@ -132,7 +138,7 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed9416bf"
+            "$oid": "61bb9058f76c36602483332d"
         },
         "Type": "string",
         "Description": "Core description of cover crop for all zones.",
@@ -147,7 +153,7 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed9416c0"
+            "$oid": "61bb9058f76c36602483332e"
         },
         "Filter Field": true,
         "Type": "string",
@@ -163,7 +169,7 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed9416c1"
+            "$oid": "61bb9058f76c36602483332f"
         },
         "Type": "string",
         "Description": "Plant common name as used when cover cropping.",
@@ -177,7 +183,7 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed9416c2"
+            "$oid": "61bb9058f76c366024833330"
         },
         "Type": "string",
         "Description": "Recommended cultivars, varieties, or subspecies of a plant that should be additionally specified for different regions.",
@@ -191,7 +197,7 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed9416c3"
+            "$oid": "61bb9058f76c366024833331"
         },
         "Type": "float",
         "Description": "Maximum depth to plant seed in fractions of an inch.",
@@ -206,7 +212,7 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed9416c4"
+            "$oid": "61bb9058f76c366024833332"
         },
         "Type": "float",
         "Description": "Minimum depth to plant seed in fractions of an inch.",
@@ -221,7 +227,7 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed9416c5"
+            "$oid": "61bb9058f76c366024833333"
         },
         "Filter Field": true,
         "Type": "integer",
@@ -229,6 +235,7 @@
         "Units/Details": "rating 1-5",
         "Category": "Environmental Tolerances",
         "Information Sheet": true,
+        "Values Details": "1 = intolerant, 5 = high tolerance\n",
         "Data Source": [
             "MCCC Species Tool"
         ],
@@ -237,7 +244,7 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed9416c6"
+            "$oid": "61bb9058f76c366024833334"
         },
         "Type": "integer",
         "Description": "Amount of dry biomass the cover crop produces in a year, lbs/A. Dry matter is highly dependent on planting and termination date and precipitation.",
@@ -252,7 +259,7 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed9416c7"
+            "$oid": "61bb9058f76c366024833335"
         },
         "Type": "integer",
         "Description": "Amount of dry biomass the cover crop produces in a year, lbs/A. Dry matter is highly dependent on planting and termination date and precipitation. ",
@@ -267,7 +274,7 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed9416c8"
+            "$oid": "61bb9058f76c366024833336"
         },
         "Filter Field": true,
         "Type": "string",
@@ -283,46 +290,49 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed9416c9"
+            "$oid": "61bb9058f76c366024833337"
         },
         "Filter Field": true,
         "Type": "integer",
-        "Description": "Speed in the spring at which the cover crop breaks dormancy and grows. No star means that early spring growth is not applicable.",
+        "Description": "Speed in the spring at which the cover crop breaks dormancy and grows.",
         "Units/Details": "rating 1-5",
         "Category": "Growth",
         "Information Sheet": true,
+        "Values Details": "1= slow, 5 = fast. No star means that early spring growth is not applicable.\n",
         "Variable": "Early Spring Growth",
         "__id": "recJQG5F0WcKuaHkc"
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed9416ca"
+            "$oid": "61bb9058f76c366024833338"
         },
         "Filter Field": true,
         "Type": "integer",
-        "Description": "Degree of difficulty in getting cover crop established.\n1 - difficult to establish\n5 - very easy to establish",
+        "Description": "Degree of difficulty in getting cover crop established.",
         "Units/Details": "rating 1-5",
         "Category": "Growth",
         "Information Sheet": true,
+        "Values Details": "1 = difficult to establish\n5 = very easy to establish\n",
         "Variable": "Ease of Establishment",
         "__id": "recuvmfYU4jx2MAje"
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed9416cb"
+            "$oid": "61bb9058f76c366024833339"
         },
         "Filter Field": true,
         "Type": "integer",
-        "Description": "Speed at which the cover crop establishes once planted.\n1 - slow to establish\n5 - quick to establish",
+        "Description": "Speed at which the cover crop establishes once planted.",
         "Units/Details": "rating 1-5",
         "Category": "Growth",
         "Information Sheet": true,
+        "Values Details": "1 = slow to establish\n5 = quick to establish\n",
         "Variable": "Establishes Quickly",
         "__id": "recQZFelwDHBG8Ban"
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed9416cc"
+            "$oid": "61bb9058f76c36602483333a"
         },
         "Type": "string",
         "Description": "Family common name.",
@@ -336,7 +346,7 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed9416cd"
+            "$oid": "61bb9058f76c36602483333b"
         },
         "Type": "string",
         "Description": "Family scientific name.",
@@ -351,7 +361,7 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed9416ce"
+            "$oid": "61bb9058f76c36602483333c"
         },
         "Filter Field": true,
         "Type": "integer",
@@ -359,6 +369,7 @@
         "Units/Details": "rating 1-5",
         "Category": "Environmental Tolerances",
         "Information Sheet": true,
+        "Values Details": "1 = intolerant, 5 = high tolerance\n",
         "Data Source": [
             "MCCC Species Tool"
         ],
@@ -367,7 +378,7 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed9416cf"
+            "$oid": "61bb9058f76c36602483333d"
         },
         "Type": "string",
         "Description": "Cover crop survival under flooding conditions.",
@@ -381,7 +392,7 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed9416d0"
+            "$oid": "61bb9058f76c36602483333e"
         },
         "Type": "string",
         "Description": "Details about what triggers flowering: Requires vernalization (spring), Intermediate day (11-13 hrs), Long day (>14 hrs), Based on plant size",
@@ -393,24 +404,26 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed9416d1"
+            "$oid": "61bb9058f76c36602483333f"
         },
         "Type": "integer",
         "Description": "General cover crop suitability as harvested forage (e.g., haylage). ",
         "Units/Details": "rating 1-5",
         "Category": "Goals",
         "Information Sheet": true,
+        "Values Details": "1 =  worst for harvested forage, 5 = best for harvested forage\n",
         "Variable": "Forage Harvest Value",
         "__id": "recHkw3bmOmEN0iSH"
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed9416d2"
+            "$oid": "61bb9058f76c366024833340"
         },
         "Type": "integer",
-        "Description": "Likelihood that conditions below 32 degrees F will successfully terminate the cover crop while it is in the flowering stage.\n\n5 - Likely to terminate in mild freeze\n1 - Requires a very significant freeze to terminate",
+        "Description": "Likelihood that conditions below 32 degrees F will successfully terminate the cover crop while it is in the flowering stage.",
         "Units/Details": "rating 1-5",
         "Category": "Termination",
+        "Values Details": "1 = requires a very significant freeze to terminate, 5 = likely to terminate in mild freeze \n",
         "Data Source": [
             "Zone Team",
             "ZTL Team"
@@ -420,14 +433,15 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed9416d3"
+            "$oid": "61bb9058f76c366024833341"
         },
         "Filter Field": true,
         "Type": "integer",
-        "Description": "Likelihood that freezing weather conditions will successfully terminate the cover crop while it is in the vegetative stage.\n\n5 - Likely to terminate in mild freeze\n1 - Requires a very significant freeze to terminate",
+        "Description": "Likelihood that freezing weather conditions will successfully terminate the cover crop while it is in the vegetative stage.",
         "Units/Details": "rating 1-5",
         "Category": "Termination",
         "Information Sheet": true,
+        "Values Details": "1 = requires a very significant freeze to terminate, 5 = likely to terminate in mild freeze \n",
         "Data Source": [
             "Zone Team",
             "ZTL Team"
@@ -437,7 +451,7 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed9416d4"
+            "$oid": "61bb9058f76c366024833342"
         },
         "Filter Field": true,
         "Type": "boolean",
@@ -453,7 +467,7 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed9416d5"
+            "$oid": "61bb9058f76c366024833343"
         },
         "Type": "date",
         "Description": "Broadcast seeding with a tractor in a frozen field. Make sure the ground is frozen enough so tractors do not get stuck. Works best with heavier soils.",
@@ -464,7 +478,7 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed9416d6"
+            "$oid": "61bb9058f76c366024833344"
         },
         "Type": "date",
         "Description": "Broadcast seeding with a tractor in a frozen field. Make sure snow has melted enough for the seed to benefit from the thaw-freeze process that works the seed into the soil. Works best with heavier soils.",
@@ -475,19 +489,20 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed9416d7"
+            "$oid": "61bb9058f76c366024833345"
         },
         "Type": "integer",
         "Description": "General cover crop suitability for grazing. See comments for details about suitability for grazing by different types of livestock.",
         "Units/Details": "rating 1-5",
         "Category": "Goals",
         "Information Sheet": true,
+        "Values Details": "1 = worst for grazing, 5 = best for grazing\n",
         "Variable": "Good Grazing",
         "__id": "recQK8KionzivOiTp"
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed9416d8"
+            "$oid": "61bb9058f76c366024833346"
         },
         "Filter Field": true,
         "Type": "string",
@@ -503,7 +518,7 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed9416d9"
+            "$oid": "61bb9058f76c366024833347"
         },
         "Filter Field": true,
         "Type": "integer",
@@ -511,6 +526,7 @@
         "Units/Details": "rating 1-5",
         "Category": "Environmental Tolerances",
         "Information Sheet": true,
+        "Values Details": "1 = intolerant, 5 = high tolerance\n",
         "Data Source": [
             "MCCC Species Tool"
         ],
@@ -519,7 +535,7 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed9416da"
+            "$oid": "61bb9058f76c366024833348"
         },
         "Type": "boolean",
         "Description": "Hessian Fly-Free Date, after which wheat and other grasses can be planted to avoid Hessian fly and/or cereal rust.",
@@ -534,31 +550,33 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed9416db"
+            "$oid": "61bb9058f76c366024833349"
         },
         "Type": "integer",
         "Description": "Rates cover crop ability to produce organic matter and improve soil structure. Based on cover crop tissue quantity (i.e. biomass production) and quality (i.e. C:N ratio). Assumes 1) cover crops will be used regularly in the cropping system to provide ongoing additions to soil organic matter and 2) straw is not harvested/removed. \n",
         "Units/Details": "rating 1-5",
         "Category": "Goals",
         "Information Sheet": true,
+        "Values Details": "1 = worst improvement, 5 = best improvement\n",
         "Variable": "Improve Soil Organic Matter",
         "__id": "receViTFJry172X0S"
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed9416dc"
+            "$oid": "61bb9058f76c36602483334a"
         },
         "Type": "integer",
         "Description": "Research Definition. Rates cover crop ability to increase soil aggregation. Aggregate stability is a good indicator of soil health. Prioritizes soil aggregate stability rather than high turnover of organic matter. Better aggregation in clay than sandy soil. \n\nNon-research definition: Soil aggregation is a key contributor to soil structure and tilth. It is an indicator of soil health, protects against erosion and improves soil structure, positively impacting soil water retention and drainage properties.",
         "Units/Details": "rating 1-5",
         "Category": "Goals",
         "Information Sheet": true,
+        "Values Details": "1 = worst aggregation, 5 = best aggregation\n",
         "Variable": "Increase Soil Aggregation",
         "__id": "recv6dLE6UuWQ16DW"
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed9416dd"
+            "$oid": "61bb9058f76c36602483334b"
         },
         "Type": "string",
         "Description": "Type of innoculant that needs to applied to legume seed to promote N fixation.",
@@ -573,19 +591,20 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed9416de"
+            "$oid": "61bb9058f76c36602483334c"
         },
         "Type": "integer",
         "Description": "Rates the effectiveness of the cover crop in providing a long-lasting mulch. Based primarily on cover crop tissue quantity (i.e. biomass production) and quality (i.e. C:N ratio).",
         "Units/Details": "rating 1-5",
         "Category": "Goals",
         "Information Sheet": true,
+        "Values Details": "1 = shortest lasting residue, 5 = longest lasting residue\n",
         "Variable": "Lasting Residue",
         "__id": "recnaCu2RvrXYwoY7"
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed9416df"
+            "$oid": "61bb9058f76c36602483334d"
         },
         "Filter Field": true,
         "Type": "integer",
@@ -593,6 +612,7 @@
         "Units/Details": "rating 1-5",
         "Category": "Environmental Tolerances",
         "Information Sheet": true,
+        "Values Details": "1 = intolerant, 5 = high tolerance\n",
         "Data Source": [
             "MCCC Species Tool"
         ],
@@ -601,7 +621,7 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed9416e0"
+            "$oid": "61bb9058f76c36602483334e"
         },
         "Type": "float",
         "Description": "The maximum soil pH the cover crop can tolerate, in the top 12 inches of soil, as typically found in the Northeast.",
@@ -616,7 +636,7 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed9416e1"
+            "$oid": "61bb9058f76c36602483334f"
         },
         "Type": "integer",
         "Description": "Minimum temperature required for cover crop seed to germinate within 5 days.",
@@ -631,7 +651,7 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed9416e2"
+            "$oid": "61bb9058f76c366024833350"
         },
         "Type": "float",
         "Description": "The minimum soil pH the cover crop can tolerate, in the top 12 inches of soil, as typically found in the Northeast.",
@@ -646,7 +666,7 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed9416e3"
+            "$oid": "61bb9058f76c366024833351"
         },
         "Filter Field": true,
         "Type": "integer",
@@ -654,6 +674,7 @@
         "Units/Details": "rating 1-5",
         "Category": "Termination",
         "Information Sheet": true,
+        "Values Details": "1 = unlikely to terminate, 5 = likely to terminate\n",
         "Data Source": [
             "Zone Team",
             "ZTL Team"
@@ -663,7 +684,7 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed9416e4"
+            "$oid": "61bb9058f76c366024833352"
         },
         "Type": "integer",
         "Description": "Amount of N a legume species contains, lbs/A. This is combined nitrogen fixed plus nitrogen taken up from the soil.",
@@ -678,7 +699,7 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed9416e5"
+            "$oid": "61bb9058f76c366024833353"
         },
         "Type": "integer",
         "Description": "Amount of N a legume species contains, lbs/A. This is combined nitrogen fixed plus nitrogen taken up from the soil.",
@@ -693,31 +714,33 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed9416e6"
+            "$oid": "61bb9058f76c366024833354"
         },
         "Type": "integer",
         "Description": "Rates legume cover crops for their ability to fix N by 50% bloom, which will vary by year and proximity to water/altitude.",
         "Units/Details": "rating 1-5",
         "Category": "Goals",
         "Information Sheet": true,
+        "Values Details": "1 = poorest N fixation, 5 = strongest N fixation\n",
         "Variable": "Nitrogen Fixation",
         "__id": "receOHXlCnlDSzgea"
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed9416e7"
+            "$oid": "61bb9058f76c366024833355"
         },
         "Type": "integer",
         "Description": "Rates cover crop ability to take up and store excess nitrogen. To maximize N scavenging, plant the cover crop as soon as possible after main crop harvest or overseed/interseed into a standing cash crop. Highly-rated cover crops are useful in systems where manure is fall-applied to hold N in place over the winter.",
         "Units/Details": "rating 1-5",
         "Category": "Goals",
         "Information Sheet": true,
+        "Values Details": "1 = poorest N scavening, 5 = strongest N scavening\n",
         "Variable": "Nitrogen Scavenging",
         "__id": "recr9fXuXPEaIqNYm"
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed9416e8"
+            "$oid": "61bb9058f76c366024833356"
         },
         "Type": "string",
         "Description": "Details about \"edge cases\", specific cultivars, etc.",
@@ -728,10 +751,10 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed9416e9"
+            "$oid": "61bb9058f76c366024833357"
         },
         "Type": "string",
-        "Description": "Comments about specific pests (e.g., which species are promoted/discouraged), edge cases, management suggestions, etc.",
+        "Description": "Comments about specific diseases.",
         "Category": "Disease and Non-Weed Pests",
         "Information Sheet": true,
         "Data Source": [
@@ -742,7 +765,7 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed9416ea"
+            "$oid": "61bb9058f76c366024833358"
         },
         "Type": "string",
         "Description": "Details about \"edge cases\", specific cultivars, etc.",
@@ -753,7 +776,7 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed9416eb"
+            "$oid": "61bb9058f76c366024833359"
         },
         "Type": "string",
         "Description": "Details about \"edge cases\", specific cultivars, etc.",
@@ -767,8 +790,9 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed9416ec"
+            "$oid": "61bb9058f76c36602483335a"
         },
+        "Type": "string",
         "Category": "Goals",
         "Information Sheet": true,
         "Variable": "Notes: Goals",
@@ -776,7 +800,7 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed9416ed"
+            "$oid": "61bb9058f76c36602483335b"
         },
         "Type": "string",
         "Description": "Details about \"edge cases\", specific cultivars, etc.",
@@ -787,8 +811,10 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed9416ee"
+            "$oid": "61bb9058f76c36602483335c"
         },
+        "Type": "string",
+        "Description": "Comments about specific insects.",
         "Category": "Disease and Non-Weed Pests",
         "Information Sheet": true,
         "Variable": "Notes: Insects",
@@ -796,10 +822,10 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed9416ef"
+            "$oid": "61bb9058f76c36602483335d"
         },
         "Type": "string",
-        "Description": "Comments about specific pests (e.g., which species are promoted/discouraged), edge cases, management suggestions, etc.",
+        "Description": "Comments about specific nematodes.",
         "Category": "Disease and Non-Weed Pests",
         "Information Sheet": true,
         "Data Source": [
@@ -810,7 +836,7 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed9416f0"
+            "$oid": "61bb9058f76c36602483335e"
         },
         "Type": "string",
         "Description": "Details about \"edge cases\", specific cultivars, etc.",
@@ -821,7 +847,7 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed9416f1"
+            "$oid": "61bb9058f76c36602483335f"
         },
         "Type": "string",
         "Description": "Details about \"edge cases\", specific cultivars, etc.",
@@ -835,7 +861,7 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed9416f2"
+            "$oid": "61bb9058f76c366024833360"
         },
         "Type": "string",
         "Description": "Details about \"edge cases\", specific cultivars, etc.",
@@ -847,7 +873,7 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed9416f3"
+            "$oid": "61bb9058f76c366024833361"
         },
         "Type": "string",
         "Description": "Additional taxonomic details, comments, and issues.",
@@ -861,7 +887,7 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed9416f4"
+            "$oid": "61bb9058f76c366024833362"
         },
         "Type": "string",
         "Description": "Details about \"edge cases\", specific cultivars, etc.",
@@ -872,7 +898,7 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed9416f5"
+            "$oid": "61bb9058f76c366024833363"
         },
         "Type": "string",
         "Description": "Details about \"edge cases\", specific cultivars, etc. ",
@@ -886,7 +912,7 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed9416f6"
+            "$oid": "61bb9058f76c366024833364"
         },
         "Type": "string",
         "Description": "Who put this cover crop on this list?",
@@ -899,36 +925,41 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed9416f7"
+            "$oid": "61bb9058f76c366024833365"
         },
+        "Type": "integer",
         "Description": "Ability of the cover crop to compete with weeds while living for space/nutrients/light/water. Assumes the cover crop is planted early enough in its optimal planting window to generate a dense stand.",
+        "Units/Details": "rating 1-5",
         "Category": "Goals",
         "Information Sheet": true,
+        "Values Details": "1 = doesn't outcompete summer annual weeds, 5 = best for outcompeting summer annual weeds\n",
         "Variable": "Outcompetes Summer Annual Weeds",
         "__id": "recvuCMnxFaSJsHAW"
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed9416f8"
+            "$oid": "61bb9058f76c366024833366"
         },
         "Type": "integer",
         "Description": "Rates cover crop ability to reduce compaction by penetrating the plow pan.",
         "Units/Details": "rating 1-5",
         "Category": "Goals",
         "Information Sheet": true,
+        "Values Details": "1 = doesn't penetrate plow pan, 5 = best for penetrating plow pan\n",
         "Variable": "Penetrates Plow Pan",
         "__id": "rect9EtRRUp4hOmZh"
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed9416f9"
+            "$oid": "61bb9058f76c366024833367"
         },
         "Filter Field": true,
         "Type": "integer",
-        "Description": "Indicates likelihood that the cover crop seed, once planted, will sit in the soil for an extended time then germinate at an inopportune moment (e.g., during cash crop growth). This is a long-term issue in which the \"risk is in the cover crop seed bag\".\n\n1= rarely has hard seed, 5=hard seed is a frequent concern.",
+        "Description": "Indicates likelihood that the cover crop seed, once planted, will sit in the soil for an extended time then germinate at an inopportune moment (e.g., during cash crop growth). This is a long-term issue in which the \"risk is in the cover crop seed bag\".",
         "Units/Details": "rating 1-5",
         "Category": "Weeds",
         "Information Sheet": true,
+        "Values Details": "1 = rarely has hard seed, 5 = hard seed is a frequent concern.\n",
         "Data Source": [
             "MCCC Species Tool"
         ],
@@ -937,7 +968,7 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed9416fa"
+            "$oid": "61bb9058f76c366024833368"
         },
         "Filter Field": true,
         "Type": "integer",
@@ -945,6 +976,7 @@
         "Units/Details": "rating 1-5",
         "Category": "Goals",
         "Information Sheet": true,
+        "Values Details": "1 = worst, 5 = best\n",
         "Data Source": [
             "MCCC Species Tool"
         ],
@@ -953,43 +985,46 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed9416fb"
+            "$oid": "61bb9058f76c366024833369"
         },
         "Type": "integer",
         "Description": "Ability of a cover crop to prevent soil erosion in the fall. Based on how extensive and how quickly a root system develops, how long residue persists, how well the cover crop holds soil in place against water erosion and the influence the growth habit may have on preventing water erosion.",
         "Units/Details": "rating 1-5",
         "Category": "Goals",
         "Information Sheet": true,
+        "Values Details": "1 = doesn't prevent fall soil erosion, 5 = best at preventing fall soil erosion\n",
         "Variable": "Prevent Fall Soil Erosion",
         "__id": "recFE2AKZKeLIj9UP"
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed9416fc"
+            "$oid": "61bb9058f76c36602483336a"
         },
         "Type": "integer",
         "Description": "Ability of a cover crop to prevent soil erosion in the spring. Based on how extensive and how quickly a root system develops, how long residue persists, how well the cover crop holds soil in place against water erosion and the influence the growth habit may have on preventing water erosion.",
         "Units/Details": "rating 1-5",
         "Category": "Goals",
         "Information Sheet": true,
+        "Values Details": "1 = doesn't prevent spring soil erosion, 5 = best at preventing spring soil erosion\n",
         "Variable": "Prevent Spring Soil Erosion",
         "__id": "recT4Iqdzi01KLLpB"
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed9416fd"
+            "$oid": "61bb9058f76c36602483336b"
         },
         "Type": "integer",
         "Description": "Reduces compaction above the Ap horizon. Better aggregation in clay than sandy soil. Does not necessarily refer to prevention of crusting (use residue, soil aggregation, plant structure to derive). Crusting is only an issue in full tillage systems.",
         "Units/Details": "rating 1-5",
         "Category": "Goals",
         "Information Sheet": true,
+        "Values Details": "1 = doesn't reduce surface compaction, 5 = best at reducing surface compaction\n",
         "Variable": "Reduces Surface Compaction",
         "__id": "recAO2hR622jmJ7XB"
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed9416fe"
+            "$oid": "61bb9058f76c36602483336c"
         },
         "Type": "date",
         "Description": "The Reliable Establishment period is an approximation. Relaible establishment is impacted by a number of environmental factors including soil temperature.",
@@ -1000,7 +1035,7 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed9416ff"
+            "$oid": "61bb9058f76c36602483336d"
         },
         "Type": "date",
         "Description": "The Reliable Establishment period is an approximation. Relaible establishment is impacted by a number of environmental factors including soil temperature.",
@@ -1011,19 +1046,20 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed941700"
+            "$oid": "61bb9058f76c36602483336e"
         },
         "Type": "integer",
         "Description": "Rates how well the cover crop residue smothers summer annual weeds.",
         "Units/Details": "rating 1-5",
         "Category": "Goals",
         "Information Sheet": true,
+        "Values Details": "1 = residue doesn't suppress summer annual weeds, 5 = residue best at suppressing summer annual weeds\n",
         "Variable": "Residue Suppresses Summer Annual Weeds",
         "__id": "recfJwkxrMjDh9ghP"
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed941701"
+            "$oid": "61bb9058f76c36602483336f"
         },
         "Filter Field": true,
         "Type": "integer",
@@ -1031,6 +1067,7 @@
         "Units/Details": "rating 1-5",
         "Category": "Termination",
         "Information Sheet": true,
+        "Values Details": "1 = unlikely to terminate, 5 = likely to terminate\n",
         "Data Source": [
             "Zone Team",
             "ZTL Team"
@@ -1040,7 +1077,7 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed941702"
+            "$oid": "61bb9058f76c366024833370"
         },
         "Filter Field": true,
         "Type": "string",
@@ -1053,7 +1090,7 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed941703"
+            "$oid": "61bb9058f76c366024833371"
         },
         "Filter Field": true,
         "Type": "string",
@@ -1066,14 +1103,15 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed941704"
+            "$oid": "61bb9058f76c366024833372"
         },
         "Filter Field": true,
         "Type": "integer",
-        "Description": "Ability to tolerate high salinity relative to other species. Scale 1-5, 1 being least/worst and 5 being most/best.",
+        "Description": "Ability to tolerate high salinity relative to other species.",
         "Units/Details": "rating 1-5",
         "Category": "Environmental Tolerances",
         "Information Sheet": true,
+        "Values Details": "1 = intolerant, 5 = high tolerance\n",
         "Data Source": [
             "USDA PLANTS"
         ],
@@ -1082,7 +1120,7 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed941705"
+            "$oid": "61bb9058f76c366024833373"
         },
         "Type": "string",
         "Description": "Full scientific name.",
@@ -1096,7 +1134,7 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed941706"
+            "$oid": "61bb9058f76c366024833374"
         },
         "Type": "date",
         "Category": "Planting Dates",
@@ -1106,7 +1144,7 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed941707"
+            "$oid": "61bb9058f76c366024833375"
         },
         "Type": "date",
         "Category": "Planting Dates",
@@ -1116,7 +1154,7 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed941708"
+            "$oid": "61bb9058f76c366024833376"
         },
         "Type": "date",
         "Category": "Planting Dates",
@@ -1125,7 +1163,7 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed941709"
+            "$oid": "61bb9058f76c366024833377"
         },
         "Type": "date",
         "Category": "Planting Dates",
@@ -1134,14 +1172,15 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed94170a"
+            "$oid": "61bb9058f76c366024833378"
         },
         "Filter Field": true,
         "Type": "integer",
-        "Description": "Relative cost of seed per pound. One star is least expensive, three stars is most expensive.",
+        "Description": "Relative cost of seed per pound. ",
         "Units/Details": "rating 1-3",
         "Category": "Planting",
         "Information Sheet": true,
+        "Values Details": "1 = least expensive, 3 = most expensive.\n",
         "Data Source": [
             "Zone Team"
         ],
@@ -1150,7 +1189,7 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed94170b"
+            "$oid": "61bb9058f76c366024833379"
         },
         "Type": "integer",
         "Description": "Average number of cover crop seeds in a pound of seed.",
@@ -1165,7 +1204,7 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed94170c"
+            "$oid": "61bb9058f76c36602483337a"
         },
         "Filter Field": true,
         "Type": "integer",
@@ -1173,6 +1212,7 @@
         "Units/Details": "rating 1-5",
         "Category": "Environmental Tolerances",
         "Information Sheet": true,
+        "Values Details": "1 = intolerant, 5 = high tolerance\n",
         "Data Source": [
             "MCCC Species Tool"
         ],
@@ -1181,7 +1221,7 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed94170d"
+            "$oid": "61bb9058f76c36602483337b"
         },
         "Type": "string",
         "Description": "Growth form or predominant shape of an individual plant.",
@@ -1196,7 +1236,7 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed94170e"
+            "$oid": "61bb9058f76c36602483337c"
         },
         "Type": "string",
         "Description": "Level of soil drainage needed for acceptable cover crop growth given regular rainfall.\n",
@@ -1211,7 +1251,7 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed94170f"
+            "$oid": "61bb9058f76c36602483337d"
         },
         "Type": "string",
         "Description": "Ability to use (i.e., remove) available soil moisture relative to other species.",
@@ -1226,7 +1266,7 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed941710"
+            "$oid": "61bb9058f76c36602483337e"
         },
         "Type": "string",
         "Description": "Ability to establish and grow in soil with coarse, medium, and fine textured soils given regular rainfall.",
@@ -1241,7 +1281,7 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed941711"
+            "$oid": "61bb9058f76c36602483337f"
         },
         "Filter Field": true,
         "Type": "integer",
@@ -1249,6 +1289,7 @@
         "Units/Details": "rating 1-5",
         "Category": "Soil Conditions",
         "Information Sheet": true,
+        "Values Details": "1 = low support, 5 = high support\n",
         "Data Source": [
             "Zone Team"
         ],
@@ -1257,19 +1298,20 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed941712"
+            "$oid": "61bb9058f76c366024833380"
         },
         "Type": "integer",
         "Description": "Rates how well the cover crop suppresses winter annual weeds through some combination of competition, residue, and allelopathy.",
         "Units/Details": "rating 1-5",
         "Category": "Goals",
         "Information Sheet": true,
+        "Values Details": "1 = doesn't suppress Winter Annual Weeds, 5 = best at suppressing Winter Annual Weeds\n",
         "Variable": "Suppresses Winter Annual Weeds",
         "__id": "recW2GmYE69iQWEaa"
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed941713"
+            "$oid": "61bb9058f76c366024833381"
         },
         "Type": "string",
         "Description": "Common region-specific synonyms.",
@@ -1284,7 +1326,7 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed941714"
+            "$oid": "61bb9058f76c366024833382"
         },
         "Type": "date",
         "Category": "Planting Dates",
@@ -1294,7 +1336,7 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed941715"
+            "$oid": "61bb9058f76c366024833383"
         },
         "Type": "date",
         "Category": "Planting Dates",
@@ -1304,14 +1346,15 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed941716"
+            "$oid": "61bb9058f76c366024833384"
         },
         "Filter Field": true,
         "Type": "integer",
-        "Description": "Likelihood that tillage (i.e. destructive mechanical operations that disturb the soil, as with disking or rotovating) will successfully terminate the cover crop while it is in the flowering stage. The expert group premises that all cover crops can be terminated with tillage, but that 1 represents hard to terminate with tillage and requires an aggressive technique, whereas 5 is easy to terminate with tillage and requires the least aggressive technique. The techniques are categorized as follows.\n\n5-light disk\n4-heavy disk\n3-chisel plow\n2-rototill\n1-moldboard",
+        "Description": "Likelihood that tillage (i.e. destructive mechanical operations that disturb the soil, as with disking or rotovating) will successfully terminate the cover crop while it is in the flowering stage. ",
         "Units/Details": "rating 1-5",
         "Category": "Termination",
         "Information Sheet": true,
+        "Values Details": "1 = hard to terminate with tillage and requires an aggressive technique, 5 =  easy to terminate with tillage and requires the least aggressive technique. \n\nThe techniques are categorized as follows.\n1-moldboard\n2-rototill\n3-chisel plow\n4-heavy disk\n5-light disk\n",
         "Data Source": [
             "Zone Team",
             "ZTL Team"
@@ -1321,14 +1364,15 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed941717"
+            "$oid": "61bb9058f76c366024833385"
         },
         "Filter Field": true,
         "Type": "integer",
-        "Description": "Likelihood that tillage (i.e. destructive mechanical operations that disturb the soil, as with disking or rotovating) will successfully terminate the cover crop while it is in the vegetative stage. The expert group premises that all cover crops can be terminated with tillage, but that 1 represents hard to terminate with tillage and requires an aggressive technique, whereas 5 is easy to terminate with tillage and requires the least aggressive technique. The techniques are categorized as follows.\n\n5-light disk\n4-heavy disk\n3-chisel plow\n2-rototill\n1-moldboard",
+        "Description": "Likelihood that tillage (i.e. destructive mechanical operations that disturb the soil, as with disking or rotovating) will successfully terminate the cover crop while it is in the vegetative stage. ",
         "Units/Details": "rating 1-5",
         "Category": "Termination",
         "Information Sheet": true,
+        "Values Details": "1 = hard to terminate with tillage and requires an aggressive technique, 5 =  easy to terminate with tillage and requires the least aggressive technique. \n\nThe techniques are categorized as follows.\n1-moldboard\n2-rototill\n3-chisel plow\n4-heavy disk\n5-light disk\n",
         "Data Source": [
             "Zone Team",
             "ZTL Team"
@@ -1338,14 +1382,15 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed941718"
+            "$oid": "61bb9058f76c366024833386"
         },
         "Filter Field": true,
         "Type": "integer",
-        "Description": "Risk of previous cover crop volunteering in current cash crop due to management (i.e. the previous cover crop setting seed that becomes part of the soil weed seedbank). Impact depends on crop rotation (i.e. desirability of self-reseeding).\n\n1=rarely volunteers, 5=frequently volunteers",
+        "Description": "Risk of previous cover crop volunteering in current cash crop due to management (i.e. the previous cover crop setting seed that becomes part of the soil weed seedbank). Impact depends on crop rotation (i.e. desirability of self-reseeding).",
         "Units/Details": "rating 1-5",
         "Category": "Weeds",
         "Information Sheet": true,
+        "Values Details": "1= rarely volunteers, 5 = frequently volunteers\n",
         "Data Source": [
             "MCCC Species Tool"
         ],
@@ -1354,7 +1399,7 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed941719"
+            "$oid": "61bb9058f76c366024833387"
         },
         "Filter Field": true,
         "Type": "string",
@@ -1370,7 +1415,7 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed94171a"
+            "$oid": "61bb9058f76c366024833388"
         },
         "Type": "string",
         "Description": "Zone-specific description of cover crop, in addition to core description.",
@@ -1385,7 +1430,7 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed94171b"
+            "$oid": "61bb9058f76c366024833389"
         },
         "Type": "string",
         "Description": "Should this cover crop be included in the dataset for this zone?",
@@ -1399,7 +1444,7 @@
     },
     {
         "_id": {
-            "$oid": "61ae41c9af583a30ed94171c"
+            "$oid": "61bb9058f76c36602483338a"
         },
         "Type": "string",
         "Description": "Whether the cover crop is commonly used in the zone or only beginning to gain adoption.\n",
