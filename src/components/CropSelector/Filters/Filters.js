@@ -20,7 +20,7 @@ const DollarsAndRatings = ({ data, filter, handleChange }) => {
           width: "150%",
         };
 
-  console.log(data, filter);
+  // if (data.length > 0) console.log(data);
 
   return (
     <div style={style}>
@@ -29,6 +29,7 @@ const DollarsAndRatings = ({ data, filter, handleChange }) => {
         .map((_, i) => i + 1)
         .map((i) => {
           const selected = data.includes(i);
+          // console.log(selected);
           return (
             <Chip
               label={filter.symbol === "dollar" ? "$".repeat(i) : i + " \u2605"}
@@ -44,7 +45,7 @@ const DollarsAndRatings = ({ data, filter, handleChange }) => {
                   } else {
                     data.push(i);
                   }
-                  handleChange(data, filter.alternateName || filter.name);
+                  handleChange(data, filter.name || filter.alternateName);
                 } else {
                   if (selected) {
                     data = data.filter((j) => j !== i);
@@ -55,9 +56,10 @@ const DollarsAndRatings = ({ data, filter, handleChange }) => {
                       }
                     }
                   }
+                  // console.log(data);
                   handleChange(
                     data.sort(),
-                    filter.alternateName || filter.name
+                    filter.name || filter.alternateName
                   );
                 }
               }}
@@ -74,9 +76,10 @@ const Chips = ({ props, filter, handleChange }) => {
   // console.log(filter);
   return filter.values.map((val) => {
     const selected = sidebarFilterOptions[filter.name].includes(val);
+    console.log(filter.alternateName);
     return (
       <Chip
-        onClick={() => handleChange(filter.name, val)}
+        onClick={() => handleChange(filter.alternateName, val)}
         component="li"
         size="medium"
         label={val}
@@ -149,10 +152,12 @@ const Filters = forwardRef(({ props }, ref) => {
   }));
 
   const dollarsAndRatingsChange = (newValue, name) => {
+    console.log(newValue, name);
     setSelected({ ...selected, [name]: newValue });
   };
 
   const chipChange = (filtername, val) => {
+    console.log(filtername, selected, val);
     if (selected[filtername].includes(val)) {
       let filtered = selected[filtername].filter((vals) => vals !== val);
       setSelected({ ...selected, [filtername]: filtered });
