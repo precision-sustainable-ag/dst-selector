@@ -10,6 +10,7 @@ import React, {
 import { Context } from "../../../store/Store";
 
 const DollarsAndRatings = ({ data, filter, handleChange }) => {
+  // if (!data) console.log(filter, data);
   let style =
     filter.symbol === "dollar"
       ? {}
@@ -18,6 +19,8 @@ const DollarsAndRatings = ({ data, filter, handleChange }) => {
           transformOrigin: "top left",
           width: "150%",
         };
+
+  console.log(data, filter);
 
   return (
     <div style={style}>
@@ -67,6 +70,8 @@ const DollarsAndRatings = ({ data, filter, handleChange }) => {
 
 const Chips = ({ props, filter, handleChange }) => {
   let { sidebarFilterOptions } = props;
+
+  // console.log(filter);
   return filter.values.map((val) => {
     const selected = sidebarFilterOptions[filter.name].includes(val);
     return (
@@ -87,59 +92,6 @@ const Chips = ({ props, filter, handleChange }) => {
 
 const Tip = ({ filter, omitHeading }) => {
   let [open, setOpen] = useState(false);
-  // const [state] = useContext(Context);
-  // const [valuesDescription, setValuesDescription] = useState("");
-
-  // useEffect(() => {
-  //   let dictionary;
-  //   switch (state.zone) {
-  //     case 7:
-  //       dictionary = state.zone7Dictionary.filter(
-  //         (val) => val.Variable === filter.name
-  //       );
-  //       break;
-  //     case 6:
-  //       dictionary = state.zone6Dictionary.filter(
-  //         (val) => val.Variable === filter.name
-  //       );
-  //       break;
-  //     case 5:
-  //       dictionary = state.zone5Dictionary.filter(
-  //         (val) => val.Variable === filter.name
-  //       );
-  //       break;
-  //     case 4:
-  //       dictionary = state.zone4Dictionary.filter(
-  //         (val) => val.Variable === filter.name
-  //       );
-  //       break;
-  //     default:
-  //       dictionary = state.zone7Dictionary.filter(
-  //         (val) => val.Variable === filter.name
-  //       );
-  //       break;
-  //   }
-
-  //   // setValuesDescription(
-  //   //   `${filter.description} ${
-  //   //     dictionary[0] ? dictionary[0]["Values Description"] : ""
-  //   //   }`
-  //   // );
-
-  //   setValuesDescription(`${filter.description}`);
-
-  //   console.log(valuesDescription);
-  //   // console.log(dictionary[0]["Values Description"]);
-  //   // setDict(dictionary);
-  // }, [
-  //   filter.description,
-  //   filter.name,
-  //   state.zone,
-  //   state.zone4Dictionary,
-  //   state.zone5Dictionary,
-  //   state.zone6Dictionary,
-  //   state.zone7Dictionary,
-  // ]);
 
   return (
     <Tooltip
@@ -175,6 +127,8 @@ const Filters = forwardRef(({ props }, ref) => {
     return acc;
   }, {});
 
+  // console.log(props.filters);
+
   const [selected, setSelected] = useState(options);
 
   const setProps = (selected) => {
@@ -209,6 +163,8 @@ const Filters = forwardRef(({ props }, ref) => {
     }
   };
 
+  // console.log(sidebarFilterOptions);
+
   return (
     <Grid container spacing={2}>
       {filters.values.map((filter) => {
@@ -238,7 +194,8 @@ const Filters = forwardRef(({ props }, ref) => {
             );
           }
         } else {
-          let data = sidebarFilterOptions[filter.alternateName || filter.name];
+          let data = sidebarFilterOptions[filter.name || filter.alternateName];
+          // console.log(data, filter.name || filter.alternateName);
 
           return (
             <Grid item xs={12}>

@@ -57,7 +57,7 @@
         "_id": {
             "$oid": "61bb9071168fa061cffb7b66"
         },
-        "name": "Cover Crop Type",
+        "name": "Cover Crop Group",
         "dataDictionaryName": "Cover Crop Group",
         "type": "chip",
         "values": "Legume, Grass, Brassica, Broadleaf",
