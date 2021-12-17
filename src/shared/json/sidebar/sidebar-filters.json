@@ -20,6 +20,7 @@
         "dataDictionaryName": "Can Aerial Seed?",
         "type": "chip",
         "values": "Aerial Seeding",
+        "maxSize": 1,
         "Species Selector Tool Category": [
             "rect3hj4Gy3WEFFx7"
         ],
@@ -185,6 +186,7 @@
         "dataDictionaryName": "Frost Seeding",
         "type": "chip",
         "values": "Frost Seeding",
+        "maxSize": 1,
         "Species Selector Tool Category": [
             "rect3hj4Gy3WEFFx7"
         ],
