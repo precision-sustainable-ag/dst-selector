@@ -42,6 +42,7 @@
     "react-dom": "^16.12.0",
     "react-drag-sortable": "^1.0.6",
     "react-flexbox-grid": "^2.1.2",
+    "react-ga": "^3.3.0",
     "react-hooks-global-state": "^0.17.0",
     "react-lazyload": "^3.0.0",
     "react-leaflet": "^2.7.0",

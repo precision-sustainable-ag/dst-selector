@@ -6,11 +6,12 @@
 
 import { Button, Typography } from "@material-ui/core";
 import { Add } from "@material-ui/icons";
-import React, { Fragment, useContext } from "react";
+import React, { Fragment, useContext, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { Context } from "../../store/Store";
 import MyCoverCropCardsComponent from "./MyCoverCropCardsComponent";
 import MyCoverCropComparisonComponent from "./MyCoverCropComparisonComponent";
+import ReactGA from "react-ga";
 
 const MyCoverCropList = (props) => {
   const [state, dispatch] = useContext(Context);
@@ -31,6 +32,15 @@ const MyCoverCropList = (props) => {
   const redirectToExplorer = () => {
     history.replace("/");
   };
+
+  useEffect(() => {
+    if (state.consent === true) {
+      console.log("viewing list");
+      ReactGA.initialize("UA-181903489-1");
+
+      ReactGA.pageview("cover crop list");
+    }
+  }, [state.consent]);
 
   const TopBar = ({ comparisonView }) => {
     return (
