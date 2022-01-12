@@ -5,9 +5,11 @@ import React, {
   useEffect,
   useImperativeHandle,
   useState,
+  Fragment,
 } from "react";
 
 const DollarsAndRatings = ({ data, filter, handleChange }) => {
+  if (!data) return <Fragment></Fragment>;
   let style =
     filter.symbol === "dollar"
       ? {}

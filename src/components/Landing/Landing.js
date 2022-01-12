@@ -9,11 +9,22 @@ import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { LightButton } from "../../shared/constants";
 import { Context } from "../../store/Store";
+import ReactGA from "react-ga";
 import "../../styles/landing.scss";
+import ConsentModal from "../CoverCropExplorer/ConsentModal";
 
 const Landing = (props) => {
   const [state, dispatch] = useContext(Context);
   const [containerHeight, setContainerHeight] = useState(props.height);
+
+  useEffect(() => {
+    if (state.consent === true) {
+      console.log("viewing landing");
+      ReactGA.initialize("UA-181903489-1");
+
+      ReactGA.pageview("cover crop selector");
+    }
+  }, [state.consent]);
 
   const incrementProgress = (incVal) => {
     incVal = parseInt(incVal);
@@ -65,6 +76,7 @@ const Landing = (props) => {
         backgroundSize: "cover",
       }}
     >
+      <ConsentModal consent={state.consent} />
       <Grid
         className="p-2"
         spacing={2}
