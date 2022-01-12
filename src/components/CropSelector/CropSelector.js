@@ -20,6 +20,7 @@ import MyCoverCropList from "../MyCoverCropList/MyCoverCropList";
 import CropCalendarViewComponent from "./CropCalendarView";
 import CropSidebarComponent from "./CropSidebar";
 import CropTableComponent from "./CropTable";
+import ReactGA from "react-ga";
 
 const _ = require("lodash");
 
@@ -75,6 +76,15 @@ const CropSelector = (props) => {
   // reset back to false
 
   const [cropData, setCropData] = useState([]);
+
+  useEffect(() => {
+    if (state.consent === true) {
+      console.log("viewing selector");
+      ReactGA.initialize("UA-181903489-1");
+
+      ReactGA.pageview("cover crop selector");
+    }
+  }, [state.consent]);
 
   const sortEnvTolCropData = (objDataArr) => {
     if (cropData.length !== 0) {

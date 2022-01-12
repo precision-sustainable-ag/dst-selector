@@ -511,21 +511,25 @@ const CropSidebarComponent = (props) => {
 
     switch (state.zone) {
       case 7:
+        setLoading(true);
         generateSidebarObject(state.zone7Dictionary)
           .then(() => setData())
           .then(() => setLoading(false));
         break;
       case 6:
+        setLoading(true);
         generateSidebarObject(state.zone6Dictionary)
           .then(() => setData())
           .then(() => setLoading(false));
         break;
       case 5:
+        setLoading(true);
         generateSidebarObject(state.zone5Dictionary)
           .then(() => setData())
           .then(() => setLoading(false));
         break;
       case 4:
+        setLoading(true);
         generateSidebarObject(state.zone4Dictionary)
           .then(() => setData())
           .then(() => setLoading(false));
