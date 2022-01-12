@@ -6,16 +6,30 @@
 */
 
 import { Button, Typography } from "@material-ui/core";
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import { CustomStyles } from "../../shared/constants";
 import Header from "../Header/Header";
 import InformationSheetDictionary from "../InformationSheet/InformationSheetDictionary";
+import ReactGA from "react-ga";
+import { Context } from "../../store/Store";
 
 const HelpComponent = () => {
+  const [state] = useContext(Context);
+
   useEffect(() => {
     document.title = "Help Page";
   }, []);
+
+  useEffect(() => {
+    console.log("viewing help");
+    if (state.consent === true) {
+      console.log("initializing react-ga");
+      ReactGA.initialize("UA-181903489-1");
+
+      ReactGA.pageview("help");
+    }
+  }, [state.consent]);
 
   const [value, setValue] = React.useState(0);
 

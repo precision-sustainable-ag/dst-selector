@@ -6,17 +6,30 @@
 */
 
 import { Button, Typography } from "@material-ui/core";
-import React, { Fragment } from "react";
+import React, { Fragment, useContext, useEffect } from "react";
 import { CustomStyles } from "../../shared/constants";
 import Header from "../Header/Header";
 import MITLicenseText from "../License/MITLicenseText";
+import ReactGA from "react-ga";
+import { Context } from "../../store/Store";
 
 const About = () => {
   const [value, setValue] = React.useState(0);
+  const [state] = useContext(Context);
 
   const handleChange = (newValue) => {
     setValue(newValue);
   };
+
+  useEffect(() => {
+    console.log("viewing about");
+    if (state.consent === true) {
+      console.log("initializing react-ga");
+      ReactGA.initialize("UA-181903489-1");
+
+      ReactGA.pageview("about");
+    }
+  }, [state.consent]);
 
   return (
     <div className="contentWrapper" id="mainContentWrapper">

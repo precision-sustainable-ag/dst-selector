@@ -4,6 +4,17 @@
 
 const Reducer = (state, action) => {
   switch (action.type) {
+    case "UPDATE_CONSENT": {
+      if (action.data.consent === true) {
+        console.log("consent: true");
+        return { ...state, consent: true };
+      } else if (action.data.consent === false) {
+        console.log("consent: false");
+        return { ...state, consent: false };
+      } else {
+        break;
+      }
+    }
     case "UPDATE_PROGRESS": {
       if (action.data.type === "INCREMENT") {
         return { ...state, progress: state.progress + 1 };

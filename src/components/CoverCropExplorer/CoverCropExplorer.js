@@ -10,6 +10,8 @@ import { Context } from "../../store/Store";
 import CropSidebarComponent from "../CropSelector/CropSidebar";
 import Header from "../Header/Header";
 import ExplorerCardView from "./ExplorerCardView";
+import ConsentModal from "./ConsentModal";
+import ReactGA from "react-ga";
 
 const CoverCropExplorer = () => {
   const [state] = useContext(Context);
@@ -21,6 +23,15 @@ const CoverCropExplorer = () => {
   useEffect(() => {
     setCropDataChanged((c) => !c);
   }, [state.zone]);
+
+  useEffect(() => {
+    if (state.consent === true) {
+      console.log("viewing explorer");
+      ReactGA.initialize("UA-181903489-1");
+
+      ReactGA.pageview("cover crop explorer");
+    }
+  }, [state.consent]);
 
   useEffect(() => {
     document.title = "Cover Crop Explorer";
@@ -47,6 +58,7 @@ const CoverCropExplorer = () => {
 
   return (
     <div className="contentWrapper">
+      <ConsentModal consent={state.consent} />
       <Header logo="neccc_wide_logo_color_web.jpg" />
       <div className="container-fluid mt-4 mb-4">
         <div className="row mt-3">

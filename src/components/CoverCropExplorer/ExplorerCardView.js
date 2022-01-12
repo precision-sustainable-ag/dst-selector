@@ -44,7 +44,7 @@ const ExplorerCardView = (props) => {
     });
     setSelectedBtns(newSelectedBtns);
     console.log("selected btns", newSelectedBtns);
-  }, [state.zone, state.selectedCrops]);
+  }, [state.zone, state.selectedCrops.length]);
 
   const { enqueueSnackbar } = useSnackbar();
 
