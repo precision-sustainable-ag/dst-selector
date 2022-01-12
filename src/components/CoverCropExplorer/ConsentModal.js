@@ -4,7 +4,7 @@
   Styles are created using makeStyles
 */
 
-import { Modal, Box, Typography, Button, Grid } from "@material-ui/core";
+import { Modal, Box, Typography, Button, Grid, Link } from "@material-ui/core";
 import React, { Fragment, useContext, useState } from "react";
 import { Context } from "../../store/Store";
 
@@ -61,7 +61,15 @@ const ExplorerCardView = (props) => {
         <Typography variant="body">
           This site uses cookies to improve user experience and analyze website
           traffic. By clicking “Accept“, you agree to our website's cookie use
-          as described in our Cookie Policy.
+          as described in our{" "}
+          <a
+            href="https://northeastcovercrops.com/privacy-policy/"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            Privacy Policy
+          </a>
+          .
         </Typography>
         <Grid container spacing={1}>
           <Grid item>
