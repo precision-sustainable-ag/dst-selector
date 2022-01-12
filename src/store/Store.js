@@ -180,6 +180,7 @@ const z5CropData = cropDataFormatter(z5AllCrops, 5);
 const z4CropData = cropDataFormatter(z4AllCrops, 4);
 
 const initialState = {
+  consent: false,
   progress: 0,
   address: "",
   addressSearchPreference: "address",
