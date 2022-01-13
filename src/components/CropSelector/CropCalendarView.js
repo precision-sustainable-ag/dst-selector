@@ -47,7 +47,7 @@ const growthIcon = {
 };
 
 const CropCalendarViewComponent = (props) => {
-  const { activeCropData, inactiveCropData } = props;
+  const { activeCropData } = props;
   const [state, dispatch] = useContext(Context);
   const [legendModal, setLegendModal] = useState(false);
   const selectedBtns = state.selectedCrops.map((crop) => {
@@ -147,7 +147,6 @@ const CropCalendarViewComponent = (props) => {
     // reset to default
     const { selectedGoals } = state;
     let activeCropDataShadow = props.activeCropData;
-    let inactiveCropDataShadow = props.inactiveCropData;
     selectedGoals
       .slice()
       .reverse()
@@ -162,27 +161,11 @@ const CropCalendarViewComponent = (props) => {
           }
           return 0;
         });
-        if (inactiveCropDataShadow.length > 0) {
-          inactiveCropDataShadow.sort((a, b) => {
-            if (a.fields[goal] && b.fields[goal]) {
-              if (a.fields[goal] > b.fields[goal]) {
-                return -1;
-              } else {
-                return 1;
-              }
-            }
-            return 0;
-          });
-        }
       });
     props.setActiveCropData(activeCropDataShadow);
-    if (inactiveCropDataShadow.length > 0) {
-      props.setInactiveCropData(inactiveCropDataShadow);
-    }
   };
   const sortCropsByName = () => {
     let activeCropDataShadow = props.activeCropData;
-    let inactiveCropDataShadow = props.inactiveCropData;
     sortReset("cropName");
 
     if (nameSortFlag) {
@@ -198,25 +181,6 @@ const CropCalendarViewComponent = (props) => {
         });
 
         props.setActiveCropData(activeCropDataShadow);
-      }
-
-      if (inactiveCropDataShadow.length > 0) {
-        inactiveCropDataShadow.sort((a, b) => {
-          var firstCropName = flipCoverCropName(
-            a.fields["Cover Crop Name"].toLowerCase()
-          );
-          var secondCropName = flipCoverCropName(
-            b.fields["Cover Crop Name"].toLowerCase()
-          );
-          if (firstCropName < secondCropName) {
-            return -1;
-          }
-          if (firstCropName > secondCropName) {
-            return 1;
-          }
-          return 0;
-        });
-        props.setInactiveCropData(inactiveCropDataShadow);
       }
     } else {
       if (activeCropDataShadow.length > 0) {
@@ -239,24 +203,6 @@ const CropCalendarViewComponent = (props) => {
         props.setActiveCropData(activeCropDataShadow);
       }
 
-      if (inactiveCropDataShadow.length > 0) {
-        inactiveCropDataShadow.sort((a, b) => {
-          var firstCropName = flipCoverCropName(
-            a.fields["Cover Crop Name"].toLowerCase()
-          ).replace(/\s+/g, "");
-          var secondCropName = flipCoverCropName(
-            b.fields["Cover Crop Name"].toLowerCase()
-          ).replace(/\s+/g, "");
-          if (firstCropName < secondCropName) {
-            return 1;
-          }
-          if (firstCropName > secondCropName) {
-            return -1;
-          }
-          return 0;
-        });
-        props.setInactiveCropData(inactiveCropDataShadow);
-      }
     }
 
     setNameSortFlag(!nameSortFlag);
@@ -266,7 +212,6 @@ const CropCalendarViewComponent = (props) => {
     sortReset("selectedCrops");
     let selectedCropsShadow = state.selectedCrops;
     let activeCropDataShadow = props.activeCropData;
-    let inactiveCropDataShadow = props.inactiveCropData;
     if (selectedCropsSortFlag) {
       if (selectedCropsShadow.length > 0) {
         let selectedCropIds = [];
@@ -281,25 +226,6 @@ const CropCalendarViewComponent = (props) => {
           }
           return crop;
         });
-
-        if (inactiveCropDataShadow.length > 0) {
-          let newInactiveShadow = inactiveCropDataShadow.map((crop) => {
-            if (selectedCropIds.includes(crop.fields.id)) {
-              crop["inCart"] = true;
-            } else {
-              crop["inCart"] = false;
-            }
-            return crop;
-          });
-          newInactiveShadow.sort((a) => {
-            if (a.inCart) {
-              return -1;
-            } else {
-              return 1;
-            }
-          });
-          props.setInactiveCropData(newInactiveShadow);
-        }
 
         if (newActiveShadow.length > 0) {
           newActiveShadow.sort((a) => {
@@ -680,11 +606,6 @@ const CropCalendarViewComponent = (props) => {
             <TableBody className="calendarTableBodyWrapper">
               {activeCropData.length > 0 ? (
                 <RenderCrops active={true} cropData={activeCropData} />
-              ) : (
-                ""
-              )}
-              {inactiveCropData.length > 0 ? (
-                <RenderCrops active={false} cropData={inactiveCropData} />
               ) : (
                 ""
               )}
