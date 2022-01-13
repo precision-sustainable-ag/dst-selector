@@ -1,5 +1,5 @@
 /*
-  This file contains the CropSidebar and it's styles
+  This file contains the CropSidebar and its styles
   The CropSidebar is the sidebar which contains the filtering and calendar view components
   Styles are created using makeStyles
 */
@@ -89,7 +89,6 @@ const CropSidebarComponent = (props) => {
     from,
     cropData,
     setActiveCropData,
-    setInactiveCropData,
     cropDataChanged,
     setGrowthWindow,
     toggleComparisonView,
@@ -157,7 +156,6 @@ const CropSidebarComponent = (props) => {
   };
 
   // make an exhaustive array of all params in array e.g. cover crop group and use includes in linq
-
   const [sidebarFilterOptions, setSidebarFilterOptions] = useState(() => {
     const sidebarStarter = {};
     sidebarFiltersData.forEach((row) => (sidebarStarter[row.name] = []));
@@ -282,13 +280,9 @@ const CropSidebarComponent = (props) => {
         return i === totalActiveFilters;
       });
 
-      const inactives = crop_data.filter((e) => !filtered.includes(e));
-
       setActiveCropData(filtered);
-      setInactiveCropData(inactives);
     } else {
       setActiveCropData(crop_data);
-      setInactiveCropData([]);
     }
   };
   const areCommonElements = (arr1, arr2) => {
@@ -338,7 +332,6 @@ const CropSidebarComponent = (props) => {
       terminationRef.current.resetFilters();
       weedsRef.current.resetFilters();
       setActiveCropData(state.cropData);
-      setInactiveCropData([]);
     }
     setSidebarFilterOptions({
       "Cover Crop Group": [], //string
@@ -787,7 +780,7 @@ const CropSidebarComponent = (props) => {
         )}
 
         {state.speciesSelectorActivationFlag || from === "explorer" ? (
-          <div className="col-12">
+          <div className="col-12" id="Filters">
             <List
               component="nav"
               classes={{ root: classes.listRoot }}
@@ -816,7 +809,7 @@ const CropSidebarComponent = (props) => {
                           label="Cover Crop Name"
                           helperText="Search by cover crop name"
                           value={coverCropName}
-                          onInput={covercropsNamesFilter}
+                          onChange={covercropsNamesFilter}
                           InputProps={{
                             endAdornment: (
                               <InputAdornment position="end">
@@ -868,9 +861,7 @@ const CropSidebarComponent = (props) => {
                               <ListItemText primary="No Goals Selected" />
                             </ListItem>
                             <ListItem className={classes.nested}>
-                              <Button
-                                onClick={() => changeProgress("decrement")}
-                              >
+                              <Button onClick={() => changeProgress("decrement")}>
                                 click to edit
                               </Button>
                             </ListItem>
@@ -942,9 +933,7 @@ const CropSidebarComponent = (props) => {
                                       <Typography
                                         variant="body1"
                                         style={{
-                                          cursor: isDragged
-                                            ? "grabbing"
-                                            : "grab",
+                                          cursor: isDragged ? "grabbing" : "grab",
                                           fontSize: "10pt",
                                           fontWeight:
                                             isDragged || isSelected
@@ -1162,11 +1151,7 @@ const CropSidebarComponent = (props) => {
                   )}
 
                   {from === "explorer" ? (
-                    <List
-                      component="div"
-                      disablePadding
-                      className="cropFilters"
-                    >
+                    <List component="div" disablePadding className="cropFilters">
                       {filtersSelected ? (
                         <ListItem onClick={() => {}}>
                           <ListItemText
@@ -1241,9 +1226,7 @@ const CropSidebarComponent = (props) => {
                                       : "filterClose"
                                   }
                                   component="div"
-                                  onClick={() =>
-                                    toggleSidebarFilterItems(index)
-                                  }
+                                  onClick={() => toggleSidebarFilterItems(index)}
                                 >
                                   <ListItemText
                                     primary={
@@ -1607,8 +1590,7 @@ const CropSidebarComponent = (props) => {
                                           ""
                                         )}
 
-                                        {filter.name.toUpperCase() ===
-                                        "SEEDS" ? (
+                                        {filter.name.toUpperCase() === "SEEDS" ? (
                                           <Seeds
                                             ref={seedsRef}
                                             filters={sidebarFilters[index]}
@@ -1624,8 +1606,7 @@ const CropSidebarComponent = (props) => {
                                         ) : (
                                           ""
                                         )}
-                                        {filter.name.toUpperCase() ===
-                                        "SEEDING METHODS" ? (
+                                        {filter.name.toUpperCase() === "SEEDING METHODS" ? (
                                           <SeedingMethods
                                             ref={seedingMethodRef}
                                             filters={sidebarFilters[index]}
@@ -1675,9 +1656,7 @@ const CropSidebarComponent = (props) => {
                                                 setSidebarFilterOptions={
                                                   setSidebarFilterOptions
                                                 }
-                                                resetAllFilters={
-                                                  resetAllFilters
-                                                }
+                                                resetAllFilters={resetAllFilters}
                                                 {...props}
                                               />
                                             </Grid>
@@ -1685,8 +1664,7 @@ const CropSidebarComponent = (props) => {
                                         ) : (
                                           ""
                                         )}
-                                        {filter.name.toUpperCase() ===
-                                        "ROOTS" ? (
+                                        {filter.name.toUpperCase() === "ROOTS" ? (
                                           <Grid container spacing={1}>
                                             <Grid item>
                                               <Roots
@@ -1698,9 +1676,7 @@ const CropSidebarComponent = (props) => {
                                                 setSidebarFilterOptions={
                                                   setSidebarFilterOptions
                                                 }
-                                                resetAllFilters={
-                                                  resetAllFilters
-                                                }
+                                                resetAllFilters={resetAllFilters}
                                                 {...props}
                                               />
                                             </Grid>
@@ -1729,8 +1705,7 @@ const CropSidebarComponent = (props) => {
                                         "BENEFICIALS"
                                           ? ""
                                           : ""}
-                                        {filter.name.toUpperCase() ===
-                                        "WEEDS" ? (
+                                        {filter.name.toUpperCase() === "WEEDS" ? (
                                           <Weeds
                                             ref={weedsRef}
                                             filters={sidebarFilters[index]}

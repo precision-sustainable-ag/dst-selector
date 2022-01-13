@@ -41,3 +41,36 @@ div.modalParentWrapper {
   width: 100%;
   overflow: scroll;
 }
+
+@media screen {
+  .noscreen {
+    display: none !important;
+  }
+}
+
+@media print {
+  body.InfoSheet {
+    #root, .doclose, .MuiIconButton-label, div[role=tooltip] {
+      display: none;
+    }
+
+    #cover-crop-modal-description {
+      overflow: visible;  /* remove the scrollbar */
+    }
+
+    .cropTableModal {  /* remove the gray margins and absolute positioning */
+      width: 100% !important;
+      top: 0 !important;
+      left: 0 !important;
+      position: relative !important;
+    }
+
+    div[role=presentation], .MuiBackdrop-root {
+      position: relative !important;
+    }
+
+    #coverCropModalPrimary {
+      border-top: 30px solid rgb(45, 123, 123);
+    }
+  }
+}
