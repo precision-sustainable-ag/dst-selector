@@ -26,6 +26,8 @@ import SoilDrainageTimeline from "./SoilDrainageTimeline";
 import sources from "./sources.json";
 import TooltipMaker from "./TooltipMaker";
 
+import ReactGA from "react-ga";
+
 const Accordion = withStyles({
   root: {
     boxShadow: "none",
@@ -136,6 +138,13 @@ const InformationSheetContent = (props) => {
   const [currentSources, setCurrentSources] = useState([{}]);
 
   useEffect(() => {
+    if (state.consent === true) {
+      ReactGA.initialize('UA-181903489-1');
+      ReactGA.pageview('information sheet');
+    }
+  }, [state.consent]);
+
+  useEffect(() => {
     document.title = `Information Sheet for ${crop["Cover Crop Name"]}`;
     const regex = /(?!\B"[^"]*),(?![^"]*"\B)/g;
     const removeDoubleQuotes = /^"(.+(?="$))"$/;
@@ -167,9 +176,22 @@ const InformationSheetContent = (props) => {
       el.before(ds);
     });
 
+    const printEvent = () => {
+      if (state.consent === true) {
+        ReactGA.event({
+          category: 'Information Sheet',
+          action: 'Print',
+          label: crop['Cover Crop Name'] + ' Zone ' + zone
+        });
+      }
+    } // printEvent
+
+    window.addEventListener('beforeprint', printEvent);
+  
     return () => {
       document.title = 'Cover Crop Explorer';
       document.body.classList.remove('InfoSheet');
+      window.removeEventListener('beforeprint', printEvent);
     }
   }, [crop, zone]);
 
