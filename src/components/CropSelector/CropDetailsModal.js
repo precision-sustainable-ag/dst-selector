@@ -80,7 +80,7 @@ const CropDetailsModalComponent = (props) => {
                       borderTopRightRadius: "5px",
                     }}
                   >
-                    <div className="row">
+                    <div className="row doclose">
                       <div className="col-2 offset-10 text-right">
                         {" "}
                         <Button
@@ -131,7 +131,7 @@ const CropDetailsModalComponent = (props) => {
                     </div>
                   </div>
                 </div>
-                <div className="row">
+                <div className="row zone">
                   <div
                     className="col-12"
                     style={{ background: "#2D7B7B", color: "white" }}
