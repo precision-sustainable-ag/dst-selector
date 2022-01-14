@@ -137,6 +137,8 @@ const InformationSheetContent = (props) => {
   const classes = useStyles();
   const [currentSources, setCurrentSources] = useState([{}]);
 
+  const [pdf, setPDF] = useState(false);
+
   useEffect(() => {
     if (state.consent === true) {
       ReactGA.initialize('UA-181903489-1');
@@ -145,7 +147,15 @@ const InformationSheetContent = (props) => {
   }, [state.consent]);
 
   useEffect(() => {
-    document.title = `Information Sheet for ${crop["Cover Crop Name"]}`;
+    document.title = crop['Cover Crop Name'] + ' Zone ' + zone;
+    fetch(`/pdf/${document.title}.pdf`)
+      .then(response => response.text())
+      .then(data => {
+        if (data.includes('PDF')) {
+          setPDF(true);
+        }
+      });
+
     const regex = /(?!\B"[^"]*),(?![^"]*"\B)/g;
     const removeDoubleQuotes = /^"(.+(?="$))"$/;
     const relevantZones = sources.filter((source, index) => {
@@ -181,7 +191,7 @@ const InformationSheetContent = (props) => {
         ReactGA.event({
           category: 'Information Sheet',
           action: 'Print',
-          label: crop['Cover Crop Name'] + ' Zone ' + zone
+          label: document.title
         });
       }
     } // printEvent
@@ -197,6 +207,21 @@ const InformationSheetContent = (props) => {
 
   return Object.keys(crop).length > 0 ? (
     <Fragment>
+      {
+        pdf && (
+          <p>
+            <a
+              href={`/pdf/${document.title}.pdf`}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{float: 'right'}}
+              class="noprint"
+            >
+              Download PDF
+            </a>
+          </p>
+        )
+      }
       <div className="row coverCropDescriptionWrapper">
         <div className="col-12 p-0">
           <Typography variant="h6" className="text-uppercase px-3 py-2">
@@ -1091,8 +1116,16 @@ const InformationSheetContent = (props) => {
             </Accordion>
           </div>
         </div>
+{/*
+        <div className="page-break"></div>
         
-        <div className="col-12 basicAgWrapper">
+        <div className="row otherRows mb-4">
+          <div className="col-12 basicAgWrapper">
+            abc
+          </div>
+        </div>
+*/}
+        <div className="col-12 basicAgWrapper" style={{breakBefore: 'always'}}>
           <div
             className="col-12 otherHeaderRow p-0"
             style={{ marginTop: "1em" }}
