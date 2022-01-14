@@ -174,17 +174,25 @@ const InformationSheetContent = (props) => {
     setCurrentSources(relevantZones);
     document.body.classList.add('InfoSheet');
 
-    const pb = document.querySelectorAll('.page-break');
-    pb.forEach(el => {
-      const cc = document.querySelector('#coverCropModalPrimary').cloneNode(true);  // crop name and picture
-      cc.style.breakBefore = 'page';
-      cc.classList.add('noscreen');
-      el.before(cc);
-
-      const ds = document.querySelector('.zone').cloneNode(true);  // "PLANT HARDINESS ZONE ... DATASET"
-      ds.classList.add('noscreen');
-      el.before(ds);
-    });
+    setTimeout(() => {
+      const pb = document.querySelectorAll('.avoidPage');
+      let top = 0;
+      pb.forEach(el => {
+        top += el.clientHeight;
+        // alert(top + '\n' + el.clientHeight + '\n' + el.innerText);
+        if (top > 950) {
+          top = el.clientHeight;
+          const cc = document.querySelector('#coverCropModalPrimary').cloneNode(true);  // crop name and picture
+          cc.style.breakBefore = 'page';
+          cc.classList.add('noscreen');
+          el.before(cc);
+  
+          const ds = document.querySelector('.zone').cloneNode(true);  // "PLANT HARDINESS ZONE ... DATASET"
+          ds.classList.add('noscreen');
+          el.before(ds);
+        }
+      });
+    }, 10);
 
     const printEvent = () => {
       if (state.consent === true) {
@@ -222,7 +230,7 @@ const InformationSheetContent = (props) => {
           </p>
         )
       }
-      <div className="row coverCropDescriptionWrapper">
+      <div className="row coverCropDescriptionWrapper avoidPage">
         <div className="col-12 p-0">
           <Typography variant="h6" className="text-uppercase px-3 py-2">
             Cover Crop Description
@@ -248,7 +256,7 @@ const InformationSheetContent = (props) => {
           imageData={crop["Image Data"] ? crop["Image Data"] : null}
         />
       </div>
-      <div className="row mt-2 coverCropGoalsWrapper">
+      <div className="row mt-2 coverCropGoalsWrapper avoidPage">
         <div className="col-12 p-0">
           <Accordion defaultExpanded>
             <AccordionSummary
@@ -303,7 +311,7 @@ const InformationSheetContent = (props) => {
         </div>
       </div>
 
-      <div className="row otherRows mb-4">
+      <div className="row otherRows mb-4 avoidPage">
         <div className="col-7 col-lg-6 weedsRowWrapper">
           <Accordion defaultExpanded style={{ border: "1px solid #2b7b79" }}>
             <AccordionSummary
@@ -354,9 +362,7 @@ const InformationSheetContent = (props) => {
         </div>
       </div>
 
-      <div className="page-break"></div>
-
-      <div className="row otherRows mb-4">
+      <div className="row otherRows mb-4 avoidPage">
         <div className="col-7 col-lg-6 basicAgWrapper">
           <div
             className="col-12 otherHeaderRow p-0"
@@ -707,7 +713,9 @@ const InformationSheetContent = (props) => {
             </Accordion>
           </div>
         </div>
-
+      </div>
+      
+      <div className="row otherRows mb-4 avoidPage">
         <div className="col-7 col-lg-6 basicAgWrapper">
           <div
             className="col-12 otherHeaderRow p-0"
@@ -875,9 +883,7 @@ const InformationSheetContent = (props) => {
         </div>
       </div>
 
-      <div className="page-break"></div>
-
-      <div className="row otherRows mb-4">
+      <div className="row otherRows mb-4 avoidPage">
         <div className="col-7 col-lg-6 basicAgWrapper">
           <div
             className="col-12 otherHeaderRow p-0"
@@ -1091,7 +1097,9 @@ const InformationSheetContent = (props) => {
             </Accordion>
           </div>
         </div>
+      </div>
 
+      <div className="row otherRows mb-4 avoidPage">
         <div className="col-12 basicAgWrapper">
           <div
             className="col-12 otherHeaderRow p-0"
@@ -1116,16 +1124,10 @@ const InformationSheetContent = (props) => {
             </Accordion>
           </div>
         </div>
-{/*
-        <div className="page-break"></div>
-        
-        <div className="row otherRows mb-4">
-          <div className="col-12 basicAgWrapper">
-            abc
-          </div>
-        </div>
-*/}
-        <div className="col-12 basicAgWrapper" style={{breakBefore: 'always'}}>
+      </div>
+
+      <div className="row otherRows mb-4 avoidPage">
+        <div className="col-12 basicAgWrapper">
           <div
             className="col-12 otherHeaderRow p-0"
             style={{ marginTop: "1em" }}
