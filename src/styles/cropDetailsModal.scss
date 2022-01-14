@@ -49,6 +49,10 @@ div.modalParentWrapper {
 }
 
 @media print {
+  .noprint {
+    display: none;
+  }
+  
   body.InfoSheet {
     #root, .doclose, .MuiIconButton-label, div[role=tooltip] {
       display: none;
