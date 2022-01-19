@@ -47,7 +47,7 @@ const ExplorerCardView = (props) => {
     });
   };
 
-  return !consent ? (
+  return !consent && !/crop=/.test(window.location.search) ? (
     <Modal
       open={modalOpen}
       //   onClose={toggleModalOpen}

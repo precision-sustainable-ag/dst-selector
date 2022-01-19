@@ -90,7 +90,7 @@ const InformationSheetContent = (props) => {
             </Typography>
           </TooltipMaker>
         </span>
-        <span className="zcol-3">
+        <span>
           {getRating(crop[attribute] || crop[alternate])}
         </span>
       </div>
@@ -109,7 +109,7 @@ const InformationSheetContent = (props) => {
           </Typography>
         </TooltipMaker>
       </div>
-      <div className="zcol-3 mb-2">
+      <div className="mb-2">
         {getRating(crop[attribute])}
       </div>
     </>
@@ -125,7 +125,7 @@ const InformationSheetContent = (props) => {
           <Typography variant="body1">{text}</Typography>
         </TooltipMaker>
       </div>
-      <div className="zcol-3 mb-2">
+      <div className="mb-2">
         {getRating(crop[attribute])}
       </div>
     </>
@@ -174,25 +174,17 @@ const InformationSheetContent = (props) => {
     setCurrentSources(relevantZones);
     document.body.classList.add('InfoSheet');
 
-    setTimeout(() => {
-      const pb = document.querySelectorAll('.avoidPage');
-      let top = 0;
-      pb.forEach(el => {
-        top += el.clientHeight;
-        // alert(top + '\n' + el.clientHeight + '\n' + el.innerText);
-        if (top > 950) {
-          top = el.clientHeight;
-          const cc = document.querySelector('#coverCropModalPrimary').cloneNode(true);  // crop name and picture
-          cc.style.breakBefore = 'page';
-          cc.classList.add('noscreen');
-          el.before(cc);
-  
-          const ds = document.querySelector('.zone').cloneNode(true);  // "PLANT HARDINESS ZONE ... DATASET"
-          ds.classList.add('noscreen');
-          el.before(ds);
-        }
-      });
-    }, 10);
+    // Firefox experiments.  It's hopeless:
+    // document.querySelectorAll('*').forEach(o => {
+    //   if (/fixed|absolute/.test(getComputedStyle(o).getPropertyValue('position'))) {
+    //     o.style.position = 'relative';
+    //     console.log(o);
+    //   }
+    //   if (/flex/i.test(getComputedStyle(o).getPropertyValue('display'))) {
+    //     o.style.display = 'span';
+    //     console.log(o);
+    //   }
+    // });    
 
     const printEvent = () => {
       if (state.consent === true) {
@@ -214,20 +206,19 @@ const InformationSheetContent = (props) => {
   }, [crop, zone]);
 
   return Object.keys(crop).length > 0 ? (
-    <Fragment>
+    <>
       {
         pdf && (
-          <p>
+          <div class="noprint" style={{textAlign: 'right'}}>
             <a
               href={`/pdf/${document.title}.pdf`}
               target="_blank"
               rel="noopener noreferrer"
-              style={{float: 'right'}}
-              class="noprint"
             >
               Download PDF
             </a>
-          </p>
+            <br/>
+          </div>
         )
       }
       <div className="row coverCropDescriptionWrapper avoidPage">
@@ -243,8 +234,9 @@ const InformationSheetContent = (props) => {
           </Typography>
         </div>
       </div>
+      
       <div
-        className="d-flex justify-content-center mt-2 mb-2 photosWrapper"
+        className="d-flex justify-content-center mt-2 mb-2 photosWrapper avoidPage"
         style={{
           overflowX: "auto",
           whiteSpace: "nowrap",
@@ -256,6 +248,7 @@ const InformationSheetContent = (props) => {
           imageData={crop["Image Data"] ? crop["Image Data"] : null}
         />
       </div>
+      
       <div className="row mt-2 coverCropGoalsWrapper avoidPage">
         <div className="col-12 p-0">
           <Accordion defaultExpanded>
@@ -276,7 +269,7 @@ const InformationSheetContent = (props) => {
                     </TooltipMaker>
                   </span>
                   {/* <span className="col-3">{crop["Growing Window"]}</span> */}
-                  <span className="zcol-3">
+                  <span>
                     <div className="blue-bg">
                       <div
                         style={{
@@ -312,7 +305,10 @@ const InformationSheetContent = (props) => {
       </div>
 
       <div className="row otherRows mb-4 avoidPage">
-        <div className="col-7 col-lg-6 weedsRowWrapper">
+        <div
+          className="col-7 col-lg-6 weedsRowWrapper"
+          style={{ marginTop: "1em" }}
+        >
           <Accordion defaultExpanded style={{ border: "1px solid #2b7b79" }}>
             <AccordionSummary
               expandIcon={<ExpandMore />}
@@ -336,7 +332,10 @@ const InformationSheetContent = (props) => {
           </Accordion>
         </div>
 
-        <div className="col-5 col-lg-6 envTolWrapper">
+        <div
+          className="col-5 col-lg-6 envTolWrapper"
+          style={{ marginTop: "1em" }}
+        >
           <Accordion defaultExpanded style={{ border: "1px solid #2b7b79" }}>
             <AccordionSummary
               expandIcon={<ExpandMore />}
@@ -388,7 +387,7 @@ const InformationSheetContent = (props) => {
                       <Typography variant="body1">Duration</Typography>
                     </TooltipMaker>
                   </div>
-                  <div className="zcol-3 mb-2">
+                  <div className="mb-2">
                     <div
                       className={`blue-bg ${
                         crop["Duration"].includes("Short-lived Perennial")
@@ -407,7 +406,7 @@ const InformationSheetContent = (props) => {
                       <Typography variant="body1">Zone Use</Typography>
                     </TooltipMaker>
                   </div>
-                  <div className="zcol-3 mb-2">
+                  <div className="mb-2">
                     <div className="blue-bg">
                       <Typography variant="body1">
                         {crop["Zone Use"]}
@@ -425,7 +424,7 @@ const InformationSheetContent = (props) => {
                       </Typography>
                     </TooltipMaker>
                   </div>
-                  <div className="zcol-3 mb-2">
+                  <div className="mb-2">
                     <div
                       className={`blueBgFlex ${
                         crop["Shape & Orientation"].length > 1
@@ -453,7 +452,7 @@ const InformationSheetContent = (props) => {
                       Dry Matter (Lbs/A/Yr)
                     </Typography>
                   </div>
-                  <div className="zcol-3 mb-2">
+                  <div className="mb-2">
                     <div className="blue-bg">
                       <Typography variant="body1">
                         {`${crop["Dry Matter Min (lbs/A/y)"]} - ${crop["Dry Matter Max (lbs/A/y)"]}`}
@@ -466,7 +465,7 @@ const InformationSheetContent = (props) => {
                       <Typography variant="body1">Soil Texture</Typography>
                     </TooltipMaker>
                   </div>
-                  <div className="zcol-3 mb-2 text-capitalize">
+                  <div className="mb-2 text-capitalize">
                     <div
                       className={`blueBgFlex ${
                         crop["Soil Textures"].length > 1 ? `borderWrapped` : ``
@@ -483,7 +482,7 @@ const InformationSheetContent = (props) => {
                   <div className="col-9 mb-2">
                     <Typography variant="body1">Soil pH</Typography>
                   </div>
-                  <div className="zcol-3 mb-2">
+                  <div className="mb-2">
                     <div className="blue-bg">
                       <Typography variant="body1">
                         {`${crop["Minimum Tolerant Soil pH"]} - ${crop["Maximum Tolerant Soil pH"]}`}
@@ -499,7 +498,7 @@ const InformationSheetContent = (props) => {
                       <Typography variant="body1">Soil Moisture Use</Typography>
                     </TooltipMaker>
                   </div>
-                  <div className="zcol-3 mb-2">
+                  <div className="mb-2">
                     <div className="blue-bg">
                       <Typography variant="body1">
                         {crop["Soil Moisture Use"]}
@@ -517,7 +516,7 @@ const InformationSheetContent = (props) => {
                       </Typography>
                     </TooltipMaker>
                   </div>
-                  <div className="zcol-3 mb-2">
+                  <div className="mb-2">
                     <div className="blue-bg">
                       <Typography variant="body1">
                         {crop["Hessian Fly Free Date"]
@@ -534,7 +533,7 @@ const InformationSheetContent = (props) => {
                           Nitrogen Accumulation (Lbs/A/Yr)
                         </Typography>
                       </div>
-                      <div className="zcol-3 mb-2">
+                      <div className="mb-2">
                         <div className="blue-bg">
                           <Typography variant="body1">
                             {`${crop["Nitrogen Accumulation Min, Legumes (lbs/A/y)"]} - ${crop["Nitrogen Accumulation Max, Legumes (lbs/A/y)"]}`}
@@ -556,7 +555,7 @@ const InformationSheetContent = (props) => {
                       </Typography>
                     </TooltipMaker>
                   </div>
-                  <div className="zcol-3 mb-2">
+                  <div className="mb-2">
                     {getRating(crop["Ease of Establishment"])}
                   </div>
 
@@ -570,7 +569,7 @@ const InformationSheetContent = (props) => {
                       </Typography>
                     </TooltipMaker>
                   </div>
-                  <div className="zcol-3 mb-2">
+                  <div className="mb-2">
                     {getRating(crop["Establishes Quickly"])}
                   </div>
 
@@ -584,7 +583,7 @@ const InformationSheetContent = (props) => {
                       </Typography>
                     </TooltipMaker>
                   </div>
-                  <div className="zcol-3 mb-2">
+                  <div className="mb-2">
                     {getRating(crop["Early Spring Growth"])}
                   </div>
 
@@ -596,7 +595,7 @@ const InformationSheetContent = (props) => {
                       <Typography variant="body1">Flowering Trigger</Typography>
                     </TooltipMaker>
                   </div>
-                  <div className="zcol-3 mb-2">
+                  <div className="mb-2">
                     <div className="blue-bg">
                       <Typography variant="body1">
                         {crop["Flowering Trigger"]}
@@ -633,7 +632,7 @@ const InformationSheetContent = (props) => {
                       <Typography variant="body1">Root Depth</Typography>
                     </TooltipMaker>
                   </div>
-                  <div className="zcol-3 mb-2">
+                  <div className="mb-2">
                     <div className="blue-bg">
                       <Typography variant="body1">
                         {crop["Root Depth"]}
@@ -653,7 +652,7 @@ const InformationSheetContent = (props) => {
                           </Typography>
                         </TooltipMaker>
                       </div>
-                      <div className="zcol-3 mb-2">
+                      <div className="mb-2">
                         <div
                           className={`blueBgFlex ${
                             crop["Inoculant Type"].length > 1
@@ -745,7 +744,7 @@ const InformationSheetContent = (props) => {
                       <Typography variant="body1">Seeds Per Lb</Typography>
                     </TooltipMaker>
                   </div>
-                  <div className="zcol-3 mb-2">
+                  <div className="mb-2">
                     <div className="blue-bg">
                       <Typography variant="body1">
                         {crop["Seeds per Pound"]}
@@ -761,7 +760,7 @@ const InformationSheetContent = (props) => {
                       <Typography variant="body1">Seed Price Per Lb</Typography>
                     </TooltipMaker>
                   </div>
-                  <div className="zcol-3 mb-2">
+                  <div className="mb-2">
                     <div className="blue-bg no-bg">
                       <RenderSeedPriceIcons
                         val={crop["Seed Price per Pound"]}
@@ -774,7 +773,7 @@ const InformationSheetContent = (props) => {
                       Base Seeding Rate (Lbs/A)
                     </Typography>
                   </div>
-                  <div className="zcol-3 mb-2">
+                  <div className="mb-2">
                     <div className="blue-bg">
                       <Typography variant="body1">
                         {`${crop["Base Seeding Rate Min (lbs/A)"]} - ${crop["Base Seeding Rate Max (lbs/A)"]}`}
@@ -785,7 +784,7 @@ const InformationSheetContent = (props) => {
                   <div className="col-9 mb-2">
                     <Typography variant="body1">Drilled Depth</Typography>
                   </div>
-                  <div className="zcol-3 mb-2">
+                  <div className="mb-2">
                     <div className="blue-bg">
                       <Typography variant="body1">
                         {`${crop["Drilled Depth Min"]}" - ${crop["Drilled Depth Max"]}"`}
@@ -801,7 +800,7 @@ const InformationSheetContent = (props) => {
                       <Typography variant="body1">Can Aerial Seed?</Typography>
                     </TooltipMaker>
                   </div>
-                  <div className="zcol-3 mb-2">
+                  <div className="mb-2">
                     <div className="blue-bg">
                       <Typography variant="body1">
                         {crop["Aerial Seeding"] ? "Yes" : "No"}
@@ -814,7 +813,7 @@ const InformationSheetContent = (props) => {
                       <Typography variant="body1">Can Frost Seed?</Typography>
                     </TooltipMaker>
                   </div>
-                  <div className="zcol-3 mb-2">
+                  <div className="mb-2">
                     <div className="blue-bg">
                       <Typography variant="body1">
                         {crop["Frost Seeding"] ? "Yes" : "No"}
@@ -832,7 +831,7 @@ const InformationSheetContent = (props) => {
                       </Typography>
                     </TooltipMaker>
                   </div>
-                  <div className="zcol-3 mb-2">
+                  <div className="mb-2">
                     <div className="blue-bg">
                       <Typography variant="body1">
                         {crop["Min Germination Temp (F)"]}
@@ -910,7 +909,7 @@ const InformationSheetContent = (props) => {
                       &nbsp;Frost Seeding
                     </Typography>
                   </div>
-                  <div className="zcol-3 mb-2">
+                  <div className="col-3 mb-2">
                     <div className="blue-bg shrt_perennial wd-110">
                       <Typography variant="body1">
                         {crop["Frost Seeding"]
@@ -932,7 +931,7 @@ const InformationSheetContent = (props) => {
                       &nbsp;Reliable Establishment
                     </Typography>
                   </div>
-                  <div className="zcol-3 mb-2">
+                  <div className="mb-2">
                     {crop["Second Reliable Establishment/Growth Start"] &&
                     crop["Second Reliable Establishment/Growth End"] ? (
                       <div className="blueBgFlex borderWrapped wd-112">
@@ -962,7 +961,7 @@ const InformationSheetContent = (props) => {
                       &nbsp;Temperature/Moisture Risk
                     </Typography>
                   </div>
-                  <div className="zcol-3 mb-2">
+                  <div className="mb-2">
                     {crop[
                       "Second Temperature/Moisture Risk to Establishment Start"
                     ] &&
@@ -996,7 +995,7 @@ const InformationSheetContent = (props) => {
                       &nbsp;Active Growth Period
                     </Typography>
                   </div>
-                  <div className="zcol-3 mb-2">
+                  <div className="mb-2">
                     <div
                       className={`blueBgFlex ${
                         crop["Active Growth Period"].length > 1
@@ -1015,7 +1014,7 @@ const InformationSheetContent = (props) => {
                   <div className="col-9 mb-2">
                     <Typography variant="body1">Winter Survival</Typography>
                   </div>
-                  <div className="zcol-3 mb-2">
+                  <div className="mb-2">
                     <div className="blue-bg">
                       <Typography variant="body1">
                         {crop["Winter Survival"]}
@@ -1026,7 +1025,7 @@ const InformationSheetContent = (props) => {
                   <div className="col-9 mb-2">
                     <Typography variant="body1">Can Interseed</Typography>
                   </div>
-                  <div className="zcol-3 mb-2">
+                  <div className="mb-2">
                     <div className="blue-bg shrt_perennial wd-110">
                       <Typography variant="body1">
                         {crop["Interseed possible"] ? "Yes" : "N/A"}
@@ -1173,7 +1172,7 @@ const InformationSheetContent = (props) => {
           </div>
         </div>
       </div>
-    </Fragment>
+    </>
   ) : (
     ""
   );
