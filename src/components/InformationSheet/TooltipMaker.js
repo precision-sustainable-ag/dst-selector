@@ -44,7 +44,7 @@ const TooltipMaker = ({ children, variable }) => {
         break;
     }
 
-    console.log(dictionary);
+    // console.log(dictionary);
     setDict(dictionary);
   }, [
     state.zone,

@@ -5,6 +5,7 @@
   }
   border-color: $progressColor !important;
 }
+
 .modalSideBar {
   //   box-shadow: 0px 2px 1px -1px $progressColor, 0px 1px 1px 0px $progressColor,
   //     0px 1px 3px 0px $progressColor !important;
@@ -49,16 +50,29 @@ div.modalParentWrapper {
 }
 
 @media print {
+  html, body {
+    border: 1px solid white;
+    height: 99%;
+    page-break-after: avoid;
+    page-break-before: avoid;
+    overflow: visible !important; /* Firefox */
+  }
+
   .noprint {
     display: none;
   }
   
   body.InfoSheet {
+    .avoidPage {
+      break-inside: avoid-page;
+    }
+
     #root, .doclose, .MuiIconButton-label, div[role=tooltip] {
       display: none;
     }
 
     #cover-crop-modal-description {
+      max-height: none;   /* let thead repeat on each page */
       overflow: visible;  /* remove the scrollbar */
     }
 
@@ -73,8 +87,13 @@ div.modalParentWrapper {
       position: relative !important;
     }
 
-    #coverCropModalPrimary {
-      border-top: 30px solid rgb(45, 123, 123);
+    * {
+      outline: none !important;
+      margin-bottom: 0 !important;
+    }
+
+    .photosWrapper {
+      flex-wrap: wrap !important;
     }
   }
 }
