@@ -93,73 +93,88 @@ const CropDetailsModalComponent = (props) => {
                     </div>
                   </div>
                 </div>
-                <div className="row" id="coverCropModalPrimary">
-                  <div className="col-12">
-                    <div className="row">
-                      <div className="col mt-2">
-                        <div>{modalData.fields["Cover Crop Group"]}</div>
-                        <div
-                          className="font-weight-bold"
-                          id="cover-crop-modal-title"
-                        >
-                          {modalData.fields["Cover Crop Name"]}
+
+                <table>
+                  <thead>
+                    <tr>
+                      <th>
+                        <div className="row" id="coverCropModalPrimary">
+                          <div className="col-12">
+                            <div className="row">
+                              <div className="col mt-2">
+                                <div>{modalData.fields["Cover Crop Group"]}</div>
+                                <div
+                                  className="font-weight-bold"
+                                  id="cover-crop-modal-title"
+                                >
+                                  {modalData.fields["Cover Crop Name"]}
+                                </div>
+                                <div>{modalData.fields["Scientific Name"]}</div>
+                              </div>
+                              <div
+                                className="col"
+                                style={{
+                                  textAlign: "right",
+                                  paddingRight: "0px",
+                                  paddingLeft: "0px",
+                                }}
+                              >
+                                {crop.fields["Image Data"] ? (
+                                  <CropImage
+                                    present={true}
+                                    src={
+                                      crop.fields["Image Data"]["Key Thumbnail"]
+                                        ? `/images/Cover Crop Photos/100x100/${crop.fields["Image Data"]["Directory"]}/${crop.fields["Image Data"]["Key Thumbnail"]}`
+                                        : "https://placehold.it/100x100"
+                                    }
+                                    alt={crop.fields["Cover Crop Name"]}
+                                  />
+                                ) : (
+                                  <CropImage present={false} />
+                                )}
+                              </div>
+                            </div>
+                          </div>
                         </div>
-                        <div>{modalData.fields["Scientific Name"]}</div>
-                      </div>
-                      <div
-                        className="col"
-                        style={{
-                          textAlign: "right",
-                          paddingRight: "0px",
-                          paddingLeft: "0px",
-                        }}
-                      >
-                        {crop.fields["Image Data"] ? (
-                          <CropImage
-                            present={true}
-                            src={
-                              crop.fields["Image Data"]["Key Thumbnail"]
-                                ? `/images/Cover Crop Photos/100x100/${crop.fields["Image Data"]["Directory"]}/${crop.fields["Image Data"]["Key Thumbnail"]}`
-                                : "https://placehold.it/100x100"
-                            }
-                            alt={crop.fields["Cover Crop Name"]}
-                          />
-                        ) : (
-                          <CropImage present={false} />
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="row zone">
-                  <div
-                    className="col-12"
-                    style={{ background: "#2D7B7B", color: "white" }}
-                  >
-                    <div className="row">
-                      <div className="col-4">
-                        <Button
-                          style={{ color: "white" }}
-                          className="dataDict"
-                          onClick={() => {
-                            window.open("/data-dictionary", "_blank");
-                          }}
-                        >
-                          {zoneIcon(20, 20)}
-                          <span className="pl-2">
-                            Plant Hardiness Zone {crop.fields.Zone} Dataset
-                          </span>
-                        </Button>
-                      </div>
-                      <div className="col-2"></div>
-                      <div className="col-4"></div>
-                      <div className="col-2 text-right"></div>
-                    </div>
-                  </div>
-                </div>
-                <div className="" id="cover-crop-modal-description">
-                  <InformationSheetContent crop={crop.fields} from="modal" />
-                </div>
+                        <div className="row zone" style={{paddingBottom: '1em'}}>
+                          <div
+                            className="col-12"
+                            style={{ background: "#2D7B7B", color: "white" }}
+                          >
+                            <div className="row">
+                              <div className="col-4">
+                                <Button
+                                  style={{ color: "white" }}
+                                  className="dataDict"
+                                  onClick={() => {
+                                    window.open("/data-dictionary", "_blank");
+                                  }}
+                                >
+                                  {zoneIcon(20, 20)}
+                                  <span className="pl-2">
+                                    Plant Hardiness Zone {crop.fields.Zone} Dataset
+                                  </span>
+                                </Button>
+                              </div>
+                              <div className="col-2"></div>
+                              <div className="col-4"></div>
+                              <div className="col-2 text-right"></div>
+                            </div>
+                          </div>
+                        </div>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <div id="cover-crop-modal-description">
+                          <InformationSheetContent crop={crop.fields} from="modal" />
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
