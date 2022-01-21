@@ -174,51 +174,52 @@ const InformationSheetContent = (props) => {
     setCurrentSources(relevantZones);
     document.body.classList.add('InfoSheet');
 
-    // Firefox experiments.  It's hopeless:
-    // document.querySelectorAll('*').forEach(o => {
-    //   if (/fixed|absolute/.test(getComputedStyle(o).getPropertyValue('position'))) {
-    //     o.style.position = 'relative';
-    //     console.log(o);
-    //   }
-    //   if (/flex/i.test(getComputedStyle(o).getPropertyValue('display'))) {
-    //     o.style.display = 'span';
-    //     console.log(o);
-    //   }
-    // });    
-
-    const printEvent = () => {
-      if (state.consent === true) {
-        ReactGA.event({
-          category: 'Information Sheet',
-          action: 'Print',
-          label: document.title
-        });
+    const kd = (e) => {
+      if (e.key === 'p' && (e.altKey || e.ctrlKey)) {
+        e.preventDefault();
+        print();
       }
-    } // printEvent
+    } // kd
 
-    window.addEventListener('beforeprint', printEvent);
-  
+    document.addEventListener('keydown', kd);
+
     return () => {
       document.title = 'Cover Crop Explorer';
       document.body.classList.remove('InfoSheet');
-      window.removeEventListener('beforeprint', printEvent);
+      document.removeEventListener('keydown', kd);
     }
   }, [crop, zone]);
+
+  const print = () => {
+    if (state.consent === true) {
+      ReactGA.event({
+        category: 'Information Sheet',
+        action: 'Print',
+        label: document.title
+      });
+    }
+    
+    document.querySelector('#PDF').contentWindow.print();
+  } // print
 
   return Object.keys(crop).length > 0 ? (
     <>
       {
         pdf && (
-          <div class="noprint" style={{textAlign: 'right'}}>
-            <a
-              href={`/pdf/${document.title}.pdf`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Download PDF
-            </a>
-            <br/>
-          </div>
+          <>
+            <iframe id="PDF" title="pdf" src={`/pdf/${document.title}.pdf`}/>
+            <div class="noprint" style={{textAlign: 'right'}}>
+              <button
+                href={`/pdf/${document.title}.pdf`}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => print()}
+                id="PDFButton"
+              >
+                <u>P</u>rint
+              </button>
+            </div>
+          </>
         )
       }
       <div className="row coverCropDescriptionWrapper avoidPage">
