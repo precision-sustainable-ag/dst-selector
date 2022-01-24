@@ -1,7 +1,7 @@
 /*
-  This file contains the CropSelector and it's styles
-  The CropSelector is the top level component for the crop selector tool and allows users to choose crops based on their needs
-  Styles are created using makeStyles
+  This file contains the CropSelector and its styles.
+  The CropSelector is the top level component for the crop selector tool and allows users to choose crops based on their needs.
+  Styles are created using makeStyles.
 */
 
 import {
@@ -21,7 +21,6 @@ import CropCalendarViewComponent from "./CropCalendarView";
 import CropSidebarComponent from "./CropSidebar";
 import CropTableComponent from "./CropTable";
 import ReactGA from "react-ga";
-
 const _ = require("lodash");
 
 const useStyles = makeStyles((theme) => ({
@@ -65,7 +64,6 @@ const CropSelector = (props) => {
   let [showGrowthWindow, setShowGrowthWindow] = useState(true);
   const [sortPreference, setSortPreference] = useState("desc");
   const [activeCropData, setActiveCropData] = useState([]);
-  const [inactiveCropData, setInactiveCropData] = useState([]);
   const [coverCropName, setCoverCropName] = useState("");
   const { selectedGoals } = state;
 
@@ -76,7 +74,6 @@ const CropSelector = (props) => {
   // reset back to false
 
   const [cropData, setCropData] = useState([]);
-
   useEffect(() => {
     if (state.consent === true) {
       console.log("viewing selector");
@@ -127,10 +124,7 @@ const CropSelector = (props) => {
     if (state.cropData.length > 0) {
       // const { selectedGoals } = state;
       if (selectedGoals.length > 0) {
-        let activeCropDataCopy =
-          activeCropData.length > 0 ? activeCropData : state.cropData;
-        let inactiveCropDataCopy =
-          inactiveCropData.length > 0 ? inactiveCropData : [];
+        let activeCropDataCopy = activeCropData.length > 0 ? activeCropData : state.cropData;
         let activeObjKeys = [];
         selectedGoals.forEach((val, index) => {
           //  Crop Data is inside cropData.fields
@@ -147,14 +141,6 @@ const CropSelector = (props) => {
               );
               setActiveCropData(updatedCropData);
             }
-            if (inactiveCropDataCopy.length > 0) {
-              let updatedInactives = _.orderBy(
-                inactiveCropDataCopy,
-                activeObjKeys,
-                ["asc", "asc", "asc"]
-              );
-              setInactiveCropData(updatedInactives);
-            }
             setSortPreference("asc");
             break;
           }
@@ -166,14 +152,6 @@ const CropSelector = (props) => {
                 ["desc", "desc", "desc"]
               );
               setActiveCropData(updatedCropData);
-            }
-            if (inactiveCropDataCopy.length > 0) {
-              let updatedInactives = _.orderBy(
-                inactiveCropDataCopy,
-                activeObjKeys,
-                ["desc", "desc", "desc"]
-              );
-              setInactiveCropData(updatedInactives);
             }
             setSortPreference("desc");
             break;
@@ -226,48 +204,34 @@ const CropSelector = (props) => {
   const toggleComparisonView = () => {
     setComparisonView(!comparisonView);
   };
+  
   const clearCoverCropNameSearch = () => {
     setCoverCropName("");
     setActiveCropData(cropData);
-    setInactiveCropData([]);
   };
 
   const covercropsNamesFilter = (e) => {
-    let value = e.target.value;
-    value = value.split(" ").join("").toLowerCase();
     setCoverCropName(e.target.value);
 
     if (e.target.value === "") {
       setActiveCropData(cropData);
-      setInactiveCropData([]);
     } else {
-      const newActives = activeCropData.filter((crops) => {
-        let cropName = flipCoverCropName(crops.fields["Cover Crop Name"])
-          .split(" ")
-          .join("")
-          .toLowerCase();
+      let search = e.target.value.toLowerCase().match(/\w+/g);
 
-        return (
-          cropName.includes(value) ||
-          crops.fields["Scientific Name"].toLowerCase().includes(value)
-        );
-      });
-      const newInactives = inactiveCropData.filter((crops) => {
-        let cropName = flipCoverCropName(crops.fields["Cover Crop Name"])
-          .split(" ")
-          .join("")
-          .toLowerCase();
+      const newActives = cropData.filter((crop) => {
+        const match = (parm) => {
+          const m = flipCoverCropName(crop.fields[parm]).toLowerCase().match(/\w+/g);
 
-        return (
-          cropName.includes(value) ||
-          crops.fields["Scientific Name"].toLowerCase().includes(value)
-        );
+          return !search || search.every((s) => m.some((t) => t.includes(s)));
+        };
+
+        return match("Cover Crop Name") || match("Scientific Name");
       });
 
       setActiveCropData(newActives);
-      setInactiveCropData(newInactives);
     }
   };
+
   useEffect(() => {
     if (state.selectedGoals.length === 0) {
       dispatch({
@@ -346,9 +310,7 @@ const CropSelector = (props) => {
             activeCropData={
               activeCropData.length > 0 ? activeCropData : cropData
             }
-            inactiveCropData={inactiveCropData}
             setActiveCropData={setActiveCropData}
-            setInactiveCropData={setInactiveCropData}
             cropDataChanged={cropDataChanged}
             comparisonView={comparisonView}
             coverCropName={coverCropName}
@@ -372,8 +334,6 @@ const CropSelector = (props) => {
                 setCropData={setCropData}
                 activeCropData={activeCropData}
                 setActiveCropData={setActiveCropData}
-                inactiveCropData={inactiveCropData}
-                setInactiveCropData={setInactiveCropData}
                 showGrowthWindow={showGrowthWindow}
                 sortAllCrops={sortCropsBy}
                 sortPreference={sortPreference}
@@ -383,8 +343,6 @@ const CropSelector = (props) => {
                 cropData={cropData}
                 activeCropData={activeCropData}
                 setActiveCropData={setActiveCropData}
-                inactiveCropData={inactiveCropData}
-                setInactiveCropData={setInactiveCropData}
                 showGrowthWindow={showGrowthWindow}
                 sortAllCrops={sortCropsBy}
                 sortPreference={sortPreference}
