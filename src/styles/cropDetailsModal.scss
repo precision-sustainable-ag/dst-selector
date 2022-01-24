@@ -5,6 +5,7 @@
   }
   border-color: $progressColor !important;
 }
+
 .modalSideBar {
   //   box-shadow: 0px 2px 1px -1px $progressColor, 0px 1px 1px 0px $progressColor,
   //     0px 1px 3px 0px $progressColor !important;
@@ -40,4 +41,69 @@ div.modalParentWrapper {
   max-height: 70vh;
   width: 100%;
   overflow: scroll;
+}
+
+@media screen {
+  .noscreen {
+    display: none !important;
+  }
+
+  #PDF {
+    display: none;
+  }
+}
+
+#PDFButton {
+  position: absolute;
+  top: 0.5em;
+  left: 0.5em;
+}
+
+@media print {
+  html, body {
+    border: 1px solid white;
+    height: 99%;
+    page-break-after: avoid;
+    page-break-before: avoid;
+    overflow: visible !important; /* Firefox */
+  }
+
+  .noprint {
+    display: none;
+  }
+  
+  body.InfoSheet {
+    .avoidPage {
+      break-inside: avoid-page;
+    }
+
+    #root, .doclose, .MuiIconButton-label, div[role=tooltip] {
+      display: none;
+    }
+
+    #cover-crop-modal-description {
+      max-height: none;   /* let thead repeat on each page */
+      overflow: visible;  /* remove the scrollbar */
+    }
+
+    .cropTableModal {  /* remove the gray margins and absolute positioning */
+      width: 100% !important;
+      top: 0 !important;
+      left: 0 !important;
+      position: relative !important;
+    }
+
+    div[role=presentation], .MuiBackdrop-root {
+      position: relative !important;
+    }
+
+    * {
+      outline: none !important;
+      margin-bottom: 0 !important;
+    }
+
+    .photosWrapper {
+      flex-wrap: wrap !important;
+    }
+  }
 }
