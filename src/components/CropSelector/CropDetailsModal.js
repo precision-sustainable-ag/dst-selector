@@ -45,9 +45,9 @@ const CropDetailsModalComponent = (props) => {
     setModalData(crop);
 
     const kd = (e) => {
-      if (e.key === 'p' && (e.altKey || e.ctrlKey)) {
+      if (e.key === 'p' && e.ctrlKey) {
         e.preventDefault();
-        // print();
+        print();
       }
     } // kd
 
