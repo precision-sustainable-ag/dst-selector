@@ -47,16 +47,10 @@ div.modalParentWrapper {
   .noscreen {
     display: none !important;
   }
-
-  #PDF {
-    display: none;
-  }
 }
 
-#PDFButton {
-  position: absolute;
-  top: 0.5em;
-  left: 0.5em;
+#PDF {
+  display: none;
 }
 
 @media print {
