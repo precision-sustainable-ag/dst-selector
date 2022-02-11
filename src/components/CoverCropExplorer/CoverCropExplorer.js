@@ -14,28 +14,10 @@ import ConsentModal from "./ConsentModal";
 import ReactGA from "react-ga";
 
 const CoverCropExplorer = () => {
-  const [state, dispatch] = useContext(Context);
+  const [state] = useContext(Context);
   const [cropDataChanged, setCropDataChanged] = useState(false);
-  // const [activeCropData, setActiveCropData] = useState([]);
 
   const activeCropData = state.activeCropData;
-  console.log(activeCropData);
-
-//  useEffect(() => {
-//    let search = state.cropSearch.toLowerCase().match(/\w+/g);
-//
-//    const crop_data = state.cropData.filter((crop) => {
-//      const match = (parm) => {
-//        const m = crop.fields[parm].toLowerCase().match(/\w+/g);
-//
-//        return !search || search.every((s) => m.some((t) => t.includes(s)));
-//      };
-//
-//      return match('Cover Crop Name') || match('Scientific Name');
-//    });
-//
-//    setActiveCropData(crop_data);
-//  }, [state.cropSearch, state.cropData]);
 
   useEffect(() => {
     setCropDataChanged((c) => !c);
@@ -54,15 +36,6 @@ const CoverCropExplorer = () => {
     document.title = "Cover Crop Explorer";
   }, []);
 
-  const handleSearchChange = (e) => {
-    dispatch({
-      type: "CROP_SEARCH",
-      data: {
-        value: e.target.value,
-      },
-    });
-  };
-
   return (
     <div className="contentWrapper">
       <ConsentModal consent={state.consent} />
@@ -73,14 +46,10 @@ const CoverCropExplorer = () => {
             <CropSidebarComponent
               from={"explorer"}
               cropDataChanged={cropDataChanged}
-              cropData={state.cropData}
               activeCropData={
                 activeCropData.length > 0 ? activeCropData : state.cropData
               }
-              //setActiveCropData={setActiveCropData}
               isListView={true}
-              handleSearchChange={handleSearchChange}
-              searchValue={state.cropSearch}
             />
           </div>
           <div className="col-md-12 col-lg-9 col-xl-10 col-12">
@@ -97,7 +66,6 @@ const CoverCropExplorer = () => {
                 cropDataChanged={cropDataChanged}
                 cropData={state.cropData}
                 activeCropData={activeCropData}
-                //setActiveCropData={setActiveCropData}
               />
             )}
           </div>

@@ -87,51 +87,18 @@ const CropSidebarComponent = (props) => {
     comparisonView,
     isListView,
     from,
-    cropData,
-    setActiveCropData,
     cropDataChanged,
     setGrowthWindow,
     toggleComparisonView,
     toggleListView,
-    coverCropName,
-    covercropsNamesFilter,
     clearCoverCropSearch,
     style,
-    searchValue,
-    handleSearchChange,
   } = props;
   const classes = useStyles();
   const [state, dispatch] = useContext(Context);
   const [loading, setLoading] = useState(true);
 
-  const zhandleSearchChange = (e) => {
-    dispatch({
-      type: 'CROP_SEARCH',
-      data: {
-        value: e.target.value,
-      },
-    });
-
-    return;
-    let search = e.target.value.toLowerCase().match(/\w+/g);
-
-    const crop_data = state.cropData.filter((crop) => {
-      const match = (parm) => {
-        const m = crop.fields[parm].toLowerCase().match(/\w+/g);
-
-        return !search || search.every((s) => m.some((t) => t.includes(s)));
-      };
-
-      return match('Cover Crop Name') || match('Scientific Name');
-    });
-
-    dispatch({
-      type: 'UPDATE_ACTIVE_CROP_DATA',
-      data: {
-        value: crop_data,
-      },
-    });
-
+  const handleSearchChange = (e) => {
     dispatch({
       type: 'CROP_SEARCH',
       data: {
@@ -210,139 +177,132 @@ const CropSidebarComponent = (props) => {
   const firstUpdate = useRef(true);
 
   useEffect(() => {
+    const filterSidebarItems = () => {
+      let crop_data = state.cropData.filter(
+        (crop) => crop.fields["Zone Decision"] === "Include"
+      );
+
+      let search = state.cropSearch.toLowerCase().match(/\w+/g);
+
+      crop_data = state.cropData.filter((crop) => {
+        const match = (parm) => {
+          const m = crop.fields[parm].toLowerCase().match(/\w+/g);
+  
+          return !search || search.every((s) => m.some((t) => t.includes(s)));
+        };
+  
+        return match('Cover Crop Name') || match('Scientific Name');
+      });
+
+      const nonZeroes = Object.keys(sidebarFilterOptions).map((key) => {
+        if (sidebarFilterOptions[key].length !== 0) {
+          return { [key]: sidebarFilterOptions[key] };
+        } else return "";
+      });
+      const nonZeroKeys2 = nonZeroes.filter((val) => val !== "");
+  
+      const nonZeroKeys = nonZeroKeys2.map((obj) => {
+        return Object.keys(obj).toString();
+      });
+  
+      dispatch({
+        type: "UPDATE_FILTER_KEYS",
+        data: {
+          filterKeys: nonZeroKeys,
+        },
+      });
+  
+      if (sidebarFilterOptions["Active Growth Period"].length > 0) {
+        let growthArray = [];
+  
+        if (sidebarFilterOptions["Active Growth Period"].includes("Fall")) {
+          growthArray.push('Sep', 'Oct', 'Nov');
+        }
+        if (sidebarFilterOptions["Active Growth Period"].includes("Winter")) {
+          growthArray.push('Dec', 'Jan', 'Feb');
+        }
+        if (sidebarFilterOptions["Active Growth Period"].includes("Spring")) {
+          growthArray.push('Mar', 'Apr', 'May');
+        }
+        if (sidebarFilterOptions["Active Growth Period"].includes("Summer")) {
+          growthArray.push('Jun', 'Jul', 'Aug');
+        }
+  
+        dispatch({
+          type: "UPDATE_ACTIVE_GROWTH_PERIOD",
+          data: {
+            activeGrowthPeriod: growthArray,
+          },
+        });
+      } else {
+        dispatch({
+          type: "UPDATE_ACTIVE_GROWTH_PERIOD",
+          data: {
+            activeGrowthPeriod: [],
+          },
+        });
+      }
+  
+      if (nonZeroKeys.length > 0) {
+        const arrayKeys = [
+          "Duration",
+          "Active Growth Period",
+          "Winter Survival",
+          "Flowering Trigger",
+          "Root Architecture",
+        ];
+        const booleanKeys = ["Aerial Seeding", "Frost Seeding"];
+  
+        const filtered = crop_data.filter((crop) => {
+          const totalActiveFilters = Object.keys(nonZeroKeys2).length;
+          let i = 0;
+          nonZeroKeys2.forEach((keyObject) => {
+            const key = Object.keys(keyObject);
+            const vals = keyObject[key];
+            if (areCommonElements(arrayKeys, key)) {
+              // Handle array type havlues
+  
+              if (_.intersection(vals, crop.fields[key]).length > 0) {
+                i++;
+              }
+            } else if (areCommonElements(booleanKeys, key)) {
+              //  Handle boolean types
+              if (crop.fields[key]) {
+                i++;
+              }
+            } else if (vals.includes(crop.fields[key])) {
+              i++;
+            }
+          });
+  
+          return i === totalActiveFilters;
+        });
+  
+        dispatch({
+          type: "UPDATE_ACTIVE_CROP_DATA",
+          data: {
+            value: filtered,
+          },
+        });
+      } else {
+        dispatch({
+          type: "UPDATE_ACTIVE_CROP_DATA",
+          data: {
+            value: crop_data,
+          },
+        });
+      }
+      return crop_data;
+    } // filterSidebarItems();
+  
     if (firstUpdate.current) {
       firstUpdate.current = false;
       return;
     }
 
-    // filterSidebarItems();
-  }, [sidebarFilterOptions, state, searchValue]);
+    filterSidebarItems();
+  }, [sidebarFilterOptions, state.cropSearch, state.cropData, dispatch]);
 
-  const filterSidebarItems = () => {
-    const dispatch = () => {};
-    alert(searchValue);
-    let crop_data = state.cropData.filter(
-      (crop) => crop.fields["Zone Decision"] === "Include"
-    );
-
-    let search = searchValue.toLowerCase().match(/\w+/g);
-
-    crop_data = state.cropData.filter((crop) => {
-      const match = (parm) => {
-        const m = crop.fields[parm].toLowerCase().match(/\w+/g);
-
-        return !search || search.every((s) => m.some((t) => t.includes(s)));
-      };
-
-      return match('Cover Crop Name') || match('Scientific Name');
-    });
-
-    const nonZeroes = Object.keys(sidebarFilterOptions).map((key) => {
-      if (sidebarFilterOptions[key].length !== 0) {
-        return { [key]: sidebarFilterOptions[key] };
-      } else return "";
-    });
-    const nonZeroKeys2 = nonZeroes.filter((val) => val !== "");
-
-    const nonZeroKeys = nonZeroKeys2.map((obj) => {
-      return Object.keys(obj).toString();
-    });
-
-    dispatch({
-      type: "UPDATE_FILTER_KEYS",
-      data: {
-        filterKeys: nonZeroKeys,
-      },
-    });
-
-    if (sidebarFilterOptions["Active Growth Period"].length > 0) {
-      let growthArray = [];
-
-      if (sidebarFilterOptions["Active Growth Period"].includes("Fall")) {
-        growthArray.push('Sep', 'Oct', 'Nov');
-      }
-      if (sidebarFilterOptions["Active Growth Period"].includes("Winter")) {
-        growthArray.push('Dec', 'Jan', 'Feb');
-      }
-      if (sidebarFilterOptions["Active Growth Period"].includes("Spring")) {
-        growthArray.push('Mar', 'Apr', 'May');
-      }
-      if (sidebarFilterOptions["Active Growth Period"].includes("Summer")) {
-        growthArray.push('Jun', 'Jul', 'Aug');
-      }
-
-      dispatch({
-        type: "UPDATE_ACTIVE_GROWTH_PERIOD",
-        data: {
-          activeGrowthPeriod: growthArray,
-        },
-      });
-    } else {
-      dispatch({
-        type: "UPDATE_ACTIVE_GROWTH_PERIOD",
-        data: {
-          activeGrowthPeriod: [],
-        },
-      });
-    }
-
-    if (nonZeroKeys.length > 0) {
-      const arrayKeys = [
-        "Duration",
-        "Active Growth Period",
-        "Winter Survival",
-        "Flowering Trigger",
-        "Root Architecture",
-      ];
-      const booleanKeys = ["Aerial Seeding", "Frost Seeding"];
-
-      const filtered = crop_data.filter((crop) => {
-        const totalActiveFilters = Object.keys(nonZeroKeys2).length;
-        let i = 0;
-        nonZeroKeys2.forEach((keyObject) => {
-          const key = Object.keys(keyObject);
-          const vals = keyObject[key];
-          if (areCommonElements(arrayKeys, key)) {
-            // Handle array type havlues
-
-            if (_.intersection(vals, crop.fields[key]).length > 0) {
-              i++;
-            }
-          } else if (areCommonElements(booleanKeys, key)) {
-            //  Handle boolean types
-            if (crop.fields[key]) {
-              i++;
-            }
-          } else if (vals.includes(crop.fields[key])) {
-            i++;
-          }
-        });
-
-        return i === totalActiveFilters;
-      });
-
-      dispatch({
-        type: "UPDATE_ACTIVE_CROP_DATA",
-        data: {
-          value: filtered,
-        },
-      });
-  
-      // setActiveCropData(filtered);
-    } else {
-      dispatch({
-        type: "UPDATE_ACTIVE_CROP_DATA",
-        data: {
-          value: crop_data,
-        },
-      });
-      
-      // setActiveCropData(crop_data);
-    }
-  } // filterSidebarItems();
-
-  filterSidebarItems();
-  
   const areCommonElements = (arr1, arr2) => {
     const arr2Set = new Set(arr2);
     return arr1.some((el) => arr2Set.has(el));
@@ -389,8 +349,6 @@ const CropSidebarComponent = (props) => {
       seedsRef.current.resetFilters();
       terminationRef.current.resetFilters();
       weedsRef.current.resetFilters();
-      
-      // setActiveCropData(state.cropData);
       
       dispatch({
         type: "UPDATE_ACTIVE_CROP_DATA",
@@ -1032,8 +990,8 @@ const CropSidebarComponent = (props) => {
                           color="secondary"
                           label="Cover Crop Name"
                           helperText="Search by cover crop name"
-                          value={coverCropName}
-                          onChange={zhandleSearchChange}
+                          value={state.cropSearch}
+                          onChange={handleSearchChange}
                           InputProps={{
                             endAdornment: (
                               <InputAdornment position="end">
@@ -1041,11 +999,7 @@ const CropSidebarComponent = (props) => {
                                   onClick={clearCoverCropSearch}
                                   size="small"
                                 >
-                                  {coverCropName.length > 1 ? (
-                                    <Clear fontSize="inherit" />
-                                  ) : (
-                                    ""
-                                  )}
+                                  {state.cropSearch.length > 0 && <Clear fontSize="inherit" />}
                                 </IconButton>
                               </InputAdornment>
                             ),
@@ -1364,8 +1318,8 @@ const CropSidebarComponent = (props) => {
                             color="secondary"
                             label="Cover Crop Name"
                             helperText="Search by cover crop name"
-                            value={searchValue}
-                            onChange={zhandleSearchChange}
+                            value={state.cropSearch}
+                            onChange={handleSearchChange}
                           />
                         </ListItemText>
                       </ListItem>
