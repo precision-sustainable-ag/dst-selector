@@ -14,11 +14,28 @@ import ConsentModal from "./ConsentModal";
 import ReactGA from "react-ga";
 
 const CoverCropExplorer = () => {
-  const [state] = useContext(Context);
+  const [state, dispatch] = useContext(Context);
   const [cropDataChanged, setCropDataChanged] = useState(false);
-  const [activeCropData, setActiveCropData] = useState([]);
-  const [inactiveCropData, setInactiveCropData] = useState([]);
-  const [cropName, setCropName] = useState("");
+  // const [activeCropData, setActiveCropData] = useState([]);
+
+  const activeCropData = state.activeCropData;
+  console.log(activeCropData);
+
+//  useEffect(() => {
+//    let search = state.cropSearch.toLowerCase().match(/\w+/g);
+//
+//    const crop_data = state.cropData.filter((crop) => {
+//      const match = (parm) => {
+//        const m = crop.fields[parm].toLowerCase().match(/\w+/g);
+//
+//        return !search || search.every((s) => m.some((t) => t.includes(s)));
+//      };
+//
+//      return match('Cover Crop Name') || match('Scientific Name');
+//    });
+//
+//    setActiveCropData(crop_data);
+//  }, [state.cropSearch, state.cropData]);
 
   useEffect(() => {
     setCropDataChanged((c) => !c);
@@ -38,22 +55,12 @@ const CoverCropExplorer = () => {
   }, []);
 
   const handleSearchChange = (e) => {
-    setCropName(e.target.value);
-    let { cropData } = state;
-
-    let search = e.target.value.toLowerCase().match(/\w+/g);
-
-    const crop_data = cropData.filter((crop) => {
-      const match = (parm) => {
-        const m = crop.fields[parm].toLowerCase().match(/\w+/g);
-
-        return !search || search.every((s) => m.some((t) => t.includes(s)));
-      };
-
-      return match("Cover Crop Name") || match("Scientific Name");
+    dispatch({
+      type: "CROP_SEARCH",
+      data: {
+        value: e.target.value,
+      },
     });
-
-    setActiveCropData(crop_data);
   };
 
   return (
@@ -70,12 +77,10 @@ const CoverCropExplorer = () => {
               activeCropData={
                 activeCropData.length > 0 ? activeCropData : state.cropData
               }
-              setActiveCropData={setActiveCropData}
-              inactiveCropData={inactiveCropData}
-              setInactiveCropData={setInactiveCropData}
+              //setActiveCropData={setActiveCropData}
               isListView={true}
               handleSearchChange={handleSearchChange}
-              searchValue={cropName}
+              searchValue={state.cropSearch}
             />
           </div>
           <div className="col-md-12 col-lg-9 col-xl-10 col-12">
@@ -92,9 +97,7 @@ const CoverCropExplorer = () => {
                 cropDataChanged={cropDataChanged}
                 cropData={state.cropData}
                 activeCropData={activeCropData}
-                setActiveCropData={setActiveCropData}
-                inactiveCropData={inactiveCropData}
-                setInactiveCropData={setInactiveCropData}
+                //setActiveCropData={setActiveCropData}
               />
             )}
           </div>
