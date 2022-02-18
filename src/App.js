@@ -60,7 +60,7 @@ const LoadRelevantRoute = ({ progress, calcHeight }) => {
 };
 
 const App = () => {
-  const [state, dispatch] = useContext(Context);
+  const {state, dispatch} = useContext(Context);
   const [calcHeight, setCalcHeight] = useState(0);
   const handleSnackClose = () => {
     dispatch({

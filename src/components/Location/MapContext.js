@@ -33,7 +33,7 @@ L.Icon.Default.mergeOptions({
 });
 
 const MapContext = ({ width, height, minzoom, maxzoom, from }) => {
-  const [state, dispatch] = useContext(Context);
+  const {state, dispatch} = useContext(Context);
   const [show, setShow] = useState(true);
   const [mapCenter, setMapCenter] = useState([]);
   const [isPoly, setIsPoly] = useState(false);

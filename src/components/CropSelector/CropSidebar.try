@@ -37,6 +37,8 @@ import React, {
   Fragment,
   useContext,
   useEffect,
+  useMemo,
+  useRef,
   useState,
 } from "react";
 import { arrayMove, List as ListMovable } from "react-movable";
@@ -93,13 +95,29 @@ const CropSidebarComponent = (props) => {
     style,
   } = props;
   const classes = useStyles();
-  const {state, dispatch, change} = useContext(Context);
+  const [state, dispatch] = useContext(Context);
   const [loading, setLoading] = useState(true);
+
+  const change = (type, e, value = e.target.value) => {
+    if (typeof value === 'object') {
+      dispatch({
+        type,
+        data: value
+      });
+    } else {
+      dispatch({
+        type,
+        data: {
+          value
+        }
+      });
+      // alert(JSON.stringify({type,data: {value}}))
+    }
+  } // change
 
   const [cropFiltersOpen, setCropFiltersOpen] = useState(
     isListView ? true : false
   );
-
   const [showFilters, setShowFilters] = useState(
     window.location.pathname === "/"
       ? from === "table"
@@ -153,8 +171,17 @@ const CropSidebarComponent = (props) => {
     sidebarFiltersData.forEach((row) => (sidebarStarter[row.name] = []));
     return sidebarStarter;
   });
+  const seedingMethodRef = useRef();
+  const coverCropTypeRef = useRef();
+  const growthRef = useRef();
+  const rootsRef = useRef();
+  const seedsRef = useRef();
+  const weedsRef = useRef();
+  const terminationRef = useRef();
+  const envTolRef = useRef();
 
   const [resetFilters, setResetFilters] = useState(false);
+  const firstUpdate = useRef(true);
 
   useEffect(() => {
     const filterSidebarItems = () => {
@@ -275,6 +302,11 @@ const CropSidebarComponent = (props) => {
       return crop_data;
     } // filterSidebarItems();
   
+    if (firstUpdate.current) {
+      firstUpdate.current = false;
+      return;
+    }
+
     filterSidebarItems();
   }, [sidebarFilterOptions, state.cropSearch, state.cropData, dispatch]);
 
@@ -306,9 +338,17 @@ const CropSidebarComponent = (props) => {
   }, [isListView]);
 
   const resetAllFilters = (withRef = true) => {
-    change('CLEAR_FILTERS');
-
     if (withRef) {
+      coverCropTypeRef.current.resetFilters();
+      envTolRef.current.resetFilters();
+      growthRef.current.resetFilters();
+      rootsRef.current.resetFilters();
+      seedingMethodRef.current.resetFilters();
+
+      seedsRef.current.resetFilters();
+      terminationRef.current.resetFilters();
+      weedsRef.current.resetFilters();
+      
       dispatch({
         type: "UPDATE_ACTIVE_CROP_DATA",
         data: {
@@ -517,6 +557,12 @@ const CropSidebarComponent = (props) => {
     state.zone7Dictionary,
   ]);
 
+  useMemo(() => {
+    if (envTolRef.current) {
+      resetAllFilters();
+    }
+  }, [cropDataChanged]);
+
   const updateSelectedGoals = (newGoalArr, oldIndex, newIndex) => {
     let newGoals = arrayMove(newGoalArr, oldIndex, newIndex);
 
@@ -590,6 +636,10 @@ const CropSidebarComponent = (props) => {
   const [tableHeight, setTableHeight] = useState(0);
 
   useEffect(() => {
+    if (firstUpdate.current) {
+      firstUpdate.current = false;
+      return;
+    }
     if (
       document.querySelector(".MuiTableRow-root.theadFirst.MuiTableRow-head")
     ) {
@@ -625,14 +675,19 @@ const CropSidebarComponent = (props) => {
     }
   }, [comparisonView, state.myCoverCropActivationFlag]);
 
-  const Filter = (Component, filter) => {
+  const Filter = (Component, ref, filter) => {
     return (
       <Grid container spacing={1}>
         <Grid item>
           <Component
+            ref={ref}
             filters={filter}
-            sidebarFilterOptions={sidebarFilterOptions}
-            setSidebarFilterOptions={setSidebarFilterOptions}
+            sidebarFilterOptions={
+              sidebarFilterOptions
+            }
+            setSidebarFilterOptions={
+              setSidebarFilterOptions
+            }
             resetAllFilters={resetAllFilters}
             {...props}
           />
@@ -644,21 +699,21 @@ const CropSidebarComponent = (props) => {
   const output = (filter) => {
     switch (filter.name.toUpperCase()) {
       case 'COVER CROP TYPE':
-        return <>{Filter(CoverCropType, filter)}</>
+        return <>{Filter(CoverCropType, coverCropTypeRef, filter)}</>
       case 'ENVIRONMENTAL TOLERANCES':
-        return <>{Filter(EnvironmentalTolerance, filter)}</>
+        return <>{Filter(EnvironmentalTolerance, envTolRef, filter)}</>
       case 'SEEDS':
-        return <>{Filter(Seeds, filter)}</>
+        return <>{Filter(Seeds, seedsRef, filter)}</>
       case 'SEEDING METHODS':
-        return  <>{Filter(SeedingMethods, filter)}</>
+        return  <>{Filter(SeedingMethods, seedingMethodRef, filter)}</>
       case 'GROWTH':
-        return  <>{Filter(Growth, filter)}</>
+        return  <>{Filter(Growth, growthRef, filter)}</>
       case 'ROOTS':
-        return  <>{Filter(Roots, filter)}</>
+        return  <>{Filter(Roots, rootsRef, filter)}</>
       case 'TERMINATION METHODS':
-        return  <>{Filter(TerminationMethods, filter)}</>
+        return  <>{Filter(TerminationMethods, terminationRef, filter)}</>
       case 'WEEDS':
-        return  <>{Filter(Weeds, filter)}</>
+        return  <>{Filter(Weeds, weedsRef, filter)}</>
       default:
     }
   } // output

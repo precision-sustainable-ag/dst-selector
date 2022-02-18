@@ -48,7 +48,7 @@ const growthIcon = {
 
 const CropCalendarViewComponent = (props) => {
   const { activeCropData } = props;
-  const [state, dispatch] = useContext(Context);
+  const {state, dispatch} = useContext(Context);
   const [legendModal, setLegendModal] = useState(false);
   const selectedBtns = state.selectedCrops.map((crop) => {
     return crop.id;

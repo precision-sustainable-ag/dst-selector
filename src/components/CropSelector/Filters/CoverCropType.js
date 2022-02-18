@@ -3,58 +3,28 @@
   The CoverCropType component filters crops based type
 */
 
-import { Chip, Grid } from "@material-ui/core";
-import React, {
-  forwardRef,
-  useEffect,
-  useImperativeHandle,
-  useState,
-} from "react";
+import {Chip, Grid} from "@material-ui/core";
+import React, {useContext} from "react";
+import {Context} from "../../../store/Store";
 
-const CoverCropType = forwardRef((props, ref) => {
-  let { setSidebarFilterOptions, sidebarFilterOptions, filters } = props;
-  const prop = "Cover Crop Group";
-  const [selected, setSelected] = useState({ [prop]: [] });
-
-  useEffect(() => {
-    setSidebarFilterOptions({
-      ...sidebarFilterOptions,
-      ...selected,
-    });
-  }, [selected]);
-
-  useImperativeHandle(ref, () => ({
-    resetFilters() {
-      setSelected({ [prop]: [] });
-    },
-  }));
-
-  const handleClick = (_, val) => {
-    if (selected[prop].includes(val)) {
-      const removed = selected[prop].filter((chipVals) => chipVals !== val);
-      setSelected({ ...selected, [prop]: removed });
-    } else {
-      const added = selected[prop];
-      added.push(val);
-
-      setSelected({ ...selected, [prop]: added });
-    }
-  };
+const CoverCropType = ((props) => {
+  const {state, change} = useContext(Context);
+  let {filters} = props;
 
   return (
     <Grid container spacing={1}>
-      {filters.values.map((val, index) => (
-        <Grid item key={index}>
+      {filters.values.map(val => (
+        <Grid item key={val.name}>
           <Chip
-            onClick={() => handleClick(filters.name, val.name)}
+            onClick={(e) => change('COVERCROPTYPE_TOGGLE', e, val.name)}
             component="li"
             size="medium"
             label={val.name}
             color={
-              sidebarFilterOptions[prop].includes(val.name)
-                ? "primary"
-                : "secondary"
-            }
+              state.coverCropType[val.name]
+                ? 'primary'
+                : 'secondary'
+            }            
           />
         </Grid>
       ))}

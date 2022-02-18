@@ -60,7 +60,7 @@ const lightBG = {
   minHeight: "36px",
 };
 const MyCoverCropComparisonComponent = (props) => {
-  const [state, dispatch] = useContext(Context);
+  const {state, dispatch} = useContext(Context);
   const { enqueueSnackbar } = useSnackbar();
   const { comparisonKeys, zone } = state;
   const [sidebarDefs, setSidebarDefs] = useState(sidebarDefinitionsz7);
@@ -500,7 +500,7 @@ const RenderSeedingData = ({ filterKey, data }) => {
   }
 };
 const GetAverageGoalRating = ({ crop }) => {
-  const [state] = useContext(Context);
+  const {state} = useContext(Context);
   let goalRating = 0;
   if (state.selectedGoals.length > 0) {
     state.selectedGoals.forEach((goal) => {

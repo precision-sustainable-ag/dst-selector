@@ -129,7 +129,7 @@ const InformationSheetContent = (props) => {
     </>
   ) // InfoEnvironmentalTermination
 
-  const [state] = useContext(Context);
+  const {state} = useContext(Context);
   const { zone } = state;
   const crop = props.crop;
   const classes = useStyles();

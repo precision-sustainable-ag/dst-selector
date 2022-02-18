@@ -15,7 +15,7 @@ import { Context } from "../../store/Store";
 
 const About = () => {
   const [value, setValue] = React.useState(0);
-  const [state] = useContext(Context);
+  const {state} = useContext(Context);
 
   const handleChange = (newValue) => {
     setValue(newValue);

@@ -19,7 +19,7 @@ import "../../styles/InformationSheet.scss";
 import InformationSheetContent from "./InformationSheetContent";
 
 const InformationSheet = (props) => {
-  const [state] = useContext(Context);
+  const {state} = useContext(Context);
 
   const name = props.match.params.cropName
     ? props.match.params.cropName

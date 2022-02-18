@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
 
 const LocationComponent = ({ title, caller }) => {
   const classes = useStyles();
-  const [state, dispatch] = useContext(Context);
+  const {state, dispatch} = useContext(Context);
   const [showRestartPrompt, setShowRestartPrompt] = useState(false);
   const [restartAccept, setRestartAccept] = useState(false);
   const [zoneSelection, setZoneSelection] = useState(7);
