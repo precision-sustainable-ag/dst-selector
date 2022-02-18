@@ -14,7 +14,7 @@ import MyCoverCropComparisonComponent from "./MyCoverCropComparisonComponent";
 import ReactGA from "react-ga";
 
 const MyCoverCropList = (props) => {
-  const [state, dispatch] = useContext(Context);
+  const {state, dispatch} = useContext(Context);
   const comparisonView = props.comparisonView ? props.comparisonView : false;
   const from = props.from ? props.from : "state";
   const history = useHistory();

@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
 const WeatherModal = (props) => {
   const classes = useStyles();
 
-  const [state, dispatch] = useContext(Context);
+  const {state, dispatch} = useContext(Context);
   const [open, setOpen] = useState(props.open);
   const [modalBtnDisabled, setModalBtnDisabled] = useState(false);
   const [months, setMonths] = useState([]);

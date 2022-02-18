@@ -28,7 +28,7 @@ const useStyles = makeStyles({
   },
 });
 const ExplorerCardView = (props) => {
-  const [state, dispatch] = useContext(Context);
+  const {state, dispatch} = useContext(Context);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalData, setModalData] = useState({});
   const classes = useStyles();

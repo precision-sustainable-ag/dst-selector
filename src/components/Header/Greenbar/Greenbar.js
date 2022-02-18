@@ -39,7 +39,7 @@ const greenBarWrapperBackground = {
 };
 
 const Greenbar = () => {
-  const [state, dispatch] = useContext(Context);
+  const {state, dispatch} = useContext(Context);
   const [expansionPanelComponent, setExpansionPanelComponent] = useState({
     component: "",
   });

@@ -52,7 +52,7 @@ const CropTableComponent = (props) => {
 
   const { enqueueSnackbar } = useSnackbar();
 
-  const [state, dispatch] = useContext(Context);
+  const {state, dispatch} = useContext(Context);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalData, setModalData] = useState({});
   const selectedBtns = state.selectedCrops.map((crop) => {

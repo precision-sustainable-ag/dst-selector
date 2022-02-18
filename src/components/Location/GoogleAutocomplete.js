@@ -53,7 +53,7 @@ export default function GoogleAutocomplete({
   selectedToEditSite,
   setSelectedToEditSite,
 }) {
-  const [state, dispatch] = useContext(Context);
+  const {state, dispatch} = useContext(Context);
   const classes = useStyles();
   const [value, setValue] = React.useState(null);
   const [inputValue, setInputValue] = React.useState(

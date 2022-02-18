@@ -59,7 +59,7 @@ const ScrollTop = (props) => {
 };
 
 const CropSelector = (props) => {
-  const [state, dispatch] = useContext(Context);
+  const {state, dispatch} = useContext(Context);
   let [showGrowthWindow, setShowGrowthWindow] = useState(true);
   const [sortPreference, setSortPreference] = useState("desc");
   const { selectedGoals } = state;
@@ -130,6 +130,7 @@ const CropSelector = (props) => {
           activeObjKeys[index] = `fields.${val}`;
         });
         console.log(activeObjKeys);
+
         switch (orderBy) {
           case "asc": {
             if (activeCropDataCopy.length > 0) {

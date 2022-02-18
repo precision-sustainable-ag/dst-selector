@@ -14,7 +14,7 @@ const GoogleMaps = ({
   center = { lat: 40.78489145, lng: -74.80733626930342 },
   zoom = 13,
 }) => {
-  const [state, dispatch] = useContext(Context);
+  const {state, dispatch} = useContext(Context);
 
   const [showMarker, setShowMarker] = useState(false);
 

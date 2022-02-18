@@ -15,7 +15,7 @@ import DictionaryContent from "./DictionaryContent";
 
 const InformationSheetDictionary = (props) => {
   const [dictionary, setDictionary] = useState([]);
-  const [state] = useContext(Context);
+  const {state} = useContext(Context);
 
   const zone = props.zone ? props.zone : state.zone;
 

@@ -32,7 +32,7 @@ import Greenbar from "./Greenbar/Greenbar";
 const Header = () => {
   let history = useHistory();
 
-  const [state, dispatch] = useContext(Context);
+  const {state, dispatch} = useContext(Context);
   const [collapse, setCollapse] = React.useState(false);
   const [isRoot, setIsRoot] = React.useState(false);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
