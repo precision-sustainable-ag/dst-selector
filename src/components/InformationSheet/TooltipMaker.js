@@ -9,7 +9,7 @@ import { Context } from "../../store/Store";
 import "../../styles/tooltipMaker.scss";
 
 const TooltipMaker = ({ children, variable }) => {
-  const [state] = useContext(Context);
+  const {state} = useContext(Context);
 
   const [desc, setDesc] = useState("");
   const [dict, setDict] = useState([]);

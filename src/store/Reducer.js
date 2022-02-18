@@ -2,8 +2,33 @@
   Reducer determines the next state in Store.js
 */
 
-const Reducer = (state, action) => {
+const Reducer = (state, action, value = action && action.data && action.data.value) => {
   switch (action.type) {
+    case 'CLEAR_FILTERS': {
+      return {
+        ...state,
+        coverCropType: {}
+      }
+    }
+
+    case 'COVERCROPTYPE_TOGGLE': {
+      const t = {...state.coverCropType};
+      t[value] = !t[value];
+
+      return {...state, coverCropType: t};
+    }
+
+    case 'SIDEBAR_TOGGLE': {
+      const t = [...state.sidebarFiltersOpen];
+      t[action.data.value] = !t[action.data.value];
+
+      return {...state, sidebarFiltersOpen: t};
+    }
+
+    case 'ZONE_TOGGLE': {
+      return {...state, zoneToggle: action.data.value};
+    }
+    
     case "CROP_SEARCH": {
       return {...state, cropSearch: action.data.value};
     }

@@ -14,7 +14,7 @@ import ConsentModal from "./ConsentModal";
 import ReactGA from "react-ga";
 
 const CoverCropExplorer = () => {
-  const [state] = useContext(Context);
+  const {state} = useContext(Context);
   const [cropDataChanged, setCropDataChanged] = useState(false);
 
   const activeCropData = state.activeCropData;

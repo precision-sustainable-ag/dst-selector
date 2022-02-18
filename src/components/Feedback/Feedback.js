@@ -9,7 +9,7 @@ import ReactGA from "react-ga";
 import { Context } from "../../store/Store";
 
 const FeedbackComponent = () => {
-  const [state] = useContext(Context);
+  const {state} = useContext(Context);
 
   useEffect(() => {
     console.log("viewing feedback");

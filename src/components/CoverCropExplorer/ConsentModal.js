@@ -10,7 +10,7 @@ import { Context } from "../../store/Store";
 
 const ExplorerCardView = (props) => {
   const { consent } = props;
-  const [, dispatch] = useContext(Context);
+  const {dispatch} = useContext(Context);
   const [modalOpen, setModalOpen] = useState(true);
 
   const style = {

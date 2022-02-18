@@ -11,7 +11,7 @@ const apiBaseURL = "https://api.openweathermap.org/data/2.5/weather";
 const apiKey = "***REMOVED***";
 
 const ForecastComponent = () => {
-  const [state, dispatch] = useContext(Context);
+  const {state, dispatch} = useContext(Context);
   const [showTempIcon, setShowTempIcon] = useState(true);
   const [temp, setTemp] = useState({
     min: 0,

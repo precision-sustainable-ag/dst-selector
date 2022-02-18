@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const CropDetailsModalComponent = (props) => {
-  const [state] = useContext(Context);  
+  const {state} = useContext(Context);  
   let crop = props.crop;
   const classes = useStyles();
   const [modalData, setModalData] = useState({});

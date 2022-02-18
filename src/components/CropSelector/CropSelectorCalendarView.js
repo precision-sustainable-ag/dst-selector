@@ -11,7 +11,7 @@ import { Context } from "../../store/Store";
 import "../../styles/cropSelectorCalendarView.scss";
 
 const CropSelectorCalendarView = ({ from = "calendar", data = [] }) => {
-  const [state] = useContext(Context);
+  const {state} = useContext(Context);
   const cashCropStartDate =
     state.cashCropData.dateRange.startDate === ""
       ? null

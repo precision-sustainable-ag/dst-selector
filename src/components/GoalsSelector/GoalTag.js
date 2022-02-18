@@ -9,7 +9,7 @@ import React, { useContext, useEffect } from "react";
 import { Context } from "../../store/Store";
 
 const GoalTag = (props) => {
-  const [state, dispatch] = useContext(Context);
+  const {state, dispatch} = useContext(Context);
 
   let goalDescription = props.goalDescription;
   let goalTitle = props.goaltTitle;
