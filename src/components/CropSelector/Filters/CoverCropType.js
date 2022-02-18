@@ -9,11 +9,10 @@ import {Context} from "../../../store/Store";
 
 const CoverCropType = ((props) => {
   const {state, change} = useContext(Context);
-  let {filters} = props;
 
   return (
     <Grid container spacing={1}>
-      {filters.values.map(val => (
+      {props.filters.values.map(val => (
         <Grid item key={val.name}>
           <Chip
             onClick={(e) => change('COVERCROPTYPE_TOGGLE', e, val.name)}

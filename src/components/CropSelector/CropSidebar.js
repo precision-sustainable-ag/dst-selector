@@ -179,6 +179,7 @@ const CropSidebarComponent = (props) => {
           return { [key]: sidebarFilterOptions[key] };
         } else return "";
       });
+      
       const nonZeroKeys2 = nonZeroes.filter((val) => val !== "");
   
       const nonZeroKeys = nonZeroKeys2.map((obj) => {
@@ -223,7 +224,7 @@ const CropSidebarComponent = (props) => {
         });
       }
   
-      if (nonZeroKeys.length > 0) {
+      if (nonZeroKeys.length > 0 || true) {
         const arrayKeys = [
           "Duration",
           "Active Growth Period",
@@ -232,8 +233,12 @@ const CropSidebarComponent = (props) => {
           "Root Architecture",
         ];
         const booleanKeys = ["Aerial Seeding", "Frost Seeding"];
-  
+
         const filtered = crop_data.filter((crop) => {
+          if (!empty(state.coverCropType) && !state.coverCropType[crop.fields['Cover Crop Group']]) {
+            return false;
+          }
+
           const totalActiveFilters = Object.keys(nonZeroKeys2).length;
           let i = 0;
           nonZeroKeys2.forEach((keyObject) => {
@@ -257,7 +262,7 @@ const CropSidebarComponent = (props) => {
   
           return i === totalActiveFilters;
         });
-  
+
         dispatch({
           type: "UPDATE_ACTIVE_CROP_DATA",
           data: {
@@ -274,9 +279,13 @@ const CropSidebarComponent = (props) => {
       }
       return crop_data;
     } // filterSidebarItems();
-  
+
     filterSidebarItems();
-  }, [sidebarFilterOptions, state.cropSearch, state.cropData, dispatch]);
+  }, [sidebarFilterOptions, state.cropSearch, state.cropData, dispatch, state.coverCropType]);
+
+  const empty = (obj) => {
+    return !Object.keys(obj).some(key => obj[key]);
+  } // empty
 
   const areCommonElements = (arr1, arr2) => {
     const arr2Set = new Set(arr2);
