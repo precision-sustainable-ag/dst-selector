@@ -272,7 +272,7 @@ const initialState = {
   activeCropData: [],
   lastZone : '',
   sidebarFiltersOpen : [], // true if expanded
-  coverCropType: {Grass: true}, // filter
+  coverCropType: {}, // filter
 };
 
 const Store = ({ children }) => {
