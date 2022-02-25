@@ -4,18 +4,20 @@
 
 const Reducer = (state, action, value = action && action.data && action.data.value) => {
   switch (action.type) {
-    case 'CLEAR_FILTERS': {
+    case 'FILTER_TOGGLE': {
+      const filters = state.filters;
+      filters[value] = !filters[value];
       return {
         ...state,
-        coverCropType: {}
+        filters
       }
     }
 
-    case 'COVERCROPTYPE_TOGGLE': {
-      const t = {...state.coverCropType};
-      t[value] = !t[value];
-
-      return {...state, coverCropType: t};
+    case 'CLEAR_FILTERS': {
+      return {
+        ...state,
+        filters: {}
+      }
     }
 
     case 'SIDEBAR_TOGGLE': {
@@ -29,41 +31,41 @@ const Reducer = (state, action, value = action && action.data && action.data.val
       return {...state, zoneToggle: action.data.value};
     }
     
-    case "CROP_SEARCH": {
+    case 'CROP_SEARCH': {
       return {...state, cropSearch: action.data.value};
     }
 
-    case "UPDATE_ACTIVE_CROP_DATA": {
+    case 'UPDATE_ACTIVE_CROP_DATA': {
       return {...state, activeCropData: action.data.value}
     }
 
-    case "LAST_ZIP_CODE": {
+    case 'LAST_ZIP_CODE': {
       return {...state, lastZipCode: action.data.value};
     }
 
-    case "UPDATE_CONSENT": {
+    case 'UPDATE_CONSENT': {
       if (action.data.consent === true) {
-        console.log("consent: true");
+        console.log('consent: true');
         return { ...state, consent: true };
       } else if (action.data.consent === false) {
-        console.log("consent: false");
+        console.log('consent: false');
         return { ...state, consent: false };
       } else {
         break;
       }
     }
-    case "UPDATE_PROGRESS": {
-      if (action.data.type === "INCREMENT") {
+    case 'UPDATE_PROGRESS': {
+      if (action.data.type === 'INCREMENT') {
         return { ...state, progress: state.progress + 1 };
-      } else if (action.data.type === "DECREMENT") {
+      } else if (action.data.type === 'DECREMENT') {
         return { ...state, progress: state.progress - 1 };
-      } else if (action.data.type === "HOME") {
+      } else if (action.data.type === 'HOME') {
         return { ...state, progress: 0 };
       } else {
         break;
       }
     }
-    case "UPDATE_LOCATION": {
+    case 'UPDATE_LOCATION': {
       return {
         ...state,
         address: action.data.address,
@@ -72,13 +74,13 @@ const Reducer = (state, action, value = action && action.data && action.data.val
         zipCode: action.data.zip,
       };
     }
-    case "JUMP_SPECIES_PROGRESS": {
+    case 'JUMP_SPECIES_PROGRESS': {
       return { ...state, progress: 5 };
     }
-    case "WEATHER_DATA_RESET": {
+    case 'WEATHER_DATA_RESET': {
       return { ...state, weatherDataReset: action.data.weatherDataReset };
     }
-    case "CHANGE_ADDRESS_BY_TYPING": {
+    case 'CHANGE_ADDRESS_BY_TYPING': {
       if (action.data.markers) {
         return {
           ...state,
@@ -94,7 +96,7 @@ const Reducer = (state, action, value = action && action.data && action.data.val
         };
       }
     }
-    case "UPDATE_ZONE_TEXT": {
+    case 'UPDATE_ZONE_TEXT': {
       return {
         ...state,
         zoneText: action.data.zoneText,
@@ -102,27 +104,27 @@ const Reducer = (state, action, value = action && action.data && action.data.val
         selectedGoals: [],
       };
     }
-    case "UPDATE_ZONE": {
+    case 'UPDATE_ZONE': {
       return {
         ...state,
         zoneText: action.data.zoneText,
         zone: action.data.zone,
       };
     }
-    case "UPDATE_LAST_ZONE": {
+    case 'UPDATE_LAST_ZONE': {
       return {
         ...state,
         lastZone: action.data.value,
       };
     }
-    case "CHANGE_ADDRESS": {
+    case 'CHANGE_ADDRESS': {
       return {
         ...state,
         address: action.data.address,
         addressVerified: action.data.addressVerified,
       };
     }
-    case "CHANGE_ADDRESS_VIA_MAP": {
+    case 'CHANGE_ADDRESS_VIA_MAP': {
       return {
         ...state,
         address: action.data.address,
@@ -133,38 +135,38 @@ const Reducer = (state, action, value = action && action.data && action.data.val
         addressChangedViaMap: true,
       };
     }
-    case "RESET": {
+    case 'RESET': {
       return {
         ...state,
         progress: 0,
-        address: "",
+        address: '',
         markers: action.data.markers,
         addressVerified: false,
         markersCopy: [],
         zipCode: 0,
-        addressSearchPreference: "address",
+        addressSearchPreference: 'address',
         selectedCrops: action.data.selectedCrops,
         selectedGoals: [],
         soilData: {
-          Map_Unit_Name: "",
+          Map_Unit_Name: '',
           Drainage_Class: [],
           Flooding_Frequency: [],
-          Ponding_Frequency: "",
+          Ponding_Frequency: '',
         },
         soilDataOriginal: {
-          Map_Unit_Name: "",
+          Map_Unit_Name: '',
           Drainage_Class: [],
           Flooding_Frequency: [],
-          Ponding_Frequency: "",
+          Ponding_Frequency: '',
         },
         weatherData: {
           averageFrost: {
             firstFrostDate: {
-              month: "October",
+              month: 'October',
               day: 21,
             },
             lastFrostDate: {
-              month: "April",
+              month: 'April',
               day: 20,
             },
           },
@@ -177,28 +179,28 @@ const Reducer = (state, action, value = action && action.data && action.data.val
         myCoverCropActivationFlag: false,
         speciesSelectorActivationFlag: true,
         cashCropData: {
-          name: "",
+          name: '',
           dateRange: {
-            startDate: "",
-            endDate: "",
+            startDate: '',
+            endDate: '',
           },
         },
       };
     }
 
-    case "UPDATE_MARKER": {
+    case 'UPDATE_MARKER': {
       return {
         ...state,
         markers: action.data.markers,
       };
     }
-    case "UPDATE_MARKER_COPY": {
+    case 'UPDATE_MARKER_COPY': {
       return {
         ...state,
         markersCopy: action.data.markersCopy,
       };
     }
-    case "UPDATE_ADDRESS_ON_MAP_CLICK": {
+    case 'UPDATE_ADDRESS_ON_MAP_CLICK': {
       return {
         ...state,
         address: action.data.address,
@@ -207,20 +209,20 @@ const Reducer = (state, action, value = action && action.data && action.data.val
         snackMessage: action.data.snackMessage,
       };
     }
-    case "TOGGLE_ADDRESS_CHANGE_BUTTON": {
+    case 'TOGGLE_ADDRESS_CHANGE_BUTTON': {
       return {
         ...state,
         showAddressChangeBtn: action.data.showAddressChangeBtn,
       };
     }
-    case "ADD_GOALS": {
+    case 'ADD_GOALS': {
       return {
         ...state,
         allGoals: action.data,
       };
     }
 
-    case "SNACK": {
+    case 'SNACK': {
       return {
         ...state,
         snackOpen: action.data.snackOpen,
@@ -228,20 +230,20 @@ const Reducer = (state, action, value = action && action.data && action.data.val
       };
     }
 
-    case "UPDATE_SELECTED_GOALS": {
+    case 'UPDATE_SELECTED_GOALS': {
       return {
         ...state,
         selectedGoals: action.data,
       };
     }
-    case "ADD_SELECTED_GOALS": {
+    case 'ADD_SELECTED_GOALS': {
       return {
         ...state,
         selectedGoals: [...state.selectedGoals, action.data],
       };
     }
 
-    case "DRAG_GOALS": {
+    case 'DRAG_GOALS': {
       return {
         ...state,
         selectedGoals: action.data.selectedGoals,
@@ -250,7 +252,7 @@ const Reducer = (state, action, value = action && action.data && action.data.val
       };
     }
 
-    case "PULL_CROP_DATA": {
+    case 'PULL_CROP_DATA': {
       return {
         ...state,
         cropData: action.data,
@@ -258,7 +260,7 @@ const Reducer = (state, action, value = action && action.data && action.data.val
       };
     }
 
-    case "SELECTED_CROPS_MODIFIER": {
+    case 'SELECTED_CROPS_MODIFIER': {
       return {
         ...state,
         selectedCrops: action.data.selectedCrops,
@@ -267,7 +269,7 @@ const Reducer = (state, action, value = action && action.data && action.data.val
       };
     }
 
-    case "ACTIVATE_MY_COVER_CROP_LIST_TILE": {
+    case 'ACTIVATE_MY_COVER_CROP_LIST_TILE': {
       return {
         ...state,
         myCoverCropActivationFlag: action.data.myCoverCropActivationFlag,
@@ -276,7 +278,7 @@ const Reducer = (state, action, value = action && action.data && action.data.val
       };
     }
 
-    case "ACTIVATE_SPECIES_SELECTOR_TILE": {
+    case 'ACTIVATE_SPECIES_SELECTOR_TILE': {
       return {
         ...state,
         myCoverCropActivationFlag: action.data.myCoverCropActivationFlag,
@@ -285,14 +287,14 @@ const Reducer = (state, action, value = action && action.data && action.data.val
       };
     }
 
-    case "UPDATE_WEATHER_CONDITIONS": {
+    case 'UPDATE_WEATHER_CONDITIONS': {
       return {
         ...state,
         weatherData: action.data.weatherData,
       };
     }
 
-    case "UPDATE_FROST_FREE_DAYS": {
+    case 'UPDATE_FROST_FREE_DAYS': {
       return {
         ...state,
         weatherData: {
@@ -302,7 +304,7 @@ const Reducer = (state, action, value = action && action.data && action.data.val
       };
     }
 
-    case "UPDATE_AVERAGE_FROST_DATES": {
+    case 'UPDATE_AVERAGE_FROST_DATES': {
       return {
         ...state,
         weatherData: {
@@ -312,7 +314,7 @@ const Reducer = (state, action, value = action && action.data && action.data.val
       };
     }
 
-    case "UPDATE_AVERAGE_PRECIP_CURRENT_MONTH": {
+    case 'UPDATE_AVERAGE_PRECIP_CURRENT_MONTH': {
       return {
         ...state,
         weatherData: {
@@ -325,7 +327,7 @@ const Reducer = (state, action, value = action && action.data && action.data.val
       };
     }
 
-    case "UPDATE_AVERAGE_PRECIP_ANNUAL": {
+    case 'UPDATE_AVERAGE_PRECIP_ANNUAL': {
       return {
         ...state,
         weatherData: {
@@ -338,40 +340,40 @@ const Reducer = (state, action, value = action && action.data && action.data.val
       };
     }
 
-    case "SET_AJAX_IN_PROGRESS": {
+    case 'SET_AJAX_IN_PROGRESS': {
       return {
         ...state,
         ajaxInProgress: action.data,
       };
     }
-    case "TOGGLE_CROP_DETAIL_MODAL": {
+    case 'TOGGLE_CROP_DETAIL_MODAL': {
       return {
         ...state,
         cropDetailModal: action.data.cropDetailModal,
       };
     }
 
-    case "TOGGLE_SOIL_LOADER": {
+    case 'TOGGLE_SOIL_LOADER': {
       return {
         ...state,
         isSoilDataLoading: action.data.isSoilDataLoading,
       };
     }
-    case "UPDATE_SELCTED_CHECKBOXES": {
+    case 'UPDATE_SELCTED_CHECKBOXES': {
       return {
         ...state,
         selectedCheckboxes: action.data.selectedCheckboxes,
       };
     }
 
-    case "UPDATE_SELECTED_STARS": {
+    case 'UPDATE_SELECTED_STARS': {
       return {
         ...state,
         selectedStars: action.data.selectedStars,
       };
     }
 
-    case "UPDATE_SOIL_DATA": {
+    case 'UPDATE_SOIL_DATA': {
       return {
         ...state,
         soilData: {
@@ -384,7 +386,7 @@ const Reducer = (state, action, value = action && action.data && action.data.val
         },
       };
     }
-    case "UPDATE_SOIL_DATA_ORIGINAL": {
+    case 'UPDATE_SOIL_DATA_ORIGINAL': {
       return {
         ...state,
         soilDataOriginal: {
@@ -398,7 +400,7 @@ const Reducer = (state, action, value = action && action.data && action.data.val
       };
     }
 
-    case "UPDATE_DATE_RANGE": {
+    case 'UPDATE_DATE_RANGE': {
       return {
         ...state,
         cashCropData: {
@@ -411,40 +413,40 @@ const Reducer = (state, action, value = action && action.data && action.data.val
       };
     }
 
-    case "UPDATE_ADDRESS_SEARCH_PREFERENCE": {
+    case 'UPDATE_ADDRESS_SEARCH_PREFERENCE': {
       return {
         ...state,
         addressSearchPreference: action.data.addressSearchPreference,
       };
     }
 
-    case "UPDATE_ZIP_CODE": {
+    case 'UPDATE_ZIP_CODE': {
       return {
         ...state,
         zipCode: action.data.zipCode,
       };
     }
 
-    case "UPDATE_FILTER_STRING": {
+    case 'UPDATE_FILTER_STRING': {
       return {
         ...state,
         filterString: action.data.filterString,
       };
     }
-    case "UPDATE_FILTER_KEYS": {
+    case 'UPDATE_FILTER_KEYS': {
       return {
         ...state,
         filterKeys: action.data.filterKeys,
       };
     }
-    case "UPDATE_ACTIVE_GROWTH_PERIOD": {
+    case 'UPDATE_ACTIVE_GROWTH_PERIOD': {
       return {
         ...state,
         activeGrowthPeriod: action.data.activeGrowthPeriod,
       };
     }
 
-    case "UPDATE_DRAINAGE_CLASS": {
+    case 'UPDATE_DRAINAGE_CLASS': {
       return {
         ...state,
         soilData: {
@@ -454,7 +456,7 @@ const Reducer = (state, action, value = action && action.data && action.data.val
       };
     }
 
-    case "UPDATE_FLOODING_FREQUENCY": {
+    case 'UPDATE_FLOODING_FREQUENCY': {
       return {
         ...state,
         soilData: {
@@ -464,7 +466,7 @@ const Reducer = (state, action, value = action && action.data && action.data.val
       };
     }
 
-    case "UPDATE_COMPARISON_KEYS": {
+    case 'UPDATE_COMPARISON_KEYS': {
       return {
         ...state,
         comparisonKeys: action.data.comparisonKeys,
