@@ -151,13 +151,16 @@ const CropSidebarComponent = (props) => {
 
   useEffect(() => {
     const filterSidebarItems = () => {
-      Object.keys(sidebarFilterOptions).forEach(key => sidebarFilterOptions[key] = []);
+      // Object.keys(sidebarFilterOptions).forEach(key => sidebarFilterOptions[key] = []);
+
+      const sfo = {};
 
       Object.keys(state.filters).forEach(key => {
         if (state.filters[key]) {
           const [k, value] = key.split(': ');
           if (value) {
-            sidebarFilterOptions[k].push(value);
+            sfo[k] = sfo[k] || [];
+            sfo[k].push(+value || value);
           }
         }
       });
@@ -178,115 +181,95 @@ const CropSidebarComponent = (props) => {
         return match('Cover Crop Name') || match('Scientific Name');
       });
 
-      const nonZeroes = Object.keys(sidebarFilterOptions).map((key) => {
-        console.log(key, sidebarFilterOptions[key]);
-        if (sidebarFilterOptions[key].length !== 0) {
-          return { [key]: sidebarFilterOptions[key] };
-        } else return "";
+      const nonZeroKeys2 = Object.keys(sfo).map((key) => {
+        if (sfo[key].length !== 0) {
+          return { [key]: sfo[key] };
+        } else {
+          return '';
+        }
       });
-      
-      const nonZeroKeys2 = nonZeroes.filter((val) => val !== "");
+
+      console.log(JSON.stringify(sfo));
+      console.log(JSON.stringify(nonZeroKeys2));
+
+      // const nonZeroKeys = nonZeroKeys2.map((obj) => {
+      //   return Object.keys(obj).toString();
+      // });
   
-      const nonZeroKeys = nonZeroKeys2.map((obj) => {
-        return Object.keys(obj).toString();
-      });
+      // dispatch({
+      //   type: 'UPDATE_FILTER_KEYS',
+      //   data: {
+      //     filterKeys: nonZeroKeys,
+      //   },
+      // });
   
+      let growthArray = [];
+
+      if (state.filters['Active Growth Period: Fall']) {
+        growthArray.push('Sep', 'Oct', 'Nov');
+      }
+      if (state.filters['Active Growth Period: Winter']) {
+        growthArray.push('Dec', 'Jan', 'Feb');
+      }
+      if (state.filters['Active Growth Period: Spring']) {
+        growthArray.push('Mar', 'Apr', 'May');
+      }
+      if (state.filters['Active Growth Period: Summer']) {
+        growthArray.push('Jun', 'Jul', 'Aug');
+      }
+
       dispatch({
-        type: "UPDATE_FILTER_KEYS",
+        type: 'UPDATE_ACTIVE_GROWTH_PERIOD',
         data: {
-          filterKeys: nonZeroKeys,
+          activeGrowthPeriod: growthArray,
         },
       });
   
-      if (sidebarFilterOptions["Active Growth Period"].length > 0) {
-        let growthArray = [];
-  
-        if (sidebarFilterOptions["Active Growth Period"].includes("Fall")) {
-          growthArray.push('Sep', 'Oct', 'Nov');
-        }
-        if (sidebarFilterOptions["Active Growth Period"].includes("Winter")) {
-          growthArray.push('Dec', 'Jan', 'Feb');
-        }
-        if (sidebarFilterOptions["Active Growth Period"].includes("Spring")) {
-          growthArray.push('Mar', 'Apr', 'May');
-        }
-        if (sidebarFilterOptions["Active Growth Period"].includes("Summer")) {
-          growthArray.push('Jun', 'Jul', 'Aug');
-        }
-  
-        dispatch({
-          type: "UPDATE_ACTIVE_GROWTH_PERIOD",
-          data: {
-            activeGrowthPeriod: growthArray,
-          },
-        });
-      } else {
-        dispatch({
-          type: "UPDATE_ACTIVE_GROWTH_PERIOD",
-          data: {
-            activeGrowthPeriod: [],
-          },
-        });
-      }
-  
-      if (nonZeroKeys.length > 0 || true) {
-        const arrayKeys = [
-          "Duration",
-          "Active Growth Period",
-          "Winter Survival",
-          "Flowering Trigger",
-          "Root Architecture",
-        ];
-        const booleanKeys = ["Aerial Seeding", "Frost Seeding"];
+      const arrayKeys = [
+        'Duration',
+        'Active Growth Period',
+        'Winter Survival',
+        'Flowering Trigger',
+        'Root Architecture',
+      ];
+      const booleanKeys = ['Aerial Seeding', 'Frost Seeding'];
 
-        const filtered = crop_data.filter((crop) => {
-          const totalActiveFilters = Object.keys(nonZeroKeys2).length;
-          let i = 0;
-          nonZeroKeys2.forEach((keyObject) => {
-            const key = Object.keys(keyObject);
-            const vals = keyObject[key];
-            if (areCommonElements(arrayKeys, key)) {
-              // Handle array type havlues
-  
-              if (_.intersection(vals, crop.fields[key]).length > 0) {
-                i++;
-              }
-            } else if (areCommonElements(booleanKeys, key)) {
-              //  Handle boolean types
-              if (crop.fields[key]) {
-                i++;
-              }
-            } else if (vals.includes(crop.fields[key])) {
+      const filtered = crop_data.filter((crop) => {
+        const totalActiveFilters = Object.keys(nonZeroKeys2).length;
+        let i = 0;
+        nonZeroKeys2.forEach((keyObject) => {
+          const key = Object.keys(keyObject);
+          const vals = keyObject[key];
+
+          if (areCommonElements(arrayKeys, key)) {
+            // Handle array type havlues
+            if (_.intersection(vals, crop.fields[key]).length > 0) {
               i++;
             }
-          });
-  
-          return i === totalActiveFilters;
+          } else if (areCommonElements(booleanKeys, key)) {
+            //  Handle boolean types
+            if (crop.fields[key]) {
+              i++;
+            }
+          } else if (vals.includes(crop.fields[key])) {
+            i++;
+          }
         });
 
-        dispatch({
-          type: "UPDATE_ACTIVE_CROP_DATA",
-          data: {
-            value: filtered,
-          },
-        });
-      } else {
-        dispatch({
-          type: "UPDATE_ACTIVE_CROP_DATA",
-          data: {
-            value: crop_data,
-          },
-        });
-      }
+        return i === totalActiveFilters;
+      });
+
+      dispatch({
+        type: 'UPDATE_ACTIVE_CROP_DATA',
+        data: {
+          value: filtered,
+        },
+      });
       return crop_data;
     } // filterSidebarItems();
 
     filterSidebarItems();
   }, [sidebarFilterOptions, state.cropSearch, state.cropData, dispatch, state.filters]);
-
-  const empty = (obj) => {
-    return !Object.keys(obj).some(key => obj[key]);
-  } // empty
 
   const areCommonElements = (arr1, arr2) => {
     const arr2Set = new Set(arr2);
@@ -295,15 +278,10 @@ const CropSidebarComponent = (props) => {
 
   const [filtersSelected, setFiltersSelected] = useState(false);
   useEffect(() => {
-    const sidebarKeys = Object.keys(sidebarFilterOptions);
-
-    const nonZeroKeys = sidebarKeys.filter(function (key) {
-      return sidebarFilterOptions[key].length > 0;
-    });
-
-    if (nonZeroKeys.length === 0) setFiltersSelected(false);
-    else setFiltersSelected(true);
-  }, [sidebarFilterOptions]);
+    setFiltersSelected(
+      Object.keys(state.filters).some(key => state.filters[key])
+    );
+  }, [sidebarFilterOptions, state.filters]);
 
   useEffect(() => {
     if (isListView) {
