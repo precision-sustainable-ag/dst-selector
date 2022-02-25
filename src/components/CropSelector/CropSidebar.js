@@ -46,17 +46,10 @@ import { Context } from "../../store/Store";
 import "../../styles/cropSidebar.scss";
 import ComparisonBar from "../MyCoverCropList/ComparisonBar/ComparisonBar";
 import DateRangeDialog from "./DateRangeDialog";
-import CoverCropType from "./Filters/CoverCropType";
-import EnvironmentalTolerance from "./Filters/EnvironmentalTolerance";
-import Growth from "./Filters/Growth";
-import Roots from "./Filters/Roots";
-import SeedingMethods from "./Filters/SeedingMethods";
-import Seeds from "./Filters/Seeds";
-import SoilConditions from "./Filters/SoilConditions";
-import TerminationMethods from "./Filters/TerminationMethods";
-import Weeds from "./Filters/Weeds";
+import ForwardFilter from "./Filters/ForwardFilter";
 import sidebarCategoriesData from "../../shared/json/sidebar/sidebar-categories.json";
 import sidebarFiltersData from "../../shared/json/sidebar/sidebar-filters.json";
+// import SoilConditions from "./Filters/SoilConditions";  // TODO May be obsolete???  rh
 
 const _ = require("lodash");
 
@@ -158,6 +151,17 @@ const CropSidebarComponent = (props) => {
 
   useEffect(() => {
     const filterSidebarItems = () => {
+      Object.keys(sidebarFilterOptions).forEach(key => sidebarFilterOptions[key] = []);
+
+      Object.keys(state.filters).forEach(key => {
+        if (state.filters[key]) {
+          const [k, value] = key.split(': ');
+          if (value) {
+            sidebarFilterOptions[k].push(value);
+          }
+        }
+      });
+
       let crop_data = state.cropData.filter(
         (crop) => crop.fields["Zone Decision"] === "Include"
       );
@@ -175,6 +179,7 @@ const CropSidebarComponent = (props) => {
       });
 
       const nonZeroes = Object.keys(sidebarFilterOptions).map((key) => {
+        console.log(key, sidebarFilterOptions[key]);
         if (sidebarFilterOptions[key].length !== 0) {
           return { [key]: sidebarFilterOptions[key] };
         } else return "";
@@ -235,10 +240,6 @@ const CropSidebarComponent = (props) => {
         const booleanKeys = ["Aerial Seeding", "Frost Seeding"];
 
         const filtered = crop_data.filter((crop) => {
-          if (!empty(state.coverCropType) && !state.coverCropType[crop.fields['Cover Crop Group']]) {
-            return false;
-          }
-
           const totalActiveFilters = Object.keys(nonZeroKeys2).length;
           let i = 0;
           nonZeroKeys2.forEach((keyObject) => {
@@ -281,7 +282,7 @@ const CropSidebarComponent = (props) => {
     } // filterSidebarItems();
 
     filterSidebarItems();
-  }, [sidebarFilterOptions, state.cropSearch, state.cropData, dispatch, state.coverCropType]);
+  }, [sidebarFilterOptions, state.cropSearch, state.cropData, dispatch, state.filters]);
 
   const empty = (obj) => {
     return !Object.keys(obj).some(key => obj[key]);
@@ -316,6 +317,7 @@ const CropSidebarComponent = (props) => {
 
   const resetAllFilters = (withRef = true) => {
     change('CLEAR_FILTERS');
+    return;
 
     if (withRef) {
       dispatch({
@@ -405,18 +407,18 @@ const CropSidebarComponent = (props) => {
             });
             break;
           case "chips-only":
-            if (category.name !== "Seeding Methods") {
+            if (category.name === "Cover Crop Type") {
               const data = sidebarFiltersData.filter(
                 (dictFilter) => dictFilter.__id === category.filters[0]
               )[0];
 
-              newCategory["values"] = data.values
-                .split(/\s+/)
-                .join("")
-                .split(",")
-                .map((val) => {
-                  return { name: val };
-                });
+              newCategory.values = [{
+                name: data.name,
+                alternateName: data.dataDictionaryName,
+                symbol: null,
+                maxSize: data.maxSize,
+                values: data.values.split(/\s*,\s*/),
+              }];
             } else {
               newCategory["description"] = null;
               newCategory["values"] = category.filters.map((f) => {
@@ -651,69 +653,25 @@ const CropSidebarComponent = (props) => {
   } // Filter
 
   const output = (filter) => {
-    switch (filter.name.toUpperCase()) {
-      case 'COVER CROP TYPE':
-        return <>{Filter(CoverCropType, filter)}</>
-      case 'ENVIRONMENTAL TOLERANCES':
-        return <>{Filter(EnvironmentalTolerance, filter)}</>
-      case 'SEEDS':
-        return <>{Filter(Seeds, filter)}</>
-      case 'SEEDING METHODS':
-        return  <>{Filter(SeedingMethods, filter)}</>
-      case 'GROWTH':
-        return  <>{Filter(Growth, filter)}</>
-      case 'ROOTS':
-        return  <>{Filter(Roots, filter)}</>
-      case 'TERMINATION METHODS':
-        return  <>{Filter(TerminationMethods, filter)}</>
-      case 'WEEDS':
-        return  <>{Filter(Weeds, filter)}</>
-      default:
-    }
+    return Filter(ForwardFilter, filter);  // SoilConditions???
   } // output
 
   const filters = () => (
     sidebarFilters.map((filter, index) => {
-      if (output(filter)) {
-        return (
-          <Fragment key={index}>
-            {filter.description !== null ? (
-              <Tooltip
-                interactive
-                arrow
-                placement="right-start"
-                title={
-                  <div className="filterTooltip">
-                    <p>{filter.description}</p>
-                  </div>
-                }
-                key={`tooltip${index}`}
-              >
-                <ListItem
-                  // className={classes.nested}
-                  className={
-                    state.sidebarFiltersOpen[index]
-                      ? "filterOpen"
-                      : "filterClose"
-                  }
-                  component="div"
-                  onClick={(e) => change('SIDEBAR_TOGGLE', e, index)}
-                >
-                  <ListItemText
-                    primary={
-                      <Typography variant="body2">
-                        {filter.name.toUpperCase()}
-                      </Typography>
-                    }
-                  />
-                  {state.sidebarFiltersOpen[index] ? (
-                    <ExpandLess />
-                  ) : (
-                    <ExpandMore />
-                  )}
-                </ListItem>
-              </Tooltip>
-            ) : (
+      return (
+        <Fragment key={index}>
+          {filter.description !== null ? (
+            <Tooltip
+              interactive
+              arrow
+              placement="right-start"
+              title={
+                <div className="filterTooltip">
+                  <p>{filter.description}</p>
+                </div>
+              }
+              key={`tooltip${index}`}
+            >
               <ListItem
                 // className={classes.nested}
                 className={
@@ -737,27 +695,49 @@ const CropSidebarComponent = (props) => {
                   <ExpandMore />
                 )}
               </ListItem>
-            )}
-
-            <Collapse
-              in={state.sidebarFiltersOpen[index]}
-              timeout="auto"
+            </Tooltip>
+          ) : (
+            <ListItem
+              // className={classes.nested}
+              className={
+                state.sidebarFiltersOpen[index]
+                  ? "filterOpen"
+                  : "filterClose"
+              }
+              component="div"
+              onClick={(e) => change('SIDEBAR_TOGGLE', e, index)}
             >
-              <List component="div" disablePadding>
-                <ListItem
-                  // className={classes.subNested}
-                  // title={filter.description}
-                  component="div"
-                >
-                  {output(filter)}
-                </ListItem>
-              </List>
-            </Collapse>
-          </Fragment>
-        );
-      } else {
-        return <Fragment />;
-      }
+              <ListItemText
+                primary={
+                  <Typography variant="body2">
+                    {filter.name.toUpperCase()}
+                  </Typography>
+                }
+              />
+              {state.sidebarFiltersOpen[index] ? (
+                <ExpandLess />
+              ) : (
+                <ExpandMore />
+              )}
+            </ListItem>
+          )}
+
+          <Collapse
+            in={state.sidebarFiltersOpen[index]}
+            timeout="auto"
+          >
+            <List component="div" disablePadding>
+              <ListItem
+                // className={classes.subNested}
+                // title={filter.description}
+                component="div"
+              >
+                {output(filter)}
+              </ListItem>
+            </List>
+          </Collapse>
+        </Fragment>
+      );
     })
   ); // filters
 

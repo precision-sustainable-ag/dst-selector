@@ -272,7 +272,7 @@ const initialState = {
   activeCropData: [],
   lastZone : '',
   sidebarFiltersOpen : [], // true if expanded
-  coverCropType: {}, // filter
+  filters: {}
 };
 
 const Store = ({ children }) => {
