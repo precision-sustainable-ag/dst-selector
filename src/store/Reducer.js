@@ -13,6 +13,24 @@ const Reducer = (state, action, value = action && action.data && action.data.val
       }
     }
 
+    case 'FILTER_ON': {
+      const filters = state.filters;
+      filters[value] = true;
+      return {
+        ...state,
+        filters
+      }
+    }
+
+    case 'FILTER_OFF': {
+      const filters = state.filters;
+      filters[value] = false;
+      return {
+        ...state,
+        filters
+      }
+    }
+
     case 'CLEAR_FILTERS': {
       return {
         ...state,
