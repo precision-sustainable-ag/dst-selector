@@ -130,7 +130,8 @@ const InformationSheetContent = (props) => {
   ) // InfoEnvironmentalTermination
 
   const {state} = useContext(Context);
-  const { zone } = state;
+  const section  = window.location.href.includes('selector') ? 'selector' : 'explorer';
+  const zone = state[section].zone;
   const crop = props.crop;
   const classes = useStyles();
   const [currentSources, setCurrentSources] = useState([{}]);

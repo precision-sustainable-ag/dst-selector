@@ -59,10 +59,14 @@ const lightBG = {
   fontWeight: "bold",
   minHeight: "36px",
 };
+
 const MyCoverCropComparisonComponent = (props) => {
   const {state, dispatch} = useContext(Context);
   const { enqueueSnackbar } = useSnackbar();
-  const { comparisonKeys, zone } = state;
+  const { comparisonKeys } = state;
+  const section = window.location.href.includes('selector') ? 'selector' : 'explorer';
+  const zone = state[section].zone;
+
   const [sidebarDefs, setSidebarDefs] = useState(sidebarDefinitionsz7);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalData, setModalData] = useState({});

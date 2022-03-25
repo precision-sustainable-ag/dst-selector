@@ -10,13 +10,15 @@ import "../../styles/tooltipMaker.scss";
 
 const TooltipMaker = ({ children, variable }) => {
   const {state} = useContext(Context);
+  const section  = window.location.href.includes('selector') ? 'selector' : 'explorer';
+  const sfilters = state[section];
 
   const [desc, setDesc] = useState("");
   const [dict, setDict] = useState([]);
 
   useEffect(() => {
     let dictionary;
-    switch (state.zone) {
+    switch (sfilters.zone) {
       case 7:
         dictionary = state.zone7Dictionary.filter(
           (val) => val.Variable === variable
@@ -47,7 +49,7 @@ const TooltipMaker = ({ children, variable }) => {
     // console.log(dictionary);
     setDict(dictionary);
   }, [
-    state.zone,
+    sfilters.zone,
     state.zone4Dictionary,
     state.zone5Dictionary,
     state.zone6Dictionary,
