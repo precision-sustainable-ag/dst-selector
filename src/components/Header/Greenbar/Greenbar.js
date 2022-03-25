@@ -40,6 +40,9 @@ const greenBarWrapperBackground = {
 
 const Greenbar = () => {
   const {state, dispatch} = useContext(Context);
+  const section  = window.location.href.includes('selector') ? 'selector' : 'explorer';
+  const sfilters = state[section];
+
   const [expansionPanelComponent, setExpansionPanelComponent] = useState({
     component: "",
   });
@@ -89,7 +92,7 @@ const Greenbar = () => {
             }
           >
             <LocationOn />
-            &nbsp;Zone {state.zone}: {state.address}
+            &nbsp;Zone {sfilters.zone}: {state.address}
           </span>
         </Button>
       );

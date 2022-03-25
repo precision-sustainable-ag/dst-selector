@@ -14,6 +14,9 @@ import "leaflet/dist/leaflet.css";
 
 const LocationConfirmation = () => {
   const {state} = useContext(Context);
+  const section  = window.location.href.includes('selector') ? 'selector' : 'explorer';
+  const sfilters = state[section];
+
   return (
     <div
       className="container-fluid mt-5"
@@ -46,7 +49,7 @@ const LocationConfirmation = () => {
                 <div className="col-12 pt-2">
                   <Typography variant="body1">
                     Your cover crop recommendations will come from the Plant
-                    Hardiness Zone {state.zone} NECCC dataset.
+                    Hardiness Zone {sfilters.zone} NECCC dataset.
                   </Typography>
                 </div>
                 <div className="col-12">

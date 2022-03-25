@@ -3,46 +3,52 @@
 */
 
 const Reducer = (state, action, value = action && action.data && action.data.value) => {
+  const section = window.location.href.includes('selector') ? 'selector' : 'explorer';
+  let sfilters = {...state[section]};
+
   switch (action.type) {
+    case 'TOGGLE' : return {...state, [value]: !state[value]}
+    case 'TRUE'   : return {...state, [value]: true}
+    case 'FALSE'  : return {...state, [value]: false}
+
     case 'FILTER_TOGGLE': {
-      const filters = state.filters;
-      filters[value] = !filters[value];
+      sfilters[value] = !sfilters[value];
       return {
         ...state,
-        filters
+        [section]: sfilters,
+        changedFilters: true,
       }
     }
 
     case 'FILTER_ON': {
-      const filters = state.filters;
-      filters[value] = true;
+      sfilters[value] = true;
       return {
         ...state,
-        filters
+        [section]: sfilters,
+        changedFilters: true,
       }
     }
 
     case 'FILTER_OFF': {
-      const filters = state.filters;
-      filters[value] = false;
+      sfilters[value] = false;
       return {
         ...state,
-        filters
+        [section]: sfilters,
+        changedFilters: true,
       }
     }
 
     case 'CLEAR_FILTERS': {
+      sfilters = {
+        cropSearch: '',
+        zone: sfilters.zone
+      }
+
       return {
         ...state,
-        filters: {}
+        [section]: sfilters,
+        changedFilters: true,
       }
-    }
-
-    case 'SIDEBAR_TOGGLE': {
-      const t = [...state.sidebarFiltersOpen];
-      t[action.data.value] = !t[action.data.value];
-
-      return {...state, sidebarFiltersOpen: t};
     }
 
     case 'ZONE_TOGGLE': {
@@ -50,11 +56,20 @@ const Reducer = (state, action, value = action && action.data && action.data.val
     }
     
     case 'CROP_SEARCH': {
-      return {...state, cropSearch: action.data.value};
+      sfilters.cropSearch = action.data.value;
+      return {
+        ...state,
+        cropSearch: action.data.value,
+        [section]: sfilters,
+      };
     }
 
     case 'UPDATE_ACTIVE_CROP_DATA': {
-      return {...state, activeCropData: action.data.value}
+      return {
+        ...state,
+        activeCropData: action.data.value,
+        changedFilters: false
+      }
     }
 
     case 'LAST_ZIP_CODE': {
@@ -72,6 +87,7 @@ const Reducer = (state, action, value = action && action.data && action.data.val
         break;
       }
     }
+
     case 'UPDATE_PROGRESS': {
       if (action.data.type === 'INCREMENT') {
         return { ...state, progress: state.progress + 1 };
@@ -83,6 +99,7 @@ const Reducer = (state, action, value = action && action.data && action.data.val
         break;
       }
     }
+    
     case 'UPDATE_LOCATION': {
       return {
         ...state,
@@ -92,12 +109,15 @@ const Reducer = (state, action, value = action && action.data && action.data.val
         zipCode: action.data.zip,
       };
     }
+    
     case 'JUMP_SPECIES_PROGRESS': {
       return { ...state, progress: 5 };
     }
+    
     case 'WEATHER_DATA_RESET': {
       return { ...state, weatherDataReset: action.data.weatherDataReset };
     }
+    
     case 'CHANGE_ADDRESS_BY_TYPING': {
       if (action.data.markers) {
         return {
@@ -114,27 +134,33 @@ const Reducer = (state, action, value = action && action.data && action.data.val
         };
       }
     }
+    
     case 'UPDATE_ZONE_TEXT': {
+      sfilters.zone = action.data.zone;
       return {
         ...state,
         zoneText: action.data.zoneText,
-        zone: action.data.zone,
         selectedGoals: [],
+        [section]: sfilters,
       };
     }
+    
     case 'UPDATE_ZONE': {
+      sfilters.zone = action.data.zone;
       return {
         ...state,
         zoneText: action.data.zoneText,
-        zone: action.data.zone,
+        [section]: sfilters,        
       };
     }
+    
     case 'UPDATE_LAST_ZONE': {
       return {
         ...state,
         lastZone: action.data.value,
       };
     }
+    
     case 'CHANGE_ADDRESS': {
       return {
         ...state,
@@ -142,6 +168,7 @@ const Reducer = (state, action, value = action && action.data && action.data.val
         addressVerified: action.data.addressVerified,
       };
     }
+    
     case 'CHANGE_ADDRESS_VIA_MAP': {
       return {
         ...state,
@@ -153,6 +180,7 @@ const Reducer = (state, action, value = action && action.data && action.data.val
         addressChangedViaMap: true,
       };
     }
+    
     case 'RESET': {
       return {
         ...state,
@@ -212,12 +240,14 @@ const Reducer = (state, action, value = action && action.data && action.data.val
         markers: action.data.markers,
       };
     }
+    
     case 'UPDATE_MARKER_COPY': {
       return {
         ...state,
         markersCopy: action.data.markersCopy,
       };
     }
+    
     case 'UPDATE_ADDRESS_ON_MAP_CLICK': {
       return {
         ...state,
@@ -227,12 +257,14 @@ const Reducer = (state, action, value = action && action.data && action.data.val
         snackMessage: action.data.snackMessage,
       };
     }
+
     case 'TOGGLE_ADDRESS_CHANGE_BUTTON': {
       return {
         ...state,
         showAddressChangeBtn: action.data.showAddressChangeBtn,
       };
     }
+
     case 'ADD_GOALS': {
       return {
         ...state,
@@ -254,6 +286,7 @@ const Reducer = (state, action, value = action && action.data && action.data.val
         selectedGoals: action.data,
       };
     }
+    
     case 'ADD_SELECTED_GOALS': {
       return {
         ...state,
@@ -364,6 +397,7 @@ const Reducer = (state, action, value = action && action.data && action.data.val
         ajaxInProgress: action.data,
       };
     }
+    
     case 'TOGGLE_CROP_DETAIL_MODAL': {
       return {
         ...state,
@@ -377,6 +411,7 @@ const Reducer = (state, action, value = action && action.data && action.data.val
         isSoilDataLoading: action.data.isSoilDataLoading,
       };
     }
+    
     case 'UPDATE_SELCTED_CHECKBOXES': {
       return {
         ...state,
@@ -404,6 +439,7 @@ const Reducer = (state, action, value = action && action.data && action.data.val
         },
       };
     }
+    
     case 'UPDATE_SOIL_DATA_ORIGINAL': {
       return {
         ...state,
@@ -445,18 +481,6 @@ const Reducer = (state, action, value = action && action.data && action.data.val
       };
     }
 
-    case 'UPDATE_FILTER_STRING': {
-      return {
-        ...state,
-        filterString: action.data.filterString,
-      };
-    }
-    case 'UPDATE_FILTER_KEYS': {
-      return {
-        ...state,
-        filterKeys: action.data.filterKeys,
-      };
-    }
     case 'UPDATE_ACTIVE_GROWTH_PERIOD': {
       return {
         ...state,
