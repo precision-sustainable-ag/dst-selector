@@ -14,6 +14,7 @@ import { Context } from "../../../store/Store";
 
 const DollarsAndRatings = ({ data, filter, handleChange }) => {
   const {state, change} = useContext(Context);  
+  const sfilters = window.location.href.includes('species') ? state.selector : state.explorer;
 
   // if (!data) return <Fragment></Fragment>;
   
@@ -36,10 +37,11 @@ const DollarsAndRatings = ({ data, filter, handleChange }) => {
 
           // const selected = data.includes(i);
 
-          const selected = state.filters[filterKey];
+          const selected = sfilters[filterKey];
 
           return (
             <Chip
+              key={filter.name + i}
               label={filter.symbol === 'dollar' ? '$'.repeat(i) : i + ' \u2605'}
               style={{
                 marginRight: 2,
@@ -91,16 +93,19 @@ const DollarsAndRatings = ({ data, filter, handleChange }) => {
   );
 }; // DollarsAndRatings
 
-const Chips = ({state, props, filter, handleChange }) => {
+const Chips = ({state, filter, handleChange}) => {
+  const sfilters = window.location.href.includes('species') ? state.selector : state.explorer;
+
   // let { sidebarFilterOptions } = props;
 
   return filter.values.map((val) => {
     // const selected = sidebarFilterOptions[filter.name].includes(val);
 
-    const selected = state.filters[filter.name + ': ' + val];
+    const selected = sfilters[filter.name + ': ' + val];
 
     return (
       <Chip
+        key={filter.name + val}
         onClick={() => handleChange(filter.name, val)}
         component="li"
         size="medium"
@@ -131,7 +136,7 @@ const Tip = ({ filter, omitHeading }) => {
       onMouseOut={() => setOpen(false)}
       title={
         <div className="filterTooltip">
-          <p dangerouslySetInnerHTML={{ __html: filter.description }} />
+          <p dangerouslySetInnerHTML={{__html: filter.description}} />
         </div>
       }
     >
@@ -142,7 +147,7 @@ const Tip = ({ filter, omitHeading }) => {
         />
       </small>
     </Tooltip>
-  );
+  )
 }; // Tip
 
 const Filters = forwardRef(({ props }, ref) => {
@@ -182,6 +187,7 @@ const Filters = forwardRef(({ props }, ref) => {
 
   const chipChange = (filtername, val) => {
     change('FILTER_TOGGLE', null, filtername + ': ' + val);
+    // change('FILTER_TOGGLE', filtername, val);
     setSelected({ ...selected, whatever: 'rerender' });
     // setSelected({ ...selected, [filtername]: val });
 
@@ -197,7 +203,7 @@ const Filters = forwardRef(({ props }, ref) => {
 
   return (
     <Grid container spacing={2}>
-      {filters.values.map((filter) => {
+      {filters.values.map((filter, i) => {
         if (filter.type === 'chip' || filters.type === 'chips-only') {
           if (filter.values && filter.values.length === 1) {
             return (
@@ -208,14 +214,22 @@ const Filters = forwardRef(({ props }, ref) => {
                   props={props}
                   handleChange={chipChange}
                 />
-                <Tip filter={filter} omitHeading={true} />
+                {
+                  filter.description &&
+                  <Tip filter={filter} omitHeading={true} />
+                }
               </Grid>
             );
           } else {
             return (
-              <Grid item>
-                <Tip filter={filter} />
-                <br/>
+              <Grid item key={i}>
+                {
+                  filter.description &&
+                  <>
+                    <Tip filter={filter} />
+                    <br/>
+                  </>
+                }                
                 <Chips
                   state={state}
                   filter={filter}

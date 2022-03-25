@@ -160,6 +160,8 @@ export default function GoogleAutocomplete({
       }
     },
     fetchGeocode: (results, county, main_text, zipCode) => {
+      county = county || [{}];
+
       dispatch({
         type: "CHANGE_ADDRESS_VIA_MAP",
         data: {
@@ -168,6 +170,7 @@ export default function GoogleAutocomplete({
           addressVerified: true,
         },
       });
+
       if (zipCode.length === 0) {
         setSelectedToEditSite({
           ...selectedToEditSite,
@@ -187,7 +190,7 @@ export default function GoogleAutocomplete({
           zipCode: parseInt(zipCode[0].long_name),
         });
       }
-    },
+    } 
   };
 
   const fetchLocationDetails = ({ place_id, structured_formatting }) => {

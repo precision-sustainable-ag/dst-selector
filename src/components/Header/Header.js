@@ -33,6 +33,9 @@ const Header = () => {
   let history = useHistory();
 
   const {state, dispatch} = useContext(Context);
+  const section  = window.location.href.includes('selector') ? 'selector' : 'explorer';
+  const sfilters = state[section];
+
   const [collapse, setCollapse] = React.useState(false);
   const [isRoot, setIsRoot] = React.useState(false);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
@@ -43,6 +46,10 @@ const Header = () => {
   };
 
   useEffect(() => {
+    if (!state.zipCode) {
+      return;
+    }
+    
     if (state.zipCode !== state.lastZipCode) {
       dispatch({
         type: 'LAST_ZIP_CODE',
@@ -88,6 +95,23 @@ const Header = () => {
                     }
                   );
                 }
+              } else {
+                enqueueSnackbar(
+                  "Error: This tool supports the Northeast US only.  If your location is in the Northeast, please submit an issue via the feedback form.",
+                  {
+                    persist: true,
+                    action: (
+                      <Button
+                        style={{ color: "white" }}
+                        onClick={() => {
+                          closeSnackbar();
+                        }}
+                      >
+                        Close
+                      </Button>
+                    ),
+                  }
+                );
               }
             });
           } else {
@@ -305,17 +329,17 @@ const Header = () => {
       default:
         break;
     }
-  }, [state.markers, state.zone, state.weatherDataReset]);
+  }, [state.markers, sfilters.zone, state.weatherDataReset]);
 
   useEffect(() => {
-    if (state.zone === state.lastZone) {
+    if (sfilters.zone === state.lastZone) {
       return;
     }
 
-    state.lastZone = state.zone;  // TODO
+    state.lastZone = sfilters.zone;  // TODO
     // dispatch({
     //   type: 'UPDATE_LAST_ZONE',
-    //   value: state.zone,
+    //   value: sfilters.zone,
     // });
 
     let z7Formattedgoal = zone7DataDictionary.filter(
@@ -344,7 +368,7 @@ const Header = () => {
       return { fields: goal };
     });
 
-    switch (parseInt(state.zone)) {
+    switch (parseInt(sfilters.zone)) {
       case 7: {
         dispatch({
           type: "PULL_CROP_DATA",
@@ -400,7 +424,7 @@ const Header = () => {
       }
     }
   }, [
-    state.zone,
+    sfilters.zone,
     state.zone4CropData,
     state.zone5CropData,
     state.zone6CropData,

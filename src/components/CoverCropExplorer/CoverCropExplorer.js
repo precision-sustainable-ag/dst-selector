@@ -15,13 +15,16 @@ import ReactGA from "react-ga";
 
 const CoverCropExplorer = () => {
   const {state} = useContext(Context);
+  const section  = window.location.href.includes('selector') ? 'selector' : 'explorer';
+  const sfilters = state[section];
+
   const [cropDataChanged, setCropDataChanged] = useState(false);
 
   const activeCropData = state.activeCropData;
 
   useEffect(() => {
     setCropDataChanged((c) => !c);
-  }, [state.zone]);
+  }, [sfilters.zone]);
 
   useEffect(() => {
     if (state.consent === true) {
@@ -53,7 +56,7 @@ const CoverCropExplorer = () => {
             />
           </div>
           <div className="col-md-12 col-lg-9 col-xl-10 col-12">
-            {state.zone === "" ? (
+            {sfilters.zone === "" ? (
               <Grid container alignItems="center" justifyContent="center">
                 <Grid item xs={12}>
                   <Typography variant="h5" align="center">
