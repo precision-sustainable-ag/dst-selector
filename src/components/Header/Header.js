@@ -435,7 +435,9 @@ const Header = () => {
   const toggleSingleCollapse = () => {
     setCollapse(!collapse);
   };
+
   const setmyCoverCropActivationFlag = () => {
+    history.push("/my-cover-crop-list");
     if (window.location.pathname === "/species-selector") {
       if (state.progress > 4) {
         dispatch({
@@ -447,7 +449,7 @@ const Header = () => {
         });
       }
     } else {
-      history.push("/");
+      // history.push("/");
     }
   };
 

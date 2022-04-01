@@ -18,6 +18,7 @@ const MyCoverCropList = (props) => {
   const comparisonView = props.comparisonView ? props.comparisonView : false;
   const from = props.from ? props.from : "state";
   const history = useHistory();
+
   const redirectToSpeciesSelector = () => {
     history.replace("/species-selector");
     dispatch({

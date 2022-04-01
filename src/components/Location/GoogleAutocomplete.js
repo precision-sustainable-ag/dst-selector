@@ -126,10 +126,8 @@ export default function GoogleAutocomplete({
         );
 
         if (zipCode.length === 0) {
-          const lonBounds = results[0].geometry.bounds.Hb;
-          const lonCenter = (lonBounds.g + lonBounds.i) / 2;
-          const latBounds = results[0].geometry.bounds.tc;
-          const latCenter = (latBounds.g + latBounds.i) / 2;
+          const lonCenter = results[0].geometry.location.lng();
+          const latCenter = results[0].geometry.location.lat();
 
           fetchLocalData
             .fetchZipFromLatLng(latCenter, lonCenter)
@@ -270,8 +268,15 @@ export default function GoogleAutocomplete({
   }, [value, inputValue, fetchData]);
 
   return (
+    /*
+     * RICK'S NOTE:
+     * This causes a "ghost" effect on FIND YOUR LOCATION:
+     *   style={{ zIndex: 1000003 }}
+     * Doesn't seem to be needed.
+     * TODO: Remove after 5/1/2022
+    */
+
     <Autocomplete
-      style={{ zIndex: 1000003 }}
       id="google-map-demo"
       fullWidth
       getOptionLabel={(option) =>
