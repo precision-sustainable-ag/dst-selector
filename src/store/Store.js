@@ -273,10 +273,11 @@ const initialState = {
 
   explorer: {  // filters for explorer
     cropSearch: '',
+    zone: 6,  // needs a default so the filters will populate when starting with species-selector
   },
 
   selector: {  // filters for selector
-    cropSearch: '',
+    cropSearch: ''
   }
 };
 

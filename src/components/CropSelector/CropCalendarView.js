@@ -58,6 +58,12 @@ const CropCalendarViewComponent = (props) => {
     setLegendModal(!legendModal);
   };
 
+  const hasGoalRatingTwoOrLess = (crop = []) => {
+    const { selectedGoals } = state;
+
+    return selectedGoals.every((rating) => crop.fields[rating] <= 2);
+  };
+
   const addCropToBasket = (cropId, cropName, btnId, cropData) => {
     let selectedCrops = {};
     var cropArray = [];
@@ -256,7 +262,7 @@ const CropCalendarViewComponent = (props) => {
         return (
           <TableRow
             key={`cropRow${index}`}
-            style={active ? {} : { opacity: "0.2" }}
+            style={hasGoalRatingTwoOrLess(crop) ? { opacity: "0.2" } : {}}
           >
             <TableCell
               className="calendarTableCell"
