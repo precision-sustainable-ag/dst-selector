@@ -61,7 +61,7 @@ const CropCalendarViewComponent = (props) => {
   const hasGoalRatingTwoOrLess = (crop = []) => {
     const { selectedGoals } = state;
 
-    return selectedGoals.every((rating) => crop.fields[rating] <= 2);
+    return crop.inactive || selectedGoals.every((rating) => crop.fields[rating] <= 2);
   };
 
   const addCropToBasket = (cropId, cropName, btnId, cropData) => {
@@ -168,7 +168,13 @@ const CropCalendarViewComponent = (props) => {
           return 0;
         });
       });
-    props.setActiveCropData(activeCropDataShadow);
+
+    dispatch({
+      type: 'UPDATE_ACTIVE_CROP_DATA',
+      data: {
+        value: activeCropDataShadow,
+      },
+    });
   };
   const sortCropsByName = () => {
     let activeCropDataShadow = props.activeCropData;
@@ -186,7 +192,12 @@ const CropCalendarViewComponent = (props) => {
           return firstCropName.localeCompare(secondCropName);
         });
 
-        props.setActiveCropData(activeCropDataShadow);
+        dispatch({
+          type: 'UPDATE_ACTIVE_CROP_DATA',
+          data: {
+            value: activeCropDataShadow,
+          },
+        });
       }
     } else {
       if (activeCropDataShadow.length > 0) {
@@ -206,7 +217,12 @@ const CropCalendarViewComponent = (props) => {
           return 0;
         });
 
-        props.setActiveCropData(activeCropDataShadow);
+        dispatch({
+          type: 'UPDATE_ACTIVE_CROP_DATA',
+          data: {
+            value: activeCropDataShadow,
+          },
+        });
       }
 
     }
@@ -225,11 +241,7 @@ const CropCalendarViewComponent = (props) => {
           selectedCropIds.push(crop.id);
         });
         let newActiveShadow = activeCropDataShadow.map((crop) => {
-          if (selectedCropIds.includes(crop.fields.id)) {
-            crop["inCart"] = true;
-          } else {
-            crop["inCart"] = false;
-          }
+          crop.inCart = selectedCropIds.includes(crop.fields.id);
           return crop;
         });
 
@@ -242,12 +254,18 @@ const CropCalendarViewComponent = (props) => {
             }
           });
 
-          props.setActiveCropData(newActiveShadow);
+          dispatch({
+            type: 'UPDATE_ACTIVE_CROP_DATA',
+            data: {
+              value: newActiveShadow,
+            },
+          });
+      
         }
       }
     } else {
       // sort back to original values
-      sortReset("selectedCrops");
+      sortReset('selectedCrops');
     }
     setSelectedCropsSortFlag(!selectedCropsSortFlag);
   };
@@ -256,8 +274,10 @@ const CropCalendarViewComponent = (props) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalData, setModalData] = useState([{}]);
 
-  const RenderCrops = ({ cropData, active = true }) => {
-    return cropData.map((crop, index) => {
+  const RenderCrops = ({cropData, active}) => {
+    return cropData
+              .filter(crop => active ? !hasGoalRatingTwoOrLess(crop) : hasGoalRatingTwoOrLess(crop))
+              .map((crop, index) => {
       if (crop.fields["Zone Decision"] === "Include")
         return (
           <TableRow
@@ -611,7 +631,10 @@ const CropCalendarViewComponent = (props) => {
 
             <TableBody className="calendarTableBodyWrapper">
               {activeCropData.length > 0 ? (
-                <RenderCrops active={true} cropData={activeCropData} />
+                <>
+                  <RenderCrops active={true}  cropData={activeCropData} />
+                  <RenderCrops active={false} cropData={activeCropData} />
+                </>
               ) : (
                 ""
               )}
