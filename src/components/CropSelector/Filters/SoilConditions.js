@@ -12,7 +12,6 @@ const SoilConditions = (props) => {
   const { Flooding_Frequency, Drainage_Class } = state.soilData;
   const {
     activeCropData,
-    setActiveCropData,
     cropData,
     filterSidebarItems,
   } = props;
@@ -60,7 +59,12 @@ const SoilConditions = (props) => {
         return areCommonElements(crop.fields["Soil Drainage"], Drainage_Class);
       });
 
-      setActiveCropData(newActives);
+      dispatch({
+        type: 'UPDATE_ACTIVE_CROP_DATA',
+        data: {
+          value: newActives,
+        },
+      });
     } else {
       filterSidebarItems();
     }
@@ -70,7 +74,12 @@ const SoilConditions = (props) => {
         return crop.fields["Flooding Tolerance"] === Flooding_Frequency;
       });
 
-      setActiveCropData(newActives);
+      dispatch({
+        type: 'UPDATE_ACTIVE_CROP_DATA',
+        data: {
+          value: newActives,
+        },
+      });
     } else {
       filterSidebarItems();
     }
@@ -81,7 +90,6 @@ const SoilConditions = (props) => {
     cropData,
     filterSidebarItems,
     selected,
-    setActiveCropData,
   ]);
 
   return (

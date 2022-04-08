@@ -220,7 +220,7 @@ const CropSidebarComponent = (props) => {
     ];
     const booleanKeys = ['Aerial Seeding', 'Frost Seeding'];
 
-    const filtered = crop_data.filter((crop) => {
+    const filtered = crop_data.filter((crop, n, cd) => {
       const totalActiveFilters = Object.keys(nonZeroKeys2).length;
       let i = 0;
       nonZeroKeys2.forEach((keyObject) => {
@@ -242,7 +242,10 @@ const CropSidebarComponent = (props) => {
         }
       });
 
-      return i === totalActiveFilters;
+      cd[n].inactive = i !== totalActiveFilters;
+
+      return true;
+      // return i === totalActiveFilters;
     });
 
     dispatch({

@@ -20,7 +20,7 @@ const CoverCropExplorer = () => {
 
   const [cropDataChanged, setCropDataChanged] = useState(false);
 
-  const activeCropData = state.activeCropData;
+  const activeCropData = state.activeCropData.filter(a => !a.inactive);
 
   useEffect(() => {
     setCropDataChanged((c) => !c);
