@@ -3,12 +3,14 @@
   Styles are created using makeStyles
 */
 
-import { Backdrop, Button, Fade, makeStyles, Modal } from "@material-ui/core";
-import { Close } from "@material-ui/icons";
-import React, { useEffect, useState } from "react";
+import { Backdrop, Button, Fade, makeStyles, Modal, IconButton } from "@material-ui/core";
+import { Close, Print } from "@material-ui/icons";
+import React, { useEffect, useState, useContext } from "react";
 import { CropImage, zoneIcon } from "../../shared/constants";
 import "../../styles/cropDetailsModal.scss";
 import InformationSheetContent from "../InformationSheet/InformationSheetContent";
+import ReactGA from "react-ga";
+import { Context } from "../../store/Store";
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -34,21 +36,54 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const CropDetailsModalComponent = (props) => {
+  const {state} = useContext(Context);  
   let crop = props.crop;
   const classes = useStyles();
   const [modalData, setModalData] = useState({});
 
   useEffect(() => {
     setModalData(crop);
+
+    const kd = (e) => {
+      if (e.key === 'p' && e.ctrlKey) {
+        e.preventDefault();
+        print();
+      }
+    } // kd
+
+    document.addEventListener('keydown', kd);
+
+    return () => {
+      document.removeEventListener('keydown', kd);
+    }
   }, [crop]);
+
+  useEffect(() => {
+    if (state.consent === true) {
+      ReactGA.initialize('UA-181903489-1');
+      ReactGA.pageview('information sheet');
+    }
+  }, [state.consent]);
 
   const handleModalClose = () => {
     props.setModalOpen(!props.modalOpen);
   };
 
+  const print = () => {
+    if (state.consent === true) {
+      ReactGA.event({
+        category: 'Information Sheet',
+        action: 'Print',
+        label: document.title
+      });
+    }
+    
+    document.querySelector('#PDF').contentWindow.print();
+  } // print
+
   return (
     <Modal
-      aria-labelledby="coover-crop-modal-title"
+      aria-labelledby="cover-crop-modal-title"
       aria-describedby="cover-crop-modal-description"
       className={classes.modal}
       open={props.modalOpen}
@@ -142,23 +177,32 @@ const CropDetailsModalComponent = (props) => {
                             style={{ background: "#2D7B7B", color: "white" }}
                           >
                             <div className="row">
-                              <div className="col-4">
-                                <Button
-                                  style={{ color: "white" }}
-                                  className="dataDict"
-                                  onClick={() => {
-                                    window.open("/data-dictionary", "_blank");
-                                  }}
-                                >
-                                  {zoneIcon(20, 20)}
-                                  <span className="pl-2">
-                                    Plant Hardiness Zone {crop.fields.Zone} Dataset
+                              <div className="col-12">
+                                {zoneIcon(20, 20)}
+                                <strong className="pl-2">
+                                  PLANT HARDINESS ZONE {crop.fields.Zone} DATASET
+                                  <span className="noprint">
+                                    <Button
+                                      style={{ color: "white", textTransform: "none", marginLeft: "2em" }}
+                                      className="dataDict"
+                                      onClick={() => {
+                                        window.open("/data-dictionary", "_blank");
+                                      }}
+                                    >
+                                      Data Dictionary
+                                    </Button>
                                   </span>
-                                </Button>
+                                  <span className="noprint">
+                                    <IconButton
+                                      title="Print"
+                                      style={{color: "white", marginLeft: "1em"}}
+                                      onClick={print}
+                                    >
+                                      <Print />
+                                    </IconButton>
+                                  </span>
+                                </strong>
                               </div>
-                              <div className="col-2"></div>
-                              <div className="col-4"></div>
-                              <div className="col-2 text-right"></div>
                             </div>
                           </div>
                         </div>

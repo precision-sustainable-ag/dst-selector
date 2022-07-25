@@ -33,7 +33,10 @@ const useStyles = makeStyles((theme) => ({
 
 const LocationComponent = ({ title, caller }) => {
   const classes = useStyles();
-  const [state, dispatch] = useContext(Context);
+  const {state, dispatch} = useContext(Context);
+  const section  = window.location.href.includes('selector') ? 'selector' : 'explorer';
+  const sfilters = state[section];
+
   const [showRestartPrompt, setShowRestartPrompt] = useState(false);
   const [restartAccept, setRestartAccept] = useState(false);
   const [zoneSelection, setZoneSelection] = useState(7);
@@ -153,21 +156,15 @@ const LocationComponent = ({ title, caller }) => {
       <div className="row boxContainerRow" style={{ minHeight: "520px" }}>
         <div className="col-xl-6 col-lg-12">
           <div className="container-fluid">
-            <div className="row">
-              <div className="col-12">
-                <Typography variant="h4">
-                  Where is your field located?
-                </Typography>
-              </div>
-            </div>
-            <div className="row pt-3">
-              <div className="col-12">
-                <Typography variant="body1" align="left">
-                  Enter your USDA plant hardiness zone, address, or zip code and
-                  hit <Search fontSize="inherit" /> to determine your location.
-                </Typography>
-              </div>
-            </div>
+            <Typography variant="h4">
+              Where is your field located?
+            </Typography>
+
+            <Typography variant="body1" align="left" className="pt-3">
+              Enter your USDA plant hardiness zone, address, or zip code and
+              hit <Search fontSize="inherit" /> to determine your location.
+            </Typography>
+
             <div className="row pt-3 mt-4">
               <div className="col-md-9 col-lg-8 col-sm-12 row">
                 <GoogleAutocomplete
@@ -190,7 +187,7 @@ const LocationComponent = ({ title, caller }) => {
                       textAlign: "left",
                     }}
                     onChange={handleZoneChange}
-                    value={state.zone}
+                    value={sfilters.zone}
                   >
                     <MenuItem value={4} key={4}>
                       Zone 4

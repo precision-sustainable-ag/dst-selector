@@ -14,15 +14,17 @@ import ConsentModal from "./ConsentModal";
 import ReactGA from "react-ga";
 
 const CoverCropExplorer = () => {
-  const [state] = useContext(Context);
+  const {state} = useContext(Context);
+  const section  = window.location.href.includes('selector') ? 'selector' : 'explorer';
+  const sfilters = state[section];
+
   const [cropDataChanged, setCropDataChanged] = useState(false);
-  const [activeCropData, setActiveCropData] = useState([]);
-  const [inactiveCropData, setInactiveCropData] = useState([]);
-  const [cropName, setCropName] = useState("");
+
+  const activeCropData = state.activeCropData.filter(a => !a.inactive);
 
   useEffect(() => {
     setCropDataChanged((c) => !c);
-  }, [state.zone]);
+  }, [sfilters.zone]);
 
   useEffect(() => {
     if (state.consent === true) {
@@ -37,25 +39,6 @@ const CoverCropExplorer = () => {
     document.title = "Cover Crop Explorer";
   }, []);
 
-  const handleSearchChange = (e) => {
-    setCropName(e.target.value);
-    let { cropData } = state;
-
-    let search = e.target.value.toLowerCase().match(/\w+/g);
-
-    const crop_data = cropData.filter((crop) => {
-      const match = (parm) => {
-        const m = crop.fields[parm].toLowerCase().match(/\w+/g);
-
-        return !search || search.every((s) => m.some((t) => t.includes(s)));
-      };
-
-      return match("Cover Crop Name") || match("Scientific Name");
-    });
-
-    setActiveCropData(crop_data);
-  };
-
   return (
     <div className="contentWrapper">
       <ConsentModal consent={state.consent} />
@@ -66,20 +49,14 @@ const CoverCropExplorer = () => {
             <CropSidebarComponent
               from={"explorer"}
               cropDataChanged={cropDataChanged}
-              cropData={state.cropData}
               activeCropData={
                 activeCropData.length > 0 ? activeCropData : state.cropData
               }
-              setActiveCropData={setActiveCropData}
-              inactiveCropData={inactiveCropData}
-              setInactiveCropData={setInactiveCropData}
               isListView={true}
-              handleSearchChange={handleSearchChange}
-              searchValue={cropName}
             />
           </div>
           <div className="col-md-12 col-lg-9 col-xl-10 col-12">
-            {state.zone === "" ? (
+            {sfilters.zone === "" ? (
               <Grid container alignItems="center" justifyContent="center">
                 <Grid item xs={12}>
                   <Typography variant="h5" align="center">
@@ -92,9 +69,6 @@ const CoverCropExplorer = () => {
                 cropDataChanged={cropDataChanged}
                 cropData={state.cropData}
                 activeCropData={activeCropData}
-                setActiveCropData={setActiveCropData}
-                inactiveCropData={inactiveCropData}
-                setInactiveCropData={setInactiveCropData}
               />
             )}
           </div>
