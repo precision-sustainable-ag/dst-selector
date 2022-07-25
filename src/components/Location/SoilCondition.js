@@ -17,7 +17,7 @@ import { Context } from "../../store/Store";
 import "../../styles/soilConditions.scss";
 
 const SoilCondition = (props) => {
-  const [state, dispatch] = useContext(Context);
+  const {state, dispatch} = useContext(Context);
   const { soilData, soilDataOriginal, markers } = state;
   const [tilingCheck, setTilingCheck] = useState(false);
 

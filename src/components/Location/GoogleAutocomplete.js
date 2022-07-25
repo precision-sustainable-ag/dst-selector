@@ -53,7 +53,7 @@ export default function GoogleAutocomplete({
   selectedToEditSite,
   setSelectedToEditSite,
 }) {
-  const [state, dispatch] = useContext(Context);
+  const {state, dispatch} = useContext(Context);
   const classes = useStyles();
   const [value, setValue] = React.useState(null);
   const [inputValue, setInputValue] = React.useState(
@@ -126,10 +126,8 @@ export default function GoogleAutocomplete({
         );
 
         if (zipCode.length === 0) {
-          const lonBounds = results[0].geometry.bounds.Hb;
-          const lonCenter = (lonBounds.g + lonBounds.i) / 2;
-          const latBounds = results[0].geometry.bounds.tc;
-          const latCenter = (latBounds.g + latBounds.i) / 2;
+          const lonCenter = results[0].geometry.location.lng();
+          const latCenter = results[0].geometry.location.lat();
 
           fetchLocalData
             .fetchZipFromLatLng(latCenter, lonCenter)
@@ -160,6 +158,8 @@ export default function GoogleAutocomplete({
       }
     },
     fetchGeocode: (results, county, main_text, zipCode) => {
+      county = county || [{}];
+
       dispatch({
         type: "CHANGE_ADDRESS_VIA_MAP",
         data: {
@@ -168,6 +168,7 @@ export default function GoogleAutocomplete({
           addressVerified: true,
         },
       });
+
       if (zipCode.length === 0) {
         setSelectedToEditSite({
           ...selectedToEditSite,
@@ -187,7 +188,7 @@ export default function GoogleAutocomplete({
           zipCode: parseInt(zipCode[0].long_name),
         });
       }
-    },
+    } 
   };
 
   const fetchLocationDetails = ({ place_id, structured_formatting }) => {
@@ -267,8 +268,15 @@ export default function GoogleAutocomplete({
   }, [value, inputValue, fetchData]);
 
   return (
+    /*
+     * RICK'S NOTE:
+     * This causes a "ghost" effect on FIND YOUR LOCATION:
+     *   style={{ zIndex: 1000003 }}
+     * Doesn't seem to be needed.
+     * TODO: Remove after 5/1/2022
+    */
+
     <Autocomplete
-      style={{ zIndex: 1000003 }}
       id="google-map-demo"
       fullWidth
       getOptionLabel={(option) =>

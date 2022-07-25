@@ -15,9 +15,11 @@ import DictionaryContent from "./DictionaryContent";
 
 const InformationSheetDictionary = (props) => {
   const [dictionary, setDictionary] = useState([]);
-  const [state] = useContext(Context);
+  const {state} = useContext(Context);
+  const section  = window.location.href.includes('selector') ? 'selector' : 'explorer';
+  const sfilters = state[section];
 
-  const zone = props.zone ? props.zone : state.zone;
+  const zone = props.zone ? props.zone : sfilters.zone;
 
   useEffect(() => {
     document.title = "Data Dictionary";
