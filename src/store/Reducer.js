@@ -4,6 +4,18 @@
 
 const Reducer = (state, action) => {
   switch (action.type) {
+    case "CROP_SEARCH": {
+      return {...state, cropSearch: action.data.value};
+    }
+
+    case "UPDATE_ACTIVE_CROP_DATA": {
+      return {...state, activeCropData: action.data.value}
+    }
+
+    case "LAST_ZIP_CODE": {
+      return {...state, lastZipCode: action.data.value};
+    }
+
     case "UPDATE_CONSENT": {
       if (action.data.consent === true) {
         console.log("consent: true");
@@ -70,6 +82,12 @@ const Reducer = (state, action) => {
         ...state,
         zoneText: action.data.zoneText,
         zone: action.data.zone,
+      };
+    }
+    case "UPDATE_LAST_ZONE": {
+      return {
+        ...state,
+        lastZone: action.data.value,
       };
     }
     case "CHANGE_ADDRESS": {
@@ -211,6 +229,7 @@ const Reducer = (state, action) => {
       return {
         ...state,
         cropData: action.data,
+        activeCropData: action.data,
       };
     }
 

@@ -13,7 +13,6 @@ import {
 } from "@material-ui/core";
 import { ArrowBack, ArrowForward, KeyboardArrowUp } from "@material-ui/icons";
 import React, { useContext, useEffect, useState } from "react";
-import { flipCoverCropName } from "../../shared/constants";
 import { Context } from "../../store/Store";
 import "../../styles/cropSelector.scss";
 import MyCoverCropList from "../MyCoverCropList/MyCoverCropList";
@@ -63,9 +62,9 @@ const CropSelector = (props) => {
   const [state, dispatch] = useContext(Context);
   let [showGrowthWindow, setShowGrowthWindow] = useState(true);
   const [sortPreference, setSortPreference] = useState("desc");
-  const [activeCropData, setActiveCropData] = useState([]);
-  const [coverCropName, setCoverCropName] = useState("");
   const { selectedGoals } = state;
+
+  const activeCropData = state.activeCropData;
 
   // toggles list view and calendar view
   let [isListView, setIsListView] = useState(true);
@@ -139,7 +138,12 @@ const CropSelector = (props) => {
                 activeObjKeys,
                 ["asc", "asc", "asc"]
               );
-              setActiveCropData(updatedCropData);
+              dispatch({
+                type: "UPDATE_ACTIVE_CROP_DATA",
+                data: {
+                  value: updatedCropData,
+                },
+              });
             }
             setSortPreference("asc");
             break;
@@ -151,7 +155,12 @@ const CropSelector = (props) => {
                 activeObjKeys,
                 ["desc", "desc", "desc"]
               );
-              setActiveCropData(updatedCropData);
+              dispatch({
+                type: "UPDATE_ACTIVE_CROP_DATA",
+                data: {
+                  value: updatedCropData,
+                },
+              });
             }
             setSortPreference("desc");
             break;
@@ -205,33 +214,6 @@ const CropSelector = (props) => {
     setComparisonView(!comparisonView);
   };
   
-  const clearCoverCropNameSearch = () => {
-    setCoverCropName("");
-    setActiveCropData(cropData);
-  };
-
-  const covercropsNamesFilter = (e) => {
-    setCoverCropName(e.target.value);
-
-    if (e.target.value === "") {
-      setActiveCropData(cropData);
-    } else {
-      let search = e.target.value.toLowerCase().match(/\w+/g);
-
-      const newActives = cropData.filter((crop) => {
-        const match = (parm) => {
-          const m = flipCoverCropName(crop.fields[parm]).toLowerCase().match(/\w+/g);
-
-          return !search || search.every((s) => m.some((t) => t.includes(s)));
-        };
-
-        return match("Cover Crop Name") || match("Scientific Name");
-      });
-
-      setActiveCropData(newActives);
-    }
-  };
-
   useEffect(() => {
     if (state.selectedGoals.length === 0) {
       dispatch({
@@ -275,6 +257,7 @@ const CropSelector = (props) => {
   }
   const size = useWindowSize();
   const [showSidebar, setShowSidebar] = useState(true);
+
   return (
     <div className="container-fluid mt-2">
       <div className="row cropSelectorRow mt-3">
@@ -310,12 +293,8 @@ const CropSelector = (props) => {
             activeCropData={
               activeCropData.length > 0 ? activeCropData : cropData
             }
-            setActiveCropData={setActiveCropData}
             cropDataChanged={cropDataChanged}
             comparisonView={comparisonView}
-            coverCropName={coverCropName}
-            covercropsNamesFilter={covercropsNamesFilter}
-            clearCoverCropSearch={clearCoverCropNameSearch}
             toggleComparisonView={toggleComparisonView}
             toggleListView={toggleListView}
             from={"table"}
@@ -333,7 +312,6 @@ const CropSelector = (props) => {
                 cropData={cropData}
                 setCropData={setCropData}
                 activeCropData={activeCropData}
-                setActiveCropData={setActiveCropData}
                 showGrowthWindow={showGrowthWindow}
                 sortAllCrops={sortCropsBy}
                 sortPreference={sortPreference}
@@ -342,7 +320,6 @@ const CropSelector = (props) => {
               <CropCalendarViewComponent
                 cropData={cropData}
                 activeCropData={activeCropData}
-                setActiveCropData={setActiveCropData}
                 showGrowthWindow={showGrowthWindow}
                 sortAllCrops={sortCropsBy}
                 sortPreference={sortPreference}
@@ -359,7 +336,7 @@ const CropSelector = (props) => {
         </ScrollTop>
       </div>
     </div>
-  );
+  )
 };
 
 export default CropSelector;
