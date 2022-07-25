@@ -31,6 +31,7 @@ import Greenbar from "./Greenbar/Greenbar";
 
 const Header = () => {
   let history = useHistory();
+
   const [state, dispatch] = useContext(Context);
   const [collapse, setCollapse] = React.useState(false);
   const [isRoot, setIsRoot] = React.useState(false);
@@ -42,14 +43,23 @@ const Header = () => {
   };
 
   useEffect(() => {
-    if (state.zipCode !== 0) {
+    if (state.zipCode !== state.lastZipCode) {
+      dispatch({
+        type: 'LAST_ZIP_CODE',
+        data: {
+          value: state.zipCode
+        }
+      });
+
       getUSDAZone(state.zipCode)
         .then((response) => {
           if (response.ok) {
             let data = response.json();
             data.then((data) => {
               let zipCode = data.zip;
-              let zone = data.zone;
+              let zone = window.location.search.match(/zone=([^\^]+)/);  // for automating Information Sheet PDFs
+              
+              zone = zone ? zone[1] : data.zone;
 
               if (state.zipCode === parseInt(zipCode)) {
                 if (zone <= 7 && zone >= 4) {
@@ -90,7 +100,7 @@ const Header = () => {
     }
   }, [
     state.zipCode,
-    state.fullAddress,
+    state.lastZipCode,
     dispatch,
     enqueueSnackbar,
     closeSnackbar,
@@ -298,6 +308,16 @@ const Header = () => {
   }, [state.markers, state.zone, state.weatherDataReset]);
 
   useEffect(() => {
+    if (state.zone === state.lastZone) {
+      return;
+    }
+
+    state.lastZone = state.zone;  // TODO
+    // dispatch({
+    //   type: 'UPDATE_LAST_ZONE',
+    //   value: state.zone,
+    // });
+
     let z7Formattedgoal = zone7DataDictionary.filter(
       (data) => data.Category === "Goals" && data.Variable !== "Notes: Goals"
     );

@@ -6,7 +6,7 @@
   styled using makeStyles and withStyles
 */
 
-import { AccordionDetails, makeStyles, Typography } from "@material-ui/core";
+import { AccordionDetails, makeStyles, Typography} from "@material-ui/core";
 import MuiAccordion from "@material-ui/core/Accordion";
 import MuiAccordionSummary from "@material-ui/core/AccordionSummary";
 import { withStyles } from "@material-ui/core/styles";
@@ -25,8 +25,6 @@ import PhotoComponent from "./PhotoComponent";
 import SoilDrainageTimeline from "./SoilDrainageTimeline";
 import sources from "./sources.json";
 import TooltipMaker from "./TooltipMaker";
-
-import ReactGA from "react-ga";
 
 const Accordion = withStyles({
   root: {
@@ -140,13 +138,6 @@ const InformationSheetContent = (props) => {
   const [pdf, setPDF] = useState(false);
 
   useEffect(() => {
-    if (state.consent === true) {
-      ReactGA.initialize('UA-181903489-1');
-      ReactGA.pageview('information sheet');
-    }
-  }, [state.consent]);
-
-  useEffect(() => {
     document.title = crop['Cover Crop Name'] + ' Zone ' + zone;
     fetch(`/pdf/${document.title}.pdf`)
       .then(response => response.text())
@@ -174,33 +165,11 @@ const InformationSheetContent = (props) => {
     setCurrentSources(relevantZones);
     document.body.classList.add('InfoSheet');
 
-    const kd = (e) => {
-      if (e.key === 'p' && (e.altKey || e.ctrlKey)) {
-        e.preventDefault();
-        print();
-      }
-    } // kd
-
-    document.addEventListener('keydown', kd);
-
     return () => {
       document.title = 'Cover Crop Explorer';
       document.body.classList.remove('InfoSheet');
-      document.removeEventListener('keydown', kd);
     }
   }, [crop, zone]);
-
-  const print = () => {
-    if (state.consent === true) {
-      ReactGA.event({
-        category: 'Information Sheet',
-        action: 'Print',
-        label: document.title
-      });
-    }
-    
-    document.querySelector('#PDF').contentWindow.print();
-  } // print
 
   return Object.keys(crop).length > 0 ? (
     <>
@@ -208,17 +177,6 @@ const InformationSheetContent = (props) => {
         pdf && (
           <>
             <iframe id="PDF" title="pdf" src={`/pdf/${document.title}.pdf`}/>
-            <div class="noprint" style={{textAlign: 'right'}}>
-              <button
-                href={`/pdf/${document.title}.pdf`}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => print()}
-                id="PDFButton"
-              >
-                <u>P</u>rint
-              </button>
-            </div>
           </>
         )
       }
