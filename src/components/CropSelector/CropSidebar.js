@@ -87,22 +87,25 @@ const CropSidebarComponent = (props) => {
     comparisonView,
     isListView,
     from,
-    cropData,
-    setActiveCropData,
     cropDataChanged,
     setGrowthWindow,
     toggleComparisonView,
     toggleListView,
-    coverCropName,
-    covercropsNamesFilter,
     clearCoverCropSearch,
     style,
-    searchValue,
-    handleSearchChange,
   } = props;
   const classes = useStyles();
   const [state, dispatch] = useContext(Context);
   const [loading, setLoading] = useState(true);
+
+  const handleSearchChange = (e) => {
+    dispatch({
+      type: 'CROP_SEARCH',
+      data: {
+        value: e.target.value,
+      },
+    });
+  } // handleSearchChange
 
   const [cropFiltersOpen, setCropFiltersOpen] = useState(
     isListView ? true : false
@@ -174,117 +177,132 @@ const CropSidebarComponent = (props) => {
   const firstUpdate = useRef(true);
 
   useEffect(() => {
+    const filterSidebarItems = () => {
+      let crop_data = state.cropData.filter(
+        (crop) => crop.fields["Zone Decision"] === "Include"
+      );
+
+      let search = state.cropSearch.toLowerCase().match(/\w+/g);
+
+      crop_data = state.cropData.filter((crop) => {
+        const match = (parm) => {
+          const m = crop.fields[parm].toLowerCase().match(/\w+/g);
+  
+          return !search || search.every((s) => m.some((t) => t.includes(s)));
+        };
+  
+        return match('Cover Crop Name') || match('Scientific Name');
+      });
+
+      const nonZeroes = Object.keys(sidebarFilterOptions).map((key) => {
+        if (sidebarFilterOptions[key].length !== 0) {
+          return { [key]: sidebarFilterOptions[key] };
+        } else return "";
+      });
+      const nonZeroKeys2 = nonZeroes.filter((val) => val !== "");
+  
+      const nonZeroKeys = nonZeroKeys2.map((obj) => {
+        return Object.keys(obj).toString();
+      });
+  
+      dispatch({
+        type: "UPDATE_FILTER_KEYS",
+        data: {
+          filterKeys: nonZeroKeys,
+        },
+      });
+  
+      if (sidebarFilterOptions["Active Growth Period"].length > 0) {
+        let growthArray = [];
+  
+        if (sidebarFilterOptions["Active Growth Period"].includes("Fall")) {
+          growthArray.push('Sep', 'Oct', 'Nov');
+        }
+        if (sidebarFilterOptions["Active Growth Period"].includes("Winter")) {
+          growthArray.push('Dec', 'Jan', 'Feb');
+        }
+        if (sidebarFilterOptions["Active Growth Period"].includes("Spring")) {
+          growthArray.push('Mar', 'Apr', 'May');
+        }
+        if (sidebarFilterOptions["Active Growth Period"].includes("Summer")) {
+          growthArray.push('Jun', 'Jul', 'Aug');
+        }
+  
+        dispatch({
+          type: "UPDATE_ACTIVE_GROWTH_PERIOD",
+          data: {
+            activeGrowthPeriod: growthArray,
+          },
+        });
+      } else {
+        dispatch({
+          type: "UPDATE_ACTIVE_GROWTH_PERIOD",
+          data: {
+            activeGrowthPeriod: [],
+          },
+        });
+      }
+  
+      if (nonZeroKeys.length > 0) {
+        const arrayKeys = [
+          "Duration",
+          "Active Growth Period",
+          "Winter Survival",
+          "Flowering Trigger",
+          "Root Architecture",
+        ];
+        const booleanKeys = ["Aerial Seeding", "Frost Seeding"];
+  
+        const filtered = crop_data.filter((crop) => {
+          const totalActiveFilters = Object.keys(nonZeroKeys2).length;
+          let i = 0;
+          nonZeroKeys2.forEach((keyObject) => {
+            const key = Object.keys(keyObject);
+            const vals = keyObject[key];
+            if (areCommonElements(arrayKeys, key)) {
+              // Handle array type havlues
+  
+              if (_.intersection(vals, crop.fields[key]).length > 0) {
+                i++;
+              }
+            } else if (areCommonElements(booleanKeys, key)) {
+              //  Handle boolean types
+              if (crop.fields[key]) {
+                i++;
+              }
+            } else if (vals.includes(crop.fields[key])) {
+              i++;
+            }
+          });
+  
+          return i === totalActiveFilters;
+        });
+  
+        dispatch({
+          type: "UPDATE_ACTIVE_CROP_DATA",
+          data: {
+            value: filtered,
+          },
+        });
+      } else {
+        dispatch({
+          type: "UPDATE_ACTIVE_CROP_DATA",
+          data: {
+            value: crop_data,
+          },
+        });
+      }
+      return crop_data;
+    } // filterSidebarItems();
+  
     if (firstUpdate.current) {
       firstUpdate.current = false;
       return;
     }
 
     filterSidebarItems();
-  }, [sidebarFilterOptions]);
+  }, [sidebarFilterOptions, state.cropSearch, state.cropData, dispatch]);
 
-  const filterSidebarItems = () => {
-    const crop_data = cropData.filter(
-      (crop) => crop.fields["Zone Decision"] === "Include"
-    );
-
-    const nonZeroes = Object.keys(sidebarFilterOptions).map((key) => {
-      if (sidebarFilterOptions[key].length !== 0) {
-        return { [key]: sidebarFilterOptions[key] };
-      } else return "";
-    });
-    const nonZeroKeys2 = nonZeroes.filter((val) => val !== "");
-
-    const nonZeroKeys = nonZeroKeys2.map((obj) => {
-      return Object.keys(obj).toString();
-    });
-
-    dispatch({
-      type: "UPDATE_FILTER_KEYS",
-      data: {
-        filterKeys: nonZeroKeys,
-      },
-    });
-    if (sidebarFilterOptions["Active Growth Period"].length > 0) {
-      let growthArray = [];
-
-      if (sidebarFilterOptions["Active Growth Period"].includes("Fall")) {
-        growthArray.push("Sep");
-        growthArray.push("Oct");
-        growthArray.push("Nov");
-      }
-      if (sidebarFilterOptions["Active Growth Period"].includes("Winter")) {
-        growthArray.push("Dec");
-        growthArray.push("Jan");
-        growthArray.push("Feb");
-      }
-      if (sidebarFilterOptions["Active Growth Period"].includes("Spring")) {
-        growthArray.push("Mar");
-        growthArray.push("Apr");
-        growthArray.push("May");
-      }
-      if (sidebarFilterOptions["Active Growth Period"].includes("Summer")) {
-        growthArray.push("Jun");
-        growthArray.push("Jul");
-        growthArray.push("Aug");
-      }
-
-      dispatch({
-        type: "UPDATE_ACTIVE_GROWTH_PERIOD",
-        data: {
-          activeGrowthPeriod: growthArray,
-        },
-      });
-    } else {
-      dispatch({
-        type: "UPDATE_ACTIVE_GROWTH_PERIOD",
-        data: {
-          activeGrowthPeriod: [],
-        },
-      });
-    }
-
-    if (nonZeroKeys.length > 0) {
-      const arrayKeys = [
-        "Duration",
-        "Active Growth Period",
-        "Winter Survival",
-        "Flowering Trigger",
-        "Root Architecture",
-      ];
-      const booleanKeys = ["Aerial Seeding", "Frost Seeding"];
-
-      const filtered = crop_data.filter((crop) => {
-        const totalActiveFilters = Object.keys(nonZeroKeys2).length;
-        let i = 0;
-        nonZeroKeys2.forEach((keyObject) => {
-          const key = Object.keys(keyObject);
-          const vals = keyObject[key];
-          if (areCommonElements(arrayKeys, key)) {
-            // Handle array type havlues
-
-            if (_.intersection(vals, crop.fields[key]).length > 0) {
-              i++;
-            }
-          } else if (areCommonElements(booleanKeys, key)) {
-            //  Handle boolean types
-            if (crop.fields[key]) {
-              i++;
-            }
-          } else {
-            if (vals.includes(crop.fields[key])) {
-              i++;
-            }
-          }
-        });
-
-        return i === totalActiveFilters;
-      });
-
-      setActiveCropData(filtered);
-    } else {
-      setActiveCropData(crop_data);
-    }
-  };
   const areCommonElements = (arr1, arr2) => {
     const arr2Set = new Set(arr2);
     return arr1.some((el) => arr2Set.has(el));
@@ -331,7 +349,13 @@ const CropSidebarComponent = (props) => {
       seedsRef.current.resetFilters();
       terminationRef.current.resetFilters();
       weedsRef.current.resetFilters();
-      setActiveCropData(state.cropData);
+      
+      dispatch({
+        type: "UPDATE_ACTIVE_CROP_DATA",
+        data: {
+          value: state.cropData,
+        },
+      });
     }
     setSidebarFilterOptions({
       "Cover Crop Group": [], //string
@@ -679,6 +703,164 @@ const CropSidebarComponent = (props) => {
     }
   }, [comparisonView, state.myCoverCropActivationFlag]);
 
+  const Filter = (Component, ref, filter) => {
+    return (
+      <Grid container spacing={1}>
+        <Grid item>
+          <Component
+            ref={ref}
+            filters={filter}
+            sidebarFilterOptions={
+              sidebarFilterOptions
+            }
+            setSidebarFilterOptions={
+              setSidebarFilterOptions
+            }
+            resetAllFilters={resetAllFilters}
+            {...props}
+          />
+        </Grid>
+      </Grid>
+    )
+  } // Filter
+
+  const output = (filter) => {
+    switch (filter.name.toUpperCase()) {
+      case 'COVER CROP TYPE':
+        return <>{Filter(CoverCropType, coverCropTypeRef, filter)}</>
+      case 'ENVIRONMENTAL TOLERANCES':
+        return <>{Filter(EnvironmentalTolerance, envTolRef, filter)}</>
+      case 'SEEDS':
+        return <>{Filter(Seeds, seedsRef, filter)}</>
+      case 'SEEDING METHODS':
+        return  <>{Filter(SeedingMethods, seedingMethodRef, filter)}</>
+      case 'GROWTH':
+        return  <>{Filter(Growth, growthRef, filter)}</>
+      case 'ROOTS':
+        return  <>{Filter(Roots, rootsRef, filter)}</>
+      case 'TERMINATION METHODS':
+        return  <>{Filter(TerminationMethods, terminationRef, filter)}</>
+      case 'WEEDS':
+        return  <>{Filter(Weeds, weedsRef, filter)}</>
+      default:
+    }
+  } // output
+
+  const filters = () => (
+    sidebarFilters.map((filter, index) => {
+      if (output(filter)) {
+        return (
+          <Fragment key={index}>
+            {filter.description !== null ? (
+              <Tooltip
+                interactive
+                arrow
+                placement="right-start"
+                title={
+                  <div className="filterTooltip">
+                    <p>{filter.description}</p>
+                  </div>
+                }
+                key={`tooltip${index}`}
+              >
+                <ListItem
+                  // className={classes.nested}
+                  className={
+                    sidebarFiltersOpen[index].open
+                      ? "filterOpen"
+                      : "filterClose"
+                  }
+                  component="div"
+                  onClick={() =>
+                    toggleSidebarFilterItems(index)
+                  }
+                >
+                  <ListItemText
+                    primary={
+                      <Typography variant="body2">
+                        {filter.name.toUpperCase()}
+                      </Typography>
+                    }
+                  />
+                  {sidebarFiltersOpen[index].open ? (
+                    <ExpandLess />
+                  ) : (
+                    <ExpandMore />
+                  )}
+                </ListItem>
+              </Tooltip>
+            ) : (
+              <ListItem
+                // className={classes.nested}
+                className={
+                  sidebarFiltersOpen[index].open
+                    ? "filterOpen"
+                    : "filterClose"
+                }
+                component="div"
+                onClick={() => toggleSidebarFilterItems(index)}
+              >
+                <ListItemText
+                  primary={
+                    <Typography variant="body2">
+                      {filter.name.toUpperCase()}
+                    </Typography>
+                  }
+                />
+                {sidebarFiltersOpen[index].open ? (
+                  <ExpandLess />
+                ) : (
+                  <ExpandMore />
+                )}
+              </ListItem>
+            )}
+
+            <Collapse
+              in={sidebarFiltersOpen[index].open}
+              timeout="auto"
+            >
+              <List component="div" disablePadding>
+                <ListItem
+                  // className={classes.subNested}
+                  // title={filter.description}
+                  component="div"
+                >
+                  {output(filter)}
+                </ListItem>
+              </List>
+            </Collapse>
+          </Fragment>
+        );
+      } else {
+        return <Fragment />;
+      }
+    })
+  ); // filters
+
+  const filtersList = () => (
+    <List component="div" disablePadding className="cropFilters">
+      {filtersSelected ? (
+        <ListItem onClick={() => {}}>
+          <ListItemText
+            primary={
+              <Typography
+                variant="button"
+                className="text-uppercase text-left text-danger font-weight-bold"
+                onClick={resetAllFilters}
+                style={{ cursor: "pointer" }}
+              >
+                Clear Filters
+              </Typography>
+            }
+          />
+        </ListItem>
+      ) : (
+        <ListItem></ListItem>
+      )}
+      {filters()}
+    </List>
+  ); // filterList
+
   if (!loading) {
     return from === "myCoverCropListStatic" ? (
       <div className="row">
@@ -808,8 +990,8 @@ const CropSidebarComponent = (props) => {
                           color="secondary"
                           label="Cover Crop Name"
                           helperText="Search by cover crop name"
-                          value={coverCropName}
-                          onChange={covercropsNamesFilter}
+                          value={state.cropSearch}
+                          onChange={handleSearchChange}
                           InputProps={{
                             endAdornment: (
                               <InputAdornment position="end">
@@ -817,11 +999,7 @@ const CropSidebarComponent = (props) => {
                                   onClick={clearCoverCropSearch}
                                   size="small"
                                 >
-                                  {coverCropName.length > 1 ? (
-                                    <Clear fontSize="inherit" />
-                                  ) : (
-                                    ""
-                                  )}
+                                  {state.cropSearch.length > 0 && <Clear fontSize="inherit" />}
                                 </IconButton>
                               </InputAdornment>
                             ),
@@ -1140,7 +1318,7 @@ const CropSidebarComponent = (props) => {
                             color="secondary"
                             label="Cover Crop Name"
                             helperText="Search by cover crop name"
-                            value={searchValue}
+                            value={state.cropSearch}
                             onChange={handleSearchChange}
                           />
                         </ListItemText>
@@ -1150,288 +1328,10 @@ const CropSidebarComponent = (props) => {
                     ""
                   )}
 
-                  {from === "explorer" ? (
-                    <List component="div" disablePadding className="cropFilters">
-                      {filtersSelected ? (
-                        <ListItem onClick={() => {}}>
-                          <ListItemText
-                            primary={
-                              <Typography
-                                variant="button"
-                                className="text-uppercase text-left text-danger font-weight-bold"
-                                onClick={resetAllFilters}
-                                style={{ cursor: "pointer" }}
-                              >
-                                Clear Filters
-                              </Typography>
-                            }
-                          />
-                        </ListItem>
-                      ) : (
-                        <ListItem></ListItem>
-                      )}
-
-                      {sidebarFilters.map((filter, index) => {
-                        if (
-                          filter.name !== "Soil Conditions" &&
-                          filter.name !== "Disease & Non Weed Pests"
-                        ) {
-                          // if (true) {
-                          return (
-                            <Fragment key={index}>
-                              {filter.description !== null ? (
-                                <Tooltip
-                                  interactive
-                                  arrow
-                                  placement="right-start"
-                                  title={
-                                    <div className="filterTooltip">
-                                      <p>{filter.description}</p>
-                                    </div>
-                                  }
-                                  key={`tooltip${index}`}
-                                >
-                                  <ListItem
-                                    // className={classes.nested}
-                                    className={
-                                      sidebarFiltersOpen[index].open
-                                        ? "filterOpen"
-                                        : "filterClose"
-                                    }
-                                    component="div"
-                                    onClick={() =>
-                                      toggleSidebarFilterItems(index)
-                                    }
-                                  >
-                                    <ListItemText
-                                      primary={
-                                        <Typography variant="body2">
-                                          {filter.name.toUpperCase()}
-                                        </Typography>
-                                      }
-                                    />
-                                    {sidebarFiltersOpen[index].open ? (
-                                      <ExpandLess />
-                                    ) : (
-                                      <ExpandMore />
-                                    )}
-                                  </ListItem>
-                                </Tooltip>
-                              ) : (
-                                <ListItem
-                                  // className={classes.nested}
-                                  className={
-                                    sidebarFiltersOpen[index].open
-                                      ? "filterOpen"
-                                      : "filterClose"
-                                  }
-                                  component="div"
-                                  onClick={() => toggleSidebarFilterItems(index)}
-                                >
-                                  <ListItemText
-                                    primary={
-                                      <Typography variant="body2">
-                                        {filter.name.toUpperCase()}
-                                      </Typography>
-                                    }
-                                  />
-                                  {sidebarFiltersOpen[index].open ? (
-                                    <ExpandLess />
-                                  ) : (
-                                    <ExpandMore />
-                                  )}
-                                </ListItem>
-                              )}
-
-                              <Collapse
-                                in={sidebarFiltersOpen[index].open}
-                                timeout="auto"
-                              >
-                                <List component="div" disablePadding>
-                                  <ListItem
-                                    // className={classes.subNested}
-                                    // title={sidebarFilters[index].description}
-                                    component="div"
-                                  >
-                                    {filter.name.toUpperCase() ===
-                                    "COVER CROP TYPE" ? (
-                                      <CoverCropType
-                                        ref={coverCropTypeRef}
-                                        filters={sidebarFilters[index]}
-                                        sidebarFilterOptions={
-                                          sidebarFilterOptions
-                                        }
-                                        setSidebarFilterOptions={
-                                          setSidebarFilterOptions
-                                        }
-                                        resetAllFilters={resetAllFilters}
-                                        {...props}
-                                      />
-                                    ) : (
-                                      ""
-                                    )}
-
-                                    {filter.name.toUpperCase() ===
-                                    "ENVIRONMENTAL TOLERANCES" ? (
-                                      <EnvironmentalTolerance
-                                        ref={envTolRef}
-                                        filters={sidebarFilters[index]}
-                                        sidebarFilterOptions={
-                                          sidebarFilterOptions
-                                        }
-                                        setSidebarFilterOptions={
-                                          setSidebarFilterOptions
-                                        }
-                                        resetAllFilters={resetAllFilters}
-                                        {...props}
-                                      />
-                                    ) : (
-                                      ""
-                                    )}
-
-                                    {filter.name.toUpperCase() === "SEEDS" ? (
-                                      <Seeds
-                                        ref={seedsRef}
-                                        filters={sidebarFilters[index]}
-                                        sidebarFilterOptions={
-                                          sidebarFilterOptions
-                                        }
-                                        setSidebarFilterOptions={
-                                          setSidebarFilterOptions
-                                        }
-                                        resetAllFilters={resetAllFilters}
-                                        {...props}
-                                      />
-                                    ) : (
-                                      ""
-                                    )}
-                                    {filter.name.toUpperCase() ===
-                                    "SEEDING METHODS" ? (
-                                      <SeedingMethods
-                                        ref={seedingMethodRef}
-                                        filters={sidebarFilters[index]}
-                                        sidebarFilterOptions={
-                                          sidebarFilterOptions
-                                        }
-                                        setSidebarFilterOptions={
-                                          setSidebarFilterOptions
-                                        }
-                                        resetAllFilters={resetAllFilters}
-                                        {...props}
-                                      />
-                                    ) : (
-                                      ""
-                                    )}
-
-                                    {filter.name.toUpperCase() ===
-                                    "SOIL CONDITIONS" ? (
-                                      <SoilConditions
-                                        filters={sidebarFilters[index]}
-                                        sidebarFilterOptions={
-                                          sidebarFilterOptions
-                                        }
-                                        setSidebarFilterOptions={
-                                          setSidebarFilterOptions
-                                        }
-                                        resetAllFilters={resetAllFilters}
-                                        filterSidebarItems={filterSidebarItems}
-                                        {...props}
-                                      />
-                                    ) : (
-                                      ""
-                                    )}
-
-                                    {filter.name.toUpperCase() === "GROWTH" ? (
-                                      <Grid container spacing={1}>
-                                        <Grid item>
-                                          <Growth
-                                            ref={growthRef}
-                                            filters={sidebarFilters[index]}
-                                            sidebarFilterOptions={
-                                              sidebarFilterOptions
-                                            }
-                                            setSidebarFilterOptions={
-                                              setSidebarFilterOptions
-                                            }
-                                            resetAllFilters={resetAllFilters}
-                                            {...props}
-                                          />
-                                        </Grid>
-                                      </Grid>
-                                    ) : (
-                                      ""
-                                    )}
-                                    {filter.name.toUpperCase() === "ROOTS" ? (
-                                      <Grid container spacing={1}>
-                                        <Grid item>
-                                          <Roots
-                                            ref={rootsRef}
-                                            filters={sidebarFilters[index]}
-                                            sidebarFilterOptions={
-                                              sidebarFilterOptions
-                                            }
-                                            setSidebarFilterOptions={
-                                              setSidebarFilterOptions
-                                            }
-                                            resetAllFilters={resetAllFilters}
-                                            {...props}
-                                          />
-                                        </Grid>
-                                      </Grid>
-                                    ) : (
-                                      ""
-                                    )}
-                                    {filter.name.toUpperCase() ===
-                                    "TERMINATION METHODS" ? (
-                                      <TerminationMethods
-                                        ref={terminationRef}
-                                        filters={sidebarFilters[index]}
-                                        sidebarFilterOptions={
-                                          sidebarFilterOptions
-                                        }
-                                        setSidebarFilterOptions={
-                                          setSidebarFilterOptions
-                                        }
-                                        resetAllFilters={resetAllFilters}
-                                        {...props}
-                                      />
-                                    ) : (
-                                      ""
-                                    )}
-                                    {filter.name.toUpperCase() === "BENEFICIALS"
-                                      ? ""
-                                      : ""}
-                                    {filter.name.toUpperCase() === "WEEDS" ? (
-                                      <Weeds
-                                        ref={weedsRef}
-                                        filters={sidebarFilters[index]}
-                                        sidebarFilterOptions={
-                                          sidebarFilterOptions
-                                        }
-                                        setSidebarFilterOptions={
-                                          setSidebarFilterOptions
-                                        }
-                                        resetAllFilters={resetAllFilters}
-                                        {...props}
-                                      />
-                                    ) : (
-                                      ""
-                                    )}
-                                    {/* code at end of page */}
-                                    {filter.name.toUpperCase() ===
-                                    "DISEASE & NON WEED PESTS"
-                                      ? ""
-                                      : ""}
-                                  </ListItem>
-                                </List>
-                              </Collapse>
-                            </Fragment>
-                          );
-                        } else return <Fragment />;
-                      })}
-                    </List>
-                  ) : (
-                    <Fragment>
+                  {from === 'explorer' ?
+                    filtersList()
+                    : (
+                    <>
                       <ListItem
                         button
                         onClick={() => handleClick(2)}
@@ -1447,301 +1347,13 @@ const CropSidebarComponent = (props) => {
                         {cropFiltersOpen ? <ExpandLess /> : <ExpandMore />}
                       </ListItem>
                       <Collapse in={cropFiltersOpen} timeout="auto">
-                        <List
-                          component="div"
-                          disablePadding
-                          className="cropFilters"
-                        >
-                          {filtersSelected ? (
-                            <ListItem onClick={() => {}}>
-                              <ListItemText
-                                primary={
-                                  <Typography
-                                    variant="button"
-                                    className="text-uppercase text-left text-danger font-weight-bold"
-                                    onClick={resetAllFilters}
-                                    style={{ cursor: "pointer" }}
-                                  >
-                                    Clear Filters
-                                  </Typography>
-                                }
-                              />
-                            </ListItem>
-                          ) : (
-                            <ListItem></ListItem>
-                          )}
-
-                          {sidebarFilters.map((filter, index) => {
-                            if (
-                              filter.name !== "Soil Conditions" &&
-                              filter.name !== "Disease & Non Weed Pests"
-                            ) {
-                              // if (true) {
-                              return (
-                                <Fragment key={index}>
-                                  {filter.description !== null ? (
-                                    <Tooltip
-                                      interactive
-                                      arrow
-                                      placement="right-start"
-                                      title={
-                                        <div className="filterTooltip">
-                                          <p>{filter.description}</p>
-                                        </div>
-                                      }
-                                      key={`tooltip${index}`}
-                                    >
-                                      <ListItem
-                                        // className={classes.nested}
-                                        className={
-                                          sidebarFiltersOpen[index].open
-                                            ? "filterOpen"
-                                            : "filterClose"
-                                        }
-                                        component="div"
-                                        onClick={() =>
-                                          toggleSidebarFilterItems(index)
-                                        }
-                                      >
-                                        <ListItemText
-                                          primary={
-                                            <Typography variant="body2">
-                                              {filter.name.toUpperCase()}
-                                            </Typography>
-                                          }
-                                        />
-                                        {sidebarFiltersOpen[index].open ? (
-                                          <ExpandLess />
-                                        ) : (
-                                          <ExpandMore />
-                                        )}
-                                      </ListItem>
-                                    </Tooltip>
-                                  ) : (
-                                    <ListItem
-                                      className={
-                                        sidebarFiltersOpen[index].open
-                                          ? "filterOpen"
-                                          : "filterClose"
-                                      }
-                                      component="div"
-                                      onClick={() =>
-                                        toggleSidebarFilterItems(index)
-                                      }
-                                    >
-                                      <ListItemText
-                                        primary={
-                                          <Typography variant="body2">
-                                            {filter.name.toUpperCase()}
-                                          </Typography>
-                                        }
-                                      />
-                                      {sidebarFiltersOpen[index].open ? (
-                                        <ExpandLess />
-                                      ) : (
-                                        <ExpandMore />
-                                      )}
-                                    </ListItem>
-                                  )}
-
-                                  <Collapse
-                                    in={sidebarFiltersOpen[index].open}
-                                    timeout="auto"
-                                  >
-                                    <List component="div" disablePadding>
-                                      <ListItem
-                                        // className={classes.subNested}
-                                        // title={sidebarFilters[index].description}
-                                        component="div"
-                                      >
-                                        {filter.name.toUpperCase() ===
-                                        "COVER CROP TYPE" ? (
-                                          <CoverCropType
-                                            ref={coverCropTypeRef}
-                                            filters={sidebarFilters[index]}
-                                            sidebarFilterOptions={
-                                              sidebarFilterOptions
-                                            }
-                                            setSidebarFilterOptions={
-                                              setSidebarFilterOptions
-                                            }
-                                            resetAllFilters={resetAllFilters}
-                                            {...props}
-                                          />
-                                        ) : (
-                                          ""
-                                        )}
-
-                                        {filter.name.toUpperCase() ===
-                                        "ENVIRONMENTAL TOLERANCES" ? (
-                                          <EnvironmentalTolerance
-                                            ref={envTolRef}
-                                            filters={sidebarFilters[index]}
-                                            sidebarFilterOptions={
-                                              sidebarFilterOptions
-                                            }
-                                            setSidebarFilterOptions={
-                                              setSidebarFilterOptions
-                                            }
-                                            resetAllFilters={resetAllFilters}
-                                            {...props}
-                                          />
-                                        ) : (
-                                          ""
-                                        )}
-
-                                        {filter.name.toUpperCase() === "SEEDS" ? (
-                                          <Seeds
-                                            ref={seedsRef}
-                                            filters={sidebarFilters[index]}
-                                            sidebarFilterOptions={
-                                              sidebarFilterOptions
-                                            }
-                                            setSidebarFilterOptions={
-                                              setSidebarFilterOptions
-                                            }
-                                            resetAllFilters={resetAllFilters}
-                                            {...props}
-                                          />
-                                        ) : (
-                                          ""
-                                        )}
-                                        {filter.name.toUpperCase() === "SEEDING METHODS" ? (
-                                          <SeedingMethods
-                                            ref={seedingMethodRef}
-                                            filters={sidebarFilters[index]}
-                                            sidebarFilterOptions={
-                                              sidebarFilterOptions
-                                            }
-                                            setSidebarFilterOptions={
-                                              setSidebarFilterOptions
-                                            }
-                                            resetAllFilters={resetAllFilters}
-                                            {...props}
-                                          />
-                                        ) : (
-                                          ""
-                                        )}
-
-                                        {filter.name.toUpperCase() ===
-                                        "SOIL CONDITIONS" ? (
-                                          <SoilConditions
-                                            filters={sidebarFilters[index]}
-                                            sidebarFilterOptions={
-                                              sidebarFilterOptions
-                                            }
-                                            setSidebarFilterOptions={
-                                              setSidebarFilterOptions
-                                            }
-                                            resetAllFilters={resetAllFilters}
-                                            filterSidebarItems={
-                                              filterSidebarItems
-                                            }
-                                            {...props}
-                                          />
-                                        ) : (
-                                          ""
-                                        )}
-
-                                        {filter.name.toUpperCase() ===
-                                        "GROWTH" ? (
-                                          <Grid container spacing={1}>
-                                            <Grid item>
-                                              <Growth
-                                                ref={growthRef}
-                                                filters={sidebarFilters[index]}
-                                                sidebarFilterOptions={
-                                                  sidebarFilterOptions
-                                                }
-                                                setSidebarFilterOptions={
-                                                  setSidebarFilterOptions
-                                                }
-                                                resetAllFilters={resetAllFilters}
-                                                {...props}
-                                              />
-                                            </Grid>
-                                          </Grid>
-                                        ) : (
-                                          ""
-                                        )}
-                                        {filter.name.toUpperCase() === "ROOTS" ? (
-                                          <Grid container spacing={1}>
-                                            <Grid item>
-                                              <Roots
-                                                ref={rootsRef}
-                                                filters={sidebarFilters[index]}
-                                                sidebarFilterOptions={
-                                                  sidebarFilterOptions
-                                                }
-                                                setSidebarFilterOptions={
-                                                  setSidebarFilterOptions
-                                                }
-                                                resetAllFilters={resetAllFilters}
-                                                {...props}
-                                              />
-                                            </Grid>
-                                          </Grid>
-                                        ) : (
-                                          ""
-                                        )}
-                                        {filter.name.toUpperCase() ===
-                                        "TERMINATION METHODS" ? (
-                                          <TerminationMethods
-                                            ref={terminationRef}
-                                            filters={sidebarFilters[index]}
-                                            sidebarFilterOptions={
-                                              sidebarFilterOptions
-                                            }
-                                            setSidebarFilterOptions={
-                                              setSidebarFilterOptions
-                                            }
-                                            resetAllFilters={resetAllFilters}
-                                            {...props}
-                                          />
-                                        ) : (
-                                          ""
-                                        )}
-                                        {filter.name.toUpperCase() ===
-                                        "BENEFICIALS"
-                                          ? ""
-                                          : ""}
-                                        {filter.name.toUpperCase() === "WEEDS" ? (
-                                          <Weeds
-                                            ref={weedsRef}
-                                            filters={sidebarFilters[index]}
-                                            sidebarFilterOptions={
-                                              sidebarFilterOptions
-                                            }
-                                            setSidebarFilterOptions={
-                                              setSidebarFilterOptions
-                                            }
-                                            resetAllFilters={resetAllFilters}
-                                            {...props}
-                                          />
-                                        ) : (
-                                          ""
-                                        )}
-                                        {/* code at end of page */}
-                                        {filter.name.toUpperCase() ===
-                                        "DISEASE & NON WEED PESTS"
-                                          ? ""
-                                          : ""}
-                                      </ListItem>
-                                    </List>
-                                  </Collapse>
-                                </Fragment>
-                              );
-                            } else {
-                              return <Fragment />;
-                            }
-                          })}
-                        </List>
+                        {filtersList()}
                       </Collapse>
-                    </Fragment>
+                    </>
                   )}
                 </Fragment>
               ) : (
-                ""
+                ''
               )}
             </List>
           </div>

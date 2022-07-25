@@ -188,6 +188,7 @@ const initialState = {
   fullAddress: "",
   zip: 0,
   zipCode: 0,
+  lastZipCode: 0,
   markersCopy: [],
   markers: [[40.78489145, -74.80733626930342]],
   showAddressChangeBtn: false,
@@ -265,6 +266,9 @@ const initialState = {
   filterKeys: [],
   activeGrowthPeriod: [],
   comparisonKeys: [],
+  cropSearch: '',
+  activeCropData: [],
+  lastZone : '',
 };
 
 const Store = ({ children }) => {
