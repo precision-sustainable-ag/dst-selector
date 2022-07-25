@@ -12,7 +12,7 @@ import { Context } from "../../store/Store";
 import "../../styles/growthWindow.scss";
 
 const GrowthWindowComponent = (props) => {
-  const [state, dispatch] = useContext(Context);
+  const {state, dispatch} = useContext(Context);
   //   const [isCashCropMonth, setIsCashCropMonth] = useState(false);
   let from = props.from;
   let cropData = props.data;

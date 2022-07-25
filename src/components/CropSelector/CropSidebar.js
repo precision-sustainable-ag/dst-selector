@@ -37,8 +37,6 @@ import React, {
   Fragment,
   useContext,
   useEffect,
-  useMemo,
-  useRef,
   useState,
 } from "react";
 import { arrayMove, List as ListMovable } from "react-movable";
@@ -48,31 +46,24 @@ import { Context } from "../../store/Store";
 import "../../styles/cropSidebar.scss";
 import ComparisonBar from "../MyCoverCropList/ComparisonBar/ComparisonBar";
 import DateRangeDialog from "./DateRangeDialog";
-import CoverCropType from "./Filters/CoverCropType";
-import EnvironmentalTolerance from "./Filters/EnvironmentalTolerance";
-import Growth from "./Filters/Growth";
-import Roots from "./Filters/Roots";
-import SeedingMethods from "./Filters/SeedingMethods";
-import Seeds from "./Filters/Seeds";
-import SoilConditions from "./Filters/SoilConditions";
-import TerminationMethods from "./Filters/TerminationMethods";
-import Weeds from "./Filters/Weeds";
+import ForwardFilter from "./Filters/ForwardFilter";
 import sidebarCategoriesData from "../../shared/json/sidebar/sidebar-categories.json";
 import sidebarFiltersData from "../../shared/json/sidebar/sidebar-filters.json";
+// import SoilConditions from "./Filters/SoilConditions";  // TODO May be obsolete???  rh
 
 const _ = require("lodash");
 
 const useStyles = makeStyles((theme) => ({
   listItemRoot: {
-    borderTop: "0px",
-    border: "1px solid " + CustomStyles().primaryProgressBtnBorderColor,
+    borderTop: '0px',
+    border: '1px solid ' + CustomStyles().primaryProgressBtnBorderColor,
   },
   formControlLabel: {},
   listSubHeaderRoot: {
     backgroundColor: CustomStyles().lightGreen,
-    color: "black",
-    textAlign: "center",
-    height: "50px",
+    color: 'black',
+    textAlign: 'center',
+    height: '50px',
   },
   nested: {
     paddingLeft: theme.spacing(3),
@@ -87,29 +78,24 @@ const CropSidebarComponent = (props) => {
     comparisonView,
     isListView,
     from,
-    cropDataChanged,
     setGrowthWindow,
     toggleComparisonView,
     toggleListView,
     clearCoverCropSearch,
     style,
   } = props;
+
   const classes = useStyles();
-  const [state, dispatch] = useContext(Context);
+  const {state, dispatch, change} = useContext(Context);
+
+  const section  = window.location.href.includes('selector') ? 'selector' : 'explorer';
+  const debug = window.location.href.includes('localhost');
+
+  const sfilters = state[section];
+
   const [loading, setLoading] = useState(true);
 
-  const handleSearchChange = (e) => {
-    dispatch({
-      type: 'CROP_SEARCH',
-      data: {
-        value: e.target.value,
-      },
-    });
-  } // handleSearchChange
-
-  const [cropFiltersOpen, setCropFiltersOpen] = useState(
-    isListView ? true : false
-  );
+  // TODO: When is showFilters false?
   const [showFilters, setShowFilters] = useState(
     window.location.pathname === "/"
       ? from === "table"
@@ -121,283 +107,159 @@ const CropSidebarComponent = (props) => {
         : true
       : true
   );
+
   useEffect(() => {
-    if (window.location.pathname !== "/") {
-      setShowFilters(true);
-    } else {
-      if (from === "table") {
-        if (state.speciesSelectorActivationFlag) {
-          setShowFilters(true);
-        } else {
-          if (comparisonView) {
-            setShowFilters(true);
-          } else {
-            setShowFilters(false);
-          }
-        }
-      } else {
-        setShowFilters(true);
-      }
+    const value = 
+      window.location.pathname === '/'
+        ? from === 'table'
+          ? state.speciesSelectorActivationFlag
+            ? true
+            : comparisonView
+            ? true
+            : false
+          : true
+        : true;
+
+    if (debug && !value) {
+      alert('RICK: useEffect value IS false');
     }
-  }, [state.speciesSelectorActivationFlag, from, comparisonView]);
+    setShowFilters(value);
+  }, [debug, state.speciesSelectorActivationFlag, from, comparisonView]);
 
-  const [cashCropOpen, setCashCropOpen] = useState(false);
-  const [cashCropVisible, setCashCropVisible] = useState(true);
-  const [goalsOpen, setGoalsOpen] = useState(true);
+  const [cashCropVisible, setCashCropVisible] = useState(true);  // TODO: buggy(?)
 
-  const [dateRangeOpen, setDateRangeOpen] = useState(false);
   const [dateRange, setDateRange] = useState({
     startDate: null,
     endDate: null,
   });
 
   const [sidebarFilters, setSidebarFilters] = useState([]);
-  const [sidebarFiltersOpen, setSidebarFiltersOpen] = useState([]);
 
   const dateRangeModalOpen = () => {
-    setDateRangeOpen(true);
+    change('TRUE', null, 'dateRangeOpen');
   };
 
   // make an exhaustive array of all params in array e.g. cover crop group and use includes in linq
   const [sidebarFilterOptions, setSidebarFilterOptions] = useState(() => {
     const sidebarStarter = {};
-    sidebarFiltersData.forEach((row) => (sidebarStarter[row.name] = []));
+    sidebarFiltersData.forEach((row) => sidebarStarter[row.name] = []);
     return sidebarStarter;
   });
-  const seedingMethodRef = useRef();
-  const coverCropTypeRef = useRef();
-  const growthRef = useRef();
-  const rootsRef = useRef();
-  const seedsRef = useRef();
-  const weedsRef = useRef();
-  const terminationRef = useRef();
-  const envTolRef = useRef();
-
-  const [resetFilters, setResetFilters] = useState(false);
-  const firstUpdate = useRef(true);
-
-  useEffect(() => {
-    const filterSidebarItems = () => {
-      let crop_data = state.cropData.filter(
-        (crop) => crop.fields["Zone Decision"] === "Include"
-      );
-
-      let search = state.cropSearch.toLowerCase().match(/\w+/g);
-
-      crop_data = state.cropData.filter((crop) => {
-        const match = (parm) => {
-          const m = crop.fields[parm].toLowerCase().match(/\w+/g);
-  
-          return !search || search.every((s) => m.some((t) => t.includes(s)));
-        };
-  
-        return match('Cover Crop Name') || match('Scientific Name');
-      });
-
-      const nonZeroes = Object.keys(sidebarFilterOptions).map((key) => {
-        if (sidebarFilterOptions[key].length !== 0) {
-          return { [key]: sidebarFilterOptions[key] };
-        } else return "";
-      });
-      const nonZeroKeys2 = nonZeroes.filter((val) => val !== "");
-  
-      const nonZeroKeys = nonZeroKeys2.map((obj) => {
-        return Object.keys(obj).toString();
-      });
-  
-      dispatch({
-        type: "UPDATE_FILTER_KEYS",
-        data: {
-          filterKeys: nonZeroKeys,
-        },
-      });
-  
-      if (sidebarFilterOptions["Active Growth Period"].length > 0) {
-        let growthArray = [];
-  
-        if (sidebarFilterOptions["Active Growth Period"].includes("Fall")) {
-          growthArray.push('Sep', 'Oct', 'Nov');
-        }
-        if (sidebarFilterOptions["Active Growth Period"].includes("Winter")) {
-          growthArray.push('Dec', 'Jan', 'Feb');
-        }
-        if (sidebarFilterOptions["Active Growth Period"].includes("Spring")) {
-          growthArray.push('Mar', 'Apr', 'May');
-        }
-        if (sidebarFilterOptions["Active Growth Period"].includes("Summer")) {
-          growthArray.push('Jun', 'Jul', 'Aug');
-        }
-  
-        dispatch({
-          type: "UPDATE_ACTIVE_GROWTH_PERIOD",
-          data: {
-            activeGrowthPeriod: growthArray,
-          },
-        });
-      } else {
-        dispatch({
-          type: "UPDATE_ACTIVE_GROWTH_PERIOD",
-          data: {
-            activeGrowthPeriod: [],
-          },
-        });
-      }
-  
-      if (nonZeroKeys.length > 0) {
-        const arrayKeys = [
-          "Duration",
-          "Active Growth Period",
-          "Winter Survival",
-          "Flowering Trigger",
-          "Root Architecture",
-        ];
-        const booleanKeys = ["Aerial Seeding", "Frost Seeding"];
-  
-        const filtered = crop_data.filter((crop) => {
-          const totalActiveFilters = Object.keys(nonZeroKeys2).length;
-          let i = 0;
-          nonZeroKeys2.forEach((keyObject) => {
-            const key = Object.keys(keyObject);
-            const vals = keyObject[key];
-            if (areCommonElements(arrayKeys, key)) {
-              // Handle array type havlues
-  
-              if (_.intersection(vals, crop.fields[key]).length > 0) {
-                i++;
-              }
-            } else if (areCommonElements(booleanKeys, key)) {
-              //  Handle boolean types
-              if (crop.fields[key]) {
-                i++;
-              }
-            } else if (vals.includes(crop.fields[key])) {
-              i++;
-            }
-          });
-  
-          return i === totalActiveFilters;
-        });
-  
-        dispatch({
-          type: "UPDATE_ACTIVE_CROP_DATA",
-          data: {
-            value: filtered,
-          },
-        });
-      } else {
-        dispatch({
-          type: "UPDATE_ACTIVE_CROP_DATA",
-          data: {
-            value: crop_data,
-          },
-        });
-      }
-      return crop_data;
-    } // filterSidebarItems();
-  
-    if (firstUpdate.current) {
-      firstUpdate.current = false;
-      return;
-    }
-
-    filterSidebarItems();
-  }, [sidebarFilterOptions, state.cropSearch, state.cropData, dispatch]);
 
   const areCommonElements = (arr1, arr2) => {
     const arr2Set = new Set(arr2);
     return arr1.some((el) => arr2Set.has(el));
-  };
+  } // areCommonElements
 
-  const [filtersSelected, setFiltersSelected] = useState(false);
   useEffect(() => {
-    const sidebarKeys = Object.keys(sidebarFilterOptions);
+    const sfo = {};
 
-    const nonZeroKeys = sidebarKeys.filter(function (key) {
-      return sidebarFilterOptions[key].length > 0;
+    Object.keys(sfilters).forEach(key => {
+      if (sfilters[key]) {
+        const [k, value] = key.split(': ');
+        if (value) {
+          sfo[k] = sfo[k] || [];
+          sfo[k].push(+value || value);
+        }
+      }
     });
 
-    if (nonZeroKeys.length === 0) setFiltersSelected(false);
-    else setFiltersSelected(true);
-  }, [sidebarFilterOptions]);
+    let crop_data = state.cropData.filter((crop) => crop.fields['Zone Decision'] === 'Include');
 
-  useEffect(() => {
-    if (isListView) {
-      setCropFiltersOpen(true);
-      setCashCropOpen(false);
-    } else {
-      setCropFiltersOpen(false);
-      setCashCropOpen(true);
+    let search = sfilters.cropSearch.toLowerCase().match(/\w+/g);
+
+    crop_data = state.cropData.filter((crop) => {
+      const match = (parm) => {
+        const m = crop.fields[parm].toLowerCase().match(/\w+/g);
+
+        return !search || search.every((s) => m.some((t) => t.includes(s)));
+      };
+
+      return match('Cover Crop Name') || match('Scientific Name');
+    });
+
+    const nonZeroKeys2 = Object.keys(sfo).map((key) => {
+      if (sfo[key].length !== 0) {
+        return { [key]: sfo[key] };
+      } else {
+        return '';
+      }
+    });
+
+    // console.log(JSON.stringify(sfo));
+    // console.log(JSON.stringify(nonZeroKeys2));
+
+    let growthArray = [];
+
+    if (sfilters['Active Growth Period: Fall']) {
+      growthArray.push('Sep', 'Oct', 'Nov');
     }
-  }, [isListView]);
+    if (sfilters['Active Growth Period: Winter']) {
+      growthArray.push('Dec', 'Jan', 'Feb');
+    }
+    if (sfilters['Active Growth Period: Spring']) {
+      growthArray.push('Mar', 'Apr', 'May');
+    }
+    if (sfilters['Active Growth Period: Summer']) {
+      growthArray.push('Jun', 'Jul', 'Aug');
+    }
 
-  const toggleSidebarFilterItems = (index) => {
-    const newSidebarFiltersOpen = sidebarFiltersOpen.map((obj, index2) => {
-      if (index2 === index) return { ...obj, open: !obj.open };
-      else return { ...obj };
-    });
-    setSidebarFiltersOpen(newSidebarFiltersOpen);
-  };
+    // dispatch({
+    //   type: 'UPDATE_ACTIVE_GROWTH_PERIOD',
+    //   data: {
+    //     activeGrowthPeriod: growthArray,
+    //   },
+    // });
 
-  const resetAllFilters = (withRef = true) => {
-    if (withRef) {
-      coverCropTypeRef.current.resetFilters();
-      envTolRef.current.resetFilters();
-      growthRef.current.resetFilters();
-      rootsRef.current.resetFilters();
-      seedingMethodRef.current.resetFilters();
+    const arrayKeys = [
+      'Duration',
+      'Active Growth Period',
+      'Winter Survival',
+      'Flowering Trigger',
+      'Root Architecture',
+    ];
+    const booleanKeys = ['Aerial Seeding', 'Frost Seeding'];
 
-      seedsRef.current.resetFilters();
-      terminationRef.current.resetFilters();
-      weedsRef.current.resetFilters();
-      
-      dispatch({
-        type: "UPDATE_ACTIVE_CROP_DATA",
-        data: {
-          value: state.cropData,
-        },
+    const filtered = crop_data.filter((crop, n, cd) => {
+      const totalActiveFilters = Object.keys(nonZeroKeys2).length;
+      let i = 0;
+      nonZeroKeys2.forEach((keyObject) => {
+        const key = Object.keys(keyObject);
+        const vals = keyObject[key];
+
+        if (areCommonElements(arrayKeys, key)) {
+          // Handle array type havlues
+          if (_.intersection(vals, crop.fields[key]).length > 0) {
+            i++;
+          }
+        } else if (areCommonElements(booleanKeys, key)) {
+          //  Handle boolean types
+          if (crop.fields[key]) {
+            i++;
+          }
+        } else if (vals.includes(crop.fields[key])) {
+          i++;
+        }
       });
-    }
-    setSidebarFilterOptions({
-      "Cover Crop Group": [], //string
-      "Drought Tolerance": [], //int
-      "Flood Tolerance": [], // int
-      "Heat Tolerance": [], // int
-      "Low Fertility Tolerance": [], // int
-      "Salinity Tolerance": [], // int
-      "Shade Tolerance": [], // int
-      "Seed Price per Pound": [], //int
-      "Frost Seeding": [], // -999 or true
-      "Aerial Seeding": [], // -999 or true
-      Duration: [], // array
-      "Active Growth Period": [], //array
-      "Growing Window": [], // string
-      "Establishes Quickly": [], // int
-      "Ease of Establishment": [], // int
-      "Winter Survival": [], // array
-      "Early Spring Growth": [], // int
-      "Flowering Trigger": [], // array
-      "Root Architecture": [], // array
-      "Root Depth": [], // string
-      "Tillage Termination at Vegetative": [], // int
-      "Tillage Termination at Flowering": [], // int
-      "Freezing Termination at Vegetative": [], // int
-      "Chemical Termination at Vegetative": [], // int
-      "Chemical Termination at Flowering": [], // int
-      "Mow Termination at Flowering": [], // int
-      "Roller Crimp Tolerance at Flowering": [], // int
-      "Supports Mycorrhizae": [], // int
-      "Pollinator Habitat": [], // int
-      "Pollinator Food": [], // int
-      "Volunteer Establishment": [], // int
-      Persistence: [], // int
-      "Discourages Nematodes": [], // int
-      "Promotes Nematodes": [], // int
-      "Discourages Pest Insects": [], // int
-      "Promotes Pest Insects": [], // int
-      "Suppresses Cash Crop Disease": [], // int
-      "Promotes Cash Crop Disease": [], // int
+
+      cd[n].inactive = i !== totalActiveFilters;
+
+      return true;
+      // return i === totalActiveFilters;
     });
-    setResetFilters(!resetFilters);
+
+    dispatch({
+      type: 'UPDATE_ACTIVE_CROP_DATA',
+      data: {
+        value: filtered,
+      },
+    });
+  }, [state.changedFilters, sfilters.cropSearch, state.cropData, dispatch, sfilters]);
+
+  const filtersSelected = Object.keys(sfilters).filter(key => sfilters[key]).length > 1;
+
+  const resetAllFilters = () => {
+    change('CLEAR_FILTERS');
   };
 
   useEffect(() => {
@@ -405,13 +267,14 @@ const CropSidebarComponent = (props) => {
 
     const generateSidebarObject = async (dataDictionary) => {
       sidebarCategoriesData.forEach((category) => {
-        let newCategory = {};
-        newCategory["name"] = category.name;
-        newCategory["description"] = category.description;
-        newCategory["type"] = category.type;
+        let newCategory = {
+          name        : category.name,
+          description : category.description,
+          type        : category.type
+        };
         switch (category.type) {
-          case "rating-only":
-            newCategory["values"] = category.filters.map((f) => {
+          case 'rating-only':
+            newCategory.values = category.filters.map((f) => {
               const data = sidebarFiltersData.filter(
                 (dictFilter) => dictFilter.__id === f
               )[0];
@@ -427,31 +290,32 @@ const CropSidebarComponent = (props) => {
                 (item) => item.Variable === data.dataDictionaryName
               );
 
-              const description = field[0]["Description"];
-              const valuesDescription = field[0]["Values Description"];
+              const description = field[0].Description;
+              const valuesDescription = field[0]['Values Description'];
 
-              obj["description"] = `${description}${
-                valuesDescription ? " <br><br>" : ""
-              }${valuesDescription ? valuesDescription : ""}`;
+              obj.description = `${description}${
+                valuesDescription ? ' <br><br>' : ''
+              }${valuesDescription ? valuesDescription : ''}`;
+              
               return obj;
             });
             break;
-          case "chips-only":
-            if (category.name !== "Seeding Methods") {
+          case 'chips-only':
+            if (category.name === 'Cover Crop Type') {
               const data = sidebarFiltersData.filter(
                 (dictFilter) => dictFilter.__id === category.filters[0]
               )[0];
 
-              newCategory["values"] = data.values
-                .split(/\s+/)
-                .join("")
-                .split(",")
-                .map((val) => {
-                  return { name: val };
-                });
+              newCategory.values = [{
+                name: data.name,
+                alternateName: data.dataDictionaryName,
+                symbol: null,
+                maxSize: data.maxSize,
+                values: data.values.split(/\s*,\s*/),
+              }];
             } else {
-              newCategory["description"] = null;
-              newCategory["values"] = category.filters.map((f) => {
+              newCategory.description = null;
+              newCategory.values = category.filters.map((f) => {
                 const data = sidebarFiltersData.filter(
                   (dictFilter) => dictFilter.__id === f
                 )[0];
@@ -468,18 +332,18 @@ const CropSidebarComponent = (props) => {
                   (item) => item.Variable === data.dataDictionaryName
                 );
 
-                const description = field[0]["Description"];
-                const valuesDescription = field[0]["Values Description"];
+                const description = field[0].Description;
+                const valuesDescription = field[0]['Values Description'];
 
-                obj["description"] = `${description}${
+                obj.description = `${description}${
                   valuesDescription ? "<br><br>" : ""
-                }${valuesDescription ? valuesDescription : ""}`;
+                }${valuesDescription ? valuesDescription : ''}`;
                 return obj;
               });
             }
             break;
-          case "chips-rating":
-            newCategory["values"] = category.filters.map((f) => {
+          case 'chips-rating':
+            newCategory.values = category.filters.map((f) => {
               const data = sidebarFiltersData.filter(
                 (dictFilter) => dictFilter.__id === f
               )[0];
@@ -487,26 +351,26 @@ const CropSidebarComponent = (props) => {
                 name: data.name,
                 type: data.type,
                 maxSize: null,
-                description: "",
+                description: '',
               };
 
-              if (data.type === "chip") {
-                obj["values"] = data.values.split(",").map((val) => val.trim());
-              } else if (data.type === "rating") {
-                obj["values"] = [];
-                obj["maxSize"] = data.maxSize;
+              if (data.type === 'chip') {
+                obj.values = data.values.split(',').map((val) => val.trim());
+              } else if (data.type === 'rating') {
+                obj.values = [];
+                obj.maxSize = data.maxSize;
               }
 
               const field = dataDictionary.filter(
                 (item) => item.Variable === data.dataDictionaryName
               );
 
-              const description = field[0]["Description"];
-              const valuesDescription = field[0]["Values Description"];
+              const description = field[0].Description;
+              const valuesDescription = field[0]['Values Description'];
 
-              obj["description"] = `${description}${
+              obj.description = `${description}${
                 valuesDescription ? "<br><br>" : ""
-              }${valuesDescription ? valuesDescription : ""}`;
+              }${valuesDescription ? valuesDescription : ''}`;
               return obj;
             });
             break;
@@ -520,13 +384,9 @@ const CropSidebarComponent = (props) => {
 
     const setData = async () => {
       setSidebarFilters(dictionary);
-      const filterTitles = dictionary.map((filter) => {
-        return { name: filter.name, open: false };
-      });
-      setSidebarFiltersOpen(filterTitles);
     };
-
-    switch (state.zone) {
+    
+    switch (sfilters.zone) {
       case 7:
         setLoading(true);
         generateSidebarObject(state.zone7Dictionary)
@@ -554,105 +414,44 @@ const CropSidebarComponent = (props) => {
       default:
         break;
     }
-
-    return () => {
-      setSidebarFilters([]);
-      setSidebarFiltersOpen([]);
-    };
   }, [
-    state.zone,
+    sfilters.zone,
     state.zone4Dictionary,
     state.zone5Dictionary,
     state.zone6Dictionary,
     state.zone7Dictionary,
   ]);
 
-  useMemo(() => {
-    if (envTolRef.current) {
-      resetAllFilters();
-    }
-  }, [cropDataChanged]);
-
-  const [zoneToggle, setZoneToggle] = useState(true);
-
-  const handleZoneToggle = () => {
-    setZoneToggle(!zoneToggle);
-  };
-
-  const handleZone = (zone = 7) => {
-    if (typeof zone === "number") {
-      dispatch({
-        type: "UPDATE_ZONE",
-        data: {
-          zoneText: `Zone ${zone}`,
-          zone: parseInt(zone),
-        },
-      });
-    }
-  };
-
   const updateSelectedGoals = (newGoalArr, oldIndex, newIndex) => {
     let newGoals = arrayMove(newGoalArr, oldIndex, newIndex);
 
     dispatch({
-      type: "DRAG_GOALS",
+      type: 'DRAG_GOALS',
       data: {
         selectedGoals: newGoals,
         snackOpen: true,
-        snackMessage: "Goal Priority Changed",
+        snackMessage: 'Goal Priority Changed',
       },
     });
-  };
+  } // updateSelectedGoals
 
-  const changeProgress = (type) => {
-    if (type === "increment") {
-      dispatch({
-        type: "UPDATE_PROGRESS",
-        data: {
-          type: "INCREMENT",
-        },
-      });
-    }
-
-    if (type === "decrement") {
-      dispatch({
-        type: "UPDATE_PROGRESS",
-        data: {
-          type: "DECREMENT",
-        },
-      });
-    }
-  };
-
-  const handleClick = (index) => {
-    switch (index) {
-      case 0:
-        setGoalsOpen(!goalsOpen);
-        break;
-      case 1:
-        setCashCropOpen(!cashCropOpen);
-        break;
-      case 2:
-        setCropFiltersOpen(!cropFiltersOpen);
-        break;
-      default:
-        break;
-    }
-  };
+  const changeProgress = (type) => {  // TODO: type is only decrement?
+    dispatch({
+      type: 'UPDATE_PROGRESS',
+      data: {
+        type: type.toUpperCase(),
+      },
+    });
+  } // changeProgress
 
   useEffect(() => {
-    if (from === "table") {
+    if (from === 'table') {
       if (dateRange.startDate !== null && dateRange.endDate !== null) {
         dispatch({
-          type: "UPDATE_DATE_RANGE",
+          type: 'UPDATE_DATE_RANGE',
           data: {
-            startDate: moment(
-              new Date(dateRange.startDate).toISOString(),
-              "YYYY-MM-DD"
-            ).format("YYYY-MM-DD"),
-            endDate: moment(new Date(dateRange.endDate).toISOString()).format(
-              "YYYY-MM-DD"
-            ),
+            startDate: moment(new Date(dateRange.startDate).toISOString()).format('YYYY-MM-DD'),
+            endDate: moment(new Date(dateRange.endDate).toISOString()).format('YYYY-MM-DD'),
           },
         });
       }
@@ -663,19 +462,15 @@ const CropSidebarComponent = (props) => {
 
   const [tableHeight, setTableHeight] = useState(0);
 
-  useEffect(() => {
-    if (firstUpdate.current) {
-      firstUpdate.current = false;
-      return;
-    }
+  useEffect(() => {  
     if (
-      document.querySelector(".MuiTableRow-root.theadFirst.MuiTableRow-head")
+      document.querySelector('.MuiTableRow-root.theadFirst.MuiTableRow-head')  // TODO:  When is this true?
     ) {
       const totalHt = document
-        .querySelector(".MuiTableRow-root.theadFirst.MuiTableRow-head")
+        .querySelector('.MuiTableRow-root.theadFirst.MuiTableRow-head')
         .getBoundingClientRect().height;
       const btnHt = document
-        .querySelector(".dynamicToggleBtn")
+        .querySelector('.dynamicToggleBtn')
         .getBoundingClientRect().height;
 
       const ht = totalHt - btnHt;
@@ -684,38 +479,34 @@ const CropSidebarComponent = (props) => {
     }
   }, []);
 
+  // TODO: Can we use Reducer instead of localStorage?
   useEffect(() => {
-    if (state.cashCropData.dateRange.startDate !== "") {
+    if (state.cashCropData.dateRange.startDate) {
       window.localStorage.setItem(
-        "cashCropDateRange",
+        'cashCropDateRange',
         JSON.stringify(state.cashCropData.dateRange)
       );
     }
   }, [state.cashCropData.dateRange]);
 
   useEffect(() => {
-    if (state.myCoverCropActivationFlag) {
+    if (state.myCoverCropActivationFlag) {  // TODO: When does this happen?
       if (comparisonView) {
         if (filtersSelected) {
-          resetAllFilters(false);
+          resetAllFilters();
         }
       }
     }
   }, [comparisonView, state.myCoverCropActivationFlag]);
 
-  const Filter = (Component, ref, filter) => {
+  const Filter = (Component, filter) => {
     return (
       <Grid container spacing={1}>
         <Grid item>
           <Component
-            ref={ref}
             filters={filter}
-            sidebarFilterOptions={
-              sidebarFilterOptions
-            }
-            setSidebarFilterOptions={
-              setSidebarFilterOptions
-            }
+            sidebarFilterOptions={sidebarFilterOptions}
+            setSidebarFilterOptions={setSidebarFilterOptions}
             resetAllFilters={resetAllFilters}
             {...props}
           />
@@ -725,80 +516,34 @@ const CropSidebarComponent = (props) => {
   } // Filter
 
   const output = (filter) => {
-    switch (filter.name.toUpperCase()) {
-      case 'COVER CROP TYPE':
-        return <>{Filter(CoverCropType, coverCropTypeRef, filter)}</>
-      case 'ENVIRONMENTAL TOLERANCES':
-        return <>{Filter(EnvironmentalTolerance, envTolRef, filter)}</>
-      case 'SEEDS':
-        return <>{Filter(Seeds, seedsRef, filter)}</>
-      case 'SEEDING METHODS':
-        return  <>{Filter(SeedingMethods, seedingMethodRef, filter)}</>
-      case 'GROWTH':
-        return  <>{Filter(Growth, growthRef, filter)}</>
-      case 'ROOTS':
-        return  <>{Filter(Roots, rootsRef, filter)}</>
-      case 'TERMINATION METHODS':
-        return  <>{Filter(TerminationMethods, terminationRef, filter)}</>
-      case 'WEEDS':
-        return  <>{Filter(Weeds, weedsRef, filter)}</>
-      default:
-    }
+    return Filter(ForwardFilter, filter);  // SoilConditions???
   } // output
 
   const filters = () => (
     sidebarFilters.map((filter, index) => {
-      if (output(filter)) {
-        return (
-          <Fragment key={index}>
-            {filter.description !== null ? (
-              <Tooltip
-                interactive
-                arrow
-                placement="right-start"
-                title={
-                  <div className="filterTooltip">
-                    <p>{filter.description}</p>
-                  </div>
-                }
-                key={`tooltip${index}`}
-              >
-                <ListItem
-                  // className={classes.nested}
-                  className={
-                    sidebarFiltersOpen[index].open
-                      ? "filterOpen"
-                      : "filterClose"
-                  }
-                  component="div"
-                  onClick={() =>
-                    toggleSidebarFilterItems(index)
-                  }
-                >
-                  <ListItemText
-                    primary={
-                      <Typography variant="body2">
-                        {filter.name.toUpperCase()}
-                      </Typography>
-                    }
-                  />
-                  {sidebarFiltersOpen[index].open ? (
-                    <ExpandLess />
-                  ) : (
-                    <ExpandMore />
-                  )}
-                </ListItem>
-              </Tooltip>
-            ) : (
+      return (
+        <Fragment key={index}>
+          {filter.description !== null ? (
+            <Tooltip
+              interactive
+              arrow
+              placement="right-start"
+              title={
+                <div className="filterTooltip">
+                  <p>{filter.description}</p>
+                </div>
+              }
+              key={`tooltip${index}`}
+            >
               <ListItem
                 // className={classes.nested}
                 className={
-                  sidebarFiltersOpen[index].open
+                  state[section + filter.name]
                     ? "filterOpen"
                     : "filterClose"
                 }
                 component="div"
-                onClick={() => toggleSidebarFilterItems(index)}
+                onClick={() => change('TOGGLE', null, section + filter.name)}
               >
                 <ListItemText
                   primary={
@@ -807,40 +552,62 @@ const CropSidebarComponent = (props) => {
                     </Typography>
                   }
                 />
-                {sidebarFiltersOpen[index].open ? (
+                {state[section + filter.name] ? (
                   <ExpandLess />
                 ) : (
                   <ExpandMore />
                 )}
               </ListItem>
-            )}
-
-            <Collapse
-              in={sidebarFiltersOpen[index].open}
-              timeout="auto"
+            </Tooltip>
+          ) : (
+            <ListItem
+              // className={classes.nested}
+              className={
+                state[section + filter.name]
+                  ? "filterOpen"
+                  : "filterClose"
+              }
+              component="div"
+              onClick={() => change('TOGGLE', null, section + filter.name)}
             >
-              <List component="div" disablePadding>
-                <ListItem
-                  // className={classes.subNested}
-                  // title={filter.description}
-                  component="div"
-                >
-                  {output(filter)}
-                </ListItem>
-              </List>
-            </Collapse>
-          </Fragment>
-        );
-      } else {
-        return <Fragment />;
-      }
+              <ListItemText
+                primary={
+                  <Typography variant="body2">
+                    {filter.name.toUpperCase()}
+                  </Typography>
+                }
+              />
+              {state[section + filter.name] ? (
+                <ExpandLess />
+              ) : (
+                <ExpandMore />
+              )}
+            </ListItem>
+          )}
+
+          <Collapse
+            in={state[section + filter.name]}
+            timeout="auto"
+          >
+            <List component="div" disablePadding>
+              <ListItem
+                // className={classes.subNested}
+                // title={filter.description}
+                component="div"
+              >
+                {output(filter)}
+              </ListItem>
+            </List>
+          </Collapse>
+        </Fragment>
+      );
     })
   ); // filters
 
   const filtersList = () => (
     <List component="div" disablePadding className="cropFilters">
       {filtersSelected ? (
-        <ListItem onClick={() => {}}>
+        <ListItem>
           <ListItemText
             primary={
               <Typography
@@ -990,8 +757,8 @@ const CropSidebarComponent = (props) => {
                           color="secondary"
                           label="Cover Crop Name"
                           helperText="Search by cover crop name"
-                          value={state.cropSearch}
-                          onChange={handleSearchChange}
+                          value={sfilters.cropSearch}
+                          onChange={(e) => change('CROP_SEARCH', e)}
                           InputProps={{
                             endAdornment: (
                               <InputAdornment position="end">
@@ -999,7 +766,7 @@ const CropSidebarComponent = (props) => {
                                   onClick={clearCoverCropSearch}
                                   size="small"
                                 >
-                                  {state.cropSearch.length > 0 && <Clear fontSize="inherit" />}
+                                  {sfilters.cropSearch.length > 0 && <Clear fontSize="inherit" />}
                                 </IconButton>
                               </InputAdornment>
                             ),
@@ -1016,9 +783,9 @@ const CropSidebarComponent = (props) => {
                       {" "}
                       <ListItem
                         button
-                        onClick={() => handleClick(0)}
+                        onClick={() => change('TOGGLE', null, 'goalsOpen')}
                         style={
-                          goalsOpen
+                          state.goalsOpen
                             ? {
                                 backgroundColor: CustomStyles().lightGreen,
                                 borderTop: "4px solid white",
@@ -1030,16 +797,16 @@ const CropSidebarComponent = (props) => {
                         }
                       >
                         <ListItemText primary="COVER CROP GOALS" />
-                        {goalsOpen ? <ExpandLess /> : <ExpandMore />}
+                        {state.goalsOpen ? <ExpandLess /> : <ExpandMore />}
                       </ListItem>
-                      <Collapse in={goalsOpen} timeout="auto" unmountOnExit>
+                      <Collapse in={state.goalsOpen} timeout="auto" unmountOnExit>
                         {state.selectedGoals.length === 0 ? (
                           <List component="div" disablePadding>
                             <ListItem button className={classes.nested}>
                               <ListItemText primary="No Goals Selected" />
                             </ListItem>
                             <ListItem className={classes.nested}>
-                              <Button onClick={() => changeProgress("decrement")}>
+                              <Button onClick={() => changeProgress('decrement')}>
                                 click to edit
                               </Button>
                             </ListItem>
@@ -1134,7 +901,7 @@ const CropSidebarComponent = (props) => {
                                 <Typography
                                   variant="button"
                                   className="text-uppercase text-left text-danger font-weight-bold"
-                                  onClick={() => changeProgress("decrement")}
+                                  onClick={() => changeProgress('decrement')}
                                   style={{ cursor: "pointer" }}
                                 >
                                   &nbsp;Click To Edit
@@ -1151,17 +918,17 @@ const CropSidebarComponent = (props) => {
 
                   <ListItem
                     button
-                    onClick={() => handleClick(1)}
+                    onClick={() => change('TOGGLE', null, 'cashCropOpen')}
                     style={
-                      cashCropOpen
+                      state.cashCropOpen
                         ? { backgroundColor: CustomStyles().lightGreen }
                         : { backgroundColor: "inherit" }
                     }
                   >
                     <ListItemText primary="PREVIOUS CASH CROP" />
-                    {cashCropOpen ? <ExpandLess /> : <ExpandMore />}
+                    {state.cashCropOpen ? <ExpandLess /> : <ExpandMore />}
                   </ListItem>
-                  <Collapse in={cashCropOpen} timeout="auto" unmountOnExit>
+                  <Collapse in={state.cashCropOpen} timeout="auto" unmountOnExit>
                     <List component="div">
                       <ListItem className={classes.nested}>
                         <TextField
@@ -1219,12 +986,10 @@ const CropSidebarComponent = (props) => {
                                 onChange={(e) => {
                                   if (e.target.checked) {
                                     let cashCropDateRange = JSON.parse(
-                                      window.localStorage.getItem(
-                                        "cashCropDateRange"
-                                      )
+                                      window.localStorage.getItem('cashCropDateRange')
                                     );
                                     dispatch({
-                                      type: "UPDATE_DATE_RANGE",
+                                      type: 'UPDATE_DATE_RANGE',
                                       data: {
                                         startDate: cashCropDateRange.startDate,
                                         endDate: cashCropDateRange.endDate,
@@ -1232,10 +997,10 @@ const CropSidebarComponent = (props) => {
                                     });
                                   } else {
                                     dispatch({
-                                      type: "UPDATE_DATE_RANGE",
+                                      type: 'UPDATE_DATE_RANGE',
                                       data: {
-                                        startDate: "",
-                                        endDate: "",
+                                        startDate: '',
+                                        endDate: '',
                                       },
                                     });
                                   }
@@ -1254,10 +1019,10 @@ const CropSidebarComponent = (props) => {
                       </ListItem>
                     </List>
                   </Collapse>
-                  {dateRangeOpen ? (
+                  {state.dateRangeOpen ? (
                     <DateRangeDialog
-                      open={dateRangeOpen}
-                      close={() => setDateRangeOpen(!dateRangeOpen)}
+                      open={true}
+                      close={() => change('TOGGLE', null, 'dateRangeOpen')}
                       onChange={(range) => setDateRange(range)}
                       range={[]}
                     />
@@ -1274,7 +1039,7 @@ const CropSidebarComponent = (props) => {
                   {from === "explorer" ? (
                     <Fragment>
                       <List component="div" disablePadding>
-                        <ListItem button onClick={handleZoneToggle}>
+                        <ListItem button onClick={(e) => change('ZONE_TOGGLE', e, !state.zoneToggle)}>
                           <ListItemText
                             primary={
                               <Typography
@@ -1285,22 +1050,22 @@ const CropSidebarComponent = (props) => {
                               </Typography>
                             }
                           />
-                          {zoneToggle ? <ExpandLess /> : <ExpandMore />}
+                          {state.zoneToggle ? <ExpandLess /> : <ExpandMore />}
                         </ListItem>
                       </List>
-                      <Collapse in={zoneToggle}>
+                      <Collapse in={state.zoneToggle}>
                         <List component="div" disablePadding>
                           <ListItem component="div">
                             <Grid container spacing={1}>
                               {[4, 5, 6, 7].map((zone, index) => (
                                 <Grid item key={index}>
                                   <Chip
-                                    onClick={() => handleZone(zone)}
+                                    onClick={(e) => change('UPDATE_ZONE', e, {zoneText: `Zone ${zone}`, zone: zone})}
                                     component="li"
                                     size="medium"
                                     label={`Zone ${zone}`}
                                     color={
-                                      parseInt(state.zone) === zone
+                                      parseInt(sfilters.zone) === zone
                                         ? "primary"
                                         : "secondary"
                                     }
@@ -1318,8 +1083,8 @@ const CropSidebarComponent = (props) => {
                             color="secondary"
                             label="Cover Crop Name"
                             helperText="Search by cover crop name"
-                            value={state.cropSearch}
-                            onChange={handleSearchChange}
+                            value={sfilters.cropSearch}
+                            onChange={(e) => change('CROP_SEARCH', e)}
                           />
                         </ListItemText>
                       </ListItem>
@@ -1334,19 +1099,19 @@ const CropSidebarComponent = (props) => {
                     <>
                       <ListItem
                         button
-                        onClick={() => handleClick(2)}
+                        onClick={() => change('TOGGLE', null, 'cropFiltersOpen')}
                         style={
                           from === "table"
-                            ? cropFiltersOpen
+                            ? state.cropFiltersOpen
                               ? { backgroundColor: CustomStyles().lightGreen }
                               : { backgroundColor: "inherit" }
                             : { backgroundColor: CustomStyles().lightGreen }
                         }
                       >
                         <ListItemText primary="COVER CROP PROPERTIES" />
-                        {cropFiltersOpen ? <ExpandLess /> : <ExpandMore />}
+                        {state.cropFiltersOpen ? <ExpandLess /> : <ExpandMore />}
                       </ListItem>
-                      <Collapse in={cropFiltersOpen} timeout="auto">
+                      <Collapse in={state.cropFiltersOpen} timeout="auto">
                         {filtersList()}
                       </Collapse>
                     </>

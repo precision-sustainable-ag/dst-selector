@@ -28,7 +28,10 @@ const useStyles = makeStyles({
   },
 });
 const ExplorerCardView = (props) => {
-  const [state, dispatch] = useContext(Context);
+  const {state, dispatch} = useContext(Context);
+  const section  = window.location.href.includes('selector') ? 'selector' : 'explorer';
+  const sfilters = state[section];
+
   const [modalOpen, setModalOpen] = useState(false);
   const [modalData, setModalData] = useState({});
   const classes = useStyles();
@@ -44,7 +47,7 @@ const ExplorerCardView = (props) => {
     });
     setSelectedBtns(newSelectedBtns);
     console.log("selected btns", newSelectedBtns);
-  }, [state.zone, state.selectedCrops.length]);
+  }, [sfilters.zone, state.selectedCrops.length]);
 
   const { enqueueSnackbar } = useSnackbar();
 
@@ -172,7 +175,7 @@ const ExplorerCardView = (props) => {
                     }}
                     className={
                       selectedBtns.includes(crop.fields.id) &&
-                      parseInt(state.zone) === crop.fields.Zone
+                      parseInt(sfilters.zone) === crop.fields.Zone
                         ? "activeCartBtn"
                         : "inactiveCartBtn"
                     }
@@ -189,7 +192,7 @@ const ExplorerCardView = (props) => {
                       variant="body2"
                       className={`text-uppercase ${
                         selectedBtns.includes(crop.fields.id) &&
-                        parseInt(state.zone) === crop.fields.Zone
+                        parseInt(sfilters.zone) === crop.fields.Zone
                           ? "text-white"
                           : ""
                       }`}
@@ -199,7 +202,7 @@ const ExplorerCardView = (props) => {
                       }}
                     >
                       {selectedBtns.includes(crop.fields.id) &&
-                      parseInt(state.zone) === crop.fields.Zone
+                      parseInt(sfilters.zone) === crop.fields.Zone
                         ? "ADDED"
                         : "ADD TO LIST"}
                     </Typography>

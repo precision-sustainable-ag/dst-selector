@@ -208,8 +208,7 @@ const initialState = {
   modalSize: "lg", //sm,md,lg,fluid
   modalBody: {},
   addToCartBtnText: "add to list",
-  zoneText: "Zone 7",
-  zone: "",
+  zoneToggle: true, // Explorer: true if PLANT HARDINESS ZONE is expanded
   soilData: {
     Map_Unit_Name: "",
     Drainage_Class: [],
@@ -262,20 +261,52 @@ const initialState = {
   zone5Dictionary: z5Dict,
   zone4Dictionary: z4Dict,
   weatherDataReset: false,
-  filterString: "",
-  filterKeys: [],
+  
   activeGrowthPeriod: [],
   comparisonKeys: [],
-  cropSearch: '',
+
   activeCropData: [],
   lastZone : '',
+
+  goalsOpen: true,
+  cropFiltersOpen: true,
+
+  explorer: {  // filters for explorer
+    cropSearch: '',
+    zone: 6,  // needs a default so the filters will populate when starting with species-selector
+  },
+
+  selector: {  // filters for selector
+    cropSearch: ''
+  }
 };
 
 const Store = ({ children }) => {
   const [state, dispatch] = useReducer(Reducer, initialState);
+
+  const change = (type, e, value = e && e.target.value) => {
+    if (typeof value === 'object') {
+      dispatch({
+        type,
+        data: value
+      });
+    } else {
+      dispatch({
+        type,
+        data: {
+          value
+        }
+      });
+      // alert(JSON.stringify({type,data: {value}}))
+    }
+  } // change
+
   return (
-    <Context.Provider value={[state, dispatch]}>{children}</Context.Provider>
+    <Context.Provider value={{state, dispatch, change}}>{children}</Context.Provider>
   );
 };
+
+
 export const Context = createContext(initialState);
+
 export default Store;

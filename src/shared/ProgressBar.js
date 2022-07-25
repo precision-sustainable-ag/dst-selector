@@ -20,7 +20,7 @@ const checkProgressStatus = (actualProgress, expectedProgress) => {
 };
 
 const ProgressBar = () => {
-  const [state] = useContext(Context);
+  const {state} = useContext(Context);
   return (
     <div className="gprogress">
       <Typography variant="body1" className="progress-track" component="div">

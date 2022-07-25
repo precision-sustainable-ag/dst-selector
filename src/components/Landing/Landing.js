@@ -14,7 +14,7 @@ import "../../styles/landing.scss";
 import ConsentModal from "../CoverCropExplorer/ConsentModal";
 
 const Landing = (props) => {
-  const [state, dispatch] = useContext(Context);
+  const {state, dispatch} = useContext(Context);
   const [containerHeight, setContainerHeight] = useState(props.height);
 
   useEffect(() => {
