@@ -4,18 +4,13 @@
 */
 
 import React, { Fragment, useContext, useEffect, useState } from "react";
-import {
-  cloudIcon,
-  ReferenceTooltip,
-} from "../../shared/constants";
+import { cloudIcon, ReferenceTooltip } from "../../shared/constants";
+import { openWeatherApiKey, geocodeAuth } from "../../shared/keys";
 import { Context } from "../../store/Store";
 
 const apiBaseURL = "https://api.openweathermap.org/data/2.5/weather";
 const apiBaseURL_weather_gov =
   "https://api.weather.gov/points/39.7456,-97.0892";
-const apiKey = "***REMOVED***";
-
-const geocodeAuth = "***REMOVED***";
 
 // TODO: look at https://agromonitoring.com/ api
 
@@ -132,7 +127,7 @@ const ForecastComponent = () => {
   };
 
   const makeURLString = (url, params) => {
-    return `${url}?lat=${params[0]}&lon=${params[1]}&appid=${apiKey}&units=imperial`;
+    return `${url}?lat=${params[0]}&lon=${params[1]}&appid=${openWeatherApiKey}&units=imperial`;
   };
 
   const reverseGEO = async (lat, lng) => {
