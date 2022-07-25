@@ -30,7 +30,7 @@ const goalSkeletonStyle = {
 };
 
 const GoalsSelector = () => {
-  const [state] = useContext(Context);
+  const {state} = useContext(Context);
   const classes = useStyles();
   const [allGoals, setAllGoals] = useState([{}]);
 
