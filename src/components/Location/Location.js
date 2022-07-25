@@ -33,7 +33,10 @@ const useStyles = makeStyles((theme) => ({
 
 const LocationComponent = ({ title, caller }) => {
   const classes = useStyles();
-  const [state, dispatch] = useContext(Context);
+  const {state, dispatch} = useContext(Context);
+  const section  = window.location.href.includes('selector') ? 'selector' : 'explorer';
+  const sfilters = state[section];
+
   const [showRestartPrompt, setShowRestartPrompt] = useState(false);
   const [restartAccept, setRestartAccept] = useState(false);
   const [zoneSelection, setZoneSelection] = useState(7);
@@ -184,7 +187,7 @@ const LocationComponent = ({ title, caller }) => {
                       textAlign: "left",
                     }}
                     onChange={handleZoneChange}
-                    value={state.zone}
+                    value={sfilters.zone}
                   >
                     <MenuItem value={4} key={4}>
                       Zone 4

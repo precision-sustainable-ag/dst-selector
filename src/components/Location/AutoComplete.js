@@ -59,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
 
 const AutoCompleteComponent = ({ from }) => {
   const classes = useStyles();
-  const [state, dispatch] = useContext(Context);
+  const {state, dispatch} = useContext(Context);
   const [open, setOpen] = useState(false);
   const [address, setAddress] = useState(state.address);
   const [suggestedAddress, setSuggestedAddress] = useState({});

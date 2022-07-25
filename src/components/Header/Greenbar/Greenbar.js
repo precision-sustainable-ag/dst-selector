@@ -10,28 +10,28 @@ import {
   DialogActions,
   DialogContent,
   Typography,
-} from "@material-ui/core";
-import { LocationOn, Refresh } from "@material-ui/icons";
-import CloudIcon from "@material-ui/icons/Cloud";
-import FilterHdrIcon from "@material-ui/icons/FilterHdr";
-import moment from "moment";
-import React, { useContext, useEffect, useState } from "react";
+} from '@material-ui/core';
+import { LocationOn, Refresh } from '@material-ui/icons';
+import CloudIcon from '@material-ui/icons/Cloud';
+import FilterHdrIcon from '@material-ui/icons/FilterHdr';
+import moment from 'moment';
+import React, { useContext, useState } from 'react';
 import {
   CustomStyles,
   greenBarExpansionPanelHeight,
-} from "../../../shared/constants";
-import { Context } from "../../../store/Store";
-import "../../../styles/greenBar.scss";
-import LocationComponent from "../../Location/Location";
-import SoilCondition from "../../Location/SoilCondition";
-import WeatherConditions from "../../Location/WeatherConditions";
+} from '../../../shared/constants';
+import { Context } from '../../../store/Store';
+import '../../../styles/greenBar.scss';
+import LocationComponent from '../../Location/Location';
+import SoilCondition from '../../Location/SoilCondition';
+import WeatherConditions from '../../Location/WeatherConditions';
 
-const speciesSelectorToolName = "species-selector";
+const speciesSelectorToolName = '/species-selector';
 
 const expansionPanelBaseStyle = {
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
 };
 
 const greenBarWrapperBackground = {
@@ -39,33 +39,40 @@ const greenBarWrapperBackground = {
 };
 
 const Greenbar = () => {
-  const [state, dispatch] = useContext(Context);
+  const {state, dispatch} = useContext(Context);
+  const section  = window.location.href.includes('selector') ? 'selector' : 'explorer';
+  const sfilters = state[section];
+
   const [expansionPanelComponent, setExpansionPanelComponent] = useState({
-    component: "",
+    component: '',
   });
 
-  useEffect(() => {
-    const greenBarParent = document.getElementById("greenBarParent");
-    document.addEventListener("click", (evt) => {
-      let targetElement = evt.target;
-      do {
-        if (targetElement === greenBarParent) {
-          return;
-        }
-
-        // Go up the DOM
-        targetElement = targetElement.parentNode;
-      } while (targetElement);
-    });
-
-    return () => {
-      closeExpansionPanel();
-    };
-  }, []);
+  /*
+   * RICK'S NOTE: What in the world was this supposed to do?
+   * TODO: Remove after 5/1/2022
+   *   useEffect(() => {
+   *     const greenBarParent = document.getElementById("greenBarParent");
+   *     document.addEventListener("click", (evt) => {
+   *       let targetElement = evt.target;
+   *       do {
+   *         if (targetElement === greenBarParent) {
+   *           return;
+   *         }
+   *       
+   *         // Go up the DOM
+   *         targetElement = targetElement.parentNode;
+   *       } while (targetElement);
+   *     });
+   *   
+   *     return () => {
+   *       closeExpansionPanel();
+   *     };
+   *   }, []);
+  */
 
   const getAddress = () => {
-    if (state.address === "") {
-      return "";
+    if (state.address === '') {
+      return '';
     } else {
       return (
         <Button
@@ -89,7 +96,7 @@ const Greenbar = () => {
             }
           >
             <LocationOn />
-            &nbsp;Zone {state.zone}: {state.address}
+            &nbsp;Zone {sfilters.zone}: {state.address}
           </span>
         </Button>
       );
@@ -273,25 +280,25 @@ const Greenbar = () => {
       <div className="greenBarWrapper" style={greenBarWrapperBackground}>
         <div className="addressBar">
           {state.progress > 0 &&
-          window.location.pathname === "/" + speciesSelectorToolName
+          window.location.pathname === speciesSelectorToolName
             ? getAddress()
             : ""}
         </div>
 
         <div className="soilBar">
           {state.progress > 1 &&
-          window.location.pathname === "/" + speciesSelectorToolName
+          window.location.pathname === speciesSelectorToolName
             ? getSoil()
             : ""}
         </div>
         <div className="weatherBar">
           {state.progress > 2 &&
-          window.location.pathname === "/" + speciesSelectorToolName
+          window.location.pathname === speciesSelectorToolName
             ? getWeatherData()
             : ""}
         </div>
         {state.progress > 0 &&
-        window.location.pathname === "/" + speciesSelectorToolName ? (
+        window.location.pathname === speciesSelectorToolName ? (
           <div className="restartBtnWrapper">
             <Button
               className="greenbarBtn"

@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const CropDetailsModalComponent = (props) => {
-  const [state] = useContext(Context);  
+  const {state} = useContext(Context);  
   let crop = props.crop;
   const classes = useStyles();
   const [modalData, setModalData] = useState({});
@@ -181,16 +181,18 @@ const CropDetailsModalComponent = (props) => {
                                 {zoneIcon(20, 20)}
                                 <strong className="pl-2">
                                   PLANT HARDINESS ZONE {crop.fields.Zone} DATASET
-                                  <Button
-                                    style={{ color: "white", textTransform: "none", marginLeft: "2em" }}
-                                    className="dataDict"
-                                    onClick={() => {
-                                      window.open("/data-dictionary", "_blank");
-                                    }}
-                                  >
-                                    Data Dictionary
-                                  </Button>
-                                  <span class="noprint">
+                                  <span className="noprint">
+                                    <Button
+                                      style={{ color: "white", textTransform: "none", marginLeft: "2em" }}
+                                      className="dataDict"
+                                      onClick={() => {
+                                        window.open("/data-dictionary", "_blank");
+                                      }}
+                                    >
+                                      Data Dictionary
+                                    </Button>
+                                  </span>
+                                  <span className="noprint">
                                     <IconButton
                                       title="Print"
                                       style={{color: "white", marginLeft: "1em"}}
