@@ -5,13 +5,13 @@
 
 import React, { Fragment, useContext, useEffect, useState } from "react";
 import { cloudIcon, ReferenceTooltip } from "../../shared/constants";
+import { openWeatherApiKey } from "../../shared/keys";
 import { Context } from "../../store/Store";
 
 const apiBaseURL = "https://api.openweathermap.org/data/2.5/weather";
-const apiKey = "99297824ab4835160bbe26208cff1d38";
 
 const ForecastComponent = () => {
-  const {state, dispatch} = useContext(Context);
+  const { state, dispatch } = useContext(Context);
   const [showTempIcon, setShowTempIcon] = useState(true);
   const [temp, setTemp] = useState({
     min: 0,
@@ -100,7 +100,7 @@ const ForecastComponent = () => {
   }, [dispatch, state.address, state.markers, state.progress]);
 
   const makeURLString = (url, params) => {
-    return `${url}?lat=${params[0]}&lon=${params[1]}&appid=${apiKey}&units=imperial`;
+    return `${url}?lat=${params[0]}&lon=${params[1]}&appid=${openWeatherApiKey}&units=imperial`;
   };
 
   const reverseGEO = async (lat, lng) => {
