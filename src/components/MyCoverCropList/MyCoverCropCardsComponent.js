@@ -27,7 +27,7 @@ const useStyles = makeStyles({
 });
 
 const MyCoverCropCardsComponent = (props) => {
-  const [state, dispatch] = useContext(Context);
+  const {state, dispatch} = useContext(Context);
   const data = props.data;
   const btnId = props.btnId;
   const classes = useStyles();

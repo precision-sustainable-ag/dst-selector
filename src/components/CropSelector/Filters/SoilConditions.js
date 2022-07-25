@@ -8,12 +8,10 @@ import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../../../store/Store";
 
 const SoilConditions = (props) => {
-  const [state] = useContext(Context);
+  const {state} = useContext(Context);
   const { Flooding_Frequency, Drainage_Class } = state.soilData;
   const {
     activeCropData,
-    setActiveCropData,
-    setInactiveCropData,
     cropData,
     filterSidebarItems,
   } = props;
@@ -61,10 +59,12 @@ const SoilConditions = (props) => {
         return areCommonElements(crop.fields["Soil Drainage"], Drainage_Class);
       });
 
-      const newInactives = cropData.filter((e) => !newActives.includes(e));
-
-      setActiveCropData(newActives);
-      setInactiveCropData(newInactives);
+      dispatch({
+        type: 'UPDATE_ACTIVE_CROP_DATA',
+        data: {
+          value: newActives,
+        },
+      });
     } else {
       filterSidebarItems();
     }
@@ -74,10 +74,12 @@ const SoilConditions = (props) => {
         return crop.fields["Flooding Tolerance"] === Flooding_Frequency;
       });
 
-      const newInactives = cropData.filter((e) => !newActives.includes(e));
-
-      setActiveCropData(newActives);
-      setInactiveCropData(newInactives);
+      dispatch({
+        type: 'UPDATE_ACTIVE_CROP_DATA',
+        data: {
+          value: newActives,
+        },
+      });
     } else {
       filterSidebarItems();
     }
@@ -88,8 +90,6 @@ const SoilConditions = (props) => {
     cropData,
     filterSidebarItems,
     selected,
-    setActiveCropData,
-    setInactiveCropData,
   ]);
 
   return (

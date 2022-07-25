@@ -33,7 +33,7 @@ L.Icon.Default.mergeOptions({
 });
 
 const MapContext = ({ width, height, minzoom, maxzoom, from }) => {
-  const [state, dispatch] = useContext(Context);
+  const {state, dispatch} = useContext(Context);
   const [show, setShow] = useState(true);
   const [mapCenter, setMapCenter] = useState([]);
   const [isPoly, setIsPoly] = useState(false);
@@ -88,19 +88,22 @@ const MapContext = ({ width, height, minzoom, maxzoom, from }) => {
   const setAddress = (latLng) => {
     let geocoder = new window.google.maps.Geocoder();
     geocoder.geocode({ location: latLng }, (results, status) => {
-      if (status === "OK") {
-        let formattedAddressArray = results[0].formatted_address.split(",");
-        let formattedAddressLength = formattedAddressArray.length;
-        let zipString =
-          formattedAddressArray[formattedAddressLength - 2].split(" ");
-        let zipArray = zipString.filter((a) => parseInt(a));
+      if (status === 'OK') {
+        let zipCode = 0;
 
+        results.forEach(r => {
+          let z = r.address_components.filter(e => e.types[0] === 'postal_code');
+          if (z.length) {
+            zipCode = +z[0].long_name;
+          }
+        });
+        
         dispatch({
           type: "CHANGE_ADDRESS_VIA_MAP",
           data: {
             address: results[0].formatted_address.split(",")[0],
             fullAddress: results[0].formatted_address,
-            zip: parseInt(zipArray[0]),
+            zip: zipCode,
             addressVerified: true,
           },
         });

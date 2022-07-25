@@ -15,7 +15,7 @@ import ReactGA from "react-ga";
 import { Context } from "../../store/Store";
 
 const HelpComponent = () => {
-  const [state] = useContext(Context);
+  const {state} = useContext(Context);
 
   useEffect(() => {
     document.title = "Help Page";

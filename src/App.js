@@ -60,7 +60,7 @@ const LoadRelevantRoute = ({ progress, calcHeight }) => {
 };
 
 const App = () => {
-  const [state, dispatch] = useContext(Context);
+  const {state, dispatch} = useContext(Context);
   const [calcHeight, setCalcHeight] = useState(0);
   const handleSnackClose = () => {
     dispatch({
@@ -170,22 +170,13 @@ const RouteNotFound = () => {
 };
 
 const crop = window.location.search.match(/crop=([^\^]+)/);
-const zone = window.location.search.match(/zone=([^\^]+)/);
 
 if (crop) {
   setTimeout(() => {
-    [...document.querySelectorAll('span.MuiChip-label')].forEach(o => {
-      if (o.textContent.includes('Zone ' + zone[1])) {
-        o.click();
+    [...document.querySelectorAll('.MuiCardContent-root')].forEach(o => {
+      if (o.textContent.includes(decodeURI(crop[1]))) {
+        o.querySelector('a').click();
       }
     });
-  
-    setTimeout(() => {
-      [...document.querySelectorAll('.MuiCardContent-root')].forEach(o => {
-        if (o.textContent.includes(decodeURI(crop[1]))) {
-          o.querySelector('a').click();
-        }
-      });
-    }, 3000);
   }, 1000);
 }

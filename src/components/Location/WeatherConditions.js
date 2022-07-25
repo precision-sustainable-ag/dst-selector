@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const WeatherConditions = (props) => {
-  const [state, dispatch] = useContext(Context);
+  const {state, dispatch} = useContext(Context);
   const classes = useStyles();
   const [months, setMonths] = useState([]);
   const [currentMonthFull, setCurrentMonthFull] = useState("NOVEMBER");
