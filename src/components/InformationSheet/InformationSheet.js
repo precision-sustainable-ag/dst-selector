@@ -18,7 +18,7 @@ import { zoneIcon, CropImage, flipCoverCropName } from "../../shared/constants";
 import { Context } from "../../store/Store";
 
 import html2canvas from "html2canvas";
-import * as JSPDF from "jspdf";
+// import * as JSPDF from "jspdf";
 import { saveAs } from "file-saver";
 import InformationSheetContent from "./InformationSheetContent";
 
