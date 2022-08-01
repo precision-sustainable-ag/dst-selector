@@ -45,6 +45,10 @@ jobs:
           output_location: 'build' # Built app content directory - optional
           ###### End of Repository/Build Configurations ######
 
+      - name: Print Build Size
+        run: |
+          du -hs /build
+
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
     runs-on: ubuntu-latest
