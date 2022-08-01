@@ -47,7 +47,10 @@ jobs:
 
       - name: Print Build Size
         run: |
+          echo "$(pwd)"
+          echo "$(ls)"
           echo "$(du -hs /build)"
+          echo "$(du -hs /bin/staticsites/ss-oryx/app')"
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
