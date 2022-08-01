@@ -17,7 +17,6 @@
     "file-saver": "^2.0.5",
     "google-map-react": "^2.1.9",
     "html2canvas": "^1.0.0-rc.5",
-    "jspdf": "^2.4.0",
     "jszip": "^3.5.0",
     "jszip-utils": "^0.1.0",
     "leaflet": "^1.6.0",
@@ -38,6 +37,7 @@
     "react-dates": "^21.8.0",
     "react-dom": "^16.12.0",
     "react-flexbox-grid": "^2.1.2",
+    "react-ga": "^3.3.0",
     "react-hooks-global-state": "^0.17.0",
     "react-lazyload": "^3.0.0",
     "react-leaflet": "^2.7.0",
@@ -55,7 +55,8 @@
     "start": "react-scripts start",
     "build": "CI=false && react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "format": "prettier --write ."
   },
   "eslintConfig": {
     "extends": "react-app"

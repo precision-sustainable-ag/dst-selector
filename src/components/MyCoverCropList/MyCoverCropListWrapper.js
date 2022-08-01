@@ -3,13 +3,11 @@
   Contains the CoverCropList component and the CropSidebar component
 */
 
-
-import { Box } from "@material-ui/core";
-import React, { useState } from "react";
-import CropSidebarComponent from "../CropSelector/CropSidebar";
-import Header from "../Header/Header";
-import MyCoverCropComparisonComponent from "./MyCoverCropComparisonComponent";
-import MyCoverCropList from "./MyCoverCropList";
+import { Box } from '@material-ui/core';
+import React, { useState } from 'react';
+import CropSidebarComponent from '../CropSelector/CropSidebar';
+import Header from '../Header/Header';
+import MyCoverCropList from './MyCoverCropList';
 
 const MyCoverCropListWrapper = (props) => {
   const [comparisonView, setComparisonView] = useState(false);
@@ -28,16 +26,13 @@ const MyCoverCropListWrapper = (props) => {
                 <CropSidebarComponent
                   comparisonView={comparisonView}
                   toggleComparisonView={toggleComparisonView}
-                  from={"myCoverCropListStatic"}
+                  from={'myCoverCropListStatic'}
                 />
               </div>
             </div>
           </div>
           <div className="col-sm-12 col-md-10">
-            <MyCoverCropList
-              from={"myCoverCropListStatic"}
-              comparisonView={comparisonView}
-            />
+            <MyCoverCropList from={'myCoverCropListStatic'} comparisonView={comparisonView} />
           </div>
         </div>
       </div>

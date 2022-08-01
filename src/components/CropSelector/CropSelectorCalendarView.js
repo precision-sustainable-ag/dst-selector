@@ -3,62 +3,51 @@
   The CropCalendarViewComponent shows the crops in calendar format
 */
 
-import { Tooltip, Typography } from "@material-ui/core";
-import React, { useState, useContext, Fragment } from "react";
-import { allMonths, getActiveCropMonths } from "../../shared/constants";
-import { Context } from "../../store/Store";
-import "../../styles/cropSelectorCalendarView.scss";
-import { BorderRight } from "@material-ui/icons";
-import moment from "moment";
-// import Header from "../Header/header";
+import { Tooltip, Typography } from '@material-ui/core';
+import moment from 'moment';
+import React, { Fragment, useContext } from 'react';
+import { allMonths, getActiveCropMonths } from '../../shared/constants';
+import { Context } from '../../store/Store';
+import '../../styles/cropSelectorCalendarView.scss';
 
-const CropSelectorCalendarView = ({ from = "calendar", data = [] }) => {
-  const [state, dispatch] = useContext(Context);
-  const [cashCropStartDate, setCashCropStartDate] = useState(
-    state.cashCropData.dateRange.startDate === ""
+const CropSelectorCalendarView = ({ from = 'calendar', data = [] }) => {
+  const { state } = useContext(Context);
+  const cashCropStartDate =
+    state.cashCropData.dateRange.startDate === ''
       ? null
-      : moment(state.cashCropData.dateRange.startDate).toISOString()
-  );
-
-  const [cashCropEndDate, setCashCropEndDate] = useState(
-    state.cashCropData.dateRange.endDate === ""
+      : moment(state.cashCropData.dateRange.startDate).toISOString();
+  const cashCropEndDate =
+    state.cashCropData.dateRange.endDate === ''
       ? null
-      : moment(state.cashCropData.dateRange.endDate).toISOString()
-  );
-  //   const months = allMonths();
+      : moment(state.cashCropData.dateRange.endDate).toISOString();
   const months = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
   ];
-  const isThisCashCropMonth = (month = "January") => {
+  const isThisCashCropMonth = (month = 'January') => {
     if (cashCropStartDate === null || cashCropEndDate === null) {
       return false;
     } else {
       var result = new Set();
-      console.log("End", cashCropEndDate);
-      console.log("Start", cashCropStartDate);
+      console.log('End', cashCropEndDate);
+      console.log('Start', cashCropStartDate);
       let start = moment(cashCropStartDate);
       let end = moment(cashCropEndDate);
-      //   if (start.isBefore(end)) {
-      //     console.log("correct");
-      //   } else {
-      //     console.log("incorrect");
-      //   }
-      while (start.isBefore(end)) {
-        result.add(start.format("MMMM"));
-        // result.push(cashCropStartDate.format("YYYY-MM-"));
 
-        start.add(moment.duration(1, "month"));
+      while (start.isBefore(end)) {
+        result.add(start.format('MMMM'));
+
+        start.add(moment.duration(1, 'month'));
       }
 
       if (result.has(month)) {
@@ -68,14 +57,14 @@ const CropSelectorCalendarView = ({ from = "calendar", data = [] }) => {
       }
     }
   };
-  return from === "calendar" ? (
+  return from === 'calendar' ? (
     <PaintGrowthChart
       data={data}
       from="calendar"
       months={months}
       isThisCashCropMonth={isThisCashCropMonth}
     />
-  ) : from === "listView" ? (
+  ) : from === 'listView' ? (
     <>
       <PaintGrowthChart
         data={data}
@@ -90,16 +79,13 @@ const CropSelectorCalendarView = ({ from = "calendar", data = [] }) => {
             {state.selectedGoals.length === 0
               ? allMonths.map((month, index) => <td key={index}>{month}</td>)
               : allMonths.map((month, index) =>
-                  month === "Jan" || month === "Dec" ? (
-                    <td
-                      key={index}
-                      style={index === 11 ? { textAlign: "right" } : {}}
-                    >
+                  month === 'Jan' || month === 'Dec' ? (
+                    <td key={index} style={index === 11 ? { textAlign: 'right' } : {}}>
                       <Typography variant="body1">{month}</Typography>
                     </td>
                   ) : (
                     <td key={index}></td>
-                  )
+                  ),
                 )}
           </tr>
         </tbody>
@@ -110,36 +96,31 @@ const CropSelectorCalendarView = ({ from = "calendar", data = [] }) => {
       let earlyStr = `${month}, Early`;
       let midStr = `${month}, Mid`;
 
-      //   let earlyStrData = data.fields[earlyStr] ? data.fields[earlyStr] : null;
-      //   let midStrData = data.fields[midStr] ? data.fields[midStr] : null;
-      // console.log(earlyStrData);
       return (
         <td
           key={index}
           className={
-            isThisCashCropMonth(month)
-              ? `cashCropMonth listView p-0 growthTd`
-              : `p-0 growthTd`
+            isThisCashCropMonth(month) ? `cashCropMonth listView p-0 growthTd` : `p-0 growthTd`
           }
           style={
-            getActiveCropMonths(data.fields).includes("Jan")
+            getActiveCropMonths(data.fields).includes('Jan')
               ? {
-                  borderLeft: "0px solid white",
-                  borderRight: "2px solid white",
+                  borderLeft: '0px solid white',
+                  borderRight: '2px solid white',
                 }
-              : getActiveCropMonths(data.fields).includes("Dec")
+              : getActiveCropMonths(data.fields).includes('Dec')
               ? {
-                  borderLeft: "2px solid white",
-                  borderRight: "0px solid white",
+                  borderLeft: '2px solid white',
+                  borderRight: '0px solid white',
                 }
               : getActiveCropMonths(data.fields).includes(month.substring(0, 3))
               ? {
-                  borderLeft: "2px solid white",
-                  borderRight: "2px solid white",
+                  borderLeft: '2px solid white',
+                  borderRight: '2px solid white',
                 }
               : {
-                  borderLeft: "2px solid white",
-                  borderRight: "2px solid white",
+                  borderLeft: '2px solid white',
+                  borderRight: '2px solid white',
                 }
           }
         >
@@ -149,9 +130,7 @@ const CropSelectorCalendarView = ({ from = "calendar", data = [] }) => {
                 arrow
                 title={
                   <Fragment>
-                    <Typography color="secondary">
-                      {month.toUpperCase()}, EARLY
-                    </Typography>
+                    <Typography color="secondary">{month.toUpperCase()}, EARLY</Typography>
                     {data.fields[earlyStr].map((v, i) => (
                       <Typography variant="body1" key={i} gutterBottom>
                         {v}
@@ -160,20 +139,12 @@ const CropSelectorCalendarView = ({ from = "calendar", data = [] }) => {
                   </Fragment>
                 }
               >
-                <div
-                  className={`${data.fields[
-                    earlyStr
-                  ].toString()} w-50 growthCell-20`}
-                ></div>
+                <div className={`${data.fields[earlyStr].toString()} w-50 growthCell-20`}></div>
               </Tooltip>
             ) : (
               <Tooltip
                 arrow
-                title={
-                  <Typography color="secondary">
-                    {month.toUpperCase()}, EARLY
-                  </Typography>
-                }
+                title={<Typography color="secondary">{month.toUpperCase()}, EARLY</Typography>}
               >
                 <div className="w-50 basic growthCell-20"></div>
               </Tooltip>
@@ -183,9 +154,7 @@ const CropSelectorCalendarView = ({ from = "calendar", data = [] }) => {
                 arrow
                 title={
                   <Fragment>
-                    <Typography color="secondary">
-                      {month.toUpperCase()}, MID
-                    </Typography>
+                    <Typography color="secondary">{month.toUpperCase()}, MID</Typography>
                     {data.fields[midStr].map((v, i) => (
                       <Typography variant="body1" key={i} gutterBottom>
                         {v}
@@ -194,20 +163,14 @@ const CropSelectorCalendarView = ({ from = "calendar", data = [] }) => {
                   </Fragment>
                 }
               >
-                <div
-                  className={`${data.fields[
-                    midStr
-                  ].toString()} w-50 growthCell-20`}
-                ></div>
+                <div className={`${data.fields[midStr].toString()} w-50 growthCell-20`}></div>
               </Tooltip>
             ) : (
               <Tooltip
                 arrow
                 title={
                   <Fragment>
-                    <Typography color="secondary">
-                      {month.toUpperCase()}, MID
-                    </Typography>
+                    <Typography color="secondary">{month.toUpperCase()}, MID</Typography>
                   </Fragment>
                 }
               >
@@ -224,13 +187,13 @@ const CropSelectorCalendarView = ({ from = "calendar", data = [] }) => {
 export default CropSelectorCalendarView;
 
 const PaintGrowthChart = ({
-  size = "30",
-  from = "calendar",
+  size = '30',
+  from = 'calendar',
   months = [],
   data = [],
   isThisCashCropMonth = () => {},
 }) => {
-  if (from === "listView") {
+  if (from === 'listView') {
     return (
       <table className="w-100">
         <tbody>
@@ -239,8 +202,6 @@ const PaintGrowthChart = ({
               let earlyStr = `${month}, Early`;
               let midStr = `${month}, Mid`;
 
-              let earlyStrData = data.fields[earlyStr];
-              // console.log(earlyStrData);
               return (
                 <td
                   key={index}
@@ -256,9 +217,7 @@ const PaintGrowthChart = ({
                         arrow
                         title={
                           <Fragment>
-                            <Typography color="secondary">
-                              {month.toUpperCase()}, EARLY
-                            </Typography>
+                            <Typography color="secondary">{month.toUpperCase()}, EARLY</Typography>
                             {data.fields[earlyStr].map((v, i) => (
                               <Typography variant="body1" key={i} gutterBottom>
                                 {v}
@@ -268,18 +227,14 @@ const PaintGrowthChart = ({
                         }
                       >
                         <div
-                          className={`${data.fields[
-                            earlyStr
-                          ].toString()} w-50 growthCell-20`}
+                          className={`${data.fields[earlyStr].toString()} w-50 growthCell-20`}
                         ></div>
                       </Tooltip>
                     ) : (
                       <Tooltip
                         arrow
                         title={
-                          <Typography color="secondary">
-                            {month.toUpperCase()}, EARLY
-                          </Typography>
+                          <Typography color="secondary">{month.toUpperCase()}, EARLY</Typography>
                         }
                       >
                         <div className="w-50 basic growthCell-20"></div>
@@ -290,9 +245,7 @@ const PaintGrowthChart = ({
                         arrow
                         title={
                           <Fragment>
-                            <Typography color="secondary">
-                              {month.toUpperCase()}, MID
-                            </Typography>
+                            <Typography color="secondary">{month.toUpperCase()}, MID</Typography>
                             {data.fields[midStr].map((v, i) => (
                               <Typography variant="body1" key={i} gutterBottom>
                                 {v}
@@ -302,9 +255,7 @@ const PaintGrowthChart = ({
                         }
                       >
                         <div
-                          className={`${data.fields[
-                            midStr
-                          ].toString()} w-50 growthCell-20`}
+                          className={`${data.fields[midStr].toString()} w-50 growthCell-20`}
                         ></div>
                       </Tooltip>
                     ) : (
@@ -312,9 +263,7 @@ const PaintGrowthChart = ({
                         arrow
                         title={
                           <Fragment>
-                            <Typography color="secondary">
-                              {month.toUpperCase()}, MID
-                            </Typography>
+                            <Typography color="secondary">{month.toUpperCase()}, MID</Typography>
                           </Fragment>
                         }
                       >
@@ -329,7 +278,7 @@ const PaintGrowthChart = ({
         </tbody>
       </table>
     );
-  } else if (from === "calendar") {
+  } else if (from === 'calendar') {
     return (
       <table className="w-100">
         <tbody>
@@ -338,15 +287,11 @@ const PaintGrowthChart = ({
               let earlyStr = `${month}, Early`;
               let midStr = `${month}, Mid`;
 
-              let earlyStrData = data.fields[earlyStr];
-              // console.log(earlyStrData);
               return (
                 <td
                   key={index}
                   className={
-                    isThisCashCropMonth(month)
-                      ? `cashCropMonth p-0 growthTd`
-                      : `p-0 growthTd`
+                    isThisCashCropMonth(month) ? `cashCropMonth p-0 growthTd` : `p-0 growthTd`
                   }
                 >
                   <div className={`d-flex flex-row w-100 growthCellsWrapper`}>
@@ -355,9 +300,7 @@ const PaintGrowthChart = ({
                         arrow
                         title={
                           <Fragment>
-                            <Typography color="secondary">
-                              {month.toUpperCase()}, EARLY
-                            </Typography>
+                            <Typography color="secondary">{month.toUpperCase()}, EARLY</Typography>
                             {data.fields[earlyStr].map((v, i) => (
                               <Typography variant="body1" key={i} gutterBottom>
                                 {v}
@@ -367,9 +310,7 @@ const PaintGrowthChart = ({
                         }
                       >
                         <div
-                          className={`${data.fields[
-                            earlyStr
-                          ].toString()} w-50 growthCell-30`}
+                          className={`${data.fields[earlyStr].toString()} w-50 growthCell-30`}
                         ></div>
                       </Tooltip>
                     ) : (
@@ -377,9 +318,7 @@ const PaintGrowthChart = ({
                         arrow
                         title={
                           <Fragment>
-                            <Typography color="secondary">
-                              {month.toUpperCase()}, EARLY
-                            </Typography>
+                            <Typography color="secondary">{month.toUpperCase()}, EARLY</Typography>
                           </Fragment>
                         }
                       >
@@ -391,9 +330,7 @@ const PaintGrowthChart = ({
                         arrow
                         title={
                           <Fragment>
-                            <Typography color="secondary">
-                              {month.toUpperCase()}, MID
-                            </Typography>
+                            <Typography color="secondary">{month.toUpperCase()}, MID</Typography>
                             {data.fields[midStr].map((v, i) => (
                               <Typography variant="body1" key={i} gutterBottom>
                                 {v}
@@ -403,9 +340,7 @@ const PaintGrowthChart = ({
                         }
                       >
                         <div
-                          className={`${data.fields[
-                            midStr
-                          ].toString()} w-50 growthCell-30`}
+                          className={`${data.fields[midStr].toString()} w-50 growthCell-30`}
                         ></div>
                       </Tooltip>
                     ) : (
@@ -413,9 +348,7 @@ const PaintGrowthChart = ({
                         arrow
                         title={
                           <Fragment>
-                            <Typography color="secondary">
-                              {month.toUpperCase()}, MID
-                            </Typography>
+                            <Typography color="secondary">{month.toUpperCase()}, MID</Typography>
                           </Fragment>
                         }
                       >
@@ -431,6 +364,6 @@ const PaintGrowthChart = ({
       </table>
     );
   } else {
-    return "";
+    return '';
   }
 };

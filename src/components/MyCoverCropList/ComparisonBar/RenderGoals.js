@@ -2,18 +2,18 @@
   Handles rendering the goals and updating them when selected
 */
 
-import React, { Fragment } from "react";
 import {
+  Checkbox,
+  Collapse,
+  FormControlLabel,
+  Grid,
+  List,
   ListItem,
   ListItemText,
   Typography,
-  Collapse,
-  List,
-  FormControlLabel,
-  Checkbox,
-  Grid,
-} from "@material-ui/core";
-import { ExpandLess, ExpandMore } from "@material-ui/icons";
+} from '@material-ui/core';
+import { ExpandLess, ExpandMore } from '@material-ui/icons';
+import React, { Fragment } from 'react';
 const RenderGoals = ({
   goals = [],
   setGoals = () => {},
@@ -28,13 +28,11 @@ const RenderGoals = ({
       <ListItem
         button
         // className={classes.nested}
-        className={goalsOpen ? "filterOpen" : "filterClose"}
+        className={goalsOpen ? 'filterOpen' : 'filterClose'}
         component="div"
         onClick={() => setGoalsOpen(!goalsOpen)}
       >
-        <ListItemText
-          primary={<Typography variant="body2">COVER CROP GOALS</Typography>}
-        />
+        <ListItemText primary={<Typography variant="body2">COVER CROP GOALS</Typography>} />
         {goalsOpen ? <ExpandLess /> : <ExpandMore />}
       </ListItem>
 
@@ -53,9 +51,7 @@ const RenderGoals = ({
                         onChange={() => {
                           // check if value exists, add else remove if exists
                           let comparisonKeysCopy = comparisonKeys;
-                          let indexOfValue = comparisonKeysCopy.indexOf(
-                            goal.name
-                          );
+                          let indexOfValue = comparisonKeysCopy.indexOf(goal.name);
                           if (indexOfValue === -1) {
                             // doesn't exist
                             comparisonKeysCopy.push(goal.name);
@@ -64,7 +60,7 @@ const RenderGoals = ({
                           }
 
                           dispatch({
-                            type: "UPDATE_COMPARISON_KEYS",
+                            type: 'UPDATE_COMPARISON_KEYS',
                             data: {
                               comparisonKeys: comparisonKeysCopy,
                             },

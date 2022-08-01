@@ -7,31 +7,16 @@
   showAllVariables selects all filters
 */
 
-
-import React, { useState, useEffect } from "react";
-import { Context } from "../../../store/Store";
-import {
-  List,
-  ListSubheader,
-  ListItem,
-  ListItemText,
-  Typography,
-  Button,
-} from "@material-ui/core";
-
-import RenderFilters from "./RenderFilters";
-import RenderGoals from "./RenderGoals";
+import { Button, List, ListItem, ListItemText, ListSubheader, Typography } from '@material-ui/core';
+import React, { useEffect, useState } from 'react';
+import RenderFilters from './RenderFilters';
+import RenderGoals from './RenderGoals';
 
 const ComparisonBar = (props) => {
   const [filterValues, setFilterValues] = useState([]);
   const [goalsOpen, setGoalsOpen] = useState(false);
   const [goals, setGoals] = useState([]);
   useEffect(() => {
-    // setSidebarFilters(props.filterData);
-    // const filterTitles = props.filterData.map((filter) => {
-    //   return { name: filter.name, open: false };
-    // });
-
     const filteredVals = props.filterData.map((filter) => {
       const vals = filter.values.map((val) => {
         return {
@@ -52,17 +37,9 @@ const ComparisonBar = (props) => {
         selected: false,
       };
     });
-    // console.log(filteredVals);
     setFilterValues(filteredVals);
     setGoals(filteredGoals);
-
-    // setSidebarFiltersOpen(filterTitles);
-
-    return () => {
-      //   setSidebarFilters([]);
-      //   setSidebarFiltersOpen([]);
-    };
-  }, []);
+  }, [props.filterData, props.goals]);
 
   const toggleSidebarFilterItems = (index) => {
     const newSidebarFilterVals = filterValues.map((obj, index2) => {
@@ -74,7 +51,7 @@ const ComparisonBar = (props) => {
   const resetAllFilters = () => {
     if (props.comparisonKeys.length > 0) {
       props.dispatch({
-        type: "UPDATE_COMPARISON_KEYS",
+        type: 'UPDATE_COMPARISON_KEYS',
         data: {
           comparisonKeys: [],
         },
@@ -84,7 +61,7 @@ const ComparisonBar = (props) => {
   const showAllVariables = () => {
     setGoalsOpen(true);
     let allGoals = [];
-    allGoals.push("Cover Crop Group");
+    allGoals.push('Cover Crop Group');
     const filteredGoals = props.goals.map((goal) => {
       return {
         name: goal,
@@ -105,37 +82,32 @@ const ComparisonBar = (props) => {
         values: vals,
       };
     });
-    // console.log(filteredVals);
-    // console.error("Roller Crimp filter bug");
+
     const filterKeysAppend = filteredVals.map((val, index) => {
       if (
         index !== 0 &&
-        val.name !== "Soil Conditions" &&
-        val.name !== "Disease & Non Weed Pests" &&
-        val.name !== "Beneficials" &&
-        val.name !== "Disease & Non Weed Pests"
+        val.name !== 'Soil Conditions' &&
+        val.name !== 'Disease & Non Weed Pests' &&
+        val.name !== 'Beneficials' &&
+        val.name !== 'Disease & Non Weed Pests'
       ) {
         return val.values.map((v) => {
-          if (v.name != "Roller Crimp at Flowering") {
+          if (v.name !== 'Roller Crimp at Flowering') {
             return v.alternateName ? v.alternateName : v.name;
           } else return [];
         });
       } else return [];
     });
-    // console.log(filterKeysAppend);
 
     const filterGoalsAppend = filteredGoals.map((v) => v.name);
 
-    // console.log(filterKeys);
-    // console.log(filterKeysAppend.flat());
     allGoals.push(filterKeysAppend.flat(2));
     allGoals.push(filterGoalsAppend.flat());
-    // console.log(allGoals.flat(2));
     setFilterValues(filteredVals);
     setGoals(filteredGoals);
 
     props.dispatch({
-      type: "UPDATE_COMPARISON_KEYS",
+      type: 'UPDATE_COMPARISON_KEYS',
       data: {
         comparisonKeys: allGoals.flat(2),
       },
@@ -165,7 +137,7 @@ const ComparisonBar = (props) => {
                 variant="button"
                 className="text-uppercase text-left text-danger font-weight-bold"
                 onClick={resetAllFilters}
-                style={{ cursor: "pointer" }}
+                style={{ cursor: 'pointer' }}
               >
                 Clear Variables
               </Typography>
@@ -178,11 +150,7 @@ const ComparisonBar = (props) => {
       <ListItem>
         <ListItemText
           primary={
-            <Button
-              size="small"
-              className="text-uppercase text-left"
-              onClick={showAllVariables}
-            >
+            <Button size="small" className="text-uppercase text-left" onClick={showAllVariables}>
               Show All
             </Button>
           }
@@ -199,7 +167,7 @@ const ComparisonBar = (props) => {
           dispatch={props.dispatch}
         />
       ) : (
-        ""
+        ''
       )}
 
       <RenderFilters
@@ -211,7 +179,7 @@ const ComparisonBar = (props) => {
       />
     </List>
   ) : (
-    ""
+    ''
   );
 };
 

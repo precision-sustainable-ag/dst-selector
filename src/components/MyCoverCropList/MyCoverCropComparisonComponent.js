@@ -8,69 +8,65 @@
   styled using ../../styles/cropComparisonView.scss
 */
 
-import React, { useState, useEffect, useContext } from "react";
 import {
   Card,
-  CardMedia,
-  CardContent,
-  Typography,
   CardActionArea,
+  CardContent,
+  CardMedia,
   IconButton,
-} from "@material-ui/core";
-import "../../styles/cropComparisonView.scss";
+  Typography,
+} from '@material-ui/core';
+import { Cancel, KeyboardArrowLeft, KeyboardArrowRight } from '@material-ui/icons';
+import { useSnackbar } from 'notistack';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   DataTooltip,
   flipCoverCropName,
   getRating,
   RenderSeedPriceIcons,
   trimString,
-} from "../../shared/constants";
-import {
-  MonetizationOn,
-  Cancel,
-  KeyboardArrowRight,
-  KeyboardArrowLeft,
-} from "@material-ui/icons";
-import { Context } from "../../store/Store";
-
-import "../../styles/MyCoverCropComparisonComponent.scss";
-import sidebarDefinitionsz7 from "../../shared/json/zone7/data-dictionary.json";
-import sidebarDefinitionsz6 from "../../shared/json/zone6/data-dictionary.json";
-import sidebarDefinitionsz5 from "../../shared/json/zone5/data-dictionary.json";
-import sidebarDefinitionsz4 from "../../shared/json/zone4/data-dictionary.json";
-import CropDetailsModalComponent from "../CropSelector/CropDetailsModal";
-import { useSnackbar } from "notistack";
+} from '../../shared/constants';
+import sidebarDefinitionsz4 from '../../shared/json/zone4/data-dictionary.json';
+import sidebarDefinitionsz5 from '../../shared/json/zone5/data-dictionary.json';
+import sidebarDefinitionsz6 from '../../shared/json/zone6/data-dictionary.json';
+import sidebarDefinitionsz7 from '../../shared/json/zone7/data-dictionary.json';
+import { Context } from '../../store/Store';
+import '../../styles/cropComparisonView.scss';
+import '../../styles/MyCoverCropComparisonComponent.scss';
+import CropDetailsModalComponent from '../CropSelector/CropDetailsModal';
 
 const lightBorder = {
-  border: "1px solid #35999b",
-  padding: "5px",
-  marginBottom: "5px",
-  borderTopLeftRadius: "10px",
-  borderBottomLeftRadius: "10px",
-  display: "flex",
-  justifyContent: "space-between",
+  border: '1px solid #35999b',
+  padding: '5px',
+  marginBottom: '5px',
+  borderTopLeftRadius: '10px',
+  borderBottomLeftRadius: '10px',
+  display: 'flex',
+  justifyContent: 'space-between',
 };
 const lightBG = {
-  border: "1px solid white",
-  backgroundColor: "#f1f7eb",
-  padding: "5px",
-  marginBottom: "5px",
-  textAlign: "center",
-  display: "flex",
-  justifyContent: "center",
-  fontWeight: "bold",
-  minHeight: "36px",
+  border: '1px solid white',
+  backgroundColor: '#f1f7eb',
+  padding: '5px',
+  marginBottom: '5px',
+  textAlign: 'center',
+  display: 'flex',
+  justifyContent: 'center',
+  fontWeight: 'bold',
+  minHeight: '36px',
 };
+
 const MyCoverCropComparisonComponent = (props) => {
-  const [state, dispatch] = useContext(Context);
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
-  const { comparisonKeys, zone } = state;
+  const { state, dispatch } = useContext(Context);
+  const { enqueueSnackbar } = useSnackbar();
+  const { comparisonKeys } = state;
+  const section = window.location.href.includes('selector') ? 'selector' : 'explorer';
+  const zone = state[section].zone;
+
   const [sidebarDefs, setSidebarDefs] = useState(sidebarDefinitionsz7);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalData, setModalData] = useState({});
-  const selectedCrops = props.selectedCrops
-    ? props.selectedCrops
-    : state.selectedCrops;
+  const selectedCrops = props.selectedCrops ? props.selectedCrops : state.selectedCrops;
 
   const handleModalOpen = (crop) => {
     // put data inside modal
@@ -116,13 +112,11 @@ const MyCoverCropComparisonComponent = (props) => {
       // element not in array
       // not possible ?
     } else {
-      // alert(removeIndex);
       let selectedCropsCopy = state.selectedCrops;
 
       selectedCropsCopy.splice(removeIndex, 1);
-      // console.log(selectedCropsCopy);
       dispatch({
-        type: "SELECTED_CROPS_MODIFIER",
+        type: 'SELECTED_CROPS_MODIFIER',
         data: {
           selectedCrops: selectedCropsCopy,
           snackOpen: false,
@@ -130,25 +124,23 @@ const MyCoverCropComparisonComponent = (props) => {
         },
       });
       enqueueSnackbar(`${cropName} Removed`);
-
-      // this.state.selectedCrops.splice(removeIndex, 1);
     }
   };
 
-  const getTooltipData = (keyName = "") => {
+  const getTooltipData = (keyName = '') => {
     const exactObject = sidebarDefs.find((keys) => keys.Variable === keyName);
 
     if (exactObject) {
       return exactObject.Description;
     } else {
-      return "No Data";
+      return 'No Data';
     }
   };
   const [showScrollArrows, setShowScrollArrow] = useState(false);
   const [showLeftScrollArrow, setShowLeftScrollArrow] = useState(false);
-  const scrollContainer = (direction = "right", amount = 100) => {
-    let parent = document.getElementById("scrollContainer");
-    if (direction === "right") {
+  const scrollContainer = (direction = 'right', amount = 100) => {
+    let parent = document.getElementById('scrollContainer');
+    if (direction === 'right') {
       parent.scrollLeft += amount;
     } else {
       parent.scrollLeft -= amount;
@@ -161,23 +153,24 @@ const MyCoverCropComparisonComponent = (props) => {
         <div className="col-xl-3 col-lg-4 col-md-4">
           <div className="row pt-3">
             <div className="col-12">
-              <Card style={{ width: "100%", boxShadow: "none" }}>
+              <Card style={{ width: '100%', boxShadow: 'none' }}>
                 <CardMedia
                   children={
                     <img
                       src="https://via.placeholder.com/10/FFFFFF/FFFFFF"
                       style={{ opacity: 0 }}
+                      alt="placeholder"
                     />
                   }
-                  style={{ width: "100%", height: "100px" }}
+                  style={{ width: '100%', height: '100px' }}
                 />
                 <CardContent>
                   <div
                     className="font-weight-bold text-uppercase"
                     style={{
-                      fontSize: "10pt",
-                      color: "white",
-                      visibility: "hidden",
+                      fontSize: '10pt',
+                      color: 'white',
+                      visibility: 'hidden',
                     }}
                   >
                     {`Zone`}
@@ -185,37 +178,35 @@ const MyCoverCropComparisonComponent = (props) => {
                   <div
                     className="font-weight-bold text-uppercase"
                     style={{
-                      fontSize: "10pt",
-                      color: "white",
-                      visibility: "hidden",
+                      fontSize: '10pt',
+                      color: 'white',
+                      visibility: 'hidden',
                     }}
                   >
-                    {"Family Common Name"}
+                    {'Family Common Name'}
                   </div>
                   <div
                     className="font-weight-bold "
                     style={{
-                      fontSize: "16pt",
-                      color: "white",
-                      visibility: "hidden",
+                      fontSize: '16pt',
+                      color: 'white',
+                      visibility: 'hidden',
                     }}
                   >
-                    {"Cover Crop Name"}
+                    {'Cover Crop Name'}
                   </div>
-                  <small
-                    className="font-italic"
-                    style={{ color: "white", visibility: "hidden" }}
-                  >
-                    {"Scientific Name"}
+                  <small className="font-italic" style={{ color: 'white', visibility: 'hidden' }}>
+                    {'Scientific Name'}
                   </small>
                   <div>
                     <small className="text-muted">
                       <a
                         style={{
-                          textDecoration: "underline",
-                          color: "white",
-                          visibility: "hidden",
+                          textDecoration: 'underline',
+                          color: 'white',
+                          visibility: 'hidden',
                         }}
+                        // href="/#"
                       >
                         View Crop Details
                       </a>
@@ -224,19 +215,17 @@ const MyCoverCropComparisonComponent = (props) => {
                 </CardContent>
                 <hr
                   style={{
-                    borderTop: "1px solid rgba(0,0,0,0)",
-                    visibility: "hidden",
+                    borderTop: '1px solid rgba(0,0,0,0)',
+                    visibility: 'hidden',
                   }}
                 />
-                <CardContent
-                  style={{ paddingRight: "0px", paddingLeft: "0px" }}
-                >
+                <CardContent style={{ paddingRight: '0px', paddingLeft: '0px' }}>
                   {comparisonKeys.map((keys, index) => {
                     return (
                       <div
                         style={lightBorder}
                         key={index}
-                        id={`comparisonLabel-${keys.split(" ").join("")}`}
+                        id={`comparisonLabel-${keys.split(' ').join('')}`}
                       >
                         <span>
                           <DataTooltip
@@ -246,13 +235,8 @@ const MyCoverCropComparisonComponent = (props) => {
                           />
                         </span>
                         <span>
-                          <Typography
-                            variant="body2"
-                            className="text-capitalize"
-                          >
-                            {keys === "Cover Crop Group"
-                              ? "Cover Crop Type"
-                              : keys}
+                          <Typography variant="body2" className="text-capitalize">
+                            {keys === 'Cover Crop Group' ? 'Cover Crop Type' : keys}
                           </Typography>
                         </span>
                       </div>
@@ -264,19 +248,17 @@ const MyCoverCropComparisonComponent = (props) => {
                     <div style={lightBorder}>
                       <span>
                         <DataTooltip
-                          data={"Average rating of all selected goals"}
+                          data={'Average rating of all selected goals'}
                           interactive={false}
                           placement="top-start"
                         />
                       </span>
                       <span>
-                        <Typography variant="body2">
-                          Average Goal Rating
-                        </Typography>
+                        <Typography variant="body2">Average Goal Rating</Typography>
                       </span>
                     </div>
                   ) : (
-                    ""
+                    ''
                   )}
                 </CardContent>
               </Card>
@@ -293,13 +275,13 @@ const MyCoverCropComparisonComponent = (props) => {
                     size="medium"
                     title="Scroll Left"
                     aria-label="Scroll Left"
-                    onClick={() => scrollContainer("left", 150)}
+                    onClick={() => scrollContainer('left', 150)}
                   >
                     <KeyboardArrowLeft fontSize="large" />
                   </IconButton>
                 </div>
               ) : (
-                ""
+                ''
               )}
 
               <div className="arrowRightContainer">
@@ -307,14 +289,14 @@ const MyCoverCropComparisonComponent = (props) => {
                   size="medium"
                   title="Scroll Right"
                   aria-label="Scroll Right"
-                  onClick={() => scrollContainer("right", 150)}
+                  onClick={() => scrollContainer('right', 150)}
                 >
                   <KeyboardArrowRight fontSize="large" />
                 </IconButton>
               </div>
             </>
           ) : (
-            ""
+            ''
           )}
 
           <div
@@ -323,7 +305,7 @@ const MyCoverCropComparisonComponent = (props) => {
             onScroll={() => {
               // show arrows
               setShowScrollArrow(true);
-              let a = document.getElementById("scrollContainer").scrollLeft;
+              let a = document.getElementById('scrollContainer').scrollLeft;
               if (a === 0) {
                 setShowLeftScrollArrow(false);
               } else {
@@ -333,30 +315,29 @@ const MyCoverCropComparisonComponent = (props) => {
           >
             {selectedCrops.map((crop, index) => (
               <div className="col-xl-3 col-lg-5" key={index}>
-                <Card className="mainComparisonCard" style={{ width: "100%" }}>
+                <Card className="mainComparisonCard" style={{ width: '100%' }}>
                   <span
                     onClick={() => removeCrop(crop.id, crop.cropName)}
                     className="cardCloseIcon"
                   >
                     <Cancel titleAccess="Remove Crop" />
                   </span>
-                  {crop.data["Image Data"] ? (
+                  {crop.data['Image Data'] ? (
                     <CardMedia
                       image={
-                        crop.data["Image Data"]["Key Thumbnail"]
-                          ? `/images/Cover Crop Photos/250/${crop.data["Image Data"]["Key Thumbnail"]}`
-                          : "https://placehold.it/100x100?text=Placeholder"
+                        crop.data['Image Data']['Key Thumbnail']
+                          ? `/images/Cover Crop Photos/250/${crop.data['Image Data']['Key Thumbnail']}`
+                          : 'https://placehold.it/100x100?text=Placeholder'
                       }
-                      // image="https://placehold.it/100x100"
                       title={crop.cropName}
-                      style={{ width: "100%", height: "100px" }}
+                      style={{ width: '100%', height: '100px' }}
                     />
                   ) : (
                     <CardMedia
                       children={
                         <img
                           src="https://via.placeholder.com/100/?text=Placeholder"
-                          style={{ width: "100%", height: "100px" }}
+                          style={{ width: '100%', height: '100px' }}
                           alt="Placeholder"
                         />
                       }
@@ -366,36 +347,33 @@ const MyCoverCropComparisonComponent = (props) => {
                   <CardContent>
                     <div
                       className="font-weight-bold text-muted text-uppercase"
-                      style={{ fontSize: "10pt" }}
+                      style={{ fontSize: '10pt' }}
                     >
-                      {`Zone ${crop.data["Zone"]}`}
+                      {`Zone ${crop.data['Zone']}`}
                     </div>
                     <div
                       className="font-weight-bold text-muted text-uppercase"
-                      style={{ fontSize: "10pt" }}
+                      style={{ fontSize: '10pt' }}
                     >
-                      {crop.data["Family Common Name"]}
+                      {crop.data['Family Common Name']}
                     </div>
-                    <div
-                      className="font-weight-bold "
-                      style={{ fontSize: "16pt" }}
-                    >
-                      {flipCoverCropName(crop.data["Cover Crop Name"])}
+                    <div className="font-weight-bold " style={{ fontSize: '16pt' }}>
+                      {flipCoverCropName(crop.data['Cover Crop Name'])}
                     </div>
                     <small className="font-italic text-muted">
-                      {trimString(crop.data["Scientific Name"], 25)}
+                      {trimString(crop.data['Scientific Name'], 25)}
                     </small>
                     <div>
                       <small className="text-muted">
                         <a
                           style={{
-                            textDecoration: "underline",
-                            color: "rgb(53, 153, 155)",
+                            textDecoration: 'underline',
+                            color: 'rgb(53, 153, 155)',
                           }}
-                          // href={`/information-sheet/${crop.data["Cover Crop Name"]}`}
                           onClick={() => handleModalOpen({ fields: crop.data })}
                           target="_blank"
-                          rel="noopener"
+                          rel="noopener noreferrer"
+                          // href="/#"
                         >
                           View Crop Details
                         </a>
@@ -405,9 +383,9 @@ const MyCoverCropComparisonComponent = (props) => {
                   <hr />
                   <CardContent
                     style={{
-                      paddingRight: "0px",
-                      paddingLeft: "0px",
-                      paddingBottom: "0px",
+                      paddingRight: '0px',
+                      paddingLeft: '0px',
+                      paddingBottom: '0px',
                     }}
                   >
                     {comparisonKeys.map((filterKey, index) => (
@@ -424,14 +402,14 @@ const MyCoverCropComparisonComponent = (props) => {
                         <GetAverageGoalRating crop={crop} />
                       </div>
                     ) : (
-                      ""
+                      ''
                     )}
                   </CardContent>
                   <CardActionArea
                     style={{
-                      backgroundColor: "#e3f2f4",
-                      textAlign: "center",
-                      padding: "0.5em",
+                      backgroundColor: '#e3f2f4',
+                      textAlign: 'center',
+                      padding: '0.5em',
                     }}
                     onClick={() => removeCrop(crop.id, crop.cropName)}
                   >
@@ -439,8 +417,8 @@ const MyCoverCropComparisonComponent = (props) => {
                       variant="body2"
                       className="text-uppercase"
                       style={{
-                        color: "black",
-                        fontWeight: "bold",
+                        color: 'black',
+                        fontWeight: 'bold',
                       }}
                     >
                       REMOVE
@@ -461,13 +439,13 @@ const MyCoverCropComparisonComponent = (props) => {
   );
 };
 
-const RenderRelevantData = ({ filterKey = "", data = [], index = 0 }) => {
-  if (typeof data[filterKey] === "number") {
+const RenderRelevantData = ({ filterKey = '', data = [], index = 0 }) => {
+  if (typeof data[filterKey] === 'number') {
     if (data[filterKey].toString().length === 1) {
-      if (filterKey === "Seed Price per Pound") {
+      if (filterKey === 'Seed Price per Pound') {
         return (
           <div style={lightBG}>
-            <RenderSeedPriceIcons val={data["Seed Price per Pound"]} />
+            <RenderSeedPriceIcons val={data['Seed Price per Pound']} />
           </div>
         );
       } else return <div style={lightBG}>{getRating(data[filterKey])}</div>;
@@ -479,7 +457,7 @@ const RenderRelevantData = ({ filterKey = "", data = [], index = 0 }) => {
       );
     }
   } else {
-    if (filterKey === "Frost Seeding" || filterKey === "Aerial Seeding") {
+    if (filterKey === 'Frost Seeding' || filterKey === 'Aerial Seeding') {
       return (
         <div style={lightBG}>
           <RenderSeedingData data={data} filterKey={filterKey} />
@@ -505,52 +483,16 @@ const RenderSeedingData = ({ filterKey, data }) => {
   }
 };
 const GetAverageGoalRating = ({ crop }) => {
-  const [state, dispatch] = useContext(Context);
+  const { state } = useContext(Context);
   let goalRating = 0;
   if (state.selectedGoals.length > 0) {
-    state.selectedGoals.map((goal) => {
+    state.selectedGoals.forEach((goal) => {
       if (crop.data[goal]) {
         goalRating += crop.data[goal];
       }
     });
   }
-  // console.log(goalRating);
   return getRating(goalRating / state.selectedGoals.length);
 };
 
 export default MyCoverCropComparisonComponent;
-
-// Deprecated
-
-// const RenderGrowthWindow = ({ window }) => {
-//   const growingWindows = ["Very Short", "Short", "Medium", "Long", "Very Long"];
-//   const index = growingWindows.indexOf(window);
-
-//   switch (index) {
-//     case 0:
-//       return getRating(1);
-//     case 1:
-//       return getRating(2);
-//     case 2:
-//       return getRating(3);
-//     case 3:
-//       return getRating(4);
-//     case 4:
-//       return getRating(5);
-//     default:
-//       return getRating(0);
-//   }
-// };
-
-// const RenderCtoNRatioText = ({ ratio }) => {
-//   switch (parseInt(ratio)) {
-//     case 1:
-//       return "LOW";
-//     case 2:
-//       return "MEDIUM";
-//     case 3:
-//       return "HIGH";
-//     default:
-//       return "NO DATA";
-//   }
-// };
