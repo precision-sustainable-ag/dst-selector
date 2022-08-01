@@ -44,18 +44,22 @@ const CropDetailsModalComponent = (props) => {
   useEffect(() => {
     setModalData(crop);
 
-    const kd = (e) => {
-      if (e.key === 'p' && e.ctrlKey) {
-        e.preventDefault();
-        print();
-      }
-    }; // kd
+    // TODO: does this key binding for print need to be here? i dont think we need it browsers should have this functionality built in
 
-    document.addEventListener('keydown', kd);
+    // const kd = (e) => {
+    //   if (e.key === 'p' && e.ctrlKey) {
+    // console.log('we are here, you clicked the thing')
 
-    return () => {
-      document.removeEventListener('keydown', kd);
-    };
+    //     e.preventDefault();
+    //     print();
+    //   }
+    // }; // kd
+
+    // document.addEventListener('keydown', kd);
+
+    // return () => {
+    //   document.removeEventListener('keydown', kd);
+    // };
   }, [crop]);
 
   useEffect(() => {
