@@ -3,24 +3,18 @@
   The SoilConditions filters crops based on soil conditions
 */
 
-import { Checkbox, FormControlLabel, Grid, Tooltip } from "@material-ui/core";
-import React, { useContext, useEffect, useState } from "react";
-import { Context } from "../../../store/Store";
+import { Checkbox, FormControlLabel, Grid, Tooltip } from '@material-ui/core';
+import React, { useContext, useEffect, useState } from 'react';
+import { Context } from '../../../store/Store';
 
 const SoilConditions = (props) => {
-  const {state} = useContext(Context);
+  const { state } = useContext(Context);
   const { Flooding_Frequency, Drainage_Class } = state.soilData;
-  const {
-    activeCropData,
-    cropData,
-    filterSidebarItems,
-  } = props;
+  const { activeCropData, cropData, filterSidebarItems } = props;
 
   const [selected, setSelected] = useState({
-    "Soil Drainage":
-      Drainage_Class !== "" && Drainage_Class.length > 0 ? true : false,
-    "Flooding Tolerance":
-      Flooding_Frequency !== "None" && Flooding_Frequency ? true : false,
+    'Soil Drainage': Drainage_Class !== '' && Drainage_Class.length > 0 ? true : false,
+    'Flooding Tolerance': Flooding_Frequency !== 'None' && Flooding_Frequency ? true : false,
   });
 
   const handleChange = (event) => {
@@ -32,31 +26,27 @@ const SoilConditions = (props) => {
   };
 
   useEffect(() => {
-    if (
-      Flooding_Frequency === null ||
-      Flooding_Frequency === "None" ||
-      Flooding_Frequency === ""
-    ) {
-      setSelected({ ...selected, "Flooding Tolerance": false });
+    if (Flooding_Frequency === null || Flooding_Frequency === 'None' || Flooding_Frequency === '') {
+      setSelected({ ...selected, 'Flooding Tolerance': false });
     } else {
-      setSelected({ ...selected, "Flooding Tolerance": true });
+      setSelected({ ...selected, 'Flooding Tolerance': true });
     }
 
-    if (Drainage_Class !== "") {
+    if (Drainage_Class !== '') {
       if (Array.isArray(Drainage_Class)) {
-        setSelected({ ...selected, "Soil Drainage": true });
+        setSelected({ ...selected, 'Soil Drainage': true });
       } else {
-        setSelected({ ...selected, "Soil Drainage": false });
+        setSelected({ ...selected, 'Soil Drainage': false });
       }
     } else {
-      setSelected({ ...selected, "Soil Drainage": false });
+      setSelected({ ...selected, 'Soil Drainage': false });
     }
   }, [Drainage_Class, Flooding_Frequency, selected, state.soilData]);
 
   useEffect(() => {
-    if (selected["Soil Drainage"]) {
+    if (selected['Soil Drainage']) {
       const newActives = activeCropData.filter((crop) => {
-        return areCommonElements(crop.fields["Soil Drainage"], Drainage_Class);
+        return areCommonElements(crop.fields['Soil Drainage'], Drainage_Class);
       });
 
       dispatch({
@@ -69,9 +59,9 @@ const SoilConditions = (props) => {
       filterSidebarItems();
     }
 
-    if (selected["Flooding Tolerance"]) {
+    if (selected['Flooding Tolerance']) {
       const newActives = activeCropData.filter((crop) => {
-        return crop.fields["Flooding Tolerance"] === Flooding_Frequency;
+        return crop.fields['Flooding Tolerance'] === Flooding_Frequency;
       });
 
       dispatch({
@@ -83,14 +73,7 @@ const SoilConditions = (props) => {
     } else {
       filterSidebarItems();
     }
-  }, [
-    Drainage_Class,
-    Flooding_Frequency,
-    activeCropData,
-    cropData,
-    filterSidebarItems,
-    selected,
-  ]);
+  }, [Drainage_Class, Flooding_Frequency, activeCropData, cropData, filterSidebarItems, selected]);
 
   return (
     <Grid container spacing={1}>
@@ -105,7 +88,7 @@ const SoilConditions = (props) => {
                 <p
                   dangerouslySetInnerHTML={{
                     __html:
-                      val.name === "Soil Drainage"
+                      val.name === 'Soil Drainage'
                         ? Drainage_Class.toString()
                         : Flooding_Frequency.toString(),
                   }}

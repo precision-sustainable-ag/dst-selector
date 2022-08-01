@@ -3,25 +3,25 @@
   Styles are created using makeStyles
 */
 
-import { Backdrop, Button, Fade, makeStyles, Modal, IconButton } from "@material-ui/core";
-import { Close, Print } from "@material-ui/icons";
-import React, { useEffect, useState, useContext } from "react";
-import { CropImage, zoneIcon } from "../../shared/constants";
-import "../../styles/cropDetailsModal.scss";
-import InformationSheetContent from "../InformationSheet/InformationSheetContent";
-import ReactGA from "react-ga";
-import { Context } from "../../store/Store";
+import { Backdrop, Button, Fade, makeStyles, Modal, IconButton } from '@material-ui/core';
+import { Close, Print } from '@material-ui/icons';
+import React, { useEffect, useState, useContext } from 'react';
+import { CropImage, zoneIcon } from '../../shared/constants';
+import '../../styles/cropDetailsModal.scss';
+import InformationSheetContent from '../InformationSheet/InformationSheetContent';
+import ReactGA from 'react-ga';
+import { Context } from '../../store/Store';
 
 const useStyles = makeStyles((theme) => ({
   modal: {
-    height: "100%",
-    display: "block",
+    height: '100%',
+    display: 'block',
   },
   paper: {
     backgroundColor: theme.palette.background.paper,
-    border: "2px solid #000",
+    border: '2px solid #000',
     boxShadow: theme.shadows[5],
-    padding: "0px",
+    padding: '0px',
   },
   textField: {
     marginLeft: theme.spacing(1),
@@ -29,14 +29,14 @@ const useStyles = makeStyles((theme) => ({
     width: 200,
   },
   AccordionSummaryIcon: {
-    "& div.MuiAccordionSummary-expandIcon.Mui-expanded": {
-      transform: "rotate(45deg)",
+    '& div.MuiAccordionSummary-expandIcon.Mui-expanded': {
+      transform: 'rotate(45deg)',
     },
   },
 }));
 
 const CropDetailsModalComponent = (props) => {
-  const {state} = useContext(Context);  
+  const { state } = useContext(Context);
   let crop = props.crop;
   const classes = useStyles();
   const [modalData, setModalData] = useState({});
@@ -49,13 +49,13 @@ const CropDetailsModalComponent = (props) => {
         e.preventDefault();
         print();
       }
-    } // kd
+    }; // kd
 
     document.addEventListener('keydown', kd);
 
     return () => {
       document.removeEventListener('keydown', kd);
-    }
+    };
   }, [crop]);
 
   useEffect(() => {
@@ -74,12 +74,12 @@ const CropDetailsModalComponent = (props) => {
       ReactGA.event({
         category: 'Information Sheet',
         action: 'Print',
-        label: document.title
+        label: document.title,
       });
     }
-    
+
     document.querySelector('#PDF').contentWindow.print();
-  } // print
+  }; // print
 
   return (
     <Modal
@@ -101,27 +101,24 @@ const CropDetailsModalComponent = (props) => {
           <div className="modalParentWrapper">
             <div
               className={`cropTableModal modalContainer ${classes.paper}`}
-              id={`cropDetailModal-${modalData.fields["id"]}`}
+              id={`cropDetailModal-${modalData.fields['id']}`}
             >
               <div className="container-fluid">
                 <div className="row">
                   <div
                     className="col-12"
                     style={{
-                      background: "#2D7B7B",
-                      color: "white",
-                      height: "auto",
-                      borderTopLeftRadius: "5px",
-                      borderTopRightRadius: "5px",
+                      background: '#2D7B7B',
+                      color: 'white',
+                      height: 'auto',
+                      borderTopLeftRadius: '5px',
+                      borderTopRightRadius: '5px',
                     }}
                   >
                     <div className="row doclose">
                       <div className="col-2 offset-10 text-right">
-                        {" "}
-                        <Button
-                          style={{ color: "white" }}
-                          onClick={handleModalClose}
-                        >
+                        {' '}
+                        <Button style={{ color: 'white' }} onClick={handleModalClose}>
                           <Close />
                         </Button>
                       </div>
@@ -137,32 +134,29 @@ const CropDetailsModalComponent = (props) => {
                           <div className="col-12">
                             <div className="row">
                               <div className="col mt-2">
-                                <div>{modalData.fields["Cover Crop Group"]}</div>
-                                <div
-                                  className="font-weight-bold"
-                                  id="cover-crop-modal-title"
-                                >
-                                  {modalData.fields["Cover Crop Name"]}
+                                <div>{modalData.fields['Cover Crop Group']}</div>
+                                <div className="font-weight-bold" id="cover-crop-modal-title">
+                                  {modalData.fields['Cover Crop Name']}
                                 </div>
-                                <div>{modalData.fields["Scientific Name"]}</div>
+                                <div>{modalData.fields['Scientific Name']}</div>
                               </div>
                               <div
                                 className="col"
                                 style={{
-                                  textAlign: "right",
-                                  paddingRight: "0px",
-                                  paddingLeft: "0px",
+                                  textAlign: 'right',
+                                  paddingRight: '0px',
+                                  paddingLeft: '0px',
                                 }}
                               >
-                                {crop.fields["Image Data"] ? (
+                                {crop.fields['Image Data'] ? (
                                   <CropImage
                                     present={true}
                                     src={
-                                      crop.fields["Image Data"]["Key Thumbnail"]
-                                        ? `/images/Cover Crop Photos/100x100/${crop.fields["Image Data"]["Directory"]}/${crop.fields["Image Data"]["Key Thumbnail"]}`
-                                        : "https://placehold.it/100x100"
+                                      crop.fields['Image Data']['Key Thumbnail']
+                                        ? `/images/Cover Crop Photos/100x100/${crop.fields['Image Data']['Directory']}/${crop.fields['Image Data']['Key Thumbnail']}`
+                                        : 'https://placehold.it/100x100'
                                     }
-                                    alt={crop.fields["Cover Crop Name"]}
+                                    alt={crop.fields['Cover Crop Name']}
                                   />
                                 ) : (
                                   <CropImage present={false} />
@@ -171,11 +165,8 @@ const CropDetailsModalComponent = (props) => {
                             </div>
                           </div>
                         </div>
-                        <div className="row zone" style={{paddingBottom: '1em'}}>
-                          <div
-                            className="col-12"
-                            style={{ background: "#2D7B7B", color: "white" }}
-                          >
+                        <div className="row zone" style={{ paddingBottom: '1em' }}>
+                          <div className="col-12" style={{ background: '#2D7B7B', color: 'white' }}>
                             <div className="row">
                               <div className="col-12">
                                 {zoneIcon(20, 20)}
@@ -183,10 +174,14 @@ const CropDetailsModalComponent = (props) => {
                                   PLANT HARDINESS ZONE {crop.fields.Zone} DATASET
                                   <span className="noprint">
                                     <Button
-                                      style={{ color: "white", textTransform: "none", marginLeft: "2em" }}
+                                      style={{
+                                        color: 'white',
+                                        textTransform: 'none',
+                                        marginLeft: '2em',
+                                      }}
                                       className="dataDict"
                                       onClick={() => {
-                                        window.open("/data-dictionary", "_blank");
+                                        window.open('/data-dictionary', '_blank');
                                       }}
                                     >
                                       Data Dictionary
@@ -195,7 +190,7 @@ const CropDetailsModalComponent = (props) => {
                                   <span className="noprint">
                                     <IconButton
                                       title="Print"
-                                      style={{color: "white", marginLeft: "1em"}}
+                                      style={{ color: 'white', marginLeft: '1em' }}
                                       onClick={print}
                                     >
                                       <Print />

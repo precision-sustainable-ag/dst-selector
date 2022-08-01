@@ -3,10 +3,10 @@
   RenderCats renders the categories
 */
 
-import { Typography } from "@material-ui/core";
-import React, { useEffect, useMemo, useState, Fragment } from "react";
+import { Typography } from '@material-ui/core';
+import React, { useEffect, useMemo, useState, Fragment } from 'react';
 
-const DictionaryContent = ({ dictData = [{}], from = "" }) => {
+const DictionaryContent = ({ dictData = [{}], from = '' }) => {
   const [groupedCats, setGroupedCats] = useState({});
 
   const groupBy = (arr, property) => {
@@ -18,13 +18,12 @@ const DictionaryContent = ({ dictData = [{}], from = "" }) => {
 
   const allCats = useMemo(() => {
     return dictData.filter(
-      (dict) =>
-        dict["Information Sheet"] === true || dict["Infromation Sheet"] === true
+      (dict) => dict['Information Sheet'] === true || dict['Infromation Sheet'] === true,
     );
   }, [dictData]);
 
   useEffect(() => {
-    const groupedCategories = groupBy(allCats, "Category");
+    const groupedCategories = groupBy(allCats, 'Category');
     setGroupedCats(groupedCategories);
   }, [allCats]);
 
@@ -34,22 +33,18 @@ const DictionaryContent = ({ dictData = [{}], from = "" }) => {
         <div className="col-12">
           <Typography
             variant="h6"
-            style={
-              from === "help"
-                ? { border: "0px", borderBottom: "1px solid gray" }
-                : {}
-            }
+            style={from === 'help' ? { border: '0px', borderBottom: '1px solid gray' } : {}}
           >
             {key}
           </Typography>
         </div>
         {groupedCats[key].map((innerCat, index2) => {
-          if (from === "help") {
-            if (!innerCat["Variable"].startsWith("Notes")) {
+          if (from === 'help') {
+            if (!innerCat['Variable'].startsWith('Notes')) {
               return (
                 <div className="col-6" key={index2}>
                   <Typography variant="body1" className="p-3">
-                    <b>{innerCat["Variable"]}:</b> {innerCat["Description"]}
+                    <b>{innerCat['Variable']}:</b> {innerCat['Description']}
                   </Typography>
                 </div>
               );
@@ -58,7 +53,7 @@ const DictionaryContent = ({ dictData = [{}], from = "" }) => {
             return (
               <div className="col-6" key={index2}>
                 <Typography variant="body1" className="p-3">
-                  <b>{innerCat["Variable"]}:</b> {innerCat["Description"]}
+                  <b>{innerCat['Variable']}:</b> {innerCat['Description']}
                 </Typography>
               </div>
             );
@@ -71,10 +66,8 @@ const DictionaryContent = ({ dictData = [{}], from = "" }) => {
   };
 
   return (
-    <div
-      className={`row ${from === "help" ? `` : `dictionaryContentWrapper p-4`}`}
-    >
-      {Object.keys(groupedCats).length > 0 ? <RenderCats /> : ""}
+    <div className={`row ${from === 'help' ? `` : `dictionaryContentWrapper p-4`}`}>
+      {Object.keys(groupedCats).length > 0 ? <RenderCats /> : ''}
     </div>
   );
 };

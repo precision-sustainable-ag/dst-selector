@@ -1,5 +1,5 @@
-@import "../../node_modules/sass-mediaqueries/media-queries";
-@import "../styles/constants.scss";
+@import '../../node_modules/sass-mediaqueries/media-queries';
+@import '../styles/constants.scss';
 
 .cropDetailsText {
   display: flex;
@@ -51,7 +51,7 @@
 .rating-3,
 .rating-4 {
   display: inline-block;
-  background: url("/images/rating_sprite.png") no-repeat;
+  background: url('/images/rating_sprite.png') no-repeat;
   overflow: hidden;
   text-indent: -9999px;
   text-align: left;
@@ -99,7 +99,7 @@ table#primaryCropTable {
   tbody.tableBodyWrapper {
     tr.MuiTableRow-root:not(.inactiveCropRow) {
       outline: 2px solid #598344;
-      
+
       td {
         padding: 0.3em;
         vertical-align: middle;
@@ -151,6 +151,7 @@ table#primaryCropTable {
   font-size: 90%;
 }
 
-table.w-100 ~ table {  /* clunky fix to get Dec right-aligned (rh) */
+table.w-100 ~ table {
+  /* clunky fix to get Dec right-aligned (rh) */
   width: 100%;
 }

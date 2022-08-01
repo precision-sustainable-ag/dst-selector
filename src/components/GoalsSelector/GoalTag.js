@@ -4,12 +4,12 @@
   Styles are created using makeStyles
 */
 
-import { Avatar, Chip, Tooltip } from "@material-ui/core";
-import React, { useContext, useEffect } from "react";
-import { Context } from "../../store/Store";
+import { Avatar, Chip, Tooltip } from '@material-ui/core';
+import React, { useContext, useEffect } from 'react';
+import { Context } from '../../store/Store';
 
 const GoalTag = (props) => {
-  const {state, dispatch} = useContext(Context);
+  const { state, dispatch } = useContext(Context);
 
   let goalDescription = props.goalDescription;
   let goalTitle = props.goaltTitle;
@@ -20,9 +20,7 @@ const GoalTag = (props) => {
   useEffect(() => {
     if (state.selectedGoals.length > 0) {
       state.selectedGoals.forEach((val, index) => {
-        document
-          .getElementsByClassName(val.toUpperCase())[0]
-          .classList.add("active");
+        document.getElementsByClassName(val.toUpperCase())[0].classList.add('active');
       });
     }
   }, [state.selectedGoals]);
@@ -30,24 +28,24 @@ const GoalTag = (props) => {
   const updateSelectedGoals = (item, key) => {
     const goals = [...state.selectedGoals];
 
-    if (goals.indexOf(item.fields["Variable"]) === -1) {
+    if (goals.indexOf(item.fields['Variable']) === -1) {
       // does not exist, dispatch to state and add to local state
 
-      document.getElementById(`chip${key}`).classList.add("active");
+      document.getElementById(`chip${key}`).classList.add('active');
       dispatch({
-        type: "ADD_SELECTED_GOALS",
-        data: item.fields["Variable"],
+        type: 'ADD_SELECTED_GOALS',
+        data: item.fields['Variable'],
       });
     } else {
       // exists, remove it from the state and update the state
-      let index = goals.indexOf(item.fields["Variable"]);
+      let index = goals.indexOf(item.fields['Variable']);
       goals.splice(index, 1);
 
       // make it lighter on the ui
-      document.getElementById(`chip${key}`).classList.remove("active");
+      document.getElementById(`chip${key}`).classList.remove('active');
 
       dispatch({
-        type: "UPDATE_SELECTED_GOALS",
+        type: 'UPDATE_SELECTED_GOALS',
         data: goals,
       });
     }
@@ -61,7 +59,7 @@ const GoalTag = (props) => {
       arrow
       title={
         <div className="filterTooltip">
-          <p>{goalDescription + " " + valuesDescriptions}</p>
+          <p>{goalDescription + ' ' + valuesDescriptions}</p>
         </div>
       }
       key={`tooltip${key}`}
@@ -75,11 +73,8 @@ const GoalTag = (props) => {
             : false
         }
         avatar={
-          state.selectedGoals.length !== 0 &&
-          state.selectedGoals.includes(goalTitle) ? (
-            <Avatar id={`avatar${key}`}>
-              {state.selectedGoals.indexOf(goalTitle) + 1}
-            </Avatar>
+          state.selectedGoals.length !== 0 && state.selectedGoals.includes(goalTitle) ? (
+            <Avatar id={`avatar${key}`}>{state.selectedGoals.indexOf(goalTitle) + 1}</Avatar>
           ) : (
             <Avatar className="d-none"></Avatar>
           )

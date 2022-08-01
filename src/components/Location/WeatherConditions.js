@@ -17,22 +17,22 @@ import {
   TextField,
   Tooltip,
   Typography,
-} from "@material-ui/core";
-import { AcUnit, Info, Opacity, WbSunnyOutlined } from "@material-ui/icons";
-import moment from "moment";
-import React, { useContext, useEffect, useState } from "react";
-import { LightButton } from "../../shared/constants";
-import { Context } from "../../store/Store";
+} from '@material-ui/core';
+import { AcUnit, Info, Opacity, WbSunnyOutlined } from '@material-ui/icons';
+import moment from 'moment';
+import React, { useContext, useEffect, useState } from 'react';
+import { LightButton } from '../../shared/constants';
+import { Context } from '../../store/Store';
 
 const useStyles = makeStyles((theme) => ({
   modal: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   paper: {
     backgroundColor: theme.palette.background.paper,
-    border: "2px solid #000",
+    border: '2px solid #000',
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
   },
@@ -44,16 +44,16 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const WeatherConditions = (props) => {
-  const {state, dispatch} = useContext(Context);
+  const { state, dispatch } = useContext(Context);
   const classes = useStyles();
   const [months, setMonths] = useState([]);
-  const [currentMonthFull, setCurrentMonthFull] = useState("NOVEMBER");
+  const [currentMonthFull, setCurrentMonthFull] = useState('NOVEMBER');
   const [anyValuesChanged, setAnyValuesChanged] = useState(false);
 
   const [weatherDataShadow, setWeatherDataShadow] = useState(state.weatherData);
 
-  const [lastFrostDayHelper, setLastFrostDayHelper] = useState("");
-  const [firstFrostDayHelper, setFirstFrostDayHelper] = useState("");
+  const [lastFrostDayHelper, setLastFrostDayHelper] = useState('');
+  const [firstFrostDayHelper, setFirstFrostDayHelper] = useState('');
   const [firstFrostDayError, setFirstFrostDayError] = useState(false);
   const [lastFrostDayError, setLastFrostDayError] = useState(false);
 
@@ -64,16 +64,16 @@ const WeatherConditions = (props) => {
   }, [state.ajaxInProgress, state.weatherData]);
 
   const [firstFrostMonth, setFirstFrostMonth] = useState(
-    state.weatherData.averageFrost.firstFrostDate.month
+    state.weatherData.averageFrost.firstFrostDate.month,
   );
   const [firstFrostDay, setFirstFrostDay] = useState(
-    state.weatherData.averageFrost.firstFrostDate.day
+    state.weatherData.averageFrost.firstFrostDate.day,
   );
   const [lastFrostMonth, setLastFrostMonth] = useState(
-    state.weatherData.averageFrost.lastFrostDate.month
+    state.weatherData.averageFrost.lastFrostDate.month,
   );
   const [lastFrostDay, setLastFrostDay] = useState(
-    state.weatherData.averageFrost.lastFrostDate.day
+    state.weatherData.averageFrost.lastFrostDate.day,
   );
 
   const [averagePrecipitation, setAveragePrecipitation] = useState({
@@ -81,9 +81,7 @@ const WeatherConditions = (props) => {
     annual: state.weatherData.averagePrecipitation.annual,
   });
 
-  const [frostFreeDays, setFrostFreeDays] = useState(
-    state.weatherData.frostFreeDays
-  );
+  const [frostFreeDays, setFrostFreeDays] = useState(state.weatherData.frostFreeDays);
   const [open, setOpen] = useState(false);
 
   const validateAndBroadcastModalData = () => {
@@ -94,8 +92,8 @@ const WeatherConditions = (props) => {
     // data correct
     setFirstFrostDayError(false);
     setLastFrostDayError(false);
-    setFirstFrostDayHelper("");
-    setLastFrostDayHelper("");
+    setFirstFrostDayHelper('');
+    setLastFrostDayHelper('');
 
     let broadcastObject = {
       averageFrost: {
@@ -117,13 +115,13 @@ const WeatherConditions = (props) => {
 
     if (firstFrostDay > 31 || firstFrostDay <= 0) {
       setFirstFrostDayError(true);
-      setFirstFrostDayHelper("Invalid Day");
+      setFirstFrostDayHelper('Invalid Day');
     } else if (lastFrostDay > 31 || lastFrostDay <= 0) {
       setLastFrostDayError(true);
-      setLastFrostDayHelper("Invalid Day");
+      setLastFrostDayHelper('Invalid Day');
     } else {
       dispatch({
-        type: "UPDATE_WEATHER_CONDITIONS",
+        type: 'UPDATE_WEATHER_CONDITIONS',
         data: { weatherData: broadcastObject },
       });
       setOpen(false);
@@ -136,7 +134,7 @@ const WeatherConditions = (props) => {
 
   useEffect(() => {
     // get current month in long form
-    setCurrentMonthFull(moment().format("MMMM"));
+    setCurrentMonthFull(moment().format('MMMM'));
     // render monthsShort on the modal
     setMonths(moment.localeData().monthsShort());
 
@@ -164,10 +162,8 @@ const WeatherConditions = (props) => {
   useEffect(() => {
     const checkIfAnythingChanged = () => {
       if (
-        firstFrostMonth ===
-          weatherDataShadow.averageFrost.firstFrostDate.month &&
-        parseInt(firstFrostDay) ===
-          parseInt(weatherDataShadow.averageFrost.firstFrostDate.day) &&
+        firstFrostMonth === weatherDataShadow.averageFrost.firstFrostDate.month &&
+        parseInt(firstFrostDay) === parseInt(weatherDataShadow.averageFrost.firstFrostDate.day) &&
         lastFrostMonth === weatherDataShadow.averageFrost.lastFrostDate.month &&
         lastFrostDay === weatherDataShadow.averageFrost.lastFrostDate.day &&
         parseFloat(averagePrecipitation.thisMonth) ===
@@ -211,39 +207,36 @@ const WeatherConditions = (props) => {
             anyValuesChanged ? `text-danger` : ``
           }`}
           onClick={handleModalOpen}
-          style={{ cursor: "pointer" }}
+          style={{ cursor: 'pointer' }}
         >
           &nbsp;Click To Edit
-          {anyValuesChanged ? `, values changed` : ""}
+          {anyValuesChanged ? `, values changed` : ''}
         </Typography>
       </div>
       <div className="mt-3 col-12 row">
         <div className="col-12">
-          <Typography
-            variant="body1"
-            className="font-weight-bold text-uppercase text-left"
-          >
+          <Typography variant="body1" className="font-weight-bold text-uppercase text-left">
             <Opacity />
-            &nbsp; Average Precipitation &nbsp;{" "}
+            &nbsp; Average Precipitation &nbsp;{' '}
             <Tooltip
               arrow
               interactive
               placement="right"
               title={
                 <div>
-                  Five-year average monthly and annual precipitation from the
-                  Precision Sustainable Agriculture Weather API powered by{" "}
+                  Five-year average monthly and annual precipitation from the Precision Sustainable
+                  Agriculture Weather API powered by{' '}
                   <a
                     href="https://www.nssl.noaa.gov/projects/mrms/"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
                     NSSL MRMS
-                  </a>{" "}
-                  and{" "}
+                  </a>{' '}
+                  and{' '}
                   <a target="_blank" rel="noopener noreferrer" href="/#">
                     NASA NLDAS-2
-                  </a>{" "}
+                  </a>{' '}
                   weather data.
                 </div>
               }
@@ -254,25 +247,22 @@ const WeatherConditions = (props) => {
         </div>
         <div className="col-12">
           <Typography variant="body1" className="text-left">
-            <Opacity style={{ color: "transparent" }} />
+            <Opacity style={{ color: 'transparent' }} />
             &nbsp; <span>{currentMonthFull.toUpperCase()}:</span> &nbsp;
             {state.weatherData.averagePrecipitation.thisMonth} inches
           </Typography>
           <Typography variant="body1" className="text-left">
-            <Opacity style={{ color: "transparent" }} />
-            &nbsp; <span>{"Annual"}:</span> &nbsp;
+            <Opacity style={{ color: 'transparent' }} />
+            &nbsp; <span>{'Annual'}:</span> &nbsp;
             {state.weatherData.averagePrecipitation.annual} inches
           </Typography>
         </div>
       </div>
       <div className="mt-3 col-12 row">
         <div className="col-12">
-          <Typography
-            variant="body1"
-            className="font-weight-bold text-uppercase text-left"
-          >
+          <Typography variant="body1" className="font-weight-bold text-uppercase text-left">
             <AcUnit />
-            &nbsp; Average Frost Dates &nbsp;{" "}
+            &nbsp; Average Frost Dates &nbsp;{' '}
             {/* <Tooltip
               dangerouslySetInnerHTML={
                 "Average dates of the first and last frosts for your location, based on frost dates for the last five years from University of Georgia’s Weather App; you may manually change this input."
@@ -284,24 +274,24 @@ const WeatherConditions = (props) => {
               placement="right"
               title={
                 <div>
-                  Average dates of the first and last frosts for your location,
-                  based on frost dates for the last five years from the
-                  Precision Sustainable Agriculture Weather API powered by{" "}
+                  Average dates of the first and last frosts for your location, based on frost dates
+                  for the last five years from the Precision Sustainable Agriculture Weather API
+                  powered by{' '}
                   <a
                     href="https://www.nssl.noaa.gov/projects/mrms/"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    NSSL MRMS{" "}
-                  </a>{" "}
-                  and{" "}
+                    NSSL MRMS{' '}
+                  </a>{' '}
+                  and{' '}
                   <a
                     href="https://ldas.gsfc.nasa.gov/nldas/"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
                     NASA NLDAS-2
-                  </a>{" "}
+                  </a>{' '}
                   weather data; you may manually change this input.
                 </div>
               }
@@ -313,44 +303,38 @@ const WeatherConditions = (props) => {
 
         <div className="col-12">
           <Typography variant="body1" className="text-left">
-            <Opacity style={{ color: "transparent" }} />
-            &nbsp; <span>{"First Frost Date"}:</span> &nbsp;
+            <Opacity style={{ color: 'transparent' }} />
+            &nbsp; <span>{'First Frost Date'}:</span> &nbsp;
             {`${state.weatherData.averageFrost.firstFrostDate.month} ${state.weatherData.averageFrost.firstFrostDate.day}`}
           </Typography>
           <Typography variant="body1" className="text-left">
-            <Opacity style={{ color: "transparent" }} />
-            &nbsp; <span>{"Last Frost Date"}:</span> &nbsp;
+            <Opacity style={{ color: 'transparent' }} />
+            &nbsp; <span>{'Last Frost Date'}:</span> &nbsp;
             {`${state.weatherData.averageFrost.lastFrostDate.month} ${state.weatherData.averageFrost.lastFrostDate.day}`}
           </Typography>
         </div>
       </div>
       <div className="mt-3 col-12 row">
         <div className="col-12">
-          <Typography
-            variant="body1"
-            className="font-weight-bold text-uppercase text-left"
-          >
+          <Typography variant="body1" className="font-weight-bold text-uppercase text-left">
             <WbSunnyOutlined />
-            &nbsp; Average Frost Free Days &nbsp;{" "}
+            &nbsp; Average Frost Free Days &nbsp;{' '}
             <Tooltip
               arrow
               interactive
               placement="right"
               title={
                 <div>
-                  Number of days in your growing season, based on average first
-                  and last frost dates for the last five years from the
-                  Precision Sustainable Agriculture Weather API powered by{" "}
-                  <a
-                    href="https://www.nssl.noaa.gov/projects/mrms/"
-                    rel="noopener noreferrer"
-                  >
+                  Number of days in your growing season, based on average first and last frost dates
+                  for the last five years from the Precision Sustainable Agriculture Weather API
+                  powered by{' '}
+                  <a href="https://www.nssl.noaa.gov/projects/mrms/" rel="noopener noreferrer">
                     NSSL MRMS
-                  </a>{" "}
-                  and{" "}
+                  </a>{' '}
+                  and{' '}
                   <a href="/#" target="_blank" rel="noopener noreferrer">
                     NASA NLDAS-2
-                  </a>{" "}
+                  </a>{' '}
                   weather data.
                 </div>
               }
@@ -362,8 +346,8 @@ const WeatherConditions = (props) => {
 
         <div className="col-12">
           <Typography variant="body1" className="text-left">
-            <Opacity style={{ color: "transparent" }} />
-            &nbsp; <span>{"Frost Free Days"}:</span> &nbsp;
+            <Opacity style={{ color: 'transparent' }} />
+            &nbsp; <span>{'Frost Free Days'}:</span> &nbsp;
             {state.weatherData.frostFreeDays}
           </Typography>
         </div>
@@ -393,10 +377,8 @@ const WeatherConditions = (props) => {
                   </div>
                   <div className="row mt-4">
                     <div className="col-6">
-                      <FormControl style={{ width: "100%" }}>
-                        <InputLabel htmlFor="age-native-simple">
-                          First Frost Month
-                        </InputLabel>
+                      <FormControl style={{ width: '100%' }}>
+                        <InputLabel htmlFor="age-native-simple">First Frost Month</InputLabel>
                         <Select
                           label="First Frost Month"
                           native
@@ -405,37 +387,30 @@ const WeatherConditions = (props) => {
                             setFirstFrostMonth(event.target.value);
                           }}
                           inputProps={{
-                            name: "age",
-                            id: "age-native-simple",
+                            name: 'age',
+                            id: 'age-native-simple',
                           }}
                         >
                           {months.map((val, key) => (
-                            <option
-                              value={moment(val, "MMM").format("MMMM")}
-                              key={key}
-                            >
+                            <option value={moment(val, 'MMM').format('MMMM')} key={key}>
                               {val}
                             </option>
                           ))}
                         </Select>
-                        {firstFrostMonth !==
-                        weatherDataShadow.averageFrost.firstFrostDate.month ? (
+                        {firstFrostMonth !== weatherDataShadow.averageFrost.firstFrostDate.month ? (
                           <Button
                             className="text-danger"
                             size="small"
                             onClick={() =>
                               setFirstFrostMonth(
-                                weatherDataShadow.averageFrost.firstFrostDate
-                                  .month
+                                weatherDataShadow.averageFrost.firstFrostDate.month,
                               )
                             }
                           >
                             Values changed, Reset?
                           </Button>
                         ) : (
-                          <Typography variant="body2">
-                            5 Year Average
-                          </Typography>
+                          <Typography variant="body2">5 Year Average</Typography>
                         )}
                       </FormControl>
                     </div>
@@ -454,10 +429,9 @@ const WeatherConditions = (props) => {
                           value={firstFrostDay}
                           onChange={(event) => {
                             if (!isNaN(event.target.value)) {
-                              if (event.target.value === "") {
-                                setFirstFrostDay("");
-                              } else
-                                setFirstFrostDay(parseInt(event.target.value));
+                              if (event.target.value === '') {
+                                setFirstFrostDay('');
+                              } else setFirstFrostDay(parseInt(event.target.value));
                             } else {
                               setFirstFrostDay(1);
                             }
@@ -465,28 +439,20 @@ const WeatherConditions = (props) => {
                           className={classes.textField}
                         />
                         {parseInt(firstFrostDay) !==
-                        parseInt(
-                          weatherDataShadow.averageFrost.firstFrostDate.day
-                        ) ? (
+                        parseInt(weatherDataShadow.averageFrost.firstFrostDate.day) ? (
                           <Button
                             className="text-danger"
                             size="small"
                             onClick={() =>
                               setFirstFrostDay(
-                                parseInt(
-                                  weatherDataShadow.averageFrost.firstFrostDate
-                                    .day
-                                )
+                                parseInt(weatherDataShadow.averageFrost.firstFrostDate.day),
                               )
                             }
                           >
                             Values changed, Reset?
                           </Button>
                         ) : (
-                          <Typography
-                            variant="body2"
-                            style={{ marginLeft: "8px" }}
-                          >
+                          <Typography variant="body2" style={{ marginLeft: '8px' }}>
                             5 Year Average
                           </Typography>
                         )}
@@ -495,10 +461,8 @@ const WeatherConditions = (props) => {
                   </div>
                   <div className="row mt-4">
                     <div className="col-6">
-                      <FormControl style={{ width: "100%" }}>
-                        <InputLabel htmlFor="last-frost-month">
-                          Last Frost Month
-                        </InputLabel>
+                      <FormControl style={{ width: '100%' }}>
+                        <InputLabel htmlFor="last-frost-month">Last Frost Month</InputLabel>
                         <Select
                           label="Last Frost Month"
                           native
@@ -507,37 +471,28 @@ const WeatherConditions = (props) => {
                             setLastFrostMonth(event.target.value);
                           }}
                           inputProps={{
-                            name: "last-frost-month",
-                            id: "last-frost-month",
+                            name: 'last-frost-month',
+                            id: 'last-frost-month',
                           }}
                         >
                           {months.map((val, key) => (
-                            <option
-                              value={moment(val, "MMM").format("MMMM")}
-                              key={key}
-                            >
+                            <option value={moment(val, 'MMM').format('MMMM')} key={key}>
                               {val}
                             </option>
                           ))}
                         </Select>
-                        {lastFrostMonth !==
-                        weatherDataShadow.averageFrost.lastFrostDate.month ? (
+                        {lastFrostMonth !== weatherDataShadow.averageFrost.lastFrostDate.month ? (
                           <Button
                             className="text-danger"
                             size="small"
                             onClick={() =>
-                              setLastFrostMonth(
-                                weatherDataShadow.averageFrost.lastFrostDate
-                                  .month
-                              )
+                              setLastFrostMonth(weatherDataShadow.averageFrost.lastFrostDate.month)
                             }
                           >
                             Values changed, Reset?
                           </Button>
                         ) : (
-                          <Typography variant="body2">
-                            5 Year Average
-                          </Typography>
+                          <Typography variant="body2">5 Year Average</Typography>
                         )}
                       </FormControl>
                     </div>
@@ -555,10 +510,9 @@ const WeatherConditions = (props) => {
                           value={lastFrostDay}
                           onChange={(event) => {
                             if (!isNaN(event.target.value)) {
-                              if (event.target.value === "") {
-                                setLastFrostDay("");
-                              } else
-                                setLastFrostDay(parseInt(event.target.value));
+                              if (event.target.value === '') {
+                                setLastFrostDay('');
+                              } else setLastFrostDay(parseInt(event.target.value));
                             } else {
                               setLastFrostDay(1);
                             }
@@ -566,28 +520,20 @@ const WeatherConditions = (props) => {
                           className={classes.textField}
                         />
                         {parseInt(lastFrostDay) !==
-                        parseInt(
-                          weatherDataShadow.averageFrost.lastFrostDate.day
-                        ) ? (
+                        parseInt(weatherDataShadow.averageFrost.lastFrostDate.day) ? (
                           <Button
                             className="text-danger"
                             size="small"
                             onClick={() =>
                               setLastFrostDay(
-                                parseInt(
-                                  weatherDataShadow.averageFrost.lastFrostDate
-                                    .day
-                                )
+                                parseInt(weatherDataShadow.averageFrost.lastFrostDate.day),
                               )
                             }
                           >
                             Values changed, Reset?
                           </Button>
                         ) : (
-                          <Typography
-                            variant="body2"
-                            style={{ marginLeft: "8px" }}
-                          >
+                          <Typography variant="body2" style={{ marginLeft: '8px' }}>
                             5 Year Average
                           </Typography>
                         )}
@@ -596,9 +542,7 @@ const WeatherConditions = (props) => {
                   </div>
                   <div className="row mt-4">
                     <div className="col-12">
-                      <Typography variant="h6">
-                        Average Precipitation
-                      </Typography>
+                      <Typography variant="h6">Average Precipitation</Typography>
                     </div>
                   </div>
                   <div className="row mt-4">
@@ -607,33 +551,27 @@ const WeatherConditions = (props) => {
                         <TextField
                           label={currentMonthFull}
                           type="number"
-                          inputProps={{ min: "1", max: "100", step: "0.01" }}
+                          inputProps={{ min: '1', max: '100', step: '0.01' }}
                           maxLength={4}
                           helperText="Inches"
                           value={averagePrecipitation.thisMonth}
                           onChange={(event) => {
                             setAveragePrecipitation({
                               ...averagePrecipitation,
-                              thisMonth:
-                                event.target.value === ""
-                                  ? 0
-                                  : event.target.value,
+                              thisMonth: event.target.value === '' ? 0 : event.target.value,
                             });
                           }}
                           className={classes.textField}
                         />
                         {parseFloat(averagePrecipitation.thisMonth) !==
-                        parseFloat(
-                          weatherDataShadow.averagePrecipitation.thisMonth
-                        ) ? (
+                        parseFloat(weatherDataShadow.averagePrecipitation.thisMonth) ? (
                           <Button
                             className="text-danger"
                             size="small"
                             onClick={() =>
                               setAveragePrecipitation({
                                 thisMonth: parseFloat(
-                                  weatherDataShadow.averagePrecipitation
-                                    .thisMonth
+                                  weatherDataShadow.averagePrecipitation.thisMonth,
                                 ),
                                 annual: parseFloat(averagePrecipitation.annual),
                               })
@@ -642,10 +580,7 @@ const WeatherConditions = (props) => {
                             Values changed, Reset?
                           </Button>
                         ) : (
-                          <Typography
-                            variant="body2"
-                            style={{ marginLeft: "8px" }}
-                          >
+                          <Typography variant="body2" style={{ marginLeft: '8px' }}>
                             5 Year Average
                           </Typography>
                         )}
@@ -654,9 +589,9 @@ const WeatherConditions = (props) => {
                     <div className="col-6">
                       <FormControl>
                         <TextField
-                          label={"Annual"}
+                          label={'Annual'}
                           type="number"
-                          inputProps={{ min: "1", max: "100", step: "0.01" }}
+                          inputProps={{ min: '1', max: '100', step: '0.01' }}
                           maxLength={4}
                           helperText="Inches"
                           value={averagePrecipitation.annual}
@@ -664,38 +599,27 @@ const WeatherConditions = (props) => {
                             setAveragePrecipitation({
                               ...averagePrecipitation,
                               annual:
-                                event.target.value === ""
-                                  ? 0
-                                  : parseFloat(event.target.value),
+                                event.target.value === '' ? 0 : parseFloat(event.target.value),
                             });
                           }}
                           className={classes.textField}
                         />
                         {parseFloat(averagePrecipitation.annual) !==
-                        parseFloat(
-                          weatherDataShadow.averagePrecipitation.annual
-                        ) ? (
+                        parseFloat(weatherDataShadow.averagePrecipitation.annual) ? (
                           <Button
                             className="text-danger"
                             size="small"
                             onClick={() =>
                               setAveragePrecipitation({
-                                thisMonth: parseFloat(
-                                  averagePrecipitation.thisMonth
-                                ),
-                                annual: parseFloat(
-                                  weatherDataShadow.averagePrecipitation.annual
-                                ),
+                                thisMonth: parseFloat(averagePrecipitation.thisMonth),
+                                annual: parseFloat(weatherDataShadow.averagePrecipitation.annual),
                               })
                             }
                           >
                             Values changed, Reset?
                           </Button>
                         ) : (
-                          <Typography
-                            variant="body2"
-                            style={{ marginLeft: "8px" }}
-                          >
+                          <Typography variant="body2" style={{ marginLeft: '8px' }}>
                             5 Year Average
                           </Typography>
                         )}
@@ -711,7 +635,7 @@ const WeatherConditions = (props) => {
                     <div className="col-6">
                       <FormControl>
                         <TextField
-                          label={"Frost Free Days"}
+                          label={'Frost Free Days'}
                           type="number"
                           step="0.01"
                           multiline={true}
@@ -719,34 +643,27 @@ const WeatherConditions = (props) => {
                           value={frostFreeDays}
                           onChange={(event) => {
                             if (!isNaN(event.target.value)) {
-                              if (event.target.value === "") {
+                              if (event.target.value === '') {
                                 setFrostFreeDays(0);
-                              } else
-                                setFrostFreeDays(parseInt(event.target.value));
+                              } else setFrostFreeDays(parseInt(event.target.value));
                             } else {
                               setFrostFreeDays(0);
                             }
                           }}
                           className={classes.textField}
                         />
-                        {parseInt(frostFreeDays) !==
-                        parseInt(weatherDataShadow.frostFreeDays) ? (
+                        {parseInt(frostFreeDays) !== parseInt(weatherDataShadow.frostFreeDays) ? (
                           <Button
                             className="text-danger"
                             size="small"
                             onClick={() =>
-                              setFrostFreeDays(
-                                parseInt(weatherDataShadow.frostFreeDays)
-                              )
+                              setFrostFreeDays(parseInt(weatherDataShadow.frostFreeDays))
                             }
                           >
                             Values changed, Reset?
                           </Button>
                         ) : (
-                          <Typography
-                            variant="body2"
-                            style={{ marginLeft: "8px" }}
-                          >
+                          <Typography variant="body2" style={{ marginLeft: '8px' }}>
                             5 Year Average
                           </Typography>
                         )}
@@ -756,10 +673,7 @@ const WeatherConditions = (props) => {
                   </div>
                   <div className="row mt-4">
                     <div className="col-6">
-                      <LightButton
-                        disabled={false}
-                        onClick={validateAndBroadcastModalData}
-                      >
+                      <LightButton disabled={false} onClick={validateAndBroadcastModalData}>
                         update
                       </LightButton>
                       <Button onClick={() => setOpen(false)}>cancel</Button>

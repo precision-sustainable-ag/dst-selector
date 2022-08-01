@@ -9,12 +9,7 @@
 // WHY: https://operations.osmfoundation.org/policies/nominatim/ Doesn't allow the API usage for building auto-complete
 // Lancaster, Pennsylvania as default for PASA
 
-import React, {
-  useState,
-  useEffect,
-  useContext,
-  Fragment,
-} from "react";
+import React, { useState, useEffect, useContext, Fragment } from 'react';
 
 import {
   TextField,
@@ -31,10 +26,10 @@ import {
   DialogActions,
   Button,
   Typography,
-} from "@material-ui/core";
-import { Context } from "../../store/Store";
-import { Search } from "@material-ui/icons";
-import Axios from "axios";
+} from '@material-ui/core';
+import { Context } from '../../store/Store';
+import { Search } from '@material-ui/icons';
+import Axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -45,13 +40,13 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(2),
   },
   modal: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   paper: {
     backgroundColor: theme.palette.background.paper,
-    border: "2px solid #000",
+    border: '2px solid #000',
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
   },
@@ -59,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
 
 const AutoCompleteComponent = ({ from }) => {
   const classes = useStyles();
-  const {state, dispatch} = useContext(Context);
+  const { state, dispatch } = useContext(Context);
   const [open, setOpen] = useState(false);
   const [address, setAddress] = useState(state.address);
   const [suggestedAddress, setSuggestedAddress] = useState({});
@@ -74,13 +69,13 @@ const AutoCompleteComponent = ({ from }) => {
   const setBoundingBoxAndAddress = (val) => {
     // set the polygon bounding box? OR lat long and address, then close the modal
     dispatch({
-      type: "UPDATE_MARKER",
+      type: 'UPDATE_MARKER',
       data: {
         markers: [[parseFloat(val.lat), parseFloat(val.lon)]],
       },
     });
     dispatch({
-      type: "CHANGE_ADDRESS",
+      type: 'CHANGE_ADDRESS',
       data: {
         address: val.display_name,
         addressVerified: true,
@@ -94,7 +89,7 @@ const AutoCompleteComponent = ({ from }) => {
   const handleToggle = () => {
     // check if zip or address
 
-    if (from === "greenbar") {
+    if (from === 'greenbar') {
       // addressSet();
       setShowRestartPrompt(true);
     } else {
@@ -103,24 +98,24 @@ const AutoCompleteComponent = ({ from }) => {
   };
 
   const addressSet = () => {
-    if (state.addressSearchPreference === "zip") {
+    if (state.addressSearchPreference === 'zip') {
       if (isNaN(address)) {
-        alert("Invalid ZIP Code");
+        alert('Invalid ZIP Code');
       } else {
-        checkAddresses(address, "zip").then((data) => {
+        checkAddresses(address, 'zip').then((data) => {
           console.log(data[0]);
           // let dataFloat = data[0].boundingbox.map((val) => {
           //   return parseFloat(val);
           // });
 
           dispatch({
-            type: "UPDATE_ZIP_CODE",
+            type: 'UPDATE_ZIP_CODE',
             data: {
               zip: parseInt(address),
             },
           });
           dispatch({
-            type: "UPDATE_MARKER",
+            type: 'UPDATE_MARKER',
             data: {
               markers: [[parseFloat(data[0].lat), parseFloat(data[0].lon)]],
             },
@@ -131,7 +126,7 @@ const AutoCompleteComponent = ({ from }) => {
       if (address.length > 3) {
         handleOpen();
         // setOpen(true);
-        checkAddresses(address, "address").then((addressData) => {
+        checkAddresses(address, 'address').then((addressData) => {
           setSuggestedAddress(addressData);
           console.log(addressData);
         });
@@ -178,14 +173,14 @@ const AutoCompleteComponent = ({ from }) => {
             <h2 id="transition-modal-title">Suggested Locations</h2>
             <div>
               <p variant="body2">
-                Server suggested {suggestedAddress.length}{" "}
-                {suggestedAddress.length > 1 ? "addresses" : "address"}
+                Server suggested {suggestedAddress.length}{' '}
+                {suggestedAddress.length > 1 ? 'addresses' : 'address'}
               </p>
               {suggestedAddress.length > 0 ? (
                 <ul>
                   {suggestedAddress.map((val, index) => (
                     <li key={index}>
-                      {" "}
+                      {' '}
                       <Link
                         component="button"
                         variant="body2"
@@ -198,21 +193,15 @@ const AutoCompleteComponent = ({ from }) => {
                   ))}
                 </ul>
               ) : (
-                ""
+                ''
               )}
 
-              <em>
-                If you don't find your location here, try typing a bit more
-              </em>
+              <em>If you don't find your location here, try typing a bit more</em>
             </div>
           </div>
         </Fade>
       </Modal>
-      <FormControl
-        variant="filled"
-        style={{ width: "100%" }}
-        className={classes.formControl}
-      >
+      <FormControl variant="filled" style={{ width: '100%' }} className={classes.formControl}>
         <TextField
           label="LOCATION"
           value={address}
@@ -231,15 +220,11 @@ const AutoCompleteComponent = ({ from }) => {
           }}
         ></TextField>
       </FormControl>
-      <Dialog
-        disableBackdropClick
-        disableEscapeKeyDown
-        open={showRestartPrompt}
-      >
+      <Dialog disableBackdropClick disableEscapeKeyDown open={showRestartPrompt}>
         <DialogContent dividers>
           <Typography variant="body1">
-            Restarting will remove all cover crops added to your list. Are you
-            sure you want to restart?
+            Restarting will remove all cover crops added to your list. Are you sure you want to
+            restart?
           </Typography>
         </DialogContent>
         <DialogActions>

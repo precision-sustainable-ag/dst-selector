@@ -3,18 +3,18 @@
   styled using ./styles/App.scss
 */
 
-import { Snackbar } from "@material-ui/core";
-import React, { useContext, useEffect, useState } from "react";
-import CropSelector from "./components/CropSelector/CropSelector";
-import GoalsSelector from "./components/GoalsSelector/GoalsSelector";
-import Header from "./components/Header/Header";
-import Landing from "./components/Landing/Landing";
-import LocationComponent from "./components/Location/Location";
-import LocationConfirmation from "./components/Location/LocationConfirmation";
-import ProgressBar from "./shared/ProgressBar";
-import ProgressButtons from "./shared/ProgressButtons";
-import { Context } from "./store/Store";
-import "./styles/App.scss";
+import { Snackbar } from '@material-ui/core';
+import React, { useContext, useEffect, useState } from 'react';
+import CropSelector from './components/CropSelector/CropSelector';
+import GoalsSelector from './components/GoalsSelector/GoalsSelector';
+import Header from './components/Header/Header';
+import Landing from './components/Landing/Landing';
+import LocationComponent from './components/Location/Location';
+import LocationConfirmation from './components/Location/LocationConfirmation';
+import ProgressBar from './shared/ProgressBar';
+import ProgressButtons from './shared/ProgressButtons';
+import { Context } from './store/Store';
+import './styles/App.scss';
 
 const LoadRelevantRoute = ({ progress, calcHeight }) => {
   switch (progress) {
@@ -41,17 +41,11 @@ const LoadRelevantRoute = ({ progress, calcHeight }) => {
       );
     case 4:
       return (
-        <GoalsSelector
-          height={calcHeight}
-          title="Species Selector Tool | Decision Support Tool"
-        />
+        <GoalsSelector height={calcHeight} title="Species Selector Tool | Decision Support Tool" />
       );
     case 5:
       return (
-        <CropSelector
-          height={calcHeight}
-          title="Species Selector Tool | Decision Support Tool"
-        />
+        <CropSelector height={calcHeight} title="Species Selector Tool | Decision Support Tool" />
       );
 
     default:
@@ -60,25 +54,23 @@ const LoadRelevantRoute = ({ progress, calcHeight }) => {
 };
 
 const App = () => {
-  const {state, dispatch} = useContext(Context);
+  const { state, dispatch } = useContext(Context);
   const [calcHeight, setCalcHeight] = useState(0);
   const handleSnackClose = () => {
     dispatch({
-      type: "SNACK",
+      type: 'SNACK',
       data: {
         snackOpen: false,
-        snackMessage: "",
+        snackMessage: '',
       },
     });
   };
 
   useEffect(() => {
     let parentDocHeight = document
-      .getElementById("mainContentWrapper")
+      .getElementById('mainContentWrapper')
       .getBoundingClientRect().height;
-    let headerHeight = document
-      .querySelector("header")
-      .getBoundingClientRect().height;
+    let headerHeight = document.querySelector('header').getBoundingClientRect().height;
 
     let calculatedHeight = parentDocHeight - headerHeight;
 
@@ -101,20 +93,14 @@ const App = () => {
             <div
               className="col-12"
               style={{
-                paddingLeft: "0px",
-                paddingRight: "0px",
+                paddingLeft: '0px',
+                paddingRight: '0px',
               }}
             >
-              <LoadRelevantRoute
-                progress={state.progress}
-                calcHeight={calcHeight}
-              />
+              <LoadRelevantRoute progress={state.progress} calcHeight={calcHeight} />
               {state.progress > 0 && state.progress < 5 ? (
                 <div className="container-fluid mt-5 mb-5">
-                  <div
-                    className="row"
-                    style={{ width: "95%", margin: "0 auto" }}
-                  >
+                  <div className="row" style={{ width: '95%', margin: '0 auto' }}>
                     <div className="col-lg-5 col-12 col-md-5"></div>
                     <div className="col-lg-5 col-12 col-md-5">
                       <ProgressButtons />
@@ -125,7 +111,7 @@ const App = () => {
                   </div>
                 </div>
               ) : (
-                ""
+                ''
               )}
             </div>
           )}
@@ -146,7 +132,7 @@ const App = () => {
           open={state.snackOpen}
           onClose={handleSnackClose}
           ContentProps={{
-            "aria-describedby": "message-id",
+            'aria-describedby': 'message-id',
           }}
           message={state.snackMessage}
         />
@@ -173,7 +159,7 @@ const crop = window.location.search.match(/crop=([^\^]+)/);
 
 if (crop) {
   setTimeout(() => {
-    [...document.querySelectorAll('.MuiCardContent-root')].forEach(o => {
+    [...document.querySelectorAll('.MuiCardContent-root')].forEach((o) => {
       if (o.textContent.includes(decodeURI(crop[1]))) {
         o.querySelector('a').click();
       }

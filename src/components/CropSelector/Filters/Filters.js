@@ -10,14 +10,14 @@ import React, {
   useState,
 } from 'react';
 
-import { Context } from "../../../store/Store";
+import { Context } from '../../../store/Store';
 
 const DollarsAndRatings = ({ data, filter, handleChange }) => {
-  const {state, change} = useContext(Context);  
+  const { state, change } = useContext(Context);
   const sfilters = window.location.href.includes('species') ? state.selector : state.explorer;
 
   // if (!data) return <Fragment></Fragment>;
-  
+
   let style =
     filter.symbol === 'dollar'
       ? {}
@@ -93,7 +93,7 @@ const DollarsAndRatings = ({ data, filter, handleChange }) => {
   );
 }; // DollarsAndRatings
 
-const Chips = ({state, filter, handleChange}) => {
+const Chips = ({ state, filter, handleChange }) => {
   const sfilters = window.location.href.includes('species') ? state.selector : state.explorer;
 
   // let { sidebarFilterOptions } = props;
@@ -136,22 +136,20 @@ const Tip = ({ filter, omitHeading }) => {
       onMouseOut={() => setOpen(false)}
       title={
         <div className="filterTooltip">
-          <p dangerouslySetInnerHTML={{__html: filter.description}} />
+          <p dangerouslySetInnerHTML={{ __html: filter.description }} />
         </div>
       }
     >
       <small style={{ whiteSpace: 'nowrap' }}>
         {omitHeading ? '' : filter.name}
-        <HelpOutlineIcon
-          style={{ cursor: 'pointer', transform: 'scale(0.7)' }}
-        />
+        <HelpOutlineIcon style={{ cursor: 'pointer', transform: 'scale(0.7)' }} />
       </small>
     </Tooltip>
-  )
+  );
 }; // Tip
 
 const Filters = forwardRef(({ props }, ref) => {
-  const {state, change} = useContext(Context);
+  const { state, change } = useContext(Context);
 
   let { filters, setSidebarFilterOptions, sidebarFilterOptions } = props;
 
@@ -174,11 +172,11 @@ const Filters = forwardRef(({ props }, ref) => {
     setProps(selected);
   }, [selected]);
 
-//  useImperativeHandle(ref, () => ({
-//    resetFilters() {
-//      setSelected(options);
-//    },
-//  }));
+  //  useImperativeHandle(ref, () => ({
+  //    resetFilters() {
+  //      setSelected(options);
+  //    },
+  //  }));
 
   const dollarsAndRatingsChange = (filtername, val) => {
     // setSelected({ ...selected, [filtername]: val });
@@ -208,34 +206,20 @@ const Filters = forwardRef(({ props }, ref) => {
           if (filter.values && filter.values.length === 1) {
             return (
               <Grid item>
-                <Chips
-                  state={state}
-                  filter={filter}
-                  props={props}
-                  handleChange={chipChange}
-                />
-                {
-                  filter.description &&
-                  <Tip filter={filter} omitHeading={true} />
-                }
+                <Chips state={state} filter={filter} props={props} handleChange={chipChange} />
+                {filter.description && <Tip filter={filter} omitHeading={true} />}
               </Grid>
             );
           } else {
             return (
               <Grid item key={i}>
-                {
-                  filter.description &&
+                {filter.description && (
                   <>
                     <Tip filter={filter} />
-                    <br/>
+                    <br />
                   </>
-                }                
-                <Chips
-                  state={state}
-                  filter={filter}
-                  props={props}
-                  handleChange={chipChange}
-                />
+                )}
+                <Chips state={state} filter={filter} props={props} handleChange={chipChange} />
               </Grid>
             );
           }
