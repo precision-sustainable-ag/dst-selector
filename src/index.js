@@ -3,42 +3,34 @@
   styled using ./styles/parent.scss, ./styles/progressBar.css, CustomStyles from ./shared/constants
 */
 
-import React, { Suspense } from "react";
-import ReactDOM from "react-dom";
-import "./index.css";
-import App from "./App";
-import * as serviceWorker from "./serviceWorker";
-import Store from "./store/Store";
-import "leaflet-control-geocoder/dist/Control.Geocoder.js";
-// import "@fortawesome/fontawesome-free/css/all.min.css";
-// import "bootstrap-css-only/css/bootstrap.min.css";
-import "./styles/parent.scss";
-import "mdbreact/dist/css/mdb.css";
-import "./styles/progressBar.css";
-import Footer from "./components/Footer/Footer";
-import { BrowserRouter, Switch, Route } from "react-router-dom";
-import About from "./components/About/About";
-import SeedingRateCalculator from "./components/SeedingRateCalculator/SeedingRateCalculator";
-import MixMaker from "./components/MixMaker/MixMaker";
-import CoverCropExplorer from "./components/CoverCropExplorer/CoverCropExplorer";
-import InformationSheet from "./components/InformationSheet/InformationSheet";
-import HelpComponent from "./components/Help/Help";
-import FeedbackComponent from "./components/Feedback/Feedback";
-import {
-  MuiThemeProvider,
-  responsiveFontSizes,
-} from "@material-ui/core";
-import { CustomStyles } from "./shared/constants";
-import { SnackbarProvider } from "notistack";
-import InformationSheetDictionary from "./components/InformationSheet/InformationSheetDictionary";
-import MyCoverCropListWrapper from "./components/MyCoverCropList/MyCoverCropListWrapper";
-import License from "./components/License/License";
-import { createTheme } from "@material-ui/core/styles";
+import React, { Suspense } from 'react';
+import ReactDOM from 'react-dom';
+import './index.css';
+import App from './App';
+import * as serviceWorker from './serviceWorker';
+import Store from './store/Store';
+import 'leaflet-control-geocoder/dist/Control.Geocoder.js';
+import './styles/parent.scss';
+import 'mdbreact/dist/css/mdb.css';
+import './styles/progressBar.css';
+import Footer from './components/Footer/Footer';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import About from './components/About/About';
+import SeedingRateCalculator from './components/SeedingRateCalculator/SeedingRateCalculator';
+import MixMaker from './components/MixMaker/MixMaker';
+import CoverCropExplorer from './components/CoverCropExplorer/CoverCropExplorer';
+import InformationSheet from './components/InformationSheet/InformationSheet';
+import HelpComponent from './components/Help/Help';
+import FeedbackComponent from './components/Feedback/Feedback';
+import { MuiThemeProvider, responsiveFontSizes } from '@material-ui/core';
+import { CustomStyles } from './shared/constants';
+import { SnackbarProvider } from 'notistack';
+import InformationSheetDictionary from './components/InformationSheet/InformationSheetDictionary';
+import MyCoverCropListWrapper from './components/MyCoverCropList/MyCoverCropListWrapper';
+import License from './components/License/License';
+import { createTheme } from '@material-ui/core/styles';
 
-const withFooter = (WrappedComponent) => () => [
-  <WrappedComponent key="1" />,
-  <Footer key="2" />,
-];
+const withFooter = (WrappedComponent) => () => [<WrappedComponent key="1" />, <Footer key="2" />];
 
 const theme = createTheme({
   palette: {
@@ -52,37 +44,37 @@ const theme = createTheme({
   overrides: {
     MuiTooltip: {
       tooltip: {
-        fontWeight: "normal",
+        fontWeight: 'normal',
         fontSize: CustomStyles().defaultFontSize,
         backgroundColor: CustomStyles().secondaryProgressBtnColor,
-        color: "black",
+        color: 'black',
         borderRadius: CustomStyles().mildlyRoundedRadius,
       },
       arrow: {},
     },
     MuiChip: {
       root: {
-        "&&:hover": {
-          boxShadow: "0 0 3px 0 black"
+        '&&:hover': {
+          boxShadow: '0 0 3px 0 black',
         },
-        border: "1px solid #777",
+        border: '1px solid #777',
       },
       colorSecondary: {
-        "&, &&:hover, &&:focus": {
+        '&, &&:hover, &&:focus': {
           backgroundColor: CustomStyles().greenishWhite,
-          color: "rgba(0,0,0,0.9)",
-          fontWeight: "normal",
+          color: 'rgba(0,0,0,0.9)',
+          fontWeight: 'normal',
         },
       },
       colorPrimary: {
-        "&, &&:hover, &&:focus": {
+        '&, &&:hover, &&:focus': {
           backgroundColor: CustomStyles().darkGreen,
-          color: "white",
-          fontWeight: "normal",
+          color: 'white',
+          fontWeight: 'normal',
         },
       },
       sizeSmall: {
-        fontSize: "1.2rem",
+        fontSize: '1.2rem',
       },
     },
     MuiDialog: {
@@ -121,7 +113,7 @@ const RouteNotFound = () => {
 };
 
 const csTheme = responsiveFontSizes(theme, {
-  breakpoints: ["xs", "sm", "md", "lg", "xl"],
+  breakpoints: ['xs', 'sm', 'md', 'lg', 'xl'],
 });
 
 const Wrapper = () => (
@@ -129,8 +121,8 @@ const Wrapper = () => (
     <SnackbarProvider
       maxSnack={5}
       anchorOrigin={{
-        vertical: "bottom",
-        horizontal: "right",
+        vertical: 'bottom',
+        horizontal: 'right',
       }}
       autoHideDuration={15000}
     >
@@ -139,46 +131,21 @@ const Wrapper = () => (
           <Suspense fallback={<div>Loading..</div>}>
             <Switch>
               <Route path={`/species-selector`} component={App} exact />
-              <Route path={"/"} component={CoverCropExplorer} exact />
-              <Route path={"/about"} component={About} exact />
-              <Route path={"/help"} component={HelpComponent} exact />
-              <Route path={"/feedback"} component={FeedbackComponent} exact />
+              <Route path={'/'} component={CoverCropExplorer} exact />
+              <Route path={'/about'} component={About} exact />
+              <Route path={'/help'} component={HelpComponent} exact />
+              <Route path={'/feedback'} component={FeedbackComponent} exact />
+              <Route path={'/my-cover-crop-list'} component={MyCoverCropListWrapper} exact />
+              <Route path={'/information-sheet/:cropName'} component={InformationSheet} exact />
+              <Route path={'/seeding-rate-calculator'} component={SeedingRateCalculator} exact />
+              <Route path={'/data-dictionary'} component={InformationSheetDictionary} exact />
+              <Route path={'/license'} component={() => <License licenseType="MIT" />} exact />
               <Route
-                path={"/my-cover-crop-list"}
-                component={MyCoverCropListWrapper}
-                exact
-              />
-              {/* <Route
-                path={"/information-sheet"}
-                component={InformationSheet}
-                exact
-              /> */}
-              <Route
-                path={"/information-sheet/:cropName"}
-                component={InformationSheet}
-                exact
-              />
-              <Route
-                path={"/seeding-rate-calculator"}
-                component={SeedingRateCalculator}
-                exact
-              />
-              <Route
-                path={"/data-dictionary"}
-                component={InformationSheetDictionary}
-                exact
-              />
-              <Route
-                path={"/license"}
-                component={() => <License licenseType="MIT" />}
-                exact
-              />
-              <Route
-                path={"/ag-informatics-license"}
+                path={'/ag-informatics-license'}
                 component={() => <License licenseType="AgInformatics" />}
                 exact
               />
-              <Route path={"/mix-maker"} component={MixMaker} exact />
+              <Route path={'/mix-maker'} component={MixMaker} exact />
 
               <Route component={RouteNotFound} />
             </Switch>
@@ -193,7 +160,7 @@ const Wrapper = () => (
 
 const WrapperWithFooter = withFooter(Wrapper);
 
-ReactDOM.render(<WrapperWithFooter />, document.getElementById("root"));
+ReactDOM.render(<WrapperWithFooter />, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

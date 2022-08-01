@@ -3,47 +3,40 @@
   The ProgressButtonsInner allow the user to navigate steps
 */
 
-import React, { useContext, Fragment } from "react";
-import { Context } from "../store/Store";
-import { LightButton } from "./constants";
+import React, { Fragment, useContext } from 'react';
+import { Context } from '../store/Store';
+import { LightButton } from './constants';
 
-const ProgressButtonsInner = props => {
+const ProgressButtonsInner = (props) => {
   let isDisabled = props.disabled;
 
-  const [state, dispatch] = useContext(Context);
+  const { dispatch } = useContext(Context);
 
-  const changeProgress = type => {
-    if (type === "increment") {
-      // if progress = 1 (location stage), check if textfield has a value? then set state address to that value
-      // if(state.progress === 1) {
-      //   if(document.getElementById('google-map-autocompletebar').)
-      // }
+  const changeProgress = (type) => {
+    if (type === 'increment') {
       dispatch({
-        type: "UPDATE_PROGRESS",
+        type: 'UPDATE_PROGRESS',
         data: {
-          type: "INCREMENT"
-        }
+          type: 'INCREMENT',
+        },
       });
     }
 
-    if (type === "decrement") {
+    if (type === 'decrement') {
       dispatch({
-        type: "UPDATE_PROGRESS",
+        type: 'UPDATE_PROGRESS',
         data: {
-          type: "DECREMENT"
-        }
+          type: 'DECREMENT',
+        },
       });
     }
   };
 
   return (
     <Fragment>
-      <LightButton onClick={() => changeProgress("decrement")}>
-        {" "}
-        back
-      </LightButton>
+      <LightButton onClick={() => changeProgress('decrement')}> back</LightButton>
       <LightButton
-        onClick={() => changeProgress("increment")}
+        onClick={() => changeProgress('increment')}
         disabled={isDisabled}
         className="ml-3"
       >

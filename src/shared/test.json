@@ -1,0 +1,275 @@
+[
+  {
+    "name": "Cover Crop Type",
+    "description": "Common name for categories of cover crops.",
+    "type": "chips-only",
+    "values": [
+      {
+        "name": "Legume"
+      },
+      {
+        "name": "Grass"
+      },
+      {
+        "name": "Brassica"
+      },
+      {
+        "name": "Broadleaf"
+      }
+    ]
+  },
+  {
+    "name": "Environmental Tolerances",
+    "description": "This data is based on expert opinion.",
+    "type": "rating-only",
+    "values": [
+      {
+        "name": "Drought",
+        "alternateName": "Drought Tolerance",
+        "symbol": "star",
+        "maxSize": 5,
+        "description": "Ability to tolerate drought relative to other species. <br><br> 1 = intolerant, 5 = high tolerance\n"
+      },
+      {
+        "name": "Flood",
+        "alternateName": "Flood Tolerance",
+        "symbol": "star",
+        "maxSize": 5,
+        "description": "Ability to tolerate flood relative to other species. <br><br> 1 = intolerant, 5 = high tolerance\n"
+      },
+      {
+        "name": "Heat",
+        "alternateName": "Heat Tolerance",
+        "symbol": "star",
+        "maxSize": 5,
+        "description": "Ability to tolerate heat relative to other species. <br><br> 1 = intolerant, 5 = high tolerance\n"
+      },
+      {
+        "name": "Low Fertility",
+        "alternateName": "Low Fertility Tolerance",
+        "symbol": "star",
+        "maxSize": 5,
+        "description": "Ability to tolerate poor fertility in general (an amalgamation of low pH soils and/or below-optimum soil tests for N, P, and/or K, sandy soil). <br><br> 1 = intolerant, 5 = high tolerance\n"
+      },
+      {
+        "name": "Salinity",
+        "alternateName": "Salinity Tolerance",
+        "symbol": "star",
+        "maxSize": 5,
+        "description": "Ability to tolerate high salinity relative to other species. <br><br> 1 = intolerant, 5 = high tolerance\n"
+      },
+      {
+        "name": "Shade",
+        "alternateName": "Shade Tolerance",
+        "symbol": "star",
+        "maxSize": 5,
+        "description": "Ability to tolerate shade relative to other species. <br><br> 1 = intolerant, 5 = high tolerance\n"
+      }
+    ]
+  },
+  {
+    "name": "Growth",
+    "description": "This data is based on expert opinion.",
+    "type": "chips-rating",
+    "values": [
+      {
+        "name": "Active Growth Period",
+        "type": "chip",
+        "maxSize": null,
+        "description": "Season in which plants have active growth. <br><br> ",
+        "values": ["Spring", "Summer", "Winter", "Fall"]
+      },
+      {
+        "name": "Duration",
+        "type": "chip",
+        "maxSize": null,
+        "description": "Length of time during which the cover crop's entire lifecycle is completed in the selected zone. Cover crops that have different Durations depending on environment or location are reported in order of increasing longevity in nature. <br><br> ",
+        "values": ["Annual", "Biennial", "Short-livedPerennial", "Perennial"]
+      },
+      {
+        "name": "Early Spring Growth",
+        "type": "rating",
+        "maxSize": 5,
+        "description": "Speed in the spring at which the cover crop breaks dormancy and grows. <br><br> 1= slow, 5 = fast. No star means that early spring growth is not applicable.\n",
+        "values": []
+      },
+      {
+        "name": "Ease of Establishment",
+        "type": "rating",
+        "maxSize": 5,
+        "description": "Degree of difficulty in getting cover crop established. <br><br> 1 = difficult to establish\n5 = very easy to establish\n",
+        "values": []
+      },
+      {
+        "name": "Establishes Quickly",
+        "type": "rating",
+        "maxSize": 5,
+        "description": "Speed at which the cover crop establishes once planted. <br><br> 1 = slow to establish\n5 = quick to establish\n",
+        "values": []
+      },
+      {
+        "name": "Growing Window",
+        "type": "chip",
+        "maxSize": null,
+        "description": "Relative length of time that is suitable for growing and terminating a cover crop. For example, cover crops with a very short growing window may be planted and terminated during a very short period (e.g., 6-8 weeks) between cash crops. <br><br> ",
+        "values": ["VeryShort", "Short", "Medium", "Long", "VeryLong"]
+      },
+      {
+        "name": "Supports Mycorrhizae",
+        "type": "rating",
+        "maxSize": 5,
+        "description": "Cover crop ability to promote relative activity of mycorrhizal fungi in the rhizosphere. <br><br> 1 = low support, 5 = high support\n",
+        "values": []
+      },
+      {
+        "name": "Winter Survival",
+        "type": "chip",
+        "maxSize": null,
+        "description": "Likelihood of cover crop survival over the winter. <br><br> ",
+        "values": ["Never", "Seldom", "Expected"]
+      }
+    ]
+  },
+  {
+    "name": "Roots",
+    "description": "This data is based on expert opinion.",
+    "type": "chips-rating",
+    "values": [
+      {
+        "name": "Root Architecture",
+        "type": "chip",
+        "maxSize": null,
+        "description": "Primary root structure: tap or fibrous. <br><br> ",
+        "values": ["Tap", "Fibrous"]
+      },
+      {
+        "name": "Root Depth",
+        "type": "chip",
+        "maxSize": null,
+        "description": "Depth to which the cover crop roots. Considers the relative ability of the roots to grow deeper than the previous crop (to reach residual nitrogen). <br><br> ",
+        "values": ["Shallow", "Medium", "Deep"]
+      }
+    ]
+  },
+  {
+    "name": "Seeding Methods",
+    "description": null,
+    "type": "chips-only",
+    "values": [
+      {
+        "name": "Aerial Seeding",
+        "alternateName": "Can Aerial Seed?",
+        "symbol": null,
+        "maxSize": 1,
+        "values": ["Aerial Seeding"],
+        "description": "Aerial seeding methods can be used for this crop.  "
+      },
+      {
+        "name": "Frost Seeding",
+        "alternateName": "Frost Seeding",
+        "symbol": null,
+        "maxSize": 1,
+        "values": ["Frost Seeding"],
+        "description": "Cover crop can be broadcast seeded when ground is frozen.  "
+      }
+    ]
+  },
+  {
+    "name": "Seeds",
+    "description": "This data is based on expert opinion.",
+    "type": "rating-only",
+    "values": [
+      {
+        "name": "Seed Price per Pound",
+        "alternateName": "Seed Price per Pound",
+        "symbol": "dollar",
+        "maxSize": 3,
+        "description": "Relative cost of seed per pound. <br><br> 1 = least expensive, 3 = most expensive.\n"
+      }
+    ]
+  },
+  {
+    "name": "Termination Methods",
+    "description": "This data is based on expert opinion.",
+    "type": "rating-only",
+    "values": [
+      {
+        "name": "Chemical at Flowering",
+        "alternateName": "Chemical Termination at Flowering",
+        "symbol": "star",
+        "maxSize": 5,
+        "description": "Likelihood that herbicide application will successfully terminate the cover crop while it is in the flowering stage. <br><br> 1 = unlikely to terminate, 5 = likely to terminate\n"
+      },
+      {
+        "name": "Chemical at Vegetative",
+        "alternateName": "Chemical Termination at Vegetative",
+        "symbol": "star",
+        "maxSize": 5,
+        "description": "Likelihood that herbicide application will successfully terminate the cover crop while it is in the vegetative stage. <br><br> 1 = unlikely to terminate, 5 = likely to terminate\n"
+      },
+      {
+        "name": "Freezing at Flowering",
+        "alternateName": "Freezing Termination at Flowering",
+        "symbol": "star",
+        "maxSize": 5,
+        "description": "Likelihood that conditions below 32 degrees F will successfully terminate the cover crop while it is in the flowering stage. <br><br> 1 = requires a very significant freeze to terminate, 5 = likely to terminate in mild freeze \n"
+      },
+      {
+        "name": "Freezing at Vegetative",
+        "alternateName": "Freezing Termination at Vegetative",
+        "symbol": "star",
+        "maxSize": 5,
+        "description": "Likelihood that freezing weather conditions will successfully terminate the cover crop while it is in the vegetative stage. <br><br> 1 = requires a very significant freeze to terminate, 5 = likely to terminate in mild freeze \n"
+      },
+      {
+        "name": "Mow at Flowering",
+        "alternateName": "Mow Termination at Flowering",
+        "symbol": "star",
+        "maxSize": 5,
+        "description": "Likelihood that mowing (i.e. destructive mechanical operations that do not disturb the soil) will successfully terminate the cover crop while it is in the flowering stage. <br><br> 1 = unlikely to terminate, 5 = likely to terminate\n"
+      },
+      {
+        "name": "Roller Crimp at Flowering",
+        "alternateName": "Roller Crimp Termination at Flowering",
+        "symbol": "star",
+        "maxSize": 5,
+        "description": "Likelihood that roller-crimping will successfully terminate the cover crop while it is in the flowering stage. Termination is most successful at higher crop densities (3+ tons of dry matter per acre).\n\nRoller crimping is usually used in tandem with chemical termination outside of organic systems. <br><br> 1 = unlikely to terminate, 5 = likely to terminate\n"
+      },
+      {
+        "name": "Tillage at Flowering",
+        "alternateName": "Tillage Termination at Flowering",
+        "symbol": "star",
+        "maxSize": 5,
+        "description": "Liklihood that tillage (i.e. destructive mechanical operations that disturb the soil, as with disking or rotovating) will successfully terminate the cover crop while it is in the flowering stage. <br><br> 1 = hard to terminate with tillage and requires an aggressive technique, 5 =  easy to terminate with tillage and requires the least aggressive technique. \n\nThe techniques are categorized as follows.\n1-moldboard\n2-rototill\n3-chisel plow\n4-heavy disk\n5-light disk\n"
+      },
+      {
+        "name": "Tillage at Vegetative",
+        "alternateName": "Tillage Termination at Vegetative",
+        "symbol": "star",
+        "maxSize": 5,
+        "description": "Likelihood that tillage (i.e. destructive mechanical operations that disturb the soil, as with disking or rotovating) will successfully terminate the cover crop while it is in the vegetative stage. <br><br> 1 = hard to terminate with tillage and requires an aggressive technique, 5 =  easy to terminate with tillage and requires the least aggressive technique. \n\nThe techniques are categorized as follows.\n1-moldboard\n2-rototill\n3-chisel plow\n4-heavy disk\n5-light disk\n"
+      }
+    ]
+  },
+  {
+    "name": "Weeds",
+    "description": "This data is based on expert opinion.",
+    "type": "rating-only",
+    "values": [
+      {
+        "name": "Persistence",
+        "alternateName": "Persistence",
+        "symbol": "star",
+        "maxSize": 5,
+        "description": "Indicates likelihood that the cover crop seed, once planted, will sit in the soil for an extended time then germinate at an inopportune moment (e.g., during cash crop growth). This is a long-term issue in which the \"risk is in the cover crop seed bag\". <br><br> 1 = rarely has hard seed, 5 = hard seed is a frequent concern.\n"
+      },
+      {
+        "name": "Volunteer Establishment",
+        "alternateName": "Volunteer Establishment",
+        "symbol": "star",
+        "maxSize": 5,
+        "description": "Risk of previous cover crop volunteering in current cash crop due to management (i.e. the previous cover crop setting seed that becomes part of the soil weed seedbank). Impact depends on crop rotation (i.e. desirability of self-reseeding). <br><br> 1= rarely volunteers, 5 = frequently volunteers\n"
+      }
+    ]
+  }
+]

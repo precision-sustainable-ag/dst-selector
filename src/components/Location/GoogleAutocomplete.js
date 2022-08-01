@@ -4,17 +4,17 @@
   styled using makeStyles
 */
 
-import React, { useContext, useEffect } from "react";
-import TextField from "@material-ui/core/TextField";
-import Autocomplete from "@material-ui/lab/Autocomplete";
-import LocationOnIcon from "@material-ui/icons/LocationOn";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
-import parse from "autosuggest-highlight/parse";
-import throttle from "lodash/throttle";
-import { Context } from "../../store/Store";
-import { googleApiKey } from "../../shared/keys";
+import Grid from '@material-ui/core/Grid';
+import { makeStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
+import LocationOnIcon from '@material-ui/icons/LocationOn';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import parse from 'autosuggest-highlight/parse';
+import throttle from 'lodash/throttle';
+import React, { useContext, useEffect } from 'react';
+import { googleApiKey } from '../../shared/keys';
+import { Context } from '../../store/Store';
 
 const isNum = (val) => {
   return /^\d+$/.test(val);
@@ -25,16 +25,15 @@ function loadScript(src, position, id) {
     return;
   }
 
-  const script = document.createElement("script");
-  script.setAttribute("async", "");
-  script.setAttribute("id", id);
+  const script = document.createElement('script');
+  script.setAttribute('async', '');
+  script.setAttribute('id', id);
   script.src = src;
   position.appendChild(script);
 }
 
 const autocompleteService = { current: null };
 const placeService = { current: null };
-const geocodeService = { current: null };
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -48,44 +47,35 @@ export default function GoogleAutocomplete({
   mapsApi,
   latLng,
   setLatLng,
-  searchLabel = "FIND YOUR LOCATION",
+  searchLabel = 'FIND YOUR LOCATION',
   setAddress,
   setCounty,
   selectedToEditSite,
   setSelectedToEditSite,
 }) {
-  const [state, dispatch] = useContext(Context);
+  const { state, dispatch } = useContext(Context);
   const classes = useStyles();
   const [value, setValue] = React.useState(null);
-  const [inputValue, setInputValue] = React.useState(
-    state.fullAddress ? state.fullAddress : ""
-  );
+  const [inputValue, setInputValue] = React.useState(state.fullAddress ? state.fullAddress : '');
   const [options, setOptions] = React.useState([]);
-  const [locationDetails, setLocationDetails] = React.useState({
-    lat: 0,
-    lng: 0,
-  });
   const loaded = React.useRef(false);
 
-  useEffect(() => {
-    // console.log(inputValue);
-  }, [inputValue]);
   useEffect(() => {
     if (state.addressChangedViaMap) {
       setValue(state.fullAddress);
     }
-  }, [state.addressChangedViaMap]);
+  }, [state.addressChangedViaMap, state.fullAddress]);
 
   useEffect(() => {
     setValue(state.fullAddress);
   }, [state.fullAddress]);
 
-  if (typeof window !== "undefined" && !loaded.current) {
-    if (!document.querySelector("#google-maps")) {
+  if (typeof window !== 'undefined' && !loaded.current) {
+    if (!document.querySelector('#google-maps')) {
       loadScript(
         `https://maps.googleapis.com/maps/api/js?key=${googleApiKey}&libraries=places`,
-        document.querySelector("head"),
-        "google-maps"
+        document.querySelector('head'),
+        'google-maps',
       );
     }
 
@@ -97,7 +87,7 @@ export default function GoogleAutocomplete({
       throttle((request, callback) => {
         autocompleteService.current.getPlacePredictions(request, callback);
       }, 200),
-    []
+    [],
   );
 
   const fetchLocalData = {
@@ -110,67 +100,64 @@ export default function GoogleAutocomplete({
       placeService.current = new window.google.maps.Geocoder();
       const placeRequest = {
         placeId: place_id,
-        region: "en-US",
+        region: 'en-US',
       };
       return await new Promise((resolve) =>
         placeService.current.geocode(placeRequest, (results, status) => {
           resolve({ results, status });
-        })
+        }),
       );
     },
     fetchZipFromLatLng: async (lat, lng) => {
       const geocoder = new window.google.maps.Geocoder();
       const latlng = new window.google.maps.LatLng(lat, lng);
-  
-      return geocoder.geocode({'latLng': latlng})
+
+      return geocoder.geocode({ latLng: latlng });
     },
     setData: async ({ results, status }, main_text) => {
-      if (status === "OK") {
+      if (status === 'OK') {
         const county = results[0].address_components.filter(
-          (e) => e.types[0] === "administrative_area_level_2"
+          (e) => e.types[0] === 'administrative_area_level_2',
         );
-        let zipCode = results[0].address_components.filter(
-          (e) => e.types[0] === "postal_code"
-        );
+        let zipCode = results[0].address_components.filter((e) => e.types[0] === 'postal_code');
 
-        if(zipCode.length === 0){
-          const lonBounds = results[0].geometry.bounds.Hb
-          const lonCenter = (lonBounds.g + lonBounds.i) / 2
-          const latBounds = results[0].geometry.bounds.tc
-          const latCenter = (latBounds.g + latBounds.i) / 2
+        if (zipCode.length === 0) {
+          const lonCenter = results[0].geometry.location.lng();
+          const latCenter = results[0].geometry.location.lat();
 
           fetchLocalData.fetchZipFromLatLng(latCenter, lonCenter).then((zip) => {
             let zipCode = zip.results[0].address_components.filter(
-              (e) => e.types[0] === "postal_code"
+              (e) => e.types[0] === 'postal_code',
             );
             if (county.length !== 0) {
               // If google is able to find the county, pick the first preference!
               fetchLocalData.fetchGeocode(results, county, main_text, zipCode);
             } else {
-              fetchLocalData.fetchGeocode(results, "", main_text, zipCode);
+              fetchLocalData.fetchGeocode(results, '', main_text, zipCode);
             }
-          })
-        }
-
-        else if (county.length !== 0) {
+          });
+        } else if (county.length !== 0) {
           // If google is able to find the county, pick the first preference!
           fetchLocalData.fetchGeocode(results, county, main_text, zipCode);
         } else {
-          fetchLocalData.fetchGeocode(results, "", main_text, zipCode);
+          fetchLocalData.fetchGeocode(results, '', main_text, zipCode);
         }
       } else {
-        console.error("Google PlaceService Status", status);
+        console.error('Google PlaceService Status', status);
       }
     },
     fetchGeocode: (results, county, main_text, zipCode) => {
+      county = county || [{}];
+
       dispatch({
-        type: "CHANGE_ADDRESS_VIA_MAP",
+        type: 'CHANGE_ADDRESS_VIA_MAP',
         data: {
-          address: results[0].formatted_address.split(",")[0],
+          address: results[0].formatted_address.split(',')[0],
           fullAddress: results[0].formatted_address,
           addressVerified: true,
         },
       });
+
       if (zipCode.length === 0) {
         setSelectedToEditSite({
           ...selectedToEditSite,
@@ -209,7 +196,7 @@ export default function GoogleAutocomplete({
       return undefined;
     }
 
-    if (inputValue === "") {
+    if (inputValue === '') {
       setOptions(value ? [value] : []);
       return undefined;
     }
@@ -219,8 +206,8 @@ export default function GoogleAutocomplete({
       fetchData(
         {
           input: inputValue,
-          types: ["(regions)"],
-          componentRestrictions: { country: "US" },
+          types: ['(regions)'],
+          componentRestrictions: { country: 'US' },
         },
         (results) => {
           if (active) {
@@ -236,14 +223,14 @@ export default function GoogleAutocomplete({
 
             setOptions(newOptions);
           }
-        }
+        },
       );
     } else {
       fetchData(
         {
           input: inputValue,
 
-          componentRestrictions: { country: "US" },
+          componentRestrictions: { country: 'US' },
         },
         (results) => {
           if (active) {
@@ -259,7 +246,7 @@ export default function GoogleAutocomplete({
 
             setOptions(newOptions);
           }
-        }
+        },
       );
     }
 
@@ -269,13 +256,18 @@ export default function GoogleAutocomplete({
   }, [value, inputValue, fetchData]);
 
   return (
+    /*
+     * RICK'S NOTE:
+     * This causes a "ghost" effect on FIND YOUR LOCATION:
+     *   style={{ zIndex: 1000003 }}
+     * Doesn't seem to be needed.
+     * TODO: Remove after 5/1/2022
+     */
+
     <Autocomplete
-      style={{ zIndex: 1000003 }}
       id="google-map-demo"
       fullWidth
-      getOptionLabel={(option) =>
-        typeof option === "string" ? option : option.description
-      }
+      getOptionLabel={(option) => (typeof option === 'string' ? option : option.description)}
       filterOptions={(x) => x}
       options={options}
       autoComplete
@@ -294,14 +286,7 @@ export default function GoogleAutocomplete({
         setInputValue(newInputValue);
       }}
       renderInput={(params) => {
-        return (
-          <TextField
-            {...params}
-            label={searchLabel}
-            variant="filled"
-            fullWidth
-          />
-        );
+        return <TextField {...params} label={searchLabel} variant="filled" fullWidth />;
       }}
       renderOption={(option) => {
         let matches = [];
@@ -311,7 +296,7 @@ export default function GoogleAutocomplete({
 
           parts = parse(
             option.structured_formatting.main_text,
-            matches.map((match) => [match.offset, match.offset + match.length])
+            matches.map((match) => [match.offset, match.offset + match.length]),
           );
         }
 
@@ -322,18 +307,13 @@ export default function GoogleAutocomplete({
             </Grid>
             <Grid item xs>
               {parts.map((part, index) => (
-                <span
-                  key={index}
-                  style={{ fontWeight: part.highlight ? 700 : 400 }}
-                >
+                <span key={index} style={{ fontWeight: part.highlight ? 700 : 400 }}>
                   {part.text}
                 </span>
               ))}
 
               <Typography variant="body2" color="textSecondary">
-                {option.structured_formatting
-                  ? option.structured_formatting.secondary_text
-                  : ""}
+                {option.structured_formatting ? option.structured_formatting.secondary_text : ''}
               </Typography>
             </Grid>
           </Grid>

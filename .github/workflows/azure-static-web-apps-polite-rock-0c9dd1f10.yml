@@ -19,7 +19,7 @@ jobs:
         with:
           submodules: true
 
-      - name: "Create env file"
+      - name: 'Create env file'
         run: |
           touch .env
           echo REACT_APP_AIRTABLE_BEARER_KEY=${{ secrets.REACT_APP_AIRTABLE_BEARER_KEY }} >> .env
@@ -37,13 +37,18 @@ jobs:
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_POLITE_ROCK_0C9DD1F10 }}
           repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
-          action: "upload"
+          action: 'upload'
           ###### Repository/Build Configurations - These values can be configured to match your app requirements. ######
           # For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
-          app_location: "/" # App source code path
-          api_location: "" # Api source code path - optional
-          output_location: "build" # Built app content directory - optional
+          app_location: '/' # App source code path
+          api_location: '' # Api source code path - optional
+          output_location: 'build' # Built app content directory - optional
           ###### End of Repository/Build Configurations ######
+
+      - name: 'Print Build Size'
+        run: |
+          pwd
+          ls
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
@@ -55,4 +60,4 @@ jobs:
         uses: Azure/static-web-apps-deploy@v1
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_POLITE_ROCK_0C9DD1F10 }}
-          action: "close"
+          action: 'close'

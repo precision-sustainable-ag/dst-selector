@@ -168,11 +168,7 @@
     "Type": "string",
     "Units/Details": "select many",
     "Information Sheet": true,
-    "valuesArray": [
-      "Never~Winter Survival",
-      "Seldom~Winter Survival",
-      "Expected~Winter Survival"
-    ]
+    "valuesArray": ["Never~Winter Survival", "Seldom~Winter Survival", "Expected~Winter Survival"]
   },
   {
     "Variable": "Salinity Tolerance",
@@ -429,11 +425,7 @@
     "Type": "string",
     "Units/Details": "select many",
     "Information Sheet": true,
-    "valuesArray": [
-      "Coarse~Soil Textures",
-      "Medium~Soil Textures",
-      "Fine~Soil Textures"
-    ]
+    "valuesArray": ["Coarse~Soil Textures", "Medium~Soil Textures", "Fine~Soil Textures"]
   },
   {
     "Variable": "Notes: Soil Conditions",
@@ -476,11 +468,7 @@
     "Type": "string",
     "Units/Details": "select one",
     "Information Sheet": true,
-    "valuesArray": [
-      "Low~Soil Moisture Use",
-      "Medium~Soil Moisture Use",
-      "High~Soil Moisture Use"
-    ]
+    "valuesArray": ["Low~Soil Moisture Use", "Medium~Soil Moisture Use", "High~Soil Moisture Use"]
   },
   {
     "Variable": "Flooding Tolerance",
@@ -604,11 +592,7 @@
     "Type": "string",
     "Units/Details": "select one",
     "Information Sheet": true,
-    "valuesArray": [
-      "Shallow~Root Depth",
-      "Medium~Root Depth",
-      "Deep~Root Depth"
-    ]
+    "valuesArray": ["Shallow~Root Depth", "Medium~Root Depth", "Deep~Root Depth"]
   },
   {
     "Variable": "Establishes Quickly",
@@ -762,10 +746,7 @@
     "Type": "boolean",
     "Units/Details": "checkbox",
     "Information Sheet": true,
-    "valuesArray": [
-      "true~Broadcast Frost Seeding",
-      "false~Broadcast Frost Seeding"
-    ]
+    "valuesArray": ["true~Broadcast Frost Seeding", "false~Broadcast Frost Seeding"]
   },
   {
     "Variable": "Seeding Rate: Aerial (lbs/A)",
