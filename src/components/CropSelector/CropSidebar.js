@@ -483,6 +483,7 @@ const CropSidebarComponent = (props) => {
     if (state.myCoverCropActivationFlag) {
       // TODO: When does this happen?
       if (comparisonView) {
+        console.log('filtersSelected', filtersSelected)
         if (filtersSelected) {
           resetAllFilters();
         }
