@@ -19,8 +19,10 @@ import "../../styles/InformationSheet.scss";
 import InformationSheetContent from "./InformationSheetContent";
 
 const InformationSheet = (props) => {
-  const {state} = useContext(Context);
-  const section  = window.location.href.includes('selector') ? 'selector' : 'explorer';
+  const { state } = useContext(Context);
+  const section = window.location.href.includes("selector")
+    ? "selector"
+    : "explorer";
   const sfilters = state[section];
 
   const name = props.match.params.cropName
