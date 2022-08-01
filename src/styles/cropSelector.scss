@@ -1,5 +1,5 @@
-@import "../../node_modules/sass-mediaqueries/media-queries";
-@import "../styles/constants.scss";
+@import '../../node_modules/sass-mediaqueries/media-queries';
+@import '../styles/constants.scss';
 
 .sidebarTitle {
   background-color: #abd08f;
@@ -76,7 +76,7 @@
         // text-decoration: underline;
       }
       &:before {
-        content: "\2295"; /* FontAwesome Unicode */
+        content: '\2295'; /* FontAwesome Unicode */
         // font-family: FontAwesome;
         display: inline-block;
         margin-left: -15px; /* same as padding-left set on li */
@@ -84,7 +84,7 @@
       }
       &.active {
         &:before {
-          content: "\2296";
+          content: '\2296';
         }
       }
     }

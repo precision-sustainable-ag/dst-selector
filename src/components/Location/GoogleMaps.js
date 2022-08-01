@@ -2,19 +2,16 @@
   Unused
 */
 
-import React, { useContext, useEffect, useState } from "react";
-import GoogleMapReact from "google-map-react";
-import { googleApiKey } from "../../shared/keys";
-import { Context } from "../../store/Store";
-import "../../styles/googleMaps.scss";
-import { Room } from "@material-ui/icons";
-import { CustomStyles } from "../../shared/constants";
+import React, { useContext, useEffect, useState } from 'react';
+import GoogleMapReact from 'google-map-react';
+import { googleApiKey } from '../../shared/keys';
+import { Context } from '../../store/Store';
+import '../../styles/googleMaps.scss';
+import { Room } from '@material-ui/icons';
+import { CustomStyles } from '../../shared/constants';
 
-const GoogleMaps = ({
-  center = { lat: 40.78489145, lng: -74.80733626930342 },
-  zoom = 13,
-}) => {
-  const {state, dispatch} = useContext(Context);
+const GoogleMaps = ({ center = { lat: 40.78489145, lng: -74.80733626930342 }, zoom = 13 }) => {
+  const { state, dispatch } = useContext(Context);
 
   const [showMarker, setShowMarker] = useState(false);
 
@@ -30,18 +27,18 @@ const GoogleMaps = ({
   };
   const drawSVG = () => {};
   return (
-    <div style={{ height: "100%", width: "100%" }}>
+    <div style={{ height: '100%', width: '100%' }}>
       <GoogleMapReact
         options={(map) => ({
           mapTypeId: map.MapTypeId.HYBRID,
           mapTypeControl: false,
           styles: [
             {
-              featureType: "all",
-              elementType: "labels",
+              featureType: 'all',
+              elementType: 'labels',
               stylers: [
                 {
-                  visibility: "on",
+                  visibility: 'on',
                 },
               ],
             },
@@ -49,9 +46,9 @@ const GoogleMaps = ({
         })}
         bootstrapURLKeys={{
           key: googleApiKey,
-          libraries: ["places", "geometry", "drawing"],
-          language: "EN",
-          region: "US",
+          libraries: ['places', 'geometry', 'drawing'],
+          language: 'EN',
+          region: 'US',
         }}
         center={state.markers[0]}
         zoom={13}
@@ -91,11 +88,7 @@ const GoogleMaps = ({
         // }}
       >
         {state.markers.length === 1 && showMarker ? (
-          <GMarker
-            lat={state.markers[0][0]}
-            lng={state.markers[0][1]}
-            text="My Location"
-          />
+          <GMarker lat={state.markers[0][0]} lng={state.markers[0][1]} text="My Location" />
         ) : (
           drawSVG()
         )}

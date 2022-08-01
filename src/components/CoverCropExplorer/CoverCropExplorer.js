@@ -4,23 +4,23 @@
   styled from from CustomStyles in ../../../shared/constants
 */
 
-import { Grid, Typography } from "@material-ui/core";
-import React, { useContext, useEffect, useState } from "react";
-import { Context } from "../../store/Store";
-import CropSidebarComponent from "../CropSelector/CropSidebar";
-import Header from "../Header/Header";
-import ExplorerCardView from "./ExplorerCardView";
-import ConsentModal from "./ConsentModal";
-import ReactGA from "react-ga";
+import { Grid, Typography } from '@material-ui/core';
+import React, { useContext, useEffect, useState } from 'react';
+import { Context } from '../../store/Store';
+import CropSidebarComponent from '../CropSelector/CropSidebar';
+import Header from '../Header/Header';
+import ExplorerCardView from './ExplorerCardView';
+import ConsentModal from './ConsentModal';
+import ReactGA from 'react-ga';
 
 const CoverCropExplorer = () => {
-  const {state} = useContext(Context);
-  const section  = window.location.href.includes('selector') ? 'selector' : 'explorer';
+  const { state } = useContext(Context);
+  const section = window.location.href.includes('selector') ? 'selector' : 'explorer';
   const sfilters = state[section];
 
   const [cropDataChanged, setCropDataChanged] = useState(false);
 
-  const activeCropData = state.activeCropData.filter(a => !a.inactive);
+  const activeCropData = state.activeCropData.filter((a) => !a.inactive);
 
   useEffect(() => {
     setCropDataChanged((c) => !c);
@@ -28,15 +28,15 @@ const CoverCropExplorer = () => {
 
   useEffect(() => {
     if (state.consent === true) {
-      console.log("viewing explorer");
-      ReactGA.initialize("UA-181903489-1");
+      console.log('viewing explorer');
+      ReactGA.initialize('UA-181903489-1');
 
-      ReactGA.pageview("cover crop explorer");
+      ReactGA.pageview('cover crop explorer');
     }
   }, [state.consent]);
 
   useEffect(() => {
-    document.title = "Cover Crop Explorer";
+    document.title = 'Cover Crop Explorer';
   }, []);
 
   return (
@@ -47,16 +47,14 @@ const CoverCropExplorer = () => {
         <div className="row mt-3">
           <div className="col-md-12 col-lg-3 col-xl-2 col-12">
             <CropSidebarComponent
-              from={"explorer"}
+              from={'explorer'}
               cropDataChanged={cropDataChanged}
-              activeCropData={
-                activeCropData.length > 0 ? activeCropData : state.cropData
-              }
+              activeCropData={activeCropData.length > 0 ? activeCropData : state.cropData}
               isListView={true}
             />
           </div>
           <div className="col-md-12 col-lg-9 col-xl-10 col-12">
-            {sfilters.zone === "" ? (
+            {sfilters.zone === '' ? (
               <Grid container alignItems="center" justifyContent="center">
                 <Grid item xs={12}>
                   <Typography variant="h5" align="center">

@@ -1,4 +1,4 @@
-@import "../styles/constants.scss";
+@import '../styles/constants.scss';
 .accordion {
   div.MuiAccordionSummary-root {
     background-color: white;
@@ -54,7 +54,8 @@ div.modalParentWrapper {
 }
 
 @media print {
-  html, body {
+  html,
+  body {
     border: 1px solid white;
     height: 99%;
     page-break-after: avoid;
@@ -65,29 +66,34 @@ div.modalParentWrapper {
   .noprint {
     display: none;
   }
-  
+
   body.InfoSheet {
     .avoidPage {
       break-inside: avoid-page;
     }
 
-    #root, .doclose, .MuiIconButton-label, div[role=tooltip] {
+    #root,
+    .doclose,
+    .MuiIconButton-label,
+    div[role='tooltip'] {
       display: none;
     }
 
     #cover-crop-modal-description {
-      max-height: none;   /* let thead repeat on each page */
-      overflow: visible;  /* remove the scrollbar */
+      max-height: none; /* let thead repeat on each page */
+      overflow: visible; /* remove the scrollbar */
     }
 
-    .cropTableModal {  /* remove the gray margins and absolute positioning */
+    .cropTableModal {
+      /* remove the gray margins and absolute positioning */
       width: 100% !important;
       top: 0 !important;
       left: 0 !important;
       position: relative !important;
     }
 
-    div[role=presentation], .MuiBackdrop-root {
+    div[role='presentation'],
+    .MuiBackdrop-root {
       position: relative !important;
     }
 

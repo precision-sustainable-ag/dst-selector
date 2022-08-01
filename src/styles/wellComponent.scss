@@ -1,4 +1,4 @@
-@import "../../node_modules/sass-mediaqueries/media-queries";
+@import '../../node_modules/sass-mediaqueries/media-queries';
 .progress {
   display: flex;
   direction: row;
@@ -219,7 +219,7 @@ div#mainJumbotronTextWrapper {
 .rating-3,
 .rating-4 {
   display: inline-block;
-  background: url("/images/rating_sprite.png") no-repeat;
+  background: url('/images/rating_sprite.png') no-repeat;
   overflow: hidden;
   text-indent: -9999px;
   text-align: left;
@@ -278,7 +278,7 @@ table {
   .tableBodyWrapper {
     text-align: center;
     &:before {
-      content: "@";
+      content: '@';
       display: block;
       line-height: 10px;
       text-indent: -99999px;

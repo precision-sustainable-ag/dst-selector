@@ -1,5 +1,5 @@
-@import "../../node_modules/sass-mediaqueries/media-queries";
-@import "../styles/constants.scss";
+@import '../../node_modules/sass-mediaqueries/media-queries';
+@import '../styles/constants.scss';
 
 // $cashCropGrowthWindowColorOLD: rgba(255, 12, 62, 0.5);
 // $cashCropGrowthWindowColor: linear-gradient(
@@ -151,7 +151,7 @@ td.growthWindowCell {
         }
         div:after {
           position: absolute;
-          content: "";
+          content: '';
           // top: 0;
           // left: 0;
           // width: 100%;
@@ -185,7 +185,7 @@ td.growthWindowCell {
       }
       div:after {
         position: absolute;
-        content: "";
+        content: '';
         // top: 0;
         // left: 0;
         // width: 100%;
@@ -364,7 +364,7 @@ table.calendarViewTable {
           position: absolute;
           top: 0;
           left: 0;
-          content: "";
+          content: '';
           height: 100%;
           background-size: cover;
           background-repeat: no-repeat;
@@ -390,7 +390,7 @@ th.calendarSecondHeadMonth.activeGrowthMonth {
     position: absolute;
     top: 0;
     left: 0;
-    content: "";
+    content: '';
     height: 100%;
     background-size: cover;
     background-repeat: no-repeat;

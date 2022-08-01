@@ -4,17 +4,17 @@
   styled using makeStyles
 */
 
-import { makeStyles } from "@material-ui/core";
-import Card from "@material-ui/core/Card";
-import CardActionArea from "@material-ui/core/CardActionArea";
-import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
-import Typography from "@material-ui/core/Typography";
-import { useSnackbar } from "notistack";
-import React, { useContext, useState } from "react";
-import { flipCoverCropName, trimString } from "../../shared/constants";
-import { Context } from "../../store/Store";
-import CropDetailsModalComponent from "../CropSelector/CropDetailsModal";
+import { makeStyles } from '@material-ui/core';
+import Card from '@material-ui/core/Card';
+import CardActionArea from '@material-ui/core/CardActionArea';
+import CardContent from '@material-ui/core/CardContent';
+import CardMedia from '@material-ui/core/CardMedia';
+import Typography from '@material-ui/core/Typography';
+import { useSnackbar } from 'notistack';
+import React, { useContext, useState } from 'react';
+import { flipCoverCropName, trimString } from '../../shared/constants';
+import { Context } from '../../store/Store';
+import CropDetailsModalComponent from '../CropSelector/CropDetailsModal';
 
 const useStyles = makeStyles({
   card: {
@@ -27,7 +27,7 @@ const useStyles = makeStyles({
 });
 
 const MyCoverCropCardsComponent = (props) => {
-  const {state, dispatch} = useContext(Context);
+  const { state, dispatch } = useContext(Context);
   const data = props.data;
   const btnId = props.btnId;
   const classes = useStyles();
@@ -58,7 +58,7 @@ const MyCoverCropCardsComponent = (props) => {
 
       selectedCropsCopy.splice(removeIndex, 1);
       dispatch({
-        type: "SELECTED_CROPS_MODIFIER",
+        type: 'SELECTED_CROPS_MODIFIER',
         data: {
           selectedCrops: selectedCropsCopy,
           snackOpen: false,
@@ -73,41 +73,32 @@ const MyCoverCropCardsComponent = (props) => {
       <Card className={classes.card}>
         <CardMedia
           image={
-            data["Image Data"]["Key Thumbnail"]
-              ? `/images/Cover Crop Photos/250/${data["Image Data"]["Key Thumbnail"]}`
-              : "https://placehold.it/100x100?text=Placeholder"
+            data['Image Data']['Key Thumbnail']
+              ? `/images/Cover Crop Photos/250/${data['Image Data']['Key Thumbnail']}`
+              : 'https://placehold.it/100x100?text=Placeholder'
           }
           className={classes.media}
-          title={data["Cover Crop Name"]}
+          title={data['Cover Crop Name']}
         />
         <CardContent>
-          <div
-            className="font-weight-bold text-muted text-uppercase"
-            style={{ fontSize: "10pt" }}
-          >
-            {`Zone ${data["Zone"]}`}
+          <div className="font-weight-bold text-muted text-uppercase" style={{ fontSize: '10pt' }}>
+            {`Zone ${data['Zone']}`}
           </div>
-          <div
-            className="font-weight-bold text-muted text-uppercase"
-            style={{ fontSize: "10pt" }}
-          >
-            {data["Family Common Name"]}
+          <div className="font-weight-bold text-muted text-uppercase" style={{ fontSize: '10pt' }}>
+            {data['Family Common Name']}
           </div>
-          <Typography
-            variant="h6"
-            className="font-weight-bold text-capitalize text-truncate"
-          >
-            {flipCoverCropName(data["Cover Crop Name"])}
+          <Typography variant="h6" className="font-weight-bold text-capitalize text-truncate">
+            {flipCoverCropName(data['Cover Crop Name'])}
           </Typography>
           <small className="font-italic text-muted">
-            {trimString(data["Scientific Name"], 25)}
+            {trimString(data['Scientific Name'], 25)}
           </small>
           <div>
             <small className="text-muted">
               <a
                 style={{
-                  textDecoration: "underline",
-                  color: "rgb(53, 153, 155)",
+                  textDecoration: 'underline',
+                  color: 'rgb(53, 153, 155)',
                 }}
                 onClick={() => handleModalOpen()}
                 // href="/#"
@@ -120,18 +111,18 @@ const MyCoverCropCardsComponent = (props) => {
 
         <CardActionArea
           style={{
-            backgroundColor: "#e3f2f4",
-            textAlign: "center",
-            padding: "0.5em",
+            backgroundColor: '#e3f2f4',
+            textAlign: 'center',
+            padding: '0.5em',
           }}
-          onClick={() => removeCrop(data["Cover Crop Name"])}
+          onClick={() => removeCrop(data['Cover Crop Name'])}
         >
           <Typography
             variant="body2"
             className="text-uppercase"
             style={{
-              color: "black",
-              fontWeight: "bold",
+              color: 'black',
+              fontWeight: 'bold',
             }}
           >
             REMOVE

@@ -4,23 +4,23 @@
   Styles are created using makeStyles
 */
 
-import { Modal, Box, Typography, Button, Grid, Link } from "@material-ui/core";
-import React, { Fragment, useContext, useState } from "react";
-import { Context } from "../../store/Store";
+import { Modal, Box, Typography, Button, Grid, Link } from '@material-ui/core';
+import React, { Fragment, useContext, useState } from 'react';
+import { Context } from '../../store/Store';
 
 const ExplorerCardView = (props) => {
   const { consent } = props;
-  const {dispatch} = useContext(Context);
+  const { dispatch } = useContext(Context);
   const [modalOpen, setModalOpen] = useState(true);
 
   const style = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
     width: 400,
-    bgcolor: "background.paper",
-    border: "2px solid #000",
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
     boxShadow: 24,
     p: 4,
   };
@@ -29,7 +29,7 @@ const ExplorerCardView = (props) => {
     //toggle modal open
     setModalOpen((o) => !o);
     dispatch({
-      type: "UPDATE_CONSENT",
+      type: 'UPDATE_CONSENT',
       data: {
         consent: true,
       },
@@ -40,7 +40,7 @@ const ExplorerCardView = (props) => {
     //toggle modal open
     setModalOpen((o) => !o);
     dispatch({
-      type: "UPDATE_CONSENT",
+      type: 'UPDATE_CONSENT',
       data: {
         consent: false,
       },
@@ -60,12 +60,11 @@ const ExplorerCardView = (props) => {
         </Typography>
         <Typography variant="body">
           <p>
-            This site uses cookies for Google Analytics to improve user experience and analyze website traffic.
-            No personally identifiable data is collected.
+            This site uses cookies for Google Analytics to improve user experience and analyze
+            website traffic. No personally identifiable data is collected.
           </p>
           <p>
-            By clicking "Accept", you agree to our website's cookie use as described in our
-            {' '}
+            By clicking "Accept", you agree to our website's cookie use as described in our{' '}
             <a
               href="https://northeastcovercrops.com/privacy-policy/"
               rel="noopener noreferrer"

@@ -4,22 +4,13 @@
   Styles are created using CustomStyles from ../../../shared/constants and ../../../styles/greenBar.scss
 */
 
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  Typography,
-} from '@material-ui/core';
+import { Button, Dialog, DialogActions, DialogContent, Typography } from '@material-ui/core';
 import { LocationOn, Refresh } from '@material-ui/icons';
 import CloudIcon from '@material-ui/icons/Cloud';
 import FilterHdrIcon from '@material-ui/icons/FilterHdr';
 import moment from 'moment';
 import React, { useContext, useState } from 'react';
-import {
-  CustomStyles,
-  greenBarExpansionPanelHeight,
-} from '../../../shared/constants';
+import { CustomStyles, greenBarExpansionPanelHeight } from '../../../shared/constants';
 import { Context } from '../../../store/Store';
 import '../../../styles/greenBar.scss';
 import LocationComponent from '../../Location/Location';
@@ -39,8 +30,8 @@ const greenBarWrapperBackground = {
 };
 
 const Greenbar = () => {
-  const {state, dispatch} = useContext(Context);
-  const section  = window.location.href.includes('selector') ? 'selector' : 'explorer';
+  const { state, dispatch } = useContext(Context);
+  const section = window.location.href.includes('selector') ? 'selector' : 'explorer';
   const sfilters = state[section];
 
   const [expansionPanelComponent, setExpansionPanelComponent] = useState({
@@ -58,17 +49,17 @@ const Greenbar = () => {
    *         if (targetElement === greenBarParent) {
    *           return;
    *         }
-   *       
+   *
    *         // Go up the DOM
    *         targetElement = targetElement.parentNode;
    *       } while (targetElement);
    *     });
-   *   
+   *
    *     return () => {
    *       closeExpansionPanel();
    *     };
    *   }, []);
-  */
+   */
 
   const getAddress = () => {
     if (state.address === '') {
@@ -79,18 +70,18 @@ const Greenbar = () => {
           className="greenbarBtn"
           onClick={handleAddressBtnClick}
           style={
-            expansionPanelComponent.component === "location"
+            expansionPanelComponent.component === 'location'
               ? {
-                  background: "white",
+                  background: 'white',
                 }
               : {}
           }
         >
           <span
             style={
-              expansionPanelComponent.component === "location"
+              expansionPanelComponent.component === 'location'
                 ? {
-                    color: "black",
+                    color: 'black',
                   }
                 : {}
             }
@@ -104,111 +95,97 @@ const Greenbar = () => {
   };
 
   const closeExpansionPanel = () => {
-    const greenbarExpansionElement = document.getElementById(
-      "greenBarExpansionPanel"
-    );
-    greenbarExpansionElement.style.transform = "translate(0px,0px)";
-    greenbarExpansionElement.style.minHeight = "0px";
+    const greenbarExpansionElement = document.getElementById('greenBarExpansionPanel');
+    greenbarExpansionElement.style.transform = 'translate(0px,0px)';
+    greenbarExpansionElement.style.minHeight = '0px';
     setExpansionPanelComponent({
-      component: "",
+      component: '',
     });
   };
   const handleAddressBtnClick = (evt) => {
-    const greenbarExpansionElement = document.getElementById(
-      "greenBarExpansionPanel"
-    );
+    const greenbarExpansionElement = document.getElementById('greenBarExpansionPanel');
     if (
-      expansionPanelComponent.component === "location" &&
-      greenbarExpansionElement.style.minHeight ===
-        greenBarExpansionPanelHeight.large
+      expansionPanelComponent.component === 'location' &&
+      greenbarExpansionElement.style.minHeight === greenBarExpansionPanelHeight.large
     ) {
       // toggle
-      console.log("toggled");
+      console.log('toggled');
       closeExpansionPanel();
     } else {
-      greenbarExpansionElement.style.transform = "translate(0px,0px)";
-      greenbarExpansionElement.style.minHeight =
-        greenBarExpansionPanelHeight.large;
+      greenbarExpansionElement.style.transform = 'translate(0px,0px)';
+      greenbarExpansionElement.style.minHeight = greenBarExpansionPanelHeight.large;
       setExpansionPanelComponent({
-        component: "location",
+        component: 'location',
       });
     }
   };
   const handleSoilBtnClick = (evt) => {
-    const greenbarExpansionElement = document.getElementById(
-      "greenBarExpansionPanel"
-    );
+    const greenbarExpansionElement = document.getElementById('greenBarExpansionPanel');
     if (
-      expansionPanelComponent.component === "soil" &&
-      greenbarExpansionElement.style.minHeight ===
-        greenBarExpansionPanelHeight.large
+      expansionPanelComponent.component === 'soil' &&
+      greenbarExpansionElement.style.minHeight === greenBarExpansionPanelHeight.large
     ) {
       // toggle
-      console.log("toggled");
+      console.log('toggled');
       closeExpansionPanel();
     } else {
-      greenbarExpansionElement.style.transform = "translate(0px,0px)";
-      greenbarExpansionElement.style.minHeight =
-        greenBarExpansionPanelHeight.large;
+      greenbarExpansionElement.style.transform = 'translate(0px,0px)';
+      greenbarExpansionElement.style.minHeight = greenBarExpansionPanelHeight.large;
       setExpansionPanelComponent({
-        component: "soil",
+        component: 'soil',
       });
     }
   };
 
   const handleWeatherBtnClick = (evt) => {
-    const greenbarExpansionElement = document.getElementById(
-      "greenBarExpansionPanel"
-    );
+    const greenbarExpansionElement = document.getElementById('greenBarExpansionPanel');
 
     if (
-      expansionPanelComponent.component === "weather" &&
-      greenbarExpansionElement.style.minHeight ===
-        greenBarExpansionPanelHeight.large
+      expansionPanelComponent.component === 'weather' &&
+      greenbarExpansionElement.style.minHeight === greenBarExpansionPanelHeight.large
     ) {
       // toggle
-      console.log("toggled");
+      console.log('toggled');
       closeExpansionPanel();
     } else {
-      greenbarExpansionElement.style.transform = "translate(0px,0px)";
-      greenbarExpansionElement.style.minHeight =
-        greenBarExpansionPanelHeight.large;
+      greenbarExpansionElement.style.transform = 'translate(0px,0px)';
+      greenbarExpansionElement.style.minHeight = greenBarExpansionPanelHeight.large;
       setExpansionPanelComponent({
-        component: "weather",
+        component: 'weather',
       });
     }
   };
   const getSoil = () => {
     if (state.soilData.Flooding_Frequency === null) {
-      return "";
+      return '';
     } else
       return (
         <Button
           className="greenbarBtn"
           onClick={handleSoilBtnClick}
           style={
-            expansionPanelComponent.component === "soil"
+            expansionPanelComponent.component === 'soil'
               ? {
-                  background: "white",
+                  background: 'white',
                 }
               : {}
           }
         >
           <span
             style={
-              expansionPanelComponent.component === "soil"
+              expansionPanelComponent.component === 'soil'
                 ? {
-                    color: "black",
+                    color: 'black',
                   }
                 : {}
             }
           >
             {<FilterHdrIcon />}
-            &nbsp;{" "}
+            &nbsp;{' '}
             {/* {`Soils: Map Unit Name (${state.soilData.Map_Unit_Name}%), Drainage Class: ${state.soilData.Drainage_Class}})`} */}
             {`Soils: Drainage Class: ${state.soilData.Drainage_Class.toString()
-              .split(",")
-              .join(", ")}`}
+              .split(',')
+              .join(', ')}`}
           </span>
         </Button>
       );
@@ -219,7 +196,7 @@ const Greenbar = () => {
 
     if (clearCoverCrops) {
       dispatch({
-        type: "RESET",
+        type: 'RESET',
         data: {
           markers: defaultMarkers,
           selectedCrops: [],
@@ -227,7 +204,7 @@ const Greenbar = () => {
       });
     } else {
       dispatch({
-        type: "RESET",
+        type: 'RESET',
         data: {
           markers: defaultMarkers,
           selectedCrops: state.selectedCrops,
@@ -241,34 +218,34 @@ const Greenbar = () => {
   const getWeatherData = () => {
     // TODO: convert month to string, currently returning int
     // let currentMonth = GetMonthString(month);
-    let currentMonth = moment().format("MMM");
+    let currentMonth = moment().format('MMM');
     // frost free days :-
     // NOTE: IP has been permanently changed to a URL. check constants
-    if (state.weatherData.length === 0) return "";
+    if (state.weatherData.length === 0) return '';
     else
       return (
         <Button
           className="greenbarBtn"
           onClick={handleWeatherBtnClick}
           style={
-            expansionPanelComponent.component === "weather"
+            expansionPanelComponent.component === 'weather'
               ? {
-                  background: "white",
+                  background: 'white',
                 }
               : {}
           }
         >
           <span
             style={
-              expansionPanelComponent.component === "weather"
+              expansionPanelComponent.component === 'weather'
                 ? {
-                    color: "black",
+                    color: 'black',
                   }
                 : {}
             }
           >
             {<CloudIcon fontSize="small" />}
-            &nbsp;{" "}
+            &nbsp;{' '}
             {`Avg First Frost: ${state.weatherData.averageFrost.firstFrostDate.month} ${state.weatherData.averageFrost.firstFrostDate.day} | Avg Rain(${currentMonth}): ${state.weatherData.averagePrecipitation.thisMonth} in`}
           </span>
         </Button>
@@ -279,26 +256,22 @@ const Greenbar = () => {
     <div className="greenBarParent" id="greenBarParent">
       <div className="greenBarWrapper" style={greenBarWrapperBackground}>
         <div className="addressBar">
-          {state.progress > 0 &&
-          window.location.pathname === speciesSelectorToolName
+          {state.progress > 0 && window.location.pathname === speciesSelectorToolName
             ? getAddress()
-            : ""}
+            : ''}
         </div>
 
         <div className="soilBar">
-          {state.progress > 1 &&
-          window.location.pathname === speciesSelectorToolName
+          {state.progress > 1 && window.location.pathname === speciesSelectorToolName
             ? getSoil()
-            : ""}
+            : ''}
         </div>
         <div className="weatherBar">
-          {state.progress > 2 &&
-          window.location.pathname === speciesSelectorToolName
+          {state.progress > 2 && window.location.pathname === speciesSelectorToolName
             ? getWeatherData()
-            : ""}
+            : ''}
         </div>
-        {state.progress > 0 &&
-        window.location.pathname === speciesSelectorToolName ? (
+        {state.progress > 0 && window.location.pathname === speciesSelectorToolName ? (
           <div className="restartBtnWrapper">
             <Button
               className="greenbarBtn"
@@ -312,7 +285,7 @@ const Greenbar = () => {
             </Button>
           </div>
         ) : (
-          ""
+          ''
         )}
       </div>
       <div
@@ -322,54 +295,40 @@ const Greenbar = () => {
       >
         <div className="row justify-content-center align-items-center">
           <div
-            className={
-              expansionPanelComponent.component === "location"
-                ? `col-md-10`
-                : `col-md-6`
-            }
+            className={expansionPanelComponent.component === 'location' ? `col-md-10` : `col-md-6`}
           >
-            {expansionPanelComponent.component === "location" ? (
-              <LocationComponent caller="greenbar" title={"Location"} />
-            ) : expansionPanelComponent.component === "soil" ? (
+            {expansionPanelComponent.component === 'location' ? (
+              <LocationComponent caller="greenbar" title={'Location'} />
+            ) : expansionPanelComponent.component === 'soil' ? (
               <div className="container mt-5" style={expansionPanelBaseStyle}>
-                <div
-                  className="row boxContainerRow"
-                  style={{ minHeight: "526px" }}
-                >
+                <div className="row boxContainerRow" style={{ minHeight: '526px' }}>
                   <SoilCondition caller="greenbar" />
                 </div>
               </div>
-            ) : expansionPanelComponent.component === "weather" ? (
+            ) : expansionPanelComponent.component === 'weather' ? (
               <div className="container mt-5" style={expansionPanelBaseStyle}>
-                <div
-                  className="row boxContainerRow"
-                  style={{ minHeight: "526px" }}
-                >
+                <div className="row boxContainerRow" style={{ minHeight: '526px' }}>
                   <WeatherConditions caller="greenbar" />
                 </div>
               </div>
             ) : (
-              ""
+              ''
             )}
           </div>
         </div>
         <div
           className="d-flex justify-content-center"
-          style={
-            expansionPanelComponent.component === ""
-              ? { height: "0px" }
-              : { height: "50px" }
-          }
+          style={expansionPanelComponent.component === '' ? { height: '0px' } : { height: '50px' }}
         >
-          {expansionPanelComponent.component !== "" ? (
+          {expansionPanelComponent.component !== '' ? (
             <div
               className="pt-2 pb-2"
               style={{
-                position: "absolute",
-                bottom: "-30px",
-                textAlign: "center",
-                width: "100%",
-                background: "linear-gradient(to top, #506147, #598344)",
+                position: 'absolute',
+                bottom: '-30px',
+                textAlign: 'center',
+                width: '100%',
+                background: 'linear-gradient(to top, #506147, #598344)',
               }}
             >
               <Button variant="contained" onClick={closeExpansionPanel}>
@@ -377,7 +336,7 @@ const Greenbar = () => {
               </Button>
             </div>
           ) : (
-            ""
+            ''
           )}
         </div>
       </div>

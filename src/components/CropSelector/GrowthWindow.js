@@ -4,15 +4,15 @@
   Styles are created using growthWindow.scss
 */
 
-import React, { useEffect, useState, Fragment, useContext } from "react";
-import moment from "moment";
-import { Tooltip, withStyles, Typography } from "@material-ui/core";
-import { Context } from "../../store/Store";
+import React, { useEffect, useState, Fragment, useContext } from 'react';
+import moment from 'moment';
+import { Tooltip, withStyles, Typography } from '@material-ui/core';
+import { Context } from '../../store/Store';
 
-import "../../styles/growthWindow.scss";
+import '../../styles/growthWindow.scss';
 
 const GrowthWindowComponent = (props) => {
-  const {state, dispatch} = useContext(Context);
+  const { state, dispatch } = useContext(Context);
   //   const [isCashCropMonth, setIsCashCropMonth] = useState(false);
   let from = props.from;
   let cropData = props.data;
@@ -21,7 +21,7 @@ const GrowthWindowComponent = (props) => {
   const [cropLegendObj, setCropLegendObj] = useState({
     Early: [],
     Mid: [],
-    class: "",
+    class: '',
     isCashCropMonth: false,
   });
 
@@ -37,13 +37,13 @@ const GrowthWindowComponent = (props) => {
       : [];
 
     // debug
-    if (cropData["Cover Crop Name"] === "Oats, Spring") {
+    if (cropData['Cover Crop Name'] === 'Oats, Spring') {
       console.log(cropData[`${fullMonth[id]}, Early`]);
     }
 
     if (
-      state.cashCropData.dateRange.startDate !== "" &&
-      state.cashCropData.dateRange.endDate !== ""
+      state.cashCropData.dateRange.startDate !== '' &&
+      state.cashCropData.dateRange.endDate !== ''
     ) {
       if (
         id >= state.cashCropData.dateRange.startDate - 1 ||
@@ -65,13 +65,13 @@ const GrowthWindowComponent = (props) => {
           Early: cropDataLegendLabel_Early,
         });
       } else {
-        cropLegendObj.Early = "";
+        cropLegendObj.Early = '';
       }
       if (cropDataLegendLabel_Mid) {
         // cropLegendObj.Mid = cropDataLegendLabel_Mid;
         setCropLegendObj({ ...cropLegendObj, Mid: cropDataLegendLabel_Mid });
       } else {
-        cropLegendObj.Mid = "";
+        cropLegendObj.Mid = '';
       }
     } else {
       // cropLegendObj.Early = "";
@@ -82,7 +82,7 @@ const GrowthWindowComponent = (props) => {
   };
 
   useEffect(() => {
-    if (props.data["Cover Crop Name"] === "Oats, Spring") {
+    if (props.data['Cover Crop Name'] === 'Oats, Spring') {
       console.log(cropLegendObj);
     }
   }, [cropLegendObj]);
@@ -145,58 +145,36 @@ const GrowthWindowComponent = (props) => {
     }
   }, []);
 
-  return from === "calendar" ? (
+  return from === 'calendar' ? (
     <td
       className={
-        state.cashCropData.dateRange.startDate !== ""
-          ? month >=
-            moment(state.cashCropData.dateRange.startDate, "MM/dd").format(
-              "M"
-            ) -
-              1 //these two should come from sidebar dateRange
-            ? month <=
-              moment(state.cashCropData.dateRange.endDate, "MM/dd").format(
-                "M"
-              ) -
-                1
+        state.cashCropData.dateRange.startDate !== ''
+          ? month >= moment(state.cashCropData.dateRange.startDate, 'MM/dd').format('M') - 1 //these two should come from sidebar dateRange
+            ? month <= moment(state.cashCropData.dateRange.endDate, 'MM/dd').format('M') - 1
               ? `growthWindowCell ${id} cashCropLegendContainer `
               : `growthWindowCell ${id}`
             : `growthWindowCell ${id}`
           : `growthWindowCell ${id}`
       }
-      style={
-        month >= 11
-          ? { borderLeft: "none", paddingBottom: "0px" }
-          : { paddingBottom: "0px" }
-      }
+      style={month >= 11 ? { borderLeft: 'none', paddingBottom: '0px' } : { paddingBottom: '0px' }}
     >
       {/* {month} */}
       <div
         className={
-          state.cashCropData.dateRange.startDate !== ""
-            ? month >=
-              moment(state.cashCropData.dateRange.startDate, "MM/dd").format(
-                "M"
-              ) -
-                1 //these two should come from sidebar dateRange
-              ? month <=
-                moment(state.cashCropData.dateRange.endDate, "MM/dd").format(
-                  "M"
-                ) -
-                  1
-                ? "legendContainer cashCropLegendContainer legendColor d-flex flex-direction-row"
-                : "legendContainer legendColor d-flex flex-direction-row"
-              : "legendContainer legendColor d-flex flex-direction-row"
-            : "legendContainer legendColor d-flex flex-direction-row"
+          state.cashCropData.dateRange.startDate !== ''
+            ? month >= moment(state.cashCropData.dateRange.startDate, 'MM/dd').format('M') - 1 //these two should come from sidebar dateRange
+              ? month <= moment(state.cashCropData.dateRange.endDate, 'MM/dd').format('M') - 1
+                ? 'legendContainer cashCropLegendContainer legendColor d-flex flex-direction-row'
+                : 'legendContainer legendColor d-flex flex-direction-row'
+              : 'legendContainer legendColor d-flex flex-direction-row'
+            : 'legendContainer legendColor d-flex flex-direction-row'
         }
       >
         <Tooltip
           arrow
           title={
             <Fragment>
-              <Typography color="secondary">
-                {fullMonth[month].toUpperCase()}, EARLY
-              </Typography>
+              <Typography color="secondary">{fullMonth[month].toUpperCase()}, EARLY</Typography>
               {cropLegendObj.Early.map((v, i) => (
                 <Typography variant="body1" key={i} gutterBottom>
                   {v}
@@ -206,19 +184,15 @@ const GrowthWindowComponent = (props) => {
           }
         >
           <div
-            className={`earlyPart ${cropLegendObj.Early.toString()
-              .split(",")
-              .join(" ")}`}
-            style={{ height: "30px", width: "50%" }}
+            className={`earlyPart ${cropLegendObj.Early.toString().split(',').join(' ')}`}
+            style={{ height: '30px', width: '50%' }}
           ></div>
         </Tooltip>
         <Tooltip
           arrow
           title={
             <Fragment>
-              <Typography color="secondary">
-                {fullMonth[month].toUpperCase()}, MID
-              </Typography>
+              <Typography color="secondary">{fullMonth[month].toUpperCase()}, MID</Typography>
               {cropLegendObj.Mid.map((v, i) => (
                 <Typography variant="body1" key={i} gutterBottom>
                   {v}
@@ -228,28 +202,18 @@ const GrowthWindowComponent = (props) => {
           }
         >
           <div
-            className={`midPart ${cropLegendObj.Mid.toString()
-              .split(",")
-              .join(" ")}`}
-            style={{ height: "30px", width: "50%" }}
+            className={`midPart ${cropLegendObj.Mid.toString().split(',').join(' ')}`}
+            style={{ height: '30px', width: '50%' }}
           ></div>
         </Tooltip>
       </div>
     </td>
-  ) : from === "tableOnlyCashCropWindow" ? (
+  ) : from === 'tableOnlyCashCropWindow' ? (
     <td
       className={
-        state.cashCropData.dateRange.startDate !== ""
-          ? month >=
-            moment(state.cashCropData.dateRange.startDate, "MM/dd").format(
-              "M"
-            ) -
-              1 //these two should come from sidebar dateRange
-            ? month <=
-              moment(state.cashCropData.dateRange.endDate, "MM/dd").format(
-                "M"
-              ) -
-                1
+        state.cashCropData.dateRange.startDate !== ''
+          ? month >= moment(state.cashCropData.dateRange.startDate, 'MM/dd').format('M') - 1 //these two should come from sidebar dateRange
+            ? month <= moment(state.cashCropData.dateRange.endDate, 'MM/dd').format('M') - 1
               ? `growthWindowCell ${id} cashCropLegendContainer`
               : `growthWindowCell ${id}`
             : `growthWindowCell ${id}`
@@ -258,58 +222,38 @@ const GrowthWindowComponent = (props) => {
     >
       <div
         className={
-          state.cashCropData.dateRange.startDate !== ""
-            ? month >=
-              moment(state.cashCropData.dateRange.startDate, "MM/dd").format(
-                "M"
-              ) -
-                1 //these two should come from sidebar dateRange
-              ? month <=
-                moment(state.cashCropData.dateRange.endDate, "MM/dd").format(
-                  "M"
-                ) -
-                  1
+          state.cashCropData.dateRange.startDate !== ''
+            ? month >= moment(state.cashCropData.dateRange.startDate, 'MM/dd').format('M') - 1 //these two should come from sidebar dateRange
+              ? month <= moment(state.cashCropData.dateRange.endDate, 'MM/dd').format('M') - 1
                 ? `legendContainer cashCropLegendContainer legendColor d-flex flex-direction-row `
-                : "legendContainer legendColor d-flex flex-direction-row "
-              : "legendContainer legendColor d-flex flex-direction-row "
+                : 'legendContainer legendColor d-flex flex-direction-row '
+              : 'legendContainer legendColor d-flex flex-direction-row '
             : `legendContainer legendColor d-flex flex-direction-row `
         }
       >
         <div
-          className={`earlyPart ${
-            cropLegendObj.isCashCropMonth ? "cashCropMonth" : ""
-          }`}
-          style={{ height: "20px", width: "50%" }}
+          className={`earlyPart ${cropLegendObj.isCashCropMonth ? 'cashCropMonth' : ''}`}
+          style={{ height: '20px', width: '50%' }}
         ></div>
         <div
-          className={`midPart ${
-            cropLegendObj.isCashCropMonth ? "cashCropMonth" : ""
-          }`}
-          style={{ height: "20px", width: "50%" }}
+          className={`midPart ${cropLegendObj.isCashCropMonth ? 'cashCropMonth' : ''}`}
+          style={{ height: '20px', width: '50%' }}
         ></div>
       </div>
     </td>
-  ) : from === "infosheet" ? (
+  ) : from === 'infosheet' ? (
     <td
       className={
-        state.cashCropData.dateRange.startDate !== ""
-          ? month >=
-            moment(state.cashCropData.dateRange.startDate, "MM/dd").format(
-              "M"
-            ) -
-              1 //these two should come from sidebar dateRange
-            ? month <=
-              moment(state.cashCropData.dateRange.endDate, "MM/dd").format(
-                "M"
-              ) -
-                1
+        state.cashCropData.dateRange.startDate !== ''
+          ? month >= moment(state.cashCropData.dateRange.startDate, 'MM/dd').format('M') - 1 //these two should come from sidebar dateRange
+            ? month <= moment(state.cashCropData.dateRange.endDate, 'MM/dd').format('M') - 1
               ? `growthWindowCell noBorderRightCond ${id}`
               : `growthWindowCell noBorderRightCond ${id}`
             : `growthWindowCell noBorderRightCond ${id}`
           : `growthWindowCell noBorderRightCond ${id}`
       }
       style={{
-        borderRight: `${month !== "Dec" ? `2px solid white` : ``}`,
+        borderRight: `${month !== 'Dec' ? `2px solid white` : ``}`,
       }}
     >
       <div className="legendContainer legendColor d-flex flex-direction-row w-100">
@@ -317,9 +261,7 @@ const GrowthWindowComponent = (props) => {
           arrow
           title={
             <Fragment>
-              <Typography color="secondary">
-                {fullMonth[month].toUpperCase()}, EARLY
-              </Typography>
+              <Typography color="secondary">{fullMonth[month].toUpperCase()}, EARLY</Typography>
               <div>
                 <Typography variant="body1">{cropLegendObj.Early}</Typography>
               </div>
@@ -328,16 +270,14 @@ const GrowthWindowComponent = (props) => {
         >
           <div
             className={`earlyPart ${cropLegendObj.Early}`}
-            style={{ height: "20px", width: "50%" }}
+            style={{ height: '20px', width: '50%' }}
           ></div>
         </Tooltip>
         <Tooltip
           arrow
           title={
             <Fragment>
-              <Typography color="secondary">
-                {fullMonth[month].toUpperCase()}, MID
-              </Typography>
+              <Typography color="secondary">{fullMonth[month].toUpperCase()}, MID</Typography>
               <div>
                 <Typography variant="body1">{cropLegendObj.Mid}</Typography>
               </div>
@@ -346,7 +286,7 @@ const GrowthWindowComponent = (props) => {
         >
           <div
             className={`earlyPart ${cropLegendObj.Mid}`}
-            style={{ height: "20px", width: "50%" }}
+            style={{ height: '20px', width: '50%' }}
           ></div>
         </Tooltip>
       </div>
@@ -354,17 +294,9 @@ const GrowthWindowComponent = (props) => {
   ) : (
     <td
       className={
-        state.cashCropData.dateRange.startDate !== ""
-          ? month >=
-            moment(state.cashCropData.dateRange.startDate, "MM/dd").format(
-              "M"
-            ) -
-              1 //these two should come from sidebar dateRange
-            ? month <=
-              moment(state.cashCropData.dateRange.endDate, "MM/dd").format(
-                "M"
-              ) -
-                1
+        state.cashCropData.dateRange.startDate !== ''
+          ? month >= moment(state.cashCropData.dateRange.startDate, 'MM/dd').format('M') - 1 //these two should come from sidebar dateRange
+            ? month <= moment(state.cashCropData.dateRange.endDate, 'MM/dd').format('M') - 1
               ? `growthWindowCell ${id} cashCropLegendContainer linear`
               : `growthWindowCell ${id}`
             : `growthWindowCell ${id}`
@@ -376,9 +308,7 @@ const GrowthWindowComponent = (props) => {
           arrow
           title={
             <Fragment>
-              <Typography color="secondary">
-                {fullMonth[month].toUpperCase()}, EARLY
-              </Typography>
+              <Typography color="secondary">{fullMonth[month].toUpperCase()}, EARLY</Typography>
               {cropLegendObj.Early.map((v, i) => (
                 <Typography variant="body1" key={i} gutterBottom>
                   {v}
@@ -388,19 +318,15 @@ const GrowthWindowComponent = (props) => {
           }
         >
           <div
-            className={`earlyPart ${cropLegendObj.Early.toString()
-              .split(",")
-              .join(" ")}`}
-            style={{ height: "20px", width: "50%" }}
+            className={`earlyPart ${cropLegendObj.Early.toString().split(',').join(' ')}`}
+            style={{ height: '20px', width: '50%' }}
           ></div>
         </Tooltip>
         <Tooltip
           arrow
           title={
             <Fragment>
-              <Typography color="secondary">
-                {fullMonth[month].toUpperCase()}, MID
-              </Typography>
+              <Typography color="secondary">{fullMonth[month].toUpperCase()}, MID</Typography>
               {cropLegendObj.Mid.map((v, i) => (
                 <Typography variant="body1" key={i} gutterBottom>
                   {v}
@@ -410,10 +336,8 @@ const GrowthWindowComponent = (props) => {
           }
         >
           <div
-            className={`earlyPart ${cropLegendObj.Mid.toString()
-              .split(",")
-              .join(" ")}`}
-            style={{ height: "20px", width: "50%" }}
+            className={`earlyPart ${cropLegendObj.Mid.toString().split(',').join(' ')}`}
+            style={{ height: '20px', width: '50%' }}
           ></div>
         </Tooltip>
       </div>

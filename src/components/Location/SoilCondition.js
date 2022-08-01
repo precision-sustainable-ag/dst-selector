@@ -4,20 +4,15 @@
   styled using ../../styles/soilConditions.scss
 */
 
-import { Button, Chip, Switch, Typography } from "@material-ui/core";
-import {
-  InvertColors,
-  LocalDrinkOutlined,
-  Terrain,
-  WavesOutlined,
-} from "@material-ui/icons";
-import React, { useContext, useEffect, useState } from "react";
-import { ReferenceTooltip } from "../../shared/constants";
-import { Context } from "../../store/Store";
-import "../../styles/soilConditions.scss";
+import { Button, Chip, Switch, Typography } from '@material-ui/core';
+import { InvertColors, LocalDrinkOutlined, Terrain, WavesOutlined } from '@material-ui/icons';
+import React, { useContext, useEffect, useState } from 'react';
+import { ReferenceTooltip } from '../../shared/constants';
+import { Context } from '../../store/Store';
+import '../../styles/soilConditions.scss';
 
 const SoilCondition = (props) => {
-  const {state, dispatch} = useContext(Context);
+  const { state, dispatch } = useContext(Context);
   const { soilData, soilDataOriginal, markers } = state;
   const [tilingCheck, setTilingCheck] = useState(false);
 
@@ -25,19 +20,18 @@ const SoilCondition = (props) => {
     const getSSURGOData = (lat, lon) => {
       let markersCopy = markers;
 
-      let longLatString = "";
+      let longLatString = '';
 
       markersCopy.forEach((val, i) => {
         // get long lat formatted as requested by SSURGO (long lat, long lat, ...)
         // saved as longLatString
         if (i === markersCopy.length - 1) {
-          longLatString +=
-            markersCopy[i][1] + " " + markersCopy[i][0] + "," + lon + " " + lat;
+          longLatString += markersCopy[i][1] + ' ' + markersCopy[i][0] + ',' + lon + ' ' + lat;
         } else {
-          longLatString += markersCopy[i][1] + " " + markersCopy[i][0] + ",";
+          longLatString += markersCopy[i][1] + ' ' + markersCopy[i][0] + ',';
         }
       });
-      let soilDataQuery = "";
+      let soilDataQuery = '';
 
       if (markersCopy.length > 1) {
         soilDataQuery = `SELECT mu.mukey AS MUKEY, mu.muname AS Map_Unit_Name, muag.drclassdcd AS Drainage_Class, muag.flodfreqdcd AS Flooding_Frequency, mp.mupolygonkey as MPKEY
@@ -60,52 +54,49 @@ const SoilCondition = (props) => {
 
       // console.log(soilDataQuery);
       var myHeaders = new Headers();
-      myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+      myHeaders.append('Content-Type', 'application/x-www-form-urlencoded');
 
       var urlencoded = new URLSearchParams();
-      urlencoded.append("query", soilDataQuery);
-      urlencoded.append("format", "json+columnname");
+      urlencoded.append('query', soilDataQuery);
+      urlencoded.append('format', 'json+columnname');
 
       var requestOptions = {
-        method: "POST",
+        method: 'POST',
         headers: myHeaders,
         body: urlencoded,
-        redirect: "follow",
+        redirect: 'follow',
       };
 
       dispatch({
-        type: "TOGGLE_SOIL_LOADER",
+        type: 'TOGGLE_SOIL_LOADER',
         data: {
           isSoilDataLoading: true,
         },
       });
 
-      fetch(
-        "https://sdmdataaccess.sc.egov.usda.gov/Tabular/post.rest",
-        requestOptions
-      )
+      fetch('https://sdmdataaccess.sc.egov.usda.gov/Tabular/post.rest', requestOptions)
         .then((response) => response.json())
         .then((result) => {
           if (result !== {}) {
-            let Ponding_Frequency = result["Table"][1][4];
-            let mapUnitString = "";
+            let Ponding_Frequency = result['Table'][1][4];
+            let mapUnitString = '';
 
             let stringSplit = [];
 
-            result["Table"].forEach((el, index) => {
+            result['Table'].forEach((el, index) => {
               if (index !== 0) {
-                if (stringSplit.indexOf(el[1].split(",")[0]) === -1) {
-                  stringSplit.push(el[1].split(",")[0]);
+                if (stringSplit.indexOf(el[1].split(',')[0]) === -1) {
+                  stringSplit.push(el[1].split(',')[0]);
                 }
               }
             });
 
             const filteredArr = stringSplit.filter((elm) => elm);
-            mapUnitString = filteredArr.join(", ");
+            mapUnitString = filteredArr.join(', ');
 
             let floodingClasses = [];
-            result["Table"].forEach((el, index) => {
-              if (index === 0 || el.indexOf("Water") === 1) {
+            result['Table'].forEach((el, index) => {
+              if (index === 0 || el.indexOf('Water') === 1) {
               } else {
                 if (floodingClasses.indexOf(el[3]) === -1) {
                   floodingClasses.push(el[3]);
@@ -114,7 +105,7 @@ const SoilCondition = (props) => {
             });
 
             let drainageClasses = [];
-            result["Table"].forEach((el, index) => {
+            result['Table'].forEach((el, index) => {
               if (index !== 0) {
                 if (drainageClasses.indexOf(el[2]) === -1) {
                   drainageClasses.push(el[2]);
@@ -126,7 +117,7 @@ const SoilCondition = (props) => {
             });
 
             dispatch({
-              type: "UPDATE_SOIL_DATA",
+              type: 'UPDATE_SOIL_DATA',
               data: {
                 Map_Unit_Name: mapUnitString,
                 Drainage_Class: drainageClasses,
@@ -136,7 +127,7 @@ const SoilCondition = (props) => {
               },
             });
             dispatch({
-              type: "UPDATE_SOIL_DATA_ORIGINAL",
+              type: 'UPDATE_SOIL_DATA_ORIGINAL',
               data: {
                 Map_Unit_Name: mapUnitString,
                 Drainage_Class: drainageClasses,
@@ -148,22 +139,20 @@ const SoilCondition = (props) => {
           }
 
           dispatch({
-            type: "TOGGLE_SOIL_LOADER",
+            type: 'TOGGLE_SOIL_LOADER',
             data: {
               isSoilDataLoading: false,
             },
           });
         })
-        .catch((error) => console.error("SSURGO FETCH ERROR", error));
+        .catch((error) => console.error('SSURGO FETCH ERROR', error));
     };
 
     let lat = markers[0][0];
     let lon = markers[0][1];
 
     if (soilDataOriginal.for) {
-      if (
-        !(soilDataOriginal.for.lat === lat && soilDataOriginal.for.lon === lon)
-      ) {
+      if (!(soilDataOriginal.for.lat === lat && soilDataOriginal.for.lon === lon)) {
         getSSURGOData(lat, lon);
       }
     } else {
@@ -171,13 +160,13 @@ const SoilCondition = (props) => {
     }
   }, [dispatch, markers, soilDataOriginal.for]);
 
-  const updateDrainageClass = (label = "") => {
+  const updateDrainageClass = (label = '') => {
     let drainages = [...state.soilData.Drainage_Class];
     if (drainages.indexOf(label) === -1) {
       // does not exist, dispatch to state
       drainages.push(label);
       dispatch({
-        type: "UPDATE_DRAINAGE_CLASS",
+        type: 'UPDATE_DRAINAGE_CLASS',
         data: drainages,
       });
     } else {
@@ -186,19 +175,19 @@ const SoilCondition = (props) => {
       drainages.splice(index, 1);
 
       dispatch({
-        type: "UPDATE_DRAINAGE_CLASS",
+        type: 'UPDATE_DRAINAGE_CLASS',
         data: drainages,
       });
     }
   };
 
-  const updateFloodingFrequency = (label = "") => {
+  const updateFloodingFrequency = (label = '') => {
     let floodings = [...state.soilData.Flooding_Frequency];
     if (floodings.indexOf(label) === -1) {
       // does not exist, dispatch to state
       floodings.push(label);
       dispatch({
-        type: "UPDATE_FLOODING_FREQUENCY",
+        type: 'UPDATE_FLOODING_FREQUENCY',
         data: floodings,
       });
     } else {
@@ -207,7 +196,7 @@ const SoilCondition = (props) => {
       floodings.splice(index, 1);
 
       dispatch({
-        type: "UPDATE_FLOODING_FREQUENCY",
+        type: 'UPDATE_FLOODING_FREQUENCY',
         data: floodings,
       });
     }
@@ -215,149 +204,130 @@ const SoilCondition = (props) => {
 
   const resetFloodingOptions = () => {
     dispatch({
-      type: "UPDATE_FLOODING_FREQUENCY",
+      type: 'UPDATE_FLOODING_FREQUENCY',
       data: soilDataOriginal.Flooding_Frequency,
     });
   };
 
   const resetDrainageClasses = () => {
     dispatch({
-      type: "UPDATE_DRAINAGE_CLASS",
+      type: 'UPDATE_DRAINAGE_CLASS',
       data: soilDataOriginal.Drainage_Class,
     });
-    window.localStorage.setItem(
-      "drainage",
-      JSON.stringify(soilDataOriginal.Drainage_Class)
-    );
+    window.localStorage.setItem('drainage', JSON.stringify(soilDataOriginal.Drainage_Class));
     setTilingCheck(false);
   };
-  const RenderFloodingOptions = ({ flooding = [""] }) => {
+  const RenderFloodingOptions = ({ flooding = [''] }) => {
     return (
       <div className="text-left">
         <Chip
           label="None"
-          color={flooding.includes("None") ? "primary" : "secondary"}
+          color={flooding.includes('None') ? 'primary' : 'secondary'}
           className="m-2 drainageTag"
           onClick={() => {
-            updateFloodingFrequency("None");
+            updateFloodingFrequency('None');
           }}
         />
         <Chip
           label="Very Rare"
-          color={flooding.includes("Very rare") ? "primary" : "secondary"}
+          color={flooding.includes('Very rare') ? 'primary' : 'secondary'}
           className="m-2 drainageTag"
           onClick={() => {
-            updateFloodingFrequency("Very rare");
+            updateFloodingFrequency('Very rare');
           }}
         />
         <Chip
           label="Rare"
-          color={flooding.includes("Rare") ? "primary" : "secondary"}
+          color={flooding.includes('Rare') ? 'primary' : 'secondary'}
           className="m-2 drainageTag"
           onClick={() => {
-            updateFloodingFrequency("Rare");
+            updateFloodingFrequency('Rare');
           }}
         />
         <Chip
           label="Occasional"
-          color={flooding.includes("Occasional") ? "primary" : "secondary"}
+          color={flooding.includes('Occasional') ? 'primary' : 'secondary'}
           className="m-2 drainageTag"
           onClick={() => {
-            updateFloodingFrequency("Occasional");
+            updateFloodingFrequency('Occasional');
           }}
         />
         <Chip
           label="Frequent"
-          color={flooding.includes("Frequent") ? "primary" : "secondary"}
+          color={flooding.includes('Frequent') ? 'primary' : 'secondary'}
           className="m-2 drainageTag"
           onClick={() => {
-            updateFloodingFrequency("Frequent");
+            updateFloodingFrequency('Frequent');
           }}
         />
         <Chip
           label="Very Frequent"
-          color={flooding.includes("Very frequent") ? "primary" : "secondary"}
+          color={flooding.includes('Very frequent') ? 'primary' : 'secondary'}
           className="m-2 drainageTag"
           onClick={() => {
-            updateFloodingFrequency("Very frequent");
+            updateFloodingFrequency('Very frequent');
           }}
         />
       </div>
     );
   };
-  const RenderDrainageClasses = ({ drainage = [""] }) => {
+  const RenderDrainageClasses = ({ drainage = [''] }) => {
     return (
       <div className="text-left">
         <Chip
           label="Very Poorly Drained"
-          color={
-            drainage.includes("Very poorly drained") ? "primary" : "secondary"
-          }
+          color={drainage.includes('Very poorly drained') ? 'primary' : 'secondary'}
           className="m-2 drainageTag"
           onClick={() => {
-            updateDrainageClass("Very poorly drained");
+            updateDrainageClass('Very poorly drained');
           }}
         />
         <Chip
           label="Poorly Drained"
-          color={drainage.includes("Poorly drained") ? "primary" : "secondary"}
+          color={drainage.includes('Poorly drained') ? 'primary' : 'secondary'}
           className="m-2 drainageTag"
           onClick={() => {
-            updateDrainageClass("Poorly drained");
+            updateDrainageClass('Poorly drained');
           }}
         />
         <Chip
           label="Somewhat Poorly Drained"
-          color={
-            drainage.includes("Somewhat poorly drained")
-              ? "primary"
-              : "secondary"
-          }
+          color={drainage.includes('Somewhat poorly drained') ? 'primary' : 'secondary'}
           className="m-2 drainageTag"
           onClick={() => {
-            updateDrainageClass("Somewhat poorly drained");
+            updateDrainageClass('Somewhat poorly drained');
           }}
         />
         <Chip
           label="Moderately Well Drained"
-          color={
-            drainage.includes("Moderately well drained")
-              ? "primary"
-              : "secondary"
-          }
+          color={drainage.includes('Moderately well drained') ? 'primary' : 'secondary'}
           className="m-2 drainageTag"
           onClick={() => {
-            updateDrainageClass("Moderately well drained");
+            updateDrainageClass('Moderately well drained');
           }}
         />
         <Chip
           label="Well Drained"
-          color={drainage.includes("Well drained") ? "primary" : "secondary"}
+          color={drainage.includes('Well drained') ? 'primary' : 'secondary'}
           className="m-2 drainageTag"
           onClick={() => {
-            updateDrainageClass("Well drained");
+            updateDrainageClass('Well drained');
           }}
         />
         <Chip
           label="Somewhat Excessively Drained"
-          color={
-            drainage.includes("Somewhat excessively drained")
-              ? "primary"
-              : "secondary"
-          }
+          color={drainage.includes('Somewhat excessively drained') ? 'primary' : 'secondary'}
           className="m-2 drainageTag"
           onClick={() => {
-            updateDrainageClass("Somewhat excessively drained");
+            updateDrainageClass('Somewhat excessively drained');
           }}
         />
         <Chip
           label="Excessively Drained"
-          color={
-            drainage.includes("Excessively drained") ? "primary" : "secondary"
-          }
+          color={drainage.includes('Excessively drained') ? 'primary' : 'secondary'}
           className="m-2 drainageTag"
           onClick={() => {
-            updateDrainageClass("Excessively drained");
+            updateDrainageClass('Excessively drained');
           }}
         />
       </div>
@@ -366,18 +336,11 @@ const SoilCondition = (props) => {
 
   const [showTiling, setShowTiling] = useState(false);
   useEffect(() => {
-    const checkArray = [
-      "Very poorly drained",
-      "Poorly drained",
-      "Somewhat poorly drained",
-    ];
+    const checkArray = ['Very poorly drained', 'Poorly drained', 'Somewhat poorly drained'];
     if (checkArray.some((e) => soilData.Drainage_Class.includes(e))) {
       setShowTiling(true);
     }
-    window.localStorage.setItem(
-      "drainage",
-      JSON.stringify(soilData.Drainage_Class)
-    );
+    window.localStorage.setItem('drainage', JSON.stringify(soilData.Drainage_Class));
   }, [soilData.Drainage_Class]);
   return (
     <div className="row">
@@ -397,9 +360,8 @@ const SoilCondition = (props) => {
               title={
                 <div>
                   <Typography variant="body1">
-                    {" "}
-                    The tool auto-completes your soil composition based on
-                    location and the{" "}
+                    {' '}
+                    The tool auto-completes your soil composition based on location and the{' '}
                     <a
                       href="https://websoilsurvey.sc.egov.usda.gov/App/HomePage.htm"
                       target="_blank"
@@ -419,7 +381,7 @@ const SoilCondition = (props) => {
             <Typography
               variant="body1"
               className="font-weight-bold"
-              style={{ color: "rgb(89, 132, 69)" }}
+              style={{ color: 'rgb(89, 132, 69)' }}
               align="left"
             >
               {soilData.Map_Unit_Name}
@@ -439,23 +401,22 @@ const SoilCondition = (props) => {
               title={
                 <div>
                   <Typography variant="body1">
-                    {" "}
-                    Indicates your soil drainage based on the{" "}
+                    {' '}
+                    Indicates your soil drainage based on the{' '}
                     <a
                       href="https://websoilsurvey.sc.egov.usda.gov/App/HomePage.htm"
                       target="_blank"
                       rel="noopener noreferrer"
                     >
                       USDA NRCS Web Soil Survey
-                    </a>{" "}
-                    drainage classes; you may modify your soil drainage by
-                    clicking below.{" "}
+                    </a>{' '}
+                    drainage classes; you may modify your soil drainage by clicking below.{' '}
                     <a
                       href="https://www.nrcs.usda.gov/wps/portal/nrcs/detail/soils/ref/?cid=nrcs142p2_054253"
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      {" "}
+                      {' '}
                       Definitions of values found here
                     </a>
                     .
@@ -465,11 +426,8 @@ const SoilCondition = (props) => {
             />
           </Typography>
         </div>
-        {arrayEquals(
-          soilDataOriginal.Drainage_Class,
-          soilData.Drainage_Class
-        ) ? (
-          ""
+        {arrayEquals(soilDataOriginal.Drainage_Class, soilData.Drainage_Class) ? (
+          ''
         ) : (
           <div className="col-12 pt-2">
             <div className="col-12 row">
@@ -505,7 +463,7 @@ const SoilCondition = (props) => {
               <ReferenceTooltip
                 type="text"
                 content={
-                  "Indicate if the field of interest has tile installed. If you have selected very poorly to somewhat poorly drained soils, selecting “yes” will increase your drainage class by one factor."
+                  'Indicate if the field of interest has tile installed. If you have selected very poorly to somewhat poorly drained soils, selecting “yes” will increase your drainage class by one factor.'
                 }
               />
             </Typography>
@@ -523,57 +481,51 @@ const SoilCondition = (props) => {
                   let drainSet = new Set(soilDrainCopy);
                   if (e.target.checked) {
                     if (
-                      drainSet.has("Very poorly drained") &&
-                      drainSet.has("Poorly drained") &&
-                      drainSet.has("Somewhat poorly drained")
+                      drainSet.has('Very poorly drained') &&
+                      drainSet.has('Poorly drained') &&
+                      drainSet.has('Somewhat poorly drained')
                     ) {
-                      drainSet.delete("Very poorly drained");
-                      drainSet.add("Moderately well drained");
+                      drainSet.delete('Very poorly drained');
+                      drainSet.add('Moderately well drained');
                     } else {
-                      if (
-                        drainSet.has("Very poorly drained") &&
-                        drainSet.has("Poorly drained")
-                      ) {
-                        drainSet.delete("Very poorly drained");
-                        drainSet.add("Somewhat poorly drained");
+                      if (drainSet.has('Very poorly drained') && drainSet.has('Poorly drained')) {
+                        drainSet.delete('Very poorly drained');
+                        drainSet.add('Somewhat poorly drained');
                       } else if (
-                        drainSet.has("Poorly drained") &&
-                        drainSet.has("Somewhat poorly drained")
+                        drainSet.has('Poorly drained') &&
+                        drainSet.has('Somewhat poorly drained')
                       ) {
-                        drainSet.delete("Poorly drained");
-                        drainSet.add("Moderately well drained");
+                        drainSet.delete('Poorly drained');
+                        drainSet.add('Moderately well drained');
                       } else if (
-                        drainSet.has("Very poorly drained") &&
-                        drainSet.has("Somewhat poorly drained")
+                        drainSet.has('Very poorly drained') &&
+                        drainSet.has('Somewhat poorly drained')
                       ) {
-                        drainSet.delete("Very poorly drained");
-                        drainSet.delete("Somewhat poorly drained");
-                        drainSet.add("Poorly drained");
-                        drainSet.add("Moderately well drained");
-                      } else if (drainSet.has("Very poorly drained")) {
-                        drainSet.delete("Very poorly drained");
-                        drainSet.add("Poorly drained");
-                      } else if (drainSet.has("Poorly drained")) {
-                        drainSet.delete("Poorly drained");
-                        drainSet.add("Somewhat poorly drained");
-                      } else if (drainSet.has("Somewhat poorly drained")) {
-                        drainSet.delete("Somewhat poorly drained");
-                        drainSet.add("Moderately well drained");
+                        drainSet.delete('Very poorly drained');
+                        drainSet.delete('Somewhat poorly drained');
+                        drainSet.add('Poorly drained');
+                        drainSet.add('Moderately well drained');
+                      } else if (drainSet.has('Very poorly drained')) {
+                        drainSet.delete('Very poorly drained');
+                        drainSet.add('Poorly drained');
+                      } else if (drainSet.has('Poorly drained')) {
+                        drainSet.delete('Poorly drained');
+                        drainSet.add('Somewhat poorly drained');
+                      } else if (drainSet.has('Somewhat poorly drained')) {
+                        drainSet.delete('Somewhat poorly drained');
+                        drainSet.add('Moderately well drained');
                       } else {
-                        drainSet.delete("Very poorly drained");
-                        drainSet.delete("Poorly drained");
-                        drainSet.delete("Somewhat poorly drained");
-                        drainSet.add("Moderately well drained");
+                        drainSet.delete('Very poorly drained');
+                        drainSet.delete('Poorly drained');
+                        drainSet.delete('Somewhat poorly drained');
+                        drainSet.add('Moderately well drained');
                       }
                     }
-                    window.localStorage.setItem(
-                      "drainage",
-                      JSON.stringify([...drainSet])
-                    );
+                    window.localStorage.setItem('drainage', JSON.stringify([...drainSet]));
                   } else {
                     window.localStorage.setItem(
-                      "drainage",
-                      JSON.stringify(soilDataOriginal.Drainage_Class)
+                      'drainage',
+                      JSON.stringify(soilDataOriginal.Drainage_Class),
                     );
                   }
 
@@ -588,7 +540,7 @@ const SoilCondition = (props) => {
           </div>
         </div>
       ) : (
-        ""
+        ''
       )}
 
       <div className="col-12 pt-2 mt-2 row">
@@ -602,7 +554,7 @@ const SoilCondition = (props) => {
               title={
                 <div>
                   <Typography variant="body1">
-                    The annual probability of a flood event based on the{" "}
+                    The annual probability of a flood event based on the{' '}
                     <a
                       href="https://websoilsurvey.sc.egov.usda.gov/App/HomePage.htm"
                       target="_blank"
@@ -610,16 +562,15 @@ const SoilCondition = (props) => {
                     >
                       USDA NRCS Web Soil Survey
                     </a>
-                    , where “flood” refers to the temporary inundation of an
-                    area caused by overflowing streams, by runoff from adjacent
-                    slopes, or by tides. You may modify your flooding frequency
-                    by clicking below.{" "}
+                    , where “flood” refers to the temporary inundation of an area caused by
+                    overflowing streams, by runoff from adjacent slopes, or by tides. You may modify
+                    your flooding frequency by clicking below.{' '}
                     <a
                       href="https://www.nrcs.usda.gov/wps/portal/nrcs/detail/soils/ref/?cid=nrcs142p2_054253"
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      {" "}
+                      {' '}
                       Definitions of values found here
                     </a>
                     .
@@ -630,11 +581,8 @@ const SoilCondition = (props) => {
           </Typography>
         </div>
 
-        {arrayEquals(
-          soilData.Flooding_Frequency,
-          soilDataOriginal.Flooding_Frequency
-        ) ? (
-          ""
+        {arrayEquals(soilData.Flooding_Frequency, soilDataOriginal.Flooding_Frequency) ? (
+          ''
         ) : (
           <div className="col-12 pt-2">
             <div className="col-12 row">

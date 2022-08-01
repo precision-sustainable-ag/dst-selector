@@ -3,12 +3,12 @@
   The ForecastComponent shows the forecast in the header
 */
 
-import React, { Fragment, useContext, useEffect, useState } from "react";
-import { cloudIcon, ReferenceTooltip } from "../../shared/constants";
-import { openWeatherApiKey } from "../../shared/keys";
-import { Context } from "../../store/Store";
+import React, { Fragment, useContext, useEffect, useState } from 'react';
+import { cloudIcon, ReferenceTooltip } from '../../shared/constants';
+import { openWeatherApiKey } from '../../shared/keys';
+import { Context } from '../../store/Store';
 
-const apiBaseURL = "https://api.openweathermap.org/data/2.5/weather";
+const apiBaseURL = 'https://api.openweathermap.org/data/2.5/weather';
 
 const ForecastComponent = () => {
   const { state, dispatch } = useContext(Context);
@@ -16,9 +16,9 @@ const ForecastComponent = () => {
   const [temp, setTemp] = useState({
     min: 0,
     max: 0,
-    unit: "F",
+    unit: 'F',
     iconURL: `https://placehold.it/20x20`,
-    iconDescription: "No Data",
+    iconDescription: 'No Data',
   });
 
   useEffect(() => {
@@ -34,7 +34,7 @@ const ForecastComponent = () => {
         try {
           latlng = state.markers[0];
         } catch (e) {
-          console.trace("Forecast Component", e);
+          console.trace('Forecast Component', e);
 
           latlng = [];
         }
@@ -49,7 +49,7 @@ const ForecastComponent = () => {
             let tempObj = {
               min: data.main.temp_min,
               max: data.main.temp_max,
-              unit: "F",
+              unit: 'F',
               iconURL: `https://openweathermap.org/img/w/${iconId}.png`,
               iconDescription: iconDescription,
             };
@@ -60,18 +60,16 @@ const ForecastComponent = () => {
             console.error(e);
           });
 
-        if (state.address === "") {
+        if (state.address === '') {
           let data = reverseGEO(latlng[0], latlng[1]);
           data
             .then((data) => {
               if (data.localityInfo.informative) {
                 let lastInfo =
-                  data.localityInfo.informative[
-                    data.localityInfo.informative.length - 1
-                  ];
+                  data.localityInfo.informative[data.localityInfo.informative.length - 1];
                 let addressString = `${lastInfo.name}, ${data.city}`;
                 dispatch({
-                  type: "CHANGE_ADDRESS",
+                  type: 'CHANGE_ADDRESS',
                   data: {
                     address: addressString,
                     addressVerified: true,
@@ -80,7 +78,7 @@ const ForecastComponent = () => {
               }
               if (data.postcode) {
                 dispatch({
-                  type: "UPDATE_ZIP_CODE",
+                  type: 'UPDATE_ZIP_CODE',
                   data: {
                     zipCode: parseInt(data.postcode),
                   },
@@ -88,7 +86,7 @@ const ForecastComponent = () => {
               }
             })
             .catch((e) => {
-              console.error("Geocode.xyz:", e);
+              console.error('Geocode.xyz:', e);
             });
         }
       }
@@ -130,15 +128,12 @@ const ForecastComponent = () => {
         {Number(temp.max.toFixed(1))} | {Number(temp.min.toFixed(1))}&nbsp;
         {temp.unit}
         <span className="ml-2">
-          <ReferenceTooltip
-            source={"openweathermap.org"}
-            url={"https://openweathermap.org/"}
-          />
+          <ReferenceTooltip source={'openweathermap.org'} url={'https://openweathermap.org/'} />
         </span>
       </Fragment>
     )
   ) : (
-    ""
+    ''
   );
 };
 
