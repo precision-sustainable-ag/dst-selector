@@ -3,9 +3,9 @@
   The DateComponent shows the date in the header
 */
 
-import { useState, useEffect } from "react";
-import moment from "moment";
-import "moment-timezone";
+import moment from 'moment';
+import 'moment-timezone';
+import { useEffect, useState } from 'react';
 
 const DateComponent = () => {
   const [date, setDate] = useState(null);
@@ -20,7 +20,7 @@ const DateComponent = () => {
 const setTodaysDate = () => {
   let now = moment();
   let tzdata = moment.tz.guess();
-  return now.tz(tzdata).format("LL");
+  return now.tz(tzdata).format('LL');
 };
 
 export default DateComponent;

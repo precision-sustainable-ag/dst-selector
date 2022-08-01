@@ -2,7 +2,7 @@
   Unused
 */
 
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect } from 'react';
 import {
   Modal,
   makeStyles,
@@ -14,21 +14,21 @@ import {
   FormControl,
   InputLabel,
   Select,
-} from "@material-ui/core";
+} from '@material-ui/core';
 
-import moment from "moment";
-import { Context } from "../../store/Store";
-import { LightButton } from "../../shared/constants";
+import moment from 'moment';
+import { Context } from '../../store/Store';
+import { LightButton } from '../../shared/constants';
 
 const useStyles = makeStyles((theme) => ({
   modal: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   paper: {
     backgroundColor: theme.palette.background.paper,
-    border: "2px solid #000",
+    border: '2px solid #000',
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
   },
@@ -42,22 +42,22 @@ const useStyles = makeStyles((theme) => ({
 const WeatherModal = (props) => {
   const classes = useStyles();
 
-  const [state, dispatch] = useContext(Context);
+  const { state, dispatch } = useContext(Context);
   const [open, setOpen] = useState(props.open);
   const [modalBtnDisabled, setModalBtnDisabled] = useState(false);
   const [months, setMonths] = useState([]);
-  const [currentMonthFull, setCurrentMonthFull] = useState("NOVEMBER");
+  const [currentMonthFull, setCurrentMonthFull] = useState('NOVEMBER');
   const [firstFrostMonth, setFirstFrostMonth] = useState(
-    state.weatherData.averageFrost.firstFrostDate.month
+    state.weatherData.averageFrost.firstFrostDate.month,
   );
   const [firstFrostDay, setFirstFrostDay] = useState(
-    state.weatherData.averageFrost.firstFrostDate.day
+    state.weatherData.averageFrost.firstFrostDate.day,
   );
   const [lastFrostMonth, setLastFrostMonth] = useState(
-    state.weatherData.averageFrost.lastFrostDate.month
+    state.weatherData.averageFrost.lastFrostDate.month,
   );
   const [lastFrostDay, setLastFrostDay] = useState(
-    state.weatherData.averageFrost.lastFrostDate.day
+    state.weatherData.averageFrost.lastFrostDate.day,
   );
 
   const [averagePrecipitation, setAveragePrecipitation] = useState({
@@ -65,9 +65,7 @@ const WeatherModal = (props) => {
     annual: state.weatherData.averagePrecipitation.annual,
   });
 
-  const [frostFreeDays, setFrostFreeDays] = useState(
-    state.weatherData.frostFreeDays
-  );
+  const [frostFreeDays, setFrostFreeDays] = useState(state.weatherData.frostFreeDays);
 
   const validateAndBroadcastModalData = () => {
     // validate existing data
@@ -97,7 +95,7 @@ const WeatherModal = (props) => {
     // boardcast and close modal
 
     dispatch({
-      type: "UPDATE_WEATHER_CONDITIONS",
+      type: 'UPDATE_WEATHER_CONDITIONS',
       data: { weatherData: broadcastObject },
     });
 
@@ -114,7 +112,7 @@ const WeatherModal = (props) => {
 
   useEffect(() => {
     // get current month in long form
-    setCurrentMonthFull(moment().format("MMMM"));
+    setCurrentMonthFull(moment().format('MMMM'));
     // render monthsShort on the modal
     setMonths(moment.localeData().monthsShort());
   }, []);
@@ -146,10 +144,8 @@ const WeatherModal = (props) => {
                 </div>
                 <div className="row mt-4">
                   <div className="col-6">
-                    <FormControl style={{ width: "100%" }}>
-                      <InputLabel htmlFor="age-native-simple">
-                        First Frost Month
-                      </InputLabel>
+                    <FormControl style={{ width: '100%' }}>
+                      <InputLabel htmlFor="age-native-simple">First Frost Month</InputLabel>
                       <Select
                         label="First Frost Month"
                         native
@@ -158,14 +154,12 @@ const WeatherModal = (props) => {
                           setFirstFrostMonth(event.target.value);
                         }}
                         inputProps={{
-                          name: "age",
-                          id: "age-native-simple",
+                          name: 'age',
+                          id: 'age-native-simple',
                         }}
                       >
                         {months.map((val, key) => (
-                          <option value={moment(val, "MMM").format("MMMM")}>
-                            {val}
-                          </option>
+                          <option value={moment(val, 'MMM').format('MMMM')}>{val}</option>
                         ))}
                       </Select>
                     </FormControl>
@@ -183,10 +177,9 @@ const WeatherModal = (props) => {
                         value={firstFrostDay}
                         onChange={(event) => {
                           if (!isNaN(event.target.value)) {
-                            if (event.target.value === "") {
-                              setFirstFrostDay("");
-                            } else
-                              setFirstFrostDay(parseInt(event.target.value));
+                            if (event.target.value === '') {
+                              setFirstFrostDay('');
+                            } else setFirstFrostDay(parseInt(event.target.value));
                           } else {
                             setFirstFrostDay(1);
                           }
@@ -198,10 +191,8 @@ const WeatherModal = (props) => {
                 </div>
                 <div className="row mt-4">
                   <div className="col-6">
-                    <FormControl style={{ width: "100%" }}>
-                      <InputLabel htmlFor="last-frost-month">
-                        Last Frost Month
-                      </InputLabel>
+                    <FormControl style={{ width: '100%' }}>
+                      <InputLabel htmlFor="last-frost-month">Last Frost Month</InputLabel>
                       <Select
                         label="Last Frost Month"
                         native
@@ -210,8 +201,8 @@ const WeatherModal = (props) => {
                           setLastFrostMonth(event.target.value);
                         }}
                         inputProps={{
-                          name: "last-frost-month",
-                          id: "last-frost-month",
+                          name: 'last-frost-month',
+                          id: 'last-frost-month',
                         }}
                       >
                         {months.map((val, key) => (
@@ -240,10 +231,9 @@ const WeatherModal = (props) => {
                         value={lastFrostDay}
                         onChange={(event) => {
                           if (!isNaN(event.target.value)) {
-                            if (event.target.value === "") {
-                              setLastFrostDay("");
-                            } else
-                              setLastFrostDay(parseInt(event.target.value));
+                            if (event.target.value === '') {
+                              setLastFrostDay('');
+                            } else setLastFrostDay(parseInt(event.target.value));
                           } else {
                             setLastFrostDay(1);
                           }
@@ -278,14 +268,13 @@ const WeatherModal = (props) => {
                         value={averagePrecipitation.thisMonth}
                         onChange={(event) => {
                           if (!isNaN(event.target.value)) {
-                            if (event.target.value === "") {
+                            if (event.target.value === '') {
                               // setFirstFrostDay("");
 
                               setAveragePrecipitation({
                                 ...averagePrecipitation,
                                 thisMonth: parseFloat(
-                                  state.weatherData.averagePrecipitation
-                                    .thisMonth
+                                  state.weatherData.averagePrecipitation.thisMonth,
                                 ),
                               });
                             } else
@@ -296,7 +285,7 @@ const WeatherModal = (props) => {
                           } else {
                             setAveragePrecipitation(...averagePrecipitation, {
                               thisMonth: parseFloat(
-                                state.weatherData.averagePrecipitation.thisMonth
+                                state.weatherData.averagePrecipitation.thisMonth,
                               ),
                             });
                           }
@@ -315,7 +304,7 @@ const WeatherModal = (props) => {
                   <div className="col-6">
                     <FormControl>
                       <TextField
-                        label={"Annual"}
+                        label={'Annual'}
                         type="number"
                         step="0.01"
                         multiLine={true}
@@ -324,14 +313,12 @@ const WeatherModal = (props) => {
                         value={averagePrecipitation.annual}
                         onChange={(event) => {
                           if (!isNaN(event.target.value)) {
-                            if (event.target.value === "") {
+                            if (event.target.value === '') {
                               // setFirstFrostDay("");
 
                               setAveragePrecipitation({
                                 ...averagePrecipitation,
-                                annual: parseFloat(
-                                  state.weatherData.averagePrecipitation.annual
-                                ),
+                                annual: parseFloat(state.weatherData.averagePrecipitation.annual),
                               });
                             } else
                               setAveragePrecipitation({
@@ -340,9 +327,7 @@ const WeatherModal = (props) => {
                               });
                           } else {
                             setAveragePrecipitation(...averagePrecipitation, {
-                              annual: parseFloat(
-                                state.weatherData.averagePrecipitation.annual
-                              ),
+                              annual: parseFloat(state.weatherData.averagePrecipitation.annual),
                             });
                           }
                         }}
@@ -368,7 +353,7 @@ const WeatherModal = (props) => {
                     <FormControl>
                       {/* TODO */}
                       <TextField
-                        label={"Frost Free Days"}
+                        label={'Frost Free Days'}
                         type="number"
                         step="0.01"
                         multiLine={true}
@@ -376,12 +361,11 @@ const WeatherModal = (props) => {
                         value={frostFreeDays}
                         onChange={(event) => {
                           if (!isNaN(event.target.value)) {
-                            if (event.target.value === "") {
+                            if (event.target.value === '') {
                               // setFirstFrostDay("");
 
                               setFrostFreeDays(0);
-                            } else
-                              setFrostFreeDays(parseInt(event.target.value));
+                            } else setFrostFreeDays(parseInt(event.target.value));
                           } else {
                             setFrostFreeDays(0);
                           }

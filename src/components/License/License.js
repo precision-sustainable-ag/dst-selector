@@ -3,23 +3,23 @@
   The License page contains the license which is made of the MIT license text and Agriculture Informatics license
 */
 
-import { Grid } from "@material-ui/core";
-import React, { useEffect } from "react";
-import Header from "../Header/Header";
-import AgInformaticsLicenseText from "./AgInformaticsLicenseText";
-import MITLicenseText from "./MITLicenseText";
+import { Grid } from '@material-ui/core';
+import React, { useEffect } from 'react';
+import Header from '../Header/Header';
+import AgInformaticsLicenseText from './AgInformaticsLicenseText';
+import MITLicenseText from './MITLicenseText';
 
-const License = ({ licenseType = "MIT" }) => {
+const License = ({ licenseType = 'MIT' }) => {
   useEffect(() => {
     switch (licenseType) {
-      case "MIT":
-        document.title = "MIT License";
+      case 'MIT':
+        document.title = 'MIT License';
         break;
-      case "AgInformatics":
-        document.title = "AgInformatics License";
+      case 'AgInformatics':
+        document.title = 'AgInformatics License';
         break;
       default:
-        document.title = "MIT License";
+        document.title = 'MIT License';
         break;
     }
   }, [licenseType]);
@@ -29,11 +29,7 @@ const License = ({ licenseType = "MIT" }) => {
       <div className="container-fluid mt-5">
         <Grid container>
           <Grid item>
-            {licenseType === "AgInformatics" ? (
-              <AgInformaticsLicenseText />
-            ) : (
-              <MITLicenseText />
-            )}
+            {licenseType === 'AgInformatics' ? <AgInformaticsLicenseText /> : <MITLicenseText />}
           </Grid>
         </Grid>
       </div>
