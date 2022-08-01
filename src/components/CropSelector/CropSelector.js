@@ -4,27 +4,21 @@
   Styles are created using makeStyles.
 */
 
-import {
-  Button,
-  Fab,
-  makeStyles,
-  useScrollTrigger,
-  Zoom,
-} from "@material-ui/core";
-import { ArrowBack, ArrowForward, KeyboardArrowUp } from "@material-ui/icons";
-import React, { useContext, useEffect, useState } from "react";
-import { Context } from "../../store/Store";
-import "../../styles/cropSelector.scss";
-import MyCoverCropList from "../MyCoverCropList/MyCoverCropList";
-import CropCalendarViewComponent from "./CropCalendarView";
-import CropSidebarComponent from "./CropSidebar";
-import CropTableComponent from "./CropTable";
-import ReactGA from "react-ga";
-const _ = require("lodash");
+import { Button, Fab, makeStyles, useScrollTrigger, Zoom } from '@material-ui/core';
+import { ArrowBack, ArrowForward, KeyboardArrowUp } from '@material-ui/icons';
+import React, { useContext, useEffect, useState } from 'react';
+import { Context } from '../../store/Store';
+import '../../styles/cropSelector.scss';
+import MyCoverCropList from '../MyCoverCropList/MyCoverCropList';
+import CropCalendarViewComponent from './CropCalendarView';
+import CropSidebarComponent from './CropSidebar';
+import CropTableComponent from './CropTable';
+import ReactGA from 'react-ga';
+const _ = require('lodash');
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    position: "fixed",
+    position: 'fixed',
     bottom: theme.spacing(2),
     right: theme.spacing(2),
   },
@@ -38,20 +32,14 @@ const ScrollTop = (props) => {
     threshold: 180,
   });
   const handleBackToTopClick = (event) => {
-    const anchor = (event.target.ownerDocument || document).querySelector(
-      ".topHeader"
-    );
+    const anchor = (event.target.ownerDocument || document).querySelector('.topHeader');
     if (anchor) {
-      anchor.scrollIntoView({ behavior: "smooth", block: "center" });
+      anchor.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
   };
   return (
     <Zoom in={trigger}>
-      <div
-        onClick={handleBackToTopClick}
-        role="presentation"
-        className={classes.root}
-      >
+      <div onClick={handleBackToTopClick} role="presentation" className={classes.root}>
         {children}
       </div>
     </Zoom>
@@ -59,9 +47,9 @@ const ScrollTop = (props) => {
 };
 
 const CropSelector = (props) => {
-  const {state, dispatch} = useContext(Context);
+  const { state, dispatch } = useContext(Context);
   let [showGrowthWindow, setShowGrowthWindow] = useState(true);
-  const [sortPreference, setSortPreference] = useState("desc");
+  const [sortPreference, setSortPreference] = useState('desc');
   const { selectedGoals } = state;
 
   const activeCropData = state.activeCropData;
@@ -75,10 +63,10 @@ const CropSelector = (props) => {
   const [cropData, setCropData] = useState([]);
   useEffect(() => {
     if (state.consent === true) {
-      console.log("viewing selector");
-      ReactGA.initialize("UA-181903489-1");
+      console.log('viewing selector');
+      ReactGA.initialize('UA-181903489-1');
 
-      ReactGA.pageview("cover crop selector");
+      ReactGA.pageview('cover crop selector');
     }
   }, [state.consent]);
 
@@ -102,11 +90,7 @@ const CropSelector = (props) => {
           //  Crop Data is inside cropData.fields
           activeObjKeys[index] = `fields.${val}`;
         });
-        let updatedCropData = _.orderBy(crop_data, activeObjKeys, [
-          "desc",
-          "desc",
-          "desc",
-        ]);
+        let updatedCropData = _.orderBy(crop_data, activeObjKeys, ['desc', 'desc', 'desc']);
 
         setCropData(updatedCropData);
       }
@@ -132,38 +116,38 @@ const CropSelector = (props) => {
         console.log(activeObjKeys);
 
         switch (orderBy) {
-          case "asc": {
+          case 'asc': {
             if (activeCropDataCopy.length > 0) {
-              let updatedCropData = _.orderBy(
-                activeCropDataCopy,
-                activeObjKeys,
-                ["asc", "asc", "asc"]
-              );
+              let updatedCropData = _.orderBy(activeCropDataCopy, activeObjKeys, [
+                'asc',
+                'asc',
+                'asc',
+              ]);
               dispatch({
-                type: "UPDATE_ACTIVE_CROP_DATA",
+                type: 'UPDATE_ACTIVE_CROP_DATA',
                 data: {
                   value: updatedCropData,
                 },
               });
             }
-            setSortPreference("asc");
+            setSortPreference('asc');
             break;
           }
-          case "desc": {
+          case 'desc': {
             if (activeCropDataCopy.length > 0) {
-              let updatedCropData = _.orderBy(
-                activeCropDataCopy,
-                activeObjKeys,
-                ["desc", "desc", "desc"]
-              );
+              let updatedCropData = _.orderBy(activeCropDataCopy, activeObjKeys, [
+                'desc',
+                'desc',
+                'desc',
+              ]);
               dispatch({
-                type: "UPDATE_ACTIVE_CROP_DATA",
+                type: 'UPDATE_ACTIVE_CROP_DATA',
                 data: {
                   value: updatedCropData,
                 },
               });
             }
-            setSortPreference("desc");
+            setSortPreference('desc');
             break;
           }
           default: {
@@ -214,13 +198,13 @@ const CropSelector = (props) => {
   const toggleComparisonView = () => {
     setComparisonView(!comparisonView);
   };
-  
+
   useEffect(() => {
     if (state.selectedGoals.length === 0) {
       dispatch({
-        type: "UPDATE_PROGRESS",
+        type: 'UPDATE_PROGRESS',
         data: {
-          type: "DECREMENT",
+          type: 'DECREMENT',
         },
       });
     }
@@ -245,13 +229,13 @@ const CropSelector = (props) => {
       }
 
       // Add event listener
-      window.addEventListener("resize", handleResize);
+      window.addEventListener('resize', handleResize);
 
       // Call handler right away so state gets updated with initial window size
       handleResize();
 
       // Remove event listener on cleanup
-      return () => window.removeEventListener("resize", handleResize);
+      return () => window.removeEventListener('resize', handleResize);
     }, []);
 
     return windowSize;
@@ -271,19 +255,19 @@ const CropSelector = (props) => {
               aria-label="toggle-sidebar"
               onClick={() => setShowSidebar(!showSidebar)}
             >
-              {!showSidebar ? "Show Sidebar" : "Hide Sidebar"}
+              {!showSidebar ? 'Show Sidebar' : 'Hide Sidebar'}
             </Button>
           </div>
         ) : (
-          ""
+          ''
         )}
 
         <div
           className={`col-md-2 col-sm-12`}
           style={
             showSidebar
-              ? { display: "block", visibility: "visible" }
-              : { display: "none", visibility: "hidden" }
+              ? { display: 'block', visibility: 'visible' }
+              : { display: 'none', visibility: 'hidden' }
           }
         >
           <CropSidebarComponent
@@ -291,22 +275,16 @@ const CropSelector = (props) => {
             setGrowthWindow={setShowGrowthWindow}
             isListView={isListView}
             cropData={cropData}
-            activeCropData={
-              activeCropData.length > 0 ? activeCropData : cropData
-            }
+            activeCropData={activeCropData.length > 0 ? activeCropData : cropData}
             cropDataChanged={cropDataChanged}
             comparisonView={comparisonView}
             toggleComparisonView={toggleComparisonView}
             toggleListView={toggleListView}
-            from={"table"}
+            from={'table'}
           />
         </div>
 
-        <div
-          className={
-            showSidebar ? `col-md-10 col-sm-12` : `col-md-12 col-sm-12`
-          }
-        >
+        <div className={showSidebar ? `col-md-10 col-sm-12` : `col-md-12 col-sm-12`}>
           {state.speciesSelectorActivationFlag ? (
             isListView ? (
               <CropTableComponent
@@ -337,7 +315,7 @@ const CropSelector = (props) => {
         </ScrollTop>
       </div>
     </div>
-  )
+  );
 };
 
 export default CropSelector;

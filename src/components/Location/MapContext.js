@@ -6,65 +6,55 @@
   styled using ../../styles/map.scss
 */
 
-import L from "leaflet";
-import "leaflet-draw/dist/leaflet.draw.css";
-import React, { useContext, useEffect, useState } from "react";
-import {
-  FeatureGroup,
-  Map,
-  Marker,
-  Polygon,
-  TileLayer,
-  Tooltip,
-} from "react-leaflet";
-import { EditControl } from "react-leaflet-draw";
-import { Context } from "../../store/Store";
-import "../../styles/map.scss";
+import L from 'leaflet';
+import 'leaflet-draw/dist/leaflet.draw.css';
+import React, { useContext, useEffect, useState } from 'react';
+import { FeatureGroup, Map, Marker, Polygon, TileLayer, Tooltip } from 'react-leaflet';
+import { EditControl } from 'react-leaflet-draw';
+import { Context } from '../../store/Store';
+import '../../styles/map.scss';
 
 // work around broken icons when using webpack, see https://github.com/PaulLeCam/react-leaflet/issues/255
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
-  iconRetinaUrl:
-    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.0/images/marker-icon.png",
-  iconUrl:
-    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.0/images/marker-icon.png",
-  shadowUrl:
-    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.0/images/marker-shadow.png",
+  iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.0/images/marker-icon.png',
+  iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.0/images/marker-icon.png',
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.0/images/marker-shadow.png',
 });
 
 const MapContext = ({ width, height, minzoom, maxzoom, from }) => {
-  const {state, dispatch} = useContext(Context);
+  const { state, dispatch } = useContext(Context);
   const [show, setShow] = useState(true);
   const [mapCenter, setMapCenter] = useState([]);
   const [isPoly, setIsPoly] = useState(false);
   const [showEditControl, setShowEditControl] = useState(true);
 
   useEffect(() => {
-    if (from === "location") {
+    if (from === 'location') {
       setShowEditControl(true);
     } else {
       setShowEditControl(false);
     }
   }, [from]);
 
-  const updateGlobalMarkers = (markersArray, type = "") => {
-    if (type === "marker") {
+  const updateGlobalMarkers = (markersArray, type = '') => {
+    if (type === 'marker') {
       setIsPoly(false);
     } else {
       setIsPoly(true);
     }
     dispatch({
-      type: "UPDATE_MARKER",
+      type: 'UPDATE_MARKER',
       data: {
         markers: markersArray,
       },
     });
 
     dispatch({
-      type: "SNACK",
+      type: 'SNACK',
       data: {
         snackOpen: true,
-        snackMessage: "Your location has been saved.",
+        snackMessage: 'Your location has been saved.',
       },
     });
   };
@@ -91,24 +81,24 @@ const MapContext = ({ width, height, minzoom, maxzoom, from }) => {
       if (status === 'OK') {
         let zipCode = 0;
 
-        results.forEach(r => {
-          let z = r.address_components.filter(e => e.types[0] === 'postal_code');
+        results.forEach((r) => {
+          let z = r.address_components.filter((e) => e.types[0] === 'postal_code');
           if (z.length) {
             zipCode = +z[0].long_name;
           }
         });
-        
+
         dispatch({
-          type: "CHANGE_ADDRESS_VIA_MAP",
+          type: 'CHANGE_ADDRESS_VIA_MAP',
           data: {
-            address: results[0].formatted_address.split(",")[0],
+            address: results[0].formatted_address.split(',')[0],
             fullAddress: results[0].formatted_address,
             zip: zipCode,
             addressVerified: true,
           },
         });
       } else {
-        console.error("API fetch error", results);
+        console.error('API fetch error', results);
       }
     });
   };
@@ -125,15 +115,15 @@ const MapContext = ({ width, height, minzoom, maxzoom, from }) => {
         editableFG.leafletElement.removeLayer(layer);
         setShow(false);
       });
-      if (e.layerType === "marker") {
+      if (e.layerType === 'marker') {
         const lat = e.layer._latlng.lat;
         const lng = e.layer._latlng.lng;
         const latLng = { lat: lat, lng: lng };
         // reverse geocode
         setAddress(latLng);
 
-        updateGlobalMarkers([[lat, lng]], "marker");
-      } else if (e.layerType === "polygon") {
+        updateGlobalMarkers([[lat, lng]], 'marker');
+      } else if (e.layerType === 'polygon') {
         const latlngs = e.layer._latlngs;
         let markers = [];
         const firstLatLng = { lat: latlngs[0][0].lat, lng: latlngs[0][0].lng };
@@ -145,7 +135,7 @@ const MapContext = ({ width, height, minzoom, maxzoom, from }) => {
             markers.push([latlng.lat, latlng.lng]);
           });
         });
-        updateGlobalMarkers(markers, "poly");
+        updateGlobalMarkers(markers, 'poly');
       }
     }
   };
@@ -161,7 +151,7 @@ const MapContext = ({ width, height, minzoom, maxzoom, from }) => {
           style={{ width: width, height: height }}
         >
           <TileLayer
-            subdomains={["mt0", "mt1", "mt2", "mt3"]}
+            subdomains={['mt0', 'mt1', 'mt2', 'mt3']}
             attribution={`Map data &copy; <a target="attr" href="http://googlemaps.com">Google</a>`}
             url="http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}"
           />
@@ -179,7 +169,7 @@ const MapContext = ({ width, height, minzoom, maxzoom, from }) => {
                 }}
                 onCreated={onCreated}
                 onDeleted={(e) => {
-                  console.log("deleted", e);
+                  console.log('deleted', e);
                 }}
                 draw={{
                   rectangle: false,
@@ -196,7 +186,7 @@ const MapContext = ({ width, height, minzoom, maxzoom, from }) => {
                 }}
               />
             ) : (
-              ""
+              ''
             )}
             {show ? (
               isPoly ? (
@@ -209,7 +199,7 @@ const MapContext = ({ width, height, minzoom, maxzoom, from }) => {
                 </Marker>
               )
             ) : (
-              ""
+              ''
             )}
           </FeatureGroup>
           {/* <TileLayer
@@ -220,7 +210,7 @@ const MapContext = ({ width, height, minzoom, maxzoom, from }) => {
       </div>
     </div>
   ) : (
-    ""
+    ''
   );
 };
 

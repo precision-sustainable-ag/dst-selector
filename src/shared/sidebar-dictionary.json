@@ -87,18 +87,14 @@
     "values": [
       {
         "name": "Frost Seeding",
-        "values": [
-          "Frost Seeding"
-        ],
+        "values": ["Frost Seeding"],
         "maxSize": 1,
         "symbol": null,
         "description": "Cover crop can be seeded when ground is frozen"
       },
       {
         "name": "Aerial Seeding",
-        "values": [
-          "Aerial Seeding"
-        ],
+        "values": ["Aerial Seeding"],
         "maxSize": 1,
         "symbol": null,
         "description": "Can aerial seeding methods be used for this crop?"
@@ -133,37 +129,21 @@
         "name": "Duration",
         "type": "chip",
         "maxSize": null,
-        "values": [
-          "Annual",
-          "Biennial",
-          "Short-lived Perennial",
-          "Perennial"
-        ],
+        "values": ["Annual", "Biennial", "Short-lived Perennial", "Perennial"],
         "description": "Length of time during which the cover crop's entire lifecycle is completed in the selected zone. Cover crops that have different Durations depending on environment or location are reported in order of increasing longevity in nature"
       },
       {
         "name": "Active Growth Period",
         "type": "chip",
         "maxSize": null,
-        "values": [
-          "Fall",
-          "Winter",
-          "Spring",
-          "Summer"
-        ],
+        "values": ["Fall", "Winter", "Spring", "Summer"],
         "description": "Season in which plants have active growth"
       },
       {
         "name": "Growing Window",
         "type": "chip",
         "maxSize": null,
-        "values": [
-          "Very Short",
-          "Short",
-          "Medium",
-          "Long",
-          "Very Long"
-        ],
+        "values": ["Very Short", "Short", "Medium", "Long", "Very Long"],
         "description": "Relative length of time that is suitable for growing and terminating a cover crop. For example, cover crops with a very short growing window may be planted and terminated during a very short period (e.g., 6-8 weeks) between cash crops"
       },
       {
@@ -184,11 +164,7 @@
         "name": "Winter Survival",
         "type": "chip",
         "maxSize": null,
-        "values": [
-          "Never",
-          "Seldom",
-          "Expected"
-        ],
+        "values": ["Never", "Seldom", "Expected"],
         "description": "Likelihood of cover crop survival over the winter"
       },
       {
@@ -209,11 +185,7 @@
         "name": "Root Depth",
         "type": "chip",
         "maxSize": null,
-        "values": [
-          "Shallow",
-          "Medium",
-          "Deep"
-        ],
+        "values": ["Shallow", "Medium", "Deep"],
         "description": "Depth to which the cover crop roots? Considers the relative ability of the roots to grow deeper than the previous crop (to reach residual nitrogen)"
       }
     ]

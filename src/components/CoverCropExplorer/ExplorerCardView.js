@@ -12,12 +12,12 @@ import {
   Grid,
   makeStyles,
   Typography,
-} from "@material-ui/core";
-import { useSnackbar } from "notistack";
-import React, { Fragment, useContext, useEffect, useState } from "react";
-import { trimString } from "../../shared/constants";
-import { Context } from "../../store/Store";
-import CropDetailsModalComponent from "../CropSelector/CropDetailsModal";
+} from '@material-ui/core';
+import { useSnackbar } from 'notistack';
+import React, { Fragment, useContext, useEffect, useState } from 'react';
+import { trimString } from '../../shared/constants';
+import { Context } from '../../store/Store';
+import CropDetailsModalComponent from '../CropSelector/CropDetailsModal';
 const useStyles = makeStyles({
   card: {
     maxWidth: 345,
@@ -28,8 +28,8 @@ const useStyles = makeStyles({
   },
 });
 const ExplorerCardView = (props) => {
-  const {state, dispatch} = useContext(Context);
-  const section  = window.location.href.includes('selector') ? 'selector' : 'explorer';
+  const { state, dispatch } = useContext(Context);
+  const section = window.location.href.includes('selector') ? 'selector' : 'explorer';
   const sfilters = state[section];
 
   const [modalOpen, setModalOpen] = useState(false);
@@ -39,14 +39,14 @@ const ExplorerCardView = (props) => {
   const [selectedBtns, setSelectedBtns] = useState(
     state.selectedCrops.map((crop) => {
       return crop.id;
-    })
+    }),
   );
   useEffect(() => {
     const newSelectedBtns = state.selectedCrops.map((crop) => {
       return crop.id;
     });
     setSelectedBtns(newSelectedBtns);
-    console.log("selected btns", newSelectedBtns);
+    console.log('selected btns', newSelectedBtns);
   }, [sfilters.zone, state.selectedCrops.length]);
 
   const { enqueueSnackbar } = useSnackbar();
@@ -60,9 +60,9 @@ const ExplorerCardView = (props) => {
   const addCropToBasket = (cropId, cropName, btnId, cropData) => {
     let selectedCrops = {};
     var cropArray = [];
-    selectedCrops["id"] = cropId;
-    selectedCrops["cropName"] = cropName;
-    selectedCrops["data"] = cropData;
+    selectedCrops['id'] = cropId;
+    selectedCrops['cropName'] = cropName;
+    selectedCrops['data'] = cropData;
 
     cropArray = selectedCrops;
 
@@ -76,7 +76,7 @@ const ExplorerCardView = (props) => {
       if (removeIndex === -1) {
         // element not in array
         dispatch({
-          type: "SELECTED_CROPS_MODIFIER",
+          type: 'SELECTED_CROPS_MODIFIER',
           data: {
             selectedCrops: [...state.selectedCrops, selectedCrops],
             snackOpen: false,
@@ -89,7 +89,7 @@ const ExplorerCardView = (props) => {
 
         selectedCropsCopy.splice(removeIndex, 1);
         dispatch({
-          type: "SELECTED_CROPS_MODIFIER",
+          type: 'SELECTED_CROPS_MODIFIER',
           data: {
             selectedCrops: selectedCropsCopy,
             snackOpen: false,
@@ -100,7 +100,7 @@ const ExplorerCardView = (props) => {
       }
     } else {
       dispatch({
-        type: "SELECTED_CROPS_MODIFIER",
+        type: 'SELECTED_CROPS_MODIFIER',
         data: {
           selectedCrops: [cropArray],
           snackOpen: false,
@@ -122,38 +122,35 @@ const ExplorerCardView = (props) => {
                   <CardActionArea onClick={() => handleModalOpen(crop)}>
                     <CardMedia
                       image={
-                        crop.fields["Image Data"]["Key Thumbnail"]
-                          ? `/images/Cover Crop Photos/250/${crop.fields["Image Data"]["Key Thumbnail"]}`
-                          : "https://placehold.it/100x100?text=Placeholder"
+                        crop.fields['Image Data']['Key Thumbnail']
+                          ? `/images/Cover Crop Photos/250/${crop.fields['Image Data']['Key Thumbnail']}`
+                          : 'https://placehold.it/100x100?text=Placeholder'
                       }
                       className={classes.media}
-                      title={crop.fields["Cover Crop Name"]}
+                      title={crop.fields['Cover Crop Name']}
                     />
                   </CardActionArea>
                   <CardContent>
                     <div
                       className="font-weight-bold text-muted text-uppercase"
-                      style={{ fontSize: "10pt" }}
+                      style={{ fontSize: '10pt' }}
                     >
-                      {crop.fields["Cover Crop Group"]}
+                      {crop.fields['Cover Crop Group']}
                     </div>
-                    <div
-                      className="font-weight-bold "
-                      style={{ fontSize: "16pt" }}
-                    >
+                    <div className="font-weight-bold " style={{ fontSize: '16pt' }}>
                       <Typography variant="h6" className="text-truncate">
-                        {crop.fields["Cover Crop Name"]}
+                        {crop.fields['Cover Crop Name']}
                       </Typography>
                     </div>
                     <small className="font-italic text-muted d-inline-block text-truncate">
-                      {trimString(crop.fields["Scientific Name"], 25)}
+                      {trimString(crop.fields['Scientific Name'], 25)}
                     </small>
                     <div>
                       <small className="text-muted">
                         <a
                           style={{
-                            textDecoration: "underline",
-                            color: "rgb(53, 153, 155)",
+                            textDecoration: 'underline',
+                            color: 'rgb(53, 153, 155)',
                           }}
                           target="_blank"
                           rel="noopener noreferrer"
@@ -169,22 +166,22 @@ const ExplorerCardView = (props) => {
                   <CardActionArea
                     id={`cartBtn${index}`}
                     style={{
-                      backgroundColor: "#e3f2f4",
-                      textAlign: "center",
-                      padding: "0.5em",
+                      backgroundColor: '#e3f2f4',
+                      textAlign: 'center',
+                      padding: '0.5em',
                     }}
                     className={
                       selectedBtns.includes(crop.fields.id) &&
                       parseInt(sfilters.zone) === crop.fields.Zone
-                        ? "activeCartBtn"
-                        : "inactiveCartBtn"
+                        ? 'activeCartBtn'
+                        : 'inactiveCartBtn'
                     }
                     onClick={() => {
                       addCropToBasket(
-                        crop.fields["id"],
-                        crop.fields["Cover Crop Name"],
+                        crop.fields['id'],
+                        crop.fields['Cover Crop Name'],
                         `cartBtn${index}`,
-                        crop.fields
+                        crop.fields,
                       );
                     }}
                   >
@@ -193,18 +190,18 @@ const ExplorerCardView = (props) => {
                       className={`text-uppercase ${
                         selectedBtns.includes(crop.fields.id) &&
                         parseInt(sfilters.zone) === crop.fields.Zone
-                          ? "text-white"
-                          : ""
+                          ? 'text-white'
+                          : ''
                       }`}
                       style={{
-                        color: "black",
-                        fontWeight: "bold",
+                        color: 'black',
+                        fontWeight: 'bold',
                       }}
                     >
                       {selectedBtns.includes(crop.fields.id) &&
                       parseInt(sfilters.zone) === crop.fields.Zone
-                        ? "ADDED"
-                        : "ADD TO LIST"}
+                        ? 'ADDED'
+                        : 'ADD TO LIST'}
                     </Typography>
                   </CardActionArea>
                 </Card>
@@ -218,7 +215,7 @@ const ExplorerCardView = (props) => {
             </Typography>
           </Grid>
         ) : (
-          "Loading.."
+          'Loading..'
         )}
       </Grid>
 

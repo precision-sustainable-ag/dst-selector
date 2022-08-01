@@ -3,26 +3,26 @@
   styled using CustomStyles from ../../shared/constants
 */
 
-import { Typography } from "@material-ui/core";
-import Timeline from "@material-ui/lab/Timeline";
-import TimelineConnector from "@material-ui/lab/TimelineConnector";
-import TimelineContent from "@material-ui/lab/TimelineContent";
-import TimelineDot from "@material-ui/lab/TimelineDot";
-import TimelineItem from "@material-ui/lab/TimelineItem";
-import TimelineSeparator from "@material-ui/lab/TimelineSeparator";
-import React from "react";
-import { CustomStyles } from "../../shared/constants";
+import { Typography } from '@material-ui/core';
+import Timeline from '@material-ui/lab/Timeline';
+import TimelineConnector from '@material-ui/lab/TimelineConnector';
+import TimelineContent from '@material-ui/lab/TimelineContent';
+import TimelineDot from '@material-ui/lab/TimelineDot';
+import TimelineItem from '@material-ui/lab/TimelineItem';
+import TimelineSeparator from '@material-ui/lab/TimelineSeparator';
+import React from 'react';
+import { CustomStyles } from '../../shared/constants';
 
 const SoilDrainageTimeline = ({ drainage = [] }) => {
   const drainageClasses = [
-    "Very poorly drained",
-    "Poorly drained",
-    "Somewhat poorly drained",
-    "Moderately well drained",
-    "Well drained",
-    "Excessively drained",
-    "Saturated muck",
-    "Well drained muck",
+    'Very poorly drained',
+    'Poorly drained',
+    'Somewhat poorly drained',
+    'Moderately well drained',
+    'Well drained',
+    'Excessively drained',
+    'Saturated muck',
+    'Well drained muck',
   ];
   return (
     <Timeline align="right">
@@ -38,9 +38,9 @@ const SoilDrainageTimeline = ({ drainage = [] }) => {
                   }}
                 />
               ) : (
-                ""
+                ''
               )}
-              {index === fullLength ? "" : <TimelineConnector />}
+              {index === fullLength ? '' : <TimelineConnector />}
             </TimelineSeparator>
 
             <TimelineContent className="text-capitalize">

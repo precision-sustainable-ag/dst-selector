@@ -77,24 +77,14 @@
         "type": "chip",
         "maxSize": null,
         "description": "Season in which plants have active growth. <br><br> ",
-        "values": [
-          "Spring",
-          "Summer",
-          "Winter",
-          "Fall"
-        ]
+        "values": ["Spring", "Summer", "Winter", "Fall"]
       },
       {
         "name": "Duration",
         "type": "chip",
         "maxSize": null,
         "description": "Length of time during which the cover crop's entire lifecycle is completed in the selected zone. Cover crops that have different Durations depending on environment or location are reported in order of increasing longevity in nature. <br><br> ",
-        "values": [
-          "Annual",
-          "Biennial",
-          "Short-livedPerennial",
-          "Perennial"
-        ]
+        "values": ["Annual", "Biennial", "Short-livedPerennial", "Perennial"]
       },
       {
         "name": "Early Spring Growth",
@@ -122,13 +112,7 @@
         "type": "chip",
         "maxSize": null,
         "description": "Relative length of time that is suitable for growing and terminating a cover crop. For example, cover crops with a very short growing window may be planted and terminated during a very short period (e.g., 6-8 weeks) between cash crops. <br><br> ",
-        "values": [
-          "VeryShort",
-          "Short",
-          "Medium",
-          "Long",
-          "VeryLong"
-        ]
+        "values": ["VeryShort", "Short", "Medium", "Long", "VeryLong"]
       },
       {
         "name": "Supports Mycorrhizae",
@@ -142,11 +126,7 @@
         "type": "chip",
         "maxSize": null,
         "description": "Likelihood of cover crop survival over the winter. <br><br> ",
-        "values": [
-          "Never",
-          "Seldom",
-          "Expected"
-        ]
+        "values": ["Never", "Seldom", "Expected"]
       }
     ]
   },
@@ -160,21 +140,14 @@
         "type": "chip",
         "maxSize": null,
         "description": "Primary root structure: tap or fibrous. <br><br> ",
-        "values": [
-          "Tap",
-          "Fibrous"
-        ]
+        "values": ["Tap", "Fibrous"]
       },
       {
         "name": "Root Depth",
         "type": "chip",
         "maxSize": null,
         "description": "Depth to which the cover crop roots. Considers the relative ability of the roots to grow deeper than the previous crop (to reach residual nitrogen). <br><br> ",
-        "values": [
-          "Shallow",
-          "Medium",
-          "Deep"
-        ]
+        "values": ["Shallow", "Medium", "Deep"]
       }
     ]
   },
@@ -188,9 +161,7 @@
         "alternateName": "Can Aerial Seed?",
         "symbol": null,
         "maxSize": 1,
-        "values": [
-          "Aerial Seeding"
-        ],
+        "values": ["Aerial Seeding"],
         "description": "Aerial seeding methods can be used for this crop.  "
       },
       {
@@ -198,9 +169,7 @@
         "alternateName": "Frost Seeding",
         "symbol": null,
         "maxSize": 1,
-        "values": [
-          "Frost Seeding"
-        ],
+        "values": ["Frost Seeding"],
         "description": "Cover crop can be broadcast seeded when ground is frozen.  "
       }
     ]
