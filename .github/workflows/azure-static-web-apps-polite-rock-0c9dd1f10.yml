@@ -45,12 +45,10 @@ jobs:
           output_location: 'build' # Built app content directory - optional
           ###### End of Repository/Build Configurations ######
 
-      - name: Print Build Size
+      - name: 'Print Build Size'
         run: |
-          echo "$(pwd)"
-          echo "$(ls)"
-          echo "$(du -hs /build)"
-          echo "$(du -hs /bin/staticsites/ss-oryx/app')"
+          pwd
+          ls
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
