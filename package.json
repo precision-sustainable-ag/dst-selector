@@ -17,7 +17,6 @@
     "file-saver": "^2.0.5",
     "google-map-react": "^2.1.9",
     "html2canvas": "^1.0.0-rc.5",
-    "jspdf": "^2.4.0",
     "jszip": "^3.5.0",
     "jszip-utils": "^0.1.0",
     "leaflet": "^1.6.0",
