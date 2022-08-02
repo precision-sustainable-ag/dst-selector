@@ -95,16 +95,15 @@ const MyCoverCropCardsComponent = (props) => {
           </small>
           <div>
             <small className="text-muted">
-              <a
+              <div
                 style={{
                   textDecoration: 'underline',
                   color: 'rgb(53, 153, 155)',
                 }}
                 onClick={() => handleModalOpen()}
-                // href="/#"
               >
                 View Crop Details
-              </a>
+              </div>
             </small>
           </div>
         </CardContent>
