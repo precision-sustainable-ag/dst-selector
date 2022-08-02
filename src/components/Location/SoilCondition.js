@@ -52,7 +52,6 @@ const SoilCondition = (props) => {
         mp.mupolygonkey IN  (SELECT * from SDA_Get_Mupolygonkey_from_intersection_with_WktWgs84('point (${lon} ${lat})'))`;
       }
 
-      // console.log(soilDataQuery);
       var myHeaders = new Headers();
       myHeaders.append('Content-Type', 'application/x-www-form-urlencoded');
 

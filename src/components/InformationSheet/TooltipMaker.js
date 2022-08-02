@@ -36,7 +36,6 @@ const TooltipMaker = ({ children, variable }) => {
         break;
     }
 
-    // console.log(dictionary);
     setDict(dictionary);
   }, [
     sfilters.zone,
