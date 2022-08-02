@@ -23,7 +23,6 @@ const GoogleMaps = ({ center = { lat: 40.78489145, lng: -74.80733626930342 }, zo
     }
   }, [state.markers]);
   const mapChange = (e) => {
-    console.log(e);
   };
   const drawSVG = () => {};
   return (
