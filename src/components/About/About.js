@@ -5,7 +5,7 @@
   Styles are created using makeStyles
 */
 
-import { Button, Typography } from '@material-ui/core';
+import { Button, Typography } from '@mui/material';
 import React, { Fragment, useContext, useEffect } from 'react';
 import { CustomStyles } from '../../shared/constants';
 import Header from '../Header/Header';

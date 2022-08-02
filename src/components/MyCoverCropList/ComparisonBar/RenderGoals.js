@@ -11,8 +11,8 @@ import {
   ListItem,
   ListItemText,
   Typography,
-} from '@material-ui/core';
-import { ExpandLess, ExpandMore } from '@material-ui/icons';
+} from '@mui/material';
+import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import React, { Fragment } from 'react';
 const RenderGoals = ({
   goals = [],

@@ -22,17 +22,17 @@ import CoverCropExplorer from './components/CoverCropExplorer/CoverCropExplorer'
 import InformationSheet from './components/InformationSheet/InformationSheet';
 import HelpComponent from './components/Help/Help';
 import FeedbackComponent from './components/Feedback/Feedback';
-import { MuiThemeProvider, responsiveFontSizes } from '@material-ui/core';
+import { ThemeProvider, StyledEngineProvider, responsiveFontSizes, adaptV4Theme } from '@mui/material';
 import { CustomStyles } from './shared/constants';
 import { SnackbarProvider } from 'notistack';
 import InformationSheetDictionary from './components/InformationSheet/InformationSheetDictionary';
 import MyCoverCropListWrapper from './components/MyCoverCropList/MyCoverCropListWrapper';
 import License from './components/License/License';
-import { createTheme } from '@material-ui/core/styles';
+import { createTheme } from '@mui/material/styles';
 
 const withFooter = (WrappedComponent) => () => [<WrappedComponent key="1" />, <Footer key="2" />];
 
-const theme = createTheme({
+const theme = createTheme(adaptV4Theme({
   palette: {
     primary: {
       main: CustomStyles().lightGreen,
@@ -83,7 +83,7 @@ const theme = createTheme({
       },
     },
   },
-});
+}));
 const RouteNotFound = () => {
   return (
     <section className="page_404">
@@ -117,45 +117,47 @@ const csTheme = responsiveFontSizes(theme, {
 });
 
 const Wrapper = () => (
-  <MuiThemeProvider theme={csTheme}>
-    <SnackbarProvider
-      maxSnack={5}
-      anchorOrigin={{
-        vertical: 'bottom',
-        horizontal: 'right',
-      }}
-      autoHideDuration={15000}
-    >
-      <Store>
-        <BrowserRouter>
-          <Suspense fallback={<div>Loading..</div>}>
-            <Switch>
-              <Route path={`/species-selector`} component={App} exact />
-              <Route path={'/'} component={CoverCropExplorer} exact />
-              <Route path={'/about'} component={About} exact />
-              <Route path={'/help'} component={HelpComponent} exact />
-              <Route path={'/feedback'} component={FeedbackComponent} exact />
-              <Route path={'/my-cover-crop-list'} component={MyCoverCropListWrapper} exact />
-              <Route path={'/information-sheet/:cropName'} component={InformationSheet} exact />
-              <Route path={'/seeding-rate-calculator'} component={SeedingRateCalculator} exact />
-              <Route path={'/data-dictionary'} component={InformationSheetDictionary} exact />
-              <Route path={'/license'} component={() => <License licenseType="MIT" />} exact />
-              <Route
-                path={'/ag-informatics-license'}
-                component={() => <License licenseType="AgInformatics" />}
-                exact
-              />
-              <Route path={'/mix-maker'} component={MixMaker} exact />
+  <StyledEngineProvider injectFirst>
+    <ThemeProvider theme={csTheme}>
+      <SnackbarProvider
+        maxSnack={5}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'right',
+        }}
+        autoHideDuration={15000}
+      >
+        <Store>
+          <BrowserRouter>
+            <Suspense fallback={<div>Loading..</div>}>
+              <Switch>
+                <Route path={`/species-selector`} component={App} exact />
+                <Route path={'/'} component={CoverCropExplorer} exact />
+                <Route path={'/about'} component={About} exact />
+                <Route path={'/help'} component={HelpComponent} exact />
+                <Route path={'/feedback'} component={FeedbackComponent} exact />
+                <Route path={'/my-cover-crop-list'} component={MyCoverCropListWrapper} exact />
+                <Route path={'/information-sheet/:cropName'} component={InformationSheet} exact />
+                <Route path={'/seeding-rate-calculator'} component={SeedingRateCalculator} exact />
+                <Route path={'/data-dictionary'} component={InformationSheetDictionary} exact />
+                <Route path={'/license'} component={() => <License licenseType="MIT" />} exact />
+                <Route
+                  path={'/ag-informatics-license'}
+                  component={() => <License licenseType="AgInformatics" />}
+                  exact
+                />
+                <Route path={'/mix-maker'} component={MixMaker} exact />
 
-              <Route component={RouteNotFound} />
-            </Switch>
-          </Suspense>
+                <Route component={RouteNotFound} />
+              </Switch>
+            </Suspense>
 
-          {/* <App /> */}
-        </BrowserRouter>
-      </Store>
-    </SnackbarProvider>
-  </MuiThemeProvider>
+            {/* <App /> */}
+          </BrowserRouter>
+        </Store>
+      </SnackbarProvider>
+    </ThemeProvider>
+  </StyledEngineProvider>
 );
 
 const WrapperWithFooter = withFooter(Wrapper);

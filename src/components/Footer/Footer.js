@@ -4,7 +4,7 @@
   styles are made in ../../styles/footer.scss
 */
 
-import { Typography } from '@material-ui/core';
+import { Typography } from '@mui/material';
 import Axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { accessToken, owner, repo } from '../../shared/keys';

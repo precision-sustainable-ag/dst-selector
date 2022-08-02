@@ -11,14 +11,14 @@ import {
   FormControl,
   FormGroup,
   InputLabel,
-  makeStyles,
   Modal,
   Select,
   TextField,
   Tooltip,
   Typography,
-} from '@material-ui/core';
-import { AcUnit, Info, Opacity, WbSunnyOutlined } from '@material-ui/icons';
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import { AcUnit, Info, Opacity, WbSunnyOutlined } from '@mui/icons-material';
 import moment from 'moment';
 import React, { useContext, useEffect, useState } from 'react';
 import { LightButton } from '../../shared/constants';

@@ -7,7 +7,7 @@ import GoogleMapReact from 'google-map-react';
 import { googleApiKey } from '../../shared/keys';
 import { Context } from '../../store/Store';
 import '../../styles/googleMaps.scss';
-import { Room } from '@material-ui/icons';
+import { Room } from '@mui/icons-material';
 import { CustomStyles } from '../../shared/constants';
 
 const GoogleMaps = ({ center = { lat: 40.78489145, lng: -74.80733626930342 }, zoom = 13 }) => {

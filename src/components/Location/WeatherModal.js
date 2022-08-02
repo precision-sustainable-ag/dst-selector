@@ -5,7 +5,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import {
   Modal,
-  makeStyles,
   Fade,
   Backdrop,
   FormGroup,
@@ -14,7 +13,9 @@ import {
   FormControl,
   InputLabel,
   Select,
-} from '@material-ui/core';
+} from '@mui/material';
+
+import makeStyles from '@mui/styles/makeStyles';
 
 import moment from 'moment';
 import { Context } from '../../store/Store';
