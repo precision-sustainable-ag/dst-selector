@@ -6,11 +6,12 @@
   styled using makeStyles and withStyles
 */
 
-import { AccordionDetails, makeStyles, Typography } from '@material-ui/core';
-import MuiAccordion from '@material-ui/core/Accordion';
-import MuiAccordionSummary from '@material-ui/core/AccordionSummary';
-import { withStyles } from '@material-ui/core/styles';
-import { ExpandMore, FiberManualRecord } from '@material-ui/icons';
+import { AccordionDetails, Typography } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import MuiAccordion from '@mui/material/Accordion';
+import MuiAccordionSummary from '@mui/material/AccordionSummary';
+import withStyles from '@mui/styles/withStyles';
+import { ExpandMore, FiberManualRecord } from '@mui/icons-material';
 import moment from 'moment-timezone';
 import React, { Fragment, useContext, useEffect, useState } from 'react';
 import {

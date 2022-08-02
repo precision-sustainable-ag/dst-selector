@@ -4,11 +4,17 @@
   "private": true,
   "homepage": "https://covercrop.tools/",
   "dependencies": {
+    "@emotion/react": "^11.10.0",
+    "@emotion/styled": "^11.10.0",
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.5.1",
     "@material-ui/lab": "^4.0.0-alpha.56",
     "@material-ui/pickers": "^3.2.10",
     "@matharumanpreet00/react-daterange-picker": "^1.0.5",
+    "@mui/icons-material": "^5.8.4",
+    "@mui/lab": "^5.0.0-alpha.93",
+    "@mui/material": "^5.9.3",
+    "@mui/styles": "^5.9.3",
     "@reach/observe-rect": "^1.2.0",
     "@types/moment-timezone": "^0.5.30",
     "autosuggest-highlight": "^3.1.1",
@@ -30,12 +36,12 @@
     "moment-timezone": "^0.5.28",
     "notistack": "^0.9.9",
     "prop-types": "^15.7.2",
-    "react": "^16.12.0",
+    "react": "^17.0.0",
     "react-context-hook": "^1.1.2",
     "react-date-range": "^1.0.3",
     "react-daterange-picker": "^2.0.1",
     "react-dates": "^21.8.0",
-    "react-dom": "^16.12.0",
+    "react-dom": "^17.0.0",
     "react-flexbox-grid": "^2.1.2",
     "react-ga": "^3.3.0",
     "react-hooks-global-state": "^0.17.0",
@@ -46,8 +52,7 @@
     "react-leaflet-search": "^1.0.3",
     "react-movable": "^2.4.0",
     "react-router-dom": "^5.1.2",
-    "react-scripts": "^3.4.4",
-    "sass": "^1.5.4",
+    "react-scripts": "5.0.0",
     "sass-mediaqueries": "^1.6.1",
     "save-as": "^0.1.8"
   },
@@ -75,6 +80,9 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-export-default-from": "^7.7.4",
-    "@types/react-leaflet": "^2.5.0"
+    "@types/react-leaflet": "^2.5.0",
+    "sass": "^1.54.0",
+    "sass-loader": "^13.0.2",
+    "webpack": "^5.74.0"
   }
 }

@@ -16,7 +16,6 @@ import {
   InputAdornment,
   IconButton,
   FormControl,
-  makeStyles,
   Modal,
   Backdrop,
   Fade,
@@ -26,9 +25,10 @@ import {
   DialogActions,
   Button,
   Typography,
-} from '@material-ui/core';
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import { Context } from '../../store/Store';
-import { Search } from '@material-ui/icons';
+import { Search } from '@mui/icons-material';
 import Axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
@@ -212,7 +212,7 @@ const AutoCompleteComponent = ({ from }) => {
           InputProps={{
             endAdornment: (
               <InputAdornment>
-                <IconButton onClick={handleToggle}>
+                <IconButton onClick={handleToggle} size="large">
                   <Search />
                 </IconButton>
               </InputAdornment>
@@ -220,7 +220,7 @@ const AutoCompleteComponent = ({ from }) => {
           }}
         ></TextField>
       </FormControl>
-      <Dialog disableBackdropClick disableEscapeKeyDown open={showRestartPrompt}>
+      <Dialog disableEscapeKeyDown open={showRestartPrompt}>
         <DialogContent dividers>
           <Typography variant="body1">
             Restarting will remove all cover crops added to your list. Are you sure you want to

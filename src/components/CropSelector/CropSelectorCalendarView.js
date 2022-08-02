@@ -3,7 +3,7 @@
   The CropCalendarViewComponent shows the crops in calendar format
 */
 
-import { Tooltip, Typography } from '@material-ui/core';
+import { Tooltip, Typography } from '@mui/material';
 import moment from 'moment';
 import React, { Fragment, useContext } from 'react';
 import { allMonths, getActiveCropMonths } from '../../shared/constants';

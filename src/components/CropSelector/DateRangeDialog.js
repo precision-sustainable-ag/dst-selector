@@ -13,7 +13,7 @@ import {
   Typography,
   useMediaQuery,
   useTheme,
-} from '@material-ui/core';
+} from '@mui/material';
 import React from 'react';
 import DateRangePicker from 'react-daterange-picker';
 import 'react-daterange-picker/dist/css/react-calendar.css';
@@ -32,7 +32,7 @@ const stateDefinitions = {
 
 const DateRangeDialog = ({ open = false, onChange = () => {}, close = () => {} }) => {
   const theme = useTheme();
-  const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
+  const fullScreen = useMediaQuery(theme.breakpoints.down('lg'));
   return (
     <Dialog
       maxWidth={'md'}

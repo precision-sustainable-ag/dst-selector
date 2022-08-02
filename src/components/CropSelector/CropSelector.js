@@ -4,8 +4,9 @@
   Styles are created using makeStyles.
 */
 
-import { Button, Fab, makeStyles, useScrollTrigger, Zoom } from '@material-ui/core';
-import { ArrowBack, ArrowForward, KeyboardArrowUp } from '@material-ui/icons';
+import { Button, Fab, useScrollTrigger, Zoom } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import { ArrowBack, ArrowForward, KeyboardArrowUp } from '@mui/icons-material';
 import React, { useContext, useEffect, useState } from 'react';
 import { Context } from '../../store/Store';
 import '../../styles/cropSelector.scss';

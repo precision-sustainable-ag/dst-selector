@@ -16,9 +16,9 @@ import {
   TableRow,
   Tooltip,
   Typography,
-} from '@material-ui/core';
+} from '@mui/material';
 
-import { AddCircle, CloseRounded, FiberManualRecord, Sort } from '@material-ui/icons';
+import { AddCircle, CloseRounded, FiberManualRecord, Sort } from '@mui/icons-material';
 
 import { useSnackbar } from 'notistack';
 
