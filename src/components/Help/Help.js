@@ -22,9 +22,7 @@ const HelpComponent = () => {
   }, []);
 
   useEffect(() => {
-    console.log('viewing help');
     if (state.consent === true) {
-      console.log('initializing react-ga');
       ReactGA.initialize('UA-181903489-1');
 
       ReactGA.pageview('help');
