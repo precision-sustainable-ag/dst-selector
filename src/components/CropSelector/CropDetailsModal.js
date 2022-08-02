@@ -43,19 +43,6 @@ const CropDetailsModalComponent = (props) => {
 
   useEffect(() => {
     setModalData(crop);
-
-    const kd = (e) => {
-      if (e.key === 'p' && e.ctrlKey) {
-        e.preventDefault();
-        print();
-      }
-    }; // kd
-
-    document.addEventListener('keydown', kd);
-
-    return () => {
-      document.removeEventListener('keydown', kd);
-    };
   }, [crop]);
 
   useEffect(() => {
