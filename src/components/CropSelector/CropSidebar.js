@@ -181,9 +181,6 @@ const CropSidebarComponent = (props) => {
       }
     });
 
-    // console.log(JSON.stringify(sfo));
-    // console.log(JSON.stringify(nonZeroKeys2));
-
     let growthArray = [];
 
     if (sfilters['Active Growth Period: Fall']) {
