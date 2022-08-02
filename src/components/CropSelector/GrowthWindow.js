@@ -37,6 +37,8 @@ const GrowthWindowComponent = (props) => {
       : [];
 
     // debug
+
+    // TODO: is this if statement needed?
     if (cropData['Cover Crop Name'] === 'Oats, Spring') {
       console.log(cropData[`${fullMonth[id]}, Early`]);
     }

@@ -46,7 +46,6 @@ const ExplorerCardView = (props) => {
       return crop.id;
     });
     setSelectedBtns(newSelectedBtns);
-    console.log('selected btns', newSelectedBtns);
   }, [sfilters.zone, state.selectedCrops]);
 
   const { enqueueSnackbar } = useSnackbar();
