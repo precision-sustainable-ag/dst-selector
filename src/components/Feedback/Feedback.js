@@ -12,9 +12,7 @@ const FeedbackComponent = () => {
   const { state } = useContext(Context);
 
   useEffect(() => {
-    console.log('viewing feedback');
     if (state.consent === true) {
-      console.log('initializing react-ga');
       ReactGA.initialize('UA-181903489-1');
 
       ReactGA.pageview('feedback');

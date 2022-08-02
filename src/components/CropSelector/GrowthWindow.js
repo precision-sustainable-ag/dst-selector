@@ -85,7 +85,6 @@ const GrowthWindowComponent = (props) => {
 
   useEffect(() => {
     if (props.data['Cover Crop Name'] === 'Oats, Spring') {
-      console.log(cropLegendObj);
     }
   }, [cropLegendObj]);
 
