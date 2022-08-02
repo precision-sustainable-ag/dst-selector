@@ -6,7 +6,8 @@
 
 import React, { useEffect, useState, Fragment, useContext } from 'react';
 import moment from 'moment';
-import { Tooltip, withStyles, Typography } from '@material-ui/core';
+import { Tooltip, Typography } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
 import { Context } from '../../store/Store';
 
 import '../../styles/growthWindow.scss';

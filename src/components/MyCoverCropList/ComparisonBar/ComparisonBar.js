@@ -7,7 +7,7 @@
   showAllVariables selects all filters
 */
 
-import { Button, List, ListItem, ListItemText, ListSubheader, Typography } from '@material-ui/core';
+import { Button, List, ListItem, ListItemText, ListSubheader, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import RenderFilters from './RenderFilters';
 import RenderGoals from './RenderGoals';

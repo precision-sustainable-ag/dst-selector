@@ -4,8 +4,8 @@
   styled using ../../styles/soilConditions.scss
 */
 
-import { Button, Chip, Switch, Typography } from '@material-ui/core';
-import { InvertColors, LocalDrinkOutlined, Terrain, WavesOutlined } from '@material-ui/icons';
+import { Button, Chip, Switch, Typography } from '@mui/material';
+import { InvertColors, LocalDrinkOutlined, Terrain, WavesOutlined } from '@mui/icons-material';
 import React, { useContext, useEffect, useState } from 'react';
 import { ReferenceTooltip } from '../../shared/constants';
 import { Context } from '../../store/Store';

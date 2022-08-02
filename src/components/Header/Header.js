@@ -4,7 +4,7 @@
   styled using ../../styles/header.scss
 */
 
-import { Badge, Button, Typography } from '@material-ui/core';
+import { Badge, Button, Typography } from '@mui/material';
 import Axios from 'axios';
 import {
   MDBCollapse,

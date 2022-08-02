@@ -4,15 +4,8 @@
   Styles are created using makeStyles
 */
 
-import {
-  Card,
-  CardActionArea,
-  CardContent,
-  CardMedia,
-  Grid,
-  makeStyles,
-  Typography,
-} from '@material-ui/core';
+import { Card, CardActionArea, CardContent, CardMedia, Grid, Typography } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import { useSnackbar } from 'notistack';
 import React, { Fragment, useContext, useEffect, useState } from 'react';
 import { trimString } from '../../shared/constants';

@@ -10,12 +10,12 @@ import {
   DialogContent,
   FormControl,
   InputLabel,
-  makeStyles,
   MenuItem,
   Select,
   Typography,
-} from '@material-ui/core';
-import { Search } from '@material-ui/icons';
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import { Search } from '@mui/icons-material';
 import React, { useContext, useEffect, useState } from 'react';
 import { Context } from '../../store/Store';
 import '../../styles/location.scss';
@@ -218,7 +218,7 @@ const LocationComponent = ({ title, caller }) => {
           <MapContext width="100%" height="400px" minzoom={4} maxzoom={20} from="location" />
         </div>
       </div>
-      <Dialog disableBackdropClick disableEscapeKeyDown open={showRestartPrompt}>
+      <Dialog disableEscapeKeyDown open={showRestartPrompt}>
         <DialogContent dividers>
           <Typography variant="body1">
             Restarting will remove all cover crops added to your list. Are you sure you want to

@@ -3,8 +3,9 @@
   Styles are created using makeStyles
 */
 
-import { Backdrop, Button, Fade, makeStyles, Modal, IconButton } from '@material-ui/core';
-import { Close, Print } from '@material-ui/icons';
+import { Backdrop, Button, Fade, Modal, IconButton } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import { Close, Print } from '@mui/icons-material';
 import React, { useEffect, useState, useContext } from 'react';
 import { CropImage, zoneIcon } from '../../shared/constants';
 import '../../styles/cropDetailsModal.scss';
@@ -82,7 +83,9 @@ const CropDetailsModalComponent = (props) => {
   }; // print
 
   return (
-    <Modal
+    <Modal// `disableBackdropClick` is removed by codemod.
+// You can find more details about this breaking change in [the migration guide](https://mui.com/material-ui/migration/v5-component-changes/#modal)
+
       aria-labelledby="cover-crop-modal-title"
       aria-describedby="cover-crop-modal-description"
       className={classes.modal}
@@ -93,9 +96,7 @@ const CropDetailsModalComponent = (props) => {
       BackdropProps={{
         timeout: 500,
       }}
-      disableBackdropClick={false}
-      disableEscapeKeyDown={false}
-    >
+      disableEscapeKeyDown={false}>
       <Fade in={props.modalOpen}>
         {modalData.fields ? (
           <div className="modalParentWrapper">
@@ -192,7 +193,7 @@ const CropDetailsModalComponent = (props) => {
                                       title="Print"
                                       style={{ color: 'white', marginLeft: '1em' }}
                                       onClick={print}
-                                    >
+                                      size="large">
                                       <Print />
                                     </IconButton>
                                   </span>
