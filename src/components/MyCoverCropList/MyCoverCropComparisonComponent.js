@@ -365,7 +365,6 @@ const MyCoverCropComparisonComponent = (props) => {
                     </small>
                     <div>
                       <small className="text-muted">
-                      {console.log('here here here HERE')}
                         <div
                           style={{
                             textDecoration: 'underline',
