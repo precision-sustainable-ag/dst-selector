@@ -63,7 +63,6 @@ const CropSelector = (props) => {
   const [cropData, setCropData] = useState([]);
   useEffect(() => {
     if (state.consent === true) {
-      console.log('viewing selector');
       ReactGA.initialize('UA-181903489-1');
 
       ReactGA.pageview('cover crop selector');
@@ -113,7 +112,6 @@ const CropSelector = (props) => {
           //  Crop Data is inside cropData.fields
           activeObjKeys[index] = `fields.${val}`;
         });
-        console.log(activeObjKeys);
 
         switch (orderBy) {
           case 'asc': {
