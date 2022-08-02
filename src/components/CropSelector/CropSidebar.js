@@ -181,9 +181,6 @@ const CropSidebarComponent = (props) => {
       }
     });
 
-    // console.log(JSON.stringify(sfo));
-    // console.log(JSON.stringify(nonZeroKeys2));
-
     let growthArray = [];
 
     if (sfilters['Active Growth Period: Fall']) {
@@ -483,7 +480,6 @@ const CropSidebarComponent = (props) => {
     if (state.myCoverCropActivationFlag) {
       // TODO: When does this happen?
       if (comparisonView) {
-        console.log('filtersSelected', filtersSelected)
         if (filtersSelected) {
           resetAllFilters();
         }
