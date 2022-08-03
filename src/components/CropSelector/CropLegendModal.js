@@ -4,8 +4,9 @@
   Styles are created using makeStyles
 */
 
-import { Backdrop, Button, Fade, makeStyles, Modal, Typography } from '@material-ui/core';
-import { CloseRounded, FiberManualRecord } from '@material-ui/icons';
+import { Backdrop, Button, Fade, Modal, Typography } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import { CloseRounded, FiberManualRecord } from '@mui/icons-material';
 import React from 'react';
 
 const useStyles = makeStyles((theme) => ({
@@ -27,16 +28,16 @@ const CropLegendModal = (props) => {
   const classes = useStyles();
 
   return (
-    <Modal
+    <Modal// `disableBackdropClick` is removed by codemod.
+// You can find more details about this breaking change in [the migration guide](https://mui.com/material-ui/migration/v5-component-changes/#modal)
+
       open={props.legendModal}
       onClose={props.handleLegendModal}
       BackdropComponent={Backdrop}
-      disableBackdropClick={props.disableBackdropClick}
       className={classes.modal}
       BackdropProps={{
         timeout: 500,
-      }}
-    >
+      }}>
       <Fade in={props.legendModal}>
         <div className={`modalLegendPaper ${classes.paper}`}>
           <div className="container-fluid">

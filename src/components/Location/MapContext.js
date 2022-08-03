@@ -9,7 +9,7 @@
 import L from 'leaflet';
 import 'leaflet-draw/dist/leaflet.draw.css';
 import React, { useContext, useEffect, useState } from 'react';
-import { FeatureGroup, Map, Marker, Polygon, TileLayer, Tooltip } from 'react-leaflet';
+import { FeatureGroup, MapContainer, Marker, Polygon, TileLayer, Tooltip } from 'react-leaflet';
 import { EditControl } from 'react-leaflet-draw';
 import { Context } from '../../store/Store';
 import '../../styles/map.scss';
@@ -142,7 +142,7 @@ const MapContext = ({ width, height, minzoom, maxzoom, from }) => {
   return mapCenter.length > 0 ? (
     <div className="row">
       <div className="col-12">
-        <Map
+        <MapContainer
           minZoom={minzoom}
           zoom={15}
           maxZoom={maxzoom}
@@ -201,7 +201,7 @@ const MapContext = ({ width, height, minzoom, maxzoom, from }) => {
             attribution="Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community"
             url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
           /> */}
-        </Map>
+        </MapContainer>
       </div>
     </div>
   ) : (
