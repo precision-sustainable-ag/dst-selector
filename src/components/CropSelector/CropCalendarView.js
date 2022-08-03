@@ -29,7 +29,6 @@ import {
   sudoButtonStyleWithPadding,
   trimString,
 } from '../../shared/constants';
-import { AirtableBearerKey } from '../../shared/keys';
 import { Context } from '../../store/Store';
 import '../../styles/cropCalendarViewComponent.scss';
 import CropDetailsModalComponent from './CropDetailsModal';
@@ -110,9 +109,6 @@ const CropCalendarViewComponent = (props) => {
       });
     }
   };
-
-  const headers = new Headers();
-  headers.append('Authorization', `Bearer ${AirtableBearerKey}`);
 
   const getAverageGoalRating = (selectedGoals, crop) => {
     // get goal rating for each crop and calculate+render rating
