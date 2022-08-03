@@ -4,7 +4,7 @@
 */
 
 import React, { Suspense } from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
@@ -22,7 +22,12 @@ import CoverCropExplorer from './components/CoverCropExplorer/CoverCropExplorer'
 import InformationSheet from './components/InformationSheet/InformationSheet';
 import HelpComponent from './components/Help/Help';
 import FeedbackComponent from './components/Feedback/Feedback';
-import { ThemeProvider, StyledEngineProvider, responsiveFontSizes, adaptV4Theme } from '@mui/material';
+import {
+  ThemeProvider,
+  StyledEngineProvider,
+  responsiveFontSizes,
+  adaptV4Theme,
+} from '@mui/material';
 import { CustomStyles } from './shared/constants';
 import { SnackbarProvider } from 'notistack';
 import InformationSheetDictionary from './components/InformationSheet/InformationSheetDictionary';
@@ -30,60 +35,63 @@ import MyCoverCropListWrapper from './components/MyCoverCropList/MyCoverCropList
 import License from './components/License/License';
 import { createTheme } from '@mui/material/styles';
 
-const withFooter = (WrappedComponent) => () => [<WrappedComponent key="1" />, <Footer key="2" />];
+const withFooter = (WrappedComponent) => () =>
+  [<WrappedComponent key="1" id="wrappedApp" />, <Footer key="2" />];
 
-const theme = createTheme(adaptV4Theme({
-  palette: {
-    primary: {
-      main: CustomStyles().lightGreen,
-    },
-    secondary: {
-      main: CustomStyles().lighterGreen,
-    },
-  },
-  overrides: {
-    MuiTooltip: {
-      tooltip: {
-        fontWeight: 'normal',
-        fontSize: CustomStyles().defaultFontSize,
-        backgroundColor: CustomStyles().secondaryProgressBtnColor,
-        color: 'black',
-        borderRadius: CustomStyles().mildlyRoundedRadius,
+const theme = createTheme(
+  adaptV4Theme({
+    palette: {
+      primary: {
+        main: CustomStyles().lightGreen,
       },
-      arrow: {},
-    },
-    MuiChip: {
-      root: {
-        '&&:hover': {
-          boxShadow: '0 0 3px 0 black',
-        },
-        border: '1px solid #777',
+      secondary: {
+        main: CustomStyles().lighterGreen,
       },
-      colorSecondary: {
-        '&, &&:hover, &&:focus': {
-          backgroundColor: CustomStyles().greenishWhite,
-          color: 'rgba(0,0,0,0.9)',
+    },
+    overrides: {
+      MuiTooltip: {
+        tooltip: {
           fontWeight: 'normal',
+          fontSize: CustomStyles().defaultFontSize,
+          backgroundColor: CustomStyles().secondaryProgressBtnColor,
+          color: 'black',
+          borderRadius: CustomStyles().mildlyRoundedRadius,
+        },
+        arrow: {},
+      },
+      MuiChip: {
+        root: {
+          '&&:hover': {
+            boxShadow: '0 0 3px 0 black',
+          },
+          border: '1px solid #777',
+        },
+        colorSecondary: {
+          '&, &&:hover, &&:focus': {
+            backgroundColor: CustomStyles().greenishWhite,
+            color: 'rgba(0,0,0,0.9)',
+            fontWeight: 'normal',
+          },
+        },
+        colorPrimary: {
+          '&, &&:hover, &&:focus': {
+            backgroundColor: CustomStyles().darkGreen,
+            color: 'white',
+            fontWeight: 'normal',
+          },
+        },
+        sizeSmall: {
+          fontSize: '1.2rem',
         },
       },
-      colorPrimary: {
-        '&, &&:hover, &&:focus': {
-          backgroundColor: CustomStyles().darkGreen,
-          color: 'white',
-          fontWeight: 'normal',
+      MuiDialog: {
+        root: {
+          zIndex: 1000003,
         },
       },
-      sizeSmall: {
-        fontSize: '1.2rem',
-      },
     },
-    MuiDialog: {
-      root: {
-        zIndex: 1000003,
-      },
-    },
-  },
-}));
+  }),
+);
 const RouteNotFound = () => {
   return (
     <section className="page_404">
@@ -161,8 +169,11 @@ const Wrapper = () => (
 );
 
 const WrapperWithFooter = withFooter(Wrapper);
+const container = document.getElementById('root');
+const root = createRoot(container);
+root.render(<WrapperWithFooter />);
 
-ReactDOM.render(<WrapperWithFooter />, document.getElementById('root'));
+// ReactDOM.render(<WrapperWithFooter />, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

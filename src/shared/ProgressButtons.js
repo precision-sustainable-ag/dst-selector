@@ -10,11 +10,12 @@ import ProgressButtonsInner from './ProgressButtonsInner';
 const ProgressButtons = () => {
   const { state } = useContext(Context);
   const section = window.location.href.includes('selector') ? 'selector' : 'explorer';
-  const sfilters = state[section];
 
   const [isDisabled, setIsDisabled] = useState(false);
 
   useEffect(() => {
+    const sfilters = state[section];
+
     const disableLogic = (progress, goalsLength) => {
       switch (parseInt(progress)) {
         case 1: {

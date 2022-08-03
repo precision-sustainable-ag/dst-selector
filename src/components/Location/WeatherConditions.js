@@ -220,7 +220,6 @@ const WeatherConditions = (props) => {
             &nbsp; Average Precipitation &nbsp;{' '}
             <Tooltip
               arrow
-              interactive
               placement="right"
               title={
                 <div>
@@ -269,7 +268,6 @@ const WeatherConditions = (props) => {
               }
             ></Tooltip> */}
             <Tooltip
-              interactive
               arrow
               placement="right"
               title={
@@ -321,7 +319,6 @@ const WeatherConditions = (props) => {
             &nbsp; Average Frost Free Days &nbsp;{' '}
             <Tooltip
               arrow
-              interactive
               placement="right"
               title={
                 <div>
