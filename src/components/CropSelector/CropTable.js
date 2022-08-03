@@ -507,6 +507,7 @@ const CropTableComponent = (props) => {
                   <Tooltip
                     arrow
                     placement="top"
+                    interactive
                     title={
                       <div className="filterTooltip">
                         <p>See filter bar for cover cropping goals.</p>
