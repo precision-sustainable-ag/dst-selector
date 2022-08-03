@@ -163,11 +163,9 @@ const MapContext = ({ width, height, minzoom, maxzoom, from }) => {
               <EditControl
                 edit={{ edit: false }}
                 position="topleft"
-                onEdited={(e) => {
-                }}
+                onEdited={(e) => {}}
                 onCreated={onCreated}
-                onDeleted={(e) => {
-                }}
+                onDeleted={(e) => {}}
                 draw={{
                   rectangle: false,
                   circle: false,
