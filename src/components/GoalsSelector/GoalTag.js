@@ -4,7 +4,7 @@
   Styles are created using makeStyles
 */
 
-import { Avatar, Chip, Tooltip } from '@material-ui/core';
+import { Avatar, Chip, Tooltip } from '@mui/material';
 import React, { useContext, useEffect } from 'react';
 import { Context } from '../../store/Store';
 

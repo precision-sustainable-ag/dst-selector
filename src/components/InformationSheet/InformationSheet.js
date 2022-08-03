@@ -4,8 +4,8 @@
   styled from ../../styles/InformationSheet.scss
 */
 
-import { Button, Typography } from '@material-ui/core';
-import { Close, FormatListBulleted, Info, PictureAsPdf, Print } from '@material-ui/icons';
+import { Button, Typography } from '@mui/material';
+import { Close, FormatListBulleted, Info, PictureAsPdf, Print } from '@mui/icons-material';
 import React, { useContext, useEffect, useState } from 'react';
 import { CropImage, flipCoverCropName, zoneIcon } from '../../shared/constants';
 import { Context } from '../../store/Store';

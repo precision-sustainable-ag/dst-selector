@@ -15,8 +15,8 @@ import {
   TableRow,
   Tooltip,
   Typography,
-} from '@material-ui/core';
-import { AcUnit, AddCircle, Eco, LocalFlorist, WbSunny } from '@material-ui/icons';
+} from '@mui/material';
+import { AcUnit, AddCircle, LocalFlorist, WbSunny } from '@mui/icons-material';
 import React, { Fragment, useContext, useEffect, useState } from 'react';
 import {
   allMonths,
@@ -505,7 +505,7 @@ const CropCalendarViewComponent = (props) => {
                           colSpan="3"
                         >
                           <Typography variant="body1">
-                            <Eco style={growthIcon} />
+                            {/* <Eco style={growthIcon} /> */}
                           </Typography>
                         </TableCell>
                       </Tooltip>

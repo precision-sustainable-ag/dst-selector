@@ -1,6 +1,6 @@
-import { Chip, Grid, Tooltip } from '@material-ui/core';
+import { Chip, Grid, Tooltip } from '@mui/material';
 
-import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 
 import React, {
   forwardRef,

@@ -5,7 +5,7 @@
   styled using CustomStyles from ../../shared/constants
 */
 
-import { Button, Typography } from '@material-ui/core';
+import { Button, Typography } from '@mui/material';
 import React, { Fragment, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { CustomStyles } from '../../shared/constants';
