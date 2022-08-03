@@ -4,8 +4,8 @@
   TopBar contains the blue bar for adding crops
 */
 
-import { Button, Typography } from '@material-ui/core';
-import { Add } from '@material-ui/icons';
+import { Button, Typography } from '@mui/material';
+import { Add } from '@mui/icons-material';
 import React, { Fragment, useContext, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Context } from '../../store/Store';

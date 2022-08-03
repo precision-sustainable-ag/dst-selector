@@ -3,7 +3,7 @@
   styled using CustomStyles from ../../shared/constants
 */
 
-import { Typography } from '@material-ui/core';
+import { Typography } from '@mui/material';
 import React, { useContext } from 'react';
 import { CustomStyles } from '../../shared/constants';
 import { Context } from '../../store/Store';
