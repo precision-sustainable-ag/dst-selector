@@ -4,12 +4,11 @@
   styles are made in ../../styles/footer.scss
 */
 
-import { Typography } from '@material-ui/core';
+import { Typography } from '@mui/material';
 import React from 'react';
 import '../../styles/footer.scss';
 
 const Footer = () => {
-
   return (
     <footer className="primaryFooter">
       <div className="leftSideText">
