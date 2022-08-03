@@ -51,7 +51,7 @@ const ExplorerCardView = (props) => {
   };
   const addCropToBasket = (cropId, cropName, btnId, cropData) => {
     let selectedCrops = {};
-    var cropArray = [];
+    let cropArray = [];
     selectedCrops['id'] = cropId;
     selectedCrops['cropName'] = cropName;
     selectedCrops['data'] = cropData;
@@ -60,7 +60,7 @@ const ExplorerCardView = (props) => {
 
     if (state.selectedCrops.length > 0) {
       // DONE: Remove crop from basket
-      var removeIndex = state.selectedCrops
+      let removeIndex = state.selectedCrops
         .map(function (item) {
           return item.id;
         })
