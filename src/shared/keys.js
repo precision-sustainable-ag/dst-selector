@@ -1,5 +1,4 @@
 const {
-  REACT_APP_AIRTABLE_BEARER_KEY,
   REACT_APP_GITHUB_ORG,
   REACT_APP_GITHUB_REPO,
   REACT_APP_GITHUB_PAT,
@@ -8,7 +7,6 @@ const {
   REACT_APP_GEOCODE_AUTH,
 } = process.env;
 
-export const AirtableBearerKey = REACT_APP_AIRTABLE_BEARER_KEY;
 export const owner = REACT_APP_GITHUB_ORG;
 export const repo = REACT_APP_GITHUB_REPO;
 export const accessToken = REACT_APP_GITHUB_PAT;
