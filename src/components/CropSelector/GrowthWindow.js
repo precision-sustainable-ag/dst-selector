@@ -25,7 +25,7 @@ const GrowthWindowComponent = (props) => {
     isCashCropMonth: false,
   });
 
-  var fullMonth = moment().localeData().months();
+  let fullMonth = moment().localeData().months();
 
   const setMonthVals = (id) => {
     let cropDataLegendLabel_Early = cropData[`${fullMonth[id]}, Early`]
