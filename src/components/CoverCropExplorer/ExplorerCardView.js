@@ -4,15 +4,8 @@
   Styles are created using makeStyles
 */
 
-import {
-  Card,
-  CardActionArea,
-  CardContent,
-  CardMedia,
-  Grid,
-  makeStyles,
-  Typography,
-} from '@material-ui/core';
+import { Card, CardActionArea, CardContent, CardMedia, Grid, Typography } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import { useSnackbar } from 'notistack';
 import React, { Fragment, useContext, useEffect, useState } from 'react';
 import { trimString } from '../../shared/constants';
@@ -58,7 +51,7 @@ const ExplorerCardView = (props) => {
   };
   const addCropToBasket = (cropId, cropName, btnId, cropData) => {
     let selectedCrops = {};
-    var cropArray = [];
+    let cropArray = [];
     selectedCrops['id'] = cropId;
     selectedCrops['cropName'] = cropName;
     selectedCrops['data'] = cropData;
@@ -67,7 +60,7 @@ const ExplorerCardView = (props) => {
 
     if (state.selectedCrops.length > 0) {
       // DONE: Remove crop from basket
-      var removeIndex = state.selectedCrops
+      let removeIndex = state.selectedCrops
         .map(function (item) {
           return item.id;
         })

@@ -1,6 +1,5 @@
 import React, { Fragment } from 'react';
 import {
-  withStyles,
   Button,
   Switch,
   Grid,
@@ -9,9 +8,10 @@ import {
   Dialog,
   DialogContent,
   DialogActions,
-} from '@material-ui/core';
+} from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
 import moment from 'moment';
-import { Info, MonetizationOn } from '@material-ui/icons';
+import { Info, MonetizationOn } from '@mui/icons-material';
 const JSZip = require('jszip');
 const JSZipUtils = require('jszip-utils');
 const saveAs = require('save-as');
@@ -160,7 +160,7 @@ export const UnderConstructionText = () => {
 };
 
 export const abbrRegion = (input, to) => {
-  var states = [
+  let states = [
     ['Alabama', 'AL'],
     ['Alaska', 'AK'],
     ['American Samoa', 'AS'],
@@ -224,7 +224,7 @@ export const abbrRegion = (input, to) => {
   ];
 
   // So happy that Canada and the US have distinct abbreviations
-  var provinces = [
+  let provinces = [
     ['Alberta', 'AB'],
     ['British Columbia', 'BC'],
     ['Manitoba', 'MB'],
@@ -240,9 +240,9 @@ export const abbrRegion = (input, to) => {
     ['Yukon', 'YT'],
   ];
 
-  var regions = states.concat(provinces);
+  let regions = states.concat(provinces);
 
-  var i; // Reusable loop variable
+  let i; // Reusable loop variable
   if (to === 'abbr') {
     input = input.replace(/\w\S*/g, function (txt) {
       return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
@@ -1245,7 +1245,7 @@ export const sidebarFilters = [
 export const downloadAllPDF = (selectedCropNames) => {
   let zip = new JSZip();
   let count = 0;
-  var zipFilename = 'Information-Sheets.zip';
+  let zipFilename = 'Information-Sheets.zip';
   selectedCropNames.forEach((val) => {
     let filename = val.name + '.pdf';
     JSZipUtils.getBinaryContent(val.pdf, (err, data) => {
@@ -1262,26 +1262,26 @@ export const downloadAllPDF = (selectedCropNames) => {
     });
   });
 };
-export const downloadAllCSV = (selectedCropNames) => {
-  let zip = new JSZip();
-  let count = 0;
-  var zipFilename = 'Information-Sheets-CSV.zip';
-  selectedCropNames.forEach((val) => {
-    let filename = val.name + '.csv';
-    JSZipUtils.getBinaryContent(val.csv, (err, data) => {
-      if (err) {
-        throw err; // or handle the error
-      }
-      zip.file(filename, data, { binary: true });
-      count++;
-      if (count === selectedCropNames.length) {
-        zip.generateAsync({ type: 'blob' }).then(function (content) {
-          saveAs.saveAs(content, zipFilename);
-        });
-      }
-    });
-  });
-};
+// export const downloadAllCSV = (selectedCropNames) => {
+//   let zip = new JSZip();
+//   let count = 0;
+//   var zipFilename = 'Information-Sheets-CSV.zip';
+//   selectedCropNames.forEach((val) => {
+//     let filename = val.name + '.csv';
+//     JSZipUtils.getBinaryContent(val.csv, (err, data) => {
+//       if (err) {
+//         throw err; // or handle the error
+//       }
+//       zip.file(filename, data, { binary: true });
+//       count++;
+//       if (count === selectedCropNames.length) {
+//         zip.generateAsync({ type: 'blob' }).then(function (content) {
+//           saveAs.saveAs(content, zipFilename);
+//         });
+//       }
+//     });
+//   });
+// };
 
 export const RenderSeedPriceIcons = ({ val }) => {
   switch (parseInt(val)) {
@@ -1439,7 +1439,7 @@ export const RestartPrompt = ({
   onAccept = () => {},
 }) => {
   return (
-    <Dialog disableBackdropClick disableEscapeKeyDown open={open}>
+    <Dialog disableEscapeKeyDown open={open}>
       <DialogContent dividers>
         <Typography variant="body1">
           {selectedCrops.length > 0

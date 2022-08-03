@@ -3,7 +3,7 @@
   The ProgressBar shows the user what step they are on in the goal selection process
 */
 
-import { Typography } from '@material-ui/core';
+import { Typography } from '@mui/material';
 import React, { useContext } from 'react';
 import { Context } from '../store/Store';
 import '../styles/progressIndicator.scss';

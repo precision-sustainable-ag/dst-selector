@@ -3,8 +3,8 @@
   fetches data from DictionaryContent
 */
 
-import { Typography } from '@material-ui/core';
-import { Info } from '@material-ui/icons';
+import { Typography } from '@mui/material';
+import { Info } from '@mui/icons-material';
 import React, { Fragment, useContext, useEffect, useState } from 'react';
 import z4Dict from '../../shared/json/zone4/data-dictionary.json';
 import z5Dict from '../../shared/json/zone5/data-dictionary.json';

@@ -15,8 +15,8 @@ import {
   TableRow,
   Tooltip,
   Typography,
-} from '@material-ui/core';
-import { AcUnit, AddCircle, Eco, LocalFlorist, WbSunny } from '@material-ui/icons';
+} from '@mui/material';
+import { AcUnit, AddCircle, LocalFlorist, WbSunny } from '@mui/icons-material';
 import React, { Fragment, useContext, useEffect, useState } from 'react';
 import {
   allMonths,
@@ -59,7 +59,7 @@ const CropCalendarViewComponent = (props) => {
 
   const addCropToBasket = (cropId, cropName, btnId, cropData) => {
     let selectedCrops = {};
-    var cropArray = [];
+    let cropArray = [];
     selectedCrops['id'] = cropId;
     selectedCrops['cropName'] = cropName;
     selectedCrops['btnId'] = btnId;
@@ -69,7 +69,7 @@ const CropCalendarViewComponent = (props) => {
     // // check if crop id exists inside state, if yes then remove it
     if (state.selectedCrops.length > 0) {
       // DONE: Remove crop from basket
-      var removeIndex = state.selectedCrops
+      let removeIndex = state.selectedCrops
         .map(function (item) {
           return item.btnId;
         })
@@ -171,11 +171,11 @@ const CropCalendarViewComponent = (props) => {
     if (nameSortFlag) {
       if (activeCropDataShadow.length > 0) {
         activeCropDataShadow.sort((a, b) => {
-          var firstCropName = flipCoverCropName(a.fields['Cover Crop Name'].toLowerCase()).replace(
+          let firstCropName = flipCoverCropName(a.fields['Cover Crop Name'].toLowerCase()).replace(
             /\s+/g,
             '',
           );
-          var secondCropName = flipCoverCropName(b.fields['Cover Crop Name'].toLowerCase()).replace(
+          let secondCropName = flipCoverCropName(b.fields['Cover Crop Name'].toLowerCase()).replace(
             /\s+/g,
             '',
           );
@@ -192,11 +192,11 @@ const CropCalendarViewComponent = (props) => {
     } else {
       if (activeCropDataShadow.length > 0) {
         activeCropDataShadow.sort((a, b) => {
-          var firstCropName = flipCoverCropName(a.fields['Cover Crop Name'].toLowerCase()).replace(
+          let firstCropName = flipCoverCropName(a.fields['Cover Crop Name'].toLowerCase()).replace(
             /\s+/g,
             '',
           );
-          var secondCropName = flipCoverCropName(b.fields['Cover Crop Name'].toLowerCase()).replace(
+          let secondCropName = flipCoverCropName(b.fields['Cover Crop Name'].toLowerCase()).replace(
             /\s+/g,
             '',
           );
@@ -501,7 +501,7 @@ const CropCalendarViewComponent = (props) => {
                           colSpan="3"
                         >
                           <Typography variant="body1">
-                            <Eco style={growthIcon} />
+                            {/* <Eco style={growthIcon} /> */}
                           </Typography>
                         </TableCell>
                       </Tooltip>

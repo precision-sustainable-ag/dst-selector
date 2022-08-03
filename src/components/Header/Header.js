@@ -4,7 +4,7 @@
   styled using ../../styles/header.scss
 */
 
-import { Badge, Button, Typography } from '@material-ui/core';
+import { Badge, Button, Typography } from '@mui/material';
 import Axios from 'axios';
 import {
   MDBCollapse,
@@ -200,7 +200,7 @@ const Header = () => {
             .then((resp) => {
               getAverageFrostDates(frostFreeDatesURL);
               let frostFreeDaysObject = resp.data[0];
-              for (var key in frostFreeDaysObject) {
+              for (let key in frostFreeDaysObject) {
                 if (frostFreeDaysObject.hasOwnProperty(key)) {
                   frostFreeDays = frostFreeDaysObject[key];
                 }
