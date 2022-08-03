@@ -513,6 +513,7 @@ const CropSidebarComponent = (props) => {
         <Fragment key={index}>
           {filter.description !== null ? (
             <Tooltip
+              interactive
               arrow
               placement="right-start"
               title={

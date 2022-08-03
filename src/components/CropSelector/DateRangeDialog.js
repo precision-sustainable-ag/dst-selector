@@ -16,8 +16,20 @@ import {
 } from '@mui/material';
 import React, { useState } from 'react';
 import { DateRangePicker } from 'react-date-range';
+import { CustomStyles } from '../../shared/constants';
 import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css'; // theme css file
+
+const stateDefinitions = {
+  available: {
+    color: null,
+    label: 'Available',
+  },
+  selected: {
+    color: CustomStyles().lightGreen,
+    label: 'Selected',
+  },
+};
 
 const DateRangeDialog = ({ open = false, onChange = () => {}, close = () => {} }) => {
   const theme = useTheme();
