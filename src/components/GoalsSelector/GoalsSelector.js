@@ -5,8 +5,9 @@
 */
 
 // TODO: Goal tags are not responsive!
-import { makeStyles, Typography } from '@material-ui/core';
-import Skeleton from '@material-ui/lab/Skeleton';
+import { Typography } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import Skeleton from '@mui/material/Skeleton';
 import React, { useContext, useEffect, useState } from 'react';
 import { Context } from '../../store/Store';
 import '../../styles/goalsSelector.scss';

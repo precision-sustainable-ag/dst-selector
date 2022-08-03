@@ -15,8 +15,8 @@ import {
   CardMedia,
   IconButton,
   Typography,
-} from '@material-ui/core';
-import { Cancel, KeyboardArrowLeft, KeyboardArrowRight } from '@material-ui/icons';
+} from '@mui/material';
+import { Cancel, KeyboardArrowLeft, KeyboardArrowRight } from '@mui/icons-material';
 import { useSnackbar } from 'notistack';
 import React, { useContext, useEffect, useState } from 'react';
 import {
@@ -102,7 +102,7 @@ const MyCoverCropComparisonComponent = (props) => {
   }, [zone]);
 
   const removeCrop = (id, cropName) => {
-    var removeIndex = state.selectedCrops
+    let removeIndex = state.selectedCrops
       .map(function (item) {
         return item.id;
       })

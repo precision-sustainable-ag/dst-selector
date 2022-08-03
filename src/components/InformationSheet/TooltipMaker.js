@@ -3,7 +3,7 @@
   styled using ../../styles/tooltipMaker.scss
 */
 
-import { Tooltip } from '@material-ui/core';
+import { Tooltip } from '@mui/material';
 import React, { useContext, useEffect, useState } from 'react';
 import { Context } from '../../store/Store';
 import '../../styles/tooltipMaker.scss';
