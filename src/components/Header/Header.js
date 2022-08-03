@@ -64,6 +64,7 @@ const Header = () => {
             let data = response.json();
             data.then((data) => {
               let zipCode = data.zip;
+              // eslint-disable-next-line
               let zone = window.location.search.match(/zone=([^\^]+)/); // for automating Information Sheet PDFs
 
               zone = zone ? zone[1] : data.zone;
