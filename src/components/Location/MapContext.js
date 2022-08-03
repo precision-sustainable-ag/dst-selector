@@ -163,11 +163,9 @@ const MapContext = ({ width, height, minzoom, maxzoom, from }) => {
               <EditControl
                 edit={{ edit: false }}
                 position="topleft"
-                onEdited={(e) => {
-                }}
+                onEdited={(e) => {}}
                 onCreated={onCreated}
-                onDeleted={(e) => {
-                }}
+                onDeleted={(e) => {}}
                 draw={{
                   rectangle: false,
                   circle: false,
@@ -217,9 +215,9 @@ export default MapContext;
 // accepts [[number][number]...[number]]
 // returns [number, number]
 const getPolyCenter = (arr) => {
-  var x = arr.map((x) => x[0]);
-  var y = arr.map((x) => x[1]);
-  var cx = (Math.min(...x) + Math.max(...x)) / 2;
-  var cy = (Math.min(...y) + Math.max(...y)) / 2;
+  let x = arr.map((x) => x[0]);
+  let y = arr.map((x) => x[1]);
+  let cx = (Math.min(...x) + Math.max(...x)) / 2;
+  let cy = (Math.min(...y) + Math.max(...y)) / 2;
   return [cx, cy];
 };
