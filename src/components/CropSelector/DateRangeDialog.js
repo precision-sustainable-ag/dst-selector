@@ -13,11 +13,12 @@ import {
   Typography,
   useMediaQuery,
   useTheme,
-} from '@material-ui/core';
-import React from 'react';
-import DateRangePicker from 'react-daterange-picker';
-import 'react-daterange-picker/dist/css/react-calendar.css';
+} from '@mui/material';
+import React, { useState } from 'react';
+import { DateRangePicker } from 'react-date-range';
 import { CustomStyles } from '../../shared/constants';
+import 'react-date-range/dist/styles.css'; // main style file
+import 'react-date-range/dist/theme/default.css'; // theme css file
 
 const stateDefinitions = {
   available: {
@@ -32,7 +33,21 @@ const stateDefinitions = {
 
 const DateRangeDialog = ({ open = false, onChange = () => {}, close = () => {} }) => {
   const theme = useTheme();
-  const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
+  const fullScreen = useMediaQuery(theme.breakpoints.down('lg'));
+
+  const [selection, setSelection] = useState({
+    startDate: new Date(),
+    endDate: new Date(),
+    key: 'selection',
+  });
+
+  const handleSelect = (ranges) => {
+    const startDate = new Date(ranges.selection.startDate).toLocaleDateString('sv');
+    const endDate = new Date(ranges.selection.endDate).toLocaleDateString('sv');
+    setSelection(ranges.selection);
+    onChange({ startDate: startDate, endDate: endDate });
+  };
+
   return (
     <Dialog
       maxWidth={'md'}
@@ -50,20 +65,12 @@ const DateRangeDialog = ({ open = false, onChange = () => {}, close = () => {} }
       </DialogContent>
       <DialogContent>
         <DateRangePicker
-          firstOfWeek={1}
-          numberOfCalendars={2}
-          selectionType="range"
-          stateDefinitions={stateDefinitions}
-          defaultState="available"
-          value={null}
-          onSelect={(e) => {
-            let startDate = e.start.format('YYYY-MM-DD').toString();
-            let endDate = e.end.format('YYYY-MM-DD').toString();
-            onChange({ startDate: startDate, endDate: endDate });
-            close();
-          }}
+          ranges={[selection]}
+          onChange={handleSelect}
+          months={2}
+          staticRanges={[]}
+          inputRanges={[]}
         />
-
         <DialogActions>
           <Button onClick={close}>Close</Button>
         </DialogActions>

@@ -3,7 +3,7 @@
   RenderCats renders the categories
 */
 
-import { Typography } from '@material-ui/core';
+import { Typography } from '@mui/material';
 import React, { useEffect, useMemo, useState, Fragment } from 'react';
 
 const DictionaryContent = ({ dictData = [{}], from = '' }) => {
