@@ -109,7 +109,6 @@ const Greenbar = () => {
       greenbarExpansionElement.style.minHeight === greenBarExpansionPanelHeight.large
     ) {
       // toggle
-      console.log('toggled');
       closeExpansionPanel();
     } else {
       greenbarExpansionElement.style.transform = 'translate(0px,0px)';
@@ -126,7 +125,6 @@ const Greenbar = () => {
       greenbarExpansionElement.style.minHeight === greenBarExpansionPanelHeight.large
     ) {
       // toggle
-      console.log('toggled');
       closeExpansionPanel();
     } else {
       greenbarExpansionElement.style.transform = 'translate(0px,0px)';
@@ -145,7 +143,6 @@ const Greenbar = () => {
       greenbarExpansionElement.style.minHeight === greenBarExpansionPanelHeight.large
     ) {
       // toggle
-      console.log('toggled');
       closeExpansionPanel();
     } else {
       greenbarExpansionElement.style.transform = 'translate(0px,0px)';

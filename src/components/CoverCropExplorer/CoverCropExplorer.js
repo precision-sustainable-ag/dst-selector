@@ -28,7 +28,6 @@ const CoverCropExplorer = () => {
 
   useEffect(() => {
     if (state.consent === true) {
-      console.log('viewing explorer');
       ReactGA.initialize('UA-181903489-1');
 
       ReactGA.pageview('cover crop explorer');

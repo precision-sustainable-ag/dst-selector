@@ -19,7 +19,6 @@ const Landing = (props) => {
 
   useEffect(() => {
     if (state.consent === true) {
-      console.log('viewing landing');
       ReactGA.initialize('UA-181903489-1');
 
       ReactGA.pageview('cover crop selector');

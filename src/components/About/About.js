@@ -22,9 +22,7 @@ const About = () => {
   };
 
   useEffect(() => {
-    console.log('viewing about');
     if (state.consent === true) {
-      console.log('initializing react-ga');
       ReactGA.initialize('UA-181903489-1');
 
       ReactGA.pageview('about');
