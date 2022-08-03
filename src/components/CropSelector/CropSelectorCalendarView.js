@@ -39,8 +39,6 @@ const CropSelectorCalendarView = ({ from = 'calendar', data = [] }) => {
       return false;
     } else {
       var result = new Set();
-      console.log('End', cashCropEndDate);
-      console.log('Start', cashCropStartDate);
       let start = moment(cashCropStartDate);
       let end = moment(cashCropEndDate);
 

@@ -81,10 +81,8 @@ const Reducer = (state, action, value = action && action.data && action.data.val
 
     case 'UPDATE_CONSENT': {
       if (action.data.consent === true) {
-        console.log('consent: true');
         return { ...state, consent: true };
       } else if (action.data.consent === false) {
-        console.log('consent: false');
         return { ...state, consent: false };
       } else {
         break;

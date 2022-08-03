@@ -106,7 +106,6 @@ const MapContext = ({ width, height, minzoom, maxzoom, from }) => {
     const drawnItems = editableFG.leafletElement._layers;
 
     // if the number of layers is bigger than 1 then delete the first
-    // console.log(drawnItems);
     if (Object.keys(drawnItems).length > 1) {
       Object.keys(drawnItems).forEach((layerid, index) => {
         if (index > 0) return;
@@ -165,11 +164,9 @@ const MapContext = ({ width, height, minzoom, maxzoom, from }) => {
                 edit={{ edit: false }}
                 position="topleft"
                 onEdited={(e) => {
-                  //   console.log("edited", e);
                 }}
                 onCreated={onCreated}
                 onDeleted={(e) => {
-                  console.log('deleted', e);
                 }}
                 draw={{
                   rectangle: false,

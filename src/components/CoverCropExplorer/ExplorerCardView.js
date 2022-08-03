@@ -39,8 +39,7 @@ const ExplorerCardView = (props) => {
       return crop.id;
     });
     setSelectedBtns(newSelectedBtns);
-    console.log('selected btns', newSelectedBtns);
-  }, [sfilters.zone, state.selectedCrops.length]);
+  }, [sfilters.zone, state.selectedCrops]);
 
   const { enqueueSnackbar } = useSnackbar();
 
@@ -140,7 +139,7 @@ const ExplorerCardView = (props) => {
                     </small>
                     <div>
                       <small className="text-muted">
-                        <a
+                        <div
                           style={{
                             textDecoration: 'underline',
                             color: 'rgb(53, 153, 155)',
@@ -148,10 +147,9 @@ const ExplorerCardView = (props) => {
                           target="_blank"
                           rel="noopener noreferrer"
                           onClick={() => handleModalOpen(crop)}
-                          // href="/#"
                         >
                           View Crop Details
-                        </a>
+                        </div>
                       </small>
                     </div>
                   </CardContent>

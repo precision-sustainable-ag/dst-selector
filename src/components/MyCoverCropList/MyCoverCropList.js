@@ -36,7 +36,6 @@ const MyCoverCropList = (props) => {
 
   useEffect(() => {
     if (state.consent === true) {
-      console.log('viewing list');
       ReactGA.initialize('UA-181903489-1');
 
       ReactGA.pageview('cover crop list');

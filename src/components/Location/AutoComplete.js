@@ -83,7 +83,6 @@ const AutoCompleteComponent = ({ from }) => {
     });
 
     handleClose();
-    console.log(val);
   };
 
   const handleToggle = () => {
@@ -103,7 +102,6 @@ const AutoCompleteComponent = ({ from }) => {
         alert('Invalid ZIP Code');
       } else {
         checkAddresses(address, 'zip').then((data) => {
-          console.log(data[0]);
           // let dataFloat = data[0].boundingbox.map((val) => {
           //   return parseFloat(val);
           // });
@@ -128,7 +126,6 @@ const AutoCompleteComponent = ({ from }) => {
         // setOpen(true);
         checkAddresses(address, 'address').then((addressData) => {
           setSuggestedAddress(addressData);
-          console.log(addressData);
         });
       }
     }
