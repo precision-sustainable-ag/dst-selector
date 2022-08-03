@@ -52,6 +52,7 @@ const RenderFilters = ({
         <Fragment key={`filters-outer-${index}`}>
           {filter.description !== null ? (
             <Tooltip
+              interactive
               arrow
               placement="right-start"
               title={
@@ -126,6 +127,7 @@ const RenderFilters = ({
                       val.name !== 'Roller Crimp at Flowering' ? (
                         <Grid item xs={12} key={`filter-inner-${index2}`}>
                           <Tooltip
+                            interactive
                             arrow
                             placement="right"
                             title={
