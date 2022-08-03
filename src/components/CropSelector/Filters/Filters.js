@@ -125,6 +125,7 @@ const Tip = ({ filter, omitHeading }) => {
 
   return (
     <Tooltip
+      interactive
       arrow
       placement="right"
       disableFocusListener
