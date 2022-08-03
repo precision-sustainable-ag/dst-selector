@@ -10,7 +10,7 @@ import L from 'leaflet';
 import 'leaflet-draw/dist/leaflet.draw.css';
 import React, { useContext, useEffect, useState } from 'react';
 import { FeatureGroup, MapContainer, Marker, Polygon, TileLayer, Tooltip } from 'react-leaflet';
-import { EditControl } from 'react-leaflet-draw';
+import { DraftControl } from 'react-leaflet-draft';
 import { Context } from '../../store/Store';
 import '../../styles/map.scss';
 
@@ -102,6 +102,7 @@ const MapContext = ({ width, height, minzoom, maxzoom, from }) => {
       }
     });
   };
+
   const onCreated = (e) => {
     const drawnItems = editableFG.leafletElement._layers;
 
@@ -160,7 +161,7 @@ const MapContext = ({ width, height, minzoom, maxzoom, from }) => {
             }}
           >
             {showEditControl ? (
-              <EditControl
+              <DraftControl
                 edit={{ edit: false }}
                 position="topleft"
                 onEdited={(e) => {}}
