@@ -22,17 +22,19 @@ const Footer = () => {
       },
     });
   };
-  useEffect(() => {
-    fetchDate().then((resp) => {
-      let lastCommitDate = resp.data[0].commit.committer.date;
-      let lastCommitDateFormatted = new Date(lastCommitDate);
-      setMonthYear(
-        `${('0' + (lastCommitDateFormatted.getMonth() + 1)).slice(
-          -2,
-        )}/${lastCommitDateFormatted.getFullYear()}`,
-      );
-    });
-  }, []);
+
+  // useEffect(() => {
+  //   fetchDate().then((resp) => {
+  //     let lastCommitDate = resp.data[0].commit.committer.date;
+  //     let lastCommitDateFormatted = new Date(lastCommitDate);
+  //     setMonthYear(
+  //       `${('0' + (lastCommitDateFormatted.getMonth() + 1)).slice(
+  //         -2,
+  //       )}/${lastCommitDateFormatted.getFullYear()}`,
+  //     );
+  //   });
+  // }, []);
+
   return (
     <footer className="primaryFooter">
       <div className="leftSideText">
@@ -65,11 +67,6 @@ const Footer = () => {
             Conservation District
           </a>{' '}
           for detailed guidance.
-        </Typography>
-      </div>
-      <div className="rightSideText">
-        <Typography variant="body2" style={{ color: 'black' }}>
-          Last Updated {monthYear}
         </Typography>
       </div>
     </footer>
