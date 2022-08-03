@@ -32,17 +32,18 @@ export const ReferenceTooltip = (props) => {
           </a>
         </div>
       }
+      interactive
       arrow
     >
       <Info fontSize="small" />
     </Tooltip>
   ) : type === 'html' ? (
-    <Tooltip arrow dangerouslySetInnerHTML={props.content}>
+    <Tooltip interactive arrow dangerouslySetInnerHTML={props.content}>
       {' '}
       <Info fontSize="small" />
     </Tooltip>
   ) : hasLink ? (
-    <Tooltip title={props.title} placement="right" arrow>
+    <Tooltip title={props.title} placement="right" interactive arrow>
       <Info fontSize="small" />
     </Tooltip>
   ) : (
@@ -60,9 +61,14 @@ export const ReferenceTooltip = (props) => {
   );
 };
 
-export const DataTooltip = ({ data, placement = 'top-start' }) => {
+export const DataTooltip = ({ data, interactive = true, placement = 'top-start' }) => {
   return (
-    <Tooltip title={<div className="text-center">{data}</div>} placement={placement} arrow>
+    <Tooltip
+      title={<div className="text-center">{data}</div>}
+      interactive={interactive}
+      placement={placement}
+      arrow
+    >
       <Info fontSize="small" />
     </Tooltip>
   );
@@ -1256,6 +1262,26 @@ export const downloadAllPDF = (selectedCropNames) => {
     });
   });
 };
+// export const downloadAllCSV = (selectedCropNames) => {
+//   let zip = new JSZip();
+//   let count = 0;
+//   var zipFilename = 'Information-Sheets-CSV.zip';
+//   selectedCropNames.forEach((val) => {
+//     let filename = val.name + '.csv';
+//     JSZipUtils.getBinaryContent(val.csv, (err, data) => {
+//       if (err) {
+//         throw err; // or handle the error
+//       }
+//       zip.file(filename, data, { binary: true });
+//       count++;
+//       if (count === selectedCropNames.length) {
+//         zip.generateAsync({ type: 'blob' }).then(function (content) {
+//           saveAs.saveAs(content, zipFilename);
+//         });
+//       }
+//     });
+//   });
+// };
 
 export const RenderSeedPriceIcons = ({ val }) => {
   switch (parseInt(val)) {

@@ -155,7 +155,6 @@ const RouteNotFound = () => {
   );
 };
 
-// eslint-disable-next-line
 const crop = window.location.search.match(/crop=([^\^]+)/);
 
 if (crop) {
