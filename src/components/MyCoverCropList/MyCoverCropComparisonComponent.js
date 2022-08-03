@@ -102,7 +102,7 @@ const MyCoverCropComparisonComponent = (props) => {
   }, [zone]);
 
   const removeCrop = (id, cropName) => {
-    var removeIndex = state.selectedCrops
+    let removeIndex = state.selectedCrops
       .map(function (item) {
         return item.id;
       })
