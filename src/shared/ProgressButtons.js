@@ -19,6 +19,7 @@ const ProgressButtons = () => {
       switch (parseInt(progress)) {
         case 1: {
           // location selection state
+          // TODO: discuss should sfilter be used here or state.lastZone
           if (sfilters.zone === 0 || state.address === '') {
             setIsDisabled(true);
           } else {

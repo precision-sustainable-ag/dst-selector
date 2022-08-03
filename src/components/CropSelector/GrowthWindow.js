@@ -38,6 +38,8 @@ const GrowthWindowComponent = (props) => {
       : [];
 
     // debug
+
+    // TODO: is this if statement needed?
     if (cropData['Cover Crop Name'] === 'Oats, Spring') {
       console.log(cropData[`${fullMonth[id]}, Early`]);
     }
@@ -84,7 +86,6 @@ const GrowthWindowComponent = (props) => {
 
   useEffect(() => {
     if (props.data['Cover Crop Name'] === 'Oats, Spring') {
-      console.log(cropLegendObj);
     }
   }, [cropLegendObj]);
 

@@ -206,7 +206,7 @@ const MyCoverCropComparisonComponent = (props) => {
                           color: 'white',
                           visibility: 'hidden',
                         }}
-                        // href="/#"
+                        href="/#"
                       >
                         View Crop Details
                       </a>
@@ -365,7 +365,7 @@ const MyCoverCropComparisonComponent = (props) => {
                     </small>
                     <div>
                       <small className="text-muted">
-                        <a
+                        <div
                           style={{
                             textDecoration: 'underline',
                             color: 'rgb(53, 153, 155)',
@@ -373,10 +373,9 @@ const MyCoverCropComparisonComponent = (props) => {
                           onClick={() => handleModalOpen({ fields: crop.data })}
                           target="_blank"
                           rel="noopener noreferrer"
-                          // href="/#"
                         >
                           View Crop Details
-                        </a>
+                        </div>
                       </small>
                     </div>
                   </CardContent>
