@@ -160,7 +160,7 @@ export const UnderConstructionText = () => {
 };
 
 export const abbrRegion = (input, to) => {
-  var states = [
+  let states = [
     ['Alabama', 'AL'],
     ['Alaska', 'AK'],
     ['American Samoa', 'AS'],
@@ -224,7 +224,7 @@ export const abbrRegion = (input, to) => {
   ];
 
   // So happy that Canada and the US have distinct abbreviations
-  var provinces = [
+  let provinces = [
     ['Alberta', 'AB'],
     ['British Columbia', 'BC'],
     ['Manitoba', 'MB'],
@@ -240,9 +240,9 @@ export const abbrRegion = (input, to) => {
     ['Yukon', 'YT'],
   ];
 
-  var regions = states.concat(provinces);
+  let regions = states.concat(provinces);
 
-  var i; // Reusable loop variable
+  let i; // Reusable loop variable
   if (to === 'abbr') {
     input = input.replace(/\w\S*/g, function (txt) {
       return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
@@ -1245,7 +1245,7 @@ export const sidebarFilters = [
 export const downloadAllPDF = (selectedCropNames) => {
   let zip = new JSZip();
   let count = 0;
-  var zipFilename = 'Information-Sheets.zip';
+  let zipFilename = 'Information-Sheets.zip';
   selectedCropNames.forEach((val) => {
     let filename = val.name + '.pdf';
     JSZipUtils.getBinaryContent(val.pdf, (err, data) => {

@@ -200,7 +200,7 @@ const Header = () => {
             .then((resp) => {
               getAverageFrostDates(frostFreeDatesURL);
               let frostFreeDaysObject = resp.data[0];
-              for (var key in frostFreeDaysObject) {
+              for (let key in frostFreeDaysObject) {
                 if (frostFreeDaysObject.hasOwnProperty(key)) {
                   frostFreeDays = frostFreeDaysObject[key];
                 }

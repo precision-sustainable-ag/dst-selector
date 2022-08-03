@@ -44,7 +44,7 @@ const MyCoverCropCardsComponent = (props) => {
   };
 
   const removeCrop = (cropName) => {
-    var removeIndex = state.selectedCrops
+    let removeIndex = state.selectedCrops
       .map(function (item) {
         return item.id;
       })
