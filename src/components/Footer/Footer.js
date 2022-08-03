@@ -4,35 +4,12 @@
   styles are made in ../../styles/footer.scss
 */
 
-import { Typography } from '@mui/material';
-import Axios from 'axios';
-import React, { useEffect, useState } from 'react';
-import { accessToken, owner, repo } from '../../shared/keys';
+import { Typography } from '@material-ui/core';
+import React from 'react';
 import '../../styles/footer.scss';
 
 const Footer = () => {
-  const [monthYear, setMonthYear] = useState('');
 
-  const fetchDate = async () => {
-    return await Axios({
-      url: `https://api.github.com/repos/${owner}/${repo}/commits?path=build&page=1&per_page=1`,
-      method: 'GET',
-      auth: {
-        password: accessToken,
-      },
-    });
-  };
-  useEffect(() => {
-    fetchDate().then((resp) => {
-      let lastCommitDate = resp.data[0].commit.committer.date;
-      let lastCommitDateFormatted = new Date(lastCommitDate);
-      setMonthYear(
-        `${('0' + (lastCommitDateFormatted.getMonth() + 1)).slice(
-          -2,
-        )}/${lastCommitDateFormatted.getFullYear()}`,
-      );
-    });
-  }, []);
   return (
     <footer className="primaryFooter">
       <div className="leftSideText">
@@ -65,11 +42,6 @@ const Footer = () => {
             Conservation District
           </a>{' '}
           for detailed guidance.
-        </Typography>
-      </div>
-      <div className="rightSideText">
-        <Typography variant="body2" style={{ color: 'black' }}>
-          Last Updated {monthYear}
         </Typography>
       </div>
     </footer>
