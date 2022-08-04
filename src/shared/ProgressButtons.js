@@ -9,16 +9,18 @@ import ProgressButtonsInner from './ProgressButtonsInner';
 
 const ProgressButtons = () => {
   const { state } = useContext(Context);
-  const section = window.location.href.includes('selector') ? 'selector' : 'explorer';
-  const sfilters = state[section];
 
   const [isDisabled, setIsDisabled] = useState(false);
 
   useEffect(() => {
+    const section = window.location.href.includes('selector') ? 'selector' : 'explorer';
+    const sfilters = state[section];
+
     const disableLogic = (progress, goalsLength) => {
       switch (parseInt(progress)) {
         case 1: {
           // location selection state
+          // TODO: discuss should sfilter be used here or state.lastZone
           if (sfilters.zone === 0 || state.address === '') {
             setIsDisabled(true);
           } else {

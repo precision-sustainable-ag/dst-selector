@@ -18,11 +18,11 @@ import {
   ListItem,
   ListItemText,
   ListSubheader,
-  makeStyles,
   TextField,
   Tooltip,
   Typography,
-} from '@material-ui/core';
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import {
   CalendarToday,
   CalendarTodayRounded,
@@ -30,8 +30,8 @@ import {
   Compare,
   ExpandLess,
   ExpandMore,
-} from '@material-ui/icons';
-import ListIcon from '@material-ui/icons/List';
+} from '@mui/icons-material';
+import ListIcon from '@mui/icons-material/List';
 import moment from 'moment';
 import React, { Fragment, useContext, useEffect, useState } from 'react';
 import { arrayMove, List as ListMovable } from 'react-movable';
@@ -180,9 +180,6 @@ const CropSidebarComponent = (props) => {
         return '';
       }
     });
-
-    // console.log(JSON.stringify(sfo));
-    // console.log(JSON.stringify(nonZeroKeys2));
 
     let growthArray = [];
 
@@ -516,7 +513,6 @@ const CropSidebarComponent = (props) => {
         <Fragment key={index}>
           {filter.description !== null ? (
             <Tooltip
-              interactive
               arrow
               placement="right-start"
               title={

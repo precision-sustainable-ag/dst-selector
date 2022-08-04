@@ -9,8 +9,8 @@
 import L from 'leaflet';
 import 'leaflet-draw/dist/leaflet.draw.css';
 import React, { useContext, useEffect, useState } from 'react';
-import { FeatureGroup, Map, Marker, Polygon, TileLayer, Tooltip } from 'react-leaflet';
-import { EditControl } from 'react-leaflet-draw';
+import { FeatureGroup, MapContainer, Marker, Polygon, TileLayer, Tooltip } from 'react-leaflet';
+import { DraftControl } from 'react-leaflet-draft';
 import { Context } from '../../store/Store';
 import '../../styles/map.scss';
 
@@ -102,11 +102,11 @@ const MapContext = ({ width, height, minzoom, maxzoom, from }) => {
       }
     });
   };
+
   const onCreated = (e) => {
     const drawnItems = editableFG.leafletElement._layers;
 
     // if the number of layers is bigger than 1 then delete the first
-    // console.log(drawnItems);
     if (Object.keys(drawnItems).length > 1) {
       Object.keys(drawnItems).forEach((layerid, index) => {
         if (index > 0) return;
@@ -143,7 +143,7 @@ const MapContext = ({ width, height, minzoom, maxzoom, from }) => {
   return mapCenter.length > 0 ? (
     <div className="row">
       <div className="col-12">
-        <Map
+        <MapContainer
           minZoom={minzoom}
           zoom={15}
           maxZoom={maxzoom}
@@ -161,16 +161,12 @@ const MapContext = ({ width, height, minzoom, maxzoom, from }) => {
             }}
           >
             {showEditControl ? (
-              <EditControl
+              <DraftControl
                 edit={{ edit: false }}
                 position="topleft"
-                onEdited={(e) => {
-                  //   console.log("edited", e);
-                }}
+                onEdited={(e) => {}}
                 onCreated={onCreated}
-                onDeleted={(e) => {
-                  console.log('deleted', e);
-                }}
+                onDeleted={(e) => {}}
                 draw={{
                   rectangle: false,
                   circle: false,
@@ -206,7 +202,7 @@ const MapContext = ({ width, height, minzoom, maxzoom, from }) => {
             attribution="Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community"
             url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
           /> */}
-        </Map>
+        </MapContainer>
       </div>
     </div>
   ) : (
@@ -220,9 +216,9 @@ export default MapContext;
 // accepts [[number][number]...[number]]
 // returns [number, number]
 const getPolyCenter = (arr) => {
-  var x = arr.map((x) => x[0]);
-  var y = arr.map((x) => x[1]);
-  var cx = (Math.min(...x) + Math.max(...x)) / 2;
-  var cy = (Math.min(...y) + Math.max(...y)) / 2;
+  let x = arr.map((x) => x[0]);
+  let y = arr.map((x) => x[1]);
+  let cx = (Math.min(...x) + Math.max(...x)) / 2;
+  let cy = (Math.min(...y) + Math.max(...y)) / 2;
   return [cx, cy];
 };

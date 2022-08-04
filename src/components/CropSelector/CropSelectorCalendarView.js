@@ -3,7 +3,7 @@
   The CropCalendarViewComponent shows the crops in calendar format
 */
 
-import { Tooltip, Typography } from '@material-ui/core';
+import { Tooltip, Typography } from '@mui/material';
 import moment from 'moment';
 import React, { Fragment, useContext } from 'react';
 import { allMonths, getActiveCropMonths } from '../../shared/constants';
@@ -38,9 +38,7 @@ const CropSelectorCalendarView = ({ from = 'calendar', data = [] }) => {
     if (cashCropStartDate === null || cashCropEndDate === null) {
       return false;
     } else {
-      var result = new Set();
-      console.log('End', cashCropEndDate);
-      console.log('Start', cashCropStartDate);
+      let result = new Set();
       let start = moment(cashCropStartDate);
       let end = moment(cashCropEndDate);
 

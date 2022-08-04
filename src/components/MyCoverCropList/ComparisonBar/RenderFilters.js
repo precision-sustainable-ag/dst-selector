@@ -12,8 +12,8 @@ import {
   ListItemText,
   Tooltip,
   Typography,
-} from '@material-ui/core';
-import { ExpandLess, ExpandMore } from '@material-ui/icons';
+} from '@mui/material';
+import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import React, { Fragment } from 'react';
 const RenderFilters = ({
   filterValues = [],
@@ -52,7 +52,6 @@ const RenderFilters = ({
         <Fragment key={`filters-outer-${index}`}>
           {filter.description !== null ? (
             <Tooltip
-              interactive
               arrow
               placement="right-start"
               title={
@@ -127,7 +126,6 @@ const RenderFilters = ({
                       val.name !== 'Roller Crimp at Flowering' ? (
                         <Grid item xs={12} key={`filter-inner-${index2}`}>
                           <Tooltip
-                            interactive
                             arrow
                             placement="right"
                             title={

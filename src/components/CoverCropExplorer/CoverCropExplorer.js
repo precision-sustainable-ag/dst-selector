@@ -4,7 +4,7 @@
   styled from from CustomStyles in ../../../shared/constants
 */
 
-import { Grid, Typography } from '@material-ui/core';
+import { Grid, Typography } from '@mui/material';
 import React, { useContext, useEffect, useState } from 'react';
 import { Context } from '../../store/Store';
 import CropSidebarComponent from '../CropSelector/CropSidebar';
@@ -28,7 +28,6 @@ const CoverCropExplorer = () => {
 
   useEffect(() => {
     if (state.consent === true) {
-      console.log('viewing explorer');
       ReactGA.initialize('UA-181903489-1');
 
       ReactGA.pageview('cover crop explorer');
