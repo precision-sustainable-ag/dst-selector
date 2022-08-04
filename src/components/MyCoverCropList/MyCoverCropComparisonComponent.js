@@ -230,7 +230,7 @@ const MyCoverCropComparisonComponent = (props) => {
                         <span>
                           <DataTooltip
                             data={getTooltipData(keys)}
-                            interactive={false}
+                            disableInteractive
                             placement="top-start"
                           />
                         </span>
@@ -249,7 +249,7 @@ const MyCoverCropComparisonComponent = (props) => {
                       <span>
                         <DataTooltip
                           data={'Average rating of all selected goals'}
-                          interactive={false}
+                          disableInteractive
                           placement="top-start"
                         />
                       </span>

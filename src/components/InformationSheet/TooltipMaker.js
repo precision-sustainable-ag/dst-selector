@@ -62,7 +62,6 @@ const TooltipMaker = ({ children, variable }) => {
           <p>{desc}</p>
         </div>
       }
-      interactive
       arrow
     >
       <span className="tooltipChildren">{children}</span>
