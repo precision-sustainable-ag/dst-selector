@@ -32,18 +32,17 @@ export const ReferenceTooltip = (props) => {
           </a>
         </div>
       }
-      interactive
       arrow
     >
       <Info fontSize="small" />
     </Tooltip>
   ) : type === 'html' ? (
-    <Tooltip interactive arrow dangerouslySetInnerHTML={props.content}>
+    <Tooltip arrow dangerouslySetInnerHTML={props.content}>
       {' '}
       <Info fontSize="small" />
     </Tooltip>
   ) : hasLink ? (
-    <Tooltip title={props.title} placement="right" interactive arrow>
+    <Tooltip title={props.title} placement="right" arrow>
       <Info fontSize="small" />
     </Tooltip>
   ) : (
@@ -61,14 +60,9 @@ export const ReferenceTooltip = (props) => {
   );
 };
 
-export const DataTooltip = ({ data, interactive = true, placement = 'top-start' }) => {
+export const DataTooltip = ({ data, placement = 'top-start' }) => {
   return (
-    <Tooltip
-      title={<div className="text-center">{data}</div>}
-      interactive={interactive}
-      placement={placement}
-      arrow
-    >
+    <Tooltip title={<div className="text-center">{data}</div>} placement={placement} arrow>
       <Info fontSize="small" />
     </Tooltip>
   );
