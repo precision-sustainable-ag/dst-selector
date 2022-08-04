@@ -3,10 +3,9 @@
   styled using ../../styles/photoComponent.scss
 */
 
-import { Typography } from '@material-ui/core';
+import { Typography } from '@mui/material';
 import Axios from 'axios';
 import React, { Suspense, useEffect, useState } from 'react';
-import '../../../node_modules/luminous-lightbox/dist/luminous-basic.css';
 import { ucFirst } from '../../shared/constants';
 import '../../styles/photoComponent.scss';
 

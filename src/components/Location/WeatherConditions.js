@@ -11,14 +11,14 @@ import {
   FormControl,
   FormGroup,
   InputLabel,
-  makeStyles,
   Modal,
   Select,
   TextField,
   Tooltip,
   Typography,
-} from '@material-ui/core';
-import { AcUnit, Info, Opacity, WbSunnyOutlined } from '@material-ui/icons';
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import { AcUnit, Info, Opacity, WbSunnyOutlined } from '@mui/icons-material';
 import moment from 'moment';
 import React, { useContext, useEffect, useState } from 'react';
 import { LightButton } from '../../shared/constants';
@@ -220,7 +220,6 @@ const WeatherConditions = (props) => {
             &nbsp; Average Precipitation &nbsp;{' '}
             <Tooltip
               arrow
-              interactive
               placement="right"
               title={
                 <div>
@@ -269,7 +268,6 @@ const WeatherConditions = (props) => {
               }
             ></Tooltip> */}
             <Tooltip
-              interactive
               arrow
               placement="right"
               title={
@@ -321,7 +319,6 @@ const WeatherConditions = (props) => {
             &nbsp; Average Frost Free Days &nbsp;{' '}
             <Tooltip
               arrow
-              interactive
               placement="right"
               title={
                 <div>

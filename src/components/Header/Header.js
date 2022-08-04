@@ -4,7 +4,7 @@
   styled using ../../styles/header.scss
 */
 
-import { Badge, Button, Typography } from '@material-ui/core';
+import { Badge, Button, Typography } from '@mui/material';
 import Axios from 'axios';
 import {
   MDBCollapse,
@@ -200,7 +200,7 @@ const Header = () => {
             .then((resp) => {
               getAverageFrostDates(frostFreeDatesURL);
               let frostFreeDaysObject = resp.data[0];
-              for (var key in frostFreeDaysObject) {
+              for (let key in frostFreeDaysObject) {
                 if (frostFreeDaysObject.hasOwnProperty(key)) {
                   frostFreeDays = frostFreeDaysObject[key];
                 }
@@ -365,7 +365,6 @@ const Header = () => {
           type: 'ADD_GOALS',
           data: z7Formattedgoal,
         });
-        console.log('z7 data dispatched');
         break;
       }
       case 6: {
@@ -373,12 +372,10 @@ const Header = () => {
           type: 'PULL_CROP_DATA',
           data: state.zone6CropData,
         });
-        console.log(state.zone6CropData.length);
         dispatch({
           type: 'ADD_GOALS',
           data: z6Formattedgoal,
         });
-        console.log('z6 data dispatched');
         break;
       }
       case 5: {
@@ -390,11 +387,9 @@ const Header = () => {
           type: 'ADD_GOALS',
           data: z5Formattedgoal,
         });
-        console.log('z5 data dispatched');
         break;
       }
       case 4: {
-        console.log(z4Formattedgoal);
         dispatch({
           type: 'PULL_CROP_DATA',
           data: state.zone4CropData,
@@ -403,7 +398,6 @@ const Header = () => {
           type: 'ADD_GOALS',
           data: z4Formattedgoal,
         });
-        console.log('z4 data dispatched');
         break;
       }
       default: {

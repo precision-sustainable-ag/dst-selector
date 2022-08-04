@@ -4,7 +4,7 @@
   Styles are created using makeStyles
 */
 
-import { Modal, Box, Typography, Button, Grid, Link } from '@material-ui/core';
+import { Modal, Box, Typography, Button, Grid } from '@mui/material';
 import React, { Fragment, useContext, useState } from 'react';
 import { Context } from '../../store/Store';
 

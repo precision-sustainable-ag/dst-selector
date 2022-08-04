@@ -5,7 +5,7 @@
   Styles are created using makeStyles
 */
 
-import { Button, Typography } from '@material-ui/core';
+import { Button, Typography } from '@mui/material';
 import React, { Fragment, useContext, useEffect } from 'react';
 import { CustomStyles } from '../../shared/constants';
 import Header from '../Header/Header';
@@ -22,9 +22,7 @@ const About = () => {
   };
 
   useEffect(() => {
-    console.log('viewing about');
     if (state.consent === true) {
-      console.log('initializing react-ga');
       ReactGA.initialize('UA-181903489-1');
 
       ReactGA.pageview('about');

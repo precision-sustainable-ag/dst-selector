@@ -15,8 +15,8 @@ import {
   CardMedia,
   IconButton,
   Typography,
-} from '@material-ui/core';
-import { Cancel, KeyboardArrowLeft, KeyboardArrowRight } from '@material-ui/icons';
+} from '@mui/material';
+import { Cancel, KeyboardArrowLeft, KeyboardArrowRight } from '@mui/icons-material';
 import { useSnackbar } from 'notistack';
 import React, { useContext, useEffect, useState } from 'react';
 import {
@@ -102,7 +102,7 @@ const MyCoverCropComparisonComponent = (props) => {
   }, [zone]);
 
   const removeCrop = (id, cropName) => {
-    var removeIndex = state.selectedCrops
+    let removeIndex = state.selectedCrops
       .map(function (item) {
         return item.id;
       })
@@ -206,7 +206,7 @@ const MyCoverCropComparisonComponent = (props) => {
                           color: 'white',
                           visibility: 'hidden',
                         }}
-                        // href="/#"
+                        href="/#"
                       >
                         View Crop Details
                       </a>
@@ -230,7 +230,7 @@ const MyCoverCropComparisonComponent = (props) => {
                         <span>
                           <DataTooltip
                             data={getTooltipData(keys)}
-                            interactive={false}
+                            disableInteractive
                             placement="top-start"
                           />
                         </span>
@@ -249,7 +249,7 @@ const MyCoverCropComparisonComponent = (props) => {
                       <span>
                         <DataTooltip
                           data={'Average rating of all selected goals'}
-                          interactive={false}
+                          disableInteractive
                           placement="top-start"
                         />
                       </span>
@@ -365,7 +365,7 @@ const MyCoverCropComparisonComponent = (props) => {
                     </small>
                     <div>
                       <small className="text-muted">
-                        <a
+                        <div
                           style={{
                             textDecoration: 'underline',
                             color: 'rgb(53, 153, 155)',
@@ -373,10 +373,9 @@ const MyCoverCropComparisonComponent = (props) => {
                           onClick={() => handleModalOpen({ fields: crop.data })}
                           target="_blank"
                           rel="noopener noreferrer"
-                          // href="/#"
                         >
                           View Crop Details
-                        </a>
+                        </div>
                       </small>
                     </div>
                   </CardContent>

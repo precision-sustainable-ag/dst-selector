@@ -4,10 +4,10 @@
   Styles are created using CustomStyles from ../../../shared/constants and ../../../styles/greenBar.scss
 */
 
-import { Button, Dialog, DialogActions, DialogContent, Typography } from '@material-ui/core';
-import { LocationOn, Refresh } from '@material-ui/icons';
-import CloudIcon from '@material-ui/icons/Cloud';
-import FilterHdrIcon from '@material-ui/icons/FilterHdr';
+import { Button, Dialog, DialogActions, DialogContent, Typography } from '@mui/material';
+import { LocationOn, Refresh } from '@mui/icons-material';
+import CloudIcon from '@mui/icons-material/Cloud';
+import FilterHdrIcon from '@mui/icons-material/FilterHdr';
 import moment from 'moment';
 import React, { useContext, useState } from 'react';
 import { CustomStyles, greenBarExpansionPanelHeight } from '../../../shared/constants';
@@ -109,7 +109,6 @@ const Greenbar = () => {
       greenbarExpansionElement.style.minHeight === greenBarExpansionPanelHeight.large
     ) {
       // toggle
-      console.log('toggled');
       closeExpansionPanel();
     } else {
       greenbarExpansionElement.style.transform = 'translate(0px,0px)';
@@ -126,7 +125,6 @@ const Greenbar = () => {
       greenbarExpansionElement.style.minHeight === greenBarExpansionPanelHeight.large
     ) {
       // toggle
-      console.log('toggled');
       closeExpansionPanel();
     } else {
       greenbarExpansionElement.style.transform = 'translate(0px,0px)';
@@ -145,7 +143,6 @@ const Greenbar = () => {
       greenbarExpansionElement.style.minHeight === greenBarExpansionPanelHeight.large
     ) {
       // toggle
-      console.log('toggled');
       closeExpansionPanel();
     } else {
       greenbarExpansionElement.style.transform = 'translate(0px,0px)';
@@ -340,7 +337,7 @@ const Greenbar = () => {
           )}
         </div>
       </div>
-      <Dialog disableBackdropClick disableEscapeKeyDown open={restartPrompt2}>
+      <Dialog disableEscapeKeyDown open={restartPrompt2}>
         {/* <DialogTitle>Clear My Cover Crop List?</DialogTitle> */}
         <DialogContent dividers>
           <Typography variant="body1">
@@ -368,7 +365,7 @@ const Greenbar = () => {
           </Button>
         </DialogActions>
       </Dialog>
-      <Dialog disableBackdropClick disableEscapeKeyDown open={confirmationOpen}>
+      <Dialog disableEscapeKeyDown open={confirmationOpen}>
         <DialogContent dividers>
           <Typography variant="body1">
             {state.selectedCrops.length > 0

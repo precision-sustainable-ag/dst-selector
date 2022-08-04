@@ -4,8 +4,8 @@
   styled using ../../styles/soilConditions.scss
 */
 
-import { Button, Chip, Switch, Typography } from '@material-ui/core';
-import { InvertColors, LocalDrinkOutlined, Terrain, WavesOutlined } from '@material-ui/icons';
+import { Button, Chip, Switch, Typography } from '@mui/material';
+import { InvertColors, LocalDrinkOutlined, Terrain, WavesOutlined } from '@mui/icons-material';
 import React, { useContext, useEffect, useState } from 'react';
 import { ReferenceTooltip } from '../../shared/constants';
 import { Context } from '../../store/Store';
@@ -52,15 +52,14 @@ const SoilCondition = (props) => {
         mp.mupolygonkey IN  (SELECT * from SDA_Get_Mupolygonkey_from_intersection_with_WktWgs84('point (${lon} ${lat})'))`;
       }
 
-      // console.log(soilDataQuery);
-      var myHeaders = new Headers();
+      let myHeaders = new Headers();
       myHeaders.append('Content-Type', 'application/x-www-form-urlencoded');
 
-      var urlencoded = new URLSearchParams();
+      let urlencoded = new URLSearchParams();
       urlencoded.append('query', soilDataQuery);
       urlencoded.append('format', 'json+columnname');
 
-      var requestOptions = {
+      let requestOptions = {
         method: 'POST',
         headers: myHeaders,
         body: urlencoded,

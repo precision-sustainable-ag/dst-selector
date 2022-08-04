@@ -4,7 +4,7 @@
   styled using ../../styles/landing.scss
 */
 
-import { Grid, Typography } from '@material-ui/core';
+import { Grid, Typography } from '@mui/material';
 import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { LightButton } from '../../shared/constants';
@@ -19,7 +19,6 @@ const Landing = (props) => {
 
   useEffect(() => {
     if (state.consent === true) {
-      console.log('viewing landing');
       ReactGA.initialize('UA-181903489-1');
 
       ReactGA.pageview('cover crop selector');

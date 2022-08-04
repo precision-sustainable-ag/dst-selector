@@ -3,7 +3,7 @@
   styled using ./styles/App.scss
 */
 
-import { Snackbar } from '@material-ui/core';
+import { Snackbar } from '@mui/material';
 import React, { useContext, useEffect, useState } from 'react';
 import CropSelector from './components/CropSelector/CropSelector';
 import GoalsSelector from './components/GoalsSelector/GoalsSelector';
@@ -155,6 +155,7 @@ const RouteNotFound = () => {
   );
 };
 
+// eslint-disable-next-line
 const crop = window.location.search.match(/crop=([^\^]+)/);
 
 if (crop) {

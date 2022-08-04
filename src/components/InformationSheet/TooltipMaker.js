@@ -3,7 +3,7 @@
   styled using ../../styles/tooltipMaker.scss
 */
 
-import { Tooltip } from '@material-ui/core';
+import { Tooltip } from '@mui/material';
 import React, { useContext, useEffect, useState } from 'react';
 import { Context } from '../../store/Store';
 import '../../styles/tooltipMaker.scss';
@@ -36,7 +36,6 @@ const TooltipMaker = ({ children, variable }) => {
         break;
     }
 
-    // console.log(dictionary);
     setDict(dictionary);
   }, [
     sfilters.zone,
@@ -63,7 +62,6 @@ const TooltipMaker = ({ children, variable }) => {
           <p>{desc}</p>
         </div>
       }
-      interactive
       arrow
     >
       <span className="tooltipChildren">{children}</span>
