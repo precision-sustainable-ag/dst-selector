@@ -80,15 +80,26 @@ const CropSidebarComponent = (props) => {
     style,
   } = props;
 
+  const [loading, setLoading] = useState(true);
+  const [cashCropVisible, setCashCropVisible] = useState(true); // TODO: buggy(?)
+  const [sidebarFilters, setSidebarFilters] = useState([]);
+  const [dateRange, setDateRange] = useState({
+    startDate: null,
+    endDate: null,
+  });
+  // make an exhaustive array of all params in array e.g. cover crop group and use includes in linq
+  const [sidebarFilterOptions, setSidebarFilterOptions] = useState(() => {
+    const sidebarStarter = {};
+    sidebarFiltersData.forEach((row) => (sidebarStarter[row.name] = []));
+    return sidebarStarter;
+  });
+
   const classes = useStyles();
   const { state, dispatch, change } = useContext(Context);
-
   const section = window.location.href.includes('selector') ? 'selector' : 'explorer';
   const debug = window.location.href.includes('localhost');
-
   const sfilters = state[section];
 
-  const [loading, setLoading] = useState(true);
 
   // TODO: When is showFilters false?
   const [showFilters, setShowFilters] = useState(
@@ -121,25 +132,14 @@ const CropSidebarComponent = (props) => {
     setShowFilters(value);
   }, [debug, state.speciesSelectorActivationFlag, from, comparisonView]);
 
-  const [cashCropVisible, setCashCropVisible] = useState(true); // TODO: buggy(?)
-
-  const [dateRange, setDateRange] = useState({
-    startDate: null,
-    endDate: null,
-  });
-
-  const [sidebarFilters, setSidebarFilters] = useState([]);
-
-  const dateRangeModalOpen = () => {
-    change('TRUE', null, 'dateRangeOpen');
-  };
-
-  // make an exhaustive array of all params in array e.g. cover crop group and use includes in linq
-  const [sidebarFilterOptions, setSidebarFilterOptions] = useState(() => {
-    const sidebarStarter = {};
-    sidebarFiltersData.forEach((row) => (sidebarStarter[row.name] = []));
-    return sidebarStarter;
-  });
+  const handleToggle = (value, type = 'TOGGLE') => {
+    dispatch({
+      type,
+      data: {
+        value,
+      },
+    })
+  }
 
   const areCommonElements = (arr1, arr2) => {
     const arr2Set = new Set(arr2);
@@ -251,7 +251,9 @@ const CropSidebarComponent = (props) => {
   const filtersSelected = Object.keys(sfilters).filter((key) => sfilters[key]).length > 1;
 
   const resetAllFilters = () => {
-    change('CLEAR_FILTERS');
+    dispatch({
+      type: 'CLEAR_FILTERS'
+    });
   };
 
   useEffect(() => {
@@ -509,6 +511,7 @@ const CropSidebarComponent = (props) => {
 
   const filters = () =>
     sidebarFilters.map((filter, index) => {
+      let sectionFilter = section + filter.name;
       return (
         <Fragment key={index}>
           {filter.description !== null ? (
@@ -524,31 +527,31 @@ const CropSidebarComponent = (props) => {
             >
               <ListItem
                 // className={classes.nested}
-                className={state[section + filter.name] ? 'filterOpen' : 'filterClose'}
+                className={state[sectionFilter] ? 'filterOpen' : 'filterClose'}
                 component="div"
-                onClick={() => change('TOGGLE', null, section + filter.name)}
+                onClick={() => handleToggle(sectionFilter )}
               >
                 <ListItemText
                   primary={<Typography variant="body2">{filter.name.toUpperCase()}</Typography>}
                 />
-                {state[section + filter.name] ? <ExpandLess /> : <ExpandMore />}
+                {state[sectionFilter] ? <ExpandLess /> : <ExpandMore />}
               </ListItem>
             </Tooltip>
           ) : (
             <ListItem
               // className={classes.nested}
-              className={state[section + filter.name] ? 'filterOpen' : 'filterClose'}
+              className={state[sectionFilter] ? 'filterOpen' : 'filterClose'}
               component="div"
-              onClick={() => change('TOGGLE', null, section + filter.name)}
+              onClick={() => handleToggle(sectionFilter )}
             >
               <ListItemText
                 primary={<Typography variant="body2">{filter.name.toUpperCase()}</Typography>}
               />
-              {state[section + filter.name] ? <ExpandLess /> : <ExpandMore />}
+              {state[sectionFilter] ? <ExpandLess /> : <ExpandMore />}
             </ListItem>
           )}
 
-          <Collapse in={state[section + filter.name]} timeout="auto">
+          <Collapse in={state[sectionFilter]} timeout="auto">
             <List component="div" disablePadding>
               <ListItem
                 // className={classes.subNested}
@@ -702,7 +705,7 @@ const CropSidebarComponent = (props) => {
               }
               className={classes.root}
             >
-              {from === 'table' ? (
+              {from === 'table' && (
                 <Fragment>
                   {showFilters && state.speciesSelectorActivationFlag && isListView ? (
                     <ListItem>
@@ -729,13 +732,13 @@ const CropSidebarComponent = (props) => {
                   ) : (
                     ''
                   )}
-
-                  {isListView ? (
+                  {}
+                  {isListView && (
                     <Fragment>
                       {' '}
                       <ListItem
                         button
-                        onClick={() => change('TOGGLE', null, 'goalsOpen')}
+                        onClick={() => handleToggle('goalsOpen')}
                         style={
                           state.goalsOpen
                             ? {
@@ -851,13 +854,11 @@ const CropSidebarComponent = (props) => {
                         )}
                       </Collapse>
                     </Fragment>
-                  ) : (
-                    ''
                   )}
 
                   <ListItem
                     button
-                    onClick={() => change('TOGGLE', null, 'cashCropOpen')}
+                    onClick={() => handleToggle('cashCropOpen')}
                     style={
                       state.cashCropOpen
                         ? { backgroundColor: CustomStyles().lightGreen }
@@ -892,7 +893,7 @@ const CropSidebarComponent = (props) => {
                               : ''
                           }`}
                           fullWidth
-                          onClick={() => dateRangeModalOpen()}
+                          onClick={() => handleToggle('dateRangeOpen')}
                           margin="dense"
                           aria-haspopup="true"
                           variant="outlined"
@@ -900,7 +901,7 @@ const CropSidebarComponent = (props) => {
                             readOnly: true,
                             endAdornment: (
                               <InputAdornment>
-                                <IconButton size="small" onClick={() => dateRangeModalOpen()}>
+                                <IconButton size="small" onClick={() => handleToggle('dateRangeOpen')}>
                                   <CalendarTodayRounded />
                                 </IconButton>
                               </InputAdornment>
@@ -951,19 +952,15 @@ const CropSidebarComponent = (props) => {
                       </ListItem>
                     </List>
                   </Collapse>
-                  {state.dateRangeOpen ? (
+                  {state.dateRangeOpen && (
                     <DateRangeDialog
                       open={true}
-                      close={() => change('TOGGLE', null, 'dateRangeOpen')}
+                      close={() => handleToggle('dateRangeOpen')}
                       onChange={(range) => setDateRange(range)}
                       range={[]}
                     />
-                  ) : (
-                    ''
-                  )}
+                  ) }
                 </Fragment>
-              ) : (
-                ''
               )}
 
               {showFilters ? (
@@ -973,7 +970,7 @@ const CropSidebarComponent = (props) => {
                       <List component="div" disablePadding>
                         <ListItem
                           button
-                          onClick={(e) => change('ZONE_TOGGLE', e, !state.zoneToggle)}
+                          onClick={(e) => handleToggle(!state.zoneToggle, 'ZONE_TOGGLE')}
                         >
                           <ListItemText
                             primary={
@@ -1034,7 +1031,7 @@ const CropSidebarComponent = (props) => {
                     <>
                       <ListItem
                         button
-                        onClick={() => change('TOGGLE', null, 'cropFiltersOpen')}
+                        onClick={() => handleToggle('cropFiltersOpen')}
                         style={
                           from === 'table'
                             ? state.cropFiltersOpen
