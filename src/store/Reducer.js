@@ -3,6 +3,7 @@
 */
 
 const Reducer = (state, action, value = action && action.data && action.data.value) => {
+
   const section = window.location.href.includes('selector') ? 'selector' : 'explorer';
   let sfilters = { ...state[section] };
 
@@ -11,10 +12,11 @@ const Reducer = (state, action, value = action && action.data && action.data.val
       return { ...state, [value]: !state[value] };
     case 'TRUE':
       return { ...state, [value]: true };
-    case 'FALSE':
-      return { ...state, [value]: false };
+    // case 'FALSE':
+    //   return { ...state, [value]: false };
 
     case 'FILTER_TOGGLE': {
+      console.log('filterOn', section)
       sfilters[value] = !sfilters[value];
       return {
         ...state,
@@ -111,30 +113,30 @@ const Reducer = (state, action, value = action && action.data && action.data.val
       };
     }
 
-    case 'JUMP_SPECIES_PROGRESS': {
-      return { ...state, progress: 5 };
-    }
+    // case 'JUMP_SPECIES_PROGRESS': {
+    //   return { ...state, progress: 5 };
+    // }
 
-    case 'WEATHER_DATA_RESET': {
-      return { ...state, weatherDataReset: action.data.weatherDataReset };
-    }
+    // case 'WEATHER_DATA_RESET': {
+    //   return { ...state, weatherDataReset: action.data.weatherDataReset };
+    // }
 
-    case 'CHANGE_ADDRESS_BY_TYPING': {
-      if (action.data.markers) {
-        return {
-          ...state,
-          address: action.data.address,
-          showAddressChangeBtn: action.data.showAddressChangeBtn,
-          markers: action.data.markers,
-        };
-      } else {
-        return {
-          ...state,
-          address: action.data.address,
-          showAddressChangeBtn: action.data.showAddressChangeBtn,
-        };
-      }
-    }
+    // case 'CHANGE_ADDRESS_BY_TYPING': {
+    //   if (action.data.markers) {
+    //     return {
+    //       ...state,
+    //       address: action.data.address,
+    //       showAddressChangeBtn: action.data.showAddressChangeBtn,
+    //       markers: action.data.markers,
+    //     };
+    //   } else {
+    //     return {
+    //       ...state,
+    //       address: action.data.address,
+    //       showAddressChangeBtn: action.data.showAddressChangeBtn,
+    //     };
+    //   }
+    // }
 
     case 'UPDATE_ZONE_TEXT': {
       sfilters.zone = action.data.zone;
@@ -155,12 +157,12 @@ const Reducer = (state, action, value = action && action.data && action.data.val
       };
     }
 
-    case 'UPDATE_LAST_ZONE': {
-      return {
-        ...state,
-        lastZone: action.data.value,
-      };
-    }
+    // case 'UPDATE_LAST_ZONE': {
+    //   return {
+    //     ...state,
+    //     lastZone: action.data.value,
+    //   };
+    // }
 
     case 'CHANGE_ADDRESS': {
       return {
@@ -242,29 +244,29 @@ const Reducer = (state, action, value = action && action.data && action.data.val
       };
     }
 
-    case 'UPDATE_MARKER_COPY': {
-      return {
-        ...state,
-        markersCopy: action.data.markersCopy,
-      };
-    }
+    // case 'UPDATE_MARKER_COPY': {
+    //   return {
+    //     ...state,
+    //     markersCopy: action.data.markersCopy,
+    //   };
+    // }
 
-    case 'UPDATE_ADDRESS_ON_MAP_CLICK': {
-      return {
-        ...state,
-        address: action.data.address,
-        addressVerified: action.data.addressVerified,
-        snackOpen: action.data.snackOpen,
-        snackMessage: action.data.snackMessage,
-      };
-    }
+    // case 'UPDATE_ADDRESS_ON_MAP_CLICK': {
+    //   return {
+    //     ...state,
+    //     address: action.data.address,
+    //     addressVerified: action.data.addressVerified,
+    //     snackOpen: action.data.snackOpen,
+    //     snackMessage: action.data.snackMessage,
+    //   };
+    // }
 
-    case 'TOGGLE_ADDRESS_CHANGE_BUTTON': {
-      return {
-        ...state,
-        showAddressChangeBtn: action.data.showAddressChangeBtn,
-      };
-    }
+    // case 'TOGGLE_ADDRESS_CHANGE_BUTTON': {
+    //   return {
+    //     ...state,
+    //     showAddressChangeBtn: action.data.showAddressChangeBtn,
+    //   };
+    // }
 
     case 'ADD_GOALS': {
       return {
@@ -397,12 +399,12 @@ const Reducer = (state, action, value = action && action.data && action.data.val
       };
     }
 
-    case 'TOGGLE_CROP_DETAIL_MODAL': {
-      return {
-        ...state,
-        cropDetailModal: action.data.cropDetailModal,
-      };
-    }
+    // case 'TOGGLE_CROP_DETAIL_MODAL': {
+    //   return {
+    //     ...state,
+    //     cropDetailModal: action.data.cropDetailModal,
+    //   };
+    // }
 
     case 'TOGGLE_SOIL_LOADER': {
       return {
@@ -411,19 +413,19 @@ const Reducer = (state, action, value = action && action.data && action.data.val
       };
     }
 
-    case 'UPDATE_SELCTED_CHECKBOXES': {
-      return {
-        ...state,
-        selectedCheckboxes: action.data.selectedCheckboxes,
-      };
-    }
+    // case 'UPDATE_SELCTED_CHECKBOXES': {
+    //   return {
+    //     ...state,
+    //     selectedCheckboxes: action.data.selectedCheckboxes,
+    //   };
+    // }
 
-    case 'UPDATE_SELECTED_STARS': {
-      return {
-        ...state,
-        selectedStars: action.data.selectedStars,
-      };
-    }
+    // case 'UPDATE_SELECTED_STARS': {
+    //   return {
+    //     ...state,
+    //     selectedStars: action.data.selectedStars,
+    //   };
+    // }
 
     case 'UPDATE_SOIL_DATA': {
       return {
@@ -466,12 +468,12 @@ const Reducer = (state, action, value = action && action.data && action.data.val
       };
     }
 
-    case 'UPDATE_ADDRESS_SEARCH_PREFERENCE': {
-      return {
-        ...state,
-        addressSearchPreference: action.data.addressSearchPreference,
-      };
-    }
+    // case 'UPDATE_ADDRESS_SEARCH_PREFERENCE': {
+    //   return {
+    //     ...state,
+    //     addressSearchPreference: action.data.addressSearchPreference,
+    //   };
+    // }
 
     case 'UPDATE_ZIP_CODE': {
       return {
@@ -480,12 +482,12 @@ const Reducer = (state, action, value = action && action.data && action.data.val
       };
     }
 
-    case 'UPDATE_ACTIVE_GROWTH_PERIOD': {
-      return {
-        ...state,
-        activeGrowthPeriod: action.data.activeGrowthPeriod,
-      };
-    }
+    // case 'UPDATE_ACTIVE_GROWTH_PERIOD': {
+    //   return {
+    //     ...state,
+    //     activeGrowthPeriod: action.data.activeGrowthPeriod,
+    //   };
+    // }
 
     case 'UPDATE_DRAINAGE_CLASS': {
       return {
