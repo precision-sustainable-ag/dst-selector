@@ -26,14 +26,13 @@ import makeStyles from '@mui/styles/makeStyles';
 import {
   CalendarToday,
   CalendarTodayRounded,
-  Clear,
   Compare,
   ExpandLess,
   ExpandMore,
 } from '@mui/icons-material';
 import ListIcon from '@mui/icons-material/List';
 import moment from 'moment';
-import React, { Fragment, useContext, useEffect, useState, useCallback } from 'react';
+import React, { Fragment, useContext, useEffect, useState } from 'react';
 import { arrayMove, List as ListMovable } from 'react-movable';
 import { CustomStyles } from '../../shared/constants';
 // import filterData from "../../shared/sidebar-dictionary.json";
@@ -44,6 +43,7 @@ import DateRangeDialog from './DateRangeDialog';
 import ForwardFilter from './Filters/ForwardFilter';
 import sidebarCategoriesData from '../../shared/json/sidebar/sidebar-categories.json';
 import sidebarFiltersData from '../../shared/json/sidebar/sidebar-filters.json';
+import CoverCropSearch from './CropSidebar/Components/CoverCropSearch';
 // import SoilConditions from "./Filters/SoilConditions";  // TODO May be obsolete???  rh
 
 const _ = require('lodash');
@@ -76,7 +76,6 @@ const CropSidebarComponent = (props) => {
     setGrowthWindow,
     toggleComparisonView,
     toggleListView,
-    clearCoverCropSearch,
     style,
   } = props;
 
@@ -653,28 +652,11 @@ const CropSidebarComponent = (props) => {
             >
               {from === 'table' && (
                 <Fragment>
-                  {showFilters && state.speciesSelectorActivationFlag && isListView && (
-                    <ListItem>
-                      <ListItemText>
-                        <TextField
-                          fullWidth
-                          color="secondary"
-                          label="Cover Crop Name"
-                          helperText="Search by cover crop name"
-                          value={sfilters.cropSearch}
-                          onChange={(e) => change('CROP_SEARCH', e)}
-                          InputProps={{
-                            endAdornment: (
-                              <InputAdornment position="end">
-                                <IconButton onClick={clearCoverCropSearch} size="small">
-                                  {sfilters.cropSearch.length > 0 && <Clear fontSize="inherit" />}
-                                </IconButton>
-                              </InputAdornment>
-                            ),
-                          }}
-                        />
-                      </ListItemText>
-                    </ListItem>
+                  {(showFilters && state.speciesSelectorActivationFlag && isListView) && (
+                    <CoverCropSearch
+                      sfilters={sfilters}
+                      change={change}
+                    />
                   )}
 
                   {isListView && (
@@ -950,18 +932,10 @@ const CropSidebarComponent = (props) => {
                           </ListItem>
                         </List>
                       </Collapse>
-                      <ListItem>
-                        <ListItemText>
-                          <TextField
-                            fullWidth
-                            color="secondary"
-                            label="Cover Crop Name"
-                            helperText="Search by cover crop name"
-                            value={sfilters.cropSearch}
-                            onChange={(e) => change('CROP_SEARCH', e)}
-                          />
-                        </ListItemText>
-                      </ListItem>
+                      <CoverCropSearch
+                        sfilters={sfilters}
+                        change={change}
+                      />
                     </Fragment>
                   )}
 
