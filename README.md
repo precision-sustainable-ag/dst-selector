@@ -12,11 +12,11 @@ To access the live tool, visit [covercrop.tools](http://covercrop.tools)
 
 ## Table of Contents:
 
-- [Tech Stack](https://github.com/precision-sustainable-ag/dst-selector/tree/documentation/README#tech-stack)
-- [Local Installation Steps](https://github.com/precision-sustainable-ag/dst-selector/tree/documentation/README#local-installation-steps)
-- [Running In Docker](https://github.com/precision-sustainable-ag/dst-selector/tree/documentation/README#running-in-docker)
-- [Documentation](https://github.com/precision-sustainable-ag/dst-selector/tree/documentation/README#documentation)
-- [Runbook](https://github.com/precision-sustainable-ag/dst-selector/tree/documentation/README#runbook)
+- [Tech Stack](#tech-stack)
+- [Local Installation Steps](#local-installation-steps)
+- [Running In Docker](#running-in-docker)
+- [Documentation](#documentation)
+- [Runbook](#runbook)
 
 ## Tech stack
 
@@ -41,11 +41,7 @@ To access the live tool, visit [covercrop.tools](http://covercrop.tools)
 REACT_APP_GOOGLE_API_KEY="<google key>"
 REACT_APP_OPEN_WEATHER_API_KEY="<open weather key>"
 ```
-7. After the dependencies have been installed and the .env file has been created, run `npm start` to run the code locally. This will compile the JSX code into Javascript and open up a new browser window with the current version of the covercrops project! 
-
-> Juliet’s Note:  “I had trouble here with Node Sass. I rebuilt Node Sass to fix this issue.
-> `Error:  Node Sass does not yet support your current environment: OS X 64-bit with Unsupported runtime (88)`
-> Fix: npm rebuild node-sass
+7. After the dependencies have been installed and the .env file has been created, run `npm start` to run the code locally. If you run into any issues take a look in the [Runbook](#runbook) for previous issues and solutions. This will compile the JSX code into Javascript and open up a new browser window with the current version of the covercrops project! 
 
 ## Running in docker:
 
