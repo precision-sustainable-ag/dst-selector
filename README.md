@@ -10,6 +10,14 @@ Support for this project is brought to us by [Agricultural Informatics Lab](http
 
 To access the live tool, visit [covercrop.tools](http://covercrop.tools)
 
+## Table of Contents:
+
+- [Tech Stack](https://github.com/precision-sustainable-ag/dst-selector/tree/documentation/README#tech-stack)
+- [Local Installation Steps](https://github.com/precision-sustainable-ag/dst-selector/tree/documentation/README#local-installation-steps)
+- [Running In Docker](https://github.com/precision-sustainable-ag/dst-selector/tree/documentation/README#running-in-docker)
+- [Documentation](https://github.com/precision-sustainable-ag/dst-selector/tree/documentation/README#documentation)
+- [Runbook](https://github.com/precision-sustainable-ag/dst-selector/tree/documentation/README#runbook)
+
 ## Tech stack
 
 - Single page application made in React.js
@@ -47,3 +55,11 @@ Run `open http://localhost:3000`
 ## Documentation
 
 For in depth documentation see [the wiki pages](https://precision-sustainable-ag.atlassian.net/wiki/spaces/DST/pages/156500002/Species+Selector)
+
+## Runbook
+
+**Symptom:** 
+Node sass not suported on Mac OS `Error:  Node Sass does not yet support your current environment: OS X 64-bit with Unsupported runtime (88)`
+
+**Solution:** 
+`npm rebuild node-sass`
