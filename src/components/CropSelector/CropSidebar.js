@@ -19,7 +19,6 @@ import {
   ListItemText,
   ListSubheader,
   TextField,
-  Tooltip,
   Typography,
 } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
@@ -40,10 +39,10 @@ import { Context } from '../../store/Store';
 import '../../styles/cropSidebar.scss';
 import ComparisonBar from '../MyCoverCropList/ComparisonBar/ComparisonBar';
 import DateRangeDialog from './DateRangeDialog';
-import ForwardFilter from './Filters/ForwardFilter';
 import sidebarCategoriesData from '../../shared/json/sidebar/sidebar-categories.json';
 import sidebarFiltersData from '../../shared/json/sidebar/sidebar-filters.json';
 import CoverCropSearch from './CropSidebar/Components/CoverCropSearch';
+import SidebarFilter from './CropSidebar/Components/SidebarFilter';
 // import SoilConditions from "./Filters/SoilConditions";  // TODO May be obsolete???  rh
 
 const _ = require('lodash');
@@ -351,34 +350,12 @@ const CropSidebarComponent = (props) => {
       setSidebarFilters(dictionary);
     };
 
-    switch (sfilters.zone) {
-      case 7:
-        setLoading(true);
-        generateSidebarObject(state.zone7Dictionary)
-          .then(() => setData())
-          .then(() => setLoading(false));
-        break;
-      case 6:
-        setLoading(true);
-        generateSidebarObject(state.zone6Dictionary)
-          .then(() => setData())
-          .then(() => setLoading(false));
-        break;
-      case 5:
-        setLoading(true);
-        generateSidebarObject(state.zone5Dictionary)
-          .then(() => setData())
-          .then(() => setLoading(false));
-        break;
-      case 4:
-        setLoading(true);
-        generateSidebarObject(state.zone4Dictionary)
-          .then(() => setData())
-          .then(() => setLoading(false));
-        break;
-      default:
-        break;
-    }
+    let zoneName = `zone${sfilters.zone}Dictionary`
+
+    setLoading(true);
+    generateSidebarObject(state[zoneName])
+      .then(() => setData())
+      .then(() => setLoading(false));
   }, [
     sfilters.zone,
     state.zone4Dictionary,
@@ -462,74 +439,22 @@ const CropSidebarComponent = (props) => {
     }
   }, [comparisonView, state.myCoverCropActivationFlag]);
 
-  const Filter = (Component, filter) => {
-    return (
-      <Grid container spacing={1}>
-        <Grid item>
-          <Component
-            filters={filter}
-            sidebarFilterOptions={sidebarFilterOptions}
-            setSidebarFilterOptions={setSidebarFilterOptions}
-            resetAllFilters={resetAllFilters}
-            {...props}
-          />
-        </Grid>
-      </Grid>
-    );
-  }; // Filter
 
-  const output = (filter) => {
-    return Filter(ForwardFilter, filter); // SoilConditions???
-  }; // output
 
   const filters = () =>
     sidebarFilters.map((filter, index) => {
-      let sectionFilter = section + filter.name;
-      let listItem = (
-        <ListItem
-          // className={classes.nested}
-          className={state[sectionFilter] ? 'filterOpen' : 'filterClose'}
-          component="div"
-          onClick={() => handleToggle(sectionFilter )}
-        >
-          <ListItemText
-            primary={<Typography variant="body2">{filter.name.toUpperCase()}</Typography>}
-          />
-          {state[sectionFilter] ? <ExpandLess /> : <ExpandMore />}
-        </ListItem>
+      let sectionFilter = `${section}${filter.name}`
+      return(
+        <SidebarFilter
+          filter={filter} 
+          index={index}
+          sidebarFilterOptions={sidebarFilterOptions}
+          setSidebarFilterOptions={setSidebarFilterOptions}
+          resetAllFilters={resetAllFilters} 
+          sectionFilter={sectionFilter}
+          handleToggle={handleToggle}
+        />
       )
-      return (
-        <Fragment key={index}>
-          {filter.description !== null ? (
-            <Tooltip
-              arrow
-              placement="right-start"
-              title={
-                <div className="filterTooltip">
-                  <p>{filter.description}</p>
-                </div>
-              }
-              key={`tooltip${index}`}
-            >
-              {listItem}
-            </Tooltip>
-          ) : (
-            listItem
-          )}
-
-          <Collapse in={state[sectionFilter]} timeout="auto">
-            <List component="div" disablePadding>
-              <ListItem
-                // className={classes.subNested}
-                // title={filter.description}
-                component="div"
-              >
-                {output(filter)}
-              </ListItem>
-            </List>
-          </Collapse>
-        </Fragment>
-      );
     }); // filters
 
   const filtersList = () => (
