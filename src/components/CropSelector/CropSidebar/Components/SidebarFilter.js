@@ -1,17 +1,6 @@
-import {
-  Collapse,
-  Grid,
-  List,
-  ListItem,
-  ListItemText,
-  Tooltip,
-  Typography,
-  } from '@mui/material';
-  import {
-    ExpandLess,
-    ExpandMore,
-  } from '@mui/icons-material'
-import React, {Fragment, useContext,} from 'react';
+import { Collapse, Grid, List, ListItem, ListItemText, Tooltip, Typography } from '@mui/material';
+import { ExpandLess, ExpandMore } from '@mui/icons-material';
+import React, { Fragment, useContext } from 'react';
 import ForwardFilter from '../../Filters/ForwardFilter';
 import { Context } from '../../../../store/Store';
 
@@ -44,8 +33,8 @@ const SidebarFilter = (props) => {
     );
   }; // Filter
 
-    let listItem = (
-      <ListItem
+  let listItem = (
+    <ListItem
       className={state[sectionFilter] ? 'filterOpen' : 'filterClose'}
       component="div"
       onClick={() => handleToggle(sectionFilter)}
@@ -55,38 +44,34 @@ const SidebarFilter = (props) => {
       />
       {state[sectionFilter] ? <ExpandLess /> : <ExpandMore />}
     </ListItem>
-    )
+  );
 
   return (
-      <Fragment key={index}>
-        {filter.description !== null ? (
-          <Tooltip
-            arrow
-            placement="right-start"
-            title={
-              <div className="filterTooltip">
-                <p>{filter.description}</p>
-              </div>
-            }
-            key={`tooltip${index}`}
-          >
-            {listItem}
-          </Tooltip>
-        ) : (
-          listItem
-        )}
+    <Fragment key={index}>
+      {filter.description !== null ? (
+        <Tooltip
+          arrow
+          placement="right-start"
+          title={
+            <div className="filterTooltip">
+              <p>{filter.description}</p>
+            </div>
+          }
+          key={`tooltip${index}`}
+        >
+          {listItem}
+        </Tooltip>
+      ) : (
+        listItem
+      )}
 
-        <Collapse in={state[sectionFilter]} timeout="auto">
-          <List component="div" disablePadding>
-            <ListItem
-              component="div"
-            >
-              {forwardFilter(ForwardFilter, filter)}
-            </ListItem>
-          </List>
-        </Collapse>
-      </Fragment>
-  )
+      <Collapse in={state[sectionFilter]} timeout="auto">
+        <List component="div" disablePadding>
+          <ListItem component="div">{forwardFilter(ForwardFilter, filter)}</ListItem>
+        </List>
+      </Collapse>
+    </Fragment>
+  );
 };
 
 export default SidebarFilter;
