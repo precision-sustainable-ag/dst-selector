@@ -1,6 +1,6 @@
 ## Cover Crop Species Selector Decision Support Tool
 
-**Date Created:** TBD
+**Date Created:** 8/18/22
 
 **Date Last Modified:** 8/15/22
 
@@ -14,9 +14,11 @@ To see development progress, visit [http://covercrop.tools](http://covercrop.too
 
 ## Table of Contents:
 
-- [Tech Stack](#tech-stack)
+- [Cover Crop Species Selector Decision Support Tool](#cover-crop-species-selector-decision-support-tool)
+- [Table of Contents:](#table-of-contents)
+- [Tech stack](#tech-stack)
 - [Local Installation Steps](#local-installation-steps)
-- [Running In Docker](#running-in-docker)
+- [Running in docker:](#running-in-docker)
 - [Documentation](#documentation)
 - [Runbook](#runbook)
 
