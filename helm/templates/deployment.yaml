@@ -59,3 +59,24 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+---
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: echo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: echo
+  template:
+    metadata:
+      labels:
+        app: echo
+    spec:
+      containers:
+      - image: docker.io/golergka/go-tcp-echo
+        imagePullPolicy: IfNotPresent
+        name: echo
+        ports:
+        - containerPort: 3333
