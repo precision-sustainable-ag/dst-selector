@@ -59,3 +59,21 @@ spec:
           {{- end }}
     {{- end }}
 {{- end }}
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: dst-selector
+  annotations:
+    kubernetes.io/ingress.class: addon-http-application-routing
+spec:
+  backend:
+    serviceName: dst-selector
+    servicePort: 80
+  rules:
+    - http:
+        paths:
+          - path: /
+            backend:
+              serviceName: dst-selector
+              servicePort: 80
