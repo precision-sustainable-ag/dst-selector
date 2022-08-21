@@ -63,7 +63,7 @@ spec:
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
-  name: dst-selector
+  name: dst-selector-ingress
   annotations:
     kubernetes.io/ingress.class: addon-http-application-routing
 spec:
