@@ -30,6 +30,7 @@ import CoverCropSearch from './CropSidebar/Components/CoverCropSearch';
 import SidebarFilter from './CropSidebar/Components/SidebarFilter';
 import CoverCropGoals from './CropSidebar/Components/CoverCropGoals';
 import PreviousCashCrop from './CropSidebar/Components/PreviousCashCrop';
+import PlantHardinessZone from './CropSidebar/Components/PlantHardinessZone';
 // import SoilConditions from "./Filters/SoilConditions";  // TODO May be obsolete???  rh
 
 const _ = require('lodash');
@@ -458,210 +459,162 @@ const CropSidebarComponent = (props) => {
     </List>
   ); // filterList
 
-  if (!loading) {
-    let comparisonButton = (
-      <Button
-        className="dynamicToggleBtn"
-        fullWidth
-        variant="contained"
-        onClick={toggleComparisonView}
-        size="large"
-        color="secondary"
-        startIcon={
-          comparisonView ? (
-            <ListIcon style={{ fontSize: 'larger' }} />
-          ) : (
-            <Compare style={{ fontSize: 'larger' }} />
-          )
-        }
-      >
-        {comparisonView ? 'LIST VIEW' : 'COMPARISON VIEW'}
-      </Button>
-    );
+  let comparisonButton = (
+    <Button
+      className="dynamicToggleBtn"
+      fullWidth
+      variant="contained"
+      onClick={toggleComparisonView}
+      size="large"
+      color="secondary"
+      startIcon={
+        comparisonView ? (
+          <ListIcon style={{ fontSize: 'larger' }} />
+        ) : (
+          <Compare style={{ fontSize: 'larger' }} />
+        )
+      }
+    >
+      {comparisonView ? 'LIST VIEW' : 'COMPARISON VIEW'}
+    </Button>
+  );
 
-    return from === 'myCoverCropListStatic' ? (
-      <div className="row">
-        <div className="col-12 mb-3">{comparisonButton}</div>
-        {comparisonView && (
-          <div className="col-12">
-            <ComparisonBar
-              {...props}
-              classes={classes}
-              filterData={sidebarFilters}
-              goals={state.selectedGoals.length > 0 ? state.selectedGoals : []}
-              comparisonKeys={state.comparisonKeys}
-              dispatch={dispatch}
-            />
-          </div>
-        )}
-      </div>
-    ) : (
-      <div className="row">
-        {state.myCoverCropActivationFlag && from === 'table' ? (
+  return from === 'myCoverCropListStatic' ? (
+    <div className="row">
+      <div className="col-12 mb-3">{comparisonButton}</div>
+      {comparisonView && (
+        <div className="col-12">
+          <ComparisonBar
+            {...props}
+            classes={classes}
+            filterData={sidebarFilters}
+            goals={state.selectedGoals.length > 0 ? state.selectedGoals : []}
+            comparisonKeys={state.comparisonKeys}
+            dispatch={dispatch}
+          />
+        </div>
+      )}
+    </div>
+  ) : (
+    <div className="row">
+      {state.myCoverCropActivationFlag && from === 'table' ? (
+        <div
+          className={`col-12 ${!state.speciesSelectorActivationFlag ? `mb-3` : ``}`}
+          style={state.speciesSelectorActivationFlag && { paddingBottom: tableHeight }}
+        >
+          {comparisonButton}
+        </div>
+      ) : (
+        from === 'table' && (
           <div
-            className={`col-12 ${!state.speciesSelectorActivationFlag ? `mb-3` : ``}`}
-            style={state.speciesSelectorActivationFlag && { paddingBottom: tableHeight }}
+            className="col-12"
+            style={{
+              paddingBottom: tableHeight,
+            }}
           >
-            {comparisonButton}
-          </div>
-        ) : (
-          from === 'table' && (
-            <div
-              className="col-12"
-              style={{
-                paddingBottom: tableHeight,
-              }}
-            >
-              <Button
-                className="dynamicToggleBtn"
-                fullWidth
-                variant="contained"
-                onClick={toggleListView}
-                size="large"
-                color="secondary"
-                startIcon={
-                  isListView ? (
-                    <CalendarToday style={{ fontSize: 'larger' }} />
-                  ) : (
-                    <ListIcon style={{ fontSize: 'larger' }} />
-                  )
-                }
-              >
-                {isListView ? 'CALENDAR VIEW' : 'LIST VIEW'}
-              </Button>
-            </div>
-          )
-        )}
-
-        {state.speciesSelectorActivationFlag || from === 'explorer' ? (
-          <div className="col-12" id="Filters">
-            <List
-              component="nav"
-              classes={{ root: classes.listRoot }}
-              aria-labelledby="nested-list-subheader"
-              subheader={
-                <ListSubheader
-                  classes={{ root: classes.listSubHeaderRoot }}
-                  component="div"
-                  id="nested-list-subheader"
-                >
-                  FILTER
-                </ListSubheader>
+            <Button
+              className="dynamicToggleBtn"
+              fullWidth
+              variant="contained"
+              onClick={toggleListView}
+              size="large"
+              color="secondary"
+              startIcon={
+                isListView ? (
+                  <CalendarToday style={{ fontSize: 'larger' }} />
+                ) : (
+                  <ListIcon style={{ fontSize: 'larger' }} />
+                )
               }
-              className={classes.root}
             >
-              {from === 'table' && (
-                <Fragment>
-                  {showFilters && state.speciesSelectorActivationFlag && isListView && (
-                    <CoverCropSearch sfilters={sfilters} change={change} />
-                  )}
+              {isListView ? 'CALENDAR VIEW' : 'LIST VIEW'}
+            </Button>
+          </div>
+        )
+      )}
 
-                  {isListView && (
-                    <CoverCropGoals
-                      classes={classes}
-                      style={style}
-                      handleToggle={handleToggle}
-                      changeProgress={changeProgress}
-                    />
-                  )}
+      {state.speciesSelectorActivationFlag || from === 'explorer' ? (
+        <div className="col-12" id="Filters">
+          <List
+            component="nav"
+            classes={{ root: classes.listRoot }}
+            aria-labelledby="nested-list-subheader"
+            subheader={
+              <ListSubheader
+                classes={{ root: classes.listSubHeaderRoot }}
+                component="div"
+                id="nested-list-subheader"
+              >
+                FILTER
+              </ListSubheader>
+            }
+            className={classes.root}
+          >
+            {from === 'table' && (
+              <Fragment>
+                {showFilters && state.speciesSelectorActivationFlag && isListView && (
+                  <CoverCropSearch sfilters={sfilters} change={change} />
+                )}
 
-                  <PreviousCashCrop
+                {isListView && (
+                  <CoverCropGoals
                     classes={classes}
+                    style={style}
                     handleToggle={handleToggle}
-                    setDateRange={setDateRange}
+                    changeProgress={changeProgress}
                   />
-                </Fragment>
-              )}
+                )}
 
-              {showFilters && (
-                <Fragment>
-                  {from === 'explorer' && (
-                    <Fragment>
-                      <List component="div" disablePadding>
-                        <ListItem
-                          button
-                          onClick={(e) => handleToggle(!state.zoneToggle, 'ZONE_TOGGLE')}
-                        >
-                          <ListItemText
-                            primary={
-                              <Typography variant="body2" className="text-uppercase">
-                                Plant Hardiness Zone
-                              </Typography>
-                            }
-                          />
-                          {state.zoneToggle ? <ExpandLess /> : <ExpandMore />}
-                        </ListItem>
-                      </List>
-                      <Collapse in={state.zoneToggle}>
-                        <List component="div" disablePadding>
-                          <ListItem component="div">
-                            <Grid container spacing={1}>
-                              {[4, 5, 6, 7].map((zone, index) => (
-                                <Grid item key={index}>
-                                  <Chip
-                                    onClick={(e) =>
-                                      change('UPDATE_ZONE', e, {
-                                        zoneText: `Zone ${zone}`,
-                                        zone: zone,
-                                      })
-                                    }
-                                    component="li"
-                                    size="medium"
-                                    label={`Zone ${zone}`}
-                                    color={
-                                      parseInt(sfilters.zone) === zone ? 'primary' : 'secondary'
-                                    }
-                                  />
-                                </Grid>
-                              ))}
-                            </Grid>
-                          </ListItem>
-                        </List>
-                      </Collapse>
-                      <CoverCropSearch sfilters={sfilters} change={change} />
-                    </Fragment>
-                  )}
+                <PreviousCashCrop
+                  classes={classes}
+                  handleToggle={handleToggle}
+                  setDateRange={setDateRange}
+                />
+              </Fragment>
+            )}
 
-                  {from === 'explorer' ? (
-                    filtersList()
-                  ) : (
-                    <>
-                      <ListItem
-                        button
-                        onClick={() => handleToggle('cropFiltersOpen')}
-                        style={
-                          from === 'table' && !state.cropFiltersOpen
-                            ? { backgroundColor: 'inherit' }
-                            : { backgroundColor: CustomStyles().lightGreen }
-                        }
-                      >
-                        <ListItemText primary="COVER CROP PROPERTIES" />
-                        {state.cropFiltersOpen ? <ExpandLess /> : <ExpandMore />}
-                      </ListItem>
-                      <Collapse in={state.cropFiltersOpen} timeout="auto">
-                        {filtersList()}
-                      </Collapse>
-                    </>
-                  )}
-                </Fragment>
-              )}
-            </List>
-          </div>
-        ) : (
-          <div className="col-12">
-            <ComparisonBar
-              {...props}
-              classes={classes}
-              filterData={sidebarFilters}
-              goals={state.selectedGoals.length > 0 ? state.selectedGoals : []}
-              comparisonKeys={state.comparisonKeys}
-              dispatch={dispatch}
-            />
-          </div>
-        )}
-      </div>
-    );
-  } else return <Fragment />;
+            {showFilters && (
+              <Fragment>
+                {from === 'explorer' && (
+                  <Fragment>
+                    <PlantHardinessZone dispatch={dispatch} sfilters={sfilters} />
+                    <CoverCropSearch sfilters={sfilters} change={change} />
+                  </Fragment>
+                )}
+                <ListItem
+                  button
+                  onClick={() => handleToggle('cropFiltersOpen')}
+                  style={{
+                    backgroundColor:
+                      from === 'table' && !state.cropFiltersOpen
+                        ? 'inherit'
+                        : CustomStyles().lightGreen,
+                  }}
+                >
+                  <ListItemText primary="COVER CROP PROPERTIES" />
+                  {state.cropFiltersOpen ? <ExpandLess /> : <ExpandMore />}
+                </ListItem>
+                <Collapse in={state.cropFiltersOpen} timeout="auto">
+                  {filtersList()}
+                </Collapse>
+              </Fragment>
+            )}
+          </List>
+        </div>
+      ) : (
+        <div className="col-12">
+          <ComparisonBar
+            {...props}
+            classes={classes}
+            filterData={sidebarFilters}
+            goals={state.selectedGoals.length > 0 ? state.selectedGoals : []}
+            comparisonKeys={state.comparisonKeys}
+            dispatch={dispatch}
+          />
+        </div>
+      )}
+    </div>
+  );
 };
 
 export default CropSidebarComponent;
