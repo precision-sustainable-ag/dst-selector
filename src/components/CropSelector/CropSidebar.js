@@ -6,9 +6,7 @@
 
 import {
   Button,
-  Chip,
   Collapse,
-  Grid,
   List,
   ListItem,
   ListItemText,
@@ -66,7 +64,7 @@ const CropSidebarComponent = (props) => {
     style,
   } = props;
 
-  const { state, dispatch, change } = useContext(Context);
+  const { state, dispatch } = useContext(Context);
   const [loading, setLoading] = useState(true);
   const [sidebarFilters, setSidebarFilters] = useState([]);
   const [showFilters, setShowFilters] = useState('');
@@ -162,13 +160,6 @@ const CropSidebarComponent = (props) => {
     if (sfilters['Active Growth Period: Summer']) {
       growthArray.push('Jun', 'Jul', 'Aug');
     }
-
-    // dispatch({
-    //   type: 'UPDATE_ACTIVE_GROWTH_PERIOD',
-    //   data: {
-    //     activeGrowthPeriod: growthArray,
-    //   },
-    // });
 
     const arrayKeys = [
       'Duration',
@@ -553,7 +544,7 @@ const CropSidebarComponent = (props) => {
             {from === 'table' && (
               <Fragment>
                 {showFilters && state.speciesSelectorActivationFlag && isListView && (
-                  <CoverCropSearch sfilters={sfilters} change={change} />
+                  <CoverCropSearch sfilters={sfilters} dispatch={dispatch} />
                 )}
 
                 {isListView && (
@@ -578,7 +569,7 @@ const CropSidebarComponent = (props) => {
                 {from === 'explorer' && (
                   <Fragment>
                     <PlantHardinessZone dispatch={dispatch} sfilters={sfilters} />
-                    <CoverCropSearch sfilters={sfilters} change={change} />
+                    <CoverCropSearch sfilters={sfilters} dispatch={dispatch} />
                   </Fragment>
                 )}
                 <ListItem
