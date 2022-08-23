@@ -6,43 +6,31 @@
 
 import {
   Button,
-  Checkbox,
   Chip,
   Collapse,
-  FormControlLabel,
-  FormGroup,
   Grid,
-  IconButton,
-  InputAdornment,
   List,
   ListItem,
   ListItemText,
   ListSubheader,
-  TextField,
   Typography,
 } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
-import {
-  CalendarToday,
-  CalendarTodayRounded,
-  Compare,
-  ExpandLess,
-  ExpandMore,
-} from '@mui/icons-material';
+import { CalendarToday, Compare, ExpandLess, ExpandMore } from '@mui/icons-material';
 import ListIcon from '@mui/icons-material/List';
 import moment from 'moment';
 import React, { Fragment, useContext, useEffect, useState } from 'react';
-import { arrayMove, List as ListMovable } from 'react-movable';
 import { CustomStyles } from '../../shared/constants';
-// import filterData from "../../shared/sidebar-dictionary.json";
 import { Context } from '../../store/Store';
 import '../../styles/cropSidebar.scss';
 import ComparisonBar from '../MyCoverCropList/ComparisonBar/ComparisonBar';
-import DateRangeDialog from './DateRangeDialog';
 import sidebarCategoriesData from '../../shared/json/sidebar/sidebar-categories.json';
 import sidebarFiltersData from '../../shared/json/sidebar/sidebar-filters.json';
 import CoverCropSearch from './CropSidebar/Components/CoverCropSearch';
 import SidebarFilter from './CropSidebar/Components/SidebarFilter';
+import CoverCropGoals from './CropSidebar/Components/CoverCropGoals';
+import PreviousCashCrop from './CropSidebar/Components/PreviousCashCrop';
+import PlantHardinessZone from './CropSidebar/Components/PlantHardinessZone';
 // import SoilConditions from "./Filters/SoilConditions";  // TODO May be obsolete???  rh
 
 const _ = require('lodash');
@@ -80,7 +68,6 @@ const CropSidebarComponent = (props) => {
 
   const { state, dispatch, change } = useContext(Context);
   const [loading, setLoading] = useState(true);
-  const [cashCropVisible, setCashCropVisible] = useState(true); // TODO: buggy(?)
   const [sidebarFilters, setSidebarFilters] = useState([]);
   const [showFilters, setShowFilters] = useState('');
   const [tableHeight, setTableHeight] = useState(0);
@@ -370,19 +357,6 @@ const CropSidebarComponent = (props) => {
     state.zone7Dictionary,
   ]);
 
-  const updateSelectedGoals = (newGoalArr, oldIndex, newIndex) => {
-    let newGoals = arrayMove(newGoalArr, oldIndex, newIndex);
-
-    dispatch({
-      type: 'DRAG_GOALS',
-      data: {
-        selectedGoals: newGoals,
-        snackOpen: true,
-        snackMessage: 'Goal Priority Changed',
-      },
-    });
-  }; // updateSelectedGoals
-
   const changeProgress = (type) => {
     // TODO: type is only decrement?
     dispatch({
@@ -485,424 +459,162 @@ const CropSidebarComponent = (props) => {
     </List>
   ); // filterList
 
-  if (!loading) {
-    let comparisonButton = (
-      <Button
-        className="dynamicToggleBtn"
-        fullWidth
-        variant="contained"
-        onClick={toggleComparisonView}
-        size="large"
-        color="secondary"
-        startIcon={
-          comparisonView ? (
-            <ListIcon style={{ fontSize: 'larger' }} />
-          ) : (
-            <Compare style={{ fontSize: 'larger' }} />
-          )
-        }
-      >
-        {comparisonView ? 'LIST VIEW' : 'COMPARISON VIEW'}
-      </Button>
-    );
+  let comparisonButton = (
+    <Button
+      className="dynamicToggleBtn"
+      fullWidth
+      variant="contained"
+      onClick={toggleComparisonView}
+      size="large"
+      color="secondary"
+      startIcon={
+        comparisonView ? (
+          <ListIcon style={{ fontSize: 'larger' }} />
+        ) : (
+          <Compare style={{ fontSize: 'larger' }} />
+        )
+      }
+    >
+      {comparisonView ? 'LIST VIEW' : 'COMPARISON VIEW'}
+    </Button>
+  );
 
-    return from === 'myCoverCropListStatic' ? (
-      <div className="row">
-        <div className="col-12 mb-3">{comparisonButton}</div>
-        {comparisonView && (
-          <div className="col-12">
-            <ComparisonBar
-              {...props}
-              classes={classes}
-              filterData={sidebarFilters}
-              goals={state.selectedGoals.length > 0 ? state.selectedGoals : []}
-              comparisonKeys={state.comparisonKeys}
-              dispatch={dispatch}
-            />
-          </div>
-        )}
-      </div>
-    ) : (
-      <div className="row">
-        {state.myCoverCropActivationFlag && from === 'table' ? (
+  return from === 'myCoverCropListStatic' ? (
+    <div className="row">
+      <div className="col-12 mb-3">{comparisonButton}</div>
+      {comparisonView && (
+        <div className="col-12">
+          <ComparisonBar
+            {...props}
+            classes={classes}
+            filterData={sidebarFilters}
+            goals={state.selectedGoals.length > 0 ? state.selectedGoals : []}
+            comparisonKeys={state.comparisonKeys}
+            dispatch={dispatch}
+          />
+        </div>
+      )}
+    </div>
+  ) : (
+    <div className="row">
+      {state.myCoverCropActivationFlag && from === 'table' ? (
+        <div
+          className={`col-12 ${!state.speciesSelectorActivationFlag ? `mb-3` : ``}`}
+          style={state.speciesSelectorActivationFlag && { paddingBottom: tableHeight }}
+        >
+          {comparisonButton}
+        </div>
+      ) : (
+        from === 'table' && (
           <div
-            className={`col-12 ${!state.speciesSelectorActivationFlag ? `mb-3` : ``}`}
-            style={state.speciesSelectorActivationFlag && { paddingBottom: tableHeight }}
+            className="col-12"
+            style={{
+              paddingBottom: tableHeight,
+            }}
           >
-            {comparisonButton}
-          </div>
-        ) : (
-          from === 'table' && (
-            <div
-              className="col-12"
-              style={{
-                paddingBottom: tableHeight,
-              }}
-            >
-              <Button
-                className="dynamicToggleBtn"
-                fullWidth
-                variant="contained"
-                onClick={toggleListView}
-                size="large"
-                color="secondary"
-                startIcon={
-                  isListView ? (
-                    <CalendarToday style={{ fontSize: 'larger' }} />
-                  ) : (
-                    <ListIcon style={{ fontSize: 'larger' }} />
-                  )
-                }
-              >
-                {isListView ? 'CALENDAR VIEW' : 'LIST VIEW'}
-              </Button>
-            </div>
-          )
-        )}
-
-        {state.speciesSelectorActivationFlag || from === 'explorer' ? (
-          <div className="col-12" id="Filters">
-            <List
-              component="nav"
-              classes={{ root: classes.listRoot }}
-              aria-labelledby="nested-list-subheader"
-              subheader={
-                <ListSubheader
-                  classes={{ root: classes.listSubHeaderRoot }}
-                  component="div"
-                  id="nested-list-subheader"
-                >
-                  FILTER
-                </ListSubheader>
+            <Button
+              className="dynamicToggleBtn"
+              fullWidth
+              variant="contained"
+              onClick={toggleListView}
+              size="large"
+              color="secondary"
+              startIcon={
+                isListView ? (
+                  <CalendarToday style={{ fontSize: 'larger' }} />
+                ) : (
+                  <ListIcon style={{ fontSize: 'larger' }} />
+                )
               }
-              className={classes.root}
             >
-              {from === 'table' && (
-                <Fragment>
-                  {showFilters && state.speciesSelectorActivationFlag && isListView && (
+              {isListView ? 'CALENDAR VIEW' : 'LIST VIEW'}
+            </Button>
+          </div>
+        )
+      )}
+
+      {state.speciesSelectorActivationFlag || from === 'explorer' ? (
+        <div className="col-12" id="Filters">
+          <List
+            component="nav"
+            classes={{ root: classes.listRoot }}
+            aria-labelledby="nested-list-subheader"
+            subheader={
+              <ListSubheader
+                classes={{ root: classes.listSubHeaderRoot }}
+                component="div"
+                id="nested-list-subheader"
+              >
+                FILTER
+              </ListSubheader>
+            }
+            className={classes.root}
+          >
+            {from === 'table' && (
+              <Fragment>
+                {showFilters && state.speciesSelectorActivationFlag && isListView && (
+                  <CoverCropSearch sfilters={sfilters} change={change} />
+                )}
+
+                {isListView && (
+                  <CoverCropGoals
+                    classes={classes}
+                    style={style}
+                    handleToggle={handleToggle}
+                    changeProgress={changeProgress}
+                  />
+                )}
+
+                <PreviousCashCrop
+                  classes={classes}
+                  handleToggle={handleToggle}
+                  setDateRange={setDateRange}
+                />
+              </Fragment>
+            )}
+
+            {showFilters && (
+              <Fragment>
+                {from === 'explorer' && (
+                  <Fragment>
+                    <PlantHardinessZone dispatch={dispatch} sfilters={sfilters} />
                     <CoverCropSearch sfilters={sfilters} change={change} />
-                  )}
-
-                  {isListView && (
-                    <Fragment>
-                      {' '}
-                      <ListItem
-                        button
-                        onClick={() => handleToggle('goalsOpen')}
-                        style={
-                          state.goalsOpen
-                            ? {
-                                backgroundColor: CustomStyles().lightGreen,
-                                borderTop: '4px solid white',
-                              }
-                            : {
-                                backgroundColor: 'inherit',
-                                borderTop: '4px solid white',
-                              }
-                        }
-                      >
-                        <ListItemText primary="COVER CROP GOALS" />
-                        {state.goalsOpen ? <ExpandLess /> : <ExpandMore />}
-                      </ListItem>
-                      <Collapse in={state.goalsOpen} timeout="auto" unmountOnExit>
-                        {state.selectedGoals.length === 0 ? (
-                          <List component="div" disablePadding>
-                            <ListItem button className={classes.nested}>
-                              <ListItemText primary="No Goals Selected" />
-                            </ListItem>
-                            <ListItem className={classes.nested}>
-                              <Button onClick={() => changeProgress('decrement')}>
-                                click to edit
-                              </Button>
-                            </ListItem>
-                          </List>
-                        ) : (
-                          <Fragment>
-                            <List component="div" disablePadding>
-                              <ListItem className={classes.nested}>
-                                <ListItemText
-                                  primary={
-                                    <div>
-                                      <div>
-                                        <Typography variant="body1">
-                                          {' '}
-                                          Goal Priority Order
-                                        </Typography>
-                                      </div>
-                                      <div>
-                                        <Typography
-                                          variant="body2"
-                                          style={{
-                                            fontWeight: 'normal',
-                                            fontSize: '10pt',
-                                          }}
-                                        >
-                                          Click & drag to reorder
-                                        </Typography>
-                                      </div>
-                                    </div>
-                                  }
-                                />
-                              </ListItem>
-                            </List>
-                            <ListMovable
-                              values={state.selectedGoals}
-                              onChange={({ oldIndex, newIndex }) =>
-                                updateSelectedGoals(state.selectedGoals, oldIndex, newIndex)
-                              }
-                              renderList={({ children, props, isDragged }) => (
-                                <ol
-                                  className="goalsListFilter"
-                                  {...props}
-                                  style={{
-                                    cursor: isDragged ? 'grabbing' : undefined,
-                                  }}
-                                >
-                                  {children}
-                                </ol>
-                              )}
-                              renderItem={({ value, props, isDragged, isSelected, index }) => (
-                                <li
-                                  {...props}
-                                  style={{
-                                    ...style,
-                                  }}
-                                >
-                                  <div className="d-flex w-100 flex-row justify-content-between align-items-center">
-                                    <div>
-                                      <Typography
-                                        variant="body1"
-                                        style={{
-                                          cursor: isDragged ? 'grabbing' : 'grab',
-                                          fontSize: '10pt',
-                                          fontWeight: isDragged || isSelected ? '700' : 'normal',
-                                          color: '#48a8ab',
-                                          width: '100%',
-                                        }}
-                                      >
-                                        {`${index + 1}. ${value}`}
-                                      </Typography>
-                                    </div>
-                                  </div>
-                                </li>
-                              )}
-                            />
-
-                            <ListItem className={classes.nested}>
-                              <ListItemText disableTypography>
-                                <Typography
-                                  variant="button"
-                                  className="text-uppercase text-left text-danger font-weight-bold"
-                                  onClick={() => changeProgress('decrement')}
-                                  style={{ cursor: 'pointer' }}
-                                >
-                                  &nbsp;Click To Edit
-                                </Typography>
-                              </ListItemText>
-                            </ListItem>
-                          </Fragment>
-                        )}
-                      </Collapse>
-                    </Fragment>
-                  )}
-
-                  <ListItem
-                    button
-                    onClick={() => handleToggle('cashCropOpen')}
-                    style={
-                      state.cashCropOpen
-                        ? { backgroundColor: CustomStyles().lightGreen }
-                        : { backgroundColor: 'inherit' }
-                    }
-                  >
-                    <ListItemText primary="PREVIOUS CASH CROP" />
-                    {state.cashCropOpen ? <ExpandLess /> : <ExpandMore />}
-                  </ListItem>
-                  <Collapse in={state.cashCropOpen} timeout="auto" unmountOnExit>
-                    <List component="div">
-                      <ListItem className={classes.nested}>
-                        <TextField
-                          fullWidth
-                          label="Previous Cash Crop"
-                          id="outlined-margin-dense"
-                          defaultValue=""
-                          margin="dense"
-                          variant="outlined"
-                        />
-                      </ListItem>
-                      <ListItem className={classes.nested}>
-                        <TextField
-                          label="Planting to Harvest"
-                          value={`${
-                            state.cashCropData.dateRange.startDate &&
-                            moment(state.cashCropData.dateRange.startDate).format('MM/D')
-                          } - ${
-                            state.cashCropData.dateRange.endDate &&
-                            moment(state.cashCropData.dateRange.endDate).format('MM/D')
-                          }`}
-                          fullWidth
-                          onClick={() => handleToggle('dateRangeOpen')}
-                          margin="dense"
-                          aria-haspopup="true"
-                          variant="outlined"
-                          InputProps={{
-                            readOnly: true,
-                            endAdornment: (
-                              <InputAdornment>
-                                <IconButton
-                                  size="small"
-                                  onClick={() => handleToggle('dateRangeOpen')}
-                                >
-                                  <CalendarTodayRounded />
-                                </IconButton>
-                              </InputAdornment>
-                            ),
-                          }}
-                        />
-                      </ListItem>
-                      <ListItem className={classes.nested}>
-                        <FormGroup>
-                          <FormControlLabel
-                            classes={{ root: classes.formControlLabel }}
-                            control={
-                              <Checkbox
-                                checked={cashCropVisible}
-                                onChange={(e) => {
-                                  if (e.target.checked) {
-                                    let cashCropDateRange = JSON.parse(
-                                      window.localStorage.getItem('cashCropDateRange'),
-                                    );
-                                    dispatch({
-                                      type: 'UPDATE_DATE_RANGE',
-                                      data: {
-                                        startDate: cashCropDateRange.startDate,
-                                        endDate: cashCropDateRange.endDate,
-                                      },
-                                    });
-                                  } else {
-                                    dispatch({
-                                      type: 'UPDATE_DATE_RANGE',
-                                      data: {
-                                        startDate: '',
-                                        endDate: '',
-                                      },
-                                    });
-                                  }
-                                  setCashCropVisible(!cashCropVisible);
-                                }}
-                                value="Show Cash Crop Growth Window"
-                              />
-                            }
-                            label={
-                              <Typography variant="body2">
-                                Show Previous Cash Crop Growth Window
-                              </Typography>
-                            }
-                          />
-                        </FormGroup>
-                      </ListItem>
-                    </List>
-                  </Collapse>
-                  {state.dateRangeOpen && (
-                    <DateRangeDialog
-                      open={true}
-                      close={() => handleToggle('dateRangeOpen')}
-                      onChange={(range) => setDateRange(range)}
-                      range={[]}
-                    />
-                  )}
-                </Fragment>
-              )}
-
-              {showFilters && (
-                <Fragment>
-                  {from === 'explorer' && (
-                    <Fragment>
-                      <List component="div" disablePadding>
-                        <ListItem
-                          button
-                          onClick={(e) => handleToggle(!state.zoneToggle, 'ZONE_TOGGLE')}
-                        >
-                          <ListItemText
-                            primary={
-                              <Typography variant="body2" className="text-uppercase">
-                                Plant Hardiness Zone
-                              </Typography>
-                            }
-                          />
-                          {state.zoneToggle ? <ExpandLess /> : <ExpandMore />}
-                        </ListItem>
-                      </List>
-                      <Collapse in={state.zoneToggle}>
-                        <List component="div" disablePadding>
-                          <ListItem component="div">
-                            <Grid container spacing={1}>
-                              {[4, 5, 6, 7].map((zone, index) => (
-                                <Grid item key={index}>
-                                  <Chip
-                                    onClick={(e) =>
-                                      change('UPDATE_ZONE', e, {
-                                        zoneText: `Zone ${zone}`,
-                                        zone: zone,
-                                      })
-                                    }
-                                    component="li"
-                                    size="medium"
-                                    label={`Zone ${zone}`}
-                                    color={
-                                      parseInt(sfilters.zone) === zone ? 'primary' : 'secondary'
-                                    }
-                                  />
-                                </Grid>
-                              ))}
-                            </Grid>
-                          </ListItem>
-                        </List>
-                      </Collapse>
-                      <CoverCropSearch sfilters={sfilters} change={change} />
-                    </Fragment>
-                  )}
-
-                  {from === 'explorer' ? (
-                    filtersList()
-                  ) : (
-                    <>
-                      <ListItem
-                        button
-                        onClick={() => handleToggle('cropFiltersOpen')}
-                        style={
-                          from === 'table' && !state.cropFiltersOpen
-                            ? { backgroundColor: 'inherit' }
-                            : { backgroundColor: CustomStyles().lightGreen }
-                        }
-                      >
-                        <ListItemText primary="COVER CROP PROPERTIES" />
-                        {state.cropFiltersOpen ? <ExpandLess /> : <ExpandMore />}
-                      </ListItem>
-                      <Collapse in={state.cropFiltersOpen} timeout="auto">
-                        {filtersList()}
-                      </Collapse>
-                    </>
-                  )}
-                </Fragment>
-              )}
-            </List>
-          </div>
-        ) : (
-          <div className="col-12">
-            <ComparisonBar
-              {...props}
-              classes={classes}
-              filterData={sidebarFilters}
-              goals={state.selectedGoals.length > 0 ? state.selectedGoals : []}
-              comparisonKeys={state.comparisonKeys}
-              dispatch={dispatch}
-            />
-          </div>
-        )}
-      </div>
-    );
-  } else return <Fragment />;
+                  </Fragment>
+                )}
+                <ListItem
+                  button
+                  onClick={() => handleToggle('cropFiltersOpen')}
+                  style={{
+                    backgroundColor:
+                      from === 'table' && !state.cropFiltersOpen
+                        ? 'inherit'
+                        : CustomStyles().lightGreen,
+                  }}
+                >
+                  <ListItemText primary="COVER CROP PROPERTIES" />
+                  {state.cropFiltersOpen ? <ExpandLess /> : <ExpandMore />}
+                </ListItem>
+                <Collapse in={state.cropFiltersOpen} timeout="auto">
+                  {filtersList()}
+                </Collapse>
+              </Fragment>
+            )}
+          </List>
+        </div>
+      ) : (
+        <div className="col-12">
+          <ComparisonBar
+            {...props}
+            classes={classes}
+            filterData={sidebarFilters}
+            goals={state.selectedGoals.length > 0 ? state.selectedGoals : []}
+            comparisonKeys={state.comparisonKeys}
+            dispatch={dispatch}
+          />
+        </div>
+      )}
+    </div>
+  );
 };
 
 export default CropSidebarComponent;
