@@ -3,10 +3,15 @@ import { Clear } from '@mui/icons-material';
 import React from 'react';
 
 const CoverCropSearch = (props) => {
-  let { sfilters, change } = props;
+  let { sfilters, dispatch } = props;
 
-  const clearCoverCropSearch = () => {
-    change('CROP_SEARCH', '');
+  const clearCoverCropSearch = (type = 'CROP_SEARCH', value = '') => {
+    dispatch({
+      type,
+      data: {
+        value,
+      },
+    });
   };
 
   return (
@@ -18,7 +23,7 @@ const CoverCropSearch = (props) => {
           label="Cover Crop Name"
           helperText="Search by cover crop name"
           value={sfilters.cropSearch}
-          onChange={(e) => change('CROP_SEARCH', e)}
+          onChange={(e) => dispatch({ type: 'CROP_SEARCH', data: { value: e.target.value } })}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
