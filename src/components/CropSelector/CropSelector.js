@@ -80,6 +80,7 @@ const CropSelector = (props) => {
 
       if (objData.length > 0) {
         // some values are truthy
+        // TODO: replace _ lowdash with array function
         let updatedCropData = _.sortBy(crop_data, objData);
         setCropData(updatedCropData);
       } else {
@@ -90,6 +91,7 @@ const CropSelector = (props) => {
           //  Crop Data is inside cropData.fields
           activeObjKeys[index] = `fields.${val}`;
         });
+        // TODO: replace _ lowdash with array function
         let updatedCropData = _.orderBy(crop_data, activeObjKeys, ['desc', 'desc', 'desc']);
 
         setCropData(updatedCropData);
@@ -117,6 +119,7 @@ const CropSelector = (props) => {
         switch (orderBy) {
           case 'asc': {
             if (activeCropDataCopy.length > 0) {
+              // TODO: replace _ lowdash with array function
               let updatedCropData = _.orderBy(activeCropDataCopy, activeObjKeys, [
                 'asc',
                 'asc',
@@ -134,6 +137,7 @@ const CropSelector = (props) => {
           }
           case 'desc': {
             if (activeCropDataCopy.length > 0) {
+              // TODO: replace _ lowdash with array function
               let updatedCropData = _.orderBy(activeCropDataCopy, activeObjKeys, [
                 'desc',
                 'desc',
