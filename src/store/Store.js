@@ -281,7 +281,6 @@ const Store = ({ children }) => {
 
   const change = (type, e, value = e && e.target.value) => {
     if (typeof value === 'object') {
-      console.log('value', value);
       dispatch({
         type,
         data: value,
