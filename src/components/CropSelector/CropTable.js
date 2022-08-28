@@ -18,7 +18,7 @@ import {
   Typography,
 } from '@mui/material';
 
-import { AddCircle, CloseRounded, FiberManualRecord, Sort } from '@mui/icons-material';
+import { AddCircle, Sort } from '@mui/icons-material';
 
 import { useSnackbar } from 'notistack';
 
@@ -513,7 +513,6 @@ const CropTableComponent = (props) => {
                       </div>
                     }
                   >
-                    <Typography variant="body2">
                       <Button
                         onClick={() => {
                           props.sortAllCrops(props.sortPreference === 'desc' ? 'asc' : 'desc');
@@ -533,9 +532,8 @@ const CropTableComponent = (props) => {
                             }}
                           />
                         )}
-                        &nbsp; COVER CROPPING GOALS
+                        &nbsp; <Typography variant="body2" style={{ color: '#000' }}>COVER CROPPING GOALS</Typography>
                       </Button>
-                    </Typography>
                   </Tooltip>
                 </TableCell>
               ) : null}
@@ -547,71 +545,17 @@ const CropTableComponent = (props) => {
                   borderRight: '5px solid white',
                 }}
               >
-                <Typography variant="body2">
-                  <Button startIcon={<AddCircle />} onClick={handleLegendModal}>
+                  <Button startIcon={<AddCircle />} onClick={handleLegendModal} style={{ color: '#000' }}>
                     {' '}
-                    LEGEND
+                    <Typography variant="body2">LEGEND</Typography>
                   </Button>
-                </Typography>
 
-                <div
-                  id="legendWrapper"
-                  className="d-none"
-                  style={{
-                    position: 'fixed',
-                    backgroundColor: 'rgba(171, 208, 143, 0.8)',
-                    bottom: 0,
-                    zIndex: 999,
-                    textAlign: 'left',
-                  }}
-                >
-                  <div className={`modalLegendPaper`}>
-                    <div className="container-fluid">
-                      <div className="row">
-                        <div className="col-6">
-                          <Typography variant="h5">LEGEND</Typography>
-                        </div>
-
-                        <div className="col-6 text-right">
-                          <Button
-                            onClick={() => {
-                              const ele = document.getElementById('legendWrapper');
-                              ele.classList.add('d-none');
-                            }}
-                          >
-                            <CloseRounded />
-                          </Button>
-                        </div>
-                      </div>
-                      <div className="row mt-2">
-                        <div className="col-12 legendModalRow">
-                          <Typography variant="body1">
-                            <FiberManualRecord className="reliable" />
-                            <span className="pl-3">Reliable Establishment</span>
-                          </Typography>
-                        </div>
-                        <div className="col-12 legendModalRow">
-                          <Typography variant="body1">
-                            <FiberManualRecord className="temperatureRisk" />
-                            <span className="pl-3">Temperature Risk To Establishment</span>
-                          </Typography>
-                        </div>
-                        <div className="col-12 legendModalRow">
-                          <Typography variant="body1">
-                            <FiberManualRecord className="frostPossible" />
-                            <span className="pl-3">Frost Seeding Possible</span>
-                          </Typography>
-                        </div>
-                        <div className="col-12 legendModalRow">
-                          <Typography variant="body1">
-                            <FiberManualRecord className="cashCrop" />
-                            <span className="pl-3">Previous Cash Crop Growth Window</span>
-                          </Typography>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                <CropLegendModal
+                  legendModal={legendModal}
+                  handleLegendModal={handleLegendModal}
+                  disableBackdropClick={false}
+                />
+                
               </TableCell>
               <TableCell
                 style={{
@@ -631,7 +575,6 @@ const CropTableComponent = (props) => {
                   borderRight: '5px solid white',
                 }}
               >
-                <Typography variant="body1">
                   <Button onClick={sortCropsByName}>
                     {nameSortFlag ? (
                       <Sort
@@ -647,9 +590,8 @@ const CropTableComponent = (props) => {
                         }}
                       />
                     )}
-                    &nbsp; COVER CROPS
+                    &nbsp; <Typography variant="body1" style={{ color: '#000' }}>COVER CROPS</Typography>
                   </Button>
-                </Typography>
               </TableCell>
               <TableCell
                 style={{
@@ -718,7 +660,6 @@ const CropTableComponent = (props) => {
                   minWidth: '165px',
                 }}
               >
-                <Typography variant="body1">
                   <Button onClick={sortBySelectedCrops}>
                     {selectedCropsSortFlag ? (
                       <Sort
@@ -734,9 +675,8 @@ const CropTableComponent = (props) => {
                         }}
                       />
                     )}
-                    &nbsp;MY LIST
+                    &nbsp;<Typography variant="body1" style={{ color: '#000' }}>MY LIST</Typography>
                   </Button>
-                </Typography>
               </TableCell>
             </TableRow>
           </TableHead>
@@ -798,16 +738,10 @@ const CropTableComponent = (props) => {
         </Table>
       </TableContainer>
 
-      <div className="cropGoals"></div>
       <CropDetailsModalComponent
         modalOpen={modalOpen}
         setModalOpen={setModalOpen}
         crop={modalData}
-      />
-      <CropLegendModal
-        legendModal={legendModal}
-        handleLegendModal={handleLegendModal}
-        disableBackdropClick={false}
       />
     </Fragment>
   ) : (
