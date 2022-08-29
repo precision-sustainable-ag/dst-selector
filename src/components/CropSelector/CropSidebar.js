@@ -6,9 +6,7 @@
 
 import {
   Button,
-  Chip,
   Collapse,
-  Grid,
   List,
   ListItem,
   ListItemText,
@@ -32,8 +30,6 @@ import CoverCropGoals from './CropSidebar/Components/CoverCropGoals';
 import PreviousCashCrop from './CropSidebar/Components/PreviousCashCrop';
 import PlantHardinessZone from './CropSidebar/Components/PlantHardinessZone';
 // import SoilConditions from "./Filters/SoilConditions";  // TODO May be obsolete???  rh
-
-const _ = require('lodash');
 
 const useStyles = makeStyles((theme) => ({
   listItemRoot: {
@@ -66,7 +62,7 @@ const CropSidebarComponent = (props) => {
     style,
   } = props;
 
-  const { state, dispatch, change } = useContext(Context);
+  const { state, dispatch } = useContext(Context);
   const [loading, setLoading] = useState(true);
   const [sidebarFilters, setSidebarFilters] = useState([]);
   const [showFilters, setShowFilters] = useState('');
@@ -163,13 +159,6 @@ const CropSidebarComponent = (props) => {
       growthArray.push('Jun', 'Jul', 'Aug');
     }
 
-    // dispatch({
-    //   type: 'UPDATE_ACTIVE_GROWTH_PERIOD',
-    //   data: {
-    //     activeGrowthPeriod: growthArray,
-    //   },
-    // });
-
     const arrayKeys = [
       'Duration',
       'Active Growth Period',
@@ -188,7 +177,11 @@ const CropSidebarComponent = (props) => {
 
         if (areCommonElements(arrayKeys, key)) {
           // Handle array type havlues
-          if (_.intersection(vals, crop.fields[key]).length > 0) {
+          let intersection = (arrays = [vals, crop.fields[key]]) => {
+            return arrays.reduce((a, b) => a.filter((c) => b.includes(c)));
+          };
+
+          if (intersection().length > 0) {
             i++;
           }
         } else if (areCommonElements(booleanKeys, key)) {
@@ -223,130 +216,115 @@ const CropSidebarComponent = (props) => {
     });
   };
 
-  useEffect(() => {
-    let dictionary = [];
+  const createObject = (obj, dataDictionary, data) => {
+    const field = dataDictionary.filter((item) => item.Variable === data.dataDictionaryName);
 
-    const generateSidebarObject = async (dataDictionary) => {
-      sidebarCategoriesData.forEach((category) => {
-        let newCategory = {
-          name: category.name,
-          description: category.description,
-          type: category.type,
-        };
-        switch (category.type) {
-          case 'rating-only':
+    const description = field[0].Description;
+    const valuesDescription = field[0]['Values Description'];
+
+    obj.description = `${description}${valuesDescription && ' <br><br>'}${
+      valuesDescription && valuesDescription
+    }`;
+  };
+
+  const generateSidebarObject = async (dataDictionary, dictionary) => {
+    sidebarCategoriesData.forEach((category) => {
+      let newCategory = {
+        name: category.name,
+        description: category.description,
+        type: category.type,
+      };
+      switch (category.type) {
+        case 'rating-only':
+          newCategory.values = category.filters.map((f) => {
+            const data = sidebarFiltersData.filter((dictFilter) => dictFilter.__id === f)[0];
+
+            let obj = {
+              name: data.name,
+              alternateName: data.dataDictionaryName,
+              symbol: data.symbol,
+              maxSize: data.maxSize,
+            };
+
+            createObject(obj, dataDictionary, data);
+
+            return obj;
+          });
+          break;
+        case 'chips-only':
+          if (category.name === 'Cover Crop Type') {
+            const data = sidebarFiltersData.filter(
+              (dictFilter) => dictFilter.__id === category.filters[0],
+            )[0];
+
+            newCategory.values = [
+              {
+                name: data.name,
+                alternateName: data.dataDictionaryName,
+                symbol: null,
+                maxSize: data.maxSize,
+                values: data.values.split(/\s*,\s*/),
+              },
+            ];
+          } else {
+            newCategory.description = null;
             newCategory.values = category.filters.map((f) => {
               const data = sidebarFiltersData.filter((dictFilter) => dictFilter.__id === f)[0];
 
               let obj = {
                 name: data.name,
                 alternateName: data.dataDictionaryName,
-                symbol: data.symbol,
+                symbol: null,
                 maxSize: data.maxSize,
+                values: [data.values],
               };
 
-              const field = dataDictionary.filter(
-                (item) => item.Variable === data.dataDictionaryName,
-              );
-
-              const description = field[0].Description;
-              const valuesDescription = field[0]['Values Description'];
-
-              obj.description = `${description}${valuesDescription && ' <br><br>'}${
-                valuesDescription && valuesDescription
-              }`;
+              createObject(obj, dataDictionary, data);
 
               return obj;
             });
-            break;
-          case 'chips-only':
-            if (category.name === 'Cover Crop Type') {
-              const data = sidebarFiltersData.filter(
-                (dictFilter) => dictFilter.__id === category.filters[0],
-              )[0];
+          }
+          break;
+        case 'chips-rating':
+          newCategory.values = category.filters.map((f) => {
+            const data = sidebarFiltersData.filter((dictFilter) => dictFilter.__id === f)[0];
+            let obj = {
+              name: data.name,
+              type: data.type,
+              maxSize: null,
+              description: '',
+            };
 
-              newCategory.values = [
-                {
-                  name: data.name,
-                  alternateName: data.dataDictionaryName,
-                  symbol: null,
-                  maxSize: data.maxSize,
-                  values: data.values.split(/\s*,\s*/),
-                },
-              ];
-            } else {
-              newCategory.description = null;
-              newCategory.values = category.filters.map((f) => {
-                const data = sidebarFiltersData.filter((dictFilter) => dictFilter.__id === f)[0];
-
-                let obj = {
-                  name: data.name,
-                  alternateName: data.dataDictionaryName,
-                  symbol: null,
-                  maxSize: data.maxSize,
-                  values: [data.values],
-                };
-
-                const field = dataDictionary.filter(
-                  (item) => item.Variable === data.dataDictionaryName,
-                );
-
-                const description = field[0].Description;
-                const valuesDescription = field[0]['Values Description'];
-
-                obj.description = `${description}${valuesDescription && '<br><br>'}${
-                  valuesDescription && valuesDescription
-                }`;
-                return obj;
-              });
+            if (data.type === 'chip') {
+              obj.values = data.values.split(',').map((val) => val.trim());
+            } else if (data.type === 'rating') {
+              obj.values = [];
+              obj.maxSize = data.maxSize;
             }
-            break;
-          case 'chips-rating':
-            newCategory.values = category.filters.map((f) => {
-              const data = sidebarFiltersData.filter((dictFilter) => dictFilter.__id === f)[0];
-              let obj = {
-                name: data.name,
-                type: data.type,
-                maxSize: null,
-                description: '',
-              };
 
-              if (data.type === 'chip') {
-                obj.values = data.values.split(',').map((val) => val.trim());
-              } else if (data.type === 'rating') {
-                obj.values = [];
-                obj.maxSize = data.maxSize;
-              }
+            createObject(obj, dataDictionary, data);
 
-              const field = dataDictionary.filter(
-                (item) => item.Variable === data.dataDictionaryName,
-              );
+            return obj;
+          });
+          break;
+        default:
+          break;
+      }
 
-              const description = field[0].Description;
-              const valuesDescription = field[0]['Values Description'];
+      dictionary.push(newCategory);
+    });
+  };
 
-              obj.description = `${description}${valuesDescription && '<br><br>'}${
-                valuesDescription && valuesDescription
-              }`;
-              return obj;
-            });
-            break;
-          default:
-            break;
-        }
-
-        dictionary.push(newCategory);
-      });
-    };
+  useEffect(() => {
+    const dictionary = [];
+    const zoneName = `zone${sfilters.zone}Dictionary`;
 
     const setData = async () => {
       setSidebarFilters(dictionary);
     };
 
-    let zoneName = `zone${sfilters.zone}Dictionary`;
-
     setLoading(true);
-    generateSidebarObject(state[zoneName])
+    generateSidebarObject(state[zoneName], dictionary)
       .then(() => setData())
       .then(() => setLoading(false));
   }, [
@@ -356,16 +334,6 @@ const CropSidebarComponent = (props) => {
     state.zone6Dictionary,
     state.zone7Dictionary,
   ]);
-
-  const changeProgress = (type) => {
-    // TODO: type is only decrement?
-    dispatch({
-      type: 'UPDATE_PROGRESS',
-      data: {
-        type: type.toUpperCase(),
-      },
-    });
-  }; // changeProgress
 
   useEffect(() => {
     if (from === 'table') {
@@ -384,9 +352,10 @@ const CropSidebarComponent = (props) => {
   }, [dateRange, from, setGrowthWindow, dispatch]);
 
   useEffect(() => {
-    if (
-      document.querySelector('.MuiTableRow-root.theadFirst.MuiTableRow-head') // TODO:  When is this true?
-    ) {
+    if (document.querySelector('.MuiTableRow-root.theadFirst.MuiTableRow-head')) {
+      // TODO:  When is this true?
+      // NOTE: could never get alert to show up.  can we delete?
+      // alert('Its true');
       const totalHt = document
         .querySelector('.MuiTableRow-root.theadFirst.MuiTableRow-head')
         .getBoundingClientRect().height;
@@ -408,17 +377,6 @@ const CropSidebarComponent = (props) => {
     }
   }, [state.cashCropData.dateRange]);
 
-  useEffect(() => {
-    if (state.myCoverCropActivationFlag) {
-      // TODO: When does this happen?
-      if (comparisonView) {
-        if (filtersSelected) {
-          resetAllFilters();
-        }
-      }
-    }
-  }, [comparisonView, state.myCoverCropActivationFlag]);
-
   const filters = () =>
     sidebarFilters.map((filter, index) => {
       let sectionFilter = `${section}${filter.name}`;
@@ -437,7 +395,7 @@ const CropSidebarComponent = (props) => {
 
   const filtersList = () => (
     <List component="div" disablePadding className="cropFilters">
-      {filtersSelected ? (
+      {filtersSelected && (
         <ListItem>
           <ListItemText
             primary={
@@ -452,8 +410,6 @@ const CropSidebarComponent = (props) => {
             }
           />
         </ListItem>
-      ) : (
-        <ListItem></ListItem>
       )}
       {filters()}
     </List>
@@ -497,40 +453,32 @@ const CropSidebarComponent = (props) => {
     </div>
   ) : (
     <div className="row">
-      {state.myCoverCropActivationFlag && from === 'table' ? (
+      {from === 'table' && (
         <div
-          className={`col-12 ${!state.speciesSelectorActivationFlag ? `mb-3` : ``}`}
-          style={state.speciesSelectorActivationFlag && { paddingBottom: tableHeight }}
+          className="col-12"
+          style={{
+            paddingBottom: tableHeight,
+          }}
         >
-          {comparisonButton}
-        </div>
-      ) : (
-        from === 'table' && (
-          <div
-            className="col-12"
-            style={{
-              paddingBottom: tableHeight,
-            }}
+          <Button
+            className="dynamicToggleBtn"
+            fullWidth
+            variant="contained"
+            onClick={toggleListView}
+            size="large"
+            color="secondary"
+            style={{ marginBottom: '15px' }}
+            startIcon={
+              isListView ? (
+                <CalendarToday style={{ fontSize: 'larger' }} />
+              ) : (
+                <ListIcon style={{ fontSize: 'larger' }} />
+              )
+            }
           >
-            <Button
-              className="dynamicToggleBtn"
-              fullWidth
-              variant="contained"
-              onClick={toggleListView}
-              size="large"
-              color="secondary"
-              startIcon={
-                isListView ? (
-                  <CalendarToday style={{ fontSize: 'larger' }} />
-                ) : (
-                  <ListIcon style={{ fontSize: 'larger' }} />
-                )
-              }
-            >
-              {isListView ? 'CALENDAR VIEW' : 'LIST VIEW'}
-            </Button>
-          </div>
-        )
+            {isListView ? 'CALENDAR VIEW' : 'LIST VIEW'}
+          </Button>
+        </div>
       )}
 
       {state.speciesSelectorActivationFlag || from === 'explorer' ? (
@@ -542,6 +490,7 @@ const CropSidebarComponent = (props) => {
             subheader={
               <ListSubheader
                 classes={{ root: classes.listSubHeaderRoot }}
+                style={{ marginBottom: '15px' }}
                 component="div"
                 id="nested-list-subheader"
               >
@@ -553,16 +502,11 @@ const CropSidebarComponent = (props) => {
             {from === 'table' && (
               <Fragment>
                 {showFilters && state.speciesSelectorActivationFlag && isListView && (
-                  <CoverCropSearch sfilters={sfilters} change={change} />
+                  <CoverCropSearch sfilters={sfilters} dispatch={dispatch} />
                 )}
 
                 {isListView && (
-                  <CoverCropGoals
-                    classes={classes}
-                    style={style}
-                    handleToggle={handleToggle}
-                    changeProgress={changeProgress}
-                  />
+                  <CoverCropGoals classes={classes} style={style} handleToggle={handleToggle} />
                 )}
 
                 <PreviousCashCrop
@@ -578,13 +522,14 @@ const CropSidebarComponent = (props) => {
                 {from === 'explorer' && (
                   <Fragment>
                     <PlantHardinessZone dispatch={dispatch} sfilters={sfilters} />
-                    <CoverCropSearch sfilters={sfilters} change={change} />
+                    <CoverCropSearch sfilters={sfilters} dispatch={dispatch} />
                   </Fragment>
                 )}
                 <ListItem
                   button
                   onClick={() => handleToggle('cropFiltersOpen')}
                   style={{
+                    marginBottom: '15px',
                     backgroundColor:
                       from === 'table' && !state.cropFiltersOpen
                         ? 'inherit'

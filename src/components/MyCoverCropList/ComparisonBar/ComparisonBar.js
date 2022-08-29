@@ -129,23 +129,21 @@ const ComparisonBar = (props) => {
       }
       className={props.classes.root}
     >
-      {props.comparisonKeys.length > 0 ? (
+      {props.comparisonKeys.length > 0 && (
         <ListItem onClick={() => {}}>
           <ListItemText
             primary={
-              <Typography
-                variant="button"
+              <Button
+                size="small"
+                style={{ marginBottom: '-15px' }}
                 className="text-uppercase text-left text-danger font-weight-bold"
                 onClick={resetAllFilters}
-                style={{ cursor: 'pointer' }}
               >
                 Clear Variables
-              </Typography>
+              </Button>
             }
           />
         </ListItem>
-      ) : (
-        <ListItem></ListItem>
       )}
       <ListItem>
         <ListItemText
