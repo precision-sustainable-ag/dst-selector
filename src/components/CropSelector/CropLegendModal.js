@@ -31,11 +31,8 @@ const CropLegendModal = (props) => {
     <Modal
       open={props.legendModal}
       onClose={props.handleLegendModal}
-      BackdropComponent={Backdrop}
       className={classes.modal}
-      BackdropProps={{
-        timeout: 500,
-      }}>
+    >
         <div className={`modalLegendPaper ${classes.paper}`}>
             <div className="row">
               <div className="col-6">
