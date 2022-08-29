@@ -6,7 +6,7 @@ import { Context } from '../../../../store/Store';
 import { CustomStyles } from '../../../../shared/constants';
 
 const CoverCropGoals = (props) => {
-  let { handleToggle, classes, changeProgress, style } = props;
+  let { handleToggle, classes, style } = props;
 
   const { state, dispatch } = useContext(Context);
 
@@ -22,6 +22,15 @@ const CoverCropGoals = (props) => {
       },
     });
   }; // updateSelectedGoals
+
+  const changeProgress = () => {
+    dispatch({
+      type: 'UPDATE_PROGRESS',
+      data: {
+        type: 'DECREMENT',
+      },
+    });
+  }; // changeProgress
 
   const renderList = (children, props, isDragged) => (
     <ol
@@ -82,7 +91,7 @@ const CoverCropGoals = (props) => {
               <ListItemText primary="No Goals Selected" />
             </ListItem>
             <ListItem className={classes.nested}>
-              <Button onClick={() => changeProgress('decrement')}>click to edit</Button>
+              <Button onClick={() => changeProgress()}>click to edit</Button>
             </ListItem>
           </List>
         ) : (
@@ -129,7 +138,7 @@ const CoverCropGoals = (props) => {
                 <Typography
                   variant="button"
                   className="text-uppercase text-left text-danger font-weight-bold"
-                  onClick={() => changeProgress('decrement')}
+                  onClick={() => changeProgress()}
                   style={{ cursor: 'pointer' }}
                 >
                   &nbsp;Click To Edit
