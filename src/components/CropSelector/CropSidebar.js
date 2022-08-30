@@ -382,6 +382,7 @@ const CropSidebarComponent = (props) => {
       let sectionFilter = `${section}${filter.name}`;
       return (
         <SidebarFilter
+          key={index}
           filter={filter}
           index={index}
           sidebarFilterOptions={sidebarFilterOptions}
