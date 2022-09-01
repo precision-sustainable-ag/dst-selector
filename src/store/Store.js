@@ -279,24 +279,7 @@ const initialState = {
 const Store = ({ children }) => {
   const [state, dispatch] = useReducer(Reducer, initialState);
 
-  const change = (type, e, value = e && e.target.value) => {
-    if (typeof value === 'object') {
-      dispatch({
-        type,
-        data: value,
-      });
-    } else {
-      dispatch({
-        type,
-        data: {
-          value,
-        },
-      });
-      // alert(JSON.stringify({type,data: {value}}))
-    }
-  }; // change
-
-  return <Context.Provider value={{ state, dispatch, change }}>{children}</Context.Provider>;
+  return <Context.Provider value={{ state, dispatch }}>{children}</Context.Provider>;
 };
 
 export const Context = createContext(initialState);
