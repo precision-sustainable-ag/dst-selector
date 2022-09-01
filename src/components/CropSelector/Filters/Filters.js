@@ -1,22 +1,11 @@
 import { Chip, Grid, Tooltip } from '@mui/material';
-
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
-
-import React, {
-  forwardRef,
-  useEffect,
-  useContext,
-  // useImperativeHandle,
-  useState,
-} from 'react';
-
+import React, { forwardRef, useEffect, useContext, useState } from 'react';
 import { Context } from '../../../store/Store';
 
-const DollarsAndRatings = ({ data, filter, handleChange }) => {
-  const { state, change } = useContext(Context);
+const DollarsAndRatings = ({ filter, handleChange }) => {
+  const { state, dispatch } = useContext(Context);
   const sfilters = window.location.href.includes('species') ? state.selector : state.explorer;
-
-  // if (!data) return <Fragment></Fragment>;
 
   let style =
     filter.symbol === 'dollar'
@@ -34,10 +23,22 @@ const DollarsAndRatings = ({ data, filter, handleChange }) => {
         .map((_, i) => i + 1)
         .map((i) => {
           const filterKey = filter.name + ': ' + i;
-
-          // const selected = data.includes(i);
-
           const selected = sfilters[filterKey];
+          const filterOn = (key = filterKey) =>
+            dispatch({
+              type: 'FILTER_ON',
+              data: {
+                value: key,
+              },
+            });
+
+          const filterOff = (key = filterKey) =>
+            dispatch({
+              type: 'FILTER_OFF',
+              data: {
+                value: key,
+              },
+            });
 
           return (
             <Chip
@@ -51,38 +52,24 @@ const DollarsAndRatings = ({ data, filter, handleChange }) => {
               onClick={() => {
                 if (filter.symbol === 'dollar') {
                   if (selected) {
-                    change('FILTER_OFF', null, filter.name + ': ' + i);
-                    // data = data.filter((d) => d !== i);
+                    filterOff();
                   } else {
-                    change('FILTER_ON', null, filter.name + ': ' + i);
-                    // data.push(i);
+                    filterOn();
                   }
-                  // handleChange(filter.name || filter.alternateName, data);
                   handleChange(filter.name || filter.alternateName);
                 } else {
                   if (selected) {
-                    change('FILTER_OFF', null, filterKey);
-                    // data = data.filter((j) => j !== i);
+                    filterOff();
                   } else {
                     for (let j = 1; j <= filter.maxSize; j++) {
+                      const filterKey2 = filter.name + ': ' + j;
                       if (j < i) {
-                        change('FILTER_OFF', null, filter.name + ': ' + j);
+                        filterOff(filterKey2);
                       } else {
-                        change('FILTER_ON', null, filter.name + ': ' + j);
+                        filterOn(filterKey2);
                       }
-
-                      // if (!data.includes(j)) {
-                      //   data.push(j);
-                      // }
                     }
-
-                    // for (let j = i; j <= filter.maxSize; j++) {
-                    //   if (!data.includes(j)) {
-                    //     data.push(j);
-                    //   }
-                    // }
                   }
-                  // handleChange(filter.name || filter.alternateName, data.sort());
                   handleChange(filter.name || filter.alternateName);
                 }
               }}
@@ -96,11 +83,7 @@ const DollarsAndRatings = ({ data, filter, handleChange }) => {
 const Chips = ({ state, filter, handleChange }) => {
   const sfilters = window.location.href.includes('species') ? state.selector : state.explorer;
 
-  // let { sidebarFilterOptions } = props;
-
   return filter.values.map((val) => {
-    // const selected = sidebarFilterOptions[filter.name].includes(val);
-
     const selected = sfilters[filter.name + ': ' + val];
 
     return (
@@ -148,16 +131,9 @@ const Tip = ({ filter, omitHeading }) => {
 }; // Tip
 
 const Filters = forwardRef(({ props }, ref) => {
-  const { state, change } = useContext(Context);
+  const { state, dispatch } = useContext(Context);
 
   let { filters, setSidebarFilterOptions, sidebarFilterOptions } = props;
-
-  // const options = filters.values.reduce(function (acc, cur, i) {
-  //   acc[cur.name || cur.alternateName] = [];
-  //   return acc;
-  // }, {});
-
-  // const [selected, setSelected] = useState(options);
   const [selected, setSelected] = useState({});
 
   const setProps = (selected) => {
@@ -171,31 +147,18 @@ const Filters = forwardRef(({ props }, ref) => {
     setProps(selected);
   }, [selected]);
 
-  //  useImperativeHandle(ref, () => ({
-  //    resetFilters() {
-  //      setSelected(options);
-  //    },
-  //  }));
-
-  const dollarsAndRatingsChange = (filtername, val) => {
-    // setSelected({ ...selected, [filtername]: val });
+  const dollarsAndRatingsChange = () => {
     setSelected({ ...selected, whatever: 'rerender' });
   };
 
   const chipChange = (filtername, val) => {
-    change('FILTER_TOGGLE', null, filtername + ': ' + val);
-    // change('FILTER_TOGGLE', filtername, val);
+    dispatch({
+      type: 'FILTER_TOGGLE',
+      data: {
+        value: filtername + ': ' + val,
+      },
+    });
     setSelected({ ...selected, whatever: 'rerender' });
-    // setSelected({ ...selected, [filtername]: val });
-
-    // if (selected[filtername].includes(val)) {
-    //   let filtered = selected[filtername].filter((vals) => vals !== val);
-    //   setSelected({ ...selected, [filtername]: filtered });
-    // } else {
-    //   let added = selected[filtername];
-    //   added.push(val);
-    //   setSelected({ ...selected, [filtername]: added });
-    // }
   };
 
   return (
@@ -204,7 +167,7 @@ const Filters = forwardRef(({ props }, ref) => {
         if (filter.type === 'chip' || filters.type === 'chips-only') {
           if (filter.values && filter.values.length === 1) {
             return (
-              <Grid item>
+              <Grid key={i} item>
                 <Chips state={state} filter={filter} props={props} handleChange={chipChange} />
                 {filter.description && <Tip filter={filter} omitHeading={true} />}
               </Grid>
@@ -223,16 +186,13 @@ const Filters = forwardRef(({ props }, ref) => {
             );
           }
         } else {
-          // let data = sidebarFilterOptions[filter.name || filter.alternateName];
-
           return (
-            <Grid item xs={12}>
+            <Grid key={i} item xs={12}>
               <Tip filter={filter} />
               <br />
               <DollarsAndRatings
                 state={state}
                 filter={filter}
-                // data={data}
                 handleChange={dollarsAndRatingsChange}
               />
             </Grid>
