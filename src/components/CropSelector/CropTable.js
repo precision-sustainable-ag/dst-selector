@@ -4,7 +4,7 @@
   addCropToBasket manages adding crops to cart
   Styles are created using makeStyles
 */
-
+import React, { Fragment, useContext, useEffect, useState } from 'react';
 import {
   Button,
   CircularProgress,
@@ -17,13 +17,8 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material';
-
 import { AddCircle, Sort } from '@mui/icons-material';
-
 import { useSnackbar } from 'notistack';
-
-import React, { Fragment, useContext, useEffect, useState } from 'react';
-
 import {
   CropImage,
   CustomStyles,
@@ -33,7 +28,6 @@ import {
   sudoButtonStyle,
   trimString,
 } from '../../shared/constants';
-
 import { Context } from '../../store/Store';
 import '../../styles/cropCalendarViewComponent.scss';
 import '../../styles/cropTable.scss';
@@ -48,26 +42,43 @@ const CropTableComponent = (props) => {
   const { enqueueSnackbar } = useSnackbar();
 
   const { state, dispatch } = useContext(Context);
+
   const [modalOpen, setModalOpen] = useState(false);
   const [modalData, setModalData] = useState({});
+  const [showGrowthWindow, setShowGrowthWindow] = useState(true);
+  const [legendModal, setLegendModal] = useState(false);
+  const [tbodyHeight, setTbodyHeight] = useState(0);
+  const [theadHeight, setTheadHeight] = useState(0);
+  const [nameSortFlag, setNameSortFlag] = useState(true);
+  const [selectedCropsSortFlag, setSelectedCropsSortFlag] = useState(true);
+
   const selectedBtns = state.selectedCrops.map((crop) => {
     return crop.id;
   });
+
+  useEffect(() => {
+    if (document.querySelector('thead.MuiTableHead-root.tableHeadWrapper')) {
+      const theadComputedHeight = document
+        .querySelector('thead.MuiTableHead-root.tableHeadWrapper')
+        .getBoundingClientRect().height;
+
+      setTbodyHeight(850 - theadComputedHeight);
+      setTheadHeight(theadComputedHeight);
+    }
+  }, []);
+
+  useEffect(() => {
+    props.showGrowthWindow ? setShowGrowthWindow(true) : setShowGrowthWindow(false);
+  }, [props.showGrowthWindow]);
 
   const handleModalOpen = (crop) => {
     setModalData(crop);
     setModalOpen(true);
   };
 
-  const [showGrowthWindow, setShowGrowthWindow] = useState(true);
-  const [legendModal, setLegendModal] = useState(false);
   const handleLegendModal = () => {
     setLegendModal(!legendModal);
   };
-
-  useEffect(() => {
-    props.showGrowthWindow ? setShowGrowthWindow(true) : setShowGrowthWindow(false);
-  }, [props.showGrowthWindow]);
 
   const addCropToBasket = (cropId, cropName, btnId, cropData) => {
     let selectedCrops = {};
@@ -153,7 +164,7 @@ const CropTableComponent = (props) => {
           ))}
 
         {showGrowthWindow && (
-          <TableCell style={goalsLength === 0 ? { width: '50%' } : {}}>
+          <TableCell style={{ width: goalsLength === 0 && '50%' }}>
             <CropSelectorCalendarView data={crop} from={'listView'} />
           </TableCell>
         )}
@@ -210,28 +221,24 @@ const CropTableComponent = (props) => {
           return (
             <Fragment key={index}>
               <TableRow
-                className={hasGoalRatingTwoOrLess(crop) ? `inactiveCropRow` : ''}
+                className={hasGoalRatingTwoOrLess(crop) && 'inactiveCropRow'}
                 key={`croprow${index}`}
                 id={crop.fields['id']}
-                style={hasGoalRatingTwoOrLess(crop) ? { opacity: '0.2' } : {}}
+                style={{ opacity: hasGoalRatingTwoOrLess(crop) && '0.2' }}
               >
                 <TableCell style={{ height: 'auto' }}>
                   <div className="container-fluid">
                     <div className="row">
                       <div className="col-auto pl-md-0">
-                        {crop.fields['Image Data'] ? (
-                          <CropImage
-                            present={true}
-                            src={
-                              crop.fields['Image Data']['Key Thumbnail']
-                                ? `/images/Cover Crop Photos/100x100/${crop.fields['Image Data']['Directory']}/${crop.fields['Image Data']['Key Thumbnail']}`
-                                : 'https://placehold.it/100x100'
-                            }
-                            alt={crop.fields['Cover Crop Name']}
-                          />
-                        ) : (
-                          <CropImage present={false} />
-                        )}
+                        <CropImage
+                          present={crop.fields['Image Data'] ? true : false}
+                          src={
+                            crop.fields['Image Data'] && crop.fields['Image Data']['Key Thumbnail']
+                              ? `/images/Cover Crop Photos/100x100/${crop.fields['Image Data']['Directory']}/${crop.fields['Image Data']['Key Thumbnail']}`
+                              : 'https://placehold.it/100x100'
+                          }
+                          alt={crop.fields['Image Data'] && crop.fields['Cover Crop Name']}
+                        />
                       </div>
                       <div className="col-auto pl-md-0">
                         <div className="col-12 p-md-0">
@@ -322,9 +329,6 @@ const CropTableComponent = (props) => {
               </TableRow>
             </Fragment>
           );
-        // else {
-        //   return '';
-        // }
       })
     );
   };
@@ -338,22 +342,6 @@ const CropTableComponent = (props) => {
     );
   };
 
-  const [tbodyHeight, setTbodyHeight] = useState(0);
-  const [theadHeight, setTheadHeight] = useState(0);
-
-  useEffect(() => {
-    if (document.querySelector('thead.MuiTableHead-root.tableHeadWrapper')) {
-      const theadComputedHeight = document
-        .querySelector('thead.MuiTableHead-root.tableHeadWrapper')
-        .getBoundingClientRect().height;
-
-      setTbodyHeight(850 - theadComputedHeight);
-      setTheadHeight(theadComputedHeight);
-    }
-  }, []);
-
-  const [nameSortFlag, setNameSortFlag] = useState(true);
-  const [selectedCropsSortFlag, setSelectedCropsSortFlag] = useState(true);
   const sortBySelectedCrops = () => {
     sortReset('selectedCrops');
     let selectedCropsShadow = state.selectedCrops;
@@ -517,20 +505,15 @@ const CropTableComponent = (props) => {
                         props.sortAllCrops(props.sortPreference === 'desc' ? 'asc' : 'desc');
                       }}
                     >
-                      {props.sortPreference === 'asc' ? (
-                        <Sort
-                          style={{
-                            color: CustomStyles().secondaryProgressBtnColor,
-                          }}
-                        />
-                      ) : (
-                        <Sort
-                          style={{
-                            color: CustomStyles().progressColor,
-                            transform: 'rotate(180deg)',
-                          }}
-                        />
-                      )}
+                      <Sort
+                        style={{
+                          color:
+                            props.sortPreference === 'asc'
+                              ? CustomStyles().secondaryProgressBtnColor
+                              : CustomStyles().progressColor,
+                          transform: props.sortPreference === 'asc' && 'rotate(180deg)',
+                        }}
+                      />
                       &nbsp;{' '}
                       <Typography variant="body2" style={{ color: '#000' }}>
                         COVER CROPPING GOALS
@@ -581,20 +564,14 @@ const CropTableComponent = (props) => {
                 }}
               >
                 <Button onClick={sortCropsByName}>
-                  {nameSortFlag ? (
-                    <Sort
-                      style={{
-                        color: CustomStyles().secondaryProgressBtnColor,
-                      }}
-                    />
-                  ) : (
-                    <Sort
-                      style={{
-                        color: CustomStyles().progressColor,
-                        transform: 'rotate(180deg)',
-                      }}
-                    />
-                  )}
+                  <Sort
+                    style={{
+                      color: nameSortFlag
+                        ? CustomStyles().secondaryProgressBtnColor
+                        : CustomStyles().progressColor,
+                      transform: nameSortFlag && 'rotate(180deg)',
+                    }}
+                  />
                   &nbsp;{' '}
                   <Typography variant="body1" style={{ color: '#000' }}>
                     COVER CROPS
@@ -623,7 +600,7 @@ const CropTableComponent = (props) => {
                         maxWidth: '185px',
                         backgroundColor: '#abd08f',
                         textAlign: 'center',
-                        borderRight: index === lastIndex ? '5px solid white' : 'none',
+                        borderRight: index === lastIndex && '5px solid white',
                       }}
                     >
                       <Typography variant="body1">
@@ -668,20 +645,14 @@ const CropTableComponent = (props) => {
                 }}
               >
                 <Button onClick={sortBySelectedCrops}>
-                  {selectedCropsSortFlag ? (
-                    <Sort
-                      style={{
-                        color: CustomStyles().secondaryProgressBtnColor,
-                      }}
-                    />
-                  ) : (
-                    <Sort
-                      style={{
-                        color: CustomStyles().progressColor,
-                        transform: 'rotate(180deg)',
-                      }}
-                    />
-                  )}
+                  <Sort
+                    style={{
+                      color: selectedCropsSortFlag
+                        ? CustomStyles().secondaryProgressBtnColor
+                        : CustomStyles().progressColor,
+                      transform: selectedCropsSortFlag && 'rotate(180deg)',
+                    }}
+                  />
                   &nbsp;
                   <Typography variant="body1" style={{ color: '#000' }}>
                     MY LIST
