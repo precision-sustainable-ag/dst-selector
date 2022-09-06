@@ -5,13 +5,11 @@ import { arrayMove, List as ListMovable } from 'react-movable';
 import { Context } from '../../../../store/Store';
 import { CustomStyles } from '../../../../shared/constants';
 
-const CoverCropGoals = (props) => {
-  let { handleToggle, classes, style } = props;
-
+function CoverCropGoals({ handleToggle, classes, style }) {
   const { state, dispatch } = useContext(Context);
 
   const updateSelectedGoals = (newGoalArr, oldIndex, newIndex) => {
-    let newGoals = arrayMove(newGoalArr, oldIndex, newIndex);
+    const newGoals = arrayMove(newGoalArr, oldIndex, newIndex);
 
     dispatch({
       type: 'DRAG_GOALS',
@@ -71,7 +69,7 @@ const CoverCropGoals = (props) => {
   );
 
   return (
-    <Fragment>
+    <>
       {' '}
       <ListItem
         button
@@ -95,7 +93,7 @@ const CoverCropGoals = (props) => {
             </ListItem>
           </List>
         ) : (
-          <Fragment>
+          <>
             <List component="div" disablePadding>
               <ListItem className={classes.nested}>
                 <ListItemText
@@ -145,11 +143,11 @@ const CoverCropGoals = (props) => {
                 </Typography>
               </ListItemText>
             </ListItem>
-          </Fragment>
+          </>
         )}
       </Collapse>
-    </Fragment>
+    </>
   );
-};
+}
 
 export default CoverCropGoals;
