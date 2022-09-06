@@ -22,7 +22,7 @@ const PreviousCashCrop = (props) => {
   let { handleToggle, classes, setDateRange } = props;
 
   const { state, dispatch } = useContext(Context);
-  const [cashCropVisible, setCashCropVisible] = useState(true); // TODO: buggy(?)
+  const [cashCropVisible, setCashCropVisible] = useState(true); // TODO: buggy(?);
 
   return (
     <Fragment>

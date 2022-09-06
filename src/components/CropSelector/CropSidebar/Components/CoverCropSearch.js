@@ -1,10 +1,10 @@
-import { IconButton, InputAdornment, ListItem, ListItemText, TextField } from '@mui/material';
+import {
+  IconButton, InputAdornment, ListItem, ListItemText, TextField,
+} from '@mui/material';
 import { Clear } from '@mui/icons-material';
 import React from 'react';
 
-const CoverCropSearch = (props) => {
-  let { sfilters, dispatch } = props;
-
+function CoverCropSearch({ sfilters, dispatch }) {
   const clearCoverCropSearch = (type = 'CROP_SEARCH', value = '') => {
     dispatch({
       type,
@@ -37,6 +37,6 @@ const CoverCropSearch = (props) => {
       </ListItemText>
     </ListItem>
   );
-};
+}
 
 export default CoverCropSearch;
