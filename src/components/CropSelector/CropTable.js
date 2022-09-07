@@ -4,7 +4,7 @@
   addCropToBasket manages adding crops to cart
   Styles are created using makeStyles
 */
-import React, { Fragment, useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Button,
   CircularProgress,
@@ -18,28 +18,17 @@ import {
   Typography,
 } from '@mui/material';
 import { AddCircle, Sort } from '@mui/icons-material';
-import { useSnackbar } from 'notistack';
-import {
-  CropImage,
-  CustomStyles,
-  flipCoverCropName,
-  getRating,
-  LightButton,
-  sudoButtonStyle,
-  trimString,
-} from '../../shared/constants';
+import { CustomStyles, flipCoverCropName, sudoButtonStyle } from '../../shared/constants';
 import { Context } from '../../store/Store';
 import '../../styles/cropCalendarViewComponent.scss';
 import '../../styles/cropTable.scss';
 import CropDetailsModalComponent from './CropDetailsModal';
 import CropLegendModal from './CropLegendModal';
-import CropSelectorCalendarView from './CropSelectorCalendarView';
+import CropDataRender from './CropDataRender';
 
 const CropTableComponent = (props) => {
   const cropData = props.cropData || [];
   let activeCropData = props.activeCropData || [];
-
-  const { enqueueSnackbar } = useSnackbar();
 
   const { state, dispatch } = useContext(Context);
 
@@ -51,10 +40,6 @@ const CropTableComponent = (props) => {
   const [theadHeight, setTheadHeight] = useState(0);
   const [nameSortFlag, setNameSortFlag] = useState(true);
   const [selectedCropsSortFlag, setSelectedCropsSortFlag] = useState(true);
-
-  const selectedBtns = state.selectedCrops.map((crop) => {
-    return crop.id;
-  });
 
   useEffect(() => {
     if (document.querySelector('thead.MuiTableHead-root.tableHeadWrapper')) {
@@ -80,266 +65,13 @@ const CropTableComponent = (props) => {
     setLegendModal(!legendModal);
   };
 
-  const addCropToBasket = (cropId, cropName, btnId, cropData) => {
-    let selectedCrops = {};
-    let cropArray = [];
-    selectedCrops.id = cropId;
-    selectedCrops.cropName = cropName;
-    selectedCrops.btnId = btnId;
-    selectedCrops.data = cropData;
-    cropArray = selectedCrops;
-    // // check if crop id exists inside state, if yes then remove it
-
-    if (state.selectedCrops.length > 0) {
-      let removeIndex = state.selectedCrops
-        .map(function (item) {
-          return item.id;
-        })
-        .indexOf(`${cropId}`);
-      if (removeIndex === -1) {
-        dispatch({
-          type: 'SELECTED_CROPS_MODIFIER',
-          data: {
-            selectedCrops: [...state.selectedCrops, selectedCrops],
-            snackOpen: false,
-            snackMessage: `${cropName} Added`,
-          },
-        });
-        enqueueSnackbar(`${cropName} Added`);
-      } else {
-        // element exists, remove
-        let selectedCropsCopy = state.selectedCrops;
-
-        selectedCropsCopy.splice(removeIndex, 1);
-
-        dispatch({
-          type: 'SELECTED_CROPS_MODIFIER',
-          data: {
-            selectedCrops: selectedCropsCopy,
-            snackOpen: false,
-            snackMessage: `${cropName} Removed`,
-          },
-        });
-        enqueueSnackbar(`${cropName} Removed`);
-      }
-    } else {
-      dispatch({
-        type: 'SELECTED_CROPS_MODIFIER',
-        data: {
-          selectedCrops: [cropArray],
-          snackOpen: false,
-          snackMessage: `${cropName} Added`,
-        },
-      });
-      enqueueSnackbar(`${cropName} Added`);
-    }
-  };
-
-  const getCardFlex = (crop, indexKey) => {
-    let goalsLength = state.selectedGoals.length;
-
-    return (
-      <>
-        {goalsLength > 0 &&
-          state.selectedGoals.map((goal, index) => (
-            <TableCell style={{ textAlign: 'center' }} key={index} className="goalCells">
-              <div>
-                <Tooltip
-                  arrow
-                  placement="bottom"
-                  title={
-                    <div className="filterTooltip text-capitalize">
-                      <p>
-                        {`Goal ${index + 1}`}
-                        {': '}
-                        {goal}
-                      </p>
-                    </div>
-                  }
-                >
-                  {getRating(crop.fields[goal])}
-                </Tooltip>
-              </div>
-            </TableCell>
-          ))}
-
-        {showGrowthWindow && (
-          <TableCell style={{ width: goalsLength === 0 && '50%' }}>
-            <CropSelectorCalendarView data={crop} from={'listView'} />
-          </TableCell>
-        )}
-
-        <TableCell style={{ maxWidth: '150px', textAlign: 'center' }}>
-          <div className="d-flex w-100 justify-content-center align-items-center flex-column">
-            <LightButton
-              id={`cartBtn${indexKey}`}
-              style={{
-                borderRadius: CustomStyles().nonRoundedRadius,
-                width: '150px',
-              }}
-              className={
-                selectedBtns.includes(crop.fields.id) ? 'activeCartBtn' : 'inactiveCartBtn'
-              }
-              onClick={() => {
-                addCropToBasket(
-                  crop.fields['id'],
-                  crop.fields['Cover Crop Name'],
-                  `cartBtn${indexKey}`,
-                  crop.fields,
-                );
-              }}
-            >
-              {selectedBtns.includes(crop.fields.id) ? 'ADDED' : 'ADD TO LIST'}
-            </LightButton>{' '}
-            <Button size="small" onClick={() => handleModalOpen(crop)}>
-              View Details
-            </Button>
-          </div>
-        </TableCell>
-      </>
-    );
-  };
-
-  const activeCropPresent = () => {
-    return activeCropData.length > 0;
-  };
-
-  const hasGoalRatingTwoOrLess = (crop = []) => {
-    const { selectedGoals } = state;
-
-    return crop.inactive || selectedGoals.every((rating) => crop.fields[rating] <= 2);
-  };
-
-  const CropList = ({ matchGoals }) => {
-    return (
-      activeCropPresent &&
-      activeCropData.map((crop, index) => {
-        if (
-          crop.fields['Zone Decision'] === 'Include' &&
-          (matchGoals ? !hasGoalRatingTwoOrLess(crop) : hasGoalRatingTwoOrLess(crop))
-        )
-          return (
-            <Fragment key={index}>
-              <TableRow
-                className={hasGoalRatingTwoOrLess(crop) && 'inactiveCropRow'}
-                key={`croprow${index}`}
-                id={crop.fields['id']}
-                style={{ opacity: hasGoalRatingTwoOrLess(crop) && '0.2' }}
-              >
-                <TableCell style={{ height: 'auto' }}>
-                  <div className="container-fluid">
-                    <div className="row">
-                      <div className="col-auto pl-md-0">
-                        <CropImage
-                          present={crop.fields['Image Data'] ? true : false}
-                          src={
-                            crop.fields['Image Data'] && crop.fields['Image Data']['Key Thumbnail']
-                              ? `/images/Cover Crop Photos/100x100/${crop.fields['Image Data']['Directory']}/${crop.fields['Image Data']['Key Thumbnail']}`
-                              : 'https://placehold.it/100x100'
-                          }
-                          alt={crop.fields['Image Data'] && crop.fields['Cover Crop Name']}
-                        />
-                      </div>
-                      <div className="col-auto pl-md-0">
-                        <div className="col-12 p-md-0">
-                          <Typography variant="h6">
-                            {flipCoverCropName(crop.fields['Cover Crop Name'])}
-                          </Typography>
-                        </div>
-                        <div className="col-12 p-md-0">
-                          <Typography
-                            variant="body1"
-                            style={{
-                              color: 'gray',
-                              fontWeight: 'normal',
-                              fontStyle: 'italic',
-                              fontSize: 'small',
-                            }}
-                          >
-                            {trimString(crop.fields['Scientific Name'], 25)}
-                          </Typography>
-                        </div>
-                        <div className="col-12 p-md-0">
-                          <Typography
-                            variant="subtitle2"
-                            className="text-uppercase"
-                            style={{ color: 'gray' }}
-                          >
-                            {crop.fields['Cover Crop Group']}
-                          </Typography>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </TableCell>
-                <TableCell style={{ textAlign: 'left', verticalAlign: 'middle' }}>
-                  <table>
-                    <tbody>
-                      {crop.fields['Cover Crop Group'].toLowerCase() === 'legume' && (
-                        <tr>
-                          <td>
-                            <Typography variant="subtitle2" component="b" className="">
-                              TOTAL N:
-                            </Typography>
-                          </td>
-                          <td>
-                            <Typography variant="subtitle2" component="b">
-                              {crop.fields['Nitrogen Accumulation Min, Legumes (lbs/A/y)']}-
-                              {crop.fields['Nitrogen Accumulation Max, Legumes (lbs/A/y)']}
-                              <span className="units">lbs/A/y</span>
-                            </Typography>
-                          </td>
-                        </tr>
-                      )}
-
-                      <tr>
-                        <td>
-                          {' '}
-                          <Typography variant="subtitle2" component="b" className="">
-                            DRY MATTER:
-                          </Typography>
-                        </td>
-                        <td>
-                          <Typography variant="subtitle2" component="b">
-                            {crop.fields['Dry Matter Min (lbs/A/y)']}-
-                            {crop.fields['Dry Matter Max (lbs/A/y)']}
-                            <span className="units">lbs/A/y</span>
-                          </Typography>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <Typography variant="subtitle2" component="b" className="">
-                            DURATION:
-                          </Typography>
-                        </td>
-                        <td>
-                          <Typography variant="subtitle2" component="b" className="text-uppercase">
-                            {crop.fields['Duration'].toString().toLowerCase() ===
-                            'short-lived perennial'
-                              ? 'Perennial'
-                              : crop.fields['Duration'].toString()}
-                          </Typography>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </TableCell>
-                {getCardFlex(crop, index)}
-              </TableRow>
-            </Fragment>
-          );
-      })
-    );
-  };
-
-  const RenderActiveInactiveCropData = () => {
-    return (
-      <>
-        <CropList matchGoals={true} />
-        <CropList matchGoals={false} />
-      </>
-    );
+  const updateActiveCropDataAction = (activeShadowValue) => {
+    dispatch({
+      type: 'UPDATE_ACTIVE_CROP_DATA',
+      data: {
+        value: activeShadowValue,
+      },
+    });
   };
 
   const sortBySelectedCrops = () => {
@@ -366,13 +98,7 @@ const CropTableComponent = (props) => {
               return 1;
             }
           });
-
-          dispatch({
-            type: 'UPDATE_ACTIVE_CROP_DATA',
-            data: {
-              value: newActiveShadow,
-            },
-          });
+          updateActiveCropDataAction(newActiveShadow);
         }
       }
     } else {
@@ -401,12 +127,7 @@ const CropTableComponent = (props) => {
         });
       });
 
-    dispatch({
-      type: 'UPDATE_ACTIVE_CROP_DATA',
-      data: {
-        value: activeCropDataShadow,
-      },
-    });
+    updateActiveCropDataAction(activeCropDataShadow);
   };
 
   const sortCropsByName = () => {
@@ -427,12 +148,7 @@ const CropTableComponent = (props) => {
           return firstCropName.localeCompare(secondCropName);
         });
 
-        dispatch({
-          type: 'UPDATE_ACTIVE_CROP_DATA',
-          data: {
-            value: activeCropDataShadow,
-          },
-        });
+        updateActiveCropDataAction(activeCropDataShadow);
       }
     } else {
       if (activeCropDataShadow.length > 0) {
@@ -454,12 +170,13 @@ const CropTableComponent = (props) => {
           return 0;
         });
 
-        dispatch({
-          type: 'UPDATE_ACTIVE_CROP_DATA',
-          data: {
-            value: activeCropDataShadow,
-          },
-        });
+        // dispatch({
+        //   type: 'UPDATE_ACTIVE_CROP_DATA',
+        //   data: {
+        //     value: activeCropDataShadow,
+        //   },
+        // });
+        updateActiveCropDataAction(activeCropDataShadow);
       }
     }
 
@@ -706,7 +423,11 @@ const CropTableComponent = (props) => {
                     </TableCell>
                   </TableRow>
                 )}
-                <RenderActiveInactiveCropData />
+                <CropDataRender
+                  activeCropData={activeCropData}
+                  showGrowthWindow={showGrowthWindow}
+                  handleModalOpen={handleModalOpen}
+                />
               </>
             ) : (
               <TableRow>
