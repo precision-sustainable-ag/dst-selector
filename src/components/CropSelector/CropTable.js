@@ -65,6 +65,15 @@ const CropTableComponent = (props) => {
     setLegendModal(!legendModal);
   };
 
+  const updateActiveCropDataAction = (activeShadowValue) => {
+    dispatch({
+      type: 'UPDATE_ACTIVE_CROP_DATA',
+      data: {
+        value: activeShadowValue,
+      },
+    });
+  };
+
   const sortBySelectedCrops = () => {
     sortReset('selectedCrops');
     let selectedCropsShadow = state.selectedCrops;
@@ -89,13 +98,7 @@ const CropTableComponent = (props) => {
               return 1;
             }
           });
-
-          dispatch({
-            type: 'UPDATE_ACTIVE_CROP_DATA',
-            data: {
-              value: newActiveShadow,
-            },
-          });
+          updateActiveCropDataAction(newActiveShadow);
         }
       }
     } else {
@@ -124,12 +127,7 @@ const CropTableComponent = (props) => {
         });
       });
 
-    dispatch({
-      type: 'UPDATE_ACTIVE_CROP_DATA',
-      data: {
-        value: activeCropDataShadow,
-      },
-    });
+    updateActiveCropDataAction(activeCropDataShadow);
   };
 
   const sortCropsByName = () => {
@@ -150,12 +148,7 @@ const CropTableComponent = (props) => {
           return firstCropName.localeCompare(secondCropName);
         });
 
-        dispatch({
-          type: 'UPDATE_ACTIVE_CROP_DATA',
-          data: {
-            value: activeCropDataShadow,
-          },
-        });
+        updateActiveCropDataAction(activeCropDataShadow);
       }
     } else {
       if (activeCropDataShadow.length > 0) {
@@ -177,12 +170,13 @@ const CropTableComponent = (props) => {
           return 0;
         });
 
-        dispatch({
-          type: 'UPDATE_ACTIVE_CROP_DATA',
-          data: {
-            value: activeCropDataShadow,
-          },
-        });
+        // dispatch({
+        //   type: 'UPDATE_ACTIVE_CROP_DATA',
+        //   data: {
+        //     value: activeCropDataShadow,
+        //   },
+        // });
+        updateActiveCropDataAction(activeCropDataShadow);
       }
     }
 
