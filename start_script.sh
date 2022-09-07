@@ -8,4 +8,8 @@ set -eoux pipefail
 
 docker build . -t nginx-dst-selector:latest
 docker run -p 3000:80 nginx-dst-selector:latest & 
+<<<<<<< HEAD
 open http://localhost:3000
+=======
+open http://localhost:3000
+>>>>>>> main
