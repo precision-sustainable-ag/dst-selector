@@ -17,6 +17,18 @@ export const CropTableCard = ({ crop, indexKey, showGrowthWindow, handleModalOpe
     return crop.id;
   });
 
+  const cropModifierAction = (selectedCrops, message) => {
+    dispatch({
+      type: 'SELECTED_CROPS_MODIFIER',
+      data: {
+        selectedCrops: selectedCrops,
+        snackOpen: false,
+        snackMessage: message,
+      },
+    });
+    enqueueSnackbar(message);
+  };
+
   const addCropToBasket = (cropId, cropName, btnId, cropData) => {
     let selectedCrops = {};
     let cropArray = [];
@@ -25,8 +37,8 @@ export const CropTableCard = ({ crop, indexKey, showGrowthWindow, handleModalOpe
     selectedCrops.btnId = btnId;
     selectedCrops.data = cropData;
     cropArray = selectedCrops;
-    // // check if crop id exists inside state, if yes then remove it
 
+    // check if crop id exists inside state, if yes then remove it
     if (state.selectedCrops.length > 0) {
       let removeIndex = state.selectedCrops
         .map(function (item) {
@@ -34,41 +46,15 @@ export const CropTableCard = ({ crop, indexKey, showGrowthWindow, handleModalOpe
         })
         .indexOf(`${cropId}`);
       if (removeIndex === -1) {
-        dispatch({
-          type: 'SELECTED_CROPS_MODIFIER',
-          data: {
-            selectedCrops: [...state.selectedCrops, selectedCrops],
-            snackOpen: false,
-            snackMessage: `${cropName} Added`,
-          },
-        });
-        enqueueSnackbar(`${cropName} Added`);
+        cropModifierAction([...state.selectedCrops, selectedCrops], `${cropName} Added`);
       } else {
         // element exists, remove
         let selectedCropsCopy = state.selectedCrops;
-
         selectedCropsCopy.splice(removeIndex, 1);
-
-        dispatch({
-          type: 'SELECTED_CROPS_MODIFIER',
-          data: {
-            selectedCrops: selectedCropsCopy,
-            snackOpen: false,
-            snackMessage: `${cropName} Removed`,
-          },
-        });
-        enqueueSnackbar(`${cropName} Removed`);
+        cropModifierAction(selectedCropsCopy, `${cropName} Removed`);
       }
     } else {
-      dispatch({
-        type: 'SELECTED_CROPS_MODIFIER',
-        data: {
-          selectedCrops: [cropArray],
-          snackOpen: false,
-          snackMessage: `${cropName} Added`,
-        },
-      });
-      enqueueSnackbar(`${cropName} Added`);
+      cropModifierAction([cropArray], `${cropName} Added`);
     }
   };
 
