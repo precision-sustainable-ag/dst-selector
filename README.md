@@ -11,6 +11,7 @@ Support for this project is brought to us by [Agricultural Informatics Lab](http
 To access the live tool, visit [covercrop.tools](http://covercrop.tools)
 To see development progress, visit [http://covercrop.tools](http://covercrop.tools)
 
+<<<<<<< HEAD
 ## Table of Contents:
 
 - [Cover Crop Species Selector Decision Support Tool](#cover-crop-species-selector-decision-support-tool)
@@ -57,6 +58,8 @@ REACT_APP_OPEN_WEATHER_API_KEY="<open weather key>"
 
 7. After the dependencies have been installed and the .env file has been created, run `npm start` to run the code locally. If you run into any issues take a look in the [Runbook](#runbook) for previous issues and solutions. This will compile the JSX code into Javascript and open up a new browser window with the current version of the covercrops project!
 
+=======
+>>>>>>> main
 ## Running in docker:
 
 Run `./start_script.sh`
@@ -64,6 +67,7 @@ Run `open http://localhost:3000`
 
 ## Documentation
 
+<<<<<<< HEAD
 For in depth documentation see [the wiki pages](https://precision-sustainable-ag.atlassian.net/wiki/spaces/DST/pages/156500002/Species+Selector)
 
 ## Runbook
@@ -73,3 +77,6 @@ Node sass not suported on Mac OS `Error: Node Sass does not yet support your cur
 
 **Solution:**
 `npm rebuild node-sass`
+=======
+For in depth documentation see [the wiki pages](https://precision-sustainable-ag.atlassian.net/wiki/spaces/DST/pages/156500002/Species+Selector)
+>>>>>>> main
