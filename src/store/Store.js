@@ -13,8 +13,8 @@
 
 import moment from 'moment-timezone';
 import React, { createContext, useReducer } from 'react';
-import desc from '../shared/crop-descriptions.json';
-import img from '../shared/image-dictionary.json';
+import desc from '../shared/json/descriptions/crop-descriptions.json';
+import img from '../shared/json/image-locations/image-dictionary.json';
 import z4crops from '../shared/json/zone4/crop-data.json';
 import z4Dict from '../shared/json/zone4/data-dictionary.json';
 import z5crops from '../shared/json/zone5/crop-data.json';
