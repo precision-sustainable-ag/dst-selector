@@ -8,7 +8,7 @@ import React, { useContext } from 'react';
 import { CustomStyles } from '../../shared/constants';
 import { Context } from '../../store/Store';
 import MapContext from './MapContext';
-import SoilCondition from './SoilCondition';
+import SoilCondition from './SoilCondition/SoilCondition';
 import WeatherConditions from './WeatherConditions';
 import 'leaflet/dist/leaflet.css';
 
