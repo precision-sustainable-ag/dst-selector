@@ -58,9 +58,7 @@ export const SoilFloodingFrequency = () => {
           </Typography>
         </div>
 
-        {arrayEquals(soilData.Flooding_Frequency, soilDataOriginal.Flooding_Frequency) ? (
-          ''
-        ) : (
+        {!arrayEquals(soilData.Flooding_Frequency, soilDataOriginal.Flooding_Frequency) && (
           <div className="col-12 pt-2">
             <div className="col-12 row">
               <div className="col text-left">
