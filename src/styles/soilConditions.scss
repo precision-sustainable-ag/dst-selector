@@ -1,12 +1,7 @@
 @import '../styles/constants.scss';
 .m-2.drainageTag {
-  transition: all 0.5s cubic-bezier(0.455, 0.03, 0.515, 0.955);
-  &:hover,
-  &:focus {
+  &:hover {
     background-color: $darkGreen !important;
-    // color: white;
-    // font-weight: bold;
-    color: rgba(0, 0, 0, 1);
   }
 }
 .MuiTypography-root.soilConditionSubHeader.MuiTypography-body1 {

@@ -58,9 +58,7 @@ export const SoilDrainage = ({ setTilingCheck }) => {
             />
           </Typography>
         </div>
-        {arrayEquals(soilDataOriginal.Drainage_Class, soilData.Drainage_Class) ? (
-          ''
-        ) : (
+        {!arrayEquals(soilDataOriginal.Drainage_Class, soilData.Drainage_Class) && (
           <div className="col-12 pt-2">
             <div className="col-12 row">
               <div className="col text-left">
