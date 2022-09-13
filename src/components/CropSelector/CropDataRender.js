@@ -3,11 +3,11 @@ import '../../styles/cropCalendarViewComponent.scss';
 import '../../styles/cropTable.scss';
 import CropTableListItem from './CropTableListItem';
 
-const CropDataRender = ({ activeCropData, showGrowthWindow, handleModalOpen }) => {
+function CropDataRender({ activeCropData, showGrowthWindow, handleModalOpen }) {
   return (
     <>
       <CropTableListItem
-        matchGoals={true}
+        matchGoals
         activeCropData={activeCropData}
         showGrowthWindow={showGrowthWindow}
         handleModalOpen={handleModalOpen}
@@ -20,6 +20,6 @@ const CropDataRender = ({ activeCropData, showGrowthWindow, handleModalOpen }) =
       />
     </>
   );
-};
+}
 
 export default CropDataRender;

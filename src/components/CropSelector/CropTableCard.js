@@ -7,21 +7,21 @@ import '../../styles/cropCalendarViewComponent.scss';
 import '../../styles/cropTable.scss';
 import CropSelectorCalendarView from './CropSelectorCalendarView';
 
-export const CropTableCard = ({ crop, indexKey, showGrowthWindow, handleModalOpen }) => {
+export default function CropTableCard({
+  crop, indexKey, showGrowthWindow, handleModalOpen,
+}) {
   const { state, dispatch } = useContext(Context);
   const { enqueueSnackbar } = useSnackbar();
 
-  let goalsLength = state.selectedGoals.length;
+  const goalsLength = state.selectedGoals.length;
 
-  const selectedBtns = state.selectedCrops.map((crop) => {
-    return crop.id;
-  });
+  const selectedBtns = state.selectedCrops.map((cropId) => cropId.id);
 
   const cropModifierAction = (selectedCrops, message) => {
     dispatch({
       type: 'SELECTED_CROPS_MODIFIER',
       data: {
-        selectedCrops: selectedCrops,
+        selectedCrops,
         snackOpen: false,
         snackMessage: message,
       },
@@ -30,7 +30,7 @@ export const CropTableCard = ({ crop, indexKey, showGrowthWindow, handleModalOpe
   };
 
   const addCropToBasket = (cropId, cropName, btnId, cropData) => {
-    let selectedCrops = {};
+    const selectedCrops = {};
     let cropArray = [];
     selectedCrops.id = cropId;
     selectedCrops.cropName = cropName;
@@ -40,16 +40,14 @@ export const CropTableCard = ({ crop, indexKey, showGrowthWindow, handleModalOpe
 
     // check if crop id exists inside state, if yes then remove it
     if (state.selectedCrops.length > 0) {
-      let removeIndex = state.selectedCrops
-        .map(function (item) {
-          return item.id;
-        })
+      const removeIndex = state.selectedCrops
+        .map((item) => item.id)
         .indexOf(`${cropId}`);
       if (removeIndex === -1) {
         cropModifierAction([...state.selectedCrops, selectedCrops], `${cropName} Added`);
       } else {
         // element exists, remove
-        let selectedCropsCopy = state.selectedCrops;
+        const selectedCropsCopy = state.selectedCrops;
         selectedCropsCopy.splice(removeIndex, 1);
         cropModifierAction(selectedCropsCopy, `${cropName} Removed`);
       }
@@ -60,14 +58,14 @@ export const CropTableCard = ({ crop, indexKey, showGrowthWindow, handleModalOpe
 
   return (
     <>
-      {goalsLength > 0 &&
-        state.selectedGoals.map((goal, index) => (
+      {goalsLength > 0
+        && state.selectedGoals.map((goal, index) => (
           <TableCell style={{ textAlign: 'center' }} key={index} className="goalCells">
             <div>
               <Tooltip
                 arrow
                 placement="bottom"
-                title={
+                title={(
                   <div className="filterTooltip text-capitalize">
                     <p>
                       {`Goal ${index + 1}`}
@@ -75,7 +73,7 @@ export const CropTableCard = ({ crop, indexKey, showGrowthWindow, handleModalOpe
                       {goal}
                     </p>
                   </div>
-                }
+                )}
               >
                 {getRating(crop.fields[goal])}
               </Tooltip>
@@ -85,7 +83,7 @@ export const CropTableCard = ({ crop, indexKey, showGrowthWindow, handleModalOpe
 
       {showGrowthWindow && (
         <TableCell style={{ width: goalsLength === 0 && '50%' }}>
-          <CropSelectorCalendarView data={crop} from={'listView'} />
+          <CropSelectorCalendarView data={crop} from="listView" />
         </TableCell>
       )}
 
@@ -100,7 +98,7 @@ export const CropTableCard = ({ crop, indexKey, showGrowthWindow, handleModalOpe
             className={selectedBtns.includes(crop.fields.id) ? 'activeCartBtn' : 'inactiveCartBtn'}
             onClick={() => {
               addCropToBasket(
-                crop.fields['id'],
+                crop.fields.id,
                 crop.fields['Cover Crop Name'],
                 `cartBtn${indexKey}`,
                 crop.fields,
@@ -108,7 +106,8 @@ export const CropTableCard = ({ crop, indexKey, showGrowthWindow, handleModalOpe
             }}
           >
             {selectedBtns.includes(crop.fields.id) ? 'ADDED' : 'ADD TO LIST'}
-          </LightButton>{' '}
+          </LightButton>
+          {' '}
           <Button size="small" onClick={() => handleModalOpen(crop)}>
             View Details
           </Button>
@@ -116,4 +115,4 @@ export const CropTableCard = ({ crop, indexKey, showGrowthWindow, handleModalOpe
       </TableCell>
     </>
   );
-};
+}

@@ -18,14 +18,14 @@ import { Context } from '../../../../store/Store';
 import DateRangeDialog from '../../DateRangeDialog';
 import { CustomStyles } from '../../../../shared/constants';
 
-const PreviousCashCrop = (props) => {
-  let { handleToggle, classes, setDateRange } = props;
+function PreviousCashCrop(props) {
+  const { handleToggle, classes, setDateRange } = props;
 
   const { state, dispatch } = useContext(Context);
   const [cashCropVisible, setCashCropVisible] = useState(true); // TODO: buggy(?);
 
   return (
-    <Fragment>
+    <>
       <ListItem
         button
         onClick={() => handleToggle('cashCropOpen')}
@@ -50,11 +50,11 @@ const PreviousCashCrop = (props) => {
             <TextField
               label="Planting to Harvest"
               value={`${
-                state.cashCropData.dateRange.startDate &&
-                moment(state.cashCropData.dateRange.startDate).format('MM/D')
+                state.cashCropData.dateRange.startDate
+                && moment(state.cashCropData.dateRange.startDate).format('MM/D')
               } - ${
-                state.cashCropData.dateRange.endDate &&
-                moment(state.cashCropData.dateRange.endDate).format('MM/D')
+                state.cashCropData.dateRange.endDate
+                && moment(state.cashCropData.dateRange.endDate).format('MM/D')
               }`}
               fullWidth
               onClick={() => handleToggle('dateRangeOpen')}
@@ -77,12 +77,12 @@ const PreviousCashCrop = (props) => {
             <FormGroup>
               <FormControlLabel
                 classes={{ root: classes.formControlLabel }}
-                control={
+                control={(
                   <Checkbox
                     checked={cashCropVisible}
                     onChange={(e) => {
                       if (e.target.checked) {
-                        let cashCropDateRange = JSON.parse(
+                        const cashCropDateRange = JSON.parse(
                           window.localStorage.getItem('cashCropDateRange'),
                         );
                         dispatch({
@@ -105,7 +105,7 @@ const PreviousCashCrop = (props) => {
                     }}
                     value="Show Cash Crop Growth Window"
                   />
-                }
+                )}
                 label={
                   <Typography variant="body2">Show Previous Cash Crop Growth Window</Typography>
                 }
@@ -116,14 +116,14 @@ const PreviousCashCrop = (props) => {
       </Collapse>
       {state.dateRangeOpen && (
         <DateRangeDialog
-          open={true}
+          open
           close={() => handleToggle('dateRangeOpen')}
           onChange={(range) => setDateRange(range)}
           range={[]}
         />
       )}
-    </Fragment>
+    </>
   );
-};
+}
 
 export default PreviousCashCrop;

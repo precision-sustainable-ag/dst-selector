@@ -18,8 +18,8 @@ const DateComponent = () => {
 };
 
 const setTodaysDate = () => {
-  let now = moment();
-  let tzdata = moment.tz.guess();
+  const now = moment();
+  const tzdata = moment.tz.guess();
   return now.tz(tzdata).format('LL');
 };
 

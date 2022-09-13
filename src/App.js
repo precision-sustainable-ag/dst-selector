@@ -16,7 +16,7 @@ import ProgressButtons from './shared/ProgressButtons';
 import { Context } from './store/Store';
 import './styles/App.scss';
 
-const LoadRelevantRoute = ({ progress, calcHeight }) => {
+function LoadRelevantRoute({ progress, calcHeight }) {
   switch (progress) {
     case 1:
       return (
@@ -51,9 +51,9 @@ const LoadRelevantRoute = ({ progress, calcHeight }) => {
     default:
       return <RouteNotFound height={calcHeight} />;
   }
-};
+}
 
-const App = () => {
+function App() {
   const { state, dispatch } = useContext(Context);
   const [calcHeight, setCalcHeight] = useState(0);
   const handleSnackClose = () => {
@@ -67,12 +67,12 @@ const App = () => {
   };
 
   useEffect(() => {
-    let parentDocHeight = document
+    const parentDocHeight = document
       .getElementById('mainContentWrapper')
       .getBoundingClientRect().height;
-    let headerHeight = document.querySelector('header').getBoundingClientRect().height;
+    const headerHeight = document.querySelector('header').getBoundingClientRect().height;
 
-    let calculatedHeight = parentDocHeight - headerHeight;
+    const calculatedHeight = parentDocHeight - headerHeight;
 
     setCalcHeight(calculatedHeight);
   }, []);
@@ -101,7 +101,7 @@ const App = () => {
               {state.progress > 0 && state.progress < 5 ? (
                 <div className="container-fluid mt-5 mb-5">
                   <div className="row" style={{ width: '95%', margin: '0 auto' }}>
-                    <div className="col-lg-5 col-12 col-md-5"></div>
+                    <div className="col-lg-5 col-12 col-md-5" />
                     <div className="col-lg-5 col-12 col-md-5">
                       <ProgressButtons />
                     </div>
@@ -139,11 +139,11 @@ const App = () => {
       </div>
     </div>
   );
-};
+}
 
 export default App;
 
-const RouteNotFound = () => {
+function RouteNotFound() {
   return (
     <div className="container mt-4">
       <div className="row">
@@ -153,7 +153,7 @@ const RouteNotFound = () => {
       </div>
     </div>
   );
-};
+}
 
 // eslint-disable-next-line
 const crop = window.location.search.match(/crop=([^\^]+)/);

@@ -16,9 +16,7 @@ import React, { useContext, useEffect } from 'react';
 import { googleApiKey } from '../../shared/keys';
 import { Context } from '../../store/Store';
 
-const isNum = (val) => {
-  return /^\d+$/.test(val);
-};
+const isNum = (val) => /^\d+$/.test(val);
 
 function loadScript(src, position, id) {
   if (!position) {
@@ -43,13 +41,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function GoogleAutocomplete({
-  mapInstance,
-  mapsApi,
-  latLng,
-  setLatLng,
   searchLabel = 'FIND YOUR LOCATION',
-  setAddress,
-  setCounty,
   selectedToEditSite,
   setSelectedToEditSite,
 }) {
@@ -83,30 +75,27 @@ export default function GoogleAutocomplete({
   }
 
   const fetchData = React.useMemo(
-    () =>
-      throttle((request, callback) => {
-        autocompleteService.current.getPlacePredictions(request, callback);
-      }, 200),
+    () => throttle((request, callback) => {
+      autocompleteService.current.getPlacePredictions(request, callback);
+    }, 200),
     [],
   );
 
   const fetchLocalData = {
-    load: (place_id, main_text) => {
-      fetchLocalData.fetchPlaces(place_id).then((res) => {
-        fetchLocalData.setData(res, main_text);
+    load: (placeId, mainText) => {
+      fetchLocalData.fetchPlaces(placeId).then((res) => {
+        fetchLocalData.setData(res, mainText);
       });
     },
-    fetchPlaces: async (place_id) => {
+    fetchPlaces: async (placeId) => {
       placeService.current = new window.google.maps.Geocoder();
       const placeRequest = {
-        placeId: place_id,
+        placeId,
         region: 'en-US',
       };
-      return await new Promise((resolve) =>
-        placeService.current.geocode(placeRequest, (results, status) => {
-          resolve({ results, status });
-        }),
-      );
+      return await new Promise((resolve) => placeService.current.geocode(placeRequest, (results, status) => {
+        resolve({ results, status });
+      }));
     },
     fetchZipFromLatLng: async (lat, lng) => {
       const geocoder = new window.google.maps.Geocoder();
@@ -114,39 +103,39 @@ export default function GoogleAutocomplete({
 
       return geocoder.geocode({ latLng: latlng });
     },
-    setData: async ({ results, status }, main_text) => {
+    setData: async ({ results, status }, mainText) => {
       if (status === 'OK') {
         const county = results[0].address_components.filter(
           (e) => e.types[0] === 'administrative_area_level_2',
         );
-        let zipCode = results[0].address_components.filter((e) => e.types[0] === 'postal_code');
+        const zipCode = results[0].address_components.filter((e) => e.types[0] === 'postal_code');
 
         if (zipCode.length === 0) {
           const lonCenter = results[0].geometry.location.lng();
           const latCenter = results[0].geometry.location.lat();
 
           fetchLocalData.fetchZipFromLatLng(latCenter, lonCenter).then((zip) => {
-            let zipCode = zip.results[0].address_components.filter(
+            const zipC = zip.results[0].address_components.filter(
               (e) => e.types[0] === 'postal_code',
             );
             if (county.length !== 0) {
               // If google is able to find the county, pick the first preference!
-              fetchLocalData.fetchGeocode(results, county, main_text, zipCode);
+              fetchLocalData.fetchGeocode(results, county, mainText, zipC);
             } else {
-              fetchLocalData.fetchGeocode(results, '', main_text, zipCode);
+              fetchLocalData.fetchGeocode(results, '', mainText, zipC);
             }
           });
         } else if (county.length !== 0) {
           // If google is able to find the county, pick the first preference!
-          fetchLocalData.fetchGeocode(results, county, main_text, zipCode);
+          fetchLocalData.fetchGeocode(results, county, mainText, zipCode);
         } else {
-          fetchLocalData.fetchGeocode(results, '', main_text, zipCode);
+          fetchLocalData.fetchGeocode(results, '', mainText, zipCode);
         }
       } else {
         console.error('Google PlaceService Status', status);
       }
     },
-    fetchGeocode: (results, county, main_text, zipCode) => {
+    fetchGeocode: (results, county, mainText, zipCode) => {
       county = county || [{}];
 
       dispatch({
@@ -164,7 +153,7 @@ export default function GoogleAutocomplete({
           latitude: results[0].geometry.location.lat(),
           longitude: results[0].geometry.location.lng(),
           county: county[0].long_name,
-          address: main_text,
+          address: mainText,
           zipCode: 0,
         });
       } else {
@@ -173,16 +162,16 @@ export default function GoogleAutocomplete({
           latitude: results[0].geometry.location.lat(),
           longitude: results[0].geometry.location.lng(),
           county: county[0].long_name,
-          address: main_text,
-          zipCode: parseInt(zipCode[0].long_name),
+          address: mainText,
+          zipCode: parseInt(zipCode[0].long_name, 10),
         });
       }
     },
   };
 
-  const fetchLocationDetails = ({ place_id, structured_formatting }) => {
-    if (place_id) {
-      fetchLocalData.load(place_id, structured_formatting.main_text);
+  const fetchLocationDetails = ({ placeId, structured_formatting }) => {
+    if (placeId) {
+      fetchLocalData.load(placeId, structured_formatting.main_text);
     }
   };
 
@@ -256,7 +245,7 @@ export default function GoogleAutocomplete({
   }, [value, inputValue, fetchData]);
 
   return (
-    /*
+  /*
      * RICK'S NOTE:
      * This causes a "ghost" effect on FIND YOUR LOCATION:
      *   style={{ zIndex: 1000003 }}
@@ -285,9 +274,7 @@ export default function GoogleAutocomplete({
       onInputChange={(event, newInputValue) => {
         setInputValue(newInputValue);
       }}
-      renderInput={(params) => {
-        return <TextField {...params} label={searchLabel} variant="filled" fullWidth />;
-      }}
+      renderInput={(params) => <TextField {...params} label={searchLabel} variant="filled" fullWidth />}
       renderOption={(option) => {
         let matches = [];
         let parts = [];

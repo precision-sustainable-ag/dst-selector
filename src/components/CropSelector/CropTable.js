@@ -1,6 +1,6 @@
 /*
   This file contains the CropTable component
-  The CropTable is the 
+  The CropTable is the
   addCropToBasket manages adding crops to cart
   Styles are created using makeStyles
 */
@@ -26,15 +26,13 @@ import CropDetailsModalComponent from './CropDetailsModal';
 import CropLegendModal from './CropLegendModal';
 import CropDataRender from './CropDataRender';
 
-const CropTableComponent = (props) => {
-  const cropData = props.cropData || [];
-  let activeCropData = props.activeCropData || [];
-
+function CropTableComponent({
+  cropData, activeCropData, showGrowthWindow, sortAllCrops, sortPreference,
+}) {
   const { state, dispatch } = useContext(Context);
 
   const [modalOpen, setModalOpen] = useState(false);
   const [modalData, setModalData] = useState({});
-  const [showGrowthWindow, setShowGrowthWindow] = useState(true);
   const [legendModal, setLegendModal] = useState(false);
   const [tbodyHeight, setTbodyHeight] = useState(0);
   const [theadHeight, setTheadHeight] = useState(0);
@@ -51,10 +49,6 @@ const CropTableComponent = (props) => {
       setTheadHeight(theadComputedHeight);
     }
   }, []);
-
-  useEffect(() => {
-    props.showGrowthWindow ? setShowGrowthWindow(true) : setShowGrowthWindow(false);
-  }, [props.showGrowthWindow]);
 
   const handleModalOpen = (crop) => {
     setModalData(crop);
@@ -74,19 +68,39 @@ const CropTableComponent = (props) => {
     });
   };
 
+  const sortReset = () => {
+    const { selectedGoals } = state;
+    const activeCropDataShadow = activeCropData;
+    selectedGoals
+      .slice()
+      .reverse()
+      .forEach((goal) => {
+        activeCropDataShadow.sort((a, b) => {
+          if (a.fields[goal] && b.fields[goal]) {
+            if (a.fields[goal] > b.fields[goal]) {
+              return -1;
+            }
+            return 1;
+          }
+          return 0;
+        });
+      });
+
+    updateActiveCropDataAction(activeCropDataShadow);
+  };
+
   const sortBySelectedCrops = () => {
     sortReset('selectedCrops');
-    let selectedCropsShadow = state.selectedCrops;
-    let activeCropDataShadow = props.activeCropData;
-
+    const selectedCropsShadow = state.selectedCrops;
+    const activeCropDataShadow = activeCropData;
     if (selectedCropsSortFlag) {
       if (selectedCropsShadow.length > 0) {
-        let selectedCropIds = [];
+        const selectedCropIds = [];
         selectedCropsShadow.forEach((crop) => {
           selectedCropIds.push(crop.id);
         });
-        let newActiveShadow = activeCropDataShadow.map((crop) => {
-          crop['inCart'] = selectedCropIds.includes(crop.fields.id);
+        const newActiveShadow = activeCropDataShadow.map((crop, i) => {
+          activeCropDataShadow[i].inCart = selectedCropIds.includes(crop.fields.id);
           return crop;
         });
 
@@ -94,9 +108,8 @@ const CropTableComponent = (props) => {
           newActiveShadow.sort((a) => {
             if (a.inCart) {
               return -1;
-            } else {
-              return 1;
             }
+            return 1;
           });
           updateActiveCropDataAction(newActiveShadow);
         }
@@ -108,40 +121,18 @@ const CropTableComponent = (props) => {
     setSelectedCropsSortFlag(!selectedCropsSortFlag);
   };
 
-  const sortReset = (from = 'cropName') => {
-    const { selectedGoals } = state;
-    let activeCropDataShadow = props.activeCropData;
-    selectedGoals
-      .slice()
-      .reverse()
-      .forEach((goal) => {
-        activeCropDataShadow.sort((a, b) => {
-          if (a.fields[goal] && b.fields[goal]) {
-            if (a.fields[goal] > b.fields[goal]) {
-              return -1;
-            } else {
-              return 1;
-            }
-          }
-          return 0;
-        });
-      });
-
-    updateActiveCropDataAction(activeCropDataShadow);
-  };
-
   const sortCropsByName = () => {
-    let activeCropDataShadow = props.activeCropData;
+    const activeCropDataShadow = activeCropData;
     sortReset('cropName');
 
     if (nameSortFlag) {
       if (activeCropDataShadow.length > 0) {
         activeCropDataShadow.sort((a, b) => {
-          let firstCropName = flipCoverCropName(a.fields['Cover Crop Name'].toLowerCase()).replace(
+          const firstCropName = flipCoverCropName(a.fields['Cover Crop Name'].toLowerCase()).replace(
             /\s+/g,
             '',
           );
-          let secondCropName = flipCoverCropName(b.fields['Cover Crop Name'].toLowerCase()).replace(
+          const secondCropName = flipCoverCropName(b.fields['Cover Crop Name'].toLowerCase()).replace(
             /\s+/g,
             '',
           );
@@ -150,34 +141,26 @@ const CropTableComponent = (props) => {
 
         updateActiveCropDataAction(activeCropDataShadow);
       }
-    } else {
-      if (activeCropDataShadow.length > 0) {
-        activeCropDataShadow.sort((a, b) => {
-          let firstCropName = flipCoverCropName(a.fields['Cover Crop Name'].toLowerCase()).replace(
-            /\s+/g,
-            '',
-          );
-          let secondCropName = flipCoverCropName(b.fields['Cover Crop Name'].toLowerCase()).replace(
-            /\s+/g,
-            '',
-          );
-          if (firstCropName < secondCropName) {
-            return 1;
-          }
-          if (firstCropName > secondCropName) {
-            return -1;
-          }
-          return 0;
-        });
+    } else if (activeCropDataShadow.length > 0) {
+      activeCropDataShadow.sort((a, b) => {
+        const firstCropName = flipCoverCropName(a.fields['Cover Crop Name'].toLowerCase()).replace(
+          /\s+/g,
+          '',
+        );
+        const secondCropName = flipCoverCropName(b.fields['Cover Crop Name'].toLowerCase()).replace(
+          /\s+/g,
+          '',
+        );
+        if (firstCropName < secondCropName) {
+          return 1;
+        }
+        if (firstCropName > secondCropName) {
+          return -1;
+        }
+        return 0;
+      });
 
-        // dispatch({
-        //   type: 'UPDATE_ACTIVE_CROP_DATA',
-        //   data: {
-        //     value: activeCropDataShadow,
-        //   },
-        // });
-        updateActiveCropDataAction(activeCropDataShadow);
-      }
+      updateActiveCropDataAction(activeCropDataShadow);
     }
 
     setNameSortFlag(!nameSortFlag);
@@ -211,27 +194,28 @@ const CropTableComponent = (props) => {
                   <Tooltip
                     arrow
                     placement="top"
-                    title={
+                    title={(
                       <div className="filterTooltip">
                         <p>See filter bar for cover cropping goals.</p>
                       </div>
-                    }
+                    )}
                   >
                     <Button
                       onClick={() => {
-                        props.sortAllCrops(props.sortPreference === 'desc' ? 'asc' : 'desc');
+                        sortAllCrops(sortPreference === 'desc' ? 'asc' : 'desc');
                       }}
                     >
                       <Sort
                         style={{
                           color:
-                            props.sortPreference === 'asc'
+                            sortPreference === 'asc'
                               ? CustomStyles().secondaryProgressBtnColor
                               : CustomStyles().progressColor,
-                          transform: props.sortPreference === 'asc' && 'rotate(180deg)',
+                          transform: sortPreference === 'asc' && 'rotate(180deg)',
                         }}
                       />
-                      &nbsp;{' '}
+                      &nbsp;
+                      {' '}
                       <Typography variant="body2" style={{ color: '#000' }}>
                         COVER CROPPING GOALS
                       </Typography>
@@ -289,7 +273,8 @@ const CropTableComponent = (props) => {
                       transform: nameSortFlag && 'rotate(180deg)',
                     }}
                   />
-                  &nbsp;{' '}
+                  &nbsp;
+                  {' '}
                   <Typography variant="body1" style={{ color: '#000' }}>
                     COVER CROPS
                   </Typography>
@@ -306,9 +291,9 @@ const CropTableComponent = (props) => {
                   Growth Traits
                 </Typography>
               </TableCell>
-              {state.selectedGoals.length > 0 &&
-                state.selectedGoals.map((goal, index) => {
-                  let lastIndex = state.selectedGoals.length - 1;
+              {state.selectedGoals.length > 0
+                && state.selectedGoals.map((goal, index) => {
+                  const lastIndex = state.selectedGoals.length - 1;
                   return (
                     <TableCell
                       key={index}
@@ -325,11 +310,11 @@ const CropTableComponent = (props) => {
                         <Tooltip
                           placement="bottom"
                           arrow
-                          title={
+                          title={(
                             <div className="filterTooltip text-capitalize">
                               <p>{goal}</p>
                             </div>
-                          }
+                          )}
                         >
                           <div style={sudoButtonStyle}>{`Goal ${index + 1}`}</div>
                         </Tooltip>
@@ -449,10 +434,10 @@ const CropTableComponent = (props) => {
   ) : (
     <div className="table-responsive calendarViewTableWrapper">
       <div className="circularCentered">
-        <CircularProgress size={'6em'} />
+        <CircularProgress size="6em" />
       </div>
     </div>
   );
-};
+}
 
 export default CropTableComponent;

@@ -1,4 +1,6 @@
-import { Button, Collapse, List, ListItem, ListItemText, Typography } from '@mui/material';
+import {
+  Button, Collapse, List, ListItem, ListItemText, Typography,
+} from '@mui/material';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import React, { Fragment, useContext } from 'react';
 import { arrayMove, List as ListMovable } from 'react-movable';
@@ -97,7 +99,7 @@ function CoverCropGoals({ handleToggle, classes, style }) {
             <List component="div" disablePadding>
               <ListItem className={classes.nested}>
                 <ListItemText
-                  primary={
+                  primary={(
                     <div>
                       <div>
                         <Typography variant="body1"> Goal Priority Order</Typography>
@@ -114,21 +116,17 @@ function CoverCropGoals({ handleToggle, classes, style }) {
                         </Typography>
                       </div>
                     </div>
-                  }
+                  )}
                 />
               </ListItem>
             </List>
             <ListMovable
               values={state.selectedGoals}
-              onChange={({ oldIndex, newIndex }) =>
-                updateSelectedGoals(state.selectedGoals, oldIndex, newIndex)
-              }
-              renderList={({ children, props, isDragged }) =>
-                renderList(children, props, isDragged)
-              }
-              renderItem={({ value, props, isDragged, isSelected, index }) =>
-                renderItem(value, props, isDragged, isSelected, index)
-              }
+              onChange={({ oldIndex, newIndex }) => updateSelectedGoals(state.selectedGoals, oldIndex, newIndex)}
+              renderList={({ children, props, isDragged }) => renderList(children, props, isDragged)}
+              renderItem={({
+                value, props, isDragged, isSelected, index,
+              }) => renderItem(value, props, isDragged, isSelected, index)}
             />
 
             <ListItem className={classes.nested}>

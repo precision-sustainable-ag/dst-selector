@@ -18,6 +18,11 @@
     ],
     "rules": {
       "react/prop-types": [0],
-      "react/jsx-filename-extension": [0]
+      "react/jsx-filename-extension": [0],
+      "react/no-array-index-key": [0],
+      "react/jsx-props-no-spreading": "off",
+      "no-param-reassign": [0],
+      "max-len": ["error", {"code": 150}],
+      "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }]
     }
 }

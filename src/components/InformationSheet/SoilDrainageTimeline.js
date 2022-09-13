@@ -1,5 +1,5 @@
 /*
-  Contains the soil drainage timeline component in the information 
+  Contains the soil drainage timeline component in the information
   styled using CustomStyles from ../../shared/constants
 */
 
@@ -13,7 +13,7 @@ import TimelineSeparator from '@mui/lab/TimelineSeparator';
 import React from 'react';
 import { CustomStyles } from '../../shared/constants';
 
-const SoilDrainageTimeline = ({ drainage = [] }) => {
+function SoilDrainageTimeline({ drainage = [] }) {
   const drainageClasses = [
     'Very poorly drained',
     'Poorly drained',
@@ -57,6 +57,6 @@ const SoilDrainageTimeline = ({ drainage = [] }) => {
       })}
     </Timeline>
   );
-};
+}
 
 export default SoilDrainageTimeline;

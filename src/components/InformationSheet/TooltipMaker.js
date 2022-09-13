@@ -8,7 +8,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Context } from '../../store/Store';
 import '../../styles/tooltipMaker.scss';
 
-const TooltipMaker = ({ children, variable }) => {
+function TooltipMaker({ children, variable }) {
   const { state } = useContext(Context);
   const section = window.location.href.includes('selector') ? 'selector' : 'explorer';
   const sfilters = state[section];
@@ -48,7 +48,7 @@ const TooltipMaker = ({ children, variable }) => {
 
   useEffect(() => {
     if (dict.length === 1) {
-      setDesc(dict[0].Description + ' ' + dict[0]['Values Description']);
+      setDesc(`${dict[0].Description} ${dict[0]['Values Description']}`);
     } else {
       setDesc('No Data');
     }
@@ -57,16 +57,16 @@ const TooltipMaker = ({ children, variable }) => {
   return (
     <Tooltip
       placement="top-end"
-      title={
+      title={(
         <div className="filterTooltip">
           <p>{desc}</p>
         </div>
-      }
+      )}
       arrow
     >
       <span className="tooltipChildren">{children}</span>
     </Tooltip>
   );
-};
+}
 
 export default TooltipMaker;

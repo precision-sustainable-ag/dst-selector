@@ -4,11 +4,13 @@
   Styles are created using makeStyles
 */
 
-import { Modal, Box, Typography, Button, Grid } from '@mui/material';
-import React, { Fragment, useContext, useState } from 'react';
+import {
+  Modal, Box, Typography, Button, Grid,
+} from '@mui/material';
+import React, { useContext, useState } from 'react';
 import { Context } from '../../store/Store';
 
-const ExplorerCardView = (props) => {
+function ExplorerCardView(props) {
   const { consent } = props;
   const { dispatch } = useContext(Context);
   const [modalOpen, setModalOpen] = useState(true);
@@ -26,7 +28,7 @@ const ExplorerCardView = (props) => {
   };
 
   const handleModalAccept = () => {
-    //toggle modal open
+    // toggle modal open
     setModalOpen((o) => !o);
     dispatch({
       type: 'UPDATE_CONSENT',
@@ -37,7 +39,7 @@ const ExplorerCardView = (props) => {
   };
 
   const handleModalDecline = () => {
-    //toggle modal open
+    // toggle modal open
     setModalOpen((o) => !o);
     dispatch({
       type: 'UPDATE_CONSENT',
@@ -47,7 +49,7 @@ const ExplorerCardView = (props) => {
     });
   };
 
-  return !consent && !/crop=/.test(window.location.search) ? (
+  return !consent && !/crop=/.test(window.location.search) && (
     <Modal
       open={modalOpen}
       //   onClose={toggleModalOpen}
@@ -64,7 +66,9 @@ const ExplorerCardView = (props) => {
             website traffic. No personally identifiable data is collected.
           </p>
           <p>
-            By clicking "Accept", you agree to our website's cookie use as described in our{' '}
+            {/* eslint-disable-next-line react/no-unescaped-entities */}
+            By clicking "Accept", you agree to our website's cookie use as described in our
+            {' '}
             <a
               href="https://northeastcovercrops.com/privacy-policy/"
               rel="noopener noreferrer"
@@ -89,9 +93,7 @@ const ExplorerCardView = (props) => {
         </Grid>
       </Box>
     </Modal>
-  ) : (
-    <Fragment></Fragment>
   );
-};
+}
 
 export default ExplorerCardView;

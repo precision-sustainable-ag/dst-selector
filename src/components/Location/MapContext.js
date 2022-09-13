@@ -1,5 +1,7 @@
+/* eslint-disable max-len */
+/* eslint-disable no-underscore-dangle */
 /*
-  Allows drawing a polygon over the map component 
+  Allows drawing a polygon over the map component
   updateGlobalMarkers handles the snackbar notifying the user their location is saved
   setAddress sets the address in google maps based on lat/long
   onCreated sets up the map
@@ -9,7 +11,9 @@
 import L from 'leaflet';
 import 'leaflet-draw/dist/leaflet.draw.css';
 import React, { useContext, useEffect, useState } from 'react';
-import { FeatureGroup, MapContainer, Marker, Polygon, TileLayer, Tooltip } from 'react-leaflet';
+import {
+  FeatureGroup, MapContainer, Marker, Polygon, TileLayer, Tooltip,
+} from 'react-leaflet';
 import { DraftControl } from 'react-leaflet-draft';
 import { Context } from '../../store/Store';
 import '../../styles/map.scss';
@@ -22,7 +26,9 @@ L.Icon.Default.mergeOptions({
   shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.0/images/marker-shadow.png',
 });
 
-const MapContext = ({ width, height, minzoom, maxzoom, from }) => {
+function MapContext({
+  width, height, minzoom, maxzoom, from,
+}) {
   const { state, dispatch } = useContext(Context);
   const [show, setShow] = useState(true);
   const [mapCenter, setMapCenter] = useState([]);
@@ -76,13 +82,13 @@ const MapContext = ({ width, height, minzoom, maxzoom, from }) => {
   };
 
   const setAddress = (latLng) => {
-    let geocoder = new window.google.maps.Geocoder();
+    const geocoder = new window.google.maps.Geocoder();
     geocoder.geocode({ location: latLng }, (results, status) => {
       if (status === 'OK') {
         let zipCode = 0;
 
         results.forEach((r) => {
-          let z = r.address_components.filter((e) => e.types[0] === 'postal_code');
+          const z = r.address_components.filter((e) => e.types[0] === 'postal_code');
           if (z.length) {
             zipCode = +z[0].long_name;
           }
@@ -116,16 +122,16 @@ const MapContext = ({ width, height, minzoom, maxzoom, from }) => {
         setShow(false);
       });
       if (e.layerType === 'marker') {
-        const lat = e.layer._latlng.lat;
-        const lng = e.layer._latlng.lng;
-        const latLng = { lat: lat, lng: lng };
+        const { lat } = e.layer._latlng;
+        const { lng } = e.layer._latlng;
+        const latLng = { lat, lng };
         // reverse geocode
         setAddress(latLng);
 
         updateGlobalMarkers([[lat, lng]], 'marker');
       } else if (e.layerType === 'polygon') {
         const latlngs = e.layer._latlngs;
-        let markers = [];
+        const markers = [];
         const firstLatLng = { lat: latlngs[0][0].lat, lng: latlngs[0][0].lng };
         // reverse geocode
         setAddress(firstLatLng);
@@ -140,85 +146,78 @@ const MapContext = ({ width, height, minzoom, maxzoom, from }) => {
     }
   };
 
-  return mapCenter.length > 0 ? (
-    <div className="row">
-      <div className="col-12">
-        <MapContainer
-          minZoom={minzoom}
-          zoom={15}
-          maxZoom={maxzoom}
-          center={isPoly ? getPolyCenter(state.markers) : mapCenter}
-          style={{ width: width, height: height }}
-        >
-          <TileLayer
-            subdomains={['mt0', 'mt1', 'mt2', 'mt3']}
-            attribution={`Map data &copy; <a target="attr" href="http://googlemaps.com">Google</a>`}
-            url="http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}"
-          />
-          <FeatureGroup
-            ref={(featureGroupRef) => {
-              onFeatureGroupReady(featureGroupRef);
-            }}
+  const getPolyCenter = (arr) => {
+    const x = arr.map((xa) => xa[0]);
+    const y = arr.map((ya) => ya[1]);
+    const cx = (Math.min(...x) + Math.max(...x)) / 2;
+    const cy = (Math.min(...y) + Math.max(...y)) / 2;
+    return [cx, cy];
+  };
+
+  return (
+    mapCenter.length > 0 && (
+      <div className="row">
+        <div className="col-12">
+          <MapContainer
+            minZoom={minzoom}
+            zoom={15}
+            maxZoom={maxzoom}
+            center={isPoly ? getPolyCenter(state.markers) : mapCenter}
+            style={{ width, height }}
           >
-            {showEditControl ? (
-              <DraftControl
-                edit={{ edit: false }}
-                position="topleft"
-                onEdited={(e) => {}}
-                onCreated={onCreated}
-                onDeleted={(e) => {}}
-                draw={{
-                  rectangle: false,
-                  circle: false,
-                  circlemarker: false,
-                  line: false,
-                  polygon: {
+            <TileLayer
+              subdomains={['mt0', 'mt1', 'mt2', 'mt3']}
+              attribution={'Map data &copy; <a target="attr" href="http://googlemaps.com">Google</a>'}
+              url="http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}"
+            />
+            <FeatureGroup
+              ref={(featureGroupRef) => {
+                onFeatureGroupReady(featureGroupRef);
+              }}
+            >
+              {showEditControl && (
+                <DraftControl
+                  edit={{ edit: false }}
+                  position="topleft"
+                  // onEdited={(e) => {}}
+                  onCreated={onCreated}
+                  // onDeleted={(e) => {}}
+                  draw={{
+                    rectangle: false,
+                    circle: false,
+                    circlemarker: false,
+                    line: false,
+                    polygon: {
+                      allowIntersection: false,
+                      showArea: true,
+                      metric: false,
+                    },
+                    polyline: false,
                     allowIntersection: false,
-                    showArea: true,
-                    metric: false,
-                  },
-                  polyline: false,
-                  allowIntersection: false,
-                }}
-              />
-            ) : (
-              ''
-            )}
-            {show ? (
-              isPoly ? (
-                <Polygon positions={state.markers}>
-                  <Tooltip>Your Field</Tooltip>
-                </Polygon>
-              ) : (
-                <Marker position={state.markers[0]}>
-                  <Tooltip>Your Field</Tooltip>
-                </Marker>
-              )
-            ) : (
-              ''
-            )}
-          </FeatureGroup>
-          {/* <TileLayer
-            attribution="Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community"
-            url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
-          /> */}
-        </MapContainer>
+                  }}
+                />
+              )}
+              {show && (
+                isPoly ? (
+                  <Polygon positions={state.markers}>
+                    <Tooltip>Your Field</Tooltip>
+                  </Polygon>
+                ) : (
+                  <Marker position={state.markers[0]}>
+                    <Tooltip>Your Field</Tooltip>
+                  </Marker>
+                )
+              )}
+            </FeatureGroup>
+            {/* <TileLayer
+              attribution="Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community"
+              url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+            /> */}
+          </MapContainer>
+        </div>
       </div>
-    </div>
-  ) : (
-    ''
+    )
   );
-};
+}
 
 export default MapContext;
-
-// Compute and return center of a polygon
-// accepts [[number][number]...[number]]
-// returns [number, number]
-const getPolyCenter = (arr) => {
-  let x = arr.map((x) => x[0]);
-  let y = arr.map((x) => x[1]);
-  let cx = (Math.min(...x) + Math.max(...x)) / 2;
-  let cy = (Math.min(...y) + Math.max(...y)) / 2;
-  return [cx, cy];
-};

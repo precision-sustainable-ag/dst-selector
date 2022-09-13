@@ -1,4 +1,4 @@
-/* 
+/*
   Handles rendering the goals and updating them when selected
 */
 
@@ -14,17 +14,16 @@ import {
 } from '@mui/material';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import React, { Fragment } from 'react';
-const RenderGoals = ({
-  goals = [],
-  setGoals = () => {},
+
+function RenderGoals({
+  goals,
   goalsOpen,
-  setGoalsOpen = () => {},
-  classes = {},
-  comparisonKeys = [],
-  dispatch = () => {},
-}) => {
+  setGoalsOpen,
+  comparisonKeys,
+  dispatch,
+}) {
   return (
-    <Fragment>
+    <>
       <ListItem
         button
         // className={classes.nested}
@@ -43,15 +42,13 @@ const RenderGoals = ({
               {goals.map((goal, index) => (
                 <Grid item xs={12} key={`goals-inner-${index}`}>
                   <FormControlLabel
-                    control={
+                    control={(
                       <Checkbox
-                        //   checked={checkIfSelected(val.name)}
                         checked={comparisonKeys.includes(goal.name)}
-                        //   onChange={handleChange}
                         onChange={() => {
                           // check if value exists, add else remove if exists
-                          let comparisonKeysCopy = comparisonKeys;
-                          let indexOfValue = comparisonKeysCopy.indexOf(goal.name);
+                          const comparisonKeysCopy = comparisonKeys;
+                          const indexOfValue = comparisonKeysCopy.indexOf(goal.name);
                           if (indexOfValue === -1) {
                             // doesn't exist
                             comparisonKeysCopy.push(goal.name);
@@ -69,7 +66,7 @@ const RenderGoals = ({
                         name={goal.name}
                         color="primary"
                       />
-                    }
+                    )}
                     label={<small>{goal.name}</small>}
                   />
                 </Grid>
@@ -78,8 +75,8 @@ const RenderGoals = ({
           </ListItem>
         </List>
       </Collapse>
-    </Fragment>
+    </>
   );
-};
+}
 
 export default RenderGoals;
