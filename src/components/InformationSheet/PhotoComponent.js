@@ -9,26 +9,25 @@ import React, { Suspense, useEffect, useState } from 'react';
 import { ucFirst } from '../../shared/constants';
 import '../../styles/photoComponent.scss';
 
-const PhotoComponent = ({
+function PhotoComponent({
   imageData = {
     Directory: '',
     Notes: null,
     'Key Thumbnail': '',
     'Cover Crop': '',
   },
-}) => {
+}) {
   const imagesApiUrl = imageData ? `//covercrop.tools/files.php?dir=${imageData.Directory}` : null;
   const [imageList, setImageList] = useState([]);
 
   useEffect(() => {
-    const getImages = async () => {
-      return await Axios({
-        url: imagesApiUrl,
-        method: 'get',
-      });
-    };
+    // eslint-disable-next-line no-return-await
+    const getImages = async () => await Axios({
+      url: imagesApiUrl,
+      method: 'get',
+    });
 
-    let imagePromise = getImages();
+    const imagePromise = getImages();
     imagePromise
       .then((response) => {
         if (response.data.result === 'success') {
@@ -43,13 +42,43 @@ const PhotoComponent = ({
       });
   }, [imagesApiUrl]);
 
+  const baseName = (path = '') => {
+    let separator = '/';
+    const windowsSeparator = '\\';
+    if (path.includes(windowsSeparator)) {
+      separator = windowsSeparator;
+    }
+    return path.slice(path.lastIndexOf(separator) + 1);
+  };
+
+  const getPhotoCredits = (url = '', cropName = '') => {
+    // get base file name
+    const fileName = baseName(url);
+
+    const fileNameArray = fileName.split('_');
+
+    // get last value of array
+    const {
+      length,
+      [length - 1]: last,
+      [length - 2]: secondLast,
+      [length - 3]: thirdLast,
+    } = fileNameArray;
+    const year = parseInt(last, 10);
+    if (thirdLast.toLowerCase().includes('mirsky')) {
+      const mirskyLabString = ucFirst(`${thirdLast} ${secondLast}`);
+      return `${cropName} - ${mirskyLabString} [${year}]`;
+    }
+    return `${cropName} - ${secondLast} [${year}]`;
+  };
+
   return imageData !== null && imageList.length !== 0 ? (
     <Suspense fallback={<div className="col">Loading..</div>}>
       {imageList.map((url, index) => {
         let strippedUrl = '';
         if (url.startsWith('images/Cover Crop Photos')) {
-          let strippedUrlArray = url.split('images/Cover Crop Photos');
-          strippedUrl = '/images/Cover Crop Photos/200x125' + strippedUrlArray[1];
+          const strippedUrlArray = url.split('images/Cover Crop Photos');
+          strippedUrl = `/images/Cover Crop Photos/200x125${strippedUrlArray[1]}`;
         }
         return (
           <div
@@ -84,37 +113,6 @@ const PhotoComponent = ({
   ) : (
     'Loading..'
   );
-};
+}
 
 export default PhotoComponent;
-
-const getPhotoCredits = (url = '', cropName = '') => {
-  // get base file name
-  let fileName = baseName(url);
-
-  let fileNameArray = fileName.split('_');
-
-  // get last value of array
-  const {
-    length,
-    [length - 1]: last,
-    [length - 2]: secondLast,
-    [length - 3]: thirdLast,
-  } = fileNameArray;
-  const year = parseInt(last);
-  if (thirdLast.toLowerCase().includes('mirsky')) {
-    let mirskyLabString = ucFirst(thirdLast + ' ' + secondLast);
-    return `${cropName} - ${mirskyLabString} [${year}]`;
-  } else {
-    return `${cropName} - ${secondLast} [${year}]`;
-  }
-};
-
-const baseName = (path = '') => {
-  let separator = '/';
-  const windowsSeparator = '\\';
-  if (path.includes(windowsSeparator)) {
-    separator = windowsSeparator;
-  }
-  return path.slice(path.lastIndexOf(separator) + 1);
-};

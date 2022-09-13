@@ -1,3 +1,6 @@
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+/* eslint-disable max-len */
+/* eslint-disable no-nested-ternary */
 import React, { Fragment } from 'react';
 import {
   Button,
@@ -12,93 +15,91 @@ import {
 import withStyles from '@mui/styles/withStyles';
 import moment from 'moment';
 import { Info, MonetizationOn } from '@mui/icons-material';
+
 const JSZip = require('jszip');
 const JSZipUtils = require('jszip-utils');
 const saveAs = require('save-as');
 
-export const ReferenceTooltip = (props) => {
-  let sourceURL = props.url;
-  let sourceName = props.source;
-  let type = props.type || 'link';
-  let content = props.content || '';
-  let hasLink = props.hasLink ? true : false;
-  return type === 'link' ? (
+export function ReferenceTooltip({
+  url, source, type, content, hasLink, title,
+}) {
+  const sourceURL = url;
+  const sourceName = source;
+  const sourceType = type || 'link';
+  const sourceContent = content || '';
+  const link = hasLink;
+  return sourceType === 'link' ? (
     <Tooltip
-      title={
+      title={(
         <div>
-          Source{': '}
+          Source
+          {': '}
           <a href={sourceURL} target="_blank" rel="noopener noreferrer">
             {sourceName}
           </a>
         </div>
-      }
+      )}
       arrow
     >
       <Info fontSize="small" />
     </Tooltip>
-  ) : type === 'html' ? (
-    <Tooltip arrow dangerouslySetInnerHTML={props.content}>
+  ) : sourceType === 'html' ? (
+    <Tooltip arrow dangerouslySetInnerHTML={content}>
       {' '}
       <Info fontSize="small" />
     </Tooltip>
-  ) : hasLink ? (
-    <Tooltip title={props.title} placement="right" arrow>
+  ) : link ? (
+    <Tooltip title={title} placement="right" arrow>
       <Info fontSize="small" />
     </Tooltip>
   ) : (
     <Tooltip
-      title={
+      title={(
         <div>
-          <Typography variant="body1">{content}</Typography>
+          <Typography variant="body1">{sourceContent}</Typography>
         </div>
-      }
+      )}
       placement="right"
       arrow
     >
       <Info fontSize="small" />
     </Tooltip>
   );
-};
+}
 
-export const DataTooltip = ({ data, placement = 'top-start' }) => {
+export function DataTooltip({ data, placement = 'top-start' }) {
   return (
     <Tooltip title={<div className="text-center">{data}</div>} placement={placement} arrow>
       <Info fontSize="small" />
     </Tooltip>
   );
-};
+}
 
-export const locationIcon = (w, h) => {
-  return (
-    <svg width={w} height={h} viewBox="0 0 14 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path
-        d="M7 0C3.13 0 0 3.13 0 7C0 12.25 7 20 7 20C7 20 14 12.25 14 7C14 3.13 10.87 0 7 0ZM7 9.5C5.62 9.5 4.5 8.38 4.5 7C4.5 5.62 5.62 4.5 7 4.5C8.38 4.5 9.5 5.62 9.5 7C9.5 8.38 8.38 9.5 7 9.5Z"
-        fill="white"
-      />
-    </svg>
-  );
-};
-export const zoneIcon = (w, h) => {
-  return (
-    <svg height={h} width={w} viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path
-        d="M10 0C4.48 0 0 4.48 0 10C0 15.52 4.48 20 10 20C15.52 20 20 15.52 20 10C20 4.48 15.52 0 10 0ZM6 15.5C4.62 15.5 3.5 14.38 3.5 13C3.5 11.62 4.62 10.5 6 10.5C7.38 10.5 8.5 11.62 8.5 13C8.5 14.38 7.38 15.5 6 15.5ZM7.5 6C7.5 4.62 8.62 3.5 10 3.5C11.38 3.5 12.5 4.62 12.5 6C12.5 7.38 11.38 8.5 10 8.5C8.62 8.5 7.5 7.38 7.5 6ZM14 15.5C12.62 15.5 11.5 14.38 11.5 13C11.5 11.62 12.62 10.5 14 10.5C15.38 10.5 16.5 11.62 16.5 13C16.5 14.38 15.38 15.5 14 15.5Z"
-        fill="white"
-      />
-    </svg>
-  );
-};
+export const locationIcon = (w, h) => (
+  <svg width={w} height={h} viewBox="0 0 14 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path
+      d="M7 0C3.13 0 0 3.13 0 7C0 12.25 7 20 7 20C7 20 14 12.25 14 7C14 3.13 10.87 0 7 0ZM7 9.5C5.62 9.5 4.5 8.38 4.5 7C4.5 5.62 5.62 4.5 7 4.5C8.38 4.5 9.5 5.62 9.5 7C9.5 8.38 8.38 9.5 7 9.5Z"
+      fill="white"
+    />
+  </svg>
+);
+export const zoneIcon = (w, h) => (
+  <svg height={h} width={w} viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path
+      d="M10 0C4.48 0 0 4.48 0 10C0 15.52 4.48 20 10 20C15.52 20 20 15.52 20 10C20 4.48 15.52 0 10 0ZM6 15.5C4.62 15.5 3.5 14.38 3.5 13C3.5 11.62 4.62 10.5 6 10.5C7.38 10.5 8.5 11.62 8.5 13C8.5 14.38 7.38 15.5 6 15.5ZM7.5 6C7.5 4.62 8.62 3.5 10 3.5C11.38 3.5 12.5 4.62 12.5 6C12.5 7.38 11.38 8.5 10 8.5C8.62 8.5 7.5 7.38 7.5 6ZM14 15.5C12.62 15.5 11.5 14.38 11.5 13C11.5 11.62 12.62 10.5 14 10.5C15.38 10.5 16.5 11.62 16.5 13C16.5 14.38 15.38 15.5 14 15.5Z"
+      fill="white"
+    />
+  </svg>
+);
 
-export const cloudIcon = (w, h) => {
-  return (
-    <svg width={w} height={h} viewBox="0 0 24 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path
-        d="M19.35 6.04C18.67 2.59 15.64 0 12 0C9.11 0 6.6 1.64 5.35 4.04C2.34 4.36 0 6.91 0 10C0 13.31 2.69 16 6 16H19C21.76 16 24 13.76 24 11C24 8.36 21.95 6.22 19.35 6.04Z"
-        fill="black"
-      />
-    </svg>
-  );
-};
+export const cloudIcon = (w, h) => (
+  <svg width={w} height={h} viewBox="0 0 24 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path
+      d="M19.35 6.04C18.67 2.59 15.64 0 12 0C9.11 0 6.6 1.64 5.35 4.04C2.34 4.36 0 6.91 0 10C0 13.31 2.69 16 6 16H19C21.76 16 24 13.76 24 11C24 8.36 21.95 6.22 19.35 6.04Z"
+      fill="black"
+    />
+  </svg>
+);
 
 export const GreenSwitch = withStyles({
   thumb: {
@@ -118,7 +119,7 @@ export const GreenSwitch = withStyles({
 })(Switch);
 
 export const GetMonthString = (month) => {
-  let months = [
+  const months = [
     'Jan',
     'Feb',
     'Mar',
@@ -136,7 +137,7 @@ export const GetMonthString = (month) => {
   return months[month].toUpperCase();
 };
 
-export const UnderConstructionText = () => {
+export function UnderConstructionText() {
   return (
     <Grid
       container
@@ -151,10 +152,11 @@ export const UnderConstructionText = () => {
       </Grid>
     </Grid>
   );
-};
+}
 
+// eslint-disable-next-line consistent-return
 export const abbrRegion = (input, to) => {
-  let states = [
+  const states = [
     ['Alabama', 'AL'],
     ['Alaska', 'AK'],
     ['American Samoa', 'AS'],
@@ -218,7 +220,7 @@ export const abbrRegion = (input, to) => {
   ];
 
   // So happy that Canada and the US have distinct abbreviations
-  let provinces = [
+  const provinces = [
     ['Alberta', 'AB'],
     ['British Columbia', 'BC'],
     ['Manitoba', 'MB'],
@@ -234,13 +236,11 @@ export const abbrRegion = (input, to) => {
     ['Yukon', 'YT'],
   ];
 
-  let regions = states.concat(provinces);
+  const regions = states.concat(provinces);
 
   let i; // Reusable loop variable
   if (to === 'abbr') {
-    input = input.replace(/\w\S*/g, function (txt) {
-      return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-    });
+    input = input.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
     for (i = 0; i < regions.length; i++) {
       if (regions[i][0] === input) {
         return regions[i][1];
@@ -256,27 +256,25 @@ export const abbrRegion = (input, to) => {
   }
 };
 
-export const CustomStyles = () => {
-  return {
-    progressColor: '#2b7b79',
-    darkGreen: '#598444',
-    defaultFontSize: '1em',
-    lighterGreen: '#598445',
-    lightGreen: '#add08f',
-    greenishWhite: '#f0f7eb',
-    primaryProgressBtnColor: '#49a8ab',
-    primaryProgressBtnBorderColor: '#62b8bc',
-    secondaryProgressBtnColor: '#e3f2f4',
-    secondaryProgressBtnBorderColor: '#e3f2f4',
-    fullyRoundedRadius: '200px',
-    semiRoundedRadius: '10px',
-    _10pxRoundedRadius: '10px',
-    _5pxRoundedRadius: '5px',
-    mildlyRoundedRadius: '5px',
-    nonRoundedRadius: '0px',
-    defaultButtonPadding: '10px 20px 10px 20px',
-  };
-};
+export const CustomStyles = () => ({
+  progressColor: '#2b7b79',
+  darkGreen: '#598444',
+  defaultFontSize: '1em',
+  lighterGreen: '#598445',
+  lightGreen: '#add08f',
+  greenishWhite: '#f0f7eb',
+  primaryProgressBtnColor: '#49a8ab',
+  primaryProgressBtnBorderColor: '#62b8bc',
+  secondaryProgressBtnColor: '#e3f2f4',
+  secondaryProgressBtnBorderColor: '#e3f2f4',
+  fullyRoundedRadius: '200px',
+  semiRoundedRadius: '10px',
+  _10pxRoundedRadius: '10px',
+  _5pxRoundedRadius: '5px',
+  mildlyRoundedRadius: '5px',
+  nonRoundedRadius: '0px',
+  defaultButtonPadding: '10px 20px 10px 20px',
+});
 
 export const LightButton = withStyles({
   root: {
@@ -294,63 +292,61 @@ export const LightButton = withStyles({
 })(Button);
 
 export const getRating = (ratng) => {
-  let rating = parseInt(ratng);
+  const rating = parseInt(ratng, 10);
 
   switch (rating) {
     case 0:
       return (
         <div className="rating-0">
-          <span></span>
+          <span />
         </div>
       );
     case 1:
       return (
         <div className="rating-1">
-          <span></span>
+          <span />
         </div>
       );
     case 2:
       return (
         <div className="rating-2">
-          <span></span>
+          <span />
         </div>
       );
     case 3:
       return (
         <div className="rating-3">
-          <span></span>
+          <span />
         </div>
       );
     case 4:
       return (
         <div className="rating-4">
-          <span></span>
+          <span />
         </div>
       );
     case 5:
       return (
         <div className="rating">
-          <span></span>
+          <span />
         </div>
       );
     default:
       return (
         <div className="rating-0">
-          <span></span>
+          <span />
         </div>
       );
   }
 };
 export const weatherApiURL = 'https://weather.aesl.ces.uga.edu';
 export const allMonths = moment().localeData().monthsShort();
-export const cropDataURL =
-  "https://api.airtable.com/v0/appC47111lCOTaMYe/Cover%20Crops%20Data?maxRecords=300&timeZone=America_NewYork&filterByFormula=NOT(SWITCH({Cover Crop Name},'__Open Discussion Row','Ok hopefully he answers me soon.'))";
+export const cropDataURL = "https://api.airtable.com/v0/appC47111lCOTaMYe/Cover%20Crops%20Data?maxRecords=300&timeZone=America_NewYork&filterByFormula=NOT(SWITCH({Cover Crop Name},'__Open Discussion Row','Ok hopefully he answers me soon.'))";
 
 // const cropDataURL =
 // "https://api.airtable.com/v0/appC47111lCOTaMYe/Cover%20Crops%20Data?maxRecords=300&timeZone=America_NewYork&filterByFormula=NOT(SWITCH({Zone Decision},'Exclude',''))";
 
-export const allGoalsURL =
-  'https://api.airtable.com/v0/appC47111lCOTaMYe/Cover%20Crop%20Goals?maxRecords=300';
+export const allGoalsURL = 'https://api.airtable.com/v0/appC47111lCOTaMYe/Cover%20Crop%20Goals?maxRecords=300';
 
 export const greenBarExpansionPanelHeight = {
   large: '600px',
@@ -360,8 +356,8 @@ export const greenBarExpansionPanelHeight = {
 
 export const trimString = (stringFull, size) => {
   if (!isNaN(size)) {
-    return stringFull.substring(0, size) + `${stringFull.length > 25 ? '...' : ''}`;
-  } else return stringFull;
+    return `${stringFull.substring(0, size)}${stringFull.length > 25 ? '...' : ''}`;
+  } return stringFull;
 };
 
 export const sidebarFilters = [
@@ -1237,20 +1233,21 @@ export const sidebarFilters = [
 ];
 
 export const downloadAllPDF = (selectedCropNames) => {
-  let zip = new JSZip();
+  const zip = new JSZip();
   let count = 0;
-  let zipFilename = 'Information-Sheets.zip';
+  const zipFilename = 'Information-Sheets.zip';
   selectedCropNames.forEach((val) => {
-    let filename = val.name + '.pdf';
+    const filename = `${val.name}.pdf`;
     JSZipUtils.getBinaryContent(val.pdf, (err, data) => {
       if (err) {
         throw err; // or handle the error
       }
       zip.file(filename, data, { binary: true });
+      // eslint-disable-next-line no-plusplus
       count++;
       if (count === selectedCropNames.length) {
-        zip.generateAsync({ type: 'blob' }).then(function (content) {
-          saveAs.saveAs(content, zipFilename);
+        zip.generateAsync({ type: 'blob' }).then((sourceContent) => {
+          saveAs.saveAs(sourceContent, zipFilename);
         });
       }
     });
@@ -1277,11 +1274,11 @@ export const downloadAllPDF = (selectedCropNames) => {
 //   });
 // };
 
-export const RenderSeedPriceIcons = ({ val }) => {
-  switch (parseInt(val)) {
+export function RenderSeedPriceIcons({ val }) {
+  switch (parseInt(val, 10)) {
     case 1:
       return (
-        <Fragment>
+        <>
           <span style={{ color: '#35999b' }}>
             <MonetizationOn />
           </span>
@@ -1291,11 +1288,11 @@ export const RenderSeedPriceIcons = ({ val }) => {
           <span style={{ color: '#35999b', opacity: 0.2 }}>
             <MonetizationOn />
           </span>
-        </Fragment>
+        </>
       );
     case 2:
       return (
-        <Fragment>
+        <>
           <span style={{ color: '#35999b' }}>
             <MonetizationOn />
           </span>
@@ -1305,11 +1302,11 @@ export const RenderSeedPriceIcons = ({ val }) => {
           <span style={{ color: '#35999b', opacity: 0.2 }}>
             <MonetizationOn />
           </span>
-        </Fragment>
+        </>
       );
     case 3:
       return (
-        <Fragment>
+        <>
           <span style={{ color: '#35999b' }}>
             <MonetizationOn />
           </span>
@@ -1319,21 +1316,21 @@ export const RenderSeedPriceIcons = ({ val }) => {
           <span style={{ color: '#35999b' }}>
             <MonetizationOn />
           </span>
-        </Fragment>
+        </>
       );
     default:
       break;
   }
-};
+}
 
-export const CropImage = ({
+export function CropImage({
   present = true,
   src = '',
   alt = '',
   view = '',
   className = '',
   onClick = () => {},
-}) => {
+}) {
   const placeholder = '//placehold.it/100x100';
   let imageStyle = {};
 
@@ -1368,39 +1365,36 @@ export const CropImage = ({
   }
 
   return (
+    // eslint-disable-next-line jsx-a11y/click-events-have-key-events
     <img
-      className={className ? className : `image-for-${alt}`}
+      className={className || `image-for-${alt}`}
       onClick={onClick}
       src={present ? src : placeholder}
       alt={present ? alt : 'Placeholder'}
       style={imageStyle}
     />
   );
-};
-export const ucFirst = (text = '') => {
-  return text
-    .toLowerCase()
-    .split(' ')
-    .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
-    .join(' ');
-};
+}
+export const ucFirst = (text = '') => text
+  .toLowerCase()
+  .split(' ')
+  .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
+  .join(' ');
 
 export const flipCoverCropName = (cropName = '') => {
   if (cropName.toLowerCase() === 'Sorghum-sudangrass'.toLowerCase()) {
     return 'Sudex';
-  } else {
-    let cropNames = cropName.split(',');
-
-    if (cropNames.length > 1) {
-      return `${cropNames[1]} ${cropNames[0]}`;
-    } else {
-      return cropName;
-    }
   }
+  const cropNames = cropName.split(',');
+
+  if (cropNames.length > 1) {
+    return `${cropNames[1]} ${cropNames[0]}`;
+  }
+  return cropName;
 };
 
 export const getActiveCropMonths = (crop = {}) => {
-  let activeMonths = [];
+  const activeMonths = [];
   if (crop['Active Growth Period'].includes('Winter')) {
     activeMonths.push('Dec');
     activeMonths.push('Jan');
@@ -1426,12 +1420,12 @@ export const getActiveCropMonths = (crop = {}) => {
   return activeMonths;
 };
 
-export const RestartPrompt = ({
+export function RestartPrompt({
   open = false,
   selectedCrops = [],
   setOpen = () => {},
   onAccept = () => {},
-}) => {
+}) {
   return (
     <Dialog disableEscapeKeyDown open={open}>
       <DialogContent dividers>
@@ -1439,7 +1433,7 @@ export const RestartPrompt = ({
           {selectedCrops.length > 0
             ? `Restarting will remove all cover crops added to your list. Are you
         sure you want to restart?`
-            : `Are you sure you want to restart?`}
+            : 'Are you sure you want to restart?'}
         </Typography>
       </DialogContent>
       <DialogActions>
@@ -1464,7 +1458,7 @@ export const RestartPrompt = ({
       </DialogActions>
     </Dialog>
   );
-};
+}
 
 export const sudoButtonStyle = {
   fontWeight: '500',

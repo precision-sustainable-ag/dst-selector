@@ -1,11 +1,13 @@
-import { Collapse, Grid, List, ListItem, ListItemText, Tooltip, Typography } from '@mui/material';
+import {
+  Collapse, Grid, List, ListItem, ListItemText, Tooltip, Typography,
+} from '@mui/material';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import React, { Fragment, useContext } from 'react';
 import ForwardFilter from '../../Filters/ForwardFilter';
 import { Context } from '../../../../store/Store';
 
-const SidebarFilter = (props) => {
-  let {
+function SidebarFilter(props) {
+  const {
     filter,
     index,
     sidebarFilterOptions,
@@ -17,23 +19,21 @@ const SidebarFilter = (props) => {
 
   const { state } = useContext(Context);
 
-  const forwardFilter = (Component, filter) => {
-    return (
-      <Grid container spacing={1}>
-        <Grid item>
-          <Component
-            filters={filter}
-            sidebarFilterOptions={sidebarFilterOptions}
-            setSidebarFilterOptions={setSidebarFilterOptions}
-            resetAllFilters={resetAllFilters}
-            {...props}
-          />
-        </Grid>
+  const forwardFilter = (Component, filt) => (
+    <Grid container spacing={1}>
+      <Grid item>
+        <Component
+          filters={filt}
+          sidebarFilterOptions={sidebarFilterOptions}
+          setSidebarFilterOptions={setSidebarFilterOptions}
+          resetAllFilters={resetAllFilters}
+          {...props}
+        />
       </Grid>
-    );
-  }; // Filter
+    </Grid>
+  ); // Filter
 
-  let listItem = (
+  const listItem = (
     <ListItem
       className={state[sectionFilter] ? 'filterOpen' : 'filterClose'}
       component="div"
@@ -52,11 +52,11 @@ const SidebarFilter = (props) => {
         <Tooltip
           arrow
           placement="right-start"
-          title={
+          title={(
             <div className="filterTooltip">
               <p>{filter.description}</p>
             </div>
-          }
+          )}
           key={`tooltip${index}`}
         >
           {listItem}
@@ -72,6 +72,6 @@ const SidebarFilter = (props) => {
       </Collapse>
     </Fragment>
   );
-};
+}
 
 export default SidebarFilter;

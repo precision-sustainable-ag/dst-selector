@@ -30,7 +30,7 @@ const goalSkeletonStyle = {
   borderRadius: '10px',
 };
 
-const GoalsSelector = () => {
+function GoalsSelector() {
   const { state } = useContext(Context);
   const classes = useStyles();
   const [allGoals, setAllGoals] = useState([{}]);
@@ -38,7 +38,7 @@ const GoalsSelector = () => {
   useEffect(() => {
     if (state.allGoals.length > 0) {
       const filteredGoals = state.allGoals.filter(
-        (goal) => goal.fields['Variable'].toLowerCase() !== 'promote water quality',
+        (goal) => goal.fields.Variable.toLowerCase() !== 'promote water quality',
       );
       setAllGoals(filteredGoals);
     }
@@ -79,8 +79,8 @@ const GoalsSelector = () => {
                     <GoalTag
                       goal={goal}
                       id={key}
-                      goaltTitle={goal.fields['Variable']}
-                      goalDescription={goal.fields['Description']}
+                      goaltTitle={goal.fields.Variable}
+                      goalDescription={goal.fields.Description}
                       valuesDescriptions={goal.fields['Values Description']}
                     />
                   </div>
@@ -94,6 +94,6 @@ const GoalsSelector = () => {
       </div>
     </div>
   );
-};
+}
 
 export default GoalsSelector;

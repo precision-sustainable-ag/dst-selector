@@ -1,4 +1,6 @@
-/* 
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/*
   Contains the individual crops in a component
   removeCrop handles removing a crop from the list
   styled using makeStyles
@@ -26,10 +28,8 @@ const useStyles = makeStyles({
   },
 });
 
-const MyCoverCropCardsComponent = (props) => {
+function MyCoverCropCardsComponent({ data, btnId, cardNo }) {
   const { state, dispatch } = useContext(Context);
-  const data = props.data;
-  const btnId = props.btnId;
   const classes = useStyles();
 
   const [modalOpen, setModalOpen] = useState(false);
@@ -44,17 +44,15 @@ const MyCoverCropCardsComponent = (props) => {
   };
 
   const removeCrop = (cropName) => {
-    let removeIndex = state.selectedCrops
-      .map(function (item) {
-        return item.id;
-      })
+    const removeIndex = state.selectedCrops
+      .map((item) => item.id)
       .indexOf(`${btnId}`);
 
     if (removeIndex === -1) {
       // element not in array
       // not possible ?
     } else {
-      let selectedCropsCopy = state.selectedCrops;
+      const selectedCropsCopy = state.selectedCrops;
 
       selectedCropsCopy.splice(removeIndex, 1);
       dispatch({
@@ -62,14 +60,14 @@ const MyCoverCropCardsComponent = (props) => {
         data: {
           selectedCrops: selectedCropsCopy,
           snackOpen: false,
-          snackMessage: `Removed`,
+          snackMessage: 'Removed',
         },
       });
       enqueueSnackbar(`${cropName} Removed`);
     }
   };
   return (
-    <div className={`${props.cardNo === 1 ? `pl-0 pr-2 pt-2 pb-2` : `p-2`}`}>
+    <div className={`${cardNo === 1 ? 'pl-0 pr-2 pt-2 pb-2' : 'p-2'}`}>
       <Card className={classes.card}>
         <CardMedia
           image={
@@ -82,7 +80,7 @@ const MyCoverCropCardsComponent = (props) => {
         />
         <CardContent>
           <div className="font-weight-bold text-muted text-uppercase" style={{ fontSize: '10pt' }}>
-            {`Zone ${data['Zone']}`}
+            {`Zone ${data.Zone}`}
           </div>
           <div className="font-weight-bold text-muted text-uppercase" style={{ fontSize: '10pt' }}>
             {data['Family Common Name']}
@@ -135,6 +133,6 @@ const MyCoverCropCardsComponent = (props) => {
       />
     </div>
   );
-};
+}
 
 export default MyCoverCropCardsComponent;

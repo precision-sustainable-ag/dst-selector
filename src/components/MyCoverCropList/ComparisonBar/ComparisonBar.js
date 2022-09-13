@@ -1,5 +1,5 @@
-/* 
-  Shows the comparison bar in the crop list component 
+/*
+  Shows the comparison bar in the crop list component
   filteredGoals shows which goals are selected
   filteredVals shows the other filters that are selected
   toggleSidebarFilterItems toggles the vlaue of a specific filter item
@@ -7,23 +7,25 @@
   showAllVariables selects all filters
 */
 
-import { Button, List, ListItem, ListItemText, ListSubheader, Typography } from '@mui/material';
+import {
+  Button, List, ListItem, ListItemText, ListSubheader,
+} from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import RenderFilters from './RenderFilters';
 import RenderGoals from './RenderGoals';
 
-const ComparisonBar = (props) => {
+function ComparisonBar({
+  filterData, goals, comparisonKeys, dispatch, comparisonView, classes,
+}) {
   const [filterValues, setFilterValues] = useState([]);
   const [goalsOpen, setGoalsOpen] = useState(false);
-  const [goals, setGoals] = useState([]);
+  const [allGoals, setAllGoals] = useState([]);
   useEffect(() => {
-    const filteredVals = props.filterData.map((filter) => {
-      const vals = filter.values.map((val) => {
-        return {
-          ...val,
-          selected: false,
-        };
-      });
+    const filteredVals = filterData.map((filter) => {
+      const vals = filter.values.map((val) => ({
+        ...val,
+        selected: false,
+      }));
       return {
         name: filter.name,
         description: filter.description || null,
@@ -31,26 +33,24 @@ const ComparisonBar = (props) => {
         values: vals,
       };
     });
-    const filteredGoals = props.goals.map((goal) => {
-      return {
-        name: goal,
-        selected: false,
-      };
-    });
+    const filteredGoals = goals.map((goal) => ({
+      name: goal,
+      selected: false,
+    }));
     setFilterValues(filteredVals);
-    setGoals(filteredGoals);
-  }, [props.filterData, props.goals]);
+    setAllGoals(filteredGoals);
+  }, [filterData, goals]);
 
   const toggleSidebarFilterItems = (index) => {
     const newSidebarFilterVals = filterValues.map((obj, index2) => {
       if (index2 === index) return { ...obj, open: !obj.open };
-      else return { ...obj };
+      return { ...obj };
     });
     setFilterValues(newSidebarFilterVals);
   };
   const resetAllFilters = () => {
-    if (props.comparisonKeys.length > 0) {
-      props.dispatch({
+    if (comparisonKeys.length > 0) {
+      dispatch({
         type: 'UPDATE_COMPARISON_KEYS',
         data: {
           comparisonKeys: [],
@@ -60,21 +60,17 @@ const ComparisonBar = (props) => {
   };
   const showAllVariables = () => {
     setGoalsOpen(true);
-    let allGoals = [];
-    allGoals.push('Cover Crop Group');
-    const filteredGoals = props.goals.map((goal) => {
-      return {
-        name: goal,
+    const theGoals = [];
+    theGoals.push('Cover Crop Group');
+    const filteredGoals = goals.map((goal) => ({
+      name: goal,
+      selected: true,
+    }));
+    const filteredVals = filterData.map((filter) => {
+      const vals = filter.values.map((val) => ({
+        ...val,
         selected: true,
-      };
-    });
-    const filteredVals = props.filterData.map((filter) => {
-      const vals = filter.values.map((val) => {
-        return {
-          ...val,
-          selected: true,
-        };
-      });
+      }));
       return {
         name: filter.name,
         description: filter.description || null,
@@ -85,54 +81,54 @@ const ComparisonBar = (props) => {
 
     const filterKeysAppend = filteredVals.map((val, index) => {
       if (
-        index !== 0 &&
-        val.name !== 'Soil Conditions' &&
-        val.name !== 'Disease & Non Weed Pests' &&
-        val.name !== 'Beneficials' &&
-        val.name !== 'Disease & Non Weed Pests'
+        index !== 0
+        && val.name !== 'Soil Conditions'
+        && val.name !== 'Disease & Non Weed Pests'
+        && val.name !== 'Beneficials'
+        && val.name !== 'Disease & Non Weed Pests'
       ) {
         return val.values.map((v) => {
           if (v.name !== 'Roller Crimp at Flowering') {
             return v.alternateName ? v.alternateName : v.name;
-          } else return [];
+          } return [];
         });
-      } else return [];
+      } return [];
     });
 
     const filterGoalsAppend = filteredGoals.map((v) => v.name);
 
-    allGoals.push(filterKeysAppend.flat(2));
-    allGoals.push(filterGoalsAppend.flat());
+    theGoals.push(filterKeysAppend.flat(2));
+    theGoals.push(filterGoalsAppend.flat());
     setFilterValues(filteredVals);
-    setGoals(filteredGoals);
+    setAllGoals(filteredGoals);
 
-    props.dispatch({
+    dispatch({
       type: 'UPDATE_COMPARISON_KEYS',
       data: {
-        comparisonKeys: allGoals.flat(2),
+        comparisonKeys: theGoals.flat(2),
       },
     });
   };
-  return props.comparisonView ? (
+  return comparisonView && (
     <List
       component="nav"
-      classes={{ root: props.classes.listRoot }}
+      classes={{ root: classes.listRoot }}
       aria-labelledby="nested-list-subheader"
-      subheader={
+      subheader={(
         <ListSubheader
-          classes={{ root: props.classes.listSubHeaderRoot }}
+          classes={{ root: classes.listSubHeaderRoot }}
           component="div"
           id="nested-list-subheader"
         >
           COMPARE BY
         </ListSubheader>
-      }
-      className={props.classes.root}
+      )}
+      className={classes.root}
     >
-      {props.comparisonKeys.length > 0 && (
+      {comparisonKeys.length > 0 && (
         <ListItem onClick={() => {}}>
           <ListItemText
-            primary={
+            primary={(
               <Button
                 size="small"
                 style={{ marginBottom: '-15px' }}
@@ -141,44 +137,38 @@ const ComparisonBar = (props) => {
               >
                 Clear Variables
               </Button>
-            }
+            )}
           />
         </ListItem>
       )}
       <ListItem>
         <ListItemText
-          primary={
+          primary={(
             <Button size="small" className="text-uppercase text-left" onClick={showAllVariables}>
               Show All
             </Button>
-          }
+          )}
         />
       </ListItem>
-      {goals.length > 0 ? (
+      {allGoals.length > 0 && (
         <RenderGoals
-          goals={goals}
-          setGoals={setGoals}
+          goals={allGoals}
           goalsOpen={goalsOpen}
           setGoalsOpen={setGoalsOpen}
-          classes={props.classes}
-          comparisonKeys={props.comparisonKeys}
-          dispatch={props.dispatch}
+          comparisonKeys={comparisonKeys}
+          dispatch={dispatch}
         />
-      ) : (
-        ''
       )}
 
       <RenderFilters
         filterValues={filterValues}
         toggleSidebarFilterItems={toggleSidebarFilterItems}
-        classes={props.classes}
-        comparisonKeys={props.comparisonKeys}
-        dispatch={props.dispatch}
+        classes={classes}
+        comparisonKeys={comparisonKeys}
+        dispatch={dispatch}
       />
     </List>
-  ) : (
-    ''
   );
-};
+}
 
 export default ComparisonBar;

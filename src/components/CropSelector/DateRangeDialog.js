@@ -19,7 +19,7 @@ import { DateRangePicker } from 'react-date-range';
 import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css'; // theme css file
 
-const DateRangeDialog = ({ open = false, onChange = () => {}, close = () => {} }) => {
+function DateRangeDialog({ open = false, onChange = () => {}, close = () => {} }) {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('lg'));
 
@@ -33,12 +33,12 @@ const DateRangeDialog = ({ open = false, onChange = () => {}, close = () => {} }
     const startDate = new Date(ranges.selection.startDate).toLocaleDateString('sv');
     const endDate = new Date(ranges.selection.endDate).toLocaleDateString('sv');
     setSelection(ranges.selection);
-    onChange({ startDate: startDate, endDate: endDate });
+    onChange({ startDate, endDate });
   };
 
   return (
     <Dialog
-      maxWidth={'md'}
+      maxWidth="md"
       fullScreen={fullScreen}
       open={open}
       onClose={close}
@@ -65,6 +65,6 @@ const DateRangeDialog = ({ open = false, onChange = () => {}, close = () => {} }
       </DialogContent>
     </Dialog>
   );
-};
+}
 
 export default DateRangeDialog;

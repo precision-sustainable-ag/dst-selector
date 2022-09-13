@@ -1,19 +1,19 @@
 /*
   This file contains the CoverCropExplorer component
-  The CoverCropExplorer component allows users to look at a list of all the cover crops for their zone 
+  The CoverCropExplorer component allows users to look at a list of all the cover crops for their zone
   styled from from CustomStyles in ../../../shared/constants
 */
 
 import { Grid, Typography } from '@mui/material';
 import React, { useContext, useEffect, useState } from 'react';
+import ReactGA from 'react-ga';
 import { Context } from '../../store/Store';
 import CropSidebarComponent from '../CropSelector/CropSidebar';
 import Header from '../Header/Header';
 import ExplorerCardView from './ExplorerCardView';
 import ConsentModal from './ConsentModal';
-import ReactGA from 'react-ga';
 
-const CoverCropExplorer = () => {
+function CoverCropExplorer() {
   const { state } = useContext(Context);
   const section = window.location.href.includes('selector') ? 'selector' : 'explorer';
   const sfilters = state[section];
@@ -46,10 +46,10 @@ const CoverCropExplorer = () => {
         <div className="row mt-3">
           <div className="col-md-12 col-lg-3 col-xl-2 col-12">
             <CropSidebarComponent
-              from={'explorer'}
+              from="explorer"
               cropDataChanged={cropDataChanged}
               activeCropData={activeCropData.length > 0 ? activeCropData : state.cropData}
-              isListView={true}
+              isListView
             />
           </div>
           <div className="col-md-12 col-lg-9 col-xl-10 col-12">
@@ -73,6 +73,6 @@ const CoverCropExplorer = () => {
       </div>
     </div>
   );
-};
+}
 
 export default CoverCropExplorer;

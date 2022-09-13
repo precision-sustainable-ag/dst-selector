@@ -9,7 +9,7 @@ import Header from '../Header/Header';
 import AgInformaticsLicenseText from './AgInformaticsLicenseText';
 import MITLicenseText from './MITLicenseText';
 
-const License = ({ licenseType = 'MIT' }) => {
+function License({ licenseType = 'MIT' }) {
   useEffect(() => {
     switch (licenseType) {
       case 'MIT':
@@ -35,6 +35,6 @@ const License = ({ licenseType = 'MIT' }) => {
       </div>
     </div>
   );
-};
+}
 
 export default License;

@@ -1,23 +1,25 @@
-import { Chip, Collapse, Grid, List, ListItem, ListItemText, Typography } from '@mui/material';
+import {
+  Chip, Collapse, Grid, List, ListItem, ListItemText, Typography,
+} from '@mui/material';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import React, { Fragment, useContext } from 'react';
 import { Context } from '../../../../store/Store';
 
-const PlantHardinessZone = (props) => {
-  let { handleToggle, dispatch, sfilters } = props;
+function PlantHardinessZone(props) {
+  const { handleToggle, dispatch, sfilters } = props;
 
   const { state } = useContext(Context);
 
   return (
-    <Fragment>
+    <>
       <List component="div" disablePadding>
-        <ListItem button onClick={(e) => handleToggle(!state.zoneToggle, 'ZONE_TOGGLE')}>
+        <ListItem button onClick={() => handleToggle(!state.zoneToggle, 'ZONE_TOGGLE')}>
           <ListItemText
-            primary={
+            primary={(
               <Typography variant="body2" className="text-uppercase">
                 Plant Hardiness Zone
               </Typography>
-            }
+            )}
           />
           {state.zoneToggle ? <ExpandLess /> : <ExpandMore />}
         </ListItem>
@@ -34,14 +36,14 @@ const PlantHardinessZone = (props) => {
                         type: 'UPDATE_ZONE',
                         data: {
                           zoneText: `Zone ${zone}`,
-                          zone: zone,
+                          zone,
                         },
                       });
                     }}
                     component="li"
                     size="medium"
                     label={`Zone ${zone}`}
-                    color={parseInt(sfilters.zone) === zone ? 'primary' : 'secondary'}
+                    color={sfilters.zone === zone ? 'primary' : 'secondary'}
                   />
                 </Grid>
               ))}
@@ -49,8 +51,8 @@ const PlantHardinessZone = (props) => {
           </ListItem>
         </List>
       </Collapse>
-    </Fragment>
+    </>
   );
-};
+}
 
 export default PlantHardinessZone;
