@@ -14,6 +14,13 @@ import '../../../styles/cropCalendarViewComponent.scss';
 const RenderCrops = ({ cropData, active, setModalOpen, modalOpen, setModalData }) => {
   const { state, dispatch } = useContext(Context);
 
+  const dispatchValue = (value, type = 'SELECTED_CROPS_MODIFIER') => {
+    dispatch({
+      type: type,
+      data: value,
+    });
+  };
+
   const selectedBtns = state.selectedCrops.map((crop) => {
     return crop.id;
   });
@@ -25,7 +32,6 @@ const RenderCrops = ({ cropData, active, setModalOpen, modalOpen, setModalData }
   };
 
   const getAverageGoalRating = (selectedGoals, crop) => {
-    // get goal rating for each crop and calculate+render rating
     let goalRating = 0;
     selectedGoals.forEach((goal) => {
       if (crop.fields[goal]) {
@@ -45,46 +51,32 @@ const RenderCrops = ({ cropData, active, setModalOpen, modalOpen, setModalData }
     selectedCrops['data'] = cropData;
     cropArray = selectedCrops;
 
-    // // check if crop id exists inside state, if yes then remove it
     if (state.selectedCrops.length > 0) {
-      // DONE: Remove crop from basket
       let removeIndex = state.selectedCrops
         .map(function (item) {
           return item.btnId;
         })
         .indexOf(`${btnId}`);
       if (removeIndex === -1) {
-        // element not in array
-        dispatch({
-          type: 'SELECTED_CROPS_MODIFIER',
-          data: {
-            selectedCrops: [...state.selectedCrops, selectedCrops],
-            snackOpen: true,
-            snackMessage: `${cropName} Added`,
-          },
+        dispatchValue({
+          selectedCrops: [...state.selectedCrops, selectedCrops],
+          snackOpen: true,
+          snackMessage: `${cropName} Added`,
         });
       } else {
         let selectedCropsCopy = state.selectedCrops;
         selectedCropsCopy.splice(removeIndex, 1);
-        dispatch({
-          type: 'SELECTED_CROPS_MODIFIER',
-          data: {
-            selectedCrops: selectedCropsCopy,
-            snackOpen: true,
-            snackMessage: `${cropName} Removed`,
-          },
+        dispatchValue({
+          selectedCrops: selectedCropsCopy,
+          snackOpen: true,
+          snackMessage: `${cropName} Removed`,
         });
       }
     } else {
-      // DONE: add the selected crop to state and change the state, show snackbar
-
-      dispatch({
-        type: 'SELECTED_CROPS_MODIFIER',
-        data: {
-          selectedCrops: [cropArray],
-          snackOpen: true,
-          snackMessage: `${cropName} Added`,
-        },
+      dispatchValue({
+        selectedCrops: [cropArray],
+        snackOpen: true,
+        snackMessage: `${cropName} Added`,
       });
     }
   };
@@ -92,8 +84,8 @@ const RenderCrops = ({ cropData, active, setModalOpen, modalOpen, setModalData }
   return cropData
     .filter((crop) => (active ? !hasGoalRatingTwoOrLess(crop) : hasGoalRatingTwoOrLess(crop)))
     .map((crop, index) => {
-      if (crop.fields['Zone Decision'] === 'Include')
-        return (
+      return (
+        crop.fields['Zone Decision'] === 'Include' && (
           <TableRow
             key={`cropRow${index}`}
             style={hasGoalRatingTwoOrLess(crop) ? { opacity: '0.2' } : {}}
@@ -149,9 +141,7 @@ const RenderCrops = ({ cropData, active, setModalOpen, modalOpen, setModalData }
                 </Button>
               </div>
             </TableCell>
-            {state.selectedGoals.length === 0 ? (
-              ''
-            ) : (
+            {state.selectedGoals.length > 0 && (
               <TableCell
                 style={{
                   paddingBottom: '0px',
@@ -193,8 +183,8 @@ const RenderCrops = ({ cropData, active, setModalOpen, modalOpen, setModalData }
               </LightButton>
             </TableCell>
           </TableRow>
-        );
-      else return null;
+        )
+      );
     });
 };
 

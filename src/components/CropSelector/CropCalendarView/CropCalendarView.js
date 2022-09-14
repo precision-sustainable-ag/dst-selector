@@ -39,6 +39,19 @@ const CropCalendarViewComponent = (props) => {
   const { activeCropData } = props;
   const { state, dispatch } = useContext(Context);
   const [legendModal, setLegendModal] = useState(false);
+  const [nameSortFlag, setNameSortFlag] = useState(true);
+  const [selectedCropsSortFlag, setSelectedCropsSortFlag] = useState(true);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalData, setModalData] = useState([{}]);
+
+  const dispatchValue = (value, type = 'UPDATE_ACTIVE_CROP_DATA') => {
+    dispatch({
+      type: type,
+      data: {
+        value: value,
+      },
+    });
+  };
 
   const handleLegendModal = () => {
     setLegendModal(!legendModal);
@@ -59,7 +72,6 @@ const CropCalendarViewComponent = (props) => {
   };
 
   const sortReset = (from = 'cropName') => {
-    // reset to default
     const { selectedGoals } = state;
     let activeCropDataShadow = props.activeCropData;
     selectedGoals
@@ -78,12 +90,7 @@ const CropCalendarViewComponent = (props) => {
         });
       });
 
-    dispatch({
-      type: 'UPDATE_ACTIVE_CROP_DATA',
-      data: {
-        value: activeCropDataShadow,
-      },
-    });
+    dispatchValue(activeCropDataShadow);
   };
   const sortCropsByName = () => {
     let activeCropDataShadow = props.activeCropData;
@@ -103,12 +110,7 @@ const CropCalendarViewComponent = (props) => {
           return firstCropName.localeCompare(secondCropName);
         });
 
-        dispatch({
-          type: 'UPDATE_ACTIVE_CROP_DATA',
-          data: {
-            value: activeCropDataShadow,
-          },
-        });
+        dispatchValue(activeCropDataShadow);
       }
     } else {
       if (activeCropDataShadow.length > 0) {
@@ -130,12 +132,7 @@ const CropCalendarViewComponent = (props) => {
           return 0;
         });
 
-        dispatch({
-          type: 'UPDATE_ACTIVE_CROP_DATA',
-          data: {
-            value: activeCropDataShadow,
-          },
-        });
+        dispatchValue(activeCropDataShadow);
       }
     }
 
@@ -166,24 +163,14 @@ const CropCalendarViewComponent = (props) => {
             }
           });
 
-          dispatch({
-            type: 'UPDATE_ACTIVE_CROP_DATA',
-            data: {
-              value: newActiveShadow,
-            },
-          });
+          dispatchValue(newActiveShadow);
         }
       }
     } else {
-      // sort back to original values
       sortReset('selectedCrops');
     }
     setSelectedCropsSortFlag(!selectedCropsSortFlag);
   };
-  const [nameSortFlag, setNameSortFlag] = useState(true);
-  const [selectedCropsSortFlag, setSelectedCropsSortFlag] = useState(true);
-  const [modalOpen, setModalOpen] = useState(false);
-  const [modalData, setModalData] = useState([{}]);
 
   return (
     <Fragment>
@@ -368,9 +355,7 @@ const CropCalendarViewComponent = (props) => {
                 <TableCell style={{ width: '17%', borderRight: '5px solid white' }}>
                   <Button onClick={sortCropsByName}>COVER CROPS</Button>
                 </TableCell>
-                {state.selectedGoals.length === 0 ? (
-                  ''
-                ) : (
+                {state.selectedGoals.length > 0 && (
                   <TableCell style={{ width: '13%', borderRight: '5px solid white' }}>
                     <Button onClick={sortReset}>AVERAGE GOAL RATING</Button>
                   </TableCell>
@@ -406,7 +391,7 @@ const CropCalendarViewComponent = (props) => {
             </TableHead>
 
             <TableBody className="calendarTableBodyWrapper">
-              {activeCropData.length > 0 ? (
+              {activeCropData.length > 0 && (
                 <>
                   <RenderCrops
                     active={true}
@@ -417,13 +402,10 @@ const CropCalendarViewComponent = (props) => {
                   />
                   <RenderCrops active={false} cropData={activeCropData} />
                 </>
-              ) : (
-                ''
               )}
             </TableBody>
           </Table>
         </TableContainer>
-        // </div>
       )}
       <CropLegendModal
         legendModal={legendModal}
