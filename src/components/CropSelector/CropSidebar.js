@@ -77,8 +77,9 @@ const CropSidebarComponent = ({
   // make an exhaustive array of all params in array e.g. cover crop group and use includes in linq
   const [sidebarFilterOptions, setSidebarFilterOptions] = useState(() => {
     const sidebarStarter = {};
-    // eslint-disable-next-line no-return-assign
-    sidebarFiltersData.forEach((row) => (sidebarStarter[row.name] = []));
+    sidebarFiltersData.forEach((row) => {
+      sidebarStarter[row.name] = [];
+    });
     return sidebarStarter;
   });
 

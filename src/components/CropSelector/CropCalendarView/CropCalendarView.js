@@ -1,5 +1,5 @@
 /*
-  This file contains the CropCalendarViewComponent  
+  This file contains the CropCalendarViewComponent
   The CropCalendarViewComponent shows the crops in calendar format
   Styles are created using makeStyles
 */
@@ -16,8 +16,12 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material';
-import { AcUnit, AddCircle, LocalFlorist, WbSunny } from '@mui/icons-material';
-import React, { Fragment, useContext, useEffect, useState } from 'react';
+import {
+  AcUnit, AddCircle, LocalFlorist, WbSunny,
+} from '@mui/icons-material';
+import React, {
+  useContext, useEffect, useState,
+} from 'react';
 import {
   allMonths,
   CustomStyles,
@@ -35,8 +39,7 @@ const growthIcon = {
   color: 'white',
 };
 
-const CropCalendarViewComponent = (props) => {
-  const { activeCropData } = props;
+const CropCalendarViewComponent = (activeCropData) => {
   const { state, dispatch } = useContext(Context);
   const [legendModal, setLegendModal] = useState(false);
   const [nameSortFlag, setNameSortFlag] = useState(true);
@@ -46,9 +49,9 @@ const CropCalendarViewComponent = (props) => {
 
   const dispatchValue = (value, type = 'UPDATE_ACTIVE_CROP_DATA') => {
     dispatch({
-      type: type,
+      type,
       data: {
-        value: value,
+        value,
       },
     });
   };
@@ -65,15 +68,14 @@ const CropCalendarViewComponent = (props) => {
   const checkIfGrowthMonth = (month) => {
     if (activeGrowthPeriodState.length !== 0) {
       if (activeGrowthPeriodState.includes(month)) return true;
-      else return false;
-    } else {
       return false;
     }
+    return false;
   };
 
-  const sortReset = (from = 'cropName') => {
+  const sortReset = () => {
     const { selectedGoals } = state;
-    let activeCropDataShadow = props.activeCropData;
+    const activeCropDataShadow = activeCropData;
     selectedGoals
       .slice()
       .reverse()
@@ -82,9 +84,8 @@ const CropCalendarViewComponent = (props) => {
           if (a.fields[goal] && b.fields[goal]) {
             if (a.fields[goal] > b.fields[goal]) {
               return -1;
-            } else {
-              return 1;
             }
+            return 1;
           }
           return 0;
         });
@@ -92,18 +93,19 @@ const CropCalendarViewComponent = (props) => {
 
     dispatchValue(activeCropDataShadow);
   };
+
   const sortCropsByName = () => {
-    let activeCropDataShadow = props.activeCropData;
+    const activeCropDataShadow = activeCropData;
     sortReset('cropName');
 
     if (nameSortFlag) {
       if (activeCropDataShadow.length > 0) {
         activeCropDataShadow.sort((a, b) => {
-          let firstCropName = flipCoverCropName(a.fields['Cover Crop Name'].toLowerCase()).replace(
+          const firstCropName = flipCoverCropName(a.fields['Cover Crop Name'].toLowerCase()).replace(
             /\s+/g,
             '',
           );
-          let secondCropName = flipCoverCropName(b.fields['Cover Crop Name'].toLowerCase()).replace(
+          const secondCropName = flipCoverCropName(b.fields['Cover Crop Name'].toLowerCase()).replace(
             /\s+/g,
             '',
           );
@@ -112,44 +114,40 @@ const CropCalendarViewComponent = (props) => {
 
         dispatchValue(activeCropDataShadow);
       }
-    } else {
-      if (activeCropDataShadow.length > 0) {
-        activeCropDataShadow.sort((a, b) => {
-          let firstCropName = flipCoverCropName(a.fields['Cover Crop Name'].toLowerCase()).replace(
-            /\s+/g,
-            '',
-          );
-          let secondCropName = flipCoverCropName(b.fields['Cover Crop Name'].toLowerCase()).replace(
-            /\s+/g,
-            '',
-          );
-          if (firstCropName < secondCropName) {
-            return 1;
-          }
-          if (firstCropName > secondCropName) {
-            return -1;
-          }
-          return 0;
-        });
-
-        dispatchValue(activeCropDataShadow);
-      }
+    } else if (activeCropDataShadow.length > 0) {
+      activeCropDataShadow.sort((a, b) => {
+        const firstCropName = flipCoverCropName(a.fields['Cover Crop Name'].toLowerCase()).replace(
+          /\s+/g,
+          '',
+        );
+        const secondCropName = flipCoverCropName(b.fields['Cover Crop Name'].toLowerCase()).replace(
+          /\s+/g,
+          '',
+        );
+        if (firstCropName < secondCropName) {
+          return 1;
+        }
+        if (firstCropName > secondCropName) {
+          return -1;
+        }
+        return 0;
+      });
+      dispatchValue(activeCropDataShadow);
     }
-
     setNameSortFlag(!nameSortFlag);
   };
 
   const sortBySelectedCrops = () => {
     sortReset('selectedCrops');
-    let selectedCropsShadow = state.selectedCrops;
-    let activeCropDataShadow = props.activeCropData;
+    const selectedCropsShadow = state.selectedCrops;
+    const activeCropDataShadow = activeCropData;
     if (selectedCropsSortFlag) {
       if (selectedCropsShadow.length > 0) {
-        let selectedCropIds = [];
+        const selectedCropIds = [];
         selectedCropsShadow.forEach((crop) => {
           selectedCropIds.push(crop.id);
         });
-        let newActiveShadow = activeCropDataShadow.map((crop) => {
+        const newActiveShadow = activeCropDataShadow.map((crop) => {
           crop.inCart = selectedCropIds.includes(crop.fields.id);
           return crop;
         });
@@ -158,9 +156,8 @@ const CropCalendarViewComponent = (props) => {
           newActiveShadow.sort((a) => {
             if (a.inCart) {
               return -1;
-            } else {
-              return 1;
             }
+            return 1;
           });
 
           dispatchValue(newActiveShadow);
@@ -173,10 +170,10 @@ const CropCalendarViewComponent = (props) => {
   };
 
   return (
-    <Fragment>
+    <>
       {state.ajaxInProgress ? (
         <div className="circularCentered">
-          <CircularProgress size={'6em'} />
+          <CircularProgress size="6em" />
         </div>
       ) : (
         <TableContainer
@@ -194,7 +191,7 @@ const CropCalendarViewComponent = (props) => {
                 <TableCell
                   colSpan={state.activeGrowthPeriod.length === 0 ? 2 : 1}
                   style={{ backgroundColor: 'white' }}
-                ></TableCell>
+                />
                 {state.activeGrowthPeriod.length === 0 ? (
                   <TableCell
                     colSpan="12"
@@ -220,7 +217,7 @@ const CropCalendarViewComponent = (props) => {
                     </div>
                   </TableCell>
                 ) : (
-                  <Fragment>
+                  <>
                     <TableCell
                       colSpan="1"
                       style={{
@@ -248,7 +245,7 @@ const CropCalendarViewComponent = (props) => {
                       <TableCell
                         style={{ borderBottom: '5px solid white' }}
                         colSpan="2"
-                      ></TableCell>
+                      />
                     )}
                     {state.activeGrowthPeriod.includes('Mar') ? (
                       <Tooltip placement="top" title="Spring">
@@ -268,7 +265,7 @@ const CropCalendarViewComponent = (props) => {
                       <TableCell
                         style={{ borderBottom: '5px solid white' }}
                         colSpan="3"
-                      ></TableCell>
+                      />
                     )}
                     {state.activeGrowthPeriod.includes('Jun') ? (
                       <Tooltip placement="top" title="Summer">
@@ -288,7 +285,7 @@ const CropCalendarViewComponent = (props) => {
                       <TableCell
                         style={{ borderBottom: '5px solid white' }}
                         colSpan="3"
-                      ></TableCell>
+                      />
                     )}
                     {state.activeGrowthPeriod.includes('Sep') ? (
                       <Tooltip placement="top" title="Fall">
@@ -308,7 +305,7 @@ const CropCalendarViewComponent = (props) => {
                       <TableCell
                         style={{ borderBottom: '5px solid white' }}
                         colSpan="3"
-                      ></TableCell>
+                      />
                     )}
                     {state.activeGrowthPeriod.includes('Dec') ? (
                       <Tooltip placement="top" title="Winter">
@@ -328,9 +325,9 @@ const CropCalendarViewComponent = (props) => {
                       <TableCell
                         style={{ borderBottom: '5px solid white' }}
                         colSpan="1"
-                      ></TableCell>
+                      />
                     )}
-                  </Fragment>
+                  </>
                 )}
                 {state.activeGrowthPeriod.length > 0 ? (
                   <TableCell
@@ -348,7 +345,7 @@ const CropCalendarViewComponent = (props) => {
                     </div>
                   </TableCell>
                 ) : (
-                  <TableCell style={{ backgroundColor: 'white' }}></TableCell>
+                  <TableCell style={{ backgroundColor: 'white' }} />
                 )}
               </TableRow>
               <TableRow className="calSecondHeadRow">
@@ -364,17 +361,15 @@ const CropCalendarViewComponent = (props) => {
                 {allMonths.map((month, index) => {
                   const growthMonth = checkIfGrowthMonth(month);
                   const growthMonthSeparator = growthMonth
-                    ? month === 'Feb' || month === 'May' || month === 'Aug' || month === 'Nov'
-                      ? true
-                      : false
+                    ? !!(month === 'Feb' || month === 'May' || month === 'Aug' || month === 'Nov')
                     : false;
 
                   return (
                     <TableCell
                       key={`monthskey${index}`}
                       className={`calendarSecondHeadMonth ${
-                        growthMonth ? `activeGrowthMonth` : ``
-                      } ${growthMonthSeparator ? `growthMonthSeparator` : ``}`}
+                        growthMonth ? 'activeGrowthMonth' : ''
+                      } ${growthMonthSeparator ? 'growthMonthSeparator' : ''}`}
                     >
                       <div style={sudoButtonStyle}>{month}</div>
                     </TableCell>
@@ -383,7 +378,9 @@ const CropCalendarViewComponent = (props) => {
 
                 <TableCell style={{ width: '10%', borderLeft: '5px solid white' }}>
                   <Button onClick={sortBySelectedCrops}>
-                    MY LIST <br />
+                    MY LIST
+                    {' '}
+                    <br />
                     {`[${state.selectedCrops.length} CROPS]`}
                   </Button>
                 </TableCell>
@@ -391,9 +388,11 @@ const CropCalendarViewComponent = (props) => {
             </TableHead>
 
             <TableBody className="calendarTableBodyWrapper">
+              {/* eslint-disable-next-line react/destructuring-assignment */}
               {activeCropData.length > 0 && (
                 <>
                   <RenderCrops
+                    // eslint-disable-next-line react/jsx-boolean-value
                     active={true}
                     cropData={activeCropData}
                     setModalOpen={setModalOpen}
@@ -417,7 +416,7 @@ const CropCalendarViewComponent = (props) => {
         setModalOpen={setModalOpen}
         crop={modalData}
       />
-    </Fragment>
+    </>
   );
 };
 
