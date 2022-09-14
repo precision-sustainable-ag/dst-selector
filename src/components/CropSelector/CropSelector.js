@@ -14,7 +14,7 @@ import ReactGA from 'react-ga';
 import { Context } from '../../store/Store';
 import '../../styles/cropSelector.scss';
 import MyCoverCropList from '../MyCoverCropList/MyCoverCropList';
-import CropCalendarViewComponent from './CropCalendarView';
+import CropCalendarViewComponent from './CropCalendarView/CropCalendarView';
 import CropSidebarComponent from './CropSidebar';
 import CropTableComponent from './CropTable';
 
