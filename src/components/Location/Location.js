@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function LocationComponent({ title, caller }) {
+const LocationComponent = ({ title, caller }) => {
   const classes = useStyles();
   const { state, dispatch } = useContext(Context);
   const section = window.location.href.includes('selector') ? 'selector' : 'explorer';
@@ -252,6 +252,6 @@ function LocationComponent({ title, caller }) {
       </Dialog>
     </div>
   );
-}
+};
 
 export default LocationComponent;

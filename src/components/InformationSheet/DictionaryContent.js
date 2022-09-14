@@ -8,7 +8,7 @@ import React, {
   useEffect, useMemo, useState,
 } from 'react';
 
-function DictionaryContent({ dictData = [{}], from = '' }) {
+const DictionaryContent = ({ dictData = [{}], from = '' }) => {
   const [groupedCats, setGroupedCats] = useState({});
 
   const groupBy = (arr, property) => arr.reduce((acc, cur) => {
@@ -75,6 +75,6 @@ function DictionaryContent({ dictData = [{}], from = '' }) {
       {Object.keys(groupedCats).length > 0 ? <RenderCats /> : ''}
     </div>
   );
-}
+};
 
 export default DictionaryContent;

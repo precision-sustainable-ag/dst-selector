@@ -10,7 +10,7 @@ import {
 import React, { useContext, useState } from 'react';
 import { Context } from '../../store/Store';
 
-function ExplorerCardView(props) {
+const ExplorerCardView = (props) => {
   const { consent } = props;
   const { dispatch } = useContext(Context);
   const [modalOpen, setModalOpen] = useState(true);
@@ -94,6 +94,6 @@ function ExplorerCardView(props) {
       </Box>
     </Modal>
   );
-}
+};
 
 export default ExplorerCardView;

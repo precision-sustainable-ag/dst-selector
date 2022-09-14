@@ -5,7 +5,7 @@ import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import React, { Fragment, useContext } from 'react';
 import { Context } from '../../../../store/Store';
 
-function PlantHardinessZone(props) {
+const PlantHardinessZone = (props) => {
   const { handleToggle, dispatch, sfilters } = props;
 
   const { state } = useContext(Context);
@@ -53,6 +53,6 @@ function PlantHardinessZone(props) {
       </Collapse>
     </>
   );
-}
+};
 
 export default PlantHardinessZone;

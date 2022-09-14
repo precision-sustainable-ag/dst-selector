@@ -7,7 +7,7 @@ import { arrayMove, List as ListMovable } from 'react-movable';
 import { Context } from '../../../../store/Store';
 import { CustomStyles } from '../../../../shared/constants';
 
-function CoverCropGoals({ handleToggle, classes, style }) {
+const CoverCropGoals = ({ handleToggle, classes, style }) => {
   const { state, dispatch } = useContext(Context);
 
   const updateSelectedGoals = (newGoalArr, oldIndex, newIndex) => {
@@ -146,6 +146,6 @@ function CoverCropGoals({ handleToggle, classes, style }) {
       </Collapse>
     </>
   );
-}
+};
 
 export default CoverCropGoals;

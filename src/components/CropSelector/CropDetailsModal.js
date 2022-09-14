@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function CropDetailsModalComponent(props) {
+const CropDetailsModalComponent = (props) => {
   const { state } = useContext(Context);
   const { crop, setModalOpen, modalOpen } = props;
   const classes = useStyles();
@@ -220,6 +220,6 @@ function CropDetailsModalComponent(props) {
       </Fade>
     </Modal>
   );
-}
+};
 
 export default CropDetailsModalComponent;

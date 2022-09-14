@@ -4,7 +4,7 @@ import {
 import { Clear } from '@mui/icons-material';
 import React from 'react';
 
-function CoverCropSearch({ sfilters, dispatch }) {
+const CoverCropSearch = ({ sfilters, dispatch }) => {
   const clearCoverCropSearch = (type = 'CROP_SEARCH', value = '') => {
     dispatch({
       type,
@@ -37,6 +37,6 @@ function CoverCropSearch({ sfilters, dispatch }) {
       </ListItemText>
     </ListItem>
   );
-}
+};
 
 export default CoverCropSearch;

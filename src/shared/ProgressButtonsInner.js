@@ -7,7 +7,7 @@ import React, { Fragment, useContext } from 'react';
 import { Context } from '../store/Store';
 import { LightButton } from './constants';
 
-function ProgressButtonsInner({ disabled }) {
+const ProgressButtonsInner = ({ disabled }) => {
   const isDisabled = disabled;
 
   const { dispatch } = useContext(Context);
@@ -44,6 +44,6 @@ function ProgressButtonsInner({ disabled }) {
       </LightButton>
     </>
   );
-}
+};
 
 export default ProgressButtonsInner;

@@ -14,9 +14,9 @@ import React, { useEffect, useState } from 'react';
 import RenderFilters from './RenderFilters';
 import RenderGoals from './RenderGoals';
 
-function ComparisonBar({
+const ComparisonBar = ({
   filterData, goals, comparisonKeys, dispatch, comparisonView, classes,
-}) {
+}) => {
   const [filterValues, setFilterValues] = useState([]);
   const [goalsOpen, setGoalsOpen] = useState(false);
   const [allGoals, setAllGoals] = useState([]);
@@ -169,6 +169,6 @@ function ComparisonBar({
       />
     </List>
   );
-}
+};
 
 export default ComparisonBar;

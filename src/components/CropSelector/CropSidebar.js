@@ -55,7 +55,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function CropSidebarComponent({
+const CropSidebarComponent = ({
   comparisonView,
   isListView,
   from,
@@ -64,7 +64,7 @@ function CropSidebarComponent({
   toggleListView,
   style,
   props,
-}) {
+}) => {
   const { state, dispatch } = useContext(Context);
   const [loading, setLoading] = useState(true);
   const [sidebarFilters, setSidebarFilters] = useState([]);
@@ -557,6 +557,6 @@ function CropSidebarComponent({
       )}
     </div>
   );
-}
+};
 
 export default CropSidebarComponent;

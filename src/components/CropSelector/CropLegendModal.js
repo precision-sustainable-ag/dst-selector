@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function CropLegendModal({ legendModal, handleLegendModal }) {
+const CropLegendModal = ({ legendModal, handleLegendModal }) => {
   const classes = useStyles();
 
   return (
@@ -75,6 +75,6 @@ function CropLegendModal({ legendModal, handleLegendModal }) {
       </div>
     </Modal>
   );
-}
+};
 
 export default CropLegendModal;

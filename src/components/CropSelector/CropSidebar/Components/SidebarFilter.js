@@ -6,7 +6,7 @@ import React, { Fragment, useContext } from 'react';
 import ForwardFilter from '../../Filters/ForwardFilter';
 import { Context } from '../../../../store/Store';
 
-function SidebarFilter(props) {
+const SidebarFilter = (props) => {
   const {
     filter,
     index,
@@ -72,6 +72,6 @@ function SidebarFilter(props) {
       </Collapse>
     </Fragment>
   );
-}
+};
 
 export default SidebarFilter;

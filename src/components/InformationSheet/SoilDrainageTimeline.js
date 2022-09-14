@@ -13,7 +13,7 @@ import TimelineSeparator from '@mui/lab/TimelineSeparator';
 import React from 'react';
 import { CustomStyles } from '../../shared/constants';
 
-function SoilDrainageTimeline({ drainage = [] }) {
+const SoilDrainageTimeline = ({ drainage = [] }) => {
   const drainageClasses = [
     'Very poorly drained',
     'Poorly drained',
@@ -57,6 +57,6 @@ function SoilDrainageTimeline({ drainage = [] }) {
       })}
     </Timeline>
   );
-}
+};
 
 export default SoilDrainageTimeline;

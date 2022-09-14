@@ -12,7 +12,7 @@ import SoilCondition from './SoilCondition/SoilCondition';
 import WeatherConditions from './WeatherConditions';
 import 'leaflet/dist/leaflet.css';
 
-function LocationConfirmation() {
+const LocationConfirmation = () => {
   const { state } = useContext(Context);
   const section = window.location.href.includes('selector') ? 'selector' : 'explorer';
   const sfilters = state[section];
@@ -122,6 +122,6 @@ function LocationConfirmation() {
       </div>
     </div>
   );
-}
+};
 
 export default LocationConfirmation;

@@ -20,9 +20,9 @@ const JSZip = require('jszip');
 const JSZipUtils = require('jszip-utils');
 const saveAs = require('save-as');
 
-export function ReferenceTooltip({
+export const ReferenceTooltip = ({
   url, source, type, content, hasLink, title,
-}) {
+}) => {
   const sourceURL = url;
   const sourceName = source;
   const sourceType = type || 'link';
@@ -65,15 +65,13 @@ export function ReferenceTooltip({
       <Info fontSize="small" />
     </Tooltip>
   );
-}
+};
 
-export function DataTooltip({ data, placement = 'top-start' }) {
-  return (
-    <Tooltip title={<div className="text-center">{data}</div>} placement={placement} arrow>
-      <Info fontSize="small" />
-    </Tooltip>
-  );
-}
+export const DataTooltip = ({ data, placement = 'top-start' }) => (
+  <Tooltip title={<div className="text-center">{data}</div>} placement={placement} arrow>
+    <Info fontSize="small" />
+  </Tooltip>
+);
 
 export const locationIcon = (w, h) => (
   <svg width={w} height={h} viewBox="0 0 14 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -137,22 +135,20 @@ export const GetMonthString = (month) => {
   return months[month].toUpperCase();
 };
 
-export function UnderConstructionText() {
-  return (
-    <Grid
-      container
-      spacing={0}
-      direction="column"
-      alignItems="center"
-      justifyContent="center"
-      style={{ minHeight: '100vh' }}
-    >
-      <Grid item xs={3}>
-        <Typography variant="h3">Under Construction</Typography>
-      </Grid>
+export const UnderConstructionText = () => (
+  <Grid
+    container
+    spacing={0}
+    direction="column"
+    alignItems="center"
+    justifyContent="center"
+    style={{ minHeight: '100vh' }}
+  >
+    <Grid item xs={3}>
+      <Typography variant="h3">Under Construction</Typography>
     </Grid>
-  );
-}
+  </Grid>
+);
 
 // eslint-disable-next-line consistent-return
 export const abbrRegion = (input, to) => {
@@ -1274,7 +1270,7 @@ export const downloadAllPDF = (selectedCropNames) => {
 //   });
 // };
 
-export function RenderSeedPriceIcons({ val }) {
+export const RenderSeedPriceIcons = ({ val }) => {
   switch (parseInt(val, 10)) {
     case 1:
       return (
@@ -1321,16 +1317,16 @@ export function RenderSeedPriceIcons({ val }) {
     default:
       break;
   }
-}
+};
 
-export function CropImage({
+export const CropImage = ({
   present = true,
   src = '',
   alt = '',
   view = '',
   className = '',
   onClick = () => {},
-}) {
+}) => {
   const placeholder = '//placehold.it/100x100';
   let imageStyle = {};
 
@@ -1374,7 +1370,7 @@ export function CropImage({
       style={imageStyle}
     />
   );
-}
+};
 export const ucFirst = (text = '') => text
   .toLowerCase()
   .split(' ')
@@ -1420,45 +1416,43 @@ export const getActiveCropMonths = (crop = {}) => {
   return activeMonths;
 };
 
-export function RestartPrompt({
+export const RestartPrompt = ({
   open = false,
   selectedCrops = [],
   setOpen = () => {},
   onAccept = () => {},
-}) {
-  return (
-    <Dialog disableEscapeKeyDown open={open}>
-      <DialogContent dividers>
-        <Typography variant="body1">
-          {selectedCrops.length > 0
-            ? `Restarting will remove all cover crops added to your list. Are you
+}) => (
+  <Dialog disableEscapeKeyDown open={open}>
+    <DialogContent dividers>
+      <Typography variant="body1">
+        {selectedCrops.length > 0
+          ? `Restarting will remove all cover crops added to your list. Are you
         sure you want to restart?`
-            : 'Are you sure you want to restart?'}
-        </Typography>
-      </DialogContent>
-      <DialogActions>
-        <Button
-          autoFocus
-          onClick={() => {
-            setOpen(false);
-            onAccept(false);
-          }}
-          color="secondary"
-        >
-          No
-        </Button>
-        <Button
-          onClick={() => {
-            onAccept(true);
-          }}
-          color="secondary"
-        >
-          Yes
-        </Button>
-      </DialogActions>
-    </Dialog>
-  );
-}
+          : 'Are you sure you want to restart?'}
+      </Typography>
+    </DialogContent>
+    <DialogActions>
+      <Button
+        autoFocus
+        onClick={() => {
+          setOpen(false);
+          onAccept(false);
+        }}
+        color="secondary"
+      >
+        No
+      </Button>
+      <Button
+        onClick={() => {
+          onAccept(true);
+        }}
+        color="secondary"
+      >
+        Yes
+      </Button>
+    </DialogActions>
+  </Dialog>
+);
 
 export const sudoButtonStyle = {
   fontWeight: '500',

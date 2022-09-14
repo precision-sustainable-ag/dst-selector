@@ -13,7 +13,7 @@ import Header from '../Header/Header';
 import ExplorerCardView from './ExplorerCardView';
 import ConsentModal from './ConsentModal';
 
-function CoverCropExplorer() {
+const CoverCropExplorer = () => {
   const { state } = useContext(Context);
   const section = window.location.href.includes('selector') ? 'selector' : 'explorer';
   const sfilters = state[section];
@@ -73,6 +73,6 @@ function CoverCropExplorer() {
       </div>
     </div>
   );
-}
+};
 
 export default CoverCropExplorer;

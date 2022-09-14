@@ -18,7 +18,7 @@ const checkProgressStatus = (actualProgress, expectedProgress) => {
   return 'progress-step';
 };
 
-function ProgressBar() {
+const ProgressBar = () => {
   const { state } = useContext(Context);
   return (
     <div className="gprogress">
@@ -40,6 +40,6 @@ function ProgressBar() {
       </div>
     </div>
   );
-}
+};
 
 export default ProgressBar;

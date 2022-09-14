@@ -16,7 +16,7 @@ import Header from '../Header/Header';
 import InformationSheetDictionary from '../InformationSheet/InformationSheetDictionary';
 import { Context } from '../../store/Store';
 
-function HelpComponent() {
+const HelpComponent = () => {
   const { state } = useContext(Context);
 
   useEffect(() => {
@@ -120,11 +120,11 @@ function HelpComponent() {
       </div>
     </div>
   );
-}
+};
 
 export default HelpComponent;
 
-function RenderContent({ value = 0 }) {
+const RenderContent = ({ value = 0 }) => {
   switch (value) {
     case 0:
       return (
@@ -671,4 +671,4 @@ function RenderContent({ value = 0 }) {
       return <div />;
     }
   }
-}
+};

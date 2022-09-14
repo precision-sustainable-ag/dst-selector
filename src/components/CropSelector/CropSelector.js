@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function ScrollTop(props) {
+const ScrollTop = (props) => {
   const { children } = props;
   const classes = useStyles();
   const trigger = useScrollTrigger({
@@ -48,9 +48,9 @@ function ScrollTop(props) {
       </div>
     </Zoom>
   );
-}
+};
 
-function CropSelector(props) {
+const CropSelector = (props) => {
   const { state, dispatch } = useContext(Context);
   const [showGrowthWindow, setShowGrowthWindow] = useState(true);
   const [sortPreference, setSortPreference] = useState('desc');
@@ -283,6 +283,6 @@ function CropSelector(props) {
       </div>
     </div>
   );
-}
+};
 
 export default CropSelector;

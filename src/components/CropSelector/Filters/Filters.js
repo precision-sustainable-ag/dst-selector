@@ -5,7 +5,7 @@ import React, {
 } from 'react';
 import { Context } from '../../../store/Store';
 
-function DollarsAndRatings({ filter, handleChange }) {
+const DollarsAndRatings = ({ filter, handleChange }) => {
   const { state, dispatch } = useContext(Context);
   const sfilters = window.location.href.includes('species') ? state.selector : state.explorer;
 
@@ -77,7 +77,7 @@ function DollarsAndRatings({ filter, handleChange }) {
         })}
     </div>
   );
-} // DollarsAndRatings
+}; // DollarsAndRatings
 
 const Chips = ({ state, filter, handleChange }) => {
   const sfilters = window.location.href.includes('species') ? state.selector : state.explorer;
@@ -102,7 +102,7 @@ const Chips = ({ state, filter, handleChange }) => {
   });
 }; // Chips
 
-function Tip({ filter, omitHeading }) {
+const Tip = ({ filter, omitHeading }) => {
   const [open, setOpen] = useState(false);
 
   return (
@@ -127,7 +127,7 @@ function Tip({ filter, omitHeading }) {
       </small>
     </Tooltip>
   );
-} // Tip
+}; // Tip
 
 const Filters = forwardRef(({ props }) => {
   const { state, dispatch } = useContext(Context);

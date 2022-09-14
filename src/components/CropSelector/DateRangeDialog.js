@@ -19,7 +19,7 @@ import { DateRangePicker } from 'react-date-range';
 import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css'; // theme css file
 
-function DateRangeDialog({ open = false, onChange = () => {}, close = () => {} }) {
+const DateRangeDialog = ({ open = false, onChange = () => {}, close = () => {} }) => {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('lg'));
 
@@ -65,6 +65,6 @@ function DateRangeDialog({ open = false, onChange = () => {}, close = () => {} }
       </DialogContent>
     </Dialog>
   );
-}
+};
 
 export default DateRangeDialog;

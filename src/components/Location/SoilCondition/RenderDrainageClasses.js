@@ -3,7 +3,7 @@ import React, { useContext } from 'react';
 import { Context } from '../../../store/Store';
 import '../../../styles/soilConditions.scss';
 
-export const RenderDrainageClasses = ({ drainage = [''] }) => {
+const RenderDrainageClasses = ({ drainage = [''] }) => {
   const { state, dispatch } = useContext(Context);
 
   const updateDrainageAction = (drainages) => {
@@ -14,14 +14,14 @@ export const RenderDrainageClasses = ({ drainage = [''] }) => {
   };
 
   const updateDrainageClass = (label = '') => {
-    let drainages = [...state.soilData.Drainage_Class];
+    const drainages = [...state.soilData.Drainage_Class];
     if (drainages.indexOf(label) === -1) {
       // does not exist, dispatch to state
       drainages.push(label);
       updateDrainageAction(drainages);
     } else {
       // exists, remove it from state
-      let index = drainages.indexOf(label);
+      const index = drainages.indexOf(label);
       drainages.splice(index, 1);
       updateDrainageAction(drainages);
     }
@@ -88,3 +88,5 @@ export const RenderDrainageClasses = ({ drainage = [''] }) => {
     </div>
   );
 };
+
+export default RenderDrainageClasses;

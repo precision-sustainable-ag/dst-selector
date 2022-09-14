@@ -14,7 +14,7 @@ import { Context } from '../../store/Store';
 import MyCoverCropCardsComponent from './MyCoverCropCardsComponent';
 import MyCoverCropComparisonComponent from './MyCoverCropComparisonComponent';
 
-function MyCoverCropList(comparisonView, from) {
+const MyCoverCropList = (comparisonView, from) => {
   const { state, dispatch } = useContext(Context);
   const comparison = comparisonView || false;
   const history = useHistory();
@@ -42,57 +42,55 @@ function MyCoverCropList(comparisonView, from) {
     }
   }, [state.consent]);
 
-  function TopBar({ view }) {
-    return (
-      <div className="row">
-        <div
-          className="col-12 myCoverCropsBlueBar"
-          style={{
-            backgroundColor: '#35999b',
-            height: '40px',
-            borderTopLeftRadius: '5px',
-            borderTopRightRadius: '5px',
-          }}
-        >
-          <div className="row">
-            {view ? (
-              <div className="col-8">
-                <Button
-                  style={{ color: 'white' }}
-                  onClick={
+  const TopBar = ({ view }) => (
+    <div className="row">
+      <div
+        className="col-12 myCoverCropsBlueBar"
+        style={{
+          backgroundColor: '#35999b',
+          height: '40px',
+          borderTopLeftRadius: '5px',
+          borderTopRightRadius: '5px',
+        }}
+      >
+        <div className="row">
+          {view ? (
+            <div className="col-8">
+              <Button
+                style={{ color: 'white' }}
+                onClick={
                     from === 'myCoverCropListStatic'
                       ? redirectToExplorer
                       : redirectToSpeciesSelector
                   }
-                >
-                  <Add />
-                  {' '}
-                  <span className="pl-2">ADD A CROP</span>
-                </Button>
-              </div>
-            ) : (
-              <div className="col-8">
-                <Button
-                  style={{ color: 'white' }}
-                  onClick={
+              >
+                <Add />
+                {' '}
+                <span className="pl-2">ADD A CROP</span>
+              </Button>
+            </div>
+          ) : (
+            <div className="col-8">
+              <Button
+                style={{ color: 'white' }}
+                onClick={
                     from === 'myCoverCropListStatic'
                       ? redirectToExplorer
                       : redirectToSpeciesSelector
                   }
-                >
-                  <Add />
-                  {' '}
-                  <span className="pl-2">ADD A CROP</span>
-                </Button>
-              </div>
-            )}
+              >
+                <Add />
+                {' '}
+                <span className="pl-2">ADD A CROP</span>
+              </Button>
+            </div>
+          )}
 
-            <div className="col-6" />
-          </div>
+          <div className="col-6" />
         </div>
       </div>
-    );
-  }
+    </div>
+  );
   return (
     <div className="container-fluid">
       {/* eslint-disable-next-line no-nested-ternary */}
@@ -135,6 +133,6 @@ function MyCoverCropList(comparisonView, from) {
       )}
     </div>
   );
-}
+};
 
 export default MyCoverCropList;

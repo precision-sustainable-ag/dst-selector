@@ -89,83 +89,79 @@ const theme = createTheme(adaptV4Theme({
     },
   },
 }));
-function RouteNotFound() {
-  return (
-    <section className="page_404">
-      <div className="container-fluid">
-        <div className="row">
-          <div className="col-sm-12">
-            <div className="col-sm-12 text-center">
-              <div className="four_zero_four_bg">
-                <h1 className="text-center ">404</h1>
-              </div>
+const RouteNotFound = () => (
+  <section className="page_404">
+    <div className="container-fluid">
+      <div className="row">
+        <div className="col-sm-12">
+          <div className="col-sm-12 text-center">
+            <div className="four_zero_four_bg">
+              <h1 className="text-center ">404</h1>
+            </div>
 
-              <div className="contant_box_404">
-                <h3 className="h2">Look like you're lost</h3>
+            <div className="contant_box_404">
+              <h3 className="h2">Look like you're lost</h3>
 
-                <p>The page you are looking for is not available!</p>
+              <p>The page you are looking for is not available!</p>
 
-                <a href="/" className="link_404">
-                  Go Home
+              <a href="/" className="link_404">
+                Go Home
                 </a>
-              </div>
             </div>
           </div>
         </div>
       </div>
-    </section>
-  );
-}
+    </div>
+  </section>
+);
 
 const csTheme = responsiveFontSizes(theme, {
   breakpoints: ['xs', 'sm', 'md', 'lg', 'xl'],
 });
 
-function Wrapper() {
-  return (
-    <StyledEngineProvider injectFirst>
-      <ThemeProvider theme={csTheme}>
-        <SnackbarProvider
-          maxSnack={5}
-          anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'right',
-          }}
-          autoHideDuration={15000}
-        >
-          <Store>
-            <BrowserRouter>
-              <Suspense fallback={<div>Loading..</div>}>
-                <Switch>
-                  <Route path="/species-selector" component={App} exact />
-                  <Route path="/" component={CoverCropExplorer} exact />
-                  <Route path="/about" component={About} exact />
-                  <Route path="/help" component={HelpComponent} exact />
-                  <Route path="/feedback" component={FeedbackComponent} exact />
-                  <Route path="/my-cover-crop-list" component={MyCoverCropListWrapper} exact />
-                  <Route path="/information-sheet/:cropName" component={InformationSheet} exact />
-                  <Route path="/seeding-rate-calculator" component={SeedingRateCalculator} exact />
-                  <Route path="/data-dictionary" component={InformationSheetDictionary} exact />
-                  <Route path="/license" component={() => <License licenseType="MIT" />} exact />
-                  <Route
+const Wrapper = () => (
+  <StyledEngineProvider injectFirst>
+    <ThemeProvider theme={csTheme}>
+      <SnackbarProvider
+        maxSnack={5}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'right',
+        }}
+        autoHideDuration={15000}
+      >
+        <Store>
+          <BrowserRouter>
+            <Suspense fallback={<div>Loading..</div>}>
+              <Switch>
+                <Route path="/species-selector" component={App} exact />
+                <Route path="/" component={CoverCropExplorer} exact />
+                <Route path="/about" component={About} exact />
+                <Route path="/help" component={HelpComponent} exact />
+                <Route path="/feedback" component={FeedbackComponent} exact />
+                <Route path="/my-cover-crop-list" component={MyCoverCropListWrapper} exact />
+                <Route path="/information-sheet/:cropName" component={InformationSheet} exact />
+                <Route path="/seeding-rate-calculator" component={SeedingRateCalculator} exact />
+                <Route path="/data-dictionary" component={InformationSheetDictionary} exact />
+                <Route path="/license" component={() => <License licenseType="MIT" />} exact />
+                <Route
                     path="/ag-informatics-license"
                     component={() => <License licenseType="AgInformatics" />}
                     exact
                   />
-                  <Route path="/mix-maker" component={MixMaker} exact />
+                <Route path="/mix-maker" component={MixMaker} exact />
 
-                  <Route component={RouteNotFound} />
-                </Switch>
-              </Suspense>
+                <Route component={RouteNotFound} />
+              </Switch>
+            </Suspense>
 
-              {/* <App /> */}
-            </BrowserRouter>
-          </Store>
-        </SnackbarProvider>
-      </ThemeProvider>
-    </StyledEngineProvider>
-  );
-}
+            {/* <App /> */}
+          </BrowserRouter>
+        </Store>
+      </SnackbarProvider>
+    </ThemeProvider>
+  </StyledEngineProvider>
+);
 
 const WrapperWithFooter = withFooter(Wrapper);
 

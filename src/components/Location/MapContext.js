@@ -26,9 +26,9 @@ L.Icon.Default.mergeOptions({
   shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.0/images/marker-shadow.png',
 });
 
-function MapContext({
+const MapContext = ({
   width, height, minzoom, maxzoom, from,
-}) {
+}) => {
   const { state, dispatch } = useContext(Context);
   const [show, setShow] = useState(true);
   const [mapCenter, setMapCenter] = useState([]);
@@ -218,6 +218,6 @@ function MapContext({
       </div>
     )
   );
-}
+};
 
 export default MapContext;

@@ -18,7 +18,7 @@ import { Context } from '../../../../store/Store';
 import DateRangeDialog from '../../DateRangeDialog';
 import { CustomStyles } from '../../../../shared/constants';
 
-function PreviousCashCrop(props) {
+const PreviousCashCrop = (props) => {
   const { handleToggle, classes, setDateRange } = props;
 
   const { state, dispatch } = useContext(Context);
@@ -124,6 +124,6 @@ function PreviousCashCrop(props) {
       )}
     </>
   );
-}
+};
 
 export default PreviousCashCrop;
