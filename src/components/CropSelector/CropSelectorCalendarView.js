@@ -10,7 +10,7 @@ import { allMonths, getActiveCropMonths } from '../../shared/constants';
 import { Context } from '../../store/Store';
 import '../../styles/cropSelectorCalendarView.scss';
 
-function CropSelectorCalendarView({ from = 'calendar', data = [] }) {
+const CropSelectorCalendarView = ({ from = 'calendar', data = [] }) => {
   const { state } = useContext(Context);
   const cashCropStartDate = state.cashCropData.dateRange.startDate === ''
     ? null
@@ -186,17 +186,17 @@ function CropSelectorCalendarView({ from = 'calendar', data = [] }) {
       );
     })
   );
-}
+};
 
 export default CropSelectorCalendarView;
 
-function PaintGrowthChart({
+const PaintGrowthChart = ({
   size = '30',
   from = 'calendar',
   months = [],
   data = [],
   isThisCashCropMonth = () => {},
-}) {
+}) => {
   if (from === 'listView') {
     return (
       <table className="w-100">
@@ -387,4 +387,4 @@ function PaintGrowthChart({
     );
   }
   return '';
-}
+};

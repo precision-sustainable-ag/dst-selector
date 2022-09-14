@@ -26,9 +26,9 @@ import CropDetailsModalComponent from './CropDetailsModal';
 import CropLegendModal from './CropLegendModal';
 import CropDataRender from './CropDataRender';
 
-function CropTableComponent({
+const CropTableComponent = ({
   cropData, activeCropData, showGrowthWindow, sortAllCrops, sortPreference,
-}) {
+}) => {
   const { state, dispatch } = useContext(Context);
 
   const [modalOpen, setModalOpen] = useState(false);
@@ -438,6 +438,6 @@ function CropTableComponent({
       </div>
     </div>
   );
-}
+};
 
 export default CropTableComponent;

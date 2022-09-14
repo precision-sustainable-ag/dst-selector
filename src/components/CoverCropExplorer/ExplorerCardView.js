@@ -26,7 +26,7 @@ const useStyles = makeStyles({
     height: 140,
   },
 });
-function ExplorerCardView({ activeCropData }) {
+const ExplorerCardView = ({ activeCropData }) => {
   const { state, dispatch } = useContext(Context);
   const section = window.location.href.includes('selector') ? 'selector' : 'explorer';
   const sfilters = state[section];
@@ -216,6 +216,6 @@ function ExplorerCardView({ activeCropData }) {
       />
     </>
   );
-}
+};
 
 export default ExplorerCardView;

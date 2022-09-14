@@ -28,7 +28,7 @@ const useStyles = makeStyles({
   },
 });
 
-function MyCoverCropCardsComponent({ data, btnId, cardNo }) {
+const MyCoverCropCardsComponent = ({ data, btnId, cardNo }) => {
   const { state, dispatch } = useContext(Context);
   const classes = useStyles();
 
@@ -133,6 +133,6 @@ function MyCoverCropCardsComponent({ data, btnId, cardNo }) {
       />
     </div>
   );
-}
+};
 
 export default MyCoverCropCardsComponent;

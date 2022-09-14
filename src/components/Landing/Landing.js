@@ -13,7 +13,7 @@ import { Context } from '../../store/Store';
 import '../../styles/landing.scss';
 import ConsentModal from '../CoverCropExplorer/ConsentModal';
 
-function Landing({ height, title, bg }) {
+const Landing = ({ height, title, bg }) => {
   const { state, dispatch } = useContext(Context);
   const [containerHeight, setContainerHeight] = useState(height);
 
@@ -136,6 +136,6 @@ function Landing({ height, title, bg }) {
       </Grid>
     </div>
   );
-}
+};
 
 export default Landing;

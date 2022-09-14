@@ -8,9 +8,9 @@ import { Avatar, Chip, Tooltip } from '@mui/material';
 import React, { useContext, useEffect } from 'react';
 import { Context } from '../../store/Store';
 // TODO: Whats up with goalt?? we need to look into fixing this.
-function GoalTag({
+const GoalTag = ({
   goaltTitle, goalDescription, goal, valuesDescriptions, id,
-}) {
+}) => {
   const { state, dispatch } = useContext(Context);
   const key = id;
   const goalTitle = goaltTitle;
@@ -87,6 +87,6 @@ function GoalTag({
       />
     </Tooltip>
   );
-}
+};
 
 export default GoalTag;

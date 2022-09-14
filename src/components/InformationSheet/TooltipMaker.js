@@ -8,7 +8,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Context } from '../../store/Store';
 import '../../styles/tooltipMaker.scss';
 
-function TooltipMaker({ children, variable }) {
+const TooltipMaker = ({ children, variable }) => {
   const { state } = useContext(Context);
   const section = window.location.href.includes('selector') ? 'selector' : 'explorer';
   const sfilters = state[section];
@@ -67,6 +67,6 @@ function TooltipMaker({ children, variable }) {
       <span className="tooltipChildren">{children}</span>
     </Tooltip>
   );
-}
+};
 
 export default TooltipMaker;

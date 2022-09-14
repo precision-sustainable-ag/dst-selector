@@ -12,7 +12,7 @@ import { Context } from '../../store/Store';
 
 const apiBaseURL = 'https://api.openweathermap.org/data/2.5/weather';
 
-function ForecastComponent() {
+const ForecastComponent = () => {
   const { state, dispatch } = useContext(Context);
   const [showTempIcon, setShowTempIcon] = useState(true);
   const [temp, setTemp] = useState({
@@ -139,6 +139,6 @@ function ForecastComponent() {
   ) : (
     ''
   );
-}
+};
 
 export default ForecastComponent;

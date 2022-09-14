@@ -9,14 +9,14 @@ import React, { Suspense, useEffect, useState } from 'react';
 import { ucFirst } from '../../shared/constants';
 import '../../styles/photoComponent.scss';
 
-function PhotoComponent({
+const PhotoComponent = ({
   imageData = {
     Directory: '',
     Notes: null,
     'Key Thumbnail': '',
     'Cover Crop': '',
   },
-}) {
+}) => {
   const imagesApiUrl = imageData ? `//covercrop.tools/files.php?dir=${imageData.Directory}` : null;
   const [imageList, setImageList] = useState([]);
 
@@ -113,6 +113,6 @@ function PhotoComponent({
   ) : (
     'Loading..'
   );
-}
+};
 
 export default PhotoComponent;

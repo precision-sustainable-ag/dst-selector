@@ -8,7 +8,7 @@ import ReactGA from 'react-ga';
 import Header from '../Header/Header';
 import { Context } from '../../store/Store';
 
-function FeedbackComponent() {
+const FeedbackComponent = () => {
   const { state } = useContext(Context);
 
   useEffect(() => {
@@ -46,6 +46,6 @@ function FeedbackComponent() {
       </div>
     </div>
   );
-}
+};
 
 export default FeedbackComponent;

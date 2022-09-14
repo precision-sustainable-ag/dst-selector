@@ -9,7 +9,7 @@ import CropSidebarComponent from '../CropSelector/CropSidebar';
 import Header from '../Header/Header';
 import MyCoverCropList from './MyCoverCropList';
 
-function MyCoverCropListWrapper() {
+const MyCoverCropListWrapper = () => {
   const [comparisonView, setComparisonView] = useState(false);
   const toggleComparisonView = () => {
     setComparisonView(!comparisonView);
@@ -38,6 +38,6 @@ function MyCoverCropListWrapper() {
       </div>
     </Box>
   );
-}
+};
 
 export default MyCoverCropListWrapper;

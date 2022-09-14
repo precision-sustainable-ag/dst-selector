@@ -56,7 +56,7 @@ const lightBG = {
   minHeight: '36px',
 };
 
-function MyCoverCropComparisonComponent(props) {
+const MyCoverCropComparisonComponent = (props) => {
   const { state, dispatch } = useContext(Context);
   const { enqueueSnackbar } = useSnackbar();
   const { comparisonKeys } = state;
@@ -431,9 +431,9 @@ function MyCoverCropComparisonComponent(props) {
       />
     </div>
   );
-}
+};
 
-function RenderRelevantData({ filterKey = '', data = [], index = 0 }) {
+const RenderRelevantData = ({ filterKey = '', data = [], index = 0 }) => {
   if (typeof data[filterKey] === 'number') {
     if (data[filterKey].toString().length === 1) {
       if (filterKey === 'Seed Price per Pound') {
@@ -464,14 +464,14 @@ function RenderRelevantData({ filterKey = '', data = [], index = 0 }) {
     );
   }
   return <div />;
-}
+};
 
-function RenderSeedingData({ filterKey, data }) {
+const RenderSeedingData = ({ filterKey, data }) => {
   if (data[filterKey]) {
     return <Typography variant="body2">Yes</Typography>;
   }
   return <Typography variant="body2">N/A</Typography>;
-}
+};
 const GetAverageGoalRating = ({ crop }) => {
   const { state } = useContext(Context);
   let goalRating = 0;

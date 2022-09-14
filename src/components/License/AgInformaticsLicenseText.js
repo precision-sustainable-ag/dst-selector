@@ -7,7 +7,7 @@ import { Grid, Typography } from '@mui/material';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-function AgInformaticsLicenseText({ styles = true, aboutPage = false, footerPage = false }) {
+const AgInformaticsLicenseText = ({ styles = true, aboutPage = false, footerPage = false }) => {
   const currentYear = new Date().getFullYear();
   return (
     <Grid container spacing={3}>
@@ -86,6 +86,6 @@ function AgInformaticsLicenseText({ styles = true, aboutPage = false, footerPage
       )}
     </Grid>
   );
-}
+};
 
 export default AgInformaticsLicenseText;

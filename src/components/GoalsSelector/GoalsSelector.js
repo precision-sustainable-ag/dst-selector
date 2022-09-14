@@ -30,7 +30,7 @@ const goalSkeletonStyle = {
   borderRadius: '10px',
 };
 
-function GoalsSelector() {
+const GoalsSelector = () => {
   const { state } = useContext(Context);
   const classes = useStyles();
   const [allGoals, setAllGoals] = useState([{}]);
@@ -94,6 +94,6 @@ function GoalsSelector() {
       </div>
     </div>
   );
-}
+};
 
 export default GoalsSelector;

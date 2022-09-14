@@ -13,7 +13,7 @@ import Header from '../Header/Header';
 import MITLicenseText from '../License/MITLicenseText';
 import { Context } from '../../store/Store';
 
-function About() {
+const About = () => {
   const [value, setValue] = React.useState(0);
   const { state } = useContext(Context);
 
@@ -136,11 +136,11 @@ function About() {
       </div>
     </div>
   );
-}
+};
 
 export default About;
 
-function RenderContent({ value = 0 }) {
+const RenderContent = ({ value = 0 }) => {
   switch (value) {
     case 0:
       return (
@@ -820,4 +820,4 @@ function RenderContent({ value = 0 }) {
       return <Typography variant="body1" />;
     }
   }
-}
+};

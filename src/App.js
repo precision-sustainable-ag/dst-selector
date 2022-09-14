@@ -16,7 +16,7 @@ import ProgressButtons from './shared/ProgressButtons';
 import { Context } from './store/Store';
 import './styles/App.scss';
 
-function LoadRelevantRoute({ progress, calcHeight }) {
+const LoadRelevantRoute = ({ progress, calcHeight }) => {
   switch (progress) {
     case 1:
       return (
@@ -51,9 +51,9 @@ function LoadRelevantRoute({ progress, calcHeight }) {
     default:
       return <RouteNotFound height={calcHeight} />;
   }
-}
+};
 
-function App() {
+const App = () => {
   const { state, dispatch } = useContext(Context);
   const [calcHeight, setCalcHeight] = useState(0);
   const handleSnackClose = () => {
@@ -139,21 +139,19 @@ function App() {
       </div>
     </div>
   );
-}
+};
 
 export default App;
 
-function RouteNotFound() {
-  return (
-    <div className="container mt-4">
-      <div className="row">
-        <div className="col-4 offset-4">
-          <h3>Unknown Route</h3>
-        </div>
+const RouteNotFound = () => (
+  <div className="container mt-4">
+    <div className="row">
+      <div className="col-4 offset-4">
+        <h3>Unknown Route</h3>
       </div>
     </div>
-  );
-}
+  </div>
+);
 
 // eslint-disable-next-line
 const crop = window.location.search.match(/crop=([^\^]+)/);
