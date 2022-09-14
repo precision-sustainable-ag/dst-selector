@@ -14,7 +14,7 @@ import { CustomStyles, greenBarExpansionPanelHeight } from '../../../shared/cons
 import { Context } from '../../../store/Store';
 import '../../../styles/greenBar.scss';
 import LocationComponent from '../../Location/Location';
-import SoilCondition from '../../Location/SoilCondition';
+import SoilCondition from '../../Location/SoilCondition/SoilCondition';
 import WeatherConditions from '../../Location/WeatherConditions';
 
 const speciesSelectorToolName = '/species-selector';
