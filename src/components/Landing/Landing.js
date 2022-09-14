@@ -26,8 +26,7 @@ const Landing = ({ height, title, bg }) => {
   }, [state.consent]);
 
   const incrementProgress = (incVal) => {
-    // eslint-disable-next-line radix
-    incVal = parseInt(incVal);
+    incVal = parseInt(incVal, 10);
     if (incVal === 1) {
       if (state.progress === 0) {
         dispatch({

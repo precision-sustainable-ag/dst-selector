@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 /*
   This file contains the About component, helper functions, and styles
   The about page is a static pages that has information about the project
