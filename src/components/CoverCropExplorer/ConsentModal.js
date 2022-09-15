@@ -10,8 +10,7 @@ import {
 import React, { useContext, useState } from 'react';
 import { Context } from '../../store/Store';
 
-const ExplorerCardView = (props) => {
-  const { consent } = props;
+const ExplorerCardView = ({ consent }) => {
   const { dispatch } = useContext(Context);
   const [modalOpen, setModalOpen] = useState(true);
 

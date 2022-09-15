@@ -5,9 +5,7 @@ import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import React, { Fragment, useContext } from 'react';
 import { Context } from '../../../../store/Store';
 
-const PlantHardinessZone = (props) => {
-  const { handleToggle, dispatch, sfilters } = props;
-
+const PlantHardinessZone = ({ handleToggle, dispatch, sfilters }) => {
   const { state } = useContext(Context);
 
   return (

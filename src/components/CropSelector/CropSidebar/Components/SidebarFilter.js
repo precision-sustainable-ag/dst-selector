@@ -6,17 +6,16 @@ import React, { Fragment, useContext } from 'react';
 import ForwardFilter from '../../Filters/ForwardFilter';
 import { Context } from '../../../../store/Store';
 
-const SidebarFilter = (props) => {
-  const {
-    filter,
-    index,
-    sidebarFilterOptions,
-    setSidebarFilterOptions,
-    resetAllFilters,
-    sectionFilter,
-    handleToggle,
-  } = props;
-
+const SidebarFilter = ({
+  filter,
+  index,
+  sidebarFilterOptions,
+  setSidebarFilterOptions,
+  resetAllFilters,
+  sectionFilter,
+  handleToggle,
+  props,
+}) => {
   const { state } = useContext(Context);
 
   const forwardFilter = (Component, filt) => (

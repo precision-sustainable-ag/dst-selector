@@ -129,10 +129,9 @@ const Tip = ({ filter, omitHeading }) => {
   );
 }; // Tip
 
-const Filters = forwardRef(({ props }) => {
+const Filters = forwardRef(({ filters, setSidebarFilterOptions, sidebarFilterOptions }) => {
   const { state, dispatch } = useContext(Context);
 
-  const { filters, setSidebarFilterOptions, sidebarFilterOptions } = props;
   const [selected, setSelected] = useState({});
 
   const setProps = (selectedItem) => {

@@ -14,7 +14,7 @@ import { Context } from '../../store/Store';
 import MyCoverCropCardsComponent from './MyCoverCropCardsComponent';
 import MyCoverCropComparisonComponent from './MyCoverCropComparisonComponent';
 
-const MyCoverCropList = (comparisonView, from) => {
+const MyCoverCropList = ({ comparisonView, from }) => {
   const { state, dispatch } = useContext(Context);
   const comparison = comparisonView || false;
   const history = useHistory();
