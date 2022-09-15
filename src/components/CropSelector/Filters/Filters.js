@@ -166,7 +166,12 @@ const Filters = forwardRef(({ props }) => {
           if (filter.values && filter.values.length === 1) {
             return (
               <Grid key={i} item>
-                <Chips state={state} filter={filter} props={props} handleChange={chipChange} />
+                <Chips
+                  state={state}
+                  filter={filter}
+                  props={{ ...props }}
+                  handleChange={chipChange}
+                />
                 {filter.description && <Tip filter={filter} omitHeading />}
               </Grid>
             );
@@ -179,7 +184,7 @@ const Filters = forwardRef(({ props }) => {
                   <br />
                 </>
               )}
-              <Chips state={state} filter={filter} props={props} handleChange={chipChange} />
+              <Chips state={state} filter={filter} props={{ ...props }} handleChange={chipChange} />
             </Grid>
           );
         }
