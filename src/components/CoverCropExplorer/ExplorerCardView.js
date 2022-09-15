@@ -153,8 +153,6 @@ const ExplorerCardView = ({ activeCropData }) => {
                     </small>
                   </div>
                 </CardContent>
-                {/* eslint-disable-next-line no-console */}
-                {console.log(sfilters.zone, crop.fields.Zone) }
                 <CardActionArea
                   id={`cartBtn${index}`}
                   style={{
