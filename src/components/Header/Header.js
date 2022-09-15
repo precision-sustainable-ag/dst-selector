@@ -30,7 +30,7 @@ import ForecastComponent from './ForecastComponent';
 import Greenbar from './Greenbar/Greenbar';
 
 const Header = () => {
-  let history = useHistory();
+  const history = useHistory();
 
   const { state, dispatch } = useContext(Context);
   const section = window.location.href.includes('selector') ? 'selector' : 'explorer';
@@ -39,11 +39,9 @@ const Header = () => {
   const [collapse, setCollapse] = React.useState(false);
   const [isRoot, setIsRoot] = React.useState(false);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
-  let isActive = {};
+  const isActive = {};
 
-  const getUSDAZone = async (zip) => {
-    return await fetch(`//covercrop.tools/zone.php?zip=` + zip);
-  };
+  const getUSDAZone = async (zip) => await fetch(`//covercrop.tools/zone.php?zip=${zip}`);
 
   useEffect(() => {
     if (!state.zipCode) {
@@ -61,9 +59,9 @@ const Header = () => {
       getUSDAZone(state.zipCode)
         .then((response) => {
           if (response.ok) {
-            let data = response.json();
+            const data = response.json();
             data.then((data) => {
-              let zipCode = data.zip;
+              const zipCode = data.zip;
               let zone = window.location.search.match(/zone=([^\^]+)/); // for automating Information Sheet PDFs
 
               zone = zone ? zone[1] : data.zone;
@@ -128,15 +126,15 @@ const Header = () => {
     const getAverageFrostDates = async (url) => {
       await Axios.get(url).then((resp) => {
         try {
-          let totalYears = resp.data.length;
+          const totalYears = resp.data.length;
           // get last years value
           // TODO: Take all years data into account
-          let mostRecentYearData = resp.data[totalYears - 1];
+          const mostRecentYearData = resp.data[totalYears - 1];
 
-          let maxDate = mostRecentYearData['max(date)'];
-          let minDate = mostRecentYearData['min(date)'];
+          const maxDate = mostRecentYearData['max(date)'];
+          const minDate = mostRecentYearData['min(date)'];
 
-          let averageFrostObject = {
+          const averageFrostObject = {
             firstFrostDate: {
               month: moment(minDate).format('MMMM'),
               day: parseInt(moment(minDate).format('D')),
@@ -158,26 +156,26 @@ const Header = () => {
       });
     };
 
-    let { markers } = state;
+    const { markers } = state;
 
     // update address on marker change
     // ref forecastComponent
 
-    let lat = markers[0][0];
-    let lon = markers[0][1];
+    const lat = markers[0][0];
+    const lon = markers[0][1];
 
     // since this updates with state; ideally, weather and soil info should be updated here
 
     // get current lat long and get county, state and city
 
     if (state.progress >= 2 && state.markers.length > 0) {
-      let revAPIURL = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`;
+      const revAPIURL = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`;
 
       Axios.get(revAPIURL)
         .then(async (resp) => {
-          let city = resp.data.locality.toLowerCase();
-          let zip = resp.data.postcode;
-          let state = abbrRegion(resp.data.principalSubdivision, 'abbr').toLowerCase();
+          const city = resp.data.locality.toLowerCase();
+          const zip = resp.data.postcode;
+          const state = abbrRegion(resp.data.principalSubdivision, 'abbr').toLowerCase();
 
           if (resp.data.postcode) {
             dispatch({
@@ -192,20 +190,20 @@ const Header = () => {
 
           // Get: Frost Free Days
           // Dynamic Dates not set!
-          let frostFreeDaysURL = `${weatherApiURL}/hourly?location=${city}%20${state}&start=2015-01-01&end=2019-12-31&stats=count(date)/24/5&where=air_temperature%3e0&output=json`;
-          let frostFreeDatesURL = `${weatherApiURL}/hourly?lat=${lat}&lon=${lon}&start=2014-07-01&end=2019-07-01&stats=min(date),max(date)&where=frost&group=growingyear&options=nomrms&output=json`;
+          const frostFreeDaysURL = `${weatherApiURL}/hourly?location=${city}%20${state}&start=2015-01-01&end=2019-12-31&stats=count(date)/24/5&where=air_temperature%3e0&output=json`;
+          const frostFreeDatesURL = `${weatherApiURL}/hourly?lat=${lat}&lon=${lon}&start=2014-07-01&end=2019-07-01&stats=min(date),max(date)&where=frost&group=growingyear&options=nomrms&output=json`;
           let frostFreeDays = 0;
 
           await Axios.get(frostFreeDaysURL)
             .then((resp) => {
               getAverageFrostDates(frostFreeDatesURL);
-              let frostFreeDaysObject = resp.data[0];
-              for (let key in frostFreeDaysObject) {
+              const frostFreeDaysObject = resp.data[0];
+              for (const key in frostFreeDaysObject) {
                 if (frostFreeDaysObject.hasOwnProperty(key)) {
                   frostFreeDays = frostFreeDaysObject[key];
                 }
               }
-              return { frostFreeDays: frostFreeDays, city: city, state: state };
+              return { frostFreeDays, city, state };
             })
             .then((obj) => {
               dispatch({
@@ -216,13 +214,13 @@ const Header = () => {
               return obj;
             })
             .then(async (obj) => {
-              let currentMonthInt = moment().month() + 1;
+              const currentMonthInt = moment().month() + 1;
 
               // What was the 5-year average rainfall for city st during the month of currentMonthInt?
               //  Dynamic dates ?
-              let averageRainForAMonthURL = `${weatherApiURL}/hourly?location=${obj.city}%20${obj.state}&start=2015-01-01&end=2019-12-31&stats=sum(precipitation)/5&where=month=${currentMonthInt}&output=json`;
+              const averageRainForAMonthURL = `${weatherApiURL}/hourly?location=${obj.city}%20${obj.state}&start=2015-01-01&end=2019-12-31&stats=sum(precipitation)/5&where=month=${currentMonthInt}&output=json`;
               // What was the 5-year average annual rainfall for city st?
-              let fiveYearAvgRainURL = `${weatherApiURL}/hourly?location=${obj.city}%20${obj.state}&start=2015-01-01&end=2019-12-31&stats=sum(precipitation)/5&output=json`;
+              const fiveYearAvgRainURL = `${weatherApiURL}/hourly?location=${obj.city}%20${obj.state}&start=2015-01-01&end=2019-12-31&stats=sum(precipitation)/5&output=json`;
               if (!state.ajaxInProgress) {
                 dispatch({
                   type: 'SET_AJAX_IN_PROGRESS',
@@ -311,7 +309,7 @@ const Header = () => {
 
     switch (state.progress) {
       case 0:
-        isActive['val'] = 0;
+        isActive.val = 0;
         break;
       default:
         break;
@@ -342,18 +340,10 @@ const Header = () => {
       (data) => data.Category === 'Goals' && data.Variable !== 'Notes: Goals',
     );
 
-    z7Formattedgoal = z7Formattedgoal.map((goal) => {
-      return { fields: goal };
-    });
-    z6Formattedgoal = z6Formattedgoal.map((goal) => {
-      return { fields: goal };
-    });
-    z5Formattedgoal = z5Formattedgoal.map((goal) => {
-      return { fields: goal };
-    });
-    z4Formattedgoal = z4Formattedgoal.map((goal) => {
-      return { fields: goal };
-    });
+    z7Formattedgoal = z7Formattedgoal.map((goal) => ({ fields: goal }));
+    z6Formattedgoal = z6Formattedgoal.map((goal) => ({ fields: goal }));
+    z5Formattedgoal = z5Formattedgoal.map((goal) => ({ fields: goal }));
+    z4Formattedgoal = z4Formattedgoal.map((goal) => ({ fields: goal }));
 
     switch (parseInt(sfilters.zone)) {
       case 7: {
@@ -446,33 +436,31 @@ const Header = () => {
       history.push('/species-selector');
     }
   };
-  const RenderMyCoverCropListButtons = () => {
-    return (
-      <Badge
-        badgeContent={state.selectedCrops.length > 0 ? state.selectedCrops.length : 0}
-        color={'error'}
+  const RenderMyCoverCropListButtons = () => (
+    <Badge
+      badgeContent={state.selectedCrops.length > 0 ? state.selectedCrops.length : 0}
+      color="error"
+    >
+      <Button
+        className={window.location.pathname === '/my-cover-crop-list' ? 'active' : ''}
+        onClick={() => history.push('/my-cover-crop-list')}
       >
-        <Button
-          className={window.location.pathname === '/my-cover-crop-list' ? 'active' : ''}
-          onClick={() => history.push('/my-cover-crop-list')}
-        >
-          My Cover Crop List
-        </Button>
-      </Badge>
-    );
-  };
+        My Cover Crop List
+      </Button>
+    </Badge>
+  );
   return (
     <header className="d-print-none">
       <div className="topHeader">
-        <NavLink to="/about" activeClassName={`active`}>
+        <NavLink to="/about" activeClassName="active">
           ABOUT
         </NavLink>
-        <span className="line"></span>
-        <NavLink to="/help" activeClassName={`active`}>
+        <span className="line" />
+        <NavLink to="/help" activeClassName="active">
           HELP
         </NavLink>
-        <span className="line"></span>
-        <NavLink to="/feedback" activeClassName={`active`}>
+        <span className="line" />
+        <NavLink to="/feedback" activeClassName="active">
           FEEDBACK
         </NavLink>
       </div>
@@ -485,9 +473,7 @@ const Header = () => {
               src="/images/neccc_wide_logo_color_web.jpg"
               alt="NECCC Logo"
               width="100%"
-              onContextMenu={() => {
-                return false;
-              }}
+              onContextMenu={() => false}
               onClick={() => {
                 dispatch({
                   type: 'UPDATE_PROGRESS',
@@ -520,7 +506,7 @@ const Header = () => {
         </div>
       </div>
       <div className="bottomHeader">
-        <Button size="large" component={NavLink} exact to={'/'} activeClassName="active">
+        <Button size="large" component={NavLink} exact to="/" activeClassName="active">
           COVER CROP EXPLORER
         </Button>
         <Button
@@ -531,12 +517,12 @@ const Header = () => {
           SPECIES SELECTOR TOOL
         </Button>
 
-        {window.location.pathname === '/species-selector' &&
-        state.selectedCrops.length > 0 &&
-        state.progress >= 5 ? (
+        {window.location.pathname === '/species-selector'
+        && state.selectedCrops.length > 0
+        && state.progress >= 5 ? (
           <Badge
             badgeContent={state.selectedCrops.length > 0 ? state.selectedCrops.length : 0}
-            color={'error'}
+            color="error"
           >
             <Button
               size="large"
@@ -550,9 +536,9 @@ const Header = () => {
               MY COVER CROP LIST
             </Button>
           </Badge>
-        ) : (
-          ''
-        )}
+          ) : (
+            ''
+          )}
         {/* My Cover Crop List As A Separate Component/Route  */}
         {window.location.pathname !== '/species-selector' ? (
           state.progress.length < 5 ? (
@@ -583,7 +569,7 @@ const Header = () => {
               <MDBNavItem>COVER CROP EXPLORER</MDBNavItem>
               <MDBNavItem
                 onClick={setSpeciesSelectorActivationFlag}
-                active={isRoot ? (state.speciesSelectorActivationFlag ? true : false) : false}
+                active={isRoot ? (!!state.speciesSelectorActivationFlag) : false}
               >
                 SPECIES SELECTOR TOOL
               </MDBNavItem>
@@ -591,9 +577,7 @@ const Header = () => {
                 <MDBNavItem
                   onClick={setmyCoverCropActivationFlag}
                   active={
-                    state.myCoverCropActivationFlag && window.location.pathname === '/'
-                      ? true
-                      : false
+                    !!(state.myCoverCropActivationFlag && window.location.pathname === '/')
                   }
                 >
                   MY COVER CROP LIST
@@ -608,15 +592,15 @@ const Header = () => {
 
       <Greenbar />
 
-      {window.location.pathname === '/about' ||
-      window.location.pathname === '/help' ||
-      (window.location.pathname === '/feedback' &&
-        window.location.pathname !== '/cover-crop-explorer') ||
-      state.progress < 0 ? (
-        <div className="topBar"></div>
-      ) : (
-        ''
-      )}
+      {window.location.pathname === '/about'
+      || window.location.pathname === '/help'
+      || (window.location.pathname === '/feedback'
+        && window.location.pathname !== '/cover-crop-explorer')
+      || state.progress < 0 ? (
+        <div className="topBar" />
+        ) : (
+          ''
+        )}
     </header>
   );
 };

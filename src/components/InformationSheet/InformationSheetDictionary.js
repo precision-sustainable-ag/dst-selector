@@ -5,7 +5,9 @@
 
 import { Typography } from '@mui/material';
 import { Info } from '@mui/icons-material';
-import React, { Fragment, useContext, useEffect, useState } from 'react';
+import React, {
+  useContext, useEffect, useState,
+} from 'react';
 import z4Dict from '../../shared/json/zone4/data-dictionary.json';
 import z5Dict from '../../shared/json/zone5/data-dictionary.json';
 import z6Dict from '../../shared/json/zone6/data-dictionary.json';
@@ -13,17 +15,17 @@ import z7Dict from '../../shared/json/zone7/data-dictionary.json';
 import { Context } from '../../store/Store';
 import DictionaryContent from './DictionaryContent';
 
-const InformationSheetDictionary = (props) => {
+const InformationSheetDictionary = ({ zone, from }) => {
   const [dictionary, setDictionary] = useState([]);
   const { state } = useContext(Context);
   const section = window.location.href.includes('selector') ? 'selector' : 'explorer';
   const sfilters = state[section];
 
-  const zone = props.zone ? props.zone : sfilters.zone;
+  const currentZone = zone || sfilters.zone;
 
   useEffect(() => {
     document.title = 'Data Dictionary';
-    switch (parseInt(zone)) {
+    switch (currentZone) {
       case 7: {
         setDictionary(z7Dict);
         break;
@@ -47,10 +49,10 @@ const InformationSheetDictionary = (props) => {
     }
   }, [zone]);
 
-  return props.from === 'help' ? (
+  return from === 'help' ? (
     <DictionaryContent dictData={dictionary} from="help" />
   ) : (
-    <Fragment>
+    <>
       <div className="row pt-4">
         <div
           className="col-12"
@@ -60,7 +62,7 @@ const InformationSheetDictionary = (props) => {
             borderTopLeftRadius: '20px',
             borderTopRightRadius: '20px',
           }}
-        ></div>
+        />
       </div>
       <div className="row mt-4 p-3">
         <div className=" col-12">
@@ -68,7 +70,9 @@ const InformationSheetDictionary = (props) => {
         </div>
         <div className="col-12">
           <Typography variant="body2">
-            <Info style={{ color: 'rgb(43, 123, 121)' }} /> &nbsp; These terms and definitions are
+            <Info style={{ color: 'rgb(43, 123, 121)' }} />
+            {' '}
+&nbsp; These terms and definitions are
             based on expert opinion
           </Typography>
         </div>
@@ -76,7 +80,7 @@ const InformationSheetDictionary = (props) => {
       <hr />
 
       <DictionaryContent dictData={dictionary} />
-    </Fragment>
+    </>
   );
 };
 

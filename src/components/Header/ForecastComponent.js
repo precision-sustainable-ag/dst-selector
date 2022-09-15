@@ -3,7 +3,9 @@
   The ForecastComponent shows the forecast in the header
 */
 
-import React, { Fragment, useContext, useEffect, useState } from 'react';
+import React, {
+  Fragment, useContext, useEffect, useState,
+} from 'react';
 import { cloudIcon, ReferenceTooltip } from '../../shared/constants';
 import { openWeatherApiKey } from '../../shared/keys';
 import { Context } from '../../store/Store';
@@ -17,14 +19,14 @@ const ForecastComponent = () => {
     min: 0,
     max: 0,
     unit: 'F',
-    iconURL: `https://placehold.it/20x20`,
+    iconURL: 'https://placehold.it/20x20',
     iconDescription: 'No Data',
   });
 
   useEffect(() => {
     const callWeatherApi = async (url, latlng) => {
-      let fetchData = await fetch(makeURLString(url, latlng));
-      let jsonData = await fetchData.json();
+      const fetchData = await fetch(makeURLString(url, latlng));
+      const jsonData = await fetchData.json();
       return jsonData;
     };
 
@@ -39,19 +41,19 @@ const ForecastComponent = () => {
           latlng = [];
         }
 
-        let apiCall = callWeatherApi(apiBaseURL, latlng);
+        const apiCall = callWeatherApi(apiBaseURL, latlng);
 
         apiCall
           .then((data) => {
-            let iconId = data.weather[0].icon;
-            let iconDescription = data.weather[0].description;
+            const iconId = data.weather[0].icon;
+            const iconDescription = data.weather[0].description;
 
-            let tempObj = {
+            const tempObj = {
               min: data.main.temp_min,
               max: data.main.temp_max,
               unit: 'F',
               iconURL: `https://openweathermap.org/img/w/${iconId}.png`,
-              iconDescription: iconDescription,
+              iconDescription,
             };
             setTemp(tempObj);
             setShowTempIcon(false);
@@ -61,13 +63,12 @@ const ForecastComponent = () => {
           });
 
         if (state.address === '') {
-          let data = reverseGEO(latlng[0], latlng[1]);
+          const data = reverseGEO(latlng[0], latlng[1]);
           data
             .then((data) => {
               if (data.localityInfo.informative) {
-                let lastInfo =
-                  data.localityInfo.informative[data.localityInfo.informative.length - 1];
-                let addressString = `${lastInfo.name}, ${data.city}`;
+                const lastInfo = data.localityInfo.informative[data.localityInfo.informative.length - 1];
+                const addressString = `${lastInfo.name}, ${data.city}`;
                 dispatch({
                   type: 'CHANGE_ADDRESS',
                   data: {
@@ -97,12 +98,10 @@ const ForecastComponent = () => {
     }
   }, [dispatch, state.address, state.markers, state.progress]);
 
-  const makeURLString = (url, params) => {
-    return `${url}?lat=${params[0]}&lon=${params[1]}&appid=${openWeatherApiKey}&units=imperial`;
-  };
+  const makeURLString = (url, params) => `${url}?lat=${params[0]}&lon=${params[1]}&appid=${openWeatherApiKey}&units=imperial`;
 
   const reverseGEO = async (lat, lng) => {
-    let url = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lng}&localityLanguage=en`;
+    const url = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lng}&localityLanguage=en`;
     let data = await fetch(url);
     data = data.json();
 
@@ -111,12 +110,13 @@ const ForecastComponent = () => {
 
   return state.progress >= 1 ? (
     showTempIcon ? (
-      <Fragment>
+      <>
         Forecast:&nbsp;
-        {cloudIcon(14, 20)}&nbsp; Loading..
-      </Fragment>
+        {cloudIcon(14, 20)}
+&nbsp; Loading..
+      </>
     ) : (
-      <Fragment>
+      <>
         Forecast:
         <img
           width="50"
@@ -125,12 +125,16 @@ const ForecastComponent = () => {
           alt={temp.iconDescription}
           title={temp.iconDescription}
         />
-        {Number(temp.max.toFixed(1))} | {Number(temp.min.toFixed(1))}&nbsp;
+        {Number(temp.max.toFixed(1))}
+        {' '}
+        |
+        {Number(temp.min.toFixed(1))}
+&nbsp;
         {temp.unit}
         <span className="ml-2">
-          <ReferenceTooltip source={'openweathermap.org'} url={'https://openweathermap.org/'} />
+          <ReferenceTooltip source="openweathermap.org" url="https://openweathermap.org/" />
         </span>
-      </Fragment>
+      </>
     )
   ) : (
     ''

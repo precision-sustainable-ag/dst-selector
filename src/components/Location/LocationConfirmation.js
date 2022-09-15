@@ -45,8 +45,11 @@ const LocationConfirmation = () => {
                 </div>
                 <div className="col-12 pt-2">
                   <Typography variant="body1">
-                    Your cover crop recommendations will come from the Plant Hardiness Zone{' '}
-                    {sfilters.zone} NECCC dataset.
+                    Your cover crop recommendations will come from the Plant Hardiness Zone
+                    {' '}
+                    {sfilters.zone}
+                    {' '}
+                    NECCC dataset.
                   </Typography>
                 </div>
                 <div className="col-12">
@@ -65,14 +68,15 @@ const LocationConfirmation = () => {
               </div>
             </div>
             <div className="row mt-3">
-              <div className="col-lg-12"></div>
+              <div className="col-lg-12" />
             </div>
             <div className="row mt-3">
               <div className="col-lg-12">
                 <Typography variant="body1">
                   Disclaimer: Cover crop recommendations are based on expert opinions. Your cover
                   crop performance and seeding rates will vary based on location, management,
-                  cultivars, and many other variables. Consult your local{' '}
+                  cultivars, and many other variables. Consult your local
+                  {' '}
                   <a
                     href="https://www.nrcs.usda.gov/wps/portal/nrcs/detailfull/national/programs/financial/csp/?&cid=nrcsdev11_000242"
                     title="click to consult your local nrcs service center"
@@ -81,7 +85,8 @@ const LocationConfirmation = () => {
                   >
                     NRCS Service Center
                   </a>
-                  ,{' '}
+                  ,
+                  {' '}
                   <a
                     href="https://nifa.usda.gov/land-grant-colleges-and-universities-partner-website-directory"
                     title="Link to Cooperative Extension Service office"
@@ -90,14 +95,16 @@ const LocationConfirmation = () => {
                   >
                     Cooperative Extension Service office
                   </a>
-                  , or{' '}
+                  , or
+                  {' '}
                   <a
                     href="https://www.nacdnet.org/general-resources/conservation-district-directory/"
                     target="_blank"
                     rel="noreferrer noopener"
                   >
                     Conservation District
-                  </a>{' '}
+                  </a>
+                  {' '}
                   for detailed guidance. Cover crop incentive programs may dictate seeding rate
                   ranges and methods, and planting and termination dates. Consult your program
                   contact to ensure your plans comply.

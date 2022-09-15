@@ -67,12 +67,12 @@ const App = () => {
   };
 
   useEffect(() => {
-    let parentDocHeight = document
+    const parentDocHeight = document
       .getElementById('mainContentWrapper')
       .getBoundingClientRect().height;
-    let headerHeight = document.querySelector('header').getBoundingClientRect().height;
+    const headerHeight = document.querySelector('header').getBoundingClientRect().height;
 
-    let calculatedHeight = parentDocHeight - headerHeight;
+    const calculatedHeight = parentDocHeight - headerHeight;
 
     setCalcHeight(calculatedHeight);
   }, []);
@@ -101,7 +101,7 @@ const App = () => {
               {state.progress > 0 && state.progress < 5 ? (
                 <div className="container-fluid mt-5 mb-5">
                   <div className="row" style={{ width: '95%', margin: '0 auto' }}>
-                    <div className="col-lg-5 col-12 col-md-5"></div>
+                    <div className="col-lg-5 col-12 col-md-5" />
                     <div className="col-lg-5 col-12 col-md-5">
                       <ProgressButtons />
                     </div>
@@ -143,17 +143,15 @@ const App = () => {
 
 export default App;
 
-const RouteNotFound = () => {
-  return (
-    <div className="container mt-4">
-      <div className="row">
-        <div className="col-4 offset-4">
-          <h3>Unknown Route</h3>
-        </div>
+const RouteNotFound = () => (
+  <div className="container mt-4">
+    <div className="row">
+      <div className="col-4 offset-4">
+        <h3>Unknown Route</h3>
       </div>
     </div>
-  );
-};
+  </div>
+);
 
 // eslint-disable-next-line
 const crop = window.location.search.match(/crop=([^\^]+)/);

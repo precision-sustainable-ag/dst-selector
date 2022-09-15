@@ -36,12 +36,12 @@ const LocationComponent = ({ title, caller }) => {
   const { state, dispatch } = useContext(Context);
   const section = window.location.href.includes('selector') ? 'selector' : 'explorer';
   const sfilters = state[section];
-
+  const [selectedToEditSite, setSelectedToEditSite] = useState({});
   const [showRestartPrompt, setShowRestartPrompt] = useState(false);
   const [restartAccept, setRestartAccept] = useState(false);
   const [zoneSelection, setZoneSelection] = useState(7);
   useEffect(() => {
-    document.title = title ? title : 'Decision Support Tool';
+    document.title = title || 'Decision Support Tool';
   }, [title]);
 
   useEffect(() => {
@@ -50,7 +50,7 @@ const LocationComponent = ({ title, caller }) => {
         type: 'UPDATE_ZONE_TEXT',
         data: {
           zoneText: 'Zone 7',
-          zone: parseInt(7),
+          zone: 7,
         },
       });
     } else if (zoneSelection === 4) {
@@ -58,7 +58,7 @@ const LocationComponent = ({ title, caller }) => {
         type: 'UPDATE_ZONE_TEXT',
         data: {
           zoneText: 'Zone 4',
-          zone: parseInt(zoneSelection),
+          zone: zoneSelection,
         },
       });
     } else if (zoneSelection === 5) {
@@ -66,7 +66,7 @@ const LocationComponent = ({ title, caller }) => {
         type: 'UPDATE_ZONE_TEXT',
         data: {
           zoneText: 'Zone 5',
-          zone: parseInt(zoneSelection),
+          zone: zoneSelection,
         },
       });
     } else if (zoneSelection === 6) {
@@ -74,7 +74,7 @@ const LocationComponent = ({ title, caller }) => {
         type: 'UPDATE_ZONE_TEXT',
         data: {
           zoneText: 'Zone 6',
-          zone: parseInt(zoneSelection),
+          zone: zoneSelection,
         },
       });
     } else {
@@ -82,7 +82,7 @@ const LocationComponent = ({ title, caller }) => {
         type: 'UPDATE_ZONE_TEXT',
         data: {
           zoneText: 'Zone 7',
-          zone: parseInt(7),
+          zone: 7,
         },
       });
     }
@@ -92,60 +92,60 @@ const LocationComponent = ({ title, caller }) => {
     if (caller === 'greenbar') {
       setShowRestartPrompt(true);
       setZoneSelection(event.target.value);
+    } else if (event.target.value === 3) {
+      dispatch({
+        type: 'UPDATE_ZONE_TEXT',
+        data: {
+          zoneText: 'Zone 7',
+          zone: 7,
+        },
+      });
+    } else if (event.target.value === 4) {
+      dispatch({
+        type: 'UPDATE_ZONE_TEXT',
+        data: {
+          zoneText: 'Zone 4',
+          zone: event.target.value,
+        },
+      });
+    } else if (event.target.value === 5) {
+      dispatch({
+        type: 'UPDATE_ZONE_TEXT',
+        data: {
+          zoneText: 'Zone 5',
+          zone: event.target.value,
+        },
+      });
+    } else if (event.target.value === 6) {
+      dispatch({
+        type: 'UPDATE_ZONE_TEXT',
+        data: {
+          zoneText: 'Zone 6',
+          zone: event.target.value,
+        },
+      });
     } else {
-      if (event.target.value === 3) {
-        dispatch({
-          type: 'UPDATE_ZONE_TEXT',
-          data: {
-            zoneText: 'Zone 7',
-            zone: parseInt(7),
-          },
-        });
-      } else if (event.target.value === 4) {
-        dispatch({
-          type: 'UPDATE_ZONE_TEXT',
-          data: {
-            zoneText: 'Zone 4',
-            zone: parseInt(event.target.value),
-          },
-        });
-      } else if (event.target.value === 5) {
-        dispatch({
-          type: 'UPDATE_ZONE_TEXT',
-          data: {
-            zoneText: 'Zone 5',
-            zone: parseInt(event.target.value),
-          },
-        });
-      } else if (event.target.value === 6) {
-        dispatch({
-          type: 'UPDATE_ZONE_TEXT',
-          data: {
-            zoneText: 'Zone 6',
-            zone: parseInt(event.target.value),
-          },
-        });
-      } else {
-        dispatch({
-          type: 'UPDATE_ZONE_TEXT',
-          data: {
-            zoneText: 'Zone 7',
-            zone: parseInt(7),
-          },
-        });
-      }
+      dispatch({
+        type: 'UPDATE_ZONE_TEXT',
+        data: {
+          zoneText: 'Zone 7',
+          zone: 7,
+        },
+      });
     }
   };
-  const [selectedToEditSite, setSelectedToEditSite] = useState({});
+
   useEffect(() => {
-    let { latitude, longitude, address, zipCode } = selectedToEditSite;
+    const {
+      latitude, longitude, address, zipCode,
+    } = selectedToEditSite;
     if (Object.keys(selectedToEditSite).length === 5) {
       dispatch({
         type: 'UPDATE_LOCATION',
         data: {
-          address: address,
-          latitude: latitude,
-          longitude: longitude,
+          address,
+          latitude,
+          longitude,
           zip: zipCode,
         },
       });
@@ -159,8 +159,11 @@ const LocationComponent = ({ title, caller }) => {
             <Typography variant="h4">Where is your field located?</Typography>
 
             <Typography variant="body1" align="left" className="pt-3">
-              Enter your USDA plant hardiness zone, address, or zip code and hit{' '}
-              <Search fontSize="inherit" /> to determine your location.
+              Enter your USDA plant hardiness zone, address, or zip code and hit
+              {' '}
+              <Search fontSize="inherit" />
+              {' '}
+              to determine your location.
             </Typography>
 
             <div className="row pt-3 mt-4">
@@ -207,10 +210,10 @@ const LocationComponent = ({ title, caller }) => {
               <div
                 className="col-md-6 offset-md-6 col-sm-12 row"
                 style={{ textAlign: 'left' }}
-              ></div>
+              />
             </div>
             <div className="row">
-              <div className="col-md-6 offset-md-6 col-sm-12"></div>
+              <div className="col-md-6 offset-md-6 col-sm-12" />
             </div>
           </div>
         </div>

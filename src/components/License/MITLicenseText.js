@@ -13,7 +13,11 @@ const MITLicenseText = ({ styles = true, aboutPage = false }) => {
     <Grid container spacing={3}>
       <Grid item xs={12}>
         <Typography variant="body1" gutterBottom>
-          Copyright © {currentYear} Northeast Cover Crop Council,&nbsp;
+          Copyright ©
+          {' '}
+          {currentYear}
+          {' '}
+          Northeast Cover Crop Council,&nbsp;
           <a href="http://northeastcovercrops.com/" target="_blank" rel="noopener noreferrer">
             northeastcovercrops.com
           </a>
@@ -26,7 +30,11 @@ const MITLicenseText = ({ styles = true, aboutPage = false }) => {
             (https://covercrop.tools). The data files and their contents licensed under the terms of
             MIT License. You may use, copy, modify and redistribute all files included in this
             distribution, individually or in aggregate, subject to the terms and conditions of the
-            MIT license. See <Link to={'/license'}>License</Link> for details.
+            MIT license. See
+            {' '}
+            <Link to="/license">License</Link>
+            {' '}
+            for details.
           </Typography>
         </Grid>
       ) : (
