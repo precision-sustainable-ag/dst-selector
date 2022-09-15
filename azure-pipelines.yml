@@ -37,9 +37,7 @@ stages:
       name: DownloadSecureFile
       inputs:
         secureFile: '.env'
-    - task: CopyFiles@2
-      inputs:
-        targetFolder: src/shared/
+    - script: cat $(DownloadSecureFile.env)
     - task: Docker@2
       displayName: Build and push an image to container registry
       inputs:
