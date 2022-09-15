@@ -7,8 +7,8 @@ import React, { Fragment, useContext } from 'react';
 import { Context } from '../store/Store';
 import { LightButton } from './constants';
 
-const ProgressButtonsInner = (props) => {
-  let isDisabled = props.disabled;
+const ProgressButtonsInner = ({ disabled }) => {
+  const isDisabled = disabled;
 
   const { dispatch } = useContext(Context);
 
@@ -33,7 +33,7 @@ const ProgressButtonsInner = (props) => {
   };
 
   return (
-    <Fragment>
+    <>
       <LightButton onClick={() => changeProgress('decrement')}> back</LightButton>
       <LightButton
         onClick={() => changeProgress('increment')}
@@ -42,7 +42,7 @@ const ProgressButtonsInner = (props) => {
       >
         next
       </LightButton>
-    </Fragment>
+    </>
   );
 };
 

@@ -1,17 +1,17 @@
-import { Button, Collapse, List, ListItem, ListItemText, Typography } from '@mui/material';
+import {
+  Button, Collapse, List, ListItem, ListItemText, Typography,
+} from '@mui/material';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import React, { Fragment, useContext } from 'react';
 import { arrayMove, List as ListMovable } from 'react-movable';
 import { Context } from '../../../../store/Store';
 import { CustomStyles } from '../../../../shared/constants';
 
-const CoverCropGoals = (props) => {
-  let { handleToggle, classes, style } = props;
-
+const CoverCropGoals = ({ handleToggle, classes, style }) => {
   const { state, dispatch } = useContext(Context);
 
   const updateSelectedGoals = (newGoalArr, oldIndex, newIndex) => {
-    let newGoals = arrayMove(newGoalArr, oldIndex, newIndex);
+    const newGoals = arrayMove(newGoalArr, oldIndex, newIndex);
 
     dispatch({
       type: 'DRAG_GOALS',
@@ -71,7 +71,7 @@ const CoverCropGoals = (props) => {
   );
 
   return (
-    <Fragment>
+    <>
       {' '}
       <ListItem
         button
@@ -95,11 +95,11 @@ const CoverCropGoals = (props) => {
             </ListItem>
           </List>
         ) : (
-          <Fragment>
+          <>
             <List component="div" disablePadding>
               <ListItem className={classes.nested}>
                 <ListItemText
-                  primary={
+                  primary={(
                     <div>
                       <div>
                         <Typography variant="body1"> Goal Priority Order</Typography>
@@ -116,21 +116,17 @@ const CoverCropGoals = (props) => {
                         </Typography>
                       </div>
                     </div>
-                  }
+                  )}
                 />
               </ListItem>
             </List>
             <ListMovable
               values={state.selectedGoals}
-              onChange={({ oldIndex, newIndex }) =>
-                updateSelectedGoals(state.selectedGoals, oldIndex, newIndex)
-              }
-              renderList={({ children, props, isDragged }) =>
-                renderList(children, props, isDragged)
-              }
-              renderItem={({ value, props, isDragged, isSelected, index }) =>
-                renderItem(value, props, isDragged, isSelected, index)
-              }
+              onChange={({ oldIndex, newIndex }) => updateSelectedGoals(state.selectedGoals, oldIndex, newIndex)}
+              renderList={({ children, props, isDragged }) => renderList(children, props, isDragged)}
+              renderItem={({
+                value, props, isDragged, isSelected, index,
+              }) => renderItem(value, props, isDragged, isSelected, index)}
             />
 
             <ListItem className={classes.nested}>
@@ -145,10 +141,10 @@ const CoverCropGoals = (props) => {
                 </Typography>
               </ListItemText>
             </ListItem>
-          </Fragment>
+          </>
         )}
       </Collapse>
-    </Fragment>
+    </>
   );
 };
 

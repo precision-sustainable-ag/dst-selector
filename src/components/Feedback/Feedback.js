@@ -4,8 +4,8 @@
 */
 
 import React, { useEffect, useContext } from 'react';
-import Header from '../Header/Header';
 import ReactGA from 'react-ga';
+import Header from '../Header/Header';
 import { Context } from '../../store/Store';
 
 const FeedbackComponent = () => {
@@ -41,7 +41,7 @@ const FeedbackComponent = () => {
               width: '100%',
               height: '733px',
             }}
-          ></iframe>
+          />
         </div>
       </div>
     </div>

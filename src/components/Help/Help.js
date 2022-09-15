@@ -1,3 +1,5 @@
+/* eslint-disable react/no-unescaped-entities */
+/* eslint-disable max-len */
 /*
   This file contains the HelpComponent, helper functions, and styles
   The HelpComponent is a static  help page that has FAQ, how to use, data dictionary, and information sheets
@@ -8,10 +10,10 @@
 import { Button, Typography } from '@mui/material';
 import React, { Fragment, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
+import ReactGA from 'react-ga';
 import { CustomStyles } from '../../shared/constants';
 import Header from '../Header/Header';
 import InformationSheetDictionary from '../InformationSheet/InformationSheetDictionary';
-import ReactGA from 'react-ga';
 import { Context } from '../../store/Store';
 
 const HelpComponent = () => {
@@ -56,8 +58,8 @@ const HelpComponent = () => {
                     borderRadius: '0px',
                   }}
                   onClick={() => handleChange(0)}
-                  variant={value === 0 ? `contained` : `text`}
-                  color={value === 0 ? `secondary` : `default`}
+                  variant={value === 0 ? 'contained' : 'text'}
+                  color={value === 0 ? 'secondary' : 'default'}
                 >
                   How to Use the NECCC Species Selector Tool
                 </Button>
@@ -69,8 +71,8 @@ const HelpComponent = () => {
                     borderRadius: '0px',
                   }}
                   onClick={() => handleChange(1)}
-                  variant={value === 1 ? `contained` : `text`}
-                  color={value === 1 ? `secondary` : `default`}
+                  variant={value === 1 ? 'contained' : 'text'}
+                  color={value === 1 ? 'secondary' : 'default'}
                 >
                   Frequently Asked Questions
                 </Button>
@@ -82,8 +84,8 @@ const HelpComponent = () => {
                     borderRadius: '0px',
                   }}
                   onClick={() => handleChange(2)}
-                  variant={value === 2 ? `contained` : `text`}
-                  color={value === 2 ? `secondary` : `default`}
+                  variant={value === 2 ? 'contained' : 'text'}
+                  color={value === 2 ? 'secondary' : 'default'}
                 >
                   Data Dictionary
                 </Button>
@@ -95,8 +97,8 @@ const HelpComponent = () => {
                     borderRadius: '0px',
                   }}
                   onClick={() => handleChange(3)}
-                  variant={value === 3 ? `contained` : `text`}
-                  color={value === 3 ? `secondary` : `default`}
+                  variant={value === 3 ? 'contained' : 'text'}
+                  color={value === 3 ? 'secondary' : 'default'}
                 >
                   Information Sheets
                 </Button>
@@ -126,7 +128,7 @@ const RenderContent = ({ value = 0 }) => {
   switch (value) {
     case 0:
       return (
-        <Fragment>
+        <>
           <Typography variant="h4" gutterBottom>
             How to Use The Tool
           </Typography>
@@ -136,11 +138,11 @@ const RenderContent = ({ value = 0 }) => {
               frameBorder="0"
               width="100%"
               height="474"
-              allowFullScreen={true}
+              allowFullScreen
               mozallowfullscreen="true"
               webkitallowfullscreen="true"
               title="iframe"
-            ></iframe>
+            />
           </Typography>
           <Typography component="div" variant="body1" align="left">
             <ol>
@@ -221,25 +223,27 @@ const RenderContent = ({ value = 0 }) => {
                   search for any cover crop in our data set.
                 </li>
                 <li>
-                  You need to specify a{' '}
+                  You need to specify a
+                  {' '}
                   <a
                     href="https://planthardiness.ars.usda.gov/PHZMWeb/"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
                     hardiness zone
-                  </a>{' '}
+                  </a>
+                  {' '}
                   to use the Explorer.
                 </li>
               </ul>
             </ol>
           </Typography>
-        </Fragment>
+        </>
       );
 
     case 1:
       return (
-        <Fragment>
+        <>
           <Typography variant="h4" gutterBottom>
             Frequently Asked Questions
           </Typography>
@@ -393,12 +397,14 @@ const RenderContent = ({ value = 0 }) => {
                   in.
                 </li>
                 <li>
-                  <Link to="/feedback">Send us feedback!</Link> Let us know.
+                  <Link to="/feedback">Send us feedback!</Link>
+                  {' '}
+                  Let us know.
                 </li>
               </ul>
             </ol>
           </Typography>
-        </Fragment>
+        </>
       );
 
     case 2:
@@ -412,7 +418,7 @@ const RenderContent = ({ value = 0 }) => {
       );
     case 3:
       return (
-        <Fragment>
+        <>
           <Typography variant="h4" gutterBottom align="center">
             Information Sheets
           </Typography>
@@ -659,10 +665,10 @@ const RenderContent = ({ value = 0 }) => {
               </ul>
             </ol>
           </Typography>
-        </Fragment>
+        </>
       );
     default: {
-      return <div></div>;
+      return <div />;
     }
   }
 };

@@ -4,7 +4,9 @@
   Styles are created using CustomStyles from ../../../shared/constants and ../../../styles/greenBar.scss
 */
 
-import { Button, Dialog, DialogActions, DialogContent, Typography } from '@mui/material';
+import {
+  Button, Dialog, DialogActions, DialogContent, Typography,
+} from '@mui/material';
 import { LocationOn, Refresh } from '@mui/icons-material';
 import CloudIcon from '@mui/icons-material/Cloud';
 import FilterHdrIcon from '@mui/icons-material/FilterHdr';
@@ -64,34 +66,38 @@ const Greenbar = () => {
   const getAddress = () => {
     if (state.address === '') {
       return '';
-    } else {
-      return (
-        <Button
-          className="greenbarBtn"
-          onClick={handleAddressBtnClick}
-          style={
+    }
+    return (
+      <Button
+        className="greenbarBtn"
+        onClick={handleAddressBtnClick}
+        style={
             expansionPanelComponent.component === 'location'
               ? {
-                  background: 'white',
-                }
+                background: 'white',
+              }
               : {}
           }
-        >
-          <span
-            style={
+      >
+        <span
+          style={
               expansionPanelComponent.component === 'location'
                 ? {
-                    color: 'black',
-                  }
+                  color: 'black',
+                }
                 : {}
             }
-          >
-            <LocationOn />
-            &nbsp;Zone {sfilters.zone}: {state.address}
-          </span>
-        </Button>
-      );
-    }
+        >
+          <LocationOn />
+            &nbsp;Zone
+          {' '}
+          {sfilters.zone}
+          :
+          {' '}
+          {state.address}
+        </span>
+      </Button>
+    );
   };
 
   const closeExpansionPanel = () => {
@@ -105,8 +111,8 @@ const Greenbar = () => {
   const handleAddressBtnClick = (evt) => {
     const greenbarExpansionElement = document.getElementById('greenBarExpansionPanel');
     if (
-      expansionPanelComponent.component === 'location' &&
-      greenbarExpansionElement.style.minHeight === greenBarExpansionPanelHeight.large
+      expansionPanelComponent.component === 'location'
+      && greenbarExpansionElement.style.minHeight === greenBarExpansionPanelHeight.large
     ) {
       // toggle
       closeExpansionPanel();
@@ -121,8 +127,8 @@ const Greenbar = () => {
   const handleSoilBtnClick = (evt) => {
     const greenbarExpansionElement = document.getElementById('greenBarExpansionPanel');
     if (
-      expansionPanelComponent.component === 'soil' &&
-      greenbarExpansionElement.style.minHeight === greenBarExpansionPanelHeight.large
+      expansionPanelComponent.component === 'soil'
+      && greenbarExpansionElement.style.minHeight === greenBarExpansionPanelHeight.large
     ) {
       // toggle
       closeExpansionPanel();
@@ -139,8 +145,8 @@ const Greenbar = () => {
     const greenbarExpansionElement = document.getElementById('greenBarExpansionPanel');
 
     if (
-      expansionPanelComponent.component === 'weather' &&
-      greenbarExpansionElement.style.minHeight === greenBarExpansionPanelHeight.large
+      expansionPanelComponent.component === 'weather'
+      && greenbarExpansionElement.style.minHeight === greenBarExpansionPanelHeight.large
     ) {
       // toggle
       closeExpansionPanel();
@@ -155,37 +161,37 @@ const Greenbar = () => {
   const getSoil = () => {
     if (state.soilData.Flooding_Frequency === null) {
       return '';
-    } else
-      return (
-        <Button
-          className="greenbarBtn"
-          onClick={handleSoilBtnClick}
-          style={
+    } return (
+      <Button
+        className="greenbarBtn"
+        onClick={handleSoilBtnClick}
+        style={
             expansionPanelComponent.component === 'soil'
               ? {
-                  background: 'white',
-                }
+                background: 'white',
+              }
               : {}
           }
-        >
-          <span
-            style={
+      >
+        <span
+          style={
               expansionPanelComponent.component === 'soil'
                 ? {
-                    color: 'black',
-                  }
+                  color: 'black',
+                }
                 : {}
             }
-          >
-            {<FilterHdrIcon />}
-            &nbsp;{' '}
-            {/* {`Soils: Map Unit Name (${state.soilData.Map_Unit_Name}%), Drainage Class: ${state.soilData.Drainage_Class}})`} */}
-            {`Soils: Drainage Class: ${state.soilData.Drainage_Class.toString()
-              .split(',')
-              .join(', ')}`}
-          </span>
-        </Button>
-      );
+        >
+          <FilterHdrIcon />
+            &nbsp;
+          {' '}
+          {/* {`Soils: Map Unit Name (${state.soilData.Map_Unit_Name}%), Drainage Class: ${state.soilData.Drainage_Class}})`} */}
+          {`Soils: Drainage Class: ${state.soilData.Drainage_Class.toString()
+            .split(',')
+            .join(', ')}`}
+        </span>
+      </Button>
+    );
   };
 
   const handleConfirmationChoice = (clearCoverCrops = false) => {
@@ -215,38 +221,38 @@ const Greenbar = () => {
   const getWeatherData = () => {
     // TODO: convert month to string, currently returning int
     // let currentMonth = GetMonthString(month);
-    let currentMonth = moment().format('MMM');
+    const currentMonth = moment().format('MMM');
     // frost free days :-
     // NOTE: IP has been permanently changed to a URL. check constants
     if (state.weatherData.length === 0) return '';
-    else
-      return (
-        <Button
-          className="greenbarBtn"
-          onClick={handleWeatherBtnClick}
-          style={
+    return (
+      <Button
+        className="greenbarBtn"
+        onClick={handleWeatherBtnClick}
+        style={
             expansionPanelComponent.component === 'weather'
               ? {
-                  background: 'white',
-                }
+                background: 'white',
+              }
               : {}
           }
-        >
-          <span
-            style={
+      >
+        <span
+          style={
               expansionPanelComponent.component === 'weather'
                 ? {
-                    color: 'black',
-                  }
+                  color: 'black',
+                }
                 : {}
             }
-          >
-            {<CloudIcon fontSize="small" />}
-            &nbsp;{' '}
-            {`Avg First Frost: ${state.weatherData.averageFrost.firstFrostDate.month} ${state.weatherData.averageFrost.firstFrostDate.day} | Avg Rain(${currentMonth}): ${state.weatherData.averagePrecipitation.thisMonth} in`}
-          </span>
-        </Button>
-      );
+        >
+          <CloudIcon fontSize="small" />
+            &nbsp;
+          {' '}
+          {`Avg First Frost: ${state.weatherData.averageFrost.firstFrostDate.month} ${state.weatherData.averageFrost.firstFrostDate.day} | Avg Rain(${currentMonth}): ${state.weatherData.averagePrecipitation.thisMonth} in`}
+        </span>
+      </Button>
+    );
   };
   const [restartPrompt2, setRestartPrompt2] = useState(false);
   return (
@@ -292,10 +298,10 @@ const Greenbar = () => {
       >
         <div className="row justify-content-center align-items-center">
           <div
-            className={expansionPanelComponent.component === 'location' ? `col-md-10` : `col-md-6`}
+            className={expansionPanelComponent.component === 'location' ? 'col-md-10' : 'col-md-6'}
           >
             {expansionPanelComponent.component === 'location' ? (
-              <LocationComponent caller="greenbar" title={'Location'} />
+              <LocationComponent caller="greenbar" title="Location" />
             ) : expansionPanelComponent.component === 'soil' ? (
               <div className="container mt-5" style={expansionPanelBaseStyle}>
                 <div className="row boxContainerRow" style={{ minHeight: '526px' }}>
@@ -371,7 +377,7 @@ const Greenbar = () => {
             {state.selectedCrops.length > 0
               ? `Restarting will remove all cover crops added to your list. Are you
             sure you want to restart?`
-              : `Are you sure you want to restart?`}
+              : 'Are you sure you want to restart?'}
           </Typography>
         </DialogContent>
         <DialogActions>

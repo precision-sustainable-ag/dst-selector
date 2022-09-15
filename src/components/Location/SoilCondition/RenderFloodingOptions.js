@@ -3,11 +3,11 @@ import { Chip } from '@mui/material';
 import { Context } from '../../../store/Store';
 import '../../../styles/soilConditions.scss';
 
-export const RenderFloodingOptions = ({ flooding = [''] }) => {
+const RenderFloodingOptions = ({ flooding = [''] }) => {
   const { state, dispatch } = useContext(Context);
 
   const updateFloodingFrequency = (label = '') => {
-    let floodings = [...state.soilData.Flooding_Frequency];
+    const floodings = [...state.soilData.Flooding_Frequency];
     if (floodings.indexOf(label) === -1) {
       // does not exist, dispatch to state
       floodings.push(label);
@@ -17,7 +17,7 @@ export const RenderFloodingOptions = ({ flooding = [''] }) => {
       });
     } else {
       // exists, remove it from state
-      let index = floodings.indexOf(label);
+      const index = floodings.indexOf(label);
       floodings.splice(index, 1);
 
       dispatch({
@@ -79,3 +79,5 @@ export const RenderFloodingOptions = ({ flooding = [''] }) => {
     </div>
   );
 };
+
+export default RenderFloodingOptions;

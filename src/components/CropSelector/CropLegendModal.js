@@ -4,7 +4,9 @@
   Styles are created using makeStyles
 */
 
-import { Backdrop, Button, Modal, Typography } from '@mui/material';
+import {
+  Button, Modal, Typography,
+} from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import { CloseRounded, FiberManualRecord } from '@mui/icons-material';
 import React from 'react';
@@ -24,53 +26,53 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const CropLegendModal = (props) => {
+const CropLegendModal = ({ legendModal, handleLegendModal }) => {
   const classes = useStyles();
 
-  return ( 
+  return (
     <Modal
-      open={props.legendModal}
-      onClose={props.handleLegendModal}
+      open={legendModal}
+      onClose={handleLegendModal}
       className={classes.modal}
     >
-        <div className={`modalLegendPaper ${classes.paper}`}>
-            <div className="row">
-              <div className="col-6">
-                <Typography variant="h4">LEGEND</Typography>
-              </div>
-              <div className="col-6 text-right">
-                <Button onClick={props.handleLegendModal}>
-                  <CloseRounded />
-                </Button>
-              </div>
-            </div>
-            <div className="row mt-5">
-              <div className="col-12 legendModalRow">
-                <Typography variant="body1">
-                  <FiberManualRecord className="reliable" />
-                  <span className="pl-3">{'Reliable Establishment'}</span>
-                </Typography>
-              </div>
-              <div className="col-12 legendModalRow">
-                <Typography variant="body1">
-                  <FiberManualRecord className="temperatureRisk" />
-                  <span className="pl-3">{'Temperature Risk To Establishment'}</span>
-                </Typography>
-              </div>
-              <div className="col-12 legendModalRow">
-                <Typography variant="body1">
-                  <FiberManualRecord className="frostPossible" />
-                  <span className="pl-3">{'Frost Seeding Possible'}</span>
-                </Typography>
-              </div>
-              <div className="col-12 legendModalRow">
-                <Typography variant="body1">
-                  <FiberManualRecord className="cashCrop" />
-                  <span className="pl-3">{'Previous Cash Crop Growth Window'}</span>
-                </Typography>
-              </div>
+      <div className={`modalLegendPaper ${classes.paper}`}>
+        <div className="row">
+          <div className="col-6">
+            <Typography variant="h4">LEGEND</Typography>
+          </div>
+          <div className="col-6 text-right">
+            <Button onClick={handleLegendModal}>
+              <CloseRounded />
+            </Button>
           </div>
         </div>
+        <div className="row mt-5">
+          <div className="col-12 legendModalRow">
+            <Typography variant="body1">
+              <FiberManualRecord className="reliable" />
+              <span className="pl-3">Reliable Establishment</span>
+            </Typography>
+          </div>
+          <div className="col-12 legendModalRow">
+            <Typography variant="body1">
+              <FiberManualRecord className="temperatureRisk" />
+              <span className="pl-3">Temperature Risk To Establishment</span>
+            </Typography>
+          </div>
+          <div className="col-12 legendModalRow">
+            <Typography variant="body1">
+              <FiberManualRecord className="frostPossible" />
+              <span className="pl-3">Frost Seeding Possible</span>
+            </Typography>
+          </div>
+          <div className="col-12 legendModalRow">
+            <Typography variant="body1">
+              <FiberManualRecord className="cashCrop" />
+              <span className="pl-3">Previous Cash Crop Growth Window</span>
+            </Typography>
+          </div>
+        </div>
+      </div>
     </Modal>
   );
 };

@@ -33,12 +33,12 @@ const DateRangeDialog = ({ open = false, onChange = () => {}, close = () => {} }
     const startDate = new Date(ranges.selection.startDate).toLocaleDateString('sv');
     const endDate = new Date(ranges.selection.endDate).toLocaleDateString('sv');
     setSelection(ranges.selection);
-    onChange({ startDate: startDate, endDate: endDate });
+    onChange({ startDate, endDate });
   };
 
   return (
     <Dialog
-      maxWidth={'md'}
+      maxWidth="md"
       fullScreen={fullScreen}
       open={open}
       onClose={close}

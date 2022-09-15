@@ -2,8 +2,8 @@
   Reducer determines the next state in Store.js
 */
 
+// eslint-disable-next-line consistent-return
 const Reducer = (state, action, value = action && action.data && action.data.value) => {
-
   const section = window.location.href.includes('selector') ? 'selector' : 'explorer';
   let sfilters = { ...state[section] };
 
@@ -12,8 +12,8 @@ const Reducer = (state, action, value = action && action.data && action.data.val
       return { ...state, [value]: !state[value] };
     case 'TRUE':
       return { ...state, [value]: true };
-    // case 'FALSE':
-    //   return { ...state, [value]: false };
+      // case 'FALSE':
+      //   return { ...state, [value]: false };
 
     case 'FILTER_TOGGLE': {
       sfilters[value] = !sfilters[value];
@@ -83,23 +83,21 @@ const Reducer = (state, action, value = action && action.data && action.data.val
     case 'UPDATE_CONSENT': {
       if (action.data.consent === true) {
         return { ...state, consent: true };
-      } else if (action.data.consent === false) {
+      } if (action.data.consent === false) {
         return { ...state, consent: false };
-      } else {
-        break;
       }
+      break;
     }
 
     case 'UPDATE_PROGRESS': {
       if (action.data.type === 'INCREMENT') {
         return { ...state, progress: state.progress + 1 };
-      } else if (action.data.type === 'DECREMENT') {
+      } if (action.data.type === 'DECREMENT') {
         return { ...state, progress: state.progress - 1 };
-      } else if (action.data.type === 'HOME') {
+      } if (action.data.type === 'HOME') {
         return { ...state, progress: 0 };
-      } else {
-        break;
       }
+      break;
     }
 
     case 'UPDATE_LOCATION': {
@@ -219,8 +217,8 @@ const Reducer = (state, action, value = action && action.data && action.data.val
             },
           },
           averagePrecipitation: {
-            thisMonth: 3.6, //inches
-            annual: 43, //inches
+            thisMonth: 3.6, // inches
+            annual: 43, // inches
           },
           frostFreeDays: 173,
         },
