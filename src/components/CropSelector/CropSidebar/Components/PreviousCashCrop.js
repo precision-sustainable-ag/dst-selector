@@ -18,9 +18,7 @@ import { Context } from '../../../../store/Store';
 import DateRangeDialog from '../../DateRangeDialog';
 import { CustomStyles } from '../../../../shared/constants';
 
-const PreviousCashCrop = (props) => {
-  const { handleToggle, classes, setDateRange } = props;
-
+const PreviousCashCrop = ({ handleToggle, classes, setDateRange }) => {
   const { state, dispatch } = useContext(Context);
   const [cashCropVisible, setCashCropVisible] = useState(true); // TODO: buggy(?);
 

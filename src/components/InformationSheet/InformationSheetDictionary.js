@@ -15,7 +15,7 @@ import z7Dict from '../../shared/json/zone7/data-dictionary.json';
 import { Context } from '../../store/Store';
 import DictionaryContent from './DictionaryContent';
 
-const InformationSheetDictionary = (zone, from) => {
+const InformationSheetDictionary = ({ zone, from }) => {
   const [dictionary, setDictionary] = useState([]);
   const { state } = useContext(Context);
   const section = window.location.href.includes('selector') ? 'selector' : 'explorer';
