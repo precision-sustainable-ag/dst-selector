@@ -3,7 +3,7 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/docker
 
 trigger:
-- develop
+- ${branch}
 
 resources:
 - repo: self
@@ -33,6 +33,13 @@ stages:
     pool:
       vmImage: $(vmImageName)
     steps:
+    - task: DownloadSecureFile@1
+      inputs:
+        secureFile: '.env'
+    - task: CopyFiles@2
+      inputs:
+        sourceFolder: $(DownloadSecureFile.env)
+        targetFolder: /
     - task: Docker@2
       displayName: Build and push an image to container registry
       inputs:
@@ -40,8 +47,7 @@ stages:
         repository: $(imageRepository)
         dockerfile: $(dockerfilePath)
         containerRegistry: $(dockerRegistryServiceConnection)
-        tags: |
-          $(tag)
+        tags: $(tag)
 
     - upload: manifests
       artifact: manifests
