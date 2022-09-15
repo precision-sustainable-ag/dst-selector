@@ -26,7 +26,7 @@ import { Context } from '../../store/Store';
 import CropSelectorCalendarView from '../CropSelector/CropSelectorCalendarView';
 import PhotoComponent from './PhotoComponent';
 import SoilDrainageTimeline from './SoilDrainageTimeline';
-import sources from './sources.json';
+import sources from '../../shared/json/sources/sources.json';
 import TooltipMaker from './TooltipMaker';
 
 const Accordion = withStyles({
