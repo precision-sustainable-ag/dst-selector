@@ -37,11 +37,10 @@ stages:
       name: DownloadSecureFile
       inputs:
         secureFile: '.env'
-    - script: |
-        echo "Creating $(DownloadSecureFile.env) to the trusted directory"
-        sudo chown root:root $(DownloadSecureFile.env)
-        sudo chmod a+r $(DownloadSecureFile.env)
-        sudo ln -s -t src/shared/.env $(DownloadSecureFile.env)
+    - task: CopyFiles@2
+      inputs:
+        sourceFolder: $(DownloadSecureFile.env) 
+        targetFolder: src/shared/
     - task: Docker@2
       displayName: Build and push an image to container registry
       inputs:
