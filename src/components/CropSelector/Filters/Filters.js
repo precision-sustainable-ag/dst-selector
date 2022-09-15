@@ -1,21 +1,20 @@
 import { Chip, Grid, Tooltip } from '@mui/material';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
-import React, {
-  forwardRef, useEffect, useContext, useState,
-} from 'react';
+import React, { forwardRef, useEffect, useContext, useState } from 'react';
 import { Context } from '../../../store/Store';
 
 const DollarsAndRatings = ({ filter, handleChange }) => {
   const { state, dispatch } = useContext(Context);
   const sfilters = window.location.href.includes('species') ? state.selector : state.explorer;
 
-  const style = filter.symbol === 'dollar'
-    ? {}
-    : {
-      transform: 'scale(0.8)',
-      transformOrigin: 'top left',
-      width: '150%',
-    };
+  const style =
+    filter.symbol === 'dollar'
+      ? {}
+      : {
+          transform: 'scale(0.8)',
+          transformOrigin: 'top left',
+          width: '150%',
+        };
 
   return (
     <div style={style}>
@@ -25,19 +24,21 @@ const DollarsAndRatings = ({ filter, handleChange }) => {
         .map((i) => {
           const filterKey = `${filter.name}: ${i}`;
           const selected = sfilters[filterKey];
-          const filterOn = (key = filterKey) => dispatch({
-            type: 'FILTER_ON',
-            data: {
-              value: key,
-            },
-          });
+          const filterOn = (key = filterKey) =>
+            dispatch({
+              type: 'FILTER_ON',
+              data: {
+                value: key,
+              },
+            });
 
-          const filterOff = (key = filterKey) => dispatch({
-            type: 'FILTER_OFF',
-            data: {
-              value: key,
-            },
-          });
+          const filterOff = (key = filterKey) =>
+            dispatch({
+              type: 'FILTER_OFF',
+              data: {
+                value: key,
+              },
+            });
 
           return (
             <Chip
@@ -115,11 +116,11 @@ const Tip = ({ filter, omitHeading }) => {
       open={open}
       onClick={() => setOpen(!open)}
       onMouseOut={() => setOpen(false)}
-      title={(
+      title={
         <div className="filterTooltip">
           <p dangerouslySetInnerHTML={{ __html: filter.description }} />
         </div>
-      )}
+      }
     >
       <small style={{ whiteSpace: 'nowrap' }}>
         {omitHeading ? '' : filter.name}
@@ -129,7 +130,7 @@ const Tip = ({ filter, omitHeading }) => {
   );
 }; // Tip
 
-const Filters = forwardRef(({ filters, setSidebarFilterOptions, sidebarFilterOptions }) => {
+const Filters = forwardRef(({ filters, setSidebarFilterOptions, sidebarFilterOptions, props }) => {
   const { state, dispatch } = useContext(Context);
 
   const [selected, setSelected] = useState({});
@@ -166,7 +167,12 @@ const Filters = forwardRef(({ filters, setSidebarFilterOptions, sidebarFilterOpt
           if (filter.values && filter.values.length === 1) {
             return (
               <Grid key={i} item>
-                <Chips state={state} filter={filter} props={props} handleChange={chipChange} />
+                <Chips
+                  state={state}
+                  filter={filter}
+                  props={{ ...props }}
+                  handleChange={chipChange}
+                />
                 {filter.description && <Tip filter={filter} omitHeading />}
               </Grid>
             );
@@ -179,7 +185,7 @@ const Filters = forwardRef(({ filters, setSidebarFilterOptions, sidebarFilterOpt
                   <br />
                 </>
               )}
-              <Chips state={state} filter={filter} props={props} handleChange={chipChange} />
+              <Chips state={state} filter={filter} props={{ ...props }} handleChange={chipChange} />
             </Grid>
           );
         }
