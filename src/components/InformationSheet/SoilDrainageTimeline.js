@@ -1,5 +1,5 @@
 /*
-  Contains the soil drainage timeline component in the information 
+  Contains the soil drainage timeline component in the information
   styled using CustomStyles from ../../shared/constants
 */
 

@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 /*
   This file contains the About component, helper functions, and styles
   The about page is a static pages that has information about the project
@@ -7,10 +8,10 @@
 
 import { Button, Typography } from '@mui/material';
 import React, { Fragment, useContext, useEffect } from 'react';
+import ReactGA from 'react-ga';
 import { CustomStyles } from '../../shared/constants';
 import Header from '../Header/Header';
 import MITLicenseText from '../License/MITLicenseText';
-import ReactGA from 'react-ga';
 import { Context } from '../../store/Store';
 
 const About = () => {
@@ -51,8 +52,8 @@ const About = () => {
                     borderRadius: '0px',
                   }}
                   onClick={() => handleChange(0)}
-                  variant={value === 0 ? `contained` : `text`}
-                  color={value === 0 ? `secondary` : `default`}
+                  variant={value === 0 ? 'contained' : 'text'}
+                  color={value === 0 ? 'secondary' : 'default'}
                 >
                   History and Purpose of the NECCC Tool Effort
                 </Button>
@@ -64,8 +65,8 @@ const About = () => {
                     borderRadius: '0px',
                   }}
                   onClick={() => handleChange(1)}
-                  variant={value === 1 ? `contained` : `text`}
-                  color={value === 1 ? `secondary` : `default`}
+                  variant={value === 1 ? 'contained' : 'text'}
+                  color={value === 1 ? 'secondary' : 'default'}
                 >
                   Cover Crop Data
                 </Button>
@@ -77,8 +78,8 @@ const About = () => {
                     borderRadius: '0px',
                   }}
                   onClick={() => handleChange(2)}
-                  variant={value === 2 ? `contained` : `text`}
-                  color={value === 2 ? `secondary` : `default`}
+                  variant={value === 2 ? 'contained' : 'text'}
+                  color={value === 2 ? 'secondary' : 'default'}
                 >
                   Tool Design Process
                 </Button>
@@ -90,8 +91,8 @@ const About = () => {
                     borderRadius: '0px',
                   }}
                   onClick={() => handleChange(5)}
-                  variant={value === 5 ? `contained` : `text`}
-                  color={value === 5 ? `secondary` : `default`}
+                  variant={value === 5 ? 'contained' : 'text'}
+                  color={value === 5 ? 'secondary' : 'default'}
                 >
                   Many Thanks to Our Funders
                 </Button>
@@ -103,8 +104,8 @@ const About = () => {
                     borderRadius: '0px',
                   }}
                   onClick={() => handleChange(6)}
-                  variant={value === 6 ? `contained` : `text`}
-                  color={value === 6 ? `secondary` : `default`}
+                  variant={value === 6 ? 'contained' : 'text'}
+                  color={value === 6 ? 'secondary' : 'default'}
                 >
                   Contact Us
                 </Button>
@@ -116,8 +117,8 @@ const About = () => {
                     borderRadius: '0px',
                   }}
                   onClick={() => handleChange(7)}
-                  variant={value === 7 ? `contained` : `text`}
-                  color={value === 7 ? `secondary` : `default`}
+                  variant={value === 7 ? 'contained' : 'text'}
+                  color={value === 7 ? 'secondary' : 'default'}
                 >
                   About the Experts
                 </Button>
@@ -153,10 +154,12 @@ const RenderContent = ({ value = 0 }) => {
           <div className="col-12">
             <Typography variant="body1" align="left">
               A diverse group of stakeholders including farmers, researchers, and personnel from
-              agribusinesses and NGOs united in 2016 to form the{' '}
+              agribusinesses and NGOs united in 2016 to form the
+              {' '}
               <a href="http://northeastcovercrops.com" target="_blank" rel="noopener noreferrer">
                 Northeast Cover Crops Council
-              </a>{' '}
+              </a>
+              {' '}
               (NECCC). Our mission is to support and promote the adoption of cover crops and foster
               the exchange of information, inspiration, and outcome-based research. Decision support
               tools are an excellent way to integrate the complexity of climate, soil, and
@@ -191,7 +194,8 @@ const RenderContent = ({ value = 0 }) => {
               analysis of the data across zones identified areas of inconsistencies which were then
               addressed in a deliberative intra-regional discussion. This process, in conjunction
               with feedback from users on the website, ensures the quality and improvement of the
-              data that powers the NECCC Species Selector. You can learn more about the{' '}
+              data that powers the NECCC Species Selector. You can learn more about the
+              {' '}
               <a
                 href="https://aginformaticslab.org/cover-crop-decision-tools/"
                 target="_blank"
@@ -199,33 +203,43 @@ const RenderContent = ({ value = 0 }) => {
               >
                 cover crop data verification process here
               </a>
-              . <b>This work was made possible by the USDA</b>
+              .
+              {' '}
+              <b>This work was made possible by the USDA</b>
             </Typography>
             <Typography variant="body1" align="left" className="pb-4">
-              <b>Data Sources:</b> The cover crop data were adapted from the{' '}
+              <b>Data Sources:</b>
+              {' '}
+              The cover crop data were adapted from the
+              {' '}
               <a href="http://mccc.msu.edu" target="_blank" rel="noopener noreferrer">
                 Midwest Cover Crops Council (MCCC) species selector tool
               </a>
               . These initial data have been reviewed, modified, and greatly expanded upon by cover
-              crop experts in the Northeast in each{' '}
+              crop experts in the Northeast in each
+              {' '}
               <a
                 href="https://planthardiness.ars.usda.gov/PHZMWeb/"
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 USDA plant hardiness zone
-              </a>{' '}
+              </a>
+              {' '}
               to best match the cropping system types, goals, and constraints found in our region.
-              Additional data sources adapted for this tool include the{' '}
+              Additional data sources adapted for this tool include the
+              {' '}
               <a
                 href="https://plants.sc.egov.usda.gov/java/"
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 USDA PLANTS database
-              </a>{' '}
+              </a>
+              {' '}
               and a seeding rate calculator developed by USDA NRCS. These data are supplemented by
-              soils data available via{' '}
+              soils data available via
+              {' '}
               <a
                 href="https://sdmdataaccess.nrcs.usda.gov/"
                 target="_blank"
@@ -234,29 +248,35 @@ const RenderContent = ({ value = 0 }) => {
                 USDA NRCS Soil Data Access
               </a>
               , and weather data made available through an API, constructed by the Precision
-              Sustainable Agriculture team, serving{' '}
+              Sustainable Agriculture team, serving
+              {' '}
               <a
                 href="https://www.nssl.noaa.gov/projects/mrms/"
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 NSSL MRMS
-              </a>{' '}
-              and{' '}
+              </a>
+              {' '}
+              and
+              {' '}
               <a href="https://ldas.gsfc.nasa.gov/nldas/" target="_blank" rel="noopener noreferrer">
                 NASA NLDAS-2
-              </a>{' '}
+              </a>
+              {' '}
               weather data.
             </Typography>
             <Typography variant="body1" align="left" className="pb-4">
-              <b>Data Availability:</b> We are in the process of making our data publicly available
+              <b>Data Availability:</b>
+              {' '}
+              We are in the process of making our data publicly available
               via a few mechanisms once we have completed beta-testing and finalized data quality
               checks. In addition to accessing this data via the NECCC Species Selector Tool, users
               will be able to download the raw data (spreadsheets) and Species Information Sheets
               (PDFs).
             </Typography>
             <Typography variant="body1" align="left" className="pb-4">
-              <MITLicenseText styles={false} aboutPage={true} />
+              <MITLicenseText styles={false} aboutPage />
             </Typography>
           </div>
         </>
@@ -272,23 +292,31 @@ const RenderContent = ({ value = 0 }) => {
           </div>
           <div className="col-12">
             <Typography variant="body1" className="pb-4" align="left">
-              The NECCC tool is a result of a design collaboration between the{' '}
+              The NECCC tool is a result of a design collaboration between the
+              {' '}
               <a href="http://www.aginformaticslab.org" target="_blank" rel="noopener noreferrer">
                 Agricultural Informatics Lab
               </a>
-              , the{' '}
+              , the
+              {' '}
               <a
                 href="http://www.precisionsustainableag.org"
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 Precision Sustainable Agriculture
-              </a>{' '}
-              team, the NECCC <b>and the USDA</b>. We took a user-centered approach to the design of
-              software. In November 2019, we conducted a{' '}
+              </a>
+              {' '}
+              team, the NECCC
+              {' '}
+              <b>and the USDA</b>
+              . We took a user-centered approach to the design of
+              software. In November 2019, we conducted a
+              {' '}
               <a href="https://aginformaticslab.org/cover-crop-decision-tools/">
                 distributed design sprint to develop a prototype of the user interface
-              </a>{' '}
+              </a>
+              {' '}
               (shown below). This interface was initially tested with 24 potential users at the
               NECCC annual conference. The tool was subsequently refined and tested with a second
               round of 20 potential users at the Pennsylvania Association for Sustainable
@@ -320,7 +348,9 @@ const RenderContent = ({ value = 0 }) => {
               </div>
             </div>
             <Typography variant="body1" className="pb-4" align="left">
-              <b>Reusability:</b> We designed the user interface components of the Cover Crop
+              <b>Reusability:</b>
+              {' '}
+              We designed the user interface components of the Cover Crop
               Species Selector Tool to be reusable. Each user interface component is composed of
               smaller components that can be duplicated and used in a variety and multiple contexts.
               For example the location component is used in two parts of the species selector: the
@@ -334,9 +364,12 @@ const RenderContent = ({ value = 0 }) => {
               team.
             </Typography>
             <Typography variant="body1" className="pb-4" align="left">
-              <b>Open Source:</b> Once we have completed beta-testing, any developer creating open
+              <b>Open Source:</b>
+              {' '}
+              Once we have completed beta-testing, any developer creating open
               source agricultural technologies requiring functionality that is currently featured in
-              the NECCC Species Selector will be able to download our code from GitHub,{' '}
+              the NECCC Species Selector will be able to download our code from GitHub,
+              {' '}
               <a
                 href="https://aginformaticslab.org/cover-crop-decision-tools/"
                 target="_blank"
@@ -351,30 +384,28 @@ const RenderContent = ({ value = 0 }) => {
       );
     case 3:
       return (
-        <Fragment>
-          <div className="col-12">
-            <Typography variant="h5" align="left" gutterBottom>
-              Many Thanks to Our Funders
-            </Typography>
-            <Typography variant="body1" align="left" className="pb-4">
-              This material is based upon work supported by the National Institute of Food and
-              Agriculture, U.S. Department of Agriculture, through the Northeast Sustainable
-              Agriculture Research and Education program under subaward number ENE 16-144. This work
-              has also been supported by a USDA NIFA postdoctoral fellowship (grant #
-              2016-67012-24711), NIFA SAS CAP grant (project # NC09873), USDA ARS and NRCS, and
-              Purdue University.
-            </Typography>
-            <Typography variant="h6" align="left" gutterBottom>
-              Contact Us
-            </Typography>
-            <Typography variant="body1" align="left" className="pb-4">
-              For information about the NECCC, the NECCC species selection tool use, and the crop
-              data itself, contact: Victoria Ackroyd, NECCC Program Manager, northeastcovercrops AT
-              gmail DOT. com. For information about decision support tool design and development,
-              and the species selector tool itself, contact: aginformaticslab AT gmail DOT com.
-            </Typography>
-          </div>
-        </Fragment>
+        <div className="col-12">
+          <Typography variant="h5" align="left" gutterBottom>
+            Many Thanks to Our Funders
+          </Typography>
+          <Typography variant="body1" align="left" className="pb-4">
+            This material is based upon work supported by the National Institute of Food and
+            Agriculture, U.S. Department of Agriculture, through the Northeast Sustainable
+            Agriculture Research and Education program under subaward number ENE 16-144. This work
+            has also been supported by a USDA NIFA postdoctoral fellowship (grant #
+            2016-67012-24711), NIFA SAS CAP grant (project # NC09873), USDA ARS and NRCS, and
+            Purdue University.
+          </Typography>
+          <Typography variant="h6" align="left" gutterBottom>
+            Contact Us
+          </Typography>
+          <Typography variant="body1" align="left" className="pb-4">
+            For information about the NECCC, the NECCC species selection tool use, and the crop
+            data itself, contact: Victoria Ackroyd, NECCC Program Manager, northeastcovercrops AT
+            gmail DOT. com. For information about decision support tool design and development,
+            and the species selector tool itself, contact: aginformaticslab AT gmail DOT com.
+          </Typography>
+        </div>
       );
 
     case 5:
@@ -419,7 +450,7 @@ const RenderContent = ({ value = 0 }) => {
 
     case 7:
       return (
-        <Fragment>
+        <>
           <div className="col-12">
             <Typography variant="h4" gutterBottom>
               About The Experts
@@ -548,7 +579,8 @@ const RenderContent = ({ value = 0 }) => {
           <div className="col-12">
             <Typography variant="body1" align="left" gutterBottom component="div">
               <p>
-                <strong>Victoria Ackroyd </strong>is Program Manager for the Northeast Cover Crops
+                <strong>Victoria Ackroyd </strong>
+                is Program Manager for the Northeast Cover Crops
                 Council, Assistant Research Scientist in the Dept. of Plant Science &amp; Landscape
                 Architecture at the University of Maryland, and a Visiting Scientist in the USDA ARS
                 Sustainable Agricultural Systems Lab (Beltsville, MD). She previously assisted with
@@ -557,113 +589,138 @@ const RenderContent = ({ value = 0 }) => {
                 for the NECCC Species Selector tool.
               </p>
               <p>
-                <strong>Rohit Bandooni </strong>is a programmer at North Carolina State University.
+                <strong>Rohit Bandooni </strong>
+                is a programmer at North Carolina State University.
                 His background is Full Stack Development with a focus on Front End Web Development
                 using modern JavaScript languages. He implemented the NECCC Species Selector
                 tool.&nbsp;
               </p>
               <p>
-                <strong>Christian Bench</strong> is a farmer and Agriculture Specialist with NJ
+                <strong>Christian Bench</strong>
+                {' '}
+                is a farmer and Agriculture Specialist with NJ
                 RC&amp;D and NRCS. He provides leadership in the NJ soil health initiative, cover
                 crop and no-till efforts. He notes that &ldquo;Armoring the soil and providing an
                 ecosystem below our feet is of utmost importance as we face challenging growing
                 conditions.&rdquo;
               </p>
               <p>
-                <strong>Gary Bergstrom</strong>, Professor, Plant Pathology and Plant-Microbe
+                <strong>Gary Bergstrom</strong>
+                , Professor, Plant Pathology and Plant-Microbe
                 Biology Section, Cornell University. Gary reviewed and updated data related to cover
                 crops and cash crop disease.
               </p>
               <p>
-                <strong>Thomas Bjorkman </strong>is a Professor of Veg Crop Physiology in the
+                <strong>Thomas Bjorkman </strong>
+                is a Professor of Veg Crop Physiology in the
                 Horticulture Section at Cornell University. He works on cover crops for weed and
                 soil-quality management goals.
               </p>
               <p>
-                <strong>Rebecca Brown</strong>, Associate Professor, Rhode Island State University.
+                <strong>Rebecca Brown</strong>
+                , Associate Professor, Rhode Island State University.
                 Rebecca works on cover crops for peri-urban vegetable systems. She is particularly
                 interested in identifying which cover crops work or do not work in coastal New
                 England, which is cool summer zone 6.
               </p>
               <p>
-                <strong>Michel Cavigelli</strong>, Soil Scientist, USDA ARS Sustainable Agricultural
+                <strong>Michel Cavigelli</strong>
+                , Soil Scientist, USDA ARS Sustainable Agricultural
                 Systems Lab (Beltsville, MD).
               </p>
               <p>
-                <strong>Shawnna Clark</strong>, Manager/Project leader/Plant Materials
+                <strong>Shawnna Clark</strong>
+                , Manager/Project leader/Plant Materials
                 Specialist/Field Tech. She works with other NRCS specialists and field office
                 personnel, and landowners, universities, local, state and other fed agencies on soil
                 health and cover crops and many other important Farm Bill Programs.
               </p>
               <p>
-                <strong>Chad Cochrane</strong>, USDA NRCS Resource Conservationist - Agronomy in New
+                <strong>Chad Cochrane</strong>
+                , USDA NRCS Resource Conservationist - Agronomy in New
                 Hampshire.
               </p>
               <p>
-                <strong>Aaron Cooper </strong>is an organic grain farmer on the lower Eastern Shore
+                <strong>Aaron Cooper </strong>
+                is an organic grain farmer on the lower Eastern Shore
                 of Maryland. He feels that cover crop planting is essential to his farm to support
                 nutrient cycling and to promote soil health.
               </p>
               <p>
-                <strong>Heather Darby</strong>, Extension Professor: Agronomy Specialist, University
+                <strong>Heather Darby</strong>
+                , Extension Professor: Agronomy Specialist, University
                 of Vermont Extension.
               </p>
               <p>
-                <strong>Sjoerd Duiker</strong>, Professor of Soil Management and Applied Soil
+                <strong>Sjoerd Duiker</strong>
+                , Professor of Soil Management and Applied Soil
                 Physics, Penn State University.
               </p>
               <p>
-                <strong>Kaitlin Farbotnik</strong>, State Conservation Agronomist and State Grazing
+                <strong>Kaitlin Farbotnik</strong>
+                , State Conservation Agronomist and State Grazing
                 Specialist for New Jersey NRCS. Much of her work is spent training the next
                 generation of conservationists and supporting the Soil Conservationists in New
                 Jersey by providing technical information to help them make better conservation
                 decisions while developing conservation plans.&nbsp;
               </p>
               <p>
-                <strong>Eric Gallandt</strong>, Professor of Weed Ecology, University of Maine. Eric
+                <strong>Eric Gallandt</strong>
+                , Professor of Weed Ecology, University of Maine. Eric
                 assisted in reviewing cover crop/weeds data.
               </p>
               <p>
-                <strong>Kelly Gill</strong>, Senior Pollinator Conservation Specialist, Xerces
+                <strong>Kelly Gill</strong>
+                , Senior Pollinator Conservation Specialist, Xerces
                 Society. Kelly reviewed and provided data related to pollinators for the tool.
               </p>
               <p>
-                <strong>Mark Goodson</strong>, USDA NRCS Pennsylvania State Agronomist.
+                <strong>Mark Goodson</strong>
+                , USDA NRCS Pennsylvania State Agronomist.
               </p>
               <p>
-                <strong>Dean Hively</strong>, Research Soil Scientist, USDA-ARS Hydrology and Remote
+                <strong>Dean Hively</strong>
+                , Research Soil Scientist, USDA-ARS Hydrology and Remote
                 Sensing Laboratory.
               </p>
               <p>
-                <strong>Cerruti Hooks</strong>, Associate Professor, University of Maryland. Cerruti
+                <strong>Cerruti Hooks</strong>
+                , Associate Professor, University of Maryland. Cerruti
                 reviewed and provided data related to insects for the tool.&nbsp;
               </p>
               <p>
-                <strong>Jim Hyde</strong>, State Agronomist in Connecticut, specializing in soil
+                <strong>Jim Hyde</strong>
+                , State Agronomist in Connecticut, specializing in soil
                 nutrient management and ag waste systems.&nbsp;
               </p>
               <p>
-                <strong>Zach Larson</strong>, Field and Forage Crops Educator, Penn State University
+                <strong>Zach Larson</strong>
+                , Field and Forage Crops Educator, Penn State University
                 Extension.
               </p>
               <p>
-                <strong>Jason Lilley</strong>, Sustainable Agriculture Professional, University of
+                <strong>Jason Lilley</strong>
+                , Sustainable Agriculture Professional, University of
                 Maine.
               </p>
               <p>
-                <strong>Rebecca Long</strong>, Agriculture and Food Systems Professional, University
+                <strong>Rebecca Long</strong>
+                , Agriculture and Food Systems Professional, University
                 of Maine Cooperative Extension Oxford County
               </p>
               <p>
-                <strong>Ellen Mallory</strong>, Sustainable Agriculture Extension Specialist and
+                <strong>Ellen Mallory</strong>
+                , Sustainable Agriculture Extension Specialist and
                 Professor, University of Maine.
               </p>
               <p>
-                <strong>Hillary Mehl</strong>, now at the University of Arizona, reviewed and
+                <strong>Hillary Mehl</strong>
+                , now at the University of Arizona, reviewed and
                 provided data related to nematodes for the tool.&nbsp;
               </p>
               <p>
-                <strong>Steven Mirsky </strong>is a Research Ecologist in the USDA ARS Sustainable
+                <strong>Steven Mirsky </strong>
+                is a Research Ecologist in the USDA ARS Sustainable
                 Agricultural Systems Lab (Beltsville, MD). His research program focuses on removing
                 barriers to cover crop adoption and increasing the precision of their use with
                 emphasis on management, breeding, and subsequent agro-ecosystem services. As chair
@@ -671,7 +728,8 @@ const RenderContent = ({ value = 0 }) => {
                 development of the NECCC Species Selector Tool and related tools.
               </p>
               <p>
-                <strong>Juliet Norton </strong>is an Informatics Post-doctoral Researcher in the
+                <strong>Juliet Norton </strong>
+                is an Informatics Post-doctoral Researcher in the
                 Agricultural Informatics Lab at Purdue University. Her research explores and
                 addresses information-based barriers to sustainable agricultural practices. She was
                 responsible for the implementation of the data verification process and underlying
@@ -680,13 +738,16 @@ const RenderContent = ({ value = 0 }) => {
                 tool.&nbsp;
               </p>
               <p>
-                <strong>Christine O&rsquo;Reilly</strong>, Forage and Grazing Specialist with the
+                <strong>Christine O&rsquo;Reilly</strong>
+                , Forage and Grazing Specialist with the
                 Ontario Ministry of Agriculture, Food, and Rural Affairs. Christine reviewed and
                 provided data related to cover crops as feed/forage for the tool.
               </p>
               <p>
-                <strong>Ankita Raturi </strong>is an Assistant Professor in Agricultural Engineering
-                at Purdue University. She runs the{' '}
+                <strong>Ankita Raturi </strong>
+                is an Assistant Professor in Agricultural Engineering
+                at Purdue University. She runs the
+                {' '}
                 <a href="http://sudokita.com" target="_blank" rel="noopener noreferrer">
                   Agricultural Informatics Lab
                 </a>
@@ -696,37 +757,46 @@ const RenderContent = ({ value = 0 }) => {
                 underlying data verification process and underlying crop information model.
               </p>
               <p>
-                <strong>Scott Raubenstein</strong>, Vice President, Agricultural Services, Perdue
+                <strong>Scott Raubenstein</strong>
+                , Vice President, Agricultural Services, Perdue
                 AgriBusinesses.&nbsp;
               </p>
               <p>
-                <strong>Lindsey Ruhl</strong>, Research Specialist for University of Vermont
+                <strong>Lindsey Ruhl</strong>
+                , Research Specialist for University of Vermont
                 Extension Services.&nbsp;
               </p>
               <p>
-                <strong>Paul Salon </strong>was formerly with USDA-NRCS at the Big Flats Plant
+                <strong>Paul Salon </strong>
+                was formerly with USDA-NRCS at the Big Flats Plant
                 Materials Center as Research Agronomist and Plant Materials Specialist covering
                 Northeast states and with the National Soil Health Division as a Soil Health
                 Specialist covering the Mid-Atlantic region. He was the primary architect of a cover
                 crop mix seeding calculator currently under further development by the NECCC.
               </p>
               <p>
-                <strong>Brandon Smith</strong>, USDA NRCS Northeast Regional Team Leader.
+                <strong>Brandon Smith</strong>
+                , USDA NRCS Northeast Regional Team Leader.
               </p>
               <p>
-                <strong>Mark VanGessel</strong>, Extension Weed Specialist at University of
+                <strong>Mark VanGessel</strong>
+                , Extension Weed Specialist at University of
                 Delaware.
               </p>
               <p>
-                <strong>Anne Verhallen</strong>, Soil Management Specialist in Horticulture at
+                <strong>Anne Verhallen</strong>
+                , Soil Management Specialist in Horticulture at
                 Ridgetown, Ontario Ministry of Agriculture, Food, and Rural Affairs.
               </p>
               <p>
-                <strong>John Wallace</strong>, Assistant Professor of Weed Science, Penn State
+                <strong>John Wallace</strong>
+                , Assistant Professor of Weed Science, Penn State
                 University.&nbsp;
               </p>
               <p>
-                <strong>Dave Wilson</strong> is an Agronomist, Field and Forage Crops Extension
+                <strong>Dave Wilson</strong>
+                {' '}
+                is an Agronomist, Field and Forage Crops Extension
                 Educator with Penn State Extension in Berks County, PA. Dave has worked as a
                 research agronomist in field crops, cover crops, forages, pasture management,
                 grazing, soil health, farming rotations and organic farming systems. Dave's
@@ -736,7 +806,8 @@ const RenderContent = ({ value = 0 }) => {
                 varieties for use in forage systems and as cover crops.
               </p>
               <p>
-                <strong>Kirsten Workman, </strong>Agronomy Specialist and Certified Crop Adviser for
+                <strong>Kirsten Workman, </strong>
+                Agronomy Specialist and Certified Crop Adviser for
                 University of Vermont Extension. She works directly with farmers on implementing
                 conservation agronomy on their farms, focusing on soil health, nutrient management
                 and water quality. She also engages in on-farm research focused on cover crops,
@@ -744,10 +815,10 @@ const RenderContent = ({ value = 0 }) => {
               </p>
             </Typography>
           </div>
-        </Fragment>
+        </>
       );
     default: {
-      return <Typography variant="body1"></Typography>;
+      return <Typography variant="body1" />;
     }
   }
 };

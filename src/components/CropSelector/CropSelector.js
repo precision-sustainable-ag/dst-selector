@@ -4,17 +4,23 @@
   Styles are created using makeStyles.
 */
 
-import { Button, Fab, useScrollTrigger, Zoom } from '@mui/material';
+import {
+  Button,
+  Fab,
+  useScrollTrigger,
+  Zoom,
+} from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import { ArrowBack, ArrowForward, KeyboardArrowUp } from '@mui/icons-material';
 import React, { useContext, useEffect, useState } from 'react';
+import ReactGA from 'react-ga';
 import { Context } from '../../store/Store';
 import '../../styles/cropSelector.scss';
 import MyCoverCropList from '../MyCoverCropList/MyCoverCropList';
-import CropCalendarViewComponent from './CropCalendarView';
+import CropCalendarViewComponent from './CropCalendarView/CropCalendarView';
 import CropSidebarComponent from './CropSidebar';
 import CropTableComponent from './CropTable';
-import ReactGA from 'react-ga';
+
 const _ = require('lodash');
 
 const useStyles = makeStyles((theme) => ({
@@ -25,8 +31,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ScrollTop = (props) => {
-  const { children } = props;
+const ScrollTop = ({ children }) => {
   const classes = useStyles();
   const trigger = useScrollTrigger({
     disableHysteresis: true,
@@ -49,14 +54,14 @@ const ScrollTop = (props) => {
 
 const CropSelector = (props) => {
   const { state, dispatch } = useContext(Context);
-  let [showGrowthWindow, setShowGrowthWindow] = useState(true);
+  const [showGrowthWindow, setShowGrowthWindow] = useState(true);
   const [sortPreference, setSortPreference] = useState('desc');
   const { selectedGoals } = state;
 
-  const activeCropData = state.activeCropData;
+  const { activeCropData } = state;
 
   // toggles list view and calendar view
-  let [isListView, setIsListView] = useState(true);
+  const [isListView, setIsListView] = useState(true);
 
   const [comparisonView, setComparisonView] = useState(false);
   // reset back to false
@@ -70,47 +75,12 @@ const CropSelector = (props) => {
     }
   }, [state.consent]);
 
-  const sortEnvTolCropData = (objDataArr) => {
-    if (cropData.length !== 0) {
-      let crop_data = cropData;
-
-      let objData = objDataArr.map((obj) => {
-        return `fields.${obj}`;
-      });
-
-      if (objData.length > 0) {
-        // some values are truthy
-        // TODO: replace _ lowdash with array function
-        let updatedCropData = _.sortBy(crop_data, objData);
-        setCropData(updatedCropData);
-      } else {
-        // reset! none are true
-        const activeObjKeys = [];
-        let { selectedGoals } = state;
-        selectedGoals.forEach((val, index) => {
-          //  Crop Data is inside cropData.fields
-          activeObjKeys[index] = `fields.${val}`;
-        });
-        // TODO: replace _ lowdash with array function
-        let updatedCropData = _.orderBy(crop_data, activeObjKeys, ['desc', 'desc', 'desc']);
-
-        setCropData(updatedCropData);
-      }
-    }
-  };
-
-  const [cropDataChanged, setCropDataChanged] = useState(false);
-
-  useEffect(() => {
-    setCropDataChanged((c) => !c);
-  }, [state.cropData]);
-
   const sortCropsBy = (orderBy) => {
     if (state.cropData.length > 0) {
       // const { selectedGoals } = state;
       if (selectedGoals.length > 0) {
-        let activeCropDataCopy = activeCropData.length > 0 ? activeCropData : state.cropData;
-        let activeObjKeys = [];
+        const activeCropDataCopy = activeCropData.length > 0 ? activeCropData : state.cropData;
+        const activeObjKeys = [];
         selectedGoals.forEach((val, index) => {
           //  Crop Data is inside cropData.fields
           activeObjKeys[index] = `fields.${val}`;
@@ -120,7 +90,7 @@ const CropSelector = (props) => {
           case 'asc': {
             if (activeCropDataCopy.length > 0) {
               // TODO: replace _ lowdash with array function
-              let updatedCropData = _.orderBy(activeCropDataCopy, activeObjKeys, [
+              const updatedCropData = _.orderBy(activeCropDataCopy, activeObjKeys, [
                 'asc',
                 'asc',
                 'asc',
@@ -138,7 +108,7 @@ const CropSelector = (props) => {
           case 'desc': {
             if (activeCropDataCopy.length > 0) {
               // TODO: replace _ lowdash with array function
-              let updatedCropData = _.orderBy(activeCropDataCopy, activeObjKeys, [
+              const updatedCropData = _.orderBy(activeCropDataCopy, activeObjKeys, [
                 'desc',
                 'desc',
                 'desc',
@@ -167,7 +137,7 @@ const CropSelector = (props) => {
         // sort crop data by goal priority
 
         if (selectedGoals.length > 0) {
-          let activeCropDataShadow = state.cropData;
+          const activeCropDataShadow = state.cropData;
           selectedGoals
             .slice()
             .reverse()
@@ -176,9 +146,8 @@ const CropSelector = (props) => {
                 if (a.fields[goal] && b.fields[goal]) {
                   if (a.fields[goal] > b.fields[goal]) {
                     return -1;
-                  } else {
-                    return 1;
                   }
+                  return 1;
                 }
                 return 0;
               });
@@ -250,7 +219,7 @@ const CropSelector = (props) => {
     <div className="container-fluid mt-2">
       <div className="row cropSelectorRow mt-3">
         {/* {Shows Collapsible icon for screen width < 1680px } */}
-        {size.width < 1680 ? (
+        {size.width < 1680 && (
           <div className="col-12 mb-2">
             <Button
               startIcon={!showSidebar ? <ArrowForward /> : <ArrowBack />}
@@ -261,12 +230,10 @@ const CropSelector = (props) => {
               {!showSidebar ? 'Show Sidebar' : 'Hide Sidebar'}
             </Button>
           </div>
-        ) : (
-          ''
         )}
 
         <div
-          className={`col-md-2 col-sm-12`}
+          className="col-md-2 col-sm-12"
           style={
             showSidebar
               ? { display: 'block', visibility: 'visible' }
@@ -274,20 +241,19 @@ const CropSelector = (props) => {
           }
         >
           <CropSidebarComponent
-            sortEnvTolCropData={sortEnvTolCropData}
             setGrowthWindow={setShowGrowthWindow}
             isListView={isListView}
             cropData={cropData}
             activeCropData={activeCropData.length > 0 ? activeCropData : cropData}
-            cropDataChanged={cropDataChanged}
             comparisonView={comparisonView}
             toggleComparisonView={toggleComparisonView}
             toggleListView={toggleListView}
-            from={'table'}
+            from="table"
           />
         </div>
 
-        <div className={showSidebar ? `col-md-10 col-sm-12` : `col-md-12 col-sm-12`}>
+        <div className={showSidebar ? 'col-md-10 col-sm-12' : 'col-md-12 col-sm-12'}>
+          {/* eslint-disable-next-line no-nested-ternary */}
           {state.speciesSelectorActivationFlag ? (
             isListView ? (
               <CropTableComponent

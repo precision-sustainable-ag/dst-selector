@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 /*
   This file contains the CropSidebar and its styles
   The CropSidebar is the sidebar which contains the filtering and calendar view components
@@ -14,10 +15,14 @@ import {
   Typography,
 } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
-import { CalendarToday, Compare, ExpandLess, ExpandMore } from '@mui/icons-material';
+import {
+  CalendarToday, Compare, ExpandLess, ExpandMore,
+} from '@mui/icons-material';
 import ListIcon from '@mui/icons-material/List';
 import moment from 'moment';
-import React, { Fragment, useContext, useEffect, useState } from 'react';
+import React, {
+  useContext, useEffect, useState,
+} from 'react';
 import { CustomStyles } from '../../shared/constants';
 import { Context } from '../../store/Store';
 import '../../styles/cropSidebar.scss';
@@ -29,12 +34,11 @@ import SidebarFilter from './CropSidebar/Components/SidebarFilter';
 import CoverCropGoals from './CropSidebar/Components/CoverCropGoals';
 import PreviousCashCrop from './CropSidebar/Components/PreviousCashCrop';
 import PlantHardinessZone from './CropSidebar/Components/PlantHardinessZone';
-// import SoilConditions from "./Filters/SoilConditions";  // TODO May be obsolete???  rh
 
 const useStyles = makeStyles((theme) => ({
   listItemRoot: {
     borderTop: '0px',
-    border: '1px solid ' + CustomStyles().primaryProgressBtnBorderColor,
+    border: `1px solid ${CustomStyles().primaryProgressBtnBorderColor}`,
   },
   formControlLabel: {},
   listSubHeaderRoot: {
@@ -51,17 +55,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const CropSidebarComponent = (props) => {
-  let {
-    comparisonView,
-    isListView,
-    from,
-    setGrowthWindow,
-    toggleComparisonView,
-    toggleListView,
-    style,
-  } = props;
-
+const CropSidebarComponent = ({
+  comparisonView,
+  isListView,
+  from,
+  setGrowthWindow,
+  toggleComparisonView,
+  toggleListView,
+  style,
+  props,
+}) => {
   const { state, dispatch } = useContext(Context);
   const [loading, setLoading] = useState(true);
   const [sidebarFilters, setSidebarFilters] = useState([]);
@@ -74,7 +77,9 @@ const CropSidebarComponent = (props) => {
   // make an exhaustive array of all params in array e.g. cover crop group and use includes in linq
   const [sidebarFilterOptions, setSidebarFilterOptions] = useState(() => {
     const sidebarStarter = {};
-    sidebarFiltersData.forEach((row) => (sidebarStarter[row.name] = []));
+    sidebarFiltersData.forEach((row) => {
+      sidebarStarter[row.name] = [];
+    });
     return sidebarStarter;
   });
 
@@ -83,15 +88,12 @@ const CropSidebarComponent = (props) => {
   const sfilters = state[section];
 
   // // TODO: When is showFilters false?
-  //NOTE: verify below when show filter is false.
+  // NOTE: verify below when show filter is false.
   useEffect(() => {
-    const value =
-      window.location.pathname === '/' &&
-      from === 'table' &&
-      !state.speciesSelectorActivationFlag &&
-      !comparisonView
-        ? false
-        : true;
+    const value = !(window.location.pathname === '/'
+      && from === 'table'
+      && !state.speciesSelectorActivationFlag
+      && !comparisonView);
     setShowFilters(value);
   }, [state.speciesSelectorActivationFlag, from, comparisonView]);
 
@@ -122,11 +124,11 @@ const CropSidebarComponent = (props) => {
       }
     });
 
-    let crop_data = state.cropData.filter((crop) => crop.fields['Zone Decision'] === 'Include');
+    let cropData = state.cropData.filter((crop) => crop.fields['Zone Decision'] === 'Include');
 
-    let search = sfilters.cropSearch.toLowerCase().match(/\w+/g);
+    const search = sfilters.cropSearch.toLowerCase().match(/\w+/g);
 
-    crop_data = state.cropData.filter((crop) => {
+    cropData = state.cropData.filter((crop) => {
       const match = (parm) => {
         const m = crop.fields[parm].toLowerCase().match(/\w+/g);
 
@@ -139,12 +141,11 @@ const CropSidebarComponent = (props) => {
     const nonZeroKeys2 = Object.keys(sfo).map((key) => {
       if (sfo[key].length !== 0) {
         return { [key]: sfo[key] };
-      } else {
-        return '';
       }
+      return '';
     });
 
-    let growthArray = [];
+    const growthArray = [];
 
     if (sfilters['Active Growth Period: Fall']) {
       growthArray.push('Sep', 'Oct', 'Nov');
@@ -168,7 +169,7 @@ const CropSidebarComponent = (props) => {
     ];
     const booleanKeys = ['Aerial Seeding', 'Frost Seeding'];
 
-    const filtered = crop_data.filter((crop, n, cd) => {
+    const filtered = cropData.filter((crop, n, cd) => {
       const totalActiveFilters = Object.keys(nonZeroKeys2).length;
       let i = 0;
       nonZeroKeys2.forEach((keyObject) => {
@@ -177,27 +178,24 @@ const CropSidebarComponent = (props) => {
 
         if (areCommonElements(arrayKeys, key)) {
           // Handle array type havlues
-          let intersection = (arrays = [vals, crop.fields[key]]) => {
-            return arrays.reduce((a, b) => a.filter((c) => b.includes(c)));
-          };
+          const intersection = (arrays = [vals, crop.fields[key]]) => arrays.reduce((a, b) => a.filter((c) => b.includes(c)));
 
           if (intersection().length > 0) {
-            i++;
+            i += 1;
           }
         } else if (areCommonElements(booleanKeys, key)) {
           //  Handle boolean types
           if (crop.fields[key]) {
-            i++;
+            i += 1;
           }
         } else if (vals.includes(crop.fields[key])) {
-          i++;
+          i += 1;
         }
       });
 
-      cd[n].inactive = i !== totalActiveFilters;
+      cd[n].inactive = (i !== totalActiveFilters);
 
       return true;
-      // return i === totalActiveFilters;
     });
 
     dispatch({
@@ -229,7 +227,7 @@ const CropSidebarComponent = (props) => {
 
   const generateSidebarObject = async (dataDictionary, dictionary) => {
     sidebarCategoriesData.forEach((category) => {
-      let newCategory = {
+      const newCategory = {
         name: category.name,
         description: category.description,
         type: category.type,
@@ -239,7 +237,7 @@ const CropSidebarComponent = (props) => {
           newCategory.values = category.filters.map((f) => {
             const data = sidebarFiltersData.filter((dictFilter) => dictFilter.__id === f)[0];
 
-            let obj = {
+            const obj = {
               name: data.name,
               alternateName: data.dataDictionaryName,
               symbol: data.symbol,
@@ -271,7 +269,7 @@ const CropSidebarComponent = (props) => {
             newCategory.values = category.filters.map((f) => {
               const data = sidebarFiltersData.filter((dictFilter) => dictFilter.__id === f)[0];
 
-              let obj = {
+              const obj = {
                 name: data.name,
                 alternateName: data.dataDictionaryName,
                 symbol: null,
@@ -288,7 +286,7 @@ const CropSidebarComponent = (props) => {
         case 'chips-rating':
           newCategory.values = category.filters.map((f) => {
             const data = sidebarFiltersData.filter((dictFilter) => dictFilter.__id === f)[0];
-            let obj = {
+            const obj = {
               name: data.name,
               type: data.type,
               maxSize: null,
@@ -377,29 +375,28 @@ const CropSidebarComponent = (props) => {
     }
   }, [state.cashCropData.dateRange]);
 
-  const filters = () =>
-    sidebarFilters.map((filter, index) => {
-      let sectionFilter = `${section}${filter.name}`;
-      return (
-        <SidebarFilter
-          key={index}
-          filter={filter}
-          index={index}
-          sidebarFilterOptions={sidebarFilterOptions}
-          setSidebarFilterOptions={setSidebarFilterOptions}
-          resetAllFilters={resetAllFilters}
-          sectionFilter={sectionFilter}
-          handleToggle={handleToggle}
-        />
-      );
-    }); // filters
+  const filters = () => sidebarFilters.map((filter, index) => {
+    const sectionFilter = `${section}${filter.name}`;
+    return (
+      <SidebarFilter
+        key={index}
+        filter={filter}
+        index={index}
+        sidebarFilterOptions={sidebarFilterOptions}
+        setSidebarFilterOptions={setSidebarFilterOptions}
+        resetAllFilters={resetAllFilters}
+        sectionFilter={sectionFilter}
+        handleToggle={handleToggle}
+      />
+    );
+  }); // filters
 
   const filtersList = () => (
     <List component="div" disablePadding className="cropFilters">
       {filtersSelected && (
         <ListItem>
           <ListItemText
-            primary={
+            primary={(
               <Typography
                 variant="button"
                 className="text-uppercase text-left text-danger font-weight-bold"
@@ -408,7 +405,7 @@ const CropSidebarComponent = (props) => {
               >
                 Clear Filters
               </Typography>
-            }
+            )}
           />
         </ListItem>
       )}
@@ -416,7 +413,7 @@ const CropSidebarComponent = (props) => {
     </List>
   ); // filterList
 
-  let comparisonButton = (
+  const comparisonButton = (
     <Button
       className="dynamicToggleBtn"
       fullWidth
@@ -436,7 +433,7 @@ const CropSidebarComponent = (props) => {
     </Button>
   );
 
-  return from === 'myCoverCropListStatic' ? (
+  return !loading && (from === 'myCoverCropListStatic') ? (
     <div className="row">
       <div className="col-12 mb-3">{comparisonButton}</div>
       {comparisonView && (
@@ -488,7 +485,7 @@ const CropSidebarComponent = (props) => {
             component="nav"
             classes={{ root: classes.listRoot }}
             aria-labelledby="nested-list-subheader"
-            subheader={
+            subheader={(
               <ListSubheader
                 classes={{ root: classes.listSubHeaderRoot }}
                 style={{ marginBottom: '15px' }}
@@ -497,11 +494,11 @@ const CropSidebarComponent = (props) => {
               >
                 FILTER
               </ListSubheader>
-            }
+            )}
             className={classes.root}
           >
             {from === 'table' && (
-              <Fragment>
+              <>
                 {showFilters && state.speciesSelectorActivationFlag && isListView && (
                   <CoverCropSearch sfilters={sfilters} dispatch={dispatch} />
                 )}
@@ -515,16 +512,16 @@ const CropSidebarComponent = (props) => {
                   handleToggle={handleToggle}
                   setDateRange={setDateRange}
                 />
-              </Fragment>
+              </>
             )}
 
             {showFilters && (
-              <Fragment>
+              <>
                 {from === 'explorer' && (
-                  <Fragment>
+                  <>
                     <PlantHardinessZone dispatch={dispatch} sfilters={sfilters} />
                     <CoverCropSearch sfilters={sfilters} dispatch={dispatch} />
-                  </Fragment>
+                  </>
                 )}
                 <ListItem
                   button
@@ -543,7 +540,7 @@ const CropSidebarComponent = (props) => {
                 <Collapse in={state.cropFiltersOpen} timeout="auto">
                   {filtersList()}
                 </Collapse>
-              </Fragment>
+              </>
             )}
           </List>
         </div>

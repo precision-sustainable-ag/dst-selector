@@ -1,4 +1,4 @@
-/* 
+/*
   Top level wrapper for the cover crop list
   Contains the CoverCropList component and the CropSidebar component
 */
@@ -9,7 +9,7 @@ import CropSidebarComponent from '../CropSelector/CropSidebar';
 import Header from '../Header/Header';
 import MyCoverCropList from './MyCoverCropList';
 
-const MyCoverCropListWrapper = (props) => {
+const MyCoverCropListWrapper = () => {
   const [comparisonView, setComparisonView] = useState(false);
   const toggleComparisonView = () => {
     setComparisonView(!comparisonView);
@@ -26,13 +26,13 @@ const MyCoverCropListWrapper = (props) => {
                 <CropSidebarComponent
                   comparisonView={comparisonView}
                   toggleComparisonView={toggleComparisonView}
-                  from={'myCoverCropListStatic'}
+                  from="myCoverCropListStatic"
                 />
               </div>
             </div>
           </div>
           <div className="col-sm-12 col-md-10">
-            <MyCoverCropList from={'myCoverCropListStatic'} comparisonView={comparisonView} />
+            <MyCoverCropList from="myCoverCropListStatic" comparisonView={comparisonView} />
           </div>
         </div>
       </div>

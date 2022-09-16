@@ -1,6 +1,6 @@
 /*
   Contains the climate conditions widget
-  validateAndBroadcastModalData validates that the day is between 1 and 31 
+  validateAndBroadcastModalData validates that the day is between 1 and 31
   styled using makeStyles
 */
 
@@ -18,7 +18,9 @@ import {
   Typography,
 } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
-import { AcUnit, Info, Opacity, WbSunnyOutlined } from '@mui/icons-material';
+import {
+  AcUnit, Info, Opacity, WbSunnyOutlined,
+} from '@mui/icons-material';
 import moment from 'moment';
 import React, { useContext, useEffect, useState } from 'react';
 import { LightButton } from '../../shared/constants';
@@ -95,7 +97,7 @@ const WeatherConditions = (props) => {
     setFirstFrostDayHelper('');
     setLastFrostDayHelper('');
 
-    let broadcastObject = {
+    const broadcastObject = {
       averageFrost: {
         firstFrostDate: {
           month: firstFrostMonth,
@@ -107,10 +109,10 @@ const WeatherConditions = (props) => {
         },
       },
       averagePrecipitation: {
-        thisMonth: averagePrecipitation.thisMonth, //inches
-        annual: averagePrecipitation.annual, //inches
+        thisMonth: averagePrecipitation.thisMonth, // inches
+        annual: averagePrecipitation.annual, // inches
       },
-      frostFreeDays: frostFreeDays,
+      frostFreeDays,
     };
 
     if (firstFrostDay > 31 || firstFrostDay <= 0) {
@@ -162,15 +164,15 @@ const WeatherConditions = (props) => {
   useEffect(() => {
     const checkIfAnythingChanged = () => {
       if (
-        firstFrostMonth === weatherDataShadow.averageFrost.firstFrostDate.month &&
-        parseInt(firstFrostDay) === parseInt(weatherDataShadow.averageFrost.firstFrostDate.day) &&
-        lastFrostMonth === weatherDataShadow.averageFrost.lastFrostDate.month &&
-        lastFrostDay === weatherDataShadow.averageFrost.lastFrostDate.day &&
-        parseFloat(averagePrecipitation.thisMonth) ===
-          parseFloat(weatherDataShadow.averagePrecipitation.thisMonth) &&
-        parseFloat(averagePrecipitation.annual) ===
-          parseFloat(weatherDataShadow.averagePrecipitation.annual) &&
-        parseInt(frostFreeDays) === parseInt(weatherDataShadow.frostFreeDays)
+        firstFrostMonth === weatherDataShadow.averageFrost.firstFrostDate.month
+        && parseInt(firstFrostDay) === parseInt(weatherDataShadow.averageFrost.firstFrostDate.day)
+        && lastFrostMonth === weatherDataShadow.averageFrost.lastFrostDate.month
+        && lastFrostDay === weatherDataShadow.averageFrost.lastFrostDate.day
+        && parseFloat(averagePrecipitation.thisMonth)
+          === parseFloat(weatherDataShadow.averagePrecipitation.thisMonth)
+        && parseFloat(averagePrecipitation.annual)
+          === parseFloat(weatherDataShadow.averagePrecipitation.annual)
+        && parseInt(frostFreeDays) === parseInt(weatherDataShadow.frostFreeDays)
       ) {
         // return false;
         setAnyValuesChanged(false);
@@ -204,41 +206,46 @@ const WeatherConditions = (props) => {
         <Typography
           variant="button"
           className={`font-weight-bold text-uppercase text-left ${
-            anyValuesChanged ? `text-danger` : ``
+            anyValuesChanged ? 'text-danger' : ''
           }`}
           onClick={handleModalOpen}
           style={{ cursor: 'pointer' }}
         >
           &nbsp;Click To Edit
-          {anyValuesChanged ? `, values changed` : ''}
+          {anyValuesChanged ? ', values changed' : ''}
         </Typography>
       </div>
       <div className="mt-3 col-12 row">
         <div className="col-12">
           <Typography variant="body1" className="font-weight-bold text-uppercase text-left">
             <Opacity />
-            &nbsp; Average Precipitation &nbsp;{' '}
+            &nbsp; Average Precipitation &nbsp;
+            {' '}
             <Tooltip
               arrow
               placement="right"
-              title={
+              title={(
                 <div>
                   Five-year average monthly and annual precipitation from the Precision Sustainable
-                  Agriculture Weather API powered by{' '}
+                  Agriculture Weather API powered by
+                  {' '}
                   <a
                     href="https://www.nssl.noaa.gov/projects/mrms/"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
                     NSSL MRMS
-                  </a>{' '}
-                  and{' '}
+                  </a>
+                  {' '}
+                  and
+                  {' '}
                   <a target="_blank" rel="noopener noreferrer" href="/#">
                     NASA NLDAS-2
-                  </a>{' '}
+                  </a>
+                  {' '}
                   weather data.
                 </div>
-              }
+              )}
             >
               <Info fontSize="small" />
             </Tooltip>
@@ -247,13 +254,31 @@ const WeatherConditions = (props) => {
         <div className="col-12">
           <Typography variant="body1" className="text-left">
             <Opacity style={{ color: 'transparent' }} />
-            &nbsp; <span>{currentMonthFull.toUpperCase()}:</span> &nbsp;
-            {state.weatherData.averagePrecipitation.thisMonth} inches
+            &nbsp;
+            {' '}
+            <span>
+              {currentMonthFull.toUpperCase()}
+              :
+            </span>
+            {' '}
+&nbsp;
+            {state.weatherData.averagePrecipitation.thisMonth}
+            {' '}
+            inches
           </Typography>
           <Typography variant="body1" className="text-left">
             <Opacity style={{ color: 'transparent' }} />
-            &nbsp; <span>{'Annual'}:</span> &nbsp;
-            {state.weatherData.averagePrecipitation.annual} inches
+            &nbsp;
+            {' '}
+            <span>
+              Annual
+              :
+            </span>
+            {' '}
+&nbsp;
+            {state.weatherData.averagePrecipitation.annual}
+            {' '}
+            inches
           </Typography>
         </div>
       </div>
@@ -261,7 +286,8 @@ const WeatherConditions = (props) => {
         <div className="col-12">
           <Typography variant="body1" className="font-weight-bold text-uppercase text-left">
             <AcUnit />
-            &nbsp; Average Frost Dates &nbsp;{' '}
+            &nbsp; Average Frost Dates &nbsp;
+            {' '}
             {/* <Tooltip
               dangerouslySetInnerHTML={
                 "Average dates of the first and last frosts for your location, based on frost dates for the last five years from University of Georgia’s Weather App; you may manually change this input."
@@ -270,29 +296,34 @@ const WeatherConditions = (props) => {
             <Tooltip
               arrow
               placement="right"
-              title={
+              title={(
                 <div>
                   Average dates of the first and last frosts for your location, based on frost dates
                   for the last five years from the Precision Sustainable Agriculture Weather API
-                  powered by{' '}
+                  powered by
+                  {' '}
                   <a
                     href="https://www.nssl.noaa.gov/projects/mrms/"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    NSSL MRMS{' '}
-                  </a>{' '}
-                  and{' '}
+                    NSSL MRMS
+                    {' '}
+                  </a>
+                  {' '}
+                  and
+                  {' '}
                   <a
                     href="https://ldas.gsfc.nasa.gov/nldas/"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
                     NASA NLDAS-2
-                  </a>{' '}
+                  </a>
+                  {' '}
                   weather data; you may manually change this input.
                 </div>
-              }
+              )}
             >
               <Info fontSize="small" />
             </Tooltip>
@@ -302,12 +333,26 @@ const WeatherConditions = (props) => {
         <div className="col-12">
           <Typography variant="body1" className="text-left">
             <Opacity style={{ color: 'transparent' }} />
-            &nbsp; <span>{'First Frost Date'}:</span> &nbsp;
+            &nbsp;
+            {' '}
+            <span>
+              First Frost Date
+              :
+            </span>
+            {' '}
+&nbsp;
             {`${state.weatherData.averageFrost.firstFrostDate.month} ${state.weatherData.averageFrost.firstFrostDate.day}`}
           </Typography>
           <Typography variant="body1" className="text-left">
             <Opacity style={{ color: 'transparent' }} />
-            &nbsp; <span>{'Last Frost Date'}:</span> &nbsp;
+            &nbsp;
+            {' '}
+            <span>
+              Last Frost Date
+              :
+            </span>
+            {' '}
+&nbsp;
             {`${state.weatherData.averageFrost.lastFrostDate.month} ${state.weatherData.averageFrost.lastFrostDate.day}`}
           </Typography>
         </div>
@@ -316,25 +361,30 @@ const WeatherConditions = (props) => {
         <div className="col-12">
           <Typography variant="body1" className="font-weight-bold text-uppercase text-left">
             <WbSunnyOutlined />
-            &nbsp; Average Frost Free Days &nbsp;{' '}
+            &nbsp; Average Frost Free Days &nbsp;
+            {' '}
             <Tooltip
               arrow
               placement="right"
-              title={
+              title={(
                 <div>
                   Number of days in your growing season, based on average first and last frost dates
                   for the last five years from the Precision Sustainable Agriculture Weather API
-                  powered by{' '}
+                  powered by
+                  {' '}
                   <a href="https://www.nssl.noaa.gov/projects/mrms/" rel="noopener noreferrer">
                     NSSL MRMS
-                  </a>{' '}
-                  and{' '}
+                  </a>
+                  {' '}
+                  and
+                  {' '}
                   <a href="/#" target="_blank" rel="noopener noreferrer">
                     NASA NLDAS-2
-                  </a>{' '}
+                  </a>
+                  {' '}
                   weather data.
                 </div>
-              }
+              )}
             >
               <Info fontSize="small" />
             </Tooltip>
@@ -344,7 +394,14 @@ const WeatherConditions = (props) => {
         <div className="col-12">
           <Typography variant="body1" className="text-left">
             <Opacity style={{ color: 'transparent' }} />
-            &nbsp; <span>{'Frost Free Days'}:</span> &nbsp;
+            &nbsp;
+            {' '}
+            <span>
+              Frost Free Days
+              :
+            </span>
+            {' '}
+&nbsp;
             {state.weatherData.frostFreeDays}
           </Typography>
         </div>
@@ -398,11 +455,9 @@ const WeatherConditions = (props) => {
                           <Button
                             className="text-danger"
                             size="small"
-                            onClick={() =>
-                              setFirstFrostMonth(
-                                weatherDataShadow.averageFrost.firstFrostDate.month,
-                              )
-                            }
+                            onClick={() => setFirstFrostMonth(
+                              weatherDataShadow.averageFrost.firstFrostDate.month,
+                            )}
                           >
                             Values changed, Reset?
                           </Button>
@@ -418,7 +473,7 @@ const WeatherConditions = (props) => {
                           type="number"
                           max="31"
                           min="1"
-                          multiline={true}
+                          multiline
                           helperText={firstFrostDayHelper}
                           error={firstFrostDayError}
                           maxLength={2}
@@ -435,24 +490,22 @@ const WeatherConditions = (props) => {
                           }}
                           className={classes.textField}
                         />
-                        {parseInt(firstFrostDay) !==
-                        parseInt(weatherDataShadow.averageFrost.firstFrostDate.day) ? (
+                        {parseInt(firstFrostDay)
+                        !== parseInt(weatherDataShadow.averageFrost.firstFrostDate.day) ? (
                           <Button
                             className="text-danger"
                             size="small"
-                            onClick={() =>
-                              setFirstFrostDay(
-                                parseInt(weatherDataShadow.averageFrost.firstFrostDate.day),
-                              )
-                            }
+                            onClick={() => setFirstFrostDay(
+                              parseInt(weatherDataShadow.averageFrost.firstFrostDate.day),
+                            )}
                           >
                             Values changed, Reset?
                           </Button>
-                        ) : (
-                          <Typography variant="body2" style={{ marginLeft: '8px' }}>
-                            5 Year Average
-                          </Typography>
-                        )}
+                          ) : (
+                            <Typography variant="body2" style={{ marginLeft: '8px' }}>
+                              5 Year Average
+                            </Typography>
+                          )}
                       </FormControl>
                     </div>
                   </div>
@@ -482,9 +535,7 @@ const WeatherConditions = (props) => {
                           <Button
                             className="text-danger"
                             size="small"
-                            onClick={() =>
-                              setLastFrostMonth(weatherDataShadow.averageFrost.lastFrostDate.month)
-                            }
+                            onClick={() => setLastFrostMonth(weatherDataShadow.averageFrost.lastFrostDate.month)}
                           >
                             Values changed, Reset?
                           </Button>
@@ -502,7 +553,7 @@ const WeatherConditions = (props) => {
                           min="1"
                           helperText={lastFrostDayHelper}
                           error={lastFrostDayError}
-                          multiline={true}
+                          multiline
                           maxLength={2}
                           value={lastFrostDay}
                           onChange={(event) => {
@@ -516,24 +567,22 @@ const WeatherConditions = (props) => {
                           }}
                           className={classes.textField}
                         />
-                        {parseInt(lastFrostDay) !==
-                        parseInt(weatherDataShadow.averageFrost.lastFrostDate.day) ? (
+                        {parseInt(lastFrostDay)
+                        !== parseInt(weatherDataShadow.averageFrost.lastFrostDate.day) ? (
                           <Button
                             className="text-danger"
                             size="small"
-                            onClick={() =>
-                              setLastFrostDay(
-                                parseInt(weatherDataShadow.averageFrost.lastFrostDate.day),
-                              )
-                            }
+                            onClick={() => setLastFrostDay(
+                              parseInt(weatherDataShadow.averageFrost.lastFrostDate.day),
+                            )}
                           >
                             Values changed, Reset?
                           </Button>
-                        ) : (
-                          <Typography variant="body2" style={{ marginLeft: '8px' }}>
-                            5 Year Average
-                          </Typography>
-                        )}
+                          ) : (
+                            <Typography variant="body2" style={{ marginLeft: '8px' }}>
+                              5 Year Average
+                            </Typography>
+                          )}
                       </FormControl>
                     </div>
                   </div>
@@ -560,33 +609,31 @@ const WeatherConditions = (props) => {
                           }}
                           className={classes.textField}
                         />
-                        {parseFloat(averagePrecipitation.thisMonth) !==
-                        parseFloat(weatherDataShadow.averagePrecipitation.thisMonth) ? (
+                        {parseFloat(averagePrecipitation.thisMonth)
+                        !== parseFloat(weatherDataShadow.averagePrecipitation.thisMonth) ? (
                           <Button
                             className="text-danger"
                             size="small"
-                            onClick={() =>
-                              setAveragePrecipitation({
-                                thisMonth: parseFloat(
-                                  weatherDataShadow.averagePrecipitation.thisMonth,
-                                ),
-                                annual: parseFloat(averagePrecipitation.annual),
-                              })
-                            }
+                            onClick={() => setAveragePrecipitation({
+                              thisMonth: parseFloat(
+                                weatherDataShadow.averagePrecipitation.thisMonth,
+                              ),
+                              annual: parseFloat(averagePrecipitation.annual),
+                            })}
                           >
                             Values changed, Reset?
                           </Button>
-                        ) : (
-                          <Typography variant="body2" style={{ marginLeft: '8px' }}>
-                            5 Year Average
-                          </Typography>
-                        )}
+                          ) : (
+                            <Typography variant="body2" style={{ marginLeft: '8px' }}>
+                              5 Year Average
+                            </Typography>
+                          )}
                       </FormControl>
                     </div>
                     <div className="col-6">
                       <FormControl>
                         <TextField
-                          label={'Annual'}
+                          label="Annual"
                           type="number"
                           inputProps={{ min: '1', max: '100', step: '0.01' }}
                           maxLength={4}
@@ -601,25 +648,23 @@ const WeatherConditions = (props) => {
                           }}
                           className={classes.textField}
                         />
-                        {parseFloat(averagePrecipitation.annual) !==
-                        parseFloat(weatherDataShadow.averagePrecipitation.annual) ? (
+                        {parseFloat(averagePrecipitation.annual)
+                        !== parseFloat(weatherDataShadow.averagePrecipitation.annual) ? (
                           <Button
                             className="text-danger"
                             size="small"
-                            onClick={() =>
-                              setAveragePrecipitation({
-                                thisMonth: parseFloat(averagePrecipitation.thisMonth),
-                                annual: parseFloat(weatherDataShadow.averagePrecipitation.annual),
-                              })
-                            }
+                            onClick={() => setAveragePrecipitation({
+                              thisMonth: parseFloat(averagePrecipitation.thisMonth),
+                              annual: parseFloat(weatherDataShadow.averagePrecipitation.annual),
+                            })}
                           >
                             Values changed, Reset?
                           </Button>
-                        ) : (
-                          <Typography variant="body2" style={{ marginLeft: '8px' }}>
-                            5 Year Average
-                          </Typography>
-                        )}
+                          ) : (
+                            <Typography variant="body2" style={{ marginLeft: '8px' }}>
+                              5 Year Average
+                            </Typography>
+                          )}
                       </FormControl>
                     </div>
                   </div>
@@ -632,10 +677,10 @@ const WeatherConditions = (props) => {
                     <div className="col-6">
                       <FormControl>
                         <TextField
-                          label={'Frost Free Days'}
+                          label="Frost Free Days"
                           type="number"
                           step="0.01"
-                          multiline={true}
+                          multiline
                           maxLength={4}
                           value={frostFreeDays}
                           onChange={(event) => {
@@ -653,9 +698,7 @@ const WeatherConditions = (props) => {
                           <Button
                             className="text-danger"
                             size="small"
-                            onClick={() =>
-                              setFrostFreeDays(parseInt(weatherDataShadow.frostFreeDays))
-                            }
+                            onClick={() => setFrostFreeDays(parseInt(weatherDataShadow.frostFreeDays))}
                           >
                             Values changed, Reset?
                           </Button>
@@ -666,7 +709,7 @@ const WeatherConditions = (props) => {
                         )}
                       </FormControl>
                     </div>
-                    <div className="col-6"></div>
+                    <div className="col-6" />
                   </div>
                   <div className="row mt-4">
                     <div className="col-6">

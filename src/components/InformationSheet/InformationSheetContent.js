@@ -1,5 +1,5 @@
 /*
-  Contains the top level information sheet popup 
+  Contains the top level information sheet popup
   BasicCrop contains the default crop
   getMonthDayString gets the start and end dates used in the info sheet
   RenderExtendedComments returns the extended notes for a crop if they exist
@@ -13,7 +13,9 @@ import MuiAccordionSummary from '@mui/material/AccordionSummary';
 import withStyles from '@mui/styles/withStyles';
 import { ExpandMore, FiberManualRecord } from '@mui/icons-material';
 import moment from 'moment-timezone';
-import React, { Fragment, useContext, useEffect, useState } from 'react';
+import React, {
+  Fragment, useContext, useEffect, useState,
+} from 'react';
 import {
   allMonths,
   getActiveCropMonths,
@@ -24,7 +26,7 @@ import { Context } from '../../store/Store';
 import CropSelectorCalendarView from '../CropSelector/CropSelectorCalendarView';
 import PhotoComponent from './PhotoComponent';
 import SoilDrainageTimeline from './SoilDrainageTimeline';
-import sources from './sources.json';
+import sources from '../../shared/json/sources/sources.json';
 import TooltipMaker from './TooltipMaker';
 
 const Accordion = withStyles({
@@ -76,22 +78,21 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const InformationSheetContent = (props) => {
-  const InfoGoals = ({ attribute, alternate }) =>
-    crop[attribute] ? (
-      <div className="col-6 mb-2 row">
-        <span className="col">
-          <TooltipMaker variable={attribute} zone={crop['Zone']}>
-            <Typography variant="body1">{attribute}</Typography>
-          </TooltipMaker>
-        </span>
-        <span>{getRating(crop[attribute] || crop[alternate])}</span>
-      </div>
-    ) : null; // InfoGoals
+  const InfoGoals = ({ attribute, alternate }) => (crop[attribute] ? (
+    <div className="col-6 mb-2 row">
+      <span className="col">
+        <TooltipMaker variable={attribute} zone={crop.Zone}>
+          <Typography variant="body1">{attribute}</Typography>
+        </TooltipMaker>
+      </span>
+      <span>{getRating(crop[attribute] || crop[alternate])}</span>
+    </div>
+  ) : null); // InfoGoals
 
   const InfoWeeds = ({ attribute }) => (
     <>
       <div className="col-9 mb-2">
-        <TooltipMaker variable={attribute} zone={crop['Zone']}>
+        <TooltipMaker variable={attribute} zone={crop.Zone}>
           <Typography variant="body1">{attribute}</Typography>
         </TooltipMaker>
       </div>
@@ -106,7 +107,7 @@ const InformationSheetContent = (props) => {
   }) => (
     <>
       <div className="col-8 mb-2">
-        <TooltipMaker variable={variable} zone={crop['Zone']}>
+        <TooltipMaker variable={variable} zone={crop.Zone}>
           <Typography variant="body1">{text}</Typography>
         </TooltipMaker>
       </div>
@@ -116,15 +117,15 @@ const InformationSheetContent = (props) => {
 
   const { state } = useContext(Context);
   const section = window.location.href.includes('selector') ? 'selector' : 'explorer';
-  const zone = state[section].zone;
-  const crop = props.crop;
+  const { zone } = state[section];
+  const { crop } = props;
   const classes = useStyles();
   const [currentSources, setCurrentSources] = useState([{}]);
 
   const [pdf, setPDF] = useState(false);
 
   useEffect(() => {
-    document.title = crop['Cover Crop Name'] + ' Zone ' + zone;
+    document.title = `${crop['Cover Crop Name']} Zone ${zone}`;
     fetch(`/pdf/${document.title}.pdf`)
       .then((response) => response.text())
       .then((data) => {
@@ -136,7 +137,7 @@ const InformationSheetContent = (props) => {
     const regex = /(?!\B"[^"]*),(?![^"]*"\B)/g;
     const removeDoubleQuotes = /^"(.+(?="$))"$/;
     const relevantZones = sources.filter((source, index) => {
-      let zones = source.Zone.split(',').map((item) => item.trim());
+      const zones = source.Zone.split(',').map((item) => item.trim());
       const coverCrops = source['Cover Crops']
         .split(regex)
         .map((item) => item.replace(removeDoubleQuotes, '$1'))
@@ -157,9 +158,7 @@ const InformationSheetContent = (props) => {
   return Object.keys(crop).length > 0 ? (
     <>
       {pdf && (
-        <>
-          <iframe id="PDF" title="pdf" src={`/pdf/${document.title}.pdf`} />
-        </>
+        <iframe id="PDF" title="pdf" src={`/pdf/${document.title}.pdf`} />
       )}
       <div className="row coverCropDescriptionWrapper avoidPage">
         <div className="col-12 p-0">
@@ -199,7 +198,7 @@ const InformationSheetContent = (props) => {
               <div className="row col-12 text-right">
                 <div className="col-6 mb-2 row">
                   <span className="col">
-                    <TooltipMaker variable="Growing Window" zone={crop['Zone']}>
+                    <TooltipMaker variable="Growing Window" zone={crop.Zone}>
                       <Typography variant="body1">Growing Window</Typography>
                     </TooltipMaker>
                   </span>
@@ -303,22 +302,22 @@ const InformationSheetContent = (props) => {
               <AccordionDetails>
                 <div className="row col-12 text-right">
                   <div className="col-9 mb-2">
-                    <TooltipMaker variable="Duration" zone={crop['Zone']}>
+                    <TooltipMaker variable="Duration" zone={crop.Zone}>
                       <Typography variant="body1">Duration</Typography>
                     </TooltipMaker>
                   </div>
                   <div className="mb-2">
                     <div
                       className={`blue-bg ${
-                        crop['Duration'].includes('Short-lived Perennial') ? `shrt_perennial` : ``
+                        crop.Duration.includes('Short-lived Perennial') ? 'shrt_perennial' : ''
                       }`}
                     >
-                      <Typography variant="body1">{crop['Duration'].toString()}</Typography>
+                      <Typography variant="body1">{crop.Duration.toString()}</Typography>
                     </div>
                   </div>
 
                   <div className="col-9 mb-2">
-                    <TooltipMaker variable="Zone Use" zone={crop['Zone']}>
+                    <TooltipMaker variable="Zone Use" zone={crop.Zone}>
                       <Typography variant="body1">Zone Use</Typography>
                     </TooltipMaker>
                   </div>
@@ -329,14 +328,14 @@ const InformationSheetContent = (props) => {
                   </div>
 
                   <div className="col-9 mb-2">
-                    <TooltipMaker variable="Shape & Orientation" zone={crop['Zone']}>
+                    <TooltipMaker variable="Shape & Orientation" zone={crop.Zone}>
                       <Typography variant="body1">Shape And Orientation</Typography>
                     </TooltipMaker>
                   </div>
                   <div className="mb-2">
                     <div
                       className={`blueBgFlex ${
-                        crop['Shape & Orientation'].length > 1 ? `borderWrapped` : ``
+                        crop['Shape & Orientation'].length > 1 ? 'borderWrapped' : ''
                       }`}
                     >
                       {crop['Shape & Orientation'].map((val, index) => (
@@ -366,14 +365,14 @@ const InformationSheetContent = (props) => {
                   </div>
 
                   <div className="col-9 mb-2">
-                    <TooltipMaker variable="Soil Textures" zone={crop['Zone']}>
+                    <TooltipMaker variable="Soil Textures" zone={crop.Zone}>
                       <Typography variant="body1">Soil Texture</Typography>
                     </TooltipMaker>
                   </div>
                   <div className="mb-2 text-capitalize">
                     <div
                       className={`blueBgFlex ${
-                        crop['Soil Textures'].length > 1 ? `borderWrapped` : ``
+                        crop['Soil Textures'].length > 1 ? 'borderWrapped' : ''
                       }`}
                     >
                       {crop['Soil Textures'].map((val, index) => (
@@ -396,7 +395,7 @@ const InformationSheetContent = (props) => {
                   </div>
 
                   <div className="col-9 mb-2">
-                    <TooltipMaker variable="Soil Moisture Use" zone={crop['Zone']}>
+                    <TooltipMaker variable="Soil Moisture Use" zone={crop.Zone}>
                       <Typography variant="body1">Soil Moisture Use</Typography>
                     </TooltipMaker>
                   </div>
@@ -407,7 +406,7 @@ const InformationSheetContent = (props) => {
                   </div>
 
                   <div className="col-9 mb-2">
-                    <TooltipMaker variable="Hessian Fly-Free Date" zone={crop['Zone']}>
+                    <TooltipMaker variable="Hessian Fly-Free Date" zone={crop.Zone}>
                       <Typography variant="body1">Hessian Fly Free Date?</Typography>
                     </TooltipMaker>
                   </div>
@@ -420,7 +419,7 @@ const InformationSheetContent = (props) => {
                   </div>
 
                   {crop['Nitrogen Accumulation Max, Legumes (lbs/A/y)'] ? (
-                    <Fragment>
+                    <>
                       <div className="col-9 mb-2">
                         <Typography variant="body1">Nitrogen Accumulation (Lbs/A/Yr)</Typography>
                       </div>
@@ -431,34 +430,34 @@ const InformationSheetContent = (props) => {
                           </Typography>
                         </div>
                       </div>
-                    </Fragment>
+                    </>
                   ) : (
                     ''
                   )}
 
                   <div className="col-9 mb-2">
-                    <TooltipMaker variable="Ease of Establishment" zone={crop['Zone']}>
+                    <TooltipMaker variable="Ease of Establishment" zone={crop.Zone}>
                       <Typography variant="body1">Ease Of Establishment</Typography>
                     </TooltipMaker>
                   </div>
                   <div className="mb-2">{getRating(crop['Ease of Establishment'])}</div>
 
                   <div className="col-9 mb-2">
-                    <TooltipMaker variable="Establishes Quickly" zone={crop['Zone']}>
+                    <TooltipMaker variable="Establishes Quickly" zone={crop.Zone}>
                       <Typography variant="body1">Establishes Quickly</Typography>
                     </TooltipMaker>
                   </div>
                   <div className="mb-2">{getRating(crop['Establishes Quickly'])}</div>
 
                   <div className="col-9 mb-2">
-                    <TooltipMaker variable="Early Spring Growth" zone={crop['Zone']}>
+                    <TooltipMaker variable="Early Spring Growth" zone={crop.Zone}>
                       <Typography variant="body1">Early Spring Growth</Typography>
                     </TooltipMaker>
                   </div>
                   <div className="mb-2">{getRating(crop['Early Spring Growth'])}</div>
 
                   <div className="col-9 mb-2">
-                    <TooltipMaker variable="Flowering Trigger" zone={crop['Zone']}>
+                    <TooltipMaker variable="Flowering Trigger" zone={crop.Zone}>
                       <Typography variant="body1">Flowering Trigger</Typography>
                     </TooltipMaker>
                   </div>
@@ -493,7 +492,7 @@ const InformationSheetContent = (props) => {
                   </div> */}
 
                   <div className="col-9 mb-2">
-                    <TooltipMaker variable="Root Depth" zone={crop['Zone']}>
+                    <TooltipMaker variable="Root Depth" zone={crop.Zone}>
                       <Typography variant="body1">Root Depth</Typography>
                     </TooltipMaker>
                   </div>
@@ -504,16 +503,16 @@ const InformationSheetContent = (props) => {
                   </div>
 
                   {crop['Inoculant Type'][0] !== 'none' ? (
-                    <Fragment>
+                    <>
                       <div className="col-9 mb-2">
-                        <TooltipMaker variable="Innoculant Type" zone={crop['Zone']}>
+                        <TooltipMaker variable="Innoculant Type" zone={crop.Zone}>
                           <Typography variant="body1">Inoculant Type</Typography>
                         </TooltipMaker>
                       </div>
                       <div className="mb-2">
                         <div
                           className={`blueBgFlex ${
-                            crop['Inoculant Type'].length > 1 ? `borderWrapped` : ``
+                            crop['Inoculant Type'].length > 1 ? 'borderWrapped' : ''
                           }`}
                         >
                           {crop['Inoculant Type'].map((val, index) => (
@@ -529,7 +528,7 @@ const InformationSheetContent = (props) => {
                           ))}
                         </div>
                       </div>
-                    </Fragment>
+                    </>
                   ) : (
                     ''
                   )}
@@ -575,7 +574,7 @@ const InformationSheetContent = (props) => {
               <AccordionDetails>
                 <div className="row col-12 text-right">
                   <div className="col-9 mb-2">
-                    <TooltipMaker variable="Seeds per Pound" zone={crop['Zone']}>
+                    <TooltipMaker variable="Seeds per Pound" zone={crop.Zone}>
                       <Typography variant="body1">Seeds Per Lb</Typography>
                     </TooltipMaker>
                   </div>
@@ -586,7 +585,7 @@ const InformationSheetContent = (props) => {
                   </div>
 
                   <div className="col-9 mb-2">
-                    <TooltipMaker variable="Seed Price per Pound" zone={crop['Zone']}>
+                    <TooltipMaker variable="Seed Price per Pound" zone={crop.Zone}>
                       <Typography variant="body1">Seed Price Per Lb</Typography>
                     </TooltipMaker>
                   </div>
@@ -619,7 +618,7 @@ const InformationSheetContent = (props) => {
                   </div>
 
                   <div className="col-9 mb-2">
-                    <TooltipMaker variable="Can Aerial Seed?" zone={crop['Zone']}>
+                    <TooltipMaker variable="Can Aerial Seed?" zone={crop.Zone}>
                       <Typography variant="body1">Can Aerial Seed?</Typography>
                     </TooltipMaker>
                   </div>
@@ -632,7 +631,7 @@ const InformationSheetContent = (props) => {
                   </div>
 
                   <div className="col-9 mb-2">
-                    <TooltipMaker variable="Frost Seeding" zone={crop['Zone']}>
+                    <TooltipMaker variable="Frost Seeding" zone={crop.Zone}>
                       <Typography variant="body1">Can Frost Seed?</Typography>
                     </TooltipMaker>
                   </div>
@@ -645,7 +644,7 @@ const InformationSheetContent = (props) => {
                   </div>
 
                   <div className="col-9 mb-2">
-                    <TooltipMaker variable="Min Germination Temp (F)" zone={crop['Zone']}>
+                    <TooltipMaker variable="Min Germination Temp (F)" zone={crop.Zone}>
                       <Typography variant="body1">Min Germination Temp (&deg;F)</Typography>
                     </TooltipMaker>
                   </div>
@@ -737,10 +736,10 @@ const InformationSheetContent = (props) => {
                       <Typography variant="body1">
                         {crop['Frost Seeding']
                           ? `${moment(crop['Frost Seeding Start'], 'YYYY-MM-DD')
-                              .format('MM/DD')
-                              .toString()} - ${moment(crop['Frost Seeding End'], 'YYYY-MM-DD')
-                              .format('MM/DD')
-                              .toString()}`
+                            .format('MM/DD')
+                            .toString()} - ${moment(crop['Frost Seeding End'], 'YYYY-MM-DD')
+                            .format('MM/DD')
+                            .toString()}`
                           : 'N/A'}
                       </Typography>
                     </div>
@@ -752,8 +751,8 @@ const InformationSheetContent = (props) => {
                     </Typography>
                   </div>
                   <div className="mb-2">
-                    {crop['Second Reliable Establishment/Growth Start'] &&
-                    crop['Second Reliable Establishment/Growth End'] ? (
+                    {crop['Second Reliable Establishment/Growth Start']
+                    && crop['Second Reliable Establishment/Growth End'] ? (
                       <div className="blueBgFlex borderWrapped wd-112">
                         <div className="blue-bg shrt_perennial wd-110">
                           <Typography variant="body1">
@@ -766,13 +765,13 @@ const InformationSheetContent = (props) => {
                           </Typography>
                         </div>
                       </div>
-                    ) : (
-                      <div className="blue-bg shrt_perennial wd-110">
-                        <Typography variant="body1">
-                          {getMonthDayString('reliable', crop)}
-                        </Typography>
-                      </div>
-                    )}
+                      ) : (
+                        <div className="blue-bg shrt_perennial wd-110">
+                          <Typography variant="body1">
+                            {getMonthDayString('reliable', crop)}
+                          </Typography>
+                        </div>
+                      )}
                   </div>
 
                   <div className="col-9 mb-2">
@@ -782,8 +781,8 @@ const InformationSheetContent = (props) => {
                     </Typography>
                   </div>
                   <div className="mb-2">
-                    {crop['Second Temperature/Moisture Risk to Establishment Start'] &&
-                    crop['Second Temperature/Moisture Risk to Establishment End'] ? (
+                    {crop['Second Temperature/Moisture Risk to Establishment Start']
+                    && crop['Second Temperature/Moisture Risk to Establishment End'] ? (
                       <div className="blueBgFlex borderWrapped wd-112">
                         <div className="blue-bg shrt_perennial wd-110">
                           <Typography variant="body1">
@@ -796,13 +795,13 @@ const InformationSheetContent = (props) => {
                           </Typography>
                         </div>
                       </div>
-                    ) : (
-                      <div className="blue-bg shrt_perennial wd-110">
-                        <Typography variant="body1">
-                          {getMonthDayString('temperature', crop)}
-                        </Typography>
-                      </div>
-                    )}
+                      ) : (
+                        <div className="blue-bg shrt_perennial wd-110">
+                          <Typography variant="body1">
+                            {getMonthDayString('temperature', crop)}
+                          </Typography>
+                        </div>
+                      )}
                   </div>
 
                   <div className="col-9 mb-2">
@@ -814,7 +813,7 @@ const InformationSheetContent = (props) => {
                   <div className="mb-2">
                     <div
                       className={`blueBgFlex ${
-                        crop['Active Growth Period'].length > 1 ? `borderWrapped` : ``
+                        crop['Active Growth Period'].length > 1 ? 'borderWrapped' : ''
                       }`}
                     >
                       {crop['Active Growth Period'].map((val, index) => (
@@ -853,14 +852,14 @@ const InformationSheetContent = (props) => {
                             <td
                               style={{
                                 background: getActiveCropMonths(crop).includes(month)
-                                  ? `#598445`
-                                  : `#f0f7eb`,
+                                  ? '#598445'
+                                  : '#f0f7eb',
                                 // width: "100%",
                                 height: '20px',
-                                borderRight: `${month !== 'Dec' ? `2px solid white` : ``}`,
+                                borderRight: `${month !== 'Dec' ? '2px solid white' : ''}`,
                               }}
                               key={`growth-${index}`}
-                            ></td>
+                            />
                           ))}
                         </tr>
                         <tr style={{ borderTop: '2px solid white' }}>
@@ -873,25 +872,23 @@ const InformationSheetContent = (props) => {
                               month={index}
                             />
                           ))} */}
-                          <CropSelectorCalendarView data={{ fields: crop }} from={'infosheet'} />
+                          <CropSelectorCalendarView data={{ fields: crop }} from="infosheet" />
                         </tr>
                         <tr>
-                          {allMonths.map((month, index) => {
-                            return (
-                              <td
-                                key={index}
-                                className={`${
-                                  month === 'Jan' || month === 'Dec'
-                                    ? month === 'Jan'
-                                      ? `text-center`
-                                      : `text-center`
-                                    : `text-center`
-                                }`}
-                              >
-                                <Typography variant="body1">{month}</Typography>
-                              </td>
-                            );
-                          })}
+                          {allMonths.map((month, index) => (
+                            <td
+                              key={index}
+                              className={`${
+                                month === 'Jan' || month === 'Dec'
+                                  ? month === 'Jan'
+                                    ? 'text-center'
+                                    : 'text-center'
+                                  : 'text-center'
+                              }`}
+                            >
+                              <Typography variant="body1">{month}</Typography>
+                            </td>
+                          ))}
                         </tr>
                       </tbody>
                     </table>
@@ -939,23 +936,25 @@ const InformationSheetContent = (props) => {
                 <Typography variant="body1" className="p-3">
                   {currentSources.length > 0
                     ? currentSources.map((source, index) => (
-                        <Fragment key={index}>
-                          <a
-                            style={{
-                              textDecoration: 'underline',
-                              color: 'black',
-                              fontWeight: 'bolder',
-                            }}
-                            href={source['URL']}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            {source['Resource Name']}
-                          </a>
-                          , {source['Institution or Author']}
-                          <br />
-                        </Fragment>
-                      ))
+                      <Fragment key={index}>
+                        <a
+                          style={{
+                            textDecoration: 'underline',
+                            color: 'black',
+                            fontWeight: 'bolder',
+                          }}
+                          href={source.URL}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {source['Resource Name']}
+                        </a>
+                        ,
+                        {' '}
+                        {source['Institution or Author']}
+                        <br />
+                      </Fragment>
+                    ))
                     : ''}
                 </Typography>
               </AccordionDetails>
@@ -987,8 +986,8 @@ const getMonthDayString = (type = '', crop = {}) => {
     }
     case 'temperature': {
       if (
-        crop['Temperature/Moisture Risk to Establishment Start'] &&
-        crop['Temperature/Moisture Risk to Establishment End']
+        crop['Temperature/Moisture Risk to Establishment Start']
+        && crop['Temperature/Moisture Risk to Establishment End']
       ) {
         const startDate = moment(
           crop['Temperature/Moisture Risk to Establishment Start'],
@@ -999,9 +998,8 @@ const getMonthDayString = (type = '', crop = {}) => {
           'YYYY-MM-DD',
         );
         return `${startDate.format('MM/DD')} - ${endDate.format('MM/DD')}`;
-      } else {
-        return 'N/A';
       }
+      return 'N/A';
     }
     case 'temperature-second': {
       const startDate = moment(
@@ -1022,16 +1020,19 @@ const getMonthDayString = (type = '', crop = {}) => {
 const RenderExtendedComments = ({ crop = {} }) => {
   const allKeysWithNotes = Object.keys(crop)
     .filter((key) => key.includes('Notes:'))
-    .map((str) => {
-      return { key: str, name: str.split(':')[1].trimStart() };
-    });
+    .map((str) => ({ key: str, name: str.split(':')[1].trimStart() }));
 
   return allKeysWithNotes.length > 0 ? (
     <div className="row">
       {allKeysWithNotes.map((obj, index) => (
-        <div key={'notesKey-' + index} className="col-12">
+        <div key={`notesKey-${index}`} className="col-12">
           <Typography variant="body1" className="p-3">
-            <b>{obj.name}:</b> {crop[obj.key]}
+            <b>
+              {obj.name}
+              :
+            </b>
+            {' '}
+            {crop[obj.key]}
           </Typography>
         </div>
       ))}
