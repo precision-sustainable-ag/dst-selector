@@ -1,10 +1,10 @@
-/* 
+/*
   Contains the comparison tool for my cover crop list
   removeCrop handles removing a crop from the list
   TopBar contains the blue bar for adding crops
   RenderRelevantData updates the filtered values
   RenderSeedingData updates seeding data
-  GetAverageGoalRating calculates the average of all the scores 
+  GetAverageGoalRating calculates the average of all the scores
   styled using ../../styles/cropComparisonView.scss
 */
 
@@ -61,7 +61,7 @@ const MyCoverCropComparisonComponent = (props) => {
   const { enqueueSnackbar } = useSnackbar();
   const { comparisonKeys } = state;
   const section = window.location.href.includes('selector') ? 'selector' : 'explorer';
-  const zone = state[section].zone;
+  const { zone } = state[section];
 
   const [sidebarDefs, setSidebarDefs] = useState(sidebarDefinitionsz7);
   const [modalOpen, setModalOpen] = useState(false);
@@ -102,17 +102,15 @@ const MyCoverCropComparisonComponent = (props) => {
   }, [zone]);
 
   const removeCrop = (id, cropName) => {
-    let removeIndex = state.selectedCrops
-      .map(function (item) {
-        return item.id;
-      })
+    const removeIndex = state.selectedCrops
+      .map((item) => item.id)
       .indexOf(`${id}`);
 
     if (removeIndex === -1) {
       // element not in array
       // not possible ?
     } else {
-      let selectedCropsCopy = state.selectedCrops;
+      const selectedCropsCopy = state.selectedCrops;
 
       selectedCropsCopy.splice(removeIndex, 1);
       dispatch({
@@ -120,7 +118,7 @@ const MyCoverCropComparisonComponent = (props) => {
         data: {
           selectedCrops: selectedCropsCopy,
           snackOpen: false,
-          snackMessage: `Removed`,
+          snackMessage: 'Removed',
         },
       });
       enqueueSnackbar(`${cropName} Removed`);
@@ -132,14 +130,13 @@ const MyCoverCropComparisonComponent = (props) => {
 
     if (exactObject) {
       return exactObject.Description;
-    } else {
-      return 'No Data';
     }
+    return 'No Data';
   };
   const [showScrollArrows, setShowScrollArrow] = useState(false);
   const [showLeftScrollArrow, setShowLeftScrollArrow] = useState(false);
   const scrollContainer = (direction = 'right', amount = 100) => {
-    let parent = document.getElementById('scrollContainer');
+    const parent = document.getElementById('scrollContainer');
     if (direction === 'right') {
       parent.scrollLeft += amount;
     } else {
@@ -155,13 +152,13 @@ const MyCoverCropComparisonComponent = (props) => {
             <div className="col-12">
               <Card style={{ width: '100%', boxShadow: 'none' }}>
                 <CardMedia
-                  children={
+                  children={(
                     <img
                       src="https://via.placeholder.com/10/FFFFFF/FFFFFF"
                       style={{ opacity: 0 }}
                       alt="placeholder"
                     />
-                  }
+                  )}
                   style={{ width: '100%', height: '100px' }}
                 />
                 <CardContent>
@@ -173,7 +170,7 @@ const MyCoverCropComparisonComponent = (props) => {
                       visibility: 'hidden',
                     }}
                   >
-                    {`Zone`}
+                    Zone
                   </div>
                   <div
                     className="font-weight-bold text-uppercase"
@@ -183,7 +180,7 @@ const MyCoverCropComparisonComponent = (props) => {
                       visibility: 'hidden',
                     }}
                   >
-                    {'Family Common Name'}
+                    Family Common Name
                   </div>
                   <div
                     className="font-weight-bold "
@@ -193,10 +190,10 @@ const MyCoverCropComparisonComponent = (props) => {
                       visibility: 'hidden',
                     }}
                   >
-                    {'Cover Crop Name'}
+                    Cover Crop Name
                   </div>
                   <small className="font-italic" style={{ color: 'white', visibility: 'hidden' }}>
-                    {'Scientific Name'}
+                    Scientific Name
                   </small>
                   <div>
                     <small className="text-muted">
@@ -220,35 +217,33 @@ const MyCoverCropComparisonComponent = (props) => {
                   }}
                 />
                 <CardContent style={{ paddingRight: '0px', paddingLeft: '0px' }}>
-                  {comparisonKeys.map((keys, index) => {
-                    return (
-                      <div
-                        style={lightBorder}
-                        key={index}
-                        id={`comparisonLabel-${keys.split(' ').join('')}`}
-                      >
-                        <span>
-                          <DataTooltip
-                            data={getTooltipData(keys)}
-                            disableInteractive
-                            placement="top-start"
-                          />
-                        </span>
-                        <span>
-                          <Typography variant="body2" className="text-capitalize">
-                            {keys === 'Cover Crop Group' ? 'Cover Crop Type' : keys}
-                          </Typography>
-                        </span>
-                      </div>
-                    );
-                  })}
+                  {comparisonKeys.map((keys, index) => (
+                    <div
+                      style={lightBorder}
+                      key={index}
+                      id={`comparisonLabel-${keys.split(' ').join('')}`}
+                    >
+                      <span>
+                        <DataTooltip
+                          data={getTooltipData(keys)}
+                          disableInteractive
+                          placement="top-start"
+                        />
+                      </span>
+                      <span>
+                        <Typography variant="body2" className="text-capitalize">
+                          {keys === 'Cover Crop Group' ? 'Cover Crop Type' : keys}
+                        </Typography>
+                      </span>
+                    </div>
+                  ))}
 
                   {/* Average Goal Rating: Show only if goals are selected */}
                   {state.selectedGoals.length > 0 ? (
                     <div style={lightBorder}>
                       <span>
                         <DataTooltip
-                          data={'Average rating of all selected goals'}
+                          data="Average rating of all selected goals"
                           disableInteractive
                           placement="top-start"
                         />
@@ -305,7 +300,7 @@ const MyCoverCropComparisonComponent = (props) => {
             onScroll={() => {
               // show arrows
               setShowScrollArrow(true);
-              let a = document.getElementById('scrollContainer').scrollLeft;
+              const a = document.getElementById('scrollContainer').scrollLeft;
               if (a === 0) {
                 setShowLeftScrollArrow(false);
               } else {
@@ -334,13 +329,13 @@ const MyCoverCropComparisonComponent = (props) => {
                     />
                   ) : (
                     <CardMedia
-                      children={
+                      children={(
                         <img
                           src="https://via.placeholder.com/100/?text=Placeholder"
                           style={{ width: '100%', height: '100px' }}
                           alt="Placeholder"
                         />
-                      }
+                      )}
                     />
                   )}
 
@@ -349,7 +344,7 @@ const MyCoverCropComparisonComponent = (props) => {
                       className="font-weight-bold text-muted text-uppercase"
                       style={{ fontSize: '10pt' }}
                     >
-                      {`Zone ${crop.data['Zone']}`}
+                      {`Zone ${crop.data.Zone}`}
                     </div>
                     <div
                       className="font-weight-bold text-muted text-uppercase"
@@ -372,7 +367,7 @@ const MyCoverCropComparisonComponent = (props) => {
                           }}
                           onClick={() => handleModalOpen({ fields: crop.data })}
                           target="_blank"
-                          rel="noopener noreferrer"
+
                         >
                           View Crop Details
                         </div>
@@ -447,39 +442,35 @@ const RenderRelevantData = ({ filterKey = '', data = [], index = 0 }) => {
             <RenderSeedPriceIcons val={data['Seed Price per Pound']} />
           </div>
         );
-      } else return <div style={lightBG}>{getRating(data[filterKey])}</div>;
-    } else {
-      return (
-        <div style={lightBG}>
-          <Typography variant="body2">{data[filterKey]}</Typography>
-        </div>
-      );
+      } return <div style={lightBG}>{getRating(data[filterKey])}</div>;
     }
-  } else {
-    if (filterKey === 'Frost Seeding' || filterKey === 'Aerial Seeding') {
-      return (
-        <div style={lightBG}>
-          <RenderSeedingData data={data} filterKey={filterKey} />
-        </div>
-      );
-    } else if (data[filterKey]) {
-      return (
-        <div style={lightBG}>
-          <Typography variant="body2">{data[filterKey].toString()}</Typography>
-        </div>
-      );
-    } else {
-      return <div></div>;
-    }
+    return (
+      <div style={lightBG}>
+        <Typography variant="body2">{data[filterKey]}</Typography>
+      </div>
+    );
   }
+  if (filterKey === 'Frost Seeding' || filterKey === 'Aerial Seeding') {
+    return (
+      <div style={lightBG}>
+        <RenderSeedingData data={data} filterKey={filterKey} />
+      </div>
+    );
+  } if (data[filterKey]) {
+    return (
+      <div style={lightBG}>
+        <Typography variant="body2">{data[filterKey].toString()}</Typography>
+      </div>
+    );
+  }
+  return <div />;
 };
 
 const RenderSeedingData = ({ filterKey, data }) => {
   if (data[filterKey]) {
     return <Typography variant="body2">Yes</Typography>;
-  } else {
-    return <Typography variant="body2">N/A</Typography>;
   }
+  return <Typography variant="body2">N/A</Typography>;
 };
 const GetAverageGoalRating = ({ crop }) => {
   const { state } = useContext(Context);

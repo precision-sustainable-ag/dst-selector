@@ -14,25 +14,33 @@ const AgInformaticsLicenseText = ({ styles = true, aboutPage = false, footerPage
       <Grid item xs={12}>
         {footerPage ? (
           <Typography variant="body2">
-            Copyright © {currentYear}{' '}
+            Copyright ©
+            {' '}
+            {currentYear}
+            {' '}
             <a href="http://northeastcovercrops.com/" target="_blank" rel="noopener noreferrer">
               Northeast Cover Crop Council
             </a>
-            ,{' '}
+            ,
+            {' '}
             <a href="http://aginformaticslab.org/" target="_blank" rel="noopener noreferrer">
               Agricultural Informatics Lab
             </a>
           </Typography>
         ) : (
           <Typography variant={footerPage ? 'body2' : 'body1'} gutterBottom>
-            Copyright © {currentYear} Agricultural Informatics Lab, &nbsp;
+            Copyright ©
+            {' '}
+            {currentYear}
+            {' '}
+            Agricultural Informatics Lab, &nbsp;
             <a href="http://aginformaticslab.org/" target="_blank" rel="noopener noreferrer">
               aginformaticslab.org
             </a>
           </Typography>
         )}
       </Grid>
-      {!footerPage ? (
+      {!footerPage && (
         aboutPage ? (
           <Grid item xs={12}>
             <Typography variant="body1">
@@ -40,8 +48,11 @@ const AgInformaticsLicenseText = ({ styles = true, aboutPage = false, footerPage
               contents, is licensed under the terms of MIT License, with the exception of the
               copyright protected cover crop images. You may use, copy, modify and redistribute all
               files included in this distribution, individually or in aggregate, subject to the
-              terms and conditions of the MIT license. See{' '}
-              <Link to={'/ag-informatics-license'}>License</Link> for details.
+              terms and conditions of the MIT license. See
+              {' '}
+              <Link to="/ag-informatics-license">License</Link>
+              {' '}
+              for details.
             </Typography>
           </Grid>
         ) : (
@@ -72,8 +83,6 @@ const AgInformaticsLicenseText = ({ styles = true, aboutPage = false, footerPage
             </Grid>
           </Grid>
         )
-      ) : (
-        ''
       )}
     </Grid>
   );

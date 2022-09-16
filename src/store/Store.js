@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 /*
   Store is the first component to run, it sets all the global state variables and is used in almost all other components
     it sets the state using the Reducer and the initial state
@@ -13,8 +14,8 @@
 
 import moment from 'moment-timezone';
 import React, { createContext, useReducer } from 'react';
-import desc from '../shared/crop-descriptions.json';
-import img from '../shared/image-dictionary.json';
+import desc from '../shared/json/descriptions/crop-descriptions.json';
+import img from '../shared/json/image-locations/image-dictionary.json';
 import z4crops from '../shared/json/zone4/crop-data.json';
 import z4Dict from '../shared/json/zone4/data-dictionary.json';
 import z5crops from '../shared/json/zone5/crop-data.json';
@@ -25,17 +26,67 @@ import z7crops from '../shared/json/zone7/crop-data.json';
 import z7Dict from '../shared/json/zone7/data-dictionary.json';
 import Reducer from './Reducer';
 
-const cropDataFormatter = (cropData = [{}], zone = 7) => {
+const cropDataFormatter = (cropData = [{}]) => {
   const excludedCropZoneDecisionKeys = ['Exclude', 'Up and Coming', 'Discuss'];
+  const loremText = () => 'Description for this cover crop is currently unavailable.';
   // Filter unwanted rows
-  let tjson = cropData.filter((crop) => {
+  const tjson = cropData.filter((crop) => {
     if (
-      excludedCropZoneDecisionKeys.includes(crop['Zone Decision']) ||
-      crop['Cover Crop Name'] === '__Open Discussion Row'
+      excludedCropZoneDecisionKeys.includes(crop['Zone Decision'])
+      || crop['Cover Crop Name'] === '__Open Discussion Row'
     ) {
       return false;
-    } else return true;
+    } return true;
   });
+
+  const monthStringBuilder = (vals) => {
+    const params = [
+      'Reliable Establishment/Growth',
+      'Second Reliable Establishment/Growth',
+      'Temperature/Moisture Risk to Establishment',
+      'Second Temperature/Mositure Risk to Establishment',
+      'Late Fall/Winter Planting Date',
+      'Early Fall/ Winter Seeding Rate',
+      'Standard Fall/Winter Seeding Rate Date',
+      'Standard Spring Seeding Rate Date',
+      'Frost Seeding',
+    ];
+    const val = vals;
+    params.forEach((param) => {
+      if (val.fields[`${param} Start`]) {
+        const valStart = moment(val.fields[`${param} Start`], 'YYYY-MM-DD');
+        const valEnd = val.fields[`${param} End`]
+          ? moment(val.fields[`${param} End`], 'YYYY-MM-DD')
+          : moment(val.fields[`${param} Stop`], 'YYYY-MM-DD');
+        let str = '';
+        const valuesArray = [];
+
+        while (valStart.isSameOrBefore(valEnd)) {
+          if (valStart.get('D') <= 15) {
+            str = 'Early';
+          } else {
+            str = 'Mid';
+          }
+          valuesArray.push([`${valStart.format('MMMM')}, ${str}`]);
+          valStart.add('14', 'days');
+        }
+        valuesArray.forEach((key) => {
+          const prev = val.fields[key] || [];
+          prev.push(param);
+          val.fields[key] = prev;
+        });
+      }
+    });
+    // this is temporary, needs to be replaced with wither a fix to calendar growth window component or exporting of json from airtable
+    Object.keys(val.fields).forEach((item) => {
+      if (item.endsWith('Early') || item.endsWith('Mid')) {
+        const uniq = [...new Set(val.fields[item])];
+        const removedOldVals = uniq.filter((u) => !u.endsWith('growth'));
+        val.fields[item] = removedOldVals;
+      }
+    });
+    return val;
+  };
 
   return tjson.map((crop) => {
     // remove open discussion row and zone decision !== include
@@ -44,16 +95,16 @@ const cropDataFormatter = (cropData = [{}], zone = 7) => {
 
     val = monthStringBuilder(val);
 
-    val.fields['inBasket'] = false;
+    val.fields.inBasket = false;
 
     val.fields['Image Data'] = img[val.fields['Cover Crop Name']]
       ? img[val.fields['Cover Crop Name']]
       : {
-          'Cover Crop': val.fields['Cover Crop Name'],
-          'Key Thumbnail': null,
-          Notes: null,
-          Directory: null,
-        };
+        'Cover Crop': val.fields['Cover Crop Name'],
+        'Key Thumbnail': null,
+        Notes: null,
+        Directory: null,
+      };
 
     val.fields['Crop Description'] = desc[val.fields['Cover Crop Name']]
       ? desc[val.fields['Cover Crop Name']]
@@ -68,13 +119,13 @@ const cropDataFormatter = (cropData = [{}], zone = 7) => {
     }
 
     val.fields['Discourages Nematodes'] = val.fields['Disoucrages Nematodes'];
-    val.fields['id'] = val.fields['__id'];
-    val.fields['Drought'] = val.fields['Drought Tolerance'];
-    val.fields['Flood'] = val.fields['Flood Tolerance'];
-    val.fields['Heat'] = val.fields['Heat Tolerance'];
+    val.fields.id = val.fields.__id;
+    val.fields.Drought = val.fields['Drought Tolerance'];
+    val.fields.Flood = val.fields['Flood Tolerance'];
+    val.fields.Heat = val.fields['Heat Tolerance'];
     val.fields['Low Fertility'] = val.fields['Low Fertility Tolerance'];
-    val.fields['Salinity'] = val.fields['Salinity Tolerance'];
-    val.fields['Shade'] = val.fields['Shade Tolerance'];
+    val.fields.Salinity = val.fields['Salinity Tolerance'];
+    val.fields.Shade = val.fields['Shade Tolerance'];
     val.fields['Tillage at Vegetative'] = val.fields['Tillage Termination at Vegetative'];
     val.fields['Tillage at Flowering'] = val.fields['Tillage Termination at Flowering'];
 
@@ -98,7 +149,7 @@ const cropDataFormatter = (cropData = [{}], zone = 7) => {
       val.fields['Aerial Seeding'] = true;
     }
 
-    //TODO: not using anymore
+    // TODO: not using anymore
     if (!val.fields['Pollinator Habitat']) {
       val.fields['Pollinator Habitat'] = 0;
     }
@@ -110,58 +161,6 @@ const cropDataFormatter = (cropData = [{}], zone = 7) => {
   });
 };
 
-const monthStringBuilder = (vals) => {
-  const params = [
-    'Reliable Establishment/Growth',
-    'Second Reliable Establishment/Growth',
-    'Temperature/Moisture Risk to Establishment',
-    'Second Temperature/Mositure Risk to Establishment',
-    'Late Fall/Winter Planting Date',
-    'Early Fall/ Winter Seeding Rate',
-    'Standard Fall/Winter Seeding Rate Date',
-    'Standard Spring Seeding Rate Date',
-    'Frost Seeding',
-  ];
-  let val = vals;
-  params.forEach((param) => {
-    if (val.fields[param + ' Start']) {
-      const valStart = moment(val.fields[param + ' Start'], 'YYYY-MM-DD');
-      const valEnd = val.fields[param + ' End']
-        ? moment(val.fields[param + ' End'], 'YYYY-MM-DD')
-        : moment(val.fields[param + ' Stop'], 'YYYY-MM-DD');
-      let str = '';
-      let valuesArray = [];
-
-      while (valStart.isSameOrBefore(valEnd)) {
-        if (valStart.get('D') <= 15) {
-          str = 'Early';
-        } else {
-          str = 'Mid';
-        }
-        valuesArray.push([`${valStart.format('MMMM')}, ${str}`]);
-        valStart.add('14', 'days');
-      }
-      valuesArray.forEach((key) => {
-        const prev = val.fields[key] || [];
-        prev.push(param);
-        val.fields[key] = prev;
-      });
-    }
-  });
-  // this is temporary, needs to be replaced with wither a fix to calendar growth window component or exporting of json from airtable
-  Object.keys(val.fields).forEach((item, index) => {
-    if (item.endsWith('Early') || item.endsWith('Mid')) {
-      let uniq = [...new Set(val.fields[item])];
-      let removedOldVals = uniq.filter((item) => !item.endsWith('growth'));
-      val.fields[item] = removedOldVals;
-    }
-  });
-  return val;
-};
-
-const loremText = () => {
-  return 'Description for this cover crop is currently unavailable.';
-};
 const z7AllCrops = z7crops;
 const z6AllCrops = z6crops;
 const z5AllCrops = z5crops;
@@ -198,7 +197,7 @@ const initialState = {
   snackHorizontal: 'right',
   snackMessage: '',
   modalOpen: false,
-  modalSize: 'lg', //sm,md,lg,fluid
+  modalSize: 'lg', // sm,md,lg,fluid
   modalBody: {},
   addToCartBtnText: 'add to list',
   zoneToggle: true, // Explorer: true if PLANT HARDINESS ZONE is expanded
@@ -227,8 +226,8 @@ const initialState = {
       },
     },
     averagePrecipitation: {
-      thisMonth: 3.6, //inches
-      annual: 43, //inches
+      thisMonth: 3.6, // inches
+      annual: 43, // inches
     },
     frostFreeDays: 173,
   },

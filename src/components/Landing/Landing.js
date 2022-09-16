@@ -7,15 +7,15 @@
 import { Grid, Typography } from '@mui/material';
 import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import ReactGA from 'react-ga';
 import { LightButton } from '../../shared/constants';
 import { Context } from '../../store/Store';
-import ReactGA from 'react-ga';
 import '../../styles/landing.scss';
 import ConsentModal from '../CoverCropExplorer/ConsentModal';
 
-const Landing = (props) => {
+const Landing = ({ height, title, bg }) => {
   const { state, dispatch } = useContext(Context);
-  const [containerHeight, setContainerHeight] = useState(props.height);
+  const [containerHeight, setContainerHeight] = useState(height);
 
   useEffect(() => {
     if (state.consent === true) {
@@ -26,7 +26,7 @@ const Landing = (props) => {
   }, [state.consent]);
 
   const incrementProgress = (incVal) => {
-    incVal = parseInt(incVal);
+    incVal = parseInt(incVal, 10);
     if (incVal === 1) {
       if (state.progress === 0) {
         dispatch({
@@ -40,25 +40,25 @@ const Landing = (props) => {
   };
 
   useEffect(() => {
-    document.title = props.title;
+    document.title = title;
     function updateSize() {
-      let documentHeight = document.getElementsByTagName('html')[0].getBoundingClientRect().height;
+      const documentHeight = document.getElementsByTagName('html')[0].getBoundingClientRect().height;
 
-      let headerHeight = document.getElementsByTagName('header')[0].getBoundingClientRect().height;
+      const headerHeight = document.getElementsByTagName('header')[0].getBoundingClientRect().height;
 
-      let footerHeight = document
+      const footerHeight = document
         .getElementsByClassName('primaryFooter')[0]
         .getBoundingClientRect().height;
 
-      let containerHeight = documentHeight - (headerHeight + footerHeight) + 7;
-      document.getElementById('landingWrapper').style.minHeight = containerHeight + 'px';
-      setContainerHeight(containerHeight);
+      const contHeight = documentHeight - (headerHeight + footerHeight) + 7;
+      document.getElementById('landingWrapper').style.minHeight = `${contHeight}px`;
+      setContainerHeight(contHeight);
     }
     window.addEventListener('resize', updateSize);
     updateSize();
 
     return () => window.removeEventListener('resize', updateSize);
-  }, [props.title]);
+  }, [title]);
 
   return (
     <div
@@ -66,7 +66,7 @@ const Landing = (props) => {
       className="d-flex flex-column justify-content-center align-items-center"
       style={{
         minHeight: containerHeight,
-        background: `url(${props.bg})`,
+        background: `url(${bg})`,
         backgroundSize: 'cover',
       }}
     >
@@ -94,8 +94,14 @@ const Landing = (props) => {
             You are currently interacting with the Northeast Cover Crop Species Selector Tool. We
             seek feedback about the usability and usefulness of this tool. Our goal is to encourage
             and support the use of cover crops in the Northeast US. You can learn more about the
-            cover crop data and design of this tool <Link to={'/about'}> here</Link>. If you need
-            assistance, consult the <Link to={'/help'}>help page</Link>.
+            cover crop data and design of this tool
+            {' '}
+            <Link to="/about"> here</Link>
+            . If you need
+            assistance, consult the
+            {' '}
+            <Link to="/help">help page</Link>
+            .
           </Typography>
         </Grid>
         <Grid item>
@@ -110,8 +116,11 @@ const Landing = (props) => {
             align="left"
             gutterBottom
           >
-            Thank you for your time and consideration. You may provide input by visiting our{' '}
-            <Link to="/feedback">Feedback</Link> page. We look forward to your hearing about your
+            Thank you for your time and consideration. You may provide input by visiting our
+            {' '}
+            <Link to="/feedback">Feedback</Link>
+            {' '}
+            page. We look forward to your hearing about your
             experience.
           </Typography>
           <Typography variant="body1" gutterBottom align="left" className="font-weight-bold">

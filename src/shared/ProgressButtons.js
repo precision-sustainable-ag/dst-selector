@@ -9,15 +9,24 @@ import ProgressButtonsInner from './ProgressButtonsInner';
 
 const ProgressButtons = () => {
   const { state } = useContext(Context);
-
   const [isDisabled, setIsDisabled] = useState(false);
+
+  const renderProgressButtons = (progress, disabled) => {
+    if (progress < 0) return '';
+
+    return (
+      <div>
+        <ProgressButtonsInner disabled={disabled} />
+      </div>
+    );
+  };
 
   useEffect(() => {
     const section = window.location.href.includes('selector') ? 'selector' : 'explorer';
     const sfilters = state[section];
 
     const disableLogic = (progress, goalsLength) => {
-      switch (parseInt(progress)) {
+      switch (parseInt(progress, 10)) {
         case 1: {
           // location selection state
           // TODO: discuss should sfilter be used here or state.lastZone
@@ -48,17 +57,6 @@ const ProgressButtons = () => {
   }, [state]);
 
   return renderProgressButtons(state.progress, isDisabled);
-};
-
-const renderProgressButtons = (progress, isDisabled) => {
-  if (progress < 0) return '';
-  else {
-    return (
-      <div>
-        <ProgressButtonsInner disabled={isDisabled} />
-      </div>
-    );
-  }
 };
 
 export default ProgressButtons;
