@@ -19,7 +19,9 @@ import {
 import {
   AcUnit, AddCircle, LocalFlorist, WbSunny,
 } from '@mui/icons-material';
-import React, { useContext, useEffect, useState } from 'react';
+import React, {
+  Fragment, useContext, useEffect, useState,
+} from 'react';
 import {
   allMonths,
   CustomStyles,
@@ -98,12 +100,14 @@ const CropCalendarViewComponent = ({ activeCropData }) => {
     if (nameSortFlag) {
       if (activeCropDataShadow.length > 0) {
         activeCropDataShadow.sort((a, b) => {
-          const firstCropName = flipCoverCropName(
-            a.fields['Cover Crop Name'].toLowerCase(),
-          ).replace(/\s+/g, '');
-          const secondCropName = flipCoverCropName(
-            b.fields['Cover Crop Name'].toLowerCase(),
-          ).replace(/\s+/g, '');
+          const firstCropName = flipCoverCropName(a.fields['Cover Crop Name'].toLowerCase()).replace(
+            /\s+/g,
+            '',
+          );
+          const secondCropName = flipCoverCropName(b.fields['Cover Crop Name'].toLowerCase()).replace(
+            /\s+/g,
+            '',
+          );
           return firstCropName.localeCompare(secondCropName);
         });
 
@@ -239,7 +243,10 @@ const CropCalendarViewComponent = ({ activeCropData }) => {
                         </TableCell>
                       </Tooltip>
                     ) : (
-                      <TableCell style={{ borderBottom: '5px solid white' }} colSpan="2" />
+                      <TableCell
+                        style={{ borderBottom: '5px solid white' }}
+                        colSpan="2"
+                      />
                     )}
                     {state.activeGrowthPeriod.includes('Mar') ? (
                       <Tooltip placement="top" title="Spring">
@@ -256,7 +263,10 @@ const CropCalendarViewComponent = ({ activeCropData }) => {
                         </TableCell>
                       </Tooltip>
                     ) : (
-                      <TableCell style={{ borderBottom: '5px solid white' }} colSpan="3" />
+                      <TableCell
+                        style={{ borderBottom: '5px solid white' }}
+                        colSpan="3"
+                      />
                     )}
                     {state.activeGrowthPeriod.includes('Jun') ? (
                       <Tooltip placement="top" title="Summer">
@@ -273,7 +283,10 @@ const CropCalendarViewComponent = ({ activeCropData }) => {
                         </TableCell>
                       </Tooltip>
                     ) : (
-                      <TableCell style={{ borderBottom: '5px solid white' }} colSpan="3" />
+                      <TableCell
+                        style={{ borderBottom: '5px solid white' }}
+                        colSpan="3"
+                      />
                     )}
                     {state.activeGrowthPeriod.includes('Sep') ? (
                       <Tooltip placement="top" title="Fall">
@@ -290,7 +303,10 @@ const CropCalendarViewComponent = ({ activeCropData }) => {
                         </TableCell>
                       </Tooltip>
                     ) : (
-                      <TableCell style={{ borderBottom: '5px solid white' }} colSpan="3" />
+                      <TableCell
+                        style={{ borderBottom: '5px solid white' }}
+                        colSpan="3"
+                      />
                     )}
                     {state.activeGrowthPeriod.includes('Dec') ? (
                       <Tooltip placement="top" title="Winter">
@@ -307,7 +323,10 @@ const CropCalendarViewComponent = ({ activeCropData }) => {
                         </TableCell>
                       </Tooltip>
                     ) : (
-                      <TableCell style={{ borderBottom: '5px solid white' }} colSpan="1" />
+                      <TableCell
+                        style={{ borderBottom: '5px solid white' }}
+                        colSpan="1"
+                      />
                     )}
                   </>
                 )}
@@ -361,6 +380,7 @@ const CropCalendarViewComponent = ({ activeCropData }) => {
                 <TableCell style={{ width: '10%', borderLeft: '5px solid white' }}>
                   <Button onClick={sortBySelectedCrops}>
                     MY LIST
+                    {' '}
                     <br />
                     {`[${state.selectedCrops.length} CROPS]`}
                   </Button>
