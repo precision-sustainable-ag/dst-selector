@@ -4,9 +4,7 @@
   Styles are created using makeStyles.
 */
 
-import {
-  Button, Fab, useScrollTrigger, Zoom,
-} from '@mui/material';
+import { Button, Fab, useScrollTrigger, Zoom } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import { ArrowBack, ArrowForward, KeyboardArrowUp } from '@mui/icons-material';
 import React, { useContext, useEffect, useState } from 'react';
@@ -14,7 +12,7 @@ import ReactGA from 'react-ga';
 import { Context } from '../../store/Store';
 import '../../styles/cropSelector.scss';
 import MyCoverCropList from '../MyCoverCropList/MyCoverCropList';
-import CropCalendarViewComponent from './CropCalendarView';
+import CropCalendarViewComponent from './CropCalendarView/CropCalendarView';
 import CropSidebarComponent from './CropSidebar';
 import CropTableComponent from './CropTable';
 
