@@ -1,0 +1,19 @@
+apiVersion : apps/v1
+kind: Deployment
+metadata:
+  name: precisionsustainableagdstselector 
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: precisionsustainableagdstselector
+  template:
+    metadata:
+      labels:
+        app: precisionsustainableagdstselector 
+    spec:
+      containers:
+        - name: precisionsustainableagdstselector 
+          image: containerregistry4pd7i.azurecr.io/precisionsustainableagdstselector
+          ports:
+          - containerPort: 80
