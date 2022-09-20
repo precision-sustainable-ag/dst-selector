@@ -3,16 +3,14 @@
   Styles are created using makeStyles
 */
 
-import {
-  Backdrop, Button, Fade, Modal, IconButton,
-} from '@mui/material';
+import { Backdrop, Button, Fade, Modal, IconButton } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import { Close, Print } from '@mui/icons-material';
 import React, { useEffect, useState, useContext } from 'react';
 import ReactGA from 'react-ga';
 import { CropImage, zoneIcon } from '../../shared/constants';
 import '../../styles/cropDetailsModal.scss';
-import InformationSheetContent from '../InformationSheet/InformationSheetContent';
+import InformationSheetContent from '../InformationSheet/InformationSheetContent/InformationSheetContent';
 import { Context } from '../../store/Store';
 
 const useStyles = makeStyles((theme) => ({
@@ -143,8 +141,8 @@ const CropDetailsModalComponent = ({ crop, setModalOpen, modalOpen }) => {
                                     present
                                     src={
                                       crop.fields['Image Data']['Key Thumbnail']
-                                        // eslint-disable-next-line max-len
-                                        ? `/images/Cover Crop Photos/100x100/${crop.fields['Image Data'].Directory}/${crop.fields['Image Data']['Key Thumbnail']}`
+                                        ? // eslint-disable-next-line max-len
+                                          `/images/Cover Crop Photos/100x100/${crop.fields['Image Data'].Directory}/${crop.fields['Image Data']['Key Thumbnail']}`
                                         : 'https://placehold.it/100x100'
                                     }
                                     alt={crop.fields['Cover Crop Name']}
@@ -162,11 +160,7 @@ const CropDetailsModalComponent = ({ crop, setModalOpen, modalOpen }) => {
                               <div className="col-12">
                                 {zoneIcon(20, 20)}
                                 <strong className="pl-2">
-                                  PLANT HARDINESS ZONE
-                                  {' '}
-                                  {crop.fields.Zone}
-                                  {' '}
-                                  DATASET
+                                  PLANT HARDINESS ZONE {crop.fields.Zone} DATASET
                                   <span className="noprint">
                                     <Button
                                       style={{

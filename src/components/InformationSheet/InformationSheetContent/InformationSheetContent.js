@@ -7,88 +7,27 @@
 */
 
 import { AccordionDetails, Typography } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
-import MuiAccordion from '@mui/material/Accordion';
-import MuiAccordionSummary from '@mui/material/AccordionSummary';
-import withStyles from '@mui/styles/withStyles';
 import { ExpandMore, FiberManualRecord } from '@mui/icons-material';
 import moment from 'moment-timezone';
-import React, {
-  Fragment, useContext, useEffect, useState,
-} from 'react';
+import React, { Fragment, useContext, useEffect, useState } from 'react';
 import {
   allMonths,
   getActiveCropMonths,
   getRating,
   RenderSeedPriceIcons,
-} from '../../shared/constants';
-import { Context } from '../../store/Store';
-import CropSelectorCalendarView from '../CropSelector/CropSelectorCalendarView';
-import PhotoComponent from './PhotoComponent';
-import SoilDrainageTimeline from './SoilDrainageTimeline';
-import sources from '../../shared/json/sources/sources.json';
-import TooltipMaker from './TooltipMaker';
-
-const Accordion = withStyles({
-  root: {
-    boxShadow: 'none',
-    '&:not(:last-child)': {
-      borderBottom: 0,
-    },
-    '&:before': {
-      display: 'none',
-    },
-    '&$expanded': {
-      margin: 'auto',
-    },
-  },
-  expanded: {},
-})(MuiAccordion);
-
-const AccordionSummary = withStyles({
-  root: {
-    borderBottom: '1px solid #2b7b79',
-    marginBottom: -1,
-    minHeight: 56,
-    '&$expanded': {
-      minHeight: 56,
-    },
-  },
-  content: {
-    '&$expanded': {
-      margin: '4px 0',
-    },
-  },
-  expanded: {},
-})(MuiAccordionSummary);
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    width: '100%',
-  },
-  heading: {
-    fontSize: theme.typography.pxToRem(15),
-    fontWeight: theme.typography.fontWeightRegular,
-  },
-  expanded: {
-    '&$expanded': {
-      margin: '4px 0',
-    },
-  },
-}));
+} from '../../../shared/constants';
+import { Context } from '../../../store/Store';
+import { Accordion, AccordionSummary, useStyles } from './informationSheet.styles';
+import { getMonthDayString } from './informationSheet.constants';
+import CropSelectorCalendarView from '../../CropSelector/CropSelectorCalendarView';
+import CoverCropInformation from './CoverCropInformation';
+import SoilDrainageTimeline from '../SoilDrainageTimeline';
+import sources from '../../../shared/json/sources/sources.json';
+import TooltipMaker from '../TooltipMaker';
+import InformationSheetGoals from './InformationSheetGoals';
+import RenderExtendedComments from './RenderExtendedComments';
 
 const InformationSheetContent = (props) => {
-  const InfoGoals = ({ attribute, alternate }) => (crop[attribute] ? (
-    <div className="col-6 mb-2 row">
-      <span className="col">
-        <TooltipMaker variable={attribute} zone={crop.Zone}>
-          <Typography variant="body1">{attribute}</Typography>
-        </TooltipMaker>
-      </span>
-      <span>{getRating(crop[attribute] || crop[alternate])}</span>
-    </div>
-  ) : null); // InfoGoals
-
   const InfoWeeds = ({ attribute }) => (
     <>
       <div className="col-9 mb-2">
@@ -157,87 +96,20 @@ const InformationSheetContent = (props) => {
 
   return Object.keys(crop).length > 0 ? (
     <>
-      {pdf && (
-        <iframe id="PDF" title="pdf" src={`/pdf/${document.title}.pdf`} />
-      )}
-      <div className="row coverCropDescriptionWrapper avoidPage">
-        <div className="col-12 p-0">
-          <Typography variant="h6" className="text-uppercase px-3 py-2">
-            Cover Crop Description
-          </Typography>
+      {pdf && <iframe id="PDF" title="pdf" src={`/pdf/${document.title}.pdf`} />}
 
-          <Typography variant="body1" className="p-3">
-            {crop['Cover Crop Description']
-              ? crop['Cover Crop Description']
-              : crop['Crop Description']}
-          </Typography>
-        </div>
-      </div>
+      <CoverCropInformation
+        cropImage={crop['Image Data'] || null}
+        cropDescription={
+          crop['Cover Crop Description'] ? crop['Cover Crop Description'] : crop['Crop Description']
+        }
+      />
 
-      <div
-        className="d-flex justify-content-center mt-2 mb-2 photosWrapper avoidPage"
-        style={{
-          overflowX: 'auto',
-          whiteSpace: 'nowrap',
-          flexWrap: 'nowrap',
-          WebkitOverflowScrolling: 'touch',
-        }}
-      >
-        <PhotoComponent imageData={crop['Image Data'] ? crop['Image Data'] : null} />
-      </div>
-
-      <div className="row mt-2 coverCropGoalsWrapper avoidPage">
-        <div className="col-12 p-0">
-          <Accordion defaultExpanded>
-            <AccordionSummary expandIcon={<ExpandMore />} classes={{ expanded: classes.expanded }}>
-              <Typography variant="h6" className="text-uppercase px-3 py-2">
-                Goals
-              </Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <div className="row col-12 text-right">
-                <div className="col-6 mb-2 row">
-                  <span className="col">
-                    <TooltipMaker variable="Growing Window" zone={crop.Zone}>
-                      <Typography variant="body1">Growing Window</Typography>
-                    </TooltipMaker>
-                  </span>
-                  {/* <span className="col-3">{crop["Growing Window"]}</span> */}
-                  <span>
-                    <div className="blue-bg">
-                      <div
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          height: '20px',
-                        }}
-                      >
-                        <Typography variant="body1">{crop['Growing Window']}</Typography>
-                      </div>
-                    </div>
-                  </span>
-                </div>
-                <InfoGoals attribute="Penetrates Plow Pan" />
-                <InfoGoals attribute="Nitrogen Scavenging" />
-                <InfoGoals attribute="Reduces Surface Compaction" />
-                <InfoGoals attribute="Lasting Residue" />
-                <InfoGoals attribute="Improve Soil Organic Matter" />
-                <InfoGoals attribute="Prevent Fall Soil Erosion" />
-                <InfoGoals
-                  attribute="Increase Soil Aggregation"
-                  alternate="Improve Soil Aggregation"
-                />
-                <InfoGoals attribute="Prevent Spring Soil Erosion" />
-                <InfoGoals attribute="Good Grazing" />
-                <InfoGoals attribute="Forage Harvest Value" />
-                <InfoGoals attribute="Pollinator Food" />
-                <InfoGoals attribute="Nitrogen Fixation" />
-              </div>
-            </AccordionDetails>
-          </Accordion>
-        </div>
-      </div>
+      <InformationSheetGoals
+        crop={crop}
+        cropZone={crop.Zone}
+        cropGrowingWindow={crop['Growing Window']}
+      />
 
       <div className="row otherRows mb-4 avoidPage">
         <div className="col-7 col-lg-6 weedsRowWrapper" style={{ marginTop: '1em' }}>
@@ -736,10 +608,10 @@ const InformationSheetContent = (props) => {
                       <Typography variant="body1">
                         {crop['Frost Seeding']
                           ? `${moment(crop['Frost Seeding Start'], 'YYYY-MM-DD')
-                            .format('MM/DD')
-                            .toString()} - ${moment(crop['Frost Seeding End'], 'YYYY-MM-DD')
-                            .format('MM/DD')
-                            .toString()}`
+                              .format('MM/DD')
+                              .toString()} - ${moment(crop['Frost Seeding End'], 'YYYY-MM-DD')
+                              .format('MM/DD')
+                              .toString()}`
                           : 'N/A'}
                       </Typography>
                     </div>
@@ -751,8 +623,8 @@ const InformationSheetContent = (props) => {
                     </Typography>
                   </div>
                   <div className="mb-2">
-                    {crop['Second Reliable Establishment/Growth Start']
-                    && crop['Second Reliable Establishment/Growth End'] ? (
+                    {crop['Second Reliable Establishment/Growth Start'] &&
+                    crop['Second Reliable Establishment/Growth End'] ? (
                       <div className="blueBgFlex borderWrapped wd-112">
                         <div className="blue-bg shrt_perennial wd-110">
                           <Typography variant="body1">
@@ -765,13 +637,13 @@ const InformationSheetContent = (props) => {
                           </Typography>
                         </div>
                       </div>
-                      ) : (
-                        <div className="blue-bg shrt_perennial wd-110">
-                          <Typography variant="body1">
-                            {getMonthDayString('reliable', crop)}
-                          </Typography>
-                        </div>
-                      )}
+                    ) : (
+                      <div className="blue-bg shrt_perennial wd-110">
+                        <Typography variant="body1">
+                          {getMonthDayString('reliable', crop)}
+                        </Typography>
+                      </div>
+                    )}
                   </div>
 
                   <div className="col-9 mb-2">
@@ -781,8 +653,8 @@ const InformationSheetContent = (props) => {
                     </Typography>
                   </div>
                   <div className="mb-2">
-                    {crop['Second Temperature/Moisture Risk to Establishment Start']
-                    && crop['Second Temperature/Moisture Risk to Establishment End'] ? (
+                    {crop['Second Temperature/Moisture Risk to Establishment Start'] &&
+                    crop['Second Temperature/Moisture Risk to Establishment End'] ? (
                       <div className="blueBgFlex borderWrapped wd-112">
                         <div className="blue-bg shrt_perennial wd-110">
                           <Typography variant="body1">
@@ -795,13 +667,13 @@ const InformationSheetContent = (props) => {
                           </Typography>
                         </div>
                       </div>
-                      ) : (
-                        <div className="blue-bg shrt_perennial wd-110">
-                          <Typography variant="body1">
-                            {getMonthDayString('temperature', crop)}
-                          </Typography>
-                        </div>
-                      )}
+                    ) : (
+                      <div className="blue-bg shrt_perennial wd-110">
+                        <Typography variant="body1">
+                          {getMonthDayString('temperature', crop)}
+                        </Typography>
+                      </div>
+                    )}
                   </div>
 
                   <div className="col-9 mb-2">
@@ -936,25 +808,23 @@ const InformationSheetContent = (props) => {
                 <Typography variant="body1" className="p-3">
                   {currentSources.length > 0
                     ? currentSources.map((source, index) => (
-                      <Fragment key={index}>
-                        <a
-                          style={{
-                            textDecoration: 'underline',
-                            color: 'black',
-                            fontWeight: 'bolder',
-                          }}
-                          href={source.URL}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          {source['Resource Name']}
-                        </a>
-                        ,
-                        {' '}
-                        {source['Institution or Author']}
-                        <br />
-                      </Fragment>
-                    ))
+                        <Fragment key={index}>
+                          <a
+                            style={{
+                              textDecoration: 'underline',
+                              color: 'black',
+                              fontWeight: 'bolder',
+                            }}
+                            href={source.URL}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            {source['Resource Name']}
+                          </a>
+                          , {source['Institution or Author']}
+                          <br />
+                        </Fragment>
+                      ))
                     : ''}
                 </Typography>
               </AccordionDetails>
@@ -969,81 +839,3 @@ const InformationSheetContent = (props) => {
 };
 
 export default InformationSheetContent;
-
-const getMonthDayString = (type = '', crop = {}) => {
-  switch (type) {
-    case 'reliable': {
-      const startDate = moment(crop['Reliable Establishment/Growth Start'], 'YYYY-MM-DD');
-      const endDate = moment(crop['Reliable Establishment/Growth End'], 'YYYY-MM-DD');
-
-      return `${startDate.format('MM/DD')} - ${endDate.format('MM/DD')}`;
-    }
-    case 'reliable-second': {
-      const startDate = moment(crop['Second Reliable Establishment/Growth Start'], 'YYYY-MM-DD');
-      const endDate = moment(crop['Second Reliable Establishment/Growth End'], 'YYYY-MM-DD');
-
-      return `${startDate.format('MM/DD')} - ${endDate.format('MM/DD')}`;
-    }
-    case 'temperature': {
-      if (
-        crop['Temperature/Moisture Risk to Establishment Start']
-        && crop['Temperature/Moisture Risk to Establishment End']
-      ) {
-        const startDate = moment(
-          crop['Temperature/Moisture Risk to Establishment Start'],
-          'YYYY-MM-DD',
-        );
-        const endDate = moment(
-          crop['Temperature/Moisture Risk to Establishment End'],
-          'YYYY-MM-DD',
-        );
-        return `${startDate.format('MM/DD')} - ${endDate.format('MM/DD')}`;
-      }
-      return 'N/A';
-    }
-    case 'temperature-second': {
-      const startDate = moment(
-        crop['Second Temperature/Moisture Risk to Establishment Start'],
-        'YYYY-MM-DD',
-      );
-      const endDate = moment(
-        crop['Second Temperature/Moisture Risk to Establishment End'],
-        'YYYY-MM-DD',
-      );
-      return `${startDate.format('MM/DD')} - ${endDate.format('MM/DD')}`;
-    }
-    default:
-      return '';
-  }
-};
-
-const RenderExtendedComments = ({ crop = {} }) => {
-  const allKeysWithNotes = Object.keys(crop)
-    .filter((key) => key.includes('Notes:'))
-    .map((str) => ({ key: str, name: str.split(':')[1].trimStart() }));
-
-  return allKeysWithNotes.length > 0 ? (
-    <div className="row">
-      {allKeysWithNotes.map((obj, index) => (
-        <div key={`notesKey-${index}`} className="col-12">
-          <Typography variant="body1" className="p-3">
-            <b>
-              {obj.name}
-              :
-            </b>
-            {' '}
-            {crop[obj.key]}
-          </Typography>
-        </div>
-      ))}
-    </div>
-  ) : (
-    <div className="row">
-      <div className="col-12">
-        <Typography variant="body1" className="p-3">
-          No Data
-        </Typography>
-      </div>
-    </div>
-  );
-};
