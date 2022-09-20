@@ -11,7 +11,7 @@ import {
 import makeStyles from '@mui/styles/makeStyles';
 import { useSnackbar } from 'notistack';
 import React, {
-  Fragment, useContext, useEffect, useState,
+  useContext, useEffect, useState,
 } from 'react';
 import { trimString } from '../../shared/constants';
 import { Context } from '../../store/Store';
