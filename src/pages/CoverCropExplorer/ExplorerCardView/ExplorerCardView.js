@@ -13,7 +13,7 @@ import { useSnackbar } from 'notistack';
 import React, {
   useContext, useEffect, useState,
 } from 'react';
-import CropDetailsModal from '../../../components/CropDetailsModal';
+import CropDetailsModal from '../../../components/CropDetailsModal/CropDetailsModal';
 import { trimString } from '../../../shared/constants';
 import { Context } from '../../../store/Store';
 

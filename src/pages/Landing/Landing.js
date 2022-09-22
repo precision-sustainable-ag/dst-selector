@@ -11,7 +11,7 @@ import ReactGA from 'react-ga';
 import { LightButton } from '../../shared/constants';
 import { Context } from '../../store/Store';
 import '../../styles/landing.scss';
-import ConsentModal from '../CoverCropExplorer/ConsentModal';
+import ConsentModal from '../CoverCropExplorer/ConsentModal/ConsentModal';
 
 const Landing = ({ height, title, bg }) => {
   const { state, dispatch } = useContext(Context);

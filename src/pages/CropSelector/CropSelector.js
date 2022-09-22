@@ -17,9 +17,9 @@ import ReactGA from 'react-ga';
 import { Context } from '../../store/Store';
 import '../../styles/cropSelector.scss';
 import MyCoverCropList from '../MyCoverCropList/MyCoverCropList';
-import CropCalendarViewComponent from './CropCalendarView/CropCalendarView';
-import CropSidebarComponent from './CropSidebar';
-import CropTableComponent from './CropTable';
+import CropCalendarView from './CropCalendarView/CropCalendarView';
+import CropSidebarComponent from '../CropSidebar/CropSidebar';
+import CropTableComponent from './CropTable/CropTable';
 
 const _ = require('lodash');
 
@@ -265,7 +265,7 @@ const CropSelector = (props) => {
                 sortPreference={sortPreference}
               />
             ) : (
-              <CropCalendarViewComponent
+              <CropCalendarView
                 cropData={cropData}
                 activeCropData={activeCropData}
                 showGrowthWindow={showGrowthWindow}

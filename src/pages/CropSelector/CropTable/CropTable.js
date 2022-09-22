@@ -22,9 +22,9 @@ import { CustomStyles, flipCoverCropName, sudoButtonStyle } from '../../../share
 import { Context } from '../../../store/Store';
 import '../../../styles/cropCalendarViewComponent.scss';
 import '../../../styles/cropTable.scss';
-import CropLegendModal from '../../../components/CropLegendModal';
+import CropLegendModal from '../../../components/CropLegendModal/CropLegendModal';
 import CropDataRender from './CropDataRender';
-import CropDetailsModal from '../../../components/CropDetailsModal';
+import CropDetailsModal from '../../../components/CropDetailsModal/CropDetailsModal';
 
 const CropTableComponent = ({
   cropData, activeCropData, showGrowthWindow, sortAllCrops, sortPreference,

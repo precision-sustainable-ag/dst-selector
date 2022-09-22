@@ -19,8 +19,8 @@ import { Search } from '@mui/icons-material';
 import React, { useContext, useEffect, useState } from 'react';
 import { Context } from '../../store/Store';
 import '../../styles/location.scss';
-import GoogleAutocomplete from './GoogleAutocomplete';
-import MapContext from './MapContext';
+import GoogleAutocomplete from './GoogleAutocomplete/GoogleAutocomplete';
+import MapContext from './MapContext/MapContext';
 
 const useStyles = makeStyles((theme) => ({
   formControl: {

@@ -11,7 +11,7 @@ import Skeleton from '@mui/material/Skeleton';
 import React, { useContext, useEffect, useState } from 'react';
 import { Context } from '../../store/Store';
 import '../../styles/goalsSelector.scss';
-import GoalTag from './GoalTag';
+import GoalTag from './GoalTag/GoalTag';
 
 const useStyles = makeStyles((theme) => ({
   root: {

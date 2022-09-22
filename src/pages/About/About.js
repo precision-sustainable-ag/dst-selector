@@ -11,7 +11,7 @@ import React, { Fragment, useContext, useEffect } from 'react';
 import ReactGA from 'react-ga';
 import { CustomStyles } from '../../shared/constants';
 import Header from '../Header/Header';
-import MITLicenseText from '../License/MITLicenseText';
+import MITLicenseText from '../License/MITLicenseText/MITLicenseText';
 import { Context } from '../../store/Store';
 
 const About = () => {

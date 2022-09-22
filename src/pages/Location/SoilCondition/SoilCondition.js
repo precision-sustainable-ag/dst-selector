@@ -11,9 +11,9 @@ import React, { useContext, useEffect, useState } from 'react';
 import { ReferenceTooltip } from '../../../shared/constants';
 import { Context } from '../../../store/Store';
 import '../../../styles/soilConditions.scss';
-import SoilComposition from './SoilComposition';
-import SoilDrainage from './SoilDrainage';
-import SoilFloodingFrequency from './SoilFloodingFrequency';
+import SoilComposition from './SoilComposition/SoilComposition';
+import SoilDrainage from './SoilDrainage/SoilDrainage';
+import SoilFloodingFrequency from './SoilFloodingFrequency/SoilFloodingFrequency';
 
 const SoilCondition = () => {
   const { state, dispatch } = useContext(Context);
@@ -100,6 +100,7 @@ const SoilCondition = () => {
 
             const floodingClasses = [];
             result.Table.forEach((el, index) => {
+              // eslint-disable-next-line no-empty
               if (index === 0 || el.indexOf('Water') === 1) {
               } else if (floodingClasses.indexOf(el[3]) === -1) {
                 floodingClasses.push(el[3]);
@@ -145,6 +146,7 @@ const SoilCondition = () => {
             },
           });
         })
+        // eslint-disable-next-line no-console
         .catch((error) => console.error('SSURGO FETCH ERROR', error));
     };
 

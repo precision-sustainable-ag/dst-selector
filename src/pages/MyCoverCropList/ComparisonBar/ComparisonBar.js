@@ -11,8 +11,8 @@ import {
   Button, List, ListItem, ListItemText, ListSubheader,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import RenderFilters from './RenderFilters';
-import RenderGoals from './RenderGoals';
+import RenderFilters from './RenderFilters/RenderFilters';
+import RenderGoals from './RenderGoals/RenderGoals';
 
 const ComparisonBar = ({
   filterData, goals, comparisonKeys, dispatch, comparisonView, classes,
