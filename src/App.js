@@ -5,12 +5,12 @@
 
 import { Snackbar } from '@mui/material';
 import React, { useContext, useEffect, useState } from 'react';
-import CropSelector from './components/CropSelector/CropSelector';
-import GoalsSelector from './components/GoalsSelector/GoalsSelector';
-import Header from './components/Header/Header';
-import Landing from './components/Landing/Landing';
-import LocationComponent from './components/Location/Location';
-import LocationConfirmation from './components/Location/LocationConfirmation';
+import CropSelector from './pages/CropSelector/CropSelector';
+import GoalsSelector from './pages/GoalsSelector/GoalsSelector';
+import Header from './pages/Header/Header';
+import Landing from './pages/Landing/Landing';
+import LocationComponent from './pages/Location/Location';
+import LocationConfirmation from './pages/Location/LocationConfirmation/LocationConfirmation';
 import ProgressBar from './shared/ProgressBar';
 import ProgressButtons from './shared/ProgressButtons';
 import { Context } from './store/Store';

@@ -25,17 +25,17 @@ import 'leaflet-control-geocoder/dist/Control.Geocoder.js';
 import './styles/parent.scss';
 import 'mdbreact/dist/css/mdb.css';
 import './styles/progressBar.css';
-import Footer from './components/Footer/Footer';
-import About from './components/About/About';
-import SeedingRateCalculator from './components/SeedingRateCalculator/SeedingRateCalculator';
-import MixMaker from './components/MixMaker/MixMaker';
-import CoverCropExplorer from './components/CoverCropExplorer/CoverCropExplorer';
-import HelpComponent from './components/Help/Help';
-import FeedbackComponent from './components/Feedback/Feedback';
+import Footer from './pages/Footer/Footer';
+import About from './pages/About/About';
+import SeedingRateCalculator from './pages/SeedingRateCalculator/SeedingRateCalculator';
+import MixMaker from './pages/MixMaker/MixMaker';
+import CoverCropExplorer from './pages/CoverCropExplorer/CoverCropExplorer';
+import HelpComponent from './pages/Help/Help';
+import FeedbackComponent from './pages/Feedback/Feedback';
 import { CustomStyles } from './shared/constants';
-import InformationSheetDictionary from './components/InformationSheet/InformationSheetDictionary';
-import MyCoverCropListWrapper from './components/MyCoverCropList/MyCoverCropListWrapper';
-import License from './components/License/License';
+import InformationSheetDictionary from './pages/InformationSheet/InformationSheetDictionary';
+import License from './pages/License/License';
+import MyCoverCropListWrapper from './pages/MyCoverCropList/MyCoverCropListWrapper/MyCoverCropListWrapper';
 
 const withFooter = (WrappedComponent) => () => [<WrappedComponent key="1" />, <Footer key="2" />];
 
