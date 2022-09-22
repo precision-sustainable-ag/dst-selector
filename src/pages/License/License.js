@@ -6,8 +6,8 @@
 import { Grid } from '@mui/material';
 import React, { useEffect } from 'react';
 import Header from '../Header/Header';
-import AgInformaticsLicenseText from './AgInformaticsLicenseText';
-import MITLicenseText from './MITLicenseText';
+import MITLicenseText from './MITLicenseText/MITLicenseText';
+import AgInformaticsLicenseText from './AgInformaticsLicenseText/AgInformaticsLicenseText';
 
 const License = ({ licenseType = 'MIT' }) => {
   useEffect(() => {

@@ -9,7 +9,9 @@
 import { AccordionDetails, Typography } from '@mui/material';
 import { ExpandMore, FiberManualRecord } from '@mui/icons-material';
 import moment from 'moment-timezone';
-import React, { Fragment, useContext, useEffect, useState } from 'react';
+import React, {
+  Fragment, useContext, useEffect, useState,
+} from 'react';
 import {
   allMonths,
   getActiveCropMonths,
@@ -18,14 +20,14 @@ import {
 } from '../../../shared/constants';
 import { Context } from '../../../store/Store';
 import { Accordion, AccordionSummary, useStyles } from './informationSheet.styles';
-import { getMonthDayString } from './informationSheet.constants';
-import CropSelectorCalendarView from '../../CropSelector/CropSelectorCalendarView';
+import getMonthDayString from './informationSheet.constants';
 import CoverCropInformation from './CoverCropInformation';
 import SoilDrainageTimeline from '../SoilDrainageTimeline';
 import sources from '../../../shared/json/sources/sources.json';
 import TooltipMaker from '../TooltipMaker';
 import InformationSheetGoals from './InformationSheetGoals';
 import RenderExtendedComments from './RenderExtendedComments';
+import CropSelectorCalendarView from '../../../components/CropSelectorCalendarView/CropSelectorCalendarView';
 
 const InformationSheetContent = (props) => {
   const InfoWeeds = ({ attribute }) => (
@@ -608,10 +610,10 @@ const InformationSheetContent = (props) => {
                       <Typography variant="body1">
                         {crop['Frost Seeding']
                           ? `${moment(crop['Frost Seeding Start'], 'YYYY-MM-DD')
-                              .format('MM/DD')
-                              .toString()} - ${moment(crop['Frost Seeding End'], 'YYYY-MM-DD')
-                              .format('MM/DD')
-                              .toString()}`
+                            .format('MM/DD')
+                            .toString()} - ${moment(crop['Frost Seeding End'], 'YYYY-MM-DD')
+                            .format('MM/DD')
+                            .toString()}`
                           : 'N/A'}
                       </Typography>
                     </div>
@@ -623,8 +625,8 @@ const InformationSheetContent = (props) => {
                     </Typography>
                   </div>
                   <div className="mb-2">
-                    {crop['Second Reliable Establishment/Growth Start'] &&
-                    crop['Second Reliable Establishment/Growth End'] ? (
+                    {crop['Second Reliable Establishment/Growth Start']
+                    && crop['Second Reliable Establishment/Growth End'] ? (
                       <div className="blueBgFlex borderWrapped wd-112">
                         <div className="blue-bg shrt_perennial wd-110">
                           <Typography variant="body1">
@@ -637,13 +639,13 @@ const InformationSheetContent = (props) => {
                           </Typography>
                         </div>
                       </div>
-                    ) : (
-                      <div className="blue-bg shrt_perennial wd-110">
-                        <Typography variant="body1">
-                          {getMonthDayString('reliable', crop)}
-                        </Typography>
-                      </div>
-                    )}
+                      ) : (
+                        <div className="blue-bg shrt_perennial wd-110">
+                          <Typography variant="body1">
+                            {getMonthDayString('reliable', crop)}
+                          </Typography>
+                        </div>
+                      )}
                   </div>
 
                   <div className="col-9 mb-2">
@@ -653,8 +655,8 @@ const InformationSheetContent = (props) => {
                     </Typography>
                   </div>
                   <div className="mb-2">
-                    {crop['Second Temperature/Moisture Risk to Establishment Start'] &&
-                    crop['Second Temperature/Moisture Risk to Establishment End'] ? (
+                    {crop['Second Temperature/Moisture Risk to Establishment Start']
+                    && crop['Second Temperature/Moisture Risk to Establishment End'] ? (
                       <div className="blueBgFlex borderWrapped wd-112">
                         <div className="blue-bg shrt_perennial wd-110">
                           <Typography variant="body1">
@@ -667,13 +669,13 @@ const InformationSheetContent = (props) => {
                           </Typography>
                         </div>
                       </div>
-                    ) : (
-                      <div className="blue-bg shrt_perennial wd-110">
-                        <Typography variant="body1">
-                          {getMonthDayString('temperature', crop)}
-                        </Typography>
-                      </div>
-                    )}
+                      ) : (
+                        <div className="blue-bg shrt_perennial wd-110">
+                          <Typography variant="body1">
+                            {getMonthDayString('temperature', crop)}
+                          </Typography>
+                        </div>
+                      )}
                   </div>
 
                   <div className="col-9 mb-2">
@@ -808,23 +810,25 @@ const InformationSheetContent = (props) => {
                 <Typography variant="body1" className="p-3">
                   {currentSources.length > 0
                     ? currentSources.map((source, index) => (
-                        <Fragment key={index}>
-                          <a
-                            style={{
-                              textDecoration: 'underline',
-                              color: 'black',
-                              fontWeight: 'bolder',
-                            }}
-                            href={source.URL}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            {source['Resource Name']}
-                          </a>
-                          , {source['Institution or Author']}
-                          <br />
-                        </Fragment>
-                      ))
+                      <Fragment key={index}>
+                        <a
+                          style={{
+                            textDecoration: 'underline',
+                            color: 'black',
+                            fontWeight: 'bolder',
+                          }}
+                          href={source.URL}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {source['Resource Name']}
+                        </a>
+                        ,
+                        {' '}
+                        {source['Institution or Author']}
+                        <br />
+                      </Fragment>
+                    ))
                     : ''}
                 </Typography>
               </AccordionDetails>

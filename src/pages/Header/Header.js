@@ -25,9 +25,9 @@ import zone6DataDictionary from '../../shared/json/zone6/data-dictionary.json';
 import zone7DataDictionary from '../../shared/json/zone7/data-dictionary.json';
 import { Context } from '../../store/Store';
 import '../../styles/header.scss';
-import DateComponent from './DateComponent';
-import ForecastComponent from './ForecastComponent';
-import Greenbar from './Greenbar/Greenbar';
+import DateComponent from './DateComponent/DateComponent';
+import ForecastComponent from './ForecastComponent/ForecastComponent';
+import InformationBar from './InformationBar/InformationBar';
 
 const Header = () => {
   const history = useHistory();
@@ -590,7 +590,7 @@ const Header = () => {
         </MDBContainer>
       </MDBNavbar>
 
-      <Greenbar />
+      <InformationBar />
 
       {window.location.pathname === '/about'
       || window.location.pathname === '/help'

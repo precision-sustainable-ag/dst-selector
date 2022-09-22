@@ -34,8 +34,8 @@ import HelpComponent from './pages/Help/Help';
 import FeedbackComponent from './pages/Feedback/Feedback';
 import { CustomStyles } from './shared/constants';
 import InformationSheetDictionary from './pages/InformationSheet/InformationSheetDictionary';
-import MyCoverCropListWrapper from './pages/MyCoverCropList/MyCoverCropListWrapper';
 import License from './pages/License/License';
+import MyCoverCropListWrapper from './pages/MyCoverCropList/MyCoverCropListWrapper/MyCoverCropListWrapper';
 
 const withFooter = (WrappedComponent) => () => [<WrappedComponent key="1" />, <Footer key="2" />];
 

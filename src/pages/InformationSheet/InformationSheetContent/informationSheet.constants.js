@@ -1,6 +1,6 @@
 import moment from 'moment-timezone';
 
-export const getMonthDayString = (type = '', crop = {}) => {
+const getMonthDayString = (type = '', crop = {}) => {
   switch (type) {
     case 'reliable': {
       const startDate = moment(crop['Reliable Establishment/Growth Start'], 'YYYY-MM-DD');
@@ -16,8 +16,8 @@ export const getMonthDayString = (type = '', crop = {}) => {
     }
     case 'temperature': {
       if (
-        crop['Temperature/Moisture Risk to Establishment Start'] &&
-        crop['Temperature/Moisture Risk to Establishment End']
+        crop['Temperature/Moisture Risk to Establishment Start']
+        && crop['Temperature/Moisture Risk to Establishment End']
       ) {
         const startDate = moment(
           crop['Temperature/Moisture Risk to Establishment Start'],
@@ -46,3 +46,5 @@ export const getMonthDayString = (type = '', crop = {}) => {
       return '';
   }
 };
+
+export default getMonthDayString;

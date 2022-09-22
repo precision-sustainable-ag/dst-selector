@@ -29,15 +29,15 @@ import {
 } from '../../../shared/constants';
 import { Context } from '../../../store/Store';
 import '../../../styles/cropCalendarViewComponent.scss';
-import CropDetailsModalComponent from '../CropDetailsModal';
-import CropLegendModal from '../CropLegendModal';
+import CropLegendModal from '../../../components/CropLegendModal/CropLegendModal';
 import RenderCrops from './RenderCrops';
+import CropDetailsModal from '../../../components/CropDetailsModal/CropDetailsModal';
 
 const growthIcon = {
   color: 'white',
 };
 
-const CropCalendarViewComponent = ({ activeCropData }) => {
+const CropCalendarView = ({ activeCropData }) => {
   const { state, dispatch } = useContext(Context);
   const [legendModal, setLegendModal] = useState(false);
   const [nameSortFlag, setNameSortFlag] = useState(true);
@@ -390,7 +390,7 @@ const CropCalendarViewComponent = ({ activeCropData }) => {
         handleLegendModal={handleLegendModal}
         disableBackdropClick={false}
       />
-      <CropDetailsModalComponent
+      <CropDetailsModal
         modalOpen={modalOpen}
         setModalOpen={setModalOpen}
         crop={modalData}
@@ -399,4 +399,4 @@ const CropCalendarViewComponent = ({ activeCropData }) => {
   );
 };
 
-export default CropCalendarViewComponent;
+export default CropCalendarView;

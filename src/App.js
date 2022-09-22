@@ -10,7 +10,7 @@ import GoalsSelector from './pages/GoalsSelector/GoalsSelector';
 import Header from './pages/Header/Header';
 import Landing from './pages/Landing/Landing';
 import LocationComponent from './pages/Location/Location';
-import LocationConfirmation from './pages/Location/LocationConfirmation';
+import LocationConfirmation from './pages/Location/LocationConfirmation/LocationConfirmation';
 import ProgressBar from './shared/ProgressBar';
 import ProgressButtons from './shared/ProgressButtons';
 import { Context } from './store/Store';

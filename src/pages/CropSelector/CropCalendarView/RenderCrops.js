@@ -7,7 +7,7 @@ import {
   trimString,
   getRating,
 } from '../../../shared/constants';
-import CropSelectorCalendarView from '../CropSelectorCalendarView';
+import CropSelectorCalendarView from '../../../components/CropSelectorCalendarView/CropSelectorCalendarView';
 import { Context } from '../../../store/Store';
 import '../../../styles/cropCalendarViewComponent.scss';
 

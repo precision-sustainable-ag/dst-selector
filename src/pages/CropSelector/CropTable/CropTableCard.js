@@ -5,7 +5,7 @@ import { CustomStyles, getRating, LightButton } from '../../../shared/constants'
 import { Context } from '../../../store/Store';
 import '../../../styles/cropCalendarViewComponent.scss';
 import '../../../styles/cropTable.scss';
-import CropSelectorCalendarView from '../../../components/CropSelectorCalendarView';
+import CropSelectorCalendarView from '../../../components/CropSelectorCalendarView/CropSelectorCalendarView';
 
 const CropTableCard = ({
   crop, indexKey, showGrowthWindow, handleModalOpen,

@@ -11,8 +11,8 @@ import React, { Fragment, useContext, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import ReactGA from 'react-ga';
 import { Context } from '../../store/Store';
-import MyCoverCropCardsComponent from './MyCoverCropCardsComponent';
-import MyCoverCropComparisonComponent from './MyCoverCropComparisonComponent';
+import MyCoverCropComparison from './MyCoverCropComparison/MyCoverCropComparison';
+import MyCoverCropCards from './MyCoverCropCards/MyCoverCropCards';
 
 const MyCoverCropList = ({ comparisonView, from }) => {
   const { state, dispatch } = useContext(Context);
@@ -110,7 +110,7 @@ const MyCoverCropList = ({ comparisonView, from }) => {
         <>
           <TopBar view={comparison} />
           <div className="row mt-2">
-            <MyCoverCropComparisonComponent selectedCrops={state.selectedCrops} />
+            <MyCoverCropComparison selectedCrops={state.selectedCrops} />
           </div>
         </>
       ) : (
@@ -119,7 +119,7 @@ const MyCoverCropList = ({ comparisonView, from }) => {
           <div className="row">
             <div className="d-flex flex-wrap mt-2">
               {state.selectedCrops.map((crop, index) => (
-                <MyCoverCropCardsComponent
+                <MyCoverCropCards
                   key={index}
                   cardNo={index + 1}
                   data={crop.data}

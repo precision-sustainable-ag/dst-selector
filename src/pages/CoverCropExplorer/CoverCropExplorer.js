@@ -8,10 +8,10 @@ import { Grid, Typography } from '@mui/material';
 import React, { useContext, useEffect, useState } from 'react';
 import ReactGA from 'react-ga';
 import { Context } from '../../store/Store';
-import CropSidebarComponent from '../CropSelector/CropSidebar';
 import Header from '../Header/Header';
-import ExplorerCardView from './ExplorerCardView';
-import ConsentModal from './ConsentModal';
+import ExplorerCardView from './ExplorerCardView/ExplorerCardView';
+import ConsentModal from './ConsentModal/ConsentModal';
+import CropSidebar from '../CropSidebar/CropSidebar';
 
 const CoverCropExplorer = () => {
   const { state } = useContext(Context);
@@ -45,7 +45,7 @@ const CoverCropExplorer = () => {
       <div className="container-fluid mt-4 mb-4">
         <div className="row mt-3">
           <div className="col-md-12 col-lg-3 col-xl-2 col-12">
-            <CropSidebarComponent
+            <CropSidebar
               from="explorer"
               cropDataChanged={cropDataChanged}
               activeCropData={activeCropData.length > 0 ? activeCropData : state.cropData}
