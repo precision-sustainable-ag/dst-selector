@@ -11,7 +11,7 @@ import TimelineDot from '@mui/lab/TimelineDot';
 import TimelineItem from '@mui/lab/TimelineItem';
 import TimelineSeparator from '@mui/lab/TimelineSeparator';
 import React from 'react';
-import { CustomStyles } from '../../shared/constants';
+import { CustomStyles } from '../../../shared/constants';
 
 const SoilDrainageTimeline = ({ drainage = [] }) => {
   const drainageClasses = [
