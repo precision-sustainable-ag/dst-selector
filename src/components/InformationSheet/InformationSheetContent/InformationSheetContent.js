@@ -10,50 +10,23 @@ import { AccordionDetails, Typography } from '@mui/material';
 import { ExpandMore, FiberManualRecord } from '@mui/icons-material';
 import moment from 'moment-timezone';
 import React, { Fragment, useContext, useEffect, useState } from 'react';
-import {
-  allMonths,
-  getActiveCropMonths,
-  getRating,
-  RenderSeedPriceIcons,
-} from '../../../shared/constants';
+import { allMonths, getActiveCropMonths, RenderSeedPriceIcons } from '../../../shared/constants';
 import { Context } from '../../../store/Store';
 import { Accordion, AccordionSummary, useStyles } from './informationSheet.styles';
 import { getMonthDayString } from './informationSheet.constants';
 import CropSelectorCalendarView from '../../CropSelector/CropSelectorCalendarView';
 import CoverCropInformation from './CoverCropInformation';
-import SoilDrainageTimeline from '../SoilDrainageTimeline';
 import sources from '../../../shared/json/sources/sources.json';
 import TooltipMaker from '../TooltipMaker';
 import InformationSheetGoals from './InformationSheetGoals';
+import InformationSheetWeeds from './InformationSheetWeeds';
+import InformationSheetEnvironment from './InformationSheetEnvironment';
+import GrowthTraits from './GrowthTraits';
 import RenderExtendedComments from './RenderExtendedComments';
+import SoilDrainageInfoContent from './SoilDrainageInfoContent';
+import TerminationInfo from './TerminationInfo';
 
 const InformationSheetContent = (props) => {
-  const InfoWeeds = ({ attribute }) => (
-    <>
-      <div className="col-9 mb-2">
-        <TooltipMaker variable={attribute} zone={crop.Zone}>
-          <Typography variant="body1">{attribute}</Typography>
-        </TooltipMaker>
-      </div>
-      <div className="mb-2">{getRating(crop[attribute])}</div>
-    </>
-  ); // InfoWeeds
-
-  const InfoEnvironmentalTermination = ({
-    attribute,
-    text = attribute.replace(/\bat\b/, 'At'),
-    variable,
-  }) => (
-    <>
-      <div className="col-8 mb-2">
-        <TooltipMaker variable={variable} zone={crop.Zone}>
-          <Typography variant="body1">{text}</Typography>
-        </TooltipMaker>
-      </div>
-      <div className="mb-2">{getRating(crop[attribute])}</div>
-    </>
-  ); // InfoEnvironmentalTermination
-
   const { state } = useContext(Context);
   const section = window.location.href.includes('selector') ? 'selector' : 'explorer';
   const { zone } = state[section];
@@ -75,7 +48,7 @@ const InformationSheetContent = (props) => {
 
     const regex = /(?!\B"[^"]*),(?![^"]*"\B)/g;
     const removeDoubleQuotes = /^"(.+(?="$))"$/;
-    const relevantZones = sources.filter((source, index) => {
+    const relevantZones = sources.filter((source) => {
       const zones = source.Zone.split(',').map((item) => item.trim());
       const coverCrops = source['Cover Crops']
         .split(regex)
@@ -112,323 +85,13 @@ const InformationSheetContent = (props) => {
       />
 
       <div className="row otherRows mb-4 avoidPage">
-        <div className="col-7 col-lg-6 weedsRowWrapper" style={{ marginTop: '1em' }}>
-          <Accordion defaultExpanded style={{ border: '1px solid #2b7b79' }}>
-            <AccordionSummary expandIcon={<ExpandMore />} classes={{ expanded: classes.expanded }}>
-              <div className="col-12 otherHeaderRow p-0">
-                <Typography variant="h6" className="px-3 py-2 text-uppercase">
-                  Weeds
-                </Typography>
-              </div>
-            </AccordionSummary>
-            <AccordionDetails>
-              <div className="row col-12 text-right">
-                <InfoWeeds attribute="Residue Suppresses Summer Annual Weeds" />
-                <InfoWeeds attribute="Outcompetes Summer Annual Weeds" />
-                <InfoWeeds attribute="Suppresses Winter Annual Weeds" />
-                <InfoWeeds attribute="Persistence" />
-                <InfoWeeds attribute="Volunteer Establishment" />
-              </div>
-            </AccordionDetails>
-          </Accordion>
-        </div>
-
-        <div className="col-5 col-lg-6 envTolWrapper" style={{ marginTop: '1em' }}>
-          <Accordion defaultExpanded style={{ border: '1px solid #2b7b79' }}>
-            <AccordionSummary expandIcon={<ExpandMore />} classes={{ expanded: classes.expanded }}>
-              <div className="col-12 otherHeaderRow p-0">
-                <Typography variant="h6" className="px-3 py-2 text-uppercase">
-                  Environmental&nbsp;Tolerances
-                </Typography>
-              </div>
-            </AccordionSummary>
-            <AccordionDetails>
-              <div className="row col-12 text-right">
-                <InfoEnvironmentalTermination
-                  attribute="Low Fertility"
-                  variable="Low Fertility Tolerance"
-                />
-                <InfoEnvironmentalTermination attribute="Drought" variable="Drought Tolerance" />
-                <InfoEnvironmentalTermination attribute="Heat" variable="Heat Tolerance" />
-                <InfoEnvironmentalTermination attribute="Shade" variable="Shade Tolerance" />
-                <InfoEnvironmentalTermination attribute="Flood" variable="Flood Tolerance" />
-                <InfoEnvironmentalTermination attribute="Salinity" variable="Salinity Tolerance" />
-              </div>
-            </AccordionDetails>
-          </Accordion>
-        </div>
+        <InformationSheetWeeds crop={crop} />
+        <InformationSheetEnvironment crop={crop} />
       </div>
 
       <div className="row otherRows mb-4 avoidPage">
-        <div className="col-7 col-lg-6 basicAgWrapper">
-          <div className="col-12 otherHeaderRow p-0" style={{ marginTop: '1em', float: 'left' }}>
-            <Accordion defaultExpanded style={{ border: '1px solid #2b7b79' }}>
-              <AccordionSummary
-                expandIcon={<ExpandMore />}
-                classes={{ expanded: classes.expanded }}
-              >
-                <Typography variant="h6" className="px-3 py-2" style={{ border: '0px' }}>
-                  Growth Traits
-                </Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                <div className="row col-12 text-right">
-                  <div className="col-9 mb-2">
-                    <TooltipMaker variable="Duration" zone={crop.Zone}>
-                      <Typography variant="body1">Duration</Typography>
-                    </TooltipMaker>
-                  </div>
-                  <div className="mb-2">
-                    <div
-                      className={`blue-bg ${
-                        crop.Duration.includes('Short-lived Perennial') ? 'shrt_perennial' : ''
-                      }`}
-                    >
-                      <Typography variant="body1">{crop.Duration.toString()}</Typography>
-                    </div>
-                  </div>
-
-                  <div className="col-9 mb-2">
-                    <TooltipMaker variable="Zone Use" zone={crop.Zone}>
-                      <Typography variant="body1">Zone Use</Typography>
-                    </TooltipMaker>
-                  </div>
-                  <div className="mb-2">
-                    <div className="blue-bg">
-                      <Typography variant="body1">{crop['Zone Use']}</Typography>
-                    </div>
-                  </div>
-
-                  <div className="col-9 mb-2">
-                    <TooltipMaker variable="Shape & Orientation" zone={crop.Zone}>
-                      <Typography variant="body1">Shape And Orientation</Typography>
-                    </TooltipMaker>
-                  </div>
-                  <div className="mb-2">
-                    <div
-                      className={`blueBgFlex ${
-                        crop['Shape & Orientation'].length > 1 ? 'borderWrapped' : ''
-                      }`}
-                    >
-                      {crop['Shape & Orientation'].map((val, index) => (
-                        <div className="blue-bg bordered" key={index}>
-                          <Typography variant="body1">{val}</Typography>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* <div className="col-9 mb-2">
-                    <Typography variant="body1">C:N</Typography>
-                  </div>
-                  <div className="col-3 mb-2">
-                    {getRating(crop["C to N Ratio"])}
-                  </div> */}
-
-                  <div className="col-9 mb-2">
-                    <Typography variant="body1">Dry Matter (Lbs/A/Yr)</Typography>
-                  </div>
-                  <div className="mb-2">
-                    <div className="blue-bg">
-                      <Typography variant="body1">
-                        {`${crop['Dry Matter Min (lbs/A/y)']} - ${crop['Dry Matter Max (lbs/A/y)']}`}
-                      </Typography>
-                    </div>
-                  </div>
-
-                  <div className="col-9 mb-2">
-                    <TooltipMaker variable="Soil Textures" zone={crop.Zone}>
-                      <Typography variant="body1">Soil Texture</Typography>
-                    </TooltipMaker>
-                  </div>
-                  <div className="mb-2 text-capitalize">
-                    <div
-                      className={`blueBgFlex ${
-                        crop['Soil Textures'].length > 1 ? 'borderWrapped' : ''
-                      }`}
-                    >
-                      {crop['Soil Textures'].map((val, index) => (
-                        <div className="blue-bg bordered" key={index}>
-                          <Typography variant="body1">{val}</Typography>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="col-9 mb-2">
-                    <Typography variant="body1">Soil pH</Typography>
-                  </div>
-                  <div className="mb-2">
-                    <div className="blue-bg">
-                      <Typography variant="body1">
-                        {`${crop['Minimum Tolerant Soil pH']} - ${crop['Maximum Tolerant Soil pH']}`}
-                      </Typography>
-                    </div>
-                  </div>
-
-                  <div className="col-9 mb-2">
-                    <TooltipMaker variable="Soil Moisture Use" zone={crop.Zone}>
-                      <Typography variant="body1">Soil Moisture Use</Typography>
-                    </TooltipMaker>
-                  </div>
-                  <div className="mb-2">
-                    <div className="blue-bg">
-                      <Typography variant="body1">{crop['Soil Moisture Use']}</Typography>
-                    </div>
-                  </div>
-
-                  <div className="col-9 mb-2">
-                    <TooltipMaker variable="Hessian Fly-Free Date" zone={crop.Zone}>
-                      <Typography variant="body1">Hessian Fly Free Date?</Typography>
-                    </TooltipMaker>
-                  </div>
-                  <div className="mb-2">
-                    <div className="blue-bg">
-                      <Typography variant="body1">
-                        {crop['Hessian Fly Free Date'] ? crop['Hessian Fly Free Date'] : 'No'}
-                      </Typography>
-                    </div>
-                  </div>
-
-                  {crop['Nitrogen Accumulation Max, Legumes (lbs/A/y)'] ? (
-                    <>
-                      <div className="col-9 mb-2">
-                        <Typography variant="body1">Nitrogen Accumulation (Lbs/A/Yr)</Typography>
-                      </div>
-                      <div className="mb-2">
-                        <div className="blue-bg">
-                          <Typography variant="body1">
-                            {`${crop['Nitrogen Accumulation Min, Legumes (lbs/A/y)']} - ${crop['Nitrogen Accumulation Max, Legumes (lbs/A/y)']}`}
-                          </Typography>
-                        </div>
-                      </div>
-                    </>
-                  ) : (
-                    ''
-                  )}
-
-                  <div className="col-9 mb-2">
-                    <TooltipMaker variable="Ease of Establishment" zone={crop.Zone}>
-                      <Typography variant="body1">Ease Of Establishment</Typography>
-                    </TooltipMaker>
-                  </div>
-                  <div className="mb-2">{getRating(crop['Ease of Establishment'])}</div>
-
-                  <div className="col-9 mb-2">
-                    <TooltipMaker variable="Establishes Quickly" zone={crop.Zone}>
-                      <Typography variant="body1">Establishes Quickly</Typography>
-                    </TooltipMaker>
-                  </div>
-                  <div className="mb-2">{getRating(crop['Establishes Quickly'])}</div>
-
-                  <div className="col-9 mb-2">
-                    <TooltipMaker variable="Early Spring Growth" zone={crop.Zone}>
-                      <Typography variant="body1">Early Spring Growth</Typography>
-                    </TooltipMaker>
-                  </div>
-                  <div className="mb-2">{getRating(crop['Early Spring Growth'])}</div>
-
-                  <div className="col-9 mb-2">
-                    <TooltipMaker variable="Flowering Trigger" zone={crop.Zone}>
-                      <Typography variant="body1">Flowering Trigger</Typography>
-                    </TooltipMaker>
-                  </div>
-                  <div className="mb-2">
-                    <div className="blue-bg">
-                      <Typography variant="body1">{crop['Flowering Trigger']}</Typography>
-                    </div>
-                  </div>
-
-                  {/* <div className="col-9 mb-2">
-                    <Typography variant="body1">Root Architecture</Typography>
-                  </div>
-                  <div className="col-3 mb-2">
-                    <div
-                      className={`blueBgFlex ${
-                        crop["Root Architecture"].length > 1
-                          ? `borderWrapped`
-                          : ``
-                      }`}
-                    >
-                      {crop["Root Architecture"].map((val, index) => (
-                        <div className="blue-bg bordered" key={index}>
-                          <Typography
-                            variant="body1"
-                            className="text-capitalize"
-                          >
-                            {val}
-                          </Typography>
-                        </div>
-                      ))}
-                    </div>
-                  </div> */}
-
-                  <div className="col-9 mb-2">
-                    <TooltipMaker variable="Root Depth" zone={crop.Zone}>
-                      <Typography variant="body1">Root Depth</Typography>
-                    </TooltipMaker>
-                  </div>
-                  <div className="mb-2">
-                    <div className="blue-bg">
-                      <Typography variant="body1">{crop['Root Depth']}</Typography>
-                    </div>
-                  </div>
-
-                  {crop['Inoculant Type'][0] !== 'none' ? (
-                    <>
-                      <div className="col-9 mb-2">
-                        <TooltipMaker variable="Innoculant Type" zone={crop.Zone}>
-                          <Typography variant="body1">Inoculant Type</Typography>
-                        </TooltipMaker>
-                      </div>
-                      <div className="mb-2">
-                        <div
-                          className={`blueBgFlex ${
-                            crop['Inoculant Type'].length > 1 ? 'borderWrapped' : ''
-                          }`}
-                        >
-                          {crop['Inoculant Type'].map((val, index) => (
-                            <div
-                              className="blue-bg bordered"
-                              key={index}
-                              style={{ height: 'auto', maxHeight: 'auto' }}
-                            >
-                              <Typography variant="body2" className="text-capitalize">
-                                {val}
-                              </Typography>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    </>
-                  ) : (
-                    ''
-                  )}
-                </div>
-              </AccordionDetails>
-            </Accordion>
-          </div>
-        </div>
-
-        <div className="col-5 col-lg-6 basicAgWrapper">
-          <div className="col-12 otherHeaderRow p-0" style={{ marginTop: '1em', float: 'left' }}>
-            <Accordion defaultExpanded style={{ border: '1px solid #2b7b79' }}>
-              <AccordionSummary
-                expandIcon={<ExpandMore />}
-                classes={{ expanded: classes.expanded }}
-              >
-                <Typography variant="h6" className="px-3 py-2" style={{ border: '0px' }}>
-                  Soil Drainage
-                </Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                <div className="col-12 text-right">
-                  <SoilDrainageTimeline drainage={crop['Soil Drainage']} />
-                </div>
-              </AccordionDetails>
-            </Accordion>
-          </div>
-        </div>
+        <GrowthTraits crop={crop} />
+        <SoilDrainageInfoContent crop={crop} />
       </div>
 
       <div className="row otherRows mb-4 avoidPage">
@@ -530,57 +193,7 @@ const InformationSheetContent = (props) => {
             </Accordion>
           </div>
         </div>
-        <div className="col-5 col-lg-6 basicAgWrapper">
-          <div className="col-12 otherHeaderRow p-0" style={{ marginTop: '1em' }}>
-            <Accordion defaultExpanded style={{ border: '1px solid #2b7b79' }}>
-              <AccordionSummary
-                expandIcon={<ExpandMore />}
-                classes={{ expanded: classes.expanded }}
-              >
-                <Typography variant="h6" className="px-3 py-2" style={{ border: '0px' }}>
-                  Termination
-                </Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                <div className="row col-12 text-right">
-                  <InfoEnvironmentalTermination
-                    attribute="Tillage at Vegetative"
-                    variable="Tillage Termination at Vegetative"
-                  />
-                  <InfoEnvironmentalTermination
-                    attribute="Tillage at Flowering"
-                    variable="Tillage Termination at Flowering"
-                  />
-                  <InfoEnvironmentalTermination
-                    attribute="Freezing at Vegetative"
-                    variable="Freezing Termination at Vegetative"
-                  />
-                  <InfoEnvironmentalTermination
-                    attribute="Freezing at Flowering"
-                    variable="Freezing Termination at Flowering"
-                  />
-                  <InfoEnvironmentalTermination
-                    attribute="Chemical at Vegetative"
-                    variable="Chemical Termination at Vegetative"
-                  />
-                  <InfoEnvironmentalTermination
-                    attribute="Chemical at Flowering"
-                    variable="Chemical Termination at Flowering"
-                  />
-                  <InfoEnvironmentalTermination
-                    attribute="Mow at Flowering"
-                    variable="Mow Termination at Flowering"
-                  />
-                  <InfoEnvironmentalTermination
-                    attribute="Roller Crimp Termination at Flowering"
-                    text="Roller-Crimp At Flowering"
-                    variable="Roller Crimp Termination at Flowering"
-                  />
-                </div>
-              </AccordionDetails>
-            </Accordion>
-          </div>
-        </div>
+        <TerminationInfo crop={crop} />
       </div>
 
       <div className="row otherRows mb-4 avoidPage">
