@@ -13,7 +13,7 @@ import { Link } from 'react-router-dom';
 import ReactGA from 'react-ga';
 import { CustomStyles } from '../../shared/constants';
 import Header from '../Header/Header';
-import InformationSheetDictionary from '../InformationSheet/InformationSheetDictionary';
+import InformationSheetDictionary from './InformationSheetDictionary/InformationSheetDictionary';
 import { Context } from '../../store/Store';
 
 const HelpComponent = () => {

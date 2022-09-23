@@ -2,8 +2,8 @@ import React from 'react';
 import { AccordionDetails, Typography } from '@mui/material';
 import { ExpandMore } from '@mui/icons-material';
 import { getRating } from '../../../shared/constants';
-import { Accordion, AccordionSummary, useStyles } from './informationSheet.styles';
-import TooltipMaker from '../TooltipMaker';
+import { Accordion, AccordionSummary, useStyles } from '../informationSheet.styles';
+import TooltipMaker from '../../../components/TooltipMaker/TooltipMaker';
 
 const InfoWeeds = ({ attribute, crop }) => (
   <>
