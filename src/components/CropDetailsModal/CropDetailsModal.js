@@ -12,7 +12,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import ReactGA from 'react-ga';
 import { CropImage, zoneIcon } from '../../shared/constants';
 import '../../styles/cropDetailsModal.scss';
-import InformationSheetContent from '../../pages/InformationSheet/InformationSheetContent/InformationSheetContent';
+import InformationSheetContent from '../../pages/InformationSheetContent/InformationSheetContent';
 import { Context } from '../../store/Store';
 
 const useStyles = makeStyles((theme) => ({

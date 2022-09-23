@@ -1,7 +1,7 @@
 /*
   Contains the top level information sheet popup
   BasicCrop contains the default crop
-  getMonthDayString gets the start and end dates used in the info sheet
+  MonthDayString gets the start and end dates used in the info sheet
   RenderExtendedComments returns the extended notes for a crop if they exist
   styled using makeStyles and withStyles
 */
@@ -16,21 +16,21 @@ import {
   allMonths,
   getActiveCropMonths,
   RenderSeedPriceIcons,
-} from '../../../shared/constants';
-import { Context } from '../../../store/Store';
+} from '../../shared/constants';
+import { Context } from '../../store/Store';
 import { Accordion, AccordionSummary, useStyles } from './informationSheet.styles';
-import getMonthDayString from './informationSheet.constants';
-import CoverCropInformation from './CoverCropInformation';
-import sources from '../../../shared/json/sources/sources.json';
-import TooltipMaker from '../TooltipMaker';
-import InformationSheetGoals from './InformationSheetGoals';
-import InformationSheetWeeds from './InformationSheetWeeds';
-import InformationSheetEnvironment from './InformationSheetEnvironment';
-import GrowthTraits from './GrowthTraits';
-import RenderExtendedComments from './RenderExtendedComments';
-import SoilDrainageInfoContent from './SoilDrainageInfoContent';
-import TerminationInfo from './TerminationInfo';
-import CropSelectorCalendarView from '../../../components/CropSelectorCalendarView/CropSelectorCalendarView';
+import MonthDayString from './MonthDayString/MonthDayString';
+import CoverCropInformation from './CoverCropInformation/CoverCropInformation';
+import sources from '../../shared/json/sources/sources.json';
+import TooltipMaker from '../../components/TooltipMaker/TooltipMaker';
+import InformationSheetGoals from './InformationSheetGoals/InformationSheetGoals';
+import InformationSheetWeeds from './InformationSheetWeeds/InformationSheetWeeds';
+import InformationSheetEnvironment from './InformationSheetEnvironment/InformationSheetEnvironment';
+import GrowthTraits from './GrowthTraits/GrowthTraits';
+import RenderExtendedComments from '../../components/RenderExtendedComments/RenderExtendedComments';
+import SoilDrainageInfoContent from './SoilDrainageInfoContent/SoilDrainageInfoContent';
+import TerminationInfo from './TerminationInfo/TerminationInfo';
+import CropSelectorCalendarView from '../../components/CropSelectorCalendarView/CropSelectorCalendarView';
 
 const InformationSheetContent = (props) => {
   const { state } = useContext(Context);
@@ -247,19 +247,19 @@ const InformationSheetContent = (props) => {
                       <div className="blueBgFlex borderWrapped wd-112">
                         <div className="blue-bg shrt_perennial wd-110">
                           <Typography variant="body1">
-                            {getMonthDayString('reliable', crop)}
+                            {MonthDayString('reliable', crop)}
                           </Typography>
                         </div>
                         <div className="blue-bg shrt_perennial wd-110">
                           <Typography variant="body1">
-                            {getMonthDayString('reliable-second', crop)}
+                            {MonthDayString('reliable-second', crop)}
                           </Typography>
                         </div>
                       </div>
                       ) : (
                         <div className="blue-bg shrt_perennial wd-110">
                           <Typography variant="body1">
-                            {getMonthDayString('reliable', crop)}
+                            {MonthDayString('reliable', crop)}
                           </Typography>
                         </div>
                       )}
@@ -277,19 +277,19 @@ const InformationSheetContent = (props) => {
                       <div className="blueBgFlex borderWrapped wd-112">
                         <div className="blue-bg shrt_perennial wd-110">
                           <Typography variant="body1">
-                            {getMonthDayString('temperature', crop)}
+                            {MonthDayString('temperature', crop)}
                           </Typography>
                         </div>
                         <div className="blue-bg shrt_perennial wd-110">
                           <Typography variant="body1">
-                            {getMonthDayString('temperature-second', crop)}
+                            {MonthDayString('temperature-second', crop)}
                           </Typography>
                         </div>
                       </div>
                       ) : (
                         <div className="blue-bg shrt_perennial wd-110">
                           <Typography variant="body1">
-                            {getMonthDayString('temperature', crop)}
+                            {MonthDayString('temperature', crop)}
                           </Typography>
                         </div>
                       )}
@@ -369,13 +369,7 @@ const InformationSheetContent = (props) => {
                           {allMonths.map((month, index) => (
                             <td
                               key={index}
-                              className={`${
-                                month === 'Jan' || month === 'Dec'
-                                  ? month === 'Jan'
-                                    ? 'text-center'
-                                    : 'text-center'
-                                  : 'text-center'
-                              }`}
+                              className="text-center"
                             >
                               <Typography variant="body1">{month}</Typography>
                             </td>

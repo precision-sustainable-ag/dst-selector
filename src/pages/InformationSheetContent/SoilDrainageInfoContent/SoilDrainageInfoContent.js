@@ -1,8 +1,8 @@
 import React from 'react';
 import { AccordionDetails, Typography } from '@mui/material';
 import { ExpandMore } from '@mui/icons-material';
-import { Accordion, AccordionSummary, useStyles } from './informationSheet.styles';
-import SoilDrainageTimeline from '../SoilDrainageTimeline';
+import { Accordion, AccordionSummary, useStyles } from '../informationSheet.styles';
+import SoilDrainageTimeline from './SoilDrainageTimeline';
 
 const SoilDrainageInfoContent = ({ crop }) => {
   const classes = useStyles();
