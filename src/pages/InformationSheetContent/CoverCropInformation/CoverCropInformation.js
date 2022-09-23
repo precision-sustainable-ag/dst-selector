@@ -1,6 +1,6 @@
 import React from 'react';
 import { Typography } from '@mui/material';
-import PhotoComponent from '../PhotoComponent';
+import PhotoComponent from './PhotoComponent';
 
 const CoverCropInformation = ({ cropImage, cropDescription }) => (
   <>

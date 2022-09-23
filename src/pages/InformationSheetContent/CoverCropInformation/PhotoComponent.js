@@ -6,8 +6,8 @@
 import { Typography } from '@mui/material';
 import Axios from 'axios';
 import React, { Suspense, useEffect, useState } from 'react';
-import { ucFirst } from '../../shared/constants';
-import '../../styles/photoComponent.scss';
+import { ucFirst } from '../../../shared/constants';
+import '../../../styles/photoComponent.scss';
 
 const PhotoComponent = ({
   imageData = {
@@ -38,6 +38,7 @@ const PhotoComponent = ({
         }
       })
       .catch((e) => {
+        // eslint-disable-next-line no-console
         console.error(e);
       });
   }, [imagesApiUrl]);

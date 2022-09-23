@@ -33,7 +33,7 @@ import CoverCropExplorer from './pages/CoverCropExplorer/CoverCropExplorer';
 import HelpComponent from './pages/Help/Help';
 import FeedbackComponent from './pages/Feedback/Feedback';
 import { CustomStyles } from './shared/constants';
-import InformationSheetDictionary from './pages/InformationSheet/InformationSheetDictionary';
+import InformationSheetDictionary from './pages/Help/InformationSheetDictionary/InformationSheetDictionary';
 import License from './pages/License/License';
 import MyCoverCropListWrapper from './pages/MyCoverCropList/MyCoverCropListWrapper/MyCoverCropListWrapper';
 
