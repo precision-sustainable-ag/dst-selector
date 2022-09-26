@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { Button, Typography } from '@mui/material';
 import { LocalDrinkOutlined } from '@mui/icons-material';
 import { ReferenceTooltip } from '../../../../shared/constants';
-import { arrayEquals } from '../../../../shared/functions';
+import arrayEquals from '../../../../shared/functions';
 import { Context } from '../../../../store/Store';
 import '../../../../styles/soilConditions.scss';
 import RenderDrainageClasses from './RenderDrainageClasses';

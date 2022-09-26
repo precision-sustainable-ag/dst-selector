@@ -1,6 +1,6 @@
 /*
-  This file contains the Greenbar component, helper functions, and styles
-  The Greenbar page is the bar in the header that contains the location, soil drainage info, temperature, and restart button
+  This file contains the InformationBar component, helper functions, and styles
+  The InformationBar page is the bar in the header that contains the location, soil drainage info, temperature, and restart button
   Styles are created using CustomStyles from ../../../shared/constants and ../../../styles/greenBar.scss
 */
 
@@ -31,39 +31,40 @@ const greenBarWrapperBackground = {
   backgroundColor: CustomStyles().lighterGreen,
 };
 
-const Greenbar = () => {
+const InformationBar = () => {
   const { state, dispatch } = useContext(Context);
   const section = window.location.href.includes('selector') ? 'selector' : 'explorer';
   const sfilters = state[section];
   const [restartPrompt2, setRestartPrompt2] = useState(false);
-
+  const [confirmationOpen, setConfirmationOpen] = useState(false);
   const [expansionPanelComponent, setExpansionPanelComponent] = useState({
     component: '',
   });
 
-  /*
-   * RICK'S NOTE: What in the world was this supposed to do?
-   * TODO: Remove after 5/1/2022
-   *   useEffect(() => {
-   *     const greenBarParent = document.getElementById("greenBarParent");
-   *     document.addEventListener("click", (evt) => {
-   *       let targetElement = evt.target;
-   *       do {
-   *         if (targetElement === greenBarParent) {
-   *           return;
-   *         }
-   *
-   *         // Go up the DOM
-   *         targetElement = targetElement.parentNode;
-   *       } while (targetElement);
-   *     });
-   *
-   *     return () => {
-   *       closeExpansionPanel();
-   *     };
-   *   }, []);
-   */
-
+  const closeExpansionPanel = () => {
+    const greenbarExpansionElement = document.getElementById('greenBarExpansionPanel');
+    greenbarExpansionElement.style.transform = 'translate(0px,0px)';
+    greenbarExpansionElement.style.minHeight = '0px';
+    setExpansionPanelComponent({
+      component: '',
+    });
+  };
+  const handleAddressBtnClick = () => {
+    const greenbarExpansionElement = document.getElementById('greenBarExpansionPanel');
+    if (
+      expansionPanelComponent.component === 'location'
+      && greenbarExpansionElement.style.minHeight === greenBarExpansionPanelHeight.large
+    ) {
+      // toggle
+      closeExpansionPanel();
+    } else {
+      greenbarExpansionElement.style.transform = 'translate(0px,0px)';
+      greenbarExpansionElement.style.minHeight = greenBarExpansionPanelHeight.large;
+      setExpansionPanelComponent({
+        component: 'location',
+      });
+    }
+  };
   const getAddress = () => {
     if (state.address === '') {
       return '';
@@ -100,32 +101,7 @@ const Greenbar = () => {
       </Button>
     );
   };
-
-  const closeExpansionPanel = () => {
-    const greenbarExpansionElement = document.getElementById('greenBarExpansionPanel');
-    greenbarExpansionElement.style.transform = 'translate(0px,0px)';
-    greenbarExpansionElement.style.minHeight = '0px';
-    setExpansionPanelComponent({
-      component: '',
-    });
-  };
-  const handleAddressBtnClick = (evt) => {
-    const greenbarExpansionElement = document.getElementById('greenBarExpansionPanel');
-    if (
-      expansionPanelComponent.component === 'location'
-      && greenbarExpansionElement.style.minHeight === greenBarExpansionPanelHeight.large
-    ) {
-      // toggle
-      closeExpansionPanel();
-    } else {
-      greenbarExpansionElement.style.transform = 'translate(0px,0px)';
-      greenbarExpansionElement.style.minHeight = greenBarExpansionPanelHeight.large;
-      setExpansionPanelComponent({
-        component: 'location',
-      });
-    }
-  };
-  const handleSoilBtnClick = (evt) => {
+  const handleSoilBtnClick = () => {
     const greenbarExpansionElement = document.getElementById('greenBarExpansionPanel');
     if (
       expansionPanelComponent.component === 'soil'
@@ -141,8 +117,7 @@ const Greenbar = () => {
       });
     }
   };
-
-  const handleWeatherBtnClick = (evt) => {
+  const handleWeatherBtnClick = () => {
     const greenbarExpansionElement = document.getElementById('greenBarExpansionPanel');
 
     if (
@@ -218,7 +193,7 @@ const Greenbar = () => {
 
     setConfirmationOpen(false);
   };
-  const [confirmationOpen, setConfirmationOpen] = useState(false);
+
   const getWeatherData = () => {
     // TODO: convert month to string, currently returning int
     // let currentMonth = GetMonthString(month);
@@ -250,7 +225,8 @@ const Greenbar = () => {
           <CloudIcon fontSize="small" />
             &nbsp;
           {' '}
-          {`Avg First Frost: ${state.weatherData.averageFrost.firstFrostDate.month} ${state.weatherData.averageFrost.firstFrostDate.day} | Avg Rain(${currentMonth}): ${state.weatherData.averagePrecipitation.thisMonth} in`}
+          {`Avg First Frost: ${state.weatherData.averageFrost.firstFrostDate.month} ${state.weatherData.averageFrost.firstFrostDate.day} 
+          | Avg Rain(${currentMonth}): ${state.weatherData.averagePrecipitation.thisMonth} in`}
         </span>
       </Button>
     );
@@ -296,15 +272,17 @@ const Greenbar = () => {
           <div
             className={expansionPanelComponent.component === 'location' ? 'col-md-10' : 'col-md-6'}
           >
-            {expansionPanelComponent.component === 'location' ? (
+            {expansionPanelComponent.component === 'location' && (
               <LocationComponent caller="greenbar" title="Location" />
-            ) : expansionPanelComponent.component === 'soil' ? (
+            )}
+            {expansionPanelComponent.component === 'soil' && (
               <div className="container mt-5" style={expansionPanelBaseStyle}>
                 <div className="row boxContainerRow" style={{ minHeight: '526px' }}>
                   <SoilCondition caller="greenbar" />
                 </div>
               </div>
-            ) : expansionPanelComponent.component === 'weather' && (
+            )}
+            {expansionPanelComponent.component === 'weather' && (
               <div className="container mt-5" style={expansionPanelBaseStyle}>
                 <div className="row boxContainerRow" style={{ minHeight: '526px' }}>
                   <WeatherConditions caller="greenbar" />
@@ -339,7 +317,7 @@ const Greenbar = () => {
         {/* <DialogTitle>Clear My Cover Crop List?</DialogTitle> */}
         <DialogContent dividers>
           <Typography variant="body1">
-            Would you also like to clear 'My Cover Crop List'?
+            Would you also like to clear My Cover Crop List?
           </Typography>
         </DialogContent>
         <DialogActions>
@@ -396,4 +374,4 @@ const Greenbar = () => {
   );
 };
 
-export default Greenbar;
+export default InformationBar;
