@@ -23,6 +23,16 @@ const ForecastComponent = () => {
     iconDescription: 'No Data',
   });
 
+  const makeURLString = (url, params) => `${url}?lat=${params[0]}&lon=${params[1]}&appid=${openWeatherApiKey}&units=imperial`;
+
+  const reverseGEO = async (lat, lng) => {
+    const url = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lng}&localityLanguage=en`;
+    let data = await fetch(url);
+    data = data.json();
+
+    return data;
+  };
+
   useEffect(() => {
     const callWeatherApi = async (url, latlng) => {
       const fetchData = await fetch(makeURLString(url, latlng));
@@ -34,6 +44,7 @@ const ForecastComponent = () => {
       if (state.markers.length > 0) {
         let latlng = [];
         try {
+          // eslint-disable-next-line
           latlng = state.markers[0];
         } catch (e) {
           console.trace('Forecast Component', e);
@@ -65,10 +76,10 @@ const ForecastComponent = () => {
         if (state.address === '') {
           const data = reverseGEO(latlng[0], latlng[1]);
           data
-            .then((data) => {
-              if (data.localityInfo.informative) {
-                const lastInfo = data.localityInfo.informative[data.localityInfo.informative.length - 1];
-                const addressString = `${lastInfo.name}, ${data.city}`;
+            .then((d) => {
+              if (d.localityInfo.informative) {
+                const lastInfo = d.localityInfo.informative[d.localityInfo.informative.length - 1];
+                const addressString = `${lastInfo.name}, ${d.city}`;
                 dispatch({
                   type: 'CHANGE_ADDRESS',
                   data: {
@@ -77,11 +88,11 @@ const ForecastComponent = () => {
                   },
                 });
               }
-              if (data.postcode) {
+              if (d.postcode) {
                 dispatch({
                   type: 'UPDATE_ZIP_CODE',
                   data: {
-                    zipCode: parseInt(data.postcode),
+                    zipCode: parseInt(d.postcode, 10),
                   },
                 });
               }
@@ -98,24 +109,18 @@ const ForecastComponent = () => {
     }
   }, [dispatch, state.address, state.markers, state.progress]);
 
-  const makeURLString = (url, params) => `${url}?lat=${params[0]}&lon=${params[1]}&appid=${openWeatherApiKey}&units=imperial`;
+  if (state.progress >= 1) {
+    if (showTempIcon) {
+      return (
+        <>
+          Forecast:&nbsp;
+          {cloudIcon(14, 20)}
+          &nbsp; Loading..
+        </>
+      );
+    }
 
-  const reverseGEO = async (lat, lng) => {
-    const url = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lng}&localityLanguage=en`;
-    let data = await fetch(url);
-    data = data.json();
-
-    return data;
-  };
-
-  return state.progress >= 1 ? (
-    showTempIcon ? (
-      <>
-        Forecast:&nbsp;
-        {cloudIcon(14, 20)}
-&nbsp; Loading..
-      </>
-    ) : (
+    return (
       <>
         Forecast:
         <img
@@ -129,16 +134,16 @@ const ForecastComponent = () => {
         {' '}
         |
         {Number(temp.min.toFixed(1))}
-&nbsp;
+        &nbsp;
         {temp.unit}
         <span className="ml-2">
           <ReferenceTooltip source="openweathermap.org" url="https://openweathermap.org/" />
         </span>
       </>
-    )
-  ) : (
-    ''
-  );
+    );
+  }
+
+  return null;
 };
 
 export default ForecastComponent;

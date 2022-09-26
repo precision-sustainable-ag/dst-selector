@@ -40,11 +40,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function GoogleAutocomplete({
+const GoogleAutocomplete = ({
   searchLabel = 'FIND YOUR LOCATION',
   selectedToEditSite,
   setSelectedToEditSite,
-}) {
+}) => {
   const { state, dispatch } = useContext(Context);
   const classes = useStyles();
   const [value, setValue] = React.useState(null);
@@ -93,9 +93,11 @@ export default function GoogleAutocomplete({
         placeId,
         region: 'en-US',
       };
-      return await new Promise((resolve) => placeService.current.geocode(placeRequest, (results, status) => {
-        resolve({ results, status });
-      }));
+      return new Promise((resolve) => {
+        placeService.current.geocode(placeRequest, (results, status) => {
+          resolve({ results, status });
+        });
+      });
     },
     fetchZipFromLatLng: async (lat, lng) => {
       const geocoder = new window.google.maps.Geocoder();
@@ -169,9 +171,9 @@ export default function GoogleAutocomplete({
     },
   };
 
-  const fetchLocationDetails = ({ placeId, structured_formatting }) => {
-    if (placeId) {
-      fetchLocalData.load(placeId, structured_formatting.main_text);
+  const fetchLocationDetails = (googleMapsData) => {
+    if (googleMapsData.place_id) {
+      fetchLocalData.load(googleMapsData.place_id, googleMapsData.structured_formatting.main_text);
     }
   };
 
@@ -190,6 +192,21 @@ export default function GoogleAutocomplete({
       return undefined;
     }
 
+    const parseOptions = (results) => {
+      if (active) {
+        let newOptions = [];
+
+        if (value) {
+          newOptions = [value];
+        }
+
+        if (results) {
+          newOptions = [...newOptions, ...results];
+        }
+        setOptions(newOptions);
+      }
+    };
+
     if (isNum(inputValue) && inputValue.length >= 3) {
       //  probably a zip code?
       fetchData(
@@ -199,19 +216,7 @@ export default function GoogleAutocomplete({
           componentRestrictions: { country: 'US' },
         },
         (results) => {
-          if (active) {
-            let newOptions = [];
-
-            if (value) {
-              newOptions = [value];
-            }
-
-            if (results) {
-              newOptions = [...newOptions, ...results];
-            }
-
-            setOptions(newOptions);
-          }
+          parseOptions(results);
         },
       );
     } else {
@@ -222,19 +227,7 @@ export default function GoogleAutocomplete({
           componentRestrictions: { country: 'US' },
         },
         (results) => {
-          if (active) {
-            let newOptions = [];
-
-            if (value) {
-              newOptions = [value];
-            }
-
-            if (results) {
-              newOptions = [...newOptions, ...results];
-            }
-
-            setOptions(newOptions);
-          }
+          parseOptions(results);
         },
       );
     }
@@ -252,7 +245,6 @@ export default function GoogleAutocomplete({
      * Doesn't seem to be needed.
      * TODO: Remove after 5/1/2022
      */
-
     <Autocomplete
       id="google-map-demo"
       fullWidth
@@ -262,8 +254,8 @@ export default function GoogleAutocomplete({
       autoComplete
       includeInputInList
       filterSelectedOptions
-      value={value}
-      onChange={(event, newValue) => {
+      value={value || null}
+      onChange={(_event, newValue) => {
         setOptions(newValue ? [newValue, ...options] : options);
         setValue(newValue);
         // fetch location details
@@ -275,7 +267,7 @@ export default function GoogleAutocomplete({
         setInputValue(newInputValue);
       }}
       renderInput={(params) => <TextField {...params} label={searchLabel} variant="filled" fullWidth />}
-      renderOption={(option) => {
+      renderOption={(props, option) => {
         let matches = [];
         let parts = [];
         if (option.structured_formatting) {
@@ -288,7 +280,7 @@ export default function GoogleAutocomplete({
         }
 
         return (
-          <Grid container alignItems="center">
+          <Grid container alignItems="center" {...props}>
             <Grid item>
               <LocationOnIcon className={classes.icon} />
             </Grid>
@@ -308,4 +300,6 @@ export default function GoogleAutocomplete({
       }}
     />
   );
-}
+};
+
+export default GoogleAutocomplete;
