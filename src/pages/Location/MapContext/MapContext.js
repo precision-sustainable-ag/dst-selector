@@ -16,8 +16,8 @@ import {
   FeatureGroup, MapContainer, Marker, Polygon, TileLayer, Tooltip,
 } from 'react-leaflet';
 import { DraftControl } from 'react-leaflet-draft';
-import { Context } from '../../store/Store';
-import '../../styles/map.scss';
+import { Context } from '../../../store/Store';
+import '../../../styles/map.scss';
 
 // work around broken icons when using webpack, see https://github.com/PaulLeCam/react-leaflet/issues/255
 delete L.Icon.Default.prototype._getIconUrl;
@@ -100,6 +100,7 @@ const MapContext = ({
           },
         });
       } else {
+        // eslint-disable-next-line no-console
         console.error('API fetch error', results);
       }
     });
