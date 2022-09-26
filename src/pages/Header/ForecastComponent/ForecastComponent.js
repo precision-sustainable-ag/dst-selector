@@ -44,7 +44,7 @@ const ForecastComponent = () => {
       if (state.markers.length > 0) {
         let latlng = [];
         try {
-          // eslint-disable-next-line prefer-destructuring
+          // eslint-disable-next-line
           latlng = state.markers[0];
         } catch (e) {
           // eslint-disable-next-line no-console
@@ -112,14 +112,18 @@ const ForecastComponent = () => {
     }
   }, [dispatch, state.address, state.markers, state.progress]);
 
-  return state.progress >= 1 && (
-    showTempIcon ? (
-      <>
-        Forecast:&nbsp;
-        {cloudIcon(14, 20)}
-&nbsp; Loading..
-      </>
-    ) : (
+  if (state.progress >= 1) {
+    if (showTempIcon) {
+      return (
+        <>
+          Forecast:&nbsp;
+          {cloudIcon(14, 20)}
+          &nbsp; Loading..
+        </>
+      );
+    }
+
+    return (
       <>
         Forecast:
         <img
@@ -133,14 +137,16 @@ const ForecastComponent = () => {
         {' '}
         |
         {Number(temp.min.toFixed(1))}
-&nbsp;
+        &nbsp;
         {temp.unit}
         <span className="ml-2">
           <ReferenceTooltip source="openweathermap.org" url="https://openweathermap.org/" />
         </span>
       </>
-    )
-  );
+    );
+  }
+
+  return null;
 };
 
 export default ForecastComponent;

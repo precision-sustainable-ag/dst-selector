@@ -63,7 +63,6 @@ const CropSidebar = ({
   toggleComparisonView,
   toggleListView,
   style,
-  props,
 }) => {
   const { state, dispatch } = useContext(Context);
   const [loading, setLoading] = useState(true);
@@ -439,12 +438,12 @@ const CropSidebar = ({
       {comparisonView && (
         <div className="col-12">
           <ComparisonBar
-            {...props}
             classes={classes}
             filterData={sidebarFilters}
             goals={state.selectedGoals.length > 0 ? state.selectedGoals : []}
             comparisonKeys={state.comparisonKeys}
             dispatch={dispatch}
+            comparisonView={comparisonView}
           />
         </div>
       )}
@@ -547,12 +546,12 @@ const CropSidebar = ({
       ) : (
         <div className="col-12">
           <ComparisonBar
-            {...props}
             classes={classes}
             filterData={sidebarFilters}
             goals={state.selectedGoals.length > 0 ? state.selectedGoals : []}
             comparisonKeys={state.comparisonKeys}
             dispatch={dispatch}
+            comparisonView={comparisonView}
           />
         </div>
       )}

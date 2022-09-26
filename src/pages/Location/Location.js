@@ -151,6 +151,7 @@ const LocationComponent = ({ title, caller }) => {
       });
     }
   }, [selectedToEditSite, dispatch]);
+
   return (
     <div className="container-fluid mt-5">
       <div className="row boxContainerRow" style={{ minHeight: '520px' }}>
@@ -188,7 +189,7 @@ const LocationComponent = ({ title, caller }) => {
                       textAlign: 'left',
                     }}
                     onChange={handleZoneChange}
-                    value={sfilters.zone}
+                    value={parseInt(sfilters.zone, 10)}
                   >
                     <MenuItem value={4} key={4}>
                       Zone 4
