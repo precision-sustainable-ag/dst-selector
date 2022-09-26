@@ -95,9 +95,6 @@ const Header = () => {
               }
             });
           }
-        })
-        .catch((e) => {
-          console.error(e);
         });
     }
   }, [state.zipCode, state.lastZipCode, dispatch, enqueueSnackbar, closeSnackbar]);
@@ -131,6 +128,7 @@ const Header = () => {
             },
           });
         } catch (e) {
+          // eslint-disable-next-line
           console.error('Average Frost Dates API::', e);
         }
       });

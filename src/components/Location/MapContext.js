@@ -99,8 +99,6 @@ const MapContext = ({
             addressVerified: true,
           },
         });
-      } else {
-        console.error('API fetch error', results);
       }
     });
   };

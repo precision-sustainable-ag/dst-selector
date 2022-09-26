@@ -133,8 +133,6 @@ const GoogleAutocomplete = ({
         } else {
           fetchLocalData.fetchGeocode(results, '', mainText, zipCode);
         }
-      } else {
-        console.error('Google PlaceService Status', status);
       }
     },
     fetchGeocode: (results, county, mainText, zipCode) => {
