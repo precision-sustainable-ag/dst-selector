@@ -11,12 +11,12 @@ resources:
 variables:
 
   # Container registry service connection established during pipeline creation
-  dockerRegistryServiceConnection: 'b181855a-e259-4f5f-a332-9eac0335ac6d'
+  dockerRegistryServiceConnection: 'b334bd6e-caa7-4cff-8e15-39a023b7d7a7'
   imageRepository: 'precisionsustainableagdstselector'
   containerRegistry: 'containerregistry4pd7i.azurecr.io'
   dockerfilePath: '**/Dockerfile'
   tag: '$(Build.BuildId)'
-  imagePullSecret: 'containerregistry4pd7i129056ca-auth'
+  imagePullSecret: 'containerregistry4pd7i68138a4d-auth'
 
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
@@ -56,7 +56,7 @@ stages:
     displayName: Deploy
     pool:
       vmImage: $(vmImageName)
-    environment: 'precisionsustainableagdstselector-2032.production'
+    environment: 'precisionsustainableagdstselector-8080.develop'
     strategy:
       runOnce:
         deploy:
@@ -86,12 +86,12 @@ stages:
     pool:
       vmImage: $(vmImageName)
 
-    environment: 'precisionsustainableagdstselector-2032.$(k8sNamespaceForPR)'
+    environment: 'precisionsustainableagdstselector-8080.$(k8sNamespaceForPR)'
     strategy:
       runOnce:
         deploy:
           steps:
-          - reviewApp: production
+          - reviewApp: develop
 
           - task: Kubernetes@1
             displayName: 'Create a new namespace for the pull request'
