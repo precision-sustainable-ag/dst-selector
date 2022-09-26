@@ -73,14 +73,14 @@ export const DataTooltip = ({ data, placement = 'top-start' }) => (
   </Tooltip>
 );
 
-export const locationIcon = (w, h) => (
-  <svg width={w} height={h} viewBox="0 0 14 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path
-      d="M7 0C3.13 0 0 3.13 0 7C0 12.25 7 20 7 20C7 20 14 12.25 14 7C14 3.13 10.87 0 7 0ZM7 9.5C5.62 9.5 4.5 8.38 4.5 7C4.5 5.62 5.62 4.5 7 4.5C8.38 4.5 9.5 5.62 9.5 7C9.5 8.38 8.38 9.5 7 9.5Z"
-      fill="white"
-    />
-  </svg>
-);
+// export const locationIcon = (w, h) => (
+//   <svg width={w} height={h} viewBox="0 0 14 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+//     <path
+//       d="M7 0C3.13 0 0 3.13 0 7C0 12.25 7 20 7 20C7 20 14 12.25 14 7C14 3.13 10.87 0 7 0ZM7 9.5C5.62 9.5 4.5 8.38 4.5 7C4.5 5.62 5.62 4.5 7 4.5C8.38 4.5 9.5 5.62 9.5 7C9.5 8.38 8.38 9.5 7 9.5Z"
+//       fill="white"
+//     />
+//   </svg>
+// );
 export const zoneIcon = (w, h) => (
   <svg height={h} width={w} viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path
@@ -99,41 +99,41 @@ export const cloudIcon = (w, h) => (
   </svg>
 );
 
-export const GreenSwitch = withStyles({
-  thumb: {
-    backgroundColor: 'rgb(138, 188, 98, 1)',
-  },
-  track: {
-    backgroundColor: 'rgb(138, 188, 98, 0.5)',
-  },
-  input: {
-    '&:checked': {
-      color: 'rgb(240, 247, 235)',
-    },
-  },
-  // "&:checked": {
-  //   color: "rgb(240, 247, 235)",
-  // },
-})(Switch);
+// export const GreenSwitch = withStyles({
+//   thumb: {
+//     backgroundColor: 'rgb(138, 188, 98, 1)',
+//   },
+//   track: {
+//     backgroundColor: 'rgb(138, 188, 98, 0.5)',
+//   },
+//   input: {
+//     '&:checked': {
+//       color: 'rgb(240, 247, 235)',
+//     },
+//   },
+//   // "&:checked": {
+//   //   color: "rgb(240, 247, 235)",
+//   // },
+// })(Switch);
 
-export const GetMonthString = (month) => {
-  const months = [
-    'Jan',
-    'Feb',
-    'Mar',
-    'Apr',
-    'May',
-    'Jun',
-    'Jul',
-    'Aug',
-    'Sept',
-    'Oct',
-    'Nov',
-    'Dec',
-  ];
+// export const GetMonthString = (month) => {
+//   const months = [
+//     'Jan',
+//     'Feb',
+//     'Mar',
+//     'Apr',
+//     'May',
+//     'Jun',
+//     'Jul',
+//     'Aug',
+//     'Sept',
+//     'Oct',
+//     'Nov',
+//     'Dec',
+//   ];
 
-  return months[month].toUpperCase();
-};
+//   return months[month].toUpperCase();
+// };
 
 export const UnderConstructionText = () => (
   <Grid
@@ -335,7 +335,7 @@ export const getRating = (ratng) => {
       );
   }
 };
-export const weatherApiURL = 'https://weather.aesl.ces.uga.edu';
+
 export const allMonths = moment().localeData().monthsShort();
 export const cropDataURL = "https://api.airtable.com/v0/appC47111lCOTaMYe/Cover%20Crops%20Data?maxRecords=300&timeZone=America_NewYork&filterByFormula=NOT(SWITCH({Cover Crop Name},'__Open Discussion Row','Ok hopefully he answers me soon.'))";
 
