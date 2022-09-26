@@ -130,11 +130,7 @@ const RenderFilters = ({
                         placement="right"
                         title={(
                           <div className="filterTooltip">
-                            <p
-                              dangerouslySetInnerHTML={{
-                                __html: val.description,
-                              }}
-                            />
+                            <p>{val.description}</p>
                           </div>
                             )}
                         key={`tooltip${index}`}

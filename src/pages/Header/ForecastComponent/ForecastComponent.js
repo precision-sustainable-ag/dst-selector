@@ -44,7 +44,7 @@ const ForecastComponent = () => {
       if (state.markers.length > 0) {
         let latlng = [];
         try {
-          // eslint-disable-next-line prefer-destructuring
+          // eslint-disable-next-line
           latlng = state.markers[0];
         } catch (e) {
           // eslint-disable-next-line no-console
@@ -78,10 +78,10 @@ const ForecastComponent = () => {
         if (state.address === '') {
           const data = reverseGEO(latlng[0], latlng[1]);
           data
-            .then((res) => {
-              if (res.localityInfo.informative) {
-                const lastInfo = res.localityInfo.informative[res.localityInfo.informative.length - 1];
-                const addressString = `${lastInfo.name}, ${res.city}`;
+            .then((d) => {
+              if (d.localityInfo.informative) {
+                const lastInfo = d.localityInfo.informative[d.localityInfo.informative.length - 1];
+                const addressString = `${lastInfo.name}, ${d.city}`;
                 dispatch({
                   type: 'CHANGE_ADDRESS',
                   data: {
@@ -90,11 +90,11 @@ const ForecastComponent = () => {
                   },
                 });
               }
-              if (res.postcode) {
+              if (d.postcode) {
                 dispatch({
                   type: 'UPDATE_ZIP_CODE',
                   data: {
-                    zipCode: parseInt(res.postcode, 10),
+                    zipCode: parseInt(d.postcode, 10),
                   },
                 });
               }
@@ -112,14 +112,18 @@ const ForecastComponent = () => {
     }
   }, [dispatch, state.address, state.markers, state.progress]);
 
-  return state.progress >= 1 && (
-    showTempIcon ? (
-      <>
-        Forecast:&nbsp;
-        {cloudIcon(14, 20)}
-&nbsp; Loading..
-      </>
-    ) : (
+  if (state.progress >= 1) {
+    if (showTempIcon) {
+      return (
+        <>
+          Forecast:&nbsp;
+          {cloudIcon(14, 20)}
+          &nbsp; Loading..
+        </>
+      );
+    }
+
+    return (
       <>
         Forecast:
         <img
@@ -133,14 +137,16 @@ const ForecastComponent = () => {
         {' '}
         |
         {Number(temp.min.toFixed(1))}
-&nbsp;
+        &nbsp;
         {temp.unit}
         <span className="ml-2">
           <ReferenceTooltip source="openweathermap.org" url="https://openweathermap.org/" />
         </span>
       </>
-    )
-  );
+    );
+  }
+
+  return null;
 };
 
 export default ForecastComponent;
