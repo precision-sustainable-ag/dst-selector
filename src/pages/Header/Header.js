@@ -18,7 +18,7 @@ import moment from 'moment';
 import { useSnackbar } from 'notistack';
 import React, { useContext, useEffect } from 'react';
 import { NavLink, useHistory } from 'react-router-dom';
-import { abbrRegion, weatherApiURL } from '../../shared/constants';
+import { abbrRegion } from '../../shared/constants';
 import zone4DataDictionary from '../../shared/json/zone4/data-dictionary.json';
 import zone5DataDictionary from '../../shared/json/zone5/data-dictionary.json';
 import zone6DataDictionary from '../../shared/json/zone6/data-dictionary.json';
@@ -42,7 +42,7 @@ const Header = () => {
   const isActive = {};
 
   const getUSDAZone = async (zip) => await fetch(`//covercrop.tools/zone.php?zip=${zip}`);
-
+  const weatherApiURL = 'https://weather.aesl.ces.uga.edu';
   useEffect(() => {
     if (!state.zipCode) {
       return;
