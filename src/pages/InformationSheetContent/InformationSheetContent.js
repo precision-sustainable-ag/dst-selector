@@ -19,7 +19,7 @@ import {
 } from '../../shared/constants';
 import { Context } from '../../store/Store';
 import { Accordion, AccordionSummary, useStyles } from './informationSheet.styles';
-import MonthDayString from './MonthDayString/MonthDayString';
+import MonthDayString from './getMonthDayString';
 import CoverCropInformation from './CoverCropInformation/CoverCropInformation';
 import sources from '../../shared/json/sources/sources.json';
 import TooltipMaker from '../../components/TooltipMaker/TooltipMaker';

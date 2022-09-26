@@ -1,6 +1,6 @@
 import moment from 'moment-timezone';
 
-const MonthDayString = (type = '', crop = {}) => {
+const getMonthDayString = (type = '', crop = {}) => {
   switch (type) {
     case 'reliable': {
       const startDate = moment(crop['Reliable Establishment/Growth Start'], 'YYYY-MM-DD');
@@ -47,4 +47,4 @@ const MonthDayString = (type = '', crop = {}) => {
   }
 };
 
-export default MonthDayString;
+export default getMonthDayString;
