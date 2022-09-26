@@ -117,7 +117,7 @@ const Tip = ({ filter, omitHeading }) => {
       onMouseOut={() => setOpen(false)}
       title={(
         <div className="filterTooltip">
-          <p dangerouslySetInnerHTML={{ __html: filter.description }} />
+          <p>{filter.description}</p>
         </div>
       )}
     >
