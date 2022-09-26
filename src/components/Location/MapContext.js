@@ -10,6 +10,7 @@
 
 import L from 'leaflet';
 import 'leaflet-draw/dist/leaflet.draw.css';
+import 'leaflet/dist/leaflet.css';
 import React, { useContext, useEffect, useState } from 'react';
 import {
   FeatureGroup, MapContainer, Marker, Polygon, TileLayer, Tooltip,
@@ -17,13 +18,14 @@ import {
 import { DraftControl } from 'react-leaflet-draft';
 import { Context } from '../../store/Store';
 import '../../styles/map.scss';
+// import TestMap from './TestMap';
 
 // work around broken icons when using webpack, see https://github.com/PaulLeCam/react-leaflet/issues/255
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
-  iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.0/images/marker-icon.png',
-  iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.0/images/marker-icon.png',
-  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.0/images/marker-shadow.png',
+  iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.1/images/marker-icon.png',
+  iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.1/images/marker-icon.png',
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.1/images/marker-shadow.png',
 });
 
 const MapContext = ({
@@ -75,11 +77,6 @@ const MapContext = ({
       setIsPoly(true);
     }
   }, [state.markers]);
-  const [editableFG, setEditableFG] = useState(null);
-  const onFeatureGroupReady = (reactFGref) => {
-    // store the featureGroup ref for future access to content
-    setEditableFG(reactFGref);
-  };
 
   const setAddress = (latLng) => {
     const geocoder = new window.google.maps.Geocoder();
@@ -110,39 +107,28 @@ const MapContext = ({
   };
 
   const onCreated = (e) => {
-    const drawnItems = editableFG.leafletElement._layers;
+    if (e.layerType === 'marker') {
+      setShow(true);
+      const { lat, lng } = e.layer._latlng;
+      const latLng = { lat, lng };
+      // reverse geocode
+      setAddress(latLng);
 
-    // if the number of layers is bigger than 1 then delete the first
-    if (Object.keys(drawnItems).length > 1) {
-      Object.keys(drawnItems).forEach((layerid, index) => {
-        if (index > 0) return;
+      updateGlobalMarkers([[lat, lng]], 'marker');
+    } else if (e.layerType === 'polygon') {
+      setShow(false);
+      const latlngs = e.layer._latlngs;
+      const markers = [];
+      const firstLatLng = { lat: latlngs[0][0].lat, lng: latlngs[0][0].lng };
+      // reverse geocode
+      setAddress(firstLatLng);
 
-        const layer = drawnItems[layerid];
-        editableFG.leafletElement.removeLayer(layer);
-        setShow(false);
-      });
-      if (e.layerType === 'marker') {
-        const { lat } = e.layer._latlng;
-        const { lng } = e.layer._latlng;
-        const latLng = { lat, lng };
-        // reverse geocode
-        setAddress(latLng);
-
-        updateGlobalMarkers([[lat, lng]], 'marker');
-      } else if (e.layerType === 'polygon') {
-        const latlngs = e.layer._latlngs;
-        const markers = [];
-        const firstLatLng = { lat: latlngs[0][0].lat, lng: latlngs[0][0].lng };
-        // reverse geocode
-        setAddress(firstLatLng);
-
-        latlngs.forEach((latlngArr) => {
-          latlngArr.forEach((latlng) => {
-            markers.push([latlng.lat, latlng.lng]);
-          });
+      latlngs.forEach((latlngArr) => {
+        latlngArr.forEach((latlng) => {
+          markers.push([latlng.lat, latlng.lng]);
         });
-        updateGlobalMarkers(markers, 'poly');
-      }
+      });
+      updateGlobalMarkers(markers, 'poly');
     }
   };
 
@@ -170,11 +156,7 @@ const MapContext = ({
               attribution={'Map data &copy; <a target="attr" href="http://googlemaps.com">Google</a>'}
               url="http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}"
             />
-            <FeatureGroup
-              ref={(featureGroupRef) => {
-                onFeatureGroupReady(featureGroupRef);
-              }}
-            >
+            <FeatureGroup>
               {showEditControl && (
                 <DraftControl
                   edit={{ edit: false }}
@@ -194,6 +176,7 @@ const MapContext = ({
                     },
                     polyline: false,
                     allowIntersection: false,
+                    marker: true,
                   }}
                 />
               )}
@@ -203,7 +186,7 @@ const MapContext = ({
                     <Tooltip>Your Field</Tooltip>
                   </Polygon>
                 ) : (
-                  <Marker position={state.markers[0]}>
+                  <Marker position={state.markers[0]} draggable>
                     <Tooltip>Your Field</Tooltip>
                   </Marker>
                 )
