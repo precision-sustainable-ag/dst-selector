@@ -109,7 +109,8 @@ const ComparisonBar = ({
       },
     });
   };
-  return comparisonView && (
+
+  return comparisonView ? (
     <List
       component="nav"
       classes={{ root: classes.listRoot }}
@@ -168,7 +169,7 @@ const ComparisonBar = ({
         dispatch={dispatch}
       />
     </List>
-  );
+  ) : null;
 };
 
 export default ComparisonBar;

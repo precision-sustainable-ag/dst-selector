@@ -41,8 +41,9 @@ const Header = () => {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const isActive = {};
 
-  const getUSDAZone = async (zip) => await fetch(`//covercrop.tools/zone.php?zip=${zip}`);
   const weatherApiURL = 'https://weather.aesl.ces.uga.edu';
+  const getUSDAZone = async (zip) => fetch(`https://phzmapi.org/${zip}.json`);
+
   useEffect(() => {
     if (!state.zipCode) {
       return;
@@ -59,43 +60,25 @@ const Header = () => {
       getUSDAZone(state.zipCode)
         .then((response) => {
           if (response.ok) {
-            const data = response.json();
-            data.then((data) => {
-              const zipCode = data.zip;
+            const dataJson = response.json();
+            dataJson.then((data) => {
+              // eslint-disable-next-line
               let zone = window.location.search.match(/zone=([^\^]+)/); // for automating Information Sheet PDFs
 
-              zone = zone ? zone[1] : data.zone;
+              zone = zone ? zone[1] : data.zone[0];
 
-              if (state.zipCode === parseInt(zipCode)) {
-                if (zone <= 7 && zone >= 4) {
-                  dispatch({
-                    type: 'UPDATE_ZONE',
-                    data: {
-                      zoneText: `Zone ${zone}`,
-                      zone: parseInt(zone),
-                    },
-                  });
-                } else {
-                  enqueueSnackbar(
-                    'Error: Zones 8-11 do not occur in the Northeast US and so are not supported by this tool. If you wish to explore the data, we suggest loading Zone 7.',
-                    {
-                      persist: true,
-                      action: (
-                        <Button
-                          style={{ color: 'white' }}
-                          onClick={() => {
-                            closeSnackbar();
-                          }}
-                        >
-                          Close
-                        </Button>
-                      ),
-                    },
-                  );
-                }
+              if (zone <= 7 && zone >= 4) {
+                dispatch({
+                  type: 'UPDATE_ZONE',
+                  data: {
+                    zoneText: `Zone ${zone}`,
+                    zone: parseInt(zone, 10),
+                  },
+                });
               } else {
                 enqueueSnackbar(
-                  'Error: This tool supports the Northeast US only.  If your location is in the Northeast, please submit an issue via the feedback form.',
+                  `Error: Zones 8-11 do not occur in the Northeast US and so are not supported by this tool. 
+                    If you wish to explore the data, we suggest loading Zone 7.`,
                   {
                     persist: true,
                     action: (
@@ -112,12 +95,7 @@ const Header = () => {
                 );
               }
             });
-          } else {
-            console.error(response);
           }
-        })
-        .catch((e) => {
-          console.error(e);
         });
     }
   }, [state.zipCode, state.lastZipCode, dispatch, enqueueSnackbar, closeSnackbar]);
@@ -137,11 +115,11 @@ const Header = () => {
           const averageFrostObject = {
             firstFrostDate: {
               month: moment(minDate).format('MMMM'),
-              day: parseInt(moment(minDate).format('D')),
+              day: parseInt(moment(minDate).format('D'), 10),
             },
             lastFrostDate: {
               month: moment(maxDate).format('MMMM'),
-              day: parseInt(moment(maxDate).format('D')),
+              day: parseInt(moment(maxDate).format('D'), 10),
             },
           };
           dispatch({
@@ -151,6 +129,7 @@ const Header = () => {
             },
           });
         } catch (e) {
+          // eslint-disable-next-line
           console.error('Average Frost Dates API::', e);
         }
       });
@@ -175,13 +154,13 @@ const Header = () => {
         .then(async (resp) => {
           const city = resp.data.locality.toLowerCase();
           const zip = resp.data.postcode;
-          const state = abbrRegion(resp.data.principalSubdivision, 'abbr').toLowerCase();
+          const abbrState = abbrRegion(resp.data.principalSubdivision, 'abbr').toLowerCase();
 
           if (resp.data.postcode) {
             dispatch({
               type: 'UPDATE_ZIP_CODE',
               data: {
-                zipCode: parseInt(zip),
+                zipCode: parseInt(zip, 10),
               },
             });
           }
@@ -190,20 +169,20 @@ const Header = () => {
 
           // Get: Frost Free Days
           // Dynamic Dates not set!
-          const frostFreeDaysURL = `${weatherApiURL}/hourly?location=${city}%20${state}&start=2015-01-01&end=2019-12-31&stats=count(date)/24/5&where=air_temperature%3e0&output=json`;
-          const frostFreeDatesURL = `${weatherApiURL}/hourly?lat=${lat}&lon=${lon}&start=2014-07-01&end=2019-07-01&stats=min(date),max(date)&where=frost&group=growingyear&options=nomrms&output=json`;
+          const frostFreeDaysURL = `${weatherApiURL}/hourly?location=${city}%20${abbrState}&start=2015-01-01&end=2019-12-31
+                                    &stats=count(date)/24/5&where=air_temperature%3e0&output=json`;
+          const frostFreeDatesURL = `${weatherApiURL}/hourly?lat=${lat}&lon=${lon}&start=2014-07-01&end=2019-07-01
+                                    &stats=min(date),max(date)&where=frost&group=growingyear&options=nomrms&output=json`;
           let frostFreeDays = 0;
 
           await Axios.get(frostFreeDaysURL)
-            .then((resp) => {
+            .then((frostResp) => {
               getAverageFrostDates(frostFreeDatesURL);
-              const frostFreeDaysObject = resp.data[0];
-              for (const key in frostFreeDaysObject) {
-                if (frostFreeDaysObject.hasOwnProperty(key)) {
-                  frostFreeDays = frostFreeDaysObject[key];
-                }
-              }
-              return { frostFreeDays, city, state };
+              const frostFreeDaysObject = frostResp.data[0];
+              frostFreeDaysObject.keys().forEach((key) => {
+                frostFreeDays = frostFreeDaysObject[key];
+              });
+              return { frostFreeDays, city, abbrState };
             })
             .then((obj) => {
               dispatch({
@@ -218,17 +197,18 @@ const Header = () => {
 
               // What was the 5-year average rainfall for city st during the month of currentMonthInt?
               //  Dynamic dates ?
-              const averageRainForAMonthURL = `${weatherApiURL}/hourly?location=${obj.city}%20${obj.state}&start=2015-01-01&end=2019-12-31&stats=sum(precipitation)/5&where=month=${currentMonthInt}&output=json`;
+              const averageRainUrl = `${weatherApiURL}/hourly?location=${obj.city}%20${obj.state}&start=2015-01-01&end=2019-12-31`;
+              const averageRainForAMonthURL = `${averageRainUrl}&stats=sum(precipitation)/5&where=month=${currentMonthInt}&output=json`;
               // What was the 5-year average annual rainfall for city st?
-              const fiveYearAvgRainURL = `${weatherApiURL}/hourly?location=${obj.city}%20${obj.state}&start=2015-01-01&end=2019-12-31&stats=sum(precipitation)/5&output=json`;
-              if (!state.ajaxInProgress) {
+              const fiveYearAvgRainURL = `${averageRainUrl}&stats=sum(precipitation)/5&output=json`;
+              if (!abbrState.ajaxInProgress) {
                 dispatch({
                   type: 'SET_AJAX_IN_PROGRESS',
                   data: true,
                 });
                 await Axios.get(averageRainForAMonthURL)
-                  .then((resp) => {
-                    let averagePrecipitationForCurrentMonth = resp.data[0]['sum(precipitation)/5'];
+                  .then((rainResp) => {
+                    let averagePrecipitationForCurrentMonth = rainResp.data[0]['sum(precipitation)/5'];
                     averagePrecipitationForCurrentMonth = parseFloat(
                       averagePrecipitationForCurrentMonth,
                     ).toFixed(2);
@@ -250,14 +230,14 @@ const Header = () => {
                     });
                   });
 
-                if (!state.ajaxInProgress) {
+                if (!abbrState.ajaxInProgress) {
                   dispatch({
                     type: 'SET_AJAX_IN_PROGRESS',
                     data: true,
                   });
                   await Axios.get(fiveYearAvgRainURL)
-                    .then((resp) => {
-                      let fiveYearAvgRainAnnual = resp.data[0]['sum(precipitation)/5'];
+                    .then((rainResp) => {
+                      let fiveYearAvgRainAnnual = rainResp.data[0]['sum(precipitation)/5'];
                       fiveYearAvgRainAnnual = parseFloat(fiveYearAvgRainAnnual).toFixed(2);
                       fiveYearAvgRainAnnual = parseFloat(fiveYearAvgRainAnnual * 0.03937).toFixed(
                         2,
@@ -345,7 +325,7 @@ const Header = () => {
     z5Formattedgoal = z5Formattedgoal.map((goal) => ({ fields: goal }));
     z4Formattedgoal = z4Formattedgoal.map((goal) => ({ fields: goal }));
 
-    switch (parseInt(sfilters.zone)) {
+    switch (parseInt(sfilters.zone, 10)) {
       case 7: {
         dispatch({
           type: 'PULL_CROP_DATA',
@@ -436,19 +416,7 @@ const Header = () => {
       history.push('/species-selector');
     }
   };
-  const RenderMyCoverCropListButtons = () => (
-    <Badge
-      badgeContent={state.selectedCrops.length > 0 ? state.selectedCrops.length : 0}
-      color="error"
-    >
-      <Button
-        className={window.location.pathname === '/my-cover-crop-list' ? 'active' : ''}
-        onClick={() => history.push('/my-cover-crop-list')}
-      >
-        My Cover Crop List
-      </Button>
-    </Badge>
-  );
+
   return (
     <header className="d-print-none">
       <div className="topHeader">
@@ -467,13 +435,9 @@ const Header = () => {
 
       <div className="container-fluid">
         <div className="row">
-          <div className="col-lg-2 col-12">
-            <img
-              className="img-fluid"
-              src="/images/neccc_wide_logo_color_web.jpg"
-              alt="NECCC Logo"
-              width="100%"
-              onContextMenu={() => false}
+          <div className="col-lg-2 col-12" role="button">
+            <button
+              type="button"
               onClick={() => {
                 dispatch({
                   type: 'UPDATE_PROGRESS',
@@ -482,8 +446,16 @@ const Header = () => {
                   },
                 });
               }}
-              style={{ cursor: 'pointer' }}
-            />
+            >
+              <img
+                className="img-fluid"
+                src="/images/neccc_wide_logo_color_web.jpg"
+                alt="NECCC Logo"
+                width="100%"
+                onContextMenu={() => false}
+                style={{ cursor: 'pointer' }}
+              />
+            </button>
           </div>
           <div className="col-12 col-lg-10 col-sm-12 row">
             <div className="col-lg-4 col-12 d-flex align-items-center text-left">
@@ -510,7 +482,7 @@ const Header = () => {
           COVER CROP EXPLORER
         </Button>
         <Button
-          className={isRoot ? (state.speciesSelectorActivationFlag ? 'active' : '') : ''}
+          className={(isRoot && state.speciesSelectorActivationFlag) && 'active'}
           onClick={setSpeciesSelectorActivationFlag}
           size="large"
         >
@@ -540,20 +512,34 @@ const Header = () => {
             ''
           )}
         {/* My Cover Crop List As A Separate Component/Route  */}
-        {window.location.pathname !== '/species-selector' ? (
+        {window.location.pathname !== '/species-selector' && (
           state.progress.length < 5 ? (
-            state.selectedCrops.length > 0 ? (
-              <RenderMyCoverCropListButtons />
-            ) : (
-              ''
+            state.selectedCrops.length > 0 && (
+              <Badge
+                badgeContent={state.selectedCrops.length > 0 ? state.selectedCrops.length : 0}
+                color="error"
+              >
+                <Button
+                  className={window.location.pathname === '/my-cover-crop-list' ? 'active' : ''}
+                  onClick={() => history.push('/my-cover-crop-list')}
+                >
+                  My Cover Crop List
+                </Button>
+              </Badge>
             )
-          ) : state.selectedCrops.length > 0 ? (
-            <RenderMyCoverCropListButtons />
-          ) : (
-            ''
+          ) : state.selectedCrops.length > 0 && (
+            <Badge
+              badgeContent={state.selectedCrops.length > 0 ? state.selectedCrops.length : 0}
+              color="error"
+            >
+              <Button
+                className={window.location.pathname === '/my-cover-crop-list' ? 'active' : ''}
+                onClick={() => history.push('/my-cover-crop-list')}
+              >
+                My Cover Crop List
+              </Button>
+            </Badge>
           )
-        ) : (
-          ''
         )}
       </div>
 
