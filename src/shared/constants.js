@@ -351,7 +351,7 @@ export const greenBarExpansionPanelHeight = {
 };
 
 export const trimString = (stringFull, size) => {
-  if (!isNaN(size)) {
+  if (!Number.isNaN(size)) {
     return `${stringFull.substring(0, size)}${stringFull.length > 25 ? '...' : ''}`;
   } return stringFull;
 };
@@ -1315,7 +1315,7 @@ export const RenderSeedPriceIcons = ({ val }) => {
         </>
       );
     default:
-      break;
+      return null;
   }
 };
 
