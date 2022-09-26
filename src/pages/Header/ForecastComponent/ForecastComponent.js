@@ -78,10 +78,10 @@ const ForecastComponent = () => {
         if (state.address === '') {
           const data = reverseGEO(latlng[0], latlng[1]);
           data
-            .then((d) => {
-              if (d.localityInfo.informative) {
-                const lastInfo = d.localityInfo.informative[d.localityInfo.informative.length - 1];
-                const addressString = `${lastInfo.name}, ${d.city}`;
+            .then((res) => {
+              if (res.localityInfo.informative) {
+                const lastInfo = res.localityInfo.informative[res.localityInfo.informative.length - 1];
+                const addressString = `${lastInfo.name}, ${res.city}`;
                 dispatch({
                   type: 'CHANGE_ADDRESS',
                   data: {
@@ -90,11 +90,11 @@ const ForecastComponent = () => {
                   },
                 });
               }
-              if (d.postcode) {
+              if (res.postcode) {
                 dispatch({
                   type: 'UPDATE_ZIP_CODE',
                   data: {
-                    zipCode: parseInt(d.postcode, 10),
+                    zipCode: parseInt(res.postcode, 10),
                   },
                 });
               }
