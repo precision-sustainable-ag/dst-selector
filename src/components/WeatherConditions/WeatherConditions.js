@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const WeatherConditions = (props) => {
+const WeatherConditions = ({ caller }) => {
   const { state, dispatch } = useContext(Context);
   const classes = useStyles();
   const [months, setMonths] = useState([]);
@@ -151,7 +151,7 @@ const WeatherConditions = (props) => {
     });
 
     setFrostFreeDays(state.weatherData.frostFreeDays);
-  }, [state.weatherData, props.caller]);
+  }, [state.weatherData, caller]);
 
   const handleModalOpen = () => {
     setOpen(true);
@@ -165,14 +165,14 @@ const WeatherConditions = (props) => {
     const checkIfAnythingChanged = () => {
       if (
         firstFrostMonth === weatherDataShadow.averageFrost.firstFrostDate.month
-        && parseInt(firstFrostDay) === parseInt(weatherDataShadow.averageFrost.firstFrostDate.day)
+        && parseInt(firstFrostDay, 10) === parseInt(weatherDataShadow.averageFrost.firstFrostDate.day, 10)
         && lastFrostMonth === weatherDataShadow.averageFrost.lastFrostDate.month
         && lastFrostDay === weatherDataShadow.averageFrost.lastFrostDate.day
         && parseFloat(averagePrecipitation.thisMonth)
           === parseFloat(weatherDataShadow.averagePrecipitation.thisMonth)
         && parseFloat(averagePrecipitation.annual)
           === parseFloat(weatherDataShadow.averagePrecipitation.annual)
-        && parseInt(frostFreeDays) === parseInt(weatherDataShadow.frostFreeDays)
+        && parseInt(frostFreeDays, 10) === parseInt(weatherDataShadow.frostFreeDays, 10)
       ) {
         // return false;
         setAnyValuesChanged(false);
@@ -288,11 +288,6 @@ const WeatherConditions = (props) => {
             <AcUnit />
             &nbsp; Average Frost Dates &nbsp;
             {' '}
-            {/* <Tooltip
-              dangerouslySetInnerHTML={
-                "Average dates of the first and last frosts for your location, based on frost dates for the last five years from University of Georgia’s Weather App; you may manually change this input."
-              }
-            ></Tooltip> */}
             <Tooltip
               arrow
               placement="right"
@@ -480,23 +475,23 @@ const WeatherConditions = (props) => {
                           id="margin-none"
                           value={firstFrostDay}
                           onChange={(event) => {
-                            if (!isNaN(event.target.value)) {
+                            if (!Number.isNaN(event.target.value)) {
                               if (event.target.value === '') {
                                 setFirstFrostDay('');
-                              } else setFirstFrostDay(parseInt(event.target.value));
+                              } else setFirstFrostDay(parseInt(event.target.value, 10));
                             } else {
                               setFirstFrostDay(1);
                             }
                           }}
                           className={classes.textField}
                         />
-                        {parseInt(firstFrostDay)
-                        !== parseInt(weatherDataShadow.averageFrost.firstFrostDate.day) ? (
+                        {parseInt(firstFrostDay, 10)
+                        !== parseInt(weatherDataShadow.averageFrost.firstFrostDate.day, 10) ? (
                           <Button
                             className="text-danger"
                             size="small"
                             onClick={() => setFirstFrostDay(
-                              parseInt(weatherDataShadow.averageFrost.firstFrostDate.day),
+                              parseInt(weatherDataShadow.averageFrost.firstFrostDate.day, 10),
                             )}
                           >
                             Values changed, Reset?
@@ -557,23 +552,23 @@ const WeatherConditions = (props) => {
                           maxLength={2}
                           value={lastFrostDay}
                           onChange={(event) => {
-                            if (!isNaN(event.target.value)) {
+                            if (!Number.isNaN(event.target.value)) {
                               if (event.target.value === '') {
                                 setLastFrostDay('');
-                              } else setLastFrostDay(parseInt(event.target.value));
+                              } else setLastFrostDay(parseInt(event.target.value, 10));
                             } else {
                               setLastFrostDay(1);
                             }
                           }}
                           className={classes.textField}
                         />
-                        {parseInt(lastFrostDay)
-                        !== parseInt(weatherDataShadow.averageFrost.lastFrostDate.day) ? (
+                        {parseInt(lastFrostDay, 10)
+                        !== parseInt(weatherDataShadow.averageFrost.lastFrostDate.day, 10) ? (
                           <Button
                             className="text-danger"
                             size="small"
                             onClick={() => setLastFrostDay(
-                              parseInt(weatherDataShadow.averageFrost.lastFrostDate.day),
+                              parseInt(weatherDataShadow.averageFrost.lastFrostDate.day, 10),
                             )}
                           >
                             Values changed, Reset?
@@ -684,21 +679,21 @@ const WeatherConditions = (props) => {
                           maxLength={4}
                           value={frostFreeDays}
                           onChange={(event) => {
-                            if (!isNaN(event.target.value)) {
+                            if (!Number.NaNisNaN(event.target.value)) {
                               if (event.target.value === '') {
                                 setFrostFreeDays(0);
-                              } else setFrostFreeDays(parseInt(event.target.value));
+                              } else setFrostFreeDays(parseInt(event.target.value, 10));
                             } else {
                               setFrostFreeDays(0);
                             }
                           }}
                           className={classes.textField}
                         />
-                        {parseInt(frostFreeDays) !== parseInt(weatherDataShadow.frostFreeDays) ? (
+                        {parseInt(frostFreeDays, 10) !== parseInt(weatherDataShadow.frostFreeDays, 10) ? (
                           <Button
                             className="text-danger"
                             size="small"
-                            onClick={() => setFrostFreeDays(parseInt(weatherDataShadow.frostFreeDays))}
+                            onClick={() => setFrostFreeDays(parseInt(weatherDataShadow.frostFreeDays, 10))}
                           >
                             Values changed, Reset?
                           </Button>
