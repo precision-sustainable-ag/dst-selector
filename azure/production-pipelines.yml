@@ -36,6 +36,7 @@ stages:
     - script: |
         echo REACT_APP_OPEN_WEATHER_API_KEY="$(REACT_APP_OPEN_WEATHER_API_KEY)" >> /home/vsts/work/1/s/.env
         echo REACT_APP_GOOGLE_API_KEY="$(REACT_APP_GOOGLE_API_KEY)" >> /home/vsts/work/1/s/.env
+      displayName: "Create .env"
     - task: Docker@2
       displayName: Build and push an image to container registry
       inputs:
