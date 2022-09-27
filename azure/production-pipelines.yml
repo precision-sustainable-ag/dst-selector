@@ -34,8 +34,8 @@ stages:
       vmImage: $(vmImageName)
     steps:
     - script: |
-        echo REACT_APP_OPEN_WEATHER_API_KEY="$(REACT_APP_OPEN_WEATHER_API_KEY)" >> .env
-        echo REACT_APP_GOOGLE_API_KEY="$(REACT_APP_GOOGLE_API_KEY)" >> .env
+        echo REACT_APP_OPEN_WEATHER_API_KEY="$(REACT_APP_OPEN_WEATHER_API_KEY)" >> /usr/src/app.env
+        echo REACT_APP_GOOGLE_API_KEY="$(REACT_APP_GOOGLE_API_KEY)" >> /usr/src/app.env
     - task: Docker@2
       displayName: Build and push an image to container registry
       inputs:
