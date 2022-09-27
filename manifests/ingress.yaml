@@ -1,0 +1,45 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nginx
+  namespace: develop
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - "develop.covercrop-selector.org"
+    secretName: precisionsustainableagdstselector
+  rules:
+  - host: "develop.covercrop-selector.org"
+    http:
+      paths:
+        - pathType: Prefix
+          path: "/"
+          backend:
+            service:
+              name: precisionsustainableagdstselector
+              port:
+                number: 443
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nginx
+  namespace: production
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - "covercrop-selector.org"
+    secretName: precisionsustainableagdstselector
+  rules:
+  - host: "covercrop-selector.org"
+    http:
+      paths:
+        - pathType: Prefix
+          path: "/"
+          backend:
+            service:
+              name: precisionsustainableagdstselector
+              port:
+                number: 443
