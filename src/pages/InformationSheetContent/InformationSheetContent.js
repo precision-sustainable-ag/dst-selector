@@ -1,7 +1,7 @@
 /*
   Contains the top level information sheet popup
   BasicCrop contains the default crop
-  MonthDayString gets the start and end dates used in the info sheet
+  getMonthDayString gets the start and end dates used in the info sheet
   RenderExtendedComments returns the extended notes for a crop if they exist
   styled using makeStyles and withStyles
 */
@@ -15,11 +15,11 @@ import React, {
 import {
   allMonths,
   getActiveCropMonths,
+  getMonthDayString,
   RenderSeedPriceIcons,
 } from '../../shared/constants';
 import { Context } from '../../store/Store';
 import { Accordion, AccordionSummary, useStyles } from './informationSheet.styles';
-import MonthDayString from './getMonthDayString';
 import CoverCropInformation from './CoverCropInformation/CoverCropInformation';
 import sources from '../../shared/json/sources/sources.json';
 import TooltipMaker from '../../components/TooltipMaker/TooltipMaker';
@@ -44,7 +44,7 @@ const InformationSheetContent = (props) => {
 
   useEffect(() => {
     document.title = `${crop['Cover Crop Name']} Zone ${zone}`;
-    fetch(`/pdf/${document.title}.pdf`)
+    fetch(`https://selectorimages.blob.core.windows.net/selectorimages/pdf/${document.title}.pdf`)
       .then((response) => response.text())
       .then((data) => {
         if (data.includes('PDF')) {
@@ -75,7 +75,7 @@ const InformationSheetContent = (props) => {
 
   return Object.keys(crop).length > 0 ? (
     <>
-      {pdf && <iframe id="PDF" title="pdf" src={`/pdf/${document.title}.pdf`} />}
+      {pdf && <iframe id="PDF" title="pdf" src={`https://selectorimages.blob.core.windows.net/selectorimages/pdf/${document.title}.pdf`} />}
 
       <CoverCropInformation
         cropImage={crop['Image Data'] || null}
@@ -247,19 +247,19 @@ const InformationSheetContent = (props) => {
                       <div className="blueBgFlex borderWrapped wd-112">
                         <div className="blue-bg shrt_perennial wd-110">
                           <Typography variant="body1">
-                            {MonthDayString('reliable', crop)}
+                            {getMonthDayString('reliable', crop)}
                           </Typography>
                         </div>
                         <div className="blue-bg shrt_perennial wd-110">
                           <Typography variant="body1">
-                            {MonthDayString('reliable-second', crop)}
+                            {getMonthDayString('reliable-second', crop)}
                           </Typography>
                         </div>
                       </div>
                       ) : (
                         <div className="blue-bg shrt_perennial wd-110">
                           <Typography variant="body1">
-                            {MonthDayString('reliable', crop)}
+                            {getMonthDayString('reliable', crop)}
                           </Typography>
                         </div>
                       )}
@@ -277,19 +277,19 @@ const InformationSheetContent = (props) => {
                       <div className="blueBgFlex borderWrapped wd-112">
                         <div className="blue-bg shrt_perennial wd-110">
                           <Typography variant="body1">
-                            {MonthDayString('temperature', crop)}
+                            {getMonthDayString('temperature', crop)}
                           </Typography>
                         </div>
                         <div className="blue-bg shrt_perennial wd-110">
                           <Typography variant="body1">
-                            {MonthDayString('temperature-second', crop)}
+                            {getMonthDayString('temperature-second', crop)}
                           </Typography>
                         </div>
                       </div>
                       ) : (
                         <div className="blue-bg shrt_perennial wd-110">
                           <Typography variant="body1">
-                            {MonthDayString('temperature', crop)}
+                            {getMonthDayString('temperature', crop)}
                           </Typography>
                         </div>
                       )}
