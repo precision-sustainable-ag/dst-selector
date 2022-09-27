@@ -67,6 +67,8 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
       });
     }
 
+    console.log('document.title', document.title, document.querySelector('#PDF'));
+
     document.querySelector('#PDF').contentWindow.print();
   }; // print
 
