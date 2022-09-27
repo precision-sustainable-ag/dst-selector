@@ -20,6 +20,13 @@ spec:
               name: precisionsustainableagdstselector
               port:
                 number: 80
+        - pathType: Prefix
+          path: "/*"
+          backend:
+            service:
+              name: precisionsustainableagdstselector
+              port:
+                number: 80
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -38,6 +45,13 @@ spec:
       paths:
         - pathType: Prefix
           path: "/"
+          backend:
+            service:
+              name: precisionsustainableagdstselector
+              port:
+                number: 80
+        - pathType: Prefix
+          path: "/*"
           backend:
             service:
               name: precisionsustainableagdstselector
