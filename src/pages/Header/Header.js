@@ -18,7 +18,7 @@ import moment from 'moment';
 import { useSnackbar } from 'notistack';
 import React, { useContext, useEffect } from 'react';
 import { NavLink, useHistory } from 'react-router-dom';
-import { abbrRegion, weatherApiURL } from '../../shared/constants';
+import { abbrRegion } from '../../shared/constants';
 import zone4DataDictionary from '../../shared/json/zone4/data-dictionary.json';
 import zone5DataDictionary from '../../shared/json/zone5/data-dictionary.json';
 import zone6DataDictionary from '../../shared/json/zone6/data-dictionary.json';
@@ -41,6 +41,7 @@ const Header = () => {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const isActive = {};
 
+  const weatherApiURL = 'https://weather.aesl.ces.uga.edu';
   const getUSDAZone = async (zip) => fetch(`https://phzmapi.org/${zip}.json`);
 
   useEffect(() => {
