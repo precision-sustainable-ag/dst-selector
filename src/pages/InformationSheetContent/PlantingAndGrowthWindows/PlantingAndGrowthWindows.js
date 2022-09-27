@@ -3,7 +3,7 @@ import { AccordionDetails, Typography } from '@mui/material';
 import { ExpandMore, FiberManualRecord } from '@mui/icons-material';
 import moment from 'moment-timezone';
 import CropSelectorCalendarView from '../../../components/CropSelectorCalendarView/CropSelectorCalendarView';
-import MonthDayString from './getMonthDayString';
+import getMonthDayString from './getMonthDayString';
 import { allMonths, getActiveCropMonths } from '../../../shared/constants';
 import { Accordion, AccordionSummary, useStyles } from '../informationSheet.styles';
 
@@ -56,18 +56,18 @@ const PlantingAndGrowthWindows = ({ crop }) => {
                       <div className="blueBgFlex borderWrapped wd-112">
                         <div className="blue-bg shrt_perennial wd-110">
                           <Typography variant="body1">
-                            {MonthDayString('reliable', crop)}
+                            {getMonthDayString('reliable', crop)}
                           </Typography>
                         </div>
                         <div className="blue-bg shrt_perennial wd-110">
                           <Typography variant="body1">
-                            {MonthDayString('reliable-second', crop)}
+                            {getMonthDayString('reliable-second', crop)}
                           </Typography>
                         </div>
                       </div>
                     ) : (
                       <div className="blue-bg shrt_perennial wd-110">
-                        <Typography variant="body1">{MonthDayString('reliable', crop)}</Typography>
+                        <Typography variant="body1">{getMonthDayString('reliable', crop)}</Typography>
                       </div>
                     )}
                 </div>
@@ -84,19 +84,19 @@ const PlantingAndGrowthWindows = ({ crop }) => {
                       <div className="blueBgFlex borderWrapped wd-112">
                         <div className="blue-bg shrt_perennial wd-110">
                           <Typography variant="body1">
-                            {MonthDayString('temperature', crop)}
+                            {getMonthDayString('temperature', crop)}
                           </Typography>
                         </div>
                         <div className="blue-bg shrt_perennial wd-110">
                           <Typography variant="body1">
-                            {MonthDayString('temperature-second', crop)}
+                            {getMonthDayString('temperature-second', crop)}
                           </Typography>
                         </div>
                       </div>
                     ) : (
                       <div className="blue-bg shrt_perennial wd-110">
                         <Typography variant="body1">
-                          {MonthDayString('temperature', crop)}
+                          {getMonthDayString('temperature', crop)}
                         </Typography>
                       </div>
                     )}
