@@ -16,4 +16,4 @@ spec:
         - name: precisionsustainableagdstselector 
           image: containerregistry4pd7i.azurecr.io/precisionsustainableagdstselector
           ports:
-          - containerPort: 80
+          - containerPort: 443
