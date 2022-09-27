@@ -42,4 +42,4 @@ spec:
             service:
               name: precisionsustainableagdstselector
               port:
-                number: 443
+                number: 80
