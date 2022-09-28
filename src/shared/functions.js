@@ -1,4 +1,4 @@
-export const arrayEquals = (a = [], b = []) => {
+const arrayEquals = (a = [], b = []) => {
   a.sort();
   b.sort();
   return (
@@ -8,3 +8,5 @@ export const arrayEquals = (a = [], b = []) => {
     && a.every((val, index) => val === b[index])
   );
 };
+
+export default arrayEquals;

@@ -13,7 +13,7 @@
 */
 
 import moment from 'moment-timezone';
-import React, { createContext, useReducer } from 'react';
+import React, { createContext, useReducer, useMemo } from 'react';
 import desc from '../shared/json/descriptions/crop-descriptions.json';
 import img from '../shared/json/image-locations/image-dictionary.json';
 import z4crops from '../shared/json/zone4/crop-data.json';
@@ -277,8 +277,9 @@ const initialState = {
 
 const Store = ({ children }) => {
   const [state, dispatch] = useReducer(Reducer, initialState);
+  const contextValue = useMemo(() => ({ state, dispatch }), [state, dispatch]);
 
-  return <Context.Provider value={{ state, dispatch }}>{children}</Context.Provider>;
+  return <Context.Provider value={contextValue}>{children}</Context.Provider>;
 };
 
 export const Context = createContext(initialState);
