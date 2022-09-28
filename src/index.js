@@ -11,7 +11,10 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import {
-  ThemeProvider, StyledEngineProvider, responsiveFontSizes, adaptV4Theme,
+  ThemeProvider,
+  StyledEngineProvider,
+  responsiveFontSizes,
+  adaptV4Theme,
 } from '@mui/material';
 import { SnackbarProvider } from 'notistack';
 import { createTheme } from '@mui/material/styles';
@@ -22,73 +25,74 @@ import 'leaflet-control-geocoder/dist/Control.Geocoder.js';
 import './styles/parent.scss';
 import 'mdbreact/dist/css/mdb.css';
 import './styles/progressBar.css';
-import Footer from './components/Footer/Footer';
-import About from './components/About/About';
-import SeedingRateCalculator from './components/SeedingRateCalculator/SeedingRateCalculator';
-import MixMaker from './components/MixMaker/MixMaker';
-import CoverCropExplorer from './components/CoverCropExplorer/CoverCropExplorer';
-import InformationSheet from './components/InformationSheet/InformationSheet';
-import HelpComponent from './components/Help/Help';
-import FeedbackComponent from './components/Feedback/Feedback';
+import Footer from './pages/Footer/Footer';
+import About from './pages/About/About';
+import SeedingRateCalculator from './pages/SeedingRateCalculator/SeedingRateCalculator';
+import MixMaker from './pages/MixMaker/MixMaker';
+import CoverCropExplorer from './pages/CoverCropExplorer/CoverCropExplorer';
+import HelpComponent from './pages/Help/Help';
+import FeedbackComponent from './pages/Feedback/Feedback';
 import { CustomStyles } from './shared/constants';
-import InformationSheetDictionary from './components/InformationSheet/InformationSheetDictionary';
-import MyCoverCropListWrapper from './components/MyCoverCropList/MyCoverCropListWrapper';
-import License from './components/License/License';
+import InformationSheetDictionary from './pages/Help/InformationSheetDictionary/InformationSheetDictionary';
+import License from './pages/License/License';
+import MyCoverCropListWrapper from './pages/MyCoverCropList/MyCoverCropListWrapper/MyCoverCropListWrapper';
 
 const withFooter = (WrappedComponent) => () => [<WrappedComponent key="1" />, <Footer key="2" />];
 
-const theme = createTheme(adaptV4Theme({
-  palette: {
-    primary: {
-      main: CustomStyles().lightGreen,
-    },
-    secondary: {
-      main: CustomStyles().lighterGreen,
-    },
-  },
-  overrides: {
-    MuiTooltip: {
-      tooltip: {
-        fontWeight: 'normal',
-        fontSize: CustomStyles().defaultFontSize,
-        backgroundColor: CustomStyles().secondaryProgressBtnColor,
-        color: 'black',
-        borderRadius: CustomStyles().mildlyRoundedRadius,
+const theme = createTheme(
+  adaptV4Theme({
+    palette: {
+      primary: {
+        main: CustomStyles().lightGreen,
       },
-      arrow: {},
-    },
-    MuiChip: {
-      root: {
-        '&&:hover': {
-          boxShadow: '0 0 3px 0 black',
-        },
-        border: '1px solid #777',
+      secondary: {
+        main: CustomStyles().lighterGreen,
       },
-      colorSecondary: {
-        '&, &&:hover, &&:focus': {
-          backgroundColor: CustomStyles().greenishWhite,
-          color: 'rgba(0,0,0,0.9)',
+    },
+    overrides: {
+      MuiTooltip: {
+        tooltip: {
           fontWeight: 'normal',
+          fontSize: CustomStyles().defaultFontSize,
+          backgroundColor: CustomStyles().secondaryProgressBtnColor,
+          color: 'black',
+          borderRadius: CustomStyles().mildlyRoundedRadius,
+        },
+        arrow: {},
+      },
+      MuiChip: {
+        root: {
+          '&&:hover': {
+            boxShadow: '0 0 3px 0 black',
+          },
+          border: '1px solid #777',
+        },
+        colorSecondary: {
+          '&, &&:hover, &&:focus': {
+            backgroundColor: CustomStyles().greenishWhite,
+            color: 'rgba(0,0,0,0.9)',
+            fontWeight: 'normal',
+          },
+        },
+        colorPrimary: {
+          '&, &&:hover, &&:focus': {
+            backgroundColor: CustomStyles().darkGreen,
+            color: 'white',
+            fontWeight: 'normal',
+          },
+        },
+        sizeSmall: {
+          fontSize: '1.2rem',
         },
       },
-      colorPrimary: {
-        '&, &&:hover, &&:focus': {
-          backgroundColor: CustomStyles().darkGreen,
-          color: 'white',
-          fontWeight: 'normal',
+      MuiDialog: {
+        root: {
+          zIndex: 1000003,
         },
       },
-      sizeSmall: {
-        fontSize: '1.2rem',
-      },
     },
-    MuiDialog: {
-      root: {
-        zIndex: 1000003,
-      },
-    },
-  },
-}));
+  }),
+);
 const RouteNotFound = () => (
   <section className="page_404">
     <div className="container-fluid">
@@ -106,7 +110,7 @@ const RouteNotFound = () => (
 
               <a href="/" className="link_404">
                 Go Home
-                </a>
+              </a>
             </div>
           </div>
         </div>
@@ -140,15 +144,14 @@ const Wrapper = () => (
                 <Route path="/help" component={HelpComponent} exact />
                 <Route path="/feedback" component={FeedbackComponent} exact />
                 <Route path="/my-cover-crop-list" component={MyCoverCropListWrapper} exact />
-                <Route path="/information-sheet/:cropName" component={InformationSheet} exact />
                 <Route path="/seeding-rate-calculator" component={SeedingRateCalculator} exact />
                 <Route path="/data-dictionary" component={InformationSheetDictionary} exact />
                 <Route path="/license" component={() => <License licenseType="MIT" />} exact />
                 <Route
-                    path="/ag-informatics-license"
-                    component={() => <License licenseType="AgInformatics" />}
-                    exact
-                  />
+                  path="/ag-informatics-license"
+                  component={() => <License licenseType="AgInformatics" />}
+                  exact
+                />
                 <Route path="/mix-maker" component={MixMaker} exact />
 
                 <Route component={RouteNotFound} />
