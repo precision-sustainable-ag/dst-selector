@@ -59,17 +59,7 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
   };
 
   const print = () => {
-    if (state.consent === true) {
-      ReactGA.event({
-        category: 'Information Sheet',
-        action: 'Print',
-        label: document.title,
-      });
-    }
-
-    console.log('document.title', document.title, document.querySelector('#PDF'));
-
-    document.querySelector('#PDF').contentWindow.print();
+    window.open(`https://selectorimages.blob.core.windows.net/selectorimages/pdf/${document.title}.pdf`, '_blank');
   }; // print
 
   return (

@@ -32,25 +32,15 @@ import SoilDrainageInfoContent from './SoilDrainageInfoContent/SoilDrainageInfoC
 import TerminationInfo from './TerminationInfo/TerminationInfo';
 import CropSelectorCalendarView from '../../components/CropSelectorCalendarView/CropSelectorCalendarView';
 
-const InformationSheetContent = (props) => {
+const InformationSheetContent = ({ crop }) => {
   const { state } = useContext(Context);
   const section = window.location.href.includes('selector') ? 'selector' : 'explorer';
   const { zone } = state[section];
-  const { crop } = props;
   const classes = useStyles();
   const [currentSources, setCurrentSources] = useState([{}]);
 
-  const [pdf, setPDF] = useState(false);
-
   useEffect(() => {
     document.title = `${crop['Cover Crop Name']} Zone ${zone}`;
-    fetch(`https://selectorimages.blob.core.windows.net/selectorimages/pdf/${document.title}.pdf`)
-      .then((response) => response.text())
-      .then((data) => {
-        if (data.includes('PDF')) {
-          setPDF(true);
-        }
-      });
 
     const regex = /(?!\B"[^"]*),(?![^"]*"\B)/g;
     const removeDoubleQuotes = /^"(.+(?="$))"$/;
@@ -65,18 +55,10 @@ const InformationSheetContent = (props) => {
     });
 
     setCurrentSources(relevantZones);
-    document.body.classList.add('InfoSheet');
-
-    return () => {
-      document.title = 'Cover Crop Explorer';
-      document.body.classList.remove('InfoSheet');
-    };
   }, [crop, zone]);
 
   return Object.keys(crop).length > 0 ? (
     <>
-      {pdf && <iframe id="PDF" title="pdf" src={`https://selectorimages.blob.core.windows.net/selectorimages/pdf/${document.title}.pdf`} />}
-
       <CoverCropInformation
         cropImage={crop['Image Data'] || null}
         cropDescription={
