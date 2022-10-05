@@ -445,10 +445,10 @@ const RenderRelevantData = ({ filterKey = '', data = [] }) => {
       </div>
     );
   }
-  if (filterKey === 'Frost Seeding' || filterKey === 'Aerial Seeding') {
+  if (filterKey === 'Frost Seeding' || (filterKey === 'Can Aerial Seed?' || filterKey === 'Aerial Seeding')) {
     return (
       <div style={lightBG}>
-        <RenderSeedingData data={data} filterKey={filterKey} />
+        <RenderSeedingData data={data} filterKey={filterKey === 'Frost Seeding' ? filterKey : 'Aerial Seeding'} />
       </div>
     );
   } if (data[filterKey]) {
