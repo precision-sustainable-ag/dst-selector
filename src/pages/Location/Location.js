@@ -4,7 +4,6 @@
 */
 
 import {
-  Button,
   Dialog,
   DialogActions,
   DialogContent,
@@ -21,6 +20,7 @@ import { Context } from '../../store/Store';
 import '../../styles/location.scss';
 import GoogleAutocomplete from './GoogleAutocomplete/GoogleAutocomplete';
 import MapContext from './MapContext/MapContext';
+import { BinaryButton } from '../../shared/constants';
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -39,100 +39,33 @@ const LocationComponent = ({ title, caller }) => {
   const [selectedToEditSite, setSelectedToEditSite] = useState({});
   const [showRestartPrompt, setShowRestartPrompt] = useState(false);
   const [restartAccept, setRestartAccept] = useState(false);
-  const [zoneSelection, setZoneSelection] = useState(7);
+  const [zoneSelection, setZoneSelection] = useState();
   useEffect(() => {
     document.title = title || 'Decision Support Tool';
   }, [title]);
+  const zones = [4, 5, 6, 7];
 
   useEffect(() => {
-    if (zoneSelection === 3) {
-      dispatch({
-        type: 'UPDATE_ZONE_TEXT',
-        data: {
-          zoneText: 'Zone 7',
-          zone: 7,
-        },
-      });
-    } else if (zoneSelection === 4) {
-      dispatch({
-        type: 'UPDATE_ZONE_TEXT',
-        data: {
-          zoneText: 'Zone 4',
-          zone: zoneSelection,
-        },
-      });
-    } else if (zoneSelection === 5) {
-      dispatch({
-        type: 'UPDATE_ZONE_TEXT',
-        data: {
-          zoneText: 'Zone 5',
-          zone: zoneSelection,
-        },
-      });
-    } else if (zoneSelection === 6) {
-      dispatch({
-        type: 'UPDATE_ZONE_TEXT',
-        data: {
-          zoneText: 'Zone 6',
-          zone: zoneSelection,
-        },
-      });
-    } else {
-      dispatch({
-        type: 'UPDATE_ZONE_TEXT',
-        data: {
-          zoneText: 'Zone 7',
-          zone: 7,
-        },
-      });
-    }
-  }, [restartAccept, dispatch, zoneSelection]);
+    const curZone = zoneSelection ?? sfilters.zone;
+    dispatch({
+      type: 'UPDATE_ZONE_TEXT',
+      data: {
+        zoneText: zones.includes(curZone) ? `Zone ${curZone}` : 'Zone 7',
+        zone: zones.includes(curZone) ? curZone : 7,
+      },
+    });
+  }, [restartAccept, zoneSelection]);
+
+  const handleConfirmationChoice = (choice) => {
+    setShowRestartPrompt(false);
+    setRestartAccept(choice);
+  };
 
   const handleZoneChange = (event) => {
     if (caller === 'greenbar') {
       setShowRestartPrompt(true);
-      setZoneSelection(event.target.value);
-    } else if (event.target.value === 3) {
-      dispatch({
-        type: 'UPDATE_ZONE_TEXT',
-        data: {
-          zoneText: 'Zone 7',
-          zone: 7,
-        },
-      });
-    } else if (event.target.value === 4) {
-      dispatch({
-        type: 'UPDATE_ZONE_TEXT',
-        data: {
-          zoneText: 'Zone 4',
-          zone: event.target.value,
-        },
-      });
-    } else if (event.target.value === 5) {
-      dispatch({
-        type: 'UPDATE_ZONE_TEXT',
-        data: {
-          zoneText: 'Zone 5',
-          zone: event.target.value,
-        },
-      });
-    } else if (event.target.value === 6) {
-      dispatch({
-        type: 'UPDATE_ZONE_TEXT',
-        data: {
-          zoneText: 'Zone 6',
-          zone: event.target.value,
-        },
-      });
-    } else {
-      dispatch({
-        type: 'UPDATE_ZONE_TEXT',
-        data: {
-          zoneText: 'Zone 7',
-          zone: 7,
-        },
-      });
     }
+    setZoneSelection(event.target.value);
   };
 
   useEffect(() => {
@@ -158,7 +91,6 @@ const LocationComponent = ({ title, caller }) => {
         <div className="col-xl-6 col-lg-12">
           <div className="container-fluid">
             <Typography variant="h4">Where is your field located?</Typography>
-
             <Typography variant="body1" align="left" className="pt-3">
               Enter your USDA plant hardiness zone, address, or zip code and hit
               {' '}
@@ -166,7 +98,6 @@ const LocationComponent = ({ title, caller }) => {
               {' '}
               to determine your location.
             </Typography>
-
             <div className="row pt-3 mt-4">
               <div className="col-md-9 col-lg-8 col-sm-12 row">
                 <GoogleAutocomplete
@@ -191,18 +122,11 @@ const LocationComponent = ({ title, caller }) => {
                     onChange={handleZoneChange}
                     value={parseInt(sfilters.zone, 10)}
                   >
-                    <MenuItem value={4} key={4}>
-                      Zone 4
-                    </MenuItem>
-                    <MenuItem value={5} key={5}>
-                      Zone 5
-                    </MenuItem>
-                    <MenuItem value={6} keuy={6}>
-                      Zone 6
-                    </MenuItem>
-                    <MenuItem value={7} key={7}>
-                      Zone 7
-                    </MenuItem>
+                    {zones.map((zone, i) => (
+                      <MenuItem value={zone} key={`Zone${zone}${i}`}>
+                        {`Zone ${zone}`}
+                      </MenuItem>
+                    ))}
                   </Select>
                 </FormControl>
               </div>
@@ -230,25 +154,7 @@ const LocationComponent = ({ title, caller }) => {
           </Typography>
         </DialogContent>
         <DialogActions>
-          <Button
-            autoFocus
-            onClick={() => {
-              setShowRestartPrompt(false);
-              setRestartAccept(false);
-            }}
-            color="secondary"
-          >
-            No
-          </Button>
-          <Button
-            onClick={() => {
-              setShowRestartPrompt(false);
-              setRestartAccept(true);
-            }}
-            color="secondary"
-          >
-            Yes
-          </Button>
+          <BinaryButton action={handleConfirmationChoice} />
         </DialogActions>
       </Dialog>
     </div>
