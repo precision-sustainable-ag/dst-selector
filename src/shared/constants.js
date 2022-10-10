@@ -447,13 +447,12 @@ export const getActiveCropMonths = (crop = {}) => {
 export const BinaryButton = ({ action }) => (
   <>
     <Button
-      autoFocus
       onClick={() => {
-        action(null);
+        action(true);
       }}
-      color="primary"
+      color="secondary"
     >
-      Cancel
+      Yes
     </Button>
     <Button
       onClick={() => {
@@ -464,12 +463,13 @@ export const BinaryButton = ({ action }) => (
       No
     </Button>
     <Button
+      autoFocus
       onClick={() => {
-        action(true);
+        action(null);
       }}
-      color="secondary"
+      color="primary"
     >
-      Yes
+      Cancel
     </Button>
   </>
 );
