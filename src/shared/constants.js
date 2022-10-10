@@ -7,9 +7,6 @@ import {
   Grid,
   Typography,
   Tooltip,
-  Dialog,
-  DialogContent,
-  DialogActions,
 } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import moment from 'moment';
@@ -447,42 +444,34 @@ export const getActiveCropMonths = (crop = {}) => {
   return activeMonths;
 };
 
-export const RestartPrompt = ({
-  open = false,
-  selectedCrops = [],
-  setOpen = () => {},
-  onAccept = () => {},
-}) => (
-  <Dialog disableEscapeKeyDown open={open}>
-    <DialogContent dividers>
-      <Typography variant="body1">
-        {selectedCrops.length > 0
-          ? `Restarting will remove all cover crops added to your list. Are you
-        sure you want to restart?`
-          : 'Are you sure you want to restart?'}
-      </Typography>
-    </DialogContent>
-    <DialogActions>
-      <Button
-        autoFocus
-        onClick={() => {
-          setOpen(false);
-          onAccept(false);
-        }}
-        color="secondary"
-      >
-        No
-      </Button>
-      <Button
-        onClick={() => {
-          onAccept(true);
-        }}
-        color="secondary"
-      >
-        Yes
-      </Button>
-    </DialogActions>
-  </Dialog>
+export const BinaryButton = ({ action }) => (
+  <>
+    <Button
+      autoFocus
+      onClick={() => {
+        action(null);
+      }}
+      color="primary"
+    >
+      Cancel
+    </Button>
+    <Button
+      onClick={() => {
+        action(false);
+      }}
+      color="secondary"
+    >
+      No
+    </Button>
+    <Button
+      onClick={() => {
+        action(true);
+      }}
+      color="secondary"
+    >
+      Yes
+    </Button>
+  </>
 );
 
 export const sudoButtonStyle = {

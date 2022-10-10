@@ -12,7 +12,7 @@ import CloudIcon from '@mui/icons-material/Cloud';
 import FilterHdrIcon from '@mui/icons-material/FilterHdr';
 import moment from 'moment';
 import React, { useContext, useState } from 'react';
-import { CustomStyles, greenBarExpansionPanelHeight } from '../../../shared/constants';
+import { BinaryButton, CustomStyles, greenBarExpansionPanelHeight } from '../../../shared/constants';
 import { Context } from '../../../store/Store';
 import '../../../styles/greenBar.scss';
 import LocationComponent from '../../Location/Location';
@@ -35,7 +35,6 @@ const InformationBar = () => {
   const { state, dispatch } = useContext(Context);
   const section = window.location.href.includes('selector') ? 'selector' : 'explorer';
   const sfilters = state[section];
-  const [restartPrompt2, setRestartPrompt2] = useState(false);
   const [confirmationOpen, setConfirmationOpen] = useState(false);
   const [expansionPanelComponent, setExpansionPanelComponent] = useState({
     component: '',
@@ -49,79 +48,11 @@ const InformationBar = () => {
       component: '',
     });
   };
-  const handleAddressBtnClick = () => {
-    const greenbarExpansionElement = document.getElementById('greenBarExpansionPanel');
-    if (
-      expansionPanelComponent.component === 'location'
-      && greenbarExpansionElement.style.minHeight === greenBarExpansionPanelHeight.large
-    ) {
-      // toggle
-      closeExpansionPanel();
-    } else {
-      greenbarExpansionElement.style.transform = 'translate(0px,0px)';
-      greenbarExpansionElement.style.minHeight = greenBarExpansionPanelHeight.large;
-      setExpansionPanelComponent({
-        component: 'location',
-      });
-    }
-  };
-  const getAddress = () => {
-    if (state.address === '') {
-      return '';
-    }
-    return (
-      <Button
-        className="greenbarBtn"
-        onClick={handleAddressBtnClick}
-        style={
-            expansionPanelComponent.component === 'location'
-              ? {
-                background: 'white',
-              }
-              : {}
-          }
-      >
-        <span
-          style={
-              expansionPanelComponent.component === 'location'
-                ? {
-                  color: 'black',
-                }
-                : {}
-            }
-        >
-          <LocationOn />
-            &nbsp;Zone
-          {' '}
-          {sfilters.zone}
-          :
-          {' '}
-          {state.address}
-        </span>
-      </Button>
-    );
-  };
-  const handleSoilBtnClick = () => {
-    const greenbarExpansionElement = document.getElementById('greenBarExpansionPanel');
-    if (
-      expansionPanelComponent.component === 'soil'
-      && greenbarExpansionElement.style.minHeight === greenBarExpansionPanelHeight.large
-    ) {
-      // toggle
-      closeExpansionPanel();
-    } else {
-      greenbarExpansionElement.style.transform = 'translate(0px,0px)';
-      greenbarExpansionElement.style.minHeight = greenBarExpansionPanelHeight.large;
-      setExpansionPanelComponent({
-        component: 'soil',
-      });
-    }
-  };
-  const handleWeatherBtnClick = () => {
-    const greenbarExpansionElement = document.getElementById('greenBarExpansionPanel');
 
+  const handleBtnClick = (type) => {
+    const greenbarExpansionElement = document.getElementById('greenBarExpansionPanel');
     if (
-      expansionPanelComponent.component === 'weather'
+      expansionPanelComponent.component === type
       && greenbarExpansionElement.style.minHeight === greenBarExpansionPanelHeight.large
     ) {
       // toggle
@@ -130,34 +61,15 @@ const InformationBar = () => {
       greenbarExpansionElement.style.transform = 'translate(0px,0px)';
       greenbarExpansionElement.style.minHeight = greenBarExpansionPanelHeight.large;
       setExpansionPanelComponent({
-        component: 'weather',
+        component: type,
       });
     }
   };
-  const getSoil = () => {
-    if (state.soilData.Flooding_Frequency === null) {
-      return '';
-    } return (
-      <Button
-        className="greenbarBtn"
-        onClick={handleSoilBtnClick}
-        style={
-            expansionPanelComponent.component === 'soil'
-              ? {
-                background: 'white',
-              }
-              : {}
-          }
-      >
-        <span
-          style={
-              expansionPanelComponent.component === 'soil'
-                ? {
-                  color: 'black',
-                }
-                : {}
-            }
-        >
+
+  const getIconInfo = (type) => {
+    if (type === 'soil') {
+      return (
+        <>
           <FilterHdrIcon />
             &nbsp;
           {' '}
@@ -165,48 +77,52 @@ const InformationBar = () => {
           {`Soils: Drainage Class: ${state.soilData.Drainage_Class.toString()
             .split(',')
             .join(', ')}`}
-        </span>
-      </Button>
-    );
-  };
-
-  const handleConfirmationChoice = (clearCoverCrops = false) => {
-    const defaultMarkers = [[40.78489145, -74.80733626930342]];
-
-    if (clearCoverCrops) {
-      dispatch({
-        type: 'RESET',
-        data: {
-          markers: defaultMarkers,
-          selectedCrops: [],
-        },
-      });
-    } else {
-      dispatch({
-        type: 'RESET',
-        data: {
-          markers: defaultMarkers,
-          selectedCrops: state.selectedCrops,
-        },
-      });
+        </>
+      );
     }
 
-    setConfirmationOpen(false);
+    if (type === 'location') {
+      return (
+        <>
+          <LocationOn />
+            &nbsp;Zone
+          {' '}
+          {sfilters.zone}
+          :
+          {' '}
+          {state.address}
+        </>
+      );
+    }
+
+    if (type === 'weather') {
+      const currentMonth = moment().format('MMM');
+      return (
+        <>
+          <CloudIcon fontSize="small" />
+            &nbsp;
+          {' '}
+          {`Avg First Frost: ${state.weatherData.averageFrost.firstFrostDate.month} ${state.weatherData.averageFrost.firstFrostDate.day} 
+          | Avg Rain(${currentMonth}): ${state.weatherData.averagePrecipitation.thisMonth} in`}
+        </>
+      );
+    }
+
+    return '';
   };
 
-  const getWeatherData = () => {
-    // TODO: convert month to string, currently returning int
-    // let currentMonth = GetMonthString(month);
-    const currentMonth = moment().format('MMM');
-    // frost free days :-
-    // NOTE: IP has been permanently changed to a URL. check constants
-    if (state.weatherData.length === 0) return '';
+  const getData = (type) => {
+    // eslint-disable-next-line max-len
+    if ((state.soilData.Flooding_Frequency === null && type === 'soil') || (type === 'address' && state.address === '') || (type === 'weather' && state.weatherData.length === 0)) {
+      return '';
+    }
+
     return (
       <Button
         className="greenbarBtn"
-        onClick={handleWeatherBtnClick}
+        onClick={() => handleBtnClick(type)}
         style={
-            expansionPanelComponent.component === 'weather'
+            expansionPanelComponent.component === type
               ? {
                 background: 'white',
               }
@@ -215,21 +131,41 @@ const InformationBar = () => {
       >
         <span
           style={
-              expansionPanelComponent.component === 'weather'
+              expansionPanelComponent.component === type
                 ? {
                   color: 'black',
                 }
                 : {}
             }
         >
-          <CloudIcon fontSize="small" />
-            &nbsp;
-          {' '}
-          {`Avg First Frost: ${state.weatherData.averageFrost.firstFrostDate.month} ${state.weatherData.averageFrost.firstFrostDate.day} 
-          | Avg Rain(${currentMonth}): ${state.weatherData.averagePrecipitation.thisMonth} in`}
+          {getIconInfo(type)}
         </span>
       </Button>
     );
+  };
+
+  const handleConfirmationChoice = (clearCoverCrops = false) => {
+    const defaultMarkers = [[40.78489145, -74.80733626930342]];
+    if (clearCoverCrops !== null) {
+      if (clearCoverCrops) {
+        dispatch({
+          type: 'RESET',
+          data: {
+            markers: defaultMarkers,
+            selectedCrops: [],
+          },
+        });
+      } else {
+        dispatch({
+          type: 'RESET',
+          data: {
+            markers: defaultMarkers,
+            selectedCrops: state.selectedCrops,
+          },
+        });
+      }
+    }
+    setConfirmationOpen(false);
   };
 
   return (
@@ -237,16 +173,16 @@ const InformationBar = () => {
       <div className="greenBarWrapper" style={greenBarWrapperBackground}>
         <div className="addressBar">
           {state.progress > 0 && window.location.pathname === speciesSelectorToolName
-            && getAddress()}
+            && getData('location')}
         </div>
 
         <div className="soilBar">
           {state.progress > 1 && window.location.pathname === speciesSelectorToolName
-            && getSoil()}
+            && getData('soil')}
         </div>
         <div className="weatherBar">
           {state.progress > 2 && window.location.pathname === speciesSelectorToolName
-            && getWeatherData()}
+            && getData('weather')}
         </div>
         {state.progress > 0 && window.location.pathname === speciesSelectorToolName && (
           <div className="restartBtnWrapper">
@@ -313,61 +249,16 @@ const InformationBar = () => {
           )}
         </div>
       </div>
-      <Dialog disableEscapeKeyDown open={restartPrompt2}>
-        {/* <DialogTitle>Clear My Cover Crop List?</DialogTitle> */}
+      <Dialog onClose={() => handleConfirmationChoice(null)} open={confirmationOpen}>
         <DialogContent dividers>
           <Typography variant="body1">
             Would you also like to clear My Cover Crop List?
           </Typography>
         </DialogContent>
         <DialogActions>
-          <Button
-            autoFocus
-            onClick={() => {
-              setRestartPrompt2(false);
-            }}
-            color="secondary"
-          >
-            No
-          </Button>
-          <Button
-            onClick={() => {
-              handleConfirmationChoice(true);
-              setRestartPrompt2(false);
-            }}
-            color="secondary"
-          >
-            Yes
-          </Button>
-        </DialogActions>
-      </Dialog>
-      <Dialog disableEscapeKeyDown open={confirmationOpen}>
-        <DialogContent dividers>
-          <Typography variant="body1">
-            {state.selectedCrops.length > 0
-              ? `Restarting will remove all cover crops added to your list. Are you
-            sure you want to restart?`
-              : 'Are you sure you want to restart?'}
-          </Typography>
-        </DialogContent>
-        <DialogActions>
-          <Button
-            autoFocus
-            onClick={() => {
-              setConfirmationOpen(false);
-            }}
-            color="secondary"
-          >
-            No
-          </Button>
-          <Button
-            onClick={() => {
-              handleConfirmationChoice(true);
-            }}
-            color="secondary"
-          >
-            Yes
-          </Button>
+          <BinaryButton
+            action={handleConfirmationChoice}
+          />
         </DialogActions>
       </Dialog>
     </div>
