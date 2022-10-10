@@ -3,8 +3,7 @@ import { AccordionDetails, Typography } from '@mui/material';
 import { ExpandMore, FiberManualRecord } from '@mui/icons-material';
 import moment from 'moment-timezone';
 import CropSelectorCalendarView from '../../../components/CropSelectorCalendarView/CropSelectorCalendarView';
-import getMonthDayString from './getMonthDayString';
-import { allMonths, getActiveCropMonths } from '../../../shared/constants';
+import { allMonths, getActiveCropMonths, getMonthDayString } from '../../../shared/constants';
 import { Accordion, AccordionSummary, useStyles } from '../informationSheet.styles';
 
 const PlantingAndGrowthWindows = ({ crop }) => {

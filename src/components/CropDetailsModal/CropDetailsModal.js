@@ -66,8 +66,7 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
         label: document.title,
       });
     }
-
-    document.querySelector('#PDF').contentWindow.print();
+    window.open(`https://selectorimages.blob.core.windows.net/selectorimages/pdf/${document.title}.pdf`, '_blank');
   }; // print
 
   return (

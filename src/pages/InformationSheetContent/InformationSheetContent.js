@@ -1,7 +1,7 @@
 /*
   Contains the top level information sheet popup
   BasicCrop contains the default crop
-  MonthDayString gets the start and end dates used in the info sheet
+  getMonthDayString gets the start and end dates used in the info sheet
   RenderExtendedComments returns the extended notes for a crop if they exist
   styled using makeStyles and withStyles
 */
@@ -23,24 +23,14 @@ import PlantingAndGrowthWindows from './PlantingAndGrowthWindows/PlantingAndGrow
 import ExtendedComments from './ExtendedComments/EntendedComments';
 import InformationSheetReferences from './InformationSheetReferences/InformationSheetReferences';
 
-const InformationSheetContent = (props) => {
+const InformationSheetContent = ({ crop }) => {
   const { state } = useContext(Context);
   const section = window.location.href.includes('selector') ? 'selector' : 'explorer';
   const { zone } = state[section];
-  const { crop } = props;
   const [currentSources, setCurrentSources] = useState([{}]);
-
-  const [pdf, setPDF] = useState(false);
 
   useEffect(() => {
     document.title = `${crop['Cover Crop Name']} Zone ${zone}`;
-    fetch(`/pdf/${document.title}.pdf`)
-      .then((response) => response.text())
-      .then((data) => {
-        if (data.includes('PDF')) {
-          setPDF(true);
-        }
-      });
 
     const regex = /(?!\B"[^"]*),(?![^"]*"\B)/g;
     const removeDoubleQuotes = /^"(.+(?="$))"$/;
@@ -55,18 +45,10 @@ const InformationSheetContent = (props) => {
     });
 
     setCurrentSources(relevantZones);
-    document.body.classList.add('InfoSheet');
-
-    return () => {
-      document.title = 'Cover Crop Explorer';
-      document.body.classList.remove('InfoSheet');
-    };
   }, [crop, zone]);
 
   return Object.keys(crop).length > 0 ? (
     <>
-      {pdf && <iframe id="PDF" title="pdf" src={`/pdf/${document.title}.pdf`} />}
-
       <CoverCropInformation
         cropImage={crop['Image Data'] || null}
         cropDescription={
