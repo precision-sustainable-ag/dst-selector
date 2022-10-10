@@ -59,7 +59,9 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
   };
 
   const print = () => {
-    window.open(`https://selectorimages.blob.core.windows.net/selectorimages/pdf/${document.title}.pdf`, '_blank');
+    if (state.consent === true) {
+      window.open(`https://selectorimages.blob.core.windows.net/selectorimages/pdf/${document.title}.pdf`, '_blank');
+    }
   }; // print
 
   return (
