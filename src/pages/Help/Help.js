@@ -59,7 +59,6 @@ const HelpComponent = () => {
                   }}
                   onClick={() => handleChange(0)}
                   variant={value === 0 ? 'contained' : 'text'}
-                  color={value === 0 ? 'secondary' : 'default'}
                 >
                   How to Use the NECCC Species Selector Tool
                 </Button>
@@ -72,7 +71,6 @@ const HelpComponent = () => {
                   }}
                   onClick={() => handleChange(1)}
                   variant={value === 1 ? 'contained' : 'text'}
-                  color={value === 1 ? 'secondary' : 'default'}
                 >
                   Frequently Asked Questions
                 </Button>
@@ -85,7 +83,6 @@ const HelpComponent = () => {
                   }}
                   onClick={() => handleChange(2)}
                   variant={value === 2 ? 'contained' : 'text'}
-                  color={value === 2 ? 'secondary' : 'default'}
                 >
                   Data Dictionary
                 </Button>
@@ -98,7 +95,6 @@ const HelpComponent = () => {
                   }}
                   onClick={() => handleChange(3)}
                   variant={value === 3 ? 'contained' : 'text'}
-                  color={value === 3 ? 'secondary' : 'default'}
                 >
                   Information Sheets
                 </Button>
