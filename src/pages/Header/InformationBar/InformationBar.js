@@ -39,6 +39,7 @@ const InformationBar = () => {
   const [expansionPanelComponent, setExpansionPanelComponent] = useState({
     component: '',
   });
+  const defaultMarkers = [[40.78489145, -74.80733626930342]];
 
   const closeExpansionPanel = () => {
     const greenbarExpansionElement = document.getElementById('greenBarExpansionPanel');
@@ -145,7 +146,6 @@ const InformationBar = () => {
   };
 
   const handleConfirmationChoice = (clearCoverCrops = false) => {
-    const defaultMarkers = [[40.78489145, -74.80733626930342]];
     if (clearCoverCrops !== null) {
       if (clearCoverCrops) {
         dispatch({
@@ -209,7 +209,7 @@ const InformationBar = () => {
             className={expansionPanelComponent.component === 'location' ? 'col-md-10' : 'col-md-6'}
           >
             {expansionPanelComponent.component === 'location' && (
-              <LocationComponent caller="greenbar" title="Location" />
+              <LocationComponent caller="greenbar" title="Location" defaultMarkers={defaultMarkers} closeExpansionPanel={closeExpansionPanel} />
             )}
             {expansionPanelComponent.component === 'soil' && (
               <div className="container mt-5" style={expansionPanelBaseStyle}>
