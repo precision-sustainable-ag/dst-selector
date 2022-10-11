@@ -4,16 +4,8 @@
   styled using ../../styles/header.scss
 */
 
-import { Badge, Button, Typography } from '@mui/material';
+import { Button } from '@mui/material';
 import Axios from 'axios';
-import {
-  MDBCollapse,
-  MDBContainer,
-  MDBHamburgerToggler,
-  MDBNavbar,
-  MDBNavbarNav,
-  MDBNavItem,
-} from 'mdbreact';
 import moment from 'moment';
 import { useSnackbar } from 'notistack';
 import React, { useContext, useEffect } from 'react';
@@ -25,9 +17,10 @@ import zone6DataDictionary from '../../shared/json/zone6/data-dictionary.json';
 import zone7DataDictionary from '../../shared/json/zone7/data-dictionary.json';
 import { Context } from '../../store/Store';
 import '../../styles/header.scss';
-import DateComponent from './DateComponent/DateComponent';
-import ForecastComponent from './ForecastComponent/ForecastComponent';
+import HeaderLogoInfo from './HeaderLogoInfo/HeaderLogoInfo';
 import InformationBar from './InformationBar/InformationBar';
+import ToggleOptions from './ToggleOptions/ToggleOptions';
+import Navbar from './Navbar/Navbar';
 
 const Header = () => {
   const history = useHistory();
@@ -35,8 +28,6 @@ const Header = () => {
   const { state, dispatch } = useContext(Context);
   const section = window.location.href.includes('selector') ? 'selector' : 'explorer';
   const sfilters = state[section];
-
-  const [collapse, setCollapse] = React.useState(false);
   const [isRoot, setIsRoot] = React.useState(false);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const isActive = {};
@@ -383,10 +374,6 @@ const Header = () => {
     dispatch,
   ]);
 
-  const toggleSingleCollapse = () => {
-    setCollapse(!collapse);
-  };
-
   const setmyCoverCropActivationFlag = () => {
     history.push('/my-cover-crop-list');
     if (window.location.pathname === '/species-selector') {
@@ -399,8 +386,6 @@ const Header = () => {
           },
         });
       }
-    } else {
-      // history.push("/");
     }
   };
 
@@ -434,147 +419,21 @@ const Header = () => {
       </div>
 
       <div className="container-fluid">
-        <div className="row">
-          <div className="col-lg-2 col-12" role="button">
-            <button
-              type="button"
-              onClick={() => {
-                dispatch({
-                  type: 'UPDATE_PROGRESS',
-                  data: {
-                    type: 'HOME',
-                  },
-                });
-              }}
-            >
-              <img
-                className="img-fluid"
-                src="/images/neccc_wide_logo_color_web.jpg"
-                alt="NECCC Logo"
-                width="100%"
-                onContextMenu={() => false}
-                style={{ cursor: 'pointer' }}
-              />
-            </button>
-          </div>
-          <div className="col-12 col-lg-10 col-sm-12 row">
-            <div className="col-lg-4 col-12 d-flex align-items-center text-left">
-              <div>
-                <Typography variant="body1" className="font-weight-bold">
-                  Cover Crop Decision Support Tools
-                </Typography>
-
-                <Typography variant="body1">
-                  <DateComponent />
-                </Typography>
-              </div>
-            </div>
-            <div className="col-lg-8 col-12 d-flex align-items-center">
-              <div>
-                <ForecastComponent />
-              </div>
-            </div>
-          </div>
-        </div>
+        <HeaderLogoInfo />
       </div>
       <div className="bottomHeader">
-        <Button size="large" component={NavLink} exact to="/" activeClassName="active">
-          COVER CROP EXPLORER
-        </Button>
-        <Button
-          className={(isRoot && state.speciesSelectorActivationFlag) && 'active'}
-          onClick={setSpeciesSelectorActivationFlag}
-          size="large"
-        >
-          SPECIES SELECTOR TOOL
-        </Button>
-
-        {window.location.pathname === '/species-selector'
-        && state.selectedCrops.length > 0
-        && state.progress >= 5 ? (
-          <Badge
-            badgeContent={state.selectedCrops.length > 0 ? state.selectedCrops.length : 0}
-            color="error"
-          >
-            <Button
-              size="large"
-              className={
-                state.myCoverCropActivationFlag && window.location.pathname === '/species-selector'
-                  ? 'active'
-                  : ''
-              }
-              onClick={setmyCoverCropActivationFlag}
-            >
-              MY COVER CROP LIST
-            </Button>
-          </Badge>
-          ) : (
-            ''
-          )}
-        {/* My Cover Crop List As A Separate Component/Route  */}
-        {window.location.pathname !== '/species-selector' && (
-          state.progress.length < 5 ? (
-            state.selectedCrops.length > 0 && (
-              <Badge
-                badgeContent={state.selectedCrops.length > 0 ? state.selectedCrops.length : 0}
-                color="error"
-              >
-                <Button
-                  className={window.location.pathname === '/my-cover-crop-list' ? 'active' : ''}
-                  onClick={() => history.push('/my-cover-crop-list')}
-                >
-                  My Cover Crop List
-                </Button>
-              </Badge>
-            )
-          ) : state.selectedCrops.length > 0 && (
-            <Badge
-              badgeContent={state.selectedCrops.length > 0 ? state.selectedCrops.length : 0}
-              color="error"
-            >
-              <Button
-                className={window.location.pathname === '/my-cover-crop-list' ? 'active' : ''}
-                onClick={() => history.push('/my-cover-crop-list')}
-              >
-                My Cover Crop List
-              </Button>
-            </Badge>
-          )
-        )}
+        <ToggleOptions
+          isRoot={isRoot}
+          setSpeciesSelectorActivationFlag={setSpeciesSelectorActivationFlag}
+          setmyCoverCropActivationFlag={setmyCoverCropActivationFlag}
+        />
       </div>
 
-      <MDBNavbar light className="ham-navWrapper">
-        <MDBContainer fluid>
-          <MDBHamburgerToggler
-            color="#598443"
-            id="hamburger1"
-            onClick={() => toggleSingleCollapse()}
-          />
-          <MDBCollapse isOpen={collapse} navbar>
-            <MDBNavbarNav className="ham-nav">
-              <MDBNavItem>COVER CROP EXPLORER</MDBNavItem>
-              <MDBNavItem
-                onClick={setSpeciesSelectorActivationFlag}
-                active={isRoot ? (!!state.speciesSelectorActivationFlag) : false}
-              >
-                SPECIES SELECTOR TOOL
-              </MDBNavItem>
-              {state.progress >= 5 ? (
-                <MDBNavItem
-                  onClick={setmyCoverCropActivationFlag}
-                  active={
-                    !!(state.myCoverCropActivationFlag && window.location.pathname === '/')
-                  }
-                >
-                  MY COVER CROP LIST
-                </MDBNavItem>
-              ) : (
-                ''
-              )}
-            </MDBNavbarNav>
-          </MDBCollapse>
-        </MDBContainer>
-      </MDBNavbar>
+      <Navbar
+        isRoot={isRoot}
+        setSpeciesSelectorActivationFlag={setSpeciesSelectorActivationFlag}
+        setmyCoverCropActivationFlag={setmyCoverCropActivationFlag}
+      />
 
       <InformationBar />
 
