@@ -40,7 +40,6 @@ const LocationComponent = ({
   const sfilters = state[section];
   const [selectedToEditSite, setSelectedToEditSite] = useState({});
   const [showRestartPrompt, setShowRestartPrompt] = useState(false);
-  const [restartAccept, setRestartAccept] = useState(false);
   const [zoneSelection, setZoneSelection] = useState();
   useEffect(() => {
     document.title = title || 'Decision Support Tool';
@@ -56,7 +55,7 @@ const LocationComponent = ({
         zone: zones.includes(curZone) ? curZone : 7,
       },
     });
-  }, [restartAccept, zoneSelection]);
+  }, [zoneSelection]);
 
   const handleConfirmationChoice = (choice) => {
     if (choice !== null) {
@@ -78,7 +77,6 @@ const LocationComponent = ({
         });
       }
       closeExpansionPanel();
-      setRestartAccept(true);
     }
     setShowRestartPrompt(false);
   };
