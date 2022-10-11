@@ -134,9 +134,6 @@ const RenderContent = ({ value = 0 }) => {
               frameBorder="0"
               width="100%"
               height="474"
-              allowFullScreen
-              mozallowfullscreen="true"
-              webkitallowfullscreen="true"
               title="iframe"
             />
           </Typography>
