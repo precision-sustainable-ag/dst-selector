@@ -31,7 +31,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const LocationComponent = ({ title, caller }) => {
+const LocationComponent = ({
+  title, caller, defaultMarkers, closeExpansionPanel,
+}) => {
   const classes = useStyles();
   const { state, dispatch } = useContext(Context);
   const section = window.location.href.includes('selector') ? 'selector' : 'explorer';
@@ -57,8 +59,28 @@ const LocationComponent = ({ title, caller }) => {
   }, [restartAccept, zoneSelection]);
 
   const handleConfirmationChoice = (choice) => {
+    if (choice !== null) {
+      if (choice) {
+        dispatch({
+          type: 'RESET',
+          data: {
+            markers: defaultMarkers,
+            selectedCrops: [],
+          },
+        });
+      } else {
+        dispatch({
+          type: 'RESET',
+          data: {
+            markers: defaultMarkers,
+            selectedCrops: state.selectedCrops,
+          },
+        });
+      }
+      closeExpansionPanel();
+      setRestartAccept(true);
+    }
     setShowRestartPrompt(false);
-    setRestartAccept(choice);
   };
 
   const handleZoneChange = (event) => {
@@ -149,8 +171,7 @@ const LocationComponent = ({ title, caller }) => {
       <Dialog disableEscapeKeyDown open={showRestartPrompt}>
         <DialogContent dividers>
           <Typography variant="body1">
-            Restarting will remove all cover crops added to your list. Are you sure you want to
-            restart?
+            This will trigger a restart.  Would you also like to clear My Cover Crop List?
           </Typography>
         </DialogContent>
         <DialogActions>
