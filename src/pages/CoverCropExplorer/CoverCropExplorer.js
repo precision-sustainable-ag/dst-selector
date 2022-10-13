@@ -53,6 +53,7 @@ const CoverCropExplorer = () => {
             />
           </div>
           <div className="col-md-12 col-lg-9 col-xl-10 col-12">
+            {console.log('sfilters.zone', sfilters.zone)}
             {sfilters.zone === '' ? (
               <Grid container alignItems="center" justifyContent="center">
                 <Grid item xs={12}>
