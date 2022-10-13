@@ -7,9 +7,6 @@ import {
   Grid,
   Typography,
   Tooltip,
-  Dialog,
-  DialogContent,
-  DialogActions,
 } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import moment from 'moment';
@@ -447,42 +444,34 @@ export const getActiveCropMonths = (crop = {}) => {
   return activeMonths;
 };
 
-export const RestartPrompt = ({
-  open = false,
-  selectedCrops = [],
-  setOpen = () => {},
-  onAccept = () => {},
-}) => (
-  <Dialog disableEscapeKeyDown open={open}>
-    <DialogContent dividers>
-      <Typography variant="body1">
-        {selectedCrops.length > 0
-          ? `Restarting will remove all cover crops added to your list. Are you
-        sure you want to restart?`
-          : 'Are you sure you want to restart?'}
-      </Typography>
-    </DialogContent>
-    <DialogActions>
-      <Button
-        autoFocus
-        onClick={() => {
-          setOpen(false);
-          onAccept(false);
-        }}
-        color="secondary"
-      >
-        No
-      </Button>
-      <Button
-        onClick={() => {
-          onAccept(true);
-        }}
-        color="secondary"
-      >
-        Yes
-      </Button>
-    </DialogActions>
-  </Dialog>
+export const BinaryButton = ({ action }) => (
+  <>
+    <Button
+      onClick={() => {
+        action(true);
+      }}
+      color="secondary"
+    >
+      Yes
+    </Button>
+    <Button
+      onClick={() => {
+        action(false);
+      }}
+      color="secondary"
+    >
+      No
+    </Button>
+    <Button
+      autoFocus
+      onClick={() => {
+        action(null);
+      }}
+      color="primary"
+    >
+      Cancel
+    </Button>
+  </>
 );
 
 export const sudoButtonStyle = {
@@ -500,4 +489,51 @@ export const sudoButtonStyleWithPadding = {
   letterSpacing: '0.02857em',
   textTransform: 'uppercase',
   fontSize: '0.875rem',
+};
+
+export const getMonthDayString = (type = '', crop = {}) => {
+  switch (type) {
+    case 'reliable': {
+      const startDate = moment(crop['Reliable Establishment/Growth Start'], 'YYYY-MM-DD');
+      const endDate = moment(crop['Reliable Establishment/Growth End'], 'YYYY-MM-DD');
+
+      return `${startDate.format('MM/DD')} - ${endDate.format('MM/DD')}`;
+    }
+    case 'reliable-second': {
+      const startDate = moment(crop['Second Reliable Establishment/Growth Start'], 'YYYY-MM-DD');
+      const endDate = moment(crop['Second Reliable Establishment/Growth End'], 'YYYY-MM-DD');
+
+      return `${startDate.format('MM/DD')} - ${endDate.format('MM/DD')}`;
+    }
+    case 'temperature': {
+      if (
+        crop['Temperature/Moisture Risk to Establishment Start']
+        && crop['Temperature/Moisture Risk to Establishment End']
+      ) {
+        const startDate = moment(
+          crop['Temperature/Moisture Risk to Establishment Start'],
+          'YYYY-MM-DD',
+        );
+        const endDate = moment(
+          crop['Temperature/Moisture Risk to Establishment End'],
+          'YYYY-MM-DD',
+        );
+        return `${startDate.format('MM/DD')} - ${endDate.format('MM/DD')}`;
+      }
+      return 'N/A';
+    }
+    case 'temperature-second': {
+      const startDate = moment(
+        crop['Second Temperature/Moisture Risk to Establishment Start'],
+        'YYYY-MM-DD',
+      );
+      const endDate = moment(
+        crop['Second Temperature/Moisture Risk to Establishment End'],
+        'YYYY-MM-DD',
+      );
+      return `${startDate.format('MM/DD')} - ${endDate.format('MM/DD')}`;
+    }
+    default:
+      return '';
+  }
 };

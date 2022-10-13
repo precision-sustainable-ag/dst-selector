@@ -53,12 +53,21 @@ const ExplorerCardView = ({ activeCropData }) => {
   };
   const addCropToBasket = (cropId, cropName, btnId, cropData) => {
     const selectedCrops = {};
-    let cropArray = [];
     selectedCrops.id = cropId;
     selectedCrops.cropName = cropName;
     selectedCrops.data = cropData;
 
-    cropArray = selectedCrops;
+    const buildDispatch = (action, crops) => {
+      dispatch({
+        type: 'SELECTED_CROPS_MODIFIER',
+        data: {
+          selectedCrops: crops,
+          snackOpen: false,
+          snackMessage: `${cropName} ${action}`,
+        },
+      });
+      enqueueSnackbar(`${cropName} ${action}`);
+    };
 
     if (state.selectedCrops.length > 0) {
       // DONE: Remove crop from basket
@@ -67,39 +76,15 @@ const ExplorerCardView = ({ activeCropData }) => {
         .indexOf(`${cropId}`);
       if (removeIndex === -1) {
         // element not in array
-        dispatch({
-          type: 'SELECTED_CROPS_MODIFIER',
-          data: {
-            selectedCrops: [...state.selectedCrops, selectedCrops],
-            snackOpen: false,
-            snackMessage: `${cropName} Added`,
-          },
-        });
-        enqueueSnackbar(`${cropName} Added`);
+        buildDispatch('added', [...state.selectedCrops, selectedCrops]);
       } else {
         const selectedCropsCopy = state.selectedCrops;
-
         selectedCropsCopy.splice(removeIndex, 1);
-        dispatch({
-          type: 'SELECTED_CROPS_MODIFIER',
-          data: {
-            selectedCrops: selectedCropsCopy,
-            snackOpen: false,
-            snackMessage: `${cropName} Removed`,
-          },
-        });
-        enqueueSnackbar(`${cropName} Removed`);
+
+        buildDispatch('Removed', selectedCropsCopy);
       }
     } else {
-      dispatch({
-        type: 'SELECTED_CROPS_MODIFIER',
-        data: {
-          selectedCrops: [cropArray],
-          snackOpen: false,
-          snackMessage: `${cropName} Added`,
-        },
-      });
-      enqueueSnackbar(`${cropName} Added`);
+      buildDispatch('Added', [selectedCrops]);
     }
   };
 
