@@ -20,24 +20,12 @@ const ConsentModual = ({ consent }) => {
     p: 4,
   };
 
-  const handleModalAccept = () => {
-    // toggle modal open
+  const handleModal = (choice) => {
     setModalOpen((o) => !o);
     dispatch({
       type: 'UPDATE_CONSENT',
       data: {
-        consent: true,
-      },
-    });
-  };
-
-  const handleModalDecline = () => {
-    // toggle modal open
-    setModalOpen((o) => !o);
-    dispatch({
-      type: 'UPDATE_CONSENT',
-      data: {
-        consent: false,
+        consent: choice,
       },
     });
   };
@@ -74,12 +62,12 @@ const ConsentModual = ({ consent }) => {
         </Typography>
         <Grid container spacing={1}>
           <Grid item>
-            <Button variant="outlined" onClick={handleModalAccept}>
+            <Button variant="outlined" onClick={() => handleModal(true)}>
               Accept
             </Button>
           </Grid>
           <Grid item>
-            <Button variant="outlined" onClick={handleModalDecline}>
+            <Button variant="outlined" onClick={() => handleModal(false)}>
               Decline
             </Button>
           </Grid>
