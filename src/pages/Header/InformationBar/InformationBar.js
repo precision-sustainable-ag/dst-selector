@@ -122,20 +122,10 @@ const InformationBar = () => {
       <Button
         className="greenbarBtn"
         onClick={() => handleBtnClick(type)}
-        style={
-            expansionPanelComponent.component === type
-              && {
-                background: 'white',
-              }
-          }
+        style={{ background: expansionPanelComponent.component === type && 'white' }}
       >
         <span
-          style={
-              expansionPanelComponent.component === type
-                && {
-                  color: 'black',
-                }
-            }
+          style={{ color: expansionPanelComponent.component === type && 'black' }}
         >
           {getIconInfo(type)}
         </span>
@@ -200,7 +190,6 @@ const InformationBar = () => {
       <div
         className="greenBarExpansionPanel container-fluid pl-0 pr-0"
         id="greenBarExpansionPanel"
-        style={{}}
       >
         <div className="row justify-content-center align-items-center">
           <div
