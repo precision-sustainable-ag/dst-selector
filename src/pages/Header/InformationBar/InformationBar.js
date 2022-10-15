@@ -124,19 +124,17 @@ const InformationBar = () => {
         onClick={() => handleBtnClick(type)}
         style={
             expansionPanelComponent.component === type
-              ? {
+              && {
                 background: 'white',
               }
-              : {}
           }
       >
         <span
           style={
               expansionPanelComponent.component === type
-                ? {
+                && {
                   color: 'black',
                 }
-                : {}
             }
         >
           {getIconInfo(type)}
