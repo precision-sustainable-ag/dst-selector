@@ -14,17 +14,16 @@ import {
   Modal,
   Select,
   TextField,
-  Tooltip,
   Typography,
 } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
-import {
-  AcUnit, Info, Opacity, WbSunnyOutlined,
-} from '@mui/icons-material';
 import moment from 'moment';
 import React, { useContext, useEffect, useState } from 'react';
 import { LightButton } from '../../shared/constants';
 import { Context } from '../../store/Store';
+import WeatherPrecipitation from './WeatherPrecipitation/WeatherPrecipitation';
+import WeatherFrostDates from './WeatherFrostDates/WeatherFrostDates';
+import WeatherFrostFreeDays from './WeatherFrostFreeDays/WeatherFrostFreeDays';
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -215,192 +214,13 @@ const WeatherConditions = ({ caller }) => {
           {anyValuesChanged ? ', values changed' : ''}
         </Typography>
       </div>
-      <div className="mt-3 col-12 row">
-        <div className="col-12">
-          <Typography variant="body1" className="font-weight-bold text-uppercase text-left">
-            <Opacity />
-            &nbsp; Average Precipitation &nbsp;
-            {' '}
-            <Tooltip
-              arrow
-              placement="right"
-              title={(
-                <div>
-                  Five-year average monthly and annual precipitation from the Precision Sustainable
-                  Agriculture Weather API powered by
-                  {' '}
-                  <a
-                    href="https://www.nssl.noaa.gov/projects/mrms/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    NSSL MRMS
-                  </a>
-                  {' '}
-                  and
-                  {' '}
-                  <a target="_blank" rel="noopener noreferrer" href="/#">
-                    NASA NLDAS-2
-                  </a>
-                  {' '}
-                  weather data.
-                </div>
-              )}
-            >
-              <Info fontSize="small" />
-            </Tooltip>
-          </Typography>
-        </div>
-        <div className="col-12">
-          <Typography variant="body1" className="text-left">
-            <Opacity style={{ color: 'transparent' }} />
-            &nbsp;
-            {' '}
-            <span>
-              {currentMonthFull.toUpperCase()}
-              :
-            </span>
-            {' '}
-&nbsp;
-            {state.weatherData.averagePrecipitation.thisMonth}
-            {' '}
-            inches
-          </Typography>
-          <Typography variant="body1" className="text-left">
-            <Opacity style={{ color: 'transparent' }} />
-            &nbsp;
-            {' '}
-            <span>
-              Annual
-              :
-            </span>
-            {' '}
-&nbsp;
-            {state.weatherData.averagePrecipitation.annual}
-            {' '}
-            inches
-          </Typography>
-        </div>
-      </div>
-      <div className="mt-3 col-12 row">
-        <div className="col-12">
-          <Typography variant="body1" className="font-weight-bold text-uppercase text-left">
-            <AcUnit />
-            &nbsp; Average Frost Dates &nbsp;
-            {' '}
-            <Tooltip
-              arrow
-              placement="right"
-              title={(
-                <div>
-                  Average dates of the first and last frosts for your location, based on frost dates
-                  for the last five years from the Precision Sustainable Agriculture Weather API
-                  powered by
-                  {' '}
-                  <a
-                    href="https://www.nssl.noaa.gov/projects/mrms/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    NSSL MRMS
-                    {' '}
-                  </a>
-                  {' '}
-                  and
-                  {' '}
-                  <a
-                    href="https://ldas.gsfc.nasa.gov/nldas/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    NASA NLDAS-2
-                  </a>
-                  {' '}
-                  weather data; you may manually change this input.
-                </div>
-              )}
-            >
-              <Info fontSize="small" />
-            </Tooltip>
-          </Typography>
-        </div>
 
-        <div className="col-12">
-          <Typography variant="body1" className="text-left">
-            <Opacity style={{ color: 'transparent' }} />
-            &nbsp;
-            {' '}
-            <span>
-              First Frost Date
-              :
-            </span>
-            {' '}
-&nbsp;
-            {`${state.weatherData.averageFrost.firstFrostDate.month} ${state.weatherData.averageFrost.firstFrostDate.day}`}
-          </Typography>
-          <Typography variant="body1" className="text-left">
-            <Opacity style={{ color: 'transparent' }} />
-            &nbsp;
-            {' '}
-            <span>
-              Last Frost Date
-              :
-            </span>
-            {' '}
-&nbsp;
-            {`${state.weatherData.averageFrost.lastFrostDate.month} ${state.weatherData.averageFrost.lastFrostDate.day}`}
-          </Typography>
-        </div>
-      </div>
-      <div className="mt-3 col-12 row">
-        <div className="col-12">
-          <Typography variant="body1" className="font-weight-bold text-uppercase text-left">
-            <WbSunnyOutlined />
-            &nbsp; Average Frost Free Days &nbsp;
-            {' '}
-            <Tooltip
-              arrow
-              placement="right"
-              title={(
-                <div>
-                  Number of days in your growing season, based on average first and last frost dates
-                  for the last five years from the Precision Sustainable Agriculture Weather API
-                  powered by
-                  {' '}
-                  <a href="https://www.nssl.noaa.gov/projects/mrms/" rel="noopener noreferrer">
-                    NSSL MRMS
-                  </a>
-                  {' '}
-                  and
-                  {' '}
-                  <a href="/#" target="_blank" rel="noopener noreferrer">
-                    NASA NLDAS-2
-                  </a>
-                  {' '}
-                  weather data.
-                </div>
-              )}
-            >
-              <Info fontSize="small" />
-            </Tooltip>
-          </Typography>
-        </div>
+      <WeatherPrecipitation currentMonthFull={currentMonthFull} />
 
-        <div className="col-12">
-          <Typography variant="body1" className="text-left">
-            <Opacity style={{ color: 'transparent' }} />
-            &nbsp;
-            {' '}
-            <span>
-              Frost Free Days
-              :
-            </span>
-            {' '}
-&nbsp;
-            {state.weatherData.frostFreeDays}
-          </Typography>
-        </div>
-      </div>
+      <WeatherFrostDates />
+
+      <WeatherFrostFreeDays />
+
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="ransition-modal-description"
