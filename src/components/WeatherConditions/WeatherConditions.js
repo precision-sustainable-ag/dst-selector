@@ -5,9 +5,7 @@
 */
 
 import {
-  Backdrop,
   Button,
-  Fade,
   FormControl,
   FormGroup,
   InputLabel,
@@ -129,7 +127,6 @@ const WeatherConditions = ({ caller }) => {
     }
 
     // data incorrect
-
     // show error on modal
   };
 
@@ -215,9 +212,9 @@ const WeatherConditions = ({ caller }) => {
         </Typography>
       </div>
 
-      <WeatherPrecipitation currentMonthFull={currentMonthFull} />
-
       <WeatherFrostDates />
+
+      <WeatherPrecipitation currentMonthFull={currentMonthFull} />
 
       <WeatherFrostFreeDays />
 
@@ -228,84 +225,79 @@ const WeatherConditions = ({ caller }) => {
         open={open}
         onClose={handleModalClose}
         closeAfterTransition
-        BackdropComponent={Backdrop}
-        BackdropProps={{
-          timeout: 500,
-        }}
       >
-        <Fade in={open}>
-          <div className={`modalContainer ${classes.paper}`}>
-            <h2 id="transition-modal-title">Edit Climate Data</h2>
-            <div id="transition-modal-description">
-              <div className="container-fluid">
-                <FormGroup>
-                  <div className="row mt-4">
-                    <div className="col-12">
-                      <Typography variant="h6">Average Frost Dates</Typography>
-                    </div>
+        <div className={`modalContainer ${classes.paper}`}>
+          <h2 id="transition-modal-title">Edit Climate Data</h2>
+          <div id="transition-modal-description">
+            <div className="container-fluid">
+              <FormGroup>
+                <div className="row mt-4">
+                  <div className="col-12">
+                    <Typography variant="h6">Average Frost Dates</Typography>
                   </div>
-                  <div className="row mt-4">
-                    <div className="col-6">
-                      <FormControl style={{ width: '100%' }}>
-                        <InputLabel htmlFor="age-native-simple">First Frost Month</InputLabel>
-                        <Select
-                          label="First Frost Month"
-                          native
-                          value={firstFrostMonth}
-                          onChange={(event) => {
-                            setFirstFrostMonth(event.target.value);
-                          }}
-                          inputProps={{
-                            name: 'age',
-                            id: 'age-native-simple',
-                          }}
+                </div>
+                <div className="row mt-4">
+                  <div className="col-6">
+                    <FormControl style={{ width: '100%' }}>
+                      <InputLabel htmlFor="age-native-simple">First Frost Month</InputLabel>
+                      <Select
+                        label="First Frost Month"
+                        native
+                        value={firstFrostMonth}
+                        onChange={(event) => {
+                          setFirstFrostMonth(event.target.value);
+                        }}
+                        inputProps={{
+                          name: 'age',
+                          id: 'age-native-simple',
+                        }}
+                      >
+                        {months.map((val, key) => (
+                          <option value={moment(val, 'MMM').format('MMMM')} key={key}>
+                            {val}
+                          </option>
+                        ))}
+                      </Select>
+                      {firstFrostMonth !== weatherDataShadow.averageFrost.firstFrostDate.month ? (
+                        <Button
+                          className="text-danger"
+                          size="small"
+                          onClick={() => setFirstFrostMonth(
+                            weatherDataShadow.averageFrost.firstFrostDate.month,
+                          )}
                         >
-                          {months.map((val, key) => (
-                            <option value={moment(val, 'MMM').format('MMMM')} key={key}>
-                              {val}
-                            </option>
-                          ))}
-                        </Select>
-                        {firstFrostMonth !== weatherDataShadow.averageFrost.firstFrostDate.month ? (
-                          <Button
-                            className="text-danger"
-                            size="small"
-                            onClick={() => setFirstFrostMonth(
-                              weatherDataShadow.averageFrost.firstFrostDate.month,
-                            )}
-                          >
-                            Values changed, Reset?
-                          </Button>
-                        ) : (
-                          <Typography variant="body2">5 Year Average</Typography>
-                        )}
-                      </FormControl>
-                    </div>
-                    <div className="col-6">
-                      <FormControl>
-                        <TextField
-                          label="First Frost Day"
-                          type="number"
-                          max="31"
-                          min="1"
-                          multiline
-                          helperText={firstFrostDayHelper}
-                          error={firstFrostDayError}
-                          maxLength={2}
-                          id="margin-none"
-                          value={firstFrostDay}
-                          onChange={(event) => {
-                            if (!Number.isNaN(event.target.value)) {
-                              if (event.target.value === '') {
-                                setFirstFrostDay('');
-                              } else setFirstFrostDay(parseInt(event.target.value, 10));
-                            } else {
-                              setFirstFrostDay(1);
-                            }
-                          }}
-                          className={classes.textField}
-                        />
-                        {parseInt(firstFrostDay, 10)
+                          Values changed, Reset?
+                        </Button>
+                      ) : (
+                        <Typography variant="body2">5 Year Average</Typography>
+                      )}
+                    </FormControl>
+                  </div>
+                  <div className="col-6">
+                    <FormControl>
+                      <TextField
+                        label="First Frost Day"
+                        type="number"
+                        max="31"
+                        min="1"
+                        multiline
+                        helperText={firstFrostDayHelper}
+                        error={firstFrostDayError}
+                        maxLength={2}
+                        id="margin-none"
+                        value={firstFrostDay}
+                        onChange={(event) => {
+                          if (!Number.isNaN(event.target.value)) {
+                            if (event.target.value === '') {
+                              setFirstFrostDay('');
+                            } else setFirstFrostDay(parseInt(event.target.value, 10));
+                          } else {
+                            setFirstFrostDay(1);
+                          }
+                        }}
+                        className={classes.textField}
+                      />
+                      {parseInt(firstFrostDay, 10)
                         !== parseInt(weatherDataShadow.averageFrost.firstFrostDate.day, 10) ? (
                           <Button
                             className="text-danger"
@@ -316,73 +308,73 @@ const WeatherConditions = ({ caller }) => {
                           >
                             Values changed, Reset?
                           </Button>
-                          ) : (
-                            <Typography variant="body2" style={{ marginLeft: '8px' }}>
-                              5 Year Average
-                            </Typography>
-                          )}
-                      </FormControl>
-                    </div>
-                  </div>
-                  <div className="row mt-4">
-                    <div className="col-6">
-                      <FormControl style={{ width: '100%' }}>
-                        <InputLabel htmlFor="last-frost-month">Last Frost Month</InputLabel>
-                        <Select
-                          label="Last Frost Month"
-                          native
-                          value={lastFrostMonth}
-                          onChange={(event) => {
-                            setLastFrostMonth(event.target.value);
-                          }}
-                          inputProps={{
-                            name: 'last-frost-month',
-                            id: 'last-frost-month',
-                          }}
-                        >
-                          {months.map((val, key) => (
-                            <option value={moment(val, 'MMM').format('MMMM')} key={key}>
-                              {val}
-                            </option>
-                          ))}
-                        </Select>
-                        {lastFrostMonth !== weatherDataShadow.averageFrost.lastFrostDate.month ? (
-                          <Button
-                            className="text-danger"
-                            size="small"
-                            onClick={() => setLastFrostMonth(weatherDataShadow.averageFrost.lastFrostDate.month)}
-                          >
-                            Values changed, Reset?
-                          </Button>
                         ) : (
-                          <Typography variant="body2">5 Year Average</Typography>
+                          <Typography variant="body2" style={{ marginLeft: '8px' }}>
+                            5 Year Average
+                          </Typography>
                         )}
-                      </FormControl>
-                    </div>
-                    <div className="col-6">
-                      <FormControl>
-                        <TextField
-                          label="Last Frost Day"
-                          type="number"
-                          max="31"
-                          min="1"
-                          helperText={lastFrostDayHelper}
-                          error={lastFrostDayError}
-                          multiline
-                          maxLength={2}
-                          value={lastFrostDay}
-                          onChange={(event) => {
-                            if (!Number.isNaN(event.target.value)) {
-                              if (event.target.value === '') {
-                                setLastFrostDay('');
-                              } else setLastFrostDay(parseInt(event.target.value, 10));
-                            } else {
-                              setLastFrostDay(1);
-                            }
-                          }}
-                          className={classes.textField}
-                        />
-                        {parseInt(lastFrostDay, 10)
+                    </FormControl>
+                  </div>
+                </div>
+                <div className="row mt-4">
+                  <div className="col-6">
+                    <FormControl style={{ width: '100%' }}>
+                      <InputLabel htmlFor="last-frost-month">Last Frost Month</InputLabel>
+                      <Select
+                        label="Last Frost Month"
+                        native
+                        value={lastFrostMonth}
+                        onChange={(event) => {
+                          setLastFrostMonth(event.target.value);
+                        }}
+                        inputProps={{
+                          name: 'last-frost-month',
+                          id: 'last-frost-month',
+                        }}
+                      >
+                        {months.map((val, key) => (
+                          <option value={moment(val, 'MMM').format('MMMM')} key={key}>
+                            {val}
+                          </option>
+                        ))}
+                      </Select>
+                      {lastFrostMonth !== weatherDataShadow.averageFrost.lastFrostDate.month ? (
+                        <Button
+                          className="text-danger"
+                          size="small"
+                          onClick={() => setLastFrostMonth(weatherDataShadow.averageFrost.lastFrostDate.month)}
+                        >
+                          Values changed, Reset?
+                        </Button>
+                      ) : (
+                        <Typography variant="body2">5 Year Average</Typography>
+                      )}
+                    </FormControl>
+                  </div>
+                  <div className="col-6">
+                    <FormControl>
+                      <TextField
+                        label="Last Frost Day"
+                        type="number"
+                        max="31"
+                        min="1"
+                        helperText={lastFrostDayHelper}
+                        error={lastFrostDayError}
+                        multiline
+                        maxLength={2}
+                        value={lastFrostDay}
+                        onChange={(event) => {
+                          if (!Number.isNaN(event.target.value)) {
+                            if (event.target.value === '') {
+                              setLastFrostDay('');
+                            } else setLastFrostDay(parseInt(event.target.value, 10));
+                          } else {
+                            setLastFrostDay(1);
+                          }
+                        }}
+                        className={classes.textField}
+                      />
+                      {parseInt(lastFrostDay, 10)
                         !== parseInt(weatherDataShadow.averageFrost.lastFrostDate.day, 10) ? (
                           <Button
                             className="text-danger"
@@ -393,38 +385,38 @@ const WeatherConditions = ({ caller }) => {
                           >
                             Values changed, Reset?
                           </Button>
-                          ) : (
-                            <Typography variant="body2" style={{ marginLeft: '8px' }}>
-                              5 Year Average
-                            </Typography>
-                          )}
-                      </FormControl>
-                    </div>
+                        ) : (
+                          <Typography variant="body2" style={{ marginLeft: '8px' }}>
+                            5 Year Average
+                          </Typography>
+                        )}
+                    </FormControl>
                   </div>
-                  <div className="row mt-4">
-                    <div className="col-12">
-                      <Typography variant="h6">Average Precipitation</Typography>
-                    </div>
+                </div>
+                <div className="row mt-4">
+                  <div className="col-12">
+                    <Typography variant="h6">Average Precipitation</Typography>
                   </div>
-                  <div className="row mt-4">
-                    <div className="col-6">
-                      <FormControl>
-                        <TextField
-                          label={currentMonthFull}
-                          type="number"
-                          inputProps={{ min: '1', max: '100', step: '0.01' }}
-                          maxLength={4}
-                          helperText="Inches"
-                          value={averagePrecipitation.thisMonth}
-                          onChange={(event) => {
-                            setAveragePrecipitation({
-                              ...averagePrecipitation,
-                              thisMonth: event.target.value === '' ? 0 : event.target.value,
-                            });
-                          }}
-                          className={classes.textField}
-                        />
-                        {parseFloat(averagePrecipitation.thisMonth)
+                </div>
+                <div className="row mt-4">
+                  <div className="col-6">
+                    <FormControl>
+                      <TextField
+                        label={currentMonthFull}
+                        type="number"
+                        inputProps={{ min: '1', max: '100', step: '0.01' }}
+                        maxLength={4}
+                        helperText="Inches"
+                        value={averagePrecipitation.thisMonth}
+                        onChange={(event) => {
+                          setAveragePrecipitation({
+                            ...averagePrecipitation,
+                            thisMonth: event.target.value === '' ? 0 : event.target.value,
+                          });
+                        }}
+                        className={classes.textField}
+                      />
+                      {parseFloat(averagePrecipitation.thisMonth)
                         !== parseFloat(weatherDataShadow.averagePrecipitation.thisMonth) ? (
                           <Button
                             className="text-danger"
@@ -438,32 +430,32 @@ const WeatherConditions = ({ caller }) => {
                           >
                             Values changed, Reset?
                           </Button>
-                          ) : (
-                            <Typography variant="body2" style={{ marginLeft: '8px' }}>
-                              5 Year Average
-                            </Typography>
-                          )}
-                      </FormControl>
-                    </div>
-                    <div className="col-6">
-                      <FormControl>
-                        <TextField
-                          label="Annual"
-                          type="number"
-                          inputProps={{ min: '1', max: '100', step: '0.01' }}
-                          maxLength={4}
-                          helperText="Inches"
-                          value={averagePrecipitation.annual}
-                          onChange={(event) => {
-                            setAveragePrecipitation({
-                              ...averagePrecipitation,
-                              annual:
+                        ) : (
+                          <Typography variant="body2" style={{ marginLeft: '8px' }}>
+                            5 Year Average
+                          </Typography>
+                        )}
+                    </FormControl>
+                  </div>
+                  <div className="col-6">
+                    <FormControl>
+                      <TextField
+                        label="Annual"
+                        type="number"
+                        inputProps={{ min: '1', max: '100', step: '0.01' }}
+                        maxLength={4}
+                        helperText="Inches"
+                        value={averagePrecipitation.annual}
+                        onChange={(event) => {
+                          setAveragePrecipitation({
+                            ...averagePrecipitation,
+                            annual:
                                 event.target.value === '' ? 0 : parseFloat(event.target.value),
-                            });
-                          }}
-                          className={classes.textField}
-                        />
-                        {parseFloat(averagePrecipitation.annual)
+                          });
+                        }}
+                        className={classes.textField}
+                      />
+                      {parseFloat(averagePrecipitation.annual)
                         !== parseFloat(weatherDataShadow.averagePrecipitation.annual) ? (
                           <Button
                             className="text-danger"
@@ -475,70 +467,69 @@ const WeatherConditions = ({ caller }) => {
                           >
                             Values changed, Reset?
                           </Button>
-                          ) : (
-                            <Typography variant="body2" style={{ marginLeft: '8px' }}>
-                              5 Year Average
-                            </Typography>
-                          )}
-                      </FormControl>
-                    </div>
-                  </div>
-                  <div className="row mt-4">
-                    <div className="col-12">
-                      <Typography variant="h6">Frost Free Days</Typography>
-                    </div>
-                  </div>
-                  <div className="row mt-4">
-                    <div className="col-6">
-                      <FormControl>
-                        <TextField
-                          label="Frost Free Days"
-                          type="number"
-                          step="0.01"
-                          multiline
-                          maxLength={4}
-                          value={frostFreeDays}
-                          onChange={(event) => {
-                            if (!Number.NaNisNaN(event.target.value)) {
-                              if (event.target.value === '') {
-                                setFrostFreeDays(0);
-                              } else setFrostFreeDays(parseInt(event.target.value, 10));
-                            } else {
-                              setFrostFreeDays(0);
-                            }
-                          }}
-                          className={classes.textField}
-                        />
-                        {parseInt(frostFreeDays, 10) !== parseInt(weatherDataShadow.frostFreeDays, 10) ? (
-                          <Button
-                            className="text-danger"
-                            size="small"
-                            onClick={() => setFrostFreeDays(parseInt(weatherDataShadow.frostFreeDays, 10))}
-                          >
-                            Values changed, Reset?
-                          </Button>
                         ) : (
                           <Typography variant="body2" style={{ marginLeft: '8px' }}>
                             5 Year Average
                           </Typography>
                         )}
-                      </FormControl>
-                    </div>
-                    <div className="col-6" />
+                    </FormControl>
                   </div>
-                  <div className="row mt-4">
-                    <div className="col-6">
-                      <LightButton disabled={false} onClick={validateAndBroadcastModalData}>
-                        update
-                      </LightButton>
-                      <Button onClick={() => setOpen(false)}>cancel</Button>
-                    </div>
+                </div>
+                <div className="row mt-4">
+                  <div className="col-12">
+                    <Typography variant="h6">Frost Free Days</Typography>
                   </div>
-                </FormGroup>
-              </div>
+                </div>
+                <div className="row mt-4">
+                  <div className="col-6">
+                    <FormControl>
+                      <TextField
+                        label="Frost Free Days"
+                        type="number"
+                        step="0.01"
+                        multiline
+                        maxLength={4}
+                        value={frostFreeDays}
+                        onChange={(event) => {
+                          if (!Number.NaNisNaN(event.target.value)) {
+                            if (event.target.value === '') {
+                              setFrostFreeDays(0);
+                            } else setFrostFreeDays(parseInt(event.target.value, 10));
+                          } else {
+                            setFrostFreeDays(0);
+                          }
+                        }}
+                        className={classes.textField}
+                      />
+                      {parseInt(frostFreeDays, 10) !== parseInt(weatherDataShadow.frostFreeDays, 10) ? (
+                        <Button
+                          className="text-danger"
+                          size="small"
+                          onClick={() => setFrostFreeDays(parseInt(weatherDataShadow.frostFreeDays, 10))}
+                        >
+                          Values changed, Reset?
+                        </Button>
+                      ) : (
+                        <Typography variant="body2" style={{ marginLeft: '8px' }}>
+                          5 Year Average
+                        </Typography>
+                      )}
+                    </FormControl>
+                  </div>
+                  <div className="col-6" />
+                </div>
+                <div className="row mt-4">
+                  <div className="col-6">
+                    <LightButton onClick={validateAndBroadcastModalData}>
+                      update
+                    </LightButton>
+                    <Button onClick={() => setOpen(false)}>cancel</Button>
+                  </div>
+                </div>
+              </FormGroup>
             </div>
           </div>
-        </Fade>
+        </div>
       </Modal>
     </div>
   );
