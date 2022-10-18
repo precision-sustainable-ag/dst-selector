@@ -39,8 +39,8 @@ const Navbar = ({ isRoot, setSpeciesSelectorActivationFlag, setmyCoverCropActiva
               <MDBNavItem
                 onClick={setmyCoverCropActivationFlag}
                 active={
-                    !!(state.myCoverCropActivationFlag && window.location.pathname === '/')
-                  }
+                  !!(state.myCoverCropActivationFlag && window.location.pathname === '/')
+                }
               >
                 MY COVER CROP LIST
               </MDBNavItem>

@@ -56,17 +56,11 @@ const CropSelector = (props) => {
   const { state, dispatch } = useContext(Context);
   const [showGrowthWindow, setShowGrowthWindow] = useState(true);
   const [sortPreference, setSortPreference] = useState('desc');
-  const { selectedGoals } = state;
-
-  const { activeCropData } = state;
-
-  // toggles list view and calendar view
+  const { selectedGoals, activeCropData } = state;
   const [isListView, setIsListView] = useState(true);
-
   const [comparisonView, setComparisonView] = useState(false);
-  // reset back to false
-
   const [cropData, setCropData] = useState([]);
+
   useEffect(() => {
     if (state.consent === true) {
       ReactGA.initialize('UA-181903489-1');
@@ -75,61 +69,16 @@ const CropSelector = (props) => {
     }
   }, [state.consent]);
 
-  const sortCropsBy = (orderBy) => {
-    if (state.cropData.length > 0) {
-      // const { selectedGoals } = state;
-      if (selectedGoals.length > 0) {
-        const activeCropDataCopy = activeCropData.length > 0 ? activeCropData : state.cropData;
-        const activeObjKeys = [];
-        selectedGoals.forEach((val, index) => {
-          //  Crop Data is inside cropData.fields
-          activeObjKeys[index] = `fields.${val}`;
-        });
-
-        switch (orderBy) {
-          case 'asc': {
-            if (activeCropDataCopy.length > 0) {
-              // TODO: replace _ lowdash with array function
-              const updatedCropData = _.orderBy(activeCropDataCopy, activeObjKeys, [
-                'asc',
-                'asc',
-                'asc',
-              ]);
-              dispatch({
-                type: 'UPDATE_ACTIVE_CROP_DATA',
-                data: {
-                  value: updatedCropData,
-                },
-              });
-            }
-            setSortPreference('asc');
-            break;
-          }
-          case 'desc': {
-            if (activeCropDataCopy.length > 0) {
-              // TODO: replace _ lowdash with array function
-              const updatedCropData = _.orderBy(activeCropDataCopy, activeObjKeys, [
-                'desc',
-                'desc',
-                'desc',
-              ]);
-              dispatch({
-                type: 'UPDATE_ACTIVE_CROP_DATA',
-                data: {
-                  value: updatedCropData,
-                },
-              });
-            }
-            setSortPreference('desc');
-            break;
-          }
-          default: {
-            break;
-          }
-        }
-      }
+  useEffect(() => {
+    if (state.selectedGoals.length === 0) {
+      dispatch({
+        type: 'UPDATE_PROGRESS',
+        data: {
+          type: 'DECREMENT',
+        },
+      });
     }
-  };
+  }, [state.selectedGoals, dispatch]);
 
   useEffect(() => {
     if (state.cropData) {
@@ -163,24 +112,61 @@ const CropSelector = (props) => {
     };
   }, [state.cropData, selectedGoals]);
 
-  const toggleListView = () => {
-    setIsListView(!isListView);
-  };
+  const sortCropsBy = (orderBy) => {
+    if (state.cropData.length > 0) {
+      // const { selectedGoals } = state;
+      if (selectedGoals.length > 0) {
+        const activeCropDataCopy = activeCropData.length > 0 ? activeCropData : state.cropData;
+        const activeObjKeys = [];
+        selectedGoals.forEach((val, index) => {
+          //  Crop Data is inside cropData.fields
+          activeObjKeys[index] = `fields.${val}`;
+        });
 
-  const toggleComparisonView = () => {
-    setComparisonView(!comparisonView);
-  };
-
-  useEffect(() => {
-    if (state.selectedGoals.length === 0) {
-      dispatch({
-        type: 'UPDATE_PROGRESS',
-        data: {
-          type: 'DECREMENT',
-        },
-      });
+        switch (orderBy) {
+          case 'asc': {
+            if (activeCropDataCopy.length > 0) {
+              // TODO: replace _ lowdash with array function will need to write a custom orderby function.
+              const updatedCropData = _.orderBy(activeCropDataCopy, activeObjKeys, [
+                'asc',
+                'asc',
+                'asc',
+              ]);
+              dispatch({
+                type: 'UPDATE_ACTIVE_CROP_DATA',
+                data: {
+                  value: updatedCropData,
+                },
+              });
+            }
+            setSortPreference('asc');
+            break;
+          }
+          case 'desc': {
+            if (activeCropDataCopy.length > 0) {
+              // TODO: replace _ lowdash with array function will need to write a custom orderby function.
+              const updatedCropData = _.orderBy(activeCropDataCopy, activeObjKeys, [
+                'desc',
+                'desc',
+                'desc',
+              ]);
+              dispatch({
+                type: 'UPDATE_ACTIVE_CROP_DATA',
+                data: {
+                  value: updatedCropData,
+                },
+              });
+            }
+            setSortPreference('desc');
+            break;
+          }
+          default: {
+            break;
+          }
+        }
+      }
     }
-  }, [state.selectedGoals, dispatch]);
+  };
 
   function useWindowSize() {
     // Initialize state with undefined width/height so server and client renders match
@@ -246,8 +232,8 @@ const CropSelector = (props) => {
             cropData={cropData}
             activeCropData={activeCropData.length > 0 ? activeCropData : cropData}
             comparisonView={comparisonView}
-            toggleComparisonView={toggleComparisonView}
-            toggleListView={toggleListView}
+            toggleComparisonView={() => { setComparisonView(!comparisonView); }}
+            toggleListView={() => { setIsListView(!isListView); }}
             from="table"
           />
         </div>
