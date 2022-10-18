@@ -8,9 +8,7 @@ const CoverCropSearch = ({ sfilters, dispatch }) => {
   const clearCoverCropSearch = (type = 'CROP_SEARCH', value = '') => {
     dispatch({
       type,
-      data: {
-        value,
-      },
+      data: { value },
     });
   };
 
