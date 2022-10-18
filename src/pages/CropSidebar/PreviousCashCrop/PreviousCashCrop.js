@@ -22,6 +22,16 @@ const PreviousCashCrop = ({ handleToggle, classes, setDateRange }) => {
   const { state, dispatch } = useContext(Context);
   const [cashCropVisible, setCashCropVisible] = useState(true); // TODO: buggy(?);
 
+  const handleDispatch = (start = '', end = '') => {
+    dispatch({
+      type: 'UPDATE_DATE_RANGE',
+      data: {
+        startDate: start,
+        endDate: end,
+      },
+    });
+  };
+
   return (
     <>
       <ListItem
@@ -83,21 +93,9 @@ const PreviousCashCrop = ({ handleToggle, classes, setDateRange }) => {
                         const cashCropDateRange = JSON.parse(
                           window.localStorage.getItem('cashCropDateRange'),
                         );
-                        dispatch({
-                          type: 'UPDATE_DATE_RANGE',
-                          data: {
-                            startDate: cashCropDateRange.startDate,
-                            endDate: cashCropDateRange.endDate,
-                          },
-                        });
+                        handleDispatch(cashCropDateRange.startDate, cashCropDateRange.endDate);
                       } else {
-                        dispatch({
-                          type: 'UPDATE_DATE_RANGE',
-                          data: {
-                            startDate: '',
-                            endDate: '',
-                          },
-                        });
+                        handleDispatch();
                       }
                       setCashCropVisible(!cashCropVisible);
                     }}
