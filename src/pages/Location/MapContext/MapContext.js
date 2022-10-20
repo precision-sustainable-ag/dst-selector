@@ -89,7 +89,6 @@ const MapContext = ({
             zipCode = +z[0].long_name;
           }
         });
-
         dispatch({
           type: 'CHANGE_ADDRESS_VIA_MAP',
           data: {
@@ -106,7 +105,7 @@ const MapContext = ({
     });
   };
 
-  const onCreated = (e) => {
+  const onChanged = (e) => {
     if (e.layerType === 'marker') {
       setShow(true);
       const { lat, lng } = e.layer._latlng;
@@ -162,7 +161,8 @@ const MapContext = ({
                   edit={{ edit: false }}
                   position="topleft"
                   // onEdited={(e) => {}}
-                  onCreated={onCreated}
+                  onCreated={(e) => onChanged(e)}
+                  onEdited={(e) => onChanged(e)}
                   // onDeleted={(e) => {}}
                   draw={{
                     rectangle: false,
