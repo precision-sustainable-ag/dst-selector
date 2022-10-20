@@ -218,7 +218,11 @@ const MapContext = ({
                   </Polygon>
                 ) : (
                   <Marker position={position} draggable eventHandlers={eventHandlers} ref={markerRef}>
-                    <Tooltip>Your Field</Tooltip>
+                    <Tooltip>
+                      Your Field
+                      <br />
+                      Click and Hold to Drag
+                    </Tooltip>
                   </Marker>
                 )
               )}
