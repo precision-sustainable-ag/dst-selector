@@ -11,9 +11,15 @@
 import L from 'leaflet';
 import 'leaflet-draw/dist/leaflet.draw.css';
 import 'leaflet/dist/leaflet.css';
-import React, { useContext, useEffect, useState } from 'react';
+import React, {
+  useContext,
+  useEffect,
+  useState,
+  useMemo,
+  useRef,
+} from 'react';
 import {
-  FeatureGroup, MapContainer, Marker, Polygon, TileLayer, Tooltip,
+  FeatureGroup, MapContainer, Marker, Polygon, TileLayer, Tooltip, useMap,
 } from 'react-leaflet';
 import { DraftControl } from 'react-leaflet-draft';
 import { Context } from '../../../store/Store';
@@ -31,8 +37,9 @@ const MapContext = ({
   width, height, minzoom, maxzoom, from,
 }) => {
   const { state, dispatch } = useContext(Context);
+  const markerRef = useRef(null);
+  const [position, setPosition] = useState(state.markers[0]);
   const [show, setShow] = useState(true);
-  const [mapCenter, setMapCenter] = useState([]);
   const [isPoly, setIsPoly] = useState(false);
   const [showEditControl, setShowEditControl] = useState(true);
 
@@ -67,7 +74,7 @@ const MapContext = ({
   };
 
   useEffect(() => {
-    setMapCenter(state.markers[0]);
+    setPosition(state.markers[0]);
     if (state.markers.length === 1) {
       // marker
       setIsPoly(false);
@@ -76,6 +83,20 @@ const MapContext = ({
       setIsPoly(true);
     }
   }, [state.markers]);
+
+  const getPolyCenter = (arr) => {
+    const x = arr.map((xa) => xa[0]);
+    const y = arr.map((ya) => ya[1]);
+    const cx = (Math.min(...x) + Math.max(...x)) / 2;
+    const cy = (Math.min(...y) + Math.max(...y)) / 2;
+    return [cx, cy];
+  };
+
+  const ChangeMapView = ({ coords }) => {
+    const map = useMap();
+    map.setView(coords, map.getZoom());
+    return null;
+  };
 
   const setAddress = (latLng) => {
     const geocoder = new window.google.maps.Geocoder();
@@ -89,7 +110,6 @@ const MapContext = ({
             zipCode = +z[0].long_name;
           }
         });
-
         dispatch({
           type: 'CHANGE_ADDRESS_VIA_MAP',
           data: {
@@ -106,7 +126,7 @@ const MapContext = ({
     });
   };
 
-  const onCreated = (e) => {
+  const onChanged = (e) => {
     if (e.layerType === 'marker') {
       setShow(true);
       const { lat, lng } = e.layer._latlng;
@@ -132,23 +152,33 @@ const MapContext = ({
     }
   };
 
-  const getPolyCenter = (arr) => {
-    const x = arr.map((xa) => xa[0]);
-    const y = arr.map((ya) => ya[1]);
-    const cx = (Math.min(...x) + Math.max(...x)) / 2;
-    const cy = (Math.min(...y) + Math.max(...y)) / 2;
-    return [cx, cy];
-  };
+  const eventHandlers = useMemo(
+    () => ({
+      dragend() {
+        const marker = markerRef.current;
+
+        if (marker != null) {
+          setShow(true);
+          const { lat, lng } = marker.getLatLng();
+          const latLng = { lat, lng };
+          setAddress(latLng);
+          updateGlobalMarkers([[lat, lng]], 'marker');
+          setPosition([lat, lng]);
+        }
+      },
+    }),
+    [],
+  );
 
   return (
-    mapCenter.length > 0 && (
+    position.length > 0 && (
       <div className="row">
         <div className="col-12">
           <MapContainer
             minZoom={minzoom}
             zoom={15}
             maxZoom={maxzoom}
-            center={isPoly ? getPolyCenter(state.markers) : mapCenter}
+            center={isPoly ? getPolyCenter(state.markers) : position}
             style={{ width, height }}
           >
             <TileLayer
@@ -162,7 +192,8 @@ const MapContext = ({
                   edit={{ edit: false }}
                   position="topleft"
                   // onEdited={(e) => {}}
-                  onCreated={onCreated}
+                  onCreated={(e) => onChanged(e)}
+                  onEdited={(e) => onChanged(e)}
                   // onDeleted={(e) => {}}
                   draw={{
                     rectangle: false,
@@ -176,7 +207,7 @@ const MapContext = ({
                     },
                     polyline: false,
                     allowIntersection: false,
-                    marker: true,
+                    // marker: true,
                   }}
                 />
               )}
@@ -186,11 +217,16 @@ const MapContext = ({
                     <Tooltip>Your Field</Tooltip>
                   </Polygon>
                 ) : (
-                  <Marker position={state.markers[0]} draggable>
-                    <Tooltip>Your Field</Tooltip>
+                  <Marker position={position} draggable eventHandlers={eventHandlers} ref={markerRef}>
+                    <Tooltip>
+                      Your Field
+                      <br />
+                      Click and Hold to Drag
+                    </Tooltip>
                   </Marker>
                 )
               )}
+              <ChangeMapView coords={position} />
             </FeatureGroup>
             {/* <TileLayer
               attribution="Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community"
