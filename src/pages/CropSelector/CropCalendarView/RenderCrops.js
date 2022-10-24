@@ -105,7 +105,7 @@ const RenderCrops = ({
                   present
                   src={
                         crop.fields['Image Data']['Key Thumbnail']
-                          ? `/images/Cover Crop Photos/${crop.fields['Image Data'].Directory}/${crop.fields['Image Data']['Key Thumbnail']}`
+                          ? crop.fields['Image Data']['Key Thumbnail']
                           : 'https://placehold.it/100x100'
                       }
                   alt={crop.fields['Cover Crop Name']}

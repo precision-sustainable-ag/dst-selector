@@ -70,6 +70,7 @@ const CropSelector = (props) => {
         .then((res) => res.json())
         .then((data) => setCropThumbs(data.data))
         .catch((err) => {
+          // eslint-disable-next-line no-console
           console.log(err.message);
         });
     }
@@ -260,7 +261,7 @@ const CropSelector = (props) => {
             setGrowthWindow={setShowGrowthWindow}
             isListView={isListView}
             cropData={cropData}
-            activeCropData={activeCropData.length > 0 ? activeCropData : cropData}
+            activeCropData={updatedActiveCropData.length > 0 ? updatedActiveCropData : cropData}
             comparisonView={comparisonView}
             toggleComparisonView={() => { setComparisonView(!comparisonView); }}
             toggleListView={() => { setIsListView(!isListView); }}
