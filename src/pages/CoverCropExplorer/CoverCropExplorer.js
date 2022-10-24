@@ -17,14 +17,38 @@ const CoverCropExplorer = () => {
   const { state } = useContext(Context);
   const section = window.location.href.includes('selector') ? 'selector' : 'explorer';
   const sfilters = state[section];
-
-  const [cropDataChanged, setCropDataChanged] = useState(false);
-
-  const activeCropData = state.activeCropData.filter((a) => !a.inactive);
+  const [cropThumbs, setCropThumbs] = useState([]);
+  const [updatedActiveCropData, setUpdatedActiveCropData] = useState([]);
+  const { activeCropData } = state;
 
   useEffect(() => {
-    setCropDataChanged((c) => !c);
-  }, [sfilters.zone]);
+    async function getData() {
+      await fetch('https://develop.covercrop-data.org/crops')
+        .then((res) => res.json())
+        .then((data) => setCropThumbs(data.data))
+        .catch((err) => {
+          // eslint-disable-next-line no-console
+          console.log(err.message);
+        });
+    }
+
+    getData();
+  }, []);
+
+  useEffect(() => {
+    const filteredActiveCropData = activeCropData.filter((a) => !a.inactive);
+    if (cropThumbs.length > 0 && filteredActiveCropData.length > 0) {
+      filteredActiveCropData.forEach((crop) => {
+        cropThumbs.forEach((thumb) => {
+          if (thumb.label === crop.fields['Cover Crop Name']) {
+            crop.fields['Image Data']['Key Thumbnail'] = thumb.thumbnail.src;
+          }
+        });
+      });
+    }
+
+    setUpdatedActiveCropData(filteredActiveCropData);
+  }, [activeCropData, cropThumbs]);
 
   useEffect(() => {
     if (state.consent === true) {
@@ -47,7 +71,6 @@ const CoverCropExplorer = () => {
           <div className="col-md-12 col-lg-3 col-xl-2 col-12">
             <CropSidebar
               from="explorer"
-              cropDataChanged={cropDataChanged}
               activeCropData={activeCropData.length > 0 ? activeCropData : state.cropData}
               isListView
             />
@@ -63,9 +86,8 @@ const CoverCropExplorer = () => {
               </Grid>
             ) : (
               <ExplorerCardView
-                cropDataChanged={cropDataChanged}
                 cropData={state.cropData}
-                activeCropData={activeCropData}
+                activeCropData={updatedActiveCropData}
               />
             )}
           </div>
