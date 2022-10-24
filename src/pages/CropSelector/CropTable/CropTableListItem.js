@@ -10,15 +10,13 @@ const CropTableListItem = ({
   activeCropData, matchGoals, showGrowthWindow, handleModalOpen,
 }) => {
   const { state } = useContext(Context);
-  const activeCropPresent = () => activeCropData.length > 0;
-
   const hasGoalRatingTwoOrLess = (crop = []) => {
     const { selectedGoals } = state;
     return crop.inactive || selectedGoals.every((rating) => crop.fields[rating] <= 2);
   };
 
   return (
-    activeCropPresent
+    activeCropData.length > 0
     && activeCropData.map((crop, index) => {
       if (
         ((crop.fields['Zone Decision'] === 'Include') && (matchGoals ? !hasGoalRatingTwoOrLess(crop) : hasGoalRatingTwoOrLess(crop)))
@@ -39,7 +37,7 @@ const CropTableListItem = ({
                         present={!!crop.fields['Image Data']}
                         src={
                           crop.fields['Image Data'] && crop.fields['Image Data']['Key Thumbnail']
-                            ? `/images/Cover Crop Photos/100x100/${crop.fields['Image Data'].Directory}/${crop.fields['Image Data']['Key Thumbnail']}`
+                            ? crop.fields['Image Data']['Key Thumbnail']
                             : 'https://placehold.it/100x100'
                         }
                         alt={crop.fields['Image Data'] && crop.fields['Cover Crop Name']}
