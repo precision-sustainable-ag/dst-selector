@@ -491,7 +491,7 @@ const WeatherConditions = ({ caller }) => {
                         maxLength={4}
                         value={frostFreeDays}
                         onChange={(event) => {
-                          if (!Number.NaNisNaN(event.target.value)) {
+                          if (!Number.isNaN(event.target.value)) {
                             if (event.target.value === '') {
                               setFrostFreeDays(0);
                             } else setFrostFreeDays(parseInt(event.target.value, 10));
