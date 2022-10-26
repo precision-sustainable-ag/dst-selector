@@ -7,7 +7,7 @@
 
 import { Button, Typography } from '@mui/material';
 import { Add } from '@mui/icons-material';
-import React, { Fragment, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import ReactGA from 'react-ga';
 import { Context } from '../../store/Store';
@@ -18,6 +18,38 @@ const MyCoverCropList = ({ comparisonView, from }) => {
   const { state, dispatch } = useContext(Context);
   const comparison = comparisonView || false;
   const history = useHistory();
+  const [updatedSelectedCrops, setUpdatedSelectedCrops] = useState([]);
+  const [cropThumbs, setCropThumbs] = useState([]);
+  const { selectedCrops } = state;
+
+  useEffect(() => {
+    async function getData() {
+      await fetch('https://develop.covercrop-data.org/crops')
+        .then((res) => res.json())
+        .then((data) => setCropThumbs(data.data))
+        .catch((err) => {
+          // eslint-disable-next-line no-console
+          console.log(err.message);
+        });
+    }
+
+    getData();
+  }, []);
+
+  useEffect(() => {
+    if (cropThumbs.length > 0 && selectedCrops.length > 0) {
+      selectedCrops.forEach((crop) => {
+        console.log('crop', crop);
+        cropThumbs.forEach((thumb) => {
+          if (thumb.label === crop.data['Cover Crop Name']) {
+            crop.data['Image Data']['Key Thumbnail'] = thumb.thumbnail.src;
+          }
+        });
+      });
+    }
+
+    setUpdatedSelectedCrops(selectedCrops);
+  }, [selectedCrops, cropThumbs]);
 
   const redirectToSpeciesSelector = () => {
     history.replace('/species-selector');
@@ -94,43 +126,44 @@ const MyCoverCropList = ({ comparisonView, from }) => {
   return (
     <div className="container-fluid">
       {/* eslint-disable-next-line no-nested-ternary */}
-      {state.selectedCrops.length === 0 ? (
-        <Typography variant="body1">
-          Your list is empty.
-          {' '}
-          <Button
-            onClick={
+      {updatedSelectedCrops.length > 0
+       && updatedSelectedCrops.length === 0 ? (
+         <Typography variant="body1">
+           Your list is empty.
+           {' '}
+           <Button
+             onClick={
               from === 'myCoverCropListStatic' ? redirectToExplorer : redirectToSpeciesSelector
             }
-          >
-            Add Crops
-          </Button>
-        </Typography>
-      ) : comparison ? (
-        <>
-          <TopBar view={comparison} />
-          <div className="row mt-2">
-            <MyCoverCropComparison selectedCrops={state.selectedCrops} />
-          </div>
-        </>
-      ) : (
-        <>
-          <TopBar view={comparison} />
-          <div className="row">
-            <div className="d-flex flex-wrap mt-2">
-              {state.selectedCrops.map((crop, index) => (
-                <MyCoverCropCards
-                  key={index}
-                  cardNo={index + 1}
-                  data={crop.data}
-                  btnId={crop.id}
-                  itemNo={index}
-                />
-              ))}
+           >
+             Add Crops
+           </Button>
+         </Typography>
+        ) : comparison ? (
+          <>
+            <TopBar view={comparison} />
+            <div className="row mt-2">
+              <MyCoverCropComparison selectedCrops={updatedSelectedCrops} />
             </div>
-          </div>
-        </>
-      )}
+          </>
+        ) : (
+          <>
+            <TopBar view={comparison} />
+            <div className="row">
+              <div className="d-flex flex-wrap mt-2">
+                {updatedSelectedCrops.map((crop, index) => (
+                  <MyCoverCropCards
+                    key={index}
+                    cardNo={index + 1}
+                    data={crop.data}
+                    btnId={crop.id}
+                    itemNo={index}
+                  />
+                ))}
+              </div>
+            </div>
+          </>
+        )}
     </div>
   );
 };
