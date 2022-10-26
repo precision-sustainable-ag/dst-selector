@@ -105,7 +105,7 @@ const CropTableCard = ({
               );
             }}
           >
-            {selectedBtns.includes(crop.fields.id) ? 'ADDED' : 'ADD TO LIST'}
+            {selectedBtns.includes(crop.fields.id) ? 'REMOVE' : 'ADD TO LIST'}
           </LightButton>
           {' '}
           <Button size="small" onClick={() => handleModalOpen(crop)}>
