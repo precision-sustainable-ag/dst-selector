@@ -48,7 +48,7 @@ const GoogleAutocomplete = ({
   const { state, dispatch } = useContext(Context);
   const classes = useStyles();
   const [value, setValue] = React.useState(null);
-  const [inputValue, setInputValue] = React.useState(state.fullAddress ? state.fullAddress : '');
+  const [inputValue, setInputValue] = React.useState(state?.fullAddress);
   const [options, setOptions] = React.useState([]);
   const loaded = React.useRef(false);
 
@@ -147,25 +147,14 @@ const GoogleAutocomplete = ({
         },
       });
 
-      if (zipCode.length === 0) {
-        setSelectedToEditSite({
-          ...selectedToEditSite,
-          latitude: results[0].geometry.location.lat(),
-          longitude: results[0].geometry.location.lng(),
-          county: county[0].long_name,
-          address: mainText,
-          zipCode: 0,
-        });
-      } else {
-        setSelectedToEditSite({
-          ...selectedToEditSite,
-          latitude: results[0].geometry.location.lat(),
-          longitude: results[0].geometry.location.lng(),
-          county: county[0].long_name,
-          address: mainText,
-          zipCode: parseInt(zipCode[0].long_name, 10),
-        });
-      }
+      setSelectedToEditSite({
+        ...selectedToEditSite,
+        latitude: results[0].geometry.location.lat(),
+        longitude: results[0].geometry.location.lng(),
+        county: county[0].long_name,
+        address: mainText,
+        zipCode: zipCode.length === 0 ? 0 : parseInt(zipCode[0].long_name, 10),
+      });
     },
   };
 
@@ -186,7 +175,7 @@ const GoogleAutocomplete = ({
     }
 
     if (inputValue === '') {
-      setOptions(value ? [value] : []);
+      setOptions(value && [value]);
       return undefined;
     }
 
@@ -290,7 +279,7 @@ const GoogleAutocomplete = ({
               ))}
 
               <Typography variant="body2" color="textSecondary">
-                {option.structured_formatting ? option.structured_formatting.secondary_text : ''}
+                {option.structured_formatting && option.structured_formatting.secondary_text}
               </Typography>
             </Grid>
           </Grid>
