@@ -6,26 +6,16 @@
 */
 
 import {
-  Card, CardActionArea, CardContent, CardMedia, Grid, Typography,
+  Grid, Typography,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import { useSnackbar } from 'notistack';
 import React, {
   useContext, useEffect, useState,
 } from 'react';
+import CropCard from '../../../components/CropCard/CropCard';
 import CropDetailsModal from '../../../components/CropDetailsModal/CropDetailsModal';
-import { trimString } from '../../../shared/constants';
 import { Context } from '../../../store/Store';
 
-const useStyles = makeStyles({
-  card: {
-    maxWidth: 345,
-    width: 250,
-  },
-  media: {
-    height: 140,
-  },
-});
 const ExplorerCardView = ({ activeCropData }) => {
   const { state, dispatch } = useContext(Context);
   const section = window.location.href.includes('selector') ? 'selector' : 'explorer';
@@ -33,7 +23,6 @@ const ExplorerCardView = ({ activeCropData }) => {
 
   const [modalOpen, setModalOpen] = useState(false);
   const [modalData, setModalData] = useState({});
-  const classes = useStyles();
 
   const [selectedBtns, setSelectedBtns] = useState(
     state.selectedCrops.map((crop) => crop.id),
@@ -46,8 +35,8 @@ const ExplorerCardView = ({ activeCropData }) => {
   const { enqueueSnackbar } = useSnackbar();
 
   const handleModalOpen = (crop) => {
-    // put data inside modal
-    setModalData(crop);
+    // put data inside modal;
+    setModalData({ fields: crop });
 
     setModalOpen(true);
   };
@@ -68,7 +57,6 @@ const ExplorerCardView = ({ activeCropData }) => {
       });
       enqueueSnackbar(`${cropName} ${action}`);
     };
-
     if (state.selectedCrops.length > 0) {
       // DONE: Remove crop from basket
       const removeIndex = state.selectedCrops
@@ -95,92 +83,15 @@ const ExplorerCardView = ({ activeCropData }) => {
         {activeCropData.length > 0 ? (
           activeCropData.map((crop, index) => (
             <Grid item key={index}>
-              <Card className={classes.card}>
-                <CardActionArea onClick={() => handleModalOpen(crop)}>
-                  <CardMedia
-                    image={
-                        crop.fields['Image Data']['Key Thumbnail']
-                          ? crop.fields['Image Data']['Key Thumbnail']
-                          // ? `/images/Cover Crop Photos/250/${crop.fields['Image Data']['Key Thumbnail']}`
-                          : 'https://placehold.it/100x100?text=Placeholder'
-                      }
-                    className={classes.media}
-                    title={crop.fields['Cover Crop Name']}
-                  />
-                </CardActionArea>
-                <CardContent>
-                  <div
-                    className="font-weight-bold text-muted text-uppercase"
-                    style={{ fontSize: '10pt' }}
-                  >
-                    {crop.fields['Cover Crop Group']}
-                  </div>
-                  <div className="font-weight-bold " style={{ fontSize: '16pt' }}>
-                    <Typography variant="h6" className="text-truncate">
-                      {crop.fields['Cover Crop Name']}
-                    </Typography>
-                  </div>
-                  <small className="font-italic text-muted d-inline-block text-truncate">
-                    {trimString(crop.fields['Scientific Name'], 25)}
-                  </small>
-                  <div>
-                    <small className="text-muted">
-                      {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
-                      <div
-                        style={{
-                          textDecoration: 'underline',
-                          color: 'rgb(53, 153, 155)',
-                        }}
-                        target="_blank"
-                        onClick={() => handleModalOpen(crop)}
-                      >
-                        View Crop Details
-                      </div>
-                    </small>
-                  </div>
-                </CardContent>
-                <CardActionArea
-                  id={`cartBtn${index}`}
-                  style={{
-                    backgroundColor: '#e3f2f4',
-                    textAlign: 'center',
-                    padding: '0.5em',
-                  }}
-                  className={
-                      selectedBtns.includes(crop.fields.id)
-                      && sfilters.zone === crop.fields.Zone
-                        ? 'activeCartBtn'
-                        : 'inactiveCartBtn'
-                    }
-                  onClick={() => {
-                    addCropToBasket(
-                      crop.fields.id,
-                      crop.fields['Cover Crop Name'],
-                      `cartBtn${index}`,
-                      crop.fields,
-                    );
-                  }}
-                >
-                  <Typography
-                    variant="body2"
-                    className={`text-uppercase ${
-                      selectedBtns.includes(crop.fields.id)
-                        && sfilters.zone === crop.fields.Zone
-                        ? 'text-white'
-                        : ''
-                    }`}
-                    style={{
-                      color: 'black',
-                      fontWeight: 'bold',
-                    }}
-                  >
-                    {selectedBtns.includes(crop.fields.id)
-                      && sfilters.zone === crop.fields.Zone
-                      ? 'ADDED'
-                      : 'ADD TO LIST'}
-                  </Typography>
-                </CardActionArea>
-              </Card>
+              <CropCard
+                crop={crop.fields}
+                handleModalOpen={handleModalOpen}
+                addCropToBasket={addCropToBasket}
+                selectedBtns={selectedBtns}
+                index={index}
+                removeCrop={addCropToBasket}
+                type="explorer"
+              />
             </Grid>
           ))
         ) : state.cropData.length > 0 ? (
@@ -193,7 +104,6 @@ const ExplorerCardView = ({ activeCropData }) => {
           'Loading..'
         )}
       </Grid>
-
       <CropDetailsModal
         modalOpen={modalOpen}
         setModalOpen={setModalOpen}
