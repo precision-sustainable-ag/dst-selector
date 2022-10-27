@@ -115,8 +115,8 @@ const LocationConfirmation = () => {
         </div>
         <div className="col-xl-5 offset-xl-1 col-lg-12">
           <div className="container-fluid">
-            {state.progress === 2 ? <SoilCondition /> : ''}
-            {state.progress === 3 ? <WeatherConditions /> : ''}
+            {state.progress === 2 && <SoilCondition />}
+            {state.progress === 3 && <WeatherConditions />}
           </div>
         </div>
       </div>

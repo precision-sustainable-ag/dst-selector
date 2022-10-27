@@ -23,36 +23,33 @@ const ToggleOptions = ({ isRoot, setSpeciesSelectorActivationFlag, setmyCoverCro
 
       {window.location.pathname === '/species-selector'
         && state.selectedCrops.length > 0
-        && state.progress >= 5 ? (
+        && state.progress >= 5 && (
           <Badge
-            badgeContent={state.selectedCrops.length > 0 ? state.selectedCrops.length : 0}
+            badgeContent={state.selectedCrops.length}
             color="error"
           >
             <Button
               size="large"
               className={
                 state.myCoverCropActivationFlag && window.location.pathname === '/species-selector'
-                  ? 'active'
-                  : ''
+                  && 'active'
               }
               onClick={setmyCoverCropActivationFlag}
             >
               MY COVER CROP LIST
             </Button>
           </Badge>
-        ) : (
-          ''
-        )}
+      )}
       {/* My Cover Crop List As A Separate Component/Route  */}
       {window.location.pathname !== '/species-selector' && (
         state.progress.length < 5 ? (
           state.selectedCrops.length > 0 && (
           <Badge
-            badgeContent={state.selectedCrops.length > 0 ? state.selectedCrops.length : 0}
+            badgeContent={state.selectedCrops.length}
             color="error"
           >
             <Button
-              className={window.location.pathname === '/my-cover-crop-list' ? 'active' : ''}
+              className={window.location.pathname === '/my-cover-crop-list' && 'active'}
               onClick={() => history.push('/my-cover-crop-list')}
             >
               My Cover Crop List
@@ -61,11 +58,11 @@ const ToggleOptions = ({ isRoot, setSpeciesSelectorActivationFlag, setmyCoverCro
           )
         ) : state.selectedCrops.length > 0 && (
         <Badge
-          badgeContent={state.selectedCrops.length > 0 ? state.selectedCrops.length : 0}
+          badgeContent={state.selectedCrops.length}
           color="error"
         >
           <Button
-            className={window.location.pathname === '/my-cover-crop-list' ? 'active' : ''}
+            className={window.location.pathname === '/my-cover-crop-list' && 'active'}
             onClick={() => history.push('/my-cover-crop-list')}
           >
             My Cover Crop List

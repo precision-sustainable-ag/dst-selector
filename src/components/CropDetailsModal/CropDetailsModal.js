@@ -8,7 +8,7 @@ import {
 } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import { Close, Print } from '@mui/icons-material';
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useContext } from 'react';
 import ReactGA from 'react-ga';
 import { CropImage, zoneIcon } from '../../shared/constants';
 import '../../styles/cropDetailsModal.scss';
@@ -41,11 +41,7 @@ const useStyles = makeStyles((theme) => ({
 const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
   const { state } = useContext(Context);
   const classes = useStyles();
-  const [modalData, setModalData] = useState({});
-
-  useEffect(() => {
-    setModalData(crop);
-  }, [crop]);
+  const modalData = crop.fields;
 
   useEffect(() => {
     if (state.consent === true) {
@@ -86,11 +82,11 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
       disableEscapeKeyDown={false}
     >
       <Fade in={modalOpen}>
-        {modalData.fields ? (
+        {modalData ? (
           <div className="modalParentWrapper">
             <div
               className={`cropTableModal modalContainer ${classes.paper}`}
-              id={`cropDetailModal-${modalData.fields.id}`}
+              id={`cropDetailModal-${modalData.id}`}
             >
               <div className="container-fluid">
                 <div className="row">
@@ -123,11 +119,11 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
                           <div className="col-12">
                             <div className="row">
                               <div className="col mt-2">
-                                <div>{modalData.fields['Cover Crop Group']}</div>
+                                <div>{modalData['Cover Crop Group']}</div>
                                 <div className="font-weight-bold" id="cover-crop-modal-title">
-                                  {modalData.fields['Cover Crop Name']}
+                                  {modalData['Cover Crop Name']}
                                 </div>
-                                <div>{modalData.fields['Scientific Name']}</div>
+                                <div>{modalData['Scientific Name']}</div>
                               </div>
                               <div
                                 className="col"
@@ -143,7 +139,7 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
                                     src={
                                       crop.fields['Image Data']['Key Thumbnail']
                                         // eslint-disable-next-line max-len
-                                        ? `/images/Cover Crop Photos/100x100/${crop.fields['Image Data'].Directory}/${crop.fields['Image Data']['Key Thumbnail']}`
+                                        ? crop.fields['Image Data']['Key Thumbnail']
                                         : 'https://placehold.it/100x100'
                                     }
                                     alt={crop.fields['Cover Crop Name']}

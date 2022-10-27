@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 /*
   This file contains the CropSelector and its styles.
   The CropSelector is the top level component for the crop selector tool and allows users to choose crops based on their needs.
@@ -56,17 +57,41 @@ const CropSelector = (props) => {
   const { state, dispatch } = useContext(Context);
   const [showGrowthWindow, setShowGrowthWindow] = useState(true);
   const [sortPreference, setSortPreference] = useState('desc');
-  const { selectedGoals } = state;
-
-  const { activeCropData } = state;
-
-  // toggles list view and calendar view
+  const { selectedGoals, activeCropData } = state;
   const [isListView, setIsListView] = useState(true);
-
   const [comparisonView, setComparisonView] = useState(false);
-  // reset back to false
-
   const [cropData, setCropData] = useState([]);
+  const [updatedActiveCropData, setUpdatedActiveCropData] = useState([]);
+  const [cropThumbs, setCropThumbs] = useState([]);
+
+  useEffect(() => {
+    async function getData() {
+      await fetch('https://develop.covercrop-data.org/crops')
+        .then((res) => res.json())
+        .then((data) => setCropThumbs(data.data))
+        .catch((err) => {
+          // eslint-disable-next-line no-console
+          console.log(err.message);
+        });
+    }
+
+    getData();
+  }, []);
+
+  useEffect(() => {
+    if (cropThumbs.length > 0 && activeCropData.length > 0) {
+      activeCropData.forEach((crop) => {
+        cropThumbs.forEach((thumb) => {
+          if (thumb.label === crop.fields['Cover Crop Name']) {
+            crop.fields['Image Data']['Key Thumbnail'] = thumb.thumbnail.src;
+          }
+        });
+      });
+    }
+
+    setUpdatedActiveCropData(activeCropData);
+  }, [activeCropData, cropThumbs]);
+
   useEffect(() => {
     if (state.consent === true) {
       ReactGA.initialize('UA-181903489-1');
@@ -75,61 +100,16 @@ const CropSelector = (props) => {
     }
   }, [state.consent]);
 
-  const sortCropsBy = (orderBy) => {
-    if (state.cropData.length > 0) {
-      // const { selectedGoals } = state;
-      if (selectedGoals.length > 0) {
-        const activeCropDataCopy = activeCropData.length > 0 ? activeCropData : state.cropData;
-        const activeObjKeys = [];
-        selectedGoals.forEach((val, index) => {
-          //  Crop Data is inside cropData.fields
-          activeObjKeys[index] = `fields.${val}`;
-        });
-
-        switch (orderBy) {
-          case 'asc': {
-            if (activeCropDataCopy.length > 0) {
-              // TODO: replace _ lowdash with array function
-              const updatedCropData = _.orderBy(activeCropDataCopy, activeObjKeys, [
-                'asc',
-                'asc',
-                'asc',
-              ]);
-              dispatch({
-                type: 'UPDATE_ACTIVE_CROP_DATA',
-                data: {
-                  value: updatedCropData,
-                },
-              });
-            }
-            setSortPreference('asc');
-            break;
-          }
-          case 'desc': {
-            if (activeCropDataCopy.length > 0) {
-              // TODO: replace _ lowdash with array function
-              const updatedCropData = _.orderBy(activeCropDataCopy, activeObjKeys, [
-                'desc',
-                'desc',
-                'desc',
-              ]);
-              dispatch({
-                type: 'UPDATE_ACTIVE_CROP_DATA',
-                data: {
-                  value: updatedCropData,
-                },
-              });
-            }
-            setSortPreference('desc');
-            break;
-          }
-          default: {
-            break;
-          }
-        }
-      }
+  useEffect(() => {
+    if (state.selectedGoals.length === 0) {
+      dispatch({
+        type: 'UPDATE_PROGRESS',
+        data: {
+          type: 'DECREMENT',
+        },
+      });
     }
-  };
+  }, [state.selectedGoals, dispatch]);
 
   useEffect(() => {
     if (state.cropData) {
@@ -163,24 +143,61 @@ const CropSelector = (props) => {
     };
   }, [state.cropData, selectedGoals]);
 
-  const toggleListView = () => {
-    setIsListView(!isListView);
-  };
+  const sortCropsBy = (orderBy) => {
+    if (state.cropData.length > 0) {
+      // const { selectedGoals } = state;
+      if (selectedGoals.length > 0) {
+        const activeCropDataCopy = activeCropData.length > 0 ? activeCropData : state.cropData;
+        const activeObjKeys = [];
+        selectedGoals.forEach((val, index) => {
+          //  Crop Data is inside cropData.fields
+          activeObjKeys[index] = `fields.${val}`;
+        });
 
-  const toggleComparisonView = () => {
-    setComparisonView(!comparisonView);
-  };
-
-  useEffect(() => {
-    if (state.selectedGoals.length === 0) {
-      dispatch({
-        type: 'UPDATE_PROGRESS',
-        data: {
-          type: 'DECREMENT',
-        },
-      });
+        switch (orderBy) {
+          case 'asc': {
+            if (activeCropDataCopy.length > 0) {
+              // TODO: replace _ lowdash with array function will need to write a custom orderby function.
+              const updatedCropData = _.orderBy(activeCropDataCopy, activeObjKeys, [
+                'asc',
+                'asc',
+                'asc',
+              ]);
+              dispatch({
+                type: 'UPDATE_ACTIVE_CROP_DATA',
+                data: {
+                  value: updatedCropData,
+                },
+              });
+            }
+            setSortPreference('asc');
+            break;
+          }
+          case 'desc': {
+            if (activeCropDataCopy.length > 0) {
+              // TODO: replace _ lowdash with array function will need to write a custom orderby function.
+              const updatedCropData = _.orderBy(activeCropDataCopy, activeObjKeys, [
+                'desc',
+                'desc',
+                'desc',
+              ]);
+              dispatch({
+                type: 'UPDATE_ACTIVE_CROP_DATA',
+                data: {
+                  value: updatedCropData,
+                },
+              });
+            }
+            setSortPreference('desc');
+            break;
+          }
+          default: {
+            break;
+          }
+        }
+      }
     }
-  }, [state.selectedGoals, dispatch]);
+  };
 
   function useWindowSize() {
     // Initialize state with undefined width/height so server and client renders match
@@ -244,38 +261,39 @@ const CropSelector = (props) => {
             setGrowthWindow={setShowGrowthWindow}
             isListView={isListView}
             cropData={cropData}
-            activeCropData={activeCropData.length > 0 ? activeCropData : cropData}
+            activeCropData={updatedActiveCropData.length > 0 ? updatedActiveCropData : cropData}
             comparisonView={comparisonView}
-            toggleComparisonView={toggleComparisonView}
-            toggleListView={toggleListView}
+            toggleComparisonView={() => { setComparisonView(!comparisonView); }}
+            toggleListView={() => { setIsListView(!isListView); }}
             from="table"
           />
         </div>
 
         <div className={showSidebar ? 'col-md-10 col-sm-12' : 'col-md-12 col-sm-12'}>
-          {/* eslint-disable-next-line no-nested-ternary */}
-          {state.speciesSelectorActivationFlag ? (
-            isListView ? (
-              <CropTableComponent
-                cropData={cropData}
-                setCropData={setCropData}
-                activeCropData={activeCropData}
-                showGrowthWindow={showGrowthWindow}
-                sortAllCrops={sortCropsBy}
-                sortPreference={sortPreference}
-              />
+          {/* we need a spinner or loading icon for when the length isnt yet determined */}
+          {updatedActiveCropData.length > 0
+            && state.speciesSelectorActivationFlag ? (
+              isListView ? (
+                <CropTableComponent
+                  cropData={cropData}
+                  setCropData={setCropData}
+                  activeCropData={updatedActiveCropData}
+                  showGrowthWindow={showGrowthWindow}
+                  sortAllCrops={sortCropsBy}
+                  sortPreference={sortPreference}
+                />
+              ) : (
+                <CropCalendarView
+                  cropData={cropData}
+                  activeCropData={updatedActiveCropData}
+                  showGrowthWindow={showGrowthWindow}
+                  sortAllCrops={sortCropsBy}
+                  sortPreference={sortPreference}
+                />
+              )
             ) : (
-              <CropCalendarView
-                cropData={cropData}
-                activeCropData={activeCropData}
-                showGrowthWindow={showGrowthWindow}
-                sortAllCrops={sortCropsBy}
-                sortPreference={sortPreference}
-              />
-            )
-          ) : (
-            <MyCoverCropList comparisonView={comparisonView} />
-          )}
+              <MyCoverCropList comparisonView={comparisonView} />
+            )}
         </div>
         <ScrollTop {...props}>
           <Fab color="secondary" size="medium" aria-label="scroll back to top">
