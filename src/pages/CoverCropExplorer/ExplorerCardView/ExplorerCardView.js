@@ -35,7 +35,7 @@ const ExplorerCardView = ({ activeCropData }) => {
   const { enqueueSnackbar } = useSnackbar();
 
   const handleModalOpen = (crop) => {
-    // put data inside modal
+    // put data inside modal;
     setModalData({ fields: crop });
 
     setModalOpen(true);

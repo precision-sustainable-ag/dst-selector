@@ -104,11 +104,10 @@ const CropSelectorCalendarView = ({ from = 'calendar', data = [] }) => {
                   borderLeft: '2px solid white',
                   borderRight: '0px solid white',
                 }
-                : getActiveCropMonths(data.fields).includes(month.substring(0, 3))
-                  && {
-                    borderLeft: '2px solid white',
-                    borderRight: '2px solid white',
-                  }
+                : {
+                  borderLeft: '2px solid white',
+                  borderRight: '2px solid white',
+                }
           }
         >
           <div className="d-flex flex-row w-100 growthCellsWrapper">

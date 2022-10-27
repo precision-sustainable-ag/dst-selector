@@ -39,7 +39,6 @@ const MyCoverCropList = ({ comparisonView, from }) => {
   useEffect(() => {
     if (cropThumbs.length > 0 && selectedCrops.length > 0) {
       selectedCrops.forEach((crop) => {
-        console.log('crop', crop);
         cropThumbs.forEach((thumb) => {
           if (thumb.label === crop.data['Cover Crop Name']) {
             crop.data['Image Data']['Key Thumbnail'] = thumb.thumbnail.src;
