@@ -47,9 +47,7 @@ const CoverCropGoals = ({ handleToggle, classes, style }) => {
   const renderItem = (value, props, isDragged, isSelected, index) => (
     <li
       {...props}
-      style={{
-        ...style,
-      }}
+      style={{ ...style }}
     >
       <div className="d-flex w-100 flex-row justify-content-between align-items-center">
         <div>

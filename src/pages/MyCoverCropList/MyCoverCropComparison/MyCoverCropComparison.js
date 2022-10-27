@@ -319,7 +319,7 @@ const MyCoverCropComparison = ({ selectedCrops }) => {
                     <CardMedia
                       image={
                         crop.data['Image Data']['Key Thumbnail']
-                          ? `/images/Cover Crop Photos/250/${crop.data['Image Data']['Key Thumbnail']}`
+                          ? crop.data['Image Data']['Key Thumbnail']
                           : 'https://placehold.it/100x100?text=Placeholder'
                       }
                       title={crop.cropName}
