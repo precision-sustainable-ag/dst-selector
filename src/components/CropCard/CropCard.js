@@ -8,11 +8,13 @@ import React, {
 } from 'react';
 import { trimString } from '../../shared/constants';
 import { Context } from '../../store/Store';
+import RenderRelevantData from '../RenderRelevantData/RenderRelevantData';
 
 const useStyles = makeStyles({
   card: {
     maxWidth: 345,
     width: 250,
+    marginRight: 10,
   },
   media: {
     height: 140,
@@ -20,7 +22,7 @@ const useStyles = makeStyles({
 });
 
 const CropCard = ({
-  crop, handleModalOpen, addCropToBasket, removeCrop, index, type,
+  crop, handleModalOpen, addCropToBasket, removeCrop, index, type, comparisonKeys, lightBG, GetAverageGoalRating,
 }) => {
   const { state } = useContext(Context);
   const section = window.location.href.includes('selector') ? 'selector' : 'explorer';
@@ -99,7 +101,7 @@ const CropCard = ({
               : 'inactiveCartBtn'
           }
         onClick={() => {
-          if (selectedBtns.includes(crop.id) && type === 'cropList') {
+          if (selectedBtns.includes(crop.id) && type !== 'explorer') {
             return (
               removeCrop(
                 crop['Cover Crop Name'],
@@ -136,6 +138,30 @@ const CropCard = ({
             : 'ADD TO LIST'}
         </Typography>
       </CardActionArea>
+      {type === 'myListCompare'
+        && (
+        <CardContent
+          style={{
+            paddingRight: '0px',
+            paddingLeft: '0px',
+            paddingBottom: '0px',
+          }}
+        >
+          {comparisonKeys.map((filterKey, i) => (
+            <RenderRelevantData
+              key={i}
+              filterKey={filterKey}
+              data={crop}
+            />
+          ))}
+          {/* Show Goal Rating Only IF Goals > 0 */}
+          {state.selectedGoals.length > 0 && (
+          <div style={lightBG}>
+            <GetAverageGoalRating crop={crop} />
+          </div>
+          )}
+        </CardContent>
+        )}
     </Card>
   );
 };
