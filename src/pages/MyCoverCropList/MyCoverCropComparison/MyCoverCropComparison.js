@@ -8,33 +8,33 @@
   styled using ../../styles/cropComparisonView.scss
 */
 
+import React, { useContext, useEffect, useState } from 'react';
+import '../../../styles/cropComparisonView.scss';
+import '../../../styles/MyCoverCropComparisonComponent.scss';
 import {
+  Button,
   Card,
   CardActionArea,
   CardContent,
   CardMedia,
   IconButton,
   Typography,
-  Button,
 } from '@mui/material';
 import { Cancel, KeyboardArrowLeft, KeyboardArrowRight } from '@mui/icons-material';
 import { useSnackbar } from 'notistack';
-import React, { useContext, useEffect, useState } from 'react';
 import {
   DataTooltip,
   flipCoverCropName,
-  getRating,
-  RenderSeedPriceIcons,
   trimString,
 } from '../../../shared/constants';
+import { Context } from '../../../store/Store';
+import CropDetailsModal from '../../../components/CropDetailsModal/CropDetailsModal';
+import GetAverageGoalRating from './GetAverageGoalRating/GetAverageGoalRating';
+import RenderRelevantData from './RenderRelevantData/RenderRelevantData';
 import sidebarDefinitionsz4 from '../../../shared/json/zone4/data-dictionary.json';
 import sidebarDefinitionsz5 from '../../../shared/json/zone5/data-dictionary.json';
 import sidebarDefinitionsz6 from '../../../shared/json/zone6/data-dictionary.json';
 import sidebarDefinitionsz7 from '../../../shared/json/zone7/data-dictionary.json';
-import { Context } from '../../../store/Store';
-import '../../../styles/cropComparisonView.scss';
-import '../../../styles/MyCoverCropComparisonComponent.scss';
-import CropDetailsModal from '../../../components/CropDetailsModal/CropDetailsModal';
 
 const lightBorder = {
   border: '1px solid #35999b',
@@ -103,9 +103,7 @@ const MyCoverCropComparison = ({ selectedCrops }) => {
   }, [zone]);
 
   const removeCrop = (id, cropName) => {
-    const removeIndex = state.selectedCrops
-      .map((item) => item.id)
-      .indexOf(`${id}`);
+    const removeIndex = state.selectedCrops.map((item) => item.id).indexOf(`${id}`);
 
     if (removeIndex === -1) {
       // element not in array
@@ -363,7 +361,6 @@ const MyCoverCropComparison = ({ selectedCrops }) => {
                           }}
                           onClick={() => handleModalOpen({ fields: crop.data })}
                           target="_blank"
-
                         >
                           View Crop Details
                         </Button>
@@ -379,11 +376,7 @@ const MyCoverCropComparison = ({ selectedCrops }) => {
                     }}
                   >
                     {comparisonKeys.map((filterKey, i) => (
-                      <RenderRelevantData
-                        key={i}
-                        filterKey={filterKey}
-                        data={crop.data}
-                      />
+                      <RenderRelevantData key={i} filterKey={filterKey} data={crop.data} />
                     ))}
                     {/* Show Goal Rating Only IF Goals > 0 */}
                     {state.selectedGoals.length > 0 ? (
@@ -419,65 +412,9 @@ const MyCoverCropComparison = ({ selectedCrops }) => {
           </div>
         </div>
       </div>
-      <CropDetailsModal
-        modalOpen={modalOpen}
-        setModalOpen={setModalOpen}
-        crop={modalData}
-      />
+      <CropDetailsModal modalOpen={modalOpen} setModalOpen={setModalOpen} crop={modalData} />
     </div>
   );
-};
-
-const RenderRelevantData = ({ filterKey = '', data = [] }) => {
-  if (typeof data[filterKey] === 'number') {
-    if (data[filterKey].toString().length === 1) {
-      if (filterKey === 'Seed Price per Pound') {
-        return (
-          <div style={lightBG}>
-            <RenderSeedPriceIcons val={data['Seed Price per Pound']} />
-          </div>
-        );
-      } return <div style={lightBG}>{getRating(data[filterKey])}</div>;
-    }
-    return (
-      <div style={lightBG}>
-        <Typography variant="body2">{data[filterKey]}</Typography>
-      </div>
-    );
-  }
-  if (filterKey === 'Frost Seeding' || (filterKey === 'Can Aerial Seed?' || filterKey === 'Aerial Seeding')) {
-    return (
-      <div style={lightBG}>
-        <RenderSeedingData data={data} filterKey={filterKey === 'Frost Seeding' ? filterKey : 'Aerial Seeding'} />
-      </div>
-    );
-  } if (data[filterKey]) {
-    return (
-      <div style={lightBG}>
-        <Typography variant="body2">{data[filterKey].toString()}</Typography>
-      </div>
-    );
-  }
-  return <div />;
-};
-
-const RenderSeedingData = ({ filterKey, data }) => {
-  if (data[filterKey]) {
-    return <Typography variant="body2">Yes</Typography>;
-  }
-  return <Typography variant="body2">N/A</Typography>;
-};
-const GetAverageGoalRating = ({ crop }) => {
-  const { state } = useContext(Context);
-  let goalRating = 0;
-  if (state.selectedGoals.length > 0) {
-    state.selectedGoals.forEach((goal) => {
-      if (crop.data[goal]) {
-        goalRating += crop.data[goal];
-      }
-    });
-  }
-  return getRating(goalRating / state.selectedGoals.length);
 };
 
 export default MyCoverCropComparison;
