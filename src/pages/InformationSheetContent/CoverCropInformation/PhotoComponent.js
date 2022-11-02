@@ -4,8 +4,7 @@
 */
 
 import { Typography } from '@mui/material';
-import Axios from 'axios';
-import React, { Suspense, useEffect, useState } from 'react';
+import React, { Suspense } from 'react';
 import { ucFirst } from '../../../shared/constants';
 import '../../../styles/photoComponent.scss';
 
@@ -16,33 +15,8 @@ const PhotoComponent = ({
     'Key Thumbnail': '',
     'Cover Crop': '',
   },
+  allThumbs,
 }) => {
-  const imagesApiUrl = imageData ? `//covercrop.tools/files.php?dir=${imageData.Directory}` : null;
-  const [imageList, setImageList] = useState([]);
-
-  useEffect(() => {
-    // eslint-disable-next-line no-return-await
-    const getImages = async () => await Axios({
-      url: imagesApiUrl,
-      method: 'get',
-    });
-
-    const imagePromise = getImages();
-    imagePromise
-      .then((response) => {
-        if (response.data.result === 'success') {
-          if (response.data.data.length === 0) {
-            setImageList([]);
-          }
-          setImageList(response.data.data);
-        }
-      })
-      .catch((e) => {
-        // eslint-disable-next-line no-console
-        console.error(e);
-      });
-  }, [imagesApiUrl]);
-
   const baseName = (path = '') => {
     let separator = '/';
     const windowsSeparator = '\\';
@@ -65,18 +39,18 @@ const PhotoComponent = ({
       [length - 2]: secondLast,
       [length - 3]: thirdLast,
     } = fileNameArray;
-    const year = parseInt(last, 10);
-    if (thirdLast.toLowerCase().includes('mirsky')) {
+    const year = parseInt(last, 10) ? `[${parseInt(last, 10)}]` : '';
+    if (thirdLast?.toLowerCase().includes('mirsky')) {
       const mirskyLabString = ucFirst(`${thirdLast} ${secondLast}`);
       return `${cropName} - ${mirskyLabString} [${year}]`;
     }
-    return `${cropName} - ${secondLast} [${year}]`;
+    return `${cropName} ${secondLast ? `- ${secondLast}` : ''} ${year}`;
   };
 
-  return imageData !== null && imageList.length !== 0 ? (
+  return imageData !== null && allThumbs.length !== 0 ? (
     <Suspense fallback={<div className="col">Loading..</div>}>
-      {imageList.map((url, index) => {
-        let strippedUrl = '';
+      {allThumbs.map((url, index) => {
+        let strippedUrl = url;
         if (url.startsWith('images/Cover Crop Photos')) {
           const strippedUrlArray = url.split('images/Cover Crop Photos');
           strippedUrl = `/images/Cover Crop Photos/200x125${strippedUrlArray[1]}`;
