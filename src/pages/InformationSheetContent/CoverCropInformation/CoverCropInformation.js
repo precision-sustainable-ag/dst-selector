@@ -2,7 +2,7 @@ import React from 'react';
 import { Typography } from '@mui/material';
 import PhotoComponent from './PhotoComponent';
 
-const CoverCropInformation = ({ cropImage, cropDescription }) => (
+const CoverCropInformation = ({ cropImage, cropDescription, allThumbs }) => (
   <>
     <div className="row coverCropDescriptionWrapper avoidPage">
       <div className="col-12 p-0">
@@ -25,7 +25,7 @@ const CoverCropInformation = ({ cropImage, cropDescription }) => (
         WebkitOverflowScrolling: 'touch',
       }}
     >
-      <PhotoComponent imageData={cropImage} />
+      <PhotoComponent imageData={cropImage} allThumbs={allThumbs} />
     </div>
   </>
 );
