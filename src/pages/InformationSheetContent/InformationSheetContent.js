@@ -28,6 +28,7 @@ const InformationSheetContent = ({ crop }) => {
   const section = window.location.href.includes('selector') ? 'selector' : 'explorer';
   const { zone } = state[section];
   const [currentSources, setCurrentSources] = useState([{}]);
+  const [allThumbs, setAllThumbs] = useState([]);
 
   useEffect(() => {
     document.title = `${crop['Cover Crop Name']} Zone ${zone}`;
@@ -47,9 +48,30 @@ const InformationSheetContent = ({ crop }) => {
     setCurrentSources(relevantZones);
   }, [crop, zone]);
 
-  return Object.keys(crop).length > 0 ? (
+  useEffect(() => {
+    const allImages = [];
+    async function getData() {
+      await fetch(`https://develop.covercrop-data.org/crops/${crop['Image Data'].id}`)
+        .then((res) => res.json())
+        .then((data) => {
+          data.data.images.forEach((image) => {
+            allImages.push(image.src);
+          });
+          setAllThumbs(allImages);
+        })
+        .catch((err) => {
+          // eslint-disable-next-line no-console
+          console.log(err.message);
+        });
+    }
+
+    getData();
+  }, [crop]);
+
+  return allThumbs.length > 0 && Object.keys(crop).length > 0 ? (
     <>
       <CoverCropInformation
+        allThumbs={allThumbs}
         cropImage={crop['Image Data'] || null}
         cropDescription={
           crop['Cover Crop Description'] ? crop['Cover Crop Description'] : crop['Crop Description']
