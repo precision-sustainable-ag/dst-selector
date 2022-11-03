@@ -84,11 +84,11 @@ const CropSelector = (props) => {
         cropThumbs.forEach((thumb) => {
           if (thumb.label === crop.fields['Cover Crop Name']) {
             crop.fields['Image Data']['Key Thumbnail'] = thumb.thumbnail.src;
+            crop.fields['Image Data'].id = thumb.id;
           }
         });
       });
     }
-
     setUpdatedActiveCropData(activeCropData);
   }, [activeCropData, cropThumbs]);
 

@@ -37,7 +37,6 @@ const ExplorerCardView = ({ activeCropData }) => {
   const handleModalOpen = (crop) => {
     // put data inside modal;
     setModalData({ fields: crop });
-
     setModalOpen(true);
   };
   const addCropToBasket = (cropId, cropName, btnId, cropData) => {
