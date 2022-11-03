@@ -49,10 +49,7 @@ const RenderRelevantData = ({ filterKey = '', data = [] }) => {
       <div style={lightBG}>
         <RenderSeedingData
           data={data}
-          if (filterKey === 'Frost Seeding') {
-
-          }
-          filterKey={ ? filterKey : 'Aerial Seeding'}
+          filterKey={filterKey === 'Frost Seeding' ? filterKey : 'Aerial Seeding'}
         />
       </div>
     );
