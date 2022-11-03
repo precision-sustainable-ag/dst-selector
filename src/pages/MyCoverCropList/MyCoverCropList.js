@@ -19,14 +19,24 @@ const MyCoverCropList = ({ comparisonView, from }) => {
   const comparison = comparisonView || false;
   const history = useHistory();
   const [updatedSelectedCrops, setUpdatedSelectedCrops] = useState([]);
-  const [cropThumbs, setCropThumbs] = useState([]);
   const { selectedCrops } = state;
 
   useEffect(() => {
     async function getData() {
       await fetch('https://develop.covercrop-data.org/crops')
         .then((res) => res.json())
-        .then((data) => setCropThumbs(data.data))
+        .then((data) => {
+          if (data.data.length > 0 && selectedCrops.length > 0) {
+            selectedCrops.forEach((crop) => {
+              data.data.forEach((thumb) => {
+                if (thumb.label === crop.data['Cover Crop Name']) {
+                  crop.data['Image Data']['Key Thumbnail'] = thumb.thumbnail.src;
+                }
+              });
+            });
+          }
+          setUpdatedSelectedCrops(selectedCrops);
+        })
         .catch((err) => {
           // eslint-disable-next-line no-console
           console.log(err.message);
@@ -34,21 +44,7 @@ const MyCoverCropList = ({ comparisonView, from }) => {
     }
 
     getData();
-  }, []);
-
-  useEffect(() => {
-    if (cropThumbs.length > 0 && selectedCrops.length > 0) {
-      selectedCrops.forEach((crop) => {
-        cropThumbs.forEach((thumb) => {
-          if (thumb.label === crop.data['Cover Crop Name']) {
-            crop.data['Image Data']['Key Thumbnail'] = thumb.thumbnail.src;
-          }
-        });
-      });
-    }
-
-    setUpdatedSelectedCrops(selectedCrops);
-  }, [selectedCrops, cropThumbs]);
+  }, [selectedCrops]);
 
   const redirectToSpeciesSelector = () => {
     history.replace('/species-selector');

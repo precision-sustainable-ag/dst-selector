@@ -17,7 +17,6 @@ const CoverCropExplorer = () => {
   const { state } = useContext(Context);
   const section = window.location.href.includes('selector') ? 'selector' : 'explorer';
   const sfilters = state[section];
-  const [cropThumbs, setCropThumbs] = useState([]);
   const [updatedActiveCropData, setUpdatedActiveCropData] = useState([]);
   const { activeCropData } = state;
 
@@ -25,7 +24,21 @@ const CoverCropExplorer = () => {
     async function getData() {
       await fetch('https://develop.covercrop-data.org/crops')
         .then((res) => res.json())
-        .then((data) => setCropThumbs(data.data))
+        .then((data) => {
+          const filteredActiveCropData = activeCropData.filter((a) => !a.inactive);
+          if (data.data.length > 0 && filteredActiveCropData.length > 0) {
+            filteredActiveCropData.forEach((crop) => {
+              data.data.forEach((thumb) => {
+                if (thumb.label === crop.fields['Cover Crop Name']) {
+                  crop.fields['Image Data']['Key Thumbnail'] = thumb.thumbnail.src;
+                  crop.fields['Image Data'].id = thumb.id;
+                }
+              });
+            });
+          }
+
+          setUpdatedActiveCropData(filteredActiveCropData);
+        })
         .catch((err) => {
           // eslint-disable-next-line no-console
           console.log(err.message);
@@ -33,23 +46,7 @@ const CoverCropExplorer = () => {
     }
 
     getData();
-  }, []);
-
-  useEffect(() => {
-    const filteredActiveCropData = activeCropData.filter((a) => !a.inactive);
-    if (cropThumbs.length > 0 && filteredActiveCropData.length > 0) {
-      filteredActiveCropData.forEach((crop) => {
-        cropThumbs.forEach((thumb) => {
-          if (thumb.label === crop.fields['Cover Crop Name']) {
-            crop.fields['Image Data']['Key Thumbnail'] = thumb.thumbnail.src;
-            crop.fields['Image Data'].id = thumb.id;
-          }
-        });
-      });
-    }
-
-    setUpdatedActiveCropData(filteredActiveCropData);
-  }, [activeCropData, cropThumbs]);
+  }, [activeCropData]);
 
   useEffect(() => {
     if (state.consent === true) {
