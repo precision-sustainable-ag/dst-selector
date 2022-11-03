@@ -8,7 +8,6 @@ import {
   RenderSeedPriceIcons,
   getRating,
 } from '../../../../shared/constants';
-import RenderSeedingData from '../RenderSeedingData/RenderSeedingData';
 
 const lightBG = {
   border: '1px solid white',
@@ -45,12 +44,19 @@ const RenderRelevantData = ({ filterKey = '', data = [] }) => {
       || filterKey === 'Can Aerial Seed?'
       || filterKey === 'Aerial Seeding'
   ) {
+    if (filterKey !== 'Frost Seeding') {
+      filterKey = 'Aerial Seeding';
+    }
+    if (data[filterKey]) {
+      return (
+        <div style={lightBG}>
+          <Typography variant="body2">Yes</Typography>
+        </div>
+      );
+    }
     return (
       <div style={lightBG}>
-        <RenderSeedingData
-          data={data}
-          filterKey={filterKey === 'Frost Seeding' ? filterKey : 'Aerial Seeding'}
-        />
+        <Typography variant="body2">N/A</Typography>
       </div>
     );
   }

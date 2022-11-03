@@ -31,6 +31,7 @@ import { Context } from '../../../store/Store';
 import CropDetailsModal from '../../../components/CropDetailsModal/CropDetailsModal';
 import GetAverageGoalRating from './GetAverageGoalRating/GetAverageGoalRating';
 import RenderRelevantData from './RenderRelevantData/RenderRelevantData';
+import RenderDataInCard from './RenderDataInCard/RenderDataInCard';
 import sidebarDefinitionsz4 from '../../../shared/json/zone4/data-dictionary.json';
 import sidebarDefinitionsz5 from '../../../shared/json/zone5/data-dictionary.json';
 import sidebarDefinitionsz6 from '../../../shared/json/zone6/data-dictionary.json';
@@ -158,36 +159,33 @@ const MyCoverCropComparison = ({ selectedCrops }) => {
                   />
                 </CardMedia>
                 <CardContent>
-                  <div
-                    className="font-weight-bold text-uppercase"
-                    style={{
+                  <RenderDataInCard
+                    classNameProperty="font-weight-bold text-uppercase"
+                    styleProperty={{
                       fontSize: '10pt',
                       color: 'white',
                       visibility: 'hidden',
                     }}
-                  >
-                    Zone
-                  </div>
-                  <div
-                    className="font-weight-bold text-uppercase"
-                    style={{
+                    data="Zone"
+                  />
+                  <RenderDataInCard
+                    classNameProperty="font-weight-bold text-uppercase"
+                    styleProperty={{
                       fontSize: '10pt',
                       color: 'white',
                       visibility: 'hidden',
                     }}
-                  >
-                    Family Common Name
-                  </div>
-                  <div
-                    className="font-weight-bold "
-                    style={{
+                    data="Family Common Name"
+                  />
+                  <RenderDataInCard
+                    classNameProperty="font-weight-bold "
+                    styleProperty={{
                       fontSize: '16pt',
                       color: 'white',
                       visibility: 'hidden',
                     }}
-                  >
-                    Cover Crop Name
-                  </div>
+                    data="Cover Crop Name"
+                  />
                   <small className="font-italic" style={{ color: 'white', visibility: 'hidden' }}>
                     Scientific Name
                   </small>
@@ -258,9 +256,9 @@ const MyCoverCropComparison = ({ selectedCrops }) => {
         </div>
         {/* Actual crops show up from here */}
         <div className="col-xl-9 col-lg-8 col-md-8 comparisonContainer">
-          {showScrollArrows || selectedCrops.length > 4 ? (
+          {(showScrollArrows || selectedCrops.length > 4) && (
             <>
-              {showLeftScrollArrow ? (
+              {showLeftScrollArrow && (
                 <div className="arrowLeftContainer">
                   <IconButton
                     size="medium"
@@ -271,8 +269,6 @@ const MyCoverCropComparison = ({ selectedCrops }) => {
                     <KeyboardArrowLeft fontSize="large" />
                   </IconButton>
                 </div>
-              ) : (
-                ''
               )}
 
               <div className="arrowRightContainer">
@@ -286,8 +282,6 @@ const MyCoverCropComparison = ({ selectedCrops }) => {
                 </IconButton>
               </div>
             </>
-          ) : (
-            ''
           )}
 
           <div
@@ -296,8 +290,8 @@ const MyCoverCropComparison = ({ selectedCrops }) => {
             onScroll={() => {
               // show arrows
               setShowScrollArrow(true);
-              const a = document.getElementById('scrollContainer').scrollLeft;
-              if (a === 0) {
+              const leftScrollArrowFlag = document.getElementById('scrollContainer').scrollLeft;
+              if (leftScrollArrowFlag === 0) {
                 setShowLeftScrollArrow(false);
               } else {
                 setShowLeftScrollArrow(true);
@@ -334,21 +328,21 @@ const MyCoverCropComparison = ({ selectedCrops }) => {
                   )}
 
                   <CardContent>
-                    <div
-                      className="font-weight-bold text-muted text-uppercase"
-                      style={{ fontSize: '10pt' }}
-                    >
-                      {`Zone ${crop.data.Zone}`}
-                    </div>
-                    <div
-                      className="font-weight-bold text-muted text-uppercase"
-                      style={{ fontSize: '10pt' }}
-                    >
-                      {crop.data['Family Common Name']}
-                    </div>
-                    <div className="font-weight-bold " style={{ fontSize: '16pt' }}>
-                      {flipCoverCropName(crop.data['Cover Crop Name'])}
-                    </div>
+                    <RenderDataInCard
+                      classNameProperty="font-weight-bold text-muted text-uppercase"
+                      styleProperty={{ fontSize: '10pt' }}
+                      data={`Zone ${crop.data.Zone}`}
+                    />
+                    <RenderDataInCard
+                      classNameProperty="font-weight-bold text-muted text-uppercase"
+                      styleProperty={{ fontSize: '10pt' }}
+                      data={crop.data['Family Common Name']}
+                    />
+                    <RenderDataInCard
+                      classNameProperty="font-weight-bold "
+                      styleProperty={{ fontSize: '16pt' }}
+                      data={flipCoverCropName(crop.data['Cover Crop Name'])}
+                    />
                     <small className="font-italic text-muted">
                       {trimString(crop.data['Scientific Name'], 25)}
                     </small>
