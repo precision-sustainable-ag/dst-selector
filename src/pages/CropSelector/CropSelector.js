@@ -62,13 +62,24 @@ const CropSelector = (props) => {
   const [comparisonView, setComparisonView] = useState(false);
   const [cropData, setCropData] = useState([]);
   const [updatedActiveCropData, setUpdatedActiveCropData] = useState([]);
-  const [cropThumbs, setCropThumbs] = useState([]);
 
   useEffect(() => {
     async function getData() {
       await fetch('https://develop.covercrop-data.org/crops')
         .then((res) => res.json())
-        .then((data) => setCropThumbs(data.data))
+        .then((data) => {
+          if (data.data.length > 0 && activeCropData.length > 0) {
+            activeCropData.forEach((crop) => {
+              data.data.forEach((thumb) => {
+                if (thumb.label === crop.fields['Cover Crop Name']) {
+                  crop.fields['Image Data']['Key Thumbnail'] = thumb.thumbnail.src;
+                  crop.fields['Image Data'].id = thumb.id;
+                }
+              });
+            });
+          }
+          setUpdatedActiveCropData(activeCropData);
+        })
         .catch((err) => {
           // eslint-disable-next-line no-console
           console.log(err.message);
@@ -76,21 +87,7 @@ const CropSelector = (props) => {
     }
 
     getData();
-  }, []);
-
-  useEffect(() => {
-    if (cropThumbs.length > 0 && activeCropData.length > 0) {
-      activeCropData.forEach((crop) => {
-        cropThumbs.forEach((thumb) => {
-          if (thumb.label === crop.fields['Cover Crop Name']) {
-            crop.fields['Image Data']['Key Thumbnail'] = thumb.thumbnail.src;
-          }
-        });
-      });
-    }
-
-    setUpdatedActiveCropData(activeCropData);
-  }, [activeCropData, cropThumbs]);
+  }, [activeCropData]);
 
   useEffect(() => {
     if (state.consent === true) {
@@ -271,29 +268,28 @@ const CropSelector = (props) => {
 
         <div className={showSidebar ? 'col-md-10 col-sm-12' : 'col-md-12 col-sm-12'}>
           {/* we need a spinner or loading icon for when the length isnt yet determined */}
-          {updatedActiveCropData.length > 0
-            && state.speciesSelectorActivationFlag ? (
-              isListView ? (
-                <CropTableComponent
-                  cropData={cropData}
-                  setCropData={setCropData}
-                  activeCropData={updatedActiveCropData}
-                  showGrowthWindow={showGrowthWindow}
-                  sortAllCrops={sortCropsBy}
-                  sortPreference={sortPreference}
-                />
-              ) : (
-                <CropCalendarView
-                  cropData={cropData}
-                  activeCropData={updatedActiveCropData}
-                  showGrowthWindow={showGrowthWindow}
-                  sortAllCrops={sortCropsBy}
-                  sortPreference={sortPreference}
-                />
-              )
+          {state.speciesSelectorActivationFlag ? (
+            isListView ? (
+              <CropTableComponent
+                cropData={cropData}
+                setCropData={setCropData}
+                activeCropData={updatedActiveCropData}
+                showGrowthWindow={showGrowthWindow}
+                sortAllCrops={sortCropsBy}
+                sortPreference={sortPreference}
+              />
             ) : (
-              <MyCoverCropList comparisonView={comparisonView} />
-            )}
+              <CropCalendarView
+                cropData={cropData}
+                activeCropData={updatedActiveCropData}
+                showGrowthWindow={showGrowthWindow}
+                sortAllCrops={sortCropsBy}
+                sortPreference={sortPreference}
+              />
+            )
+          ) : (
+            <MyCoverCropList comparisonView={comparisonView} />
+          )}
         </div>
         <ScrollTop {...props}>
           <Fab color="secondary" size="medium" aria-label="scroll back to top">

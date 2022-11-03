@@ -16,8 +16,7 @@ const CropTableListItem = ({
   };
 
   return (
-    activeCropData.length > 0
-    && activeCropData.map((crop, index) => {
+    activeCropData.map((crop, index) => {
       if (
         ((crop.fields['Zone Decision'] === 'Include') && (matchGoals ? !hasGoalRatingTwoOrLess(crop) : hasGoalRatingTwoOrLess(crop)))
       ) {
