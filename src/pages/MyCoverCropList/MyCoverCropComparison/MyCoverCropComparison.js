@@ -8,6 +8,7 @@
   styled using ../../styles/cropComparisonView.scss
 */
 
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Card,
   CardContent,
@@ -17,19 +18,17 @@ import {
 } from '@mui/material';
 import { KeyboardArrowLeft, KeyboardArrowRight } from '@mui/icons-material';
 import { useSnackbar } from 'notistack';
-import React, { useContext, useEffect, useState } from 'react';
 import {
   DataTooltip,
-  getRating,
 } from '../../../shared/constants';
+import { Context } from '../../../store/Store';
+import CropDetailsModal from '../../../components/CropDetailsModal/CropDetailsModal';
 import sidebarDefinitionsz4 from '../../../shared/json/zone4/data-dictionary.json';
 import sidebarDefinitionsz5 from '../../../shared/json/zone5/data-dictionary.json';
 import sidebarDefinitionsz6 from '../../../shared/json/zone6/data-dictionary.json';
 import sidebarDefinitionsz7 from '../../../shared/json/zone7/data-dictionary.json';
-import { Context } from '../../../store/Store';
 import '../../../styles/cropComparisonView.scss';
 import '../../../styles/MyCoverCropComparisonComponent.scss';
-import CropDetailsModal from '../../../components/CropDetailsModal/CropDetailsModal';
 import CropCard from '../../../components/CropCard/CropCard';
 
 const lightBorder = {
@@ -51,19 +50,6 @@ const lightBG = {
   justifyContent: 'center',
   fontWeight: 'bold',
   minHeight: '36px',
-};
-
-const GetAverageGoalRating = ({ crop }) => {
-  const { state } = useContext(Context);
-  let goalRating = 0;
-  if (state.selectedGoals.length > 0) {
-    state.selectedGoals.forEach((goal) => {
-      if (crop.data[goal]) {
-        goalRating += crop.data[goal];
-      }
-    });
-  }
-  return getRating(goalRating / state.selectedGoals.length);
 };
 
 const MyCoverCropComparison = ({ selectedCrops }) => {
@@ -195,7 +181,7 @@ const MyCoverCropComparison = ({ selectedCrops }) => {
                   ))}
 
                   {/* Average Goal Rating: Show only if goals are selected */}
-                  {state.selectedGoals.length > 0 ? (
+                  {state.selectedGoals.length > 0 && (
                     <div style={lightBorder}>
                       <span>
                         <DataTooltip
@@ -208,8 +194,6 @@ const MyCoverCropComparison = ({ selectedCrops }) => {
                         <Typography variant="body2">Average Goal Rating</Typography>
                       </span>
                     </div>
-                  ) : (
-                    ''
                   )}
                 </CardContent>
               </Card>
@@ -218,9 +202,9 @@ const MyCoverCropComparison = ({ selectedCrops }) => {
         </div>
         {/* Actual crops show up from here */}
         <div className="col-xl-9 col-lg-8 col-md-8 comparisonContainer">
-          {showScrollArrows || selectedCrops.length > 4 ? (
+          {(showScrollArrows || selectedCrops.length > 4) && (
             <>
-              {showLeftScrollArrow ? (
+              {showLeftScrollArrow && (
                 <div className="arrowLeftContainer">
                   <IconButton
                     size="medium"
@@ -231,8 +215,6 @@ const MyCoverCropComparison = ({ selectedCrops }) => {
                     <KeyboardArrowLeft fontSize="large" />
                   </IconButton>
                 </div>
-              ) : (
-                ''
               )}
 
               <div className="arrowRightContainer">
@@ -246,8 +228,6 @@ const MyCoverCropComparison = ({ selectedCrops }) => {
                 </IconButton>
               </div>
             </>
-          ) : (
-            ''
           )}
 
           <div
@@ -256,8 +236,8 @@ const MyCoverCropComparison = ({ selectedCrops }) => {
             onScroll={() => {
               // show arrows
               setShowScrollArrow(true);
-              const a = document.getElementById('scrollContainer').scrollLeft;
-              if (a === 0) {
+              const leftScrollArrowFlag = document.getElementById('scrollContainer').scrollLeft;
+              if (leftScrollArrowFlag === 0) {
                 setShowLeftScrollArrow(false);
               } else {
                 setShowLeftScrollArrow(true);
@@ -274,18 +254,13 @@ const MyCoverCropComparison = ({ selectedCrops }) => {
                   type="myListCompare"
                   comparisonKeys={comparisonKeys}
                   lightBG={lightBG}
-                  GetAverageGoalRating={GetAverageGoalRating}
                 />
               </div>
             ))}
           </div>
         </div>
       </div>
-      <CropDetailsModal
-        modalOpen={modalOpen}
-        setModalOpen={setModalOpen}
-        crop={modalData}
-      />
+      <CropDetailsModal modalOpen={modalOpen} setModalOpen={setModalOpen} crop={modalData} />
     </div>
   );
 };

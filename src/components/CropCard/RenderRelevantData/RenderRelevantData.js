@@ -5,7 +5,7 @@ import React from 'react';
 import {
   getRating,
   RenderSeedPriceIcons,
-} from '../../shared/constants';
+} from '../../../shared/constants';
 
 const lightBG = {
   border: '1px solid white',
