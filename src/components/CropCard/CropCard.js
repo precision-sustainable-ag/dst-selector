@@ -8,7 +8,8 @@ import React, {
 } from 'react';
 import { trimString } from '../../shared/constants';
 import { Context } from '../../store/Store';
-import RenderRelevantData from '../RenderRelevantData/RenderRelevantData';
+import GetAverageGoalRating from './GetAverageGoalRating/GetAverageGoalRating';
+import RenderRelevantData from './RenderRelevantData/RenderRelevantData';
 
 const useStyles = makeStyles({
   card: {
@@ -22,7 +23,7 @@ const useStyles = makeStyles({
 });
 
 const CropCard = ({
-  crop, handleModalOpen, addCropToBasket, removeCrop, index, type, comparisonKeys, lightBG, GetAverageGoalRating,
+  crop, handleModalOpen, addCropToBasket, removeCrop, index, type, comparisonKeys, lightBG,
 }) => {
   const { state } = useContext(Context);
   const section = window.location.href.includes('selector') ? 'selector' : 'explorer';
