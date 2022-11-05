@@ -10,22 +10,17 @@
 
 import {
   Card,
-  CardActionArea,
   CardContent,
   CardMedia,
   IconButton,
   Typography,
-  Button,
 } from '@mui/material';
-import { Cancel, KeyboardArrowLeft, KeyboardArrowRight } from '@mui/icons-material';
+import { KeyboardArrowLeft, KeyboardArrowRight } from '@mui/icons-material';
 import { useSnackbar } from 'notistack';
 import React, { useContext, useEffect, useState } from 'react';
 import {
   DataTooltip,
-  flipCoverCropName,
   getRating,
-  RenderSeedPriceIcons,
-  trimString,
 } from '../../../shared/constants';
 import sidebarDefinitionsz4 from '../../../shared/json/zone4/data-dictionary.json';
 import sidebarDefinitionsz5 from '../../../shared/json/zone5/data-dictionary.json';
@@ -35,6 +30,7 @@ import { Context } from '../../../store/Store';
 import '../../../styles/cropComparisonView.scss';
 import '../../../styles/MyCoverCropComparisonComponent.scss';
 import CropDetailsModal from '../../../components/CropDetailsModal/CropDetailsModal';
+import CropCard from '../../../components/CropCard/CropCard';
 
 const lightBorder = {
   border: '1px solid #35999b',
@@ -57,6 +53,19 @@ const lightBG = {
   minHeight: '36px',
 };
 
+const GetAverageGoalRating = ({ crop }) => {
+  const { state } = useContext(Context);
+  let goalRating = 0;
+  if (state.selectedGoals.length > 0) {
+    state.selectedGoals.forEach((goal) => {
+      if (crop.data[goal]) {
+        goalRating += crop.data[goal];
+      }
+    });
+  }
+  return getRating(goalRating / state.selectedGoals.length);
+};
+
 const MyCoverCropComparison = ({ selectedCrops }) => {
   const { state, dispatch } = useContext(Context);
   const { enqueueSnackbar } = useSnackbar();
@@ -71,9 +80,7 @@ const MyCoverCropComparison = ({ selectedCrops }) => {
 
   const handleModalOpen = (crop) => {
     // put data inside modal
-
-    setModalData(crop);
-
+    setModalData({ fields: crop });
     setModalOpen(true);
   };
 
@@ -102,7 +109,7 @@ const MyCoverCropComparison = ({ selectedCrops }) => {
     }
   }, [zone]);
 
-  const removeCrop = (id, cropName) => {
+  const removeCrop = (cropName, id) => {
     const removeIndex = state.selectedCrops
       .map((item) => item.id)
       .indexOf(`${id}`);
@@ -152,62 +159,13 @@ const MyCoverCropComparison = ({ selectedCrops }) => {
           <div className="row pt-3">
             <div className="col-12">
               <Card style={{ width: '100%', boxShadow: 'none' }}>
-                <CardMedia style={{ width: '100%', height: '100px' }}>
+                <CardMedia style={{ width: '100%', height: '292px' }}>
                   <img
                     src="https://via.placeholder.com/10/FFFFFF/FFFFFF"
                     style={{ opacity: 0 }}
                     alt="placeholder"
                   />
                 </CardMedia>
-                <CardContent>
-                  <div
-                    className="font-weight-bold text-uppercase"
-                    style={{
-                      fontSize: '10pt',
-                      color: 'white',
-                      visibility: 'hidden',
-                    }}
-                  >
-                    Zone
-                  </div>
-                  <div
-                    className="font-weight-bold text-uppercase"
-                    style={{
-                      fontSize: '10pt',
-                      color: 'white',
-                      visibility: 'hidden',
-                    }}
-                  >
-                    Family Common Name
-                  </div>
-                  <div
-                    className="font-weight-bold "
-                    style={{
-                      fontSize: '16pt',
-                      color: 'white',
-                      visibility: 'hidden',
-                    }}
-                  >
-                    Cover Crop Name
-                  </div>
-                  <small className="font-italic" style={{ color: 'white', visibility: 'hidden' }}>
-                    Scientific Name
-                  </small>
-                  <div>
-                    <small className="text-muted">
-                      <a
-                        style={{
-                          textDecoration: 'underline',
-                          color: 'white',
-                          visibility: 'hidden',
-                        }}
-                        href="/#"
-                      >
-                        View Crop Details
-                      </a>
-                    </small>
-                  </div>
-                </CardContent>
                 <hr
                   style={{
                     borderTop: '1px solid rgba(0,0,0,0)',
@@ -307,113 +265,17 @@ const MyCoverCropComparison = ({ selectedCrops }) => {
             }}
           >
             {selectedCrops.map((crop, index) => (
-              <div className="col-xl-3 col-lg-5" key={index}>
-                <Card className="mainComparisonCard" style={{ width: '100%' }}>
-                  <Button
-                    onClick={() => removeCrop(crop.id, crop.cropName)}
-                    className="cardCloseIcon"
-                  >
-                    <Cancel titleAccess="Remove Crop" />
-                  </Button>
-                  {crop.data['Image Data'] ? (
-                    <CardMedia
-                      image={
-                        crop.data['Image Data']['Key Thumbnail']
-                          ? crop.data['Image Data']['Key Thumbnail']
-                          : 'https://placehold.it/100x100?text=Placeholder'
-                      }
-                      title={crop.cropName}
-                      style={{ width: '100%', height: '100px' }}
-                    />
-                  ) : (
-                    <CardMedia>
-                      <img
-                        src="https://via.placeholder.com/100/?text=Placeholder"
-                        style={{ width: '100%', height: '100px' }}
-                        alt="Placeholder"
-                      />
-                    </CardMedia>
-                  )}
-
-                  <CardContent>
-                    <div
-                      className="font-weight-bold text-muted text-uppercase"
-                      style={{ fontSize: '10pt' }}
-                    >
-                      {`Zone ${crop.data.Zone}`}
-                    </div>
-                    <div
-                      className="font-weight-bold text-muted text-uppercase"
-                      style={{ fontSize: '10pt' }}
-                    >
-                      {crop.data['Family Common Name']}
-                    </div>
-                    <div className="font-weight-bold " style={{ fontSize: '16pt' }}>
-                      {flipCoverCropName(crop.data['Cover Crop Name'])}
-                    </div>
-                    <small className="font-italic text-muted">
-                      {trimString(crop.data['Scientific Name'], 25)}
-                    </small>
-                    <div>
-                      <small className="text-muted">
-                        <Button
-                          style={{
-                            textDecoration: 'underline',
-                            color: 'rgb(53, 153, 155)',
-                          }}
-                          onClick={() => handleModalOpen({ fields: crop.data })}
-                          target="_blank"
-
-                        >
-                          View Crop Details
-                        </Button>
-                      </small>
-                    </div>
-                  </CardContent>
-                  <hr />
-                  <CardContent
-                    style={{
-                      paddingRight: '0px',
-                      paddingLeft: '0px',
-                      paddingBottom: '0px',
-                    }}
-                  >
-                    {comparisonKeys.map((filterKey, i) => (
-                      <RenderRelevantData
-                        key={i}
-                        filterKey={filterKey}
-                        data={crop.data}
-                      />
-                    ))}
-                    {/* Show Goal Rating Only IF Goals > 0 */}
-                    {state.selectedGoals.length > 0 ? (
-                      <div style={lightBG}>
-                        <GetAverageGoalRating crop={crop} />
-                      </div>
-                    ) : (
-                      ''
-                    )}
-                  </CardContent>
-                  <CardActionArea
-                    style={{
-                      backgroundColor: '#e3f2f4',
-                      textAlign: 'center',
-                      padding: '0.5em',
-                    }}
-                    onClick={() => removeCrop(crop.id, crop.cropName)}
-                  >
-                    <Typography
-                      variant="body2"
-                      className="text-uppercase"
-                      style={{
-                        color: 'black',
-                        fontWeight: 'bold',
-                      }}
-                    >
-                      REMOVE
-                    </Typography>
-                  </CardActionArea>
-                </Card>
+              <div className="col-xl-3 col-lg-5" style={{ marginRight: 40 }} key={index}>
+                <CropCard
+                  crop={crop.data}
+                  removeCrop={removeCrop}
+                  handleModalOpen={handleModalOpen}
+                  index={index}
+                  type="myListCompare"
+                  comparisonKeys={comparisonKeys}
+                  lightBG={lightBG}
+                  GetAverageGoalRating={GetAverageGoalRating}
+                />
               </div>
             ))}
           </div>
@@ -426,58 +288,6 @@ const MyCoverCropComparison = ({ selectedCrops }) => {
       />
     </div>
   );
-};
-
-const RenderRelevantData = ({ filterKey = '', data = [] }) => {
-  if (typeof data[filterKey] === 'number') {
-    if (data[filterKey].toString().length === 1) {
-      if (filterKey === 'Seed Price per Pound') {
-        return (
-          <div style={lightBG}>
-            <RenderSeedPriceIcons val={data['Seed Price per Pound']} />
-          </div>
-        );
-      } return <div style={lightBG}>{getRating(data[filterKey])}</div>;
-    }
-    return (
-      <div style={lightBG}>
-        <Typography variant="body2">{data[filterKey]}</Typography>
-      </div>
-    );
-  }
-  if (filterKey === 'Frost Seeding' || (filterKey === 'Can Aerial Seed?' || filterKey === 'Aerial Seeding')) {
-    return (
-      <div style={lightBG}>
-        <RenderSeedingData data={data} filterKey={filterKey === 'Frost Seeding' ? filterKey : 'Aerial Seeding'} />
-      </div>
-    );
-  } if (data[filterKey]) {
-    return (
-      <div style={lightBG}>
-        <Typography variant="body2">{data[filterKey].toString()}</Typography>
-      </div>
-    );
-  }
-  return <div />;
-};
-
-const RenderSeedingData = ({ filterKey, data }) => {
-  if (data[filterKey]) {
-    return <Typography variant="body2">Yes</Typography>;
-  }
-  return <Typography variant="body2">N/A</Typography>;
-};
-const GetAverageGoalRating = ({ crop }) => {
-  const { state } = useContext(Context);
-  let goalRating = 0;
-  if (state.selectedGoals.length > 0) {
-    state.selectedGoals.forEach((goal) => {
-      if (crop.data[goal]) {
-        goalRating += crop.data[goal];
-      }
-    });
-  }
-  return getRating(goalRating / state.selectedGoals.length);
 };
 
 export default MyCoverCropComparison;
