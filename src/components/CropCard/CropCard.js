@@ -97,7 +97,6 @@ const CropCard = ({
         }}
         className={
             selectedBtns.includes(crop.id)
-            && sfilters.zone === crop.Zone
               ? 'activeCartBtn'
               : 'inactiveCartBtn'
           }
@@ -124,7 +123,6 @@ const CropCard = ({
           variant="body2"
           className={`text-uppercase ${
             selectedBtns.includes(crop.id)
-              && sfilters.zone === crop.Zone
               ? 'text-white'
               : ''
           }`}
@@ -134,7 +132,6 @@ const CropCard = ({
           }}
         >
           {selectedBtns.includes(crop.id)
-            && sfilters.zone === crop.Zone
             ? 'REMOVE'
             : 'ADD TO LIST'}
         </Typography>
