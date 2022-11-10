@@ -429,6 +429,7 @@ const Header = () => {
         />
       </div>
 
+      {/* TODO: Is Navbar actually used? */}
       <Navbar
         isRoot={isRoot}
         setSpeciesSelectorActivationFlag={setSpeciesSelectorActivationFlag}
