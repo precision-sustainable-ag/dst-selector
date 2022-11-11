@@ -21,9 +21,11 @@ export default function MapCanvas({
   hasDrawing = true,
   hasGeolocate = true,
   hasFullScreen = true,
+  doubleClickZoom = false,
 }) {
   const [viewport, setViewport] = useState({ ...initViewport });
   const [mouseLoc, setMouseLoc] = useState({});
+  const [isDrawActive, setIsDrawActive] = useState(false);
   const mapRef = useRef();
 
   const onLoad = () => {};
@@ -62,6 +64,7 @@ export default function MapCanvas({
           //   mapStyle="mapbox://styles/mapbox/streets-v9"
           //   mapStyle="mapbox://styles/mapbox/satellite-v9"
           mapboxAccessToken={apiKey}
+          doubleClickZoom={doubleClickZoom}
           onLoad={onLoad}
           onMoveEnd={(vp) => {
             setViewport((viewport) => ({ ...viewport, ...vp.viewState }));
@@ -70,7 +73,7 @@ export default function MapCanvas({
             setMouseLoc({ longitude: e.lngLat.lng, latitude: e.lngLat.lat });
           }}
         >
-          {hasMarker && (
+          {hasMarker && !isDrawActive && (
             <MarkerControl mapRef={mapRef} setViewport={setViewport} viewport={viewport} />
           )}
           {hasSearchBar && (
@@ -84,6 +87,9 @@ export default function MapCanvas({
           {hasDrawing && (
             <DrawControl
               position="top-left"
+              onCreate={() => setIsDrawActive(true)}
+              // onUpdate={() => setIsDrawActive(true)}
+              onDelete={() => setIsDrawActive(false)}
               displayControlsDefault={false}
               controls={{
                 polygon: true,
