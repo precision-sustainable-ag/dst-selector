@@ -18,9 +18,11 @@ import { Search } from '@mui/icons-material';
 import React, { useContext, useEffect, useState } from 'react';
 import { Context } from '../../store/Store';
 import '../../styles/location.scss';
-import GoogleAutocomplete from './GoogleAutocomplete/GoogleAutocomplete';
-import MapContext from './MapContext/MapContext';
+// import GoogleAutocomplete from './GoogleAutocomplete/GoogleAutocomplete';
+// import MapContext from './MapContext/MapContext';
+import Map from '../../components/Map/Map';
 import { BinaryButton } from '../../shared/constants';
+import { MapboxApiKey } from '../../shared/keys';
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -31,9 +33,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const LocationComponent = ({
-  title, caller, defaultMarkers, closeExpansionPanel,
-}) => {
+const LocationComponent = ({ title, caller, defaultMarkers, closeExpansionPanel }) => {
   const classes = useStyles();
   const { state, dispatch } = useContext(Context);
   const section = window.location.href.includes('selector') ? 'selector' : 'explorer';
@@ -89,9 +89,7 @@ const LocationComponent = ({
   };
 
   useEffect(() => {
-    const {
-      latitude, longitude, address, zipCode,
-    } = selectedToEditSite;
+    const { latitude, longitude, address, zipCode } = selectedToEditSite;
     if (Object.keys(selectedToEditSite).length === 5) {
       dispatch({
         type: 'UPDATE_LOCATION',
@@ -107,24 +105,18 @@ const LocationComponent = ({
 
   return (
     <div className="container-fluid mt-5">
-      <div className="row boxContainerRow" style={{ minHeight: '520px' }}>
-        <div className="col-xl-6 col-lg-12">
+      <div className="row boxContainerRow mx-0 px-0 mx-lg-3 px-lg-3" style={{ minHeight: '520px' }}>
+        <div className="col-xl-4 col-sm-12">
           <div className="container-fluid">
-            <Typography variant="h4">Where is your field located?</Typography>
-            <Typography variant="body1" align="left" className="pt-3">
-              Enter your USDA plant hardiness zone, address, or zip code and hit
-              {' '}
+            <Typography variant="h4" align="left">
+              Where is your field located?
+            </Typography>
+            <Typography variant="body1" align="left" justifyContent="center" className="pt-5 pb-2">
+              Select your USDA plant hardiness zone, search your address, or zip code and hit
               <Search fontSize="inherit" />
-              {' '}
               to determine your location.
             </Typography>
-            <div className="row pt-3 mt-4">
-              <div className="col-md-9 col-lg-8 col-sm-12 row">
-                <GoogleAutocomplete
-                  selectedToEditSite={selectedToEditSite}
-                  setSelectedToEditSite={setSelectedToEditSite}
-                />
-              </div>
+            <div className="row py-3 my-4 ">
               <div className="col-md-3 col-lg-4 col-sm-12 col-12">
                 <FormControl
                   variant="filled"
@@ -151,25 +143,31 @@ const LocationComponent = ({
                 </FormControl>
               </div>
             </div>
-            <div className="row">
-              <div
-                className="col-md-6 offset-md-6 col-sm-12 row"
-                style={{ textAlign: 'left' }}
-              />
-            </div>
-            <div className="row">
-              <div className="col-md-6 offset-md-6 col-sm-12" />
-            </div>
           </div>
         </div>
-        <div className="col-xl-6 col-lg-12">
-          <MapContext width="100%" height="400px" minzoom={4} maxzoom={20} from="location" />
+        {/* <div className="col-xl-1 col-sm-0"></div> */}
+        <div className="col-xl-8 col-sm-12">
+          <div className="container-fluid">
+            <Map
+              initViewport={{
+                width: "100%",
+                height: "600px",
+                longitude: -122,
+                latitude: 47,
+                minZoom: 4,
+                maxZoom: 18,
+                startZoom: 12,
+              }}
+              from="location"
+              apiKey={MapboxApiKey}
+            />
+          </div>
         </div>
       </div>
       <Dialog disableEscapeKeyDown open={showRestartPrompt}>
         <DialogContent dividers>
           <Typography variant="body1">
-            This will trigger a restart.  Would you also like to clear My Cover Crop List?
+            This will trigger a restart. Would you also like to clear My Cover Crop List?
           </Typography>
         </DialogContent>
         <DialogActions>

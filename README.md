@@ -53,6 +53,7 @@ To see development progress, visit [http://covercrop.tools](http://covercrop.too
 ```
 REACT_APP_GOOGLE_API_KEY="<google key>"
 REACT_APP_OPEN_WEATHER_API_KEY="<open weather key>"
+REACT_APP_MAPBOX_API_KEY="<mapbox token key>"
 ```
 
 7. After the dependencies have been installed and the .env file has been created, run `npm start` to run the code locally. If you run into any issues take a look in the [Runbook](#runbook) for previous issues and solutions. This will compile the JSX code into Javascript and open up a new browser window with the current version of the covercrops project!
