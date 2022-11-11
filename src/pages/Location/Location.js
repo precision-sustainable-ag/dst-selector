@@ -18,8 +18,6 @@ import { Search } from '@mui/icons-material';
 import React, { useContext, useEffect, useState } from 'react';
 import { Context } from '../../store/Store';
 import '../../styles/location.scss';
-// import GoogleAutocomplete from './GoogleAutocomplete/GoogleAutocomplete';
-// import MapContext from './MapContext/MapContext';
 import Map from '../../components/Map/Map';
 import { BinaryButton } from '../../shared/constants';
 import { MapboxApiKey } from '../../shared/keys';
@@ -89,20 +87,50 @@ const LocationComponent = ({ title, caller, defaultMarkers, closeExpansionPanel 
   };
 
   useEffect(() => {
-    const { latitude, longitude, address, zipCode } = selectedToEditSite;
-    if (Object.keys(selectedToEditSite).length === 5) {
+    const { latitude, longitude, address, fullAddress, zipCode } = selectedToEditSite;
+
+    if (Object.keys(selectedToEditSite).length > 0) {
       dispatch({
         type: 'UPDATE_LOCATION',
         data: {
           address,
           latitude,
           longitude,
-          zip: zipCode,
+          zipCode: zipCode,
         },
       });
+
+      dispatch({
+        type: 'UPDATE_MARKER',
+        data: {
+          markers: [[latitude, longitude]],
+        },
+      });
+
+      dispatch({
+        type: 'SNACK',
+        data: {
+          snackOpen: true,
+          snackMessage: 'Your location has been saved.',
+        },
+      });
+
+      if (selectedToEditSite.address) {
+        dispatch({
+          type: 'CHANGE_ADDRESS_VIA_MAP',
+          data: {
+            address: address,
+            fullAddress: fullAddress,
+            zipCode: zipCode,
+            addressVerified: true,
+          },
+        });
+      }
     }
   }, [selectedToEditSite, dispatch]);
 
+
+  
   return (
     <div className="container-fluid mt-5">
       <div className="row boxContainerRow mx-0 px-0 mx-lg-3 px-lg-3" style={{ minHeight: '520px' }}>
@@ -150,16 +178,19 @@ const LocationComponent = ({ title, caller, defaultMarkers, closeExpansionPanel 
           <div className="container-fluid">
             <Map
               initViewport={{
-                width: "100%",
-                height: "600px",
-                longitude: -122,
-                latitude: 47,
+                width: '100%',
+                height: '600px',
+                latitude: (state.markers && state.markers.length>0) ? state.markers[0][0] : 47,
+                longitude: (state.markers && state.markers.length>0) ? state.markers[0][1] : -122,
                 minZoom: 4,
                 maxZoom: 18,
                 startZoom: 12,
               }}
-              from="location"
+              address={selectedToEditSite}
+              setAddress={setSelectedToEditSite}
               apiKey={MapboxApiKey}
+              hasSearchBar={true}
+              hasMarker={true}
             />
           </div>
         </div>

@@ -94,7 +94,8 @@ const ForecastComponent = () => {
                 dispatch({
                   type: 'UPDATE_ZIP_CODE',
                   data: {
-                    zipCode: parseInt(res.postcode, 10),
+                    zipCode: res.postcode,
+                    // zipCode: parseInt(res.postcode, 10),
                   },
                 });
               }

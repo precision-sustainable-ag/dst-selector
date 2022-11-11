@@ -18,7 +18,7 @@ import './styles/App.scss';
 
 const LoadRelevantRoute = ({ progress, calcHeight }) => {
   switch (progress) {
-    case 0:
+    case 1:
       return (
         <LocationComponent
           height={calcHeight}
@@ -83,7 +83,7 @@ const App = () => {
 
       <div className="container-fluid pl-0 pr-0">
         <div className="contentContainer">
-          {state.progress === 10 ? (
+          {state.progress === 0 ? (
             <Landing
               title="Decision Support Tool"
               height={calcHeight}

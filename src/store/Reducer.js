@@ -105,7 +105,7 @@ const Reducer = (state, action, value = action && action.data && action.data.val
         ...state,
         address: action.data.address,
         markers: [[action.data.latitude, action.data.longitude]],
-        zip: action.data.zip,
+        // zip: action.data.zip,
         zipCode: action.data.zip,
       };
     }
@@ -174,7 +174,7 @@ const Reducer = (state, action, value = action && action.data && action.data.val
         ...state,
         address: action.data.address,
         fullAddress: action.data.fullAddress,
-        zip: action.data.zip,
+        // zip: action.data.zip,
         zipCode: action.data.zip,
         addressVerified: action.data.addressVerified,
         addressChangedViaMap: true,
