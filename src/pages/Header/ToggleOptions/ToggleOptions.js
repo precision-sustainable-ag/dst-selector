@@ -31,7 +31,7 @@ const ToggleOptions = ({ isRoot, setSpeciesSelectorActivationFlag, setmyCoverCro
             <Button
               size="large"
               className={
-                state.myCoverCropActivationFlag && window.location.pathname === '/species-selector'
+                (state.myCoverCropActivationFlag && window.location.pathname === '/species-selector')
                   && 'active'
               }
               onClick={setmyCoverCropActivationFlag}

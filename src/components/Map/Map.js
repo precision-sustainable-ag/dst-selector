@@ -1,38 +1,46 @@
-import { set } from 'lodash';
 import React, { useEffect, useRef, useState, useCallback } from 'react';
-import {
-  MapProvider,
-  Map,
-  useMap,
-  Marker,
-  Popup,
-  FullscreenControl,
-  NavigationControl,
-} from 'react-map-gl';
+import { MapProvider, Map, FullscreenControl, NavigationControl } from 'react-map-gl';
 
 import GeolocateControl from './geolocate-control';
 import GeocoderControl from './geocoder-control';
 import DrawControl from './draw-control';
 import MarkerControl from './marker-control';
-import { getAddressFromLoc } from './geocoder-search';
+import { geocodeReverse } from './geocoder-search';
 import './styles.scss';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
 export default function MapCanvas({
   initViewport = { width, height, longitude, latitude, minZoom, maxZoom, startZoom },
   apiKey,
+  address,
+  setAddress = () => {},
+  hasSearchBar = true,
+  hasMarker = true,
+  hasNavigation = true,
+  hasCoordBar = true,
+  hasDrawing = true,
+  hasGeolocate = true,
+  hasFullScreen = true,
 }) {
   const [viewport, setViewport] = useState({ ...initViewport });
-  const [address, setAddress] = useState({});
   const [mouseLoc, setMouseLoc] = useState({});
   const mapRef = useRef();
 
   const onLoad = () => {};
 
-  //   useEffect(() => {
-  //     console.log('address changed: ');
-  //     console.log(address);
-  //   }, [address]);
+  useEffect(() => {
+    geocodeReverse({
+      apiKey,
+      setterFunc: setAddress,
+      longitude: viewport.longitude,
+      latitude: viewport.latitude,
+    });
+    setAddress((addr) => ({
+      ...addr,
+      longitude: viewport.longitude,
+      latitude: viewport.latitude,
+    }));
+  }, [viewport.longitude, viewport.latitude]);
 
   return (
     <MapProvider>
@@ -62,26 +70,31 @@ export default function MapCanvas({
             setMouseLoc({ longitude: e.lngLat.lng, latitude: e.lngLat.lat });
           }}
         >
-          <MarkerControl setViewport={setViewport} mapRef={mapRef} viewport={viewport} />
-          <GeocoderControl
-            mapboxAccessToken={apiKey}
-            mapRef={mapRef}
-            onResults={() => setViewport({ ...viewport })}
-            setLocation={setViewport}
-            setAddress={setAddress}
-          />
-          <DrawControl
-            position="top-left"
-            displayControlsDefault={false}
-            controls={{
-              polygon: true,
-              trash: true,
-            }}
-          />
-          <FullscreenControl />
-          <GeolocateControl />
-          <NavigationControl />
-          {mouseLoc.longitude && (
+          {hasMarker && (
+            <MarkerControl mapRef={mapRef} setViewport={setViewport} viewport={viewport} />
+          )}
+          {hasSearchBar && (
+            <GeocoderControl
+              mapRef={mapRef}
+              mapboxAccessToken={apiKey}
+              viewport={viewport}
+              setViewport={setViewport}
+            />
+          )}
+          {hasDrawing && (
+            <DrawControl
+              position="top-left"
+              displayControlsDefault={false}
+              controls={{
+                polygon: true,
+                trash: true,
+              }}
+            />
+          )}
+          {hasFullScreen && <FullscreenControl />}
+          {hasGeolocate && <GeolocateControl />}
+          {hasNavigation && <NavigationControl />}
+          {hasCoordBar && mouseLoc.longitude && (
             <div className="infobar">
               Longitude: {mouseLoc.longitude.toFixed(4)} | Latitude: {mouseLoc.latitude.toFixed(4)}
             </div>

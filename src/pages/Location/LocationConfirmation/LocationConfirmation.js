@@ -3,13 +3,16 @@
   styled using CustomStyles from ../../shared/constants
 */
 
+import L from 'leaflet';
 import { Typography } from '@mui/material';
 import React, { useContext } from 'react';
 import { CustomStyles } from '../../../shared/constants';
 import { Context } from '../../../store/Store';
 import SoilCondition from '../SoilCondition/SoilCondition';
 import 'leaflet/dist/leaflet.css';
-import MapContext from '../MapContext/MapContext';
+import { MapboxApiKey } from '../../../shared/keys';
+// import MapContext from '../MapContext/MapContext';
+import Map from '../../../components/Map/Map';
 import WeatherConditions from '../../../components/WeatherConditions/WeatherConditions';
 
 const LocationConfirmation = () => {
@@ -31,12 +34,25 @@ const LocationConfirmation = () => {
           <div className="container-fluid">
             <div className="row">
               <div className="col-lg-6">
-                <MapContext
-                  width="100%"
-                  height="200px"
-                  minzoom={4}
-                  maxzoom={20}
-                  from="confirmation"
+                <Map
+                  initViewport={{
+                    width: '100%',
+                    height: '200px',
+                    latitude: state.markers && state.markers.length > 0 ? state.markers[0][0] : 47,
+                    longitude:
+                      state.markers && state.markers.length > 0 ? state.markers[0][1] : -122,
+                    minZoom: 4,
+                    maxZoom: 18,
+                    startZoom: 12,
+                  }}
+                  apiKey={MapboxApiKey}
+                  hasSearchBar={false}
+                  hasMarker={true}
+                  hasNavigation={false}
+                  hasCoordBar={false}
+                  hasDrawing={false}
+                  hasGeolocate={false}
+                  hasFullScreen={false}
                 />
               </div>
               <div className="col-lg-6">
@@ -45,11 +61,8 @@ const LocationConfirmation = () => {
                 </div>
                 <div className="col-12 pt-2">
                   <Typography variant="body1">
-                    Your cover crop recommendations will come from the Plant Hardiness Zone
-                    {' '}
-                    {sfilters.zone}
-                    {' '}
-                    NECCC dataset.
+                    Your cover crop recommendations will come from the Plant Hardiness Zone{' '}
+                    {sfilters.zone} NECCC dataset.
                   </Typography>
                 </div>
                 <div className="col-12">
@@ -75,8 +88,7 @@ const LocationConfirmation = () => {
                 <Typography variant="body1">
                   Disclaimer: Cover crop recommendations are based on expert opinions. Your cover
                   crop performance and seeding rates will vary based on location, management,
-                  cultivars, and many other variables. Consult your local
-                  {' '}
+                  cultivars, and many other variables. Consult your local{' '}
                   <a
                     href="https://www.nrcs.usda.gov/wps/portal/nrcs/detailfull/national/programs/financial/csp/?&cid=nrcsdev11_000242"
                     title="click to consult your local nrcs service center"
@@ -85,8 +97,7 @@ const LocationConfirmation = () => {
                   >
                     NRCS Service Center
                   </a>
-                  ,
-                  {' '}
+                  ,{' '}
                   <a
                     href="https://nifa.usda.gov/land-grant-colleges-and-universities-partner-website-directory"
                     title="Link to Cooperative Extension Service office"
@@ -95,16 +106,14 @@ const LocationConfirmation = () => {
                   >
                     Cooperative Extension Service office
                   </a>
-                  , or
-                  {' '}
+                  , or{' '}
                   <a
                     href="https://www.nacdnet.org/general-resources/conservation-district-directory/"
                     target="_blank"
                     rel="noreferrer noopener"
                   >
                     Conservation District
-                  </a>
-                  {' '}
+                  </a>{' '}
                   for detailed guidance. Cover crop incentive programs may dictate seeding rate
                   ranges and methods, and planting and termination dates. Consult your program
                   contact to ensure your plans comply.
