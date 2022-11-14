@@ -30,7 +30,7 @@ const ExplorerCardView = ({ activeCropData }) => {
   useEffect(() => {
     const newSelectedBtns = state.selectedCrops.map((crop) => crop.id);
     setSelectedBtns(newSelectedBtns);
-  }, [sfilters.zone, state]);
+  }, [sfilters.zone, state.selectedCrops]);
 
   const { enqueueSnackbar } = useSnackbar();
 
