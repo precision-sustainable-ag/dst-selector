@@ -30,7 +30,7 @@ const ExplorerCardView = ({ activeCropData }) => {
   useEffect(() => {
     const newSelectedBtns = state.selectedCrops.map((crop) => crop.id);
     setSelectedBtns(newSelectedBtns);
-  }, [sfilters.zone, state.selectedCrops]);
+  }, [sfilters.zone, state]);
 
   const { enqueueSnackbar } = useSnackbar();
 
@@ -56,6 +56,7 @@ const ExplorerCardView = ({ activeCropData }) => {
       });
       enqueueSnackbar(`${cropName} ${action}`);
     };
+
     if (state.selectedCrops.length > 0) {
       // DONE: Remove crop from basket
       const removeIndex = state.selectedCrops
