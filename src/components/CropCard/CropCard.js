@@ -8,7 +8,6 @@ import React, {
 } from 'react';
 import { trimString } from '../../shared/constants';
 import { Context } from '../../store/Store';
-import GetAverageGoalRating from './GetAverageGoalRating/GetAverageGoalRating';
 import RenderRelevantData from './RenderRelevantData/RenderRelevantData';
 
 const useStyles = makeStyles({
@@ -23,7 +22,7 @@ const useStyles = makeStyles({
 });
 
 const CropCard = ({
-  crop, handleModalOpen, addCropToBasket, removeCrop, index, type, comparisonKeys, lightBG,
+  crop, handleModalOpen, addCropToBasket, removeCrop, index, type, comparisonKeys, lightBG, GetAverageGoalRating,
 }) => {
   const { state } = useContext(Context);
   const section = window.location.href.includes('selector') ? 'selector' : 'explorer';
@@ -97,6 +96,7 @@ const CropCard = ({
         }}
         className={
             selectedBtns.includes(crop.id)
+            && sfilters.zone === crop.Zone
               ? 'activeCartBtn'
               : 'inactiveCartBtn'
           }
@@ -123,6 +123,7 @@ const CropCard = ({
           variant="body2"
           className={`text-uppercase ${
             selectedBtns.includes(crop.id)
+              && sfilters.zone === crop.Zone
               ? 'text-white'
               : ''
           }`}
@@ -132,6 +133,7 @@ const CropCard = ({
           }}
         >
           {selectedBtns.includes(crop.id)
+            && sfilters.zone === crop.Zone
             ? 'REMOVE'
             : 'ADD TO LIST'}
         </Typography>
