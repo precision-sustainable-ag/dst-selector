@@ -56,6 +56,7 @@ const ExplorerCardView = ({ activeCropData }) => {
       });
       enqueueSnackbar(`${cropName} ${action}`);
     };
+
     if (state.selectedCrops.length > 0) {
       // DONE: Remove crop from basket
       const removeIndex = state.selectedCrops
