@@ -9,7 +9,11 @@ import { useControl } from 'react-map-gl';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
 
-const GeocoderControl = ({ mapboxAccessToken, setViewport }) => {
+const GeocoderControl = ({
+  mapboxAccessToken,
+  setViewport,
+  setMarker,
+}) => {
   useControl(() => {
     const ctrl = new MapboxGeocoder({
       placeholder: 'Search Your Address ...',
@@ -31,11 +35,16 @@ const GeocoderControl = ({ mapboxAccessToken, setViewport }) => {
         const stateZip = splitted[splitted.length - 2].split(' ');
         const zipCode = stateZip[stateZip.length - 1];
         if (fullAddress) {
-          setViewport((vp) => ({
-            ...vp,
+          setViewport((prev) => ({
+            ...prev,
             address: streetNum,
             zipCode,
             fullAddress,
+          }));
+          setMarker((prev) => ({
+            ...prev,
+            longitude: e.result.center[0],
+            latitude: e.result.center[1],
           }));
         }
       }
