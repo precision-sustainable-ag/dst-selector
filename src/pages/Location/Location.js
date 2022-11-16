@@ -3,6 +3,7 @@
   styled using ../../styles/location.scss
 */
 
+import '../../styles/location.scss';
 import {
   Dialog,
   DialogActions,
@@ -13,13 +14,12 @@ import {
   Select,
   Typography,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
-import { Search } from '@mui/icons-material';
 import React, { useContext, useEffect, useState } from 'react';
-import { Context } from '../../store/Store';
-import '../../styles/location.scss';
-import Map from '../../components/Map/Map';
+import { Search } from '@mui/icons-material';
+import makeStyles from '@mui/styles/makeStyles';
 import { BinaryButton } from '../../shared/constants';
+import { Context } from '../../store/Store';
+import Map from '../../components/Map/Map';
 import { MapboxApiKey } from '../../shared/keys';
 
 const useStyles = makeStyles((theme) => ({
@@ -31,7 +31,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const LocationComponent = ({ title, caller, defaultMarkers, closeExpansionPanel }) => {
+const LocationComponent = ({
+  title,
+  caller,
+  defaultMarkers,
+  closeExpansionPanel,
+}) => {
   const classes = useStyles();
   const { state, dispatch } = useContext(Context);
   const section = window.location.href.includes('selector') ? 'selector' : 'explorer';
@@ -87,7 +92,13 @@ const LocationComponent = ({ title, caller, defaultMarkers, closeExpansionPanel 
   };
 
   useEffect(() => {
-    const { latitude, longitude, address, fullAddress, zipCode } = selectedToEditSite;
+    const {
+      latitude,
+      longitude,
+      address,
+      fullAddress,
+      zipCode,
+    } = selectedToEditSite;
 
     if (Object.keys(selectedToEditSite).length > 0) {
       dispatch({
@@ -96,7 +107,7 @@ const LocationComponent = ({ title, caller, defaultMarkers, closeExpansionPanel 
           address,
           latitude,
           longitude,
-          zipCode: zipCode,
+          zipCode,
         },
       });
 
@@ -119,9 +130,9 @@ const LocationComponent = ({ title, caller, defaultMarkers, closeExpansionPanel 
         dispatch({
           type: 'CHANGE_ADDRESS_VIA_MAP',
           data: {
-            address: address,
-            fullAddress: fullAddress,
-            zipCode: zipCode,
+            address,
+            fullAddress,
+            zipCode,
             addressVerified: true,
           },
         });
@@ -129,8 +140,6 @@ const LocationComponent = ({ title, caller, defaultMarkers, closeExpansionPanel 
     }
   }, [selectedToEditSite, dispatch]);
 
-
-  
   return (
     <div className="container-fluid mt-5">
       <div className="row boxContainerRow mx-0 px-0 mx-lg-3 px-lg-3" style={{ minHeight: '520px' }}>
@@ -145,7 +154,7 @@ const LocationComponent = ({ title, caller, defaultMarkers, closeExpansionPanel 
               to determine your location.
             </Typography>
             <div className="row py-3 my-4 ">
-              <div className="col-md-3 col-lg-4 col-sm-12 col-12">
+              <div className="col-md-5 col-lg-6 col-sm-12 col-12">
                 <FormControl
                   variant="filled"
                   style={{ width: '100%' }}
@@ -180,17 +189,22 @@ const LocationComponent = ({ title, caller, defaultMarkers, closeExpansionPanel 
               initViewport={{
                 width: '100%',
                 height: '600px',
-                latitude: (state.markers && state.markers.length>0) ? state.markers[0][0] : 47,
-                longitude: (state.markers && state.markers.length>0) ? state.markers[0][1] : -122,
+                latitude: state.markers && state.markers.length > 0 ? state.markers[0][0] : 47,
+                longitude: state.markers && state.markers.length > 0 ? state.markers[0][1] : -122,
                 minZoom: 4,
                 maxZoom: 18,
                 startZoom: 12,
               }}
-              address={selectedToEditSite}
               setAddress={setSelectedToEditSite}
               apiKey={MapboxApiKey}
-              hasSearchBar={true}
-              hasMarker={true}
+              userInteractions={{
+                doubleClickZoom: false,
+                scrollZoom: true,
+                dragRotate: true,
+                dragPan: true,
+                keyboard: true,
+                touchZoomRotate: true,
+              }}
             />
           </div>
         </div>
