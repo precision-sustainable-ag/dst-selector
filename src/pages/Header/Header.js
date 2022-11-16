@@ -35,7 +35,6 @@ const Header = () => {
   const weatherApiURL = 'https://weather.aesl.ces.uga.edu';
   const getUSDAZone = async (zip) => fetch(`https://phzmapi.org/${zip}.json`);
 
-  
   useEffect(() => {
     if (!state.zipCode) {
       return;

@@ -1,10 +1,16 @@
-import React, { useState } from 'react';
-import { useControl, Marker, MarkerProps, ControlPosition } from 'react-map-gl';
-import MapboxGeocoder, { GeocoderOptions } from '@mapbox/mapbox-gl-geocoder';
+/*
+  Provdides forward geocoder search bar on the map component
+    to convert text address to lat lon coordinates
+  Styles are created using sass - stored in ../../styles/map.scss
+*/
+
+import '../../styles/map.scss';
+import { useControl } from 'react-map-gl';
+import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
 
 const GeocoderControl = ({ mapboxAccessToken, setViewport }) => {
-  const geocoder = useControl(() => {
+  useControl(() => {
     const ctrl = new MapboxGeocoder({
       placeholder: 'Search Your Address ...',
       marker: false,
@@ -13,26 +19,25 @@ const GeocoderControl = ({ mapboxAccessToken, setViewport }) => {
         bearing: 0,
         speed: 5, // Make the flying slow/fast.
         curve: 5, // Change the speed at which it zooms out.
-        easing: function (t) {
-          return t ** 2;
-        },
+        easing: (t) => t ** 2,
       },
       countries: 'us',
     });
     ctrl.on('result', (e) => {
       if (e && e.result) {
-        let fullAddress = e.result.place_name;
-        let splitted = fullAddress.split(', ');
-        let streetNum = splitted[0];
-        let state_zip = splitted[splitted.length - 2].split(' ');
-        let zipCode = state_zip[state_zip.length - 1];
-        fullAddress &&
+        const fullAddress = e.result.place_name;
+        const splitted = fullAddress.split(', ');
+        const streetNum = splitted[0];
+        const stateZip = splitted[splitted.length - 2].split(' ');
+        const zipCode = stateZip[stateZip.length - 1];
+        if (fullAddress) {
           setViewport((vp) => ({
             ...vp,
             address: streetNum,
-            zipCode: zipCode,
-            fullAddress: fullAddress,
+            zipCode,
+            fullAddress,
           }));
+        }
       }
     });
     return ctrl;

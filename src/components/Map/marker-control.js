@@ -1,44 +1,38 @@
-import { set } from 'lodash';
-import React, { useEffect, useRef, useState, useCallback } from 'react';
-import { Marker, Popup, useMap } from 'react-map-gl';
+/*
+  Handles drop marker object on the map component
+  Styles are created using sass - stored in ../../styles/map.scss
+*/
 
-import './styles.scss';
+import React, { useEffect, useState, useCallback } from 'react';
+import { Marker, Popup } from 'react-map-gl';
+import '../../styles/map.scss';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
-export default function MapCanvas({ viewport, setViewport, mapRef }) {
+const MapMarker = ({
+  marker,
+  setMarker,
+  mapRef,
+  hasMarkerPopup,
+  hasMarkerMovable,
+}) => {
   const [popupOpen, setPopupOpen] = useState(true);
-  const [marker, setMarker] = useState({
-    latitude: viewport.latitude,
-    longitude: viewport.longitude,
-  });
-  const [events, logEvents] = useState({});
-  const onMarkerDragStart = useCallback((event: MarkerDragEvent) => {
-    logEvents((_events) => ({ ..._events, onDragStart: event.lngLat }));
-  }, []);
 
   useEffect(() => {
+    if (hasMarkerMovable) {
+      mapRef.current.on('dblclick', (e) => {
+        setMarker((prev) => ({
+          ...prev,
+          longitude: e.lngLat.lng,
+          latitude: e.lngLat.lat,
+        }));
+      });
+    }
     setTimeout(() => setPopupOpen(false), 2000);
   }, []);
 
-  useEffect(() => {
-    setMarker({
-      longitude: viewport.longitude,
-      latitude: viewport.latitude,
-    });
-  }, [viewport.latitude, viewport.longitude]);
-
-  const onMarkerDrag = useCallback((event: MarkerDragEvent) => {
-    logEvents((_events) => ({ ..._events, onDrag: event.lngLat }));
-    setMarker({
-      longitude: event.lngLat.lng,
-      latitude: event.lngLat.lat,
-    });
-  }, []);
-
-  const onMarkerDragEnd = useCallback((event: MarkerDragEvent) => {
-    logEvents((_events) => ({ ..._events, onDragEnd: event.lngLat }));
-    setViewport((viewport) => ({
-      ...viewport,
+  const onMarkerDragEnd = useCallback((event) => {
+    setMarker((prev) => ({
+      ...prev,
       longitude: event.lngLat.lng,
       latitude: event.lngLat.lat,
     }));
@@ -51,31 +45,31 @@ export default function MapCanvas({ viewport, setViewport, mapRef }) {
         longitude={marker.longitude}
         latitude={marker.latitude}
         anchor="bottom"
-        draggable
-        onDragStart={onMarkerDragStart}
-        onDrag={onMarkerDrag}
+        draggable={hasMarkerMovable}
         onDragEnd={onMarkerDragEnd}
         onClick={(e) => {
           e.originalEvent.stopPropagation();
           setPopupOpen(!popupOpen);
         }}
       >
-        <img src=" https://img.icons8.com/color/48/000000/marker.png" width="30px" />
+        <img src=" https://img.icons8.com/color/48/000000/marker.png" width="30px" alt="" />
       </Marker>
-      {popupOpen && (
+      {popupOpen && hasMarkerPopup && (
         <Popup
-          key={'popup-1'}
+          key="popup-1"
           latitude={marker.latitude}
           longitude={marker.longitude}
           onClose={() => setPopupOpen(false)}
-          closeButton={true}
+          closeButton
           offset={[0, -20]}
         >
-          <span>{'click and drag'}</span>
-          <br/>
-          <span>{`${viewport.longitude.toFixed(4)}  ${viewport.latitude.toFixed(4)}`}</span>
+          <span> click and drag </span>
+          <br />
+          <span>{`${marker.longitude.toFixed(4)}  ${marker.latitude.toFixed(4)}`}</span>
         </Popup>
       )}
     </>
   );
-}
+};
+
+export default MapMarker;
