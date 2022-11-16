@@ -44,6 +44,7 @@ const MapCanvas = ({
     touchZoomRotate: true,
   },
 }) => {
+  // eslint-disable-next-line no-unused-vars
   const [viewport, setViewport] = useState({ ...initViewport });
   const [marker, setMarker] = useState({ ...initViewport });
   const [mouseLoc, setMouseLoc] = useState({});
@@ -154,10 +155,9 @@ const MapCanvas = ({
           )}
           {features.hasSearchBar && (
             <GeocoderControl
-              mapRef={mapRef}
               mapboxAccessToken={apiKey}
-              viewport={viewport}
               setViewport={setViewport}
+              setMarker={setMarker}
             />
           )}
           {features.hasDrawing && (
