@@ -99,7 +99,7 @@ const LocationConfirmation = () => {
                   Disclaimer: Cover crop recommendations are based on expert opinions. Your cover
                   crop performance and seeding rates will vary based on location, management,
                   cultivars, and many other variables. Consult your local
-                  &nbsp;
+                  {' '}
                   <a
                     href="https://www.nrcs.usda.gov/wps/portal/nrcs/detailfull/national/programs/financial/csp/?&cid=nrcsdev11_000242"
                     title="click to consult your local nrcs service center"
@@ -109,7 +109,7 @@ const LocationConfirmation = () => {
                     NRCS Service Center
                   </a>
                   ,
-                  &nbsp;
+                  {' '}
                   <a
                     href="https://nifa.usda.gov/land-grant-colleges-and-universities-partner-website-directory"
                     title="Link to Cooperative Extension Service office"
@@ -118,9 +118,9 @@ const LocationConfirmation = () => {
                   >
                     Cooperative Extension Service office
                   </a>
-                  &nbsp;
+                  ,
                   or
-                  &nbsp;
+                  {' '}
                   <a
                     href="https://www.nacdnet.org/general-resources/conservation-district-directory/"
                     target="_blank"
@@ -128,7 +128,7 @@ const LocationConfirmation = () => {
                   >
                     Conservation District
                   </a>
-                  &nbsp;
+                  {' '}
                   for detailed guidance. Cover crop incentive programs may dictate seeding rate
                   ranges and methods, and planting and termination dates. Consult your program
                   contact to ensure your plans comply.
