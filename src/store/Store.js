@@ -178,7 +178,6 @@ const initialState = {
   addressSearchPreference: 'address',
   addressChangedViaMap: false,
   fullAddress: '',
-  zip: 0,
   zipCode: 0,
   lastZipCode: 0,
   markersCopy: [],
