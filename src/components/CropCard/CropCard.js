@@ -33,10 +33,18 @@ const CropCard = ({
     state.selectedCrops.map((crp) => crp.id),
   );
 
+  async function updateBtns() {
+    await setSelectedBtns(state.selectedCrops.map((crp) => crp.id));
+  }
+
   useEffect(() => {
-    const newSelectedBtns = state.selectedCrops.map((crp) => crp.id);
-    setSelectedBtns(newSelectedBtns);
+    updateBtns();
   }, [sfilters.zone, state.selectedCrops]);
+
+  async function addToBasket(cropId, name, i, c) {
+    addCropToBasket(cropId, name, i, c);
+    await updateBtns();
+  }
 
   return (
     <Card className={classes.card}>
@@ -109,7 +117,7 @@ const CropCard = ({
             );
           }
           return (
-            addCropToBasket(
+            addToBasket(
               crop.id,
               crop['Cover Crop Name'],
               `cartBtn${index}`,
