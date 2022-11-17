@@ -64,6 +64,7 @@ const CropSelector = (props) => {
   const [updatedActiveCropData, setUpdatedActiveCropData] = useState([]);
 
   useEffect(() => {
+    localStorage.setItem('lastLocation', 'CropSelector');
     async function getData() {
       await fetch('https://develop.covercrop-data.org/crops')
         .then((res) => res.json())
