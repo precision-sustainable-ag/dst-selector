@@ -9,6 +9,7 @@ import { useControl } from 'react-map-gl';
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 
 const DrawControl = ({
+  drawerRef,
   onCreate,
   onUpdate,
   onDelete,
@@ -16,7 +17,7 @@ const DrawControl = ({
   position,
   controlFlags,
 }) => {
-  useControl(
+  const draw = useControl(
     () => new MapboxDraw({
       displayControlsDefault: false,
       controls: controlFlags,
@@ -26,6 +27,9 @@ const DrawControl = ({
       map.on('draw.update', onUpdate);
       map.on('draw.delete', onDelete);
       map.on('draw.selectionchange', onSelection);
+      map.on('load', () => {
+        drawerRef.current = draw;
+      });
     },
     ({ map }) => {
       map.on('draw.create', onCreate);
@@ -37,7 +41,6 @@ const DrawControl = ({
       position,
     },
   );
-
   return null;
 };
 

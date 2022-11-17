@@ -15,15 +15,19 @@ import {
 } from 'react-map-gl';
 import React, { useEffect, useRef, useState } from 'react';
 import area from '@turf/area';
+import centroid from '@turf/centroid';
 import DrawControl from './draw-control';
 import GeocoderControl from './geocoder-control';
 import MarkerControl from './marker-control';
 import geocodeReverse from './geocoder-search';
 
+const acreDiv = 4046.8564224;
+
 const MapCanvas = ({
   initViewport,
   apiKey,
   setAddress = () => {},
+  setGeometry = () => {},
   features = {
     hasSearchBar: true,
     hasMarker: true,
@@ -50,8 +54,16 @@ const MapCanvas = ({
   const [mouseLoc, setMouseLoc] = useState({});
   const [polygonArea, setPolygonArea] = useState(0);
   const [isDrawActive, setIsDrawActive] = useState(false);
+  const [geocodeResult, setGeocodeResult] = useState(undefined);
   const mapRef = useRef();
+  const drawerRef = useRef();
 
+  // delete all shapes after geocode search
+  useEffect(() => {
+    if (drawerRef.current) drawerRef.current.deleteAll();
+  }, [geocodeResult]);
+
+  // upon marker move, find the address of this new location and set the state
   useEffect(() => {
     geocodeReverse({
       apiKey,
@@ -88,32 +100,52 @@ const MapCanvas = ({
         }),
       );
     }, 2000);
+    // clear all shapes after geolocating to user's location
+    if (drawerRef.current) drawerRef.current.deleteAll();
   };
 
-  const handleDrawCreate = () => {
-    setIsDrawActive(true);
+  const handlePolyCentCalc = (geom) => {
+    if (geom) {
+      if (geom.features.length > 0) {
+        const coords = centroid(geom.features[0]).geometry.coordinates;
+        setMarker(
+          (prev) => ({
+            ...prev,
+            longitude: coords[0],
+            latitude: coords[1],
+          }),
+        );
+        setViewport(
+          (prev) => ({
+            ...prev,
+            longitude: coords[0],
+            latitude: coords[1],
+          }),
+        );
+      }
+    }
   };
 
+  const handlePolyAreaCalc = (e) => {
+    if (e.features.length > 0) {
+      const a = area(e.features[0]) / acreDiv;
+      setPolygonArea(a);
+      setGeometry(e.features);
+      handlePolyCentCalc(e);
+    } else {
+      setPolygonArea(0);
+    }
+  };
+
+  const handleDrawCreate = () => {};
   const handleDrawDelete = () => {
     setIsDrawActive(false);
   };
-
   const handleDrawUpdate = (e) => {
-    if (e.features.length > 0) {
-      const a = area(e.features[0]) / 4046.8564224;
-      setPolygonArea(a);
-    } else {
-      setPolygonArea(0);
-    }
+    handlePolyAreaCalc(e);
   };
-
   const handleDrawSelection = (e) => {
-    if (e.features.length > 0) {
-      const a = area(e.features[0]) / 4046.8564224;
-      setPolygonArea(a);
-    } else {
-      setPolygonArea(0);
-    }
+    handlePolyAreaCalc(e);
   };
 
   return (
@@ -133,8 +165,6 @@ const MapCanvas = ({
           maxZoom={initViewport.maxZoom}
           ref={mapRef}
           mapStyle="mapbox://styles/mapbox/satellite-streets-v11"
-          //   mapStyle="mapbox://styles/mapbox/streets-v9"
-          //   mapStyle="mapbox://styles/mapbox/satellite-v9"
           mapboxAccessToken={apiKey}
           onLoad={onLoad}
           onMoveEnd={(vp) => {
@@ -158,11 +188,13 @@ const MapCanvas = ({
               mapboxAccessToken={apiKey}
               setViewport={setViewport}
               setMarker={setMarker}
+              setGeocodeResult={setGeocodeResult}
             />
           )}
           {features.hasDrawing && (
             <DrawControl
               position="top-left"
+              drawerRef={drawerRef}
               onCreate={handleDrawCreate}
               onUpdate={handleDrawUpdate}
               onDelete={handleDrawDelete}
@@ -178,7 +210,7 @@ const MapCanvas = ({
           {features.hasNavigation && <NavigationControl />}
           {features.hasCoordBar && mouseLoc.longitude && (
             <div className="infobar">
-              {polygonArea > 0 && `Area ${polygonArea.toFixed(3)} acres | `}
+              {polygonArea > 0 && `Area ${polygonArea.toFixed(2)} acres | `}
               Longitude:
               {mouseLoc.longitude.toFixed(4)}
               | Latitude:
