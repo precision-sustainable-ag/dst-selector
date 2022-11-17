@@ -144,14 +144,14 @@ const Header = () => {
       Axios.get(revAPIURL)
         .then(async (resp) => {
           const city = resp.data.locality.toLowerCase();
-          const zip = resp.data.postcode;
+          const zipCode = resp.data.postcode;
           const abbrState = abbrRegion(resp.data.principalSubdivision, 'abbr').toLowerCase();
 
           if (resp.data.postcode) {
             dispatch({
               type: 'UPDATE_ZIP_CODE',
               data: {
-                zipCode: parseInt(zip, 10),
+                zipCode,
               },
             });
           }

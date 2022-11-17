@@ -21,7 +21,6 @@ import { createTheme } from '@mui/material/styles';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import Store from './store/Store';
-import 'leaflet-control-geocoder/dist/Control.Geocoder.js';
 import './styles/parent.scss';
 import 'mdbreact/dist/css/mdb.css';
 import './styles/progressBar.css';

@@ -28,6 +28,7 @@ jobs:
           echo REACT_APP_GITHUB_PAT=${{ secrets.REACT_APP_GITHUB_PAT }} >> .env
           echo REACT_APP_GOOGLE_API_KEY=${{ secrets.REACT_APP_GOOGLE_API_KEY }} >> .env
           echo REACT_APP_OPEN_WEATHER_API_KEY=${{ secrets.REACT_APP_OPEN_WEATHER_API_KEY }} >> .env
+          echo REACT_APP_MAPBOX_API_KEY=${{ secrets.REACT_APP_MAPBOX_API_KEY }} >> .env
           echo REACT_APP_GEOCODE_AUTH=${{ secrets.REACT_APP_GEOCODE_AUTH }} >> .env
           cat .env
 
