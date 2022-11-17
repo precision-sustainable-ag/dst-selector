@@ -1,6 +1,6 @@
 import React from 'react';
 import { Typography } from '@mui/material';
-import PhotoComponent from './PhotoComponent';
+import ImageCarousel from '../../../components/ImageCarousel/ImageCarousel';
 
 const CoverCropInformation = ({ cropImage, cropDescription, allThumbs }) => (
   <>
@@ -25,7 +25,7 @@ const CoverCropInformation = ({ cropImage, cropDescription, allThumbs }) => (
         WebkitOverflowScrolling: 'touch',
       }}
     >
-      <PhotoComponent imageData={cropImage} allThumbs={allThumbs} />
+      <ImageCarousel images={allThumbs} cropName={cropImage['Cover Crop']} />
     </div>
   </>
 );
