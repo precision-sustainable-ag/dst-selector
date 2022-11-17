@@ -13,6 +13,7 @@ const GeocoderControl = ({
   mapboxAccessToken,
   setViewport,
   setMarker,
+  setGeocodeResult,
 }) => {
   useControl(() => {
     const ctrl = new MapboxGeocoder({
@@ -29,6 +30,7 @@ const GeocoderControl = ({
     });
     ctrl.on('result', (e) => {
       if (e && e.result) {
+        setGeocodeResult(e.result);
         const fullAddress = e.result.place_name;
         const splitted = fullAddress.split(', ');
         const streetNum = splitted[0];
