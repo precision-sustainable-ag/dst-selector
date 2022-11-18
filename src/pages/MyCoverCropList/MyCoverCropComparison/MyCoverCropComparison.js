@@ -58,8 +58,8 @@ const GetAverageGoalRating = ({ crop }) => {
   let goalRating = 0;
   if (state.selectedGoals.length > 0) {
     state.selectedGoals.forEach((goal) => {
-      if (crop.data[goal]) {
-        goalRating += crop.data[goal];
+      if (crop[goal]) {
+        goalRating += crop[goal];
       }
     });
   }
