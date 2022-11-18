@@ -20,6 +20,10 @@ import DrawControl from './draw-control';
 import GeocoderControl from './geocoder-control';
 import MarkerControl from './marker-control';
 import geocodeReverse from './geocoder-search';
+// eslint-disable-next-line import/order
+import mapboxgl from 'mapbox-gl';
+// eslint-disable-next-line import/no-webpack-loader-syntax, import/no-unresolved
+mapboxgl.workerClass = require('worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker').default;
 
 const acreDiv = 4046.8564224;
 
