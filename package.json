@@ -39,7 +39,8 @@
     "react-swipeable-views": "^0.14.0",
     "react-swipeable-views-utils": "^0.14.0",
     "sass-mediaqueries": "^1.6.1",
-    "save-as": "^0.1.8"
+    "save-as": "^0.1.8",
+    "worker-loader": "^3.0.8"
   },
   "scripts": {
     "start": "react-scripts start",
