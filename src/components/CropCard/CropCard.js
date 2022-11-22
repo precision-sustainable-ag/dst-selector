@@ -47,7 +47,7 @@ const CropCard = ({
   }
 
   return (
-    <Card className={classes.card}>
+    <Card className={classes.card} style={{ position: 'center', width: '100%' }}>
       <CardActionArea onClick={() => handleModalOpen(crop)}>
         <CardMedia
           image={
@@ -73,7 +73,7 @@ const CropCard = ({
           {crop['Cover Crop Group']}
         </div>
         <div className="font-weight-bold " style={{ fontSize: '16pt' }}>
-          <Typography variant="h6" className="text-truncate">
+          <Typography variant="subtitle1" className="font-weight-bold text-truncate">
             {crop['Cover Crop Name']}
           </Typography>
         </div>
@@ -84,6 +84,8 @@ const CropCard = ({
           <small className="text-muted">
             <Button
               style={{
+                fontSize: '10pt',
+                left: -15,
                 textDecoration: 'underline',
                 color: 'rgb(53, 153, 155)',
               }}

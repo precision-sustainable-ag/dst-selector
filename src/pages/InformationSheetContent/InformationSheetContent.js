@@ -76,6 +76,7 @@ const InformationSheetContent = ({ crop }) => {
         cropDescription={
           crop['Cover Crop Description'] ? crop['Cover Crop Description'] : crop['Crop Description']
         }
+        crop={crop}
       />
 
       <InformationSheetGoals
