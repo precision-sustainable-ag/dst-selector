@@ -154,10 +154,10 @@ const MyCoverCropComparison = ({ selectedCrops }) => {
   return (
     <div className="container-fluid">
       <div className="row">
-        {/* Placeholder for empty white space */}
         <div className="col-xl-3 col-lg-4 col-md-4">
           <div className="row pt-3">
             <div className="col-12">
+              {/* placeholder space before the first crop card */}
               <Card style={{ width: '100%', boxShadow: 'none' }}>
                 <CardMedia style={{ width: '100%', height: '292px' }}>
                   <img
@@ -265,7 +265,7 @@ const MyCoverCropComparison = ({ selectedCrops }) => {
             }}
           >
             {selectedCrops.map((crop, index) => (
-              <div className="col-xl-3 col-lg-5" style={{ marginRight: 40 }} key={index}>
+              <div className="col-xl-3 col-lg-5 col-md-6" style={{ paddingLeft: '5px' }} key={index}>
                 <CropCard
                   crop={crop.data}
                   removeCrop={removeCrop}

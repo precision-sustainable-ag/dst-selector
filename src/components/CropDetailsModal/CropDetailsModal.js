@@ -4,13 +4,14 @@
 */
 
 import {
-  Backdrop, Button, Fade, Modal, IconButton,
+  Backdrop, Button, Fade, Modal,
 } from '@mui/material';
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import makeStyles from '@mui/styles/makeStyles';
 import { Close, Print } from '@mui/icons-material';
 import React, { useEffect, useContext } from 'react';
 import ReactGA from 'react-ga';
-import { CropImage, zoneIcon } from '../../shared/constants';
+import { zoneIcon } from '../../shared/constants';
 import '../../styles/cropDetailsModal.scss';
 import InformationSheetContent from '../../pages/InformationSheetContent/InformationSheetContent';
 import { Context } from '../../store/Store';
@@ -73,6 +74,7 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
       aria-describedby="cover-crop-modal-description"
       className={classes.modal}
       open={modalOpen}
+      style={{ maxWidth: '80%', marginLeft: '10%' }}
       onClose={handleModalClose}
       closeAfterTransition
       BackdropComponent={Backdrop}
@@ -89,70 +91,21 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
               id={`cropDetailModal-${modalData.id}`}
             >
               <div className="container-fluid">
-                <div className="row">
-                  <div
-                    className="col-12"
-                    style={{
-                      background: '#2D7B7B',
-                      color: 'white',
-                      height: 'auto',
-                      borderTopLeftRadius: '5px',
-                      borderTopRightRadius: '5px',
-                    }}
-                  >
-                    <div className="row doclose">
-                      <div className="col-2 offset-10 text-right">
-                        {' '}
-                        <Button style={{ color: 'white' }} onClick={handleModalClose}>
-                          <Close />
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
                 <table>
                   <thead>
                     <tr>
                       <th>
-                        <div className="row" id="coverCropModalPrimary">
-                          <div className="col-12">
-                            <div className="row">
-                              <div className="col mt-2">
-                                <div>{modalData['Cover Crop Group']}</div>
-                                <div className="font-weight-bold" id="cover-crop-modal-title">
-                                  {modalData['Cover Crop Name']}
-                                </div>
-                                <div>{modalData['Scientific Name']}</div>
-                              </div>
-                              <div
-                                className="col"
-                                style={{
-                                  textAlign: 'right',
-                                  paddingRight: '0px',
-                                  paddingLeft: '0px',
-                                }}
-                              >
-                                {crop.fields['Image Data'] ? (
-                                  <CropImage
-                                    present
-                                    src={
-                                      crop.fields['Image Data']['Key Thumbnail']
-                                        // eslint-disable-next-line max-len
-                                        ? crop.fields['Image Data']['Key Thumbnail']
-                                        : 'https://placehold.it/100x100'
-                                    }
-                                    alt={crop.fields['Cover Crop Name']}
-                                  />
-                                ) : (
-                                  <CropImage present={false} />
-                                )}
-                              </div>
-                            </div>
-                          </div>
-                        </div>
                         <div className="row zone" style={{ paddingBottom: '1em' }}>
-                          <div className="col-12" style={{ background: '#2D7B7B', color: 'white' }}>
+                          <div
+                            className="col-12"
+                            style={{
+                              top: '-1px',
+                              background: '#2D7B7B',
+                              color: 'white',
+                              borderTopLeftRadius: '5px',
+                              borderTopRightRadius: '5px',
+                            }}
+                          >
                             <div className="row">
                               <div className="col-12">
                                 {zoneIcon(20, 20)}
@@ -164,10 +117,12 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
                                   DATASET
                                   <span className="noprint">
                                     <Button
+                                      startIcon={<OpenInNewIcon />}
                                       style={{
                                         color: 'white',
                                         textTransform: 'none',
                                         marginLeft: '2em',
+                                        textDecoration: 'underline',
                                       }}
                                       className="dataDict"
                                       onClick={() => {
@@ -178,14 +133,22 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
                                     </Button>
                                   </span>
                                   <span className="noprint">
-                                    <IconButton
-                                      title="Print"
-                                      style={{ color: 'white', marginLeft: '1em' }}
+                                    <Button
+                                      startIcon={<Print />}
+                                      style={{
+                                        color: 'white',
+                                        textTransform: 'none',
+                                        marginLeft: '2em',
+                                        textDecoration: 'underline',
+                                      }}
+                                      className="dataDict"
                                       onClick={print}
-                                      size="large"
                                     >
-                                      <Print />
-                                    </IconButton>
+                                      Print
+                                    </Button>
+                                    <Button style={{ color: 'white', float: 'right', paddingTop: '13px' }} onClick={handleModalClose}>
+                                      <Close />
+                                    </Button>
                                   </span>
                                 </strong>
                               </div>

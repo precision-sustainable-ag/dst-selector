@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import MobileStepper from '@mui/material/MobileStepper';
-import Paper from '@mui/material/Paper';
+// import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
@@ -13,7 +13,7 @@ import { ucFirst } from '../../shared/constants';
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
-const ImageCarousel = ({ images, cropName }) => {
+const ImageCarousel = ({ images }) => {
   const theme = useTheme();
   const [activeStep, setActiveStep] = useState(0);
   const maxSteps = images.length;
@@ -44,9 +44,9 @@ const ImageCarousel = ({ images, cropName }) => {
     const year = parseInt(last, 10) ? `[${parseInt(last, 10)}]` : '';
     if (thirdLast?.toLowerCase().includes('mirsky')) {
       const mirskyLabString = ucFirst(`${thirdLast} ${secondLast}`);
-      return `${cropName} - ${mirskyLabString} [${year}]`;
+      return `Credit ${mirskyLabString} [${year}]`;
     }
-    return `${cropName} ${secondLast ? `- ${secondLast}` : ''} ${year}`;
+    return `Credit ${secondLast ? `- ${secondLast}` : ''} ${year}`;
   };
 
   useEffect(() => {
@@ -77,43 +77,45 @@ const ImageCarousel = ({ images, cropName }) => {
   };
 
   return (
-    <Box sx={{ maxWidth: 400, flexGrow: 1 }}>
-      <Paper
-        square
-        elevation={0}
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          height: 50,
-          pl: 2,
-          bgcolor: 'background.default',
-        }}
-      >
-        <Typography>{imagesData[activeStep]?.label}</Typography>
-      </Paper>
+    <Box sx={{ flexGrow: 1, mt: -25 }}>
       <AutoPlaySwipeableViews
         axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
         index={activeStep}
         onChangeIndex={handleStepChange}
         enableMouseEvents
+        interval={5000}
       >
         {imagesData.map((step, index) => (
-          <div key={step.label + index}>
-            {Math.abs(activeStep - index) <= 2 ? (
+          <>
+            <div
+              key={step.label + index}
+              style={{
+                justifyContent: 'center', display: 'flex', alignItems: 'center', height: '550px',
+              }}
+            >
+              {Math.abs(activeStep - index) <= 2 && (
+              // <img src={step.imgPath} alt={step.label} style={{ width: '100px', height:  }} />
               <Box
                 component="img"
+                objectFit="contain"
                 sx={{
-                  height: 255,
-                  display: 'block',
+                  // height: 1 / 2,
+                  // display: 'block',
                   maxWidth: 400,
                   overflow: 'hidden',
                   width: '100%',
+                  fontSize: '8pt',
                 }}
+                style={{ cursor: 'pointer' }}
+                onClick={() => { window.open(step.imgPath); }}
                 src={step.imgPath}
                 alt={step.label}
               />
-            ) : null}
-          </div>
+              )}
+            </div>
+
+            <Typography style={{ paddingLeft: '35%', fontSize: '8pt' }}>{imagesData[activeStep]?.label}</Typography>
+          </>
         ))}
       </AutoPlaySwipeableViews>
       <MobileStepper
