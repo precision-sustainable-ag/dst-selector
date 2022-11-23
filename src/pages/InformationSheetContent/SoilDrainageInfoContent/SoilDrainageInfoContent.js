@@ -17,7 +17,7 @@ const SoilDrainageInfoContent = ({ crop }) => {
             </Typography>
           </AccordionSummary>
           <AccordionDetails>
-            <div className="col-12 text-right">
+            <div className="col-12 text-left">
               <SoilDrainageTimeline drainage={crop['Soil Drainage']} />
             </div>
           </AccordionDetails>

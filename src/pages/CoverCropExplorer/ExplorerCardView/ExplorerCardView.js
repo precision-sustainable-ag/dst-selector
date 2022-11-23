@@ -82,7 +82,7 @@ const ExplorerCardView = ({ activeCropData }) => {
         {/* eslint-disable-next-line no-nested-ternary */}
         {activeCropData.length > 0 ? (
           activeCropData.map((crop, index) => (
-            <Grid item key={index}>
+            <Grid style={{ width: '260px' }} item key={index}>
               <CropCard
                 crop={crop.fields}
                 handleModalOpen={handleModalOpen}

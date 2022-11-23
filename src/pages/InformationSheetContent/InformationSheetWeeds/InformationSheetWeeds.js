@@ -1,5 +1,5 @@
 import React from 'react';
-import { AccordionDetails, Typography } from '@mui/material';
+import { AccordionDetails, Box, Typography } from '@mui/material';
 import { ExpandMore } from '@mui/icons-material';
 import { getRating } from '../../../shared/constants';
 import { Accordion, AccordionSummary, useStyles } from '../informationSheet.styles';
@@ -12,7 +12,16 @@ const InfoWeeds = ({ attribute, crop }) => (
         <Typography variant="body1">{attribute}</Typography>
       </TooltipMaker>
     </div>
-    <div className="mb-2">{getRating(crop[attribute])}</div>
+    <Box
+      className="mb-2"
+      sx={{
+        paddingLeft: {
+          xs: '50px', md: '50px', lg: '0px', xl: '0px',
+        },
+      }}
+    >
+      {getRating(crop[attribute])}
+    </Box>
   </>
 ); // InfoWeeds
 
@@ -29,8 +38,8 @@ const InformationSheetWeeds = ({ crop }) => {
             </Typography>
           </div>
         </AccordionSummary>
-        <AccordionDetails>
-          <div className="row col-12 text-right">
+        <AccordionDetails sx={{ paddingLeft: '0px' }}>
+          <div className="row col-12 text-left p-0 m-0">
             <InfoWeeds crop={crop} attribute="Residue Suppresses Summer Annual Weeds" />
             <InfoWeeds crop={crop} attribute="Outcompetes Summer Annual Weeds" />
             <InfoWeeds crop={crop} attribute="Suppresses Winter Annual Weeds" />
