@@ -86,9 +86,8 @@ const ImageCarousel = ({ images }) => {
         interval={5000}
       >
         {imagesData.map((step, index) => (
-          <>
+          <div key={step.label + index}>
             <div
-              key={step.label + index}
               style={{
                 justifyContent: 'center', display: 'flex', alignItems: 'center', height: '550px',
               }}
@@ -115,7 +114,7 @@ const ImageCarousel = ({ images }) => {
             </div>
 
             <Typography style={{ paddingLeft: '35%', fontSize: '8pt' }}>{imagesData[activeStep]?.label}</Typography>
-          </>
+          </div>
         ))}
       </AutoPlaySwipeableViews>
       <MobileStepper

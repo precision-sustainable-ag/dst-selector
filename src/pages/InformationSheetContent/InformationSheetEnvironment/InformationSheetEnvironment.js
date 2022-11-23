@@ -35,7 +35,7 @@ const InformationSheetEnvironment = ({ crop }) => {
           </div>
         </AccordionSummary>
         <AccordionDetails>
-          <div className="row col-12 text-right">
+          <div className="row col-12 text-left">
             <InfoEnvironmentalTermination
               attribute="Low Fertility"
               variable="Low Fertility Tolerance"

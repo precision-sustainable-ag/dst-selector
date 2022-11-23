@@ -18,8 +18,8 @@ const InformationSheetPlanting = ({ crop }) => {
             </Typography>
           </AccordionSummary>
           <AccordionDetails>
-            <div className="row col-12 text-right">
-              <div className="col-9 mb-2">
+            <div className="row col-12 text-left">
+              <div className="col-7 mb-2">
                 <TooltipMaker variable="Seeds per Pound" zone={crop.Zone}>
                   <Typography variant="body1">Seeds Per Lb</Typography>
                 </TooltipMaker>
@@ -30,7 +30,7 @@ const InformationSheetPlanting = ({ crop }) => {
                 </div>
               </div>
 
-              <div className="col-9 mb-2">
+              <div className="col-7 mb-2">
                 <TooltipMaker variable="Seed Price per Pound" zone={crop.Zone}>
                   <Typography variant="body1">Seed Price Per Lb</Typography>
                 </TooltipMaker>
@@ -41,7 +41,7 @@ const InformationSheetPlanting = ({ crop }) => {
                 </div>
               </div>
 
-              <div className="col-9 mb-2">
+              <div className="col-7 mb-2">
                 <Typography variant="body1">Base Seeding Rate (Lbs/A)</Typography>
               </div>
               <div className="mb-2">
@@ -52,7 +52,7 @@ const InformationSheetPlanting = ({ crop }) => {
                 </div>
               </div>
 
-              <div className="col-9 mb-2">
+              <div className="col-7 mb-2">
                 <Typography variant="body1">Drilled Depth</Typography>
               </div>
               <div className="mb-2">
@@ -63,7 +63,7 @@ const InformationSheetPlanting = ({ crop }) => {
                 </div>
               </div>
 
-              <div className="col-9 mb-2">
+              <div className="col-7 mb-2">
                 <TooltipMaker variable="Can Aerial Seed?" zone={crop.Zone}>
                   <Typography variant="body1">Can Aerial Seed?</Typography>
                 </TooltipMaker>
@@ -74,7 +74,7 @@ const InformationSheetPlanting = ({ crop }) => {
                 </div>
               </div>
 
-              <div className="col-9 mb-2">
+              <div className="col-7 mb-2">
                 <TooltipMaker variable="Frost Seeding" zone={crop.Zone}>
                   <Typography variant="body1">Can Frost Seed?</Typography>
                 </TooltipMaker>
@@ -85,7 +85,7 @@ const InformationSheetPlanting = ({ crop }) => {
                 </div>
               </div>
 
-              <div className="col-9 mb-2">
+              <div className="col-7 mb-2">
                 <TooltipMaker variable="Min Germination Temp (F)" zone={crop.Zone}>
                   <Typography variant="body1">Min Germination Temp (&deg;F)</Typography>
                 </TooltipMaker>
