@@ -8,7 +8,7 @@ import React, {
 } from 'react';
 import { trimString } from '../../shared/constants';
 import { Context } from '../../store/Store';
-import RenderRelevantData from '../RenderRelevantData/RenderRelevantData';
+import RenderRelevantData from './RenderRelevantData/RenderRelevantData';
 
 const useStyles = makeStyles({
   card: {
@@ -33,13 +33,21 @@ const CropCard = ({
     state.selectedCrops.map((crp) => crp.id),
   );
 
+  async function updateBtns() {
+    await setSelectedBtns(state.selectedCrops.map((crp) => crp.id));
+  }
+
   useEffect(() => {
-    const newSelectedBtns = state.selectedCrops.map((crp) => crp.id);
-    setSelectedBtns(newSelectedBtns);
+    updateBtns();
   }, [sfilters.zone, state.selectedCrops]);
 
+  async function addToBasket(cropId, name, i, c) {
+    addCropToBasket(cropId, name, i, c);
+    await updateBtns();
+  }
+
   return (
-    <Card className={classes.card}>
+    <Card className={classes.card} style={{ position: 'center', width: '100%' }}>
       <CardActionArea onClick={() => handleModalOpen(crop)}>
         <CardMedia
           image={
@@ -65,7 +73,7 @@ const CropCard = ({
           {crop['Cover Crop Group']}
         </div>
         <div className="font-weight-bold " style={{ fontSize: '16pt' }}>
-          <Typography variant="h6" className="text-truncate">
+          <Typography variant="subtitle1" className="font-weight-bold text-truncate">
             {crop['Cover Crop Name']}
           </Typography>
         </div>
@@ -76,6 +84,8 @@ const CropCard = ({
           <small className="text-muted">
             <Button
               style={{
+                fontSize: '10pt',
+                left: -15,
                 textDecoration: 'underline',
                 color: 'rgb(53, 153, 155)',
               }}
@@ -96,7 +106,6 @@ const CropCard = ({
         }}
         className={
             selectedBtns.includes(crop.id)
-            && sfilters.zone === crop.Zone
               ? 'activeCartBtn'
               : 'inactiveCartBtn'
           }
@@ -110,7 +119,7 @@ const CropCard = ({
             );
           }
           return (
-            addCropToBasket(
+            addToBasket(
               crop.id,
               crop['Cover Crop Name'],
               `cartBtn${index}`,
@@ -123,7 +132,6 @@ const CropCard = ({
           variant="body2"
           className={`text-uppercase ${
             selectedBtns.includes(crop.id)
-              && sfilters.zone === crop.Zone
               ? 'text-white'
               : ''
           }`}
@@ -133,7 +141,6 @@ const CropCard = ({
           }}
         >
           {selectedBtns.includes(crop.id)
-            && sfilters.zone === crop.Zone
             ? 'REMOVE'
             : 'ADD TO LIST'}
         </Typography>

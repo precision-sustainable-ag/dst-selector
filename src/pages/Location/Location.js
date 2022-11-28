@@ -3,6 +3,7 @@
   styled using ../../styles/location.scss
 */
 
+import '../../styles/location.scss';
 import {
   Dialog,
   DialogActions,
@@ -13,14 +14,13 @@ import {
   Select,
   Typography,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
-import { Search } from '@mui/icons-material';
 import React, { useContext, useEffect, useState } from 'react';
-import { Context } from '../../store/Store';
-import '../../styles/location.scss';
-import GoogleAutocomplete from './GoogleAutocomplete/GoogleAutocomplete';
-import MapContext from './MapContext/MapContext';
+import { Search } from '@mui/icons-material';
+import makeStyles from '@mui/styles/makeStyles';
 import { BinaryButton } from '../../shared/constants';
+import { Context } from '../../store/Store';
+import Map from '../../components/Map/Map';
+import { MapboxApiKey } from '../../shared/keys';
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -32,7 +32,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const LocationComponent = ({
-  title, caller, defaultMarkers, closeExpansionPanel,
+  title,
+  caller,
+  defaultMarkers,
+  closeExpansionPanel,
 }) => {
   const classes = useStyles();
   const { state, dispatch } = useContext(Context);
@@ -90,42 +93,68 @@ const LocationComponent = ({
 
   useEffect(() => {
     const {
-      latitude, longitude, address, zipCode,
+      latitude,
+      longitude,
+      address,
+      fullAddress,
+      zipCode,
     } = selectedToEditSite;
-    if (Object.keys(selectedToEditSite).length === 5) {
+
+    if (Object.keys(selectedToEditSite).length > 0) {
       dispatch({
         type: 'UPDATE_LOCATION',
         data: {
           address,
           latitude,
           longitude,
-          zip: zipCode,
+          zipCode,
         },
       });
+
+      dispatch({
+        type: 'UPDATE_MARKER',
+        data: {
+          markers: [[latitude, longitude]],
+        },
+      });
+
+      dispatch({
+        type: 'SNACK',
+        data: {
+          snackOpen: true,
+          snackMessage: 'Your location has been saved.',
+        },
+      });
+
+      if (selectedToEditSite.address) {
+        dispatch({
+          type: 'CHANGE_ADDRESS_VIA_MAP',
+          data: {
+            address,
+            fullAddress,
+            zipCode,
+            addressVerified: true,
+          },
+        });
+      }
     }
   }, [selectedToEditSite, dispatch]);
 
   return (
     <div className="container-fluid mt-5">
-      <div className="row boxContainerRow" style={{ minHeight: '520px' }}>
-        <div className="col-xl-6 col-lg-12">
+      <div className="row boxContainerRow mx-0 px-0 mx-lg-3 px-lg-3" style={{ minHeight: '520px' }}>
+        <div className="col-xl-4 col-sm-12">
           <div className="container-fluid">
-            <Typography variant="h4">Where is your field located?</Typography>
-            <Typography variant="body1" align="left" className="pt-3">
-              Enter your USDA plant hardiness zone, address, or zip code and hit
-              {' '}
+            <Typography variant="h4" align="left">
+              Where is your field located?
+            </Typography>
+            <Typography variant="body1" align="left" justifyContent="center" className="pt-5 pb-2">
+              Select your USDA plant hardiness zone, search your address, or zip code and hit
               <Search fontSize="inherit" />
-              {' '}
               to determine your location.
             </Typography>
-            <div className="row pt-3 mt-4">
-              <div className="col-md-9 col-lg-8 col-sm-12 row">
-                <GoogleAutocomplete
-                  selectedToEditSite={selectedToEditSite}
-                  setSelectedToEditSite={setSelectedToEditSite}
-                />
-              </div>
-              <div className="col-md-3 col-lg-4 col-sm-12 col-12">
+            <div className="row py-3 my-4 ">
+              <div className="col-md-5 col-lg-6 col-sm-12 col-12">
                 <FormControl
                   variant="filled"
                   style={{ width: '100%' }}
@@ -151,25 +180,39 @@ const LocationComponent = ({
                 </FormControl>
               </div>
             </div>
-            <div className="row">
-              <div
-                className="col-md-6 offset-md-6 col-sm-12 row"
-                style={{ textAlign: 'left' }}
-              />
-            </div>
-            <div className="row">
-              <div className="col-md-6 offset-md-6 col-sm-12" />
-            </div>
           </div>
         </div>
-        <div className="col-xl-6 col-lg-12">
-          <MapContext width="100%" height="400px" minzoom={4} maxzoom={20} from="location" />
+        {/* <div className="col-xl-1 col-sm-0"></div> */}
+        <div className="col-xl-8 col-sm-12">
+          <div className="container-fluid">
+            <Map
+              initViewport={{
+                width: '100%',
+                height: '600px',
+                latitude: state.markers && state.markers.length > 0 ? state.markers[0][0] : 47,
+                longitude: state.markers && state.markers.length > 0 ? state.markers[0][1] : -122,
+                minZoom: 4,
+                maxZoom: 18,
+                startZoom: 12,
+              }}
+              setAddress={setSelectedToEditSite}
+              apiKey={MapboxApiKey}
+              userInteractions={{
+                doubleClickZoom: false,
+                scrollZoom: true,
+                dragRotate: true,
+                dragPan: true,
+                keyboard: true,
+                touchZoomRotate: true,
+              }}
+            />
+          </div>
         </div>
       </div>
       <Dialog disableEscapeKeyDown open={showRestartPrompt}>
         <DialogContent dividers>
           <Typography variant="body1">
-            This will trigger a restart.  Would you also like to clear My Cover Crop List?
+            This will trigger a restart. Would you also like to clear My Cover Crop List?
           </Typography>
         </DialogContent>
         <DialogActions>

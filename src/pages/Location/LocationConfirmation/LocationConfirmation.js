@@ -3,13 +3,14 @@
   styled using CustomStyles from ../../shared/constants
 */
 
-import { Typography } from '@mui/material';
 import React, { useContext } from 'react';
-import { CustomStyles } from '../../../shared/constants';
+
+import { Typography } from '@mui/material';
 import { Context } from '../../../store/Store';
+import { CustomStyles } from '../../../shared/constants';
+import Map from '../../../components/Map/Map';
+import { MapboxApiKey } from '../../../shared/keys';
 import SoilCondition from '../SoilCondition/SoilCondition';
-import 'leaflet/dist/leaflet.css';
-import MapContext from '../MapContext/MapContext';
 import WeatherConditions from '../../../components/WeatherConditions/WeatherConditions';
 
 const LocationConfirmation = () => {
@@ -31,12 +32,36 @@ const LocationConfirmation = () => {
           <div className="container-fluid">
             <div className="row">
               <div className="col-lg-6">
-                <MapContext
-                  width="100%"
-                  height="200px"
-                  minzoom={4}
-                  maxzoom={20}
-                  from="confirmation"
+                <Map
+                  initViewport={{
+                    width: '100%',
+                    height: '200px',
+                    latitude: state.markers && state.markers.length > 0 ? state.markers[0][0] : 47,
+                    longitude:
+                      state.markers && state.markers.length > 0 ? state.markers[0][1] : -122,
+                    minZoom: 4,
+                    maxZoom: 18,
+                    startZoom: 12,
+                  }}
+                  apiKey={MapboxApiKey}
+                  features={{
+                    hasSearchBar: false,
+                    hasMarker: true,
+                    hasNavigation: false,
+                    hasCoordBar: false,
+                    hasDrawing: false,
+                    hasGeolocate: false,
+                    hasFullScreen: false,
+                    hasMarkerPopup: false,
+                  }}
+                  userInteractions={{
+                    scrollZoom: false,
+                    dragRotate: false,
+                    dragPan: false,
+                    keyboard: false,
+                    doubleClickZoom: false,
+                    touchZoomRotate: false,
+                  }}
                 />
               </div>
               <div className="col-lg-6">
@@ -46,9 +71,7 @@ const LocationConfirmation = () => {
                 <div className="col-12 pt-2">
                   <Typography variant="body1">
                     Your cover crop recommendations will come from the Plant Hardiness Zone
-                    {' '}
-                    {sfilters.zone}
-                    {' '}
+                    {` ${sfilters.zone} `}
                     NECCC dataset.
                   </Typography>
                 </div>
@@ -95,7 +118,8 @@ const LocationConfirmation = () => {
                   >
                     Cooperative Extension Service office
                   </a>
-                  , or
+                  ,
+                  or
                   {' '}
                   <a
                     href="https://www.nacdnet.org/general-resources/conservation-district-directory/"
