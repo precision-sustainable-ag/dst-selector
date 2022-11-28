@@ -4,21 +4,28 @@
   styled from from CustomStyles in ../../../shared/constants
 */
 
-import { Grid, Typography } from '@mui/material';
+import {
+  Dialog, DialogActions, DialogContent, Grid, Typography,
+} from '@mui/material';
 import React, { useContext, useEffect, useState } from 'react';
 import ReactGA from 'react-ga';
+import { useHistory } from 'react-router-dom';
 import { Context } from '../../store/Store';
 import Header from '../Header/Header';
 import ExplorerCardView from './ExplorerCardView/ExplorerCardView';
 import ConsentModal from './ConsentModal/ConsentModal';
 import CropSidebar from '../CropSidebar/CropSidebar';
+import { BinaryButton } from '../../shared/constants';
 
 const CoverCropExplorer = () => {
-  const { state } = useContext(Context);
+  const history = useHistory();
+  const { state, dispatch } = useContext(Context);
   const section = window.location.href.includes('selector') ? 'selector' : 'explorer';
   const sfilters = state[section];
   const [updatedActiveCropData, setUpdatedActiveCropData] = useState([]);
   const { activeCropData } = state;
+  const [handleConfirm, setHandleConfirm] = useState(false);
+  const defaultMarkers = [[40.78489145, -74.80733626930342]];
 
   useEffect(() => {
     async function getData() {
@@ -57,8 +64,32 @@ const CoverCropExplorer = () => {
   }, [state.consent]);
 
   useEffect(() => {
-    document.title = 'Cover Crop Explorer';
+    if (localStorage.getItem('lastLocation') === 'CropSelector') {
+      document.title = 'Cover Crop Explorer';
+      if (state.selectedCrops.length) {
+        setHandleConfirm(true);
+      }
+    }
+    localStorage.setItem('lastLocation', 'CoverCropExplorer');
   }, []);
+
+  const handleConfirmationChoice = (clearMyList = false) => {
+    if (clearMyList) {
+      dispatch({
+        type: 'RESET',
+        data: {
+          markers: defaultMarkers,
+          selectedCrops: [],
+        },
+      });
+    } else {
+      history.goBack();
+      if (window.location.pathname !== '/species-selector') {
+        history.push('/species-selector');
+      }
+    }
+    setHandleConfirm(false);
+  };
 
   return (
     <div className="contentWrapper">
@@ -91,6 +122,18 @@ const CoverCropExplorer = () => {
           </div>
         </div>
       </div>
+      <Dialog onClose={() => setHandleConfirm(false)} open={handleConfirm}>
+        <DialogContent dividers>
+          <Typography variant="body1">
+            You will need to clear your My Cover Crop List to continue.  Would you like to continue?
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <BinaryButton
+            action={handleConfirmationChoice}
+          />
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };
