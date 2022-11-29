@@ -62,22 +62,22 @@ const CropCard = ({
       <CardContent>
         {type === 'cropList'
         && (
-        <div className="font-weight-bold text-muted text-uppercase" style={{ fontSize: '10pt' }}>
+        <div className="font-weight-bold text-muted text-uppercase" style={{ fontSize: '10pt', marginLeft: '-10px' }}>
             {`Zone ${crop.Zone}`}
         </div>
         )}
         <div
           className="font-weight-bold text-muted text-uppercase"
-          style={{ fontSize: '10pt' }}
+          style={{ fontSize: '10pt', marginLeft: '-10px' }}
         >
           {crop['Cover Crop Group']}
         </div>
-        <div className="font-weight-bold " style={{ fontSize: '16pt' }}>
+        <div className="font-weight-bold " style={{ fontSize: '16pt', marginLeft: '-10px' }}>
           <Typography variant="subtitle1" className="font-weight-bold text-truncate">
             {crop['Cover Crop Name']}
           </Typography>
         </div>
-        <small className="font-italic text-muted d-inline-block text-truncate">
+        <small className="font-italic text-muted d-inline-block text-truncate" style={{ marginLeft: '-10px' }}>
           {trimString(crop['Scientific Name'], 25)}
         </small>
         <div>

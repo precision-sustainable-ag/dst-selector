@@ -11,7 +11,6 @@ import makeStyles from '@mui/styles/makeStyles';
 import { Close, Print } from '@mui/icons-material';
 import React, { useEffect, useContext } from 'react';
 import ReactGA from 'react-ga';
-import { zoneIcon } from '../../shared/constants';
 import '../../styles/cropDetailsModal.scss';
 import InformationSheetContent from '../../pages/InformationSheetContent/InformationSheetContent';
 import { Context } from '../../store/Store';
@@ -108,7 +107,6 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
                           >
                             <div className="row">
                               <div className="col-12">
-                                {zoneIcon(20, 20)}
                                 <strong className="pl-2">
                                   PLANT HARDINESS ZONE
                                   {' '}

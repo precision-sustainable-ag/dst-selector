@@ -12,7 +12,7 @@ const InfoEnvironmentalTermination = ({
   crop,
 }) => (
   <>
-    <div className="col-8 mb-2">
+    <div className="col-7 mb-2">
       <TooltipMaker variable={variable} zone={crop.Zone}>
         <Typography variant="body1">{text}</Typography>
       </TooltipMaker>
@@ -34,7 +34,7 @@ const TerminationInfo = ({ crop }) => {
             </Typography>
           </AccordionSummary>
           <AccordionDetails>
-            <div className="row col-12 text-right">
+            <div className="row col-12 text-left">
               <InfoEnvironmentalTermination
                 crop={crop}
                 attribute="Tillage at Vegetative"

@@ -21,28 +21,26 @@ const InformationSheetReferences = ({ currentSources }) => {
             </AccordionSummary>
             <AccordionDetails>
               <Typography variant="body1" className="p-3">
-                {currentSources.length > 0
-                  ? currentSources.map((source, index) => (
-                    <Fragment key={index}>
-                      <a
-                        style={{
-                          textDecoration: 'underline',
-                          color: 'black',
-                          fontWeight: 'bolder',
-                        }}
-                        href={source.URL}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        {source['Resource Name']}
-                      </a>
-                      ,
-                      {' '}
-                      {source['Institution or Author']}
-                      <br />
-                    </Fragment>
-                  ))
-                  : ''}
+                {currentSources.length > 0 && currentSources.map((source, index) => (
+                  <Fragment key={index}>
+                    <a
+                      style={{
+                        textDecoration: 'underline',
+                        color: 'black',
+                        fontWeight: 'bolder',
+                      }}
+                      href={source.URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {source['Resource Name']}
+                    </a>
+                    :
+                    {' '}
+                    {source['Institution or Author']}
+                    <br />
+                  </Fragment>
+                ))}
               </Typography>
             </AccordionDetails>
           </Accordion>
