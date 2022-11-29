@@ -31,14 +31,12 @@ const SoilDrainageTimeline = ({ drainage = [] }) => {
         return (
           <TimelineItem key={index}>
             <TimelineSeparator>
-              {drainage.includes(drainageClass) ? (
+              {drainage.includes(drainageClass) && (
                 <TimelineDot
                   style={{
                     backgroundColor: CustomStyles().progressColor,
                   }}
                 />
-              ) : (
-                ''
               )}
               {index === fullLength ? '' : <TimelineConnector />}
             </TimelineSeparator>

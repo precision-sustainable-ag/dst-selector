@@ -5,16 +5,30 @@ import { getRating } from '../../../shared/constants';
 import { Accordion, AccordionSummary, useStyles } from '../informationSheet.styles';
 import TooltipMaker from '../../../components/TooltipMaker/TooltipMaker';
 
-const InfoGoals = ({ crop, attribute, alternate }) => crop[attribute] && (
-  <div className="col-6 mb-2 row">
-    <span className="col">
-      <TooltipMaker variable={attribute} zone={crop.Zone}>
-        <Typography variant="body1">{attribute}</Typography>
-      </TooltipMaker>
-    </span>
-    <span>{getRating(crop[attribute] || crop[alternate])}</span>
-  </div>
-);
+const InfoGoals = ({ crop, attribute, alternate }) => {
+  if (crop[attribute]) {
+    return (
+      <div className="col-6 mb-2 row">
+        <span className="col">
+          <TooltipMaker variable={attribute} zone={crop.Zone}>
+            <Typography variant="body1">{attribute}</Typography>
+          </TooltipMaker>
+        </span>
+        <span>{getRating(crop[attribute] || crop[alternate])}</span>
+      </div>
+    );
+  }
+  return (
+    <div className="col-6 mb-2 row">
+      <span className="col">
+        <TooltipMaker variable={attribute} zone={crop.Zone}>
+          <Typography variant="body1">{attribute}</Typography>
+        </TooltipMaker>
+      </span>
+      <Typography style={{ marginRight: '72px' }} variant="body1">N/A</Typography>
+    </div>
+  );
+};
 
 const InformationSheetGoals = ({ crop, cropZone, cropGrowingWindow }) => {
   const classes = useStyles();
@@ -30,7 +44,7 @@ const InformationSheetGoals = ({ crop, cropZone, cropGrowingWindow }) => {
               </Typography>
             </AccordionSummary>
             <AccordionDetails>
-              <div className="row col-12 text-right">
+              <div className="row col-12 text-left">
                 <div className="col-6 mb-2 row">
                   <span className="col">
                     <TooltipMaker variable="Growing Window" zone={cropZone}>
@@ -45,7 +59,7 @@ const InformationSheetGoals = ({ crop, cropZone, cropGrowingWindow }) => {
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
-                          height: '20px',
+                          marginRight: '24px',
                         }}
                       >
                         <Typography variant="body1">{cropGrowingWindow}</Typography>

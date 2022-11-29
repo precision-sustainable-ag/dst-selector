@@ -12,8 +12,7 @@ const RenderExtendedComments = ({ crop = {} }) => {
         <div key={`notesKey-${index}`} className="col-12">
           <Typography variant="body1" className="p-3">
             <b>
-              {obj.name}
-              :
+              {`${obj.name}: `}
             </b>
             {crop[obj.key]}
           </Typography>
