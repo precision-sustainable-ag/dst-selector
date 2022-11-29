@@ -18,8 +18,8 @@ const GrowthTraits = ({ crop }) => {
             </Typography>
           </AccordionSummary>
           <AccordionDetails>
-            <div className="row col-12 text-right">
-              <div className="col-9 mb-2">
+            <div className="row col-12 text-left">
+              <div className="col-7 mb-2">
                 <TooltipMaker variable="Duration" zone={crop.Zone}>
                   <Typography variant="body1">Duration</Typography>
                 </TooltipMaker>
@@ -34,7 +34,7 @@ const GrowthTraits = ({ crop }) => {
                 </div>
               </div>
 
-              <div className="col-9 mb-2">
+              <div className="col-7 mb-2">
                 <TooltipMaker variable="Zone Use" zone={crop.Zone}>
                   <Typography variant="body1">Zone Use</Typography>
                 </TooltipMaker>
@@ -45,7 +45,7 @@ const GrowthTraits = ({ crop }) => {
                 </div>
               </div>
 
-              <div className="col-9 mb-2">
+              <div className="col-7 mb-2">
                 <TooltipMaker variable="Shape & Orientation" zone={crop.Zone}>
                   <Typography variant="body1">Shape And Orientation</Typography>
                 </TooltipMaker>
@@ -64,14 +64,14 @@ const GrowthTraits = ({ crop }) => {
                 </div>
               </div>
 
-              {/* <div className="col-9 mb-2">
+              {/* <div className="col-7 mb-2">
                     <Typography variant="body1">C:N</Typography>
                   </div>
                   <div className="col-3 mb-2">
                     {getRating(crop["C to N Ratio"])}
                   </div> */}
 
-              <div className="col-9 mb-2">
+              <div className="col-7 mb-2">
                 <Typography variant="body1">Dry Matter (Lbs/A/Yr)</Typography>
               </div>
               <div className="mb-2">
@@ -82,7 +82,7 @@ const GrowthTraits = ({ crop }) => {
                 </div>
               </div>
 
-              <div className="col-9 mb-2">
+              <div className="col-7 mb-2">
                 <TooltipMaker variable="Soil Textures" zone={crop.Zone}>
                   <Typography variant="body1">Soil Texture</Typography>
                 </TooltipMaker>
@@ -101,7 +101,7 @@ const GrowthTraits = ({ crop }) => {
                 </div>
               </div>
 
-              <div className="col-9 mb-2">
+              <div className="col-7 mb-2">
                 <Typography variant="body1">Soil pH</Typography>
               </div>
               <div className="mb-2">
@@ -112,7 +112,7 @@ const GrowthTraits = ({ crop }) => {
                 </div>
               </div>
 
-              <div className="col-9 mb-2">
+              <div className="col-7 mb-2">
                 <TooltipMaker variable="Soil Moisture Use" zone={crop.Zone}>
                   <Typography variant="body1">Soil Moisture Use</Typography>
                 </TooltipMaker>
@@ -123,7 +123,7 @@ const GrowthTraits = ({ crop }) => {
                 </div>
               </div>
 
-              <div className="col-9 mb-2">
+              <div className="col-7 mb-2">
                 <TooltipMaker variable="Hessian Fly-Free Date" zone={crop.Zone}>
                   <Typography variant="body1">Hessian Fly Free Date?</Typography>
                 </TooltipMaker>
@@ -138,7 +138,7 @@ const GrowthTraits = ({ crop }) => {
 
               {crop['Nitrogen Accumulation Max, Legumes (lbs/A/y)'] ? (
                 <>
-                  <div className="col-9 mb-2">
+                  <div className="col-7 mb-2">
                     <Typography variant="body1">Nitrogen Accumulation (Lbs/A/Yr)</Typography>
                   </div>
                   <div className="mb-2">
@@ -153,38 +153,46 @@ const GrowthTraits = ({ crop }) => {
                 ''
               )}
 
-              <div className="col-9 mb-2">
+              <div className="col-7 mb-2">
                 <TooltipMaker variable="Ease of Establishment" zone={crop.Zone}>
                   <Typography variant="body1">Ease Of Establishment</Typography>
                 </TooltipMaker>
               </div>
               <div className="mb-2">{getRating(crop['Ease of Establishment'])}</div>
 
-              <div className="col-9 mb-2">
+              <div className="col-7 mb-2">
                 <TooltipMaker variable="Establishes Quickly" zone={crop.Zone}>
                   <Typography variant="body1">Establishes Quickly</Typography>
                 </TooltipMaker>
               </div>
               <div className="mb-2">{getRating(crop['Establishes Quickly'])}</div>
 
-              <div className="col-9 mb-2">
+              <div className="col-7 mb-2">
                 <TooltipMaker variable="Early Spring Growth" zone={crop.Zone}>
                   <Typography variant="body1">Early Spring Growth</Typography>
                 </TooltipMaker>
               </div>
               <div className="mb-2">{getRating(crop['Early Spring Growth'])}</div>
 
-              <div className="col-9 mb-2">
+              <div className="col-7 mb-2">
                 <TooltipMaker variable="Flowering Trigger" zone={crop.Zone}>
                   <Typography variant="body1">Flowering Trigger</Typography>
                 </TooltipMaker>
               </div>
               <div className="mb-2">
-                <div className="blue-bg">
-                  <Typography variant="body1">{crop['Flowering Trigger']}</Typography>
+                <div
+                  className={`blueBgFlex ${
+                    crop['Flowering Trigger']?.length > 1 ? 'borderWrapped' : ''
+                  }`}
+                >
+                  {crop['Flowering Trigger']?.map((val, index) => (
+                    <div className="blue-bg bordered" key={index}>
+                      <Typography variant="body1">{val}</Typography>
+                    </div>
+                  ))}
                 </div>
               </div>
-              <div className="col-9 mb-2">
+              <div className="col-7 mb-2">
                 <TooltipMaker variable="Root Depth" zone={crop.Zone}>
                   <Typography variant="body1">Root Depth</Typography>
                 </TooltipMaker>
@@ -197,7 +205,7 @@ const GrowthTraits = ({ crop }) => {
 
               {crop['Inoculant Type'][0] !== 'none' ? (
                 <>
-                  <div className="col-9 mb-2">
+                  <div className="col-7 mb-2">
                     <TooltipMaker variable="Innoculant Type" zone={crop.Zone}>
                       <Typography variant="body1">Inoculant Type</Typography>
                     </TooltipMaker>

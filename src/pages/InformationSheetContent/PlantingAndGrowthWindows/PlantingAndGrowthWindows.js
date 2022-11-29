@@ -9,6 +9,18 @@ import { Accordion, AccordionSummary, useStyles } from '../informationSheet.styl
 const PlantingAndGrowthWindows = ({ crop }) => {
   const classes = useStyles();
 
+  const getFrostSeedingInfo = () => {
+    if (crop['Frost Seeding'] && crop['Frost Seeding Start'] && crop['Frost Seeding End']) {
+      return (
+        `${moment(crop['Frost Seeding Start'], 'YYYY-MM-DD')
+          .format('MM/DD')
+          .toString()} - ${moment(crop['Frost Seeding End'], 'YYYY-MM-DD')
+          .format('MM/DD')
+          .toString()}`);
+    }
+    return 'N/A';
+  };
+
   return (
     <div className="row otherRows mb-4 avoidPage">
       <div className="col-7 col-lg-6 basicAgWrapper">
@@ -23,27 +35,21 @@ const PlantingAndGrowthWindows = ({ crop }) => {
               </Typography>
             </AccordionSummary>
             <AccordionDetails>
-              <div className="row col-12 text-right">
-                <div className="col-9 mb-2">
+              <div className="row col-12 text-left">
+                <div className="col-7 mb-2">
                   <Typography variant="body1">
                     <FiberManualRecord style={{ color: '#2f80ed' }} />
                       &nbsp;Frost Seeding
                   </Typography>
                 </div>
-                <div className="col-3 mb-2">
+                <div className="mb-2">
                   <div className="blue-bg shrt_perennial wd-110">
-                    <Typography variant="body1">
-                      {crop['Frost Seeding']
-                        ? `${moment(crop['Frost Seeding Start'], 'YYYY-MM-DD')
-                          .format('MM/DD')
-                          .toString()} - ${moment(crop['Frost Seeding End'], 'YYYY-MM-DD')
-                          .format('MM/DD')
-                          .toString()}`
-                        : 'N/A'}
+                    <Typography variant="body1" style={{ paddingLeft: '-10px' }}>
+                      {getFrostSeedingInfo()}
                     </Typography>
                   </div>
                 </div>
-                <div className="col-9 mb-2">
+                <div className="col-7 mb-2">
                   <Typography variant="body1">
                     <FiberManualRecord style={{ color: '#2d7b7b' }} />
                       &nbsp;Reliable Establishment
@@ -71,7 +77,7 @@ const PlantingAndGrowthWindows = ({ crop }) => {
                     )}
                 </div>
 
-                <div className="col-9 mb-2">
+                <div className="col-7 mb-2">
                   <Typography variant="body1">
                     <FiberManualRecord style={{ color: '#f2c94c' }} />
                       &nbsp;Temperature/Moisture Risk
@@ -101,7 +107,7 @@ const PlantingAndGrowthWindows = ({ crop }) => {
                     )}
                 </div>
 
-                <div className="col-9 mb-2">
+                <div className="col-7 mb-2">
                   <Typography variant="body1">
                     <FiberManualRecord style={{ color: '#598445' }} />
                       &nbsp;Active Growth Period
@@ -121,7 +127,7 @@ const PlantingAndGrowthWindows = ({ crop }) => {
                   </div>
                 </div>
 
-                <div className="col-9 mb-2">
+                <div className="col-7 mb-2">
                   <Typography variant="body1">Winter Survival</Typography>
                 </div>
                 <div className="mb-2">
@@ -130,7 +136,7 @@ const PlantingAndGrowthWindows = ({ crop }) => {
                   </div>
                 </div>
 
-                <div className="col-9 mb-2">
+                <div className="col-7 mb-2">
                   <Typography variant="body1">Can Interseed</Typography>
                 </div>
                 <div className="mb-2">
