@@ -35,7 +35,7 @@ const InfoEnvironmentalTermination = ({
       className="mb-2"
       sx={{
         paddingLeft: {
-          xs: '50px', sm: '50px', md: '5px', lg: '10%', xl: '20%',
+          xs: '50px', sm: '50px', md: '50px', lg: '10%', xl: '20%',
         },
       }}
     >

@@ -29,11 +29,8 @@ const InfoWeeds = ({ attribute, crop }) => (
     <Box
       className="mb-2"
       sx={{
-        maxWidth: {
-          xs: '45%', sm: '45%', md: '35%', lg: '25%', xl: '100%',
-        },
         paddingLeft: {
-          xs: '50px', sm: '50px', md: '5px', lg: '25%', xl: '20%',
+          xs: '50px', sm: '50px', md: '50px', lg: '10%', xl: '20%',
         },
       }}
     >
@@ -55,14 +52,7 @@ const InformationSheetWeeds = ({ crop }) => {
             </Typography>
           </div>
         </AccordionSummary>
-        <AccordionDetails sx={{
-          paddingLeft: '0px',
-          margin: '0px',
-          width: {
-            xs: '100px', sm: '100px', md: '350px', lg: '100%', xl: '100%',
-          },
-        }}
-        >
+        <AccordionDetails>
           <div className="row col-12 text-left">
             <InfoWeeds crop={crop} attribute="Residue Suppresses Summer Annual Weeds" />
             <InfoWeeds crop={crop} attribute="Outcompetes Summer Annual Weeds" />

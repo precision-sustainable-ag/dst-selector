@@ -34,11 +34,8 @@ const InfoEnvironmentalTermination = ({
     <Box
       className="mb-2"
       sx={{
-        maxWidth: {
-          xs: '45%', sm: '45%', md: '35%', lg: '25%', xl: '100%',
-        },
         paddingLeft: {
-          xs: '50px', sm: '50px', md: '5px', lg: '25%', xl: '20%',
+          xs: '50px', sm: '50px', md: '50px', lg: '25%', xl: '20%',
         },
       }}
     >
