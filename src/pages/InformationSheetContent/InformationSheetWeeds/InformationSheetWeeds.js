@@ -7,16 +7,33 @@ import TooltipMaker from '../../../components/TooltipMaker/TooltipMaker';
 
 const InfoWeeds = ({ attribute, crop }) => (
   <>
-    <div className="col-9 mb-2">
+    <Box
+      className="col-6 mb-2 ml-4"
+      sx={{
+        paddingLeft: {
+          xs: '50px', sm: '0px', md: '50px', lg: '0px', xl: '50px',
+        },
+      }}
+    >
       <TooltipMaker variable={attribute} zone={crop.Zone}>
-        <Typography variant="body1">{attribute}</Typography>
+        <Typography
+          sx={{
+            fontWeight: 'bold',
+          }}
+          variant="body1"
+        >
+          {attribute}
+        </Typography>
       </TooltipMaker>
-    </div>
+    </Box>
     <Box
       className="mb-2"
       sx={{
+        maxWidth: {
+          xs: '45%', sm: '45%', md: '35%', lg: '25%', xl: '100%',
+        },
         paddingLeft: {
-          xs: '50px', md: '50px', lg: '0px', xl: '0px',
+          xs: '50px', sm: '50px', md: '5px', lg: '25%', xl: '20%',
         },
       }}
     >
@@ -29,7 +46,7 @@ const InformationSheetWeeds = ({ crop }) => {
   const classes = useStyles();
 
   return (
-    <div className="col-7 col-lg-6 weedsRowWrapper" style={{ marginTop: '1em' }}>
+    <div className="col-6 col-lg-6 weedsRowWrapper" style={{ marginTop: '1em' }}>
       <Accordion defaultExpanded style={{ border: '1px solid #2b7b79' }}>
         <AccordionSummary expandIcon={<ExpandMore />} classes={{ expanded: classes.expanded }}>
           <div className="col-12 otherHeaderRow p-0">
@@ -38,8 +55,15 @@ const InformationSheetWeeds = ({ crop }) => {
             </Typography>
           </div>
         </AccordionSummary>
-        <AccordionDetails sx={{ paddingLeft: '0px' }}>
-          <div className="row col-12 text-left p-0 m-0">
+        <AccordionDetails sx={{
+          paddingLeft: '0px',
+          margin: '0px',
+          width: {
+            xs: '100px', sm: '100px', md: '350px', lg: '100%', xl: '100%',
+          },
+        }}
+        >
+          <div className="row col-12 text-left">
             <InfoWeeds crop={crop} attribute="Residue Suppresses Summer Annual Weeds" />
             <InfoWeeds crop={crop} attribute="Outcompetes Summer Annual Weeds" />
             <InfoWeeds crop={crop} attribute="Suppresses Winter Annual Weeds" />
