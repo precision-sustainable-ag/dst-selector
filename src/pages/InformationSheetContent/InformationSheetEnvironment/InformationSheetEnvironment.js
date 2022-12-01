@@ -1,5 +1,5 @@
 import React from 'react';
-import { AccordionDetails, Typography } from '@mui/material';
+import { AccordionDetails, Box, Typography } from '@mui/material';
 import { ExpandMore } from '@mui/icons-material';
 import { getRating } from '../../../shared/constants';
 import { Accordion, AccordionSummary, useStyles } from '../informationSheet.styles';
@@ -12,12 +12,35 @@ const InfoEnvironmentalTermination = ({
   crop,
 }) => (
   <>
-    <div className="col-8 mb-2">
+    <Box
+      className="col-6 mb-2 ml-4"
+      sx={{
+        paddingLeft: {
+          xs: '50px', sm: '0px', md: '50px', lg: '0px', xl: '50px',
+        },
+      }}
+    >
       <TooltipMaker variable={variable} zone={crop.Zone}>
-        <Typography variant="body1">{text}</Typography>
+        <Typography
+          sx={{
+            fontWeight: 'bold',
+          }}
+          variant="body1"
+        >
+          {text}
+        </Typography>
       </TooltipMaker>
-    </div>
-    <div className="mb-2">{getRating(crop[attribute])}</div>
+    </Box>
+    <Box
+      className="mb-2"
+      sx={{
+        paddingLeft: {
+          xs: '50px', sm: '50px', md: '50px', lg: '25%', xl: '20%',
+        },
+      }}
+    >
+      {getRating(crop[attribute])}
+    </Box>
   </>
 ); // InfoEnvironmentalTermination
 
@@ -30,7 +53,7 @@ const InformationSheetEnvironment = ({ crop }) => {
         <AccordionSummary expandIcon={<ExpandMore />} classes={{ expanded: classes.expanded }}>
           <div className="col-12 otherHeaderRow p-0">
             <Typography variant="h6" className="px-3 py-2 text-uppercase">
-              Environmental&nbsp;Tolerances
+              Environmental Tolerances
             </Typography>
           </div>
         </AccordionSummary>
