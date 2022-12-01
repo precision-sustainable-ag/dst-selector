@@ -1,9 +1,59 @@
 import React from 'react';
-import { AccordionDetails, Typography } from '@mui/material';
+import { AccordionDetails, Box, Typography } from '@mui/material';
 import { ExpandMore } from '@mui/icons-material';
 import { RenderSeedPriceIcons } from '../../../shared/constants';
 import { Accordion, AccordionSummary, useStyles } from '../informationSheet.styles';
 import TooltipMaker from '../../../components/TooltipMaker/TooltipMaker';
+
+const PlantingTrait = ({
+  attribute,
+  text = attribute.replace(/\bat\b/, 'At'),
+  crop,
+  variable,
+}) => (
+  <>
+    <Box
+      className="col-6 mb-2 ml-4"
+      sx={{
+        paddingLeft: {
+          xs: '50px', sm: '0px', md: '50px', lg: '0px', xl: '50px',
+        },
+      }}
+    >
+      <TooltipMaker variable={attribute} zone={crop.Zone}>
+        <Typography
+          sx={{
+            fontWeight: 'bold',
+          }}
+          variant="body1"
+        >
+          {text}
+        </Typography>
+      </TooltipMaker>
+    </Box>
+    <Box
+      className="mb-2"
+      sx={{
+        paddingLeft: {
+          xs: '50px', sm: '50px', md: '5px', lg: '10%', xl: '20%',
+        },
+      }}
+    >
+      {typeof crop[attribute] !== 'number'
+        ? (
+
+          <Typography variant="body1">
+            {crop[attribute] === undefined || attribute === 'Inoculant Type' ? variable : crop[attribute].toString()}
+          </Typography>
+        )
+        : (
+          <Typography variant="body1">
+            variable
+          </Typography>
+        )}
+    </Box>
+  </>
+);
 
 const InformationSheetPlanting = ({ crop }) => {
   const classes = useStyles();
@@ -13,88 +63,54 @@ const InformationSheetPlanting = ({ crop }) => {
       <div className="col-12 otherHeaderRow p-0" style={{ marginTop: '1em' }}>
         <Accordion defaultExpanded style={{ border: '1px solid #2b7b79' }}>
           <AccordionSummary expandIcon={<ExpandMore />} classes={{ expanded: classes.expanded }}>
-            <Typography variant="h6" className="px-3 py-2" style={{ border: '0px' }}>
+            <Typography sx={{ fontWeight: 'bold' }} variant="h6" className="px-3 py-2" style={{ border: '0px' }}>
               Planting
             </Typography>
           </AccordionSummary>
           <AccordionDetails>
+
             <div className="row col-12 text-left">
-              <div className="col-7 mb-2">
-                <TooltipMaker variable="Seeds per Pound" zone={crop.Zone}>
-                  <Typography variant="body1">Seeds Per Lb</Typography>
-                </TooltipMaker>
-              </div>
-              <div className="mb-2">
-                <div className="blue-bg">
-                  <Typography variant="body1">{crop['Seeds per Pound']}</Typography>
-                </div>
-              </div>
+              <PlantingTrait
+                crop={crop}
+                attribute="Seeds Per Lb"
+                variable={<Typography variant="body1">{crop['Seeds per Pound']}</Typography>}
+              />
 
-              <div className="col-7 mb-2">
-                <TooltipMaker variable="Seed Price per Pound" zone={crop.Zone}>
-                  <Typography variant="body1">Seed Price Per Lb</Typography>
-                </TooltipMaker>
-              </div>
-              <div className="mb-2">
-                <div className="blue-bg no-bg">
-                  <RenderSeedPriceIcons val={crop['Seed Price per Pound']} />
-                </div>
-              </div>
+              <PlantingTrait
+                crop={crop}
+                attribute="Seed Price Per Lb"
+                variable={<RenderSeedPriceIcons val={crop['Seed Price per Pound']} />}
+              />
 
-              <div className="col-7 mb-2">
-                <Typography variant="body1">Base Seeding Rate (Lbs/A)</Typography>
-              </div>
-              <div className="mb-2">
-                <div className="blue-bg">
-                  <Typography variant="body1">
-                    {`${crop['Base Seeding Rate Min (lbs/A)']} - ${crop['Base Seeding Rate Max (lbs/A)']}`}
-                  </Typography>
-                </div>
-              </div>
+              <PlantingTrait
+                crop={crop}
+                attribute="Base Seeding Rate (Lbs/A)"
+                variable={`${crop['Base Seeding Rate Min (lbs/A)']} - ${crop['Base Seeding Rate Max (lbs/A)']}`}
+              />
 
-              <div className="col-7 mb-2">
-                <Typography variant="body1">Drilled Depth</Typography>
-              </div>
-              <div className="mb-2">
-                <div className="blue-bg">
-                  <Typography variant="body1">
-                    {`${crop['Drilled Depth Min']}" - ${crop['Drilled Depth Max']}"`}
-                  </Typography>
-                </div>
-              </div>
+              <PlantingTrait
+                crop={crop}
+                attribute="Drilled Depth"
+                variable={`${crop['Drilled Depth Min']}" - ${crop['Drilled Depth Max']}"`}
+              />
 
-              <div className="col-7 mb-2">
-                <TooltipMaker variable="Can Aerial Seed?" zone={crop.Zone}>
-                  <Typography variant="body1">Can Aerial Seed?</Typography>
-                </TooltipMaker>
-              </div>
-              <div className="mb-2">
-                <div className="blue-bg">
-                  <Typography variant="body1">{crop['Aerial Seeding'] ? 'Yes' : 'No'}</Typography>
-                </div>
-              </div>
+              <PlantingTrait
+                crop={crop}
+                attribute="Can Aerial Seed"
+                variable={crop['Aerial Seeding'] ? 'Yes' : 'No'}
+              />
 
-              <div className="col-7 mb-2">
-                <TooltipMaker variable="Frost Seeding" zone={crop.Zone}>
-                  <Typography variant="body1">Can Frost Seed?</Typography>
-                </TooltipMaker>
-              </div>
-              <div className="mb-2">
-                <div className="blue-bg">
-                  <Typography variant="body1">{crop['Frost Seeding'] ? 'Yes' : 'No'}</Typography>
-                </div>
-              </div>
+              <PlantingTrait
+                crop={crop}
+                attribute="Can Frost Seed"
+                variable={crop['Frost Seeding'] ? 'Yes' : 'No'}
+              />
 
-              <div className="col-7 mb-2">
-                <TooltipMaker variable="Min Germination Temp (F)" zone={crop.Zone}>
-                  <Typography variant="body1">Min Germination Temp (&deg;F)</Typography>
-                </TooltipMaker>
-              </div>
-              <div className="mb-2">
-                <div className="blue-bg">
-                  <Typography variant="body1">{crop['Min Germination Temp (F)']}</Typography>
-                </div>
-              </div>
+              <PlantingTrait
+                crop={crop}
+                attribute="Min Germination Temp (&deg;F)"
+                variable={crop['Min Germination Temp (F)']}
+              />
             </div>
           </AccordionDetails>
         </Accordion>
