@@ -21,6 +21,7 @@ const ComparisonBar = ({
   const [goalsOpen, setGoalsOpen] = useState(false);
   const [allGoals, setAllGoals] = useState([]);
   useEffect(() => {
+    console.log('here here here ');
     const filteredVals = filterData.map((filter) => {
       const vals = filter.values.map((val) => ({
         ...val,
@@ -39,15 +40,17 @@ const ComparisonBar = ({
     }));
     setFilterValues(filteredVals);
     setAllGoals(filteredGoals);
-  }, [filterData, goals]);
+  }, [filterData]);
 
   const toggleSidebarFilterItems = (index) => {
+    console.log('Did we get here?');
     const newSidebarFilterVals = filterValues.map((obj, index2) => {
       if (index2 === index) return { ...obj, open: !obj.open };
       return { ...obj };
     });
     setFilterValues(newSidebarFilterVals);
   };
+
   const resetAllFilters = () => {
     if (comparisonKeys.length > 0) {
       dispatch({
@@ -58,6 +61,7 @@ const ComparisonBar = ({
       });
     }
   };
+
   const showAllVariables = () => {
     setGoalsOpen(true);
     const theGoals = [];
@@ -160,7 +164,7 @@ const ComparisonBar = ({
           dispatch={dispatch}
         />
       )}
-
+      {console.log('here')}
       <RenderFilters
         filterValues={filterValues}
         toggleSidebarFilterItems={toggleSidebarFilterItems}
