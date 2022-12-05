@@ -89,7 +89,6 @@ const RenderFilters = ({
         )}
 
         <Collapse in={filterValues[index].open} timeout="auto">
-          {console.log('I AM HERE', filterValues[index].open)}
           <List component="div" disablePadding>
             <ListItem component="div" className={classes.subNested}>
               <Grid container spacing={1}>
