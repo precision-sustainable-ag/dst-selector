@@ -53,7 +53,7 @@ const About = () => {
                   }}
                   onClick={() => handleChange(0)}
                   variant={value === 0 ? 'contained' : 'text'}
-                  color={value === 0 ? 'secondary' : 'default'}
+                  // color={value === 0 ? 'secondary' : 'default'}
                 >
                   History and Purpose of the NECCC Tool Effort
                 </Button>
@@ -66,7 +66,7 @@ const About = () => {
                   }}
                   onClick={() => handleChange(1)}
                   variant={value === 1 ? 'contained' : 'text'}
-                  color={value === 1 ? 'secondary' : 'default'}
+                  // color={value === 1 ? 'secondary' : 'default'}
                 >
                   Cover Crop Data
                 </Button>
@@ -79,7 +79,7 @@ const About = () => {
                   }}
                   onClick={() => handleChange(2)}
                   variant={value === 2 ? 'contained' : 'text'}
-                  color={value === 2 ? 'secondary' : 'default'}
+                  // color={value === 2 ? 'secondary' : 'default'}
                 >
                   Tool Design Process
                 </Button>
@@ -92,7 +92,7 @@ const About = () => {
                   }}
                   onClick={() => handleChange(5)}
                   variant={value === 5 ? 'contained' : 'text'}
-                  color={value === 5 ? 'secondary' : 'default'}
+                  // color={value === 5 ? 'secondary' : 'default'}
                 >
                   Many Thanks to Our Funders
                 </Button>
@@ -105,7 +105,7 @@ const About = () => {
                   }}
                   onClick={() => handleChange(6)}
                   variant={value === 6 ? 'contained' : 'text'}
-                  color={value === 6 ? 'secondary' : 'default'}
+                  // color={value === 6 ? 'secondary' : 'default'}
                 >
                   Contact Us
                 </Button>
@@ -118,7 +118,7 @@ const About = () => {
                   }}
                   onClick={() => handleChange(7)}
                   variant={value === 7 ? 'contained' : 'text'}
-                  color={value === 7 ? 'secondary' : 'default'}
+                  // color={value === 7 ? 'secondary' : 'default'}
                 >
                   About the Experts
                 </Button>
