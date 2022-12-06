@@ -287,6 +287,37 @@ const Header = () => {
     }
   }, [state.markers, sfilters.zone, state.weatherDataReset]);
 
+  async function getCropData(zone, formattedGoal) {
+    await fetch(`https://developapi.covercrop-selector.org/crop-data?zoneId=${zone}`)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log('data', data);
+        dispatch({
+          type: 'PULL_CROP_DATA',
+          data: data.data,
+        });
+        dispatch({
+          type: 'ADD_GOALS',
+          data: formattedGoal,
+        });
+        // if (data.data.length > 0 && activeCropData.length > 0) {
+        //   activeCropData.forEach((crop) => {
+        //     data.data.forEach((thumb) => {
+        //       if (thumb.label === crop.fields['Cover Crop Name']) {
+        //         crop.fields['Image Data']['Key Thumbnail'] = thumb.thumbnail.src;
+        //         crop.fields['Image Data'].id = thumb.id;
+        //       }
+        //     });
+        //   });
+        // }
+        // setUpdatedActiveCropData(activeCropData);
+      })
+      .catch((err) => {
+      // eslint-disable-next-line no-console
+        console.log(err.message);
+      });
+  }
+
   useEffect(() => {
     if (sfilters.zone === state.lastZone) {
       return;
@@ -310,55 +341,64 @@ const Header = () => {
     let z4Formattedgoal = zone4DataDictionary.filter(
       (data) => data.Category === 'Goals' && data.Variable !== 'Notes: Goals',
     );
-
     z7Formattedgoal = z7Formattedgoal.map((goal) => ({ fields: goal }));
     z6Formattedgoal = z6Formattedgoal.map((goal) => ({ fields: goal }));
     z5Formattedgoal = z5Formattedgoal.map((goal) => ({ fields: goal }));
     z4Formattedgoal = z4Formattedgoal.map((goal) => ({ fields: goal }));
 
+    getCropData(sfilters.zone);
+
     switch (parseInt(sfilters.zone, 10)) {
       case 7: {
-        dispatch({
-          type: 'PULL_CROP_DATA',
-          data: state.zone7CropData,
-        });
-        dispatch({
-          type: 'ADD_GOALS',
-          data: z7Formattedgoal,
-        });
+        getCropData(4, z7Formattedgoal);
+        // console.log('pull data', state.zone7CropData);
+        // console.log('z7Formattedgoal', z7Formattedgoal);
+        // dispatch({
+        //   type: 'PULL_CROP_DATA',
+        //   data: state.zone7CropData,
+        // });
+        // dispatch({
+        //   type: 'ADD_GOALS',
+        //   data: z7Formattedgoal,
+        // });
         break;
       }
       case 6: {
-        dispatch({
-          type: 'PULL_CROP_DATA',
-          data: state.zone6CropData,
-        });
-        dispatch({
-          type: 'ADD_GOALS',
-          data: z6Formattedgoal,
-        });
+        getCropData(3, z6Formattedgoal);
+        // console.log('pull data', state.zone6CropData);
+        // console.log('z6Formattedgoal', z6Formattedgoal);
+        // dispatch({
+        //   type: 'PULL_CROP_DATA',
+        //   data: state.zone6CropData,
+        // });
+        // dispatch({
+        //   type: 'ADD_GOALS',
+        //   data: z6Formattedgoal,
+        // });
         break;
       }
       case 5: {
-        dispatch({
-          type: 'PULL_CROP_DATA',
-          data: state.zone5CropData,
-        });
-        dispatch({
-          type: 'ADD_GOALS',
-          data: z5Formattedgoal,
-        });
+        getCropData(2, z5Formattedgoal);
+        // dispatch({
+        //   type: 'PULL_CROP_DATA',
+        //   data: state.zone5CropData,
+        // });
+        // dispatch({
+        //   type: 'ADD_GOALS',
+        //   data: z5Formattedgoal,
+        // });
         break;
       }
       case 4: {
-        dispatch({
-          type: 'PULL_CROP_DATA',
-          data: state.zone4CropData,
-        });
-        dispatch({
-          type: 'ADD_GOALS',
-          data: z4Formattedgoal,
-        });
+        getCropData(1, z4Formattedgoal);
+        // dispatch({
+        //   type: 'PULL_CROP_DATA',
+        //   data: state.zone4CropData,
+        // });
+        // dispatch({
+        //   type: 'ADD_GOALS',
+        //   data: z4Formattedgoal,
+        // });
         break;
       }
       default: {

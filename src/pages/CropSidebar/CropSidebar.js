@@ -122,14 +122,16 @@ const CropSidebar = ({
         }
       }
     });
+    console.log('state.cropData', state.cropData);
 
-    let cropData = state.cropData.filter((crop) => crop.fields['Zone Decision'] === 'Include');
+    // let cropData = state.cropData.filter((crop, i) => console.log(i, crop['Cover Crop Name'], crop['Zone Decision']));
+    let cropData = state.cropData.filter((crop) => crop['Zone Decision'] === 'Include');
 
-    const search = sfilters.cropSearch.toLowerCase().match(/\w+/g);
+    const search = sfilters.cropSearch?.toLowerCase().match(/\w+/g);
 
     cropData = state.cropData.filter((crop) => {
       const match = (parm) => {
-        const m = crop.fields[parm].toLowerCase().match(/\w+/g);
+        const m = crop[parm]?.toLowerCase().match(/\w+/g);
 
         return !search || search.every((s) => m.some((t) => t.includes(s)));
       };
@@ -177,17 +179,17 @@ const CropSidebar = ({
 
         if (areCommonElements(arrayKeys, key)) {
           // Handle array type havlues
-          const intersection = (arrays = [vals, crop.fields[key]]) => arrays.reduce((a, b) => a.filter((c) => b.includes(c)));
+          const intersection = (arrays = [vals, crop[key]]) => arrays.reduce((a, b) => a.filter((c) => b.includes(c)));
 
           if (intersection().length > 0) {
             i += 1;
           }
         } else if (areCommonElements(booleanKeys, key)) {
           //  Handle boolean types
-          if (crop.fields[key]) {
+          if (crop[key]) {
             i += 1;
           }
-        } else if (vals.includes(crop.fields[key])) {
+        } else if (vals.includes(crop[key])) {
           i += 1;
         }
       });
@@ -518,7 +520,7 @@ const CropSidebar = ({
               <>
                 {from === 'explorer' && (
                   <>
-                    <PlantHardinessZone dispatch={dispatch} sfilters={sfilters} />
+                    <PlantHardinessZone handleToggle={handleToggle} dispatch={dispatch} sfilters={sfilters} />
                     <CoverCropSearch sfilters={sfilters} dispatch={dispatch} />
                   </>
                 )}
