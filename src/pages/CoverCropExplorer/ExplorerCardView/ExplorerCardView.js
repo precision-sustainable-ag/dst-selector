@@ -84,7 +84,7 @@ const ExplorerCardView = ({ activeCropData }) => {
           activeCropData.map((crop, index) => (
             <Grid style={{ width: '260px' }} item key={index}>
               <CropCard
-                crop={crop.fields}
+                crop={crop}
                 handleModalOpen={handleModalOpen}
                 addCropToBasket={addCropToBasket}
                 selectedBtns={selectedBtns}

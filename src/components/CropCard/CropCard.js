@@ -49,9 +49,10 @@ const CropCard = ({
   return (
     <Card className={classes.card} style={{ position: 'center', width: '100%' }}>
       <CardActionArea onClick={() => handleModalOpen(crop)}>
+        {console.log('crop', crop)}
         <CardMedia
           image={
-            crop['Image Data']['Key Thumbnail']
+            crop['Image Data']?.['Key Thumbnail']
               ? crop['Image Data']['Key Thumbnail']
               : 'https://placehold.it/100x100?text=Placeholder'
             }
@@ -78,7 +79,7 @@ const CropCard = ({
           </Typography>
         </div>
         <small className="font-italic text-muted d-inline-block text-truncate" style={{ marginLeft: '-10px' }}>
-          {trimString(crop['Scientific Name'], 25)}
+          {crop['Scientific Name'] ? trimString(crop['Scientific Name'], 25) : null}
         </small>
         <div>
           <small className="text-muted">

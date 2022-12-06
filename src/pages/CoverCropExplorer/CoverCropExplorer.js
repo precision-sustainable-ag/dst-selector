@@ -36,9 +36,9 @@ const CoverCropExplorer = () => {
           if (data.data.length > 0 && filteredActiveCropData.length > 0) {
             filteredActiveCropData.forEach((crop) => {
               data.data.forEach((thumb) => {
-                if (thumb.label === crop.fields['Cover Crop Name']) {
-                  crop.fields['Image Data']['Key Thumbnail'] = thumb.thumbnail.src;
-                  crop.fields['Image Data'].id = thumb.id;
+                if (thumb.label === crop['Cover Crop Name']) {
+                  crop['Image Data']['Key Thumbnail'] = thumb.thumbnail.src;
+                  crop['Image Data'].id = thumb.id;
                 }
               });
             });
