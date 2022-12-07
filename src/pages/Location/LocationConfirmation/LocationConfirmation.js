@@ -6,10 +6,9 @@
 import React, { useContext } from 'react';
 
 import { Typography } from '@mui/material';
+import { Map } from '@psa/dst.ui.map';
 import { Context } from '../../../store/Store';
 import { CustomStyles } from '../../../shared/constants';
-import Map from '../../../components/Map/Map';
-import { MapboxApiKey } from '../../../shared/keys';
 import SoilCondition from '../SoilCondition/SoilCondition';
 import WeatherConditions from '../../../components/WeatherConditions/WeatherConditions';
 
@@ -33,35 +32,27 @@ const LocationConfirmation = () => {
             <div className="row">
               <div className="col-lg-6">
                 <Map
-                  initViewport={{
-                    width: '100%',
-                    height: '200px',
-                    latitude: state.markers && state.markers.length > 0 ? state.markers[0][0] : 47,
-                    longitude:
-                      state.markers && state.markers.length > 0 ? state.markers[0][1] : -122,
-                    minZoom: 4,
-                    maxZoom: 18,
-                    startZoom: 12,
-                  }}
-                  apiKey={MapboxApiKey}
-                  features={{
-                    hasSearchBar: false,
-                    hasMarker: true,
-                    hasNavigation: false,
-                    hasCoordBar: false,
-                    hasDrawing: false,
-                    hasGeolocate: false,
-                    hasFullScreen: false,
-                    hasMarkerPopup: false,
-                  }}
-                  userInteractions={{
-                    scrollZoom: false,
-                    dragRotate: false,
-                    dragPan: false,
-                    keyboard: false,
-                    doubleClickZoom: false,
-                    touchZoomRotate: false,
-                  }}
+                  initWidth="100%"
+                  initHeight="200px"
+                  initLon={state.markers && state.markers.length > 0 ? state.markers[0][1] : -122}
+                  initLat={state.markers && state.markers.length > 0 ? state.markers[0][0] : 47}
+                  initMinZoom={4}
+                  initMaxZoom={18}
+                  initStartZoom={12}
+                  hasSearchBar={false}
+                  hasNavigation={false}
+                  hasCoordBar={false}
+                  hasDrawing={false}
+                  hasGeolocate={false}
+                  hasFullScreen={false}
+                  hasMarkerPopup={false}
+                  hasMarkerMovable={false}
+                  scrollZoom={false}
+                  dragRotate={false}
+                  dragPan={false}
+                  keyboard={false}
+                  doubleClickZoom={false}
+                  touchZoomRotate={false}
                 />
               </div>
               <div className="col-lg-6">
