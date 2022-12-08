@@ -47,6 +47,10 @@ stages:
         echo "always-auth=true" >> /home/vsts/work/1/s/.npmrc
       displayName: "Create .npmrc"
     - script: |
+        npx @teambit/bvm install
+        npx @teambit/bvm upgrade
+        npm config set @bit:registry https://node.bitsrc.io
+        npm config set '@bit:registry' https://node.bit.dev
         npm config set '@psa:registry' https://node.bit.cloud
       displayName: "set registry"
     - task: Docker@2
