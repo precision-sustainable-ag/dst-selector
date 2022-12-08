@@ -40,12 +40,13 @@ const LocationConfirmation = () => {
                   initMaxZoom={18}
                   initStartZoom={12}
                   hasSearchBar={false}
+                  hasMarker
                   hasNavigation={false}
                   hasCoordBar={false}
                   hasDrawing={false}
                   hasGeolocate={false}
                   hasFullScreen={false}
-                  hasMarkerPopup={false}
+                  hasMarkerPopup
                   hasMarkerMovable={false}
                   scrollZoom={false}
                   dragRotate={false}
