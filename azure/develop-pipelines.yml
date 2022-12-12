@@ -56,14 +56,6 @@ stages:
         bit tag --persist
         bit export
       displayName: "bit export to private collection"
-    - script: |
-        git config --global user.email "mikahpinegar@gmail.com"
-        git config --global user.name "mikahpinegar"
-        git checkout main
-        git add .
-        git commit -m "new version [skip ci]"
-        git push -u origin main
-      displayName: "git commit back after exported new version components"
 
     - task: Docker@2
       displayName: Build and push an image to container registry
