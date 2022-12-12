@@ -42,28 +42,7 @@ stages:
         echo REACT_APP_MAPBOX_API_KEY="$(REACT_APP_MAPBOX_API_KEY)" >> /home/vsts/work/1/s/.env
       displayName: "Create .env"
     - script: |
-        npm i -g @teambit/bvm
-        bvm install
-        export PATH=$HOME/bin:$PATH
-        bit config set analytics_reporting false
-        bit config set anonymous_reporting false
-        bit config set user.token $(BIT_TOKEN)
-        bit config
-
-        bit init
-        bit install
-        bit compile
-        bit tag --persist
-        bit export
-      displayName: "bit export to private collection"
-    - script: |
-        echo "@bit:registry=https://node.bit.dev" >> /home/vsts/work/1/s/.npmrc
-        echo "//node.bit.dev/:_authToken=$(BIT_TOKEN)" >> /home/vsts/work/1/s/.npmrc
-        echo "always-auth=true" >> /home/vsts/work/1/s/.npmrc
-      displayName: "Create .npmrc"
-    - script: |
-        npm config set '@psa:registry' https://node.bit.cloud
-      displayName: "set registry"
+        ./npm-ci.sh
 
     - task: Docker@2
       displayName: Build and push an image to container registry
