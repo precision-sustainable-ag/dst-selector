@@ -195,7 +195,7 @@ const WeatherConditions = ({ caller }) => {
     <div className="row">
       <div className="col-12">
         <Typography variant="h4" align="left">
-          Climate Conditions?
+          Climate Conditions
         </Typography>
       </div>
       <div className="mt-2 col-12 text-left">
@@ -205,9 +205,12 @@ const WeatherConditions = ({ caller }) => {
             anyValuesChanged ? 'text-danger' : ''
           }`}
           onClick={handleModalOpen}
-          style={{ cursor: 'pointer' }}
+          style={{
+            cursor: 'pointer',
+            color: 'blue',
+          }}
         >
-          &nbsp;Click To Edit
+          <u>Click To Edit </u>
           {anyValuesChanged ? ', values changed' : ''}
         </Typography>
       </div>

@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-    name: precisionsustainableagdstselector
+    name: dstselector
 spec:
     type: LoadBalancer
     ports:
-    - port: 80
+    - port: 80 
     selector:
-        app: precisionsustainableagdstselector
+        app: dstselector

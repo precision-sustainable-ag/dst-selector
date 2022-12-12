@@ -8,10 +8,10 @@ import TooltipMaker from '../../../components/TooltipMaker/TooltipMaker';
 const InfoGoals = ({ crop, attribute, alternate }) => {
   if (crop[attribute]) {
     return (
-      <div className="col-6 mb-2 row">
+      <div className="col-6 mb-2 ml-1 row">
         <span className="col">
           <TooltipMaker variable={attribute} zone={crop.Zone}>
-            <Typography variant="body1">{attribute}</Typography>
+            <Typography sx={{ fontWeight: 'bold' }} variant="body1">{attribute}</Typography>
           </TooltipMaker>
         </span>
         <span>{getRating(crop[attribute] || crop[alternate])}</span>
@@ -19,13 +19,13 @@ const InfoGoals = ({ crop, attribute, alternate }) => {
     );
   }
   return (
-    <div className="col-6 mb-2 row">
+    <div className="col-6 mb-2 ml-1 row">
       <span className="col">
         <TooltipMaker variable={attribute} zone={crop.Zone}>
-          <Typography variant="body1">{attribute}</Typography>
+          <Typography sx={{ fontWeight: 'bold' }} variant="body1">{attribute}</Typography>
         </TooltipMaker>
       </span>
-      <Typography style={{ marginRight: '72px' }} variant="body1">N/A</Typography>
+      <Typography style={{ marginRight: '6%' }} variant="body1">N/A</Typography>
     </div>
   );
 };
@@ -45,24 +45,28 @@ const InformationSheetGoals = ({ crop, cropZone, cropGrowingWindow }) => {
             </AccordionSummary>
             <AccordionDetails>
               <div className="row col-12 text-left">
-                <div className="col-6 mb-2 row">
+                <div className="col-6 mb-2 ml-1 row">
                   <span className="col">
                     <TooltipMaker variable="Growing Window" zone={cropZone}>
-                      <Typography variant="body1">Growing Window</Typography>
+                      <Typography sx={{ fontWeight: 'bold' }} variant="body1">Growing Window</Typography>
                     </TooltipMaker>
                   </span>
                   {/* <span className="col-3">{crop["Growing Window"]}</span> */}
                   <span>
                     <div className="blue-bg">
-                      <div
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          marginRight: '24px',
-                        }}
-                      >
-                        <Typography variant="body1">{cropGrowingWindow}</Typography>
+                      <div>
+                        <Typography
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            marginRight: '24px',
+                          }}
+                          variant="body1"
+                        >
+                          {cropGrowingWindow}
+
+                        </Typography>
                       </div>
                     </div>
                   </span>

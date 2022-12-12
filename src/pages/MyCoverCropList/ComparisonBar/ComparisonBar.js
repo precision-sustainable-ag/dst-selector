@@ -39,7 +39,7 @@ const ComparisonBar = ({
     }));
     setFilterValues(filteredVals);
     setAllGoals(filteredGoals);
-  }, [filterData, goals]);
+  }, [filterData]);
 
   const toggleSidebarFilterItems = (index) => {
     const newSidebarFilterVals = filterValues.map((obj, index2) => {
@@ -48,6 +48,7 @@ const ComparisonBar = ({
     });
     setFilterValues(newSidebarFilterVals);
   };
+
   const resetAllFilters = () => {
     if (comparisonKeys.length > 0) {
       dispatch({
@@ -58,6 +59,7 @@ const ComparisonBar = ({
       });
     }
   };
+
   const showAllVariables = () => {
     setGoalsOpen(true);
     const theGoals = [];
@@ -160,7 +162,6 @@ const ComparisonBar = ({
           dispatch={dispatch}
         />
       )}
-
       <RenderFilters
         filterValues={filterValues}
         toggleSidebarFilterItems={toggleSidebarFilterItems}
