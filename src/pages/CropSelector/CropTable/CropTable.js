@@ -100,7 +100,7 @@ const CropTableComponent = ({
           selectedCropIds.push(crop.id);
         });
         const newActiveShadow = activeCropDataShadow.map((crop, i) => {
-          activeCropDataShadow[i].inCart = selectedCropIds.includes(crop.fields.id);
+          activeCropDataShadow[i].inCart = selectedCropIds.includes(crop.id);
           return crop;
         });
 

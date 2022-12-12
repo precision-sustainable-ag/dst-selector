@@ -287,11 +287,10 @@ const Header = () => {
     }
   }, [state.markers, sfilters.zone, state.weatherDataReset]);
 
-  async function getCropData(zone, formattedGoal) {
+  async function getCropData(formattedGoal, zone = 4) {
     await fetch(`https://developapi.covercrop-selector.org/crop-data?zoneId=${zone}`)
       .then((res) => res.json())
       .then((data) => {
-        console.log('data', data);
         dispatch({
           type: 'PULL_CROP_DATA',
           data: data.data,
@@ -324,10 +323,6 @@ const Header = () => {
     }
 
     state.lastZone = sfilters.zone; // TODO
-    // dispatch({
-    //   type: 'UPDATE_LAST_ZONE',
-    //   value: sfilters.zone,
-    // });
 
     let z7Formattedgoal = zone7DataDictionary.filter(
       (data) => data.Category === 'Goals' && data.Variable !== 'Notes: Goals',
@@ -346,59 +341,23 @@ const Header = () => {
     z5Formattedgoal = z5Formattedgoal.map((goal) => ({ fields: goal }));
     z4Formattedgoal = z4Formattedgoal.map((goal) => ({ fields: goal }));
 
-    getCropData(sfilters.zone);
+    getCropData([], sfilters.zone);
 
     switch (parseInt(sfilters.zone, 10)) {
       case 7: {
-        getCropData(4, z7Formattedgoal);
-        // console.log('pull data', state.zone7CropData);
-        // console.log('z7Formattedgoal', z7Formattedgoal);
-        // dispatch({
-        //   type: 'PULL_CROP_DATA',
-        //   data: state.zone7CropData,
-        // });
-        // dispatch({
-        //   type: 'ADD_GOALS',
-        //   data: z7Formattedgoal,
-        // });
+        getCropData(z7Formattedgoal, 4);
         break;
       }
       case 6: {
-        getCropData(3, z6Formattedgoal);
-        // console.log('pull data', state.zone6CropData);
-        // console.log('z6Formattedgoal', z6Formattedgoal);
-        // dispatch({
-        //   type: 'PULL_CROP_DATA',
-        //   data: state.zone6CropData,
-        // });
-        // dispatch({
-        //   type: 'ADD_GOALS',
-        //   data: z6Formattedgoal,
-        // });
+        getCropData(z6Formattedgoal, 3);
         break;
       }
       case 5: {
-        getCropData(2, z5Formattedgoal);
-        // dispatch({
-        //   type: 'PULL_CROP_DATA',
-        //   data: state.zone5CropData,
-        // });
-        // dispatch({
-        //   type: 'ADD_GOALS',
-        //   data: z5Formattedgoal,
-        // });
+        getCropData(z5Formattedgoal, 2);
         break;
       }
       case 4: {
-        getCropData(1, z4Formattedgoal);
-        // dispatch({
-        //   type: 'PULL_CROP_DATA',
-        //   data: state.zone4CropData,
-        // });
-        // dispatch({
-        //   type: 'ADD_GOALS',
-        //   data: z4Formattedgoal,
-        // });
+        getCropData(z4Formattedgoal, 1);
         break;
       }
       default: {

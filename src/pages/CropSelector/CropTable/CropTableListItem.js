@@ -12,20 +12,20 @@ const CropTableListItem = ({
   const { state } = useContext(Context);
   const hasGoalRatingTwoOrLess = (crop = []) => {
     const { selectedGoals } = state;
-    return crop.inactive || selectedGoals.every((rating) => crop.fields[rating] <= 2);
+    return crop.inactive || selectedGoals.every((rating) => crop[rating] <= 2);
   };
 
   return (
     activeCropData.map((crop, index) => {
       if (
-        ((crop.fields['Zone Decision'] === 'Include') && (matchGoals ? !hasGoalRatingTwoOrLess(crop) : hasGoalRatingTwoOrLess(crop)))
+        ((crop['Zone Decision'] === 'Include') && (matchGoals ? !hasGoalRatingTwoOrLess(crop) : hasGoalRatingTwoOrLess(crop)))
       ) {
         return (
           <Fragment key={index}>
             <TableRow
               className={hasGoalRatingTwoOrLess(crop) && 'inactiveCropRow'}
               key={`croprow${index}`}
-              id={crop.fields.id}
+              id={crop.id}
               style={{ opacity: hasGoalRatingTwoOrLess(crop) && '0.2' }}
             >
               <TableCell style={{ height: 'auto' }}>
@@ -33,19 +33,19 @@ const CropTableListItem = ({
                   <div className="row">
                     <div className="col-auto pl-md-0">
                       <CropImage
-                        present={!!crop.fields['Image Data']}
+                        present={!!crop['Image Data']}
                         src={
-                          crop.fields['Image Data'] && crop.fields['Image Data']['Key Thumbnail']
-                            ? crop.fields['Image Data']['Key Thumbnail']
+                          crop['Image Data'] && crop['Image Data']['Key Thumbnail']
+                            ? crop['Image Data']['Key Thumbnail']
                             : 'https://placehold.it/100x100'
                         }
-                        alt={crop.fields['Image Data'] && crop.fields['Cover Crop Name']}
+                        alt={crop['Image Data'] && crop['Cover Crop Name']}
                       />
                     </div>
                     <div className="col-auto pl-md-0">
                       <div className="col-12 p-md-0">
                         <Typography variant="h6">
-                          {flipCoverCropName(crop.fields['Cover Crop Name'])}
+                          {flipCoverCropName(crop['Cover Crop Name'])}
                         </Typography>
                       </div>
                       <div className="col-12 p-md-0">
@@ -58,7 +58,7 @@ const CropTableListItem = ({
                             fontSize: 'small',
                           }}
                         >
-                          {trimString(crop.fields['Scientific Name'], 25)}
+                          {trimString(crop['Scientific Name'], 25)}
                         </Typography>
                       </div>
                       <div className="col-12 p-md-0">
@@ -67,7 +67,7 @@ const CropTableListItem = ({
                           className="text-uppercase"
                           style={{ color: 'gray' }}
                         >
-                          {crop.fields['Cover Crop Group']}
+                          {crop['Cover Crop Group']}
                         </Typography>
                       </div>
                     </div>
@@ -77,7 +77,7 @@ const CropTableListItem = ({
               <TableCell style={{ textAlign: 'left', verticalAlign: 'middle' }}>
                 <table>
                   <tbody>
-                    {crop.fields['Cover Crop Group'].toLowerCase() === 'legume' && (
+                    {crop['Cover Crop Group'].toLowerCase() === 'legume' && (
                     <tr>
                       <td>
                         <Typography variant="subtitle2" component="b" className="">
@@ -86,9 +86,9 @@ const CropTableListItem = ({
                       </td>
                       <td>
                         <Typography variant="subtitle2" component="b">
-                          {crop.fields['Nitrogen Accumulation Min, Legumes (lbs/A/y)']}
+                          {crop['Nitrogen Accumulation Min, Legumes (lbs/A/y)']}
                           -
-                          {crop.fields['Nitrogen Accumulation Max, Legumes (lbs/A/y)']}
+                          {crop['Nitrogen Accumulation Max, Legumes (lbs/A/y)']}
                           <span className="units">lbs/A/y</span>
                         </Typography>
                       </td>
@@ -104,9 +104,9 @@ const CropTableListItem = ({
                       </td>
                       <td>
                         <Typography variant="subtitle2" component="b">
-                          {crop.fields['Dry Matter Min (lbs/A/y)']}
+                          {crop['Dry Matter Min (lbs/A/y)']}
                           -
-                          {crop.fields['Dry Matter Max (lbs/A/y)']}
+                          {crop['Dry Matter Max (lbs/A/y)']}
                           <span className="units">lbs/A/y</span>
                         </Typography>
                       </td>
@@ -119,10 +119,10 @@ const CropTableListItem = ({
                       </td>
                       <td>
                         <Typography variant="subtitle2" component="b" className="text-uppercase">
-                          {crop.fields.Duration.toString().toLowerCase()
+                          {crop.Duration.toString().toLowerCase()
                           === 'short-lived perennial'
                             ? 'Perennial'
-                            : crop.fields.Duration.toString()}
+                            : crop.Duration.toString()}
                         </Typography>
                       </td>
                     </tr>
