@@ -122,9 +122,7 @@ const CropSidebar = ({
         }
       }
     });
-    console.log('state.cropData', state.cropData);
 
-    // let cropData = state.cropData.filter((crop, i) => console.log(i, crop['Cover Crop Name'], crop['Zone Decision']));
     let cropData = state.cropData.filter((crop) => crop['Zone Decision'] === 'Include');
 
     const search = sfilters.cropSearch?.toLowerCase().match(/\w+/g);

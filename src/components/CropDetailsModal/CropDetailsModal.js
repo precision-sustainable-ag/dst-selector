@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
 const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
   const { state } = useContext(Context);
   const classes = useStyles();
-  const modalData = crop.fields;
+  const modalData = crop;
 
   useEffect(() => {
     if (state.consent === true) {
@@ -110,7 +110,7 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
                                 <strong className="pl-2">
                                   PLANT HARDINESS ZONE
                                   {' '}
-                                  {crop.fields.Zone}
+                                  {crop.Zone}
                                   {' '}
                                   DATASET
                                   <span className="noprint">
@@ -160,7 +160,7 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
                     <tr>
                       <td>
                         <div id="cover-crop-modal-description">
-                          <InformationSheetContent crop={crop.fields} from="modal" />
+                          <InformationSheetContent crop={crop} from="modal" />
                         </div>
                       </td>
                     </tr>

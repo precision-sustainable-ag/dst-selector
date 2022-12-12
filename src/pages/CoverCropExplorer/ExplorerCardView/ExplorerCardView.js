@@ -39,12 +39,12 @@ const ExplorerCardView = ({ activeCropData }) => {
     setModalData({ fields: crop });
     setModalOpen(true);
   };
+
   const addCropToBasket = (cropId, cropName, btnId, cropData) => {
     const selectedCrops = {};
     selectedCrops.id = cropId;
     selectedCrops.cropName = cropName;
     selectedCrops.data = cropData;
-
     const buildDispatch = (action, crops) => {
       dispatch({
         type: 'SELECTED_CROPS_MODIFIER',
@@ -56,12 +56,14 @@ const ExplorerCardView = ({ activeCropData }) => {
       });
       enqueueSnackbar(`${cropName} ${action}`);
     };
-
     if (state.selectedCrops.length > 0) {
       // DONE: Remove crop from basket
-      const removeIndex = state.selectedCrops
-        .map((item) => item.id)
-        .indexOf(`${cropId}`);
+      let removeIndex = -1;
+      state.selectedCrops.forEach((item, i) => {
+        if (item.id === cropId) {
+          removeIndex = i;
+        }
+      });
       if (removeIndex === -1) {
         // element not in array
         buildDispatch('added', [...state.selectedCrops, selectedCrops]);

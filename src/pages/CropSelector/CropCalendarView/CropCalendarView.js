@@ -145,7 +145,7 @@ const CropCalendarView = ({ activeCropData }) => {
           selectedCropIds.push(crop.id);
         });
         const newActiveShadow = activeCropDataShadow.map((crop) => {
-          crop.inCart = selectedCropIds.includes(crop.fields.id);
+          crop.inCart = selectedCropIds.includes(crop.id);
           return crop;
         });
 

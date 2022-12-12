@@ -49,7 +49,6 @@ const CropCard = ({
   return (
     <Card className={classes.card} style={{ position: 'center', width: '100%' }}>
       <CardActionArea onClick={() => handleModalOpen(crop)}>
-        {console.log('crop', crop)}
         <CardMedia
           image={
             crop['Image Data']?.['Key Thumbnail']
