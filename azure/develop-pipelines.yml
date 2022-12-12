@@ -43,6 +43,7 @@ stages:
       displayName: "Create .env"
     - script: |
         chmod +x ./npm-ci.sh
+        npm config set '@psa:registry' https://node.bit.cloud
         ./npm-ci.sh
 
     - task: Docker@2
