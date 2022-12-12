@@ -50,6 +50,7 @@ stages:
         bit config set user.token $(BIT_TOKEN)
         bit config
 
+        bit init
         bit install
         bit compile
         bit tag --persist
