@@ -17,10 +17,13 @@ import {
 import React, { useContext, useEffect, useState } from 'react';
 import { Search } from '@mui/icons-material';
 import makeStyles from '@mui/styles/makeStyles';
+import { Map } from '@psa/dst.ui.map';
+import mapboxgl from 'mapbox-gl';
 import { BinaryButton } from '../../shared/constants';
 import { Context } from '../../store/Store';
-import Map from '../../components/Map/Map';
-import { MapboxApiKey } from '../../shared/keys';
+
+// eslint-disable-next-line import/no-webpack-loader-syntax, import/no-unresolved
+mapboxgl.workerClass = require('worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker').default;
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -186,25 +189,23 @@ const LocationComponent = ({
         <div className="col-xl-8 col-sm-12">
           <div className="container-fluid">
             <Map
-              initViewport={{
-                width: '100%',
-                height: '600px',
-                latitude: state.markers && state.markers.length > 0 ? state.markers[0][0] : 47,
-                longitude: state.markers && state.markers.length > 0 ? state.markers[0][1] : -122,
-                minZoom: 4,
-                maxZoom: 18,
-                startZoom: 12,
-              }}
               setAddress={setSelectedToEditSite}
-              apiKey={MapboxApiKey}
-              userInteractions={{
-                doubleClickZoom: false,
-                scrollZoom: true,
-                dragRotate: true,
-                dragPan: true,
-                keyboard: true,
-                touchZoomRotate: true,
-              }}
+              initWidth="100%"
+              initHeight="600px"
+              initLat={state.markers && state.markers.length > 0 ? state.markers[0][0] : 47}
+              initLon={state.markers && state.markers.length > 0 ? state.markers[0][1] : -122}
+              initStartZoom={12}
+              initMinZoom={4}
+              initMaxZoom={18}
+              hasSearchBar
+              hasMarker
+              hasNavigation
+              hasCoordBar
+              hasDrawing
+              hasGeolocate
+              hasFullScreen
+              hasMarkerPopup
+              hasMarkerMovable
             />
           </div>
         </div>

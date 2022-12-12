@@ -37,7 +37,7 @@ const PlantingAndGrowthWindows = ({ crop }) => {
             <AccordionDetails>
               <div className="row col-12 text-left">
                 <div className="col-7 mb-2">
-                  <Typography variant="body1">
+                  <Typography sx={{ fontWeight: 'bold' }} variant="body1">
                     <FiberManualRecord style={{ color: '#2f80ed' }} />
                       &nbsp;Frost Seeding
                   </Typography>
@@ -50,7 +50,7 @@ const PlantingAndGrowthWindows = ({ crop }) => {
                   </div>
                 </div>
                 <div className="col-7 mb-2">
-                  <Typography variant="body1">
+                  <Typography sx={{ fontWeight: 'bold' }} variant="body1">
                     <FiberManualRecord style={{ color: '#2d7b7b' }} />
                       &nbsp;Reliable Establishment
                   </Typography>
@@ -78,7 +78,7 @@ const PlantingAndGrowthWindows = ({ crop }) => {
                 </div>
 
                 <div className="col-7 mb-2">
-                  <Typography variant="body1">
+                  <Typography sx={{ fontWeight: 'bold' }} variant="body1">
                     <FiberManualRecord style={{ color: '#f2c94c' }} />
                       &nbsp;Temperature/Moisture Risk
                   </Typography>
@@ -108,7 +108,7 @@ const PlantingAndGrowthWindows = ({ crop }) => {
                 </div>
 
                 <div className="col-7 mb-2">
-                  <Typography variant="body1">
+                  <Typography sx={{ fontWeight: 'bold' }} variant="body1">
                     <FiberManualRecord style={{ color: '#598445' }} />
                       &nbsp;Active Growth Period
                   </Typography>
@@ -128,7 +128,7 @@ const PlantingAndGrowthWindows = ({ crop }) => {
                 </div>
 
                 <div className="col-7 mb-2">
-                  <Typography variant="body1">Winter Survival</Typography>
+                  <Typography sx={{ fontWeight: 'bold' }} variant="body1">Winter Survival</Typography>
                 </div>
                 <div className="mb-2">
                   <div className="blue-bg">
@@ -137,7 +137,7 @@ const PlantingAndGrowthWindows = ({ crop }) => {
                 </div>
 
                 <div className="col-7 mb-2">
-                  <Typography variant="body1">Can Interseed</Typography>
+                  <Typography sx={{ fontWeight: 'bold' }} variant="body1">Can Interseed</Typography>
                 </div>
                 <div className="mb-2">
                   <div className="blue-bg shrt_perennial wd-110">
