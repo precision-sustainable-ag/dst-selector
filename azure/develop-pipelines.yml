@@ -42,6 +42,7 @@ stages:
         echo REACT_APP_MAPBOX_API_KEY="$(REACT_APP_MAPBOX_API_KEY)" >> /home/vsts/work/1/s/.env
       displayName: "Create .env"
     - script: |
+        chmod +x ./npm-ci.sh
         ./npm-ci.sh
 
     - task: Docker@2
