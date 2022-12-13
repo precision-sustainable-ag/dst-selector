@@ -160,7 +160,7 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
                     <tr>
                       <td>
                         <div id="cover-crop-modal-description">
-                          <InformationSheetContent crop={crop} from="modal" />
+                          <InformationSheetContent crop={crop.fields ? crop.fields : modalData} from="modal" />
                         </div>
                       </td>
                     </tr>
