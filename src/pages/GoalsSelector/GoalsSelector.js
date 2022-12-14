@@ -36,12 +36,16 @@ const GoalsSelector = () => {
   const [allGoals, setAllGoals] = useState([{}]);
 
   useEffect(() => {
-    if (state.allGoals.length > 0) {
-      const filteredGoals = state.allGoals.filter(
-        (goal) => goal.fields.Variable.toLowerCase() !== 'promote water quality',
-      );
-      setAllGoals(filteredGoals);
+    async function makeGoals() {
+      if (state.allGoals.length > 0) {
+        const filteredGoals = state.allGoals.filter(
+          (goal) => goal.fields.Variable.toLowerCase() !== 'promote water quality',
+        );
+        setAllGoals(filteredGoals);
+      }
     }
+
+    makeGoals();
   }, [state.allGoals]);
 
   return (
