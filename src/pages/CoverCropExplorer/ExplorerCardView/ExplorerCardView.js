@@ -103,7 +103,11 @@ const ExplorerCardView = ({ activeCropData }) => {
             </Typography>
           </Grid>
         ) : (
-          'Loading..'
+          <div
+            style={{ padding: '50px 0 0 50px' }}
+          >
+            <b>Please select a zone</b>
+          </div>
         )}
       </Grid>
       <CropDetailsModal

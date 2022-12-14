@@ -15,7 +15,7 @@ import zone4DataDictionary from '../../shared/json/zone4/data-dictionary.json';
 import zone5DataDictionary from '../../shared/json/zone5/data-dictionary.json';
 import zone6DataDictionary from '../../shared/json/zone6/data-dictionary.json';
 import zone7DataDictionary from '../../shared/json/zone7/data-dictionary.json';
-import { Context } from '../../store/Store';
+import { Context, cropDataFormatter } from '../../store/Store';
 import '../../styles/header.scss';
 import HeaderLogoInfo from './HeaderLogoInfo/HeaderLogoInfo';
 import InformationBar from './InformationBar/InformationBar';
@@ -291,6 +291,7 @@ const Header = () => {
     await fetch(`https://developapi.covercrop-selector.org/crop-data?zoneId=${zone}`)
       .then((res) => res.json())
       .then((data) => {
+        cropDataFormatter(data.data);
         dispatch({
           type: 'PULL_CROP_DATA',
           data: data.data,
@@ -299,17 +300,6 @@ const Header = () => {
           type: 'ADD_GOALS',
           data: formattedGoal,
         });
-        // if (data.data.length > 0 && activeCropData.length > 0) {
-        //   activeCropData.forEach((crop) => {
-        //     data.data.forEach((thumb) => {
-        //       if (thumb.label === crop.fields['Cover Crop Name']) {
-        //         crop.fields['Image Data']['Key Thumbnail'] = thumb.thumbnail.src;
-        //         crop.fields['Image Data'].id = thumb.id;
-        //       }
-        //     });
-        //   });
-        // }
-        // setUpdatedActiveCropData(activeCropData);
       })
       .catch((err) => {
       // eslint-disable-next-line no-console
