@@ -17,11 +17,15 @@ import RenderGoals from './RenderGoals/RenderGoals';
 const ComparisonBar = ({
   filterData, goals, comparisonKeys, dispatch, comparisonView, classes,
 }) => {
+  const [filtersTotal, setFiltersTotal] = useState();
   const [filterValues, setFilterValues] = useState([]);
   const [goalsOpen, setGoalsOpen] = useState(false);
   const [allGoals, setAllGoals] = useState([]);
   useEffect(() => {
+    let totalFilters = 0;
     const filteredVals = filterData.map((filter) => {
+      totalFilters += filter.values.length;
+
       const vals = filter.values.map((val) => ({
         ...val,
         selected: false,
@@ -37,6 +41,7 @@ const ComparisonBar = ({
       name: goal,
       selected: false,
     }));
+    setFiltersTotal(totalFilters);
     setFilterValues(filteredVals);
     setAllGoals(filteredGoals);
   }, [filterData]);
@@ -144,6 +149,7 @@ const ComparisonBar = ({
           />
         </ListItem>
       )}
+      {(comparisonKeys.length + 1) !== filtersTotal && (
       <ListItem>
         <ListItemText
           primary={(
@@ -153,6 +159,7 @@ const ComparisonBar = ({
           )}
         />
       </ListItem>
+      )}
       {allGoals.length > 0 && (
         <RenderGoals
           goals={allGoals}
