@@ -288,7 +288,7 @@ const Header = () => {
   }, [state.markers, sfilters.zone, state.weatherDataReset]);
 
   async function getCropData(formattedGoal, zone = 4) {
-    await fetch(`https://developapi.covercrop-selector.org/crop-data?zoneId=${zone}`)
+    await fetch(`https://api.covercrop-selector.org/crop-data?zoneId=${zone}`)
       .then((res) => res.json())
       .then((data) => {
         cropDataFormatter(data.data);
