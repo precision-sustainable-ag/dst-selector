@@ -27,7 +27,7 @@ const CropPaintGrowthChart = ({
                   }
                 >
                   <div className="d-flex flex-row w-100 growthCellsWrapper">
-                    {data.fields[earlyStr] ? (
+                    {data[earlyStr] ? (
                       <Tooltip
                         arrow
                         title={(
@@ -36,7 +36,7 @@ const CropPaintGrowthChart = ({
                               {month.toUpperCase()}
                               , EARLY
                             </Typography>
-                            {data.fields[earlyStr].map((v, i) => (
+                            {data[earlyStr].map((v, i) => (
                               <Typography variant="body1" key={i} gutterBottom>
                                 {v}
                               </Typography>
@@ -45,7 +45,7 @@ const CropPaintGrowthChart = ({
                         )}
                       >
                         <div
-                          className={`${data.fields[earlyStr].toString()} w-50 growthCell-20`}
+                          className={`${data[earlyStr].toString()} w-50 growthCell-20`}
                         />
                       </Tooltip>
                     ) : (
@@ -61,7 +61,7 @@ const CropPaintGrowthChart = ({
                         <div className="w-50 basic growthCell-20" />
                       </Tooltip>
                     )}
-                    {data.fields[midStr] ? (
+                    {data[midStr] ? (
                       <Tooltip
                         arrow
                         title={(
@@ -70,7 +70,7 @@ const CropPaintGrowthChart = ({
                               {month.toUpperCase()}
                               , MID
                             </Typography>
-                            {data.fields[midStr].map((v, i) => (
+                            {data[midStr].map((v, i) => (
                               <Typography variant="body1" key={i} gutterBottom>
                                 {v}
                               </Typography>
@@ -79,7 +79,7 @@ const CropPaintGrowthChart = ({
                         )}
                       >
                         <div
-                          className={`${data.fields[midStr].toString()} w-50 growthCell-20`}
+                          className={`${data[midStr].toString()} w-50 growthCell-20`}
                         />
                       </Tooltip>
                     ) : (
@@ -120,7 +120,7 @@ const CropPaintGrowthChart = ({
                   }
                 >
                   <div className="d-flex flex-row w-100 growthCellsWrapper">
-                    {data.fields[earlyStr] ? (
+                    {data[earlyStr] ? (
                       <Tooltip
                         arrow
                         title={(
@@ -129,7 +129,7 @@ const CropPaintGrowthChart = ({
                               {month.toUpperCase()}
                               , EARLY
                             </Typography>
-                            {data.fields[earlyStr].map((v, i) => (
+                            {data[earlyStr].map((v, i) => (
                               <Typography variant="body1" key={i} gutterBottom>
                                 {v}
                               </Typography>
@@ -138,7 +138,7 @@ const CropPaintGrowthChart = ({
                         )}
                       >
                         <div
-                          className={`${data.fields[earlyStr].toString()} w-50 growthCell-30`}
+                          className={`${data[earlyStr].toString()} w-50 growthCell-30`}
                         />
                       </Tooltip>
                     ) : (
@@ -154,7 +154,7 @@ const CropPaintGrowthChart = ({
                         <div className="w-50 basic growthCell-30" />
                       </Tooltip>
                     )}
-                    {data.fields[midStr] ? (
+                    {data[midStr] ? (
                       <Tooltip
                         arrow
                         title={(
@@ -163,7 +163,7 @@ const CropPaintGrowthChart = ({
                               {month.toUpperCase()}
                               , MID
                             </Typography>
-                            {data.fields[midStr].map((v, i) => (
+                            {data[midStr].map((v, i) => (
                               <Typography variant="body1" key={i} gutterBottom>
                                 {v}
                               </Typography>
@@ -172,7 +172,7 @@ const CropPaintGrowthChart = ({
                         )}
                       >
                         <div
-                          className={`${data.fields[midStr].toString()} w-50 growthCell-30`}
+                          className={`${data[midStr].toString()} w-50 growthCell-30`}
                         />
                       </Tooltip>
                     ) : (
