@@ -40,9 +40,12 @@ const CropTableCard = ({
 
     // check if crop id exists inside state, if yes then remove it
     if (state.selectedCrops.length > 0) {
-      const removeIndex = state.selectedCrops
-        .map((item) => item.id)
-        .indexOf(`${cropId}`);
+      let removeIndex = -1;
+      state.selectedCrops.forEach((item, i) => {
+        if (item.id === cropId) {
+          removeIndex = i;
+        }
+      });
       if (removeIndex === -1) {
         cropModifierAction([...state.selectedCrops, selectedCrops], `${cropName} Added`);
       } else {
@@ -75,7 +78,7 @@ const CropTableCard = ({
                   </div>
                 )}
               >
-                {getRating(crop.fields[goal])}
+                {getRating(crop[goal])}
               </Tooltip>
             </div>
           </TableCell>
@@ -95,17 +98,17 @@ const CropTableCard = ({
               borderRadius: CustomStyles().nonRoundedRadius,
               width: '150px',
             }}
-            className={selectedBtns.includes(crop.fields.id) ? 'activeCartBtn' : 'inactiveCartBtn'}
+            className={selectedBtns.includes(crop.id) ? 'activeCartBtn' : 'inactiveCartBtn'}
             onClick={() => {
               addCropToBasket(
-                crop.fields.id,
-                crop.fields['Cover Crop Name'],
+                crop.id,
+                crop['Cover Crop Name'],
                 `cartBtn${indexKey}`,
-                crop.fields,
+                crop,
               );
             }}
           >
-            {selectedBtns.includes(crop.fields.id) ? 'REMOVE' : 'ADD TO LIST'}
+            {selectedBtns.includes(crop.id) ? 'REMOVE' : 'ADD TO LIST'}
           </LightButton>
           {' '}
           <Button size="small" onClick={() => handleModalOpen(crop)}>

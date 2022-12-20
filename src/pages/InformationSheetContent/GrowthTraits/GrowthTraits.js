@@ -89,7 +89,7 @@ const GrowthTraits = ({ crop }) => {
               <GrowthTrait
                 crop={crop}
                 attribute="Soil Texture"
-                variable={crop['Soil Textures'].map((val, index) => (
+                variable={crop['Soil Texture'].map((val, index) => (
                   <Typography className="text-capitalize" key={index} variant="body1">{val}</Typography>
                 ))}
               />

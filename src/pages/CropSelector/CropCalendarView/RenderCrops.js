@@ -28,14 +28,14 @@ const RenderCrops = ({
   const hasGoalRatingTwoOrLess = (crop = []) => {
     const { selectedGoals } = state;
 
-    return crop.inactive || selectedGoals.every((rating) => crop.fields[rating] <= 2);
+    return crop.inactive || selectedGoals.every((rating) => crop[rating] <= 2);
   };
 
   const getAverageGoalRating = (selectedGoals, crop) => {
     let goalRating = 0;
     selectedGoals.forEach((goal) => {
-      if (crop.fields[goal]) {
-        goalRating += crop.fields[goal];
+      if (crop[goal]) {
+        goalRating += crop[goal];
       }
     });
 
@@ -80,7 +80,7 @@ const RenderCrops = ({
   return cropData
     .filter((crop) => (active ? !hasGoalRatingTwoOrLess(crop) : hasGoalRatingTwoOrLess(crop)))
     .map(
-      (crop, index) => crop.fields['Zone Decision'] === 'Include' && (
+      (crop, index) => crop['Zone Decision'] === 'Include' && (
       <TableRow
         key={`cropRow${index}`}
         style={hasGoalRatingTwoOrLess(crop) ? { opacity: '0.2' } : {}}
@@ -92,7 +92,7 @@ const RenderCrops = ({
           }}
         >
           <div className="tdContainer d-flex justify-content-between flex-nowrap">
-            {crop.fields['Image Data'] ? (
+            {crop['Image Data'] ? (
               <Button
                 size="small"
                 onClick={() => {
@@ -104,11 +104,11 @@ const RenderCrops = ({
                   view="calendar"
                   present
                   src={
-                        crop.fields['Image Data']['Key Thumbnail']
-                          ? crop.fields['Image Data']['Key Thumbnail']
+                        crop['Image Data']['Key Thumbnail']
+                          ? crop['Image Data']['Key Thumbnail']
                           : 'https://placehold.it/100x100'
                       }
-                  alt={crop.fields['Cover Crop Name']}
+                  alt={crop['Cover Crop Name']}
                 />
               </Button>
             ) : (
@@ -130,9 +130,9 @@ const RenderCrops = ({
                 setModalOpen(!modalOpen);
               }}
             >
-              {crop.fields['Cover Crop Name'] !== 'Sorghum-sudangrass'
-                ? flipCoverCropName(crop.fields['Cover Crop Name'])
-                : trimString(flipCoverCropName(crop.fields['Cover Crop Name']), 15)}
+              {crop['Cover Crop Name'] !== 'Sorghum-sudangrass'
+                ? flipCoverCropName(crop['Cover Crop Name'])
+                : trimString(flipCoverCropName(crop['Cover Crop Name']), 15)}
             </Button>
           </div>
         </TableCell>
@@ -163,18 +163,18 @@ const RenderCrops = ({
               width: '130px',
             }}
             className={
-                  selectedBtns.includes(crop.fields.id) ? 'activeCartBtn' : 'inactiveCartBtn'
+                  selectedBtns.includes(crop.id) ? 'activeCartBtn' : 'inactiveCartBtn'
                 }
             onClick={() => {
               addCropToBasket(
-                crop.fields.id,
-                crop.fields['Cover Crop Name'],
+                crop.id,
+                crop['Cover Crop Name'],
                 `cartBtn${index}`,
-                crop.fields,
+                crop,
               );
             }}
           >
-            {selectedBtns.includes(crop.fields.id) ? 'ADDED' : 'ADD TO LIST'}
+            {selectedBtns.includes(crop.id) ? 'ADDED' : 'ADD TO LIST'}
           </LightButton>
         </TableCell>
       </TableRow>

@@ -15,18 +15,13 @@
 import moment from 'moment-timezone';
 import React, { createContext, useReducer, useMemo } from 'react';
 import desc from '../shared/json/descriptions/crop-descriptions.json';
-import img from '../shared/json/image-locations/image-dictionary.json';
-import z4crops from '../shared/json/zone4/crop-data.json';
 import z4Dict from '../shared/json/zone4/data-dictionary.json';
-import z5crops from '../shared/json/zone5/crop-data.json';
 import z5Dict from '../shared/json/zone5/data-dictionary.json';
-import z6crops from '../shared/json/zone6/crop-data.json';
 import z6Dict from '../shared/json/zone6/data-dictionary.json';
-import z7crops from '../shared/json/zone7/crop-data.json';
 import z7Dict from '../shared/json/zone7/data-dictionary.json';
 import Reducer from './Reducer';
 
-const cropDataFormatter = (cropData = [{}]) => {
+export const cropDataFormatter = (cropData = [{}]) => {
   const excludedCropZoneDecisionKeys = ['Exclude', 'Up and Coming', 'Discuss'];
   const loremText = () => 'Description for this cover crop is currently unavailable.';
   // Filter unwanted rows
@@ -92,19 +87,9 @@ const cropDataFormatter = (cropData = [{}]) => {
     // remove open discussion row and zone decision !== include
 
     let val = { fields: crop };
-
     val = monthStringBuilder(val);
 
     val.fields.inBasket = false;
-
-    val.fields['Image Data'] = img[val.fields['Cover Crop Name']]
-      ? img[val.fields['Cover Crop Name']]
-      : {
-        'Cover Crop': val.fields['Cover Crop Name'],
-        'Key Thumbnail': null,
-        Notes: null,
-        Directory: null,
-      };
 
     val.fields['Crop Description'] = desc[val.fields['Cover Crop Name']]
       ? desc[val.fields['Cover Crop Name']]
@@ -119,7 +104,8 @@ const cropDataFormatter = (cropData = [{}]) => {
     }
 
     val.fields['Discourages Nematodes'] = val.fields['Disoucrages Nematodes'];
-    val.fields.id = val.fields.__id;
+    // TODO: do we want the __id value to be apart of the object maybe as altId we need the ID from the API to be unaltered
+    // val.fields.id = val.fields.__id;
     val.fields.Drought = val.fields['Drought Tolerance'];
     val.fields.Flood = val.fields['Flood Tolerance'];
     val.fields.Heat = val.fields['Heat Tolerance'];
@@ -161,16 +147,6 @@ const cropDataFormatter = (cropData = [{}]) => {
   });
 };
 
-const z7AllCrops = z7crops;
-const z6AllCrops = z6crops;
-const z5AllCrops = z5crops;
-const z4AllCrops = z4crops;
-
-const z7CropData = cropDataFormatter(z7AllCrops, 7);
-const z6CropData = cropDataFormatter(z6AllCrops, 6);
-const z5CropData = cropDataFormatter(z5AllCrops, 5);
-const z4CropData = cropDataFormatter(z4AllCrops, 4);
-
 const initialState = {
   consent: false,
   progress: 0,
@@ -186,7 +162,7 @@ const initialState = {
   selectedCheckboxes: [],
   selectedStars: {},
   allGoals: [],
-  cropData: z7CropData,
+  cropData: [],
   selectedCrops: [],
   selectedGoals: [],
   zoom: 13,
@@ -243,10 +219,10 @@ const initialState = {
       endDate: '',
     },
   },
-  zone7CropData: z7CropData,
-  zone6CropData: z6CropData,
-  zone5CropData: z5CropData,
-  zone4CropData: z4CropData,
+  zone7CropData: [],
+  zone6CropData: [],
+  zone5CropData: [],
+  zone4CropData: [],
   zone7Dictionary: z7Dict,
   zone6Dictionary: z6Dict,
   zone5Dictionary: z5Dict,

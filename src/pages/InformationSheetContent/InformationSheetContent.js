@@ -51,7 +51,7 @@ const InformationSheetContent = ({ crop }) => {
   useEffect(() => {
     const allImages = [];
     async function getData() {
-      await fetch(`https://develop.covercrop-data.org/crops/${crop['Image Data'].id}`)
+      await fetch(`https://covercrop-data.org/crops/${crop.id}`)
         .then((res) => res.json())
         .then((data) => {
           data.data.images.forEach((image) => {
