@@ -1,27 +1,20 @@
+// eslint-disable react/jsx-one-expression-per-line
 import {
-  Button, Collapse, List, ListItem, ListItemText, Typography,
+  Button,
+  Collapse,
+  List,
+  ListItem,
+  ListItemText,
+  Typography,
 } from '@mui/material';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
-import React, { useContext } from 'react';
-import { arrayMove, List as ListMovable } from 'react-movable';
+import React, { useContext, Fragment } from 'react';
+// import { arrayMove, List as ListMovable } from 'react-movable';
 import { Context } from '../../../store/Store';
 import { CustomStyles } from '../../../shared/constants';
 
-const CoverCropGoals = ({ handleToggle, classes, style }) => {
+const CoverCropGoals = ({ handleToggle }) => {
   const { state, dispatch } = useContext(Context);
-
-  const updateSelectedGoals = (newGoalArr, oldIndex, newIndex) => {
-    const newGoals = arrayMove(newGoalArr, oldIndex, newIndex);
-
-    dispatch({
-      type: 'DRAG_GOALS',
-      data: {
-        selectedGoals: newGoals,
-        snackOpen: true,
-        snackMessage: 'Goal Priority Changed',
-      },
-    });
-  }; // updateSelectedGoals
 
   const changeProgress = () => {
     dispatch({
@@ -31,42 +24,6 @@ const CoverCropGoals = ({ handleToggle, classes, style }) => {
       },
     });
   }; // changeProgress
-
-  const renderList = (children, props, isDragged) => (
-    <ol
-      className="goalsListFilter"
-      {...props}
-      style={{
-        cursor: isDragged ? 'grabbing' : undefined,
-      }}
-    >
-      {children}
-    </ol>
-  );
-
-  const renderItem = (value, props, isDragged, isSelected, index) => (
-    <li
-      {...props}
-      style={{ ...style }}
-    >
-      <div className="d-flex w-100 flex-row justify-content-between align-items-center">
-        <div>
-          <Typography
-            variant="body1"
-            style={{
-              cursor: isDragged ? 'grabbing' : 'grab',
-              fontSize: '10pt',
-              fontWeight: isDragged || isSelected ? '700' : 'normal',
-              color: '#48a8ab',
-              width: '100%',
-            }}
-          >
-            {`${index + 1}. ${value}`}
-          </Typography>
-        </div>
-      </div>
-    </li>
-  );
 
   return (
     <>
@@ -85,49 +42,38 @@ const CoverCropGoals = ({ handleToggle, classes, style }) => {
       <Collapse in={state.goalsOpen} timeout="auto" unmountOnExit>
         {state.selectedGoals.length === 0 ? (
           <List component="div" disablePadding>
-            <ListItem button className={classes.nested}>
+            <ListItem button sx={{ paddingLeft: 3 }}>
               <ListItemText primary="No Goals Selected" />
             </ListItem>
-            <ListItem className={classes.nested}>
+            <ListItem sx={{ paddingLeft: 3 }}>
               <Button onClick={() => changeProgress()}>click to edit</Button>
             </ListItem>
           </List>
         ) : (
           <>
             <List component="div" disablePadding>
-              <ListItem className={classes.nested}>
+              <ListItem sx={{ paddingLeft: 3 }}>
                 <ListItemText
                   primary={(
-                    <div>
-                      <div>
-                        <Typography variant="body1"> Goal Priority Order</Typography>
-                      </div>
-                      <div>
+                    <>
+                      <Typography variant="body1"> Goal Priority Order</Typography>
+                      {state?.selectedGoals?.map((goal, index) => (
                         <Typography
-                          variant="body2"
-                          style={{
-                            fontWeight: 'normal',
-                            fontSize: '10pt',
-                          }}
+                          variant="body1"
+                          sx={{ fontWeight: 'normal', fontSize: '10pt', color: '#48a8ab' }}
                         >
-                          Click & drag to reorder
+                          <br />
+                          {index}
+                          {': '}
+                          {goal}
                         </Typography>
-                      </div>
-                    </div>
+                      ))}
+                    </>
                   )}
                 />
               </ListItem>
             </List>
-            <ListMovable
-              values={state.selectedGoals}
-              onChange={({ oldIndex, newIndex }) => updateSelectedGoals(state.selectedGoals, oldIndex, newIndex)}
-              renderList={({ children, props, isDragged }) => renderList(children, props, isDragged)}
-              renderItem={({
-                value, props, isDragged, isSelected, index,
-              }) => renderItem(value, props, isDragged, isSelected, index)}
-            />
-
-            <ListItem className={classes.nested}>
+            <ListItem sx={{ paddingLeft: 3 }}>
               <ListItemText disableTypography>
                 <Typography
                   variant="button"
@@ -135,7 +81,7 @@ const CoverCropGoals = ({ handleToggle, classes, style }) => {
                   onClick={() => changeProgress()}
                   style={{ cursor: 'pointer' }}
                 >
-                  &nbsp;Click To Edit
+                  &nbsp;Click Here to Edit Goals
                 </Typography>
               </ListItemText>
             </ListItem>
