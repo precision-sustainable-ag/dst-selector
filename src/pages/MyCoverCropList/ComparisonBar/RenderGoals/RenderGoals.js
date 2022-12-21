@@ -25,7 +25,7 @@ const RenderGoals = ({
   <>
     <ListItem
       button
-        // className={classes.nested}
+      sx={{ paddingLeft: 3 }}
       className={goalsOpen ? 'filterOpen' : 'filterClose'}
       component="div"
       onClick={() => setGoalsOpen(!goalsOpen)}

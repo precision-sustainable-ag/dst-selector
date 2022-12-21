@@ -20,7 +20,7 @@ import SoilDrainageInfoContent from './SoilDrainageInfoContent/SoilDrainageInfoC
 import TerminationInfo from './TerminationInfo/TerminationInfo';
 import InformationSheetPlanting from './InformationSheetPlanting/InformationSheetPlanting';
 import PlantingAndGrowthWindows from './PlantingAndGrowthWindows/PlantingAndGrowthWindows';
-import ExtendedComments from './ExtendedComments/EntendedComments';
+import ExtendedComments from './ExtendedComments/ExtendedComments';
 import InformationSheetReferences from './InformationSheetReferences/InformationSheetReferences';
 
 const InformationSheetContent = ({ crop }) => {

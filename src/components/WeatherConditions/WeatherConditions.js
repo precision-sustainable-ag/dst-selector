@@ -13,8 +13,9 @@ import {
   Select,
   TextField,
   Typography,
+  Box,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
+// import makeStyles from '@mui/styles/makeStyles';
 import moment from 'moment';
 import React, { useContext, useEffect, useState } from 'react';
 import { LightButton } from '../../shared/constants';
@@ -23,28 +24,28 @@ import WeatherPrecipitation from './WeatherPrecipitation/WeatherPrecipitation';
 import WeatherFrostDates from './WeatherFrostDates/WeatherFrostDates';
 import WeatherFrostFreeDays from './WeatherFrostFreeDays/WeatherFrostFreeDays';
 
-const useStyles = makeStyles((theme) => ({
-  modal: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  paper: {
-    backgroundColor: theme.palette.background.paper,
-    border: '2px solid #000',
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3),
-  },
-  textField: {
-    marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(1),
-    width: 200,
-  },
-}));
+// const useStyles = makeStyles((theme) => ({
+//   modal: {
+//     display: 'flex',
+//     alignItems: 'center',
+//     justifyContent: 'center',
+//   },
+//   paper: {
+//     backgroundColor: theme.palette.background.paper,
+//     border: '2px solid #000',
+//     boxShadow: theme.shadows[5],
+//     padding: theme.spacing(2, 4, 3),
+//   },
+//   textField: {
+//     marginLeft: theme.spacing(1),
+//     marginRight: theme.spacing(1),
+//     width: 200,
+//   },
+// }));
 
 const WeatherConditions = ({ caller }) => {
   const { state, dispatch } = useContext(Context);
-  const classes = useStyles();
+  // const classes = useStyles();
   const [months, setMonths] = useState([]);
   const [currentMonthFull, setCurrentMonthFull] = useState('NOVEMBER');
   const [anyValuesChanged, setAnyValuesChanged] = useState(false);
@@ -224,12 +225,25 @@ const WeatherConditions = ({ caller }) => {
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="ransition-modal-description"
-        className={classes.modal}
+        // className={classes.modal}
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
         open={open}
         onClose={handleModalClose}
         closeAfterTransition
       >
-        <div className={`modalContainer ${classes.paper}`}>
+        <Box
+          className="modalContainer"
+          sx={{
+            backgroundColor: 'background.paper',
+            border: '2px solid #000',
+            boxShadow: 5,
+            padding: (theme) => theme.spacing(2, 4, 3),
+          }}
+        >
           <h2 id="transition-modal-title">Edit Climate Data</h2>
           <div id="transition-modal-description">
             <div className="container-fluid">
@@ -298,7 +312,12 @@ const WeatherConditions = ({ caller }) => {
                             setFirstFrostDay(1);
                           }
                         }}
-                        className={classes.textField}
+                        // className={classes.textField}
+                        sx={{
+                          marginLeft: 1,
+                          marginRight: 1,
+                          width: 200,
+                        }}
                       />
                       {parseInt(firstFrostDay, 10)
                         !== parseInt(weatherDataShadow.averageFrost.firstFrostDate.day, 10) ? (
@@ -375,7 +394,12 @@ const WeatherConditions = ({ caller }) => {
                             setLastFrostDay(1);
                           }
                         }}
-                        className={classes.textField}
+                        // className={classes.textField}
+                        sx={{
+                          marginLeft: 1,
+                          marginRight: 1,
+                          width: 200,
+                        }}
                       />
                       {parseInt(lastFrostDay, 10)
                         !== parseInt(weatherDataShadow.averageFrost.lastFrostDate.day, 10) ? (
@@ -417,7 +441,12 @@ const WeatherConditions = ({ caller }) => {
                             thisMonth: event.target.value === '' ? 0 : event.target.value,
                           });
                         }}
-                        className={classes.textField}
+                        // className={classes.textField}
+                        sx={{
+                          marginLeft: 1,
+                          marginRight: 1,
+                          width: 200,
+                        }}
                       />
                       {parseFloat(averagePrecipitation.thisMonth)
                         !== parseFloat(weatherDataShadow.averagePrecipitation.thisMonth) ? (
@@ -456,7 +485,12 @@ const WeatherConditions = ({ caller }) => {
                                 event.target.value === '' ? 0 : parseFloat(event.target.value),
                           });
                         }}
-                        className={classes.textField}
+                        // className={classes.textField}
+                        sx={{
+                          marginLeft: 1,
+                          marginRight: 1,
+                          width: 200,
+                        }}
                       />
                       {parseFloat(averagePrecipitation.annual)
                         !== parseFloat(weatherDataShadow.averagePrecipitation.annual) ? (
@@ -502,7 +536,12 @@ const WeatherConditions = ({ caller }) => {
                             setFrostFreeDays(0);
                           }
                         }}
-                        className={classes.textField}
+                        // className={classes.textField}
+                        sx={{
+                          marginLeft: 1,
+                          marginRight: 1,
+                          width: 200,
+                        }}
                       />
                       {parseInt(frostFreeDays, 10) !== parseInt(weatherDataShadow.frostFreeDays, 10) ? (
                         <Button
@@ -532,7 +571,7 @@ const WeatherConditions = ({ caller }) => {
               </FormGroup>
             </div>
           </div>
-        </div>
+        </Box>
       </Modal>
     </div>
   );
