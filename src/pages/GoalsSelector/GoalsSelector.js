@@ -6,23 +6,11 @@
 
 // TODO: Goal tags are not responsive!
 import { Typography, Grid } from '@mui/material';
-// import makeStyles from '@mui/styles/makeStyles';
 import Skeleton from '@mui/material/Skeleton';
 import React, { useContext, useEffect, useState } from 'react';
 import { Context } from '../../store/Store';
 import '../../styles/goalsSelector.scss';
 import GoalTag from './GoalTag/GoalTag';
-
-// const useStyles = makeStyles((theme) => ({
-//   root: {
-//     display: 'flex',
-//     justifyContent: 'center',
-//     flexWrap: 'wrap',
-//     '& > *': {
-//       margin: theme.spacing(1),
-//     },
-//   },
-// }));
 
 const goalSkeletonStyle = {
   height: '50px',
@@ -32,7 +20,6 @@ const goalSkeletonStyle = {
 
 const GoalsSelector = () => {
   const { state } = useContext(Context);
-  // const classes = useStyles();
   const [allGoals, setAllGoals] = useState([{}]);
 
   useEffect(() => {

@@ -12,7 +12,6 @@ import {
   Zoom,
   Box,
 } from '@mui/material';
-// import makeStyles from '@mui/styles/makeStyles';
 import { ArrowBack, ArrowForward, KeyboardArrowUp } from '@mui/icons-material';
 import React, { useContext, useEffect, useState } from 'react';
 import ReactGA from 'react-ga';
@@ -25,16 +24,7 @@ import CropTableComponent from './CropTable/CropTable';
 
 const _ = require('lodash');
 
-// const useStyles = makeStyles((theme) => ({
-//   root: {
-//     position: 'fixed',
-//     bottom: theme.spacing(2),
-//     right: theme.spacing(2),
-//   },
-// }));
-
 const ScrollTop = ({ children }) => {
-  // const classes = useStyles();
   const trigger = useScrollTrigger({
     disableHysteresis: true,
     threshold: 180,

@@ -43,7 +43,6 @@ const InformationSheetGoals = ({ crop, cropZone, cropGrowingWindow }) => (
         <Accordion defaultExpanded>
           <AccordionSummary
             expandIcon={<ExpandMore />}
-            // classes={{ expanded: classes.expanded }}
             sx={{
               '&$expanded': {
                 margin: '4px 0',

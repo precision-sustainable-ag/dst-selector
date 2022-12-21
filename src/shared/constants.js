@@ -8,7 +8,6 @@ import {
   Typography,
   Tooltip,
 } from '@mui/material';
-// import withStyles from '@mui/styles/withStyles';
 import styled from 'styled-components';
 import moment from 'moment';
 import { Info, MonetizationOn } from '@mui/icons-material';

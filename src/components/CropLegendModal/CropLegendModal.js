@@ -10,30 +10,13 @@ import {
   Typography,
   Box,
 } from '@mui/material';
-// import makeStyles from '@mui/styles/makeStyles';
 import { CloseRounded, FiberManualRecord } from '@mui/icons-material';
 import React from 'react';
-
-// const useStyles = makeStyles((theme) => ({
-//   modal: {
-//     display: 'flex',
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//   },
-//   paper: {
-//     backgroundColor: theme.palette.background.paper,
-//     border: '2px solid #000',
-//     boxShadow: theme.shadows[5],
-//     padding: '1em',
-//     width: '30%',
-//   },
-// }));
 
 const CropLegendModal = ({ legendModal, handleLegendModal }) => (
   <Modal
     open={legendModal}
     onClose={handleLegendModal}
-    // className={classes.modal}
     sx={{
       display: 'flex',
       alignItems: 'center',

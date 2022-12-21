@@ -16,7 +16,6 @@ import {
 } from '@mui/material';
 import React, { useContext, useEffect, useState } from 'react';
 import { Search } from '@mui/icons-material';
-// import makeStyles from '@mui/styles/makeStyles';
 import { Map } from '@psa/dst.ui.map';
 import mapboxgl from 'mapbox-gl';
 import { BinaryButton } from '../../shared/constants';
@@ -25,22 +24,12 @@ import { Context } from '../../store/Store';
 // eslint-disable-next-line import/no-webpack-loader-syntax, import/no-unresolved
 mapboxgl.workerClass = require('worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker').default;
 
-// const useStyles = makeStyles((theme) => ({
-//   formControl: {
-//     minWidth: 120,
-//   },
-//   selectEmpty: {
-//     marginTop: theme.spacing(2),
-//   },
-// }));
-
 const LocationComponent = ({
   title,
   caller,
   defaultMarkers,
   closeExpansionPanel,
 }) => {
-  // const classes = useStyles();
   const { state, dispatch } = useContext(Context);
   const section = window.location.href.includes('selector') ? 'selector' : 'explorer';
   const sfilters = state[section];
@@ -161,7 +150,6 @@ const LocationComponent = ({
                 <FormControl
                   variant="filled"
                   style={{ width: '100%' }}
-                  // className={classes.formControl}
                   sx={{ minWidth: 120 }}
                 >
                   <InputLabel>PLANT HARDINESS ZONE</InputLabel>
@@ -186,7 +174,6 @@ const LocationComponent = ({
             </div>
           </div>
         </div>
-        {/* <div className="col-xl-1 col-sm-0"></div> */}
         <div className="col-xl-8 col-sm-12">
           <div className="container-fluid">
             <Map
