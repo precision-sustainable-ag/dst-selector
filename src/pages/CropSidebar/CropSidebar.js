@@ -2,7 +2,6 @@
 /*
   This file contains the CropSidebar and its styles
   The CropSidebar is the sidebar which contains the filtering and calendar view components
-  Styles are created using makeStyles
 */
 
 import {
@@ -14,7 +13,6 @@ import {
   ListSubheader,
   Typography,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import {
   CalendarToday, Compare, ExpandLess, ExpandMore,
 } from '@mui/icons-material';
@@ -34,26 +32,6 @@ import SidebarFilter from './SidebarFilter/SidebarFilter';
 import CoverCropGoals from './CoverCropGoals/CoverCropGoals';
 import PreviousCashCrop from './PreviousCashCrop/PreviousCashCrop';
 import PlantHardinessZone from './PlantHardinessZone/PlantHardinessZone';
-
-const useStyles = makeStyles((theme) => ({
-  listItemRoot: {
-    borderTop: '0px',
-    border: `1px solid ${CustomStyles().primaryProgressBtnBorderColor}`,
-  },
-  formControlLabel: {},
-  listSubHeaderRoot: {
-    backgroundColor: CustomStyles().lightGreen,
-    color: 'black',
-    textAlign: 'center',
-    height: '50px',
-  },
-  nested: {
-    paddingLeft: theme.spacing(3),
-  },
-  subNested: {
-    paddingLeft: theme.spacing(4),
-  },
-}));
 
 const CropSidebar = ({
   comparisonView,
@@ -82,7 +60,6 @@ const CropSidebar = ({
     return sidebarStarter;
   });
 
-  const classes = useStyles();
   const section = window.location.href.includes('selector') ? 'selector' : 'explorer';
   const sfilters = state[section];
 
@@ -438,7 +415,6 @@ const CropSidebar = ({
       {comparisonView && (
         <div className="col-12">
           <ComparisonBar
-            classes={classes}
             filterData={sidebarFilters}
             goals={state.selectedGoals.length > 0 ? state.selectedGoals : []}
             comparisonKeys={state.comparisonKeys}
@@ -482,11 +458,15 @@ const CropSidebar = ({
         <div className="col-12" id="Filters">
           <List
             component="nav"
-            classes={{ root: classes.listRoot }}
             aria-labelledby="nested-list-subheader"
             subheader={(
               <ListSubheader
-                classes={{ root: classes.listSubHeaderRoot }}
+                sx={{
+                  backgroundColor: '#add08f',
+                  color: 'black',
+                  textAlign: 'center',
+                  height: '50px',
+                }}
                 style={{ marginBottom: '15px' }}
                 component="div"
                 id="nested-list-subheader"
@@ -494,7 +474,6 @@ const CropSidebar = ({
                 FILTER
               </ListSubheader>
             )}
-            className={classes.root}
           >
             {from === 'table' && (
               <>
@@ -503,11 +482,10 @@ const CropSidebar = ({
                 )}
 
                 {isListView && (
-                  <CoverCropGoals classes={classes} style={style} handleToggle={handleToggle} />
+                  <CoverCropGoals style={style} handleToggle={handleToggle} />
                 )}
 
                 <PreviousCashCrop
-                  classes={classes}
                   handleToggle={handleToggle}
                   setDateRange={setDateRange}
                 />
@@ -546,7 +524,6 @@ const CropSidebar = ({
       ) : (
         <div className="col-12">
           <ComparisonBar
-            classes={classes}
             filterData={sidebarFilters}
             goals={state.selectedGoals.length > 0 ? state.selectedGoals : []}
             comparisonKeys={state.comparisonKeys}

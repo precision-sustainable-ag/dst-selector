@@ -120,18 +120,24 @@ const ComparisonBar = ({
   return comparisonView ? (
     <List
       component="nav"
-      classes={{ root: classes.listRoot }}
       aria-labelledby="nested-list-subheader"
       subheader={(
         <ListSubheader
-          classes={{ root: classes.listSubHeaderRoot }}
+          sx={{
+            backgroundColor: '#add08f',
+            color: 'black',
+            textAlign: 'center',
+            height: '50px',
+          }}
           component="div"
           id="nested-list-subheader"
         >
           COMPARE BY
         </ListSubheader>
       )}
-      className={classes.root}
+      sx={{
+        width: '100%',
+      }}
     >
       {comparisonKeys.length > 0 && (
         <ListItem onClick={() => {}}>

@@ -2,7 +2,6 @@
 /*
   This file contains the ExplorerCardView component, and styles
   The ExplorerCardView component is the card that contains a single crop in the crop explorer
-  Styles are created using makeStyles
 */
 
 import {
