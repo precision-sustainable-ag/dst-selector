@@ -13,7 +13,7 @@ import React, { useContext, Fragment } from 'react';
 import { Context } from '../../../store/Store';
 import { CustomStyles } from '../../../shared/constants';
 
-const CoverCropGoals = ({ handleToggle, classes }) => {
+const CoverCropGoals = ({ handleToggle }) => {
   const { state, dispatch } = useContext(Context);
 
   const changeProgress = () => {
@@ -42,17 +42,17 @@ const CoverCropGoals = ({ handleToggle, classes }) => {
       <Collapse in={state.goalsOpen} timeout="auto" unmountOnExit>
         {state.selectedGoals.length === 0 ? (
           <List component="div" disablePadding>
-            <ListItem button className={classes.nested}>
+            <ListItem button sx={{ paddingLeft: 3 }}>
               <ListItemText primary="No Goals Selected" />
             </ListItem>
-            <ListItem className={classes.nested}>
+            <ListItem sx={{ paddingLeft: 3 }}>
               <Button onClick={() => changeProgress()}>click to edit</Button>
             </ListItem>
           </List>
         ) : (
           <>
             <List component="div" disablePadding>
-              <ListItem className={classes.nested}>
+              <ListItem sx={{ paddingLeft: 3 }}>
                 <ListItemText
                   primary={(
                     <>
@@ -73,7 +73,7 @@ const CoverCropGoals = ({ handleToggle, classes }) => {
                 />
               </ListItem>
             </List>
-            <ListItem className={classes.nested}>
+            <ListItem sx={{ paddingLeft: 3 }}>
               <ListItemText disableTypography>
                 <Typography
                   variant="button"

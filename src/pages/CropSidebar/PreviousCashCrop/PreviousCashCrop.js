@@ -18,7 +18,7 @@ import { Context } from '../../../store/Store';
 import DateRangeDialog from './DateRangeDialog';
 import { CustomStyles } from '../../../shared/constants';
 
-const PreviousCashCrop = ({ handleToggle, classes, setDateRange }) => {
+const PreviousCashCrop = ({ handleToggle, setDateRange }) => {
   const { state, dispatch } = useContext(Context);
   const [cashCropVisible, setCashCropVisible] = useState(true); // TODO: buggy(?);
 
@@ -44,7 +44,7 @@ const PreviousCashCrop = ({ handleToggle, classes, setDateRange }) => {
       </ListItem>
       <Collapse in={state.cashCropOpen} timeout="auto" unmountOnExit>
         <List component="div">
-          <ListItem className={classes.nested}>
+          <ListItem sx={{ paddingLeft: 3 }}>
             <TextField
               fullWidth
               label="Previous Cash Crop"
@@ -54,7 +54,7 @@ const PreviousCashCrop = ({ handleToggle, classes, setDateRange }) => {
               variant="outlined"
             />
           </ListItem>
-          <ListItem className={classes.nested}>
+          <ListItem sx={{ paddingLeft: 3 }}>
             <TextField
               label="Planting to Harvest"
               value={`${
@@ -81,10 +81,10 @@ const PreviousCashCrop = ({ handleToggle, classes, setDateRange }) => {
               }}
             />
           </ListItem>
-          <ListItem className={classes.nested}>
+          <ListItem sx={{ paddingLeft: 3 }}>
             <FormGroup>
               <FormControlLabel
-                classes={{ root: classes.formControlLabel }}
+                // classes={{ root: classes.formControlLabel }}
                 control={(
                   <Checkbox
                     checked={cashCropVisible}
