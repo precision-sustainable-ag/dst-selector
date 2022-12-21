@@ -8,7 +8,8 @@ import {
   Typography,
   Tooltip,
 } from '@mui/material';
-import withStyles from '@mui/styles/withStyles';
+// import withStyles from '@mui/styles/withStyles';
+import styled from 'styled-components';
 import moment from 'moment';
 import { Info, MonetizationOn } from '@mui/icons-material';
 
@@ -220,20 +221,18 @@ export const CustomStyles = () => ({
   defaultButtonPadding: '10px 20px 10px 20px',
 });
 
-export const LightButton = withStyles({
-  root: {
-    backgroundColor: CustomStyles().secondaryProgressBtnBorderColor,
-    borderRadius: CustomStyles().fullyRoundedRadius,
-    color: '#000',
-    padding: CustomStyles().defaultButtonPadding,
-    borderColor: CustomStyles().secondaryProgressBtnBorderColor,
-    '&:hover': {
-      borderColor: CustomStyles().primaryProgressBtnBorderColor,
-      backgroundColor: CustomStyles().primaryProgressBtnColor,
-      color: '#fff',
-    },
+export const LightButton = styled(Button)({
+  backgroundColor: CustomStyles().secondaryProgressBtnBorderColor,
+  borderRadius: CustomStyles().fullyRoundedRadius,
+  color: '#000',
+  padding: CustomStyles().defaultButtonPadding,
+  borderColor: CustomStyles().secondaryProgressBtnBorderColor,
+  '&:hover': {
+    borderColor: CustomStyles().primaryProgressBtnBorderColor,
+    backgroundColor: CustomStyles().primaryProgressBtnColor,
+    color: '#fff',
   },
-})(Button);
+});
 
 export const getRating = (ratng) => {
   const rating = parseInt(ratng, 10);
