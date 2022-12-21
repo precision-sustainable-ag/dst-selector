@@ -1,7 +1,6 @@
 /*
   This file contains the CropLegendModal and it's styles
   The CropLegendModal shows the color legend for the calendar view
-  Styles are created using makeStyles
 */
 
 import {

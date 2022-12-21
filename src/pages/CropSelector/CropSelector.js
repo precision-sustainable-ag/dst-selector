@@ -2,7 +2,6 @@
 /*
   This file contains the CropSelector and its styles.
   The CropSelector is the top level component for the crop selector tool and allows users to choose crops based on their needs.
-  Styles are created using makeStyles.
 */
 
 import {

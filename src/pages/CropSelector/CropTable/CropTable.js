@@ -2,7 +2,6 @@
   This file contains the CropTable component
   The CropTable is the
   addCropToBasket manages adding crops to cart
-  Styles are created using makeStyles
 */
 import React, { useContext, useEffect, useState } from 'react';
 import {

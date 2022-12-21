@@ -1,6 +1,5 @@
 /*
   Handles the popup on hovering over one of the goal rankings in the crop selector
-  Styles are created using makeStyles
 */
 
 import {
