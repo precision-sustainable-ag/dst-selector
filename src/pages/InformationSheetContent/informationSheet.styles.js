@@ -19,13 +19,11 @@ export const Accordion = styled(MuiAccordion)({
 });
 
 export const AccordionSummary = styled(MuiAccordionSummary)({
-  root: {
-    borderBottom: '1px solid #2b7b79',
-    marginBottom: -1,
+  borderBottom: '1px solid #2b7b79',
+  marginBottom: -1,
+  minHeight: 56,
+  '&$expanded': {
     minHeight: 56,
-    '&$expanded': {
-      minHeight: 56,
-    },
   },
   content: {
     '&$expanded': {
