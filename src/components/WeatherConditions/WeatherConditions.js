@@ -1,7 +1,6 @@
 /*
   Contains the climate conditions widget
   validateAndBroadcastModalData validates that the day is between 1 and 31
-  styled using makeStyles
 */
 
 import {

@@ -3,7 +3,6 @@
 /*
   Contains the individual crops in a component
   removeCrop handles removing a crop from the list
-  styled using makeStyles
 */
 import React, { useContext, useState } from 'react';
 import { useSnackbar } from 'notistack';

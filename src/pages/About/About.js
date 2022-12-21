@@ -3,7 +3,6 @@
   This file contains the About component, helper functions, and styles
   The about page is a static pages that has information about the project
   RenderContent contains all the text listed in the about section
-  Styles are created using makeStyles
 */
 
 import { Button, Typography } from '@mui/material';

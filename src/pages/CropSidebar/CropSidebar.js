@@ -2,7 +2,6 @@
 /*
   This file contains the CropSidebar and its styles
   The CropSidebar is the sidebar which contains the filtering and calendar view components
-  Styles are created using makeStyles
 */
 
 import {

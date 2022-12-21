@@ -32,18 +32,3 @@ export const AccordionSummary = styled(MuiAccordionSummary)({
   },
   expanded: {},
 });
-
-// export const useStyles = makeStyles((theme) => ({
-//   root: {
-//     width: '100%',
-//   },
-//   heading: {
-//     fontSize: theme.typography.pxToRem(15),
-//     fontWeight: theme.typography.fontWeightRegular,
-//   },
-//   expanded: {
-//     '&$expanded': {
-//       margin: '4px 0',
-//     },
-//   },
-// }));
