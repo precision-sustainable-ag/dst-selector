@@ -25,7 +25,6 @@ const PlantingAndGrowthWindows = ({ crop }) => {
           <Accordion defaultExpanded style={{ border: '1px solid #2b7b79' }}>
             <AccordionSummary
               expandIcon={<ExpandMore />}
-              // classes={{ expanded: classes.expanded }}
               sx={{
                 '&$expanded': {
                   margin: '4px 0',

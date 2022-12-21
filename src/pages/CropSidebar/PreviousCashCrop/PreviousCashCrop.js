@@ -84,7 +84,6 @@ const PreviousCashCrop = ({ handleToggle, setDateRange }) => {
           <ListItem sx={{ paddingLeft: 3 }}>
             <FormGroup>
               <FormControlLabel
-                // classes={{ root: classes.formControlLabel }}
                 control={(
                   <Checkbox
                     checked={cashCropVisible}

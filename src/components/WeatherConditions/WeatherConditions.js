@@ -15,7 +15,6 @@ import {
   Typography,
   Box,
 } from '@mui/material';
-// import makeStyles from '@mui/styles/makeStyles';
 import moment from 'moment';
 import React, { useContext, useEffect, useState } from 'react';
 import { LightButton } from '../../shared/constants';
@@ -24,28 +23,8 @@ import WeatherPrecipitation from './WeatherPrecipitation/WeatherPrecipitation';
 import WeatherFrostDates from './WeatherFrostDates/WeatherFrostDates';
 import WeatherFrostFreeDays from './WeatherFrostFreeDays/WeatherFrostFreeDays';
 
-// const useStyles = makeStyles((theme) => ({
-//   modal: {
-//     display: 'flex',
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//   },
-//   paper: {
-//     backgroundColor: theme.palette.background.paper,
-//     border: '2px solid #000',
-//     boxShadow: theme.shadows[5],
-//     padding: theme.spacing(2, 4, 3),
-//   },
-//   textField: {
-//     marginLeft: theme.spacing(1),
-//     marginRight: theme.spacing(1),
-//     width: 200,
-//   },
-// }));
-
 const WeatherConditions = ({ caller }) => {
   const { state, dispatch } = useContext(Context);
-  // const classes = useStyles();
   const [months, setMonths] = useState([]);
   const [currentMonthFull, setCurrentMonthFull] = useState('NOVEMBER');
   const [anyValuesChanged, setAnyValuesChanged] = useState(false);
@@ -225,7 +204,6 @@ const WeatherConditions = ({ caller }) => {
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="ransition-modal-description"
-        // className={classes.modal}
         sx={{
           display: 'flex',
           alignItems: 'center',
@@ -312,7 +290,6 @@ const WeatherConditions = ({ caller }) => {
                             setFirstFrostDay(1);
                           }
                         }}
-                        // className={classes.textField}
                         sx={{
                           marginLeft: 1,
                           marginRight: 1,
@@ -394,7 +371,6 @@ const WeatherConditions = ({ caller }) => {
                             setLastFrostDay(1);
                           }
                         }}
-                        // className={classes.textField}
                         sx={{
                           marginLeft: 1,
                           marginRight: 1,
@@ -441,7 +417,6 @@ const WeatherConditions = ({ caller }) => {
                             thisMonth: event.target.value === '' ? 0 : event.target.value,
                           });
                         }}
-                        // className={classes.textField}
                         sx={{
                           marginLeft: 1,
                           marginRight: 1,
@@ -485,7 +460,6 @@ const WeatherConditions = ({ caller }) => {
                                 event.target.value === '' ? 0 : parseFloat(event.target.value),
                           });
                         }}
-                        // className={classes.textField}
                         sx={{
                           marginLeft: 1,
                           marginRight: 1,
@@ -536,7 +510,6 @@ const WeatherConditions = ({ caller }) => {
                             setFrostFreeDays(0);
                           }
                         }}
-                        // className={classes.textField}
                         sx={{
                           marginLeft: 1,
                           marginRight: 1,

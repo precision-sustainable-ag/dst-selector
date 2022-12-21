@@ -1,7 +1,5 @@
 import MuiAccordion from '@mui/material/Accordion';
 import MuiAccordionSummary from '@mui/material/AccordionSummary';
-// import withStyles from '@mui/styles/withStyles';
-// import makeStyles from '@mui/styles/makeStyles';
 import styled from 'styled-components';
 
 export const Accordion = styled(MuiAccordion)({
