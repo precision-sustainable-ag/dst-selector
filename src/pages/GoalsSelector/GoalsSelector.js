@@ -65,7 +65,7 @@ const GoalsSelector = () => {
             <Grid container spacing={2} className="goals" style={{ justifyContent: 'center' }}>
               {allGoals[0].fields ? (
                 allGoals.map((goal, key) => (
-                  <Grid item lg={2} xl={2}>
+                  <Grid item>
                     <GoalTag
                       goal={goal}
                       id={key}
