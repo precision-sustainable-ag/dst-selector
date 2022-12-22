@@ -155,7 +155,7 @@ const ComparisonBar = ({
           />
         </ListItem>
       )}
-      {(comparisonKeys.length + 1) !== filtersTotal && (
+      {((comparisonKeys.length - allGoals.length) + 1) !== filtersTotal && (
       <ListItem>
         <ListItemText
           primary={(
