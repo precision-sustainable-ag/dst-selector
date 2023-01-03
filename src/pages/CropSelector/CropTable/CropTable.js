@@ -2,7 +2,6 @@
   This file contains the CropTable component
   The CropTable is the
   addCropToBasket manages adding crops to cart
-  Styles are created using makeStyles
 */
 import React, { useContext, useEffect, useState } from 'react';
 import {
@@ -100,7 +99,7 @@ const CropTableComponent = ({
           selectedCropIds.push(crop.id);
         });
         const newActiveShadow = activeCropDataShadow.map((crop, i) => {
-          activeCropDataShadow[i].inCart = selectedCropIds.includes(crop.fields.id);
+          activeCropDataShadow[i].inCart = selectedCropIds.includes(crop.id);
           return crop;
         });
 

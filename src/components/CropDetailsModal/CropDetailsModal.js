@@ -1,13 +1,11 @@
 /*
   Handles the popup on hovering over one of the goal rankings in the crop selector
-  Styles are created using makeStyles
 */
 
 import {
-  Backdrop, Button, Fade, Modal,
+  Backdrop, Button, Fade, Modal, Box,
 } from '@mui/material';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
-import makeStyles from '@mui/styles/makeStyles';
 import { Close, Print } from '@mui/icons-material';
 import React, { useEffect, useContext } from 'react';
 import ReactGA from 'react-ga';
@@ -15,33 +13,9 @@ import '../../styles/cropDetailsModal.scss';
 import InformationSheetContent from '../../pages/InformationSheetContent/InformationSheetContent';
 import { Context } from '../../store/Store';
 
-const useStyles = makeStyles((theme) => ({
-  modal: {
-    height: '100%',
-    display: 'block',
-  },
-  paper: {
-    backgroundColor: theme.palette.background.paper,
-    border: '2px solid #000',
-    boxShadow: theme.shadows[5],
-    padding: '0px',
-  },
-  textField: {
-    marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(1),
-    width: 200,
-  },
-  AccordionSummaryIcon: {
-    '& div.MuiAccordionSummary-expandIcon.Mui-expanded': {
-      transform: 'rotate(45deg)',
-    },
-  },
-}));
-
 const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
   const { state } = useContext(Context);
-  const classes = useStyles();
-  const modalData = crop.fields;
+  const modalData = crop;
 
   useEffect(() => {
     if (state.consent === true) {
@@ -71,7 +45,10 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
       // [the migration guide](https://mui.com/material-ui/migration/v5-component-changes/#modal)
       aria-labelledby="cover-crop-modal-title"
       aria-describedby="cover-crop-modal-description"
-      className={classes.modal}
+      sx={{
+        height: '100%',
+        display: 'block',
+      }}
       open={modalOpen}
       style={{ maxWidth: '80%', marginLeft: '10%' }}
       onClose={handleModalClose}
@@ -85,8 +62,14 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
       <Fade in={modalOpen}>
         {modalData ? (
           <div className="modalParentWrapper">
-            <div
-              className={`cropTableModal modalContainer ${classes.paper}`}
+            <Box
+              className="cropTableModal modalContainer"
+              sx={{
+                backgroundColor: 'background.paper',
+                border: '2px solid #000',
+                boxShadow: 5,
+                padding: '0px',
+              }}
               id={`cropDetailModal-${modalData.id}`}
             >
               <div className="container-fluid">
@@ -110,7 +93,7 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
                                 <strong className="pl-2">
                                   PLANT HARDINESS ZONE
                                   {' '}
-                                  {crop.fields.Zone}
+                                  {crop.Zone}
                                   {' '}
                                   DATASET
                                   <span className="noprint">
@@ -160,14 +143,14 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
                     <tr>
                       <td>
                         <div id="cover-crop-modal-description">
-                          <InformationSheetContent crop={crop.fields} from="modal" />
+                          <InformationSheetContent crop={crop.fields ? crop.fields : modalData} from="modal" />
                         </div>
                       </td>
                     </tr>
                   </tbody>
                 </table>
               </div>
-            </div>
+            </Box>
           </div>
         ) : (
           <div />

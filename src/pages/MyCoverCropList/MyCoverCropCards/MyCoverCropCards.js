@@ -3,7 +3,6 @@
 /*
   Contains the individual crops in a component
   removeCrop handles removing a crop from the list
-  styled using makeStyles
 */
 import React, { useContext, useState } from 'react';
 import { useSnackbar } from 'notistack';
@@ -18,9 +17,12 @@ const MyCoverCropCards = ({ data, cardNo }) => {
   const { enqueueSnackbar } = useSnackbar();
 
   const removeCrop = (cropName, id) => {
-    const removeIndex = state.selectedCrops
-      .map((item) => item.id)
-      .indexOf(`${id}`);
+    let removeIndex = -1;
+    state.selectedCrops.forEach((item, i) => {
+      if (item.id === id) {
+        removeIndex = i;
+      }
+    });
 
     if (removeIndex === -1) {
       // element not in array

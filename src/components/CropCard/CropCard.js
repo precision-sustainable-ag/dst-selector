@@ -2,7 +2,6 @@ import {
   Button,
   Card, CardActionArea, CardContent, CardMedia, Typography,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import React, {
   useContext, useEffect, useState,
 } from 'react';
@@ -10,24 +9,12 @@ import { trimString } from '../../shared/constants';
 import { Context } from '../../store/Store';
 import RenderRelevantData from './RenderRelevantData/RenderRelevantData';
 
-const useStyles = makeStyles({
-  card: {
-    maxWidth: 345,
-    width: 250,
-    marginRight: 10,
-  },
-  media: {
-    height: 140,
-  },
-});
-
 const CropCard = ({
   crop, handleModalOpen, addCropToBasket, removeCrop, index, type, comparisonKeys, lightBG, GetAverageGoalRating,
 }) => {
   const { state } = useContext(Context);
   const section = window.location.href.includes('selector') ? 'selector' : 'explorer';
   const sfilters = state[section];
-  const classes = useStyles();
 
   const [selectedBtns, setSelectedBtns] = useState(
     state.selectedCrops.map((crp) => crp.id),
@@ -47,15 +34,22 @@ const CropCard = ({
   }
 
   return (
-    <Card className={classes.card} style={{ position: 'center', width: '100%' }}>
+    <Card
+      sx={{
+        position: 'center',
+        width: '100%',
+        maxWidth: 345,
+        marginRight: 10,
+      }}
+    >
       <CardActionArea onClick={() => handleModalOpen(crop)}>
         <CardMedia
           image={
-            crop['Image Data']['Key Thumbnail']
+            crop['Image Data']?.['Key Thumbnail']
               ? crop['Image Data']['Key Thumbnail']
               : 'https://placehold.it/100x100?text=Placeholder'
             }
-          className={classes.media}
+          sx={{ height: 140 }}
           title={crop['Cover Crop Name']}
         />
       </CardActionArea>
@@ -78,7 +72,7 @@ const CropCard = ({
           </Typography>
         </div>
         <small className="font-italic text-muted d-inline-block text-truncate" style={{ marginLeft: '-10px' }}>
-          {trimString(crop['Scientific Name'], 25)}
+          {crop['Scientific Name'] ? trimString(crop['Scientific Name'], 25) : null}
         </small>
         <div>
           <small className="text-muted">

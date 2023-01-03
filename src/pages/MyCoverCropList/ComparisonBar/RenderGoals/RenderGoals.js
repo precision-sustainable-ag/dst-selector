@@ -13,7 +13,7 @@ import {
   Typography,
 } from '@mui/material';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
-import React, { Fragment } from 'react';
+import React from 'react';
 
 const RenderGoals = ({
   goals,
@@ -25,7 +25,6 @@ const RenderGoals = ({
   <>
     <ListItem
       button
-        // className={classes.nested}
       className={goalsOpen ? 'filterOpen' : 'filterClose'}
       component="div"
       onClick={() => setGoalsOpen(!goalsOpen)}

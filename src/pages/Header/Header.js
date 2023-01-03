@@ -15,7 +15,7 @@ import zone4DataDictionary from '../../shared/json/zone4/data-dictionary.json';
 import zone5DataDictionary from '../../shared/json/zone5/data-dictionary.json';
 import zone6DataDictionary from '../../shared/json/zone6/data-dictionary.json';
 import zone7DataDictionary from '../../shared/json/zone7/data-dictionary.json';
-import { Context } from '../../store/Store';
+import { Context, cropDataFormatter } from '../../store/Store';
 import '../../styles/header.scss';
 import HeaderLogoInfo from './HeaderLogoInfo/HeaderLogoInfo';
 import InformationBar from './InformationBar/InformationBar';
@@ -287,16 +287,32 @@ const Header = () => {
     }
   }, [state.markers, sfilters.zone, state.weatherDataReset]);
 
+  async function getCropData(formattedGoal, zone = 4) {
+    await fetch(`https://api.covercrop-selector.org/crop-data?zoneId=${zone}`)
+      .then((res) => res.json())
+      .then((data) => {
+        cropDataFormatter(data.data);
+        dispatch({
+          type: 'PULL_CROP_DATA',
+          data: data.data,
+        });
+        dispatch({
+          type: 'ADD_GOALS',
+          data: formattedGoal,
+        });
+      })
+      .catch((err) => {
+      // eslint-disable-next-line no-console
+        console.log(err.message);
+      });
+  }
+
   useEffect(() => {
     if (sfilters.zone === state.lastZone) {
       return;
     }
 
     state.lastZone = sfilters.zone; // TODO
-    // dispatch({
-    //   type: 'UPDATE_LAST_ZONE',
-    //   value: sfilters.zone,
-    // });
 
     let z7Formattedgoal = zone7DataDictionary.filter(
       (data) => data.Category === 'Goals' && data.Variable !== 'Notes: Goals',
@@ -310,55 +326,28 @@ const Header = () => {
     let z4Formattedgoal = zone4DataDictionary.filter(
       (data) => data.Category === 'Goals' && data.Variable !== 'Notes: Goals',
     );
-
     z7Formattedgoal = z7Formattedgoal.map((goal) => ({ fields: goal }));
     z6Formattedgoal = z6Formattedgoal.map((goal) => ({ fields: goal }));
     z5Formattedgoal = z5Formattedgoal.map((goal) => ({ fields: goal }));
     z4Formattedgoal = z4Formattedgoal.map((goal) => ({ fields: goal }));
 
+    getCropData([], sfilters.zone);
+
     switch (parseInt(sfilters.zone, 10)) {
       case 7: {
-        dispatch({
-          type: 'PULL_CROP_DATA',
-          data: state.zone7CropData,
-        });
-        dispatch({
-          type: 'ADD_GOALS',
-          data: z7Formattedgoal,
-        });
+        getCropData(z7Formattedgoal, 4);
         break;
       }
       case 6: {
-        dispatch({
-          type: 'PULL_CROP_DATA',
-          data: state.zone6CropData,
-        });
-        dispatch({
-          type: 'ADD_GOALS',
-          data: z6Formattedgoal,
-        });
+        getCropData(z6Formattedgoal, 3);
         break;
       }
       case 5: {
-        dispatch({
-          type: 'PULL_CROP_DATA',
-          data: state.zone5CropData,
-        });
-        dispatch({
-          type: 'ADD_GOALS',
-          data: z5Formattedgoal,
-        });
+        getCropData(z5Formattedgoal, 2);
         break;
       }
       case 4: {
-        dispatch({
-          type: 'PULL_CROP_DATA',
-          data: state.zone4CropData,
-        });
-        dispatch({
-          type: 'ADD_GOALS',
-          data: z4Formattedgoal,
-        });
+        getCropData(z4Formattedgoal, 1);
         break;
       }
       default: {

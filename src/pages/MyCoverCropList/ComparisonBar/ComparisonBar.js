@@ -17,11 +17,15 @@ import RenderGoals from './RenderGoals/RenderGoals';
 const ComparisonBar = ({
   filterData, goals, comparisonKeys, dispatch, comparisonView, classes,
 }) => {
+  const [filtersTotal, setFiltersTotal] = useState();
   const [filterValues, setFilterValues] = useState([]);
   const [goalsOpen, setGoalsOpen] = useState(false);
   const [allGoals, setAllGoals] = useState([]);
   useEffect(() => {
+    let totalFilters = 0;
     const filteredVals = filterData.map((filter) => {
+      totalFilters += filter.values.length;
+
       const vals = filter.values.map((val) => ({
         ...val,
         selected: false,
@@ -37,6 +41,7 @@ const ComparisonBar = ({
       name: goal,
       selected: false,
     }));
+    setFiltersTotal(totalFilters);
     setFilterValues(filteredVals);
     setAllGoals(filteredGoals);
   }, [filterData]);
@@ -115,18 +120,24 @@ const ComparisonBar = ({
   return comparisonView ? (
     <List
       component="nav"
-      classes={{ root: classes.listRoot }}
       aria-labelledby="nested-list-subheader"
       subheader={(
         <ListSubheader
-          classes={{ root: classes.listSubHeaderRoot }}
+          sx={{
+            backgroundColor: '#add08f',
+            color: 'black',
+            textAlign: 'center',
+            height: '50px',
+          }}
           component="div"
           id="nested-list-subheader"
         >
           COMPARE BY
         </ListSubheader>
       )}
-      className={classes.root}
+      sx={{
+        width: '100%',
+      }}
     >
       {comparisonKeys.length > 0 && (
         <ListItem onClick={() => {}}>
@@ -144,6 +155,7 @@ const ComparisonBar = ({
           />
         </ListItem>
       )}
+      {((comparisonKeys.length - allGoals.length) + 1) !== filtersTotal && (
       <ListItem>
         <ListItemText
           primary={(
@@ -153,6 +165,7 @@ const ComparisonBar = ({
           )}
         />
       </ListItem>
+      )}
       {allGoals.length > 0 && (
         <RenderGoals
           goals={allGoals}
