@@ -196,8 +196,7 @@ const CropSidebar = ({
     const description = field[0].Description;
     const valuesDescription = field[0]['Values Description'];
 
-    obj.description = `${description}${valuesDescription && ' <br><br>'}${
-      valuesDescription && valuesDescription
+    obj.description = `${description}${valuesDescription && `\n${valuesDescription}`
     }`;
   };
 
