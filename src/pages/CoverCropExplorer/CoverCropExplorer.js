@@ -28,31 +28,9 @@ const CoverCropExplorer = () => {
   const defaultMarkers = [[40.78489145, -74.80733626930342]];
 
   useEffect(() => {
-    async function getData() {
-      await fetch('https://develop.covercrop-data.org/crops')
-        .then((res) => res.json())
-        .then((data) => {
-          const filteredActiveCropData = activeCropData.filter((a) => !a.inactive);
-          if (data.data.length > 0 && filteredActiveCropData.length > 0) {
-            filteredActiveCropData.forEach((crop) => {
-              data.data.forEach((thumb) => {
-                if (thumb.label === crop.fields['Cover Crop Name']) {
-                  crop.fields['Image Data']['Key Thumbnail'] = thumb.thumbnail.src;
-                  crop.fields['Image Data'].id = thumb.id;
-                }
-              });
-            });
-          }
-
-          setUpdatedActiveCropData(filteredActiveCropData);
-        })
-        .catch((err) => {
-          // eslint-disable-next-line no-console
-          console.log(err.message);
-        });
-    }
-
-    getData();
+    const filteredActiveCropData = activeCropData.filter((a) => !a.inactive);
+    setUpdatedActiveCropData(filteredActiveCropData);
+    // getData();
   }, [activeCropData]);
 
   useEffect(() => {

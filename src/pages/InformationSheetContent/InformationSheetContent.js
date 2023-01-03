@@ -3,7 +3,6 @@
   BasicCrop contains the default crop
   getMonthDayString gets the start and end dates used in the info sheet
   RenderExtendedComments returns the extended notes for a crop if they exist
-  styled using makeStyles and withStyles
 */
 
 import React, {
@@ -20,7 +19,7 @@ import SoilDrainageInfoContent from './SoilDrainageInfoContent/SoilDrainageInfoC
 import TerminationInfo from './TerminationInfo/TerminationInfo';
 import InformationSheetPlanting from './InformationSheetPlanting/InformationSheetPlanting';
 import PlantingAndGrowthWindows from './PlantingAndGrowthWindows/PlantingAndGrowthWindows';
-import ExtendedComments from './ExtendedComments/EntendedComments';
+import ExtendedComments from './ExtendedComments/ExtendedComments';
 import InformationSheetReferences from './InformationSheetReferences/InformationSheetReferences';
 
 const InformationSheetContent = ({ crop }) => {
@@ -51,7 +50,7 @@ const InformationSheetContent = ({ crop }) => {
   useEffect(() => {
     const allImages = [];
     async function getData() {
-      await fetch(`https://develop.covercrop-data.org/crops/${crop['Image Data'].id}`)
+      await fetch(`https://covercrop-data.org/crops/${crop.id}`)
         .then((res) => res.json())
         .then((data) => {
           data.data.images.forEach((image) => {

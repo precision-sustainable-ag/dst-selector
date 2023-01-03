@@ -1,9 +1,8 @@
 import MuiAccordion from '@mui/material/Accordion';
 import MuiAccordionSummary from '@mui/material/AccordionSummary';
-import withStyles from '@mui/styles/withStyles';
-import makeStyles from '@mui/styles/makeStyles';
+import styled from 'styled-components';
 
-export const Accordion = withStyles({
+export const Accordion = styled(MuiAccordion)({
   root: {
     boxShadow: 'none',
     '&:not(:last-child)': {
@@ -17,16 +16,14 @@ export const Accordion = withStyles({
     },
   },
   expanded: {},
-})(MuiAccordion);
+});
 
-export const AccordionSummary = withStyles({
-  root: {
-    borderBottom: '1px solid #2b7b79',
-    marginBottom: -1,
+export const AccordionSummary = styled(MuiAccordionSummary)({
+  borderBottom: '1px solid #2b7b79',
+  marginBottom: -1,
+  minHeight: 56,
+  '&$expanded': {
     minHeight: 56,
-    '&$expanded': {
-      minHeight: 56,
-    },
   },
   content: {
     '&$expanded': {
@@ -34,19 +31,4 @@ export const AccordionSummary = withStyles({
     },
   },
   expanded: {},
-})(MuiAccordionSummary);
-
-export const useStyles = makeStyles((theme) => ({
-  root: {
-    width: '100%',
-  },
-  heading: {
-    fontSize: theme.typography.pxToRem(15),
-    fontWeight: theme.typography.fontWeightRegular,
-  },
-  expanded: {
-    '&$expanded': {
-      margin: '4px 0',
-    },
-  },
-}));
+});

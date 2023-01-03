@@ -2,7 +2,6 @@
 /*
   This file contains the CropSelector and its styles.
   The CropSelector is the top level component for the crop selector tool and allows users to choose crops based on their needs.
-  Styles are created using makeStyles.
 */
 
 import {
@@ -10,8 +9,8 @@ import {
   Fab,
   useScrollTrigger,
   Zoom,
+  Box,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import { ArrowBack, ArrowForward, KeyboardArrowUp } from '@mui/icons-material';
 import React, { useContext, useEffect, useState } from 'react';
 import ReactGA from 'react-ga';
@@ -24,16 +23,7 @@ import CropTableComponent from './CropTable/CropTable';
 
 const _ = require('lodash');
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    position: 'fixed',
-    bottom: theme.spacing(2),
-    right: theme.spacing(2),
-  },
-}));
-
 const ScrollTop = ({ children }) => {
-  const classes = useStyles();
   const trigger = useScrollTrigger({
     disableHysteresis: true,
     threshold: 180,
@@ -46,9 +36,17 @@ const ScrollTop = ({ children }) => {
   };
   return (
     <Zoom in={trigger}>
-      <div onClick={handleBackToTopClick} role="presentation" className={classes.root}>
+      <Box
+        onClick={handleBackToTopClick}
+        role="presentation"
+        sx={{
+          position: 'fixed',
+          bottom: 2,
+          right: 2,
+        }}
+      >
         {children}
-      </div>
+      </Box>
     </Zoom>
   );
 };
@@ -65,29 +63,7 @@ const CropSelector = (props) => {
 
   useEffect(() => {
     localStorage.setItem('lastLocation', 'CropSelector');
-    async function getData() {
-      await fetch('https://develop.covercrop-data.org/crops')
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.data.length > 0 && activeCropData.length > 0) {
-            activeCropData.forEach((crop) => {
-              data.data.forEach((thumb) => {
-                if (thumb.label === crop.fields['Cover Crop Name']) {
-                  crop.fields['Image Data']['Key Thumbnail'] = thumb.thumbnail.src;
-                  crop.fields['Image Data'].id = thumb.id;
-                }
-              });
-            });
-          }
-          setUpdatedActiveCropData(activeCropData);
-        })
-        .catch((err) => {
-          // eslint-disable-next-line no-console
-          console.log(err.message);
-        });
-    }
-
-    getData();
+    setUpdatedActiveCropData(activeCropData);
   }, [activeCropData]);
 
   useEffect(() => {
@@ -121,8 +97,8 @@ const CropSelector = (props) => {
             .reverse()
             .forEach((goal) => {
               activeCropDataShadow.sort((a, b) => {
-                if (a.fields[goal] && b.fields[goal]) {
-                  if (a.fields[goal] > b.fields[goal]) {
+                if (a[goal] && b[goal]) {
+                  if (a[goal] > b[goal]) {
                     return -1;
                   }
                   return 1;

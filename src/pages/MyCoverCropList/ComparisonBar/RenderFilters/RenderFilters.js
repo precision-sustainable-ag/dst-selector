@@ -19,7 +19,6 @@ import React, { Fragment } from 'react';
 const RenderFilters = ({
   filterValues = [],
   toggleSidebarFilterItems = () => {},
-  classes = {},
   comparisonKeys = [],
   dispatch = () => {},
 }) => {
@@ -90,7 +89,7 @@ const RenderFilters = ({
 
         <Collapse in={filterValues[index].open} timeout="auto">
           <List component="div" disablePadding>
-            <ListItem component="div" className={classes.subNested}>
+            <ListItem component="div" sx={{ paddingLeft: 4 }}>
               <Grid container spacing={1}>
                 {filter.name === 'Cover Crop Type' ? (
                   <FormControlLabel

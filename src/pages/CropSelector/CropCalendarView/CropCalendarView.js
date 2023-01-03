@@ -1,7 +1,6 @@
 /*
   This file contains the CropCalendarViewComponent
   The CropCalendarViewComponent shows the crops in calendar format
-  Styles are created using makeStyles
 */
 
 import {
@@ -145,7 +144,7 @@ const CropCalendarView = ({ activeCropData }) => {
           selectedCropIds.push(crop.id);
         });
         const newActiveShadow = activeCropDataShadow.map((crop) => {
-          crop.inCart = selectedCropIds.includes(crop.fields.id);
+          crop.inCart = selectedCropIds.includes(crop.id);
           return crop;
         });
 
@@ -205,8 +204,13 @@ const CropCalendarView = ({ activeCropData }) => {
                         </div>
                         <div className="col-6">
                           <Typography variant="body1">
-                            <Button startIcon={<AddCircle />} onClick={handleLegendModal}>
-                              Legend
+                            <Button
+                              startIcon={<AddCircle />}
+                              onClick={handleLegendModal}
+                              style={{ color: '#000' }}
+                            >
+                              {' '}
+                              <Typography variant="body2">LEGEND</Typography>
                             </Button>
                           </Typography>
                         </div>
@@ -321,7 +325,7 @@ const CropCalendarView = ({ activeCropData }) => {
                     <div className="col-12">
                       <Typography variant="body1">
                         <Button startIcon={<AddCircle />} onClick={handleLegendModal}>
-                          Legend
+                          <Typography variant="body2"> Legend</Typography>
                         </Button>
                       </Typography>
                     </div>
@@ -332,11 +336,21 @@ const CropCalendarView = ({ activeCropData }) => {
               </TableRow>
               <TableRow className="calSecondHeadRow">
                 <TableCell style={{ width: '17%', borderRight: '5px solid white' }}>
-                  <Button onClick={sortCropsByName}>COVER CROPS</Button>
+                  <Button style={{ color: '#000' }} onClick={sortCropsByName}>
+                    <Typography variant="body2"> COVER CROPS </Typography>
+                  </Button>
                 </TableCell>
                 {state.selectedGoals.length > 0 && (
                   <TableCell style={{ width: '13%', borderRight: '5px solid white' }}>
-                    <Button onClick={sortReset}>AVERAGE GOAL RATING</Button>
+                    <div className="col-12">
+                      <Typography variant="body1">
+                        <Button style={{ color: '#000' }} onClick={sortReset}>
+
+                          <Typography variant="body2"> AVERAGE GOAL RATING</Typography>
+                        </Button>
+                      </Typography>
+                    </div>
+
                   </TableCell>
                 )}
 
@@ -359,10 +373,8 @@ const CropCalendarView = ({ activeCropData }) => {
                 })}
 
                 <TableCell style={{ width: '10%', borderLeft: '5px solid white' }}>
-                  <Button onClick={sortBySelectedCrops}>
-                    MY LIST
-                    <br />
-                    {`[${state.selectedCrops.length} CROPS]`}
+                  <Button style={{ color: '#000' }} onClick={sortBySelectedCrops}>
+                    <Typography variant="body2"> MY LIST </Typography>
                   </Button>
                 </TableCell>
               </TableRow>
