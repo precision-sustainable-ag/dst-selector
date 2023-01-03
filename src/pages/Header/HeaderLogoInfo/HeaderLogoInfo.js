@@ -1,25 +1,41 @@
-import { Typography } from '@mui/material';
-import React, { useContext } from 'react';
+import {
+  Dialog, DialogActions, DialogContent, Typography,
+} from '@mui/material';
+import React, { useContext, useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import { BinaryButton } from '../../../shared/constants';
 import { Context } from '../../../store/Store';
 import '../../../styles/header.scss';
 import DateComponent from '../DateComponent/DateComponent';
 import ForecastComponent from '../ForecastComponent/ForecastComponent';
 
 const HeaderLogoInfo = () => {
-  const { dispatch } = useContext(Context);
+  const { state, dispatch } = useContext(Context);
+  const history = useHistory();
+  const [handleConfirm, setHandleConfirm] = useState(false);
+  const defaultMarkers = [[40.78489145, -74.80733626930342]];
+  const { selectedCrops } = state;
+
+  const logoClick = (clearMyList = false) => {
+    if (clearMyList) {
+      dispatch({
+        type: 'RESET',
+        data: {
+          markers: defaultMarkers,
+          selectedCrops: [],
+        },
+      });
+      history.replace('/');
+    }
+    setHandleConfirm(false);
+  };
+
   return (
     <div className="row">
       <div className="col-lg-2 col-12" role="button">
         <button
           type="button"
-          onClick={() => {
-            dispatch({
-              type: 'UPDATE_PROGRESS',
-              data: {
-                type: 'HOME',
-              },
-            });
-          }}
+          onClick={selectedCrops.length > 0 ? () => setHandleConfirm(true) : () => logoClick(true)}
         >
           <img
             className="img-fluid"
@@ -49,6 +65,18 @@ const HeaderLogoInfo = () => {
           </div>
         </div>
       </div>
+      <Dialog onClose={() => setHandleConfirm(false)} open={handleConfirm}>
+        <DialogContent dividers>
+          <Typography variant="body1">
+            You will need to clear your My Cover Crop List to continue.  Would you like to continue?
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <BinaryButton
+            action={logoClick}
+          />
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };
