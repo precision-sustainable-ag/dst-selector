@@ -40,6 +40,7 @@ const lightBorder = {
   borderBottomLeftRadius: '10px',
   display: 'flex',
   justifyContent: 'space-between',
+  width: 'calc(100%)',
 };
 const lightBG = {
   border: '1px solid white',
@@ -161,8 +162,8 @@ const MyCoverCropComparison = ({ selectedCrops }) => {
           <div className="row pt-3">
             <div className="col-12">
               {/* placeholder space before the first crop card */}
-              <Card style={{ width: '100%', boxShadow: 'none' }}>
-                <CardMedia style={{ width: '100%', height: '292px' }}>
+              <Card style={{ width: 'calc(100%)', boxShadow: 'none' }}>
+                <CardMedia style={{ width: 'calc(100%)', height: '292px' }}>
                   <img
                     src="https://via.placeholder.com/10/FFFFFF/FFFFFF"
                     style={{ opacity: 0 }}
@@ -175,22 +176,22 @@ const MyCoverCropComparison = ({ selectedCrops }) => {
                     visibility: 'hidden',
                   }}
                 />
-                <CardContent style={{ paddingRight: '0px', paddingLeft: '0px' }}>
+                <CardContent style={{ paddingRight: '0px', paddingLeft: '0px', width: 'calc(100%)' }}>
                   {comparisonKeys.map((keys, index) => (
                     <div
                       style={lightBorder}
                       key={index}
                       id={`comparisonLabel-${keys.split(' ').join('')}`}
                     >
-                      <span>
+                      <span style={{ width: 'calc(10%)' }}>
                         <DataTooltip
                           data={getTooltipData(keys)}
                           disableInteractive
                           placement="top-start"
                         />
                       </span>
-                      <span>
-                        <Typography variant="body2" className="text-capitalize">
+                      <span style={{ width: 'calc(90%)' }}>
+                        <Typography variant="body2" className="text-capitalize" noWrap>
                           {keys === 'Cover Crop Group' ? 'Cover Crop Type' : keys}
                         </Typography>
                       </span>
