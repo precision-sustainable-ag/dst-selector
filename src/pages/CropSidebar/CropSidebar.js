@@ -289,22 +289,34 @@ const CropSidebar = ({
 
   useEffect(() => {
     const dictionary = [];
-    const zoneName = `zone${sfilters.zone}Dictionary`;
-
     const setData = async () => {
       setSidebarFilters(dictionary);
     };
 
     setLoading(true);
-    generateSidebarObject(state[zoneName], dictionary)
-      .then(() => setData())
-      .then(() => setLoading(false));
+    async function getSidebars(data) {
+      await generateSidebarObject(data, dictionary)
+        .then(() => setData())
+        .then(() => { setLoading(false); })
+        .catch((err) => {
+        // eslint-disable-next-line no-console
+          console.log(err.message);
+        });
+    }
+
+    async function getDictData() {
+      await fetch(`https://api.covercrop-selector.org/legacy/data-dictionary?zone=zone${sfilters.zone}`)
+        .then((res) => res.json())
+        .then((data) => { getSidebars(data); })
+        .catch((err) => {
+          // eslint-disable-next-line no-console
+          console.log(err.message);
+        });
+    }
+
+    getDictData();
   }, [
     sfilters.zone,
-    state.zone4Dictionary,
-    state.zone5Dictionary,
-    state.zone6Dictionary,
-    state.zone7Dictionary,
   ]);
 
   useEffect(() => {
