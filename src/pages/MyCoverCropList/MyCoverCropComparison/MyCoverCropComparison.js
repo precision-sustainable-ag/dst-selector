@@ -22,10 +22,6 @@ import {
   DataTooltip,
   getRating,
 } from '../../../shared/constants';
-import sidebarDefinitionsz4 from '../../../shared/json/zone4/data-dictionary.json';
-import sidebarDefinitionsz5 from '../../../shared/json/zone5/data-dictionary.json';
-import sidebarDefinitionsz6 from '../../../shared/json/zone6/data-dictionary.json';
-import sidebarDefinitionsz7 from '../../../shared/json/zone7/data-dictionary.json';
 import { Context } from '../../../store/Store';
 import '../../../styles/cropComparisonView.scss';
 import '../../../styles/MyCoverCropComparisonComponent.scss';
@@ -74,7 +70,7 @@ const MyCoverCropComparison = ({ selectedCrops }) => {
   const section = window.location.href.includes('selector') ? 'selector' : 'explorer';
   const { zone } = state[section];
 
-  const [sidebarDefs, setSidebarDefs] = useState(sidebarDefinitionsz7);
+  const [sidebarDefs, setSidebarDefs] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalData, setModalData] = useState({});
   selectedCrops = selectedCrops || state.selectedCrops;
@@ -86,28 +82,17 @@ const MyCoverCropComparison = ({ selectedCrops }) => {
   };
 
   useEffect(() => {
-    switch (parseInt(zone, 10)) {
-      case 7: {
-        setSidebarDefs(sidebarDefinitionsz7);
-        break;
-      }
-      case 6: {
-        setSidebarDefs(sidebarDefinitionsz6);
-        break;
-      }
-      case 5: {
-        setSidebarDefs(sidebarDefinitionsz5);
-        break;
-      }
-      case 4: {
-        setSidebarDefs(sidebarDefinitionsz4);
-        break;
-      }
-      default: {
-        setSidebarDefs(sidebarDefinitionsz7);
-        break;
-      }
+    async function getDictData() {
+      await fetch(`https://api.covercrop-selector.org/legacy/data-dictionary?zone=zone${zone}`)
+        .then((res) => res.json())
+        .then((data) => { setSidebarDefs(data); })
+        .catch((err) => {
+          // eslint-disable-next-line no-console
+          console.log(err.message);
+        });
     }
+
+    getDictData();
   }, [zone]);
 
   const removeCrop = (cropName, id) => {
