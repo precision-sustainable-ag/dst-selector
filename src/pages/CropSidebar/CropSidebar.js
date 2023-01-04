@@ -196,8 +196,7 @@ const CropSidebar = ({
     const description = field[0].Description;
     const valuesDescription = field[0]['Values Description'];
 
-    obj.description = `${description}${valuesDescription && `\n${valuesDescription}`
-    }`;
+    obj.description = valuesDescription ? `${description} ${valuesDescription}` : description;
   };
 
   const generateSidebarObject = async (dataDictionary, dictionary) => {
