@@ -102,32 +102,24 @@ const Chips = ({ state, filter, handleChange }) => {
   });
 }; // Chips
 
-const Tip = ({ filter, omitHeading }) => {
-  const [open, setOpen] = useState(false);
-
-  return (
-    <Tooltip
-      arrow
-      placement="right"
-      disableFocusListener
-      disableHoverListener
-      disableTouchListener
-      open={open}
-      onClick={() => setOpen(!open)}
-      onMouseOut={() => setOpen(false)}
-      title={(
-        <div className="filterTooltip">
-          <p>{filter.description}</p>
-        </div>
+const Tip = ({ filter, omitHeading }) => (
+  <Tooltip
+    arrow
+    placement="right"
+    disableFocusListener
+    disableTouchListener
+    title={(
+      <div className="filterTooltip">
+        <p>{filter.description}</p>
+      </div>
       )}
-    >
-      <small style={{ whiteSpace: 'nowrap' }}>
-        {omitHeading ? '' : filter.name}
-        <HelpOutlineIcon style={{ cursor: 'pointer', transform: 'scale(0.7)' }} />
-      </small>
-    </Tooltip>
-  );
-}; // Tip
+  >
+    <small style={{ whiteSpace: 'nowrap' }}>
+      {omitHeading ? '' : filter.name}
+      <HelpOutlineIcon style={{ cursor: 'pointer', transform: 'scale(0.7)' }} />
+    </small>
+  </Tooltip>
+); // Tip
 
 const Filters = forwardRef(({ props }) => {
   const { state, dispatch } = useContext(Context);
