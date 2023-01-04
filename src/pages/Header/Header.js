@@ -8,13 +8,9 @@ import { Button } from '@mui/material';
 import Axios from 'axios';
 import moment from 'moment';
 import { useSnackbar } from 'notistack';
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { NavLink, useHistory } from 'react-router-dom';
 import { abbrRegion } from '../../shared/constants';
-import zone4DataDictionary from '../../shared/json/zone4/data-dictionary.json';
-import zone5DataDictionary from '../../shared/json/zone5/data-dictionary.json';
-import zone6DataDictionary from '../../shared/json/zone6/data-dictionary.json';
-import zone7DataDictionary from '../../shared/json/zone7/data-dictionary.json';
 import { Context, cropDataFormatter } from '../../store/Store';
 import '../../styles/header.scss';
 import HeaderLogoInfo from './HeaderLogoInfo/HeaderLogoInfo';
@@ -28,7 +24,7 @@ const Header = () => {
   const { state, dispatch } = useContext(Context);
   const section = window.location.href.includes('selector') ? 'selector' : 'explorer';
   const sfilters = state[section];
-  const [isRoot, setIsRoot] = React.useState(false);
+  const [isRoot, setIsRoot] = useState(false);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const isActive = {};
 
@@ -312,54 +308,25 @@ const Header = () => {
       return;
     }
 
-    state.lastZone = sfilters.zone; // TODO
-
-    let z7Formattedgoal = zone7DataDictionary.filter(
-      (data) => data.Category === 'Goals' && data.Variable !== 'Notes: Goals',
-    );
-    let z6Formattedgoal = zone6DataDictionary.filter(
-      (data) => data.Category === 'Goals' && data.Variable !== 'Notes: Goals',
-    );
-    let z5Formattedgoal = zone5DataDictionary.filter(
-      (data) => data.Category === 'Goals' && data.Variable !== 'Notes: Goals',
-    );
-    let z4Formattedgoal = zone4DataDictionary.filter(
-      (data) => data.Category === 'Goals' && data.Variable !== 'Notes: Goals',
-    );
-    z7Formattedgoal = z7Formattedgoal.map((goal) => ({ fields: goal }));
-    z6Formattedgoal = z6Formattedgoal.map((goal) => ({ fields: goal }));
-    z5Formattedgoal = z5Formattedgoal.map((goal) => ({ fields: goal }));
-    z4Formattedgoal = z4Formattedgoal.map((goal) => ({ fields: goal }));
-
-    getCropData([], sfilters.zone);
-
-    switch (parseInt(sfilters.zone, 10)) {
-      case 7: {
-        getCropData(z7Formattedgoal, 4);
-        break;
-      }
-      case 6: {
-        getCropData(z6Formattedgoal, 3);
-        break;
-      }
-      case 5: {
-        getCropData(z5Formattedgoal, 2);
-        break;
-      }
-      case 4: {
-        getCropData(z4Formattedgoal, 1);
-        break;
-      }
-      default: {
-        break;
-      }
+    async function getDictData() {
+      await fetch(`https://api.covercrop-selector.org/legacy/data-dictionary?zone=zone${sfilters.zone}`)
+        .then((res) => res.json())
+        .then((data) => data.filter(
+          (d) => d.Category === 'Goals' && d.Variable !== 'Notes: Goals',
+        ))
+        .then((data) => data.map((goal) => ({ fields: goal })))
+        .then((data) => getCropData(data, (sfilters.zone - 3)))
+        .catch((err) => {
+        // eslint-disable-next-line no-console
+          console.log(err.message);
+        });
     }
+
+    getDictData();
+    getCropData([], sfilters.zone);
+    state.lastZone = sfilters.zone; // TODO
   }, [
     sfilters.zone,
-    state.zone4CropData,
-    state.zone5CropData,
-    state.zone6CropData,
-    state.zone7CropData,
     dispatch,
   ]);
 
