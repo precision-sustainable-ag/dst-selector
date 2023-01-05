@@ -4,7 +4,8 @@
 
 // eslint-disable-next-line consistent-return
 const Reducer = (state, action, value = action && action.data && action.data.value) => {
-  const section = window.location.href.includes('selector') ? 'selector' : 'explorer';
+  const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
+  console.log(section);
   let sfilters = { ...state[section] };
 
   switch (action.type) {

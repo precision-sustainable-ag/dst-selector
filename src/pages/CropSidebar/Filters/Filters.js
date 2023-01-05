@@ -8,7 +8,6 @@ import { Context } from '../../../store/Store';
 const DollarsAndRatings = ({ filter, handleChange }) => {
   const { state, dispatch } = useContext(Context);
   const sfilters = window.location.href.includes('species') ? state.selector : state.explorer;
-  console.log(sfilters);
 
   const style = filter.symbol === 'dollar'
     ? {}
@@ -26,11 +25,7 @@ const DollarsAndRatings = ({ filter, handleChange }) => {
         .map((i) => {
           const filterKey = `${filter.name}: ${i}`;
           const selected = sfilters[filterKey];
-
-          if (selected) {
-            console.log(sfilters, filterKey, selected);
-          }
-          // console.log(sfilters, filterKey, selected);
+          
           const filterOn = (key = filterKey) => dispatch({
             type: 'FILTER_ON',
             data: {
