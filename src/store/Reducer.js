@@ -6,6 +6,7 @@
 const Reducer = (state, action, value = action && action.data && action.data.value) => {
   const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
   let sfilters = { ...state[section] };
+  console.log(sfilters);
 
   switch (action.type) {
     case 'TOGGLE':
