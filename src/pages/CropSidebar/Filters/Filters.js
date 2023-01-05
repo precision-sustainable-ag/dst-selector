@@ -25,7 +25,7 @@ const DollarsAndRatings = ({ filter, handleChange }) => {
         .map((i) => {
           const filterKey = `${filter.name}: ${i}`;
           const selected = sfilters[filterKey];
-          
+
           const filterOn = (key = filterKey) => dispatch({
             type: 'FILTER_ON',
             data: {
