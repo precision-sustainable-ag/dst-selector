@@ -290,7 +290,6 @@ const CropSidebar = ({
   useEffect(() => {
     const dictionary = [];
     const zoneName = `zone${sfilters.zone}Dictionary`;
-    console.log(zoneName);
 
     const setData = async () => {
       setSidebarFilters(dictionary);
