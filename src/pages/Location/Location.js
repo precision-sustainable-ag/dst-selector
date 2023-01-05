@@ -31,7 +31,7 @@ const LocationComponent = ({
   closeExpansionPanel,
 }) => {
   const { state, dispatch } = useContext(Context);
-  const section = window.location.href.includes('selector') ? 'selector' : 'explorer';
+  const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
   const sfilters = state[section];
   const [selectedToEditSite, setSelectedToEditSite] = useState({});
   const [showRestartPrompt, setShowRestartPrompt] = useState(false);
