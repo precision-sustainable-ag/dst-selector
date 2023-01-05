@@ -67,7 +67,7 @@ const MyCoverCropComparison = ({ selectedCrops }) => {
   const { state, dispatch } = useContext(Context);
   const { enqueueSnackbar } = useSnackbar();
   const { comparisonKeys } = state;
-  const section = window.location.href.includes('selector') ? 'selector' : 'explorer';
+  const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
   const { zone } = state[section];
 
   const [sidebarDefs, setSidebarDefs] = useState([]);

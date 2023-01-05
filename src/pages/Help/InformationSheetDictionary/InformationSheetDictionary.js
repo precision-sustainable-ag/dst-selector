@@ -14,7 +14,7 @@ import DictionaryContent from './DictionaryContent';
 const InformationSheetDictionary = ({ zone, from }) => {
   const [dictionary, setDictionary] = useState([]);
   const { state } = useContext(Context);
-  const section = window.location.href.includes('selector') ? 'selector' : 'explorer';
+  const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
   const sfilters = state[section];
 
   const currentZone = zone || sfilters.zone;

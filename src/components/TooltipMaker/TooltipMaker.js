@@ -10,7 +10,7 @@ import '../../styles/tooltipMaker.scss';
 
 const TooltipMaker = ({ children, variable }) => {
   const { state } = useContext(Context);
-  const section = window.location.href.includes('selector') ? 'selector' : 'explorer';
+  const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
   const sfilters = state[section];
 
   const [desc, setDesc] = useState('');
