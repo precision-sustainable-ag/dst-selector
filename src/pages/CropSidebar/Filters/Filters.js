@@ -8,7 +8,7 @@ import { Context } from '../../../store/Store';
 const DollarsAndRatings = ({ filter, handleChange }) => {
   const { state, dispatch } = useContext(Context);
   const sfilters = window.location.href.includes('species') ? state.selector : state.explorer;
-  // console.log(sfilters);
+  console.log(sfilters);
 
   const style = filter.symbol === 'dollar'
     ? {}

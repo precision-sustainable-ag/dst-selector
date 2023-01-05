@@ -16,7 +16,11 @@ const Reducer = (state, action, value = action && action.data && action.data.val
       //   return { ...state, [value]: false };
 
     case 'FILTER_TOGGLE': {
+      console.log(sfilters, value);
+
+      console.log(sfilters, value, sfilters[value]);
       sfilters[value] = !sfilters[value];
+      console.log(sfilters, value, sfilters[value]);
       return {
         ...state,
         [section]: sfilters,
