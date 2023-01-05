@@ -1,13 +1,14 @@
 import { Chip, Grid, Tooltip } from '@mui/material';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import React, {
-  forwardRef, useEffect, useContext, useState,
+  forwardRef, useContext,
 } from 'react';
 import { Context } from '../../../store/Store';
 
 const DollarsAndRatings = ({ filter, handleChange }) => {
   const { state, dispatch } = useContext(Context);
   const sfilters = window.location.href.includes('species') ? state.selector : state.explorer;
+  // console.log(sfilters);
 
   const style = filter.symbol === 'dollar'
     ? {}
@@ -25,6 +26,11 @@ const DollarsAndRatings = ({ filter, handleChange }) => {
         .map((i) => {
           const filterKey = `${filter.name}: ${i}`;
           const selected = sfilters[filterKey];
+
+          if (selected) {
+            console.log(sfilters, filterKey, selected);
+          }
+          // console.log(sfilters, filterKey, selected);
           const filterOn = (key = filterKey) => dispatch({
             type: 'FILTER_ON',
             data: {
@@ -124,32 +130,34 @@ const Tip = ({ filter, omitHeading }) => (
 const Filters = forwardRef(({ props }) => {
   const { state, dispatch } = useContext(Context);
   const { filters } = props;
-  const [selected, setSelected] = useState({});
-  const [sidebarFilterOptions, setSidebarFilterOptions] = useState({});
+  // const [selected, setSelected] = useState({});
+  // const [sidebarFilterOptions, setSidebarFilterOptions] = useState({});
 
-  const setProps = (selectedItem) => {
-    setSidebarFilterOptions({
-      ...sidebarFilterOptions,
-      ...selectedItem,
-    });
-  };
+  // const setProps = (selectedItem) => {
+  //   setSidebarFilterOptions({
+  //     ...sidebarFilterOptions,
+  //     ...selectedItem,
+  //   });
+  // };
 
-  useEffect(() => {
-    setProps(selected);
-  }, [selected]);
+  // useEffect(() => {
+  //   setProps(selected);
+  // }, [selected]);
 
   const dollarsAndRatingsChange = () => {
-    setSelected({ ...selected, whatever: 'rerender' });
+    console.log('changing');
+    // setSelected({ ...selected });
   };
 
   const chipChange = (filtername, val) => {
+    console.log(filtername, val);
     dispatch({
       type: 'FILTER_TOGGLE',
       data: {
         value: `${filtername}: ${val}`,
       },
     });
-    setSelected({ ...selected, whatever: 'rerender' });
+    // setSelected({ ...selected });
   };
 
   return (
