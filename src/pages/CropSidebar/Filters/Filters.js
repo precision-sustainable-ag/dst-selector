@@ -7,7 +7,7 @@ import { Context } from '../../../store/Store';
 
 const DollarsAndRatings = ({ filter, handleChange }) => {
   const { state, dispatch } = useContext(Context);
-  const sfilters = window.location.href.includes('species') ? state.selector : state.explorer;
+  const sfilters = window.location.href.includes('species-selector') ? state.selector : state.explorer;
 
   const style = filter.symbol === 'dollar'
     ? {}
@@ -80,7 +80,7 @@ const DollarsAndRatings = ({ filter, handleChange }) => {
 }; // DollarsAndRatings
 
 const Chips = ({ state, filter, handleChange }) => {
-  const sfilters = window.location.href.includes('species') ? state.selector : state.explorer;
+  const sfilters = window.location.href.includes('species-selector') ? state.selector : state.explorer;
 
   return filter.values.map((val) => {
     const selected = sfilters[`${filter.name}: ${val}`];

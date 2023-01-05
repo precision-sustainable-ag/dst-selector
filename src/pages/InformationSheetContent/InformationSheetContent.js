@@ -23,7 +23,7 @@ import InformationSheetReferences from './InformationSheetReferences/Information
 
 const InformationSheetContent = ({ crop }) => {
   const { state } = useContext(Context);
-  const section = window.location.href.includes('selector') ? 'selector' : 'explorer';
+  const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
   const { zone } = state[section];
   const [currentSources, setCurrentSources] = useState([{}]);
   const [allThumbs, setAllThumbs] = useState([]);

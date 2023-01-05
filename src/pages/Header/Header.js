@@ -22,7 +22,7 @@ const Header = () => {
   const history = useHistory();
 
   const { state, dispatch } = useContext(Context);
-  const section = window.location.href.includes('selector') ? 'selector' : 'explorer';
+  const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
   const sfilters = state[section];
   const [isRoot, setIsRoot] = useState(false);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
