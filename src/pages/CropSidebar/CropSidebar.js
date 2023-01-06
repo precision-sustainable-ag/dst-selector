@@ -25,8 +25,6 @@ import { CustomStyles } from '../../shared/constants';
 import { Context } from '../../store/Store';
 import '../../styles/cropSidebar.scss';
 import ComparisonBar from '../MyCoverCropList/ComparisonBar/ComparisonBar';
-// import sidebarCategoriesData from '../../shared/json/sidebar/sidebar-categories.json';
-// import sidebarFiltersData from '../../shared/json/sidebar/sidebar-filters.json';
 import CoverCropSearch from './CoverCropSearch/CoverCropSearch';
 import SidebarFilter from './SidebarFilter/SidebarFilter';
 import CoverCropGoals from './CoverCropGoals/CoverCropGoals';
