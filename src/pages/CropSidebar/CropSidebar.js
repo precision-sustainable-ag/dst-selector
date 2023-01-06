@@ -69,7 +69,6 @@ const CropSidebar = ({
     async function getFilterData() {
       await fetch('https://api.covercrop-selector.org/legacy/sidebar/filters')
         .then((res) => res.json())
-        // .then((data) => { console.log('filters', data); })
         .then((data) => { setSidebarFiltersData(data); })
         .catch((err) => {
           // eslint-disable-next-line no-console
@@ -80,7 +79,6 @@ const CropSidebar = ({
     async function getCategoriesData() {
       await fetch('https://api.covercrop-selector.org/legacy/sidebar/categories')
         .then((res) => res.json())
-        // .then((data) => { console.log('categories', data); })
         .then((data) => { setSidebarCategoriesData(data); })
         .catch((err) => {
           // eslint-disable-next-line no-console
