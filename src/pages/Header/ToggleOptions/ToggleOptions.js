@@ -42,17 +42,17 @@ const ToggleOptions = ({ isRoot, setSpeciesSelectorActivationFlag, setmyCoverCro
   return (
     <>
       <Button size="large" onClick={() => clearMyCoverCropList(false)} component={NavLink} exact to="/" activeClassName="active">
-        COVER CROP EXPLORER
+        SPECIES SELECTOR TOOL
       </Button>
       <Button
         className={(isRoot && state.speciesSelectorActivationFlag) && 'active'}
         onClick={() => clearMyCoverCropList(true)}
         size="large"
       >
-        SPECIES SELECTOR TOOL
+        COVER CROP EXPLORER
       </Button>
 
-      {window.location.pathname === '/species-selector'
+      {window.location.pathname === '/'
         && state.selectedCrops.length > 0
         && state.progress >= 5 && (
           <Badge
@@ -62,7 +62,7 @@ const ToggleOptions = ({ isRoot, setSpeciesSelectorActivationFlag, setmyCoverCro
             <Button
               size="large"
               className={
-                (state.myCoverCropActivationFlag && window.location.pathname === '/species-selector')
+                (state.myCoverCropActivationFlag && window.location.pathname === '/')
                   && 'active'
               }
               onClick={setmyCoverCropActivationFlag}
@@ -72,7 +72,7 @@ const ToggleOptions = ({ isRoot, setSpeciesSelectorActivationFlag, setmyCoverCro
           </Badge>
       )}
       {/* My Cover Crop List As A Separate Component/Route  */}
-      {window.location.pathname !== '/species-selector' && (
+      {window.location.pathname !== '/' && (
         state.progress.length < 5 ? (
           state.selectedCrops.length > 0 && (
           <Badge

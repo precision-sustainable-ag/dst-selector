@@ -19,7 +19,7 @@ import LocationComponent from '../../Location/Location';
 import SoilCondition from '../../Location/SoilCondition/SoilCondition';
 import WeatherConditions from '../../../components/WeatherConditions/WeatherConditions';
 
-const speciesSelectorToolName = '/species-selector';
+const speciesSelectorToolName = '/';
 
 const expansionPanelBaseStyle = {
   display: 'flex',

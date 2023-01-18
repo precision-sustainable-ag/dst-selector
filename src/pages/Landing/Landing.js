@@ -6,6 +6,7 @@
 
 import { Grid, Typography } from '@mui/material';
 import React, { useContext, useEffect, useState } from 'react';
+import SelectUSState from 'react-select-us-states';
 import { Link } from 'react-router-dom';
 import ReactGA from 'react-ga';
 import { LightButton } from '../../shared/constants';
@@ -16,6 +17,19 @@ import ConsentModal from '../CoverCropExplorer/ConsentModal/ConsentModal';
 const Landing = ({ height, title, bg }) => {
   const { state, dispatch } = useContext(Context);
   const [containerHeight, setContainerHeight] = useState(height);
+  const [councilName, setCouncilName] = useState('');
+
+  useEffect(() => {
+    if (state.state) {
+      if (state.council === 'Northeast') {
+        setCouncilName('Northeast Cover Crop');
+      } else if (state.council === 'Midwest') {
+        setCouncilName('Midwest Cover Crop');
+      } else if (state.council === 'Southern') {
+        setCouncilName('Southern Cover Crop');
+      }
+    }
+  }, [state.state]);
 
   useEffect(() => {
     if (state.consent === true) {
@@ -60,6 +74,15 @@ const Landing = ({ height, title, bg }) => {
     return () => window.removeEventListener('resize', updateSize);
   }, [title]);
 
+  const onStateChange = (value) => {
+    dispatch({
+      type: 'UPDATE_STATE',
+      data: {
+        state: value,
+      },
+    });
+  };
+
   return (
     <div
       id="landingWrapper"
@@ -86,15 +109,15 @@ const Landing = ({ height, title, bg }) => {
       >
         <Grid item>
           <Typography variant="h4" gutterBottom align="center">
-            Welcome to the Northeast Cover Crop Species Selector Tool
+            {`Welcome to the ${councilName} Species Selector Tool`}
           </Typography>
         </Grid>
         <Grid item>
           <Typography variant="body1" gutterBottom align="left">
-            You are currently interacting with the Northeast Cover Crop Species Selector Tool. We
+            {`You are currently interacting with the ${councilName} Species Selector Tool. We
             seek feedback about the usability and usefulness of this tool. Our goal is to encourage
-            and support the use of cover crops in the Northeast US. You can learn more about the
-            cover crop data and design of this tool
+            and support the use of cover crops in your area. You can learn more about the
+            cover crop data and design of this tool`}
             {' '}
             <Link to="/about"> here</Link>
             . If you need
@@ -105,6 +128,10 @@ const Landing = ({ height, title, bg }) => {
           </Typography>
         </Grid>
         <Grid item>
+          <Typography variant="body1" gutterBottom align="left" className="font-weight-bold">
+            Select Your State
+          </Typography>
+          <SelectUSState id="myId" className="myClassName" onChange={(e) => onStateChange(e)} />
           <Typography align="left" variant="body1" gutterBottom style={{ paddingBottom: '1em' }}>
             In the future, this platform will host a variety of tools including a cover crop mixture
             and seeding rate calculator and an economics calculator. Our ultimate goal is to provide
