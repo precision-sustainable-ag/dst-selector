@@ -109,6 +109,17 @@ const Reducer = (state, action, value = action && action.data && action.data.val
       };
     }
 
+    case 'UPDATE_STATE': {
+      if (['IN', 'MI', 'OH', 'IL', 'ID', 'WI', 'KY', 'MO'].includes(action.data.state)) {
+        return { ...state, state: action.data.state, council: 'Midwest' };
+      } if (['LA', 'GA', 'FL', 'AL', 'MS'].includes(action.data.state)) {
+        return { ...state, state: action.data.state, council: 'Southern' };
+      } if (['NC', 'SC', 'VA', 'MA'].includes(action.data.state)) {
+        return { ...state, state: action.data.state, council: 'Northeast' };
+      }
+      return { ...state, state: action.data.state, council: '' };
+    }
+
     // case 'JUMP_SPECIES_PROGRESS': {
     //   return { ...state, progress: 5 };
     // }

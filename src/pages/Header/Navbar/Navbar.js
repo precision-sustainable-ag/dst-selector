@@ -28,12 +28,12 @@ const Navbar = ({ isRoot, setSpeciesSelectorActivationFlag, setmyCoverCropActiva
         />
         <MDBCollapse isOpen={collapse} navbar>
           <MDBNavbarNav className="ham-nav">
-            <MDBNavItem>COVER CROP EXPLORER</MDBNavItem>
+            <MDBNavItem>SPECIES SELECTOR TOOL</MDBNavItem>
             <MDBNavItem
               onClick={setSpeciesSelectorActivationFlag}
               active={isRoot ? (!!state.speciesSelectorActivationFlag) : false}
             >
-              SPECIES SELECTOR TOOL
+              COVER CROP EXPLORER
             </MDBNavItem>
             {state.progress >= 5 && (
               <MDBNavItem

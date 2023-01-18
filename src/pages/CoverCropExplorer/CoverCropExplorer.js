@@ -62,8 +62,8 @@ const CoverCropExplorer = () => {
       });
     } else {
       history.goBack();
-      if (window.location.pathname !== '/species-selector') {
-        history.push('/species-selector');
+      if (window.location.pathname !== '/') {
+        history.push('/');
       }
     }
     setHandleConfirm(false);

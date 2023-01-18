@@ -32,21 +32,26 @@ const HeaderLogoInfo = () => {
 
   return (
     <div className="row">
-      <div className="col-lg-2 col-12" role="button">
-        <button
-          type="button"
-          onClick={selectedCrops.length > 0 ? () => setHandleConfirm(true) : () => logoClick(true)}
-        >
-          <img
-            className="img-fluid"
-            src="/images/neccc_wide_logo_color_web.jpg"
-            alt="NECCC Logo"
-            width="100%"
-            onContextMenu={() => false}
-            style={{ cursor: 'pointer' }}
-          />
-        </button>
-      </div>
+      {state.council === 'Northeast'
+          && (
+          <div className="col-lg-2 col-12" role="button">
+            <button
+              type="button"
+              onClick={selectedCrops.length > 0 ? () => setHandleConfirm(true) : () => logoClick(true)}
+            >
+
+              <img
+                className="img-fluid"
+                src="/images/neccc_wide_logo_color_web.jpg"
+                alt="NECCC Logo"
+                width="100%"
+                onContextMenu={() => false}
+                style={{ cursor: 'pointer' }}
+              />
+
+            </button>
+          </div>
+          )}
       <div className="col-12 col-lg-10 col-sm-12 row">
         <div className="col-lg-4 col-12 d-flex align-items-center text-left">
           <div>

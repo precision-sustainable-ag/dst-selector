@@ -267,7 +267,7 @@ const Header = () => {
     }
     // check if isRoot
 
-    if (window.location.pathname === '/species-selector') {
+    if (window.location.pathname === '/explorer') {
       setIsRoot(true);
     } else {
       setIsRoot(false);
@@ -332,7 +332,7 @@ const Header = () => {
 
   const setmyCoverCropActivationFlag = () => {
     history.push('/my-cover-crop-list');
-    if (window.location.pathname === '/species-selector') {
+    if (window.location.pathname === '/explorer') {
       if (state.progress > 4) {
         dispatch({
           type: 'ACTIVATE_MY_COVER_CROP_LIST_TILE',
@@ -353,8 +353,8 @@ const Header = () => {
         myCoverCropActivationFlag: false,
       },
     });
-    if (window.location.pathname !== '/species-selector') {
-      history.push('/species-selector');
+    if (window.location.pathname !== '/explorer') {
+      history.push('/explorer');
     }
   };
 
