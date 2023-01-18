@@ -27,6 +27,8 @@ const Landing = ({ height, title, bg }) => {
         setCouncilName('Midwest Cover Crop');
       } else if (state.council === 'Southern') {
         setCouncilName('Southern Cover Crop');
+      } else if (state.council === '') {
+        setCouncilName('');
       }
     }
   }, [state.state]);
