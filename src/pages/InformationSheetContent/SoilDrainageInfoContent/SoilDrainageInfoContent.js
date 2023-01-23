@@ -5,7 +5,7 @@ import { Accordion, AccordionSummary } from '../informationSheet.styles';
 import SoilDrainageTimeline from './SoilDrainageTimeline';
 
 const SoilDrainageInfoContent = ({ crop }) => (
-  <div className="col-5 col-lg-6 basicAgWrapper">
+  <div className="col-5 col-xs-12 col-sm-12 col-md-12 col-lg-6 basicAgWrapper">
     <div className="col-12 otherHeaderRow p-0" style={{ marginTop: '1em', float: 'left' }}>
       <Accordion defaultExpanded style={{ border: '1px solid #2b7b79' }}>
         <AccordionSummary

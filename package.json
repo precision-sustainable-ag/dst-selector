@@ -11,6 +11,7 @@
         "@mui/icons-material": "^5.8.4",
         "@mui/lab": "^5.0.0-alpha.93",
         "@mui/material": "^5.9.3",
+        "@mui/system": "^5.11.5",
         "@psa/dst.ui.map": "latest",
         "@turf/area": "^6.5.0",
         "@turf/centroid": "^6.5.0",
@@ -39,6 +40,7 @@
         "react-swipeable-views-utils": "^0.14.0",
         "sass-mediaqueries": "^1.6.1",
         "save-as": "^0.1.8",
+        "screen-size-detector": "^1.0.4",
         "styled-components": "^5.3.6",
         "worker-loader": "^3.0.8"
     },
