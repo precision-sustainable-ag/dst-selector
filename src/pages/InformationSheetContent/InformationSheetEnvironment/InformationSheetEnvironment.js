@@ -53,7 +53,7 @@ const InfoEnvironmentalTermination = ({
 ); // InfoEnvironmentalTermination
 
 const InformationSheetEnvironment = ({ crop }) => (
-  <div className="col-5 col-lg-6 envTolWrapper" style={{ marginTop: '1em' }}>
+  <div className="col-5 col-xs-12 col-sm-12 col-md-12 col-lg-6 envTolWrapper" style={{ marginTop: '1em' }}>
     <Accordion defaultExpanded style={{ border: '1px solid #2b7b79' }}>
       <AccordionSummary
         expandIcon={<ExpandMore />}
