@@ -135,16 +135,25 @@ const LocationComponent = ({
   return (
     <div className="container-fluid mt-5">
       <div className="row boxContainerRow mx-0 px-0 mx-lg-3 px-lg-3" style={{ minHeight: '520px' }}>
-        <div className="col-xl-4 col-sm-12">
+        <div className={`col-xl-${state.council === 'Midwest' ? '12' : '4'} col-sm-12`}>
           <div className="container-fluid">
             <Typography variant="h4" align="left">
               Where is your field located?
             </Typography>
-            <Typography variant="body1" align="left" justifyContent="center" className="pt-5 pb-2">
-              Select your USDA plant hardiness zone, search your address, or zip code and hit
-              <Search fontSize="inherit" />
-              to determine your location.
-            </Typography>
+            {state.council === 'Midwest'
+              ? (
+                <Typography variant="body1" align="left" justifyContent="center" className="pt-5 pb-2">
+                  Please Select A County.
+                </Typography>
+              )
+              : (
+                <Typography variant="body1" align="left" justifyContent="center" className="pt-5 pb-2">
+                  Select your USDA plant hardiness zone, search your address, or zip code and hit
+                  <Search fontSize="inherit" />
+                  to determine your location.
+
+                </Typography>
+              )}
             <div className="row py-3 my-4 ">
               <div className="col-md-5 col-lg-6 col-sm-12 col-12">
                 <FormControl
@@ -174,29 +183,34 @@ const LocationComponent = ({
             </div>
           </div>
         </div>
-        <div className="col-xl-8 col-sm-12">
-          <div className="container-fluid">
-            <Map
-              setAddress={setSelectedToEditSite}
-              initWidth="100%"
-              initHeight="600px"
-              initLat={state.markers && state.markers.length > 0 ? state.markers[0][0] : 47}
-              initLon={state.markers && state.markers.length > 0 ? state.markers[0][1] : -122}
-              initStartZoom={12}
-              initMinZoom={4}
-              initMaxZoom={18}
-              hasSearchBar
-              hasMarker
-              hasNavigation
-              hasCoordBar
-              hasDrawing
-              hasGeolocate
-              hasFullScreen
-              hasMarkerPopup
-              hasMarkerMovable
-            />
-          </div>
-        </div>
+        {state.council !== 'Midwest'
+            && (
+            <div className="col-xl-8 col-sm-12">
+              <div className="container-fluid">
+
+                <Map
+                  setAddress={setSelectedToEditSite}
+                  initWidth="100%"
+                  initHeight="600px"
+                  initLat={state.markers && state.markers.length > 0 ? state.markers[0][0] : 47}
+                  initLon={state.markers && state.markers.length > 0 ? state.markers[0][1] : -122}
+                  initStartZoom={12}
+                  initMinZoom={4}
+                  initMaxZoom={18}
+                  hasSearchBar
+                  hasMarker
+                  hasNavigation
+                  hasCoordBar
+                  hasDrawing
+                  hasGeolocate
+                  hasFullScreen
+                  hasMarkerPopup
+                  hasMarkerMovable
+                />
+              </div>
+            </div>
+            )}
+
       </div>
       <Dialog disableEscapeKeyDown open={showRestartPrompt}>
         <DialogContent dividers>

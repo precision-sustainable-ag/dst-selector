@@ -17,21 +17,16 @@ import ConsentModal from '../CoverCropExplorer/ConsentModal/ConsentModal';
 const Landing = ({ height, title, bg }) => {
   const { state, dispatch } = useContext(Context);
   const [containerHeight, setContainerHeight] = useState(height);
-  const [councilName, setCouncilName] = useState('');
 
   useEffect(() => {
-    if (state.state) {
-      if (state.council === 'Northeast') {
-        setCouncilName('Northeast Cover Crop');
-      } else if (state.council === 'Midwest') {
-        setCouncilName('Midwest Cover Crop');
-      } else if (state.council === 'Southern') {
-        setCouncilName('Southern Cover Crop');
-      } else if (state.council === '') {
-        setCouncilName('');
-      }
-    }
-  }, [state.state]);
+    dispatch({
+      type: 'UPDATE_STATE',
+      data: {
+        state: '',
+        council: '',
+      },
+    });
+  }, []);
 
   useEffect(() => {
     if (state.consent === true) {
@@ -111,12 +106,12 @@ const Landing = ({ height, title, bg }) => {
       >
         <Grid item>
           <Typography variant="h4" gutterBottom align="center">
-            {`Welcome to the ${councilName} Species Selector Tool`}
+            {`Welcome to the${state.council ? ` ${state.council} Cover Crop` : ''} Species Selector Tool`}
           </Typography>
         </Grid>
         <Grid item>
           <Typography variant="body1" gutterBottom align="left">
-            {`You are currently interacting with the ${councilName} Species Selector Tool. We
+            {`You are currently interacting with the${state.council ? ` ${state.council} Cover Crop` : ''} Species Selector Tool. We
             seek feedback about the usability and usefulness of this tool. Our goal is to encourage
             and support the use of cover crops in your area. You can learn more about the
             cover crop data and design of this tool`}
