@@ -117,7 +117,7 @@ const Reducer = (state, action, value = action && action.data && action.data.val
       } if (['NC', 'SC', 'VA', 'MA'].includes(action.data.state)) {
         return { ...state, state: action.data.state, council: 'Northeast' };
       }
-      return { ...state, state: action.data.state, council: '' };
+      return { ...state, state: action.data.state, council: action.data.council };
     }
 
     // case 'JUMP_SPECIES_PROGRESS': {
