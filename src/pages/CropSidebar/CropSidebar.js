@@ -25,8 +25,6 @@ import { CustomStyles } from '../../shared/constants';
 import { Context } from '../../store/Store';
 import '../../styles/cropSidebar.scss';
 import ComparisonBar from '../MyCoverCropList/ComparisonBar/ComparisonBar';
-import sidebarCategoriesData from '../../shared/json/sidebar/sidebar-categories.json';
-import sidebarFiltersData from '../../shared/json/sidebar/sidebar-filters.json';
 import CoverCropSearch from './CoverCropSearch/CoverCropSearch';
 import SidebarFilter from './SidebarFilter/SidebarFilter';
 import CoverCropGoals from './CoverCropGoals/CoverCropGoals';
@@ -46,6 +44,8 @@ const CropSidebar = ({
   const [loading, setLoading] = useState(true);
   const [sidebarFilters, setSidebarFilters] = useState([]);
   const [showFilters, setShowFilters] = useState('');
+  const [sidebarCategoriesData, setSidebarCategoriesData] = useState([]);
+  const [sidebarFiltersData, setSidebarFiltersData] = useState([]);
   const [tableHeight, setTableHeight] = useState(0);
   const [dateRange, setDateRange] = useState({
     startDate: null,
@@ -60,8 +60,33 @@ const CropSidebar = ({
     return sidebarStarter;
   });
 
-  const section = window.location.href.includes('selector') ? 'selector' : 'explorer';
+  const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
   const sfilters = state[section];
+
+  useEffect(() => {
+    async function getFilterData() {
+      await fetch('https://api.covercrop-selector.org/legacy/sidebar/filters')
+        .then((res) => res.json())
+        .then((data) => { setSidebarFiltersData(data); })
+        .catch((err) => {
+          // eslint-disable-next-line no-console
+          console.log(err.message);
+        });
+    }
+
+    async function getCategoriesData() {
+      await fetch('https://api.covercrop-selector.org/legacy/sidebar/categories')
+        .then((res) => res.json())
+        .then((data) => { setSidebarCategoriesData(data); })
+        .catch((err) => {
+          // eslint-disable-next-line no-console
+          console.log(err.message);
+        });
+    }
+
+    getFilterData();
+    getCategoriesData();
+  }, []);
 
   // // TODO: When is showFilters false?
   // NOTE: verify below when show filter is false.
@@ -289,22 +314,35 @@ const CropSidebar = ({
 
   useEffect(() => {
     const dictionary = [];
-    const zoneName = `zone${sfilters.zone}Dictionary`;
-
     const setData = async () => {
       setSidebarFilters(dictionary);
     };
 
     setLoading(true);
-    generateSidebarObject(state[zoneName], dictionary)
-      .then(() => setData())
-      .then(() => setLoading(false));
+    async function getSidebars(data) {
+      await generateSidebarObject(data, dictionary)
+        .then(() => setData())
+        .then(() => { setLoading(false); })
+        .catch((err) => {
+        // eslint-disable-next-line no-console
+          console.log(err.message);
+        });
+    }
+
+    async function getDictData() {
+      await fetch(`https://api.covercrop-selector.org/legacy/data-dictionary?zone=zone${sfilters.zone}`)
+        .then((res) => res.json())
+        .then((data) => { getSidebars(data); })
+        .catch((err) => {
+          // eslint-disable-next-line no-console
+          console.log(err.message);
+        });
+    }
+
+    getDictData();
   }, [
     sfilters.zone,
-    state.zone4Dictionary,
-    state.zone5Dictionary,
-    state.zone6Dictionary,
-    state.zone7Dictionary,
+    sidebarCategoriesData,
   ]);
 
   useEffect(() => {
