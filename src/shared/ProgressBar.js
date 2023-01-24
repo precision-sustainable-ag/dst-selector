@@ -25,14 +25,14 @@ const ProgressBar = () => {
       <Typography variant="body1" className="progress-track" component="div">
         Question
         {' '}
-        {state.progress}
+        {state.council === 'Midwest' && state.progress >= 3 ? state.progress - 1 : state.progress}
         {' '}
-        of 4
+        {state.council === 'Midwest' ? 'of 3' : 'of 4'}
       </Typography>
       <div className="progress-diagram">
         <div id="step1" className={checkProgressStatus(state.progress, 1)} />
 
-        <div id="step2" className={checkProgressStatus(state.progress, 2)} />
+        {state.council !== 'Midwest' && <div id="step2" className={checkProgressStatus(state.progress, 2)} />}
 
         <div id="step3" className={checkProgressStatus(state.progress, 3)} />
 
