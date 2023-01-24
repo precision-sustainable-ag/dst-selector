@@ -165,7 +165,7 @@ const InformationBar = () => {
         </div>
 
         <div className="soilBar">
-          {state.progress > 1 && window.location.pathname === speciesSelectorToolName
+          {state.progress > 1 && state.council !== 'Midwest' && window.location.pathname === speciesSelectorToolName
             && getData('soil')}
         </div>
         <div className="weatherBar">

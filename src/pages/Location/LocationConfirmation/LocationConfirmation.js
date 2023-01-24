@@ -29,6 +29,8 @@ const LocationConfirmation = () => {
       <div className="row boxContainerRow" style={{ textAlign: 'left', minHeight: '520px' }}>
         <div className="col-xl-6 col-lg-12">
           <div className="container-fluid">
+            {state.coucil !== 'Midwest'
+            ?? (
             <div className="row">
               <div className="col-lg-6">
                 <Map
@@ -82,6 +84,7 @@ const LocationConfirmation = () => {
                 </div>
               </div>
             </div>
+            )}
             <div className="row mt-3">
               <div className="col-lg-12" />
             </div>
@@ -131,7 +134,7 @@ const LocationConfirmation = () => {
         </div>
         <div className="col-xl-5 offset-xl-1 col-lg-12">
           <div className="container-fluid">
-            {state.progress === 2 && <SoilCondition />}
+            {state.progress === 2 && state.council !== 'Midwest' && <SoilCondition />}
             {state.progress === 3 && <WeatherConditions />}
           </div>
         </div>

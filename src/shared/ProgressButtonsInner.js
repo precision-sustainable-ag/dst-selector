@@ -3,16 +3,18 @@
   The ProgressButtonsInner allow the user to navigate steps
 */
 
-import React, { Fragment, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Context } from '../store/Store';
 import { LightButton } from './constants';
 
 const ProgressButtonsInner = ({ disabled }) => {
   const isDisabled = disabled;
 
-  const { dispatch } = useContext(Context);
+  const { state, dispatch } = useContext(Context);
+  const [crement, setCrement] = useState('');
 
   const changeProgress = (type) => {
+    setCrement(type);
     if (type === 'increment') {
       dispatch({
         type: 'UPDATE_PROGRESS',
@@ -31,6 +33,12 @@ const ProgressButtonsInner = ({ disabled }) => {
       });
     }
   };
+
+  useEffect(() => {
+    if (state.council === 'Midwest' && state.progress === 2) {
+      changeProgress(crement);
+    }
+  }, [state.progress]);
 
   return (
     <>
