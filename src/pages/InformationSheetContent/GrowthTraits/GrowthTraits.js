@@ -63,7 +63,7 @@ const GrowthTrait = ({
 const GrowthTraits = ({ crop }) => (
   // const classes = useStyles();
 
-  <div className="col-7 col-xs-12 col-sm-12 col-md-12 col-lg-6 basicAgWrapper">
+  <div className="col-7 col-lg-12 col-xl-6 basicAgWrapper">
     <div className="col-12 otherHeaderRow p-0" style={{ marginTop: '1em', float: 'left' }}>
       <Accordion defaultExpanded style={{ border: '1px solid #2b7b79' }}>
         <AccordionSummary
