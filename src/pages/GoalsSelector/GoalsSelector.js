@@ -42,7 +42,9 @@ const GoalsSelector = () => {
             What are your cover cropping goals?
           </Typography>
           <Typography variant="body2" align="center" color="secondary" gutterBottom>
-            Select up to three. Hover for more information
+            Select up to three. The order in which you select your goals will determine the sorting of
+            cover crops. The first goal you select will have the highest priority in sorting and then
+            decrease for each additional goal. Hover on a goal for more information.
           </Typography>
           {allGoals.length === 0 ? (
             <div className="goals col-lg-12">
