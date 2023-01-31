@@ -61,13 +61,14 @@ const GoalTag = ({
       )}
       key={`tooltip${key}`}
     >
-      <Chip
-        disabled={
+      <span>
+        <Chip
+          disabled={
           state.selectedGoals.length >= 3
             ? !state.selectedGoals.includes(goalTitle)
             : false
         }
-        avatar={
+          avatar={
           state.selectedGoals.length !== 0 && state.selectedGoals.includes(goalTitle) ? (
             <Avatar id={`avatar${key}`}>{state.selectedGoals.indexOf(goalTitle) + 1}</Avatar>
           ) : (
@@ -75,15 +76,16 @@ const GoalTag = ({
           )
         }
         // style={{ textAlign: "left" }}
-        label={goalTitle.toUpperCase()}
-        onClick={() => updateSelectedGoals(goal, key)}
-        key={`chip${key}`}
-        id={`chip${key}`}
-        size="medium"
-        variant="outlined"
+          label={goalTitle.toUpperCase()}
+          onClick={() => updateSelectedGoals(goal, key)}
+          key={`chip${key}`}
+          id={`chip${key}`}
+          size="medium"
+          variant="outlined"
         // color={"primary"}
-        className={`goal enabled ${goalTitle.toUpperCase()}`}
-      />
+          className={`goal enabled ${goalTitle.toUpperCase()}`}
+        />
+      </span>
     </Tooltip>
   );
 };
