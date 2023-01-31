@@ -10,39 +10,26 @@ import '../../styles/tooltipMaker.scss';
 
 const TooltipMaker = ({ children, variable }) => {
   const { state } = useContext(Context);
-  const section = window.location.href.includes('selector') ? 'selector' : 'explorer';
+  const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
   const sfilters = state[section];
 
   const [desc, setDesc] = useState('');
   const [dict, setDict] = useState([]);
 
   useEffect(() => {
-    let dictionary;
-    switch (sfilters.zone) {
-      case 7:
-        dictionary = state.zone7Dictionary.filter((val) => val.Variable === variable);
-        break;
-      case 6:
-        dictionary = state.zone6Dictionary.filter((val) => val.Variable === variable);
-        break;
-      case 5:
-        dictionary = state.zone5Dictionary.filter((val) => val.Variable === variable);
-        break;
-      case 4:
-        dictionary = state.zone4Dictionary.filter((val) => val.Variable === variable);
-        break;
-      default:
-        dictionary = state.zone7Dictionary.filter((val) => val.Variable === variable);
-        break;
+    async function getDictData() {
+      await fetch(`https://api.covercrop-selector.org/legacy/data-dictionary?zone=zone${sfilters.zone}`)
+        .then((res) => res.json())
+        .then((data) => { setDict(data.filter((val) => val.Variable === variable)); })
+        .catch((err) => {
+          // eslint-disable-next-line no-console
+          console.log(err.message);
+        });
     }
 
-    setDict(dictionary);
+    getDictData();
   }, [
     sfilters.zone,
-    state.zone4Dictionary,
-    state.zone5Dictionary,
-    state.zone6Dictionary,
-    state.zone7Dictionary,
     variable,
   ]);
 

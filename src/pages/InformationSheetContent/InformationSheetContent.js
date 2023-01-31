@@ -10,7 +10,6 @@ import React, {
 } from 'react';
 import { Context } from '../../store/Store';
 import CoverCropInformation from './CoverCropInformation/CoverCropInformation';
-import sources from '../../shared/json/sources/sources.json';
 import InformationSheetGoals from './InformationSheetGoals/InformationSheetGoals';
 import InformationSheetWeeds from './InformationSheetWeeds/InformationSheetWeeds';
 import InformationSheetEnvironment from './InformationSheetEnvironment/InformationSheetEnvironment';
@@ -24,27 +23,36 @@ import InformationSheetReferences from './InformationSheetReferences/Information
 
 const InformationSheetContent = ({ crop }) => {
   const { state } = useContext(Context);
-  const section = window.location.href.includes('selector') ? 'selector' : 'explorer';
+  const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
   const { zone } = state[section];
   const [currentSources, setCurrentSources] = useState([{}]);
   const [allThumbs, setAllThumbs] = useState([]);
 
   useEffect(() => {
     document.title = `${crop['Cover Crop Name']} Zone ${zone}`;
-
     const regex = /(?!\B"[^"]*),(?![^"]*"\B)/g;
     const removeDoubleQuotes = /^"(.+(?="$))"$/;
-    const relevantZones = sources.filter((source) => {
-      const zones = source.Zone.split(',').map((item) => item.trim());
-      const coverCrops = source['Cover Crops']
-        .split(regex)
-        .map((item) => item.replace(removeDoubleQuotes, '$1'))
-        .map((item) => item.trim());
 
-      return zones.includes(`Zone ${zone}`) && coverCrops.includes(crop['Cover Crop Name']);
-    });
+    async function getSourceData() {
+      await fetch('https://api.covercrop-selector.org/legacy/sources')
+        .then((res) => res.json())
+        .then((data) => data.filter((source) => {
+          const zones = source.Zone.split(',').map((item) => item.trim());
+          const coverCrops = source['Cover Crops']
+            .split(regex)
+            .map((item) => item.replace(removeDoubleQuotes, '$1'))
+            .map((item) => item.trim());
 
-    setCurrentSources(relevantZones);
+          return zones.includes(`Zone ${zone}`) && coverCrops.includes(crop['Cover Crop Name']);
+        }))
+        .then((data) => setCurrentSources(data))
+        .catch((err) => {
+          // eslint-disable-next-line no-console
+          console.log(err.message);
+        });
+    }
+
+    getSourceData();
   }, [crop, zone]);
 
   useEffect(() => {
