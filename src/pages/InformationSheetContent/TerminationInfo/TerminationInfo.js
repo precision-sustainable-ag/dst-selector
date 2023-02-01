@@ -53,7 +53,7 @@ const InfoEnvironmentalTermination = ({
 ); // InfoEnvironmentalTermination
 
 const TerminationInfo = ({ crop }) => (
-  <div className="col-5 col-lg-12 col-xl-6 basicAgWrapper">
+  <div className="col-lg-12 col-xl-6 basicAgWrapper">
     <div className="col-12 otherHeaderRow p-0" style={{ marginTop: '1em' }}>
       <Accordion defaultExpanded style={{ border: '1px solid #2b7b79' }}>
         <AccordionSummary
