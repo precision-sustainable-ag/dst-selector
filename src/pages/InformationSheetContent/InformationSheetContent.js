@@ -28,6 +28,8 @@ const InformationSheetContent = ({ crop }) => {
   const [currentSources, setCurrentSources] = useState([{}]);
   const [allThumbs, setAllThumbs] = useState([]);
 
+  console.log(crop);
+
   useEffect(() => {
     document.title = `${crop['Cover Crop Name']} Zone ${zone}`;
     const regex = /(?!\B"[^"]*),(?![^"]*"\B)/g;
