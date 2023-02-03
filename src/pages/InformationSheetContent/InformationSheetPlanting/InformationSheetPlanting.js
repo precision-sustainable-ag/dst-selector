@@ -61,7 +61,7 @@ const PlantingTrait = ({
 );
 
 const InformationSheetPlanting = ({ crop }) => (
-  <div className="col-7 col-lg-6 basicAgWrapper">
+  <div className="col-lg-12 col-xl-6 basicAgWrapper">
     <div className="col-12 otherHeaderRow p-0" style={{ marginTop: '1em' }}>
       <Accordion defaultExpanded style={{ border: '1px solid #2b7b79' }}>
         <AccordionSummary

@@ -48,7 +48,7 @@ const InfoWeeds = ({ attribute, crop }) => (
 ); // InfoWeeds
 
 const InformationSheetWeeds = ({ crop }) => (
-  <div className="col-6 col-lg-6 weedsRowWrapper" style={{ marginTop: '1em' }}>
+  <div className="col-lg-12 col-xl-6 weedsRowWrapper" style={{ marginTop: '1em' }}>
     <Accordion defaultExpanded style={{ border: '1px solid #2b7b79' }}>
       <AccordionSummary
         expandIcon={<ExpandMore />}
