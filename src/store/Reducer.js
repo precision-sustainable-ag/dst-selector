@@ -110,14 +110,38 @@ const Reducer = (state, action, value = action && action.data && action.data.val
     }
 
     case 'UPDATE_STATE': {
-      if (['IN', 'MI', 'OH', 'IL', 'ID', 'WI', 'KY', 'MO'].includes(action.data.state)) {
-        return { ...state, state: action.data.state, council: 'Midwest' };
-      } if (['LA', 'GA', 'FL', 'AL', 'MS'].includes(action.data.state)) {
-        return { ...state, state: action.data.state, council: 'Southern' };
-      } if (['NC', 'SC', 'VA', 'MA'].includes(action.data.state)) {
-        return { ...state, state: action.data.state, council: 'Northeast' };
+      if (action.data.council === 'NECCC') {
+        return {
+          ...state, state: action.data.state, council: 'Northeast', stateId: action.data.stateId,
+        };
       }
-      return { ...state, state: action.data.state, council: action.data.council };
+      if (action.data.council === 'SCCC') {
+        return {
+          ...state, state: action.data.state, council: 'Southern', stateId: action.data.stateId,
+        };
+      }
+      if (action.data.council === 'MCCC') {
+        return {
+          ...state, state: action.data.state, council: 'Midwest', stateId: action.data.stateId,
+        };
+      }
+      if (action.data.council === 'WCCC') {
+        return {
+          ...state, state: action.data.state, council: 'Western', stateId: action.data.stateId,
+        };
+      }
+      return {
+        ...state, state: action.data.state, council: action.data.council, stateId: action.data.stateId,
+      };
+    }
+
+    case 'UPDATE_REGIONS': {
+      return {
+        ...state,
+        physiographicRegions: action.data.physiographicRegions,
+        zones: action.data.zones,
+        councilId: action.data.councilId,
+      };
     }
 
     // case 'JUMP_SPECIES_PROGRESS': {
