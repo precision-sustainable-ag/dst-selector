@@ -4,9 +4,12 @@
   styled using ../../styles/landing.scss
 */
 
-import { Grid, Typography } from '@mui/material';
+import {
+  Grid, Typography, MenuItem, InputLabel, FormControl,
+} from '@mui/material';
+import Select from '@mui/material/Select';
 import React, { useContext, useEffect, useState } from 'react';
-import SelectUSState from 'react-select-us-states';
+// import SelectUSState from 'react-select-us-states';
 import { Link } from 'react-router-dom';
 import ReactGA from 'react-ga';
 import { LightButton } from '../../shared/constants';
@@ -17,6 +20,14 @@ import ConsentModal from '../CoverCropExplorer/ConsentModal/ConsentModal';
 const Landing = ({ height, title, bg }) => {
   const { state, dispatch } = useContext(Context);
   const [containerHeight, setContainerHeight] = useState(height);
+  const [allStates, setAllStates] = useState([]);
+  const [selectedState, setSelectedState] = useState('');
+  const [selectedStateId, setSelectedStateId] = useState('');
+  const [selectedStateName, setSelectedStateName] = useState('');
+  const [selectedCouncil, setSelectedCouncil] = useState('');
+  const [physiographicRegions, setPhysiographicRegions] = useState('');
+  const [zones, setZones] = useState('');
+  const [councilId, setCouncilId] = useState('');
 
   useEffect(() => {
     dispatch({
@@ -24,9 +35,82 @@ const Landing = ({ height, title, bg }) => {
       data: {
         state: '',
         council: '',
+        stateId: '',
       },
     });
   }, []);
+
+  async function getAllStates() {
+    await fetch('https://developapi.covercrop-selector.org/v1/states')
+      .then((res) => res.json())
+      .then((data) => { setAllStates(data.data); })
+      .catch((err) => {
+        // eslint-disable-next-line no-console
+        console.log(err.message);
+      });
+  }
+
+  async function getAllRegions() {
+    await fetch(`https://developapi.covercrop-selector.org/v1/states/${state.stateId}/regions`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.data['Phsyiographic Regions']) {
+          setPhysiographicRegions(data.data['Phsyiographic Regions']);
+        } else {
+          setPhysiographicRegions([]);
+        }
+        if (data.data.Councils) {
+          setCouncilId({ id: data.data.Councils[0].id });
+        } else {
+          setCouncilId([]);
+        }
+        if (data.data.Zones) {
+          setZones(data.data.Zones);
+        } else {
+          setZones([]);
+        }
+      })
+      .catch((err) => {
+        // eslint-disable-next-line no-console
+        console.log(err.message);
+      });
+  }
+
+  useEffect(() => {
+    dispatch({
+      type: 'UPDATE_REGIONS',
+      data: {
+        physiographicRegions,
+        zones,
+        councilId,
+      },
+    });
+  }, [physiographicRegions, zones, councilId]);
+
+  useEffect(() => {
+    dispatch({
+      type: 'UPDATE_STATE',
+      data: {
+        state: selectedStateName,
+        stateId: selectedStateId,
+        council: selectedCouncil,
+      },
+    });
+  }, [selectedState, selectedStateId, selectedCouncil]);
+
+  useEffect(() => {
+    if (state.stateId) {
+      getAllRegions();
+    }
+  }, [state.stateId]);
+
+  const onStateChange = (event) => {
+    const stateArray = event.target.value.split('-');
+    setSelectedState(event.target.value);
+    setSelectedStateName(stateArray[0]);
+    setSelectedStateId(stateArray[1]);
+    setSelectedCouncil(stateArray[2]);
+  };
 
   useEffect(() => {
     if (state.consent === true) {
@@ -35,6 +119,10 @@ const Landing = ({ height, title, bg }) => {
       ReactGA.pageview('cover crop selector');
     }
   }, [state.consent]);
+
+  useEffect(() => {
+    getAllStates();
+  }, []);
 
   const incrementProgress = (incVal) => {
     incVal = parseInt(incVal, 10);
@@ -70,15 +158,6 @@ const Landing = ({ height, title, bg }) => {
 
     return () => window.removeEventListener('resize', updateSize);
   }, [title]);
-
-  const onStateChange = (value) => {
-    dispatch({
-      type: 'UPDATE_STATE',
-      data: {
-        state: value,
-      },
-    });
-  };
 
   return (
     <div
@@ -128,7 +207,48 @@ const Landing = ({ height, title, bg }) => {
           <Typography variant="body1" gutterBottom align="left" className="font-weight-bold">
             Select Your State
           </Typography>
-          <SelectUSState id="myId" className="myClassName" onChange={(e) => onStateChange(e)} />
+          {/* <SelectUSState id="myId" className="myClassName" onChange={(e) => onStateChange(e)} />
+          {allStates.length > 0
+          && (
+
+            <FormControl fullWidth>
+              <InputLabel>State</InputLabel>
+              <Select
+                value={selectState.name}
+                name={selectState.name}
+                label="State"
+                onChange={onStateChange}
+              >
+                {allStates.length > 0 && allStates.map((s) => (
+                  <MenuItem value={{ name: s.label, value: s.id }}>{s.label}</MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          )} */}
+          {allStates.length > 0
+          && (
+          <FormControl
+            variant="filled"
+            style={{ width: '100%' }}
+            sx={{ minWidth: 120 }}
+          >
+            <InputLabel>STATE</InputLabel>
+            <Select
+              variant="filled"
+              labelId="plant-hardiness-zone-dropdown-select"
+              id="plant-hardiness-zone-dropdown-select"
+              style={{
+                textAlign: 'left',
+              }}
+              onChange={onStateChange}
+              value={selectedState}
+            >
+              {allStates.length > 0 && allStates.map((s) => (
+                <MenuItem key={s.id} value={`${s.label}-${s.id}-${s.council}`}>{s.label}</MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          )}
           <Typography align="left" variant="body1" gutterBottom style={{ paddingBottom: '1em' }}>
             In the future, this platform will host a variety of tools including a cover crop mixture
             and seeding rate calculator and an economics calculator. Our ultimate goal is to provide
