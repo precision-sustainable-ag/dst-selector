@@ -63,7 +63,7 @@ const CoverCropGoals = ({ handleToggle }) => {
                           sx={{ fontWeight: 'normal', fontSize: '10pt', color: '#48a8ab' }}
                         >
                           <br />
-                          {index}
+                          {index + 1}
                           {': '}
                           {goal}
                         </Typography>
