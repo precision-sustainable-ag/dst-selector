@@ -247,17 +247,17 @@ const CropSelector = (props) => {
           {/* we need a spinner or loading icon for when the length isnt yet determined */}
           {state.speciesSelectorActivationFlag ? (
             isListView ? (
-              <CropTableComponent
+              <CropCalendarView
                 cropData={cropData}
-                setCropData={setCropData}
                 activeCropData={updatedActiveCropData}
                 showGrowthWindow={showGrowthWindow}
                 sortAllCrops={sortCropsBy}
                 sortPreference={sortPreference}
               />
             ) : (
-              <CropCalendarView
+              <CropTableComponent
                 cropData={cropData}
+                setCropData={setCropData}
                 activeCropData={updatedActiveCropData}
                 showGrowthWindow={showGrowthWindow}
                 sortAllCrops={sortCropsBy}
