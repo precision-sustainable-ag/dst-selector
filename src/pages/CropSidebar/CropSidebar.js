@@ -479,13 +479,13 @@ const CropSidebar = ({
             style={{ marginBottom: '15px' }}
             startIcon={
               isListView ? (
-                <CalendarToday style={{ fontSize: 'larger' }} />
-              ) : (
                 <ListIcon style={{ fontSize: 'larger' }} />
+              ) : (
+                <CalendarToday style={{ fontSize: 'larger' }} />
               )
             }
           >
-            {isListView ? 'CALENDAR VIEW' : 'LIST VIEW'}
+            {isListView ? 'LIST VIEW' : 'CALENDAR VIEW'}
           </Button>
         </div>
       )}
@@ -513,11 +513,11 @@ const CropSidebar = ({
           >
             {from === 'table' && (
               <>
-                {showFilters && state.speciesSelectorActivationFlag && isListView && (
+                {showFilters && state.speciesSelectorActivationFlag && !isListView && (
                   <CoverCropSearch sfilters={sfilters} dispatch={dispatch} />
                 )}
 
-                {isListView && (
+                {!isListView && (
                   <CoverCropGoals style={style} handleToggle={handleToggle} />
                 )}
 
