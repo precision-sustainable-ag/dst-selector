@@ -22,10 +22,16 @@ import ConsentModal from '../CoverCropExplorer/ConsentModal/ConsentModal';
 const Landing = ({ height, title, bg }) => {
   const { state, dispatch } = useContext(Context);
   const [containerHeight, setContainerHeight] = useState(height);
-  const [selectedRegion, setSelectedRegion] = useState({});
+  const [selectedRegion, setSelectedRegion] = useState(state.selectedRegion);
   const mapRef = useRef(null);
 
-  console.log('state: ', state);
+  useEffect(() => {
+    dispatch({
+      type: 'UPDATE_SELECTED_REGION',
+      data: selectedRegion,
+    });
+  }, [selectedRegion, dispatch]);
+
   useEffect(() => {
     if (state.consent === true) {
       ReactGA.initialize('UA-181903489-1');
@@ -51,9 +57,13 @@ const Landing = ({ height, title, bg }) => {
   useEffect(() => {
     document.title = title;
     function updateSize() {
-      const documentHeight = document.getElementsByTagName('html')[0].getBoundingClientRect().height;
+      const documentHeight = document
+        .getElementsByTagName('html')[0]
+        .getBoundingClientRect().height;
 
-      const headerHeight = document.getElementsByTagName('header')[0].getBoundingClientRect().height;
+      const headerHeight = document
+        .getElementsByTagName('header')[0]
+        .getBoundingClientRect().height;
 
       const footerHeight = document
         .getElementsByClassName('primaryFooter')[0]
@@ -80,10 +90,7 @@ const Landing = ({ height, title, bg }) => {
       }}
     >
       <ConsentModal consent={state.consent} />
-      <Grid
-        container
-        direction="row"
-      >
+      <Grid container direction="row">
         <Grid
           className="p-2"
           item
@@ -108,13 +115,12 @@ const Landing = ({ height, title, bg }) => {
           <Grid item>
             <Typography variant="body1" gutterBottom align="left">
               You are currently interacting with the Northeast Cover Crop Species Selector Tool. We
-              seek feedback about the usability and usefulness of this tool. Our goal is to encourage
-              and support the use of cover crops in the Northeast US. You can learn more about the
-              cover crop data and design of this tool
+              seek feedback about the usability and usefulness of this tool. Our goal is to
+              encourage and support the use of cover crops in the Northeast US. You can learn more
+              about the cover crop data and design of this tool
               {' '}
               <Link to="/about"> here</Link>
-              . If you need
-              assistance, consult the
+              . If you need assistance, consult the
               {' '}
               <Link to="/help">help page</Link>
               .
@@ -122,9 +128,9 @@ const Landing = ({ height, title, bg }) => {
           </Grid>
           <Grid item>
             <Typography align="left" variant="body1" gutterBottom style={{ paddingBottom: '1em' }}>
-              In the future, this platform will host a variety of tools including a cover crop mixture
-              and seeding rate calculator and an economics calculator. Our ultimate goal is to provide
-              a suite of interconnected tools that function together seamlessly.
+              In the future, this platform will host a variety of tools including a cover crop
+              mixture and seeding rate calculator and an economics calculator. Our ultimate goal is
+              to provide a suite of interconnected tools that function together seamlessly.
             </Typography>
             <Typography
               variant="body1"
@@ -136,8 +142,7 @@ const Landing = ({ height, title, bg }) => {
               {' '}
               <Link to="/feedback">Feedback</Link>
               {' '}
-              page. We look forward to your hearing about your
-              experience.
+              page. We look forward to your hearing about your experience.
             </Typography>
             <Typography variant="body1" gutterBottom align="left" className="font-weight-bold">
               Click Next to enter the Species Selector.
@@ -173,22 +178,34 @@ const Landing = ({ height, title, bg }) => {
             <Typography variant="h5" gutterBottom align="left" className="font-weight-bold">
               Select your State
             </Typography>
-            {selectedRegion.name && (
-              <Typography variant="h6" gutterBottom align="left" className="font-weight-bold" style={{ color: 'green', marginLeft: '1rem' }}>
-                {selectedRegion.name}
+            {selectedRegion.properties && (
+              <Typography
+                variant="h6"
+                gutterBottom
+                align="left"
+                className="font-weight-bold"
+                style={{ color: 'blue', marginLeft: '1rem' }}
+              >
+                {selectedRegion.properties.STATE_NAME}
+                {' '}
+                (
+                  { selectedRegion.properties.STATE_ABBR }
+                )
               </Typography>
             )}
           </Grid>
           <Grid item>
-            <RegionSelectorMap
-              selectorFunc={setSelectedRegion}
-              selectedRegion={selectedRegion}
-              initWidth="90%"
-              initHeight="350px"
-              initLon={-98}
-              initLat={38}
-              initStartZoom={2.8}
-            />
+            <div style={{ position: 'relative', width: '100%', paddingRight: '10%' }}>
+              <RegionSelectorMap
+                selectorFunc={setSelectedRegion}
+                selectedRegion={selectedRegion}
+                initWidth="100%"
+                initHeight="350px"
+                initLon={-98}
+                initLat={43}
+                initStartZoom={2.3}
+              />
+            </div>
           </Grid>
         </Grid>
       </Grid>
