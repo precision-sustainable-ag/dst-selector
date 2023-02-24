@@ -42,8 +42,9 @@ const DollarsAndRatings = ({ filter, handleChange }) => {
           return (
             <Chip
               key={filter.name + i}
-              label={filter.symbol === 'dollar' ? '$'.repeat(i) : `${i} \u2605`}
+              label={filter.symbol === 'dollar' ? '$'.repeat(i) : i.toString()}
               style={{
+                fontSize: '1.2rem',
                 marginRight: 2,
                 marginBottom: 3,
               }}
