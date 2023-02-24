@@ -155,7 +155,8 @@ const Filters = forwardRef(({ props }) => {
   return (
     <Grid container spacing={2}>
       {filters.values.map((filter, i) => {
-        if (filter.type === 'chip' || filters.type === 'chips-only') {
+        // console.log('filter', filter);
+        if (filter.type === 'string') {
           if (filter.values && filter.values.length === 1) {
             return (
               <Grid key={i} item>
@@ -171,6 +172,7 @@ const Filters = forwardRef(({ props }) => {
           }
           return (
             <Grid item key={i}>
+              {console.log('HERE', filter)}
               {filter.description && (
                 <>
                   <Tip filter={filter} />

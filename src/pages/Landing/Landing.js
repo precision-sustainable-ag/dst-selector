@@ -24,21 +24,9 @@ const Landing = ({ height, title, bg }) => {
   const [selectedState, setSelectedState] = useState('');
   const [selectedStateId, setSelectedStateId] = useState('');
   const [selectedStateName, setSelectedStateName] = useState('');
-  const [selectedCouncil, setSelectedCouncil] = useState('');
-  const [physiographicRegions, setPhysiographicRegions] = useState('');
-  const [zones, setZones] = useState('');
-  const [councilId, setCouncilId] = useState('');
-
-  useEffect(() => {
-    dispatch({
-      type: 'UPDATE_STATE',
-      data: {
-        state: '',
-        council: '',
-        stateId: '',
-      },
-    });
-  }, []);
+  const [selectedCouncilShorthand, setSelectedCouncilShorthand] = useState('');
+  const [selectedCouncilLabel, setSelectedCouncilLabel] = useState('');
+  const [regions, setRegions] = useState('');
 
   async function getAllStates() {
     await fetch('https://developapi.covercrop-selector.org/v1/states')
@@ -54,20 +42,10 @@ const Landing = ({ height, title, bg }) => {
     await fetch(`https://developapi.covercrop-selector.org/v1/states/${state.stateId}/regions`)
       .then((res) => res.json())
       .then((data) => {
-        if (data.data['Phsyiographic Regions']) {
-          setPhysiographicRegions(data.data['Phsyiographic Regions']);
+        if (data.data.Counties) {
+          setRegions(data.data.Counties);
         } else {
-          setPhysiographicRegions([]);
-        }
-        if (data.data.Councils) {
-          setCouncilId({ id: data.data.Councils[0].id });
-        } else {
-          setCouncilId([]);
-        }
-        if (data.data.Zones) {
-          setZones(data.data.Zones);
-        } else {
-          setZones([]);
+          setRegions(data.data.Zones);
         }
       })
       .catch((err) => {
@@ -80,12 +58,10 @@ const Landing = ({ height, title, bg }) => {
     dispatch({
       type: 'UPDATE_REGIONS',
       data: {
-        physiographicRegions,
-        zones,
-        councilId,
+        regions,
       },
     });
-  }, [physiographicRegions, zones, councilId]);
+  }, [regions]);
 
   useEffect(() => {
     dispatch({
@@ -93,10 +69,11 @@ const Landing = ({ height, title, bg }) => {
       data: {
         state: selectedStateName,
         stateId: selectedStateId,
-        council: selectedCouncil,
+        councilShorthand: selectedCouncilShorthand,
+        councilLabel: selectedCouncilLabel,
       },
     });
-  }, [selectedState, selectedStateId, selectedCouncil]);
+  }, [selectedState, selectedStateId, selectedCouncilLabel, selectedCouncilShorthand]);
 
   useEffect(() => {
     if (state.stateId) {
@@ -105,11 +82,14 @@ const Landing = ({ height, title, bg }) => {
   }, [state.stateId]);
 
   const onStateChange = (event) => {
+    // console.log(event.target.value);
     const stateArray = event.target.value.split('-');
+    // console.log('stateArray', stateArray);
     setSelectedState(event.target.value);
     setSelectedStateName(stateArray[0]);
     setSelectedStateId(stateArray[1]);
-    setSelectedCouncil(stateArray[2]);
+    setSelectedCouncilShorthand(stateArray[2]);
+    setSelectedCouncilLabel(stateArray[3]);
   };
 
   useEffect(() => {
@@ -185,12 +165,12 @@ const Landing = ({ height, title, bg }) => {
       >
         <Grid item>
           <Typography variant="h4" gutterBottom align="center">
-            {`Welcome to the${state.council ? ` ${state.council} Cover Crop` : ''} Species Selector Tool`}
+            {`Welcome to the${state.councilLabel ? ` ${state.councilLabel}` : ''} Species Selector Tool`}
           </Typography>
         </Grid>
         <Grid item>
           <Typography variant="body1" gutterBottom align="left">
-            {`You are currently interacting with the${state.council ? ` ${state.council} Cover Crop` : ''} Species Selector Tool. We
+            {`You are currently interacting with the${state.councilLabel ? ` ${state.councilLabel}` : ''} Species Selector Tool. We
             seek feedback about the usability and usefulness of this tool. Our goal is to encourage
             and support the use of cover crops in your area. You can learn more about the
             cover crop data and design of this tool`}
@@ -207,24 +187,6 @@ const Landing = ({ height, title, bg }) => {
           <Typography variant="body1" gutterBottom align="left" className="font-weight-bold">
             Select Your State
           </Typography>
-          {/* <SelectUSState id="myId" className="myClassName" onChange={(e) => onStateChange(e)} />
-          {allStates.length > 0
-          && (
-
-            <FormControl fullWidth>
-              <InputLabel>State</InputLabel>
-              <Select
-                value={selectState.name}
-                name={selectState.name}
-                label="State"
-                onChange={onStateChange}
-              >
-                {allStates.length > 0 && allStates.map((s) => (
-                  <MenuItem value={{ name: s.label, value: s.id }}>{s.label}</MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          )} */}
           {allStates.length > 0
           && (
           <FormControl
@@ -244,7 +206,7 @@ const Landing = ({ height, title, bg }) => {
               value={selectedState}
             >
               {allStates.length > 0 && allStates.map((s) => (
-                <MenuItem key={s.id} value={`${s.label}-${s.id}-${s.council}`}>{s.label}</MenuItem>
+                <MenuItem key={s.id} value={`${s.label}-${s.id}-${s.council.shorthand}-${s.council.label}`}>{s.label}</MenuItem>
               ))}
             </Select>
           </FormControl>

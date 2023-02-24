@@ -63,11 +63,40 @@ const CropSidebar = ({
   const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
   const sfilters = state[section];
 
+  const query = `${encodeURIComponent('regions')}=${encodeURIComponent(state.regionId)}`;
+
+  // console.log('query', query, 'state.stateId', state.stateId);
+
+  async function getAllFilters() {
+    // await fetch(`https://developapi.covercrop-selector.org/v1/goals?${query}`)
+    await fetch(`https://developapi.covercrop-selector.org/v1/states/${state.stateId}/filters?${query}`)
+      .then((res) => res.json())
+      .then((data) => {
+        // console.log('FILTER DATA', data);
+        const allFilters = [];
+        data.data.forEach((category) => {
+          allFilters.push(category.attributes);
+        });
+        setSidebarFiltersData(allFilters);
+        setSidebarCategoriesData(data.data);
+      })
+      // .then((data) => { setSidebarFiltersData(data); })
+      .catch((err) => {
+        // eslint-disable-next-line no-console
+        console.log(err.message);
+      });
+  }
+
+  useEffect(() => {
+    getAllFilters();
+  }, [state.allGoals]);
+
   useEffect(() => {
     async function getFilterData() {
       await fetch('https://api.covercrop-selector.org/legacy/sidebar/filters')
         .then((res) => res.json())
-        .then((data) => { setSidebarFiltersData(data); })
+        // .then((data) => { console.log('this is from filters OLD OLD', data); })
+        // .then((data) => { setSidebarFiltersData(data); })
         .catch((err) => {
           // eslint-disable-next-line no-console
           console.log(err.message);
@@ -77,7 +106,8 @@ const CropSidebar = ({
     async function getCategoriesData() {
       await fetch('https://api.covercrop-selector.org/legacy/sidebar/categories')
         .then((res) => res.json())
-        .then((data) => { setSidebarCategoriesData(data); })
+        // .then((data) => { console.log('this is from filters OLD OLDOLLLLLLLLLLLDDDD', data); })
+        // .then((data) => { setSidebarCategoriesData(data); })
         .catch((err) => {
           // eslint-disable-next-line no-console
           console.log(err.message);
@@ -216,129 +246,127 @@ const CropSidebar = ({
   };
 
   const createObject = (obj, dataDictionary, data) => {
-    const field = dataDictionary.filter((item) => item.Variable === data.dataDictionaryName);
-
-    const description = field[0].Description;
-    const valuesDescription = field[0]['Values Description'];
-
-    obj.description = valuesDescription ? `${description} ${valuesDescription}` : description;
+    const field = dataDictionary.filter((item) => item.Variable === data.label);
+    if (field[0] !== undefined) {
+      obj.description = field[0].Description > 0 ? field[0].Description : '';
+    }
   };
 
   const generateSidebarObject = async (dataDictionary, dictionary) => {
     sidebarCategoriesData.forEach((category) => {
       const newCategory = {
-        name: category.name,
+        name: category.label,
         description: category.description,
-        type: category.type,
       };
-      switch (category.type) {
-        case 'rating-only':
-          newCategory.values = category.filters.map((f) => {
-            const data = sidebarFiltersData.filter((dictFilter) => dictFilter.__id === f)[0];
+      // switch ('chips-rating') {
+      //   case 'rating-only':
+      //     newCategory.values = category.filters.map((f) => {
+      //       const data = sidebarFiltersData.filter((dictFilter) => dictFilter.__id === f)[0];
 
-            const obj = {
-              name: data.name,
-              alternateName: data.dataDictionaryName,
-              symbol: data.symbol,
-              maxSize: data.maxSize,
-            };
+      //       const obj = {
+      //         name: data.name,
+      //         alternateName: data.dataDictionaryName,
+      //         symbol: data.symbol,
+      //         maxSize: data.maxSize,
+      //       };
 
-            createObject(obj, dataDictionary, data);
+      //       createObject(obj, dataDictionary, data);
 
-            return obj;
-          });
-          break;
-        case 'chips-only':
-          if (category.name === 'Cover Crop Type') {
-            const data = sidebarFiltersData.filter(
-              (dictFilter) => dictFilter.__id === category.filters[0],
-            )[0];
+      //       return obj;
+      //     });
+      //     break;
+      //   case 'chips-only':
+      //     if (category.name === 'Cover Crop Type') {
+      //       const data = sidebarFiltersData.filter(
+      //         (dictFilter) => dictFilter.__id === category.filters[0],
+      //       )[0];
 
-            newCategory.values = [
-              {
-                name: data.name,
-                alternateName: data.dataDictionaryName,
-                symbol: null,
-                maxSize: data.maxSize,
-                values: data.values.split(/\s*,\s*/),
-              },
-            ];
-          } else {
-            newCategory.description = null;
-            newCategory.values = category.filters.map((f) => {
-              const data = sidebarFiltersData.filter((dictFilter) => dictFilter.__id === f)[0];
+      //       newCategory.values = [
+      //         {
+      //           name: data.name,
+      //           alternateName: data.dataDictionaryName,
+      //           symbol: null,
+      //           maxSize: data.maxSize,
+      //           values: data.values.split(/\s*,\s*/),
+      //         },
+      //       ];
+      //     } else {
+      //       newCategory.description = null;
+      //       newCategory.values = category.filters.map((f) => {
+      //         const data = sidebarFiltersData.filter((dictFilter) => dictFilter.__id === f)[0];
 
-              const obj = {
-                name: data.name,
-                alternateName: data.dataDictionaryName,
-                symbol: null,
-                maxSize: data.maxSize,
-                values: [data.values],
-              };
+      //         const obj = {
+      //           name: data.name,
+      //           alternateName: data.dataDictionaryName,
+      //           symbol: null,
+      //           maxSize: data.maxSize,
+      //           values: [data.values],
+      //         };
 
-              createObject(obj, dataDictionary, data);
+      //         createObject(obj, dataDictionary, data);
 
-              return obj;
-            });
-          }
-          break;
-        case 'chips-rating':
-          newCategory.values = category.filters.map((f) => {
-            const data = sidebarFiltersData.filter((dictFilter) => dictFilter.__id === f)[0];
-            const obj = {
-              name: data.name,
-              type: data.type,
-              maxSize: null,
-              description: '',
-            };
+      //         return obj;
+      //       });
+      //     }
+      //     break;
+      //   case 'chips-rating':
+      newCategory.values = category.attributes.map((filter) => {
+        const type = filter.values[0].dataType;
+        // console.log('filterfilterfilterfilterfilter', filter);
 
-            if (data.type === 'chip') {
-              obj.values = data.values.split(',').map((val) => val.trim());
-            } else if (data.type === 'rating') {
-              obj.values = [];
-              obj.maxSize = data.maxSize;
-            }
+        const obj = {
+          name: filter.label,
+          type,
+          rating: !filter.isArray,
+          maxSize: null,
+          description: '',
+        };
+        if (type === 'number') {
+          obj.values = filter.values;
+          obj.maxSize = 5;
+        } else {
+          obj.values = filter.values;
+        }
 
-            createObject(obj, dataDictionary, data);
+        createObject(obj, dataDictionary, filter);
 
-            return obj;
-          });
-          break;
-        default:
-          break;
-      }
-
+        return obj;
+      });
       dictionary.push(newCategory);
     });
   };
 
-  useEffect(() => {
+  async function getSidebars(data) {
     const dictionary = [];
     const setData = async () => {
+      // console.log('dictionary', dictionary);
       setSidebarFilters(dictionary);
     };
 
-    setLoading(true);
-    async function getSidebars(data) {
-      await generateSidebarObject(data, dictionary)
-        .then(() => setData())
-        .then(() => { setLoading(false); })
-        .catch((err) => {
+    await generateSidebarObject(data, dictionary)
+      .then(() => setData())
+      .then(() => { setLoading(false); })
+      .catch((err) => {
+      // eslint-disable-next-line no-console
+        console.log(err.message);
+      });
+  }
+
+  async function getDictData() {
+    await fetch(`https://developapi.covercrop-selector.org/v1/states/${state.stateId}/dictionary?${query}`)
+      .then((res) => res.json())
+      .then((data) => {
+        // console.log('data', data);
+        getSidebars(data.data);
+      })
+      .catch((err) => {
         // eslint-disable-next-line no-console
-          console.log(err.message);
-        });
-    }
+        console.log(err.message);
+      });
+  }
 
-    async function getDictData() {
-      await fetch(`https://api.covercrop-selector.org/legacy/data-dictionary?zone=zone${sfilters.zone}`)
-        .then((res) => res.json())
-        .then((data) => { getSidebars(data); })
-        .catch((err) => {
-          // eslint-disable-next-line no-console
-          console.log(err.message);
-        });
-    }
-
+  useEffect(() => {
+    setLoading(true);
     getDictData();
   }, [
     sfilters.zone,
@@ -388,6 +416,7 @@ const CropSidebar = ({
   }, [state.cashCropData.dateRange]);
 
   const filters = () => sidebarFilters.map((filter, index) => {
+    // console.log('filterfilterfilterfilterfilter', filter);
     const sectionFilter = `${section}${filter.name}`;
     return (
       <SidebarFilter
