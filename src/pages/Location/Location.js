@@ -31,26 +31,27 @@ const LocationComponent = ({
   closeExpansionPanel,
 }) => {
   const { state, dispatch } = useContext(Context);
-  const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
-  const sfilters = state[section];
+  // const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
+  // const sfilters = state[section];
   const [selectedToEditSite, setSelectedToEditSite] = useState({});
   const [showRestartPrompt, setShowRestartPrompt] = useState(false);
-  const [zoneSelection, setZoneSelection] = useState();
+  const [selectedRegion, setSelectedRegion] = useState({});
+
   useEffect(() => {
     document.title = title || 'Decision Support Tool';
   }, [title]);
-  const zones = [4, 5, 6, 7];
 
   useEffect(() => {
-    const curZone = zoneSelection ?? sfilters.zone;
+    console.log('selectedRegion', selectedRegion);
     dispatch({
-      type: 'UPDATE_ZONE_TEXT',
+      type: 'UPDATE_REGION',
       data: {
-        zoneText: zones.includes(curZone) ? `Zone ${curZone}` : 'Zone 7',
-        zone: zones.includes(curZone) ? curZone : 7,
+        regionId: selectedRegion.id ?? '',
+        regionLabel: selectedRegion.label ?? '',
+        regionShorthand: selectedRegion.shorthand ?? '',
       },
     });
-  }, [zoneSelection]);
+  }, [selectedRegion]);
 
   const handleConfirmationChoice = (choice) => {
     if (choice !== null) {
@@ -76,11 +77,11 @@ const LocationComponent = ({
     setShowRestartPrompt(false);
   };
 
-  const handleZoneChange = (event) => {
+  const handleRegionChange = (event) => {
     if (caller === 'greenbar') {
       setShowRestartPrompt(true);
     }
-    setZoneSelection(event.target.value);
+    setSelectedRegion(event.target.value);
   };
 
   useEffect(() => {
@@ -135,12 +136,12 @@ const LocationComponent = ({
   return (
     <div className="container-fluid mt-5">
       <div className="row boxContainerRow mx-0 px-0 mx-lg-3 px-lg-3" style={{ minHeight: '520px' }}>
-        <div className={`col-xl-${state.council === 'Midwest' ? '12' : '4'} col-sm-12`}>
+        <div className={`col-xl-${state.councilLabel === 'Midwest' ? '12' : '4'} col-sm-12`}>
           <div className="container-fluid">
             <Typography variant="h4" align="left">
               Where is your field located?
             </Typography>
-            {state.council === 'Midwest'
+            {state.councilLabel === 'Midwest'
               ? (
                 <Typography variant="body1" align="left" justifyContent="center" className="pt-5 pb-2">
                   Please Select A County.
@@ -169,12 +170,14 @@ const LocationComponent = ({
                     style={{
                       textAlign: 'left',
                     }}
-                    onChange={handleZoneChange}
-                    value={parseInt(sfilters.zone, 10)}
+                    onChange={handleRegionChange}
+                    value={selectedRegion.label}
                   >
-                    {zones.map((zone, i) => (
-                      <MenuItem value={zone} key={`Zone${zone}${i}`}>
-                        {`Zone ${zone}`}
+                    {state.regions.length > 0 && state.regions.map((region, i) => (
+
+                      <MenuItem value={region} key={`Region${region}${i}`}>
+                        {console.log('Region', region)}
+                        {region.label}
                       </MenuItem>
                     ))}
                   </Select>
@@ -183,7 +186,7 @@ const LocationComponent = ({
             </div>
           </div>
         </div>
-        {state.council !== 'Midwest'
+        {state.councilLabel !== 'Midwest'
             && (
             <div className="col-xl-8 col-sm-12">
               <div className="container-fluid">

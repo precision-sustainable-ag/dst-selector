@@ -5,34 +5,25 @@
 
 // TODO: Goal tags are not responsive!
 import { Typography, Grid } from '@mui/material';
-import Skeleton from '@mui/material/Skeleton';
 import React, { useContext, useEffect, useState } from 'react';
 import { Context } from '../../store/Store';
 import '../../styles/goalsSelector.scss';
 import GoalTag from './GoalTag/GoalTag';
 
-const goalSkeletonStyle = {
-  height: '50px',
-  width: '100%',
-  borderRadius: '10px',
-};
+// const goalSkeletonStyle = {
+//   height: '50px',
+//   width: '100%',
+//   borderRadius: '10px',
+// };
 
 const GoalsSelector = () => {
   const { state } = useContext(Context);
   const [allGoals, setAllGoals] = useState([]);
 
   async function getAllGoals() {
-    const allregions = [...state.councilId, ...state.physiographicRegions, ...state.zones];
-    const idArray = allregions.map((region) => (
-      region.id
-    ));
+    const query = `${encodeURIComponent('regions')}=${encodeURIComponent(state.regionId)}`;
 
-    const query = idArray.map((id) => (
-      `${encodeURIComponent('regions')}=${encodeURIComponent(id)}`
-    ))
-      .join('&');
-
-    await fetch(`https://developapi.covercrop-selector.org/v1/goals?${query}`)
+    await fetch(`https://developapi.covercrop-selector.org/v1/states/${state.stateId}/goals?${query}`)
       .then((res) => res.json())
       .then((data) => {
         setAllGoals(data.data);
@@ -61,10 +52,11 @@ const GoalsSelector = () => {
           </Typography>
           {allGoals.length > 0 && (
             <Grid container spacing={4} className="goals" style={{ justifyContent: 'center' }}>
-              {allGoals.length > 0 ? (
+              {
                 allGoals.map((goal, key) => (
-                  <Grid item>
+                  <Grid key={key} item>
                     <GoalTag
+                      key={key}
                       goal={goal}
                       id={key}
                       goaltTitle={goal.label}
@@ -73,9 +65,7 @@ const GoalsSelector = () => {
                     />
                   </Grid>
                 ))
-              ) : (
-                <Skeleton style={goalSkeletonStyle} />
-              )}
+              }
             </Grid>
           )}
         </div>

@@ -35,7 +35,7 @@ const ProgressButtonsInner = ({ disabled }) => {
   };
 
   useEffect(() => {
-    if (state.council === 'Midwest' && state.progress === 2) {
+    if (state.councilLabel === 'Midwest' && state.progress === 2) {
       changeProgress(crement);
     }
   }, [state.progress]);
