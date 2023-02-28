@@ -65,14 +65,10 @@ const CropSidebar = ({
 
   const query = `${encodeURIComponent('regions')}=${encodeURIComponent(state.regionId)}`;
 
-  // console.log('query', query, 'state.stateId', state.stateId);
-
   async function getAllFilters() {
-    // await fetch(`https://developapi.covercrop-selector.org/v1/goals?${query}`)
     await fetch(`https://developapi.covercrop-selector.org/v1/states/${state.stateId}/filters?${query}`)
       .then((res) => res.json())
       .then((data) => {
-        // console.log('FILTER DATA', data);
         const allFilters = [];
         data.data.forEach((category) => {
           allFilters.push(category.attributes);
@@ -80,7 +76,6 @@ const CropSidebar = ({
         setSidebarFiltersData(allFilters);
         setSidebarCategoriesData(data.data);
       })
-      // .then((data) => { setSidebarFiltersData(data); })
       .catch((err) => {
         // eslint-disable-next-line no-console
         console.log(err.message);
@@ -90,33 +85,6 @@ const CropSidebar = ({
   useEffect(() => {
     getAllFilters();
   }, [state.allGoals]);
-
-  useEffect(() => {
-    async function getFilterData() {
-      await fetch('https://api.covercrop-selector.org/legacy/sidebar/filters')
-        .then((res) => res.json())
-        // .then((data) => { console.log('this is from filters OLD OLD', data); })
-        // .then((data) => { setSidebarFiltersData(data); })
-        .catch((err) => {
-          // eslint-disable-next-line no-console
-          console.log(err.message);
-        });
-    }
-
-    async function getCategoriesData() {
-      await fetch('https://api.covercrop-selector.org/legacy/sidebar/categories')
-        .then((res) => res.json())
-        // .then((data) => { console.log('this is from filters OLD OLDOLLLLLLLLLLLDDDD', data); })
-        // .then((data) => { setSidebarCategoriesData(data); })
-        .catch((err) => {
-          // eslint-disable-next-line no-console
-          console.log(err.message);
-        });
-    }
-
-    getFilterData();
-    getCategoriesData();
-  }, []);
 
   // // TODO: When is showFilters false?
   // NOTE: verify below when show filter is false.
@@ -258,68 +226,18 @@ const CropSidebar = ({
         name: category.label,
         description: category.description,
       };
-      // switch ('chips-rating') {
-      //   case 'rating-only':
-      //     newCategory.values = category.filters.map((f) => {
-      //       const data = sidebarFiltersData.filter((dictFilter) => dictFilter.__id === f)[0];
 
-      //       const obj = {
-      //         name: data.name,
-      //         alternateName: data.dataDictionaryName,
-      //         symbol: data.symbol,
-      //         maxSize: data.maxSize,
-      //       };
-
-      //       createObject(obj, dataDictionary, data);
-
-      //       return obj;
-      //     });
-      //     break;
-      //   case 'chips-only':
-      //     if (category.name === 'Cover Crop Type') {
-      //       const data = sidebarFiltersData.filter(
-      //         (dictFilter) => dictFilter.__id === category.filters[0],
-      //       )[0];
-
-      //       newCategory.values = [
-      //         {
-      //           name: data.name,
-      //           alternateName: data.dataDictionaryName,
-      //           symbol: null,
-      //           maxSize: data.maxSize,
-      //           values: data.values.split(/\s*,\s*/),
-      //         },
-      //       ];
-      //     } else {
-      //       newCategory.description = null;
-      //       newCategory.values = category.filters.map((f) => {
-      //         const data = sidebarFiltersData.filter((dictFilter) => dictFilter.__id === f)[0];
-
-      //         const obj = {
-      //           name: data.name,
-      //           alternateName: data.dataDictionaryName,
-      //           symbol: null,
-      //           maxSize: data.maxSize,
-      //           values: [data.values],
-      //         };
-
-      //         createObject(obj, dataDictionary, data);
-
-      //         return obj;
-      //       });
-      //     }
-      //     break;
-      //   case 'chips-rating':
       newCategory.values = category.attributes.map((filter) => {
         const type = filter.values[0].dataType;
-        // console.log('filterfilterfilterfilterfilter', filter);
 
         const obj = {
           name: filter.label,
           type,
           rating: !filter.isArray,
           maxSize: null,
-          description: '',
+          description: filter.description,
+          details: filter.details,
+          units: filter.units,
         };
         if (type === 'number') {
           obj.values = filter.values;
@@ -339,7 +257,6 @@ const CropSidebar = ({
   async function getSidebars(data) {
     const dictionary = [];
     const setData = async () => {
-      // console.log('dictionary', dictionary);
       setSidebarFilters(dictionary);
     };
 
@@ -356,7 +273,6 @@ const CropSidebar = ({
     await fetch(`https://developapi.covercrop-selector.org/v1/states/${state.stateId}/dictionary?${query}`)
       .then((res) => res.json())
       .then((data) => {
-        // console.log('data', data);
         getSidebars(data.data);
       })
       .catch((err) => {
@@ -416,7 +332,6 @@ const CropSidebar = ({
   }, [state.cashCropData.dateRange]);
 
   const filters = () => sidebarFilters.map((filter, index) => {
-    // console.log('filterfilterfilterfilterfilter', filter);
     const sectionFilter = `${section}${filter.name}`;
     return (
       <SidebarFilter

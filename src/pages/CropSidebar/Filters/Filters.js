@@ -74,6 +74,7 @@ const DollarsAndRatings = ({ filter, handleChange }) => {
                 }
               }}
             />
+
           );
         })}
     </div>
@@ -84,15 +85,15 @@ const Chips = ({ state, filter, handleChange }) => {
   const sfilters = window.location.href.includes('species-selector') ? state.selector : state.explorer;
 
   return filter.values.map((val) => {
-    const selected = sfilters[`${filter.name}: ${val}`];
+    const selected = sfilters[`${filter.name}: ${val.value}`];
 
     return (
       <Chip
-        key={filter.name + val}
-        onClick={() => handleChange(filter.name, val)}
+        key={filter.name + val.value}
+        onClick={() => handleChange(filter.name, val.value)}
         component="li"
         size="medium"
-        label={val}
+        label={val.value}
         style={{
           marginRight: 3,
           marginBottom: 3,
@@ -103,7 +104,7 @@ const Chips = ({ state, filter, handleChange }) => {
   });
 }; // Chips
 
-const Tip = ({ filter, omitHeading }) => (
+const Tip = ({ filter }) => (
   <Tooltip
     arrow
     placement="right"
@@ -112,11 +113,12 @@ const Tip = ({ filter, omitHeading }) => (
     title={(
       <div className="filterTooltip">
         <p>{filter.description}</p>
+        <p>{filter.details}</p>
       </div>
       )}
   >
     <small style={{ whiteSpace: 'nowrap' }}>
-      {omitHeading ? '' : filter.name}
+      {filter.name}
       <HelpOutlineIcon style={{ cursor: 'pointer', transform: 'scale(0.7)' }} />
     </small>
   </Tooltip>
@@ -147,7 +149,7 @@ const Filters = forwardRef(({ props }) => {
     dispatch({
       type: 'FILTER_TOGGLE',
       data: {
-        value: `${filtername}: ${val}`,
+        value: `${filtername}: ${val.value}`,
       },
     });
     setSelected({ ...selected, whatever: 'rerender' });
@@ -156,31 +158,34 @@ const Filters = forwardRef(({ props }) => {
   return (
     <Grid container spacing={2}>
       {filters.values.map((filter, i) => {
-        // console.log('filter', filter);
         if (filter.type === 'string') {
           if (filter.values && filter.values.length === 1) {
             return (
               <Grid key={i} item>
                 <Chips
+                  key={i}
                   state={state}
                   filter={filter}
                   props={{ ...props }}
                   handleChange={chipChange}
                 />
-                {filter.description && <Tip filter={filter} omitHeading />}
+                {filter.description && (
+                <Tip
+                  filter={filter}
+                />
+                )}
               </Grid>
             );
           }
           return (
             <Grid item key={i}>
-              {console.log('HERE', filter)}
               {filter.description && (
                 <>
                   <Tip filter={filter} />
                   <br />
                 </>
               )}
-              <Chips state={state} filter={filter} props={{ ...props }} handleChange={chipChange} />
+              <Chips key={i} state={state} filter={filter} props={{ ...props }} handleChange={chipChange} />
             </Grid>
           );
         }
