@@ -8,8 +8,7 @@ import {
   Typography,
 } from '@mui/material';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
-import React, { useContext, Fragment } from 'react';
-// import { arrayMove, List as ListMovable } from 'react-movable';
+import React, { useContext } from 'react';
 import { Context } from '../../../store/Store';
 import { CustomStyles } from '../../../shared/constants';
 

@@ -61,7 +61,6 @@ const GoalsSelector = () => {
                       id={key}
                       goaltTitle={goal.label}
                       goalDescription={goal.description}
-                      // valuesDescriptions={goal.fields['Values Description']}
                     />
                   </Grid>
                 ))

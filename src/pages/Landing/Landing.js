@@ -82,9 +82,7 @@ const Landing = ({ height, title, bg }) => {
   }, [state.stateId]);
 
   const onStateChange = (event) => {
-    // console.log(event.target.value);
     const stateArray = event.target.value.split('-');
-    // console.log('stateArray', stateArray);
     setSelectedState(event.target.value);
     setSelectedStateName(stateArray[0]);
     setSelectedStateId(stateArray[1]);

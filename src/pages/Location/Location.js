@@ -42,7 +42,6 @@ const LocationComponent = ({
   }, [title]);
 
   useEffect(() => {
-    console.log('selectedRegion', selectedRegion);
     dispatch({
       type: 'UPDATE_REGION',
       data: {
@@ -176,7 +175,6 @@ const LocationComponent = ({
                     {state.regions.length > 0 && state.regions.map((region, i) => (
 
                       <MenuItem value={region} key={`Region${region}${i}`}>
-                        {console.log('Region', region)}
                         {region.label}
                       </MenuItem>
                     ))}
