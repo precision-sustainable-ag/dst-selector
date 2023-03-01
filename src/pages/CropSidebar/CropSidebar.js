@@ -177,18 +177,20 @@ const CropSidebar = ({
 
         if (areCommonElements(arrayKeys, key)) {
           // Handle array type havlues
-          const intersection = (arrays = [vals, crop[key]]) => arrays.reduce((a, b) => a.filter((c) => b.includes(c)));
+          if (crop[key] !== undefined) {
+            const intersection = (arrays = [vals, crop[key]]) => arrays.reduce((a, b) => a.filter((c) => b.includes(c)));
 
-          if (intersection().length > 0) {
-            i += 1;
-          }
-        } else if (areCommonElements(booleanKeys, key)) {
+            if (intersection().length > 0) {
+              i += 1;
+            }
+          } else if (areCommonElements(booleanKeys, key)) {
           //  Handle boolean types
-          if (crop[key]) {
+            if (crop[key]) {
+              i += 1;
+            }
+          } else if (vals.includes(crop[key])) {
             i += 1;
           }
-        } else if (vals.includes(crop[key])) {
-          i += 1;
         }
       });
 
