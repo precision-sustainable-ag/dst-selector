@@ -14,9 +14,15 @@ import {
   Select,
   Typography,
 } from '@mui/material';
-import React, { useContext, useEffect, useState } from 'react';
+import React, {
+  useContext,
+  useEffect,
+  useState,
+  useCallback,
+} from 'react';
 import { Search } from '@mui/icons-material';
 import { Map } from '@psa/dst.ui.map';
+import centroid from '@turf/centroid';
 import mapboxgl from 'mapbox-gl';
 import { BinaryButton } from '../../shared/constants';
 import { Context } from '../../store/Store';
@@ -36,6 +42,16 @@ const LocationComponent = ({
   const [selectedToEditSite, setSelectedToEditSite] = useState({});
   const [showRestartPrompt, setShowRestartPrompt] = useState(false);
   const [zoneSelection, setZoneSelection] = useState();
+
+  const getLatLng = useCallback(() => {
+    if (state.selectedRegion.properties) {
+      const cent = centroid(state.selectedRegion);
+      if (cent.geometry && cent.geometry.coordinates.length > 0) return [cent.geometry.coordinates[1], cent.geometry.coordinates[0]];
+    }
+    if (state.markers && state.markers.length > 0) return state.markers[0];
+    return [47, -122];
+  }, [state]);
+
   useEffect(() => {
     document.title = title || 'Decision Support Tool';
   }, [title]);
@@ -180,8 +196,8 @@ const LocationComponent = ({
               setAddress={setSelectedToEditSite}
               initWidth="100%"
               initHeight="600px"
-              initLat={state.markers && state.markers.length > 0 ? state.markers[0][0] : 47}
-              initLon={state.markers && state.markers.length > 0 ? state.markers[0][1] : -122}
+              initLat={getLatLng()[0]}
+              initLon={getLatLng()[1]}
               initStartZoom={12}
               initMinZoom={4}
               initMaxZoom={18}
