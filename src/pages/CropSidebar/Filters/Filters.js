@@ -145,11 +145,11 @@ const Filters = forwardRef(({ props }) => {
     setSelected({ ...selected, whatever: 'rerender' });
   };
 
-  const chipChange = (filtername, val) => {
+  const chipChange = (filterName, val) => {
     dispatch({
       type: 'FILTER_TOGGLE',
       data: {
-        value: `${filtername}: ${val.value}`,
+        value: `${filterName}: ${val}`,
       },
     });
     setSelected({ ...selected, whatever: 'rerender' });
@@ -159,32 +159,12 @@ const Filters = forwardRef(({ props }) => {
     <Grid container spacing={2}>
       {filters.values.map((filter, i) => {
         if (filter.type === 'string') {
-          if (filter.values && filter.values.length === 1) {
-            return (
-              <Grid key={i} item>
-                <Chips
-                  key={i}
-                  state={state}
-                  filter={filter}
-                  props={{ ...props }}
-                  handleChange={chipChange}
-                />
-                {filter.description && (
-                <Tip
-                  filter={filter}
-                />
-                )}
-              </Grid>
-            );
-          }
           return (
             <Grid item key={i}>
-              {filter.description && (
-                <>
-                  <Tip filter={filter} />
-                  <br />
-                </>
-              )}
+              <>
+                <Tip filter={filter} />
+                <br />
+              </>
               <Chips key={i} state={state} filter={filter} props={{ ...props }} handleChange={chipChange} />
             </Grid>
           );
