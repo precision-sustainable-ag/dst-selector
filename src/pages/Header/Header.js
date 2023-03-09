@@ -4,7 +4,6 @@
   styled using ../../styles/header.scss
 */
 
-import { Button } from '@mui/material';
 import Axios from 'axios';
 import moment from 'moment';
 import { useSnackbar } from 'notistack';
@@ -50,37 +49,16 @@ const Header = () => {
             const dataJson = response.json();
             dataJson.then((data) => {
               // eslint-disable-next-line
-              let zone = window.location.search.match(/zone=([^\^]+)/); // for automating Information Sheet PDFs
+              // let zone = window.location.search.match(/zone=([^\^]+)/); // for automating Information Sheet PDFs
+              const { zone } = data;
 
-              zone = zone ? zone[1] : data.zone[0];
-
-              if (zone <= 7 && zone >= 4) {
-                dispatch({
-                  type: 'UPDATE_ZONE',
-                  data: {
-                    zoneText: `Zone ${zone}`,
-                    zone: parseInt(zone, 10),
-                  },
-                });
-              } else {
-                enqueueSnackbar(
-                  `Error: Zones 8-11 do not occur in the Northeast US and so are not supported by this tool. 
-                    If you wish to explore the data, we suggest loading Zone 7.`,
-                  {
-                    persist: true,
-                    action: (
-                      <Button
-                        style={{ color: 'white' }}
-                        onClick={() => {
-                          closeSnackbar();
-                        }}
-                      >
-                        Close
-                      </Button>
-                    ),
-                  },
-                );
-              }
+              dispatch({
+                type: 'UPDATE_ZONE',
+                data: {
+                  zoneText: state.councilShorthand === 'NECCC' ? `Zone ${parseInt(zone, 10)}` : `Zone ${zone}`,
+                  zone: state.councilShorthand === 'NECCC' ? zone.charAt(0) : zone,
+                },
+              });
             });
           }
         });
