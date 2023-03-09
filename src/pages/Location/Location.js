@@ -32,7 +32,7 @@ const LocationComponent = ({
 }) => {
   const { state, dispatch } = useContext(Context);
   // const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
-  // const sfilters = state[section];
+  const [selectedZone, setselectedZone] = useState();
   const [selectedToEditSite, setSelectedToEditSite] = useState({});
   const [showRestartPrompt, setShowRestartPrompt] = useState(false);
   const [selectedRegion, setSelectedRegion] = useState({});
@@ -51,6 +51,17 @@ const LocationComponent = ({
       },
     });
   }, [selectedRegion]);
+
+  const updateZone = (region) => {
+    setSelectedRegion(region);
+    dispatch({
+      type: 'UPDATE_ZONE',
+      data: {
+        zoneText: region.label,
+        zone: region.shorthand,
+      },
+    });
+  };
 
   const handleConfirmationChoice = (choice) => {
     if (choice !== null) {
@@ -77,11 +88,53 @@ const LocationComponent = ({
   };
 
   const handleRegionChange = (event) => {
-    if (caller === 'greenbar') {
-      setShowRestartPrompt(true);
+    // eslint-disable-next-line eqeqeq
+    const regionInfo = state.regions.filter((region) => region.shorthand == event.target.value);
+
+    if (event.target) {
+      if (caller === 'greenbar') {
+        setShowRestartPrompt(true);
+      }
+      updateZone(regionInfo[0]);
     }
-    setSelectedRegion(event.target.value);
   };
+
+  const handleMapChange = () => {
+    // eslint-disable-next-line eqeqeq
+    const regionInfo = state.regions.filter((region) => region.shorthand == selectedZone);
+    if (regionInfo.length > 0) {
+      setSelectedRegion(regionInfo[0]);
+    }
+  };
+
+  const plantHardinessZone = () => (
+    <Select
+      variant="filled"
+      labelId="plant-hardiness-zone-dropdown-select"
+      id="plant-hardiness-zone-dropdown-select"
+      style={{
+        textAlign: 'left',
+      }}
+      onChange={handleRegionChange}
+      value={selectedZone || ''}
+    >
+
+      {state.regions.length > 0 && state.regions.map((region, i) => (
+        <MenuItem value={region.shorthand} name={region.label} key={`Region${region}${i}`}>
+
+          {region.label}
+        </MenuItem>
+      ))}
+    </Select>
+  );
+
+  useEffect(() => {
+    plantHardinessZone();
+  }, [selectedZone]);
+
+  useEffect(() => {
+    setselectedZone(state.zone);
+  }, [state.zone]);
 
   useEffect(() => {
     const {
@@ -129,8 +182,9 @@ const LocationComponent = ({
           },
         });
       }
+      handleMapChange();
     }
-  }, [selectedToEditSite, dispatch]);
+  }, [selectedToEditSite, selectedZone]);
 
   return (
     <div className="container-fluid mt-5">
@@ -162,23 +216,7 @@ const LocationComponent = ({
                   sx={{ minWidth: 120 }}
                 >
                   <InputLabel>PLANT HARDINESS ZONE</InputLabel>
-                  <Select
-                    variant="filled"
-                    labelId="plant-hardiness-zone-dropdown-select"
-                    id="plant-hardiness-zone-dropdown-select"
-                    style={{
-                      textAlign: 'left',
-                    }}
-                    onChange={handleRegionChange}
-                    value={selectedRegion.label}
-                  >
-                    {state.regions.length > 0 && state.regions.map((region, i) => (
-
-                      <MenuItem value={region} key={`Region${region}${i}`}>
-                        {region.label}
-                      </MenuItem>
-                    ))}
-                  </Select>
+                  {plantHardinessZone()}
                 </FormControl>
               </div>
             </div>

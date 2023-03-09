@@ -172,11 +172,12 @@ const Reducer = (state, action, value = action && action.data && action.data.val
     }
 
     case 'UPDATE_ZONE': {
-      sfilters.zone = action.data.zone;
+      // sfilters.zone = action.data.zone;
       return {
         ...state,
         zoneText: action.data.zoneText,
-        [section]: sfilters,
+        zone: action.data.zone,
+        // [section]: sfilters,
       };
     }
 
