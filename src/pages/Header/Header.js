@@ -51,12 +51,21 @@ const Header = () => {
               // eslint-disable-next-line
               // let zone = window.location.search.match(/zone=([^\^]+)/); // for automating Information Sheet PDFs
               const { zone } = data;
+              let match = false;
+
+              if (state.regions?.length > 0) {
+                state.regions.forEach((region) => {
+                  if (region.shorthand === zone) {
+                    match = true;
+                  }
+                });
+              }
 
               dispatch({
                 type: 'UPDATE_ZONE',
                 data: {
-                  zoneText: state.councilShorthand === 'NECCC' ? `Zone ${parseInt(zone, 10)}` : `Zone ${zone}`,
-                  zone: state.councilShorthand === 'NECCC' ? zone.charAt(0) : zone,
+                  zoneText: state.councilShorthand === 'NECCC' || !match ? `Zone ${zone.slice(0, -1)}` : `Zone ${zone}`,
+                  zone: (state.councilShorthand === 'NECCC') || !match ? zone.slice(0, -1) : zone,
                 },
               });
             });

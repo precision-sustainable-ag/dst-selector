@@ -45,7 +45,7 @@ const ToggleOptions = ({ isRoot, setSpeciesSelectorActivationFlag, setmyCoverCro
         SPECIES SELECTOR TOOL
       </Button>
       <Button
-        className={(isRoot && state.speciesSelectorActivationFlag) && 'active'}
+        className={(isRoot && state.speciesSelectorActivationFlag) ? 'active' : ''}
         onClick={() => clearMyCoverCropList(true)}
         size="large"
         disabled={!state.state}

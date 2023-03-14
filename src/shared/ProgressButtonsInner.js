@@ -42,13 +42,36 @@ const ProgressButtonsInner = ({ disabled }) => {
 
   return (
     <>
-      <LightButton onClick={() => changeProgress('decrement')}> back</LightButton>
       <LightButton
+        style={{
+          maxWidth: '50px',
+          maxHeight: '35px',
+          minWidth: '50px',
+          minHeight: '35px',
+          fontSize: '11px',
+          marginLeft: '20px',
+          marginTop: '2.5px',
+          marginBottom: '2.5px',
+        }}
+        onClick={() => changeProgress('decrement')}
+      >
+        BACK
+      </LightButton>
+      <LightButton
+        style={{
+          maxWidth: '50px',
+          maxHeight: '35px',
+          minWidth: '50px',
+          minHeight: '35px',
+          fontSize: '11px',
+          marginTop: '2.5px',
+          marginBottom: '2.5px',
+        }}
         onClick={() => changeProgress('increment')}
         disabled={isDisabled}
         className="ml-3"
       >
-        next
+        NEXT
       </LightButton>
     </>
   );
