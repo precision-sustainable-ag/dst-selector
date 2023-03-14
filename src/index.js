@@ -38,6 +38,7 @@ import MyCoverCropListWrapper from './pages/MyCoverCropList/MyCoverCropListWrapp
 
 const withFooter = (WrappedComponent) => () => [<WrappedComponent key="1" />, <Footer key="2" />];
 
+// AdaptV4Theme has been depreciated and v5 is the new version.  TODO: look into update
 const theme = createTheme(
   adaptV4Theme({
     palette: {

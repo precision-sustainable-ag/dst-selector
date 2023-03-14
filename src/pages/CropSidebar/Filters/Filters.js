@@ -124,11 +124,14 @@ const Tip = ({ filter }) => (
   </Tooltip>
 ); // Tip
 
-const Filters = forwardRef(({ props }) => {
+// added ref prop to remove error. TODO: look into if forwardRef is needed here since ref isnt used
+const Filters = forwardRef(({ props }, ref) => {
   const { state, dispatch } = useContext(Context);
   const { filters } = props;
   const [selected, setSelected] = useState({});
   const [sidebarFilterOptions, setSidebarFilterOptions] = useState({});
+  // eslint-disable-next-line no-unused-vars
+  const r = ref;
 
   const setProps = (selectedItem) => {
     setSidebarFilterOptions({

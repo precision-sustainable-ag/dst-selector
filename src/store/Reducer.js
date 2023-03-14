@@ -101,6 +101,10 @@ const Reducer = (state, action, value = action && action.data && action.data.val
       break;
     }
 
+    case 'GOTO_PROGRESS': {
+      return { ...state, progress: action.data.progress };
+    }
+
     case 'UPDATE_LOCATION': {
       return {
         ...state,

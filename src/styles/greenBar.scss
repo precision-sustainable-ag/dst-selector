@@ -1,4 +1,5 @@
 @import '../styles/constants.scss';
+$lighterGreen: #598445;
 .greenbarBtn {
   max-width: 500px;
 
@@ -9,8 +10,25 @@
     text-overflow: ellipsis;
   }
   &:hover {
-    background-color: white !important;
+    background-color: $lighterGreen !important;
     span:first-child {
+      color: black;
+    }
+  }
+}
+
+.greenbarBtn2{
+  max-width: 500px;
+
+  span {
+    overflow: hidden;
+    white-space: nowrap;
+    display: block;
+    text-overflow: ellipsis;
+  }
+  &:hover {
+    background-color: white !important;
+    span: {
       color: black;
     }
   }
