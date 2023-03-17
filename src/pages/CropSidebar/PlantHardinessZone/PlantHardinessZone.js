@@ -2,11 +2,36 @@ import {
   Chip, Collapse, Grid, List, ListItem, ListItemText, Typography,
 } from '@mui/material';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Context } from '../../../store/Store';
 
-const PlantHardinessZone = ({ handleToggle, dispatch, sfilters }) => {
+const PlantHardinessZone = ({ handleToggle, dispatch }) => {
   const { state } = useContext(Context);
+  const [selectedRegion, setSelectedRegion] = useState({});
+
+  useEffect(() => {
+    if (selectedRegion.length > 0) {
+      dispatch({
+        type: 'UPDATE_REGION',
+        data: {
+          regionId: selectedRegion.id ?? '',
+          regionLabel: selectedRegion.label ?? '',
+          regionShorthand: selectedRegion.shorthand ?? '',
+        },
+      });
+    }
+  }, [selectedRegion]);
+
+  const updateZone = (region) => {
+    setSelectedRegion(region);
+    dispatch({
+      type: 'UPDATE_ZONE',
+      data: {
+        zoneText: region.label,
+        zone: region.shorthand,
+      },
+    });
+  };
 
   return (
     <>
@@ -26,22 +51,14 @@ const PlantHardinessZone = ({ handleToggle, dispatch, sfilters }) => {
         <List component="div" disablePadding>
           <ListItem component="div">
             <Grid container spacing={1}>
-              {[4, 5, 6, 7].map((zone, index) => (
+              {state.regions.map((region, index) => (
                 <Grid item key={index}>
                   <Chip
-                    onClick={() => {
-                      dispatch({
-                        type: 'UPDATE_ZONE',
-                        data: {
-                          zoneText: `Zone ${zone}`,
-                          zone,
-                        },
-                      });
-                    }}
+                    onClick={() => { updateZone(region); }}
                     component="li"
                     size="medium"
-                    label={`Zone ${zone}`}
-                    color={sfilters.zone === zone ? 'primary' : 'secondary'}
+                    label={`Zone ${region.shorthand.toUpperCase()}`}
+                    color={region.shorthand === state.zone ? 'primary' : 'secondary'}
                   />
                 </Grid>
               ))}

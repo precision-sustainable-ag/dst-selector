@@ -121,8 +121,7 @@ const LocationComponent = ({
 
       {state.regions.length > 0 && state.regions.map((region, i) => (
         <MenuItem value={region.shorthand} name={region.label} key={`Region${region}${i}`}>
-
-          {region.label}
+          {`Zone ${region.shorthand.toUpperCase()}`}
         </MenuItem>
       ))}
     </Select>

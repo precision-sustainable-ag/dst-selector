@@ -5,12 +5,13 @@
 */
 
 import {
+  Box,
   Button,
   Collapse,
   List,
   ListItem,
   ListItemText,
-  ListSubheader,
+  // ListSubheader,
   Typography,
 } from '@mui/material';
 import {
@@ -62,29 +63,27 @@ const CropSidebar = ({
 
   const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
   const sfilters = state[section];
-
-  const query = `${encodeURIComponent('regions')}=${encodeURIComponent(state.regionId)}`;
+  const dictionary = [];
 
   async function getAllFilters() {
-    await fetch(`https://developapi.covercrop-selector.org/v1/states/${state.stateId}/filters?${query}`)
-      .then((res) => res.json())
-      .then((data) => {
-        const allFilters = [];
-        data.data.forEach((category) => {
-          allFilters.push(category.attributes);
-        });
-        setSidebarFiltersData(allFilters);
-        setSidebarCategoriesData(data.data);
-      })
-      .catch((err) => {
+    if (state.regionId) {
+      const query = `${encodeURIComponent('regions')}=${encodeURIComponent(state.regionId)}`;
+      await fetch(`https://developapi.covercrop-selector.org/v1/states/${state.stateId}/filters?${query}`)
+        .then((res) => res.json())
+        .then((data) => {
+          const allFilters = [];
+          data.data.forEach((category) => {
+            allFilters.push(category.attributes);
+          });
+          setSidebarFiltersData(allFilters);
+          setSidebarCategoriesData(data.data);
+        })
+        .catch((err) => {
         // eslint-disable-next-line no-console
-        console.log(err.message);
-      });
+          console.log(err.message);
+        });
+    }
   }
-
-  useEffect(() => {
-    getAllFilters();
-  }, [state.allGoals]);
 
   // // TODO: When is showFilters false?
   // NOTE: verify below when show filter is false.
@@ -222,13 +221,12 @@ const CropSidebar = ({
     }
   };
 
-  const generateSidebarObject = async (dataDictionary, dictionary) => {
-    sidebarCategoriesData.forEach((category) => {
+  const generateSidebarObject = async (dataDictionary) => {
+    await sidebarCategoriesData.forEach((category) => {
       const newCategory = {
         name: category.label,
         description: category.description,
       };
-
       newCategory.values = category.attributes.map((filter) => {
         const type = filter.values[0].dataType;
 
@@ -257,13 +255,12 @@ const CropSidebar = ({
   };
 
   async function getSidebars(data) {
-    const dictionary = [];
-    const setData = async () => {
-      setSidebarFilters(dictionary);
+    const setData = (dict) => {
+      setSidebarFilters(dict);
     };
 
-    await generateSidebarObject(data, dictionary)
-      .then(() => setData())
+    await generateSidebarObject(data)
+      .then(() => setData(dictionary))
       .then(() => { setLoading(false); })
       .catch((err) => {
       // eslint-disable-next-line no-console
@@ -272,23 +269,28 @@ const CropSidebar = ({
   }
 
   async function getDictData() {
-    await fetch(`https://developapi.covercrop-selector.org/v1/states/${state.stateId}/dictionary?${query}`)
-      .then((res) => res.json())
-      .then((data) => {
-        getSidebars(data.data);
-      })
-      .catch((err) => {
+    if (state.regionId) {
+      const query = `${encodeURIComponent('regions')}=${encodeURIComponent(state.regionId)}`;
+      await fetch(`https://developapi.covercrop-selector.org/v1/states/${state.stateId}/dictionary?${query}`)
+        .then((res) => res.json())
+        .then((data) => {
+          getSidebars(data.data);
+        })
+        .catch((err) => {
         // eslint-disable-next-line no-console
-        console.log(err.message);
-      });
+          console.log(err.message);
+        });
+    }
   }
 
   useEffect(() => {
     setLoading(true);
-    getDictData();
+    if (sidebarCategoriesData.length > 0 && state.regionId) {
+      getDictData();
+    }
   }, [
-    sfilters.zone,
     sidebarCategoriesData,
+    state.regionId,
   ]);
 
   useEffect(() => {
@@ -371,6 +373,14 @@ const CropSidebar = ({
     </List>
   ); // filterList
 
+  useEffect(() => {
+    getAllFilters();
+  }, [state.regionId]);
+
+  useEffect(() => {
+    filtersList();
+  }, [sidebarFilters]);
+
   const comparisonButton = (
     <Button
       className="dynamicToggleBtn"
@@ -437,25 +447,34 @@ const CropSidebar = ({
       )}
 
       {state.speciesSelectorActivationFlag || from === 'explorer' ? (
-        <div className="col-12" id="Filters">
+        <Box
+          // className="col-"
+          sx={{
+            width: {
+              lg: '280px',
+              xl: '280px',
+            },
+          }}
+          id="Filters"
+        >
           <List
             component="nav"
             aria-labelledby="nested-list-subheader"
-            subheader={(
-              <ListSubheader
-                sx={{
-                  backgroundColor: '#add08f',
-                  color: 'black',
-                  textAlign: 'center',
-                  height: '50px',
-                }}
-                style={{ marginBottom: '15px' }}
-                component="div"
-                id="nested-list-subheader"
-              >
-                FILTER
-              </ListSubheader>
-            )}
+            // subheader={(
+            //   <ListSubheader
+            //     sx={{
+            //       backgroundColor: '#add08f',
+            //       color: 'black',
+            //       textAlign: 'center',
+            //       height: '50px',
+            //     }}
+            //     style={{ marginBottom: '15px' }}
+            //     component="div"
+            //     id="nested-list-subheader"
+            //   >
+            //     FILTERS
+            //   </ListSubheader>
+            // )}
           >
             {from === 'table' && (
               <>
@@ -494,6 +513,7 @@ const CropSidebar = ({
                   }}
                 >
                   <ListItemText primary="COVER CROP PROPERTIES" />
+
                   {state.cropFiltersOpen ? <ExpandLess /> : <ExpandMore />}
                 </ListItem>
                 <Collapse in={state.cropFiltersOpen} timeout="auto">
@@ -502,7 +522,7 @@ const CropSidebar = ({
               </>
             )}
           </List>
-        </div>
+        </Box>
       ) : (
         <div className="col-12">
           <ComparisonBar

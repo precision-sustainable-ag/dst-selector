@@ -79,7 +79,7 @@ const ExplorerCardView = ({ activeCropData }) => {
 
   return (
     <>
-      <Grid container spacing={4}>
+      <Grid style={{ marginLeft: '40px' }} container spacing={2}>
         {/* eslint-disable-next-line no-nested-ternary */}
         {activeCropData.length > 0 ? (
           activeCropData.map((crop, index) => (
