@@ -82,7 +82,7 @@ const CoverCropExplorer = () => {
               isListView
             />
           </div>
-          <div className="col-md-12 col-lg-9 col-xl-10 col-12">
+          <div className="col-md-12 col-lg-8 col-xl-9 col-10">
             {sfilters.zone === '' || sfilters.zone === undefined ? (
               <Grid container alignItems="center" justifyContent="center">
                 <Grid item xs={12}>

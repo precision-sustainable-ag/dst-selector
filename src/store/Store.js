@@ -227,7 +227,7 @@ const initialState = {
 
   activeGrowthPeriod: [],
   comparisonKeys: [],
-
+  regions: [],
   activeCropData: [],
   lastZone: '',
 
