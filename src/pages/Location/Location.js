@@ -201,10 +201,9 @@ const LocationComponent = ({
               )
               : (
                 <Typography variant="body1" align="left" justifyContent="center" className="pt-5 pb-2">
-                  Select your USDA plant hardiness zone, search your address, or zip code and hit
+                  Search your address or zip code and hit
                   <Search fontSize="inherit" />
-                  to determine your location.
-
+                  to determine your location. If needed, adjust your USDA Plant Hardiness Zone in the dropdown.
                 </Typography>
               )}
             <div className="row py-3 my-4 ">
