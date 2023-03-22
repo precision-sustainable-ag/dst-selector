@@ -4,22 +4,16 @@
   styled using ../../styles/landing.scss
 */
 
-<<<<<<< HEAD
 import {
-  Grid, Typography, MenuItem, InputLabel, FormControl,
+  Grid, Typography,
 } from '@mui/material';
-import Select from '@mui/material/Select';
-import React, { useContext, useEffect, useState } from 'react';
 // import SelectUSState from 'react-select-us-states';
-=======
-import { Grid, Typography } from '@mui/material';
 import React, {
   useContext,
   useEffect,
   useState,
   useRef,
 } from 'react';
->>>>>>> d5b7c9b80b83986be29ac5d0d6c081b385b7a7ec
 import { Link } from 'react-router-dom';
 import ReactGA from 'react-ga';
 import { RegionSelectorMap } from '@psa/dst.ui.region-selector-map';
@@ -31,7 +25,6 @@ import ConsentModal from '../CoverCropExplorer/ConsentModal/ConsentModal';
 const Landing = ({ height, title, bg }) => {
   const { state, dispatch } = useContext(Context);
   const [containerHeight, setContainerHeight] = useState(height);
-<<<<<<< HEAD
   const [allStates, setAllStates] = useState([]);
   const [selectedState, setSelectedState] = useState('');
   const [selectedStateId, setSelectedStateId] = useState('');
@@ -39,6 +32,8 @@ const Landing = ({ height, title, bg }) => {
   const [selectedCouncilShorthand, setSelectedCouncilShorthand] = useState('');
   const [selectedCouncilLabel, setSelectedCouncilLabel] = useState('');
   const [regions, setRegions] = useState('');
+  const [selectedRegion, setSelectedRegion] = useState(state.selectedRegion);
+  const mapRef = useRef(null);
 
   async function getAllStates() {
     await fetch('https://developapi.covercrop-selector.org/v1/states')
@@ -49,6 +44,9 @@ const Landing = ({ height, title, bg }) => {
         console.log(err.message);
       });
   }
+  useEffect(() => {
+    getAllStates();
+  }, []);
 
   async function getAllRegions() {
     await fetch(`https://developapi.covercrop-selector.org/v1/states/${state.stateId}/regions`)
@@ -93,25 +91,20 @@ const Landing = ({ height, title, bg }) => {
     }
   }, [state.stateId]);
 
-  const onStateChange = (event) => {
-    const stateArray = event.target.value.split('-');
-    setSelectedState(event.target.value);
-    setSelectedStateName(stateArray[0]);
-    setSelectedStateId(stateArray[1]);
-    setSelectedCouncilShorthand(stateArray[2]);
-    setSelectedCouncilLabel(stateArray[3]);
+  const stateChange = (selState) => {
+    setSelectedState(selState);
+    setSelectedStateName(selState.label);
+    setSelectedStateId(selState.id);
+    setSelectedCouncilShorthand(selState.council.councilShorthand);
+    setSelectedCouncilLabel(selState.council.label);
   };
-=======
-  const [selectedRegion, setSelectedRegion] = useState(state.selectedRegion);
-  const mapRef = useRef(null);
 
   useEffect(() => {
-    dispatch({
-      type: 'UPDATE_SELECTED_REGION',
-      data: selectedRegion,
-    });
-  }, [selectedRegion, dispatch]);
->>>>>>> d5b7c9b80b83986be29ac5d0d6c081b385b7a7ec
+    const selState = allStates.filter((s) => s.label === selectedRegion.properties.STATE_NAME);
+    if (selState.length > 0) {
+      stateChange(selState[0]);
+    }
+  }, [selectedRegion]);
 
   useEffect(() => {
     if (state.consent === true) {
@@ -120,10 +113,6 @@ const Landing = ({ height, title, bg }) => {
       ReactGA.pageview('cover crop selector');
     }
   }, [state.consent]);
-
-  useEffect(() => {
-    getAllStates();
-  }, []);
 
   const incrementProgress = (incVal) => {
     incVal = parseInt(incVal, 10);
@@ -175,8 +164,7 @@ const Landing = ({ height, title, bg }) => {
       }}
     >
       <ConsentModal consent={state.consent} />
-<<<<<<< HEAD
-      <Grid
+      {/* <Grid
         className="p-2"
         spacing={2}
         container
@@ -246,8 +234,7 @@ const Landing = ({ height, title, bg }) => {
             variant="body1"
             style={{ fontWeight: 'bold', paddingBottom: '1em' }}
             align="left"
-            gutterBottom
-=======
+            gutterBottom */}
       <Grid container direction="row">
         <Grid
           className="p-2"
@@ -267,18 +254,19 @@ const Landing = ({ height, title, bg }) => {
         >
           <Grid item>
             <Typography variant="h4" gutterBottom align="center">
-              Welcome to the Northeast Cover Crop Species Selector Tool
+              {`Welcome to the${state.councilLabel ? ` ${state.councilLabel}` : ''} Species Selector Tool`}
             </Typography>
           </Grid>
           <Grid item>
             <Typography variant="body1" gutterBottom align="left">
-              You are currently interacting with the Northeast Cover Crop Species Selector Tool. We
-              seek feedback about the usability and usefulness of this tool. Our goal is to
-              encourage and support the use of cover crops in the Northeast US. You can learn more
-              about the cover crop data and design of this tool
+              {`You are currently interacting with the${state.councilLabel ? ` ${state.councilLabel}` : ''} Species Selector Tool. We
+            seek feedback about the usability and usefulness of this tool. Our goal is to encourage
+            and support the use of cover crops in your area. You can learn more about the
+            cover crop data and design of this tool`}
               {' '}
               <Link to="/about"> here</Link>
-              . If you need assistance, consult the
+              . If you need
+              assistance, consult the
               {' '}
               <Link to="/help">help page</Link>
               .
@@ -286,9 +274,9 @@ const Landing = ({ height, title, bg }) => {
           </Grid>
           <Grid item>
             <Typography align="left" variant="body1" gutterBottom style={{ paddingBottom: '1em' }}>
-              In the future, this platform will host a variety of tools including a cover crop
-              mixture and seeding rate calculator and an economics calculator. Our ultimate goal is
-              to provide a suite of interconnected tools that function together seamlessly.
+              In the future, this platform will host a variety of tools including a cover crop mixture
+              and seeding rate calculator and an economics calculator. Our ultimate goal is to provide
+              a suite of interconnected tools that function together seamlessly.
             </Typography>
             <Typography
               variant="body1"
@@ -332,7 +320,6 @@ const Landing = ({ height, title, bg }) => {
               marginBottom: '0rem',
               marginLeft: '10%',
             }}
->>>>>>> d5b7c9b80b83986be29ac5d0d6c081b385b7a7ec
           >
             <Typography variant="h5" gutterBottom align="left" className="font-weight-bold">
               Select your State
