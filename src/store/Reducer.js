@@ -7,12 +7,6 @@ const Reducer = (state, action, value = action && action.data && action.data.val
   const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
   let sfilters = { ...state[section] };
   switch (action.type) {
-    case 'UPDATE_SELECTED_REGION': {
-      return {
-        ...state,
-        selectedRegion: action.data,
-      };
-    }
     case 'TOGGLE':
       return { ...state, [value]: !state[value] };
     case 'TRUE':
