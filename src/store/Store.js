@@ -144,6 +144,7 @@ export const cropDataFormatter = (cropData = [{}]) => {
 };
 
 const initialState = {
+  selectedRegion: {},
   consent: false,
   progress: 0,
   address: '',
