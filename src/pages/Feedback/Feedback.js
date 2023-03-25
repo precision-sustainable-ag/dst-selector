@@ -39,7 +39,7 @@ const FeedbackComponent = () => {
     'About the Website',
     'Other',
   ];
-  const isDisabled = feedbackData.title === '' || feedbackData.comments === '' || feedbackData.topic === '';
+  const isDisabled = feedbackData.title === '' || feedbackData.comments === '' || feedbackData.labels.length === 0;
 
   useEffect(() => {
     if (state.consent === true) {
