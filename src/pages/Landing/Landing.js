@@ -13,7 +13,7 @@ import React, {
 } from 'react';
 import { Link } from 'react-router-dom';
 import ReactGA from 'react-ga';
-import { RegionSelectorMap } from '@psa/dst.ui.region-selector-map';
+// import { RegionSelectorMap } from '@psa/dst.ui.region-selector-map';
 import { LightButton } from '../../shared/constants';
 import { Context } from '../../store/Store';
 import '../../styles/landing.scss';
@@ -22,15 +22,15 @@ import ConsentModal from '../CoverCropExplorer/ConsentModal/ConsentModal';
 const Landing = ({ height, title, bg }) => {
   const { state, dispatch } = useContext(Context);
   const [containerHeight, setContainerHeight] = useState(height);
-  const [selectedRegion, setSelectedRegion] = useState(state.selectedRegion);
+  // const [selectedRegion, setSelectedRegion] = useState(state.selectedRegion);
   const mapRef = useRef(null);
 
   useEffect(() => {
     dispatch({
       type: 'UPDATE_SELECTED_REGION',
-      data: selectedRegion,
+      // data: selectedRegion,
     });
-  }, [selectedRegion, dispatch]);
+  }, [/* selectedRegion, */dispatch]);
 
   useEffect(() => {
     if (state.consent === true) {
@@ -178,7 +178,7 @@ const Landing = ({ height, title, bg }) => {
             <Typography variant="h5" gutterBottom align="left" className="font-weight-bold">
               Select your State
             </Typography>
-            {selectedRegion.properties && (
+            {/* {selectedRegion.properties && (
               <Typography
                 variant="h6"
                 gutterBottom
@@ -192,11 +192,11 @@ const Landing = ({ height, title, bg }) => {
                   { selectedRegion.properties.STATE_ABBR }
                 )
               </Typography>
-            )}
+            )} */}
           </Grid>
           <Grid item>
             <div style={{ position: 'relative', width: '100%', paddingRight: '10%' }}>
-              <RegionSelectorMap
+              {/* <RegionSelectorMap
                 selectorFunc={setSelectedRegion}
                 selectedRegion={selectedRegion}
                 initWidth="100%"
@@ -204,7 +204,7 @@ const Landing = ({ height, title, bg }) => {
                 initLon={-98}
                 initLat={43}
                 initStartZoom={2.3}
-              />
+              /> */}
             </div>
           </Grid>
         </Grid>
