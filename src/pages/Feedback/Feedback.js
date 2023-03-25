@@ -14,6 +14,10 @@ import {
   Button,
   Snackbar,
   InputLabel,
+  Checkbox,
+  ListItemText,
+  OutlinedInput,
+  FormControl,
 } from '@mui/material';
 import Header from '../Header/Header';
 import { Context } from '../../store/Store';
@@ -30,6 +34,11 @@ const FeedbackComponent = () => {
     name: '',
     email: '',
   });
+  const topicOptions = [
+    'About the Cover Crop Data',
+    'About the Website',
+    'Other',
+  ];
   const isDisabled = feedbackData.title === '' || feedbackData.comments === '' || feedbackData.topic === '';
 
   useEffect(() => {
@@ -44,13 +53,19 @@ const FeedbackComponent = () => {
     document.title = 'Feedback';
   }, []);
 
-  const handleDropdownChange = (event) => {
-    const { value } = event.target;
-    setFeedbackData((prevData) => ({ ...prevData, labels: value }));
-  };
-
   const handleScreenshotUpload = (event) => {
     setFeedbackData({ ...feedbackData, screenshot: event.target.files[0] });
+  };
+
+  const handleDropdownChange = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setFeedbackData({
+      ...feedbackData,
+      // On autofill we get a stringified value.
+      labels: typeof value === 'string' ? value.split(',') : value,
+    });
   };
 
   const handleTextInputChange = (event, propertyName) => {
@@ -168,6 +183,7 @@ const FeedbackComponent = () => {
               multiline
               variant="outlined"
               fullWidth
+              minRows={3}
               onChange={(event) => handleTextInputChange(event, 'comments')}
             />
           </Grid>
@@ -185,19 +201,27 @@ const FeedbackComponent = () => {
             <Typography variant="body1">What is this feedback about?</Typography>
           </Grid>
           <Grid item xs={12}>
-            <InputLabel id="topic-dropdown-label">Select at least one option</InputLabel>
-            <Select
-              labelId="topic-dropdown-label"
-              id="topic-dropdown"
-              multiple
-              required
-              value={feedbackData.labels}
-              onChange={handleDropdownChange}
-            >
-              <MenuItem value="About the Cover Crop Data">About the Cover Crop Data</MenuItem>
-              <MenuItem value="About the Website">About the Website</MenuItem>
-              <MenuItem value="Other">Other</MenuItem>
-            </Select>
+            <FormControl sx={{ minWidth: 250 }}>
+              <InputLabel id="topic-dropdown-label">Select at least one option</InputLabel>
+              <Select
+                labelId="topic-dropdown-label"
+                id="topic-dropdown"
+                multiple
+                required
+                autoWidth
+                value={feedbackData.labels}
+                onChange={handleDropdownChange}
+                input={<OutlinedInput label="Select at least one option" />}
+                renderValue={(selected) => selected.join(', ')}
+              >
+                {topicOptions.map((topic) => (
+                  <MenuItem key={topic} value={topic}>
+                    <Checkbox checked={feedbackData.labels.indexOf(topic) > -1} />
+                    <ListItemText primary={topic} />
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
           </Grid>
         </Grid>
 
