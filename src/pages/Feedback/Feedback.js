@@ -141,8 +141,6 @@ const FeedbackComponent = () => {
           </Grid>
           <Grid item xs={12}>
             <TextField
-              required
-              label="Title"
               placeholder="Enter Your Title"
               variant="outlined"
               onChange={(event) => handleTextInputChange(event, 'title')}
@@ -166,9 +164,7 @@ const FeedbackComponent = () => {
           </Grid>
           <Grid item xs={12}>
             <TextField
-              required
-              label="Message"
-              placeholder="Enter your Feedback"
+              placeholder="Enter Your Feedback"
               multiline
               variant="outlined"
               fullWidth
@@ -259,7 +255,7 @@ const FeedbackComponent = () => {
           {isDisabled && (
             <Grid item xs={12}>
               <Typography variant="body1">
-                Please fill all required fields before submitting.
+                You are missing one or more required fields. Please fill all required fields before submitting.
               </Typography>
             </Grid>
           )}
