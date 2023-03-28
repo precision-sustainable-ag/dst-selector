@@ -221,7 +221,7 @@ const LocationComponent = ({
               )
               : (
                 <Typography variant="body1" align="left" justifyContent="center" className="pt-5 pb-2">
-                  Search your address or zip code and hit
+                  Find your address or ZIP code using the search bar on the map and hit
                   <Search fontSize="inherit" />
                   to determine your location. If needed, adjust your USDA Plant Hardiness Zone in the dropdown.
                 </Typography>
