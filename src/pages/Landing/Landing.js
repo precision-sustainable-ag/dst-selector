@@ -5,6 +5,9 @@
 */
 
 import {
+  Dialog,
+  DialogActions,
+  DialogContent,
   Grid, Typography,
 } from '@mui/material';
 // import SelectUSState from 'react-select-us-states';
@@ -14,16 +17,18 @@ import React, {
   useState,
   useRef,
 } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import ReactGA from 'react-ga';
 import { RegionSelectorMap } from '@psa/dst.ui.region-selector-map';
-import { LightButton } from '../../shared/constants';
+import { BinaryButton, LightButton } from '../../shared/constants';
 import { Context } from '../../store/Store';
 import '../../styles/landing.scss';
 import ConsentModal from '../CoverCropExplorer/ConsentModal/ConsentModal';
 
 const Landing = ({ height, title, bg }) => {
   const { state, dispatch } = useContext(Context);
+  const history = useHistory();
+  const [handleConfirm, setHandleConfirm] = useState(false);
   const [containerHeight, setContainerHeight] = useState(height);
   const [allStates, setAllStates] = useState([]);
   const [selectedState, setSelectedState] = useState('');
@@ -34,6 +39,7 @@ const Landing = ({ height, title, bg }) => {
   const [regions, setRegions] = useState('');
   const [selectedRegion, setSelectedRegion] = useState(state.selectedRegion);
   const mapRef = useRef(null);
+  const defaultMarkers = [[40.78489145, -74.80733626930342]];
 
   async function getAllStates() {
     await fetch('https://developapi.covercrop-selector.org/v1/states')
@@ -100,9 +106,17 @@ const Landing = ({ height, title, bg }) => {
   };
 
   useEffect(() => {
-    const selState = allStates.filter((s) => s.label === selectedRegion.properties.STATE_NAME);
-    if (selState.length > 0) {
-      stateChange(selState[0]);
+    if (Object.keys(selectedRegion).length > 0) {
+      const selState = allStates.filter((s) => s.label === selectedRegion.properties.STATE_NAME);
+      if (selState.length > 0) {
+        stateChange(selState[0]);
+      } else {
+        // eslint-disable-next-line no-alert
+        alert(
+          // eslint-disable-next-line max-len
+          'The region you have selected is not currently supported. We currently support Northeast and Southern Cover Crop Councils. Please try again!',
+        );
+      }
     }
   }, [selectedRegion]);
 
@@ -153,6 +167,34 @@ const Landing = ({ height, title, bg }) => {
     return () => window.removeEventListener('resize', updateSize);
   }, [title]);
 
+  useEffect(() => {
+    if (localStorage.getItem('lastLocation') === 'CoverCropExplorer') {
+      document.title = 'Cover Crop Selector';
+      if (state.selectedCrops.length) {
+        setHandleConfirm(true);
+      }
+    }
+    localStorage.setItem('lastLocation', 'CropSelector');
+  }, []);
+
+  const handleConfirmationChoice = (clearMyList = false) => {
+    if (clearMyList) {
+      dispatch({
+        type: 'RESET',
+        data: {
+          markers: defaultMarkers,
+          selectedCrops: [],
+        },
+      });
+    } else {
+      history.goBack();
+      if (window.location.pathname !== '/') {
+        history.push('/');
+      }
+    }
+    setHandleConfirm(false);
+  };
+
   return (
     <div
       id="landingWrapper"
@@ -164,77 +206,6 @@ const Landing = ({ height, title, bg }) => {
       }}
     >
       <ConsentModal consent={state.consent} />
-      {/* <Grid
-        className="p-2"
-        spacing={2}
-        container
-        justifyContent="center"
-        alignItems="center"
-        style={{
-          width: '90%',
-          backgroundColor: 'rgba(240,247,235,.8)',
-          borderRadius: '10px',
-          border: '1px solid #598445',
-        }}
-      >
-        <Grid item>
-          <Typography variant="h4" gutterBottom align="center">
-            {`Welcome to the${state.councilLabel ? ` ${state.councilLabel}` : ''} Species Selector Tool`}
-          </Typography>
-        </Grid>
-        <Grid item>
-          <Typography variant="body1" gutterBottom align="left">
-            {`You are currently interacting with the${state.councilLabel ? ` ${state.councilLabel}` : ''} Species Selector Tool. We
-            seek feedback about the usability and usefulness of this tool. Our goal is to encourage
-            and support the use of cover crops in your area. You can learn more about the
-            cover crop data and design of this tool`}
-            {' '}
-            <Link to="/about"> here</Link>
-            . If you need
-            assistance, consult the
-            {' '}
-            <Link to="/help">help page</Link>
-            .
-          </Typography>
-        </Grid>
-        <Grid item>
-          <Typography variant="body1" gutterBottom align="left" className="font-weight-bold">
-            Select Your State
-          </Typography>
-          {allStates.length > 0
-          && (
-          <FormControl
-            variant="filled"
-            style={{ width: '100%' }}
-            sx={{ minWidth: 120 }}
-          >
-            <InputLabel>STATE</InputLabel>
-            <Select
-              variant="filled"
-              labelId="plant-hardiness-zone-dropdown-select"
-              id="plant-hardiness-zone-dropdown-select"
-              style={{
-                textAlign: 'left',
-              }}
-              onChange={onStateChange}
-              value={selectedState}
-            >
-              {allStates.length > 0 && allStates.map((s) => (
-                <MenuItem key={s.id} value={`${s.label}-${s.id}-${s.council.shorthand}-${s.council.label}`}>{s.label}</MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          )}
-          <Typography align="left" variant="body1" gutterBottom style={{ paddingBottom: '1em' }}>
-            In the future, this platform will host a variety of tools including a cover crop mixture
-            and seeding rate calculator and an economics calculator. Our ultimate goal is to provide
-            a suite of interconnected tools that function together seamlessly.
-          </Typography>
-          <Typography
-            variant="body1"
-            style={{ fontWeight: 'bold', paddingBottom: '1em' }}
-            align="left"
-            gutterBottom */}
       <Grid container direction="row">
         <Grid
           className="p-2"
@@ -357,9 +328,21 @@ const Landing = ({ height, title, bg }) => {
       </Grid>
       <Grid container justifyContent="center" alignItems="center" style={{ marginTop: '1rem' }}>
         <Grid item>
-          <LightButton onClick={() => incrementProgress(1)}>NEXT</LightButton>
+          <LightButton disabled={!state.councilLabel} onClick={() => incrementProgress(1)}>NEXT</LightButton>
         </Grid>
       </Grid>
+      <Dialog onClose={() => setHandleConfirm(false)} open={handleConfirm}>
+        <DialogContent dividers>
+          <Typography variant="body1">
+            You will need to clear your My Cover Crop List to continue.  Would you like to continue?
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <BinaryButton
+            action={handleConfirmationChoice}
+          />
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };

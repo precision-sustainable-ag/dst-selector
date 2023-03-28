@@ -268,7 +268,7 @@ const Header = () => {
       default:
         break;
     }
-  }, [state.markers, sfilters.zone, state.weatherDataReset]);
+  }, [state.markers, state.weatherDataReset]);
 
   async function getCropData(formattedGoal, zone = 4) {
     await fetch(`https://api.covercrop-selector.org/crop-data?zoneId=${zone}`)

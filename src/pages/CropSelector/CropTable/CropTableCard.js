@@ -55,6 +55,11 @@ const CropTableCard = ({
         cropModifierAction(selectedCropsCopy, `${cropName} Removed`);
       }
     } else {
+      dispatch({
+        type: 'MY_CROP_LIST_LOCATION',
+        data: { from: 'selector' },
+      });
+
       cropModifierAction([cropArray], `${cropName} Added`);
     }
   };
