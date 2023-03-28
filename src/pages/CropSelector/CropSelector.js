@@ -20,6 +20,7 @@ import MyCoverCropList from '../MyCoverCropList/MyCoverCropList';
 import CropCalendarView from './CropCalendarView/CropCalendarView';
 import CropSidebarComponent from '../CropSidebar/CropSidebar';
 import CropTableComponent from './CropTable/CropTable';
+import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset';
 
 const _ = require('lodash');
 
@@ -60,9 +61,16 @@ const CropSelector = (props) => {
   const [comparisonView, setComparisonView] = useState(false);
   const [cropData, setCropData] = useState([]);
   const [updatedActiveCropData, setUpdatedActiveCropData] = useState([]);
+  const [handleConfirm, setHandleConfirm] = useState(false);
 
   useEffect(() => {
-    localStorage.setItem('lastLocation', 'CropSelector');
+    if (state.myCoverCropListLocation !== 'selector' && state.selectedCrops.length > 0) {
+      // document.title = 'Cover Crop Selector';
+      setHandleConfirm(true);
+    }
+  }, [state.selectedCrops, state.myCoverCropListLocation]);
+
+  useEffect(() => {
     setUpdatedActiveCropData(activeCropData);
   }, [activeCropData]);
 
@@ -247,17 +255,17 @@ const CropSelector = (props) => {
           {/* we need a spinner or loading icon for when the length isnt yet determined */}
           {state.speciesSelectorActivationFlag ? (
             isListView ? (
-              <CropTableComponent
+              <CropCalendarView
                 cropData={cropData}
-                setCropData={setCropData}
                 activeCropData={updatedActiveCropData}
                 showGrowthWindow={showGrowthWindow}
                 sortAllCrops={sortCropsBy}
                 sortPreference={sortPreference}
               />
             ) : (
-              <CropCalendarView
+              <CropTableComponent
                 cropData={cropData}
+                setCropData={setCropData}
                 activeCropData={updatedActiveCropData}
                 showGrowthWindow={showGrowthWindow}
                 sortAllCrops={sortCropsBy}
@@ -274,6 +282,7 @@ const CropSelector = (props) => {
           </Fab>
         </ScrollTop>
       </div>
+      <MyCoverCropReset handleConfirm={handleConfirm} setHandleConfirm={setHandleConfirm} />
     </div>
   );
 };

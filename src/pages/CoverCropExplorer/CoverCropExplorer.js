@@ -9,16 +9,15 @@ import {
 } from '@mui/material';
 import React, { useContext, useEffect, useState } from 'react';
 import ReactGA from 'react-ga';
-import { useHistory } from 'react-router-dom';
 import { Context } from '../../store/Store';
 import Header from '../Header/Header';
 import ExplorerCardView from './ExplorerCardView/ExplorerCardView';
 import ConsentModal from './ConsentModal/ConsentModal';
 import CropSidebar from '../CropSidebar/CropSidebar';
 import { BinaryButton } from '../../shared/constants';
+import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset';
 
 const CoverCropExplorer = () => {
-  const history = useHistory();
   const { state, dispatch } = useContext(Context);
   const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
   const sfilters = state[section];
@@ -42,14 +41,11 @@ const CoverCropExplorer = () => {
   }, [state.consent]);
 
   useEffect(() => {
-    if (localStorage.getItem('lastLocation') === 'CropSelector') {
-      document.title = 'Cover Crop Explorer';
-      if (state.selectedCrops.length) {
-        setHandleConfirm(true);
-      }
+    if (state.myCoverCropListLocation !== 'explorer' && state.selectedCrops.length > 0) {
+      // document.title = 'Cover Crop Explorer';
+      setHandleConfirm(true);
     }
-    localStorage.setItem('lastLocation', 'CoverCropExplorer');
-  }, []);
+  }, [state.selectedCrops, state.myCoverCropListLocation]);
 
   const handleConfirmationChoice = (clearMyList = false) => {
     if (clearMyList) {
@@ -60,13 +56,10 @@ const CoverCropExplorer = () => {
           selectedCrops: [],
         },
       });
+      // setSpeciesSelectorActivationFlag();
     } else {
-      history.goBack();
-      if (window.location.pathname !== '/species-selector') {
-        history.push('/species-selector');
-      }
+      setHandleConfirm(false);
     }
-    setHandleConfirm(false);
   };
 
   return (
@@ -82,7 +75,7 @@ const CoverCropExplorer = () => {
               isListView
             />
           </div>
-          <div className="col-md-12 col-lg-9 col-xl-10 col-12">
+          <div className="col-md-12 col-lg-8 col-xl-9 col-10">
             {sfilters.zone === '' || sfilters.zone === undefined ? (
               <Grid container alignItems="center" justifyContent="center">
                 <Grid item xs={12}>
@@ -112,6 +105,7 @@ const CoverCropExplorer = () => {
           />
         </DialogActions>
       </Dialog>
+      <MyCoverCropReset handleConfirm={handleConfirm} setHandleConfirm={setHandleConfirm} />
     </div>
   );
 };

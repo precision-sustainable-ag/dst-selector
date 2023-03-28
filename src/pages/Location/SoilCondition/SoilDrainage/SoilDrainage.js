@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Button, Typography } from '@mui/material';
 import { LocalDrinkOutlined } from '@mui/icons-material';
 import { ReferenceTooltip } from '../../../../shared/constants';
@@ -6,10 +6,19 @@ import arrayEquals from '../../../../shared/functions';
 import { Context } from '../../../../store/Store';
 import '../../../../styles/soilConditions.scss';
 import RenderDrainageClasses from './RenderDrainageClasses';
+import MyCoverCropReset from '../../../../components/MyCoverCropReset/MyCoverCropReset';
 
 const SoilDrainage = ({ setTilingCheck }) => {
   const { state, dispatch } = useContext(Context);
   const { soilData, soilDataOriginal } = state;
+  const [handleConfirm, setHandleConfirm] = useState(false);
+
+  useEffect(() => {
+    if (state.myCoverCropListLocation !== 'selector' && state.selectedCrops.length > 0) {
+      // document.title = 'Cover Crop Selector';
+      setHandleConfirm(true);
+    }
+  }, [state.selectedCrops, state.myCoverCropListLocation]);
 
   const resetDrainageClasses = () => {
     dispatch({
@@ -84,6 +93,7 @@ const SoilDrainage = ({ setTilingCheck }) => {
       <div className="col-12">
         <RenderDrainageClasses drainage={soilData.Drainage_Class} />
       </div>
+      <MyCoverCropReset handleConfirm={handleConfirm} setHandleConfirm={setHandleConfirm} />
     </div>
   );
 };

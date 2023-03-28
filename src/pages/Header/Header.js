@@ -4,7 +4,6 @@
   styled using ../../styles/header.scss
 */
 
-import { Button } from '@mui/material';
 import Axios from 'axios';
 import moment from 'moment';
 import { useSnackbar } from 'notistack';
@@ -50,37 +49,25 @@ const Header = () => {
             const dataJson = response.json();
             dataJson.then((data) => {
               // eslint-disable-next-line
-              let zone = window.location.search.match(/zone=([^\^]+)/); // for automating Information Sheet PDFs
+              // let zone = window.location.search.match(/zone=([^\^]+)/); // for automating Information Sheet PDFs
+              const { zone } = data;
+              let match = false;
 
-              zone = zone ? zone[1] : data.zone[0];
-
-              if (zone <= 7 && zone >= 4) {
-                dispatch({
-                  type: 'UPDATE_ZONE',
-                  data: {
-                    zoneText: `Zone ${zone}`,
-                    zone: parseInt(zone, 10),
-                  },
+              if (state.regions?.length > 0) {
+                state.regions.forEach((region) => {
+                  if (region.shorthand === zone) {
+                    match = true;
+                  }
                 });
-              } else {
-                enqueueSnackbar(
-                  `Error: Zones 8-11 do not occur in the Northeast US and so are not supported by this tool. 
-                    If you wish to explore the data, we suggest loading Zone 7.`,
-                  {
-                    persist: true,
-                    action: (
-                      <Button
-                        style={{ color: 'white' }}
-                        onClick={() => {
-                          closeSnackbar();
-                        }}
-                      >
-                        Close
-                      </Button>
-                    ),
-                  },
-                );
               }
+
+              dispatch({
+                type: 'UPDATE_ZONE',
+                data: {
+                  zoneText: state.councilShorthand === 'NECCC' || !match ? `Zone ${zone.slice(0, -1)}` : `Zone ${zone}`,
+                  zone: (state.councilShorthand === 'NECCC') || !match ? zone.slice(0, -1) : zone,
+                },
+              });
             });
           }
         });
@@ -267,7 +254,7 @@ const Header = () => {
     }
     // check if isRoot
 
-    if (window.location.pathname === '/species-selector') {
+    if (window.location.pathname === '/explorer') {
       setIsRoot(true);
     } else {
       setIsRoot(false);
@@ -281,7 +268,7 @@ const Header = () => {
       default:
         break;
     }
-  }, [state.markers, sfilters.zone, state.weatherDataReset]);
+  }, [state.markers, state.weatherDataReset]);
 
   async function getCropData(formattedGoal, zone = 4) {
     await fetch(`https://api.covercrop-selector.org/crop-data?zoneId=${zone}`)
@@ -332,7 +319,7 @@ const Header = () => {
 
   const setmyCoverCropActivationFlag = () => {
     history.push('/my-cover-crop-list');
-    if (window.location.pathname === '/species-selector') {
+    if (window.location.pathname === '/explorer') {
       if (state.progress > 4) {
         dispatch({
           type: 'ACTIVATE_MY_COVER_CROP_LIST_TILE',
@@ -353,8 +340,8 @@ const Header = () => {
         myCoverCropActivationFlag: false,
       },
     });
-    if (window.location.pathname !== '/species-selector') {
-      history.push('/species-selector');
+    if (window.location.pathname !== '/explorer') {
+      history.push('/explorer');
     }
   };
 
