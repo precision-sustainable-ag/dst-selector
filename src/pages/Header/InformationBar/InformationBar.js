@@ -9,17 +9,20 @@ import {
 } from '@mui/material';
 import { LocationOn, Refresh } from '@mui/icons-material';
 import CloudIcon from '@mui/icons-material/Cloud';
+import CheckIcon from '@mui/icons-material/Check';
 import FilterHdrIcon from '@mui/icons-material/FilterHdr';
-import moment from 'moment';
 import React, { useContext, useState } from 'react';
-import { BinaryButton, CustomStyles, greenBarExpansionPanelHeight } from '../../../shared/constants';
+import {
+  BinaryButton, LightButton,
+} from '../../../shared/constants';
 import { Context } from '../../../store/Store';
 import '../../../styles/greenBar.scss';
 import LocationComponent from '../../Location/Location';
 import SoilCondition from '../../Location/SoilCondition/SoilCondition';
 import WeatherConditions from '../../../components/WeatherConditions/WeatherConditions';
+import ProgressButtons from '../../../shared/ProgressButtons';
 
-const speciesSelectorToolName = '/species-selector';
+const speciesSelectorToolName = '/';
 
 const expansionPanelBaseStyle = {
   display: 'flex',
@@ -27,14 +30,8 @@ const expansionPanelBaseStyle = {
   alignItems: 'center',
 };
 
-const greenBarWrapperBackground = {
-  backgroundColor: CustomStyles().lighterGreen,
-};
-
 const InformationBar = () => {
   const { state, dispatch } = useContext(Context);
-  const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
-  const sfilters = state[section];
   const [confirmationOpen, setConfirmationOpen] = useState(false);
   const [expansionPanelComponent, setExpansionPanelComponent] = useState({
     component: '',
@@ -51,23 +48,38 @@ const InformationBar = () => {
   };
 
   const handleBtnClick = (type) => {
-    const greenbarExpansionElement = document.getElementById('greenBarExpansionPanel');
-    if (
-      expansionPanelComponent.component === type
-      && greenbarExpansionElement.style.minHeight === greenBarExpansionPanelHeight.large
-    ) {
-      // toggle
-      closeExpansionPanel();
-    } else {
-      greenbarExpansionElement.style.transform = 'translate(0px,0px)';
-      greenbarExpansionElement.style.minHeight = greenBarExpansionPanelHeight.large;
-      setExpansionPanelComponent({
-        component: type,
-      });
+    let progress;
+
+    if (type === 'location') {
+      progress = 1;
+    } else if (type === 'soil') {
+      progress = 2;
+    } else if (type === 'weather') {
+      progress = 3;
+    } else if (type === 'goals') {
+      progress = 4;
     }
+
+    dispatch({
+      type: 'GOTO_PROGRESS',
+      data: {
+        progress,
+      },
+    });
   };
 
   const getIconInfo = (type) => {
+    if (type === 'location') {
+      return (
+        <>
+          <LocationOn />
+            &nbsp;Location: Zone
+          {' '}
+          {state.zone}
+        </>
+      );
+    }
+
     if (type === 'soil') {
       return (
         <>
@@ -75,36 +87,29 @@ const InformationBar = () => {
             &nbsp;
           {' '}
           {/* {`Soils: Map Unit Name (${state.soilData.Map_Unit_Name}%), Drainage Class: ${state.soilData.Drainage_Class}})`} */}
-          {`Soils: Drainage Class: ${state.soilData.Drainage_Class.toString()
+          {`Soil Drainage: ${state.soilData.Drainage_Class.toString()
             .split(',')
             .join(', ')}`}
         </>
       );
     }
 
-    if (type === 'location') {
-      return (
-        <>
-          <LocationOn />
-            &nbsp;Zone
-          {' '}
-          {sfilters.zone}
-          :
-          {' '}
-          {state.address}
-        </>
-      );
-    }
-
     if (type === 'weather') {
-      const currentMonth = moment().format('MMM');
       return (
         <>
           <CloudIcon fontSize="small" />
             &nbsp;
           {' '}
-          {`Avg First Frost: ${state.weatherData.averageFrost.firstFrostDate.month} ${state.weatherData.averageFrost.firstFrostDate.day} 
-          | Avg Rain(${currentMonth}): ${state.weatherData.averagePrecipitation.thisMonth} in`}
+          {`First Frost: ${state.weatherData.averageFrost.firstFrostDate.month} ${state.weatherData.averageFrost.firstFrostDate.day}`}
+        </>
+      );
+    }
+
+    if (type === 'goals') {
+      return (
+        <>
+          <CheckIcon />
+            &nbsp;Goals
         </>
       );
     }
@@ -120,12 +125,25 @@ const InformationBar = () => {
 
     return (
       <Button
-        className="greenbarBtn"
+        className={((type === 'location' && state.progress > 0)
+        || (type === 'soil' && state.progress > 1)
+        || (type === 'weather' && state.progress > 2)
+        || (type === 'goals' && state.progress > 3)) ? 'greenbarBtn' : 'greenbarBtn2'}
         onClick={() => handleBtnClick(type)}
-        style={{ background: expansionPanelComponent.component === type && 'white' }}
+        style={{
+          borderRadius: '200px',
+          margin: '5px',
+          background:
+            ((type === 'location' && state.progress > 0)
+            || (type === 'soil' && state.progress > 1)
+            || (type === 'weather' && state.progress > 2)
+            || (type === 'goals' && state.progress > 3)) && '#e3f2f4',
+        }}
       >
         <span
-          style={{ color: expansionPanelComponent.component === type && 'black' }}
+          style={{
+            color: 'black',
+          }}
         >
           {getIconInfo(type)}
         </span>
@@ -158,33 +176,56 @@ const InformationBar = () => {
 
   return (
     <div className="greenBarParent" id="greenBarParent">
-      <div className="greenBarWrapper" style={greenBarWrapperBackground}>
-        <div className="addressBar">
-          {state.progress > 0 && window.location.pathname === speciesSelectorToolName
-            && getData('location')}
-        </div>
-
-        <div className="soilBar">
-          {state.progress > 1 && window.location.pathname === speciesSelectorToolName
-            && getData('soil')}
-        </div>
-        <div className="weatherBar">
-          {state.progress > 2 && window.location.pathname === speciesSelectorToolName
-            && getData('weather')}
-        </div>
+      <div className="greenBarWrapper">
         {state.progress > 0 && window.location.pathname === speciesSelectorToolName && (
-          <div className="restartBtnWrapper">
-            <Button
-              className="greenbarBtn"
+        <>
+          <div>
+            {getData('location')}
+          </div>
+          <div>
+            {getData('soil')}
+          </div>
+          <div>
+            {getData('weather')}
+          </div>
+          <div>
+            {getData('goals')}
+          </div>
+          <div
+            style={{
+              marginRight: '40px',
+            }}
+            className="restartBtnWrapper"
+          >
+            <ProgressButtons />
+            <LightButton
+              style={{
+                maxWidth: '90px',
+                maxHeight: '35px',
+                minWidth: '90px',
+                minHeight: '35px',
+                fontSize: '13px',
+                marginLeft: '-5%',
+                marginTop: '2.5px',
+                marginBottom: '2.5px',
+
+              }}
               onClick={() => {
                 closeExpansionPanel();
                 setConfirmationOpen(true);
               }}
             >
               <Refresh />
-              &nbsp; Restart
-            </Button>
+              <p style={{
+                paddingBottom: '6px',
+              }}
+              >
+                &nbsp; Restart
+
+              </p>
+            </LightButton>
           </div>
+        </>
         )}
       </div>
       <div

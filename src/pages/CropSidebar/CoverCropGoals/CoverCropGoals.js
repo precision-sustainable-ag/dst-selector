@@ -8,8 +8,7 @@ import {
   Typography,
 } from '@mui/material';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
-import React, { useContext, Fragment } from 'react';
-// import { arrayMove, List as ListMovable } from 'react-movable';
+import React, { useContext } from 'react';
 import { Context } from '../../../store/Store';
 import { CustomStyles } from '../../../shared/constants';
 
@@ -63,7 +62,7 @@ const CoverCropGoals = ({ handleToggle }) => {
                           sx={{ fontWeight: 'normal', fontSize: '10pt', color: '#48a8ab' }}
                         >
                           <br />
-                          {index}
+                          {index + 1}
                           {': '}
                           {goal}
                         </Typography>
