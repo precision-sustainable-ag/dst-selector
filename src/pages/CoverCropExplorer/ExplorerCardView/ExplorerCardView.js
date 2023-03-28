@@ -44,6 +44,7 @@ const ExplorerCardView = ({ activeCropData }) => {
     selectedCrops.id = cropId;
     selectedCrops.cropName = cropName;
     selectedCrops.data = cropData;
+
     const buildDispatch = (action, crops) => {
       dispatch({
         type: 'SELECTED_CROPS_MODIFIER',
@@ -55,6 +56,7 @@ const ExplorerCardView = ({ activeCropData }) => {
       });
       enqueueSnackbar(`${cropName} ${action}`);
     };
+
     if (state.selectedCrops.length > 0) {
       // DONE: Remove crop from basket
       let removeIndex = -1;
@@ -73,6 +75,10 @@ const ExplorerCardView = ({ activeCropData }) => {
         buildDispatch('Removed', selectedCropsCopy);
       }
     } else {
+      dispatch({
+        type: 'MY_CROP_LIST_LOCATION',
+        data: { from: 'explorer' },
+      });
       buildDispatch('Added', [selectedCrops]);
     }
   };

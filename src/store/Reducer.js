@@ -251,6 +251,7 @@ const Reducer = (state, action, value = action && action.data && action.data.val
           },
           frostFreeDays: 173,
         },
+        myCoverCropListLocation: '',
         myCoverCropActivationFlag: false,
         speciesSelectorActivationFlag: true,
         cashCropData: {
@@ -260,6 +261,13 @@ const Reducer = (state, action, value = action && action.data && action.data.val
             endDate: '',
           },
         },
+      };
+    }
+
+    case 'MY_CROP_LIST_LOCATION': {
+      return {
+        ...state,
+        myCoverCropListLocation: action.data.from,
       };
     }
 

@@ -6,6 +6,7 @@
 // TODO: Goal tags are not responsive!
 import { Typography, Grid } from '@mui/material';
 import React, { useContext, useEffect, useState } from 'react';
+import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset';
 import { Context } from '../../store/Store';
 import '../../styles/goalsSelector.scss';
 import GoalTag from './GoalTag/GoalTag';
@@ -19,6 +20,14 @@ import GoalTag from './GoalTag/GoalTag';
 const GoalsSelector = () => {
   const { state } = useContext(Context);
   const [allGoals, setAllGoals] = useState([]);
+  const [handleConfirm, setHandleConfirm] = useState(false);
+
+  useEffect(() => {
+    if (state.myCoverCropListLocation !== 'selector' && state.selectedCrops.length > 0) {
+      // document.title = 'Cover Crop Selector';
+      setHandleConfirm(true);
+    }
+  }, [state.selectedCrops, state.myCoverCropListLocation]);
 
   async function getAllGoals() {
     const query = `${encodeURIComponent('regions')}=${encodeURIComponent(state.regionId)}`;
@@ -69,6 +78,7 @@ const GoalsSelector = () => {
           )}
         </div>
       </div>
+      <MyCoverCropReset handleConfirm={handleConfirm} setHandleConfirm={setHandleConfirm} />
     </div>
   );
 };

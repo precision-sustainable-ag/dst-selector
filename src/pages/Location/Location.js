@@ -26,14 +26,14 @@ import centroid from '@turf/centroid';
 import mapboxgl from 'mapbox-gl';
 import { BinaryButton } from '../../shared/constants';
 import { Context } from '../../store/Store';
+import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset';
 
 // eslint-disable-next-line import/no-webpack-loader-syntax, import/no-unresolved
 mapboxgl.workerClass = require('worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker').default;
 
 const LocationComponent = ({
-  title,
+  // title,
   caller,
-  defaultMarkers,
   closeExpansionPanel,
 }) => {
   const { state, dispatch } = useContext(Context);
@@ -42,6 +42,8 @@ const LocationComponent = ({
   const [selectedToEditSite, setSelectedToEditSite] = useState({});
   const [showRestartPrompt, setShowRestartPrompt] = useState(false);
   const [selectedRegion, setSelectedRegion] = useState({});
+  const [handleConfirm, setHandleConfirm] = useState(false);
+  const defaultMarkers = [[40.78489145, -74.80733626930342]];
 
   const getLatLng = useCallback(() => {
     if (state.selectedRegion.properties) {
@@ -53,8 +55,11 @@ const LocationComponent = ({
   }, [state]);
 
   useEffect(() => {
-    document.title = title || 'Decision Support Tool';
-  }, [title]);
+    if (state.myCoverCropListLocation !== 'selector' && state.selectedCrops.length > 0) {
+      // document.title = 'Cover Crop Selector';
+      setHandleConfirm(true);
+    }
+  }, [state.selectedCrops, state.myCoverCropListLocation]);
 
   useEffect(() => {
     dispatch({
@@ -273,6 +278,7 @@ const LocationComponent = ({
           <BinaryButton action={handleConfirmationChoice} />
         </DialogActions>
       </Dialog>
+      <MyCoverCropReset handleConfirm={handleConfirm} setHandleConfirm={setHandleConfirm} from="selector" />
     </div>
   );
 };

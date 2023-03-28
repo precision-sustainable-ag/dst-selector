@@ -21,6 +21,7 @@ import { Context } from '../../store/Store';
 import WeatherPrecipitation from './WeatherPrecipitation/WeatherPrecipitation';
 import WeatherFrostDates from './WeatherFrostDates/WeatherFrostDates';
 import WeatherFrostFreeDays from './WeatherFrostFreeDays/WeatherFrostFreeDays';
+import MyCoverCropReset from '../MyCoverCropReset/MyCoverCropReset';
 
 const WeatherConditions = ({ caller }) => {
   const { state, dispatch } = useContext(Context);
@@ -34,6 +35,7 @@ const WeatherConditions = ({ caller }) => {
   const [firstFrostDayHelper, setFirstFrostDayHelper] = useState('');
   const [firstFrostDayError, setFirstFrostDayError] = useState(false);
   const [lastFrostDayError, setLastFrostDayError] = useState(false);
+  const [handleConfirm, setHandleConfirm] = useState(false);
 
   useEffect(() => {
     if (!state.ajaxInProgress) {
@@ -108,6 +110,13 @@ const WeatherConditions = ({ caller }) => {
     // data incorrect
     // show error on modal
   };
+
+  useEffect(() => {
+    if (state.myCoverCropListLocation !== 'selector' && state.selectedCrops.length > 0) {
+      // document.title = 'Cover Crop Selector';
+      setHandleConfirm(true);
+    }
+  }, [state.selectedCrops, state.myCoverCropListLocation]);
 
   useEffect(() => {
     // get current month in long form
@@ -545,6 +554,7 @@ const WeatherConditions = ({ caller }) => {
           </div>
         </Box>
       </Modal>
+      <MyCoverCropReset handleConfirm={handleConfirm} setHandleConfirm={setHandleConfirm} />
     </div>
   );
 };
