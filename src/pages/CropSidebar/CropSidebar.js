@@ -125,11 +125,11 @@ const CropSidebar = ({
       }
     });
 
-    let cropData = state.cropData.filter((crop) => crop['Zone Decision'] === 'Include');
+    let cropData = state?.cropData?.filter((crop) => crop['Zone Decision'] === 'Include');
 
     const search = sfilters.cropSearch?.toLowerCase().match(/\w+/g);
 
-    cropData = state.cropData.filter((crop) => {
+    cropData = state?.cropData?.filter((crop) => {
       const match = (parm) => {
         const m = crop[parm]?.toLowerCase().match(/\w+/g);
 
@@ -140,7 +140,7 @@ const CropSidebar = ({
     });
 
     const nonZeroKeys2 = Object.keys(sfo).map((key) => {
-      if (sfo[key].length !== 0) {
+      if (sfo[key]?.length !== 0) {
         return { [key]: sfo[key] };
       }
       return '';
@@ -170,8 +170,8 @@ const CropSidebar = ({
     ];
     const booleanKeys = ['Aerial Seeding', 'Frost Seeding'];
 
-    const filtered = cropData.filter((crop, n, cd) => {
-      const totalActiveFilters = Object.keys(nonZeroKeys2).length;
+    const filtered = cropData?.filter((crop, n, cd) => {
+      const totalActiveFilters = Object.keys(nonZeroKeys2)?.length;
       let i = 0;
       nonZeroKeys2.forEach((keyObject) => {
         const key = Object.keys(keyObject);
@@ -179,9 +179,9 @@ const CropSidebar = ({
 
         if (areCommonElements(arrayKeys, key)) {
           // Handle array type havlues
-          const intersection = (arrays = [vals, crop[key]]) => arrays.reduce((a, b) => a.filter((c) => b.includes(c)));
+          const intersection = (arrays = [vals, crop[key]]) => arrays.reduce((a, b) => a?.filter((c) => b.includes(c)));
 
-          if (intersection().length > 0) {
+          if (intersection()?.length > 0) {
             i += 1;
           }
         } else if (areCommonElements(booleanKeys, key)) {
@@ -205,9 +205,9 @@ const CropSidebar = ({
         value: filtered,
       },
     });
-  }, [state.changedFilters, sfilters.cropSearch, state.cropData, dispatch, sfilters]);
+  }, [state.changedFilters, sfilters.cropSearch, state?.cropData, dispatch, sfilters]);
 
-  const filtersSelected = Object.keys(sfilters).filter((key) => sfilters[key]).length > 1;
+  const filtersSelected = Object.keys(sfilters)?.filter((key) => sfilters[key])?.length > 1;
 
   const resetAllFilters = () => {
     dispatch({
@@ -216,7 +216,7 @@ const CropSidebar = ({
   };
 
   const createObject = (obj, dataDictionary, data) => {
-    const field = dataDictionary.filter((item) => item.Variable === data.dataDictionaryName);
+    const field = dataDictionary?.filter((item) => item.Variable === data.dataDictionaryName);
 
     const description = field[0].Description;
     const valuesDescription = field[0]['Values Description'];
@@ -233,8 +233,8 @@ const CropSidebar = ({
       };
       switch (category.type) {
         case 'rating-only':
-          newCategory.values = category.filters.map((f) => {
-            const data = sidebarFiltersData.filter((dictFilter) => dictFilter.__id === f)[0];
+          newCategory.values = category?.filters.map((f) => {
+            const data = sidebarFiltersData?.filter((dictFilter) => dictFilter.__id === f)[0];
 
             const obj = {
               name: data.name,
@@ -250,8 +250,8 @@ const CropSidebar = ({
           break;
         case 'chips-only':
           if (category.name === 'Cover Crop Type') {
-            const data = sidebarFiltersData.filter(
-              (dictFilter) => dictFilter.__id === category.filters[0],
+            const data = sidebarFiltersData?.filter(
+              (dictFilter) => dictFilter.__id === category?.filters[0],
             )[0];
 
             newCategory.values = [
@@ -265,8 +265,8 @@ const CropSidebar = ({
             ];
           } else {
             newCategory.description = null;
-            newCategory.values = category.filters.map((f) => {
-              const data = sidebarFiltersData.filter((dictFilter) => dictFilter.__id === f)[0];
+            newCategory.values = category?.filters.map((f) => {
+              const data = sidebarFiltersData?.filter((dictFilter) => dictFilter.__id === f)[0];
 
               const obj = {
                 name: data.name,
@@ -283,8 +283,8 @@ const CropSidebar = ({
           }
           break;
         case 'chips-rating':
-          newCategory.values = category.filters.map((f) => {
-            const data = sidebarFiltersData.filter((dictFilter) => dictFilter.__id === f)[0];
+          newCategory.values = category?.filters.map((f) => {
+            const data = sidebarFiltersData?.filter((dictFilter) => dictFilter.__id === f)[0];
             const obj = {
               name: data.name,
               type: data.type,
@@ -452,7 +452,7 @@ const CropSidebar = ({
         <div className="col-12">
           <ComparisonBar
             filterData={sidebarFilters}
-            goals={state.selectedGoals.length > 0 ? state.selectedGoals : []}
+            goals={state.selectedGoals?.length > 0 ? state.selectedGoals : []}
             comparisonKeys={state.comparisonKeys}
             dispatch={dispatch}
             comparisonView={comparisonView}
@@ -561,7 +561,7 @@ const CropSidebar = ({
         <div className="col-12">
           <ComparisonBar
             filterData={sidebarFilters}
-            goals={state.selectedGoals.length > 0 ? state.selectedGoals : []}
+            goals={state.selectedGoals?.length > 0 ? state.selectedGoals : []}
             comparisonKeys={state.comparisonKeys}
             dispatch={dispatch}
             comparisonView={comparisonView}

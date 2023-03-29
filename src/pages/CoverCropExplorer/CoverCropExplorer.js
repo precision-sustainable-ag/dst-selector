@@ -28,7 +28,7 @@ const CoverCropExplorer = () => {
   const defaultMarkers = [[40.78489145, -74.80733626930342]];
 
   useEffect(() => {
-    const filteredActiveCropData = activeCropData.filter((a) => !a.inactive);
+    const filteredActiveCropData = activeCropData?.filter((a) => !a.inactive);
     setUpdatedActiveCropData(filteredActiveCropData);
     // getData();
   }, [activeCropData]);
@@ -44,7 +44,7 @@ const CoverCropExplorer = () => {
   useEffect(() => {
     if (localStorage.getItem('lastLocation') === 'CropSelector') {
       document.title = 'Cover Crop Explorer';
-      if (state.selectedCrops.length) {
+      if (state.selectedCrops?.length) {
         setHandleConfirm(true);
       }
     }
@@ -78,7 +78,7 @@ const CoverCropExplorer = () => {
           <div className="col-md-12 col-lg-3 col-xl-2 col-12">
             <CropSidebar
               from="explorer"
-              activeCropData={activeCropData?.length > 0 ? activeCropData : state.cropData}
+              activeCropData={activeCropData?.length > 0 ? activeCropData : state?.cropData}
               isListView
             />
           </div>
@@ -93,7 +93,7 @@ const CoverCropExplorer = () => {
               </Grid>
             ) : (
               <ExplorerCardView
-                cropData={state.cropData}
+                cropData={state?.cropData}
                 activeCropData={updatedActiveCropData}
               />
             )}
