@@ -75,7 +75,7 @@ const CropSelector = (props) => {
   }, [state.consent]);
 
   useEffect(() => {
-    if (state.selectedGoals.length === 0) {
+    if (state.selectedGoals?.length === 0) {
       dispatch({
         type: 'UPDATE_PROGRESS',
         data: {
@@ -86,12 +86,12 @@ const CropSelector = (props) => {
   }, [state.selectedGoals, dispatch]);
 
   useEffect(() => {
-    if (state.cropData) {
-      if (state.cropData.length > 0) {
+    if (state?.cropData) {
+      if (state?.cropData?.length > 0) {
         // sort crop data by goal priority
 
-        if (selectedGoals.length > 0) {
-          const activeCropDataShadow = state.cropData;
+        if (selectedGoals?.length > 0) {
+          const activeCropDataShadow = state?.cropData;
           selectedGoals
             .slice()
             .reverse()
@@ -108,20 +108,20 @@ const CropSelector = (props) => {
             });
           setCropData(activeCropDataShadow);
         } else {
-          setCropData(state.cropData);
+          setCropData(state?.cropData);
         }
       }
     }
     return () => {
       setCropData([]);
     };
-  }, [state.cropData, selectedGoals]);
+  }, [state?.cropData, selectedGoals]);
 
   const sortCropsBy = (orderBy) => {
-    if (state.cropData.length > 0) {
+    if (state?.cropData?.length > 0) {
       // const { selectedGoals } = state;
-      if (selectedGoals.length > 0) {
-        const activeCropDataCopy = activeCropData.length > 0 ? activeCropData : state.cropData;
+      if (selectedGoals?.length > 0) {
+        const activeCropDataCopy = activeCropData?.length > 0 ? activeCropData : state?.cropData;
         const activeObjKeys = [];
         selectedGoals.forEach((val, index) => {
           //  Crop Data is inside cropData.fields
@@ -130,7 +130,7 @@ const CropSelector = (props) => {
 
         switch (orderBy) {
           case 'asc': {
-            if (activeCropDataCopy.length > 0) {
+            if (activeCropDataCopy?.length > 0) {
               // TODO: replace _ lowdash with array function will need to write a custom orderby function.
               const updatedCropData = _.orderBy(activeCropDataCopy, activeObjKeys, [
                 'asc',
@@ -148,7 +148,7 @@ const CropSelector = (props) => {
             break;
           }
           case 'desc': {
-            if (activeCropDataCopy.length > 0) {
+            if (activeCropDataCopy?.length > 0) {
               // TODO: replace _ lowdash with array function will need to write a custom orderby function.
               const updatedCropData = _.orderBy(activeCropDataCopy, activeObjKeys, [
                 'desc',
@@ -235,7 +235,7 @@ const CropSelector = (props) => {
             setGrowthWindow={setShowGrowthWindow}
             isListView={isListView}
             cropData={cropData}
-            activeCropData={updatedActiveCropData.length > 0 ? updatedActiveCropData : cropData}
+            activeCropData={updatedActiveCropData?.length > 0 ? updatedActiveCropData : cropData}
             comparisonView={comparisonView}
             toggleComparisonView={() => { setComparisonView(!comparisonView); }}
             toggleListView={() => { setIsListView(!isListView); }}
