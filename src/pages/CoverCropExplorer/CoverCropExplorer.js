@@ -78,7 +78,7 @@ const CoverCropExplorer = () => {
           <div className="col-md-12 col-lg-3 col-xl-2 col-12">
             <CropSidebar
               from="explorer"
-              activeCropData={activeCropData.length > 0 ? activeCropData : state.cropData}
+              activeCropData={activeCropData?.length > 0 ? activeCropData : state.cropData}
               isListView
             />
           </div>
