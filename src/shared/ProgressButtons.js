@@ -15,7 +15,7 @@ const ProgressButtons = () => {
     if (progress < 0) return '';
 
     return (
-      <div>
+      <div style={{ maxWidth: '150px', align: 'right' }}>
         <ProgressButtonsInner disabled={disabled} />
       </div>
     );

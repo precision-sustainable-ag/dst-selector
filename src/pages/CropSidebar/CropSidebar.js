@@ -5,12 +5,13 @@
 */
 
 import {
+  Box,
   Button,
   Collapse,
   List,
   ListItem,
   ListItemText,
-  ListSubheader,
+  // ListSubheader,
   Typography,
 } from '@mui/material';
 import {
@@ -62,31 +63,27 @@ const CropSidebar = ({
 
   const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
   const sfilters = state[section];
+  const dictionary = [];
 
-  useEffect(() => {
-    async function getFilterData() {
-      await fetch('https://api.covercrop-selector.org/legacy/sidebar/filters')
+  async function getAllFilters() {
+    if (state.regionId) {
+      const query = `${encodeURIComponent('regions')}=${encodeURIComponent(state.regionId)}`;
+      await fetch(`https://developapi.covercrop-selector.org/v1/states/${state.stateId}/filters?${query}`)
         .then((res) => res.json())
-        .then((data) => { setSidebarFiltersData(data); })
+        .then((data) => {
+          const allFilters = [];
+          data.data.forEach((category) => {
+            allFilters.push(category.attributes);
+          });
+          setSidebarFiltersData(allFilters);
+          setSidebarCategoriesData(data.data);
+        })
         .catch((err) => {
-          // eslint-disable-next-line no-console
+        // eslint-disable-next-line no-console
           console.log(err.message);
         });
     }
-
-    async function getCategoriesData() {
-      await fetch('https://api.covercrop-selector.org/legacy/sidebar/categories')
-        .then((res) => res.json())
-        .then((data) => { setSidebarCategoriesData(data); })
-        .catch((err) => {
-          // eslint-disable-next-line no-console
-          console.log(err.message);
-        });
-    }
-
-    getFilterData();
-    getCategoriesData();
-  }, []);
+  }
 
   // // TODO: When is showFilters false?
   // NOTE: verify below when show filter is false.
@@ -179,18 +176,20 @@ const CropSidebar = ({
 
         if (areCommonElements(arrayKeys, key)) {
           // Handle array type havlues
-          const intersection = (arrays = [vals, crop[key]]) => arrays.reduce((a, b) => a.filter((c) => b.includes(c)));
+          if (crop[key] !== undefined) {
+            const intersection = (arrays = [vals, crop[key]]) => arrays.reduce((a, b) => a.filter((c) => b.includes(c)));
 
-          if (intersection().length > 0) {
-            i += 1;
-          }
-        } else if (areCommonElements(booleanKeys, key)) {
+            if (intersection().length > 0) {
+              i += 1;
+            }
+          } else if (areCommonElements(booleanKeys, key)) {
           //  Handle boolean types
-          if (crop[key]) {
+            if (crop[key]) {
+              i += 1;
+            }
+          } else if (vals.includes(crop[key])) {
             i += 1;
           }
-        } else if (vals.includes(crop[key])) {
-          i += 1;
         }
       });
 
@@ -216,133 +215,82 @@ const CropSidebar = ({
   };
 
   const createObject = (obj, dataDictionary, data) => {
-    const field = dataDictionary.filter((item) => item.Variable === data.dataDictionaryName);
-
-    const description = field[0].Description;
-    const valuesDescription = field[0]['Values Description'];
-
-    obj.description = valuesDescription ? `${description} ${valuesDescription}` : description;
+    const field = dataDictionary.filter((item) => item.Variable === data.label);
+    if (field[0] !== undefined) {
+      obj.description = field[0].Description > 0 ? field[0].Description : '';
+    }
   };
 
-  const generateSidebarObject = async (dataDictionary, dictionary) => {
-    sidebarCategoriesData.forEach((category) => {
+  const generateSidebarObject = async (dataDictionary) => {
+    await sidebarCategoriesData.forEach((category) => {
       const newCategory = {
-        name: category.name,
+        name: category.label,
         description: category.description,
-        type: category.type,
       };
-      switch (category.type) {
-        case 'rating-only':
-          newCategory.values = category.filters.map((f) => {
-            const data = sidebarFiltersData.filter((dictFilter) => dictFilter.__id === f)[0];
+      newCategory.values = category.attributes.map((filter) => {
+        const type = filter.values[0].dataType;
 
-            const obj = {
-              name: data.name,
-              alternateName: data.dataDictionaryName,
-              symbol: data.symbol,
-              maxSize: data.maxSize,
-            };
+        const obj = {
+          name: filter.label,
+          type,
+          rating: !filter.isArray,
+          maxSize: null,
+          description: filter.description,
+          details: filter.details,
+          units: filter.units,
+        };
+        if (type === 'number') {
+          obj.values = filter.values;
+          obj.maxSize = 5;
+        } else {
+          obj.values = filter.values;
+        }
 
-            createObject(obj, dataDictionary, data);
+        createObject(obj, dataDictionary, filter);
 
-            return obj;
-          });
-          break;
-        case 'chips-only':
-          if (category.name === 'Cover Crop Type') {
-            const data = sidebarFiltersData.filter(
-              (dictFilter) => dictFilter.__id === category.filters[0],
-            )[0];
-
-            newCategory.values = [
-              {
-                name: data.name,
-                alternateName: data.dataDictionaryName,
-                symbol: null,
-                maxSize: data.maxSize,
-                values: data.values.split(/\s*,\s*/),
-              },
-            ];
-          } else {
-            newCategory.description = null;
-            newCategory.values = category.filters.map((f) => {
-              const data = sidebarFiltersData.filter((dictFilter) => dictFilter.__id === f)[0];
-
-              const obj = {
-                name: data.name,
-                alternateName: data.dataDictionaryName,
-                symbol: null,
-                maxSize: data.maxSize,
-                values: [data.values],
-              };
-
-              createObject(obj, dataDictionary, data);
-
-              return obj;
-            });
-          }
-          break;
-        case 'chips-rating':
-          newCategory.values = category.filters.map((f) => {
-            const data = sidebarFiltersData.filter((dictFilter) => dictFilter.__id === f)[0];
-            const obj = {
-              name: data.name,
-              type: data.type,
-              maxSize: null,
-              description: '',
-            };
-
-            if (data.type === 'chip') {
-              obj.values = data.values.split(',').map((val) => val.trim());
-            } else if (data.type === 'rating') {
-              obj.values = [];
-              obj.maxSize = data.maxSize;
-            }
-
-            createObject(obj, dataDictionary, data);
-
-            return obj;
-          });
-          break;
-        default:
-          break;
-      }
-
+        return obj;
+      });
       dictionary.push(newCategory);
     });
   };
 
-  useEffect(() => {
-    const dictionary = [];
-    const setData = async () => {
-      setSidebarFilters(dictionary);
+  async function getSidebars(data) {
+    const setData = (dict) => {
+      setSidebarFilters(dict);
     };
 
-    setLoading(true);
-    async function getSidebars(data) {
-      await generateSidebarObject(data, dictionary)
-        .then(() => setData())
-        .then(() => { setLoading(false); })
+    await generateSidebarObject(data)
+      .then(() => setData(dictionary))
+      .then(() => { setLoading(false); })
+      .catch((err) => {
+      // eslint-disable-next-line no-console
+        console.log(err.message);
+      });
+  }
+
+  async function getDictData() {
+    if (state.regionId) {
+      const query = `${encodeURIComponent('regions')}=${encodeURIComponent(state.regionId)}`;
+      await fetch(`https://developapi.covercrop-selector.org/v1/states/${state.stateId}/dictionary?${query}`)
+        .then((res) => res.json())
+        .then((data) => {
+          getSidebars(data.data);
+        })
         .catch((err) => {
         // eslint-disable-next-line no-console
           console.log(err.message);
         });
     }
+  }
 
-    async function getDictData() {
-      await fetch(`https://api.covercrop-selector.org/legacy/data-dictionary?zone=zone${sfilters.zone}`)
-        .then((res) => res.json())
-        .then((data) => { getSidebars(data); })
-        .catch((err) => {
-          // eslint-disable-next-line no-console
-          console.log(err.message);
-        });
+  useEffect(() => {
+    setLoading(true);
+    if (sidebarCategoriesData.length > 0 && state.regionId) {
+      getDictData();
     }
-
-    getDictData();
   }, [
-    sfilters.zone,
     sidebarCategoriesData,
+    state.regionId,
   ]);
 
   useEffect(() => {
@@ -425,6 +373,14 @@ const CropSidebar = ({
     </List>
   ); // filterList
 
+  useEffect(() => {
+    getAllFilters();
+  }, [state.regionId]);
+
+  useEffect(() => {
+    filtersList();
+  }, [sidebarFilters]);
+
   const comparisonButton = (
     <Button
       className="dynamicToggleBtn"
@@ -479,45 +435,54 @@ const CropSidebar = ({
             style={{ marginBottom: '15px' }}
             startIcon={
               isListView ? (
-                <CalendarToday style={{ fontSize: 'larger' }} />
-              ) : (
                 <ListIcon style={{ fontSize: 'larger' }} />
+              ) : (
+                <CalendarToday style={{ fontSize: 'larger' }} />
               )
             }
           >
-            {isListView ? 'CALENDAR VIEW' : 'LIST VIEW'}
+            {isListView ? 'LIST VIEW' : 'CALENDAR VIEW'}
           </Button>
         </div>
       )}
 
       {state.speciesSelectorActivationFlag || from === 'explorer' ? (
-        <div className="col-12" id="Filters">
+        <Box
+          // className="col-"
+          sx={{
+            width: {
+              lg: '280px',
+              xl: '280px',
+            },
+          }}
+          id="Filters"
+        >
           <List
             component="nav"
             aria-labelledby="nested-list-subheader"
-            subheader={(
-              <ListSubheader
-                sx={{
-                  backgroundColor: '#add08f',
-                  color: 'black',
-                  textAlign: 'center',
-                  height: '50px',
-                }}
-                style={{ marginBottom: '15px' }}
-                component="div"
-                id="nested-list-subheader"
-              >
-                FILTER
-              </ListSubheader>
-            )}
+            // subheader={(
+            //   <ListSubheader
+            //     sx={{
+            //       backgroundColor: '#add08f',
+            //       color: 'black',
+            //       textAlign: 'center',
+            //       height: '50px',
+            //     }}
+            //     style={{ marginBottom: '15px' }}
+            //     component="div"
+            //     id="nested-list-subheader"
+            //   >
+            //     FILTERS
+            //   </ListSubheader>
+            // )}
           >
             {from === 'table' && (
               <>
-                {showFilters && state.speciesSelectorActivationFlag && isListView && (
+                {showFilters && state.speciesSelectorActivationFlag && !isListView && (
                   <CoverCropSearch sfilters={sfilters} dispatch={dispatch} />
                 )}
 
-                {isListView && (
+                {!isListView && (
                   <CoverCropGoals style={style} handleToggle={handleToggle} />
                 )}
 
@@ -548,6 +513,7 @@ const CropSidebar = ({
                   }}
                 >
                   <ListItemText primary="COVER CROP PROPERTIES" />
+
                   {state.cropFiltersOpen ? <ExpandLess /> : <ExpandMore />}
                 </ListItem>
                 <Collapse in={state.cropFiltersOpen} timeout="auto">
@@ -556,7 +522,7 @@ const CropSidebar = ({
               </>
             )}
           </List>
-        </div>
+        </Box>
       ) : (
         <div className="col-12">
           <ComparisonBar

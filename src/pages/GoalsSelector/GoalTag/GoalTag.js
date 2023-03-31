@@ -8,7 +8,7 @@ import React, { useContext, useEffect } from 'react';
 import { Context } from '../../../store/Store';
 // TODO: Whats up with goalt?? we need to look into fixing this.
 const GoalTag = ({
-  goaltTitle, goalDescription, goal, valuesDescriptions, id,
+  goaltTitle, goalDescription, goal, id,
 }) => {
   const { state, dispatch } = useContext(Context);
   const key = id;
@@ -25,17 +25,17 @@ const GoalTag = ({
   const updateSelectedGoals = (item, k) => {
     const goals = [...state.selectedGoals];
 
-    if (goals.indexOf(item.fields.Variable) === -1) {
+    if (goals.indexOf(item.label) === -1) {
       // does not exist, dispatch to state and add to local state
 
       document.getElementById(`chip${k}`).classList.add('active');
       dispatch({
         type: 'ADD_SELECTED_GOALS',
-        data: item.fields.Variable,
+        data: item.label,
       });
     } else {
       // exists, remove it from the state and update the state
-      const index = goals.indexOf(item.fields.Variable);
+      const index = goals.indexOf(item.label);
       goals.splice(index, 1);
 
       // make it lighter on the ui
@@ -56,7 +56,8 @@ const GoalTag = ({
       arrow
       title={(
         <div className="filterTooltip">
-          <p>{`${goalDescription} ${valuesDescriptions}`}</p>
+          {/* <p>{`${goalDescription} ${valuesDescriptions}`}</p> */}
+          <p>{`${goalDescription}`}</p>
         </div>
       )}
       key={`tooltip${key}`}

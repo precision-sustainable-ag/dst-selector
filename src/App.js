@@ -11,8 +11,6 @@ import Header from './pages/Header/Header';
 import Landing from './pages/Landing/Landing';
 import LocationComponent from './pages/Location/Location';
 import LocationConfirmation from './pages/Location/LocationConfirmation/LocationConfirmation';
-import ProgressBar from './shared/ProgressBar';
-import ProgressButtons from './shared/ProgressButtons';
 import { Context } from './store/Store';
 import './styles/App.scss';
 
@@ -98,21 +96,6 @@ const App = () => {
               }}
             >
               <LoadRelevantRoute progress={state.progress} calcHeight={calcHeight} />
-              {state.progress > 0 && state.progress < 5 ? (
-                <div className="container-fluid mt-5 mb-5">
-                  <div className="row" style={{ width: '95%', margin: '0 auto' }}>
-                    <div className="col-lg-5 col-12 col-md-5" />
-                    <div className="col-lg-5 col-12 col-md-5">
-                      <ProgressButtons />
-                    </div>
-                    <div className="col-lg-2 pr-0 col-12 col-md-2">
-                      <ProgressBar />
-                    </div>
-                  </div>
-                </div>
-              ) : (
-                ''
-              )}
             </div>
           )}
         </div>

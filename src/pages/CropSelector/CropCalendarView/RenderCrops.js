@@ -69,6 +69,10 @@ const RenderCrops = ({
         });
       }
     } else {
+      dispatch({
+        type: 'MY_CROP_LIST_LOCATION',
+        data: { from: 'selector' },
+      });
       dispatchValue({
         selectedCrops: [cropArray],
         snackOpen: true,
