@@ -38,6 +38,7 @@ import MyCoverCropListWrapper from './pages/MyCoverCropList/MyCoverCropListWrapp
 
 const withFooter = (WrappedComponent) => () => [<WrappedComponent key="1" />, <Footer key="2" />];
 
+// AdaptV4Theme has been depreciated and v5 is the new version.  TODO: look into update
 const theme = createTheme(
   adaptV4Theme({
     palette: {
@@ -137,8 +138,8 @@ const Wrapper = () => (
           <BrowserRouter>
             <Suspense fallback={<div>Loading..</div>}>
               <Switch>
-                <Route path="/species-selector" component={App} exact />
-                <Route path="/" component={CoverCropExplorer} exact />
+                <Route path="/" component={App} exact />
+                <Route path="/explorer" component={CoverCropExplorer} exact />
                 <Route path="/about" component={About} exact />
                 <Route path="/help" component={HelpComponent} exact />
                 <Route path="/feedback" component={FeedbackComponent} exact />

@@ -1,23 +1,14 @@
-/*
-  This file contains the FeedbackComponent component, helper functions
-  The FeedbackComponent page is a static page that shows an airtable form
-*/
-
 import React, { useEffect, useContext, useState } from 'react';
 import ReactGA from 'react-ga';
 import {
   Grid,
   Typography,
   TextField,
-  Select,
-  MenuItem,
   Button,
   Snackbar,
-  InputLabel,
   Checkbox,
-  ListItemText,
-  OutlinedInput,
-  FormControl,
+  FormGroup,
+  FormControlLabel,
 } from '@mui/material';
 import Header from '../Header/Header';
 import { Context } from '../../store/Store';
@@ -34,12 +25,41 @@ const FeedbackComponent = () => {
     name: '',
     email: '',
   });
-  const topicOptions = [
-    'About the Cover Crop Data',
-    'About the Website',
-    'Other',
-  ];
-  const isDisabled = feedbackData.title === '' || feedbackData.comments === '' || feedbackData.labels.length === 0;
+
+  const convertMessageArr = (arr) => {
+    if (arr.length === 0) {
+      return '';
+    }
+    if (arr.length === 1) {
+      return `The "${arr[0]}" field is blank`;
+    }
+    if (arr.length === 2) {
+      return `The "${arr.join('" and "')}" fields are blank`;
+    }
+    return `The "${arr.slice(0, -1).join('", "')}", and "${arr[arr.length - 1]}" fields are blank`;
+  };
+
+  const checkDisabled = () => {
+    const titleMissing = feedbackData.title === '';
+    const commentsMissing = feedbackData.comments === '';
+    const labelsMissing = feedbackData.labels.length === 0;
+    const messageArr = [];
+
+    if (titleMissing) {
+      messageArr.push('Title');
+    }
+    if (commentsMissing) {
+      messageArr.push('Message');
+    }
+    if (labelsMissing) {
+      messageArr.push('Topic');
+    }
+    const messageStr = convertMessageArr(messageArr);
+    if (titleMissing || commentsMissing || labelsMissing) {
+      return { state: true, message: messageStr };
+    }
+    return { state: false, message: '' };
+  };
 
   useEffect(() => {
     if (state.consent === true) {
@@ -57,19 +77,24 @@ const FeedbackComponent = () => {
     setFeedbackData({ ...feedbackData, screenshot: event.target.files[0] });
   };
 
-  const handleDropdownChange = (event) => {
-    const {
-      target: { value },
-    } = event;
-    setFeedbackData({
-      ...feedbackData,
-      // On autofill we get a stringified value.
-      labels: typeof value === 'string' ? value.split(',') : value,
-    });
-  };
-
   const handleTextInputChange = (event, propertyName) => {
     setFeedbackData({ ...feedbackData, [propertyName]: event.target.value });
+  };
+
+  const remove = (arr, value) => {
+    const index = arr.indexOf(value);
+    if (index > -1) {
+      arr.splice(index, 1);
+    }
+    return arr;
+  };
+
+  const handleCheckboxChange = (event) => {
+    if (event.target.checked) {
+      setFeedbackData({ ...feedbackData, labels: [...feedbackData.labels, event.target.name] });
+    } else {
+      setFeedbackData({ ...feedbackData, labels: remove(feedbackData.labels, event.target.name) });
+    }
   };
 
   const handleSnackbarClose = () => {
@@ -82,7 +107,7 @@ const FeedbackComponent = () => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(feedbackData),
+      body: JSON.stringify({ ...feedbackData, labels: ['cc-selecotor', ...feedbackData.labels] }),
     })
       .then((response) => {
         if (response.status === 201) {
@@ -136,17 +161,14 @@ const FeedbackComponent = () => {
         {/* Title */}
         <Grid container item spacing={1} justifyContent="center">
           <Grid item xs={12}>
-            <Typography variant="h3">NECCC Species Selector Feedback</Typography>
-          </Grid>
-          <Grid item xs={12}>
-            <Typography variant="h5">Beta-Testing Feedback</Typography>
+            <Typography variant="h3">Cover Crop Species Selector Feedback</Typography>
           </Grid>
         </Grid>
 
         {/* Feedback Title */}
         <Grid container item spacing={1} justifyContent="flex-start" alignItems="flex-start">
           <Grid item xs={12}>
-            <Typography variant="h6" display="inline-block">Feedback Title</Typography>
+            <Typography variant="h6" display="inline-block">Title</Typography>
             <Typography variant="h6" display="inline-block" style={{ color: 'red' }}>
               *
             </Typography>
@@ -166,7 +188,7 @@ const FeedbackComponent = () => {
         {/* Feedback Messsage */}
         <Grid container item spacing={1} justifyContent="flex-start" alignItems="flex-start">
           <Grid item xs={12}>
-            <Typography variant="h6" display="inline-block">Feedback Message </Typography>
+            <Typography variant="h6" display="inline-block">Message </Typography>
             <Typography variant="h6" display="inline-block" style={{ color: 'red' }}>
               *
             </Typography>
@@ -192,7 +214,7 @@ const FeedbackComponent = () => {
         {/* Feedback Topic */}
         <Grid container item spacing={1} justifyContent="flex-start" alignItems="flex-start">
           <Grid item xs={12}>
-            <Typography variant="h6" display="inline-block">Feedback Topic </Typography>
+            <Typography variant="h6" display="inline-block">Topic </Typography>
             <Typography variant="h6" display="inline-block" style={{ color: 'red' }}>
               *
             </Typography>
@@ -201,27 +223,20 @@ const FeedbackComponent = () => {
             <Typography variant="body1">What is this feedback about?</Typography>
           </Grid>
           <Grid item xs={12}>
-            <FormControl sx={{ minWidth: 250 }}>
-              <InputLabel id="topic-dropdown-label">Select at least one option</InputLabel>
-              <Select
-                labelId="topic-dropdown-label"
-                id="topic-dropdown"
-                multiple
-                required
-                autoWidth
-                value={feedbackData.labels}
-                onChange={handleDropdownChange}
-                input={<OutlinedInput label="Select at least one option" />}
-                renderValue={(selected) => selected.join(', ')}
-              >
-                {topicOptions.map((topic) => (
-                  <MenuItem key={topic} value={topic}>
-                    <Checkbox checked={feedbackData.labels.indexOf(topic) > -1} />
-                    <ListItemText primary={topic} />
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
+            <FormGroup>
+              <FormControlLabel
+                control={<Checkbox onChange={handleCheckboxChange} name="About the Cover Crop Data" />}
+                label="About the Cover Crop Data"
+              />
+              <FormControlLabel
+                control={<Checkbox onChange={handleCheckboxChange} name="About the Website" />}
+                label="About the Website"
+              />
+              <FormControlLabel
+                control={<Checkbox onChange={handleCheckboxChange} name="Other" />}
+                label="Other"
+              />
+            </FormGroup>
           </Grid>
         </Grid>
 
@@ -276,15 +291,16 @@ const FeedbackComponent = () => {
 
         {/* Submit */}
         <Grid container item spacing={1} justifyContent="flex-start" alignItems="flex-start">
-          {isDisabled && (
+          {checkDisabled().state && (
             <Grid item xs={12}>
-              <Typography variant="body1">
-                You are missing one or more required fields. Please fill all required fields before submitting.
+              <Typography variant="body1" style={{ color: 'red' }}>
+                {checkDisabled().message}
+                . Please fill all required fields before submitting.
               </Typography>
             </Grid>
           )}
           <Grid item xs={12}>
-            <Button disabled={isDisabled} onClick={handleSubmit} size="large">
+            <Button disabled={checkDisabled().state} onClick={handleSubmit} size="large" variant="outlined">
               Submit
             </Button>
           </Grid>

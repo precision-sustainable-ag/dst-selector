@@ -4,33 +4,121 @@
   styled using ../../styles/landing.scss
 */
 
-import { Grid, Typography } from '@mui/material';
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  Grid, Typography,
+} from '@mui/material';
+// import SelectUSState from 'react-select-us-states';
 import React, {
   useContext,
   useEffect,
   useState,
   useRef,
 } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import ReactGA from 'react-ga';
-// import { RegionSelectorMap } from '@psa/dst.ui.region-selector-map';
-import { LightButton } from '../../shared/constants';
+import { RegionSelectorMap } from '@psa/dst.ui.region-selector-map';
+import { BinaryButton, LightButton } from '../../shared/constants';
 import { Context } from '../../store/Store';
 import '../../styles/landing.scss';
 import ConsentModal from '../CoverCropExplorer/ConsentModal/ConsentModal';
 
 const Landing = ({ height, title, bg }) => {
   const { state, dispatch } = useContext(Context);
+  const history = useHistory();
+  const [handleConfirm, setHandleConfirm] = useState(false);
   const [containerHeight, setContainerHeight] = useState(height);
-  // const [selectedRegion, setSelectedRegion] = useState(state.selectedRegion);
+  const [allStates, setAllStates] = useState([]);
+  const [selectedState, setSelectedState] = useState('');
+  const [selectedStateId, setSelectedStateId] = useState('');
+  const [selectedStateName, setSelectedStateName] = useState('');
+  const [selectedCouncilShorthand, setSelectedCouncilShorthand] = useState('');
+  const [selectedCouncilLabel, setSelectedCouncilLabel] = useState('');
+  const [regions, setRegions] = useState('');
+  const [selectedRegion, setSelectedRegion] = useState(state.selectedRegion);
   const mapRef = useRef(null);
+  const defaultMarkers = [[40.78489145, -74.80733626930342]];
+
+  async function getAllStates() {
+    await fetch('https://developapi.covercrop-selector.org/v1/states')
+      .then((res) => res.json())
+      .then((data) => { setAllStates(data.data); })
+      .catch((err) => {
+        // eslint-disable-next-line no-console
+        console.log(err.message);
+      });
+  }
+  useEffect(() => {
+    getAllStates();
+  }, []);
+
+  async function getAllRegions() {
+    await fetch(`https://developapi.covercrop-selector.org/v1/states/${state.stateId}/regions`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.data.Counties) {
+          setRegions(data.data.Counties);
+        } else {
+          setRegions(data.data.Zones);
+        }
+      })
+      .catch((err) => {
+        // eslint-disable-next-line no-console
+        console.log(err.message);
+      });
+  }
 
   useEffect(() => {
     dispatch({
-      type: 'UPDATE_SELECTED_REGION',
-      // data: selectedRegion,
+      type: 'UPDATE_REGIONS',
+      data: {
+        regions,
+      },
     });
-  }, [/* selectedRegion, */dispatch]);
+  }, [regions]);
+
+  useEffect(() => {
+    dispatch({
+      type: 'UPDATE_STATE',
+      data: {
+        state: selectedStateName,
+        stateId: selectedStateId,
+        councilShorthand: selectedCouncilShorthand,
+        councilLabel: selectedCouncilLabel,
+      },
+    });
+  }, [selectedState, selectedStateId, selectedCouncilLabel, selectedCouncilShorthand]);
+
+  useEffect(() => {
+    if (state.stateId) {
+      getAllRegions();
+    }
+  }, [state.stateId]);
+
+  const stateChange = (selState) => {
+    setSelectedState(selState);
+    setSelectedStateName(selState.label);
+    setSelectedStateId(selState.id);
+    setSelectedCouncilShorthand(selState.council.councilShorthand);
+    setSelectedCouncilLabel(selState.council.label);
+  };
+
+  useEffect(() => {
+    if (Object.keys(selectedRegion).length > 0) {
+      const selState = allStates.filter((s) => s.label === selectedRegion.properties.STATE_NAME);
+      if (selState.length > 0) {
+        stateChange(selState[0]);
+      } else {
+        // eslint-disable-next-line no-alert
+        alert(
+          // eslint-disable-next-line max-len
+          'The region you have selected is not currently supported. We currently support Northeast and Southern Cover Crop Councils. Please try again!',
+        );
+      }
+    }
+  }, [selectedRegion]);
 
   useEffect(() => {
     if (state.consent === true) {
@@ -79,6 +167,34 @@ const Landing = ({ height, title, bg }) => {
     return () => window.removeEventListener('resize', updateSize);
   }, [title]);
 
+  useEffect(() => {
+    if (localStorage.getItem('lastLocation') === 'CoverCropExplorer') {
+      document.title = 'Cover Crop Selector';
+      if (state.selectedCrops.length) {
+        setHandleConfirm(true);
+      }
+    }
+    localStorage.setItem('lastLocation', 'CropSelector');
+  }, []);
+
+  const handleConfirmationChoice = (clearMyList = false) => {
+    if (clearMyList) {
+      dispatch({
+        type: 'RESET',
+        data: {
+          markers: defaultMarkers,
+          selectedCrops: [],
+        },
+      });
+    } else {
+      history.goBack();
+      if (window.location.pathname !== '/') {
+        history.push('/');
+      }
+    }
+    setHandleConfirm(false);
+  };
+
   return (
     <div
       id="landingWrapper"
@@ -109,18 +225,19 @@ const Landing = ({ height, title, bg }) => {
         >
           <Grid item>
             <Typography variant="h4" gutterBottom align="center">
-              Welcome to the Northeast Cover Crop Species Selector Tool
+              {`Welcome to the${state.councilLabel ? ` ${state.councilLabel}` : ''} Species Selector Tool`}
             </Typography>
           </Grid>
           <Grid item>
             <Typography variant="body1" gutterBottom align="left">
-              You are currently interacting with the Northeast Cover Crop Species Selector Tool. We
-              seek feedback about the usability and usefulness of this tool. Our goal is to
-              encourage and support the use of cover crops in the Northeast US. You can learn more
-              about the cover crop data and design of this tool
+              {`You are currently interacting with the${state.councilLabel ? ` ${state.councilLabel}` : ''} Species Selector Tool. We
+            seek feedback about the usability and usefulness of this tool. Our goal is to encourage
+            and support the use of cover crops in your area. You can learn more about the
+            cover crop data and design of this tool`}
               {' '}
               <Link to="/about"> here</Link>
-              . If you need assistance, consult the
+              . If you need
+              assistance, consult the
               {' '}
               <Link to="/help">help page</Link>
               .
@@ -128,9 +245,9 @@ const Landing = ({ height, title, bg }) => {
           </Grid>
           <Grid item>
             <Typography align="left" variant="body1" gutterBottom style={{ paddingBottom: '1em' }}>
-              In the future, this platform will host a variety of tools including a cover crop
-              mixture and seeding rate calculator and an economics calculator. Our ultimate goal is
-              to provide a suite of interconnected tools that function together seamlessly.
+              In the future, this platform will host a variety of tools including a cover crop mixture
+              and seeding rate calculator and an economics calculator. Our ultimate goal is to provide
+              a suite of interconnected tools that function together seamlessly.
             </Typography>
             <Typography
               variant="body1"
@@ -178,7 +295,7 @@ const Landing = ({ height, title, bg }) => {
             <Typography variant="h5" gutterBottom align="left" className="font-weight-bold">
               Select your State
             </Typography>
-            {/* {selectedRegion.properties && (
+            {selectedRegion.properties && (
               <Typography
                 variant="h6"
                 gutterBottom
@@ -192,11 +309,11 @@ const Landing = ({ height, title, bg }) => {
                   { selectedRegion.properties.STATE_ABBR }
                 )
               </Typography>
-            )} */}
+            )}
           </Grid>
           <Grid item>
             <div style={{ position: 'relative', width: '100%', paddingRight: '10%' }}>
-              {/* <RegionSelectorMap
+              <RegionSelectorMap
                 selectorFunc={setSelectedRegion}
                 selectedRegion={selectedRegion}
                 initWidth="100%"
@@ -204,16 +321,28 @@ const Landing = ({ height, title, bg }) => {
                 initLon={-98}
                 initLat={43}
                 initStartZoom={2.3}
-              /> */}
+              />
             </div>
           </Grid>
         </Grid>
       </Grid>
       <Grid container justifyContent="center" alignItems="center" style={{ marginTop: '1rem' }}>
         <Grid item>
-          <LightButton onClick={() => incrementProgress(1)}>NEXT</LightButton>
+          <LightButton disabled={!state.councilLabel} onClick={() => incrementProgress(1)}>NEXT</LightButton>
         </Grid>
       </Grid>
+      <Dialog onClose={() => setHandleConfirm(false)} open={handleConfirm}>
+        <DialogContent dividers>
+          <Typography variant="body1">
+            You will need to clear your My Cover Crop List to continue.  Would you like to continue?
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <BinaryButton
+            action={handleConfirmationChoice}
+          />
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };

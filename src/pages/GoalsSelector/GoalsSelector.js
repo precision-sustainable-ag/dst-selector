@@ -5,33 +5,46 @@
 
 // TODO: Goal tags are not responsive!
 import { Typography, Grid } from '@mui/material';
-import Skeleton from '@mui/material/Skeleton';
 import React, { useContext, useEffect, useState } from 'react';
+import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset';
 import { Context } from '../../store/Store';
 import '../../styles/goalsSelector.scss';
 import GoalTag from './GoalTag/GoalTag';
 
-const goalSkeletonStyle = {
-  height: '50px',
-  width: '100%',
-  borderRadius: '10px',
-};
+// const goalSkeletonStyle = {
+//   height: '50px',
+//   width: '100%',
+//   borderRadius: '10px',
+// };
 
 const GoalsSelector = () => {
   const { state } = useContext(Context);
-  const [allGoals, setAllGoals] = useState([{}]);
+  const [allGoals, setAllGoals] = useState([]);
+  const [handleConfirm, setHandleConfirm] = useState(false);
 
   useEffect(() => {
-    async function makeGoals() {
-      if (state.allGoals.length > 0) {
-        const filteredGoals = state.allGoals.filter(
-          (goal) => goal.fields.Variable.toLowerCase() !== 'promote water quality',
-        );
-        setAllGoals(filteredGoals);
-      }
+    if (state.myCoverCropListLocation !== 'selector' && state.selectedCrops.length > 0) {
+      // document.title = 'Cover Crop Selector';
+      setHandleConfirm(true);
     }
+  }, [state.selectedCrops, state.myCoverCropListLocation]);
 
-    makeGoals();
+  async function getAllGoals() {
+    const query = `${encodeURIComponent('regions')}=${encodeURIComponent(state.regionId)}`;
+
+    await fetch(`https://developapi.covercrop-selector.org/v1/states/${state.stateId}/goals?${query}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setAllGoals(data.data);
+      })
+      .catch((err) => {
+        // eslint-disable-next-line no-console
+        console.log(err.message);
+      });
+  }
+
+  useEffect(() => {
+    getAllGoals();
   }, [state.allGoals]);
 
   return (
@@ -46,44 +59,26 @@ const GoalsSelector = () => {
             cover crops. The first goal you select will have the highest priority in sorting and then
             decrease for each additional goal. Hover on a goal for more information.
           </Typography>
-          {allGoals.length === 0 ? (
-            <div className="goals col-lg-12">
-              <div className="row">
-                <div className="col-3">
-                  <Skeleton style={goalSkeletonStyle} />
-                </div>
-                <div className="col-3">
-                  <Skeleton style={goalSkeletonStyle} />
-                </div>
-                <div className="col-3">
-                  <Skeleton style={goalSkeletonStyle} />
-                </div>
-                <div className="col-3">
-                  <Skeleton style={goalSkeletonStyle} />
-                </div>
-              </div>
-            </div>
-          ) : (
+          {allGoals.length > 0 && (
             <Grid container spacing={4} className="goals" style={{ justifyContent: 'center' }}>
-              {allGoals[0].fields ? (
+              {
                 allGoals.map((goal, key) => (
-                  <Grid item>
+                  <Grid key={key} item>
                     <GoalTag
+                      key={key}
                       goal={goal}
                       id={key}
-                      goaltTitle={goal.fields.Variable}
-                      goalDescription={goal.fields.Description}
-                      valuesDescriptions={goal.fields['Values Description']}
+                      goaltTitle={goal.label}
+                      goalDescription={goal.description}
                     />
                   </Grid>
                 ))
-              ) : (
-                <Skeleton style={goalSkeletonStyle} />
-              )}
+              }
             </Grid>
           )}
         </div>
       </div>
+      <MyCoverCropReset handleConfirm={handleConfirm} setHandleConfirm={setHandleConfirm} />
     </div>
   );
 };
