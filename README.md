@@ -75,3 +75,15 @@ Node sass not suported on Mac OS `Error: Node Sass does not yet support your cur
 **Solution:**
 `npm rebuild node-sass`
 
+**Symptom:**
+After running `npm install` you might run into an `Error E404 - Not Found - GET https://registry.npmjs.org/@psa%2fdst.ui.map - Not found`
+
+**Solution:**
+Follow these steps:
+1. Run `npm config set '@psa:registry' https://node.bit.cloud`
+2. Install the `react-scripts` package using `npm install react-scripts --save`
+3. Run  `npm start`
+
+
+
+
