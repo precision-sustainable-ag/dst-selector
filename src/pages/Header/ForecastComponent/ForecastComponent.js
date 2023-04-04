@@ -24,18 +24,19 @@ const ForecastComponent = () => {
   });
 
   const makeURLString = (url, params) => `${url}?lat=${params[0]}&lon=${params[1]}&appid=${openWeatherApiKey}&units=imperial`;
-
+  
   const reverseGEO = async (lat, lng) => {
     const url = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lng}&localityLanguage=en`;
     let data = await fetch(url);
     data = data.json();
-
+    
     return data;
   };
-
+  
   useEffect(() => {
     const callWeatherApi = async (url, latlng) => {
       const fetchData = await fetch(makeURLString(url, latlng));
+      console.log(makeURLString(url, latlng));
       const jsonData = await fetchData.json();
       return jsonData;
     };

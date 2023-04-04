@@ -27,7 +27,7 @@ const Header = () => {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const isActive = {};
 
-  const weatherApiURL = 'https://weather.aesl.ces.uga.edu';
+  const weatherApiURL = 'https://weather.covercrop-data.org';
   const getUSDAZone = async (zip) => fetch(`https://phzmapi.org/${zip}.json`);
 
   useEffect(() => {
