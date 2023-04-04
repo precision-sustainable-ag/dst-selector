@@ -122,11 +122,11 @@ const CropSidebar = ({
       }
     });
 
-    let cropData = state.cropData.filter((crop) => crop['Zone Decision'] === 'Include');
+    let cropData = state?.cropData?.filter((crop) => crop['Zone Decision'] === 'Include');
 
     const search = sfilters.cropSearch?.toLowerCase().match(/\w+/g);
 
-    cropData = state.cropData.filter((crop) => {
+    cropData = state?.cropData?.filter((crop) => {
       const match = (parm) => {
         const m = crop[parm]?.toLowerCase().match(/\w+/g);
 
@@ -137,7 +137,7 @@ const CropSidebar = ({
     });
 
     const nonZeroKeys2 = Object.keys(sfo).map((key) => {
-      if (sfo[key].length !== 0) {
+      if (sfo[key]?.length !== 0) {
         return { [key]: sfo[key] };
       }
       return '';
@@ -167,8 +167,8 @@ const CropSidebar = ({
     ];
     const booleanKeys = ['Aerial Seeding', 'Frost Seeding'];
 
-    const filtered = cropData.filter((crop, n, cd) => {
-      const totalActiveFilters = Object.keys(nonZeroKeys2).length;
+    const filtered = cropData?.filter((crop, n, cd) => {
+      const totalActiveFilters = Object.keys(nonZeroKeys2)?.length;
       let i = 0;
       nonZeroKeys2.forEach((keyObject) => {
         const key = Object.keys(keyObject);
@@ -179,7 +179,7 @@ const CropSidebar = ({
           if (crop[key] !== undefined) {
             const intersection = (arrays = [vals, crop[key]]) => arrays.reduce((a, b) => a.filter((c) => b.includes(c)));
 
-            if (intersection().length > 0) {
+            if (intersection()?.length > 0) {
               i += 1;
             }
           } else if (areCommonElements(booleanKeys, key)) {
@@ -204,9 +204,9 @@ const CropSidebar = ({
         value: filtered,
       },
     });
-  }, [state.changedFilters, sfilters.cropSearch, state.cropData, dispatch, sfilters]);
+  }, [state.changedFilters, sfilters.cropSearch, state?.cropData, dispatch, sfilters]);
 
-  const filtersSelected = Object.keys(sfilters).filter((key) => sfilters[key]).length > 1;
+  const filtersSelected = Object.keys(sfilters)?.filter((key) => sfilters[key])?.length > 1;
 
   const resetAllFilters = () => {
     dispatch({
@@ -215,7 +215,7 @@ const CropSidebar = ({
   };
 
   const createObject = (obj, dataDictionary, data) => {
-    const field = dataDictionary.filter((item) => item.Variable === data.label);
+    const field = dataDictionary?.filter((item) => item.Variable === data.label);
     if (field[0] !== undefined) {
       obj.description = field[0].Description > 0 ? field[0].Description : '';
     }
@@ -227,8 +227,8 @@ const CropSidebar = ({
         name: category.label,
         description: category.description,
       };
-      newCategory.values = category.attributes.map((filter) => {
-        const type = filter.values[0].dataType;
+      newCategory.values = category?.attributes?.map((filter) => {
+        const type = filter?.values[0]?.dataType;
 
         const obj = {
           name: filter.label,
@@ -408,7 +408,7 @@ const CropSidebar = ({
         <div className="col-12">
           <ComparisonBar
             filterData={sidebarFilters}
-            goals={state.selectedGoals.length > 0 ? state.selectedGoals : []}
+            goals={state.selectedGoals?.length > 0 ? state.selectedGoals : []}
             comparisonKeys={state.comparisonKeys}
             dispatch={dispatch}
             comparisonView={comparisonView}
@@ -527,7 +527,7 @@ const CropSidebar = ({
         <div className="col-12">
           <ComparisonBar
             filterData={sidebarFilters}
-            goals={state.selectedGoals.length > 0 ? state.selectedGoals : []}
+            goals={state.selectedGoals?.length > 0 ? state.selectedGoals : []}
             comparisonKeys={state.comparisonKeys}
             dispatch={dispatch}
             comparisonView={comparisonView}
