@@ -27,7 +27,7 @@ const Header = () => {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const isActive = {};
 
-  const weatherApiURL = 'https://weather.aesl.ces.uga.edu';
+  const weatherApiURL = 'https://weather.covercrop-data.org';
   const getUSDAZone = async (zip) => fetch(`https://phzmapi.org/${zip}.json`);
 
   useEffect(() => {
@@ -225,15 +225,14 @@ const Header = () => {
                         data: false,
                       });
                     })
-                    .then(() => {})
+                    .then(() => { })
                     .catch((error) => {
                       dispatch({
                         type: 'SNACK',
                         data: {
                           snackOpen: true,
-                          snackMessage: `Weather API error code: ${
-                            error.response.status
-                          } for getting 5 year average rainfall for ${obj.city.toUpperCase()}, ${obj.state.toUpperCase()}`,
+                          snackMessage: `Weather API error code: ${error.response.status
+                            } for getting 5 year average rainfall for ${obj.city.toUpperCase()}, ${obj.state.toUpperCase()}`,
                         },
                       });
                       dispatch({
@@ -285,7 +284,7 @@ const Header = () => {
         });
       })
       .catch((err) => {
-      // eslint-disable-next-line no-console
+        // eslint-disable-next-line no-console
         console.log(err.message);
       });
   }
@@ -304,7 +303,7 @@ const Header = () => {
         .then((data) => data.map((goal) => ({ fields: goal })))
         .then((data) => getCropData(data, (sfilters.zone - 3)))
         .catch((err) => {
-        // eslint-disable-next-line no-console
+          // eslint-disable-next-line no-console
           console.log(err.message);
         });
     }
@@ -382,12 +381,12 @@ const Header = () => {
       <InformationBar />
 
       {window.location.pathname === '/about'
-      || window.location.pathname === '/help'
-      || (window.location.pathname === '/feedback'
-        && window.location.pathname !== '/cover-crop-explorer')
-      || (state.progress < 0 && (
-        <div className="topBar" />
-      ))}
+        || window.location.pathname === '/help'
+        || (window.location.pathname === '/feedback'
+          && window.location.pathname !== '/cover-crop-explorer')
+        || (state.progress < 0 && (
+          <div className="topBar" />
+        ))}
     </header>
   );
 };
