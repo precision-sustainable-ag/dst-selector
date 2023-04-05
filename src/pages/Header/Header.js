@@ -43,36 +43,34 @@ const Header = () => {
         },
       });
 
-      getUSDAZone(state.zipCode).then((response) => {
-        if (response.ok) {
-          const dataJson = response.json();
-          dataJson.then((data) => {
-            // eslint-disable-next-line
-            // let zone = window.location.search.match(/zone=([^\^]+)/); // for automating Information Sheet PDFs
-            const { zone } = data;
-            let match = false;
+      getUSDAZone(state.zipCode)
+        .then((response) => {
+          if (response.ok) {
+            const dataJson = response.json();
+            dataJson.then((data) => {
+              // eslint-disable-next-line
+              // let zone = window.location.search.match(/zone=([^\^]+)/); // for automating Information Sheet PDFs
+              const { zone } = data;
+              let match = false;
 
-            if (state.regions?.length > 0) {
-              state.regions.forEach((region) => {
-                if (region.shorthand === zone) {
-                  match = true;
-                }
+              if (state.regions?.length > 0) {
+                state.regions.forEach((region) => {
+                  if (region.shorthand === zone) {
+                    match = true;
+                  }
+                });
+              }
+
+              dispatch({
+                type: 'UPDATE_ZONE',
+                data: {
+                  zoneText: state.councilShorthand === 'NECCC' || !match ? `Zone ${zone.slice(0, -1)}` : `Zone ${zone}`,
+                  zone: (state.councilShorthand === 'NECCC') || !match ? zone.slice(0, -1) : zone,
+                },
               });
-            }
-
-            dispatch({
-              type: 'UPDATE_ZONE',
-              data: {
-                zoneText:
-                  state.councilShorthand === 'NECCC' || !match
-                    ? `Zone ${zone.slice(0, -1)}`
-                    : `Zone ${zone}`,
-                zone: state.councilShorthand === 'NECCC' || !match ? zone.slice(0, -1) : zone,
-              },
             });
-          });
-        }
-      });
+          }
+        });
     }
   }, [state.zipCode, state.lastZipCode, dispatch, enqueueSnackbar, closeSnackbar]);
 
@@ -184,8 +182,7 @@ const Header = () => {
                 });
                 await Axios.get(averageRainForAMonthURL)
                   .then((rainResp) => {
-                    let averagePrecipitationForCurrentMonth =
-                      rainResp.data[0]['sum(precipitation)/5'];
+                    let averagePrecipitationForCurrentMonth = rainResp.data[0]['sum(precipitation)/5'];
                     averagePrecipitationForCurrentMonth = parseFloat(
                       averagePrecipitationForCurrentMonth,
                     ).toFixed(2);
@@ -228,15 +225,14 @@ const Header = () => {
                         data: false,
                       });
                     })
-                    .then(() => {})
+                    .then(() => { })
                     .catch((error) => {
                       dispatch({
                         type: 'SNACK',
                         data: {
                           snackOpen: true,
-                          snackMessage: `Weather API error code: ${
-                            error.response.status
-                          } for getting 5 year average rainfall for ${obj.city.toUpperCase()}, ${obj.state.toUpperCase()}`,
+                          snackMessage: `Weather API error code: ${error.response.status
+                            } for getting 5 year average rainfall for ${obj.city.toUpperCase()}, ${obj.state.toUpperCase()}`,
                         },
                       });
                       dispatch({
@@ -299,13 +295,13 @@ const Header = () => {
     }
 
     async function getDictData() {
-      await fetch(
-        `https://api.covercrop-selector.org/legacy/data-dictionary?zone=zone${sfilters.zone}`,
-      )
+      await fetch(`https://api.covercrop-selector.org/legacy/data-dictionary?zone=zone${sfilters.zone}`)
         .then((res) => res.json())
-        .then((data) => data.filter((d) => d.Category === 'Goals' && d.Variable !== 'Notes: Goals'))
+        .then((data) => data.filter(
+          (d) => d.Category === 'Goals' && d.Variable !== 'Notes: Goals',
+        ))
         .then((data) => data.map((goal) => ({ fields: goal })))
-        .then((data) => getCropData(data, sfilters.zone - 3))
+        .then((data) => getCropData(data, (sfilters.zone - 3)))
         .catch((err) => {
           // eslint-disable-next-line no-console
           console.log(err.message);
@@ -315,7 +311,10 @@ const Header = () => {
     getDictData();
     getCropData([], sfilters.zone);
     state.lastZone = sfilters.zone; // TODO
-  }, [sfilters.zone, dispatch]);
+  }, [
+    sfilters.zone,
+    dispatch,
+  ]);
 
   const setmyCoverCropActivationFlag = () => {
     history.push('/my-cover-crop-list');
@@ -381,11 +380,13 @@ const Header = () => {
 
       <InformationBar />
 
-      {window.location.pathname === '/about' ||
-        window.location.pathname === '/help' ||
-        (window.location.pathname === '/feedback' &&
-          window.location.pathname !== '/cover-crop-explorer') ||
-        (state.progress < 0 && <div className="topBar" />)}
+      {window.location.pathname === '/about'
+        || window.location.pathname === '/help'
+        || (window.location.pathname === '/feedback'
+          && window.location.pathname !== '/cover-crop-explorer')
+        || (state.progress < 0 && (
+          <div className="topBar" />
+        ))}
     </header>
   );
 };

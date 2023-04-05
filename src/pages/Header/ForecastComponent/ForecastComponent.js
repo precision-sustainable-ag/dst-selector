@@ -3,7 +3,9 @@
   The ForecastComponent shows the forecast in the header
 */
 
-import React, { Fragment, useContext, useEffect, useState } from 'react';
+import React, {
+  Fragment, useContext, useEffect, useState,
+} from 'react';
 import { cloudIcon, ReferenceTooltip } from '../../../shared/constants';
 import { openWeatherApiKey } from '../../../shared/keys';
 import { Context } from '../../../store/Store';
@@ -21,8 +23,7 @@ const ForecastComponent = () => {
     iconDescription: 'No Data',
   });
 
-  const makeURLString = (url, params) =>
-    `${url}?lat=${params[0]}&lon=${params[1]}&appid=${openWeatherApiKey}&units=imperial`;
+  const makeURLString = (url, params) => `${url}?lat=${params[0]}&lon=${params[1]}&appid=${openWeatherApiKey}&units=imperial`;
 
   const reverseGEO = async (lat, lng) => {
     const url = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lng}&localityLanguage=en`;
@@ -79,8 +80,7 @@ const ForecastComponent = () => {
           data
             .then((res) => {
               if (res.localityInfo.informative) {
-                const lastInfo =
-                  res.localityInfo.informative[res.localityInfo.informative.length - 1];
+                const lastInfo = res.localityInfo.informative[res.localityInfo.informative.length - 1];
                 const addressString = `${lastInfo.name}, ${res.city}`;
                 dispatch({
                   type: 'CHANGE_ADDRESS',
@@ -133,7 +133,10 @@ const ForecastComponent = () => {
           alt={temp.iconDescription}
           title={temp.iconDescription}
         />
-        {Number(temp.max.toFixed(1))} |{Number(temp.min.toFixed(1))}
+        {Number(temp.max.toFixed(1))}
+        {' '}
+        |
+        {Number(temp.min.toFixed(1))}
         &nbsp;
         {temp.unit}
         <span className="ml-2">
