@@ -57,7 +57,7 @@ const ExplorerCardView = ({ activeCropData }) => {
       enqueueSnackbar(`${cropName} ${action}`);
     };
 
-    if (state.selectedCrops.length > 0) {
+    if (state?.selectedCrops?.length > 0) {
       // DONE: Remove crop from basket
       let removeIndex = -1;
       state.selectedCrops.forEach((item, i) => {
@@ -87,7 +87,7 @@ const ExplorerCardView = ({ activeCropData }) => {
     <>
       <Grid style={{ marginLeft: '40px' }} container spacing={2}>
         {/* eslint-disable-next-line no-nested-ternary */}
-        {activeCropData.length > 0 ? (
+        {activeCropData?.length > 0 ? (
           activeCropData.map((crop, index) => (
             <Grid style={{ width: '260px' }} item key={index}>
               <CropCard
@@ -101,7 +101,7 @@ const ExplorerCardView = ({ activeCropData }) => {
               />
             </Grid>
           ))
-        ) : state.cropData.length > 0 ? (
+        ) : state?.cropData?.length > 0 ? (
           <Grid item>
             <Typography variant="body1" align="center">
               No cover crops match your selected Cover Crop Property filters.

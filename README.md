@@ -2,7 +2,7 @@
 
 **Date Created:** 8/18/22
 
-**Date Last Modified:** 12/1/2022
+**Date Last Modified:** 04/04/2023
 
 The species selector DST is used to help farmers select a cover crop that fits their goals and constraints. The user can either input specifics about their field location and cover cropping goals or explore cover crops without entering those details. The tool is mainly used to explore expert reccomendations and ratings for cover crops in the farmer's USDA Plant Hardiness Zone. This allows farmers to make educated decisions that are best suited for their specific goals and can save time as opposed to calling the extension office.
 
@@ -74,4 +74,16 @@ Node sass not suported on Mac OS `Error: Node Sass does not yet support your cur
 
 **Solution:**
 `npm rebuild node-sass`
+
+**Symptom:**
+After running `npm install` you might run into an `Error E404 - Not Found - GET https://registry.npmjs.org/@psa%2fdst.ui.map - Not found`
+
+**Solution:**
+Follow these steps:
+1. Run `npm config set '@psa:registry' https://node.bit.cloud`
+2. Install the `react-scripts` package using `npm install react-scripts --save`
+3. Run  `npm start`
+
+
+
 
