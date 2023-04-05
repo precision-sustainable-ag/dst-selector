@@ -36,7 +36,6 @@ const ForecastComponent = () => {
   useEffect(() => {
     const callWeatherApi = async (url, latlng) => {
       const fetchData = await fetch(makeURLString(url, latlng));
-      console.log(makeURLString(url, latlng));
       const jsonData = await fetchData.json();
       return jsonData;
     };

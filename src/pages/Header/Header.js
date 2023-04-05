@@ -145,6 +145,7 @@ const Header = () => {
           // Dynamic Dates not set!
           const frostFreeDaysURL = `${weatherApiURL}/hourly?location=${city}%20${abbrState}&start=2015-01-01&end=2019-12-31
                                     &stats=count(date)/24/5&where=air_temperature%3e0&output=json`;
+          console.log(frostFreeDay);
           const frostFreeDatesURL = `${weatherApiURL}/hourly?lat=${lat}&lon=${lon}&start=2014-07-01&end=2019-07-01
                                     &stats=min(date),max(date)&where=frost&group=growingyear&options=nomrms&output=json`;
           let frostFreeDays = 0;
