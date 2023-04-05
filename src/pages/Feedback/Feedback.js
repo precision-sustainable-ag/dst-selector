@@ -21,7 +21,7 @@ const FeedbackComponent = () => {
     title: '',
     comments: '',
     labels: [],
-    screenshot: null,
+    // screenshot: null,
     name: '',
     email: '',
   });
@@ -73,9 +73,9 @@ const FeedbackComponent = () => {
     document.title = 'Feedback';
   }, []);
 
-  const handleScreenshotUpload = (event) => {
-    setFeedbackData({ ...feedbackData, screenshot: event.target.files[0] });
-  };
+  // const handleScreenshotUpload = (event) => {
+  //   setFeedbackData({ ...feedbackData, screenshot: event.target.files[0] });
+  // };
 
   const handleTextInputChange = (event, propertyName) => {
     setFeedbackData({ ...feedbackData, [propertyName]: event.target.value });
@@ -240,7 +240,7 @@ const FeedbackComponent = () => {
           </Grid>
         </Grid>
 
-        {/* Screenshot */}
+        {/* //Screenshot
         <Grid container item spacing={1} justifyContent="flex-start" alignItems="flex-start">
           <Grid item xs={12}>
             <Typography variant="h6">Screen Shot Upload</Typography>
@@ -259,7 +259,7 @@ const FeedbackComponent = () => {
               variant="outlined"
             />
           </Grid>
-        </Grid>
+        </Grid> */}
 
         {/* Name */}
         <Grid container item spacing={1} justifyContent="flex-start" alignItems="flex-start">
