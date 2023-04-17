@@ -137,10 +137,8 @@ const FeedbackComponent = () => {
         }
         return response.json();
       })
-      .then((data) => {
-        console.log(data);
-      })
       .catch((error) => {
+        // eslint-disable-next-line
         console.error(error);
       });
   };
