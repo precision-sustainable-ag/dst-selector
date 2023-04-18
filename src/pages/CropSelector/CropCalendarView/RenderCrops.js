@@ -32,13 +32,12 @@ const RenderCrops = ({
   };
 
   const getAverageGoalRating = (selectedGoals, crop) => {
-    let goalRating = 0;
+    let goalRating;
     selectedGoals.forEach((goal) => {
-      if (crop[goal]) {
-        goalRating += crop[goal];
+      if (crop.data.Goals[goal]) {
+        [goalRating] = crop.data.Goals[goal].values;
       }
     });
-
     return getRating(goalRating / selectedGoals.length);
   };
 
@@ -84,104 +83,104 @@ const RenderCrops = ({
   return cropData
     .filter((crop) => (active ? !hasGoalRatingTwoOrLess(crop) : hasGoalRatingTwoOrLess(crop)))
     .map(
-      (crop, index) => crop['Zone Decision'] === 'Include' && (
-      <TableRow
-        key={`cropRow${index}`}
-        style={hasGoalRatingTwoOrLess(crop) ? { opacity: '0.2' } : {}}
-      >
-        <TableCell
-          className="calendarTableCell"
-          style={{
-            paddingBottom: '0px',
-          }}
+      (crop, index) => (
+        <TableRow
+          key={`cropRow${index}`}
+          style={hasGoalRatingTwoOrLess(crop) ? { opacity: '0.2' } : {}}
         >
-          <div className="tdContainer d-flex justify-content-between flex-nowrap">
-            {crop['Image Data'] ? (
-              <Button
-                size="small"
-                onClick={() => {
-                  setModalData(crop);
-                  setModalOpen(!modalOpen);
-                }}
-              >
-                <CropImage
-                  view="calendar"
-                  present
-                  src={
-                        crop['Image Data']['Key Thumbnail']
-                          ? crop['Image Data']['Key Thumbnail']
-                          : 'https://placehold.it/100x100'
-                      }
-                  alt={crop['Cover Crop Name']}
-                />
-              </Button>
-            ) : (
-              <Button
-                size="small"
-                onClick={() => {
-                  setModalData(crop);
-                  setModalOpen(!modalOpen);
-                }}
-              >
-                <CropImage view="calendar" present={false} />
-              </Button>
-            )}
-
-            <Button
-              size="small"
-              onClick={() => {
-                setModalData(crop);
-                setModalOpen(!modalOpen);
-              }}
-            >
-              {crop['Cover Crop Name'] !== 'Sorghum-sudangrass'
-                ? flipCoverCropName(crop['Cover Crop Name'])
-                : trimString(flipCoverCropName(crop['Cover Crop Name']), 15)}
-            </Button>
-          </div>
-        </TableCell>
-        {state.selectedGoals.length > 0 && (
-        <TableCell
-          style={{
-            paddingBottom: '0px',
-            textAlign: 'center',
-          }}
-        >
-          {getAverageGoalRating(state.selectedGoals, crop)}
-        </TableCell>
-        )}
-        <TableCell colSpan="12">
-          <CropSelectorCalendarView from="calendar" data={crop} />
-        </TableCell>
-
-        <TableCell
-          style={{
-            paddingBottom: '0px',
-          }}
-        >
-          {' '}
-          <LightButton
-            id={`cartBtn${index}`}
+          <TableCell
+            className="calendarTableCell"
             style={{
-              borderRadius: '0px',
-              width: '130px',
-            }}
-            className={
-                  selectedBtns.includes(crop.id) ? 'activeCartBtn' : 'inactiveCartBtn'
-                }
-            onClick={() => {
-              addCropToBasket(
-                crop.id,
-                crop['Cover Crop Name'],
-                `cartBtn${index}`,
-                crop,
-              );
+              paddingBottom: '0px',
             }}
           >
-            {selectedBtns.includes(crop.id) ? 'ADDED' : 'ADD TO LIST'}
-          </LightButton>
-        </TableCell>
-      </TableRow>
+            <div className="tdContainer d-flex justify-content-between flex-nowrap">
+              {crop ? (
+                <Button
+                  size="small"
+                  onClick={() => {
+                    setModalData(crop);
+                    setModalOpen(!modalOpen);
+                  }}
+                >
+                  <CropImage
+                    view="calendar"
+                    present
+                    src={
+                          crop.thumbnail
+                            ? crop.thumbnail
+                            : 'https://placehold.it/100x100'
+                        }
+                    alt={crop.label}
+                  />
+                </Button>
+              ) : (
+                <Button
+                  size="small"
+                  onClick={() => {
+                    setModalData(crop);
+                    setModalOpen(!modalOpen);
+                  }}
+                >
+                  <CropImage view="calendar" present={false} />
+                </Button>
+              )}
+
+              <Button
+                size="small"
+                onClick={() => {
+                  setModalData(crop);
+                  setModalOpen(!modalOpen);
+                }}
+              >
+                {crop.label !== 'Sorghum-sudangrass'
+                  ? flipCoverCropName(crop.label)
+                  : trimString(flipCoverCropName(crop.label), 15)}
+              </Button>
+            </div>
+          </TableCell>
+          {state.selectedGoals.length > 0 && (
+          <TableCell
+            style={{
+              paddingBottom: '0px',
+              textAlign: 'center',
+            }}
+          >
+            {getAverageGoalRating(state.selectedGoals, crop)}
+          </TableCell>
+          )}
+          <TableCell colSpan="12">
+            <CropSelectorCalendarView from="calendar" data={crop} />
+          </TableCell>
+
+          <TableCell
+            style={{
+              paddingBottom: '0px',
+            }}
+          >
+            {' '}
+            <LightButton
+              id={`cartBtn${index}`}
+              style={{
+                borderRadius: '0px',
+                width: '130px',
+              }}
+              className={
+                    selectedBtns.includes(crop.id) ? 'activeCartBtn' : 'inactiveCartBtn'
+                  }
+              onClick={() => {
+                addCropToBasket(
+                  crop.id,
+                  crop.label,
+                  `cartBtn${index}`,
+                  crop,
+                );
+              }}
+            >
+              {selectedBtns.includes(crop.id) ? 'ADDED' : 'ADD TO LIST'}
+            </LightButton>
+          </TableCell>
+        </TableRow>
       ),
     );
 };

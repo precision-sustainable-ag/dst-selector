@@ -28,6 +28,7 @@ const CoverCropExplorer = () => {
 
   useEffect(() => {
     const filteredActiveCropData = activeCropData.filter((a) => !a.inactive);
+
     setUpdatedActiveCropData(filteredActiveCropData);
     // getData();
   }, [activeCropData]);

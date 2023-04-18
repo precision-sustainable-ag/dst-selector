@@ -15,6 +15,8 @@ const CropCard = ({
   const { state } = useContext(Context);
   const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
   const sfilters = state[section];
+  const [allfilters, setAllFilters] = useState([]);
+  const allData = [];
 
   const [selectedBtns, setSelectedBtns] = useState(
     state.selectedCrops.map((crp) => crp.id),
@@ -24,14 +26,58 @@ const CropCard = ({
     await setSelectedBtns(state.selectedCrops.map((crp) => crp.id));
   }
 
+  async function setDataDict() {
+    await Object.keys(crop.data).forEach((key) => {
+      Object.keys(crop.data[key]).forEach((k) => {
+        if (!k.startsWith('Notes:') && typeof crop.data[key][k] === 'object') {
+          allData.push(crop.data[key][k]);
+        }
+      });
+    });
+    await setAllFilters(allData);
+  }
+
   useEffect(() => {
     updateBtns();
   }, [sfilters.zone, state.selectedCrops]);
+
+  useEffect(() => {
+    setDataDict();
+  }, [comparisonKeys]);
 
   async function addToBasket(cropId, name, i, c) {
     addCropToBasket(cropId, name, i, c);
     await updateBtns();
   }
+  const getRenderData = () => (
+    <CardContent
+      style={{
+        paddingRight: '0px',
+        paddingLeft: '0px',
+        paddingBottom: '0px',
+      }}
+    >
+      {comparisonKeys.map((filterKey, i) => (
+        <RenderRelevantData
+          key={i}
+          filterKey={filterKey}
+          data={allfilters}
+        />
+      ))}
+      {/* Show Goal Rating Only IF Goals > 0 */}
+      {state.selectedGoals.length > 0 && (
+      <div style={lightBG}>
+        <GetAverageGoalRating crop={crop} />
+      </div>
+      )}
+    </CardContent>
+  );
+
+  useEffect(() => {
+    if (allfilters.length > 0 && comparisonKeys?.length > 0) {
+      getRenderData();
+    }
+  }, [allfilters, comparisonKeys]);
 
   return (
     <Card
@@ -45,34 +91,34 @@ const CropCard = ({
       <CardActionArea onClick={() => handleModalOpen(crop)}>
         <CardMedia
           image={
-            crop['Image Data']?.['Key Thumbnail']
-              ? crop['Image Data']['Key Thumbnail']
+            crop.thumbnail
+              ? crop.thumbnail
               : 'https://placehold.it/100x100?text=Placeholder'
             }
           sx={{ height: 140 }}
-          title={crop['Cover Crop Name']}
+          title={crop.label}
         />
       </CardActionArea>
       <CardContent>
         {type === 'cropList'
         && (
         <div className="font-weight-bold text-muted text-uppercase" style={{ fontSize: '10pt', marginLeft: '-10px' }}>
-            {`Zone ${crop.Zone}`}
+            {`Zone ${state.zone}`}
         </div>
         )}
         <div
           className="font-weight-bold text-muted text-uppercase"
           style={{ fontSize: '10pt', marginLeft: '-10px' }}
         >
-          {crop['Cover Crop Group']}
+          {crop.group}
         </div>
         <div className="font-weight-bold " style={{ fontSize: '16pt', marginLeft: '-10px' }}>
           <Typography variant="subtitle1" className="font-weight-bold text-truncate">
-            {crop['Cover Crop Name']}
+            {crop.label}
           </Typography>
         </div>
         <small className="font-italic text-muted d-inline-block text-truncate" style={{ marginLeft: '-10px' }}>
-          {crop['Scientific Name'] ? trimString(crop['Scientific Name'], 25) : null}
+          {crop.family.scientific ? trimString(crop.family.scientific, 25) : null}
         </small>
         <div>
           <small className="text-muted">
@@ -107,7 +153,7 @@ const CropCard = ({
           if (selectedBtns.includes(crop.id) && type !== 'explorer') {
             return (
               removeCrop(
-                crop['Cover Crop Name'],
+                crop.label,
                 crop.id,
               )
             );
@@ -115,7 +161,7 @@ const CropCard = ({
           return (
             addToBasket(
               crop.id,
-              crop['Cover Crop Name'],
+              crop.label,
               `cartBtn${index}`,
               crop,
             )
@@ -141,27 +187,7 @@ const CropCard = ({
       </CardActionArea>
       {type === 'myListCompare'
         && (
-        <CardContent
-          style={{
-            paddingRight: '0px',
-            paddingLeft: '0px',
-            paddingBottom: '0px',
-          }}
-        >
-          {comparisonKeys.map((filterKey, i) => (
-            <RenderRelevantData
-              key={i}
-              filterKey={filterKey}
-              data={crop}
-            />
-          ))}
-          {/* Show Goal Rating Only IF Goals > 0 */}
-          {state.selectedGoals.length > 0 && (
-          <div style={lightBG}>
-            <GetAverageGoalRating crop={crop} />
-          </div>
-          )}
-        </CardContent>
+          getRenderData()
         )}
     </Card>
   );

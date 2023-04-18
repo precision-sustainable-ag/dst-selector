@@ -14,12 +14,10 @@
 
 import moment from 'moment-timezone';
 import React, { createContext, useReducer, useMemo } from 'react';
-import desc from '../shared/json/descriptions/crop-descriptions.json';
 import Reducer from './Reducer';
 
 export const cropDataFormatter = (cropData = [{}]) => {
   const excludedCropZoneDecisionKeys = ['Exclude', 'Up and Coming', 'Discuss'];
-  const loremText = () => 'Description for this cover crop is currently unavailable.';
   // Filter unwanted rows
   const tjson = cropData.filter((crop) => {
     if (
@@ -32,42 +30,75 @@ export const cropDataFormatter = (cropData = [{}]) => {
 
   const monthStringBuilder = (vals) => {
     const params = [
-      'Reliable Establishment/Growth',
-      'Second Reliable Establishment/Growth',
-      'Temperature/Moisture Risk to Establishment',
-      'Second Temperature/Mositure Risk to Establishment',
-      'Late Fall/Winter Planting Date',
-      'Early Fall/ Winter Seeding Rate',
-      'Standard Fall/Winter Seeding Rate Date',
-      'Standard Spring Seeding Rate Date',
+      'Reliable Establishment',
+      'Freeze/Moisture Risk to Establishment',
       'Frost Seeding',
+      'Fall/Winter Seeding Rate',
+      'Spring Seeding Rate',
+      'Summer Seeding Rate',
+      'Can Interseed',
+      'Average Frost',
     ];
     const val = vals;
     params.forEach((param) => {
-      if (val.fields[`${param} Start`]) {
-        const valStart = moment(val.fields[`${param} Start`], 'YYYY-MM-DD');
-        const valEnd = val.fields[`${param} End`]
-          ? moment(val.fields[`${param} End`], 'YYYY-MM-DD')
-          : moment(val.fields[`${param} Stop`], 'YYYY-MM-DD');
-        let str = '';
-        const valuesArray = [];
+      if (val.fields.data['Planting Dates'][`${param}`]) {
+        val.fields.data['Planting Dates'][`${param}`].values.forEach((dateArray) => {
+          const datesArr = dateArray.split('-');
+          // const valStart = moment(datesArr[0], 'YYYY-MM-DD');
+          const valStart = moment(datesArr[0], 'MM/DD/YYYY');
+          const valEnd = moment(datesArr[1], 'MM/DD/YYYY');
+          let str = '';
+          const valuesArray = [];
 
-        while (valStart.isSameOrBefore(valEnd)) {
-          if (valStart.get('D') <= 15) {
-            str = 'Early';
-          } else {
-            str = 'Mid';
+          if (param === 'Average Frost') {
+            valEnd.add('1', 'years');
           }
-          valuesArray.push([`${valStart.format('MMMM')}, ${str}`]);
-          valStart.add('14', 'days');
-        }
-        valuesArray.forEach((key) => {
-          const prev = val.fields[key] || [];
-          prev.push(param);
-          val.fields[key] = prev;
+
+          while (valStart.isSameOrBefore(valEnd)) {
+            if (valStart.get('D') <= 15) {
+              str = 'Early';
+            } else {
+              str = 'Mid';
+            }
+            if (!valuesArray.includes([`${valStart.format('MMMM')}, ${str}`])) {
+              valuesArray.push([`${valStart.format('MMMM')}, ${str}`]);
+            }
+            valStart.add('1', 'days');
+          }
+          valuesArray.forEach((key) => {
+            const prev = val.fields[key] || [];
+            prev.push(param);
+            val.fields[key] = prev;
+          });
         });
       }
     });
+    // params.forEach((param) => {
+    //   if (val.fields[`${param} Start`]) {
+    //     const valStart = moment(val.fields[`${param} Start`], 'YYYY-MM-DD');
+    //     const valEnd = val.fields[`${param} End`]
+    //       ? moment(val.fields[`${param} End`], 'YYYY-MM-DD')
+    //       : moment(val.fields[`${param} Stop`], 'YYYY-MM-DD');
+    //     let str = '';
+    //     const valuesArray = [];
+
+    //     while (valStart.isSameOrBefore(valEnd)) {
+    //       if (valStart.get('D') <= 15) {
+    //         str = 'Early';
+    //       } else {
+    //         str = 'Mid';
+    //       }
+    //       valuesArray.push([`${valStart.format('MMMM')}, ${str}`]);
+    //       valStart.add('14', 'days');
+    //     }
+    //     valuesArray.forEach((key) => {
+    //       const prev = val.fields[key] || [];
+    //       prev.push(param);
+    //       val.fields[key] = prev;
+    //     });
+    //   }
+    // });
+
     // this is temporary, needs to be replaced with wither a fix to calendar growth window component or exporting of json from airtable
     Object.keys(val.fields).forEach((item) => {
       if (item.endsWith('Early') || item.endsWith('Mid')) {
@@ -84,12 +115,9 @@ export const cropDataFormatter = (cropData = [{}]) => {
 
     let val = { fields: crop };
     val = monthStringBuilder(val);
+    console.log('HERE MONTH STRING BUILDER', val);
 
     val.fields.inBasket = false;
-
-    val.fields['Crop Description'] = desc[val.fields['Cover Crop Name']]
-      ? desc[val.fields['Cover Crop Name']]
-      : loremText();
 
     if (!val.fields['Nitrogen Fixation']) {
       val.fields['Nitrogen Fixation'] = 0;
@@ -135,6 +163,7 @@ export const cropDataFormatter = (cropData = [{}]) => {
     if (!val.fields['Pollinator Habitat']) {
       val.fields['Pollinator Habitat'] = 0;
     }
+
     if (!val.fields['Pollinator Food']) {
       val.fields['Pollinator Food'] = 0;
     }
