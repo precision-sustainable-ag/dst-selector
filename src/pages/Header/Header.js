@@ -21,8 +21,6 @@ const Header = () => {
   const history = useHistory();
 
   const { state, dispatch } = useContext(Context);
-  const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
-  const sfilters = state[section];
   const [isRoot, setIsRoot] = useState(false);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const isActive = {};
@@ -270,8 +268,16 @@ const Header = () => {
     }
   }, [state.markers, state.weatherDataReset]);
 
-  async function getCropData(formattedGoal, zone = 4) {
-    await fetch(`https://api.covercrop-selector.org/crop-data?zoneId=${zone}`)
+  const loadDictData = (data) => {
+    dispatch({
+      type: 'PULL_DICTIONARY_DATA',
+      data,
+    });
+  };
+
+  async function getCropData(formattedGoal) {
+    const query = `${encodeURIComponent('regions')}=${encodeURIComponent(state.regionId)}`;
+    await fetch(`https://developapi.covercrop-selector.org/v1/states/${state.stateId}/crops?${query}`)
       .then((res) => res.json())
       .then((data) => {
         cropDataFormatter(data.data);
@@ -290,32 +296,37 @@ const Header = () => {
       });
   }
 
+  async function getDictData() {
+    const query = `${encodeURIComponent('regions')}=${encodeURIComponent(state.regionId)}`;
+    await fetch(`https://developapi.covercrop-selector.org/v1/states/${state.stateId}/dictionary?${query}`)
+      .then((res) => res.json())
+      .then((data) => {
+        loadDictData(data.data);
+        return data.data.filter(
+          (d) => d.label === 'Goals',
+        );
+      })
+      .then((data) => data[0].attributes.filter(
+        (d) => d.label !== 'Notes: Goals',
+      ))
+      .then((data) => data.map((goal) => ({ fields: goal })))
+      .then((data) => getCropData(data))
+      .catch((err) => {
+      // eslint-disable-next-line no-console
+        console.log(err.message);
+      });
+  }
+
   useEffect(() => {
-    if (sfilters.zone === state.lastZone) {
-      return;
+    // if (state.zone === state.lastZone) {
+    //   return;
+    // }
+    if (state.regionId && state.stateId) {
+      getDictData();
+      getCropData([]);
     }
-
-    async function getDictData() {
-      await fetch(`https://api.covercrop-selector.org/legacy/data-dictionary?zone=zone${sfilters.zone}`)
-        .then((res) => res.json())
-        .then((data) => data.filter(
-          (d) => d.Category === 'Goals' && d.Variable !== 'Notes: Goals',
-        ))
-        .then((data) => data.map((goal) => ({ fields: goal })))
-        .then((data) => getCropData(data, (sfilters.zone - 3)))
-        .catch((err) => {
-        // eslint-disable-next-line no-console
-          console.log(err.message);
-        });
-    }
-
-    getDictData();
-    getCropData([], sfilters.zone);
-    state.lastZone = sfilters.zone; // TODO
-  }, [
-    sfilters.zone,
-    dispatch,
-  ]);
+    state.lastZone = state.zone; // TODO
+  }, [state.stateId, state.zone, state.regionId]);
 
   const setmyCoverCropActivationFlag = () => {
     history.push('/my-cover-crop-list');

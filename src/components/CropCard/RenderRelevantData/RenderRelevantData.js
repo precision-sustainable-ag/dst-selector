@@ -1,7 +1,7 @@
 import {
   Typography,
 } from '@mui/material';
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   getRating,
   RenderSeedPriceIcons,
@@ -20,38 +20,57 @@ const lightBG = {
 };
 
 const RenderRelevantData = ({ filterKey = '', data = [] }) => {
-  if (typeof data[filterKey] === 'number') {
-    if (data[filterKey].toString().length === 1) {
-      if (filterKey === 'Seed Price per Pound') {
-        return (
-          <div style={lightBG}>
-            <RenderSeedPriceIcons val={data['Seed Price per Pound']} />
-          </div>
-        );
-      } return <div style={lightBG}>{getRating(data[filterKey])}</div>;
+  const filterData = [];
+  data.forEach((filter) => {
+    if (filter.label === filterKey) {
+      filterData.push(filter);
     }
-    return (
-      <div style={lightBG}>
-        <Typography variant="body2">{data[filterKey]}</Typography>
-      </div>
-    );
-  }
-  if (filterKey === 'Frost Seeding' || (filterKey === 'Can Aerial Seed?' || filterKey === 'Aerial Seeding')) {
-    return (
-      <div style={lightBG}>
-        <Typography data={data} variant="body2" filterKey={filterKey === 'Frost Seeding' ? filterKey : 'Aerial Seeding'}>
-          {data[filterKey] ? 'Yes' : 'N/A'}
-        </Typography>
-      </div>
-    );
-  } if (data[filterKey]) {
-    return (
-      <div style={lightBG}>
-        <Typography variant="body2">{data[filterKey].toString()}</Typography>
-      </div>
-    );
-  }
-  return <div />;
+  });
+
+  const getFilterItems = () => {
+    if (filterData.length > 0 && filterData[0]?.dataType === 'number') {
+      if (filterData[0].values[0].toString().length === 1) {
+        if (filterKey === 'Seed Price per Pound') {
+          return (
+            <div style={lightBG}>
+              <RenderSeedPriceIcons val={filterData[0].values[0]} />
+            </div>
+          );
+        } return <div style={lightBG}>{getRating(filterData[0].values[0])}</div>;
+      }
+      return (
+        <div style={lightBG}>
+          <Typography variant="body2">{filterData[0].values[0]}</Typography>
+        </div>
+      );
+    }
+    if (filterKey === 'Frost Seeding' || (filterKey === 'Can Aerial Seed?' || filterKey === 'Aerial Seeding')) {
+      return (
+        <div style={lightBG}>
+          <Typography data={data} variant="body2" filterKey={filterKey === 'Frost Seeding' ? filterKey : 'Aerial Seeding'}>
+            {filterData[0].values[0] ? 'Yes' : 'N/A'}
+          </Typography>
+        </div>
+      );
+    } if (filterData[0]?.values[0]) {
+      return (
+        <div style={lightBG}>
+          <Typography variant="body2">{filterData[0].values[0].toString()}</Typography>
+        </div>
+      );
+    }
+    return <div />;
+  };
+
+  useEffect(() => {
+    getFilterItems();
+  }, [filterData]);
+
+  return (
+    <>
+      {getFilterItems()}
+    </>
+  );
 };
 
 export default RenderRelevantData;

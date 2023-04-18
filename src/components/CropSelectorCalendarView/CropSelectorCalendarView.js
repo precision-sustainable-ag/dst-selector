@@ -1,6 +1,6 @@
 import { Tooltip, Typography } from '@mui/material';
 import moment from 'moment';
-import React, { Fragment, useContext } from 'react';
+import React, { useContext } from 'react';
 import { allMonths, getActiveCropMonths } from '../../shared/constants';
 import { Context } from '../../store/Store';
 import '../../styles/cropSelectorCalendarView.scss';
@@ -8,12 +8,14 @@ import CropPaintGrowthChart from './CropPaintGrowthChart/CropPaintGrowthChart';
 
 const CropSelectorCalendarView = ({ from = 'calendar', data = [] }) => {
   const { state } = useContext(Context);
+
   const cashCropStartDate = state.cashCropData.dateRange.startDate === ''
     ? null
     : moment(state.cashCropData.dateRange.startDate).toISOString();
   const cashCropEndDate = state.cashCropData.dateRange.endDate === ''
     ? null
     : moment(state.cashCropData.dateRange.endDate).toISOString();
+
   const months = [
     'January',
     'February',
@@ -28,6 +30,7 @@ const CropSelectorCalendarView = ({ from = 'calendar', data = [] }) => {
     'November',
     'December',
   ];
+
   const isThisCashCropMonth = (month = 'January') => {
     if (cashCropStartDate === null || cashCropEndDate === null) {
       return false;
@@ -47,6 +50,7 @@ const CropSelectorCalendarView = ({ from = 'calendar', data = [] }) => {
     }
     return false;
   };
+
   // eslint-disable-next-line no-nested-ternary
   return from === 'calendar' ? (
     <CropPaintGrowthChart
@@ -138,7 +142,7 @@ const CropSelectorCalendarView = ({ from = 'calendar', data = [] }) => {
                     {month.toUpperCase()}
                     , EARLY
                   </Typography>
-)}
+                )}
               >
                 <div className="w-50 basic growthCell-20" />
               </Tooltip>

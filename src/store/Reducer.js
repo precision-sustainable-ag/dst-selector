@@ -348,6 +348,13 @@ const Reducer = (state, action, value = action && action.data && action.data.val
       };
     }
 
+    case 'PULL_DICTIONARY_DATA': {
+      return {
+        ...state,
+        dataDictionary: action.data,
+      };
+    }
+
     case 'SELECTED_CROPS_MODIFIER': {
       return {
         ...state,
