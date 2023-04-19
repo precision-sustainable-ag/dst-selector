@@ -115,7 +115,6 @@ export const cropDataFormatter = (cropData = [{}]) => {
 
     let val = { fields: crop };
     val = monthStringBuilder(val);
-    console.log('HERE MONTH STRING BUILDER', val);
 
     val.fields.inBasket = false;
 
