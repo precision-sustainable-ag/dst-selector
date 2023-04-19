@@ -6,7 +6,6 @@ const CoverCropInformation = ({
   cropImage, cropDescription, allThumbs, crop,
 }) => (
   <div className="row otherRows mb-4 avoidPage">
-    {console.log('cropDescription', crop, cropDescription)}
     <div className="col-6 p-0" style={{ marginRight: '5%' }}>
       <Typography variant="h5" className="font-weight-bold text-muted" id="cover-crop-modal-title">
         <div style={{ marginLeft: '3%' }}>
