@@ -34,7 +34,7 @@ const InformationSheetContent = ({ crop }) => {
     const removeDoubleQuotes = /^"(.+(?="$))"$/;
 
     async function getSourceData() {
-      await fetch('https://api.covercrop-selector.org/legacy/sources')
+      await fetch(`https://adevelopapi.covercrop-selector.org/v1/crops/${crop.id}/images`)
         .then((res) => res.json())
         .then((data) => data.filter((source) => {
           const zones = source.Zone.split(',').map((item) => item.trim());
@@ -80,9 +80,8 @@ const InformationSheetContent = ({ crop }) => {
       <CoverCropInformation
         allThumbs={allThumbs}
         cropImage={crop['Image Data'] || null}
-        cropDescription={
-          crop['Cover Crop Description'] ? crop['Cover Crop Description'] : crop['Crop Description']
-        }
+        cropDescription="cover crop description"
+          // crop['Cover Crop Description'] ? crop['Cover Crop Description'] : crop['Crop Description']
         crop={crop}
       />
 

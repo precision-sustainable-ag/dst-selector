@@ -32,10 +32,10 @@ const RenderCrops = ({
   };
 
   const getAverageGoalRating = (selectedGoals, crop) => {
-    let goalRating;
+    let goalRating = 0;
     selectedGoals.forEach((goal) => {
       if (crop.data.Goals[goal]) {
-        [goalRating] = crop.data.Goals[goal].values;
+        goalRating = +crop.data.Goals[goal].values[0] + goalRating;
       }
     });
     return getRating(goalRating / selectedGoals.length);
