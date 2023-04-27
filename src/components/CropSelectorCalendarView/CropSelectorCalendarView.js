@@ -97,13 +97,13 @@ const CropSelectorCalendarView = ({ from = 'calendar', data = [] }) => {
           }
           style={
             // eslint-disable-next-line no-nested-ternary
-            getActiveCropMonths(data.fields).includes('Jan')
+            getActiveCropMonths(data.data['Basic Agronomics']).includes('Jan')
               ? {
                 borderLeft: '0px solid white',
                 borderRight: '2px solid white',
               }
               // eslint-disable-next-line no-nested-ternary
-              : getActiveCropMonths(data.fields).includes('Dec')
+              : getActiveCropMonths(data.data['Basic Agronomics']).includes('Dec')
                 ? {
                   borderLeft: '2px solid white',
                   borderRight: '0px solid white',
@@ -115,7 +115,7 @@ const CropSelectorCalendarView = ({ from = 'calendar', data = [] }) => {
           }
         >
           <div className="d-flex flex-row w-100 growthCellsWrapper">
-            {data.fields[earlyStr] ? (
+            {data[earlyStr] ? (
               <Tooltip
                 arrow
                 title={(
@@ -124,7 +124,7 @@ const CropSelectorCalendarView = ({ from = 'calendar', data = [] }) => {
                       {month.toUpperCase()}
                       , EARLY
                     </Typography>
-                    {data.fields[earlyStr].map((v, i) => (
+                    {data[earlyStr].map((v, i) => (
                       <Typography variant="body1" key={i} gutterBottom>
                         {v}
                       </Typography>
@@ -132,7 +132,7 @@ const CropSelectorCalendarView = ({ from = 'calendar', data = [] }) => {
                   </>
                 )}
               >
-                <div className={`${data.fields[earlyStr].toString()} w-50 growthCell-20`} />
+                <div className={`${data[earlyStr].toString()} w-50 growthCell-20`} />
               </Tooltip>
             ) : (
               <Tooltip
@@ -147,7 +147,7 @@ const CropSelectorCalendarView = ({ from = 'calendar', data = [] }) => {
                 <div className="w-50 basic growthCell-20" />
               </Tooltip>
             )}
-            {data.fields[midStr] ? (
+            {data[midStr] ? (
               <Tooltip
                 arrow
                 title={(
@@ -156,7 +156,7 @@ const CropSelectorCalendarView = ({ from = 'calendar', data = [] }) => {
                       {month.toUpperCase()}
                       , MID
                     </Typography>
-                    {data.fields[midStr].map((v, i) => (
+                    {data[midStr].map((v, i) => (
                       <Typography variant="body1" key={i} gutterBottom>
                         {v}
                       </Typography>
@@ -164,7 +164,7 @@ const CropSelectorCalendarView = ({ from = 'calendar', data = [] }) => {
                   </>
                 )}
               >
-                <div className={`${data.fields[midStr].toString()} w-50 growthCell-20`} />
+                <div className={`${data[midStr].toString()} w-50 growthCell-20`} />
               </Tooltip>
             ) : (
               <Tooltip
