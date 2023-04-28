@@ -9,7 +9,7 @@ import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import SwipeableViews from 'react-swipeable-views-react-18-fix';
 import { autoPlay } from 'react-swipeable-views-utils';
-import { ucFirst } from '../../shared/constants';
+// import { ucFirst } from '../../shared/constants';
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
@@ -19,43 +19,44 @@ const ImageCarousel = ({ images }) => {
   const maxSteps = images.length;
   const [imagesData, setImagesData] = useState([]);
 
-  const baseName = (path = '') => {
-    let separator = '/';
-    const windowsSeparator = '\\';
-    if (path.includes(windowsSeparator)) {
-      separator = windowsSeparator;
-    }
-    return path.slice(path.lastIndexOf(separator) + 1);
-  };
+  // const baseName = (path = '') => {
+  //   let separator = '/';
+  //   const windowsSeparator = '\\';
+  //   if (path.includes(windowsSeparator)) {
+  //     separator = windowsSeparator;
+  //   }
+  //   return path.slice(path.lastIndexOf(separator) + 1);
+  // };
 
-  const getPhotoCredits = (url = '') => {
-    // get base file name
-    const fileName = baseName(url);
+  // const getPhotoCredits = (image = '') => {
+  //   // get base file name
+  //   const fileName = baseName(image.url);
 
-    const fileNameArray = fileName.split('_');
+  //   const fileNameArray = fileName.split('_');
 
-    // get last value of array
-    const {
-      length,
-      [length - 1]: last,
-      [length - 2]: secondLast,
-      [length - 3]: thirdLast,
-    } = fileNameArray;
-    const year = parseInt(last, 10) ? `[${parseInt(last, 10)}]` : '';
-    if (thirdLast?.toLowerCase().includes('mirsky')) {
-      const mirskyLabString = ucFirst(`${thirdLast} ${secondLast}`);
-      return `Credit ${mirskyLabString} [${year}]`;
-    }
-    return `Credit ${secondLast ? `- ${secondLast}` : ''} ${year}`;
-  };
+  //   // get last value of array
+  //   const {
+  //     length,
+  //     [length - 1]: last,
+  //     [length - 2]: secondLast,
+  //     [length - 3]: thirdLast,
+  //   } = fileNameArray;
+  //   const year = parseInt(last, 10) ? `[${parseInt(last, 10)}]` : '';
+  //   if (thirdLast?.toLowerCase().includes('mirsky')) {
+  //     const mirskyLabString = ucFirst(`${thirdLast} ${secondLast}`);
+  //     return `Credit ${mirskyLabString} [${year}]`;
+  //   }
+  //   return `Credit ${secondLast ? `- ${secondLast}` : ''} ${year}`;
+  // };
 
   useEffect(() => {
     const imgsData = [];
     async function makeImages() {
       await images.forEach((image) => {
         const imgData = { label: '', imgPath: '' };
-        imgData.label = getPhotoCredits(image);
-        imgData.imgPath = image;
+        // imgData.label = getPhotoCredits(image);
+        imgData.label = 'Need Source Data';
+        imgData.imgPath = image.url;
         imgsData.push(imgData);
       });
       await setImagesData(imgsData);
