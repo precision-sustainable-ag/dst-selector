@@ -90,7 +90,6 @@ const InformationSheetContent = ({ crop }) => {
       {console.log('allThumbs', allThumbs)}
       <CoverCropInformation
         allThumbs={allThumbs}
-        cropImage={crop.thumbnail || null}
         cropDescription="cover crop description"
           // crop['Cover Crop Description'] ? crop['Cover Crop Description'] : crop['Crop Description']
         crop={crop}
@@ -119,9 +118,9 @@ const InformationSheetContent = ({ crop }) => {
 
       <PlantingAndGrowthWindows crop={crop} />
 
-      {/* <ExtendedComments crop={crop} /> */}
+      {/* <ExtendedComments crop={crop} /> Notes: section */}
 
-      {/* <InformationSheetReferences currentSources={currentSources} /> */}
+      <InformationSheetReferences currentSources={currentSources} />
     </>
   ) : (
     ''

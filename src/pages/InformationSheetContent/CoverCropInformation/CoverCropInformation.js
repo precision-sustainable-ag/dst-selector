@@ -3,7 +3,7 @@ import { Typography } from '@mui/material';
 import ImageCarousel from '../../../components/ImageCarousel/ImageCarousel';
 
 const CoverCropInformation = ({
-  cropImage, cropDescription, allThumbs, crop,
+  cropDescription, allThumbs, crop,
 }) => (
   <div className="row otherRows mb-4 avoidPage">
     <div className="col-6 p-0" style={{ marginRight: '5%' }}>
@@ -29,7 +29,7 @@ const CoverCropInformation = ({
       <Typography variant="body1" className="p-3" style={{ maxWidth: '800px', top: '500px' }}>
         {cropDescription}
       </Typography>
-      <ImageCarousel images={allThumbs} cropName={cropImage['Cover Crop']} />
+      <ImageCarousel images={allThumbs} />
     </div>
   </div>
 );
