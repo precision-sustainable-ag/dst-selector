@@ -148,7 +148,7 @@ const GrowthTraits = ({ crop }) => (
               <GrowthTrait
                 crop={crop.data.Growth}
                 attribute="Inoculant Type"
-                variable={crop.data.Growth['Inoculant Type'].values[0]?.map((val, index) => (
+                variable={crop.data.Growth['Inoculant Type']?.values.map((val, index) => (
                   <Typography className="text-capitalize" key={index} variant="body1">
                     {val}
                   </Typography>

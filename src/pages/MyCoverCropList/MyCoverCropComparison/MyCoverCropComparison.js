@@ -53,13 +53,11 @@ const lightBG = {
 const GetAverageGoalRating = ({ crop }) => {
   const { state } = useContext(Context);
   let goalRating = 0;
-  if (state.selectedGoals.length > 0) {
-    state.selectedGoals.forEach((goal) => {
-      if (crop.data.Goals[goal]) {
-        [goalRating] = crop.data.Goals[goal].values;
-      }
-    });
-  }
+  state.selectedGoals.forEach((goal) => {
+    if (crop.data.Goals[goal]) {
+      goalRating = +crop.data.Goals[goal].values[0] + goalRating;
+    }
+  });
   return getRating(goalRating / state.selectedGoals.length);
 };
 

@@ -18,7 +18,7 @@ import SoilDrainageInfoContent from './SoilDrainageInfoContent/SoilDrainageInfoC
 import TerminationInfo from './TerminationInfo/TerminationInfo';
 import InformationSheetPlanting from './InformationSheetPlanting/InformationSheetPlanting';
 import PlantingAndGrowthWindows from './PlantingAndGrowthWindows/PlantingAndGrowthWindows';
-import ExtendedComments from './ExtendedComments/ExtendedComments';
+// import ExtendedComments from './ExtendedComments/ExtendedComments';
 import InformationSheetReferences from './InformationSheetReferences/InformationSheetReferences';
 
 const InformationSheetContent = ({ crop }) => {
@@ -28,10 +28,6 @@ const InformationSheetContent = ({ crop }) => {
   const [currentSources, setCurrentSources] = useState([{}]);
   const [allThumbs, setAllThumbs] = useState([]);
   const query = `${encodeURIComponent('regions')}=${encodeURIComponent(state.regionId)}`;
-
-  // const regex = /(?!\B"[^"]*),(?![^"]*"\B)/g;
-  // const removeDoubleQuotes = /^"(.+(?="$))"$/;
-  console.log('crop', crop);
 
   async function getSourceData() {
     await fetch(`https://developapi.covercrop-selector.org/v1/crops/${crop.id}/resources?${query}`)
@@ -86,12 +82,12 @@ const InformationSheetContent = ({ crop }) => {
 
   return allThumbs.length > 0 && currentSources.length > 0 && Object.keys(crop.data).length > 0 ? (
     <>
-      {console.log('currentSources', currentSources)}
-      {console.log('allThumbs', allThumbs)}
       <CoverCropInformation
         allThumbs={allThumbs}
-        cropDescription="cover crop description"
-          // crop['Cover Crop Description'] ? crop['Cover Crop Description'] : crop['Crop Description']
+        cropDescription={
+          crop.data['Taxonomy & Listing']['Cover Crop Description'].values[0]
+            ? crop.data['Taxonomy & Listing']['Cover Crop Description'].values[0] : ''
+        }
         crop={crop}
       />
 

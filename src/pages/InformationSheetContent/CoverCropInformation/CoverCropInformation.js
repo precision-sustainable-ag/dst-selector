@@ -26,7 +26,7 @@ const CoverCropInformation = ({
       </Typography>
     </div>
     <div style={{ display: 'flex' }}>
-      <Typography variant="body1" className="p-3" style={{ maxWidth: '800px', top: '500px' }}>
+      <Typography variant="body1" className="p-3" style={{ maxWidth: '700px', minWidth: '700px', top: '500px' }}>
         {cropDescription}
       </Typography>
       <ImageCarousel images={allThumbs} />

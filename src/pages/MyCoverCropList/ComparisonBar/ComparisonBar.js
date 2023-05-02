@@ -21,6 +21,7 @@ const ComparisonBar = ({
   const [filterValues, setFilterValues] = useState([]);
   const [goalsOpen, setGoalsOpen] = useState(false);
   const [allGoals, setAllGoals] = useState([]);
+
   useEffect(() => {
     let totalFilters = 0;
     const filteredVals = filterData.map((filter) => {
@@ -175,6 +176,7 @@ const ComparisonBar = ({
           dispatch={dispatch}
         />
       )}
+
       <RenderFilters
         filterValues={filterValues}
         toggleSidebarFilterItems={toggleSidebarFilterItems}
