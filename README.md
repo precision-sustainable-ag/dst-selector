@@ -2,7 +2,7 @@
 
 **Date Created:** 8/18/22
 
-**Date Last Modified:** 12/1/2022
+**Date Last Modified:** 04/04/2023
 
 The species selector DST is used to help farmers select a cover crop that fits their goals and constraints. The user can either input specifics about their field location and cover cropping goals or explore cover crops without entering those details. The tool is mainly used to explore expert reccomendations and ratings for cover crops in the farmer's USDA Plant Hardiness Zone. This allows farmers to make educated decisions that are best suited for their specific goals and can save time as opposed to calling the extension office.
 
@@ -48,7 +48,7 @@ To see development progress, visit [http://covercrop.tools](http://covercrop.too
 3. Clone this repository into that folder `git clone https://github.com/precision-sustainable-ag/dst-selector`
 4. From the Terminal/Command Prompt, move into the cloned directory `cd dst-selector`
 5. From the same command window, run `npm install` to install project dependencies. A full list of the dependencies can be found in package.json. If you are running on a windows machine delete package-lock.json prior to running the below command.
-6. Create a file called .env in src/shared. The file will contain the below keys. This document is in the git ignore, so it (and your API keys) won't be pushed to the repository. Ask @mikahpinegar for the values of the keys
+6. Create a file called .env in `root` directory (dst-selector). The file will contain the below keys. This document is in the git ignore, so it (and your API keys) won't be pushed to the repository. Ask @mikahpinegar for the values of the keys
 
 ```
 REACT_APP_GOOGLE_API_KEY="<google key>"
@@ -74,4 +74,16 @@ Node sass not suported on Mac OS `Error: Node Sass does not yet support your cur
 
 **Solution:**
 `npm rebuild node-sass`
+
+**Symptom:**
+After running `npm install` you might run into an `Error E404 - Not Found - GET https://registry.npmjs.org/@psa%2fdst.ui.map - Not found`
+
+**Solution:**
+Follow these steps:
+1. Run `npm config set '@psa:registry' https://node.bit.cloud`
+2. Install the `react-scripts` package using `npm install react-scripts --save`
+3. Run  `npm start`
+
+
+
 
