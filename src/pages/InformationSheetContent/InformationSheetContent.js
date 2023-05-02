@@ -32,21 +32,7 @@ const InformationSheetContent = ({ crop }) => {
   async function getSourceData() {
     await fetch(`https://developapi.covercrop-selector.org/v1/crops/${crop.id}/resources?${query}`)
       .then((res) => res.json())
-      // .then((data) => {
-      //   console.log('RESOURCES data', data);
-      //   return data;
-      // })
       .then((data) => setCurrentSources(data.data))
-      // .then((data) => data.data.map((source) => {
-      //   const zones = source.Zone.split(',').map((item) => item.trim());
-      //   const coverCrops = source['Cover Crops']
-      //     .split(regex)
-      //     .map((item) => item.replace(removeDoubleQuotes, '$1'))
-      //     .map((item) => item.trim());
-
-      //   return zones.includes(`Zone ${zone}`) && coverCrops.includes(crop.label);
-      // }))
-      // .then((data) => setCurrentSources(data))
       .catch((err) => {
         // eslint-disable-next-line no-console
         console.log(err.message);
@@ -56,15 +42,6 @@ const InformationSheetContent = ({ crop }) => {
   async function getData() {
     await fetch(`https://developapi.covercrop-selector.org/v1/crops/${crop.id}/images?${query}`)
       .then((res) => res.json())
-      // .then((data) => {
-      //   console.log('IMAGES data', data);
-      //   return data;
-      // })
-      // .then((data) => {
-      //   data.data.map((image) => {
-      //     return image;
-      //   });
-      // })
       .then((data) => {
         setAllThumbs(data.data);
       })

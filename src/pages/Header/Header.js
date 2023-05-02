@@ -230,7 +230,7 @@ const Header = () => {
                         data: {
                           snackOpen: true,
                           snackMessage: `Weather API error code: ${error.response.status
-                            } for getting 5 year average rainfall for ${obj.city.toUpperCase()}, ${obj.state.toUpperCase()}`,
+                          } for getting 5 year average rainfall for ${obj.city.toUpperCase()}, ${obj.state.toUpperCase()}`,
                         },
                       });
                       dispatch({
