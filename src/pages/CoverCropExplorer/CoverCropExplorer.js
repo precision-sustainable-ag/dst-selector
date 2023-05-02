@@ -7,6 +7,8 @@
 import {
   Dialog, DialogActions, DialogContent, Grid, Typography,
 } from '@mui/material';
+import { useHistory } from 'react-router-dom';
+
 import React, { useContext, useEffect, useState } from 'react';
 import ReactGA from 'react-ga';
 import { Context } from '../../store/Store';
@@ -19,6 +21,7 @@ import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset
 
 const CoverCropExplorer = () => {
   const { state, dispatch } = useContext(Context);
+  const history = useHistory();
   const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
   const sfilters = state[section];
   const [updatedActiveCropData, setUpdatedActiveCropData] = useState([]);
@@ -39,6 +42,12 @@ const CoverCropExplorer = () => {
       ReactGA.pageview('cover crop explorer');
     }
   }, [state.consent]);
+
+  useEffect(() => {
+    if (state.state === undefined) {
+      history.push('/');
+    }
+  }, [state.state]);
 
   useEffect(() => {
     if (state?.myCoverCropListLocation !== 'explorer' && state?.selectedCrops?.length > 0) {
