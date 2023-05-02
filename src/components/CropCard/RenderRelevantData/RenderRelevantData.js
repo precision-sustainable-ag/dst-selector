@@ -44,11 +44,11 @@ const RenderRelevantData = ({ filterKey = '', data = [] }) => {
         </div>
       );
     }
-    if (filterKey === 'Frost Seeding' || (filterKey === 'Can Aerial Seed?' || filterKey === 'Aerial Seeding')) {
+    if ((filterKey === 'Frost Seeding' || (filterKey === 'Can Aerial Seed?' || filterKey === 'Aerial Seeding'))) {
       return (
         <div style={lightBG}>
           <Typography data={data} variant="body2" filterKey={filterKey === 'Frost Seeding' ? filterKey : 'Aerial Seeding'}>
-            {filterData[0].values[0] ? 'Yes' : 'N/A'}
+            {filterData[0]?.values[0] ? 'Yes' : 'N/A'}
           </Typography>
         </div>
       );
