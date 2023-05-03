@@ -111,6 +111,15 @@ const Landing = ({ height, title, bg }) => {
       if (selState.length > 0) {
         stateChange(selState[0]);
       } else {
+        dispatch({
+          type: 'UPDATE_STATE',
+          data: {
+            state: '',
+            stateId: '',
+            councilShorthand: '',
+            councilLabel: '',
+          },
+        });
         // eslint-disable-next-line no-alert
         alert(
           // eslint-disable-next-line max-len

@@ -273,6 +273,10 @@ const initialState = {
     // filters for selector
     cropSearch: '',
   },
+  state: '',
+  councilLabel: '',
+  councilShorthand: '',
+  stateId: '',
 };
 
 const Store = ({ children }) => {
