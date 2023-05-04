@@ -51,10 +51,10 @@ const GrowthTrait = ({
         <Typography variant="body1">
           {crop[attribute] === undefined || attribute === 'Inoculant Type'
             ? variable
-            : crop[attribute].values[0].toString()}
+            : crop[attribute]?.values[0].toString()}
         </Typography>
       ) : (
-        <>{getRating(crop[attribute].values[0])}</>
+        <>{getRating(crop[attribute]?.values[0])}</>
       )}
     </Box>
   </>
@@ -87,15 +87,15 @@ const GrowthTraits = ({ crop }) => (
               crop={crop.data['Basic Agronomics']}
               attribute="Dry Matter (Lbs/A/Yr)"
               variable={
-                `${crop.data['Basic Agronomics']['Dry Matter Min (lbs/A/y)'].values[0]}
-                - ${crop.data['Basic Agronomics']['Dry Matter Max (lbs/A/y)'].values[0]}`
+                `${crop.data['Basic Agronomics']['Dry Matter Min (lbs/A/y)']?.values[0]}
+                - ${crop.data['Basic Agronomics']['Dry Matter Max (lbs/A/y)']?.values[0]}`
               }
             />
 
             <GrowthTrait
               crop={crop.data['Soil Conditions']}
               attribute="Soil Textures"
-              variable={crop.data['Soil Conditions']['Soil Textures'].values?.map((val, index) => (
+              variable={crop.data['Soil Conditions']['Soil Textures']?.values.map((val, index) => (
                 <Typography className="text-capitalize" key={index} variant="body1">
                   {val}
                 </Typography>
@@ -106,8 +106,8 @@ const GrowthTraits = ({ crop }) => (
               crop={crop.data['Soil Conditions']}
               attribute="Soil pH"
               variable={
-                `${crop.data['Soil Conditions']['Minimum Tolerant Soil pH'].values[0]}
-                - ${crop.data['Soil Conditions']['Maximum Tolerant Soil pH'].values[0]}`
+                `${crop.data['Soil Conditions']['Minimum Tolerant Soil pH']?.values[0]}
+                - ${crop.data['Soil Conditions']['Maximum Tolerant Soil pH']?.values[0]}`
               }
             />
 
@@ -119,13 +119,13 @@ const GrowthTraits = ({ crop }) => (
               variable={crop['Hessian Fly Free Date'] ? crop['Hessian Fly Free Date'] : 'No'}
             /> */}
 
-            {crop.data['Basic Agronomics']['Nitrogen Accumulation Max, Legumes (lbs/A/y)'].values[0] > 0 && (
+            {crop.data['Basic Agronomics']['Nitrogen Accumulation Max, Legumes (lbs/A/y)']?.values[0] > 0 && (
               <GrowthTrait
                 crop={crop.data['Basic Agronomics']}
                 attribute="Nitrogen Accumulation (Lbs/A/Yr)"
                 variable={
-                  `${crop.data['Basic Agronomics']['Nitrogen Accumulation Min, Legumes (lbs/A/y)'].values[0]}
-                  - ${crop.data['Basic Agronomics']['Nitrogen Accumulation Max, Legumes (lbs/A/y)'].values[0]}`
+                  `${crop.data['Basic Agronomics']['Nitrogen Accumulation Min, Legumes (lbs/A/y)']?.values[0]}
+                  - ${crop.data['Basic Agronomics']['Nitrogen Accumulation Max, Legumes (lbs/A/y)']?.values[0]}`
                 }
               />
             )}
@@ -136,7 +136,7 @@ const GrowthTraits = ({ crop }) => (
             <GrowthTrait
               crop={crop.data.Growth}
               attribute="Flowering Trigger"
-              variable={crop.data.Growth['Flowering Trigger'].values?.map((val, index) => (
+              variable={crop.data.Growth['Flowering Trigger']?.values.map((val, index) => (
                 <Typography className="text-capitalize" key={index} variant="body1">
                   {val}
                 </Typography>
@@ -144,7 +144,7 @@ const GrowthTraits = ({ crop }) => (
             />
             <GrowthTrait crop={crop.data.Growth} attribute="Root Depth" />
 
-            {crop.data.Growth['Inoculant Type'].values[0] !== 'none' && (
+            {crop.data.Growth['Inoculant Type']?.values[0] !== 'none' && (
               <GrowthTrait
                 crop={crop.data.Growth}
                 attribute="Inoculant Type"
