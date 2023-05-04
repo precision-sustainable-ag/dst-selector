@@ -26,7 +26,7 @@ const MyCoverCropList = ({ comparisonView, from }) => {
   }, [selectedCrops]);
 
   useEffect(() => {
-    if (state.state === undefined) {
+    if (state.state === '') {
       history.push('/');
     }
   }, [state.state]);
