@@ -223,34 +223,36 @@ const CropSidebar = ({
 
   const generateSidebarObject = async (dataDictionary) => {
     await sidebarCategoriesData.forEach((category) => {
-      const newCategory = {
-        name: category.label,
-        description: category.description,
-      };
-      newCategory.values = category?.attributes?.map((filter) => {
-        const type = filter?.values[0]?.dataType;
-
-        const obj = {
-          name: filter.label,
-          type,
-          rating: !filter.isArray,
-          maxSize: null,
-          description: filter.description,
-          details: filter.details,
-          units: filter.units,
+      if (category.label !== 'Goals') {
+        const newCategory = {
+          name: category.label,
+          description: category.description,
         };
-        if (type === 'number') {
-          obj.values = filter.values;
-          obj.maxSize = 5;
-        } else {
-          obj.values = filter.values;
-        }
+        newCategory.values = category?.attributes?.map((filter) => {
+          const type = filter?.values[0]?.dataType;
 
-        createObject(obj, dataDictionary, filter);
+          const obj = {
+            name: filter.label,
+            type,
+            rating: !filter.isArray,
+            maxSize: null,
+            description: filter.description,
+            details: filter.details,
+            units: filter.units,
+          };
+          if (type === 'number') {
+            obj.values = filter.values;
+            obj.maxSize = 5;
+          } else {
+            obj.values = filter.values;
+          }
 
-        return obj;
-      });
-      dictionary.push(newCategory);
+          createObject(obj, dataDictionary, filter);
+
+          return obj;
+        });
+        dictionary.push(newCategory);
+      }
     });
   };
 

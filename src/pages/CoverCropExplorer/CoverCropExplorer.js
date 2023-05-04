@@ -44,7 +44,7 @@ const CoverCropExplorer = () => {
   }, [state.consent]);
 
   useEffect(() => {
-    if (state.state === undefined) {
+    if (state.state === '') {
       history.push('/');
     }
   }, [state.state]);
