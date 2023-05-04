@@ -27,6 +27,7 @@ const InformationSheetContent = ({ crop }) => {
   const { zone } = state[section];
   const [currentSources, setCurrentSources] = useState([{}]);
   const [allThumbs, setAllThumbs] = useState([]);
+  const [dataDone, setDataDone] = useState(false);
   const query = `${encodeURIComponent('regions')}=${encodeURIComponent(state.regionId)}`;
 
   async function getSourceData() {
@@ -44,6 +45,7 @@ const InformationSheetContent = ({ crop }) => {
       .then((res) => res.json())
       .then((data) => {
         setAllThumbs(data.data);
+        setDataDone(true);
       })
       .catch((err) => {
         // eslint-disable-next-line no-console
@@ -52,12 +54,13 @@ const InformationSheetContent = ({ crop }) => {
   }
 
   useEffect(() => {
-    getSourceData();
     document.title = `${crop.label} Zone ${zone}`;
+    getSourceData();
     getData();
   }, [crop, zone]);
 
-  return allThumbs.length > 0 && currentSources.length > 0 && Object.keys(crop.data).length > 0 ? (
+  console.log('crop', crop);
+  return dataDone === true && Object.keys(crop.data).length > 0 ? (
     <>
       <CoverCropInformation
         allThumbs={allThumbs}
