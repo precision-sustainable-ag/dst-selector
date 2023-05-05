@@ -138,32 +138,19 @@ const Header = () => {
               },
             });
           }
-
-          // call weather API to fetch details
-
-          // Get: Frost Free Days
-          // Dynamic Dates not set!
-          const frostFreeDaysURL = `${weatherApiURL}/hourly?location=${city}%20${abbrState}&start=2015-01-01&end=2019-12-31
-                                    &stats=count(date)/24/5&where=air_temperature%3e0&output=json`;
-          const frostFreeDatesURL = `${weatherApiURL}/hourly?lat=${lat}&lon=${lon}&start=2014-07-01&end=2019-07-01
-                                    &stats=min(date),max(date)&where=frost&group=growingyear&options=nomrms&output=json`;
-          let frostFreeDays = 0;
-
-          await Axios.get(frostFreeDaysURL)
-            .then((frostResp) => {
-              getAverageFrostDates(frostFreeDatesURL);
-              const frostFreeDaysObject = frostResp.data[0];
-              frostFreeDaysObject.keys().forEach((key) => {
-                frostFreeDays = frostFreeDaysObject[key];
-              });
-              return { frostFreeDays, city, abbrState };
-            })
+          
+          const frostUrl = `${weatherApiURL}/frost?lat=${lat}&lon=${lon}`;
+          await Axios.get(frostUrl)
+            .then((frostResp => {
+              const { firstFrost, lastFrost } = frostResp.data;
+              const frostFreeDaysObj = moment(lastFrost).diff(moment(firstFrost), 'days');
+              return {frostFreeDaysObj, city, abbrState}
+            }))
             .then((obj) => {
               dispatch({
                 type: 'UPDATE_FROST_FREE_DAYS',
-                data: { frostFreeDays: obj.frostFreeDays },
+                data: { frostFreeDays: obj.frostFreeDaysObj },
               });
-
               return obj;
             })
             .then(async (obj) => {
