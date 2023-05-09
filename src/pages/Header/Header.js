@@ -75,52 +75,15 @@ const Header = () => {
   }, [state.zipCode, state.lastZipCode, dispatch, enqueueSnackbar, closeSnackbar]);
 
   useEffect(() => {
-    const getAverageFrostDates = async (url) => {
-      await Axios.get(url).then((resp) => {
-        try {
-          const totalYears = resp.data.length;
-          // get last years value
-          // TODO: Take all years data into account
-          const mostRecentYearData = resp.data[totalYears - 1];
-
-          const maxDate = mostRecentYearData['max(date)'];
-          const minDate = mostRecentYearData['min(date)'];
-
-          const averageFrostObject = {
-            firstFrostDate: {
-              month: moment(minDate).format('MMMM'),
-              day: parseInt(moment(minDate).format('D'), 10),
-            },
-            lastFrostDate: {
-              month: moment(maxDate).format('MMMM'),
-              day: parseInt(moment(maxDate).format('D'), 10),
-            },
-          };
-          dispatch({
-            type: 'UPDATE_AVERAGE_FROST_DATES',
-            data: {
-              averageFrost: averageFrostObject,
-            },
-          });
-        } catch (e) {
-          // eslint-disable-next-line
-          console.error('Average Frost Dates API::', e);
-        }
-      });
-    };
-
     const { markers } = state;
 
     // update address on marker change
     // ref forecastComponent
-
     const lat = markers[0][0];
     const lon = markers[0][1];
 
     // since this updates with state; ideally, weather and soil info should be updated here
-
     // get current lat long and get county, state and city
-
     if (state.progress >= 2 && state.markers.length > 0) {
       const revAPIURL = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`;
 
@@ -138,18 +101,43 @@ const Header = () => {
               },
             });
           }
-          
+
           const frostUrl = `${weatherApiURL}/frost?lat=${lat}&lon=${lon}`;
           await Axios.get(frostUrl)
             .then((frostResp => {
-              const { firstFrost, lastFrost } = frostResp.data;
-              const frostFreeDaysObj = moment(lastFrost).diff(moment(firstFrost), 'days');
-              return {frostFreeDaysObj, city, abbrState}
+              // added "/" and do %100 to get them into correct format (want frost dates to look like 01/01/23)
+              const currYear = "/" + (new Date().getFullYear() % 100).toString();
+              const prevYear = "/" + ((new Date().getFullYear() % 100) - 1).toString(); 
+              const oneDay = 24 * 60 * 60 * 1000; // milliseconds in a day
+              const firstFrost = new Date(frostResp.data.firstfrost + prevYear);
+              const lastFrost = new Date(frostResp.data.lastfrost + currYear);
+
+              const frostFreeDaysObj = Math.round(Math.abs((firstFrost.getTime() - lastFrost.getTime()) / oneDay));
+              const averageFrostObject = {
+                firstFrostDate: {
+                  month: firstFrost.toLocaleString('en-US', { month: 'long' }),
+                  day: firstFrost.getDate().toString(),
+                },
+                lastFrostDate: {
+                  month: lastFrost.toLocaleString('en-US', { month: 'long' }),
+                  day: lastFrost.getDate().toString(),
+                },
+              };
+
+              return {frostFreeDaysObj, city, abbrState, averageFrostObject}
             }))
             .then((obj) => {
+              console.log(obj.frostFreeDaysObj);
+              console.log(obj.averageFrostObject);
               dispatch({
                 type: 'UPDATE_FROST_FREE_DAYS',
                 data: { frostFreeDays: obj.frostFreeDaysObj },
+              });
+              dispatch({
+                type: 'UPDATE_AVERAGE_FROST_DATES',
+                data: {
+                  averageFrost: obj.averageFrostObject,
+                },
               });
               return obj;
             })
@@ -229,6 +217,8 @@ const Header = () => {
                     });
                 }
               }
+            }).catch((err) => {
+              console.error(`Failed to fetch frost data: ${err}`);
             });
         })
         .then(() => {
@@ -255,6 +245,7 @@ const Header = () => {
         break;
     }
   }, [state.markers, state.weatherDataReset]);
+
 
   async function getCropData(formattedGoal, zone = 4) {
     await fetch(`https://api.covercrop-selector.org/crop-data?zoneId=${zone}`)
