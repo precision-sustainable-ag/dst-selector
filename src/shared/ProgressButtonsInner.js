@@ -68,7 +68,7 @@ const ProgressButtonsInner = ({ disabled }) => {
           marginBottom: '2.5px',
         }}
         onClick={() => changeProgress('increment')}
-        disabled={isDisabled}
+        disabled={isDisabled || state.progress === 5}
         className="ml-3"
       >
         NEXT
