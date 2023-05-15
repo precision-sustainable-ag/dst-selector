@@ -47,7 +47,7 @@ const InfoEnvironmentalTermination = ({
         },
       }}
     >
-      {getRating(crop[attribute])}
+      {getRating(crop[variable].values[0])}
     </Box>
   </>
 ); // InfoEnvironmentalTermination
