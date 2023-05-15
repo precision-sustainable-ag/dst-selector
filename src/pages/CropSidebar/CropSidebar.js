@@ -18,7 +18,6 @@ import {
   CalendarToday, Compare, ExpandLess, ExpandMore,
 } from '@mui/icons-material';
 import ListIcon from '@mui/icons-material/List';
-import moment from 'moment';
 import React, {
   useContext, useEffect, useState,
 } from 'react';
