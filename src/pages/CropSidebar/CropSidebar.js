@@ -18,7 +18,6 @@ import {
   CalendarToday, Compare, ExpandLess, ExpandMore,
 } from '@mui/icons-material';
 import ListIcon from '@mui/icons-material/List';
-import moment from 'moment';
 import React, {
   useContext, useEffect, useState,
 } from 'react';
@@ -328,8 +327,8 @@ const CropSidebar = ({
         dispatch({
           type: 'UPDATE_DATE_RANGE',
           data: {
-            startDate: moment(new Date(dateRange.startDate).toISOString()).format('YYYY-MM-DD'),
-            endDate: moment(new Date(dateRange.endDate).toISOString()).format('YYYY-MM-DD'),
+            startDate: dateRange.startDate.toISOString().substring(0, 10),
+            endDate: dateRange.endDate.toISOString().substring(0, 10),
           },
         });
       }
