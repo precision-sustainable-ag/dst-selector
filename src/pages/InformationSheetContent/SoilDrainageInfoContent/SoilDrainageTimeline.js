@@ -15,14 +15,14 @@ import { CustomStyles } from '../../../shared/constants';
 
 const SoilDrainageTimeline = ({ drainage = [] }) => {
   const drainageClasses = [
-    'Very poorly drained',
-    'Poorly drained',
-    'Somewhat poorly drained',
-    'Moderately well drained',
-    'Well drained',
-    'Excessively drained',
-    'Saturated muck',
-    'Well drained muck',
+    'Very Poorly Drained',
+    'Poorly Drained',
+    'Somewhat Poorly Drained',
+    'Moderately Well Drained',
+    'Well Drained',
+    'Excessively Drained',
+    'Saturated Muck',
+    'Well Drained Muck',
   ];
   return (
     <Timeline align="right">
