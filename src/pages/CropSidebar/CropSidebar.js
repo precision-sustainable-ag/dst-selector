@@ -122,7 +122,7 @@ const CropSidebar = ({
       }
     });
 
-    console.log('sfo', sfo);
+    // console.log('sfo', sfo);
 
     let cropData = state?.cropData?.filter((crop) => crop['Zone Decision'] === 'Include');
 
@@ -186,7 +186,7 @@ const CropSidebar = ({
           //   console.log('KEY KEY', key);
           // }
           if (Object.keys(crop.data[category]).includes(key[0])) {
-            console.log('Object.keys(category).key', vals, crop.data[category][key].values[0]);
+            // console.log('Object.keys(category).key', vals, crop.data[category][key].values[0]);
             if (crop.data[category][key].values[0] !== undefined) {
               const intersection = (arrays = [vals, crop.data[category][key].values[0]]) => arrays.reduce((a, b) => a.filter((c) => b.includes(c)));
 
