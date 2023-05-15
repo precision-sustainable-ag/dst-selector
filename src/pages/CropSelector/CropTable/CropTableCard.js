@@ -83,7 +83,7 @@ const CropTableCard = ({
                   </div>
                 )}
               >
-                {getRating(crop[goal])}
+                {getRating(crop.data.Goals[goal]?.values[0])}
               </Tooltip>
             </div>
           </TableCell>
@@ -107,7 +107,7 @@ const CropTableCard = ({
             onClick={() => {
               addCropToBasket(
                 crop.id,
-                crop['Cover Crop Name'],
+                crop.label,
                 `cartBtn${indexKey}`,
                 crop,
               );

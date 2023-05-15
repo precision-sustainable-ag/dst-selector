@@ -138,7 +138,7 @@ const CropPaintGrowthChart = ({
                         )}
                       >
                         <div
-                          className={`${data[earlyStr].toString()} w-50 growthCell-30`}
+                          className={`${data[earlyStr][0].toString()} w-50 growthCell-30`}
                         />
                       </Tooltip>
                     ) : (
@@ -172,7 +172,7 @@ const CropPaintGrowthChart = ({
                         )}
                       >
                         <div
-                          className={`${data[midStr].toString()} w-50 growthCell-30`}
+                          className={`${data[midStr][0].toString()} w-50 growthCell-30`}
                         />
                       </Tooltip>
                     ) : (

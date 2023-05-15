@@ -31,14 +31,14 @@ const InformationSheetReferences = ({ currentSources }) => (
                       color: 'black',
                       fontWeight: 'bolder',
                     }}
-                    href={source.URL}
+                    href={source.url}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    {source['Resource Name']}
+                    {source.label}
                   </a>
                   {': '}
-                  {source['Institution or Author']}
+                  {source.source}
                   <br />
                 </Fragment>
               ))}
