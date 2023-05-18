@@ -22,7 +22,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import {
   allMonths,
   CustomStyles,
-  flipCoverCropName,
+  Sort,
   sudoButtonStyle,
   sudoButtonStyleWithPadding,
 } from '../../../shared/constants';
@@ -40,9 +40,11 @@ const CropCalendarView = ({ activeCropData }) => {
   const { state, dispatch } = useContext(Context);
   const [legendModal, setLegendModal] = useState(false);
   const [nameSortFlag, setNameSortFlag] = useState(true);
-  const [selectedCropsSortFlag, setSelectedCropsSortFlag] = useState(true);
+  const [goalsSortFlag, setGoalsSortFlag] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalData, setModalData] = useState([{}]);
+  const { selectedGoals } = state;
+  const activeCropDataShadow = activeCropData;
 
   const dispatchValue = (value, type = 'UPDATE_ACTIVE_CROP_DATA') => {
     dispatch({
@@ -71,98 +73,102 @@ const CropCalendarView = ({ activeCropData }) => {
   };
 
   const sortReset = () => {
-    const { selectedGoals } = state;
-    const activeCropDataShadow = activeCropData;
-    selectedGoals
-      .slice()
-      .reverse()
-      .forEach((goal) => {
-        activeCropDataShadow.sort((a, b) => {
-          if (a.data.Goals[goal] && b.data.Goals[goal]) {
-            if (a.data.Goals[goal].values[0] > b.data.Goals[goal].values[0]) {
-              return -1;
-            }
-            return 1;
-          }
-          return 0;
-        });
-      });
-
+    Sort('Average Goals', activeCropDataShadow, dispatchValue, selectedGoals, goalsSortFlag);
+    setGoalsSortFlag(!goalsSortFlag);
     dispatchValue(activeCropDataShadow);
+
+    // activeCropDataShadow.sort((a, b) => {
+    //   let aAvg = 0;
+    //   let bAvg = 0;
+    //   selectedGoals
+    //     .slice()
+    //     .reverse()
+    //     .forEach((goal) => {
+    //       aAvg = +a.data.Goals[goal].values[0] + aAvg;
+    //       bAvg = +b.data.Goals[goal].values[0] + bAvg;
+    //     });
+    //   aAvg /= selectedGoals.length;
+    //   bAvg /= selectedGoals.length;
+
+    //   if (aAvg > 0 && bAvg > 0) {
+    //     if (aAvg > bAvg) {
+    //       return -1;
+    //     }
+    //     return 1;
+    //   }
+    //   return 0;
+    // });
   };
+
   const sortCropsByName = () => {
-    const activeCropDataShadow = activeCropData;
-    sortReset('cropName');
-
-    if (nameSortFlag) {
-      if (activeCropDataShadow.length > 0) {
-        activeCropDataShadow.sort((a, b) => {
-          const firstCropName = flipCoverCropName(
-            a.data.Weeds['Cover Crop Name'].values[0].toLowerCase(),
-          ).replace(/\s+/g, '');
-          const secondCropName = flipCoverCropName(
-            b.data.Weeds['Cover Crop Name'].values[0].toLowerCase(),
-          ).replace(/\s+/g, '');
-          return firstCropName.localeCompare(secondCropName);
-        });
-
-        dispatchValue(activeCropDataShadow);
-      }
-    } else if (activeCropDataShadow.length > 0) {
-      activeCropDataShadow.sort((a, b) => {
-        const firstCropName = flipCoverCropName(a.data.Weeds['Cover Crop Name'].values[0].toLowerCase()).replace(
-          /\s+/g,
-          '',
-        );
-        const secondCropName = flipCoverCropName(b.data.Weeds['Cover Crop Name'].values[0].toLowerCase()).replace(
-          /\s+/g,
-          '',
-        );
-        if (firstCropName < secondCropName) {
-          return 1;
-        }
-        if (firstCropName > secondCropName) {
-          return -1;
-        }
-        return 0;
-      });
-
-      dispatchValue(activeCropDataShadow);
-    }
-
+    // const activeCropDataShadow = activeCropData;
+    Sort('Crop Name', activeCropDataShadow, dispatchValue, selectedGoals, nameSortFlag);
     setNameSortFlag(!nameSortFlag);
+
+    // if (nameSortFlag) {
+    //   if (activeCropDataShadow.length > 0) {
+    //     activeCropDataShadow.sort((a, b) => {
+    //       const firstCropName = flipCoverCropName(
+    //         a.data.Weeds['Cover Crop Name'].values[0].toLowerCase(),
+    //       ).replace(/\s+/g, '');
+    //       const secondCropName = flipCoverCropName(
+    //         b.data.Weeds['Cover Crop Name'].values[0].toLowerCase(),
+    //       ).replace(/\s+/g, '');
+    //       return firstCropName.localeCompare(secondCropName);
+    //     });
+
+    //     dispatchValue(activeCropDataShadow);
+    //   }
+    // } else if (activeCropDataShadow.length > 0) {
+    //   activeCropDataShadow.sort((a, b) => {
+    //     const firstCropName = flipCoverCropName(a.data.Weeds['Cover Crop Name'].values[0].toLowerCase()).replace(
+    //       /\s+/g,
+    //       '',
+    //     );
+    //     const secondCropName = flipCoverCropName(b.data.Weeds['Cover Crop Name'].values[0].toLowerCase()).replace(
+    //       /\s+/g,
+    //       '',
+    //     );
+    //     if (firstCropName < secondCropName) {
+    //       return 1;
+    //     }
+    //     if (firstCropName > secondCropName) {
+    //       return -1;
+    //     }
+    //     return 0;
+    //   });
+    // }
   };
 
   const sortBySelectedCrops = () => {
-    sortReset('selectedCrops');
     const selectedCropsShadow = state.selectedCrops;
-    const activeCropDataShadow = activeCropData;
-    if (selectedCropsSortFlag) {
-      if (selectedCropsShadow.length > 0) {
-        const selectedCropIds = [];
-        selectedCropsShadow.forEach((crop) => {
-          selectedCropIds.push(crop.id);
-        });
-        const newActiveShadow = activeCropDataShadow.map((crop) => {
-          crop.inCart = selectedCropIds.includes(crop.id);
-          return crop;
-        });
 
-        if (newActiveShadow.length > 0) {
-          newActiveShadow.sort((a) => {
-            if (a.inCart) {
-              return -1;
-            }
-            return 1;
-          });
+    Sort('Selected Crops', activeCropDataShadow, dispatchValue, selectedCropsShadow);
 
-          dispatchValue(newActiveShadow);
-        }
-      }
-    } else {
-      sortReset('selectedCrops');
-    }
-    setSelectedCropsSortFlag(!selectedCropsSortFlag);
+    // const activeCropDataShadow = activeCropData;
+    // if (selectedCropsSortFlag) {
+    //   if (selectedCropsShadow.length > 0) {
+    //     const selectedCropIds = [];
+    //     selectedCropsShadow.forEach((crop) => {
+    //       selectedCropIds.push(crop.id);
+    //     });
+    //     const newActiveShadow = activeCropDataShadow.map((crop) => {
+    //       crop.inCart = selectedCropIds.includes(crop.id);
+    //       return crop;
+    //     });
+
+    //     if (newActiveShadow.length > 0) {
+    //       newActiveShadow.sort((a) => {
+    //         if (a.inCart) {
+    //           return -1;
+    //         }
+    //         return 1;
+    //       });
+
+    //       dispatchValue(newActiveShadow);
+    //     }
+    //   }
+    // }
   };
 
   return (
