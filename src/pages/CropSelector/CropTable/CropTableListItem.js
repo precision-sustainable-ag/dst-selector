@@ -22,7 +22,6 @@ const CropTableListItem = ({
       ) {
         return (
           <Fragment key={index}>
-            {/* {console.log('crop', crop)} */}
 
             <TableRow
               className={hasGoalRatingTwoOrLess(crop) && 'inactiveCropRow'}

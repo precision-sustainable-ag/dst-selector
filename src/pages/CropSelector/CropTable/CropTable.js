@@ -201,16 +201,16 @@ const CropTableComponent = ({
                   >
                     <Button
                       onClick={() => {
-                        sortAllCrops(sortPreference === 'desc' ? 'asc' : 'desc');
+                        sortAllCrops(!sortPreference ? 'asc' : 'desc');
                       }}
                     >
                       <Sort
                         style={{
                           color:
-                            sortPreference === 'asc'
+                            sortPreference
                               ? CustomStyles().secondaryProgressBtnColor
                               : CustomStyles().progressColor,
-                          transform: sortPreference === 'asc' && 'rotate(180deg)',
+                          transform: sortPreference && 'rotate(180deg)',
                         }}
                       />
                       &nbsp;

@@ -59,7 +59,6 @@ const InformationSheetContent = ({ crop }) => {
     getData();
   }, [crop, zone]);
 
-  //   console.log('crop', crop);
   return dataDone === true && Object.keys(crop.data).length > 0 ? (
     <>
       <CoverCropInformation
