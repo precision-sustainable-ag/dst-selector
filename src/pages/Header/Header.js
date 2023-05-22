@@ -279,6 +279,8 @@ const Header = () => {
     await fetch(`https://developapi.covercrop-selector.org/v1/states/${state.stateId}/crops?${query}`)
       .then((res) => res.json())
       .then((data) => {
+        console.log(data.data);
+
         cropDataFormatter(data.data);
         dispatch({
           type: 'PULL_CROP_DATA',
