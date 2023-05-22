@@ -91,7 +91,6 @@ const RenderFilters = ({
           <List component="div" disablePadding>
             <ListItem component="div" sx={{ paddingLeft: 4 }}>
               <Grid container spacing={1}>
-                {console.log('filter', filter)}
                 {filter.name === 'Cover Crop Type' ? (
                   <FormControlLabel
                     control={(
