@@ -21,8 +21,6 @@ const Header = () => {
   const history = useHistory();
 
   const { state, dispatch } = useContext(Context);
-  const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
-  const sfilters = state[section];
   const [isRoot, setIsRoot] = useState(false);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const isActive = {};
@@ -104,10 +102,10 @@ const Header = () => {
 
           const frostUrl = `${weatherApiURL}/frost?lat=${lat}&lon=${lon}`;
           await Axios.get(frostUrl)
-            .then((frostResp => {
+            .then(((frostResp) => {
               // added "/" and do %100 to get them into correct format (want frost dates to look like 01/01/23)
-              const currYear = "/" + (new Date().getFullYear() % 100).toString();
-              const prevYear = "/" + ((new Date().getFullYear() % 100) - 1).toString(); 
+              const currYear = `/${(new Date().getFullYear() % 100).toString()}`;
+              const prevYear = `/${((new Date().getFullYear() % 100) - 1).toString()}`;
               const oneDay = 24 * 60 * 60 * 1000; // milliseconds in a day
               const firstFrost = new Date(frostResp.data.firstfrost + prevYear);
               const lastFrost = new Date(frostResp.data.lastfrost + currYear);
@@ -124,11 +122,11 @@ const Header = () => {
                 },
               };
 
-              return {frostFreeDaysObj, city, abbrState, averageFrostObject}
+              return {
+                frostFreeDaysObj, city, abbrState, averageFrostObject,
+              };
             }))
             .then((obj) => {
-              console.log(obj.frostFreeDaysObj);
-              console.log(obj.averageFrostObject);
               dispatch({
                 type: 'UPDATE_FROST_FREE_DAYS',
                 data: { frostFreeDays: obj.frostFreeDaysObj },
@@ -207,7 +205,7 @@ const Header = () => {
                         data: {
                           snackOpen: true,
                           snackMessage: `Weather API error code: ${error.response.status
-                            } for getting 5 year average rainfall for ${obj.city.toUpperCase()}, ${obj.state.toUpperCase()}`,
+                          } for getting 5 year average rainfall for ${obj.city.toUpperCase()}, ${obj.state.toUpperCase()}`,
                         },
                       });
                       dispatch({
@@ -217,7 +215,8 @@ const Header = () => {
                     });
                 }
               }
-            }).catch((err) => {
+            })
+            .catch((err) => {
               console.error(`Failed to fetch frost data: ${err}`);
             });
         })
@@ -246,9 +245,16 @@ const Header = () => {
     }
   }, [state.markers, state.weatherDataReset]);
 
+  const loadDictData = (data) => {
+    dispatch({
+      type: 'PULL_DICTIONARY_DATA',
+      data,
+    });
+  };
 
-  async function getCropData(formattedGoal, zone = 4) {
-    await fetch(`https://api.covercrop-selector.org/crop-data?zoneId=${zone}`)
+  async function getCropData(formattedGoal) {
+    const query = `${encodeURIComponent('regions')}=${encodeURIComponent(state.regionId)}`;
+    await fetch(`https://developapi.covercrop-selector.org/v1/states/${state.stateId}/crops?${query}`)
       .then((res) => res.json())
       .then((data) => {
         cropDataFormatter(data.data);
@@ -267,32 +273,37 @@ const Header = () => {
       });
   }
 
+  async function getDictData() {
+    const query = `${encodeURIComponent('regions')}=${encodeURIComponent(state.regionId)}`;
+    await fetch(`https://developapi.covercrop-selector.org/v1/states/${state.stateId}/dictionary?${query}`)
+      .then((res) => res.json())
+      .then((data) => {
+        loadDictData(data.data);
+        return data.data.filter(
+          (d) => d.label === 'Goals',
+        );
+      })
+      .then((data) => data[0].attributes.filter(
+        (d) => d.label !== 'Notes: Goals',
+      ))
+      .then((data) => data.map((goal) => ({ fields: goal })))
+      .then((data) => getCropData(data))
+      .catch((err) => {
+      // eslint-disable-next-line no-console
+        console.log(err.message);
+      });
+  }
+
   useEffect(() => {
-    if (sfilters.zone === state.lastZone) {
-      return;
+    // if (state.zone === state.lastZone) {
+    //   return;
+    // }
+    if (state.regionId && state.stateId) {
+      getDictData();
+      getCropData([]);
     }
-
-    async function getDictData() {
-      await fetch(`https://api.covercrop-selector.org/legacy/data-dictionary?zone=zone${sfilters.zone}`)
-        .then((res) => res.json())
-        .then((data) => data.filter(
-          (d) => d.Category === 'Goals' && d.Variable !== 'Notes: Goals',
-        ))
-        .then((data) => data.map((goal) => ({ fields: goal })))
-        .then((data) => getCropData(data, (sfilters.zone - 3)))
-        .catch((err) => {
-          // eslint-disable-next-line no-console
-          console.log(err.message);
-        });
-    }
-
-    getDictData();
-    getCropData([], sfilters.zone);
-    state.lastZone = sfilters.zone; // TODO
-  }, [
-    sfilters.zone,
-    dispatch,
-  ]);
+    state.lastZone = state.zone; // TODO
+  }, [state.stateId, state.zone, state.regionId]);
 
   const setmyCoverCropActivationFlag = () => {
     history.push('/my-cover-crop-list');
