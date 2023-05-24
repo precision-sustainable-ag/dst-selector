@@ -417,24 +417,24 @@ export const flipCoverCropName = (cropName = '') => {
 
 export const getActiveCropMonths = (crop = {}) => {
   const activeMonths = [];
-  if (crop['Active Growth Period'].includes('Winter')) {
+  if (crop['Active Growth Period'].values.includes('Winter')) {
     activeMonths.push('Dec');
     activeMonths.push('Jan');
     activeMonths.push('Feb');
   }
-  if (crop['Active Growth Period'].includes('Summer')) {
+  if (crop['Active Growth Period'].values.includes('Summer')) {
     activeMonths.push('Jun');
     activeMonths.push('Jul');
     activeMonths.push('Aug');
   }
 
-  if (crop['Active Growth Period'].includes('Fall')) {
+  if (crop['Active Growth Period'].values.includes('Fall')) {
     activeMonths.push('Sep');
     activeMonths.push('Oct');
     activeMonths.push('Nov');
   }
 
-  if (crop['Active Growth Period'].includes('Spring')) {
+  if (crop['Active Growth Period'].values.includes('Spring')) {
     activeMonths.push('Mar');
     activeMonths.push('Apr');
     activeMonths.push('May');
@@ -489,48 +489,49 @@ export const sudoButtonStyleWithPadding = {
   fontSize: '0.875rem',
 };
 
-export const getMonthDayString = (type = '', crop = {}) => {
+export const getMonthDayString = (type = '', date = '') => {
+  const formattedDate = date.split('-');
   switch (type) {
     case 'reliable': {
-      const startDate = moment(crop['Reliable Establishment/Growth Start'], 'YYYY-MM-DD');
-      const endDate = moment(crop['Reliable Establishment/Growth End'], 'YYYY-MM-DD');
+      const startDate = moment(formattedDate[0], 'MM-DD-YYYY');
+      const endDate = moment(formattedDate[1], 'MM-DD-YYYY');
 
       return `${startDate.format('MM/DD')} - ${endDate.format('MM/DD')}`;
     }
-    case 'reliable-second': {
-      const startDate = moment(crop['Second Reliable Establishment/Growth Start'], 'YYYY-MM-DD');
-      const endDate = moment(crop['Second Reliable Establishment/Growth End'], 'YYYY-MM-DD');
+    // case 'reliable-second': {
+    //   const startDate = moment(formattedDate[0], 'MM-DD-YYYY');
+    //   const endDate = moment(formattedDate[1], 'MM-DD-YYYY');
 
-      return `${startDate.format('MM/DD')} - ${endDate.format('MM/DD')}`;
-    }
-    case 'temperature': {
-      if (
-        crop['Temperature/Moisture Risk to Establishment Start']
-        && crop['Temperature/Moisture Risk to Establishment End']
-      ) {
-        const startDate = moment(
-          crop['Temperature/Moisture Risk to Establishment Start'],
-          'YYYY-MM-DD',
-        );
-        const endDate = moment(
-          crop['Temperature/Moisture Risk to Establishment End'],
-          'YYYY-MM-DD',
-        );
-        return `${startDate.format('MM/DD')} - ${endDate.format('MM/DD')}`;
-      }
-      return 'N/A';
-    }
-    case 'temperature-second': {
-      const startDate = moment(
-        crop['Second Temperature/Moisture Risk to Establishment Start'],
-        'YYYY-MM-DD',
-      );
-      const endDate = moment(
-        crop['Second Temperature/Moisture Risk to Establishment End'],
-        'YYYY-MM-DD',
-      );
-      return `${startDate.format('MM/DD')} - ${endDate.format('MM/DD')}`;
-    }
+    //   return `${startDate.format('MM/DD')} - ${endDate.format('MM/DD')}`;
+    // }
+    // case 'temperature': {
+    //   if (
+    //     crop['Temperature/Moisture Risk to Establishment Start']
+    //     && crop['Temperature/Moisture Risk to Establishment End']
+    //   ) {
+    //     const startDate = moment(
+    //       crop['Temperature/Moisture Risk to Establishment Start'],
+    //       'YYYY-MM-DD',
+    //     );
+    //     const endDate = moment(
+    //       crop['Temperature/Moisture Risk to Establishment End'],
+    //       'YYYY-MM-DD',
+    //     );
+    //     return `${startDate.format('MM/DD')} - ${endDate.format('MM/DD')}`;
+    //   }
+    //   return 'N/A';
+    // }
+    // case 'temperature-second': {
+    //   const startDate = moment(
+    //     crop['Second Temperature/Moisture Risk to Establishment Start'],
+    //     'YYYY-MM-DD',
+    //   );
+    //   const endDate = moment(
+    //     crop['Second Temperature/Moisture Risk to Establishment End'],
+    //     'YYYY-MM-DD',
+    //   );
+    //   return `${startDate.format('MM/DD')} - ${endDate.format('MM/DD')}`;
+    // }
     default:
       return '';
   }

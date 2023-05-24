@@ -58,6 +58,7 @@ const CoverCropGoals = ({ handleToggle }) => {
                       <Typography variant="body1"> Goal Priority Order</Typography>
                       {state?.selectedGoals?.map((goal, index) => (
                         <Typography
+                          key={index}
                           variant="body1"
                           sx={{ fontWeight: 'normal', fontSize: '10pt', color: '#48a8ab' }}
                         >

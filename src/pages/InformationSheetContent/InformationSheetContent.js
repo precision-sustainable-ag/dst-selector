@@ -18,7 +18,7 @@ import SoilDrainageInfoContent from './SoilDrainageInfoContent/SoilDrainageInfoC
 import TerminationInfo from './TerminationInfo/TerminationInfo';
 import InformationSheetPlanting from './InformationSheetPlanting/InformationSheetPlanting';
 import PlantingAndGrowthWindows from './PlantingAndGrowthWindows/PlantingAndGrowthWindows';
-import ExtendedComments from './ExtendedComments/ExtendedComments';
+// import ExtendedComments from './ExtendedComments/ExtendedComments';
 import InformationSheetReferences from './InformationSheetReferences/InformationSheetReferences';
 
 const InformationSheetContent = ({ crop }) => {
@@ -27,89 +27,74 @@ const InformationSheetContent = ({ crop }) => {
   const { zone } = state[section];
   const [currentSources, setCurrentSources] = useState([{}]);
   const [allThumbs, setAllThumbs] = useState([]);
+  const [dataDone, setDataDone] = useState(false);
+  const query = `${encodeURIComponent('regions')}=${encodeURIComponent(state.regionId)}`;
+
+  async function getSourceData() {
+    await fetch(`https://developapi.covercrop-selector.org/v1/crops/${crop.id}/resources?${query}`)
+      .then((res) => res.json())
+      .then((data) => setCurrentSources(data.data))
+      .catch((err) => {
+        // eslint-disable-next-line no-console
+        console.log(err.message);
+      });
+  }
+
+  async function getData() {
+    await fetch(`https://developapi.covercrop-selector.org/v1/crops/${crop.id}/images?${query}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setAllThumbs(data.data);
+        setDataDone(true);
+      })
+      .catch((err) => {
+        // eslint-disable-next-line no-console
+        console.log(err.message);
+      });
+  }
 
   useEffect(() => {
-    document.title = `${crop['Cover Crop Name']} Zone ${zone}`;
-    const regex = /(?!\B"[^"]*),(?![^"]*"\B)/g;
-    const removeDoubleQuotes = /^"(.+(?="$))"$/;
-
-    async function getSourceData() {
-      await fetch('https://api.covercrop-selector.org/legacy/sources')
-        .then((res) => res.json())
-        .then((data) => data.filter((source) => {
-          const zones = source.Zone.split(',').map((item) => item.trim());
-          const coverCrops = source['Cover Crops']
-            .split(regex)
-            .map((item) => item.replace(removeDoubleQuotes, '$1'))
-            .map((item) => item.trim());
-
-          return zones.includes(`Zone ${zone}`) && coverCrops.includes(crop['Cover Crop Name']);
-        }))
-        .then((data) => setCurrentSources(data))
-        .catch((err) => {
-          // eslint-disable-next-line no-console
-          console.log(err.message);
-        });
-    }
-
+    document.title = `${crop.label} Zone ${zone}`;
     getSourceData();
+    getData();
   }, [crop, zone]);
 
-  useEffect(() => {
-    const allImages = [];
-    async function getData() {
-      await fetch(`https://covercrop-data.org/crops/${crop.id}`)
-        .then((res) => res.json())
-        .then((data) => {
-          data.data.images.forEach((image) => {
-            allImages.push(image.src);
-          });
-          setAllThumbs(allImages);
-        })
-        .catch((err) => {
-          // eslint-disable-next-line no-console
-          console.log(err.message);
-        });
-    }
-
-    getData();
-  }, [crop]);
-
-  return allThumbs.length > 0 && Object.keys(crop).length > 0 ? (
+  //   console.log('crop', crop);
+  return dataDone === true && Object.keys(crop.data).length > 0 ? (
     <>
       <CoverCropInformation
         allThumbs={allThumbs}
-        cropImage={crop['Image Data'] || null}
         cropDescription={
-          crop['Cover Crop Description'] ? crop['Cover Crop Description'] : crop['Crop Description']
+          crop.data['Taxonomy & Listing']['Cover Crop Description'].values[0]
+            ? crop.data['Taxonomy & Listing']['Cover Crop Description'].values[0] : ''
         }
         crop={crop}
       />
 
       <InformationSheetGoals
         crop={crop}
-        cropZone={crop.Zone}
-        cropGrowingWindow={crop['Growing Window']}
+        cropZone={state.zone}
+        cropGrowingWindow={crop.data.Growth['Growing Window'].values[0]}
       />
 
       <div className="row otherRows mb-4 avoidPage">
-        <InformationSheetWeeds crop={crop} />
-        <InformationSheetEnvironment crop={crop} />
+        <InformationSheetWeeds crop={crop} zone={state.zone} />
+        <InformationSheetEnvironment crop={crop.data['Environmental Tolerances']} zone={state.zone} />
       </div>
 
       <div className="row otherRows mb-4 avoidPage">
         <GrowthTraits crop={crop} />
-        <SoilDrainageInfoContent crop={crop} />
+        <SoilDrainageInfoContent crop={crop.data['Soil Conditions']['Soil Drainage']} />
       </div>
 
       <div className="row otherRows mb-4 avoidPage">
         <InformationSheetPlanting crop={crop} />
-        <TerminationInfo crop={crop} />
+        <TerminationInfo crop={crop.data.Termination} />
       </div>
 
       <PlantingAndGrowthWindows crop={crop} />
 
-      <ExtendedComments crop={crop} />
+      {/* <ExtendedComments crop={crop} /> Notes: section */}
 
       <InformationSheetReferences currentSources={currentSources} />
     </>

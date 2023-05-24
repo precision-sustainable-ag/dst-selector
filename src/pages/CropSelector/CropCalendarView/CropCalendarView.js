@@ -78,8 +78,8 @@ const CropCalendarView = ({ activeCropData }) => {
       .reverse()
       .forEach((goal) => {
         activeCropDataShadow.sort((a, b) => {
-          if (a.fields[goal] && b.fields[goal]) {
-            if (a.fields[goal] > b.fields[goal]) {
+          if (a.data.Goals[goal] && b.data.Goals[goal]) {
+            if (a.data.Goals[goal].values[0] > b.data.Goals[goal].values[0]) {
               return -1;
             }
             return 1;
@@ -98,10 +98,10 @@ const CropCalendarView = ({ activeCropData }) => {
       if (activeCropDataShadow.length > 0) {
         activeCropDataShadow.sort((a, b) => {
           const firstCropName = flipCoverCropName(
-            a.fields['Cover Crop Name'].toLowerCase(),
+            a.data.Weeds['Cover Crop Name'].values[0].toLowerCase(),
           ).replace(/\s+/g, '');
           const secondCropName = flipCoverCropName(
-            b.fields['Cover Crop Name'].toLowerCase(),
+            b.data.Weeds['Cover Crop Name'].values[0].toLowerCase(),
           ).replace(/\s+/g, '');
           return firstCropName.localeCompare(secondCropName);
         });
@@ -110,11 +110,11 @@ const CropCalendarView = ({ activeCropData }) => {
       }
     } else if (activeCropDataShadow.length > 0) {
       activeCropDataShadow.sort((a, b) => {
-        const firstCropName = flipCoverCropName(a.fields['Cover Crop Name'].toLowerCase()).replace(
+        const firstCropName = flipCoverCropName(a.data.Weeds['Cover Crop Name'].values[0].toLowerCase()).replace(
           /\s+/g,
           '',
         );
-        const secondCropName = flipCoverCropName(b.fields['Cover Crop Name'].toLowerCase()).replace(
+        const secondCropName = flipCoverCropName(b.data.Weeds['Cover Crop Name'].values[0].toLowerCase()).replace(
           /\s+/g,
           '',
         );

@@ -18,7 +18,6 @@ import {
   CalendarToday, Compare, ExpandLess, ExpandMore,
 } from '@mui/icons-material';
 import ListIcon from '@mui/icons-material/List';
-import moment from 'moment';
 import React, {
   useContext, useEffect, useState,
 } from 'react';
@@ -122,6 +121,8 @@ const CropSidebar = ({
       }
     });
 
+    // console.log('sfo', sfo);
+
     let cropData = state?.cropData?.filter((crop) => crop['Zone Decision'] === 'Include');
 
     const search = sfilters.cropSearch?.toLowerCase().match(/\w+/g);
@@ -143,54 +144,79 @@ const CropSidebar = ({
       return '';
     });
 
-    const growthArray = [];
+    // const growthArray = [];
 
-    if (sfilters['Active Growth Period: Fall']) {
-      growthArray.push('Sep', 'Oct', 'Nov');
-    }
-    if (sfilters['Active Growth Period: Winter']) {
-      growthArray.push('Dec', 'Jan', 'Feb');
-    }
-    if (sfilters['Active Growth Period: Spring']) {
-      growthArray.push('Mar', 'Apr', 'May');
-    }
-    if (sfilters['Active Growth Period: Summer']) {
-      growthArray.push('Jun', 'Jul', 'Aug');
-    }
+    // if (sfilters['Active Growth Period: Fall']) {
+    //   growthArray.push('Sep', 'Oct', 'Nov');
+    // }
+    // if (sfilters['Active Growth Period: Winter']) {
+    //   growthArray.push('Dec', 'Jan', 'Feb');
+    // }
+    // if (sfilters['Active Growth Period: Spring']) {
+    //   growthArray.push('Mar', 'Apr', 'May');
+    // }
+    // if (sfilters['Active Growth Period: Summer']) {
+    //   growthArray.push('Jun', 'Jul', 'Aug');
+    // }
 
-    const arrayKeys = [
-      'Duration',
-      'Active Growth Period',
-      'Winter Survival',
-      'Flowering Trigger',
-      'Root Architecture',
-    ];
+    // const arrayKeys = [
+    //   'Duration',
+    //   'Active Growth Period',
+    //   'Winter Survival',
+    //   'Flowering Trigger',
+    //   'Root Architecture',
+    // ];
     const booleanKeys = ['Aerial Seeding', 'Frost Seeding'];
-
+    // console.log('HERE 1', cropData);
     const filtered = cropData?.filter((crop, n, cd) => {
       const totalActiveFilters = Object.keys(nonZeroKeys2)?.length;
       let i = 0;
       nonZeroKeys2.forEach((keyObject) => {
         const key = Object.keys(keyObject);
         const vals = keyObject[key];
+        // console.log('HERE 2', arrayKeys, key);
+        // if (areCommonElements(arrayKeys, key)) {
+        // Handle array type havlues
+        Object.keys(crop.data).forEach((category) => {
+          // console.log('category', category);
+          // console.log('crop.data[category]', Object.keys(crop.data[category]).includes('Root Architecture'));
 
-        if (areCommonElements(arrayKeys, key)) {
-          // Handle array type havlues
-          if (crop[key] !== undefined) {
-            const intersection = (arrays = [vals, crop[key]]) => arrays.reduce((a, b) => a.filter((c) => b.includes(c)));
+          // if (Object.keys(crop.data[category]).includes('Root Architecture')) {
+          //   console.log('KEY KEY', key);
+          // }
+          if (Object.keys(crop.data[category]).includes(key[0])) {
+            // console.log('Object.keys(category).key', vals, crop.data[category][key].values[0]);
+            if (crop.data[category][key].values[0] !== undefined) {
+              const intersection = (arrays = [vals, crop.data[category][key].values[0]]) => arrays.reduce((a, b) => a.filter((c) => b.includes(c)));
 
-            if (intersection()?.length > 0) {
+              if (intersection()?.length > 0) {
+                i += 1;
+              }
+            } else if (areCommonElements(booleanKeys, key)) {
+            //  Handle boolean types
+              if (crop.data[category][key].values[0]) {
+                i += 1;
+              }
+            } else if (vals.includes(crop.data[category][key].values[0])) {
               i += 1;
             }
-          } else if (areCommonElements(booleanKeys, key)) {
-          //  Handle boolean types
-            if (crop[key]) {
-              i += 1;
-            }
-          } else if (vals.includes(crop[key])) {
-            i += 1;
           }
-        }
+        });
+        // if (crop.data[category][key].values[0] !== undefined) {
+        //   const intersection = (arrays = [vals, crop.data[category][key].values[0]]) => arrays.reduce((a, b) => a.filter((c) => b.includes(c)));
+
+        //   if (intersection()?.length > 0) {
+        //     i += 1;
+        //   }
+        // } else if (areCommonElements(booleanKeys, key)) {
+        // //  Handle boolean types
+        //   if (crop.data[category][key].values[0]) {
+        //     i += 1;
+        //   }
+        // } else if (vals.includes(crop.data[category][key].values[0])) {
+        //   i += 1;
+        // }
+        // }
       });
 
       cd[n].inactive = (i !== totalActiveFilters);
@@ -223,34 +249,36 @@ const CropSidebar = ({
 
   const generateSidebarObject = async (dataDictionary) => {
     await sidebarCategoriesData.forEach((category) => {
-      const newCategory = {
-        name: category.label,
-        description: category.description,
-      };
-      newCategory.values = category?.attributes?.map((filter) => {
-        const type = filter?.values[0]?.dataType;
-
-        const obj = {
-          name: filter.label,
-          type,
-          rating: !filter.isArray,
-          maxSize: null,
-          description: filter.description,
-          details: filter.details,
-          units: filter.units,
+      if (category.label !== 'Goals') {
+        const newCategory = {
+          name: category.label,
+          description: category.description,
         };
-        if (type === 'number') {
-          obj.values = filter.values;
-          obj.maxSize = 5;
-        } else {
-          obj.values = filter.values;
-        }
+        newCategory.values = category?.attributes?.map((filter) => {
+          const type = filter?.values[0]?.dataType;
 
-        createObject(obj, dataDictionary, filter);
+          const obj = {
+            name: filter.label,
+            type,
+            rating: !filter.isArray,
+            maxSize: null,
+            description: filter.description,
+            details: filter.details,
+            units: filter.units,
+          };
+          if (type === 'number') {
+            obj.values = filter.values;
+            obj.maxSize = 5;
+          } else {
+            obj.values = filter.values;
+          }
 
-        return obj;
-      });
-      dictionary.push(newCategory);
+          createObject(obj, dataDictionary, filter);
+
+          return obj;
+        });
+        dictionary.push(newCategory);
+      }
     });
   };
 
@@ -299,8 +327,8 @@ const CropSidebar = ({
         dispatch({
           type: 'UPDATE_DATE_RANGE',
           data: {
-            startDate: moment(new Date(dateRange.startDate).toISOString()).format('YYYY-MM-DD'),
-            endDate: moment(new Date(dateRange.endDate).toISOString()).format('YYYY-MM-DD'),
+            startDate: dateRange.startDate.toISOString().substring(0, 10),
+            endDate: dateRange.endDate.toISOString().substring(0, 10),
           },
         });
       }
