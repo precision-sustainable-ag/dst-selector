@@ -82,7 +82,11 @@ const Header = () => {
 
     // since this updates with state; ideally, weather and soil info should be updated here
     // get current lat long and get county, state and city
-    if (state.progress >= 2 && state.markers.length > 0) {
+    console.log('before');
+    console.log(lat, lon, state.markers);
+    console.log(state.progress);
+    if (state.progress >= 1 && state.markers.length > 0) {
+      console.log('after');
       const revAPIURL = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`;
 
       Axios.get(revAPIURL)
