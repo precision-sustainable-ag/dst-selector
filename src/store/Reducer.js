@@ -348,6 +348,13 @@ const Reducer = (state, action, value = action && action.data && action.data.val
       };
     }
 
+    case 'MODAL_DATA': {
+      return {
+        ...state,
+        modalData: action.data,
+      };
+    }
+
     case 'PULL_DICTIONARY_DATA': {
       return {
         ...state,
