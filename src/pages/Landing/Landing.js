@@ -106,9 +106,21 @@ const Landing = ({ height, title, bg }) => {
   };
 
   useEffect(() => {
+    // true signifies we are on dev, false signifies we are on prod
+    const devEnvironment = /(localhost|dev)/i.test(window.location);
+    // verifies selected state is in allowed council based off of devEnv variable
+    const verifyCouncil = (selectedCouncil) => {
+      const developCouncils = ['NECCC', 'MCCC', 'SCCC'];
+      const productionCouncils = ['NECCC'];
+      if (devEnvironment) {
+        return developCouncils.includes(selectedCouncil);
+      }
+      return productionCouncils.includes(selectedCouncil);
+    };
+
     if (Object.keys(selectedRegion).length > 0) {
       const selState = allStates.filter((s) => s.label === selectedRegion.properties.STATE_NAME);
-      if (selState.length > 0 && selState[0]?.council.shorthand === 'NECCC') {
+      if (selState.length > 0 && verifyCouncil(selState[0]?.council.shorthand)) {
         stateChange(selState[0]);
       } else {
         dispatch({
@@ -123,7 +135,7 @@ const Landing = ({ height, title, bg }) => {
         // eslint-disable-next-line no-alert
         alert(
           // eslint-disable-next-line max-len
-          'The region you have selected is not currently supported. We currently support Northeast and Southern Cover Crop Councils. Please try again!',
+          devEnvironment === true ? 'The region you have selected is not currently supported. We currently support Northeast, Midwest, and Southern Cover Crop Councils. Please try again!' : 'The region you have selected is not currently supported. We currently support Northeast Cover Crop Council. Please try again!',
         );
       }
     }
