@@ -7,15 +7,40 @@ import {
 } from '@mui/material';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { Close, Print } from '@mui/icons-material';
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 import ReactGA from 'react-ga';
 import '../../styles/cropDetailsModal.scss';
 import InformationSheetContent from '../../pages/InformationSheetContent/InformationSheetContent';
 import { Context } from '../../store/Store';
 
 const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
-  const { state } = useContext(Context);
-  const modalData = crop;
+  const { state, dispatch } = useContext(Context);
+  const [dataDone, setDataDone] = useState(false);
+
+  async function getCropData() {
+    const query = `${encodeURIComponent('regions')}=${encodeURIComponent(state.regionId)}`;
+    await fetch(`https://developapi.covercrop-selector.org/v1/states/${state.stateId}/crops/${crop.id}?${query}`)
+      .then((res) => res.json())
+      .then((data) => {
+        dispatch({
+          type: 'MODAL_DATA',
+          data,
+        });
+      })
+      .then(() => {
+        setDataDone(true);
+      })
+      .catch((err) => {
+        // eslint-disable-next-line no-console
+        console.log(err.message);
+      });
+  }
+
+  useEffect(() => {
+    // if (crop.length > 1) {
+    getCropData();
+    // }
+  }, [crop]);
 
   useEffect(() => {
     if (state.consent === true) {
@@ -39,7 +64,7 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
     window.open(`https://selectorimages.blob.core.windows.net/selectorimages/pdf/${document.title}.pdf`, '_blank');
   }; // print
 
-  return (
+  return dataDone === true && (
     <Modal // `disableBackdropClick` is removed by codemod.
       // You can find more details about this breaking change in
       // [the migration guide](https://mui.com/material-ui/migration/v5-component-changes/#modal)
@@ -60,101 +85,99 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
       disableEscapeKeyDown={false}
     >
       <Fade in={modalOpen}>
-        {modalData ? (
-          <div className="modalParentWrapper">
-            <Box
-              className="cropTableModal modalContainer"
-              sx={{
-                backgroundColor: 'background.paper',
-                border: '2px solid #000',
-                boxShadow: 5,
-                padding: '0px',
-              }}
-              id={`cropDetailModal-${modalData.id}`}
-            >
-              <div className="container-fluid">
-                <table>
-                  <thead>
-                    <tr>
-                      <th>
-                        <div className="row zone" style={{ paddingBottom: '1em' }}>
-                          <div
-                            className="col-12"
-                            style={{
-                              top: '-1px',
-                              background: '#2D7B7B',
-                              color: 'white',
-                              borderTopLeftRadius: '5px',
-                              borderTopRightRadius: '5px',
-                            }}
-                          >
-                            <div className="row">
-                              <div className="col-12">
-                                <strong className="pl-2">
-                                  PLANT HARDINESS ZONE
-                                  {' '}
-                                  {crop.Zone}
-                                  {' '}
-                                  DATASET
-                                  <span className="noprint">
-                                    <Button
-                                      startIcon={<OpenInNewIcon />}
-                                      style={{
-                                        color: 'white',
-                                        textTransform: 'none',
-                                        marginLeft: '2em',
-                                        textDecoration: 'underline',
-                                      }}
-                                      className="dataDict"
-                                      onClick={() => {
-                                        window.open('/data-dictionary', '_blank');
-                                      }}
-                                    >
-                                      Data Dictionary
-                                    </Button>
-                                  </span>
-                                  <span className="noprint">
-                                    <Button
-                                      startIcon={<Print />}
-                                      style={{
-                                        color: 'white',
-                                        textTransform: 'none',
-                                        marginLeft: '2em',
-                                        textDecoration: 'underline',
-                                      }}
-                                      className="dataDict"
-                                      onClick={print}
-                                    >
-                                      Print
-                                    </Button>
-                                    <Button style={{ color: 'white', float: 'right', paddingTop: '13px' }} onClick={handleModalClose}>
-                                      <Close />
-                                    </Button>
-                                  </span>
-                                </strong>
-                              </div>
+        {/* {state.modalData.length > 0 && ( */}
+        <div className="modalParentWrapper">
+          <Box
+            className="cropTableModal modalContainer"
+            sx={{
+              backgroundColor: 'background.paper',
+              border: '2px solid #000',
+              boxShadow: 5,
+              padding: '0px',
+            }}
+            id={`cropDetailModal-${state.modalData.id}`}
+          >
+            <div className="container-fluid">
+              <table>
+                <thead>
+                  <tr>
+                    <th>
+                      <div className="row zone" style={{ paddingBottom: '1em' }}>
+                        <div
+                          className="col-12"
+                          style={{
+                            top: '-1px',
+                            background: '#2D7B7B',
+                            color: 'white',
+                            borderTopLeftRadius: '5px',
+                            borderTopRightRadius: '5px',
+                          }}
+                        >
+                          <div className="row">
+                            <div className="col-12">
+                              <strong className="pl-2">
+                                PLANT HARDINESS ZONE
+                                {' '}
+                                {crop.Zone}
+                                {' '}
+                                DATASET
+                                <span className="noprint">
+                                  <Button
+                                    startIcon={<OpenInNewIcon />}
+                                    style={{
+                                      color: 'white',
+                                      textTransform: 'none',
+                                      marginLeft: '2em',
+                                      textDecoration: 'underline',
+                                    }}
+                                    className="dataDict"
+                                    onClick={() => {
+                                      window.open('/data-dictionary', '_blank');
+                                    }}
+                                  >
+                                    Data Dictionary
+                                  </Button>
+                                </span>
+                                <span className="noprint">
+                                  <Button
+                                    startIcon={<Print />}
+                                    style={{
+                                      color: 'white',
+                                      textTransform: 'none',
+                                      marginLeft: '2em',
+                                      textDecoration: 'underline',
+                                    }}
+                                    className="dataDict"
+                                    onClick={print}
+                                  >
+                                    Print
+                                  </Button>
+                                  <Button style={{ color: 'white', float: 'right', paddingTop: '13px' }} onClick={handleModalClose}>
+                                    <Close />
+                                  </Button>
+                                </span>
+                              </strong>
                             </div>
                           </div>
                         </div>
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>
-                        <div id="cover-crop-modal-description">
-                          <InformationSheetContent crop={crop.fields ? crop.fields : modalData} from="modal" />
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </Box>
-          </div>
-        ) : (
-          <div />
-        )}
+                      </div>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      <div id="cover-crop-modal-description">
+                        <InformationSheetContent crop={crop} modalData={state.modalData.data} from="modal" />
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </Box>
+        </div>
+        {/* )} */}
       </Fade>
     </Modal>
   );

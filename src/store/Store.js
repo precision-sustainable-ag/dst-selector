@@ -188,6 +188,7 @@ const initialState = {
   selectedStars: {},
   allGoals: [],
   cropData: [],
+  modalData: [],
   selectedCrops: [],
   selectedGoals: [],
   zoom: 13,
