@@ -79,6 +79,7 @@ const LocationComponent = ({
       data: {
         zoneText: region.label,
         zone: region.shorthand,
+        zoneId: region.id,
       },
     });
   };
