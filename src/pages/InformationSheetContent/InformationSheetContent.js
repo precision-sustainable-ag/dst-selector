@@ -37,7 +37,7 @@ const InformationSheetContent = ({ crop, modalData }) => {
   const query = `${encodeURIComponent('regions')}=${encodeURIComponent(state.regionId)}`;
 
   async function getSourceData() {
-    await fetch(`https://developapi.covercrop-selector.org/v1/crops/${crop.fields.id}/resources?${query}`)
+    await fetch(`https://developapi.covercrop-selector.org/v1/crops/${crop?.id}/resources?${query}`)
       .then((res) => res.json())
       .then((data) => setCurrentSources(data.data))
       .catch((err) => {
@@ -47,7 +47,7 @@ const InformationSheetContent = ({ crop, modalData }) => {
   }
 
   async function getData() {
-    await fetch(`https://developapi.covercrop-selector.org/v1/crops/${crop.fields.id}/images?${query}`)
+    await fetch(`https://developapi.covercrop-selector.org/v1/crops/${crop?.id}/images?${query}`)
       .then((res) => res.json())
       .then((data) => {
         setAllThumbs(data.data);
