@@ -71,7 +71,6 @@ const Landing = ({ height, title, bg }) => {
   }
 
   useEffect(() => {
-    console.log(regions);
     dispatch({
       type: 'UPDATE_REGIONS',
       data: {
