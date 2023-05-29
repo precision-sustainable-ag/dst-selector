@@ -39,7 +39,7 @@ const growthIcon = {
 const CropCalendarView = ({ activeCropData }) => {
   const { state, dispatch } = useContext(Context);
   const [legendModal, setLegendModal] = useState(false);
-  const [nameSortFlag, setNameSortFlag] = useState(true);
+  const [nameSortFlag, setNameSortFlag] = useState(false);
   const [goalsSortFlag, setGoalsSortFlag] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalData, setModalData] = useState([{}]);
@@ -170,6 +170,10 @@ const CropCalendarView = ({ activeCropData }) => {
     //   }
     // }
   };
+
+  useEffect(() => {
+    sortCropsByName();
+  }, []);
 
   return (
     <>

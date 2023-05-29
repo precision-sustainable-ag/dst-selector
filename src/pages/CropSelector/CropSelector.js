@@ -57,75 +57,13 @@ const CropSelector = (props) => {
   const { state, dispatch } = useContext(Context);
   const [showGrowthWindow, setShowGrowthWindow] = useState(true);
   // const [sortPreference, setSortPreference] = useState('desc');
-  const [goalsSortFlag, setGoalsSortFlag] = useState(true);
+  const [goalsSortFlag, setGoalsSortFlag] = useState(false);
   const { selectedGoals, activeCropData } = state;
   const [isListView, setIsListView] = useState(true);
   const [comparisonView, setComparisonView] = useState(false);
   const [cropData, setCropData] = useState([]);
   const [updatedActiveCropData, setUpdatedActiveCropData] = useState([]);
   const [handleConfirm, setHandleConfirm] = useState(false);
-
-  useEffect(() => {
-    if (state.myCoverCropListLocation !== 'selector' && state.selectedCrops.length > 0) {
-      // document.title = 'Cover Crop Selector';
-      setHandleConfirm(true);
-    }
-  }, [state.selectedCrops, state.myCoverCropListLocation]);
-
-  useEffect(() => {
-    setUpdatedActiveCropData(activeCropData);
-  }, [activeCropData]);
-
-  useEffect(() => {
-    if (state.consent === true) {
-      ReactGA.initialize('UA-181903489-1');
-
-      ReactGA.pageview('cover crop selector');
-    }
-  }, [state.consent]);
-
-  useEffect(() => {
-    if (state.selectedGoals?.length === 0) {
-      dispatch({
-        type: 'UPDATE_PROGRESS',
-        data: {
-          type: 'DECREMENT',
-        },
-      });
-    }
-  }, [state.selectedGoals, dispatch]);
-
-  useEffect(() => {
-    if (state?.cropData) {
-      if (state?.cropData?.length > 0) {
-        // sort crop data by goal priority
-
-        if (selectedGoals?.length > 0) {
-          const activeCropDataShadow = state?.cropData;
-          selectedGoals
-            .slice()
-            .reverse()
-            .forEach((goal) => {
-              activeCropDataShadow.sort((a, b) => {
-                if (a[goal] && b[goal]) {
-                  if (a[goal] > b[goal]) {
-                    return -1;
-                  }
-                  return 1;
-                }
-                return 0;
-              });
-            });
-          setCropData(activeCropDataShadow);
-        } else {
-          setCropData(state?.cropData);
-        }
-      }
-    }
-    return () => {
-      setCropData([]);
-    };
-  }, [state?.cropData, selectedGoals]);
 
   const sortCropsBy = () => {
     const dispatchValue = (updatedCropData) => dispatch({
@@ -185,6 +123,69 @@ const CropSelector = (props) => {
       // }
     }
   };
+
+  useEffect(() => {
+    if (state.myCoverCropListLocation !== 'selector' && state.selectedCrops.length > 0) {
+      // document.title = 'Cover Crop Selector';
+      setHandleConfirm(true);
+    }
+  }, [state.selectedCrops, state.myCoverCropListLocation]);
+
+  useEffect(() => {
+    setUpdatedActiveCropData(activeCropData);
+    sortCropsBy();
+  }, [activeCropData]);
+
+  useEffect(() => {
+    if (state.consent === true) {
+      ReactGA.initialize('UA-181903489-1');
+
+      ReactGA.pageview('cover crop selector');
+    }
+  }, [state.consent]);
+
+  useEffect(() => {
+    if (state.selectedGoals?.length === 0) {
+      dispatch({
+        type: 'UPDATE_PROGRESS',
+        data: {
+          type: 'DECREMENT',
+        },
+      });
+    }
+  }, [state.selectedGoals, dispatch]);
+
+  useEffect(() => {
+    if (state?.cropData) {
+      if (state?.cropData?.length > 0) {
+        // sort crop data by goal priority
+
+        if (selectedGoals?.length > 0) {
+          const activeCropDataShadow = state?.cropData;
+          selectedGoals
+            .slice()
+            .reverse()
+            .forEach((goal) => {
+              activeCropDataShadow.sort((a, b) => {
+                if (a[goal] && b[goal]) {
+                  if (a[goal] > b[goal]) {
+                    return -1;
+                  }
+                  return 1;
+                }
+                return 0;
+              });
+            });
+          setCropData(activeCropDataShadow);
+        } else {
+          setCropData(state?.cropData);
+        }
+      }
+    }
+    return () => {
+      setCropData([]);
+    };
+  }, [state?.cropData, selectedGoals]);
 
   function useWindowSize() {
     // Initialize state with undefined width/height so server and client renders match
