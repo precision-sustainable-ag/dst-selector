@@ -121,7 +121,7 @@ const LocationComponent = ({
 
   const handleMapChange = () => {
     // eslint-disable-next-line eqeqeq
-    const regionInfo = state.regions.filter((region) => region.shorthand == selectedZone);
+    const regionInfo = state.regions.filter((region) => region.shorthand === selectedZone);
     if (regionInfo.length > 0) {
       setSelectedRegion(regionInfo[0]);
     }

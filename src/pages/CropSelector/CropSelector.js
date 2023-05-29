@@ -21,7 +21,7 @@ import CropCalendarView from './CropCalendarView/CropCalendarView';
 import CropSidebarComponent from '../CropSidebar/CropSidebar';
 import CropTableComponent from './CropTable/CropTable';
 import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset';
-import { Sort } from '../../shared/constants';
+import { sortCrops } from '../../shared/constants';
 
 // const _ = require('lodash');
 
@@ -138,7 +138,7 @@ const CropSelector = (props) => {
     if (selectedGoals?.length > 0) {
       const activeCropDataShadow = activeCropData?.length > 0 ? activeCropData : state?.cropData;
 
-      Sort('Average Goals', activeCropDataShadow, dispatchValue, selectedGoals, goalsSortFlag);
+      sortCrops('Average Goals', activeCropDataShadow, dispatchValue, selectedGoals, goalsSortFlag);
       setGoalsSortFlag(!goalsSortFlag);
       dispatchValue(activeCropDataShadow);
 
@@ -264,7 +264,7 @@ const CropSelector = (props) => {
                 // cropData={cropData}
                 activeCropData={updatedActiveCropData}
                 // showGrowthWindow={showGrowthWindow}
-                sortAllCrops={sortCropsBy}
+                // sortAllCrops={sortCropsBy}
                 // sortPreference={sortPreference}
               />
             ) : (
