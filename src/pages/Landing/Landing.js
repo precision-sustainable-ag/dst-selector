@@ -71,10 +71,20 @@ const Landing = ({ height, title, bg }) => {
   }
 
   useEffect(() => {
+    console.log(regions);
     dispatch({
       type: 'UPDATE_REGIONS',
       data: {
         regions,
+      },
+    });
+
+    dispatch({
+      type: 'UPDATE_ZONE',
+      data: {
+        zoneText: regions[0]?.label,
+        zone: regions[0]?.shorthand,
+        zoneId: regions[0]?.id,
       },
     });
   }, [regions]);
