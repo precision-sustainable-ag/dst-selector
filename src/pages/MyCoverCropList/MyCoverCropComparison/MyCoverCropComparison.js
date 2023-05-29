@@ -76,7 +76,7 @@ const MyCoverCropComparison = ({ selectedCrops }) => {
 
   const handleModalOpen = (crop) => {
     // put data inside modal
-    setModalData({ fields: crop });
+    setModalData(crop);
     setModalOpen(true);
   };
 
