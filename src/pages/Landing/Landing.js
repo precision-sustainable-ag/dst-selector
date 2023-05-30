@@ -120,7 +120,7 @@ const Landing = ({ height, title, bg }) => {
     // verifies selected state is in allowed council based off of devEnv variable
     const verifyCouncil = (selectedCouncil) => {
       const developCouncils = ['NECCC', 'MCCC', 'SCCC'];
-      const productionCouncils = ['NECCC'];
+      const productionCouncils = ['NECCC', 'SCCC'];
       if (devEnvironment) {
         return developCouncils.includes(selectedCouncil);
       }
