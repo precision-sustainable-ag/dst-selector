@@ -309,7 +309,7 @@ const Header = () => {
       .then((data) => data[0].attributes.filter(
         (d) => d.label !== 'Notes: Goals',
       ))
-      .then((data) => data.map((goal) => ({ fields: goal })))
+      // .then((data) => data.map((goal) => ({ fields: goal })))
       .then((data) => getCropData(data))
       .catch((err) => {
       // eslint-disable-next-line no-console
