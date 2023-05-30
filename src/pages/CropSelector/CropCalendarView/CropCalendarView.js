@@ -22,7 +22,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import {
   allMonths,
   CustomStyles,
-  Sort,
+  sortCrops,
   sudoButtonStyle,
   sudoButtonStyleWithPadding,
 } from '../../../shared/constants';
@@ -39,7 +39,7 @@ const growthIcon = {
 const CropCalendarView = ({ activeCropData }) => {
   const { state, dispatch } = useContext(Context);
   const [legendModal, setLegendModal] = useState(false);
-  const [nameSortFlag, setNameSortFlag] = useState(true);
+  const [nameSortFlag, setNameSortFlag] = useState(false);
   const [goalsSortFlag, setGoalsSortFlag] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalData, setModalData] = useState([{}]);
@@ -73,7 +73,7 @@ const CropCalendarView = ({ activeCropData }) => {
   };
 
   const sortReset = () => {
-    Sort('Average Goals', activeCropDataShadow, dispatchValue, selectedGoals, goalsSortFlag);
+    sortCrops('Average Goals', activeCropDataShadow, dispatchValue, selectedGoals, goalsSortFlag);
     setGoalsSortFlag(!goalsSortFlag);
     dispatchValue(activeCropDataShadow);
 
@@ -102,7 +102,7 @@ const CropCalendarView = ({ activeCropData }) => {
 
   const sortCropsByName = () => {
     // const activeCropDataShadow = activeCropData;
-    Sort('Crop Name', activeCropDataShadow, dispatchValue, selectedGoals, nameSortFlag);
+    sortCrops('Crop Name', activeCropDataShadow, dispatchValue, selectedGoals, nameSortFlag);
     setNameSortFlag(!nameSortFlag);
 
     // if (nameSortFlag) {
@@ -143,7 +143,7 @@ const CropCalendarView = ({ activeCropData }) => {
   const sortBySelectedCrops = () => {
     const selectedCropsShadow = state.selectedCrops;
 
-    Sort('Selected Crops', activeCropDataShadow, dispatchValue, selectedCropsShadow);
+    sortCrops('Selected Crops', activeCropDataShadow, dispatchValue, selectedCropsShadow);
 
     // const activeCropDataShadow = activeCropData;
     // if (selectedCropsSortFlag) {
@@ -170,6 +170,10 @@ const CropCalendarView = ({ activeCropData }) => {
     //   }
     // }
   };
+
+  useEffect(() => {
+    sortCropsByName();
+  }, []);
 
   return (
     <>

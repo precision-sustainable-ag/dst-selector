@@ -472,7 +472,7 @@ export const BinaryButton = ({ action }) => (
   </>
 );
 
-export const Sort = (type = 'Average Goals', crops = [], dispatchValue = {}, selectedItems = [], sortFlag = '') => {
+export const sortCrops = (type = 'Average Goals', crops = [], dispatchValue = {}, selectedItems = [], sortFlag = '') => {
   if (type === 'Average Goals') {
     crops.sort((a, b) => {
       let aAvg = 0;
@@ -481,19 +481,23 @@ export const Sort = (type = 'Average Goals', crops = [], dispatchValue = {}, sel
         .slice()
         .reverse()
         .forEach((goal) => {
-          aAvg = +a.data.Goals[goal].values[0] + aAvg;
-          bAvg = +b.data.Goals[goal].values[0] + bAvg;
+          if (b.data.Goals[goal]) {
+            bAvg = +b.data.Goals[goal].values[0] + bAvg;
+          }
+          if (a.data.Goals[goal]) {
+            aAvg = +a.data.Goals[goal].values[0] + aAvg;
+          }
         });
+
       aAvg /= selectedItems.length;
       bAvg /= selectedItems.length;
 
-      if (aAvg > 0 && bAvg > 0) {
-        if (aAvg > bAvg) {
-          return -1;
-        }
-        return 1;
+      if (aAvg > bAvg) {
+        return -1;
+      } if (aAvg === bAvg) {
+        return 0;
       }
-      return 0;
+      return 1;
     });
     if (!sortFlag) {
       crops.reverse();
@@ -505,10 +509,10 @@ export const Sort = (type = 'Average Goals', crops = [], dispatchValue = {}, sel
       if (crops.length > 0) {
         crops.sort((a, b) => {
           const firstCropName = flipCoverCropName(
-            a.data.Weeds['Cover Crop Name'].values[0].toLowerCase(),
+            a.label.toLowerCase(),
           ).replace(/\s+/g, '');
           const secondCropName = flipCoverCropName(
-            b.data.Weeds['Cover Crop Name'].values[0].toLowerCase(),
+            b.label.toLowerCase(),
           ).replace(/\s+/g, '');
           return firstCropName.localeCompare(secondCropName);
         });
@@ -517,11 +521,11 @@ export const Sort = (type = 'Average Goals', crops = [], dispatchValue = {}, sel
       }
     } else if (crops.length > 0) {
       crops.sort((a, b) => {
-        const firstCropName = flipCoverCropName(a.data.Weeds['Cover Crop Name'].values[0].toLowerCase()).replace(
+        const firstCropName = flipCoverCropName(a.label.toLowerCase()).replace(
           /\s+/g,
           '',
         );
-        const secondCropName = flipCoverCropName(b.data.Weeds['Cover Crop Name'].values[0].toLowerCase()).replace(
+        const secondCropName = flipCoverCropName(b.label.toLowerCase()).replace(
           /\s+/g,
           '',
         );

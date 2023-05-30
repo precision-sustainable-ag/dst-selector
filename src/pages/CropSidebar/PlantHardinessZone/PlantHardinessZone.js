@@ -29,6 +29,7 @@ const PlantHardinessZone = ({ handleToggle, dispatch }) => {
       data: {
         zoneText: region.label,
         zone: region.shorthand,
+        zoneId: region.id,
       },
     });
   };

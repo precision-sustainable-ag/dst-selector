@@ -5,7 +5,7 @@
 */
 
 import {
-  Button, Dialog, DialogActions, DialogContent, Typography,
+  Button, Dialog, DialogActions, DialogContent, Typography, Grid,
 } from '@mui/material';
 import { LocationOn, Refresh } from '@mui/icons-material';
 import CloudIcon from '@mui/icons-material/Cloud';
@@ -179,19 +179,58 @@ const InformationBar = () => {
       <div className="greenBarWrapper">
         {state.progress > 0 && window.location.pathname === speciesSelectorToolName && (
         <>
-          <div>
-            {getData('location')}
-          </div>
-          <div>
-            {getData('soil')}
-          </div>
-          <div>
-            {getData('weather')}
-          </div>
-          <div>
-            {getData('goals')}
-          </div>
-          <div
+          <Grid container>
+            <Grid item>
+              {getData('location')}
+            </Grid>
+            <Grid item>
+              {getData('soil')}
+            </Grid>
+            <Grid item>
+              {getData('weather')}
+            </Grid>
+            <Grid item>
+              {getData('goals')}
+            </Grid>
+            <Grid item>
+              <div
+                style={{
+                  marginRight: '40px',
+                }}
+                className="restartBtnWrapper"
+              >
+                <ProgressButtons />
+                <LightButton
+                  style={{
+                    maxWidth: '90px',
+                    maxHeight: '35px',
+                    minWidth: '90px',
+                    minHeight: '35px',
+                    fontSize: '13px',
+                    marginLeft: '-5%',
+                    marginTop: '2.5px',
+                    marginBottom: '2.5px',
+
+                  }}
+                  onClick={() => {
+                    closeExpansionPanel();
+                    setConfirmationOpen(true);
+                  }}
+                >
+                  <Refresh />
+                  <p style={{
+                    paddingBottom: '6px',
+                  }}
+                  >
+                    &nbsp; Restart
+
+                  </p>
+                </LightButton>
+              </div>
+            </Grid>
+          </Grid>
+
+          {/* <div
             style={{
               marginRight: '40px',
             }}
@@ -224,7 +263,7 @@ const InformationBar = () => {
 
               </p>
             </LightButton>
-          </div>
+          </div> */}
         </>
         )}
       </div>
