@@ -64,6 +64,7 @@ const Header = () => {
                 data: {
                   zoneText: state.councilShorthand === 'NECCC' || !match ? `Zone ${zone.slice(0, -1)}` : `Zone ${zone}`,
                   zone: (state.councilShorthand === 'NECCC') || !match ? zone.slice(0, -1) : zone,
+                  zoneId: zone,
                 },
               });
             });
@@ -275,8 +276,8 @@ const Header = () => {
   };
 
   async function getCropData(formattedGoal) {
-    const query = `${encodeURIComponent('regions')}=${encodeURIComponent(state.regionId)}`;
-    await fetch(`https://developapi.covercrop-selector.org/v1/states/${state.stateId}/crops?${query}`)
+    const query = `${encodeURIComponent('regions')}=${encodeURIComponent(state.zoneId)}`;
+    await fetch(`https://developapi.covercrop-selector.org/v1/states/${state.zoneId}/crops?${query}`)
       .then((res) => res.json())
       .then((data) => {
         cropDataFormatter(data.data);
@@ -296,8 +297,8 @@ const Header = () => {
   }
 
   async function getDictData() {
-    const query = `${encodeURIComponent('regions')}=${encodeURIComponent(state.regionId)}`;
-    await fetch(`https://developapi.covercrop-selector.org/v1/states/${state.stateId}/dictionary?${query}`)
+    const query = `${encodeURIComponent('regions')}=${encodeURIComponent(state.zoneId)}`;
+    await fetch(`https://developapi.covercrop-selector.org/v1/states/${state.zoneId}/dictionary?${query}`)
       .then((res) => res.json())
       .then((data) => {
         loadDictData(data.data);
@@ -308,7 +309,7 @@ const Header = () => {
       .then((data) => data[0].attributes.filter(
         (d) => d.label !== 'Notes: Goals',
       ))
-      .then((data) => data.map((goal) => ({ fields: goal })))
+      // .then((data) => data.map((goal) => ({ fields: goal })))
       .then((data) => getCropData(data))
       .catch((err) => {
       // eslint-disable-next-line no-console

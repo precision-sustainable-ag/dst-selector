@@ -23,7 +23,7 @@ const GoalsSelector = () => {
   const [handleConfirm, setHandleConfirm] = useState(false);
 
   useEffect(() => {
-    if (state.myCoverCropListLocation !== 'selector' && state.selectedCrops.length > 0) {
+    if (state.myCoverCropListLocation !== 'selector' && state.selectedCrops?.length > 0) {
       // document.title = 'Cover Crop Selector';
       setHandleConfirm(true);
     }
@@ -59,7 +59,7 @@ const GoalsSelector = () => {
             cover crops. The first goal you select will have the highest priority in sorting and then
             decrease for each additional goal. Hover on a goal for more information.
           </Typography>
-          {allGoals.length > 0 && (
+          {allGoals?.length > 0 && (
             <Grid container spacing={4} className="goals" style={{ justifyContent: 'center' }}>
               {
                 allGoals.map((goal, key) => (
