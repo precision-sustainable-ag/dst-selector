@@ -12,14 +12,14 @@
     if lorem text is in a crop then airtable does not have a description for that crop
 */
 
-// import moment from 'moment-timezone';
+import moment from 'moment-timezone';
 import React, { createContext, useReducer, useMemo } from 'react';
 import Reducer from './Reducer';
 
 export const cropDataFormatter = (cropData = [{}]) => {
   const excludedCropZoneDecisionKeys = ['Exclude', 'Up and Coming', 'Discuss'];
   // Filter unwanted rows
-  return cropData.filter((crop) => {
+  const tjson = cropData.filter((crop) => {
     if (
       excludedCropZoneDecisionKeys.includes(crop['Zone Decision'])
       || crop['Cover Crop Name'] === '__Open Discussion Row'
@@ -28,147 +28,122 @@ export const cropDataFormatter = (cropData = [{}]) => {
     } return true;
   });
 
-  // const monthStringBuilder = (vals) => {
-  //   const params = [
-  //     'Reliable Establishment',
-  //     'Freeze/Moisture Risk to Establishment',
-  //     'Frost Seeding',
-  //     'Fall/Winter Seeding Rate',
-  //     'Spring Seeding Rate',
-  //     'Summer Seeding Rate',
-  //     'Can Interseed',
-  //     'Average Frost',
-  //   ];
-  //   const val = vals;
-  //   params.forEach((param) => {
-  //     if (val.fields.data['Planting and Growth Windows'][`${param}`]) {
-  //       val.fields.data['Planting and Growth Windows'][`${param}`].values.forEach((dateArray) => {
-  //         const datesArr = dateArray.split('-');
-  //         // const valStart = moment(datesArr[0], 'YYYY-MM-DD');
-  //         const valStart = moment(datesArr[0], 'MM/DD/YYYY');
-  //         const valEnd = moment(datesArr[1], 'MM/DD/YYYY');
-  //         let str = '';
-  //         const valuesArray = [];
+  const monthStringBuilder = (vals) => {
+    const params = [
+      'Reliable Establishment',
+      'Freeze/Moisture Risk to Establishment',
+      'Frost Seeding',
+      'Fall/Winter Seeding Rate',
+      'Spring Seeding Rate',
+      'Summer Seeding Rate',
+      'Can Interseed',
+      'Average Frost',
+    ];
+    const val = vals;
+    params.forEach((param) => {
+      if (val.data['Planting and Growth Windows'][`${param}`]) {
+        val.data['Planting and Growth Windows'][`${param}`].values.forEach((dateArray) => {
+          const datesArr = dateArray.split('-');
+          // const valStart = moment(datesArr[0], 'YYYY-MM-DD');
+          const valStart = moment(datesArr[0], 'MM/DD/YYYY');
+          const valEnd = moment(datesArr[1], 'MM/DD/YYYY');
+          let str = '';
+          const valuesArray = [];
 
-  //         if (param === 'Average Frost') {
-  //           valEnd.add('1', 'years');
-  //         }
+          if (param === 'Average Frost') {
+            valEnd.add('1', 'years');
+          }
 
-  //         while (valStart.isSameOrBefore(valEnd)) {
-  //           if (valStart.get('D') <= 15) {
-  //             str = 'Early';
-  //           } else {
-  //             str = 'Mid';
-  //           }
-  //           if (!valuesArray.includes([`${valStart.format('MMMM')}, ${str}`])) {
-  //             valuesArray.push([`${valStart.format('MMMM')}, ${str}`]);
-  //           }
-  //           valStart.add('1', 'days');
-  //         }
-  //         valuesArray.forEach((key) => {
-  //           const prev = val.fields[key] || [];
-  //           prev.push(param);
-  //           val.fields[key] = prev;
-  //         });
-  //       });
-  //     }
-  //   });
-  //   // params.forEach((param) => {
-  //   //   if (val.fields[`${param} Start`]) {
-  //   //     const valStart = moment(val.fields[`${param} Start`], 'YYYY-MM-DD');
-  //   //     const valEnd = val.fields[`${param} End`]
-  //   //       ? moment(val.fields[`${param} End`], 'YYYY-MM-DD')
-  //   //       : moment(val.fields[`${param} Stop`], 'YYYY-MM-DD');
-  //   //     let str = '';
-  //   //     const valuesArray = [];
+          while (valStart.isSameOrBefore(valEnd)) {
+            if (valStart.get('D') <= 15) {
+              str = 'Early';
+            } else {
+              str = 'Mid';
+            }
+            if (!valuesArray.includes([`${valStart.format('MMMM')}, ${str}`])) {
+              valuesArray.push([`${valStart.format('MMMM')}, ${str}`]);
+            }
+            valStart.add('1', 'days');
+          }
+          valuesArray.forEach((key) => {
+            const prev = val[key] || [];
+            prev.push(param);
+            val[key] = prev;
+          });
+        });
+      }
+    });
 
-  //   //     while (valStart.isSameOrBefore(valEnd)) {
-  //   //       if (valStart.get('D') <= 15) {
-  //   //         str = 'Early';
-  //   //       } else {
-  //   //         str = 'Mid';
-  //   //       }
-  //   //       valuesArray.push([`${valStart.format('MMMM')}, ${str}`]);
-  //   //       valStart.add('14', 'days');
-  //   //     }
-  //   //     valuesArray.forEach((key) => {
-  //   //       const prev = val.fields[key] || [];
-  //   //       prev.push(param);
-  //   //       val.fields[key] = prev;
-  //   //     });
-  //   //   }
-  //   // });
+    // this is temporary, needs to be replaced with wither a fix to calendar growth window component or exporting of json from airtable
+    Object.keys(val).forEach((item) => {
+      if (item.endsWith('Early') || item.endsWith('Mid')) {
+        const uniq = [...new Set(val[item])];
+        const removedOldVals = uniq.filter((u) => !u.endsWith('growth'));
+        val[item] = removedOldVals;
+      }
+    });
+    return val;
+  };
 
-  //   // this is temporary, needs to be replaced with wither a fix to calendar growth window component or exporting of json from airtable
-  //   Object.keys(val.fields).forEach((item) => {
-  //     if (item.endsWith('Early') || item.endsWith('Mid')) {
-  //       const uniq = [...new Set(val.fields[item])];
-  //       const removedOldVals = uniq.filter((u) => !u.endsWith('growth'));
-  //       val.fields[item] = removedOldVals;
-  //     }
-  //   });
-  //   return val;
-  // };
+  return tjson.map((crop) => {
+    // remove open discussion row and zone decision !== include
 
-  // return tjson.map((crop) => {
-  //   // remove open discussion row and zone decision !== include
+    // let val = { fields: crop };
+    const val = monthStringBuilder(crop);
 
-  //   let val = { fields: crop };
-  //   val = monthStringBuilder(val);
+    val.inBasket = false;
 
-  //   val.fields.inBasket = false;
+    // if (!val['Nitrogen Fixation']) {
+    //   val['Nitrogen Fixation'] = 0;
+    // }
 
-  //   if (!val.fields['Nitrogen Fixation']) {
-  //     val.fields['Nitrogen Fixation'] = 0;
-  //   }
+    // if (!val['Early Spring Growth']) {
+    //   val['Early Spring Growth'] = 0;
+    // }
 
-  //   if (!val.fields['Early Spring Growth']) {
-  //     val.fields['Early Spring Growth'] = 0;
-  //   }
+    // val['Discourages Nematodes'] = val['Disoucrages Nematodes'];
+    // // TODO: do we want the __id value to be apart of the object maybe as altId we need the ID from the API to be unaltered
+    // // val.id = val.__id;
+    // val.Drought = val['Drought Tolerance'];
+    // val.Flood = val['Flood Tolerance'];
+    // val.Heat = val['Heat Tolerance'];
+    // val['Low Fertility'] = val['Low Fertility Tolerance'];
+    // val.Salinity = val['Salinity Tolerance'];
+    // val.Shade = val['Shade Tolerance'];
+    // val['Tillage at Vegetative'] = val['Tillage Termination at Vegetative'];
+    // val['Tillage at Flowering'] = val['Tillage Termination at Flowering'];
 
-  //   val.fields['Discourages Nematodes'] = val.fields['Disoucrages Nematodes'];
-  //   // TODO: do we want the __id value to be apart of the object maybe as altId we need the ID from the API to be unaltered
-  //   // val.fields.id = val.fields.__id;
-  //   val.fields.Drought = val.fields['Drought Tolerance'];
-  //   val.fields.Flood = val.fields['Flood Tolerance'];
-  //   val.fields.Heat = val.fields['Heat Tolerance'];
-  //   val.fields['Low Fertility'] = val.fields['Low Fertility Tolerance'];
-  //   val.fields.Salinity = val.fields['Salinity Tolerance'];
-  //   val.fields.Shade = val.fields['Shade Tolerance'];
-  //   val.fields['Tillage at Vegetative'] = val.fields['Tillage Termination at Vegetative'];
-  //   val.fields['Tillage at Flowering'] = val.fields['Tillage Termination at Flowering'];
+    // val['Freezing at Flowering'] = val['Freezing Termination at Flowering'];
 
-  //   val.fields['Freezing at Flowering'] = val.fields['Freezing Termination at Flowering'];
+    // val['Freezing at Vegetative'] = val['Freezing Termination at Vegetative'];
+    // val['Chemical at Vegetative'] = val['Chemical Termination at Vegetative'];
+    // val['Chemical at Flowering'] = val['Chemical Termination at Flowering'];
 
-  //   val.fields['Freezing at Vegetative'] = val.fields['Freezing Termination at Vegetative'];
-  //   val.fields['Chemical at Vegetative'] = val.fields['Chemical Termination at Vegetative'];
-  //   val.fields['Chemical at Flowering'] = val.fields['Chemical Termination at Flowering'];
+    // val['Mow at Flowering'] = val['Mow Termination at Flowering'];
+    // val['Roller Crimp at Flowering'] = val['Roller Crimp Termination at Flowering'];
 
-  //   val.fields['Mow at Flowering'] = val.fields['Mow Termination at Flowering'];
-  //   val.fields['Roller Crimp at Flowering'] = val.fields['Roller Crimp Termination at Flowering'];
+    // if (!val['Frost Seeding']) {
+    //   val['Frost Seeding'] = false;
+    // } else {
+    //   val['Frost Seeding'] = true;
+    // }
+    // if (!val['Can Aerial Seed']) {
+    //   val['Aerial Seeding'] = false;
+    // } else {
+    //   val['Aerial Seeding'] = true;
+    // }
 
-  //   if (!val.fields['Frost Seeding']) {
-  //     val.fields['Frost Seeding'] = false;
-  //   } else {
-  //     val.fields['Frost Seeding'] = true;
-  //   }
-  //   if (!val.fields['Can Aerial Seed']) {
-  //     val.fields['Aerial Seeding'] = false;
-  //   } else {
-  //     val.fields['Aerial Seeding'] = true;
-  //   }
+    // // TODO: not using anymore
+    // if (!val['Pollinator Habitat']) {
+    //   val['Pollinator Habitat'] = 0;
+    // }
 
-  //   // TODO: not using anymore
-  //   if (!val.fields['Pollinator Habitat']) {
-  //     val.fields['Pollinator Habitat'] = 0;
-  //   }
+    // if (!val['Pollinator Food']) {
+    //   val['Pollinator Food'] = 0;
+    // }
 
-  //   if (!val.fields['Pollinator Food']) {
-  //     val.fields['Pollinator Food'] = 0;
-  //   }
-
-  //   return val;
-  // });
+    return val;
+  });
 };
 
 const initialState = {
