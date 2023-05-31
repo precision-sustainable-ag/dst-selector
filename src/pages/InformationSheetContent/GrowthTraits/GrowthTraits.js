@@ -24,7 +24,7 @@ const GrowthTrait = ({
         },
       }}
     >
-      <TooltipMaker variable={attribute} zone={crop.Zone}>
+      <TooltipMaker variable={attribute}>
         <Typography
           sx={{
             fontWeight: 'bold',
@@ -47,14 +47,14 @@ const GrowthTrait = ({
         },
       }}
     >
-      {typeof crop[attribute] !== 'number' ? (
+      { crop[attribute]?.dataType !== 'number' ? (
         <Typography variant="body1">
           {crop[attribute] === undefined || attribute === 'Inoculant Type'
             ? variable
-            : crop[attribute].toString()}
+            : crop[attribute]?.values[0].toString()}
         </Typography>
       ) : (
-        <>{getRating(crop[attribute])}</>
+        <>{getRating(crop[attribute]?.values[0])}</>
       )}
     </Box>
   </>
@@ -79,62 +79,76 @@ const GrowthTraits = ({ crop }) => (
         </AccordionSummary>
         <AccordionDetails>
           <div className="row col-12 text-left">
-            <GrowthTrait crop={crop} attribute="Duration" />
-            <GrowthTrait crop={crop} attribute="Zone Use" />
-            <GrowthTrait crop={crop} attribute="Shape & Orientation" />
+            <GrowthTrait crop={crop.data['Basic Agronomics']} attribute="Duration" />
+            <GrowthTrait crop={crop.data['Basic Agronomics']} attribute="Zone Use" />
+            <GrowthTrait crop={crop.data['Basic Agronomics']} attribute="Shape & Orientation" />
+
             <GrowthTrait
-              crop={crop}
+              crop={crop.data['Basic Agronomics']}
               attribute="Dry Matter (Lbs/A/Yr)"
-              variable={`${crop['Dry Matter Min (lbs/A/y)']} - ${crop['Dry Matter Max (lbs/A/y)']}`}
+              variable={
+                `${crop.data['Basic Agronomics']['Dry Matter Min (lbs/A/y)']?.values[0]}
+                - ${crop.data['Basic Agronomics']['Dry Matter Max (lbs/A/y)']?.values[0]}`
+              }
             />
+
             <GrowthTrait
-              crop={crop}
+              crop={crop.data['Soil Conditions']}
               attribute="Soil Textures"
-              variable={crop['Soil Textures']?.map((val, index) => (
+              variable={crop.data['Soil Conditions']['Soil Textures']?.values.map((val, index) => (
                 <Typography className="text-capitalize" key={index} variant="body1">
                   {val}
                 </Typography>
               ))}
             />
+
             <GrowthTrait
-              crop={crop}
+              crop={crop.data['Soil Conditions']}
               attribute="Soil pH"
-              variable={`${crop['Minimum Tolerant Soil pH']} - ${crop['Maximum Tolerant Soil pH']}`}
-            />
-            <GrowthTrait crop={crop} attribute="Soil Moisture Use" />
-            <GrowthTrait
-              crop={crop}
-              attribute="Hessian Fly Free Date"
-              variable={crop['Hessian Fly Free Date'] ? crop['Hessian Fly Free Date'] : 'No'}
+              variable={
+                `${crop.data['Soil Conditions']['Minimum Tolerant Soil pH']?.values[0]}
+                - ${crop.data['Soil Conditions']['Maximum Tolerant Soil pH']?.values[0]}`
+              }
             />
 
-            {crop['Nitrogen Accumulation Max, Legumes (lbs/A/y)'] > 0 && (
+            <GrowthTrait crop={crop.data['Soil Conditions']} attribute="Soil Moisture Use" />
+
+            {/* <GrowthTrait
+              crop={crop.data.}
+              attribute="Hessian Fly Free Date"
+              variable={crop['Hessian Fly Free Date'] ? crop['Hessian Fly Free Date'] : 'No'}
+            /> */}
+
+            {crop.data['Basic Agronomics']['Nitrogen Accumulation Max, Legumes (lbs/A/y)']?.values[0] > 0 && (
               <GrowthTrait
-                crop={crop}
+                crop={crop.data['Basic Agronomics']}
                 attribute="Nitrogen Accumulation (Lbs/A/Yr)"
-                variable={`${crop['Nitrogen Accumulation Min, Legumes (lbs/A/y)']} - ${crop['Nitrogen Accumulation Max, Legumes (lbs/A/y)']}`}
+                variable={
+                  `${crop.data['Basic Agronomics']['Nitrogen Accumulation Min, Legumes (lbs/A/y)']?.values[0]}
+                  - ${crop.data['Basic Agronomics']['Nitrogen Accumulation Max, Legumes (lbs/A/y)']?.values[0]}`
+                }
               />
             )}
 
-            <GrowthTrait crop={crop} attribute="Ease of Establishment" />
-            <GrowthTrait crop={crop} attribute="Establishes Quickly" />
-            <GrowthTrait crop={crop} attribute="Early Spring Growth" />
+            <GrowthTrait crop={crop.data.Growth} attribute="Ease of Establishment" />
+            <GrowthTrait crop={crop.data.Growth} attribute="Establishes Quickly" />
+            <GrowthTrait crop={crop.data.Growth} attribute="Early Spring Growth" />
             <GrowthTrait
-              crop={crop}
+              crop={crop.data.Growth}
               attribute="Flowering Trigger"
-              variable={crop['Flowering Trigger']?.map((val, index) => (
+              variable={crop.data.Growth['Flowering Trigger']?.values.map((val, index) => (
                 <Typography className="text-capitalize" key={index} variant="body1">
                   {val}
                 </Typography>
               ))}
             />
-            <GrowthTrait crop={crop} attribute="Root Depth" />
+            <GrowthTrait crop={crop.data.Growth} attribute="Root Depth" />
 
-            {crop['Inoculant Type'][0] !== 'none' && (
+            {crop.data.Growth['Inoculant Type']?.values[0] !== 'none' && (
               <GrowthTrait
-                crop={crop}
+                crop={crop.data.Growth}
                 attribute="Inoculant Type"
-                variable={crop['Inoculant Type']?.map((val, index) => (
+                variable={crop.data.Growth['Inoculant Type']?.values.map((val, index) => (
                   <Typography className="text-capitalize" key={index} variant="body1">
                     {val}
                   </Typography>

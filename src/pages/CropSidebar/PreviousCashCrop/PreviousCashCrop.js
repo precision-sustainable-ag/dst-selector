@@ -11,27 +11,26 @@ import {
 } from '@mui/material';
 import moment from 'moment';
 import React, { Fragment, useContext, useState } from 'react';
-import { Context } from '../../../store/Store';
-import { CustomStyles } from '../../../shared/constants';
 
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
-import { DatePicker } from "@mui/x-date-pickers";
-import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment'
-import { LocalizationProvider } from "@mui/x-date-pickers";
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
+import { CustomStyles } from '../../../shared/constants';
+import { Context } from '../../../store/Store';
 
-
-const PreviousCashCrop = ({ handleToggle, setDateRange}) => {
+const PreviousCashCrop = ({ handleToggle }) => {
   const { state, dispatch } = useContext(Context);
   const [cashCropVisible, setCashCropVisible] = useState(true); // TODO: buggy(?);
+
   const [cashCropOpen, setCashCropOpen] = useState(true);
 
- 
-  const handleDispatch = (start = '', end = '', type) => {
+  const handleDispatch = (start = '', end = '') => {
+
     dispatch({
 
       type: 'UPDATE_DATE_RANGE',
       data: {
-        //TODO: use Date() in future?
+        // TODO: use Date() in future?
         startDate: start,
         endDate: end,
       },
@@ -44,20 +43,22 @@ const PreviousCashCrop = ({ handleToggle, setDateRange}) => {
 
   return (
     <>
-      
+
       <ListItem
         button
         onClick={toggleCashCrop}
         style={{ backgroundColor: cashCropOpen ? CustomStyles().lightGreen : 'inherit' }}
       >
+
       <ListItemText primary="PREVIOUS CASH CROP" />
         {cashCropOpen  ? <ExpandLess /> : <ExpandMore />}
       </ListItem>
       <Collapse in={cashCropOpen} timeout="auto" unmountOnExit>
       <Typography variant="body1" sx={{ paddingLeft: 3 }}>
+
           Specify the Cash Crop Growth Window by selecting the Cash Crop Planting Date then
           selecting its Harvest Date.
-      </Typography>
+        </Typography>
         <List component="div">
           <ListItem sx={{ paddingLeft: 3 }}>
             <TextField
@@ -127,5 +128,3 @@ const PreviousCashCrop = ({ handleToggle, setDateRange}) => {
 };
 
 export default PreviousCashCrop;
-
-

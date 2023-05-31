@@ -47,11 +47,20 @@ const PlantingTrait = ({
         },
       }}
     >
-      {typeof crop[attribute] !== 'number' ? (
+      {/* {typeof crop[attribute] !== 'number' ? (
         <Typography variant="body1">
           {crop[attribute] === undefined || attribute === 'Inoculant Type'
             ? variable
             : crop[attribute].toString()}
+        </Typography>
+      ) : (
+        <Typography variant="body1">variable</Typography>
+      )} */}
+      { crop[attribute]?.dataType !== 'number' ? (
+        <Typography variant="body1">
+          {crop[attribute] === undefined || attribute === 'Inoculant Type'
+            ? variable
+            : crop[attribute].values[0].toString()}
         </Typography>
       ) : (
         <Typography variant="body1">variable</Typography>
@@ -84,27 +93,33 @@ const InformationSheetPlanting = ({ crop }) => (
         <AccordionDetails>
           <div className="row col-12 text-left">
             <PlantingTrait
-              crop={crop}
+              crop={crop.data.Planting}
               attribute="Seeds Per Lb"
-              variable={<Typography variant="body1">{crop['Seeds per Pound']}</Typography>}
+              variable={<Typography variant="body1">{crop.data.Planting['Seeds per Pound'].values[0]}</Typography>}
             />
 
             <PlantingTrait
-              crop={crop}
+              crop={crop.data.Planting}
               attribute="Seed Price Per Lb"
-              variable={<RenderSeedPriceIcons val={crop['Seed Price per Pound']} />}
+              variable={<RenderSeedPriceIcons val={crop.data.Planting['Seed Price per Pound'].values[0]} />}
             />
 
             <PlantingTrait
-              crop={crop}
+              crop={crop.data.Planting}
               attribute="Base Seeding Rate (Lbs/A)"
-              variable={`${crop['Base Seeding Rate Min (lbs/A)']} - ${crop['Base Seeding Rate Max (lbs/A)']}`}
+              variable={
+                `${crop.data.Planting['Base Seeding Rate Min (lbs/A)'].values[0]} 
+                - ${crop.data.Planting['Base Seeding Rate Max (lbs/A)'].values[0]}`
+              }
             />
 
             <PlantingTrait
-              crop={crop}
+              crop={crop.data.Planting}
               attribute="Drilled Depth"
-              variable={`${crop['Drilled Depth Min']}" - ${crop['Drilled Depth Max']}"`}
+              variable={
+                `${crop.data.Planting['Drilled Depth Min'].values[0]} 
+                - ${crop.data.Planting['Drilled Depth Max'].values[0]}`
+              }
             />
 
             <PlantingTrait
@@ -120,9 +135,9 @@ const InformationSheetPlanting = ({ crop }) => (
             />
 
             <PlantingTrait
-              crop={crop}
+              crop={crop.data.Planting}
               attribute="Min Germination Temp (&deg;F)"
-              variable={crop['Min Germination Temp (F)']}
+              variable={crop.data.Planting['Min Germination Temp (F)'].values[0]}
             />
           </div>
         </AccordionDetails>

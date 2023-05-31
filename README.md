@@ -2,7 +2,7 @@
 
 **Date Created:** 8/18/22
 
-**Date Last Modified:** 04/04/2023
+**Date Last Modified:** 05/15/2023
 
 The species selector DST is used to help farmers select a cover crop that fits their goals and constraints. The user can either input specifics about their field location and cover cropping goals or explore cover crops without entering those details. The tool is mainly used to explore expert reccomendations and ratings for cover crops in the farmer's USDA Plant Hardiness Zone. This allows farmers to make educated decisions that are best suited for their specific goals and can save time as opposed to calling the extension office.
 
