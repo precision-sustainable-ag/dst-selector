@@ -57,7 +57,7 @@ const CropSelector = (props) => {
   const { state, dispatch } = useContext(Context);
   const [showGrowthWindow, setShowGrowthWindow] = useState(true);
   // const [sortPreference, setSortPreference] = useState('desc');
-  const [goalsSortFlag, setGoalsSortFlag] = useState(false);
+  const [goalsSortFlag, setGoalsSortFlag] = useState(true);
   const { selectedGoals, activeCropData } = state;
   const [isListView, setIsListView] = useState(true);
   const [comparisonView, setComparisonView] = useState(false);
@@ -79,48 +79,6 @@ const CropSelector = (props) => {
       sortCrops('Average Goals', activeCropDataShadow, dispatchValue, selectedGoals, goalsSortFlag);
       setGoalsSortFlag(!goalsSortFlag);
       dispatchValue(activeCropDataShadow);
-
-      // switch (orderBy) {
-      //   case 'asc': {
-      //     if (activeCropDataCopy?.length > 0) {
-      //       // TODO: replace _ lowdash with array function will need to write a custom orderby function.
-      //       const updatedCropData = _.orderBy(activeCropDataCopy, activeObjKeys, [
-      //         'asc',
-      //         'asc',
-      //         'asc',
-      //       ]);
-      //       dispatch({
-      //         type: 'UPDATE_ACTIVE_CROP_DATA',
-      //         data: {
-      //           value: updatedCropData,
-      //         },
-      //       });
-      //     }
-      //     setSortPreference('asc');
-      //     break;
-      //   }
-      //   case 'desc': {
-      //     if (activeCropDataCopy?.length > 0) {
-      //       // TODO: replace _ lowdash with array function will need to write a custom orderby function.
-      //       const updatedCropData = _.orderBy(activeCropDataCopy, activeObjKeys, [
-      //         'desc',
-      //         'desc',
-      //         'desc',
-      //       ]);
-      //       dispatch({
-      //         type: 'UPDATE_ACTIVE_CROP_DATA',
-      //         data: {
-      //           value: updatedCropData,
-      //         },
-      //       });
-      //     }
-      //     setSortPreference('desc');
-      //     break;
-      //   }
-      //   default: {
-      //     break;
-      //   }
-      // }
     }
   };
 
@@ -132,8 +90,11 @@ const CropSelector = (props) => {
   }, [state.selectedCrops, state.myCoverCropListLocation]);
 
   useEffect(() => {
-    setUpdatedActiveCropData(activeCropData);
     sortCropsBy();
+  }, []);
+
+  useEffect(() => {
+    setUpdatedActiveCropData(activeCropData);
   }, [activeCropData]);
 
   useEffect(() => {
