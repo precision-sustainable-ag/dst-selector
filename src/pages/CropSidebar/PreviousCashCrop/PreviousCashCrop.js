@@ -23,6 +23,8 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 const PreviousCashCrop = ({ handleToggle, setDateRange}) => {
   const { state, dispatch } = useContext(Context);
   const [cashCropVisible, setCashCropVisible] = useState(true); // TODO: buggy(?);
+  const [cashCropOpen, setCashCropOpen] = useState(true);
+
  
   const handleDispatch = (start = '', end = '', type) => {
     dispatch({
@@ -36,19 +38,22 @@ const PreviousCashCrop = ({ handleToggle, setDateRange}) => {
     });
   };
 
+  const toggleCashCrop = () => {
+    setCashCropOpen(!cashCropOpen);
+  }
 
   return (
     <>
       
       <ListItem
         button
-        onClick={() => handleToggle('cashCropOpen')}
-        style={{ backgroundColor: state.cashCropOpen ? CustomStyles().lightGreen : 'inherit' }}
+        onClick={toggleCashCrop}
+        style={{ backgroundColor: cashCropOpen ? CustomStyles().lightGreen : 'inherit' }}
       >
       <ListItemText primary="PREVIOUS CASH CROP" />
-        {state.cashCropOpen ? <ExpandLess /> : <ExpandMore />}
+        {cashCropOpen  ? <ExpandLess /> : <ExpandMore />}
       </ListItem>
-      <Collapse in={state.cashCropOpen} timeout="auto" unmountOnExit>
+      <Collapse in={cashCropOpen} timeout="auto" unmountOnExit>
       <Typography variant="body1" sx={{ paddingLeft: 3 }}>
           Specify the Cash Crop Growth Window by selecting the Cash Crop Planting Date then
           selecting its Harvest Date.
