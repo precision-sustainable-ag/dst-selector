@@ -21,6 +21,7 @@ const ComparisonBar = ({
   const [filterValues, setFilterValues] = useState([]);
   const [goalsOpen, setGoalsOpen] = useState(false);
   const [allGoals, setAllGoals] = useState([]);
+
   useEffect(() => {
     let totalFilters = 0;
     const filteredVals = filterData.map((filter) => {
@@ -86,10 +87,9 @@ const ComparisonBar = ({
       };
     });
 
-    const filterKeysAppend = filteredVals.map((val, index) => {
+    const filterKeysAppend = filteredVals.map((val) => {
       if (
-        index !== 0
-        && val.name !== 'Soil Conditions'
+        val.name !== 'Soil Conditions'
         && val.name !== 'Disease & Non Weed Pests'
         && val.name !== 'Beneficials'
         && val.name !== 'Disease & Non Weed Pests'
@@ -175,6 +175,7 @@ const ComparisonBar = ({
           dispatch={dispatch}
         />
       )}
+
       <RenderFilters
         filterValues={filterValues}
         toggleSidebarFilterItems={toggleSidebarFilterItems}

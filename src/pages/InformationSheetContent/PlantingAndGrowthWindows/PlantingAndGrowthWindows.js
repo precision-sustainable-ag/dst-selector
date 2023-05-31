@@ -8,10 +8,11 @@ import { Accordion, AccordionSummary } from '../informationSheet.styles';
 
 const PlantingAndGrowthWindows = ({ crop }) => {
   const getFrostSeedingInfo = () => {
-    if (crop['Frost Seeding'] && crop['Frost Seeding Start'] && crop['Frost Seeding End']) {
-      return `${moment(crop['Frost Seeding Start'], 'YYYY-MM-DD')
+    const frostDates = crop.data['Planting Dates']['Frost Seeding']?.values[0].split('-');
+    if (frostDates !== undefined) {
+      return `${moment(frostDates[0], 'MM-DD-YYYY')
         .format('MM/DD')
-        .toString()} - ${moment(crop['Frost Seeding End'], 'YYYY-MM-DD')
+        .toString()} - ${moment(frostDates[1], 'MM-DD-YYYY')
         .format('MM/DD')
         .toString()}`;
     }
@@ -57,25 +58,25 @@ const PlantingAndGrowthWindows = ({ crop }) => {
                   </Typography>
                 </div>
                 <div className="mb-2">
-                  {crop['Second Reliable Establishment/Growth Start']
-                  && crop['Second Reliable Establishment/Growth End'] ? (
+                  {crop.data['Planting Dates']['Reliable Establishment'].values.forEach((date) => (
                     <div className="blueBgFlex borderWrapped wd-112">
                       <div className="blue-bg shrt_perennial wd-110">
                         <Typography variant="body1">
-                          {getMonthDayString('reliable', crop)}
+                          {getMonthDayString('reliable', date)}
                         </Typography>
                       </div>
-                      <div className="blue-bg shrt_perennial wd-110">
+                      {/* <div className="blue-bg shrt_perennial wd-110">
                         <Typography variant="body1">
                           {getMonthDayString('reliable-second', crop)}
                         </Typography>
-                      </div>
+                      </div> */}
                     </div>
-                    ) : (
+                  ))}
+                  {/* (
                       <div className="blue-bg shrt_perennial wd-110">
                         <Typography variant="body1">{getMonthDayString('reliable', crop)}</Typography>
                       </div>
-                    )}
+                    ) */}
                 </div>
 
                 <div className="col-7 mb-2">
@@ -84,7 +85,7 @@ const PlantingAndGrowthWindows = ({ crop }) => {
                     &nbsp;Temperature/Moisture Risk
                   </Typography>
                 </div>
-                <div className="mb-2">
+                {/* <div className="mb-2">
                   {crop['Second Temperature/Moisture Risk to Establishment Start']
                   && crop['Second Temperature/Moisture Risk to Establishment End'] ? (
                     <div className="blueBgFlex borderWrapped wd-112">
@@ -106,7 +107,7 @@ const PlantingAndGrowthWindows = ({ crop }) => {
                         </Typography>
                       </div>
                     )}
-                </div>
+                </div> */}
 
                 <div className="col-7 mb-2">
                   <Typography sx={{ fontWeight: 'bold' }} variant="body1">
@@ -117,10 +118,10 @@ const PlantingAndGrowthWindows = ({ crop }) => {
                 <div className="mb-2">
                   <div
                     className={`blueBgFlex ${
-                      crop['Active Growth Period'].length > 1 ? 'borderWrapped' : ''
+                      crop.data['Basic Agronomics']['Active Growth Period'].values.length > 1 ? 'borderWrapped' : ''
                     }`}
                   >
-                    {crop['Active Growth Period'].map((val, index) => (
+                    {crop.data['Basic Agronomics']['Active Growth Period'].values.map((val, index) => (
                       <div className="blue-bg bordered" key={index}>
                         <Typography variant="body1">{val}</Typography>
                       </div>
@@ -135,7 +136,7 @@ const PlantingAndGrowthWindows = ({ crop }) => {
                 </div>
                 <div className="mb-2">
                   <div className="blue-bg">
-                    <Typography variant="body1">{crop['Winter Survival']}</Typography>
+                    <Typography variant="body1">{crop.data['Environmental Tolerances']['Winter Survival'].values[0]}</Typography>
                   </div>
                 </div>
 
@@ -144,13 +145,13 @@ const PlantingAndGrowthWindows = ({ crop }) => {
                     Can Interseed
                   </Typography>
                 </div>
-                <div className="mb-2">
+                {/* <div className="mb-2">
                   <div className="blue-bg shrt_perennial wd-110">
                     <Typography variant="body1">
                       {crop['Interseed possible'] ? 'Yes' : 'N/A'}
                     </Typography>
                   </div>
-                </div>
+                </div> */}
 
                 <div className="col-12 pt-4">
                   <table style={{ width: '100%', height: '40px' }}>
@@ -159,7 +160,7 @@ const PlantingAndGrowthWindows = ({ crop }) => {
                         {allMonths.map((month, index) => (
                           <td
                             style={{
-                              background: getActiveCropMonths(crop).includes(month)
+                              background: getActiveCropMonths(crop.data['Basic Agronomics']).includes(month)
                                 ? '#598445'
                                 : '#f0f7eb',
                               // width: "100%",
@@ -180,7 +181,7 @@ const PlantingAndGrowthWindows = ({ crop }) => {
                               month={index}
                             />
                           ))} */}
-                        <CropSelectorCalendarView data={{ fields: crop }} from="infosheet" />
+                        <CropSelectorCalendarView data={crop} from="infosheet" />
                       </tr>
                       <tr>
                         {allMonths.map((month, index) => (
