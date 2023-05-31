@@ -76,103 +76,21 @@ const CropCalendarView = ({ activeCropData }) => {
     sortCrops('Average Goals', activeCropDataShadow, dispatchValue, selectedGoals, goalsSortFlag);
     setGoalsSortFlag(!goalsSortFlag);
     dispatchValue(activeCropDataShadow);
-
-    // activeCropDataShadow.sort((a, b) => {
-    //   let aAvg = 0;
-    //   let bAvg = 0;
-    //   selectedGoals
-    //     .slice()
-    //     .reverse()
-    //     .forEach((goal) => {
-    //       aAvg = +a.data.Goals[goal].values[0] + aAvg;
-    //       bAvg = +b.data.Goals[goal].values[0] + bAvg;
-    //     });
-    //   aAvg /= selectedGoals.length;
-    //   bAvg /= selectedGoals.length;
-
-    //   if (aAvg > 0 && bAvg > 0) {
-    //     if (aAvg > bAvg) {
-    //       return -1;
-    //     }
-    //     return 1;
-    //   }
-    //   return 0;
-    // });
   };
 
   const sortCropsByName = () => {
     // const activeCropDataShadow = activeCropData;
     sortCrops('Crop Name', activeCropDataShadow, dispatchValue, selectedGoals, nameSortFlag);
     setNameSortFlag(!nameSortFlag);
-
-    // if (nameSortFlag) {
-    //   if (activeCropDataShadow.length > 0) {
-    //     activeCropDataShadow.sort((a, b) => {
-    //       const firstCropName = flipCoverCropName(
-    //         a.data.Weeds['Cover Crop Name'].values[0].toLowerCase(),
-    //       ).replace(/\s+/g, '');
-    //       const secondCropName = flipCoverCropName(
-    //         b.data.Weeds['Cover Crop Name'].values[0].toLowerCase(),
-    //       ).replace(/\s+/g, '');
-    //       return firstCropName.localeCompare(secondCropName);
-    //     });
-
-    //     dispatchValue(activeCropDataShadow);
-    //   }
-    // } else if (activeCropDataShadow.length > 0) {
-    //   activeCropDataShadow.sort((a, b) => {
-    //     const firstCropName = flipCoverCropName(a.data.Weeds['Cover Crop Name'].values[0].toLowerCase()).replace(
-    //       /\s+/g,
-    //       '',
-    //     );
-    //     const secondCropName = flipCoverCropName(b.data.Weeds['Cover Crop Name'].values[0].toLowerCase()).replace(
-    //       /\s+/g,
-    //       '',
-    //     );
-    //     if (firstCropName < secondCropName) {
-    //       return 1;
-    //     }
-    //     if (firstCropName > secondCropName) {
-    //       return -1;
-    //     }
-    //     return 0;
-    //   });
-    // }
   };
 
   const sortBySelectedCrops = () => {
     const selectedCropsShadow = state.selectedCrops;
-
     sortCrops('Selected Crops', activeCropDataShadow, dispatchValue, selectedCropsShadow);
-
-    // const activeCropDataShadow = activeCropData;
-    // if (selectedCropsSortFlag) {
-    //   if (selectedCropsShadow.length > 0) {
-    //     const selectedCropIds = [];
-    //     selectedCropsShadow.forEach((crop) => {
-    //       selectedCropIds.push(crop.id);
-    //     });
-    //     const newActiveShadow = activeCropDataShadow.map((crop) => {
-    //       crop.inCart = selectedCropIds.includes(crop.id);
-    //       return crop;
-    //     });
-
-    //     if (newActiveShadow.length > 0) {
-    //       newActiveShadow.sort((a) => {
-    //         if (a.inCart) {
-    //           return -1;
-    //         }
-    //         return 1;
-    //       });
-
-    //       dispatchValue(newActiveShadow);
-    //     }
-    //   }
-    // }
   };
 
   useEffect(() => {
-    sortCropsByName();
+    sortReset();
   }, []);
 
   return (
@@ -355,7 +273,6 @@ const CropCalendarView = ({ activeCropData }) => {
                     <div className="col-12">
                       <Typography variant="body1">
                         <Button style={{ color: '#000' }} onClick={sortReset}>
-
                           <Typography variant="body2"> AVERAGE GOAL RATING</Typography>
                         </Button>
                       </Typography>
