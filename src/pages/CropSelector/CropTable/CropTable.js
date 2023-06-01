@@ -127,11 +127,11 @@ const CropTableComponent = ({
     if (nameSortFlag) {
       if (activeCropDataShadow.length > 0) {
         activeCropDataShadow.sort((a, b) => {
-          const firstCropName = flipCoverCropName(a.data.Weeds['Cover Crop Name'].values[0].toLowerCase()).replace(
+          const firstCropName = flipCoverCropName(a.label.toLowerCase()).replace(
             /\s+/g,
             '',
           );
-          const secondCropName = flipCoverCropName(b.data.Weeds['Cover Crop Name'].values[0].toLowerCase()).replace(
+          const secondCropName = flipCoverCropName(b.label.toLowerCase()).replace(
             /\s+/g,
             '',
           );
@@ -142,11 +142,11 @@ const CropTableComponent = ({
       }
     } else if (activeCropDataShadow.length > 0) {
       activeCropDataShadow.sort((a, b) => {
-        const firstCropName = flipCoverCropName(a.data.Weeds['Cover Crop Name'].values[0].toLowerCase()).replace(
+        const firstCropName = flipCoverCropName(a.a.label.toLowerCase()).replace(
           /\s+/g,
           '',
         );
-        const secondCropName = flipCoverCropName(b.data.Weeds['Cover Crop Name'].values[0].toLowerCase()).replace(
+        const secondCropName = flipCoverCropName(b.a.label.toLowerCase()).replace(
           /\s+/g,
           '',
         );
