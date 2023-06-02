@@ -226,7 +226,7 @@ const Landing = ({ height, title, bg }) => {
   };
 
   return (
-     
+
     <div
       id="landingWrapper"
       // className="d-flex flex-column"
@@ -241,11 +241,12 @@ const Landing = ({ height, title, bg }) => {
 
       {/* <Grid container direction="row"> */}
       <Grid container>
-        
+
         <Grid
           className="p-2"
           item
-          lg={6} xs={12}
+          lg={6}
+          xs={12}
           // xs={6}
           // spacing={2}
           container
