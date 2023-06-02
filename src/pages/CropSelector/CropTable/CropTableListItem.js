@@ -20,6 +20,13 @@ const CropTableListItem = ({
       if (
         ((matchGoals ? !hasGoalRatingTwoOrLess(crop) : hasGoalRatingTwoOrLess(crop)))
       ) {
+        const searchCategory = crop.data['Basic Agronomics'] ? 'Basic Agronomics' : 'Growth Traits';
+
+        const duration = (crop.data[searchCategory].Duration.values[0].toString().toLowerCase()
+                          === 'short-lived perennial' ? 'Perennial' : crop.data[searchCategory]?.Duration.values[0]) || 'No Data';
+        const totalN = crop.data[searchCategory]['Nitrogen Accumulation Max, Legumes (lbs/A/y)'] || 'No Data';
+        const dryMatter = crop.data[searchCategory]?.['Dry Matter Min (lbs/A/y)']?.values[0] || 'No Data';
+
         return (
           <Fragment key={index}>
 
@@ -87,9 +94,7 @@ const CropTableListItem = ({
                       </td>
                       <td>
                         <Typography variant="subtitle2" component="b">
-                          {/* {crop['Nitrogen Accumulation Min, Legumes (lbs/A/y)']}
-                          -
-                          {crop['Nitrogen Accumulation Max, Legumes (lbs/A/y)']} */}
+                          {totalN}
                           <span className="units">lbs/A/y</span>
                         </Typography>
                       </td>
@@ -105,9 +110,9 @@ const CropTableListItem = ({
                       </td>
                       <td>
                         <Typography variant="subtitle2" component="b">
-                          {crop.data['Basic Agronomics']?.['Dry Matter Min (lbs/A/y)']?.values[0]}
-                          -
-                          {crop.data['Basic Agronomics']?.['Dry Matter Max (lbs/A/y)']?.values[0]}
+                          {dryMatter}
+                          {/* -
+                          {dryMatter} */}
                           <span className="units">lbs/A/y</span>
                         </Typography>
                       </td>
@@ -120,10 +125,7 @@ const CropTableListItem = ({
                       </td>
                       <td>
                         <Typography variant="subtitle2" component="b" className="text-uppercase">
-                          {
-                          crop.data['Basic Agronomics']?.Duration.values[0].toString().toLowerCase()
-                            === 'short-lived perennial' ? 'Perennial' : crop.data['Basic Agronomics']?.Duration.values[0]
-                          }
+                          {duration}
                         </Typography>
                       </td>
                     </tr>
