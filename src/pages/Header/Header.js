@@ -17,7 +17,7 @@ import InformationBar from './InformationBar/InformationBar';
 import ToggleOptions from './ToggleOptions/ToggleOptions';
 import Navbar from './Navbar/Navbar';
 
-const Header = ({logo}) => {
+const Header = () => {
   const history = useHistory();
 
   const { state, dispatch } = useContext(Context);
