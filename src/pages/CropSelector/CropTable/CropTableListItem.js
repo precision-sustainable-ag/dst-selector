@@ -24,8 +24,21 @@ const CropTableListItem = ({
 
         const duration = (crop.data[searchCategory].Duration.values[0].toString().toLowerCase()
                           === 'short-lived perennial' ? 'Perennial' : crop.data[searchCategory]?.Duration.values[0]) || 'No Data';
-        const totalN = crop.data[searchCategory]['Nitrogen Accumulation Max, Legumes (lbs/A/y)'] || 'No Data';
-        const dryMatter = crop.data[searchCategory]?.['Dry Matter Min (lbs/A/y)']?.values[0] || 'No Data';
+
+        const maxN = crop.data[searchCategory]['Nitrogen Accumulation Min, Legumes (lbs/A/y)']?.values[0];
+        const minN = crop.data[searchCategory]['Nitrogen Accumulation Max, Legumes (lbs/A/y)']?.values[0];
+        const totalN = (minN && maxN) ? `${minN} - ${maxN}` : 'No Data';
+
+        let dryMatter;
+
+        if (crop.data[searchCategory]?.['Dry Matter']) {
+          dryMatter = crop.data[searchCategory]?.['Dry Matter']?.values[0] || 'No Data';
+        } else {
+          const dryMatterMax = crop.data[searchCategory]?.['Dry Matter Max (lbs/A/y)']?.values[0];
+          const dryMatterMin = crop.data[searchCategory]?.['Dry Matter Min (lbs/A/y)']?.values[0];
+
+          dryMatter = (dryMatterMin && dryMatterMax) ? `${dryMatterMin} - ${dryMatterMax}` : 'No Data';
+        }
 
         return (
           <Fragment key={index}>
