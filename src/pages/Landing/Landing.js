@@ -217,6 +217,7 @@ const Landing = ({ height, title, bg }) => {
   };
 
   return (
+     
     <div
       id="landingWrapper"
       // className="d-flex flex-column"
@@ -226,12 +227,17 @@ const Landing = ({ height, title, bg }) => {
         backgroundSize: 'cover',
       }}
     >
+
       <ConsentModal consent={state.consent} />
-      <Grid container direction="row">
+
+      {/* <Grid container direction="row"> */}
+      <Grid container>
+        
         <Grid
           className="p-2"
           item
-          xs={6}
+          lg={6} xs={12}
+          // xs={6}
           // spacing={2}
           container
           justifyContent="center"
@@ -294,6 +300,7 @@ const Landing = ({ height, title, bg }) => {
             height: '100%',
             padding: '1rem',
             marginRight: '2rem',
+            marginLeft: '2rem',
             marginTop: '1rem',
             backgroundColor: 'rgba(240,247,235,.8)',
             borderRadius: '10px',
@@ -308,7 +315,7 @@ const Landing = ({ height, title, bg }) => {
             item
             container
             direction="row"
-            style={{
+            sx={{
               marginBottom: '0rem',
               marginLeft: '10%',
             }}
