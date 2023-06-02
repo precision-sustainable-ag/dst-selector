@@ -17,7 +17,7 @@ import InformationBar from './InformationBar/InformationBar';
 import ToggleOptions from './ToggleOptions/ToggleOptions';
 import Navbar from './Navbar/Navbar';
 
-const Header = () => {
+const Header = ({logo}) => {
   const history = useHistory();
 
   const { state, dispatch } = useContext(Context);
@@ -373,7 +373,7 @@ const Header = () => {
       </div>
 
       <div className="container-fluid">
-        <HeaderLogoInfo />
+        <HeaderLogoInfo logo />
       </div>
       <div className="bottomHeader">
         <ToggleOptions
