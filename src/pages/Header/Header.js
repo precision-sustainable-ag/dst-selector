@@ -111,7 +111,7 @@ const Header = () => {
               const firstFrost = new Date(frostResp.data.firstfrost + prevYear);
               const lastFrost = new Date(frostResp.data.lastfrost + currYear);
 
-              const frostFreeDaysObj = Math.round(Math.abs((firstFrost.getTime() - lastFrost.getTime()) / oneDay));
+              const frostFreeDaysObj = Math.round(Math.abs((firstFrost.valueOf() - lastFrost.valueOf()) / oneDay));
               const averageFrostObject = {
                 firstFrostDate: {
                   month: firstFrost.toLocaleString('en-US', { month: 'long' }),
