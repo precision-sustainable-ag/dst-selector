@@ -14,7 +14,8 @@ import React, { Fragment, useContext, useState } from 'react';
 
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+// import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { CustomStyles } from '../../../shared/constants';
 import { Context } from '../../../store/Store';
 
@@ -70,7 +71,7 @@ const PreviousCashCrop = () => {
             />
           </ListItem>
           <ListItem sx={{ paddingLeft: 3 }}>
-            <LocalizationProvider dateAdapter={AdapterMoment}>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
                 label="Planting Date"
                 value={state.cashCropData.dateRange.startDate}
@@ -83,7 +84,7 @@ const PreviousCashCrop = () => {
           </ListItem>
 
           <ListItem sx={{ paddingLeft: 3 }}>
-            <LocalizationProvider dateAdapter={AdapterMoment}>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
                 label="Harvest Date"
                 value={state.cashCropData.dateRange.endDate}
