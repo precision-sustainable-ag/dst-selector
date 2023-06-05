@@ -18,14 +18,13 @@ import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { CustomStyles } from '../../../shared/constants';
 import { Context } from '../../../store/Store';
 
-const PreviousCashCrop = ({ handleToggle }) => {
+const PreviousCashCrop = () => {
   const { state, dispatch } = useContext(Context);
   const [cashCropVisible, setCashCropVisible] = useState(true); // TODO: buggy(?);
 
   const [cashCropOpen, setCashCropOpen] = useState(true);
 
   const handleDispatch = (start = '', end = '') => {
-
     dispatch({
 
       type: 'UPDATE_DATE_RANGE',
@@ -39,7 +38,7 @@ const PreviousCashCrop = ({ handleToggle }) => {
 
   const toggleCashCrop = () => {
     setCashCropOpen(!cashCropOpen);
-  }
+  };
 
   return (
     <>
@@ -50,11 +49,11 @@ const PreviousCashCrop = ({ handleToggle }) => {
         style={{ backgroundColor: cashCropOpen ? CustomStyles().lightGreen : 'inherit' }}
       >
 
-      <ListItemText primary="PREVIOUS CASH CROP" />
-        {cashCropOpen  ? <ExpandLess /> : <ExpandMore />}
+        <ListItemText primary="PREVIOUS CASH CROP" />
+        {cashCropOpen ? <ExpandLess /> : <ExpandMore />}
       </ListItem>
       <Collapse in={cashCropOpen} timeout="auto" unmountOnExit>
-      <Typography variant="body1" sx={{ paddingLeft: 3 }}>
+        <Typography variant="body1" sx={{ paddingLeft: 3 }}>
 
           Specify the Cash Crop Growth Window by selecting the Cash Crop Planting Date then
           selecting its Harvest Date.

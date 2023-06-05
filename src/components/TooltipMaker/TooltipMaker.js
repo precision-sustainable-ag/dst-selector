@@ -4,42 +4,21 @@
 */
 
 import { Tooltip } from '@mui/material';
-import React, { useContext, useEffect, useState } from 'react';
-import { Context } from '../../store/Store';
+import React, { useEffect, useState } from 'react';
 import '../../styles/tooltipMaker.scss';
 
-const TooltipMaker = ({ children, variable }) => {
-  const { state } = useContext(Context);
-  const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
-  const sfilters = state[section];
-
+const TooltipMaker = ({
+  children, attribute,
+}) => {
   const [desc, setDesc] = useState('');
-  const [dict, setDict] = useState([]);
 
   useEffect(() => {
-    async function getDictData() {
-      await fetch(`https://api.covercrop-selector.org/legacy/data-dictionary?zone=zone${sfilters.zone}`)
-        .then((res) => res.json())
-        .then((data) => { setDict(data.filter((val) => val.Variable === variable)); })
-        .catch((err) => {
-          // eslint-disable-next-line no-console
-          console.log(err.message);
-        });
-    }
-
-    getDictData();
-  }, [
-    sfilters.zone,
-    variable,
-  ]);
-
-  useEffect(() => {
-    if (dict.length === 1) {
-      setDesc(`${dict[0].Description} ${dict[0]['Values Description']}`);
+    if (attribute.description.length > 0) {
+      setDesc(`${attribute.description} ${attribute.units}`);
     } else {
       setDesc('No Data');
     }
-  }, [dict]);
+  }, [attribute]);
 
   return (
     <Tooltip

@@ -1,5 +1,5 @@
 import {
-  Dialog, DialogActions, DialogContent, Typography, Box, Grid
+  Dialog, DialogActions, DialogContent, Typography, Box, Grid,
 } from '@mui/material';
 import React, { useContext, useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
@@ -32,37 +32,36 @@ const HeaderLogoInfo = () => {
 
   useEffect(() => {
     let imageSrc;
-    if (state.councilLabel === "Northeast Cover Crop Council") {
+    if (state.councilLabel === 'Northeast Cover Crop Council') {
       imageSrc = '../images/neccc_wide_logo_color_web.jpg';
-    } else if (state.councilLabel === "Southern Cover Crop Council"){
-      imageSrc = '../images/sccc_logo.png'
-    } else if (state.councilLabel === "Midwest Cover Crop Council"){
-      imageSrc = '../images/mwccc_logo.png'
-    } else if (state.councilLabel === "Western Cover Crop Council"){
-      imageSrc = '../images/wccc_logo.png'
+    } else if (state.councilLabel === 'Southern Cover Crop Council') {
+      imageSrc = '../images/sccc_logo.png';
+    } else if (state.councilLabel === 'Midwest Cover Crop Council') {
+      imageSrc = '../images/mwccc_logo.png';
+    } else if (state.councilLabel === 'Western Cover Crop Council') {
+      imageSrc = '../images/wccc_logo.png';
     } else {
-      imageSrc = '../images/whitebg.png'
+      imageSrc = '../images/whitebg.png';
     }
 
-
-  const imageElement = document.getElementById('logoImage');
+    const imageElement = document.getElementById('logoImage');
     if (imageElement) {
       imageElement.src = imageSrc;
     }
-  }, [state.councilLabel]); 
+  }, [state.councilLabel]);
 
   return (
-    <Grid lg={12} item container alignItems="center" sx={{height: '150px', padding:'0', margin:'0',}}>
+    <Grid lg={12} item container alignItems="center" sx={{ height: '150px', padding: '0', margin: '0' }}>
 
-<Grid item lg={1} md={1} sm={12} xs={12}>
- 
-      <Box
+      <Grid item lg={1} md={1} sm={12} xs={12}>
+
+        <Box
           padding={0}
           margin={0}
           component="div"
           sx={{
-            position: 'relative', 
-            width: '100px', 
+            position: 'relative',
+            width: '100px',
             height: 'auto',
             marginRight: '10px',
             '@media (max-width: 768px)': {
@@ -88,35 +87,35 @@ const HeaderLogoInfo = () => {
               id="logoImage" // id to the img element to reference it in useEffect
               className="img-fluid"
               src="../images/neccc_wide_logo_color_web.jpg"
-              // alt="NECCC Logo" 
+              // alt="NECCC Logo"
               width="150%"
+              alt=""
               onContextMenu={() => false}
               style={{ cursor: 'pointer' }}
             />
           </button>
-          </Box>
+        </Box>
       </Grid>
       <Grid item lg={4} md={4} sm={12} xs={12} sx={{ marginLeft: '80px' }}>
-      <div className="d-flex align-items-center text-left">
-              <div>
-                <Typography variant="body1" className="font-weight-bold">
-                  Cover Crop Decision Support Tools
-                </Typography>
-                <Typography variant="body1">
-                  <DateComponent />
-                </Typography>
-              </div>
-            </div>
+        <div className="d-flex align-items-center text-left">
+          <div>
+            <Typography variant="body1" className="font-weight-bold">
+              Cover Crop Decision Support Tools
+            </Typography>
+            <Typography variant="body1">
+              <DateComponent />
+            </Typography>
+          </div>
+        </div>
       </Grid>
 
       <Grid item lg={3} md={4} sm={12} xs={12}>
-      <div className="d-flex align-items-center">
-              <div>
-                <ForecastComponent />
-              </div>
-            </div>
+        <div className="d-flex align-items-center">
+          <div>
+            <ForecastComponent />
+          </div>
+        </div>
       </Grid>
-
 
       <Dialog onClose={() => setHandleConfirm(false)} open={handleConfirm}>
         <DialogContent dividers>
