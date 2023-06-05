@@ -76,7 +76,7 @@ const MyCoverCropComparison = ({ selectedCrops }) => {
 
   const handleModalOpen = (crop) => {
     // put data inside modal
-    setModalData({ fields: crop });
+    setModalData(crop);
     setModalOpen(true);
   };
 
@@ -119,10 +119,10 @@ const MyCoverCropComparison = ({ selectedCrops }) => {
   };
 
   const getTooltipData = (keyName = '') => {
-    const exactObject = sidebarDefs.find((keys) => keys.Variable === keyName);
+    const exactObject = sidebarDefs.find((keys) => keys.label === keyName);
 
     if (exactObject) {
-      return exactObject.Description;
+      return exactObject.description;
     }
     return 'No Data';
   };

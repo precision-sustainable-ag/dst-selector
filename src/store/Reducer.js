@@ -180,6 +180,7 @@ const Reducer = (state, action, value = action && action.data && action.data.val
         ...state,
         zoneText: action.data.zoneText,
         zone: action.data.zone,
+        zoneId: action.data.zoneId,
         // [section]: sfilters,
       };
     }
@@ -345,6 +346,13 @@ const Reducer = (state, action, value = action && action.data && action.data.val
         ...state,
         cropData: action.data,
         activeCropData: action.data,
+      };
+    }
+
+    case 'MODAL_DATA': {
+      return {
+        ...state,
+        modalData: action.data,
       };
     }
 

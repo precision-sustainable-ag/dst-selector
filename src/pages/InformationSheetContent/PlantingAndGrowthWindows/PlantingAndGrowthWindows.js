@@ -6,6 +6,8 @@ import CropSelectorCalendarView from '../../../components/CropSelectorCalendarVi
 import { allMonths, getActiveCropMonths, getMonthDayString } from '../../../shared/constants';
 import { Accordion, AccordionSummary } from '../informationSheet.styles';
 
+// deprecated
+
 const PlantingAndGrowthWindows = ({ crop }) => {
   const getFrostSeedingInfo = () => {
     const frostDates = crop.data['Planting Dates']['Frost Seeding']?.values[0].split('-');

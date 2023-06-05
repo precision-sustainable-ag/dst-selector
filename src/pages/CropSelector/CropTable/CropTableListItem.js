@@ -20,9 +20,28 @@ const CropTableListItem = ({
       if (
         ((matchGoals ? !hasGoalRatingTwoOrLess(crop) : hasGoalRatingTwoOrLess(crop)))
       ) {
+        const searchCategory = crop.data['Basic Agronomics'] ? 'Basic Agronomics' : 'Growth Traits';
+
+        const duration = (crop.data[searchCategory].Duration.values[0].toString().toLowerCase()
+                          === 'short-lived perennial' ? 'Perennial' : crop.data[searchCategory]?.Duration.values[0]) || 'No Data';
+
+        const maxN = crop.data[searchCategory]['Nitrogen Accumulation Min, Legumes (lbs/A/y)']?.values[0];
+        const minN = crop.data[searchCategory]['Nitrogen Accumulation Max, Legumes (lbs/A/y)']?.values[0];
+        const totalN = (minN && maxN) ? `${minN} - ${maxN}` : 'No Data';
+
+        let dryMatter;
+
+        if (crop.data[searchCategory]?.['Dry Matter']) {
+          dryMatter = crop.data[searchCategory]?.['Dry Matter']?.values[0] || 'No Data';
+        } else {
+          const dryMatterMax = crop.data[searchCategory]?.['Dry Matter Max (lbs/A/y)']?.values[0];
+          const dryMatterMin = crop.data[searchCategory]?.['Dry Matter Min (lbs/A/y)']?.values[0];
+
+          dryMatter = (dryMatterMin && dryMatterMax) ? `${dryMatterMin} - ${dryMatterMax}` : 'No Data';
+        }
+
         return (
           <Fragment key={index}>
-            {/* {console.log('crop', crop)} */}
 
             <TableRow
               className={hasGoalRatingTwoOrLess(crop) && 'inactiveCropRow'}
@@ -88,9 +107,7 @@ const CropTableListItem = ({
                       </td>
                       <td>
                         <Typography variant="subtitle2" component="b">
-                          {/* {crop['Nitrogen Accumulation Min, Legumes (lbs/A/y)']}
-                          -
-                          {crop['Nitrogen Accumulation Max, Legumes (lbs/A/y)']} */}
+                          {totalN}
                           <span className="units">lbs/A/y</span>
                         </Typography>
                       </td>
@@ -106,9 +123,9 @@ const CropTableListItem = ({
                       </td>
                       <td>
                         <Typography variant="subtitle2" component="b">
-                          {crop.data['Basic Agronomics']?.['Dry Matter Min (lbs/A/y)']?.values[0]}
-                          -
-                          {crop.data['Basic Agronomics']?.['Dry Matter Max (lbs/A/y)']?.values[0]}
+                          {dryMatter}
+                          {/* -
+                          {dryMatter} */}
                           <span className="units">lbs/A/y</span>
                         </Typography>
                       </td>
@@ -121,10 +138,7 @@ const CropTableListItem = ({
                       </td>
                       <td>
                         <Typography variant="subtitle2" component="b" className="text-uppercase">
-                          {
-                          crop.data['Basic Agronomics']?.Duration.values[0].toString().toLowerCase()
-                            === 'short-lived perennial' ? 'Perennial' : crop.data['Basic Agronomics']?.Duration.values[0]
-                          }
+                          {duration}
                         </Typography>
                       </td>
                     </tr>

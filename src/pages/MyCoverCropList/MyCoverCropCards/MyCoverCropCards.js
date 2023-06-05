@@ -44,7 +44,7 @@ const MyCoverCropCards = ({ data, cardNo }) => {
   };
 
   const handleModalOpen = () => {
-    setModalData({ fields: data });
+    setModalData(data);
     setModalOpen(true);
   };
 

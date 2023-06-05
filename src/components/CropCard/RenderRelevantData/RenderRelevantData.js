@@ -59,7 +59,11 @@ const RenderRelevantData = ({ filterKey = '', data = [] }) => {
         </div>
       );
     }
-    return <div />;
+    return (
+      <div style={lightBG}>
+        <Typography variant="body2">No Data</Typography>
+      </div>
+    );
   };
 
   useEffect(() => {

@@ -127,11 +127,11 @@ const CropTableComponent = ({
     if (nameSortFlag) {
       if (activeCropDataShadow.length > 0) {
         activeCropDataShadow.sort((a, b) => {
-          const firstCropName = flipCoverCropName(a.data.Weeds['Cover Crop Name'].values[0].toLowerCase()).replace(
+          const firstCropName = flipCoverCropName(a.label.toLowerCase()).replace(
             /\s+/g,
             '',
           );
-          const secondCropName = flipCoverCropName(b.data.Weeds['Cover Crop Name'].values[0].toLowerCase()).replace(
+          const secondCropName = flipCoverCropName(b.label.toLowerCase()).replace(
             /\s+/g,
             '',
           );
@@ -142,11 +142,11 @@ const CropTableComponent = ({
       }
     } else if (activeCropDataShadow.length > 0) {
       activeCropDataShadow.sort((a, b) => {
-        const firstCropName = flipCoverCropName(a.data.Weeds['Cover Crop Name'].values[0].toLowerCase()).replace(
+        const firstCropName = flipCoverCropName(a.label.toLowerCase()).replace(
           /\s+/g,
           '',
         );
-        const secondCropName = flipCoverCropName(b.data.Weeds['Cover Crop Name'].values[0].toLowerCase()).replace(
+        const secondCropName = flipCoverCropName(b.label.toLowerCase()).replace(
           /\s+/g,
           '',
         );
@@ -201,16 +201,16 @@ const CropTableComponent = ({
                   >
                     <Button
                       onClick={() => {
-                        sortAllCrops(sortPreference === 'desc' ? 'asc' : 'desc');
+                        sortAllCrops(!sortPreference ? 'asc' : 'desc');
                       }}
                     >
                       <Sort
                         style={{
                           color:
-                            sortPreference === 'asc'
+                            sortPreference
                               ? CustomStyles().secondaryProgressBtnColor
                               : CustomStyles().progressColor,
-                          transform: sortPreference === 'asc' && 'rotate(180deg)',
+                          transform: sortPreference && 'rotate(180deg)',
                         }}
                       />
                       &nbsp;

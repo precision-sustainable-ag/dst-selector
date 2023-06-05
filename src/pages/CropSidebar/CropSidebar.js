@@ -121,8 +121,6 @@ const CropSidebar = ({
       }
     });
 
-    // console.log('sfo', sfo);
-
     let cropData = state?.cropData?.filter((crop) => crop['Zone Decision'] === 'Include');
 
     const search = sfilters.cropSearch?.toLowerCase().match(/\w+/g);
@@ -144,48 +142,17 @@ const CropSidebar = ({
       return '';
     });
 
-    // const growthArray = [];
-
-    // if (sfilters['Active Growth Period: Fall']) {
-    //   growthArray.push('Sep', 'Oct', 'Nov');
-    // }
-    // if (sfilters['Active Growth Period: Winter']) {
-    //   growthArray.push('Dec', 'Jan', 'Feb');
-    // }
-    // if (sfilters['Active Growth Period: Spring']) {
-    //   growthArray.push('Mar', 'Apr', 'May');
-    // }
-    // if (sfilters['Active Growth Period: Summer']) {
-    //   growthArray.push('Jun', 'Jul', 'Aug');
-    // }
-
-    // const arrayKeys = [
-    //   'Duration',
-    //   'Active Growth Period',
-    //   'Winter Survival',
-    //   'Flowering Trigger',
-    //   'Root Architecture',
-    // ];
     const booleanKeys = ['Aerial Seeding', 'Frost Seeding'];
-    // console.log('HERE 1', cropData);
     const filtered = cropData?.filter((crop, n, cd) => {
       const totalActiveFilters = Object.keys(nonZeroKeys2)?.length;
       let i = 0;
       nonZeroKeys2.forEach((keyObject) => {
         const key = Object.keys(keyObject);
         const vals = keyObject[key];
-        // console.log('HERE 2', arrayKeys, key);
         // if (areCommonElements(arrayKeys, key)) {
         // Handle array type havlues
         Object.keys(crop.data).forEach((category) => {
-          // console.log('category', category);
-          // console.log('crop.data[category]', Object.keys(crop.data[category]).includes('Root Architecture'));
-
-          // if (Object.keys(crop.data[category]).includes('Root Architecture')) {
-          //   console.log('KEY KEY', key);
-          // }
           if (Object.keys(crop.data[category]).includes(key[0])) {
-            // console.log('Object.keys(category).key', vals, crop.data[category][key].values[0]);
             if (crop.data[category][key].values[0] !== undefined) {
               const intersection = (arrays = [vals, crop.data[category][key].values[0]]) => arrays.reduce((a, b) => a.filter((c) => b.includes(c)));
 
@@ -202,21 +169,6 @@ const CropSidebar = ({
             }
           }
         });
-        // if (crop.data[category][key].values[0] !== undefined) {
-        //   const intersection = (arrays = [vals, crop.data[category][key].values[0]]) => arrays.reduce((a, b) => a.filter((c) => b.includes(c)));
-
-        //   if (intersection()?.length > 0) {
-        //     i += 1;
-        //   }
-        // } else if (areCommonElements(booleanKeys, key)) {
-        // //  Handle boolean types
-        //   if (crop.data[category][key].values[0]) {
-        //     i += 1;
-        //   }
-        // } else if (vals.includes(crop.data[category][key].values[0])) {
-        //   i += 1;
-        // }
-        // }
       });
 
       cd[n].inactive = (i !== totalActiveFilters);
@@ -488,21 +440,6 @@ const CropSidebar = ({
           <List
             component="nav"
             aria-labelledby="nested-list-subheader"
-            // subheader={(
-            //   <ListSubheader
-            //     sx={{
-            //       backgroundColor: '#add08f',
-            //       color: 'black',
-            //       textAlign: 'center',
-            //       height: '50px',
-            //     }}
-            //     style={{ marginBottom: '15px' }}
-            //     component="div"
-            //     id="nested-list-subheader"
-            //   >
-            //     FILTERS
-            //   </ListSubheader>
-            // )}
           >
             {from === 'table' && (
               <>

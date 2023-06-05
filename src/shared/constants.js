@@ -472,6 +472,98 @@ export const BinaryButton = ({ action }) => (
   </>
 );
 
+export const sortCrops = (type = 'Average Goals', crops = [], dispatchValue = {}, selectedItems = [], sortFlag = '') => {
+  if (type === 'Average Goals') {
+    crops.sort((a, b) => {
+      let aAvg = 0;
+      let bAvg = 0;
+      selectedItems
+        .slice()
+        .reverse()
+        .forEach((goal) => {
+          if (b.data.Goals[goal]) {
+            bAvg = +b.data.Goals[goal].values[0] + bAvg;
+          }
+          if (a.data.Goals[goal]) {
+            aAvg = +a.data.Goals[goal].values[0] + aAvg;
+          }
+        });
+
+      aAvg /= selectedItems.length;
+      bAvg /= selectedItems.length;
+
+      if (aAvg > bAvg) {
+        return -1;
+      } if (aAvg === bAvg) {
+        return 0;
+      }
+      return 1;
+    });
+    if (!sortFlag) {
+      crops.reverse();
+    }
+  }
+
+  if (type === 'Crop Name') {
+    if (sortFlag) {
+      if (crops.length > 0) {
+        crops.sort((a, b) => {
+          const firstCropName = flipCoverCropName(
+            a.label.toLowerCase(),
+          ).replace(/\s+/g, '');
+          const secondCropName = flipCoverCropName(
+            b.label.toLowerCase(),
+          ).replace(/\s+/g, '');
+          return firstCropName.localeCompare(secondCropName);
+        });
+
+        dispatchValue(crops);
+      }
+    } else if (crops.length > 0) {
+      crops.sort((a, b) => {
+        const firstCropName = flipCoverCropName(a.label.toLowerCase()).replace(
+          /\s+/g,
+          '',
+        );
+        const secondCropName = flipCoverCropName(b.label.toLowerCase()).replace(
+          /\s+/g,
+          '',
+        );
+        if (firstCropName < secondCropName) {
+          return 1;
+        }
+        if (firstCropName > secondCropName) {
+          return -1;
+        }
+        return 0;
+      });
+    }
+  }
+
+  if (type === 'Selected Crops') {
+    if (selectedItems.length > 0) {
+      const selectedCropIds = [];
+      selectedItems.forEach((crop) => {
+        selectedCropIds.push(crop.id);
+      });
+      const newActiveShadow = crops.map((crop) => {
+        crop.inBasket = selectedCropIds.includes(crop.id);
+        return crop;
+      });
+      if (newActiveShadow.length > 0) {
+        newActiveShadow.sort((a) => {
+          if (a.inBasket) {
+            return -1;
+          }
+          return 1;
+        });
+
+        dispatchValue(newActiveShadow);
+      }
+    }
+  }
+};
+
 export const sudoButtonStyle = {
   fontWeight: '500',
   lineHeight: '1.75',
