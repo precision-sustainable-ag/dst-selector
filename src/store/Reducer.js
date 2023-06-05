@@ -6,7 +6,6 @@
 const Reducer = (state, action, value = action && action.data && action.data.value) => {
   const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
   let sfilters = { ...state[section] };
-
   switch (action.type) {
     case 'TOGGLE':
       return { ...state, [value]: !state[value] };
@@ -17,6 +16,7 @@ const Reducer = (state, action, value = action && action.data && action.data.val
 
     case 'FILTER_TOGGLE': {
       sfilters[value] = !sfilters[value];
+
       return {
         ...state,
         [section]: sfilters,
@@ -100,12 +100,42 @@ const Reducer = (state, action, value = action && action.data && action.data.val
       break;
     }
 
+    case 'GOTO_PROGRESS': {
+      return { ...state, progress: action.data.progress };
+    }
+
     case 'UPDATE_LOCATION': {
       return {
         ...state,
         address: action.data.address,
         markers: [[action.data.latitude, action.data.longitude]],
         zipCode: action.data.zipCode,
+      };
+    }
+
+    case 'UPDATE_STATE': {
+      return {
+        ...state,
+        state: action.data.state,
+        councilLabel: action.data.councilLabel,
+        councilShorthand: action.data.councilShorthand,
+        stateId: action.data.stateId,
+      };
+    }
+
+    case 'UPDATE_REGIONS': {
+      return {
+        ...state,
+        regions: action.data.regions,
+      };
+    }
+
+    case 'UPDATE_REGION': {
+      return {
+        ...state,
+        regionId: action.data.regionId,
+        regionLabel: action.data.regionLabel,
+        regionShorthand: action.data.regionShorthand,
       };
     }
 
@@ -145,11 +175,13 @@ const Reducer = (state, action, value = action && action.data && action.data.val
     }
 
     case 'UPDATE_ZONE': {
-      sfilters.zone = action.data.zone;
+      // sfilters.zone = action.data.zone;
       return {
         ...state,
         zoneText: action.data.zoneText,
-        [section]: sfilters,
+        zone: action.data.zone,
+        zoneId: action.data.zoneId,
+        // [section]: sfilters,
       };
     }
 
@@ -220,6 +252,7 @@ const Reducer = (state, action, value = action && action.data && action.data.val
           },
           frostFreeDays: 173,
         },
+        myCoverCropListLocation: '',
         myCoverCropActivationFlag: false,
         speciesSelectorActivationFlag: true,
         cashCropData: {
@@ -229,6 +262,13 @@ const Reducer = (state, action, value = action && action.data && action.data.val
             endDate: '',
           },
         },
+      };
+    }
+
+    case 'MY_CROP_LIST_LOCATION': {
+      return {
+        ...state,
+        myCoverCropListLocation: action.data.from,
       };
     }
 
@@ -306,6 +346,20 @@ const Reducer = (state, action, value = action && action.data && action.data.val
         ...state,
         cropData: action.data,
         activeCropData: action.data,
+      };
+    }
+
+    case 'MODAL_DATA': {
+      return {
+        ...state,
+        modalData: action.data,
+      };
+    }
+
+    case 'PULL_DICTIONARY_DATA': {
+      return {
+        ...state,
+        dataDictionary: action.data,
       };
     }
 

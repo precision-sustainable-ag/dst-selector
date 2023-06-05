@@ -8,113 +8,109 @@
 import React, {
   useContext, useEffect, useState,
 } from 'react';
+import {
+  Accordion, AccordionDetails, AccordionSummary, Typography,
+} from '@mui/material';
+import { ExpandMore } from '@mui/icons-material';
 import { Context } from '../../store/Store';
 import CoverCropInformation from './CoverCropInformation/CoverCropInformation';
-import InformationSheetGoals from './InformationSheetGoals/InformationSheetGoals';
-import InformationSheetWeeds from './InformationSheetWeeds/InformationSheetWeeds';
-import InformationSheetEnvironment from './InformationSheetEnvironment/InformationSheetEnvironment';
-import GrowthTraits from './GrowthTraits/GrowthTraits';
-import SoilDrainageInfoContent from './SoilDrainageInfoContent/SoilDrainageInfoContent';
-import TerminationInfo from './TerminationInfo/TerminationInfo';
-import InformationSheetPlanting from './InformationSheetPlanting/InformationSheetPlanting';
-import PlantingAndGrowthWindows from './PlantingAndGrowthWindows/PlantingAndGrowthWindows';
-import ExtendedComments from './ExtendedComments/ExtendedComments';
 import InformationSheetReferences from './InformationSheetReferences/InformationSheetReferences';
+import TooltipMaker from '../../components/TooltipMaker/TooltipMaker';
+import { getRating } from '../../shared/constants';
 
-const InformationSheetContent = ({ crop }) => {
+const InformationSheetContent = ({ crop, modalData }) => {
   const { state } = useContext(Context);
   const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
   const { zone } = state[section];
   const [currentSources, setCurrentSources] = useState([{}]);
   const [allThumbs, setAllThumbs] = useState([]);
+  const [dataDone, setDataDone] = useState(false);
+  const query = `${encodeURIComponent('regions')}=${encodeURIComponent(state.regionId)}`;
+
+  async function getSourceData() {
+    await fetch(`https://developapi.covercrop-selector.org/v1/crops/${crop?.id}/resources?${query}`)
+      .then((res) => res.json())
+      .then((data) => setCurrentSources(data.data))
+      .catch((err) => {
+        // eslint-disable-next-line no-console
+        console.log(err.message);
+      });
+  }
+
+  async function getData() {
+    await fetch(`https://developapi.covercrop-selector.org/v1/crops/${crop?.id}/images?${query}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setAllThumbs(data.data);
+        setDataDone(true);
+      })
+      .catch((err) => {
+        // eslint-disable-next-line no-console
+        console.log(err.message);
+      });
+  }
 
   useEffect(() => {
-    document.title = `${crop['Cover Crop Name']} Zone ${zone}`;
-    const regex = /(?!\B"[^"]*),(?![^"]*"\B)/g;
-    const removeDoubleQuotes = /^"(.+(?="$))"$/;
-
-    async function getSourceData() {
-      await fetch('https://api.covercrop-selector.org/legacy/sources')
-        .then((res) => res.json())
-        .then((data) => data.filter((source) => {
-          const zones = source.Zone.split(',').map((item) => item.trim());
-          const coverCrops = source['Cover Crops']
-            .split(regex)
-            .map((item) => item.replace(removeDoubleQuotes, '$1'))
-            .map((item) => item.trim());
-
-          return zones.includes(`Zone ${zone}`) && coverCrops.includes(crop['Cover Crop Name']);
-        }))
-        .then((data) => setCurrentSources(data))
-        .catch((err) => {
-          // eslint-disable-next-line no-console
-          console.log(err.message);
-        });
-    }
-
+    document.title = `${crop.label} Zone ${zone}`;
     getSourceData();
+    getData();
   }, [crop, zone]);
 
-  useEffect(() => {
-    const allImages = [];
-    async function getData() {
-      await fetch(`https://covercrop-data.org/crops/${crop.id}`)
-        .then((res) => res.json())
-        .then((data) => {
-          data.data.images.forEach((image) => {
-            allImages.push(image.src);
-          });
-          setAllThumbs(allImages);
-        })
-        .catch((err) => {
-          // eslint-disable-next-line no-console
-          console.log(err.message);
-        });
-    }
-
-    getData();
-  }, [crop]);
-
-  return allThumbs.length > 0 && Object.keys(crop).length > 0 ? (
+  return dataDone === true && (
     <>
       <CoverCropInformation
         allThumbs={allThumbs}
-        cropImage={crop['Image Data'] || null}
-        cropDescription={
-          crop['Cover Crop Description'] ? crop['Cover Crop Description'] : crop['Crop Description']
-        }
         crop={crop}
       />
 
-      <InformationSheetGoals
-        crop={crop}
-        cropZone={crop.Zone}
-        cropGrowingWindow={crop['Growing Window']}
-      />
-
-      <div className="row otherRows mb-4 avoidPage">
-        <InformationSheetWeeds crop={crop} />
-        <InformationSheetEnvironment crop={crop} />
-      </div>
-
-      <div className="row otherRows mb-4 avoidPage">
-        <GrowthTraits crop={crop} />
-        <SoilDrainageInfoContent crop={crop} />
-      </div>
-
-      <div className="row otherRows mb-4 avoidPage">
-        <InformationSheetPlanting crop={crop} />
-        <TerminationInfo crop={crop} />
-      </div>
-
-      <PlantingAndGrowthWindows crop={crop} />
-
-      <ExtendedComments crop={crop} />
+      {modalData && modalData.data.map((cat) => (
+        <div key={cat.id} className="row mt-2 coverCropGoalsWrapper avoidPage">
+          <div className="col-12 basicAgWrapper">
+            <div className="col-12 p-0">
+              <Accordion defaultExpanded>
+                <AccordionSummary
+                  expandIcon={<ExpandMore />}
+                  sx={{
+                    '&$expanded': {
+                      margin: '4px 0',
+                    },
+                  }}
+                >
+                  <Typography variant="h6" className="text-uppercase px-3 py-2">
+                    {cat.label}
+                  </Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  {' '}
+                  <div className="row col-12 text-left">
+                    {cat.attributes.map((att) => (
+                      <div className="col-6 mb-2 ml-1 row">
+                        <span className="col">
+                          <TooltipMaker variable={att.label} crop={crop} attribute={att}>
+                            <Typography sx={{ fontWeight: 'bold' }} variant="body1">
+                              {att.label}
+                            </Typography>
+                          </TooltipMaker>
+                        </span>
+                        { att.values[0]?.dataType !== 'number' ? (
+                          <Typography variant="body1">
+                            <span>{att.values[0]?.value}</span>
+                          </Typography>
+                        ) : (
+                          <span>{getRating(att.values[0]?.value)}</span>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </AccordionDetails>
+              </Accordion>
+            </div>
+          </div>
+        </div>
+      ))}
 
       <InformationSheetReferences currentSources={currentSources} />
     </>
-  ) : (
-    ''
   );
 };
 

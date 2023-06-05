@@ -25,8 +25,14 @@ const MyCoverCropList = ({ comparisonView, from }) => {
     setUpdatedSelectedCrops(selectedCrops);
   }, [selectedCrops]);
 
+  useEffect(() => {
+    if (state.state === '') {
+      history.push('/');
+    }
+  }, [state.state]);
+
   const redirectToSpeciesSelector = () => {
-    history.replace('/species-selector');
+    history.replace('/');
     dispatch({
       type: 'ACTIVATE_SPECIES_SELECTOR_TILE',
       data: {

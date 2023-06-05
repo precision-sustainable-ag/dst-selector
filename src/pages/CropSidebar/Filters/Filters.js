@@ -42,8 +42,9 @@ const DollarsAndRatings = ({ filter, handleChange }) => {
           return (
             <Chip
               key={filter.name + i}
-              label={filter.symbol === 'dollar' ? '$'.repeat(i) : `${i} \u2605`}
+              label={filter.symbol === 'dollar' ? '$'.repeat(i) : i.toString()}
               style={{
+                fontSize: '1.2rem',
                 marginRight: 2,
                 marginBottom: 3,
               }}
@@ -73,6 +74,7 @@ const DollarsAndRatings = ({ filter, handleChange }) => {
                 }
               }}
             />
+
           );
         })}
     </div>
@@ -83,15 +85,15 @@ const Chips = ({ state, filter, handleChange }) => {
   const sfilters = window.location.href.includes('species-selector') ? state.selector : state.explorer;
 
   return filter.values.map((val) => {
-    const selected = sfilters[`${filter.name}: ${val}`];
+    const selected = sfilters[`${filter.name}: ${val.value}`];
 
     return (
       <Chip
-        key={filter.name + val}
-        onClick={() => handleChange(filter.name, val)}
+        key={filter.name + val.value}
+        onClick={() => handleChange(filter.name, val.value)}
         component="li"
         size="medium"
-        label={val}
+        label={val.value}
         style={{
           marginRight: 3,
           marginBottom: 3,
@@ -102,7 +104,7 @@ const Chips = ({ state, filter, handleChange }) => {
   });
 }; // Chips
 
-const Tip = ({ filter, omitHeading }) => (
+const Tip = ({ filter }) => (
   <Tooltip
     arrow
     placement="right"
@@ -111,21 +113,25 @@ const Tip = ({ filter, omitHeading }) => (
     title={(
       <div className="filterTooltip">
         <p>{filter.description}</p>
+        <p>{filter.details}</p>
       </div>
       )}
   >
     <small style={{ whiteSpace: 'nowrap' }}>
-      {omitHeading ? '' : filter.name}
+      {filter.name}
       <HelpOutlineIcon style={{ cursor: 'pointer', transform: 'scale(0.7)' }} />
     </small>
   </Tooltip>
 ); // Tip
 
-const Filters = forwardRef(({ props }) => {
+// added ref prop to remove error. TODO: look into if forwardRef is needed here since ref isnt used
+const Filters = forwardRef(({ props }, ref) => {
   const { state, dispatch } = useContext(Context);
   const { filters } = props;
   const [selected, setSelected] = useState({});
   const [sidebarFilterOptions, setSidebarFilterOptions] = useState({});
+  // eslint-disable-next-line no-unused-vars
+  const r = ref;
 
   const setProps = (selectedItem) => {
     setSidebarFilterOptions({
@@ -142,11 +148,11 @@ const Filters = forwardRef(({ props }) => {
     setSelected({ ...selected, whatever: 'rerender' });
   };
 
-  const chipChange = (filtername, val) => {
+  const chipChange = (filterName, val) => {
     dispatch({
       type: 'FILTER_TOGGLE',
       data: {
-        value: `${filtername}: ${val}`,
+        value: `${filterName}: ${val}`,
       },
     });
     setSelected({ ...selected, whatever: 'rerender' });
@@ -155,29 +161,14 @@ const Filters = forwardRef(({ props }) => {
   return (
     <Grid container spacing={2}>
       {filters.values.map((filter, i) => {
-        if (filter.type === 'chip' || filters.type === 'chips-only') {
-          if (filter.values && filter.values.length === 1) {
-            return (
-              <Grid key={i} item>
-                <Chips
-                  state={state}
-                  filter={filter}
-                  props={{ ...props }}
-                  handleChange={chipChange}
-                />
-                {filter.description && <Tip filter={filter} omitHeading />}
-              </Grid>
-            );
-          }
+        if (filter.type === 'string') {
           return (
             <Grid item key={i}>
-              {filter.description && (
-                <>
-                  <Tip filter={filter} />
-                  <br />
-                </>
-              )}
-              <Chips state={state} filter={filter} props={{ ...props }} handleChange={chipChange} />
+              <>
+                <Tip filter={filter} />
+                <br />
+              </>
+              <Chips key={i} state={state} filter={filter} props={{ ...props }} handleChange={chipChange} />
             </Grid>
           );
         }

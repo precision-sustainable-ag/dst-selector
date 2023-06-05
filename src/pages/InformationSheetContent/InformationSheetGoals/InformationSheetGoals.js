@@ -5,8 +5,8 @@ import { getRating } from '../../../shared/constants';
 import { Accordion, AccordionSummary } from '../informationSheet.styles';
 import TooltipMaker from '../../../components/TooltipMaker/TooltipMaker';
 
-const InfoGoals = ({ crop, attribute, alternate }) => {
-  if (crop[attribute]) {
+const InfoGoals = ({ crop, attribute }) => {
+  if (crop.data.Goals[attribute]) {
     return (
       <div className="col-6 mb-2 ml-1 row">
         <span className="col">
@@ -16,7 +16,7 @@ const InfoGoals = ({ crop, attribute, alternate }) => {
             </Typography>
           </TooltipMaker>
         </span>
-        <span>{getRating(crop[attribute] || crop[alternate])}</span>
+        <span>{getRating(crop.data.Goals[attribute].values[0])}</span>
       </div>
     );
   }

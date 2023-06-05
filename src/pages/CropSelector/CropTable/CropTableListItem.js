@@ -18,10 +18,31 @@ const CropTableListItem = ({
   return (
     activeCropData.map((crop, index) => {
       if (
-        ((crop['Zone Decision'] === 'Include') && (matchGoals ? !hasGoalRatingTwoOrLess(crop) : hasGoalRatingTwoOrLess(crop)))
+        ((matchGoals ? !hasGoalRatingTwoOrLess(crop) : hasGoalRatingTwoOrLess(crop)))
       ) {
+        const searchCategory = crop.data['Basic Agronomics'] ? 'Basic Agronomics' : 'Growth Traits';
+
+        const duration = (crop.data[searchCategory].Duration.values[0].toString().toLowerCase()
+                          === 'short-lived perennial' ? 'Perennial' : crop.data[searchCategory]?.Duration.values[0]) || 'No Data';
+
+        const maxN = crop.data[searchCategory]['Nitrogen Accumulation Min, Legumes (lbs/A/y)']?.values[0];
+        const minN = crop.data[searchCategory]['Nitrogen Accumulation Max, Legumes (lbs/A/y)']?.values[0];
+        const totalN = (minN && maxN) ? `${minN} - ${maxN}` : 'No Data';
+
+        let dryMatter;
+
+        if (crop.data[searchCategory]?.['Dry Matter']) {
+          dryMatter = crop.data[searchCategory]?.['Dry Matter']?.values[0] || 'No Data';
+        } else {
+          const dryMatterMax = crop.data[searchCategory]?.['Dry Matter Max (lbs/A/y)']?.values[0];
+          const dryMatterMin = crop.data[searchCategory]?.['Dry Matter Min (lbs/A/y)']?.values[0];
+
+          dryMatter = (dryMatterMin && dryMatterMax) ? `${dryMatterMin} - ${dryMatterMax}` : 'No Data';
+        }
+
         return (
           <Fragment key={index}>
+
             <TableRow
               className={hasGoalRatingTwoOrLess(crop) && 'inactiveCropRow'}
               key={`croprow${index}`}
@@ -33,19 +54,19 @@ const CropTableListItem = ({
                   <div className="row">
                     <div className="col-auto pl-md-0">
                       <CropImage
-                        present={!!crop['Image Data']}
+                        present={!!crop.thumbnail}
                         src={
-                          crop['Image Data'] && crop['Image Data']['Key Thumbnail']
-                            ? crop['Image Data']['Key Thumbnail']
+                          crop.thumbnail
+                            ? crop.thumbnail
                             : 'https://placehold.it/100x100'
                         }
-                        alt={crop['Image Data'] && crop['Cover Crop Name']}
+                        alt={crop.label}
                       />
                     </div>
                     <div className="col-auto pl-md-0">
                       <div className="col-12 p-md-0">
                         <Typography variant="h6">
-                          {flipCoverCropName(crop['Cover Crop Name'])}
+                          {flipCoverCropName(crop.label)}
                         </Typography>
                       </div>
                       <div className="col-12 p-md-0">
@@ -58,7 +79,7 @@ const CropTableListItem = ({
                             fontSize: 'small',
                           }}
                         >
-                          {trimString(crop['Scientific Name'], 25)}
+                          {trimString(crop.family.scientific, 25)}
                         </Typography>
                       </div>
                       <div className="col-12 p-md-0">
@@ -67,7 +88,7 @@ const CropTableListItem = ({
                           className="text-uppercase"
                           style={{ color: 'gray' }}
                         >
-                          {crop['Cover Crop Group']}
+                          {crop.group}
                         </Typography>
                       </div>
                     </div>
@@ -77,7 +98,7 @@ const CropTableListItem = ({
               <TableCell style={{ textAlign: 'left', verticalAlign: 'middle' }}>
                 <table>
                   <tbody>
-                    {crop['Cover Crop Group'].toLowerCase() === 'legume' && (
+                    {crop.group.toLowerCase() === 'legume' && (
                     <tr>
                       <td>
                         <Typography variant="subtitle2" component="b" className="">
@@ -86,9 +107,7 @@ const CropTableListItem = ({
                       </td>
                       <td>
                         <Typography variant="subtitle2" component="b">
-                          {crop['Nitrogen Accumulation Min, Legumes (lbs/A/y)']}
-                          -
-                          {crop['Nitrogen Accumulation Max, Legumes (lbs/A/y)']}
+                          {totalN}
                           <span className="units">lbs/A/y</span>
                         </Typography>
                       </td>
@@ -104,9 +123,9 @@ const CropTableListItem = ({
                       </td>
                       <td>
                         <Typography variant="subtitle2" component="b">
-                          {crop['Dry Matter Min (lbs/A/y)']}
-                          -
-                          {crop['Dry Matter Max (lbs/A/y)']}
+                          {dryMatter}
+                          {/* -
+                          {dryMatter} */}
                           <span className="units">lbs/A/y</span>
                         </Typography>
                       </td>
@@ -119,10 +138,7 @@ const CropTableListItem = ({
                       </td>
                       <td>
                         <Typography variant="subtitle2" component="b" className="text-uppercase">
-                          {crop.Duration.toString().toLowerCase()
-                          === 'short-lived perennial'
-                            ? 'Perennial'
-                            : crop.Duration.toString()}
+                          {duration}
                         </Typography>
                       </td>
                     </tr>

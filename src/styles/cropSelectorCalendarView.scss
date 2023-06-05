@@ -9,7 +9,7 @@ div.growthCellsWrapper {
     width: 50%;
     height: 30px;
   }
-  .growthCell-30.Frost {
+  .growthCell-30.Frost.Seeding {
     background-color: $frostSeedingPossibleColor;
     z-index: 2;
   }
@@ -17,11 +17,11 @@ div.growthCellsWrapper {
     background-color: $reliableEstablishmentColor;
     z-index: 2;
   }
-  .growthCell-30.Temperature\/Moisture.Risk.to.Establishment {
+  .growthCell-30.Freeze\/Moisture.Risk.to.Establishment {
     background-color: $temperatureRiskToEstablishmentColor;
     z-index: 2;
   }
-  .basic.growthCell-30 {
+  .growthCell-30.Spring, .basic, .Fall\/Winter, .Can, .Summer, .Spring, .Average  {
     background-color: $defaultLegendColor;
   }
 

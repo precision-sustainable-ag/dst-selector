@@ -75,8 +75,8 @@ const CropTableComponent = ({
       .reverse()
       .forEach((goal) => {
         activeCropDataShadow.sort((a, b) => {
-          if (a.fields[goal] && b.fields[goal]) {
-            if (a.fields[goal] > b.fields[goal]) {
+          if (a.data.Goals[goal] && b.data.Goals[goal]) {
+            if (a.data.Goals[goal].values[0] > b.data.Goals[goal].values[0]) {
               return -1;
             }
             return 1;
@@ -127,11 +127,11 @@ const CropTableComponent = ({
     if (nameSortFlag) {
       if (activeCropDataShadow.length > 0) {
         activeCropDataShadow.sort((a, b) => {
-          const firstCropName = flipCoverCropName(a.fields['Cover Crop Name'].toLowerCase()).replace(
+          const firstCropName = flipCoverCropName(a.label.toLowerCase()).replace(
             /\s+/g,
             '',
           );
-          const secondCropName = flipCoverCropName(b.fields['Cover Crop Name'].toLowerCase()).replace(
+          const secondCropName = flipCoverCropName(b.label.toLowerCase()).replace(
             /\s+/g,
             '',
           );
@@ -142,11 +142,11 @@ const CropTableComponent = ({
       }
     } else if (activeCropDataShadow.length > 0) {
       activeCropDataShadow.sort((a, b) => {
-        const firstCropName = flipCoverCropName(a.fields['Cover Crop Name'].toLowerCase()).replace(
+        const firstCropName = flipCoverCropName(a.label.toLowerCase()).replace(
           /\s+/g,
           '',
         );
-        const secondCropName = flipCoverCropName(b.fields['Cover Crop Name'].toLowerCase()).replace(
+        const secondCropName = flipCoverCropName(b.label.toLowerCase()).replace(
           /\s+/g,
           '',
         );
@@ -201,16 +201,16 @@ const CropTableComponent = ({
                   >
                     <Button
                       onClick={() => {
-                        sortAllCrops(sortPreference === 'desc' ? 'asc' : 'desc');
+                        sortAllCrops(!sortPreference ? 'asc' : 'desc');
                       }}
                     >
                       <Sort
                         style={{
                           color:
-                            sortPreference === 'asc'
+                            sortPreference
                               ? CustomStyles().secondaryProgressBtnColor
                               : CustomStyles().progressColor,
-                          transform: sortPreference === 'asc' && 'rotate(180deg)',
+                          transform: sortPreference && 'rotate(180deg)',
                         }}
                       />
                       &nbsp;

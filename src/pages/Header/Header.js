@@ -4,7 +4,6 @@
   styled using ../../styles/header.scss
 */
 
-import { Button } from '@mui/material';
 import Axios from 'axios';
 import moment from 'moment';
 import { useSnackbar } from 'notistack';
@@ -22,13 +21,11 @@ const Header = () => {
   const history = useHistory();
 
   const { state, dispatch } = useContext(Context);
-  const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
-  const sfilters = state[section];
   const [isRoot, setIsRoot] = useState(false);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const isActive = {};
 
-  const weatherApiURL = 'https://weather.aesl.ces.uga.edu';
+  const weatherApiURL = 'https://weather.covercrop-data.org';
   const getUSDAZone = async (zip) => fetch(`https://phzmapi.org/${zip}.json`);
 
   useEffect(() => {
@@ -50,37 +47,26 @@ const Header = () => {
             const dataJson = response.json();
             dataJson.then((data) => {
               // eslint-disable-next-line
-              let zone = window.location.search.match(/zone=([^\^]+)/); // for automating Information Sheet PDFs
+              // let zone = window.location.search.match(/zone=([^\^]+)/); // for automating Information Sheet PDFs
+              const { zone } = data;
+              let match = false;
 
-              zone = zone ? zone[1] : data.zone[0];
-
-              if (zone <= 7 && zone >= 4) {
-                dispatch({
-                  type: 'UPDATE_ZONE',
-                  data: {
-                    zoneText: `Zone ${zone}`,
-                    zone: parseInt(zone, 10),
-                  },
+              if (state.regions?.length > 0) {
+                state.regions.forEach((region) => {
+                  if (region.shorthand === zone) {
+                    match = true;
+                  }
                 });
-              } else {
-                enqueueSnackbar(
-                  `Error: Zones 8-11 do not occur in the Northeast US and so are not supported by this tool. 
-                    If you wish to explore the data, we suggest loading Zone 7.`,
-                  {
-                    persist: true,
-                    action: (
-                      <Button
-                        style={{ color: 'white' }}
-                        onClick={() => {
-                          closeSnackbar();
-                        }}
-                      >
-                        Close
-                      </Button>
-                    ),
-                  },
-                );
               }
+
+              dispatch({
+                type: 'UPDATE_ZONE',
+                data: {
+                  zoneText: state.councilShorthand === 'NECCC' || !match ? `Zone ${zone.slice(0, -1)}` : `Zone ${zone}`,
+                  zone: (state.councilShorthand === 'NECCC') || !match ? zone.slice(0, -1) : zone,
+                  zoneId: zone,
+                },
+              });
             });
           }
         });
@@ -88,53 +74,16 @@ const Header = () => {
   }, [state.zipCode, state.lastZipCode, dispatch, enqueueSnackbar, closeSnackbar]);
 
   useEffect(() => {
-    const getAverageFrostDates = async (url) => {
-      await Axios.get(url).then((resp) => {
-        try {
-          const totalYears = resp.data.length;
-          // get last years value
-          // TODO: Take all years data into account
-          const mostRecentYearData = resp.data[totalYears - 1];
-
-          const maxDate = mostRecentYearData['max(date)'];
-          const minDate = mostRecentYearData['min(date)'];
-
-          const averageFrostObject = {
-            firstFrostDate: {
-              month: moment(minDate).format('MMMM'),
-              day: parseInt(moment(minDate).format('D'), 10),
-            },
-            lastFrostDate: {
-              month: moment(maxDate).format('MMMM'),
-              day: parseInt(moment(maxDate).format('D'), 10),
-            },
-          };
-          dispatch({
-            type: 'UPDATE_AVERAGE_FROST_DATES',
-            data: {
-              averageFrost: averageFrostObject,
-            },
-          });
-        } catch (e) {
-          // eslint-disable-next-line
-          console.error('Average Frost Dates API::', e);
-        }
-      });
-    };
-
     const { markers } = state;
 
     // update address on marker change
     // ref forecastComponent
-
     const lat = markers[0][0];
     const lon = markers[0][1];
 
     // since this updates with state; ideally, weather and soil info should be updated here
-
     // get current lat long and get county, state and city
-
-    if (state.progress >= 2 && state.markers.length > 0) {
+    if (state.progress >= 1 && state.markers.length > 0) {
       const revAPIURL = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`;
 
       Axios.get(revAPIURL)
@@ -152,31 +101,43 @@ const Header = () => {
             });
           }
 
-          // call weather API to fetch details
+          const frostUrl = `${weatherApiURL}/frost?lat=${lat}&lon=${lon}`;
+          await Axios.get(frostUrl)
+            .then(((frostResp) => {
+              // added "/" and do %100 to get them into correct format (want frost dates to look like 01/01/23)
+              const currYear = `/${(new Date().getFullYear() % 100).toString()}`;
+              const prevYear = `/${((new Date().getFullYear() % 100) - 1).toString()}`;
+              const oneDay = 24 * 60 * 60 * 1000; // milliseconds in a day
+              const firstFrost = new Date(frostResp.data.firstfrost + prevYear);
+              const lastFrost = new Date(frostResp.data.lastfrost + currYear);
 
-          // Get: Frost Free Days
-          // Dynamic Dates not set!
-          const frostFreeDaysURL = `${weatherApiURL}/hourly?location=${city}%20${abbrState}&start=2015-01-01&end=2019-12-31
-                                    &stats=count(date)/24/5&where=air_temperature%3e0&output=json`;
-          const frostFreeDatesURL = `${weatherApiURL}/hourly?lat=${lat}&lon=${lon}&start=2014-07-01&end=2019-07-01
-                                    &stats=min(date),max(date)&where=frost&group=growingyear&options=nomrms&output=json`;
-          let frostFreeDays = 0;
+              const frostFreeDaysObj = Math.round(Math.abs((firstFrost.valueOf() - lastFrost.valueOf()) / oneDay));
+              const averageFrostObject = {
+                firstFrostDate: {
+                  month: firstFrost.toLocaleString('en-US', { month: 'long' }),
+                  day: firstFrost.getDate().toString(),
+                },
+                lastFrostDate: {
+                  month: lastFrost.toLocaleString('en-US', { month: 'long' }),
+                  day: lastFrost.getDate().toString(),
+                },
+              };
 
-          await Axios.get(frostFreeDaysURL)
-            .then((frostResp) => {
-              getAverageFrostDates(frostFreeDatesURL);
-              const frostFreeDaysObject = frostResp.data[0];
-              frostFreeDaysObject.keys().forEach((key) => {
-                frostFreeDays = frostFreeDaysObject[key];
-              });
-              return { frostFreeDays, city, abbrState };
-            })
+              return {
+                frostFreeDaysObj, city, abbrState, averageFrostObject,
+              };
+            }))
             .then((obj) => {
               dispatch({
                 type: 'UPDATE_FROST_FREE_DAYS',
-                data: { frostFreeDays: obj.frostFreeDays },
+                data: { frostFreeDays: obj.frostFreeDaysObj },
               });
-
+              dispatch({
+                type: 'UPDATE_AVERAGE_FROST_DATES',
+                data: {
+                  averageFrost: obj.averageFrostObject,
+                },
+              });
               return obj;
             })
             .then(async (obj) => {
@@ -238,14 +199,13 @@ const Header = () => {
                         data: false,
                       });
                     })
-                    .then(() => {})
+                    .then(() => { })
                     .catch((error) => {
                       dispatch({
                         type: 'SNACK',
                         data: {
                           snackOpen: true,
-                          snackMessage: `Weather API error code: ${
-                            error.response.status
+                          snackMessage: `Weather API error code: ${error.response.status
                           } for getting 5 year average rainfall for ${obj.city.toUpperCase()}, ${obj.state.toUpperCase()}`,
                         },
                       });
@@ -256,6 +216,9 @@ const Header = () => {
                     });
                 }
               }
+            })
+            .catch((err) => {
+              console.error(`Failed to fetch frost data: ${err}`);
             });
         })
         .then(() => {
@@ -267,7 +230,7 @@ const Header = () => {
     }
     // check if isRoot
 
-    if (window.location.pathname === '/species-selector') {
+    if (window.location.pathname === '/explorer') {
       setIsRoot(true);
     } else {
       setIsRoot(false);
@@ -281,10 +244,18 @@ const Header = () => {
       default:
         break;
     }
-  }, [state.markers, sfilters.zone, state.weatherDataReset]);
+  }, [state.markers, state.weatherDataReset]);
 
-  async function getCropData(formattedGoal, zone = 4) {
-    await fetch(`https://api.covercrop-selector.org/crop-data?zoneId=${zone}`)
+  const loadDictData = (data) => {
+    dispatch({
+      type: 'PULL_DICTIONARY_DATA',
+      data,
+    });
+  };
+
+  async function getCropData(formattedGoal) {
+    const query = `${encodeURIComponent('regions')}=${encodeURIComponent(state.zoneId)}`;
+    await fetch(`https://developapi.covercrop-selector.org/v1/states/${state.zoneId}/crops?${query}`)
       .then((res) => res.json())
       .then((data) => {
         cropDataFormatter(data.data);
@@ -298,41 +269,46 @@ const Header = () => {
         });
       })
       .catch((err) => {
+        // eslint-disable-next-line no-console
+        console.log(err.message);
+      });
+  }
+
+  async function getDictData() {
+    const query = `${encodeURIComponent('regions')}=${encodeURIComponent(state.zoneId)}`;
+    await fetch(`https://developapi.covercrop-selector.org/v1/states/${state.zoneId}/dictionary?${query}`)
+      .then((res) => res.json())
+      .then((data) => {
+        loadDictData(data.data);
+        return data.data.filter(
+          (d) => d.label === 'Goals',
+        );
+      })
+      .then((data) => data[0].attributes.filter(
+        (d) => d.label !== 'Notes: Goals',
+      ))
+      // .then((data) => data.map((goal) => ({ fields: goal })))
+      .then((data) => getCropData(data))
+      .catch((err) => {
       // eslint-disable-next-line no-console
         console.log(err.message);
       });
   }
 
   useEffect(() => {
-    if (sfilters.zone === state.lastZone) {
-      return;
+    // if (state.zone === state.lastZone) {
+    //   return;
+    // }
+    if (state.regionId && state.stateId) {
+      getDictData();
+      getCropData([]);
     }
-
-    async function getDictData() {
-      await fetch(`https://api.covercrop-selector.org/legacy/data-dictionary?zone=zone${sfilters.zone}`)
-        .then((res) => res.json())
-        .then((data) => data.filter(
-          (d) => d.Category === 'Goals' && d.Variable !== 'Notes: Goals',
-        ))
-        .then((data) => data.map((goal) => ({ fields: goal })))
-        .then((data) => getCropData(data, (sfilters.zone - 3)))
-        .catch((err) => {
-        // eslint-disable-next-line no-console
-          console.log(err.message);
-        });
-    }
-
-    getDictData();
-    getCropData([], sfilters.zone);
-    state.lastZone = sfilters.zone; // TODO
-  }, [
-    sfilters.zone,
-    dispatch,
-  ]);
+    state.lastZone = state.zone; // TODO
+  }, [state.stateId, state.zone, state.regionId]);
 
   const setmyCoverCropActivationFlag = () => {
     history.push('/my-cover-crop-list');
-    if (window.location.pathname === '/species-selector') {
+    if (window.location.pathname === '/explorer') {
       if (state.progress > 4) {
         dispatch({
           type: 'ACTIVATE_MY_COVER_CROP_LIST_TILE',
@@ -353,8 +329,8 @@ const Header = () => {
         myCoverCropActivationFlag: false,
       },
     });
-    if (window.location.pathname !== '/species-selector') {
-      history.push('/species-selector');
+    if (window.location.pathname !== '/explorer') {
+      history.push('/explorer');
     }
   };
 
@@ -375,7 +351,7 @@ const Header = () => {
       </div>
 
       <div className="container-fluid">
-        <HeaderLogoInfo />
+        <HeaderLogoInfo logo />
       </div>
       <div className="bottomHeader">
         <ToggleOptions
@@ -395,12 +371,12 @@ const Header = () => {
       <InformationBar />
 
       {window.location.pathname === '/about'
-      || window.location.pathname === '/help'
-      || (window.location.pathname === '/feedback'
-        && window.location.pathname !== '/cover-crop-explorer')
-      || (state.progress < 0 && (
-        <div className="topBar" />
-      ))}
+        || window.location.pathname === '/help'
+        || (window.location.pathname === '/feedback'
+          && window.location.pathname !== '/cover-crop-explorer')
+        || (state.progress < 0 && (
+          <div className="topBar" />
+        ))}
     </header>
   );
 };

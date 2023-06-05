@@ -5,7 +5,7 @@ import { getRating } from '../../../shared/constants';
 import { Accordion, AccordionSummary } from '../informationSheet.styles';
 import TooltipMaker from '../../../components/TooltipMaker/TooltipMaker';
 
-const InfoWeeds = ({ attribute, crop }) => (
+const InfoWeeds = ({ attribute, crop, zone }) => (
   <>
     <Box
       className="col-6 mb-2 ml-4"
@@ -19,7 +19,7 @@ const InfoWeeds = ({ attribute, crop }) => (
         },
       }}
     >
-      <TooltipMaker variable={attribute} zone={crop.Zone}>
+      <TooltipMaker variable={attribute} zone={zone}>
         <Typography
           sx={{
             fontWeight: 'bold',
@@ -42,12 +42,12 @@ const InfoWeeds = ({ attribute, crop }) => (
         },
       }}
     >
-      {getRating(crop[attribute])}
+      {getRating(crop[attribute].values[0])}
     </Box>
   </>
 ); // InfoWeeds
 
-const InformationSheetWeeds = ({ crop }) => (
+const InformationSheetWeeds = ({ crop, zone }) => (
   <div className="col-lg-12 col-xl-6 weedsRowWrapper" style={{ marginTop: '1em' }}>
     <Accordion defaultExpanded style={{ border: '1px solid #2b7b79' }}>
       <AccordionSummary
@@ -66,11 +66,11 @@ const InformationSheetWeeds = ({ crop }) => (
       </AccordionSummary>
       <AccordionDetails>
         <div className="row col-12 text-left">
-          <InfoWeeds crop={crop} attribute="Residue Suppresses Summer Annual Weeds" />
-          <InfoWeeds crop={crop} attribute="Outcompetes Summer Annual Weeds" />
-          <InfoWeeds crop={crop} attribute="Suppresses Winter Annual Weeds" />
-          <InfoWeeds crop={crop} attribute="Persistence" />
-          <InfoWeeds crop={crop} attribute="Volunteer Establishment" />
+          <InfoWeeds crop={crop.data.Goals} zone={zone} attribute="Residue Suppresses Summer Annual Weeds" />
+          <InfoWeeds crop={crop.data.Goals} zone={zone} attribute="Outcompetes Summer Annual Weeds" />
+          <InfoWeeds crop={crop.data.Goals} zone={zone} attribute="Suppresses Winter Annual Weeds" />
+          <InfoWeeds crop={crop.data.Weeds} zone={zone} attribute="Persistence" />
+          <InfoWeeds crop={crop.data.Weeds} zone={zone} attribute="Volunteer Establishment" />
         </div>
       </AccordionDetails>
     </Accordion>
