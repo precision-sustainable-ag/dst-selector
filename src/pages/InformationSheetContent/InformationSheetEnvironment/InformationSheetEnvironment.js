@@ -8,7 +8,6 @@ import TooltipMaker from '../../../components/TooltipMaker/TooltipMaker';
 const InfoEnvironmentalTermination = ({
   attribute,
   text = attribute.replace(/\bat\b/, 'At'),
-  variable,
   crop,
 }) => (
   <>
@@ -24,7 +23,7 @@ const InfoEnvironmentalTermination = ({
         },
       }}
     >
-      <TooltipMaker variable={variable} zone={crop.Zone}>
+      <TooltipMaker zone={crop.Zone}>
         <Typography
           sx={{
             fontWeight: 'bold',
@@ -47,12 +46,12 @@ const InfoEnvironmentalTermination = ({
         },
       }}
     >
-      {getRating(crop[attribute])}
+      {getRating(crop[attribute].values[0])}
     </Box>
   </>
 ); // InfoEnvironmentalTermination
 
-const InformationSheetEnvironment = ({ crop }) => (
+const InformationSheetEnvironment = ({ crop, zone }) => (
   <div className="col-lg-12 col-xl-6 envTolWrapper" style={{ marginTop: '1em' }}>
     <Accordion defaultExpanded style={{ border: '1px solid #2b7b79' }}>
       <AccordionSummary
@@ -72,22 +71,22 @@ const InformationSheetEnvironment = ({ crop }) => (
       <AccordionDetails>
         <div className="row col-12 text-left">
           <InfoEnvironmentalTermination
-            attribute="Low Fertility"
-            variable="Low Fertility Tolerance"
+            attribute="Low Fertility Tolerance"
             crop={crop}
+            zone={zone}
           />
           <InfoEnvironmentalTermination
             crop={crop}
-            attribute="Drought"
-            variable="Drought Tolerance"
+            attribute="Drought Tolerance"
+            zone={zone}
           />
-          <InfoEnvironmentalTermination crop={crop} attribute="Heat" variable="Heat Tolerance" />
-          <InfoEnvironmentalTermination crop={crop} attribute="Shade" variable="Shade Tolerance" />
-          <InfoEnvironmentalTermination crop={crop} attribute="Flood" variable="Flood Tolerance" />
+          <InfoEnvironmentalTermination crop={crop} attribute="Heat Tolerance" zone={zone} />
+          <InfoEnvironmentalTermination crop={crop} attribute="Shade Tolerance" zone={zone} />
+          <InfoEnvironmentalTermination crop={crop} attribute="Flood Tolerance" zone={zone} />
           <InfoEnvironmentalTermination
             crop={crop}
-            attribute="Salinity"
-            variable="Salinity Tolerance"
+            attribute="Salinity Tolerance"
+            zone={zone}
           />
         </div>
       </AccordionDetails>

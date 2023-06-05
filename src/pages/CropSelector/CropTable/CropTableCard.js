@@ -55,6 +55,11 @@ const CropTableCard = ({
         cropModifierAction(selectedCropsCopy, `${cropName} Removed`);
       }
     } else {
+      dispatch({
+        type: 'MY_CROP_LIST_LOCATION',
+        data: { from: 'selector' },
+      });
+
       cropModifierAction([cropArray], `${cropName} Added`);
     }
   };
@@ -78,7 +83,7 @@ const CropTableCard = ({
                   </div>
                 )}
               >
-                {getRating(crop[goal])}
+                {getRating(crop.data.Goals[goal]?.values[0])}
               </Tooltip>
             </div>
           </TableCell>
@@ -102,7 +107,7 @@ const CropTableCard = ({
             onClick={() => {
               addCropToBasket(
                 crop.id,
-                crop['Cover Crop Name'],
+                crop.label,
                 `cartBtn${indexKey}`,
                 crop,
               );

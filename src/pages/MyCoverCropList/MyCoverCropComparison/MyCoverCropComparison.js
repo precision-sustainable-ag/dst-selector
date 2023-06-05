@@ -53,13 +53,11 @@ const lightBG = {
 const GetAverageGoalRating = ({ crop }) => {
   const { state } = useContext(Context);
   let goalRating = 0;
-  if (state.selectedGoals.length > 0) {
-    state.selectedGoals.forEach((goal) => {
-      if (crop[goal]) {
-        goalRating += crop[goal];
-      }
-    });
-  }
+  state.selectedGoals.forEach((goal) => {
+    if (crop.data.Goals[goal]) {
+      goalRating = +crop.data.Goals[goal].values[0] + goalRating;
+    }
+  });
   return getRating(goalRating / state.selectedGoals.length);
 };
 
@@ -69,31 +67,29 @@ const MyCoverCropComparison = ({ selectedCrops }) => {
   const { comparisonKeys } = state;
   const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
   const { zone } = state[section];
-
+  // const [formattedDictData, setFormattedDictData] = useState([]);
   const [sidebarDefs, setSidebarDefs] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalData, setModalData] = useState({});
+  const allData = [];
   selectedCrops = selectedCrops || state.selectedCrops;
 
   const handleModalOpen = (crop) => {
     // put data inside modal
-    setModalData({ fields: crop });
+    setModalData(crop);
     setModalOpen(true);
   };
 
-  useEffect(() => {
-    async function getDictData() {
-      await fetch(`https://api.covercrop-selector.org/legacy/data-dictionary?zone=zone${zone}`)
-        .then((res) => res.json())
-        .then((data) => { setSidebarDefs(data); })
-        .catch((err) => {
-          // eslint-disable-next-line no-console
-          console.log(err.message);
-        });
-    }
+  async function setDataDict() {
+    await state.dataDictionary.forEach((item) => {
+      item.attributes.map((i) => allData.push(i));
+    });
+  }
 
-    getDictData();
-  }, [zone]);
+  useEffect(() => {
+    setDataDict();
+    setSidebarDefs(allData);
+  }, [zone, state.dataDictionary]);
 
   const removeCrop = (cropName, id) => {
     let removeIndex = -1;
@@ -123,10 +119,10 @@ const MyCoverCropComparison = ({ selectedCrops }) => {
   };
 
   const getTooltipData = (keyName = '') => {
-    const exactObject = sidebarDefs.find((keys) => keys.Variable === keyName);
+    const exactObject = sidebarDefs.find((keys) => keys.label === keyName);
 
     if (exactObject) {
-      return exactObject.Description;
+      return exactObject.description;
     }
     return 'No Data';
   };

@@ -22,7 +22,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import {
   allMonths,
   CustomStyles,
-  flipCoverCropName,
+  sortCrops,
   sudoButtonStyle,
   sudoButtonStyleWithPadding,
 } from '../../../shared/constants';
@@ -39,10 +39,12 @@ const growthIcon = {
 const CropCalendarView = ({ activeCropData }) => {
   const { state, dispatch } = useContext(Context);
   const [legendModal, setLegendModal] = useState(false);
-  const [nameSortFlag, setNameSortFlag] = useState(true);
-  const [selectedCropsSortFlag, setSelectedCropsSortFlag] = useState(true);
+  const [nameSortFlag, setNameSortFlag] = useState(false);
+  const [goalsSortFlag, setGoalsSortFlag] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalData, setModalData] = useState([{}]);
+  const { selectedGoals } = state;
+  const activeCropDataShadow = activeCropData;
 
   const dispatchValue = (value, type = 'UPDATE_ACTIVE_CROP_DATA') => {
     dispatch({
@@ -71,99 +73,25 @@ const CropCalendarView = ({ activeCropData }) => {
   };
 
   const sortReset = () => {
-    const { selectedGoals } = state;
-    const activeCropDataShadow = activeCropData;
-    selectedGoals
-      .slice()
-      .reverse()
-      .forEach((goal) => {
-        activeCropDataShadow.sort((a, b) => {
-          if (a.fields[goal] && b.fields[goal]) {
-            if (a.fields[goal] > b.fields[goal]) {
-              return -1;
-            }
-            return 1;
-          }
-          return 0;
-        });
-      });
-
+    sortCrops('Average Goals', activeCropDataShadow, dispatchValue, selectedGoals, goalsSortFlag);
+    setGoalsSortFlag(!goalsSortFlag);
     dispatchValue(activeCropDataShadow);
   };
+
   const sortCropsByName = () => {
-    const activeCropDataShadow = activeCropData;
-    sortReset('cropName');
-
-    if (nameSortFlag) {
-      if (activeCropDataShadow.length > 0) {
-        activeCropDataShadow.sort((a, b) => {
-          const firstCropName = flipCoverCropName(
-            a.fields['Cover Crop Name'].toLowerCase(),
-          ).replace(/\s+/g, '');
-          const secondCropName = flipCoverCropName(
-            b.fields['Cover Crop Name'].toLowerCase(),
-          ).replace(/\s+/g, '');
-          return firstCropName.localeCompare(secondCropName);
-        });
-
-        dispatchValue(activeCropDataShadow);
-      }
-    } else if (activeCropDataShadow.length > 0) {
-      activeCropDataShadow.sort((a, b) => {
-        const firstCropName = flipCoverCropName(a.fields['Cover Crop Name'].toLowerCase()).replace(
-          /\s+/g,
-          '',
-        );
-        const secondCropName = flipCoverCropName(b.fields['Cover Crop Name'].toLowerCase()).replace(
-          /\s+/g,
-          '',
-        );
-        if (firstCropName < secondCropName) {
-          return 1;
-        }
-        if (firstCropName > secondCropName) {
-          return -1;
-        }
-        return 0;
-      });
-
-      dispatchValue(activeCropDataShadow);
-    }
-
+    // const activeCropDataShadow = activeCropData;
+    sortCrops('Crop Name', activeCropDataShadow, dispatchValue, selectedGoals, nameSortFlag);
     setNameSortFlag(!nameSortFlag);
   };
 
   const sortBySelectedCrops = () => {
-    sortReset('selectedCrops');
     const selectedCropsShadow = state.selectedCrops;
-    const activeCropDataShadow = activeCropData;
-    if (selectedCropsSortFlag) {
-      if (selectedCropsShadow.length > 0) {
-        const selectedCropIds = [];
-        selectedCropsShadow.forEach((crop) => {
-          selectedCropIds.push(crop.id);
-        });
-        const newActiveShadow = activeCropDataShadow.map((crop) => {
-          crop.inCart = selectedCropIds.includes(crop.id);
-          return crop;
-        });
-
-        if (newActiveShadow.length > 0) {
-          newActiveShadow.sort((a) => {
-            if (a.inCart) {
-              return -1;
-            }
-            return 1;
-          });
-
-          dispatchValue(newActiveShadow);
-        }
-      }
-    } else {
-      sortReset('selectedCrops');
-    }
-    setSelectedCropsSortFlag(!selectedCropsSortFlag);
+    sortCrops('Selected Crops', activeCropDataShadow, dispatchValue, selectedCropsShadow);
   };
+
+  useEffect(() => {
+    sortReset();
+  }, []);
 
   return (
     <>
@@ -345,7 +273,6 @@ const CropCalendarView = ({ activeCropData }) => {
                     <div className="col-12">
                       <Typography variant="body1">
                         <Button style={{ color: '#000' }} onClick={sortReset}>
-
                           <Typography variant="body2"> AVERAGE GOAL RATING</Typography>
                         </Button>
                       </Typography>
