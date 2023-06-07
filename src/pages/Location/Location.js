@@ -109,8 +109,11 @@ const LocationComponent = ({
   };
 
   const handleRegionChange = (event) => {
+    console.log('event.target.value', event.target.value);
+
     // eslint-disable-next-line eqeqeq
     const regionInfo = state.regions.filter((region) => region.shorthand == event.target.value);
+    console.log('regionInfo', regionInfo);
 
     if (event.target) {
       if (caller === 'greenbar') {
@@ -141,8 +144,8 @@ const LocationComponent = ({
     >
 
       {state.regions.length > 0 && state.regions.map((region, i) => (
-        <MenuItem value={region.shorthand} name={region.label} key={`Region${region}${i}`}>
-          {`Zone ${region.shorthand.toUpperCase()}`}
+        <MenuItem value={region.shorthand} key={`Region${region}${i}`}>
+          {state.councilLabel !== 'Midwest Cover Crop Council' ? `Zone ${region.shorthand?.toUpperCase()}` : `${region.shorthand?.toUpperCase()}`}
         </MenuItem>
       ))}
     </Select>
@@ -209,12 +212,12 @@ const LocationComponent = ({
   return (
     <div className="container-fluid mt-5">
       <div className="row boxContainerRow mx-0 px-0 mx-lg-3 px-lg-3" style={{ minHeight: '520px' }}>
-        <div className={`col-xl-${state.councilLabel === 'Midwest' ? '12' : '4'} col-sm-12`}>
+        <div className="col-xl-4 col-sm-12">
           <div className="container-fluid">
             <Typography variant="h4" align="left">
               Where is your field located?
             </Typography>
-            {state.councilLabel === 'Midwest'
+            {state.councilLabel === 'Midwest Cover Crop Council'
               ? (
                 <Typography variant="body1" align="left" justifyContent="center" className="pt-5 pb-2">
                   Please Select A County.
@@ -234,39 +237,39 @@ const LocationComponent = ({
                   style={{ width: '100%' }}
                   sx={{ minWidth: 120 }}
                 >
-                  <InputLabel>PLANT HARDINESS ZONE</InputLabel>
+                  <InputLabel>{state.councilLabel === 'Midwest Cover Crop Council' ? 'COUNTY' : 'ZONE'}</InputLabel>
                   {plantHardinessZone()}
                 </FormControl>
               </div>
             </div>
           </div>
         </div>
-        {state.councilLabel !== 'Midwest'
-            && (
-              <div className="col-xl-8 col-sm-12">
-                <div className="container-fluid">
-                  <Map
-                    setAddress={setSelectedToEditSite}
-                    initWidth="100%"
-                    initHeight="600px"
-                    initLat={getLatLng()[0]}
-                    initLon={getLatLng()[1]}
-                    initStartZoom={12}
-                    initMinZoom={4}
-                    initMaxZoom={18}
-                    hasSearchBar
-                    hasMarker
-                    hasNavigation
-                    hasCoordBar
-                    hasDrawing
-                    hasGeolocate
-                    hasFullScreen
-                    hasMarkerPopup
-                    hasMarkerMovable
-                  />
-                </div>
-              </div>
-            )}
+        {/* {state.councilLabel !== 'Midwest Cover Crop Council' */}
+        {/* && ( */}
+        <div className="col-xl-8 col-sm-12">
+          <div className="container-fluid">
+            <Map
+              setAddress={setSelectedToEditSite}
+              initWidth="100%"
+              initHeight="600px"
+              initLat={getLatLng()[0]}
+              initLon={getLatLng()[1]}
+              initStartZoom={12}
+              initMinZoom={4}
+              initMaxZoom={18}
+              hasSearchBar
+              hasMarker
+              hasNavigation
+              hasCoordBar
+              hasDrawing
+              hasGeolocate
+              hasFullScreen
+              hasMarkerPopup
+              hasMarkerMovable
+            />
+          </div>
+        </div>
+        {/* )} */}
 
       </div>
       <Dialog disableEscapeKeyDown open={showRestartPrompt}>
