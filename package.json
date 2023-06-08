@@ -19,6 +19,7 @@
         "autosuggest-highlight": "^3.1.1",
         "axios": "^0.21.4",
         "bootstrap": "^4.5.2",
+        "dayjs": "^1.11.8",
         "jszip": "^3.5.0",
         "jszip-utils": "^0.1.0",
         "lodash": "^4.17.20",

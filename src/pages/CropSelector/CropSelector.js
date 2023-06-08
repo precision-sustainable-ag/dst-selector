@@ -10,6 +10,7 @@ import {
   useScrollTrigger,
   Zoom,
   Box,
+  Grid,
 } from '@mui/material';
 import { ArrowBack, ArrowForward, KeyboardArrowUp } from '@mui/icons-material';
 import React, { useContext, useEffect, useState } from 'react';
@@ -18,7 +19,7 @@ import { Context } from '../../store/Store';
 import '../../styles/cropSelector.scss';
 import MyCoverCropList from '../MyCoverCropList/MyCoverCropList';
 import CropCalendarView from './CropCalendarView/CropCalendarView';
-import CropSidebarComponent from '../CropSidebar/CropSidebar';
+import CropSidebar from '../CropSidebar/CropSidebar';
 import CropTableComponent from './CropTable/CropTable';
 import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset';
 import { sortCrops } from '../../shared/constants';
@@ -182,10 +183,10 @@ const CropSelector = (props) => {
   const [showSidebar, setShowSidebar] = useState(true);
 
   return (
-    <div className="container-fluid mt-2">
-      <div className="row cropSelectorRow mt-3">
-        {/* {Shows Collapsible icon for screen width < 1680px } */}
-        {size.width < 1680 && (
+    <Grid container spacing={4}>
+      {/* <div className="row cropSelectorRow mt-3"> */}
+      {/* {Shows Collapsible icon for screen width < 1680px } */}
+      {/* {size.width < 1680 && (
           <div className="col-12 mb-2">
             <Button
               startIcon={!showSidebar ? <ArrowForward /> : <ArrowBack />}
@@ -196,61 +197,137 @@ const CropSelector = (props) => {
               {!showSidebar ? 'Show Sidebar' : 'Hide Sidebar'}
             </Button>
           </div>
-        )}
+        )} */}
 
-        <div
-          className="col-md-2 col-sm-12"
-          style={
-            showSidebar
-              ? { display: 'block', visibility: 'visible' }
-              : { display: 'none', visibility: 'hidden' }
-          }
+      <Grid item xl={12} lg={12} md={12}>
+        {(size.width < 1680) && (
+        <Button
+          startIcon={!showSidebar ? <ArrowForward /> : <ArrowBack />}
+          title="Toggle Sidebar"
+          aria-label="toggle-sidebar"
+          onClick={() => setShowSidebar(!showSidebar)}
         >
-          <CropSidebarComponent
-            setGrowthWindow={setShowGrowthWindow}
-            isListView={isListView}
-            cropData={cropData}
-            activeCropData={updatedActiveCropData?.length > 0 ? updatedActiveCropData : cropData}
-            comparisonView={comparisonView}
-            toggleComparisonView={() => { setComparisonView(!comparisonView); }}
-            toggleListView={() => { setIsListView(!isListView); }}
-            from="table"
-          />
-        </div>
+          {!showSidebar ? 'Show Sidebar' : 'Hide Sidebar'}
+        </Button>
+        )}
+      </Grid>
 
-        <div className={showSidebar ? 'col-md-10 col-sm-12' : 'col-md-12 col-sm-12'}>
-          {/* we need a spinner or loading icon for when the length isnt yet determined */}
-          {state.speciesSelectorActivationFlag ? (
-            isListView ? (
-              <CropCalendarView
+      <Grid item xl={3} lg={3} md={3}>
+        {showSidebar && (
+        <CropSidebar
+          setGrowthWindow={setShowGrowthWindow}
+          isListView={isListView}
+          cropData={cropData}
+          activeCropData={updatedActiveCropData?.length > 0 ? updatedActiveCropData : cropData}
+          comparisonView={comparisonView}
+          toggleComparisonView={() => { setComparisonView(!comparisonView); }}
+          toggleListView={() => { setIsListView(!isListView); }}
+          from="table"
+        />
+        )}
+      </Grid>
+
+      <Grid item xl={showSidebar ? 8 : 12} lg={showSidebar ? 8 : 12} md={showSidebar ? 8 : 12}>
+        {/* we need a spinner or loading icon for when the length isnt yet determined */}
+        {state.speciesSelectorActivationFlag ? (
+          isListView ? (
+            <CropCalendarView
                 // cropData={cropData}
-                activeCropData={updatedActiveCropData}
-                // showGrowthWindow={showGrowthWindow}
-                // sortAllCrops={sortCropsBy}
-                // sortPreference={sortPreference}
-              />
-            ) : (
-              <CropTableComponent
-                cropData={cropData}
-                setCropData={setCropData}
-                activeCropData={updatedActiveCropData}
-                showGrowthWindow={showGrowthWindow}
-                sortAllCrops={sortCropsBy}
-                sortPreference={goalsSortFlag}
-              />
-            )
+              activeCropData={updatedActiveCropData}
+            />
           ) : (
-            <MyCoverCropList comparisonView={comparisonView} />
-          )}
-        </div>
-        <ScrollTop {...props}>
-          <Fab color="secondary" size="medium" aria-label="scroll back to top">
-            <KeyboardArrowUp />
-          </Fab>
-        </ScrollTop>
-      </div>
+            <CropTableComponent
+              cropData={cropData}
+              setCropData={setCropData}
+              activeCropData={updatedActiveCropData}
+              showGrowthWindow={showGrowthWindow}
+              sortAllCrops={sortCropsBy}
+              sortPreference={goalsSortFlag}
+            />
+          )
+        ) : (
+          <MyCoverCropList comparisonView={comparisonView} />
+        )}
+      </Grid>
+      <ScrollTop {...props}>
+        <Fab color="secondary" size="medium" aria-label="scroll back to top">
+          <KeyboardArrowUp />
+        </Fab>
+      </ScrollTop>
+      {/* </div> */}
       <MyCoverCropReset handleConfirm={handleConfirm} setHandleConfirm={setHandleConfirm} />
-    </div>
+    </Grid>
+
+  // </div>
+  // <div className="container-fluid mt-2">
+  //   <div className="row cropSelectorRow mt-3">
+  //     {/* {Shows Collapsible icon for screen width < 1680px } */}
+  //     {size.width < 1680 && (
+  //       <div className="col-12 mb-2">
+  //         <Button
+  //           startIcon={!showSidebar ? <ArrowForward /> : <ArrowBack />}
+  //           title="Toggle Sidebar"
+  //           aria-label="toggle-sidebar"
+  //           onClick={() => setShowSidebar(!showSidebar)}
+  //         >
+  //           {!showSidebar ? 'Show Sidebar' : 'Hide Sidebar'}
+  //         </Button>
+  //       </div>
+  //     )}
+
+  //     <div
+  //       className="col-md-2 col-sm-12"
+  //       style={
+  //         showSidebar
+  //           ? { display: 'block', visibility: 'visible' }
+  //           : { display: 'none', visibility: 'hidden' }
+  //       }
+  //     >
+  //       <CropSidebar
+  //         setGrowthWindow={setShowGrowthWindow}
+  //         isListView={isListView}
+  //         cropData={cropData}
+  //         activeCropData={updatedActiveCropData?.length > 0 ? updatedActiveCropData : cropData}
+  //         comparisonView={comparisonView}
+  //         toggleComparisonView={() => { setComparisonView(!comparisonView); }}
+  //         toggleListView={() => { setIsListView(!isListView); }}
+  //         from="table"
+  //       />
+  //     </div>
+
+  //     <div className={showSidebar ? 'col-md-10 col-sm-12' : 'col-md-12 col-sm-12'}>
+  //       {/* we need a spinner or loading icon for when the length isnt yet determined */}
+  //       {state.speciesSelectorActivationFlag ? (
+  //         isListView ? (
+  //           <CropCalendarView
+  //             // cropData={cropData}
+  //             activeCropData={updatedActiveCropData}
+  //             // showGrowthWindow={showGrowthWindow}
+  //             // sortAllCrops={sortCropsBy}
+  //             // sortPreference={sortPreference}
+  //           />
+  //         ) : (
+  //           <CropTableComponent
+  //             cropData={cropData}
+  //             setCropData={setCropData}
+  //             activeCropData={updatedActiveCropData}
+  //             showGrowthWindow={showGrowthWindow}
+  //             sortAllCrops={sortCropsBy}
+  //             sortPreference={goalsSortFlag}
+  //           />
+  //         )
+  //       ) : (
+  //         <MyCoverCropList comparisonView={comparisonView} />
+  //       )}
+  //     </div>
+  //     <ScrollTop {...props}>
+  //       <Fab color="secondary" size="medium" aria-label="scroll back to top">
+  //         <KeyboardArrowUp />
+  //       </Fab>
+  //     </ScrollTop>
+  //   </div>
+  //   <MyCoverCropReset handleConfirm={handleConfirm} setHandleConfirm={setHandleConfirm} />
+  // </div>
   );
 };
 
