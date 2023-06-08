@@ -488,8 +488,8 @@ Responsive Styles
         height: auto;
         max-height: max-content;
         div {
-          // width: 100%;
-          justify-content: center;
+          width: 100%;
+          justify-content: flex-start;
         }
       }
     }

@@ -23,21 +23,11 @@ const WeatherFrostFreeDays = () => {
             placement="right"
             title={(
               <div>
-                Number of days in your growing season, based on average first and last frost dates
-                for the last five years from the Precision Sustainable Agriculture Weather API
-                powered by
+                Number of days in your growing season, based on the PSA Weather API using data from the
                 {' '}
-                <a href="https://www.nssl.noaa.gov/projects/mrms/" rel="noopener noreferrer">
-                  NSSL MRMS
+                <a href="https://www.ncei.noaa.gov/products/land-based-station/us-climate-normals" rel="noopener noreferrer">
+                  NOAA 30-Year Climate Normals.
                 </a>
-                {' '}
-                and
-                {' '}
-                <a href="/#" target="_blank" rel="noopener noreferrer">
-                  NASA NLDAS-2
-                </a>
-                {' '}
-                weather data.
               </div>
               )}
           >
