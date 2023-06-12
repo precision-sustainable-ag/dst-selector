@@ -27,7 +27,6 @@ const PreviousCashCrop = () => {
 
   const handleDispatch = (start = '', end = '') => {
     dispatch({
-
       type: 'UPDATE_DATE_RANGE',
       data: {
         // TODO: use Date() in future?
