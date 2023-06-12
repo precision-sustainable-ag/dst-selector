@@ -51,7 +51,6 @@ const DateRangeDialog = ({ open = false, onChange = () => {}, close = () => {} }
         </Typography>
       </DialogContent>
       <DialogContent>
-        {console.log('HERE')}
         <DateRangePicker
           ranges={[selection]}
           onChange={handleSelect}
