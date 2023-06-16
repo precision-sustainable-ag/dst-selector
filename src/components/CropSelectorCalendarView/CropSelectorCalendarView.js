@@ -9,13 +9,6 @@ import CropPaintGrowthChart from './CropPaintGrowthChart/CropPaintGrowthChart';
 const CropSelectorCalendarView = ({ from = 'calendar', data = [] }) => {
   const { state } = useContext(Context);
 
-  const cashCropStartDate = state.cashCropData.dateRange.startDate === ''
-    ? null
-    : moment(state.cashCropData.dateRange.startDate).toISOString();
-  const cashCropEndDate = state.cashCropData.dateRange.endDate === ''
-    ? null
-    : moment(state.cashCropData.dateRange.endDate).toISOString();
-
   const months = [
     'January',
     'February',
@@ -32,16 +25,15 @@ const CropSelectorCalendarView = ({ from = 'calendar', data = [] }) => {
   ];
 
   const isThisCashCropMonth = (month = 'January') => {
-    if (cashCropStartDate === null || cashCropEndDate === null) {
+    if (state.cashCropData.dateRange.startDate === null || state.cashCropData.dateRange.endDate === null) {
       return false;
     }
     const result = new Set();
-    const start = moment(cashCropStartDate);
-    const end = moment(cashCropEndDate);
+    const start = moment(state.cashCropData.dateRange.startDate.$d);
+    const end = moment(state.cashCropData.dateRange.endDate.$d);
 
     while (start.isBefore(end)) {
       result.add(start.format('MMMM'));
-
       start.add(moment.duration(1, 'month'));
     }
 
