@@ -14,8 +14,6 @@ import WeatherConditions from '../../../components/WeatherConditions/WeatherCond
 
 const LocationConfirmation = () => {
   const { state } = useContext(Context);
-  const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
-  const sfilters = state[section];
 
   return (
     <div
@@ -29,8 +27,8 @@ const LocationConfirmation = () => {
       <div className="row boxContainerRow" style={{ textAlign: 'left', minHeight: '520px' }}>
         <div className="col-xl-6 col-lg-12">
           <div className="container-fluid">
-            {state.coucil !== 'Midwest'
-            ?? (
+            {state.councilShorthand !== 'MCCC'
+            && (
             <div className="row">
               <div className="col-lg-6">
                 <Map
@@ -65,8 +63,7 @@ const LocationConfirmation = () => {
                 <div className="col-12 pt-2">
                   <Typography variant="body1">
                     Your cover crop recommendations will come from the Plant Hardiness Zone
-                    {` ${sfilters.zone} `}
-                    NECCC dataset.
+                    {` ${state.zone} ${state.councilShorthand} dataset`}
                   </Typography>
                 </div>
                 <div className="col-12">
@@ -134,7 +131,7 @@ const LocationConfirmation = () => {
         </div>
         <div className="col-xl-5 offset-xl-1 col-lg-12">
           <div className="container-fluid">
-            {state.progress === 2 && state.councilLabel !== 'Midwest' && <SoilCondition />}
+            {state.progress === 2 && state.councilLabel !== 'Midwest Cover Crop Council' && <SoilCondition />}
             {state.progress === 3 && <WeatherConditions />}
           </div>
         </div>

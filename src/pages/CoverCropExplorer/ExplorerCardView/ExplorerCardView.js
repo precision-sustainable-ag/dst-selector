@@ -22,7 +22,6 @@ const ExplorerCardView = ({ activeCropData }) => {
 
   const [modalOpen, setModalOpen] = useState(false);
   const [modalData, setModalData] = useState({});
-  console.log('cropData', activeCropData);
 
   const [selectedBtns, setSelectedBtns] = useState(
     state.selectedCrops.map((crop) => crop.id),
