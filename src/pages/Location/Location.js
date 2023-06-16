@@ -109,12 +109,8 @@ const LocationComponent = ({
   };
 
   const handleRegionChange = (event) => {
-    console.log('event.target.value', event.target.value);
-
     // eslint-disable-next-line eqeqeq
     const regionInfo = state.regions.filter((region) => region.shorthand == event.target.value);
-    console.log('regionInfo', regionInfo);
-
     if (event.target) {
       if (caller === 'greenbar') {
         setShowRestartPrompt(true);
