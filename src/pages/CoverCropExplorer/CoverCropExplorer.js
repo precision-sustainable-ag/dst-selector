@@ -30,6 +30,7 @@ const CoverCropExplorer = () => {
   const defaultMarkers = [[40.78489145, -74.80733626930342]];
 
   useEffect(() => {
+    console.log('activeCropData', activeCropData);
     const filteredActiveCropData = activeCropData?.filter((a) => !a.inactive);
     setUpdatedActiveCropData(filteredActiveCropData);
     // getData();

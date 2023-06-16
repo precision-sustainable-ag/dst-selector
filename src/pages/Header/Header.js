@@ -255,7 +255,7 @@ const Header = () => {
 
   async function getCropData(formattedGoal) {
     const query = `${encodeURIComponent('regions')}=${encodeURIComponent(state.zoneId)}`;
-    await fetch(`https://developapi.covercrop-selector.org/v1/states/${state.zoneId}/crops?${query}`)
+    await fetch(`https://developapi.covercrop-selector.org/v1/states/${state.stateId}/crops?${query}`)
       .then((res) => res.json())
       .then((data) => {
         cropDataFormatter(data.data);
@@ -276,21 +276,17 @@ const Header = () => {
 
   async function getDictData() {
     const query = `${encodeURIComponent('regions')}=${encodeURIComponent(state.zoneId)}`;
-    await fetch(`https://developapi.covercrop-selector.org/v1/states/${state.zoneId}/dictionary?${query}`)
+    await fetch(`https://developapi.covercrop-selector.org/v1/states/${state.stateId}/dictionary?${query}`)
       .then((res) => res.json())
       .then((data) => {
-        console.log('state', state.stateId);
-        console.log('query', query);
-        console.log('data1', data);
         loadDictData(data.data);
         return data.data.filter(
           (d) => d.label === 'Goals',
         );
       })
-      .then((data) => console.log('data2', data))
-      // .then((data) => data[0].attributes.filter(
-      //   (d) => d.label !== 'Notes: Goals',
-      // ))
+      .then((data) => data[0].attributes.filter(
+        (d) => d.label !== 'Notes: Goals',
+      ))
       // .then((data) => data.map((goal) => ({ fields: goal })))
       .then((data) => getCropData(data))
       .catch((err) => {
