@@ -218,6 +218,7 @@ const Header = () => {
               }
             })
             .catch((err) => {
+              // eslint-disable-next-line no-console
               console.error(`Failed to fetch frost data: ${err}`);
             });
         })
@@ -284,7 +285,7 @@ const Header = () => {
           (d) => d.label === 'Goals',
         );
       })
-      .then((data) => data[0].attributes.filter(
+      .then((data) => data[0]?.attributes?.filter(
         (d) => d.label !== 'Notes: Goals',
       ))
       // .then((data) => data.map((goal) => ({ fields: goal })))
