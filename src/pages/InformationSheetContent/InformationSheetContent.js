@@ -62,7 +62,6 @@ const InformationSheetContent = ({ crop, modalData }) => {
         allThumbs={allThumbs}
         crop={crop}
       />
-      {console.log('modalData', modalData)}
       {modalData && modalData.data.map((cat) => (
         <div key={cat.id} className="row mt-2 coverCropGoalsWrapper avoidPage">
           <div className="col-12 basicAgWrapper">
