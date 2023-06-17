@@ -5,15 +5,21 @@
 */
 
 import {
-  Button, Dialog, DialogActions, DialogContent, Typography,
+  Button,
+  // Chip,
+  Dialog, DialogActions, DialogContent, Grid, Typography,
 } from '@mui/material';
-import { LocationOn, Refresh } from '@mui/icons-material';
+import {
+  LocationOn,
+  // , Refresh
+} from '@mui/icons-material';
 import CloudIcon from '@mui/icons-material/Cloud';
 import CheckIcon from '@mui/icons-material/Check';
 import FilterHdrIcon from '@mui/icons-material/FilterHdr';
 import React, { useContext, useState } from 'react';
 import {
-  BinaryButton, LightButton,
+  BinaryButton,
+  // LightButton,
 } from '../../../shared/constants';
 import { Context } from '../../../store/Store';
 import '../../../styles/greenBar.scss';
@@ -178,54 +184,29 @@ const InformationBar = () => {
     <div className="greenBarParent" id="greenBarParent">
       <div className="greenBarWrapper">
         {state.progress > 0 && window.location.pathname === speciesSelectorToolName && (
-        <>
-          <div>
+        <Grid container>
+          <Grid item xs={12} sm={6} md={2.4}>
             {getData('location')}
-          </div>
-          <div>
+          </Grid>
+          <Grid item xs={12} sm={6} md={2.4}>
             {getData('soil')}
-          </div>
-          <div>
+          </Grid>
+          <Grid item xs={12} sm={6} md={2.4}>
             {getData('weather')}
-          </div>
-          <div>
+          </Grid>
+          <Grid item xs={12} sm={6} md={2.4}>
             {getData('goals')}
-          </div>
-          <div
-            style={{
-              marginRight: '40px',
-            }}
-            className="restartBtnWrapper"
+          </Grid>
+          <Grid
+            item
+            xs={12}
+            sm={12}
+            md={2.4}
           >
-            <ProgressButtons />
-            <LightButton
-              style={{
-                maxWidth: '90px',
-                maxHeight: '35px',
-                minWidth: '90px',
-                minHeight: '35px',
-                fontSize: '13px',
-                marginLeft: '-5%',
-                marginTop: '2.5px',
-                marginBottom: '2.5px',
 
-              }}
-              onClick={() => {
-                closeExpansionPanel();
-                setConfirmationOpen(true);
-              }}
-            >
-              <Refresh />
-              <p style={{
-                paddingBottom: '6px',
-              }}
-              >
-                &nbsp; Restart
-
-              </p>
-            </LightButton>
-          </div>
-        </>
+            <ProgressButtons closeExpansionPanel={closeExpansionPanel} setConfirmationOpen={setConfirmationOpen} />
+          </Grid>
+        </Grid>
         )}
       </div>
       <div
