@@ -7,7 +7,7 @@
 import {
   Button,
   // Chip,
-  Dialog, DialogActions, DialogContent, Grid, Typography,
+  Dialog, DialogActions, DialogContent, Grid, Tooltip, Typography,
 } from '@mui/material';
 import { LocationOn } from '@mui/icons-material';
 import CloudIcon from '@mui/icons-material/Cloud';
@@ -68,14 +68,29 @@ const InformationBar = () => {
     });
   };
 
+  const getSelectedValues = (type) => {
+    switch (type) {
+      case 'location':
+        return `Zone ${state.zone}`;
+      case 'soil':
+        return state.soilData.Drainage_Class
+          .toString()
+          .split(',')
+          .join(', ');
+      case 'weather':
+        return `${state.weatherData.averageFrost.firstFrostDate.month} ${state.weatherData.averageFrost.firstFrostDate.day}`;
+      default: return '';
+    }
+  };
+
   const getIconInfo = (type) => {
     if (type === 'location') {
       return (
         <>
           <LocationOn />
-            &nbsp;Location: Zone
+            &nbsp;Location:
           {' '}
-          {state.zone}
+          {getSelectedValues('location')}
         </>
       );
     }
@@ -87,9 +102,7 @@ const InformationBar = () => {
             &nbsp;
           {' '}
           {/* {`Soils: Map Unit Name (${state.soilData.Map_Unit_Name}%), Drainage Class: ${state.soilData.Drainage_Class}})`} */}
-          {`Soil Drainage: ${state.soilData.Drainage_Class.toString()
-            .split(',')
-            .join(', ')}`}
+          {`Soil Drainage: ${getSelectedValues('soil')}`}
         </>
       );
     }
@@ -100,7 +113,7 @@ const InformationBar = () => {
           <CloudIcon fontSize="small" />
             &nbsp;
           {' '}
-          {`First Frost: ${state.weatherData.averageFrost.firstFrostDate.month} ${state.weatherData.averageFrost.firstFrostDate.day}`}
+          {`First Frost: ${getSelectedValues('weather')}`}
         </>
       );
     }
@@ -185,16 +198,24 @@ const InformationBar = () => {
           container
         >
           <Grid item xs={12} sm={6} md={6} lg={1.5}>
-            {getData('location')}
+            <Tooltip title={getSelectedValues('location')} placement="bottom">
+              {getData('location')}
+            </Tooltip>
           </Grid>
           <Grid item xs={12} sm={6} md={6} lg={3.5}>
-            {getData('soil')}
+            <Tooltip title={getSelectedValues('soil')} placement="bottom">
+              {getData('soil')}
+            </Tooltip>
           </Grid>
           <Grid item xs={12} sm={6} md={6} lg={2.5}>
-            {getData('weather')}
+            <Tooltip title={getSelectedValues('weather')} placement="bottom">
+              {getData('weather')}
+            </Tooltip>
           </Grid>
           <Grid item xs={12} sm={6} md={6} lg={1.5}>
-            {getData('goals')}
+            <Tooltip title={getSelectedValues('goals')} placement="bottom">
+              {getData('goals')}
+            </Tooltip>
           </Grid>
           <Grid
             item
