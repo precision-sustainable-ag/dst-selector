@@ -5,9 +5,7 @@
 */
 
 import {
-  Button,
-  // Chip,
-  Dialog, DialogActions, DialogContent, Grid, Tooltip, Typography,
+  Button, Dialog, DialogActions, DialogContent, Grid, Tooltip, Typography,
 } from '@mui/material';
 import { LocationOn } from '@mui/icons-material';
 import CloudIcon from '@mui/icons-material/Cloud';
@@ -48,23 +46,18 @@ const InformationBar = () => {
   };
 
   const handleBtnClick = (type) => {
-    let progress;
+    const options = {
+      location: 1,
+      soil: 2,
+      weather: 3,
+      goals: 4,
+    };
 
-    if (type === 'location') {
-      progress = 1;
-    } else if (type === 'soil') {
-      progress = 2;
-    } else if (type === 'weather') {
-      progress = 3;
-    } else if (type === 'goals') {
-      progress = 4;
-    }
+    const progress = options[type];
 
     dispatch({
       type: 'GOTO_PROGRESS',
-      data: {
-        progress,
-      },
+      data: progress,
     });
   };
 
@@ -84,50 +77,43 @@ const InformationBar = () => {
   };
 
   const getIconInfo = (type) => {
-    if (type === 'location') {
-      return (
-        <>
-          <LocationOn />
+    switch (type) {
+      case 'location':
+        return (
+          <>
+            <LocationOn />
             &nbsp;Location:
-          {' '}
-          {getSelectedValues('location')}
-        </>
-      );
-    }
-
-    if (type === 'soil') {
-      return (
+            {' '}
+            {getSelectedValues('location')}
+          </>
+        );
+      case 'soil': return (
         <>
           <FilterHdrIcon />
-            &nbsp;
+          &nbsp;
           {' '}
           {/* {`Soils: Map Unit Name (${state.soilData.Map_Unit_Name}%), Drainage Class: ${state.soilData.Drainage_Class}})`} */}
           {`Soil Drainage: ${getSelectedValues('soil')}`}
         </>
       );
-    }
-
-    if (type === 'weather') {
-      return (
-        <>
-          <CloudIcon fontSize="small" />
+      case 'weather':
+        return (
+          <>
+            <CloudIcon fontSize="small" />
             &nbsp;
-          {' '}
-          {`First Frost: ${getSelectedValues('weather')}`}
-        </>
-      );
-    }
-
-    if (type === 'goals') {
-      return (
-        <>
-          <CheckIcon />
+            {' '}
+            {`First Frost: ${getSelectedValues('weather')}`}
+          </>
+        );
+      case 'goals':
+        return (
+          <>
+            <CheckIcon />
             &nbsp;Goals
-        </>
-      );
+          </>
+        );
+      default: return null;
     }
-
-    return '';
   };
 
   const getData = (type) => {
