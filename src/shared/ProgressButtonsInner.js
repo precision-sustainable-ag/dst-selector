@@ -44,12 +44,17 @@ const ProgressButtonsInner = ({ disabled, closeExpansionPanel, setConfirmationOp
   }, [state.progress]);
 
   return (
-    <Stack direction="row" ml={{ xs: '13%', sm: '30%', md: 1 }}>
+    <Stack
+      direction="row"
+      ml={{
+        xs: '13%', sm: '30%', md: '30%', lg: '10%',
+      }}
+    >
       <LightButton
         style={{
           maxWidth: '90px',
           maxHeight: '35px',
-          minWidth: '90px',
+          minWidth: '70px',
           fontSize: '13px',
           marginLeft: '3%',
         }}
@@ -61,7 +66,7 @@ const ProgressButtonsInner = ({ disabled, closeExpansionPanel, setConfirmationOp
         style={{
           maxWidth: '90px',
           maxHeight: '35px',
-          minWidth: '90px',
+          minWidth: '70px',
           fontSize: '13px',
           marginLeft: '3%',
         }}
@@ -84,12 +89,7 @@ const ProgressButtonsInner = ({ disabled, closeExpansionPanel, setConfirmationOp
         }}
       >
         <Refresh />
-        <p style={{
-          paddingBottom: '6px',
-        }}
-        >
-          &nbsp; Restart
-        </p>
+        Restart
       </LightButton>
     </Stack>
   );

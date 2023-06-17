@@ -181,26 +181,28 @@ const InformationBar = () => {
     <div className="greenBarParent" id="greenBarParent">
       <div className="greenBarWrapper">
         {state.progress > 0 && window.location.pathname === speciesSelectorToolName && (
-        <Grid container>
-          <Grid item xs={12} sm={6} md={2.4}>
+        <Grid
+          container
+        >
+          <Grid item xs={12} sm={6} md={6} lg={1.5}>
             {getData('location')}
           </Grid>
-          <Grid item xs={12} sm={6} md={2.4}>
+          <Grid item xs={12} sm={6} md={6} lg={3.5}>
             {getData('soil')}
           </Grid>
-          <Grid item xs={12} sm={6} md={2.4}>
+          <Grid item xs={12} sm={6} md={6} lg={2.5}>
             {getData('weather')}
           </Grid>
-          <Grid item xs={12} sm={6} md={2.4}>
+          <Grid item xs={12} sm={6} md={6} lg={1.5}>
             {getData('goals')}
           </Grid>
           <Grid
             item
             xs={12}
             sm={12}
-            md={2.4}
+            md={12}
+            lg={2.5}
           >
-
             <ProgressButtons closeExpansionPanel={closeExpansionPanel} setConfirmationOpen={setConfirmationOpen} />
           </Grid>
         </Grid>
