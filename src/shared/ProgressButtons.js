@@ -7,7 +7,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Context } from '../store/Store';
 import ProgressButtonsInner from './ProgressButtonsInner';
 
-const ProgressButtons = () => {
+const ProgressButtons = ({ closeExpansionPanel, setConfirmationOpen }) => {
   const { state } = useContext(Context);
   const [isDisabled, setIsDisabled] = useState(false);
 
@@ -15,9 +15,11 @@ const ProgressButtons = () => {
     if (progress < 0) return '';
 
     return (
-      <div style={{ maxWidth: '150px', align: 'right' }}>
-        <ProgressButtonsInner disabled={disabled} />
-      </div>
+      <ProgressButtonsInner
+        disabled={disabled}
+        closeExpansionPanel={closeExpansionPanel}
+        setConfirmationOpen={setConfirmationOpen}
+      />
     );
   };
 
