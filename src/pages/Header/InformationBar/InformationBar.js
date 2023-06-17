@@ -9,18 +9,12 @@ import {
   // Chip,
   Dialog, DialogActions, DialogContent, Grid, Typography,
 } from '@mui/material';
-import {
-  LocationOn,
-  // , Refresh
-} from '@mui/icons-material';
+import { LocationOn } from '@mui/icons-material';
 import CloudIcon from '@mui/icons-material/Cloud';
 import CheckIcon from '@mui/icons-material/Check';
 import FilterHdrIcon from '@mui/icons-material/FilterHdr';
 import React, { useContext, useState } from 'react';
-import {
-  BinaryButton,
-  // LightButton,
-} from '../../../shared/constants';
+import { BinaryButton } from '../../../shared/constants';
 import { Context } from '../../../store/Store';
 import '../../../styles/greenBar.scss';
 import LocationComponent from '../../Location/Location';
@@ -124,8 +118,11 @@ const InformationBar = () => {
   };
 
   const getData = (type) => {
-    // eslint-disable-next-line max-len
-    if ((state.soilData.Flooding_Frequency === null && type === 'soil') || (type === 'address' && state.address === '') || (type === 'weather' && state.weatherData.length === 0)) {
+    if (
+      (state.soilData.Flooding_Frequency === null && type === 'soil')
+      || (type === 'address' && state.address === '')
+      || (type === 'weather' && state.weatherData.length === 0)
+    ) {
       return '';
     }
 
