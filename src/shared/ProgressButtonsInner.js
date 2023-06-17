@@ -10,10 +10,11 @@ import { Context } from '../store/Store';
 import { LightButton } from './constants';
 
 const ProgressButtonsInner = ({ disabled, closeExpansionPanel, setConfirmationOpen }) => {
-  const isDisabled = disabled;
-
   const { state, dispatch } = useContext(Context);
+
   const [crement, setCrement] = useState('');
+
+  const isDisabled = disabled;
 
   const changeProgress = (type) => {
     setCrement(type);

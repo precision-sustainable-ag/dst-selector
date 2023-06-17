@@ -11,18 +11,6 @@ const ProgressButtons = ({ closeExpansionPanel, setConfirmationOpen }) => {
   const { state } = useContext(Context);
   const [isDisabled, setIsDisabled] = useState(false);
 
-  const renderProgressButtons = (progress, disabled) => {
-    if (progress < 0) return '';
-
-    return (
-      <ProgressButtonsInner
-        disabled={disabled}
-        closeExpansionPanel={closeExpansionPanel}
-        setConfirmationOpen={setConfirmationOpen}
-      />
-    );
-  };
-
   useEffect(() => {
     const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
     const sfilters = state[section];
@@ -57,6 +45,18 @@ const ProgressButtons = ({ closeExpansionPanel, setConfirmationOpen }) => {
 
     disableLogic(state.progress, state.selectedGoals.length);
   }, [state]);
+
+  const renderProgressButtons = (progress, disabled) => {
+    if (progress < 0) return '';
+
+    return (
+      <ProgressButtonsInner
+        disabled={disabled}
+        closeExpansionPanel={closeExpansionPanel}
+        setConfirmationOpen={setConfirmationOpen}
+      />
+    );
+  };
 
   return renderProgressButtons(state.progress, isDisabled);
 };
