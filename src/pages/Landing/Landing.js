@@ -20,7 +20,7 @@ import React, {
 import { Link, useHistory } from 'react-router-dom';
 import ReactGA from 'react-ga';
 import { RegionSelectorMap } from '@psa/dst.ui.region-selector-map';
-import { BinaryButton, LightButton } from '../../shared/constants';
+import { BinaryButton } from '../../shared/constants';
 import { Context } from '../../store/Store';
 import '../../styles/landing.scss';
 import ConsentModal from '../CoverCropExplorer/ConsentModal/ConsentModal';
@@ -157,20 +157,6 @@ const Landing = ({ height, title, bg }) => {
       ReactGA.pageview('cover crop selector');
     }
   }, [state.consent]);
-
-  const incrementProgress = (incVal) => {
-    incVal = parseInt(incVal, 10);
-    if (incVal === 1) {
-      if (state.progress === 0) {
-        dispatch({
-          type: 'UPDATE_PROGRESS',
-          data: {
-            type: 'INCREMENT',
-          },
-        });
-      }
-    }
-  };
 
   useEffect(() => {
     document.title = title;
@@ -362,11 +348,6 @@ const Landing = ({ height, title, bg }) => {
               />
             </div>
           </Grid>
-        </Grid>
-      </Grid>
-      <Grid container justifyContent="center" alignItems="center" style={{ marginTop: '1rem' }}>
-        <Grid item>
-          <LightButton disabled={!state.councilLabel} onClick={() => incrementProgress(1)}>NEXT</LightButton>
         </Grid>
       </Grid>
       <Dialog onClose={() => setHandleConfirm(false)} open={handleConfirm}>
