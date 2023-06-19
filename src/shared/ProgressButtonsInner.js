@@ -10,7 +10,7 @@ import { Context } from '../store/Store';
 import { LightButton } from './constants';
 
 const ProgressButtonsInner = ({
-  isDisabledBack, isDisabledNext, isDisabledReset, closeExpansionPanel, setConfirmationOpen,
+  isDisabledBack, isDisabledNext, isDisabledRefresh, closeExpansionPanel, setConfirmationOpen,
 }) => {
   const { state, dispatch } = useContext(Context);
 
@@ -46,9 +46,15 @@ const ProgressButtonsInner = ({
   return (
     <Stack
       direction="row"
-      ml={{
-        xs: '13%', sm: '30%', md: '30%', lg: '10%',
-      }}
+      ml={
+        state.progress === 0
+          ? {
+            xs: '13%', sm: '30%', md: '30%', lg: '375%', xl: '390%',
+          }
+          : {
+            xs: '13%', sm: '30%', md: '30%', lg: '10%',
+          }
+      }
     >
       <LightButton
         style={{
@@ -88,7 +94,7 @@ const ProgressButtonsInner = ({
           closeExpansionPanel();
           setConfirmationOpen(true);
         }}
-        disabled={isDisabledReset}
+        disabled={isDisabledRefresh}
       >
         <Refresh />
         Restart

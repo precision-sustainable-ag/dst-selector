@@ -11,13 +11,13 @@ const ProgressButtons = ({ closeExpansionPanel, setConfirmationOpen }) => {
   const { state } = useContext(Context);
   const [isDisabledBack, setIsDisabledBack] = useState(false);
   const [isDisabledNext, setIsDisabledNext] = useState(true);
-  const [isDisabledReset, setIsDisabledReset] = useState(false);
+  const [isDisabledRefresh, setIsDisabledRefresh] = useState(false);
 
   const disableLogic = (progress, goalsLength, sfilters) => {
     switch (parseInt(progress, 10)) {
       case 0:
         setIsDisabledBack(true);
-        setIsDisabledReset(true);
+        setIsDisabledRefresh(true);
         setIsDisabledNext(state.councilLabel === '');
         break;
       case 1:
@@ -29,7 +29,7 @@ const ProgressButtons = ({ closeExpansionPanel, setConfirmationOpen }) => {
           setIsDisabledNext(false);
         }
         setIsDisabledBack(false);
-        setIsDisabledReset(false);
+        setIsDisabledRefresh(false);
         break;
       case 4:
         // goals selection state
@@ -39,12 +39,12 @@ const ProgressButtons = ({ closeExpansionPanel, setConfirmationOpen }) => {
           setIsDisabledNext(false);
         }
         setIsDisabledBack(false);
-        setIsDisabledReset(false);
+        setIsDisabledRefresh(false);
         break;
       default:
         setIsDisabledNext(false);
         setIsDisabledBack(false);
-        setIsDisabledReset(false);
+        setIsDisabledRefresh(false);
         break;
     }
   };
@@ -55,21 +55,21 @@ const ProgressButtons = ({ closeExpansionPanel, setConfirmationOpen }) => {
     disableLogic(state.progress, state.selectedGoals.length, sfilters);
   }, [state]);
 
-  const renderProgressButtons = (progress, disabledBack, disabledNext, disabledReset) => {
+  const renderProgressButtons = (progress, disabledBack, disabledNext, disabledRefresh) => {
     if (progress < 0) return '';
 
     return (
       <ProgressButtonsInner
         isDisabledBack={disabledBack}
         isDisabledNext={disabledNext}
-        isDisabledReset={disabledReset}
+        isDisabledRefresh={disabledRefresh}
         closeExpansionPanel={closeExpansionPanel}
         setConfirmationOpen={setConfirmationOpen}
       />
     );
   };
 
-  return renderProgressButtons(state.progress, isDisabledBack, isDisabledNext, isDisabledReset);
+  return renderProgressButtons(state.progress, isDisabledBack, isDisabledNext, isDisabledRefresh);
 };
 
 export default ProgressButtons;
