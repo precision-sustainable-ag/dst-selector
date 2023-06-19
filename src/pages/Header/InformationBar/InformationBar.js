@@ -57,7 +57,7 @@ const InformationBar = () => {
 
     dispatch({
       type: 'GOTO_PROGRESS',
-      data: progress,
+      data: { progress },
     });
   };
 
