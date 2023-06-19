@@ -10,15 +10,15 @@ import ProgressButtonsInner from './ProgressButtonsInner';
 const ProgressButtons = ({ closeExpansionPanel, setConfirmationOpen }) => {
   const { state } = useContext(Context);
   const [isDisabledBack, setIsDisabledBack] = useState(false);
-  const [isDisabledNext, setIsDisabledNext] = useState(false);
+  const [isDisabledNext, setIsDisabledNext] = useState(true);
   const [isDisabledReset, setIsDisabledReset] = useState(false);
 
   const disableLogic = (progress, goalsLength, sfilters) => {
     switch (parseInt(progress, 10)) {
       case 0:
-        setIsDisabledBack(false);
-        setIsDisabledReset(false);
-        setIsDisabledNext(true);
+        setIsDisabledBack(true);
+        setIsDisabledReset(true);
+        setIsDisabledNext(state.councilLabel === '');
         break;
       case 1:
         // location selection state
@@ -28,6 +28,8 @@ const ProgressButtons = ({ closeExpansionPanel, setConfirmationOpen }) => {
         } else {
           setIsDisabledNext(false);
         }
+        setIsDisabledBack(false);
+        setIsDisabledReset(false);
         break;
       case 4:
         // goals selection state
@@ -36,9 +38,13 @@ const ProgressButtons = ({ closeExpansionPanel, setConfirmationOpen }) => {
         } else {
           setIsDisabledNext(false);
         }
+        setIsDisabledBack(false);
+        setIsDisabledReset(false);
         break;
       default:
         setIsDisabledNext(false);
+        setIsDisabledBack(false);
+        setIsDisabledReset(false);
         break;
     }
   };
@@ -46,16 +52,17 @@ const ProgressButtons = ({ closeExpansionPanel, setConfirmationOpen }) => {
   useEffect(() => {
     const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
     const sfilters = state[section];
-
     disableLogic(state.progress, state.selectedGoals.length, sfilters);
   }, [state]);
 
-  const renderProgressButtons = (progress, disabled) => {
+  const renderProgressButtons = (progress, disabledBack, disabledNext, disabledReset) => {
     if (progress < 0) return '';
 
     return (
       <ProgressButtonsInner
-        disabled={disabled}
+        isDisabledBack={disabledBack}
+        isDisabledNext={disabledNext}
+        isDisabledReset={disabledReset}
         closeExpansionPanel={closeExpansionPanel}
         setConfirmationOpen={setConfirmationOpen}
       />
