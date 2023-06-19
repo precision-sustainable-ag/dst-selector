@@ -49,7 +49,7 @@ const ProgressButtonsInner = ({
       ml={
         state.progress === 0
           ? {
-            xs: '13%', sm: '30%', md: '30%', lg: '375%', xl: '390%',
+            xs: '13%', sm: '30%', md: '30%', lg: '375%', xl: '380%',
           }
           : {
             xs: '13%', sm: '30%', md: '30%', lg: '10%',
