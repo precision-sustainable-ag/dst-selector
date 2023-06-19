@@ -9,41 +9,45 @@ import ProgressButtonsInner from './ProgressButtonsInner';
 
 const ProgressButtons = ({ closeExpansionPanel, setConfirmationOpen }) => {
   const { state } = useContext(Context);
-  const [isDisabled, setIsDisabled] = useState(false);
+  const [isDisabledBack, setIsDisabledBack] = useState(false);
+  const [isDisabledNext, setIsDisabledNext] = useState(false);
+  const [isDisabledReset, setIsDisabledReset] = useState(false);
+
+  const disableLogic = (progress, goalsLength, sfilters) => {
+    switch (parseInt(progress, 10)) {
+      case 0:
+        setIsDisabledBack(false);
+        setIsDisabledReset(false);
+        setIsDisabledNext(true);
+        break;
+      case 1:
+        // location selection state
+        // TODO: discuss should sfilter be used here or state.lastZone
+        if (sfilters.zone === 0 || state.address === '') {
+          setIsDisabledNext(true);
+        } else {
+          setIsDisabledNext(false);
+        }
+        break;
+      case 4:
+        // goals selection state
+        if (goalsLength > 3 || goalsLength < 1) {
+          setIsDisabledNext(true);
+        } else {
+          setIsDisabledNext(false);
+        }
+        break;
+      default:
+        setIsDisabledNext(false);
+        break;
+    }
+  };
 
   useEffect(() => {
     const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
     const sfilters = state[section];
 
-    const disableLogic = (progress, goalsLength) => {
-      switch (parseInt(progress, 10)) {
-        case 1: {
-          // location selection state
-          // TODO: discuss should sfilter be used here or state.lastZone
-          if (sfilters.zone === 0 || state.address === '') {
-            setIsDisabled(true);
-          } else {
-            setIsDisabled(false);
-          }
-          break;
-        }
-        case 4: {
-          // goals selection state
-          if (goalsLength > 3 || goalsLength < 1) {
-            setIsDisabled(true);
-          } else {
-            setIsDisabled(false);
-          }
-          break;
-        }
-        default: {
-          setIsDisabled(false);
-          break;
-        }
-      }
-    };
-
-    disableLogic(state.progress, state.selectedGoals.length);
+    disableLogic(state.progress, state.selectedGoals.length, sfilters);
   }, [state]);
 
   const renderProgressButtons = (progress, disabled) => {
@@ -58,7 +62,7 @@ const ProgressButtons = ({ closeExpansionPanel, setConfirmationOpen }) => {
     );
   };
 
-  return renderProgressButtons(state.progress, isDisabled);
+  return renderProgressButtons(state.progress, isDisabledBack, isDisabledNext, isDisabledReset);
 };
 
 export default ProgressButtons;
