@@ -9,12 +9,12 @@ import { Stack } from '@mui/material';
 import { Context } from '../store/Store';
 import { LightButton } from './constants';
 
-const ProgressButtonsInner = ({ disabled, closeExpansionPanel, setConfirmationOpen }) => {
+const ProgressButtonsInner = ({
+  isDisabledBack, isDisabledNext, isDisabledReset, closeExpansionPanel, setConfirmationOpen,
+}) => {
   const { state, dispatch } = useContext(Context);
 
   const [crement, setCrement] = useState('');
-
-  const isDisabled = disabled;
 
   const changeProgress = (type) => {
     setCrement(type);
@@ -59,6 +59,7 @@ const ProgressButtonsInner = ({ disabled, closeExpansionPanel, setConfirmationOp
           marginLeft: '3%',
         }}
         onClick={() => changeProgress('decrement')}
+        disabled={isDisabledBack}
       >
         BACK
       </LightButton>
@@ -71,7 +72,7 @@ const ProgressButtonsInner = ({ disabled, closeExpansionPanel, setConfirmationOp
           marginLeft: '3%',
         }}
         onClick={() => changeProgress('increment')}
-        disabled={isDisabled || state.progress === 5}
+        disabled={isDisabledNext || state.progress === 5}
       >
         NEXT
       </LightButton>
@@ -87,6 +88,7 @@ const ProgressButtonsInner = ({ disabled, closeExpansionPanel, setConfirmationOp
           closeExpansionPanel();
           setConfirmationOpen(true);
         }}
+        disabled={isDisabledReset}
       >
         <Refresh />
         Restart
