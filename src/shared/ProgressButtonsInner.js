@@ -64,7 +64,6 @@ const ProgressButtonsInner = ({
           maxHeight: '35px',
           minWidth: '70px',
           fontSize: '13px',
-          // marginLeft: '3%',
         }}
         onClick={() => changeProgress('decrement')}
         disabled={isDisabledBack}
