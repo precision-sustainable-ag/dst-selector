@@ -191,8 +191,8 @@ const InformationBar = () => {
           {
             state.progress > 0
             && (
-            <>
-              <Grid item xs={12} sm={6} md={6} lg={1.5}>
+            <Grid item container xs={12} sm={12} md={12} lg={9.5}>
+              <Grid item xs={12} sm={6} md={6} lg={2.5}>
                 {getData('location')}
               </Grid>
               <Grid item xs={12} sm={6} md={6} lg={3.5}>
@@ -201,10 +201,10 @@ const InformationBar = () => {
               <Grid item xs={12} sm={6} md={6} lg={2.5}>
                 {getData('weather')}
               </Grid>
-              <Grid item xs={12} sm={6} md={6} lg={1.5}>
+              <Grid item xs={12} sm={6} md={6} lg={2.5}>
                 {getData('goals')}
               </Grid>
-            </>
+            </Grid>
             )
           }
 
