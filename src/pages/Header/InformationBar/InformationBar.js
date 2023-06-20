@@ -72,6 +72,11 @@ const InformationBar = () => {
           .join(', ');
       case 'weather':
         return `${state.weatherData.averageFrost.firstFrostDate.month} ${state.weatherData.averageFrost.firstFrostDate.day}`;
+      case 'goals':
+        return state.selectedGoals
+          .toString()
+          .split(',')
+          .join(', ');
       default: return '';
     }
   };
