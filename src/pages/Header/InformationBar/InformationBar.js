@@ -5,7 +5,7 @@
 */
 
 import {
-  Button, Dialog, DialogActions, DialogContent, Grid, Tooltip, Typography,
+  Button, Dialog, DialogActions, DialogContent, Grid, Typography,
 } from '@mui/material';
 import { LocationOn } from '@mui/icons-material';
 import CloudIcon from '@mui/icons-material/Cloud';
@@ -193,24 +193,16 @@ const InformationBar = () => {
             && (
             <>
               <Grid item xs={12} sm={6} md={6} lg={1.5}>
-                <Tooltip title={getSelectedValues('location')} placement="bottom">
-                  {getData('location')}
-                </Tooltip>
+                {getData('location')}
               </Grid>
               <Grid item xs={12} sm={6} md={6} lg={3.5}>
-                <Tooltip title={getSelectedValues('soil')} placement="bottom">
-                  {getData('soil')}
-                </Tooltip>
+                {getData('soil')}
               </Grid>
               <Grid item xs={12} sm={6} md={6} lg={2.5}>
-                <Tooltip title={getSelectedValues('weather')} placement="bottom">
-                  {getData('weather')}
-                </Tooltip>
+                {getData('weather')}
               </Grid>
               <Grid item xs={12} sm={6} md={6} lg={1.5}>
-                <Tooltip title={getSelectedValues('goals')} placement="bottom">
-                  {getData('goals')}
-                </Tooltip>
+                {getData('goals')}
               </Grid>
             </>
             )
