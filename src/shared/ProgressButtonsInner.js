@@ -52,9 +52,11 @@ const ProgressButtonsInner = ({
             xs: '13%', sm: '30%', md: '30%', lg: '375%', xl: '380%',
           }
           : {
-            xs: '13%', sm: '30%', md: '30%', lg: '10%',
+            xs: '13%', sm: '30%', md: '33%', lg: '10%',
           }
       }
+      container
+      style={{ width: '100%' }}
     >
       <LightButton
         style={{
@@ -62,7 +64,7 @@ const ProgressButtonsInner = ({
           maxHeight: '35px',
           minWidth: '70px',
           fontSize: '13px',
-          marginLeft: '3%',
+          // marginLeft: '3%',
         }}
         onClick={() => changeProgress('decrement')}
         disabled={isDisabledBack}
