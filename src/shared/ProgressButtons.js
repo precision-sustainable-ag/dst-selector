@@ -9,6 +9,7 @@ import ProgressButtonsInner from './ProgressButtonsInner';
 
 const ProgressButtons = ({ closeExpansionPanel, setConfirmationOpen }) => {
   const { state } = useContext(Context);
+  console.log(state);
   const [isDisabledBack, setIsDisabledBack] = useState(false);
   const [isDisabledNext, setIsDisabledNext] = useState(true);
   const [isDisabledRefresh, setIsDisabledRefresh] = useState(false);
@@ -23,21 +24,15 @@ const ProgressButtons = ({ closeExpansionPanel, setConfirmationOpen }) => {
       case 1:
         // location selection state
         // TODO: discuss should sfilter be used here or state.lastZone
-        if (sfilters.zone === 0 || state.address === '') {
-          setIsDisabledNext(true);
-        } else {
-          setIsDisabledNext(false);
-        }
+        setIsDisabledNext(sfilters.zone === 0 || state.address === '');
+
         setIsDisabledBack(false);
         setIsDisabledRefresh(false);
         break;
       case 4:
         // goals selection state
-        if (goalsLength > 3 || goalsLength < 1) {
-          setIsDisabledNext(true);
-        } else {
-          setIsDisabledNext(false);
-        }
+        setIsDisabledNext(goalsLength > 3 || goalsLength < 1);
+
         setIsDisabledBack(false);
         setIsDisabledRefresh(false);
         break;
