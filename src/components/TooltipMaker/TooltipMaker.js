@@ -13,8 +13,8 @@ const TooltipMaker = ({
   const [desc, setDesc] = useState('');
 
   useEffect(() => {
-    if (attribute.description.length > 0) {
-      setDesc(`${attribute.description} ${attribute.units}`);
+    if (attribute?.description?.length > 0) {
+      setDesc(`${attribute?.description} ${attribute?.units}`);
     } else {
       setDesc('No Data');
     }
