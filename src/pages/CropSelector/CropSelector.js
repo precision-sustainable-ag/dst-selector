@@ -66,7 +66,7 @@ const CropSelector = (props) => {
   const [updatedActiveCropData, setUpdatedActiveCropData] = useState([]);
   const [handleConfirm, setHandleConfirm] = useState(false);
 
-  const sortCropsBy = () => {
+  const sortCropsBy = (flag) => {
     const dispatchValue = (updatedCropData) => dispatch({
       type: 'UPDATE_ACTIVE_CROP_DATA',
       data: {
@@ -77,7 +77,7 @@ const CropSelector = (props) => {
     if (selectedGoals?.length > 0) {
       const activeCropDataShadow = activeCropData?.length > 0 ? activeCropData : state?.cropData;
 
-      sortCrops('Average Goals', activeCropDataShadow, dispatchValue, selectedGoals, goalsSortFlag);
+      sortCrops('Average Goals', activeCropDataShadow, dispatchValue, selectedGoals, flag || goalsSortFlag);
       setGoalsSortFlag(!goalsSortFlag);
       dispatchValue(activeCropDataShadow);
     }
@@ -91,8 +91,8 @@ const CropSelector = (props) => {
   }, [state.selectedCrops, state.myCoverCropListLocation]);
 
   useEffect(() => {
-    sortCropsBy();
-  }, []);
+    sortCropsBy(true);
+  }, [activeCropData]);
 
   useEffect(() => {
     setUpdatedActiveCropData(activeCropData);
