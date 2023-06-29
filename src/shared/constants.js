@@ -472,7 +472,7 @@ export const BinaryButton = ({ action }) => (
   </>
 );
 
-export const sortCrops = (type = 'Average Goals', crops = [], dispatchValue = {}, selectedItems = [], sortFlag = '') => {
+export const sortCrops = (type = 'Average Goals', crops = [], sortFlag = '', dispatchValue = {}, selectedItems = [], goal = '') => {
   if (type === 'Average Goals') {
     crops.sort((a, b) => {
       let aAvg = 0;
@@ -480,12 +480,12 @@ export const sortCrops = (type = 'Average Goals', crops = [], dispatchValue = {}
       selectedItems
         .slice()
         .reverse()
-        .forEach((goal) => {
-          if (b.data.Goals[goal]) {
-            bAvg = +b.data.Goals[goal].values[0] + bAvg;
+        .forEach((g) => {
+          if (b.data.Goals[g]) {
+            bAvg = +b.data.Goals[g].values[0] + bAvg;
           }
-          if (a.data.Goals[goal]) {
-            aAvg = +a.data.Goals[goal].values[0] + aAvg;
+          if (a.data.Goals[g]) {
+            aAvg = +a.data.Goals[g].values[0] + aAvg;
           }
         });
 
@@ -503,8 +503,52 @@ export const sortCrops = (type = 'Average Goals', crops = [], dispatchValue = {}
       crops.reverse();
     }
   }
+  // if (type === 'Goal') {
+  //   if (sortFlag) {
+  //     crops.sort((a, b) => {
+  //       if (a.data.Goals[goal] && b.data.Goals[goal]) {
+  //         if (a.data.Goals[goal].values[0] > b.data.Goals[goal].values[0]) {
+  //           return -1;
+  //         }
+  //         return 1;
+  //       }
+  //       return 0;
+  //     });
+  //     if (!sortFlag) {
+  //       crops.reverse();
+  //     }
+  //   }
+  //   crops.sort((a, b) => {
+  //     let aAvg = 0;
+  //     let bAvg = 0;
+  //     selectedItems
+  //       .slice()
+  //       .reverse()
+  //       .forEach((goal) => {
+  //         if (b.data.Goals[goal]) {
+  //           bAvg = +b.data.Goals[goal].values[0] + bAvg;
+  //         }
+  //         if (a.data.Goals[goal]) {
+  //           aAvg = +a.data.Goals[goal].values[0] + aAvg;
+  //         }
+  //       });
 
+  //     aAvg /= selectedItems.length;
+  //     bAvg /= selectedItems.length;
+
+  //     if (aAvg > bAvg) {
+  //       return -1;
+  //     } if (aAvg === bAvg) {
+  //       return 0;
+  //     }
+  //     return 1;
+  //   });
+  //   if (!sortFlag) {
+  //     crops.reverse();
+  //   }
+  // }
   if (type === 'Crop Name') {
+    // can we remove this if and the whole if else?
     if (sortFlag) {
       if (crops.length > 0) {
         crops.sort((a, b) => {
@@ -516,7 +560,9 @@ export const sortCrops = (type = 'Average Goals', crops = [], dispatchValue = {}
           ).replace(/\s+/g, '');
           return firstCropName.localeCompare(secondCropName);
         });
-
+        if (!sortFlag) {
+          crops.reverse();
+        }
         dispatchValue(crops);
       }
     } else if (crops.length > 0) {
@@ -557,7 +603,9 @@ export const sortCrops = (type = 'Average Goals', crops = [], dispatchValue = {}
           }
           return 1;
         });
-
+        if (!sortFlag) {
+          crops.reverse();
+        }
         dispatchValue(newActiveShadow);
       }
     }

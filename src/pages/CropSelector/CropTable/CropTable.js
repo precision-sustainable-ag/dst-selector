@@ -17,7 +17,9 @@ import {
   Typography,
 } from '@mui/material';
 import { AddCircle, Sort } from '@mui/icons-material';
-import { CustomStyles, flipCoverCropName, sudoButtonStyle } from '../../../shared/constants';
+import {
+  CustomStyles, sortCrops, sudoButtonStyle,
+} from '../../../shared/constants';
 import { Context } from '../../../store/Store';
 import '../../../styles/cropCalendarViewComponent.scss';
 import '../../../styles/cropTable.scss';
@@ -26,7 +28,7 @@ import CropDataRender from './CropDataRender';
 import CropDetailsModal from '../../../components/CropDetailsModal/CropDetailsModal';
 
 const CropTableComponent = ({
-  cropData, activeCropData, showGrowthWindow, sortAllCrops, sortPreference,
+  cropData, activeCropData, showGrowthWindow, sortPreference,
 }) => {
   const { state, dispatch } = useContext(Context);
 
@@ -37,6 +39,9 @@ const CropTableComponent = ({
   const [theadHeight, setTheadHeight] = useState(0);
   const [nameSortFlag, setNameSortFlag] = useState(true);
   const [selectedCropsSortFlag, setSelectedCropsSortFlag] = useState(true);
+  const [goalsSortFlag, setGoalsSortFlag] = useState(true);
+  const [goalSortFlag, setGoalSortFlag] = useState(true);
+  const activeCropDataShadow = activeCropData;
 
   useEffect(() => {
     if (document.querySelector('thead.MuiTableHead-root.tableHeadWrapper')) {
@@ -67,102 +72,26 @@ const CropTableComponent = ({
     });
   };
 
-  const sortReset = () => {
-    const { selectedGoals } = state;
-    const activeCropDataShadow = activeCropData;
-    selectedGoals
-      .slice()
-      .reverse()
-      .forEach((goal) => {
-        activeCropDataShadow.sort((a, b) => {
-          if (a.data.Goals[goal] && b.data.Goals[goal]) {
-            if (a.data.Goals[goal].values[0] > b.data.Goals[goal].values[0]) {
-              return -1;
-            }
-            return 1;
-          }
-          return 0;
-        });
-      });
+  const sortByName = () => {
+    sortCrops('Crop Name', activeCropDataShadow, nameSortFlag, updateActiveCropDataAction);
+    setNameSortFlag(!nameSortFlag);
+  };
 
+  const sortByAverageGoals = () => {
+    sortCrops('Average Goals', activeCropDataShadow, goalsSortFlag, updateActiveCropDataAction, state.selectedGoals);
+    setGoalsSortFlag(!goalsSortFlag);
     updateActiveCropDataAction(activeCropDataShadow);
   };
 
   const sortBySelectedCrops = () => {
-    sortReset('selectedCrops');
     const selectedCropsShadow = state.selectedCrops;
-    const activeCropDataShadow = activeCropData;
-    if (selectedCropsSortFlag) {
-      if (selectedCropsShadow.length > 0) {
-        const selectedCropIds = [];
-        selectedCropsShadow.forEach((crop) => {
-          selectedCropIds.push(crop.id);
-        });
-        const newActiveShadow = activeCropDataShadow.map((crop, i) => {
-          activeCropDataShadow[i].inCart = selectedCropIds.includes(crop.id);
-          return crop;
-        });
-
-        if (newActiveShadow.length > 0) {
-          newActiveShadow.sort((a) => {
-            if (a.inCart) {
-              return -1;
-            }
-            return 1;
-          });
-          updateActiveCropDataAction(newActiveShadow);
-        }
-      }
-    } else {
-      // sort back to original values
-      sortReset('selectedCrops');
-    }
+    sortCrops('Selected Crops', activeCropDataShadow, selectedCropsSortFlag, updateActiveCropDataAction, selectedCropsShadow);
     setSelectedCropsSortFlag(!selectedCropsSortFlag);
   };
 
-  const sortCropsByName = () => {
-    const activeCropDataShadow = activeCropData;
-    sortReset('cropName');
-
-    if (nameSortFlag) {
-      if (activeCropDataShadow.length > 0) {
-        activeCropDataShadow.sort((a, b) => {
-          const firstCropName = flipCoverCropName(a.label.toLowerCase()).replace(
-            /\s+/g,
-            '',
-          );
-          const secondCropName = flipCoverCropName(b.label.toLowerCase()).replace(
-            /\s+/g,
-            '',
-          );
-          return firstCropName.localeCompare(secondCropName);
-        });
-
-        updateActiveCropDataAction(activeCropDataShadow);
-      }
-    } else if (activeCropDataShadow.length > 0) {
-      activeCropDataShadow.sort((a, b) => {
-        const firstCropName = flipCoverCropName(a.label.toLowerCase()).replace(
-          /\s+/g,
-          '',
-        );
-        const secondCropName = flipCoverCropName(b.label.toLowerCase()).replace(
-          /\s+/g,
-          '',
-        );
-        if (firstCropName < secondCropName) {
-          return 1;
-        }
-        if (firstCropName > secondCropName) {
-          return -1;
-        }
-        return 0;
-      });
-
-      updateActiveCropDataAction(activeCropDataShadow);
-    }
-
-    setNameSortFlag(!nameSortFlag);
+  const sortByGoal = (goal) => {
+    sortCrops('Goal', activeCropDataShadow, goalSortFlag, updateActiveCropDataAction, state.selectedGoals, goal);
+    setGoalSortFlag(!goalSortFlag);
   };
 
   return cropData.length !== 0 ? (
@@ -200,9 +129,7 @@ const CropTableComponent = ({
                     )}
                   >
                     <Button
-                      onClick={() => {
-                        sortAllCrops(!sortPreference ? 'asc' : 'desc');
-                      }}
+                      onClick={() => sortByAverageGoals()}
                     >
                       <Sort
                         style={{
@@ -263,7 +190,8 @@ const CropTableComponent = ({
                   borderRight: '5px solid white',
                 }}
               >
-                <Button onClick={sortCropsByName}>
+                {/* <Button onClick={sortCropsByName}> */}
+                <Button onClick={() => sortByName()}>
                   <Sort
                     style={{
                       color: nameSortFlag
@@ -315,7 +243,23 @@ const CropTableComponent = ({
                             </div>
                           )}
                         >
-                          <div style={sudoButtonStyle}>{`Goal ${index + 1}`}</div>
+                          <Button
+                            onClick={() => sortByGoal(goal)}
+                          >
+                            <Sort
+                              style={{
+                                color:
+                              sortPreference
+                                ? CustomStyles().secondaryProgressBtnColor
+                                : CustomStyles().progressColor,
+                                transform: sortPreference && 'rotate(180deg)',
+                              }}
+                            />
+                            <Typography variant="body2" style={{ color: '#000' }}>
+                              {`Goal ${index + 1}`}
+                            </Typography>
+                          </Button>
+
                         </Tooltip>
                       </Typography>
                     </TableCell>
@@ -345,7 +289,7 @@ const CropTableComponent = ({
                   minWidth: '165px',
                 }}
               >
-                <Button onClick={sortBySelectedCrops}>
+                <Button onClick={() => sortBySelectedCrops()}>
                   <Sort
                     style={{
                       color: selectedCropsSortFlag

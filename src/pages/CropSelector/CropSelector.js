@@ -77,7 +77,7 @@ const CropSelector = (props) => {
     if (selectedGoals?.length > 0) {
       const activeCropDataShadow = activeCropData?.length > 0 ? activeCropData : state?.cropData;
 
-      sortCrops('Average Goals', activeCropDataShadow, dispatchValue, selectedGoals, flag || goalsSortFlag);
+      sortCrops('Average Goals', activeCropDataShadow, flag || goalsSortFlag, dispatchValue, selectedGoals);
       setGoalsSortFlag(!goalsSortFlag);
       dispatchValue(activeCropDataShadow);
     }
@@ -232,7 +232,6 @@ const CropSelector = (props) => {
         {state.speciesSelectorActivationFlag ? (
           isListView ? (
             <CropCalendarView
-                // cropData={cropData}
               activeCropData={updatedActiveCropData}
             />
           ) : (
@@ -241,7 +240,6 @@ const CropSelector = (props) => {
               setCropData={setCropData}
               activeCropData={updatedActiveCropData}
               showGrowthWindow={showGrowthWindow}
-              sortAllCrops={sortCropsBy}
               sortPreference={goalsSortFlag}
             />
           )
