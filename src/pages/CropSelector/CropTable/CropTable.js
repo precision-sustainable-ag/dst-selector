@@ -28,7 +28,7 @@ import CropDataRender from './CropDataRender';
 import CropDetailsModal from '../../../components/CropDetailsModal/CropDetailsModal';
 
 const CropTableComponent = ({
-  cropData, activeCropData, showGrowthWindow, sortPreference,
+  cropData, activeCropData, showGrowthWindow,
 }) => {
   const { state, dispatch } = useContext(Context);
 
@@ -39,8 +39,10 @@ const CropTableComponent = ({
   const [theadHeight, setTheadHeight] = useState(0);
   const [nameSortFlag, setNameSortFlag] = useState(true);
   const [selectedCropsSortFlag, setSelectedCropsSortFlag] = useState(true);
-  const [goalsSortFlag, setGoalsSortFlag] = useState(true);
-  const [goalSortFlag, setGoalSortFlag] = useState(true);
+  const [averageGoalsFlag, setAverageGoalsFlag] = useState(true);
+  const [goal1SortFlag, setGoal1SortFlag] = useState(true);
+  const [goal2SortFlag, setGoal2SortFlag] = useState(true);
+  const [goal3SortFlag, setGoal3SortFlag] = useState(true);
   const activeCropDataShadow = activeCropData;
 
   useEffect(() => {
@@ -73,25 +75,36 @@ const CropTableComponent = ({
   };
 
   const sortByName = () => {
-    sortCrops('Crop Name', activeCropDataShadow, nameSortFlag, updateActiveCropDataAction);
+    sortCrops('Crop Name', activeCropDataShadow, nameSortFlag);
     setNameSortFlag(!nameSortFlag);
   };
 
   const sortByAverageGoals = () => {
-    sortCrops('Average Goals', activeCropDataShadow, goalsSortFlag, updateActiveCropDataAction, state.selectedGoals);
-    setGoalsSortFlag(!goalsSortFlag);
+    sortCrops('Average Goals', activeCropDataShadow, averageGoalsFlag, state.selectedGoals);
+    setAverageGoalsFlag(!averageGoalsFlag);
     updateActiveCropDataAction(activeCropDataShadow);
   };
 
   const sortBySelectedCrops = () => {
     const selectedCropsShadow = state.selectedCrops;
-    sortCrops('Selected Crops', activeCropDataShadow, selectedCropsSortFlag, updateActiveCropDataAction, selectedCropsShadow);
+    sortCrops('Selected Crops', activeCropDataShadow, selectedCropsSortFlag, selectedCropsShadow, updateActiveCropDataAction);
     setSelectedCropsSortFlag(!selectedCropsSortFlag);
   };
 
-  const sortByGoal = (goal) => {
-    sortCrops('Goal', activeCropDataShadow, goalSortFlag, updateActiveCropDataAction, state.selectedGoals, goal);
-    setGoalSortFlag(!goalSortFlag);
+  const sortByGoal = (goal, index) => {
+    let flag = '';
+    if (index === 0) {
+      flag = goal1SortFlag;
+      setGoal1SortFlag(!goal1SortFlag);
+    } else if (index === 1) {
+      flag = goal2SortFlag;
+      setGoal2SortFlag(!goal2SortFlag);
+    } else {
+      flag = goal3SortFlag;
+      setGoal3SortFlag(!goal3SortFlag);
+    }
+
+    sortCrops('Goal', activeCropDataShadow, flag, state.selectedGoals, updateActiveCropDataAction, goal);
   };
 
   return cropData.length !== 0 ? (
@@ -134,10 +147,10 @@ const CropTableComponent = ({
                       <Sort
                         style={{
                           color:
-                            sortPreference
+                            averageGoalsFlag
                               ? CustomStyles().secondaryProgressBtnColor
                               : CustomStyles().progressColor,
-                          transform: sortPreference && 'rotate(180deg)',
+                          transform: averageGoalsFlag && 'rotate(180deg)',
                         }}
                       />
                       &nbsp;
@@ -244,17 +257,45 @@ const CropTableComponent = ({
                           )}
                         >
                           <Button
-                            onClick={() => sortByGoal(goal)}
+                            onClick={() => sortByGoal(goal, index)}
                           >
-                            <Sort
-                              style={{
-                                color:
-                              sortPreference
-                                ? CustomStyles().secondaryProgressBtnColor
-                                : CustomStyles().progressColor,
-                                transform: sortPreference && 'rotate(180deg)',
-                              }}
-                            />
+                            {index === 0
+                              && (
+                                <Sort
+                                  style={{
+                                    color:
+                                    goal1SortFlag
+                                      ? CustomStyles().secondaryProgressBtnColor
+                                      : CustomStyles().progressColor,
+                                    transform: goal1SortFlag && 'rotate(180deg)',
+                                  }}
+                                />
+                              )}
+                            {index === 1
+                              && (
+                                <Sort
+                                  style={{
+                                    color:
+                                    goal2SortFlag
+                                      ? CustomStyles().secondaryProgressBtnColor
+                                      : CustomStyles().progressColor,
+                                    transform: goal2SortFlag && 'rotate(180deg)',
+                                  }}
+                                />
+                              )}
+                            {index === 2
+                              && (
+                                <Sort
+                                  style={{
+                                    color:
+                                    goal3SortFlag
+                                      ? CustomStyles().secondaryProgressBtnColor
+                                      : CustomStyles().progressColor,
+                                    transform: goal3SortFlag && 'rotate(180deg)',
+                                  }}
+                                />
+                              )}
+
                             <Typography variant="body2" style={{ color: '#000' }}>
                               {`Goal ${index + 1}`}
                             </Typography>
