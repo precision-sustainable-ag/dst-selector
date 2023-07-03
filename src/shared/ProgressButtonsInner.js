@@ -4,14 +4,17 @@
 */
 
 import React, { useState, useContext, useEffect } from 'react';
+import { Refresh } from '@mui/icons-material';
+import { Stack } from '@mui/material';
 import { Context } from '../store/Store';
 import { LightButton } from './constants';
 
-const ProgressButtonsInner = ({ disabled }) => {
-  const isDisabled = disabled;
-
+const ProgressButtonsInner = ({ disabled, closeExpansionPanel, setConfirmationOpen }) => {
   const { state, dispatch } = useContext(Context);
+
   const [crement, setCrement] = useState('');
+
+  const isDisabled = disabled;
 
   const changeProgress = (type) => {
     setCrement(type);
@@ -41,17 +44,19 @@ const ProgressButtonsInner = ({ disabled }) => {
   }, [state.progress]);
 
   return (
-    <>
+    <Stack
+      direction="row"
+      ml={{
+        xs: '13%', sm: '30%', md: '30%', lg: '10%',
+      }}
+    >
       <LightButton
         style={{
-          maxWidth: '50px',
+          maxWidth: '90px',
           maxHeight: '35px',
-          minWidth: '50px',
-          minHeight: '35px',
-          fontSize: '11px',
-          marginLeft: '20px',
-          marginTop: '2.5px',
-          marginBottom: '2.5px',
+          minWidth: '70px',
+          fontSize: '13px',
+          marginLeft: '3%',
         }}
         onClick={() => changeProgress('decrement')}
       >
@@ -59,21 +64,34 @@ const ProgressButtonsInner = ({ disabled }) => {
       </LightButton>
       <LightButton
         style={{
-          maxWidth: '50px',
+          maxWidth: '90px',
           maxHeight: '35px',
-          minWidth: '50px',
-          minHeight: '35px',
-          fontSize: '11px',
-          marginTop: '2.5px',
-          marginBottom: '2.5px',
+          minWidth: '70px',
+          fontSize: '13px',
+          marginLeft: '3%',
         }}
         onClick={() => changeProgress('increment')}
         disabled={isDisabled || state.progress === 5}
-        className="ml-3"
       >
         NEXT
       </LightButton>
-    </>
+      <LightButton
+        style={{
+          maxWidth: '90px',
+          maxHeight: '35px',
+          minWidth: '90px',
+          fontSize: '13px',
+          marginLeft: '3%',
+        }}
+        onClick={() => {
+          closeExpansionPanel();
+          setConfirmationOpen(true);
+        }}
+      >
+        <Refresh />
+        Restart
+      </LightButton>
+    </Stack>
   );
 };
 
