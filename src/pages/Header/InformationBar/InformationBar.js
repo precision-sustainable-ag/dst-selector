@@ -5,16 +5,14 @@
 */
 
 import {
-  Button, Dialog, DialogActions, DialogContent, Typography,
+  Button, Dialog, DialogActions, DialogContent, Grid, Tooltip, Typography,
 } from '@mui/material';
-import { LocationOn, Refresh } from '@mui/icons-material';
+import { LocationOn } from '@mui/icons-material';
 import CloudIcon from '@mui/icons-material/Cloud';
 import CheckIcon from '@mui/icons-material/Check';
 import FilterHdrIcon from '@mui/icons-material/FilterHdr';
 import React, { useContext, useState } from 'react';
-import {
-  BinaryButton, LightButton,
-} from '../../../shared/constants';
+import { BinaryButton } from '../../../shared/constants';
 import { Context } from '../../../store/Store';
 import '../../../styles/greenBar.scss';
 import LocationComponent from '../../Location/Location';
@@ -48,78 +46,82 @@ const InformationBar = () => {
   };
 
   const handleBtnClick = (type) => {
-    let progress;
+    const options = {
+      location: 1,
+      soil: 2,
+      weather: 3,
+      goals: 4,
+    };
 
-    if (type === 'location') {
-      progress = 1;
-    } else if (type === 'soil') {
-      progress = 2;
-    } else if (type === 'weather') {
-      progress = 3;
-    } else if (type === 'goals') {
-      progress = 4;
-    }
+    const progress = options[type];
 
     dispatch({
       type: 'GOTO_PROGRESS',
-      data: {
-        progress,
-      },
+      data: { progress },
     });
   };
 
-  const getIconInfo = (type) => {
-    if (type === 'location') {
-      return (
-        <>
-          <LocationOn />
-            &nbsp;Location: Zone
-          {' '}
-          {state.zone}
-        </>
-      );
+  const getSelectedValues = (type) => {
+    switch (type) {
+      case 'location':
+        return `Zone ${state.zone}`;
+      case 'soil':
+        return state.soilData.Drainage_Class
+          .toString()
+          .split(',')
+          .join(', ');
+      case 'weather':
+        return `${state.weatherData.averageFrost.firstFrostDate.month} ${state.weatherData.averageFrost.firstFrostDate.day}`;
+      default: return '';
     }
+  };
 
-    if (type === 'soil') {
-      return (
+  const getIconInfo = (type) => {
+    switch (type) {
+      case 'location':
+        return (
+          <>
+            <LocationOn />
+            &nbsp;Location:
+            {' '}
+            {getSelectedValues('location')}
+          </>
+        );
+      case 'soil': return (
         <>
           <FilterHdrIcon />
-            &nbsp;
+          &nbsp;
           {' '}
           {/* {`Soils: Map Unit Name (${state.soilData.Map_Unit_Name}%), Drainage Class: ${state.soilData.Drainage_Class}})`} */}
-          {`Soil Drainage: ${state.soilData.Drainage_Class.toString()
-            .split(',')
-            .join(', ')}`}
+          {`Soil Drainage: ${getSelectedValues('soil')}`}
         </>
       );
-    }
-
-    if (type === 'weather') {
-      return (
-        <>
-          <CloudIcon fontSize="small" />
+      case 'weather':
+        return (
+          <>
+            <CloudIcon fontSize="small" />
             &nbsp;
-          {' '}
-          {`First Frost: ${state.weatherData.averageFrost.firstFrostDate.month} ${state.weatherData.averageFrost.firstFrostDate.day}`}
-        </>
-      );
-    }
-
-    if (type === 'goals') {
-      return (
-        <>
-          <CheckIcon />
+            {' '}
+            {`First Frost: ${getSelectedValues('weather')}`}
+          </>
+        );
+      case 'goals':
+        return (
+          <>
+            <CheckIcon />
             &nbsp;Goals
-        </>
-      );
+          </>
+        );
+      default: return null;
     }
-
-    return '';
   };
 
   const getData = (type) => {
-    // eslint-disable-next-line max-len
-    if ((state.soilData.Flooding_Frequency === null && type === 'soil') || (type === 'address' && state.address === '') || (type === 'weather' && state.weatherData.length === 0)) {
+    if (
+      (state.soilData.Flooding_Frequency === null && type === 'soil')
+      || (type === 'address' && state.address === '')
+      || (type === 'weather' && state.weatherData.length === 0)
+    ) {
       return '';
     }
 
@@ -178,54 +180,39 @@ const InformationBar = () => {
     <div className="greenBarParent" id="greenBarParent">
       <div className="greenBarWrapper">
         {state.progress > 0 && window.location.pathname === speciesSelectorToolName && (
-        <>
-          <div>
-            {getData('location')}
-          </div>
-          <div>
-            {getData('soil')}
-          </div>
-          <div>
-            {getData('weather')}
-          </div>
-          <div>
-            {getData('goals')}
-          </div>
-          <div
-            style={{
-              marginRight: '40px',
-            }}
-            className="restartBtnWrapper"
+        <Grid
+          container
+        >
+          <Grid item xs={12} sm={6} md={6} lg={1.5}>
+            <Tooltip title={getSelectedValues('location')} placement="bottom">
+              {getData('location')}
+            </Tooltip>
+          </Grid>
+          <Grid item xs={12} sm={6} md={6} lg={3.5}>
+            <Tooltip title={getSelectedValues('soil')} placement="bottom">
+              {getData('soil')}
+            </Tooltip>
+          </Grid>
+          <Grid item xs={12} sm={6} md={6} lg={2.5}>
+            <Tooltip title={getSelectedValues('weather')} placement="bottom">
+              {getData('weather')}
+            </Tooltip>
+          </Grid>
+          <Grid item xs={12} sm={6} md={6} lg={1.5}>
+            <Tooltip title={getSelectedValues('goals')} placement="bottom">
+              {getData('goals')}
+            </Tooltip>
+          </Grid>
+          <Grid
+            item
+            xs={12}
+            sm={12}
+            md={12}
+            lg={2.5}
           >
-            <ProgressButtons />
-            <LightButton
-              style={{
-                maxWidth: '90px',
-                maxHeight: '35px',
-                minWidth: '90px',
-                minHeight: '35px',
-                fontSize: '13px',
-                marginLeft: '-5%',
-                marginTop: '2.5px',
-                marginBottom: '2.5px',
-
-              }}
-              onClick={() => {
-                closeExpansionPanel();
-                setConfirmationOpen(true);
-              }}
-            >
-              <Refresh />
-              <p style={{
-                paddingBottom: '6px',
-              }}
-              >
-                &nbsp; Restart
-
-              </p>
-            </LightButton>
-          </div>
-        </>
+            <ProgressButtons closeExpansionPanel={closeExpansionPanel} setConfirmationOpen={setConfirmationOpen} />
+          </Grid>
+        </Grid>
         )}
       </div>
       <div

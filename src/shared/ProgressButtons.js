@@ -7,19 +7,9 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Context } from '../store/Store';
 import ProgressButtonsInner from './ProgressButtonsInner';
 
-const ProgressButtons = () => {
+const ProgressButtons = ({ closeExpansionPanel, setConfirmationOpen }) => {
   const { state } = useContext(Context);
   const [isDisabled, setIsDisabled] = useState(false);
-
-  const renderProgressButtons = (progress, disabled) => {
-    if (progress < 0) return '';
-
-    return (
-      <div style={{ maxWidth: '150px', align: 'right' }}>
-        <ProgressButtonsInner disabled={disabled} />
-      </div>
-    );
-  };
 
   useEffect(() => {
     const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
@@ -55,6 +45,18 @@ const ProgressButtons = () => {
 
     disableLogic(state.progress, state.selectedGoals.length);
   }, [state]);
+
+  const renderProgressButtons = (progress, disabled) => {
+    if (progress < 0) return '';
+
+    return (
+      <ProgressButtonsInner
+        disabled={disabled}
+        closeExpansionPanel={closeExpansionPanel}
+        setConfirmationOpen={setConfirmationOpen}
+      />
+    );
+  };
 
   return renderProgressButtons(state.progress, isDisabled);
 };
