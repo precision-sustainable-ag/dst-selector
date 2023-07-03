@@ -5,7 +5,7 @@
 */
 
 import {
-  Button, Dialog, DialogActions, DialogContent, Grid, Tooltip, Typography,
+  Button, Dialog, DialogActions, DialogContent, Grid, Typography,
 } from '@mui/material';
 import { LocationOn } from '@mui/icons-material';
 import CloudIcon from '@mui/icons-material/Cloud';
@@ -72,6 +72,11 @@ const InformationBar = () => {
           .join(', ');
       case 'weather':
         return `${state.weatherData.averageFrost.firstFrostDate.month} ${state.weatherData.averageFrost.firstFrostDate.day}`;
+      case 'goals':
+        return state.selectedGoals
+          .toString()
+          .split(',')
+          .join(', ');
       default: return '';
     }
   };
@@ -179,30 +184,30 @@ const InformationBar = () => {
   return (
     <div className="greenBarParent" id="greenBarParent">
       <div className="greenBarWrapper">
-        {state.progress > 0 && window.location.pathname === speciesSelectorToolName && (
+        {window.location.pathname === speciesSelectorToolName && (
         <Grid
           container
         >
-          <Grid item xs={12} sm={6} md={6} lg={1.5}>
-            <Tooltip title={getSelectedValues('location')} placement="bottom">
-              {getData('location')}
-            </Tooltip>
-          </Grid>
-          <Grid item xs={12} sm={6} md={6} lg={3.5}>
-            <Tooltip title={getSelectedValues('soil')} placement="bottom">
-              {getData('soil')}
-            </Tooltip>
-          </Grid>
-          <Grid item xs={12} sm={6} md={6} lg={2.5}>
-            <Tooltip title={getSelectedValues('weather')} placement="bottom">
-              {getData('weather')}
-            </Tooltip>
-          </Grid>
-          <Grid item xs={12} sm={6} md={6} lg={1.5}>
-            <Tooltip title={getSelectedValues('goals')} placement="bottom">
-              {getData('goals')}
-            </Tooltip>
-          </Grid>
+          {
+            state.progress > 0
+            && (
+            <Grid item container xs={12} sm={12} md={12} lg={9.5}>
+              <Grid item xs={12} sm={6} md={6} lg={2.5}>
+                {getData('location')}
+              </Grid>
+              <Grid item xs={12} sm={6} md={6} lg={3.5}>
+                {getData('soil')}
+              </Grid>
+              <Grid item xs={12} sm={6} md={6} lg={2.5}>
+                {getData('weather')}
+              </Grid>
+              <Grid item xs={12} sm={6} md={6} lg={2.5}>
+                {getData('goals')}
+              </Grid>
+            </Grid>
+            )
+          }
+
           <Grid
             item
             xs={12}
