@@ -5,8 +5,10 @@
 */
 import React, { useContext, useEffect, useState } from 'react';
 import {
+  Box,
   Button,
   CircularProgress,
+  Modal,
   Table,
   TableBody,
   TableCell,
@@ -21,9 +23,9 @@ import { CustomStyles, flipCoverCropName, sudoButtonStyle } from '../../../share
 import { Context } from '../../../store/Store';
 import '../../../styles/cropCalendarViewComponent.scss';
 import '../../../styles/cropTable.scss';
-import CropLegendModal from '../../../components/CropLegendModal/CropLegendModal';
 import CropDataRender from './CropDataRender';
 import CropDetailsModal from '../../../components/CropDetailsModal/CropDetailsModal';
+import Legend from '../../../components/Legend/Legend';
 
 const CropTableComponent = ({
   cropData, activeCropData, showGrowthWindow, sortAllCrops, sortPreference,
@@ -37,6 +39,13 @@ const CropTableComponent = ({
   const [theadHeight, setTheadHeight] = useState(0);
   const [nameSortFlag, setNameSortFlag] = useState(true);
   const [selectedCropsSortFlag, setSelectedCropsSortFlag] = useState(true);
+
+  const legendData = [
+    { className: 'reliable', label: 'Reliable Establishment' },
+    { className: 'temperatureRisk', label: 'Temperature Risk To Establishment' },
+    { className: 'frostPossible', label: 'Frost Seeding Possible' },
+    { className: 'cashCrop', label: 'Previous Cash Crop Growth Window' },
+  ];
 
   useEffect(() => {
     if (document.querySelector('thead.MuiTableHead-root.tableHeadWrapper')) {
@@ -238,12 +247,33 @@ const CropTableComponent = ({
                   {' '}
                   <Typography variant="body2">LEGEND</Typography>
                 </Button>
+                <Modal
+                  open={legendModal}
+                  onClose={handleLegendModal}
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <Box
+                    className="modalLegendPaper"
+                    sx={{
+                      backgroundColor: 'background.paper',
+                      border: '2px solid #000',
+                      boxShadow: 5,
+                      padding: '1em',
+                      width: '30%',
+                    }}
+                  >
+                    <Legend
+                      handleLegendModal={handleLegendModal}
+                      legendData={legendData}
+                      modal
+                    />
+                  </Box>
 
-                <CropLegendModal
-                  legendModal={legendModal}
-                  handleLegendModal={handleLegendModal}
-                  disableBackdropClick={false}
-                />
+                </Modal>
               </TableCell>
               <TableCell
                 style={{
