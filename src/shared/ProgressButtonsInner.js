@@ -4,13 +4,16 @@
 */
 
 import React, { useState, useContext, useEffect } from 'react';
+import { Refresh } from '@mui/icons-material';
+import { Stack } from '@mui/material';
 import { Context } from '../store/Store';
 import { LightButton } from './constants';
 
-const ProgressButtonsInner = ({ disabled }) => {
-  const isDisabled = disabled;
-
+const ProgressButtonsInner = ({
+  isDisabledBack, isDisabledNext, isDisabledRefresh, closeExpansionPanel, setConfirmationOpen,
+}) => {
   const { state, dispatch } = useContext(Context);
+
   const [crement, setCrement] = useState('');
 
   const changeProgress = (type) => {
@@ -41,39 +44,63 @@ const ProgressButtonsInner = ({ disabled }) => {
   }, [state.progress]);
 
   return (
-    <>
+    <Stack
+      direction="row"
+      ml={
+        state.progress === 0
+          ? {
+            xs: '13%', sm: '30%', md: '30%', lg: '375%', xl: '380%',
+          }
+          : {
+            xs: '13%', sm: '30%', md: '33%', lg: '10%',
+          }
+      }
+      container
+      style={{ width: '100%' }}
+    >
       <LightButton
         style={{
-          maxWidth: '50px',
+          maxWidth: '90px',
           maxHeight: '35px',
-          minWidth: '50px',
-          minHeight: '35px',
-          fontSize: '11px',
-          marginLeft: '20px',
-          marginTop: '2.5px',
-          marginBottom: '2.5px',
+          minWidth: '70px',
+          fontSize: '13px',
         }}
         onClick={() => changeProgress('decrement')}
+        disabled={isDisabledBack}
       >
         BACK
       </LightButton>
       <LightButton
         style={{
-          maxWidth: '50px',
+          maxWidth: '90px',
           maxHeight: '35px',
-          minWidth: '50px',
-          minHeight: '35px',
-          fontSize: '11px',
-          marginTop: '2.5px',
-          marginBottom: '2.5px',
+          minWidth: '70px',
+          fontSize: '13px',
+          marginLeft: '3%',
         }}
         onClick={() => changeProgress('increment')}
-        disabled={isDisabled || state.progress === 5}
-        className="ml-3"
+        disabled={isDisabledNext || state.progress === 5}
       >
         NEXT
       </LightButton>
-    </>
+      <LightButton
+        style={{
+          maxWidth: '90px',
+          maxHeight: '35px',
+          minWidth: '90px',
+          fontSize: '13px',
+          marginLeft: '3%',
+        }}
+        onClick={() => {
+          closeExpansionPanel();
+          setConfirmationOpen(true);
+        }}
+        disabled={isDisabledRefresh}
+      >
+        <Refresh />
+        Restart
+      </LightButton>
+    </Stack>
   );
 };
 
