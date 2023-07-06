@@ -70,7 +70,6 @@ const CropSelector = (props) => {
         value: updatedCropData,
       },
     });
-      // const { selectedGoals } = state;
     if (selectedGoals?.length > 0) {
       const activeCropDataShadow = activeCropData?.length > 0 ? activeCropData : state?.cropData;
 
@@ -82,7 +81,6 @@ const CropSelector = (props) => {
 
   useEffect(() => {
     if (state.myCoverCropListLocation !== 'selector' && state.selectedCrops.length > 0) {
-      // document.title = 'Cover Crop Selector';
       setHandleConfirm(true);
     }
   }, [state.selectedCrops, state.myCoverCropListLocation]);
@@ -117,8 +115,6 @@ const CropSelector = (props) => {
   useEffect(() => {
     if (state?.cropData) {
       if (state?.cropData?.length > 0) {
-        // sort crop data by goal priority
-
         if (selectedGoals?.length > 0) {
           const activeCropDataShadow = state?.cropData;
           selectedGoals
@@ -180,8 +176,19 @@ const CropSelector = (props) => {
   const [showSidebar, setShowSidebar] = useState(true);
 
   return (
-    <Grid container spacing={4}>
-      <Grid item xl={12} lg={12} md={12}>
+    <Grid
+      container
+      mt={{
+        xs: '1%', sm: '1%', md: '2%', lg: '2%', xl: '2%',
+      }}
+    >
+
+      <Grid
+        item
+        xl={12}
+        lg={12}
+        md={12}
+      >
         {(size.width < 1680) && (
         <Button
           startIcon={!showSidebar ? <ArrowForward /> : <ArrowBack />}
@@ -194,7 +201,7 @@ const CropSelector = (props) => {
         )}
       </Grid>
 
-      <Grid item xl={3} lg={3} md={3}>
+      <Grid item xl={3} lg={3} md={3} mt={4}>
         {showSidebar && (
         <CropSidebar
           setGrowthWindow={setShowGrowthWindow}
@@ -209,7 +216,7 @@ const CropSelector = (props) => {
         )}
       </Grid>
 
-      <Grid item xl={showSidebar ? 8 : 12} lg={showSidebar ? 8 : 12} md={showSidebar ? 8 : 12}>
+      <Grid item xl={showSidebar ? 8 : 12} lg={showSidebar ? 8 : 12} md={showSidebar ? 8 : 12} mt={4} ml={4}>
         {/* we need a spinner or loading icon for when the length isnt yet determined */}
         {state.speciesSelectorActivationFlag ? (
           isListView ? (
@@ -233,7 +240,6 @@ const CropSelector = (props) => {
           <KeyboardArrowUp />
         </Fab>
       </ScrollTop>
-      {/* </div> */}
       <MyCoverCropReset handleConfirm={handleConfirm} setHandleConfirm={setHandleConfirm} />
     </Grid>
   );

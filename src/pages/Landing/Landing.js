@@ -20,7 +20,7 @@ import React, {
 import { Link, useHistory } from 'react-router-dom';
 import ReactGA from 'react-ga';
 import { RegionSelectorMap } from '@psa/dst.ui.region-selector-map';
-import { BinaryButton, LightButton } from '../../shared/constants';
+import { BinaryButton } from '../../shared/constants';
 import { Context } from '../../store/Store';
 import '../../styles/landing.scss';
 import ConsentModal from '../CoverCropExplorer/ConsentModal/ConsentModal';
@@ -144,33 +144,19 @@ const Landing = ({ height, title, bg }) => {
         // eslint-disable-next-line no-alert
         alert(
           // eslint-disable-next-line max-len
-          devEnvironment === true ? 'The region you have selected is not currently supported. We currently support Northeast, Midwest, and Southern Cover Crop Councils. Please try again!' : 'The region you have selected is not currently supported. We currently support Northeast Cover Crop Council. Please try again!',
+          devEnvironment ? 'The region you have selected is not currently supported. We currently support Northeast, Midwest, and Southern Cover Crop Councils. Please try again!' : 'The region you have selected is not currently supported. We currently support Northeast Cover Crop Council. Please try again!',
         );
       }
     }
   }, [selectedRegion]);
 
   useEffect(() => {
-    if (state.consent === true) {
+    if (state.consent) {
       ReactGA.initialize('UA-181903489-1');
 
       ReactGA.pageview('cover crop selector');
     }
   }, [state.consent]);
-
-  const incrementProgress = (incVal) => {
-    incVal = parseInt(incVal, 10);
-    if (incVal === 1) {
-      if (state.progress === 0) {
-        dispatch({
-          type: 'UPDATE_PROGRESS',
-          data: {
-            type: 'INCREMENT',
-          },
-        });
-      }
-    }
-  };
 
   useEffect(() => {
     document.title = title;
@@ -262,12 +248,12 @@ const Landing = ({ height, title, bg }) => {
         >
           <Grid item>
             <Typography variant="h4" gutterBottom align="center">
-              {`Welcome to the${state.councilLabel ? ` ${state.councilLabel}` : ''} Species Selector Tool`}
+              {`Welcome to the${state.councilLabel && ` ${state.councilLabel}`} Species Selector Tool`}
             </Typography>
           </Grid>
           <Grid item>
             <Typography variant="body1" gutterBottom align="left">
-              {`You are currently interacting with the${state.councilLabel ? ` ${state.councilLabel}` : ''} Species Selector Tool. We
+              {`You are currently interacting with the${state.councilLabel && ` ${state.councilLabel}`} Species Selector Tool. We
             seek feedback about the usability and usefulness of this tool. Our goal is to encourage
             and support the use of cover crops in your area. You can learn more about the
             cover crop data and design of this tool`}
@@ -362,11 +348,6 @@ const Landing = ({ height, title, bg }) => {
               />
             </div>
           </Grid>
-        </Grid>
-      </Grid>
-      <Grid container justifyContent="center" alignItems="center" style={{ marginTop: '1rem' }}>
-        <Grid item>
-          <LightButton disabled={!state.councilLabel} onClick={() => incrementProgress(1)}>NEXT</LightButton>
         </Grid>
       </Grid>
       <Dialog onClose={() => setHandleConfirm(false)} open={handleConfirm}>
