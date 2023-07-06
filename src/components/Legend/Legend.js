@@ -6,6 +6,7 @@
 import {
   Button,
   Typography,
+  Grid,
 } from '@mui/material';
 import { CloseRounded, FiberManualRecord } from '@mui/icons-material';
 import React from 'react';
@@ -14,56 +15,30 @@ const Legend = ({ handleLegendModal, legendData, modal }) => (
   <>
     {modal
       && (
-      <div className="row">
-        <div className="col-6">
+      <Grid container>
+        <Grid item xs={6}>
           <Typography variant="h4">LEGEND</Typography>
-        </div>
+        </Grid>
 
-        <div className="col-6 text-right">
+        <Grid item xs={6} display="flex" justifyContent="flex-end">
           <Button onClick={handleLegendModal}>
             <CloseRounded />
           </Button>
-        </div>
-      </div>
+        </Grid>
+      </Grid>
       )}
 
-    <div className="row">
+    <Grid container>
       {legendData.length > 0
       && legendData.map((item) => (
-        <div className="col-12 legendModalRow">
+        <Grid item className="legendModalRow">
           <Typography variant="body1">
-            <FiberManualRecord className={`${item.className}`} />
-            <span className="pl-3">{`${item.label}`}</span>
+            <FiberManualRecord style={{ marginLeft: '9px' }} className={`${item.className}`} />
+            <span style={{ paddingLeft: '1px' }}>{`${item.label}`}</span>
           </Typography>
-        </div>
+        </Grid>
       ))}
-    </div>
-    {/*
-      <div className="col-12 legendModalRow">
-        <Typography variant="body1">
-          <FiberManualRecord className="reliable" />
-          <span className="pl-3">Reliable Establishment</span>
-        </Typography>
-      </div>
-      <div className="col-12 legendModalRow">
-        <Typography variant="body1">
-          <FiberManualRecord className="temperatureRisk" />
-          <span className="pl-3">Temperature Risk To Establishment</span>
-        </Typography>
-      </div>
-      <div className="col-12 legendModalRow">
-        <Typography variant="body1">
-          <FiberManualRecord className="frostPossible" />
-          <span className="pl-3">Frost Seeding Possible</span>
-        </Typography>
-      </div>
-      <div className="col-12 legendModalRow">
-        <Typography variant="body1">
-          <FiberManualRecord className="cashCrop" />
-          <span className="pl-3">Previous Cash Crop Growth Window</span>
-        </Typography>
-      </div>
-    </div> */}
+    </Grid>
   </>
 );
 
