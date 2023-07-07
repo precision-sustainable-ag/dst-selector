@@ -16,11 +16,11 @@ const Legend = ({ handleLegendModal, legendData, modal }) => (
     {modal
       && (
       <Grid container>
-        <Grid item xs={6}>
+        <Grid item xs={11} display="flex" justifyContent="center">
           <Typography variant="h4">LEGEND</Typography>
         </Grid>
 
-        <Grid item xs={6} display="flex" justifyContent="flex-end">
+        <Grid item xs={1} display="flex" justifyContent="flex-end">
           <Button onClick={handleLegendModal}>
             <CloseRounded />
           </Button>

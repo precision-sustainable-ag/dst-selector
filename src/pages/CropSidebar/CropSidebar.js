@@ -66,7 +66,7 @@ const CropSidebar = ({
   const dictionary = [];
 
   const legendData = [
-    { className: 'sideBar', label: '1 = Least, 5 = Most' },
+    { className: 'sideBar', label: '0 = Least, 5 = Most' },
   ];
 
   async function getAllFilters() {
