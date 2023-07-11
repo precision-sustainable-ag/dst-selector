@@ -67,7 +67,7 @@ const CropSidebar = ({
   async function getAllFilters() {
     if (state.regionId) {
       const query = `${encodeURIComponent('regions')}=${encodeURIComponent(state.regionId)}`;
-      await fetch(`https://developapi.covercrop-selector.org/v1/states/${state.stateId}/filters?${query}`)
+      await fetch(`https://api.covercrop-selector.org/v1/states/${state.stateId}/filters?${query}`)
         .then((res) => res.json())
         .then((data) => {
           const allFilters = [];
@@ -251,7 +251,7 @@ const CropSidebar = ({
   async function getDictData() {
     if (state.regionId) {
       const query = `${encodeURIComponent('regions')}=${encodeURIComponent(state.regionId)}`;
-      await fetch(`https://developapi.covercrop-selector.org/v1/states/${state.stateId}/dictionary?${query}`)
+      await fetch(`https://api.covercrop-selector.org/v1/states/${state.stateId}/dictionary?${query}`)
         .then((res) => res.json())
         .then((data) => {
           getSidebars(data.data);
