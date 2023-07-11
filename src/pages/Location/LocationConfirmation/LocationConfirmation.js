@@ -74,7 +74,7 @@ const LocationConfirmation = () => {
                       color: CustomStyles().lighterGreen,
                     }}
                   >
-                    {state.address.length > 0
+                    {state?.address?.length > 0
                       ? `${state.address.toString().substring(0, 35)}...`
                       : 'Loading...'}
                   </Typography>

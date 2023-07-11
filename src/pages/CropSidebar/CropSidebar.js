@@ -109,79 +109,78 @@ const CropSidebar = ({
   // }; // areCommonElements
 
   useEffect(() => {
-    // const sfo = {};
+    const sfo = {};
 
-    // Object.keys(sfilters).forEach((key) => {
-    //   if (sfilters[key]) {
-    //     const [k, value] = key.split(': ');
-    //     if (value) {
-    //       sfo[k] = sfo[k] || [];
-    //       sfo[k].push(+value || value);
-    //     }
-    //   }
-    // });
+    Object.keys(sfilters).forEach((key) => {
+      if (sfilters[key]) {
+        const [k, value] = key.split(': ');
+        if (value) {
+          sfo[k] = sfo[k] || [];
+          sfo[k].push(+value || value);
+        }
+      }
+    });
 
-    // let cropData = state?.cropData?.filter((crop) => crop['Zone Decision'] === 'Include');
+    let cropData = state?.cropData?.filter((crop) => crop['Zone Decision'] === 'Include');
 
-    // const search = sfilters.cropSearch?.toLowerCase().match(/\w+/g);
+    const search = sfilters.cropSearch?.toLowerCase().match(/\w+/g);
 
-    // cropData = state?.cropData?.filter((crop) => {
-    //   const match = (parm) => {
-    //     const m = crop[parm]?.toLowerCase().match(/\w+/g);
+    cropData = state?.cropData?.filter((crop) => {
+      const match = (parm) => {
+        const m = crop[parm]?.toLowerCase().match(/\w+/g);
 
-    //     return !search || search.every((s) => m.some((t) => t.includes(s)));
-    //   };
+        return !search || search.every((s) => m.some((t) => t.includes(s)));
+      };
 
-    //   return match('Cover Crop Name') || match('Scientific Name');
-    // });
+      return match('Cover Crop Name') || match('Scientific Name');
+    });
 
-    // const nonZeroKeys2 = Object.keys(sfo).map((key) => {
-    //   if (sfo[key]?.length !== 0) {
-    //     return { [key]: sfo[key] };
-    //   }
-    //   return '';
-    // });
+    const nonZeroKeys2 = Object.keys(sfo).map((key) => {
+      if (sfo[key]?.length !== 0) {
+        return { [key]: sfo[key] };
+      }
+      return '';
+    });
 
     // const booleanKeys = ['Aerial Seeding', 'Frost Seeding'];
-    // const filtered = cropData?.filter((crop, n, cd) => {
-    //   const totalActiveFilters = Object.keys(nonZeroKeys2)?.length;
-    //   let i = 0;
-    //   nonZeroKeys2.forEach((keyObject) => {
-    //     const key = Object.keys(keyObject);
-    //     const vals = keyObject[key];
-    //     // if (areCommonElements(arrayKeys, key)) {
-    //     // Handle array type havlues
-    //     Object.keys(crop.data).forEach((category) => {
-    //       if (Object.keys(crop.data[category]).includes(key[0])) {
-    //         if (crop.data[category][key].values[0] !== undefined) {
-    //         const intersection = (arrays = [vals, crop.data[category][key].values[0]]) => arrays.reduce((a, b) => a.filter((c) => b.includes(c)));
+    const filtered = cropData?.filter((crop, n, cd) => {
+      const totalActiveFilters = Object.keys(nonZeroKeys2)?.length;
+      let i = 0;
+      nonZeroKeys2.forEach((keyObject) => {
+        const key = Object.keys(keyObject);
+        const vals = keyObject[key];
+        // if (areCommonElements(arrayKeys, key)) {
+        // Handle array type havlues
+        Object.keys(crop.data).forEach((category) => {
+          if (Object.keys(crop.data[category]).includes(key[0])) {
+            if (crop.data[category][key].values[0] !== undefined) {
+              const intersection = (arrays = [vals, crop.data[category][key].values[0]]) => arrays.reduce((a, b) => a.filter((c) => b.includes(c)));
 
-    //           if (intersection()?.length > 0) {
-    //             i += 1;
-    //           }
-    //         } else if (areCommonElements(booleanKeys, key)) {
-    //         //  Handle boolean types
-    //           if (crop.data[category][key].values[0]) {
-    //             i += 1;
-    //           }
-    //         } else if (vals.includes(crop.data[category][key].values[0])) {
-    //           i += 1;
-    //         }
-    //       }
-    //     });
-    //   });
+              if (intersection()?.length > 0) {
+                i += 1;
+              }
+            // } else if (areCommonElements(booleanKeys, key)) {
+            // //  Handle boolean types
+            //   if (crop.data[category][key].values[0]) {
+            //     i += 1;
+            //   }
+            } else if (vals.includes(crop.data[category][key].values[0])) {
+              i += 1;
+            }
+          }
+        });
+      });
 
-    //   cd[n].inactive = (i !== totalActiveFilters);
+      cd[n].inactive = (i !== totalActiveFilters);
 
-    //   return true;
-    // });
-    // console.log('3 THIS UPDATES THE ACTIVE CROP DATA ');
-    // dispatch({
-    //   type: 'UPDATE_ACTIVE_CROP_DATA',
-    //   data: {
-    //     value: filtered,
-    //   },
-    // });
+      return true;
+    });
+    dispatch({
+      type: 'UPDATE_ACTIVE_CROP_DATA',
+      data: {
+        value: filtered,
+      },
+    });
   }, [state.changedFilters, sfilters.cropSearch, state?.cropData, dispatch, sfilters]);
 
   const filtersSelected = Object.keys(sfilters)?.filter((key) => sfilters[key])?.length > 1;
@@ -462,7 +461,19 @@ const CropSidebar = ({
               <>
                 {from === 'explorer' && (
                   <>
-                    <PlantHardinessZone handleToggle={handleToggle} dispatch={dispatch} sfilters={sfilters} />
+                    <List component="div" disablePadding>
+                      <ListItem button onClick={() => handleToggle(!state.zoneToggle, 'ZONE_TOGGLE')}>
+                        <ListItemText
+                          primary={(
+                            <Typography variant="body2" className="text-uppercase">
+                              Plant Hardiness Zone
+                            </Typography>
+            )}
+                        />
+                        {state.zoneToggle ? <ExpandLess /> : <ExpandMore />}
+                      </ListItem>
+                    </List>
+                    <PlantHardinessZone />
                     <CoverCropSearch sfilters={sfilters} dispatch={dispatch} />
                   </>
                 )}

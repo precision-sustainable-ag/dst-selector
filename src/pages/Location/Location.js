@@ -8,8 +8,6 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  FormControl,
-  InputLabel,
   MenuItem,
   Select,
   Typography,
@@ -27,6 +25,7 @@ import mapboxgl from 'mapbox-gl';
 import { BinaryButton } from '../../shared/constants';
 import { Context } from '../../store/Store';
 import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset';
+import PlantHardinessZone from '../CropSidebar/PlantHardinessZone/PlantHardinessZone';
 
 // eslint-disable-next-line import/no-webpack-loader-syntax, import/no-unresolved
 mapboxgl.workerClass = require('worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker').default;
@@ -228,14 +227,7 @@ const LocationComponent = ({
               )}
             <div className="row py-3 my-4 ">
               <div className="col-md-5 col-lg-6 col-sm-12 col-12">
-                <FormControl
-                  variant="filled"
-                  style={{ width: '100%' }}
-                  sx={{ minWidth: 120 }}
-                >
-                  <InputLabel>{state.councilLabel === 'Midwest Cover Crop Council' ? 'COUNTY' : 'ZONE'}</InputLabel>
-                  {plantHardinessZone()}
-                </FormControl>
+                <PlantHardinessZone />
               </div>
             </div>
           </div>
