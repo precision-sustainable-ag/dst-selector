@@ -112,6 +112,15 @@ const Landing = ({ height, title, bg }) => {
     setSelectedStateId(selState.id);
     setSelectedCouncilShorthand(selState.council.shorthand);
     setSelectedCouncilLabel(selState.council.label);
+    dispatch({
+      type: 'UPDATE_STATE',
+      data: {
+        state: selState,
+        stateId: selState.id,
+        councilShorthand: selState.council.shorthand,
+        councilLabel: selState.council.label,
+      },
+    });
   };
 
   useEffect(() => {
@@ -128,6 +137,15 @@ const Landing = ({ height, title, bg }) => {
     };
 
     if (Object.keys(selectedRegion).length > 0) {
+      // console.log(selectedRegion);
+      // dispatch({
+      //   type: 'UPDATE_REIGON',
+      //   data: {
+      //     regionId: selectedReigon.id
+      //     regionLabel: ??
+      //     regionShorthand: ??
+      //   },
+      // });
       const selState = allStates.filter((s) => s.label === selectedRegion.properties.STATE_NAME);
       if (selState.length > 0 && verifyCouncil(selState[0]?.council.shorthand)) {
         stateChange(selState[0]);
