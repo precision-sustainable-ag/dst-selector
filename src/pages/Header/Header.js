@@ -58,15 +58,16 @@ const Header = () => {
                   }
                 });
               }
-
-              dispatch({
-                type: 'UPDATE_ZONE',
-                data: {
-                  zoneText: state.councilShorthand === 'NECCC' || !match ? `Zone ${zone.slice(0, -1)}` : `Zone ${zone}`,
-                  zone: (state.councilShorthand === 'NECCC') || !match ? zone.slice(0, -1) : zone,
-                  zoneId: zone,
-                },
-              });
+              if (state.councilShorthand !== 'MCCC') {
+                dispatch({
+                  type: 'UPDATE_ZONE',
+                  data: {
+                    zoneText: state.councilShorthand === 'NECCC' || !match ? `Zone ${zone.slice(0, -1)}` : `Zone ${zone}`,
+                    zone: (state.councilShorthand === 'NECCC') || !match ? zone.slice(0, -1) : zone,
+                    zoneId: zone,
+                  },
+                });
+              }
             });
           }
         });

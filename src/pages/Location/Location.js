@@ -8,8 +8,6 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  MenuItem,
-  Select,
   Typography,
 } from '@mui/material';
 import React, {
@@ -31,12 +29,9 @@ import PlantHardinessZone from '../CropSidebar/PlantHardinessZone/PlantHardiness
 mapboxgl.workerClass = require('worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker').default;
 
 const LocationComponent = ({
-  // title,
-  caller,
   closeExpansionPanel,
 }) => {
   const { state, dispatch } = useContext(Context);
-  // const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
   const [selectedZone, setselectedZone] = useState();
   const [selectedToEditSite, setSelectedToEditSite] = useState({});
   const [showRestartPrompt, setShowRestartPrompt] = useState(false);
@@ -55,7 +50,6 @@ const LocationComponent = ({
 
   useEffect(() => {
     if (state.myCoverCropListLocation !== 'selector' && state.selectedCrops.length > 0) {
-      // document.title = 'Cover Crop Selector';
       setHandleConfirm(true);
     }
   }, [state.selectedCrops, state.myCoverCropListLocation]);
@@ -72,15 +66,17 @@ const LocationComponent = ({
   }, [selectedRegion]);
 
   const updateZone = (region) => {
-    setSelectedRegion(region);
-    dispatch({
-      type: 'UPDATE_ZONE',
-      data: {
-        zoneText: region.label,
-        zone: region.shorthand,
-        zoneId: region.id,
-      },
-    });
+    if (region !== undefined) {
+      setSelectedRegion(region);
+      dispatch({
+        type: 'UPDATE_ZONE',
+        data: {
+          zoneText: region.label,
+          zone: region.shorthand,
+          zoneId: region.id,
+        },
+      });
+    }
   };
 
   const handleConfirmationChoice = (choice) => {
@@ -107,58 +103,19 @@ const LocationComponent = ({
     setShowRestartPrompt(false);
   };
 
-  const handleRegionChange = (event) => {
-    // eslint-disable-next-line eqeqeq
-    const regionInfo = state.regions.filter((region) => region.shorthand == event.target.value);
-    if (event.target) {
-      if (caller === 'greenbar') {
-        setShowRestartPrompt(true);
-      }
-      updateZone(regionInfo[0]);
-    }
-  };
-
   const handleMapChange = () => {
     // eslint-disable-next-line eqeqeq
-    const regionInfo = state.regions.filter((region) => region.shorthand === selectedZone);
-    if (regionInfo.length > 0) {
-      setSelectedRegion(regionInfo[0]);
-    }
+    const regionInfo = state.regions.filter((region) => region.shorthand == selectedZone);
+    updateZone(regionInfo[0]);
   };
-
-  const plantHardinessZone = () => (
-    <Select
-      variant="filled"
-      labelId="plant-hardiness-zone-dropdown-select"
-      id="plant-hardiness-zone-dropdown-select"
-      style={{
-        textAlign: 'left',
-      }}
-      onChange={handleRegionChange}
-      value={selectedZone || ''}
-    >
-
-      {state.regions.length > 0 && state.regions.map((region, i) => (
-        <MenuItem value={region.shorthand} key={`Region${region}${i}`}>
-          {state.councilLabel !== 'Midwest Cover Crop Council' ? `Zone ${region.shorthand?.toUpperCase()}` : `${region.shorthand?.toUpperCase()}`}
-        </MenuItem>
-      ))}
-    </Select>
-  );
-
-  useEffect(() => {
-    plantHardinessZone();
-  }, [selectedZone]);
 
   useEffect(() => {
     if (state.councilLabel !== 'Midwest Cover Crop Council') {
-      console.log('NOT MIDWEST state.zone', state.zone);
       setselectedZone(state.zone);
     } else {
-      console.log('MIDWEST state.zone', state.zone);
-      setselectedZone(state.zone);
+      setselectedZone(state.county?.replace(' County', ''));
     }
-  }, [state.zone]);
+  }, [state.zone, state.county]);
 
   useEffect(() => {
     const {
@@ -167,6 +124,7 @@ const LocationComponent = ({
       address,
       fullAddress,
       zipCode,
+      county,
     } = selectedToEditSite;
 
     if (Object.keys(selectedToEditSite).length > 0) {
@@ -202,11 +160,14 @@ const LocationComponent = ({
             address,
             fullAddress,
             zipCode,
+            county,
             addressVerified: true,
           },
         });
       }
-      handleMapChange();
+      if (selectedZone) {
+        handleMapChange();
+      }
     }
   }, [selectedToEditSite, selectedZone]);
 
