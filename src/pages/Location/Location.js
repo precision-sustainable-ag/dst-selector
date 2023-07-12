@@ -151,7 +151,13 @@ const LocationComponent = ({
   }, [selectedZone]);
 
   useEffect(() => {
-    setselectedZone(state.zone);
+    if (state.councilLabel !== 'Midwest Cover Crop Council') {
+      console.log('NOT MIDWEST state.zone', state.zone);
+      setselectedZone(state.zone);
+    } else {
+      console.log('MIDWEST state.zone', state.zone);
+      setselectedZone(state.zone);
+    }
   }, [state.zone]);
 
   useEffect(() => {
