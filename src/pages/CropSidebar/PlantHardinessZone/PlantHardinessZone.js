@@ -10,10 +10,6 @@ const PlantHardinessZone = () => {
   const [selectedRegion, setSelectedRegion] = useState();
 
   useEffect(() => {
-    setSelectedRegion(state.zone);
-  }, [state.zone]);
-
-  useEffect(() => {
     if (typeof selectedRegion !== 'string' && selectedRegion?.length > 0) {
       dispatch({
         type: 'UPDATE_REGION',
@@ -27,23 +23,23 @@ const PlantHardinessZone = () => {
   }, [selectedRegion]);
 
   const updateZone = (region) => {
-    setSelectedRegion(region);
-    dispatch({
-      type: 'UPDATE_ZONE',
-      data: {
-        zoneText: region.label,
-        zone: region.shorthand,
-        zoneId: region.id,
-      },
-    });
+    if (region !== undefined && typeof selectedRegion !== 'string') {
+      setSelectedRegion(region);
+      dispatch({
+        type: 'UPDATE_ZONE',
+        data: {
+          zoneText: region.label,
+          zone: region.shorthand,
+          zoneId: region.id,
+        },
+      });
+    }
   };
 
   const handleRegionChange = (event) => {
     // eslint-disable-next-line eqeqeq
     const regionInfo = state.regions.filter((region) => region.shorthand == event.target.value);
-    if (event.target) {
-      updateZone(regionInfo[0]);
-    }
+    updateZone(regionInfo[0]);
   };
 
   const plantHardinessZone = () => (
@@ -56,7 +52,7 @@ const PlantHardinessZone = () => {
         textAlign: 'left',
       }}
       onChange={handleRegionChange}
-      value={selectedRegion || ''}
+      value={state?.zone || ''}
     >
 
       {state.regions.length > 0 && state.regions.map((region, i) => (
