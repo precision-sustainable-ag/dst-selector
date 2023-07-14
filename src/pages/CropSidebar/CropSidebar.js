@@ -30,6 +30,7 @@ import SidebarFilter from './SidebarFilter/SidebarFilter';
 import CoverCropGoals from './CoverCropGoals/CoverCropGoals';
 import PreviousCashCrop from './PreviousCashCrop/PreviousCashCrop';
 import PlantHardinessZone from './PlantHardinessZone/PlantHardinessZone';
+import Legend from '../../components/Legend/Legend';
 
 const CropSidebar = ({
   comparisonView,
@@ -64,10 +65,14 @@ const CropSidebar = ({
   const sfilters = state[section];
   const dictionary = [];
 
+  const legendData = [
+    { className: 'sideBar', label: '0 = Least, 5 = Most' },
+  ];
+
   async function getAllFilters() {
     if (state.regionId) {
       const query = `${encodeURIComponent('regions')}=${encodeURIComponent(state.regionId)}`;
-      await fetch(`https://developapi.covercrop-selector.org/v1/states/${state.stateId}/filters?${query}`)
+      await fetch(`https://api.covercrop-selector.org/v1/states/${state.stateId}/filters?${query}`)
         .then((res) => res.json())
         .then((data) => {
           const allFilters = [];
@@ -251,7 +256,7 @@ const CropSidebar = ({
   async function getDictData() {
     if (state.regionId) {
       const query = `${encodeURIComponent('regions')}=${encodeURIComponent(state.regionId)}`;
-      await fetch(`https://developapi.covercrop-selector.org/v1/states/${state.stateId}/dictionary?${query}`)
+      await fetch(`https://api.covercrop-selector.org/v1/states/${state.stateId}/dictionary?${query}`)
         .then((res) => res.json())
         .then((data) => {
           getSidebars(data.data);
@@ -457,7 +462,6 @@ const CropSidebar = ({
                 />
               </>
             )}
-
             {showFilters && (
               <>
                 {from === 'explorer' && (
@@ -481,6 +485,20 @@ const CropSidebar = ({
 
                   {state.cropFiltersOpen ? <ExpandLess /> : <ExpandMore />}
                 </ListItem>
+                <Box
+                  sx={{
+                    backgroundColor: 'background.paper',
+                    border: '1px solid lightgrey',
+                    paddingLeft: '1em',
+                    margin: '1em',
+
+                  }}
+                >
+                  <Legend
+                    legendData={legendData}
+                    modal={false}
+                  />
+                </Box>
                 <Collapse in={state.cropFiltersOpen} timeout="auto">
                   {filtersList()}
                 </Collapse>
