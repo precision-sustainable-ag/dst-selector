@@ -1,6 +1,6 @@
 /** dict with keys as states and values as the lat/long of the state capitol
  * (stored as an array where array[0] is lat and array[1] is long) */
-const StateLatLongDict = {
+const statesLatLongDict = {
   Alabama: [32.377716, -86.300568],
   Alaska: [58.301598, -134.420212],
   // Canada
@@ -57,4 +57,4 @@ const StateLatLongDict = {
   Wyoming: [41.140259, -104.820236],
 };
 
-export default StateLatLongDict;
+export default statesLatLongDict;
