@@ -42,7 +42,7 @@ const Landing = ({ height, title, bg }) => {
   const defaultMarkers = [[40.78489145, -74.80733626930342]];
 
   async function getAllStates() {
-    await fetch('https://developapi.covercrop-selector.org/v1/states')
+    await fetch('https://api.covercrop-selector.org/v1/states')
       .then((res) => res.json())
       .then((data) => { setAllStates(data.data); })
       .catch((err) => {
@@ -55,7 +55,7 @@ const Landing = ({ height, title, bg }) => {
   }, []);
 
   async function getAllRegions() {
-    await fetch(`https://developapi.covercrop-selector.org/v1/states/${state.stateId}/regions`)
+    await fetch(`https://api.covercrop-selector.org/v1/states/${state.stateId}/regions`)
       .then((res) => res.json())
       .then((data) => {
         if (data.data.Counties) {
