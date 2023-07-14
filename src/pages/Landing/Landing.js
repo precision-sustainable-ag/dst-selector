@@ -137,15 +137,6 @@ const Landing = ({ height, title, bg }) => {
     };
 
     if (Object.keys(selectedRegion).length > 0) {
-      // console.log(selectedRegion);
-      // dispatch({
-      //   type: 'UPDATE_REIGON',
-      //   data: {
-      //     regionId: selectedReigon.id
-      //     regionLabel: ??
-      //     regionShorthand: ??
-      //   },
-      // });
       const selState = allStates.filter((s) => s.label === selectedRegion.properties.STATE_NAME);
       if (selState.length > 0 && verifyCouncil(selState[0]?.council.shorthand)) {
         stateChange(selState[0]);
