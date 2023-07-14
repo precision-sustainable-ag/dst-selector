@@ -126,13 +126,19 @@ const CropSidebar = ({
     const search = sfilters.cropSearch?.toLowerCase().match(/\w+/g);
 
     cropData = state?.cropData?.filter((crop) => {
-      const match = (parm) => {
-        const m = crop[parm]?.toLowerCase().match(/\w+/g);
+      let m;
 
-        return !search || search.every((s) => m.some((t) => t.includes(s)));
+      const match = (parm) => {
+        if (parm === 'label') {
+          m = crop[parm]?.toLowerCase().match(/\w+/g);
+        } else {
+          m = crop.family[parm]?.toLowerCase().match(/\w+/g);
+        }
+
+        return !search || (m !== null && search.every((s) => m?.some((t) => t.includes(s))));
       };
 
-      return match('Cover Crop Name') || match('Scientific Name');
+      return match('label') || match('scientific') || match('common');
     });
 
     const nonZeroKeys2 = Object.keys(sfo).map((key) => {

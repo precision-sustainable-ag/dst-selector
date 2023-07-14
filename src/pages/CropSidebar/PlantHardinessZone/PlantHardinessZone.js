@@ -52,7 +52,7 @@ const PlantHardinessZone = () => {
         textAlign: 'left',
       }}
       onChange={handleRegionChange}
-      value={state?.zone || ''}
+      value={state.zone || ''}
     >
 
       {state.regions.length > 0 && state.regions.map((region, i) => (
