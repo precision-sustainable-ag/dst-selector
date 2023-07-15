@@ -386,6 +386,27 @@ const CropSidebar = ({
     </Button>
   );
 
+  const updateZone = (region) => {
+    if (region !== undefined) {
+      dispatch({
+        type: 'UPDATE_ZONE',
+        data: {
+          zoneText: region.label,
+          zone: region.shorthand,
+          zoneId: region.id,
+        },
+      });
+      dispatch({
+        type: 'UPDATE_REGION',
+        data: {
+          regionId: region.id ?? '',
+          regionLabel: region.label ?? '',
+          regionShorthand: region.shorthand ?? '',
+        },
+      });
+    }
+  };
+
   return !loading && (from === 'myCoverCropListStatic') ? (
     <div className="row">
       <div className="col-12 mb-3">{comparisonButton}</div>
@@ -479,7 +500,7 @@ const CropSidebar = ({
                         {state.zoneToggle ? <ExpandLess /> : <ExpandMore />}
                       </ListItem>
                     </List>
-                    <PlantHardinessZone />
+                    <PlantHardinessZone updateZone={updateZone} />
                     <CoverCropSearch sfilters={sfilters} dispatch={dispatch} />
                   </>
                 )}

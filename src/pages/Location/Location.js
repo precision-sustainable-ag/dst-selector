@@ -35,7 +35,7 @@ const LocationComponent = ({
   const [selectedZone, setselectedZone] = useState();
   const [selectedToEditSite, setSelectedToEditSite] = useState({});
   const [showRestartPrompt, setShowRestartPrompt] = useState(false);
-  const [selectedRegion, setSelectedRegion] = useState({});
+  // const [selectedRegion, setSelectedRegion] = useState({});
   const [handleConfirm, setHandleConfirm] = useState(false);
   const defaultMarkers = [[40.78489145, -74.80733626930342]];
 
@@ -54,20 +54,9 @@ const LocationComponent = ({
     }
   }, [state.selectedCrops, state.myCoverCropListLocation]);
 
-  useEffect(() => {
-    dispatch({
-      type: 'UPDATE_REGION',
-      data: {
-        regionId: selectedRegion.id ?? '',
-        regionLabel: selectedRegion.label ?? '',
-        regionShorthand: selectedRegion.shorthand ?? '',
-      },
-    });
-  }, [selectedRegion]);
-
   const updateZone = (region) => {
     if (region !== undefined) {
-      setSelectedRegion(region);
+      // setSelectedRegion(region);
       dispatch({
         type: 'UPDATE_ZONE',
         data: {
@@ -76,8 +65,20 @@ const LocationComponent = ({
           zoneId: region.id,
         },
       });
+      dispatch({
+        type: 'UPDATE_REGION',
+        data: {
+          regionId: region.id ?? '',
+          regionLabel: region.label ?? '',
+          regionShorthand: region.shorthand ?? '',
+        },
+      });
     }
   };
+
+  useEffect(() => {
+    updateZone(state.regions[0]);
+  }, [state.regions]);
 
   const handleConfirmationChoice = (choice) => {
     if (choice !== null) {
@@ -194,13 +195,11 @@ const LocationComponent = ({
               )}
             <div className="row py-3 my-4 ">
               <div className="col-md-5 col-lg-6 col-sm-12 col-12">
-                <PlantHardinessZone />
+                <PlantHardinessZone updateZone={updateZone} handleMapChange={handleMapChange} />
               </div>
             </div>
           </div>
         </div>
-        {/* {state.councilLabel !== 'Midwest Cover Crop Council' */}
-        {/* && ( */}
         <div className="col-xl-8 col-sm-12">
           <div className="container-fluid">
             <Map
@@ -224,8 +223,6 @@ const LocationComponent = ({
             />
           </div>
         </div>
-        {/* )} */}
-
       </div>
       <Dialog disableEscapeKeyDown open={showRestartPrompt}>
         <DialogContent dividers>
