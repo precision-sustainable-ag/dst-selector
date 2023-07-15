@@ -6,12 +6,13 @@
 */
 
 import {
-  Box, Button, Grid, Stack, Typography,
+  Box, Button, Grid, Stack, Table, TableBody, TableCell, TableContainer, TableRow, Typography,
 } from '@mui/material';
 import React, { useContext, useEffect } from 'react';
 import ReactGA from 'react-ga';
 import { CustomStyles } from '../../shared/constants';
 import Header from '../Header/Header';
+// import MITLicenseText from '../License/MITLicenseText/MITLicenseText';
 import { Context } from '../../store/Store';
 import MITLicenseText from '../License/MITLicenseText/MITLicenseText';
 
@@ -50,6 +51,15 @@ const AboutNew = () => {
       menuOption: 'About the Experts',
       title: 'About The Experts',
     },
+  ];
+
+  const expertsTable = [
+    { area: 'Zone 7', people: 'Michel Cavigelli, Aaron Cooper, Dean Hively, Steven Mirsky, Scott Raubenstein, Mark VanGessel' },
+    { area: 'Zone 6', people: 'Christian Bench, Rebecca Brown, Sjoerd Duiker, Kaitlin Farbotnik, Mark Goodson, Jim Hyde, Zach Larson, Dave Wilson' },
+    { area: 'Zone 5', people: 'Thomas Bjorkman, Shawnna Clark, Chad Cochrane, Mark Goodson, Paul Salon, Anne Verhallen, Kirsten Workman' },
+    { area: 'Zone 4', people: 'Heather Darby, Jason Lilley, Rebecca Long, Ellen Mallory, Lindsey Ruhl, Paul Salon, Brandon Smith, Kirsten Workman' },
+    { area: 'Specialist Data', people: "Gary Bergstrom, Eric Gallandt, Kelly Gill, Cerruti Hooks, Hillary Mehl, Christine O'Reilly" },
+    { area: 'Development Team', people: 'Victoria Ackroyd, Rohit Bandooni, Steven Mirsky, Juliet Norton, Ankita Raturi' },
   ];
 
   const handleChange = (newValue) => {
@@ -302,97 +312,36 @@ const AboutNew = () => {
             experts in Zones 4 through 7. The Species Selector and the data verification process
             are brought to you by the Development Team.
           </Typography>
-
-          <div className="tbl">
-            <table className="table-bordered table-sm table-bordered table-hover">
-              <tbody>
-                <tr>
-                  <td>
-                    <Typography variant="body1" align="left">
-                      Zone 7
-                    </Typography>
-                  </td>
-                  <td>
-                    <Typography variant="body1" align="left">
-                      Michel Cavigelli, Aaron Cooper, Dean Hively, Steven Mirsky, Scott
-                      Raubenstein, Mark VanGessel
-                    </Typography>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    {' '}
-                    <Typography variant="body1" align="left">
-                      Zone 6
-                    </Typography>
-                  </td>
-                  <td>
-                    <Typography variant="body1" align="left">
-                      Christian Bench, Rebecca Brown, Sjoerd Duiker, Kaitlin Farbotnik, Mark
-                      Goodson, Jim Hyde, Zach Larson, Dave Wilson
-                    </Typography>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    {' '}
-                    <Typography variant="body1" align="left">
-                      Zone 5
-                    </Typography>
-                  </td>
-                  <td>
-                    <Typography variant="body1" align="left">
-                      Thomas Bjorkman, Shawnna Clark, Chad Cochrane, Mark Goodson, Paul Salon,
-                      Anne Verhallen, Kirsten Workman
-                    </Typography>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    {' '}
-                    <Typography variant="body1" align="left">
-                      Zone 4
-                    </Typography>
-                  </td>
-                  <td>
-                    <Typography variant="body1" align="left">
-                      Heather Darby, Jason Lilley, Rebecca Long, Ellen Mallory, Lindsey Ruhl, Paul
-                      Salon, Brandon Smith, Kirsten Workman
-                    </Typography>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    {' '}
-                    <Typography variant="body1" align="left">
-                      Specialist Data
-                    </Typography>
-                  </td>
-                  <td>
-                    <Typography variant="body1" align="left">
-                      Gary Bergstrom, Eric Gallandt, Kelly Gill, Cerruti Hooks, Hillary Mehl,
-                      Christine O'Reilly
-                    </Typography>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    {' '}
-                    <Typography variant="body1" align="left">
-                      Development Team
-                    </Typography>
-                  </td>
-                  <td>
-                    <Typography variant="body1" align="left">
-                      Victoria Ackroyd, Rohit Bandooni, Steven Mirsky, Juliet Norton, Ankita
-                      Raturi
-                    </Typography>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
+          <TableContainer>
+            <Table
+              aria-label="simple table"
+            >
+              <TableBody>
+                {expertsTable.map(((expert, index) => (
+                  <TableRow
+                    key={index}
+                    sx={{
+                      '&:hover': {
+                        backgroundColor: 'lightgray',
+                      },
+                    }}
+                  >
+                    <TableCell sx={{ border: 2, borderColor: 'lightgray' }}>
+                      <Typography variant="body1" align="left">
+                        {expert.area}
+                      </Typography>
+                    </TableCell>
+                    <TableCell sx={{ border: 2, borderColor: 'lightgray' }}>
+                      <Typography variant="body1" align="left">
+                        {expert.people}
+                      </Typography>
+                    </TableCell>
+                  </TableRow>
+                )))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <br />
           <Typography variant="body1" align="left" gutterBottom>
             <b>Acknowledgements:</b>
             <br />
@@ -411,6 +360,7 @@ const AboutNew = () => {
             sessions.
           </Typography>
 
+          <br />
           <Typography variant="body1" align="left">
             <b>Expert and Development Team Credits:</b>
           </Typography>
