@@ -35,7 +35,6 @@ import { CustomStyles } from './shared/constants';
 import InformationSheetDictionary from './pages/Help/InformationSheetDictionary/InformationSheetDictionary';
 import License from './pages/License/License';
 import MyCoverCropListWrapper from './pages/MyCoverCropList/MyCoverCropListWrapper/MyCoverCropListWrapper';
-import AboutNew from './pages/About/AboutNew';
 
 const withFooter = (WrappedComponent) => () => [<WrappedComponent key="1" />, <Footer key="2" />];
 
@@ -142,7 +141,6 @@ const Wrapper = () => (
                 <Route path="/" component={App} exact />
                 <Route path="/explorer" component={CoverCropExplorer} exact />
                 <Route path="/about" component={About} exact />
-                <Route path="/aboutnew" component={AboutNew} exact />
                 <Route path="/help" component={HelpComponent} exact />
                 <Route path="/feedback" component={FeedbackComponent} exact />
                 <Route path="/my-cover-crop-list" component={MyCoverCropListWrapper} exact />
