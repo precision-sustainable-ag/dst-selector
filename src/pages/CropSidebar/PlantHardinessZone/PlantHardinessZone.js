@@ -2,39 +2,11 @@
 import {
   Collapse, FormControl, InputLabel, List, ListItem, MenuItem, Select,
 } from '@mui/material';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import { Context } from '../../../store/Store';
 
-const PlantHardinessZone = () => {
-  const { state, dispatch } = useContext(Context);
-  const [selectedRegion, setSelectedRegion] = useState();
-
-  useEffect(() => {
-    if (typeof selectedRegion !== 'string' && selectedRegion?.length > 0) {
-      dispatch({
-        type: 'UPDATE_REGION',
-        data: {
-          regionId: selectedRegion.id ?? '',
-          regionLabel: selectedRegion.label ?? '',
-          regionShorthand: selectedRegion.shorthand ?? '',
-        },
-      });
-    }
-  }, [selectedRegion]);
-
-  const updateZone = (region) => {
-    if (region !== undefined && typeof selectedRegion !== 'string') {
-      setSelectedRegion(region);
-      dispatch({
-        type: 'UPDATE_ZONE',
-        data: {
-          zoneText: region.label,
-          zone: region.shorthand,
-          zoneId: region.id,
-        },
-      });
-    }
-  };
+const PlantHardinessZone = ({ updateZone }) => {
+  const { state } = useContext(Context);
 
   const handleRegionChange = (event) => {
     // eslint-disable-next-line eqeqeq
@@ -51,7 +23,7 @@ const PlantHardinessZone = () => {
         width: '100%',
         textAlign: 'left',
       }}
-      onChange={handleRegionChange}
+      onChange={(e) => handleRegionChange(e)}
       value={state.zone || ''}
     >
 
