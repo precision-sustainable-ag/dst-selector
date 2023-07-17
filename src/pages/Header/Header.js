@@ -257,7 +257,7 @@ const Header = () => {
 
   async function getCropData(formattedGoal) {
     const query = `${encodeURIComponent('regions')}=${encodeURIComponent(state.zoneId)}`;
-    await fetch(`https://api.covercrop-selector.org/v1/states/${state.zoneId}/crops?${query}`)
+    await fetch(`https://developapi.covercrop-selector.org/v1/states/${state.zoneId}/crops?${query}`)
       .then((res) => res.json())
       .then((data) => {
         cropDataFormatter(data.data);
