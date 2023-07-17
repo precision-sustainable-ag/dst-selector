@@ -4,8 +4,10 @@
 */
 
 import {
+  Box,
   Button,
   CircularProgress,
+  Modal,
   Table,
   TableBody,
   TableCell,
@@ -28,9 +30,10 @@ import {
 } from '../../../shared/constants';
 import { Context } from '../../../store/Store';
 import '../../../styles/cropCalendarViewComponent.scss';
-import CropLegendModal from '../../../components/CropLegendModal/CropLegendModal';
+// import CropLegendModal from '../../../components/CropLegendModal/CropLegendModal';
 import RenderCrops from './RenderCrops';
 import CropDetailsModal from '../../../components/CropDetailsModal/CropDetailsModal';
+import Legend from '../../../components/Legend/Legend';
 
 const growthIcon = {
   color: 'white',
@@ -46,6 +49,13 @@ const CropCalendarView = ({ activeCropData }) => {
   const [modalData, setModalData] = useState([{}]);
   const { selectedGoals } = state;
   const activeCropDataShadow = activeCropData;
+
+  const legendData = [
+    { className: 'reliable', label: 'Reliable Establishment' },
+    { className: 'temperatureRisk', label: 'Temperature Risk To Establishment' },
+    { className: 'frostPossible', label: 'Frost Seeding Possible' },
+    { className: 'cashCrop', label: 'Previous Cash Crop Growth Window' },
+  ];
 
   const dispatchValue = (value, type = 'UPDATE_ACTIVE_CROP_DATA') => {
     dispatch({
@@ -325,11 +335,38 @@ const CropCalendarView = ({ activeCropData }) => {
           </Table>
         </TableContainer>
       )}
-      <CropLegendModal
+      <Modal
+        open={legendModal}
+        onClose={handleLegendModal}
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <Box
+          className="modalLegendPaper"
+          sx={{
+            backgroundColor: 'background.paper',
+            border: '2px solid #000',
+            boxShadow: 5,
+            padding: '1em',
+            width: '30%',
+          }}
+        >
+          <Legend
+            handleLegendModal={handleLegendModal}
+            legendData={legendData}
+            modal
+          />
+        </Box>
+
+      </Modal>
+      {/* <CropLegendModal
         legendModal={legendModal}
         handleLegendModal={handleLegendModal}
         disableBackdropClick={false}
-      />
+      /> */}
       <CropDetailsModal
         modalOpen={modalOpen}
         setModalOpen={setModalOpen}
