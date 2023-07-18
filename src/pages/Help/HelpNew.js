@@ -269,262 +269,252 @@ const HelpNew = () => {
         </Typography>
       );
       case 2: return (
-        <div className="text-left pl-4">
-          <Typography variant="h4" gutterBottom align="center">
-            Data Dictionary
-          </Typography>
-          <InformationSheetDictionary zone={6} from="help" />
-        </div>
+        <InformationSheetDictionary zone={6} from="help" />
       );
       case 3: return (
-        <>
-          <Typography variant="h4" gutterBottom align="center">
-            Information Sheets
-          </Typography>
-          <Typography component="div" variant="body1" align="left">
-            <ol>
-              <li className="font-weight-bold">Cover Crops and Pollinators</li>
-              <ul className="pb-4">
-                <li>
-                  Using Flowering Cover Crops for Native Pollinating Bee Conservation, Penn State
-                  Extension,
-                  <br />
-                  <a
-                    href="https://extension.psu.edu/using-flowering-cover-crops-for-native-pollinating-bee-conservation"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    https://extension.psu.edu/using-flowering-cover-crops-for-native-pollinating-bee-conservation
-                  </a>
-                </li>
-                <li>
-                  Conservation Cover for Pollinators, Xerces Society for Invertebrate Conservation,
-                  <br />
-                  <a
-                    href="http://northeastcovercrops.com/wp-content/uploads/2018/03/Conservation-Cover-for-Pollinators.pdf"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    http://northeastcovercrops.com/wp-content/uploads/2018/03/Conservation-Cover-for-Pollinators.pdf
-                  </a>
-                </li>
-                <li>
-                  Planting Flowers For Bees in Connecticut, Connecticut Agricultural Experiment
-                  Station,
-                  <br />
-                  <a
-                    href="http://northeastcovercrops.com/wp-content/uploads/2018/03/Planting-Flowers-For-Bees-in-Connecticut.pdf"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    http://northeastcovercrops.com/wp-content/uploads/2018/03/Planting-Flowers-For-Bees-in-Connecticut.pdf
-                  </a>
-                </li>
-                <li>
-                  Use of Cover Crops and Green Manures to Attract Beneficial Insects, University of
-                  Connecticut Integrated Pest Management Program,
-                  <br />
-                  <a
-                    href="http://ipm.uconn.edu/documents/raw2/Use%20of%20Cover%20Crops%20and%20Green%20Manures%20to%20Attract%20Beneficial%20Insects/Use%20of%20Cover%20Crops%20and%20Green%20Manures%20to%20Attract%20Beneficial%20Insects.php?display=print"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    http://ipm.uconn.edu/documents/raw2/Use%20of%20Cover%20Crops%20and%20Green%20Manures%20to%20Attract%20Beneficial%20Insects/Use%20of%20Cover%20Crops%20and%20Green%20Manures%20to%20Attract%20Beneficial%20Insects.php?display=print
-                  </a>
-                </li>
-              </ul>
-              <li className="font-weight-bold">Cover Crops for Weed Suppression</li>
-              <ul className="pb-4">
-                <li>
-                  Suppressing Weeds Using Cover Crops in Pennsylvania, Penn State Extension,
-                  <br />
-                  <a
-                    href="http://northeastcovercrops.com/wp-content/uploads/2018/04/Suppressing-Weeds-Using-Cover-Crops-in-Pennsylvania.pdf"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    http://northeastcovercrops.com/wp-content/uploads/2018/04/Suppressing-Weeds-Using-Cover-Crops-in-Pennsylvania.pdf
-                  </a>
-                </li>
-                <li>
-                  Cover Crops as a Weed Management Tool, Getting Rid of Weeds,
-                  <br />
-                  <a
-                    href="https://growiwm.org/cover-crops"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    https://growiwm.org/cover-crops
-                  </a>
-                </li>
-              </ul>
-              <li className="font-weight-bold">
-                Cover Cropping in Fruit, Vegetable, or Perennial Systems
+        <Typography component="div" variant="body1" align="left">
+          <ol>
+            <li className="font-weight-bold">Cover Crops and Pollinators</li>
+            <ul className="pb-4">
+              <li>
+                Using Flowering Cover Crops for Native Pollinating Bee Conservation, Penn State
+                Extension,
+                <br />
+                <a
+                  href="https://extension.psu.edu/using-flowering-cover-crops-for-native-pollinating-bee-conservation"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  https://extension.psu.edu/using-flowering-cover-crops-for-native-pollinating-bee-conservation
+                </a>
               </li>
-              <ul className="pb-4">
-                <li>
-                  Between Two Rows: Cover Crops for Perennial Plants, NH Vegetable and Fruit News,
-                  <br />
-                  <a
-                    href="https://nhvegfruitnews.wordpress.com/2016/06/27/between-two-rows-cover-crops-for-perennial-plants/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    https://nhvegfruitnews.wordpress.com/2016/06/27/between-two-rows-cover-crops-for-perennial-plants/
-                  </a>
-                </li>
-                <li>
-                  Spring Planted Cover Crops for Vegetable Rotations, University of Delaware
-                  Cooperative Extension,
-                  <br />
-                  <a
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    href="https://extension.udel.edu/weeklycropupdate/?p=9950"
-                  >
-                    https://extension.udel.edu/weeklycropupdate/?p=9950
-                  </a>
-                </li>
-                <li>
-                  Cover Crops and Green Manures (New England Vegetable Management Guide), University
-                  of Massachusetts Amherst,
-                  <br />
-                  <a
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    href="https://nevegetable.org/cultural-practices/cover-crops-and-green-manures"
-                  >
-                    https://nevegetable.org/cultural-practices/cover-crops-and-green-manures
-                  </a>
-                </li>
-              </ul>
-              <li className="font-weight-bold">Cover Crop Planting</li>
-              <ul className="pb-4">
-                <li>
-                  NH 340 Cover Crop Planting Specification Guide, USDA NRCS,
-                  <br />
-                  <a
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    href="http://northeastcovercrops.com/wp-content/uploads/2018/03/NH-340-Cover-Crop-Planting-Specification-Guide-2.pdf"
-                  >
-                    http://northeastcovercrops.com/wp-content/uploads/2018/03/NH-340-Cover-Crop-Planting-Specification-Guide-2.pdf
-                  </a>
-                </li>
-                <li>
-                  Tips for Interseeding Cover Crops, University of Vermont Extension,
-                  <br />
-                  <a
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    href="http://northeastcovercrops.com/wp-content/uploads/2018/02/Tips-for-Interseeding-Cover-Crops.pdf"
-                  >
-                    http://northeastcovercrops.com/wp-content/uploads/2018/02/Tips-for-Interseeding-Cover-Crops.pdf
-                  </a>
-                </li>
-                <li>
-                  Aerial Seeding Helps Farmers Plant Cover Crops in the Northeast, Lancaster
-                  Farming,
-                  <br />
-                  <a
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    href="http://www.lancasterfarming.com/news/northern_edition/aerial-seeding-helps-farmers-plant-cover-crops-in-northeast/article_1d4fbe53-e72e-5c37-ae24-98ce2ca8b2bb.html"
-                  >
-                    http://www.lancasterfarming.com/news/northern_edition/aerial-seeding-helps-farmers-plant-cover-crops-in-northeast/article_1d4fbe53-e72e-5c37-ae24-98ce2ca8b2bb.html
-                  </a>
-                </li>
-              </ul>
-              <li className="font-weight-bold">Cover Crops and Herbicide Carryover</li>
-              <ul className="pb-4">
-                <li>
-                  Cover Crop Interseeder – Potential for Injury from Corn Herbicides, Penn State
-                  Extension,
-                  <br />
-                  <a
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    href="http://northeastcovercrops.com/wp-content/uploads/2018/04/Cover-Crop-Interseeder-Potential-for-Injury-from-Corn-Herbicides.pdf"
-                  >
-                    http://northeastcovercrops.com/wp-content/uploads/2018/04/Cover-Crop-Interseeder-Potential-for-Injury-from-Corn-Herbicides.pdf
-                  </a>
-                </li>
-                <li>
-                  Herbicides Persistence and Rotation to Cover Crops, Penn State Extension,
-                  <br />
-                  <a
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    href="https://extension.psu.edu/herbicides-persistence-and-rotation-to-cover-crops"
-                  >
-                    https://extension.psu.edu/herbicides-persistence-and-rotation-to-cover-crops
-                  </a>
-                </li>
-                <li>
-                  Herbicide Considerations for Cover and Forage Crops, Penn State Extension,
-                  <br />
-                  <a
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    href="https://extension.psu.edu/herbicide-considerations-for-cover-and-forage-crops"
-                  >
-                    https://extension.psu.edu/herbicide-considerations-for-cover-and-forage-crops
-                  </a>
-                </li>
-              </ul>
-              <li className="font-weight-bold">Cover Crop Termination</li>
-              <ul className="pb-4">
-                <li>
-                  Special Cover Crop Control Considerations, Penn State Extension,
-                  <br />
-                  <a
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    href="https://extension.psu.edu/special-cover-crop-control-considerations"
-                  >
-                    https://extension.psu.edu/special-cover-crop-control-considerations
-                  </a>
-                </li>
-                <li>
-                  Cover Crop Rollers for Northeastern Grain Production, Penn State Extension,
-                  <br />
-                  <a
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    href="https://extension.psu.edu/cover-crop-rollers-for-northeastern-grain-production"
-                  >
-                    https://extension.psu.edu/cover-crop-rollers-for-northeastern-grain-production
-                  </a>
-                </li>
-                <li>
-                  Cover Crop Termination Options, Getting Rid of Weeds,
-                  <br />
-                  <a
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    href="https://growiwm.org/cover-crop-termination-options/"
-                  >
-                    https://growiwm.org/cover-crop-termination-options/
-                  </a>
-                </li>
-              </ul>
-              <li className="font-weight-bold">Planting Green</li>
-              <ul className="pb-4">
-                <li>
-                  Planting Green – A New Cover Crop Management Technique, Penn State Extension,
-                  <br />
-                  <a
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    href="https://extension.psu.edu/planting-green-a-new-cover-crop-management-technique"
-                  >
-                    https://extension.psu.edu/planting-green-a-new-cover-crop-management-technique
-                  </a>
-                </li>
-              </ul>
-            </ol>
-          </Typography>
-        </>
+              <li>
+                Conservation Cover for Pollinators, Xerces Society for Invertebrate Conservation,
+                <br />
+                <a
+                  href="http://northeastcovercrops.com/wp-content/uploads/2018/03/Conservation-Cover-for-Pollinators.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  http://northeastcovercrops.com/wp-content/uploads/2018/03/Conservation-Cover-for-Pollinators.pdf
+                </a>
+              </li>
+              <li>
+                Planting Flowers For Bees in Connecticut, Connecticut Agricultural Experiment
+                Station,
+                <br />
+                <a
+                  href="http://northeastcovercrops.com/wp-content/uploads/2018/03/Planting-Flowers-For-Bees-in-Connecticut.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  http://northeastcovercrops.com/wp-content/uploads/2018/03/Planting-Flowers-For-Bees-in-Connecticut.pdf
+                </a>
+              </li>
+              <li>
+                Use of Cover Crops and Green Manures to Attract Beneficial Insects, University of
+                Connecticut Integrated Pest Management Program,
+                <br />
+                <a
+                  href="http://ipm.uconn.edu/documents/raw2/Use%20of%20Cover%20Crops%20and%20Green%20Manures%20to%20Attract%20Beneficial%20Insects/Use%20of%20Cover%20Crops%20and%20Green%20Manures%20to%20Attract%20Beneficial%20Insects.php?display=print"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  http://ipm.uconn.edu/documents/raw2/Use%20of%20Cover%20Crops%20and%20Green%20Manures%20to%20Attract%20Beneficial%20Insects/Use%20of%20Cover%20Crops%20and%20Green%20Manures%20to%20Attract%20Beneficial%20Insects.php?display=print
+                </a>
+              </li>
+            </ul>
+            <li className="font-weight-bold">Cover Crops for Weed Suppression</li>
+            <ul className="pb-4">
+              <li>
+                Suppressing Weeds Using Cover Crops in Pennsylvania, Penn State Extension,
+                <br />
+                <a
+                  href="http://northeastcovercrops.com/wp-content/uploads/2018/04/Suppressing-Weeds-Using-Cover-Crops-in-Pennsylvania.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  http://northeastcovercrops.com/wp-content/uploads/2018/04/Suppressing-Weeds-Using-Cover-Crops-in-Pennsylvania.pdf
+                </a>
+              </li>
+              <li>
+                Cover Crops as a Weed Management Tool, Getting Rid of Weeds,
+                <br />
+                <a
+                  href="https://growiwm.org/cover-crops"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  https://growiwm.org/cover-crops
+                </a>
+              </li>
+            </ul>
+            <li className="font-weight-bold">
+              Cover Cropping in Fruit, Vegetable, or Perennial Systems
+            </li>
+            <ul className="pb-4">
+              <li>
+                Between Two Rows: Cover Crops for Perennial Plants, NH Vegetable and Fruit News,
+                <br />
+                <a
+                  href="https://nhvegfruitnews.wordpress.com/2016/06/27/between-two-rows-cover-crops-for-perennial-plants/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  https://nhvegfruitnews.wordpress.com/2016/06/27/between-two-rows-cover-crops-for-perennial-plants/
+                </a>
+              </li>
+              <li>
+                Spring Planted Cover Crops for Vegetable Rotations, University of Delaware
+                Cooperative Extension,
+                <br />
+                <a
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href="https://extension.udel.edu/weeklycropupdate/?p=9950"
+                >
+                  https://extension.udel.edu/weeklycropupdate/?p=9950
+                </a>
+              </li>
+              <li>
+                Cover Crops and Green Manures (New England Vegetable Management Guide), University
+                of Massachusetts Amherst,
+                <br />
+                <a
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href="https://nevegetable.org/cultural-practices/cover-crops-and-green-manures"
+                >
+                  https://nevegetable.org/cultural-practices/cover-crops-and-green-manures
+                </a>
+              </li>
+            </ul>
+            <li className="font-weight-bold">Cover Crop Planting</li>
+            <ul className="pb-4">
+              <li>
+                NH 340 Cover Crop Planting Specification Guide, USDA NRCS,
+                <br />
+                <a
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href="http://northeastcovercrops.com/wp-content/uploads/2018/03/NH-340-Cover-Crop-Planting-Specification-Guide-2.pdf"
+                >
+                  http://northeastcovercrops.com/wp-content/uploads/2018/03/NH-340-Cover-Crop-Planting-Specification-Guide-2.pdf
+                </a>
+              </li>
+              <li>
+                Tips for Interseeding Cover Crops, University of Vermont Extension,
+                <br />
+                <a
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href="http://northeastcovercrops.com/wp-content/uploads/2018/02/Tips-for-Interseeding-Cover-Crops.pdf"
+                >
+                  http://northeastcovercrops.com/wp-content/uploads/2018/02/Tips-for-Interseeding-Cover-Crops.pdf
+                </a>
+              </li>
+              <li>
+                Aerial Seeding Helps Farmers Plant Cover Crops in the Northeast, Lancaster
+                Farming,
+                <br />
+                <a
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href="http://www.lancasterfarming.com/news/northern_edition/aerial-seeding-helps-farmers-plant-cover-crops-in-northeast/article_1d4fbe53-e72e-5c37-ae24-98ce2ca8b2bb.html"
+                >
+                  http://www.lancasterfarming.com/news/northern_edition/aerial-seeding-helps-farmers-plant-cover-crops-in-northeast/article_1d4fbe53-e72e-5c37-ae24-98ce2ca8b2bb.html
+                </a>
+              </li>
+            </ul>
+            <li className="font-weight-bold">Cover Crops and Herbicide Carryover</li>
+            <ul className="pb-4">
+              <li>
+                Cover Crop Interseeder – Potential for Injury from Corn Herbicides, Penn State
+                Extension,
+                <br />
+                <a
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href="http://northeastcovercrops.com/wp-content/uploads/2018/04/Cover-Crop-Interseeder-Potential-for-Injury-from-Corn-Herbicides.pdf"
+                >
+                  http://northeastcovercrops.com/wp-content/uploads/2018/04/Cover-Crop-Interseeder-Potential-for-Injury-from-Corn-Herbicides.pdf
+                </a>
+              </li>
+              <li>
+                Herbicides Persistence and Rotation to Cover Crops, Penn State Extension,
+                <br />
+                <a
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href="https://extension.psu.edu/herbicides-persistence-and-rotation-to-cover-crops"
+                >
+                  https://extension.psu.edu/herbicides-persistence-and-rotation-to-cover-crops
+                </a>
+              </li>
+              <li>
+                Herbicide Considerations for Cover and Forage Crops, Penn State Extension,
+                <br />
+                <a
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href="https://extension.psu.edu/herbicide-considerations-for-cover-and-forage-crops"
+                >
+                  https://extension.psu.edu/herbicide-considerations-for-cover-and-forage-crops
+                </a>
+              </li>
+            </ul>
+            <li className="font-weight-bold">Cover Crop Termination</li>
+            <ul className="pb-4">
+              <li>
+                Special Cover Crop Control Considerations, Penn State Extension,
+                <br />
+                <a
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href="https://extension.psu.edu/special-cover-crop-control-considerations"
+                >
+                  https://extension.psu.edu/special-cover-crop-control-considerations
+                </a>
+              </li>
+              <li>
+                Cover Crop Rollers for Northeastern Grain Production, Penn State Extension,
+                <br />
+                <a
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href="https://extension.psu.edu/cover-crop-rollers-for-northeastern-grain-production"
+                >
+                  https://extension.psu.edu/cover-crop-rollers-for-northeastern-grain-production
+                </a>
+              </li>
+              <li>
+                Cover Crop Termination Options, Getting Rid of Weeds,
+                <br />
+                <a
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href="https://growiwm.org/cover-crop-termination-options/"
+                >
+                  https://growiwm.org/cover-crop-termination-options/
+                </a>
+              </li>
+            </ul>
+            <li className="font-weight-bold">Planting Green</li>
+            <ul className="pb-4">
+              <li>
+                Planting Green – A New Cover Crop Management Technique, Penn State Extension,
+                <br />
+                <a
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href="https://extension.psu.edu/planting-green-a-new-cover-crop-management-technique"
+                >
+                  https://extension.psu.edu/planting-green-a-new-cover-crop-management-technique
+                </a>
+              </li>
+            </ul>
+          </ol>
+        </Typography>
       );
       default: return null;
     }
