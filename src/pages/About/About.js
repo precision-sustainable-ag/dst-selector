@@ -12,11 +12,10 @@ import React, { useContext, useEffect } from 'react';
 import ReactGA from 'react-ga';
 import { CustomStyles } from '../../shared/constants';
 import Header from '../Header/Header';
-// import MITLicenseText from '../License/MITLicenseText/MITLicenseText';
 import { Context } from '../../store/Store';
 import MITLicenseText from '../License/MITLicenseText/MITLicenseText';
 
-const AboutNew = () => {
+const About = () => {
   const [value, setValue] = React.useState(0);
   const { state } = useContext(Context);
 
@@ -667,4 +666,4 @@ const AboutNew = () => {
   );
 };
 
-export default AboutNew;
+export default About;
