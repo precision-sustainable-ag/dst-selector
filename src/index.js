@@ -29,12 +29,12 @@ import About from './pages/About/About';
 import SeedingRateCalculator from './pages/SeedingRateCalculator/SeedingRateCalculator';
 import MixMaker from './pages/MixMaker/MixMaker';
 import CoverCropExplorer from './pages/CoverCropExplorer/CoverCropExplorer';
-import HelpComponent from './pages/Help/Help';
 import FeedbackComponent from './pages/Feedback/Feedback';
 import { CustomStyles } from './shared/constants';
 import InformationSheetDictionary from './pages/Help/InformationSheetDictionary/InformationSheetDictionary';
 import License from './pages/License/License';
 import MyCoverCropListWrapper from './pages/MyCoverCropList/MyCoverCropListWrapper/MyCoverCropListWrapper';
+import Help from './pages/Help/Help';
 
 const withFooter = (WrappedComponent) => () => [<WrappedComponent key="1" />, <Footer key="2" />];
 
@@ -141,7 +141,7 @@ const Wrapper = () => (
                 <Route path="/" component={App} exact />
                 <Route path="/explorer" component={CoverCropExplorer} exact />
                 <Route path="/about" component={About} exact />
-                <Route path="/help" component={HelpComponent} exact />
+                <Route path="/help" component={Help} exact />
                 <Route path="/feedback" component={FeedbackComponent} exact />
                 <Route path="/my-cover-crop-list" component={MyCoverCropListWrapper} exact />
                 <Route path="/seeding-rate-calculator" component={SeedingRateCalculator} exact />
