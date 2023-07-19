@@ -77,7 +77,6 @@ const Landing = ({ height, title, bg }) => {
         regions,
       },
     });
-
     dispatch({
       type: 'UPDATE_ZONE',
       data: {
