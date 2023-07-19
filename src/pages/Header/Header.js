@@ -48,13 +48,20 @@ const Header = () => {
             dataJson.then((data) => {
               // eslint-disable-next-line
               // let zone = window.location.search.match(/zone=([^\^]+)/); // for automating Information Sheet PDFs
-              const { zone } = data;
+              let { zone } = data;
               let match = false;
+
+              let regionId = null;
+
+              if (zone !== '8a' && zone !== '8b') {
+                zone = zone.slice(0, -1);
+              }
 
               if (state.regions?.length > 0) {
                 state.regions.forEach((region) => {
                   if (region.shorthand === zone) {
                     match = true;
+                    regionId = region.id;
                   }
                 });
               }
@@ -64,7 +71,7 @@ const Header = () => {
                 data: {
                   zoneText: state.councilShorthand === 'NECCC' || !match ? `Zone ${zone.slice(0, -1)}` : `Zone ${zone}`,
                   zone: (state.councilShorthand === 'NECCC') || !match ? zone.slice(0, -1) : zone,
-                  zoneId: zone,
+                  zoneId: regionId,
                 },
               });
             });
@@ -145,7 +152,8 @@ const Header = () => {
 
               // What was the 5-year average rainfall for city st during the month of currentMonthInt?
               //  Dynamic dates ?
-              const averageRainUrl = `${weatherApiURL}/hourly?location=${obj.city}%20${obj.state}&start=2015-01-01&end=2019-12-31`;
+              console.log(obj);
+              const averageRainUrl = `${weatherApiURL}/hourly?location=${obj.city}%20${obj.abbrState}&start=2015-01-01&end=2019-12-31`;
               const averageRainForAMonthURL = `${averageRainUrl}&stats=sum(precipitation)/5&where=month=${currentMonthInt}&output=json`;
               // What was the 5-year average annual rainfall for city st?
               const fiveYearAvgRainURL = `${averageRainUrl}&stats=sum(precipitation)/5&output=json`;
