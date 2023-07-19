@@ -136,7 +136,7 @@ const CropCalendarView = ({ activeCropData }) => {
                     <div className="container-fluid">
                       <div className="row">
                         <div className="col-6">
-                          <Typography variant="body1">
+                          <Typography variant="body1" component="span">
                             <div style={sudoButtonStyleWithPadding}>COVER CROP GROWTH WINDOW</div>
                           </Typography>
                         </div>
