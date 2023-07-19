@@ -8,18 +8,15 @@ import Axios from 'axios';
 import moment from 'moment';
 import { useSnackbar } from 'notistack';
 import React, { useContext, useEffect, useState } from 'react';
-import { NavLink, useHistory } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { abbrRegion } from '../../shared/constants';
 import { Context, cropDataFormatter } from '../../store/Store';
 import '../../styles/header.scss';
 import HeaderLogoInfo from './HeaderLogoInfo/HeaderLogoInfo';
 import InformationBar from './InformationBar/InformationBar';
 import ToggleOptions from './ToggleOptions/ToggleOptions';
-import Navbar from './Navbar/Navbar';
 
 const Header = () => {
-  const history = useHistory();
-
   const { state, dispatch } = useContext(Context);
   const [isRoot, setIsRoot] = useState(false);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
@@ -306,34 +303,6 @@ const Header = () => {
     state.lastZone = state.zone; // TODO
   }, [state.stateId, state.zone, state.regionId]);
 
-  const setmyCoverCropActivationFlag = () => {
-    history.push('/my-cover-crop-list');
-    if (window.location.pathname === '/explorer') {
-      if (state.progress > 4) {
-        dispatch({
-          type: 'ACTIVATE_MY_COVER_CROP_LIST_TILE',
-          data: {
-            myCoverCropActivationFlag: true,
-            speciesSelectorActivationFlag: false,
-          },
-        });
-      }
-    }
-  };
-
-  const setSpeciesSelectorActivationFlag = () => {
-    dispatch({
-      type: 'ACTIVATE_SPECIES_SELECTOR_TILE',
-      data: {
-        speciesSelectorActivationFlag: true,
-        myCoverCropActivationFlag: false,
-      },
-    });
-    if (window.location.pathname !== '/explorer') {
-      history.push('/explorer');
-    }
-  };
-
   return (
     <header className="d-print-none">
       <div className="topHeader">
@@ -356,17 +325,8 @@ const Header = () => {
       <div className="bottomHeader">
         <ToggleOptions
           isRoot={isRoot}
-          setSpeciesSelectorActivationFlag={setSpeciesSelectorActivationFlag}
-          setmyCoverCropActivationFlag={setmyCoverCropActivationFlag}
         />
       </div>
-
-      {/* TODO: Is Navbar actually used? */}
-      <Navbar
-        isRoot={isRoot}
-        setSpeciesSelectorActivationFlag={setSpeciesSelectorActivationFlag}
-        setmyCoverCropActivationFlag={setmyCoverCropActivationFlag}
-      />
 
       <InformationBar />
 
