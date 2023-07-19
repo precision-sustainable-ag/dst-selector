@@ -75,9 +75,6 @@ const PreviousCashCrop = () => {
                 label="Planting Date"
                 value={state.cashCropData.dateRange.startDate}
                 onChange={(newDate) => handleDispatch(newDate, state.cashCropData.dateRange.endDate)}
-                renderInput={(params) => (
-                  <TextField {...params} fullWidth margin="dense" variant="outlined" />
-                )}
               />
             </LocalizationProvider>
           </ListItem>
@@ -88,9 +85,6 @@ const PreviousCashCrop = () => {
                 label="Harvest Date"
                 value={state.cashCropData.dateRange.endDate}
                 onChange={(newDate) => handleDispatch(state.cashCropData.dateRange.startDate, newDate)}
-                renderInput={(params) => (
-                  <TextField {...params} fullWidth margin="dense" variant="outlined" />
-                )}
               />
             </LocalizationProvider>
           </ListItem>
