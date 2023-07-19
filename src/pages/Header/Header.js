@@ -45,13 +45,20 @@ const Header = () => {
             dataJson.then((data) => {
               // eslint-disable-next-line
               // let zone = window.location.search.match(/zone=([^\^]+)/); // for automating Information Sheet PDFs
-              const { zone } = data;
+              let { zone } = data;
               let match = false;
+
+              let regionId = null;
+
+              if (zone !== '8a' && zone !== '8b') {
+                zone = zone.slice(0, -1);
+              }
 
               if (state.regions?.length > 0) {
                 state.regions.forEach((region) => {
                   if (region.shorthand === zone) {
                     match = true;
+                    regionId = region.id;
                   }
                 });
               }
@@ -61,7 +68,7 @@ const Header = () => {
                 data: {
                   zoneText: state.councilShorthand === 'NECCC' || !match ? `Zone ${zone.slice(0, -1)}` : `Zone ${zone}`,
                   zone: (state.councilShorthand === 'NECCC') || !match ? zone.slice(0, -1) : zone,
-                  zoneId: zone,
+                  zoneId: regionId,
                 },
               });
             });
