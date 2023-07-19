@@ -30,8 +30,8 @@ const Legend = ({ handleLegendModal, legendData, modal }) => (
 
     <Grid container>
       {legendData.length > 0
-      && legendData.map((item) => (
-        <Grid item className="legendModalRow">
+      && legendData.map((item, key) => (
+        <Grid item className="legendModalRow" key={`gird index ${key}`}>
           <Typography variant="body1">
             {modal && <FiberManualRecord style={{ marginLeft: '9px' }} className={`${item.className}`} />}
             <span style={{ paddingLeft: '1px' }}>{`${item.label}`}</span>
