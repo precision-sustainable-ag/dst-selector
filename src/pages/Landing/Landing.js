@@ -120,6 +120,14 @@ const Landing = ({ height, title, bg }) => {
         councilLabel: selState.council.label,
       },
     });
+    dispatch({
+      type: 'UPDATE_REGION',
+      data: {
+        regionId: selectedRegion.id ?? '',
+        regionLabel: selectedRegion.label ?? '',
+        regionShorthand: selectedRegion.shorthand ?? '',
+      },
+    });
   };
 
   useEffect(() => {
