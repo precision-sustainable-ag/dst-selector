@@ -55,7 +55,7 @@ const ProgressButtonsInner = ({
             xs: '13%', sm: '30%', md: '33%', lg: '10%',
           }
       }
-      container
+      // container
       style={{ width: '100%' }}
     >
       <LightButton

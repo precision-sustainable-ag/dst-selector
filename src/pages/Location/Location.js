@@ -18,8 +18,9 @@ import React, {
 } from 'react';
 import { Search } from '@mui/icons-material';
 import { Map } from '@psa/dst.ui.map';
-import centroid from '@turf/centroid';
+// import centroid from '@turf/centroid';
 import mapboxgl from 'mapbox-gl';
+import statesLatLongDict from '../../shared/stateslatlongdict';
 import { BinaryButton } from '../../shared/constants';
 import { Context } from '../../store/Store';
 import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset';
@@ -40,11 +41,9 @@ const LocationComponent = ({
   const defaultMarkers = [[40.78489145, -74.80733626930342]];
 
   const getLatLng = useCallback(() => {
-    if (state.selectedRegion.properties) {
-      const cent = centroid(state.selectedRegion);
-      if (cent.geometry && cent.geometry.coordinates.length > 0) return [cent.geometry.coordinates[1], cent.geometry.coordinates[0]];
+    if (state.state) {
+      return [statesLatLongDict[state.state][0], statesLatLongDict[state.state][1]];
     }
-    if (state.markers && state.markers.length > 0) return state.markers[0];
     return [47, -122];
   }, [state]);
 

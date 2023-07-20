@@ -77,7 +77,6 @@ const Landing = ({ height, title, bg }) => {
         regions,
       },
     });
-
     dispatch({
       type: 'UPDATE_ZONE',
       data: {
@@ -112,6 +111,23 @@ const Landing = ({ height, title, bg }) => {
     setSelectedStateId(selState.id);
     setSelectedCouncilShorthand(selState.council.shorthand);
     setSelectedCouncilLabel(selState.council.label);
+    dispatch({
+      type: 'UPDATE_STATE',
+      data: {
+        state: selState,
+        stateId: selState.id,
+        councilShorthand: selState.council.shorthand,
+        councilLabel: selState.council.label,
+      },
+    });
+    dispatch({
+      type: 'UPDATE_REGION',
+      data: {
+        regionId: selectedRegion.id ?? '',
+        regionLabel: selectedRegion.label ?? '',
+        regionShorthand: selectedRegion.shorthand ?? '',
+      },
+    });
   };
 
   useEffect(() => {
