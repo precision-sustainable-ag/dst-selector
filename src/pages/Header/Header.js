@@ -8,18 +8,15 @@ import Axios from 'axios';
 import moment from 'moment';
 import { useSnackbar } from 'notistack';
 import React, { useContext, useEffect, useState } from 'react';
-import { NavLink, useHistory } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { abbrRegion } from '../../shared/constants';
 import { Context, cropDataFormatter } from '../../store/Store';
 import '../../styles/header.scss';
 import HeaderLogoInfo from './HeaderLogoInfo/HeaderLogoInfo';
 import InformationBar from './InformationBar/InformationBar';
 import ToggleOptions from './ToggleOptions/ToggleOptions';
-import Navbar from './Navbar/Navbar';
 
 const Header = () => {
-  const history = useHistory();
-
   const { state, dispatch } = useContext(Context);
   const [isRoot, setIsRoot] = useState(false);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
@@ -48,13 +45,20 @@ const Header = () => {
             dataJson.then((data) => {
               // eslint-disable-next-line
               // let zone = window.location.search.match(/zone=([^\^]+)/); // for automating Information Sheet PDFs
-              const { zone } = data;
+              let { zone } = data;
               let match = false;
+
+              let regionId = null;
+
+              if (zone !== '8a' && zone !== '8b') {
+                zone = zone.slice(0, -1);
+              }
 
               if (state.regions?.length > 0) {
                 state.regions.forEach((region) => {
                   if (region.shorthand === zone) {
                     match = true;
+                    regionId = region.id;
                   }
                 });
               }
@@ -64,7 +68,7 @@ const Header = () => {
                   data: {
                     zoneText: state.councilShorthand === 'NECCC' || !match ? `Zone ${zone.slice(0, -1)}` : `Zone ${zone}`,
                     zone: (state.councilShorthand === 'NECCC') || !match ? zone.slice(0, -1) : zone,
-                    zoneId: zone,
+                    zoneId: regionId,
                   },
                 });
               }
@@ -146,7 +150,7 @@ const Header = () => {
 
               // What was the 5-year average rainfall for city st during the month of currentMonthInt?
               //  Dynamic dates ?
-              const averageRainUrl = `${weatherApiURL}/hourly?location=${obj.city}%20${obj.state}&start=2015-01-01&end=2019-12-31`;
+              const averageRainUrl = `${weatherApiURL}/hourly?location=${obj.city}%20${obj.abbrState}&start=2015-01-01&end=2019-12-31`;
               const averageRainForAMonthURL = `${averageRainUrl}&stats=sum(precipitation)/5&where=month=${currentMonthInt}&output=json`;
               // What was the 5-year average annual rainfall for city st?
               const fiveYearAvgRainURL = `${averageRainUrl}&stats=sum(precipitation)/5&output=json`;
@@ -256,6 +260,9 @@ const Header = () => {
   };
 
   async function getCropData(formattedGoal) {
+    if (state.zoneId === null) {
+      return;
+    }
     const query = `${encodeURIComponent('regions')}=${encodeURIComponent(state.zoneId)}`;
     await fetch(`https://developapi.covercrop-selector.org/v1/states/${state.zoneId}/crops?${query}`)
       .then((res) => res.json())
@@ -277,6 +284,9 @@ const Header = () => {
   }
 
   async function getDictData() {
+    if (state.zoneId === null) {
+      return;
+    }
     const query = `${encodeURIComponent('regions')}=${encodeURIComponent(state.zoneId)}`;
     await fetch(`https://api.covercrop-selector.org/v1/states/${state.zoneId}/dictionary?${query}`)
       .then((res) => res.json())
@@ -308,34 +318,6 @@ const Header = () => {
     state.lastZone = state.zone; // TODO
   }, [state.stateId, state.zone, state.regionId]);
 
-  const setmyCoverCropActivationFlag = () => {
-    history.push('/my-cover-crop-list');
-    if (window.location.pathname === '/explorer') {
-      if (state.progress > 4) {
-        dispatch({
-          type: 'ACTIVATE_MY_COVER_CROP_LIST_TILE',
-          data: {
-            myCoverCropActivationFlag: true,
-            speciesSelectorActivationFlag: false,
-          },
-        });
-      }
-    }
-  };
-
-  const setSpeciesSelectorActivationFlag = () => {
-    dispatch({
-      type: 'ACTIVATE_SPECIES_SELECTOR_TILE',
-      data: {
-        speciesSelectorActivationFlag: true,
-        myCoverCropActivationFlag: false,
-      },
-    });
-    if (window.location.pathname !== '/explorer') {
-      history.push('/explorer');
-    }
-  };
-
   return (
     <header className="d-print-none">
       <div className="topHeader">
@@ -358,17 +340,8 @@ const Header = () => {
       <div className="bottomHeader">
         <ToggleOptions
           isRoot={isRoot}
-          setSpeciesSelectorActivationFlag={setSpeciesSelectorActivationFlag}
-          setmyCoverCropActivationFlag={setmyCoverCropActivationFlag}
         />
       </div>
-
-      {/* TODO: Is Navbar actually used? */}
-      <Navbar
-        isRoot={isRoot}
-        setSpeciesSelectorActivationFlag={setSpeciesSelectorActivationFlag}
-        setmyCoverCropActivationFlag={setmyCoverCropActivationFlag}
-      />
 
       <InformationBar />
 

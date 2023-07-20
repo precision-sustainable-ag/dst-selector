@@ -1,7 +1,7 @@
 import { Chip, Grid, Tooltip } from '@mui/material';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import React, {
-  forwardRef, useEffect, useContext, useState,
+  useEffect, useContext, useState,
 } from 'react';
 import { Context } from '../../../store/Store';
 
@@ -125,13 +125,12 @@ const Tip = ({ filter }) => (
 ); // Tip
 
 // added ref prop to remove error. TODO: look into if forwardRef is needed here since ref isnt used
-const Filters = forwardRef(({ props }, ref) => {
+const Filters = ({ filters }) => {
   const { state, dispatch } = useContext(Context);
-  const { filters } = props;
+  // const { filters } = props;
   const [selected, setSelected] = useState({});
   const [sidebarFilterOptions, setSidebarFilterOptions] = useState({});
   // eslint-disable-next-line no-unused-vars
-  const r = ref;
 
   const setProps = (selectedItem) => {
     setSidebarFilterOptions({
@@ -168,7 +167,7 @@ const Filters = forwardRef(({ props }, ref) => {
                 <Tip filter={filter} />
                 <br />
               </>
-              <Chips key={i} state={state} filter={filter} props={{ ...props }} handleChange={chipChange} />
+              <Chips key={i} state={state} filter={filter} handleChange={chipChange} />
             </Grid>
           );
         }
@@ -186,6 +185,6 @@ const Filters = forwardRef(({ props }, ref) => {
       })}
     </Grid>
   );
-}); // Filters
+}; // Filters
 
 export default Filters;

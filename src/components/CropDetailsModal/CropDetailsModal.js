@@ -18,6 +18,9 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
   const [dataDone, setDataDone] = useState(false);
 
   async function getCropData() {
+    if (Object.keys(crop).length === 0) {
+      return;
+    }
     const query = `${encodeURIComponent('regions')}=${encodeURIComponent(state.regionId)}`;
     await fetch(`https://api.covercrop-selector.org/v1/states/${state.stateId}/crops/${crop?.id}?${query}`)
       .then((res) => res.json())
