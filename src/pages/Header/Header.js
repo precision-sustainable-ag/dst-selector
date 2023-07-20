@@ -258,6 +258,9 @@ const Header = () => {
   };
 
   async function getCropData(formattedGoal) {
+    if (state.zoneId === null) {
+      return;
+    }
     const query = `${encodeURIComponent('regions')}=${encodeURIComponent(state.zoneId)}`;
     await fetch(`https://api.covercrop-selector.org/v1/states/${state.zoneId}/crops?${query}`)
       .then((res) => res.json())
@@ -279,6 +282,9 @@ const Header = () => {
   }
 
   async function getDictData() {
+    if (state.zoneId === null) {
+      return;
+    }
     const query = `${encodeURIComponent('regions')}=${encodeURIComponent(state.zoneId)}`;
     await fetch(`https://api.covercrop-selector.org/v1/states/${state.zoneId}/dictionary?${query}`)
       .then((res) => res.json())
