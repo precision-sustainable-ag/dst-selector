@@ -40,9 +40,9 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
   }
 
   useEffect(() => {
-    // if (crop.length > 1) {
-    getCropData();
-    // }
+    if (crop.id !== undefined) {
+      getCropData();
+    }
   }, [crop]);
 
   useEffect(() => {

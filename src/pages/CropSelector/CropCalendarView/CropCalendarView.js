@@ -42,8 +42,9 @@ const growthIcon = {
 const CropCalendarView = ({ activeCropData }) => {
   const { state, dispatch } = useContext(Context);
   const [legendModal, setLegendModal] = useState(false);
-  const [nameSortFlag, setNameSortFlag] = useState(false);
+  const [nameSortFlag, setNameSortFlag] = useState(true);
   const [goalsSortFlag, setGoalsSortFlag] = useState(true);
+  const [selectedCropsSortFlag, setSelectedCropsFlag] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalData, setModalData] = useState([{}]);
   const { selectedGoals } = state;
@@ -83,20 +84,20 @@ const CropCalendarView = ({ activeCropData }) => {
   };
 
   const sortReset = () => {
-    sortCrops('Average Goals', activeCropDataShadow, dispatchValue, selectedGoals, goalsSortFlag);
+    sortCrops('Average Goals', activeCropDataShadow, goalsSortFlag, selectedGoals);
     setGoalsSortFlag(!goalsSortFlag);
     dispatchValue(activeCropDataShadow);
   };
 
   const sortCropsByName = () => {
-    // const activeCropDataShadow = activeCropData;
-    sortCrops('Crop Name', activeCropDataShadow, dispatchValue, selectedGoals, nameSortFlag);
+    sortCrops('Crop Name', activeCropDataShadow, nameSortFlag);
     setNameSortFlag(!nameSortFlag);
   };
 
   const sortBySelectedCrops = () => {
     const selectedCropsShadow = state.selectedCrops;
-    sortCrops('Selected Crops', activeCropDataShadow, dispatchValue, selectedCropsShadow);
+    sortCrops('Selected Crops', activeCropDataShadow, selectedCropsSortFlag, selectedCropsShadow, dispatchValue);
+    setSelectedCropsFlag(!selectedCropsSortFlag);
   };
 
   useEffect(() => {

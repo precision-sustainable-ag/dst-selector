@@ -38,7 +38,7 @@ const ProgressButtonsInner = ({
   };
 
   useEffect(() => {
-    if (state.councilLabel === 'Midwest' && state.progress === 2) {
+    if (state.councilLabel === 'Midwest Cover Crop Council' && state.progress === 2) {
       changeProgress(crement);
     }
   }, [state.progress]);

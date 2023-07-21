@@ -206,6 +206,7 @@ const Reducer = (state, action, value = action && action.data && action.data.val
         address: action.data.address,
         fullAddress: action.data.fullAddress,
         zipCode: action.data.zipCode,
+        county: action.data.county,
         addressVerified: action.data.addressVerified,
         addressChangedViaMap: true,
       };

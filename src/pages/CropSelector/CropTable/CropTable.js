@@ -19,7 +19,9 @@ import {
   Typography,
 } from '@mui/material';
 import { AddCircle, Sort } from '@mui/icons-material';
-import { CustomStyles, flipCoverCropName, sudoButtonStyle } from '../../../shared/constants';
+import {
+  CustomStyles, sortCrops, sudoButtonStyle,
+} from '../../../shared/constants';
 import { Context } from '../../../store/Store';
 import '../../../styles/cropCalendarViewComponent.scss';
 import '../../../styles/cropTable.scss';
@@ -28,7 +30,7 @@ import CropDetailsModal from '../../../components/CropDetailsModal/CropDetailsMo
 import Legend from '../../../components/Legend/Legend';
 
 const CropTableComponent = ({
-  cropData, activeCropData, showGrowthWindow, sortAllCrops, sortPreference,
+  cropData, activeCropData, showGrowthWindow,
 }) => {
   const { state, dispatch } = useContext(Context);
 
@@ -39,6 +41,11 @@ const CropTableComponent = ({
   const [theadHeight, setTheadHeight] = useState(0);
   const [nameSortFlag, setNameSortFlag] = useState(true);
   const [selectedCropsSortFlag, setSelectedCropsSortFlag] = useState(true);
+  const [averageGoalsFlag, setAverageGoalsFlag] = useState(true);
+  const [goal1SortFlag, setGoal1SortFlag] = useState(true);
+  const [goal2SortFlag, setGoal2SortFlag] = useState(true);
+  const [goal3SortFlag, setGoal3SortFlag] = useState(true);
+  const activeCropDataShadow = activeCropData;
 
   const legendData = [
     { className: 'reliable', label: 'Reliable Establishment' },
@@ -76,102 +83,37 @@ const CropTableComponent = ({
     });
   };
 
-  const sortReset = () => {
-    const { selectedGoals } = state;
-    const activeCropDataShadow = activeCropData;
-    selectedGoals
-      .slice()
-      .reverse()
-      .forEach((goal) => {
-        activeCropDataShadow.sort((a, b) => {
-          if (a.data.Goals[goal] && b.data.Goals[goal]) {
-            if (a.data.Goals[goal].values[0] > b.data.Goals[goal].values[0]) {
-              return -1;
-            }
-            return 1;
-          }
-          return 0;
-        });
-      });
+  const sortByName = () => {
+    sortCrops('Crop Name', activeCropDataShadow, nameSortFlag);
+    setNameSortFlag(!nameSortFlag);
+  };
 
+  const sortByAverageGoals = () => {
+    sortCrops('Average Goals', activeCropDataShadow, averageGoalsFlag, state.selectedGoals);
+    setAverageGoalsFlag(!averageGoalsFlag);
     updateActiveCropDataAction(activeCropDataShadow);
   };
 
   const sortBySelectedCrops = () => {
-    sortReset('selectedCrops');
     const selectedCropsShadow = state.selectedCrops;
-    const activeCropDataShadow = activeCropData;
-    if (selectedCropsSortFlag) {
-      if (selectedCropsShadow.length > 0) {
-        const selectedCropIds = [];
-        selectedCropsShadow.forEach((crop) => {
-          selectedCropIds.push(crop.id);
-        });
-        const newActiveShadow = activeCropDataShadow.map((crop, i) => {
-          activeCropDataShadow[i].inCart = selectedCropIds.includes(crop.id);
-          return crop;
-        });
-
-        if (newActiveShadow.length > 0) {
-          newActiveShadow.sort((a) => {
-            if (a.inCart) {
-              return -1;
-            }
-            return 1;
-          });
-          updateActiveCropDataAction(newActiveShadow);
-        }
-      }
-    } else {
-      // sort back to original values
-      sortReset('selectedCrops');
-    }
+    sortCrops('Selected Crops', activeCropDataShadow, selectedCropsSortFlag, selectedCropsShadow, updateActiveCropDataAction);
     setSelectedCropsSortFlag(!selectedCropsSortFlag);
   };
 
-  const sortCropsByName = () => {
-    const activeCropDataShadow = activeCropData;
-    sortReset('cropName');
-
-    if (nameSortFlag) {
-      if (activeCropDataShadow.length > 0) {
-        activeCropDataShadow.sort((a, b) => {
-          const firstCropName = flipCoverCropName(a.label.toLowerCase()).replace(
-            /\s+/g,
-            '',
-          );
-          const secondCropName = flipCoverCropName(b.label.toLowerCase()).replace(
-            /\s+/g,
-            '',
-          );
-          return firstCropName.localeCompare(secondCropName);
-        });
-
-        updateActiveCropDataAction(activeCropDataShadow);
-      }
-    } else if (activeCropDataShadow.length > 0) {
-      activeCropDataShadow.sort((a, b) => {
-        const firstCropName = flipCoverCropName(a.label.toLowerCase()).replace(
-          /\s+/g,
-          '',
-        );
-        const secondCropName = flipCoverCropName(b.label.toLowerCase()).replace(
-          /\s+/g,
-          '',
-        );
-        if (firstCropName < secondCropName) {
-          return 1;
-        }
-        if (firstCropName > secondCropName) {
-          return -1;
-        }
-        return 0;
-      });
-
-      updateActiveCropDataAction(activeCropDataShadow);
+  const sortByGoal = (goal, index) => {
+    let flag = '';
+    if (index === 0) {
+      flag = goal1SortFlag;
+      setGoal1SortFlag(!goal1SortFlag);
+    } else if (index === 1) {
+      flag = goal2SortFlag;
+      setGoal2SortFlag(!goal2SortFlag);
+    } else {
+      flag = goal3SortFlag;
+      setGoal3SortFlag(!goal3SortFlag);
     }
 
-    setNameSortFlag(!nameSortFlag);
+    sortCrops('Goal', activeCropDataShadow, flag, state.selectedGoals, updateActiveCropDataAction, goal);
   };
 
   return cropData.length !== 0 ? (
@@ -209,17 +151,15 @@ const CropTableComponent = ({
                     )}
                   >
                     <Button
-                      onClick={() => {
-                        sortAllCrops(!sortPreference ? 'asc' : 'desc');
-                      }}
+                      onClick={() => sortByAverageGoals()}
                     >
                       <Sort
                         style={{
                           color:
-                            sortPreference
+                            averageGoalsFlag
                               ? CustomStyles().secondaryProgressBtnColor
                               : CustomStyles().progressColor,
-                          transform: sortPreference && 'rotate(180deg)',
+                          transform: averageGoalsFlag && 'rotate(180deg)',
                         }}
                       />
                       &nbsp;
@@ -293,7 +233,8 @@ const CropTableComponent = ({
                   borderRight: '5px solid white',
                 }}
               >
-                <Button onClick={sortCropsByName}>
+                {/* <Button onClick={sortCropsByName}> */}
+                <Button onClick={() => sortByName()}>
                   <Sort
                     style={{
                       color: nameSortFlag
@@ -345,7 +286,51 @@ const CropTableComponent = ({
                             </div>
                           )}
                         >
-                          <div style={sudoButtonStyle}>{`Goal ${index + 1}`}</div>
+                          <Button
+                            onClick={() => sortByGoal(goal, index)}
+                          >
+                            {index === 0
+                              && (
+                                <Sort
+                                  style={{
+                                    color:
+                                    goal1SortFlag
+                                      ? CustomStyles().secondaryProgressBtnColor
+                                      : CustomStyles().progressColor,
+                                    transform: goal1SortFlag && 'rotate(180deg)',
+                                  }}
+                                />
+                              )}
+                            {index === 1
+                              && (
+                                <Sort
+                                  style={{
+                                    color:
+                                    goal2SortFlag
+                                      ? CustomStyles().secondaryProgressBtnColor
+                                      : CustomStyles().progressColor,
+                                    transform: goal2SortFlag && 'rotate(180deg)',
+                                  }}
+                                />
+                              )}
+                            {index === 2
+                              && (
+                                <Sort
+                                  style={{
+                                    color:
+                                    goal3SortFlag
+                                      ? CustomStyles().secondaryProgressBtnColor
+                                      : CustomStyles().progressColor,
+                                    transform: goal3SortFlag && 'rotate(180deg)',
+                                  }}
+                                />
+                              )}
+
+                            <Typography variant="body2" style={{ color: '#000' }}>
+                              {`Goal ${index + 1}`}
+                            </Typography>
+                          </Button>
+
                         </Tooltip>
                       </Typography>
                     </TableCell>
@@ -375,7 +360,7 @@ const CropTableComponent = ({
                   minWidth: '165px',
                 }}
               >
-                <Button onClick={sortBySelectedCrops}>
+                <Button onClick={() => sortBySelectedCrops()}>
                   <Sort
                     style={{
                       color: selectedCropsSortFlag
