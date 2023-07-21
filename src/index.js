@@ -35,9 +35,11 @@ import InformationSheetDictionary from './pages/Help/InformationSheetDictionary/
 import License from './pages/License/License';
 import MyCoverCropListWrapper from './pages/MyCoverCropList/MyCoverCropListWrapper/MyCoverCropListWrapper';
 import Help from './pages/Help/Help';
+import { Provider } from 'react-redux';
+import configureStore from './reduxStore/store';
 
 const withFooter = (WrappedComponent) => () => [<WrappedComponent key="1" />, <Footer key="2" />];
-
+const store = configureStore();
 // AdaptV4Theme has been depreciated and v5 is the new version.  TODO: look into update
 const theme = createTheme(
   adaptV4Theme({
@@ -134,7 +136,7 @@ const Wrapper = () => (
         }}
         autoHideDuration={15000}
       >
-        <Store>
+        <Provider store={store}>
           <BrowserRouter>
             <Suspense fallback={<div>Loading..</div>}>
               <Switch>
@@ -160,7 +162,7 @@ const Wrapper = () => (
 
             {/* <App /> */}
           </BrowserRouter>
-        </Store>
+          </Provider>
       </SnackbarProvider>
     </ThemeProvider>
   </StyledEngineProvider>
