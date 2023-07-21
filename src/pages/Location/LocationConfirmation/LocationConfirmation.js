@@ -27,8 +27,8 @@ const LocationConfirmation = () => {
       <div className="row boxContainerRow" style={{ textAlign: 'left', minHeight: '520px' }}>
         <div className="col-xl-6 col-lg-12">
           <div className="container-fluid">
-            {state.councilShorthand !== 'MCCC'
-            && (
+            {state.coucil !== 'Midwest'
+            ?? (
             <div className="row">
               <div className="col-lg-6">
                 <Map
