@@ -46,7 +46,6 @@ const Header = () => {
               // eslint-disable-next-line
               // let zone = window.location.search.match(/zone=([^\^]+)/); // for automating Information Sheet PDFs
               let { zone } = data;
-              let match = false;
 
               let regionId = null;
 
@@ -57,7 +56,6 @@ const Header = () => {
               if (state.regions?.length > 0) {
                 state.regions.forEach((region) => {
                   if (region.shorthand === zone) {
-                    match = true;
                     regionId = region.id;
                   }
                 });
@@ -66,8 +64,8 @@ const Header = () => {
                 dispatch({
                   type: 'UPDATE_ZONE',
                   data: {
-                    zoneText: state.councilShorthand === 'NECCC' || !match ? `Zone ${zone.slice(0, -1)}` : `Zone ${zone}`,
-                    zone: (state.councilShorthand === 'NECCC') || !match ? zone.slice(0, -1) : zone,
+                    zoneText: `Zone ${zone}`,
+                    zone,
                     zoneId: regionId,
                   },
                 });
