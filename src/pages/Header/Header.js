@@ -60,15 +60,16 @@ const Header = () => {
                   }
                 });
               }
-
-              dispatch({
-                type: 'UPDATE_ZONE',
-                data: {
-                  zoneText: `Zone ${zone}`,
-                  zone,
-                  zoneId: regionId,
-                },
-              });
+              if (state.councilShorthand !== 'MCCC') {
+                dispatch({
+                  type: 'UPDATE_ZONE',
+                  data: {
+                    zoneText: `Zone ${zone}`,
+                    zone,
+                    zoneId: regionId,
+                  },
+                });
+              }
             });
           }
         });
@@ -220,6 +221,7 @@ const Header = () => {
               }
             })
             .catch((err) => {
+              // eslint-disable-next-line no-console
               console.error(`Failed to fetch frost data: ${err}`);
             });
         })
@@ -260,7 +262,7 @@ const Header = () => {
       return;
     }
     const query = `${encodeURIComponent('regions')}=${encodeURIComponent(state.zoneId)}`;
-    await fetch(`https://api.covercrop-selector.org/v1/states/${state.zoneId}/crops?${query}`)
+    await fetch(`https://developapi.covercrop-selector.org/v1/states/${state.zoneId}/crops?${query}`)
       .then((res) => res.json())
       .then((data) => {
         cropDataFormatter(data.data);
@@ -292,7 +294,7 @@ const Header = () => {
           (d) => d.label === 'Goals',
         );
       })
-      .then((data) => data[0].attributes.filter(
+      .then((data) => data[0]?.attributes?.filter(
         (d) => d.label !== 'Notes: Goals',
       ))
       // .then((data) => data.map((goal) => ({ fields: goal })))

@@ -84,12 +84,12 @@ const DollarsAndRatings = ({ filter, handleChange }) => {
 const Chips = ({ state, filter, handleChange }) => {
   const sfilters = window.location.href.includes('species-selector') ? state.selector : state.explorer;
 
-  return filter.values.map((val) => {
+  return filter.values.map((val, i) => {
     const selected = sfilters[`${filter.name}: ${val.value}`];
 
     return (
       <Chip
-        key={filter.name + val.value}
+        key={filter.name + val.value + i}
         onClick={() => handleChange(filter.name, val.value)}
         component="li"
         size="medium"

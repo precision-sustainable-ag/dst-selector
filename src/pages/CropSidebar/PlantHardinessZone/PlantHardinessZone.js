@@ -1,73 +1,55 @@
+/* eslint-disable max-len */
 import {
-  Chip, Collapse, Grid, List, ListItem, ListItemText, Typography,
+  Collapse, FormControl, InputLabel, List, ListItem, MenuItem, Select,
 } from '@mui/material';
-import { ExpandLess, ExpandMore } from '@mui/icons-material';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import { Context } from '../../../store/Store';
 
-const PlantHardinessZone = ({ handleToggle, dispatch }) => {
+const PlantHardinessZone = ({ updateZone }) => {
   const { state } = useContext(Context);
-  const [selectedRegion, setSelectedRegion] = useState({});
 
-  useEffect(() => {
-    if (selectedRegion.length > 0) {
-      dispatch({
-        type: 'UPDATE_REGION',
-        data: {
-          regionId: selectedRegion.id ?? '',
-          regionLabel: selectedRegion.label ?? '',
-          regionShorthand: selectedRegion.shorthand ?? '',
-        },
-      });
-    }
-  }, [selectedRegion]);
-
-  const updateZone = (region) => {
-    setSelectedRegion(region);
-    dispatch({
-      type: 'UPDATE_ZONE',
-      data: {
-        zoneText: region.label,
-        zone: region.shorthand,
-        zoneId: region.id,
-      },
-    });
+  const handleRegionChange = (event) => {
+    // eslint-disable-next-line eqeqeq
+    const regionInfo = state.regions.filter((region) => region.shorthand == event.target.value);
+    updateZone(regionInfo[0]);
   };
 
+  const plantHardinessZone = () => (
+    <Select
+      variant="filled"
+      labelId="plant-hardiness-zone-dropdown-select"
+      id="plant-hardiness-zone-dropdown-select"
+      style={{
+        width: '100%',
+        textAlign: 'left',
+      }}
+      onChange={(e) => handleRegionChange(e)}
+      value={state.zone || ''}
+    >
+
+      {state.regions.length > 0 && state.regions.map((region, i) => (
+        <MenuItem value={region.shorthand} key={`Region${region}${i}`}>
+          {state.councilLabel !== 'Midwest Cover Crop Council' ? `Zone ${region.shorthand?.toUpperCase()}` : `${region.shorthand?.toUpperCase()}`}
+        </MenuItem>
+      ))}
+    </Select>
+  );
+
   return (
-    <>
+    <Collapse in={state.zoneToggle}>
       <List component="div" disablePadding>
-        <ListItem button onClick={() => handleToggle(!state.zoneToggle, 'ZONE_TOGGLE')}>
-          <ListItemText
-            primary={(
-              <Typography variant="body2" className="text-uppercase">
-                Plant Hardiness Zone
-              </Typography>
-            )}
-          />
-          {state.zoneToggle ? <ExpandLess /> : <ExpandMore />}
+        <ListItem component="div">
+          <FormControl
+            variant="filled"
+            style={{ width: '100%' }}
+            sx={{ minWidth: 120 }}
+          >
+            <InputLabel>{state.councilLabel === 'Midwest Cover Crop Council' ? 'COUNTY' : 'ZONE'}</InputLabel>
+            {plantHardinessZone()}
+          </FormControl>
         </ListItem>
       </List>
-      <Collapse in={state.zoneToggle}>
-        <List component="div" disablePadding>
-          <ListItem component="div">
-            <Grid container spacing={1}>
-              {state.regions.map((region, index) => (
-                <Grid item key={index}>
-                  <Chip
-                    onClick={() => { updateZone(region); }}
-                    component="li"
-                    size="medium"
-                    label={`Zone ${region.shorthand.toUpperCase()}`}
-                    color={region.shorthand === state.zone ? 'primary' : 'secondary'}
-                  />
-                </Grid>
-              ))}
-            </Grid>
-          </ListItem>
-        </List>
-      </Collapse>
-    </>
+    </Collapse>
   );
 };
 

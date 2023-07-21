@@ -28,9 +28,9 @@ const CropCard = ({
 
   async function setDataDict() {
     await Object.keys(crop.data).forEach((key) => {
-      Object.keys(crop.data[key]).forEach((k) => {
-        if (!k.startsWith('Notes:') && typeof crop.data[key][k] === 'object') {
-          allData.push(crop.data[key][k]);
+      Object.keys(crop?.data?.[key]).forEach((k) => {
+        if (crop.data[key][k] !== null && !k.startsWith('Notes:') && typeof crop?.data?.[key]?.[k] === 'object') {
+          allData.push(crop.data?.[key]?.[k]);
         }
       });
     });
