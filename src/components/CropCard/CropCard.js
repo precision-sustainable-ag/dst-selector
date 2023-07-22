@@ -8,11 +8,13 @@ import React, {
 import { trimString } from '../../shared/constants';
 import { Context } from '../../store/Store';
 import RenderRelevantData from './RenderRelevantData/RenderRelevantData';
+import { useSelector } from 'react-redux';
 
 const CropCard = ({
   crop, handleModalOpen, addCropToBasket, removeCrop, index, type, comparisonKeys, lightBG, GetAverageGoalRating,
 }) => {
   const { state } = useContext(Context);
+  const zoneRedux = useSelector((state) => state.addressData.zone);
   const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
   const sfilters = state[section];
   const [allfilters, setAllFilters] = useState([]);
@@ -103,7 +105,7 @@ const CropCard = ({
         {type === 'cropList'
         && (
         <div className="font-weight-bold text-muted text-uppercase" style={{ fontSize: '10pt', marginLeft: '-10px' }}>
-            {`Zone ${state.zone}`}
+            {`Zone ${zoneRedux}`}
         </div>
         )}
         <div
