@@ -21,6 +21,7 @@ import ListIcon from '@mui/icons-material/List';
 import React, {
   useContext, useEffect, useState,
 } from 'react';
+import { useDispatch } from 'react-redux';
 import { CustomStyles } from '../../shared/constants';
 import { Context } from '../../store/Store';
 import '../../styles/cropSidebar.scss';
@@ -31,6 +32,7 @@ import CoverCropGoals from './CoverCropGoals/CoverCropGoals';
 import PreviousCashCrop from './PreviousCashCrop/PreviousCashCrop';
 import PlantHardinessZone from './PlantHardinessZone/PlantHardinessZone';
 import Legend from '../../components/Legend/Legend';
+import { updateZone as updateZoneRedux } from '../../reduxStore/addressSlice';
 
 const CropSidebar = ({
   comparisonView,
@@ -42,6 +44,7 @@ const CropSidebar = ({
   style,
 }) => {
   const { state, dispatch } = useContext(Context);
+  const dispatchRedux = useDispatch();
   const [loading, setLoading] = useState(true);
   const [sidebarFilters, setSidebarFilters] = useState([]);
   const [showFilters, setShowFilters] = useState('');
@@ -393,14 +396,19 @@ const CropSidebar = ({
 
   const updateZone = (region) => {
     if (region !== undefined) {
-      dispatch({
-        type: 'UPDATE_ZONE',
-        data: {
-          zoneText: region.label,
+      dispatchRedux(updateZoneRedux({
+        zoneText: region.label,
           zone: region.shorthand,
           zoneId: region.id,
-        },
-      });
+      }));
+      // dispatch({
+      //   type: 'UPDATE_ZONE',
+      //   data: {
+      //     zoneText: region.label,
+      //     zone: region.shorthand,
+      //     zoneId: region.id,
+      //   },
+      // });
       dispatch({
         type: 'UPDATE_REGION',
         data: {

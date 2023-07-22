@@ -4,9 +4,11 @@ import {
 } from '@mui/material';
 import React, { useContext } from 'react';
 import { Context } from '../../../store/Store';
+import { useSelector } from 'react-redux';
 
 const PlantHardinessZone = ({ updateZone }) => {
   const { state } = useContext(Context);
+  const zoneRedux = useSelector((state) => state.addressData.zone);
 
   const handleRegionChange = (event) => {
     // eslint-disable-next-line eqeqeq
@@ -24,7 +26,7 @@ const PlantHardinessZone = ({ updateZone }) => {
         textAlign: 'left',
       }}
       onChange={(e) => handleRegionChange(e)}
-      value={state.zone || ''}
+      value={zoneRedux || ''}
     >
 
       {state.regions.length > 0 && state.regions.map((region, i) => (

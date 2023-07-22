@@ -6,14 +6,19 @@
 import React, {
   Fragment, useContext, useEffect, useState,
 } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { cloudIcon, ReferenceTooltip } from '../../../shared/constants';
 import { openWeatherApiKey } from '../../../shared/keys';
 import { Context } from '../../../store/Store';
+import { changeAddress, updateZipCode } from '../../../reduxStore/addressSlice';
 
 const apiBaseURL = 'https://api.openweathermap.org/data/2.5/weather';
 
 const ForecastComponent = () => {
   const { state, dispatch } = useContext(Context);
+  const dispatchRedux = useDispatch();
+  const markersRedux = useSelector((state) => state.addressData.markers);
+  const addressRedux  = useSelector((state) => state.addressData.address);
   const [showTempIcon, setShowTempIcon] = useState(true);
   const [temp, setTemp] = useState({
     min: 0,
@@ -41,11 +46,11 @@ const ForecastComponent = () => {
     };
 
     const setShowFeatures = () => {
-      if (state.markers.length > 0) {
+      if (markersRedux.length > 0) {
         let latlng = [];
         try {
           // eslint-disable-next-line
-          latlng = state.markers[0];
+          latlng = markersRedux[0];
         } catch (e) {
           // eslint-disable-next-line no-console
           console.trace('Forecast Component', e);
@@ -75,28 +80,30 @@ const ForecastComponent = () => {
             console.error(e);
           });
 
-        if (state.address === '') {
+        if (addressRedux === '') {
           const data = reverseGEO(latlng[0], latlng[1]);
           data
             .then((res) => {
               if (res.localityInfo.informative) {
                 const lastInfo = res.localityInfo.informative[res.localityInfo.informative.length - 1];
                 const addressString = `${lastInfo.name}, ${res.city}`;
-                dispatch({
-                  type: 'CHANGE_ADDRESS',
-                  data: {
-                    address: addressString,
-                    addressVerified: true,
-                  },
-                });
+                dispatchRedux(changeAddress({address: addressString, addressVerified: true}));
+                // dispatch({
+                //   type: 'CHANGE_ADDRESS',
+                //   data: {
+                //     address: addressString,
+                //     addressVerified: true,
+                //   },
+                // });
               }
               if (res.postcode) {
-                dispatch({
-                  type: 'UPDATE_ZIP_CODE',
-                  data: {
-                    zipCode: res.postcode,
-                  },
-                });
+                dispatchRedux(updateZipCode(res.postcode));
+                // dispatch({
+                //   type: 'UPDATE_ZIP_CODE',
+                //   data: {
+                //     zipCode: res.postcode,
+                //   },
+                // });
               }
             })
             .catch((e) => {
@@ -107,10 +114,10 @@ const ForecastComponent = () => {
       }
     };
 
-    if (state.markers[0].length > 0) {
+    if (markersRedux[0].length > 0) {
       setShowFeatures();
     }
-  }, [dispatch, state.address, state.markers, state.progress]);
+  }, [dispatch, addressRedux, markersRedux, state.progress]);
 
   if (state.progress >= 1) {
     if (showTempIcon) {

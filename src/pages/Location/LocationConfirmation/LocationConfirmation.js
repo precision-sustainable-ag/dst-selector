@@ -4,6 +4,7 @@
 */
 
 import React, { useContext } from 'react';
+import { useSelector } from 'react-redux';
 
 import { Typography } from '@mui/material';
 import { Map } from '@psa/dst.ui.map';
@@ -14,6 +15,9 @@ import WeatherConditions from '../../../components/WeatherConditions/WeatherCond
 
 const LocationConfirmation = () => {
   const { state } = useContext(Context);
+  const addressRedux  = useSelector((state) => state.addressData.address);
+  const markersRedux = useSelector((state) => state.addressData.markers);
+  const zoneRedux = useSelector((state) => state.addressData.zone);
 
   return (
     <div
@@ -34,8 +38,8 @@ const LocationConfirmation = () => {
                 <Map
                   initWidth="100%"
                   initHeight="200px"
-                  initLon={state.markers && state.markers.length > 0 ? state.markers[0][1] : -122}
-                  initLat={state.markers && state.markers.length > 0 ? state.markers[0][0] : 47}
+                  initLon={markersRedux && markersRedux.length > 0 ? markersRedux[0][1] : -122}
+                  initLat={markersRedux && markersRedux.length > 0 ? markersRedux[0][0] : 47}
                   initMinZoom={4}
                   initMaxZoom={18}
                   initStartZoom={12}
@@ -63,7 +67,7 @@ const LocationConfirmation = () => {
                 <div className="col-12 pt-2">
                   <Typography variant="body1">
                     Your cover crop recommendations will come from the Plant Hardiness Zone
-                    {` ${state.zone} ${state.councilShorthand} dataset`}
+                    {` ${zoneRedux} ${state.councilShorthand} dataset`}
                   </Typography>
                 </div>
                 <div className="col-12">
@@ -75,7 +79,7 @@ const LocationConfirmation = () => {
                     }}
                   >
                     {state?.address?.length > 0
-                      ? `${state.address.toString().substring(0, 35)}...`
+                      ? `${addressRedux.toString().substring(0, 35)}...`
                       : 'Loading...'}
                   </Typography>
                 </div>

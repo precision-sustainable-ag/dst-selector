@@ -136,6 +136,7 @@ const Wrapper = () => (
         }}
         autoHideDuration={15000}
       >
+        <Store>
         <Provider store={store}>
           <BrowserRouter>
             <Suspense fallback={<div>Loading..</div>}>
@@ -163,6 +164,7 @@ const Wrapper = () => (
             {/* <App /> */}
           </BrowserRouter>
           </Provider>
+          </Store>
       </SnackbarProvider>
     </ThemeProvider>
   </StyledEngineProvider>

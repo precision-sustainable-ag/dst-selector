@@ -17,6 +17,7 @@ import React, {
   useState,
   useRef,
 } from 'react';
+import { useDispatch } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 import ReactGA from 'react-ga';
 import { RegionSelectorMap } from '@psa/dst.ui.region-selector-map';
@@ -24,9 +25,11 @@ import { BinaryButton } from '../../shared/constants';
 import { Context } from '../../store/Store';
 import '../../styles/landing.scss';
 import ConsentModal from '../CoverCropExplorer/ConsentModal/ConsentModal';
+import { updateZone } from '../../reduxStore/addressSlice';
 
 const Landing = ({ height, title, bg }) => {
   const { state, dispatch } = useContext(Context);
+  const dispatchRedux = useDispatch();
   const history = useHistory();
   const [handleConfirm, setHandleConfirm] = useState(false);
   const [containerHeight, setContainerHeight] = useState(height);
@@ -77,14 +80,21 @@ const Landing = ({ height, title, bg }) => {
         regions,
       },
     });
-    dispatch({
-      type: 'UPDATE_ZONE',
-      data: {
+    dispatchRedux(updateZone(
+      {
         zoneText: regions[0]?.label,
         zone: regions[0]?.shorthand,
         zoneId: regions[0]?.id,
-      },
-    });
+      }
+    ));
+    // dispatch({
+    //   type: 'UPDATE_ZONE',
+    //   data: {
+    //     zoneText: regions[0]?.label,
+    //     zone: regions[0]?.shorthand,
+    //     zoneId: regions[0]?.id,
+    //   },
+    // });
   }, [regions]);
 
   useEffect(() => {
