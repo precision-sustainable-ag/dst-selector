@@ -30,6 +30,7 @@ import SidebarFilter from './SidebarFilter/SidebarFilter';
 import CoverCropGoals from './CoverCropGoals/CoverCropGoals';
 import PreviousCashCrop from './PreviousCashCrop/PreviousCashCrop';
 import PlantHardinessZone from './PlantHardinessZone/PlantHardinessZone';
+import Legend from '../../components/Legend/Legend';
 
 const CropSidebar = ({
   comparisonView,
@@ -63,6 +64,10 @@ const CropSidebar = ({
   const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
   const sfilters = state[section];
   const dictionary = [];
+
+  const legendData = [
+    { className: 'sideBar', label: '0 = Least, 5 = Most' },
+  ];
 
   async function getAllFilters() {
     if (state.regionId) {
@@ -103,10 +108,10 @@ const CropSidebar = ({
     });
   };
 
-  const areCommonElements = (arr1, arr2) => {
-    const arr2Set = new Set(arr2);
-    return arr1.some((el) => arr2Set.has(el));
-  }; // areCommonElements
+  // const areCommonElements = (arr1, arr2) => {
+  //   const arr2Set = new Set(arr2);
+  //   return arr1.some((el) => arr2Set.has(el));
+  // }; // areCommonElements
 
   useEffect(() => {
     const sfo = {};
@@ -126,13 +131,19 @@ const CropSidebar = ({
     const search = sfilters.cropSearch?.toLowerCase().match(/\w+/g);
 
     cropData = state?.cropData?.filter((crop) => {
-      const match = (parm) => {
-        const m = crop[parm]?.toLowerCase().match(/\w+/g);
+      let m;
 
-        return !search || search.every((s) => m.some((t) => t.includes(s)));
+      const match = (parm) => {
+        if (parm === 'label') {
+          m = crop[parm]?.toLowerCase().match(/\w+/g);
+        } else {
+          m = crop.family[parm]?.toLowerCase().match(/\w+/g);
+        }
+
+        return !search || (m !== null && search.every((s) => m?.some((t) => t.includes(s))));
       };
 
-      return match('Cover Crop Name') || match('Scientific Name');
+      return match('label') || match('scientific') || match('common');
     });
 
     const nonZeroKeys2 = Object.keys(sfo).map((key) => {
@@ -142,7 +153,7 @@ const CropSidebar = ({
       return '';
     });
 
-    const booleanKeys = ['Aerial Seeding', 'Frost Seeding'];
+    // const booleanKeys = ['Aerial Seeding', 'Frost Seeding'];
     const filtered = cropData?.filter((crop, n, cd) => {
       const totalActiveFilters = Object.keys(nonZeroKeys2)?.length;
       let i = 0;
@@ -159,11 +170,11 @@ const CropSidebar = ({
               if (intersection()?.length > 0) {
                 i += 1;
               }
-            } else if (areCommonElements(booleanKeys, key)) {
-            //  Handle boolean types
-              if (crop.data[category][key].values[0]) {
-                i += 1;
-              }
+            // } else if (areCommonElements(booleanKeys, key)) {
+            // //  Handle boolean types
+            //   if (crop.data[category][key].values[0]) {
+            //     i += 1;
+            //   }
             } else if (vals.includes(crop.data[category][key].values[0])) {
               i += 1;
             }
@@ -175,7 +186,6 @@ const CropSidebar = ({
 
       return true;
     });
-
     dispatch({
       type: 'UPDATE_ACTIVE_CROP_DATA',
       data: {
@@ -381,6 +391,27 @@ const CropSidebar = ({
     </Button>
   );
 
+  const updateZone = (region) => {
+    if (region !== undefined) {
+      dispatch({
+        type: 'UPDATE_ZONE',
+        data: {
+          zoneText: region.label,
+          zone: region.shorthand,
+          zoneId: region.id,
+        },
+      });
+      dispatch({
+        type: 'UPDATE_REGION',
+        data: {
+          regionId: region.id ?? '',
+          regionLabel: region.label ?? '',
+          regionShorthand: region.shorthand ?? '',
+        },
+      });
+    }
+  };
+
   return !loading && (from === 'myCoverCropListStatic') ? (
     <div className="row">
       <div className="col-12 mb-3">{comparisonButton}</div>
@@ -457,12 +488,23 @@ const CropSidebar = ({
                 />
               </>
             )}
-
             {showFilters && (
               <>
                 {from === 'explorer' && (
                   <>
-                    <PlantHardinessZone handleToggle={handleToggle} dispatch={dispatch} sfilters={sfilters} />
+                    <List component="div" disablePadding>
+                      <ListItem button onClick={() => handleToggle(!state.zoneToggle, 'ZONE_TOGGLE')}>
+                        <ListItemText
+                          primary={(
+                            <Typography variant="body2" className="text-uppercase">
+                              Plant Hardiness Zone
+                            </Typography>
+            )}
+                        />
+                        {state.zoneToggle ? <ExpandLess /> : <ExpandMore />}
+                      </ListItem>
+                    </List>
+                    <PlantHardinessZone updateZone={updateZone} />
                     <CoverCropSearch sfilters={sfilters} dispatch={dispatch} />
                   </>
                 )}
@@ -481,6 +523,20 @@ const CropSidebar = ({
 
                   {state.cropFiltersOpen ? <ExpandLess /> : <ExpandMore />}
                 </ListItem>
+                <Box
+                  sx={{
+                    backgroundColor: 'background.paper',
+                    border: '1px solid lightgrey',
+                    paddingLeft: '1em',
+                    margin: '1em',
+
+                  }}
+                >
+                  <Legend
+                    legendData={legendData}
+                    modal={false}
+                  />
+                </Box>
                 <Collapse in={state.cropFiltersOpen} timeout="auto">
                   {filtersList()}
                 </Collapse>

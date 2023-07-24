@@ -472,7 +472,7 @@ export const BinaryButton = ({ action }) => (
   </>
 );
 
-export const sortCrops = (type = 'Average Goals', crops = [], dispatchValue = {}, selectedItems = [], sortFlag = '') => {
+export const sortCrops = (type = 'Average Goals', crops = [], sortFlag = '', selectedItems = [], dispatchValue = {}, goal = '') => {
   if (type === 'Average Goals') {
     crops.sort((a, b) => {
       let aAvg = 0;
@@ -480,12 +480,12 @@ export const sortCrops = (type = 'Average Goals', crops = [], dispatchValue = {}
       selectedItems
         .slice()
         .reverse()
-        .forEach((goal) => {
-          if (b.data.Goals[goal]) {
-            bAvg = +b.data.Goals[goal].values[0] + bAvg;
+        .forEach((g) => {
+          if (b.data.Goals[g]) {
+            bAvg = +b.data.Goals[g].values[0] + bAvg;
           }
-          if (a.data.Goals[goal]) {
-            aAvg = +a.data.Goals[goal].values[0] + aAvg;
+          if (a.data.Goals[g]) {
+            aAvg = +a.data.Goals[g].values[0] + aAvg;
           }
         });
 
@@ -503,43 +503,36 @@ export const sortCrops = (type = 'Average Goals', crops = [], dispatchValue = {}
       crops.reverse();
     }
   }
-
-  if (type === 'Crop Name') {
-    if (sortFlag) {
-      if (crops.length > 0) {
-        crops.sort((a, b) => {
-          const firstCropName = flipCoverCropName(
-            a.label.toLowerCase(),
-          ).replace(/\s+/g, '');
-          const secondCropName = flipCoverCropName(
-            b.label.toLowerCase(),
-          ).replace(/\s+/g, '');
-          return firstCropName.localeCompare(secondCropName);
-        });
-
-        dispatchValue(crops);
-      }
-    } else if (crops.length > 0) {
-      crops.sort((a, b) => {
-        const firstCropName = flipCoverCropName(a.label.toLowerCase()).replace(
-          /\s+/g,
-          '',
-        );
-        const secondCropName = flipCoverCropName(b.label.toLowerCase()).replace(
-          /\s+/g,
-          '',
-        );
-        if (firstCropName < secondCropName) {
-          return 1;
-        }
-        if (firstCropName > secondCropName) {
+  if (type === 'Goal') {
+    crops.sort((a, b) => {
+      if (a.data.Goals[goal] && b.data.Goals[goal]) {
+        if (a.data.Goals[goal].values[0] > b.data.Goals[goal].values[0]) {
           return -1;
         }
-        return 0;
-      });
+        return 1;
+      }
+      return 0;
+    });
+    if (!sortFlag) {
+      crops.reverse();
     }
   }
-
+  if (type === 'Crop Name') {
+    if (crops.length > 0) {
+      crops.sort((a, b) => {
+        const firstCropName = flipCoverCropName(
+          a.label.toLowerCase(),
+        ).replace(/\s+/g, '');
+        const secondCropName = flipCoverCropName(
+          b.label.toLowerCase(),
+        ).replace(/\s+/g, '');
+        return firstCropName.localeCompare(secondCropName);
+      });
+    }
+    if (!sortFlag) {
+      crops.reverse();
+    }
+  }
   if (type === 'Selected Crops') {
     if (selectedItems.length > 0) {
       const selectedCropIds = [];
@@ -557,7 +550,9 @@ export const sortCrops = (type = 'Average Goals', crops = [], dispatchValue = {}
           }
           return 1;
         });
-
+        if (!sortFlag) {
+          crops.reverse();
+        }
         dispatchValue(newActiveShadow);
       }
     }

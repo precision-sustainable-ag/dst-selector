@@ -1,14 +1,42 @@
 import {
-  Badge, Button,
+  Badge, Button, Tooltip,
 } from '@mui/material';
 import React, { useContext } from 'react';
 import { NavLink, useHistory } from 'react-router-dom';
 import { Context } from '../../../store/Store';
 import '../../../styles/header.scss';
 
-const ToggleOptions = ({ isRoot, setSpeciesSelectorActivationFlag, setmyCoverCropActivationFlag }) => {
-  const { state } = useContext(Context);
+const ToggleOptions = ({ isRoot }) => {
+  const { state, dispatch } = useContext(Context);
   const history = useHistory();
+
+  const setMyCoverCropActivationFlag = () => {
+    history.push('/my-cover-crop-list');
+    if (window.location.pathname === '/explorer') {
+      if (state.progress > 4) {
+        dispatch({
+          type: 'ACTIVATE_MY_COVER_CROP_LIST_TILE',
+          data: {
+            myCoverCropActivationFlag: true,
+            speciesSelectorActivationFlag: false,
+          },
+        });
+      }
+    }
+  };
+
+  const setSpeciesSelectorActivationFlag = () => {
+    dispatch({
+      type: 'ACTIVATE_SPECIES_SELECTOR_TILE',
+      data: {
+        speciesSelectorActivationFlag: true,
+        myCoverCropActivationFlag: false,
+      },
+    });
+    if (window.location.pathname !== '/explorer') {
+      history.push('/explorer');
+    }
+  };
 
   const clearMyCoverCropList = (selector = false) => {
     if (selector) {
@@ -21,14 +49,18 @@ const ToggleOptions = ({ isRoot, setSpeciesSelectorActivationFlag, setmyCoverCro
       <Button size="large" onClick={() => clearMyCoverCropList(false)} component={NavLink} exact to="/" activeClassName="active">
         SPECIES SELECTOR TOOL
       </Button>
-      <Button
-        className={(isRoot && state.speciesSelectorActivationFlag) ? 'active' : ''}
-        onClick={() => clearMyCoverCropList(true)}
-        size="large"
-        disabled={state.progress === 0}
-      >
-        COVER CROP EXPLORER
-      </Button>
+      <Tooltip title={state.state === '' ? 'You must select a state before using the Cover Crop Explorer' : ''}>
+        <span>
+          <Button
+            className={(isRoot && state.speciesSelectorActivationFlag) ? 'active' : ''}
+            onClick={() => clearMyCoverCropList(true)}
+            size="large"
+            disabled={state.state === ''}
+          >
+            COVER CROP EXPLORER
+          </Button>
+        </span>
+      </Tooltip>
 
       {window.location.pathname === '/'
         && state.selectedCrops.length > 0
@@ -43,7 +75,7 @@ const ToggleOptions = ({ isRoot, setSpeciesSelectorActivationFlag, setmyCoverCro
                 (state.myCoverCropActivationFlag && window.location.pathname === '/')
                   && 'active'
               }
-              onClick={setmyCoverCropActivationFlag}
+              onClick={setMyCoverCropActivationFlag}
             >
               MY COVER CROP LIST
             </Button>
