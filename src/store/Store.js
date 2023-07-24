@@ -146,6 +146,10 @@ export const cropDataFormatter = (cropData = [{}]) => {
   });
 };
 
+const apiBaseURL = /(localhost|dev)/i.test(window.location)
+  ? 'developapi'
+  : 'api';
+
 const initialState = {
   selectedRegion: {},
   consent: false,
@@ -253,6 +257,7 @@ const initialState = {
   councilLabel: '',
   councilShorthand: '',
   stateId: '',
+  apiBaseURL,
 };
 
 const Store = ({ children }) => {

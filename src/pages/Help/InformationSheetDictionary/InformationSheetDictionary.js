@@ -23,7 +23,7 @@ const InformationSheetDictionary = ({ zone, from }) => {
     document.title = 'Data Dictionary';
 
     async function getDictData() {
-      await fetch(`https://api.covercrop-selector.org/legacy/data-dictionary?zone=zone${currentZone}`)
+      await fetch(`https://${state.apiBaseURL}.covercrop-selector.org/legacy/data-dictionary?zone=zone${currentZone}`)
         .then((res) => res.json())
         .then((data) => { setDictionary(data); })
         .catch((err) => {
