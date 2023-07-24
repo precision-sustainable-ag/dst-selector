@@ -22,11 +22,11 @@ const CropTableListItem = ({
       ) {
         const searchCategory = crop.data['Basic Agronomics'] ? 'Basic Agronomics' : 'Growth Traits';
 
-        const duration = (crop.data[searchCategory].Duration.values[0].toString().toLowerCase()
+        const duration = (crop.data[searchCategory]?.Duration.values[0].toString().toLowerCase()
                           === 'short-lived perennial' ? 'Perennial' : crop.data[searchCategory]?.Duration.values[0]) || 'No Data';
 
-        const maxN = crop.data[searchCategory]['Nitrogen Accumulation Min, Legumes (lbs/A/y)']?.values[0];
-        const minN = crop.data[searchCategory]['Nitrogen Accumulation Max, Legumes (lbs/A/y)']?.values[0];
+        const maxN = crop.data[searchCategory]?.['Nitrogen Accumulation Min, Legumes (lbs/A/y)']?.values[0];
+        const minN = crop.data[searchCategory]?.['Nitrogen Accumulation Max, Legumes (lbs/A/y)']?.values[0];
         const totalN = (minN && maxN) ? `${minN} - ${maxN}` : 'No Data';
 
         let dryMatter;
