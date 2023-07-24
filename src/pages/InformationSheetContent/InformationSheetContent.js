@@ -9,13 +9,12 @@ import React, {
   useContext, useEffect, useState,
 } from 'react';
 import {
-  Accordion, AccordionDetails, AccordionSummary, Typography,
+  Accordion, AccordionDetails, AccordionSummary, Typography, Tooltip,
 } from '@mui/material';
 import { ExpandMore } from '@mui/icons-material';
 import { Context } from '../../store/Store';
 import CoverCropInformation from './CoverCropInformation/CoverCropInformation';
 import InformationSheetReferences from './InformationSheetReferences/InformationSheetReferences';
-import TooltipMaker from '../../components/TooltipMaker/TooltipMaker';
 import { getRating } from '../../shared/constants';
 
 const InformationSheetContent = ({ crop, modalData }) => {
@@ -62,7 +61,6 @@ const InformationSheetContent = ({ crop, modalData }) => {
         allThumbs={allThumbs}
         crop={crop}
       />
-
       {modalData && modalData.data.map((cat) => (
         <div key={cat.id} className="row mt-2 coverCropGoalsWrapper avoidPage">
           <div className="col-12 basicAgWrapper">
@@ -86,11 +84,19 @@ const InformationSheetContent = ({ crop, modalData }) => {
                     {cat.attributes.map((att) => (
                       <div className="col-6 mb-2 ml-1 row">
                         <span className="col">
-                          <TooltipMaker variable={att.label} crop={crop} attribute={att}>
+                          <Tooltip
+                            placement="top-end"
+                            title={(
+                              <div className="filterTooltip">
+                                <p>{att.description}</p>
+                              </div>
+                          )}
+                            arrow
+                          >
                             <Typography sx={{ fontWeight: 'bold' }} variant="body1">
                               {att.label}
                             </Typography>
-                          </TooltipMaker>
+                          </Tooltip>
                         </span>
                         { att.values[0]?.dataType !== 'number' ? (
                           <Typography variant="body1">

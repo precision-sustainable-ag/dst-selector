@@ -41,8 +41,8 @@ export const cropDataFormatter = (cropData = [{}]) => {
     ];
     const val = vals;
     params.forEach((param) => {
-      if (val.data['Planting and Growth Windows'][`${param}`]) {
-        val.data['Planting and Growth Windows'][`${param}`].values.forEach((dateArray) => {
+      if (val.data['Planting and Growth Windows']?.[`${param}`]) {
+        val.data['Planting and Growth Windows']?.[`${param}`].values.forEach((dateArray) => {
           const datesArr = dateArray.split('-');
           // const valStart = moment(datesArr[0], 'YYYY-MM-DD');
           const valStart = moment(datesArr[0], 'MM/DD/YYYY');

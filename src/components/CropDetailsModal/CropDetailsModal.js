@@ -18,6 +18,9 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
   const [dataDone, setDataDone] = useState(false);
 
   async function getCropData() {
+    if (Object.keys(crop).length === 0) {
+      return;
+    }
     const query = `${encodeURIComponent('regions')}=${encodeURIComponent(state.regionId)}`;
     await fetch(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${state.stateId}/crops/${crop?.id}?${query}`)
       .then((res) => res.json())
@@ -37,9 +40,9 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
   }
 
   useEffect(() => {
-    // if (crop.length > 1) {
-    getCropData();
-    // }
+    if (crop.id !== undefined) {
+      getCropData();
+    }
   }, [crop]);
 
   useEffect(() => {
