@@ -15,10 +15,11 @@ const CropTableCard = ({
 }) => {
   const { state, dispatch } = useContext(Context);
   const selectedCropsRedux = useSelector((state) => state.cropData.selectedCrops);
+  const selectedGoalsRedux = useSelector((state) => state.goalsData.selectedGoals);
   const dispatchRedux = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
 
-  const goalsLength = state.selectedGoals.length;
+  const goalsLength = selectedGoalsRedux.length;
 
   const selectedBtns = selectedCropsRedux.map((cropId) => cropId.id);
 
@@ -74,7 +75,7 @@ const CropTableCard = ({
   return (
     <>
       {goalsLength > 0
-        && state.selectedGoals.map((goal, index) => (
+        && selectedGoalsRedux.map((goal, index) => (
           <TableCell style={{ textAlign: 'center' }} key={index} className="goalCells">
             <div>
               <Tooltip

@@ -21,6 +21,7 @@ import { useSelector } from 'react-redux';
 const GoalsSelector = () => {
   const { state } = useContext(Context);
   const selectedCropsRedux = useSelector((state) => state.cropData.selectedCrops);
+  const allGoalsRedux = useSelector((state) => state.goalsData.allGoals);
   const [allGoals, setAllGoals] = useState([]);
   const [handleConfirm, setHandleConfirm] = useState(false);
 
@@ -47,7 +48,7 @@ const GoalsSelector = () => {
 
   useEffect(() => {
     getAllGoals();
-  }, [state.allGoals]);
+  }, [allGoalsRedux]);
 
   return (
     <div className="container-fluid mt-5">

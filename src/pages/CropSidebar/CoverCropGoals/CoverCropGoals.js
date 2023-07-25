@@ -14,6 +14,7 @@ import { CustomStyles } from '../../../shared/constants';
 
 const CoverCropGoals = ({ handleToggle }) => {
   const { state, dispatch } = useContext(Context);
+  const selectedGoalsRedux = useSelector((state) => state.goalsData.selectedGoals);
 
   const changeProgress = () => {
     dispatch({
@@ -39,7 +40,7 @@ const CoverCropGoals = ({ handleToggle }) => {
         {state.goalsOpen ? <ExpandLess /> : <ExpandMore />}
       </ListItem>
       <Collapse in={state.goalsOpen} timeout="auto" unmountOnExit>
-        {state.selectedGoals.length === 0 ? (
+        {selectedGoalsRedux.length === 0 ? (
           <List component="div" disablePadding>
             <ListItem button sx={{ paddingLeft: 3 }}>
               <ListItemText primary="No Goals Selected" />
@@ -56,7 +57,7 @@ const CoverCropGoals = ({ handleToggle }) => {
                   primary={(
                     <>
                       <Typography variant="body1"> Goal Priority Order</Typography>
-                      {state?.selectedGoals?.map((goal, index) => (
+                      {selectedGoalsRedux?.map((goal, index) => (
                         <Typography
                           key={index}
                           variant="body1"

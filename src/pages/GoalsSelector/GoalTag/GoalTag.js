@@ -6,11 +6,14 @@
 import { Avatar, Chip, Tooltip } from '@mui/material';
 import React, { useContext, useEffect } from 'react';
 import { Context } from '../../../store/Store';
+import { addSelectedGoals, updateSelectedGoal } from '../../../reduxStore/goalSlice';
+import { useDispatch } from 'react-redux';
 // TODO: Whats up with goalt?? we need to look into fixing this.
 const GoalTag = ({
   goaltTitle, goalDescription, goal, id,
 }) => {
   const { state, dispatch } = useContext(Context);
+  const dispatchRedux = useDispatch();
   const key = id;
   const goalTitle = goaltTitle;
 
@@ -29,10 +32,11 @@ const GoalTag = ({
       // does not exist, dispatch to state and add to local state
 
       document.getElementById(`chip${k}`).classList.add('active');
-      dispatch({
-        type: 'ADD_SELECTED_GOALS',
-        data: item.label,
-      });
+      dispatchRedux(addSelectedGoals(item.label));
+      // dispatch({
+      //   type: 'ADD_SELECTED_GOALS',
+      //   data: item.label,
+      // });
     } else {
       // exists, remove it from the state and update the state
       const index = goals.indexOf(item.label);
@@ -41,10 +45,11 @@ const GoalTag = ({
       // make it lighter on the ui
       document.getElementById(`chip${k}`).classList.remove('active');
 
-      dispatch({
-        type: 'UPDATE_SELECTED_GOALS',
-        data: goals,
-      });
+      dispatchRedux(updateSelectedGoal(goals));
+      // dispatch({
+      //   type: 'UPDATE_SELECTED_GOALS',
+      //   data: goals,
+      // });
     }
   };
   return (

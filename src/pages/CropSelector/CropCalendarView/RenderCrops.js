@@ -20,6 +20,7 @@ const RenderCrops = ({
   const { state, dispatch } = useContext(Context);
   const dispatchRedux = useDispatch();
   const selectedCropsRedux = useSelector((state) => state.cropData.selectedCrops);
+  const selectedGoalsRedux = useSelector((state) => state.goalsData.selectedGoals);
   // const dispatchValue = (value, type = 'SELECTED_CROPS_MODIFIER') => {
   //   dispatch({
   //     type,
@@ -34,9 +35,9 @@ const RenderCrops = ({
   const selectedBtns = selectedCropsRedux.map((crop) => crop.id);
 
   const hasGoalRatingTwoOrLess = (crop = []) => {
-    const { selectedGoals } = state;
+    // const { selectedGoals } = state;
 
-    return crop.inactive || selectedGoals.every((rating) => crop[rating] <= 2);
+    return crop.inactive || selectedGoalsRedux.every((rating) => crop[rating] <= 2);
   };
 
   const getAverageGoalRating = (selectedGoals, crop) => {
@@ -147,14 +148,14 @@ const RenderCrops = ({
               </Button>
             </div>
           </TableCell>
-          {state.selectedGoals.length > 0 && (
+          {selectedGoalsRedux.length > 0 && (
           <TableCell
             style={{
               paddingBottom: '0px',
               textAlign: 'center',
             }}
           >
-            {getAverageGoalRating(state.selectedGoals, crop)}
+            {getAverageGoalRating(selectedGoalsRedux, crop)}
           </TableCell>
           )}
           <TableCell colSpan="12">

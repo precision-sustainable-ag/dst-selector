@@ -18,6 +18,7 @@ import InformationBar from './InformationBar/InformationBar';
 import ToggleOptions from './ToggleOptions/ToggleOptions';
 import { lastZipCode, updateZipCode, updateZone } from '../../reduxStore/addressSlice';
 import { pullCropData } from '../../reduxStore/cropSlice';
+import { addGoals } from '../../reduxStore/goalSlice';
 
 const Header = () => {
   const { state, dispatch } = useContext(Context);
@@ -290,10 +291,11 @@ const Header = () => {
         //   data: data.data,
         // });
 
-        dispatch({
-          type: 'ADD_GOALS',
-          data: formattedGoal,
-        });
+        dispatchRedux(addGoals(formattedGoal));
+        // dispatch({
+        //   type: 'ADD_GOALS',
+        //   data: formattedGoal,
+        // });
       })
       .catch((err) => {
         // eslint-disable-next-line no-console

@@ -82,6 +82,7 @@ const initialState = {
           };
         
         case 'UPDATE_DATE_RANGE':
+          console.log("ACTION",action.payload);
           return {
             ...state,
             cashCropData:{

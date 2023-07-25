@@ -11,6 +11,7 @@ import { useSelector } from 'react-redux';
 const ProgressButtons = ({ closeExpansionPanel, setConfirmationOpen }) => {
   const { state } = useContext(Context);
   const addressRedux  = useSelector((state) => state.addressData.address);
+  const selectedGoalsRedux = useSelector((state) => state.goalsData.selectedGoals);
   const [isDisabledBack, setIsDisabledBack] = useState(false);
   const [isDisabledNext, setIsDisabledNext] = useState(true);
   const [isDisabledRefresh, setIsDisabledRefresh] = useState(false);
@@ -48,8 +49,8 @@ const ProgressButtons = ({ closeExpansionPanel, setConfirmationOpen }) => {
   useEffect(() => {
     const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
     const sfilters = state[section];
-    disableLogic(state.progress, state.selectedGoals.length, sfilters);
-  }, [state]);
+    disableLogic(state.progress, selectedGoalsRedux.length, sfilters);
+  }, [state, selectedGoalsRedux]);
 
   const renderProgressButtons = (progress, disabledBack, disabledNext, disabledRefresh) => {
     if (progress < 0) return '';
