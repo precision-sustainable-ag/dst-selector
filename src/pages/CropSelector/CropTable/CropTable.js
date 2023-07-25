@@ -33,7 +33,7 @@ const CropTableComponent = ({
   cropData, activeCropData, showGrowthWindow,
 }) => {
   const { state, dispatch } = useContext(Context);
-
+  const selectedCropsRedux = useSelector((state) => state.cropData.selectedCrops);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalData, setModalData] = useState({});
   const [legendModal, setLegendModal] = useState(false);
@@ -95,7 +95,7 @@ const CropTableComponent = ({
   };
 
   const sortBySelectedCrops = () => {
-    const selectedCropsShadow = state.selectedCrops;
+    const selectedCropsShadow = selectedCropsRedux;
     sortCrops('Selected Crops', activeCropDataShadow, selectedCropsSortFlag, selectedCropsShadow, updateActiveCropDataAction);
     setSelectedCropsSortFlag(!selectedCropsSortFlag);
   };

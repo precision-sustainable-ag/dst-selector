@@ -10,15 +10,16 @@ import MyCoverCropReset from '../../../../components/MyCoverCropReset/MyCoverCro
 
 const SoilDrainage = ({ setTilingCheck }) => {
   const { state, dispatch } = useContext(Context);
+  const selectedCropsRedux = useSelector((state) => state.cropData.selectedCrops);
   const { soilData, soilDataOriginal } = state;
   const [handleConfirm, setHandleConfirm] = useState(false);
 
   useEffect(() => {
-    if (state.myCoverCropListLocation !== 'selector' && state.selectedCrops.length > 0) {
+    if (state.myCoverCropListLocation !== 'selector' && selectedCropsRedux.length > 0) {
       // document.title = 'Cover Crop Selector';
       setHandleConfirm(true);
     }
-  }, [state.selectedCrops, state.myCoverCropListLocation]);
+  }, [selectedCropsRedux, state.myCoverCropListLocation]);
 
   const resetDrainageClasses = () => {
     dispatch({

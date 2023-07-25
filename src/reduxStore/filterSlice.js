@@ -38,12 +38,23 @@ export const filterOff = (value) => ({
   },
 });
 
-export const cropSearch = (value) => ({
-  type: 'CROP_SEARCH',
-  payload: {
-    value,
-  },
-});
+export const cropSearch = (value) => {
+    return {
+        type: 'CROP_SEARCH',
+        payload: {
+            value,
+        },
+    };
+};
+
+export const changeFilters = (value) => {
+  return {
+      type: 'CHANGE_FILTER',
+      payload: {
+          value,
+      },
+  };
+};
 
 const filterReducer = (state = initialState, action) => {
   const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
@@ -94,14 +105,20 @@ const filterReducer = (state = initialState, action) => {
       sfilters.cropSearch = action.payload.value;
 
       return {
-        ...state,
-        cropSearch: action.payload.value,
-        [section]: sfilters,
+          ...state,
+          cropSearch: action.payload.value,
+          [section]: sfilters,
       };
 
+    case 'CHANGE_FILTER':
+      return {
+          ...state,
+          changedFilters: action.payload.value
+      }
+
     default:
-      return { ...state };
-  }
-};
+        return { ...state };
+    }
+}
 
 export default filterReducer;

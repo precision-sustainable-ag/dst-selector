@@ -16,7 +16,8 @@ import '../../styles/header.scss';
 import HeaderLogoInfo from './HeaderLogoInfo/HeaderLogoInfo';
 import InformationBar from './InformationBar/InformationBar';
 import ToggleOptions from './ToggleOptions/ToggleOptions';
-import { lastZipCode, updateLastZone, updateZipCode, updateZone } from '../../reduxStore/addressSlice';
+import { lastZipCode, updateZipCode, updateZone } from '../../reduxStore/addressSlice';
+import { pullCropData } from '../../reduxStore/cropSlice';
 
 const Header = () => {
   const { state, dispatch } = useContext(Context);
@@ -283,10 +284,12 @@ const Header = () => {
       .then((res) => res.json())
       .then((data) => {
         cropDataFormatter(data.data);
-        dispatch({
-          type: 'PULL_CROP_DATA',
-          data: data.data,
-        });
+        dispatchRedux(pullCropData(data.data));
+        // dispatch({
+        //   type: 'PULL_CROP_DATA',
+        //   data: data.data,
+        // });
+
         dispatch({
           type: 'ADD_GOALS',
           data: formattedGoal,

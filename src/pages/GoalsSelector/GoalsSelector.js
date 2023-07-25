@@ -19,15 +19,16 @@ import GoalTag from './GoalTag/GoalTag';
 
 const GoalsSelector = () => {
   const { state } = useContext(Context);
+  const selectedCropsRedux = useSelector((state) => state.cropData.selectedCrops);
   const [allGoals, setAllGoals] = useState([]);
   const [handleConfirm, setHandleConfirm] = useState(false);
 
   useEffect(() => {
-    if (state.myCoverCropListLocation !== 'selector' && state.selectedCrops?.length > 0) {
+    if (state.myCoverCropListLocation !== 'selector' && selectedCropsRedux?.length > 0) {
       // document.title = 'Cover Crop Selector';
       setHandleConfirm(true);
     }
-  }, [state.selectedCrops, state.myCoverCropListLocation]);
+  }, [selectedCropsRedux, state.myCoverCropListLocation]);
 
   async function getAllGoals() {
     const query = `${encodeURIComponent('regions')}=${encodeURIComponent(state.regionId)}`;

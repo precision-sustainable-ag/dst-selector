@@ -6,26 +6,33 @@ import { Context } from '../../../store/Store';
 import '../../../styles/cropCalendarViewComponent.scss';
 import '../../../styles/cropTable.scss';
 import CropSelectorCalendarView from '../../../components/CropSelectorCalendarView/CropSelectorCalendarView';
+import { selectedCropsModifier } from '../../../reduxStore/cropSlice';
+import { snackHandler } from '../../../reduxStore/sharedSlice';
+import { useDispatch } from 'react-redux';
 
 const CropTableCard = ({
   crop, indexKey, showGrowthWindow, handleModalOpen,
 }) => {
   const { state, dispatch } = useContext(Context);
+  const selectedCropsRedux = useSelector((state) => state.cropData.selectedCrops);
+  const dispatchRedux = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
 
   const goalsLength = state.selectedGoals.length;
 
-  const selectedBtns = state.selectedCrops.map((cropId) => cropId.id);
+  const selectedBtns = selectedCropsRedux.map((cropId) => cropId.id);
 
   const cropModifierAction = (selectedCrops, message) => {
-    dispatch({
-      type: 'SELECTED_CROPS_MODIFIER',
-      data: {
-        selectedCrops,
-        snackOpen: false,
-        snackMessage: message,
-      },
-    });
+    dispatchRedux(selectedCropsModifier(selectedCrops));
+    dispatchRedux(snackHandler({snackOpen: false, snackMessage: message}));
+    // dispatch({
+    //   type: 'SELECTED_CROPS_MODIFIER',
+    //   data: {
+    //     selectedCrops,
+    //     snackOpen: false,
+    //     snackMessage: message,
+    //   },
+    // });
     enqueueSnackbar(message);
   };
 
@@ -39,18 +46,18 @@ const CropTableCard = ({
     cropArray = selectedCrops;
 
     // check if crop id exists inside state, if yes then remove it
-    if (state.selectedCrops.length > 0) {
+    if (selectedCropsRedux.length > 0) {
       let removeIndex = -1;
-      state.selectedCrops.forEach((item, i) => {
+      selectedCropsRedux.forEach((item, i) => {
         if (item.id === cropId) {
           removeIndex = i;
         }
       });
       if (removeIndex === -1) {
-        cropModifierAction([...state.selectedCrops, selectedCrops], `${cropName} Added`);
+        cropModifierAction([...selectedCropsRedux, selectedCrops], `${cropName} Added`);
       } else {
         // element exists, remove
-        const selectedCropsCopy = state.selectedCrops;
+        const selectedCropsCopy = selectedCropsRedux;
         selectedCropsCopy.splice(removeIndex, 1);
         cropModifierAction(selectedCropsCopy, `${cropName} Removed`);
       }

@@ -21,7 +21,7 @@ import ListIcon from '@mui/icons-material/List';
 import React, {
   useContext, useEffect, useState,
 } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { CustomStyles } from '../../shared/constants';
 import { Context } from '../../store/Store';
 import '../../styles/cropSidebar.scss';
@@ -33,6 +33,7 @@ import PreviousCashCrop from './PreviousCashCrop/PreviousCashCrop';
 import PlantHardinessZone from './PlantHardinessZone/PlantHardinessZone';
 import Legend from '../../components/Legend/Legend';
 import { updateZone as updateZoneRedux } from '../../reduxStore/addressSlice';
+import { updateDateRange } from '../../reduxStore/cropSlice';
 
 const CropSidebar = ({
   comparisonView,
@@ -45,6 +46,7 @@ const CropSidebar = ({
 }) => {
   const { state, dispatch } = useContext(Context);
   const dispatchRedux = useDispatch();
+  const cashCropDataRedux = useSelector((state) => state.cropData.cashCropData);
   const [loading, setLoading] = useState(true);
   const [sidebarFilters, setSidebarFilters] = useState([]);
   const [showFilters, setShowFilters] = useState('');
@@ -71,6 +73,8 @@ const CropSidebar = ({
   const legendData = [
     { className: 'sideBar', label: '0 = Least, 5 = Most' },
   ];
+
+  const cropDataRedux = useSelector((state) => state.cropData.cropData);
 
   async function getAllFilters() {
     if (state.regionId) {
@@ -129,11 +133,11 @@ const CropSidebar = ({
       }
     });
 
-    let cropData = state?.cropData?.filter((crop) => crop['Zone Decision'] === 'Include');
+    let cropData = cropDataRedux.filter((crop) => crop['Zone Decision'] === 'Include');
 
     const search = sfilters.cropSearch?.toLowerCase().match(/\w+/g);
 
-    cropData = state?.cropData?.filter((crop) => {
+    cropData = cropDataRedux.filter((crop) => {
       let m;
 
       const match = (parm) => {
@@ -289,13 +293,19 @@ const CropSidebar = ({
   useEffect(() => {
     if (from === 'table') {
       if (dateRange.startDate !== null && dateRange.endDate !== null) {
-        dispatch({
-          type: 'UPDATE_DATE_RANGE',
-          data: {
+        dispatchRedux(updateDateRange(
+          {
             startDate: dateRange.startDate.toISOString().substring(0, 10),
-            endDate: dateRange.endDate.toISOString().substring(0, 10),
-          },
-        });
+            endDate: dateRange.endDate.toISOString().substring(0, 10)
+          }
+        ));
+        // dispatch({
+        //   type: 'UPDATE_DATE_RANGE',
+        //   data: {
+        //     startDate: dateRange.startDate.toISOString().substring(0, 10),
+        //     endDate: dateRange.endDate.toISOString().substring(0, 10)
+        //   },
+        // });
       }
 
       setGrowthWindow(true);
@@ -320,13 +330,13 @@ const CropSidebar = ({
 
   // TODO: Can we use Reducer instead of localStorage?
   useEffect(() => {
-    if (state.cashCropData.dateRange.startDate) {
+    if (cashCropDataRedux.dateRange.startDate) {
       window.localStorage.setItem(
         'cashCropDateRange',
-        JSON.stringify(state.cashCropData.dateRange),
+        JSON.stringify(cashCropDataRedux.dateRange),
       );
     }
-  }, [state.cashCropData.dateRange]);
+  }, [cashCropDataRedux.dateRange]);
 
   const filters = () => sidebarFilters.map((filter, index) => {
     const sectionFilter = `${section}${filter.name}`;
