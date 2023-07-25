@@ -10,6 +10,7 @@ import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset
 import { Context } from '../../store/Store';
 import '../../styles/goalsSelector.scss';
 import GoalTag from './GoalTag/GoalTag';
+import { useSelector } from 'react-redux';
 
 // const goalSkeletonStyle = {
 //   height: '50px',

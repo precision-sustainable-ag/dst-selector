@@ -7,6 +7,7 @@ import { Context } from '../../../../store/Store';
 import '../../../../styles/soilConditions.scss';
 import RenderDrainageClasses from './RenderDrainageClasses';
 import MyCoverCropReset from '../../../../components/MyCoverCropReset/MyCoverCropReset';
+import { useSelector } from 'react-redux';
 
 const SoilDrainage = ({ setTilingCheck }) => {
   const { state, dispatch } = useContext(Context);

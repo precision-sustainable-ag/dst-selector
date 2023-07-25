@@ -13,17 +13,19 @@ import ReactGA from 'react-ga';
 import { Context } from '../../store/Store';
 import MyCoverCropComparison from './MyCoverCropComparison/MyCoverCropComparison';
 import MyCoverCropCards from './MyCoverCropCards/MyCoverCropCards';
+import { useSelector } from 'react-redux';
 
 const MyCoverCropList = ({ comparisonView, from }) => {
   const { state, dispatch } = useContext(Context);
   const comparison = comparisonView || false;
   const history = useHistory();
   const [updatedSelectedCrops, setUpdatedSelectedCrops] = useState([]);
-  const { selectedCrops } = state;
+  // const { selectedCrops } = state;
+  const selectedCropsRedux = useSelector((state) => state.cropData.selectedCrops);
 
   useEffect(() => {
-    setUpdatedSelectedCrops(selectedCrops);
-  }, [selectedCrops]);
+    setUpdatedSelectedCrops(selectedCropsRedux);
+  }, [selectedCropsRedux]);
 
   useEffect(() => {
     if (state.state === '') {

@@ -27,7 +27,8 @@ import '../../../styles/cropComparisonView.scss';
 import '../../../styles/MyCoverCropComparisonComponent.scss';
 import CropDetailsModal from '../../../components/CropDetailsModal/CropDetailsModal';
 import CropCard from '../../../components/CropCard/CropCard';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectedCropsModifier } from '../../../reduxStore/cropSlice';
 
 const lightBorder = {
   border: '1px solid #35999b',

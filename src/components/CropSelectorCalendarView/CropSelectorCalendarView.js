@@ -27,12 +27,12 @@ const CropSelectorCalendarView = ({ from = 'calendar', data = [] }) => {
   ];
 
   const isThisCashCropMonth = (month = 'January') => {
-    if (cashCropDataRedux.dateRange.startDate === null || cashCropDataRedux.dateRange.endDate === null) {
+    if (cashCropDataRedux?.dateRange?.startDate === null || cashCropDataRedux?.dateRange?.endDate === null) {
       return false;
     }
     const result = new Set();
-    const start = moment(cashCropDataRedux.dateRange.startDate.$d);
-    const end = moment(cashCropDataRedux.dateRange.endDate.$d);
+    const start = moment(cashCropDataRedux?.dateRange?.startDate.$d);
+    const end = moment(cashCropDataRedux?.dateRange?.endDate.$d);
 
     while (start.isBefore(end)) {
       result.add(start.format('MMMM'));

@@ -5,6 +5,7 @@ import React, { useContext } from 'react';
 import { NavLink, useHistory } from 'react-router-dom';
 import { Context } from '../../../store/Store';
 import '../../../styles/header.scss';
+import { useSelector } from 'react-redux';
 
 const ToggleOptions = ({ isRoot }) => {
   const { state, dispatch } = useContext(Context);

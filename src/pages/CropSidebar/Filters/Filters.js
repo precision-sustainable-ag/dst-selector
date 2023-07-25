@@ -4,9 +4,12 @@ import React, {
   useEffect, useContext, useState,
 } from 'react';
 import { Context } from '../../../store/Store';
+import { useDispatch } from 'react-redux';
+import { filterOn as filterOnRedux, filterOff as filterOffRedux, filterToggle } from '../../../reduxStore/filterSlice';
 
 const DollarsAndRatings = ({ filter, handleChange }) => {
   const { state, dispatch } = useContext(Context);
+  const dispatchRedux = useDispatch();
   const sfilters = window.location.href.includes('species-selector') ? state.selector : state.explorer;
 
   const style = filter.symbol === 'dollar'
@@ -25,19 +28,21 @@ const DollarsAndRatings = ({ filter, handleChange }) => {
         .map((i) => {
           const filterKey = `${filter.name}: ${i}`;
           const selected = sfilters[filterKey];
-          const filterOn = (key = filterKey) => dispatch({
-            type: 'FILTER_ON',
-            data: {
-              value: key,
-            },
-          });
+          // const filterOn = (key = filterKey) => dispatch({
+          //   type: 'FILTER_ON',
+          //   data: {
+          //     value: key,
+          //   },
+          // });
+          const filterOn = (key = filterKey) => dispatchRedux(filterOnRedux(key));
 
-          const filterOff = (key = filterKey) => dispatch({
-            type: 'FILTER_OFF',
-            data: {
-              value: key,
-            },
-          });
+          // const filterOff = (key = filterKey) => dispatch({
+          //   type: 'FILTER_OFF',
+          //   data: {
+          //     value: key,
+          //   },
+          // });
+          const filterOff = (key = filterKey) => dispatchRedux(filterOffRedux(key));
 
           return (
             <Chip
@@ -127,6 +132,7 @@ const Tip = ({ filter }) => (
 // added ref prop to remove error. TODO: look into if forwardRef is needed here since ref isnt used
 const Filters = ({ filters }) => {
   const { state, dispatch } = useContext(Context);
+  const dispatchRedux = useDispatch();
   // const { filters } = props;
   const [selected, setSelected] = useState({});
   const [sidebarFilterOptions, setSidebarFilterOptions] = useState({});
@@ -148,12 +154,13 @@ const Filters = ({ filters }) => {
   };
 
   const chipChange = (filterName, val) => {
-    dispatch({
-      type: 'FILTER_TOGGLE',
-      data: {
-        value: `${filterName}: ${val}`,
-      },
-    });
+    dispatchRedux(filterToggle({value:`${filterName}: ${val}`}));
+    // dispatch({
+    //   type: 'FILTER_TOGGLE',
+    //   data: {
+    //     value: `${filterName}: ${val}`,
+    //   },
+    // });
     setSelected({ ...selected, whatever: 'rerender' });
   };
 

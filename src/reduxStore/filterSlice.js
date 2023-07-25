@@ -64,9 +64,10 @@ export const changeFilters = (value) => {
     };
 };
 
-const filterReducer = (state = initialState, action, value = action && action.payload && action.payload.value) => {
+const filterReducer = (state = initialState, action) => {
     const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
     let sfilters = { ...state[section] };
+    const value = action && action.payload && action.payload.value;
 
     switch (action.type) {
         case 'CLEAR_FILTERS':

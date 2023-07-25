@@ -34,6 +34,7 @@ import PlantHardinessZone from './PlantHardinessZone/PlantHardinessZone';
 import Legend from '../../components/Legend/Legend';
 import { updateZone as updateZoneRedux } from '../../reduxStore/addressSlice';
 import { updateDateRange } from '../../reduxStore/cropSlice';
+import { clearFilters } from '../../reduxStore/filterSlice';
 
 const CropSidebar = ({
   comparisonView,
@@ -204,9 +205,10 @@ const CropSidebar = ({
   const filtersSelected = Object.keys(sfilters)?.filter((key) => sfilters[key])?.length > 1;
 
   const resetAllFilters = () => {
-    dispatch({
-      type: 'CLEAR_FILTERS',
-    });
+    dispatchRedux(clearFilters());
+    // dispatch({
+    //   type: 'CLEAR_FILTERS',
+    // });
   };
 
   const createObject = (obj, dataDictionary, data) => {
@@ -330,10 +332,10 @@ const CropSidebar = ({
 
   // TODO: Can we use Reducer instead of localStorage?
   useEffect(() => {
-    if (cashCropDataRedux.dateRange.startDate) {
+    if (cashCropDataRedux?.dateRange?.startDate) {
       window.localStorage.setItem(
         'cashCropDateRange',
-        JSON.stringify(cashCropDataRedux.dateRange),
+        JSON.stringify(cashCropDataRedux?.dateRange),
       );
     }
   }, [cashCropDataRedux.dateRange]);

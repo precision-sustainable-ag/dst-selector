@@ -19,7 +19,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { CustomStyles } from '../../../shared/constants';
 import { Context } from '../../../store/Store';
 import { updateDateRange } from '../../../reduxStore/cropSlice';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 const PreviousCashCrop = () => {
   const { state, dispatch } = useContext(Context);
@@ -78,8 +78,8 @@ const PreviousCashCrop = () => {
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
                 label="Planting Date"
-                value={cashCropDataRedux.dateRange.startDate}
-                onChange={(newDate) => handleDispatch(newDate, cashCropDataRedux.dateRange.endDate)}
+                value={cashCropDataRedux?.dateRange?.startDate}
+                onChange={(newDate) => handleDispatch(newDate, cashCropDataRedux?.dateRange?.endDate)}
               />
             </LocalizationProvider>
           </ListItem>
@@ -88,8 +88,8 @@ const PreviousCashCrop = () => {
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
                 label="Harvest Date"
-                value={cashCropDataRedux.dateRange.endDate}
-                onChange={(newDate) => handleDispatch(cashCropDataRedux.dateRange.startDate, newDate)}
+                value={cashCropDataRedux?.dateRange?.endDate}
+                onChange={(newDate) => handleDispatch(cashCropDataRedux?.dateRange?.startDate, newDate)}
               />
             </LocalizationProvider>
           </ListItem>
@@ -104,7 +104,7 @@ const PreviousCashCrop = () => {
                         const cashCropDateRange = JSON.parse(
                           window.localStorage.getItem('cashCropDateRange'),
                         );
-                        handleDispatch(moment(cashCropDateRange.startDate.substring(0, 10)), moment(cashCropDateRange.endDate.substring(0, 10)));
+                        handleDispatch(moment(cashCropDateRange?.startDate?.substring(0, 10)), moment(cashCropDateRange?.endDate?.substring(0, 10)));
                       } else {
                         handleDispatch();
                       }

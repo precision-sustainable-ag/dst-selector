@@ -12,7 +12,7 @@ import { Context } from '../../../store/Store';
 import '../../../styles/cropCalendarViewComponent.scss';
 import { selectedCropsModifier } from '../../../reduxStore/cropSlice';
 import { snackHandler } from '../../../reduxStore/sharedSlice';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 const RenderCrops = ({
   cropData, active, setModalOpen, modalOpen, setModalData,
