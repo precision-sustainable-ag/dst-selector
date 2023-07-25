@@ -23,6 +23,9 @@ import CropSidebar from '../CropSidebar/CropSidebar';
 import CropTableComponent from './CropTable/CropTable';
 import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset';
 import { sortCrops } from '../../shared/constants';
+import { updateActiveCropData } from '../../reduxStore/cropSlice';
+import { changeFilters } from '../../reduxStore/filterSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 const ScrollTop = ({ children }) => {
   const trigger = useScrollTrigger({
@@ -54,24 +57,32 @@ const ScrollTop = ({ children }) => {
 
 const CropSelector = (props) => {
   const { state, dispatch } = useContext(Context);
+  const dispatchRedux = useDispatch();
+  const selectedCropsRedux = useSelector((state) => state.cropData.selectedCrops);
   const [showGrowthWindow, setShowGrowthWindow] = useState(true);
   const [goalsSortFlag, setGoalsSortFlag] = useState(true);
-  const { selectedGoals, activeCropData } = state;
+  const { selectedGoals } = state;
+  const activeCropDataRedux = useSelector((state) => state.cropData.activeCropData);
   const [isListView, setIsListView] = useState(true);
   const [comparisonView, setComparisonView] = useState(false);
   const [cropData, setCropData] = useState([]);
   const [updatedActiveCropData, setUpdatedActiveCropData] = useState([]);
   const [handleConfirm, setHandleConfirm] = useState(false);
+  const cropDataRedux = useSelector((state) => state.cropData.cropData);
 
   const sortCropsBy = (flag) => {
-    const dispatchValue = (updatedCropData) => dispatch({
-      type: 'UPDATE_ACTIVE_CROP_DATA',
-      data: {
-        value: updatedCropData,
-      },
-    });
+    // const dispatchValue = (updatedCropData) => dispatch({
+    //   type: 'UPDATE_ACTIVE_CROP_DATA',
+    //   data: {
+    //     value: updatedCropData,
+    //   },
+    // });
+    const dispatchValue = (updatedCropData) => {
+      dispatchRedux(updateActiveCropData(updatedCropData));
+      dispatchRedux(changeFilters(false));
+    }
     if (selectedGoals?.length > 0) {
-      const activeCropDataShadow = activeCropData?.length > 0 ? activeCropData : state?.cropData;
+      const activeCropDataShadow = activeCropDataRedux?.length > 0 ? activeCropDataRedux : state?.cropData;
 
       sortCrops('Average Goals', activeCropDataShadow, flag || goalsSortFlag, selectedGoals, dispatchValue);
       setGoalsSortFlag(!goalsSortFlag);
@@ -80,18 +91,18 @@ const CropSelector = (props) => {
   };
 
   useEffect(() => {
-    if (state.myCoverCropListLocation !== 'selector' && state.selectedCrops.length > 0) {
+    if (state.myCoverCropListLocation !== 'selector' && selectedCropsRedux.length > 0) {
       setHandleConfirm(true);
     }
-  }, [state.selectedCrops, state.myCoverCropListLocation]);
+  }, [selectedCropsRedux, state.myCoverCropListLocation]);
 
   useEffect(() => {
     sortCropsBy(true);
-  }, [activeCropData]);
+  }, [activeCropDataRedux]);
 
   useEffect(() => {
-    setUpdatedActiveCropData(activeCropData);
-  }, [activeCropData]);
+    setUpdatedActiveCropData(activeCropDataRedux);
+  }, [activeCropDataRedux]);
 
   useEffect(() => {
     if (state.consent === true) {
@@ -113,10 +124,10 @@ const CropSelector = (props) => {
   }, [state.selectedGoals, dispatch]);
 
   useEffect(() => {
-    if (state?.cropData) {
-      if (state?.cropData?.length > 0) {
+    if (cropDataRedux) {
+      if (cropDataRedux.length > 0) {
         if (selectedGoals?.length > 0) {
-          const activeCropDataShadow = state?.cropData;
+          const activeCropDataShadow = cropDataRedux;
           selectedGoals
             .slice()
             .reverse()

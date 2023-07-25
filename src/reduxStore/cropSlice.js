@@ -46,7 +46,7 @@ const initialState = {
       };
     };
   
-    export const updateDateRange = (startDate, endDate) => {
+    export const updateDateRange = ({startDate, endDate}) => {
       return {
         type: 'UPDATE_DATE_RANGE',
         payload: {

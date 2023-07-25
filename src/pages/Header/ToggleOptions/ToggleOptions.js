@@ -8,6 +8,7 @@ import '../../../styles/header.scss';
 
 const ToggleOptions = ({ isRoot }) => {
   const { state, dispatch } = useContext(Context);
+  const selectedCropsRedux = useSelector((state) => state.cropData.selectedCrops);
   const history = useHistory();
 
   const setMyCoverCropActivationFlag = () => {
@@ -63,10 +64,10 @@ const ToggleOptions = ({ isRoot }) => {
       </Tooltip>
 
       {window.location.pathname === '/'
-        && state.selectedCrops.length > 0
+        && selectedCropsRedux.length > 0
         && state.progress >= 5 && (
           <Badge
-            badgeContent={state.selectedCrops.length}
+            badgeContent={selectedCropsRedux.length}
             color="error"
           >
             <Button
@@ -84,9 +85,9 @@ const ToggleOptions = ({ isRoot }) => {
       {/* My Cover Crop List As A Separate Component/Route  */}
       {window.location.pathname !== '/' && (
         state.progress.length < 5 ? (
-          state.selectedCrops.length > 0 && (
+          selectedCropsRedux.length > 0 && (
           <Badge
-            badgeContent={state.selectedCrops.length}
+            badgeContent={selectedCropsRedux.length}
             color="error"
           >
             <Button
@@ -97,9 +98,9 @@ const ToggleOptions = ({ isRoot }) => {
             </Button>
           </Badge>
           )
-        ) : state.selectedCrops.length > 0 && (
+        ) : selectedCropsRedux.length > 0 && (
         <Badge
-          badgeContent={state.selectedCrops.length}
+          badgeContent={selectedCropsRedux.length}
           color="error"
         >
           <Button

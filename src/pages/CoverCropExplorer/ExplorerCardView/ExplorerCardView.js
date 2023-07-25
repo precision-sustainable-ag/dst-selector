@@ -14,22 +14,28 @@ import React, {
 import CropCard from '../../../components/CropCard/CropCard';
 import CropDetailsModal from '../../../components/CropDetailsModal/CropDetailsModal';
 import { Context } from '../../../store/Store';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectedCropsModifier } from '../../../reduxStore/cropSlice';
+import { snackHandler } from '../../../reduxStore/sharedSlice';
 
 const ExplorerCardView = ({ activeCropData }) => {
   const { state, dispatch } = useContext(Context);
+  const dispatchRedux = useDispatch();
+  const selectedCropsRedux = useSelector((state) => state.cropData.selectedCrops);
   const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
   const sfilters = state[section];
+  const cropDataRedux = useSelector((state) => state.cropData.cropData);
 
   const [modalOpen, setModalOpen] = useState(false);
   const [modalData, setModalData] = useState({});
 
   const [selectedBtns, setSelectedBtns] = useState(
-    state.selectedCrops.map((crop) => crop.id),
+    selectedCropsRedux.map((crop) => crop.id),
   );
   useEffect(() => {
-    const newSelectedBtns = state.selectedCrops.map((crop) => crop.id);
+    const newSelectedBtns = selectedCropsRedux.map((crop) => crop.id);
     setSelectedBtns(newSelectedBtns);
-  }, [sfilters.zone, state.selectedCrops]);
+  }, [sfilters.zone, selectedCropsRedux]);
 
   const { enqueueSnackbar } = useSnackbar();
 
@@ -46,30 +52,41 @@ const ExplorerCardView = ({ activeCropData }) => {
     selectedCrops.data = cropData;
 
     const buildDispatch = (action, crops) => {
-      dispatch({
-        type: 'SELECTED_CROPS_MODIFIER',
-        data: {
-          selectedCrops: crops,
+      dispatchRedux(selectedCropsModifier(
+        {
+          crops
+        }
+      ));
+      dispatchRedux(snackHandler(
+        {
           snackOpen: false,
-          snackMessage: `${cropName} ${action}`,
-        },
-      });
+          snackMessage: `${cropName} ${action}`
+        }
+      ));
+      // dispatch({
+      //   type: 'SELECTED_CROPS_MODIFIER',
+      //   data: {
+      //     selectedCrops: crops,
+      //     snackOpen: false,
+      //     snackMessage: `${cropName} ${action}`,
+      //   },
+      // });
       enqueueSnackbar(`${cropName} ${action}`);
     };
 
-    if (state?.selectedCrops?.length > 0) {
+    if (selectedCropsRedux?.length > 0) {
       // DONE: Remove crop from basket
       let removeIndex = -1;
-      state.selectedCrops.forEach((item, i) => {
+      selectedCropsRedux.forEach((item, i) => {
         if (item.id === cropId) {
           removeIndex = i;
         }
       });
       if (removeIndex === -1) {
         // element not in array
-        buildDispatch('added', [...state.selectedCrops, selectedCrops]);
+        buildDispatch('added', [...selectedCropsRedux, selectedCrops]);
       } else {
-        const selectedCropsCopy = state.selectedCrops;
+        const selectedCropsCopy = selectedCropsRedux;
         selectedCropsCopy.splice(removeIndex, 1);
 
         buildDispatch('Removed', selectedCropsCopy);
@@ -101,7 +118,7 @@ const ExplorerCardView = ({ activeCropData }) => {
               />
             </Grid>
           ))
-        ) : state?.cropData?.length > 0 ? (
+        ) : cropDataRedux.length > 0 ? (
           <Grid item>
             <Typography variant="body1" align="center">
               No cover crops match your selected Cover Crop Property filters.

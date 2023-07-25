@@ -36,6 +36,7 @@ const LocationComponent = ({
 }) => {
   const { state, dispatch } = useContext(Context);
   const dispatchRedux = useDispatch();
+  const selectedCropsRedux = useSelector((state) => state.cropData.selectedCrops);
   const [selectedZone, setselectedZone] = useState();
   const [selectedToEditSite, setSelectedToEditSite] = useState({});
   const [showRestartPrompt, setShowRestartPrompt] = useState(false);
@@ -53,10 +54,10 @@ const LocationComponent = ({
   }, [state]);
 
   useEffect(() => {
-    if (state.myCoverCropListLocation !== 'selector' && state.selectedCrops.length > 0) {
+    if (state.myCoverCropListLocation !== 'selector' && selectedCropsRedux.length > 0) {
       setHandleConfirm(true);
     }
-  }, [state.selectedCrops, state.myCoverCropListLocation]);
+  }, [selectedCropsRedux, state.myCoverCropListLocation]);
 
   const updateZone = (region) => {
     if (region !== undefined) {
@@ -106,7 +107,7 @@ const LocationComponent = ({
           type: 'RESET',
           data: {
             markers: defaultMarkers,
-            selectedCrops: state.selectedCrops,
+            selectedCrops: selectedCropsRedux,
           },
         });
       }

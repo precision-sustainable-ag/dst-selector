@@ -55,6 +55,15 @@ export const cropSearch = (value) => {
     };
 };
 
+export const changeFilters = (value) => {
+    return {
+        type: 'CHANGE_FILTER',
+        payload: {
+            value,
+        },
+    };
+};
+
 const filterReducer = (state = initialState, action, value = action && action.payload && action.payload.value) => {
     const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
     let sfilters = { ...state[section] };
@@ -108,6 +117,12 @@ const filterReducer = (state = initialState, action, value = action && action.pa
                 [section]: sfilters,
             };
         
+        case 'CHANGE_FILTER':
+            return {
+                ...state,
+                changedFilters: action.payload.value
+            }
+
         default:
             return { ...state };
     }

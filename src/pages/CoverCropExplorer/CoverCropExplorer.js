@@ -18,22 +18,25 @@ import ConsentModal from './ConsentModal/ConsentModal';
 import CropSidebar from '../CropSidebar/CropSidebar';
 import { BinaryButton } from '../../shared/constants';
 import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset';
+import { useSelector } from 'react-redux';
 
 const CoverCropExplorer = () => {
   const { state, dispatch } = useContext(Context);
+  const selectedCropsRedux = useSelector((state) => state.cropData.selectedCrops);
   const history = useHistory();
   const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
   const sfilters = state[section];
   const [updatedActiveCropData, setUpdatedActiveCropData] = useState([]);
-  const { activeCropData } = state;
+  // const { activeCropData } = state;
+  const activeCropDataRedux = useSelector((state) => state.cropData.activeCropData);
   const [handleConfirm, setHandleConfirm] = useState(false);
   const defaultMarkers = [[40.78489145, -74.80733626930342]];
 
   useEffect(() => {
-    const filteredActiveCropData = activeCropData?.filter((a) => !a.inactive);
+    const filteredActiveCropData = activeCropDataRedux?.filter((a) => !a.inactive);
     setUpdatedActiveCropData(filteredActiveCropData);
     // getData();
-  }, [activeCropData]);
+  }, [activeCropDataRedux]);
 
   useEffect(() => {
     if (state.consent === true) {
@@ -50,11 +53,11 @@ const CoverCropExplorer = () => {
   }, [state.state]);
 
   useEffect(() => {
-    if (state?.myCoverCropListLocation !== 'explorer' && state?.selectedCrops?.length > 0) {
+    if (state?.myCoverCropListLocation !== 'explorer' && selectedCropsRedux.length > 0) {
       // document.title = 'Cover Crop Explorer';
       setHandleConfirm(true);
     }
-  }, [state.selectedCrops, state.myCoverCropListLocation]);
+  }, [selectedCropsRedux, state.myCoverCropListLocation]);
 
   const handleConfirmationChoice = (clearMyList = false) => {
     if (clearMyList) {
@@ -80,7 +83,7 @@ const CoverCropExplorer = () => {
           <div className="col-md-12 col-lg-3 col-xl-2 col-12">
             <CropSidebar
               from="explorer"
-              activeCropData={activeCropData?.length > 0 ? activeCropData : state?.cropData}
+              activeCropData={activeCropDataRedux?.length > 0 ? activeCropDataRedux : state?.cropData}
               isListView
             />
           </div>

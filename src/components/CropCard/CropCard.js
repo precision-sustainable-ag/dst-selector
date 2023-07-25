@@ -19,13 +19,14 @@ const CropCard = ({
   const sfilters = state[section];
   const [allfilters, setAllFilters] = useState([]);
   const allData = [];
+  const selectedCropsRedux = useSelector((state) => state.cropData.selectedCrops);
 
   const [selectedBtns, setSelectedBtns] = useState(
-    state.selectedCrops.map((crp) => crp.id),
+    selectedCropsRedux.map((crp) => crp.id),
   );
 
   async function updateBtns() {
-    await setSelectedBtns(state.selectedCrops.map((crp) => crp.id));
+    await setSelectedBtns(selectedCropsRedux.map((crp) => crp.id));
   }
 
   async function setDataDict() {
@@ -41,7 +42,7 @@ const CropCard = ({
 
   useEffect(() => {
     updateBtns();
-  }, [sfilters.zone, state.selectedCrops]);
+  }, [sfilters.zone, selectedCropsRedux]);
 
   useEffect(() => {
     setDataDict();
