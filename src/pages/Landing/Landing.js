@@ -43,7 +43,6 @@ const Landing = ({ height, title, bg }) => {
 
   async function getAllStates() {
     const key = `https://${state.apiBaseURL}.covercrop-selector.org/v1/states`;
-    console.log(key);
     await fetch(key)
       .then((res) => res.json())
       .then((data) => { setAllStates(data.data); })
