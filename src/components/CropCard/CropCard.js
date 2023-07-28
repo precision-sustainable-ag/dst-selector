@@ -5,22 +5,22 @@ import {
 import React, {
   useContext, useEffect, useState,
 } from 'react';
+import { useSelector } from 'react-redux';
 import { trimString } from '../../shared/constants';
 import { Context } from '../../store/Store';
 import RenderRelevantData from './RenderRelevantData/RenderRelevantData';
-import { useSelector } from 'react-redux';
 
 const CropCard = ({
   crop, handleModalOpen, addCropToBasket, removeCrop, index, type, comparisonKeys, lightBG, GetAverageGoalRating,
 }) => {
   const { state } = useContext(Context);
-  const zoneRedux = useSelector((state) => state.addressData.zone);
-  const selectedGoalsRedux = useSelector((state) => state.goalsData.selectedGoals);
+  const zoneRedux = useSelector((stateRedux) => stateRedux.addressData.zone);
+  const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
   const sfilters = state[section];
   const [allfilters, setAllFilters] = useState([]);
   const allData = [];
-  const selectedCropsRedux = useSelector((state) => state.cropData.selectedCrops);
+  const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
 
   const [selectedBtns, setSelectedBtns] = useState(
     selectedCropsRedux.map((crp) => crp.id),

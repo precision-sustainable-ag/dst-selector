@@ -3,12 +3,12 @@ import {
 } from '@mui/material';
 import { Clear } from '@mui/icons-material';
 import React from 'react';
-import { cropSearch } from '../../../reduxStore/filterSlice';
 import { useDispatch } from 'react-redux';
+import { cropSearch } from '../../../reduxStore/filterSlice';
 
-const CoverCropSearch = ({ sfilters, dispatch }) => {
+const CoverCropSearch = ({ sfilters }) => {
   const dispatchRedux = useDispatch();
-  const clearCoverCropSearch = (type = 'CROP_SEARCH', value = '') => {
+  const clearCoverCropSearch = (value = '') => {
     dispatchRedux(cropSearch(value));
     // dispatch({
     //   type,

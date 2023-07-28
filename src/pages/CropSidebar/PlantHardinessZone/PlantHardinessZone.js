@@ -3,12 +3,12 @@ import {
   Collapse, FormControl, InputLabel, List, ListItem, MenuItem, Select,
 } from '@mui/material';
 import React, { useContext } from 'react';
-import { Context } from '../../../store/Store';
 import { useSelector } from 'react-redux';
+import { Context } from '../../../store/Store';
 
 const PlantHardinessZone = ({ updateZone }) => {
   const { state } = useContext(Context);
-  const zoneRedux = useSelector((state) => state.addressData.zone);
+  const zoneRedux = useSelector((stateRedux) => stateRedux.addressData.zone);
 
   const handleRegionChange = (event) => {
     // eslint-disable-next-line eqeqeq

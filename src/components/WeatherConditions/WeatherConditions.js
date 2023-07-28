@@ -16,17 +16,17 @@ import {
 } from '@mui/material';
 import moment from 'moment';
 import React, { useContext, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { LightButton } from '../../shared/constants';
 import { Context } from '../../store/Store';
 import WeatherPrecipitation from './WeatherPrecipitation/WeatherPrecipitation';
 import WeatherFrostDates from './WeatherFrostDates/WeatherFrostDates';
 import WeatherFrostFreeDays from './WeatherFrostFreeDays/WeatherFrostFreeDays';
 import MyCoverCropReset from '../MyCoverCropReset/MyCoverCropReset';
-import { useSelector } from 'react-redux';
 
 const WeatherConditions = ({ caller }) => {
   const { state, dispatch } = useContext(Context);
-  const selectedCropsRedux = useSelector((state) => state.cropData.selectedCrops);
+  const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
   const [months, setMonths] = useState([]);
   const [currentMonthFull, setCurrentMonthFull] = useState('NOVEMBER');
   const [anyValuesChanged, setAnyValuesChanged] = useState(false);

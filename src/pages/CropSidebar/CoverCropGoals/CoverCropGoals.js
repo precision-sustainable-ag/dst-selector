@@ -9,12 +9,13 @@ import {
 } from '@mui/material';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import React, { useContext } from 'react';
+import { useSelector } from 'react-redux';
 import { Context } from '../../../store/Store';
 import { CustomStyles } from '../../../shared/constants';
 
 const CoverCropGoals = ({ handleToggle }) => {
   const { state, dispatch } = useContext(Context);
-  const selectedGoalsRedux = useSelector((state) => state.goalsData.selectedGoals);
+  const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
 
   const changeProgress = () => {
     dispatch({

@@ -4,14 +4,14 @@
 */
 
 import React, { useContext, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { Context } from '../store/Store';
 import ProgressButtonsInner from './ProgressButtonsInner';
-import { useSelector } from 'react-redux';
 
 const ProgressButtons = ({ closeExpansionPanel, setConfirmationOpen }) => {
   const { state } = useContext(Context);
-  const addressRedux  = useSelector((state) => state.addressData.address);
-  const selectedGoalsRedux = useSelector((state) => state.goalsData.selectedGoals);
+  const addressRedux = useSelector((stateRedux) => stateRedux.addressData.address);
+  const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const [isDisabledBack, setIsDisabledBack] = useState(false);
   const [isDisabledNext, setIsDisabledNext] = useState(true);
   const [isDisabledRefresh, setIsDisabledRefresh] = useState(false);

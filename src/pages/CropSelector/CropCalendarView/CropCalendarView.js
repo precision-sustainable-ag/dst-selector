@@ -21,6 +21,7 @@ import {
   AcUnit, AddCircle, LocalFlorist, WbSunny,
 } from '@mui/icons-material';
 import React, { useContext, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import {
   allMonths,
   CustomStyles,
@@ -34,7 +35,6 @@ import '../../../styles/cropCalendarViewComponent.scss';
 import RenderCrops from './RenderCrops';
 import CropDetailsModal from '../../../components/CropDetailsModal/CropDetailsModal';
 import Legend from '../../../components/Legend/Legend';
-import { useSelector } from 'react-redux';
 
 const growthIcon = {
   color: 'white',
@@ -42,7 +42,7 @@ const growthIcon = {
 
 const CropCalendarView = ({ activeCropData }) => {
   const { state, dispatch } = useContext(Context);
-  const activeGrowthPeriodRedux = useSelector((state) => state.cropData.activeGrowthPeriod);
+  const activeGrowthPeriodRedux = useSelector((stateRedux) => stateRedux.cropData.activeGrowthPeriod);
   const [legendModal, setLegendModal] = useState(false);
   const [nameSortFlag, setNameSortFlag] = useState(true);
   const [goalsSortFlag, setGoalsSortFlag] = useState(true);
@@ -50,7 +50,7 @@ const CropCalendarView = ({ activeCropData }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalData, setModalData] = useState([{}]);
   // const { selectedGoals } = state;
-  const selectedGoalsRedux = useSelector((state) => state.goalsData.selectedGoals);
+  const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const activeCropDataShadow = activeCropData;
 
   const legendData = [

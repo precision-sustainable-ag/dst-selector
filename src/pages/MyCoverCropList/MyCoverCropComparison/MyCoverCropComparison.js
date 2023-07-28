@@ -18,6 +18,7 @@ import {
 import { KeyboardArrowLeft, KeyboardArrowRight } from '@mui/icons-material';
 import { useSnackbar } from 'notistack';
 import React, { useContext, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   DataTooltip,
   getRating,
@@ -27,8 +28,8 @@ import '../../../styles/cropComparisonView.scss';
 import '../../../styles/MyCoverCropComparisonComponent.scss';
 import CropDetailsModal from '../../../components/CropDetailsModal/CropDetailsModal';
 import CropCard from '../../../components/CropCard/CropCard';
-import { useDispatch, useSelector } from 'react-redux';
 import { selectedCropsModifier } from '../../../reduxStore/cropSlice';
+import { snackHandler } from '../../../reduxStore/sharedSlice';
 
 const lightBorder = {
   border: '1px solid #35999b',
@@ -52,23 +53,12 @@ const lightBG = {
   minHeight: '36px',
 };
 
-const GetAverageGoalRating = ({ crop }) => {
-  const { state } = useContext(Context);
-  let goalRating = 0;
-  selectedGoalsRedux.forEach((goal) => {
-    if (crop.data.Goals[goal]) {
-      goalRating = +crop.data.Goals[goal].values[0] + goalRating;
-    }
-  });
-  return getRating(goalRating / selectedGoalsRedux.length);
-};
-
 const MyCoverCropComparison = ({ selectedCrops }) => {
-  const { state, dispatch } = useContext(Context);
+  const { state } = useContext(Context);
   const dispatchRedux = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
-  const selectedCropsRedux = useSelector((state) => state.cropData.selectedCrops);
-  const selectedGoalsRedux = useSelector((state) => state.goalsData.selectedGoals);
+  const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
+  const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const { comparisonKeys } = state;
   const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
   const { zone } = state[section];
@@ -83,6 +73,16 @@ const MyCoverCropComparison = ({ selectedCrops }) => {
     // put data inside modal
     setModalData(crop);
     setModalOpen(true);
+  };
+
+  const GetAverageGoalRating = ({ crop }) => {
+    let goalRating = 0;
+    selectedGoalsRedux.forEach((goal) => {
+      if (crop.data.Goals[goal]) {
+        goalRating = +crop.data.Goals[goal].values[0] + goalRating;
+      }
+    });
+    return getRating(goalRating / selectedGoalsRedux.length);
   };
 
   async function setDataDict() {
@@ -112,7 +112,7 @@ const MyCoverCropComparison = ({ selectedCrops }) => {
 
       selectedCropsCopy.splice(removeIndex, 1);
       dispatchRedux(selectedCropsModifier(selectedCropsCopy));
-      dispatchRedux(snackHandler({snackOpen: false, snackMessage: 'Removed'}));
+      dispatchRedux(snackHandler({ snackOpen: false, snackMessage: 'Removed' }));
       // dispatch({
       //   type: 'SELECTED_CROPS_MODIFIER',
       //   data: {

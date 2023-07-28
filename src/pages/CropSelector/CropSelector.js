@@ -15,6 +15,7 @@ import {
 import { ArrowBack, ArrowForward, KeyboardArrowUp } from '@mui/icons-material';
 import React, { useContext, useEffect, useState } from 'react';
 import ReactGA from 'react-ga';
+import { useDispatch, useSelector } from 'react-redux';
 import { Context } from '../../store/Store';
 import '../../styles/cropSelector.scss';
 import MyCoverCropList from '../MyCoverCropList/MyCoverCropList';
@@ -25,7 +26,6 @@ import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset
 import { sortCrops } from '../../shared/constants';
 import { updateActiveCropData } from '../../reduxStore/cropSlice';
 import { changeFilters } from '../../reduxStore/filterSlice';
-import { useDispatch, useSelector } from 'react-redux';
 
 const ScrollTop = ({ children }) => {
   const trigger = useScrollTrigger({
@@ -58,18 +58,18 @@ const ScrollTop = ({ children }) => {
 const CropSelector = (props) => {
   const { state, dispatch } = useContext(Context);
   const dispatchRedux = useDispatch();
-  const selectedCropsRedux = useSelector((state) => state.cropData.selectedCrops);
-  const selectedGoalsRedux = useSelector((state) => state.goalsData.selectedGoals);
+  const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
+  const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const [showGrowthWindow, setShowGrowthWindow] = useState(true);
   const [goalsSortFlag, setGoalsSortFlag] = useState(true);
   // const { selectedGoals } = state;
-  const activeCropDataRedux = useSelector((state) => state.cropData.activeCropData);
+  const activeCropDataRedux = useSelector((stateRedux) => stateRedux.cropData.activeCropData);
   const [isListView, setIsListView] = useState(true);
   const [comparisonView, setComparisonView] = useState(false);
   const [cropData, setCropData] = useState([]);
   const [updatedActiveCropData, setUpdatedActiveCropData] = useState([]);
   const [handleConfirm, setHandleConfirm] = useState(false);
-  const cropDataRedux = useSelector((state) => state.cropData.cropData);
+  const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
 
   const sortCropsBy = (flag) => {
     // const dispatchValue = (updatedCropData) => dispatch({
@@ -81,7 +81,7 @@ const CropSelector = (props) => {
     const dispatchValue = (updatedCropData) => {
       dispatchRedux(updateActiveCropData(updatedCropData));
       dispatchRedux(changeFilters(false));
-    }
+    };
     if (selectedGoalsRedux?.length > 0) {
       const activeCropDataShadow = activeCropDataRedux?.length > 0 ? activeCropDataRedux : cropDataRedux;
 

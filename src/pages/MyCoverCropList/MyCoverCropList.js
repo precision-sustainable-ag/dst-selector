@@ -10,10 +10,10 @@ import { Add } from '@mui/icons-material';
 import React, { useState, useContext, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import ReactGA from 'react-ga';
+import { useSelector } from 'react-redux';
 import { Context } from '../../store/Store';
 import MyCoverCropComparison from './MyCoverCropComparison/MyCoverCropComparison';
 import MyCoverCropCards from './MyCoverCropCards/MyCoverCropCards';
-import { useSelector } from 'react-redux';
 
 const MyCoverCropList = ({ comparisonView, from }) => {
   const { state, dispatch } = useContext(Context);
@@ -21,7 +21,7 @@ const MyCoverCropList = ({ comparisonView, from }) => {
   const history = useHistory();
   const [updatedSelectedCrops, setUpdatedSelectedCrops] = useState([]);
   // const { selectedCrops } = state;
-  const selectedCropsRedux = useSelector((state) => state.cropData.selectedCrops);
+  const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
 
   useEffect(() => {
     setUpdatedSelectedCrops(selectedCropsRedux);

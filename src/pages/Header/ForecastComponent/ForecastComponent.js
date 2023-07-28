@@ -17,8 +17,8 @@ const apiBaseURL = 'https://api.openweathermap.org/data/2.5/weather';
 const ForecastComponent = () => {
   const { state, dispatch } = useContext(Context);
   const dispatchRedux = useDispatch();
-  const markersRedux = useSelector((state) => state.addressData.markers);
-  const addressRedux  = useSelector((state) => state.addressData.address);
+  const markersRedux = useSelector((stateRedux) => stateRedux.addressData.markers);
+  const addressRedux = useSelector((stateRedux) => stateRedux.addressData.address);
   const [showTempIcon, setShowTempIcon] = useState(true);
   const [temp, setTemp] = useState({
     min: 0,
@@ -87,7 +87,7 @@ const ForecastComponent = () => {
               if (res.localityInfo.informative) {
                 const lastInfo = res.localityInfo.informative[res.localityInfo.informative.length - 1];
                 const addressString = `${lastInfo.name}, ${res.city}`;
-                dispatchRedux(changeAddress({address: addressString, addressVerified: true}));
+                dispatchRedux(changeAddress({ address: addressString, addressVerified: true }));
                 // dispatch({
                 //   type: 'CHANGE_ADDRESS',
                 //   data: {

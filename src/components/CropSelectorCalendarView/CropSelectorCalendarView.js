@@ -1,15 +1,15 @@
 import { Tooltip, Typography } from '@mui/material';
 import moment from 'moment';
 import React, { useContext } from 'react';
+import { useSelector } from 'react-redux';
 import { allMonths, getActiveCropMonths } from '../../shared/constants';
 import { Context } from '../../store/Store';
 import '../../styles/cropSelectorCalendarView.scss';
 import CropPaintGrowthChart from './CropPaintGrowthChart/CropPaintGrowthChart';
-import { useSelector } from 'react-redux';
 
 const CropSelectorCalendarView = ({ from = 'calendar', data = [] }) => {
   const { state } = useContext(Context);
-  const cashCropDataRedux = useSelector((state) => state.cropData.cashCropData);
+  const cashCropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cashCropData);
 
   const months = [
     'January',

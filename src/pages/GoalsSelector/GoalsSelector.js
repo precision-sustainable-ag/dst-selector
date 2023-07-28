@@ -6,11 +6,11 @@
 // TODO: Goal tags are not responsive!
 import { Typography, Grid } from '@mui/material';
 import React, { useContext, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset';
 import { Context } from '../../store/Store';
 import '../../styles/goalsSelector.scss';
 import GoalTag from './GoalTag/GoalTag';
-import { useSelector } from 'react-redux';
 
 // const goalSkeletonStyle = {
 //   height: '50px',
@@ -20,8 +20,8 @@ import { useSelector } from 'react-redux';
 
 const GoalsSelector = () => {
   const { state } = useContext(Context);
-  const selectedCropsRedux = useSelector((state) => state.cropData.selectedCrops);
-  const allGoalsRedux = useSelector((state) => state.goalsData.allGoals);
+  const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
+  const allGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.allGoals);
   const [allGoals, setAllGoals] = useState([]);
   const [handleConfirm, setHandleConfirm] = useState(false);
 

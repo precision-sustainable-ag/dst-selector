@@ -3,13 +3,13 @@ import {
 } from '@mui/material';
 import React, { useContext } from 'react';
 import { NavLink, useHistory } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import { Context } from '../../../store/Store';
 import '../../../styles/header.scss';
-import { useSelector } from 'react-redux';
 
 const ToggleOptions = ({ isRoot }) => {
   const { state, dispatch } = useContext(Context);
-  const selectedCropsRedux = useSelector((state) => state.cropData.selectedCrops);
+  const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
   const history = useHistory();
 
   const setMyCoverCropActivationFlag = () => {

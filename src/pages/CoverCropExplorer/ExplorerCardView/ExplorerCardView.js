@@ -11,20 +11,20 @@ import { useSnackbar } from 'notistack';
 import React, {
   useContext, useEffect, useState,
 } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import CropCard from '../../../components/CropCard/CropCard';
 import CropDetailsModal from '../../../components/CropDetailsModal/CropDetailsModal';
 import { Context } from '../../../store/Store';
-import { useDispatch, useSelector } from 'react-redux';
 import { selectedCropsModifier } from '../../../reduxStore/cropSlice';
 import { snackHandler } from '../../../reduxStore/sharedSlice';
 
 const ExplorerCardView = ({ activeCropData }) => {
   const { state, dispatch } = useContext(Context);
   const dispatchRedux = useDispatch();
-  const selectedCropsRedux = useSelector((state) => state.cropData.selectedCrops);
+  const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
   const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
   const sfilters = state[section];
-  const cropDataRedux = useSelector((state) => state.cropData.cropData);
+  const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
 
   const [modalOpen, setModalOpen] = useState(false);
   const [modalData, setModalData] = useState({});
@@ -54,14 +54,14 @@ const ExplorerCardView = ({ activeCropData }) => {
     const buildDispatch = (action, crops) => {
       dispatchRedux(selectedCropsModifier(
         {
-          crops
-        }
+          crops,
+        },
       ));
       dispatchRedux(snackHandler(
         {
           snackOpen: false,
-          snackMessage: `${cropName} ${action}`
-        }
+          snackMessage: `${cropName} ${action}`,
+        },
       ));
       // dispatch({
       //   type: 'SELECTED_CROPS_MODIFIER',

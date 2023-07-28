@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { Button, TableCell, TableRow } from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   CropImage,
   flipCoverCropName,
@@ -12,15 +13,14 @@ import { Context } from '../../../store/Store';
 import '../../../styles/cropCalendarViewComponent.scss';
 import { selectedCropsModifier } from '../../../reduxStore/cropSlice';
 import { snackHandler } from '../../../reduxStore/sharedSlice';
-import { useDispatch, useSelector } from 'react-redux';
 
 const RenderCrops = ({
   cropData, active, setModalOpen, modalOpen, setModalData,
 }) => {
-  const { state, dispatch } = useContext(Context);
+  const { dispatch } = useContext(Context);
   const dispatchRedux = useDispatch();
-  const selectedCropsRedux = useSelector((state) => state.cropData.selectedCrops);
-  const selectedGoalsRedux = useSelector((state) => state.goalsData.selectedGoals);
+  const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
+  const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   // const dispatchValue = (value, type = 'SELECTED_CROPS_MODIFIER') => {
   //   dispatch({
   //     type,
@@ -28,17 +28,13 @@ const RenderCrops = ({
   //   });
   // };
 
-  const dispatchValue = ({selectedCrops, snackOpen, snackMessage}) => {
+  const dispatchValue = ({ selectedCrops, snackOpen, snackMessage }) => {
     dispatchRedux(selectedCropsModifier(selectedCrops));
-    dispatchRedux(snackHandler({snackOpen: snackOpen, snackMessage: snackMessage}));
-  }
+    dispatchRedux(snackHandler({ snackOpen, snackMessage }));
+  };
   const selectedBtns = selectedCropsRedux.map((crop) => crop.id);
 
-  const hasGoalRatingTwoOrLess = (crop = []) => {
-    // const { selectedGoals } = state;
-
-    return crop.inactive || selectedGoalsRedux.every((rating) => crop[rating] <= 2);
-  };
+  const hasGoalRatingTwoOrLess = (crop = []) => crop.inactive || selectedGoalsRedux.every((rating) => crop[rating] <= 2);
 
   const getAverageGoalRating = (selectedGoals, crop) => {
     let goalRating = 0;

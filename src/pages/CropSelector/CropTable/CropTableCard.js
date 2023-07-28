@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { Button, TableCell, Tooltip } from '@mui/material';
 import { useSnackbar } from 'notistack';
+import { useDispatch, useSelector } from 'react-redux';
 import { CustomStyles, getRating, LightButton } from '../../../shared/constants';
 import { Context } from '../../../store/Store';
 import '../../../styles/cropCalendarViewComponent.scss';
@@ -8,14 +9,13 @@ import '../../../styles/cropTable.scss';
 import CropSelectorCalendarView from '../../../components/CropSelectorCalendarView/CropSelectorCalendarView';
 import { selectedCropsModifier } from '../../../reduxStore/cropSlice';
 import { snackHandler } from '../../../reduxStore/sharedSlice';
-import { useDispatch } from 'react-redux';
 
 const CropTableCard = ({
   crop, indexKey, showGrowthWindow, handleModalOpen,
 }) => {
-  const { state, dispatch } = useContext(Context);
-  const selectedCropsRedux = useSelector((state) => state.cropData.selectedCrops);
-  const selectedGoalsRedux = useSelector((state) => state.goalsData.selectedGoals);
+  const { dispatch } = useContext(Context);
+  const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
+  const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const dispatchRedux = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
 
@@ -25,7 +25,7 @@ const CropTableCard = ({
 
   const cropModifierAction = (selectedCrops, message) => {
     dispatchRedux(selectedCropsModifier(selectedCrops));
-    dispatchRedux(snackHandler({snackOpen: false, snackMessage: message}));
+    dispatchRedux(snackHandler({ snackOpen: false, snackMessage: message }));
     // dispatch({
     //   type: 'SELECTED_CROPS_MODIFIER',
     //   data: {

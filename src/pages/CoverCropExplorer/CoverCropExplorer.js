@@ -11,6 +11,7 @@ import { useHistory } from 'react-router-dom';
 
 import React, { useContext, useEffect, useState } from 'react';
 import ReactGA from 'react-ga';
+import { useSelector } from 'react-redux';
 import { Context } from '../../store/Store';
 import Header from '../Header/Header';
 import ExplorerCardView from './ExplorerCardView/ExplorerCardView';
@@ -18,17 +19,16 @@ import ConsentModal from './ConsentModal/ConsentModal';
 import CropSidebar from '../CropSidebar/CropSidebar';
 import { BinaryButton } from '../../shared/constants';
 import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset';
-import { useSelector } from 'react-redux';
 
 const CoverCropExplorer = () => {
   const { state, dispatch } = useContext(Context);
-  const selectedCropsRedux = useSelector((state) => state.cropData.selectedCrops);
+  const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
   const history = useHistory();
   const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
   const sfilters = state[section];
   const [updatedActiveCropData, setUpdatedActiveCropData] = useState([]);
   // const { activeCropData } = state;
-  const activeCropDataRedux = useSelector((state) => state.cropData.activeCropData);
+  const activeCropDataRedux = useSelector((stateRedux) => stateRedux.cropData.activeCropData);
   const [handleConfirm, setHandleConfirm] = useState(false);
   const defaultMarkers = [[40.78489145, -74.80733626930342]];
 

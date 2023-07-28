@@ -23,11 +23,11 @@ import { addGoals } from '../../reduxStore/goalSlice';
 const Header = () => {
   const { state, dispatch } = useContext(Context);
   const dispatchRedux = useDispatch();
-  const markersRedux = useSelector((state) => state.addressData.markers);
-  const zipCodeRedux = useSelector((state) => state.addressData.zipCode);
-  const lastZipCodeRedux = useSelector((state) => state.addressData.lastZipCode);
-  const zoneRedux = useSelector((state) => state.addressData.zone);
-  const zoneIdRedux = useSelector((state) => state.addressData.zoneId);
+  const markersRedux = useSelector((stateRedux) => stateRedux.addressData.markers);
+  const zipCodeRedux = useSelector((stateRedux) => stateRedux.addressData.zipCode);
+  const lastZipCodeRedux = useSelector((stateRedux) => stateRedux.addressData.lastZipCode);
+  const zoneRedux = useSelector((stateRedux) => stateRedux.addressData.zone);
+  const zoneIdRedux = useSelector((stateRedux) => stateRedux.addressData.zoneId);
   const [isRoot, setIsRoot] = useState(false);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const isActive = {};
@@ -77,7 +77,7 @@ const Header = () => {
                     zoneText: `Zone ${zone}`,
                     zone,
                     zoneId: regionId,
-                  }
+                  },
                 ));
                 // dispatch({
                 //   type: 'UPDATE_ZONE',

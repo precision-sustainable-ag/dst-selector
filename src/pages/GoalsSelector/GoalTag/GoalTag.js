@@ -5,14 +5,14 @@
 
 import { Avatar, Chip, Tooltip } from '@mui/material';
 import React, { useContext, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { Context } from '../../../store/Store';
 import { addSelectedGoals, updateSelectedGoal } from '../../../reduxStore/goalSlice';
-import { useDispatch } from 'react-redux';
 // TODO: Whats up with goalt?? we need to look into fixing this.
 const GoalTag = ({
   goaltTitle, goalDescription, goal, id,
 }) => {
-  const { state, dispatch } = useContext(Context);
+  const { state } = useContext(Context);
   const dispatchRedux = useDispatch();
   const key = id;
   const goalTitle = goaltTitle;

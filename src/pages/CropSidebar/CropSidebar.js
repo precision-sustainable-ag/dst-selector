@@ -47,8 +47,8 @@ const CropSidebar = ({
 }) => {
   const { state, dispatch } = useContext(Context);
   const dispatchRedux = useDispatch();
-  const cashCropDataRedux = useSelector((state) => state.cropData.cashCropData);
-  const selectedGoalsRedux = useSelector((state) => state.goalsData.selectedGoals);
+  const cashCropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cashCropData);
+  const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const [loading, setLoading] = useState(true);
   const [sidebarFilters, setSidebarFilters] = useState([]);
   const [showFilters, setShowFilters] = useState('');
@@ -76,7 +76,7 @@ const CropSidebar = ({
     { className: 'sideBar', label: '0 = Least, 5 = Most' },
   ];
 
-  const cropDataRedux = useSelector((state) => state.cropData.cropData);
+  const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
 
   async function getAllFilters() {
     if (state.regionId) {
@@ -299,8 +299,8 @@ const CropSidebar = ({
         dispatchRedux(updateDateRange(
           {
             startDate: dateRange.startDate.toISOString().substring(0, 10),
-            endDate: dateRange.endDate.toISOString().substring(0, 10)
-          }
+            endDate: dateRange.endDate.toISOString().substring(0, 10),
+          },
         ));
         // dispatch({
         //   type: 'UPDATE_DATE_RANGE',
@@ -411,8 +411,8 @@ const CropSidebar = ({
     if (region !== undefined) {
       dispatchRedux(updateZoneRedux({
         zoneText: region.label,
-          zone: region.shorthand,
-          zoneId: region.id,
+        zone: region.shorthand,
+        zoneId: region.id,
       }));
       // dispatch({
       //   type: 'UPDATE_ZONE',

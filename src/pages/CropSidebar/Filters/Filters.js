@@ -3,12 +3,12 @@ import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import React, {
   useEffect, useContext, useState,
 } from 'react';
-import { Context } from '../../../store/Store';
 import { useDispatch } from 'react-redux';
+import { Context } from '../../../store/Store';
 import { filterOn as filterOnRedux, filterOff as filterOffRedux, filterToggle } from '../../../reduxStore/filterSlice';
 
 const DollarsAndRatings = ({ filter, handleChange }) => {
-  const { state, dispatch } = useContext(Context);
+  const { state } = useContext(Context);
   const dispatchRedux = useDispatch();
   const sfilters = window.location.href.includes('species-selector') ? state.selector : state.explorer;
 
@@ -131,7 +131,7 @@ const Tip = ({ filter }) => (
 
 // added ref prop to remove error. TODO: look into if forwardRef is needed here since ref isnt used
 const Filters = ({ filters }) => {
-  const { state, dispatch } = useContext(Context);
+  const { state } = useContext(Context);
   const dispatchRedux = useDispatch();
   // const { filters } = props;
   const [selected, setSelected] = useState({});
@@ -154,7 +154,7 @@ const Filters = ({ filters }) => {
   };
 
   const chipChange = (filterName, val) => {
-    dispatchRedux(filterToggle({value:`${filterName}: ${val}`}));
+    dispatchRedux(filterToggle({ value: `${filterName}: ${val}` }));
     // dispatch({
     //   type: 'FILTER_TOGGLE',
     //   data: {

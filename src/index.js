@@ -18,6 +18,7 @@ import {
 } from '@mui/material';
 import { SnackbarProvider } from 'notistack';
 import { createTheme } from '@mui/material/styles';
+import { Provider } from 'react-redux';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import Store from './store/Store';
@@ -35,7 +36,6 @@ import InformationSheetDictionary from './pages/Help/InformationSheetDictionary/
 import License from './pages/License/License';
 import MyCoverCropListWrapper from './pages/MyCoverCropList/MyCoverCropListWrapper/MyCoverCropListWrapper';
 import Help from './pages/Help/Help';
-import { Provider } from 'react-redux';
 import configureStore from './reduxStore/store';
 
 const withFooter = (WrappedComponent) => () => [<WrappedComponent key="1" />, <Footer key="2" />];
@@ -137,34 +137,34 @@ const Wrapper = () => (
         autoHideDuration={15000}
       >
         <Store>
-        <Provider store={store}>
-          <BrowserRouter>
-            <Suspense fallback={<div>Loading..</div>}>
-              <Switch>
-                <Route path="/" component={App} exact />
-                <Route path="/explorer" component={CoverCropExplorer} exact />
-                <Route path="/about" component={About} exact />
-                <Route path="/help" component={Help} exact />
-                <Route path="/feedback" component={FeedbackComponent} exact />
-                <Route path="/my-cover-crop-list" component={MyCoverCropListWrapper} exact />
-                <Route path="/seeding-rate-calculator" component={SeedingRateCalculator} exact />
-                <Route path="/data-dictionary" component={InformationSheetDictionary} exact />
-                <Route path="/license" component={() => <License licenseType="MIT" />} exact />
-                <Route
-                  path="/ag-informatics-license"
-                  component={() => <License licenseType="AgInformatics" />}
-                  exact
-                />
-                <Route path="/mix-maker" component={MixMaker} exact />
+          <Provider store={store}>
+            <BrowserRouter>
+              <Suspense fallback={<div>Loading..</div>}>
+                <Switch>
+                  <Route path="/" component={App} exact />
+                  <Route path="/explorer" component={CoverCropExplorer} exact />
+                  <Route path="/about" component={About} exact />
+                  <Route path="/help" component={Help} exact />
+                  <Route path="/feedback" component={FeedbackComponent} exact />
+                  <Route path="/my-cover-crop-list" component={MyCoverCropListWrapper} exact />
+                  <Route path="/seeding-rate-calculator" component={SeedingRateCalculator} exact />
+                  <Route path="/data-dictionary" component={InformationSheetDictionary} exact />
+                  <Route path="/license" component={() => <License licenseType="MIT" />} exact />
+                  <Route
+                    path="/ag-informatics-license"
+                    component={() => <License licenseType="AgInformatics" />}
+                    exact
+                  />
+                  <Route path="/mix-maker" component={MixMaker} exact />
 
-                <Route component={RouteNotFound} />
-              </Switch>
-            </Suspense>
+                  <Route component={RouteNotFound} />
+                </Switch>
+              </Suspense>
 
-            {/* <App /> */}
-          </BrowserRouter>
+              {/* <App /> */}
+            </BrowserRouter>
           </Provider>
-          </Store>
+        </Store>
       </SnackbarProvider>
     </ThemeProvider>
   </StyledEngineProvider>

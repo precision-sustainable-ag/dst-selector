@@ -4,19 +4,19 @@
   Contains the individual crops in a component
   removeCrop handles removing a crop from the list
 */
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { useSnackbar } from 'notistack';
-import { Context } from '../../../store/Store';
+import { useDispatch, useSelector } from 'react-redux';
+// import { Context } from '../../../store/Store';
 import CropCard from '../../../components/CropCard/CropCard';
 import CropDetailsModal from '../../../components/CropDetailsModal/CropDetailsModal';
 import { selectedCropsModifier } from '../../../reduxStore/cropSlice';
 import { snackHandler } from '../../../reduxStore/sharedSlice';
-import { useDispatch, useSelector } from 'react-redux';
 
 const MyCoverCropCards = ({ data, cardNo }) => {
-  const { state, dispatch } = useContext(Context);
+  // const { state, dispatch } = useContext(Context);
   const dispatchRedux = useDispatch();
-  const selectedCropsRedux = useSelector((state) => state.cropData.selectedCrops);
+  const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalData, setModalData] = useState({});
   const { enqueueSnackbar } = useSnackbar();
@@ -37,7 +37,7 @@ const MyCoverCropCards = ({ data, cardNo }) => {
 
       selectedCropsCopy.splice(removeIndex, 1);
       dispatchRedux(selectedCropsModifier(selectedCropsCopy));
-      dispatchRedux(snackHandler({snackOpen: false, snackMessage: 'Removed'}));
+      dispatchRedux(snackHandler({ snackOpen: false, snackMessage: 'Removed' }));
       // dispatch({
       //   type: 'SELECTED_CROPS_MODIFIER',
       //   data: {

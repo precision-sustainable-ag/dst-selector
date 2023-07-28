@@ -1,17 +1,17 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Button, Typography } from '@mui/material';
 import { LocalDrinkOutlined } from '@mui/icons-material';
+import { useSelector } from 'react-redux';
 import { ReferenceTooltip } from '../../../../shared/constants';
 import arrayEquals from '../../../../shared/functions';
 import { Context } from '../../../../store/Store';
 import '../../../../styles/soilConditions.scss';
 import RenderDrainageClasses from './RenderDrainageClasses';
 import MyCoverCropReset from '../../../../components/MyCoverCropReset/MyCoverCropReset';
-import { useSelector } from 'react-redux';
 
 const SoilDrainage = ({ setTilingCheck }) => {
   const { state, dispatch } = useContext(Context);
-  const selectedCropsRedux = useSelector((state) => state.cropData.selectedCrops);
+  const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
   const { soilData, soilDataOriginal } = state;
   const [handleConfirm, setHandleConfirm] = useState(false);
 

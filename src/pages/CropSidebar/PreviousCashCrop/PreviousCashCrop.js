@@ -10,27 +10,25 @@ import {
   Typography,
 } from '@mui/material';
 import moment from 'moment';
-import React, { Fragment, useContext, useState } from 'react';
+import React, { useState } from 'react';
 
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 // import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
-import { CustomStyles } from '../../../shared/constants';
-import { Context } from '../../../store/Store';
-import { updateDateRange } from '../../../reduxStore/cropSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import { CustomStyles } from '../../../shared/constants';
+import { updateDateRange } from '../../../reduxStore/cropSlice';
 
 const PreviousCashCrop = () => {
-  const { state, dispatch } = useContext(Context);
   const dispatchRedux = useDispatch();
-  const cashCropDataRedux = useSelector((state) => state.cropData.cashCropData);
+  const cashCropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cashCropData);
   const [cashCropVisible, setCashCropVisible] = useState(true); // TODO: buggy(?);
 
   const [cashCropOpen, setCashCropOpen] = useState(true);
 
   const handleDispatch = (start = '', end = '') => {
-    dispatchRedux(updateDateRange({startDate: start, endDate: end}));
+    dispatchRedux(updateDateRange({ startDate: start, endDate: end }));
     // dispatch({
     //   type: 'UPDATE_DATE_RANGE',
     //   data: {

@@ -36,15 +36,15 @@ const LocationComponent = ({
 }) => {
   const { state, dispatch } = useContext(Context);
   const dispatchRedux = useDispatch();
-  const selectedCropsRedux = useSelector((state) => state.cropData.selectedCrops);
+  const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
   const [selectedZone, setselectedZone] = useState();
   const [selectedToEditSite, setSelectedToEditSite] = useState({});
   const [showRestartPrompt, setShowRestartPrompt] = useState(false);
   // const [selectedRegion, setSelectedRegion] = useState({});
   const [handleConfirm, setHandleConfirm] = useState(false);
   const defaultMarkers = [[40.78489145, -74.80733626930342]];
-  const countyRedux = useSelector((state) => state.addressData.county);
-  const zoneRedux = useSelector((state) => state.addressData.zone);
+  const countyRedux = useSelector((stateRedux) => stateRedux.addressData.county);
+  const zoneRedux = useSelector((stateRedux) => stateRedux.addressData.zone);
 
   const getLatLng = useCallback(() => {
     if (state.state) {
@@ -67,7 +67,7 @@ const LocationComponent = ({
           zoneText: region.label,
           zone: region.shorthand,
           zoneId: region.id,
-        }
+        },
       ));
       // dispatch({
       //   type: 'UPDATE_ZONE',
@@ -154,7 +154,7 @@ const LocationComponent = ({
           address,
           markers: [[latitude, longitude]],
           zipCode,
-        }
+        },
       ));
 
       dispatch({
@@ -173,7 +173,7 @@ const LocationComponent = ({
             zipCode,
             county,
             addressVerified: true,
-          }
+          },
         ));
         // dispatch({
         //   type: 'CHANGE_ADDRESS_VIA_MAP',

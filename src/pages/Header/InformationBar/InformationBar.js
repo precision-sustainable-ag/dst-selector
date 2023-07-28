@@ -31,9 +31,9 @@ const expansionPanelBaseStyle = {
 
 const InformationBar = () => {
   const { state, dispatch } = useContext(Context);
-  const addressRedux = useSelector((state) => state.addressData.address);
-  const zoneRedux = useSelector((state) => state.addressData.zone);
-  const selectedGoalsRedux = useSelector((state) => state.goalsData.selectedGoals);
+  const addressRedux = useSelector((stateRedux) => stateRedux.addressData.address);
+  const zoneRedux = useSelector((stateRedux) => stateRedux.addressData.zone);
+  const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const [confirmationOpen, setConfirmationOpen] = useState(false);
   const [expansionPanelComponent, setExpansionPanelComponent] = useState({
     component: '',

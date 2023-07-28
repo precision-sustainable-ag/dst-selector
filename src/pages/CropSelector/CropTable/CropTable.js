@@ -19,6 +19,7 @@ import {
   Typography,
 } from '@mui/material';
 import { AddCircle, Sort } from '@mui/icons-material';
+import { useSelector } from 'react-redux';
 import {
   CustomStyles, sortCrops, sudoButtonStyle,
 } from '../../../shared/constants';
@@ -33,8 +34,8 @@ const CropTableComponent = ({
   cropData, activeCropData, showGrowthWindow,
 }) => {
   const { state, dispatch } = useContext(Context);
-  const selectedCropsRedux = useSelector((state) => state.cropData.selectedCrops);
-  const selectedGoalsRedux = useSelector((state) => state.goalsData.selectedGoals);
+  const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
+  const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalData, setModalData] = useState({});
   const [legendModal, setLegendModal] = useState(false);
