@@ -8,7 +8,8 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  Grid, Typography,
+  FormControl,
+  Grid, InputLabel, List, ListItem, MenuItem, Select, Typography,
 } from '@mui/material';
 // import SelectUSState from 'react-select-us-states';
 import React, {
@@ -32,12 +33,9 @@ const Landing = ({ height, title, bg }) => {
   const [containerHeight, setContainerHeight] = useState(height);
   const [allStates, setAllStates] = useState([]);
   const [selectedState, setSelectedState] = useState('');
-  const [selectedStateId, setSelectedStateId] = useState('');
-  const [selectedStateName, setSelectedStateName] = useState('');
-  const [selectedCouncilShorthand, setSelectedCouncilShorthand] = useState('');
-  const [selectedCouncilLabel, setSelectedCouncilLabel] = useState('');
   const [regions, setRegions] = useState('');
-  const [selectedRegion, setSelectedRegion] = useState(state.selectedRegion);
+  const [mapState, setMapState] = useState({});
+  const [selectedRegion, setSelectedRegion] = useState({});
   const mapRef = useRef(null);
   const defaultMarkers = [[40.78489145, -74.80733626930342]];
 
@@ -71,6 +69,12 @@ const Landing = ({ height, title, bg }) => {
   }
 
   useEffect(() => {
+    if (state.stateId) {
+      getAllRegions();
+    }
+  }, [state.stateId]);
+
+  useEffect(() => {
     dispatch({
       type: 'UPDATE_REGIONS',
       data: {
@@ -87,30 +91,18 @@ const Landing = ({ height, title, bg }) => {
     });
   }, [regions]);
 
+  // SelectedRegion needs to get replaced with mapState once the map is updated to using state verbage instead of region.
   useEffect(() => {
-    dispatch({
-      type: 'UPDATE_STATE',
-      data: {
-        state: selectedStateName,
-        stateId: selectedStateId,
-        councilShorthand: selectedCouncilShorthand,
-        councilLabel: selectedCouncilLabel,
-      },
-    });
-  }, [selectedState, selectedStateId, selectedCouncilLabel, selectedCouncilShorthand]);
-
-  useEffect(() => {
-    if (state.stateId) {
-      getAllRegions();
+    if (selectedRegion) {
+      const st = allStates.filter((s) => s.label === selectedRegion.properties.STATE_NAME);
+      if (st.length > 0) {
+        setSelectedState(st[0]);
+      }
     }
-  }, [state.stateId]);
+  }, [selectedRegion, mapState]);
 
   const stateChange = (selState) => {
     setSelectedState(selState);
-    setSelectedStateName(selState.label);
-    setSelectedStateId(selState.id);
-    setSelectedCouncilShorthand(selState.council.shorthand);
-    setSelectedCouncilLabel(selState.council.label);
     dispatch({
       type: 'UPDATE_STATE',
       data: {
@@ -120,14 +112,22 @@ const Landing = ({ height, title, bg }) => {
         councilLabel: selState.council.label,
       },
     });
-    dispatch({
-      type: 'UPDATE_REGION',
-      data: {
-        regionId: selectedRegion.id ?? '',
-        regionLabel: selectedRegion.label ?? '',
-        regionShorthand: selectedRegion.shorthand ?? '',
-      },
-    });
+    // This was targeting the map object which didnt have a label or shorthand property.  Should be be getting done here?
+
+    // dispatch({
+    //   type: 'UPDATE_REGION',
+    //   data: {
+    //     regionId: selectedRegion.id ?? '',
+    //     regionLabel: selectedRegion.label ?? '',
+    //     regionShorthand: selectedRegion.shorthand ?? '',
+    //   },
+    // });
+  };
+
+  const handleStateChange = (e) => {
+    setSelectedRegion('');
+    const selState = allStates.filter((s) => s.shorthand === e.target.value);
+    stateChange(selState[0]);
   };
 
   useEffect(() => {
@@ -143,10 +143,9 @@ const Landing = ({ height, title, bg }) => {
       return productionCouncils.includes(selectedCouncil);
     };
 
-    if (Object.keys(selectedRegion).length > 0) {
-      const selState = allStates.filter((s) => s.label === selectedRegion.properties.STATE_NAME);
-      if (selState.length > 0 && verifyCouncil(selState[0]?.council.shorthand)) {
-        stateChange(selState[0]);
+    if (selectedState.length > 0) {
+      if (verifyCouncil(selectedState.council.shorthand)) {
+        stateChange(selectedState);
       } else {
         dispatch({
           type: 'UPDATE_STATE',
@@ -164,7 +163,54 @@ const Landing = ({ height, title, bg }) => {
         );
       }
     }
-  }, [selectedRegion]);
+  }, [selectedState]);
+
+  const stateSelect = () => (
+    <List component="div" disablePadding>
+      <ListItem component="div">
+        <FormControl
+          variant="filled"
+          style={{ width: '100%' }}
+          sx={{ minWidth: 120 }}
+        >
+          <InputLabel>State</InputLabel>
+          <Select
+            variant="filled"
+            labelId="plant-hardiness-zone-dropdown-select"
+            id="plant-hardiness-zone-dropdown-select"
+            style={{
+              width: '100%',
+              textAlign: 'left',
+            }}
+            onChange={(e) => handleStateChange(e)}
+            value={selectedState.shorthand || ''}
+          >
+
+            {allStates.length > 0 && allStates.map((st, i) => (
+              <MenuItem value={st.shorthand} key={`Region${st}${i}`}>
+                {st.label?.toUpperCase()}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </ListItem>
+    </List>
+  );
+
+  useEffect(() => {
+    if (selectedState) {
+      stateSelect();
+      dispatch({
+        type: 'UPDATE_STATE',
+        data: {
+          state: selectedState.label,
+          stateId: selectedState.id,
+          councilShorthand: selectedState.council.shorthand,
+          councilLabel: selectedState.council.label,
+        },
+      });
+    }
+  }, [selectedState]);
 
   useEffect(() => {
     if (state.consent) {
@@ -231,7 +277,6 @@ const Landing = ({ height, title, bg }) => {
 
     <div
       id="landingWrapper"
-      // className="d-flex flex-column"
       style={{
         minHeight: containerHeight,
         background: `url(${bg})`,
@@ -241,7 +286,6 @@ const Landing = ({ height, title, bg }) => {
 
       <ConsentModal consent={state.consent} />
 
-      {/* <Grid container direction="row"> */}
       <Grid container>
 
         <Grid
@@ -249,8 +293,6 @@ const Landing = ({ height, title, bg }) => {
           item
           lg={6}
           xs={12}
-          // xs={6}
-          // spacing={2}
           container
           justifyContent="center"
           alignItems="center"
@@ -288,6 +330,7 @@ const Landing = ({ height, title, bg }) => {
               and seeding rate calculator and an economics calculator. Our ultimate goal is to provide
               a suite of interconnected tools that function together seamlessly.
             </Typography>
+            {stateSelect()}
             <Typography
               variant="body1"
               style={{ fontWeight: 'bold', paddingBottom: '1em' }}
@@ -335,7 +378,7 @@ const Landing = ({ height, title, bg }) => {
             <Typography variant="h5" gutterBottom align="left" className="font-weight-bold">
               Select your State
             </Typography>
-            {selectedRegion.properties && (
+            {selectedState && (
               <Typography
                 variant="h6"
                 gutterBottom
@@ -343,19 +386,22 @@ const Landing = ({ height, title, bg }) => {
                 className="font-weight-bold"
                 style={{ color: 'blue', marginLeft: '1rem' }}
               >
-                {selectedRegion.properties.STATE_NAME}
+                {selectedState.label}
                 {' '}
                 (
-                  { selectedRegion.properties.STATE_ABBR }
+                  { selectedState.shorthand }
                 )
               </Typography>
             )}
           </Grid>
           <Grid item>
             <div style={{ position: 'relative', width: '100%', paddingRight: '10%' }}>
+              {/* selectedRegion and selectorFunc should be deprecated and selectedState and setMapState should be used in their place */}
               <RegionSelectorMap
                 selectorFunc={setSelectedRegion}
+                selectorFunction={setMapState}
                 selectedRegion={selectedRegion}
+                selectedState={selectedState}
                 initWidth="100%"
                 initHeight="350px"
                 initLon={-98}
