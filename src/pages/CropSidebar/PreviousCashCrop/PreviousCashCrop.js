@@ -39,6 +39,16 @@ const PreviousCashCrop = () => {
     //     endDate: end,
     //   },
     // });
+    console.log('start', start);
+    console.log('end', end);
+    dispatch({
+      type: 'UPDATE_DATE_RANGE',
+      data: {
+        // TODO: use Date() in future?
+        startDate: start,
+        endDate: end,
+      },
+    });
   };
 
   const toggleCashCrop = () => {
