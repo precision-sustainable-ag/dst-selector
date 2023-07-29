@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux';
 
 const PlantHardinessZone = ({ updateZone }) => {
   const { state } = useContext(Context);
-  const zoneRedux = useSelector((state) => state.addressData.zone);
+  const zoneRedux = useSelector((stateRedux) => stateRedux.addressData.zone);
 
   const handleRegionChange = (event) => {
     // eslint-disable-next-line eqeqeq
