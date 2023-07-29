@@ -42,8 +42,8 @@ const LocationComponent = ({
   // const [selectedRegion, setSelectedRegion] = useState({});
   const [handleConfirm, setHandleConfirm] = useState(false);
   const defaultMarkers = [[40.78489145, -74.80733626930342]];
-  const countyRedux = useSelector((state) => state.addressData.county);
-  const zoneRedux = useSelector((state) => state.addressData.zone);
+  const countyRedux = useSelector((stateRedux) => stateRedux.addressData.county);
+  const zoneRedux = useSelector((stateRedux) => stateRedux.addressData.zone);
 
   const getLatLng = useCallback(() => {
     if (state.state) {

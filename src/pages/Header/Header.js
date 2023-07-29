@@ -16,16 +16,16 @@ import '../../styles/header.scss';
 import HeaderLogoInfo from './HeaderLogoInfo/HeaderLogoInfo';
 import InformationBar from './InformationBar/InformationBar';
 import ToggleOptions from './ToggleOptions/ToggleOptions';
-import { lastZipCode, updateZipCode, updateZone } from '../../reduxStore/addressSlice';
+import { lastZipCode, updateLastZone, updateZipCode, updateZone } from '../../reduxStore/addressSlice';
 
 const Header = () => {
   const { state, dispatch } = useContext(Context);
   const dispatchRedux = useDispatch();
-  const markersRedux = useSelector((state) => state.addressData.markers);
-  const zipCodeRedux = useSelector((state) => state.addressData.zipCode);
-  const lastZipCodeRedux = useSelector((state) => state.addressData.lastZipCode);
-  const zoneRedux = useSelector((state) => state.addressData.zone);
-  const zoneIdRedux = useSelector((state) => state.addressData.zoneId);
+  const markersRedux = useSelector((stateRedux) => stateRedux.addressData.markers);
+  const zipCodeRedux = useSelector((stateRedux) => stateRedux.addressData.zipCode);
+  const lastZipCodeRedux = useSelector((stateRedux) => stateRedux.addressData.lastZipCode);
+  const zoneRedux = useSelector((stateRedux) => stateRedux.addressData.zone);
+  const zoneIdRedux = useSelector((stateRedux) => stateRedux.addressData.zoneId);
   const [isRoot, setIsRoot] = useState(false);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const isActive = {};
@@ -74,7 +74,7 @@ const Header = () => {
                   {
                     zoneText: `Zone ${zone}`,
                     zone,
-                    zoneId: regionId,
+                    zoneId: regionId
                   }
                 ));
                 // dispatch({
@@ -90,15 +90,15 @@ const Header = () => {
           }
         });
     }
-  }, [zipCodeRedux, lastZipCodeRedux, dispatch, enqueueSnackbar, closeSnackbar]);
+  }, [zipCodeRedux, lastZipCodeRedux, dispatch, dispatchRedux, enqueueSnackbar, closeSnackbar]);
 
   useEffect(() => {
-    const { markers } = state;
+    // const { markers } = state;
 
     // update address on marker change
     // ref forecastComponent
-    const lat = markers[0][0];
-    const lon = markers[0][1];
+    const lat = markersRedux[0][0];
+    const lon = markersRedux[0][1];
 
     // since this updates with state; ideally, weather and soil info should be updated here
     // get current lat long and get county, state and city
@@ -299,7 +299,7 @@ const Header = () => {
   }
 
   async function getDictData() {
-    if (zoneIdRedux === null) {
+    if (!zoneIdRedux || !state.regionId) {
       return;
     }
     const query = `${encodeURIComponent('regions')}=${encodeURIComponent(zoneIdRedux)}`;
@@ -326,11 +326,13 @@ const Header = () => {
     // if (state.zone === state.lastZone) {
     //   return;
     // }
+    
     if (state.regionId && state.stateId) {
       getDictData();
       getCropData([]);
     }
-    state.lastZone = zoneRedux; // TODO
+    // state.lastZone = state.zone; // TODO: update through dispatch
+    dispatchRedux(updateLastZone(zoneRedux));
   }, [state.stateId, zoneRedux, state.regionId]);
 
   return (

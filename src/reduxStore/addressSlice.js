@@ -5,7 +5,7 @@ const initialState = {
     fullAddress: '',
     addressChangedViaMap: false,
     zipCode: 0,
-    zone: 'hey', //not initialised earlier
+    zone: '', //not initialised earlier
     zoneText: '', //not initialised earlier
     zoneId: null,
     lastZipCode: 0,
@@ -59,21 +59,14 @@ export const updateZone = ({zoneText, zone, zoneId}) => {
     };
 };
 
-export const updateZone = ({ zoneText, zone, zoneId }) => ({
-  type: 'UPDATE_ZONE',
-  payload: {
-    zoneText,
-    zone,
-    zoneId,
-  },
-});
-
-export const updateZipCode = (value) => ({
-  type: 'UPDATE_ZIP_CODE',
-  payload: {
-    value,
-  },
-});
+export const updateZipCode = (value) => {
+    return {
+        type: 'UPDATE_ZIP_CODE',
+        payload: {
+            value,
+        },
+    };
+};
 
 export const lastZipCode = (value) => ({
   type: 'LAST_ZIP_CODE',
@@ -92,13 +85,11 @@ export const updateLastZone = (value) => ({
 const addressReducer = (state = initialState, action) => {
     switch (action.type) {
         case 'UPDATE_LOCATION':
-            console.log("UPDATE_LOCATION");
             return {
               ...state,
-            //   lastZipCode: state.zipCode, 
               address: action.payload.address,
-              markers: action.payload.markers,
-              zipCode: action.payload.zipCode ,
+              markers: [[action.payload.latitude, action.payload.longitude]],
+              zipCode: action.payload.zipCode  
             };
 
         case 'CHANGE_ADDRESS':
@@ -155,43 +146,5 @@ const addressReducer = (state = initialState, action) => {
             return {...state};
     }
 }
-
-    case 'UPDATE_MARKER':
-      return {
-        ...state,
-        markers: action.payload.value,
-      };
-
-    case 'UPDATE_ZONE':
-      console.log('UPDATE_ZONE', action.payload);
-      return {
-        ...state,
-        zoneText: action.payload.zoneText,
-        zone: action.payload.zone,
-        zoneId: action.payload.zoneId,
-      };
-
-    case 'UPDATE_ZIP_CODE':
-      return {
-        ...state,
-        zipCode: action.payload.zipCode,
-      };
-
-    case 'LAST_ZIP_CODE':
-      return {
-        ...state,
-        lastZipCode: action.payload.value,
-      };
-
-    case 'UPDATE_LAST_ZONE':
-      return {
-        ...state,
-        lastZone: action.payload.value,
-      };
-
-    default:
-      return { ...state };
-  }
-};
 
 export default addressReducer;
