@@ -17,7 +17,7 @@ import React, {
   useState,
   useRef,
 } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 import ReactGA from 'react-ga';
 import { RegionSelectorMap } from '@psa/dst.ui.region-selector-map';
@@ -26,11 +26,13 @@ import { Context } from '../../store/Store';
 import '../../styles/landing.scss';
 import ConsentModal from '../CoverCropExplorer/ConsentModal/ConsentModal';
 import { updateZone } from '../../reduxStore/addressSlice';
+import { updateRegion, updateRegions, updateStateInfo } from '../../reduxStore/mapSlice';
 
 const Landing = ({ height, title, bg }) => {
   const { state, dispatch } = useContext(Context);
   const dispatchRedux = useDispatch();
   const history = useHistory();
+  const stateIdRedux = useSelector((state) => state.mapData.stateId);
   const [handleConfirm, setHandleConfirm] = useState(false);
   const [containerHeight, setContainerHeight] = useState(height);
   const [allStates, setAllStates] = useState([]);
@@ -58,7 +60,7 @@ const Landing = ({ height, title, bg }) => {
   }, []);
 
   async function getAllRegions() {
-    await fetch(`https://api.covercrop-selector.org/v1/states/${state.stateId}/regions`)
+    await fetch(`https://api.covercrop-selector.org/v1/states/${stateIdRedux}/regions`)
       .then((res) => res.json())
       .then((data) => {
         if (data.data.Counties) {
@@ -74,12 +76,14 @@ const Landing = ({ height, title, bg }) => {
   }
 
   useEffect(() => {
-    dispatch({
-      type: 'UPDATE_REGIONS',
-      data: {
-        regions,
-      },
-    });
+    console.log("update region in useEffect", regions);
+    dispatchRedux(updateRegions(regions));
+    // dispatch({
+    //   type: 'UPDATE_REGIONS',
+    //   data: {
+    //     regions,
+    //   },
+    // });
     dispatchRedux(updateZone(
       {
         zoneText: regions[0]?.label,
@@ -98,22 +102,30 @@ const Landing = ({ height, title, bg }) => {
   }, [regions]);
 
   useEffect(() => {
-    dispatch({
-      type: 'UPDATE_STATE',
-      data: {
-        state: selectedStateName,
+    dispatchRedux(updateStateInfo(
+      {
+        stateName: selectedStateName,
         stateId: selectedStateId,
         councilShorthand: selectedCouncilShorthand,
         councilLabel: selectedCouncilLabel,
-      },
-    });
+      }
+    ))
+    // dispatch({
+    //   type: 'UPDATE_STATE',
+    //   data: {
+    //     state: selectedStateName,
+    //     stateId: selectedStateId,
+    //     councilShorthand: selectedCouncilShorthand,
+    //     councilLabel: selectedCouncilLabel,
+    //   },
+    // });
   }, [selectedState, selectedStateId, selectedCouncilLabel, selectedCouncilShorthand]);
 
   useEffect(() => {
-    if (state.stateId) {
+    if (stateIdRedux) {
       getAllRegions();
     }
-  }, [state.stateId]);
+  }, [stateIdRedux]);
 
   const stateChange = (selState) => {
     setSelectedState(selState);
@@ -121,23 +133,38 @@ const Landing = ({ height, title, bg }) => {
     setSelectedStateId(selState.id);
     setSelectedCouncilShorthand(selState.council.shorthand);
     setSelectedCouncilLabel(selState.council.label);
-    dispatch({
-      type: 'UPDATE_STATE',
-      data: {
-        state: selState,
+    dispatchRedux(updateStateInfo(
+      {
+        stateName: selState,
         stateId: selState.id,
         councilShorthand: selState.council.shorthand,
         councilLabel: selState.council.label,
-      },
-    });
-    dispatch({
-      type: 'UPDATE_REGION',
-      data: {
+      }
+    ))
+    // dispatch({
+    //   type: 'UPDATE_STATE',
+    //   data: {
+    //     state: selState,
+    //     stateId: selState.id,
+    //     councilShorthand: selState.council.shorthand,
+    //     councilLabel: selState.council.label,
+    //   },
+    // });
+    dispatchRedux(updateRegion(
+      {
         regionId: selectedRegion.id ?? '',
         regionLabel: selectedRegion.label ?? '',
         regionShorthand: selectedRegion.shorthand ?? '',
-      },
-    });
+      }
+    ))
+    // dispatch({
+    //   type: 'UPDATE_REGION',
+    //   data: {
+    //     regionId: selectedRegion.id ?? '',
+    //     regionLabel: selectedRegion.label ?? '',
+    //     regionShorthand: selectedRegion.shorthand ?? '',
+    //   },
+    // });
   };
 
   useEffect(() => {
@@ -158,15 +185,23 @@ const Landing = ({ height, title, bg }) => {
       if (selState.length > 0 && verifyCouncil(selState[0]?.council.shorthand)) {
         stateChange(selState[0]);
       } else {
-        dispatch({
-          type: 'UPDATE_STATE',
-          data: {
-            state: '',
+        dispatchRedux(updateStateInfo(
+          {
+            stateName: '',
             stateId: '',
             councilShorthand: '',
             councilLabel: '',
-          },
-        });
+          }
+        ));
+        // dispatch({
+        //   type: 'UPDATE_STATE',
+        //   data: {
+        //     state: '',
+        //     stateId: '',
+        //     councilShorthand: '',
+        //     councilLabel: '',
+        //   },
+        // });
         // eslint-disable-next-line no-alert
         alert(
           // eslint-disable-next-line max-len

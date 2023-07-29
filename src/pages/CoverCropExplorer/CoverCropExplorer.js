@@ -28,7 +28,9 @@ const CoverCropExplorer = () => {
   const sfilters = state[section];
   const [updatedActiveCropData, setUpdatedActiveCropData] = useState([]);
   // const { activeCropData } = state;
+
   const activeCropDataRedux = useSelector((stateRedux) => stateRedux.cropData.activeCropData);
+  const stateNameRedux = useSelector((stateRedux) => stateRedux.mapData.stateName);
   const [handleConfirm, setHandleConfirm] = useState(false);
   const defaultMarkers = [[40.78489145, -74.80733626930342]];
 
@@ -47,10 +49,10 @@ const CoverCropExplorer = () => {
   }, [state.consent]);
 
   useEffect(() => {
-    if (state.state === '') {
+    if (stateNameRedux === '') {
       history.push('/');
     }
-  }, [state.state]);
+  }, [stateNameRedux]);
 
   useEffect(() => {
     if (state?.myCoverCropListLocation !== 'explorer' && selectedCropsRedux.length > 0) {

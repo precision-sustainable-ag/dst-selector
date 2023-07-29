@@ -28,7 +28,7 @@ import '../../../styles/cropCalendarViewComponent.scss';
 import '../../../styles/cropTable.scss';
 import CropDataRender from './CropDataRender';
 import CropDetailsModal from '../../../components/CropDetailsModal/CropDetailsModal';
-import Legend from '../../../components/Legend/Legend';
+import Legend from '../../../components/Legend/Legend'; 
 
 const CropTableComponent = ({
   cropData, activeCropData, showGrowthWindow,
@@ -135,7 +135,7 @@ const CropTableComponent = ({
                 blank
               </TableCell>
 
-              {state.selectedGoals.length > 0 && (
+              {selectedGoalsRedux.length > 0 && (
                 <TableCell
                   colSpan={selectedGoalsRedux.length}
                   style={{

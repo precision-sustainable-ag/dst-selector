@@ -22,6 +22,7 @@ const GoalsSelector = () => {
   const { state } = useContext(Context);
   const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
   const allGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.allGoals);
+  const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
   const [allGoals, setAllGoals] = useState([]);
   const [handleConfirm, setHandleConfirm] = useState(false);
 
@@ -33,18 +34,31 @@ const GoalsSelector = () => {
   }, [selectedCropsRedux, state.myCoverCropListLocation]);
 
   async function getAllGoals() {
-    const query = `${encodeURIComponent('regions')}=${encodeURIComponent(state.regionId)}`;
-
-    await fetch(`https://api.covercrop-selector.org/v1/states/${state.stateId}/goals?${query}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setAllGoals(data.data);
-      })
-      .catch((err) => {
-        // eslint-disable-next-line no-console
-        console.log(err.message);
-      });
+    // Check if regionIdRedux is valid
+    if (!regionIdRedux) {
+      // Handle the case when regionIdRedux is null, undefined, or an empty string
+      console.error("Region ID is not valid. Unable to fetch goals data.");
+      return;
+    }
+  
+    const query = `${encodeURIComponent('regions')}=${encodeURIComponent(regionIdRedux)}`;
+  
+    try {
+      const response = await fetch(`https://api.covercrop-selector.org/v1/states/${stateIdRedux}/goals?${query}`);
+      if (!response.ok) {
+        // Handle the case when the API call is not successful
+        console.error("Failed to fetch goals data from the API.");
+        return;
+      }
+  
+      const data = await response.json();
+      setAllGoals(data.data);
+    } catch (error) {
+      // Handle any other errors that may occur during the API call
+      console.error("Error while fetching goals data:", error.message);
+    }
   }
+  
 
   useEffect(() => {
     getAllGoals();

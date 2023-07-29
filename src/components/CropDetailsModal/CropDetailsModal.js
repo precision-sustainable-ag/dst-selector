@@ -5,6 +5,7 @@
 import {
   Backdrop, Button, Fade, Modal, Box,
 } from '@mui/material';
+import { useSelector } from 'react-redux';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { Close, Print } from '@mui/icons-material';
 import React, { useEffect, useContext, useState } from 'react';
@@ -16,13 +17,15 @@ import { Context } from '../../store/Store';
 const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
   const { state, dispatch } = useContext(Context);
   const [dataDone, setDataDone] = useState(false);
+  const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
+  const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
 
   async function getCropData() {
     if (Object.keys(crop).length === 0) {
       return;
     }
-    const query = `${encodeURIComponent('regions')}=${encodeURIComponent(state.regionId)}`;
-    await fetch(`https://api.covercrop-selector.org/v1/states/${state.stateId}/crops/${crop?.id}?${query}`)
+    const query = `${encodeURIComponent('regions')}=${encodeURIComponent(regionIdRedux)}`;
+    await fetch(`https://api.covercrop-selector.org/v1/states/${stateIdRedux}/crops/${crop?.id}?${query}`)
       .then((res) => res.json())
       .then((data) => {
         dispatch({

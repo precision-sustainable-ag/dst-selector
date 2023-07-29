@@ -35,6 +35,7 @@ import Legend from '../../components/Legend/Legend';
 import { updateZone as updateZoneRedux } from '../../reduxStore/addressSlice';
 import { updateDateRange } from '../../reduxStore/cropSlice';
 import { clearFilters } from '../../reduxStore/filterSlice';
+import { updateRegion } from '../../reduxStore/mapSlice';
 
 const CropSidebar = ({
   comparisonView,
@@ -76,11 +77,13 @@ const CropSidebar = ({
     { className: 'sideBar', label: '0 = Least, 5 = Most' },
   ];
 
+
   const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
+  const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
 
   async function getAllFilters() {
-    if (state.regionId) {
-      const query = `${encodeURIComponent('regions')}=${encodeURIComponent(state.regionId)}`;
+    if (regionIdRedux) {
+      const query = `${encodeURIComponent('regions')}=${encodeURIComponent(regionIdRedux)}`;
       await fetch(`https://api.covercrop-selector.org/v1/states/${state.stateId}/filters?${query}`)
         .then((res) => res.json())
         .then((data) => {
@@ -269,8 +272,8 @@ const CropSidebar = ({
   }
 
   async function getDictData() {
-    if (state.regionId) {
-      const query = `${encodeURIComponent('regions')}=${encodeURIComponent(state.regionId)}`;
+    if (regionIdRedux) {
+      const query = `${encodeURIComponent('regions')}=${encodeURIComponent(regionIdRedux)}`;
       await fetch(`https://api.covercrop-selector.org/v1/states/${state.stateId}/dictionary?${query}`)
         .then((res) => res.json())
         .then((data) => {
@@ -285,12 +288,12 @@ const CropSidebar = ({
 
   useEffect(() => {
     setLoading(true);
-    if (sidebarCategoriesData.length > 0 && state.regionId) {
+    if (sidebarCategoriesData.length > 0 && regionIdRedux) {
       getDictData();
     }
   }, [
     sidebarCategoriesData,
-    state.regionId,
+    regionIdRedux,
   ]);
 
   useEffect(() => {
@@ -381,7 +384,7 @@ const CropSidebar = ({
 
   useEffect(() => {
     getAllFilters();
-  }, [state.regionId]);
+  }, [regionIdRedux]);
 
   useEffect(() => {
     filtersList();
@@ -422,14 +425,21 @@ const CropSidebar = ({
       //     zoneId: region.id,
       //   },
       // });
-      dispatch({
-        type: 'UPDATE_REGION',
-        data: {
+      dispatchRedux(updateRegion(
+        {
           regionId: region.id ?? '',
           regionLabel: region.label ?? '',
-          regionShorthand: region.shorthand ?? '',
-        },
-      });
+          regionShorthand: region.shorthand ?? ''
+        }
+      ));
+      // dispatch({
+      //   type: 'UPDATE_REGION',
+      //   data: {
+      //     regionId: region.id ?? '',
+      //     regionLabel: region.label ?? '',
+      //     regionShorthand: region.shorthand ?? '',
+      //   },
+      // });
     }
   };
 

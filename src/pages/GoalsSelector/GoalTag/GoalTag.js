@@ -5,7 +5,7 @@
 
 import { Avatar, Chip, Tooltip } from '@mui/material';
 import React, { useContext, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Context } from '../../../store/Store';
 import { addSelectedGoals, updateSelectedGoal } from '../../../reduxStore/goalSlice';
 // TODO: Whats up with goalt?? we need to look into fixing this.
@@ -14,19 +14,20 @@ const GoalTag = ({
 }) => {
   const { state } = useContext(Context);
   const dispatchRedux = useDispatch();
+  const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const key = id;
   const goalTitle = goaltTitle;
 
   useEffect(() => {
-    if (state.selectedGoals.length > 0) {
-      state.selectedGoals.forEach((val) => {
+    if (selectedGoalsRedux.length > 0) {
+      selectedGoalsRedux.forEach((val) => {
         document.getElementsByClassName(val.toUpperCase())[0].classList.add('active');
       });
     }
-  }, [state.selectedGoals]);
+  }, [selectedGoalsRedux]);
 
   const updateSelectedGoals = (item, k) => {
-    const goals = [...state.selectedGoals];
+    const goals = [...selectedGoalsRedux];
 
     if (goals.indexOf(item.label) === -1) {
       // does not exist, dispatch to state and add to local state
@@ -70,13 +71,13 @@ const GoalTag = ({
       <span>
         <Chip
           disabled={
-          state.selectedGoals.length >= 3
-            ? !state.selectedGoals.includes(goalTitle)
+          selectedGoalsRedux.length >= 3
+            ? !selectedGoalsRedux.includes(goalTitle)
             : false
         }
           avatar={
-          state.selectedGoals.length !== 0 && state.selectedGoals.includes(goalTitle) ? (
-            <Avatar id={`avatar${key}`}>{state.selectedGoals.indexOf(goalTitle) + 1}</Avatar>
+          selectedGoalsRedux.length !== 0 && selectedGoalsRedux.includes(goalTitle) ? (
+            <Avatar id={`avatar${key}`}>{selectedGoalsRedux.indexOf(goalTitle) + 1}</Avatar>
           ) : (
             <Avatar className="d-none" />
           )

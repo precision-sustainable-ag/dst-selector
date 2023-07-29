@@ -27,6 +27,7 @@ import { Context } from '../../store/Store';
 import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset';
 import PlantHardinessZone from '../CropSidebar/PlantHardinessZone/PlantHardinessZone';
 import { changeAddressViaMap, updateLocation, updateZone as updateZoneRedux } from '../../reduxStore/addressSlice';
+import { updateRegion } from '../../reduxStore/mapSlice';
 
 // eslint-disable-next-line import/no-webpack-loader-syntax, import/no-unresolved
 mapboxgl.workerClass = require('worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker').default;
@@ -37,6 +38,8 @@ const LocationComponent = ({
   const { state, dispatch } = useContext(Context);
   const dispatchRedux = useDispatch();
   const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
+  const mapStateRedux = useSelector((stateRedux) => stateRedux.mapData);
+  const regionsRedux = useSelector((stateRedux) => stateRedux.mapData.regions);
   const [selectedZone, setselectedZone] = useState();
   const [selectedToEditSite, setSelectedToEditSite] = useState({});
   const [showRestartPrompt, setShowRestartPrompt] = useState(false);
@@ -45,13 +48,14 @@ const LocationComponent = ({
   const defaultMarkers = [[40.78489145, -74.80733626930342]];
   const countyRedux = useSelector((stateRedux) => stateRedux.addressData.county);
   const zoneRedux = useSelector((stateRedux) => stateRedux.addressData.zone);
+  const stateNameRedux = useSelector((stateRedux) => stateRedux.mapData.stateName);
 
   const getLatLng = useCallback(() => {
-    if (state.state) {
-      return [statesLatLongDict[state.state][0], statesLatLongDict[state.state][1]];
+    if (stateNameRedux) {
+      return [statesLatLongDict[stateNameRedux][0], statesLatLongDict[stateNameRedux][1]];
     }
     return [47, -122];
-  }, [state]);
+  }, [mapStateRedux]);
 
   useEffect(() => {
     if (state.myCoverCropListLocation !== 'selector' && selectedCropsRedux.length > 0) {
@@ -77,20 +81,27 @@ const LocationComponent = ({
       //     zoneId: region.id,
       //   },
       // });
-      dispatch({
-        type: 'UPDATE_REGION',
-        data: {
+      dispatchRedux(updateRegion(
+        {
           regionId: region.id ?? '',
           regionLabel: region.label ?? '',
           regionShorthand: region.shorthand ?? '',
-        },
-      });
+        }
+      ))
+      // dispatch({
+      //   type: 'UPDATE_REGION',
+      //   data: {
+      //     regionId: region.id ?? '',
+      //     regionLabel: region.label ?? '',
+      //     regionShorthand: region.shorthand ?? '',
+      //   },
+      // });
     }
   };
 
   useEffect(() => {
-    updateZone(state.regions[0]);
-  }, [state.regions]);
+    updateZone(regionsRedux[0]);
+  }, [regionsRedux]);
 
   const handleConfirmationChoice = (choice) => {
     if (choice !== null) {
@@ -118,7 +129,7 @@ const LocationComponent = ({
 
   const handleMapChange = () => {
     // eslint-disable-next-line eqeqeq
-    const regionInfo = state.regions.filter((region) => region.shorthand == selectedZone);
+    const regionInfo = regionsRedux?.filter((region) => region.shorthand == selectedZone);
     updateZone(regionInfo[0]);
   };
 

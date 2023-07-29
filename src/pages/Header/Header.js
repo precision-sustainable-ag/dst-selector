@@ -28,6 +28,9 @@ const Header = () => {
   const lastZipCodeRedux = useSelector((stateRedux) => stateRedux.addressData.lastZipCode);
   const zoneRedux = useSelector((stateRedux) => stateRedux.addressData.zone);
   const zoneIdRedux = useSelector((stateRedux) => stateRedux.addressData.zoneId);
+  const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
+  const regionsRedux = useSelector((stateRedux) => stateRedux.mapData.regions);
+  const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
   const [isRoot, setIsRoot] = useState(false);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const isActive = {};
@@ -64,8 +67,8 @@ const Header = () => {
                 zone = zone.slice(0, -1);
               }
 
-              if (state.regions?.length > 0) {
-                state.regions.forEach((region) => {
+              if (regionsRedux?.length > 0) {
+                regionsRedux.forEach((region) => {
                   if (region.shorthand === zone) {
                     regionId = region.id;
                   }
@@ -331,12 +334,12 @@ const Header = () => {
     // if (state.zone === state.lastZone) {
     //   return;
     // }
-    if (state.regionId && state.stateId) {
+    if (regionIdRedux && stateIdRedux) {
       getDictData();
       getCropData([]);
     }
     state.lastZone = zoneRedux; // TODO
-  }, [state.stateId, zoneRedux, state.regionId]);
+  }, [stateIdRedux, zoneRedux, regionIdRedux]);
 
   return (
     <header className="d-print-none">

@@ -10,6 +10,7 @@ import '../../../styles/header.scss';
 const ToggleOptions = ({ isRoot }) => {
   const { state, dispatch } = useContext(Context);
   const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
+  const stateNameRedux = useSelector((stateRedux) => stateRedux.mapData.stateName);
   const history = useHistory();
 
   const setMyCoverCropActivationFlag = () => {
@@ -51,13 +52,13 @@ const ToggleOptions = ({ isRoot }) => {
       <Button size="large" onClick={() => clearMyCoverCropList(false)} component={NavLink} exact to="/" activeClassName="active">
         SPECIES SELECTOR TOOL
       </Button>
-      <Tooltip title={state.state === '' ? 'You must select a state before using the Cover Crop Explorer' : ''}>
+      <Tooltip title={stateNameRedux === '' ? 'You must select a state before using the Cover Crop Explorer' : ''}>
         <span>
           <Button
             className={(isRoot && state.speciesSelectorActivationFlag) ? 'active' : ''}
             onClick={() => clearMyCoverCropList(true)}
             size="large"
-            disabled={state.state === ''}
+            disabled={stateNameRedux === ''}
           >
             COVER CROP EXPLORER
           </Button>

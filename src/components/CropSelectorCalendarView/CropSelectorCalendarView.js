@@ -10,6 +10,7 @@ import CropPaintGrowthChart from './CropPaintGrowthChart/CropPaintGrowthChart';
 const CropSelectorCalendarView = ({ from = 'calendar', data = [] }) => {
   const { state } = useContext(Context);
   const cashCropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cashCropData);
+  const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
 
   const months = [
     'January',
@@ -65,7 +66,7 @@ const CropSelectorCalendarView = ({ from = 'calendar', data = [] }) => {
       <table>
         <tbody>
           <tr>
-            {state.selectedGoals.length === 0
+            {selectedGoalsRedux.length === 0
               ? allMonths.map((month, index) => <td key={index}>{month}</td>)
               : allMonths.map((month, index) => (month === 'Jan' || month === 'Dec' ? (
                 <td key={index} style={index === 11 ? { textAlign: 'right' } : {}}>

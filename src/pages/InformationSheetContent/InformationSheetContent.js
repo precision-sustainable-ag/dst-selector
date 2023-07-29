@@ -16,15 +16,17 @@ import { Context } from '../../store/Store';
 import CoverCropInformation from './CoverCropInformation/CoverCropInformation';
 import InformationSheetReferences from './InformationSheetReferences/InformationSheetReferences';
 import { getRating } from '../../shared/constants';
+import { useSelector } from 'react-redux';
 
 const InformationSheetContent = ({ crop, modalData }) => {
   const { state } = useContext(Context);
   const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
+  const regionIdRedux = useSelector((state) => state.mapData.regionId);
   const { zone } = state[section];
   const [currentSources, setCurrentSources] = useState([{}]);
   const [allThumbs, setAllThumbs] = useState([]);
   const [dataDone, setDataDone] = useState(false);
-  const query = `${encodeURIComponent('regions')}=${encodeURIComponent(state.regionId)}`;
+  const query = `${encodeURIComponent('regions')}=${encodeURIComponent(regionIdRedux)}`;
 
   async function getSourceData() {
     await fetch(`https://api.covercrop-selector.org/v1/crops/${crop?.id}/resources?${query}`)
