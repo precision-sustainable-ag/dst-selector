@@ -7,6 +7,7 @@
 */
 
 import React, { Suspense } from 'react';
+import { Provider } from 'react-redux';
 import ReactDOM from 'react-dom';
 import './index.css';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
@@ -35,8 +36,10 @@ import InformationSheetDictionary from './pages/Help/InformationSheetDictionary/
 import License from './pages/License/License';
 import MyCoverCropListWrapper from './pages/MyCoverCropList/MyCoverCropListWrapper/MyCoverCropListWrapper';
 import Help from './pages/Help/Help';
+import configureStore from './reduxStore/store';
 
 const withFooter = (WrappedComponent) => () => [<WrappedComponent key="1" />, <Footer key="2" />];
+const store = configureStore();
 
 // AdaptV4Theme has been depreciated and v5 is the new version.  TODO: look into update
 const theme = createTheme(
@@ -134,6 +137,7 @@ const Wrapper = () => (
         }}
         autoHideDuration={15000}
       >
+        <Provider store={store}>
         <Store>
           <BrowserRouter>
             <Suspense fallback={<div>Loading..</div>}>
@@ -161,6 +165,7 @@ const Wrapper = () => (
             {/* <App /> */}
           </BrowserRouter>
         </Store>
+        </Provider>
       </SnackbarProvider>
     </ThemeProvider>
   </StyledEngineProvider>
