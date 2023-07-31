@@ -14,6 +14,7 @@ const initialState = {
   isSoilDataLoading: false,
 };
 
+/* eslint-disable */
 export const updateSoilData = ({
   Map_Unit_Name, Drainage_Class, Flooding_Frequency, PondingFrequency, latLong,
 }) => ({
@@ -39,6 +40,7 @@ export const updateSoilDataOriginal = ({
     latLong,
   },
 });
+/* eslint-enable */
 
 export const toggleSoilLoader = (value) => ({
   type: 'TOGGLE_SOIL_LOADER',
@@ -61,7 +63,7 @@ export const updatedFloodingFrequency = (value) => ({
   },
 });
 
-const soilReducer = (state = initialState, action) => {
+const soilReducer = (state = initialState, action = null) => {
   switch (action.type) {
     case 'UPDATE_SOIL_DATA':
       return {

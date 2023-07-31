@@ -45,7 +45,7 @@ export const cropSearch = (value) => ({
   },
 });
 
-const filterReducer = (state = initialState, action) => {
+const filterReducer = (state = initialState, action = null) => {
   const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
   let sfilters = { ...state[section] };
   const value = action && action.payload && action.payload.value;

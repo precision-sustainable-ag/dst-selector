@@ -16,7 +16,9 @@ import '../../styles/header.scss';
 import HeaderLogoInfo from './HeaderLogoInfo/HeaderLogoInfo';
 import InformationBar from './InformationBar/InformationBar';
 import ToggleOptions from './ToggleOptions/ToggleOptions';
-import { lastZipCode, updateLastZone, updateZipCode, updateZone } from '../../reduxStore/addressSlice';
+import {
+  lastZipCode, updateLastZone, updateZipCode, updateZone,
+} from '../../reduxStore/addressSlice';
 
 const Header = () => {
   const { state, dispatch } = useContext(Context);
@@ -74,8 +76,8 @@ const Header = () => {
                   {
                     zoneText: `Zone ${zone}`,
                     zone,
-                    zoneId: regionId
-                  }
+                    zoneId: regionId,
+                  },
                 ));
                 // dispatch({
                 //   type: 'UPDATE_ZONE',
@@ -326,7 +328,7 @@ const Header = () => {
     // if (state.zone === state.lastZone) {
     //   return;
     // }
-    
+
     if (state.regionId && state.stateId) {
       getDictData();
       getCropData([]);

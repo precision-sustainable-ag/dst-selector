@@ -24,7 +24,7 @@ export const addGoals = (value) => ({
   },
 });
 
-const goalsReducer = (state = initialState, action) => {
+const goalsReducer = (state = initialState, action = null) => {
   switch (action.type) {
     case 'UPDATE_SELECTED_GOALS':
       return {

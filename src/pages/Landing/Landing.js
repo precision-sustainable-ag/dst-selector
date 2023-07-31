@@ -85,7 +85,7 @@ const Landing = ({ height, title, bg }) => {
         zoneText: regions[0]?.label,
         zone: regions[0]?.shorthand,
         zoneId: regions[0]?.id,
-      }
+      },
     ));
     // dispatch({
     //   type: 'UPDATE_ZONE',
