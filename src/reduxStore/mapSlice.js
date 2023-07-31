@@ -39,7 +39,7 @@ export const updateStateInfo = ({
   },
 });
 
-const mapReducer = (state = initialState, action) => {
+const mapReducer = (state = initialState, action = null) => {
   switch (action.type) {
     case 'UPDATE_REGIONS':
       return {

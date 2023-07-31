@@ -5,10 +5,10 @@ import {
 import React, {
   useContext, useEffect, useState,
 } from 'react';
+import { useSelector } from 'react-redux';
 import { trimString } from '../../shared/constants';
 import { Context } from '../../store/Store';
 import RenderRelevantData from './RenderRelevantData/RenderRelevantData';
-import { useSelector } from 'react-redux';
 
 const CropCard = ({
   crop, handleModalOpen, addCropToBasket, removeCrop, index, type, comparisonKeys, lightBG, GetAverageGoalRating,

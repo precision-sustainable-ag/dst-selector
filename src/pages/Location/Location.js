@@ -66,7 +66,7 @@ const LocationComponent = ({
           zoneText: region.label,
           zone: region.shorthand,
           zoneId: region.id,
-        }
+        },
       ));
       // dispatch({
       //   type: 'UPDATE_ZONE',
@@ -153,7 +153,7 @@ const LocationComponent = ({
           address,
           markers: [[latitude, longitude]],
           zipCode,
-        }
+        },
       ));
 
       dispatch({
@@ -172,7 +172,7 @@ const LocationComponent = ({
             zipCode,
             county,
             addressVerified: true,
-          }
+          },
         ));
         // dispatch({
         //   type: 'CHANGE_ADDRESS_VIA_MAP',

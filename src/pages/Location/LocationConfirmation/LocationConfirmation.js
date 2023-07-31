@@ -15,7 +15,7 @@ import WeatherConditions from '../../../components/WeatherConditions/WeatherCond
 
 const LocationConfirmation = () => {
   const { state } = useContext(Context);
-  const addressRedux  = useSelector((stateRedux) => stateRedux.addressData.address);
+  const addressRedux = useSelector((stateRedux) => stateRedux.addressData.address);
   const markersRedux = useSelector((stateRedux) => stateRedux.addressData.markers);
   const zoneRedux = useSelector((stateRedux) => stateRedux.addressData.zone);
 
