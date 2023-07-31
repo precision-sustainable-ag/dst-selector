@@ -3,7 +3,7 @@
   RenderCats renders the categories
 */
 
-import { Typography } from '@mui/material';
+import { Grid, Typography } from '@mui/material';
 import React, {
   useEffect, useMemo, useState,
 } from 'react';
@@ -26,21 +26,26 @@ const DictionaryContent = ({ dictData = [{}], from = '' }) => {
   }, [allCats]);
 
   const RenderCats = () => Object.keys(groupedCats).map((key, index) => (
-    <div className="row col-12" key={index}>
-      <div className="col-12">
-        <Typography
-          variant="h6"
-          style={from === 'help' ? { border: '0px', borderBottom: '1px solid gray' } : {}}
-        >
-          {key}
-        </Typography>
-      </div>
+    <Grid container xs={12} sm={12} md={12} lg={12} xl={12} key={index} mt={2}>
+      <Typography
+        variant="h6"
+        style={from === 'help' ? { border: '0px', borderBottom: '1px solid gray', width: '100%' } : { width: '100%' }}
+        ml={2}
+        mr={4}
+      >
+        {key}
+      </Typography>
       {groupedCats[key].map((innerCat, index2) => {
         if (from === 'help') {
           if (!innerCat.Variable.startsWith('Notes')) {
             return (
-              <div className="col-6" key={index2}>
-                <Typography variant="body1" className="p-3">
+              <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
+                <Typography
+                  variant="body1"
+                  ml={4}
+                  mt={3}
+                  key={index2}
+                >
                   <b>
                     {innerCat.Variable}
                     :
@@ -48,13 +53,18 @@ const DictionaryContent = ({ dictData = [{}], from = '' }) => {
                   {' '}
                   {innerCat.Description}
                 </Typography>
-              </div>
+              </Grid>
             );
           }
         }
         return (
-          <div className="col-6" key={index2}>
-            <Typography variant="body1" className="p-3">
+          <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
+            <Typography
+              variant="body1"
+              key={index2}
+              ml={4}
+              mt={3}
+            >
               <b>
                 {innerCat.Variable}
                 :
@@ -62,18 +72,17 @@ const DictionaryContent = ({ dictData = [{}], from = '' }) => {
               {' '}
               {innerCat.Description}
             </Typography>
-          </div>
+          </Grid>
         );
       })}
-    </div>
+    </Grid>
   ));
 
-  // return catOptions;
-
   return (
-    <div className={`row ${from === 'help' ? '' : 'dictionaryContentWrapper p-4'}`}>
+    <div className={`${from === 'help' ? '' : 'dictionaryContentWrapper'}`}>
       {Object.keys(groupedCats).length > 0 ? <RenderCats /> : ''}
     </div>
+
   );
 };
 
