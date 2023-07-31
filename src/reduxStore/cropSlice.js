@@ -45,7 +45,7 @@ export const updateDateRange = (startDate, endDate) => ({
 });
 
 // reducer
-const cropDataReducer = (state = initialState, action) => {
+const cropDataReducer = (state = initialState, action = null) => {
   switch (action.type) {
     case 'UPDATE_ACTIVE_CROP_DATA':
       return {

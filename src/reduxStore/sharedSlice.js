@@ -12,15 +12,12 @@ const initialState = {
   snackHorizontal: 'right',
 };
 
-export const toggleValue = (value) => {
-  console.log('action creator', value);
-  return {
-    type: 'TOGGLE',
-    payload: {
-      value,
-    },
-  };
-};
+export const toggleValue = (value) => ({
+  type: 'TOGGLE',
+  payload: {
+    value,
+  },
+});
 
 export const updateProgress = (value) => ({
   type: 'UPDATE_PROGRESS',
@@ -88,7 +85,7 @@ export const myCropListLocation = ({ from }) => ({
   },
 });
 
-const sharedReducer = (state = initialState, action) => {
+const sharedReducer = (state = initialState, action = null) => {
   const value = action && action.payload && action.payload.value;
   switch (action.type) {
     case 'TOGGLE':
@@ -107,6 +104,7 @@ const sharedReducer = (state = initialState, action) => {
       if (action.payload.value === 'HOME') {
         return { ...state, progress: 0 };
       }
+      return { ...state };
 
     case 'UPDATE_CONSENT':
       if (action.payload.value === true) {
@@ -115,6 +113,7 @@ const sharedReducer = (state = initialState, action) => {
       if (action.payload.value === false) {
         return { ...state, consent: false };
       }
+      return { ...state };
 
     case 'GOTO_PROGRESS':
       return {

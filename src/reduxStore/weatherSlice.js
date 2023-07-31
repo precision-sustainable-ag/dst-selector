@@ -54,7 +54,7 @@ export const updateAvgPrecipAnnual = (value) => ({
   },
 });
 
-const weatherReducer = (state = initialState, action) => {
+const weatherReducer = (state = initialState, action = null) => {
   switch (action.type) {
     case 'UPDATE_WEATHER_CONDITIONS':
       return {
