@@ -6,7 +6,9 @@ $defaultLegendColor: #f0f7eb;
 
 div.growthCellsWrapper {
   .growthCell-30 {
-    width: 50%;
+    // width: 50%;
+    // for controlling the length of each grid, default set to 1
+    flex: 1;
     height: 30px;
   }
   .growthCell-30.Frost.Seeding {

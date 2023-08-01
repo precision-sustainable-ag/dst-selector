@@ -40,6 +40,10 @@ export const cropDataFormatter = (cropData = [{}]) => {
       'Average Frost',
     ];
     const val = vals;
+    const halfMonthArr = Array.from({ length: 24 }, (_, i) => ({
+      month: moment().month(Math.floor(i / 2)).format('M'),
+      info: '',
+    }));
     params.forEach((param) => {
       if (val.data['Planting and Growth Windows']?.[`${param}`]) {
         val.data['Planting and Growth Windows']?.[`${param}`].values.forEach((dateArray) => {
@@ -54,15 +58,20 @@ export const cropDataFormatter = (cropData = [{}]) => {
             valEnd.add('1', 'years');
           }
 
+          // not a efficient alg, there might be better solutions
           while (valStart.isSameOrBefore(valEnd)) {
+            const month = valStart.month();
+            let index = month * 2;
             if (valStart.get('D') <= 15) {
               str = 'Early';
             } else {
               str = 'Mid';
+              index += 1;
             }
             if (!valuesArray.includes([`${valStart.format('MMMM')}, ${str}`])) {
               valuesArray.push([`${valStart.format('MMMM')}, ${str}`]);
             }
+            halfMonthArr[index].info = param;
             valStart.add('1', 'days');
           }
           valuesArray.forEach((key) => {
@@ -73,6 +82,7 @@ export const cropDataFormatter = (cropData = [{}]) => {
         });
       }
     });
+    val['Half Month Data'] = halfMonthArr;
 
     // this is temporary, needs to be replaced with wither a fix to calendar growth window component or exporting of json from airtable
     Object.keys(val).forEach((item) => {

@@ -14,6 +14,7 @@ import '../../../styles/cropCalendarViewComponent.scss';
 const RenderCrops = ({
   cropData, active, setModalOpen, modalOpen, setModalData,
 }) => {
+  console.log('cropData', cropData);
   const { state, dispatch } = useContext(Context);
 
   const dispatchValue = (value, type = 'SELECTED_CROPS_MODIFIER') => {
@@ -150,6 +151,7 @@ const RenderCrops = ({
           </TableCell>
           )}
           <TableCell colSpan="12">
+            {/* render the calendar cells */}
             <CropSelectorCalendarView from="calendar" data={crop} />
           </TableCell>
 
