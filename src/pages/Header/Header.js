@@ -10,7 +10,7 @@ import moment from 'moment';
 import { useSnackbar } from 'notistack';
 import React, { useContext, useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { abbrRegion } from '../../shared/constants';
+import { abbrRegion, reverseGEO } from '../../shared/constants';
 import { Context, cropDataFormatter } from '../../store/Store';
 import '../../styles/header.scss';
 import HeaderLogoInfo from './HeaderLogoInfo/HeaderLogoInfo';
@@ -104,20 +104,22 @@ const Header = () => {
     // since this updates with state; ideally, weather and soil info should be updated here
     // get current lat long and get county, state and city
     if (state.progress >= 1 && markersRedux.length > 0) {
-      const revAPIURL = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`;
-
-      Axios.get(revAPIURL)
+      reverseGEO(lat, lon)
         .then(async (resp) => {
-          const city = resp.data.locality.toLowerCase();
-          const zipCode = resp.data.postcode;
-          const abbrState = abbrRegion(resp.data.principalSubdivision, 'abbr').toLowerCase();
+          const abbrState = abbrRegion(
+            resp?.features?.filter((feature) => feature?.place_type?.includes('region'))[0]?.text,
+            'abbr',
+          ).toLowerCase();
 
-          if (resp.data.postcode) {
-            dispatchRedux(updateZipCode(zipCode));
+          const city = resp?.features?.filter((feature) => feature?.place_type?.includes('place'))[0]?.text?.toLowerCase();
+          const zip = resp?.features?.filter((feature) => feature?.place_type?.includes('postcode'))[0]?.text;
+
+          if (zip) {
+            dispatchRedux(updateZipCode(zip));
             // dispatch({
             //   type: 'UPDATE_ZIP_CODE',
             //   data: {
-            //     zipCode,
+            //     zip,
             //   },
             // });
           }
