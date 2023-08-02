@@ -7,6 +7,7 @@
 */
 
 import React, { Suspense } from 'react';
+import { Provider } from 'react-redux';
 import ReactDOM from 'react-dom';
 import './index.css';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
@@ -35,8 +36,10 @@ import InformationSheetDictionary from './pages/Help/InformationSheetDictionary/
 import License from './pages/License/License';
 import MyCoverCropListWrapper from './pages/MyCoverCropList/MyCoverCropListWrapper/MyCoverCropListWrapper';
 import Help from './pages/Help/Help';
+import configureStore from './reduxStore/store';
 
 const withFooter = (WrappedComponent) => () => [<WrappedComponent key="1" />, <Footer key="2" />];
+const store = configureStore();
 
 // AdaptV4Theme has been depreciated and v5 is the new version.  TODO: look into update
 const theme = createTheme(
@@ -134,33 +137,35 @@ const Wrapper = () => (
         }}
         autoHideDuration={15000}
       >
-        <Store>
-          <BrowserRouter>
-            <Suspense fallback={<div>Loading..</div>}>
-              <Switch>
-                <Route path="/" component={App} exact />
-                <Route path="/explorer" component={CoverCropExplorer} exact />
-                <Route path="/about" component={About} exact />
-                <Route path="/help" component={Help} exact />
-                <Route path="/feedback" component={FeedbackComponent} exact />
-                <Route path="/my-cover-crop-list" component={MyCoverCropListWrapper} exact />
-                <Route path="/seeding-rate-calculator" component={SeedingRateCalculator} exact />
-                <Route path="/data-dictionary" component={InformationSheetDictionary} exact />
-                <Route path="/license" component={() => <License licenseType="MIT" />} exact />
-                <Route
-                  path="/ag-informatics-license"
-                  component={() => <License licenseType="AgInformatics" />}
-                  exact
-                />
-                <Route path="/mix-maker" component={MixMaker} exact />
+        <Provider store={store}>
+          <Store>
+            <BrowserRouter>
+              <Suspense fallback={<div>Loading..</div>}>
+                <Switch>
+                  <Route path="/" component={App} exact />
+                  <Route path="/explorer" component={CoverCropExplorer} exact />
+                  <Route path="/about" component={About} exact />
+                  <Route path="/help" component={Help} exact />
+                  <Route path="/feedback" component={FeedbackComponent} exact />
+                  <Route path="/my-cover-crop-list" component={MyCoverCropListWrapper} exact />
+                  <Route path="/seeding-rate-calculator" component={SeedingRateCalculator} exact />
+                  <Route path="/data-dictionary" component={InformationSheetDictionary} exact />
+                  <Route path="/license" component={() => <License licenseType="MIT" />} exact />
+                  <Route
+                    path="/ag-informatics-license"
+                    component={() => <License licenseType="AgInformatics" />}
+                    exact
+                  />
+                  <Route path="/mix-maker" component={MixMaker} exact />
 
-                <Route component={RouteNotFound} />
-              </Switch>
-            </Suspense>
+                  <Route component={RouteNotFound} />
+                </Switch>
+              </Suspense>
 
-            {/* <App /> */}
-          </BrowserRouter>
-        </Store>
+              {/* <App /> */}
+            </BrowserRouter>
+          </Store>
+        </Provider>
       </SnackbarProvider>
     </ThemeProvider>
   </StyledEngineProvider>
