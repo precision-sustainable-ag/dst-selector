@@ -32,7 +32,7 @@ const GoalsSelector = () => {
   async function getAllGoals() {
     const query = `${encodeURIComponent('regions')}=${encodeURIComponent(state.regionId)}`;
 
-    await fetch(`https://api.covercrop-selector.org/v1/states/${state.stateId}/goals?${query}`)
+    await fetch(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${state.stateId}/goals?${query}`)
       .then((res) => res.json())
       .then((data) => {
         setAllGoals(data.data);
