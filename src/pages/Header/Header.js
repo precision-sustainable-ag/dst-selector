@@ -16,7 +16,7 @@ import '../../styles/header.scss';
 import HeaderLogoInfo from './HeaderLogoInfo/HeaderLogoInfo';
 import InformationBar from './InformationBar/InformationBar';
 import ToggleOptions from './ToggleOptions/ToggleOptions';
-import { lastZipCode, updateZipCode, updateZone } from '../../reduxStore/addressSlice';
+import { lastZipCode, updateLastZone, updateZipCode, updateZone } from '../../reduxStore/addressSlice';
 import { pullCropData } from '../../reduxStore/cropSlice';
 
 const Header = () => {
@@ -91,7 +91,7 @@ const Header = () => {
           }
         });
     }
-  }, [zipCodeRedux, lastZipCodeRedux, dispatch, dispatchRedux, enqueueSnackbar, closeSnackbar]);
+  }, [zipCodeRedux, lastZipCodeRedux, dispatchRedux, enqueueSnackbar, closeSnackbar]);
 
   useEffect(() => {
     // const { markers } = state;
@@ -106,10 +106,10 @@ const Header = () => {
     if (state.progress >= 1 && markersRedux.length > 0) {
       reverseGEO(lat, lon)
         .then(async (resp) => {
-          const abbrState = abbrRegion(
+          const abbrState = (abbrRegion(
             resp?.features?.filter((feature) => feature?.place_type?.includes('region'))[0]?.text,
             'abbr',
-          ).toLowerCase();
+          ) ?? '').toLowerCase();
 
           const city = resp?.features?.filter((feature) => feature?.place_type?.includes('place'))[0]?.text?.toLowerCase();
           const zip = resp?.features?.filter((feature) => feature?.place_type?.includes('postcode'))[0]?.text;

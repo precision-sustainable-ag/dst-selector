@@ -68,27 +68,41 @@ export const updateZipCode = (value) => {
     };
 };
 
-export const lastZipCode = (value) => ({
-  type: 'LAST_ZIP_CODE',
-  payload: {
-    value,
-  },
-});
+export const lastZipCode = (value) => {
+    return {
+        type: 'LAST_ZIP_CODE',
+        payload: {
+            value,
+        },
+    };
+};
 
-export const updateLastZone = (value) => ({
-  type: 'UPDATE_LAST_ZONE',
-  payload: {
-    value,
-  },
-});
+export const updateLastZone = (value) => {
+    return {
+        type: 'UPDATE_LAST_ZONE',
+        payload: {
+            value,
+        },
+    };
+};
+
+// export const updateMarker = (value) => {
+//     return {
+//         type: 'UPDATE_MARKER',
+//         payload: {
+//             value,
+//         },
+//     };
+// };
 
 const addressReducer = (state = initialState, action) => {
     switch (action.type) {
         case 'UPDATE_LOCATION':
+            console.log("UPDATE_LOCATION", action.payload);
             return {
               ...state,
               address: action.payload.address,
-              markers: [[action.payload.latitude, action.payload.longitude]],
+              markers: action.payload.markers,
               zipCode: action.payload.zipCode  
             };
 
@@ -141,6 +155,12 @@ const addressReducer = (state = initialState, action) => {
                 ...state,
                 lastZone: action.payload.value,
             };
+        
+        // case 'UPDATE_MARKER':
+        //     return {
+        //         ...state,
+        //         markers: action.payload.value,
+        //     };
             
         default:
             return {...state};

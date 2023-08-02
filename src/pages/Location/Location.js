@@ -26,7 +26,7 @@ import { BinaryButton } from '../../shared/constants';
 import { Context } from '../../store/Store';
 import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset';
 import PlantHardinessZone from '../CropSidebar/PlantHardinessZone/PlantHardinessZone';
-import { changeAddressViaMap, updateLocation, updateZone as updateZoneRedux } from '../../reduxStore/addressSlice';
+import { changeAddressViaMap, updateLocation, updateMarker, updateZone as updateZoneRedux } from '../../reduxStore/addressSlice';
 
 // eslint-disable-next-line import/no-webpack-loader-syntax, import/no-unresolved
 mapboxgl.workerClass = require('worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker').default;
@@ -149,13 +149,9 @@ const LocationComponent = ({
       //     zipCode,
       //   },
       // });
-      dispatchRedux(updateLocation(
-        {
-          address,
-          markers: [[latitude, longitude]],
-          zipCode,
-        }
-      ));
+      dispatchRedux(updateLocation({address, markers: [[latitude, longitude]], zipCode}));
+
+      // dispatchRedux(updateMarker([[latitude, longitude]]));
 
       dispatch({
         type: 'SNACK',

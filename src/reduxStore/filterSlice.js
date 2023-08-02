@@ -13,30 +13,38 @@ const initialState = {
   changedFilters: true,
 };
 
-export const clearFilters = () => ({
-  type: 'CLEAR_FILTERS',
-});
+export const clearFilters = () => {
+  return {
+    type: 'CLEAR_FILTERS',
+  };
+};
 
-export const filterToggle = ({ value }) => ({
-  type: 'FILTER_TOGGLE',
-  payload: {
-    value,
-  },
-});
+export const filterToggle = (value) => {
+  return {
+    type: 'FILTER_TOGGLE',
+    patload: {
+      value,
+    },
+  };
+};
 
-export const filterOn = (value) => ({
-  type: 'FILTER_ON',
-  payload: {
-    value,
-  },
-});
+export const filterOn = (value) => {
+  return {
+    type: 'FILTER_ON',
+    payload: {
+      value,
+    },
+  };
+};
 
-export const filterOff = (value) => ({
-  type: 'FILTER_OFF',
-  payload: {
-    value,
-  },
-});
+export const filterOff = (value) => {
+  return {
+    type: 'FILTER_OFF',
+    payload: {
+      value,
+    },
+  };
+};
 
 export const cropSearch = (value) => {
     return {

@@ -1,6 +1,7 @@
 import {
   Badge, Button, Tooltip,
 } from '@mui/material';
+import { useSelector } from 'react-redux';
 import React, { useContext } from 'react';
 import { NavLink, useHistory } from 'react-router-dom';
 import { Context } from '../../../store/Store';

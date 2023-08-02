@@ -185,14 +185,14 @@ export const abbrRegion = (input, to) => {
 
   let i; // Reusable loop variable
   if (to === 'abbr') {
-    input = input.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
+    input = (input ?? '').replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
     for (i = 0; i < regions.length; i++) {
       if (regions[i][0] === input) {
         return regions[i][1];
       }
     }
   } else if (to === 'name') {
-    input = input.toUpperCase();
+    input = (input ?? '').toUpperCase();
     for (i = 0; i < regions.length; i++) {
       if (regions[i][1] === input) {
         return regions[i][0];

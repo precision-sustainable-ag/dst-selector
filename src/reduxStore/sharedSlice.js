@@ -22,71 +22,89 @@ export const toggleValue = (value) => {
   };
 };
 
-export const updateProgress = (value) => ({
-  type: 'UPDATE_PROGRESS',
-  payload: {
-    value,
-  },
-});
+export const updateProgress = (value) => {
+  return {
+    type: 'UPDATE_PROGRESS',
+    payload: {
+      value,
+    },
+  };
+};
 
-export const updateConsent = (value) => ({
-  type: 'UPDATE_CONSENT',
-  payload: {
-    value,
-  },
-});
+export const updateConsent = (value) => {
+  return {
+    type: 'UPDATE_CONSENT',
+    payload: {
+      value,
+    },
+  };
+};
 
-export const gotoProgress = (value) => ({
-  type: 'GOTO_PROGRESS',
-  payload: {
-    value,
-  },
-});
+export const gotoProgress = (value) => {
+  return {
+    type: 'GOTO_PROGRESS',
+    payload: {
+      value,
+    },
+  };
+};
 
-export const snackHandler = ({ snackOpen, snackMessage }) => ({
-  type: 'SNACK',
-  payload: {
-    snackOpen,
-    snackMessage,
-  },
-});
+export const snackHandler = ({ snackOpen, snackMessage }) => {
+  return {
+    type: 'SNACK',
+    payload: {
+      snackOpen,
+      snackMessage,
+    },
+  };
+};
 
-export const setAjaxInProgress = (value) => ({
-  type: 'SET_AJAX_IN_PROGRESS',
-  payload: {
-    value,
-  },
-});
+export const setAjaxInProgress = (value) => {
+  return {
+    type: 'SET_AJAX_IN_PROGRESS',
+    payload: {
+      value,
+    },
+  };
+};
 
-export const updateComparisonKeys = (value) => ({
-  type: 'UPDATE_COMPARISON_KEYS',
-  payload: {
-    value,
-  },
-});
+export const updateComparisonKeys = (value) => {
+  return {
+    type: 'UPDATE_COMPARISON_KEYS',
+    payload: {
+      value,
+    },
+  };
+};
 
-export const activateMyCoverCropListTile = ({ myCoverCropActivationFlag, speciesSelectorActivationFlag }) => ({
-  type: 'ACTIVATE_MY_COVER_CROP_LIST_TILE',
-  payload: {
-    myCoverCropActivationFlag,
-    speciesSelectorActivationFlag,
-  },
-});
+export const activateMyCoverCropListTile = ({ myCoverCropActivationFlag, speciesSelectorActivationFlag }) => {
+  return {
+    type: 'ACTIVATE_MY_COVER_CROP_LIST_TILE',
+    payload: {
+      myCoverCropActivationFlag,
+      speciesSelectorActivationFlag,
+    },
+  };
+};
 
-export const activateSpeicesSelectorTile = ({ myCoverCropActivationFlag, speciesSelectorActivationFlag }) => ({
-  type: 'ACTIVATE_SPECIES_SELECTOR_TILE',
-  payload: {
-    myCoverCropActivationFlag,
-    speciesSelectorActivationFlag,
-  },
-});
+export const activateSpeicesSelectorTile = ({ myCoverCropActivationFlag, speciesSelectorActivationFlag }) => {
+  return {
+    type: 'ACTIVATE_SPECIES_SELECTOR_TILE',
+    payload: {
+      myCoverCropActivationFlag,
+      speciesSelectorActivationFlag,
+    },
+  };
+};
 
-export const myCropListLocation = ({ from }) => ({
-  type: 'MY_CROP_LIST_LOCATION',
-  payload: {
-    from,
-  },
-});
+export const myCropListLocation = ({ from }) => {
+  return {
+    type: 'MY_CROP_LIST_LOCATION',
+    payload: {
+      from,
+    },
+  };
+};
 
 const sharedReducer = (state = initialState, action) => {
   const value = action && action.payload && action.payload.value;

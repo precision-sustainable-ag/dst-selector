@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { Button, Typography } from '@mui/material';
 import { LocalDrinkOutlined } from '@mui/icons-material';
 import { ReferenceTooltip } from '../../../../shared/constants';
@@ -10,7 +11,7 @@ import MyCoverCropReset from '../../../../components/MyCoverCropReset/MyCoverCro
 
 const SoilDrainage = ({ setTilingCheck }) => {
   const { state, dispatch } = useContext(Context);
-  const selectedCropsRedux = useSelector((state) => state.cropData.selectedCrops);
+  const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
   const { soilData, soilDataOriginal } = state;
   const [handleConfirm, setHandleConfirm] = useState(false);
 

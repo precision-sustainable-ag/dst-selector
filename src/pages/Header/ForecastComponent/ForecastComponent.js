@@ -79,7 +79,7 @@ const ForecastComponent = () => {
               const address = res?.features?.filter((feature) => feature?.place_type?.includes('address'))[0]?.place_name;
               const zip = res?.features?.filter((feature) => feature?.place_type?.includes('postcode'))[0]?.text;
               if (address) {
-                dispatchRedux(changeAddress({address: addressString, addressVerified: true}));
+                dispatchRedux(changeAddress({address, addressVerified: true}));
                 // dispatch({
                 //   type: 'CHANGE_ADDRESS',
                 //   data: {
@@ -109,7 +109,7 @@ const ForecastComponent = () => {
     if (markersRedux[0].length > 0) {
       setShowFeatures();
     }
-  }, [dispatch, addressRedux, markersRedux, state.progress]);
+  }, [dispatchRedux, addressRedux, markersRedux, state.progress]);
 
   if (state.progress >= 1) {
     if (showTempIcon) {
