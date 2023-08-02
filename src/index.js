@@ -16,6 +16,7 @@ import {
   responsiveFontSizes,
   Grid,
   Typography,
+  Container,
   Link,
   adaptV4Theme,
 } from '@mui/material';
@@ -98,17 +99,23 @@ const theme = createTheme(
 );
 const RouteNotFound = () => (
   <section className="page_404">
-    <Grid container>
-      <Grid item xs={12}>
+    <Container maxWidth="sm">
+      <Grid container justifyContent="center">
         <Grid item xs={12}>
           <div className="four_zero_four_bg">
-            <Typography variant="h4" sx={{ fontWeight: 'bold' }}>404</Typography>
+            <Typography variant="h1" component="h1" className="text-center">
+              404
+            </Typography>
           </div>
 
-          <div className="contant_box_404">
-            <Typography variant="h6">Looks like you're lost</Typography>
+          <div className="contant_box_404" style={{ textAlign: 'center' }}>
+            <Typography variant="h3" component="h2">
+              Looks like you're lost
+            </Typography>
 
-            <Typography variant="body1">The page you are looking for is not available!</Typography>
+            <Typography variant="body1">
+              The page you are looking for is not available!
+            </Typography>
 
             <Link href="/" className="link_404">
               Go Home
@@ -116,7 +123,7 @@ const RouteNotFound = () => (
           </div>
         </Grid>
       </Grid>
-    </Grid>
+    </Container>
   </section>
 );
 
