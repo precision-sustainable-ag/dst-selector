@@ -124,9 +124,9 @@ const Landing = ({ height, title, bg }) => {
     dispatch({
       type: 'UPDATE_REGION',
       data: {
-        regionId: selectedRegion.id ?? '',
-        regionLabel: selectedRegion.label ?? '',
-        regionShorthand: selectedRegion.shorthand ?? '',
+        regionId: regions[0]?.id ?? '',
+        regionLabel: regions[0]?.label ?? '',
+        regionShorthand: regions[0]?.shorthand ?? '',
       },
     });
   };
@@ -165,7 +165,7 @@ const Landing = ({ height, title, bg }) => {
         );
       }
     }
-  }, [selectedRegion]);
+  }, [selectedRegion, regions]);
 
   useEffect(() => {
     if (state.consent) {
