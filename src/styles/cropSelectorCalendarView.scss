@@ -1,15 +1,27 @@
 @import '../styles/constants.scss';
-$frostSeedingPossibleColor: #2f80ed;
-$temperatureRiskToEstablishmentColor: #f2c94c;
-$reliableEstablishmentColor: #2d7b7b;
-$defaultLegendColor: #f0f7eb;
+// $frostSeedingPossibleColor: #2f80ed;
+// $temperatureRiskToEstablishmentColor: #f2c94c;
+// $reliableEstablishmentColor: #2d7b7b;
+// $defaultLegendColor: #f0f7eb;
+$averageFrostColor: #accbff;
 
-div.growthCellsWrapper {
+div.growthCellsWrapper { 
   .growthCell-30 {
-    // width: 50%;
     // for controlling the length of each grid, default set to 1
     flex: 1;
     height: 30px;
+    position: relative;
+    &.cashCropMonth{
+      &::after {
+        position: absolute;
+        width: 100%;
+        height: 53px;
+        top: 0;
+        content: '';
+        background-color: $cashCropGrowthWindowColor;
+        z-index: 1;
+      }
+    }
   }
   .growthCell-30.Frost.Seeding {
     background-color: $frostSeedingPossibleColor;
@@ -17,6 +29,18 @@ div.growthCellsWrapper {
   }
   .growthCell-30.Reliable {
     background-color: $reliableEstablishmentColor;
+    z-index: 2;
+  }
+  .growthCell-30.Average {
+    background-color: $averageFrostColor;
+    z-index: 2;
+  }
+  .growthCell-30.Average.Reliable{
+    background-image: repeating-linear-gradient(45deg, 
+    $reliableEstablishmentColor, 
+    $reliableEstablishmentColor 5px, 
+    $averageFrostColor 5px, 
+    $averageFrostColor 10px);
     z-index: 2;
   }
   .growthCell-30.Freeze\/Moisture.Risk.to.Establishment {

@@ -43,6 +43,25 @@ const CropSelectorCalendarView = ({ from = 'calendar', data = [] }) => {
     return false;
   };
 
+  const isCashCropMonth = (month = '0') => {
+    if (state.cashCropData.dateRange.startDate === null || state.cashCropData.dateRange.endDate === null) {
+      return false;
+    }
+    const result = new Set();
+    const start = moment(state.cashCropData.dateRange.startDate.$d);
+    const end = moment(state.cashCropData.dateRange.endDate.$d);
+
+    while (start.isBefore(end)) {
+      result.add(start.format('M').toString());
+      start.add(moment.duration(1, 'month'));
+    }
+
+    if (result.has(month)) {
+      return true;
+    }
+    return false;
+  };
+
   // eslint-disable-next-line no-nested-ternary
   return from === 'calendar' ? (
     <CropPaintGrowthChart
@@ -50,6 +69,7 @@ const CropSelectorCalendarView = ({ from = 'calendar', data = [] }) => {
       from="calendar"
       months={months}
       isThisCashCropMonth={isThisCashCropMonth}
+      isCashCropMonth={isCashCropMonth}
     />
   ) : from === 'listView' ? (
     <>
