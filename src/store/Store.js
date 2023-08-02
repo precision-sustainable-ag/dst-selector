@@ -15,6 +15,7 @@
 import moment from 'moment-timezone';
 import React, { createContext, useReducer, useMemo } from 'react';
 import Reducer from './Reducer';
+import arrayEquals from '../shared/functions';
 
 export const cropDataFormatter = (cropData = [{}]) => {
   const excludedCropZoneDecisionKeys = ['Exclude', 'Up and Coming', 'Discuss'];
@@ -27,6 +28,41 @@ export const cropDataFormatter = (cropData = [{}]) => {
       return false;
     } return true;
   });
+
+  const formatHalfMonthData = (halfMonthData) => {
+    // TODO: add calculation for cash crops(use isThisCashCropMonth)
+    const result = [];
+    let index = 0;
+    while (index < halfMonthData.length) {
+      const timePeriod = {
+        startTime: '',
+        endTime: '',
+        months: [],
+        info: [],
+      };
+      if (timePeriod.months.length === 0) {
+        if (halfMonthData[index].start !== '') {
+          timePeriod.startTime = halfMonthData[index].start;
+          timePeriod.endTime = halfMonthData[index].end;
+          timePeriod.info = [...halfMonthData[index].info];
+        }
+        timePeriod.months.push(halfMonthData[index].month);
+        index += 1;
+      }
+      while (
+        index > 0
+        && index < halfMonthData.length
+        && arrayEquals(halfMonthData[index].info, halfMonthData[index - 1].info)
+      ) {
+        timePeriod.months.push(halfMonthData[index].month);
+        index += 1;
+      }
+      if (timePeriod.months.length > 0) result.push(timePeriod);
+      else index += 1;
+    }
+    // console.log('test', halfMonthData, result);
+    return result;
+  };
 
   const monthStringBuilder = (vals) => {
     const params = [
@@ -42,10 +78,14 @@ export const cropDataFormatter = (cropData = [{}]) => {
     const val = vals;
     const halfMonthArr = Array.from({ length: 24 }, (_, i) => ({
       month: moment().month(Math.floor(i / 2)).format('M'),
-      info: '',
+      info: [],
+      start: '',
+      end: '',
     }));
+    const windowsMap = new Map();
     params.forEach((param) => {
       if (val.data['Planting and Growth Windows']?.[`${param}`]) {
+        windowsMap.set(param, val.data['Planting and Growth Windows']?.[`${param}`].values);
         val.data['Planting and Growth Windows']?.[`${param}`].values.forEach((dateArray) => {
           const datesArr = dateArray.split('-');
           // const valStart = moment(datesArr[0], 'YYYY-MM-DD');
@@ -58,7 +98,10 @@ export const cropDataFormatter = (cropData = [{}]) => {
             valEnd.add('1', 'years');
           }
 
-          // not a efficient alg, there might be better solutions
+          const start = valStart;
+          const end = valEnd;
+
+          // TODO: This is not a efficient alg, there might be better solutions
           while (valStart.isSameOrBefore(valEnd)) {
             const month = valStart.month();
             let index = month * 2;
@@ -71,7 +114,22 @@ export const cropDataFormatter = (cropData = [{}]) => {
             if (!valuesArray.includes([`${valStart.format('MMMM')}, ${str}`])) {
               valuesArray.push([`${valStart.format('MMMM')}, ${str}`]);
             }
-            halfMonthArr[index].info = param;
+            if (halfMonthArr[index].info.at(-1) !== param) {
+              halfMonthArr[index].info.push(param);
+              // TODO: need some modification for more accurate time periods
+              if (halfMonthArr[index].start === '') halfMonthArr[index].start = start.format('MM/DD');
+              else {
+                halfMonthArr[index].start = moment().isBefore(start, halfMonthArr[index].start)
+                  ? halfMonthArr[index].start
+                  : start.format('MM/DD');
+              }
+              if (halfMonthArr[index].end === '') halfMonthArr[index].end = end.format('MM/DD');
+              else {
+                halfMonthArr[index].end = moment().isBefore(end, halfMonthArr[index].end)
+                  ? halfMonthArr[index].end
+                  : end.format('MM/DD');
+              }
+            }
             valStart.add('1', 'days');
           }
           valuesArray.forEach((key) => {
@@ -82,7 +140,8 @@ export const cropDataFormatter = (cropData = [{}]) => {
         });
       }
     });
-    val['Half Month Data'] = halfMonthArr;
+    const halfMonthData = formatHalfMonthData(halfMonthArr);
+    val['Half Month Data'] = halfMonthData;
 
     // this is temporary, needs to be replaced with wither a fix to calendar growth window component or exporting of json from airtable
     Object.keys(val).forEach((item) => {

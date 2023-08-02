@@ -7,8 +7,8 @@ const CropPaintGrowthChart = ({
   months = [],
   data = [],
   isThisCashCropMonth = () => {},
+  isCashCropMonth = () => {},
 }) => {
-  // console.log('data', data.data['Planting and Growth Windows']);
   if (from === 'listView') {
     return (
       <table className="w-100">
@@ -198,32 +198,57 @@ const CropPaintGrowthChart = ({
 
           </tbody>
         </table>
+        {/* TODO: This is the implementation of the new calendar chart */}
         <br />
+
         <div>
           <div className="d-flex flex-row w-100 growthCellsWrapper">
-            <div
-              className="w-50 basic growthCell-30"
-            />
-            <Tooltip
-              arrow
-              title="01/01-03/01"
-            >
-              <div
-                className="w-25 basic growthCell-30 Reliable Establishment"
-                style={{ flex: 3 }}
-              />
+            {data['Half Month Data'].map((item, index) => {
+              const l = item.months.length;
+              if (item.info.length > 0) {
+                return (
+                  <Tooltip
+                    arrow
+                    title={(
+                      <>
+                        {item.info.length === 1 ? (
+                          <Typography color="secondary">
+                            {`${item.startTime} - ${item.endTime}`}
+                          </Typography>
+                        ) : null}
+                        <Typography variant="body1" gutterBottom>
+                          {item.info.join(', ')}
+                        </Typography>
+                      </>
+                    )}
+                    key={index}
+                  >
+                    <div className="d-flex flex-row" style={{ flex: l }}>
+                      {item.months.map((month, i) => (
+                        <div
+                          className={`basic growthCell-30 ${item.info.join(' ')} 
+                          ${isCashCropMonth(month) ? 'cashCropMonth' : ''}`}
+                          key={`${index}-${i}`}
+                        />
+                      ))}
 
-            </Tooltip>
-            <div
-              className="w-50 basic growthCell-30"
-            />
-            <div
-              className="w-50 basic growthCell-30"
-            />
+                    </div>
+                  </Tooltip>
+                );
+              }
+              return (
+                <div className="d-flex flex-row" style={{ flex: l }}>
+                  {item.months.map((month, i) => (
+                    <div
+                      className={`basic growthCell-30 ${item.info.join(' ')} 
+                      ${isCashCropMonth(month) ? 'cashCropMonth' : ''}`}
+                      key={`${index}-${i}`}
+                    />
+                  ))}
 
-            <div
-              className="w-50 basic growthCell-30"
-            />
+                </div>
+              );
+            })}
           </div>
         </div>
       </>
