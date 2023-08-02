@@ -6,7 +6,7 @@
 import React, {
   Fragment, useContext, useEffect, useState,
 } from 'react';
-import { cloudIcon, ReferenceTooltip } from '../../../shared/constants';
+import { cloudIcon, ReferenceTooltip, reverseGEO } from '../../../shared/constants';
 import { openWeatherApiKey } from '../../../shared/keys';
 import { Context } from '../../../store/Store';
 
@@ -24,14 +24,6 @@ const ForecastComponent = () => {
   });
 
   const makeURLString = (url, params) => `${url}?lat=${params[0]}&lon=${params[1]}&appid=${openWeatherApiKey}&units=imperial`;
-
-  const reverseGEO = async (lat, lng) => {
-    const url = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lng}&localityLanguage=en`;
-    let data = await fetch(url);
-    data = data.json();
-
-    return data;
-  };
 
   useEffect(() => {
     const callWeatherApi = async (url, latlng) => {
@@ -79,22 +71,22 @@ const ForecastComponent = () => {
           const data = reverseGEO(latlng[0], latlng[1]);
           data
             .then((res) => {
-              if (res.localityInfo.informative) {
-                const lastInfo = res.localityInfo.informative[res.localityInfo.informative.length - 1];
-                const addressString = `${lastInfo.name}, ${res.city}`;
+              const address = res?.features?.filter((feature) => feature?.place_type?.includes('address'))[0]?.place_name;
+              const zip = res?.features?.filter((feature) => feature?.place_type?.includes('postcode'))[0]?.text;
+              if (address) {
                 dispatch({
                   type: 'CHANGE_ADDRESS',
                   data: {
-                    address: addressString,
+                    address,
                     addressVerified: true,
                   },
                 });
               }
-              if (res.postcode) {
+              if (zip) {
                 dispatch({
                   type: 'UPDATE_ZIP_CODE',
                   data: {
-                    zipCode: res.postcode,
+                    zipCode: zip,
                   },
                 });
               }
