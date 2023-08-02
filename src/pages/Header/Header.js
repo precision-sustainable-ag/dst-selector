@@ -261,7 +261,7 @@ const Header = () => {
     if (state.zoneId === null) {
       return;
     }
-    const query = `${encodeURIComponent('regions')}=${encodeURIComponent(state.zoneId)}`;
+    const query = `${encodeURIComponent('regions')}=${encodeURIComponent(state.regionId)}`;
     await fetch(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${state.zoneId}/crops?${query}`)
       .then((res) => res.json())
       .then((data) => {
