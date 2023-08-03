@@ -5,22 +5,19 @@ const initialState = {
   fullAddress: '',
   addressChangedViaMap: false,
   zipCode: 0,
-  zone: '', // not initialised earlier
-  zoneText: '', // not initialised earlier
+  zone: '',
+  zoneText: '',
   zoneId: null,
   lastZipCode: 0,
   lastZone: '',
-
+  county: null,
 };
 
-export const updateLocation = ({
-  address, latitude, longitude, zipCode,
-}) => ({
+export const updateLocation = ({ address, markers, zipCode }) => ({
   type: 'UPDATE_LOCATION',
   payload: {
     address,
-    latitude,
-    longitude,
+    markers,
     zipCode,
   },
 });
@@ -34,21 +31,19 @@ export const changeAddress = ({ address, addressVerified }) => ({
 });
 
 export const changeAddressViaMap = ({
-  address, fullAddress, zipCode, addressVerified,
+  address,
+  fullAddress,
+  zipCode,
+  county,
+  addressVerified,
 }) => ({
   type: 'CHANGE_ADDRESS_VIA_MAP',
   payload: {
     address,
     fullAddress,
     zipCode,
+    county,
     addressVerified,
-  },
-});
-
-export const updateMarker = (value) => ({
-  type: 'UPDATE_MARKER',
-  payload: {
-    value,
   },
 });
 
@@ -82,13 +77,22 @@ export const updateLastZone = (value) => ({
   },
 });
 
+// export const updateMarker = (value) => {
+//     return {
+//         type: 'UPDATE_MARKER',
+//         payload: {
+//             value,
+//         },
+//     };
+// };
+
 const addressReducer = (state = initialState, action = null) => {
   switch (action.type) {
     case 'UPDATE_LOCATION':
       return {
         ...state,
         address: action.payload.address,
-        markers: [[action.payload.latitude, action.payload.longitude]],
+        markers: action.payload.markers,
         zipCode: action.payload.zipCode,
       };
 
@@ -105,14 +109,9 @@ const addressReducer = (state = initialState, action = null) => {
         address: action.payload.address,
         fullAddress: action.payload.fullAddress,
         zipCode: action.payload.zipCode,
+        county: action.payload.county,
         addressVerified: action.payload.addressVerified,
         addressChangedViaMap: true,
-      };
-
-    case 'UPDATE_MARKER':
-      return {
-        ...state,
-        markers: action.payload.value,
       };
 
     case 'UPDATE_ZONE':
@@ -126,7 +125,7 @@ const addressReducer = (state = initialState, action = null) => {
     case 'UPDATE_ZIP_CODE':
       return {
         ...state,
-        zipCode: action.payload.zipCode,
+        zipCode: action.payload.value,
       };
 
     case 'LAST_ZIP_CODE':

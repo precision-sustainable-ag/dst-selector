@@ -5,6 +5,7 @@ import {
 import React, {
   useContext, useEffect, useState,
 } from 'react';
+import { useSelector } from 'react-redux';
 import { trimString } from '../../shared/constants';
 import { Context } from '../../store/Store';
 import RenderRelevantData from './RenderRelevantData/RenderRelevantData';
@@ -13,6 +14,7 @@ const CropCard = ({
   crop, handleModalOpen, addCropToBasket, removeCrop, index, type, comparisonKeys, lightBG, GetAverageGoalRating,
 }) => {
   const { state } = useContext(Context);
+  const zoneRedux = useSelector((stateRedux) => stateRedux.addressData.zone);
   const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
   const sfilters = state[section];
   const [allfilters, setAllFilters] = useState([]);
@@ -93,7 +95,7 @@ const CropCard = ({
           image={
             crop.thumbnail
               ? crop.thumbnail
-              : 'https://placehold.it/100x100?text=Placeholder'
+              : 'https://placehold.it/250x150?text=Placeholder'
             }
           sx={{ height: 140 }}
           title={crop.label}
@@ -103,7 +105,7 @@ const CropCard = ({
         {type === 'cropList'
         && (
         <div className="font-weight-bold text-muted text-uppercase" style={{ fontSize: '10pt', marginLeft: '-10px' }}>
-            {`Zone ${state.zone}`}
+            {`Zone ${zoneRedux}`}
         </div>
         )}
         <div
