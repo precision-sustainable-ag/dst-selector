@@ -21,7 +21,6 @@ const lightBG = {
 
 const RenderRelevantData = ({ filterKey = '', data = [] }) => {
   const filterData = [];
-  // console.log('data', data);
   data.forEach((filter) => {
     if (filter.label === filterKey) {
       filterData.push(filter);
