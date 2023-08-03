@@ -10,22 +10,21 @@ import {
   DialogContent,
   Grid, Typography,
 } from '@mui/material';
-// import SelectUSState from 'react-select-us-states';
 import React, {
   useContext,
   useEffect,
   useState,
   useRef,
 } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 import ReactGA from 'react-ga';
 import { RegionSelectorMap } from '@psa/dst.ui.region-selector-map';
 import { BinaryButton } from '../../shared/constants';
-import { Context } from '../../store/Store';
+import { Context, cropDataFormatter } from '../../store/Store';
 import '../../styles/landing.scss';
 import ConsentModal from '../CoverCropExplorer/ConsentModal/ConsentModal';
-import { updateZone } from '../../reduxStore/addressSlice';
+import { updateZone, updateLastZone } from '../../reduxStore/addressSlice';
 
 const Landing = ({ height, title, bg }) => {
   const { state, dispatch } = useContext(Context);
@@ -34,15 +33,12 @@ const Landing = ({ height, title, bg }) => {
   const [handleConfirm, setHandleConfirm] = useState(false);
   const [containerHeight, setContainerHeight] = useState(height);
   const [allStates, setAllStates] = useState([]);
-  const [selectedState, setSelectedState] = useState('');
-  const [selectedStateId, setSelectedStateId] = useState('');
-  const [selectedStateName, setSelectedStateName] = useState('');
-  const [selectedCouncilShorthand, setSelectedCouncilShorthand] = useState('');
-  const [selectedCouncilLabel, setSelectedCouncilLabel] = useState('');
-  const [regions, setRegions] = useState('');
   const [selectedRegion, setSelectedRegion] = useState(state.selectedRegion);
   const mapRef = useRef(null);
   const defaultMarkers = [[40.78489145, -74.80733626930342]];
+
+  const zoneRedux = useSelector((stateRedux) => stateRedux.addressData.zone);
+  const zoneIdRedux = useSelector((stateRedux) => stateRedux.addressData.zoneId);
 
   async function getAllStates() {
     const key = `https://${state.apiBaseURL}.covercrop-selector.org/v1/states`;
@@ -54,19 +50,28 @@ const Landing = ({ height, title, bg }) => {
         console.log(err.message);
       });
   }
-  useEffect(() => {
-    getAllStates();
-  }, []);
 
-  async function getAllRegions() {
-    await fetch(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${state.stateId}/regions`)
+  const loadDictData = (data) => {
+    dispatch({
+      type: 'PULL_DICTIONARY_DATA',
+      data,
+    });
+  };
+
+  async function getCropData() {
+    if (zoneIdRedux === null) {
+      return;
+    }
+
+    const query = `${encodeURIComponent('regions')}=${encodeURIComponent(state.regionId)}`;
+    await fetch(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${state.stateId}/crops?${query}`)
       .then((res) => res.json())
       .then((data) => {
-        if (data.data.Counties) {
-          setRegions(data.data.Counties);
-        } else {
-          setRegions(data.data.Zones);
-        }
+        cropDataFormatter(data.data);
+        dispatch({
+          type: 'PULL_CROP_DATA',
+          data: data.data,
+        });
       })
       .catch((err) => {
         // eslint-disable-next-line no-console
@@ -74,72 +79,75 @@ const Landing = ({ height, title, bg }) => {
       });
   }
 
-  useEffect(() => {
-    dispatch({
-      type: 'UPDATE_REGIONS',
-      data: {
-        regions,
-      },
-    });
-    dispatchRedux(updateZone(
-      {
-        zoneText: regions[0]?.label,
-        zone: regions[0]?.shorthand,
-        zoneId: regions[0]?.id,
-      },
-    ));
-    // dispatch({
-    //   type: 'UPDATE_ZONE',
-    //   data: {
-    //     zoneText: regions[0]?.label,
-    //     zone: regions[0]?.shorthand,
-    //     zoneId: regions[0]?.id,
-    //   },
-    // });
-  }, [regions]);
-
-  useEffect(() => {
-    dispatch({
-      type: 'UPDATE_STATE',
-      data: {
-        state: selectedStateName,
-        stateId: selectedStateId,
-        councilShorthand: selectedCouncilShorthand,
-        councilLabel: selectedCouncilLabel,
-      },
-    });
-  }, [selectedState, selectedStateId, selectedCouncilLabel, selectedCouncilShorthand]);
-
-  useEffect(() => {
-    if (state.stateId) {
-      getAllRegions();
+  async function getDictData() {
+    if (!zoneIdRedux || !state.regionId) {
+      return;
     }
-  }, [state.stateId]);
 
-  const stateChange = (selState) => {
-    setSelectedState(selState);
-    setSelectedStateName(selState.label);
-    setSelectedStateId(selState.id);
-    setSelectedCouncilShorthand(selState.council.shorthand);
-    setSelectedCouncilLabel(selState.council.label);
-    dispatch({
-      type: 'UPDATE_STATE',
-      data: {
-        state: selState.label,
-        stateId: selState.id,
-        councilShorthand: selState.council.shorthand,
-        councilLabel: selState.council.label,
-      },
-    });
+    const query = `${encodeURIComponent('regions')}=${encodeURIComponent(state.regionId)}`;
+    await fetch(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${state.stateId}/dictionary?${query}`)
+      .then((res) => res.json())
+      .then((data) => {
+        loadDictData(data.data);
+      })
+      .catch((err) => {
+      // eslint-disable-next-line no-console
+        console.log(err.message);
+      });
+  }
+
+  useEffect(() => {
+    getAllStates();
+  }, []);
+
+  useEffect(() => {
+    getDictData();
+    getCropData();
+  }, [state.regionId]);
+
+  useEffect(() => {
     dispatch({
       type: 'UPDATE_REGION',
       data: {
-        regionId: regions[0]?.id ?? '',
-        regionLabel: regions[0]?.label ?? '',
-        regionShorthand: regions[0]?.shorthand ?? '',
+        regionId: state.regions[0]?.id ?? '',
+        regionLabel: state.regions[0]?.label ?? '',
+        regionShorthand: state.regions[0]?.shorthand ?? '',
       },
     });
-  };
+
+    dispatchRedux(updateZone(
+      {
+        zoneText: state.regions[0]?.label,
+        zone: state.regions[0]?.shorthand,
+        zoneId: state.regions[0]?.id,
+      },
+    ));
+  }, [state.regions]);
+
+  useEffect(() => {
+    if (state.stateId) {
+      fetch(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${state.stateId}/regions`)
+        .then((res) => res.json())
+        .then((data) => {
+          let fetchedRegions;
+          if (data.data.Counties) {
+            fetchedRegions = data.data.Counties;
+          }
+          fetchedRegions = data.data.Zones;
+
+          dispatch({
+            type: 'UPDATE_REGIONS',
+            data: {
+              regions: fetchedRegions,
+            },
+          });
+        })
+        .catch((err) => {
+          // eslint-disable-next-line no-console
+          console.log(err.message);
+        });
+    }
+  }, [state.stateId]);
 
   useEffect(() => {
     // true signifies we are on dev, false signifies we are on prod
@@ -157,7 +165,17 @@ const Landing = ({ height, title, bg }) => {
     if (Object.keys(selectedRegion).length > 0) {
       const selState = allStates.filter((s) => s.label === selectedRegion.properties.STATE_NAME);
       if (selState.length > 0 && verifyCouncil(selState[0]?.council.shorthand)) {
-        stateChange(selState[0]);
+        dispatchRedux(updateLastZone(zoneRedux));
+
+        dispatch({
+          type: 'UPDATE_STATE',
+          data: {
+            state: selState[0].label,
+            stateId: selState[0].id,
+            councilShorthand: selState[0].council.shorthand,
+            councilLabel: selState[0].council.label,
+          },
+        });
       } else {
         dispatch({
           type: 'UPDATE_STATE',
@@ -175,7 +193,7 @@ const Landing = ({ height, title, bg }) => {
         );
       }
     }
-  }, [selectedRegion, regions]);
+  }, [selectedRegion]);
 
   useEffect(() => {
     if (state.consent) {
