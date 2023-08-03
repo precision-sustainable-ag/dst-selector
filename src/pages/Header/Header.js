@@ -11,13 +11,13 @@ import { useSnackbar } from 'notistack';
 import React, { useContext, useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { abbrRegion, reverseGEO } from '../../shared/constants';
-import { Context, cropDataFormatter } from '../../store/Store';
+import { Context } from '../../store/Store';
 import '../../styles/header.scss';
 import HeaderLogoInfo from './HeaderLogoInfo/HeaderLogoInfo';
 import InformationBar from './InformationBar/InformationBar';
 import ToggleOptions from './ToggleOptions/ToggleOptions';
 import {
-  lastZipCode, updateLastZone, updateZipCode, updateZone,
+  lastZipCode, updateZipCode, updateZone,
 } from '../../reduxStore/addressSlice';
 
 const Header = () => {
@@ -26,8 +26,6 @@ const Header = () => {
   const markersRedux = useSelector((stateRedux) => stateRedux.addressData.markers);
   const zipCodeRedux = useSelector((stateRedux) => stateRedux.addressData.zipCode);
   const lastZipCodeRedux = useSelector((stateRedux) => stateRedux.addressData.lastZipCode);
-  const zoneRedux = useSelector((stateRedux) => stateRedux.addressData.zone);
-  const zoneIdRedux = useSelector((stateRedux) => stateRedux.addressData.zoneId);
   const [isRoot, setIsRoot] = useState(false);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const isActive = {};
@@ -264,76 +262,6 @@ const Header = () => {
         break;
     }
   }, [markersRedux, state.weatherDataReset]);
-
-  const loadDictData = (data) => {
-    dispatch({
-      type: 'PULL_DICTIONARY_DATA',
-      data,
-    });
-  };
-
-  async function getCropData(formattedGoal) {
-    if (zoneIdRedux === null) {
-      return;
-    }
-
-    const query = `${encodeURIComponent('regions')}=${encodeURIComponent(state.regionId)}`;
-    await fetch(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${state.regionId}/crops?${query}`)
-      .then((res) => res.json())
-      .then((data) => {
-        cropDataFormatter(data.data);
-        dispatch({
-          type: 'PULL_CROP_DATA',
-          data: data.data,
-        });
-        dispatch({
-          type: 'ADD_GOALS',
-          data: formattedGoal,
-        });
-      })
-      .catch((err) => {
-        // eslint-disable-next-line no-console
-        console.log(err.message);
-      });
-  }
-
-  async function getDictData() {
-    if (!zoneIdRedux || !state.regionId) {
-      return;
-    }
-
-    const query = `${encodeURIComponent('regions')}=${encodeURIComponent(state.regionId)}`;
-    await fetch(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${state.regionId}/dictionary?${query}`)
-      .then((res) => res.json())
-      .then((data) => {
-        loadDictData(data.data);
-        return data.data.filter(
-          (d) => d.label === 'Goals',
-        );
-      })
-      .then((data) => data[0]?.attributes?.filter(
-        (d) => d.label !== 'Notes: Goals',
-      ))
-      // .then((data) => data.map((goal) => ({ fields: goal })))
-      .then((data) => getCropData(data))
-      .catch((err) => {
-      // eslint-disable-next-line no-console
-        console.log(err.message);
-      });
-  }
-
-  useEffect(() => {
-    // if (state.zone === state.lastZone) {
-    //   return;
-    // }
-
-    if (state.regionId && state.stateId) {
-      getDictData();
-      getCropData([]);
-    }
-    // state.lastZone = state.zone; // TODO: update through dispatch
-    dispatchRedux(updateLastZone(zoneRedux));
-  }, [state.stateId, zoneRedux, state.regionId]);
 
   return (
     <header className="d-print-none">
