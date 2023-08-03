@@ -60,6 +60,14 @@ export const cropDataFormatter = (cropData = [{}]) => {
       if (timePeriod.months.length > 0) result.push(timePeriod);
       else index += 1;
     }
+    for (let i = 1; i < result.length; i++) {
+      if (moment(result[i].startTime).isSameOrBefore(result[i - 1].endTime)) {
+        result[i - 1] = { ...result[i - 1], endTime: result[i].startTime };
+      }
+      if (moment(result[i].endTime).isSameOrBefore(result[i].startTime)) {
+        result[i].endTime = '12/31';
+      }
+    }
     // console.log('test', halfMonthData, result);
     return result;
   };
@@ -119,13 +127,13 @@ export const cropDataFormatter = (cropData = [{}]) => {
               // TODO: need some modification for more accurate time periods
               if (halfMonthArr[index].start === '') halfMonthArr[index].start = start.format('MM/DD');
               else {
-                halfMonthArr[index].start = moment().isBefore(start, halfMonthArr[index].start)
+                halfMonthArr[index].start = moment(start).isSameOrBefore(halfMonthArr[index].start)
                   ? halfMonthArr[index].start
                   : start.format('MM/DD');
               }
               if (halfMonthArr[index].end === '') halfMonthArr[index].end = end.format('MM/DD');
               else {
-                halfMonthArr[index].end = moment().isBefore(end, halfMonthArr[index].end)
+                halfMonthArr[index].end = moment(end).isSameOrBefore(halfMonthArr[index].end)
                   ? halfMonthArr[index].end
                   : end.format('MM/DD');
               }
