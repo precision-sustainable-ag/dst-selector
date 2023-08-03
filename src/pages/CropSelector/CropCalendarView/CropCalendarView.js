@@ -54,8 +54,9 @@ const CropCalendarView = ({ activeCropData }) => {
     { className: 'reliable', label: 'Reliable Establishment' },
     { className: 'temperatureRisk', label: 'Temperature Risk To Establishment' },
     { className: 'frostPossible', label: 'Frost Seeding Possible' },
-    { className: 'cashCrop', label: 'Previous Cash Crop Growth Window' },
     { className: 'averageFrost', label: 'Average Frost' },
+    { className: 'multiple', label: 'Multiple' },
+    { className: 'cashCrop', label: 'Previous Cash Crop Growth Window' },
   ];
 
   const dispatchValue = (value, type = 'UPDATE_ACTIVE_CROP_DATA') => {
