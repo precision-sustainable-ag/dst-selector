@@ -107,7 +107,7 @@ const Landing = ({ height, title, bg }) => {
     dispatch({
       type: 'UPDATE_STATE',
       data: {
-        state: selState,
+        state: selState.label,
         stateId: selState.id,
         councilShorthand: selState.council.shorthand,
         councilLabel: selState.council.label,
