@@ -45,6 +45,7 @@ const CropCalendarView = ({ activeCropData }) => {
   const [nameSortFlag, setNameSortFlag] = useState(true);
   const [goalsSortFlag, setGoalsSortFlag] = useState(true);
   const [selectedCropsSortFlag, setSelectedCropsFlag] = useState(true);
+  const [plantingWindowSortFlag, setPlantingWindowSortFlag] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalData, setModalData] = useState([{}]);
   const { selectedGoals } = state;
@@ -92,6 +93,11 @@ const CropCalendarView = ({ activeCropData }) => {
   const sortCropsByName = () => {
     sortCrops('Crop Name', activeCropDataShadow, nameSortFlag);
     setNameSortFlag(!nameSortFlag);
+  };
+
+  const sortByPlantingWindow = () => {
+    sortCrops('Planting Window', activeCropDataShadow, plantingWindowSortFlag);
+    setPlantingWindowSortFlag(!plantingWindowSortFlag);
   };
 
   const sortBySelectedCrops = () => {
@@ -291,7 +297,6 @@ const CropCalendarView = ({ activeCropData }) => {
 
                   </TableCell>
                 )}
-
                 {allMonths.map((month, index) => {
                   const growthMonth = checkIfGrowthMonth(month);
                   const growthMonthSeparator = growthMonth
@@ -301,15 +306,16 @@ const CropCalendarView = ({ activeCropData }) => {
                   return (
                     <TableCell
                       key={`monthskey${index}`}
+                      style={{ cursor: 'pointer' }}
                       className={`calendarSecondHeadMonth ${
                         growthMonth ? 'activeGrowthMonth' : ''
                       } ${growthMonthSeparator ? 'growthMonthSeparator' : ''}`}
+                      onClick={sortByPlantingWindow}
                     >
                       <div style={sudoButtonStyle}>{month}</div>
                     </TableCell>
                   );
                 })}
-
                 <TableCell style={{ width: '10%', borderLeft: '5px solid white' }}>
                   <Button style={{ color: '#000' }} onClick={sortBySelectedCrops}>
                     <Typography variant="body2"> MY LIST </Typography>
