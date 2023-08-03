@@ -38,7 +38,7 @@ const Landing = ({ height, title, bg }) => {
   const defaultMarkers = [[40.78489145, -74.80733626930342]];
 
   const zoneRedux = useSelector((stateRedux) => stateRedux.addressData.zone);
-  const zoneIdRedux = useSelector((stateRedux) => stateRedux.addressData.zoneId);
+  // const zoneIdRedux = useSelector((stateRedux) => stateRedux.addressData.zoneId);
 
   async function getAllStates() {
     const key = `https://${state.apiBaseURL}.covercrop-selector.org/v1/states`;
@@ -51,19 +51,12 @@ const Landing = ({ height, title, bg }) => {
       });
   }
 
-  const loadDictData = (data) => {
-    dispatch({
-      type: 'PULL_DICTIONARY_DATA',
-      data,
-    });
-  };
-
-  async function getCropData() {
-    if (zoneIdRedux === null) {
+  async function getCropData(currentRegionId) {
+    if (currentRegionId === null) {
       return;
     }
 
-    const query = `${encodeURIComponent('regions')}=${encodeURIComponent(state.regionId)}`;
+    const query = `${encodeURIComponent('regions')}=${encodeURIComponent(currentRegionId)}`;
     await fetch(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${state.stateId}/crops?${query}`)
       .then((res) => res.json())
       .then((data) => {
@@ -79,16 +72,19 @@ const Landing = ({ height, title, bg }) => {
       });
   }
 
-  async function getDictData() {
-    if (!zoneIdRedux || !state.regionId) {
+  async function getDictData(currentRegionId) {
+    if (currentRegionId === null) {
       return;
     }
 
-    const query = `${encodeURIComponent('regions')}=${encodeURIComponent(state.regionId)}`;
+    const query = `${encodeURIComponent('regions')}=${encodeURIComponent(currentRegionId)}`;
     await fetch(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${state.stateId}/dictionary?${query}`)
       .then((res) => res.json())
       .then((data) => {
-        loadDictData(data.data);
+        dispatch({
+          type: 'PULL_DICTIONARY_DATA',
+          data: data.data,
+        });
       })
       .catch((err) => {
       // eslint-disable-next-line no-console
@@ -101,27 +97,27 @@ const Landing = ({ height, title, bg }) => {
   }, []);
 
   useEffect(() => {
-    getDictData();
-    getCropData();
-  }, [state.regionId]);
+    if (state.regions?.length > 0) {
+      dispatch({
+        type: 'UPDATE_REGION',
+        data: {
+          regionId: state.regions[0]?.id ?? '',
+          regionLabel: state.regions[0]?.label ?? '',
+          regionShorthand: state.regions[0]?.shorthand ?? '',
+        },
+      });
 
-  useEffect(() => {
-    dispatch({
-      type: 'UPDATE_REGION',
-      data: {
-        regionId: state.regions[0]?.id ?? '',
-        regionLabel: state.regions[0]?.label ?? '',
-        regionShorthand: state.regions[0]?.shorthand ?? '',
-      },
-    });
+      dispatchRedux(updateZone(
+        {
+          zoneText: state.regions[0]?.label,
+          zone: state.regions[0]?.shorthand,
+          zoneId: state.regions[0]?.id,
+        },
+      ));
 
-    dispatchRedux(updateZone(
-      {
-        zoneText: state.regions[0]?.label,
-        zone: state.regions[0]?.shorthand,
-        zoneId: state.regions[0]?.id,
-      },
-    ));
+      getDictData(state.regions[0]?.id);
+      getCropData(state.regions[0]?.id);
+    }
   }, [state.regions]);
 
   useEffect(() => {
