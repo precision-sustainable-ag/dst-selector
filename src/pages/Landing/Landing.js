@@ -45,7 +45,8 @@ const Landing = ({ height, title, bg }) => {
   const defaultMarkers = [[40.78489145, -74.80733626930342]];
 
   async function getAllStates() {
-    await fetch('https://api.covercrop-selector.org/v1/states')
+    const key = `https://${state.apiBaseURL}.covercrop-selector.org/v1/states`;
+    await fetch(key)
       .then((res) => res.json())
       .then((data) => { setAllStates(data.data); })
       .catch((err) => {
@@ -58,7 +59,7 @@ const Landing = ({ height, title, bg }) => {
   }, []);
 
   async function getAllRegions() {
-    await fetch(`https://api.covercrop-selector.org/v1/states/${state.stateId}/regions`)
+    await fetch(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${state.stateId}/regions`)
       .then((res) => res.json())
       .then((data) => {
         if (data.data.Counties) {
@@ -124,7 +125,7 @@ const Landing = ({ height, title, bg }) => {
     dispatch({
       type: 'UPDATE_STATE',
       data: {
-        state: selState,
+        state: selState.label,
         stateId: selState.id,
         councilShorthand: selState.council.shorthand,
         councilLabel: selState.council.label,
@@ -133,9 +134,9 @@ const Landing = ({ height, title, bg }) => {
     dispatch({
       type: 'UPDATE_REGION',
       data: {
-        regionId: selectedRegion.id ?? '',
-        regionLabel: selectedRegion.label ?? '',
-        regionShorthand: selectedRegion.shorthand ?? '',
+        regionId: regions[0]?.id ?? '',
+        regionLabel: regions[0]?.label ?? '',
+        regionShorthand: regions[0]?.shorthand ?? '',
       },
     });
   };
@@ -174,7 +175,7 @@ const Landing = ({ height, title, bg }) => {
         );
       }
     }
-  }, [selectedRegion]);
+  }, [selectedRegion, regions]);
 
   useEffect(() => {
     if (state.consent) {

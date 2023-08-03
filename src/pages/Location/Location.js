@@ -118,6 +118,7 @@ const LocationComponent = ({
   const handleMapChange = () => {
     // eslint-disable-next-line eqeqeq
     const regionInfo = state.regions.filter((region) => region.shorthand == selectedZone);
+
     updateZone(regionInfo[0]);
   };
 
@@ -189,7 +190,7 @@ const LocationComponent = ({
         handleMapChange();
       }
     }
-  }, [selectedToEditSite, selectedZone]);
+  }, [selectedToEditSite]);
 
   return (
     <div className="container-fluid mt-5">
@@ -214,7 +215,7 @@ const LocationComponent = ({
               )}
             <div className="row py-3 my-4 ">
               <div className="col-md-5 col-lg-6 col-sm-12 col-12">
-                <PlantHardinessZone updateZone={updateZone} handleMapChange={handleMapChange} />
+                <PlantHardinessZone updateZone={updateZone} />
               </div>
             </div>
           </div>

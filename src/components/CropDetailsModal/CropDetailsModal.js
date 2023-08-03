@@ -22,7 +22,7 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
       return;
     }
     const query = `${encodeURIComponent('regions')}=${encodeURIComponent(state.regionId)}`;
-    await fetch(`https://api.covercrop-selector.org/v1/states/${state.stateId}/crops/${crop?.id}?${query}`)
+    await fetch(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${state.stateId}/crops/${crop?.id}?${query}`)
       .then((res) => res.json())
       .then((data) => {
         dispatch({
