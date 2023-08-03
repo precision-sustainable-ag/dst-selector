@@ -4,6 +4,7 @@
   styled using ../../styles/header.scss
 */
 
+import { useDispatch, useSelector } from 'react-redux';
 import Axios from 'axios';
 import moment from 'moment';
 import { useSnackbar } from 'notistack';
@@ -15,9 +16,18 @@ import '../../styles/header.scss';
 import HeaderLogoInfo from './HeaderLogoInfo/HeaderLogoInfo';
 import InformationBar from './InformationBar/InformationBar';
 import ToggleOptions from './ToggleOptions/ToggleOptions';
+import {
+  lastZipCode, updateLastZone, updateZipCode, updateZone,
+} from '../../reduxStore/addressSlice';
 
 const Header = () => {
   const { state, dispatch } = useContext(Context);
+  const dispatchRedux = useDispatch();
+  const markersRedux = useSelector((stateRedux) => stateRedux.addressData.markers);
+  const zipCodeRedux = useSelector((stateRedux) => stateRedux.addressData.zipCode);
+  const lastZipCodeRedux = useSelector((stateRedux) => stateRedux.addressData.lastZipCode);
+  const zoneRedux = useSelector((stateRedux) => stateRedux.addressData.zone);
+  const zoneIdRedux = useSelector((stateRedux) => stateRedux.addressData.zoneId);
   const [isRoot, setIsRoot] = useState(false);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const isActive = {};
@@ -26,19 +36,20 @@ const Header = () => {
   const getUSDAZone = async (zip) => fetch(`https://phzmapi.org/${zip}.json`);
 
   useEffect(() => {
-    if (!state.zipCode) {
+    if (!zipCodeRedux) {
       return;
     }
 
-    if (state.zipCode !== state.lastZipCode) {
-      dispatch({
-        type: 'LAST_ZIP_CODE',
-        data: {
-          value: state.zipCode,
-        },
-      });
+    if (zipCodeRedux !== lastZipCodeRedux) {
+      dispatchRedux(lastZipCode(zipCodeRedux));
+      // dispatch({
+      //   type: 'LAST_ZIP_CODE',
+      //   data: {
+      //     value: zipCodeRedux,
+      //   },
+      // });
 
-      getUSDAZone(state.zipCode)
+      getUSDAZone(zipCodeRedux)
         .then((response) => {
           if (response.ok) {
             const dataJson = response.json();
@@ -61,32 +72,39 @@ const Header = () => {
                 });
               }
               if (state.councilShorthand !== 'MCCC') {
-                dispatch({
-                  type: 'UPDATE_ZONE',
-                  data: {
+                dispatchRedux(updateZone(
+                  {
                     zoneText: `Zone ${zone}`,
                     zone,
                     zoneId: regionId,
                   },
-                });
+                ));
+                // dispatch({
+                //   type: 'UPDATE_ZONE',
+                //   data: {
+                //     zoneText: `Zone ${zone}`,
+                //     zone,
+                //     zoneId: regionId,
+                //   },
+                // });
               }
             });
           }
         });
     }
-  }, [state.zipCode, state.lastZipCode, dispatch, enqueueSnackbar, closeSnackbar]);
+  }, [zipCodeRedux, lastZipCodeRedux, dispatch, dispatchRedux, enqueueSnackbar, closeSnackbar]);
 
   useEffect(() => {
-    const { markers } = state;
+    // const { markers } = state;
 
     // update address on marker change
     // ref forecastComponent
-    const lat = markers[0][0];
-    const lon = markers[0][1];
+    const lat = markersRedux[0][0];
+    const lon = markersRedux[0][1];
 
     // since this updates with state; ideally, weather and soil info should be updated here
     // get current lat long and get county, state and city
-    if (state.progress >= 1 && state.markers.length > 0) {
+    if (state.progress >= 1 && markersRedux.length > 0) {
       reverseGEO(lat, lon)
         .then(async (resp) => {
           const abbrState = abbrRegion(
@@ -98,12 +116,7 @@ const Header = () => {
           const zip = resp?.features?.filter((feature) => feature?.place_type?.includes('postcode'))[0]?.text;
 
           if (zip) {
-            dispatch({
-              type: 'UPDATE_ZIP_CODE',
-              data: {
-                zip,
-              },
-            });
+            dispatchRedux(updateZipCode(zip));
           }
 
           const frostUrl = `${weatherApiURL}/frost?lat=${lat}&lon=${lon}`;
@@ -250,7 +263,7 @@ const Header = () => {
       default:
         break;
     }
-  }, [state.markers, state.weatherDataReset]);
+  }, [markersRedux, state.weatherDataReset]);
 
   const loadDictData = (data) => {
     dispatch({
@@ -260,11 +273,12 @@ const Header = () => {
   };
 
   async function getCropData(formattedGoal) {
-    if (state.zoneId === null) {
+    if (zoneIdRedux === null) {
       return;
     }
+
     const query = `${encodeURIComponent('regions')}=${encodeURIComponent(state.regionId)}`;
-    await fetch(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${state.zoneId}/crops?${query}`)
+    await fetch(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${state.regionId}/crops?${query}`)
       .then((res) => res.json())
       .then((data) => {
         cropDataFormatter(data.data);
@@ -284,11 +298,12 @@ const Header = () => {
   }
 
   async function getDictData() {
-    if (state.zoneId === null) {
+    if (!zoneIdRedux || !state.regionId) {
       return;
     }
-    const query = `${encodeURIComponent('regions')}=${encodeURIComponent(state.zoneId)}`;
-    await fetch(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${state.zoneId}/dictionary?${query}`)
+
+    const query = `${encodeURIComponent('regions')}=${encodeURIComponent(state.regionId)}`;
+    await fetch(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${state.regionId}/dictionary?${query}`)
       .then((res) => res.json())
       .then((data) => {
         loadDictData(data.data);
@@ -311,12 +326,14 @@ const Header = () => {
     // if (state.zone === state.lastZone) {
     //   return;
     // }
+
     if (state.regionId && state.stateId) {
       getDictData();
       getCropData([]);
     }
-    state.lastZone = state.zone; // TODO
-  }, [state.stateId, state.zone, state.regionId]);
+    // state.lastZone = state.zone; // TODO: update through dispatch
+    dispatchRedux(updateLastZone(zoneRedux));
+  }, [state.stateId, zoneRedux, state.regionId]);
 
   return (
     <header className="d-print-none">
