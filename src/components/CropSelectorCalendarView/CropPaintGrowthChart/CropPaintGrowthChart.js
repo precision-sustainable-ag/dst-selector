@@ -9,100 +9,153 @@ const CropPaintGrowthChart = ({
   isThisCashCropMonth = () => {},
   isCashCropMonth = () => {},
 }) => {
+  // TODO: add listView here, change growthCell-30 to growthCell-20
   if (from === 'listView') {
     return (
-      <table className="w-100">
-        <tbody>
-          <tr>
-            {months.map((month, index) => {
-              const earlyStr = `${month}, Early`;
-              const midStr = `${month}, Mid`;
+      <>
+        <table className="w-100">
+          <tbody>
+            <tr>
+              {months.map((month, index) => {
+                const earlyStr = `${month}, Early`;
+                const midStr = `${month}, Mid`;
 
-              return (
-                <td
-                  key={index}
-                  className={
+                return (
+                  <td
+                    key={index}
+                    className={
                     isThisCashCropMonth(month)
                       ? 'cashCropMonth listView p-0 growthTd'
                       : 'p-0 growthTd'
                   }
-                >
-                  <div className="d-flex flex-row w-100 growthCellsWrapper">
-                    {data[earlyStr] ? (
-                      <Tooltip
-                        arrow
-                        title={(
-                          <>
+                  >
+                    <div className="d-flex flex-row w-100 growthCellsWrapper">
+                      {data[earlyStr] ? (
+                        <Tooltip
+                          arrow
+                          title={(
+                            <>
+                              <Typography color="secondary">
+                                {month.toUpperCase()}
+                                , EARLY
+                              </Typography>
+                              {data[earlyStr].map((v, i) => (
+                                <Typography variant="body1" key={i} gutterBottom>
+                                  {v}
+                                </Typography>
+                              ))}
+                            </>
+                        )}
+                        >
+                          <div
+                            className={`${data[earlyStr].toString()} w-50 growthCell-20`}
+                          />
+                        </Tooltip>
+                      ) : (
+                        <Tooltip
+                          arrow
+                          title={(
                             <Typography color="secondary">
                               {month.toUpperCase()}
                               , EARLY
                             </Typography>
-                            {data[earlyStr].map((v, i) => (
-                              <Typography variant="body1" key={i} gutterBottom>
-                                {v}
+                        )}
+                        >
+                          <div className="w-50 basic growthCell-20" />
+                        </Tooltip>
+                      )}
+                      {data[midStr] ? (
+                        <Tooltip
+                          arrow
+                          title={(
+                            <>
+                              <Typography color="secondary">
+                                {month.toUpperCase()}
+                                , MID
                               </Typography>
-                            ))}
-                          </>
+                              {data[midStr].map((v, i) => (
+                                <Typography variant="body1" key={i} gutterBottom>
+                                  {v}
+                                </Typography>
+                              ))}
+                            </>
                         )}
-                      >
-                        <div
-                          className={`${data[earlyStr].toString()} w-50 growthCell-20`}
-                        />
-                      </Tooltip>
-                    ) : (
-                      <Tooltip
-                        arrow
-                        title={(
-                          <Typography color="secondary">
-                            {month.toUpperCase()}
-                            , EARLY
-                          </Typography>
-                        )}
-                      >
-                        <div className="w-50 basic growthCell-20" />
-                      </Tooltip>
-                    )}
-                    {data[midStr] ? (
-                      <Tooltip
-                        arrow
-                        title={(
-                          <>
+                        >
+                          <div
+                            className={`${data[midStr].toString()} w-50 growthCell-20`}
+                          />
+                        </Tooltip>
+                      ) : (
+                        <Tooltip
+                          arrow
+                          title={(
                             <Typography color="secondary">
                               {month.toUpperCase()}
                               , MID
                             </Typography>
-                            {data[midStr].map((v, i) => (
-                              <Typography variant="body1" key={i} gutterBottom>
-                                {v}
-                              </Typography>
-                            ))}
-                          </>
                         )}
-                      >
-                        <div
-                          className={`${data[midStr].toString()} w-50 growthCell-20`}
-                        />
-                      </Tooltip>
-                    ) : (
-                      <Tooltip
-                        arrow
-                        title={(
+                        >
+                          <div className="w-50 basic growthCell-20" />
+                        </Tooltip>
+                      )}
+                    </div>
+                  </td>
+                );
+              })}
+            </tr>
+          </tbody>
+        </table>
+        <br />
+
+        <div>
+          <div className="d-flex flex-row w-100 growthCellsWrapper">
+            {data['Half Month Data'].map((item, index) => {
+              const l = item.months.length;
+              if (item.info.length > 0) {
+                return (
+                  <Tooltip
+                    arrow
+                    title={(
+                      <>
+                        {item.info.length === 1 ? (
                           <Typography color="secondary">
-                            {month.toUpperCase()}
-                            , MID
+                            {`${item.startTime} - ${item.endTime}`}
                           </Typography>
-                        )}
-                      >
-                        <div className="w-50 basic growthCell-20" />
-                      </Tooltip>
+                        ) : null}
+                        <Typography variant="body1" gutterBottom>
+                          {item.info.join(', ')}
+                        </Typography>
+                      </>
                     )}
-                  </div>
-                </td>
+                    key={index}
+                  >
+                    <div className="d-flex flex-row" style={{ flex: l }}>
+                      {item.months.map((month, i) => (
+                        <div
+                          className={`basic growthCell-20 ${item.info.join(' ')} ${isCashCropMonth(month) ? 'cashCropMonth' : ''}`}
+                          key={`${index}-${i}`}
+                        />
+                      ))}
+
+                    </div>
+                  </Tooltip>
+                );
+              }
+              return (
+                <div className="d-flex flex-row" style={{ flex: l }}>
+                  {item.months.map((month, i) => (
+                    <div
+                      className={`basic growthCell-20 ${item.info.join(' ')} ${isCashCropMonth(month) ? 'cashCropMonth' : ''}`}
+                      key={`${index}-${i}`}
+                    />
+                  ))}
+
+                </div>
               );
             })}
-          </tr>
-        </tbody>
-      </table>
+          </div>
+        </div>
+      </>
     );
   } if (from === 'calendar') {
     return (

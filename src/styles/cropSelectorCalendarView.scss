@@ -19,21 +19,26 @@ div.growthCellsWrapper {
         top: 0;
         content: '';
         background-color: $cashCropGrowthWindowColor;
-        z-index: 1;
+        z-index: -1;
       }
     }
   }
+  // TODO: The z-index is an issue here to implement the cash crop bar
+  // since in this situation I used a div and ::after to implement it, 
+  // the ::after will inherit the z-index value from parent and stack on parent,
+  // so I set basic z-index to 2, and others to auto so the cash crop bar
+  // will be shown on the basic bars will not affecting others
   .growthCell-30.Frost.Seeding {
     background-color: $frostSeedingPossibleColor;
-    z-index: 2;
+    z-index: auto;
   }
   .growthCell-30.Reliable {
     background-color: $reliableEstablishmentColor;
-    z-index: 2;
+    z-index: auto;
   }
   .growthCell-30.Average {
     background-color: $averageFrostColor;
-    z-index: 2;
+    z-index: auto;
   }
   .growthCell-30.Average.Reliable{
     background-image: repeating-linear-gradient(45deg, 
@@ -41,20 +46,34 @@ div.growthCellsWrapper {
     $reliableEstablishmentColor 5px, 
     $averageFrostColor 5px, 
     $averageFrostColor 10px);
-    z-index: 2;
+    z-index: auto;
   }
   .growthCell-30.Freeze\/Moisture.Risk.to.Establishment {
     background-color: $temperatureRiskToEstablishmentColor;
-    z-index: 2;
+    z-index: auto;
   }
   .growthCell-30.Spring, .basic, .Fall\/Winter, .Can, .Summer, .Spring, .Average  {
     background-color: $defaultLegendColor;
+    z-index: 2;
   }
 
   .growthCell-20 {
-    width: 50%;
+    flex: 1;
     height: 20px;
+    position: relative;
+    &.cashCropMonth{
+      &::after {
+        position: absolute;
+        width: 100%;
+        height: 20px;
+        top: 0;
+        content: '';
+        background-color: $cashCropGrowthWindowColor;
+        z-index: 1;
+      }
+    }
   }
+
   .growthCell-20.Frost {
     background-color: $frostSeedingPossibleColor;
     z-index: 2;
@@ -63,12 +82,13 @@ div.growthCellsWrapper {
     background-color: $reliableEstablishmentColor;
     z-index: 2;
   }
-  .growthCell-20.Temperature\/Moisture.Risk.to.Establishment {
+  .growthCell-20.Freeze\/Moisture.Risk.to.Establishment {
     background-color: $temperatureRiskToEstablishmentColor;
     z-index: 2;
   }
-  .basic.growthCell-20 {
+  .growthCell-20.Spring, .basic, .Fall\/Winter, .Can, .Summer, .Spring, .Average  {
     background-color: $defaultLegendColor;
+    // z-index: 2;
   }
 }
 
