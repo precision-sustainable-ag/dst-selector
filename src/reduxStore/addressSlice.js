@@ -86,7 +86,7 @@ export const updateLastZone = (value) => ({
 //     };
 // };
 
-const addressReducer = (state = initialState, action) => {
+const addressReducer = (state = initialState, action = null) => {
   switch (action.type) {
     case 'UPDATE_LOCATION':
       return {
