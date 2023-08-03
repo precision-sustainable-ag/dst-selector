@@ -151,7 +151,6 @@ const RenderCrops = ({
           </TableCell>
           )}
           <TableCell colSpan="12">
-            {/* TODO: render the calendar cells */}
             <CropSelectorCalendarView from="calendar" data={crop} />
           </TableCell>
 
