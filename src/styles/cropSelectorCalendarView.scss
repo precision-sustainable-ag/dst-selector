@@ -35,12 +35,8 @@ div.growthCellsWrapper {
     background-color: $averageFrostColor;
     z-index: auto;
   }
-  .growthCell-30.Average.Reliable{
-    background-image: repeating-linear-gradient(45deg, 
-    $reliableEstablishmentColor, 
-    $reliableEstablishmentColor 5px, 
-    $averageFrostColor 5px, 
-    $averageFrostColor 10px);
+  .growthCell-30.Multiple{
+    background-color: $multipleColor;
     z-index: auto;
   }
   .growthCell-30.Freeze\/Moisture.Risk.to.Establishment {
@@ -75,6 +71,10 @@ div.growthCellsWrapper {
   }
   .growthCell-20.Reliable {
     background-color: $reliableEstablishmentColor;
+    z-index: 2;
+  }
+  .growthCell-20.Multiple{
+    background-color: $multipleColor;
     z-index: 2;
   }
   .growthCell-20.Freeze\/Moisture.Risk.to.Establishment {

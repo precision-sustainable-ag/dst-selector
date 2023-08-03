@@ -7,7 +7,6 @@ const CropPaintGrowthChart = ({
   data = [],
   isCashCropMonth = () => {},
 }) => (
-  // TODO: add listView here, change growthCell-30 to growthCell-20
   <div className="d-flex flex-row w-100 growthCellsWrapper">
     {data['Half Month Data'].map((item, index) => {
       const l = item.months.length;
@@ -34,7 +33,7 @@ const CropPaintGrowthChart = ({
                 <div
                   className={`basic\
                   ${from === 'listView' ? 'growthCell-20' : 'growthCell-30'}\
-                  ${item.info.join(' ')}\
+                  ${item.info.length > 1 ? 'Multiple' : item.info[0]}\
                   ${isCashCropMonth(month) ? 'cashCropMonth' : ''}`}
                   key={`${index}-${i}`}
                 />
@@ -49,7 +48,7 @@ const CropPaintGrowthChart = ({
             <div
               className={`basic\
               ${from === 'listView' ? 'growthCell-20' : 'growthCell-30'} \
-              ${item.info.join(' ')} \
+              ${item.info.length > 1 ? 'Multiple' : item.info[0]}\
               ${isCashCropMonth(month) ? 'cashCropMonth' : ''}`}
               key={`${index}-${i}`}
             />
