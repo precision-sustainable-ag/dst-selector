@@ -30,7 +30,6 @@ export const cropDataFormatter = (cropData = [{}]) => {
   });
 
   const formatHalfMonthData = (halfMonthData) => {
-    // TODO: add calculation for cash crops(use isThisCashCropMonth)
     const result = [];
     let index = 0;
     while (index < halfMonthData.length) {
@@ -68,7 +67,6 @@ export const cropDataFormatter = (cropData = [{}]) => {
         result[i].endTime = '12/31';
       }
     }
-    // console.log('test', halfMonthData, result);
     return result;
   };
 
@@ -90,17 +88,14 @@ export const cropDataFormatter = (cropData = [{}]) => {
       start: '',
       end: '',
     }));
-    const windowsMap = new Map();
+
     params.forEach((param) => {
       if (val.data['Planting and Growth Windows']?.[`${param}`]) {
-        windowsMap.set(param, val.data['Planting and Growth Windows']?.[`${param}`].values);
         val.data['Planting and Growth Windows']?.[`${param}`].values.forEach((dateArray) => {
           const datesArr = dateArray.split('-');
           // const valStart = moment(datesArr[0], 'YYYY-MM-DD');
           const valStart = moment(datesArr[0], 'MM/DD/YYYY');
           const valEnd = moment(datesArr[1], 'MM/DD/YYYY');
-          let str = '';
-          const valuesArray = [];
 
           if (param === 'Average Frost') {
             valEnd.add('1', 'years');
@@ -113,18 +108,11 @@ export const cropDataFormatter = (cropData = [{}]) => {
           while (valStart.isSameOrBefore(valEnd)) {
             const month = valStart.month();
             let index = month * 2;
-            if (valStart.get('D') <= 15) {
-              str = 'Early';
-            } else {
-              str = 'Mid';
+            if (valStart.get('D') > 15) {
               index += 1;
-            }
-            if (!valuesArray.includes([`${valStart.format('MMMM')}, ${str}`])) {
-              valuesArray.push([`${valStart.format('MMMM')}, ${str}`]);
             }
             if (halfMonthArr[index].info.at(-1) !== param) {
               halfMonthArr[index].info.push(param);
-              // TODO: need some modification for more accurate time periods
               if (halfMonthArr[index].start === '') halfMonthArr[index].start = start.format('MM/DD');
               else {
                 halfMonthArr[index].start = moment(start).isSameOrBefore(halfMonthArr[index].start)
@@ -140,11 +128,6 @@ export const cropDataFormatter = (cropData = [{}]) => {
             }
             valStart.add('1', 'days');
           }
-          valuesArray.forEach((key) => {
-            const prev = val[key] || [];
-            prev.push(param);
-            val[key] = prev;
-          });
         });
       }
     });
