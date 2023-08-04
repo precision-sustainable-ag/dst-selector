@@ -29,7 +29,7 @@ export const cropDataFormatter = (cropData = [{}]) => {
     } return true;
   });
 
-  const formatHalfMonthData = (halfMonthData) => {
+  const formatHalfMonthData = (halfMonthData = []) => {
     const result = [];
     let index = 0;
     while (index < halfMonthData.length) {
@@ -59,15 +59,38 @@ export const cropDataFormatter = (cropData = [{}]) => {
       if (timePeriod.months.length > 0) result.push(timePeriod);
       else index += 1;
     }
-    for (let i = 1; i < result.length; i++) {
-      if (moment(result[i].startTime).isSameOrBefore(result[i - 1].endTime)) {
-        result[i - 1] = { ...result[i - 1], endTime: result[i].startTime };
-      }
-      if (moment(result[i].endTime).isSameOrBefore(result[i].startTime)) {
-        result[i].endTime = '12/31';
-      }
-    }
+    // for (let i = 1; i < result.length; i++) {
+    //   if (moment(result[i].startTime).isSameOrBefore(result[i - 1].endTime)) {
+    //     result[i - 1] = { ...result[i - 1], endTime: result[i].startTime };
+    //   }
+    //   if (moment(result[i].endTime).isSameOrBefore(result[i].startTime)) {
+    //     result[i].endTime = '12/31';
+    //   }
+    // }
     return result;
+  };
+
+  const formatTimeToHalfMonthData = (startTime = '', endTime = '', param = '', halfMonthData = []) => {
+    const startIndex = moment(startTime).month() * 2 + (moment(startTime).date() >= 15 ? 1 : 0);
+    // 0 based month
+    const endIndex = moment(endTime).month() * 2 + (moment(endTime).date() >= 15 ? 1 : 0);
+    halfMonthData = halfMonthData.map((data, index) => {
+      if (index >= startIndex && index <= endIndex) {
+        const info = [...data.info, param];
+        let start = '';
+        let end = '';
+        if (data.start === '') start = startTime;
+        else start = moment(data.start).isSameOrBefore(startTime) ? startTime : data.start;
+        if (data.end === '') end = endTime;
+        else end = moment(data.end).isSameOrBefore(endTime) ? data.end : endTime;
+        return {
+          ...data, start, end, info,
+        };
+      }
+      return data;
+    });
+    // console.log('halfMonthData', halfMonthData);
+    return halfMonthData;
   };
 
   const monthStringBuilder = (vals) => {
@@ -82,7 +105,7 @@ export const cropDataFormatter = (cropData = [{}]) => {
       'Average Frost',
     ];
     const val = vals;
-    const halfMonthArr = Array.from({ length: 24 }, (_, i) => ({
+    let halfMonthArr = Array.from({ length: 24 }, (_, i) => ({
       month: moment().month(Math.floor(i / 2)).format('M'),
       info: [],
       start: '',
@@ -94,45 +117,52 @@ export const cropDataFormatter = (cropData = [{}]) => {
         val.data['Planting and Growth Windows']?.[`${param}`].values.forEach((dateArray) => {
           const datesArr = dateArray.split('-');
           // const valStart = moment(datesArr[0], 'YYYY-MM-DD');
-          const valStart = moment(datesArr[0], 'MM/DD/YYYY');
-          const valEnd = moment(datesArr[1], 'MM/DD/YYYY');
+          const valStart = moment(datesArr[0], 'MM/DD/YYYY').format('MM/DD');
+          const valEnd = moment(datesArr[1], 'MM/DD/YYYY').format('MM/DD');
 
-          if (param === 'Average Frost') {
-            valEnd.add('1', 'years');
+          if (moment(valStart).isSameOrAfter(valEnd)) {
+            const tempStart = '01/01';
+            const tempEnd = '12/31';
+            halfMonthArr = formatTimeToHalfMonthData(valStart, tempEnd, param, halfMonthArr);
+            halfMonthArr = formatTimeToHalfMonthData(tempStart, valEnd, param, halfMonthArr);
+          } else {
+            halfMonthArr = formatTimeToHalfMonthData(valStart, valEnd, param, halfMonthArr);
           }
+          console.log(val.label, val.data, halfMonthArr);
 
-          const start = valStart;
-          const end = valEnd;
+          // const start = valStart;
+          // const end = valEnd;
 
-          // TODO: This is not a efficient alg, there might be better solutions
-          while (valStart.isSameOrBefore(valEnd)) {
-            const month = valStart.month();
-            let index = month * 2;
-            if (valStart.get('D') > 15) {
-              index += 1;
-            }
-            if (halfMonthArr[index].info.at(-1) !== param) {
-              halfMonthArr[index].info.push(param);
-              if (halfMonthArr[index].start === '') halfMonthArr[index].start = start.format('MM/DD');
-              else {
-                halfMonthArr[index].start = moment(start).isSameOrBefore(halfMonthArr[index].start)
-                  ? halfMonthArr[index].start
-                  : start.format('MM/DD');
-              }
-              if (halfMonthArr[index].end === '') halfMonthArr[index].end = end.format('MM/DD');
-              else {
-                halfMonthArr[index].end = moment(end).isSameOrBefore(halfMonthArr[index].end)
-                  ? halfMonthArr[index].end
-                  : end.format('MM/DD');
-              }
-            }
-            valStart.add('1', 'days');
-          }
+          // // TODO: This is not a efficient alg, there might be better solutions
+          // while (valStart.isSameOrBefore(valEnd)) {
+          //   const month = valStart.month();
+          //   let index = month * 2;
+          //   if (valStart.get('D') > 15) {
+          //     index += 1;
+          //   }
+          //   if (halfMonthArr[index].info.at(-1) !== param) {
+          //     halfMonthArr[index].info.push(param);
+          //     if (halfMonthArr[index].start === '') halfMonthArr[index].start = start.format('MM/DD');
+          //     else {
+          //       halfMonthArr[index].start = moment(start).isSameOrBefore(halfMonthArr[index].start)
+          //         ? halfMonthArr[index].start
+          //         : start.format('MM/DD');
+          //     }
+          //     if (halfMonthArr[index].end === '') halfMonthArr[index].end = end.format('MM/DD');
+          //     else {
+          //       halfMonthArr[index].end = moment(end).isSameOrBefore(halfMonthArr[index].end)
+          //         ? halfMonthArr[index].end
+          //         : end.format('MM/DD');
+          //     }
+          //   }
+          //   valStart.add('1', 'days');
+          // }
         });
       }
     });
     const halfMonthData = formatHalfMonthData(halfMonthArr);
     val['Half Month Data'] = halfMonthData;
+    // console.log('test', halfMonthData, halfMonthArr);
 
     // this is temporary, needs to be replaced with wither a fix to calendar growth window component or exporting of json from airtable
     Object.keys(val).forEach((item) => {
