@@ -65,12 +65,16 @@ div.growthCellsWrapper {
     }
   }
 
-  .growthCell-20.Frost {
+  .growthCell-20.Frost.Seeding {
     background-color: $frostSeedingPossibleColor;
     z-index: 2;
   }
   .growthCell-20.Reliable {
     background-color: $reliableEstablishmentColor;
+    z-index: 2;
+  }
+  .growthCell-20.Average {
+    background-color: $averageFrostColor;
     z-index: 2;
   }
   .growthCell-20.Multiple{
