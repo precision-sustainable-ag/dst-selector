@@ -39,6 +39,7 @@ const Landing = ({ height, title, bg }) => {
   const defaultMarkers = [[40.78489145, -74.80733626930342]];
 
   const zoneRedux = useSelector((stateRedux) => stateRedux.addressData.zone);
+  const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
   // const zoneIdRedux = useSelector((stateRedux) => stateRedux.addressData.zoneId);
 
   async function getAllStates() {
@@ -229,7 +230,7 @@ const Landing = ({ height, title, bg }) => {
   useEffect(() => {
     if (localStorage.getItem('lastLocation') === 'CoverCropExplorer') {
       document.title = 'Cover Crop Selector';
-      if (state.selectedCrops.length) {
+      if (selectedCropsRedux.length) {
         setHandleConfirm(true);
       }
     }

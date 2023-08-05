@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Button, TableCell, TableRow } from '@mui/material';
 import {
   CropImage,
@@ -10,20 +11,26 @@ import {
 import CropSelectorCalendarView from '../../../components/CropSelectorCalendarView/CropSelectorCalendarView';
 import { Context } from '../../../store/Store';
 import '../../../styles/cropCalendarViewComponent.scss';
+import { selectedCropsModifier } from '../../../reduxStore/cropSlice';
+import { snackHandler } from '../../../reduxStore/sharedSlice';
 
 const RenderCrops = ({
   cropData, active, setModalOpen, modalOpen, setModalData,
 }) => {
   const { state, dispatch } = useContext(Context);
-
-  const dispatchValue = (value, type = 'SELECTED_CROPS_MODIFIER') => {
-    dispatch({
-      type,
-      data: value,
-    });
+  const dispatchRedux = useDispatch();
+  const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
+  const dispatchValue = ({ selectedCrops, snackOpen, snackMessage }) => {
+    dispatchRedux(selectedCropsModifier(selectedCrops));
+    console.log('snack');
+    dispatchRedux(snackHandler({ snackOpen, snackMessage }));
+    // dispatch({
+    //   type,
+    //   data: value,
+    // });
   };
 
-  const selectedBtns = state.selectedCrops.map((crop) => crop.id);
+  const selectedBtns = selectedCropsRedux.map((crop) => crop.id);
 
   const hasGoalRatingTwoOrLess = (crop = []) => {
     const { selectedGoals } = state;
@@ -50,16 +57,16 @@ const RenderCrops = ({
     selectedCrops.data = cData;
     cropArray = selectedCrops;
 
-    if (state.selectedCrops.length > 0) {
-      const removeIndex = state.selectedCrops.map((item) => item.btnId).indexOf(`${btnId}`);
+    if (selectedCropsRedux.length > 0) {
+      const removeIndex = selectedCropsRedux.map((item) => item.btnId).indexOf(`${btnId}`);
       if (removeIndex === -1) {
         dispatchValue({
-          selectedCrops: [...state.selectedCrops, selectedCrops],
+          selectedCrops: [...selectedCropsRedux, selectedCrops],
           snackOpen: true,
           snackMessage: `${cropName} Added`,
         });
       } else {
-        const selectedCropsCopy = state.selectedCrops;
+        const selectedCropsCopy = selectedCropsRedux;
         selectedCropsCopy.splice(removeIndex, 1);
         dispatchValue({
           selectedCrops: selectedCropsCopy,

@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { Button, Typography } from '@mui/material';
 import { LocalDrinkOutlined } from '@mui/icons-material';
 import { ReferenceTooltip } from '../../../../shared/constants';
@@ -12,13 +13,14 @@ const SoilDrainage = ({ setTilingCheck }) => {
   const { state, dispatch } = useContext(Context);
   const { soilData, soilDataOriginal } = state;
   const [handleConfirm, setHandleConfirm] = useState(false);
+  const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
 
   useEffect(() => {
-    if (state.myCoverCropListLocation !== 'selector' && state.selectedCrops.length > 0) {
+    if (state.myCoverCropListLocation !== 'selector' && selectedCropsRedux.length > 0) {
       // document.title = 'Cover Crop Selector';
       setHandleConfirm(true);
     }
-  }, [state.selectedCrops, state.myCoverCropListLocation]);
+  }, [selectedCropsRedux, state.myCoverCropListLocation]);
 
   const resetDrainageClasses = () => {
     dispatch({

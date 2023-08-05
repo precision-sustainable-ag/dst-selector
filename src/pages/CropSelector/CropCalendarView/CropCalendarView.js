@@ -21,7 +21,7 @@ import {
   AcUnit, AddCircle, LocalFlorist, WbSunny,
 } from '@mui/icons-material';
 import React, { useContext, useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   allMonths,
   CustomStyles,
@@ -44,6 +44,7 @@ const growthIcon = {
 const CropCalendarView = ({ activeCropData }) => {
   const { state, dispatch } = useContext(Context);
   const dispatchRedux = useDispatch();
+  const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
   const [legendModal, setLegendModal] = useState(false);
   const [nameSortFlag, setNameSortFlag] = useState(true);
   const [goalsSortFlag, setGoalsSortFlag] = useState(true);
@@ -98,7 +99,7 @@ const CropCalendarView = ({ activeCropData }) => {
   };
 
   const sortBySelectedCrops = () => {
-    const selectedCropsShadow = state.selectedCrops;
+    const selectedCropsShadow = selectedCropsRedux;
     sortCrops('Selected Crops', activeCropDataShadow, selectedCropsSortFlag, selectedCropsShadow, dispatchValue);
     setSelectedCropsFlag(!selectedCropsSortFlag);
   };

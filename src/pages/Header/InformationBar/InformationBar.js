@@ -33,6 +33,7 @@ const InformationBar = () => {
   const { state, dispatch } = useContext(Context);
   const addressRedux = useSelector((stateRedux) => stateRedux.addressData.address);
   const zoneRedux = useSelector((stateRedux) => stateRedux.addressData.zone);
+  const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
   const [confirmationOpen, setConfirmationOpen] = useState(false);
   const [expansionPanelComponent, setExpansionPanelComponent] = useState({
     component: '',
@@ -176,7 +177,7 @@ const InformationBar = () => {
           type: 'RESET',
           data: {
             markers: defaultMarkers,
-            selectedCrops: state.selectedCrops,
+            selectedCrops: selectedCropsRedux,
           },
         });
       }
