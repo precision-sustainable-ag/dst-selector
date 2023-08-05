@@ -25,6 +25,7 @@ const CoverCropExplorer = () => {
   const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
   const sfilters = state[section];
   const activeCropDataRedux = useSelector((stateRedux) => stateRedux.cropData.activeCropData);
+  const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
   const [updatedActiveCropData, setUpdatedActiveCropData] = useState([]);
   // const { activeCropData } = state;
   const [handleConfirm, setHandleConfirm] = useState(false);
@@ -81,7 +82,7 @@ const CoverCropExplorer = () => {
           <div className="col-md-12 col-lg-3 col-xl-2 col-12">
             <CropSidebar
               from="explorer"
-              activeCropData={activeCropDataRedux?.length > 0 ? activeCropDataRedux : state?.cropData} //here
+              activeCropData={activeCropDataRedux?.length > 0 ? activeCropDataRedux : cropDataRedux} //here
               isListView
             />
           </div>
@@ -96,7 +97,7 @@ const CoverCropExplorer = () => {
               </Grid>
             ) : (
               <ExplorerCardView
-                cropData={state?.cropData}
+                cropData={cropDataRedux}
                 activeCropData={updatedActiveCropData}
               />
             )}

@@ -21,7 +21,7 @@ import ListIcon from '@mui/icons-material/List';
 import React, {
   useContext, useEffect, useState,
 } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { CustomStyles } from '../../shared/constants';
 import { Context } from '../../store/Store';
 import '../../styles/cropSidebar.scss';
@@ -46,6 +46,7 @@ const CropSidebar = ({
 }) => {
   const { state, dispatch } = useContext(Context);
   const dispatchRedux = useDispatch();
+  const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
   const [loading, setLoading] = useState(true);
   const [sidebarFilters, setSidebarFilters] = useState([]);
   const [showFilters, setShowFilters] = useState('');
@@ -130,11 +131,11 @@ const CropSidebar = ({
       }
     });
 
-    let cropData = state?.cropData?.filter((crop) => crop['Zone Decision'] === 'Include');
+    let cropData = cropDataRedux?.filter((crop) => crop['Zone Decision'] === 'Include');
 
     const search = sfilters.cropSearch?.toLowerCase().match(/\w+/g);
 
-    cropData = state?.cropData?.filter((crop) => {
+    cropData = cropDataRedux?.filter((crop) => {
       let m;
 
       const match = (parm) => {
@@ -197,7 +198,7 @@ const CropSidebar = ({
     //     value: filtered,
     //   },
     // });
-  }, [state.changedFilters, sfilters.cropSearch, state?.cropData, dispatch, dispatchRedux, sfilters]);
+  }, [state.changedFilters, sfilters.cropSearch, cropDataRedux, dispatch, dispatchRedux, sfilters]);
 
   const filtersSelected = Object.keys(sfilters)?.filter((key) => sfilters[key])?.length > 1;
 
