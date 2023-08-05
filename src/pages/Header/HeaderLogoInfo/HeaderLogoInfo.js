@@ -2,6 +2,7 @@ import {
   Dialog, DialogActions, DialogContent, Typography, Box, Grid,
 } from '@mui/material';
 import React, { useContext, useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { BinaryButton } from '../../../shared/constants';
 import { Context } from '../../../store/Store';
@@ -12,9 +13,10 @@ import ForecastComponent from '../ForecastComponent/ForecastComponent';
 const HeaderLogoInfo = () => {
   const { state, dispatch } = useContext(Context);
   const history = useHistory();
+  const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
   const [handleConfirm, setHandleConfirm] = useState(false);
   const defaultMarkers = [[40.78489145, -74.80733626930342]];
-  const { selectedCrops } = state;
+  // const { selectedCrops } = state;
 
   const logoClick = (clearMyList = false) => {
     if (clearMyList) {
@@ -77,7 +79,7 @@ const HeaderLogoInfo = () => {
         >
           <button
             type="button"
-            onClick={selectedCrops.length > 0 ? () => setHandleConfirm(true) : () => logoClick(true)}
+            onClick={selectedCropsRedux.length > 0 ? () => setHandleConfirm(true) : () => logoClick(true)}
             style={{
               backgroundColor: 'white',
               border: 'none',

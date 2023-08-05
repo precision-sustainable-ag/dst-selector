@@ -27,6 +27,7 @@ import { Context } from '../../store/Store';
 import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset';
 import PlantHardinessZone from '../CropSidebar/PlantHardinessZone/PlantHardinessZone';
 import { changeAddressViaMap, updateLocation, updateZone as updateZoneRedux } from '../../reduxStore/addressSlice';
+import { snackHandler } from '../../reduxStore/sharedSlice';
 
 // eslint-disable-next-line import/no-webpack-loader-syntax, import/no-unresolved
 mapboxgl.workerClass = require('worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker').default;
@@ -44,7 +45,7 @@ const LocationComponent = ({
   const defaultMarkers = [[40.78489145, -74.80733626930342]];
   const countyRedux = useSelector((stateRedux) => stateRedux.addressData.county);
   const zoneRedux = useSelector((stateRedux) => stateRedux.addressData.zone);
-
+  const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
   const getLatLng = useCallback(() => {
     if (state.state) {
       return [statesLatLongDict[state.state][0], statesLatLongDict[state.state][1]];
@@ -53,10 +54,10 @@ const LocationComponent = ({
   }, [state]);
 
   useEffect(() => {
-    if (state.myCoverCropListLocation !== 'selector' && state.selectedCrops.length > 0) {
+    if (state.myCoverCropListLocation !== 'selector' && selectedCropsRedux.length > 0) {
       setHandleConfirm(true);
     }
-  }, [state.selectedCrops, state.myCoverCropListLocation]);
+  }, [selectedCropsRedux, state.myCoverCropListLocation]);
 
   const updateZone = (region) => {
     if (region !== undefined) {
@@ -106,7 +107,7 @@ const LocationComponent = ({
           type: 'RESET',
           data: {
             markers: defaultMarkers,
-            selectedCrops: state.selectedCrops,
+            selectedCrops: selectedCropsRedux,
           },
         });
       }
@@ -156,14 +157,17 @@ const LocationComponent = ({
           zipCode,
         },
       ));
-
-      dispatch({
-        type: 'SNACK',
-        data: {
-          snackOpen: true,
-          snackMessage: 'Your location has been saved.',
-        },
-      });
+      dispatchRedux(snackHandler({
+        snackOpen: true,
+        snackMessage: 'Your location has been saved.',
+      }));
+      // dispatch({
+      //   type: 'SNACK',
+      //   data: {
+      //     snackOpen: true,
+      //     snackMessage: 'Your location has been saved.',
+      //   },
+      // });
 
       if (selectedToEditSite.address) {
         dispatchRedux(changeAddressViaMap(

@@ -5,6 +5,7 @@
 
 import { Snackbar } from '@mui/material';
 import React, { useContext, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import CropSelector from './pages/CropSelector/CropSelector';
 import GoalsSelector from './pages/GoalsSelector/GoalsSelector';
 import Header from './pages/Header/Header';
@@ -13,6 +14,7 @@ import LocationComponent from './pages/Location/Location';
 import LocationConfirmation from './pages/Location/LocationConfirmation/LocationConfirmation';
 import { Context } from './store/Store';
 import './styles/App.scss';
+import { snackHandler } from './reduxStore/sharedSlice';
 
 const LoadRelevantRoute = ({ progress, calcHeight }) => {
   switch (progress) {
@@ -53,15 +55,19 @@ const LoadRelevantRoute = ({ progress, calcHeight }) => {
 
 const App = () => {
   const { state, dispatch } = useContext(Context);
+  const dispatchRedux = useDispatch();
   const [calcHeight, setCalcHeight] = useState(0);
+  const snackOpenRedux = useSelector((stateRedux) => stateRedux.sharedData.snackOpen);
+  const snackMessageRedux = useSelector((stateRedux) => stateRedux.sharedData.snackMessage);
   const handleSnackClose = () => {
-    dispatch({
-      type: 'SNACK',
-      data: {
-        snackOpen: false,
-        snackMessage: '',
-      },
-    });
+    dispatchRedux(snackHandler({ snackOpen: false, snackMessage: ''}));
+    // dispatch({
+    //   type: 'SNACK',
+    //   data: {
+    //     snackOpen: false,
+    //     snackMessage: '',
+    //   },
+    // });
   };
 
   useEffect(() => {
@@ -112,12 +118,12 @@ const App = () => {
             horizontal: state.snackHorizontal,
           }}
           autoHideDuration={3000}
-          open={state.snackOpen}
+          open={snackOpenRedux}
           onClose={handleSnackClose}
           ContentProps={{
             'aria-describedby': 'message-id',
           }}
-          message={state.snackMessage}
+          message={snackMessageRedux}
         />
       </div>
     </div>

@@ -26,6 +26,7 @@ const CoverCropExplorer = () => {
   const sfilters = state[section];
   const activeCropDataRedux = useSelector((stateRedux) => stateRedux.cropData.activeCropData);
   const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
+  const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
   const [updatedActiveCropData, setUpdatedActiveCropData] = useState([]);
   // const { activeCropData } = state;
   const [handleConfirm, setHandleConfirm] = useState(false);
@@ -52,11 +53,11 @@ const CoverCropExplorer = () => {
   }, [state.state]);
 
   useEffect(() => {
-    if (state?.myCoverCropListLocation !== 'explorer' && state?.selectedCrops?.length > 0) {
+    if (state?.myCoverCropListLocation !== 'explorer' && selectedCropsRedux?.length > 0) {
       // document.title = 'Cover Crop Explorer';
       setHandleConfirm(true);
     }
-  }, [state.selectedCrops, state.myCoverCropListLocation]);
+  }, [selectedCropsRedux, state.myCoverCropListLocation]);
 
   const handleConfirmationChoice = (clearMyList = false) => {
     if (clearMyList) {

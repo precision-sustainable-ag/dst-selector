@@ -19,6 +19,7 @@ import ToggleOptions from './ToggleOptions/ToggleOptions';
 import {
   lastZipCode, updateZipCode, updateZone,
 } from '../../reduxStore/addressSlice';
+import { snackHandler } from '../../reduxStore/sharedSlice';
 
 const Header = () => {
   const { state, dispatch } = useContext(Context);
@@ -185,13 +186,17 @@ const Header = () => {
                     });
                   })
                   .catch((error) => {
-                    dispatch({
-                      type: 'SNACK',
-                      data: {
-                        snackOpen: true,
-                        snackMessage: `Weather API error code: ${error.response.status} for getting 5 year average rainfall for this month`,
-                      },
-                    });
+                    dispatchRedux(snackHandler({
+                      snackOpen: true,
+                      snackMessage: `Weather API error code: ${error.response.status} for getting 5 year average rainfall for this month`,
+                    }));
+                    // dispatch({
+                    //   type: 'SNACK',
+                    //   data: {
+                    //     snackOpen: true,
+                    //     snackMessage: `Weather API error code: ${error.response.status} for getting 5 year average rainfall for this month`,
+                    //   },
+                    // });
                   });
 
                 if (!abbrState.ajaxInProgress) {
@@ -217,14 +222,19 @@ const Header = () => {
                     })
                     .then(() => { })
                     .catch((error) => {
-                      dispatch({
-                        type: 'SNACK',
-                        data: {
-                          snackOpen: true,
+                      dispatchRedux(snackHandler({
+                        snackOpen: true,
                           snackMessage: `Weather API error code: ${error.response.status
                           } for getting 5 year average rainfall for ${obj.city.toUpperCase()}, ${obj.state.toUpperCase()}`,
-                        },
-                      });
+                      }));
+                      // dispatch({
+                      //   type: 'SNACK',
+                      //   data: {
+                      //     snackOpen: true,
+                      //     snackMessage: `Weather API error code: ${error.response.status
+                      //     } for getting 5 year average rainfall for ${obj.city.toUpperCase()}, ${obj.state.toUpperCase()}`,
+                      //   },
+                      // });
                       dispatch({
                         type: 'SET_AJAX_IN_PROGRESS',
                         data: false,
