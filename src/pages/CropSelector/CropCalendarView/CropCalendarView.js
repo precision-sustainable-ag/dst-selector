@@ -21,6 +21,7 @@ import {
   AcUnit, AddCircle, LocalFlorist, WbSunny,
 } from '@mui/icons-material';
 import React, { useContext, useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import {
   allMonths,
   CustomStyles,
@@ -34,6 +35,7 @@ import '../../../styles/cropCalendarViewComponent.scss';
 import RenderCrops from './RenderCrops';
 import CropDetailsModal from '../../../components/CropDetailsModal/CropDetailsModal';
 import Legend from '../../../components/Legend/Legend';
+import { updateActiveCropData } from '../../../reduxStore/cropSlice';
 
 const growthIcon = {
   color: 'white',
@@ -41,6 +43,7 @@ const growthIcon = {
 
 const CropCalendarView = ({ activeCropData }) => {
   const { state, dispatch } = useContext(Context);
+  const dispatchRedux = useDispatch();
   const [legendModal, setLegendModal] = useState(false);
   const [nameSortFlag, setNameSortFlag] = useState(true);
   const [goalsSortFlag, setGoalsSortFlag] = useState(true);
@@ -57,15 +60,15 @@ const CropCalendarView = ({ activeCropData }) => {
     { className: 'cashCrop', label: 'Previous Cash Crop Growth Window' },
   ];
 
-  const dispatchValue = (value, type = 'UPDATE_ACTIVE_CROP_DATA') => {
-    dispatch({
-      type,
-      data: {
-        value,
-      },
-    });
-  };
-
+  // const dispatchValue = (value, type = 'UPDATE_ACTIVE_CROP_DATA') => {
+  //   dispatch({
+  //     type,
+  //     data: {
+  //       value,
+  //     },
+  //   });
+  // };
+  const dispatchValue = (value) => dispatchRedux(updateActiveCropData(value));
   const handleLegendModal = () => {
     setLegendModal(!legendModal);
   };

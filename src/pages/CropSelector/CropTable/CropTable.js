@@ -4,6 +4,7 @@
   addCropToBasket manages adding crops to cart
 */
 import React, { useContext, useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import {
   Box,
   Button,
@@ -28,12 +29,13 @@ import '../../../styles/cropTable.scss';
 import CropDataRender from './CropDataRender';
 import CropDetailsModal from '../../../components/CropDetailsModal/CropDetailsModal';
 import Legend from '../../../components/Legend/Legend';
+import { updateActiveCropData } from '../../../reduxStore/cropSlice';
 
 const CropTableComponent = ({
   cropData, activeCropData, showGrowthWindow,
 }) => {
   const { state, dispatch } = useContext(Context);
-
+  const dispatchRedux = useDispatch();
   const [modalOpen, setModalOpen] = useState(false);
   const [modalData, setModalData] = useState({});
   const [legendModal, setLegendModal] = useState(false);
@@ -75,12 +77,13 @@ const CropTableComponent = ({
   };
 
   const updateActiveCropDataAction = (activeShadowValue) => {
-    dispatch({
-      type: 'UPDATE_ACTIVE_CROP_DATA',
-      data: {
-        value: activeShadowValue,
-      },
-    });
+    // dispatch({
+    //   type: 'UPDATE_ACTIVE_CROP_DATA',
+    //   data: {
+    //     value: activeShadowValue,
+    //   },
+    // });
+    dispatchRedux(updateActiveCropData(activeShadowValue));
   };
 
   const sortByName = () => {

@@ -33,6 +33,7 @@ import PreviousCashCrop from './PreviousCashCrop/PreviousCashCrop';
 import PlantHardinessZone from './PlantHardinessZone/PlantHardinessZone';
 import Legend from '../../components/Legend/Legend';
 import { updateZone as updateZoneRedux } from '../../reduxStore/addressSlice';
+import { updateActiveCropData } from '../../reduxStore/cropSlice';
 
 const CropSidebar = ({
   comparisonView,
@@ -189,13 +190,14 @@ const CropSidebar = ({
 
       return true;
     });
-    dispatch({
-      type: 'UPDATE_ACTIVE_CROP_DATA',
-      data: {
-        value: filtered,
-      },
-    });
-  }, [state.changedFilters, sfilters.cropSearch, state?.cropData, dispatch, sfilters]);
+    dispatchRedux(updateActiveCropData(filtered));
+    // dispatch({
+    //   type: 'UPDATE_ACTIVE_CROP_DATA',
+    //   data: {
+    //     value: filtered,
+    //   },
+    // });
+  }, [state.changedFilters, sfilters.cropSearch, state?.cropData, dispatch, dispatchRedux, sfilters]);
 
   const filtersSelected = Object.keys(sfilters)?.filter((key) => sfilters[key])?.length > 1;
 
