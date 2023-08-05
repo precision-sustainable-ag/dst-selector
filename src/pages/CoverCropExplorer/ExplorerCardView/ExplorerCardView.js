@@ -11,6 +11,7 @@ import { useSnackbar } from 'notistack';
 import React, {
   useContext, useEffect, useState,
 } from 'react';
+import { useSelector } from 'react-redux';
 import CropCard from '../../../components/CropCard/CropCard';
 import CropDetailsModal from '../../../components/CropDetailsModal/CropDetailsModal';
 import { Context } from '../../../store/Store';
@@ -19,7 +20,7 @@ const ExplorerCardView = ({ activeCropData }) => {
   const { state, dispatch } = useContext(Context);
   const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
   const sfilters = state[section];
-
+  const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalData, setModalData] = useState({});
 
@@ -101,7 +102,7 @@ const ExplorerCardView = ({ activeCropData }) => {
               />
             </Grid>
           ))
-        ) : state?.cropData?.length > 0 ? (
+        ) : cropDataRedux?.length > 0 ? (
           <Grid item>
             <Typography variant="body1" align="center">
               No cover crops match your selected Cover Crop Property filters.

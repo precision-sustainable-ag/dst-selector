@@ -25,6 +25,7 @@ import { Context, cropDataFormatter } from '../../store/Store';
 import '../../styles/landing.scss';
 import ConsentModal from '../CoverCropExplorer/ConsentModal/ConsentModal';
 import { updateZone, updateLastZone } from '../../reduxStore/addressSlice';
+import { pullCropData } from '../../reduxStore/cropSlice';
 
 const Landing = ({ height, title, bg }) => {
   const { state, dispatch } = useContext(Context);
@@ -61,10 +62,11 @@ const Landing = ({ height, title, bg }) => {
       .then((res) => res.json())
       .then((data) => {
         cropDataFormatter(data.data);
-        dispatch({
-          type: 'PULL_CROP_DATA',
-          data: data.data,
-        });
+        dispatchRedux(pullCropData(data.data));
+        // dispatch({
+        //   type: 'PULL_CROP_DATA',
+        //   data: data.data,
+        // });
       })
       .catch((err) => {
         // eslint-disable-next-line no-console

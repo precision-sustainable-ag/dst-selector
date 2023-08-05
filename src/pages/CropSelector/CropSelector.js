@@ -61,6 +61,7 @@ const CropSelector = (props) => {
   const [goalsSortFlag, setGoalsSortFlag] = useState(true);
   const { selectedGoals, activeCropData } = state;
   const activeCropDataRedux = useSelector((stateRedux) => stateRedux.cropData.activeCropData);
+  const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
   const [isListView, setIsListView] = useState(true);
   const [comparisonView, setComparisonView] = useState(false);
   const [cropData, setCropData] = useState([]);
@@ -76,7 +77,7 @@ const CropSelector = (props) => {
     // });
     const dispatchValue = (updatedCropData) => dispatchRedux(updateActiveCropData(updatedCropData));
     if (selectedGoals?.length > 0) {
-      const activeCropDataShadow = activeCropDataRedux?.length > 0 ? activeCropDataRedux : state?.cropData;
+      const activeCropDataShadow = activeCropDataRedux?.length > 0 ? activeCropDataRedux : cropDataRedux;
 
       sortCrops('Average Goals', activeCropDataShadow, flag || goalsSortFlag, selectedGoals, dispatchValue);
       setGoalsSortFlag(!goalsSortFlag);
@@ -118,10 +119,10 @@ const CropSelector = (props) => {
   }, [state.selectedGoals, dispatch]);
 
   useEffect(() => {
-    if (state?.cropData) {
-      if (state?.cropData?.length > 0) {
+    if (cropDataRedux) {
+      if (cropDataRedux?.length > 0) {
         if (selectedGoals?.length > 0) {
-          const activeCropDataShadow = state?.cropData;
+          const activeCropDataShadow = cropDataRedux;
           selectedGoals
             .slice()
             .reverse()
@@ -138,14 +139,14 @@ const CropSelector = (props) => {
             });
           setCropData(activeCropDataShadow);
         } else {
-          setCropData(state?.cropData);
+          setCropData(cropDataRedux);
         }
       }
     }
     return () => {
       setCropData([]);
     };
-  }, [state?.cropData, selectedGoals]);
+  }, [cropDataRedux, selectedGoals]);
 
   function useWindowSize() {
     // Initialize state with undefined width/height so server and client renders match
