@@ -8,8 +8,8 @@ import {
   Dialog, DialogActions, DialogContent, Grid, Typography,
 } from '@mui/material';
 import { useHistory } from 'react-router-dom';
-
 import React, { useContext, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import ReactGA from 'react-ga';
 import { Context } from '../../store/Store';
 import Header from '../Header/Header';
@@ -24,16 +24,17 @@ const CoverCropExplorer = () => {
   const history = useHistory();
   const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
   const sfilters = state[section];
+  const activeCropDataRedux = useSelector((stateRedux) => stateRedux.cropData.activeCropData);
   const [updatedActiveCropData, setUpdatedActiveCropData] = useState([]);
-  const { activeCropData } = state;
+  // const { activeCropData } = state;
   const [handleConfirm, setHandleConfirm] = useState(false);
   const defaultMarkers = [[40.78489145, -74.80733626930342]];
 
   useEffect(() => {
-    const filteredActiveCropData = activeCropData?.filter((a) => !a.inactive);
+    const filteredActiveCropData = activeCropDataRedux?.filter((a) => !a.inactive); //here
     setUpdatedActiveCropData(filteredActiveCropData);
     // getData();
-  }, [activeCropData]);
+  }, [activeCropDataRedux]); //here
 
   useEffect(() => {
     if (state.consent === true) {
@@ -80,7 +81,7 @@ const CoverCropExplorer = () => {
           <div className="col-md-12 col-lg-3 col-xl-2 col-12">
             <CropSidebar
               from="explorer"
-              activeCropData={activeCropData?.length > 0 ? activeCropData : state?.cropData}
+              activeCropData={activeCropDataRedux?.length > 0 ? activeCropDataRedux : state?.cropData} //here
               isListView
             />
           </div>
