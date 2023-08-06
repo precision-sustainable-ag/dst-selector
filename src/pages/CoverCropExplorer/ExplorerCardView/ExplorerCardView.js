@@ -52,7 +52,6 @@ const ExplorerCardView = ({ activeCropData }) => {
 
     const buildDispatch = (action, crops) => {
       dispatchRedux(selectedCropsModifier(crops));
-      console.log('snack');
       dispatchRedux(snackHandler({ snackOpen: false, snackMessage: `${cropName} ${action}` }));
       // dispatch({
       //   type: 'SELECTED_CROPS_MODIFIER',

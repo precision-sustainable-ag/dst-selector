@@ -70,7 +70,6 @@ const cropDataReducer = (state = initialState, action = null) => {
       };
 
     case 'UPDATE_DATE_RANGE': {
-      console.log('date');
       return {
         ...state,
         cashCropData: {
