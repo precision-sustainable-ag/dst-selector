@@ -29,7 +29,6 @@ const PreviousCashCrop = () => {
   const [cashCropOpen, setCashCropOpen] = useState(true);
 
   const handleDispatch = (start = '', end = '') => {
-    console.log('date');
     dispatchRedux(updateDateRange({ startDate: start, endDate: end }));
     // dispatch({
     //   type: 'UPDATE_DATE_RANGE',

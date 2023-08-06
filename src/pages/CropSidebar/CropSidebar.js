@@ -293,7 +293,6 @@ const CropSidebar = ({
   useEffect(() => {
     if (from === 'table') {
       if (dateRange.startDate !== null && dateRange.endDate !== null) {
-        console.log('date');
         dispatchRedux(updateDateRange({
           startDate: dateRange.startDate.toISOString().substring(0, 10),
           endDate: dateRange.endDate.toISOString().substring(0, 10),

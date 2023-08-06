@@ -22,7 +22,6 @@ const RenderCrops = ({
   const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
   const dispatchValue = ({ selectedCrops, snackOpen, snackMessage }) => {
     dispatchRedux(selectedCropsModifier(selectedCrops));
-    console.log('snack');
     dispatchRedux(snackHandler({ snackOpen, snackMessage }));
     // dispatch({
     //   type,

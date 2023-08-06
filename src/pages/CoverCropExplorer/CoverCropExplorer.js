@@ -33,10 +33,10 @@ const CoverCropExplorer = () => {
   const defaultMarkers = [[40.78489145, -74.80733626930342]];
 
   useEffect(() => {
-    const filteredActiveCropData = activeCropDataRedux?.filter((a) => !a.inactive); // here
+    const filteredActiveCropData = activeCropDataRedux?.filter((a) => !a.inactive);
     setUpdatedActiveCropData(filteredActiveCropData);
     // getData();
-  }, [activeCropDataRedux]); // here
+  }, [activeCropDataRedux]);
 
   useEffect(() => {
     if (state.consent === true) {
@@ -83,7 +83,7 @@ const CoverCropExplorer = () => {
           <div className="col-md-12 col-lg-3 col-xl-2 col-12">
             <CropSidebar
               from="explorer"
-              activeCropData={activeCropDataRedux?.length > 0 ? activeCropDataRedux : cropDataRedux} // here
+              activeCropData={activeCropDataRedux?.length > 0 ? activeCropDataRedux : cropDataRedux}
               isListView
             />
           </div>

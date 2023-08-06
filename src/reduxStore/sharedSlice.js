@@ -122,7 +122,6 @@ const sharedReducer = (state = initialState, action = null) => {
       };
 
     case 'SNACK':
-      console.log('snack', action.payload);
       return {
         ...state,
         snackOpen: action.payload.snackOpen,
