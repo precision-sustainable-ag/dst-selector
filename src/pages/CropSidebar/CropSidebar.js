@@ -33,7 +33,7 @@ import PreviousCashCrop from './PreviousCashCrop/PreviousCashCrop';
 import PlantHardinessZone from './PlantHardinessZone/PlantHardinessZone';
 import Legend from '../../components/Legend/Legend';
 import { updateZone as updateZoneRedux } from '../../reduxStore/addressSlice';
-import { updateActiveCropData } from '../../reduxStore/cropSlice';
+import { updateActiveCropData, updateDateRange } from '../../reduxStore/cropSlice';
 
 const CropSidebar = ({
   comparisonView,
@@ -47,6 +47,7 @@ const CropSidebar = ({
   const { state, dispatch } = useContext(Context);
   const dispatchRedux = useDispatch();
   const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
+  const cashCropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cashCropData);
   const [loading, setLoading] = useState(true);
   const [sidebarFilters, setSidebarFilters] = useState([]);
   const [showFilters, setShowFilters] = useState('');
@@ -292,13 +293,18 @@ const CropSidebar = ({
   useEffect(() => {
     if (from === 'table') {
       if (dateRange.startDate !== null && dateRange.endDate !== null) {
-        dispatch({
-          type: 'UPDATE_DATE_RANGE',
-          data: {
-            startDate: dateRange.startDate.toISOString().substring(0, 10),
-            endDate: dateRange.endDate.toISOString().substring(0, 10),
-          },
-        });
+        console.log('date');
+        dispatchRedux(updateDateRange({
+          startDate: dateRange.startDate.toISOString().substring(0, 10),
+          endDate: dateRange.endDate.toISOString().substring(0, 10),
+        }));
+        // dispatch({
+        //   type: 'UPDATE_DATE_RANGE',
+        //   data: {
+        //     startDate: dateRange.startDate.toISOString().substring(0, 10),
+        //     endDate: dateRange.endDate.toISOString().substring(0, 10),
+        //   },
+        // });
       }
 
       setGrowthWindow(true);
@@ -323,13 +329,13 @@ const CropSidebar = ({
 
   // TODO: Can we use Reducer instead of localStorage?
   useEffect(() => {
-    if (state.cashCropData.dateRange.startDate) {
+    if (cashCropDataRedux.dateRange.startDate) {
       window.localStorage.setItem(
         'cashCropDateRange',
-        JSON.stringify(state.cashCropData.dateRange),
+        JSON.stringify(cashCropDataRedux.dateRange),
       );
     }
-  }, [state.cashCropData.dateRange]);
+  }, [cashCropDataRedux.dateRange]);
 
   const filters = () => sidebarFilters.map((filter, index) => {
     const sectionFilter = `${section}${filter.name}`;

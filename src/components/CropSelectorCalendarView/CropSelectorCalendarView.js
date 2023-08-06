@@ -1,6 +1,7 @@
 import { Tooltip, Typography } from '@mui/material';
 import moment from 'moment';
 import React, { useContext } from 'react';
+import { useSelector } from 'react-redux';
 import { allMonths, getActiveCropMonths } from '../../shared/constants';
 import { Context } from '../../store/Store';
 import '../../styles/cropSelectorCalendarView.scss';
@@ -8,6 +9,7 @@ import CropPaintGrowthChart from './CropPaintGrowthChart/CropPaintGrowthChart';
 
 const CropSelectorCalendarView = ({ from = 'calendar', data = [] }) => {
   const { state } = useContext(Context);
+  const cashCropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cashCropData);
 
   const months = [
     'January',
@@ -25,12 +27,12 @@ const CropSelectorCalendarView = ({ from = 'calendar', data = [] }) => {
   ];
 
   const isThisCashCropMonth = (month = 'January') => {
-    if (state.cashCropData.dateRange.startDate === null || state.cashCropData.dateRange.endDate === null) {
+    if (cashCropDataRedux.dateRange.startDate === null || cashCropDataRedux.dateRange.endDate === null) {
       return false;
     }
     const result = new Set();
-    const start = moment(state.cashCropData.dateRange.startDate.$d);
-    const end = moment(state.cashCropData.dateRange.endDate.$d);
+    const start = moment(cashCropDataRedux.dateRange.startDate.$d);
+    const end = moment(cashCropDataRedux.dateRange.endDate.$d);
 
     while (start.isBefore(end)) {
       result.add(start.format('MMMM'));
