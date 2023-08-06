@@ -11,29 +11,34 @@ import {
 } from '@mui/material';
 import moment from 'moment';
 import React, { Fragment, useContext, useState } from 'react';
-
+import { useDispatch, useSelector } from 'react-redux';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 // import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { CustomStyles } from '../../../shared/constants';
 import { Context } from '../../../store/Store';
+import { updateDateRange } from '../../../reduxStore/cropSlice';
 
 const PreviousCashCrop = () => {
   const { state, dispatch } = useContext(Context);
+  const dispatchRedux = useDispatch();
+  const cashCropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cashCropData);
   const [cashCropVisible, setCashCropVisible] = useState(true); // TODO: buggy(?);
 
   const [cashCropOpen, setCashCropOpen] = useState(true);
 
   const handleDispatch = (start = '', end = '') => {
-    dispatch({
-      type: 'UPDATE_DATE_RANGE',
-      data: {
-        // TODO: use Date() in future?
-        startDate: start,
-        endDate: end,
-      },
-    });
+    console.log('date');
+    dispatchRedux(updateDateRange({ startDate: start, endDate: end }));
+    // dispatch({
+    //   type: 'UPDATE_DATE_RANGE',
+    //   data: {
+    //     // TODO: use Date() in future?
+    //     startDate: start,
+    //     endDate: end,
+    //   },
+    // });
   };
 
   const toggleCashCrop = () => {
@@ -73,8 +78,8 @@ const PreviousCashCrop = () => {
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
                 label="Planting Date"
-                value={state.cashCropData.dateRange.startDate}
-                onChange={(newDate) => handleDispatch(newDate, state.cashCropData.dateRange.endDate)}
+                value={cashCropDataRedux.dateRange.startDate}
+                onChange={(newDate) => handleDispatch(newDate, cashCropDataRedux.dateRange.endDate)}
               />
             </LocalizationProvider>
           </ListItem>
@@ -83,8 +88,8 @@ const PreviousCashCrop = () => {
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
                 label="Harvest Date"
-                value={state.cashCropData.dateRange.endDate}
-                onChange={(newDate) => handleDispatch(state.cashCropData.dateRange.startDate, newDate)}
+                value={cashCropDataRedux.dateRange.endDate}
+                onChange={(newDate) => handleDispatch(cashCropDataRedux.dateRange.startDate, newDate)}
               />
             </LocalizationProvider>
           </ListItem>
