@@ -24,7 +24,7 @@ const CropTableCard = ({
   const cropModifierAction = (selectedCrops, message) => {
     dispatchRedux(selectedCropsModifier(selectedCrops));
     console.log('snack');
-    dispatchRedux(snackHandler({ snackOpen: false, snackMessage: message}));
+    dispatchRedux(snackHandler({ snackOpen: false, snackMessage: message }));
     // dispatch({
     //   type: 'SELECTED_CROPS_MODIFIER',
     //   data: {
