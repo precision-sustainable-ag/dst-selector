@@ -69,19 +69,19 @@ const cropDataReducer = (state = initialState, action = null) => {
         // snackMessage: action.data.snackMessage,
       };
 
-      case 'UPDATE_DATE_RANGE': {
-        console.log('date');
-        return {
-          ...state,
-          cashCropData: {
-            ...state.cashCropData,
-            dateRange: {
-              startDate: action.payload.startDate,
-              endDate: action.payload.endDate,
-            },
+    case 'UPDATE_DATE_RANGE': {
+      console.log('date');
+      return {
+        ...state,
+        cashCropData: {
+          ...state.cashCropData,
+          dateRange: {
+            startDate: action.payload.startDate,
+            endDate: action.payload.endDate,
           },
-        };
-      }
+        },
+      };
+    }
 
     default:
       return { ...state };

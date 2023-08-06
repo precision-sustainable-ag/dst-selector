@@ -113,7 +113,7 @@ const MyCoverCropComparison = ({ selectedCrops }) => {
       selectedCropsCopy.splice(removeIndex, 1);
       dispatchRedux(selectedCropsModifier(selectedCropsCopy));
       console.log('snack');
-      dispatchRedux(snackHandler({ snackOpen: false, snackMessage: 'Removed'}));
+      dispatchRedux(snackHandler({ snackOpen: false, snackMessage: 'Removed' }));
       // dispatch({
       //   type: 'SELECTED_CROPS_MODIFIER',
       //   data: {

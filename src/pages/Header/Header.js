@@ -224,8 +224,8 @@ const Header = () => {
                     .catch((error) => {
                       dispatchRedux(snackHandler({
                         snackOpen: true,
-                          snackMessage: `Weather API error code: ${error.response.status
-                          } for getting 5 year average rainfall for ${obj.city.toUpperCase()}, ${obj.state.toUpperCase()}`,
+                        snackMessage: `Weather API error code: ${error.response.status
+                        } for getting 5 year average rainfall for ${obj.city.toUpperCase()}, ${obj.state.toUpperCase()}`,
                       }));
                       // dispatch({
                       //   type: 'SNACK',

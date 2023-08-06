@@ -60,7 +60,7 @@ const App = () => {
   const snackOpenRedux = useSelector((stateRedux) => stateRedux.sharedData.snackOpen);
   const snackMessageRedux = useSelector((stateRedux) => stateRedux.sharedData.snackMessage);
   const handleSnackClose = () => {
-    dispatchRedux(snackHandler({ snackOpen: false, snackMessage: ''}));
+    dispatchRedux(snackHandler({ snackOpen: false, snackMessage: '' }));
     // dispatch({
     //   type: 'SNACK',
     //   data: {
