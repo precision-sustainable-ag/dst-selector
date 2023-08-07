@@ -65,7 +65,7 @@ const GetAverageGoalRating = ({ crop }) => {
 };
 
 const MyCoverCropComparison = ({ selectedCrops }) => {
-  const { state, dispatch } = useContext(Context);
+  const { state } = useContext(Context);
   const dispatchRedux = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
   const { comparisonKeys } = state;

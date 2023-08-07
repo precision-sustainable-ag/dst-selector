@@ -54,7 +54,7 @@ const LoadRelevantRoute = ({ progress, calcHeight }) => {
 };
 
 const App = () => {
-  const { state, dispatch } = useContext(Context);
+  const { state } = useContext(Context);
   const dispatchRedux = useDispatch();
   const [calcHeight, setCalcHeight] = useState(0);
   const snackOpenRedux = useSelector((stateRedux) => stateRedux.sharedData.snackOpen);

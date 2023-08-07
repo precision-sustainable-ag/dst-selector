@@ -10,18 +10,16 @@ import {
   Typography,
 } from '@mui/material';
 import moment from 'moment';
-import React, { Fragment, useContext, useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 // import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { CustomStyles } from '../../../shared/constants';
-import { Context } from '../../../store/Store';
 import { updateDateRange } from '../../../reduxStore/cropSlice';
 
 const PreviousCashCrop = () => {
-  const { state, dispatch } = useContext(Context);
   const dispatchRedux = useDispatch();
   const cashCropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cashCropData);
   const [cashCropVisible, setCashCropVisible] = useState(true); // TODO: buggy(?);

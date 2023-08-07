@@ -59,7 +59,7 @@ const CropSelector = (props) => {
   const dispatchRedux = useDispatch();
   const [showGrowthWindow, setShowGrowthWindow] = useState(true);
   const [goalsSortFlag, setGoalsSortFlag] = useState(true);
-  const { selectedGoals, activeCropData } = state;
+  const { selectedGoals } = state;
   const activeCropDataRedux = useSelector((stateRedux) => stateRedux.cropData.activeCropData);
   const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
   const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
