@@ -15,7 +15,7 @@ const CropPaintGrowthChart = ({
           <Tooltip
             arrow
             title={(
-              <>
+              <div style={{ textAlign: 'center' }}>
                 {item.info.length === 1 ? (
                   <Typography color="secondary">
                     {`${item.startTime} - ${item.endTime}`}
@@ -24,7 +24,7 @@ const CropPaintGrowthChart = ({
                 <Typography variant="body1" gutterBottom>
                   {item.info.join(', ')}
                 </Typography>
-              </>
+              </div>
                   )}
             key={index}
           >
