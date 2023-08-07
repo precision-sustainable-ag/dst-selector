@@ -39,6 +39,36 @@ const growthIcon = {
   color: 'white',
 };
 
+const getLegendDataBasedOnCouncil = (councilShorthand = '') => {
+  const legendData = [
+    { className: 'reliable', label: 'Reliable Establishment' },
+    { className: 'temperatureRisk', label: 'Temperature Risk To Establishment' },
+    { className: 'frostPossible', label: 'Frost Seeding Possible' },
+    { className: 'multiple', label: 'Multiple' },
+    { className: 'cashCrop', label: 'Previous Cash Crop Growth Window' },
+  ];
+  const MCCClegendData = [
+    { className: 'reliable', label: 'Reliable Establishment' },
+    { className: 'temperatureRisk', label: 'Freeze/Moisture Risk to Establishment' },
+    { className: 'multiple', label: 'Multiple' },
+    { className: 'cashCrop', label: 'Previous Cash Crop Growth Window' },
+  ];
+  const SCCClegendData = [
+    { className: 'reliable', label: 'Reliable Establishment' },
+    { className: 'frostPossible', label: 'Average Frost' },
+    { className: 'multiple', label: 'Multiple' },
+    { className: 'cashCrop', label: 'Previous Cash Crop Growth Window' },
+  ];
+  switch (councilShorthand) {
+    case 'MCCC':
+      return MCCClegendData;
+    case 'SCCC':
+      return SCCClegendData;
+    default:
+      return legendData;
+  }
+};
+
 const CropCalendarView = ({ activeCropData }) => {
   const { state, dispatch } = useContext(Context);
   const [legendModal, setLegendModal] = useState(false);
@@ -50,14 +80,7 @@ const CropCalendarView = ({ activeCropData }) => {
   const { selectedGoals } = state;
   const activeCropDataShadow = activeCropData;
 
-  const legendData = [
-    { className: 'reliable', label: 'Reliable Establishment' },
-    { className: 'temperatureRisk', label: 'Temperature Risk To Establishment' },
-    { className: 'frostPossible', label: 'Frost Seeding Possible' },
-    { className: 'averageFrost', label: 'Average Frost' },
-    { className: 'multiple', label: 'Multiple' },
-    { className: 'cashCrop', label: 'Previous Cash Crop Growth Window' },
-  ];
+  const legendData = getLegendDataBasedOnCouncil(state.councilShorthand);
 
   const dispatchValue = (value, type = 'UPDATE_ACTIVE_CROP_DATA') => {
     dispatch({
