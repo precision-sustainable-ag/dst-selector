@@ -42,7 +42,7 @@ const growthIcon = {
 };
 
 const CropCalendarView = ({ activeCropData }) => {
-  const { state, dispatch } = useContext(Context);
+  const { state } = useContext(Context);
   const dispatchRedux = useDispatch();
   const cropDataStateRedux = useSelector((stateRedux) => stateRedux.cropData);
   const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);

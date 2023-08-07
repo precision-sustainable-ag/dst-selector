@@ -4,17 +4,15 @@
   Contains the individual crops in a component
   removeCrop handles removing a crop from the list
 */
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSnackbar } from 'notistack';
-import { Context } from '../../../store/Store';
 import CropCard from '../../../components/CropCard/CropCard';
 import CropDetailsModal from '../../../components/CropDetailsModal/CropDetailsModal';
 import { selectedCropsModifier } from '../../../reduxStore/cropSlice';
 import { snackHandler } from '../../../reduxStore/sharedSlice';
 
 const MyCoverCropCards = ({ data, cardNo }) => {
-  const { state, dispatch } = useContext(Context);
   const dispatchRedux = useDispatch();
   const [modalOpen, setModalOpen] = useState(false);
   const [modalData, setModalData] = useState({});

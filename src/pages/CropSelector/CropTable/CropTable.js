@@ -34,7 +34,7 @@ import { updateActiveCropData } from '../../../reduxStore/cropSlice';
 const CropTableComponent = ({
   cropData, activeCropData, showGrowthWindow,
 }) => {
-  const { state, dispatch } = useContext(Context);
+  const { state } = useContext(Context);
   const dispatchRedux = useDispatch();
   const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
   const [modalOpen, setModalOpen] = useState(false);
