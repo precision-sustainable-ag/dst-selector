@@ -31,7 +31,7 @@ div.growthCellsWrapper {
     z-index: auto;
   }
   .growthCell-30.Average {
-    background-color: $averageFrostColor;
+    background-color: $frostSeedingPossibleColor;
     z-index: auto;
   }
   .growthCell-30.Multiple{
@@ -73,7 +73,7 @@ div.growthCellsWrapper {
     z-index: 2;
   }
   .growthCell-20.Average {
-    background-color: $averageFrostColor;
+    background-color: $frostSeedingPossibleColor;
     z-index: 2;
   }
   .growthCell-20.Multiple{
