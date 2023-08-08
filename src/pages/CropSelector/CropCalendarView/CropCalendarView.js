@@ -27,6 +27,7 @@ import {
   sortCrops,
   sudoButtonStyle,
   sudoButtonStyleWithPadding,
+  getLegendDataBasedOnCouncil,
 } from '../../../shared/constants';
 import { Context } from '../../../store/Store';
 import '../../../styles/cropCalendarViewComponent.scss';
@@ -50,12 +51,7 @@ const CropCalendarView = ({ activeCropData }) => {
   const { selectedGoals } = state;
   const activeCropDataShadow = activeCropData;
 
-  const legendData = [
-    { className: 'reliable', label: 'Reliable Establishment' },
-    { className: 'temperatureRisk', label: 'Temperature Risk To Establishment' },
-    { className: 'frostPossible', label: 'Frost Seeding Possible' },
-    { className: 'cashCrop', label: 'Previous Cash Crop Growth Window' },
-  ];
+  const legendData = getLegendDataBasedOnCouncil(state.councilShorthand);
 
   const dispatchValue = (value, type = 'UPDATE_ACTIVE_CROP_DATA') => {
     dispatch({

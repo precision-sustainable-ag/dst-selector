@@ -625,10 +625,39 @@ export const getMonthDayString = (type = '', date = '') => {
   }
 };
 
+export const getLegendDataBasedOnCouncil = (councilShorthand = '') => {
+  const legendData = [
+    { className: 'reliable', label: 'Reliable Establishment' },
+    { className: 'temperatureRisk', label: 'Temperature Risk To Establishment' },
+    { className: 'frostPossible', label: 'Frost Seeding Possible' },
+    { className: 'multiple', label: 'Multiple' },
+    { className: 'cashCrop', label: 'Previous Cash Crop Growth Window' },
+  ];
+  const MCCClegendData = [
+    { className: 'reliable', label: 'Reliable Establishment' },
+    { className: 'temperatureRisk', label: 'Freeze/Moisture Risk to Establishment' },
+    { className: 'multiple', label: 'Multiple' },
+    { className: 'cashCrop', label: 'Previous Cash Crop Growth Window' },
+  ];
+  const SCCClegendData = [
+    { className: 'reliable', label: 'Reliable Establishment' },
+    { className: 'frostPossible', label: 'Average Frost' },
+    { className: 'multiple', label: 'Multiple' },
+    { className: 'cashCrop', label: 'Previous Cash Crop Growth Window' },
+  ];
+  switch (councilShorthand) {
+    case 'MCCC':
+      return MCCClegendData;
+    case 'SCCC':
+      return SCCClegendData;
+    default:
+      return legendData;
+  }
+};
+
 export const reverseGEO = async (lat, lng) => {
   const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${lng},${lat}.json?access_token=${MapboxApiKey}`;
   let data = await fetch(url);
   data = data.json();
-
   return data;
 };
