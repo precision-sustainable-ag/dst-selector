@@ -31,8 +31,8 @@ const ForecastComponent = () => {
   const makeURLString = (url, params) => `${url}?lat=${params[0]}&lon=${params[1]}&appid=${openWeatherApiKey}&units=imperial`;
 
   useEffect(() => {
-    const callWeatherApi = async (url, latlng) => {
-      const fetchData = await fetch(makeURLString(url, latlng));
+    const callWeatherApi = async (latlng) => {
+      const fetchData = await fetch(makeURLString(apiBaseURL, latlng));
       const jsonData = await fetchData.json();
       return jsonData;
     };
@@ -50,7 +50,7 @@ const ForecastComponent = () => {
           latlng = [];
         }
 
-        const apiCall = callWeatherApi(apiBaseURL, latlng);
+        const apiCall = callWeatherApi(latlng);
 
         apiCall
           .then((data) => {

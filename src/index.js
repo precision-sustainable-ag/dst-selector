@@ -15,6 +15,10 @@ import {
   ThemeProvider,
   StyledEngineProvider,
   responsiveFontSizes,
+  Grid,
+  Typography,
+  Container,
+  Link,
   adaptV4Theme,
 } from '@mui/material';
 import { SnackbarProvider } from 'notistack';
@@ -98,27 +102,31 @@ const theme = createTheme(
 );
 const RouteNotFound = () => (
   <section className="page_404">
-    <div className="container-fluid">
-      <div className="row">
-        <div className="col-sm-12">
-          <div className="col-sm-12 text-center">
-            <div className="four_zero_four_bg">
-              <h1 className="text-center ">404</h1>
-            </div>
-
-            <div className="contant_box_404">
-              <h3 className="h2">Look like you're lost</h3>
-
-              <p>The page you are looking for is not available!</p>
-
-              <a href="/" className="link_404">
-                Go Home
-              </a>
-            </div>
+    <Container maxWidth="sm">
+      <Grid container justifyContent="center">
+        <Grid item xs={12}>
+          <div className="four_zero_four_bg">
+            <Typography variant="h1" component="h1" className="text-center">
+              404
+            </Typography>
           </div>
-        </div>
-      </div>
-    </div>
+
+          <div className="contant_box_404" style={{ textAlign: 'center' }}>
+            <Typography variant="h3" component="h2">
+              Looks like you're lost
+            </Typography>
+
+            <Typography variant="body1">
+              The page you are looking for is not available!
+            </Typography>
+
+            <Link href="/" className="link_404">
+              Go Home
+            </Link>
+          </div>
+        </Grid>
+      </Grid>
+    </Container>
   </section>
 );
 
