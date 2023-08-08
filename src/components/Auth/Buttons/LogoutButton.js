@@ -1,4 +1,3 @@
-import { Button } from '@mui/material';
 import { useAuth0 } from '@auth0/auth0-react';
 import React from 'react';
 
@@ -14,9 +13,9 @@ const LogoutButton = () => {
   };
 
   return (
-    <Button variant="outlined" onClick={handleLogout}>
-      Log Out
-    </Button>
+    <a href="/" onClick={handleLogout}>
+      LOG OUT
+    </a>
   );
 };
 
