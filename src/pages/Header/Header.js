@@ -20,8 +20,6 @@ import ToggleOptions from './ToggleOptions/ToggleOptions';
 import {
   lastZipCode, updateZipCode, updateZone,
 } from '../../reduxStore/addressSlice';
-import LoginButton from '../../components/Auth/Buttons/LoginButton';
-import SignUpButton from '../../components/Auth/Buttons/SignUpButton';
 import LogoutButton from '../../components/Auth/Buttons/LogoutButton';
 
 const Header = () => {
@@ -31,7 +29,7 @@ const Header = () => {
   const zipCodeRedux = useSelector((stateRedux) => stateRedux.addressData.zipCode);
   const lastZipCodeRedux = useSelector((stateRedux) => stateRedux.addressData.lastZipCode);
   const [isRoot, setIsRoot] = useState(false);
-  const { user, isAuthenticated } = useAuth0();
+  const { user, isAuthenticated, loginWithRedirect } = useAuth0();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const isActive = {};
   console.log('user auth0', user);
@@ -272,20 +270,10 @@ const Header = () => {
   return (
     <header className="d-print-none">
       <div className="topHeader">
-        {isAuthenticated ? (
-          <>
-            Hello,
-            {' '}
-            {user.name}
-            <LogoutButton />
-          </>
-        ) : (
-          <>
-            <LoginButton />
-            <SignUpButton />
-          </>
-        )}
-
+        <NavLink to="/profile" activeClassName="active">
+          PROFILE
+        </NavLink>
+        <span className="line" />
         <NavLink to="/about" activeClassName="active">
           ABOUT
         </NavLink>
@@ -297,6 +285,14 @@ const Header = () => {
         <NavLink to="/feedback" activeClassName="active">
           FEEDBACK
         </NavLink>
+        <span className="line" />
+        {isAuthenticated ? (
+          <LogoutButton />
+        ) : (
+          <a href="/" onClick={loginWithRedirect}>
+            LOG IN
+          </a>
+        )}
       </div>
 
       <div className="container-fluid">
