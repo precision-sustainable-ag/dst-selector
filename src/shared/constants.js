@@ -661,3 +661,32 @@ export const reverseGEO = async (lat, lng) => {
   data = data.json();
   return data;
 };
+
+export const getCropData = async (apiBaseURL, regionId, stateId) => {
+  if (regionId === null) {
+    return {};
+  }
+
+  const query = `${encodeURIComponent('regions')}=${encodeURIComponent(regionId)}`;
+
+  return fetch(`https://${apiBaseURL}.covercrop-selector.org/v1/states/${stateId}/crops?${query}`)
+    .then((res) => res.json())
+    .catch((err) => {
+      // eslint-disable-next-line no-console
+      console.log(err.message);
+    });
+};
+
+export const getDictData = async (apiBaseURL, regionId, stateId) => {
+  if (regionId === null) {
+    return;
+  }
+
+  const query = `${encodeURIComponent('regions')}=${encodeURIComponent(regionId)}`;
+  await fetch(`https://${apiBaseURL}.covercrop-selector.org/v1/states/${stateId}/dictionary?${query}`)
+    .then((res) => res.json())
+    .catch((err) => {
+    // eslint-disable-next-line no-console
+      console.log(err.message);
+    });
+};
