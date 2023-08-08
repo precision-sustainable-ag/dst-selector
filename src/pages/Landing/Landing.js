@@ -1,3 +1,4 @@
+/* eslint-disable no-alert */
 /*
   This file contains the Landing component, helper functions, and styles
   The Landing page is a static pages that has information about the project and prompts the user to select their location and goals
@@ -171,11 +172,6 @@ const Landing = ({ height, title, bg }) => {
             councilLabel: '',
           },
         });
-        // eslint-disable-next-line no-alert
-        alert(
-          // eslint-disable-next-line max-len
-          devEnvironment ? 'The region you have selected is not currently supported. We currently support Northeast, Midwest, and Southern Cover Crop Councils. Please try again!' : 'The region you have selected is not currently supported. We currently support Northeast Cover Crop Council. Please try again!',
-        );
       }
     }
   }, [selectedState]);
