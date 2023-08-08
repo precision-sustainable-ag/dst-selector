@@ -22,7 +22,7 @@ import { useDispatch } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 import ReactGA from 'react-ga';
 import { RegionSelectorMap } from '@psa/dst.ui.region-selector-map';
-import { BinaryButton } from '../../shared/constants';
+import { BinaryButton, callSelectorApi } from '../../shared/constants';
 import { Context } from '../../store/Store';
 import '../../styles/landing.scss';
 import ConsentModal from '../CoverCropExplorer/ConsentModal/ConsentModal';
@@ -36,81 +36,10 @@ const Landing = ({ height, title, bg }) => {
   const [containerHeight, setContainerHeight] = useState(height);
   const [allStates, setAllStates] = useState([]);
   const [selectedState, setSelectedState] = useState('');
-  const [regions, setRegions] = useState('');
   const [mapState, setMapState] = useState({});
   const [selectedRegion, setSelectedRegion] = useState({});
   const mapRef = useRef(null);
   const defaultMarkers = [[40.78489145, -74.80733626930342]];
-
-  async function getAllStates() {
-    const key = `https://${state.apiBaseURL}.covercrop-selector.org/v1/states`;
-    await fetch(key)
-      .then((res) => res.json())
-      .then((data) => { setAllStates(data.data); })
-      .catch((err) => {
-        // eslint-disable-next-line no-console
-        console.log(err.message);
-      });
-  }
-  useEffect(() => {
-    getAllStates();
-  }, []);
-
-  async function getAllRegions() {
-    await fetch(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${state.stateId}/regions`)
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.data.Counties) {
-          setRegions(data.data.Counties);
-        } else {
-          setRegions(data.data.Zones);
-        }
-      })
-      .catch((err) => {
-        // eslint-disable-next-line no-console
-        console.log(err.message);
-      });
-  }
-
-  useEffect(() => {
-    if (state.stateId) {
-      getAllRegions();
-    }
-  }, [state.stateId]);
-
-  useEffect(() => {
-    dispatch({
-      type: 'UPDATE_REGIONS',
-      data: {
-        regions,
-      },
-    });
-    dispatchRedux(updateZone(
-      {
-        zoneText: regions[0]?.label,
-        zone: regions[0]?.shorthand,
-        zoneId: regions[0]?.id,
-      },
-    ));
-    // dispatch({
-    //   type: 'UPDATE_ZONE',
-    //   data: {
-    //     zoneText: regions[0]?.label,
-    //     zone: regions[0]?.shorthand,
-    //     zoneId: regions[0]?.id,
-    //   },
-    // });
-  }, [regions]);
-
-  // SelectedRegion needs to get replaced with mapState once the map is updated to using state verbage instead of region.
-  useEffect(() => {
-    if (selectedRegion) {
-      const st = allStates.filter((s) => s.label === selectedRegion.properties.STATE_NAME);
-      if (st.length > 0) {
-        setSelectedState(st[0]);
-      }
-    }
-  }, [selectedRegion, mapState]);
 
   const stateChange = (selState) => {
     setSelectedState(selState);
@@ -140,6 +69,68 @@ const Landing = ({ height, title, bg }) => {
     const selState = allStates.filter((s) => s.shorthand === e.target.value);
     stateChange(selState[0]);
   };
+
+  useEffect(() => {
+    callSelectorApi(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states`).then((data) => { setAllStates(data.data); });
+  }, []);
+
+  useEffect(() => {
+    if (state.regions?.length > 0) {
+      dispatch({
+        type: 'UPDATE_REGION',
+        data: {
+          regionId: state.regions[0]?.id ?? '',
+          regionLabel: state.regions[0]?.label ?? '',
+          regionShorthand: state.regions[0]?.shorthand ?? '',
+        },
+      });
+
+      dispatchRedux(updateZone(
+        {
+          zoneText: state.regions[0]?.label,
+          zone: state.regions[0]?.shorthand,
+          zoneId: state.regions[0]?.id,
+        },
+      ));
+    }
+  }, [state.regions]);
+
+  useEffect(() => {
+    if (state.stateId) {
+      fetch(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${state.stateId}/regions`)
+        .then((res) => res.json())
+        .then((data) => {
+          let fetchedRegions;
+
+          if (data.data.Counties) {
+            fetchedRegions = data.data.Counties;
+          } else {
+            fetchedRegions = data.data.Zones;
+          }
+
+          dispatch({
+            type: 'UPDATE_REGIONS',
+            data: {
+              regions: fetchedRegions,
+            },
+          });
+        })
+        .catch((err) => {
+          // eslint-disable-next-line no-console
+          console.log(err.message);
+        });
+    }
+  }, [state.stateId]);
+
+  // SelectedRegion needs to get replaced with mapState once the map is updated to using state verbage instead of region.
+  useEffect(() => {
+    if (selectedRegion) {
+      const st = allStates.filter((s) => s.label === selectedRegion.properties.STATE_NAME);
+      if (st.length > 0) {
+        setSelectedState(st[0]);
+      }
+    }
+  }, [selectedRegion, mapState]);
 
   useEffect(() => {
     // true signifies we are on dev, false signifies we are on prod

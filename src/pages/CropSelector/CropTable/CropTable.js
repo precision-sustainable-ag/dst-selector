@@ -20,7 +20,7 @@ import {
 } from '@mui/material';
 import { AddCircle, Sort } from '@mui/icons-material';
 import {
-  CustomStyles, sortCrops, sudoButtonStyle,
+  CustomStyles, sortCrops, sudoButtonStyle, getLegendDataBasedOnCouncil,
 } from '../../../shared/constants';
 import { Context } from '../../../store/Store';
 import '../../../styles/cropCalendarViewComponent.scss';
@@ -48,12 +48,7 @@ const CropTableComponent = ({
   const [goal3SortFlag, setGoal3SortFlag] = useState(true);
   const activeCropDataShadow = activeCropData;
 
-  const legendData = [
-    { className: 'reliable', label: 'Reliable Establishment' },
-    { className: 'temperatureRisk', label: 'Temperature Risk To Establishment' },
-    { className: 'frostPossible', label: 'Frost Seeding Possible' },
-    { className: 'cashCrop', label: 'Previous Cash Crop Growth Window' },
-  ];
+  const legendData = getLegendDataBasedOnCouncil(state.councilShorthand);
 
   useEffect(() => {
     if (document.querySelector('thead.MuiTableHead-root.tableHeadWrapper')) {
