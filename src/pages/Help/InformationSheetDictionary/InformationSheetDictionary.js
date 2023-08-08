@@ -10,6 +10,7 @@ import React, {
 } from 'react';
 import { Context } from '../../../store/Store';
 import DictionaryContent from './DictionaryContent';
+import { callSelectorApi } from '../../../shared/constants';
 
 const InformationSheetDictionary = ({ zone, from }) => {
   const [dictionary, setDictionary] = useState([]);
@@ -21,18 +22,10 @@ const InformationSheetDictionary = ({ zone, from }) => {
 
   useEffect(() => {
     document.title = 'Data Dictionary';
-
-    async function getDictData() {
-      await fetch(`https://${state.apiBaseURL}.covercrop-selector.org/legacy/data-dictionary?zone=zone${currentZone}`)
-        .then((res) => res.json())
-        .then((data) => { setDictionary(data); })
-        .catch((err) => {
-          // eslint-disable-next-line no-console
-          console.log(err.message);
-        });
+    if (currentZone) {
+      callSelectorApi(`https://${state.apiBaseURL}.covercrop-selector.org/legacy/data-dictionary?zone=zone${currentZone}`)
+        .then((data) => { setDictionary(data); });
     }
-
-    getDictData();
   }, [zone]);
 
   return from === 'help' ? (
