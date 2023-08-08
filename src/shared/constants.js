@@ -661,3 +661,10 @@ export const reverseGEO = async (lat, lng) => {
   data = data.json();
   return data;
 };
+
+export const callSelectorApi = async (url) => fetch(url)
+  .then((res) => res.json())
+  .catch((err) => {
+    // eslint-disable-next-line no-console
+    console.log(err.message);
+  });
