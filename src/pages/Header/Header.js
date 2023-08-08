@@ -10,6 +10,7 @@ import moment from 'moment';
 import { useSnackbar } from 'notistack';
 import React, { useContext, useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
+import { useAuth0 } from '@auth0/auth0-react';
 import { abbrRegion, reverseGEO } from '../../shared/constants';
 import { Context } from '../../store/Store';
 import '../../styles/header.scss';
@@ -19,6 +20,9 @@ import ToggleOptions from './ToggleOptions/ToggleOptions';
 import {
   lastZipCode, updateZipCode, updateZone,
 } from '../../reduxStore/addressSlice';
+import LoginButton from '../../components/Auth/Buttons/LoginButton';
+import SignUpButton from '../../components/Auth/Buttons/SignUpButton';
+import LogoutButton from '../../components/Auth/Buttons/LogoutButton';
 
 const Header = () => {
   const { state, dispatch } = useContext(Context);
@@ -27,8 +31,10 @@ const Header = () => {
   const zipCodeRedux = useSelector((stateRedux) => stateRedux.addressData.zipCode);
   const lastZipCodeRedux = useSelector((stateRedux) => stateRedux.addressData.lastZipCode);
   const [isRoot, setIsRoot] = useState(false);
+  const { user, isAuthenticated } = useAuth0();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const isActive = {};
+  console.log('user auth0', user);
 
   const weatherApiURL = 'https://weather.covercrop-data.org';
   const getUSDAZone = async (zip) => fetch(`https://phzmapi.org/${zip}.json`);
@@ -266,6 +272,20 @@ const Header = () => {
   return (
     <header className="d-print-none">
       <div className="topHeader">
+        {isAuthenticated ? (
+          <>
+            Hello,
+            {' '}
+            {user.name}
+            <LogoutButton />
+          </>
+        ) : (
+          <>
+            <LoginButton />
+            <SignUpButton />
+          </>
+        )}
+
         <NavLink to="/about" activeClassName="active">
           ABOUT
         </NavLink>
