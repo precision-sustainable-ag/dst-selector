@@ -201,21 +201,6 @@ const Landing = ({ height, title, bg }) => {
   );
 
   useEffect(() => {
-    if (selectedState) {
-      stateSelect();
-      dispatch({
-        type: 'UPDATE_STATE',
-        data: {
-          state: selectedState.label,
-          stateId: selectedState.id,
-          councilShorthand: selectedState.council.shorthand,
-          councilLabel: selectedState.council.label,
-        },
-      });
-    }
-  }, [selectedState]);
-
-  useEffect(() => {
     if (state.consent) {
       ReactGA.initialize('UA-181903489-1');
 
