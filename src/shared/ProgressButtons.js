@@ -4,11 +4,13 @@
 */
 
 import React, { useContext, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { Context } from '../store/Store';
 import ProgressButtonsInner from './ProgressButtonsInner';
 
 const ProgressButtons = ({ closeExpansionPanel, setConfirmationOpen }) => {
   const { state } = useContext(Context);
+  const addressRedux = useSelector((stateRedux) => stateRedux.addressData.address);
   const [isDisabledBack, setIsDisabledBack] = useState(false);
   const [isDisabledNext, setIsDisabledNext] = useState(true);
   const [isDisabledRefresh, setIsDisabledRefresh] = useState(false);
@@ -23,7 +25,7 @@ const ProgressButtons = ({ closeExpansionPanel, setConfirmationOpen }) => {
       case 1:
         // location selection state
         // TODO: discuss should sfilter be used here or state.lastZone
-        setIsDisabledNext(sfilters.zone === 0 || state.address === '');
+        setIsDisabledNext(sfilters.zone === 0 || addressRedux === '');
 
         setIsDisabledBack(false);
         setIsDisabledRefresh(false);
