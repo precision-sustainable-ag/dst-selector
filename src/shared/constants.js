@@ -662,12 +662,9 @@ export const reverseGEO = async (lat, lng) => {
   return data;
 };
 
-export const callSelectorApi = async (url) => {
-  console.log(url.split('https://developapi.covercrop-selector.org/v1')[1]);
-  return fetch(url)
-    .then((res) => res.json())
-    .catch((err) => {
+export const callSelectorApi = async (url) => fetch(url)
+  .then((res) => res.json())
+  .catch((err) => {
     // eslint-disable-next-line no-console
-      console.log(err.message);
-    });
-};
+    console.log(err.message);
+  });

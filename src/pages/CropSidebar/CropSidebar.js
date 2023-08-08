@@ -66,7 +66,7 @@ const CropSidebar = ({
 
   const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
   const sfilters = state[section];
-  const dictionary = [];
+  // const dictionary = [];
 
   const legendData = [
     { className: 'sideBar', label: '0 = Least, 5 = Most' },
@@ -92,11 +92,6 @@ const CropSidebar = ({
       },
     });
   };
-
-  // const areCommonElements = (arr1, arr2) => {
-  //   const arr2Set = new Set(arr2);
-  //   return arr1.some((el) => arr2Set.has(el));
-  // }; // areCommonElements
 
   useEffect(() => {
     const sfo = {};
@@ -187,14 +182,8 @@ const CropSidebar = ({
     });
   };
 
-  const createObject = (obj, dataDictionary, data) => {
-    const field = dataDictionary?.filter((item) => item.Variable === data.label);
-    if (field[0] !== undefined) {
-      obj.description = field[0].Description > 0 ? field[0].Description : '';
-    }
-  };
-
-  const generateSidebarObject = async (dataDictionary) => {
+  const generateSidebarObject = async () => {
+    const sidebars = [];
     await sidebarCategoriesData.forEach((category) => {
       if (category.label !== 'Goals') {
         const newCategory = {
@@ -220,36 +209,30 @@ const CropSidebar = ({
             obj.values = filter.values;
           }
 
-          createObject(obj, dataDictionary, filter);
+          // createObject(obj, dataDictionary, filter);
 
           return obj;
         });
-        dictionary.push(newCategory);
+        sidebars.push(newCategory);
       }
     });
+
+    return sidebars;
   };
 
-  async function getSidebars(data) {
-    console.log(data);
-    const setData = (dict) => {
-      setSidebarFilters(dict);
-    };
-
-    await generateSidebarObject(data)
-      .then(() => setData(dictionary))
+  useEffect(() => {
+    generateSidebarObject()
+      .then((data) => setSidebarFilters(data))
       .then(() => { setLoading(false); })
       .catch((err) => {
-      // eslint-disable-next-line no-console
+        // eslint-disable-next-line no-console
         console.log(err.message);
       });
-  }
+  }, [sidebarCategoriesData]);
 
   useEffect(() => {
     setLoading(true);
-    // getDictData();
     callSelectorApi(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${state.stateId}/dictionary?${query}`).then((data) => {
-      getSidebars(data.data);
-      // constDictUrl =
       dispatch({
         type: 'PULL_DICTIONARY_DATA',
         data: data.data,
