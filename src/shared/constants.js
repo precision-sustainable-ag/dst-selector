@@ -625,7 +625,6 @@ export const getMonthDayString = (type = '', date = '') => {
   }
 };
 
-
 export const getLegendDataBasedOnCouncil = (councilShorthand = '') => {
   const legendData = [
     { className: 'reliable', label: 'Reliable Establishment' },
