@@ -16,6 +16,7 @@ import React, {
   useState,
   useCallback,
 } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Search } from '@mui/icons-material';
 import { Map } from '@psa/dst.ui.map';
 // import centroid from '@turf/centroid';
@@ -25,6 +26,7 @@ import { BinaryButton } from '../../shared/constants';
 import { Context } from '../../store/Store';
 import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset';
 import PlantHardinessZone from '../CropSidebar/PlantHardinessZone/PlantHardinessZone';
+import { changeAddressViaMap, updateLocation, updateZone as updateZoneRedux } from '../../reduxStore/addressSlice';
 
 // eslint-disable-next-line import/no-webpack-loader-syntax, import/no-unresolved
 mapboxgl.workerClass = require('worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker').default;
@@ -33,12 +35,15 @@ const LocationComponent = ({
   closeExpansionPanel,
 }) => {
   const { state, dispatch } = useContext(Context);
+  const dispatchRedux = useDispatch();
   const [selectedZone, setselectedZone] = useState();
   const [selectedToEditSite, setSelectedToEditSite] = useState({});
   const [showRestartPrompt, setShowRestartPrompt] = useState(false);
   // const [selectedRegion, setSelectedRegion] = useState({});
   const [handleConfirm, setHandleConfirm] = useState(false);
   const defaultMarkers = [[40.78489145, -74.80733626930342]];
+  const countyRedux = useSelector((stateRedux) => stateRedux.addressData.county);
+  const zoneRedux = useSelector((stateRedux) => stateRedux.addressData.zone);
 
   const getLatLng = useCallback(() => {
     if (state.state) {
@@ -56,14 +61,21 @@ const LocationComponent = ({
   const updateZone = (region) => {
     if (region !== undefined) {
       // setSelectedRegion(region);
-      dispatch({
-        type: 'UPDATE_ZONE',
-        data: {
+      dispatchRedux(updateZoneRedux(
+        {
           zoneText: region.label,
           zone: region.shorthand,
           zoneId: region.id,
         },
-      });
+      ));
+      // dispatch({
+      //   type: 'UPDATE_ZONE',
+      //   data: {
+      //     zoneText: region.label,
+      //     zone: region.shorthand,
+      //     zoneId: region.id,
+      //   },
+      // });
       dispatch({
         type: 'UPDATE_REGION',
         data: {
@@ -106,16 +118,17 @@ const LocationComponent = ({
   const handleMapChange = () => {
     // eslint-disable-next-line eqeqeq
     const regionInfo = state.regions.filter((region) => region.shorthand == selectedZone);
+
     updateZone(regionInfo[0]);
   };
 
   useEffect(() => {
     if (state.councilLabel !== 'Midwest Cover Crop Council') {
-      setselectedZone(state.zone);
+      setselectedZone(zoneRedux);
     } else {
-      setselectedZone(state.county?.replace(' County', ''));
+      setselectedZone(countyRedux?.replace(' County', ''));
     }
-  }, [state.zone, state.county]);
+  }, [zoneRedux, countyRedux]);
 
   useEffect(() => {
     const {
@@ -128,22 +141,21 @@ const LocationComponent = ({
     } = selectedToEditSite;
 
     if (Object.keys(selectedToEditSite).length > 0) {
-      dispatch({
-        type: 'UPDATE_LOCATION',
-        data: {
+      // dispatch({
+      //   type: 'UPDATE_LOCATION',
+      //   data: {
+      //     address,
+      //     markers: [[latitude, longitude]],
+      //     zipCode,
+      //   },
+      // });
+      dispatchRedux(updateLocation(
+        {
           address,
-          latitude,
-          longitude,
+          markers: [[latitude, longitude]],
           zipCode,
         },
-      });
-
-      dispatch({
-        type: 'UPDATE_MARKER',
-        data: {
-          markers: [[latitude, longitude]],
-        },
-      });
+      ));
 
       dispatch({
         type: 'SNACK',
@@ -154,22 +166,31 @@ const LocationComponent = ({
       });
 
       if (selectedToEditSite.address) {
-        dispatch({
-          type: 'CHANGE_ADDRESS_VIA_MAP',
-          data: {
+        dispatchRedux(changeAddressViaMap(
+          {
             address,
             fullAddress,
             zipCode,
             county,
             addressVerified: true,
           },
-        });
+        ));
+        // dispatch({
+        //   type: 'CHANGE_ADDRESS_VIA_MAP',
+        //   data: {
+        //     address,
+        //     fullAddress,
+        //     zipCode,
+        //     county,
+        //     addressVerified: true,
+        //   },
+        // });
       }
       if (selectedZone) {
         handleMapChange();
       }
     }
-  }, [selectedToEditSite, selectedZone]);
+  }, [selectedToEditSite]);
 
   return (
     <div className="container-fluid mt-5">
@@ -194,7 +215,7 @@ const LocationComponent = ({
               )}
             <div className="row py-3 my-4 ">
               <div className="col-md-5 col-lg-6 col-sm-12 col-12">
-                <PlantHardinessZone updateZone={updateZone} handleMapChange={handleMapChange} />
+                <PlantHardinessZone updateZone={updateZone} />
               </div>
             </div>
           </div>

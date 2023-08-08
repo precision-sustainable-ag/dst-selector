@@ -11,6 +11,7 @@ import {
 import styled from 'styled-components';
 import moment from 'moment';
 import { Info, MonetizationOn } from '@mui/icons-material';
+import { MapboxApiKey } from './keys';
 
 export const ReferenceTooltip = ({
   url, source, type, content, hasLink, title,
@@ -624,6 +625,7 @@ export const getMonthDayString = (type = '', date = '') => {
   }
 };
 
+
 export const getLegendDataBasedOnCouncil = (councilShorthand = '') => {
   const legendData = [
     { className: 'reliable', label: 'Reliable Establishment' },
@@ -652,4 +654,11 @@ export const getLegendDataBasedOnCouncil = (councilShorthand = '') => {
     default:
       return legendData;
   }
+};
+
+export const reverseGEO = async (lat, lng) => {
+  const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${lng},${lat}.json?access_token=${MapboxApiKey}`;
+  let data = await fetch(url);
+  data = data.json();
+  return data;
 };
