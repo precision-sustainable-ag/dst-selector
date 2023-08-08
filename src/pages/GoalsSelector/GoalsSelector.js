@@ -10,6 +10,7 @@ import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset
 import { Context } from '../../store/Store';
 import '../../styles/goalsSelector.scss';
 import GoalTag from './GoalTag/GoalTag';
+import { callSelectorApi } from '../../shared/constants';
 
 // const goalSkeletonStyle = {
 //   height: '50px',
@@ -28,23 +29,12 @@ const GoalsSelector = () => {
       setHandleConfirm(true);
     }
   }, [state.selectedCrops, state.myCoverCropListLocation]);
-
-  async function getAllGoals() {
-    const query = `${encodeURIComponent('regions')}=${encodeURIComponent(state.regionId)}`;
-
-    await fetch(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${state.stateId}/goals?${query}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setAllGoals(data.data);
-      })
-      .catch((err) => {
-        // eslint-disable-next-line no-console
-        console.log(err.message);
-      });
-  }
+  const query = `${encodeURIComponent('regions')}=${encodeURIComponent(state.regionId)}`;
 
   useEffect(() => {
-    getAllGoals();
+    callSelectorApi(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${state.stateId}/goals?${query}`).then((data) => {
+      setAllGoals(data.data);
+    });
   }, [state.allGoals]);
 
   return (
