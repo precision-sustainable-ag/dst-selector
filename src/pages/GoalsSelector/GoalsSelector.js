@@ -32,9 +32,11 @@ const GoalsSelector = () => {
   const query = `${encodeURIComponent('regions')}=${encodeURIComponent(state.regionId)}`;
 
   useEffect(() => {
-    callSelectorApi(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${state.stateId}/goals?${query}`).then((data) => {
-      setAllGoals(data.data);
-    });
+    if (state.stateId && state.regionId) {
+      callSelectorApi(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${state.stateId}/goals?${query}`).then((data) => {
+        setAllGoals(data.data);
+      });
+    }
   }, [state.allGoals]);
 
   return (

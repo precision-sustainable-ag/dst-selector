@@ -22,9 +22,10 @@ const InformationSheetDictionary = ({ zone, from }) => {
 
   useEffect(() => {
     document.title = 'Data Dictionary';
-
-    callSelectorApi(`https://${state.apiBaseURL}.covercrop-selector.org/legacy/data-dictionary?zone=zone${currentZone}`)
-      .then((data) => { setDictionary(data); });
+    if (currentZone) {
+      callSelectorApi(`https://${state.apiBaseURL}.covercrop-selector.org/legacy/data-dictionary?zone=zone${currentZone}`)
+        .then((data) => { setDictionary(data); });
+    }
   }, [zone]);
 
   return from === 'help' ? (
