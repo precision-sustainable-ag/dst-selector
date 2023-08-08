@@ -231,30 +231,32 @@ const CropSidebar = ({
   }, [sidebarCategoriesData]);
 
   useEffect(() => {
-    setLoading(true);
-    callSelectorApi(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${state.stateId}/dictionary?${query}`).then((data) => {
-      dispatch({
-        type: 'PULL_DICTIONARY_DATA',
-        data: data.data,
+    if (state.stateId && state.regionId) {
+      setLoading(true);
+      callSelectorApi(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${state.stateId}/dictionary?${query}`).then((data) => {
+        dispatch({
+          type: 'PULL_DICTIONARY_DATA',
+          data: data.data,
+        });
       });
-    });
 
-    callSelectorApi(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${state.stateId}/filters?${query}`).then((data) => {
-      const allFilters = [];
-      data.data.forEach((category) => {
-        allFilters.push(category.attributes);
+      callSelectorApi(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${state.stateId}/filters?${query}`).then((data) => {
+        const allFilters = [];
+        data.data.forEach((category) => {
+          allFilters.push(category.attributes);
+        });
+        setSidebarFiltersData(allFilters);
+        setSidebarCategoriesData(data.data);
       });
-      setSidebarFiltersData(allFilters);
-      setSidebarCategoriesData(data.data);
-    });
 
-    callSelectorApi(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${state.stateId}/crops?${query}`).then((data) => {
-      cropDataFormatter(data.data);
-      dispatch({
-        type: 'PULL_CROP_DATA',
-        data: data.data,
+      callSelectorApi(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${state.stateId}/crops?${query}`).then((data) => {
+        cropDataFormatter(data.data);
+        dispatch({
+          type: 'PULL_CROP_DATA',
+          data: data.data,
+        });
       });
-    });
+    }
   }, [
     state.regionId,
   ]);
@@ -338,17 +340,6 @@ const CropSidebar = ({
       {filters()}
     </List>
   ); // filterList
-
-  // useEffect(() => {
-  //   callSelectorApi(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${state.stateId}/filters?${query}`).then((data) => {
-  //     const allFilters = [];
-  //     data.data.forEach((category) => {
-  //       allFilters.push(category.attributes);
-  //     });
-  //     setSidebarFiltersData(allFilters);
-  //     setSidebarCategoriesData(data.data);
-  //   });
-  // }, [state.regionId]);
 
   useEffect(() => {
     filtersList();

@@ -28,14 +28,15 @@ const InformationSheetContent = ({ crop, modalData }) => {
 
   useEffect(() => {
     document.title = `${crop.label} Zone ${zone}`;
-
-    callSelectorApi(`https://${state.apiBaseURL}.covercrop-selector.org/v1/crops/${crop?.id}/resources?${query}`)
-      .then((data) => setCurrentSources(data.data));
-    callSelectorApi(`https://${state.apiBaseURL}.covercrop-selector.org/v1/crops/${crop?.id}/images?${query}`)
-      .then((data) => {
-        setAllThumbs(data.data);
-        setDataDone(true);
-      });
+    if (state.stateId && state.regionId) {
+      callSelectorApi(`https://${state.apiBaseURL}.covercrop-selector.org/v1/crops/${crop?.id}/resources?${query}`)
+        .then((data) => setCurrentSources(data.data));
+      callSelectorApi(`https://${state.apiBaseURL}.covercrop-selector.org/v1/crops/${crop?.id}/images?${query}`)
+        .then((data) => {
+          setAllThumbs(data.data);
+          setDataDone(true);
+        });
+    }
   }, [crop, zone]);
 
   return dataDone === true && (
