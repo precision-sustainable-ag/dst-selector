@@ -42,6 +42,7 @@ const Landing = ({ height, title, bg }) => {
   const defaultMarkers = [[40.78489145, -74.80733626930342]];
 
   const stateChange = (selState) => {
+    console.log('sel state', selState);
     setSelectedState(selState);
     dispatch({
       type: 'UPDATE_STATE',
@@ -124,10 +125,17 @@ const Landing = ({ height, title, bg }) => {
 
   // SelectedRegion needs to get replaced with mapState once the map is updated to using state verbage instead of region.
   useEffect(() => {
+    console.log(selectedRegion);
+
     if (selectedRegion) {
       const st = allStates.filter((s) => s.label === selectedRegion.properties.STATE_NAME);
       if (st.length > 0) {
         setSelectedState(st[0]);
+      } else if (selectedRegion?.id) {
+        alert(
+          // eslint-disable-next-line max-len
+          'The region you have selected is not currently supported. We currently support Northeast, Midwest, and Southern Cover Crop Councils. Please try again!',
+        );
       }
     }
   }, [selectedRegion, mapState]);
@@ -145,10 +153,15 @@ const Landing = ({ height, title, bg }) => {
       return productionCouncils.includes(selectedCouncil);
     };
 
-    if (selectedState.length > 0) {
+    if (selectedState) {
+      console.log('here');
       if (verifyCouncil(selectedState.council.shorthand)) {
+        console.log('here2');
+
         stateChange(selectedState);
       } else {
+        console.log('here3');
+
         dispatch({
           type: 'UPDATE_STATE',
           data: {
