@@ -46,6 +46,7 @@ const CropCalendarView = ({ activeCropData }) => {
   const [nameSortFlag, setNameSortFlag] = useState(true);
   const [goalsSortFlag, setGoalsSortFlag] = useState(true);
   const [selectedCropsSortFlag, setSelectedCropsFlag] = useState(true);
+  const [plantingWindowSortFlag, setPlantingWindowSortFlag] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalData, setModalData] = useState([{}]);
   const { selectedGoals } = state;
@@ -90,6 +91,11 @@ const CropCalendarView = ({ activeCropData }) => {
     setNameSortFlag(!nameSortFlag);
   };
 
+  const sortByPlantingWindow = () => {
+    sortCrops('Planting Window', activeCropDataShadow, plantingWindowSortFlag);
+    setPlantingWindowSortFlag(!plantingWindowSortFlag);
+  };
+
   const sortBySelectedCrops = () => {
     const selectedCropsShadow = state.selectedCrops;
     sortCrops('Selected Crops', activeCropDataShadow, selectedCropsSortFlag, selectedCropsShadow, dispatchValue);
@@ -132,12 +138,12 @@ const CropCalendarView = ({ activeCropData }) => {
                   >
                     <div className="container-fluid">
                       <div className="row">
-                        <div className="col-6">
+                        <div className="col-4">
                           <Typography variant="body1" component="span">
                             <div style={sudoButtonStyleWithPadding}>COVER CROP GROWTH WINDOW</div>
                           </Typography>
                         </div>
-                        <div className="col-6">
+                        <div className="col-4">
                           <Typography variant="body1">
                             <Button
                               startIcon={<AddCircle />}
@@ -148,6 +154,16 @@ const CropCalendarView = ({ activeCropData }) => {
                               <Typography variant="body2">LEGEND</Typography>
                             </Button>
                           </Typography>
+                        </div>
+                        <div className="col-4">
+                          <Button
+                            onClick={sortByPlantingWindow}
+                            style={{ color: '#000' }}
+                          >
+                            <Typography variant="body1" component="span">
+                              <div style={sudoButtonStyleWithPadding}>SORT BY PLANTING WINDOW</div>
+                            </Typography>
+                          </Button>
                         </div>
                       </div>
                     </div>
@@ -287,7 +303,6 @@ const CropCalendarView = ({ activeCropData }) => {
 
                   </TableCell>
                 )}
-
                 {allMonths.map((month, index) => {
                   const growthMonth = checkIfGrowthMonth(month);
                   const growthMonthSeparator = growthMonth
@@ -297,15 +312,16 @@ const CropCalendarView = ({ activeCropData }) => {
                   return (
                     <TableCell
                       key={`monthskey${index}`}
+                      style={{ cursor: 'pointer' }}
                       className={`calendarSecondHeadMonth ${
                         growthMonth ? 'activeGrowthMonth' : ''
                       } ${growthMonthSeparator ? 'growthMonthSeparator' : ''}`}
+                      onClick={sortByPlantingWindow}
                     >
                       <div style={sudoButtonStyle}>{month}</div>
                     </TableCell>
                   );
                 })}
-
                 <TableCell style={{ width: '10%', borderLeft: '5px solid white' }}>
                   <Button style={{ color: '#000' }} onClick={sortBySelectedCrops}>
                     <Typography variant="body2"> MY LIST </Typography>
