@@ -20,7 +20,7 @@ import {
 } from '@mui/material';
 import { AddCircle, Sort } from '@mui/icons-material';
 import {
-  CustomStyles, sortCrops, sudoButtonStyle,
+  CustomStyles, sortCrops, sudoButtonStyle, getLegendDataBasedOnCouncil,
 } from '../../../shared/constants';
 import { Context } from '../../../store/Store';
 import '../../../styles/cropCalendarViewComponent.scss';
@@ -28,36 +28,6 @@ import '../../../styles/cropTable.scss';
 import CropDataRender from './CropDataRender';
 import CropDetailsModal from '../../../components/CropDetailsModal/CropDetailsModal';
 import Legend from '../../../components/Legend/Legend';
-
-const getLegendDataBasedOnCouncil = (councilShorthand = '') => {
-  const legendData = [
-    { className: 'reliable', label: 'Reliable Establishment' },
-    { className: 'temperatureRisk', label: 'Temperature Risk To Establishment' },
-    { className: 'frostPossible', label: 'Frost Seeding Possible' },
-    { className: 'multiple', label: 'Multiple' },
-    { className: 'cashCrop', label: 'Previous Cash Crop Growth Window' },
-  ];
-  const MCCClegendData = [
-    { className: 'reliable', label: 'Reliable Establishment' },
-    { className: 'temperatureRisk', label: 'Freeze/Moisture Risk to Establishment' },
-    { className: 'multiple', label: 'Multiple' },
-    { className: 'cashCrop', label: 'Previous Cash Crop Growth Window' },
-  ];
-  const SCCClegendData = [
-    { className: 'reliable', label: 'Reliable Establishment' },
-    { className: 'frostPossible', label: 'Average Frost' },
-    { className: 'multiple', label: 'Multiple' },
-    { className: 'cashCrop', label: 'Previous Cash Crop Growth Window' },
-  ];
-  switch (councilShorthand) {
-    case 'MCCC':
-      return MCCClegendData;
-    case 'SCCC':
-      return SCCClegendData;
-    default:
-      return legendData;
-  }
-};
 
 const CropTableComponent = ({
   cropData, activeCropData, showGrowthWindow,
