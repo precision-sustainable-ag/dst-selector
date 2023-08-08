@@ -20,7 +20,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 import ReactGA from 'react-ga';
 import { RegionSelectorMap } from '@psa/dst.ui.region-selector-map';
-import { BinaryButton } from '../../shared/constants';
+import { BinaryButton, getCropData, getDictData } from '../../shared/constants';
 import { Context, cropDataFormatter } from '../../store/Store';
 import '../../styles/landing.scss';
 import ConsentModal from '../CoverCropExplorer/ConsentModal/ConsentModal';
@@ -51,46 +51,46 @@ const Landing = ({ height, title, bg }) => {
       });
   }
 
-  async function getCropData(currentRegionId) {
-    if (currentRegionId === null) {
-      return;
-    }
+  // async function getCropData(currentRegionId) {
+  //   if (currentRegionId === null) {
+  //     return;
+  //   }
 
-    const query = `${encodeURIComponent('regions')}=${encodeURIComponent(currentRegionId)}`;
-    await fetch(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${state.stateId}/crops?${query}`)
-      .then((res) => res.json())
-      .then((data) => {
-        cropDataFormatter(data.data);
-        dispatch({
-          type: 'PULL_CROP_DATA',
-          data: data.data,
-        });
-      })
-      .catch((err) => {
-        // eslint-disable-next-line no-console
-        console.log(err.message);
-      });
-  }
+  //   const query = `${encodeURIComponent('regions')}=${encodeURIComponent(currentRegionId)}`;
+  //   await fetch(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${state.stateId}/crops?${query}`)
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       cropDataFormatter(data.data);
+  //       dispatch({
+  //         type: 'PULL_CROP_DATA',
+  //         data: data.data,
+  //       });
+  //     })
+  //     .catch((err) => {
+  //       // eslint-disable-next-line no-console
+  //       console.log(err.message);
+  //     });
+  // }
 
-  async function getDictData(currentRegionId) {
-    if (currentRegionId === null) {
-      return;
-    }
+  // async function getDictData(currentRegionId) {
+  //   if (currentRegionId === null) {
+  //     return;
+  //   }
 
-    const query = `${encodeURIComponent('regions')}=${encodeURIComponent(currentRegionId)}`;
-    await fetch(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${state.stateId}/dictionary?${query}`)
-      .then((res) => res.json())
-      .then((data) => {
-        dispatch({
-          type: 'PULL_DICTIONARY_DATA',
-          data: data.data,
-        });
-      })
-      .catch((err) => {
-      // eslint-disable-next-line no-console
-        console.log(err.message);
-      });
-  }
+  //   const query = `${encodeURIComponent('regions')}=${encodeURIComponent(currentRegionId)}`;
+  //   await fetch(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${state.stateId}/dictionary?${query}`)
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       dispatch({
+  //         type: 'PULL_DICTIONARY_DATA',
+  //         data: data.data,
+  //       });
+  //     })
+  //     .catch((err) => {
+  //     // eslint-disable-next-line no-console
+  //       console.log(err.message);
+  //     });
+  // }
 
   useEffect(() => {
     getAllStates();
@@ -115,8 +115,28 @@ const Landing = ({ height, title, bg }) => {
         },
       ));
 
-      getDictData(state.regions[0]?.id);
-      getCropData(state.regions[0]?.id);
+      getDictData(state.apiBaseURL, state.regions[0]?.id, state.stateId).then((data) => {
+        dispatch({
+          type: 'PULL_DICTIONARY_DATA',
+          data: data.data,
+        });
+      })
+        .catch((err) => {
+        // eslint-disable-next-line no-console
+          console.log(err.message);
+        });
+
+      getCropData(state.apiBaseURL, state.regions[0]?.id, state.stateId).then((data) => {
+        cropDataFormatter(data.data);
+        dispatch({
+          type: 'PULL_CROP_DATA',
+          data: data.data,
+        });
+      })
+        .catch((err) => {
+        // eslint-disable-next-line no-console
+          console.log(err.message);
+        });
     }
   }, [state.regions]);
 
