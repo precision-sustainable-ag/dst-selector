@@ -142,12 +142,12 @@ const CropCalendarView = ({ activeCropData }) => {
                   >
                     <div className="container-fluid">
                       <div className="row">
-                        <div className="col-6">
+                        <div className="col-4">
                           <Typography variant="body1" component="span">
                             <div style={sudoButtonStyleWithPadding}>COVER CROP GROWTH WINDOW</div>
                           </Typography>
                         </div>
-                        <div className="col-6">
+                        <div className="col-4">
                           <Typography variant="body1">
                             <Button
                               startIcon={<AddCircle />}
@@ -158,6 +158,16 @@ const CropCalendarView = ({ activeCropData }) => {
                               <Typography variant="body2">LEGEND</Typography>
                             </Button>
                           </Typography>
+                        </div>
+                        <div className="col-4">
+                          <Button
+                            onClick={sortByPlantingWindow}
+                            style={{ color: '#000' }}
+                          >
+                            <Typography variant="body1" component="span">
+                              <div style={sudoButtonStyleWithPadding}>SORT BY PLANTING WINDOW</div>
+                            </Typography>
+                          </Button>
                         </div>
                       </div>
                     </div>
