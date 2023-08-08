@@ -623,3 +623,33 @@ export const getMonthDayString = (type = '', date = '') => {
       return '';
   }
 };
+
+export const getLegendDataBasedOnCouncil = (councilShorthand = '') => {
+  const legendData = [
+    { className: 'reliable', label: 'Reliable Establishment' },
+    { className: 'temperatureRisk', label: 'Temperature Risk To Establishment' },
+    { className: 'frostPossible', label: 'Frost Seeding Possible' },
+    { className: 'multiple', label: 'Multiple' },
+    { className: 'cashCrop', label: 'Previous Cash Crop Growth Window' },
+  ];
+  const MCCClegendData = [
+    { className: 'reliable', label: 'Reliable Establishment' },
+    { className: 'temperatureRisk', label: 'Freeze/Moisture Risk to Establishment' },
+    { className: 'multiple', label: 'Multiple' },
+    { className: 'cashCrop', label: 'Previous Cash Crop Growth Window' },
+  ];
+  const SCCClegendData = [
+    { className: 'reliable', label: 'Reliable Establishment' },
+    { className: 'frostPossible', label: 'Average Frost' },
+    { className: 'multiple', label: 'Multiple' },
+    { className: 'cashCrop', label: 'Previous Cash Crop Growth Window' },
+  ];
+  switch (councilShorthand) {
+    case 'MCCC':
+      return MCCClegendData;
+    case 'SCCC':
+      return SCCClegendData;
+    default:
+      return legendData;
+  }
+};
