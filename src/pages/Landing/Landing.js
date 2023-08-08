@@ -20,11 +20,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 import ReactGA from 'react-ga';
 import { RegionSelectorMap } from '@psa/dst.ui.region-selector-map';
+import { useAuth0 } from '@auth0/auth0-react';
 import { BinaryButton } from '../../shared/constants';
 import { Context, cropDataFormatter } from '../../store/Store';
 import '../../styles/landing.scss';
 import ConsentModal from '../CoverCropExplorer/ConsentModal/ConsentModal';
 import { updateZone, updateLastZone } from '../../reduxStore/addressSlice';
+import AuthModal from './AuthModal/AuthModal';
 
 const Landing = ({ height, title, bg }) => {
   const { state, dispatch } = useContext(Context);
@@ -36,6 +38,7 @@ const Landing = ({ height, title, bg }) => {
   const [selectedRegion, setSelectedRegion] = useState(state.selectedRegion);
   const mapRef = useRef(null);
   const defaultMarkers = [[40.78489145, -74.80733626930342]];
+  const { isAuthenticated } = useAuth0();
 
   const zoneRedux = useSelector((stateRedux) => stateRedux.addressData.zone);
   // const zoneIdRedux = useSelector((stateRedux) => stateRedux.addressData.zoneId);
@@ -263,7 +266,7 @@ const Landing = ({ height, title, bg }) => {
         backgroundSize: 'cover',
       }}
     >
-
+      {!isAuthenticated && <AuthModal />}
       <ConsentModal consent={state.consent} />
 
       {/* <Grid container direction="row"> */}

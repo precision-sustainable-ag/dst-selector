@@ -4,6 +4,7 @@
     "private": true,
     "homepage": "https://covercrop.tools/",
     "dependencies": {
+        "@auth0/auth0-react": "^2.2.0",
         "@emotion/react": "^11.10.6",
         "@emotion/styled": "^11.10.6",
         "@mapbox/mapbox-gl-draw": "^1.3.0",
