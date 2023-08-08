@@ -20,8 +20,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 import ReactGA from 'react-ga';
 import { RegionSelectorMap } from '@psa/dst.ui.region-selector-map';
-import { BinaryButton, getCropData, getDictData } from '../../shared/constants';
-import { Context, cropDataFormatter } from '../../store/Store';
+import {
+  BinaryButton, callSelectorApi,
+} from '../../shared/constants';
+import { Context } from '../../store/Store';
 import '../../styles/landing.scss';
 import ConsentModal from '../CoverCropExplorer/ConsentModal/ConsentModal';
 import { updateZone, updateLastZone } from '../../reduxStore/addressSlice';
@@ -40,60 +42,8 @@ const Landing = ({ height, title, bg }) => {
   const zoneRedux = useSelector((stateRedux) => stateRedux.addressData.zone);
   // const zoneIdRedux = useSelector((stateRedux) => stateRedux.addressData.zoneId);
 
-  async function getAllStates() {
-    const key = `https://${state.apiBaseURL}.covercrop-selector.org/v1/states`;
-    await fetch(key)
-      .then((res) => res.json())
-      .then((data) => { setAllStates(data.data); })
-      .catch((err) => {
-        // eslint-disable-next-line no-console
-        console.log(err.message);
-      });
-  }
-
-  // async function getCropData(currentRegionId) {
-  //   if (currentRegionId === null) {
-  //     return;
-  //   }
-
-  //   const query = `${encodeURIComponent('regions')}=${encodeURIComponent(currentRegionId)}`;
-  //   await fetch(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${state.stateId}/crops?${query}`)
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       cropDataFormatter(data.data);
-  //       dispatch({
-  //         type: 'PULL_CROP_DATA',
-  //         data: data.data,
-  //       });
-  //     })
-  //     .catch((err) => {
-  //       // eslint-disable-next-line no-console
-  //       console.log(err.message);
-  //     });
-  // }
-
-  // async function getDictData(currentRegionId) {
-  //   if (currentRegionId === null) {
-  //     return;
-  //   }
-
-  //   const query = `${encodeURIComponent('regions')}=${encodeURIComponent(currentRegionId)}`;
-  //   await fetch(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${state.stateId}/dictionary?${query}`)
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       dispatch({
-  //         type: 'PULL_DICTIONARY_DATA',
-  //         data: data.data,
-  //       });
-  //     })
-  //     .catch((err) => {
-  //     // eslint-disable-next-line no-console
-  //       console.log(err.message);
-  //     });
-  // }
-
   useEffect(() => {
-    getAllStates();
+    callSelectorApi(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states`).then((data) => { setAllStates(data.data); });
   }, []);
 
   useEffect(() => {
@@ -114,29 +64,6 @@ const Landing = ({ height, title, bg }) => {
           zoneId: state.regions[0]?.id,
         },
       ));
-
-      getDictData(state.apiBaseURL, state.regions[0]?.id, state.stateId).then((data) => {
-        dispatch({
-          type: 'PULL_DICTIONARY_DATA',
-          data: data.data,
-        });
-      })
-        .catch((err) => {
-        // eslint-disable-next-line no-console
-          console.log(err.message);
-        });
-
-      getCropData(state.apiBaseURL, state.regions[0]?.id, state.stateId).then((data) => {
-        cropDataFormatter(data.data);
-        dispatch({
-          type: 'PULL_CROP_DATA',
-          data: data.data,
-        });
-      })
-        .catch((err) => {
-        // eslint-disable-next-line no-console
-          console.log(err.message);
-        });
     }
   }, [state.regions]);
 
@@ -146,10 +73,12 @@ const Landing = ({ height, title, bg }) => {
         .then((res) => res.json())
         .then((data) => {
           let fetchedRegions;
+
           if (data.data.Counties) {
             fetchedRegions = data.data.Counties;
+          } else {
+            fetchedRegions = data.data.Zones;
           }
-          fetchedRegions = data.data.Zones;
 
           dispatch({
             type: 'UPDATE_REGIONS',

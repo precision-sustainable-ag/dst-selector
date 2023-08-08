@@ -22,8 +22,8 @@ import React, {
   useContext, useEffect, useState,
 } from 'react';
 import { useDispatch } from 'react-redux';
-import { CustomStyles } from '../../shared/constants';
-import { Context } from '../../store/Store';
+import { CustomStyles, callSelectorApi } from '../../shared/constants';
+import { Context, cropDataFormatter } from '../../store/Store';
 import '../../styles/cropSidebar.scss';
 import ComparisonBar from '../MyCoverCropList/ComparisonBar/ComparisonBar';
 import CoverCropSearch from './CoverCropSearch/CoverCropSearch';
@@ -45,7 +45,7 @@ const CropSidebar = ({
 }) => {
   const { state, dispatch } = useContext(Context);
   const dispatchRedux = useDispatch();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [sidebarFilters, setSidebarFilters] = useState([]);
   const [showFilters, setShowFilters] = useState('');
   const [sidebarCategoriesData, setSidebarCategoriesData] = useState([]);
@@ -72,25 +72,7 @@ const CropSidebar = ({
     { className: 'sideBar', label: '0 = Least, 5 = Most' },
   ];
 
-  async function getAllFilters() {
-    if (state.regionId) {
-      const query = `${encodeURIComponent('regions')}=${encodeURIComponent(state.regionId)}`;
-      await fetch(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${state.stateId}/filters?${query}`)
-        .then((res) => res.json())
-        .then((data) => {
-          const allFilters = [];
-          data.data.forEach((category) => {
-            allFilters.push(category.attributes);
-          });
-          setSidebarFiltersData(allFilters);
-          setSidebarCategoriesData(data.data);
-        })
-        .catch((err) => {
-        // eslint-disable-next-line no-console
-          console.log(err.message);
-        });
-    }
-  }
+  const query = `${encodeURIComponent('regions')}=${encodeURIComponent(state.regionId)}`;
 
   // // TODO: When is showFilters false?
   // NOTE: verify below when show filter is false.
@@ -248,6 +230,7 @@ const CropSidebar = ({
   };
 
   async function getSidebars(data) {
+    console.log(data);
     const setData = (dict) => {
       setSidebarFilters(dict);
     };
@@ -261,28 +244,35 @@ const CropSidebar = ({
       });
   }
 
-  async function getDictData() {
-    if (state.regionId) {
-      const query = `${encodeURIComponent('regions')}=${encodeURIComponent(state.regionId)}`;
-      await fetch(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${state.stateId}/dictionary?${query}`)
-        .then((res) => res.json())
-        .then((data) => {
-          getSidebars(data.data);
-        })
-        .catch((err) => {
-        // eslint-disable-next-line no-console
-          console.log(err.message);
-        });
-    }
-  }
-
   useEffect(() => {
     setLoading(true);
-    if (sidebarCategoriesData.length > 0 && state.regionId) {
-      getDictData();
-    }
+    // getDictData();
+    callSelectorApi(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${state.stateId}/dictionary?${query}`).then((data) => {
+      getSidebars(data.data);
+      // constDictUrl =
+      dispatch({
+        type: 'PULL_DICTIONARY_DATA',
+        data: data.data,
+      });
+    });
+
+    callSelectorApi(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${state.stateId}/filters?${query}`).then((data) => {
+      const allFilters = [];
+      data.data.forEach((category) => {
+        allFilters.push(category.attributes);
+      });
+      setSidebarFiltersData(allFilters);
+      setSidebarCategoriesData(data.data);
+    });
+
+    callSelectorApi(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${state.stateId}/crops?${query}`).then((data) => {
+      cropDataFormatter(data.data);
+      dispatch({
+        type: 'PULL_CROP_DATA',
+        data: data.data,
+      });
+    });
   }, [
-    sidebarCategoriesData,
     state.regionId,
   ]);
 
@@ -366,9 +356,16 @@ const CropSidebar = ({
     </List>
   ); // filterList
 
-  useEffect(() => {
-    getAllFilters();
-  }, [state.regionId]);
+  // useEffect(() => {
+  //   callSelectorApi(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${state.stateId}/filters?${query}`).then((data) => {
+  //     const allFilters = [];
+  //     data.data.forEach((category) => {
+  //       allFilters.push(category.attributes);
+  //     });
+  //     setSidebarFiltersData(allFilters);
+  //     setSidebarCategoriesData(data.data);
+  //   });
+  // }, [state.regionId]);
 
   useEffect(() => {
     filtersList();
