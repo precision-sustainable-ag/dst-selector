@@ -534,6 +534,27 @@ export const sortCrops = (type = 'Average Goals', crops = [], sortFlag = '', sel
       crops.reverse();
     }
   }
+  if (type === 'Planting Window') {
+    if (crops.length > 0) {
+      crops.sort((a, b) => {
+        let firstDate;
+        let secondDate;
+        const firstLength = a.data?.['Planting and Growth Windows']?.['Reliable Establishment']?.values.length;
+        const secondLength = b.data?.['Planting and Growth Windows']?.['Reliable Establishment']?.values.length;
+        if (firstLength && secondLength) {
+          firstDate = new Date(a.data?.['Planting and Growth Windows']?.['Reliable Establishment']?.values[firstLength - 1].split(' - ')[1]).toLocaleDateString('en-GB').split('/').reverse()
+            .join('');
+          secondDate = new Date(b.data?.['Planting and Growth Windows']?.['Reliable Establishment']?.values[secondLength - 1].split(' - ')[1]).toLocaleDateString('en-GB').split('/').reverse()
+            .join('');
+          return firstDate.localeCompare(secondDate);
+        }
+        return 1;
+      });
+    }
+    if (!sortFlag) {
+      crops.reverse();
+    }
+  }
   if (type === 'Selected Crops') {
     if (selectedItems.length > 0) {
       const selectedCropIds = [];
