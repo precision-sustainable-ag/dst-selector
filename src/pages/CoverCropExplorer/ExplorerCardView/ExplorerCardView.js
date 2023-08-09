@@ -11,14 +11,16 @@ import { useSnackbar } from 'notistack';
 import React, {
   useContext, useEffect, useState,
 } from 'react';
+import { useSelector } from 'react-redux';
 import CropCard from '../../../components/CropCard/CropCard';
 import CropDetailsModal from '../../../components/CropDetailsModal/CropDetailsModal';
 import { Context } from '../../../store/Store';
 
 const ExplorerCardView = ({ activeCropData }) => {
   const { state, dispatch } = useContext(Context);
+  const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
   const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
-  const sfilters = state[section];
+  const sfilters = filterStateRedux[section];
 
   const [modalOpen, setModalOpen] = useState(false);
   const [modalData, setModalData] = useState({});

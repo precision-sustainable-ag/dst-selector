@@ -21,7 +21,7 @@ import ListIcon from '@mui/icons-material/List';
 import React, {
   useContext, useEffect, useState,
 } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { CustomStyles } from '../../shared/constants';
 import { Context } from '../../store/Store';
 import '../../styles/cropSidebar.scss';
@@ -33,6 +33,7 @@ import PreviousCashCrop from './PreviousCashCrop/PreviousCashCrop';
 import PlantHardinessZone from './PlantHardinessZone/PlantHardinessZone';
 import Legend from '../../components/Legend/Legend';
 import { updateZone as updateZoneRedux } from '../../reduxStore/addressSlice';
+import { clearFilters } from '../../reduxStore/filterSlice';
 
 const CropSidebar = ({
   comparisonView,
@@ -63,11 +64,11 @@ const CropSidebar = ({
     });
     return sidebarStarter;
   });
-
+  const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
   const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
-  const sfilters = state[section];
+  const sfilters = filterStateRedux[section];
   const dictionary = [];
-
+  const changedFiltersRedux = useSelector((stateRedux) => stateRedux.filterData.changedFilters);
   const legendData = [
     { className: 'sideBar', label: '0 = Least, 5 = Most' },
   ];
@@ -195,14 +196,15 @@ const CropSidebar = ({
         value: filtered,
       },
     });
-  }, [state.changedFilters, sfilters.cropSearch, state?.cropData, dispatch, sfilters]);
+  }, [changedFiltersRedux, sfilters.cropSearch, state?.cropData, dispatch, sfilters]);
 
   const filtersSelected = Object.keys(sfilters)?.filter((key) => sfilters[key])?.length > 1;
 
   const resetAllFilters = () => {
-    dispatch({
-      type: 'CLEAR_FILTERS',
-    });
+    dispatchRedux(clearFilters());
+    // dispatch({
+    //   type: 'CLEAR_FILTERS',
+    // });
   };
 
   const createObject = (obj, dataDictionary, data) => {

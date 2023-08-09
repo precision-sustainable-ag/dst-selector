@@ -2,7 +2,6 @@ const initialState = {
   explorer: {
     // filters for explorer
     cropSearch: '',
-    // zone is also initialised in the addressData slice
     zone: 6, // needs a default so the filters will populate when starting with species-selector
   },
 
@@ -24,14 +23,14 @@ export const filterToggle = ({ value }) => ({
   },
 });
 
-export const filterOn = (value) => ({
+export const filterOnRedux = (value) => ({
   type: 'FILTER_ON',
   payload: {
     value,
   },
 });
 
-export const filterOff = (value) => ({
+export const filterOffRedux = (value) => ({
   type: 'FILTER_OFF',
   payload: {
     value,
@@ -52,6 +51,7 @@ const filterReducer = (state = initialState, action = null) => {
 
   switch (action.type) {
     case 'CLEAR_FILTERS':
+      console.log('clear filter');
       sfilters = {
         cropSearch: '',
         zone: sfilters.zone,
@@ -64,6 +64,7 @@ const filterReducer = (state = initialState, action = null) => {
       };
 
     case 'FILTER_TOGGLE':
+      console.log('filter toggle');
       sfilters[value] = !sfilters[value];
 
       return {

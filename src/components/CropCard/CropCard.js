@@ -15,8 +15,9 @@ const CropCard = ({
 }) => {
   const { state } = useContext(Context);
   const zoneRedux = useSelector((stateRedux) => stateRedux.addressData.zone);
+  const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
   const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
-  const sfilters = state[section];
+  const sfilters = filterStateRedux[section];
   const [allfilters, setAllFilters] = useState([]);
   const allData = [];
 

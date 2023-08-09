@@ -11,6 +11,7 @@ import { useHistory } from 'react-router-dom';
 
 import React, { useContext, useEffect, useState } from 'react';
 import ReactGA from 'react-ga';
+import { useSelector } from 'react-redux';
 import { Context } from '../../store/Store';
 import Header from '../Header/Header';
 import ExplorerCardView from './ExplorerCardView/ExplorerCardView';
@@ -22,8 +23,9 @@ import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset
 const CoverCropExplorer = () => {
   const { state, dispatch } = useContext(Context);
   const history = useHistory();
+  const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
   const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
-  const sfilters = state[section];
+  const sfilters = filterStateRedux[section];
   const [updatedActiveCropData, setUpdatedActiveCropData] = useState([]);
   const { activeCropData } = state;
   const [handleConfirm, setHandleConfirm] = useState(false);
