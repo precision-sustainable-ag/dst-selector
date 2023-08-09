@@ -8,7 +8,6 @@
 import { Switch, Typography } from '@mui/material';
 import { InvertColors } from '@mui/icons-material';
 import React, { useContext, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { ReferenceTooltip } from '../../../shared/constants';
 import { Context } from '../../../store/Store';
 import '../../../styles/soilConditions.scss';
@@ -18,14 +17,13 @@ import SoilFloodingFrequency from './SoilFloodingFrequency/SoilFloodingFrequency
 
 const SoilCondition = () => {
   const { state, dispatch } = useContext(Context);
-  const { soilData, soilDataOriginal } = state;
-  const markersRedux = useSelector((stateRedux) => stateRedux.addressData.markers);
+  const { soilData, soilDataOriginal, markers } = state;
   const [tilingCheck, setTilingCheck] = useState(false);
   const [showTiling, setShowTiling] = useState(false);
 
   useEffect(() => {
     const getSSURGOData = (lat, lon) => {
-      const markersCopy = markersRedux;
+      const markersCopy = markers;
 
       let longLatString = '';
 
@@ -152,8 +150,8 @@ const SoilCondition = () => {
         .catch((error) => console.error('SSURGO FETCH ERROR', error));
     };
 
-    const lat = markersRedux[0][0];
-    const lon = markersRedux[0][1];
+    const lat = markers[0][0];
+    const lon = markers[0][1];
 
     if (soilDataOriginal.for) {
       if (!(soilDataOriginal.for.lat === lat && soilDataOriginal.for.lon === lon)) {
@@ -162,7 +160,7 @@ const SoilCondition = () => {
     } else {
       getSSURGOData(lat, lon);
     }
-  }, [dispatch, markersRedux, soilDataOriginal.for]);
+  }, [dispatch, markers, soilDataOriginal.for]);
 
   useEffect(() => {
     const checkArray = ['Very poorly drained', 'Poorly drained', 'Somewhat poorly drained'];
