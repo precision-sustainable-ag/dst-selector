@@ -23,7 +23,7 @@ import { useDispatch } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 import ReactGA from 'react-ga';
 import { RegionSelectorMap } from '@psa/dst.ui.region-selector-map';
-import { BinaryButton, callSelectorApi } from '../../shared/constants';
+import { BinaryButton, callCoverCropApi } from '../../shared/constants';
 import { Context } from '../../store/Store';
 import '../../styles/landing.scss';
 import ConsentModal from '../CoverCropExplorer/ConsentModal/ConsentModal';
@@ -72,7 +72,7 @@ const Landing = ({ height, title, bg }) => {
   };
 
   useEffect(() => {
-    callSelectorApi(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states`).then((data) => { setAllStates(data.data); });
+    callCoverCropApi(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states`).then((data) => { setAllStates(data.data); });
   }, []);
 
   useEffect(() => {

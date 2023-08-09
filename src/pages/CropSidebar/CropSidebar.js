@@ -22,7 +22,7 @@ import React, {
   useContext, useEffect, useState,
 } from 'react';
 import { useDispatch } from 'react-redux';
-import { CustomStyles, callSelectorApi } from '../../shared/constants';
+import { CustomStyles, callCoverCropApi } from '../../shared/constants';
 import { Context, cropDataFormatter } from '../../store/Store';
 import '../../styles/cropSidebar.scss';
 import ComparisonBar from '../MyCoverCropList/ComparisonBar/ComparisonBar';
@@ -232,15 +232,20 @@ const CropSidebar = ({
 
   useEffect(() => {
     if (state.stateId && state.regionId) {
+      dispatch({
+        type: 'SET_AJAX_IN_PROGRESS',
+        data: true,
+      });
+
       setLoading(true);
-      callSelectorApi(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${state.stateId}/dictionary?${query}`).then((data) => {
+      callCoverCropApi(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${state.stateId}/dictionary?${query}`).then((data) => {
         dispatch({
           type: 'PULL_DICTIONARY_DATA',
           data: data.data,
         });
       });
 
-      callSelectorApi(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${state.stateId}/filters?${query}`).then((data) => {
+      callCoverCropApi(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${state.stateId}/filters?${query}`).then((data) => {
         const allFilters = [];
         data.data.forEach((category) => {
           allFilters.push(category.attributes);
@@ -249,11 +254,15 @@ const CropSidebar = ({
         setSidebarCategoriesData(data.data);
       });
 
-      callSelectorApi(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${state.stateId}/crops?${query}`).then((data) => {
+      callCoverCropApi(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${state.stateId}/crops?${query}`).then((data) => {
         cropDataFormatter(data.data);
         dispatch({
           type: 'PULL_CROP_DATA',
           data: data.data,
+        });
+        dispatch({
+          type: 'SET_AJAX_IN_PROGRESS',
+          data: false,
         });
       });
     }
