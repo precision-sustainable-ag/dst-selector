@@ -15,7 +15,7 @@ import { ExpandMore } from '@mui/icons-material';
 import { Context } from '../../store/Store';
 import CoverCropInformation from './CoverCropInformation/CoverCropInformation';
 import InformationSheetReferences from './InformationSheetReferences/InformationSheetReferences';
-import { callSelectorApi, getRating } from '../../shared/constants';
+import { callCoverCropApi, getRating } from '../../shared/constants';
 
 const InformationSheetContent = ({ crop, modalData }) => {
   const { state } = useContext(Context);
@@ -29,9 +29,9 @@ const InformationSheetContent = ({ crop, modalData }) => {
   useEffect(() => {
     document.title = `${crop.label} Zone ${zone}`;
     if (state.stateId && state.regionId) {
-      callSelectorApi(`https://${state.apiBaseURL}.covercrop-selector.org/v1/crops/${crop?.id}/resources?${query}`)
+      callCoverCropApi(`https://${state.apiBaseURL}.covercrop-selector.org/v1/crops/${crop?.id}/resources?${query}`)
         .then((data) => setCurrentSources(data.data));
-      callSelectorApi(`https://${state.apiBaseURL}.covercrop-selector.org/v1/crops/${crop?.id}/images?${query}`)
+      callCoverCropApi(`https://${state.apiBaseURL}.covercrop-selector.org/v1/crops/${crop?.id}/images?${query}`)
         .then((data) => {
           setAllThumbs(data.data);
           setDataDone(true);
