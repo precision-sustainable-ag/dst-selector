@@ -15,6 +15,7 @@
 import moment from 'moment-timezone';
 import React, { createContext, useReducer, useMemo } from 'react';
 import Reducer from './Reducer';
+import arrayEquals from '../shared/functions';
 
 export const cropDataFormatter = (cropData = [{}]) => {
   const excludedCropZoneDecisionKeys = ['Exclude', 'Up and Coming', 'Discuss'];
@@ -28,6 +29,60 @@ export const cropDataFormatter = (cropData = [{}]) => {
     } return true;
   });
 
+  const formatHalfMonthData = (halfMonthData = []) => {
+    const result = [];
+    let index = 0;
+    while (index < halfMonthData.length) {
+      const timePeriod = {
+        startTime: '',
+        endTime: '',
+        months: [],
+        info: [],
+      };
+      if (timePeriod.months.length === 0) {
+        if (halfMonthData[index].start !== '') {
+          timePeriod.startTime = halfMonthData[index].start;
+          timePeriod.endTime = halfMonthData[index].end;
+          timePeriod.info = [...halfMonthData[index].info];
+        }
+        timePeriod.months.push(halfMonthData[index].month);
+        index += 1;
+      }
+      while (
+        index > 0
+        && index < halfMonthData.length
+        && arrayEquals(halfMonthData[index].info, halfMonthData[index - 1].info)
+      ) {
+        timePeriod.months.push(halfMonthData[index].month);
+        index += 1;
+      }
+      if (timePeriod.months.length > 0) result.push(timePeriod);
+      else index += 1;
+    }
+    return result;
+  };
+
+  const formatTimeToHalfMonthData = (startTime = '', endTime = '', param = '', halfMonthData = []) => {
+    const startIndex = moment(startTime).month() * 2 + (moment(startTime).date() >= 15 ? 1 : 0);
+    const endIndex = moment(endTime).month() * 2 + (moment(endTime).date() >= 15 ? 1 : 0);
+    halfMonthData = halfMonthData.map((data, index) => {
+      if (index >= startIndex && index <= endIndex) {
+        const info = [...data.info, param];
+        let start = '';
+        let end = '';
+        if (data.start === '') start = startTime;
+        else start = moment(data.start).isSameOrBefore(startTime) ? startTime : data.start;
+        if (data.end === '') end = endTime;
+        else end = moment(data.end).isSameOrBefore(endTime) ? data.end : endTime;
+        return {
+          ...data, start, end, info,
+        };
+      }
+      return data;
+    });
+    return halfMonthData;
+  };
+
   const monthStringBuilder = (vals) => {
     const params = [
       'Reliable Establishment',
@@ -40,39 +95,34 @@ export const cropDataFormatter = (cropData = [{}]) => {
       'Average Frost',
     ];
     const val = vals;
+    let halfMonthArr = Array.from({ length: 24 }, (_, i) => ({
+      month: moment().month(Math.floor(i / 2)).format('M'),
+      info: [],
+      start: '',
+      end: '',
+    }));
+
     params.forEach((param) => {
       if (val.data['Planting and Growth Windows']?.[`${param}`]) {
         val.data['Planting and Growth Windows']?.[`${param}`].values.forEach((dateArray) => {
           const datesArr = dateArray.split('-');
           // const valStart = moment(datesArr[0], 'YYYY-MM-DD');
-          const valStart = moment(datesArr[0], 'MM/DD/YYYY');
-          const valEnd = moment(datesArr[1], 'MM/DD/YYYY');
-          let str = '';
-          const valuesArray = [];
+          const valStart = moment(datesArr[0], 'MM/DD/YYYY').format('MM/DD');
+          const valEnd = moment(datesArr[1], 'MM/DD/YYYY').format('MM/DD');
 
-          if (param === 'Average Frost') {
-            valEnd.add('1', 'years');
+          if (moment(valStart).isSameOrAfter(valEnd)) {
+            const tempStart = '01/01';
+            const tempEnd = '12/31';
+            halfMonthArr = formatTimeToHalfMonthData(valStart, tempEnd, param, halfMonthArr);
+            halfMonthArr = formatTimeToHalfMonthData(tempStart, valEnd, param, halfMonthArr);
+          } else {
+            halfMonthArr = formatTimeToHalfMonthData(valStart, valEnd, param, halfMonthArr);
           }
-
-          while (valStart.isSameOrBefore(valEnd)) {
-            if (valStart.get('D') <= 15) {
-              str = 'Early';
-            } else {
-              str = 'Mid';
-            }
-            if (!valuesArray.includes([`${valStart.format('MMMM')}, ${str}`])) {
-              valuesArray.push([`${valStart.format('MMMM')}, ${str}`]);
-            }
-            valStart.add('1', 'days');
-          }
-          valuesArray.forEach((key) => {
-            const prev = val[key] || [];
-            prev.push(param);
-            val[key] = prev;
-          });
         });
       }
     });
+    const halfMonthData = formatHalfMonthData(halfMonthArr);
+    val['Half Month Data'] = halfMonthData;
 
     // this is temporary, needs to be replaced with wither a fix to calendar growth window component or exporting of json from airtable
     Object.keys(val).forEach((item) => {
@@ -145,6 +195,10 @@ export const cropDataFormatter = (cropData = [{}]) => {
     return val;
   });
 };
+
+const apiBaseURL = /(localhost|dev)/i.test(window.location)
+  ? 'developapi'
+  : 'api';
 
 const initialState = {
   selectedRegion: {},
@@ -253,6 +307,7 @@ const initialState = {
   councilLabel: '',
   councilShorthand: '',
   stateId: '',
+  apiBaseURL,
 };
 
 const Store = ({ children }) => {

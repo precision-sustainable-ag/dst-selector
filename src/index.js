@@ -7,6 +7,7 @@
 */
 
 import React, { Suspense } from 'react';
+import { Provider } from 'react-redux';
 import ReactDOM from 'react-dom';
 import './index.css';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
@@ -14,6 +15,10 @@ import {
   ThemeProvider,
   StyledEngineProvider,
   responsiveFontSizes,
+  Grid,
+  Typography,
+  Container,
+  Link,
   adaptV4Theme,
 } from '@mui/material';
 import { SnackbarProvider } from 'notistack';
@@ -35,8 +40,10 @@ import InformationSheetDictionary from './pages/Help/InformationSheetDictionary/
 import License from './pages/License/License';
 import MyCoverCropListWrapper from './pages/MyCoverCropList/MyCoverCropListWrapper/MyCoverCropListWrapper';
 import Help from './pages/Help/Help';
+import configureStore from './reduxStore/store';
 
 const withFooter = (WrappedComponent) => () => [<WrappedComponent key="1" />, <Footer key="2" />];
+const store = configureStore();
 
 // AdaptV4Theme has been depreciated and v5 is the new version.  TODO: look into update
 const theme = createTheme(
@@ -95,27 +102,31 @@ const theme = createTheme(
 );
 const RouteNotFound = () => (
   <section className="page_404">
-    <div className="container-fluid">
-      <div className="row">
-        <div className="col-sm-12">
-          <div className="col-sm-12 text-center">
-            <div className="four_zero_four_bg">
-              <h1 className="text-center ">404</h1>
-            </div>
-
-            <div className="contant_box_404">
-              <h3 className="h2">Look like you're lost</h3>
-
-              <p>The page you are looking for is not available!</p>
-
-              <a href="/" className="link_404">
-                Go Home
-              </a>
-            </div>
+    <Container maxWidth="sm">
+      <Grid container justifyContent="center">
+        <Grid item xs={12}>
+          <div className="four_zero_four_bg">
+            <Typography variant="h1" component="h1" className="text-center">
+              404
+            </Typography>
           </div>
-        </div>
-      </div>
-    </div>
+
+          <div className="contant_box_404" style={{ textAlign: 'center' }}>
+            <Typography variant="h3" component="h2">
+              Looks like you're lost
+            </Typography>
+
+            <Typography variant="body1">
+              The page you are looking for is not available!
+            </Typography>
+
+            <Link href="/" className="link_404">
+              Go Home
+            </Link>
+          </div>
+        </Grid>
+      </Grid>
+    </Container>
   </section>
 );
 
@@ -134,33 +145,35 @@ const Wrapper = () => (
         }}
         autoHideDuration={15000}
       >
-        <Store>
-          <BrowserRouter>
-            <Suspense fallback={<div>Loading..</div>}>
-              <Switch>
-                <Route path="/" component={App} exact />
-                <Route path="/explorer" component={CoverCropExplorer} exact />
-                <Route path="/about" component={About} exact />
-                <Route path="/help" component={Help} exact />
-                <Route path="/feedback" component={FeedbackComponent} exact />
-                <Route path="/my-cover-crop-list" component={MyCoverCropListWrapper} exact />
-                <Route path="/seeding-rate-calculator" component={SeedingRateCalculator} exact />
-                <Route path="/data-dictionary" component={InformationSheetDictionary} exact />
-                <Route path="/license" component={() => <License licenseType="MIT" />} exact />
-                <Route
-                  path="/ag-informatics-license"
-                  component={() => <License licenseType="AgInformatics" />}
-                  exact
-                />
-                <Route path="/mix-maker" component={MixMaker} exact />
+        <Provider store={store}>
+          <Store>
+            <BrowserRouter>
+              <Suspense fallback={<div>Loading..</div>}>
+                <Switch>
+                  <Route path="/" component={App} exact />
+                  <Route path="/explorer" component={CoverCropExplorer} exact />
+                  <Route path="/about" component={About} exact />
+                  <Route path="/help" component={Help} exact />
+                  <Route path="/feedback" component={FeedbackComponent} exact />
+                  <Route path="/my-cover-crop-list" component={MyCoverCropListWrapper} exact />
+                  <Route path="/seeding-rate-calculator" component={SeedingRateCalculator} exact />
+                  <Route path="/data-dictionary" component={InformationSheetDictionary} exact />
+                  <Route path="/license" component={() => <License licenseType="MIT" />} exact />
+                  <Route
+                    path="/ag-informatics-license"
+                    component={() => <License licenseType="AgInformatics" />}
+                    exact
+                  />
+                  <Route path="/mix-maker" component={MixMaker} exact />
 
-                <Route component={RouteNotFound} />
-              </Switch>
-            </Suspense>
+                  <Route component={RouteNotFound} />
+                </Switch>
+              </Suspense>
 
-            {/* <App /> */}
-          </BrowserRouter>
-        </Store>
+              {/* <App /> */}
+            </BrowserRouter>
+          </Store>
+        </Provider>
       </SnackbarProvider>
     </ThemeProvider>
   </StyledEngineProvider>

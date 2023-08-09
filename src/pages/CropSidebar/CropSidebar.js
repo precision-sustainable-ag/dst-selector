@@ -21,8 +21,9 @@ import ListIcon from '@mui/icons-material/List';
 import React, {
   useContext, useEffect, useState,
 } from 'react';
-import { CustomStyles } from '../../shared/constants';
-import { Context } from '../../store/Store';
+import { useDispatch } from 'react-redux';
+import { CustomStyles, callCoverCropApi } from '../../shared/constants';
+import { Context, cropDataFormatter } from '../../store/Store';
 import '../../styles/cropSidebar.scss';
 import ComparisonBar from '../MyCoverCropList/ComparisonBar/ComparisonBar';
 import CoverCropSearch from './CoverCropSearch/CoverCropSearch';
@@ -31,6 +32,7 @@ import CoverCropGoals from './CoverCropGoals/CoverCropGoals';
 import PreviousCashCrop from './PreviousCashCrop/PreviousCashCrop';
 import PlantHardinessZone from './PlantHardinessZone/PlantHardinessZone';
 import Legend from '../../components/Legend/Legend';
+import { updateZone as updateZoneRedux } from '../../reduxStore/addressSlice';
 
 const CropSidebar = ({
   comparisonView,
@@ -42,7 +44,8 @@ const CropSidebar = ({
   style,
 }) => {
   const { state, dispatch } = useContext(Context);
-  const [loading, setLoading] = useState(true);
+  const dispatchRedux = useDispatch();
+  const [loading, setLoading] = useState(false);
   const [sidebarFilters, setSidebarFilters] = useState([]);
   const [showFilters, setShowFilters] = useState('');
   const [sidebarCategoriesData, setSidebarCategoriesData] = useState([]);
@@ -63,31 +66,13 @@ const CropSidebar = ({
 
   const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
   const sfilters = state[section];
-  const dictionary = [];
+  // const dictionary = [];
 
   const legendData = [
     { className: 'sideBar', label: '0 = Least, 5 = Most' },
   ];
 
-  async function getAllFilters() {
-    if (state.regionId) {
-      const query = `${encodeURIComponent('regions')}=${encodeURIComponent(state.regionId)}`;
-      await fetch(`https://api.covercrop-selector.org/v1/states/${state.stateId}/filters?${query}`)
-        .then((res) => res.json())
-        .then((data) => {
-          const allFilters = [];
-          data.data.forEach((category) => {
-            allFilters.push(category.attributes);
-          });
-          setSidebarFiltersData(allFilters);
-          setSidebarCategoriesData(data.data);
-        })
-        .catch((err) => {
-        // eslint-disable-next-line no-console
-          console.log(err.message);
-        });
-    }
-  }
+  const query = `${encodeURIComponent('regions')}=${encodeURIComponent(state.regionId)}`;
 
   // // TODO: When is showFilters false?
   // NOTE: verify below when show filter is false.
@@ -107,11 +92,6 @@ const CropSidebar = ({
       },
     });
   };
-
-  // const areCommonElements = (arr1, arr2) => {
-  //   const arr2Set = new Set(arr2);
-  //   return arr1.some((el) => arr2Set.has(el));
-  // }; // areCommonElements
 
   useEffect(() => {
     const sfo = {};
@@ -202,14 +182,8 @@ const CropSidebar = ({
     });
   };
 
-  const createObject = (obj, dataDictionary, data) => {
-    const field = dataDictionary?.filter((item) => item.Variable === data.label);
-    if (field[0] !== undefined) {
-      obj.description = field[0].Description > 0 ? field[0].Description : '';
-    }
-  };
-
-  const generateSidebarObject = async (dataDictionary) => {
+  const generateSidebarObject = async () => {
+    const sidebars = [];
     await sidebarCategoriesData.forEach((category) => {
       if (category.label !== 'Goals') {
         const newCategory = {
@@ -235,51 +209,64 @@ const CropSidebar = ({
             obj.values = filter.values;
           }
 
-          createObject(obj, dataDictionary, filter);
+          // createObject(obj, dataDictionary, filter);
 
           return obj;
         });
-        dictionary.push(newCategory);
+        sidebars.push(newCategory);
       }
     });
+
+    return sidebars;
   };
 
-  async function getSidebars(data) {
-    const setData = (dict) => {
-      setSidebarFilters(dict);
-    };
-
-    await generateSidebarObject(data)
-      .then(() => setData(dictionary))
+  useEffect(() => {
+    generateSidebarObject()
+      .then((data) => setSidebarFilters(data))
       .then(() => { setLoading(false); })
       .catch((err) => {
-      // eslint-disable-next-line no-console
+        // eslint-disable-next-line no-console
         console.log(err.message);
       });
-  }
-
-  async function getDictData() {
-    if (state.regionId) {
-      const query = `${encodeURIComponent('regions')}=${encodeURIComponent(state.regionId)}`;
-      await fetch(`https://api.covercrop-selector.org/v1/states/${state.stateId}/dictionary?${query}`)
-        .then((res) => res.json())
-        .then((data) => {
-          getSidebars(data.data);
-        })
-        .catch((err) => {
-        // eslint-disable-next-line no-console
-          console.log(err.message);
-        });
-    }
-  }
+  }, [sidebarCategoriesData]);
 
   useEffect(() => {
-    setLoading(true);
-    if (sidebarCategoriesData.length > 0 && state.regionId) {
-      getDictData();
+    if (state.stateId && state.regionId) {
+      dispatch({
+        type: 'SET_AJAX_IN_PROGRESS',
+        data: true,
+      });
+
+      setLoading(true);
+      callCoverCropApi(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${state.stateId}/dictionary?${query}`).then((data) => {
+        dispatch({
+          type: 'PULL_DICTIONARY_DATA',
+          data: data.data,
+        });
+      });
+
+      callCoverCropApi(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${state.stateId}/filters?${query}`).then((data) => {
+        const allFilters = [];
+        data.data.forEach((category) => {
+          allFilters.push(category.attributes);
+        });
+        setSidebarFiltersData(allFilters);
+        setSidebarCategoriesData(data.data);
+      });
+
+      callCoverCropApi(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${state.stateId}/crops?${query}`).then((data) => {
+        cropDataFormatter(data.data);
+        dispatch({
+          type: 'PULL_CROP_DATA',
+          data: data.data,
+        });
+        dispatch({
+          type: 'SET_AJAX_IN_PROGRESS',
+          data: false,
+        });
+      });
     }
   }, [
-    sidebarCategoriesData,
     state.regionId,
   ]);
 
@@ -364,10 +351,6 @@ const CropSidebar = ({
   ); // filterList
 
   useEffect(() => {
-    getAllFilters();
-  }, [state.regionId]);
-
-  useEffect(() => {
     filtersList();
   }, [sidebarFilters]);
 
@@ -393,14 +376,19 @@ const CropSidebar = ({
 
   const updateZone = (region) => {
     if (region !== undefined) {
-      dispatch({
-        type: 'UPDATE_ZONE',
-        data: {
-          zoneText: region.label,
-          zone: region.shorthand,
-          zoneId: region.id,
-        },
-      });
+      dispatchRedux(updateZoneRedux({
+        zoneText: region.label,
+        zone: region.shorthand,
+        zoneId: region.id,
+      }));
+      // dispatch({
+      //   type: 'UPDATE_ZONE',
+      //   data: {
+      //     zoneText: region.label,
+      //     zone: region.shorthand,
+      //     zoneId: region.id,
+      //   },
+      // });
       dispatch({
         type: 'UPDATE_REGION',
         data: {
