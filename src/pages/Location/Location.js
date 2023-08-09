@@ -50,6 +50,7 @@ const LocationComponent = ({
   const countyRedux = useSelector((stateRedux) => stateRedux.addressData.county);
   const zoneRedux = useSelector((stateRedux) => stateRedux.addressData.zone);
   const markersRedux = useSelector((stateRedux) => stateRedux.addressData.markers);
+  const zipCodeRedux = useSelector((stateRedux) => stateRedux.addressData.zipCode);
 
   const getLatLng = useCallback(() => {
     if (state.state) {
@@ -66,7 +67,6 @@ const LocationComponent = ({
 
   const updateZone = (region) => {
     if (region !== undefined) {
-      // setSelectedRegion(region);
       dispatchRedux(updateZoneRedux(
         {
           zoneText: region.label,
@@ -74,14 +74,6 @@ const LocationComponent = ({
           zoneId: region.id,
         },
       ));
-      // dispatch({
-      //   type: 'UPDATE_ZONE',
-      //   data: {
-      //     zoneText: region.label,
-      //     zone: region.shorthand,
-      //     zoneId: region.id,
-      //   },
-      // });
       dispatch({
         type: 'UPDATE_REGION',
         data: {
@@ -292,6 +284,40 @@ const LocationComponent = ({
         });
     }
   }, [markersRedux]);
+
+  useEffect(() => {
+    if (!zipCodeRedux) {
+      return;
+    }
+
+    callCoverCropApi(`https://phzmapi.org/${zipCodeRedux}.json`)
+      .then((response) => {
+        let { zone } = response;
+
+        let regionId = null;
+
+        if (zone !== '8a' && zone !== '8b') {
+          zone = zone.slice(0, -1);
+        }
+
+        if (state.regions?.length > 0) {
+          state.regions.forEach((region) => {
+            if (region.shorthand === zone) {
+              regionId = region.id;
+            }
+          });
+        }
+        if (state.councilShorthand !== 'MCCC') {
+          dispatchRedux(updateZoneRedux(
+            {
+              zoneText: `Zone ${zone}`,
+              zone,
+              zoneId: regionId,
+            },
+          ));
+        }
+      });
+  }, [zipCodeRedux]);
 
   return (
     <div className="container-fluid mt-5">
