@@ -1,16 +1,15 @@
 import { Chip, Grid, Tooltip } from '@mui/material';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import React, {
-  useEffect, useContext, useState,
+  useEffect, useState,
 } from 'react';
-import { useDispatch } from 'react-redux';
-import { Context } from '../../../store/Store';
+import { useDispatch, useSelector } from 'react-redux';
 import { filterOffRedux, filterOnRedux, filterToggle } from '../../../reduxStore/filterSlice';
 
 const DollarsAndRatings = ({ filter, handleChange }) => {
-  const { state, dispatch } = useContext(Context);
   const dispatchRedux = useDispatch();
-  const sfilters = window.location.href.includes('species-selector') ? state.selector : state.explorer;
+  const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
+  const sfilters = window.location.href.includes('species-selector') ? filterStateRedux.selector : filterStateRedux.explorer;
 
   const style = filter.symbol === 'dollar'
     ? {}
@@ -131,9 +130,9 @@ const Tip = ({ filter }) => (
 
 // added ref prop to remove error. TODO: look into if forwardRef is needed here since ref isnt used
 const Filters = ({ filters }) => {
-  const { state, dispatch } = useContext(Context);
   const disptachRedux = useDispatch();
   // const { filters } = props;
+  const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
   const [selected, setSelected] = useState({});
   const [sidebarFilterOptions, setSidebarFilterOptions] = useState({});
   // eslint-disable-next-line no-unused-vars
@@ -174,7 +173,7 @@ const Filters = ({ filters }) => {
                 <Tip filter={filter} />
                 <br />
               </>
-              <Chips key={i} state={state} filter={filter} handleChange={chipChange} />
+              <Chips key={i} state={filterStateRedux} filter={filter} handleChange={chipChange} />
             </Grid>
           );
         }
@@ -183,7 +182,7 @@ const Filters = ({ filters }) => {
             <Tip filter={filter} />
             <br />
             <DollarsAndRatings
-              state={state}
+              state={filterStateRedux}
               filter={filter}
               handleChange={dollarsAndRatingsChange}
             />
