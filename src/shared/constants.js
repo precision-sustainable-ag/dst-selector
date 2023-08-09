@@ -683,7 +683,7 @@ export const reverseGEO = async (lat, lng) => {
   return data;
 };
 
-export const callSelectorApi = async (url) => fetch(url)
+export const callCoverCropApi = async (url) => fetch(url)
   .then((res) => res.json())
   .catch((err) => {
     // eslint-disable-next-line no-console

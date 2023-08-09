@@ -12,7 +12,7 @@ import ReactGA from 'react-ga';
 import '../../styles/cropDetailsModal.scss';
 import InformationSheetContent from '../../pages/InformationSheetContent/InformationSheetContent';
 import { Context } from '../../store/Store';
-import { callSelectorApi } from '../../shared/constants';
+import { callCoverCropApi } from '../../shared/constants';
 
 const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
   const { state, dispatch } = useContext(Context);
@@ -22,7 +22,7 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
     const regionQuery = `${encodeURIComponent('regions')}=${encodeURIComponent(state.regionId)}`;
     const url = `https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${state.stateId}/crops/${crop?.id}?${regionQuery}`;
     if (crop.id !== undefined) {
-      callSelectorApi(url).then((data) => {
+      callCoverCropApi(url).then((data) => {
         dispatch({
           type: 'MODAL_DATA',
           data,
