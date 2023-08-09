@@ -11,6 +11,7 @@ import {
 import styled from 'styled-components';
 import moment from 'moment';
 import { Info, MonetizationOn } from '@mui/icons-material';
+import { MapboxApiKey } from './keys';
 
 export const ReferenceTooltip = ({
   url, source, type, content, hasLink, title,
@@ -533,6 +534,27 @@ export const sortCrops = (type = 'Average Goals', crops = [], sortFlag = '', sel
       crops.reverse();
     }
   }
+  if (type === 'Planting Window') {
+    if (crops.length > 0) {
+      crops.sort((a, b) => {
+        let firstDate;
+        let secondDate;
+        const firstLength = a.data?.['Planting and Growth Windows']?.['Reliable Establishment']?.values.length;
+        const secondLength = b.data?.['Planting and Growth Windows']?.['Reliable Establishment']?.values.length;
+        if (firstLength && secondLength) {
+          firstDate = new Date(a.data?.['Planting and Growth Windows']?.['Reliable Establishment']?.values[firstLength - 1].split(' - ')[1]).toLocaleDateString('en-GB').split('/').reverse()
+            .join('');
+          secondDate = new Date(b.data?.['Planting and Growth Windows']?.['Reliable Establishment']?.values[secondLength - 1].split(' - ')[1]).toLocaleDateString('en-GB').split('/').reverse()
+            .join('');
+          return firstDate.localeCompare(secondDate);
+        }
+        return 1;
+      });
+    }
+    if (!sortFlag) {
+      crops.reverse();
+    }
+  }
   if (type === 'Selected Crops') {
     if (selectedItems.length > 0) {
       const selectedCropIds = [];
@@ -623,3 +645,47 @@ export const getMonthDayString = (type = '', date = '') => {
       return '';
   }
 };
+
+export const getLegendDataBasedOnCouncil = (councilShorthand = '') => {
+  const legendData = [
+    { className: 'reliable', label: 'Reliable Establishment' },
+    { className: 'temperatureRisk', label: 'Temperature Risk To Establishment' },
+    { className: 'frostPossible', label: 'Frost Seeding Possible' },
+    { className: 'multiple', label: 'Multiple' },
+    { className: 'cashCrop', label: 'Previous Cash Crop Growth Window' },
+  ];
+  const MCCClegendData = [
+    { className: 'reliable', label: 'Reliable Establishment' },
+    { className: 'temperatureRisk', label: 'Freeze/Moisture Risk to Establishment' },
+    { className: 'multiple', label: 'Multiple' },
+    { className: 'cashCrop', label: 'Previous Cash Crop Growth Window' },
+  ];
+  const SCCClegendData = [
+    { className: 'reliable', label: 'Reliable Establishment' },
+    { className: 'frostPossible', label: 'Average Frost' },
+    { className: 'multiple', label: 'Multiple' },
+    { className: 'cashCrop', label: 'Previous Cash Crop Growth Window' },
+  ];
+  switch (councilShorthand) {
+    case 'MCCC':
+      return MCCClegendData;
+    case 'SCCC':
+      return SCCClegendData;
+    default:
+      return legendData;
+  }
+};
+
+export const reverseGEO = async (lat, lng) => {
+  const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${lng},${lat}.json?access_token=${MapboxApiKey}`;
+  let data = await fetch(url);
+  data = data.json();
+  return data;
+};
+
+export const callCoverCropApi = async (url) => fetch(url)
+  .then((res) => res.json())
+  .catch((err) => {
+    // eslint-disable-next-line no-console
+    console.log(err.message);
+  });

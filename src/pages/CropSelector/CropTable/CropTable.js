@@ -20,7 +20,7 @@ import {
 } from '@mui/material';
 import { AddCircle, Sort } from '@mui/icons-material';
 import {
-  CustomStyles, sortCrops, sudoButtonStyle,
+  CustomStyles, sortCrops, sudoButtonStyle, getLegendDataBasedOnCouncil,
 } from '../../../shared/constants';
 import { Context } from '../../../store/Store';
 import '../../../styles/cropCalendarViewComponent.scss';
@@ -40,19 +40,15 @@ const CropTableComponent = ({
   const [tbodyHeight, setTbodyHeight] = useState(0);
   const [theadHeight, setTheadHeight] = useState(0);
   const [nameSortFlag, setNameSortFlag] = useState(true);
-  const [selectedCropsSortFlag, setSelectedCropsSortFlag] = useState(true);
   const [averageGoalsFlag, setAverageGoalsFlag] = useState(true);
+  const [plantingWindowSortFlag, setPlantingWindowSortFlag] = useState(true);
+  const [selectedCropsSortFlag, setSelectedCropsSortFlag] = useState(true);
   const [goal1SortFlag, setGoal1SortFlag] = useState(true);
   const [goal2SortFlag, setGoal2SortFlag] = useState(true);
   const [goal3SortFlag, setGoal3SortFlag] = useState(true);
   const activeCropDataShadow = activeCropData;
 
-  const legendData = [
-    { className: 'reliable', label: 'Reliable Establishment' },
-    { className: 'temperatureRisk', label: 'Temperature Risk To Establishment' },
-    { className: 'frostPossible', label: 'Frost Seeding Possible' },
-    { className: 'cashCrop', label: 'Previous Cash Crop Growth Window' },
-  ];
+  const legendData = getLegendDataBasedOnCouncil(state.councilShorthand);
 
   useEffect(() => {
     if (document.querySelector('thead.MuiTableHead-root.tableHeadWrapper')) {
@@ -92,6 +88,10 @@ const CropTableComponent = ({
     sortCrops('Average Goals', activeCropDataShadow, averageGoalsFlag, state.selectedGoals);
     setAverageGoalsFlag(!averageGoalsFlag);
     updateActiveCropDataAction(activeCropDataShadow);
+  };
+  const sortByPlantingWindow = () => {
+    sortCrops('Planting Window', activeCropDataShadow, plantingWindowSortFlag);
+    setPlantingWindowSortFlag(!plantingWindowSortFlag);
   };
 
   const sortBySelectedCrops = () => {
@@ -346,10 +346,22 @@ const CropTableComponent = ({
                     width: '180px',
                   }}
                 >
-                  <Typography variant="body1" style={sudoButtonStyle}>
+                  <Button onClick={() => sortByPlantingWindow()}>
+                    <Sort
+                      style={{
+                        color: nameSortFlag
+                          ? CustomStyles().secondaryProgressBtnColor
+                          : CustomStyles().progressColor,
+                        transform: nameSortFlag && 'rotate(180deg)',
+                      }}
+                    />
+                    &nbsp;
                     {' '}
-                    PLANTING WINDOW
-                  </Typography>
+                    <Typography variant="body1" style={{ color: '#000' }}>
+                      {' '}
+                      PLANTING WINDOW
+                    </Typography>
+                  </Button>
                 </TableCell>
               )}
 

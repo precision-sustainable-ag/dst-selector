@@ -78,6 +78,7 @@ const ImageCarousel = ({ images }) => {
   };
 
   return (
+    maxSteps > 0 && (
     <Box sx={{ flexGrow: 1, mt: -25 }}>
       <AutoPlaySwipeableViews
         axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
@@ -148,6 +149,7 @@ const ImageCarousel = ({ images }) => {
         )}
       />
     </Box>
+    )
   );
 };
 

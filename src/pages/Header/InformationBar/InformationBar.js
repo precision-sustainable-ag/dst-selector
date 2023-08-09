@@ -7,6 +7,7 @@
 import {
   Button, Dialog, DialogActions, DialogContent, Grid, Typography,
 } from '@mui/material';
+import { useSelector } from 'react-redux';
 import { LocationOn } from '@mui/icons-material';
 import CloudIcon from '@mui/icons-material/Cloud';
 import CheckIcon from '@mui/icons-material/Check';
@@ -30,6 +31,8 @@ const expansionPanelBaseStyle = {
 
 const InformationBar = () => {
   const { state, dispatch } = useContext(Context);
+  const addressRedux = useSelector((stateRedux) => stateRedux.addressData.address);
+  const zoneRedux = useSelector((stateRedux) => stateRedux.addressData.zone);
   const [confirmationOpen, setConfirmationOpen] = useState(false);
   const [expansionPanelComponent, setExpansionPanelComponent] = useState({
     component: '',
@@ -64,7 +67,7 @@ const InformationBar = () => {
   const getSelectedValues = (type) => {
     switch (type) {
       case 'location':
-        return `Zone ${state.zone}`;
+        return `Zone ${zoneRedux}`;
       case 'soil':
         return state.soilData.Drainage_Class
           .toString()
@@ -124,7 +127,7 @@ const InformationBar = () => {
   const getData = (type) => {
     if (
       (state.soilData.Flooding_Frequency === null && type === 'soil')
-      || (type === 'address' && state.address === '')
+      || (type === 'address' && addressRedux === '')
       || (type === 'weather' && state.weatherData.length === 0)
     ) {
       return '';
