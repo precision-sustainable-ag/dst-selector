@@ -3,7 +3,9 @@
   styled using ./styles/App.scss
 */
 
-import { Snackbar } from '@mui/material';
+import {
+  Snackbar, Box, Container, Grid, Typography,
+} from '@mui/material';
 import React, { useContext, useEffect, useState } from 'react';
 import CropSelector from './pages/CropSelector/CropSelector';
 import GoalsSelector from './pages/GoalsSelector/GoalsSelector';
@@ -76,11 +78,11 @@ const App = () => {
   }, []);
 
   return (
-    <div className="contentWrapper" id="mainContentWrapper">
+    <Box className="contentWrapper" id="mainContentWrapper">
       <Header logo="neccc_wide_logo_color_web.jpg" />
 
-      <div className="container-fluid pl-0 pr-0">
-        <div className="contentContainer">
+      <Container maxWidth="lg">
+        <Box className="contentContainer">
           {state.progress === 0 ? (
             <Landing
               title="Decision Support Tool"
@@ -88,18 +90,12 @@ const App = () => {
               bg="/images/cover-crop-field.png"
             />
           ) : (
-            <div
-              className="col-12"
-              style={{
-                paddingLeft: '0px',
-                paddingRight: '0px',
-              }}
-            >
+            <Grid container item xs={12} style={{ paddingLeft: 0, paddingRight: 0 }}>
               <LoadRelevantRoute progress={state.progress} calcHeight={calcHeight} />
-            </div>
+            </Grid>
           )}
-        </div>
-      </div>
+        </Box>
+      </Container>
 
       <div>
         <Snackbar
@@ -120,20 +116,22 @@ const App = () => {
           message={state.snackMessage}
         />
       </div>
-    </div>
+    </Box>
   );
 };
 
 export default App;
 
 const RouteNotFound = () => (
-  <div className="container mt-4">
-    <div className="row">
-      <div className="col-4 offset-4">
-        <h3>Unknown Route</h3>
-      </div>
-    </div>
-  </div>
+  <Container>
+    <Grid container justifyContent="center" alignItems="center" spacing={3}>
+      <Grid item xs={4}>
+        <Typography variant="h3" align="center">
+          Unknown Route
+        </Typography>
+      </Grid>
+    </Grid>
+  </Container>
 );
 
 // eslint-disable-next-line
