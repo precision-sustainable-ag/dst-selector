@@ -8,14 +8,16 @@ import { Info } from '@mui/icons-material';
 import React, {
   useContext, useEffect, useState,
 } from 'react';
+import { useSelector } from 'react-redux';
 import { Context } from '../../../store/Store';
 import DictionaryContent from './DictionaryContent';
 
 const InformationSheetDictionary = ({ zone, from }) => {
   const [dictionary, setDictionary] = useState([]);
+  const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
   const { state } = useContext(Context);
   const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
-  const sfilters = state[section];
+  const sfilters = filterStateRedux[section];
 
   const currentZone = zone || sfilters.zone;
 
