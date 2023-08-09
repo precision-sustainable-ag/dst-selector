@@ -10,7 +10,7 @@ import React, {
 } from 'react';
 import { Context } from '../../../store/Store';
 import DictionaryContent from './DictionaryContent';
-import { callSelectorApi } from '../../../shared/constants';
+import { callCoverCropApi } from '../../../shared/constants';
 
 const InformationSheetDictionary = ({ zone, from }) => {
   const [dictionary, setDictionary] = useState([]);
@@ -23,7 +23,7 @@ const InformationSheetDictionary = ({ zone, from }) => {
   useEffect(() => {
     document.title = 'Data Dictionary';
     if (currentZone) {
-      callSelectorApi(`https://${state.apiBaseURL}.covercrop-selector.org/legacy/data-dictionary?zone=zone${currentZone}`)
+      callCoverCropApi(`https://${state.apiBaseURL}.covercrop-selector.org/legacy/data-dictionary?zone=zone${currentZone}`)
         .then((data) => { setDictionary(data); });
     }
   }, [zone]);
