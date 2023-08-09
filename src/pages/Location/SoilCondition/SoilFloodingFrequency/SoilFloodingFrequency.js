@@ -81,6 +81,7 @@ const SoilFloodingFrequency = () => {
       </div>
       )}
       <div className="col-12">
+        {console.log(soilData)}
         <RenderFloodingOptions flooding={soilData.Flooding_Frequency} />
       </div>
     </div>
