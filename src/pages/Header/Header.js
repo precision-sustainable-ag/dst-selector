@@ -4,8 +4,7 @@
   styled using ../../styles/header.scss
 */
 
-import { useDispatch, useSelector } from 'react-redux';
-import { useSnackbar } from 'notistack';
+import { useSelector } from 'react-redux';
 import React, { useContext, useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { Context } from '../../store/Store';
@@ -13,80 +12,12 @@ import '../../styles/header.scss';
 import HeaderLogoInfo from './HeaderLogoInfo/HeaderLogoInfo';
 import InformationBar from './InformationBar/InformationBar';
 import ToggleOptions from './ToggleOptions/ToggleOptions';
-import {
-  lastZipCode, updateZone,
-} from '../../reduxStore/addressSlice';
 
 const Header = () => {
-  const { state, dispatch } = useContext(Context);
-  const dispatchRedux = useDispatch();
+  const { state } = useContext(Context);
   const markersRedux = useSelector((stateRedux) => stateRedux.addressData.markers);
-  const zipCodeRedux = useSelector((stateRedux) => stateRedux.addressData.zipCode);
-  const lastZipCodeRedux = useSelector((stateRedux) => stateRedux.addressData.lastZipCode);
   const [isRoot, setIsRoot] = useState(false);
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const isActive = {};
-
-  const getUSDAZone = async (zip) => fetch(`https://phzmapi.org/${zip}.json`);
-
-  useEffect(() => {
-    if (!zipCodeRedux) {
-      return;
-    }
-
-    if (zipCodeRedux !== lastZipCodeRedux) {
-      dispatchRedux(lastZipCode(zipCodeRedux));
-      // dispatch({
-      //   type: 'LAST_ZIP_CODE',
-      //   data: {
-      //     value: zipCodeRedux,
-      //   },
-      // });
-
-      getUSDAZone(zipCodeRedux)
-        .then((response) => {
-          if (response.ok) {
-            const dataJson = response.json();
-            dataJson.then((data) => {
-              // eslint-disable-next-line
-              // let zone = window.location.search.match(/zone=([^\^]+)/); // for automating Information Sheet PDFs
-              let { zone } = data;
-
-              let regionId = null;
-
-              if (zone !== '8a' && zone !== '8b') {
-                zone = zone.slice(0, -1);
-              }
-
-              if (state.regions?.length > 0) {
-                state.regions.forEach((region) => {
-                  if (region.shorthand === zone) {
-                    regionId = region.id;
-                  }
-                });
-              }
-              if (state.councilShorthand !== 'MCCC') {
-                dispatchRedux(updateZone(
-                  {
-                    zoneText: `Zone ${zone}`,
-                    zone,
-                    zoneId: regionId,
-                  },
-                ));
-                // dispatch({
-                //   type: 'UPDATE_ZONE',
-                //   data: {
-                //     zoneText: `Zone ${zone}`,
-                //     zone,
-                //     zoneId: regionId,
-                //   },
-                // });
-              }
-            });
-          }
-        });
-    }
-  }, [zipCodeRedux, lastZipCodeRedux, dispatch, dispatchRedux, enqueueSnackbar, closeSnackbar]);
 
   useEffect(() => {
     if (window.location.pathname === '/explorer') {
@@ -94,7 +25,6 @@ const Header = () => {
     } else {
       setIsRoot(false);
     }
-    // check value of progress state
 
     switch (state.progress) {
       case 0:
