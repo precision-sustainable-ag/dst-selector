@@ -70,8 +70,6 @@ const CropTableCard = ({
     }
   };
 
-  console.log(selectedGoalsRedux);
-
   return (
     <>
       {selectedGoalsRedux.length > 0
