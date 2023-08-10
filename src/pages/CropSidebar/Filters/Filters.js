@@ -85,8 +85,9 @@ const DollarsAndRatings = ({ filter, handleChange }) => {
   );
 }; // DollarsAndRatings
 
-const Chips = ({ state, filter, handleChange }) => {
-  const sfilters = window.location.href.includes('species-selector') ? state.selector : state.explorer;
+const Chips = ({ filter, handleChange }) => {
+  const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
+  const sfilters = window.location.href.includes('species-selector') ? filterStateRedux.selector : filterStateRedux.explorer;
 
   return filter.values.map((val, i) => {
     const selected = sfilters[`${filter.name}: ${val.value}`];
@@ -132,7 +133,6 @@ const Tip = ({ filter }) => (
 const Filters = ({ filters }) => {
   const disptachRedux = useDispatch();
   // const { filters } = props;
-  const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
   const [selected, setSelected] = useState({});
   const [sidebarFilterOptions, setSidebarFilterOptions] = useState({});
   // eslint-disable-next-line no-unused-vars
@@ -173,7 +173,7 @@ const Filters = ({ filters }) => {
                 <Tip filter={filter} />
                 <br />
               </>
-              <Chips key={i} state={filterStateRedux} filter={filter} handleChange={chipChange} />
+              <Chips key={i} filter={filter} handleChange={chipChange} />
             </Grid>
           );
         }
@@ -182,7 +182,6 @@ const Filters = ({ filters }) => {
             <Tip filter={filter} />
             <br />
             <DollarsAndRatings
-              state={filterStateRedux}
               filter={filter}
               handleChange={dollarsAndRatingsChange}
             />
