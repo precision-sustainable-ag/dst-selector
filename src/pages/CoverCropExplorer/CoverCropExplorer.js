@@ -9,9 +9,10 @@ import {
 } from '@mui/material';
 import { useHistory } from 'react-router-dom';
 import React, { useContext, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import ReactGA from 'react-ga';
 import { Context } from '../../store/Store';
+import { reset } from '../../reduxStore/store';
 import Header from '../Header/Header';
 import ExplorerCardView from './ExplorerCardView/ExplorerCardView';
 import ConsentModal from './ConsentModal/ConsentModal';
@@ -21,6 +22,7 @@ import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset
 
 const CoverCropExplorer = () => {
   const { state, dispatch } = useContext(Context);
+  const dispatchRedux = useDispatch();
   const history = useHistory();
   const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
   const sfilters = state[section];
@@ -68,6 +70,7 @@ const CoverCropExplorer = () => {
           selectedCrops: [],
         },
       });
+      dispatchRedux(reset());
       // setSpeciesSelectorActivationFlag();
     } else {
       setHandleConfirm(false);
