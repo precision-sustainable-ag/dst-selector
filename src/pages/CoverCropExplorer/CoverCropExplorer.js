@@ -5,7 +5,7 @@
 */
 
 import {
-  Dialog, DialogActions, DialogContent, Grid, Typography,
+  Grid, Typography,
 } from '@mui/material';
 import { useHistory } from 'react-router-dom';
 
@@ -16,18 +16,16 @@ import Header from '../Header/Header';
 import ExplorerCardView from './ExplorerCardView/ExplorerCardView';
 import ConsentModal from './ConsentModal/ConsentModal';
 import CropSidebar from '../CropSidebar/CropSidebar';
-import { BinaryButton } from '../../shared/constants';
 import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset';
 
 const CoverCropExplorer = () => {
-  const { state, dispatch } = useContext(Context);
+  const { state } = useContext(Context);
   const history = useHistory();
   const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
   const sfilters = state[section];
   const [updatedActiveCropData, setUpdatedActiveCropData] = useState([]);
   const { activeCropData } = state;
   const [handleConfirm, setHandleConfirm] = useState(false);
-  const defaultMarkers = [[40.78489145, -74.80733626930342]];
 
   useEffect(() => {
     const filteredActiveCropData = activeCropData?.filter((a) => !a.inactive);
@@ -55,21 +53,6 @@ const CoverCropExplorer = () => {
       setHandleConfirm(true);
     }
   }, [state.selectedCrops, state.myCoverCropListLocation]);
-
-  const handleConfirmationChoice = (clearMyList = false) => {
-    if (clearMyList) {
-      dispatch({
-        type: 'RESET',
-        data: {
-          markers: defaultMarkers,
-          selectedCrops: [],
-        },
-      });
-      // setSpeciesSelectorActivationFlag();
-    } else {
-      setHandleConfirm(false);
-    }
-  };
 
   return (
     <div className="contentWrapper">
@@ -102,18 +85,6 @@ const CoverCropExplorer = () => {
           </div>
         </div>
       </div>
-      <Dialog onClose={() => setHandleConfirm(false)} open={handleConfirm}>
-        <DialogContent dividers>
-          <Typography variant="body1">
-            You will need to clear your My Cover Crop List to continue.  Would you like to continue?
-          </Typography>
-        </DialogContent>
-        <DialogActions>
-          <BinaryButton
-            action={handleConfirmationChoice}
-          />
-        </DialogActions>
-      </Dialog>
       <MyCoverCropReset handleConfirm={handleConfirm} setHandleConfirm={setHandleConfirm} />
     </div>
   );
