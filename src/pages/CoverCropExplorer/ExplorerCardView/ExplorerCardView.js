@@ -5,7 +5,7 @@
 */
 
 import {
-  Grid, Typography,
+  Grid, Typography, CircularProgress,
 } from '@mui/material';
 import { useSnackbar } from 'notistack';
 import React, {
@@ -91,43 +91,47 @@ const ExplorerCardView = ({ activeCropData }) => {
   };
 
   return (
-    <>
-      <Grid style={{ marginLeft: '40px' }} container spacing={2}>
-        {/* eslint-disable-next-line no-nested-ternary */}
-        {activeCropData?.length > 0 ? (
-          activeCropData.map((crop, index) => (
-            <Grid style={{ width: '260px' }} item key={index}>
-              <CropCard
-                crop={crop}
-                handleModalOpen={handleModalOpen}
-                addCropToBasket={addCropToBasket}
-                selectedBtns={selectedBtns}
-                index={index}
-                removeCrop={addCropToBasket}
-                type="explorer"
-              />
+    state.ajaxInProgress ? (
+      <CircularProgress style={{ marginLeft: '60px' }} size="6em" />
+    ) : (
+      <>
+        <Grid style={{ marginLeft: '40px' }} container spacing={2}>
+          {/* eslint-disable-next-line no-nested-ternary */}
+          {activeCropData?.length > 0 ? (
+            activeCropData.map((crop, index) => (
+              <Grid style={{ width: '260px' }} item key={index}>
+                <CropCard
+                  crop={crop}
+                  handleModalOpen={handleModalOpen}
+                  addCropToBasket={addCropToBasket}
+                  selectedBtns={selectedBtns}
+                  index={index}
+                  removeCrop={addCropToBasket}
+                  type="explorer"
+                />
+              </Grid>
+            ))
+          ) : cropDataRedux?.length > 0 ? (
+            <Grid item>
+              <Typography variant="body1" align="center">
+                No cover crops match your selected Cover Crop Property filters.
+              </Typography>
             </Grid>
-          ))
-        ) : cropDataRedux?.length > 0 ? (
-          <Grid item>
-            <Typography variant="body1" align="center">
-              No cover crops match your selected Cover Crop Property filters.
-            </Typography>
-          </Grid>
-        ) : (
-          <div
-            style={{ padding: '50px 0 0 50px' }}
-          >
-            <b>Please select a zone</b>
-          </div>
-        )}
-      </Grid>
-      <CropDetailsModal
-        modalOpen={modalOpen}
-        setModalOpen={setModalOpen}
-        crop={modalData}
-      />
-    </>
+          ) : (
+            <div
+              style={{ padding: '50px 0 0 50px' }}
+            >
+              <b>Please select a zone</b>
+            </div>
+          )}
+        </Grid>
+        <CropDetailsModal
+          modalOpen={modalOpen}
+          setModalOpen={setModalOpen}
+          crop={modalData}
+        />
+      </>
+    )
   );
 };
 

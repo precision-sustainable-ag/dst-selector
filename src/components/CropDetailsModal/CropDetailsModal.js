@@ -12,36 +12,25 @@ import ReactGA from 'react-ga';
 import '../../styles/cropDetailsModal.scss';
 import InformationSheetContent from '../../pages/InformationSheetContent/InformationSheetContent';
 import { Context } from '../../store/Store';
+import { callCoverCropApi } from '../../shared/constants';
 
 const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
   const { state, dispatch } = useContext(Context);
   const [dataDone, setDataDone] = useState(false);
 
-  async function getCropData() {
-    if (Object.keys(crop).length === 0) {
-      return;
-    }
-    const query = `${encodeURIComponent('regions')}=${encodeURIComponent(state.regionId)}`;
-    await fetch(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${state.stateId}/crops/${crop?.id}?${query}`)
-      .then((res) => res.json())
-      .then((data) => {
+  useEffect(() => {
+    const regionQuery = `${encodeURIComponent('regions')}=${encodeURIComponent(state.regionId)}`;
+    const url = `https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${state.stateId}/crops/${crop?.id}?${regionQuery}`;
+    if (crop.id !== undefined) {
+      callCoverCropApi(url).then((data) => {
         dispatch({
           type: 'MODAL_DATA',
           data,
         });
       })
-      .then(() => {
-        setDataDone(true);
-      })
-      .catch((err) => {
-        // eslint-disable-next-line no-console
-        console.log(err.message);
-      });
-  }
-
-  useEffect(() => {
-    if (crop.id !== undefined) {
-      getCropData();
+        .then(() => {
+          setDataDone(true);
+        });
     }
   }, [crop]);
 
