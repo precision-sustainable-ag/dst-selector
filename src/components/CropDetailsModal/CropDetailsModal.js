@@ -9,6 +9,7 @@ import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { Close, Print } from '@mui/icons-material';
 import React, { useEffect, useContext, useState } from 'react';
 import ReactGA from 'react-ga';
+import { useSelector } from 'react-redux';
 import '../../styles/cropDetailsModal.scss';
 import InformationSheetContent from '../../pages/InformationSheetContent/InformationSheetContent';
 import { Context } from '../../store/Store';
@@ -17,10 +18,12 @@ import { callCoverCropApi } from '../../shared/constants';
 const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
   const { state, dispatch } = useContext(Context);
   const [dataDone, setDataDone] = useState(false);
+  const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
+  const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
 
   useEffect(() => {
-    const regionQuery = `${encodeURIComponent('regions')}=${encodeURIComponent(state.regionId)}`;
-    const url = `https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${state.stateId}/crops/${crop?.id}?${regionQuery}`;
+    const regionQuery = `${encodeURIComponent('regions')}=${encodeURIComponent(regionIdRedux)}`;
+    const url = `https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${stateIdRedux}/crops/${crop?.id}?${regionQuery}`;
     if (crop.id !== undefined) {
       callCoverCropApi(url).then((data) => {
         dispatch({

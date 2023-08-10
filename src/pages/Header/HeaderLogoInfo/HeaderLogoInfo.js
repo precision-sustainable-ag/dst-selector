@@ -3,6 +3,7 @@ import {
 } from '@mui/material';
 import React, { useContext, useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import { BinaryButton } from '../../../shared/constants';
 import { Context } from '../../../store/Store';
 import '../../../styles/header.scss';
@@ -15,6 +16,7 @@ const HeaderLogoInfo = () => {
   const [handleConfirm, setHandleConfirm] = useState(false);
   const defaultMarkers = [[40.78489145, -74.80733626930342]];
   const { selectedCrops } = state;
+  const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
 
   const logoClick = (clearMyList = false) => {
     if (clearMyList) {
@@ -32,13 +34,13 @@ const HeaderLogoInfo = () => {
 
   useEffect(() => {
     let imageSrc;
-    if (state.councilLabel === 'Northeast Cover Crop Council') {
+    if (councilLabelRedux === 'Northeast Cover Crop Council') {
       imageSrc = '../images/neccc_wide_logo_color_web.jpg';
-    } else if (state.councilLabel === 'Southern Cover Crop Council') {
+    } else if (councilLabelRedux === 'Southern Cover Crop Council') {
       imageSrc = '../images/sccc_logo.png';
-    } else if (state.councilLabel === 'Midwest Cover Crop Council') {
+    } else if (councilLabelRedux === 'Midwest Cover Crop Council') {
       imageSrc = '../images/mwccc_logo.png';
-    } else if (state.councilLabel === 'Western Cover Crop Council') {
+    } else if (councilLabelRedux === 'Western Cover Crop Council') {
       imageSrc = '../images/wccc_logo.png';
     } else {
       imageSrc = '../images/whitebg.png';
@@ -48,7 +50,7 @@ const HeaderLogoInfo = () => {
     if (imageElement) {
       imageElement.src = imageSrc;
     }
-  }, [state.councilLabel]);
+  }, [councilLabelRedux]);
 
   return (
     <Grid lg={12} item container alignItems="center" sx={{ height: '150px', padding: '0', margin: '0' }}>

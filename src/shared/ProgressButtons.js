@@ -15,13 +15,14 @@ const ProgressButtons = ({ closeExpansionPanel, setConfirmationOpen }) => {
   const [isDisabledBack, setIsDisabledBack] = useState(false);
   const [isDisabledNext, setIsDisabledNext] = useState(true);
   const [isDisabledRefresh, setIsDisabledRefresh] = useState(false);
+  const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
 
   const disableLogic = (progress, goalsLength, sfilters) => {
     switch (parseInt(progress, 10)) {
       case 0:
         setIsDisabledBack(true);
         setIsDisabledRefresh(true);
-        setIsDisabledNext(state.councilLabel === '');
+        setIsDisabledNext(councilLabelRedux === '');
         break;
       case 1:
         // location selection state

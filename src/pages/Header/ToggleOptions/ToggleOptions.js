@@ -3,12 +3,14 @@ import {
 } from '@mui/material';
 import React, { useContext } from 'react';
 import { NavLink, useHistory } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import { Context } from '../../../store/Store';
 import '../../../styles/header.scss';
 
 const ToggleOptions = ({ isRoot }) => {
   const { state, dispatch } = useContext(Context);
   const history = useHistory();
+  const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
 
   const setMyCoverCropActivationFlag = () => {
     history.push('/my-cover-crop-list');
@@ -49,13 +51,13 @@ const ToggleOptions = ({ isRoot }) => {
       <Button size="large" onClick={() => clearMyCoverCropList(false)} component={NavLink} exact to="/" activeClassName="active">
         SPECIES SELECTOR TOOL
       </Button>
-      <Tooltip title={state.state === '' ? 'You must select a state before using the Cover Crop Explorer' : ''}>
+      <Tooltip title={stateLabelRedux === '' ? 'You must select a state before using the Cover Crop Explorer' : ''}>
         <span>
           <Button
             className={(isRoot && state.speciesSelectorActivationFlag) ? 'active' : ''}
             onClick={() => clearMyCoverCropList(true)}
             size="large"
-            disabled={state.state === ''}
+            disabled={stateLabelRedux === ''}
           >
             COVER CROP EXPLORER
           </Button>
