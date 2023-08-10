@@ -31,11 +31,11 @@ const AuthModal = () => {
     >
       <Box sx={style}>
         <Typography id="modal-modal-title" variant="h6" component="h2">
-          Would you like to login to beta test user history?
+          Login to try out our new user history feature?
         </Typography>
         <Typography variant="body">
           <p>
-            We will not share your data with outside sources.
+            We will not share your data.
           </p>
         </Typography>
         <Grid container spacing={1}>
