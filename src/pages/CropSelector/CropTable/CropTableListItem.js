@@ -1,7 +1,7 @@
-import React, { Fragment, useContext } from 'react';
+import React, { Fragment } from 'react';
+import { useSelector } from 'react-redux';
 import { TableCell, Typography, TableRow } from '@mui/material';
 import { CropImage, flipCoverCropName, trimString } from '../../../shared/constants';
-import { Context } from '../../../store/Store';
 import '../../../styles/cropCalendarViewComponent.scss';
 import '../../../styles/cropTable.scss';
 import CropTableCard from './CropTableCard';
@@ -9,11 +9,8 @@ import CropTableCard from './CropTableCard';
 const CropTableListItem = ({
   activeCropData, matchGoals, showGrowthWindow, handleModalOpen,
 }) => {
-  const { state } = useContext(Context);
-  const hasGoalRatingTwoOrLess = (crop = []) => {
-    const { selectedGoals } = state;
-    return crop.inactive || selectedGoals.every((rating) => crop[rating] <= 2);
-  };
+  const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
+  const hasGoalRatingTwoOrLess = (crop = []) => crop.inactive || selectedGoalsRedux.every((rating) => crop[rating] <= 2);
 
   return (
     activeCropData.map((crop, index) => {

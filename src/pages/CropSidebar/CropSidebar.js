@@ -48,6 +48,7 @@ const CropSidebar = ({
   const dispatchRedux = useDispatch();
   const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
   const cashCropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cashCropData);
+  const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const [loading, setLoading] = useState(false);
   const [sidebarFilters, setSidebarFilters] = useState([]);
   const [showFilters, setShowFilters] = useState('');
@@ -412,7 +413,7 @@ const CropSidebar = ({
         <div className="col-12">
           <ComparisonBar
             filterData={sidebarFilters}
-            goals={state.selectedGoals?.length > 0 ? state.selectedGoals : []}
+            goals={selectedGoalsRedux?.length > 0 ? selectedGoalsRedux : []}
             comparisonKeys={state.comparisonKeys}
             dispatch={dispatch}
             comparisonView={comparisonView}
@@ -541,7 +542,7 @@ const CropSidebar = ({
         <div className="col-12">
           <ComparisonBar
             filterData={sidebarFilters}
-            goals={state.selectedGoals?.length > 0 ? state.selectedGoals : []}
+            goals={selectedGoalsRedux?.length > 0 ? selectedGoalsRedux : []}
             comparisonKeys={state.comparisonKeys}
             dispatch={dispatch}
             comparisonView={comparisonView}

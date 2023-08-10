@@ -16,6 +16,7 @@ const CropCard = ({
   const { state } = useContext(Context);
   const zoneRedux = useSelector((stateRedux) => stateRedux.addressData.zone);
   const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
+  const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
   const sfilters = state[section];
   const [allfilters, setAllFilters] = useState([]);
@@ -68,7 +69,7 @@ const CropCard = ({
         />
       ))}
       {/* Show Goal Rating Only IF Goals > 0 */}
-      {state.selectedGoals.length > 0 && (
+      {selectedGoalsRedux.length > 0 && (
       <div style={lightBG}>
         <GetAverageGoalRating crop={crop} />
       </div>
