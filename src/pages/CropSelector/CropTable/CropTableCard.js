@@ -13,11 +13,10 @@ import { snackHandler } from '../../../reduxStore/sharedSlice';
 const CropTableCard = ({
   crop, indexKey, showGrowthWindow, handleModalOpen,
 }) => {
-  const { state, dispatch } = useContext(Context);
+  const { dispatch } = useContext(Context);
   const dispatchRedux = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
   const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
-  const goalsLength = state.selectedGoals.length;
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
 
   const selectedBtns = selectedCropsRedux.map((cropId) => cropId.id);
@@ -71,9 +70,11 @@ const CropTableCard = ({
     }
   };
 
+  console.log(selectedGoalsRedux);
+
   return (
     <>
-      {goalsLength > 0
+      {selectedGoalsRedux.length > 0
         && selectedGoalsRedux.map((goal, index) => (
           <TableCell style={{ textAlign: 'center' }} key={index} className="goalCells">
             <div>
@@ -97,7 +98,7 @@ const CropTableCard = ({
         ))}
 
       {showGrowthWindow && (
-        <TableCell style={{ width: goalsLength === 0 && '50%' }}>
+        <TableCell style={{ width: selectedGoalsRedux.length === 0 && '50%' }}>
           <CropSelectorCalendarView data={crop} from="listView" />
         </TableCell>
       )}
