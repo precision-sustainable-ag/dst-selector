@@ -16,6 +16,7 @@ import {
 } from '@mui/material';
 import moment from 'moment';
 import React, { useContext, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { LightButton } from '../../shared/constants';
 import { Context } from '../../store/Store';
 import WeatherPrecipitation from './WeatherPrecipitation/WeatherPrecipitation';
@@ -25,6 +26,7 @@ import MyCoverCropReset from '../MyCoverCropReset/MyCoverCropReset';
 
 const WeatherConditions = ({ caller }) => {
   const { state, dispatch } = useContext(Context);
+  const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
   const [months, setMonths] = useState([]);
   const [currentMonthFull, setCurrentMonthFull] = useState('NOVEMBER');
   const [anyValuesChanged, setAnyValuesChanged] = useState(false);
@@ -112,11 +114,11 @@ const WeatherConditions = ({ caller }) => {
   };
 
   useEffect(() => {
-    if (state.myCoverCropListLocation !== 'selector' && state.selectedCrops.length > 0) {
+    if (state.myCoverCropListLocation !== 'selector' && selectedCropsRedux.length > 0) {
       // document.title = 'Cover Crop Selector';
       setHandleConfirm(true);
     }
-  }, [state.selectedCrops, state.myCoverCropListLocation]);
+  }, [selectedCropsRedux, state.myCoverCropListLocation]);
 
   useEffect(() => {
     // get current month in long form

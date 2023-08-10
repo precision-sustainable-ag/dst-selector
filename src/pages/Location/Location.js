@@ -22,6 +22,7 @@ import moment from 'moment';
 import { Map } from '@psa/dst.ui.map';
 // import centroid from '@turf/centroid';
 import mapboxgl from 'mapbox-gl';
+import { reset } from '../../reduxStore/store';
 import statesLatLongDict from '../../shared/stateslatlongdict';
 import {
   abbrRegion, reverseGEO, BinaryButton, callCoverCropApi,
@@ -32,6 +33,8 @@ import PlantHardinessZone from '../CropSidebar/PlantHardinessZone/PlantHardiness
 import {
   changeAddressViaMap, updateLocation, updateZone as updateZoneRedux, updateZipCode,
 } from '../../reduxStore/addressSlice';
+
+import { snackHandler } from '../../reduxStore/sharedSlice';
 
 // eslint-disable-next-line import/no-webpack-loader-syntax, import/no-unresolved
 mapboxgl.workerClass = require('worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker').default;
@@ -49,6 +52,7 @@ const LocationComponent = ({
   const defaultMarkers = [[40.78489145, -74.80733626930342]];
   const countyRedux = useSelector((stateRedux) => stateRedux.addressData.county);
   const zoneRedux = useSelector((stateRedux) => stateRedux.addressData.zone);
+  const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
   const markersRedux = useSelector((stateRedux) => stateRedux.addressData.markers);
   const zipCodeRedux = useSelector((stateRedux) => stateRedux.addressData.zipCode);
 
@@ -60,10 +64,10 @@ const LocationComponent = ({
   }, [state]);
 
   useEffect(() => {
-    if (state.myCoverCropListLocation !== 'selector' && state.selectedCrops.length > 0) {
+    if (state.myCoverCropListLocation !== 'selector' && selectedCropsRedux.length > 0) {
       setHandleConfirm(true);
     }
-  }, [state.selectedCrops, state.myCoverCropListLocation]);
+  }, [selectedCropsRedux, state.myCoverCropListLocation]);
 
   const updateZone = (region) => {
     if (region !== undefined) {
@@ -99,14 +103,16 @@ const LocationComponent = ({
             selectedCrops: [],
           },
         });
+        dispatchRedux(reset());
       } else {
         dispatch({
           type: 'RESET',
           data: {
             markers: defaultMarkers,
-            selectedCrops: state.selectedCrops,
+            selectedCrops: selectedCropsRedux,
           },
         });
+        dispatchRedux(reset());
       }
       closeExpansionPanel();
     }
@@ -148,14 +154,17 @@ const LocationComponent = ({
           zipCode,
         },
       ));
-
-      dispatch({
-        type: 'SNACK',
-        data: {
-          snackOpen: true,
-          snackMessage: 'Your location has been saved.',
-        },
-      });
+      dispatchRedux(snackHandler({
+        snackOpen: true,
+        snackMessage: 'Your location has been saved.',
+      }));
+      // dispatch({
+      //   type: 'SNACK',
+      //   data: {
+      //     snackOpen: true,
+      //     snackMessage: 'Your location has been saved.',
+      //   },
+      // });
 
       if (selectedToEditSite.address) {
         dispatchRedux(changeAddressViaMap(

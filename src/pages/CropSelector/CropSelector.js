@@ -14,6 +14,7 @@ import {
 } from '@mui/material';
 import { ArrowBack, ArrowForward, KeyboardArrowUp } from '@mui/icons-material';
 import React, { useContext, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import ReactGA from 'react-ga';
 import { Context } from '../../store/Store';
 import '../../styles/cropSelector.scss';
@@ -23,6 +24,7 @@ import CropSidebar from '../CropSidebar/CropSidebar';
 import CropTableComponent from './CropTable/CropTable';
 import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset';
 import { sortCrops } from '../../shared/constants';
+import { updateActiveCropData } from '../../reduxStore/cropSlice';
 
 const ScrollTop = ({ children }) => {
   const trigger = useScrollTrigger({
@@ -54,9 +56,14 @@ const ScrollTop = ({ children }) => {
 
 const CropSelector = (props) => {
   const { state, dispatch } = useContext(Context);
+  const dispatchRedux = useDispatch();
   const [showGrowthWindow, setShowGrowthWindow] = useState(true);
   const [goalsSortFlag, setGoalsSortFlag] = useState(true);
-  const { selectedGoals, activeCropData } = state;
+  const { selectedGoals } = state;
+  const activeCropDataRedux = useSelector((stateRedux) => stateRedux.cropData.activeCropData);
+  const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
+  const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
+  const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const [isListView, setIsListView] = useState(true);
   const [comparisonView, setComparisonView] = useState(false);
   const [cropData, setCropData] = useState([]);
@@ -64,34 +71,36 @@ const CropSelector = (props) => {
   const [handleConfirm, setHandleConfirm] = useState(false);
 
   const sortCropsBy = (flag) => {
-    const dispatchValue = (updatedCropData) => dispatch({
-      type: 'UPDATE_ACTIVE_CROP_DATA',
-      data: {
-        value: updatedCropData,
-      },
-    });
-    if (selectedGoals?.length > 0) {
-      const activeCropDataShadow = activeCropData?.length > 0 ? activeCropData : state?.cropData;
+    // const dispatchValue = (updatedCropData) => dispatch({
+    //   type: 'UPDATE_ACTIVE_CROP_DATA',
+    //   data: {
+    //     value: updatedCropData,
+    //   },
+    // });
+    const dispatchValue = (updatedCropData) => dispatchRedux(updateActiveCropData(updatedCropData));
 
-      sortCrops('Average Goals', activeCropDataShadow, flag || goalsSortFlag, selectedGoals, dispatchValue);
+    if (selectedGoalsRedux?.length > 0) {
+      const activeCropDataShadow = activeCropDataRedux?.length > 0 ? activeCropDataRedux : state?.cropData;
+
+      sortCrops('Average Goals', activeCropDataShadow, flag || goalsSortFlag, selectedGoalsRedux, dispatchValue);
       setGoalsSortFlag(!goalsSortFlag);
       dispatchValue(activeCropDataShadow);
     }
   };
 
   useEffect(() => {
-    if (state.myCoverCropListLocation !== 'selector' && state.selectedCrops.length > 0) {
+    if (state.myCoverCropListLocation !== 'selector' && selectedCropsRedux.length > 0) {
       setHandleConfirm(true);
     }
-  }, [state.selectedCrops, state.myCoverCropListLocation]);
+  }, [selectedCropsRedux, state.myCoverCropListLocation]);
 
   useEffect(() => {
     sortCropsBy(true);
-  }, [activeCropData]);
+  }, [activeCropDataRedux]);
 
   useEffect(() => {
-    setUpdatedActiveCropData(activeCropData);
-  }, [activeCropData]);
+    setUpdatedActiveCropData(activeCropDataRedux);
+  }, [activeCropDataRedux]);
 
   useEffect(() => {
     if (state.consent === true) {
@@ -102,7 +111,7 @@ const CropSelector = (props) => {
   }, [state.consent]);
 
   useEffect(() => {
-    if (state.selectedGoals?.length === 0) {
+    if (selectedGoalsRedux?.length === 0) {
       dispatch({
         type: 'UPDATE_PROGRESS',
         data: {
@@ -110,13 +119,13 @@ const CropSelector = (props) => {
         },
       });
     }
-  }, [state.selectedGoals, dispatch]);
+  }, [selectedGoalsRedux, dispatch]);
 
   useEffect(() => {
-    if (state?.cropData) {
-      if (state?.cropData?.length > 0) {
+    if (cropDataRedux) {
+      if (cropDataRedux?.length > 0) {
         if (selectedGoals?.length > 0) {
-          const activeCropDataShadow = state?.cropData;
+          const activeCropDataShadow = cropDataRedux;
           selectedGoals
             .slice()
             .reverse()
@@ -133,14 +142,14 @@ const CropSelector = (props) => {
             });
           setCropData(activeCropDataShadow);
         } else {
-          setCropData(state?.cropData);
+          setCropData(cropDataRedux);
         }
       }
     }
     return () => {
       setCropData([]);
     };
-  }, [state?.cropData, selectedGoals]);
+  }, [cropDataRedux, selectedGoals]);
 
   function useWindowSize() {
     // Initialize state with undefined width/height so server and client renders match
