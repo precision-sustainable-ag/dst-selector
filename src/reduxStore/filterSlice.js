@@ -9,7 +9,6 @@ const initialState = {
     // filters for selector
     cropSearch: '',
   },
-  changedFilters: true,
 };
 
 export const clearFilters = () => ({
@@ -59,7 +58,6 @@ const filterReducer = (state = initialState, action = null) => {
       return {
         ...state,
         [section]: sfilters,
-        changedFilters: true,
       };
 
     case 'FILTER_TOGGLE':
@@ -68,7 +66,6 @@ const filterReducer = (state = initialState, action = null) => {
       return {
         ...state,
         [section]: sfilters,
-        changedFilters: true,
       };
 
     case 'FILTER_ON':
@@ -77,7 +74,6 @@ const filterReducer = (state = initialState, action = null) => {
       return {
         ...state,
         [section]: sfilters,
-        changedFilters: true,
       };
 
     case 'FILTER_OFF':
@@ -86,7 +82,6 @@ const filterReducer = (state = initialState, action = null) => {
       return {
         ...state,
         [section]: sfilters,
-        changedFilters: true,
       };
 
     case 'CROP_SEARCH':
