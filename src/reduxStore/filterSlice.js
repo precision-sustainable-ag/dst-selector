@@ -51,7 +51,6 @@ const filterReducer = (state = initialState, action = null) => {
 
   switch (action.type) {
     case 'CLEAR_FILTERS':
-      console.log('clear filter');
       sfilters = {
         cropSearch: '',
         zone: sfilters.zone,
@@ -64,7 +63,6 @@ const filterReducer = (state = initialState, action = null) => {
       };
 
     case 'FILTER_TOGGLE':
-      console.log('filter toggle');
       sfilters[value] = !sfilters[value];
 
       return {
