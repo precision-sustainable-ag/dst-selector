@@ -6,9 +6,6 @@
 */
 
 import {
-  Dialog,
-  DialogActions,
-  DialogContent,
   FormControl,
   Grid, InputLabel, List, ListItem, MenuItem, Select, Typography,
 } from '@mui/material';
@@ -20,19 +17,19 @@ import React, {
   useRef,
 } from 'react';
 import { useDispatch } from 'react-redux';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import ReactGA from 'react-ga';
 import { RegionSelectorMap } from '@psa/dst.ui.region-selector-map';
-import { BinaryButton, callCoverCropApi } from '../../shared/constants';
+import { callCoverCropApi } from '../../shared/constants';
 import { Context } from '../../store/Store';
 import '../../styles/landing.scss';
 import ConsentModal from '../CoverCropExplorer/ConsentModal/ConsentModal';
+import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset';
 import { updateZone } from '../../reduxStore/addressSlice';
 
 const Landing = ({ height, title, bg }) => {
   const { state, dispatch } = useContext(Context);
   const dispatchRedux = useDispatch();
-  const history = useHistory();
   const [handleConfirm, setHandleConfirm] = useState(false);
   const [containerHeight, setContainerHeight] = useState(height);
   const [allStates, setAllStates] = useState([]);
@@ -40,7 +37,6 @@ const Landing = ({ height, title, bg }) => {
   const [mapState, setMapState] = useState({});
   const [selectedRegion, setSelectedRegion] = useState({});
   const mapRef = useRef(null);
-  const defaultMarkers = [[40.78489145, -74.80733626930342]];
 
   const stateChange = (selState) => {
     setSelectedState(selState);
@@ -243,24 +239,6 @@ const Landing = ({ height, title, bg }) => {
     localStorage.setItem('lastLocation', 'CropSelector');
   }, []);
 
-  const handleConfirmationChoice = (clearMyList = false) => {
-    if (clearMyList) {
-      dispatch({
-        type: 'RESET',
-        data: {
-          markers: defaultMarkers,
-          selectedCrops: [],
-        },
-      });
-    } else {
-      history.goBack();
-      if (window.location.pathname !== '/') {
-        history.push('/');
-      }
-    }
-    setHandleConfirm(false);
-  };
-
   return (
 
     <div
@@ -400,18 +378,7 @@ const Landing = ({ height, title, bg }) => {
           </Grid>
         </Grid>
       </Grid>
-      <Dialog onClose={() => setHandleConfirm(false)} open={handleConfirm}>
-        <DialogContent dividers>
-          <Typography variant="body1">
-            You will need to clear your My Cover Crop List to continue.  Would you like to continue?
-          </Typography>
-        </DialogContent>
-        <DialogActions>
-          <BinaryButton
-            action={handleConfirmationChoice}
-          />
-        </DialogActions>
-      </Dialog>
+      <MyCoverCropReset handleConfirm={handleConfirm} setHandleConfirm={setHandleConfirm} />
     </div>
   );
 };

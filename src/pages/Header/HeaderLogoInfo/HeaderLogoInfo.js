@@ -1,33 +1,35 @@
 import {
-  Dialog, DialogActions, DialogContent, Typography, Box, Grid,
+  Typography, Box, Grid,
 } from '@mui/material';
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { BinaryButton } from '../../../shared/constants';
 import { Context } from '../../../store/Store';
 import '../../../styles/header.scss';
 import DateComponent from '../DateComponent/DateComponent';
 import ForecastComponent from '../ForecastComponent/ForecastComponent';
+import MyCoverCropReset from '../../../components/MyCoverCropReset/MyCoverCropReset';
 
 const HeaderLogoInfo = () => {
   const { state, dispatch } = useContext(Context);
   const history = useHistory();
   const [handleConfirm, setHandleConfirm] = useState(false);
   const defaultMarkers = [[40.78489145, -74.80733626930342]];
-  const { selectedCrops } = state;
 
-  const logoClick = (clearMyList = false) => {
-    if (clearMyList) {
-      dispatch({
-        type: 'RESET',
-        data: {
-          markers: defaultMarkers,
-          selectedCrops: [],
-        },
-      });
-      history.replace('/');
+  const handleClick = () => {
+    if (state.selectedCrops.length === 0) {
+      if (window.location.pathname === '/') {
+      // if no cover crops selected, update state to return to the 1st progress
+        dispatch({
+          type: 'RESET',
+          data: {
+            markers: defaultMarkers,
+            selectedCrops: [],
+          },
+        });
+      } else history.replace('/');
+    } else {
+      setHandleConfirm(true);
     }
-    setHandleConfirm(false);
   };
 
   useEffect(() => {
@@ -77,7 +79,7 @@ const HeaderLogoInfo = () => {
         >
           <button
             type="button"
-            onClick={selectedCrops.length > 0 ? () => setHandleConfirm(true) : () => logoClick(true)}
+            onClick={handleClick}
             style={{
               backgroundColor: 'white',
               border: 'none',
@@ -117,16 +119,7 @@ const HeaderLogoInfo = () => {
         </div>
       </Grid>
 
-      <Dialog onClose={() => setHandleConfirm(false)} open={handleConfirm}>
-        <DialogContent dividers>
-          <Typography variant="body1">
-            You will need to clear your My Cover Crop List to continue. Would you like to continue?
-          </Typography>
-        </DialogContent>
-        <DialogActions>
-          <BinaryButton action={logoClick} />
-        </DialogActions>
-      </Dialog>
+      <MyCoverCropReset handleConfirm={handleConfirm} setHandleConfirm={setHandleConfirm} goBack={false} returnToHome />
     </Grid>
   );
 };
