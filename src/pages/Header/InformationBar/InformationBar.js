@@ -33,6 +33,7 @@ const InformationBar = () => {
   const { state, dispatch } = useContext(Context);
   const addressRedux = useSelector((stateRedux) => stateRedux.addressData.address);
   const zoneRedux = useSelector((stateRedux) => stateRedux.addressData.zone);
+  const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const [confirmationOpen, setConfirmationOpen] = useState(false);
   const [expansionPanelComponent, setExpansionPanelComponent] = useState({
     component: '',
@@ -76,7 +77,7 @@ const InformationBar = () => {
       case 'weather':
         return `${state.weatherData.averageFrost.firstFrostDate.month} ${state.weatherData.averageFrost.firstFrostDate.day}`;
       case 'goals':
-        return state.selectedGoals
+        return selectedGoalsRedux
           .toString()
           .split(',')
           .join(', ');

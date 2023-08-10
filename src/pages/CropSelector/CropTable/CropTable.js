@@ -4,6 +4,7 @@
   addCropToBasket manages adding crops to cart
 */
 import React, { useContext, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import {
   Box,
   Button,
@@ -33,7 +34,7 @@ const CropTableComponent = ({
   cropData, activeCropData, showGrowthWindow,
 }) => {
   const { state, dispatch } = useContext(Context);
-
+  const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalData, setModalData] = useState({});
   const [legendModal, setLegendModal] = useState(false);
@@ -85,7 +86,7 @@ const CropTableComponent = ({
   };
 
   const sortByAverageGoals = () => {
-    sortCrops('Average Goals', activeCropDataShadow, averageGoalsFlag, state.selectedGoals);
+    sortCrops('Average Goals', activeCropDataShadow, averageGoalsFlag, selectedGoalsRedux);
     setAverageGoalsFlag(!averageGoalsFlag);
     updateActiveCropDataAction(activeCropDataShadow);
   };
@@ -113,7 +114,7 @@ const CropTableComponent = ({
       setGoal3SortFlag(!goal3SortFlag);
     }
 
-    sortCrops('Goal', activeCropDataShadow, flag, state.selectedGoals, updateActiveCropDataAction, goal);
+    sortCrops('Goal', activeCropDataShadow, flag, selectedGoalsRedux, updateActiveCropDataAction, goal);
   };
 
   return cropData.length !== 0 ? (
@@ -133,9 +134,9 @@ const CropTableComponent = ({
                 blank
               </TableCell>
 
-              {state.selectedGoals.length > 0 && (
+              {selectedGoalsRedux.length > 0 && (
                 <TableCell
-                  colSpan={state.selectedGoals.length}
+                  colSpan={selectedGoalsRedux.length}
                   style={{
                     backgroundColor: '#abd08f',
                     textAlign: 'center',
@@ -261,9 +262,9 @@ const CropTableComponent = ({
                   Growth Traits
                 </Typography>
               </TableCell>
-              {state.selectedGoals.length > 0
-                && state.selectedGoals.map((goal, index) => {
-                  const lastIndex = state.selectedGoals.length - 1;
+              {selectedGoalsRedux.length > 0
+                && selectedGoalsRedux.map((goal, index) => {
+                  const lastIndex = selectedGoalsRedux.length - 1;
                   return (
                     <TableCell
                       key={index}
