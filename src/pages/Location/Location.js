@@ -58,7 +58,6 @@ const LocationComponent = ({
   const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
 
   const getLatLng = useCallback(() => {
-    console.log(stateLabelRedux);
     if (stateLabelRedux) {
       return [statesLatLongDict[stateLabelRedux][0], statesLatLongDict[stateLabelRedux][1]];
     }
