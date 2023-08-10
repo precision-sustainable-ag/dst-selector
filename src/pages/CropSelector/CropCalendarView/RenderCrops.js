@@ -17,25 +17,20 @@ import { snackHandler } from '../../../reduxStore/sharedSlice';
 const RenderCrops = ({
   cropData, active, setModalOpen, modalOpen, setModalData,
 }) => {
-  const { state, dispatch } = useContext(Context);
+  const { dispatch } = useContext(Context);
   const dispatchRedux = useDispatch();
   const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
+
   const dispatchValue = ({ selectedCrops, snackOpen, snackMessage }) => {
     dispatchRedux(selectedCropsModifier(selectedCrops));
     dispatchRedux(snackHandler({ snackOpen, snackMessage }));
-    // dispatch({
-    //   type,
-    //   data: value,
-    // });
   };
+
+  const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
 
   const selectedBtns = selectedCropsRedux.map((crop) => crop.id);
 
-  const hasGoalRatingTwoOrLess = (crop = []) => {
-    const { selectedGoals } = state;
-
-    return crop.inactive || selectedGoals.every((rating) => crop[rating] <= 2);
-  };
+  const hasGoalRatingTwoOrLess = (crop = []) => crop.inactive || selectedGoalsRedux.every((rating) => crop[rating] <= 2);
 
   const getAverageGoalRating = (selectedGoals, crop) => {
     let goalRating = 0;
@@ -145,14 +140,14 @@ const RenderCrops = ({
               </Button>
             </div>
           </TableCell>
-          {state.selectedGoals.length > 0 && (
+          {selectedGoalsRedux.length > 0 && (
           <TableCell
             style={{
               paddingBottom: '0px',
               textAlign: 'center',
             }}
           >
-            {getAverageGoalRating(state.selectedGoals, crop)}
+            {getAverageGoalRating(selectedGoalsRedux, crop)}
           </TableCell>
           )}
           <TableCell colSpan="12">

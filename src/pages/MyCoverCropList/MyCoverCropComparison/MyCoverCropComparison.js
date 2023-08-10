@@ -54,19 +54,20 @@ const lightBG = {
 };
 
 const GetAverageGoalRating = ({ crop }) => {
-  const { state } = useContext(Context);
+  const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   let goalRating = 0;
-  state.selectedGoals.forEach((goal) => {
+  selectedGoalsRedux.forEach((goal) => {
     if (crop.data.Goals[goal]) {
       goalRating = +crop.data.Goals[goal].values[0] + goalRating;
     }
   });
-  return getRating(goalRating / state.selectedGoals.length);
+  return getRating(goalRating / selectedGoalsRedux.length);
 };
 
 const MyCoverCropComparison = ({ selectedCrops }) => {
   const { state } = useContext(Context);
   const dispatchRedux = useDispatch();
+  const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const { enqueueSnackbar } = useSnackbar();
   const { comparisonKeys } = state;
   const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
@@ -187,7 +188,7 @@ const MyCoverCropComparison = ({ selectedCrops }) => {
                   ))}
 
                   {/* Average Goal Rating: Show only if goals are selected */}
-                  {state.selectedGoals.length > 0 ? (
+                  {selectedGoalsRedux.length > 0 ? (
                     <div style={lightBorder}>
                       <span>
                         <DataTooltip

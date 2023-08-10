@@ -63,6 +63,7 @@ const CropSelector = (props) => {
   const activeCropDataRedux = useSelector((stateRedux) => stateRedux.cropData.activeCropData);
   const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
   const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
+  const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const [isListView, setIsListView] = useState(true);
   const [comparisonView, setComparisonView] = useState(false);
   const [cropData, setCropData] = useState([]);
@@ -77,10 +78,11 @@ const CropSelector = (props) => {
     //   },
     // });
     const dispatchValue = (updatedCropData) => dispatchRedux(updateActiveCropData(updatedCropData));
-    if (selectedGoals?.length > 0) {
-      const activeCropDataShadow = activeCropDataRedux?.length > 0 ? activeCropDataRedux : cropDataRedux;
 
-      sortCrops('Average Goals', activeCropDataShadow, flag || goalsSortFlag, selectedGoals, dispatchValue);
+    if (selectedGoalsRedux?.length > 0) {
+      const activeCropDataShadow = activeCropDataRedux?.length > 0 ? activeCropDataRedux : state?.cropData;
+
+      sortCrops('Average Goals', activeCropDataShadow, flag || goalsSortFlag, selectedGoalsRedux, dispatchValue);
       setGoalsSortFlag(!goalsSortFlag);
       dispatchValue(activeCropDataShadow);
     }
@@ -109,7 +111,7 @@ const CropSelector = (props) => {
   }, [state.consent]);
 
   useEffect(() => {
-    if (state.selectedGoals?.length === 0) {
+    if (selectedGoalsRedux?.length === 0) {
       dispatch({
         type: 'UPDATE_PROGRESS',
         data: {
@@ -117,7 +119,7 @@ const CropSelector = (props) => {
         },
       });
     }
-  }, [state.selectedGoals, dispatch]);
+  }, [selectedGoalsRedux, dispatch]);
 
   useEffect(() => {
     if (cropDataRedux) {
