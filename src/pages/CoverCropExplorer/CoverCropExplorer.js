@@ -8,9 +8,9 @@ import {
   Dialog, DialogActions, DialogContent, Grid, Typography,
 } from '@mui/material';
 import { useHistory } from 'react-router-dom';
-
 import React, { useContext, useEffect, useState } from 'react';
 import ReactGA from 'react-ga';
+import { useSelector } from 'react-redux';
 import { Context } from '../../store/Store';
 import Header from '../Header/Header';
 import ExplorerCardView from './ExplorerCardView/ExplorerCardView';
@@ -28,6 +28,7 @@ const CoverCropExplorer = () => {
   const { activeCropData } = state;
   const [handleConfirm, setHandleConfirm] = useState(false);
   const defaultMarkers = [[40.78489145, -74.80733626930342]];
+  const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
 
   useEffect(() => {
     const filteredActiveCropData = activeCropData?.filter((a) => !a.inactive);
@@ -44,10 +45,10 @@ const CoverCropExplorer = () => {
   }, [state.consent]);
 
   useEffect(() => {
-    if (state.state === '') {
+    if (stateLabelRedux === '') {
       history.push('/');
     }
-  }, [state.state]);
+  }, [stateLabelRedux]);
 
   useEffect(() => {
     if (state?.myCoverCropListLocation !== 'explorer' && state?.selectedCrops?.length > 0) {

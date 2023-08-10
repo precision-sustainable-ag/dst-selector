@@ -131,6 +131,7 @@ const Reducer = (state, action, value = action && action.data && action.data.val
     }
 
     case 'UPDATE_REGION': {
+      console.log('test');
       return {
         ...state,
         regionId: action.data.regionId,

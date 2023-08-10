@@ -32,6 +32,7 @@ import PlantHardinessZone from '../CropSidebar/PlantHardinessZone/PlantHardiness
 import {
   changeAddressViaMap, updateLocation, updateZone as updateZoneRedux, updateZipCode,
 } from '../../reduxStore/addressSlice';
+import { updateRegion } from '../../reduxStore/mapSlice';
 
 // eslint-disable-next-line import/no-webpack-loader-syntax, import/no-unresolved
 mapboxgl.workerClass = require('worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker').default;
@@ -51,10 +52,15 @@ const LocationComponent = ({
   const zoneRedux = useSelector((stateRedux) => stateRedux.addressData.zone);
   const markersRedux = useSelector((stateRedux) => stateRedux.addressData.markers);
   const zipCodeRedux = useSelector((stateRedux) => stateRedux.addressData.zipCode);
+  const regionsRedux = useSelector((stateRedux) => stateRedux.mapData.regions);
+  const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
+  const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
+  const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
 
   const getLatLng = useCallback(() => {
-    if (state.state) {
-      return [statesLatLongDict[state.state][0], statesLatLongDict[state.state][1]];
+    console.log(stateLabelRedux);
+    if (stateLabelRedux) {
+      return [statesLatLongDict[stateLabelRedux][0], statesLatLongDict[stateLabelRedux][1]];
     }
     return [47, -122];
   }, [state]);
@@ -74,20 +80,17 @@ const LocationComponent = ({
           zoneId: region.id,
         },
       ));
-      dispatch({
-        type: 'UPDATE_REGION',
-        data: {
-          regionId: region.id ?? '',
-          regionLabel: region.label ?? '',
-          regionShorthand: region.shorthand ?? '',
-        },
-      });
+      dispatchRedux(updateRegion({
+        regionId: region.id ?? '',
+        regionLabel: region.label ?? '',
+        regionShorthand: region.shorthand ?? '',
+      }));
     }
   };
 
   useEffect(() => {
-    updateZone(state.regions[0]);
-  }, [state.regions]);
+    updateZone(regionsRedux[0]);
+  }, [regionsRedux]);
 
   const handleConfirmationChoice = (choice) => {
     if (choice !== null) {
@@ -115,13 +118,13 @@ const LocationComponent = ({
 
   const handleMapChange = () => {
     // eslint-disable-next-line eqeqeq
-    const regionInfo = state.regions.filter((region) => region.shorthand == selectedZone);
+    const regionInfo = regionsRedux.filter((region) => region.shorthand == selectedZone);
 
     updateZone(regionInfo[0]);
   };
 
   useEffect(() => {
-    if (state.councilLabel !== 'Midwest Cover Crop Council') {
+    if (councilLabelRedux !== 'Midwest Cover Crop Council') {
       setselectedZone(zoneRedux);
     } else {
       setselectedZone(countyRedux?.replace(' County', ''));
@@ -300,14 +303,14 @@ const LocationComponent = ({
           zone = zone.slice(0, -1);
         }
 
-        if (state.regions?.length > 0) {
-          state.regions.forEach((region) => {
+        if (regionsRedux?.length > 0) {
+          regionsRedux.forEach((region) => {
             if (region.shorthand === zone) {
               regionId = region.id;
             }
           });
         }
-        if (state.councilShorthand !== 'MCCC') {
+        if (councilShorthandRedux !== 'MCCC') {
           dispatchRedux(updateZoneRedux(
             {
               zoneText: `Zone ${zone}`,
@@ -327,7 +330,7 @@ const LocationComponent = ({
             <Typography variant="h4" align="left">
               Where is your field located?
             </Typography>
-            {state.councilLabel === 'Midwest Cover Crop Council'
+            {councilLabelRedux === 'Midwest Cover Crop Council'
               ? (
                 <Typography variant="body1" align="left" justifyContent="center" className="pt-5 pb-2">
                   Please Select A County.

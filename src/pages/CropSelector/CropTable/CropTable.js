@@ -48,8 +48,9 @@ const CropTableComponent = ({
   const [goal2SortFlag, setGoal2SortFlag] = useState(true);
   const [goal3SortFlag, setGoal3SortFlag] = useState(true);
   const activeCropDataShadow = activeCropData;
+  const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
 
-  const legendData = getLegendDataBasedOnCouncil(state.councilShorthand);
+  const legendData = getLegendDataBasedOnCouncil(councilShorthandRedux);
 
   useEffect(() => {
     if (document.querySelector('thead.MuiTableHead-root.tableHeadWrapper')) {
