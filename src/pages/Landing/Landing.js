@@ -19,10 +19,11 @@ import React, {
   useState,
   useRef,
 } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 import ReactGA from 'react-ga';
 import { RegionSelectorMap } from '@psa/dst.ui.region-selector-map';
+import { reset } from '../../reduxStore/store';
 import { BinaryButton, callCoverCropApi } from '../../shared/constants';
 import { Context } from '../../store/Store';
 import '../../styles/landing.scss';
@@ -41,6 +42,7 @@ const Landing = ({ height, title, bg }) => {
   const [selectedRegion, setSelectedRegion] = useState({});
   const mapRef = useRef(null);
   const defaultMarkers = [[40.78489145, -74.80733626930342]];
+  const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
 
   const stateChange = (selState) => {
     setSelectedState(selState);
@@ -236,7 +238,7 @@ const Landing = ({ height, title, bg }) => {
   useEffect(() => {
     if (localStorage.getItem('lastLocation') === 'CoverCropExplorer') {
       document.title = 'Cover Crop Selector';
-      if (state.selectedCrops.length) {
+      if (selectedCropsRedux.length) {
         setHandleConfirm(true);
       }
     }
@@ -252,6 +254,7 @@ const Landing = ({ height, title, bg }) => {
           selectedCrops: [],
         },
       });
+      dispatchRedux(reset());
     } else {
       history.goBack();
       if (window.location.pathname !== '/') {
