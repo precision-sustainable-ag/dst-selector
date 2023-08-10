@@ -21,6 +21,7 @@ import {
   AcUnit, AddCircle, LocalFlorist, WbSunny,
 } from '@mui/icons-material';
 import React, { useContext, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import {
   allMonths,
   CustomStyles,
@@ -42,6 +43,7 @@ const growthIcon = {
 
 const CropCalendarView = ({ activeCropData }) => {
   const { state, dispatch } = useContext(Context);
+  const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const [legendModal, setLegendModal] = useState(false);
   const [nameSortFlag, setNameSortFlag] = useState(true);
   const [goalsSortFlag, setGoalsSortFlag] = useState(true);
@@ -49,7 +51,7 @@ const CropCalendarView = ({ activeCropData }) => {
   const [plantingWindowSortFlag, setPlantingWindowSortFlag] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalData, setModalData] = useState([{}]);
-  const { selectedGoals } = state;
+  // const { selectedGoals } = state;
   const activeCropDataShadow = activeCropData;
 
   const legendData = getLegendDataBasedOnCouncil(state.councilShorthand);
@@ -81,7 +83,7 @@ const CropCalendarView = ({ activeCropData }) => {
   };
 
   const sortReset = () => {
-    sortCrops('Average Goals', activeCropDataShadow, goalsSortFlag, selectedGoals);
+    sortCrops('Average Goals', activeCropDataShadow, goalsSortFlag, selectedGoalsRedux);
     setGoalsSortFlag(!goalsSortFlag);
     dispatchValue(activeCropDataShadow);
   };
@@ -291,7 +293,7 @@ const CropCalendarView = ({ activeCropData }) => {
                     <Typography variant="body2"> COVER CROPS </Typography>
                   </Button>
                 </TableCell>
-                {state.selectedGoals.length > 0 && (
+                {selectedGoalsRedux.length > 0 && (
                   <TableCell style={{ width: '13%', borderRight: '5px solid white' }}>
                     <div className="col-12">
                       <Typography variant="body1">
