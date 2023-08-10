@@ -6,7 +6,7 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { cropSearch } from '../../../reduxStore/filterSlice';
 
-const CoverCropSearch = ({ sfilters, dispatch }) => {
+const CoverCropSearch = ({ sfilters }) => {
   const dispatchRedux = useDispatch();
   // const clearCoverCropSearch = (type = 'CROP_SEARCH', value = '') => {
   //   dispatch({
@@ -16,7 +16,7 @@ const CoverCropSearch = ({ sfilters, dispatch }) => {
   // };
   const clearCoverCropSearch = (value = '') => {
     dispatchRedux(cropSearch(value));
-  }
+  };
 
   return (
     <ListItem>
