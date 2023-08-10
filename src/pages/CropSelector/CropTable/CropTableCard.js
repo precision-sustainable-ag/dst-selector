@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { useSelector } from 'react-redux';
 import { Button, TableCell, Tooltip } from '@mui/material';
 import { useSnackbar } from 'notistack';
 import { CustomStyles, getRating, LightButton } from '../../../shared/constants';
@@ -11,9 +12,10 @@ const CropTableCard = ({
   crop, indexKey, showGrowthWindow, handleModalOpen,
 }) => {
   const { state, dispatch } = useContext(Context);
+  const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const { enqueueSnackbar } = useSnackbar();
 
-  const goalsLength = state.selectedGoals.length;
+  const goalsLength = selectedGoalsRedux.length;
 
   const selectedBtns = state.selectedCrops.map((cropId) => cropId.id);
 
@@ -67,7 +69,7 @@ const CropTableCard = ({
   return (
     <>
       {goalsLength > 0
-        && state.selectedGoals.map((goal, index) => (
+        && selectedGoalsRedux.map((goal, index) => (
           <TableCell style={{ textAlign: 'center' }} key={index} className="goalCells">
             <div>
               <Tooltip
