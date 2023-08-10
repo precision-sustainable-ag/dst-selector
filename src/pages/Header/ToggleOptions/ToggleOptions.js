@@ -64,27 +64,26 @@ const ToggleOptions = ({ isRoot }) => {
 
       {window.location.pathname === '/'
         && state.selectedCrops.length > 0
-        && state.progress >= 5 && (
-          <Badge
-            badgeContent={state.selectedCrops.length}
-            color="error"
-          >
-            <Button
-              size="large"
-              className={
+         && (
+         <Badge
+           badgeContent={state.selectedCrops.length}
+           color="error"
+         >
+           <Button
+             size="large"
+             className={
                 (state.myCoverCropActivationFlag && window.location.pathname === '/')
                   && 'active'
               }
-              onClick={setMyCoverCropActivationFlag}
-            >
-              MY COVER CROP LIST
-            </Button>
-          </Badge>
-      )}
+             onClick={setMyCoverCropActivationFlag}
+           >
+             MY COVER CROP LIST
+           </Button>
+         </Badge>
+         )}
       {/* My Cover Crop List As A Separate Component/Route  */}
       {window.location.pathname !== '/' && (
-        state.progress.length < 5 ? (
-          state.selectedCrops.length > 0 && (
+        state.selectedCrops.length > 0 && (
           <Badge
             badgeContent={state.selectedCrops.length}
             color="error"
@@ -96,19 +95,6 @@ const ToggleOptions = ({ isRoot }) => {
               My Cover Crop List
             </Button>
           </Badge>
-          )
-        ) : state.selectedCrops.length > 0 && (
-        <Badge
-          badgeContent={state.selectedCrops.length}
-          color="error"
-        >
-          <Button
-            className={window.location.pathname === '/my-cover-crop-list' && 'active'}
-            onClick={() => history.push('/my-cover-crop-list')}
-          >
-            My Cover Crop List
-          </Button>
-        </Badge>
         )
       )}
     </>

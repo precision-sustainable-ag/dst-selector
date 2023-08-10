@@ -230,13 +230,10 @@ const Landing = ({ height, title, bg }) => {
   }, [title]);
 
   useEffect(() => {
-    if (localStorage.getItem('lastLocation') === 'CoverCropExplorer') {
-      document.title = 'Cover Crop Selector';
-      if (state.selectedCrops.length) {
-        setHandleConfirm(true);
-      }
+    document.title = 'Cover Crop Selector';
+    if (state.myCoverCropListLocation !== 'selector' && state.selectedCrops.length > 0) {
+      setHandleConfirm(true);
     }
-    localStorage.setItem('lastLocation', 'CropSelector');
   }, []);
 
   return (

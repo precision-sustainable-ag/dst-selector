@@ -53,7 +53,7 @@ const LocationComponent = () => {
   }, [state]);
 
   useEffect(() => {
-    if (state.myCoverCropListLocation !== 'selector' && state.selectedCrops.length > 0) {
+    if (state.selectedCrops.length > 0) {
       setHandleConfirm(true);
     }
   }, [state.selectedCrops, state.myCoverCropListLocation]);
