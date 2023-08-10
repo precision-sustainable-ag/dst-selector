@@ -7,12 +7,13 @@
 import {
   Button, Dialog, DialogActions, DialogContent, Grid, Typography,
 } from '@mui/material';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { LocationOn } from '@mui/icons-material';
 import CloudIcon from '@mui/icons-material/Cloud';
 import CheckIcon from '@mui/icons-material/Check';
 import FilterHdrIcon from '@mui/icons-material/FilterHdr';
 import React, { useContext, useState } from 'react';
+import { reset } from '../../../reduxStore/store';
 import { BinaryButton } from '../../../shared/constants';
 import { Context } from '../../../store/Store';
 import '../../../styles/greenBar.scss';
@@ -31,6 +32,7 @@ const expansionPanelBaseStyle = {
 
 const InformationBar = () => {
   const { state, dispatch } = useContext(Context);
+  const dispatchRedux = useDispatch();
   const addressRedux = useSelector((stateRedux) => stateRedux.addressData.address);
   const zoneRedux = useSelector((stateRedux) => stateRedux.addressData.zone);
   const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
@@ -173,6 +175,7 @@ const InformationBar = () => {
             selectedCrops: [],
           },
         });
+        dispatchRedux(reset());
       } else {
         dispatch({
           type: 'RESET',
@@ -181,6 +184,7 @@ const InformationBar = () => {
             selectedCrops: selectedCropsRedux,
           },
         });
+        dispatchRedux(reset());
       }
     }
     setConfirmationOpen(false);

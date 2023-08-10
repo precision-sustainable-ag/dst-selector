@@ -2,8 +2,9 @@ import {
   Dialog, DialogActions, DialogContent, Typography, Box, Grid,
 } from '@mui/material';
 import React, { useContext, useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import { reset } from '../../../reduxStore/store';
 import { BinaryButton } from '../../../shared/constants';
 import { Context } from '../../../store/Store';
 import '../../../styles/header.scss';
@@ -12,6 +13,7 @@ import ForecastComponent from '../ForecastComponent/ForecastComponent';
 
 const HeaderLogoInfo = () => {
   const { state, dispatch } = useContext(Context);
+  const dispatchRedux = useDispatch();
   const history = useHistory();
   const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
   const [handleConfirm, setHandleConfirm] = useState(false);
@@ -27,6 +29,7 @@ const HeaderLogoInfo = () => {
           selectedCrops: [],
         },
       });
+      dispatchRedux(reset());
       history.replace('/');
     }
     setHandleConfirm(false);

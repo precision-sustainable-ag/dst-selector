@@ -22,6 +22,7 @@ import moment from 'moment';
 import { Map } from '@psa/dst.ui.map';
 // import centroid from '@turf/centroid';
 import mapboxgl from 'mapbox-gl';
+import { reset } from '../../reduxStore/store';
 import statesLatLongDict from '../../shared/stateslatlongdict';
 import {
   abbrRegion, reverseGEO, BinaryButton, callCoverCropApi,
@@ -102,6 +103,7 @@ const LocationComponent = ({
             selectedCrops: [],
           },
         });
+        dispatchRedux(reset());
       } else {
         dispatch({
           type: 'RESET',
@@ -110,6 +112,7 @@ const LocationComponent = ({
             selectedCrops: selectedCropsRedux,
           },
         });
+        dispatchRedux(reset());
       }
       closeExpansionPanel();
     }
