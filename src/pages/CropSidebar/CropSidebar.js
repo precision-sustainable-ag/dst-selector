@@ -72,7 +72,6 @@ const CropSidebar = ({
   const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
   const sfilters = filterStateRedux[section];
   // const dictionary = [];
-  const changedFiltersRedux = useSelector((stateRedux) => stateRedux.filterData.changedFilters);
   const legendData = [
     { className: 'sideBar', label: '0 = Least, 5 = Most' },
   ];
@@ -178,7 +177,7 @@ const CropSidebar = ({
     //     value: filtered,
     //   },
     // });
-  }, [changedFiltersRedux, sfilters.cropSearch, cropDataRedux, dispatch, dispatchRedux, sfilters]);
+  }, [sfilters.cropSearch, cropDataRedux, dispatch, dispatchRedux, sfilters]);
 
   const filtersSelected = Object.keys(sfilters)?.filter((key) => sfilters[key])?.length > 1;
 
