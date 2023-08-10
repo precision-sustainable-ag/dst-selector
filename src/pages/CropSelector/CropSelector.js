@@ -14,6 +14,7 @@ import {
 } from '@mui/material';
 import { ArrowBack, ArrowForward, KeyboardArrowUp } from '@mui/icons-material';
 import React, { useContext, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import ReactGA from 'react-ga';
 import { Context } from '../../store/Store';
 import '../../styles/cropSelector.scss';
@@ -54,9 +55,10 @@ const ScrollTop = ({ children }) => {
 
 const CropSelector = (props) => {
   const { state, dispatch } = useContext(Context);
+  const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const [showGrowthWindow, setShowGrowthWindow] = useState(true);
   const [goalsSortFlag, setGoalsSortFlag] = useState(true);
-  const { selectedGoals, activeCropData } = state;
+  const { activeCropData } = state;
   const [isListView, setIsListView] = useState(true);
   const [comparisonView, setComparisonView] = useState(false);
   const [cropData, setCropData] = useState([]);
@@ -70,10 +72,10 @@ const CropSelector = (props) => {
         value: updatedCropData,
       },
     });
-    if (selectedGoals?.length > 0) {
+    if (selectedGoalsRedux?.length > 0) {
       const activeCropDataShadow = activeCropData?.length > 0 ? activeCropData : state?.cropData;
 
-      sortCrops('Average Goals', activeCropDataShadow, flag || goalsSortFlag, selectedGoals, dispatchValue);
+      sortCrops('Average Goals', activeCropDataShadow, flag || goalsSortFlag, selectedGoalsRedux, dispatchValue);
       setGoalsSortFlag(!goalsSortFlag);
       dispatchValue(activeCropDataShadow);
     }
@@ -102,7 +104,7 @@ const CropSelector = (props) => {
   }, [state.consent]);
 
   useEffect(() => {
-    if (state.selectedGoals?.length === 0) {
+    if (selectedGoalsRedux?.length === 0) {
       dispatch({
         type: 'UPDATE_PROGRESS',
         data: {
@@ -110,14 +112,14 @@ const CropSelector = (props) => {
         },
       });
     }
-  }, [state.selectedGoals, dispatch]);
+  }, [selectedGoalsRedux, dispatch]);
 
   useEffect(() => {
     if (state?.cropData) {
       if (state?.cropData?.length > 0) {
-        if (selectedGoals?.length > 0) {
+        if (selectedGoalsRedux?.length > 0) {
           const activeCropDataShadow = state?.cropData;
-          selectedGoals
+          selectedGoalsRedux
             .slice()
             .reverse()
             .forEach((goal) => {
@@ -140,7 +142,7 @@ const CropSelector = (props) => {
     return () => {
       setCropData([]);
     };
-  }, [state?.cropData, selectedGoals]);
+  }, [state?.cropData, selectedGoalsRedux]);
 
   function useWindowSize() {
     // Initialize state with undefined width/height so server and client renders match

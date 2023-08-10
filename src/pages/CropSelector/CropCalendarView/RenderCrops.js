@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { useSelector } from 'react-redux';
 import { Button, TableCell, TableRow } from '@mui/material';
 import {
   CropImage,
@@ -15,7 +16,7 @@ const RenderCrops = ({
   cropData, active, setModalOpen, modalOpen, setModalData,
 }) => {
   const { state, dispatch } = useContext(Context);
-
+  const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const dispatchValue = (value, type = 'SELECTED_CROPS_MODIFIER') => {
     dispatch({
       type,
@@ -25,11 +26,7 @@ const RenderCrops = ({
 
   const selectedBtns = state.selectedCrops.map((crop) => crop.id);
 
-  const hasGoalRatingTwoOrLess = (crop = []) => {
-    const { selectedGoals } = state;
-
-    return crop.inactive || selectedGoals.every((rating) => crop[rating] <= 2);
-  };
+  const hasGoalRatingTwoOrLess = (crop = []) => crop.inactive || selectedGoalsRedux.every((rating) => crop[rating] <= 2);
 
   const getAverageGoalRating = (selectedGoals, crop) => {
     let goalRating = 0;
@@ -139,14 +136,14 @@ const RenderCrops = ({
               </Button>
             </div>
           </TableCell>
-          {state.selectedGoals.length > 0 && (
+          {selectedGoalsRedux.length > 0 && (
           <TableCell
             style={{
               paddingBottom: '0px',
               textAlign: 'center',
             }}
           >
-            {getAverageGoalRating(state.selectedGoals, crop)}
+            {getAverageGoalRating(selectedGoalsRedux, crop)}
           </TableCell>
           )}
           <TableCell colSpan="12">
