@@ -2,8 +2,9 @@ import {
   Dialog, DialogActions, DialogContent, Typography, Box, Grid,
 } from '@mui/material';
 import React, { useContext, useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { reset } from '../../../reduxStore/store';
 import { BinaryButton } from '../../../shared/constants';
 import { Context } from '../../../store/Store';
 import '../../../styles/header.scss';
@@ -11,11 +12,12 @@ import DateComponent from '../DateComponent/DateComponent';
 import ForecastComponent from '../ForecastComponent/ForecastComponent';
 
 const HeaderLogoInfo = () => {
-  const { state, dispatch } = useContext(Context);
+  const { dispatch } = useContext(Context);
+  const dispatchRedux = useDispatch();
   const history = useHistory();
+  const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
   const [handleConfirm, setHandleConfirm] = useState(false);
   const defaultMarkers = [[40.78489145, -74.80733626930342]];
-  const { selectedCrops } = state;
   const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
 
   const logoClick = (clearMyList = false) => {
@@ -27,6 +29,7 @@ const HeaderLogoInfo = () => {
           selectedCrops: [],
         },
       });
+      dispatchRedux(reset());
       history.replace('/');
     }
     setHandleConfirm(false);
@@ -79,7 +82,7 @@ const HeaderLogoInfo = () => {
         >
           <button
             type="button"
-            onClick={selectedCrops.length > 0 ? () => setHandleConfirm(true) : () => logoClick(true)}
+            onClick={selectedCropsRedux.length > 0 ? () => setHandleConfirm(true) : () => logoClick(true)}
             style={{
               backgroundColor: 'white',
               border: 'none',

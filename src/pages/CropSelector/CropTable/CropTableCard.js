@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Button, TableCell, Tooltip } from '@mui/material';
 import { useSnackbar } from 'notistack';
 import { CustomStyles, getRating, LightButton } from '../../../shared/constants';
@@ -7,27 +7,31 @@ import { Context } from '../../../store/Store';
 import '../../../styles/cropCalendarViewComponent.scss';
 import '../../../styles/cropTable.scss';
 import CropSelectorCalendarView from '../../../components/CropSelectorCalendarView/CropSelectorCalendarView';
+import { selectedCropsModifier } from '../../../reduxStore/cropSlice';
+import { snackHandler } from '../../../reduxStore/sharedSlice';
 
 const CropTableCard = ({
   crop, indexKey, showGrowthWindow, handleModalOpen,
 }) => {
-  const { state, dispatch } = useContext(Context);
-  const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
+  const { dispatch } = useContext(Context);
+  const dispatchRedux = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
+  const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
+  const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
 
-  const goalsLength = selectedGoalsRedux.length;
-
-  const selectedBtns = state.selectedCrops.map((cropId) => cropId.id);
+  const selectedBtns = selectedCropsRedux.map((cropId) => cropId.id);
 
   const cropModifierAction = (selectedCrops, message) => {
-    dispatch({
-      type: 'SELECTED_CROPS_MODIFIER',
-      data: {
-        selectedCrops,
-        snackOpen: false,
-        snackMessage: message,
-      },
-    });
+    dispatchRedux(selectedCropsModifier(selectedCrops));
+    dispatchRedux(snackHandler({ snackOpen: false, snackMessage: message }));
+    // dispatch({
+    //   type: 'SELECTED_CROPS_MODIFIER',
+    //   data: {
+    //     selectedCrops,
+    //     snackOpen: false,
+    //     snackMessage: message,
+    //   },
+    // });
     enqueueSnackbar(message);
   };
 
@@ -41,18 +45,18 @@ const CropTableCard = ({
     cropArray = selectedCrops;
 
     // check if crop id exists inside state, if yes then remove it
-    if (state.selectedCrops.length > 0) {
+    if (selectedCropsRedux.length > 0) {
       let removeIndex = -1;
-      state.selectedCrops.forEach((item, i) => {
+      selectedCropsRedux.forEach((item, i) => {
         if (item.id === cropId) {
           removeIndex = i;
         }
       });
       if (removeIndex === -1) {
-        cropModifierAction([...state.selectedCrops, selectedCrops], `${cropName} Added`);
+        cropModifierAction([...selectedCropsRedux, selectedCrops], `${cropName} Added`);
       } else {
         // element exists, remove
-        const selectedCropsCopy = state.selectedCrops;
+        const selectedCropsCopy = selectedCropsRedux;
         selectedCropsCopy.splice(removeIndex, 1);
         cropModifierAction(selectedCropsCopy, `${cropName} Removed`);
       }
@@ -68,7 +72,7 @@ const CropTableCard = ({
 
   return (
     <>
-      {goalsLength > 0
+      {selectedGoalsRedux.length > 0
         && selectedGoalsRedux.map((goal, index) => (
           <TableCell style={{ textAlign: 'center' }} key={index} className="goalCells">
             <div>
@@ -92,7 +96,7 @@ const CropTableCard = ({
         ))}
 
       {showGrowthWindow && (
-        <TableCell style={{ width: goalsLength === 0 && '50%' }}>
+        <TableCell style={{ width: selectedGoalsRedux.length === 0 && '50%' }}>
           <CropSelectorCalendarView data={crop} from="listView" />
         </TableCell>
       )}

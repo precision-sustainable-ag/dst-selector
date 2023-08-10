@@ -8,9 +8,9 @@
 import { Button, Typography } from '@mui/material';
 import { Add } from '@mui/icons-material';
 import React, { useState, useContext, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import ReactGA from 'react-ga';
-import { useSelector } from 'react-redux';
 import { Context } from '../../store/Store';
 import MyCoverCropComparison from './MyCoverCropComparison/MyCoverCropComparison';
 import MyCoverCropCards from './MyCoverCropCards/MyCoverCropCards';
@@ -20,12 +20,13 @@ const MyCoverCropList = ({ comparisonView, from }) => {
   const comparison = comparisonView || false;
   const history = useHistory();
   const [updatedSelectedCrops, setUpdatedSelectedCrops] = useState([]);
-  const { selectedCrops } = state;
   const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
+  const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
+  // const { selectedCrops } = state;
 
   useEffect(() => {
-    setUpdatedSelectedCrops(selectedCrops);
-  }, [selectedCrops]);
+    setUpdatedSelectedCrops(selectedCropsRedux);
+  }, [selectedCropsRedux]);
 
   useEffect(() => {
     if (stateLabelRedux === '') {
