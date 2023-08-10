@@ -3,30 +3,30 @@ import {
   Card, CardActionArea, CardContent, CardMedia, Typography,
 } from '@mui/material';
 import React, {
-  useContext, useEffect, useState,
+  useEffect, useState,
 } from 'react';
 import { useSelector } from 'react-redux';
 import { trimString } from '../../shared/constants';
-import { Context } from '../../store/Store';
 import RenderRelevantData from './RenderRelevantData/RenderRelevantData';
 
 const CropCard = ({
   crop, handleModalOpen, addCropToBasket, removeCrop, index, type, comparisonKeys, lightBG, GetAverageGoalRating,
 }) => {
-  const { state } = useContext(Context);
   const zoneRedux = useSelector((stateRedux) => stateRedux.addressData.zone);
   const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
+  const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
+  const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
   const sfilters = filterStateRedux[section];
   const [allfilters, setAllFilters] = useState([]);
   const allData = [];
 
   const [selectedBtns, setSelectedBtns] = useState(
-    state.selectedCrops.map((crp) => crp.id),
+    selectedCropsRedux.map((crp) => crp.id),
   );
 
   async function updateBtns() {
-    await setSelectedBtns(state.selectedCrops.map((crp) => crp.id));
+    await setSelectedBtns(selectedCropsRedux.map((crp) => crp.id));
   }
 
   async function setDataDict() {
@@ -42,7 +42,7 @@ const CropCard = ({
 
   useEffect(() => {
     updateBtns();
-  }, [sfilters.zone, state.selectedCrops]);
+  }, [sfilters.zone, selectedCropsRedux]);
 
   useEffect(() => {
     setDataDict();
@@ -68,7 +68,7 @@ const CropCard = ({
         />
       ))}
       {/* Show Goal Rating Only IF Goals > 0 */}
-      {state.selectedGoals.length > 0 && (
+      {selectedGoalsRedux.length > 0 && (
       <div style={lightBG}>
         <GetAverageGoalRating crop={crop} />
       </div>

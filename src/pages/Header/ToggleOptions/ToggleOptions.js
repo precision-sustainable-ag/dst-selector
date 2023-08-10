@@ -2,6 +2,7 @@ import {
   Badge, Button, Tooltip,
 } from '@mui/material';
 import React, { useContext } from 'react';
+import { useSelector } from 'react-redux';
 import { NavLink, useHistory } from 'react-router-dom';
 import { Context } from '../../../store/Store';
 import '../../../styles/header.scss';
@@ -9,7 +10,7 @@ import '../../../styles/header.scss';
 const ToggleOptions = ({ isRoot }) => {
   const { state, dispatch } = useContext(Context);
   const history = useHistory();
-
+  const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
   const setMyCoverCropActivationFlag = () => {
     history.push('/my-cover-crop-list');
     if (window.location.pathname === '/explorer') {
@@ -63,10 +64,10 @@ const ToggleOptions = ({ isRoot }) => {
       </Tooltip>
 
       {window.location.pathname === '/'
-        && state.selectedCrops.length > 0
+        && selectedCropsRedux.length > 0
         && state.progress >= 5 && (
           <Badge
-            badgeContent={state.selectedCrops.length}
+            badgeContent={selectedCropsRedux.length}
             color="error"
           >
             <Button
@@ -84,9 +85,9 @@ const ToggleOptions = ({ isRoot }) => {
       {/* My Cover Crop List As A Separate Component/Route  */}
       {window.location.pathname !== '/' && (
         state.progress.length < 5 ? (
-          state.selectedCrops.length > 0 && (
+          selectedCropsRedux.length > 0 && (
           <Badge
-            badgeContent={state.selectedCrops.length}
+            badgeContent={selectedCropsRedux.length}
             color="error"
           >
             <Button
@@ -97,9 +98,9 @@ const ToggleOptions = ({ isRoot }) => {
             </Button>
           </Badge>
           )
-        ) : state.selectedCrops.length > 0 && (
+        ) : selectedCropsRedux.length > 0 && (
         <Badge
-          badgeContent={state.selectedCrops.length}
+          badgeContent={selectedCropsRedux.length}
           color="error"
         >
           <Button

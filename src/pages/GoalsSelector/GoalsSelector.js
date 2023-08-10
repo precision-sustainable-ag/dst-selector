@@ -6,6 +6,7 @@
 // TODO: Goal tags are not responsive!
 import { Typography, Grid } from '@mui/material';
 import React, { useContext, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset';
 import { Context } from '../../store/Store';
 import '../../styles/goalsSelector.scss';
@@ -20,15 +21,16 @@ import { callCoverCropApi } from '../../shared/constants';
 
 const GoalsSelector = () => {
   const { state } = useContext(Context);
+  const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
   const [allGoals, setAllGoals] = useState([]);
   const [handleConfirm, setHandleConfirm] = useState(false);
 
   useEffect(() => {
-    if (state.myCoverCropListLocation !== 'selector' && state.selectedCrops?.length > 0) {
+    if (state.myCoverCropListLocation !== 'selector' && selectedCropsRedux?.length > 0) {
       // document.title = 'Cover Crop Selector';
       setHandleConfirm(true);
     }
-  }, [state.selectedCrops, state.myCoverCropListLocation]);
+  }, [selectedCropsRedux, state.myCoverCropListLocation]);
   const query = `${encodeURIComponent('regions')}=${encodeURIComponent(state.regionId)}`;
 
   useEffect(() => {

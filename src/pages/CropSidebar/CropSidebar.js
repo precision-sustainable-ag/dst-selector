@@ -34,6 +34,7 @@ import PlantHardinessZone from './PlantHardinessZone/PlantHardinessZone';
 import Legend from '../../components/Legend/Legend';
 import { updateZone as updateZoneRedux } from '../../reduxStore/addressSlice';
 import { clearFilters } from '../../reduxStore/filterSlice';
+import { pullCropData, updateActiveCropData, updateDateRange } from '../../reduxStore/cropSlice';
 
 const CropSidebar = ({
   comparisonView,
@@ -46,6 +47,9 @@ const CropSidebar = ({
 }) => {
   const { state, dispatch } = useContext(Context);
   const dispatchRedux = useDispatch();
+  const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
+  const cashCropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cashCropData);
+  const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const [loading, setLoading] = useState(false);
   const [sidebarFilters, setSidebarFilters] = useState([]);
   const [showFilters, setShowFilters] = useState('');
@@ -107,11 +111,11 @@ const CropSidebar = ({
       }
     });
 
-    let cropData = state?.cropData?.filter((crop) => crop['Zone Decision'] === 'Include');
+    let cropData = cropDataRedux?.filter((crop) => crop['Zone Decision'] === 'Include');
 
     const search = sfilters.cropSearch?.toLowerCase().match(/\w+/g);
 
-    cropData = state?.cropData?.filter((crop) => {
+    cropData = cropDataRedux?.filter((crop) => {
       let m;
 
       const match = (parm) => {
@@ -167,13 +171,14 @@ const CropSidebar = ({
 
       return true;
     });
-    dispatch({
-      type: 'UPDATE_ACTIVE_CROP_DATA',
-      data: {
-        value: filtered,
-      },
-    });
-  }, [changedFiltersRedux, sfilters.cropSearch, state?.cropData, dispatch, sfilters]);
+    dispatchRedux(updateActiveCropData(filtered));
+    // dispatch({
+    //   type: 'UPDATE_ACTIVE_CROP_DATA',
+    //   data: {
+    //     value: filtered,
+    //   },
+    // });
+  }, [changedFiltersRedux, sfilters.cropSearch, cropDataRedux, dispatch, dispatchRedux, sfilters]);
 
   const filtersSelected = Object.keys(sfilters)?.filter((key) => sfilters[key])?.length > 1;
 
@@ -258,10 +263,7 @@ const CropSidebar = ({
 
       callCoverCropApi(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${state.stateId}/crops?${query}`).then((data) => {
         cropDataFormatter(data.data);
-        dispatch({
-          type: 'PULL_CROP_DATA',
-          data: data.data,
-        });
+        dispatchRedux(pullCropData(data.data));
         dispatch({
           type: 'SET_AJAX_IN_PROGRESS',
           data: false,
@@ -275,13 +277,17 @@ const CropSidebar = ({
   useEffect(() => {
     if (from === 'table') {
       if (dateRange.startDate !== null && dateRange.endDate !== null) {
-        dispatch({
-          type: 'UPDATE_DATE_RANGE',
-          data: {
-            startDate: dateRange.startDate.toISOString().substring(0, 10),
-            endDate: dateRange.endDate.toISOString().substring(0, 10),
-          },
-        });
+        dispatchRedux(updateDateRange({
+          startDate: dateRange.startDate.toISOString().substring(0, 10),
+          endDate: dateRange.endDate.toISOString().substring(0, 10),
+        }));
+        // dispatch({
+        //   type: 'UPDATE_DATE_RANGE',
+        //   data: {
+        //     startDate: dateRange.startDate.toISOString().substring(0, 10),
+        //     endDate: dateRange.endDate.toISOString().substring(0, 10),
+        //   },
+        // });
       }
 
       setGrowthWindow(true);
@@ -306,13 +312,13 @@ const CropSidebar = ({
 
   // TODO: Can we use Reducer instead of localStorage?
   useEffect(() => {
-    if (state.cashCropData.dateRange.startDate) {
+    if (cashCropDataRedux.dateRange.startDate) {
       window.localStorage.setItem(
         'cashCropDateRange',
-        JSON.stringify(state.cashCropData.dateRange),
+        JSON.stringify(cashCropDataRedux.dateRange),
       );
     }
-  }, [state.cashCropData.dateRange]);
+  }, [cashCropDataRedux.dateRange]);
 
   const filters = () => sidebarFilters.map((filter, index) => {
     const sectionFilter = `${section}${filter.name}`;
@@ -409,7 +415,7 @@ const CropSidebar = ({
         <div className="col-12">
           <ComparisonBar
             filterData={sidebarFilters}
-            goals={state.selectedGoals?.length > 0 ? state.selectedGoals : []}
+            goals={selectedGoalsRedux?.length > 0 ? selectedGoalsRedux : []}
             comparisonKeys={state.comparisonKeys}
             dispatch={dispatch}
             comparisonView={comparisonView}
@@ -538,7 +544,7 @@ const CropSidebar = ({
         <div className="col-12">
           <ComparisonBar
             filterData={sidebarFilters}
-            goals={state.selectedGoals?.length > 0 ? state.selectedGoals : []}
+            goals={selectedGoalsRedux?.length > 0 ? selectedGoalsRedux : []}
             comparisonKeys={state.comparisonKeys}
             dispatch={dispatch}
             comparisonView={comparisonView}
