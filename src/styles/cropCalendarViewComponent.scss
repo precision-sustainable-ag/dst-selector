@@ -111,6 +111,9 @@
       &.sideBar {
         color: $defaultLegendColor;
       }
+      &.multiple {
+        color: $multipleColor;
+      }
     }
     // font-weight: 800;
   }
