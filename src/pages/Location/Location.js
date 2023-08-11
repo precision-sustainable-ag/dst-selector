@@ -5,9 +5,6 @@
 
 import '../../styles/location.scss';
 import {
-  Dialog,
-  DialogActions,
-  DialogContent,
   Typography,
 } from '@mui/material';
 import React, {
@@ -22,10 +19,9 @@ import moment from 'moment';
 import { Map } from '@psa/dst.ui.map';
 // import centroid from '@turf/centroid';
 import mapboxgl from 'mapbox-gl';
-import { reset } from '../../reduxStore/store';
 import statesLatLongDict from '../../shared/stateslatlongdict';
 import {
-  abbrRegion, reverseGEO, BinaryButton, callCoverCropApi,
+  abbrRegion, reverseGEO, callCoverCropApi,
 } from '../../shared/constants';
 import { Context } from '../../store/Store';
 import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset';
@@ -43,17 +39,13 @@ import {
 // eslint-disable-next-line import/no-webpack-loader-syntax, import/no-unresolved
 mapboxgl.workerClass = require('worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker').default;
 
-const LocationComponent = ({
-  closeExpansionPanel,
-}) => {
-  const { state, dispatch } = useContext(Context);
+const LocationComponent = () => {
+  const { state } = useContext(Context);
   const dispatchRedux = useDispatch();
   const [selectedZone, setselectedZone] = useState();
   const [selectedToEditSite, setSelectedToEditSite] = useState({});
-  const [showRestartPrompt, setShowRestartPrompt] = useState(false);
   // const [selectedRegion, setSelectedRegion] = useState({});
   const [handleConfirm, setHandleConfirm] = useState(false);
-  const defaultMarkers = [[40.78489145, -74.80733626930342]];
   const countyRedux = useSelector((stateRedux) => stateRedux.addressData.county);
   const zoneRedux = useSelector((stateRedux) => stateRedux.addressData.zone);
   const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
@@ -72,7 +64,7 @@ const LocationComponent = ({
   }, [state]);
 
   useEffect(() => {
-    if (state.myCoverCropListLocation !== 'selector' && selectedCropsRedux.length > 0) {
+    if (selectedCropsRedux.length > 0) {
       setHandleConfirm(true);
     }
   }, [selectedCropsRedux, state.myCoverCropListLocation]);
@@ -97,32 +89,6 @@ const LocationComponent = ({
   useEffect(() => {
     updateZone(regionsRedux[0]);
   }, [regionsRedux]);
-
-  const handleConfirmationChoice = (choice) => {
-    if (choice !== null) {
-      if (choice) {
-        dispatch({
-          type: 'RESET',
-          data: {
-            markers: defaultMarkers,
-            selectedCrops: [],
-          },
-        });
-        dispatchRedux(reset());
-      } else {
-        dispatch({
-          type: 'RESET',
-          data: {
-            markers: defaultMarkers,
-            selectedCrops: selectedCropsRedux,
-          },
-        });
-        dispatchRedux(reset());
-      }
-      closeExpansionPanel();
-    }
-    setShowRestartPrompt(false);
-  };
 
   const handleMapChange = () => {
     // eslint-disable-next-line eqeqeq
@@ -370,16 +336,6 @@ const LocationComponent = ({
           </div>
         </div>
       </div>
-      <Dialog disableEscapeKeyDown open={showRestartPrompt}>
-        <DialogContent dividers>
-          <Typography variant="body1">
-            This will trigger a restart. Would you also like to clear My Cover Crop List?
-          </Typography>
-        </DialogContent>
-        <DialogActions>
-          <BinaryButton action={handleConfirmationChoice} />
-        </DialogActions>
-      </Dialog>
       <MyCoverCropReset handleConfirm={handleConfirm} setHandleConfirm={setHandleConfirm} from="selector" />
     </div>
   );
