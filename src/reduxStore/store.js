@@ -9,8 +9,12 @@ import filterReducer from './filterSlice';
 import addressReducer from './addressSlice';
 import sharedReducer from './sharedSlice';
 
+export const reset = () => ({
+  type: 'RESET',
+});
+
 const configureStore = () => {
-  const rootReducer = combineReducers({
+  const appReducer = combineReducers({
     cropData: cropDataReducer,
     mapData: MapReducer,
     weatherData: weatherReducer,
@@ -20,6 +24,14 @@ const configureStore = () => {
     filterData: filterReducer,
     addressData: addressReducer,
   });
+
+  const rootReducer = (state, action) => {
+    if (action.type === 'RESET') {
+      return appReducer(undefined, action);
+    }
+
+    return appReducer(state, action);
+  };
 
   const store = createStore(rootReducer, devToolsEnhancer());
   return store;

@@ -8,8 +8,8 @@ import {
   Grid, Typography,
 } from '@mui/material';
 import { useHistory } from 'react-router-dom';
-
 import React, { useContext, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import ReactGA from 'react-ga';
 import { Context } from '../../store/Store';
 import Header from '../Header/Header';
@@ -21,17 +21,22 @@ import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset
 const CoverCropExplorer = () => {
   const { state } = useContext(Context);
   const history = useHistory();
+  const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
   const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
-  const sfilters = state[section];
+  const sfilters = filterStateRedux[section];
+  const activeCropDataRedux = useSelector((stateRedux) => stateRedux.cropData.activeCropData);
+  const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
+  const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
   const [updatedActiveCropData, setUpdatedActiveCropData] = useState([]);
-  const { activeCropData } = state;
+  // const { activeCropData } = state;
   const [handleConfirm, setHandleConfirm] = useState(false);
+  const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
 
   useEffect(() => {
-    const filteredActiveCropData = activeCropData?.filter((a) => !a.inactive);
+    const filteredActiveCropData = activeCropDataRedux?.filter((a) => !a.inactive);
     setUpdatedActiveCropData(filteredActiveCropData);
     // getData();
-  }, [activeCropData]);
+  }, [activeCropDataRedux]);
 
   useEffect(() => {
     if (state.consent === true) {
@@ -42,17 +47,17 @@ const CoverCropExplorer = () => {
   }, [state.consent]);
 
   useEffect(() => {
-    if (state.state === '') {
+    if (stateLabelRedux === '') {
       history.push('/');
     }
-  }, [state.state]);
+  }, [stateLabelRedux]);
 
   useEffect(() => {
-    if (state?.myCoverCropListLocation !== 'explorer' && state?.selectedCrops?.length > 0) {
+    if (state?.myCoverCropListLocation !== 'explorer' && selectedCropsRedux?.length > 0) {
       // document.title = 'Cover Crop Explorer';
       setHandleConfirm(true);
     }
-  }, [state.selectedCrops, state.myCoverCropListLocation]);
+  }, [selectedCropsRedux, state.myCoverCropListLocation]);
 
   return (
     <div className="contentWrapper">
@@ -63,7 +68,7 @@ const CoverCropExplorer = () => {
           <div className="col-md-12 col-lg-3 col-xl-2 col-12">
             <CropSidebar
               from="explorer"
-              activeCropData={activeCropData?.length > 0 ? activeCropData : state?.cropData}
+              activeCropData={activeCropDataRedux?.length > 0 ? activeCropDataRedux : cropDataRedux}
               isListView
             />
           </div>
@@ -78,7 +83,7 @@ const CoverCropExplorer = () => {
               </Grid>
             ) : (
               <ExplorerCardView
-                cropData={state?.cropData}
+                cropData={cropDataRedux}
                 activeCropData={updatedActiveCropData}
               />
             )}

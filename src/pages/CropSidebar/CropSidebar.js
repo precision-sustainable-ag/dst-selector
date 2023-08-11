@@ -33,6 +33,9 @@ import PreviousCashCrop from './PreviousCashCrop/PreviousCashCrop';
 import PlantHardinessZone from './PlantHardinessZone/PlantHardinessZone';
 import Legend from '../../components/Legend/Legend';
 import { updateZone as updateZoneRedux } from '../../reduxStore/addressSlice';
+import { updateRegion } from '../../reduxStore/mapSlice';
+import { clearFilters } from '../../reduxStore/filterSlice';
+import { pullCropData, updateActiveCropData, updateDateRange } from '../../reduxStore/cropSlice';
 
 const CropSidebar = ({
   comparisonView,
@@ -45,6 +48,8 @@ const CropSidebar = ({
 }) => {
   const { state, dispatch } = useContext(Context);
   const dispatchRedux = useDispatch();
+  const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
+  const cashCropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cashCropData);
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const [loading, setLoading] = useState(false);
   const [sidebarFilters, setSidebarFilters] = useState([]);
@@ -52,6 +57,8 @@ const CropSidebar = ({
   const [sidebarCategoriesData, setSidebarCategoriesData] = useState([]);
   const [sidebarFiltersData, setSidebarFiltersData] = useState([]);
   const [tableHeight, setTableHeight] = useState(0);
+  const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
+  const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
   const [dateRange, setDateRange] = useState({
     startDate: null,
     endDate: null,
@@ -64,16 +71,15 @@ const CropSidebar = ({
     });
     return sidebarStarter;
   });
-
+  const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
   const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
-  const sfilters = state[section];
+  const sfilters = filterStateRedux[section];
   // const dictionary = [];
-
   const legendData = [
     { className: 'sideBar', label: '0 = Least, 5 = Most' },
   ];
 
-  const query = `${encodeURIComponent('regions')}=${encodeURIComponent(state.regionId)}`;
+  const query = `${encodeURIComponent('regions')}=${encodeURIComponent(regionIdRedux)}`;
 
   // // TODO: When is showFilters false?
   // NOTE: verify below when show filter is false.
@@ -107,11 +113,11 @@ const CropSidebar = ({
       }
     });
 
-    let cropData = state?.cropData?.filter((crop) => crop['Zone Decision'] === 'Include');
+    let cropData = cropDataRedux?.filter((crop) => crop['Zone Decision'] === 'Include');
 
     const search = sfilters.cropSearch?.toLowerCase().match(/\w+/g);
 
-    cropData = state?.cropData?.filter((crop) => {
+    cropData = cropDataRedux?.filter((crop) => {
       let m;
 
       const match = (parm) => {
@@ -167,20 +173,22 @@ const CropSidebar = ({
 
       return true;
     });
-    dispatch({
-      type: 'UPDATE_ACTIVE_CROP_DATA',
-      data: {
-        value: filtered,
-      },
-    });
-  }, [state.changedFilters, sfilters.cropSearch, state?.cropData, dispatch, sfilters]);
+    dispatchRedux(updateActiveCropData(filtered));
+    // dispatch({
+    //   type: 'UPDATE_ACTIVE_CROP_DATA',
+    //   data: {
+    //     value: filtered,
+    //   },
+    // });
+  }, [sfilters.cropSearch, cropDataRedux, dispatch, dispatchRedux, sfilters]);
 
   const filtersSelected = Object.keys(sfilters)?.filter((key) => sfilters[key])?.length > 1;
 
   const resetAllFilters = () => {
-    dispatch({
-      type: 'CLEAR_FILTERS',
-    });
+    dispatchRedux(clearFilters());
+    // dispatch({
+    //   type: 'CLEAR_FILTERS',
+    // });
   };
 
   const generateSidebarObject = async () => {
@@ -232,21 +240,21 @@ const CropSidebar = ({
   }, [sidebarCategoriesData]);
 
   useEffect(() => {
-    if (state.stateId && state.regionId) {
+    if (stateIdRedux && regionIdRedux) {
       dispatch({
         type: 'SET_AJAX_IN_PROGRESS',
         data: true,
       });
 
       setLoading(true);
-      callCoverCropApi(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${state.stateId}/dictionary?${query}`).then((data) => {
+      callCoverCropApi(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${stateIdRedux}/dictionary?${query}`).then((data) => {
         dispatch({
           type: 'PULL_DICTIONARY_DATA',
           data: data.data,
         });
       });
 
-      callCoverCropApi(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${state.stateId}/filters?${query}`).then((data) => {
+      callCoverCropApi(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${stateIdRedux}/filters?${query}`).then((data) => {
         const allFilters = [];
         data.data.forEach((category) => {
           allFilters.push(category.attributes);
@@ -255,12 +263,9 @@ const CropSidebar = ({
         setSidebarCategoriesData(data.data);
       });
 
-      callCoverCropApi(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${state.stateId}/crops?${query}`).then((data) => {
+      callCoverCropApi(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${stateIdRedux}/crops?${query}`).then((data) => {
         cropDataFormatter(data.data);
-        dispatch({
-          type: 'PULL_CROP_DATA',
-          data: data.data,
-        });
+        dispatchRedux(pullCropData(data.data));
         dispatch({
           type: 'SET_AJAX_IN_PROGRESS',
           data: false,
@@ -268,19 +273,23 @@ const CropSidebar = ({
       });
     }
   }, [
-    state.regionId,
+    regionIdRedux,
   ]);
 
   useEffect(() => {
     if (from === 'table') {
       if (dateRange.startDate !== null && dateRange.endDate !== null) {
-        dispatch({
-          type: 'UPDATE_DATE_RANGE',
-          data: {
-            startDate: dateRange.startDate.toISOString().substring(0, 10),
-            endDate: dateRange.endDate.toISOString().substring(0, 10),
-          },
-        });
+        dispatchRedux(updateDateRange({
+          startDate: dateRange.startDate.toISOString().substring(0, 10),
+          endDate: dateRange.endDate.toISOString().substring(0, 10),
+        }));
+        // dispatch({
+        //   type: 'UPDATE_DATE_RANGE',
+        //   data: {
+        //     startDate: dateRange.startDate.toISOString().substring(0, 10),
+        //     endDate: dateRange.endDate.toISOString().substring(0, 10),
+        //   },
+        // });
       }
 
       setGrowthWindow(true);
@@ -305,13 +314,13 @@ const CropSidebar = ({
 
   // TODO: Can we use Reducer instead of localStorage?
   useEffect(() => {
-    if (state.cashCropData.dateRange.startDate) {
+    if (cashCropDataRedux.dateRange.startDate) {
       window.localStorage.setItem(
         'cashCropDateRange',
-        JSON.stringify(state.cashCropData.dateRange),
+        JSON.stringify(cashCropDataRedux.dateRange),
       );
     }
-  }, [state.cashCropData.dateRange]);
+  }, [cashCropDataRedux.dateRange]);
 
   const filters = () => sidebarFilters.map((filter, index) => {
     const sectionFilter = `${section}${filter.name}`;
@@ -390,14 +399,11 @@ const CropSidebar = ({
       //     zoneId: region.id,
       //   },
       // });
-      dispatch({
-        type: 'UPDATE_REGION',
-        data: {
-          regionId: region.id ?? '',
-          regionLabel: region.label ?? '',
-          regionShorthand: region.shorthand ?? '',
-        },
-      });
+      dispatchRedux(updateRegion({
+        regionId: region.id ?? '',
+        regionLabel: region.label ?? '',
+        regionShorthand: region.shorthand ?? '',
+      }));
     }
   };
 

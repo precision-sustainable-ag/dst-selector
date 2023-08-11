@@ -6,6 +6,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Refresh } from '@mui/icons-material';
 import { Stack } from '@mui/material';
+import { useSelector } from 'react-redux';
 import { Context } from '../store/Store';
 import { LightButton } from './constants';
 
@@ -13,6 +14,7 @@ const ProgressButtonsInner = ({
   isDisabledBack, isDisabledNext, isDisabledRefresh, closeExpansionPanel, setConfirmationOpen,
 }) => {
   const { state, dispatch } = useContext(Context);
+  const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
 
   const [crement, setCrement] = useState('');
 
@@ -38,7 +40,7 @@ const ProgressButtonsInner = ({
   };
 
   useEffect(() => {
-    if (state.councilLabel === 'Midwest Cover Crop Council' && state.progress === 2) {
+    if (councilLabelRedux === 'Midwest Cover Crop Council' && state.progress === 2) {
       changeProgress(crement);
     }
   }, [state.progress]);

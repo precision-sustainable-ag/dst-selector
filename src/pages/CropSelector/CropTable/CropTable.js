@@ -3,8 +3,8 @@
   The CropTable is the
   addCropToBasket manages adding crops to cart
 */
-import React, { useContext, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   Box,
   Button,
@@ -23,17 +23,18 @@ import { AddCircle, Sort } from '@mui/icons-material';
 import {
   CustomStyles, sortCrops, sudoButtonStyle, getLegendDataBasedOnCouncil,
 } from '../../../shared/constants';
-import { Context } from '../../../store/Store';
 import '../../../styles/cropCalendarViewComponent.scss';
 import '../../../styles/cropTable.scss';
 import CropDataRender from './CropDataRender';
 import CropDetailsModal from '../../../components/CropDetailsModal/CropDetailsModal';
 import Legend from '../../../components/Legend/Legend';
+import { updateActiveCropData } from '../../../reduxStore/cropSlice';
 
 const CropTableComponent = ({
   cropData, activeCropData, showGrowthWindow,
 }) => {
-  const { state, dispatch } = useContext(Context);
+  const dispatchRedux = useDispatch();
+  const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalData, setModalData] = useState({});
@@ -48,8 +49,9 @@ const CropTableComponent = ({
   const [goal2SortFlag, setGoal2SortFlag] = useState(true);
   const [goal3SortFlag, setGoal3SortFlag] = useState(true);
   const activeCropDataShadow = activeCropData;
+  const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
 
-  const legendData = getLegendDataBasedOnCouncil(state.councilShorthand);
+  const legendData = getLegendDataBasedOnCouncil(councilShorthandRedux);
 
   useEffect(() => {
     if (document.querySelector('thead.MuiTableHead-root.tableHeadWrapper')) {
@@ -72,12 +74,13 @@ const CropTableComponent = ({
   };
 
   const updateActiveCropDataAction = (activeShadowValue) => {
-    dispatch({
-      type: 'UPDATE_ACTIVE_CROP_DATA',
-      data: {
-        value: activeShadowValue,
-      },
-    });
+    // dispatch({
+    //   type: 'UPDATE_ACTIVE_CROP_DATA',
+    //   data: {
+    //     value: activeShadowValue,
+    //   },
+    // });
+    dispatchRedux(updateActiveCropData(activeShadowValue));
   };
 
   const sortByName = () => {
@@ -96,7 +99,7 @@ const CropTableComponent = ({
   };
 
   const sortBySelectedCrops = () => {
-    const selectedCropsShadow = state.selectedCrops;
+    const selectedCropsShadow = selectedCropsRedux;
     sortCrops('Selected Crops', activeCropDataShadow, selectedCropsSortFlag, selectedCropsShadow, updateActiveCropDataAction);
     setSelectedCropsSortFlag(!selectedCropsSortFlag);
   };

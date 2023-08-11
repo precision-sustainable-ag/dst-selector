@@ -18,7 +18,7 @@ import {
 import { KeyboardArrowLeft, KeyboardArrowRight } from '@mui/icons-material';
 import { useSnackbar } from 'notistack';
 import React, { useContext, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   DataTooltip,
   getRating,
@@ -28,6 +28,8 @@ import '../../../styles/cropComparisonView.scss';
 import '../../../styles/MyCoverCropComparisonComponent.scss';
 import CropDetailsModal from '../../../components/CropDetailsModal/CropDetailsModal';
 import CropCard from '../../../components/CropCard/CropCard';
+import { selectedCropsModifier } from '../../../reduxStore/cropSlice';
+import { snackHandler } from '../../../reduxStore/sharedSlice';
 
 const lightBorder = {
   border: '1px solid #35999b',
@@ -63,18 +65,20 @@ const GetAverageGoalRating = ({ crop }) => {
 };
 
 const MyCoverCropComparison = ({ selectedCrops }) => {
-  const { state, dispatch } = useContext(Context);
+  const { state } = useContext(Context);
+  const dispatchRedux = useDispatch();
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const { enqueueSnackbar } = useSnackbar();
   const { comparisonKeys } = state;
   const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
   const { zone } = state[section];
+  const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
   // const [formattedDictData, setFormattedDictData] = useState([]);
   const [sidebarDefs, setSidebarDefs] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalData, setModalData] = useState({});
   const allData = [];
-  selectedCrops = selectedCrops || state.selectedCrops;
+  selectedCrops = selectedCrops || selectedCropsRedux;
 
   const handleModalOpen = (crop) => {
     // put data inside modal
@@ -95,7 +99,7 @@ const MyCoverCropComparison = ({ selectedCrops }) => {
 
   const removeCrop = (cropName, id) => {
     let removeIndex = -1;
-    state.selectedCrops.forEach((item, i) => {
+    selectedCropsRedux.forEach((item, i) => {
       if (item.id === id) {
         removeIndex = i;
       }
@@ -105,17 +109,19 @@ const MyCoverCropComparison = ({ selectedCrops }) => {
       // element not in array
       // not possible ?
     } else {
-      const selectedCropsCopy = state.selectedCrops;
+      const selectedCropsCopy = selectedCropsRedux;
 
       selectedCropsCopy.splice(removeIndex, 1);
-      dispatch({
-        type: 'SELECTED_CROPS_MODIFIER',
-        data: {
-          selectedCrops: selectedCropsCopy,
-          snackOpen: false,
-          snackMessage: 'Removed',
-        },
-      });
+      dispatchRedux(selectedCropsModifier(selectedCropsCopy));
+      dispatchRedux(snackHandler({ snackOpen: false, snackMessage: 'Removed' }));
+      // dispatch({
+      //   type: 'SELECTED_CROPS_MODIFIER',
+      //   data: {
+      //     selectedCrops: selectedCropsCopy,
+      //     snackOpen: false,
+      //     snackMessage: 'Removed',
+      //   },
+      // });
       enqueueSnackbar(`${cropName} Removed`);
     }
   };
