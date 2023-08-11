@@ -34,6 +34,7 @@ import PlantHardinessZone from './PlantHardinessZone/PlantHardinessZone';
 import Legend from '../../components/Legend/Legend';
 import { updateZone as updateZoneRedux } from '../../reduxStore/addressSlice';
 import { updateRegion } from '../../reduxStore/mapSlice';
+import { clearFilters } from '../../reduxStore/filterSlice';
 import { pullCropData, updateActiveCropData, updateDateRange } from '../../reduxStore/cropSlice';
 
 const CropSidebar = ({
@@ -70,11 +71,10 @@ const CropSidebar = ({
     });
     return sidebarStarter;
   });
-
+  const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
   const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
-  const sfilters = state[section];
+  const sfilters = filterStateRedux[section];
   // const dictionary = [];
-
   const legendData = [
     { className: 'sideBar', label: '0 = Least, 5 = Most' },
   ];
@@ -180,14 +180,15 @@ const CropSidebar = ({
     //     value: filtered,
     //   },
     // });
-  }, [state.changedFilters, sfilters.cropSearch, cropDataRedux, dispatch, dispatchRedux, sfilters]);
+  }, [sfilters.cropSearch, cropDataRedux, dispatch, dispatchRedux, sfilters]);
 
   const filtersSelected = Object.keys(sfilters)?.filter((key) => sfilters[key])?.length > 1;
 
   const resetAllFilters = () => {
-    dispatch({
-      type: 'CLEAR_FILTERS',
-    });
+    dispatchRedux(clearFilters());
+    // dispatch({
+    //   type: 'CLEAR_FILTERS',
+    // });
   };
 
   const generateSidebarObject = async () => {
