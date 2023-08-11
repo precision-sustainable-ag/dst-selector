@@ -81,7 +81,7 @@ const App = () => {
     <Box className="contentWrapper" id="mainContentWrapper">
       <Header logo="neccc_wide_logo_color_web.jpg" />
 
-      <Container maxWidth={false}>
+      <Container disableGutters maxWidth={false}>
         <Box className="contentContainer">
           {state.progress === 0 ? (
             <Landing
