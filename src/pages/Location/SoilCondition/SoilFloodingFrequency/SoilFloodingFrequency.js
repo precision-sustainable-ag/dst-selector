@@ -1,21 +1,22 @@
 import { Button, Typography } from '@mui/material';
 import { WavesOutlined } from '@mui/icons-material';
-import React, { useContext } from 'react';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { ReferenceTooltip } from '../../../../shared/constants';
 import arrayEquals from '../../../../shared/functions';
-import { Context } from '../../../../store/Store';
 import '../../../../styles/soilConditions.scss';
 import RenderFloodingOptions from './RenderFloodingOptions';
+import { updateFloodingFrequency } from '../../../../reduxStore/soilSlice';
 
 const SoilFloodingFrequency = () => {
-  const { state, dispatch } = useContext(Context);
-  const { soilData, soilDataOriginal } = state;
+  const dispatchRedux = useDispatch;
+
+  // redux vars
+  const soilDataRedux = useSelector((stateRedux) => stateRedux.soilData.soilData);
+  const soilDataOriginalRedux = useSelector((stateRedux) => stateRedux.soilData.soilDataOriginal);
 
   const resetFloodingOptions = () => {
-    dispatch({
-      type: 'UPDATE_FLOODING_FREQUENCY',
-      data: soilDataOriginal.Flooding_Frequency,
-    });
+    dispatchRedux(updateFloodingFrequency(soilDataOriginalRedux?.Flooding_Frequency));
   };
 
   return (
@@ -59,7 +60,7 @@ const SoilFloodingFrequency = () => {
         </Typography>
       </div>
 
-      {!arrayEquals(soilData.Flooding_Frequency, soilDataOriginal.Flooding_Frequency) && (
+      {!arrayEquals(soilDataRedux?.Flooding_Frequency, soilDataOriginalRedux?.Flooding_Frequency) && (
       <div className="col-12 pt-2">
         <div className="col-12 row">
           <div className="col text-left">
@@ -81,7 +82,7 @@ const SoilFloodingFrequency = () => {
       </div>
       )}
       <div className="col-12">
-        <RenderFloodingOptions flooding={soilData.Flooding_Frequency} />
+        <RenderFloodingOptions flooding={soilDataRedux?.Flooding_Frequency} />
       </div>
     </div>
   );

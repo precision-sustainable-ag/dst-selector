@@ -7,19 +7,24 @@
 
 import { Switch, Typography } from '@mui/material';
 import { InvertColors } from '@mui/icons-material';
-import React, { useContext, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { ReferenceTooltip } from '../../../shared/constants';
-import { Context } from '../../../store/Store';
 import '../../../styles/soilConditions.scss';
 import SoilComposition from './SoilComposition/SoilComposition';
 import SoilDrainage from './SoilDrainage/SoilDrainage';
 import SoilFloodingFrequency from './SoilFloodingFrequency/SoilFloodingFrequency';
+import { toggleSoilLoader, updateSoilData, updateSoilDataOriginal } from '../../../reduxStore/soilSlice';
 
 const SoilCondition = () => {
-  const { state, dispatch } = useContext(Context);
-  const { soilData, soilDataOriginal } = state;
+  const dispatchRedux = useDispatch();
+
+  // redux vars
   const markersRedux = useSelector((stateRedux) => stateRedux.addressData.markers);
+  const soilDataRedux = useSelector((stateRedux) => stateRedux.soilData.soilData);
+  const soilDataOriginalRedux = useSelector((stateRedux) => stateRedux.soilData.soilDataOriginal);
+
+  // useState vars
   const [tilingCheck, setTilingCheck] = useState(false);
   const [showTiling, setShowTiling] = useState(false);
 
@@ -73,12 +78,9 @@ const SoilCondition = () => {
         redirect: 'follow',
       };
 
-      dispatch({
-        type: 'TOGGLE_SOIL_LOADER',
-        data: {
-          isSoilDataLoading: true,
-        },
-      });
+      dispatchRedux(toggleSoilLoader({
+        isSoilDataLoading: true,
+      }));
 
       fetch('https://sdmdataaccess.sc.egov.usda.gov/Tabular/post.rest', requestOptions)
         .then((response) => response.json())
@@ -119,34 +121,25 @@ const SoilCondition = () => {
             });
             drainageClasses = drainageClasses.filter((el) => el != null);
 
-            dispatch({
-              type: 'UPDATE_SOIL_DATA',
-              data: {
-                Map_Unit_Name: mapUnitString,
-                Drainage_Class: drainageClasses,
-                Flooding_Frequency: floodingClasses,
-                PondingFrequency,
-                for: { lat, lon },
-              },
-            });
-            dispatch({
-              type: 'UPDATE_SOIL_DATA_ORIGINAL',
-              data: {
-                Map_Unit_Name: mapUnitString,
-                Drainage_Class: drainageClasses,
-                Flooding_Frequency: floodingClasses,
-                PondingFrequency,
-                for: { lat, lon },
-              },
-            });
+            dispatchRedux(updateSoilData({
+              Map_Unit_Name: mapUnitString,
+              Drainage_Class: drainageClasses,
+              Flooding_Frequency: floodingClasses,
+              PondingFrequency,
+              latLong: { lat, lon },
+            }));
+            dispatchRedux(updateSoilDataOriginal({
+              Map_Unit_Name: mapUnitString,
+              Drainage_Class: drainageClasses,
+              Flooding_Frequency: floodingClasses,
+              PondingFrequency,
+              latLong: { lat, lon },
+            }));
           }
 
-          dispatch({
-            type: 'TOGGLE_SOIL_LOADER',
-            data: {
-              isSoilDataLoading: false,
-            },
-          });
+          dispatchRedux(toggleSoilLoader({
+            isSoilDataLoading: false,
+          }));
         })
         // eslint-disable-next-line no-console
         .catch((error) => console.error('SSURGO FETCH ERROR', error));
@@ -155,22 +148,22 @@ const SoilCondition = () => {
     const lat = markersRedux[0][0];
     const lon = markersRedux[0][1];
 
-    if (soilDataOriginal.for) {
-      if (!(soilDataOriginal.for.lat === lat && soilDataOriginal.for.lon === lon)) {
+    if (soilDataOriginalRedux?.latLong) {
+      if (!(soilDataOriginalRedux.latLong?.lat === lat && soilDataOriginalRedux.latLong?.lon === lon)) {
         getSSURGOData(lat, lon);
       }
     } else {
       getSSURGOData(lat, lon);
     }
-  }, [dispatch, markersRedux, soilDataOriginal.for]);
+  }, [markersRedux, soilDataOriginalRedux?.latLong]);
 
   useEffect(() => {
     const checkArray = ['Very poorly drained', 'Poorly drained', 'Somewhat poorly drained'];
-    if (checkArray.some((e) => soilData.Drainage_Class.includes(e))) {
+    if (checkArray.some((e) => soilDataRedux?.Drainage_Class.includes(e))) {
       setShowTiling(true);
     }
-    window.localStorage.setItem('drainage', JSON.stringify(soilData.Drainage_Class));
-  }, [soilData.Drainage_Class]);
+    window.localStorage.setItem('drainage', JSON.stringify(soilDataRedux?.Drainage_Class));
+  }, [soilDataRedux?.Drainage_Class]);
 
   return (
     <div className="row">
@@ -180,7 +173,7 @@ const SoilCondition = () => {
         </Typography>
       </div>
 
-      <SoilComposition soilData={soilData} />
+      <SoilComposition />
 
       <SoilDrainage setTilingCheck={setTilingCheck} />
 
@@ -204,7 +197,7 @@ const SoilCondition = () => {
               <Switch
                 checked={tilingCheck}
                 onChange={(e) => {
-                  const soilDrainCopy = soilData.Drainage_Class;
+                  const soilDrainCopy = soilDataRedux?.Drainage_Class;
 
                   const drainSet = new Set(soilDrainCopy);
                   if (e.target.checked) {
@@ -251,7 +244,7 @@ const SoilCondition = () => {
                   } else {
                     window.localStorage.setItem(
                       'drainage',
-                      JSON.stringify(soilDataOriginal.Drainage_Class),
+                      JSON.stringify(soilDataOriginalRedux?.Drainage_Class),
                     );
                   }
 
