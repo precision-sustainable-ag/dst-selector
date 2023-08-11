@@ -5,24 +5,21 @@
 */
 
 import {
-  Dialog, DialogActions, DialogContent, Grid, Typography,
+  Grid, Typography,
 } from '@mui/material';
 import { useHistory } from 'react-router-dom';
 import React, { useContext, useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import ReactGA from 'react-ga';
 import { Context } from '../../store/Store';
-import { reset } from '../../reduxStore/store';
 import Header from '../Header/Header';
 import ExplorerCardView from './ExplorerCardView/ExplorerCardView';
 import ConsentModal from './ConsentModal/ConsentModal';
 import CropSidebar from '../CropSidebar/CropSidebar';
-import { BinaryButton } from '../../shared/constants';
 import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset';
 
 const CoverCropExplorer = () => {
-  const { state, dispatch } = useContext(Context);
-  const dispatchRedux = useDispatch();
+  const { state } = useContext(Context);
   const history = useHistory();
   const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
   const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
@@ -33,7 +30,6 @@ const CoverCropExplorer = () => {
   const [updatedActiveCropData, setUpdatedActiveCropData] = useState([]);
   // const { activeCropData } = state;
   const [handleConfirm, setHandleConfirm] = useState(false);
-  const defaultMarkers = [[40.78489145, -74.80733626930342]];
   const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
 
   useEffect(() => {
@@ -51,7 +47,7 @@ const CoverCropExplorer = () => {
   }, [state.consent]);
 
   useEffect(() => {
-    if (stateLabelRedux === '') {
+    if (stateLabelRedux === null || stateLabelRedux === '') {
       history.push('/');
     }
   }, [stateLabelRedux]);
@@ -62,22 +58,6 @@ const CoverCropExplorer = () => {
       setHandleConfirm(true);
     }
   }, [selectedCropsRedux, state.myCoverCropListLocation]);
-
-  const handleConfirmationChoice = (clearMyList = false) => {
-    if (clearMyList) {
-      dispatch({
-        type: 'RESET',
-        data: {
-          markers: defaultMarkers,
-          selectedCrops: [],
-        },
-      });
-      dispatchRedux(reset());
-      // setSpeciesSelectorActivationFlag();
-    } else {
-      setHandleConfirm(false);
-    }
-  };
 
   return (
     <div className="contentWrapper">
@@ -110,18 +90,6 @@ const CoverCropExplorer = () => {
           </div>
         </div>
       </div>
-      <Dialog onClose={() => setHandleConfirm(false)} open={handleConfirm}>
-        <DialogContent dividers>
-          <Typography variant="body1">
-            You will need to clear your My Cover Crop List to continue.  Would you like to continue?
-          </Typography>
-        </DialogContent>
-        <DialogActions>
-          <BinaryButton
-            action={handleConfirmationChoice}
-          />
-        </DialogActions>
-      </Dialog>
       <MyCoverCropReset handleConfirm={handleConfirm} setHandleConfirm={setHandleConfirm} />
     </div>
   );

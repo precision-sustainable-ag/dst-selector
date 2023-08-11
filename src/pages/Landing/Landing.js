@@ -6,9 +6,6 @@
 */
 
 import {
-  Dialog,
-  DialogActions,
-  DialogContent,
   FormControl,
   Grid, InputLabel, List, ListItem, MenuItem, Select, Typography,
 } from '@mui/material';
@@ -20,21 +17,20 @@ import React, {
   useRef,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import ReactGA from 'react-ga';
 import { RegionSelectorMap } from '@psa/dst.ui.region-selector-map';
-import { reset } from '../../reduxStore/store';
-import { BinaryButton, callCoverCropApi } from '../../shared/constants';
+import { callCoverCropApi } from '../../shared/constants';
 import { Context } from '../../store/Store';
 import '../../styles/landing.scss';
 import ConsentModal from '../CoverCropExplorer/ConsentModal/ConsentModal';
+import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset';
 import { updateZone } from '../../reduxStore/addressSlice';
 import { updateRegions, updateRegion, updateStateInfo } from '../../reduxStore/mapSlice';
 
 const Landing = ({ height, title, bg }) => {
-  const { state, dispatch } = useContext(Context);
+  const { state } = useContext(Context);
   const dispatchRedux = useDispatch();
-  const history = useHistory();
   const [handleConfirm, setHandleConfirm] = useState(false);
   const [containerHeight, setContainerHeight] = useState(height);
   const [allStates, setAllStates] = useState([]);
@@ -42,7 +38,6 @@ const Landing = ({ height, title, bg }) => {
   const [mapState, setMapState] = useState({});
   const [selectedRegion, setSelectedRegion] = useState({});
   const mapRef = useRef(null);
-  const defaultMarkers = [[40.78489145, -74.80733626930342]];
   const regionsRedux = useSelector((stateRedux) => stateRedux.mapData.regions);
   const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
   const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
@@ -141,6 +136,7 @@ const Landing = ({ height, title, bg }) => {
       if (verifyCouncil(selectedState.council.shorthand)) {
         stateChange(selectedState);
       } else {
+        // FIXME: possible issues here due to the default value changed from '' to null
         dispatchRedux(updateStateInfo({
           stateLabel: '',
           stateId: '',
@@ -217,33 +213,11 @@ const Landing = ({ height, title, bg }) => {
   }, [title]);
 
   useEffect(() => {
-    if (localStorage.getItem('lastLocation') === 'CoverCropExplorer') {
-      document.title = 'Cover Crop Selector';
-      if (selectedCropsRedux.length) {
-        setHandleConfirm(true);
-      }
+    document.title = 'Cover Crop Selector';
+    if (state.myCoverCropListLocation !== 'selector' && selectedCropsRedux.length > 0) {
+      setHandleConfirm(true);
     }
-    localStorage.setItem('lastLocation', 'CropSelector');
   }, []);
-
-  const handleConfirmationChoice = (clearMyList = false) => {
-    if (clearMyList) {
-      dispatch({
-        type: 'RESET',
-        data: {
-          markers: defaultMarkers,
-          selectedCrops: [],
-        },
-      });
-      dispatchRedux(reset());
-    } else {
-      history.goBack();
-      if (window.location.pathname !== '/') {
-        history.push('/');
-      }
-    }
-    setHandleConfirm(false);
-  };
 
   return (
 
@@ -384,18 +358,7 @@ const Landing = ({ height, title, bg }) => {
           </Grid>
         </Grid>
       </Grid>
-      <Dialog onClose={() => setHandleConfirm(false)} open={handleConfirm}>
-        <DialogContent dividers>
-          <Typography variant="body1">
-            You will need to clear your My Cover Crop List to continue.  Would you like to continue?
-          </Typography>
-        </DialogContent>
-        <DialogActions>
-          <BinaryButton
-            action={handleConfirmationChoice}
-          />
-        </DialogActions>
-      </Dialog>
+      <MyCoverCropReset handleConfirm={handleConfirm} setHandleConfirm={setHandleConfirm} />
     </div>
   );
 };

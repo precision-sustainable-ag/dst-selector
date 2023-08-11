@@ -5,22 +5,21 @@
 */
 
 import {
-  Button, Dialog, DialogActions, DialogContent, Grid, Typography,
+  Button, Grid,
 } from '@mui/material';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { LocationOn } from '@mui/icons-material';
 import CloudIcon from '@mui/icons-material/Cloud';
 import CheckIcon from '@mui/icons-material/Check';
 import FilterHdrIcon from '@mui/icons-material/FilterHdr';
 import React, { useContext, useState } from 'react';
-import { reset } from '../../../reduxStore/store';
-import { BinaryButton } from '../../../shared/constants';
 import { Context } from '../../../store/Store';
 import '../../../styles/greenBar.scss';
 import LocationComponent from '../../Location/Location';
 import SoilCondition from '../../Location/SoilCondition/SoilCondition';
 import WeatherConditions from '../../../components/WeatherConditions/WeatherConditions';
 import ProgressButtons from '../../../shared/ProgressButtons';
+import MyCoverCropReset from '../../../components/MyCoverCropReset/MyCoverCropReset';
 
 const speciesSelectorToolName = '/';
 
@@ -32,18 +31,14 @@ const expansionPanelBaseStyle = {
 
 const InformationBar = () => {
   const { state, dispatch } = useContext(Context);
-  const dispatchRedux = useDispatch();
-
-  // redux vars
   const addressRedux = useSelector((stateRedux) => stateRedux.addressData.address);
   const zoneRedux = useSelector((stateRedux) => stateRedux.addressData.zone);
-  const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const weatherDataRedux = useSelector((stateRedux) => stateRedux.weatherData.weatherData);
   const soilDataRedux = useSelector((stateRedux) => stateRedux.soilData.soilData);
 
   // useState vars
-  const [confirmationOpen, setConfirmationOpen] = useState(false);
+  const [handleConfirm, setHandleConfirm] = useState(false);
   const [expansionPanelComponent, setExpansionPanelComponent] = useState({
     component: '',
   });
@@ -174,31 +169,6 @@ const InformationBar = () => {
     );
   };
 
-  const handleConfirmationChoice = (clearCoverCrops = false) => {
-    if (clearCoverCrops !== null) {
-      if (clearCoverCrops) {
-        dispatch({
-          type: 'RESET',
-          data: {
-            markers: defaultMarkers,
-            selectedCrops: [],
-          },
-        });
-        dispatchRedux(reset());
-      } else {
-        dispatch({
-          type: 'RESET',
-          data: {
-            markers: defaultMarkers,
-            selectedCrops: selectedCropsRedux,
-          },
-        });
-        dispatchRedux(reset());
-      }
-    }
-    setConfirmationOpen(false);
-  };
-
   return (
     <div className="greenBarParent" id="greenBarParent">
       <div className="greenBarWrapper">
@@ -233,7 +203,7 @@ const InformationBar = () => {
             md={12}
             lg={2.5}
           >
-            <ProgressButtons closeExpansionPanel={closeExpansionPanel} setConfirmationOpen={setConfirmationOpen} />
+            <ProgressButtons closeExpansionPanel={closeExpansionPanel} setConfirmationOpen={setHandleConfirm} />
           </Grid>
         </Grid>
         )}
@@ -287,18 +257,7 @@ const InformationBar = () => {
           )}
         </div>
       </div>
-      <Dialog onClose={() => handleConfirmationChoice(null)} open={confirmationOpen}>
-        <DialogContent dividers>
-          <Typography variant="body1">
-            Would you also like to clear My Cover Crop List?
-          </Typography>
-        </DialogContent>
-        <DialogActions>
-          <BinaryButton
-            action={handleConfirmationChoice}
-          />
-        </DialogActions>
-      </Dialog>
+      <MyCoverCropReset handleConfirm={handleConfirm} setHandleConfirm={setHandleConfirm} goBack={false} />
     </div>
   );
 };
