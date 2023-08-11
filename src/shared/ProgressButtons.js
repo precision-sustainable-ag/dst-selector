@@ -16,13 +16,14 @@ const ProgressButtons = ({ closeExpansionPanel, setConfirmationOpen }) => {
   const [isDisabledNext, setIsDisabledNext] = useState(true);
   const [isDisabledRefresh, setIsDisabledRefresh] = useState(false);
   const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
+  const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
 
   const disableLogic = (progress, goalsLength, sfilters) => {
     switch (parseInt(progress, 10)) {
       case 0:
         setIsDisabledBack(true);
         setIsDisabledRefresh(true);
-        setIsDisabledNext(councilLabelRedux === '');
+        setIsDisabledNext(councilLabelRedux === '' || councilLabelRedux === null);
         break;
       case 1:
         // location selection state
@@ -51,7 +52,7 @@ const ProgressButtons = ({ closeExpansionPanel, setConfirmationOpen }) => {
     const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
     const sfilters = state[section];
     disableLogic(state.progress, selectedGoalsRedux.length, sfilters);
-  }, [state, selectedGoalsRedux]);
+  }, [state, selectedGoalsRedux, stateLabelRedux]);
 
   const renderProgressButtons = (progress, disabledBack, disabledNext, disabledRefresh) => {
     if (progress < 0) return '';

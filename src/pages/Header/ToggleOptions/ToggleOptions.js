@@ -52,13 +52,13 @@ const ToggleOptions = ({ isRoot }) => {
       <Button size="large" onClick={() => clearMyCoverCropList(false)} component={NavLink} exact to="/" activeClassName="active">
         SPECIES SELECTOR TOOL
       </Button>
-      <Tooltip title={stateLabelRedux === '' ? 'You must select a state before using the Cover Crop Explorer' : ''}>
+      <Tooltip title={(stateLabelRedux === null || stateLabelRedux === '') ? 'You must select a state before using the Cover Crop Explorer' : ''}>
         <span>
           <Button
             className={(isRoot && state.speciesSelectorActivationFlag) ? 'active' : ''}
             onClick={() => clearMyCoverCropList(true)}
             size="large"
-            disabled={stateLabelRedux === ''}
+            disabled={stateLabelRedux === null || stateLabelRedux === ''}
           >
             COVER CROP EXPLORER
           </Button>
