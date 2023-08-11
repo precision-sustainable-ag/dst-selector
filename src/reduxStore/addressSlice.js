@@ -8,9 +8,9 @@ const initialState = {
   zone: '',
   zoneText: '',
   zoneId: null,
-  lastZipCode: 0,
+  lastZipCode: null,
   lastZone: '',
-  county: null,
+  county: '',
 };
 
 export const updateLocation = ({ address, markers, zipCode }) => ({

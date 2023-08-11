@@ -1,12 +1,12 @@
 const initialState = {
   regions: [],
   regionId: null,
-  regionLabel: null,
-  regionShorthand: null,
+  regionLabel: '',
+  regionShorthand: '',
   stateId: null,
-  stateLabel: null,
-  councilShorthand: null,
-  councilLabel: null,
+  stateLabel: '',
+  councilShorthand: '',
+  councilLabel: '',
   selectedRegion: {},
   council: '',
 };
