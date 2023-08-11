@@ -32,6 +32,9 @@ import {
 import { updateRegion } from '../../reduxStore/mapSlice';
 
 import { snackHandler } from '../../reduxStore/sharedSlice';
+import {
+  updateAvgFrostDates, updateAvgPrecipAnnual, updateAvgPrecipCurrentMonth, updateFrostFreeDays,
+} from '../../reduxStore/weatherSlice';
 
 // eslint-disable-next-line import/no-webpack-loader-syntax, import/no-unresolved
 mapboxgl.workerClass = require('worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker').default;
@@ -196,8 +199,10 @@ const LocationComponent = () => {
             .then(((frostResp) => {
               const firstFrost = new Date(frostResp.firstfrost + prevYear);
               const lastFrost = new Date(frostResp.lastfrost + currYear);
-              const frostFreeDaysObj = Math.round(Math.abs((firstFrost.valueOf() - lastFrost.valueOf()) / oneDay));
-              const averageFrostObject = {
+              const frostFreeDays = Math.round(Math.abs((firstFrost.valueOf() - lastFrost.valueOf()) / oneDay));
+
+              dispatchRedux(updateFrostFreeDays(frostFreeDays));
+              dispatchRedux(updateAvgFrostDates({
                 firstFrostDate: {
                   month: firstFrost.toLocaleString('en-US', { month: 'long' }),
                   day: firstFrost.getDate().toString(),
@@ -206,18 +211,7 @@ const LocationComponent = () => {
                   month: lastFrost.toLocaleString('en-US', { month: 'long' }),
                   day: lastFrost.getDate().toString(),
                 },
-              };
-
-              dispatch({
-                type: 'UPDATE_FROST_FREE_DAYS',
-                data: { frostFreeDays: frostFreeDaysObj },
-              });
-              dispatch({
-                type: 'UPDATE_AVERAGE_FROST_DATES',
-                data: {
-                  averageFrost: averageFrostObject,
-                },
-              });
+              }));
             })).catch((error) => {
               // eslint-disable-next-line
               console.log(`Weather API error code: ${error?.response?.status} for getting 5 year average rainfall for this month`);
@@ -232,10 +226,7 @@ const LocationComponent = () => {
                 averagePrecipitationForCurrentMonth * 0.03937,
               ).toFixed(2);
 
-              dispatch({
-                type: 'UPDATE_AVERAGE_PRECIP_CURRENT_MONTH',
-                data: { thisMonth: averagePrecipitationForCurrentMonth },
-              });
+              dispatchRedux(updateAvgPrecipCurrentMonth(averagePrecipitationForCurrentMonth));
             })
             .catch((error) => {
               // eslint-disable-next-line
@@ -249,10 +240,7 @@ const LocationComponent = () => {
               fiveYearAvgRainAnnual = parseFloat(fiveYearAvgRainAnnual * 0.03937).toFixed(
                 2,
               );
-              dispatch({
-                type: 'UPDATE_AVERAGE_PRECIP_ANNUAL',
-                data: { annual: fiveYearAvgRainAnnual },
-              });
+              dispatchRedux(updateAvgPrecipAnnual(fiveYearAvgRainAnnual));
             })
             .catch((error) => {
               // eslint-disable-next-line
