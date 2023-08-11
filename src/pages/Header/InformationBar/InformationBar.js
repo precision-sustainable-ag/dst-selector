@@ -33,16 +33,24 @@ const expansionPanelBaseStyle = {
 const InformationBar = () => {
   const { state, dispatch } = useContext(Context);
   const dispatchRedux = useDispatch();
+
+  // redux vars
   const addressRedux = useSelector((stateRedux) => stateRedux.addressData.address);
   const zoneRedux = useSelector((stateRedux) => stateRedux.addressData.zone);
   const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
+  const soilDataRedux = useSelector((stateRedux) => stateRedux.soilData.soilData);
+
+  // useState vars
   const [confirmationOpen, setConfirmationOpen] = useState(false);
   const [expansionPanelComponent, setExpansionPanelComponent] = useState({
     component: '',
   });
+
+  // const vars
   const defaultMarkers = [[40.78489145, -74.80733626930342]];
 
+  // functions
   const closeExpansionPanel = () => {
     const greenbarExpansionElement = document.getElementById('greenBarExpansionPanel');
     greenbarExpansionElement.style.transform = 'translate(0px,0px)';
@@ -73,7 +81,7 @@ const InformationBar = () => {
       case 'location':
         return `Zone ${zoneRedux}`;
       case 'soil':
-        return state.soilData.Drainage_Class
+        return soilDataRedux?.drainageClass
           .toString()
           .split(',')
           .join(', ');
@@ -104,7 +112,7 @@ const InformationBar = () => {
           <FilterHdrIcon />
           &nbsp;
           {' '}
-          {/* {`Soils: Map Unit Name (${state.soilData.Map_Unit_Name}%), Drainage Class: ${state.soilData.Drainage_Class}})`} */}
+          {/* {`Soils: Map Unit Name (${soilDataRedux?.mapUnitName}%), Drainage Class: ${soilDataRedux?.drainageClass}})`} */}
           {`Soil Drainage: ${getSelectedValues('soil')}`}
         </>
       );
@@ -130,7 +138,7 @@ const InformationBar = () => {
 
   const getData = (type) => {
     if (
-      (state.soilData.Flooding_Frequency === null && type === 'soil')
+      (soilDataRedux?.floodingFrequency === null && type === 'soil')
       || (type === 'address' && addressRedux === '')
       || (type === 'weather' && state.weatherData.length === 0)
     ) {
