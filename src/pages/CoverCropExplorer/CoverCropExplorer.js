@@ -47,7 +47,7 @@ const CoverCropExplorer = () => {
   }, [state.consent]);
 
   useEffect(() => {
-    if (stateLabelRedux === '') {
+    if (stateLabelRedux === null || stateLabelRedux === '') {
       history.push('/');
     }
   }, [stateLabelRedux]);

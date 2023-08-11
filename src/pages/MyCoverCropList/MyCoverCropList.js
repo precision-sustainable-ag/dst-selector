@@ -29,7 +29,7 @@ const MyCoverCropList = ({ comparisonView, from }) => {
   }, [selectedCropsRedux]);
 
   useEffect(() => {
-    if (stateLabelRedux === '') {
+    if (stateLabelRedux === null || stateLabelRedux === '') {
       history.push('/');
     }
   }, [stateLabelRedux]);
