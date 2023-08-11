@@ -46,7 +46,7 @@ const SoilCondition = () => {
       let soilDataQuery = '';
 
       if (markersCopy.length > 1) {
-        soilDataQuery = `SELECT mu.mukey AS MUKEY, mu.muname AS Map_Unit_Name, muag.drclassdcd AS Drainage_Class, muag.flodfreqdcd AS Flooding_Frequency, mp.mupolygonkey as MPKEY
+        soilDataQuery = `SELECT mu.mukey AS MUKEY, mu.muname AS mapUnitName, muag.drclassdcd AS drainageClass, muag.flodfreqdcd AS floodingFrequency, mp.mupolygonkey as MPKEY
       FROM mapunit AS mu 
       INNER JOIN muaggatt AS muag ON muag.mukey = mu.mukey
       INNER JOIN mupolygon AS mp ON mp.mukey = mu.mukey
@@ -55,7 +55,7 @@ const SoilCondition = () => {
       mp.mupolygonkey IN  (SELECT * from SDA_Get_Mupolygonkey_from_intersection_with_WktWgs84('polygon ((${longLatString}))'))`;
       } else {
         // point
-        soilDataQuery = `SELECT mu.mukey AS MUKEY, mu.muname AS Map_Unit_Name, muag.drclassdcd AS Drainage_Class, muag.flodfreqdcd AS Flooding_Frequency, mp.mupolygonkey as MPKEY
+        soilDataQuery = `SELECT mu.mukey AS MUKEY, mu.muname AS mapUnitName, muag.drclassdcd AS drainageClass, muag.flodfreqdcd AS floodingFrequency, mp.mupolygonkey as MPKEY
         FROM mapunit AS mu 
         INNER JOIN muaggatt AS muag ON muag.mukey = mu.mukey
         INNER JOIN mupolygon AS mp ON mp.mukey = mu.mukey
@@ -86,7 +86,7 @@ const SoilCondition = () => {
         .then((response) => response.json())
         .then((result) => {
           if (result !== {}) {
-            const PondingFrequency = result.Table[1][4];
+            const pondingFrequency = result.Table[1][4];
             let mapUnitString = '';
 
             const stringSplit = [];
@@ -122,17 +122,17 @@ const SoilCondition = () => {
             drainageClasses = drainageClasses.filter((el) => el != null);
 
             dispatchRedux(updateSoilData({
-              Map_Unit_Name: mapUnitString,
-              Drainage_Class: drainageClasses,
-              Flooding_Frequency: floodingClasses,
-              PondingFrequency,
+              mapUnitName: mapUnitString,
+              drainageClass: drainageClasses,
+              floodingFrequency: floodingClasses,
+              pondingFrequency,
               latLong: { lat, lon },
             }));
             dispatchRedux(updateSoilDataOriginal({
-              Map_Unit_Name: mapUnitString,
-              Drainage_Class: drainageClasses,
-              Flooding_Frequency: floodingClasses,
-              PondingFrequency,
+              mapUnitName: mapUnitString,
+              drainageClass: drainageClasses,
+              floodingFrequency: floodingClasses,
+              pondingFrequency,
               latLong: { lat, lon },
             }));
           }
@@ -159,11 +159,11 @@ const SoilCondition = () => {
 
   useEffect(() => {
     const checkArray = ['Very poorly drained', 'Poorly drained', 'Somewhat poorly drained'];
-    if (checkArray.some((e) => soilDataRedux?.Drainage_Class.includes(e))) {
+    if (checkArray.some((e) => soilDataRedux?.drainageClass.includes(e))) {
       setShowTiling(true);
     }
-    window.localStorage.setItem('drainage', JSON.stringify(soilDataRedux?.Drainage_Class));
-  }, [soilDataRedux?.Drainage_Class]);
+    window.localStorage.setItem('drainage', JSON.stringify(soilDataRedux?.drainageClass));
+  }, [soilDataRedux?.drainageClass]);
 
   return (
     <div className="row">
@@ -197,7 +197,7 @@ const SoilCondition = () => {
               <Switch
                 checked={tilingCheck}
                 onChange={(e) => {
-                  const soilDrainCopy = soilDataRedux?.Drainage_Class;
+                  const soilDrainCopy = soilDataRedux?.drainageClass;
 
                   const drainSet = new Set(soilDrainCopy);
                   if (e.target.checked) {
@@ -244,7 +244,7 @@ const SoilCondition = () => {
                   } else {
                     window.localStorage.setItem(
                       'drainage',
-                      JSON.stringify(soilDataOriginalRedux?.Drainage_Class),
+                      JSON.stringify(soilDataOriginalRedux?.drainageClass),
                     );
                   }
 

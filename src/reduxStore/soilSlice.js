@@ -1,16 +1,16 @@
 const initialState = {
   soilData: {
-    Map_Unit_Name: '',
-    Drainage_Class: [],
-    Flooding_Frequency: [],
-    Ponding_Frequency: '',
+    mapUnitName: '',
+    drainageClass: [],
+    floodingFrequency: [],
+    pondingFrequency: '',
     latLong: [],
   },
   soilDataOriginal: {
-    Map_Unit_Name: '',
-    Drainage_Class: [],
-    Flooding_Frequency: [],
-    Ponding_Frequency: '',
+    mapUnitName: '',
+    drainageClass: [],
+    floodingFrequency: [],
+    pondingFrequency: '',
     latLong: [],
   },
   isSoilDataLoading: false,
@@ -18,27 +18,27 @@ const initialState = {
 
 /* eslint-disable */
 export const updateSoilData = ({
-  Map_Unit_Name, Drainage_Class, Flooding_Frequency, PondingFrequency, latLong,
+  mapUnitName, drainageClass, floodingFrequency, pondingFrequency, latLong,
 }) => ({
   type: 'UPDATE_SOIL_DATA',
   payload: {
-    mapUnitName: Map_Unit_Name,
-    drainageClass: Drainage_Class,
-    floodingFrequency: Flooding_Frequency,
-    pondingFrequency: PondingFrequency,
+    mapUnitName: mapUnitName,
+    drainageClass: drainageClass,
+    floodingFrequency: floodingFrequency,
+    pondingFrequency: pondingFrequency,
     latLong,
   },
 });
 
 export const updateSoilDataOriginal = ({
-  Map_Unit_Name, Drainage_Class, Flooding_Frequency, PondingFrequency, latLong,
+  mapUnitName, drainageClass, floodingFrequency, pondingFrequency, latLong,
 }) => ({
   type: 'UPDATE_SOIL_DATA_ORIGINAL',
   payload: {
-    mapUnitName: Map_Unit_Name,
-    drainageClass: Drainage_Class,
-    floodingFrequency: Flooding_Frequency,
-    pondingFrequency: PondingFrequency,
+    mapUnitName: mapUnitName,
+    drainageClass: drainageClass,
+    floodingFrequency: floodingFrequency,
+    pondingFrequency: pondingFrequency,
     latLong,
   },
 });
@@ -72,10 +72,10 @@ const soilReducer = (state = initialState, action = null) => {
         ...state,
         soilData: {
           ...state.soilData,
-          Map_Unit_Name: action.payload.mapUnitName,
-          Drainage_Class: action.payload.drainageClass,
-          Flooding_Frequency: action.payload.floodingFrequency,
-          Ponding_Frequency: action.payload.pondingFrequency,
+          mapUnitName: action.payload.mapUnitName,
+          drainageClass: action.payload.drainageClass,
+          floodingFrequency: action.payload.floodingFrequency,
+          pondingFrequency: action.payload.pondingFrequency,
           for: action.payload.latLong,
         },
       };
@@ -86,10 +86,10 @@ const soilReducer = (state = initialState, action = null) => {
         ...state,
         soilDataOriginal: {
           ...state.soilDataOriginal,
-          Map_Unit_Name: action.payload.mapUnitName,
-          Drainage_Class: action.payload.drainageClass,
-          Flooding_Frequency: action.payload.floodingFrequency,
-          Ponding_Frequency: action.payload.pondingFrequency,
+          mapUnitName: action.payload.mapUnitName,
+          drainageClass: action.payload.drainageClass,
+          floodingFrequency: action.payload.floodingFrequency,
+          pondingFrequency: action.payload.pondingFrequency,
           for: action.payload.latLong,
         },
       };
@@ -105,7 +105,7 @@ const soilReducer = (state = initialState, action = null) => {
         ...state,
         soilData: {
           ...state.soilData,
-          Drainage_Class: action.payload.value,
+          drainageClass: action.payload.value,
         },
       };
 
@@ -114,7 +114,7 @@ const soilReducer = (state = initialState, action = null) => {
         ...state,
         soilData: {
           ...state.soilData,
-          Flooding_Frequency: action.payload.value,
+          floodingFrequency: action.payload.value,
         },
       };
 

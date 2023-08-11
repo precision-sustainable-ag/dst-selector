@@ -30,8 +30,8 @@ const SoilDrainage = ({ setTilingCheck }) => {
   }, [selectedCropsRedux, state.myCoverCropListLocation]);
 
   const resetDrainageClasses = () => {
-    dispatchRedux(updateDrainageClassRedux(soilDataOriginalRedux?.Drainage_Class));
-    window.localStorage.setItem('drainage', JSON.stringify(soilDataOriginalRedux?.Drainage_Class));
+    dispatchRedux(updateDrainageClassRedux(soilDataOriginalRedux?.drainageClass));
+    window.localStorage.setItem('drainage', JSON.stringify(soilDataOriginalRedux?.drainageClass));
     setTilingCheck(false);
   };
 
@@ -75,7 +75,7 @@ const SoilDrainage = ({ setTilingCheck }) => {
           />
         </Typography>
       </div>
-      {!arrayEquals(soilDataOriginalRedux?.Drainage_Class, soilDataRedux?.Drainage_Class) && (
+      {!arrayEquals(soilDataOriginalRedux?.drainageClass, soilDataRedux?.drainageClass) && (
       <div className="col-12 pt-2">
         <div className="col-12 row">
           <div className="col text-left">
@@ -97,7 +97,7 @@ const SoilDrainage = ({ setTilingCheck }) => {
       </div>
       )}
       <div className="col-12">
-        <RenderDrainageClasses drainage={soilDataRedux?.Drainage_Class} />
+        <RenderDrainageClasses drainage={soilDataRedux?.drainageClass} />
       </div>
       <MyCoverCropReset handleConfirm={handleConfirm} setHandleConfirm={setHandleConfirm} />
     </div>

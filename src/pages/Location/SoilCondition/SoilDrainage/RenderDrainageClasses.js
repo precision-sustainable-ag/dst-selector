@@ -16,7 +16,7 @@ const RenderDrainageClasses = ({ drainage = [''] }) => {
   };
 
   const updateDrainageClass = (label = '') => {
-    const drainages = soilDataRedux.Drainage_Class ? [...soilDataRedux.Drainage_Class] : [];
+    const drainages = soilDataRedux.drainageClass ? [...soilDataRedux.drainageClass] : [];
     if (drainages.indexOf(label) === -1) {
       // does not exist, dispatch to state
       drainages.push(label);

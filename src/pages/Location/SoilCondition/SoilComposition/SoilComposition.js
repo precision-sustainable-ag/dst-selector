@@ -44,7 +44,7 @@ const SoilComposition = () => {
             style={{ color: 'rgb(89, 132, 69)' }}
             align="left"
           >
-            {soilDataRedux?.Map_Unit_Name}
+            {soilDataRedux?.mapUnitName}
           </Typography>
         </div>
       </div>
