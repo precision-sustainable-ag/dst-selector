@@ -16,7 +16,7 @@ const initialState = {
     },
     frostFreeDays: 173,
   },
-  weatherDataReset: false,
+  weatherDataReset: false, // unused
 };
 
 export const updateWeatherConditions = (value) => ({
@@ -86,7 +86,7 @@ const weatherReducer = (state = initialState, action = null) => {
         weatherData: {
           ...state.weatherData,
           averagePrecipitation: {
-            ...state.weatherData.averagePrecipitation,
+            ...state.weatherData?.averagePrecipitation,
             thisMonth: action.payload.value,
           },
         },
@@ -98,7 +98,7 @@ const weatherReducer = (state = initialState, action = null) => {
         weatherData: {
           ...state.weatherData,
           averagePrecipitation: {
-            ...state.weatherData.averagePrecipitation,
+            ...state.weatherData?.averagePrecipitation,
             annual: action.payload.value,
           },
         },
