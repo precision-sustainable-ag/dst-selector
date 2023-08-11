@@ -1,20 +1,22 @@
 import { Chip } from '@mui/material';
-import React, { useContext } from 'react';
-import { Context } from '../../../../store/Store';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import '../../../../styles/soilConditions.scss';
+import { updateDrainageClass as updateDrainageClassRedux } from '../../../../reduxStore/soilSlice';
 
 const RenderDrainageClasses = ({ drainage = [''] }) => {
-  const { state, dispatch } = useContext(Context);
+  const dispatchRedux = useDispatch();
 
+  // redux vars
+  const soilDataRedux = useSelector((stateRedux) => stateRedux.soilData.soilData);
+
+  // functions
   const updateDrainageAction = (drainages) => {
-    dispatch({
-      type: 'UPDATE_DRAINAGE_CLASS',
-      data: drainages,
-    });
+    dispatchRedux(updateDrainageClassRedux(drainages));
   };
 
   const updateDrainageClass = (label = '') => {
-    const drainages = [...state.soilData.Drainage_Class];
+    const drainages = soilDataRedux.Drainage_Class ? [...soilDataRedux.Drainage_Class] : [];
     if (drainages.indexOf(label) === -1) {
       // does not exist, dispatch to state
       drainages.push(label);

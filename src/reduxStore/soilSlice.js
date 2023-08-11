@@ -4,12 +4,14 @@ const initialState = {
     Drainage_Class: [],
     Flooding_Frequency: [],
     Ponding_Frequency: '',
+    latLong: [],
   },
   soilDataOriginal: {
     Map_Unit_Name: '',
     Drainage_Class: [],
     Flooding_Frequency: [],
     Ponding_Frequency: '',
+    latLong: [],
   },
   isSoilDataLoading: false,
 };
@@ -49,14 +51,14 @@ export const toggleSoilLoader = (value) => ({
   },
 });
 
-export const updatedDrainageClass = (value) => ({
+export const updateDrainageClass = (value) => ({
   type: 'UPDATE_DRAINAGE_CLASS',
   payload: {
     value,
   },
 });
 
-export const updatedFloodingFrequency = (value) => ({
+export const updateFloodingFrequency = (value) => ({
   type: 'UPDATE_FLOODING_FREQUENCY',
   payload: {
     value,
@@ -82,8 +84,8 @@ const soilReducer = (state = initialState, action = null) => {
     case 'UPDATE_SOIL_DATA_ORIGINAL':
       return {
         ...state,
-        soilData: {
-          ...state.soilData,
+        soilDataOriginal: {
+          ...state.soilDataOriginal,
           Map_Unit_Name: action.payload.mapUnitName,
           Drainage_Class: action.payload.drainageClass,
           Flooding_Frequency: action.payload.floodingFrequency,
@@ -95,7 +97,7 @@ const soilReducer = (state = initialState, action = null) => {
     case 'TOGGLE_SOIL_LOADER':
       return {
         ...state,
-        isSoilDataLoading: action.payload.value,
+        isSoilDataLoading: action.payload.value, // unused
       };
 
     case 'UPDATE_DRAINAGE_CLASS':

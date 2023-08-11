@@ -1,29 +1,27 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Chip } from '@mui/material';
-import { Context } from '../../../../store/Store';
+import { useDispatch, useSelector } from 'react-redux';
 import '../../../../styles/soilConditions.scss';
+import { updateFloodingFrequency as updateFloodingFrequencyRedux } from '../../../../reduxStore/soilSlice';
 
 const RenderFloodingOptions = ({ flooding = [''] }) => {
-  const { state, dispatch } = useContext(Context);
+  const dispatchRedux = useDispatch;
+
+  // redux vars
+  const soilDataRedux = useSelector((stateRedux) => stateRedux.soilData.soilData);
 
   const updateFloodingFrequency = (label = '') => {
-    const floodings = [...state.soilData.Flooding_Frequency];
+    const floodings = soilDataRedux?.Flooding_Frequency ? [...soilDataRedux.Flooding_Frequency] : [];
     if (floodings.indexOf(label) === -1) {
       // does not exist, dispatch to state
       floodings.push(label);
-      dispatch({
-        type: 'UPDATE_FLOODING_FREQUENCY',
-        data: floodings,
-      });
+      dispatchRedux(updateFloodingFrequencyRedux(floodings));
     } else {
       // exists, remove it from state
       const index = floodings.indexOf(label);
       floodings.splice(index, 1);
 
-      dispatch({
-        type: 'UPDATE_FLOODING_FREQUENCY',
-        data: floodings,
-      });
+      dispatchRedux(updateFloodingFrequencyRedux(floodings));
     }
   };
   return (
