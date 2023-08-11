@@ -33,10 +33,15 @@ const expansionPanelBaseStyle = {
 const InformationBar = () => {
   const { state, dispatch } = useContext(Context);
   const dispatchRedux = useDispatch();
+
+  // redux vars
   const addressRedux = useSelector((stateRedux) => stateRedux.addressData.address);
   const zoneRedux = useSelector((stateRedux) => stateRedux.addressData.zone);
   const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
+  const weatherDataRedux = useSelector((stateRedux) => stateRedux.weatherData.weatherData);
+
+  // useState vars
   const [confirmationOpen, setConfirmationOpen] = useState(false);
   const [expansionPanelComponent, setExpansionPanelComponent] = useState({
     component: '',
@@ -78,7 +83,7 @@ const InformationBar = () => {
           .split(',')
           .join(', ');
       case 'weather':
-        return `${state.weatherData.averageFrost.firstFrostDate.month} ${state.weatherData.averageFrost.firstFrostDate.day}`;
+        return `${weatherDataRedux?.averageFrost?.firstFrostDate?.month} ${weatherDataRedux?.averageFrost?.firstFrostDate?.day}`;
       case 'goals':
         return selectedGoalsRedux
           .toString()
@@ -132,7 +137,7 @@ const InformationBar = () => {
     if (
       (state.soilData.Flooding_Frequency === null && type === 'soil')
       || (type === 'address' && addressRedux === '')
-      || (type === 'weather' && state.weatherData.length === 0)
+      || (type === 'weather' && weatherDataRedux.length === 0)
     ) {
       return '';
     }
