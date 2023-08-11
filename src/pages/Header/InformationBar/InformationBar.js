@@ -81,7 +81,7 @@ const InformationBar = () => {
       case 'location':
         return `Zone ${zoneRedux}`;
       case 'soil':
-        return soilDataRedux?.Drainage_Class
+        return soilDataRedux?.drainageClass
           .toString()
           .split(',')
           .join(', ');
@@ -112,7 +112,7 @@ const InformationBar = () => {
           <FilterHdrIcon />
           &nbsp;
           {' '}
-          {/* {`Soils: Map Unit Name (${soilDataRedux?.Map_Unit_Name}%), Drainage Class: ${soilDataRedux?.Drainage_Class}})`} */}
+          {/* {`Soils: Map Unit Name (${soilDataRedux?.mapUnitName}%), Drainage Class: ${soilDataRedux?.drainageClass}})`} */}
           {`Soil Drainage: ${getSelectedValues('soil')}`}
         </>
       );
@@ -138,7 +138,7 @@ const InformationBar = () => {
 
   const getData = (type) => {
     if (
-      (soilDataRedux?.Flooding_Frequency === null && type === 'soil')
+      (soilDataRedux?.floodingFrequency === null && type === 'soil')
       || (type === 'address' && addressRedux === '')
       || (type === 'weather' && state.weatherData.length === 0)
     ) {

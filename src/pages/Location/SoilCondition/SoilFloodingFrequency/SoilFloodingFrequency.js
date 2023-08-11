@@ -16,7 +16,7 @@ const SoilFloodingFrequency = () => {
   const soilDataOriginalRedux = useSelector((stateRedux) => stateRedux.soilData.soilDataOriginal);
 
   const resetFloodingOptions = () => {
-    dispatchRedux(updateFloodingFrequency(soilDataOriginalRedux?.Flooding_Frequency));
+    dispatchRedux(updateFloodingFrequency(soilDataOriginalRedux?.floodingFrequency));
   };
 
   return (
@@ -60,7 +60,7 @@ const SoilFloodingFrequency = () => {
         </Typography>
       </div>
 
-      {!arrayEquals(soilDataRedux?.Flooding_Frequency, soilDataOriginalRedux?.Flooding_Frequency) && (
+      {!arrayEquals(soilDataRedux?.floodingFrequency, soilDataOriginalRedux?.floodingFrequency) && (
       <div className="col-12 pt-2">
         <div className="col-12 row">
           <div className="col text-left">
@@ -82,7 +82,7 @@ const SoilFloodingFrequency = () => {
       </div>
       )}
       <div className="col-12">
-        <RenderFloodingOptions flooding={soilDataRedux?.Flooding_Frequency} />
+        <RenderFloodingOptions flooding={soilDataRedux?.floodingFrequency} />
       </div>
     </div>
   );
