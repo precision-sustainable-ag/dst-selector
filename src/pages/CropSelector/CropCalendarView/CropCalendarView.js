@@ -58,8 +58,9 @@ const CropCalendarView = ({ activeCropData }) => {
   const [modalData, setModalData] = useState([{}]);
   // const { selectedGoals } = state;
   const activeCropDataShadow = activeCropData;
+  const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
 
-  const legendData = getLegendDataBasedOnCouncil(state.councilShorthand);
+  const legendData = getLegendDataBasedOnCouncil(councilShorthandRedux);
 
   // const dispatchValue = (value, type = 'UPDATE_ACTIVE_CROP_DATA') => {
   //   dispatch({

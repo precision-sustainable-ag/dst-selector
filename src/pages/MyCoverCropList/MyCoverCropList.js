@@ -20,6 +20,7 @@ const MyCoverCropList = ({ comparisonView, from }) => {
   const comparison = comparisonView || false;
   const history = useHistory();
   const [updatedSelectedCrops, setUpdatedSelectedCrops] = useState([]);
+  const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
   const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
   // const { selectedCrops } = state;
 
@@ -28,10 +29,10 @@ const MyCoverCropList = ({ comparisonView, from }) => {
   }, [selectedCropsRedux]);
 
   useEffect(() => {
-    if (state.state === '') {
+    if (stateLabelRedux === '') {
       history.push('/');
     }
-  }, [state.state]);
+  }, [stateLabelRedux]);
 
   const redirectToSpeciesSelector = () => {
     history.replace('/');
