@@ -51,7 +51,6 @@ const cropDataReducer = (state = initialState, action = null) => {
       return {
         ...state,
         activeCropData: action.payload.value,
-        // changedFilters: false can have different slice
       };
 
     case 'PULL_CROP_DATA':

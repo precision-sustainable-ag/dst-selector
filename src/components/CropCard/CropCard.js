@@ -3,22 +3,21 @@ import {
   Card, CardActionArea, CardContent, CardMedia, Typography,
 } from '@mui/material';
 import React, {
-  useContext, useEffect, useState,
+  useEffect, useState,
 } from 'react';
 import { useSelector } from 'react-redux';
 import { trimString } from '../../shared/constants';
-import { Context } from '../../store/Store';
 import RenderRelevantData from './RenderRelevantData/RenderRelevantData';
 
 const CropCard = ({
   crop, handleModalOpen, addCropToBasket, removeCrop, index, type, comparisonKeys, lightBG, GetAverageGoalRating,
 }) => {
-  const { state } = useContext(Context);
   const zoneRedux = useSelector((stateRedux) => stateRedux.addressData.zone);
+  const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
   const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
-  const sfilters = state[section];
+  const sfilters = filterStateRedux[section];
   const [allfilters, setAllFilters] = useState([]);
   const allData = [];
 
