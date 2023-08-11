@@ -8,31 +8,26 @@ import { Info } from '@mui/icons-material';
 import React, {
   useContext, useEffect, useState,
 } from 'react';
+import { useSelector } from 'react-redux';
 import { Context } from '../../../store/Store';
 import DictionaryContent from './DictionaryContent';
+import { callCoverCropApi } from '../../../shared/constants';
 
 const InformationSheetDictionary = ({ zone, from }) => {
   const [dictionary, setDictionary] = useState([]);
+  const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
   const { state } = useContext(Context);
   const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
-  const sfilters = state[section];
+  const sfilters = filterStateRedux[section];
 
   const currentZone = zone || sfilters.zone;
 
   useEffect(() => {
     document.title = 'Data Dictionary';
-
-    async function getDictData() {
-      await fetch(`https://${state.apiBaseURL}.covercrop-selector.org/legacy/data-dictionary?zone=zone${currentZone}`)
-        .then((res) => res.json())
-        .then((data) => { setDictionary(data); })
-        .catch((err) => {
-          // eslint-disable-next-line no-console
-          console.log(err.message);
-        });
+    if (currentZone) {
+      callCoverCropApi(`https://${state.apiBaseURL}.covercrop-selector.org/legacy/data-dictionary?zone=zone${currentZone}`)
+        .then((data) => { setDictionary(data); });
     }
-
-    getDictData();
   }, [zone]);
 
   return from === 'help' ? (

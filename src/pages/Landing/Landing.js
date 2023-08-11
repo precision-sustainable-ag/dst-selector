@@ -1,3 +1,4 @@
+/* eslint-disable no-alert */
 /*
   This file contains the Landing component, helper functions, and styles
   The Landing page is a static pages that has information about the project and prompts the user to select their location and goals
@@ -5,11 +6,10 @@
 */
 
 import {
-  Dialog,
-  DialogActions,
-  DialogContent,
-  Grid, Typography,
+  FormControl,
+  Grid, InputLabel, List, ListItem, MenuItem, Select, Typography,
 } from '@mui/material';
+// import SelectUSState from 'react-select-us-states';
 import React, {
   useContext,
   useEffect,
@@ -17,136 +17,110 @@ import React, {
   useRef,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import ReactGA from 'react-ga';
 import { RegionSelectorMap } from '@psa/dst.ui.region-selector-map';
 import { useAuth0 } from '@auth0/auth0-react';
-import { BinaryButton } from '../../shared/constants';
-import { Context, cropDataFormatter } from '../../store/Store';
+import { callCoverCropApi } from '../../shared/constants';
+import { Context } from '../../store/Store';
 import '../../styles/landing.scss';
 import ConsentModal from '../CoverCropExplorer/ConsentModal/ConsentModal';
-import { updateZone, updateLastZone } from '../../reduxStore/addressSlice';
+import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset';
+import { updateZone } from '../../reduxStore/addressSlice';
 import AuthModal from './AuthModal/AuthModal';
+import { updateRegions, updateRegion, updateStateInfo } from '../../reduxStore/mapSlice';
 
 const Landing = ({ height, title, bg }) => {
-  const { state, dispatch } = useContext(Context);
+  const { state } = useContext(Context);
   const dispatchRedux = useDispatch();
-  const history = useHistory();
   const [handleConfirm, setHandleConfirm] = useState(false);
   const [containerHeight, setContainerHeight] = useState(height);
   const [allStates, setAllStates] = useState([]);
-  const [selectedRegion, setSelectedRegion] = useState(state.selectedRegion);
+  const [selectedState, setSelectedState] = useState('');
+  const [mapState, setMapState] = useState({});
+  const [selectedRegion, setSelectedRegion] = useState({});
   const mapRef = useRef(null);
-  const defaultMarkers = [[40.78489145, -74.80733626930342]];
+  const regionsRedux = useSelector((stateRedux) => stateRedux.mapData.regions);
+  const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
+  const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
+  const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
   const { isAuthenticated } = useAuth0();
 
-  const zoneRedux = useSelector((stateRedux) => stateRedux.addressData.zone);
-  // const zoneIdRedux = useSelector((stateRedux) => stateRedux.addressData.zoneId);
+  const stateChange = (selState) => {
+    setSelectedState(selState);
+    dispatchRedux(updateStateInfo({
+      stateLabel: selState.label,
+      stateId: selState.id,
+      councilShorthand: selState.council.shorthand,
+      councilLabel: selState.council.label,
+    }));
+    // This was targeting the map object which didnt have a label or shorthand property.  Should be be getting done here?
+  };
 
-  async function getAllStates() {
-    const key = `https://${state.apiBaseURL}.covercrop-selector.org/v1/states`;
-    await fetch(key)
-      .then((res) => res.json())
-      .then((data) => { setAllStates(data.data); })
-      .catch((err) => {
-        // eslint-disable-next-line no-console
-        console.log(err.message);
-      });
-  }
-
-  async function getCropData(currentRegionId) {
-    if (currentRegionId === null) {
-      return;
-    }
-
-    const query = `${encodeURIComponent('regions')}=${encodeURIComponent(currentRegionId)}`;
-    await fetch(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${state.stateId}/crops?${query}`)
-      .then((res) => res.json())
-      .then((data) => {
-        cropDataFormatter(data.data);
-        dispatch({
-          type: 'PULL_CROP_DATA',
-          data: data.data,
-        });
-      })
-      .catch((err) => {
-        // eslint-disable-next-line no-console
-        console.log(err.message);
-      });
-  }
-
-  async function getDictData(currentRegionId) {
-    if (currentRegionId === null) {
-      return;
-    }
-
-    const query = `${encodeURIComponent('regions')}=${encodeURIComponent(currentRegionId)}`;
-    await fetch(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${state.stateId}/dictionary?${query}`)
-      .then((res) => res.json())
-      .then((data) => {
-        dispatch({
-          type: 'PULL_DICTIONARY_DATA',
-          data: data.data,
-        });
-      })
-      .catch((err) => {
-      // eslint-disable-next-line no-console
-        console.log(err.message);
-      });
-  }
+  const handleStateChange = (e) => {
+    setSelectedRegion('');
+    const selState = allStates.filter((s) => s.shorthand === e.target.value);
+    stateChange(selState[0]);
+  };
 
   useEffect(() => {
-    getAllStates();
+    callCoverCropApi(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states`).then((data) => { setAllStates(data.data); });
   }, []);
 
   useEffect(() => {
-    if (state.regions?.length > 0) {
-      dispatch({
-        type: 'UPDATE_REGION',
-        data: {
-          regionId: state.regions[0]?.id ?? '',
-          regionLabel: state.regions[0]?.label ?? '',
-          regionShorthand: state.regions[0]?.shorthand ?? '',
-        },
-      });
+    if (regionsRedux?.length > 0) {
+      dispatchRedux(updateRegion({
+        regionId: regionsRedux[0]?.id ?? '',
+        regionLabel: regionsRedux[0]?.label ?? '',
+        regionShorthand: regionsRedux[0]?.shorthand ?? '',
+      }));
 
       dispatchRedux(updateZone(
         {
-          zoneText: state.regions[0]?.label,
-          zone: state.regions[0]?.shorthand,
-          zoneId: state.regions[0]?.id,
+          zoneText: regionsRedux[0]?.label,
+          zone: regionsRedux[0]?.shorthand,
+          zoneId: regionsRedux[0]?.id,
         },
       ));
-
-      getDictData(state.regions[0]?.id);
-      getCropData(state.regions[0]?.id);
     }
-  }, [state.regions]);
+  }, [regionsRedux]);
 
   useEffect(() => {
-    if (state.stateId) {
-      fetch(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${state.stateId}/regions`)
+    if (stateIdRedux) {
+      fetch(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${stateIdRedux}/regions`)
         .then((res) => res.json())
         .then((data) => {
           let fetchedRegions;
+
           if (data.data.Counties) {
             fetchedRegions = data.data.Counties;
+          } else {
+            fetchedRegions = data.data.Zones;
           }
-          fetchedRegions = data.data.Zones;
 
-          dispatch({
-            type: 'UPDATE_REGIONS',
-            data: {
-              regions: fetchedRegions,
-            },
-          });
+          dispatchRedux(updateRegions(fetchedRegions));
         })
         .catch((err) => {
           // eslint-disable-next-line no-console
           console.log(err.message);
         });
     }
-  }, [state.stateId]);
+  }, [stateIdRedux]);
+
+  // SelectedRegion needs to get replaced with mapState once the map is updated to using state verbage instead of region.
+  useEffect(() => {
+    if (selectedRegion) {
+      const st = allStates.filter((s) => s.label === selectedRegion.properties.STATE_NAME);
+      if (st.length > 0) {
+        setSelectedState(st[0]);
+      } else if (selectedRegion?.id) {
+        alert(
+          // eslint-disable-next-line max-len
+          'The region you have selected is not currently supported. We currently support Northeast, Midwest, and Southern Cover Crop Councils. Please try again!',
+        );
+      }
+    }
+  }, [selectedRegion, mapState]);
 
   useEffect(() => {
     // true signifies we are on dev, false signifies we are on prod
@@ -161,38 +135,52 @@ const Landing = ({ height, title, bg }) => {
       return productionCouncils.includes(selectedCouncil);
     };
 
-    if (Object.keys(selectedRegion).length > 0) {
-      const selState = allStates.filter((s) => s.label === selectedRegion.properties.STATE_NAME);
-      if (selState.length > 0 && verifyCouncil(selState[0]?.council.shorthand)) {
-        dispatchRedux(updateLastZone(zoneRedux));
-
-        dispatch({
-          type: 'UPDATE_STATE',
-          data: {
-            state: selState[0].label,
-            stateId: selState[0].id,
-            councilShorthand: selState[0].council.shorthand,
-            councilLabel: selState[0].council.label,
-          },
-        });
+    if (selectedState) {
+      if (verifyCouncil(selectedState.council.shorthand)) {
+        stateChange(selectedState);
       } else {
-        dispatch({
-          type: 'UPDATE_STATE',
-          data: {
-            state: '',
-            stateId: '',
-            councilShorthand: '',
-            councilLabel: '',
-          },
-        });
-        // eslint-disable-next-line no-alert
-        alert(
-          // eslint-disable-next-line max-len
-          devEnvironment ? 'The region you have selected is not currently supported. We currently support Northeast, Midwest, and Southern Cover Crop Councils. Please try again!' : 'The region you have selected is not currently supported. We currently support Northeast Cover Crop Council. Please try again!',
-        );
+        // FIXME: possible issues here due to the default value changed from '' to null
+        dispatchRedux(updateStateInfo({
+          stateLabel: '',
+          stateId: '',
+          councilShorthand: '',
+          councilLabel: '',
+        }));
       }
     }
-  }, [selectedRegion]);
+  }, [selectedState]);
+
+  const stateSelect = () => (
+    <List component="div" disablePadding>
+      <ListItem component="div">
+        <FormControl
+          variant="filled"
+          style={{ width: '100%' }}
+          sx={{ minWidth: 120 }}
+        >
+          <InputLabel>State</InputLabel>
+          <Select
+            variant="filled"
+            labelId="plant-hardiness-zone-dropdown-select"
+            id="plant-hardiness-zone-dropdown-select"
+            style={{
+              width: '100%',
+              textAlign: 'left',
+            }}
+            onChange={(e) => handleStateChange(e)}
+            value={selectedState.shorthand || ''}
+          >
+
+            {allStates.length > 0 && allStates.map((st, i) => (
+              <MenuItem value={st.shorthand} key={`Region${st}${i}`}>
+                {st.label?.toUpperCase()}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </ListItem>
+    </List>
+  );
 
   useEffect(() => {
     if (state.consent) {
@@ -228,38 +216,16 @@ const Landing = ({ height, title, bg }) => {
   }, [title]);
 
   useEffect(() => {
-    if (localStorage.getItem('lastLocation') === 'CoverCropExplorer') {
-      document.title = 'Cover Crop Selector';
-      if (state.selectedCrops.length) {
-        setHandleConfirm(true);
-      }
+    document.title = 'Cover Crop Selector';
+    if (state.myCoverCropListLocation !== 'selector' && selectedCropsRedux.length > 0) {
+      setHandleConfirm(true);
     }
-    localStorage.setItem('lastLocation', 'CropSelector');
   }, []);
-
-  const handleConfirmationChoice = (clearMyList = false) => {
-    if (clearMyList) {
-      dispatch({
-        type: 'RESET',
-        data: {
-          markers: defaultMarkers,
-          selectedCrops: [],
-        },
-      });
-    } else {
-      history.goBack();
-      if (window.location.pathname !== '/') {
-        history.push('/');
-      }
-    }
-    setHandleConfirm(false);
-  };
 
   return (
 
     <div
       id="landingWrapper"
-      // className="d-flex flex-column"
       style={{
         minHeight: containerHeight,
         background: `url(${bg})`,
@@ -269,7 +235,6 @@ const Landing = ({ height, title, bg }) => {
       <ConsentModal consent={state.consent} />
       {!isAuthenticated && <AuthModal />}
 
-      {/* <Grid container direction="row"> */}
       <Grid container>
 
         <Grid
@@ -277,8 +242,6 @@ const Landing = ({ height, title, bg }) => {
           item
           lg={6}
           xs={12}
-          // xs={6}
-          // spacing={2}
           container
           justifyContent="center"
           alignItems="center"
@@ -292,12 +255,12 @@ const Landing = ({ height, title, bg }) => {
         >
           <Grid item>
             <Typography variant="h4" gutterBottom align="center">
-              {`Welcome to the${state.councilLabel && ` ${state.councilLabel}`} Species Selector Tool`}
+              {`Welcome to the${councilLabelRedux && ` ${councilLabelRedux}`} Species Selector Tool`}
             </Typography>
           </Grid>
           <Grid item>
             <Typography variant="body1" gutterBottom align="left">
-              {`You are currently interacting with the${state.councilLabel && ` ${state.councilLabel}`} Species Selector Tool. We
+              {`You are currently interacting with the${councilLabelRedux && ` ${councilLabelRedux}`} Species Selector Tool. We
             seek feedback about the usability and usefulness of this tool. Our goal is to encourage
             and support the use of cover crops in your area. You can learn more about the
             cover crop data and design of this tool`}
@@ -316,6 +279,7 @@ const Landing = ({ height, title, bg }) => {
               and seeding rate calculator and an economics calculator. Our ultimate goal is to provide
               a suite of interconnected tools that function together seamlessly.
             </Typography>
+            {stateSelect()}
             <Typography
               variant="body1"
               style={{ fontWeight: 'bold', paddingBottom: '1em' }}
@@ -363,7 +327,7 @@ const Landing = ({ height, title, bg }) => {
             <Typography variant="h5" gutterBottom align="left" className="font-weight-bold">
               Select your State
             </Typography>
-            {selectedRegion.properties && (
+            {selectedState && (
               <Typography
                 variant="h6"
                 gutterBottom
@@ -371,19 +335,22 @@ const Landing = ({ height, title, bg }) => {
                 className="font-weight-bold"
                 style={{ color: 'blue', marginLeft: '1rem' }}
               >
-                {selectedRegion.properties.STATE_NAME}
+                {selectedState.label}
                 {' '}
                 (
-                  { selectedRegion.properties.STATE_ABBR }
+                  { selectedState.shorthand }
                 )
               </Typography>
             )}
           </Grid>
           <Grid item>
             <div style={{ position: 'relative', width: '100%', paddingRight: '10%' }}>
+              {/* selectedRegion and selectorFunc should be deprecated and selectedState and setMapState should be used in their place */}
               <RegionSelectorMap
                 selectorFunc={setSelectedRegion}
+                selectorFunction={setMapState}
                 selectedRegion={selectedRegion}
+                selectedState={selectedState}
                 initWidth="100%"
                 initHeight="350px"
                 initLon={-98}
@@ -394,18 +361,7 @@ const Landing = ({ height, title, bg }) => {
           </Grid>
         </Grid>
       </Grid>
-      <Dialog onClose={() => setHandleConfirm(false)} open={handleConfirm}>
-        <DialogContent dividers>
-          <Typography variant="body1">
-            You will need to clear your My Cover Crop List to continue.  Would you like to continue?
-          </Typography>
-        </DialogContent>
-        <DialogActions>
-          <BinaryButton
-            action={handleConfirmationChoice}
-          />
-        </DialogActions>
-      </Dialog>
+      <MyCoverCropReset handleConfirm={handleConfirm} setHandleConfirm={setHandleConfirm} />
     </div>
   );
 };

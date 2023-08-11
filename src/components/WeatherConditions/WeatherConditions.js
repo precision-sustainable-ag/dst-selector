@@ -16,52 +16,53 @@ import {
 } from '@mui/material';
 import moment from 'moment';
 import React, { useContext, useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { LightButton } from '../../shared/constants';
 import { Context } from '../../store/Store';
 import WeatherPrecipitation from './WeatherPrecipitation/WeatherPrecipitation';
 import WeatherFrostDates from './WeatherFrostDates/WeatherFrostDates';
 import WeatherFrostFreeDays from './WeatherFrostFreeDays/WeatherFrostFreeDays';
 import MyCoverCropReset from '../MyCoverCropReset/MyCoverCropReset';
+import { updateWeatherConditions } from '../../reduxStore/weatherSlice';
 
 const WeatherConditions = ({ caller }) => {
-  const { state, dispatch } = useContext(Context);
+  const { state } = useContext(Context);
+  const dispatchRedux = useDispatch();
+
+  // redux vars
+  const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
+  const weatherDataRedux = useSelector((stateRedux) => stateRedux.weatherData.weatherData);
+
+  // useState vars
   const [months, setMonths] = useState([]);
   const [currentMonthFull, setCurrentMonthFull] = useState('NOVEMBER');
   const [anyValuesChanged, setAnyValuesChanged] = useState(false);
-
-  const [weatherDataShadow, setWeatherDataShadow] = useState(state.weatherData);
-
+  const [weatherDataShadow, setWeatherDataShadow] = useState(weatherDataRedux);
   const [lastFrostDayHelper, setLastFrostDayHelper] = useState('');
   const [firstFrostDayHelper, setFirstFrostDayHelper] = useState('');
   const [firstFrostDayError, setFirstFrostDayError] = useState(false);
   const [lastFrostDayError, setLastFrostDayError] = useState(false);
   const [handleConfirm, setHandleConfirm] = useState(false);
 
-  useEffect(() => {
-    if (!state.ajaxInProgress) {
-      setWeatherDataShadow(state.weatherData);
-    }
-  }, [state.ajaxInProgress, state.weatherData]);
-
   const [firstFrostMonth, setFirstFrostMonth] = useState(
-    state.weatherData.averageFrost.firstFrostDate.month,
+    weatherDataRedux?.averageFrost?.firstFrostDate?.month,
   );
   const [firstFrostDay, setFirstFrostDay] = useState(
-    state.weatherData.averageFrost.firstFrostDate.day,
+    weatherDataRedux?.averageFrost?.firstFrostDate?.day,
   );
   const [lastFrostMonth, setLastFrostMonth] = useState(
-    state.weatherData.averageFrost.lastFrostDate.month,
+    weatherDataRedux?.averageFrost?.lastFrostDate?.month,
   );
   const [lastFrostDay, setLastFrostDay] = useState(
-    state.weatherData.averageFrost.lastFrostDate.day,
+    weatherDataRedux?.averageFrost?.lastFrostDate?.day,
   );
 
   const [averagePrecipitation, setAveragePrecipitation] = useState({
-    thisMonth: state.weatherData.averagePrecipitation.thisMonth,
-    annual: state.weatherData.averagePrecipitation.annual,
+    thisMonth: weatherDataRedux?.averagePrecipitation?.thisMonth,
+    annual: weatherDataRedux?.averagePrecipitation?.annual,
   });
 
-  const [frostFreeDays, setFrostFreeDays] = useState(state.weatherData.frostFreeDays);
+  const [frostFreeDays, setFrostFreeDays] = useState(weatherDataRedux?.frostFreeDays);
   const [open, setOpen] = useState(false);
 
   const validateAndBroadcastModalData = () => {
@@ -87,8 +88,8 @@ const WeatherConditions = ({ caller }) => {
         },
       },
       averagePrecipitation: {
-        thisMonth: averagePrecipitation.thisMonth, // inches
-        annual: averagePrecipitation.annual, // inches
+        thisMonth: averagePrecipitation?.thisMonth, // inches
+        annual: averagePrecipitation?.annual, // inches
       },
       frostFreeDays,
     };
@@ -100,10 +101,7 @@ const WeatherConditions = ({ caller }) => {
       setLastFrostDayError(true);
       setLastFrostDayHelper('Invalid Day');
     } else {
-      dispatch({
-        type: 'UPDATE_WEATHER_CONDITIONS',
-        data: { weatherData: broadcastObject },
-      });
+      dispatchRedux(updateWeatherConditions(broadcastObject));
       setOpen(false);
     }
 
@@ -112,11 +110,11 @@ const WeatherConditions = ({ caller }) => {
   };
 
   useEffect(() => {
-    if (state.myCoverCropListLocation !== 'selector' && state.selectedCrops.length > 0) {
+    if (state.myCoverCropListLocation !== 'selector' && selectedCropsRedux.length > 0) {
       // document.title = 'Cover Crop Selector';
       setHandleConfirm(true);
     }
-  }, [state.selectedCrops, state.myCoverCropListLocation]);
+  }, [selectedCropsRedux, state.myCoverCropListLocation]);
 
   useEffect(() => {
     // get current month in long form
@@ -124,18 +122,18 @@ const WeatherConditions = ({ caller }) => {
     // render monthsShort on the modal
     setMonths(moment.localeData().monthsShort());
 
-    setFirstFrostMonth(state.weatherData.averageFrost.firstFrostDate.month);
-    setFirstFrostDay(state.weatherData.averageFrost.firstFrostDate.day);
-    setLastFrostDay(state.weatherData.averageFrost.lastFrostDate.day);
-    setLastFrostMonth(state.weatherData.averageFrost.lastFrostDate.month);
+    setFirstFrostMonth(weatherDataRedux?.averageFrost?.firstFrostDate?.month);
+    setFirstFrostDay(weatherDataRedux?.averageFrost?.firstFrostDate?.day);
+    setLastFrostDay(weatherDataRedux?.averageFrost?.lastFrostDate?.day);
+    setLastFrostMonth(weatherDataRedux?.averageFrost?.lastFrostDate?.month);
 
     setAveragePrecipitation({
-      thisMonth: state.weatherData.averagePrecipitation.thisMonth,
-      annual: state.weatherData.averagePrecipitation.annual,
+      thisMonth: weatherDataRedux?.averagePrecipitation?.thisMonth,
+      annual: weatherDataRedux?.averagePrecipitation?.annual,
     });
 
-    setFrostFreeDays(state.weatherData.frostFreeDays);
-  }, [state.weatherData, caller]);
+    setFrostFreeDays(weatherDataRedux?.frostFreeDays);
+  }, [weatherDataRedux, caller]);
 
   const handleModalOpen = () => {
     setOpen(true);
@@ -148,15 +146,15 @@ const WeatherConditions = ({ caller }) => {
   useEffect(() => {
     const checkIfAnythingChanged = () => {
       if (
-        firstFrostMonth === weatherDataShadow.averageFrost.firstFrostDate.month
-        && parseInt(firstFrostDay, 10) === parseInt(weatherDataShadow.averageFrost.firstFrostDate.day, 10)
-        && lastFrostMonth === weatherDataShadow.averageFrost.lastFrostDate.month
-        && lastFrostDay === weatherDataShadow.averageFrost.lastFrostDate.day
-        && parseFloat(averagePrecipitation.thisMonth)
-          === parseFloat(weatherDataShadow.averagePrecipitation.thisMonth)
-        && parseFloat(averagePrecipitation.annual)
-          === parseFloat(weatherDataShadow.averagePrecipitation.annual)
-        && parseInt(frostFreeDays, 10) === parseInt(weatherDataShadow.frostFreeDays, 10)
+        firstFrostMonth === weatherDataShadow?.averageFrost?.firstFrostDate?.month
+        && parseInt(firstFrostDay, 10) === parseInt(weatherDataShadow?.averageFrost?.firstFrostDate?.day, 10)
+        && lastFrostMonth === weatherDataShadow?.averageFrost?.lastFrostDate?.month
+        && lastFrostDay === weatherDataShadow?.averageFrost?.lastFrostDate?.day
+        && parseFloat(averagePrecipitation?.thisMonth)
+          === parseFloat(weatherDataShadow?.averagePrecipitation?.thisMonth)
+        && parseFloat(averagePrecipitation?.annual)
+          === parseFloat(weatherDataShadow?.averagePrecipitation?.annual)
+        && parseInt(frostFreeDays, 10) === parseInt(weatherDataShadow?.frostFreeDays, 10)
       ) {
         // return false;
         setAnyValuesChanged(false);
@@ -179,6 +177,13 @@ const WeatherConditions = ({ caller }) => {
     averagePrecipitation,
     frostFreeDays,
   ]);
+
+  useEffect(() => {
+    if (!state.ajaxInProgress) {
+      setWeatherDataShadow(weatherDataRedux);
+    }
+  }, [state.ajaxInProgress, weatherDataRedux]);
+
   return (
     <div className="row">
       <div className="col-12">
@@ -261,12 +266,12 @@ const WeatherConditions = ({ caller }) => {
                           </option>
                         ))}
                       </Select>
-                      {firstFrostMonth !== weatherDataShadow.averageFrost.firstFrostDate.month ? (
+                      {firstFrostMonth !== weatherDataShadow?.averageFrost?.firstFrostDate?.month ? (
                         <Button
                           className="text-danger"
                           size="small"
                           onClick={() => setFirstFrostMonth(
-                            weatherDataShadow.averageFrost.firstFrostDate.month,
+                            weatherDataShadow?.averageFrost?.firstFrostDate?.month,
                           )}
                         >
                           Values changed, Reset?
@@ -305,12 +310,12 @@ const WeatherConditions = ({ caller }) => {
                         }}
                       />
                       {parseInt(firstFrostDay, 10)
-                        !== parseInt(weatherDataShadow.averageFrost.firstFrostDate.day, 10) ? (
+                        !== parseInt(weatherDataShadow?.averageFrost?.firstFrostDate?.day, 10) ? (
                           <Button
                             className="text-danger"
                             size="small"
                             onClick={() => setFirstFrostDay(
-                              parseInt(weatherDataShadow.averageFrost.firstFrostDate.day, 10),
+                              parseInt(weatherDataShadow?.averageFrost?.firstFrostDate?.day, 10),
                             )}
                           >
                             Values changed, Reset?
@@ -345,11 +350,11 @@ const WeatherConditions = ({ caller }) => {
                           </option>
                         ))}
                       </Select>
-                      {lastFrostMonth !== weatherDataShadow.averageFrost.lastFrostDate.month ? (
+                      {lastFrostMonth !== weatherDataShadow?.averageFrost?.lastFrostDate?.month ? (
                         <Button
                           className="text-danger"
                           size="small"
-                          onClick={() => setLastFrostMonth(weatherDataShadow.averageFrost.lastFrostDate.month)}
+                          onClick={() => setLastFrostMonth(weatherDataShadow?.averageFrost?.lastFrostDate?.month)}
                         >
                           Values changed, Reset?
                         </Button>
@@ -386,12 +391,12 @@ const WeatherConditions = ({ caller }) => {
                         }}
                       />
                       {parseInt(lastFrostDay, 10)
-                        !== parseInt(weatherDataShadow.averageFrost.lastFrostDate.day, 10) ? (
+                        !== parseInt(weatherDataShadow?.averageFrost?.lastFrostDate?.day, 10) ? (
                           <Button
                             className="text-danger"
                             size="small"
                             onClick={() => setLastFrostDay(
-                              parseInt(weatherDataShadow.averageFrost.lastFrostDate.day, 10),
+                              parseInt(weatherDataShadow?.averageFrost?.lastFrostDate?.day, 10),
                             )}
                           >
                             Values changed, Reset?
@@ -418,10 +423,10 @@ const WeatherConditions = ({ caller }) => {
                         inputProps={{ min: '1', max: '100', step: '0.01' }}
                         maxLength={4}
                         helperText="Inches"
-                        value={averagePrecipitation.thisMonth}
+                        value={averagePrecipitation?.thisMonth}
                         onChange={(event) => {
                           setAveragePrecipitation({
-                            ...averagePrecipitation,
+                            averagePrecipitation,
                             thisMonth: event.target.value === '' ? 0 : event.target.value,
                           });
                         }}
@@ -431,16 +436,16 @@ const WeatherConditions = ({ caller }) => {
                           width: 200,
                         }}
                       />
-                      {parseFloat(averagePrecipitation.thisMonth)
-                        !== parseFloat(weatherDataShadow.averagePrecipitation.thisMonth) ? (
+                      {parseFloat(averagePrecipitation?.thisMonth)
+                        !== parseFloat(weatherDataShadow?.averagePrecipitation?.thisMonth) ? (
                           <Button
                             className="text-danger"
                             size="small"
                             onClick={() => setAveragePrecipitation({
                               thisMonth: parseFloat(
-                                weatherDataShadow.averagePrecipitation.thisMonth,
+                                weatherDataShadow?.averagePrecipitation?.thisMonth,
                               ),
-                              annual: parseFloat(averagePrecipitation.annual),
+                              annual: parseFloat(averagePrecipitation?.annual),
                             })}
                           >
                             Values changed, Reset?
@@ -460,10 +465,10 @@ const WeatherConditions = ({ caller }) => {
                         inputProps={{ min: '1', max: '100', step: '0.01' }}
                         maxLength={4}
                         helperText="Inches"
-                        value={averagePrecipitation.annual}
+                        value={averagePrecipitation?.annual}
                         onChange={(event) => {
                           setAveragePrecipitation({
-                            ...averagePrecipitation,
+                            averagePrecipitation,
                             annual:
                                 event.target.value === '' ? 0 : parseFloat(event.target.value),
                           });
@@ -474,14 +479,14 @@ const WeatherConditions = ({ caller }) => {
                           width: 200,
                         }}
                       />
-                      {parseFloat(averagePrecipitation.annual)
-                        !== parseFloat(weatherDataShadow.averagePrecipitation.annual) ? (
+                      {parseFloat(averagePrecipitation?.annual)
+                        !== parseFloat(weatherDataShadow?.averagePrecipitation?.annual) ? (
                           <Button
                             className="text-danger"
                             size="small"
                             onClick={() => setAveragePrecipitation({
-                              thisMonth: parseFloat(averagePrecipitation.thisMonth),
-                              annual: parseFloat(weatherDataShadow.averagePrecipitation.annual),
+                              thisMonth: parseFloat(averagePrecipitation?.thisMonth),
+                              annual: parseFloat(weatherDataShadow?.averagePrecipitation?.annual),
                             })}
                           >
                             Values changed, Reset?
@@ -524,11 +529,11 @@ const WeatherConditions = ({ caller }) => {
                           width: 200,
                         }}
                       />
-                      {parseInt(frostFreeDays, 10) !== parseInt(weatherDataShadow.frostFreeDays, 10) ? (
+                      {parseInt(frostFreeDays, 10) !== parseInt(weatherDataShadow?.frostFreeDays, 10) ? (
                         <Button
                           className="text-danger"
                           size="small"
-                          onClick={() => setFrostFreeDays(parseInt(weatherDataShadow.frostFreeDays, 10))}
+                          onClick={() => setFrostFreeDays(parseInt(weatherDataShadow?.frostFreeDays, 10))}
                         >
                           Values changed, Reset?
                         </Button>

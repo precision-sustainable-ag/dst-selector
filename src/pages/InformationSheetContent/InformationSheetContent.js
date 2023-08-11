@@ -12,10 +12,11 @@ import {
   Accordion, AccordionDetails, AccordionSummary, Typography, Tooltip,
 } from '@mui/material';
 import { ExpandMore } from '@mui/icons-material';
+import { useSelector } from 'react-redux';
 import { Context } from '../../store/Store';
 import CoverCropInformation from './CoverCropInformation/CoverCropInformation';
 import InformationSheetReferences from './InformationSheetReferences/InformationSheetReferences';
-import { getRating } from '../../shared/constants';
+import { callCoverCropApi, getRating } from '../../shared/constants';
 
 const InformationSheetContent = ({ crop, modalData }) => {
   const { state } = useContext(Context);
@@ -24,35 +25,21 @@ const InformationSheetContent = ({ crop, modalData }) => {
   const [currentSources, setCurrentSources] = useState([{}]);
   const [allThumbs, setAllThumbs] = useState([]);
   const [dataDone, setDataDone] = useState(false);
-  const query = `${encodeURIComponent('regions')}=${encodeURIComponent(state.regionId)}`;
-
-  async function getSourceData() {
-    await fetch(`https://${state.apiBaseURL}.covercrop-selector.org/v1/crops/${crop?.id}/resources?${query}`)
-      .then((res) => res.json())
-      .then((data) => setCurrentSources(data.data))
-      .catch((err) => {
-        // eslint-disable-next-line no-console
-        console.log(err.message);
-      });
-  }
-
-  async function getData() {
-    await fetch(`https://${state.apiBaseURL}.covercrop-selector.org/v1/crops/${crop?.id}/images?${query}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setAllThumbs(data.data);
-        setDataDone(true);
-      })
-      .catch((err) => {
-        // eslint-disable-next-line no-console
-        console.log(err.message);
-      });
-  }
+  const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
+  const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
+  const query = `${encodeURIComponent('regions')}=${encodeURIComponent(regionIdRedux)}`;
 
   useEffect(() => {
     document.title = `${crop.label} Zone ${zone}`;
-    getSourceData();
-    getData();
+    if (stateIdRedux && regionIdRedux) {
+      callCoverCropApi(`https://${state.apiBaseURL}.covercrop-selector.org/v1/crops/${crop?.id}/resources?${query}`)
+        .then((data) => setCurrentSources(data.data));
+      callCoverCropApi(`https://${state.apiBaseURL}.covercrop-selector.org/v1/crops/${crop?.id}/images?${query}`)
+        .then((data) => {
+          setAllThumbs(data.data);
+          setDataDone(true);
+        });
+    }
   }, [crop, zone]);
 
   return dataDone === true && (

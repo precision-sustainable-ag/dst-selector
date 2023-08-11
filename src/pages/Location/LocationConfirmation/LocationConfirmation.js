@@ -18,6 +18,8 @@ const LocationConfirmation = () => {
   const addressRedux = useSelector((stateRedux) => stateRedux.addressData.address);
   const markersRedux = useSelector((stateRedux) => stateRedux.addressData.markers);
   const zoneRedux = useSelector((stateRedux) => stateRedux.addressData.zone);
+  const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
+  const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
 
   return (
     <div
@@ -67,7 +69,7 @@ const LocationConfirmation = () => {
                 <div className="col-12 pt-2">
                   <Typography variant="body1">
                     Your cover crop recommendations will come from the Plant Hardiness Zone
-                    {` ${zoneRedux} ${state.councilShorthand} dataset`}
+                    {` ${zoneRedux} ${councilShorthandRedux} dataset`}
                   </Typography>
                 </div>
                 <div className="col-12">
@@ -135,7 +137,7 @@ const LocationConfirmation = () => {
         </div>
         <div className="col-xl-5 offset-xl-1 col-lg-12">
           <div className="container-fluid">
-            {state.progress === 2 && state.councilLabel !== 'Midwest Cover Crop Council' && <SoilCondition />}
+            {state.progress === 2 && councilLabelRedux !== 'Midwest Cover Crop Council' && <SoilCondition />}
             {state.progress === 3 && <WeatherConditions />}
           </div>
         </div>

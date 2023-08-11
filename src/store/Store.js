@@ -232,16 +232,16 @@ const initialState = {
   addToCartBtnText: 'add to list',
   zoneToggle: true, // Explorer: true if PLANT HARDINESS ZONE is expanded
   soilData: {
-    Map_Unit_Name: '',
-    Drainage_Class: [],
-    Flooding_Frequency: [],
-    Ponding_Frequency: '',
+    mapUnitName: '',
+    drainageClass: [],
+    floodingFrequency: [],
+    pondingFrequency: '',
   },
   soilDataOriginal: {
-    Map_Unit_Name: '',
-    Drainage_Class: [],
-    Flooding_Frequency: [],
-    Ponding_Frequency: '',
+    mapUnitName: '',
+    drainageClass: [],
+    floodingFrequency: [],
+    pondingFrequency: '',
   },
 
   weatherData: {

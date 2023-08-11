@@ -1,13 +1,15 @@
 import { Chip, Grid, Tooltip } from '@mui/material';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import React, {
-  useEffect, useContext, useState,
+  useEffect, useState,
 } from 'react';
-import { Context } from '../../../store/Store';
+import { useDispatch, useSelector } from 'react-redux';
+import { filterOffRedux, filterOnRedux, filterToggle } from '../../../reduxStore/filterSlice';
 
 const DollarsAndRatings = ({ filter, handleChange }) => {
-  const { state, dispatch } = useContext(Context);
-  const sfilters = window.location.href.includes('species-selector') ? state.selector : state.explorer;
+  const dispatchRedux = useDispatch();
+  const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
+  const sfilters = window.location.href.includes('species-selector') ? filterStateRedux.selector : filterStateRedux.explorer;
 
   const style = filter.symbol === 'dollar'
     ? {}
@@ -25,19 +27,21 @@ const DollarsAndRatings = ({ filter, handleChange }) => {
         .map((i) => {
           const filterKey = `${filter.name}: ${i}`;
           const selected = sfilters[filterKey];
-          const filterOn = (key = filterKey) => dispatch({
-            type: 'FILTER_ON',
-            data: {
-              value: key,
-            },
-          });
+          // const filterOn = (key = filterKey) => dispatch({
+          //   type: 'FILTER_ON',
+          //   data: {
+          //     value: key,
+          //   },
+          // });
+          const filterOn = (key = filterKey) => dispatchRedux(filterOnRedux(key));
 
-          const filterOff = (key = filterKey) => dispatch({
-            type: 'FILTER_OFF',
-            data: {
-              value: key,
-            },
-          });
+          // const filterOff = (key = filterKey) => dispatch({
+          //   type: 'FILTER_OFF',
+          //   data: {
+          //     value: key,
+          //   },
+          // });
+          const filterOff = (key = filterKey) => dispatchRedux(filterOffRedux(key));
 
           return (
             <Chip
@@ -81,8 +85,9 @@ const DollarsAndRatings = ({ filter, handleChange }) => {
   );
 }; // DollarsAndRatings
 
-const Chips = ({ state, filter, handleChange }) => {
-  const sfilters = window.location.href.includes('species-selector') ? state.selector : state.explorer;
+const Chips = ({ filter, handleChange }) => {
+  const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
+  const sfilters = window.location.href.includes('species-selector') ? filterStateRedux.selector : filterStateRedux.explorer;
 
   return filter.values.map((val, i) => {
     const selected = sfilters[`${filter.name}: ${val.value}`];
@@ -126,7 +131,7 @@ const Tip = ({ filter }) => (
 
 // added ref prop to remove error. TODO: look into if forwardRef is needed here since ref isnt used
 const Filters = ({ filters }) => {
-  const { state, dispatch } = useContext(Context);
+  const disptachRedux = useDispatch();
   // const { filters } = props;
   const [selected, setSelected] = useState({});
   const [sidebarFilterOptions, setSidebarFilterOptions] = useState({});
@@ -148,12 +153,13 @@ const Filters = ({ filters }) => {
   };
 
   const chipChange = (filterName, val) => {
-    dispatch({
-      type: 'FILTER_TOGGLE',
-      data: {
-        value: `${filterName}: ${val}`,
-      },
-    });
+    disptachRedux(filterToggle({ value: `${filterName}: ${val}` }));
+    // dispatch({
+    //   type: 'FILTER_TOGGLE',
+    //   data: {
+    //     value: `${filterName}: ${val}`,
+    //   },
+    // });
     setSelected({ ...selected, whatever: 'rerender' });
   };
 
@@ -167,7 +173,7 @@ const Filters = ({ filters }) => {
                 <Tip filter={filter} />
                 <br />
               </>
-              <Chips key={i} state={state} filter={filter} handleChange={chipChange} />
+              <Chips key={i} filter={filter} handleChange={chipChange} />
             </Grid>
           );
         }
@@ -176,7 +182,6 @@ const Filters = ({ filters }) => {
             <Tip filter={filter} />
             <br />
             <DollarsAndRatings
-              state={state}
               filter={filter}
               handleChange={dollarsAndRatingsChange}
             />
