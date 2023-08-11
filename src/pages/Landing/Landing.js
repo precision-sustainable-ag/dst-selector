@@ -16,7 +16,7 @@ import React, {
   useState,
   useRef,
 } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import ReactGA from 'react-ga';
 import { RegionSelectorMap } from '@psa/dst.ui.region-selector-map';
@@ -26,9 +26,10 @@ import '../../styles/landing.scss';
 import ConsentModal from '../CoverCropExplorer/ConsentModal/ConsentModal';
 import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset';
 import { updateZone } from '../../reduxStore/addressSlice';
+import { updateRegions, updateRegion, updateStateInfo } from '../../reduxStore/mapSlice';
 
 const Landing = ({ height, title, bg }) => {
-  const { state, dispatch } = useContext(Context);
+  const { state } = useContext(Context);
   const dispatchRedux = useDispatch();
   const [handleConfirm, setHandleConfirm] = useState(false);
   const [containerHeight, setContainerHeight] = useState(height);
@@ -37,28 +38,20 @@ const Landing = ({ height, title, bg }) => {
   const [mapState, setMapState] = useState({});
   const [selectedRegion, setSelectedRegion] = useState({});
   const mapRef = useRef(null);
+  const regionsRedux = useSelector((stateRedux) => stateRedux.mapData.regions);
+  const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
+  const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
+  const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
 
   const stateChange = (selState) => {
     setSelectedState(selState);
-    dispatch({
-      type: 'UPDATE_STATE',
-      data: {
-        state: selState.label,
-        stateId: selState.id,
-        councilShorthand: selState.council.shorthand,
-        councilLabel: selState.council.label,
-      },
-    });
+    dispatchRedux(updateStateInfo({
+      stateLabel: selState.label,
+      stateId: selState.id,
+      councilShorthand: selState.council.shorthand,
+      councilLabel: selState.council.label,
+    }));
     // This was targeting the map object which didnt have a label or shorthand property.  Should be be getting done here?
-
-    // dispatch({
-    //   type: 'UPDATE_REGION',
-    //   data: {
-    //     regionId: selectedRegion.id ?? '',
-    //     regionLabel: selectedRegion.label ?? '',
-    //     regionShorthand: selectedRegion.shorthand ?? '',
-    //   },
-    // });
   };
 
   const handleStateChange = (e) => {
@@ -72,29 +65,26 @@ const Landing = ({ height, title, bg }) => {
   }, []);
 
   useEffect(() => {
-    if (state.regions?.length > 0) {
-      dispatch({
-        type: 'UPDATE_REGION',
-        data: {
-          regionId: state.regions[0]?.id ?? '',
-          regionLabel: state.regions[0]?.label ?? '',
-          regionShorthand: state.regions[0]?.shorthand ?? '',
-        },
-      });
+    if (regionsRedux?.length > 0) {
+      dispatchRedux(updateRegion({
+        regionId: regionsRedux[0]?.id ?? '',
+        regionLabel: regionsRedux[0]?.label ?? '',
+        regionShorthand: regionsRedux[0]?.shorthand ?? '',
+      }));
 
       dispatchRedux(updateZone(
         {
-          zoneText: state.regions[0]?.label,
-          zone: state.regions[0]?.shorthand,
-          zoneId: state.regions[0]?.id,
+          zoneText: regionsRedux[0]?.label,
+          zone: regionsRedux[0]?.shorthand,
+          zoneId: regionsRedux[0]?.id,
         },
       ));
     }
-  }, [state.regions]);
+  }, [regionsRedux]);
 
   useEffect(() => {
-    if (state.stateId) {
-      fetch(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${state.stateId}/regions`)
+    if (stateIdRedux) {
+      fetch(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${stateIdRedux}/regions`)
         .then((res) => res.json())
         .then((data) => {
           let fetchedRegions;
@@ -105,19 +95,14 @@ const Landing = ({ height, title, bg }) => {
             fetchedRegions = data.data.Zones;
           }
 
-          dispatch({
-            type: 'UPDATE_REGIONS',
-            data: {
-              regions: fetchedRegions,
-            },
-          });
+          dispatchRedux(updateRegions(fetchedRegions));
         })
         .catch((err) => {
           // eslint-disable-next-line no-console
           console.log(err.message);
         });
     }
-  }, [state.stateId]);
+  }, [stateIdRedux]);
 
   // SelectedRegion needs to get replaced with mapState once the map is updated to using state verbage instead of region.
   useEffect(() => {
@@ -151,15 +136,12 @@ const Landing = ({ height, title, bg }) => {
       if (verifyCouncil(selectedState.council.shorthand)) {
         stateChange(selectedState);
       } else {
-        dispatch({
-          type: 'UPDATE_STATE',
-          data: {
-            state: '',
-            stateId: '',
-            councilShorthand: '',
-            councilLabel: '',
-          },
-        });
+        dispatchRedux(updateStateInfo({
+          stateLabel: '',
+          stateId: '',
+          councilShorthand: '',
+          councilLabel: '',
+        }));
       }
     }
   }, [selectedState]);
@@ -231,7 +213,7 @@ const Landing = ({ height, title, bg }) => {
 
   useEffect(() => {
     document.title = 'Cover Crop Selector';
-    if (state.myCoverCropListLocation !== 'selector' && state.selectedCrops.length > 0) {
+    if (state.myCoverCropListLocation !== 'selector' && selectedCropsRedux.length > 0) {
       setHandleConfirm(true);
     }
   }, []);
@@ -269,12 +251,12 @@ const Landing = ({ height, title, bg }) => {
         >
           <Grid item>
             <Typography variant="h4" gutterBottom align="center">
-              {`Welcome to the${state.councilLabel && ` ${state.councilLabel}`} Species Selector Tool`}
+              {`Welcome to the${councilLabelRedux && ` ${councilLabelRedux}`} Species Selector Tool`}
             </Typography>
           </Grid>
           <Grid item>
             <Typography variant="body1" gutterBottom align="left">
-              {`You are currently interacting with the${state.councilLabel && ` ${state.councilLabel}`} Species Selector Tool. We
+              {`You are currently interacting with the${councilLabelRedux && ` ${councilLabelRedux}`} Species Selector Tool. We
             seek feedback about the usability and usefulness of this tool. Our goal is to encourage
             and support the use of cover crops in your area. You can learn more about the
             cover crop data and design of this tool`}

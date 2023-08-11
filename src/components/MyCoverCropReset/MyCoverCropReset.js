@@ -8,13 +8,16 @@ import React, {
   useContext,
 } from 'react';
 import { useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { BinaryButton } from '../../shared/constants';
 import { Context } from '../../store/Store';
+import { reset } from '../../reduxStore/store';
 
 const MyCoverCropReset = ({
   handleConfirm, setHandleConfirm, goBack = true, returnToHome = false,
 }) => {
   const { dispatch } = useContext(Context);
+  const dispatchRedux = useDispatch();
   const history = useHistory();
   const defaultMarkers = [[40.78489145, -74.80733626930342]];
 
@@ -27,6 +30,7 @@ const MyCoverCropReset = ({
           selectedCrops: [],
         },
       });
+      dispatchRedux(reset());
       if (returnToHome) history.push('/');
       // setSpeciesSelectorActivationFlag();
     } else if (goBack === true) {
