@@ -5,11 +5,11 @@ import {
 import {
   WbSunnyOutlined, Info, Opacity,
 } from '@mui/icons-material';
-import React, { useContext } from 'react';
-import { Context } from '../../../store/Store';
+import React from 'react';
+import { useSelector } from 'react-redux';
 
 const WeatherFrostFreeDays = () => {
-  const { state } = useContext(Context);
+  const weatherDataRedux = useSelector((stateRedux) => stateRedux.weatherData.weatherData);
 
   return (
     <div className="mt-3 col-12 row">
@@ -47,7 +47,7 @@ const WeatherFrostFreeDays = () => {
           </span>
           {' '}
 &nbsp;
-          {state.weatherData.frostFreeDays}
+          {weatherDataRedux?.frostFreeDays}
         </Typography>
       </div>
     </div>

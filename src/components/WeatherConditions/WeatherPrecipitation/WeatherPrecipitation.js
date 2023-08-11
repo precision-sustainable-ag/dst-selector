@@ -5,11 +5,11 @@ import {
 import {
   Info, Opacity,
 } from '@mui/icons-material';
-import React, { useContext } from 'react';
-import { Context } from '../../../store/Store';
+import React from 'react';
+import { useSelector } from 'react-redux';
 
 const WeatherPrecipitation = ({ currentMonthFull }) => {
-  const { state } = useContext(Context);
+  const weatherDataRedux = useSelector((stateRedux) => stateRedux.weatherData.weatherData);
 
   return (
     <div className="mt-3 col-12 row">
@@ -59,7 +59,7 @@ const WeatherPrecipitation = ({ currentMonthFull }) => {
           </span>
           {' '}
 &nbsp;
-          {state.weatherData.averagePrecipitation.thisMonth}
+          {weatherDataRedux?.averagePrecipitation?.thisMonth}
           {' '}
           inches
         </Typography>
@@ -73,7 +73,7 @@ const WeatherPrecipitation = ({ currentMonthFull }) => {
           </span>
           {' '}
 &nbsp;
-          {state.weatherData.averagePrecipitation.annual}
+          {weatherDataRedux?.averagePrecipitation?.annual}
           {' '}
           inches
         </Typography>

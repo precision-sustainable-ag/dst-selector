@@ -5,11 +5,11 @@ import {
 import {
   AcUnit, Info, Opacity,
 } from '@mui/icons-material';
-import React, { useContext } from 'react';
-import { Context } from '../../../store/Store';
+import React from 'react';
+import { useSelector } from 'react-redux';
 
 const WeatherFrostDates = () => {
-  const { state } = useContext(Context);
+  const weatherDataRedux = useSelector((stateRedux) => stateRedux.weatherData.weatherData);
 
   return (
     <div className="mt-3 col-12 row">
@@ -66,7 +66,7 @@ const WeatherFrostDates = () => {
           </span>
           {' '}
 &nbsp;
-          {`${state.weatherData.averageFrost.firstFrostDate.month} ${state.weatherData.averageFrost.firstFrostDate.day}`}
+          {`${weatherDataRedux?.averageFrost?.firstFrostDate?.month} ${weatherDataRedux?.averageFrost?.firstFrostDate?.day}`}
         </Typography>
         <Typography variant="body1" className="text-left">
           <Opacity style={{ color: 'transparent' }} />
@@ -78,7 +78,7 @@ const WeatherFrostDates = () => {
           </span>
           {' '}
 &nbsp;
-          {`${state.weatherData.averageFrost.lastFrostDate.month} ${state.weatherData.averageFrost.lastFrostDate.day}`}
+          {`${weatherDataRedux?.averageFrost?.lastFrostDate?.month} ${weatherDataRedux?.averageFrost?.lastFrostDate?.day}`}
         </Typography>
       </div>
     </div>
