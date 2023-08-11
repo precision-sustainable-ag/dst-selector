@@ -20,9 +20,11 @@ import { snackHandler } from '../../../reduxStore/sharedSlice';
 
 const ExplorerCardView = ({ activeCropData }) => {
   const { state, dispatch } = useContext(Context);
-  const dispatchRedux = useDispatch();
+  const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
   const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
-  const sfilters = state[section];
+  const sfilters = filterStateRedux[section];
+
+  const dispatchRedux = useDispatch();
   const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
   const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
   const [modalOpen, setModalOpen] = useState(false);
