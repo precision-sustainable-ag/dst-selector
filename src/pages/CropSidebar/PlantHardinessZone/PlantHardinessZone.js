@@ -9,10 +9,12 @@ import { Context } from '../../../store/Store';
 const PlantHardinessZone = ({ updateZone }) => {
   const { state } = useContext(Context);
   const zoneRedux = useSelector((stateRedux) => stateRedux.addressData.zone);
+  const regionsRedux = useSelector((stateRedux) => stateRedux.mapData.regions);
+  const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
 
   const handleRegionChange = (event) => {
     // eslint-disable-next-line eqeqeq
-    const regionInfo = state.regions.filter((region) => region.shorthand == event.target.value);
+    const regionInfo = regionsRedux.filter((region) => region.shorthand == event.target.value);
     updateZone(regionInfo[0]);
   };
 
@@ -29,9 +31,9 @@ const PlantHardinessZone = ({ updateZone }) => {
       value={zoneRedux || ''}
     >
 
-      {state.regions.length > 0 && state.regions.map((region, i) => (
+      {regionsRedux.length > 0 && regionsRedux.map((region, i) => (
         <MenuItem value={region.shorthand} key={`Region${region}${i}`}>
-          {state.councilLabel !== 'Midwest Cover Crop Council' ? `Zone ${region.shorthand?.toUpperCase()}` : `${region.shorthand?.toUpperCase()}`}
+          {councilLabelRedux !== 'Midwest Cover Crop Council' ? `Zone ${region.shorthand?.toUpperCase()}` : `${region.shorthand?.toUpperCase()}`}
         </MenuItem>
       ))}
     </Select>
@@ -46,7 +48,7 @@ const PlantHardinessZone = ({ updateZone }) => {
             style={{ width: '100%' }}
             sx={{ minWidth: 120 }}
           >
-            <InputLabel>{state.councilLabel === 'Midwest Cover Crop Council' ? 'COUNTY' : 'ZONE'}</InputLabel>
+            <InputLabel>{councilLabelRedux === 'Midwest Cover Crop Council' ? 'COUNTY' : 'ZONE'}</InputLabel>
             {plantHardinessZone()}
           </FormControl>
         </ListItem>

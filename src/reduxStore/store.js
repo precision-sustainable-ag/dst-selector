@@ -27,8 +27,7 @@ const configureStore = () => {
 
   const rootReducer = (state, action) => {
     if (action.type === 'RESET') {
-      const { routing } = state;
-      state = { routing };
+      return appReducer(undefined, action);
     }
 
     return appReducer(state, action);

@@ -3,7 +3,7 @@
   The CropTable is the
   addCropToBasket manages adding crops to cart
 */
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   Box,
@@ -23,7 +23,6 @@ import { AddCircle, Sort } from '@mui/icons-material';
 import {
   CustomStyles, sortCrops, sudoButtonStyle, getLegendDataBasedOnCouncil,
 } from '../../../shared/constants';
-import { Context } from '../../../store/Store';
 import '../../../styles/cropCalendarViewComponent.scss';
 import '../../../styles/cropTable.scss';
 import CropDataRender from './CropDataRender';
@@ -34,7 +33,6 @@ import { updateActiveCropData } from '../../../reduxStore/cropSlice';
 const CropTableComponent = ({
   cropData, activeCropData, showGrowthWindow,
 }) => {
-  const { state } = useContext(Context);
   const dispatchRedux = useDispatch();
   const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
@@ -51,8 +49,9 @@ const CropTableComponent = ({
   const [goal2SortFlag, setGoal2SortFlag] = useState(true);
   const [goal3SortFlag, setGoal3SortFlag] = useState(true);
   const activeCropDataShadow = activeCropData;
+  const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
 
-  const legendData = getLegendDataBasedOnCouncil(state.councilShorthand);
+  const legendData = getLegendDataBasedOnCouncil(councilShorthandRedux);
 
   useEffect(() => {
     if (document.querySelector('thead.MuiTableHead-root.tableHeadWrapper')) {

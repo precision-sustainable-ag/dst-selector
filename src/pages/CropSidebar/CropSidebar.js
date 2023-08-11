@@ -33,6 +33,7 @@ import PreviousCashCrop from './PreviousCashCrop/PreviousCashCrop';
 import PlantHardinessZone from './PlantHardinessZone/PlantHardinessZone';
 import Legend from '../../components/Legend/Legend';
 import { updateZone as updateZoneRedux } from '../../reduxStore/addressSlice';
+import { updateRegion } from '../../reduxStore/mapSlice';
 import { clearFilters } from '../../reduxStore/filterSlice';
 import { pullCropData, updateActiveCropData, updateDateRange } from '../../reduxStore/cropSlice';
 
@@ -56,6 +57,8 @@ const CropSidebar = ({
   const [sidebarCategoriesData, setSidebarCategoriesData] = useState([]);
   const [sidebarFiltersData, setSidebarFiltersData] = useState([]);
   const [tableHeight, setTableHeight] = useState(0);
+  const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
+  const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
   const [dateRange, setDateRange] = useState({
     startDate: null,
     endDate: null,
@@ -76,7 +79,7 @@ const CropSidebar = ({
     { className: 'sideBar', label: '0 = Least, 5 = Most' },
   ];
 
-  const query = `${encodeURIComponent('regions')}=${encodeURIComponent(state.regionId)}`;
+  const query = `${encodeURIComponent('regions')}=${encodeURIComponent(regionIdRedux)}`;
 
   // // TODO: When is showFilters false?
   // NOTE: verify below when show filter is false.
@@ -237,21 +240,21 @@ const CropSidebar = ({
   }, [sidebarCategoriesData]);
 
   useEffect(() => {
-    if (state.stateId && state.regionId) {
+    if (stateIdRedux && regionIdRedux) {
       dispatch({
         type: 'SET_AJAX_IN_PROGRESS',
         data: true,
       });
 
       setLoading(true);
-      callCoverCropApi(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${state.stateId}/dictionary?${query}`).then((data) => {
+      callCoverCropApi(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${stateIdRedux}/dictionary?${query}`).then((data) => {
         dispatch({
           type: 'PULL_DICTIONARY_DATA',
           data: data.data,
         });
       });
 
-      callCoverCropApi(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${state.stateId}/filters?${query}`).then((data) => {
+      callCoverCropApi(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${stateIdRedux}/filters?${query}`).then((data) => {
         const allFilters = [];
         data.data.forEach((category) => {
           allFilters.push(category.attributes);
@@ -260,7 +263,7 @@ const CropSidebar = ({
         setSidebarCategoriesData(data.data);
       });
 
-      callCoverCropApi(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${state.stateId}/crops?${query}`).then((data) => {
+      callCoverCropApi(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${stateIdRedux}/crops?${query}`).then((data) => {
         cropDataFormatter(data.data);
         dispatchRedux(pullCropData(data.data));
         dispatch({
@@ -270,7 +273,7 @@ const CropSidebar = ({
       });
     }
   }, [
-    state.regionId,
+    regionIdRedux,
   ]);
 
   useEffect(() => {
@@ -396,14 +399,11 @@ const CropSidebar = ({
       //     zoneId: region.id,
       //   },
       // });
-      dispatch({
-        type: 'UPDATE_REGION',
-        data: {
-          regionId: region.id ?? '',
-          regionLabel: region.label ?? '',
-          regionShorthand: region.shorthand ?? '',
-        },
-      });
+      dispatchRedux(updateRegion({
+        regionId: region.id ?? '',
+        regionLabel: region.label ?? '',
+        regionShorthand: region.shorthand ?? '',
+      }));
     }
   };
 

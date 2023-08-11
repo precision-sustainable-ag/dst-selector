@@ -12,6 +12,7 @@ import {
   Accordion, AccordionDetails, AccordionSummary, Typography, Tooltip,
 } from '@mui/material';
 import { ExpandMore } from '@mui/icons-material';
+import { useSelector } from 'react-redux';
 import { Context } from '../../store/Store';
 import CoverCropInformation from './CoverCropInformation/CoverCropInformation';
 import InformationSheetReferences from './InformationSheetReferences/InformationSheetReferences';
@@ -24,11 +25,13 @@ const InformationSheetContent = ({ crop, modalData }) => {
   const [currentSources, setCurrentSources] = useState([{}]);
   const [allThumbs, setAllThumbs] = useState([]);
   const [dataDone, setDataDone] = useState(false);
-  const query = `${encodeURIComponent('regions')}=${encodeURIComponent(state.regionId)}`;
+  const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
+  const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
+  const query = `${encodeURIComponent('regions')}=${encodeURIComponent(regionIdRedux)}`;
 
   useEffect(() => {
     document.title = `${crop.label} Zone ${zone}`;
-    if (state.stateId && state.regionId) {
+    if (stateIdRedux && regionIdRedux) {
       callCoverCropApi(`https://${state.apiBaseURL}.covercrop-selector.org/v1/crops/${crop?.id}/resources?${query}`)
         .then((data) => setCurrentSources(data.data));
       callCoverCropApi(`https://${state.apiBaseURL}.covercrop-selector.org/v1/crops/${crop?.id}/images?${query}`)

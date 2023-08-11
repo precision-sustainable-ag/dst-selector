@@ -4,7 +4,7 @@ const initialState = {
   regionLabel: null,
   regionShorthand: null,
   stateId: null,
-  stateName: null,
+  stateLabel: null,
   councilShorthand: null,
   councilLabel: null,
   selectedRegion: {},
@@ -22,17 +22,17 @@ export const updateRegion = ({ regionId, regionLabel, regionShorthand }) => ({
   type: 'UPDATE_REGION',
   payload: {
     regionId,
-    regionLabel,
-    regionShorthand,
+    regionLabel, // unused
+    regionShorthand, // unused
   },
 });
 
 export const updateStateInfo = ({
-  stateName, stateId, councilShorthand, councilLabel,
+  stateLabel, stateId, councilShorthand, councilLabel,
 }) => ({
   type: 'UPDATE_STATE_INFO',
   payload: {
-    stateName,
+    stateLabel,
     stateId,
     councilShorthand,
     councilLabel,
@@ -44,7 +44,7 @@ const mapReducer = (state = initialState, action = null) => {
     case 'UPDATE_REGIONS':
       return {
         ...state,
-        regions: action.payload.value,
+        regions: [...action.payload.value],
       };
 
     case 'UPDATE_REGION':
@@ -58,7 +58,7 @@ const mapReducer = (state = initialState, action = null) => {
     case 'UPDATE_STATE_INFO':
       return {
         ...state,
-        stateName: action.payload.stateName,
+        stateLabel: action.payload.stateLabel,
         councilLabel: action.payload.councilLabel,
         councilShorthand: action.payload.councilShorthand,
         stateId: action.payload.stateId,
