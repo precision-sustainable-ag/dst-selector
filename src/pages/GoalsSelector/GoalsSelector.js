@@ -6,10 +6,12 @@
 // TODO: Goal tags are not responsive!
 import { Typography, Grid } from '@mui/material';
 import React, { useContext, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset';
 import { Context } from '../../store/Store';
 import '../../styles/goalsSelector.scss';
 import GoalTag from './GoalTag/GoalTag';
+import { callCoverCropApi } from '../../shared/constants';
 
 // const goalSkeletonStyle = {
 //   height: '50px',
@@ -19,32 +21,26 @@ import GoalTag from './GoalTag/GoalTag';
 
 const GoalsSelector = () => {
   const { state } = useContext(Context);
+  const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
   const [allGoals, setAllGoals] = useState([]);
   const [handleConfirm, setHandleConfirm] = useState(false);
+  const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
+  const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
 
   useEffect(() => {
-    if (state.myCoverCropListLocation !== 'selector' && state.selectedCrops?.length > 0) {
+    if (state.myCoverCropListLocation !== 'selector' && selectedCropsRedux?.length > 0) {
       // document.title = 'Cover Crop Selector';
       setHandleConfirm(true);
     }
-  }, [state.selectedCrops, state.myCoverCropListLocation]);
-
-  async function getAllGoals() {
-    const query = `${encodeURIComponent('regions')}=${encodeURIComponent(state.regionId)}`;
-
-    await fetch(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${state.stateId}/goals?${query}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setAllGoals(data.data);
-      })
-      .catch((err) => {
-        // eslint-disable-next-line no-console
-        console.log(err.message);
-      });
-  }
+  }, [selectedCropsRedux, state.myCoverCropListLocation]);
+  const query = `${encodeURIComponent('regions')}=${encodeURIComponent(regionIdRedux)}`;
 
   useEffect(() => {
-    getAllGoals();
+    if (stateIdRedux && regionIdRedux) {
+      callCoverCropApi(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${stateIdRedux}/goals?${query}`).then((data) => {
+        setAllGoals(data.data);
+      });
+    }
   }, [state.allGoals]);
 
   return (

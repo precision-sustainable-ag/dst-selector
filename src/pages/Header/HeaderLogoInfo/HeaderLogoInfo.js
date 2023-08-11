@@ -1,44 +1,52 @@
 import {
-  Dialog, DialogActions, DialogContent, Typography, Box, Grid,
+  Typography, Box, Grid,
 } from '@mui/material';
 import React, { useContext, useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { BinaryButton } from '../../../shared/constants';
+import { reset } from '../../../reduxStore/store';
 import { Context } from '../../../store/Store';
 import '../../../styles/header.scss';
 import DateComponent from '../DateComponent/DateComponent';
 import ForecastComponent from '../ForecastComponent/ForecastComponent';
+import MyCoverCropReset from '../../../components/MyCoverCropReset/MyCoverCropReset';
 
 const HeaderLogoInfo = () => {
-  const { state, dispatch } = useContext(Context);
+  const { dispatch } = useContext(Context);
+  const dispatchRedux = useDispatch();
   const history = useHistory();
+  const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
   const [handleConfirm, setHandleConfirm] = useState(false);
   const defaultMarkers = [[40.78489145, -74.80733626930342]];
-  const { selectedCrops } = state;
+  const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
 
-  const logoClick = (clearMyList = false) => {
-    if (clearMyList) {
-      dispatch({
-        type: 'RESET',
-        data: {
-          markers: defaultMarkers,
-          selectedCrops: [],
-        },
-      });
-      history.replace('/');
+  const handleClick = () => {
+    if (selectedCropsRedux.length === 0) {
+      if (window.location.pathname === '/') {
+      // if no cover crops selected, update state to return to the 1st progress
+        dispatch({
+          type: 'RESET',
+          data: {
+            markers: defaultMarkers,
+            selectedCrops: [],
+          },
+        });
+        dispatchRedux(reset());
+      } else history.replace('/');
+    } else {
+      setHandleConfirm(true);
     }
-    setHandleConfirm(false);
   };
 
   useEffect(() => {
     let imageSrc;
-    if (state.councilLabel === 'Northeast Cover Crop Council') {
+    if (councilLabelRedux === 'Northeast Cover Crop Council') {
       imageSrc = '../images/neccc_wide_logo_color_web.jpg';
-    } else if (state.councilLabel === 'Southern Cover Crop Council') {
+    } else if (councilLabelRedux === 'Southern Cover Crop Council') {
       imageSrc = '../images/sccc_logo.png';
-    } else if (state.councilLabel === 'Midwest Cover Crop Council') {
+    } else if (councilLabelRedux === 'Midwest Cover Crop Council') {
       imageSrc = '../images/mwccc_logo.png';
-    } else if (state.councilLabel === 'Western Cover Crop Council') {
+    } else if (councilLabelRedux === 'Western Cover Crop Council') {
       imageSrc = '../images/wccc_logo.png';
     } else {
       imageSrc = '../images/whitebg.png';
@@ -48,7 +56,7 @@ const HeaderLogoInfo = () => {
     if (imageElement) {
       imageElement.src = imageSrc;
     }
-  }, [state.councilLabel]);
+  }, [councilLabelRedux]);
 
   return (
     <Grid lg={12} item container alignItems="center" sx={{ height: '150px', padding: '0', margin: '0' }}>
@@ -77,7 +85,7 @@ const HeaderLogoInfo = () => {
         >
           <button
             type="button"
-            onClick={selectedCrops.length > 0 ? () => setHandleConfirm(true) : () => logoClick(true)}
+            onClick={handleClick}
             style={{
               backgroundColor: 'white',
               border: 'none',
@@ -117,16 +125,7 @@ const HeaderLogoInfo = () => {
         </div>
       </Grid>
 
-      <Dialog onClose={() => setHandleConfirm(false)} open={handleConfirm}>
-        <DialogContent dividers>
-          <Typography variant="body1">
-            You will need to clear your My Cover Crop List to continue. Would you like to continue?
-          </Typography>
-        </DialogContent>
-        <DialogActions>
-          <BinaryButton action={logoClick} />
-        </DialogActions>
-      </Dialog>
+      <MyCoverCropReset handleConfirm={handleConfirm} setHandleConfirm={setHandleConfirm} goBack={false} returnToHome />
     </Grid>
   );
 };

@@ -6,13 +6,19 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Refresh } from '@mui/icons-material';
 import { Stack } from '@mui/material';
+import { useSelector, useDispatch } from 'react-redux';
 import { Context } from '../store/Store';
 import { LightButton } from './constants';
+import { reset } from '../reduxStore/store';
 
 const ProgressButtonsInner = ({
   isDisabledBack, isDisabledNext, isDisabledRefresh, closeExpansionPanel, setConfirmationOpen,
 }) => {
   const { state, dispatch } = useContext(Context);
+  const dispatchRedux = useDispatch();
+  const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
+  const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
+  const defaultMarkers = [[40.78489145, -74.80733626930342]];
 
   const [crement, setCrement] = useState('');
 
@@ -38,7 +44,7 @@ const ProgressButtonsInner = ({
   };
 
   useEffect(() => {
-    if (state.councilLabel === 'Midwest Cover Crop Council' && state.progress === 2) {
+    if (councilLabelRedux === 'Midwest Cover Crop Council' && state.progress === 2) {
       changeProgress(crement);
     }
   }, [state.progress]);
@@ -93,7 +99,17 @@ const ProgressButtonsInner = ({
         }}
         onClick={() => {
           closeExpansionPanel();
-          setConfirmationOpen(true);
+          if (selectedCropsRedux.length > 0) setConfirmationOpen(true);
+          else {
+            dispatch({
+              type: 'RESET',
+              data: {
+                markers: defaultMarkers,
+                selectedCrops: [],
+              },
+            });
+            dispatchRedux(reset());
+          }
         }}
         disabled={isDisabledRefresh}
       >

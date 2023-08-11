@@ -21,9 +21,9 @@ import ListIcon from '@mui/icons-material/List';
 import React, {
   useContext, useEffect, useState,
 } from 'react';
-import { useDispatch } from 'react-redux';
-import { CustomStyles } from '../../shared/constants';
-import { Context } from '../../store/Store';
+import { useDispatch, useSelector } from 'react-redux';
+import { CustomStyles, callCoverCropApi } from '../../shared/constants';
+import { Context, cropDataFormatter } from '../../store/Store';
 import '../../styles/cropSidebar.scss';
 import ComparisonBar from '../MyCoverCropList/ComparisonBar/ComparisonBar';
 import CoverCropSearch from './CoverCropSearch/CoverCropSearch';
@@ -33,6 +33,9 @@ import PreviousCashCrop from './PreviousCashCrop/PreviousCashCrop';
 import PlantHardinessZone from './PlantHardinessZone/PlantHardinessZone';
 import Legend from '../../components/Legend/Legend';
 import { updateZone as updateZoneRedux } from '../../reduxStore/addressSlice';
+import { updateRegion } from '../../reduxStore/mapSlice';
+import { clearFilters } from '../../reduxStore/filterSlice';
+import { pullCropData, updateActiveCropData, updateDateRange } from '../../reduxStore/cropSlice';
 
 const CropSidebar = ({
   comparisonView,
@@ -45,12 +48,17 @@ const CropSidebar = ({
 }) => {
   const { state, dispatch } = useContext(Context);
   const dispatchRedux = useDispatch();
-  const [loading, setLoading] = useState(true);
+  const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
+  const cashCropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cashCropData);
+  const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
+  const [loading, setLoading] = useState(false);
   const [sidebarFilters, setSidebarFilters] = useState([]);
   const [showFilters, setShowFilters] = useState('');
   const [sidebarCategoriesData, setSidebarCategoriesData] = useState([]);
   const [sidebarFiltersData, setSidebarFiltersData] = useState([]);
   const [tableHeight, setTableHeight] = useState(0);
+  const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
+  const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
   const [dateRange, setDateRange] = useState({
     startDate: null,
     endDate: null,
@@ -63,34 +71,15 @@ const CropSidebar = ({
     });
     return sidebarStarter;
   });
-
+  const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
   const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
-  const sfilters = state[section];
-  const dictionary = [];
-
+  const sfilters = filterStateRedux[section];
+  // const dictionary = [];
   const legendData = [
     { className: 'sideBar', label: '0 = Least, 5 = Most' },
   ];
 
-  async function getAllFilters() {
-    if (state.regionId) {
-      const query = `${encodeURIComponent('regions')}=${encodeURIComponent(state.regionId)}`;
-      await fetch(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${state.stateId}/filters?${query}`)
-        .then((res) => res.json())
-        .then((data) => {
-          const allFilters = [];
-          data.data.forEach((category) => {
-            allFilters.push(category.attributes);
-          });
-          setSidebarFiltersData(allFilters);
-          setSidebarCategoriesData(data.data);
-        })
-        .catch((err) => {
-        // eslint-disable-next-line no-console
-          console.log(err.message);
-        });
-    }
-  }
+  const query = `${encodeURIComponent('regions')}=${encodeURIComponent(regionIdRedux)}`;
 
   // // TODO: When is showFilters false?
   // NOTE: verify below when show filter is false.
@@ -111,11 +100,6 @@ const CropSidebar = ({
     });
   };
 
-  // const areCommonElements = (arr1, arr2) => {
-  //   const arr2Set = new Set(arr2);
-  //   return arr1.some((el) => arr2Set.has(el));
-  // }; // areCommonElements
-
   useEffect(() => {
     const sfo = {};
 
@@ -129,11 +113,11 @@ const CropSidebar = ({
       }
     });
 
-    let cropData = state?.cropData?.filter((crop) => crop['Zone Decision'] === 'Include');
+    let cropData = cropDataRedux?.filter((crop) => crop['Zone Decision'] === 'Include');
 
     const search = sfilters.cropSearch?.toLowerCase().match(/\w+/g);
 
-    cropData = state?.cropData?.filter((crop) => {
+    cropData = cropDataRedux?.filter((crop) => {
       let m;
 
       const match = (parm) => {
@@ -189,30 +173,26 @@ const CropSidebar = ({
 
       return true;
     });
-    dispatch({
-      type: 'UPDATE_ACTIVE_CROP_DATA',
-      data: {
-        value: filtered,
-      },
-    });
-  }, [state.changedFilters, sfilters.cropSearch, state?.cropData, dispatch, sfilters]);
+    dispatchRedux(updateActiveCropData(filtered));
+    // dispatch({
+    //   type: 'UPDATE_ACTIVE_CROP_DATA',
+    //   data: {
+    //     value: filtered,
+    //   },
+    // });
+  }, [sfilters.cropSearch, cropDataRedux, dispatch, dispatchRedux, sfilters]);
 
   const filtersSelected = Object.keys(sfilters)?.filter((key) => sfilters[key])?.length > 1;
 
   const resetAllFilters = () => {
-    dispatch({
-      type: 'CLEAR_FILTERS',
-    });
+    dispatchRedux(clearFilters());
+    // dispatch({
+    //   type: 'CLEAR_FILTERS',
+    // });
   };
 
-  const createObject = (obj, dataDictionary, data) => {
-    const field = dataDictionary?.filter((item) => item.Variable === data.label);
-    if (field[0] !== undefined) {
-      obj.description = field[0].Description > 0 ? field[0].Description : '';
-    }
-  };
-
-  const generateSidebarObject = async (dataDictionary) => {
+  const generateSidebarObject = async () => {
+    const sidebars = [];
     await sidebarCategoriesData.forEach((category) => {
       if (category.label !== 'Goals') {
         const newCategory = {
@@ -238,64 +218,78 @@ const CropSidebar = ({
             obj.values = filter.values;
           }
 
-          createObject(obj, dataDictionary, filter);
+          // createObject(obj, dataDictionary, filter);
 
           return obj;
         });
-        dictionary.push(newCategory);
+        sidebars.push(newCategory);
       }
     });
+
+    return sidebars;
   };
 
-  async function getSidebars(data) {
-    const setData = (dict) => {
-      setSidebarFilters(dict);
-    };
-
-    await generateSidebarObject(data)
-      .then(() => setData(dictionary))
+  useEffect(() => {
+    generateSidebarObject()
+      .then((data) => setSidebarFilters(data))
       .then(() => { setLoading(false); })
       .catch((err) => {
-      // eslint-disable-next-line no-console
+        // eslint-disable-next-line no-console
         console.log(err.message);
       });
-  }
-
-  async function getDictData() {
-    if (state.regionId) {
-      const query = `${encodeURIComponent('regions')}=${encodeURIComponent(state.regionId)}`;
-      await fetch(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${state.stateId}/dictionary?${query}`)
-        .then((res) => res.json())
-        .then((data) => {
-          getSidebars(data.data);
-        })
-        .catch((err) => {
-        // eslint-disable-next-line no-console
-          console.log(err.message);
-        });
-    }
-  }
+  }, [sidebarCategoriesData]);
 
   useEffect(() => {
-    setLoading(true);
-    if (sidebarCategoriesData.length > 0 && state.regionId) {
-      getDictData();
+    if (stateIdRedux && regionIdRedux) {
+      dispatch({
+        type: 'SET_AJAX_IN_PROGRESS',
+        data: true,
+      });
+
+      setLoading(true);
+      callCoverCropApi(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${stateIdRedux}/dictionary?${query}`).then((data) => {
+        dispatch({
+          type: 'PULL_DICTIONARY_DATA',
+          data: data.data,
+        });
+      });
+
+      callCoverCropApi(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${stateIdRedux}/filters?${query}`).then((data) => {
+        const allFilters = [];
+        data.data.forEach((category) => {
+          allFilters.push(category.attributes);
+        });
+        setSidebarFiltersData(allFilters);
+        setSidebarCategoriesData(data.data);
+      });
+
+      callCoverCropApi(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${stateIdRedux}/crops?${query}`).then((data) => {
+        cropDataFormatter(data.data);
+        dispatchRedux(pullCropData(data.data));
+        dispatch({
+          type: 'SET_AJAX_IN_PROGRESS',
+          data: false,
+        });
+      });
     }
   }, [
-    sidebarCategoriesData,
-    state.regionId,
+    regionIdRedux,
   ]);
 
   useEffect(() => {
     if (from === 'table') {
       if (dateRange.startDate !== null && dateRange.endDate !== null) {
-        dispatch({
-          type: 'UPDATE_DATE_RANGE',
-          data: {
-            startDate: dateRange.startDate.toISOString().substring(0, 10),
-            endDate: dateRange.endDate.toISOString().substring(0, 10),
-          },
-        });
+        dispatchRedux(updateDateRange({
+          startDate: dateRange.startDate.toISOString().substring(0, 10),
+          endDate: dateRange.endDate.toISOString().substring(0, 10),
+        }));
+        // dispatch({
+        //   type: 'UPDATE_DATE_RANGE',
+        //   data: {
+        //     startDate: dateRange.startDate.toISOString().substring(0, 10),
+        //     endDate: dateRange.endDate.toISOString().substring(0, 10),
+        //   },
+        // });
       }
 
       setGrowthWindow(true);
@@ -320,13 +314,13 @@ const CropSidebar = ({
 
   // TODO: Can we use Reducer instead of localStorage?
   useEffect(() => {
-    if (state.cashCropData.dateRange.startDate) {
+    if (cashCropDataRedux.dateRange.startDate) {
       window.localStorage.setItem(
         'cashCropDateRange',
-        JSON.stringify(state.cashCropData.dateRange),
+        JSON.stringify(cashCropDataRedux.dateRange),
       );
     }
-  }, [state.cashCropData.dateRange]);
+  }, [cashCropDataRedux.dateRange]);
 
   const filters = () => sidebarFilters.map((filter, index) => {
     const sectionFilter = `${section}${filter.name}`;
@@ -367,10 +361,6 @@ const CropSidebar = ({
   ); // filterList
 
   useEffect(() => {
-    getAllFilters();
-  }, [state.regionId]);
-
-  useEffect(() => {
     filtersList();
   }, [sidebarFilters]);
 
@@ -409,14 +399,11 @@ const CropSidebar = ({
       //     zoneId: region.id,
       //   },
       // });
-      dispatch({
-        type: 'UPDATE_REGION',
-        data: {
-          regionId: region.id ?? '',
-          regionLabel: region.label ?? '',
-          regionShorthand: region.shorthand ?? '',
-        },
-      });
+      dispatchRedux(updateRegion({
+        regionId: region.id ?? '',
+        regionLabel: region.label ?? '',
+        regionShorthand: region.shorthand ?? '',
+      }));
     }
   };
 
@@ -427,7 +414,7 @@ const CropSidebar = ({
         <div className="col-12">
           <ComparisonBar
             filterData={sidebarFilters}
-            goals={state.selectedGoals?.length > 0 ? state.selectedGoals : []}
+            goals={selectedGoalsRedux?.length > 0 ? selectedGoalsRedux : []}
             comparisonKeys={state.comparisonKeys}
             dispatch={dispatch}
             comparisonView={comparisonView}
@@ -556,7 +543,7 @@ const CropSidebar = ({
         <div className="col-12">
           <ComparisonBar
             filterData={sidebarFilters}
-            goals={state.selectedGoals?.length > 0 ? state.selectedGoals : []}
+            goals={selectedGoalsRedux?.length > 0 ? selectedGoalsRedux : []}
             comparisonKeys={state.comparisonKeys}
             dispatch={dispatch}
             comparisonView={comparisonView}

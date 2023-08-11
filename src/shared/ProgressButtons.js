@@ -11,16 +11,19 @@ import ProgressButtonsInner from './ProgressButtonsInner';
 const ProgressButtons = ({ closeExpansionPanel, setConfirmationOpen }) => {
   const { state } = useContext(Context);
   const addressRedux = useSelector((stateRedux) => stateRedux.addressData.address);
+  const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const [isDisabledBack, setIsDisabledBack] = useState(false);
   const [isDisabledNext, setIsDisabledNext] = useState(true);
   const [isDisabledRefresh, setIsDisabledRefresh] = useState(false);
+  const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
+  const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
 
   const disableLogic = (progress, goalsLength, sfilters) => {
     switch (parseInt(progress, 10)) {
       case 0:
         setIsDisabledBack(true);
         setIsDisabledRefresh(true);
-        setIsDisabledNext(state.councilLabel === '');
+        setIsDisabledNext(councilLabelRedux === '' || councilLabelRedux === null);
         break;
       case 1:
         // location selection state
@@ -48,8 +51,8 @@ const ProgressButtons = ({ closeExpansionPanel, setConfirmationOpen }) => {
   useEffect(() => {
     const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
     const sfilters = state[section];
-    disableLogic(state.progress, state.selectedGoals.length, sfilters);
-  }, [state]);
+    disableLogic(state.progress, selectedGoalsRedux.length, sfilters);
+  }, [state, selectedGoalsRedux, stateLabelRedux]);
 
   const renderProgressButtons = (progress, disabledBack, disabledNext, disabledRefresh) => {
     if (progress < 0) return '';
