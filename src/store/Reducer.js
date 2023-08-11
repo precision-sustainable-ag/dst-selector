@@ -225,16 +225,16 @@ const Reducer = (state, action, value = action && action.data && action.data.val
         selectedCrops: action.data.selectedCrops,
         selectedGoals: [],
         soilData: {
-          Map_Unit_Name: '',
-          Drainage_Class: [],
-          Flooding_Frequency: [],
-          Ponding_Frequency: '',
+          mapUnitName: '',
+          drainageClass: [],
+          floodingFrequency: [],
+          pondingFrequency: '',
         },
         soilDataOriginal: {
-          Map_Unit_Name: '',
-          Drainage_Class: [],
-          Flooding_Frequency: [],
-          Ponding_Frequency: '',
+          mapUnitName: '',
+          drainageClass: [],
+          floodingFrequency: [],
+          pondingFrequency: '',
         },
         weatherData: {
           averageFrost: {
@@ -482,10 +482,10 @@ const Reducer = (state, action, value = action && action.data && action.data.val
         ...state,
         soilData: {
           ...state.soilData,
-          Map_Unit_Name: action.data.Map_Unit_Name,
-          Drainage_Class: action.data.Drainage_Class,
-          Flooding_Frequency: action.data.Flooding_Frequency,
-          Ponding_Frequency: action.data.Ponding_Frequency,
+          mapUnitName: action.data.mapUnitName,
+          drainageClass: action.data.drainageClass,
+          floodingFrequency: action.data.floodingFrequency,
+          pondingFrequency: action.data.pondingFrequency,
           for: action.data.for,
         },
       };
@@ -496,10 +496,10 @@ const Reducer = (state, action, value = action && action.data && action.data.val
         ...state,
         soilDataOriginal: {
           ...state.soilDataOriginal,
-          Map_Unit_Name: action.data.Map_Unit_Name,
-          Drainage_Class: action.data.Drainage_Class,
-          Flooding_Frequency: action.data.Flooding_Frequency,
-          Ponding_Frequency: action.data.Ponding_Frequency,
+          mapUnitName: action.data.mapUnitName,
+          drainageClass: action.data.drainageClass,
+          floodingFrequency: action.data.floodingFrequency,
+          pondingFrequency: action.data.pondingFrequency,
           for: action.data.for,
         },
       };
@@ -544,7 +544,7 @@ const Reducer = (state, action, value = action && action.data && action.data.val
         ...state,
         soilData: {
           ...state.soilData,
-          Drainage_Class: action.data,
+          drainageClass: action.data,
         },
       };
     }
@@ -554,7 +554,7 @@ const Reducer = (state, action, value = action && action.data && action.data.val
         ...state,
         soilData: {
           ...state.soilData,
-          Flooding_Frequency: action.data,
+          floodingFrequency: action.data,
         },
       };
     }
