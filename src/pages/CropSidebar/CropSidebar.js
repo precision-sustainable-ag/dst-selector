@@ -10,6 +10,7 @@ import {
   Collapse,
   List,
   ListItem,
+  ListItemButton,
   ListItemText,
   // ListSubheader,
   Typography,
@@ -36,6 +37,7 @@ import { updateZone as updateZoneRedux } from '../../reduxStore/addressSlice';
 import { updateRegion } from '../../reduxStore/mapSlice';
 import { clearFilters } from '../../reduxStore/filterSlice';
 import { pullCropData, updateActiveCropData, updateDateRange } from '../../reduxStore/cropSlice';
+import { setAjaxInProgress, toggleValue, zoneToggleHandler } from '../../reduxStore/sharedSlice';
 
 const CropSidebar = ({
   comparisonView,
@@ -59,6 +61,9 @@ const CropSidebar = ({
   const [tableHeight, setTableHeight] = useState(0);
   const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
   const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
+  const zoneToggleRedux = useSelector((stateRedux) => stateRedux.sharedData.zonToggle);
+  const speciesSelectorActivationFlagRedux = useSelector((stateRedux) => stateRedux.sharedData.speciesSelectorActivationFlag);
+  const comparisonKeysRedux = useSelector((stateRedux) => stateRedux.sharedData.comparisonKeys);
   const [dateRange, setDateRange] = useState({
     startDate: null,
     endDate: null,
@@ -86,18 +91,20 @@ const CropSidebar = ({
   useEffect(() => {
     const value = !(window.location.pathname === '/'
       && from === 'table'
-      && !state.speciesSelectorActivationFlag
+      && !speciesSelectorActivationFlagRedux
       && !comparisonView);
     setShowFilters(value);
-  }, [state.speciesSelectorActivationFlag, from, comparisonView]);
+  }, [speciesSelectorActivationFlagRedux, from, comparisonView]);
 
-  const handleToggle = (value, type = 'TOGGLE') => {
-    dispatch({
-      type,
-      data: {
-        value,
-      },
-    });
+  const handleToggle = (value) => {
+    console.log(value);
+    dispatchRedux(toggleValue(value));
+    // dispatch({
+    //   type,
+    //   data: {
+    //     value,
+    //   },
+    // });
   };
 
   useEffect(() => {
@@ -241,10 +248,11 @@ const CropSidebar = ({
 
   useEffect(() => {
     if (stateIdRedux && regionIdRedux) {
-      dispatch({
-        type: 'SET_AJAX_IN_PROGRESS',
-        data: true,
-      });
+      dispatchRedux(setAjaxInProgress(true));
+      // dispatch({
+      //   type: 'SET_AJAX_IN_PROGRESS',
+      //   data: true,
+      // });
 
       setLoading(true);
       callCoverCropApi(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${stateIdRedux}/dictionary?${query}`).then((data) => {
@@ -266,10 +274,11 @@ const CropSidebar = ({
       callCoverCropApi(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${stateIdRedux}/crops?${query}`).then((data) => {
         cropDataFormatter(data.data);
         dispatchRedux(pullCropData(data.data));
-        dispatch({
-          type: 'SET_AJAX_IN_PROGRESS',
-          data: false,
-        });
+        dispatchRedux(setAjaxInProgress(false));
+        // dispatch({
+        //   type: 'SET_AJAX_IN_PROGRESS',
+        //   data: false,
+        // });
       });
     }
   }, [
@@ -415,7 +424,7 @@ const CropSidebar = ({
           <ComparisonBar
             filterData={sidebarFilters}
             goals={selectedGoalsRedux?.length > 0 ? selectedGoalsRedux : []}
-            comparisonKeys={state.comparisonKeys}
+            comparisonKeys={comparisonKeysRedux}
             dispatch={dispatch}
             comparisonView={comparisonView}
           />
@@ -452,7 +461,7 @@ const CropSidebar = ({
         </div>
       )}
 
-      {state.speciesSelectorActivationFlag || from === 'explorer' ? (
+      {speciesSelectorActivationFlagRedux || from === 'explorer' ? (
         <Box
           // className="col-"
           sx={{
@@ -469,7 +478,7 @@ const CropSidebar = ({
           >
             {from === 'table' && (
               <>
-                {showFilters && state.speciesSelectorActivationFlag && !isListView && (
+                {showFilters && speciesSelectorActivationFlagRedux && !isListView && (
                   <CoverCropSearch sfilters={sfilters} dispatch={dispatch} />
                 )}
 
@@ -488,7 +497,7 @@ const CropSidebar = ({
                 {from === 'explorer' && (
                   <>
                     <List component="div" disablePadding>
-                      <ListItem button onClick={() => handleToggle(!state.zoneToggle, 'ZONE_TOGGLE')}>
+                      <ListItemButton onClick={() => dispatchRedux(zoneToggleHandler(!zoneToggleRedux))}>
                         <ListItemText
                           primary={(
                             <Typography variant="body2" className="text-uppercase">
@@ -496,15 +505,14 @@ const CropSidebar = ({
                             </Typography>
             )}
                         />
-                        {state.zoneToggle ? <ExpandLess /> : <ExpandMore />}
-                      </ListItem>
+                        {zoneToggleRedux ? <ExpandLess /> : <ExpandMore />}
+                      </ListItemButton>
                     </List>
                     <PlantHardinessZone updateZone={updateZone} />
                     <CoverCropSearch sfilters={sfilters} dispatch={dispatch} />
                   </>
                 )}
-                <ListItem
-                  button
+                <ListItemButton
                   onClick={() => handleToggle('cropFiltersOpen')}
                   style={{
                     marginBottom: '15px',
@@ -517,7 +525,9 @@ const CropSidebar = ({
                   <ListItemText primary="COVER CROP PROPERTIES" />
 
                   {state.cropFiltersOpen ? <ExpandLess /> : <ExpandMore />}
-                </ListItem>
+                  {' '}
+                  // why is this here
+                </ListItemButton>
                 <Box
                   sx={{
                     backgroundColor: 'background.paper',
@@ -544,7 +554,7 @@ const CropSidebar = ({
           <ComparisonBar
             filterData={sidebarFilters}
             goals={selectedGoalsRedux?.length > 0 ? selectedGoalsRedux : []}
-            comparisonKeys={state.comparisonKeys}
+            comparisonKeys={comparisonKeysRedux}
             dispatch={dispatch}
             comparisonView={comparisonView}
           />

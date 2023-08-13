@@ -8,28 +8,28 @@
 import {
   Box, Button, Grid, Stack, Table, TableBody, TableCell, TableContainer, TableRow, Typography,
 } from '@mui/material';
-import React, { useContext, useEffect } from 'react';
+import React, { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import ReactGA from 'react-ga';
 import { CustomStyles } from '../../shared/constants';
 import Header from '../Header/Header';
-import { Context } from '../../store/Store';
 import MITLicenseText from '../License/MITLicenseText/MITLicenseText';
 
 const About = () => {
   const [value, setValue] = React.useState(0);
-  const { state } = useContext(Context);
+  const consentRedux = useSelector((stateRedux) => stateRedux.sharedData.consent);
 
   const handleChange = (newValue) => {
     setValue(newValue);
   };
 
   useEffect(() => {
-    if (state.consent === true) {
+    if (consentRedux === true) {
       ReactGA.initialize('UA-181903489-1');
 
       ReactGA.pageview('about');
     }
-  }, [state.consent]);
+  }, [consentRedux]);
 
   const pageSections = [
     {

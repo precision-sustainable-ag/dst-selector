@@ -10,14 +10,16 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Context } from '../store/Store';
 import { LightButton } from './constants';
 import { reset } from '../reduxStore/store';
+import { updateProgress } from '../reduxStore/sharedSlice';
 
 const ProgressButtonsInner = ({
   isDisabledBack, isDisabledNext, isDisabledRefresh, closeExpansionPanel, setConfirmationOpen,
 }) => {
-  const { state, dispatch } = useContext(Context);
+  const { dispatch } = useContext(Context);
   const dispatchRedux = useDispatch();
   const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
   const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
+  const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
   const defaultMarkers = [[40.78489145, -74.80733626930342]];
 
   const [crement, setCrement] = useState('');
@@ -25,35 +27,37 @@ const ProgressButtonsInner = ({
   const changeProgress = (type) => {
     setCrement(type);
     if (type === 'increment') {
-      dispatch({
-        type: 'UPDATE_PROGRESS',
-        data: {
-          type: 'INCREMENT',
-        },
-      });
+      dispatchRedux(updateProgress('INCREMENT'));
+      // dispatch({
+      //   type: 'UPDATE_PROGRESS',
+      //   data: {
+      //     type: 'INCREMENT',
+      //   },
+      // });
     }
 
     if (type === 'decrement') {
-      dispatch({
-        type: 'UPDATE_PROGRESS',
-        data: {
-          type: 'DECREMENT',
-        },
-      });
+      dispatchRedux(updateProgress('DECREMENT'));
+      // dispatch({
+      //   type: 'UPDATE_PROGRESS',
+      //   data: {
+      //     type: 'DECREMENT',
+      //   },
+      // });
     }
   };
 
   useEffect(() => {
-    if (councilLabelRedux === 'Midwest Cover Crop Council' && state.progress === 2) {
+    if (councilLabelRedux === 'Midwest Cover Crop Council' && progressRedux === 2) {
       changeProgress(crement);
     }
-  }, [state.progress]);
+  }, [progressRedux]);
 
   return (
     <Stack
       direction="row"
       ml={
-        state.progress === 0
+        progressRedux === 0
           ? {
             xs: '13%', sm: '30%', md: '30%', lg: '375%', xl: '380%',
           }
@@ -85,7 +89,7 @@ const ProgressButtonsInner = ({
           marginLeft: '3%',
         }}
         onClick={() => changeProgress('increment')}
-        disabled={isDisabledNext || state.progress === 5}
+        disabled={isDisabledNext || progressRedux === 5}
       >
         NEXT
       </LightButton>

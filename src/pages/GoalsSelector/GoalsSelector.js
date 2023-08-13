@@ -26,13 +26,14 @@ const GoalsSelector = () => {
   const [handleConfirm, setHandleConfirm] = useState(false);
   const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
   const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
+  const myCoverCropListLocationRedux = useSelector((stateRedux) => stateRedux.sharedData.myCoverCropListLocation);
 
   useEffect(() => {
-    if (state.myCoverCropListLocation !== 'selector' && selectedCropsRedux?.length > 0) {
+    if (myCoverCropListLocationRedux !== 'selector' && selectedCropsRedux?.length > 0) {
       // document.title = 'Cover Crop Selector';
       setHandleConfirm(true);
     }
-  }, [selectedCropsRedux, state.myCoverCropListLocation]);
+  }, [selectedCropsRedux, myCoverCropListLocationRedux]);
   const query = `${encodeURIComponent('regions')}=${encodeURIComponent(regionIdRedux)}`;
 
   useEffect(() => {
