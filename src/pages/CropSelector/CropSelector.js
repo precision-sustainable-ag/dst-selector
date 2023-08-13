@@ -25,6 +25,7 @@ import CropTableComponent from './CropTable/CropTable';
 import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset';
 import { sortCrops } from '../../shared/constants';
 import { updateActiveCropData } from '../../reduxStore/cropSlice';
+import { updateProgress } from '../../reduxStore/sharedSlice';
 
 const ScrollTop = ({ children }) => {
   const trigger = useScrollTrigger({
@@ -55,7 +56,7 @@ const ScrollTop = ({ children }) => {
 };
 
 const CropSelector = (props) => {
-  const { state, dispatch } = useContext(Context);
+  const { state } = useContext(Context);
   const dispatchRedux = useDispatch();
   const [showGrowthWindow, setShowGrowthWindow] = useState(true);
   const [goalsSortFlag, setGoalsSortFlag] = useState(true);
@@ -64,6 +65,9 @@ const CropSelector = (props) => {
   const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
   const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
+  const consentRedux = useSelector((stateRedux) => stateRedux.sharedData.consent);
+  const speciesSelectorActivationFlagRedux = useSelector((stateRedux) => stateRedux.sharedData.speciesSelectorActivationFlag);
+  const myCoverCropListLocationRedux = useSelector((stateRedux) => stateRedux.sharedData.myCoverCropListLocation);
   const [isListView, setIsListView] = useState(true);
   const [comparisonView, setComparisonView] = useState(false);
   const [cropData, setCropData] = useState([]);
@@ -89,10 +93,10 @@ const CropSelector = (props) => {
   };
 
   useEffect(() => {
-    if (state.myCoverCropListLocation !== 'selector' && selectedCropsRedux.length > 0) {
+    if (myCoverCropListLocationRedux !== 'selector' && selectedCropsRedux.length > 0) {
       setHandleConfirm(true);
     }
-  }, [selectedCropsRedux, state.myCoverCropListLocation]);
+  }, [selectedCropsRedux, myCoverCropListLocationRedux]);
 
   useEffect(() => {
     sortCropsBy(true);
@@ -103,23 +107,24 @@ const CropSelector = (props) => {
   }, [activeCropDataRedux]);
 
   useEffect(() => {
-    if (state.consent === true) {
+    if (consentRedux === true) {
       ReactGA.initialize('UA-181903489-1');
 
       ReactGA.pageview('cover crop selector');
     }
-  }, [state.consent]);
+  }, [consentRedux]);
 
   useEffect(() => {
     if (selectedGoalsRedux?.length === 0) {
-      dispatch({
-        type: 'UPDATE_PROGRESS',
-        data: {
-          type: 'DECREMENT',
-        },
-      });
+      dispatchRedux(updateProgress('DECREMENT'));
+      // dispatch({
+      //   type: 'UPDATE_PROGRESS',
+      //   data: {
+      //     type: 'DECREMENT',
+      //   },
+      // });
     }
-  }, [selectedGoalsRedux, dispatch]);
+  }, [selectedGoalsRedux, dispatchRedux]);
 
   useEffect(() => {
     if (cropDataRedux) {
@@ -227,7 +232,7 @@ const CropSelector = (props) => {
 
       <Grid item xl={showSidebar ? 8 : 12} lg={showSidebar ? 8 : 12} md={showSidebar ? 8 : 12} mt={4} ml={4}>
         {/* we need a spinner or loading icon for when the length isnt yet determined */}
-        {state.speciesSelectorActivationFlag ? (
+        {speciesSelectorActivationFlagRedux ? (
           isListView ? (
             <CropCalendarView
               activeCropData={updatedActiveCropData}

@@ -20,6 +20,7 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
   const [dataDone, setDataDone] = useState(false);
   const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
   const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
+  const consentRedux = useSelector((stateRedux) => stateRedux.sharedData.consent);
 
   useEffect(() => {
     const regionQuery = `${encodeURIComponent('regions')}=${encodeURIComponent(regionIdRedux)}`;
@@ -38,18 +39,18 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
   }, [crop]);
 
   useEffect(() => {
-    if (state.consent === true) {
+    if (consentRedux === true) {
       ReactGA.initialize('UA-181903489-1');
       ReactGA.pageview('information sheet');
     }
-  }, [state.consent]);
+  }, [consentRedux]);
 
   const handleModalClose = () => {
     setModalOpen(!modalOpen);
   };
 
   const print = () => {
-    if (state.consent === true) {
+    if (consentRedux === true) {
       ReactGA.event({
         category: 'Information Sheet',
         action: 'Print',

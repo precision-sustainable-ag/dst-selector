@@ -4,7 +4,7 @@
 */
 
 import { Snackbar } from '@mui/material';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import CropSelector from './pages/CropSelector/CropSelector';
 import GoalsSelector from './pages/GoalsSelector/GoalsSelector';
@@ -12,7 +12,6 @@ import Header from './pages/Header/Header';
 import Landing from './pages/Landing/Landing';
 import LocationComponent from './pages/Location/Location';
 import LocationConfirmation from './pages/Location/LocationConfirmation/LocationConfirmation';
-import { Context } from './store/Store';
 import './styles/App.scss';
 import { snackHandler } from './reduxStore/sharedSlice';
 
@@ -54,11 +53,13 @@ const LoadRelevantRoute = ({ progress, calcHeight }) => {
 };
 
 const App = () => {
-  const { state } = useContext(Context);
   const dispatchRedux = useDispatch();
   const [calcHeight, setCalcHeight] = useState(0);
   const snackOpenRedux = useSelector((stateRedux) => stateRedux.sharedData.snackOpen);
   const snackMessageRedux = useSelector((stateRedux) => stateRedux.sharedData.snackMessage);
+  const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
+  const snackVerticalRedux = useSelector((stateRedux) => stateRedux.sharedData.snackVertical);
+  const snackHorizontalRedux = useSelector((stateRedux) => stateRedux.sharedData.snackHorizontal);
   const handleSnackClose = () => {
     dispatchRedux(snackHandler({ snackOpen: false, snackMessage: '' }));
     // dispatch({
@@ -87,7 +88,7 @@ const App = () => {
 
       <div className="container-fluid pl-0 pr-0">
         <div className="contentContainer">
-          {state.progress === 0 ? (
+          {progressRedux === 0 ? (
             <Landing
               title="Decision Support Tool"
               height={calcHeight}
@@ -101,7 +102,7 @@ const App = () => {
                 paddingRight: '0px',
               }}
             >
-              <LoadRelevantRoute progress={state.progress} calcHeight={calcHeight} />
+              <LoadRelevantRoute progress={progressRedux} calcHeight={calcHeight} />
             </div>
           )}
         </div>
@@ -110,12 +111,12 @@ const App = () => {
       <div>
         <Snackbar
           anchorOrigin={{
-            vertical: state.snackVertical,
-            horizontal: state.snackHorizontal,
+            vertical: snackVerticalRedux,
+            horizontal: snackHorizontalRedux,
           }}
           key={{
-            vertical: state.snackVertical,
-            horizontal: state.snackHorizontal,
+            vertical: snackVerticalRedux,
+            horizontal: snackHorizontalRedux,
           }}
           autoHideDuration={3000}
           open={snackOpenRedux}

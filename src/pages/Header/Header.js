@@ -5,17 +5,16 @@
 */
 
 import { useSelector } from 'react-redux';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { Context } from '../../store/Store';
 import '../../styles/header.scss';
 import HeaderLogoInfo from './HeaderLogoInfo/HeaderLogoInfo';
 import InformationBar from './InformationBar/InformationBar';
 import ToggleOptions from './ToggleOptions/ToggleOptions';
 
 const Header = () => {
-  const { state } = useContext(Context);
   const markersRedux = useSelector((stateRedux) => stateRedux.addressData.markers);
+  const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
   const [isRoot, setIsRoot] = useState(false);
   const isActive = {};
 
@@ -26,7 +25,7 @@ const Header = () => {
       setIsRoot(false);
     }
 
-    switch (state.progress) {
+    switch (progressRedux) {
       case 0:
         isActive.val = 0;
         break;
@@ -66,7 +65,7 @@ const Header = () => {
         || window.location.pathname === '/help'
         || (window.location.pathname === '/feedback'
           && window.location.pathname !== '/cover-crop-explorer')
-        || (state.progress < 0 && (
+        || (progressRedux < 0 && (
           <div className="topBar" />
         ))}
     </header>

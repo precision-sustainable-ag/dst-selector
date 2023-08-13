@@ -10,6 +10,7 @@ const initialState = {
   myCoverCropListLocation: '',
   snackVertical: 'bottom',
   snackHorizontal: 'right',
+  zoneToggle: true,
 };
 
 export const toggleValue = (value) => ({
@@ -85,8 +86,16 @@ export const myCropListLocation = ({ from }) => ({
   },
 });
 
+export const zoneToggleHandler = (value) => ({
+  type: 'ZONE_TOGGLE',
+  payload: {
+    value,
+  },
+});
+
 const sharedReducer = (state = initialState, action = null) => {
   const value = action && action.payload && action.payload.value;
+  console.log('VALUE: ', value);
   switch (action.type) {
     case 'TOGGLE':
       return {
@@ -159,6 +168,9 @@ const sharedReducer = (state = initialState, action = null) => {
         ...state,
         myCoverCropListLocation: action.payload.from,
       };
+
+    case 'ZONE_TOGGLE':
+      return { ...state, zoneToggle: action.payload.value };
 
     default:
       return { ...state };

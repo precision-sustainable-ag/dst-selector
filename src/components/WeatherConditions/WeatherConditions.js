@@ -15,10 +15,9 @@ import {
   Box,
 } from '@mui/material';
 import moment from 'moment';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { LightButton } from '../../shared/constants';
-import { Context } from '../../store/Store';
 import WeatherPrecipitation from './WeatherPrecipitation/WeatherPrecipitation';
 import WeatherFrostDates from './WeatherFrostDates/WeatherFrostDates';
 import WeatherFrostFreeDays from './WeatherFrostFreeDays/WeatherFrostFreeDays';
@@ -26,12 +25,13 @@ import MyCoverCropReset from '../MyCoverCropReset/MyCoverCropReset';
 import { updateWeatherConditions } from '../../reduxStore/weatherSlice';
 
 const WeatherConditions = ({ caller }) => {
-  const { state } = useContext(Context);
   const dispatchRedux = useDispatch();
 
   // redux vars
   const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
   const weatherDataRedux = useSelector((stateRedux) => stateRedux.weatherData.weatherData);
+  const ajaxInProgressRedux = useSelector((stateRedux) => stateRedux.sharedData.ajaxInProgress);
+  const myCoverCropListLocationRedux = useSelector((stateRedux) => stateRedux.sharedData.myCoverCropListLocation);
 
   // useState vars
   const [months, setMonths] = useState([]);
@@ -110,11 +110,11 @@ const WeatherConditions = ({ caller }) => {
   };
 
   useEffect(() => {
-    if (state.myCoverCropListLocation !== 'selector' && selectedCropsRedux.length > 0) {
+    if (myCoverCropListLocationRedux !== 'selector' && selectedCropsRedux.length > 0) {
       // document.title = 'Cover Crop Selector';
       setHandleConfirm(true);
     }
-  }, [selectedCropsRedux, state.myCoverCropListLocation]);
+  }, [selectedCropsRedux, myCoverCropListLocationRedux]);
 
   useEffect(() => {
     // get current month in long form
@@ -164,12 +164,12 @@ const WeatherConditions = ({ caller }) => {
       }
     };
 
-    if (!state.ajaxInProgress) {
+    if (!ajaxInProgressRedux) {
       checkIfAnythingChanged();
     }
   }, [
     weatherDataShadow,
-    state.ajaxInProgress,
+    ajaxInProgressRedux,
     firstFrostDay,
     firstFrostMonth,
     lastFrostDay,
@@ -179,10 +179,10 @@ const WeatherConditions = ({ caller }) => {
   ]);
 
   useEffect(() => {
-    if (!state.ajaxInProgress) {
+    if (!ajaxInProgressRedux) {
       setWeatherDataShadow(weatherDataRedux);
     }
-  }, [state.ajaxInProgress, weatherDataRedux]);
+  }, [ajaxInProgressRedux, weatherDataRedux]);
 
   return (
     <div className="row">

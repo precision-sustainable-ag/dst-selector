@@ -1,10 +1,10 @@
 import {
   Collapse, List, ListItem, ListItemText, Tooltip, Typography,
 } from '@mui/material';
+import { useSelector } from 'react-redux';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
-import React, { Fragment, useContext } from 'react';
+import React, { Fragment } from 'react';
 import Filters from '../Filters/Filters';
-import { Context } from '../../../store/Store';
 
 const SidebarFilter = ({
   filter,
@@ -15,7 +15,7 @@ const SidebarFilter = ({
   sectionFilter,
   handleToggle,
 }) => {
-  const { state } = useContext(Context);
+  const sharedDataState = useSelector((stateRedux) => stateRedux.sharedData);
 
   return (
     <Fragment key={index}>
@@ -32,31 +32,31 @@ const SidebarFilter = ({
         >
           <ListItem
             key={index}
-            className={state[sectionFilter] ? 'filterOpen' : 'filterClose'}
+            className={sharedDataState[sectionFilter] ? 'filterOpen' : 'filterClose'}
             component="div"
             onClick={() => handleToggle(sectionFilter)}
           >
             <ListItemText
               primary={<Typography variant="body2">{filter.name.toUpperCase()}</Typography>}
             />
-            {state[sectionFilter] ? <ExpandLess /> : <ExpandMore />}
+            {sharedDataState[sectionFilter] ? <ExpandLess /> : <ExpandMore />}
           </ListItem>
         </Tooltip>
       ) : (
         <ListItem
           key={index}
-          className={state[sectionFilter] ? 'filterOpen' : 'filterClose'}
+          className={sharedDataState[sectionFilter] ? 'filterOpen' : 'filterClose'}
           component="div"
           onClick={() => handleToggle(sectionFilter)}
         >
           <ListItemText
             primary={<Typography variant="body2">{filter.name.toUpperCase()}</Typography>}
           />
-          {state[sectionFilter] ? <ExpandLess /> : <ExpandMore />}
+          {sharedDataState[sectionFilter] ? <ExpandLess /> : <ExpandMore />}
         </ListItem>
       )}
 
-      <Collapse in={state[sectionFilter]} timeout="auto">
+      <Collapse in={sharedDataState[sectionFilter]} timeout="auto">
         <List component="div" disablePadding>
           <ListItem key={index} component="div">
             <Filters

@@ -4,21 +4,20 @@
 */
 
 import React, {
-  Fragment, useContext, useEffect, useState,
+  useEffect, useState,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { cloudIcon, ReferenceTooltip, reverseGEO } from '../../../shared/constants';
 import { openWeatherApiKey } from '../../../shared/keys';
-import { Context } from '../../../store/Store';
 import { changeAddress, updateZipCode } from '../../../reduxStore/addressSlice';
 
 const apiBaseURL = 'https://api.openweathermap.org/data/2.5/weather';
 
 const ForecastComponent = () => {
-  const { state, dispatch } = useContext(Context);
   const dispatchRedux = useDispatch();
   const markersRedux = useSelector((stateRedux) => stateRedux.addressData.markers);
   const addressRedux = useSelector((stateRedux) => stateRedux.addressData.address);
+  const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
   const [showTempIcon, setShowTempIcon] = useState(true);
   const [temp, setTemp] = useState({
     min: 0,
@@ -97,9 +96,9 @@ const ForecastComponent = () => {
     if (markersRedux[0].length > 0) {
       setShowFeatures();
     }
-  }, [dispatch, addressRedux, markersRedux, state.progress]);
+  }, [dispatchRedux, addressRedux, markersRedux, progressRedux]);
 
-  if (state.progress >= 1) {
+  if (progressRedux >= 1) {
     if (showTempIcon) {
       return (
         <>

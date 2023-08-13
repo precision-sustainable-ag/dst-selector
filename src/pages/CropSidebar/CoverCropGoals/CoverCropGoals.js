@@ -9,20 +9,23 @@ import {
 } from '@mui/material';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import React, { useContext } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Context } from '../../../store/Store';
 import { CustomStyles } from '../../../shared/constants';
+import { updateProgress } from '../../../reduxStore/sharedSlice';
 
 const CoverCropGoals = ({ handleToggle }) => {
-  const { state, dispatch } = useContext(Context);
+  const { state } = useContext(Context);
+  const dispatchRedux = useDispatch();
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const changeProgress = () => {
-    dispatch({
-      type: 'UPDATE_PROGRESS',
-      data: {
-        type: 'DECREMENT',
-      },
-    });
+    dispatchRedux(updateProgress('DECREMENT'));
+    // dispatch({
+    //   type: 'UPDATE_PROGRESS',
+    //   data: {
+    //     type: 'DECREMENT',
+    //   },
+    // });
   }; // changeProgress
 
   return (

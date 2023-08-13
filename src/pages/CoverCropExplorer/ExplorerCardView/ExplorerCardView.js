@@ -9,21 +9,19 @@ import {
 } from '@mui/material';
 import { useSnackbar } from 'notistack';
 import React, {
-  useContext, useEffect, useState,
+  useEffect, useState,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import CropCard from '../../../components/CropCard/CropCard';
 import CropDetailsModal from '../../../components/CropDetailsModal/CropDetailsModal';
-import { Context } from '../../../store/Store';
 import { selectedCropsModifier } from '../../../reduxStore/cropSlice';
-import { snackHandler } from '../../../reduxStore/sharedSlice';
+import { myCropListLocation, snackHandler } from '../../../reduxStore/sharedSlice';
 
 const ExplorerCardView = ({ activeCropData }) => {
-  const { state, dispatch } = useContext(Context);
   const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
   const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
   const sfilters = filterStateRedux[section];
-
+  const ajaxInProgressRedux = useSelector((stateRedux) => stateRedux.sharedData.ajaxInProgress);
   const dispatchRedux = useDispatch();
   const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
   const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
@@ -84,16 +82,17 @@ const ExplorerCardView = ({ activeCropData }) => {
         buildDispatch('Removed', selectedCropsCopy);
       }
     } else {
-      dispatch({
-        type: 'MY_CROP_LIST_LOCATION',
-        data: { from: 'explorer' },
-      });
+      dispatchRedux(myCropListLocation({ from: 'explorer' }));
+      // dispatch({
+      //   type: 'MY_CROP_LIST_LOCATION',
+      //   data: { from: 'explorer' },
+      // });
       buildDispatch('Added', [selectedCrops]);
     }
   };
 
   return (
-    state.ajaxInProgress ? (
+    ajaxInProgressRedux ? (
       <CircularProgress style={{ marginLeft: '60px' }} size="6em" />
     ) : (
       <>

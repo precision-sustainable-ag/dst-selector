@@ -27,6 +27,8 @@ const CoverCropExplorer = () => {
   const activeCropDataRedux = useSelector((stateRedux) => stateRedux.cropData.activeCropData);
   const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
   const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
+  const consentRedux = useSelector((stateRedux) => stateRedux.sharedData.consent);
+  const myCoverCropListLocationRedux = useSelector((stateRedux) => stateRedux.sharedData.myCoverCropListLocation);
   const [updatedActiveCropData, setUpdatedActiveCropData] = useState([]);
   // const { activeCropData } = state;
   const [handleConfirm, setHandleConfirm] = useState(false);
@@ -39,12 +41,12 @@ const CoverCropExplorer = () => {
   }, [activeCropDataRedux]);
 
   useEffect(() => {
-    if (state.consent === true) {
+    if (consentRedux === true) {
       ReactGA.initialize('UA-181903489-1');
 
       ReactGA.pageview('cover crop explorer');
     }
-  }, [state.consent]);
+  }, [consentRedux]);
 
   useEffect(() => {
     if (stateLabelRedux === null || stateLabelRedux === '') {
@@ -57,11 +59,11 @@ const CoverCropExplorer = () => {
       // document.title = 'Cover Crop Explorer';
       setHandleConfirm(true);
     }
-  }, [selectedCropsRedux, state.myCoverCropListLocation]);
+  }, [selectedCropsRedux, myCoverCropListLocationRedux]);
 
   return (
     <div className="contentWrapper">
-      <ConsentModal consent={state.consent} />
+      <ConsentModal consent={consentRedux} />
       <Header logo="neccc_wide_logo_color_web.jpg" />
       <div className="container-fluid mt-4 mb-4">
         <div className="row mt-3">

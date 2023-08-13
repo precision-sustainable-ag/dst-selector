@@ -42,6 +42,8 @@ const Landing = ({ height, title, bg }) => {
   const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
   const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
   const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
+  const consentRedux = useSelector((stateRedux) => stateRedux.sharedData.consent);
+  const myCoverCropListLocationRedux = useSelector((stateRedux) => stateRedux.sharedData.myCoverCropListLocation);
 
   const stateChange = (selState) => {
     setSelectedState(selState);
@@ -180,12 +182,12 @@ const Landing = ({ height, title, bg }) => {
   );
 
   useEffect(() => {
-    if (state.consent) {
+    if (consentRedux) {
       ReactGA.initialize('UA-181903489-1');
 
       ReactGA.pageview('cover crop selector');
     }
-  }, [state.consent]);
+  }, [consentRedux]);
 
   useEffect(() => {
     document.title = title;
@@ -214,7 +216,7 @@ const Landing = ({ height, title, bg }) => {
 
   useEffect(() => {
     document.title = 'Cover Crop Selector';
-    if (state.myCoverCropListLocation !== 'selector' && selectedCropsRedux.length > 0) {
+    if (myCoverCropListLocationRedux !== 'selector' && selectedCropsRedux.length > 0) {
       setHandleConfirm(true);
     }
   }, []);
@@ -230,7 +232,7 @@ const Landing = ({ height, title, bg }) => {
       }}
     >
 
-      <ConsentModal consent={state.consent} />
+      <ConsentModal consent={consentRedux} />
 
       <Grid container>
 
