@@ -8,10 +8,9 @@ import {
   Grid, Typography,
 } from '@mui/material';
 import { useHistory } from 'react-router-dom';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import ReactGA from 'react-ga';
-import { Context } from '../../store/Store';
 import Header from '../Header/Header';
 import ExplorerCardView from './ExplorerCardView/ExplorerCardView';
 import ConsentModal from './ConsentModal/ConsentModal';
@@ -19,7 +18,6 @@ import CropSidebar from '../CropSidebar/CropSidebar';
 import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset';
 
 const CoverCropExplorer = () => {
-  const { state } = useContext(Context);
   const history = useHistory();
   const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
   const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
@@ -55,7 +53,7 @@ const CoverCropExplorer = () => {
   }, [stateLabelRedux]);
 
   useEffect(() => {
-    if (state?.myCoverCropListLocation !== 'explorer' && selectedCropsRedux?.length > 0) {
+    if (myCoverCropListLocationRedux !== 'explorer' && selectedCropsRedux?.length > 0) {
       // document.title = 'Cover Crop Explorer';
       setHandleConfirm(true);
     }

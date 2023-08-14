@@ -69,7 +69,7 @@ const MyCoverCropComparison = ({ selectedCrops }) => {
   const dispatchRedux = useDispatch();
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const { enqueueSnackbar } = useSnackbar();
-  const { comparisonKeys } = state;
+  const comparisonKeysRedux = useSelector((stateRedux) => stateRedux.sharedData.comparisonKeys);
   const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
   const { zone } = state[section];
   const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
@@ -166,7 +166,7 @@ const MyCoverCropComparison = ({ selectedCrops }) => {
                   }}
                 />
                 <CardContent style={{ paddingRight: '0px', paddingLeft: '0px', width: 'calc(100%)' }}>
-                  {comparisonKeys.map((keys, index) => (
+                  {comparisonKeysRedux.map((keys, index) => (
                     <div
                       style={lightBorder}
                       key={index}
@@ -265,7 +265,7 @@ const MyCoverCropComparison = ({ selectedCrops }) => {
                   handleModalOpen={handleModalOpen}
                   index={index}
                   type="myListCompare"
-                  comparisonKeys={comparisonKeys}
+                  comparisonKeys={comparisonKeysRedux}
                   lightBG={lightBG}
                   GetAverageGoalRating={GetAverageGoalRating}
                 />
