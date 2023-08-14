@@ -19,9 +19,8 @@ const Header = () => {
   const { state } = useContext(Context);
   const markersRedux = useSelector((stateRedux) => stateRedux.addressData.markers);
   const [isRoot, setIsRoot] = useState(false);
-  const { user, isAuthenticated, loginWithRedirect } = useAuth0();
+  const { isAuthenticated, loginWithRedirect } = useAuth0();
   const isActive = {};
-  console.log('user auth0', user);
 
   useEffect(() => {
     if (window.location.pathname === '/explorer') {

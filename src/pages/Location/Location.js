@@ -1,3 +1,4 @@
+/* eslint-disable no-use-before-define */
 /*
   This is the main location widget component
   styled using ../../styles/location.scss
@@ -19,6 +20,7 @@ import moment from 'moment';
 import { Map } from '@psa/dst.ui.map';
 // import centroid from '@turf/centroid';
 import mapboxgl from 'mapbox-gl';
+import { useAuth0 } from '@auth0/auth0-react';
 import statesLatLongDict from '../../shared/stateslatlongdict';
 import {
   abbrRegion, reverseGEO, callCoverCropApi,
@@ -57,6 +59,11 @@ const LocationComponent = () => {
   const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
 
   const getLatLng = useCallback(() => {
+    // eslint-disable-next-line no-use-before-define
+    if (isAuthenticated) {
+      // getData().then((data) => setUserData(data));
+      console.log('map data', userData);
+    }
     if (stateLabelRedux) {
       return [statesLatLongDict[stateLabelRedux][0], statesLatLongDict[stateLabelRedux][1]];
     }
@@ -106,6 +113,7 @@ const LocationComponent = () => {
   }, [zoneRedux, countyRedux]);
 
   useEffect(() => {
+    console.log('marker', selectedToEditSite);
     const {
       latitude,
       longitude,
@@ -284,6 +292,79 @@ const LocationComponent = () => {
       });
   }, [zipCodeRedux]);
 
+  const [accessToken, setAccessToken] = useState('');
+  const [userData, setUserData] = useState();
+  const { isAuthenticated, getAccessTokenSilently } = useAuth0();
+  const apiServerUrl = process.env.REACT_APP_API_SERVER_URL;
+
+  const [currArea, setCurrArea] = useState([]);
+
+  const handleArea = (a) => {
+    // TODO: add areas into redux to prevent loss of state.
+    setCurrArea([...currArea, a]);
+  };
+
+  // console.log('currArea', currArea);
+
+  const onDraw = (e) => {
+    console.log('draw event', e);
+  };
+
+  useEffect(() => {
+    const getToken = async () => {
+      const token = await getAccessTokenSilently();
+      setAccessToken(token);
+    };
+    getToken();
+    getData().then((data) => setUserData(data));
+  }, [getAccessTokenSilently]);
+
+  console.log('userData', userData);
+
+  const getData = async () => {
+    const url = `${apiServerUrl}fields?page=1&perPage=200`;
+    const config = {
+      method: 'GET',
+      headers: {
+        'content-type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+    };
+    return fetch(url, config)
+      .then((res) => res.json());
+  };
+
+  const handleLoad = () => {
+    getData().then((data) => setUserData(data));
+  };
+
+  const buildPointGeoJSON = (lng, lat) => ({
+    type: 'Feature',
+    properties: {},
+    geometry: {
+      coordinates: [
+        lng, lat,
+      ],
+      type: 'Point',
+    },
+  });
+
+  const handleSave = () => {
+    const { longitude, latitude } = selectedToEditSite;
+    const point = buildPointGeoJSON(longitude, latitude);
+    // console.log(point);
+    const url = `${apiServerUrl}fields`;
+    const config = {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify(point),
+    };
+    fetch(url, config).then((res) => res.json()).then(console.log);
+  };
+
   return (
     <div className="container-fluid mt-5">
       <div className="row boxContainerRow mx-0 px-0 mx-lg-3 px-lg-3" style={{ minHeight: '520px' }}>
@@ -316,6 +397,8 @@ const LocationComponent = () => {
           <div className="container-fluid">
             <Map
               setAddress={setSelectedToEditSite}
+              setFeatures={handleArea}
+              onDraw={onDraw}
               initWidth="100%"
               initHeight="600px"
               initLat={getLatLng()[0]}
@@ -336,6 +419,8 @@ const LocationComponent = () => {
           </div>
         </div>
       </div>
+      <button type="button" onClick={handleLoad}>LOAD</button>
+      <button type="button" onClick={handleSave}>SAVE</button>
       <MyCoverCropReset handleConfirm={handleConfirm} setHandleConfirm={setHandleConfirm} from="selector" />
     </div>
   );

@@ -5,11 +5,40 @@
 
 import { Box } from '@mui/material';
 import { useAuth0 } from '@auth0/auth0-react';
-import React from 'react';
+import React, { useEffect } from 'react';
 import Header from '../Header/Header';
 
+const apiServerUrl = process.env.REACT_APP_API_SERVER_URL;
+
+const getFields = async (accessToken = null) => {
+  const url = `${apiServerUrl}fields?page=1&perPage=200`;
+  const config = {
+    method: 'GET',
+    headers: {
+      'content-type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+      mode: 'no-cors',
+    },
+  };
+  // console.log(url, config);
+
+  return fetch(url, config)
+    .then((res) => res.json())
+    .then((data) => console.log('test', data))
+    .catch((err) => console.error(err));
+};
+
 const Profile = () => {
-  const { user, isAuthenticated } = useAuth0();
+  const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
+
+  useEffect(() => {
+    const getData = async () => {
+      const accessToken = await getAccessTokenSilently();
+      const res = await getFields(accessToken);
+      console.log(res);
+    };
+    getData();
+  }, [getAccessTokenSilently]);
 
   return (
     <div className="contentWrapper" id="mainContentWrapper">
