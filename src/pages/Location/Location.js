@@ -1,3 +1,5 @@
+// /* eslint-disable */
+// TODO: remember to delete this line after developing
 /* eslint-disable no-use-before-define */
 /*
   This is the main location widget component
@@ -60,18 +62,17 @@ const LocationComponent = () => {
   const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
   const accessTokenRedux = useSelector((stateRedux) => stateRedux.userData.accessToken);
   const userFieldRedux = useSelector((stateRedux) => stateRedux.userData.field);
-  console.log('userFieldRedux', userFieldRedux);
-  // const { isAuthenticated } = useAuth0();
+  console.log('userFieldRedux', userFieldRedux, userFieldRedux?.data[0]?.geometry?.coordinates);
 
-  // const getInitPoint = () => {
-  //   if (userFieldRedux && userFieldRedux.data.length > 0) {
-  //     if (userFieldRedux.data[0].geometry.type !== 'Polygon') {
-
-  //     } else {
-
-  //     }
-  //   }
-  // };
+  const getArea = useCallback(() => {
+    if (userFieldRedux
+      && userFieldRedux.data.length > 0
+      && userFieldRedux.data[0].geometry.type === 'Polygon') {
+      return userFieldRedux.data;
+    }
+    return [];
+  }, [state]);
+  console.log('initArea()', getArea());
 
   const getLatLng = useCallback(() => {
     if (userFieldRedux && userFieldRedux.data.length > 0 && userFieldRedux.data[0].geometry.type !== 'Polygon') {
@@ -83,7 +84,7 @@ const LocationComponent = () => {
     }
     return [47, -122];
   }, [state]);
-  console.log('getLatLng', getLatLng());
+  // console.log('getLatLng', getLatLng());
 
   useEffect(() => {
     if (selectedCropsRedux.length > 0) {
@@ -129,6 +130,7 @@ const LocationComponent = () => {
 
   useEffect(() => {
     console.log('marker', selectedToEditSite);
+    // if (selectedToEditSite !== {}) handleSave();
     const {
       latitude,
       longitude,
@@ -307,17 +309,8 @@ const LocationComponent = () => {
       });
   }, [zipCodeRedux]);
 
-  // eslint-disable-next-line no-unused-vars
   const [currArea, setCurrArea] = useState([]);
   // console.log('currArea', currArea);
-  // const handleArea = (a) => {
-  //   // TODO: add areas into redux to prevent loss of state.
-  //   setCurrArea([...currArea, a]);
-  // };
-
-  const onDraw = (e) => {
-    console.log('draw event', e);
-  };
 
   const handleLoad = () => {
     getFields(accessTokenRedux).then((data) => console.log(data.data[0]));
@@ -341,6 +334,12 @@ const LocationComponent = () => {
     postFields(accessTokenRedux, point).then(
       getFields(accessTokenRedux).then((data) => dispatchRedux(updateField(data))),
     );
+    if (currArea.length > 0) {
+      postFields(accessTokenRedux, currArea[0]).then(
+        getFields(accessTokenRedux).then((data) => dispatchRedux(updateField(data))),
+      );
+      console.log('save area');
+    }
     // postFields(accessTokenRedux, currArea[0]).then(console.log);
   };
 
@@ -377,11 +376,11 @@ const LocationComponent = () => {
             <Map
               setAddress={setSelectedToEditSite}
               setFeatures={setCurrArea}
-              onDraw={onDraw}
               initWidth="100%"
               initHeight="600px"
               initLat={getLatLng()[0]}
               initLon={getLatLng()[1]}
+              initFeatures={getArea()}
               initStartZoom={12}
               initMinZoom={4}
               initMaxZoom={18}
