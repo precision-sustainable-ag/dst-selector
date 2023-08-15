@@ -20,26 +20,12 @@ const ToggleOptions = ({ isRoot }) => {
     if (window.location.pathname === '/explorer') {
       if (progressRedux > 4) {
         dispatchRedux(activateMyCoverCropListTile({ myCoverCropActivationFlag: true, speciesSelectorActivationFlag: false }));
-        // dispatch({
-        //   type: 'ACTIVATE_MY_COVER_CROP_LIST_TILE',
-        //   data: {
-        //     myCoverCropActivationFlag: true,
-        //     speciesSelectorActivationFlag: false,
-        //   },
-        // });
       }
     }
   };
 
   const setSpeciesSelectorActivationFlag = () => {
     dispatchRedux(activateSpeicesSelectorTile({ speciesSelectorActivationFlag: true, myCoverCropActivationFlag: false }));
-    // dispatch({
-    //   type: 'ACTIVATE_SPECIES_SELECTOR_TILE',
-    //   data: {
-    //     speciesSelectorActivationFlag: true,
-    //     myCoverCropActivationFlag: false,
-    //   },
-    // });
     if (window.location.pathname !== '/explorer') {
       history.push('/explorer');
     }

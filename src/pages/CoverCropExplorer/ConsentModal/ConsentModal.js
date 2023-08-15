@@ -24,12 +24,6 @@ const ConsentModual = ({ consent }) => {
   const handleModal = (choice) => {
     setModalOpen((o) => !o);
     dispatchRedux(updateConsent(choice));
-    // dispatch({
-    //   type: 'UPDATE_CONSENT',
-    //   data: {
-    //     consent: choice,
-    //   },
-    // });
   };
 
   return !consent && !/crop=/.test(window.location.search) && (

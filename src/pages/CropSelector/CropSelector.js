@@ -75,12 +75,6 @@ const CropSelector = (props) => {
   const [handleConfirm, setHandleConfirm] = useState(false);
 
   const sortCropsBy = (flag) => {
-    // const dispatchValue = (updatedCropData) => dispatch({
-    //   type: 'UPDATE_ACTIVE_CROP_DATA',
-    //   data: {
-    //     value: updatedCropData,
-    //   },
-    // });
     const dispatchValue = (updatedCropData) => dispatchRedux(updateActiveCropData(updatedCropData));
 
     if (selectedGoalsRedux?.length > 0) {
@@ -117,12 +111,6 @@ const CropSelector = (props) => {
   useEffect(() => {
     if (selectedGoalsRedux?.length === 0) {
       dispatchRedux(updateProgress('DECREMENT'));
-      // dispatch({
-      //   type: 'UPDATE_PROGRESS',
-      //   data: {
-      //     type: 'DECREMENT',
-      //   },
-      // });
     }
   }, [selectedGoalsRedux, dispatchRedux]);
 

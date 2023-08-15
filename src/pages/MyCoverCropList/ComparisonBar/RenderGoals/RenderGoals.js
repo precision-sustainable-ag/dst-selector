@@ -22,7 +22,6 @@ const RenderGoals = ({
   goalsOpen,
   setGoalsOpen,
   comparisonKeys,
-  dispatch,
 }) => {
   const dispatchRedux = useDispatch();
   return (
@@ -59,12 +58,6 @@ const RenderGoals = ({
                           }
 
                           dispatchRedux(updateComparisonKeys(comparisonKeysCopy));
-                          dispatch({
-                            type: 'UPDATE_COMPARISON_KEYS',
-                            data: {
-                              comparisonKeys: comparisonKeysCopy,
-                            },
-                          });
                         }}
                         name={goal.name}
                         color="primary"

@@ -60,15 +60,9 @@ const App = () => {
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
   const snackVerticalRedux = useSelector((stateRedux) => stateRedux.sharedData.snackVertical);
   const snackHorizontalRedux = useSelector((stateRedux) => stateRedux.sharedData.snackHorizontal);
+
   const handleSnackClose = () => {
     dispatchRedux(snackHandler({ snackOpen: false, snackMessage: '' }));
-    // dispatch({
-    //   type: 'SNACK',
-    //   data: {
-    //     snackOpen: false,
-    //     snackMessage: '',
-    //   },
-    // });
   };
 
   useEffect(() => {

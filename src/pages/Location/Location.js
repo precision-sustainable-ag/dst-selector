@@ -131,13 +131,6 @@ const LocationComponent = () => {
         snackOpen: true,
         snackMessage: 'Your location has been saved.',
       }));
-      // dispatch({
-      //   type: 'SNACK',
-      //   data: {
-      //     snackOpen: true,
-      //     snackMessage: 'Your location has been saved.',
-      //   },
-      // });
 
       if (selectedToEditSite.address) {
         dispatchRedux(changeAddressViaMap(

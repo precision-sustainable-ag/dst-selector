@@ -17,7 +17,7 @@ import RenderGoals from './RenderGoals/RenderGoals';
 import { updateComparisonKeys } from '../../../reduxStore/sharedSlice';
 
 const ComparisonBar = ({
-  filterData, goals, comparisonKeys, dispatch, comparisonView, classes,
+  filterData, goals, comparisonKeys, comparisonView, classes,
 }) => {
   const dispatchRedux = useDispatch();
   const [filtersTotal, setFiltersTotal] = useState();
@@ -61,12 +61,6 @@ const ComparisonBar = ({
   const resetAllFilters = () => {
     if (comparisonKeys.length > 0) {
       dispatchRedux(updateComparisonKeys([]));
-      // dispatch({
-      //   type: 'UPDATE_COMPARISON_KEYS',
-      //   data: {
-      //     comparisonKeys: [],
-      //   },
-      // });
     }
   };
 
@@ -114,12 +108,6 @@ const ComparisonBar = ({
     setAllGoals(filteredGoals);
 
     dispatchRedux(updateComparisonKeys(theGoals.flat(2)));
-    // dispatch({
-    //   type: 'UPDATE_COMPARISON_KEYS',
-    //   data: {
-    //     comparisonKeys: theGoals.flat(2),
-    //   },
-    // });
   };
 
   return comparisonView ? (
@@ -177,7 +165,6 @@ const ComparisonBar = ({
           goalsOpen={goalsOpen}
           setGoalsOpen={setGoalsOpen}
           comparisonKeys={comparisonKeys}
-          dispatch={dispatch}
         />
       )}
 
@@ -186,7 +173,6 @@ const ComparisonBar = ({
         toggleSidebarFilterItems={toggleSidebarFilterItems}
         classes={classes}
         comparisonKeys={comparisonKeys}
-        dispatch={dispatch}
       />
     </List>
   ) : null;

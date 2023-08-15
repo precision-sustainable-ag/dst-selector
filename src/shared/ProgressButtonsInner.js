@@ -3,11 +3,10 @@
   The ProgressButtonsInner allow the user to navigate steps
 */
 
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Refresh } from '@mui/icons-material';
 import { Stack } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
-import { Context } from '../store/Store';
 import { LightButton } from './constants';
 import { reset } from '../reduxStore/store';
 import { updateProgress } from '../reduxStore/sharedSlice';
@@ -15,12 +14,10 @@ import { updateProgress } from '../reduxStore/sharedSlice';
 const ProgressButtonsInner = ({
   isDisabledBack, isDisabledNext, isDisabledRefresh, closeExpansionPanel, setConfirmationOpen,
 }) => {
-  const { dispatch } = useContext(Context);
   const dispatchRedux = useDispatch();
   const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
   const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
-  const defaultMarkers = [[40.78489145, -74.80733626930342]];
 
   const [crement, setCrement] = useState('');
 
@@ -28,22 +25,10 @@ const ProgressButtonsInner = ({
     setCrement(type);
     if (type === 'increment') {
       dispatchRedux(updateProgress('INCREMENT'));
-      // dispatch({
-      //   type: 'UPDATE_PROGRESS',
-      //   data: {
-      //     type: 'INCREMENT',
-      //   },
-      // });
     }
 
     if (type === 'decrement') {
       dispatchRedux(updateProgress('DECREMENT'));
-      // dispatch({
-      //   type: 'UPDATE_PROGRESS',
-      //   data: {
-      //     type: 'DECREMENT',
-      //   },
-      // });
     }
   };
 
@@ -105,13 +90,6 @@ const ProgressButtonsInner = ({
           closeExpansionPanel();
           if (selectedCropsRedux.length > 0) setConfirmationOpen(true);
           else {
-            dispatch({
-              type: 'RESET',
-              data: {
-                markers: defaultMarkers,
-                selectedCrops: [],
-              },
-            });
             dispatchRedux(reset());
           }
         }}
