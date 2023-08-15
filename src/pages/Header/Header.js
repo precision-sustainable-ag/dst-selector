@@ -4,7 +4,7 @@
   styled using ../../styles/header.scss
 */
 
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import React, { useContext, useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
@@ -14,13 +14,34 @@ import HeaderLogoInfo from './HeaderLogoInfo/HeaderLogoInfo';
 import InformationBar from './InformationBar/InformationBar';
 import ToggleOptions from './ToggleOptions/ToggleOptions';
 import LogoutButton from '../../components/Auth/Buttons/LogoutButton';
+import { updateAccessToken, updateField } from '../../reduxStore/userSlice';
+import { getFields } from '../../shared/constants';
 
 const Header = () => {
+  const dispatch = useDispatch();
   const { state } = useContext(Context);
   const markersRedux = useSelector((stateRedux) => stateRedux.addressData.markers);
+  const accessTokenRedux = useSelector((stateRedux) => stateRedux.userData.accessToken);
   const [isRoot, setIsRoot] = useState(false);
-  const { isAuthenticated, loginWithRedirect } = useAuth0();
+  const { isAuthenticated, loginWithRedirect, getAccessTokenSilently } = useAuth0();
   const isActive = {};
+
+  useEffect(() => {
+    const getToken = async () => {
+      const token = await getAccessTokenSilently();
+      dispatch(updateAccessToken(token));
+      // console.log('update token:', token);
+    };
+    getToken();
+  }, [getAccessTokenSilently, accessTokenRedux]);
+
+  // TODO: need to fix this logic, now it has some errors
+  useEffect(() => {
+    if (isAuthenticated && accessTokenRedux) {
+      getFields(accessTokenRedux).then((data) => dispatch(updateField(data)));
+    }
+    // else dispatch(userLogout());
+  }, [isAuthenticated, accessTokenRedux]);
 
   useEffect(() => {
     if (window.location.pathname === '/explorer') {
