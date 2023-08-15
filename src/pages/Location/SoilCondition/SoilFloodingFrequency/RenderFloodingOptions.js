@@ -5,7 +5,7 @@ import '../../../../styles/soilConditions.scss';
 import { updateFloodingFrequency as updateFloodingFrequencyRedux } from '../../../../reduxStore/soilSlice';
 
 const RenderFloodingOptions = ({ flooding = [''] }) => {
-  const dispatchRedux = useDispatch;
+  const dispatchRedux = useDispatch();
 
   // redux vars
   const soilDataRedux = useSelector((stateRedux) => stateRedux.soilData.soilData);
@@ -15,6 +15,7 @@ const RenderFloodingOptions = ({ flooding = [''] }) => {
     if (floodings.indexOf(label) === -1) {
       // does not exist, dispatch to state
       floodings.push(label);
+      console.log(floodings);
       dispatchRedux(updateFloodingFrequencyRedux(floodings));
     } else {
       // exists, remove it from state
