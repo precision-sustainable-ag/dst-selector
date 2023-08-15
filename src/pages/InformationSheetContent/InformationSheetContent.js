@@ -22,19 +22,25 @@ const InformationSheetContent = ({ crop, modalData }) => {
   const { state } = useContext(Context);
   const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
   const { zone } = state[section];
+
+  // redux vars
+  const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
+  const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
+  const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
+
+  // useState vars
   const [currentSources, setCurrentSources] = useState([{}]);
   const [allThumbs, setAllThumbs] = useState([]);
   const [dataDone, setDataDone] = useState(false);
-  const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
-  const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
+
   const query = `${encodeURIComponent('regions')}=${encodeURIComponent(regionIdRedux)}`;
 
   useEffect(() => {
     document.title = `${crop.label} Zone ${zone}`;
     if (stateIdRedux && regionIdRedux) {
-      callCoverCropApi(`https://${state.apiBaseURL}.covercrop-selector.org/v1/crops/${crop?.id}/resources?${query}`)
+      callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/crops/${crop?.id}/resources?${query}`)
         .then((data) => setCurrentSources(data.data));
-      callCoverCropApi(`https://${state.apiBaseURL}.covercrop-selector.org/v1/crops/${crop?.id}/images?${query}`)
+      callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/crops/${crop?.id}/images?${query}`)
         .then((data) => {
           setAllThumbs(data.data);
           setDataDone(true);

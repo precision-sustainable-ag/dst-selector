@@ -5,10 +5,9 @@
 
 // TODO: Goal tags are not responsive!
 import { Typography, Grid } from '@mui/material';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset';
-import { Context } from '../../store/Store';
 import '../../styles/goalsSelector.scss';
 import GoalTag from './GoalTag/GoalTag';
 import { callCoverCropApi } from '../../shared/constants';
@@ -20,13 +19,17 @@ import { callCoverCropApi } from '../../shared/constants';
 // };
 
 const GoalsSelector = () => {
-  const { state } = useContext(Context);
-  const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
-  const [allGoals, setAllGoals] = useState([]);
-  const [handleConfirm, setHandleConfirm] = useState(false);
+  // redux vars
   const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
   const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
   const myCoverCropListLocationRedux = useSelector((stateRedux) => stateRedux.sharedData.myCoverCropListLocation);
+  const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
+  const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
+  const allGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.allGoals);
+
+  // useState vars
+  const [allGoals, setAllGoals] = useState([]);
+  const [handleConfirm, setHandleConfirm] = useState(false);
 
   useEffect(() => {
     if (myCoverCropListLocationRedux !== 'selector' && selectedCropsRedux?.length > 0) {
@@ -38,11 +41,11 @@ const GoalsSelector = () => {
 
   useEffect(() => {
     if (stateIdRedux && regionIdRedux) {
-      callCoverCropApi(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${stateIdRedux}/goals?${query}`).then((data) => {
+      callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/goals?${query}`).then((data) => {
         setAllGoals(data.data);
       });
     }
-  }, [state.allGoals]);
+  }, [allGoalsRedux]);
 
   return (
     <div className="container-fluid mt-5">

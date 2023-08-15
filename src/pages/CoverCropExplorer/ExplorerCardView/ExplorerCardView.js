@@ -53,14 +53,6 @@ const ExplorerCardView = ({ activeCropData }) => {
     const buildDispatch = (action, crops) => {
       dispatchRedux(selectedCropsModifier(crops));
       dispatchRedux(snackHandler({ snackOpen: false, snackMessage: `${cropName} ${action}` }));
-      // dispatch({
-      //   type: 'SELECTED_CROPS_MODIFIER',
-      //   data: {
-      //     selectedCrops: crops,
-      //     snackOpen: false,
-      //     snackMessage: `${cropName} ${action}`,
-      //   },
-      // });
       enqueueSnackbar(`${cropName} ${action}`);
     };
 
@@ -83,10 +75,6 @@ const ExplorerCardView = ({ activeCropData }) => {
       }
     } else {
       dispatchRedux(myCropListLocation({ from: 'explorer' }));
-      // dispatch({
-      //   type: 'MY_CROP_LIST_LOCATION',
-      //   data: { from: 'explorer' },
-      // });
       buildDispatch('Added', [selectedCrops]);
     }
   };

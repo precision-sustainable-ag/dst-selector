@@ -7,18 +7,15 @@ const initialState = {
   myCoverCropActivationFlag: false,
   speciesSelectorActivationFlag: true,
   comparisonKeys: [],
-  myCoverCropListLocation: '',
+  myCoverCropListLocation: 'selector',
   snackVertical: 'bottom',
   snackHorizontal: 'right',
   zoneToggle: true,
+  dataDictionary: {},
+  apiBaseUrl: /(localhost|dev)/i.test(window.location)
+    ? 'developapi'
+    : 'api',
 };
-
-export const toggleValue = (value) => ({
-  type: 'TOGGLE',
-  payload: {
-    value,
-  },
-});
 
 export const updateProgress = (value) => ({
   type: 'UPDATE_PROGRESS',
@@ -93,16 +90,15 @@ export const zoneToggleHandler = (value) => ({
   },
 });
 
-const sharedReducer = (state = initialState, action = null) => {
-  const value = action && action.payload && action.payload.value;
-  console.log('VALUE: ', value);
-  switch (action.type) {
-    case 'TOGGLE':
-      return {
-        ...state,
-        [value]: !state[value],
-      };
+export const pullDictionaryData = (value) => ({
+  type: 'PULL_DICTIONARY_DATA',
+  payload: {
+    value,
+  },
+});
 
+const sharedReducer = (state = initialState, action = null) => {
+  switch (action.type) {
     case 'UPDATE_PROGRESS':
       if (action.payload.value === 'INCREMENT') {
         return { ...state, progress: state.progress + 1 };
@@ -170,7 +166,14 @@ const sharedReducer = (state = initialState, action = null) => {
       };
 
     case 'ZONE_TOGGLE':
-      return { ...state, zoneToggle: action.payload.value };
+      return { ...state, zoneToggle: !state.zoneToggle };
+
+    case 'PULL_DICTIONARY_DATA': {
+      return {
+        ...state,
+        dataDictionary: action.payload.value,
+      };
+    }
 
     default:
       return { ...state };

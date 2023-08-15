@@ -22,14 +22,6 @@ const CropTableCard = ({
   const cropModifierAction = (selectedCrops, message) => {
     dispatchRedux(selectedCropsModifier(selectedCrops));
     dispatchRedux(snackHandler({ snackOpen: false, snackMessage: message }));
-    // dispatch({
-    //   type: 'SELECTED_CROPS_MODIFIER',
-    //   data: {
-    //     selectedCrops,
-    //     snackOpen: false,
-    //     snackMessage: message,
-    //   },
-    // });
     enqueueSnackbar(message);
   };
 
@@ -60,10 +52,6 @@ const CropTableCard = ({
       }
     } else {
       dispatchRedux(myCropListLocation({ from: 'explorer' }));
-      // dispatch({
-      //   type: 'MY_CROP_LIST_LOCATION',
-      //   data: { from: 'selector' },
-      // });
 
       cropModifierAction([cropArray], `${cropName} Added`);
     }

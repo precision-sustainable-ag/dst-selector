@@ -11,7 +11,6 @@ import {
 } from '@mui/material';
 // import SelectUSState from 'react-select-us-states';
 import React, {
-  useContext,
   useEffect,
   useState,
   useRef,
@@ -21,7 +20,6 @@ import { Link } from 'react-router-dom';
 import ReactGA from 'react-ga';
 import { RegionSelectorMap } from '@psa/dst.ui.region-selector-map';
 import { callCoverCropApi } from '../../shared/constants';
-import { Context } from '../../store/Store';
 import '../../styles/landing.scss';
 import ConsentModal from '../CoverCropExplorer/ConsentModal/ConsentModal';
 import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset';
@@ -29,21 +27,26 @@ import { updateZone } from '../../reduxStore/addressSlice';
 import { updateRegions, updateRegion, updateStateInfo } from '../../reduxStore/mapSlice';
 
 const Landing = ({ height, title, bg }) => {
-  const { state } = useContext(Context);
   const dispatchRedux = useDispatch();
-  const [handleConfirm, setHandleConfirm] = useState(false);
-  const [containerHeight, setContainerHeight] = useState(height);
-  const [allStates, setAllStates] = useState([]);
-  const [selectedState, setSelectedState] = useState('');
-  const [mapState, setMapState] = useState({});
-  const [selectedRegion, setSelectedRegion] = useState({});
+
   const mapRef = useRef(null);
+
+  // redux vars
   const regionsRedux = useSelector((stateRedux) => stateRedux.mapData.regions);
   const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
   const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
   const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
   const consentRedux = useSelector((stateRedux) => stateRedux.sharedData.consent);
   const myCoverCropListLocationRedux = useSelector((stateRedux) => stateRedux.sharedData.myCoverCropListLocation);
+  const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
+
+  // useState vars
+  const [handleConfirm, setHandleConfirm] = useState(false);
+  const [containerHeight, setContainerHeight] = useState(height);
+  const [allStates, setAllStates] = useState([]);
+  const [selectedState, setSelectedState] = useState('');
+  const [mapState, setMapState] = useState({});
+  const [selectedRegion, setSelectedRegion] = useState({});
 
   const stateChange = (selState) => {
     setSelectedState(selState);
@@ -63,7 +66,7 @@ const Landing = ({ height, title, bg }) => {
   };
 
   useEffect(() => {
-    callCoverCropApi(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states`).then((data) => { setAllStates(data.data); });
+    callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states`).then((data) => { setAllStates(data.data); });
   }, []);
 
   useEffect(() => {
@@ -86,7 +89,7 @@ const Landing = ({ height, title, bg }) => {
 
   useEffect(() => {
     if (stateIdRedux) {
-      fetch(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${stateIdRedux}/regions`)
+      fetch(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/regions`)
         .then((res) => res.json())
         .then((data) => {
           let fetchedRegions;

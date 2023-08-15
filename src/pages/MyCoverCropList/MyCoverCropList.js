@@ -38,13 +38,6 @@ const MyCoverCropList = ({ comparisonView, from }) => {
   const redirectToSpeciesSelector = () => {
     history.replace('/');
     dispatchRedux(activateSpeicesSelectorTile({ speciesSelectorActivationFlag: true, myCoverCropActivationFlag: false }));
-    // dispatch({
-    //   type: 'ACTIVATE_SPECIES_SELECTOR_TILE',
-    //   data: {
-    //     speciesSelectorActivationFlag: true,
-    //     myCoverCropActivationFlag: false,
-    //   },
-    // });
   };
 
   const redirectToExplorer = () => {

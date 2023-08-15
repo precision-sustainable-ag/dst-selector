@@ -35,12 +35,6 @@ const RenderFilters = ({
     }
 
     dispatchRedux(updateComparisonKeys(comparisonKeysCopy));
-    // dispatch({
-    //   type: 'UPDATE_COMPARISON_KEYS',
-    //   data: {
-    //     comparisonKeys: comparisonKeysCopy,
-    //   },
-    // });
   };
 
   return filterValues.map((filter, index) => {
@@ -112,12 +106,6 @@ const RenderFilters = ({
                           }
 
                           dispatchRedux(updateComparisonKeys(comparisonKeysCopy));
-                          // dispatch({
-                          //   type: 'UPDATE_COMPARISON_KEYS',
-                          //   data: {
-                          //     comparisonKeys: comparisonKeysCopy,
-                          //   },
-                          // });
                         }}
                         name={filter.name}
                         color="primary"

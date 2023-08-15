@@ -60,14 +60,6 @@ const CropCalendarView = ({ activeCropData }) => {
   const ajaxInProgressRedux = useSelector((stateRedux) => stateRedux.sharedData.ajaxInProgress);
   const legendData = getLegendDataBasedOnCouncil(councilShorthandRedux);
 
-  // const dispatchValue = (value, type = 'UPDATE_ACTIVE_CROP_DATA') => {
-  //   dispatch({
-  //     type,
-  //     data: {
-  //       value,
-  //     },
-  //   });
-  // };
   const dispatchValue = (value) => dispatchRedux(updateActiveCropData(value));
   const handleLegendModal = () => {
     setLegendModal(!legendModal);
