@@ -51,7 +51,7 @@ const CropTableCard = ({
         cropModifierAction(selectedCropsCopy, `${cropName} Removed`);
       }
     } else {
-      dispatchRedux(myCropListLocation({ from: 'explorer' }));
+      dispatchRedux(myCropListLocation({ from: 'selector' }));
 
       cropModifierAction([cropArray], `${cropName} Added`);
     }

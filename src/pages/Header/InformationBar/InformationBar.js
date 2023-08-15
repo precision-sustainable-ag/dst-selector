@@ -67,7 +67,7 @@ const InformationBar = () => {
 
     const progress = options[type];
 
-    dispatchRedux(gotoProgress({ progress }));
+    dispatchRedux(gotoProgress(progress));
   };
 
   const getSelectedValues = (type) => {

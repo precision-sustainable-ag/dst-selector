@@ -7,7 +7,7 @@ const initialState = {
   myCoverCropActivationFlag: false,
   speciesSelectorActivationFlag: true,
   comparisonKeys: [],
-  myCoverCropListLocation: 'selector',
+  myCoverCropListLocation: '',
   snackVertical: 'bottom',
   snackHorizontal: 'right',
   zoneToggle: true,

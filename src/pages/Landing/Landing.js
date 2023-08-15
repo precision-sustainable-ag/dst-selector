@@ -143,10 +143,10 @@ const Landing = ({ height, title, bg }) => {
       } else {
         // FIXME: possible issues here due to the default value changed from '' to null
         dispatchRedux(updateStateInfo({
-          stateLabel: '',
-          stateId: '',
-          councilShorthand: '',
-          councilLabel: '',
+          stateLabel: null,
+          stateId: null,
+          councilShorthand: null,
+          councilLabel: null,
         }));
       }
     }
@@ -257,12 +257,12 @@ const Landing = ({ height, title, bg }) => {
         >
           <Grid item>
             <Typography variant="h4" gutterBottom align="center">
-              {`Welcome to the${councilLabelRedux && ` ${councilLabelRedux}`} Species Selector Tool`}
+              {`Welcome to the${councilLabelRedux ? ` ${councilLabelRedux}` : ''} Species Selector Tool`}
             </Typography>
           </Grid>
           <Grid item>
             <Typography variant="body1" gutterBottom align="left">
-              {`You are currently interacting with the${councilLabelRedux && ` ${councilLabelRedux}`} Species Selector Tool. We
+              {`You are currently interacting with the${councilLabelRedux ? ` ${councilLabelRedux}` : ''} Species Selector Tool. We
             seek feedback about the usability and usefulness of this tool. Our goal is to encourage
             and support the use of cover crops in your area. You can learn more about the
             cover crop data and design of this tool`}
