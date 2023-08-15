@@ -11,7 +11,7 @@ import {
 import CropSelectorCalendarView from '../../../components/CropSelectorCalendarView/CropSelectorCalendarView';
 import '../../../styles/cropCalendarViewComponent.scss';
 import { selectedCropsModifier } from '../../../reduxStore/cropSlice';
-import { snackHandler } from '../../../reduxStore/sharedSlice';
+import { myCropListLocation, snackHandler } from '../../../reduxStore/sharedSlice';
 
 const RenderCrops = ({
   cropData, active, setModalOpen, modalOpen, setModalData,
@@ -67,7 +67,7 @@ const RenderCrops = ({
         });
       }
     } else {
-      // dispatchRedux(myCropListLocation({ from: 'explorer' }));
+      dispatchRedux(myCropListLocation({ from: 'selector' }));
 
       dispatchValue({
         selectedCrops: [cropArray],
