@@ -689,3 +689,34 @@ export const callCoverCropApi = async (url) => fetch(url)
     // eslint-disable-next-line no-console
     console.log(err.message);
   });
+
+export const apiServerUrl = process.env.REACT_APP_API_SERVER_URL;
+
+export const getFields = async (accessToken = null) => {
+  const url = `${apiServerUrl}fields?page=1&perPage=200`;
+  const config = {
+    method: 'GET',
+    headers: {
+      'content-type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    },
+  };
+  return fetch(url, config)
+    .then((res) => res.json())
+    .catch((err) => console.log(err));
+};
+
+export const postFields = async (accessToken = null, fieldsData = null) => {
+  const url = `${apiServerUrl}fields`;
+  const config = {
+    method: 'POST',
+    headers: {
+      'content-type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify(fieldsData),
+  };
+  return fetch(url, config)
+    .then((res) => res.json())
+    .catch((err) => console.log(err));
+};

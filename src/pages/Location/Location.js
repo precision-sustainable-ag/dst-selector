@@ -20,10 +20,10 @@ import moment from 'moment';
 import { Map } from '@psa/dst.ui.map';
 // import centroid from '@turf/centroid';
 import mapboxgl from 'mapbox-gl';
-import { useAuth0 } from '@auth0/auth0-react';
+// import { useAuth0 } from '@auth0/auth0-react';
 import statesLatLongDict from '../../shared/stateslatlongdict';
 import {
-  abbrRegion, reverseGEO, callCoverCropApi,
+  abbrRegion, reverseGEO, callCoverCropApi, postFields, getFields,
 } from '../../shared/constants';
 import { Context } from '../../store/Store';
 import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset';
@@ -37,6 +37,7 @@ import { snackHandler } from '../../reduxStore/sharedSlice';
 import {
   updateAvgFrostDates, updateAvgPrecipAnnual, updateAvgPrecipCurrentMonth, updateFrostFreeDays,
 } from '../../reduxStore/weatherSlice';
+import { updateField } from '../../reduxStore/userSlice';
 
 // eslint-disable-next-line import/no-webpack-loader-syntax, import/no-unresolved
 mapboxgl.workerClass = require('worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker').default;
@@ -57,18 +58,32 @@ const LocationComponent = () => {
   const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
+  const accessTokenRedux = useSelector((stateRedux) => stateRedux.userData.accessToken);
+  const userFieldRedux = useSelector((stateRedux) => stateRedux.userData.field);
+  console.log('userFieldRedux', userFieldRedux);
+  // const { isAuthenticated } = useAuth0();
+
+  // const getInitPoint = () => {
+  //   if (userFieldRedux && userFieldRedux.data.length > 0) {
+  //     if (userFieldRedux.data[0].geometry.type !== 'Polygon') {
+
+  //     } else {
+
+  //     }
+  //   }
+  // };
 
   const getLatLng = useCallback(() => {
-    // eslint-disable-next-line no-use-before-define
-    if (isAuthenticated) {
-      // getData().then((data) => setUserData(data));
-      console.log('map data', userData);
+    if (userFieldRedux && userFieldRedux.data.length > 0 && userFieldRedux.data[0].geometry.type !== 'Polygon') {
+      // need to flip lat and lng here
+      return [userFieldRedux.data[0].geometry.coordinates[1], userFieldRedux.data[0].geometry.coordinates[0]];
     }
     if (stateLabelRedux) {
       return [statesLatLongDict[stateLabelRedux][0], statesLatLongDict[stateLabelRedux][1]];
     }
     return [47, -122];
   }, [state]);
+  console.log('getLatLng', getLatLng());
 
   useEffect(() => {
     if (selectedCropsRedux.length > 0) {
@@ -292,50 +307,20 @@ const LocationComponent = () => {
       });
   }, [zipCodeRedux]);
 
-  const [accessToken, setAccessToken] = useState('');
-  const [userData, setUserData] = useState();
-  const { isAuthenticated, getAccessTokenSilently } = useAuth0();
-  const apiServerUrl = process.env.REACT_APP_API_SERVER_URL;
-
+  // eslint-disable-next-line no-unused-vars
   const [currArea, setCurrArea] = useState([]);
-
-  const handleArea = (a) => {
-    // TODO: add areas into redux to prevent loss of state.
-    setCurrArea([...currArea, a]);
-  };
-
   // console.log('currArea', currArea);
+  // const handleArea = (a) => {
+  //   // TODO: add areas into redux to prevent loss of state.
+  //   setCurrArea([...currArea, a]);
+  // };
 
   const onDraw = (e) => {
     console.log('draw event', e);
   };
 
-  useEffect(() => {
-    const getToken = async () => {
-      const token = await getAccessTokenSilently();
-      setAccessToken(token);
-    };
-    getToken();
-    getData().then((data) => setUserData(data));
-  }, [getAccessTokenSilently]);
-
-  console.log('userData', userData);
-
-  const getData = async () => {
-    const url = `${apiServerUrl}fields?page=1&perPage=200`;
-    const config = {
-      method: 'GET',
-      headers: {
-        'content-type': 'application/json',
-        Authorization: `Bearer ${accessToken}`,
-      },
-    };
-    return fetch(url, config)
-      .then((res) => res.json());
-  };
-
   const handleLoad = () => {
-    getData().then((data) => setUserData(data));
+    getFields(accessTokenRedux).then((data) => console.log(data.data[0]));
   };
 
   const buildPointGeoJSON = (lng, lat) => ({
@@ -353,16 +338,10 @@ const LocationComponent = () => {
     const { longitude, latitude } = selectedToEditSite;
     const point = buildPointGeoJSON(longitude, latitude);
     // console.log(point);
-    const url = `${apiServerUrl}fields`;
-    const config = {
-      method: 'POST',
-      headers: {
-        'content-type': 'application/json',
-        Authorization: `Bearer ${accessToken}`,
-      },
-      body: JSON.stringify(point),
-    };
-    fetch(url, config).then((res) => res.json()).then(console.log);
+    postFields(accessTokenRedux, point).then(
+      getFields(accessTokenRedux).then((data) => dispatchRedux(updateField(data))),
+    );
+    // postFields(accessTokenRedux, currArea[0]).then(console.log);
   };
 
   return (
@@ -397,7 +376,7 @@ const LocationComponent = () => {
           <div className="container-fluid">
             <Map
               setAddress={setSelectedToEditSite}
-              setFeatures={handleArea}
+              setFeatures={setCurrArea}
               onDraw={onDraw}
               initWidth="100%"
               initHeight="600px"
