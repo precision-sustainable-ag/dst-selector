@@ -36,6 +36,7 @@ const Header = () => {
   }, [getAccessTokenSilently, accessTokenRedux]);
 
   // TODO: need to fix this logic, now it has some errors
+  // the dependency array
   useEffect(() => {
     if (isAuthenticated && accessTokenRedux) {
       getFields(accessTokenRedux).then((data) => dispatch(updateField(data)));
