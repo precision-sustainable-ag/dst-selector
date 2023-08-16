@@ -77,7 +77,6 @@ const App = () => {
 
   // this handlespopulating redux state if there are url params
   if (crop && stateId && regionId) {
-    console.log(crop[1], stateId[1], regionId[1]);
     dispatchRedux(updateStateInfo({
       stateLabel: null,
       stateId: stateId[1],
