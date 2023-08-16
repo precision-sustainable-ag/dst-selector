@@ -426,7 +426,7 @@ const WeatherConditions = ({ caller }) => {
                         value={averagePrecipitation?.thisMonth}
                         onChange={(event) => {
                           setAveragePrecipitation({
-                            averagePrecipitation,
+                            ...averagePrecipitation,
                             thisMonth: event.target.value === '' ? 0 : event.target.value,
                           });
                         }}
@@ -468,9 +468,9 @@ const WeatherConditions = ({ caller }) => {
                         value={averagePrecipitation?.annual}
                         onChange={(event) => {
                           setAveragePrecipitation({
-                            averagePrecipitation,
+                            ...averagePrecipitation,
                             annual:
-                                event.target.value === '' ? 0 : parseFloat(event.target.value),
+                                event.target.value === '' ? 0 : event.target.value,
                           });
                         }}
                         sx={{
