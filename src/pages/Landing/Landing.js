@@ -36,12 +36,14 @@ const Landing = ({ height, title, bg }) => {
   const [allStates, setAllStates] = useState([]);
   const [selectedState, setSelectedState] = useState('');
   const [mapState, setMapState] = useState({});
+  // The seelctedRegion here controls the initial region selected for the map
   const [selectedRegion, setSelectedRegion] = useState({});
   const mapRef = useRef(null);
   const regionsRedux = useSelector((stateRedux) => stateRedux.mapData.regions);
   const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
   const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
   const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
+  // console.log('selectedState', selectedState, stateIdRedux, selectedRegion);
 
   const stateChange = (selState) => {
     setSelectedState(selState);
@@ -61,7 +63,10 @@ const Landing = ({ height, title, bg }) => {
   };
 
   useEffect(() => {
-    callCoverCropApi(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states`).then((data) => { setAllStates(data.data); });
+    callCoverCropApi(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states`).then((data) => {
+      setAllStates(data.data);
+      if (stateIdRedux) setSelectedState(data.data.filter((s) => s.id === stateIdRedux)[0]);
+    });
   }, []);
 
   useEffect(() => {
@@ -96,6 +101,7 @@ const Landing = ({ height, title, bg }) => {
           }
 
           dispatchRedux(updateRegions(fetchedRegions));
+          // setSelectedState(allStates.filter((s) => s.id === stateIdRedux)[0]);
         })
         .catch((err) => {
           // eslint-disable-next-line no-console
@@ -136,7 +142,6 @@ const Landing = ({ height, title, bg }) => {
       if (verifyCouncil(selectedState.council.shorthand)) {
         stateChange(selectedState);
       } else {
-        // FIXME: possible issues here due to the default value changed from '' to null
         dispatchRedux(updateStateInfo({
           stateLabel: '',
           stateId: '',
