@@ -11,17 +11,15 @@ const DollarsAndRatings = ({ filter, handleChange }) => {
   const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
   const sfilters = window.location.href.includes('species-selector') ? filterStateRedux.selector : filterStateRedux.explorer;
 
-  const style = filter.symbol === 'dollar'
-    ? {}
-    : {
-      transform: 'scale(0.8)',
-      transformOrigin: 'top left',
-      width: '150%',
-    };
+  const style = {
+    transform: 'scale(0.8)',
+    transformOrigin: 'top left',
+    width: '150%',
+  };
 
   return (
     <div style={style}>
-      {new Array(filter.maxSize)
+      {new Array(filter.values.length)
         .fill(0)
         .map((_, i) => i + 1)
         .map((i) => {
@@ -46,7 +44,7 @@ const DollarsAndRatings = ({ filter, handleChange }) => {
           return (
             <Chip
               key={filter.name + i}
-              label={filter.symbol === 'dollar' ? '$'.repeat(i) : i.toString()}
+              label={filter.units === 'rating 1-3' ? '$'.repeat(i) : filter.values[i - 1].value}
               style={{
                 fontSize: '1.2rem',
                 marginRight: 2,
@@ -54,7 +52,7 @@ const DollarsAndRatings = ({ filter, handleChange }) => {
               }}
               color={selected ? 'primary' : 'secondary'}
               onClick={() => {
-                if (filter.symbol === 'dollar') {
+                if (filter.units === 'rating 1-3') {
                   if (selected) {
                     filterOff();
                   } else {
