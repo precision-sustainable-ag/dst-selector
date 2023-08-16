@@ -17,13 +17,12 @@ import {
 } from '@mui/material';
 import { KeyboardArrowLeft, KeyboardArrowRight } from '@mui/icons-material';
 import { useSnackbar } from 'notistack';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   DataTooltip,
   getRating,
 } from '../../../shared/constants';
-import { Context } from '../../../store/Store';
 import '../../../styles/cropComparisonView.scss';
 import '../../../styles/MyCoverCropComparisonComponent.scss';
 import CropDetailsModal from '../../../components/CropDetailsModal/CropDetailsModal';
@@ -65,14 +64,17 @@ const GetAverageGoalRating = ({ crop }) => {
 };
 
 const MyCoverCropComparison = ({ selectedCrops }) => {
-  const { state } = useContext(Context);
   const dispatchRedux = useDispatch();
-  const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const { enqueueSnackbar } = useSnackbar();
-  const { comparisonKeys } = state;
-  const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
-  const { zone } = state[section];
+
+  // redux vars
+  const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
+  const comparisonKeysRedux = useSelector((stateRedux) => stateRedux.sharedData.comparisonKeys);
   const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
+  const dataDictionaryRedux = useSelector((stateRedux) => stateRedux.sharedData.dataDictionary);
+  const zoneRedux = useSelector((stateRedux) => stateRedux.addressData.zone);
+
+  // useState vars
   // const [formattedDictData, setFormattedDictData] = useState([]);
   const [sidebarDefs, setSidebarDefs] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
@@ -87,7 +89,7 @@ const MyCoverCropComparison = ({ selectedCrops }) => {
   };
 
   async function setDataDict() {
-    await state.dataDictionary.forEach((item) => {
+    await dataDictionaryRedux.forEach((item) => {
       item.attributes.map((i) => allData.push(i));
     });
   }
@@ -95,7 +97,7 @@ const MyCoverCropComparison = ({ selectedCrops }) => {
   useEffect(() => {
     setDataDict();
     setSidebarDefs(allData);
-  }, [zone, state.dataDictionary]);
+  }, [zoneRedux, dataDictionaryRedux]);
 
   const removeCrop = (cropName, id) => {
     let removeIndex = -1;
@@ -114,14 +116,6 @@ const MyCoverCropComparison = ({ selectedCrops }) => {
       selectedCropsCopy.splice(removeIndex, 1);
       dispatchRedux(selectedCropsModifier(selectedCropsCopy));
       dispatchRedux(snackHandler({ snackOpen: false, snackMessage: 'Removed' }));
-      // dispatch({
-      //   type: 'SELECTED_CROPS_MODIFIER',
-      //   data: {
-      //     selectedCrops: selectedCropsCopy,
-      //     snackOpen: false,
-      //     snackMessage: 'Removed',
-      //   },
-      // });
       enqueueSnackbar(`${cropName} Removed`);
     }
   };
@@ -166,7 +160,7 @@ const MyCoverCropComparison = ({ selectedCrops }) => {
                   }}
                 />
                 <CardContent style={{ paddingRight: '0px', paddingLeft: '0px', width: 'calc(100%)' }}>
-                  {comparisonKeys.map((keys, index) => (
+                  {comparisonKeysRedux.map((keys, index) => (
                     <div
                       style={lightBorder}
                       key={index}
@@ -265,7 +259,7 @@ const MyCoverCropComparison = ({ selectedCrops }) => {
                   handleModalOpen={handleModalOpen}
                   index={index}
                   type="myListCompare"
-                  comparisonKeys={comparisonKeys}
+                  comparisonKeys={comparisonKeysRedux}
                   lightBG={lightBG}
                   GetAverageGoalRating={GetAverageGoalRating}
                 />

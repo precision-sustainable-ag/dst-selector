@@ -6,17 +6,19 @@
 import { Typography } from '@mui/material';
 import { Info } from '@mui/icons-material';
 import React, {
-  useContext, useEffect, useState,
+  useEffect, useState,
 } from 'react';
 import { useSelector } from 'react-redux';
-import { Context } from '../../../store/Store';
 import DictionaryContent from './DictionaryContent';
 import { callCoverCropApi } from '../../../shared/constants';
 
 const InformationSheetDictionary = ({ zone, from }) => {
-  const [dictionary, setDictionary] = useState([]);
+  // redux vars
   const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
-  const { state } = useContext(Context);
+  const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
+
+  // useState vars
+  const [dictionary, setDictionary] = useState([]);
   const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
   const sfilters = filterStateRedux[section];
 
@@ -25,7 +27,7 @@ const InformationSheetDictionary = ({ zone, from }) => {
   useEffect(() => {
     document.title = 'Data Dictionary';
     if (currentZone) {
-      callCoverCropApi(`https://${state.apiBaseURL}.covercrop-selector.org/legacy/data-dictionary?zone=zone${currentZone}`)
+      callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/legacy/data-dictionary?zone=zone${currentZone}`)
         .then((data) => { setDictionary(data); });
     }
   }, [zone]);

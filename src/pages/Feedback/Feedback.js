@@ -1,4 +1,5 @@
-import React, { useEffect, useContext, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import ReactGA from 'react-ga';
 import {
   Grid,
@@ -11,10 +12,9 @@ import {
   FormControlLabel,
 } from '@mui/material';
 import Header from '../Header/Header';
-import { Context } from '../../store/Store';
 
 const FeedbackComponent = () => {
-  const { state } = useContext(Context);
+  const consentRedux = useSelector((stateRedux) => stateRedux.sharedData.consent);
   const [snackbarData, setSnackbarData] = useState({ open: false, message: '', color: '' });
   const [feedbackData, setFeedbackData] = useState({
     repository: 'dst-feedback',
@@ -62,12 +62,12 @@ const FeedbackComponent = () => {
   };
 
   useEffect(() => {
-    if (state.consent === true) {
+    if (consentRedux === true) {
       ReactGA.initialize('UA-181903489-1');
 
       ReactGA.pageview('feedback');
     }
-  }, [state.consent]);
+  }, [consentRedux]);
 
   useEffect(() => {
     document.title = 'Feedback';
