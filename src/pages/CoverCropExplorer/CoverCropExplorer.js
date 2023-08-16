@@ -43,11 +43,8 @@ const CoverCropExplorer = () => {
     // this handles auto opening the info sheet if there are url params
     if (crop) {
       const substring = crop[1].replace('%20', ' ');
-      console.log('finding!', substring);
       [...document.querySelectorAll('.MuiCardContent-root')].forEach((o) => {
-        console.log(o.textContent);
         if (o.textContent.includes(decodeURI(substring))) {
-          console.log('found!', o, substring);
           o.querySelector('.MuiButtonBase-root').click();
         }
       });
