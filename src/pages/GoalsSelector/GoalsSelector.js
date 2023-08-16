@@ -48,10 +48,10 @@ const GoalsSelector = () => {
   }, [allGoalsRedux]);
 
   return (
-    <div className="container-fluid mt-5">
-      <div className="row boxContainerRow goalsContainer" style={{ height: '520px' }}>
-        <div className="col-12 goalsBoxContainer">
-          <Typography variant="h4" gutterBottom>
+    <>
+      <div className="goalsContainer" style={{ marginTop: '5%', width: '80%', marginLeft: '10%' }}>
+        <div className="goalsBoxContainer">
+          <Typography variant="h4" gutterBottom align="center">
             What are your cover cropping goals?
           </Typography>
           <Typography variant="body2" align="center" color="secondary" gutterBottom>
@@ -60,8 +60,8 @@ const GoalsSelector = () => {
             decrease for each additional goal. Hover on a goal for more information.
           </Typography>
           {allGoals?.length > 0 && (
-            <Grid container spacing={4} className="goals" style={{ justifyContent: 'center' }}>
-              {
+          <Grid container spacing={4} className="goals" style={{ justifyContent: 'center' }}>
+            {
                 allGoals.map((goal, key) => (
                   <Grid key={key} item>
                     <GoalTag
@@ -74,12 +74,12 @@ const GoalsSelector = () => {
                   </Grid>
                 ))
               }
-            </Grid>
+          </Grid>
           )}
         </div>
       </div>
       <MyCoverCropReset handleConfirm={handleConfirm} setHandleConfirm={setHandleConfirm} />
-    </div>
+    </>
   );
 };
 
