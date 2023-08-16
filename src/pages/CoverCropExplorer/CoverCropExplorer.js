@@ -30,12 +30,28 @@ const CoverCropExplorer = () => {
   const [updatedActiveCropData, setUpdatedActiveCropData] = useState([]);
   // const { activeCropData } = state;
   const [handleConfirm, setHandleConfirm] = useState(false);
-  const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
+  const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
+
+  // open crop if url exists
+  // eslint-disable-next-line
+  const crop = window.location.search.match(/crop=([^\^]+)/);
 
   useEffect(() => {
     const filteredActiveCropData = activeCropDataRedux?.filter((a) => !a.inactive);
     setUpdatedActiveCropData(filteredActiveCropData);
-    // getData();
+
+    // this handles auto opening the info sheet if there are url params
+    if (crop) {
+      const substring = crop[1].replace('%20', ' ');
+      console.log('finding!', substring);
+      [...document.querySelectorAll('.MuiCardContent-root')].forEach((o) => {
+        console.log(o.textContent);
+        if (o.textContent.includes(decodeURI(substring))) {
+          console.log('found!', o, substring);
+          o.querySelector('.MuiButtonBase-root').click();
+        }
+      });
+    }
   }, [activeCropDataRedux]);
 
   useEffect(() => {
@@ -47,10 +63,10 @@ const CoverCropExplorer = () => {
   }, [consentRedux]);
 
   useEffect(() => {
-    if (stateLabelRedux === null || stateLabelRedux === '') {
+    if (stateIdRedux === null || stateIdRedux === '') {
       history.push('/');
     }
-  }, [stateLabelRedux]);
+  }, [stateIdRedux]);
 
   useEffect(() => {
     if (myCoverCropListLocationRedux !== 'explorer' && selectedCropsRedux?.length > 0) {
