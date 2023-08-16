@@ -156,7 +156,7 @@ const sharedReducer = (state = initialState, action = null) => {
     case 'UPDATE_COMPARISON_KEYS':
       return {
         ...state,
-        comparisonKeys: action.payload.value,
+        comparisonKeys: [...action.payload.value],
       };
 
     case 'MY_CROP_LIST_LOCATION':
