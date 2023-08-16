@@ -55,6 +55,8 @@ const LocationComponent = () => {
   const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
+  const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
+  const myCoverCropListLocationRedux = useSelector((stateRedux) => stateRedux.sharedData.myCoverCropListLocation);
 
   const getLatLng = useCallback(() => {
     if (stateLabelRedux) {
@@ -67,7 +69,7 @@ const LocationComponent = () => {
     if (selectedCropsRedux.length > 0) {
       setHandleConfirm(true);
     }
-  }, [selectedCropsRedux, state.myCoverCropListLocation]);
+  }, [selectedCropsRedux, myCoverCropListLocationRedux]);
 
   const updateZone = (region) => {
     if (region !== undefined) {
@@ -129,13 +131,6 @@ const LocationComponent = () => {
         snackOpen: true,
         snackMessage: 'Your location has been saved.',
       }));
-      // dispatch({
-      //   type: 'SNACK',
-      //   data: {
-      //     snackOpen: true,
-      //     snackMessage: 'Your location has been saved.',
-      //   },
-      // });
 
       if (selectedToEditSite.address) {
         dispatchRedux(changeAddressViaMap(
@@ -165,7 +160,7 @@ const LocationComponent = () => {
 
     // since this updates with state; ideally, weather and soil info should be updated here
     // get current lat long and get county, state and city
-    if (state.progress >= 1 && markersRedux.length > 0) {
+    if (progressRedux >= 1 && markersRedux.length > 0) {
       reverseGEO(lat, lon)
         .then(async (resp) => {
           const abbrState = abbrRegion(

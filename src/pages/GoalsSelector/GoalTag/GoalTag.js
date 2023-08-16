@@ -32,10 +32,6 @@ const GoalTag = ({
 
       document.getElementById(`chip${k}`).classList.add('active');
       dispatchRedux(addSelectedGoals(item.label));
-      // dispatch({
-      //   type: 'ADD_SELECTED_GOALS',
-      //   data: item.label,
-      // });
     } else {
       // exists, remove it from the state and update the state
       const index = goals.indexOf(item.label);
@@ -44,10 +40,6 @@ const GoalTag = ({
       // make it lighter on the ui
       document.getElementById(`chip${k}`).classList.remove('active');
       dispatchRedux(updateSelectedGoal(goals));
-      // dispatch({
-      //   type: 'UPDATE_SELECTED_GOALS',
-      //   data: goals,
-      // });
     }
   };
   return (

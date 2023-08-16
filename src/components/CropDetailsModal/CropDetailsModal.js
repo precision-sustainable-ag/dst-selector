@@ -7,29 +7,30 @@ import {
 } from '@mui/material';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { Close, Print } from '@mui/icons-material';
-import React, { useEffect, useContext, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactGA from 'react-ga';
 import { useSelector } from 'react-redux';
 import '../../styles/cropDetailsModal.scss';
 import InformationSheetContent from '../../pages/InformationSheetContent/InformationSheetContent';
-import { Context } from '../../store/Store';
 import { callCoverCropApi } from '../../shared/constants';
 
 const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
-  const { state, dispatch } = useContext(Context);
-  const [dataDone, setDataDone] = useState(false);
+  // redux vars
   const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
   const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
+  const consentRedux = useSelector((stateRedux) => stateRedux.sharedData.consent);
+  const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
+
+  // useState vars
+  const [dataDone, setDataDone] = useState(false);
+  const [modalData, setModalData] = useState([]);
 
   useEffect(() => {
     const regionQuery = `${encodeURIComponent('regions')}=${encodeURIComponent(regionIdRedux)}`;
-    const url = `https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${stateIdRedux}/crops/${crop?.id}?${regionQuery}`;
+    const url = `https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/crops/${crop?.id}?${regionQuery}`;
     if (crop.id !== undefined) {
       callCoverCropApi(url).then((data) => {
-        dispatch({
-          type: 'MODAL_DATA',
-          data,
-        });
+        setModalData(data);
       })
         .then(() => {
           setDataDone(true);
@@ -38,18 +39,18 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
   }, [crop]);
 
   useEffect(() => {
-    if (state.consent === true) {
+    if (consentRedux === true) {
       ReactGA.initialize('UA-181903489-1');
       ReactGA.pageview('information sheet');
     }
-  }, [state.consent]);
+  }, [consentRedux]);
 
   const handleModalClose = () => {
     setModalOpen(!modalOpen);
   };
 
   const print = () => {
-    if (state.consent === true) {
+    if (consentRedux === true) {
       ReactGA.event({
         category: 'Information Sheet',
         action: 'Print',
@@ -90,7 +91,7 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
               boxShadow: 5,
               padding: '0px',
             }}
-            id={`cropDetailModal-${state.modalData.id}`}
+            id={`cropDetailModal-${modalData.id}`}
           >
             <div className="container-fluid">
               <table>
@@ -163,7 +164,7 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
                   <tr>
                     <td>
                       <div id="cover-crop-modal-description">
-                        <InformationSheetContent crop={crop} modalData={state.modalData.data} from="modal" />
+                        <InformationSheetContent crop={crop} modalData={modalData.data} from="modal" />
                       </div>
                     </td>
                   </tr>

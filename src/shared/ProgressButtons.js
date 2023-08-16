@@ -3,20 +3,20 @@
   The ProgressButtons allow the user to navigate steps
 */
 
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Context } from '../store/Store';
 import ProgressButtonsInner from './ProgressButtonsInner';
 
 const ProgressButtons = ({ closeExpansionPanel, setConfirmationOpen }) => {
-  const { state } = useContext(Context);
   const addressRedux = useSelector((stateRedux) => stateRedux.addressData.address);
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
+  const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
   const [isDisabledBack, setIsDisabledBack] = useState(false);
   const [isDisabledNext, setIsDisabledNext] = useState(true);
   const [isDisabledRefresh, setIsDisabledRefresh] = useState(false);
   const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
   const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
+  const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
 
   const disableLogic = (progress, goalsLength, sfilters) => {
     switch (parseInt(progress, 10)) {
@@ -50,9 +50,9 @@ const ProgressButtons = ({ closeExpansionPanel, setConfirmationOpen }) => {
 
   useEffect(() => {
     const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
-    const sfilters = state[section];
-    disableLogic(state.progress, selectedGoalsRedux.length, sfilters);
-  }, [state, selectedGoalsRedux, stateLabelRedux]);
+    const sfilters = filterStateRedux[section];
+    disableLogic(progressRedux, selectedGoalsRedux.length, sfilters);
+  }, [filterStateRedux, selectedGoalsRedux, stateLabelRedux]);
 
   const renderProgressButtons = (progress, disabledBack, disabledNext, disabledRefresh) => {
     if (progress < 0) return '';
@@ -68,7 +68,7 @@ const ProgressButtons = ({ closeExpansionPanel, setConfirmationOpen }) => {
     );
   };
 
-  return renderProgressButtons(state.progress, isDisabledBack, isDisabledNext, isDisabledRefresh);
+  return renderProgressButtons(progressRedux, isDisabledBack, isDisabledNext, isDisabledRefresh);
 };
 
 export default ProgressButtons;

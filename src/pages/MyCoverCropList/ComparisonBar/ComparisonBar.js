@@ -11,12 +11,15 @@ import {
   Button, List, ListItem, ListItemText, ListSubheader,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import RenderFilters from './RenderFilters/RenderFilters';
 import RenderGoals from './RenderGoals/RenderGoals';
+import { updateComparisonKeys } from '../../../reduxStore/sharedSlice';
 
 const ComparisonBar = ({
-  filterData, goals, comparisonKeys, dispatch, comparisonView, classes,
+  filterData, goals, comparisonKeys, comparisonView, classes,
 }) => {
+  const dispatchRedux = useDispatch();
   const [filtersTotal, setFiltersTotal] = useState();
   const [filterValues, setFilterValues] = useState([]);
   const [goalsOpen, setGoalsOpen] = useState(false);
@@ -57,12 +60,7 @@ const ComparisonBar = ({
 
   const resetAllFilters = () => {
     if (comparisonKeys.length > 0) {
-      dispatch({
-        type: 'UPDATE_COMPARISON_KEYS',
-        data: {
-          comparisonKeys: [],
-        },
-      });
+      dispatchRedux(updateComparisonKeys([]));
     }
   };
 
@@ -109,12 +107,7 @@ const ComparisonBar = ({
     setFilterValues(filteredVals);
     setAllGoals(filteredGoals);
 
-    dispatch({
-      type: 'UPDATE_COMPARISON_KEYS',
-      data: {
-        comparisonKeys: theGoals.flat(2),
-      },
-    });
+    dispatchRedux(updateComparisonKeys(theGoals.flat(2)));
   };
 
   return comparisonView ? (
@@ -172,7 +165,6 @@ const ComparisonBar = ({
           goalsOpen={goalsOpen}
           setGoalsOpen={setGoalsOpen}
           comparisonKeys={comparisonKeys}
-          dispatch={dispatch}
         />
       )}
 
@@ -181,7 +173,6 @@ const ComparisonBar = ({
         toggleSidebarFilterItems={toggleSidebarFilterItems}
         classes={classes}
         comparisonKeys={comparisonKeys}
-        dispatch={dispatch}
       />
     </List>
   ) : null;

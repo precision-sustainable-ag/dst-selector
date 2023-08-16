@@ -25,20 +25,7 @@ const DollarsAndRatings = ({ filter, handleChange }) => {
         .map((i) => {
           const filterKey = `${filter.name}: ${i}`;
           const selected = sfilters[filterKey];
-          // const filterOn = (key = filterKey) => dispatch({
-          //   type: 'FILTER_ON',
-          //   data: {
-          //     value: key,
-          //   },
-          // });
           const filterOn = (key = filterKey) => dispatchRedux(filterOnRedux(key));
-
-          // const filterOff = (key = filterKey) => dispatch({
-          //   type: 'FILTER_OFF',
-          //   data: {
-          //     value: key,
-          //   },
-          // });
           const filterOff = (key = filterKey) => dispatchRedux(filterOffRedux(key));
 
           return (
@@ -129,7 +116,7 @@ const Tip = ({ filter }) => (
 
 // added ref prop to remove error. TODO: look into if forwardRef is needed here since ref isnt used
 const Filters = ({ filters }) => {
-  const disptachRedux = useDispatch();
+  const dispatchRedux = useDispatch();
   // const { filters } = props;
   const [selected, setSelected] = useState({});
   const [sidebarFilterOptions, setSidebarFilterOptions] = useState({});
@@ -151,13 +138,7 @@ const Filters = ({ filters }) => {
   };
 
   const chipChange = (filterName, val) => {
-    disptachRedux(filterToggle({ value: `${filterName}: ${val}` }));
-    // dispatch({
-    //   type: 'FILTER_TOGGLE',
-    //   data: {
-    //     value: `${filterName}: ${val}`,
-    //   },
-    // });
+    dispatchRedux(filterToggle({ value: `${filterName}: ${val}` }));
     setSelected({ ...selected, whatever: 'rerender' });
   };
 
