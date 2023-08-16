@@ -15,6 +15,7 @@ import React, {
   useEffect,
   useState,
   useCallback,
+  useRef,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Search } from '@mui/icons-material';
@@ -50,6 +51,7 @@ const LocationComponent = () => {
   const dispatchRedux = useDispatch();
   const [selectedZone, setselectedZone] = useState();
   const [selectedToEditSite, setSelectedToEditSite] = useState({});
+  const [currArea, setCurrArea] = useState([]);
   // const [selectedRegion, setSelectedRegion] = useState({});
   const [handleConfirm, setHandleConfirm] = useState(false);
   const countyRedux = useSelector((stateRedux) => stateRedux.addressData.county);
@@ -63,11 +65,9 @@ const LocationComponent = () => {
   const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
   const accessTokenRedux = useSelector((stateRedux) => stateRedux.userData.accessToken);
   const userFieldRedux = useSelector((stateRedux) => stateRedux.userData.field);
-  console.log('userFieldRedux', userFieldRedux, userFieldRedux?.data[0]?.geometry?.coordinates);
 
   const getArea = useCallback(() => {
     if (userFieldRedux && userFieldRedux.data.length > 0) {
-      if (userFieldRedux.data[0].geometry.type === 'Polygon') return userFieldRedux.data;
       if (userFieldRedux.data[0].geometry.type === 'GeometryCollection') return destructureGeometryCollection(userFieldRedux.data[0]);
     }
     return [];
@@ -75,7 +75,7 @@ const LocationComponent = () => {
 
   const getLatLng = useCallback(() => {
     if (userFieldRedux && userFieldRedux.data.length > 0) {
-      // need to flip lat and lng here
+      // flip lat and lng here
       if (userFieldRedux.data[0].geometry.type === 'Point') {
         return [userFieldRedux.data[0].geometry.coordinates[1], userFieldRedux.data[0].geometry.coordinates[0]];
       }
@@ -89,7 +89,6 @@ const LocationComponent = () => {
     }
     return [47, -122];
   }, [state]);
-  // console.log('getLatLng', getLatLng());
 
   useEffect(() => {
     if (selectedCropsRedux.length > 0) {
@@ -134,6 +133,8 @@ const LocationComponent = () => {
   }, [zoneRedux, countyRedux]);
 
   useEffect(() => {
+    selectedToEditSiteRef.current = selectedToEditSite;
+    currAreaRef.current = currArea;
     const {
       latitude,
       longitude,
@@ -312,35 +313,28 @@ const LocationComponent = () => {
       });
   }, [zipCodeRedux]);
 
-  const [currArea, setCurrArea] = useState([]);
-  // console.log('currArea', currArea[0]?.geometry);
-  // console.log('currPoint', selectedToEditSite);
+  const selectedToEditSiteRef = useRef();
+  const currAreaRef = useRef();
 
-  const handleLoad = () => {
-    getFields(accessTokenRedux).then((data) => console.log(data.data[0]));
-  };
-
-  const handleSave = async () => {
-    // TODO: save logic:
-    // save everytime user leave this page, if there's a point, save the point, if area save area
-    // what is user didn't make change: test if selectedToEditSite didn't change, if not change don't save
-    const { longitude, latitude } = selectedToEditSite;
+  const handleSave = async (selectedPoint, selectedArea) => {
+    const [initLat, initLng] = getLatLng();
+    const { longitude, latitude } = selectedPoint;
+    // if the point/polygon is not modified by user, do not trigger a redundant save.
+    if (initLat === latitude && initLng === longitude) return;
     const point = buildPoint(longitude, latitude);
-    if (currArea.length > 0) {
-      const geoCollection = buildGeometryCollection(point.geometry, currArea[0].geometry);
-      console.log('save geoCollection', geoCollection);
+    if (selectedArea.length > 0) {
+      const geoCollection = buildGeometryCollection(point.geometry, selectedArea[0].geometry);
       await postFields(accessTokenRedux, geoCollection);
       getFields(accessTokenRedux).then((data) => dispatchRedux(updateField(data)));
     } else {
       await postFields(accessTokenRedux, point);
       getFields(accessTokenRedux).then((data) => dispatchRedux(updateField(data)));
-      console.log('save point', point);
     }
   };
 
-  // useEffect(() => {
-  //   return () => handleSave();
-  // }, [])
+  useEffect(() => () => {
+    handleSave(selectedToEditSiteRef.current, currAreaRef.current);
+  }, []);
 
   return (
     <div className="container-fluid mt-5">
@@ -396,8 +390,6 @@ const LocationComponent = () => {
           </div>
         </div>
       </div>
-      <button type="button" onClick={handleLoad}>LOAD</button>
-      <button type="button" onClick={handleSave}>SAVE</button>
       <MyCoverCropReset handleConfirm={handleConfirm} setHandleConfirm={setHandleConfirm} from="selector" />
     </div>
   );
