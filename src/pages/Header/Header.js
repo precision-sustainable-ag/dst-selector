@@ -21,7 +21,6 @@ const Header = () => {
   const dispatch = useDispatch();
   const { state } = useContext(Context);
   const markersRedux = useSelector((stateRedux) => stateRedux.addressData.markers);
-  const accessTokenRedux = useSelector((stateRedux) => stateRedux.userData.accessToken);
   const [isRoot, setIsRoot] = useState(false);
   const { isAuthenticated, loginWithRedirect, getAccessTokenSilently } = useAuth0();
   const isActive = {};
@@ -30,20 +29,11 @@ const Header = () => {
     const getToken = async () => {
       const token = await getAccessTokenSilently();
       dispatch(updateAccessToken(token));
-      // console.log('update token:', token);
+      // get initial user field data
+      getFields(token).then((data) => dispatch(updateField(data)));
     };
     if (isAuthenticated) getToken();
-    if (isAuthenticated && accessTokenRedux) {
-      getFields(accessTokenRedux).then((data) => dispatch(updateField(data)));
-    }
   }, [isAuthenticated, getAccessTokenSilently]);
-
-  // TODO: need to fix this logic, now it has some errors
-  // the dependency array
-  // useEffect(() => {
-
-  //   // else dispatch(userLogout());
-  // }, [isAuthenticated, accessTokenRedux]);
 
   useEffect(() => {
     if (window.location.pathname === '/explorer') {
