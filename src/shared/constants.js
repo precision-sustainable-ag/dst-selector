@@ -720,3 +720,35 @@ export const postFields = async (accessToken = null, fieldsData = null) => {
     .then((res) => res.json())
     .catch((err) => console.log(err));
 };
+
+export const buildPoint = (lng, lat) => ({
+  type: 'Feature',
+  geometry: {
+    coordinates: [
+      lng, lat,
+    ],
+    type: 'Point',
+  },
+});
+
+export const buildGeometryCollection = (point, polygon) => {
+  const { coordinates: pointCoordinates } = point;
+  const { coordinates: polygonCoordinates } = polygon;
+  return {
+    type: 'Feature',
+    geometry: {
+      type: 'GeometryCollection',
+      geometries: [{
+        type: 'Point',
+        coordinates: pointCoordinates,
+      }, {
+        type: 'Polygon',
+        coordinates: polygonCoordinates,
+      }],
+    },
+  };
+};
+
+export const destructureGeometryCollection = (geoCollection) => [{
+  geometry: { ...geoCollection.geometry.geometries[0] },
+}, { geometry: { ...geoCollection.geometry.geometries[1] } }];

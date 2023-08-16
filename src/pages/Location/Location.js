@@ -25,7 +25,8 @@ import mapboxgl from 'mapbox-gl';
 // import { useAuth0 } from '@auth0/auth0-react';
 import statesLatLongDict from '../../shared/stateslatlongdict';
 import {
-  abbrRegion, reverseGEO, callCoverCropApi, postFields, getFields,
+  abbrRegion, reverseGEO, callCoverCropApi, postFields, getFields, destructureGeometryCollection,
+  buildPoint, buildGeometryCollection,
 } from '../../shared/constants';
 import { Context } from '../../store/Store';
 import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset';
@@ -65,19 +66,23 @@ const LocationComponent = () => {
   console.log('userFieldRedux', userFieldRedux, userFieldRedux?.data[0]?.geometry?.coordinates);
 
   const getArea = useCallback(() => {
-    if (userFieldRedux
-      && userFieldRedux.data.length > 0
-      && userFieldRedux.data[0].geometry.type === 'Polygon') {
-      return userFieldRedux.data;
+    if (userFieldRedux && userFieldRedux.data.length > 0) {
+      if (userFieldRedux.data[0].geometry.type === 'Polygon') return userFieldRedux.data;
+      if (userFieldRedux.data[0].geometry.type === 'GeometryCollection') return destructureGeometryCollection(userFieldRedux.data[0]);
     }
     return [];
   }, [state]);
-  console.log('initArea()', getArea());
 
   const getLatLng = useCallback(() => {
-    if (userFieldRedux && userFieldRedux.data.length > 0 && userFieldRedux.data[0].geometry.type !== 'Polygon') {
+    if (userFieldRedux && userFieldRedux.data.length > 0) {
       // need to flip lat and lng here
-      return [userFieldRedux.data[0].geometry.coordinates[1], userFieldRedux.data[0].geometry.coordinates[0]];
+      if (userFieldRedux.data[0].geometry.type === 'Point') {
+        return [userFieldRedux.data[0].geometry.coordinates[1], userFieldRedux.data[0].geometry.coordinates[0]];
+      }
+      if (userFieldRedux.data[0].geometry.type === 'GeometryCollection') {
+        const { coordinates } = userFieldRedux.data[0].geometry.geometries[0];
+        return [coordinates[1], coordinates[0]];
+      }
     }
     if (stateLabelRedux) {
       return [statesLatLongDict[stateLabelRedux][0], statesLatLongDict[stateLabelRedux][1]];
@@ -129,8 +134,6 @@ const LocationComponent = () => {
   }, [zoneRedux, countyRedux]);
 
   useEffect(() => {
-    console.log('marker', selectedToEditSite);
-    // if (selectedToEditSite !== {}) handleSave();
     const {
       latitude,
       longitude,
@@ -310,38 +313,34 @@ const LocationComponent = () => {
   }, [zipCodeRedux]);
 
   const [currArea, setCurrArea] = useState([]);
-  // console.log('currArea', currArea);
+  // console.log('currArea', currArea[0]?.geometry);
+  // console.log('currPoint', selectedToEditSite);
 
   const handleLoad = () => {
     getFields(accessTokenRedux).then((data) => console.log(data.data[0]));
   };
 
-  const buildPointGeoJSON = (lng, lat) => ({
-    type: 'Feature',
-    properties: {},
-    geometry: {
-      coordinates: [
-        lng, lat,
-      ],
-      type: 'Point',
-    },
-  });
-
-  const handleSave = () => {
+  const handleSave = async () => {
+    // TODO: save logic:
+    // save everytime user leave this page, if there's a point, save the point, if area save area
+    // what is user didn't make change: test if selectedToEditSite didn't change, if not change don't save
     const { longitude, latitude } = selectedToEditSite;
-    const point = buildPointGeoJSON(longitude, latitude);
-    // console.log(point);
-    postFields(accessTokenRedux, point).then(
-      getFields(accessTokenRedux).then((data) => dispatchRedux(updateField(data))),
-    );
+    const point = buildPoint(longitude, latitude);
     if (currArea.length > 0) {
-      postFields(accessTokenRedux, currArea[0]).then(
-        getFields(accessTokenRedux).then((data) => dispatchRedux(updateField(data))),
-      );
-      console.log('save area');
+      const geoCollection = buildGeometryCollection(point.geometry, currArea[0].geometry);
+      console.log('save geoCollection', geoCollection);
+      await postFields(accessTokenRedux, geoCollection);
+      getFields(accessTokenRedux).then((data) => dispatchRedux(updateField(data)));
+    } else {
+      await postFields(accessTokenRedux, point);
+      getFields(accessTokenRedux).then((data) => dispatchRedux(updateField(data)));
+      console.log('save point', point);
     }
-    // postFields(accessTokenRedux, currArea[0]).then(console.log);
   };
+
+  // useEffect(() => {
+  //   return () => handleSave();
+  // }, [])
 
   return (
     <div className="container-fluid mt-5">

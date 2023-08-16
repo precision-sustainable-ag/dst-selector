@@ -32,17 +32,18 @@ const Header = () => {
       dispatch(updateAccessToken(token));
       // console.log('update token:', token);
     };
-    getToken();
-  }, [getAccessTokenSilently, accessTokenRedux]);
-
-  // TODO: need to fix this logic, now it has some errors
-  // the dependency array
-  useEffect(() => {
+    if (isAuthenticated) getToken();
     if (isAuthenticated && accessTokenRedux) {
       getFields(accessTokenRedux).then((data) => dispatch(updateField(data)));
     }
-    // else dispatch(userLogout());
-  }, [isAuthenticated, accessTokenRedux]);
+  }, [isAuthenticated, getAccessTokenSilently]);
+
+  // TODO: need to fix this logic, now it has some errors
+  // the dependency array
+  // useEffect(() => {
+
+  //   // else dispatch(userLogout());
+  // }, [isAuthenticated, accessTokenRedux]);
 
   useEffect(() => {
     if (window.location.pathname === '/explorer') {
