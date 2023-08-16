@@ -15,13 +15,15 @@ import {
 } from '@mui/material';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import React, { Fragment } from 'react';
+import { useDispatch } from 'react-redux';
+import { updateComparisonKeys } from '../../../../reduxStore/sharedSlice';
 
 const RenderFilters = ({
   filterValues = [],
   toggleSidebarFilterItems = () => {},
   comparisonKeys = [],
-  dispatch = () => {},
 }) => {
+  const dispatchRedux = useDispatch();
   const updateCheckboxStatus = (name = '') => {
     const comparisonKeysCopy = comparisonKeys;
     const indexOfValue = comparisonKeysCopy.indexOf(name);
@@ -32,12 +34,7 @@ const RenderFilters = ({
       comparisonKeysCopy.splice(indexOfValue, 1);
     }
 
-    dispatch({
-      type: 'UPDATE_COMPARISON_KEYS',
-      data: {
-        comparisonKeys: comparisonKeysCopy,
-      },
-    });
+    dispatchRedux(updateComparisonKeys(comparisonKeysCopy));
   };
 
   return filterValues.map((filter, index) => {
@@ -108,12 +105,7 @@ const RenderFilters = ({
                             comparisonKeysCopy.splice(indexOfValue, 1);
                           }
 
-                          dispatch({
-                            type: 'UPDATE_COMPARISON_KEYS',
-                            data: {
-                              comparisonKeys: comparisonKeysCopy,
-                            },
-                          });
+                          dispatchRedux(updateComparisonKeys(comparisonKeysCopy));
                         }}
                         name={filter.name}
                         color="primary"

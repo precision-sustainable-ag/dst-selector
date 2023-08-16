@@ -8,12 +8,6 @@ import { cropSearch } from '../../../reduxStore/filterSlice';
 
 const CoverCropSearch = ({ sfilters }) => {
   const dispatchRedux = useDispatch();
-  // const clearCoverCropSearch = (type = 'CROP_SEARCH', value = '') => {
-  //   dispatch({
-  //     type,
-  //     data: { value },
-  //   });
-  // };
   const clearCoverCropSearch = (value = '') => {
     dispatchRedux(cropSearch(value));
   };
@@ -27,7 +21,6 @@ const CoverCropSearch = ({ sfilters }) => {
           label="Cover Crop Name"
           helperText="Search by cover crop name"
           value={sfilters.cropSearch}
-          // onChange={(e) => dispatch({ type: 'CROP_SEARCH', data: { value: e.target.value } })}
           onChangeCapture={(e) => dispatchRedux(cropSearch(e.target.value))}
           InputProps={{
             endAdornment: (

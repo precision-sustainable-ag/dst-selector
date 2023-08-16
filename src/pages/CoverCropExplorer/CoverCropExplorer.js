@@ -8,10 +8,9 @@ import {
   Grid, Typography,
 } from '@mui/material';
 import { useHistory } from 'react-router-dom';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import ReactGA from 'react-ga';
-import { Context } from '../../store/Store';
 import Header from '../Header/Header';
 import ExplorerCardView from './ExplorerCardView/ExplorerCardView';
 import ConsentModal from './ConsentModal/ConsentModal';
@@ -19,7 +18,6 @@ import CropSidebar from '../CropSidebar/CropSidebar';
 import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset';
 
 const CoverCropExplorer = () => {
-  const { state } = useContext(Context);
   const history = useHistory();
   const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
   const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
@@ -27,6 +25,8 @@ const CoverCropExplorer = () => {
   const activeCropDataRedux = useSelector((stateRedux) => stateRedux.cropData.activeCropData);
   const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
   const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
+  const consentRedux = useSelector((stateRedux) => stateRedux.sharedData.consent);
+  const myCoverCropListLocationRedux = useSelector((stateRedux) => stateRedux.sharedData.myCoverCropListLocation);
   const [updatedActiveCropData, setUpdatedActiveCropData] = useState([]);
   // const { activeCropData } = state;
   const [handleConfirm, setHandleConfirm] = useState(false);
@@ -39,12 +39,12 @@ const CoverCropExplorer = () => {
   }, [activeCropDataRedux]);
 
   useEffect(() => {
-    if (state.consent === true) {
+    if (consentRedux === true) {
       ReactGA.initialize('UA-181903489-1');
 
       ReactGA.pageview('cover crop explorer');
     }
-  }, [state.consent]);
+  }, [consentRedux]);
 
   useEffect(() => {
     if (stateLabelRedux === null || stateLabelRedux === '') {
@@ -53,15 +53,15 @@ const CoverCropExplorer = () => {
   }, [stateLabelRedux]);
 
   useEffect(() => {
-    if (state?.myCoverCropListLocation !== 'explorer' && selectedCropsRedux?.length > 0) {
+    if (myCoverCropListLocationRedux !== 'explorer' && selectedCropsRedux?.length > 0) {
       // document.title = 'Cover Crop Explorer';
       setHandleConfirm(true);
     }
-  }, [selectedCropsRedux, state.myCoverCropListLocation]);
+  }, [selectedCropsRedux, myCoverCropListLocationRedux]);
 
   return (
     <div className="contentWrapper">
-      <ConsentModal consent={state.consent} />
+      <ConsentModal consent={consentRedux} />
       <Header logo="neccc_wide_logo_color_web.jpg" />
       <div className="container-fluid mt-4 mb-4">
         <div className="row mt-3">

@@ -2,15 +2,14 @@
 import {
   Collapse, FormControl, InputLabel, List, ListItem, MenuItem, Select,
 } from '@mui/material';
-import React, { useContext } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
-import { Context } from '../../../store/Store';
 
 const PlantHardinessZone = ({ updateZone }) => {
-  const { state } = useContext(Context);
   const zoneRedux = useSelector((stateRedux) => stateRedux.addressData.zone);
   const regionsRedux = useSelector((stateRedux) => stateRedux.mapData.regions);
   const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
+  const zoneToggleRedux = useSelector((stateRedux) => stateRedux.sharedData.zoneToggle);
 
   const handleRegionChange = (event) => {
     // eslint-disable-next-line eqeqeq
@@ -40,7 +39,7 @@ const PlantHardinessZone = ({ updateZone }) => {
   );
 
   return (
-    <Collapse in={state.zoneToggle}>
+    <Collapse in={zoneToggleRedux}>
       <List component="div" disablePadding>
         <ListItem component="div">
           <FormControl

@@ -12,12 +12,16 @@ import RenderRelevantData from './RenderRelevantData/RenderRelevantData';
 const CropCard = ({
   crop, handleModalOpen, addCropToBasket, removeCrop, index, type, comparisonKeys, lightBG, GetAverageGoalRating,
 }) => {
+  // redux vars
   const zoneRedux = useSelector((stateRedux) => stateRedux.addressData.zone);
   const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
   const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
+
   const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
   const sfilters = filterStateRedux[section];
+
+  // useState vars
   const [allfilters, setAllFilters] = useState([]);
   const allData = [];
 
