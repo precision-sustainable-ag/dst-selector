@@ -5,7 +5,7 @@ import '../../../../styles/soilConditions.scss';
 import { updateFloodingFrequency as updateFloodingFrequencyRedux } from '../../../../reduxStore/soilSlice';
 
 const RenderFloodingOptions = ({ flooding = [''] }) => {
-  const dispatchRedux = useDispatch;
+  const dispatchRedux = useDispatch();
 
   // redux vars
   const soilDataRedux = useSelector((stateRedux) => stateRedux.soilData.soilData);

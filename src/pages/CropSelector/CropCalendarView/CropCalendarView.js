@@ -20,7 +20,7 @@ import {
 import {
   AcUnit, AddCircle, LocalFlorist, WbSunny,
 } from '@mui/icons-material';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   allMonths,
@@ -30,7 +30,6 @@ import {
   sudoButtonStyleWithPadding,
   getLegendDataBasedOnCouncil,
 } from '../../../shared/constants';
-import { Context } from '../../../store/Store';
 import '../../../styles/cropCalendarViewComponent.scss';
 // import CropLegendModal from '../../../components/CropLegendModal/CropLegendModal';
 import RenderCrops from './RenderCrops';
@@ -43,7 +42,6 @@ const growthIcon = {
 };
 
 const CropCalendarView = ({ activeCropData }) => {
-  const { state } = useContext(Context);
   const dispatchRedux = useDispatch();
   const cropDataStateRedux = useSelector((stateRedux) => stateRedux.cropData);
   const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
@@ -59,17 +57,9 @@ const CropCalendarView = ({ activeCropData }) => {
   // const { selectedGoals } = state;
   const activeCropDataShadow = activeCropData;
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
-
+  const ajaxInProgressRedux = useSelector((stateRedux) => stateRedux.sharedData.ajaxInProgress);
   const legendData = getLegendDataBasedOnCouncil(councilShorthandRedux);
 
-  // const dispatchValue = (value, type = 'UPDATE_ACTIVE_CROP_DATA') => {
-  //   dispatch({
-  //     type,
-  //     data: {
-  //       value,
-  //     },
-  //   });
-  // };
   const dispatchValue = (value) => dispatchRedux(updateActiveCropData(value));
   const handleLegendModal = () => {
     setLegendModal(!legendModal);
@@ -116,7 +106,7 @@ const CropCalendarView = ({ activeCropData }) => {
 
   return (
     <>
-      {state.ajaxInProgress ? (
+      {ajaxInProgressRedux ? (
         <div className="circularCentered">
           <CircularProgress size="6em" />
         </div>

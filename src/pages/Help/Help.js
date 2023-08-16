@@ -10,28 +10,28 @@
 import {
   Box, Button, Container, Grid, Stack, Typography,
 } from '@mui/material';
-import React, { useEffect, useContext, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import ReactGA from 'react-ga';
 import { CustomStyles } from '../../shared/constants';
 import Header from '../Header/Header';
 import InformationSheetDictionary from './InformationSheetDictionary/InformationSheetDictionary';
-import { Context } from '../../store/Store';
 
 const Help = () => {
-  const { state } = useContext(Context);
+  const consentRedux = useSelector((stateRedux) => stateRedux.sharedData.consent);
 
   useEffect(() => {
     document.title = 'Help Page';
   }, []);
 
   useEffect(() => {
-    if (state.consent === true) {
+    if (consentRedux === true) {
       ReactGA.initialize('UA-181903489-1');
 
       ReactGA.pageview('help');
     }
-  }, [state.consent]);
+  }, [consentRedux]);
 
   const [value, setValue] = useState(0);
 

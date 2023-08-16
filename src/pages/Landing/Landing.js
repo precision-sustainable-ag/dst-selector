@@ -11,7 +11,6 @@ import {
 } from '@mui/material';
 // import SelectUSState from 'react-select-us-states';
 import React, {
-  useContext,
   useEffect,
   useState,
   useRef,
@@ -21,7 +20,6 @@ import { Link } from 'react-router-dom';
 import ReactGA from 'react-ga';
 import { RegionSelectorMap } from '@psa/dst.ui.region-selector-map';
 import { callCoverCropApi } from '../../shared/constants';
-import { Context } from '../../store/Store';
 import '../../styles/landing.scss';
 import ConsentModal from '../CoverCropExplorer/ConsentModal/ConsentModal';
 import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset';
@@ -29,19 +27,26 @@ import { updateZone } from '../../reduxStore/addressSlice';
 import { updateRegions, updateRegion, updateStateInfo } from '../../reduxStore/mapSlice';
 
 const Landing = ({ height, title, bg }) => {
-  const { state } = useContext(Context);
   const dispatchRedux = useDispatch();
+
+  const mapRef = useRef(null);
+
+  // redux vars
+  const regionsRedux = useSelector((stateRedux) => stateRedux.mapData.regions);
+  const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
+  const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
+  const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
+  const consentRedux = useSelector((stateRedux) => stateRedux.sharedData.consent);
+  const myCoverCropListLocationRedux = useSelector((stateRedux) => stateRedux.sharedData.myCoverCropListLocation);
+  const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
+
+  // useState vars
   const [handleConfirm, setHandleConfirm] = useState(false);
   const [containerHeight, setContainerHeight] = useState(height);
   const [allStates, setAllStates] = useState([]);
   const [selectedState, setSelectedState] = useState('');
   const [mapState, setMapState] = useState({});
   const [selectedRegion, setSelectedRegion] = useState({});
-  const mapRef = useRef(null);
-  const regionsRedux = useSelector((stateRedux) => stateRedux.mapData.regions);
-  const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
-  const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
-  const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
 
   const stateChange = (selState) => {
     setSelectedState(selState);
@@ -61,7 +66,7 @@ const Landing = ({ height, title, bg }) => {
   };
 
   useEffect(() => {
-    callCoverCropApi(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states`).then((data) => { setAllStates(data.data); });
+    callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states`).then((data) => { setAllStates(data.data); });
   }, []);
 
   useEffect(() => {
@@ -84,7 +89,7 @@ const Landing = ({ height, title, bg }) => {
 
   useEffect(() => {
     if (stateIdRedux) {
-      fetch(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${stateIdRedux}/regions`)
+      fetch(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/regions`)
         .then((res) => res.json())
         .then((data) => {
           let fetchedRegions;
@@ -138,10 +143,10 @@ const Landing = ({ height, title, bg }) => {
       } else {
         // FIXME: possible issues here due to the default value changed from '' to null
         dispatchRedux(updateStateInfo({
-          stateLabel: '',
-          stateId: '',
-          councilShorthand: '',
-          councilLabel: '',
+          stateLabel: null,
+          stateId: null,
+          councilShorthand: null,
+          councilLabel: null,
         }));
       }
     }
@@ -180,12 +185,12 @@ const Landing = ({ height, title, bg }) => {
   );
 
   useEffect(() => {
-    if (state.consent) {
+    if (consentRedux) {
       ReactGA.initialize('UA-181903489-1');
 
       ReactGA.pageview('cover crop selector');
     }
-  }, [state.consent]);
+  }, [consentRedux]);
 
   useEffect(() => {
     document.title = title;
@@ -214,7 +219,7 @@ const Landing = ({ height, title, bg }) => {
 
   useEffect(() => {
     document.title = 'Cover Crop Selector';
-    if (state.myCoverCropListLocation !== 'selector' && selectedCropsRedux.length > 0) {
+    if (myCoverCropListLocationRedux !== 'selector' && selectedCropsRedux.length > 0) {
       setHandleConfirm(true);
     }
   }, []);
@@ -230,7 +235,7 @@ const Landing = ({ height, title, bg }) => {
       }}
     >
 
-      <ConsentModal consent={state.consent} />
+      <ConsentModal consent={consentRedux} />
 
       <Grid container>
 
@@ -252,12 +257,12 @@ const Landing = ({ height, title, bg }) => {
         >
           <Grid item>
             <Typography variant="h4" gutterBottom align="center">
-              {`Welcome to the${councilLabelRedux && ` ${councilLabelRedux}`} Species Selector Tool`}
+              {`Welcome to the${councilLabelRedux ? ` ${councilLabelRedux}` : ''} Species Selector Tool`}
             </Typography>
           </Grid>
           <Grid item>
             <Typography variant="body1" gutterBottom align="left">
-              {`You are currently interacting with the${councilLabelRedux && ` ${councilLabelRedux}`} Species Selector Tool. We
+              {`You are currently interacting with the${councilLabelRedux ? ` ${councilLabelRedux}` : ''} Species Selector Tool. We
             seek feedback about the usability and usefulness of this tool. Our goal is to encourage
             and support the use of cover crops in your area. You can learn more about the
             cover crop data and design of this tool`}
