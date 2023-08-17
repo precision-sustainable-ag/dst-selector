@@ -5,10 +5,9 @@
 
 // TODO: Goal tags are not responsive!
 import { Typography, Grid } from '@mui/material';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset';
-import { Context } from '../../store/Store';
 import '../../styles/goalsSelector.scss';
 import GoalTag from './GoalTag/GoalTag';
 import { callCoverCropApi } from '../../shared/constants';
@@ -20,34 +19,39 @@ import { callCoverCropApi } from '../../shared/constants';
 // };
 
 const GoalsSelector = () => {
-  const { state } = useContext(Context);
-  const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
-  const [allGoals, setAllGoals] = useState([]);
-  const [handleConfirm, setHandleConfirm] = useState(false);
+  // redux vars
   const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
   const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
+  const myCoverCropListLocationRedux = useSelector((stateRedux) => stateRedux.sharedData.myCoverCropListLocation);
+  const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
+  const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
+  const allGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.allGoals);
+
+  // useState vars
+  const [allGoals, setAllGoals] = useState([]);
+  const [handleConfirm, setHandleConfirm] = useState(false);
 
   useEffect(() => {
-    if (state.myCoverCropListLocation !== 'selector' && selectedCropsRedux?.length > 0) {
+    if (myCoverCropListLocationRedux !== 'selector' && selectedCropsRedux?.length > 0) {
       // document.title = 'Cover Crop Selector';
       setHandleConfirm(true);
     }
-  }, [selectedCropsRedux, state.myCoverCropListLocation]);
+  }, [selectedCropsRedux, myCoverCropListLocationRedux]);
   const query = `${encodeURIComponent('regions')}=${encodeURIComponent(regionIdRedux)}`;
 
   useEffect(() => {
     if (stateIdRedux && regionIdRedux) {
-      callCoverCropApi(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${stateIdRedux}/goals?${query}`).then((data) => {
+      callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/goals?${query}`).then((data) => {
         setAllGoals(data.data);
       });
     }
-  }, [state.allGoals]);
+  }, [allGoalsRedux]);
 
   return (
-    <div className="container-fluid mt-5">
-      <div className="row boxContainerRow goalsContainer" style={{ height: '520px' }}>
-        <div className="col-12 goalsBoxContainer">
-          <Typography variant="h4" gutterBottom>
+    <>
+      <div className="goalsContainer" style={{ marginTop: '5%', width: '80%', marginLeft: '10%' }}>
+        <div className="goalsBoxContainer">
+          <Typography variant="h4" gutterBottom align="center">
             What are your cover cropping goals?
           </Typography>
           <Typography variant="body2" align="center" color="secondary" gutterBottom>
@@ -56,8 +60,8 @@ const GoalsSelector = () => {
             decrease for each additional goal. Hover on a goal for more information.
           </Typography>
           {allGoals?.length > 0 && (
-            <Grid container spacing={4} className="goals" style={{ justifyContent: 'center' }}>
-              {
+          <Grid container spacing={4} className="goals" style={{ justifyContent: 'center' }}>
+            {
                 allGoals.map((goal, key) => (
                   <Grid key={key} item>
                     <GoalTag
@@ -70,12 +74,12 @@ const GoalsSelector = () => {
                   </Grid>
                 ))
               }
-            </Grid>
+          </Grid>
           )}
         </div>
       </div>
       <MyCoverCropReset handleConfirm={handleConfirm} setHandleConfirm={setHandleConfirm} />
-    </div>
+    </>
   );
 };
 

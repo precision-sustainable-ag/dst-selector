@@ -8,21 +8,21 @@ import {
   Typography,
 } from '@mui/material';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
-import React, { useContext } from 'react';
-import { useSelector } from 'react-redux';
-import { Context } from '../../../store/Store';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { CustomStyles } from '../../../shared/constants';
+import { updateProgress } from '../../../reduxStore/sharedSlice';
+import { toggleGoalsOpen } from '../../../reduxStore/goalSlice';
 
-const CoverCropGoals = ({ handleToggle }) => {
-  const { state, dispatch } = useContext(Context);
+const CoverCropGoals = () => {
+  const dispatchRedux = useDispatch();
+
+  // redux vars
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
+  const goalsOpenRedux = useSelector((stateRedux) => stateRedux.goalsData.goalsOpen);
+
   const changeProgress = () => {
-    dispatch({
-      type: 'UPDATE_PROGRESS',
-      data: {
-        type: 'DECREMENT',
-      },
-    });
+    dispatchRedux(updateProgress('DECREMENT'));
   }; // changeProgress
 
   return (
@@ -30,16 +30,16 @@ const CoverCropGoals = ({ handleToggle }) => {
       {' '}
       <ListItem
         button
-        onClick={() => handleToggle('goalsOpen')}
+        onClick={() => dispatchRedux(toggleGoalsOpen())}
         style={{
-          backgroundColor: state.goalsOpen ? CustomStyles().lightGreen : 'inherit',
+          backgroundColor: goalsOpenRedux ? CustomStyles().lightGreen : 'inherit',
           borderTop: '4px solid white',
         }}
       >
         <ListItemText primary="COVER CROP GOALS" />
-        {state.goalsOpen ? <ExpandLess /> : <ExpandMore />}
+        {goalsOpenRedux ? <ExpandLess /> : <ExpandMore />}
       </ListItem>
-      <Collapse in={state.goalsOpen} timeout="auto" unmountOnExit>
+      <Collapse in={goalsOpenRedux} timeout="auto" unmountOnExit>
         {selectedGoalsRedux.length === 0 ? (
           <List component="div" disablePadding>
             <ListItem button sx={{ paddingLeft: 3 }}>

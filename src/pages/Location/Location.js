@@ -9,7 +9,6 @@ import {
   Typography,
 } from '@mui/material';
 import React, {
-  useContext,
   useEffect,
   useState,
   useCallback,
@@ -28,7 +27,6 @@ import {
   abbrRegion, reverseGEO, callCoverCropApi, postFields, getFields, destructureGeometryCollection,
   buildPoint, buildGeometryCollection,
 } from '../../shared/constants';
-import { Context } from '../../store/Store';
 import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset';
 import PlantHardinessZone from '../CropSidebar/PlantHardinessZone/PlantHardinessZone';
 import {
@@ -46,7 +44,6 @@ import { updateField } from '../../reduxStore/userSlice';
 mapboxgl.workerClass = require('worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker').default;
 
 const LocationComponent = () => {
-  const { state } = useContext(Context);
   const dispatchRedux = useDispatch();
   const [selectedZone, setselectedZone] = useState();
   const [selectedToEditSite, setSelectedToEditSite] = useState({});
@@ -75,7 +72,9 @@ const LocationComponent = () => {
       if (userFieldRedux.data[0].geometry.type === 'GeometryCollection') return destructureGeometryCollection(userFieldRedux.data[0]);
     }
     return [];
-  }, [state]);
+  }, [stateLabelRedux]);
+  const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
+  const myCoverCropListLocationRedux = useSelector((stateRedux) => stateRedux.sharedData.myCoverCropListLocation);
 
   const getLatLng = useCallback(() => {
     if (userFieldRedux && userFieldRedux.data.length > 0) {
@@ -92,13 +91,13 @@ const LocationComponent = () => {
       return [statesLatLongDict[stateLabelRedux][0], statesLatLongDict[stateLabelRedux][1]];
     }
     return [47, -122];
-  }, [state]);
+  }, [stateLabelRedux]);
 
   useEffect(() => {
     if (selectedCropsRedux.length > 0) {
       setHandleConfirm(true);
     }
-  }, [selectedCropsRedux, state.myCoverCropListLocation]);
+  }, [selectedCropsRedux, myCoverCropListLocationRedux]);
 
   const updateZone = (region) => {
     if (region !== undefined) {
@@ -162,13 +161,6 @@ const LocationComponent = () => {
         snackOpen: true,
         snackMessage: 'Your location has been saved.',
       }));
-      // dispatch({
-      //   type: 'SNACK',
-      //   data: {
-      //     snackOpen: true,
-      //     snackMessage: 'Your location has been saved.',
-      //   },
-      // });
 
       if (selectedToEditSite.address) {
         dispatchRedux(changeAddressViaMap(
@@ -198,7 +190,7 @@ const LocationComponent = () => {
 
     // since this updates with state; ideally, weather and soil info should be updated here
     // get current lat long and get county, state and city
-    if (state.progress >= 1 && markersRedux.length > 0) {
+    if (progressRedux >= 1 && markersRedux.length > 0) {
       reverseGEO(lat, lon)
         .then(async (resp) => {
           const abbrState = abbrRegion(

@@ -1,10 +1,11 @@
 import {
   Collapse, List, ListItem, ListItemText, Tooltip, Typography,
 } from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
-import React, { Fragment, useContext } from 'react';
+import React, { Fragment } from 'react';
 import Filters from '../Filters/Filters';
-import { Context } from '../../../store/Store';
+import { toggleFilterValue } from '../../../reduxStore/filterSlice';
 
 const SidebarFilter = ({
   filter,
@@ -13,9 +14,9 @@ const SidebarFilter = ({
   setSidebarFilterOptions,
   resetAllFilters,
   sectionFilter,
-  handleToggle,
 }) => {
-  const { state } = useContext(Context);
+  const dispatchRedux = useDispatch();
+  const filterDataRedux = useSelector((stateRedux) => stateRedux.filterData);
 
   return (
     <Fragment key={index}>
@@ -32,31 +33,31 @@ const SidebarFilter = ({
         >
           <ListItem
             key={index}
-            className={state[sectionFilter] ? 'filterOpen' : 'filterClose'}
+            className={filterDataRedux[sectionFilter] ? 'filterOpen' : 'filterClose'}
             component="div"
-            onClick={() => handleToggle(sectionFilter)}
+            onClick={() => dispatchRedux(toggleFilterValue(sectionFilter))}
           >
             <ListItemText
               primary={<Typography variant="body2">{filter.name.toUpperCase()}</Typography>}
             />
-            {state[sectionFilter] ? <ExpandLess /> : <ExpandMore />}
+            {filterDataRedux[sectionFilter] ? <ExpandLess /> : <ExpandMore />}
           </ListItem>
         </Tooltip>
       ) : (
         <ListItem
           key={index}
-          className={state[sectionFilter] ? 'filterOpen' : 'filterClose'}
+          className={filterDataRedux[sectionFilter] ? 'filterOpen' : 'filterClose'}
           component="div"
-          onClick={() => handleToggle(sectionFilter)}
+          onClick={() => dispatchRedux(toggleFilterValue(sectionFilter))}
         >
           <ListItemText
             primary={<Typography variant="body2">{filter.name.toUpperCase()}</Typography>}
           />
-          {state[sectionFilter] ? <ExpandLess /> : <ExpandMore />}
+          {filterDataRedux[sectionFilter] ? <ExpandLess /> : <ExpandMore />}
         </ListItem>
       )}
 
-      <Collapse in={state[sectionFilter]} timeout="auto">
+      <Collapse in={filterDataRedux[sectionFilter]} timeout="auto">
         <List component="div" disablePadding>
           <ListItem key={index} component="div">
             <Filters

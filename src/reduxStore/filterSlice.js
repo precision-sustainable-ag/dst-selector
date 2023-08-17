@@ -9,6 +9,8 @@ const initialState = {
     // filters for selector
     cropSearch: '',
   },
+
+  cropFiltersOpen: true,
 };
 
 export const clearFilters = () => ({
@@ -41,6 +43,17 @@ export const cropSearch = (value) => ({
   payload: {
     value,
   },
+});
+
+export const toggleFilterValue = (value) => ({
+  type: 'TOGGLE_FILTER_VALUE',
+  payload: {
+    value,
+  },
+});
+
+export const toggleCropFiltersOpen = () => ({
+  type: 'TOGGLE_CROP_FILTERS_OPEN',
 });
 
 const filterReducer = (state = initialState, action = null) => {
@@ -91,6 +104,18 @@ const filterReducer = (state = initialState, action = null) => {
         ...state,
         cropSearch: action.payload.value,
         [section]: sfilters,
+      };
+
+    case 'TOGGLE_FILTER_VALUE':
+      return {
+        ...state,
+        [value]: !state[value],
+      };
+
+    case 'TOGGLE_CROP_FILTERS_OPEN':
+      return {
+        ...state,
+        cropFiltersOpen: !state.cropFiltersOpen,
       };
 
     default:
