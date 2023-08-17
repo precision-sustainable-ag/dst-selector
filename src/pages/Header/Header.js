@@ -5,10 +5,9 @@
 */
 
 import { useDispatch, useSelector } from 'react-redux';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
-import { Context } from '../../store/Store';
 import '../../styles/header.scss';
 import HeaderLogoInfo from './HeaderLogoInfo/HeaderLogoInfo';
 import InformationBar from './InformationBar/InformationBar';
@@ -19,8 +18,8 @@ import { getFields } from '../../shared/constants';
 
 const Header = () => {
   const dispatch = useDispatch();
-  const { state } = useContext(Context);
   const markersRedux = useSelector((stateRedux) => stateRedux.addressData.markers);
+  const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
   const [isRoot, setIsRoot] = useState(false);
   const { isAuthenticated, loginWithRedirect, getAccessTokenSilently } = useAuth0();
   const isActive = {};
@@ -42,7 +41,7 @@ const Header = () => {
       setIsRoot(false);
     }
 
-    switch (state.progress) {
+    switch (progressRedux) {
       case 0:
         isActive.val = 0;
         break;
@@ -94,7 +93,7 @@ const Header = () => {
         || window.location.pathname === '/help'
         || (window.location.pathname === '/feedback'
           && window.location.pathname !== '/cover-crop-explorer')
-        || (state.progress < 0 && (
+        || (progressRedux < 0 && (
           <div className="topBar" />
         ))}
     </header>
