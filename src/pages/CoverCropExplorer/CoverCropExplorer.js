@@ -9,16 +9,18 @@ import {
 } from '@mui/material';
 import { useHistory } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import ReactGA from 'react-ga';
 import Header from '../Header/Header';
 import ExplorerCardView from './ExplorerCardView/ExplorerCardView';
 import ConsentModal from './ConsentModal/ConsentModal';
 import CropSidebar from '../CropSidebar/CropSidebar';
 import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset';
+import { updateRegion, updateStateInfo } from '../../reduxStore/mapSlice';
 
 const CoverCropExplorer = () => {
   const history = useHistory();
+  const dispatchRedux = useDispatch();
   const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
   const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
   const sfilters = filterStateRedux[section];
@@ -30,12 +32,41 @@ const CoverCropExplorer = () => {
   const [updatedActiveCropData, setUpdatedActiveCropData] = useState([]);
   // const { activeCropData } = state;
   const [handleConfirm, setHandleConfirm] = useState(false);
-  const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
+  const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
+
+  // open crop if url exists
+  // eslint-disable-next-line
+  const urlCrop = window.location.search.match(/crop=([^\^]+)/);
+  // eslint-disable-next-line
+  const urlParamStateId = window.location.search.match(/state=([^\^]+)/); // for automating Information Sheet PDFs
+  // eslint-disable-next-line
+  const urlRegionId = window.location.search.match(/region=([^\^]+)/); // for automating Information Sheet PDFs
 
   useEffect(() => {
     const filteredActiveCropData = activeCropDataRedux?.filter((a) => !a.inactive);
     setUpdatedActiveCropData(filteredActiveCropData);
-    // getData();
+
+    if (urlCrop && urlParamStateId && urlRegionId) {
+      dispatchRedux(updateStateInfo({
+        stateLabel: null,
+        stateId: urlParamStateId[1],
+        councilShorthand: null,
+        councilLabel: null,
+      }));
+      dispatchRedux(updateRegion({
+        regionId: urlRegionId[1],
+        regionLabel: null,
+        regionShorthand: null,
+      }));
+
+      // eslint-disable-next-line
+      for (const o of [...document.querySelectorAll('.MuiCardContent-root')]) {
+        if (o.textContent.includes(decodeURI(urlCrop[1]))) {
+          o.querySelector('.MuiButtonBase-root').click();
+          break;
+        }
+      }
+    }
   }, [activeCropDataRedux]);
 
   useEffect(() => {
@@ -47,10 +78,10 @@ const CoverCropExplorer = () => {
   }, [consentRedux]);
 
   useEffect(() => {
-    if (stateLabelRedux === null || stateLabelRedux === '') {
+    if ((stateIdRedux === null || stateIdRedux === '') && !urlParamStateId) {
       history.push('/');
     }
-  }, [stateLabelRedux]);
+  }, [stateIdRedux]);
 
   useEffect(() => {
     if (myCoverCropListLocationRedux !== 'explorer' && selectedCropsRedux?.length > 0) {
