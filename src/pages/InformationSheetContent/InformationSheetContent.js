@@ -6,27 +6,26 @@
 */
 
 import React, {
-  useContext, useEffect, useState,
+  useEffect, useState,
 } from 'react';
 import {
   Accordion, AccordionDetails, AccordionSummary, Typography, Tooltip,
 } from '@mui/material';
 import { ExpandMore } from '@mui/icons-material';
 import { useSelector } from 'react-redux';
-import { Context } from '../../store/Store';
 import CoverCropInformation from './CoverCropInformation/CoverCropInformation';
 import InformationSheetReferences from './InformationSheetReferences/InformationSheetReferences';
 import { callCoverCropApi, getRating } from '../../shared/constants';
 
 const InformationSheetContent = ({ crop, modalData }) => {
-  const { state } = useContext(Context);
   const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
-  const { zone } = state[section];
 
   // redux vars
   const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
   const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
+  const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
+  const { zone } = filterStateRedux[section];
 
   // useState vars
   const [currentSources, setCurrentSources] = useState([{}]);
