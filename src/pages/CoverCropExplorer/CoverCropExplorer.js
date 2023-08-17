@@ -9,16 +9,18 @@ import {
 } from '@mui/material';
 import { useHistory } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import ReactGA from 'react-ga';
 import Header from '../Header/Header';
 import ExplorerCardView from './ExplorerCardView/ExplorerCardView';
 import ConsentModal from './ConsentModal/ConsentModal';
 import CropSidebar from '../CropSidebar/CropSidebar';
 import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset';
+import { updateRegion, updateStateInfo } from '../../reduxStore/mapSlice';
 
 const CoverCropExplorer = () => {
   const history = useHistory();
+  const dispatchRedux = useDispatch();
   const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
   const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
   const sfilters = filterStateRedux[section];
@@ -34,15 +36,30 @@ const CoverCropExplorer = () => {
 
   // open crop if url exists
   // eslint-disable-next-line
-  const crop = window.location.search.match(/crop=([^\^]+)/);
+  const urlCrop = window.location.search.match(/crop=([^\^]+)/);
+  // eslint-disable-next-line
+  const urlParamStateId = window.location.search.match(/state=([^\^]+)/); // for automating Information Sheet PDFs
+  // eslint-disable-next-line
+  const urlRegionId = window.location.search.match(/region=([^\^]+)/); // for automating Information Sheet PDFs
 
   useEffect(() => {
     const filteredActiveCropData = activeCropDataRedux?.filter((a) => !a.inactive);
     setUpdatedActiveCropData(filteredActiveCropData);
 
-    // this handles auto opening the info sheet if there are url params
-    if (crop) {
-      const substring = crop[1].replace('%20', ' ');
+    if (urlCrop && urlParamStateId && urlRegionId) {
+      dispatchRedux(updateStateInfo({
+        stateLabel: null,
+        stateId: urlParamStateId[1],
+        councilShorthand: null,
+        councilLabel: null,
+      }));
+      dispatchRedux(updateRegion({
+        regionId: urlRegionId[1],
+        regionLabel: null,
+        regionShorthand: null,
+      }));
+
+      const substring = urlCrop[1].replace('%20', ' ');
       [...document.querySelectorAll('.MuiCardContent-root')].forEach((o) => {
         if (o.textContent.includes(decodeURI(substring))) {
           o.querySelector('.MuiButtonBase-root').click();
@@ -60,7 +77,7 @@ const CoverCropExplorer = () => {
   }, [consentRedux]);
 
   useEffect(() => {
-    if (stateIdRedux === null || stateIdRedux === '') {
+    if ((stateIdRedux === null || stateIdRedux === '') && !urlParamStateId) {
       history.push('/');
     }
   }, [stateIdRedux]);
