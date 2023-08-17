@@ -8,12 +8,12 @@ const LogoutButton = () => {
   const { dispatch } = useDispatch();
 
   const handleLogout = () => {
-    dispatch(userLogout());
+    // dispatch(userLogout());
     logout({
       logoutParams: {
         returnTo: window.location.origin,
       },
-    });
+    }).then(dispatch(userLogout()));
   };
 
   return (
