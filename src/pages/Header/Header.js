@@ -51,6 +51,10 @@ const Header = () => {
     }
   }, [markersRedux]);
 
+  const handleLogin = async () => {
+    await loginWithRedirect();
+  };
+
   return (
     <header className="d-print-none">
       <div className="topHeader">
@@ -73,7 +77,7 @@ const Header = () => {
         {isAuthenticated ? (
           <LogoutButton />
         ) : (
-          <a href="/" onClick={loginWithRedirect}>
+          <a href="/" onClick={handleLogin}>
             LOG IN
           </a>
         )}

@@ -144,7 +144,6 @@ const Landing = ({ height, title, bg }) => {
       if (verifyCouncil(selectedState.council.shorthand)) {
         stateChange(selectedState);
       } else {
-        // FIXME: possible issues here due to the default value changed from '' to null
         dispatchRedux(updateStateInfo({
           stateLabel: null,
           stateId: null,
