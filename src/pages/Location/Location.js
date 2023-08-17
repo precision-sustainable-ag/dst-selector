@@ -1,5 +1,3 @@
-// /* eslint-disable */
-// TODO: remember to delete this line after developing
 /* eslint-disable no-use-before-define */
 /*
   This is the main location widget component
@@ -24,6 +22,7 @@ import { Map } from '@psa/dst.ui.map';
 // import centroid from '@turf/centroid';
 import mapboxgl from 'mapbox-gl';
 // import { useAuth0 } from '@auth0/auth0-react';
+import { useAuth0 } from '@auth0/auth0-react';
 import statesLatLongDict from '../../shared/stateslatlongdict';
 import {
   abbrRegion, reverseGEO, callCoverCropApi, postFields, getFields, destructureGeometryCollection,
@@ -65,6 +64,11 @@ const LocationComponent = () => {
   const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
   const accessTokenRedux = useSelector((stateRedux) => stateRedux.userData.accessToken);
   const userFieldRedux = useSelector((stateRedux) => stateRedux.userData.field);
+
+  const { isAuthenticated } = useAuth0();
+
+  const selectedToEditSiteRef = useRef();
+  const currAreaRef = useRef();
 
   const getArea = useCallback(() => {
     if (userFieldRedux && userFieldRedux.data.length > 0) {
@@ -313,9 +317,6 @@ const LocationComponent = () => {
       });
   }, [zipCodeRedux]);
 
-  const selectedToEditSiteRef = useRef();
-  const currAreaRef = useRef();
-
   const handleSave = async (selectedPoint, selectedArea) => {
     const [initLat, initLng] = getLatLng();
     const { longitude, latitude } = selectedPoint;
@@ -333,7 +334,8 @@ const LocationComponent = () => {
   };
 
   useEffect(() => () => {
-    handleSave(selectedToEditSiteRef.current, currAreaRef.current);
+    // save user selected field when component will unmount, need to use refs to reach the component state
+    if (isAuthenticated) handleSave(selectedToEditSiteRef.current, currAreaRef.current);
   }, []);
 
   return (
