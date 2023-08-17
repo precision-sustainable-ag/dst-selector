@@ -31,7 +31,7 @@ const DollarsAndRatings = ({ filter, handleChange }) => {
           return (
             <Chip
               key={filter.name + i}
-              label={filter.units === 'rating 1-3' ? '$'.repeat(i) : filter.values[i - 1].value}
+              label={filter.dataType === 'currency' ? '$'.repeat(i) : filter.values[i - 1].value}
               style={{
                 fontSize: '1.2rem',
                 marginRight: 2,
@@ -39,7 +39,7 @@ const DollarsAndRatings = ({ filter, handleChange }) => {
               }}
               color={selected ? 'primary' : 'secondary'}
               onClick={() => {
-                if (filter.units === 'rating 1-3') {
+                if (filter.dataType === 'currency') {
                   if (selected) {
                     filterOff();
                   } else {
