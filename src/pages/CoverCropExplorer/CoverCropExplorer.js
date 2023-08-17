@@ -59,12 +59,13 @@ const CoverCropExplorer = () => {
         regionShorthand: null,
       }));
 
-      const substring = urlCrop[1].replace('%20', ' ');
-      [...document.querySelectorAll('.MuiCardContent-root')].forEach((o) => {
-        if (o.textContent.includes(decodeURI(substring))) {
+      // eslint-disable-next-line
+      for (const o of [...document.querySelectorAll('.MuiCardContent-root')]) {
+        if (o.textContent.includes(decodeURI(urlCrop[1]))) {
           o.querySelector('.MuiButtonBase-root').click();
+          break;
         }
-      });
+      }
     }
   }, [activeCropDataRedux]);
 
