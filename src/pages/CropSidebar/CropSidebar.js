@@ -199,6 +199,7 @@ const CropSidebar = ({
             type,
             rating: !filter.isArray,
             maxSize: null,
+            dataType: filter.dataType.label,
             description: filter.description,
             details: filter.details,
             units: filter.units,
