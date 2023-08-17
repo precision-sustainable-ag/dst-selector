@@ -18,7 +18,7 @@ const LocationConfirmation = () => {
   const markersRedux = useSelector((stateRedux) => stateRedux.addressData.markers);
   const zoneRedux = useSelector((stateRedux) => stateRedux.addressData.zone);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
-  const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
+  // const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
 
   return (
@@ -137,7 +137,7 @@ const LocationConfirmation = () => {
         </div>
         <div className="col-xl-5 offset-xl-1 col-lg-12">
           <div className="container-fluid">
-            {progressRedux === 2 && councilLabelRedux !== 'Midwest Cover Crop Council' && <SoilCondition />}
+            {progressRedux === 2 && <SoilCondition />}
             {progressRedux === 3 && <WeatherConditions />}
           </div>
         </div>
