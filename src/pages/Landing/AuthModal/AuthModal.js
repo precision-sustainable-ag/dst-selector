@@ -1,12 +1,11 @@
 import {
   Modal, Box, Typography, Button, Grid,
 } from '@mui/material';
-import React, { useState } from 'react';
+import React from 'react';
 import LoginButton from '../../../components/Auth/Buttons/LoginButton';
 import SignUpButton from '../../../components/Auth/Buttons/SignUpButton';
 
-const AuthModal = () => {
-  const [modalOpen, setModalOpen] = useState(true);
+const AuthModal = ({ modalOpen, setModalOpen }) => {
   const style = {
     position: 'absolute',
     top: '50%',
