@@ -25,7 +25,6 @@ import { SnackbarProvider } from 'notistack';
 import { createTheme } from '@mui/material/styles';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import Store from './store/Store';
 import './styles/parent.scss';
 import 'mdbreact/dist/css/mdb.css';
 import './styles/progressBar.css';
@@ -146,33 +145,31 @@ const Wrapper = () => (
         autoHideDuration={15000}
       >
         <Provider store={store}>
-          <Store>
-            <BrowserRouter>
-              <Suspense fallback={<div>Loading..</div>}>
-                <Switch>
-                  <Route path="/" component={App} exact />
-                  <Route path="/explorer" component={CoverCropExplorer} exact />
-                  <Route path="/about" component={About} exact />
-                  <Route path="/help" component={Help} exact />
-                  <Route path="/feedback" component={FeedbackComponent} exact />
-                  <Route path="/my-cover-crop-list" component={MyCoverCropListWrapper} exact />
-                  <Route path="/seeding-rate-calculator" component={SeedingRateCalculator} exact />
-                  <Route path="/data-dictionary" component={InformationSheetDictionary} exact />
-                  <Route path="/license" component={() => <License licenseType="MIT" />} exact />
-                  <Route
-                    path="/ag-informatics-license"
-                    component={() => <License licenseType="AgInformatics" />}
-                    exact
-                  />
-                  <Route path="/mix-maker" component={MixMaker} exact />
+          <BrowserRouter>
+            <Suspense fallback={<div>Loading..</div>}>
+              <Switch>
+                <Route path="/" component={App} exact />
+                <Route path="/explorer" component={CoverCropExplorer} exact />
+                <Route path="/about" component={About} exact />
+                <Route path="/help" component={Help} exact />
+                <Route path="/feedback" component={FeedbackComponent} exact />
+                <Route path="/my-cover-crop-list" component={MyCoverCropListWrapper} exact />
+                <Route path="/seeding-rate-calculator" component={SeedingRateCalculator} exact />
+                <Route path="/data-dictionary" component={InformationSheetDictionary} exact />
+                <Route path="/license" component={() => <License licenseType="MIT" />} exact />
+                <Route
+                  path="/ag-informatics-license"
+                  component={() => <License licenseType="AgInformatics" />}
+                  exact
+                />
+                <Route path="/mix-maker" component={MixMaker} exact />
 
-                  <Route component={RouteNotFound} />
-                </Switch>
-              </Suspense>
+                <Route component={RouteNotFound} />
+              </Switch>
+            </Suspense>
 
-              {/* <App /> */}
-            </BrowserRouter>
-          </Store>
+            {/* <App /> */}
+          </BrowserRouter>
         </Provider>
       </SnackbarProvider>
     </ThemeProvider>

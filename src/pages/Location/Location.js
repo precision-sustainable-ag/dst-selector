@@ -8,7 +8,6 @@ import {
   Typography,
 } from '@mui/material';
 import React, {
-  useContext,
   useEffect,
   useState,
   useCallback,
@@ -23,7 +22,6 @@ import statesLatLongDict from '../../shared/stateslatlongdict';
 import {
   abbrRegion, reverseGEO, callCoverCropApi,
 } from '../../shared/constants';
-import { Context } from '../../store/Store';
 import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset';
 import PlantHardinessZone from '../CropSidebar/PlantHardinessZone/PlantHardinessZone';
 import {
@@ -40,7 +38,6 @@ import {
 mapboxgl.workerClass = require('worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker').default;
 
 const LocationComponent = () => {
-  const { state } = useContext(Context);
   const dispatchRedux = useDispatch();
   const [selectedZone, setselectedZone] = useState();
   const [selectedToEditSite, setSelectedToEditSite] = useState({});
@@ -63,7 +60,7 @@ const LocationComponent = () => {
       return [statesLatLongDict[stateLabelRedux][0], statesLatLongDict[stateLabelRedux][1]];
     }
     return [47, -122];
-  }, [state]);
+  }, [stateLabelRedux]);
 
   useEffect(() => {
     if (selectedCropsRedux.length > 0) {

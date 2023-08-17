@@ -57,6 +57,8 @@ const LoadRelevantRoute = ({ progress, calcHeight }) => {
 const App = () => {
   const dispatchRedux = useDispatch();
   const [calcHeight, setCalcHeight] = useState(0);
+
+  // redux vars
   const snackOpenRedux = useSelector((stateRedux) => stateRedux.sharedData.snackOpen);
   const snackMessageRedux = useSelector((stateRedux) => stateRedux.sharedData.snackMessage);
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
@@ -134,16 +136,3 @@ const RouteNotFound = () => (
     </Grid>
   </Container>
 );
-
-// eslint-disable-next-line
-const crop = window.location.search.match(/crop=([^\^]+)/);
-
-if (crop) {
-  setTimeout(() => {
-    [...document.querySelectorAll('.MuiCardContent-root')].forEach((o) => {
-      if (o.textContent.includes(decodeURI(crop[1]))) {
-        o.querySelector('a').click();
-      }
-    });
-  }, 1000);
-}
