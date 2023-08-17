@@ -20,6 +20,7 @@ const Header = () => {
   const dispatch = useDispatch();
   const markersRedux = useSelector((stateRedux) => stateRedux.addressData.markers);
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
+  const consentRedux = useSelector((stateRedux) => stateRedux.sharedData.consent);
   const [isRoot, setIsRoot] = useState(false);
   const { isAuthenticated, loginWithRedirect, getAccessTokenSilently } = useAuth0();
   const isActive = {};
@@ -28,11 +29,11 @@ const Header = () => {
     const getToken = async () => {
       const token = await getAccessTokenSilently();
       dispatch(updateAccessToken(token));
-      // get initial user field data
+      // Initially get user field data
       getFields(token).then((data) => dispatch(updateField(data)));
     };
     if (isAuthenticated) getToken();
-  }, [isAuthenticated, getAccessTokenSilently]);
+  }, [isAuthenticated, getAccessTokenSilently, consentRedux]);
 
   useEffect(() => {
     if (window.location.pathname === '/explorer') {
