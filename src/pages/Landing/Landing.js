@@ -50,6 +50,7 @@ const Landing = ({ height, title, bg }) => {
   const [mapState, setMapState] = useState({});
   const [selectedRegion, setSelectedRegion] = useState({});
   const { isAuthenticated } = useAuth0();
+  const [authModalOpen, setAuthModalOpen] = useState(true);
 
   const stateChange = (selState) => {
     setSelectedState(selState);
@@ -236,8 +237,8 @@ const Landing = ({ height, title, bg }) => {
         backgroundSize: 'cover',
       }}
     >
-      <ConsentModal consent={consentRedux} />
-      {!isAuthenticated && <AuthModal />}
+      {(!authModalOpen || isAuthenticated) && <ConsentModal consent={consentRedux} />}
+      {!isAuthenticated && <AuthModal modalOpen={authModalOpen} setModalOpen={setAuthModalOpen} />}
 
       <Grid container>
 
