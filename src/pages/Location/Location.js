@@ -47,9 +47,23 @@ import {
 } from '../../reduxStore/weatherSlice';
 import { updateField } from '../../reduxStore/userSlice';
 import UserFieldList from './UserFieldList/UserFieldList';
+import UserFieldDialog from './UserFieldDialog/UserFieldDialog';
 
 // eslint-disable-next-line import/no-webpack-loader-syntax, import/no-unresolved
 mapboxgl.workerClass = require('worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker').default;
+
+const initFieldDialogState = {
+  open: false,
+  fieldName: '',
+  error: false,
+  errorText: '',
+}
+
+const fieldNameValidation = (name, currentFields) => {
+  if (name === '') return "You must input a valid name!";
+  if (currentFields.filter((f) => f.label === name).length > 0) return "Input name existed!";
+  return '';
+}
 
 const LocationComponent = () => {
   // console.log('rerender');
@@ -72,20 +86,19 @@ const LocationComponent = () => {
   const userFieldRedux = useSelector((stateRedux) => stateRedux.userData.field);
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
   const myCoverCropListLocationRedux = useSelector((stateRedux) => stateRedux.sharedData.myCoverCropListLocation);
-//  console.log('userFieldRedux', userFieldRedux)
-  const [openDialog, setOpenDialog] = useState(false);
+  //  console.log('userFieldRedux', userFieldRedux)
+  const [fieldDialogState, setFieldDialogState] = useState(initFieldDialogState);
   const [newFieldType, setnewFieldType] = useState('');
-  const [fieldName, setFieldName] = useState('');
   // init data, save data
   const [userFields, setUserFields] = useState(userFieldRedux ? [...userFieldRedux.data] : []);
   const [selectedUserField, setSelectedUserField] = useState('');
+
   const { isAuthenticated } = useAuth0();
 
   const selectedToEditSiteRef = useRef();
   const currAreaRef = useRef();
   const userFieldsRef = useRef(userFields);
 
-  // TODO: modify the logic, based on selectedUserField, show related field on map
   const getArea = () => {
     if (userFields.length > 0) {
       for (const field of userFields) {
@@ -375,32 +388,34 @@ const LocationComponent = () => {
 
   }, []);
 
-  console.log('currArea', currArea, currArea?.[0]);
+  // console.log('currArea', currArea, currArea?.[0]);
   // console.log('features', features);
   
   const onDraw = (draw) => {
     // console.log(draw.mode, draw.e.type, draw);
     if (draw.e.type === 'draw.create') {
-      setOpenDialog(true);
+      setFieldDialogState({...fieldDialogState, open:true});
       setnewFieldType('Polygon');
     }
   };
 
   const handleClose = (save) => {
+    const errText = fieldNameValidation(fieldDialogState.fieldName, userFields);
+    if (errText !== '') {
+      setFieldDialogState({...fieldDialogState, error: true, errorText: errText});
+      return;
+    }
     if (save) {
-      // TODO: add input validation
-      // not null, not same with current ones
       const { longitude, latitude } = selectedToEditSite;
-      const point = buildPoint(longitude, latitude, fieldName);
-      const geoCollection = buildGeometryCollection(point.geometry, currArea[0].geometry, fieldName);
+      const point = buildPoint(longitude, latitude, fieldDialogState.fieldName);
+      const geoCollection = buildGeometryCollection(point.geometry, currArea[0].geometry, fieldDialogState.fieldName);
       setUserFields([...userFields, geoCollection]);
       userFieldsRef.current = [...userFields, geoCollection];
     }
     else {
       console.log("This field will not be saved");
     }
-    setFieldName('');
-    setOpenDialog(false);
+    setFieldDialogState(initFieldDialogState);
   };
 
   return (
@@ -467,18 +482,11 @@ const LocationComponent = () => {
         </div>
       </div>
       <MyCoverCropReset handleConfirm={handleConfirm} setHandleConfirm={setHandleConfirm} from="selector" />
-      <Dialog sx={{ m: 0, p: 2 }} open={openDialog}>
-        <DialogTitle>
-          You need to give this field a nickname
-        </DialogTitle>
-        <DialogContent>
-          <TextField autoFocus variant="standard" label="Field Nickname" value={fieldName} onChange={(e) => setFieldName(e.target.value)} />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => handleClose(true)}>OK</Button>
-          <Button onClick={() => handleClose(false)}>Cancel</Button>
-        </DialogActions>
-      </Dialog>
+      <UserFieldDialog 
+        fieldDialogState={fieldDialogState} 
+        setFieldDialogState={setFieldDialogState}
+        handleClose={handleClose}
+        />
     </div>
   );
 };
