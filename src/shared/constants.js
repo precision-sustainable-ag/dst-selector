@@ -721,8 +721,9 @@ export const postFields = async (accessToken = null, fieldsData = null) => {
     .catch((err) => console.log(err));
 };
 
-export const buildPoint = (lng, lat) => ({
+export const buildPoint = (lng, lat, name = null) => ({
   type: 'Feature',
+  label: name,
   geometry: {
     coordinates: [
       lng, lat,
@@ -731,11 +732,12 @@ export const buildPoint = (lng, lat) => ({
   },
 });
 
-export const buildGeometryCollection = (point, polygon) => {
+export const buildGeometryCollection = (point, polygon, name = null) => {
   const { coordinates: pointCoordinates } = point;
   const { coordinates: polygonCoordinates } = polygon;
   return {
     type: 'Feature',
+    label: name,
     geometry: {
       type: 'GeometryCollection',
       geometries: [{
