@@ -1,3 +1,4 @@
+/* eslint-disable */
 /* eslint-disable no-use-before-define */
 /*
   This is the main location widget component
@@ -6,7 +7,13 @@
 
 import '../../styles/location.scss';
 import {
+  Dialog,
   Typography,
+  Button,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  TextField,
 } from '@mui/material';
 import React, {
   useEffect,
@@ -39,11 +46,13 @@ import {
   updateAvgFrostDates, updateAvgPrecipAnnual, updateAvgPrecipCurrentMonth, updateFrostFreeDays,
 } from '../../reduxStore/weatherSlice';
 import { updateField } from '../../reduxStore/userSlice';
+import UserFieldList from './UserFieldList/UserFieldList';
 
 // eslint-disable-next-line import/no-webpack-loader-syntax, import/no-unresolved
 mapboxgl.workerClass = require('worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker').default;
 
 const LocationComponent = () => {
+  // console.log('rerender');
   const dispatchRedux = useDispatch();
   const [selectedZone, setselectedZone] = useState();
   const [selectedToEditSite, setSelectedToEditSite] = useState({});
@@ -61,20 +70,41 @@ const LocationComponent = () => {
   const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
   const accessTokenRedux = useSelector((stateRedux) => stateRedux.userData.accessToken);
   const userFieldRedux = useSelector((stateRedux) => stateRedux.userData.field);
-
+  const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
+  const myCoverCropListLocationRedux = useSelector((stateRedux) => stateRedux.sharedData.myCoverCropListLocation);
+//  console.log('userFieldRedux', userFieldRedux)
+  const [openDialog, setOpenDialog] = useState(false);
+  const [newFieldType, setnewFieldType] = useState('');
+  const [fieldName, setFieldName] = useState('');
+  // init data, save data
+  const [userFields, setUserFields] = useState(userFieldRedux ? [...userFieldRedux.data] : []);
+  const [selectedUserField, setSelectedUserField] = useState('');
   const { isAuthenticated } = useAuth0();
 
   const selectedToEditSiteRef = useRef();
   const currAreaRef = useRef();
+  const userFieldsRef = useRef(userFields);
 
-  const getArea = useCallback(() => {
-    if (userFieldRedux && userFieldRedux.data.length > 0) {
-      if (userFieldRedux.data[0].geometry.type === 'GeometryCollection') return destructureGeometryCollection(userFieldRedux.data[0]);
+  // TODO: modify the logic, based on selectedUserField, show related field on map
+  const getArea = () => {
+    if (userFields.length > 0) {
+      for (const field of userFields) {
+        if (field.label === selectedUserField) {
+          console.log('field', selectedUserField, field)
+          if (field.geometry.type === 'Point') return [field];
+          if (field.geometry.type === 'GeometryCollection') return destructureGeometryCollection(field);
+        }
+      }
     }
     return [];
-  }, [stateLabelRedux]);
-  const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
-  const myCoverCropListLocationRedux = useSelector((stateRedux) => stateRedux.sharedData.myCoverCropListLocation);
+  }
+
+  const [drawFields, setDrawFields] = useState([]);
+  useEffect(() => {
+    setDrawFields(getArea());
+  }, [selectedUserField])
+
+  // console.log('state', drawFields)
 
   const getLatLng = useCallback(() => {
     if (userFieldRedux && userFieldRedux.data.length > 0) {
@@ -92,6 +122,7 @@ const LocationComponent = () => {
     }
     return [47, -122];
   }, [stateLabelRedux]);
+
 
   useEffect(() => {
     if (selectedCropsRedux.length > 0) {
@@ -138,6 +169,9 @@ const LocationComponent = () => {
   useEffect(() => {
     selectedToEditSiteRef.current = selectedToEditSite;
     currAreaRef.current = currArea;
+    // TODO: everytime the dialog would showup to ask you input name for new field
+    // setOpenDialog(true);
+    // setnewFieldType('Point');
     const {
       latitude,
       longitude,
@@ -316,7 +350,7 @@ const LocationComponent = () => {
     if (initLat === latitude && initLng === longitude) return;
     const point = buildPoint(longitude, latitude);
     if (selectedArea.length > 0) {
-      const geoCollection = buildGeometryCollection(point.geometry, selectedArea[0].geometry);
+      const geoCollection = buildGeometryCollection(point.geometry, selectedArea[0].geometry, 'test1');
       await postFields(accessTokenRedux, geoCollection);
       getFields(accessTokenRedux).then((data) => dispatchRedux(updateField(data)));
     } else {
@@ -326,9 +360,48 @@ const LocationComponent = () => {
   };
 
   useEffect(() => () => {
+    // TODO: change logic, use userfields to do save job
     // save user selected field when component will unmount, need to use refs to reach the component state
-    if (isAuthenticated) handleSave(selectedToEditSiteRef.current, currAreaRef.current);
+    // if (isAuthenticated) handleSave(selectedToEditSiteRef.current, currAreaRef.current);
+    console.log('save', userFieldsRef.current);
+    if (isAuthenticated) {
+      userFieldsRef.current.forEach(async (f) => {
+        if (!f.id) {
+          await postFields(accessTokenRedux, f);
+          getFields(accessTokenRedux).then((data) => dispatchRedux(updateField(data)));
+        }
+      })
+    }
+
   }, []);
+
+  console.log('currArea', currArea, currArea?.[0]);
+  // console.log('features', features);
+  
+  const onDraw = (draw) => {
+    // console.log(draw.mode, draw.e.type, draw);
+    if (draw.e.type === 'draw.create') {
+      setOpenDialog(true);
+      setnewFieldType('Polygon');
+    }
+  };
+
+  const handleClose = (save) => {
+    if (save) {
+      // TODO: add input validation
+      // not null, not same with current ones
+      const { longitude, latitude } = selectedToEditSite;
+      const point = buildPoint(longitude, latitude, fieldName);
+      const geoCollection = buildGeometryCollection(point.geometry, currArea[0].geometry, fieldName);
+      setUserFields([...userFields, geoCollection]);
+      userFieldsRef.current = [...userFields, geoCollection];
+    }
+    else {
+      console.log("This field will not be saved");
+    }
+    setFieldName('');
+    setOpenDialog(false);
+  };
 
   return (
     <div className="container-fluid mt-5">
@@ -356,6 +429,14 @@ const LocationComponent = () => {
                 <PlantHardinessZone updateZone={updateZone} />
               </div>
             </div>
+            <div className="row py-3 my-4 ">
+              <div className="col-md-5 col-lg-6 col-sm-12 col-12">
+                <UserFieldList 
+                  userFields={userFields} 
+                  field={selectedUserField} 
+                  setField={setSelectedUserField}/>
+              </div>
+            </div>
           </div>
         </div>
         <div className="col-xl-8 col-sm-12">
@@ -363,11 +444,12 @@ const LocationComponent = () => {
             <Map
               setAddress={setSelectedToEditSite}
               setFeatures={setCurrArea}
+              onDraw={onDraw}
               initWidth="100%"
               initHeight="600px"
               initLat={getLatLng()[0]}
               initLon={getLatLng()[1]}
-              initFeatures={getArea()}
+              initFeatures={drawFields}
               initStartZoom={12}
               initMinZoom={4}
               initMaxZoom={18}
@@ -385,6 +467,18 @@ const LocationComponent = () => {
         </div>
       </div>
       <MyCoverCropReset handleConfirm={handleConfirm} setHandleConfirm={setHandleConfirm} from="selector" />
+      <Dialog sx={{ m: 0, p: 2 }} open={openDialog}>
+        <DialogTitle>
+          You need to give this field a nickname
+        </DialogTitle>
+        <DialogContent>
+          <TextField autoFocus variant="standard" label="Field Nickname" value={fieldName} onChange={(e) => setFieldName(e.target.value)} />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => handleClose(true)}>OK</Button>
+          <Button onClick={() => handleClose(false)}>Cancel</Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };
