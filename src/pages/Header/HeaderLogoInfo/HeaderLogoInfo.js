@@ -27,18 +27,25 @@ const HeaderLogoInfo = () => {
     }
   };
 
+  // TODO: change favicon href links
   useEffect(() => {
     let imageSrc;
+    const favicon = document.getElementById('favicon');
     if (councilLabelRedux === 'Northeast Cover Crop Council') {
       imageSrc = '../images/neccc_wide_logo_color_web.jpg';
+      favicon.href = 'favicon.ico';
     } else if (councilLabelRedux === 'Southern Cover Crop Council') {
       imageSrc = '../images/sccc_logo.png';
+      favicon.href = 'favicon-psa.ico';
     } else if (councilLabelRedux === 'Midwest Cover Crop Council') {
       imageSrc = '../images/mwccc_logo.png';
+      favicon.href = 'favicon-psa.ico';
     } else if (councilLabelRedux === 'Western Cover Crop Council') {
       imageSrc = '../images/wccc_logo.png';
+      favicon.href = 'favicon-psa.ico';
     } else {
       imageSrc = '../images/whitebg.png';
+      favicon.href = 'favicon-psa.ico';
     }
 
     const imageElement = document.getElementById('logoImage');
