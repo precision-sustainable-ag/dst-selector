@@ -1,36 +1,25 @@
 import {
   Typography, Box, Grid,
 } from '@mui/material';
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { reset } from '../../../reduxStore/store';
-import { Context } from '../../../store/Store';
 import '../../../styles/header.scss';
 import DateComponent from '../DateComponent/DateComponent';
 import ForecastComponent from '../ForecastComponent/ForecastComponent';
 import MyCoverCropReset from '../../../components/MyCoverCropReset/MyCoverCropReset';
 
 const HeaderLogoInfo = () => {
-  const { dispatch } = useContext(Context);
   const dispatchRedux = useDispatch();
   const history = useHistory();
   const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
   const [handleConfirm, setHandleConfirm] = useState(false);
-  const defaultMarkers = [[40.78489145, -74.80733626930342]];
   const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
 
   const handleClick = () => {
     if (selectedCropsRedux.length === 0) {
       if (window.location.pathname === '/') {
-      // if no cover crops selected, update state to return to the 1st progress
-        dispatch({
-          type: 'RESET',
-          data: {
-            markers: defaultMarkers,
-            selectedCrops: [],
-          },
-        });
         dispatchRedux(reset());
       } else history.replace('/');
     } else {
