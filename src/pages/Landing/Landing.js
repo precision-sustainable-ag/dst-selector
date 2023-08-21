@@ -82,7 +82,6 @@ const Landing = ({ height, title, bg }) => {
 
       dispatchRedux(updateZone(
         {
-          zoneText: regionsRedux[0]?.label,
           zone: regionsRedux[0]?.shorthand,
           zoneId: regionsRedux[0]?.id,
         },

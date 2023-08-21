@@ -206,7 +206,6 @@ const initialState = {
   progress: 0,
   address: '',
   addressSearchPreference: 'address',
-  fullAddress: '',
   zipCode: 0,
   lastZipCode: 0,
   markersCopy: [],

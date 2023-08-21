@@ -363,7 +363,6 @@ const CropSidebar = ({
   const updateZone = (region) => {
     if (region !== undefined) {
       dispatchRedux(updateZoneRedux({
-        zoneText: region.label,
         zone: region.shorthand,
         zoneId: region.id,
       }));

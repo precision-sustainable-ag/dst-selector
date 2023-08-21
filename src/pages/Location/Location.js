@@ -72,7 +72,6 @@ const LocationComponent = () => {
     if (region !== undefined) {
       dispatchRedux(updateZoneRedux(
         {
-          zoneText: region.label,
           zone: region.shorthand,
           zoneId: region.id,
         },
@@ -109,7 +108,6 @@ const LocationComponent = () => {
       latitude,
       longitude,
       address,
-      fullAddress,
       zipCode,
       county,
     } = selectedToEditSite;
@@ -133,7 +131,6 @@ const LocationComponent = () => {
         dispatchRedux(changeAddressViaMap(
           {
             address,
-            fullAddress,
             zipCode,
             county,
           },
@@ -266,7 +263,6 @@ const LocationComponent = () => {
         if (councilShorthandRedux !== 'MCCC') {
           dispatchRedux(updateZoneRedux(
             {
-              zoneText: `Zone ${zone}`,
               zone,
               zoneId: regionId,
             },
