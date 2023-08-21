@@ -136,7 +136,6 @@ const LocationComponent = () => {
             fullAddress,
             zipCode,
             county,
-            addressVerified: true,
           },
         ));
       }

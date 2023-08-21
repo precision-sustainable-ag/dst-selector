@@ -79,7 +79,7 @@ const ForecastComponent = () => {
               const zip = res?.features?.filter((feature) => feature?.place_type?.includes('postcode'))[0]?.text;
 
               if (address) {
-                dispatchRedux(changeAddress({ address, addressVerified: true }));
+                dispatchRedux(changeAddress({ address }));
               }
               if (zip) {
                 dispatchRedux(updateZipCode(zip));

@@ -1,9 +1,7 @@
 const initialState = {
   address: '',
   markers: [[40.78489145, -74.80733626930342]],
-  addressVerified: false,
   fullAddress: '',
-  addressChangedViaMap: false,
   zipCode: 0,
   zone: '',
   zoneText: '',
@@ -22,11 +20,10 @@ export const updateLocation = ({ address, markers, zipCode }) => ({
   },
 });
 
-export const changeAddress = ({ address, addressVerified }) => ({
+export const changeAddress = ({ address }) => ({
   type: 'CHANGE_ADDRESS',
   payload: {
     address,
-    addressVerified,
   },
 });
 
@@ -35,7 +32,6 @@ export const changeAddressViaMap = ({
   fullAddress,
   zipCode,
   county,
-  addressVerified,
 }) => ({
   type: 'CHANGE_ADDRESS_VIA_MAP',
   payload: {
@@ -43,7 +39,6 @@ export const changeAddressViaMap = ({
     fullAddress,
     zipCode,
     county,
-    addressVerified,
   },
 });
 
@@ -100,7 +95,6 @@ const addressReducer = (state = initialState, action = null) => {
       return {
         ...state,
         address: action.payload.address,
-        addressVerified: action.payload.addressVerified,
       };
 
     case 'CHANGE_ADDRESS_VIA_MAP':
@@ -110,8 +104,6 @@ const addressReducer = (state = initialState, action = null) => {
         fullAddress: action.payload.fullAddress,
         zipCode: action.payload.zipCode,
         county: action.payload.county,
-        addressVerified: action.payload.addressVerified,
-        addressChangedViaMap: true,
       };
 
     case 'UPDATE_ZONE':

@@ -196,7 +196,6 @@ const Reducer = (state, action, value = action && action.data && action.data.val
       return {
         ...state,
         address: action.data.address,
-        addressVerified: action.data.addressVerified,
       };
     }
 
@@ -207,8 +206,6 @@ const Reducer = (state, action, value = action && action.data && action.data.val
         fullAddress: action.data.fullAddress,
         zipCode: action.data.zipCode,
         county: action.data.county,
-        addressVerified: action.data.addressVerified,
-        addressChangedViaMap: true,
       };
     }
 
@@ -218,7 +215,6 @@ const Reducer = (state, action, value = action && action.data && action.data.val
         progress: 0,
         address: '',
         markers: action.data.markers,
-        addressVerified: false,
         markersCopy: [],
         zipCode: 0,
         addressSearchPreference: 'address',
@@ -291,7 +287,6 @@ const Reducer = (state, action, value = action && action.data && action.data.val
     //   return {
     //     ...state,
     //     address: action.data.address,
-    //     addressVerified: action.data.addressVerified,
     //     snackOpen: action.data.snackOpen,
     //     snackMessage: action.data.snackMessage,
     //   };
