@@ -1,41 +1,31 @@
 import {
   Badge, Button, Tooltip,
 } from '@mui/material';
-import React, { useContext } from 'react';
-import { useSelector } from 'react-redux';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useHistory } from 'react-router-dom';
-import { Context } from '../../../store/Store';
 import '../../../styles/header.scss';
+import { activateMyCoverCropListTile, activateSpeicesSelectorTile } from '../../../reduxStore/sharedSlice';
 
 const ToggleOptions = ({ isRoot }) => {
-  const { state, dispatch } = useContext(Context);
+  const dispatchRedux = useDispatch();
   const history = useHistory();
   const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
-
+  const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
+  const myCoverCropActivationFlagRedux = useSelector((stateRedux) => stateRedux.sharedData.myCoverCropActivationFlag);
   const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
+  const speciesSelectorActivationFlagRedux = useSelector((stateRedux) => stateRedux.sharedData.speciesSelectorActivationFlag);
   const setMyCoverCropActivationFlag = () => {
     history.push('/my-cover-crop-list');
     if (window.location.pathname === '/explorer') {
-      if (state.progress > 4) {
-        dispatch({
-          type: 'ACTIVATE_MY_COVER_CROP_LIST_TILE',
-          data: {
-            myCoverCropActivationFlag: true,
-            speciesSelectorActivationFlag: false,
-          },
-        });
+      if (progressRedux > 4) {
+        dispatchRedux(activateMyCoverCropListTile({ myCoverCropActivationFlag: true, speciesSelectorActivationFlag: false }));
       }
     }
   };
 
   const setSpeciesSelectorActivationFlag = () => {
-    dispatch({
-      type: 'ACTIVATE_SPECIES_SELECTOR_TILE',
-      data: {
-        speciesSelectorActivationFlag: true,
-        myCoverCropActivationFlag: false,
-      },
-    });
+    dispatchRedux(activateSpeicesSelectorTile({ speciesSelectorActivationFlag: true, myCoverCropActivationFlag: false }));
     if (window.location.pathname !== '/explorer') {
       history.push('/explorer');
     }
@@ -55,7 +45,7 @@ const ToggleOptions = ({ isRoot }) => {
       <Tooltip title={(stateLabelRedux === null || stateLabelRedux === '') ? 'You must select a state before using the Cover Crop Explorer' : ''}>
         <span>
           <Button
-            className={(isRoot && state.speciesSelectorActivationFlag) ? 'active' : ''}
+            className={(isRoot && speciesSelectorActivationFlagRedux) ? 'active' : ''}
             onClick={() => clearMyCoverCropList(true)}
             size="large"
             disabled={stateLabelRedux === null || stateLabelRedux === ''}
@@ -75,7 +65,7 @@ const ToggleOptions = ({ isRoot }) => {
            <Button
              size="large"
              className={
-                (state.myCoverCropActivationFlag && window.location.pathname === '/')
+                (myCoverCropActivationFlagRedux && window.location.pathname === '/')
                   && 'active'
               }
              onClick={setMyCoverCropActivationFlag}

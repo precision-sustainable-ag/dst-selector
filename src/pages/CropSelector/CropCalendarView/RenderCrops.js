@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, TableCell, TableRow } from '@mui/material';
 import {
@@ -9,15 +9,13 @@ import {
   getRating,
 } from '../../../shared/constants';
 import CropSelectorCalendarView from '../../../components/CropSelectorCalendarView/CropSelectorCalendarView';
-import { Context } from '../../../store/Store';
 import '../../../styles/cropCalendarViewComponent.scss';
 import { selectedCropsModifier } from '../../../reduxStore/cropSlice';
-import { snackHandler } from '../../../reduxStore/sharedSlice';
+import { myCropListLocation, snackHandler } from '../../../reduxStore/sharedSlice';
 
 const RenderCrops = ({
   cropData, active, setModalOpen, modalOpen, setModalData,
 }) => {
-  const { dispatch } = useContext(Context);
   const dispatchRedux = useDispatch();
   const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
 
@@ -69,10 +67,8 @@ const RenderCrops = ({
         });
       }
     } else {
-      dispatch({
-        type: 'MY_CROP_LIST_LOCATION',
-        data: { from: 'selector' },
-      });
+      dispatchRedux(myCropListLocation({ from: 'selector' }));
+
       dispatchValue({
         selectedCrops: [cropArray],
         snackOpen: true,

@@ -74,12 +74,6 @@ const CropTableComponent = ({
   };
 
   const updateActiveCropDataAction = (activeShadowValue) => {
-    // dispatch({
-    //   type: 'UPDATE_ACTIVE_CROP_DATA',
-    //   data: {
-    //     value: activeShadowValue,
-    //   },
-    // });
     dispatchRedux(updateActiveCropData(activeShadowValue));
   };
 

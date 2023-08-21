@@ -35,14 +35,6 @@ const MyCoverCropCards = ({ data, cardNo }) => {
       selectedCropsCopy.splice(removeIndex, 1);
       dispatchRedux(selectedCropsModifier(selectedCropsCopy));
       dispatchRedux(snackHandler({ snackOpen: false, snackMessage: 'Removed' }));
-      // dispatch({
-      //   type: 'SELECTED_CROPS_MODIFIER',
-      //   data: {
-      //     selectedCrops: selectedCropsCopy,
-      //     snackOpen: false,
-      //     snackMessage: 'Removed',
-      //   },
-      // });
       enqueueSnackbar(`${cropName} Removed`);
     }
   };

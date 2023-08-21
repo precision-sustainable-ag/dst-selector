@@ -11,42 +11,27 @@ const DollarsAndRatings = ({ filter, handleChange }) => {
   const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
   const sfilters = window.location.href.includes('species-selector') ? filterStateRedux.selector : filterStateRedux.explorer;
 
-  const style = filter.symbol === 'dollar'
-    ? {}
-    : {
-      transform: 'scale(0.8)',
-      transformOrigin: 'top left',
-      width: '150%',
-    };
+  const style = {
+    transform: 'scale(0.8)',
+    transformOrigin: 'top left',
+    width: '150%',
+  };
 
   return (
     <div style={style}>
-      {new Array(filter.maxSize)
+      {new Array(filter.values.length)
         .fill(0)
         .map((_, i) => i + 1)
         .map((i) => {
           const filterKey = `${filter.name}: ${i}`;
           const selected = sfilters[filterKey];
-          // const filterOn = (key = filterKey) => dispatch({
-          //   type: 'FILTER_ON',
-          //   data: {
-          //     value: key,
-          //   },
-          // });
           const filterOn = (key = filterKey) => dispatchRedux(filterOnRedux(key));
-
-          // const filterOff = (key = filterKey) => dispatch({
-          //   type: 'FILTER_OFF',
-          //   data: {
-          //     value: key,
-          //   },
-          // });
           const filterOff = (key = filterKey) => dispatchRedux(filterOffRedux(key));
 
           return (
             <Chip
               key={filter.name + i}
-              label={filter.symbol === 'dollar' ? '$'.repeat(i) : i.toString()}
+              label={filter.dataType === 'currency' ? '$'.repeat(i) : filter.values[i - 1].value}
               style={{
                 fontSize: '1.2rem',
                 marginRight: 2,
@@ -54,7 +39,7 @@ const DollarsAndRatings = ({ filter, handleChange }) => {
               }}
               color={selected ? 'primary' : 'secondary'}
               onClick={() => {
-                if (filter.symbol === 'dollar') {
+                if (filter.dataType === 'currency') {
                   if (selected) {
                     filterOff();
                   } else {
@@ -131,7 +116,7 @@ const Tip = ({ filter }) => (
 
 // added ref prop to remove error. TODO: look into if forwardRef is needed here since ref isnt used
 const Filters = ({ filters }) => {
-  const disptachRedux = useDispatch();
+  const dispatchRedux = useDispatch();
   // const { filters } = props;
   const [selected, setSelected] = useState({});
   const [sidebarFilterOptions, setSidebarFilterOptions] = useState({});
@@ -153,13 +138,7 @@ const Filters = ({ filters }) => {
   };
 
   const chipChange = (filterName, val) => {
-    disptachRedux(filterToggle({ value: `${filterName}: ${val}` }));
-    // dispatch({
-    //   type: 'FILTER_TOGGLE',
-    //   data: {
-    //     value: `${filterName}: ${val}`,
-    //   },
-    // });
+    dispatchRedux(filterToggle({ value: `${filterName}: ${val}` }));
     setSelected({ ...selected, whatever: 'rerender' });
   };
 
