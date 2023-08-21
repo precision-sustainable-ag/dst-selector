@@ -78,7 +78,7 @@ const CoverCropExplorer = () => {
   }, [consentRedux]);
 
   useEffect(() => {
-    if ((stateIdRedux === null || stateIdRedux === '') && !urlParamStateId) {
+    if ((stateIdRedux === null) && !urlParamStateId) {
       history.push('/');
     }
   }, [stateIdRedux]);
