@@ -168,7 +168,6 @@ const Reducer = (state, action, value = action && action.data && action.data.val
       sfilters.zone = action.data.zone;
       return {
         ...state,
-        zoneText: action.data.zoneText,
         selectedGoals: [],
         [section]: sfilters,
       };
@@ -178,7 +177,6 @@ const Reducer = (state, action, value = action && action.data && action.data.val
       // sfilters.zone = action.data.zone;
       return {
         ...state,
-        zoneText: action.data.zoneText,
         zone: action.data.zone,
         zoneId: action.data.zoneId,
         // [section]: sfilters,
@@ -203,7 +201,6 @@ const Reducer = (state, action, value = action && action.data && action.data.val
       return {
         ...state,
         address: action.data.address,
-        fullAddress: action.data.fullAddress,
         zipCode: action.data.zipCode,
         county: action.data.county,
       };
