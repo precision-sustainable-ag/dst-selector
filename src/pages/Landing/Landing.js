@@ -46,7 +46,6 @@ const Landing = ({ height, title, bg }) => {
   const [allStates, setAllStates] = useState([]);
   const [selectedState, setSelectedState] = useState('');
   const [mapState, setMapState] = useState({});
-  // The seelctedRegion here controls the initial region selected for the map
   const [selectedRegion, setSelectedRegion] = useState({});
 
   const stateChange = (selState) => {
@@ -105,7 +104,6 @@ const Landing = ({ height, title, bg }) => {
           }
 
           dispatchRedux(updateRegions(fetchedRegions));
-          // setSelectedState(allStates.filter((s) => s.id === stateIdRedux)[0]);
         })
         .catch((err) => {
           // eslint-disable-next-line no-console
