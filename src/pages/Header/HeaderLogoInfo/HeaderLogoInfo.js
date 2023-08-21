@@ -27,25 +27,30 @@ const HeaderLogoInfo = () => {
     }
   };
 
-  // TODO: change favicon href links
   useEffect(() => {
     let imageSrc;
     const favicon = document.getElementById('favicon');
+    const appleTouchIcon = document.getElementById('apple-touch-icon');
     if (councilLabelRedux === 'Northeast Cover Crop Council') {
       imageSrc = '../images/neccc_wide_logo_color_web.jpg';
-      favicon.href = 'favicon.ico';
+      favicon.href = 'NECCC-favicons/favicon.ico';
+      appleTouchIcon.href = 'logo192.png';
     } else if (councilLabelRedux === 'Southern Cover Crop Council') {
       imageSrc = '../images/sccc_logo.png';
-      favicon.href = 'favicon-psa.ico';
+      favicon.href = 'SCCC-favicons/favicon.ico';
+      appleTouchIcon.href = 'SCCC-favicons/apple-touch-icon.ico';
     } else if (councilLabelRedux === 'Midwest Cover Crop Council') {
       imageSrc = '../images/mwccc_logo.png';
-      favicon.href = 'favicon-psa.ico';
+      favicon.href = 'MCCC-favicons/favicon.ico';
+      appleTouchIcon.href = 'MCCC-favicons/apple-touch-icon.ico';
     } else if (councilLabelRedux === 'Western Cover Crop Council') {
       imageSrc = '../images/wccc_logo.png';
       favicon.href = 'favicon-psa.ico';
+      appleTouchIcon.href = 'favicon-psa.ico';
     } else {
       imageSrc = '../images/whitebg.png';
       favicon.href = 'favicon-psa.ico';
+      appleTouchIcon.href = 'favicon-psa.ico';
     }
 
     const imageElement = document.getElementById('logoImage');
