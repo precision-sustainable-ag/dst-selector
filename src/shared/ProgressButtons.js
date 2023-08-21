@@ -23,7 +23,7 @@ const ProgressButtons = ({ closeExpansionPanel, setConfirmationOpen }) => {
       case 0:
         setIsDisabledBack(true);
         setIsDisabledRefresh(true);
-        setIsDisabledNext(councilLabelRedux === '' || councilLabelRedux === null);
+        setIsDisabledNext(councilLabelRedux === null);
         break;
       case 1:
         // location selection state
