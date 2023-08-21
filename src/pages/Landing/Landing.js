@@ -117,6 +117,13 @@ const Landing = ({ height, title, bg }) => {
       if (st.length > 0) {
         setSelectedState(st[0]);
       } else if (selectedRegion?.id) {
+        setSelectedState('');
+        dispatchRedux(updateStateInfo({
+          stateLabel: null,
+          stateId: null,
+          councilShorthand: null,
+          councilLabel: null,
+        }));
         alert(
           // eslint-disable-next-line max-len
           'The region you have selected is not currently supported. We currently support Northeast, Midwest, and Southern Cover Crop Councils. Please try again!',
