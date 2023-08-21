@@ -11,7 +11,15 @@ const RenderFloodingOptions = ({ flooding = [''] }) => {
   const soilDataRedux = useSelector((stateRedux) => stateRedux.soilData.soilData);
 
   const updateFloodingFrequency = (label = '') => {
-    const floodings = soilDataRedux?.floodingFrequency ? [...soilDataRedux.floodingFrequency] : [];
+    let floodings = soilDataRedux?.floodingFrequency ? [...soilDataRedux.floodingFrequency] : [];
+    if (floodings.indexOf('None') !== -1) {
+      // does exist, remove none because something else was selected
+      floodings.splice(floodings.indexOf('None'));
+    }
+    if (label === 'None') {
+      // does exist, remove none because something else was selected
+      floodings = [];
+    }
     if (floodings.indexOf(label) === -1) {
       // does not exist, dispatch to state
       floodings.push(label);
