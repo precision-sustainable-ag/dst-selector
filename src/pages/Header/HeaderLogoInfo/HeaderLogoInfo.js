@@ -30,27 +30,21 @@ const HeaderLogoInfo = () => {
   useEffect(() => {
     let imageSrc;
     const favicon = document.getElementById('favicon');
-    const appleTouchIcon = document.getElementById('apple-touch-icon');
     if (councilLabelRedux === 'Northeast Cover Crop Council') {
       imageSrc = '../images/neccc_wide_logo_color_web.jpg';
-      favicon.href = 'NECCC-favicons/favicon.ico';
-      appleTouchIcon.href = 'logo192.png';
+      favicon.href = 'favicons/neccc-favicon.ico';
     } else if (councilLabelRedux === 'Southern Cover Crop Council') {
       imageSrc = '../images/sccc_logo.png';
-      favicon.href = 'SCCC-favicons/favicon.ico';
-      appleTouchIcon.href = 'SCCC-favicons/apple-touch-icon.ico';
+      favicon.href = 'favicons/sccc-favicon.ico';
     } else if (councilLabelRedux === 'Midwest Cover Crop Council') {
       imageSrc = '../images/mwccc_logo.png';
-      favicon.href = 'MCCC-favicons/favicon.ico';
-      appleTouchIcon.href = 'MCCC-favicons/apple-touch-icon.ico';
+      favicon.href = 'favicons/mccc-favicon.ico';
     } else if (councilLabelRedux === 'Western Cover Crop Council') {
       imageSrc = '../images/wccc_logo.png';
-      favicon.href = 'favicon-psa.ico';
-      appleTouchIcon.href = 'favicon-psa.ico';
+      favicon.href = 'favicons/psa-favicon.ico';
     } else {
-      imageSrc = '../images/whitebg.png';
-      favicon.href = 'favicon-psa.ico';
-      appleTouchIcon.href = 'favicon-psa.ico';
+      imageSrc = '../images/PSAlogo-text.png';
+      favicon.href = 'favicons/psa-favicon.ico';
     }
 
     const imageElement = document.getElementById('logoImage');
@@ -70,7 +64,6 @@ const HeaderLogoInfo = () => {
           component="div"
           sx={{
             position: 'relative',
-            width: '100px',
             height: 'auto',
             marginRight: '10px',
             '@media (max-width: 768px)': {
@@ -80,7 +73,7 @@ const HeaderLogoInfo = () => {
               width: '120px', /*  medium screens */
             },
             '@media (min-width: 1025px)': {
-              width: '160px', /* large screens */
+              width: '200px', /* large screens */
             },
           }}
         >
@@ -105,7 +98,7 @@ const HeaderLogoInfo = () => {
           </button>
         </Box>
       </Grid>
-      <Grid item lg={4} md={4} sm={12} xs={12} sx={{ marginLeft: '80px' }}>
+      <Grid item lg={4} md={4} sm={12} xs={12} sx={{ marginLeft: '120px' }}>
         <div className="d-flex align-items-center text-left">
           <div>
             <Typography variant="body1" className="font-weight-bold">
