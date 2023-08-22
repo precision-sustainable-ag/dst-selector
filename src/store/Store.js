@@ -283,7 +283,6 @@ const initialState = {
   comparisonKeys: [],
   regions: [],
   activeCropData: [],
-  lastZone: '',
 
   goalsOpen: true,
   cropFiltersOpen: true,

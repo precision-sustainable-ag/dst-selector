@@ -168,22 +168,6 @@ const Reducer = (state, action, value = action && action.data && action.data.val
       };
     }
 
-    case 'UPDATE_ZONE': {
-      // sfilters.zone = action.data.zone;
-      return {
-        ...state,
-        zone: action.data.zone,
-        // [section]: sfilters,
-      };
-    }
-
-    // case 'UPDATE_LAST_ZONE': {
-    //   return {
-    //     ...state,
-    //     lastZone: action.data.value,
-    //   };
-    // }
-
     case 'CHANGE_ADDRESS': {
       return {
         ...state,
