@@ -58,20 +58,18 @@ const initFieldDialogState = {
   error: false,
   errorText: '',
   type: '',
-}
+};
 
 const initActionType = {
   addressType: '',
   action: '',
-}
+};
 
 const fieldNameValidation = (name, currentFields) => {
-  if (name === '') return "You must input a valid name!";
-  if (currentFields.filter((f) => f.label === name).length > 0) return "Input name existed!";
+  if (name === '') return 'You must input a valid name!';
+  if (currentFields.filter((f) => f.label === name).length > 0) return 'Input name existed!';
   return '';
-}
-
-
+};
 
 const LocationComponent = () => {
   const dispatchRedux = useDispatch();
@@ -96,20 +94,17 @@ const LocationComponent = () => {
   //  console.log('userFieldRedux', userFieldRedux)
   const [fieldDialogState, setFieldDialogState] = useState(initFieldDialogState);
   const [actionType, setActionType] = useState(initActionType);
-  // init data, save data
-  // FIXME: this might be replaced with the ref, since they are always the same
-  const [userFields, setUserFields] = useState(userFieldRedux ? [...userFieldRedux.data] : []);
   const [selectedUserField, setSelectedUserField] = useState('');
 
   const { isAuthenticated } = useAuth0();
 
-  const selectedToEditSiteRef = useRef();
-  const currAreaRef = useRef();
-  const userFieldsRef = useRef(userFields);
+  // const selectedToEditSiteRef = useRef();
+  // const currAreaRef = useRef();
+  const userFieldsRef = useRef(userFieldRedux ? [...userFieldRedux.data] : []);
 
   const getArea = () => {
-    if (userFields.length > 0) {
-      for (const field of userFields) {
+    if (userFieldsRef.current.length > 0) {
+      for (const field of userFieldsRef.current) {
         if (field.label === selectedUserField) {
           // console.log('field', selectedUserField, field)
           if (field.geometry.type === 'Point') return [field];
@@ -118,13 +113,13 @@ const LocationComponent = () => {
       }
     }
     return [];
-  }
+  };
 
   const [drawFields, setDrawFields] = useState([]);
   // this useEffect can be instead by UserFieldList's onChange
   useEffect(() => {
     setDrawFields(getArea());
-  }, [selectedUserField])
+  }, [selectedUserField]);
 
   // console.log('state', drawFields)
 
@@ -144,7 +139,6 @@ const LocationComponent = () => {
     }
     return [47, -122];
   }, [stateLabelRedux]);
-
 
   useEffect(() => {
     if (selectedCropsRedux.length > 0) {
@@ -189,8 +183,8 @@ const LocationComponent = () => {
   }, [zoneRedux, countyRedux]);
 
   useEffect(() => {
-    selectedToEditSiteRef.current = selectedToEditSite;
-    currAreaRef.current = currArea;
+    // selectedToEditSiteRef.current = selectedToEditSite;
+    // currAreaRef.current = currArea;
     // TODO: everytime the dialog would showup to ask you input name for new field
     // setOpenDialog(true);
     // setActionType({addressType: 'Point', action: 'add'});
@@ -365,87 +359,75 @@ const LocationComponent = () => {
       });
   }, [zipCodeRedux]);
 
-  const handleSave = async (selectedPoint, selectedArea) => {
-    const [initLat, initLng] = getLatLng();
-    const { longitude, latitude } = selectedPoint;
-    // if the point/polygon is not modified by user, do not trigger a redundant save.
-    if (initLat === latitude && initLng === longitude) return;
-    const point = buildPoint(longitude, latitude);
-    if (selectedArea.length > 0) {
-      const geoCollection = buildGeometryCollection(point.geometry, selectedArea[0].geometry, 'test1');
-      await postFields(accessTokenRedux, geoCollection);
-      getFields(accessTokenRedux).then((data) => dispatchRedux(updateField(data)));
-    } else {
-      await postFields(accessTokenRedux, point);
-      getFields(accessTokenRedux).then((data) => dispatchRedux(updateField(data)));
-    }
-  };
+  // const handleSave = async (selectedPoint, selectedArea) => {
+  //   const [initLat, initLng] = getLatLng();
+  //   const { longitude, latitude } = selectedPoint;
+  //   // if the point/polygon is not modified by user, do not trigger a redundant save.
+  //   if (initLat === latitude && initLng === longitude) return;
+  //   const point = buildPoint(longitude, latitude);
+  //   if (selectedArea.length > 0) {
+  //     const geoCollection = buildGeometryCollection(point.geometry, selectedArea[0].geometry, 'test1');
+  //     await postFields(accessTokenRedux, geoCollection);
+  //     getFields(accessTokenRedux).then((data) => dispatchRedux(updateField(data)));
+  //   } else {
+  //     await postFields(accessTokenRedux, point);
+  //     getFields(accessTokenRedux).then((data) => dispatchRedux(updateField(data)));
+  //   }
+  // };
 
   useEffect(() => () => {
-    // TODO: change logic, use userfields to do save job
     // save user selected field when component will unmount, need to use refs to reach the component state
     console.log('save', userFieldsRef.current);
     if (isAuthenticated) {
-      userFieldsRef.current.forEach(async (f) => {
-        // if there is no id field in the object, then this object is a new one and need to be post to the backend
-        if (!f.id) {
-          await postFields(accessTokenRedux, f);
+      userFieldsRef.current.forEach(async (field) => {
+        // if there is no id field in the object, then it means this object is a new one and need to be post to the backend
+        if (!field.id) {
+          await postFields(accessTokenRedux, field);
           getFields(accessTokenRedux).then((data) => dispatchRedux(updateField(data)));
         }
-      })
+      });
     }
-
   }, []);
 
   // console.log('currArea', currArea, currArea?.[0]);
   // console.log('features', features);
-  // console.log('userFields', userFields);
-  
+
   const onDraw = (draw) => {
     console.log(draw.mode, draw.e.type, draw);
     if (draw.mode !== 'select') {
-      setFieldDialogState({...fieldDialogState, open:true, type: draw.mode});
+      setFieldDialogState({ ...fieldDialogState, open: true, type: draw.mode });
     }
   };
-
 
   const handleClose = (save) => {
     // field validation
     if (save) {
       if (fieldDialogState.type === 'add') {
-        const errText = fieldNameValidation(fieldDialogState.fieldName, userFields);
+        const errText = fieldNameValidation(fieldDialogState.fieldName, userFieldsRef.current);
         if (errText !== '') {
-          setFieldDialogState({...fieldDialogState, error: true, errorText: errText});
+          setFieldDialogState({ ...fieldDialogState, error: true, errorText: errText });
           return;
         }
         const { longitude, latitude } = selectedToEditSite;
         const point = buildPoint(longitude, latitude, fieldDialogState.fieldName);
         const geoCollection = buildGeometryCollection(point.geometry, currArea[0].geometry, fieldDialogState.fieldName);
-        // TODO: add save type: POINT/POLYGON/UPDATE/DELETE
-        setUserFields([...userFields, geoCollection]);
-        userFieldsRef.current = [...userFields, geoCollection];
+        // TODO: add save type: POINT/POLYGON
+        userFieldsRef.current = [...userFieldsRef.current, geoCollection];
       }
       if (fieldDialogState.type === 'update') {
         const { longitude, latitude } = selectedToEditSite;
         const point = buildPoint(longitude, latitude, selectedUserField);
         const geoCollection = buildGeometryCollection(point.geometry, currArea[0].geometry, selectedUserField);
-        setUserFields(userFields.map((f) => {
-          if (f.label === selectedUserField) return geoCollection;
-          return f;
-        }));
-        userFieldsRef.current = userFields.map((f) => {
+        userFieldsRef.current = userFieldsRef.current.map((f) => {
           if (f.label === selectedUserField) return geoCollection;
           return f;
         });
       }
       // if (fieldDialogState.type === 'delete') {
-      //   setUserFields(userFields.filter((f) => f.id !== selectedUserField));
+        // userFieldsRef.current = userFieldsRef.current.filter((f) => f.id !== selectedUserField);
       // }
-      
-      
-    }
-    else {
-      console.log("This field will not be saved");
+    } else {
+      console.log('This field will not be saved');
     }
     setFieldDialogState(initFieldDialogState);
   };
@@ -478,10 +460,11 @@ const LocationComponent = () => {
             </div>
             <div className="row py-3 my-4 ">
               <div className="col-md-5 col-lg-6 col-sm-12 col-12">
-                <UserFieldList 
-                  userFields={userFields} 
-                  field={selectedUserField} 
-                  setField={setSelectedUserField}/>
+                <UserFieldList
+                  userFields={userFieldsRef.current}
+                  field={selectedUserField}
+                  setField={setSelectedUserField}
+                />
               </div>
             </div>
           </div>
@@ -514,11 +497,11 @@ const LocationComponent = () => {
         </div>
       </div>
       <MyCoverCropReset handleConfirm={handleConfirm} setHandleConfirm={setHandleConfirm} from="selector" />
-      <UserFieldDialog 
-        fieldDialogState={fieldDialogState} 
+      <UserFieldDialog
+        fieldDialogState={fieldDialogState}
         setFieldDialogState={setFieldDialogState}
         handleClose={handleClose}
-        />
+      />
     </div>
   );
 };
