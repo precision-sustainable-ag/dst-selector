@@ -206,8 +206,6 @@ const initialState = {
   progress: 0,
   address: '',
   addressSearchPreference: 'address',
-  zipCode: 0,
-  lastZipCode: 0,
   markersCopy: [],
   markers: [[40.78489145, -74.80733626930342]],
   showAddressChangeBtn: false,

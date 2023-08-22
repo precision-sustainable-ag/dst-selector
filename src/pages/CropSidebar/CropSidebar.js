@@ -33,7 +33,7 @@ import CoverCropGoals from './CoverCropGoals/CoverCropGoals';
 import PreviousCashCrop from './PreviousCashCrop/PreviousCashCrop';
 import PlantHardinessZone from './PlantHardinessZone/PlantHardinessZone';
 import Legend from '../../components/Legend/Legend';
-import { updateZone as updateZoneRedux } from '../../reduxStore/addressSlice';
+// import { updateZone as updateZoneRedux } from '../../reduxStore/addressSlice';
 import { updateRegion } from '../../reduxStore/mapSlice';
 import { clearFilters, toggleCropFiltersOpen } from '../../reduxStore/filterSlice';
 import { pullCropData, updateActiveCropData, updateDateRange } from '../../reduxStore/cropSlice';
@@ -362,10 +362,6 @@ const CropSidebar = ({
 
   const updateZone = (region) => {
     if (region !== undefined) {
-      dispatchRedux(updateZoneRedux({
-        zone: region.shorthand,
-        zoneId: region.id,
-      }));
       dispatchRedux(updateRegion({
         regionId: region.id ?? '',
         regionLabel: region.label ?? '',

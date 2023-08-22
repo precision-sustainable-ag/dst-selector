@@ -23,7 +23,7 @@ import { callCoverCropApi } from '../../shared/constants';
 import '../../styles/landing.scss';
 import ConsentModal from '../CoverCropExplorer/ConsentModal/ConsentModal';
 import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset';
-import { updateZone } from '../../reduxStore/addressSlice';
+// import { updateZone } from '../../reduxStore/addressSlice';
 import { updateRegions, updateRegion, updateStateInfo } from '../../reduxStore/mapSlice';
 
 const Landing = ({ height, title, bg }) => {
@@ -79,13 +79,6 @@ const Landing = ({ height, title, bg }) => {
         regionLabel: regionsRedux[0]?.label ?? '',
         regionShorthand: regionsRedux[0]?.shorthand ?? '',
       }));
-
-      dispatchRedux(updateZone(
-        {
-          zone: regionsRedux[0]?.shorthand,
-          zoneId: regionsRedux[0]?.id,
-        },
-      ));
     }
   }, [regionsRedux]);
 

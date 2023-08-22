@@ -5,8 +5,9 @@ import {
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-const PlantHardinessZone = ({ updateZone }) => {
-  const zoneRedux = useSelector((stateRedux) => stateRedux.addressData.zone);
+const PlantHardinessZone = ({ updateReg }) => {
+  // const zoneRedux = useSelector((stateRedux) => stateRedux.addressData.zone);
+  const regionShorthand = useSelector((stateRedux) => stateRedux.mapData.regionShorthand);
   const regionsRedux = useSelector((stateRedux) => stateRedux.mapData.regions);
   const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
   const zoneToggleRedux = useSelector((stateRedux) => stateRedux.sharedData.zoneToggle);
@@ -14,7 +15,7 @@ const PlantHardinessZone = ({ updateZone }) => {
   const handleRegionChange = (event) => {
     // eslint-disable-next-line eqeqeq
     const regionInfo = regionsRedux.filter((region) => region.shorthand == event.target.value);
-    updateZone(regionInfo[0]);
+    updateReg(regionInfo[0]);
   };
 
   const plantHardinessZone = () => (
@@ -27,7 +28,7 @@ const PlantHardinessZone = ({ updateZone }) => {
         textAlign: 'left',
       }}
       onChange={(e) => handleRegionChange(e)}
-      value={zoneRedux || ''}
+      value={regionShorthand || ''}
     >
 
       {regionsRedux.length > 0 && regionsRedux.map((region, i) => (

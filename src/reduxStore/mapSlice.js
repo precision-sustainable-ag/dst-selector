@@ -23,7 +23,7 @@ export const updateRegion = ({ regionId, regionLabel, regionShorthand }) => ({
   payload: {
     regionId,
     regionLabel, // unused
-    regionShorthand, // unused
+    regionShorthand,
   },
 });
 
