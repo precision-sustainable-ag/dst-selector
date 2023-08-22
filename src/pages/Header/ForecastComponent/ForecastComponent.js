@@ -9,7 +9,7 @@ import React, {
 import { useDispatch, useSelector } from 'react-redux';
 import { cloudIcon, ReferenceTooltip, reverseGEO } from '../../../shared/constants';
 import { openWeatherApiKey } from '../../../shared/keys';
-import { changeAddress, updateZipCode } from '../../../reduxStore/addressSlice';
+import { changeAddress } from '../../../reduxStore/addressSlice';
 
 const apiBaseURL = 'https://api.openweathermap.org/data/2.5/weather';
 
@@ -76,13 +76,9 @@ const ForecastComponent = () => {
           data
             .then((res) => {
               const address = res?.features?.filter((feature) => feature?.place_type?.includes('address'))[0]?.place_name;
-              const zip = res?.features?.filter((feature) => feature?.place_type?.includes('postcode'))[0]?.text;
 
               if (address) {
                 dispatchRedux(changeAddress({ address }));
-              }
-              if (zip) {
-                dispatchRedux(updateZipCode(zip));
               }
             })
             .catch((e) => {

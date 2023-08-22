@@ -76,10 +76,6 @@ const Reducer = (state, action, value = action && action.data && action.data.val
       };
     }
 
-    case 'LAST_ZIP_CODE': {
-      return { ...state, lastZipCode: action.data.value };
-    }
-
     case 'UPDATE_CONSENT': {
       if (action.data.consent === true) {
         return { ...state, consent: true };
@@ -109,7 +105,6 @@ const Reducer = (state, action, value = action && action.data && action.data.val
         ...state,
         address: action.data.address,
         markers: [[action.data.latitude, action.data.longitude]],
-        zipCode: action.data.zipCode,
       };
     }
 
@@ -178,7 +173,6 @@ const Reducer = (state, action, value = action && action.data && action.data.val
       return {
         ...state,
         zone: action.data.zone,
-        zoneId: action.data.zoneId,
         // [section]: sfilters,
       };
     }
@@ -201,7 +195,6 @@ const Reducer = (state, action, value = action && action.data && action.data.val
       return {
         ...state,
         address: action.data.address,
-        zipCode: action.data.zipCode,
         county: action.data.county,
       };
     }
@@ -213,7 +206,6 @@ const Reducer = (state, action, value = action && action.data && action.data.val
         address: '',
         markers: action.data.markers,
         markersCopy: [],
-        zipCode: 0,
         addressSearchPreference: 'address',
         selectedCrops: action.data.selectedCrops,
         selectedGoals: [],
@@ -516,13 +508,6 @@ const Reducer = (state, action, value = action && action.data && action.data.val
     //     addressSearchPreference: action.data.addressSearchPreference,
     //   };
     // }
-
-    case 'UPDATE_ZIP_CODE': {
-      return {
-        ...state,
-        zipCode: action.data.zipCode,
-      };
-    }
 
     // case 'UPDATE_ACTIVE_GROWTH_PERIOD': {
     //   return {
