@@ -5,7 +5,9 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import React from 'react';
 
-const UserFieldList = ({ userFields, field, setField }) => {
+const UserFieldList = ({
+  userFields, field, setField, setFieldDialogState,
+}) => {
   const handleChange = (e) => {
     setField(e.target.value);
   };
@@ -33,12 +35,12 @@ const UserFieldList = ({ userFields, field, setField }) => {
               </MenuItem>
             ))}
           </Select>
-
         </FormControl>
-        <IconButton>
+
+        <IconButton onClick={() => setFieldDialogState((prev) => ({ ...prev, open: true, actionType: 'updateName' }))}>
           <EditIcon />
         </IconButton>
-        <IconButton>
+        <IconButton onClick={() => setFieldDialogState((prev) => ({ ...prev, open: true, actionType: 'delete' }))}>
           <DeleteIcon />
         </IconButton>
       </ListItem>

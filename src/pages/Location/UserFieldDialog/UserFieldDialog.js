@@ -10,11 +10,11 @@ import React from 'react';
 
 const UserFieldDialog = ({ fieldDialogState, setFieldDialogState, handleClose }) => {
   const {
-    open, fieldName, error, errorText, type,
+    open, fieldName, error, errorText, actionType,
   } = fieldDialogState;
   return (
     <Dialog sx={{ m: 0, p: 2 }} open={open}>
-      {type === 'add' && (
+      {actionType === 'add' && (
       <>
         <DialogTitle>
           You need to give this field a nickname
@@ -32,12 +32,12 @@ const UserFieldDialog = ({ fieldDialogState, setFieldDialogState, handleClose })
         </DialogContent>
       </>
       )}
-      {type === 'update' && (
+      {actionType === 'update' && (
         <DialogTitle>
           Are you going to update this field?
         </DialogTitle>
       )}
-      {type === 'delete' && (
+      {actionType === 'delete' && (
         <DialogTitle>
           Are you going to delete this field?
         </DialogTitle>
