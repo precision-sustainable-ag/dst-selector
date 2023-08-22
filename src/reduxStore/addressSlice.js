@@ -2,7 +2,6 @@ const initialState = {
   address: '',
   markers: [[40.78489145, -74.80733626930342]],
   zone: '',
-  lastZone: '',
   county: null,
 };
 
@@ -29,13 +28,6 @@ export const changeAddressViaMap = ({
   payload: {
     address,
     county,
-  },
-});
-
-export const updateLastZone = (value) => ({
-  type: 'UPDATE_LAST_ZONE',
-  payload: {
-    value,
   },
 });
 
@@ -68,12 +60,6 @@ const addressReducer = (state = initialState, action = null) => {
         ...state,
         address: action.payload.address,
         county: action.payload.county,
-      };
-
-    case 'UPDATE_LAST_ZONE':
-      return {
-        ...state,
-        lastZone: action.payload.value,
       };
 
     default:
