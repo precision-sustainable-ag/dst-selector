@@ -40,6 +40,7 @@ import License from './pages/License/License';
 import MyCoverCropListWrapper from './pages/MyCoverCropList/MyCoverCropListWrapper/MyCoverCropListWrapper';
 import Help from './pages/Help/Help';
 import configureStore from './reduxStore/store';
+import InfoSheet from './pages/InfoSheet/InfoSheet';
 
 const withFooter = (WrappedComponent) => () => [<WrappedComponent key="1" />, <Footer key="2" />];
 const store = configureStore();
@@ -149,6 +150,7 @@ const Wrapper = () => (
             <Suspense fallback={<div>Loading..</div>}>
               <Switch>
                 <Route path="/" component={App} exact />
+                <Route path="/info-sheet" component={InfoSheet} exact />
                 <Route path="/explorer" component={CoverCropExplorer} exact />
                 <Route path="/about" component={About} exact />
                 <Route path="/help" component={Help} exact />
