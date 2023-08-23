@@ -37,7 +37,10 @@ const UserFieldList = ({
           </Select>
         </FormControl>
 
-        <IconButton onClick={() => setFieldDialogState((prev) => ({ ...prev, open: true, actionType: 'updateName' }))}>
+        <IconButton onClick={() => setFieldDialogState((prev) => ({
+          ...prev, open: true, actionType: 'updateName', fieldName: field, prevName: field,
+        }))}
+        >
           <EditIcon />
         </IconButton>
         <IconButton onClick={() => setFieldDialogState((prev) => ({ ...prev, open: true, actionType: 'delete' }))}>

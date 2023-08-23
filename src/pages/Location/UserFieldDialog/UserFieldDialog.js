@@ -42,6 +42,24 @@ const UserFieldDialog = ({ fieldDialogState, setFieldDialogState, handleClose })
           Are you going to delete this field?
         </DialogTitle>
       )}
+      {actionType === 'updateName' && (
+      <>
+        <DialogTitle>
+          Change the nickname for this field
+        </DialogTitle>
+        <DialogContent>
+          <TextField
+            autoFocus
+            error={error}
+            helperText={errorText}
+            variant="standard"
+            label="Field Nickname"
+            value={fieldName}
+            onChange={(e) => setFieldDialogState({ ...fieldDialogState, fieldName: e.target.value })}
+          />
+        </DialogContent>
+      </>
+      )}
       <DialogActions>
         <Button onClick={() => handleClose(true)}>OK</Button>
         <Button onClick={() => handleClose(false)}>Cancel</Button>
