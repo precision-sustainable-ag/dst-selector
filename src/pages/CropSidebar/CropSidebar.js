@@ -60,7 +60,6 @@ const CropSidebar = ({
   const comparisonKeysRedux = useSelector((stateRedux) => stateRedux.sharedData.comparisonKeys);
   const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
-  // const cropFiltersOpenRedux = useSelector((stateRedux) => stateRedux.filterData.cropFiltersOpen);
 
   // useState vars
   const [loading, setLoading] = useState(false);
@@ -74,6 +73,7 @@ const CropSidebar = ({
     startDate: null,
     endDate: null,
   });
+
   // make an exhaustive array of all params in array e.g. cover crop group and use includes in linq
   const [sidebarFilterOptions, setSidebarFilterOptions] = useState(() => {
     const sidebarStarter = {};
