@@ -56,7 +56,7 @@ const Reducer = (state, action, value = action && action.data && action.data.val
     }
 
     case 'ZONE_TOGGLE': {
-      return { ...state, zoneToggle: action.data.value };
+      return { ...state, regionToggle: action.data.value };
     }
 
     case 'CROP_SEARCH': {

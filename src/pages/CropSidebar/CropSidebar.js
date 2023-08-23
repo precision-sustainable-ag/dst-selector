@@ -36,7 +36,7 @@ import Legend from '../../components/Legend/Legend';
 import { updateRegion } from '../../reduxStore/mapSlice';
 import { clearFilters, toggleCropFiltersOpen } from '../../reduxStore/filterSlice';
 import { pullCropData, updateActiveCropData, updateDateRange } from '../../reduxStore/cropSlice';
-import { pullDictionaryData, setAjaxInProgress, zoneToggleHandler } from '../../reduxStore/sharedSlice';
+import { pullDictionaryData, setAjaxInProgress, regionToggleHandler } from '../../reduxStore/sharedSlice';
 
 const CropSidebar = ({
   comparisonView,
@@ -55,7 +55,7 @@ const CropSidebar = ({
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
   const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
-  const zoneToggleRedux = useSelector((stateRedux) => stateRedux.sharedData.zoneToggle);
+  const regionToggleRedux = useSelector((stateRedux) => stateRedux.sharedData.regionToggle);
   const speciesSelectorActivationFlagRedux = useSelector((stateRedux) => stateRedux.sharedData.speciesSelectorActivationFlag);
   const comparisonKeysRedux = useSelector((stateRedux) => stateRedux.sharedData.comparisonKeys);
   const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
@@ -451,7 +451,7 @@ const CropSidebar = ({
                 {from === 'explorer' && (
                   <>
                     <List component="div" disablePadding>
-                      <ListItemButton onClick={() => dispatchRedux(zoneToggleHandler())}>
+                      <ListItemButton onClick={() => dispatchRedux(regionToggleHandler())}>
                         <ListItemText
                           primary={(
                             <Typography variant="body2" className="text-uppercase">
@@ -459,7 +459,7 @@ const CropSidebar = ({
                             </Typography>
             )}
                         />
-                        {zoneToggleRedux ? <ExpandLess /> : <ExpandMore />}
+                        {regionToggleRedux ? <ExpandLess /> : <ExpandMore />}
                       </ListItemButton>
                     </List>
                     <PlantHardinessZone
@@ -467,7 +467,7 @@ const CropSidebar = ({
                       regionShorthand={regionShorthand}
                       regionsRedux={regionsRedux}
                       councilLabelRedux={councilLabelRedux}
-                      zoneToggleRedux={zoneToggleRedux}
+                      regionToggleRedux={regionToggleRedux}
                     />
                     <CoverCropSearch sfilters={sfilters} />
                   </>
