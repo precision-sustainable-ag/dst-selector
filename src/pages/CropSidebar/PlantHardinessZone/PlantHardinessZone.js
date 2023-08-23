@@ -10,7 +10,7 @@ const PlantHardinessZone = ({
   regionShorthand,
   regionsRedux,
   councilLabelRedux,
-  zoneToggleRedux,
+  regionToggleRedux,
 }) => {
   const handleRegionChange = (event) => {
     // eslint-disable-next-line eqeqeq
@@ -40,7 +40,7 @@ const PlantHardinessZone = ({
   );
 
   return (
-    <Collapse in={zoneToggleRedux}>
+    <Collapse in={regionToggleRedux}>
       <List component="div" disablePadding>
         <ListItem component="div">
           <FormControl

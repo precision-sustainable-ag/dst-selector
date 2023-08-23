@@ -10,7 +10,7 @@ const initialState = {
   myCoverCropListLocation: '',
   snackVertical: 'bottom',
   snackHorizontal: 'right',
-  zoneToggle: true,
+  regionToggle: true,
   dataDictionary: {},
   apiBaseUrl: /(localhost|dev)/i.test(window.location)
     ? 'developapi'
@@ -83,8 +83,8 @@ export const myCropListLocation = ({ from }) => ({
   },
 });
 
-export const zoneToggleHandler = (value) => ({
-  type: 'ZONE_TOGGLE',
+export const regionToggleHandler = (value) => ({
+  type: 'REGION_TOGGLE',
   payload: {
     value,
   },
@@ -165,8 +165,8 @@ const sharedReducer = (state = initialState, action = null) => {
         myCoverCropListLocation: action.payload.from,
       };
 
-    case 'ZONE_TOGGLE':
-      return { ...state, zoneToggle: !state.zoneToggle };
+    case 'REGION_TOGGLE':
+      return { ...state, regionToggle: !state.regionToggle };
 
     case 'PULL_DICTIONARY_DATA': {
       return {
