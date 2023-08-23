@@ -58,6 +58,7 @@ const initFieldDialogState = {
   errorText: '',
   actionType: '',
   areaType: '',
+  prevName: '',
 };
 
 const fieldNameValidation = (name, currentFields) => {
@@ -89,6 +90,7 @@ const LocationComponent = () => {
 
   //  console.log('userFieldRedux', userFieldRedux)
   const [fieldDialogState, setFieldDialogState] = useState(initFieldDialogState);
+  // TODO: set selectedUserField the latest field that have been updated
   const [selectedUserField, setSelectedUserField] = useState(userFieldRedux ? userFieldRedux.data[0].label : '');
   // use a state to control if currently is adding a point
   const [isAddingPoint, setIsAddingPoint] = useState(true);
@@ -106,7 +108,8 @@ const LocationComponent = () => {
         }
       }
     }
-    return [];
+    // reset default field to state capitol
+    return [buildPoint(statesLatLongDict[stateLabelRedux][1], statesLatLongDict[stateLabelRedux][0])];
   };
 
   const [drawFields, setDrawFields] = useState([]);
@@ -188,12 +191,11 @@ const LocationComponent = () => {
 
     if (latitude === markersRedux[0][0] && longitude === markersRedux[0][1]) { return; }
 
-    // if selected point is different as current point
-    // TODO: add a state for polygons, add/select/update/delete, after the dialog is closed, set state back to default.
-    const currSelectedField = userFieldsRef.current.filter((f) => f.label === selectedUserField)[0].geometry;
+    // TODO: consoder user not logged in situation & no initial field situation
+    const currSelectedField = userFieldsRef.current.filter((f) => f.label === selectedUserField)[0]?.geometry;
     if (isAddingPoint && latitude) {
-      if ((currSelectedField.type === 'Point' && latitude !== currSelectedField.coordinates[1])
-        || (currSelectedField.type === 'GeometryCollection' && latitude !== currSelectedField.geometries[0].coordinates[1])) {
+      if ((currSelectedField?.type === 'Point' && latitude !== currSelectedField?.coordinates[1])
+        || (currSelectedField?.type === 'GeometryCollection' && latitude !== currSelectedField?.geometries[0].coordinates[1])) {
         setFieldDialogState({
           ...fieldDialogState, open: true, actionType: 'add', areaType: 'Point',
         });
@@ -367,6 +369,10 @@ const LocationComponent = () => {
     if (isAuthenticated) {
       userFieldsRef.current.forEach(async (field) => {
         // if there is no id field in the object, then it means this object is a new one and need to be post to the backend
+        if (field.delete === true) {
+          // TODO: call delete api
+          console.log('DELETE', field);
+        }
         if (!field.id) {
           await postFields(accessTokenRedux, field);
           getFields(accessTokenRedux).then((data) => dispatchRedux(updateField(data)));
@@ -424,12 +430,32 @@ const LocationComponent = () => {
           return f;
         });
       }
-      // if (actionType === 'delete') {
-      // userFieldsRef.current = userFieldsRef.current.filter((f) => f.id !== selectedUserField);
-      // }
-      // if (actionType === 'updateName') {
-      // TODO: delete prev? and add new
-      // }
+      if (actionType === 'delete') {
+        // add a delete flag so when saving the code knows delete which field
+        userFieldsRef.current = userFieldsRef.current.map((f) => {
+          if (f.label === selectedUserField) {
+            // if this field have not been saved to the backend, directly delete it from the userFields.
+            if (!f.id) return;
+            return {...f, delete: true};
+          }
+          return f;
+        });
+        // TODO: reset initFeature to another field(the last field?)
+        setSelectedUserField('');
+      }
+      if (actionType === 'updateName') {
+        const { prevName } = fieldDialogState;
+        const errText = fieldNameValidation(fieldName, userFieldsRef.current);
+        if (errText !== '') {
+          setFieldDialogState({ ...fieldDialogState, error: true, errorText: errText });
+          return;
+        }
+        const newField = {...userFieldsRef.current.filter((f) => f.label === prevName)[0], label: fieldName};
+        userFieldsRef.current = [...userFieldsRef.current.map((f) => {
+          if (f.label !== prevName) return {...f, delete: true};
+          return f;
+        }), newField];
+      }
     } else {
       // select cancel
       if (actionType === 'add' || actionType === 'update') {
