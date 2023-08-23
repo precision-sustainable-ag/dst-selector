@@ -43,10 +43,12 @@ const growthIcon = {
 
 const CropCalendarView = ({ activeCropData }) => {
   const dispatchRedux = useDispatch();
+
+  // redux vars
   const cropDataStateRedux = useSelector((stateRedux) => stateRedux.cropData);
-  const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
-  const activeGrowthPeriodRedux = useSelector((stateRedux) => stateRedux.cropData.activeGrowthPeriod);
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
+  const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
+  const ajaxInProgressRedux = useSelector((stateRedux) => stateRedux.sharedData.ajaxInProgress);
   const [legendModal, setLegendModal] = useState(false);
   const [nameSortFlag, setNameSortFlag] = useState(true);
   const [goalsSortFlag, setGoalsSortFlag] = useState(true);
@@ -54,32 +56,28 @@ const CropCalendarView = ({ activeCropData }) => {
   const [plantingWindowSortFlag, setPlantingWindowSortFlag] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalData, setModalData] = useState([{}]);
-  // const { selectedGoals } = state;
+
+  // useState vars
+  const { activeGrowthPeriod, selectedCrops } = cropDataStateRedux;
   const activeCropDataShadow = activeCropData;
-  const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
-  const ajaxInProgressRedux = useSelector((stateRedux) => stateRedux.sharedData.ajaxInProgress);
   const legendData = getLegendDataBasedOnCouncil(councilShorthandRedux);
 
   const dispatchValue = (value) => dispatchRedux(updateActiveCropData(value));
+
   const handleLegendModal = () => {
     setLegendModal(!legendModal);
   };
-  const [activeGrowthPeriodState, setActiveGrowthPeriodState] = useState(activeGrowthPeriodRedux);
-
-  useEffect(() => {
-    setActiveGrowthPeriodState(activeGrowthPeriodRedux);
-  }, [cropDataStateRedux]);
 
   const checkIfGrowthMonth = (month) => {
-    if (activeGrowthPeriodState.length !== 0) {
-      if (activeGrowthPeriodState.includes(month)) return true;
+    if (activeGrowthPeriod.length !== 0) {
+      if (activeGrowthPeriod.includes(month)) return true;
       return false;
     }
     return false;
   };
 
   const sortReset = () => {
-    sortCrops('Average Goals', activeCropDataShadow, goalsSortFlag, selectedGoalsRedux);
+    sortCrops('Average Goals', activeCropDataShadow, goalsSortFlag, selectedCrops);
     setGoalsSortFlag(!goalsSortFlag);
     dispatchValue(activeCropDataShadow);
   };
@@ -95,7 +93,7 @@ const CropCalendarView = ({ activeCropData }) => {
   };
 
   const sortBySelectedCrops = () => {
-    const selectedCropsShadow = selectedCropsRedux;
+    const selectedCropsShadow = selectedCrops;
     sortCrops('Selected Crops', activeCropDataShadow, selectedCropsSortFlag, selectedCropsShadow, dispatchValue);
     setSelectedCropsFlag(!selectedCropsSortFlag);
   };
@@ -124,10 +122,10 @@ const CropCalendarView = ({ activeCropData }) => {
             <TableHead className="tableHeadWrapper">
               <TableRow className="calFirstHeadRow">
                 <TableCell
-                  colSpan={activeGrowthPeriodRedux.length === 0 ? 2 : 1}
+                  colSpan={activeGrowthPeriod.length === 0 ? 2 : 1}
                   style={{ backgroundColor: 'white' }}
                 />
-                {activeGrowthPeriodRedux.length === 0 ? (
+                {activeGrowthPeriod.length === 0 ? (
                   <TableCell
                     colSpan="12"
                     style={{
@@ -177,7 +175,7 @@ const CropCalendarView = ({ activeCropData }) => {
                     >
                       <div style={sudoButtonStyleWithPadding}>ACTIVE GROWTH PERIOD</div>
                     </TableCell>
-                    {activeGrowthPeriodRedux.includes('Jan') ? (
+                    {activeGrowthPeriod.includes('Jan') ? (
                       <Tooltip placement="top" title="Winter">
                         <TableCell
                           className="activeGrowthMonth growthMonthSeparator"
@@ -194,7 +192,7 @@ const CropCalendarView = ({ activeCropData }) => {
                     ) : (
                       <TableCell style={{ borderBottom: '5px solid white' }} colSpan="2" />
                     )}
-                    {activeGrowthPeriodRedux.includes('Mar') ? (
+                    {activeGrowthPeriod.includes('Mar') ? (
                       <Tooltip placement="top" title="Spring">
                         <TableCell
                           className="activeGrowthMonth growthMonthSeparator"
@@ -211,7 +209,7 @@ const CropCalendarView = ({ activeCropData }) => {
                     ) : (
                       <TableCell style={{ borderBottom: '5px solid white' }} colSpan="3" />
                     )}
-                    {activeGrowthPeriodRedux.includes('Jun') ? (
+                    {activeGrowthPeriod.includes('Jun') ? (
                       <Tooltip placement="top" title="Summer">
                         <TableCell
                           className="activeGrowthMonth growthMonthSeparator"
@@ -228,7 +226,7 @@ const CropCalendarView = ({ activeCropData }) => {
                     ) : (
                       <TableCell style={{ borderBottom: '5px solid white' }} colSpan="3" />
                     )}
-                    {activeGrowthPeriodRedux.includes('Sep') ? (
+                    {activeGrowthPeriod.includes('Sep') ? (
                       <Tooltip placement="top" title="Fall">
                         <TableCell
                           className="activeGrowthMonth growthMonthSeparator"
@@ -245,7 +243,7 @@ const CropCalendarView = ({ activeCropData }) => {
                     ) : (
                       <TableCell style={{ borderBottom: '5px solid white' }} colSpan="3" />
                     )}
-                    {activeGrowthPeriodRedux.includes('Dec') ? (
+                    {activeGrowthPeriod.includes('Dec') ? (
                       <Tooltip placement="top" title="Winter">
                         <TableCell
                           className="activeGrowthMonth growthMonthSeparator"
@@ -264,7 +262,7 @@ const CropCalendarView = ({ activeCropData }) => {
                     )}
                   </>
                 )}
-                {activeGrowthPeriodRedux.length > 0 ? (
+                {activeGrowthPeriod.length > 0 ? (
                   <TableCell
                     style={{
                       borderLeft: '5px solid white',
