@@ -289,8 +289,6 @@ const initialState = {
   activeCropData: [],
 
   goalsOpen: true,
-  cropFiltersOpen: true,
-
   explorer: {
     // filters for explorer
     cropSearch: '',
