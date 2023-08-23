@@ -23,8 +23,7 @@ import React, {
   useEffect, useState,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { CustomStyles, callCoverCropApi } from '../../shared/constants';
-import { cropDataFormatter } from '../../store/Store';
+import { CustomStyles, callCoverCropApi, cropDataFormatter } from '../../shared/constants';
 import '../../styles/cropSidebar.scss';
 import ComparisonBar from '../MyCoverCropList/ComparisonBar/ComparisonBar';
 import CoverCropSearch from './CoverCropSearch/CoverCropSearch';
