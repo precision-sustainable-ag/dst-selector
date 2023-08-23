@@ -5,6 +5,7 @@
   RenderContent contains all the text listed in the about section
 */
 import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { Typography } from '@mui/material';
 import { useLocation } from 'react-router-dom';
 import { callCoverCropApi, getRating } from '../../shared/constants';
@@ -20,8 +21,8 @@ function encodeParams(params) {
     .join('&');
 }
 
-function buildApiRequestUrl(uri, params) {
-  const baseUrl = 'http://localhost:3001';
+function buildApiRequestUrl(prefix, uri, params) {
+  const baseUrl = `https://${prefix}.covercrop-selector.org`;
 
   if (!params) return `${baseUrl}${uri}`;
 
@@ -30,21 +31,21 @@ function buildApiRequestUrl(uri, params) {
   return `${baseUrl}${uri}?${query}`;
 }
 
-async function getStateDataFromApi(state) {
+async function getStateDataFromApi(urlPrefix, state) {
   const uri = `/v2/regions/${state}`;
-  const url = buildApiRequestUrl(uri);
+  const url = buildApiRequestUrl(urlPrefix, uri);
   return callCoverCropApi(url); // Assuming this returns a promise, else adjust accordingly
 }
 
-async function getRegionsDataFromApi(regions) {
+async function getRegionsDataFromApi(urlPrefix, regions) {
   const uri = `/v2/regions/${regions}`;
-  const url = buildApiRequestUrl(uri);
+  const url = buildApiRequestUrl(urlPrefix, uri);
   return callCoverCropApi(url);
 }
 
-async function getCropDataFromApi(state, crop, regions) {
+async function getCropDataFromApi(urlPrefix, state, crop, regions) {
   const uri = `/v1/states/${state}/crops/${crop}`;
-  const url = buildApiRequestUrl(uri, { regions });
+  const url = buildApiRequestUrl(urlPrefix, uri, { regions });
   return callCoverCropApi(url);
 }
 
@@ -167,6 +168,7 @@ const InfoSheet = () => {
   const [loadingCrop, setLoadingCrop] = useState(false);
   const [loadingState, setLoadingState] = useState(false);
   const [loadingRegion, setLoadingRegion] = useState(false);
+  const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
 
   const query = useQuery();
   const CROP_ID = query.get('crop');
@@ -176,7 +178,7 @@ const InfoSheet = () => {
   useEffect(() => {
     if (!stateData && !loadingState) {
       setLoadingState(true);
-      getStateDataFromApi(STATE_ID).then((res) => {
+      getStateDataFromApi(apiBaseUrlRedux, STATE_ID).then((res) => {
         console.log('> State', res.data);
         setStateData(res.data);
         setLoadingState(false);
@@ -185,7 +187,7 @@ const InfoSheet = () => {
 
     if (!regionsData && !loadingRegion) {
       setLoadingRegion(true);
-      getRegionsDataFromApi(REGIONS_ID).then((res) => {
+      getRegionsDataFromApi(apiBaseUrlRedux, REGIONS_ID).then((res) => {
         console.log('> region', res.data);
         setRegionsData(res.data);
         setLoadingRegion(false);
@@ -194,7 +196,7 @@ const InfoSheet = () => {
 
     if (!crop && !loadingCrop) {
       setLoadingCrop(true);
-      getCropDataFromApi(STATE_ID, CROP_ID, REGIONS_ID).then((res) => {
+      getCropDataFromApi(apiBaseUrlRedux, STATE_ID, CROP_ID, REGIONS_ID).then((res) => {
         console.log('> crop', res.data);
         setCrop(res.data);
         setLoadingCrop(false);
