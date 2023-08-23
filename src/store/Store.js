@@ -284,11 +284,9 @@ const initialState = {
   zone4Dictionary: [],
   weatherDataReset: false,
 
-  activeGrowthPeriod: [],
   comparisonKeys: [],
   regions: [],
   activeCropData: [],
-  lastZone: '',
 
   goalsOpen: true,
   cropFiltersOpen: true,
