@@ -15,9 +15,13 @@ const apiBaseURL = 'https://api.openweathermap.org/data/2.5/weather';
 
 const ForecastComponent = () => {
   const dispatchRedux = useDispatch();
+
+  // redux vars
   const markersRedux = useSelector((stateRedux) => stateRedux.addressData.markers);
   const addressRedux = useSelector((stateRedux) => stateRedux.addressData.address);
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
+
+  // useState vars
   const [showTempIcon, setShowTempIcon] = useState(true);
   const [temp, setTemp] = useState({
     min: 0,
