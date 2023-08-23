@@ -43,6 +43,8 @@ const growthIcon = {
 
 const CropCalendarView = ({ activeCropData }) => {
   const dispatchRedux = useDispatch();
+
+  // redux vars
   const cropDataStateRedux = useSelector((stateRedux) => stateRedux.cropData);
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
@@ -54,12 +56,14 @@ const CropCalendarView = ({ activeCropData }) => {
   const [plantingWindowSortFlag, setPlantingWindowSortFlag] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalData, setModalData] = useState([{}]);
+
+  // useState vars
   const { activeGrowthPeriod, selectedCrops } = cropDataStateRedux;
   const activeCropDataShadow = activeCropData;
-
   const legendData = getLegendDataBasedOnCouncil(councilShorthandRedux);
 
   const dispatchValue = (value) => dispatchRedux(updateActiveCropData(value));
+
   const handleLegendModal = () => {
     setLegendModal(!legendModal);
   };
