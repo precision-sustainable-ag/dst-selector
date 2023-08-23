@@ -1,5 +1,4 @@
 /* eslint-disable */
-/* eslint-disable no-use-before-define */
 /*
   This is the main location widget component
   styled using ../../styles/location.scss
@@ -32,7 +31,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 import statesLatLongDict from '../../shared/stateslatlongdict';
 import {
   abbrRegion, reverseGEO, callCoverCropApi, postFields, getFields, destructureGeometryCollection,
-  buildPoint, buildGeometryCollection,
+  buildPoint, buildGeometryCollection, drawAreaFromGeoCollection
 } from '../../shared/constants';
 import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset';
 import PlantHardinessZone from '../CropSidebar/PlantHardinessZone/PlantHardinessZone';
@@ -87,6 +86,7 @@ const LocationComponent = () => {
   const userFieldRedux = useSelector((stateRedux) => stateRedux.userData.field);
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
   const myCoverCropListLocationRedux = useSelector((stateRedux) => stateRedux.sharedData.myCoverCropListLocation);
+
   //  console.log('userFieldRedux', userFieldRedux)
   const [fieldDialogState, setFieldDialogState] = useState(initFieldDialogState);
   const [selectedUserField, setSelectedUserField] = useState(userFieldRedux ? userFieldRedux.data[0].label : '');
@@ -99,9 +99,8 @@ const LocationComponent = () => {
     if (userFieldsRef.current.length > 0) {
       for (const field of userFieldsRef.current) {
         if (field.label === selectedUserField) {
-          // console.log('field', selectedUserField, field)
           if (field.geometry.type === 'Point') return [field];
-          if (field.geometry.type === 'GeometryCollection') return destructureGeometryCollection(field);
+          if (field.geometry.type === 'GeometryCollection') return drawAreaFromGeoCollection(field);
         }
       }
     }
@@ -188,9 +187,14 @@ const LocationComponent = () => {
     if (latitude === markersRedux[0][0] && longitude === markersRedux[0][1]) { return; }
 
     // if selected point is different as current point
-    if (latitude && latitude !== userFieldsRef.current.filter(f => f.label === selectedUserField)[0].geometry.coordinates[1]) {
-      setFieldDialogState({...fieldDialogState, open: true, actionType: 'add', areaType: 'Point'})
-    }
+    // TODO: add a state for polygons, add/select/update/delete, after the dialog is closed, set state back to default.
+    // const currSelectedField = userFieldsRef.current.filter((f) => f.label === selectedUserField)[0].geometry;
+    // if ((currSelectedField.type === 'Point' && latitude !== currSelectedField.coordinates[1])
+    //   || (currSelectedField.type === 'GeometryCollection' && latitude !== currSelectedField.geometries[0].coordinates[1])) {
+    //   setFieldDialogState({
+    //     ...fieldDialogState, open: true, actionType: 'add', areaType: 'Point',
+    //   });
+    // }
 
     if (Object.keys(selectedToEditSite).length > 0) {
       dispatchRedux(updateLocation(
@@ -366,52 +370,69 @@ const LocationComponent = () => {
     }
   }, []);
 
-  // console.log('currArea', currArea, currArea?.[0]);
+  console.log('currArea', currArea, currArea?.features?.slice(-1)[0]);
   // console.log('features', features);
 
   const onDraw = (draw) => {
     console.log(draw.mode, draw.e.type, draw);
     if (draw.mode !== 'select') {
-      setFieldDialogState({ ...fieldDialogState, open: true, actionType: draw.mode, areaType: 'Polygon' });
+      setFieldDialogState({
+        ...fieldDialogState, open: true, actionType: draw.mode, areaType: 'Polygon',
+      });
     }
   };
-
+  
+  // FIXME: Problems: 
+  // 1. if user select cancel after add a polygon, the current area would still presented
+  // 2. if user select cancel after update, the current are would still presented
   const handleClose = (save) => {
-    const { actionType, areaType } = fieldDialogState;
+    const { actionType, areaType, fieldName } = fieldDialogState;
     if (save) {
       if (actionType === 'add') {
-        const errText = fieldNameValidation(fieldDialogState.fieldName, userFieldsRef.current);
+        // TODO: remember to ADD the added field to userFieldList and DRAW it on the map
+        const errText = fieldNameValidation(fieldName, userFieldsRef.current);
         if (errText !== '') {
           setFieldDialogState({ ...fieldDialogState, error: true, errorText: errText });
           return;
         }
         const { longitude, latitude } = selectedToEditSite;
-        const point = buildPoint(longitude, latitude, fieldDialogState.fieldName);
+        const point = buildPoint(longitude, latitude, fieldName);
+        // console.log('add area', polygon);
         if (areaType === 'Point') {
           userFieldsRef.current = [...userFieldsRef.current, point];
+          setSelectedUserField(fieldName);
         }
-        if (actionType === 'Polygon') {
-          const geoCollection = buildGeometryCollection(point.geometry, currArea[0].geometry, fieldDialogState.fieldName);
+        if (areaType === 'Polygon') {
+          const polygon = currArea.features.slice(-1)[0];
+          const geoCollection = buildGeometryCollection(point.geometry, polygon.geometry, fieldName);
           userFieldsRef.current = [...userFieldsRef.current, geoCollection];
-        }        
+          setSelectedUserField(fieldName);
+        }
       }
       if (actionType === 'update') {
-        // currently update only supports point
+        // FIXME: currently update only supports polygon
         const { longitude, latitude } = selectedToEditSite;
         const point = buildPoint(longitude, latitude, selectedUserField);
-        const geoCollection = buildGeometryCollection(point.geometry, currArea[0].geometry, selectedUserField);
+        const polygon = currArea.features.slice(-1)[0];
+        // console.log('update', polygon);
+        const geoCollection = buildGeometryCollection(point.geometry, polygon.geometry, selectedUserField);
         userFieldsRef.current = userFieldsRef.current.map((f) => {
           if (f.label === selectedUserField) return geoCollection;
           return f;
         });
       }
       // if (actionType === 'delete') {
-        // userFieldsRef.current = userFieldsRef.current.filter((f) => f.id !== selectedUserField);
+      // userFieldsRef.current = userFieldsRef.current.filter((f) => f.id !== selectedUserField);
       // }
       // if (actionType === 'updateName') {
-          // TODO: delete prev? and add new
+      // TODO: delete prev? and add new
       // }
     } else {
+      // select cancel
+      if (actionType === 'add' || actionType === 'update') {
+        setDrawFields(getArea());
+      }
+      // if select delete and cancel, do not do anything
       console.log('This field will not be saved');
     }
     // reset to default state
