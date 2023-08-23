@@ -3,15 +3,15 @@ import {
   Collapse, FormControl, InputLabel, List, ListItem, MenuItem, Select,
 } from '@mui/material';
 import React from 'react';
-import { useSelector } from 'react-redux';
+// import { useSelector } from 'react-redux';
 
-const PlantHardinessZone = ({ updateReg }) => {
-  // const zoneRedux = useSelector((stateRedux) => stateRedux.addressData.zone);
-  const regionShorthand = useSelector((stateRedux) => stateRedux.mapData.regionShorthand);
-  const regionsRedux = useSelector((stateRedux) => stateRedux.mapData.regions);
-  const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
-  const zoneToggleRedux = useSelector((stateRedux) => stateRedux.sharedData.zoneToggle);
-
+const PlantHardinessZone = ({
+  updateReg,
+  regionShorthand,
+  regionsRedux,
+  councilLabelRedux,
+  zoneToggleRedux,
+}) => {
   const handleRegionChange = (event) => {
     // eslint-disable-next-line eqeqeq
     const regionInfo = regionsRedux.filter((region) => region.shorthand == event.target.value);
@@ -31,7 +31,7 @@ const PlantHardinessZone = ({ updateReg }) => {
       value={regionShorthand || ''}
     >
 
-      {regionsRedux.length > 0 && regionsRedux.map((region, i) => (
+      {regionsRedux?.length > 0 && regionsRedux.map((region, i) => (
         <MenuItem value={region.shorthand} key={`Region${region}${i}`}>
           {councilLabelRedux !== 'Midwest Cover Crop Council' ? `Zone ${region.shorthand?.toUpperCase()}` : `${region.shorthand?.toUpperCase()}`}
         </MenuItem>

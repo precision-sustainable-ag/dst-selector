@@ -38,10 +38,8 @@ mapboxgl.workerClass = require('worker-loader!mapbox-gl/dist/mapbox-gl-csp-worke
 
 const LocationComponent = () => {
   const dispatchRedux = useDispatch();
-  const [selectedZone, setselectedZone] = useState();
-  const [selectedToEditSite, setSelectedToEditSite] = useState({});
-  const [handleConfirm, setHandleConfirm] = useState(false);
-  const [locZipCode, setLocZipCode] = useState();
+
+  // redux vars
   const countyRedux = useSelector((stateRedux) => stateRedux.addressData.county);
   const zoneRedux = useSelector((stateRedux) => stateRedux.addressData.zone);
   const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
@@ -52,6 +50,13 @@ const LocationComponent = () => {
   const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
   const myCoverCropListLocationRedux = useSelector((stateRedux) => stateRedux.sharedData.myCoverCropListLocation);
+  const regionShorthand = useSelector((stateRedux) => stateRedux.mapData.regionShorthand);
+
+  // useState vars
+  const [selectedZone, setselectedZone] = useState();
+  const [selectedToEditSite, setSelectedToEditSite] = useState({});
+  const [handleConfirm, setHandleConfirm] = useState(false);
+  const [locZipCode, setLocZipCode] = useState();
 
   const getLatLng = useCallback(() => {
     if (stateLabelRedux) {
@@ -278,7 +283,12 @@ const LocationComponent = () => {
               )}
             <div className="row py-3 my-4 ">
               <div className="col-md-5 col-lg-6 col-sm-12 col-12">
-                <PlantHardinessZone updateReg={updateReg} />
+                <PlantHardinessZone
+                  updateReg={updateReg}
+                  regionShorthand={regionShorthand}
+                  regionsRedux={regionsRedux}
+                  councilLabelRedux={councilLabelRedux}
+                />
               </div>
             </div>
           </div>

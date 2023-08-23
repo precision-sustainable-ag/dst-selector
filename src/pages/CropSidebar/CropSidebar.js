@@ -55,12 +55,15 @@ const CropSidebar = ({
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
   const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
-  const zoneToggleRedux = useSelector((stateRedux) => stateRedux.sharedData.zonToggle);
+  const zoneToggleRedux = useSelector((stateRedux) => stateRedux.sharedData.zoneToggle);
   const speciesSelectorActivationFlagRedux = useSelector((stateRedux) => stateRedux.sharedData.speciesSelectorActivationFlag);
   const comparisonKeysRedux = useSelector((stateRedux) => stateRedux.sharedData.comparisonKeys);
   const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
   const cropFiltersOpenRedux = useSelector((stateRedux) => stateRedux.filterData.cropFiltersOpen);
+  const regionShorthand = useSelector((stateRedux) => stateRedux.mapData.regionShorthand);
+  const regionsRedux = useSelector((stateRedux) => stateRedux.mapData.regions);
+  const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
 
   // useState vars
   const [loading, setLoading] = useState(false);
@@ -459,7 +462,13 @@ const CropSidebar = ({
                         {zoneToggleRedux ? <ExpandLess /> : <ExpandMore />}
                       </ListItemButton>
                     </List>
-                    <PlantHardinessZone updateReg={updateReg} />
+                    <PlantHardinessZone
+                      updateReg={updateReg}
+                      regionShorthand={regionShorthand}
+                      regionsRedux={regionsRedux}
+                      councilLabelRedux={councilLabelRedux}
+                      zoneToggleRedux={zoneToggleRedux}
+                    />
                     <CoverCropSearch sfilters={sfilters} />
                   </>
                 )}
