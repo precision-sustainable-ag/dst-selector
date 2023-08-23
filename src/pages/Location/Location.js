@@ -90,6 +90,8 @@ const LocationComponent = () => {
   //  console.log('userFieldRedux', userFieldRedux)
   const [fieldDialogState, setFieldDialogState] = useState(initFieldDialogState);
   const [selectedUserField, setSelectedUserField] = useState(userFieldRedux ? userFieldRedux.data[0].label : '');
+  // use a state to control if currently is adding a point
+  const [isAddingPoint, setIsAddingPoint] = useState(true);
 
   const { isAuthenticated } = useAuth0();
 
@@ -188,13 +190,16 @@ const LocationComponent = () => {
 
     // if selected point is different as current point
     // TODO: add a state for polygons, add/select/update/delete, after the dialog is closed, set state back to default.
-    // const currSelectedField = userFieldsRef.current.filter((f) => f.label === selectedUserField)[0].geometry;
-    // if ((currSelectedField.type === 'Point' && latitude !== currSelectedField.coordinates[1])
-    //   || (currSelectedField.type === 'GeometryCollection' && latitude !== currSelectedField.geometries[0].coordinates[1])) {
-    //   setFieldDialogState({
-    //     ...fieldDialogState, open: true, actionType: 'add', areaType: 'Point',
-    //   });
-    // }
+    const currSelectedField = userFieldsRef.current.filter((f) => f.label === selectedUserField)[0].geometry;
+    if (isAddingPoint && latitude) {
+      if ((currSelectedField.type === 'Point' && latitude !== currSelectedField.coordinates[1])
+        || (currSelectedField.type === 'GeometryCollection' && latitude !== currSelectedField.geometries[0].coordinates[1])) {
+        setFieldDialogState({
+          ...fieldDialogState, open: true, actionType: 'add', areaType: 'Point',
+        });
+      }
+    }
+    
 
     if (Object.keys(selectedToEditSite).length > 0) {
       dispatchRedux(updateLocation(
@@ -370,26 +375,24 @@ const LocationComponent = () => {
     }
   }, []);
 
-  console.log('currArea', currArea, currArea?.features?.slice(-1)[0]);
+  // console.log('currArea', currArea, currArea?.features?.slice(-1)[0]);
   // console.log('features', features);
 
   const onDraw = (draw) => {
     console.log(draw.mode, draw.e.type, draw);
+    // set isaddingPoint to false
     if (draw.mode !== 'select') {
+      setIsAddingPoint(false);
       setFieldDialogState({
         ...fieldDialogState, open: true, actionType: draw.mode, areaType: 'Polygon',
       });
     }
   };
   
-  // FIXME: Problems: 
-  // 1. if user select cancel after add a polygon, the current area would still presented
-  // 2. if user select cancel after update, the current are would still presented
   const handleClose = (save) => {
     const { actionType, areaType, fieldName } = fieldDialogState;
     if (save) {
       if (actionType === 'add') {
-        // TODO: remember to ADD the added field to userFieldList and DRAW it on the map
         const errText = fieldNameValidation(fieldName, userFieldsRef.current);
         if (errText !== '') {
           setFieldDialogState({ ...fieldDialogState, error: true, errorText: errText });
@@ -437,6 +440,8 @@ const LocationComponent = () => {
     }
     // reset to default state
     setFieldDialogState(initFieldDialogState);
+    // reset isAdding point
+    setIsAddingPoint(true);
   };
 
   return (
