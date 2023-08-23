@@ -10,7 +10,7 @@ const PlantHardinessZone = ({
   regionShorthand,
   regionsRedux,
   councilLabelRedux,
-  regionToggleRedux,
+  regionToggleRedux = true,
 }) => {
   const handleRegionChange = (event) => {
     // eslint-disable-next-line eqeqeq
@@ -18,6 +18,7 @@ const PlantHardinessZone = ({
     updateReg(regionInfo[0]);
   };
 
+  console.log('HERE', regionShorthand);
   const plantHardinessZone = () => (
     <Select
       variant="filled"
