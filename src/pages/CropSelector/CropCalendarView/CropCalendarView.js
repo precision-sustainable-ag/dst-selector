@@ -54,6 +54,7 @@ const CropCalendarView = ({ activeCropData }) => {
   const [goalsSortFlag, setGoalsSortFlag] = useState(true);
   const [selectedCropsSortFlag, setSelectedCropsFlag] = useState(true);
   const [plantingWindowSortFlag, setPlantingWindowSortFlag] = useState(true);
+  const [cropGroupSortFlag, setCropGroupSortFlag] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalData, setModalData] = useState([{}]);
 
@@ -90,6 +91,10 @@ const CropCalendarView = ({ activeCropData }) => {
   const sortByPlantingWindow = () => {
     sortCrops('Planting Window', activeCropDataShadow, plantingWindowSortFlag);
     setPlantingWindowSortFlag(!plantingWindowSortFlag);
+  };
+  const sortByCropGroup = () => {
+    sortCrops('Crop Group', activeCropDataShadow, cropGroupSortFlag);
+    setCropGroupSortFlag(!cropGroupSortFlag);
   };
 
   const sortBySelectedCrops = () => {
@@ -134,12 +139,12 @@ const CropCalendarView = ({ activeCropData }) => {
                   >
                     <div className="container-fluid">
                       <div className="row">
-                        <div className="col-4">
+                        <div className="col-3">
                           <Typography variant="body1" component="span">
                             <div style={sudoButtonStyleWithPadding}>COVER CROP GROWTH WINDOW</div>
                           </Typography>
                         </div>
-                        <div className="col-4">
+                        <div className="col-3">
                           <Typography variant="body1">
                             <Button
                               startIcon={<AddCircle />}
@@ -151,13 +156,23 @@ const CropCalendarView = ({ activeCropData }) => {
                             </Button>
                           </Typography>
                         </div>
-                        <div className="col-4">
+                        <div className="col-3">
                           <Button
                             onClick={sortByPlantingWindow}
                             style={{ color: '#000' }}
                           >
                             <Typography variant="body1" component="span">
                               <div style={sudoButtonStyleWithPadding}>SORT BY PLANTING WINDOW</div>
+                            </Typography>
+                          </Button>
+                        </div>
+                        <div className="col-3">
+                          <Button
+                            onClick={sortByCropGroup}
+                            style={{ color: '#000' }}
+                          >
+                            <Typography variant="body1" component="span">
+                              <div style={sudoButtonStyleWithPadding}>SORT BY CROP GROUP</div>
                             </Typography>
                           </Button>
                         </div>
