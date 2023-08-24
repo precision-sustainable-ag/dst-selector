@@ -721,6 +721,20 @@ export const postFields = async (accessToken = null, fieldsData = null) => {
     .catch((err) => console.log(err));
 };
 
+export const deleteFields = async (accessToken = null, id = null) => {
+  const url = `${apiServerUrl}fields/${id}`;
+  const config = {
+    method: 'DELETE',
+    headers: {
+      'content-type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    },
+  };
+  return fetch(url, config)
+    .then((res) => res.json())
+    .catch((err) => console.log(err));
+};
+
 export const buildPoint = (lng, lat, name = null) => ({
   type: 'Feature',
   label: name,
