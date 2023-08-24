@@ -32,11 +32,10 @@ import CoverCropGoals from './CoverCropGoals/CoverCropGoals';
 import PreviousCashCrop from './PreviousCashCrop/PreviousCashCrop';
 import PlantHardinessZone from './PlantHardinessZone/PlantHardinessZone';
 import Legend from '../../components/Legend/Legend';
-import { updateZone as updateZoneRedux } from '../../reduxStore/addressSlice';
 import { updateRegion } from '../../reduxStore/mapSlice';
 import { clearFilters } from '../../reduxStore/filterSlice';
 import { pullCropData, updateActiveCropData, updateDateRange } from '../../reduxStore/cropSlice';
-import { pullDictionaryData, setAjaxInProgress, zoneToggleHandler } from '../../reduxStore/sharedSlice';
+import { pullDictionaryData, setAjaxInProgress, regionToggleHandler } from '../../reduxStore/sharedSlice';
 
 const CropSidebar = ({
   comparisonView,
@@ -55,11 +54,14 @@ const CropSidebar = ({
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
   const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
-  const zoneToggleRedux = useSelector((stateRedux) => stateRedux.sharedData.zonToggle);
+  const regionToggleRedux = useSelector((stateRedux) => stateRedux.sharedData.regionToggle);
   const speciesSelectorActivationFlagRedux = useSelector((stateRedux) => stateRedux.sharedData.speciesSelectorActivationFlag);
   const comparisonKeysRedux = useSelector((stateRedux) => stateRedux.sharedData.comparisonKeys);
   const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
+  const regionShorthand = useSelector((stateRedux) => stateRedux.mapData.regionShorthand);
+  const regionsRedux = useSelector((stateRedux) => stateRedux.mapData.regions);
+  const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
 
   // useState vars
   const [loading, setLoading] = useState(false);
@@ -360,13 +362,8 @@ const CropSidebar = ({
     </Button>
   );
 
-  const updateZone = (region) => {
+  const updateReg = (region) => {
     if (region !== undefined) {
-      dispatchRedux(updateZoneRedux({
-        zoneText: region.label,
-        zone: region.shorthand,
-        zoneId: region.id,
-      }));
       dispatchRedux(updateRegion({
         regionId: region.id ?? '',
         regionLabel: region.label ?? '',
@@ -454,7 +451,7 @@ const CropSidebar = ({
                 {from === 'explorer' && (
                   <>
                     <List component="div" disablePadding>
-                      <ListItemButton onClick={() => dispatchRedux(zoneToggleHandler())}>
+                      <ListItemButton onClick={() => dispatchRedux(regionToggleHandler())}>
                         <ListItemText
                           primary={(
                             <Typography variant="body2" className="text-uppercase">
@@ -462,10 +459,16 @@ const CropSidebar = ({
                             </Typography>
             )}
                         />
-                        {zoneToggleRedux ? <ExpandLess /> : <ExpandMore />}
+                        {regionToggleRedux ? <ExpandLess /> : <ExpandMore />}
                       </ListItemButton>
                     </List>
-                    <PlantHardinessZone updateZone={updateZone} />
+                    <PlantHardinessZone
+                      updateReg={updateReg}
+                      regionShorthand={regionShorthand}
+                      regionsRedux={regionsRedux}
+                      councilLabelRedux={councilLabelRedux}
+                      regionToggleRedux={regionToggleRedux}
+                    />
                     <CoverCropSearch sfilters={sfilters} />
                   </>
                 )}

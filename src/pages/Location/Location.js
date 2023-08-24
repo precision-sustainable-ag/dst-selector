@@ -25,10 +25,9 @@ import {
 import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset';
 import PlantHardinessZone from '../CropSidebar/PlantHardinessZone/PlantHardinessZone';
 import {
-  changeAddressViaMap, updateLocation, updateZone as updateZoneRedux, updateZipCode,
+  changeAddressViaMap, updateLocation,
 } from '../../reduxStore/addressSlice';
 import { updateRegion } from '../../reduxStore/mapSlice';
-
 import { snackHandler } from '../../reduxStore/sharedSlice';
 import {
   updateAvgFrostDates, updateAvgPrecipAnnual, updateAvgPrecipCurrentMonth, updateFrostFreeDays,
@@ -39,21 +38,25 @@ mapboxgl.workerClass = require('worker-loader!mapbox-gl/dist/mapbox-gl-csp-worke
 
 const LocationComponent = () => {
   const dispatchRedux = useDispatch();
-  const [selectedZone, setselectedZone] = useState();
-  const [selectedToEditSite, setSelectedToEditSite] = useState({});
-  // const [selectedRegion, setSelectedRegion] = useState({});
-  const [handleConfirm, setHandleConfirm] = useState(false);
+
+  // redux vars
   const countyRedux = useSelector((stateRedux) => stateRedux.addressData.county);
   const zoneRedux = useSelector((stateRedux) => stateRedux.addressData.zone);
   const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
   const markersRedux = useSelector((stateRedux) => stateRedux.addressData.markers);
-  const zipCodeRedux = useSelector((stateRedux) => stateRedux.addressData.zipCode);
   const regionsRedux = useSelector((stateRedux) => stateRedux.mapData.regions);
   const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
   const myCoverCropListLocationRedux = useSelector((stateRedux) => stateRedux.sharedData.myCoverCropListLocation);
+  const regionShorthand = useSelector((stateRedux) => stateRedux.mapData.regionShorthand);
+
+  // useState vars
+  const [selectedZone, setselectedZone] = useState();
+  const [selectedToEditSite, setSelectedToEditSite] = useState({});
+  const [handleConfirm, setHandleConfirm] = useState(false);
+  const [locZipCode, setLocZipCode] = useState();
 
   const getLatLng = useCallback(() => {
     if (stateLabelRedux) {
@@ -68,15 +71,8 @@ const LocationComponent = () => {
     }
   }, [selectedCropsRedux, myCoverCropListLocationRedux]);
 
-  const updateZone = (region) => {
+  const updateReg = (region) => {
     if (region !== undefined) {
-      dispatchRedux(updateZoneRedux(
-        {
-          zoneText: region.label,
-          zone: region.shorthand,
-          zoneId: region.id,
-        },
-      ));
       dispatchRedux(updateRegion({
         regionId: region.id ?? '',
         regionLabel: region.label ?? '',
@@ -86,14 +82,14 @@ const LocationComponent = () => {
   };
 
   useEffect(() => {
-    updateZone(regionsRedux[0]);
+    updateReg(regionsRedux[0]);
   }, [regionsRedux]);
 
   const handleMapChange = () => {
     // eslint-disable-next-line eqeqeq
     const regionInfo = regionsRedux.filter((region) => region.shorthand == selectedZone);
 
-    updateZone(regionInfo[0]);
+    updateReg(regionInfo[0]);
   };
 
   useEffect(() => {
@@ -109,7 +105,6 @@ const LocationComponent = () => {
       latitude,
       longitude,
       address,
-      fullAddress,
       zipCode,
       county,
     } = selectedToEditSite;
@@ -117,11 +112,11 @@ const LocationComponent = () => {
     if (latitude === markersRedux[0][0] && longitude === markersRedux[0][1]) { return; }
 
     if (Object.keys(selectedToEditSite).length > 0) {
+      setLocZipCode(zipCode);
       dispatchRedux(updateLocation(
         {
           address,
           markers: [[latitude, longitude]],
-          zipCode,
         },
       ));
       dispatchRedux(snackHandler({
@@ -133,10 +128,7 @@ const LocationComponent = () => {
         dispatchRedux(changeAddressViaMap(
           {
             address,
-            fullAddress,
-            zipCode,
             county,
-            addressVerified: true,
           },
         ));
       }
@@ -166,11 +158,6 @@ const LocationComponent = () => {
           ).toLowerCase();
 
           const city = resp?.features?.filter((feature) => feature?.place_type?.includes('place'))[0]?.text?.toLowerCase();
-          const zip = resp?.features?.filter((feature) => feature?.place_type?.includes('postcode'))[0]?.text;
-
-          if (zip) {
-            dispatchRedux(updateZipCode(zip));
-          }
 
           const currentMonthInt = moment().month() + 1;
           // frost url
@@ -243,11 +230,11 @@ const LocationComponent = () => {
   }, [markersRedux]);
 
   useEffect(() => {
-    if (!zipCodeRedux) {
+    if (!locZipCode) {
       return;
     }
 
-    callCoverCropApi(`https://phzmapi.org/${zipCodeRedux}.json`)
+    callCoverCropApi(`https://phzmapi.org/${locZipCode}.json`)
       .then((response) => {
         let { zone } = response;
 
@@ -265,16 +252,13 @@ const LocationComponent = () => {
           });
         }
         if (councilShorthandRedux !== 'MCCC') {
-          dispatchRedux(updateZoneRedux(
-            {
-              zoneText: `Zone ${zone}`,
-              zone,
-              zoneId: regionId,
-            },
-          ));
+          dispatchRedux(updateRegion({
+            regionId: regionId ?? '',
+            regionShorthand: zone ?? '',
+          }));
         }
       });
-  }, [zipCodeRedux]);
+  }, [locZipCode]);
 
   return (
     <div className="container-fluid mt-5">
@@ -299,7 +283,12 @@ const LocationComponent = () => {
               )}
             <div className="row py-3 my-4 ">
               <div className="col-md-5 col-lg-6 col-sm-12 col-12">
-                <PlantHardinessZone updateZone={updateZone} />
+                <PlantHardinessZone
+                  updateReg={updateReg}
+                  regionShorthand={regionShorthand}
+                  regionsRedux={regionsRedux}
+                  councilLabelRedux={councilLabelRedux}
+                />
               </div>
             </div>
           </div>
