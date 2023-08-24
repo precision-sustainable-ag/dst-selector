@@ -26,7 +26,6 @@ import moment from 'moment';
 import { Map } from '@psa/dst.ui.map';
 // import centroid from '@turf/centroid';
 import mapboxgl from 'mapbox-gl';
-// import { useAuth0 } from '@auth0/auth0-react';
 import { useAuth0 } from '@auth0/auth0-react';
 import statesLatLongDict from '../../shared/stateslatlongdict';
 import {
@@ -94,7 +93,7 @@ const LocationComponent = () => {
   const [selectedUserField, setSelectedUserField] = useState(userFieldRedux ? userFieldRedux.data[0].label : '');
   // use a state to control if currently is adding a point
   const [isAddingPoint, setIsAddingPoint] = useState(true);
-
+// console.log('isAddingPoint', isAddingPoint)
   const { isAuthenticated } = useAuth0();
 
   const userFieldsRef = useRef(userFieldRedux ? [...userFieldRedux.data] : []);
@@ -113,12 +112,10 @@ const LocationComponent = () => {
   };
 
   const [drawFields, setDrawFields] = useState([]);
-  // TODO: this useEffect can be instead by UserFieldList's onChange
+
   useEffect(() => {
     setDrawFields(getArea());
   }, [selectedUserField]);
-
-  // console.log('state', drawFields)
 
   const getLatLng = useCallback(() => {
     if (userFieldRedux && userFieldRedux.data.length > 0) {
@@ -191,7 +188,7 @@ const LocationComponent = () => {
 
     if (latitude === markersRedux[0][0] && longitude === markersRedux[0][1]) { return; }
 
-    // TODO: consoder user not logged in situation & no initial field situation
+    // if user not logged in, currSelectedField is undefined so will not be create new dialog
     const currSelectedField = userFieldsRef.current.filter((f) => f.label === selectedUserField)[0]?.geometry;
     if (isAddingPoint && latitude) {
       if ((currSelectedField?.type === 'Point' && latitude !== currSelectedField?.coordinates[1])
@@ -202,7 +199,6 @@ const LocationComponent = () => {
       }
     }
     
-
     if (Object.keys(selectedToEditSite).length > 0) {
       dispatchRedux(updateLocation(
         {
@@ -387,7 +383,7 @@ const LocationComponent = () => {
   const onDraw = (draw) => {
     console.log(draw.mode, draw.e.type, draw);
     // set isaddingPoint to false
-    if (draw.mode !== 'select') {
+    if (isAuthenticated && draw.mode !== 'select') {
       setIsAddingPoint(false);
       setFieldDialogState({
         ...fieldDialogState, open: true, actionType: draw.mode, areaType: 'Polygon',
@@ -409,17 +405,16 @@ const LocationComponent = () => {
         // console.log('add area', polygon);
         if (areaType === 'Point') {
           userFieldsRef.current = [...userFieldsRef.current, point];
-          setSelectedUserField(fieldName);
         }
         if (areaType === 'Polygon') {
           const polygon = currArea.features.slice(-1)[0];
           const geoCollection = buildGeometryCollection(point.geometry, polygon.geometry, fieldName);
           userFieldsRef.current = [...userFieldsRef.current, geoCollection];
-          setSelectedUserField(fieldName);
         }
+        setSelectedUserField(fieldName);
       }
       if (actionType === 'update') {
-        // FIXME: currently update only supports polygon
+        // Only supports polygon updates
         const { longitude, latitude } = selectedToEditSite;
         const point = buildPoint(longitude, latitude, selectedUserField);
         const polygon = currArea.features.slice(-1)[0];
