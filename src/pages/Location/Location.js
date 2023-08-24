@@ -1,4 +1,4 @@
-/* eslint-disable */
+// /* eslint-disable */
 /*
   This is the main location widget component
   styled using ../../styles/location.scss
@@ -6,13 +6,7 @@
 
 import '../../styles/location.scss';
 import {
-  Dialog,
   Typography,
-  Button,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  TextField,
 } from '@mui/material';
 import React, {
   useEffect,
@@ -29,8 +23,8 @@ import mapboxgl from 'mapbox-gl';
 import { useAuth0 } from '@auth0/auth0-react';
 import statesLatLongDict from '../../shared/stateslatlongdict';
 import {
-  abbrRegion, reverseGEO, callCoverCropApi, postFields, getFields, destructureGeometryCollection,
-  buildPoint, buildGeometryCollection, drawAreaFromGeoCollection
+  abbrRegion, reverseGEO, callCoverCropApi, postFields, getFields,
+  buildPoint, buildGeometryCollection, drawAreaFromGeoCollection, deleteFields,
 } from '../../shared/constants';
 import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset';
 import PlantHardinessZone from '../CropSidebar/PlantHardinessZone/PlantHardinessZone';
@@ -62,7 +56,7 @@ const initFieldDialogState = {
 
 const fieldNameValidation = (name, currentFields) => {
   if (name === '') return 'You must input a valid name!';
-  if (currentFields.filter((f) => f.label === name).length > 0) return 'Input name existed!';
+  if (currentFields.filter((f) => f.delete !== true && f.label === name).length > 0) return 'Input name existed!';
   return '';
 };
 
@@ -87,20 +81,25 @@ const LocationComponent = () => {
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
   const myCoverCropListLocationRedux = useSelector((stateRedux) => stateRedux.sharedData.myCoverCropListLocation);
 
-  //  console.log('userFieldRedux', userFieldRedux)
+  // console.log('userFieldRedux', userFieldRedux);
   const [fieldDialogState, setFieldDialogState] = useState(initFieldDialogState);
-  // TODO: set selectedUserField the latest field that have been updated
-  const [selectedUserField, setSelectedUserField] = useState(userFieldRedux ? userFieldRedux.data[0].label : '');
+  const [selectedUserField, setSelectedUserField] = useState(
+    userFieldRedux && userFieldRedux.data.length
+      ? userFieldRedux.data[userFieldRedux.data.length - 1].label
+      : '',
+  );
   // use a state to control if currently is adding a point
   const [isAddingPoint, setIsAddingPoint] = useState(true);
-// console.log('isAddingPoint', isAddingPoint)
   const { isAuthenticated } = useAuth0();
+
+  // console.log('selectedUserField', selectedUserField)
 
   const userFieldsRef = useRef(userFieldRedux ? [...userFieldRedux.data] : []);
 
   const getArea = () => {
     if (userFieldsRef.current.length > 0) {
-      for (const field of userFieldsRef.current) {
+      for (let i = 0; i < userFieldsRef.current.length; i++) {
+        const field = userFieldsRef.current[i];
         if (field.label === selectedUserField) {
           if (field.geometry.type === 'Point') return [field];
           if (field.geometry.type === 'GeometryCollection') return drawAreaFromGeoCollection(field);
@@ -108,6 +107,7 @@ const LocationComponent = () => {
       }
     }
     // reset default field to state capitol
+    // FIXME: since this add a point to the map without triggering dialog?? the isAddingPoint is set to false and cannot recover
     return [buildPoint(statesLatLongDict[stateLabelRedux][1], statesLatLongDict[stateLabelRedux][0])];
   };
 
@@ -119,12 +119,13 @@ const LocationComponent = () => {
 
   const getLatLng = useCallback(() => {
     if (userFieldRedux && userFieldRedux.data.length > 0) {
+      const currField = userFieldRedux.data[userFieldRedux.data.length - 1];
       // flip lat and lng here
-      if (userFieldRedux.data[0].geometry.type === 'Point') {
-        return [userFieldRedux.data[0].geometry.coordinates[1], userFieldRedux.data[0].geometry.coordinates[0]];
+      if (currField.geometry.type === 'Point') {
+        return [currField.geometry.coordinates[1], currField.geometry.coordinates[0]];
       }
-      if (userFieldRedux.data[0].geometry.type === 'GeometryCollection') {
-        const { coordinates } = userFieldRedux.data[0].geometry.geometries[0];
+      if (currField.geometry.type === 'GeometryCollection') {
+        const { coordinates } = currField.geometry.geometries[0];
         return [coordinates[1], coordinates[0]];
       }
     }
@@ -188,17 +189,20 @@ const LocationComponent = () => {
 
     if (latitude === markersRedux[0][0] && longitude === markersRedux[0][1]) { return; }
 
-    // if user not logged in, currSelectedField is undefined so will not be create new dialog
-    const currSelectedField = userFieldsRef.current.filter((f) => f.label === selectedUserField)[0]?.geometry;
-    if (isAddingPoint && latitude) {
-      if ((currSelectedField?.type === 'Point' && latitude !== currSelectedField?.coordinates[1])
-        || (currSelectedField?.type === 'GeometryCollection' && latitude !== currSelectedField?.geometries[0].coordinates[1])) {
-        setFieldDialogState({
-          ...fieldDialogState, open: true, actionType: 'add', areaType: 'Point',
-        });
+    if (isAuthenticated) {
+      const currSelectedField = userFieldsRef.current.filter((f) => f.label === selectedUserField)[0]?.geometry;
+      if (isAddingPoint && latitude) {
+        if ((!currSelectedField && latitude !== statesLatLongDict[stateLabelRedux][0])
+          || (currSelectedField?.type === 'Point' && latitude !== currSelectedField?.coordinates[1])
+          || (currSelectedField?.type === 'GeometryCollection' && latitude !== currSelectedField?.geometries[0].coordinates[1])
+        ) {
+          setFieldDialogState({
+            ...fieldDialogState, open: true, actionType: 'add', areaType: 'Point',
+          });
+        }
       }
     }
-    
+
     if (Object.keys(selectedToEditSite).length > 0) {
       dispatchRedux(updateLocation(
         {
@@ -363,17 +367,21 @@ const LocationComponent = () => {
     // save user selected field when component will unmount, need to use refs to reach the component state
     console.log('save', userFieldsRef.current);
     if (isAuthenticated) {
-      userFieldsRef.current.forEach(async (field) => {
-        // if there is no id field in the object, then it means this object is a new one and need to be post to the backend
-        if (field.delete === true) {
-          // TODO: call delete api
-          console.log('DELETE', field);
-        }
-        if (!field.id) {
-          await postFields(accessTokenRedux, field);
-          getFields(accessTokenRedux).then((data) => dispatchRedux(updateField(data)));
-        }
-      });
+      const updateFields = async () => {
+        const fieldUpdates = userFieldsRef.current.map((field) => {
+          if (field.delete === true) {
+            return deleteFields(accessTokenRedux, field.id);
+          }
+          // if there is no id field in the object, then it means this object is a new one and need to be post to the backend
+          if (!field.id) {
+            return postFields(accessTokenRedux, field);
+          }
+          return null;
+        });
+        await Promise.all(fieldUpdates);
+        getFields(accessTokenRedux).then((data) => dispatchRedux(updateField(data)));
+      };
+      updateFields();
     }
   }, []);
 
@@ -390,7 +398,7 @@ const LocationComponent = () => {
       });
     }
   };
-  
+
   const handleClose = (save) => {
     const { actionType, areaType, fieldName } = fieldDialogState;
     if (save) {
@@ -430,11 +438,12 @@ const LocationComponent = () => {
         userFieldsRef.current = userFieldsRef.current.map((f) => {
           if (f.label === selectedUserField) {
             // if this field have not been saved to the backend, directly delete it from the userFields.
-            if (!f.id) return;
-            return {...f, delete: true};
+            if (!f.id) return null;
+            return { ...f, delete: true };
           }
           return f;
         });
+        userFieldsRef.current = userFieldsRef.current.filter((f) => f !== null);
         // TODO: reset initFeature to another field(the last field?)
         setSelectedUserField('');
       }
@@ -445,11 +454,16 @@ const LocationComponent = () => {
           setFieldDialogState({ ...fieldDialogState, error: true, errorText: errText });
           return;
         }
-        const newField = {...userFieldsRef.current.filter((f) => f.label === prevName)[0], label: fieldName};
+        const newField = {
+          type: 'Feature',
+          geometry: userFieldsRef.current.filter((f) => f.label === prevName)[0].geometry,
+          label: fieldName,
+        };
         userFieldsRef.current = [...userFieldsRef.current.map((f) => {
-          if (f.label !== prevName) return {...f, delete: true};
+          if (f.label === prevName) return { ...f, delete: true };
           return f;
         }), newField];
+        setSelectedUserField(fieldName);
       }
     } else {
       // select cancel
