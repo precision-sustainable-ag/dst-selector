@@ -44,6 +44,7 @@ const CropTableComponent = ({
   const [nameSortFlag, setNameSortFlag] = useState(true);
   const [averageGoalsFlag, setAverageGoalsFlag] = useState(true);
   const [plantingWindowSortFlag, setPlantingWindowSortFlag] = useState(true);
+  const [cropGroupSortFlag, setCropGroupSortFlag] = useState(true);
   const [selectedCropsSortFlag, setSelectedCropsSortFlag] = useState(true);
   const [goal1SortFlag, setGoal1SortFlag] = useState(true);
   const [goal2SortFlag, setGoal2SortFlag] = useState(true);
@@ -90,6 +91,11 @@ const CropTableComponent = ({
   const sortByPlantingWindow = () => {
     sortCrops('Planting Window', activeCropDataShadow, plantingWindowSortFlag);
     setPlantingWindowSortFlag(!plantingWindowSortFlag);
+  };
+
+  const sortByCropGroup = () => {
+    sortCrops('Crop Group', activeCropDataShadow, cropGroupSortFlag);
+    setCropGroupSortFlag(!cropGroupSortFlag);
   };
 
   const sortBySelectedCrops = () => {
@@ -170,6 +176,35 @@ const CropTableComponent = ({
                 </TableCell>
               )}
 
+              {selectedGoalsRedux.length > 0 && (
+                <TableCell
+                  colSpan={selectedGoalsRedux.length}
+                  style={{
+                    backgroundColor: '#abd08f',
+                    textAlign: 'center',
+                  }}
+                >
+                  <Button
+                    // fix this
+                    onClick={() => sortByCropGroup()}
+                  >
+                    <Sort
+                      style={{
+                        color:
+                          cropGroupSortFlag
+                            ? CustomStyles().secondaryProgressBtnColor
+                            : CustomStyles().progressColor,
+                        transform: cropGroupSortFlag && 'rotate(180deg)',
+                      }}
+                    />
+                    &nbsp;
+                    {' '}
+                    <Typography variant="body2" style={{ color: '#000' }}>
+                      SORT BY CROP GROUP
+                    </Typography>
+                  </Button>
+                </TableCell>
+              )}
               <TableCell
                 style={{
                   backgroundColor: '#abd08f',
