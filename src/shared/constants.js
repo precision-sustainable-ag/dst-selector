@@ -580,6 +580,30 @@ export const sortCrops = (type = 'Average Goals', crops = [], sortFlag = '', sel
       }
     }
   }
+  if (type === 'Crop Group') {
+    if (crops.length > 0) {
+      crops.sort((a, b) => {
+        const firstGroup = a.group.toLowerCase().replace(/\s+/g, '');
+        const secondGroup = b.group.toLowerCase().replace(/\s+/g, '');
+        const groupStringComparsion = firstGroup.localeCompare(secondGroup);
+        // to ensure same order every time, if the group names are same then sort by crop name
+        if (groupStringComparsion === 0) {
+          // reused code piece
+          const firstCropName = flipCoverCropName(
+            a.label.toLowerCase(),
+          ).replace(/\s+/g, '');
+          const secondCropName = flipCoverCropName(
+            b.label.toLowerCase(),
+          ).replace(/\s+/g, '');
+          return firstCropName.localeCompare(secondCropName);
+        }
+        return groupStringComparsion;
+      });
+    }
+    if (!sortFlag) {
+      crops.reverse();
+    }
+  }
 };
 
 export const sudoButtonStyle = {
