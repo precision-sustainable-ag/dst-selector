@@ -1,9 +1,8 @@
 import {
-  Modal, Box, Typography, Button, Grid,
+  Modal, Box, Typography, Grid,
 } from '@mui/material';
 import React from 'react';
-import LoginButton from '../../../components/Auth/Buttons/LoginButton';
-import SignUpButton from '../../../components/Auth/Buttons/SignUpButton';
+import AuthButton from '../../../components/Auth/AuthButton/AuthButton';
 
 const AuthModal = ({ modalOpen, setModalOpen }) => {
   const style = {
@@ -39,15 +38,13 @@ const AuthModal = ({ modalOpen, setModalOpen }) => {
         </Typography>
         <Grid container spacing={1}>
           <Grid item>
-            <LoginButton />
+            <AuthButton variant="outlined" type="Login" />
           </Grid>
           <Grid item>
-            <SignUpButton />
+            <AuthButton variant="outlined" type="Signup" />
           </Grid>
           <Grid item>
-            <Button variant="text" onClick={handleModal}>
-              Not now
-            </Button>
+            <AuthButton variant="text" type="Not now" onClickCallback={handleModal} />
           </Grid>
         </Grid>
       </Box>
