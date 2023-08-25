@@ -3,7 +3,7 @@
   The ProgressButtonsInner allow the user to navigate steps
 */
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Refresh } from '@mui/icons-material';
 import { Stack } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
@@ -15,14 +15,13 @@ const ProgressButtonsInner = ({
   isDisabledBack, isDisabledNext, isDisabledRefresh, closeExpansionPanel, setConfirmationOpen,
 }) => {
   const dispatchRedux = useDispatch();
-  const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
   const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
 
-  const [crement, setCrement] = useState('');
+  // const [crement, setCrement] = useState('');
 
   const changeProgress = (type) => {
-    setCrement(type);
+    // setCrement(type);
     if (type === 'increment') {
       dispatchRedux(updateProgress('INCREMENT'));
     }
@@ -31,12 +30,6 @@ const ProgressButtonsInner = ({
       dispatchRedux(updateProgress('DECREMENT'));
     }
   };
-
-  useEffect(() => {
-    if (councilLabelRedux === 'Midwest Cover Crop Council' && progressRedux === 2) {
-      changeProgress(crement);
-    }
-  }, [progressRedux]);
 
   return (
     <Stack
