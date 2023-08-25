@@ -12,9 +12,9 @@ import '../../styles/header.scss';
 import HeaderLogoInfo from './HeaderLogoInfo/HeaderLogoInfo';
 import InformationBar from './InformationBar/InformationBar';
 import ToggleOptions from './ToggleOptions/ToggleOptions';
-import LogoutButton from '../../components/Auth/Buttons/LogoutButton';
 import { updateAccessToken, updateField } from '../../reduxStore/userSlice';
 import { getFields } from '../../shared/constants';
+import AuthButton from '../../components/Auth/AuthButton/AuthButton';
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -22,7 +22,7 @@ const Header = () => {
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
   const consentRedux = useSelector((stateRedux) => stateRedux.sharedData.consent);
   const [isRoot, setIsRoot] = useState(false);
-  const { isAuthenticated, loginWithRedirect, getAccessTokenSilently } = useAuth0();
+  const { isAuthenticated, getAccessTokenSilently } = useAuth0();
   const isActive = {};
 
   useEffect(() => {
@@ -51,10 +51,6 @@ const Header = () => {
     }
   }, [markersRedux]);
 
-  const handleLogin = async () => {
-    await loginWithRedirect();
-  };
-
   return (
     <header className="d-print-none">
       <div className="topHeader">
@@ -74,13 +70,7 @@ const Header = () => {
           FEEDBACK
         </NavLink>
         <span className="line" />
-        {isAuthenticated ? (
-          <LogoutButton />
-        ) : (
-          <a href="/" onClick={handleLogin}>
-            LOG IN
-          </a>
-        )}
+        <AuthButton type={isAuthenticated ? 'Logout' : 'Login'} isAnchor />
       </div>
 
       <div className="container-fluid">
