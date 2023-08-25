@@ -39,9 +39,9 @@ export const updateStateInfo = ({
   },
 });
 
-export const resetMapData = {
+export const resetMapData = () => ({
   type: 'RESET_MAP_DATA',
-};
+});
 
 const mapReducer = (state = initialState, action = null) => {
   switch (action.type) {
