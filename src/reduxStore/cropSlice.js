@@ -64,8 +64,6 @@ const cropDataReducer = (state = initialState, action = null) => {
       return {
         ...state,
         selectedCrops: [...action.payload.value],
-        // snackOpen: action.data.snackOpen,
-        // snackMessage: action.data.snackMessage,
       };
 
     case 'UPDATE_DATE_RANGE': {

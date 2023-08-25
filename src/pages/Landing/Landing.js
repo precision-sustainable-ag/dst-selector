@@ -24,7 +24,7 @@ import { callCoverCropApi } from '../../shared/constants';
 import '../../styles/landing.scss';
 import ConsentModal from '../CoverCropExplorer/ConsentModal/ConsentModal';
 import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset';
-import { updateZone } from '../../reduxStore/addressSlice';
+// import { updateZone } from '../../reduxStore/addressSlice';
 import AuthModal from './AuthModal/AuthModal';
 import { updateRegions, updateRegion, updateStateInfo } from '../../reduxStore/mapSlice';
 
@@ -70,7 +70,10 @@ const Landing = ({ height, title, bg }) => {
   };
 
   useEffect(() => {
-    callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states`).then((data) => { setAllStates(data.data); });
+    callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states`).then((data) => {
+      setAllStates(data.data);
+      if (stateIdRedux) setSelectedState(data.data.filter((s) => s.id === stateIdRedux)[0]);
+    });
   }, []);
 
   useEffect(() => {
@@ -80,14 +83,6 @@ const Landing = ({ height, title, bg }) => {
         regionLabel: regionsRedux[0]?.label ?? '',
         regionShorthand: regionsRedux[0]?.shorthand ?? '',
       }));
-
-      dispatchRedux(updateZone(
-        {
-          zoneText: regionsRedux[0]?.label,
-          zone: regionsRedux[0]?.shorthand,
-          zoneId: regionsRedux[0]?.id,
-        },
-      ));
     }
   }, [regionsRedux]);
 
@@ -120,6 +115,13 @@ const Landing = ({ height, title, bg }) => {
       if (st.length > 0) {
         setSelectedState(st[0]);
       } else if (selectedRegion?.id) {
+        setSelectedState('');
+        dispatchRedux(updateStateInfo({
+          stateLabel: null,
+          stateId: null,
+          councilShorthand: null,
+          councilLabel: null,
+        }));
         alert(
           // eslint-disable-next-line max-len
           'The region you have selected is not currently supported. We currently support Northeast, Midwest, and Southern Cover Crop Councils. Please try again!',
