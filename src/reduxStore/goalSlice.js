@@ -29,9 +29,9 @@ export const toggleGoalsOpen = () => ({
   type: 'TOGGLE_GOALS_OPEN',
 });
 
-export const resetGoalData = {
+export const resetGoalData = () => ({
   type: 'RESET_GOAL_DATA',
-};
+});
 
 const goalsReducer = (state = initialState, action = null) => {
   switch (action.type) {

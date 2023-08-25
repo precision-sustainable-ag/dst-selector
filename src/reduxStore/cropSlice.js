@@ -44,9 +44,9 @@ export const updateDateRange = ({ startDate, endDate }) => ({
   },
 });
 
-export const resetCropData = {
+export const resetCropData = () => ({
   type: 'RESET_CROP_DATA',
-};
+});
 
 // reducer
 const cropDataReducer = (state = initialState, action = null) => {
