@@ -1,4 +1,4 @@
-/* eslint-disable */
+// /* eslint-disable */
 /*
   This is the main location widget component
   styled using ../../styles/location.scss
@@ -61,7 +61,6 @@ const fieldNameValidation = (name, currentFields) => {
 
 const LocationComponent = () => {
   const dispatchRedux = useDispatch();
-  const [currArea, setCurrArea] = useState([]);
   // redux vars
   const countyRedux = useSelector((stateRedux) => stateRedux.addressData.county);
   const zoneRedux = useSelector((stateRedux) => stateRedux.addressData.zone);
@@ -82,10 +81,7 @@ const LocationComponent = () => {
   const [selectedToEditSite, setSelectedToEditSite] = useState({});
   const [handleConfirm, setHandleConfirm] = useState(false);
   const [locZipCode, setLocZipCode] = useState();
-
-  const { isAuthenticated } = useAuth0();
-
-  // console.log('userFieldRedux', userFieldRedux);
+  const [currArea, setCurrArea] = useState([]);
   const [fieldDialogState, setFieldDialogState] = useState(initFieldDialogState);
   const [selectedUserField, setSelectedUserField] = useState(
     userFieldRedux && userFieldRedux.data.length
@@ -95,11 +91,13 @@ const LocationComponent = () => {
   // use a state to control if currently is adding a point
   const [isAddingPoint, setIsAddingPoint] = useState(true);
   const [drawFields, setDrawFields] = useState([]);
-  
+
   const userFieldsRef = useRef(userFieldRedux ? [...userFieldRedux.data] : []);
 
-  // console.log('selectedUserField', selectedUserField)
+  const { isAuthenticated } = useAuth0();
 
+  // console.log('userFieldRedux', userFieldRedux);
+  // console.log('selectedUserField', selectedUserField)
 
   const getArea = () => {
     if (userFieldsRef.current.length > 0) {
@@ -114,7 +112,6 @@ const LocationComponent = () => {
     // reset default field to state capitol
     return [buildPoint(statesLatLongDict[stateLabelRedux][1], statesLatLongDict[stateLabelRedux][0])];
   };
-
 
   useEffect(() => {
     setDrawFields(getArea());
@@ -363,7 +360,16 @@ const LocationComponent = () => {
           return null;
         });
         await Promise.all(fieldUpdates);
-        getFields(accessTokenRedux).then((data) => dispatchRedux(updateField(data)));
+        getFields(accessTokenRedux).then((data) => {
+          // TODO: since all updated fields are send to the backend after leave the page,
+          // the backend time might be not accurate to when show the field is updated
+          // data = {
+          //   ...data,
+          //   data: data.data.sort((a, b) => new Date(a.updatedAt) - new Date(b.updatedAt)),
+          // };
+          // console.log('sortedData', data);
+          dispatchRedux(updateField(data));
+        });
       };
       updateFields();
     }
@@ -373,7 +379,7 @@ const LocationComponent = () => {
   // console.log('features', features);
 
   const onDraw = (draw) => {
-    console.log(draw.mode, draw.e.type, draw);
+    // console.log(draw.mode, draw.e.type, draw);
     // set isaddingPoint to false
     if (isAuthenticated && draw.mode !== 'select') {
       setIsAddingPoint(false);
@@ -428,8 +434,9 @@ const LocationComponent = () => {
           return f;
         });
         userFieldsRef.current = userFieldsRef.current.filter((f) => f !== null);
-        // TODO: reset initFeature to another field(the last field?)
-        setSelectedUserField('');
+        // find next available field in current fields array
+        const nextAvailableField = userFieldsRef.current.find((f) => f.delete !== true);
+        setSelectedUserField(nextAvailableField === undefined ? '' : nextAvailableField.label);
       }
       if (actionType === 'updateName') {
         const { prevName } = fieldDialogState;
