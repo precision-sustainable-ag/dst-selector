@@ -50,13 +50,13 @@ const LocationComponent = () => {
   const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
   const myCoverCropListLocationRedux = useSelector((stateRedux) => stateRedux.sharedData.myCoverCropListLocation);
-  const regionShorthand = useSelector((stateRedux) => stateRedux.mapData.regionShorthand);
 
   // useState vars
-  const [selectedZone, setselectedZone] = useState();
+  const [selectedRegion, setRelectedRegion] = useState();
   const [selectedToEditSite, setSelectedToEditSite] = useState({});
   const [handleConfirm, setHandleConfirm] = useState(false);
   const [locZipCode, setLocZipCode] = useState();
+  const [regionShorthand, setRegionShorthand] = useState();
 
   const getLatLng = useCallback(() => {
     if (stateLabelRedux) {
@@ -73,10 +73,9 @@ const LocationComponent = () => {
 
   const updateReg = (region) => {
     if (region !== undefined) {
+      setRegionShorthand(region.shorthand);
       dispatchRedux(updateRegion({
         regionId: region.id ?? '',
-        regionLabel: region.label ?? '',
-        regionShorthand: region.shorthand ?? '',
       }));
     }
   };
@@ -87,16 +86,16 @@ const LocationComponent = () => {
 
   const handleMapChange = () => {
     // eslint-disable-next-line eqeqeq
-    const regionInfo = regionsRedux.filter((region) => region.shorthand == selectedZone);
+    const regionInfo = regionsRedux.filter((region) => region.shorthand == selectedRegion);
 
     updateReg(regionInfo[0]);
   };
 
   useEffect(() => {
     if (councilLabelRedux !== 'Midwest Cover Crop Council') {
-      setselectedZone(zoneRedux);
+      setRelectedRegion(zoneRedux);
     } else {
-      setselectedZone(countyRedux?.replace(' County', ''));
+      setRelectedRegion(countyRedux?.replace(' County', ''));
     }
   }, [zoneRedux, countyRedux]);
 
@@ -132,7 +131,7 @@ const LocationComponent = () => {
           },
         ));
       }
-      if (selectedZone) {
+      if (selectedRegion) {
         handleMapChange();
       }
     }
@@ -252,9 +251,9 @@ const LocationComponent = () => {
           });
         }
         if (councilShorthandRedux !== 'MCCC') {
+          setRegionShorthand(zone);
           dispatchRedux(updateRegion({
             regionId: regionId ?? '',
-            regionShorthand: zone ?? '',
           }));
         }
       });

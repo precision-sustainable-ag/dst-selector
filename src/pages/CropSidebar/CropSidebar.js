@@ -59,7 +59,6 @@ const CropSidebar = ({
   const comparisonKeysRedux = useSelector((stateRedux) => stateRedux.sharedData.comparisonKeys);
   const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
-  const regionShorthand = useSelector((stateRedux) => stateRedux.mapData.regionShorthand);
   const regionsRedux = useSelector((stateRedux) => stateRedux.mapData.regions);
   const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
 
@@ -71,6 +70,7 @@ const CropSidebar = ({
   const [sidebarFiltersData, setSidebarFiltersData] = useState([]);
   const [tableHeight, setTableHeight] = useState(0);
   const [cropFiltersOpen, setCropFiltersOpen] = useState(true);
+  const [regionShorthand, setRegionShorthand] = useState();
   const [dateRange, setDateRange] = useState({
     startDate: null,
     endDate: null,
@@ -364,10 +364,9 @@ const CropSidebar = ({
 
   const updateReg = (region) => {
     if (region !== undefined) {
+      setRegionShorthand(region.shorthand);
       dispatchRedux(updateRegion({
         regionId: region.id ?? '',
-        regionLabel: region.label ?? '',
-        regionShorthand: region.shorthand ?? '',
       }));
     }
   };
