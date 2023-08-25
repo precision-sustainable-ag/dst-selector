@@ -5,7 +5,7 @@ import React from 'react';
 import { userLogout } from '../../../reduxStore/userSlice';
 
 const AuthButton = ({
-  type, variant = 'text', onClickCallback = () => {}, isAnchor = false,
+  type, variant = 'text', onClickCallback = () => {}, color = 'primary',
 }) => {
   const { dispatch } = useDispatch();
   const { loginWithRedirect, logout } = useAuth0();
@@ -44,7 +44,7 @@ const AuthButton = ({
   };
 
   return (
-    <Button variant={variant} onClick={handleClick} component={isAnchor ? 'a' : null}>
+    <Button variant={variant} onClick={handleClick} color={color}>
       {type}
     </Button>
   );

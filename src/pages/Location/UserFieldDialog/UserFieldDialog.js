@@ -14,10 +14,11 @@ const UserFieldDialog = ({ fieldDialogState, setFieldDialogState, handleClose })
   } = fieldDialogState;
   return (
     <Dialog sx={{ m: 0, p: 2 }} open={open}>
-      {actionType === 'add' && (
+      {(actionType === 'add' || actionType === 'updateName') && (
       <>
         <DialogTitle>
-          You need to give this field a nickname
+          {actionType === 'add' && 'You need to give this field a nickname'}
+          {actionType === 'updateName' && 'Change the nickname for this field'}
         </DialogTitle>
         <DialogContent>
           <TextField
@@ -41,24 +42,6 @@ const UserFieldDialog = ({ fieldDialogState, setFieldDialogState, handleClose })
         <DialogTitle>
           Are you going to delete this field?
         </DialogTitle>
-      )}
-      {actionType === 'updateName' && (
-      <>
-        <DialogTitle>
-          Change the nickname for this field
-        </DialogTitle>
-        <DialogContent>
-          <TextField
-            autoFocus
-            error={error}
-            helperText={errorText}
-            variant="standard"
-            label="Field Nickname"
-            value={fieldName}
-            onChange={(e) => setFieldDialogState({ ...fieldDialogState, fieldName: e.target.value })}
-          />
-        </DialogContent>
-      </>
       )}
       <DialogActions>
         <Button onClick={() => handleClose(true)}>OK</Button>
