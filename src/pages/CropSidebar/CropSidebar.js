@@ -23,8 +23,7 @@ import React, {
   useEffect, useState,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { CustomStyles, callCoverCropApi } from '../../shared/constants';
-import { cropDataFormatter } from '../../store/Store';
+import { CustomStyles, callCoverCropApi, cropDataFormatter } from '../../shared/constants';
 import '../../styles/cropSidebar.scss';
 import ComparisonBar from '../MyCoverCropList/ComparisonBar/ComparisonBar';
 import CoverCropSearch from './CoverCropSearch/CoverCropSearch';
@@ -33,11 +32,10 @@ import CoverCropGoals from './CoverCropGoals/CoverCropGoals';
 import PreviousCashCrop from './PreviousCashCrop/PreviousCashCrop';
 import PlantHardinessZone from './PlantHardinessZone/PlantHardinessZone';
 import Legend from '../../components/Legend/Legend';
-import { updateZone as updateZoneRedux } from '../../reduxStore/addressSlice';
 import { updateRegion } from '../../reduxStore/mapSlice';
-import { clearFilters, toggleCropFiltersOpen } from '../../reduxStore/filterSlice';
+import { clearFilters } from '../../reduxStore/filterSlice';
 import { pullCropData, updateActiveCropData, updateDateRange } from '../../reduxStore/cropSlice';
-import { pullDictionaryData, setAjaxInProgress, zoneToggleHandler } from '../../reduxStore/sharedSlice';
+import { pullDictionaryData, setAjaxInProgress, regionToggleHandler } from '../../reduxStore/sharedSlice';
 
 const CropSidebar = ({
   comparisonView,
@@ -56,12 +54,14 @@ const CropSidebar = ({
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
   const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
-  const zoneToggleRedux = useSelector((stateRedux) => stateRedux.sharedData.zonToggle);
+  const regionToggleRedux = useSelector((stateRedux) => stateRedux.sharedData.regionToggle);
   const speciesSelectorActivationFlagRedux = useSelector((stateRedux) => stateRedux.sharedData.speciesSelectorActivationFlag);
   const comparisonKeysRedux = useSelector((stateRedux) => stateRedux.sharedData.comparisonKeys);
   const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
-  const cropFiltersOpenRedux = useSelector((stateRedux) => stateRedux.filterData.cropFiltersOpen);
+  const regionShorthand = useSelector((stateRedux) => stateRedux.mapData.regionShorthand);
+  const regionsRedux = useSelector((stateRedux) => stateRedux.mapData.regions);
+  const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
 
   // useState vars
   const [loading, setLoading] = useState(false);
@@ -70,10 +70,12 @@ const CropSidebar = ({
   const [sidebarCategoriesData, setSidebarCategoriesData] = useState([]);
   const [sidebarFiltersData, setSidebarFiltersData] = useState([]);
   const [tableHeight, setTableHeight] = useState(0);
+  const [cropFiltersOpen, setCropFiltersOpen] = useState(true);
   const [dateRange, setDateRange] = useState({
     startDate: null,
     endDate: null,
   });
+
   // make an exhaustive array of all params in array e.g. cover crop group and use includes in linq
   const [sidebarFilterOptions, setSidebarFilterOptions] = useState(() => {
     const sidebarStarter = {};
@@ -360,13 +362,8 @@ const CropSidebar = ({
     </Button>
   );
 
-  const updateZone = (region) => {
+  const updateReg = (region) => {
     if (region !== undefined) {
-      dispatchRedux(updateZoneRedux({
-        zoneText: region.label,
-        zone: region.shorthand,
-        zoneId: region.id,
-      }));
       dispatchRedux(updateRegion({
         regionId: region.id ?? '',
         regionLabel: region.label ?? '',
@@ -454,7 +451,7 @@ const CropSidebar = ({
                 {from === 'explorer' && (
                   <>
                     <List component="div" disablePadding>
-                      <ListItemButton onClick={() => dispatchRedux(zoneToggleHandler())}>
+                      <ListItemButton onClick={() => dispatchRedux(regionToggleHandler())}>
                         <ListItemText
                           primary={(
                             <Typography variant="body2" className="text-uppercase">
@@ -462,26 +459,32 @@ const CropSidebar = ({
                             </Typography>
             )}
                         />
-                        {zoneToggleRedux ? <ExpandLess /> : <ExpandMore />}
+                        {regionToggleRedux ? <ExpandLess /> : <ExpandMore />}
                       </ListItemButton>
                     </List>
-                    <PlantHardinessZone updateZone={updateZone} />
+                    <PlantHardinessZone
+                      updateReg={updateReg}
+                      regionShorthand={regionShorthand}
+                      regionsRedux={regionsRedux}
+                      councilLabelRedux={councilLabelRedux}
+                      regionToggleRedux={regionToggleRedux}
+                    />
                     <CoverCropSearch sfilters={sfilters} />
                   </>
                 )}
                 <ListItemButton
-                  onClick={() => dispatchRedux(toggleCropFiltersOpen())}
+                  onClick={() => setCropFiltersOpen(!cropFiltersOpen)}
                   style={{
                     marginBottom: '15px',
                     backgroundColor:
-                      from === 'table' && !cropFiltersOpenRedux
+                      from === 'table' && !cropFiltersOpen
                         ? 'inherit'
                         : CustomStyles().lightGreen,
                   }}
                 >
                   <ListItemText primary="COVER CROP PROPERTIES" />
 
-                  {cropFiltersOpenRedux ? <ExpandLess /> : <ExpandMore />}
+                  {cropFiltersOpen ? <ExpandLess /> : <ExpandMore />}
                   {' '}
                   {/* // why is this here */}
                 </ListItemButton>
@@ -499,7 +502,7 @@ const CropSidebar = ({
                     modal={false}
                   />
                 </Box>
-                <Collapse in={cropFiltersOpenRedux} timeout="auto">
+                <Collapse in={cropFiltersOpen} timeout="auto">
                   {filtersList()}
                 </Collapse>
               </>
