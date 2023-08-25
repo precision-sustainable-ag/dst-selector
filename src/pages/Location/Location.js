@@ -1,4 +1,4 @@
-// /* eslint-disable */
+/* eslint-disable */
 /*
   This is the main location widget component
   styled using ../../styles/location.scss
@@ -80,6 +80,7 @@ const LocationComponent = () => {
   const userFieldRedux = useSelector((stateRedux) => stateRedux.userData.field);
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
   const myCoverCropListLocationRedux = useSelector((stateRedux) => stateRedux.sharedData.myCoverCropListLocation);
+  const { isAuthenticated } = useAuth0();
 
   // console.log('userFieldRedux', userFieldRedux);
   const [fieldDialogState, setFieldDialogState] = useState(initFieldDialogState);
@@ -90,11 +91,12 @@ const LocationComponent = () => {
   );
   // use a state to control if currently is adding a point
   const [isAddingPoint, setIsAddingPoint] = useState(true);
-  const { isAuthenticated } = useAuth0();
+  const [drawFields, setDrawFields] = useState([]);
+  
+  const userFieldsRef = useRef(userFieldRedux ? [...userFieldRedux.data] : []);
 
   // console.log('selectedUserField', selectedUserField)
 
-  const userFieldsRef = useRef(userFieldRedux ? [...userFieldRedux.data] : []);
 
   const getArea = () => {
     if (userFieldsRef.current.length > 0) {
@@ -107,11 +109,9 @@ const LocationComponent = () => {
       }
     }
     // reset default field to state capitol
-    // FIXME: since this add a point to the map without triggering dialog?? the isAddingPoint is set to false and cannot recover
     return [buildPoint(statesLatLongDict[stateLabelRedux][1], statesLatLongDict[stateLabelRedux][0])];
   };
 
-  const [drawFields, setDrawFields] = useState([]);
 
   useEffect(() => {
     setDrawFields(getArea());
@@ -363,8 +363,8 @@ const LocationComponent = () => {
       });
   }, [zipCodeRedux]);
 
+  // save user selected field when component will unmount, need to use refs to reach the component state
   useEffect(() => () => {
-    // save user selected field when component will unmount, need to use refs to reach the component state
     console.log('save', userFieldsRef.current);
     if (isAuthenticated) {
       const updateFields = async () => {
@@ -467,10 +467,7 @@ const LocationComponent = () => {
       }
     } else {
       // select cancel
-      if (actionType === 'add' || actionType === 'update') {
-        setDrawFields(getArea());
-      }
-      // if select delete and cancel, do not do anything
+      setDrawFields(getArea());
       console.log('This field will not be saved');
     }
     // reset to default state
