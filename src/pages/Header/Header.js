@@ -70,7 +70,11 @@ const Header = () => {
           FEEDBACK
         </NavLink>
         <span className="line" />
-        <AuthButton type={isAuthenticated ? 'Logout' : 'Login'} isAnchor />
+        <AuthButton
+          variant="outlined"
+          type={isAuthenticated ? 'Logout' : 'Login'}
+          color={isAuthenticated ? 'error' : 'primary'}
+        />
       </div>
 
       <div className="container-fluid">

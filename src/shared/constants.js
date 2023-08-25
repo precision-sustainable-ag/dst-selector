@@ -894,7 +894,7 @@ export const cropDataFormatter = (cropData = [{}]) => {
   });
 };
 
-export const apiServerUrl = process.env.REACT_APP_API_SERVER_URL;
+export const apiServerUrl = 'https://history.covercrop-data.org/v1/';
 
 export const getFields = async (accessToken = null) => {
   const url = `${apiServerUrl}fields?page=1&perPage=200`;

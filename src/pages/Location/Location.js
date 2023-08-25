@@ -55,7 +55,7 @@ const initFieldDialogState = {
 
 const fieldNameValidation = (name, currentFields) => {
   if (name === '') return 'You must input a valid name!';
-  if (currentFields.filter((f) => f.delete !== true && f.label === name).length > 0) return 'Input name existed!';
+  if (currentFields.filter((userField) => userField.delete !== true && userField.label === name).length > 0) return 'Input name existed!';
   return '';
 };
 
@@ -418,24 +418,24 @@ const LocationComponent = () => {
         const polygon = currArea.features.slice(-1)[0];
         // console.log('update', polygon);
         const geoCollection = buildGeometryCollection(point.geometry, polygon.geometry, selectedUserField);
-        userFieldsRef.current = userFieldsRef.current.map((f) => {
-          if (f.label === selectedUserField) return geoCollection;
-          return f;
+        userFieldsRef.current = userFieldsRef.current.map((userField) => {
+          if (userField.label === selectedUserField) return geoCollection;
+          return userField;
         });
       }
       if (actionType === 'delete') {
         // add a delete flag so when saving the code knows delete which field
-        userFieldsRef.current = userFieldsRef.current.map((f) => {
-          if (f.label === selectedUserField) {
+        userFieldsRef.current = userFieldsRef.current.map((userField) => {
+          if (userField.label === selectedUserField) {
             // if this field have not been saved to the backend, directly delete it from the userFields.
-            if (!f.id) return null;
-            return { ...f, delete: true };
+            if (!userField.id) return null;
+            return { ...userField, delete: true };
           }
-          return f;
+          return userField;
         });
-        userFieldsRef.current = userFieldsRef.current.filter((f) => f !== null);
+        userFieldsRef.current = userFieldsRef.current.filter((userField) => userField !== null);
         // find next available field in current fields array
-        const nextAvailableField = userFieldsRef.current.find((f) => f.delete !== true);
+        const nextAvailableField = userFieldsRef.current.find((userField) => userField.delete !== true);
         setSelectedUserField(nextAvailableField === undefined ? '' : nextAvailableField.label);
       }
       if (actionType === 'updateName') {
@@ -447,12 +447,12 @@ const LocationComponent = () => {
         }
         const newField = {
           type: 'Feature',
-          geometry: userFieldsRef.current.filter((f) => f.label === prevName)[0].geometry,
+          geometry: userFieldsRef.current.filter((userField) => userField.label === prevName)[0].geometry,
           label: fieldName,
         };
-        userFieldsRef.current = [...userFieldsRef.current.map((f) => {
-          if (f.label === prevName) return { ...f, delete: true };
-          return f;
+        userFieldsRef.current = [...userFieldsRef.current.map((userField) => {
+          if (userField.label === prevName) return { ...userField, delete: true };
+          return userField;
         }), newField];
         setSelectedUserField(fieldName);
       }

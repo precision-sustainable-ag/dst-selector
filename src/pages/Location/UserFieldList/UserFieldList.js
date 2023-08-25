@@ -43,11 +43,11 @@ const UserFieldList = ({
             value={field}
             onChange={handleChange}
           >
-            {userFields.map((f, i) => {
-              if (f.delete === true) return null;
+            {userFields.map((userField, index) => {
+              if (userField.delete === true) return null;
               return (
-                <MenuItem key={`userField-${i}`} value={f.label === null ? 'null' : f.label}>
-                  {f.label === null ? 'null' : f.label}
+                <MenuItem key={`userField-${index}`} value={userField.label === null ? 'null' : userField.label}>
+                  {userField.label === null ? 'null' : userField.label}
                 </MenuItem>
               );
             })}
