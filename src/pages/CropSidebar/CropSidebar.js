@@ -35,7 +35,7 @@ import Legend from '../../components/Legend/Legend';
 import { updateRegion } from '../../reduxStore/mapSlice';
 import { clearFilters } from '../../reduxStore/filterSlice';
 import { pullCropData, updateActiveCropData, updateDateRange } from '../../reduxStore/cropSlice';
-import { pullDictionaryData, setAjaxInProgress, regionToggleHandler } from '../../reduxStore/sharedSlice';
+import { setAjaxInProgress, regionToggleHandler } from '../../reduxStore/sharedSlice';
 
 const CropSidebar = ({
   comparisonView,
@@ -213,8 +213,6 @@ const CropSidebar = ({
             obj.values = filter.values;
           }
 
-          // createObject(obj, dataDictionary, filter);
-
           return obj;
         });
         sidebars.push(newCategory);
@@ -239,10 +237,6 @@ const CropSidebar = ({
       dispatchRedux(setAjaxInProgress(true));
 
       setLoading(true);
-      callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/dictionary?${query}`).then((data) => {
-        dispatchRedux(pullDictionaryData(data.data));
-      });
-
       callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/filters?${query}`).then((data) => {
         const allFilters = [];
         data.data.forEach((category) => {
