@@ -1,4 +1,5 @@
 // /* eslint-disable */
+// FIXME: remember to delete this line after finish testing
 /*
   This is the main location widget component
   styled using ../../styles/location.scss

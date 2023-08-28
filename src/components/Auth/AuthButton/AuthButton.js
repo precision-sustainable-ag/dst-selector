@@ -1,3 +1,8 @@
+/*
+  This file contains the Button with authorization functions.
+  The authorization functions includes Login, SignUp and LogOut, you can also define custom onClick callbacks and use it like a normal MUI Button.
+*/
+
 import { Button } from '@mui/material';
 import { useAuth0 } from '@auth0/auth0-react';
 import { useDispatch } from 'react-redux';

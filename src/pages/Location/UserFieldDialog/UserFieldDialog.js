@@ -1,3 +1,8 @@
+/*
+  This file contains the popup dialog for user field updates.
+  Everytime user make any updates, this dialog would popup and show related informations.
+*/
+
 import {
   Dialog,
   Button,

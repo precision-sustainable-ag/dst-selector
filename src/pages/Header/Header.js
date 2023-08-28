@@ -71,7 +71,6 @@ const Header = () => {
         </NavLink>
         <span className="line" />
         <AuthButton
-          variant="outlined"
           type={isAuthenticated ? 'Logout' : 'Login'}
           color={isAuthenticated ? 'error' : 'primary'}
         />

@@ -1,3 +1,8 @@
+/*
+  This file contains the List for Saved user fields.
+  The component receives userField prop from its parent, and render a list of user fields, with delete and rename button.
+*/
+
 import {
   FormControl, InputLabel, MenuItem, Select, List, ListItem, IconButton,
 } from '@mui/material';
