@@ -1,3 +1,9 @@
+/*
+  This file contains the Auth0 Provider component.
+  It mainly uses Context to provide Auth0 states through the app. The Provider should be a children for <BrowserRouter>
+  For example: https://developer.auth0.com/resources/guides/spa/react/basic-authentication/v17-javascript-react-router-5
+*/
+
 import { Auth0Provider } from '@auth0/auth0-react';
 import React from 'react';
 import { useHistory } from 'react-router-dom';

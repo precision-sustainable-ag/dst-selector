@@ -1,3 +1,7 @@
+/*
+  This is the popup modal asking for user login/signup.
+*/
+
 import {
   Modal, Box, Typography, Grid,
 } from '@mui/material';
