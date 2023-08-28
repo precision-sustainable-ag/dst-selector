@@ -18,8 +18,6 @@ const PlantHardinessZone = ({
     updateReg(regionInfo[0]);
   };
 
-  console.log('regionShorthand', regionShorthand);
-
   const plantHardinessZone = () => (
     <Select
       variant="filled"
