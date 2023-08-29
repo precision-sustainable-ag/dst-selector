@@ -18,7 +18,7 @@ const UserFieldDialog = ({ fieldDialogState, setFieldDialogState, handleClose })
     open, fieldName, error, errorText, actionType,
   } = fieldDialogState;
   return (
-    <Dialog sx={{ m: 0, p: 2 }} open={open}>
+    <Dialog sx={{ m: 0, p: 2 }} open={open} onKeyUp={(e) => { if (e.key === 'Enter') handleClose(true); }}>
       {(actionType === 'add' || actionType === 'updateName') && (
       <>
         <DialogTitle>
