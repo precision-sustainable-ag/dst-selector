@@ -48,7 +48,7 @@ const AuthModal = ({ modalOpen, setModalOpen }) => {
             <AuthButton variant="outlined" type="Signup" />
           </Grid>
           <Grid item>
-            <AuthButton variant="text" type="Not now" onClickCallback={handleModal} />
+            <AuthButton variant="text" type="Not now" color="error" onClickCallback={handleModal} />
           </Grid>
         </Grid>
       </Box>

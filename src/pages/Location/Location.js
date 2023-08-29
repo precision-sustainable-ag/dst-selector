@@ -82,7 +82,7 @@ const LocationComponent = () => {
   const [selectedToEditSite, setSelectedToEditSite] = useState({});
   const [handleConfirm, setHandleConfirm] = useState(false);
   const [locZipCode, setLocZipCode] = useState();
-  const [currArea, setCurrArea] = useState([]);
+  const [currentGeometry, setCurrentGeometry] = useState([]);
   const [fieldDialogState, setFieldDialogState] = useState(initFieldDialogState);
   const [selectedUserField, setSelectedUserField] = useState(
     userFieldRedux && userFieldRedux.data.length
@@ -100,7 +100,7 @@ const LocationComponent = () => {
   // console.log('userFieldRedux', userFieldRedux);
   // console.log('selectedUserField', selectedUserField)
 
-  const getArea = () => {
+  const getSelectedField = () => {
     if (userFieldsRef.current.length > 0) {
       for (let i = 0; i < userFieldsRef.current.length; i++) {
         const field = userFieldsRef.current[i];
@@ -115,7 +115,7 @@ const LocationComponent = () => {
   };
 
   useEffect(() => {
-    setDrawFields(getArea());
+    setDrawFields(getSelectedField());
   }, [selectedUserField]);
 
   const getLatLng = useCallback(() => {
@@ -360,23 +360,31 @@ const LocationComponent = () => {
           }
           return null;
         });
-        await Promise.all(fieldUpdates);
-        getFields(accessTokenRedux).then((data) => {
-          // TODO: since all updated fields are send to the backend after leave the page,
-          // the backend time might be not accurate to when show the field is updated
-          // data = {
-          //   ...data,
-          //   data: data.data.sort((a, b) => new Date(a.updatedAt) - new Date(b.updatedAt)),
-          // };
-          // console.log('sortedData', data);
-          dispatchRedux(updateField(data));
-        });
+        fieldUpdates.push(
+          getFields(accessTokenRedux).then((data) => {
+            dispatchRedux(updateField(data));
+          }),
+        );
+        console.log(fieldUpdates);
+        const reducePromises = () => fieldUpdates.reduce((prev, field) => prev.then(field), Promise.resolve());
+        reducePromises();
+        // await Promise.all(fieldUpdates);
+        // getFields(accessTokenRedux).then((data) => {
+        //   // TODO: since all updated fields are send to the backend after leave the page,
+        //   // the backend time might be not accurate to when show the field is updated
+        //   // data = {
+        //   //   ...data,
+        //   //   data: data.data.sort((a, b) => new Date(a.updatedAt) - new Date(b.updatedAt)),
+        //   // };
+        //   // console.log('sortedData', data);
+        //   dispatchRedux(updateField(data));
+        // });
       };
       updateFields();
     }
   }, []);
 
-  // console.log('currArea', currArea, currArea?.features?.slice(-1)[0]);
+  // console.log('currentGeometry', currentGeometry, currentGeometry?.features?.slice(-1)[0]);
   // console.log('features', features);
 
   const onDraw = (draw) => {
@@ -406,7 +414,7 @@ const LocationComponent = () => {
           userFieldsRef.current = [...userFieldsRef.current, point];
         }
         if (areaType === 'Polygon') {
-          const polygon = currArea.features.slice(-1)[0];
+          const polygon = currentGeometry.features.slice(-1)[0];
           const geoCollection = buildGeometryCollection(point.geometry, polygon.geometry, fieldName);
           userFieldsRef.current = [...userFieldsRef.current, geoCollection];
         }
@@ -416,7 +424,7 @@ const LocationComponent = () => {
         // Only supports polygon updates
         const { longitude, latitude } = selectedToEditSite;
         const point = buildPoint(longitude, latitude, selectedUserField);
-        const polygon = currArea.features.slice(-1)[0];
+        const polygon = currentGeometry.features.slice(-1)[0];
         // console.log('update', polygon);
         const geoCollection = buildGeometryCollection(point.geometry, polygon.geometry, selectedUserField);
         userFieldsRef.current = userFieldsRef.current.map((userField) => {
@@ -430,7 +438,7 @@ const LocationComponent = () => {
           if (userField.label === selectedUserField) {
             // if this field have not been saved to the backend, directly delete it from the userFields.
             if (!userField.id) return null;
-            return { ...userField, delete: true };
+            return { ...userField, delete: true, label: `${userField.label}-del` };
           }
           return userField;
         });
@@ -452,14 +460,18 @@ const LocationComponent = () => {
           label: fieldName,
         };
         userFieldsRef.current = [...userFieldsRef.current.map((userField) => {
-          if (userField.label === prevName) return { ...userField, delete: true };
+          if (userField.label === prevName) {
+            if (!userField.id) return null;
+            return { ...userField, delete: true };
+          }
           return userField;
         }), newField];
+        userFieldsRef.current = userFieldsRef.current.filter((userField) => userField !== null);
         setSelectedUserField(fieldName);
       }
     } else {
       // select cancel
-      setDrawFields(getArea());
+      setDrawFields(getSelectedField());
       console.log('This field will not be saved');
     }
     // reset to default state
@@ -515,7 +527,7 @@ const LocationComponent = () => {
           <div className="container-fluid">
             <Map
               setAddress={setSelectedToEditSite}
-              setFeatures={setCurrArea}
+              setFeatures={setCurrentGeometry}
               onDraw={onDraw}
               initWidth="100%"
               initHeight="600px"
