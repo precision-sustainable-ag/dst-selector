@@ -1,5 +1,3 @@
-// /* eslint-disable */
-// FIXME: remember to delete this line after finish testing
 /*
   This is the main location widget component
   styled using ../../styles/location.scss
@@ -13,7 +11,6 @@ import React, {
   useEffect,
   useState,
   useCallback,
-  useRef,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Search } from '@mui/icons-material';
@@ -54,12 +51,6 @@ const initFieldDialogState = {
   prevName: '',
 };
 
-const fieldNameValidation = (name, currentFields) => {
-  if (name === '') return 'You must input a valid name!';
-  if (currentFields.filter((userField) => userField.delete !== true && userField.label === name).length > 0) return 'Input name existed!';
-  return '';
-};
-
 const LocationComponent = () => {
   const dispatchRedux = useDispatch();
   // redux vars
@@ -78,10 +69,10 @@ const LocationComponent = () => {
   const regionShorthand = useSelector((stateRedux) => stateRedux.mapData.regionShorthand);
 
   // useState vars
-  const [selectedZone, setselectedZone] = useState();
-  const [selectedToEditSite, setSelectedToEditSite] = useState({});
   const [handleConfirm, setHandleConfirm] = useState(false);
+  const [selectedZone, setselectedZone] = useState();
   const [locZipCode, setLocZipCode] = useState();
+  const [selectedToEditSite, setSelectedToEditSite] = useState({});
   const [currentGeometry, setCurrentGeometry] = useState([]);
   const [fieldDialogState, setFieldDialogState] = useState(initFieldDialogState);
   const [selectedUserField, setSelectedUserField] = useState(
@@ -93,7 +84,7 @@ const LocationComponent = () => {
   const [isAddingPoint, setIsAddingPoint] = useState(true);
   const [drawFields, setDrawFields] = useState([]);
 
-  const userFieldsRef = useRef(userFieldRedux ? [...userFieldRedux.data] : []);
+  const [userFields, setUserFields] = useState(userFieldRedux ? [...userFieldRedux.data] : []);
 
   const { isAuthenticated } = useAuth0();
 
@@ -101,9 +92,9 @@ const LocationComponent = () => {
   // console.log('selectedUserField', selectedUserField)
 
   const getSelectedField = () => {
-    if (userFieldsRef.current.length > 0) {
-      for (let i = 0; i < userFieldsRef.current.length; i++) {
-        const field = userFieldsRef.current[i];
+    if (userFields.length > 0) {
+      for (let i = 0; i < userFields.length; i++) {
+        const field = userFields[i];
         if (field.label === selectedUserField) {
           if (field.geometry.type === 'Point') return [field];
           if (field.geometry.type === 'GeometryCollection') return drawAreaFromGeoCollection(field);
@@ -120,13 +111,13 @@ const LocationComponent = () => {
 
   const getLatLng = useCallback(() => {
     if (userFieldRedux && userFieldRedux.data.length > 0) {
-      const currField = userFieldRedux.data[userFieldRedux.data.length - 1];
+      const currentField = userFieldRedux.data[userFieldRedux.data.length - 1];
       // flip lat and lng here
-      if (currField.geometry.type === 'Point') {
-        return [currField.geometry.coordinates[1], currField.geometry.coordinates[0]];
+      if (currentField.geometry.type === 'Point') {
+        return [currentField.geometry.coordinates[1], currentField.geometry.coordinates[0]];
       }
-      if (currField.geometry.type === 'GeometryCollection') {
-        const { coordinates } = currField.geometry.geometries[0];
+      if (currentField.geometry.type === 'GeometryCollection') {
+        const { coordinates } = currentField.geometry.geometries[0];
         return [coordinates[1], coordinates[0]];
       }
     }
@@ -183,11 +174,11 @@ const LocationComponent = () => {
     if (latitude === markersRedux[0][0] && longitude === markersRedux[0][1]) { return; }
 
     if (isAuthenticated) {
-      const currSelectedField = userFieldsRef.current.filter((f) => f.label === selectedUserField)[0]?.geometry;
+      const currentSelectedField = userFields.filter((f) => f.label === selectedUserField)[0]?.geometry;
       if (isAddingPoint && latitude) {
-        if ((!currSelectedField && latitude !== statesLatLongDict[stateLabelRedux][0])
-          || (currSelectedField?.type === 'Point' && latitude !== currSelectedField?.coordinates[1])
-          || (currSelectedField?.type === 'GeometryCollection' && latitude !== currSelectedField?.geometries[0].coordinates[1])
+        if ((!currentSelectedField && latitude !== statesLatLongDict[stateLabelRedux][0])
+          || (currentSelectedField?.type === 'Point' && latitude !== currentSelectedField?.coordinates[1])
+          || (currentSelectedField?.type === 'GeometryCollection' && latitude !== currentSelectedField?.geometries[0].coordinates[1])
         ) {
           setFieldDialogState({
             ...fieldDialogState, open: true, actionType: 'add', areaType: 'Point',
@@ -347,40 +338,8 @@ const LocationComponent = () => {
 
   // save user selected field when component will unmount, need to use refs to reach the component state
   useEffect(() => () => {
-    console.log('save', userFieldsRef.current);
     if (isAuthenticated) {
-      const updateFields = async () => {
-        const fieldUpdates = userFieldsRef.current.map((field) => {
-          if (field.delete === true) {
-            return deleteFields(accessTokenRedux, field.id);
-          }
-          // if there is no id field in the object, then it means this object is a new one and need to be post to the backend
-          if (!field.id) {
-            return postFields(accessTokenRedux, field);
-          }
-          return null;
-        });
-        fieldUpdates.push(
-          getFields(accessTokenRedux).then((data) => {
-            dispatchRedux(updateField(data));
-          }),
-        );
-        console.log(fieldUpdates);
-        const reducePromises = () => fieldUpdates.reduce((prev, field) => prev.then(field), Promise.resolve());
-        reducePromises();
-        // await Promise.all(fieldUpdates);
-        // getFields(accessTokenRedux).then((data) => {
-        //   // TODO: since all updated fields are send to the backend after leave the page,
-        //   // the backend time might be not accurate to when show the field is updated
-        //   // data = {
-        //   //   ...data,
-        //   //   data: data.data.sort((a, b) => new Date(a.updatedAt) - new Date(b.updatedAt)),
-        //   // };
-        //   // console.log('sortedData', data);
-        //   dispatchRedux(updateField(data));
-        // });
-      };
-      updateFields();
+      getFields(accessTokenRedux).then((fields) => dispatchRedux(updateField(fields)));
     }
   }, []);
 
@@ -398,76 +357,72 @@ const LocationComponent = () => {
     }
   };
 
+  const fieldNameValidation = (fieldName) => {
+    let errText = '';
+    if (fieldName === '') errText = 'You must input a valid name!';
+    if (userFields.filter((field) => field.label === fieldName).length > 0) errText = 'Input name existed!';
+    if (errText !== '') {
+      setFieldDialogState({ ...fieldDialogState, error: true, errorText: errText });
+      return false;
+    }
+    return true;
+  };
+
   const handleClose = (save) => {
     const { actionType, areaType, fieldName } = fieldDialogState;
     if (save) {
       if (actionType === 'add') {
-        const errText = fieldNameValidation(fieldName, userFieldsRef.current);
-        if (errText !== '') {
-          setFieldDialogState({ ...fieldDialogState, error: true, errorText: errText });
-          return;
-        }
+        if (!fieldNameValidation(fieldName)) return;
         const { longitude, latitude } = selectedToEditSite;
         const point = buildPoint(longitude, latitude, fieldName);
-        // console.log('add area', polygon);
-        if (areaType === 'Point') {
-          userFieldsRef.current = [...userFieldsRef.current, point];
-        }
+        let geoCollection = null;
         if (areaType === 'Polygon') {
-          const polygon = currentGeometry.features.slice(-1)[0];
-          const geoCollection = buildGeometryCollection(point.geometry, polygon.geometry, fieldName);
-          userFieldsRef.current = [...userFieldsRef.current, geoCollection];
+          const polygon = currentGeometry.features?.slice(-1)[0];
+          geoCollection = buildGeometryCollection(point.geometry, polygon?.geometry, fieldName);
         }
-        setSelectedUserField(fieldName);
+        const addedGeometry = areaType === 'Polygon' ? geoCollection : point;
+        postFields(accessTokenRedux, addedGeometry).then((newField) => {
+          setUserFields([...userFields, newField.data]);
+          setSelectedUserField(fieldName);
+        });
       }
       if (actionType === 'update') {
         // Only supports polygon updates
         const { longitude, latitude } = selectedToEditSite;
         const point = buildPoint(longitude, latitude, selectedUserField);
         const polygon = currentGeometry.features.slice(-1)[0];
-        // console.log('update', polygon);
         const geoCollection = buildGeometryCollection(point.geometry, polygon.geometry, selectedUserField);
-        userFieldsRef.current = userFieldsRef.current.map((userField) => {
-          if (userField.label === selectedUserField) return geoCollection;
-          return userField;
+        postFields(accessTokenRedux, geoCollection).then((newField) => {
+          setUserFields([...userFields.map((userField) => {
+            if (userField.label === selectedUserField) return newField.data;
+            return userField;
+          })]);
         });
       }
       if (actionType === 'delete') {
-        // add a delete flag so when saving the code knows delete which field
-        userFieldsRef.current = userFieldsRef.current.map((userField) => {
-          if (userField.label === selectedUserField) {
-            // if this field have not been saved to the backend, directly delete it from the userFields.
-            if (!userField.id) return null;
-            return { ...userField, delete: true, label: `${userField.label}-del` };
-          }
-          return userField;
-        });
-        userFieldsRef.current = userFieldsRef.current.filter((userField) => userField !== null);
-        // find next available field in current fields array
-        const nextAvailableField = userFieldsRef.current.find((userField) => userField.delete !== true);
-        setSelectedUserField(nextAvailableField === undefined ? '' : nextAvailableField.label);
+        const deletedField = userFields.filter((userField) => userField.label === selectedUserField);
+        deleteFields(accessTokenRedux, deletedField[0].id)
+          .then(() => {
+            const updatedUserFields = userFields.filter((userField) => userField.label !== selectedUserField);
+            setUserFields(updatedUserFields);
+            setSelectedUserField(updatedUserFields.length > 0 ? updatedUserFields[0].label : '');
+          });
       }
       if (actionType === 'updateName') {
+        if (!fieldNameValidation(fieldName)) return;
         const { prevName } = fieldDialogState;
-        const errText = fieldNameValidation(fieldName, userFieldsRef.current);
-        if (errText !== '') {
-          setFieldDialogState({ ...fieldDialogState, error: true, errorText: errText });
-          return;
-        }
         const newField = {
           type: 'Feature',
-          geometry: userFieldsRef.current.filter((userField) => userField.label === prevName)[0].geometry,
+          geometry: userFields.filter((userField) => userField.label === prevName)[0].geometry,
           label: fieldName,
         };
-        userFieldsRef.current = [...userFieldsRef.current.map((userField) => {
-          if (userField.label === prevName) {
-            if (!userField.id) return null;
-            return { ...userField, delete: true };
-          }
-          return userField;
-        }), newField];
-        userFieldsRef.current = userFieldsRef.current.filter((userField) => userField !== null);
-        setSelectedUserField(fieldName);
+        const deletedField = userFields.filter((userField) => userField.label === prevName);
+        deleteFields(accessTokenRedux, deletedField[0].id)
+          .then(() => postFields(accessTokenRedux, newField))
+          .then((resField) => {
+            setUserFields([...userFields.filter((userField) => userField.label !== prevName), resField.data]);
+            setSelectedUserField(fieldName);
+          });
       }
     } else {
       // select cancel
@@ -514,7 +469,7 @@ const LocationComponent = () => {
             <div className="row py-3 my-4">
               <div className="col-md-5 col-lg-6 col-sm-12 col-12">
                 <UserFieldList
-                  userFields={userFieldsRef.current}
+                  userFields={userFields}
                   field={selectedUserField}
                   setField={setSelectedUserField}
                   setFieldDialogState={setFieldDialogState}
