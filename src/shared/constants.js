@@ -969,10 +969,6 @@ export const buildGeometryCollection = (point, polygon, name = null) => {
   };
 };
 
-export const destructureGeometryCollection = (geoCollection) => [{
-  type: 'Feature', geometry: { ...geoCollection.geometry.geometries[0] },
-}, { type: 'Feature', geometry: { ...geoCollection.geometry.geometries[1] } }];
-
 export const drawAreaFromGeoCollection = (geoCollection) => [
   { type: 'Feature', geometry: { ...geoCollection.geometry.geometries[1] } },
 ];
