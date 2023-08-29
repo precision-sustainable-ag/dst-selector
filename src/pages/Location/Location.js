@@ -53,6 +53,7 @@ const initFieldDialogState = {
 
 const LocationComponent = () => {
   const dispatchRedux = useDispatch();
+
   // redux vars
   const countyRedux = useSelector((stateRedux) => stateRedux.addressData.county);
   const zoneRedux = useSelector((stateRedux) => stateRedux.addressData.zone);
@@ -62,11 +63,11 @@ const LocationComponent = () => {
   const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
-  const accessTokenRedux = useSelector((stateRedux) => stateRedux.userData.accessToken);
-  const userFieldRedux = useSelector((stateRedux) => stateRedux.userData.field);
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
   const myCoverCropListLocationRedux = useSelector((stateRedux) => stateRedux.sharedData.myCoverCropListLocation);
   const regionShorthand = useSelector((stateRedux) => stateRedux.mapData.regionShorthand);
+  const accessTokenRedux = useSelector((stateRedux) => stateRedux.userData.accessToken);
+  const userFieldRedux = useSelector((stateRedux) => stateRedux.userData.field);
 
   // useState vars
   const [handleConfirm, setHandleConfirm] = useState(false);
@@ -82,8 +83,7 @@ const LocationComponent = () => {
   );
   // use a state to control if currently is adding a point
   const [isAddingPoint, setIsAddingPoint] = useState(true);
-  const [drawFields, setDrawFields] = useState([]);
-
+  const [mapFeatures, setMapFeatures] = useState([]);
   const [userFields, setUserFields] = useState(userFieldRedux ? [...userFieldRedux.data] : []);
 
   const { isAuthenticated } = useAuth0();
@@ -91,22 +91,18 @@ const LocationComponent = () => {
   // console.log('userFieldRedux', userFieldRedux);
   // console.log('selectedUserField', selectedUserField)
 
-  const getSelectedField = () => {
-    if (userFields.length > 0) {
-      for (let i = 0; i < userFields.length; i++) {
-        const field = userFields[i];
-        if (field.label === selectedUserField) {
-          if (field.geometry.type === 'Point') return [field];
-          if (field.geometry.type === 'GeometryCollection') return drawAreaFromGeoCollection(field);
-        }
-      }
+  const getFeatures = () => {
+    if (userFields.length > 0 && selectedUserField !== '') {
+      const selectedField = userFields.find((userField) => userField.label === selectedUserField);
+      if (selectedField.geometry.type === 'Point') return [selectedField];
+      if (selectedField.geometry.type === 'GeometryCollection') return drawAreaFromGeoCollection(selectedField);
     }
     // reset default field to state capitol
     return [buildPoint(statesLatLongDict[stateLabelRedux][1], statesLatLongDict[stateLabelRedux][0])];
   };
 
   useEffect(() => {
-    setDrawFields(getSelectedField());
+    setMapFeatures(getFeatures());
   }, [selectedUserField]);
 
   const getLatLng = useCallback(() => {
@@ -174,8 +170,8 @@ const LocationComponent = () => {
     if (latitude === markersRedux[0][0] && longitude === markersRedux[0][1]) { return; }
 
     if (isAuthenticated) {
-      const currentSelectedField = userFields.filter((f) => f.label === selectedUserField)[0]?.geometry;
       if (isAddingPoint && latitude) {
+        const currentSelectedField = userFields.filter((userField) => userField.label === selectedUserField)[0]?.geometry;
         if ((!currentSelectedField && latitude !== statesLatLongDict[stateLabelRedux][0])
           || (currentSelectedField?.type === 'Point' && latitude !== currentSelectedField?.coordinates[1])
           || (currentSelectedField?.type === 'GeometryCollection' && latitude !== currentSelectedField?.geometries[0].coordinates[1])
@@ -336,19 +332,15 @@ const LocationComponent = () => {
       });
   }, [locZipCode]);
 
-  // save user selected field when component will unmount, need to use refs to reach the component state
+  // update userFieldRedux when component will unmount
   useEffect(() => () => {
     if (isAuthenticated) {
       getFields(accessTokenRedux).then((fields) => dispatchRedux(updateField(fields)));
     }
   }, []);
 
-  // console.log('currentGeometry', currentGeometry, currentGeometry?.features?.slice(-1)[0]);
-  // console.log('features', features);
-
   const onDraw = (draw) => {
     // console.log(draw.mode, draw.e.type, draw);
-    // set isaddingPoint to false
     if (isAuthenticated && draw.mode !== 'select') {
       setIsAddingPoint(false);
       setFieldDialogState({
@@ -380,8 +372,7 @@ const LocationComponent = () => {
           const polygon = currentGeometry.features?.slice(-1)[0];
           geoCollection = buildGeometryCollection(point.geometry, polygon?.geometry, fieldName);
         }
-        const addedGeometry = areaType === 'Polygon' ? geoCollection : point;
-        postFields(accessTokenRedux, addedGeometry).then((newField) => {
+        postFields(accessTokenRedux, areaType === 'Polygon' ? geoCollection : point).then((newField) => {
           setUserFields([...userFields, newField.data]);
           setSelectedUserField(fieldName);
         });
@@ -420,18 +411,18 @@ const LocationComponent = () => {
         deleteFields(accessTokenRedux, deletedField[0].id)
           .then(() => postFields(accessTokenRedux, newField))
           .then((resField) => {
+            setSelectedUserField('');
             setUserFields([...userFields.filter((userField) => userField.label !== prevName), resField.data]);
             setSelectedUserField(fieldName);
           });
       }
     } else {
-      // select cancel
-      setDrawFields(getSelectedField());
-      console.log('This field will not be saved');
+      // if the user select cancel
+      setMapFeatures(getFeatures());
     }
-    // reset to default state
+    // reset dialog to default state
     setFieldDialogState(initFieldDialogState);
-    // reset isAdding point
+    // reset isAddingPoint
     setIsAddingPoint(true);
   };
 
@@ -488,7 +479,7 @@ const LocationComponent = () => {
               initHeight="600px"
               initLat={getLatLng()[0]}
               initLon={getLatLng()[1]}
-              initFeatures={drawFields}
+              initFeatures={mapFeatures}
               initStartZoom={12}
               initMinZoom={4}
               initMaxZoom={18}
