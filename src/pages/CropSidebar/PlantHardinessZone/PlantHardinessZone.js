@@ -2,18 +2,20 @@
 import {
   Collapse, FormControl, InputLabel, List, ListItem, MenuItem, Select,
 } from '@mui/material';
-import React, { useContext } from 'react';
-import { useSelector } from 'react-redux';
-import { Context } from '../../../store/Store';
+import React from 'react';
+// import { useSelector } from 'react-redux';
 
-const PlantHardinessZone = ({ updateZone }) => {
-  const { state } = useContext(Context);
-  const zoneRedux = useSelector((stateRedux) => stateRedux.addressData.zone);
-
+const PlantHardinessZone = ({
+  updateReg,
+  regionShorthand,
+  regionsRedux,
+  councilLabelRedux,
+  regionToggleRedux = true,
+}) => {
   const handleRegionChange = (event) => {
     // eslint-disable-next-line eqeqeq
-    const regionInfo = state.regions.filter((region) => region.shorthand == event.target.value);
-    updateZone(regionInfo[0]);
+    const regionInfo = regionsRedux.filter((region) => region.shorthand == event.target.value);
+    updateReg(regionInfo[0]);
   };
 
   const plantHardinessZone = () => (
@@ -26,19 +28,19 @@ const PlantHardinessZone = ({ updateZone }) => {
         textAlign: 'left',
       }}
       onChange={(e) => handleRegionChange(e)}
-      value={zoneRedux || ''}
+      value={regionShorthand || ''}
     >
 
-      {state.regions.length > 0 && state.regions.map((region, i) => (
+      {regionsRedux?.length > 0 && regionsRedux.map((region, i) => (
         <MenuItem value={region.shorthand} key={`Region${region}${i}`}>
-          {state.councilLabel !== 'Midwest Cover Crop Council' ? `Zone ${region.shorthand?.toUpperCase()}` : `${region.shorthand?.toUpperCase()}`}
+          {councilLabelRedux !== 'Midwest Cover Crop Council' ? `Zone ${region.shorthand?.toUpperCase()}` : `${region.shorthand?.toUpperCase()}`}
         </MenuItem>
       ))}
     </Select>
   );
 
   return (
-    <Collapse in={state.zoneToggle}>
+    <Collapse in={regionToggleRedux}>
       <List component="div" disablePadding>
         <ListItem component="div">
           <FormControl
@@ -46,7 +48,7 @@ const PlantHardinessZone = ({ updateZone }) => {
             style={{ width: '100%' }}
             sx={{ minWidth: 120 }}
           >
-            <InputLabel>{state.councilLabel === 'Midwest Cover Crop Council' ? 'COUNTY' : 'ZONE'}</InputLabel>
+            <InputLabel>{councilLabelRedux === 'Midwest Cover Crop Council' ? 'COUNTY' : 'ZONE'}</InputLabel>
             {plantHardinessZone()}
           </FormControl>
         </ListItem>

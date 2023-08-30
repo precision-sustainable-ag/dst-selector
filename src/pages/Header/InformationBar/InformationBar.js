@@ -5,21 +5,21 @@
 */
 
 import {
-  Button, Dialog, DialogActions, DialogContent, Grid, Typography,
+  Button, Grid,
 } from '@mui/material';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { LocationOn } from '@mui/icons-material';
 import CloudIcon from '@mui/icons-material/Cloud';
 import CheckIcon from '@mui/icons-material/Check';
 import FilterHdrIcon from '@mui/icons-material/FilterHdr';
-import React, { useContext, useState } from 'react';
-import { BinaryButton } from '../../../shared/constants';
-import { Context } from '../../../store/Store';
+import React, { useState } from 'react';
 import '../../../styles/greenBar.scss';
 import LocationComponent from '../../Location/Location';
 import SoilCondition from '../../Location/SoilCondition/SoilCondition';
 import WeatherConditions from '../../../components/WeatherConditions/WeatherConditions';
 import ProgressButtons from '../../../shared/ProgressButtons';
+import MyCoverCropReset from '../../../components/MyCoverCropReset/MyCoverCropReset';
+import { gotoProgress } from '../../../reduxStore/sharedSlice';
 
 const speciesSelectorToolName = '/';
 
@@ -30,15 +30,24 @@ const expansionPanelBaseStyle = {
 };
 
 const InformationBar = () => {
-  const { state, dispatch } = useContext(Context);
+  const dispatchRedux = useDispatch();
   const addressRedux = useSelector((stateRedux) => stateRedux.addressData.address);
   const zoneRedux = useSelector((stateRedux) => stateRedux.addressData.zone);
-  const [confirmationOpen, setConfirmationOpen] = useState(false);
+  const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
+  const weatherDataRedux = useSelector((stateRedux) => stateRedux.weatherData.weatherData);
+  const soilDataRedux = useSelector((stateRedux) => stateRedux.soilData.soilData);
+  const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
+
+  // useState vars
+  const [handleConfirm, setHandleConfirm] = useState(false);
   const [expansionPanelComponent, setExpansionPanelComponent] = useState({
     component: '',
   });
+
+  // const vars
   const defaultMarkers = [[40.78489145, -74.80733626930342]];
 
+  // functions
   const closeExpansionPanel = () => {
     const greenbarExpansionElement = document.getElementById('greenBarExpansionPanel');
     greenbarExpansionElement.style.transform = 'translate(0px,0px)';
@@ -58,10 +67,7 @@ const InformationBar = () => {
 
     const progress = options[type];
 
-    dispatch({
-      type: 'GOTO_PROGRESS',
-      data: { progress },
-    });
+    dispatchRedux(gotoProgress(progress));
   };
 
   const getSelectedValues = (type) => {
@@ -69,14 +75,14 @@ const InformationBar = () => {
       case 'location':
         return `Zone ${zoneRedux}`;
       case 'soil':
-        return state.soilData.Drainage_Class
+        return soilDataRedux?.drainageClass
           .toString()
           .split(',')
           .join(', ');
       case 'weather':
-        return `${state.weatherData.averageFrost.firstFrostDate.month} ${state.weatherData.averageFrost.firstFrostDate.day}`;
+        return `${weatherDataRedux?.averageFrost?.firstFrostDate?.month} ${weatherDataRedux?.averageFrost?.firstFrostDate?.day}`;
       case 'goals':
-        return state.selectedGoals
+        return selectedGoalsRedux
           .toString()
           .split(',')
           .join(', ');
@@ -100,7 +106,7 @@ const InformationBar = () => {
           <FilterHdrIcon />
           &nbsp;
           {' '}
-          {/* {`Soils: Map Unit Name (${state.soilData.Map_Unit_Name}%), Drainage Class: ${state.soilData.Drainage_Class}})`} */}
+          {/* {`Soils: Map Unit Name (${soilDataRedux?.mapUnitName}%), Drainage Class: ${soilDataRedux?.drainageClass}})`} */}
           {`Soil Drainage: ${getSelectedValues('soil')}`}
         </>
       );
@@ -126,28 +132,28 @@ const InformationBar = () => {
 
   const getData = (type) => {
     if (
-      (state.soilData.Flooding_Frequency === null && type === 'soil')
+      (soilDataRedux?.floodingFrequency === null && type === 'soil')
       || (type === 'address' && addressRedux === '')
-      || (type === 'weather' && state.weatherData.length === 0)
+      || (type === 'weather' && weatherDataRedux.length === 0)
     ) {
       return '';
     }
 
     return (
       <Button
-        className={((type === 'location' && state.progress > 0)
-        || (type === 'soil' && state.progress > 1)
-        || (type === 'weather' && state.progress > 2)
-        || (type === 'goals' && state.progress > 3)) ? 'greenbarBtn' : 'greenbarBtn2'}
+        className={((type === 'location' && progressRedux > 0)
+        || (type === 'soil' && progressRedux > 1)
+        || (type === 'weather' && progressRedux > 2)
+        || (type === 'goals' && progressRedux > 3)) ? 'greenbarBtn' : 'greenbarBtn2'}
         onClick={() => handleBtnClick(type)}
         style={{
           borderRadius: '200px',
           margin: '5px',
           background:
-            ((type === 'location' && state.progress > 0)
-            || (type === 'soil' && state.progress > 1)
-            || (type === 'weather' && state.progress > 2)
-            || (type === 'goals' && state.progress > 3)) && '#e3f2f4',
+            ((type === 'location' && progressRedux > 0)
+            || (type === 'soil' && progressRedux > 1)
+            || (type === 'weather' && progressRedux > 2)
+            || (type === 'goals' && progressRedux > 3)) && '#e3f2f4',
         }}
       >
         <span
@@ -161,29 +167,6 @@ const InformationBar = () => {
     );
   };
 
-  const handleConfirmationChoice = (clearCoverCrops = false) => {
-    if (clearCoverCrops !== null) {
-      if (clearCoverCrops) {
-        dispatch({
-          type: 'RESET',
-          data: {
-            markers: defaultMarkers,
-            selectedCrops: [],
-          },
-        });
-      } else {
-        dispatch({
-          type: 'RESET',
-          data: {
-            markers: defaultMarkers,
-            selectedCrops: state.selectedCrops,
-          },
-        });
-      }
-    }
-    setConfirmationOpen(false);
-  };
-
   return (
     <div className="greenBarParent" id="greenBarParent">
       <div className="greenBarWrapper">
@@ -192,7 +175,7 @@ const InformationBar = () => {
           container
         >
           {
-            state.progress > 0
+            progressRedux > 0
             && (
             <Grid item container xs={12} sm={12} md={12} lg={9.5}>
               <Grid item xs={12} sm={6} md={6} lg={2.5}>
@@ -218,7 +201,7 @@ const InformationBar = () => {
             md={12}
             lg={2.5}
           >
-            <ProgressButtons closeExpansionPanel={closeExpansionPanel} setConfirmationOpen={setConfirmationOpen} />
+            <ProgressButtons closeExpansionPanel={closeExpansionPanel} setConfirmationOpen={setHandleConfirm} />
           </Grid>
         </Grid>
         )}
@@ -272,18 +255,7 @@ const InformationBar = () => {
           )}
         </div>
       </div>
-      <Dialog onClose={() => handleConfirmationChoice(null)} open={confirmationOpen}>
-        <DialogContent dividers>
-          <Typography variant="body1">
-            Would you also like to clear My Cover Crop List?
-          </Typography>
-        </DialogContent>
-        <DialogActions>
-          <BinaryButton
-            action={handleConfirmationChoice}
-          />
-        </DialogActions>
-      </Dialog>
+      <MyCoverCropReset handleConfirm={handleConfirm} setHandleConfirm={setHandleConfirm} goBack={false} />
     </div>
   );
 };

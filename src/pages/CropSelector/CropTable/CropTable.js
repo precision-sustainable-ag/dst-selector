@@ -3,7 +3,8 @@
   The CropTable is the
   addCropToBasket manages adding crops to cart
 */
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   Box,
   Button,
@@ -22,18 +23,19 @@ import { AddCircle, Sort } from '@mui/icons-material';
 import {
   CustomStyles, sortCrops, sudoButtonStyle, getLegendDataBasedOnCouncil,
 } from '../../../shared/constants';
-import { Context } from '../../../store/Store';
 import '../../../styles/cropCalendarViewComponent.scss';
 import '../../../styles/cropTable.scss';
 import CropDataRender from './CropDataRender';
 import CropDetailsModal from '../../../components/CropDetailsModal/CropDetailsModal';
 import Legend from '../../../components/Legend/Legend';
+import { updateActiveCropData } from '../../../reduxStore/cropSlice';
 
 const CropTableComponent = ({
   cropData, activeCropData, showGrowthWindow,
 }) => {
-  const { state, dispatch } = useContext(Context);
-
+  const dispatchRedux = useDispatch();
+  const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
+  const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalData, setModalData] = useState({});
   const [legendModal, setLegendModal] = useState(false);
@@ -42,13 +44,15 @@ const CropTableComponent = ({
   const [nameSortFlag, setNameSortFlag] = useState(true);
   const [averageGoalsFlag, setAverageGoalsFlag] = useState(true);
   const [plantingWindowSortFlag, setPlantingWindowSortFlag] = useState(true);
+  const [cropGroupSortFlag, setCropGroupSortFlag] = useState(true);
   const [selectedCropsSortFlag, setSelectedCropsSortFlag] = useState(true);
   const [goal1SortFlag, setGoal1SortFlag] = useState(true);
   const [goal2SortFlag, setGoal2SortFlag] = useState(true);
   const [goal3SortFlag, setGoal3SortFlag] = useState(true);
   const activeCropDataShadow = activeCropData;
+  const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
 
-  const legendData = getLegendDataBasedOnCouncil(state.councilShorthand);
+  const legendData = getLegendDataBasedOnCouncil(councilShorthandRedux);
 
   useEffect(() => {
     if (document.querySelector('thead.MuiTableHead-root.tableHeadWrapper')) {
@@ -71,12 +75,7 @@ const CropTableComponent = ({
   };
 
   const updateActiveCropDataAction = (activeShadowValue) => {
-    dispatch({
-      type: 'UPDATE_ACTIVE_CROP_DATA',
-      data: {
-        value: activeShadowValue,
-      },
-    });
+    dispatchRedux(updateActiveCropData(activeShadowValue));
   };
 
   const sortByName = () => {
@@ -85,7 +84,7 @@ const CropTableComponent = ({
   };
 
   const sortByAverageGoals = () => {
-    sortCrops('Average Goals', activeCropDataShadow, averageGoalsFlag, state.selectedGoals);
+    sortCrops('Average Goals', activeCropDataShadow, averageGoalsFlag, selectedGoalsRedux);
     setAverageGoalsFlag(!averageGoalsFlag);
     updateActiveCropDataAction(activeCropDataShadow);
   };
@@ -94,8 +93,13 @@ const CropTableComponent = ({
     setPlantingWindowSortFlag(!plantingWindowSortFlag);
   };
 
+  const sortByCropGroup = () => {
+    sortCrops('Crop Group', activeCropDataShadow, cropGroupSortFlag);
+    setCropGroupSortFlag(!cropGroupSortFlag);
+  };
+
   const sortBySelectedCrops = () => {
-    const selectedCropsShadow = state.selectedCrops;
+    const selectedCropsShadow = selectedCropsRedux;
     sortCrops('Selected Crops', activeCropDataShadow, selectedCropsSortFlag, selectedCropsShadow, updateActiveCropDataAction);
     setSelectedCropsSortFlag(!selectedCropsSortFlag);
   };
@@ -113,7 +117,7 @@ const CropTableComponent = ({
       setGoal3SortFlag(!goal3SortFlag);
     }
 
-    sortCrops('Goal', activeCropDataShadow, flag, state.selectedGoals, updateActiveCropDataAction, goal);
+    sortCrops('Goal', activeCropDataShadow, flag, selectedGoalsRedux, updateActiveCropDataAction, goal);
   };
 
   return cropData.length !== 0 ? (
@@ -133,9 +137,9 @@ const CropTableComponent = ({
                 blank
               </TableCell>
 
-              {state.selectedGoals.length > 0 && (
+              {selectedGoalsRedux.length > 0 && (
                 <TableCell
-                  colSpan={state.selectedGoals.length}
+                  colSpan={selectedGoalsRedux.length}
                   style={{
                     backgroundColor: '#abd08f',
                     textAlign: 'center',
@@ -172,6 +176,35 @@ const CropTableComponent = ({
                 </TableCell>
               )}
 
+              {selectedGoalsRedux.length > 0 && (
+                <TableCell
+                  colSpan={selectedGoalsRedux.length}
+                  style={{
+                    backgroundColor: '#abd08f',
+                    textAlign: 'center',
+                  }}
+                >
+                  <Button
+                    // fix this
+                    onClick={() => sortByCropGroup()}
+                  >
+                    <Sort
+                      style={{
+                        color:
+                          cropGroupSortFlag
+                            ? CustomStyles().secondaryProgressBtnColor
+                            : CustomStyles().progressColor,
+                        transform: cropGroupSortFlag && 'rotate(180deg)',
+                      }}
+                    />
+                    &nbsp;
+                    {' '}
+                    <Typography variant="body2" style={{ color: '#000' }}>
+                      SORT BY CROP GROUP
+                    </Typography>
+                  </Button>
+                </TableCell>
+              )}
               <TableCell
                 style={{
                   backgroundColor: '#abd08f',
@@ -261,9 +294,9 @@ const CropTableComponent = ({
                   Growth Traits
                 </Typography>
               </TableCell>
-              {state.selectedGoals.length > 0
-                && state.selectedGoals.map((goal, index) => {
-                  const lastIndex = state.selectedGoals.length - 1;
+              {selectedGoalsRedux.length > 0
+                && selectedGoalsRedux.map((goal, index) => {
+                  const lastIndex = selectedGoalsRedux.length - 1;
                   return (
                     <TableCell
                       key={index}

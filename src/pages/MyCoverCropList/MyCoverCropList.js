@@ -7,39 +7,37 @@
 
 import { Button, Typography } from '@mui/material';
 import { Add } from '@mui/icons-material';
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import ReactGA from 'react-ga';
-import { Context } from '../../store/Store';
 import MyCoverCropComparison from './MyCoverCropComparison/MyCoverCropComparison';
 import MyCoverCropCards from './MyCoverCropCards/MyCoverCropCards';
+import { activateSpeicesSelectorTile } from '../../reduxStore/sharedSlice';
 
 const MyCoverCropList = ({ comparisonView, from }) => {
-  const { state, dispatch } = useContext(Context);
+  const dispatchRedux = useDispatch();
   const comparison = comparisonView || false;
   const history = useHistory();
   const [updatedSelectedCrops, setUpdatedSelectedCrops] = useState([]);
-  const { selectedCrops } = state;
+  const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
+  const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
+  const consentRedux = useSelector((stateRedux) => stateRedux.sharedData.consent);
+  // const { selectedCrops } = state;
 
   useEffect(() => {
-    setUpdatedSelectedCrops(selectedCrops);
-  }, [selectedCrops]);
+    setUpdatedSelectedCrops(selectedCropsRedux);
+  }, [selectedCropsRedux]);
 
   useEffect(() => {
-    if (state.state === '') {
+    if (stateLabelRedux === null) {
       history.push('/');
     }
-  }, [state.state]);
+  }, [stateLabelRedux]);
 
   const redirectToSpeciesSelector = () => {
     history.replace('/');
-    dispatch({
-      type: 'ACTIVATE_SPECIES_SELECTOR_TILE',
-      data: {
-        speciesSelectorActivationFlag: true,
-        myCoverCropActivationFlag: false,
-      },
-    });
+    dispatchRedux(activateSpeicesSelectorTile({ speciesSelectorActivationFlag: true, myCoverCropActivationFlag: false }));
   };
 
   const redirectToExplorer = () => {
@@ -47,12 +45,12 @@ const MyCoverCropList = ({ comparisonView, from }) => {
   };
 
   useEffect(() => {
-    if (state.consent === true) {
+    if (consentRedux === true) {
       ReactGA.initialize('UA-181903489-1');
 
       ReactGA.pageview('cover crop list');
     }
-  }, [state.consent]);
+  }, [consentRedux]);
 
   const TopBar = ({ view }) => (
     <div className="row">

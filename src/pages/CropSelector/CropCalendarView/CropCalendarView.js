@@ -20,7 +20,8 @@ import {
 import {
   AcUnit, AddCircle, LocalFlorist, WbSunny,
 } from '@mui/icons-material';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   allMonths,
   CustomStyles,
@@ -29,59 +30,55 @@ import {
   sudoButtonStyleWithPadding,
   getLegendDataBasedOnCouncil,
 } from '../../../shared/constants';
-import { Context } from '../../../store/Store';
 import '../../../styles/cropCalendarViewComponent.scss';
 // import CropLegendModal from '../../../components/CropLegendModal/CropLegendModal';
 import RenderCrops from './RenderCrops';
 import CropDetailsModal from '../../../components/CropDetailsModal/CropDetailsModal';
 import Legend from '../../../components/Legend/Legend';
+import { updateActiveCropData } from '../../../reduxStore/cropSlice';
 
 const growthIcon = {
   color: 'white',
 };
 
 const CropCalendarView = ({ activeCropData }) => {
-  const { state, dispatch } = useContext(Context);
+  const dispatchRedux = useDispatch();
+
+  // redux vars
+  const cropDataStateRedux = useSelector((stateRedux) => stateRedux.cropData);
+  const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
+  const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
+  const ajaxInProgressRedux = useSelector((stateRedux) => stateRedux.sharedData.ajaxInProgress);
   const [legendModal, setLegendModal] = useState(false);
   const [nameSortFlag, setNameSortFlag] = useState(true);
   const [goalsSortFlag, setGoalsSortFlag] = useState(true);
   const [selectedCropsSortFlag, setSelectedCropsFlag] = useState(true);
   const [plantingWindowSortFlag, setPlantingWindowSortFlag] = useState(true);
+  const [cropGroupSortFlag, setCropGroupSortFlag] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalData, setModalData] = useState([{}]);
-  const { selectedGoals } = state;
+
+  // useState vars
+  const { activeGrowthPeriod, selectedCrops } = cropDataStateRedux;
   const activeCropDataShadow = activeCropData;
+  const legendData = getLegendDataBasedOnCouncil(councilShorthandRedux);
 
-  const legendData = getLegendDataBasedOnCouncil(state.councilShorthand);
-
-  const dispatchValue = (value, type = 'UPDATE_ACTIVE_CROP_DATA') => {
-    dispatch({
-      type,
-      data: {
-        value,
-      },
-    });
-  };
+  const dispatchValue = (value) => dispatchRedux(updateActiveCropData(value));
 
   const handleLegendModal = () => {
     setLegendModal(!legendModal);
   };
-  const [activeGrowthPeriodState, setActiveGrowthPeriodState] = useState(state.activeGrowthPeriod);
-
-  useEffect(() => {
-    setActiveGrowthPeriodState(state.activeGrowthPeriod);
-  }, [state]);
 
   const checkIfGrowthMonth = (month) => {
-    if (activeGrowthPeriodState.length !== 0) {
-      if (activeGrowthPeriodState.includes(month)) return true;
+    if (activeGrowthPeriod.length !== 0) {
+      if (activeGrowthPeriod.includes(month)) return true;
       return false;
     }
     return false;
   };
 
   const sortReset = () => {
-    sortCrops('Average Goals', activeCropDataShadow, goalsSortFlag, selectedGoals);
+    sortCrops('Average Goals', activeCropDataShadow, goalsSortFlag, selectedCrops);
     setGoalsSortFlag(!goalsSortFlag);
     dispatchValue(activeCropDataShadow);
   };
@@ -95,9 +92,13 @@ const CropCalendarView = ({ activeCropData }) => {
     sortCrops('Planting Window', activeCropDataShadow, plantingWindowSortFlag);
     setPlantingWindowSortFlag(!plantingWindowSortFlag);
   };
+  const sortByCropGroup = () => {
+    sortCrops('Crop Group', activeCropDataShadow, cropGroupSortFlag);
+    setCropGroupSortFlag(!cropGroupSortFlag);
+  };
 
   const sortBySelectedCrops = () => {
-    const selectedCropsShadow = state.selectedCrops;
+    const selectedCropsShadow = selectedCrops;
     sortCrops('Selected Crops', activeCropDataShadow, selectedCropsSortFlag, selectedCropsShadow, dispatchValue);
     setSelectedCropsFlag(!selectedCropsSortFlag);
   };
@@ -108,7 +109,7 @@ const CropCalendarView = ({ activeCropData }) => {
 
   return (
     <>
-      {state.ajaxInProgress ? (
+      {ajaxInProgressRedux ? (
         <div className="circularCentered">
           <CircularProgress size="6em" />
         </div>
@@ -126,10 +127,10 @@ const CropCalendarView = ({ activeCropData }) => {
             <TableHead className="tableHeadWrapper">
               <TableRow className="calFirstHeadRow">
                 <TableCell
-                  colSpan={state.activeGrowthPeriod.length === 0 ? 2 : 1}
+                  colSpan={activeGrowthPeriod.length === 0 ? 2 : 1}
                   style={{ backgroundColor: 'white' }}
                 />
-                {state.activeGrowthPeriod.length === 0 ? (
+                {activeGrowthPeriod.length === 0 ? (
                   <TableCell
                     colSpan="12"
                     style={{
@@ -138,12 +139,12 @@ const CropCalendarView = ({ activeCropData }) => {
                   >
                     <div className="container-fluid">
                       <div className="row">
-                        <div className="col-4">
+                        <div className="col-3">
                           <Typography variant="body1" component="span">
                             <div style={sudoButtonStyleWithPadding}>COVER CROP GROWTH WINDOW</div>
                           </Typography>
                         </div>
-                        <div className="col-4">
+                        <div className="col-3">
                           <Typography variant="body1">
                             <Button
                               startIcon={<AddCircle />}
@@ -155,13 +156,23 @@ const CropCalendarView = ({ activeCropData }) => {
                             </Button>
                           </Typography>
                         </div>
-                        <div className="col-4">
+                        <div className="col-3">
                           <Button
                             onClick={sortByPlantingWindow}
                             style={{ color: '#000' }}
                           >
                             <Typography variant="body1" component="span">
                               <div style={sudoButtonStyleWithPadding}>SORT BY PLANTING WINDOW</div>
+                            </Typography>
+                          </Button>
+                        </div>
+                        <div className="col-3">
+                          <Button
+                            onClick={sortByCropGroup}
+                            style={{ color: '#000' }}
+                          >
+                            <Typography variant="body1" component="span">
+                              <div style={sudoButtonStyleWithPadding}>SORT BY CROP GROUP</div>
                             </Typography>
                           </Button>
                         </div>
@@ -179,7 +190,7 @@ const CropCalendarView = ({ activeCropData }) => {
                     >
                       <div style={sudoButtonStyleWithPadding}>ACTIVE GROWTH PERIOD</div>
                     </TableCell>
-                    {state.activeGrowthPeriod.includes('Jan') ? (
+                    {activeGrowthPeriod.includes('Jan') ? (
                       <Tooltip placement="top" title="Winter">
                         <TableCell
                           className="activeGrowthMonth growthMonthSeparator"
@@ -196,7 +207,7 @@ const CropCalendarView = ({ activeCropData }) => {
                     ) : (
                       <TableCell style={{ borderBottom: '5px solid white' }} colSpan="2" />
                     )}
-                    {state.activeGrowthPeriod.includes('Mar') ? (
+                    {activeGrowthPeriod.includes('Mar') ? (
                       <Tooltip placement="top" title="Spring">
                         <TableCell
                           className="activeGrowthMonth growthMonthSeparator"
@@ -213,7 +224,7 @@ const CropCalendarView = ({ activeCropData }) => {
                     ) : (
                       <TableCell style={{ borderBottom: '5px solid white' }} colSpan="3" />
                     )}
-                    {state.activeGrowthPeriod.includes('Jun') ? (
+                    {activeGrowthPeriod.includes('Jun') ? (
                       <Tooltip placement="top" title="Summer">
                         <TableCell
                           className="activeGrowthMonth growthMonthSeparator"
@@ -230,7 +241,7 @@ const CropCalendarView = ({ activeCropData }) => {
                     ) : (
                       <TableCell style={{ borderBottom: '5px solid white' }} colSpan="3" />
                     )}
-                    {state.activeGrowthPeriod.includes('Sep') ? (
+                    {activeGrowthPeriod.includes('Sep') ? (
                       <Tooltip placement="top" title="Fall">
                         <TableCell
                           className="activeGrowthMonth growthMonthSeparator"
@@ -247,7 +258,7 @@ const CropCalendarView = ({ activeCropData }) => {
                     ) : (
                       <TableCell style={{ borderBottom: '5px solid white' }} colSpan="3" />
                     )}
-                    {state.activeGrowthPeriod.includes('Dec') ? (
+                    {activeGrowthPeriod.includes('Dec') ? (
                       <Tooltip placement="top" title="Winter">
                         <TableCell
                           className="activeGrowthMonth growthMonthSeparator"
@@ -266,7 +277,7 @@ const CropCalendarView = ({ activeCropData }) => {
                     )}
                   </>
                 )}
-                {state.activeGrowthPeriod.length > 0 ? (
+                {activeGrowthPeriod.length > 0 ? (
                   <TableCell
                     style={{
                       borderLeft: '5px solid white',
@@ -291,7 +302,7 @@ const CropCalendarView = ({ activeCropData }) => {
                     <Typography variant="body2"> COVER CROPS </Typography>
                   </Button>
                 </TableCell>
-                {state.selectedGoals.length > 0 && (
+                {selectedGoalsRedux.length > 0 && (
                   <TableCell style={{ width: '13%', borderRight: '5px solid white' }}>
                     <div className="col-12">
                       <Typography variant="body1">

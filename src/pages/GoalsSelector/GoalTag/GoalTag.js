@@ -4,35 +4,34 @@
 */
 
 import { Avatar, Chip, Tooltip } from '@mui/material';
-import React, { useContext, useEffect } from 'react';
-import { Context } from '../../../store/Store';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { addSelectedGoals, updateSelectedGoal } from '../../../reduxStore/goalSlice';
 // TODO: Whats up with goalt?? we need to look into fixing this.
 const GoalTag = ({
   goaltTitle, goalDescription, goal, id,
 }) => {
-  const { state, dispatch } = useContext(Context);
+  const dispatchRedux = useDispatch();
+  const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const key = id;
   const goalTitle = goaltTitle;
 
   useEffect(() => {
-    if (state.selectedGoals.length > 0) {
-      state.selectedGoals.forEach((val) => {
+    if (selectedGoalsRedux.length > 0) {
+      selectedGoalsRedux.forEach((val) => {
         document.getElementsByClassName(val.toUpperCase())[0].classList.add('active');
       });
     }
-  }, [state.selectedGoals]);
+  }, [selectedGoalsRedux]);
 
   const updateSelectedGoals = (item, k) => {
-    const goals = [...state.selectedGoals];
+    const goals = [...selectedGoalsRedux];
 
     if (goals.indexOf(item.label) === -1) {
       // does not exist, dispatch to state and add to local state
 
       document.getElementById(`chip${k}`).classList.add('active');
-      dispatch({
-        type: 'ADD_SELECTED_GOALS',
-        data: item.label,
-      });
+      dispatchRedux(addSelectedGoals(item.label));
     } else {
       // exists, remove it from the state and update the state
       const index = goals.indexOf(item.label);
@@ -40,11 +39,7 @@ const GoalTag = ({
 
       // make it lighter on the ui
       document.getElementById(`chip${k}`).classList.remove('active');
-
-      dispatch({
-        type: 'UPDATE_SELECTED_GOALS',
-        data: goals,
-      });
+      dispatchRedux(updateSelectedGoal(goals));
     }
   };
   return (
@@ -65,13 +60,13 @@ const GoalTag = ({
       <span>
         <Chip
           disabled={
-          state.selectedGoals.length >= 3
-            ? !state.selectedGoals.includes(goalTitle)
+          selectedGoalsRedux.length >= 3
+            ? !selectedGoalsRedux.includes(goalTitle)
             : false
         }
           avatar={
-          state.selectedGoals.length !== 0 && state.selectedGoals.includes(goalTitle) ? (
-            <Avatar id={`avatar${key}`}>{state.selectedGoals.indexOf(goalTitle) + 1}</Avatar>
+          selectedGoalsRedux.length !== 0 && selectedGoalsRedux.includes(goalTitle) ? (
+            <Avatar id={`avatar${key}`}>{selectedGoalsRedux.indexOf(goalTitle) + 1}</Avatar>
           ) : (
             <Avatar className="d-none" />
           )

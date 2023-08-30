@@ -5,13 +5,9 @@
 
 import '../../styles/location.scss';
 import {
-  Dialog,
-  DialogActions,
-  DialogContent,
   Typography,
 } from '@mui/material';
 import React, {
-  useContext,
   useEffect,
   useState,
   useCallback,
@@ -24,104 +20,80 @@ import { Map } from '@psa/dst.ui.map';
 import mapboxgl from 'mapbox-gl';
 import statesLatLongDict from '../../shared/stateslatlongdict';
 import {
-  abbrRegion, reverseGEO, BinaryButton, callCoverCropApi,
+  abbrRegion, reverseGEO, callCoverCropApi,
 } from '../../shared/constants';
-import { Context } from '../../store/Store';
 import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset';
 import PlantHardinessZone from '../CropSidebar/PlantHardinessZone/PlantHardinessZone';
 import {
-  changeAddressViaMap, updateLocation, updateZone as updateZoneRedux, updateZipCode,
+  changeAddressViaMap, updateLocation,
 } from '../../reduxStore/addressSlice';
+import { updateRegion } from '../../reduxStore/mapSlice';
+import { snackHandler } from '../../reduxStore/sharedSlice';
+import {
+  updateAvgFrostDates, updateAvgPrecipAnnual, updateAvgPrecipCurrentMonth, updateFrostFreeDays,
+} from '../../reduxStore/weatherSlice';
 
 // eslint-disable-next-line import/no-webpack-loader-syntax, import/no-unresolved
 mapboxgl.workerClass = require('worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker').default;
 
-const LocationComponent = ({
-  closeExpansionPanel,
-}) => {
-  const { state, dispatch } = useContext(Context);
+const LocationComponent = () => {
   const dispatchRedux = useDispatch();
-  const [selectedZone, setselectedZone] = useState();
-  const [selectedToEditSite, setSelectedToEditSite] = useState({});
-  const [showRestartPrompt, setShowRestartPrompt] = useState(false);
-  // const [selectedRegion, setSelectedRegion] = useState({});
-  const [handleConfirm, setHandleConfirm] = useState(false);
-  const defaultMarkers = [[40.78489145, -74.80733626930342]];
+
+  // redux vars
   const countyRedux = useSelector((stateRedux) => stateRedux.addressData.county);
   const zoneRedux = useSelector((stateRedux) => stateRedux.addressData.zone);
+  const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
   const markersRedux = useSelector((stateRedux) => stateRedux.addressData.markers);
-  const zipCodeRedux = useSelector((stateRedux) => stateRedux.addressData.zipCode);
+  const regionsRedux = useSelector((stateRedux) => stateRedux.mapData.regions);
+  const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
+  const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
+  const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
+  const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
+  const myCoverCropListLocationRedux = useSelector((stateRedux) => stateRedux.sharedData.myCoverCropListLocation);
+  const regionShorthand = useSelector((stateRedux) => stateRedux.mapData.regionShorthand);
+
+  // useState vars
+  const [selectedZone, setselectedZone] = useState();
+  const [selectedToEditSite, setSelectedToEditSite] = useState({});
+  const [handleConfirm, setHandleConfirm] = useState(false);
+  const [locZipCode, setLocZipCode] = useState();
 
   const getLatLng = useCallback(() => {
-    if (state.state) {
-      return [statesLatLongDict[state.state][0], statesLatLongDict[state.state][1]];
+    if (stateLabelRedux) {
+      return [statesLatLongDict[stateLabelRedux][0], statesLatLongDict[stateLabelRedux][1]];
     }
     return [47, -122];
-  }, [state]);
+  }, [stateLabelRedux]);
 
   useEffect(() => {
-    if (state.myCoverCropListLocation !== 'selector' && state.selectedCrops.length > 0) {
+    if (selectedCropsRedux.length > 0) {
       setHandleConfirm(true);
     }
-  }, [state.selectedCrops, state.myCoverCropListLocation]);
+  }, [selectedCropsRedux, myCoverCropListLocationRedux]);
 
-  const updateZone = (region) => {
+  const updateReg = (region) => {
     if (region !== undefined) {
-      dispatchRedux(updateZoneRedux(
-        {
-          zoneText: region.label,
-          zone: region.shorthand,
-          zoneId: region.id,
-        },
-      ));
-      dispatch({
-        type: 'UPDATE_REGION',
-        data: {
-          regionId: region.id ?? '',
-          regionLabel: region.label ?? '',
-          regionShorthand: region.shorthand ?? '',
-        },
-      });
+      dispatchRedux(updateRegion({
+        regionId: region.id ?? '',
+        regionLabel: region.label ?? '',
+        regionShorthand: region.shorthand ?? '',
+      }));
     }
   };
 
   useEffect(() => {
-    updateZone(state.regions[0]);
-  }, [state.regions]);
-
-  const handleConfirmationChoice = (choice) => {
-    if (choice !== null) {
-      if (choice) {
-        dispatch({
-          type: 'RESET',
-          data: {
-            markers: defaultMarkers,
-            selectedCrops: [],
-          },
-        });
-      } else {
-        dispatch({
-          type: 'RESET',
-          data: {
-            markers: defaultMarkers,
-            selectedCrops: state.selectedCrops,
-          },
-        });
-      }
-      closeExpansionPanel();
-    }
-    setShowRestartPrompt(false);
-  };
+    updateReg(regionsRedux[0]);
+  }, [regionsRedux]);
 
   const handleMapChange = () => {
     // eslint-disable-next-line eqeqeq
-    const regionInfo = state.regions.filter((region) => region.shorthand == selectedZone);
+    const regionInfo = regionsRedux.filter((region) => region.shorthand == selectedZone);
 
-    updateZone(regionInfo[0]);
+    updateReg(regionInfo[0]);
   };
 
   useEffect(() => {
-    if (state.councilLabel !== 'Midwest Cover Crop Council') {
+    if (councilLabelRedux !== 'Midwest Cover Crop Council') {
       setselectedZone(zoneRedux);
     } else {
       setselectedZone(countyRedux?.replace(' County', ''));
@@ -133,7 +105,6 @@ const LocationComponent = ({
       latitude,
       longitude,
       address,
-      fullAddress,
       zipCode,
       county,
     } = selectedToEditSite;
@@ -141,30 +112,23 @@ const LocationComponent = ({
     if (latitude === markersRedux[0][0] && longitude === markersRedux[0][1]) { return; }
 
     if (Object.keys(selectedToEditSite).length > 0) {
+      setLocZipCode(zipCode);
       dispatchRedux(updateLocation(
         {
           address,
           markers: [[latitude, longitude]],
-          zipCode,
         },
       ));
-
-      dispatch({
-        type: 'SNACK',
-        data: {
-          snackOpen: true,
-          snackMessage: 'Your location has been saved.',
-        },
-      });
+      dispatchRedux(snackHandler({
+        snackOpen: true,
+        snackMessage: 'Your location has been saved.',
+      }));
 
       if (selectedToEditSite.address) {
         dispatchRedux(changeAddressViaMap(
           {
             address,
-            fullAddress,
-            zipCode,
             county,
-            addressVerified: true,
           },
         ));
       }
@@ -185,7 +149,7 @@ const LocationComponent = ({
 
     // since this updates with state; ideally, weather and soil info should be updated here
     // get current lat long and get county, state and city
-    if (state.progress >= 1 && markersRedux.length > 0) {
+    if (progressRedux >= 1 && markersRedux.length > 0) {
       reverseGEO(lat, lon)
         .then(async (resp) => {
           const abbrState = abbrRegion(
@@ -194,11 +158,6 @@ const LocationComponent = ({
           ).toLowerCase();
 
           const city = resp?.features?.filter((feature) => feature?.place_type?.includes('place'))[0]?.text?.toLowerCase();
-          const zip = resp?.features?.filter((feature) => feature?.place_type?.includes('postcode'))[0]?.text;
-
-          if (zip) {
-            dispatchRedux(updateZipCode(zip));
-          }
 
           const currentMonthInt = moment().month() + 1;
           // frost url
@@ -219,8 +178,10 @@ const LocationComponent = ({
             .then(((frostResp) => {
               const firstFrost = new Date(frostResp.firstfrost + prevYear);
               const lastFrost = new Date(frostResp.lastfrost + currYear);
-              const frostFreeDaysObj = Math.round(Math.abs((firstFrost.valueOf() - lastFrost.valueOf()) / oneDay));
-              const averageFrostObject = {
+              const frostFreeDays = Math.round(Math.abs((firstFrost.valueOf() - lastFrost.valueOf()) / oneDay));
+
+              dispatchRedux(updateFrostFreeDays(frostFreeDays));
+              dispatchRedux(updateAvgFrostDates({
                 firstFrostDate: {
                   month: firstFrost.toLocaleString('en-US', { month: 'long' }),
                   day: firstFrost.getDate().toString(),
@@ -229,18 +190,7 @@ const LocationComponent = ({
                   month: lastFrost.toLocaleString('en-US', { month: 'long' }),
                   day: lastFrost.getDate().toString(),
                 },
-              };
-
-              dispatch({
-                type: 'UPDATE_FROST_FREE_DAYS',
-                data: { frostFreeDays: frostFreeDaysObj },
-              });
-              dispatch({
-                type: 'UPDATE_AVERAGE_FROST_DATES',
-                data: {
-                  averageFrost: averageFrostObject,
-                },
-              });
+              }));
             })).catch((error) => {
               // eslint-disable-next-line
               console.log(`Weather API error code: ${error?.response?.status} for getting 5 year average rainfall for this month`);
@@ -255,10 +205,7 @@ const LocationComponent = ({
                 averagePrecipitationForCurrentMonth * 0.03937,
               ).toFixed(2);
 
-              dispatch({
-                type: 'UPDATE_AVERAGE_PRECIP_CURRENT_MONTH',
-                data: { thisMonth: averagePrecipitationForCurrentMonth },
-              });
+              dispatchRedux(updateAvgPrecipCurrentMonth(averagePrecipitationForCurrentMonth));
             })
             .catch((error) => {
               // eslint-disable-next-line
@@ -272,10 +219,7 @@ const LocationComponent = ({
               fiveYearAvgRainAnnual = parseFloat(fiveYearAvgRainAnnual * 0.03937).toFixed(
                 2,
               );
-              dispatch({
-                type: 'UPDATE_AVERAGE_PRECIP_ANNUAL',
-                data: { annual: fiveYearAvgRainAnnual },
-              });
+              dispatchRedux(updateAvgPrecipAnnual(fiveYearAvgRainAnnual));
             })
             .catch((error) => {
               // eslint-disable-next-line
@@ -286,11 +230,11 @@ const LocationComponent = ({
   }, [markersRedux]);
 
   useEffect(() => {
-    if (!zipCodeRedux) {
+    if (!locZipCode) {
       return;
     }
 
-    callCoverCropApi(`https://phzmapi.org/${zipCodeRedux}.json`)
+    callCoverCropApi(`https://phzmapi.org/${locZipCode}.json`)
       .then((response) => {
         let { zone } = response;
 
@@ -300,24 +244,21 @@ const LocationComponent = ({
           zone = zone.slice(0, -1);
         }
 
-        if (state.regions?.length > 0) {
-          state.regions.forEach((region) => {
+        if (regionsRedux?.length > 0) {
+          regionsRedux.forEach((region) => {
             if (region.shorthand === zone) {
               regionId = region.id;
             }
           });
         }
-        if (state.councilShorthand !== 'MCCC') {
-          dispatchRedux(updateZoneRedux(
-            {
-              zoneText: `Zone ${zone}`,
-              zone,
-              zoneId: regionId,
-            },
-          ));
+        if (councilShorthandRedux !== 'MCCC') {
+          dispatchRedux(updateRegion({
+            regionId: regionId ?? '',
+            regionShorthand: zone ?? '',
+          }));
         }
       });
-  }, [zipCodeRedux]);
+  }, [locZipCode]);
 
   return (
     <div className="container-fluid mt-5">
@@ -327,7 +268,7 @@ const LocationComponent = ({
             <Typography variant="h4" align="left">
               Where is your field located?
             </Typography>
-            {state.councilLabel === 'Midwest Cover Crop Council'
+            {councilLabelRedux === 'Midwest Cover Crop Council'
               ? (
                 <Typography variant="body1" align="left" justifyContent="center" className="pt-5 pb-2">
                   Please Select A County.
@@ -342,7 +283,12 @@ const LocationComponent = ({
               )}
             <div className="row py-3 my-4 ">
               <div className="col-md-5 col-lg-6 col-sm-12 col-12">
-                <PlantHardinessZone updateZone={updateZone} />
+                <PlantHardinessZone
+                  updateReg={updateReg}
+                  regionShorthand={regionShorthand}
+                  regionsRedux={regionsRedux}
+                  councilLabelRedux={councilLabelRedux}
+                />
               </div>
             </div>
           </div>
@@ -371,16 +317,6 @@ const LocationComponent = ({
           </div>
         </div>
       </div>
-      <Dialog disableEscapeKeyDown open={showRestartPrompt}>
-        <DialogContent dividers>
-          <Typography variant="body1">
-            This will trigger a restart. Would you also like to clear My Cover Crop List?
-          </Typography>
-        </DialogContent>
-        <DialogActions>
-          <BinaryButton action={handleConfirmationChoice} />
-        </DialogActions>
-      </Dialog>
       <MyCoverCropReset handleConfirm={handleConfirm} setHandleConfirm={setHandleConfirm} from="selector" />
     </div>
   );

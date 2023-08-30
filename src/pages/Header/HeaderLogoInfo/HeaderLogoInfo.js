@@ -1,54 +1,57 @@
 import {
-  Dialog, DialogActions, DialogContent, Typography, Box, Grid,
+  Typography, Box, Grid,
 } from '@mui/material';
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { BinaryButton } from '../../../shared/constants';
-import { Context } from '../../../store/Store';
+import { reset } from '../../../reduxStore/store';
 import '../../../styles/header.scss';
 import DateComponent from '../DateComponent/DateComponent';
 import ForecastComponent from '../ForecastComponent/ForecastComponent';
+import MyCoverCropReset from '../../../components/MyCoverCropReset/MyCoverCropReset';
 
 const HeaderLogoInfo = () => {
-  const { state, dispatch } = useContext(Context);
+  const dispatchRedux = useDispatch();
   const history = useHistory();
+  const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
   const [handleConfirm, setHandleConfirm] = useState(false);
-  const defaultMarkers = [[40.78489145, -74.80733626930342]];
-  const { selectedCrops } = state;
+  const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
 
-  const logoClick = (clearMyList = false) => {
-    if (clearMyList) {
-      dispatch({
-        type: 'RESET',
-        data: {
-          markers: defaultMarkers,
-          selectedCrops: [],
-        },
-      });
-      history.replace('/');
+  const handleClick = () => {
+    if (selectedCropsRedux.length === 0) {
+      if (window.location.pathname === '/') {
+        dispatchRedux(reset());
+      } else history.replace('/');
+    } else {
+      setHandleConfirm(true);
     }
-    setHandleConfirm(false);
   };
 
   useEffect(() => {
     let imageSrc;
-    if (state.councilLabel === 'Northeast Cover Crop Council') {
+    const favicon = document.getElementById('favicon');
+    if (councilLabelRedux === 'Northeast Cover Crop Council') {
       imageSrc = '../images/neccc_wide_logo_color_web.jpg';
-    } else if (state.councilLabel === 'Southern Cover Crop Council') {
+      favicon.href = 'favicons/neccc-favicon.ico';
+    } else if (councilLabelRedux === 'Southern Cover Crop Council') {
       imageSrc = '../images/sccc_logo.png';
-    } else if (state.councilLabel === 'Midwest Cover Crop Council') {
+      favicon.href = 'favicons/sccc-favicon.ico';
+    } else if (councilLabelRedux === 'Midwest Cover Crop Council') {
       imageSrc = '../images/mwccc_logo.png';
-    } else if (state.councilLabel === 'Western Cover Crop Council') {
+      favicon.href = 'favicons/mccc-favicon.ico';
+    } else if (councilLabelRedux === 'Western Cover Crop Council') {
       imageSrc = '../images/wccc_logo.png';
+      favicon.href = 'favicons/psa-favicon.ico';
     } else {
-      imageSrc = '../images/whitebg.png';
+      imageSrc = '../images/PSAlogo-text.png';
+      favicon.href = 'favicons/psa-favicon.ico';
     }
 
     const imageElement = document.getElementById('logoImage');
     if (imageElement) {
       imageElement.src = imageSrc;
     }
-  }, [state.councilLabel]);
+  }, [councilLabelRedux]);
 
   return (
     <Grid lg={12} item container alignItems="center" sx={{ height: '150px', padding: '0', margin: '0' }}>
@@ -61,7 +64,6 @@ const HeaderLogoInfo = () => {
           component="div"
           sx={{
             position: 'relative',
-            width: '100px',
             height: 'auto',
             marginRight: '10px',
             '@media (max-width: 768px)': {
@@ -71,13 +73,13 @@ const HeaderLogoInfo = () => {
               width: '120px', /*  medium screens */
             },
             '@media (min-width: 1025px)': {
-              width: '160px', /* large screens */
+              width: '200px', /* large screens */
             },
           }}
         >
           <button
             type="button"
-            onClick={selectedCrops.length > 0 ? () => setHandleConfirm(true) : () => logoClick(true)}
+            onClick={handleClick}
             style={{
               backgroundColor: 'white',
               border: 'none',
@@ -96,7 +98,7 @@ const HeaderLogoInfo = () => {
           </button>
         </Box>
       </Grid>
-      <Grid item lg={4} md={4} sm={12} xs={12} sx={{ marginLeft: '80px' }}>
+      <Grid item lg={4} md={4} sm={12} xs={12} sx={{ marginLeft: '120px' }}>
         <div className="d-flex align-items-center text-left">
           <div>
             <Typography variant="body1" className="font-weight-bold">
@@ -117,16 +119,7 @@ const HeaderLogoInfo = () => {
         </div>
       </Grid>
 
-      <Dialog onClose={() => setHandleConfirm(false)} open={handleConfirm}>
-        <DialogContent dividers>
-          <Typography variant="body1">
-            You will need to clear your My Cover Crop List to continue. Would you like to continue?
-          </Typography>
-        </DialogContent>
-        <DialogActions>
-          <BinaryButton action={logoClick} />
-        </DialogActions>
-      </Dialog>
+      <MyCoverCropReset handleConfirm={handleConfirm} setHandleConfirm={setHandleConfirm} goBack={false} returnToHome />
     </Grid>
   );
 };

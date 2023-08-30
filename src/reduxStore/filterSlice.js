@@ -2,7 +2,6 @@ const initialState = {
   explorer: {
     // filters for explorer
     cropSearch: '',
-    // zone is also initialised in the addressData slice
     zone: 6, // needs a default so the filters will populate when starting with species-selector
   },
 
@@ -10,7 +9,6 @@ const initialState = {
     // filters for selector
     cropSearch: '',
   },
-  changedFilters: true,
 };
 
 export const clearFilters = () => ({
@@ -24,14 +22,14 @@ export const filterToggle = ({ value }) => ({
   },
 });
 
-export const filterOn = (value) => ({
+export const filterOnRedux = (value) => ({
   type: 'FILTER_ON',
   payload: {
     value,
   },
 });
 
-export const filterOff = (value) => ({
+export const filterOffRedux = (value) => ({
   type: 'FILTER_OFF',
   payload: {
     value,
@@ -40,6 +38,13 @@ export const filterOff = (value) => ({
 
 export const cropSearch = (value) => ({
   type: 'CROP_SEARCH',
+  payload: {
+    value,
+  },
+});
+
+export const toggleFilterValue = (value) => ({
+  type: 'TOGGLE_FILTER_VALUE',
   payload: {
     value,
   },
@@ -60,7 +65,6 @@ const filterReducer = (state = initialState, action = null) => {
       return {
         ...state,
         [section]: sfilters,
-        changedFilters: true,
       };
 
     case 'FILTER_TOGGLE':
@@ -69,7 +73,6 @@ const filterReducer = (state = initialState, action = null) => {
       return {
         ...state,
         [section]: sfilters,
-        changedFilters: true,
       };
 
     case 'FILTER_ON':
@@ -78,7 +81,6 @@ const filterReducer = (state = initialState, action = null) => {
       return {
         ...state,
         [section]: sfilters,
-        changedFilters: true,
       };
 
     case 'FILTER_OFF':
@@ -87,7 +89,6 @@ const filterReducer = (state = initialState, action = null) => {
       return {
         ...state,
         [section]: sfilters,
-        changedFilters: true,
       };
 
     case 'CROP_SEARCH':
@@ -97,6 +98,12 @@ const filterReducer = (state = initialState, action = null) => {
         ...state,
         cropSearch: action.payload.value,
         [section]: sfilters,
+      };
+
+    case 'TOGGLE_FILTER_VALUE':
+      return {
+        ...state,
+        [value]: !state[value],
       };
 
     default:

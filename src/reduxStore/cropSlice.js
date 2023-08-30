@@ -4,7 +4,7 @@ const initialState = {
   selectedCrops: [],
   cashCropData: {
     name: '',
-    dataRange: {
+    dateRange: {
       startDate: '',
       endDate: '',
     },
@@ -36,7 +36,7 @@ export const selectedCropsModifier = (value) => ({
   },
 });
 
-export const updateDateRange = (startDate, endDate) => ({
+export const updateDateRange = ({ startDate, endDate }) => ({
   type: 'UPDATE_DATE_RANGE',
   payload: {
     startDate,
@@ -51,35 +51,33 @@ const cropDataReducer = (state = initialState, action = null) => {
       return {
         ...state,
         activeCropData: action.payload.value,
-        // changedFilters: false can have different slice
       };
 
     case 'PULL_CROP_DATA':
       return {
         ...state,
-        cropData: action.payload.value,
+        cropData: [...action.payload.value],
         activeCropData: action.payload.value,
       };
 
     case 'SELECTED_CROPS_MODIFIER':
       return {
         ...state,
-        selectedCrops: action.payload.value,
-        // snackOpen: action.data.snackOpen,
-        // snackMessage: action.data.snackMessage,
+        selectedCrops: [...action.payload.value],
       };
 
-    case 'UPDATE_DATE_RANGE':
+    case 'UPDATE_DATE_RANGE': {
       return {
         ...state,
         cashCropData: {
           ...state.cashCropData,
-          dataRange: {
+          dateRange: {
             startDate: action.payload.startDate,
             endDate: action.payload.endDate,
           },
         },
       };
+    }
 
     default:
       return { ...state };

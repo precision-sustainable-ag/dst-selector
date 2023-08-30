@@ -3,16 +3,19 @@
   styled using ./styles/App.scss
 */
 
-import { Snackbar } from '@mui/material';
-import React, { useContext, useEffect, useState } from 'react';
+import {
+  Snackbar, Box, Container, Grid, Typography,
+} from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import CropSelector from './pages/CropSelector/CropSelector';
 import GoalsSelector from './pages/GoalsSelector/GoalsSelector';
 import Header from './pages/Header/Header';
 import Landing from './pages/Landing/Landing';
 import LocationComponent from './pages/Location/Location';
 import LocationConfirmation from './pages/Location/LocationConfirmation/LocationConfirmation';
-import { Context } from './store/Store';
 import './styles/App.scss';
+import { snackHandler } from './reduxStore/sharedSlice';
 
 const LoadRelevantRoute = ({ progress, calcHeight }) => {
   switch (progress) {
@@ -52,16 +55,18 @@ const LoadRelevantRoute = ({ progress, calcHeight }) => {
 };
 
 const App = () => {
-  const { state, dispatch } = useContext(Context);
+  const dispatchRedux = useDispatch();
   const [calcHeight, setCalcHeight] = useState(0);
+
+  // redux vars
+  const snackOpenRedux = useSelector((stateRedux) => stateRedux.sharedData.snackOpen);
+  const snackMessageRedux = useSelector((stateRedux) => stateRedux.sharedData.snackMessage);
+  const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
+  const snackVerticalRedux = useSelector((stateRedux) => stateRedux.sharedData.snackVertical);
+  const snackHorizontalRedux = useSelector((stateRedux) => stateRedux.sharedData.snackHorizontal);
+
   const handleSnackClose = () => {
-    dispatch({
-      type: 'SNACK',
-      data: {
-        snackOpen: false,
-        snackMessage: '',
-      },
-    });
+    dispatchRedux(snackHandler({ snackOpen: false, snackMessage: '' }));
   };
 
   useEffect(() => {
@@ -76,75 +81,58 @@ const App = () => {
   }, []);
 
   return (
-    <div className="contentWrapper" id="mainContentWrapper">
+    <Box className="contentWrapper" id="mainContentWrapper">
       <Header logo="neccc_wide_logo_color_web.jpg" />
 
-      <div className="container-fluid pl-0 pr-0">
-        <div className="contentContainer">
-          {state.progress === 0 ? (
+      <Container disableGutters maxWidth={false}>
+        <Box className="contentContainer">
+          {progressRedux === 0 ? (
             <Landing
               title="Decision Support Tool"
               height={calcHeight}
               bg="/images/cover-crop-field.png"
             />
           ) : (
-            <div
-              className="col-12"
-              style={{
-                paddingLeft: '0px',
-                paddingRight: '0px',
-              }}
-            >
-              <LoadRelevantRoute progress={state.progress} calcHeight={calcHeight} />
-            </div>
+            <Grid container item xs={12} style={{ paddingLeft: 0, paddingRight: 0 }}>
+              <LoadRelevantRoute progress={progressRedux} calcHeight={calcHeight} />
+            </Grid>
           )}
-        </div>
-      </div>
+        </Box>
+      </Container>
 
       <div>
         <Snackbar
           anchorOrigin={{
-            vertical: state.snackVertical,
-            horizontal: state.snackHorizontal,
+            vertical: snackVerticalRedux,
+            horizontal: snackHorizontalRedux,
           }}
           key={{
-            vertical: state.snackVertical,
-            horizontal: state.snackHorizontal,
+            vertical: snackVerticalRedux,
+            horizontal: snackHorizontalRedux,
           }}
           autoHideDuration={3000}
-          open={state.snackOpen}
+          open={snackOpenRedux}
           onClose={handleSnackClose}
           ContentProps={{
             'aria-describedby': 'message-id',
           }}
-          message={state.snackMessage}
+          message={snackMessageRedux}
         />
       </div>
-    </div>
+    </Box>
   );
 };
 
 export default App;
 
 const RouteNotFound = () => (
-  <div className="container mt-4">
-    <div className="row">
-      <div className="col-4 offset-4">
-        <h3>Unknown Route</h3>
-      </div>
-    </div>
-  </div>
+  <Container>
+    <Grid container justifyContent="center" alignItems="center" spacing={3}>
+      <Grid item xs={4}>
+        <Typography variant="h3" align="center">
+          Unknown Route
+        </Typography>
+      </Grid>
+    </Grid>
+  </Container>
 );
-
-// eslint-disable-next-line
-const crop = window.location.search.match(/crop=([^\^]+)/);
-
-if (crop) {
-  setTimeout(() => {
-    [...document.querySelectorAll('.MuiCardContent-root')].forEach((o) => {
-      if (o.textContent.includes(decodeURI(crop[1]))) {
-        o.querySelector('a').click();
-      }
-    });
-  }, 1000);
-}

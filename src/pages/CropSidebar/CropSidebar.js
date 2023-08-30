@@ -10,6 +10,7 @@ import {
   Collapse,
   List,
   ListItem,
+  ListItemButton,
   ListItemText,
   // ListSubheader,
   Typography,
@@ -19,11 +20,10 @@ import {
 } from '@mui/icons-material';
 import ListIcon from '@mui/icons-material/List';
 import React, {
-  useContext, useEffect, useState,
+  useEffect, useState,
 } from 'react';
-import { useDispatch } from 'react-redux';
-import { CustomStyles, callCoverCropApi } from '../../shared/constants';
-import { Context, cropDataFormatter } from '../../store/Store';
+import { useDispatch, useSelector } from 'react-redux';
+import { CustomStyles, callCoverCropApi, cropDataFormatter } from '../../shared/constants';
 import '../../styles/cropSidebar.scss';
 import ComparisonBar from '../MyCoverCropList/ComparisonBar/ComparisonBar';
 import CoverCropSearch from './CoverCropSearch/CoverCropSearch';
@@ -32,7 +32,10 @@ import CoverCropGoals from './CoverCropGoals/CoverCropGoals';
 import PreviousCashCrop from './PreviousCashCrop/PreviousCashCrop';
 import PlantHardinessZone from './PlantHardinessZone/PlantHardinessZone';
 import Legend from '../../components/Legend/Legend';
-import { updateZone as updateZoneRedux } from '../../reduxStore/addressSlice';
+import { updateRegion } from '../../reduxStore/mapSlice';
+import { clearFilters } from '../../reduxStore/filterSlice';
+import { pullCropData, updateActiveCropData, updateDateRange } from '../../reduxStore/cropSlice';
+import { pullDictionaryData, setAjaxInProgress, regionToggleHandler } from '../../reduxStore/sharedSlice';
 
 const CropSidebar = ({
   comparisonView,
@@ -43,18 +46,36 @@ const CropSidebar = ({
   toggleListView,
   style,
 }) => {
-  const { state, dispatch } = useContext(Context);
   const dispatchRedux = useDispatch();
+
+  // redux vars
+  const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
+  const cashCropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cashCropData);
+  const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
+  const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
+  const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
+  const regionToggleRedux = useSelector((stateRedux) => stateRedux.sharedData.regionToggle);
+  const speciesSelectorActivationFlagRedux = useSelector((stateRedux) => stateRedux.sharedData.speciesSelectorActivationFlag);
+  const comparisonKeysRedux = useSelector((stateRedux) => stateRedux.sharedData.comparisonKeys);
+  const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
+  const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
+  const regionShorthand = useSelector((stateRedux) => stateRedux.mapData.regionShorthand);
+  const regionsRedux = useSelector((stateRedux) => stateRedux.mapData.regions);
+  const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
+
+  // useState vars
   const [loading, setLoading] = useState(false);
   const [sidebarFilters, setSidebarFilters] = useState([]);
   const [showFilters, setShowFilters] = useState('');
   const [sidebarCategoriesData, setSidebarCategoriesData] = useState([]);
   const [sidebarFiltersData, setSidebarFiltersData] = useState([]);
   const [tableHeight, setTableHeight] = useState(0);
+  const [cropFiltersOpen, setCropFiltersOpen] = useState(true);
   const [dateRange, setDateRange] = useState({
     startDate: null,
     endDate: null,
   });
+
   // make an exhaustive array of all params in array e.g. cover crop group and use includes in linq
   const [sidebarFilterOptions, setSidebarFilterOptions] = useState(() => {
     const sidebarStarter = {};
@@ -63,35 +84,24 @@ const CropSidebar = ({
     });
     return sidebarStarter;
   });
-
   const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
-  const sfilters = state[section];
+  const sfilters = filterStateRedux[section];
   // const dictionary = [];
-
   const legendData = [
     { className: 'sideBar', label: '0 = Least, 5 = Most' },
   ];
 
-  const query = `${encodeURIComponent('regions')}=${encodeURIComponent(state.regionId)}`;
+  const query = `${encodeURIComponent('regions')}=${encodeURIComponent(regionIdRedux)}`;
 
   // // TODO: When is showFilters false?
   // NOTE: verify below when show filter is false.
   useEffect(() => {
     const value = !(window.location.pathname === '/'
       && from === 'table'
-      && !state.speciesSelectorActivationFlag
+      && !speciesSelectorActivationFlagRedux
       && !comparisonView);
     setShowFilters(value);
-  }, [state.speciesSelectorActivationFlag, from, comparisonView]);
-
-  const handleToggle = (value, type = 'TOGGLE') => {
-    dispatch({
-      type,
-      data: {
-        value,
-      },
-    });
-  };
+  }, [speciesSelectorActivationFlagRedux, from, comparisonView]);
 
   useEffect(() => {
     const sfo = {};
@@ -106,11 +116,11 @@ const CropSidebar = ({
       }
     });
 
-    let cropData = state?.cropData?.filter((crop) => crop['Zone Decision'] === 'Include');
+    let cropData = cropDataRedux?.filter((crop) => crop['Zone Decision'] === 'Include');
 
     const search = sfilters.cropSearch?.toLowerCase().match(/\w+/g);
 
-    cropData = state?.cropData?.filter((crop) => {
+    cropData = cropDataRedux?.filter((crop) => {
       let m;
 
       const match = (parm) => {
@@ -166,20 +176,13 @@ const CropSidebar = ({
 
       return true;
     });
-    dispatch({
-      type: 'UPDATE_ACTIVE_CROP_DATA',
-      data: {
-        value: filtered,
-      },
-    });
-  }, [state.changedFilters, sfilters.cropSearch, state?.cropData, dispatch, sfilters]);
+    dispatchRedux(updateActiveCropData(filtered));
+  }, [sfilters.cropSearch, cropDataRedux, dispatchRedux, sfilters]);
 
   const filtersSelected = Object.keys(sfilters)?.filter((key) => sfilters[key])?.length > 1;
 
   const resetAllFilters = () => {
-    dispatch({
-      type: 'CLEAR_FILTERS',
-    });
+    dispatchRedux(clearFilters());
   };
 
   const generateSidebarObject = async () => {
@@ -198,6 +201,7 @@ const CropSidebar = ({
             type,
             rating: !filter.isArray,
             maxSize: null,
+            dataType: filter.dataType.label,
             description: filter.description,
             details: filter.details,
             units: filter.units,
@@ -231,21 +235,15 @@ const CropSidebar = ({
   }, [sidebarCategoriesData]);
 
   useEffect(() => {
-    if (state.stateId && state.regionId) {
-      dispatch({
-        type: 'SET_AJAX_IN_PROGRESS',
-        data: true,
-      });
+    if (stateIdRedux && regionIdRedux) {
+      dispatchRedux(setAjaxInProgress(true));
 
       setLoading(true);
-      callCoverCropApi(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${state.stateId}/dictionary?${query}`).then((data) => {
-        dispatch({
-          type: 'PULL_DICTIONARY_DATA',
-          data: data.data,
-        });
+      callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/dictionary?${query}`).then((data) => {
+        dispatchRedux(pullDictionaryData(data.data));
       });
 
-      callCoverCropApi(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${state.stateId}/filters?${query}`).then((data) => {
+      callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/filters?${query}`).then((data) => {
         const allFilters = [];
         data.data.forEach((category) => {
           allFilters.push(category.attributes);
@@ -254,37 +252,28 @@ const CropSidebar = ({
         setSidebarCategoriesData(data.data);
       });
 
-      callCoverCropApi(`https://${state.apiBaseURL}.covercrop-selector.org/v1/states/${state.stateId}/crops?${query}`).then((data) => {
+      callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/crops?${query}`).then((data) => {
         cropDataFormatter(data.data);
-        dispatch({
-          type: 'PULL_CROP_DATA',
-          data: data.data,
-        });
-        dispatch({
-          type: 'SET_AJAX_IN_PROGRESS',
-          data: false,
-        });
+        dispatchRedux(pullCropData(data.data));
+        dispatchRedux(setAjaxInProgress(false));
       });
     }
   }, [
-    state.regionId,
+    regionIdRedux,
   ]);
 
   useEffect(() => {
     if (from === 'table') {
       if (dateRange.startDate !== null && dateRange.endDate !== null) {
-        dispatch({
-          type: 'UPDATE_DATE_RANGE',
-          data: {
-            startDate: dateRange.startDate.toISOString().substring(0, 10),
-            endDate: dateRange.endDate.toISOString().substring(0, 10),
-          },
-        });
+        dispatchRedux(updateDateRange({
+          startDate: dateRange.startDate.toISOString().substring(0, 10),
+          endDate: dateRange.endDate.toISOString().substring(0, 10),
+        }));
       }
 
       setGrowthWindow(true);
     }
-  }, [dateRange, from, setGrowthWindow, dispatch]);
+  }, [dateRange, from, setGrowthWindow]);
 
   useEffect(() => {
     if (document.querySelector('.MuiTableRow-root.theadFirst.MuiTableRow-head')) {
@@ -304,13 +293,13 @@ const CropSidebar = ({
 
   // TODO: Can we use Reducer instead of localStorage?
   useEffect(() => {
-    if (state.cashCropData.dateRange.startDate) {
+    if (cashCropDataRedux.dateRange.startDate) {
       window.localStorage.setItem(
         'cashCropDateRange',
-        JSON.stringify(state.cashCropData.dateRange),
+        JSON.stringify(cashCropDataRedux.dateRange),
       );
     }
-  }, [state.cashCropData.dateRange]);
+  }, [cashCropDataRedux.dateRange]);
 
   const filters = () => sidebarFilters.map((filter, index) => {
     const sectionFilter = `${section}${filter.name}`;
@@ -323,7 +312,6 @@ const CropSidebar = ({
         setSidebarFilterOptions={setSidebarFilterOptions}
         resetAllFilters={resetAllFilters}
         sectionFilter={sectionFilter}
-        handleToggle={handleToggle}
       />
     );
   }); // filters
@@ -374,29 +362,13 @@ const CropSidebar = ({
     </Button>
   );
 
-  const updateZone = (region) => {
+  const updateReg = (region) => {
     if (region !== undefined) {
-      dispatchRedux(updateZoneRedux({
-        zoneText: region.label,
-        zone: region.shorthand,
-        zoneId: region.id,
+      dispatchRedux(updateRegion({
+        regionId: region.id ?? '',
+        regionLabel: region.label ?? '',
+        regionShorthand: region.shorthand ?? '',
       }));
-      // dispatch({
-      //   type: 'UPDATE_ZONE',
-      //   data: {
-      //     zoneText: region.label,
-      //     zone: region.shorthand,
-      //     zoneId: region.id,
-      //   },
-      // });
-      dispatch({
-        type: 'UPDATE_REGION',
-        data: {
-          regionId: region.id ?? '',
-          regionLabel: region.label ?? '',
-          regionShorthand: region.shorthand ?? '',
-        },
-      });
     }
   };
 
@@ -407,9 +379,8 @@ const CropSidebar = ({
         <div className="col-12">
           <ComparisonBar
             filterData={sidebarFilters}
-            goals={state.selectedGoals?.length > 0 ? state.selectedGoals : []}
-            comparisonKeys={state.comparisonKeys}
-            dispatch={dispatch}
+            goals={selectedGoalsRedux?.length > 0 ? selectedGoalsRedux : []}
+            comparisonKeys={comparisonKeysRedux}
             comparisonView={comparisonView}
           />
         </div>
@@ -445,7 +416,7 @@ const CropSidebar = ({
         </div>
       )}
 
-      {state.speciesSelectorActivationFlag || from === 'explorer' ? (
+      {speciesSelectorActivationFlagRedux || from === 'explorer' ? (
         <Box
           // className="col-"
           sx={{
@@ -462,16 +433,15 @@ const CropSidebar = ({
           >
             {from === 'table' && (
               <>
-                {showFilters && state.speciesSelectorActivationFlag && !isListView && (
-                  <CoverCropSearch sfilters={sfilters} dispatch={dispatch} />
+                {showFilters && speciesSelectorActivationFlagRedux && !isListView && (
+                  <CoverCropSearch sfilters={sfilters} />
                 )}
 
                 {!isListView && (
-                  <CoverCropGoals style={style} handleToggle={handleToggle} />
+                  <CoverCropGoals style={style} />
                 )}
 
                 <PreviousCashCrop
-                  handleToggle={handleToggle}
                   setDateRange={setDateRange}
                 />
               </>
@@ -481,7 +451,7 @@ const CropSidebar = ({
                 {from === 'explorer' && (
                   <>
                     <List component="div" disablePadding>
-                      <ListItem button onClick={() => handleToggle(!state.zoneToggle, 'ZONE_TOGGLE')}>
+                      <ListItemButton onClick={() => dispatchRedux(regionToggleHandler())}>
                         <ListItemText
                           primary={(
                             <Typography variant="body2" className="text-uppercase">
@@ -489,28 +459,35 @@ const CropSidebar = ({
                             </Typography>
             )}
                         />
-                        {state.zoneToggle ? <ExpandLess /> : <ExpandMore />}
-                      </ListItem>
+                        {regionToggleRedux ? <ExpandLess /> : <ExpandMore />}
+                      </ListItemButton>
                     </List>
-                    <PlantHardinessZone updateZone={updateZone} />
-                    <CoverCropSearch sfilters={sfilters} dispatch={dispatch} />
+                    <PlantHardinessZone
+                      updateReg={updateReg}
+                      regionShorthand={regionShorthand}
+                      regionsRedux={regionsRedux}
+                      councilLabelRedux={councilLabelRedux}
+                      regionToggleRedux={regionToggleRedux}
+                    />
+                    <CoverCropSearch sfilters={sfilters} />
                   </>
                 )}
-                <ListItem
-                  button
-                  onClick={() => handleToggle('cropFiltersOpen')}
+                <ListItemButton
+                  onClick={() => setCropFiltersOpen(!cropFiltersOpen)}
                   style={{
                     marginBottom: '15px',
                     backgroundColor:
-                      from === 'table' && !state.cropFiltersOpen
+                      from === 'table' && !cropFiltersOpen
                         ? 'inherit'
                         : CustomStyles().lightGreen,
                   }}
                 >
                   <ListItemText primary="COVER CROP PROPERTIES" />
 
-                  {state.cropFiltersOpen ? <ExpandLess /> : <ExpandMore />}
-                </ListItem>
+                  {cropFiltersOpen ? <ExpandLess /> : <ExpandMore />}
+                  {' '}
+                  {/* // why is this here */}
+                </ListItemButton>
                 <Box
                   sx={{
                     backgroundColor: 'background.paper',
@@ -525,7 +502,7 @@ const CropSidebar = ({
                     modal={false}
                   />
                 </Box>
-                <Collapse in={state.cropFiltersOpen} timeout="auto">
+                <Collapse in={cropFiltersOpen} timeout="auto">
                   {filtersList()}
                 </Collapse>
               </>
@@ -536,9 +513,8 @@ const CropSidebar = ({
         <div className="col-12">
           <ComparisonBar
             filterData={sidebarFilters}
-            goals={state.selectedGoals?.length > 0 ? state.selectedGoals : []}
-            comparisonKeys={state.comparisonKeys}
-            dispatch={dispatch}
+            goals={selectedGoalsRedux?.length > 0 ? selectedGoalsRedux : []}
+            comparisonKeys={comparisonKeysRedux}
             comparisonView={comparisonView}
           />
         </div>

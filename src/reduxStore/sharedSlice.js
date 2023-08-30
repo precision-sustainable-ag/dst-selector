@@ -10,14 +10,12 @@ const initialState = {
   myCoverCropListLocation: '',
   snackVertical: 'bottom',
   snackHorizontal: 'right',
+  regionToggle: true,
+  dataDictionary: {},
+  apiBaseUrl: /(localhost|dev)/i.test(window.location)
+    ? 'developapi'
+    : 'api',
 };
-
-export const toggleValue = (value) => ({
-  type: 'TOGGLE',
-  payload: {
-    value,
-  },
-});
 
 export const updateProgress = (value) => ({
   type: 'UPDATE_PROGRESS',
@@ -85,15 +83,22 @@ export const myCropListLocation = ({ from }) => ({
   },
 });
 
-const sharedReducer = (state = initialState, action = null) => {
-  const value = action && action.payload && action.payload.value;
-  switch (action.type) {
-    case 'TOGGLE':
-      return {
-        ...state,
-        [value]: !state[value],
-      };
+export const regionToggleHandler = (value) => ({
+  type: 'REGION_TOGGLE',
+  payload: {
+    value,
+  },
+});
 
+export const pullDictionaryData = (value) => ({
+  type: 'PULL_DICTIONARY_DATA',
+  payload: {
+    value,
+  },
+});
+
+const sharedReducer = (state = initialState, action = null) => {
+  switch (action.type) {
     case 'UPDATE_PROGRESS':
       if (action.payload.value === 'INCREMENT') {
         return { ...state, progress: state.progress + 1 };
@@ -151,7 +156,7 @@ const sharedReducer = (state = initialState, action = null) => {
     case 'UPDATE_COMPARISON_KEYS':
       return {
         ...state,
-        comparisonKeys: action.payload.value,
+        comparisonKeys: [...action.payload.value],
       };
 
     case 'MY_CROP_LIST_LOCATION':
@@ -159,6 +164,16 @@ const sharedReducer = (state = initialState, action = null) => {
         ...state,
         myCoverCropListLocation: action.payload.from,
       };
+
+    case 'REGION_TOGGLE':
+      return { ...state, regionToggle: !state.regionToggle };
+
+    case 'PULL_DICTIONARY_DATA': {
+      return {
+        ...state,
+        dataDictionary: action.payload.value,
+      };
+    }
 
     default:
       return { ...state };
