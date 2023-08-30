@@ -88,9 +88,6 @@ const LocationComponent = () => {
 
   const { isAuthenticated } = useAuth0();
 
-  // console.log('userFieldRedux', userFieldRedux);
-  // console.log('selectedUserField', selectedUserField)
-
   const getFeatures = () => {
     if (userFields.length > 0 && selectedUserField !== '') {
       const selectedField = userFields.find((userField) => userField.label === selectedUserField);
@@ -340,7 +337,6 @@ const LocationComponent = () => {
   }, []);
 
   const onDraw = (draw) => {
-    // console.log(draw.mode, draw.e.type, draw);
     if (isAuthenticated && draw.mode !== 'select') {
       setIsAddingPoint(false);
       setFieldDialogState({
@@ -420,7 +416,6 @@ const LocationComponent = () => {
       // if the user select cancel
       setMapFeatures(getFeatures());
     }
-    // reset dialog to default state
     setFieldDialogState(initFieldDialogState);
     // reset isAddingPoint
     setIsAddingPoint(true);
@@ -457,16 +452,18 @@ const LocationComponent = () => {
                 />
               </div>
             </div>
-            <div className="row py-3 my-4">
-              <div className="col-md-5 col-lg-6 col-sm-12 col-12">
-                <UserFieldList
-                  userFields={userFields}
-                  field={selectedUserField}
-                  setField={setSelectedUserField}
-                  setFieldDialogState={setFieldDialogState}
-                />
+            {isAuthenticated && (
+              <div className="row py-3 my-4">
+                <div className="col-md-5 col-lg-6 col-sm-12 col-12">
+                  <UserFieldList
+                    userFields={userFields}
+                    field={selectedUserField}
+                    setField={setSelectedUserField}
+                    setFieldDialogState={setFieldDialogState}
+                  />
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
         <div className="col-xl-8 col-sm-12">
