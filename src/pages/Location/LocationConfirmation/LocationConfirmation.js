@@ -3,21 +3,23 @@
   styled using CustomStyles from ../../shared/constants
 */
 
-import React, { useContext } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
 
 import { Typography } from '@mui/material';
 import { Map } from '@psa/dst.ui.map';
-import { Context } from '../../../store/Store';
 import { CustomStyles } from '../../../shared/constants';
 import SoilCondition from '../SoilCondition/SoilCondition';
 import WeatherConditions from '../../../components/WeatherConditions/WeatherConditions';
 
 const LocationConfirmation = () => {
-  const { state } = useContext(Context);
+  // redux vars
   const addressRedux = useSelector((stateRedux) => stateRedux.addressData.address);
   const markersRedux = useSelector((stateRedux) => stateRedux.addressData.markers);
   const zoneRedux = useSelector((stateRedux) => stateRedux.addressData.zone);
+  const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
+  // const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
+  const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
 
   return (
     <div
@@ -31,7 +33,7 @@ const LocationConfirmation = () => {
       <div className="row boxContainerRow" style={{ textAlign: 'left', minHeight: '520px' }}>
         <div className="col-xl-6 col-lg-12">
           <div className="container-fluid">
-            {state.coucil !== 'Midwest'
+            {councilShorthandRedux !== 'MCCC'
             ?? (
             <div className="row">
               <div className="col-lg-6">
@@ -67,7 +69,7 @@ const LocationConfirmation = () => {
                 <div className="col-12 pt-2">
                   <Typography variant="body1">
                     Your cover crop recommendations will come from the Plant Hardiness Zone
-                    {` ${zoneRedux} ${state.councilShorthand} dataset`}
+                    {` ${zoneRedux} ${councilShorthandRedux} dataset`}
                   </Typography>
                 </div>
                 <div className="col-12">
@@ -78,7 +80,7 @@ const LocationConfirmation = () => {
                       color: CustomStyles().lighterGreen,
                     }}
                   >
-                    {state?.address?.length > 0
+                    {addressRedux?.length > 0
                       ? `${addressRedux.toString().substring(0, 35)}...`
                       : 'Loading...'}
                   </Typography>
@@ -135,8 +137,8 @@ const LocationConfirmation = () => {
         </div>
         <div className="col-xl-5 offset-xl-1 col-lg-12">
           <div className="container-fluid">
-            {state.progress === 2 && state.councilLabel !== 'Midwest Cover Crop Council' && <SoilCondition />}
-            {state.progress === 3 && <WeatherConditions />}
+            {progressRedux === 2 && <SoilCondition />}
+            {progressRedux === 3 && <WeatherConditions />}
           </div>
         </div>
       </div>

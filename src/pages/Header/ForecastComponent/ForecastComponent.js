@@ -4,21 +4,24 @@
 */
 
 import React, {
-  Fragment, useContext, useEffect, useState,
+  useEffect, useState,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { cloudIcon, ReferenceTooltip, reverseGEO } from '../../../shared/constants';
 import { openWeatherApiKey } from '../../../shared/keys';
-import { Context } from '../../../store/Store';
-import { changeAddress, updateZipCode } from '../../../reduxStore/addressSlice';
+import { changeAddress } from '../../../reduxStore/addressSlice';
 
 const apiBaseURL = 'https://api.openweathermap.org/data/2.5/weather';
 
 const ForecastComponent = () => {
-  const { state, dispatch } = useContext(Context);
   const dispatchRedux = useDispatch();
+
+  // redux vars
   const markersRedux = useSelector((stateRedux) => stateRedux.addressData.markers);
   const addressRedux = useSelector((stateRedux) => stateRedux.addressData.address);
+  const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
+
+  // useState vars
   const [showTempIcon, setShowTempIcon] = useState(true);
   const [temp, setTemp] = useState({
     min: 0,
@@ -77,13 +80,9 @@ const ForecastComponent = () => {
           data
             .then((res) => {
               const address = res?.features?.filter((feature) => feature?.place_type?.includes('address'))[0]?.place_name;
-              const zip = res?.features?.filter((feature) => feature?.place_type?.includes('postcode'))[0]?.text;
 
               if (address) {
-                dispatchRedux(changeAddress({ address, addressVerified: true }));
-              }
-              if (zip) {
-                dispatchRedux(updateZipCode(zip));
+                dispatchRedux(changeAddress({ address }));
               }
             })
             .catch((e) => {
@@ -97,9 +96,9 @@ const ForecastComponent = () => {
     if (markersRedux[0].length > 0) {
       setShowFeatures();
     }
-  }, [dispatch, addressRedux, markersRedux, state.progress]);
+  }, [dispatchRedux, addressRedux, markersRedux, progressRedux]);
 
-  if (state.progress >= 1) {
+  if (progressRedux >= 1) {
     if (showTempIcon) {
       return (
         <>

@@ -6,24 +6,28 @@
 import { Typography } from '@mui/material';
 import { Info } from '@mui/icons-material';
 import React, {
-  useContext, useEffect, useState,
+  useEffect, useState,
 } from 'react';
-import { Context } from '../../../store/Store';
+import { useSelector } from 'react-redux';
 import DictionaryContent from './DictionaryContent';
 import { callCoverCropApi } from '../../../shared/constants';
 
 const InformationSheetDictionary = ({ zone, from }) => {
+  // redux vars
+  const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
+  const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
+
+  // useState vars
   const [dictionary, setDictionary] = useState([]);
-  const { state } = useContext(Context);
   const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
-  const sfilters = state[section];
+  const sfilters = filterStateRedux[section];
 
   const currentZone = zone || sfilters.zone;
 
   useEffect(() => {
     document.title = 'Data Dictionary';
     if (currentZone) {
-      callCoverCropApi(`https://${state.apiBaseURL}.covercrop-selector.org/legacy/data-dictionary?zone=zone${currentZone}`)
+      callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/legacy/data-dictionary?zone=zone${currentZone}`)
         .then((data) => { setDictionary(data); });
     }
   }, [zone]);

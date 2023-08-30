@@ -1,31 +1,36 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { Button, Typography } from '@mui/material';
 import { LocalDrinkOutlined } from '@mui/icons-material';
 import { ReferenceTooltip } from '../../../../shared/constants';
 import arrayEquals from '../../../../shared/functions';
-import { Context } from '../../../../store/Store';
 import '../../../../styles/soilConditions.scss';
 import RenderDrainageClasses from './RenderDrainageClasses';
 import MyCoverCropReset from '../../../../components/MyCoverCropReset/MyCoverCropReset';
+import { updateDrainageClass as updateDrainageClassRedux } from '../../../../reduxStore/soilSlice';
 
 const SoilDrainage = ({ setTilingCheck }) => {
-  const { state, dispatch } = useContext(Context);
-  const { soilData, soilDataOriginal } = state;
+  const dispatchRedux = useDispatch();
+
+  // redux vars
+  const soilDataRedux = useSelector((stateRedux) => stateRedux.soilData.soilData);
+  const soilDataOriginalRedux = useSelector((stateRedux) => stateRedux.soilData.soilDataOriginal);
+  const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
+  const myCoverCropListLocationRedux = useSelector((stateRedux) => stateRedux.sharedData.myCoverCropListLocation);
+
+  // useState vars
   const [handleConfirm, setHandleConfirm] = useState(false);
 
   useEffect(() => {
-    if (state.myCoverCropListLocation !== 'selector' && state.selectedCrops.length > 0) {
+    if (myCoverCropListLocationRedux !== 'selector' && selectedCropsRedux.length > 0) {
       // document.title = 'Cover Crop Selector';
       setHandleConfirm(true);
     }
-  }, [state.selectedCrops, state.myCoverCropListLocation]);
+  }, [selectedCropsRedux, myCoverCropListLocationRedux]);
 
   const resetDrainageClasses = () => {
-    dispatch({
-      type: 'UPDATE_DRAINAGE_CLASS',
-      data: soilDataOriginal.Drainage_Class,
-    });
-    window.localStorage.setItem('drainage', JSON.stringify(soilDataOriginal.Drainage_Class));
+    dispatchRedux(updateDrainageClassRedux(soilDataOriginalRedux?.drainageClass));
+    window.localStorage.setItem('drainage', JSON.stringify(soilDataOriginalRedux?.drainageClass));
     setTilingCheck(false);
   };
 
@@ -69,7 +74,7 @@ const SoilDrainage = ({ setTilingCheck }) => {
           />
         </Typography>
       </div>
-      {!arrayEquals(soilDataOriginal.Drainage_Class, soilData.Drainage_Class) && (
+      {!arrayEquals(soilDataOriginalRedux?.drainageClass, soilDataRedux?.drainageClass) && (
       <div className="col-12 pt-2">
         <div className="col-12 row">
           <div className="col text-left">
@@ -91,7 +96,7 @@ const SoilDrainage = ({ setTilingCheck }) => {
       </div>
       )}
       <div className="col-12">
-        <RenderDrainageClasses drainage={soilData.Drainage_Class} />
+        <RenderDrainageClasses drainage={soilDataRedux?.drainageClass} />
       </div>
       <MyCoverCropReset handleConfirm={handleConfirm} setHandleConfirm={setHandleConfirm} />
     </div>
