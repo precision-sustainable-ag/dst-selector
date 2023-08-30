@@ -1,6 +1,7 @@
 import {
   Tooltip,
   Typography,
+  Grid,
 } from '@mui/material';
 import {
   WbSunnyOutlined, Info, Opacity,
@@ -12,8 +13,8 @@ const WeatherFrostFreeDays = () => {
   const weatherDataRedux = useSelector((stateRedux) => stateRedux.weatherData.weatherData);
 
   return (
-    <div className="mt-3 col-12 row">
-      <div className="col-12">
+    <Grid style={{ marginTop: '1rem', marginLeft: '1rem' }}>
+      <Grid item>
         <Typography variant="body1" className="font-weight-bold text-uppercase text-left">
           <WbSunnyOutlined />
             &nbsp; Average Frost Free Days &nbsp;
@@ -34,9 +35,9 @@ const WeatherFrostFreeDays = () => {
             <Info fontSize="small" />
           </Tooltip>
         </Typography>
-      </div>
+      </Grid>
 
-      <div className="col-12">
+      <Grid item>
         <Typography variant="body1" className="text-left">
           <Opacity style={{ color: 'transparent' }} />
             &nbsp;
@@ -49,8 +50,8 @@ const WeatherFrostFreeDays = () => {
 &nbsp;
           {weatherDataRedux?.frostFreeDays}
         </Typography>
-      </div>
-    </div>
+      </Grid>
+    </Grid>
   );
 };
 
