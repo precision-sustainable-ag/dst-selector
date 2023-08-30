@@ -18,9 +18,11 @@ import moment from 'moment';
 import { Map } from '@psa/dst.ui.map';
 // import centroid from '@turf/centroid';
 import mapboxgl from 'mapbox-gl';
+import { useAuth0 } from '@auth0/auth0-react';
 import statesLatLongDict from '../../shared/stateslatlongdict';
 import {
-  abbrRegion, reverseGEO, callCoverCropApi,
+  abbrRegion, reverseGEO, callCoverCropApi, postFields, getFields,
+  buildPoint, buildGeometryCollection, drawAreaFromGeoCollection, deleteFields,
 } from '../../shared/constants';
 import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset';
 import PlantHardinessZone from '../CropSidebar/PlantHardinessZone/PlantHardinessZone';
@@ -32,9 +34,22 @@ import { snackHandler } from '../../reduxStore/sharedSlice';
 import {
   updateAvgFrostDates, updateAvgPrecipAnnual, updateAvgPrecipCurrentMonth, updateFrostFreeDays,
 } from '../../reduxStore/weatherSlice';
+import { updateField } from '../../reduxStore/userSlice';
+import UserFieldList from './UserFieldList/UserFieldList';
+import UserFieldDialog from './UserFieldDialog/UserFieldDialog';
 
 // eslint-disable-next-line import/no-webpack-loader-syntax, import/no-unresolved
 mapboxgl.workerClass = require('worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker').default;
+
+const initFieldDialogState = {
+  open: false,
+  fieldName: '',
+  error: false,
+  errorText: '',
+  actionType: '',
+  areaType: '',
+  prevName: '',
+};
 
 const LocationComponent = () => {
   const dispatchRedux = useDispatch();
@@ -51,14 +66,54 @@ const LocationComponent = () => {
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
   const myCoverCropListLocationRedux = useSelector((stateRedux) => stateRedux.sharedData.myCoverCropListLocation);
   const regionShorthand = useSelector((stateRedux) => stateRedux.mapData.regionShorthand);
+  const accessTokenRedux = useSelector((stateRedux) => stateRedux.userData.accessToken);
+  const userFieldRedux = useSelector((stateRedux) => stateRedux.userData.field);
 
   // useState vars
-  const [selectedZone, setselectedZone] = useState();
-  const [selectedToEditSite, setSelectedToEditSite] = useState({});
   const [handleConfirm, setHandleConfirm] = useState(false);
+  const [selectedZone, setselectedZone] = useState();
   const [locZipCode, setLocZipCode] = useState();
+  const [selectedToEditSite, setSelectedToEditSite] = useState({});
+  const [currentGeometry, setCurrentGeometry] = useState([]);
+  const [fieldDialogState, setFieldDialogState] = useState(initFieldDialogState);
+  const [selectedUserField, setSelectedUserField] = useState(
+    userFieldRedux && userFieldRedux.data.length
+      ? userFieldRedux.data[userFieldRedux.data.length - 1].label
+      : '',
+  );
+  // use a state to control if currently is adding a point
+  const [isAddingPoint, setIsAddingPoint] = useState(true);
+  const [mapFeatures, setMapFeatures] = useState([]);
+  const [userFields, setUserFields] = useState(userFieldRedux ? [...userFieldRedux.data] : []);
+
+  const { isAuthenticated } = useAuth0();
+
+  const getFeatures = () => {
+    if (userFields.length > 0 && selectedUserField !== '') {
+      const selectedField = userFields.find((userField) => userField.label === selectedUserField);
+      if (selectedField.geometry.type === 'Point') return [selectedField];
+      if (selectedField.geometry.type === 'GeometryCollection') return drawAreaFromGeoCollection(selectedField);
+    }
+    // reset default field to state capitol
+    return [buildPoint(statesLatLongDict[stateLabelRedux][1], statesLatLongDict[stateLabelRedux][0])];
+  };
+
+  useEffect(() => {
+    setMapFeatures(getFeatures());
+  }, [selectedUserField]);
 
   const getLatLng = useCallback(() => {
+    if (userFieldRedux && userFieldRedux.data.length > 0) {
+      const currentField = userFieldRedux.data[userFieldRedux.data.length - 1];
+      // flip lat and lng here
+      if (currentField.geometry.type === 'Point') {
+        return [currentField.geometry.coordinates[1], currentField.geometry.coordinates[0]];
+      }
+      if (currentField.geometry.type === 'GeometryCollection') {
+        const { coordinates } = currentField.geometry.geometries[0];
+        return [coordinates[1], coordinates[0]];
+      }
+    }
     if (stateLabelRedux) {
       return [statesLatLongDict[stateLabelRedux][0], statesLatLongDict[stateLabelRedux][1]];
     }
@@ -110,6 +165,20 @@ const LocationComponent = () => {
     } = selectedToEditSite;
 
     if (latitude === markersRedux[0][0] && longitude === markersRedux[0][1]) { return; }
+
+    if (isAuthenticated) {
+      if (isAddingPoint && latitude) {
+        const currentSelectedField = userFields.filter((userField) => userField.label === selectedUserField)[0]?.geometry;
+        if ((!currentSelectedField && latitude !== statesLatLongDict[stateLabelRedux][0])
+          || (currentSelectedField?.type === 'Point' && latitude !== currentSelectedField?.coordinates[1])
+          || (currentSelectedField?.type === 'GeometryCollection' && latitude !== currentSelectedField?.geometries[0].coordinates[1])
+        ) {
+          setFieldDialogState({
+            ...fieldDialogState, open: true, actionType: 'add', areaType: 'Point',
+          });
+        }
+      }
+    }
 
     if (Object.keys(selectedToEditSite).length > 0) {
       setLocZipCode(zipCode);
@@ -260,6 +329,98 @@ const LocationComponent = () => {
       });
   }, [locZipCode]);
 
+  // update userFieldRedux when component will unmount
+  useEffect(() => () => {
+    if (isAuthenticated) {
+      getFields(accessTokenRedux).then((fields) => dispatchRedux(updateField(fields)));
+    }
+  }, []);
+
+  const onDraw = (draw) => {
+    if (isAuthenticated && draw.mode !== 'select') {
+      setIsAddingPoint(false);
+      setFieldDialogState({
+        ...fieldDialogState, open: true, actionType: draw.mode, areaType: 'Polygon',
+      });
+    }
+  };
+
+  const fieldNameValidation = (fieldName) => {
+    let errText = '';
+    if (fieldName === '') errText = 'You must input a valid name!';
+    if (userFields.filter((field) => field.label === fieldName).length > 0) errText = 'Input name existed!';
+    if (errText !== '') {
+      setFieldDialogState({ ...fieldDialogState, error: true, errorText: errText });
+      return false;
+    }
+    return true;
+  };
+
+  const handleClose = (save) => {
+    const { actionType, areaType, fieldName } = fieldDialogState;
+    if (save) {
+      if (actionType === 'add') {
+        if (!fieldNameValidation(fieldName)) return;
+        const { longitude, latitude } = selectedToEditSite;
+        const point = buildPoint(longitude, latitude, fieldName);
+        let geoCollection = null;
+        if (areaType === 'Polygon') {
+          const polygon = currentGeometry.features?.slice(-1)[0];
+          geoCollection = buildGeometryCollection(point.geometry, polygon?.geometry, fieldName);
+        }
+        postFields(accessTokenRedux, areaType === 'Polygon' ? geoCollection : point).then((newField) => {
+          setUserFields([...userFields, newField.data]);
+          setSelectedUserField(fieldName);
+        });
+      }
+      if (actionType === 'update') {
+        // Only supports polygon updates
+        const { longitude, latitude } = selectedToEditSite;
+        const point = buildPoint(longitude, latitude, selectedUserField);
+        const polygon = currentGeometry.features.slice(-1)[0];
+        const geoCollection = buildGeometryCollection(point.geometry, polygon.geometry, selectedUserField);
+        postFields(accessTokenRedux, geoCollection).then((newField) => {
+          setUserFields([...userFields.map((userField) => {
+            if (userField.label === selectedUserField) return newField.data;
+            return userField;
+          })]);
+        });
+      }
+      if (actionType === 'delete') {
+        const deletedField = userFields.filter((userField) => userField.label === selectedUserField);
+        deleteFields(accessTokenRedux, deletedField[0].id)
+          .then(() => {
+            const updatedUserFields = userFields.filter((userField) => userField.label !== selectedUserField);
+            setUserFields(updatedUserFields);
+            setSelectedUserField(updatedUserFields.length > 0 ? updatedUserFields[0].label : '');
+          });
+      }
+      if (actionType === 'updateName') {
+        if (!fieldNameValidation(fieldName)) return;
+        const { prevName } = fieldDialogState;
+        const newField = {
+          type: 'Feature',
+          geometry: userFields.filter((userField) => userField.label === prevName)[0].geometry,
+          label: fieldName,
+        };
+        const deletedField = userFields.filter((userField) => userField.label === prevName);
+        deleteFields(accessTokenRedux, deletedField[0].id)
+          .then(() => postFields(accessTokenRedux, newField))
+          .then((resField) => {
+            setSelectedUserField('');
+            setUserFields([...userFields.filter((userField) => userField.label !== prevName), resField.data]);
+            setSelectedUserField(fieldName);
+          });
+      }
+    } else {
+      // if the user select cancel
+      setMapFeatures(getFeatures());
+    }
+    setFieldDialogState(initFieldDialogState);
+    // reset isAddingPoint
+    setIsAddingPoint(true);
+  };
+
   return (
     <div className="container-fluid mt-5">
       <div className="row boxContainerRow mx-0 px-0 mx-lg-3 px-lg-3" style={{ minHeight: '520px' }}>
@@ -291,16 +452,31 @@ const LocationComponent = () => {
                 />
               </div>
             </div>
+            {isAuthenticated && (
+              <div className="row py-3 my-4">
+                <div className="col-md-5 col-lg-6 col-sm-12 col-12">
+                  <UserFieldList
+                    userFields={userFields}
+                    field={selectedUserField}
+                    setField={setSelectedUserField}
+                    setFieldDialogState={setFieldDialogState}
+                  />
+                </div>
+              </div>
+            )}
           </div>
         </div>
         <div className="col-xl-8 col-sm-12">
           <div className="container-fluid">
             <Map
               setAddress={setSelectedToEditSite}
+              setFeatures={setCurrentGeometry}
+              onDraw={onDraw}
               initWidth="100%"
               initHeight="600px"
               initLat={getLatLng()[0]}
               initLon={getLatLng()[1]}
+              initFeatures={mapFeatures}
               initStartZoom={12}
               initMinZoom={4}
               initMaxZoom={18}
@@ -318,6 +494,11 @@ const LocationComponent = () => {
         </div>
       </div>
       <MyCoverCropReset handleConfirm={handleConfirm} setHandleConfirm={setHandleConfirm} from="selector" />
+      <UserFieldDialog
+        fieldDialogState={fieldDialogState}
+        setFieldDialogState={setFieldDialogState}
+        handleClose={handleClose}
+      />
     </div>
   );
 };

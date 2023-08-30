@@ -40,6 +40,8 @@ import License from './pages/License/License';
 import MyCoverCropListWrapper from './pages/MyCoverCropList/MyCoverCropListWrapper/MyCoverCropListWrapper';
 import Help from './pages/Help/Help';
 import configureStore from './reduxStore/store';
+import Auth0ProviderWithHistory from './components/Auth/Auth0ProviderWithHistory/Auth0ProviderWithHistory';
+import Profile from './pages/Profile/Profile';
 
 const withFooter = (WrappedComponent) => () => [<WrappedComponent key="1" />, <Footer key="2" />];
 const store = configureStore();
@@ -146,28 +148,30 @@ const Wrapper = () => (
       >
         <Provider store={store}>
           <BrowserRouter>
-            <Suspense fallback={<div>Loading..</div>}>
-              <Switch>
-                <Route path="/" component={App} exact />
-                <Route path="/explorer" component={CoverCropExplorer} exact />
-                <Route path="/about" component={About} exact />
-                <Route path="/help" component={Help} exact />
-                <Route path="/feedback" component={FeedbackComponent} exact />
-                <Route path="/my-cover-crop-list" component={MyCoverCropListWrapper} exact />
-                <Route path="/seeding-rate-calculator" component={SeedingRateCalculator} exact />
-                <Route path="/data-dictionary" component={InformationSheetDictionary} exact />
-                <Route path="/license" component={() => <License licenseType="MIT" />} exact />
-                <Route
-                  path="/ag-informatics-license"
-                  component={() => <License licenseType="AgInformatics" />}
-                  exact
-                />
-                <Route path="/mix-maker" component={MixMaker} exact />
+            <Auth0ProviderWithHistory>
+              <Suspense fallback={<div>Loading..</div>}>
+                <Switch>
+                  <Route path="/" component={App} exact />
+                  <Route path="/explorer" component={CoverCropExplorer} exact />
+                  <Route path="/about" component={About} exact />
+                  <Route path="/help" component={Help} exact />
+                  <Route path="/feedback" component={FeedbackComponent} exact />
+                  <Route path="/profile" component={Profile} exact />
+                  <Route path="/my-cover-crop-list" component={MyCoverCropListWrapper} exact />
+                  <Route path="/seeding-rate-calculator" component={SeedingRateCalculator} exact />
+                  <Route path="/data-dictionary" component={InformationSheetDictionary} exact />
+                  <Route path="/license" component={() => <License licenseType="MIT" />} exact />
+                  <Route
+                    path="/ag-informatics-license"
+                    component={() => <License licenseType="AgInformatics" />}
+                    exact
+                  />
+                  <Route path="/mix-maker" component={MixMaker} exact />
 
-                <Route component={RouteNotFound} />
-              </Switch>
-            </Suspense>
-
+                  <Route component={RouteNotFound} />
+                </Switch>
+              </Suspense>
+            </Auth0ProviderWithHistory>
             {/* <App /> */}
           </BrowserRouter>
         </Provider>
