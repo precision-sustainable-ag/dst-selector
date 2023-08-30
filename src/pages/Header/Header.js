@@ -17,7 +17,7 @@ import { getFields } from '../../shared/constants';
 import AuthButton from '../../components/Auth/AuthButton/AuthButton';
 
 const Header = () => {
-  const dispatch = useDispatch();
+  const dispatchRedux = useDispatch();
   const markersRedux = useSelector((stateRedux) => stateRedux.addressData.markers);
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
   const consentRedux = useSelector((stateRedux) => stateRedux.sharedData.consent);
@@ -28,9 +28,9 @@ const Header = () => {
   useEffect(() => {
     const getToken = async () => {
       const token = await getAccessTokenSilently();
-      dispatch(updateAccessToken(token));
+      dispatchRedux(updateAccessToken(token));
       // Initially get user field data
-      getFields(token).then((data) => dispatch(updateField(data)));
+      getFields(token).then((data) => dispatchRedux(updateField(data)));
     };
     if (isAuthenticated) getToken();
   }, [isAuthenticated, getAccessTokenSilently, consentRedux]);

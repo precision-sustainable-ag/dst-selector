@@ -5,14 +5,11 @@
 
 import { Button } from '@mui/material';
 import { useAuth0 } from '@auth0/auth0-react';
-import { useDispatch } from 'react-redux';
 import React from 'react';
-import { userLogout } from '../../../reduxStore/userSlice';
 
 const AuthButton = ({
   type, variant = 'text', onClickCallback = () => {}, color = 'primary',
 }) => {
-  const { dispatch } = useDispatch();
   const { loginWithRedirect, logout } = useAuth0();
 
   const handleLogin = async () => {
@@ -32,7 +29,7 @@ const AuthButton = ({
       logoutParams: {
         returnTo: window.location.origin,
       },
-    }).then(dispatch(userLogout()));
+    });
   };
 
   const handleClick = () => {
