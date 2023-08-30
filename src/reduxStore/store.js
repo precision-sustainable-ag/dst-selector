@@ -8,6 +8,7 @@ import soilReducer from './soilSlice';
 import filterReducer from './filterSlice';
 import addressReducer from './addressSlice';
 import sharedReducer from './sharedSlice';
+import userReducer from './userSlice';
 
 export const reset = () => ({
   type: 'RESET',
@@ -23,6 +24,7 @@ const configureStore = () => {
     soilData: soilReducer,
     filterData: filterReducer,
     addressData: addressReducer,
+    userData: userReducer,
   });
 
   const rootReducer = (state, action) => {
