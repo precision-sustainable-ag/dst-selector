@@ -893,3 +893,82 @@ export const cropDataFormatter = (cropData = [{}]) => {
     return val;
   });
 };
+
+export const apiServerUrl = 'https://history.covercrop-data.org/v1/';
+
+export const getFields = async (accessToken = null) => {
+  const url = `${apiServerUrl}fields?page=1&perPage=200`;
+  const config = {
+    method: 'GET',
+    headers: {
+      'content-type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    },
+  };
+  return fetch(url, config)
+    .then((res) => res.json())
+    .catch((err) => console.log(err));
+};
+
+export const postFields = async (accessToken = null, fieldsData = null) => {
+  const url = `${apiServerUrl}fields`;
+  const config = {
+    method: 'POST',
+    headers: {
+      'content-type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify(fieldsData),
+  };
+  return fetch(url, config)
+    .then((res) => res.json())
+    .catch((err) => console.log(err));
+};
+
+export const deleteFields = async (accessToken = null, id = null) => {
+  const url = `${apiServerUrl}fields/${id}`;
+  const config = {
+    method: 'DELETE',
+    headers: {
+      'content-type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    },
+  };
+  return fetch(url, config)
+    .then((res) => res.json())
+    .catch((err) => console.log(err));
+};
+
+export const buildPoint = (lng, lat, name = null) => ({
+  type: 'Feature',
+  label: name,
+  geometry: {
+    coordinates: [
+      lng, lat,
+    ],
+    type: 'Point',
+  },
+});
+
+export const buildGeometryCollection = (point, polygon, name = null) => {
+  const { coordinates: pointCoordinates } = point;
+  const { coordinates: polygonCoordinates } = polygon;
+  return {
+    type: 'Feature',
+    label: name,
+    geometry: {
+      type: 'GeometryCollection',
+      geometries: [{
+        type: 'Point',
+        coordinates: pointCoordinates,
+      }, {
+        type: 'Polygon',
+        coordinates: polygonCoordinates,
+      }],
+    },
+  };
+};
+
+export const drawAreaFromGeoCollection = (geoCollection) => [
+  { type: 'Feature', geometry: { ...geoCollection.geometry.geometries[1] } },
+];

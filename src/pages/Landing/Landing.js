@@ -19,11 +19,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import ReactGA from 'react-ga';
 import { RegionSelectorMap } from '@psa/dst.ui.region-selector-map';
+import { useAuth0 } from '@auth0/auth0-react';
 import { callCoverCropApi } from '../../shared/constants';
 import '../../styles/landing.scss';
 import ConsentModal from '../CoverCropExplorer/ConsentModal/ConsentModal';
 import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset';
 // import { updateZone } from '../../reduxStore/addressSlice';
+import AuthModal from './AuthModal/AuthModal';
 import { updateRegions, updateRegion, updateStateInfo } from '../../reduxStore/mapSlice';
 
 const Landing = ({ height, title, bg }) => {
@@ -47,6 +49,8 @@ const Landing = ({ height, title, bg }) => {
   const [selectedState, setSelectedState] = useState('');
   const [mapState, setMapState] = useState({});
   const [selectedRegion, setSelectedRegion] = useState({});
+  const { isAuthenticated } = useAuth0();
+  const [authModalOpen, setAuthModalOpen] = useState(true);
 
   const stateChange = (selState) => {
     setSelectedState(selState);
@@ -233,8 +237,8 @@ const Landing = ({ height, title, bg }) => {
         backgroundSize: 'cover',
       }}
     >
-
-      <ConsentModal consent={consentRedux} />
+      {(!authModalOpen || isAuthenticated) && <ConsentModal consent={consentRedux} />}
+      {!isAuthenticated && <AuthModal modalOpen={authModalOpen} setModalOpen={setAuthModalOpen} />}
 
       <Grid container>
 
