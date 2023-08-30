@@ -4,19 +4,36 @@
   styled using ../../styles/header.scss
 */
 
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import React, { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
+import { useAuth0 } from '@auth0/auth0-react';
 import '../../styles/header.scss';
 import HeaderLogoInfo from './HeaderLogoInfo/HeaderLogoInfo';
 import InformationBar from './InformationBar/InformationBar';
 import ToggleOptions from './ToggleOptions/ToggleOptions';
+import { updateAccessToken, updateField } from '../../reduxStore/userSlice';
+import { getFields } from '../../shared/constants';
+import AuthButton from '../../components/Auth/AuthButton/AuthButton';
 
 const Header = () => {
+  const dispatchRedux = useDispatch();
   const markersRedux = useSelector((stateRedux) => stateRedux.addressData.markers);
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
+  const consentRedux = useSelector((stateRedux) => stateRedux.sharedData.consent);
   const [isRoot, setIsRoot] = useState(false);
+  const { isAuthenticated, getAccessTokenSilently } = useAuth0();
   const isActive = {};
+
+  useEffect(() => {
+    const getToken = async () => {
+      const token = await getAccessTokenSilently();
+      dispatchRedux(updateAccessToken(token));
+      // Initially get user field data
+      getFields(token).then((data) => dispatchRedux(updateField(data)));
+    };
+    if (isAuthenticated) getToken();
+  }, [isAuthenticated, getAccessTokenSilently, consentRedux]);
 
   useEffect(() => {
     if (window.location.pathname === '/explorer') {
@@ -37,6 +54,10 @@ const Header = () => {
   return (
     <header className="d-print-none">
       <div className="topHeader">
+        <NavLink to="/profile" activeClassName="active">
+          PROFILE
+        </NavLink>
+        <span className="line" />
         <NavLink to="/about" activeClassName="active">
           ABOUT
         </NavLink>
@@ -48,6 +69,11 @@ const Header = () => {
         <NavLink to="/feedback" activeClassName="active">
           FEEDBACK
         </NavLink>
+        <span className="line" />
+        <AuthButton
+          type={isAuthenticated ? 'Logout' : 'Login'}
+          color={isAuthenticated ? 'error' : 'primary'}
+        />
       </div>
 
       <div className="container-fluid">
