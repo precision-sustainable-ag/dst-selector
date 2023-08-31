@@ -47,12 +47,10 @@ const Landing = ({ height, title, bg }) => {
   const [handleConfirm, setHandleConfirm] = useState(false);
   const [containerHeight, setContainerHeight] = useState(height);
   const [allStates, setAllStates] = useState([]);
-  // This is the state obj mapped by selectedRegion
+  // This is the state obj mapped by mapStates
   const [selectedState, setSelectedState] = useState({});
-  // mapState not used now
-  const [mapState, setMapState] = useState({});
-  // This is the selected map feature obj
-  const [selectedRegion, setSelectedRegion] = useState({});
+  // This is the obj map returns when you selected a state on map
+  const [mapStates, setMapStates] = useState({});
   const { isAuthenticated } = useAuth0();
   const [authModalOpen, setAuthModalOpen] = useState(true);
 
@@ -123,15 +121,14 @@ const Landing = ({ height, title, bg }) => {
     }
   }, [stateIdRedux]);
 
-  // SelectedRegion needs to get replaced with mapState once the map is updated to using state verbage instead of region.
   useEffect(() => {
-    if (Object.keys(selectedRegion).length !== 0) {
-      const st = allStates.filter((s) => s.label === selectedRegion.properties.STATE_NAME);
+    if (Object.keys(mapStates).length !== 0) {
+      const st = allStates.filter((s) => s.label === mapStates.properties.STATE_NAME);
       if (st.length > 0) {
         setSelectedState(st[0]);
       }
     }
-  }, [selectedRegion, mapState]);
+  }, [mapStates]);
 
   useEffect(() => {
     if (Object.keys(selectedState).length !== 0) {
@@ -333,11 +330,8 @@ const Landing = ({ height, title, bg }) => {
           </Grid>
           <Grid item>
             <div style={{ position: 'relative', width: '100%', paddingRight: '10%' }}>
-              {/* selectedRegion and selectorFunc should be deprecated and selectedState and setMapState should be used in their place */}
               <RegionSelectorMap
-                selectorFunction={setSelectedRegion}
-                // this selectorFunc prop is not used now
-                selectorFunc={setMapState}
+                selectorFunction={setMapStates}
                 selectedState={selectedState.label}
                 availableStates={availableStates}
                 initWidth="100%"
