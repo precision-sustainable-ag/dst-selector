@@ -1,6 +1,7 @@
 const initialState = {
   progress: 0,
   consent: false,
+  hideConsentModal: false,
   snackOpen: false,
   snackMessage: '',
   ajaxInProgress: false,
@@ -113,12 +114,12 @@ const sharedReducer = (state = initialState, action = null) => {
 
     case 'UPDATE_CONSENT':
       if (action.payload.value === true) {
-        return { ...state, consent: true };
+        return { ...state, consent: true, hideConsentModal: true };
       }
       if (action.payload.value === false) {
-        return { ...state, consent: false };
+        return { ...state, consent: false, hideConsentModal: true };
       }
-      return { ...state };
+      return { ...state, hideConsentModal: true };
 
     case 'GOTO_PROGRESS':
       return {
