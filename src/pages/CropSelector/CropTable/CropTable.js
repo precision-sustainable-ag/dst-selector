@@ -9,7 +9,12 @@ import {
   Box,
   Button,
   CircularProgress,
+  FormControl,
+  InputLabel,
+  MenuItem,
   Modal,
+  Select,
+  SelectChangeEvent,
   Table,
   TableBody,
   TableCell,
@@ -41,11 +46,12 @@ const CropTableComponent = ({
   const [legendModal, setLegendModal] = useState(false);
   const [tbodyHeight, setTbodyHeight] = useState(0);
   const [theadHeight, setTheadHeight] = useState(0);
-  const [nameSortFlag, setNameSortFlag] = useState(true);
-  const [averageGoalsFlag, setAverageGoalsFlag] = useState(true);
-  const [plantingWindowSortFlag, setPlantingWindowSortFlag] = useState(true);
-  const [cropGroupSortFlag, setCropGroupSortFlag] = useState(true);
-  const [selectedCropsSortFlag, setSelectedCropsSortFlag] = useState(true);
+  const [sortAlgo, setSortAlgo] = React.useState('');
+  // const [nameSortFlag, setNameSortFlag] = useState(true);
+  // const [averageGoalsFlag, setAverageGoalsFlag] = useState(true);
+  // const [plantingWindowSortFlag, setPlantingWindowSortFlag] = useState(true);
+  // const [cropGroupSortFlag, setCropGroupSortFlag] = useState(true);
+  // const [selectedCropsSortFlag, setSelectedCropsSortFlag] = useState(true);
   const [goal1SortFlag, setGoal1SortFlag] = useState(true);
   const [goal2SortFlag, setGoal2SortFlag] = useState(true);
   const [goal3SortFlag, setGoal3SortFlag] = useState(true);
@@ -78,30 +84,30 @@ const CropTableComponent = ({
     dispatchRedux(updateActiveCropData(activeShadowValue));
   };
 
-  const sortByName = () => {
+  const sortByName = (nameSortFlag) => {
     sortCrops('Crop Name', activeCropDataShadow, nameSortFlag);
-    setNameSortFlag(!nameSortFlag);
+    // setNameSortFlag(!nameSortFlag);
   };
 
-  const sortByAverageGoals = () => {
+  const sortByAverageGoals = (averageGoalsFlag) => {
     sortCrops('Average Goals', activeCropDataShadow, averageGoalsFlag, selectedGoalsRedux);
-    setAverageGoalsFlag(!averageGoalsFlag);
+    // setAverageGoalsFlag(!averageGoalsFlag);
     updateActiveCropDataAction(activeCropDataShadow);
   };
-  const sortByPlantingWindow = () => {
+  const sortByPlantingWindow = (plantingWindowSortFlag) => {
     sortCrops('Planting Window', activeCropDataShadow, plantingWindowSortFlag);
-    setPlantingWindowSortFlag(!plantingWindowSortFlag);
+    // setPlantingWindowSortFlag(!plantingWindowSortFlag);
   };
 
-  const sortByCropGroup = () => {
+  const sortByCropGroup = (cropGroupSortFlag) => {
     sortCrops('Crop Group', activeCropDataShadow, cropGroupSortFlag);
-    setCropGroupSortFlag(!cropGroupSortFlag);
+    // setCropGroupSortFlag(!cropGroupSortFlag);
   };
 
-  const sortBySelectedCrops = () => {
+  const sortBySelectedCrops = (selectedCropsSortFlag) => {
     const selectedCropsShadow = selectedCropsRedux;
     sortCrops('Selected Crops', activeCropDataShadow, selectedCropsSortFlag, selectedCropsShadow, updateActiveCropDataAction);
-    setSelectedCropsSortFlag(!selectedCropsSortFlag);
+    // setSelectedCropsSortFlag(!selectedCropsSortFlag);
   };
 
   const sortByGoal = (goal, index) => {
@@ -118,6 +124,32 @@ const CropTableComponent = ({
     }
 
     sortCrops('Goal', activeCropDataShadow, flag, selectedGoalsRedux, updateActiveCropDataAction, goal);
+  };
+
+  const selectSortingAlgo = (event: SelectChangeEvent) => {
+    const sortingAlgo = event.target.value;
+    setSortAlgo(sortingAlgo);
+    if (sortingAlgo === 'goalsAsc') {
+      sortByAverageGoals(false);
+    } else if (sortingAlgo === 'goalsDsc') {
+      sortByAverageGoals(true);
+    } else if (sortingAlgo === 'cropNameA-Z') {
+      sortByName(true);
+    } else if (sortingAlgo === 'cropNameZ-A') {
+      sortByName(false);
+    } else if (sortingAlgo === 'cropGroupA-Z') {
+      sortByCropGroup(true);
+    } else if (sortingAlgo === 'cropGroupZ-A') {
+      sortByCropGroup(false);
+    } else if (sortingAlgo === 'plantingWindowAsc') {
+      sortByPlantingWindow(true);
+    } else if (sortingAlgo === 'plantingWindowDsc') {
+      sortByPlantingWindow(false);
+    } else if (sortingAlgo === 'myListA-Z') {
+      sortBySelectedCrops(true);
+    } else if (sortingAlgo === 'myListZ-A') {
+      sortBySelectedCrops(false);
+    }
   };
 
   return cropData.length !== 0 ? (
@@ -154,57 +186,13 @@ const CropTableComponent = ({
                       </div>
                     )}
                   >
-                    <Button
-                      onClick={() => sortByAverageGoals()}
-                    >
-                      <Sort
-                        style={{
-                          color:
-                            averageGoalsFlag
-                              ? CustomStyles().secondaryProgressBtnColor
-                              : CustomStyles().progressColor,
-                          transform: averageGoalsFlag && 'rotate(180deg)',
-                        }}
-                      />
-                      &nbsp;
-                      {' '}
-                      <Typography variant="body2" style={{ color: '#000' }}>
-                        COVER CROPPING GOALS
-                      </Typography>
-                    </Button>
+                    <Typography variant="body1" style={sudoButtonStyle}>
+                      COVER CROPPING GOALS
+                    </Typography>
                   </Tooltip>
                 </TableCell>
               )}
 
-              {selectedGoalsRedux.length > 0 && (
-                <TableCell
-                  colSpan={selectedGoalsRedux.length}
-                  style={{
-                    backgroundColor: '#abd08f',
-                    textAlign: 'center',
-                  }}
-                >
-                  <Button
-                    // fix this
-                    onClick={() => sortByCropGroup()}
-                  >
-                    <Sort
-                      style={{
-                        color:
-                          cropGroupSortFlag
-                            ? CustomStyles().secondaryProgressBtnColor
-                            : CustomStyles().progressColor,
-                        transform: cropGroupSortFlag && 'rotate(180deg)',
-                      }}
-                    />
-                    &nbsp;
-                    {' '}
-                    <Typography variant="body2" style={{ color: '#000' }}>
-                      SORT BY CROP GROUP
-                    </Typography>
-                  </Button>
-                </TableCell>
-              )}
               <TableCell
                 style={{
                   backgroundColor: '#abd08f',
@@ -248,7 +236,38 @@ const CropTableComponent = ({
 
                 </Modal>
               </TableCell>
-              <TableCell
+              {selectedGoalsRedux.length > 0 && (
+                <TableCell
+                  colSpan={selectedGoalsRedux.length}
+                  style={{
+                    backgroundColor: '#abd08f',
+                    textAlign: 'center',
+                  }}
+                >
+                  <FormControl fullWidth>
+                    <InputLabel id="select-sorting">Sort by</InputLabel>
+                    <Select
+                      labelId="sorting-selector-label"
+                      id="sorting-selector"
+                      value={sortAlgo}
+                      label="Select"
+                      onChange={selectSortingAlgo}
+                    >
+                      <MenuItem value="goalsDsc">Average Goal Rating Highest-Least</MenuItem>
+                      <MenuItem value="goalsAsc">Average Goal Rating Least-Highest</MenuItem>
+                      <MenuItem value="cropNameA-Z">Crop Name A-Z</MenuItem>
+                      <MenuItem value="cropNameZ-A">Crop Name Z-A</MenuItem>
+                      <MenuItem value="cropGroupA-Z">Crop Group A-Z</MenuItem>
+                      <MenuItem value="cropGroupZ-A">Crop Group Z-A</MenuItem>
+                      <MenuItem value="plantingWindowAsc">Planting Window Ascending</MenuItem>
+                      <MenuItem value="plantingWindowDsc">Planting Window Desceding</MenuItem>
+                      <MenuItem value="myListA-Z">Selected Cover Crops A-Z</MenuItem>
+                      <MenuItem value="myListZ-A">Selected Cover Crops Z-A</MenuItem>
+                    </Select>
+                  </FormControl>
+                </TableCell>
+              )}
+              {/* <TableCell
                 style={{
                   backgroundColor: 'white',
                   color: 'white',
@@ -256,7 +275,7 @@ const CropTableComponent = ({
                 }}
               >
                 blank
-              </TableCell>
+              </TableCell> */}
             </TableRow>
             <TableRow className="theadSecond">
               <TableCell
@@ -266,22 +285,9 @@ const CropTableComponent = ({
                   borderRight: '5px solid white',
                 }}
               >
-                {/* <Button onClick={sortCropsByName}> */}
-                <Button onClick={() => sortByName()}>
-                  <Sort
-                    style={{
-                      color: nameSortFlag
-                        ? CustomStyles().secondaryProgressBtnColor
-                        : CustomStyles().progressColor,
-                      transform: nameSortFlag && 'rotate(180deg)',
-                    }}
-                  />
-                  &nbsp;
-                  {' '}
-                  <Typography variant="body1" style={{ color: '#000' }}>
-                    COVER CROPS
-                  </Typography>
-                </Button>
+                <Typography variant="body1" style={sudoButtonStyle}>
+                  COVER CROPS
+                </Typography>
               </TableCell>
               <TableCell
                 style={{
@@ -379,22 +385,9 @@ const CropTableComponent = ({
                     width: '180px',
                   }}
                 >
-                  <Button onClick={() => sortByPlantingWindow()}>
-                    <Sort
-                      style={{
-                        color: nameSortFlag
-                          ? CustomStyles().secondaryProgressBtnColor
-                          : CustomStyles().progressColor,
-                        transform: nameSortFlag && 'rotate(180deg)',
-                      }}
-                    />
-                    &nbsp;
-                    {' '}
-                    <Typography variant="body1" style={{ color: '#000' }}>
-                      {' '}
-                      PLANTING WINDOW
-                    </Typography>
-                  </Button>
+                  <Typography variant="body1" style={sudoButtonStyle}>
+                    PLANTING WINDOW
+                  </Typography>
                 </TableCell>
               )}
 
@@ -405,20 +398,9 @@ const CropTableComponent = ({
                   minWidth: '165px',
                 }}
               >
-                <Button onClick={() => sortBySelectedCrops()}>
-                  <Sort
-                    style={{
-                      color: selectedCropsSortFlag
-                        ? CustomStyles().secondaryProgressBtnColor
-                        : CustomStyles().progressColor,
-                      transform: selectedCropsSortFlag && 'rotate(180deg)',
-                    }}
-                  />
-                  &nbsp;
-                  <Typography variant="body1" style={{ color: '#000' }}>
-                    MY LIST
-                  </Typography>
-                </Button>
+                <Typography variant="body1" style={sudoButtonStyle}>
+                  MY LIST
+                </Typography>
               </TableCell>
             </TableRow>
           </TableHead>
