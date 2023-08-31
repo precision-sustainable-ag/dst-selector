@@ -7,7 +7,12 @@ import {
   Box,
   Button,
   CircularProgress,
+  FormControl,
+  InputLabel,
+  MenuItem,
   Modal,
+  Select,
+  SelectChangeEvent,
   Table,
   TableBody,
   TableCell,
@@ -50,11 +55,13 @@ const CropCalendarView = ({ activeCropData }) => {
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const ajaxInProgressRedux = useSelector((stateRedux) => stateRedux.sharedData.ajaxInProgress);
   const [legendModal, setLegendModal] = useState(false);
-  const [nameSortFlag, setNameSortFlag] = useState(true);
-  const [goalsSortFlag, setGoalsSortFlag] = useState(true);
-  const [selectedCropsSortFlag, setSelectedCropsFlag] = useState(true);
-  const [plantingWindowSortFlag, setPlantingWindowSortFlag] = useState(true);
-  const [cropGroupSortFlag, setCropGroupSortFlag] = useState(true);
+  // const [nameSortFlag, setNameSortFlag] = useState(true);
+  // const [goalsSortFlag, setGoalsSortFlag] = useState(true);
+  // const [selectedCropsSortFlag, setSelectedCropsFlag] = useState(true);
+  // const [plantingWindowSortFlag, setPlantingWindowSortFlag] = useState(true);
+  // const [cropGroupSortFlag, setCropGroupSortFlag] = useState(true);
+  // let cropGroupSortFlag = true;
+  const [sortAlgo, setSortAlgo] = React.useState('');
   const [modalOpen, setModalOpen] = useState(false);
   const [modalData, setModalData] = useState([{}]);
 
@@ -77,30 +84,54 @@ const CropCalendarView = ({ activeCropData }) => {
     return false;
   };
 
-  const sortReset = () => {
+  const sortReset = (goalsSortFlag) => {
     sortCrops('Average Goals', activeCropDataShadow, goalsSortFlag, selectedCrops);
-    setGoalsSortFlag(!goalsSortFlag);
+    // setGoalsSortFlag(!goalsSortFlag);
     dispatchValue(activeCropDataShadow);
   };
 
-  const sortCropsByName = () => {
+  const sortCropsByName = (nameSortFlag) => {
     sortCrops('Crop Name', activeCropDataShadow, nameSortFlag);
-    setNameSortFlag(!nameSortFlag);
   };
 
-  const sortByPlantingWindow = () => {
+  const sortByPlantingWindow = (plantingWindowSortFlag) => {
     sortCrops('Planting Window', activeCropDataShadow, plantingWindowSortFlag);
-    setPlantingWindowSortFlag(!plantingWindowSortFlag);
-  };
-  const sortByCropGroup = () => {
-    sortCrops('Crop Group', activeCropDataShadow, cropGroupSortFlag);
-    setCropGroupSortFlag(!cropGroupSortFlag);
+    // setPlantingWindowSortFlag(!plantingWindowSortFlag);
   };
 
-  const sortBySelectedCrops = () => {
+  const sortByCropGroup = (cropGroupSortFlag) => {
+    sortCrops('Crop Group', activeCropDataShadow, cropGroupSortFlag);
+  };
+
+  const sortBySelectedCrops = (selectedCropsSortFlag) => {
     const selectedCropsShadow = selectedCrops;
     sortCrops('Selected Crops', activeCropDataShadow, selectedCropsSortFlag, selectedCropsShadow, dispatchValue);
-    setSelectedCropsFlag(!selectedCropsSortFlag);
+  };
+  // sorting function drop down selection
+  const selectSortingAlgo = (event: SelectChangeEvent) => {
+    const sortingAlgo = event.target.value;
+    setSortAlgo(sortingAlgo);
+    if (sortingAlgo === 'goalsAsc') {
+      sortReset(false);
+    } else if (sortingAlgo === 'goalsDsc') {
+      sortReset(true);
+    } else if (sortingAlgo === 'cropNameA-Z') {
+      sortCropsByName(true);
+    } else if (sortingAlgo === 'cropNameZ-A') {
+      sortCropsByName(false);
+    } else if (sortingAlgo === 'cropGroupA-Z') {
+      sortByCropGroup(true);
+    } else if (sortingAlgo === 'cropGroupZ-A') {
+      sortByCropGroup(false);
+    } else if (sortingAlgo === 'plantingWindowAsc') {
+      sortByPlantingWindow(true);
+    } else if (sortingAlgo === 'plantingWindowDsc') {
+      sortByPlantingWindow(false);
+    } else if (sortingAlgo === 'myListA-Z') {
+      sortBySelectedCrops(true);
+    } else if (sortingAlgo === 'myListZ-A') {
+      sortBySelectedCrops(false);
+    }
   };
 
   useEffect(() => {
@@ -139,12 +170,7 @@ const CropCalendarView = ({ activeCropData }) => {
                   >
                     <div className="container-fluid">
                       <div className="row">
-                        <div className="col-3">
-                          <Typography variant="body1" component="span">
-                            <div style={sudoButtonStyleWithPadding}>COVER CROP GROWTH WINDOW</div>
-                          </Typography>
-                        </div>
-                        <div className="col-3">
+                        <div className="col-4">
                           <Typography variant="body1">
                             <Button
                               startIcon={<AddCircle />}
@@ -156,7 +182,35 @@ const CropCalendarView = ({ activeCropData }) => {
                             </Button>
                           </Typography>
                         </div>
-                        <div className="col-3">
+                        <div className="col-4">
+                          <Typography variant="body1" component="span">
+                            <div style={sudoButtonStyleWithPadding}>COVER CROP GROWTH WINDOW</div>
+                          </Typography>
+                        </div>
+                        <div className="col-4">
+                          <FormControl fullWidth>
+                            <InputLabel id="select-sorting">Sort by</InputLabel>
+                            <Select
+                              labelId="sorting-selector-label"
+                              id="sorting-selector"
+                              value={sortAlgo}
+                              label="Select"
+                              onChange={selectSortingAlgo}
+                            >
+                              <MenuItem value="goalsDsc">Average Goal Rating Highest-Least</MenuItem>
+                              <MenuItem value="goalsAsc">Average Goal Rating Least-Highest</MenuItem>
+                              <MenuItem value="cropNameA-Z">Crop Name A-Z</MenuItem>
+                              <MenuItem value="cropNameZ-A">Crop Name Z-A</MenuItem>
+                              <MenuItem value="cropGroupA-Z">Crop Group A-Z</MenuItem>
+                              <MenuItem value="cropGroupZ-A">Crop Group Z-A</MenuItem>
+                              <MenuItem value="plantingWindowAsc">Planting Window Ascending</MenuItem>
+                              <MenuItem value="plantingWindowDsc">Planting Window Desceding</MenuItem>
+                              <MenuItem value="myListA-Z">Selected Cover Crops A-Z</MenuItem>
+                              <MenuItem value="myListZ-A">Selected Cover Crops Z-A</MenuItem>
+                            </Select>
+                          </FormControl>
+                        </div>
+                        {/* <div className="col-3">
                           <Button
                             onClick={sortByPlantingWindow}
                             style={{ color: '#000' }}
@@ -175,7 +229,7 @@ const CropCalendarView = ({ activeCropData }) => {
                               <div style={sudoButtonStyleWithPadding}>SORT BY CROP GROUP</div>
                             </Typography>
                           </Button>
-                        </div>
+                        </div> */}
                       </div>
                     </div>
                   </TableCell>
@@ -298,17 +352,17 @@ const CropCalendarView = ({ activeCropData }) => {
               </TableRow>
               <TableRow className="calSecondHeadRow">
                 <TableCell style={{ width: '17%', borderRight: '5px solid white' }}>
-                  <Button style={{ color: '#000' }} onClick={sortCropsByName}>
-                    <Typography variant="body2"> COVER CROPS </Typography>
-                  </Button>
+                  {/* <Button style={{ color: '#000' }} onClick={sortCropsByName}> */}
+                  <Typography variant="body2"> COVER CROPS </Typography>
+                  {/* </Button> */}
                 </TableCell>
                 {selectedGoalsRedux.length > 0 && (
                   <TableCell style={{ width: '13%', borderRight: '5px solid white' }}>
                     <div className="col-12">
                       <Typography variant="body1">
-                        <Button style={{ color: '#000' }} onClick={sortReset}>
-                          <Typography variant="body2"> AVERAGE GOAL RATING</Typography>
-                        </Button>
+                        {/* <Button style={{ color: '#000' }} onClick={sortReset}> */}
+                        <Typography variant="body2"> AVERAGE GOAL RATING</Typography>
+                        {/* </Button> */}
                       </Typography>
                     </div>
 
@@ -334,9 +388,9 @@ const CropCalendarView = ({ activeCropData }) => {
                   );
                 })}
                 <TableCell style={{ width: '10%', borderLeft: '5px solid white' }}>
-                  <Button style={{ color: '#000' }} onClick={sortBySelectedCrops}>
-                    <Typography variant="body2"> MY LIST </Typography>
-                  </Button>
+                  {/* <Button style={{ color: '#000' }} onClick={sortBySelectedCrops}> */}
+                  <Typography variant="body2"> MY LIST </Typography>
+                  {/* </Button> */}
                 </TableCell>
               </TableRow>
             </TableHead>
