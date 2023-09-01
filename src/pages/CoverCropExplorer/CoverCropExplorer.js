@@ -11,7 +11,6 @@ import { useHistory } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import ReactGA from 'react-ga';
-import Header from '../Header/Header';
 import ExplorerCardView from './ExplorerCardView/ExplorerCardView';
 import ConsentModal from './ConsentModal/ConsentModal';
 import CropSidebar from '../CropSidebar/CropSidebar';
@@ -91,9 +90,8 @@ const CoverCropExplorer = () => {
   }, [selectedCropsRedux, myCoverCropListLocationRedux]);
 
   return (
-    <div className="contentWrapper">
-      <ConsentModal consent={consentRedux} />
-      <Header logo="neccc_wide_logo_color_web.jpg" />
+    <>
+      <ConsentModal />
       <div className="container-fluid mt-4 mb-4">
         <div className="row mt-3">
           <div className="col-md-12 col-lg-3 col-xl-2 col-12">
@@ -122,7 +120,7 @@ const CoverCropExplorer = () => {
         </div>
       </div>
       <MyCoverCropReset handleConfirm={handleConfirm} setHandleConfirm={setHandleConfirm} />
-    </div>
+    </>
   );
 };
 

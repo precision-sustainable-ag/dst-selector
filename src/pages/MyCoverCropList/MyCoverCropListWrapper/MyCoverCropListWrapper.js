@@ -6,7 +6,6 @@
 import { Grid } from '@mui/material';
 import React, { useState } from 'react';
 import CropSidebar from '../../CropSidebar/CropSidebar';
-import Header from '../../Header/Header';
 import MyCoverCropList from '../MyCoverCropList';
 
 const MyCoverCropListWrapper = () => {
@@ -16,9 +15,6 @@ const MyCoverCropListWrapper = () => {
   };
   return (
     <Grid container spacing={5}>
-      <Grid item xl={12} lg={12} md={12}>
-        <Header />
-      </Grid>
 
       {/* <Grid container spacing={5}> */}
       <Grid item xl={3} lg={3} md={3}>

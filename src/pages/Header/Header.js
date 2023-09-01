@@ -77,7 +77,7 @@ const Header = () => {
       </div>
 
       <div className="container-fluid">
-        <HeaderLogoInfo logo />
+        <HeaderLogoInfo />
       </div>
       <div className="bottomHeader">
         <ToggleOptions
