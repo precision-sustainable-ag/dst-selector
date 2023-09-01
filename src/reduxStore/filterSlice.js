@@ -54,6 +54,10 @@ export const toggleCropFiltersOpen = () => ({
   type: 'TOGGLE_CROP_FILTERS_OPEN',
 });
 
+export const resetFilterData = () => ({
+  type: 'RESET_FILTER_DATA',
+});
+
 const filterReducer = (state = initialState, action = null) => {
   const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
   let sfilters = { ...state[section] };
@@ -115,6 +119,9 @@ const filterReducer = (state = initialState, action = null) => {
         ...state,
         cropFiltersOpen: !state.cropFiltersOpen,
       };
+
+    case 'RESET_FILTER_DATA':
+      return initialState;
 
     default:
       return { ...state };

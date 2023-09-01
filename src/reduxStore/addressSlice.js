@@ -28,6 +28,10 @@ export const changeAddressViaMap = ({ address, county }) => ({
   },
 });
 
+export const resetAddressData = () => ({
+  type: 'RESET_ADDRESS_DATA',
+});
+
 const addressReducer = (state = initialState, action = null) => {
   switch (action.type) {
     case 'UPDATE_LOCATION':
@@ -49,6 +53,9 @@ const addressReducer = (state = initialState, action = null) => {
         address: action.payload.address,
         county: action.payload.county,
       };
+
+    case 'RESET_ADDRESS_DATA':
+      return initialState;
 
     default:
       return { ...state };

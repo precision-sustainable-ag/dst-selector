@@ -32,7 +32,12 @@ import PlantHardinessZone from './PlantHardinessZone/PlantHardinessZone';
 import Legend from '../../components/Legend/Legend';
 import { updateRegion } from '../../reduxStore/mapSlice';
 import { clearFilters } from '../../reduxStore/filterSlice';
-import { pullCropData, updateActiveCropData, updateDateRange } from '../../reduxStore/cropSlice';
+import {
+  pullCropData,
+  resetCropData,
+  updateActiveCropData,
+  updateDateRange,
+} from '../../reduxStore/cropSlice';
 import {
   pullDictionaryData,
   setAjaxInProgress,
@@ -243,6 +248,7 @@ const CropSidebar = ({
   useEffect(() => {
     if (stateIdRedux && regionIdRedux) {
       dispatchRedux(setAjaxInProgress(true));
+      dispatchRedux(resetCropData());
 
       setLoading(true);
       callCoverCropApi(

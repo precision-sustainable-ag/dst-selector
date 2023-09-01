@@ -73,6 +73,10 @@ export const updateFloodingFrequency = (value) => ({
   },
 });
 
+export const resetSoilData = () => ({
+  type: 'RESET_SOIL_DATA',
+});
+
 const soilReducer = (state = initialState, action = null) => {
   switch (action.type) {
     case 'UPDATE_SOIL_DATA':
@@ -125,6 +129,10 @@ const soilReducer = (state = initialState, action = null) => {
           floodingFrequency: action.payload.value,
         },
       };
+
+    case 'RESET_SOIL_DATA': {
+      return initialState;
+    }
 
     default:
       return { ...state };
