@@ -101,10 +101,6 @@ export const pullDictionaryData = (value) => ({
   },
 });
 
-export const resetSharedSlice = () => ({
-  type: 'RESET_SHARED_DATA',
-});
-
 const sharedReducer = (state = initialState, action = null) => {
   switch (action.type) {
     case 'UPDATE_PROGRESS':
@@ -181,10 +177,6 @@ const sharedReducer = (state = initialState, action = null) => {
         ...state,
         dataDictionary: action.payload.value,
       };
-    }
-
-    case 'RESET_SHARED_DATA': {
-      return initialState;
     }
 
     default:
