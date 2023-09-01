@@ -2,12 +2,13 @@ import {
   Modal, Box, Typography, Button, Grid,
 } from '@mui/material';
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { updateConsent } from '../../../reduxStore/sharedSlice';
 
-const ConsentModual = ({ consent }) => {
+const ConsentModal = () => {
   const [modalOpen, setModalOpen] = useState(true);
   const dispatchRedux = useDispatch();
+  const hideConsentRedux = useSelector((stateRedux) => stateRedux.sharedData.hideConsentModal);
 
   const style = {
     position: 'absolute',
@@ -26,7 +27,7 @@ const ConsentModual = ({ consent }) => {
     dispatchRedux(updateConsent(choice));
   };
 
-  return !consent && !/crop=/.test(window.location.search) && (
+  return !hideConsentRedux && !/crop=/.test(window.location.search) && (
     <Modal
       open={modalOpen}
       //   onClose={toggleModalOpen}
@@ -73,4 +74,4 @@ const ConsentModual = ({ consent }) => {
   );
 };
 
-export default ConsentModual;
+export default ConsentModal;
