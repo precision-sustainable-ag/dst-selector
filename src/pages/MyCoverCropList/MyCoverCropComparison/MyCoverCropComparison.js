@@ -16,7 +16,6 @@ import {
   Typography,
 } from '@mui/material';
 import { KeyboardArrowLeft, KeyboardArrowRight } from '@mui/icons-material';
-import { useSnackbar } from 'notistack';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -65,7 +64,6 @@ const GetAverageGoalRating = ({ crop }) => {
 
 const MyCoverCropComparison = ({ selectedCrops }) => {
   const dispatchRedux = useDispatch();
-  const { enqueueSnackbar } = useSnackbar();
 
   // redux vars
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
@@ -115,8 +113,7 @@ const MyCoverCropComparison = ({ selectedCrops }) => {
 
       selectedCropsCopy.splice(removeIndex, 1);
       dispatchRedux(selectedCropsModifier(selectedCropsCopy));
-      dispatchRedux(snackHandler({ snackOpen: false, snackMessage: 'Removed' }));
-      enqueueSnackbar(`${cropName} Removed`);
+      dispatchRedux(snackHandler({ snackOpen: true, snackMessage: `${cropName} Removed` }));
     }
   };
 

@@ -12,7 +12,6 @@ import {
 import { createTheme } from '@mui/material/styles';
 import React, { useEffect, useState, Suspense } from 'react';
 import { useDispatch, useSelector, Provider } from 'react-redux';
-import { SnackbarProvider } from 'notistack';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
 import configureStore from './reduxStore/store';
@@ -109,60 +108,52 @@ const csTheme = responsiveFontSizes(theme, {
 const App = () => (
   <StyledEngineProvider injectFirst>
     <ThemeProvider theme={csTheme}>
-      <SnackbarProvider
-        maxSnack={5}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right',
-        }}
-        autoHideDuration={15000}
-      >
-        <Provider store={store}>
-          <BrowserRouter>
-            <Auth0ProviderWithHistory>
-              <Suspense fallback={<div>Loading..</div>}>
-                <Box className="contentWrapper" id="mainContentWrapper">
-                  <Header />
-                  <Container disableGutters maxWidth={false}>
-                    <Box className="contentContainer">
+      <Provider store={store}>
+        <BrowserRouter>
+          <Auth0ProviderWithHistory>
+            <Suspense fallback={<div>Loading..</div>}>
+              <Box className="contentWrapper" id="mainContentWrapper">
+                <Header />
+                <Container disableGutters maxWidth={false}>
+                  <Box className="contentContainer">
 
-                      <Switch>
-                        <Route
-                          path="/"
-                          render={() => (
-                            <Grid container item xs={12} style={{ paddingLeft: 0, paddingRight: 0 }}>
-                              <LoadRelevantRoute />
-                            </Grid>
-                          )}
-                          exact
-                        />
-                        <Route path="/explorer" component={CoverCropExplorer} exact />
-                        <Route path="/about" component={About} exact />
-                        <Route path="/help" component={Help} exact />
-                        <Route path="/feedback" component={FeedbackComponent} exact />
-                        <Route path="/profile" component={Profile} exact />
-                        <Route path="/my-cover-crop-list" component={MyCoverCropListWrapper} exact />
-                        <Route path="/seeding-rate-calculator" component={SeedingRateCalculator} exact />
-                        <Route path="/data-dictionary" component={InformationSheetDictionary} exact />
-                        <Route path="/license" render={() => <License licenseType="MIT" />} exact />
-                        <Route
-                          path="/ag-informatics-license"
-                          render={() => <License licenseType="AgInformatics" />}
-                          exact
-                        />
-                        <Route path="/mix-maker" component={MixMaker} exact />
+                    <Switch>
+                      <Route
+                        path="/"
+                        render={() => (
+                          <Grid container item xs={12} style={{ paddingLeft: 0, paddingRight: 0 }}>
+                            <LoadRelevantRoute />
+                          </Grid>
+                        )}
+                        exact
+                      />
+                      <Route path="/explorer" component={CoverCropExplorer} exact />
+                      <Route path="/about" component={About} exact />
+                      <Route path="/help" component={Help} exact />
+                      <Route path="/feedback" component={FeedbackComponent} exact />
+                      <Route path="/profile" component={Profile} exact />
+                      <Route path="/my-cover-crop-list" component={MyCoverCropListWrapper} exact />
+                      <Route path="/seeding-rate-calculator" component={SeedingRateCalculator} exact />
+                      <Route path="/data-dictionary" component={InformationSheetDictionary} exact />
+                      <Route path="/license" render={() => <License licenseType="MIT" />} exact />
+                      <Route
+                        path="/ag-informatics-license"
+                        render={() => <License licenseType="AgInformatics" />}
+                        exact
+                      />
+                      <Route path="/mix-maker" component={MixMaker} exact />
 
-                        <Route component={RouteNotFound} />
-                      </Switch>
-                    </Box>
-                  </Container>
-                </Box>
-                <Footer />
-              </Suspense>
-            </Auth0ProviderWithHistory>
-          </BrowserRouter>
-        </Provider>
-      </SnackbarProvider>
+                      <Route component={RouteNotFound} />
+                    </Switch>
+                  </Box>
+                </Container>
+              </Box>
+              <SnackbarComponent />
+              <Footer />
+            </Suspense>
+          </Auth0ProviderWithHistory>
+        </BrowserRouter>
+      </Provider>
     </ThemeProvider>
   </StyledEngineProvider>
 
@@ -245,24 +236,19 @@ const SnackbarComponent = () => {
   };
 
   return (
-    <div>
-      <Snackbar
-        anchorOrigin={{
-          vertical: snackVerticalRedux,
-          horizontal: snackHorizontalRedux,
-        }}
-        key={{
-          vertical: snackVerticalRedux,
-          horizontal: snackHorizontalRedux,
-        }}
-        autoHideDuration={3000}
-        open={snackOpenRedux}
-        onClose={handleSnackClose}
-        ContentProps={{
-          'aria-describedby': 'message-id',
-        }}
-        message={snackMessageRedux}
-      />
-    </div>
+    <Snackbar
+      anchorOrigin={{
+        vertical: snackVerticalRedux,
+        horizontal: snackHorizontalRedux,
+      }}
+      key={snackOpenRedux + snackMessageRedux}
+      autoHideDuration={3000}
+      open={snackOpenRedux}
+      onClose={handleSnackClose}
+      ContentProps={{
+        'aria-describedby': 'message-id',
+      }}
+      message={snackMessageRedux}
+    />
   );
 };
