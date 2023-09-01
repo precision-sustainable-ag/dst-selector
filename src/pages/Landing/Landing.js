@@ -14,6 +14,7 @@ import React, {
   useEffect,
   useState,
   useRef,
+  useMemo,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -46,14 +47,16 @@ const Landing = ({ height, title, bg }) => {
   const [handleConfirm, setHandleConfirm] = useState(false);
   const [containerHeight, setContainerHeight] = useState(height);
   const [allStates, setAllStates] = useState([]);
-  const [selectedState, setSelectedState] = useState('');
+  // This is the state obj mapped by mapState
+  const [selectedState, setSelectedState] = useState({});
+  // This is the obj map returns when you selected a state on map
   const [mapState, setMapState] = useState({});
-  const [selectedRegion, setSelectedRegion] = useState({});
   const { isAuthenticated } = useAuth0();
   const [authModalOpen, setAuthModalOpen] = useState(true);
 
-  const stateChange = (selState) => {
-    setSelectedState(selState);
+  const availableStates = useMemo(() => allStates.map((state) => state.label), [allStates]);
+
+  const updateStateRedux = (selState) => {
     dispatchRedux(updateStateInfo({
       stateLabel: selState.label,
       stateId: selState.id,
@@ -64,15 +67,22 @@ const Landing = ({ height, title, bg }) => {
   };
 
   const handleStateChange = (e) => {
-    setSelectedRegion('');
     const selState = allStates.filter((s) => s.shorthand === e.target.value);
-    stateChange(selState[0]);
+    setSelectedState(selState[0]);
+    updateStateRedux(selState[0]);
   };
 
   useEffect(() => {
-    callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states`).then((data) => {
-      setAllStates(data.data);
-      if (stateIdRedux) setSelectedState(data.data.filter((s) => s.id === stateIdRedux)[0]);
+    // Load map data based on current enviorment, set map selected state based on redux state
+    callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states`).then((stateData) => {
+      // true signifies we are on dev, false signifies we are on prod
+      const isDevEnvironment = /(localhost|dev)/i.test(window.location);
+      const productionCouncils = ['NECCC', 'SCCC'];
+      const states = isDevEnvironment
+        ? stateData.data
+        : stateData.data.filter((state) => productionCouncils.includes(state.council.shorthand));
+      setAllStates(states);
+      if (stateIdRedux) setSelectedState(stateData.data.filter((s) => s.id === stateIdRedux)[0]);
     });
   }, []);
 
@@ -103,55 +113,24 @@ const Landing = ({ height, title, bg }) => {
           // eslint-disable-next-line no-console
           console.log(err.message);
         });
+    } else {
+      // if no stateIdredux, set selectedState to empty (When you hit logo button after selected state in map)
+      setSelectedState({});
     }
   }, [stateIdRedux]);
 
-  // SelectedRegion needs to get replaced with mapState once the map is updated to using state verbage instead of region.
   useEffect(() => {
-    if (selectedRegion) {
-      const st = allStates.filter((s) => s.label === selectedRegion.properties.STATE_NAME);
+    if (Object.keys(mapState).length !== 0) {
+      const st = allStates.filter((s) => s.label === mapState.properties.STATE_NAME);
       if (st.length > 0) {
         setSelectedState(st[0]);
-      } else if (selectedRegion?.id) {
-        setSelectedState('');
-        dispatchRedux(updateStateInfo({
-          stateLabel: null,
-          stateId: null,
-          councilShorthand: null,
-          councilLabel: null,
-        }));
-        alert(
-          // eslint-disable-next-line max-len
-          'The region you have selected is not currently supported. We currently support Northeast, Midwest, and Southern Cover Crop Councils. Please try again!',
-        );
       }
     }
-  }, [selectedRegion, mapState]);
+  }, [mapState]);
 
   useEffect(() => {
-    // true signifies we are on dev, false signifies we are on prod
-    const devEnvironment = /(localhost|dev)/i.test(window.location);
-    // verifies selected state is in allowed council based off of devEnv variable
-    const verifyCouncil = (selectedCouncil) => {
-      const developCouncils = ['NECCC', 'MCCC', 'SCCC'];
-      const productionCouncils = ['NECCC', 'SCCC'];
-      if (devEnvironment) {
-        return developCouncils.includes(selectedCouncil);
-      }
-      return productionCouncils.includes(selectedCouncil);
-    };
-
-    if (selectedState) {
-      if (verifyCouncil(selectedState.council.shorthand)) {
-        stateChange(selectedState);
-      } else {
-        dispatchRedux(updateStateInfo({
-          stateLabel: null,
-          stateId: null,
-          councilShorthand: null,
-          councilLabel: null,
-        }));
-      }
+    if (Object.keys(selectedState).length !== 0) {
+      updateStateRedux(selectedState);
     }
   }, [selectedState]);
 
@@ -190,7 +169,6 @@ const Landing = ({ height, title, bg }) => {
   useEffect(() => {
     if (consentRedux) {
       ReactGA.initialize('UA-181903489-1');
-
       ReactGA.pageview('cover crop selector');
     }
   }, [consentRedux]);
@@ -332,7 +310,7 @@ const Landing = ({ height, title, bg }) => {
             <Typography variant="h5" gutterBottom align="left" className="font-weight-bold">
               Select your State
             </Typography>
-            {selectedState && (
+            {Object.keys(selectedState).length !== 0 && (
               <Typography
                 variant="h6"
                 gutterBottom
@@ -350,12 +328,10 @@ const Landing = ({ height, title, bg }) => {
           </Grid>
           <Grid item>
             <div style={{ position: 'relative', width: '100%', paddingRight: '10%' }}>
-              {/* selectedRegion and selectorFunc should be deprecated and selectedState and setMapState should be used in their place */}
               <RegionSelectorMap
-                selectorFunc={setSelectedRegion}
                 selectorFunction={setMapState}
-                selectedRegion={selectedRegion}
-                selectedState={selectedState}
+                selectedState={selectedState.label}
+                availableStates={availableStates}
                 initWidth="100%"
                 initHeight="350px"
                 initLon={-98}
