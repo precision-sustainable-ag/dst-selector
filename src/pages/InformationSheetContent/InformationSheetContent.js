@@ -73,7 +73,7 @@ const InformationSheetContent = ({ crop, modalData }) => {
                 <AccordionDetails>
                   {' '}
                   <div className="row col-12 text-left">
-                    {cat.attributes.map((att) => (
+                    {cat.attributes.map((att) => (att.label !== 'Comments' ? (
                       <div className="col-6 mb-2 ml-1 row">
                         <span className="col">
                           <Tooltip
@@ -82,7 +82,7 @@ const InformationSheetContent = ({ crop, modalData }) => {
                               <div className="filterTooltip">
                                 <p>{att.description}</p>
                               </div>
-                          )}
+                            )}
                             arrow
                           >
                             <Typography sx={{ fontWeight: 'bold' }} variant="body1">
@@ -98,7 +98,29 @@ const InformationSheetContent = ({ crop, modalData }) => {
                           <span>{getRating(att.values[0]?.value)}</span>
                         )}
                       </div>
-                    ))}
+                    )
+                      : (
+                        <div className="col-12 mb-2 ml-1 row">
+                          <span className="col">
+                            <Tooltip
+                              placement="top-end"
+                              title={(
+                                <div className="filterTooltip">
+                                  <p>{att.description}</p>
+                                </div>
+                          )}
+                              arrow
+                            >
+                              <Typography display="flex" justifyContent="center" sx={{ fontWeight: 'bold' }} variant="body1">
+                                {att.label}
+                              </Typography>
+                            </Tooltip>
+                          </span>
+                          <Typography variant="body1">
+                            <span>{att.values[0]?.value}</span>
+                          </Typography>
+                        </div>
+                      )))}
                   </div>
                 </AccordionDetails>
               </Accordion>
