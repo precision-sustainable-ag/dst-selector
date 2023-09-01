@@ -60,6 +60,7 @@ const LocationComponent = () => {
   const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
   const markersRedux = useSelector((stateRedux) => stateRedux.addressData.markers);
   const regionsRedux = useSelector((stateRedux) => stateRedux.mapData.regions);
+  const regionShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.regionShorthand);
   const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
@@ -72,7 +73,7 @@ const LocationComponent = () => {
   const [selectedRegion, setRelectedRegion] = useState();
   const [handleConfirm, setHandleConfirm] = useState(false);
   const [locZipCode, setLocZipCode] = useState();
-  const [regionShorthand, setRegionShorthand] = useState();
+  // const [regionShorthand, setRegionShorthand] = useState();
   const [selectedToEditSite, setSelectedToEditSite] = useState({});
   const [currentGeometry, setCurrentGeometry] = useState([]);
   const [fieldDialogState, setFieldDialogState] = useState(initFieldDialogState);
@@ -128,9 +129,10 @@ const LocationComponent = () => {
 
   const updateReg = (region) => {
     if (region !== undefined) {
-      setRegionShorthand(region.shorthand);
+      // setRegionShorthand(region.shorthand);
       dispatchRedux(updateRegion({
         regionId: region.id ?? '',
+        regionShorthand: region.shorthand ?? '',
       }));
     }
   };
@@ -320,9 +322,10 @@ const LocationComponent = () => {
           });
         }
         if (councilShorthandRedux !== 'MCCC') {
-          setRegionShorthand(zone);
+          // setRegionShorthand(zone);
           dispatchRedux(updateRegion({
             regionId: regionId ?? '',
+            regionShorthand: zone ?? '',
           }));
         }
       });
@@ -445,7 +448,7 @@ const LocationComponent = () => {
               <div className="col-md-5 col-lg-6 col-sm-12 col-12">
                 <PlantHardinessZone
                   updateReg={updateReg}
-                  regionShorthand={regionShorthand}
+                  regionShorthand={regionShorthandRedux}
                   regionsRedux={regionsRedux}
                   councilLabelRedux={councilLabelRedux}
                 />

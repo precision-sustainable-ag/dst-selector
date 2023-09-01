@@ -1,6 +1,7 @@
 const initialState = {
   regions: [],
   regionId: null,
+  regionShorthand: null,
   regionLabel: null,
   stateId: null,
   stateLabel: null,
@@ -15,10 +16,11 @@ export const updateRegions = (value) => ({
   },
 });
 
-export const updateRegion = ({ regionId }) => ({
+export const updateRegion = ({ regionId, regionShorthand }) => ({
   type: 'UPDATE_REGION',
   payload: {
     regionId,
+    regionShorthand,
   },
 });
 
@@ -46,6 +48,7 @@ const mapReducer = (state = initialState, action = null) => {
       return {
         ...state,
         regionId: action.payload.regionId,
+        regionShorthand: action.payload.regionShorthand,
       };
 
     case 'UPDATE_STATE_INFO':
