@@ -6,7 +6,6 @@
 */
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useSnackbar } from 'notistack';
 import CropCard from '../../../components/CropCard/CropCard';
 import CropDetailsModal from '../../../components/CropDetailsModal/CropDetailsModal';
 import { selectedCropsModifier } from '../../../reduxStore/cropSlice';
@@ -16,7 +15,6 @@ const MyCoverCropCards = ({ data, cardNo }) => {
   const dispatchRedux = useDispatch();
   const [modalOpen, setModalOpen] = useState(false);
   const [modalData, setModalData] = useState({});
-  const { enqueueSnackbar } = useSnackbar();
   const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
   const removeCrop = (cropName, id) => {
     let removeIndex = -1;
@@ -34,8 +32,7 @@ const MyCoverCropCards = ({ data, cardNo }) => {
 
       selectedCropsCopy.splice(removeIndex, 1);
       dispatchRedux(selectedCropsModifier(selectedCropsCopy));
-      dispatchRedux(snackHandler({ snackOpen: false, snackMessage: 'Removed' }));
-      enqueueSnackbar(`${cropName} Removed`);
+      dispatchRedux(snackHandler({ snackOpen: true, snackMessage: `${cropName} Removed` }));
     }
   };
 
