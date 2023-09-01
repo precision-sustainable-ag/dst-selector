@@ -4,7 +4,7 @@
 */
 
 import {
-  Snackbar, Box, Container, Grid, Typography,
+  Snackbar, Box, Container, Grid,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -16,9 +16,54 @@ import LocationComponent from './pages/Location/Location';
 import LocationConfirmation from './pages/Location/LocationConfirmation/LocationConfirmation';
 import './styles/App.scss';
 import { snackHandler } from './reduxStore/sharedSlice';
+import RouteNotFound from './pages/RouteNotFound/RouteNotFound';
+
+const App = () => {
+  const [calcHeight, setCalcHeight] = useState(0);
+
+  const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
+
+  useEffect(() => {
+    const parentDocHeight = document
+      .getElementById('mainContentWrapper')
+      .getBoundingClientRect().height;
+    const headerHeight = document.querySelector('header').getBoundingClientRect().height;
+
+    const calculatedHeight = parentDocHeight - headerHeight;
+
+    setCalcHeight(calculatedHeight);
+  }, []);
+
+  return (
+    <Box className="contentWrapper" id="mainContentWrapper">
+      <Header logo="neccc_wide_logo_color_web.jpg" />
+
+      <Container disableGutters maxWidth={false}>
+        <Box className="contentContainer">
+
+          <Grid container item xs={12} style={{ paddingLeft: 0, paddingRight: 0 }}>
+            <LoadRelevantRoute progress={progressRedux} calcHeight={calcHeight} />
+          </Grid>
+
+        </Box>
+      </Container>
+
+    </Box>
+  );
+};
+
+export default App;
 
 const LoadRelevantRoute = ({ progress, calcHeight }) => {
   switch (progress) {
+    case 0:
+      return (
+        <Landing
+          title="Decision Support Tool"
+          height={calcHeight}
+          bg="/images/cover-crop-field.png"
+        />
+      );
     case 1:
       return (
         <LocationComponent
@@ -54,14 +99,13 @@ const LoadRelevantRoute = ({ progress, calcHeight }) => {
   }
 };
 
-const App = () => {
+// eslint-disable-next-line no-unused-vars
+const SnackbarComponent = () => {
   const dispatchRedux = useDispatch();
-  const [calcHeight, setCalcHeight] = useState(0);
 
   // redux vars
   const snackOpenRedux = useSelector((stateRedux) => stateRedux.sharedData.snackOpen);
   const snackMessageRedux = useSelector((stateRedux) => stateRedux.sharedData.snackMessage);
-  const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
   const snackVerticalRedux = useSelector((stateRedux) => stateRedux.sharedData.snackVertical);
   const snackHorizontalRedux = useSelector((stateRedux) => stateRedux.sharedData.snackHorizontal);
 
@@ -69,70 +113,25 @@ const App = () => {
     dispatchRedux(snackHandler({ snackOpen: false, snackMessage: '' }));
   };
 
-  useEffect(() => {
-    const parentDocHeight = document
-      .getElementById('mainContentWrapper')
-      .getBoundingClientRect().height;
-    const headerHeight = document.querySelector('header').getBoundingClientRect().height;
-
-    const calculatedHeight = parentDocHeight - headerHeight;
-
-    setCalcHeight(calculatedHeight);
-  }, []);
-
   return (
-    <Box className="contentWrapper" id="mainContentWrapper">
-      <Header logo="neccc_wide_logo_color_web.jpg" />
-
-      <Container disableGutters maxWidth={false}>
-        <Box className="contentContainer">
-          {progressRedux === 0 ? (
-            <Landing
-              title="Decision Support Tool"
-              height={calcHeight}
-              bg="/images/cover-crop-field.png"
-            />
-          ) : (
-            <Grid container item xs={12} style={{ paddingLeft: 0, paddingRight: 0 }}>
-              <LoadRelevantRoute progress={progressRedux} calcHeight={calcHeight} />
-            </Grid>
-          )}
-        </Box>
-      </Container>
-
-      <div>
-        <Snackbar
-          anchorOrigin={{
-            vertical: snackVerticalRedux,
-            horizontal: snackHorizontalRedux,
-          }}
-          key={{
-            vertical: snackVerticalRedux,
-            horizontal: snackHorizontalRedux,
-          }}
-          autoHideDuration={3000}
-          open={snackOpenRedux}
-          onClose={handleSnackClose}
-          ContentProps={{
-            'aria-describedby': 'message-id',
-          }}
-          message={snackMessageRedux}
-        />
-      </div>
-    </Box>
+    <div>
+      <Snackbar
+        anchorOrigin={{
+          vertical: snackVerticalRedux,
+          horizontal: snackHorizontalRedux,
+        }}
+        key={{
+          vertical: snackVerticalRedux,
+          horizontal: snackHorizontalRedux,
+        }}
+        autoHideDuration={3000}
+        open={snackOpenRedux}
+        onClose={handleSnackClose}
+        ContentProps={{
+          'aria-describedby': 'message-id',
+        }}
+        message={snackMessageRedux}
+      />
+    </div>
   );
 };
-
-export default App;
-
-const RouteNotFound = () => (
-  <Container>
-    <Grid container justifyContent="center" alignItems="center" spacing={3}>
-      <Grid item xs={4}>
-        <Typography variant="h3" align="center">
-          Unknown Route
-        </Typography>
-      </Grid>
-    </Grid>
-  </Container>
-);

@@ -15,10 +15,6 @@ import {
   ThemeProvider,
   StyledEngineProvider,
   responsiveFontSizes,
-  Grid,
-  Typography,
-  Container,
-  Link,
   adaptV4Theme,
 } from '@mui/material';
 import { SnackbarProvider } from 'notistack';
@@ -42,6 +38,7 @@ import Help from './pages/Help/Help';
 import configureStore from './reduxStore/store';
 import Auth0ProviderWithHistory from './components/Auth/Auth0ProviderWithHistory/Auth0ProviderWithHistory';
 import Profile from './pages/Profile/Profile';
+import RouteNotFound from './pages/RouteNotFound/RouteNotFound';
 
 const withFooter = (WrappedComponent) => () => [<WrappedComponent key="1" />, <Footer key="2" />];
 const store = configureStore();
@@ -100,35 +97,6 @@ const theme = createTheme(
       },
     },
   }),
-);
-const RouteNotFound = () => (
-  <section className="page_404">
-    <Container maxWidth="sm">
-      <Grid container justifyContent="center">
-        <Grid item xs={12}>
-          <div className="four_zero_four_bg">
-            <Typography variant="h1" component="h1" className="text-center">
-              404
-            </Typography>
-          </div>
-
-          <div className="contant_box_404" style={{ textAlign: 'center' }}>
-            <Typography variant="h3" component="h2">
-              Looks like you're lost
-            </Typography>
-
-            <Typography variant="body1">
-              The page you are looking for is not available!
-            </Typography>
-
-            <Link href="/" className="link_404">
-              Go Home
-            </Link>
-          </div>
-        </Grid>
-      </Grid>
-    </Container>
-  </section>
 );
 
 const csTheme = responsiveFontSizes(theme, {
