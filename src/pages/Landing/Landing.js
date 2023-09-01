@@ -218,7 +218,7 @@ const Landing = ({ height, title, bg }) => {
         backgroundSize: 'cover',
       }}
     >
-      { (!hideConsentRedux && (!authModalOpen || isAuthenticated)) && <ConsentModal consent={consentRedux} />}
+      { (!authModalOpen || isAuthenticated) && <ConsentModal />}
       { (!hideConsentRedux && !isAuthenticated) && <AuthModal modalOpen={authModalOpen} setModalOpen={setAuthModalOpen} />}
 
       <Grid container>

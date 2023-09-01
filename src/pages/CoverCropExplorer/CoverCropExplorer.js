@@ -92,7 +92,7 @@ const CoverCropExplorer = () => {
 
   return (
     <div className="contentWrapper">
-      <ConsentModal consent={consentRedux} />
+      <ConsentModal />
       <Header logo="neccc_wide_logo_color_web.jpg" />
       <div className="container-fluid mt-4 mb-4">
         <div className="row mt-3">
