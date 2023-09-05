@@ -14,20 +14,11 @@ import CheckIcon from '@mui/icons-material/Check';
 import FilterHdrIcon from '@mui/icons-material/FilterHdr';
 import React, { useState } from 'react';
 import '../../../styles/greenBar.scss';
-import LocationComponent from '../../Location/Location';
-import SoilCondition from '../../Location/SoilCondition/SoilCondition';
-import WeatherConditions from '../../../components/WeatherConditions/WeatherConditions';
 import ProgressButtons from '../../../shared/ProgressButtons';
 import MyCoverCropReset from '../../../components/MyCoverCropReset/MyCoverCropReset';
 import { gotoProgress } from '../../../reduxStore/sharedSlice';
 
 const speciesSelectorToolName = '/';
-
-const expansionPanelBaseStyle = {
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-};
 
 const InformationBar = ({ pathname }) => {
   const dispatchRedux = useDispatch();
@@ -40,23 +31,8 @@ const InformationBar = ({ pathname }) => {
 
   // useState vars
   const [handleConfirm, setHandleConfirm] = useState(false);
-  const [expansionPanelComponent, setExpansionPanelComponent] = useState({
-    component: '',
-  });
-
-  // const vars
-  const defaultMarkers = [[40.78489145, -74.80733626930342]];
 
   // functions
-  const closeExpansionPanel = () => {
-    const greenbarExpansionElement = document.getElementById('greenBarExpansionPanel');
-    greenbarExpansionElement.style.transform = 'translate(0px,0px)';
-    greenbarExpansionElement.style.minHeight = '0px';
-    setExpansionPanelComponent({
-      component: '',
-    });
-  };
-
   const handleBtnClick = (type) => {
     const options = {
       location: 1,
@@ -201,60 +177,10 @@ const InformationBar = ({ pathname }) => {
             md={12}
             lg={2.5}
           >
-            <ProgressButtons closeExpansionPanel={closeExpansionPanel} setConfirmationOpen={setHandleConfirm} />
+            <ProgressButtons setConfirmationOpen={setHandleConfirm} />
           </Grid>
         </Grid>
         )}
-      </div>
-      {/* FIXME: this part of codes seems not used */}
-      <div
-        className="greenBarExpansionPanel container-fluid pl-0 pr-0"
-        id="greenBarExpansionPanel"
-      >
-        <div className="row justify-content-center align-items-center">
-          <div
-            className={expansionPanelComponent.component === 'location' ? 'col-md-10' : 'col-md-6'}
-          >
-            {expansionPanelComponent.component === 'location' && (
-              <LocationComponent caller="greenbar" title="Location" defaultMarkers={defaultMarkers} closeExpansionPanel={closeExpansionPanel} />
-            )}
-            {expansionPanelComponent.component === 'soil' && (
-              <div className="container mt-5" style={expansionPanelBaseStyle}>
-                <div className="row boxContainerRow" style={{ minHeight: '526px' }}>
-                  <SoilCondition caller="greenbar" />
-                </div>
-              </div>
-            )}
-            {expansionPanelComponent.component === 'weather' && (
-              <div className="container mt-5" style={expansionPanelBaseStyle}>
-                <div className="row boxContainerRow" style={{ minHeight: '526px' }}>
-                  <WeatherConditions caller="greenbar" />
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-        <div
-          className="d-flex justify-content-center"
-          style={expansionPanelComponent.component === '' ? { height: '0px' } : { height: '50px' }}
-        >
-          {expansionPanelComponent.component !== '' && (
-            <div
-              className="pt-2 pb-2"
-              style={{
-                position: 'absolute',
-                bottom: '-30px',
-                textAlign: 'center',
-                width: '100%',
-                background: 'linear-gradient(to top, #506147, #598344)',
-              }}
-            >
-              <Button variant="contained" onClick={closeExpansionPanel}>
-                Close
-              </Button>
-            </div>
-          )}
-        </div>
       </div>
       <MyCoverCropReset handleConfirm={handleConfirm} setHandleConfirm={setHandleConfirm} goBack={false} />
     </div>

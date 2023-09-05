@@ -12,7 +12,7 @@ import { reset } from '../reduxStore/store';
 import { updateProgress } from '../reduxStore/sharedSlice';
 
 const ProgressButtonsInner = ({
-  isDisabledBack, isDisabledNext, isDisabledRefresh, closeExpansionPanel, setConfirmationOpen,
+  isDisabledBack, isDisabledNext, isDisabledRefresh, setConfirmationOpen,
 }) => {
   const dispatchRedux = useDispatch();
   const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
@@ -80,7 +80,6 @@ const ProgressButtonsInner = ({
           marginLeft: '3%',
         }}
         onClick={() => {
-          closeExpansionPanel();
           if (selectedCropsRedux.length > 0) setConfirmationOpen(true);
           else {
             dispatchRedux(reset());
