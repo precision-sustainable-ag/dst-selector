@@ -12,7 +12,6 @@ const ToggleOptions = ({ pathname }) => {
   const history = useHistory();
   const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
-  const myCoverCropActivationFlagRedux = useSelector((stateRedux) => stateRedux.sharedData.myCoverCropActivationFlag);
   const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
   const speciesSelectorActivationFlagRedux = useSelector((stateRedux) => stateRedux.sharedData.speciesSelectorActivationFlag);
   const setMyCoverCropActivationFlag = () => {
@@ -50,41 +49,20 @@ const ToggleOptions = ({ pathname }) => {
         </span>
       </Tooltip>
 
-      {pathname === '/'
-        && selectedCropsRedux.length > 0
-         && (
-         <Badge
-           badgeContent={selectedCropsRedux.length}
-           color="error"
-         >
-           <Button
-             size="large"
-             className={
-                (myCoverCropActivationFlagRedux && pathname === '/')
-                  && 'active'
-              }
-             onClick={setMyCoverCropActivationFlag}
-           >
-             MY COVER CROP LIST
-           </Button>
-         </Badge>
-         )}
-      {/* My Cover Crop List As A Separate Component/Route  */}
-      {pathname !== '/' && (
-        selectedCropsRedux.length > 0 && (
-          <Badge
-            badgeContent={selectedCropsRedux.length}
-            color="error"
+      {selectedCropsRedux.length > 0
+        && (
+        <Badge
+          badgeContent={selectedCropsRedux.length}
+          color="error"
+        >
+          <Button
+            size="large"
+            onClick={setMyCoverCropActivationFlag}
           >
-            <Button
-              className={pathname === '/my-cover-crop-list' && 'active'}
-              onClick={() => history.push('/my-cover-crop-list')}
-            >
-              My Cover Crop List
-            </Button>
-          </Badge>
-        )
-      )}
+            MY COVER CROP LIST
+          </Button>
+        </Badge>
+        )}
     </>
   );
 };
