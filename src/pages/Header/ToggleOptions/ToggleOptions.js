@@ -7,7 +7,7 @@ import { NavLink, useHistory } from 'react-router-dom';
 import '../../../styles/header.scss';
 import { activateMyCoverCropListTile, activateSpeicesSelectorTile } from '../../../reduxStore/sharedSlice';
 
-const ToggleOptions = ({ isRoot }) => {
+const ToggleOptions = ({ pathname }) => {
   const dispatchRedux = useDispatch();
   const history = useHistory();
   const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
@@ -17,7 +17,8 @@ const ToggleOptions = ({ isRoot }) => {
   const speciesSelectorActivationFlagRedux = useSelector((stateRedux) => stateRedux.sharedData.speciesSelectorActivationFlag);
   const setMyCoverCropActivationFlag = () => {
     history.push('/my-cover-crop-list');
-    if (window.location.pathname === '/explorer') {
+    // FIXME: the following codes will not work?
+    if (pathname === '/explorer') {
       if (progressRedux > 4) {
         dispatchRedux(activateMyCoverCropListTile({ myCoverCropActivationFlag: true, speciesSelectorActivationFlag: false }));
       }
@@ -26,36 +27,30 @@ const ToggleOptions = ({ isRoot }) => {
 
   const setSpeciesSelectorActivationFlag = () => {
     dispatchRedux(activateSpeicesSelectorTile({ speciesSelectorActivationFlag: true, myCoverCropActivationFlag: false }));
-    if (window.location.pathname !== '/explorer') {
+    if (pathname !== '/explorer') {
       history.push('/explorer');
-    }
-  };
-
-  const clearMyCoverCropList = (selector = false) => {
-    if (selector) {
-      setSpeciesSelectorActivationFlag();
     }
   };
 
   return (
     <>
-      <Button size="large" onClick={() => clearMyCoverCropList(false)} component={NavLink} exact to="/" activeClassName="active">
+      <Button size="large" component={NavLink} exact to="/" activeClassName="active">
         SPECIES SELECTOR TOOL
       </Button>
-      <Tooltip title={(stateLabelRedux === null || stateLabelRedux === '') ? 'You must select a state before using the Cover Crop Explorer' : ''}>
+      <Tooltip title={(stateLabelRedux === null) ? 'You must select a state before using the Cover Crop Explorer' : ''}>
         <span>
           <Button
-            className={(isRoot && speciesSelectorActivationFlagRedux) ? 'active' : ''}
-            onClick={() => clearMyCoverCropList(true)}
+            className={(pathname === '/explorer' && speciesSelectorActivationFlagRedux) ? 'active' : ''}
+            onClick={setSpeciesSelectorActivationFlag}
             size="large"
-            disabled={stateLabelRedux === null || stateLabelRedux === ''}
+            disabled={stateLabelRedux === null}
           >
             COVER CROP EXPLORER
           </Button>
         </span>
       </Tooltip>
 
-      {window.location.pathname === '/'
+      {pathname === '/'
         && selectedCropsRedux.length > 0
          && (
          <Badge
@@ -65,7 +60,7 @@ const ToggleOptions = ({ isRoot }) => {
            <Button
              size="large"
              className={
-                (myCoverCropActivationFlagRedux && window.location.pathname === '/')
+                (myCoverCropActivationFlagRedux && pathname === '/')
                   && 'active'
               }
              onClick={setMyCoverCropActivationFlag}
@@ -75,14 +70,14 @@ const ToggleOptions = ({ isRoot }) => {
          </Badge>
          )}
       {/* My Cover Crop List As A Separate Component/Route  */}
-      {window.location.pathname !== '/' && (
+      {pathname !== '/' && (
         selectedCropsRedux.length > 0 && (
           <Badge
             badgeContent={selectedCropsRedux.length}
             color="error"
           >
             <Button
-              className={window.location.pathname === '/my-cover-crop-list' && 'active'}
+              className={pathname === '/my-cover-crop-list' && 'active'}
               onClick={() => history.push('/my-cover-crop-list')}
             >
               My Cover Crop List

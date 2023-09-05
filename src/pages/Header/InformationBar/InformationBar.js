@@ -29,7 +29,7 @@ const expansionPanelBaseStyle = {
   alignItems: 'center',
 };
 
-const InformationBar = () => {
+const InformationBar = ({ pathname }) => {
   const dispatchRedux = useDispatch();
   const addressRedux = useSelector((stateRedux) => stateRedux.addressData.address);
   const zoneRedux = useSelector((stateRedux) => stateRedux.addressData.zone);
@@ -170,7 +170,7 @@ const InformationBar = () => {
   return (
     <div className="greenBarParent" id="greenBarParent">
       <div className="greenBarWrapper">
-        {window.location.pathname === speciesSelectorToolName && (
+        {pathname === speciesSelectorToolName && (
         <Grid
           container
         >
@@ -206,6 +206,7 @@ const InformationBar = () => {
         </Grid>
         )}
       </div>
+      {/* FIXME: this part of codes seems not used */}
       <div
         className="greenBarExpansionPanel container-fluid pl-0 pr-0"
         id="greenBarExpansionPanel"

@@ -6,7 +6,7 @@
 
 import { useDispatch, useSelector } from 'react-redux';
 import React, { useEffect, useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useHistory } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
 import '../../styles/header.scss';
 import HeaderLogoInfo from './HeaderLogoInfo/HeaderLogoInfo';
@@ -17,13 +17,20 @@ import { getFields } from '../../shared/constants';
 import AuthButton from '../../components/Auth/AuthButton/AuthButton';
 
 const Header = () => {
+  const [pathname, setPathname] = useState('/');
+  const history = useHistory();
   const dispatchRedux = useDispatch();
-  const markersRedux = useSelector((stateRedux) => stateRedux.addressData.markers);
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
   const consentRedux = useSelector((stateRedux) => stateRedux.sharedData.consent);
-  const [isRoot, setIsRoot] = useState(false);
   const { isAuthenticated, getAccessTokenSilently } = useAuth0();
-  const isActive = {};
+
+  useEffect(() => {
+    // detect current pathname
+    history.listen((location) => {
+      console.log('location', location.pathname);
+      setPathname(location.pathname);
+    });
+  }, [history]);
 
   useEffect(() => {
     const getToken = async () => {
@@ -34,22 +41,6 @@ const Header = () => {
     };
     if (isAuthenticated) getToken();
   }, [isAuthenticated, getAccessTokenSilently, consentRedux]);
-
-  useEffect(() => {
-    if (window.location.pathname === '/explorer') {
-      setIsRoot(true);
-    } else {
-      setIsRoot(false);
-    }
-
-    switch (progressRedux) {
-      case 0:
-        isActive.val = 0;
-        break;
-      default:
-        break;
-    }
-  }, [markersRedux]);
 
   return (
     <header className="d-print-none">
@@ -80,13 +71,12 @@ const Header = () => {
         <HeaderLogoInfo />
       </div>
       <div className="bottomHeader">
-        <ToggleOptions
-          isRoot={isRoot}
-        />
+        <ToggleOptions pathname={pathname} />
       </div>
 
-      <InformationBar />
+      <InformationBar pathname={pathname} />
 
+      {/* FIXME: this part of code will never render a div */}
       {window.location.pathname === '/about'
         || window.location.pathname === '/help'
         || (window.location.pathname === '/feedback'
