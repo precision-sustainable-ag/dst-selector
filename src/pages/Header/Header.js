@@ -20,14 +20,12 @@ const Header = () => {
   const [pathname, setPathname] = useState('/');
   const history = useHistory();
   const dispatchRedux = useDispatch();
-  const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
   const consentRedux = useSelector((stateRedux) => stateRedux.sharedData.consent);
   const { isAuthenticated, getAccessTokenSilently } = useAuth0();
 
   useEffect(() => {
     // detect current pathname
     history.listen((location) => {
-      console.log('location', location.pathname);
       setPathname(location.pathname);
     });
   }, [history]);
@@ -73,17 +71,7 @@ const Header = () => {
       <div className="bottomHeader">
         <ToggleOptions pathname={pathname} />
       </div>
-
       <InformationBar pathname={pathname} />
-
-      {/* FIXME: this part of code will never render a div */}
-      {window.location.pathname === '/about'
-        || window.location.pathname === '/help'
-        || (window.location.pathname === '/feedback'
-          && window.location.pathname !== '/cover-crop-explorer')
-        || (progressRedux < 0 && (
-          <div className="topBar" />
-        ))}
     </header>
   );
 };
