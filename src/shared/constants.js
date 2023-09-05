@@ -286,12 +286,6 @@ export const getRating = (ratng) => {
 
 export const allMonths = moment().localeData().monthsShort();
 
-export const greenBarExpansionPanelHeight = {
-  large: '600px',
-  medium: '600px',
-  small: '600px',
-};
-
 export const trimString = (stringFull, size) => {
   if (!Number.isNaN(size)) {
     return `${stringFull.substring(0, size)}${stringFull.length > 25 ? '...' : ''}`;

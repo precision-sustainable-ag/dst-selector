@@ -7,7 +7,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import ProgressButtonsInner from './ProgressButtonsInner';
 
-const ProgressButtons = ({ closeExpansionPanel, setConfirmationOpen }) => {
+const ProgressButtons = ({ setConfirmationOpen }) => {
   const addressRedux = useSelector((stateRedux) => stateRedux.addressData.address);
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
@@ -62,7 +62,6 @@ const ProgressButtons = ({ closeExpansionPanel, setConfirmationOpen }) => {
         isDisabledBack={disabledBack}
         isDisabledNext={disabledNext}
         isDisabledRefresh={disabledRefresh}
-        closeExpansionPanel={closeExpansionPanel}
         setConfirmationOpen={setConfirmationOpen}
       />
     );
