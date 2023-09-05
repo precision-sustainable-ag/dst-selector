@@ -339,6 +339,7 @@ const CropSidebar = ({
   ); // filterList
 
   useEffect(() => {
+    // FIXME: this function returns a compoennt in useEffect, not sure why doing that
     filtersList();
   }, [sidebarFilters]);
 
