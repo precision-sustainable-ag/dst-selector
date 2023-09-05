@@ -31,6 +31,7 @@ const MyCoverCropReset = ({
   };
 
   return (
+    // FIXME: this div shows to a white line under the Header on many pages
     <div className="container-fluid mt-5">
       <Dialog disableEscapeKeyDown open={handleConfirm}>
         <DialogContent dividers>

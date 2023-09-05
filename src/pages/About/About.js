@@ -240,8 +240,7 @@ const About = () => {
           ).
           <br />
           <br />
-          {/* FIXME: cannot add a <center> in <p> */}
-          <center>
+          <span style={{ display: 'inline-flex', justifyContent: 'center' }}>
             <img
               style={{
                 width: '70%',
@@ -252,7 +251,7 @@ const About = () => {
               src="/images/mockup.gif"
               alt="Decision Support Tool Mockup"
             />
-          </center>
+          </span>
           <br />
           <br />
           <b>Reusability:</b>
