@@ -20,7 +20,7 @@ const Header = () => {
   const [pathname, setPathname] = useState('/');
   const history = useHistory();
   const dispatchRedux = useDispatch();
-  const consentRedux = useSelector((stateRedux) => stateRedux.sharedData.consent);
+  const consentRedux = useSelector((stateRedux) => stateRedux.userData.consent);
   const { isAuthenticated, getAccessTokenSilently } = useAuth0();
 
   useEffect(() => {
