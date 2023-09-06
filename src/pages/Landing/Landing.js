@@ -39,10 +39,10 @@ const Landing = ({ height, title, bg }) => {
   const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
   const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
   const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
-  const consentRedux = useSelector((stateRedux) => stateRedux.sharedData.consent);
+  const consentRedux = useSelector((stateRedux) => stateRedux.userData.consent);
   const myCoverCropListLocationRedux = useSelector((stateRedux) => stateRedux.sharedData.myCoverCropListLocation);
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
-  const hideConsentRedux = useSelector((stateRedux) => stateRedux.sharedData.hideConsentModal);
+  const hideConsentRedux = useSelector((stateRedux) => stateRedux.userData.hideConsentModal);
 
   // useState vars
   const [handleConfirm, setHandleConfirm] = useState(false);

@@ -27,7 +27,7 @@ const CoverCropExplorer = () => {
   const activeCropDataRedux = useSelector((stateRedux) => stateRedux.cropData.activeCropData);
   const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
   const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
-  const consentRedux = useSelector((stateRedux) => stateRedux.sharedData.consent);
+  const consentRedux = useSelector((stateRedux) => stateRedux.userData.consent);
   const myCoverCropListLocationRedux = useSelector((stateRedux) => stateRedux.sharedData.myCoverCropListLocation);
   const [updatedActiveCropData, setUpdatedActiveCropData] = useState([]);
   // const { activeCropData } = state;

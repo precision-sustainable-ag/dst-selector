@@ -1,7 +1,5 @@
 const initialState = {
   progress: 0,
-  consent: false,
-  hideConsentModal: false,
   snackOpen: false,
   snackMessage: '',
   ajaxInProgress: false,
@@ -20,13 +18,6 @@ const initialState = {
 
 export const updateProgress = (value) => ({
   type: 'UPDATE_PROGRESS',
-  payload: {
-    value,
-  },
-});
-
-export const updateConsent = (value) => ({
-  type: 'UPDATE_CONSENT',
   payload: {
     value,
   },
@@ -111,15 +102,6 @@ const sharedReducer = (state = initialState, action = null) => {
         return { ...state, progress: 0 };
       }
       return { ...state };
-
-    case 'UPDATE_CONSENT':
-      if (action.payload.value === true) {
-        return { ...state, consent: true, hideConsentModal: true };
-      }
-      if (action.payload.value === false) {
-        return { ...state, consent: false, hideConsentModal: true };
-      }
-      return { ...state, hideConsentModal: true };
 
     case 'GOTO_PROGRESS':
       return {
