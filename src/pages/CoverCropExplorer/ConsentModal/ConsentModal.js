@@ -3,12 +3,12 @@ import {
 } from '@mui/material';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateConsent } from '../../../reduxStore/sharedSlice';
+import { updateConsent } from '../../../reduxStore/userSlice';
 
 const ConsentModal = () => {
   const [modalOpen, setModalOpen] = useState(true);
   const dispatchRedux = useDispatch();
-  const hideConsentRedux = useSelector((stateRedux) => stateRedux.sharedData.hideConsentModal);
+  const hideConsentRedux = useSelector((stateRedux) => stateRedux.userData.hideConsentModal);
 
   const style = {
     position: 'absolute',
