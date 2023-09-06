@@ -31,21 +31,18 @@ const MyCoverCropReset = ({
   };
 
   return (
-    // FIXME: this div shows to a white line under the Header on many pages
-    <div className="container-fluid mt-5">
-      <Dialog disableEscapeKeyDown open={handleConfirm}>
-        <DialogContent dividers>
-          <Typography variant="body1">
-            In order to continue you will need to reset the My Cover Crop List. Would you like to continue?
-          </Typography>
-        </DialogContent>
-        <DialogActions>
-          <BinaryButton
-            action={handleConfirmChoice}
-          />
-        </DialogActions>
-      </Dialog>
-    </div>
+    <Dialog disableEscapeKeyDown open={handleConfirm}>
+      <DialogContent dividers>
+        <Typography variant="body1">
+          In order to continue you will need to reset the My Cover Crop List. Would you like to continue?
+        </Typography>
+      </DialogContent>
+      <DialogActions>
+        <BinaryButton
+          action={handleConfirmChoice}
+        />
+      </DialogActions>
+    </Dialog>
   );
 };
 
