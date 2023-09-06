@@ -18,7 +18,7 @@ import { CustomStyles } from '../../shared/constants';
 import InformationSheetDictionary from './InformationSheetDictionary/InformationSheetDictionary';
 
 const Help = () => {
-  const consentRedux = useSelector((stateRedux) => stateRedux.sharedData.consent);
+  const consentRedux = useSelector((stateRedux) => stateRedux.userData.consent);
 
   useEffect(() => {
     document.title = 'Help Page';
