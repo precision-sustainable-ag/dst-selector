@@ -1,6 +1,5 @@
 const initialState = {
   progress: 0,
-  consent: false,
   snackOpen: false,
   snackMessage: '',
   ajaxInProgress: false,
@@ -12,20 +11,11 @@ const initialState = {
   snackHorizontal: 'right',
   regionToggle: true,
   dataDictionary: {},
-  apiBaseUrl: /(localhost|dev)/i.test(window.location)
-    ? 'developapi'
-    : 'api',
+  apiBaseUrl: /(localhost|dev)/i.test(window.location) ? 'developapi' : 'api',
 };
 
 export const updateProgress = (value) => ({
   type: 'UPDATE_PROGRESS',
-  payload: {
-    value,
-  },
-});
-
-export const updateConsent = (value) => ({
-  type: 'UPDATE_CONSENT',
   payload: {
     value,
   },
@@ -60,7 +50,10 @@ export const updateComparisonKeys = (value) => ({
   },
 });
 
-export const activateMyCoverCropListTile = ({ myCoverCropActivationFlag, speciesSelectorActivationFlag }) => ({
+export const activateMyCoverCropListTile = ({
+  myCoverCropActivationFlag,
+  speciesSelectorActivationFlag,
+}) => ({
   type: 'ACTIVATE_MY_COVER_CROP_LIST_TILE',
   payload: {
     myCoverCropActivationFlag,
@@ -68,7 +61,10 @@ export const activateMyCoverCropListTile = ({ myCoverCropActivationFlag, species
   },
 });
 
-export const activateSpeicesSelectorTile = ({ myCoverCropActivationFlag, speciesSelectorActivationFlag }) => ({
+export const activateSpeicesSelectorTile = ({
+  myCoverCropActivationFlag,
+  speciesSelectorActivationFlag,
+}) => ({
   type: 'ACTIVATE_SPECIES_SELECTOR_TILE',
   payload: {
     myCoverCropActivationFlag,
@@ -97,6 +93,10 @@ export const pullDictionaryData = (value) => ({
   },
 });
 
+export const resetSharedSlice = () => ({
+  type: 'RESET_SHARED_DATA',
+});
+
 const sharedReducer = (state = initialState, action = null) => {
   switch (action.type) {
     case 'UPDATE_PROGRESS':
@@ -108,15 +108,6 @@ const sharedReducer = (state = initialState, action = null) => {
       }
       if (action.payload.value === 'HOME') {
         return { ...state, progress: 0 };
-      }
-      return { ...state };
-
-    case 'UPDATE_CONSENT':
-      if (action.payload.value === true) {
-        return { ...state, consent: true };
-      }
-      if (action.payload.value === false) {
-        return { ...state, consent: false };
       }
       return { ...state };
 
@@ -173,6 +164,10 @@ const sharedReducer = (state = initialState, action = null) => {
         ...state,
         dataDictionary: action.payload.value,
       };
+    }
+
+    case 'RESET_SHARED_DATA': {
+      return initialState;
     }
 
     default:

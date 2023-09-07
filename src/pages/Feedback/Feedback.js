@@ -14,7 +14,7 @@ import {
 import Header from '../Header/Header';
 
 const FeedbackComponent = () => {
-  const consentRedux = useSelector((stateRedux) => stateRedux.sharedData.consent);
+  const consentRedux = useSelector((stateRedux) => stateRedux.userData.consent);
   const [snackbarData, setSnackbarData] = useState({ open: false, message: '', color: '' });
   const [feedbackData, setFeedbackData] = useState({
     repository: 'dst-feedback',

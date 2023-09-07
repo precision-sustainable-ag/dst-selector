@@ -27,7 +27,7 @@ const CoverCropExplorer = () => {
   const activeCropDataRedux = useSelector((stateRedux) => stateRedux.cropData.activeCropData);
   const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
   const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
-  const consentRedux = useSelector((stateRedux) => stateRedux.sharedData.consent);
+  const consentRedux = useSelector((stateRedux) => stateRedux.userData.consent);
   const myCoverCropListLocationRedux = useSelector((stateRedux) => stateRedux.sharedData.myCoverCropListLocation);
   const [updatedActiveCropData, setUpdatedActiveCropData] = useState([]);
   // const { activeCropData } = state;
@@ -92,7 +92,7 @@ const CoverCropExplorer = () => {
 
   return (
     <div className="contentWrapper">
-      <ConsentModal consent={consentRedux} />
+      <ConsentModal />
       <Header logo="neccc_wide_logo_color_web.jpg" />
       <div className="container-fluid mt-4 mb-4">
         <div className="row mt-3">
