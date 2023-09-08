@@ -22,7 +22,7 @@ const MyCoverCropList = ({ comparisonView, from }) => {
   const [updatedSelectedCrops, setUpdatedSelectedCrops] = useState([]);
   const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
   const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
-  const consentRedux = useSelector((stateRedux) => stateRedux.sharedData.consent);
+  const consentRedux = useSelector((stateRedux) => stateRedux.userData.consent);
   // const { selectedCrops } = state;
 
   useEffect(() => {

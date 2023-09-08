@@ -44,6 +44,10 @@ export const updateDateRange = ({ startDate, endDate }) => ({
   },
 });
 
+export const resetCropData = () => ({
+  type: 'RESET_CROP_DATA',
+});
+
 // reducer
 const cropDataReducer = (state = initialState, action = null) => {
   switch (action.type) {
@@ -77,6 +81,10 @@ const cropDataReducer = (state = initialState, action = null) => {
           },
         },
       };
+    }
+
+    case 'RESET_CROP_DATA': {
+      return initialState;
     }
 
     default:
