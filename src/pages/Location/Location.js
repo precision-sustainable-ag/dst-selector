@@ -34,7 +34,7 @@ import { snackHandler } from '../../reduxStore/sharedSlice';
 import {
   updateAvgFrostDates, updateAvgPrecipAnnual, updateAvgPrecipCurrentMonth, updateFrostFreeDays,
 } from '../../reduxStore/weatherSlice';
-import { updateField } from '../../reduxStore/userSlice';
+import { setSelectField, updateField } from '../../reduxStore/userSlice';
 import UserFieldList from './UserFieldList/UserFieldList';
 import UserFieldDialog from './UserFieldDialog/UserFieldDialog';
 
@@ -68,6 +68,7 @@ const LocationComponent = () => {
   const regionShorthand = useSelector((stateRedux) => stateRedux.mapData.regionShorthand);
   const accessTokenRedux = useSelector((stateRedux) => stateRedux.userData.accessToken);
   const userFieldRedux = useSelector((stateRedux) => stateRedux.userData.field);
+  const selectedFieldRedux = useSelector((stateRedux) => stateRedux.userData.selectedField);
 
   // useState vars
   const [handleConfirm, setHandleConfirm] = useState(false);
@@ -77,9 +78,9 @@ const LocationComponent = () => {
   const [currentGeometry, setCurrentGeometry] = useState([]);
   const [fieldDialogState, setFieldDialogState] = useState(initFieldDialogState);
   const [selectedUserField, setSelectedUserField] = useState(
-    userFieldRedux && userFieldRedux.data.length
+    selectedFieldRedux || (userFieldRedux && userFieldRedux.data.length
       ? userFieldRedux.data[userFieldRedux.data.length - 1].label
-      : '',
+      : ''),
   );
   // use a state to control if currently is adding a point
   const [isAddingPoint, setIsAddingPoint] = useState(true);
@@ -100,9 +101,20 @@ const LocationComponent = () => {
 
   useEffect(() => {
     setMapFeatures(getFeatures());
+    dispatchRedux(setSelectField(selectedUserField));
   }, [selectedUserField]);
 
   const getLatLng = useCallback(() => {
+    if (selectedFieldRedux !== null) {
+      const selectedField = userFields.find((userField) => userField.label === selectedUserField);
+      if (selectedField.geometry.type === 'Point') {
+        return [selectedField.geometry.coordinates[1], selectedField.geometry.coordinates[0]];
+      }
+      if (selectedField.geometry.type === 'GeometryCollection') {
+        const { coordinates } = selectedField.geometry.geometries[0];
+        return [coordinates[1], coordinates[0]];
+      }
+    }
     if (userFieldRedux && userFieldRedux.data.length > 0) {
       const currentField = userFieldRedux.data[userFieldRedux.data.length - 1];
       // flip lat and lng here
