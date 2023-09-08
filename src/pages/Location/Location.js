@@ -101,30 +101,27 @@ const LocationComponent = () => {
 
   useEffect(() => {
     setMapFeatures(getFeatures());
-    dispatchRedux(setSelectField(selectedUserField));
+    if (selectedUserField !== '') dispatchRedux(setSelectField(selectedUserField));
   }, [selectedUserField]);
 
   const getLatLng = useCallback(() => {
-    if (selectedFieldRedux !== null) {
-      const selectedField = userFields.find((userField) => userField.label === selectedUserField);
-      if (selectedField.geometry.type === 'Point') {
-        return [selectedField.geometry.coordinates[1], selectedField.geometry.coordinates[0]];
+    const getFieldLatLng = (field) => {
+      if (field.geometry.type === 'Point') {
+        return [field.geometry.coordinates[1], field.geometry.coordinates[0]];
       }
-      if (selectedField.geometry.type === 'GeometryCollection') {
-        const { coordinates } = selectedField.geometry.geometries[0];
+      if (field.geometry.type === 'GeometryCollection') {
+        const { coordinates } = field.geometry.geometries[0];
         return [coordinates[1], coordinates[0]];
       }
+      return undefined;
+    };
+    if (selectedFieldRedux !== null) {
+      const selectedField = userFields.find((userField) => userField.label === selectedUserField);
+      return getFieldLatLng(selectedField);
     }
     if (userFieldRedux && userFieldRedux.data.length > 0) {
       const currentField = userFieldRedux.data[userFieldRedux.data.length - 1];
-      // flip lat and lng here
-      if (currentField.geometry.type === 'Point') {
-        return [currentField.geometry.coordinates[1], currentField.geometry.coordinates[0]];
-      }
-      if (currentField.geometry.type === 'GeometryCollection') {
-        const { coordinates } = currentField.geometry.geometries[0];
-        return [coordinates[1], coordinates[0]];
-      }
+      return getFieldLatLng(currentField);
     }
     if (stateLabelRedux) {
       return [statesLatLongDict[stateLabelRedux][0], statesLatLongDict[stateLabelRedux][1]];
