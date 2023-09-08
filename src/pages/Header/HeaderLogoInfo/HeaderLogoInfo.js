@@ -1,6 +1,4 @@
-import {
-  Typography, Box, Grid,
-} from '@mui/material';
+import { Typography, Box, Grid } from '@mui/material';
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
@@ -54,10 +52,14 @@ const HeaderLogoInfo = () => {
   }, [councilLabelRedux]);
 
   return (
-    <Grid lg={12} item container alignItems="center" sx={{ height: '150px', padding: '0', margin: '0' }}>
-
+    <Grid
+      lg={12}
+      item
+      container
+      alignItems="center"
+      sx={{ height: '150px', padding: '0', margin: '0' }}
+    >
       <Grid item lg={1} md={1} sm={12} xs={12}>
-
         <Box
           padding={0}
           margin={0}
@@ -65,15 +67,15 @@ const HeaderLogoInfo = () => {
           sx={{
             position: 'relative',
             height: 'auto',
-            marginRight: '10px',
+            marginRight: 'auto',
             '@media (max-width: 768px)': {
-              width: '80px', /* small screens */
+              width: '80px' /* small screens */,
             },
             '@media (min-width: 769px) and (max-width: 1024px)': {
-              width: '120px', /*  medium screens */
+              width: '120px' /*  medium screens */,
             },
             '@media (min-width: 1025px)': {
-              width: '200px', /* large screens */
+              width: '200px' /* large screens */,
             },
           }}
         >
@@ -112,14 +114,19 @@ const HeaderLogoInfo = () => {
       </Grid>
 
       <Grid item lg={3} md={4} sm={12} xs={12}>
-        <div className="d-flex align-items-center">
+        <div className="d-flex align-items-center text-center">
           <div>
             <ForecastComponent />
           </div>
         </div>
       </Grid>
 
-      <MyCoverCropReset handleConfirm={handleConfirm} setHandleConfirm={setHandleConfirm} goBack={false} returnToHome />
+      <MyCoverCropReset
+        handleConfirm={handleConfirm}
+        setHandleConfirm={setHandleConfirm}
+        goBack={false}
+        returnToHome
+      />
     </Grid>
   );
 };

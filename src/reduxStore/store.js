@@ -29,7 +29,19 @@ const configureStore = () => {
 
   const rootReducer = (state, action) => {
     if (action.type === 'RESET') {
-      return appReducer(undefined, action);
+      return {
+        ...state,
+        cropData: cropDataReducer(undefined, action),
+        mapData: MapReducer(undefined, action),
+        weatherData: weatherReducer(undefined, action),
+        goalsData: goalsReducer(undefined, action),
+        sharedData: sharedReducer(undefined, action),
+        soilData: soilReducer(undefined, action),
+        filterData: filterReducer(undefined, action),
+        addressData: addressReducer(undefined, action),
+        // keep the userData as the same
+        userData: state.userData,
+      };
     }
 
     return appReducer(state, action);
