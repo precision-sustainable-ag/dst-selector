@@ -39,10 +39,6 @@ export const updateStateInfo = ({
   },
 });
 
-export const resetMapData = () => ({
-  type: 'RESET_MAP_DATA',
-});
-
 const mapReducer = (state = initialState, action = null) => {
   switch (action.type) {
     case 'UPDATE_REGIONS':
@@ -67,9 +63,6 @@ const mapReducer = (state = initialState, action = null) => {
         councilShorthand: action.payload.councilShorthand,
         stateId: action.payload.stateId,
       };
-
-    case 'RESET_MAP_DATA':
-      return initialState;
 
     default:
       return { ...state };
