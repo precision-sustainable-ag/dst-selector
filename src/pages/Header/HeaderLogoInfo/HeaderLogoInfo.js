@@ -18,9 +18,8 @@ const HeaderLogoInfo = () => {
 
   const handleClick = () => {
     if (selectedCropsRedux.length === 0) {
-      if (window.location.pathname === '/') {
-        dispatchRedux(reset());
-      } else history.replace('/');
+      dispatchRedux(reset());
+      history.replace('/');
     } else {
       dispatchRedux(setMyCoverCropReset(true, false));
     }

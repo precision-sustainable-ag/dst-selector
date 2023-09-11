@@ -1,13 +1,14 @@
 import {
   Badge, Button, Tooltip,
 } from '@mui/material';
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useHistory } from 'react-router-dom';
 import '../../../styles/header.scss';
 import { activateMyCoverCropListTile, activateSpeicesSelectorTile, setMyCoverCropReset } from '../../../reduxStore/sharedSlice';
 
 const ToggleOptions = ({ pathname }) => {
+  const [prevRoute, setPrevRoute] = useState('selector');
   const dispatchRedux = useDispatch();
   const history = useHistory();
   const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
@@ -25,11 +26,9 @@ const ToggleOptions = ({ pathname }) => {
   };
 
   const openMyCoverCropReset = (to) => {
-    if (selectedCropsRedux.length > 0
-      && ((pathname === '/' && to === 'explorer')
-      || (pathname === '/explorer' && to === 'selector'))) {
+    if (selectedCropsRedux.length > 0 && prevRoute !== to) {
       dispatchRedux(setMyCoverCropReset(true));
-    }
+    } else setPrevRoute(to);
   };
 
   const setSpeciesSelectorActivationFlag = () => {
@@ -65,6 +64,7 @@ const ToggleOptions = ({ pathname }) => {
           color="error"
         >
           <Button
+            className={pathname === '/my-cover-crop-list' ? 'active' : ''}
             size="large"
             onClick={setMyCoverCropActivationFlag}
           >
