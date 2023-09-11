@@ -29,10 +29,6 @@ export const toggleGoalsOpen = () => ({
   type: 'TOGGLE_GOALS_OPEN',
 });
 
-export const resetGoalData = () => ({
-  type: 'RESET_GOAL_DATA',
-});
-
 const goalsReducer = (state = initialState, action = null) => {
   switch (action.type) {
     case 'UPDATE_SELECTED_GOALS':
@@ -58,9 +54,6 @@ const goalsReducer = (state = initialState, action = null) => {
         ...state,
         goalsOpen: !state.goalsOpen,
       };
-
-    case 'RESET_GOAL_DATA':
-      return initialState;
 
     default:
       return { ...state };
