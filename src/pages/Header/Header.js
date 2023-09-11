@@ -20,7 +20,7 @@ const Header = () => {
   const dispatchRedux = useDispatch();
   const markersRedux = useSelector((stateRedux) => stateRedux.addressData.markers);
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
-  const consentRedux = useSelector((stateRedux) => stateRedux.sharedData.consent);
+  const consentRedux = useSelector((stateRedux) => stateRedux.userData.consent);
   const [isRoot, setIsRoot] = useState(false);
   const { isAuthenticated, getAccessTokenSilently } = useAuth0();
   const isActive = {};

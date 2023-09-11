@@ -17,7 +17,7 @@ import MITLicenseText from '../License/MITLicenseText/MITLicenseText';
 
 const About = () => {
   const [value, setValue] = React.useState(0);
-  const consentRedux = useSelector((stateRedux) => stateRedux.sharedData.consent);
+  const consentRedux = useSelector((stateRedux) => stateRedux.userData.consent);
 
   const handleChange = (newValue) => {
     setValue(newValue);

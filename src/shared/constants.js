@@ -761,17 +761,17 @@ export const cropDataFormatter = (cropData = [{}]) => {
   };
 
   const formatTimeToHalfMonthData = (startTime = '', endTime = '', param = '', halfMonthData = []) => {
-    const startIndex = moment(startTime).month() * 2 + (moment(startTime).date() >= 15 ? 1 : 0);
-    const endIndex = moment(endTime).month() * 2 + (moment(endTime).date() >= 15 ? 1 : 0);
+    const startIndex = moment(startTime, 'MM/DD').month() * 2 + (moment(startTime, 'MM/DD').date() >= 15 ? 1 : 0);
+    const endIndex = moment(endTime, 'MM/DD').month() * 2 + (moment(endTime, 'MM/DD').date() >= 15 ? 1 : 0);
     halfMonthData = halfMonthData.map((data, index) => {
       if (index >= startIndex && index <= endIndex) {
         const info = [...data.info, param];
         let start = '';
         let end = '';
         if (data.start === '') start = startTime;
-        else start = moment(data.start).isSameOrBefore(startTime) ? startTime : data.start;
+        else start = moment(data.start, 'MM/DD').isSameOrBefore(moment(startTime, 'MM/DD')) ? startTime : data.start;
         if (data.end === '') end = endTime;
-        else end = moment(data.end).isSameOrBefore(endTime) ? data.end : endTime;
+        else end = moment(data.end, 'MM/DD').isSameOrBefore(moment(endTime, 'MM/DD')) ? data.end : endTime;
         return {
           ...data, start, end, info,
         };
@@ -808,7 +808,7 @@ export const cropDataFormatter = (cropData = [{}]) => {
           const valStart = moment(datesArr[0], 'MM/DD/YYYY').format('MM/DD');
           const valEnd = moment(datesArr[1], 'MM/DD/YYYY').format('MM/DD');
 
-          if (moment(valStart).isSameOrAfter(valEnd)) {
+          if (moment(valStart, 'MM/DD').isSameOrAfter(moment(valEnd, 'MM/DD'))) {
             const tempStart = '01/01';
             const tempEnd = '12/31';
             halfMonthArr = formatTimeToHalfMonthData(valStart, tempEnd, param, halfMonthArr);
