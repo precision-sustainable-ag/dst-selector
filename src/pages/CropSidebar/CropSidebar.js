@@ -54,6 +54,7 @@ const CropSidebar = ({
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
   const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
+  const regionShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.regionShorthand);
   const regionToggleRedux = useSelector((stateRedux) => stateRedux.sharedData.regionToggle);
   const speciesSelectorActivationFlagRedux = useSelector((stateRedux) => stateRedux.sharedData.speciesSelectorActivationFlag);
   const comparisonKeysRedux = useSelector((stateRedux) => stateRedux.sharedData.comparisonKeys);
@@ -70,7 +71,6 @@ const CropSidebar = ({
   const [sidebarFiltersData, setSidebarFiltersData] = useState([]);
   const [tableHeight, setTableHeight] = useState(0);
   const [cropFiltersOpen, setCropFiltersOpen] = useState(true);
-  const [regionShorthand, setRegionShorthand] = useState();
   const [dateRange, setDateRange] = useState({
     startDate: null,
     endDate: null,
@@ -358,9 +358,10 @@ const CropSidebar = ({
 
   const updateReg = (region) => {
     if (region !== undefined) {
-      setRegionShorthand(region.shorthand);
+      // setRegionShorthand(region.shorthand);
       dispatchRedux(updateRegion({
         regionId: region.id ?? '',
+        regionShorthand: region.shorthand ?? '',
       }));
     }
   };
@@ -457,7 +458,7 @@ const CropSidebar = ({
                     </List>
                     <PlantHardinessZone
                       updateReg={updateReg}
-                      regionShorthand={regionShorthand}
+                      regionShorthand={regionShorthandRedux}
                       regionsRedux={regionsRedux}
                       councilLabelRedux={councilLabelRedux}
                       regionToggleRedux={regionToggleRedux}
