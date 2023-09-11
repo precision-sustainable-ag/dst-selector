@@ -54,10 +54,6 @@ export const updateAvgPrecipAnnual = (value) => ({
   },
 });
 
-export const resetWeatherData = () => ({
-  type: 'RESET_WEATHER_DATA',
-});
-
 const weatherReducer = (state = initialState, action = null) => {
   switch (action.type) {
     case 'UPDATE_WEATHER_CONDITIONS':
@@ -107,9 +103,6 @@ const weatherReducer = (state = initialState, action = null) => {
           },
         },
       };
-
-    case 'RESET_WEATHER_DATA':
-      return initialState;
 
     default:
       return { ...state };

@@ -18,11 +18,7 @@ const initialState = {
 
 /* eslint-disable */
 export const updateSoilData = ({
-  mapUnitName,
-  drainageClass,
-  floodingFrequency,
-  pondingFrequency,
-  latLong,
+  mapUnitName, drainageClass, floodingFrequency, pondingFrequency, latLong,
 }) => ({
   type: 'UPDATE_SOIL_DATA',
   payload: {
@@ -35,11 +31,7 @@ export const updateSoilData = ({
 });
 
 export const updateSoilDataOriginal = ({
-  mapUnitName,
-  drainageClass,
-  floodingFrequency,
-  pondingFrequency,
-  latLong,
+  mapUnitName, drainageClass, floodingFrequency, pondingFrequency, latLong,
 }) => ({
   type: 'UPDATE_SOIL_DATA_ORIGINAL',
   payload: {
@@ -71,10 +63,6 @@ export const updateFloodingFrequency = (value) => ({
   payload: {
     value,
   },
-});
-
-export const resetSoilData = () => ({
-  type: 'RESET_SOIL_DATA',
 });
 
 const soilReducer = (state = initialState, action = null) => {
@@ -129,10 +117,6 @@ const soilReducer = (state = initialState, action = null) => {
           floodingFrequency: action.payload.value,
         },
       };
-
-    case 'RESET_SOIL_DATA': {
-      return initialState;
-    }
 
     default:
       return { ...state };
