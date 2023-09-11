@@ -12,10 +12,9 @@ import { LocationOn } from '@mui/icons-material';
 import CloudIcon from '@mui/icons-material/Cloud';
 import CheckIcon from '@mui/icons-material/Check';
 import FilterHdrIcon from '@mui/icons-material/FilterHdr';
-import React, { useState } from 'react';
+import React from 'react';
 import '../../../styles/greenBar.scss';
 import ProgressButtons from '../../../shared/ProgressButtons';
-import MyCoverCropReset from '../../../components/MyCoverCropReset/MyCoverCropReset';
 import { gotoProgress } from '../../../reduxStore/sharedSlice';
 
 const speciesSelectorToolName = '/';
@@ -28,9 +27,6 @@ const InformationBar = ({ pathname }) => {
   const weatherDataRedux = useSelector((stateRedux) => stateRedux.weatherData.weatherData);
   const soilDataRedux = useSelector((stateRedux) => stateRedux.soilData.soilData);
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
-
-  // useState vars
-  const [handleConfirm, setHandleConfirm] = useState(false);
 
   // functions
   const handleBtnClick = (type) => {
@@ -177,12 +173,11 @@ const InformationBar = ({ pathname }) => {
             md={12}
             lg={2.5}
           >
-            <ProgressButtons setConfirmationOpen={setHandleConfirm} />
+            <ProgressButtons />
           </Grid>
         </Grid>
         )}
       </div>
-      <MyCoverCropReset handleConfirm={handleConfirm} setHandleConfirm={setHandleConfirm} goBack={false} />
     </div>
   );
 };

@@ -24,7 +24,6 @@ import {
   abbrRegion, reverseGEO, callCoverCropApi, postFields, getFields,
   buildPoint, buildGeometryCollection, drawAreaFromGeoCollection, deleteFields,
 } from '../../shared/constants';
-import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset';
 import PlantHardinessZone from '../CropSidebar/PlantHardinessZone/PlantHardinessZone';
 import {
   changeAddressViaMap, updateLocation,
@@ -57,21 +56,18 @@ const LocationComponent = () => {
   // redux vars
   const countyRedux = useSelector((stateRedux) => stateRedux.addressData.county);
   const zoneRedux = useSelector((stateRedux) => stateRedux.addressData.zone);
-  const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
   const markersRedux = useSelector((stateRedux) => stateRedux.addressData.markers);
   const regionsRedux = useSelector((stateRedux) => stateRedux.mapData.regions);
   const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
-  const myCoverCropListLocationRedux = useSelector((stateRedux) => stateRedux.sharedData.myCoverCropListLocation);
   const regionShorthand = useSelector((stateRedux) => stateRedux.mapData.regionShorthand);
   const accessTokenRedux = useSelector((stateRedux) => stateRedux.userData.accessToken);
   const userFieldRedux = useSelector((stateRedux) => stateRedux.userData.field);
   const selectedFieldRedux = useSelector((stateRedux) => stateRedux.userData.selectedField);
 
   // useState vars
-  const [handleConfirm, setHandleConfirm] = useState(false);
   const [selectedZone, setselectedZone] = useState();
   const [locZipCode, setLocZipCode] = useState();
   const [selectedToEditSite, setSelectedToEditSite] = useState({});
@@ -128,12 +124,6 @@ const LocationComponent = () => {
     }
     return [47, -122];
   }, [stateLabelRedux]);
-
-  useEffect(() => {
-    if (selectedCropsRedux.length > 0) {
-      setHandleConfirm(true);
-    }
-  }, [selectedCropsRedux, myCoverCropListLocationRedux]);
 
   const updateReg = (region) => {
     if (region !== undefined) {
@@ -502,7 +492,6 @@ const LocationComponent = () => {
           </div>
         </div>
       </div>
-      <MyCoverCropReset handleConfirm={handleConfirm} setHandleConfirm={setHandleConfirm} from="selector" />
       <UserFieldDialog
         fieldDialogState={fieldDialogState}
         setFieldDialogState={setFieldDialogState}

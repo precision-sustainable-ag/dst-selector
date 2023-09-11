@@ -5,7 +5,7 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useHistory } from 'react-router-dom';
 import '../../../styles/header.scss';
-import { activateMyCoverCropListTile, activateSpeicesSelectorTile } from '../../../reduxStore/sharedSlice';
+import { activateMyCoverCropListTile, activateSpeicesSelectorTile, setMyCoverCropReset } from '../../../reduxStore/sharedSlice';
 
 const ToggleOptions = ({ pathname }) => {
   const dispatchRedux = useDispatch();
@@ -24,7 +24,16 @@ const ToggleOptions = ({ pathname }) => {
     }
   };
 
+  const openMyCoverCropReset = (to) => {
+    if (selectedCropsRedux.length > 0
+      && ((pathname === '/' && to === 'explorer')
+      || (pathname === '/explorer' && to === 'selector'))) {
+      dispatchRedux(setMyCoverCropReset(true));
+    }
+  };
+
   const setSpeciesSelectorActivationFlag = () => {
+    openMyCoverCropReset('explorer');
     dispatchRedux(activateSpeicesSelectorTile({ speciesSelectorActivationFlag: true, myCoverCropActivationFlag: false }));
     if (pathname !== '/explorer') {
       history.push('/explorer');
@@ -33,7 +42,7 @@ const ToggleOptions = ({ pathname }) => {
 
   return (
     <>
-      <Button size="large" component={NavLink} exact to="/" activeClassName="active">
+      <Button size="large" component={NavLink} onClick={() => openMyCoverCropReset('selector')} exact to="/" activeClassName="active">
         SPECIES SELECTOR TOOL
       </Button>
       <Tooltip title={(stateLabelRedux === null) ? 'You must select a state before using the Cover Crop Explorer' : ''}>

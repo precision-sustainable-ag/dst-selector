@@ -12,6 +12,7 @@ import '../../styles/header.scss';
 import HeaderLogoInfo from './HeaderLogoInfo/HeaderLogoInfo';
 import InformationBar from './InformationBar/InformationBar';
 import ToggleOptions from './ToggleOptions/ToggleOptions';
+import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset';
 import { updateAccessToken, updateField } from '../../reduxStore/userSlice';
 import { getFields } from '../../shared/constants';
 import AuthButton from '../../components/Auth/AuthButton/AuthButton';
@@ -72,6 +73,7 @@ const Header = () => {
         <ToggleOptions pathname={pathname} />
       </div>
       <InformationBar pathname={pathname} />
+      <MyCoverCropReset />
     </header>
   );
 };
