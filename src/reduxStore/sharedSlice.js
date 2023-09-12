@@ -11,7 +11,9 @@ const initialState = {
   snackHorizontal: 'right',
   regionToggle: true,
   dataDictionary: {},
-  apiBaseUrl: /(localhost|dev)/i.test(window.location) ? 'developapi' : 'api',
+  apiBaseUrl: /(localhost|dev)/i.test(window.location)
+    ? 'developapi'
+    : 'api',
 };
 
 export const updateProgress = (value) => ({
@@ -50,10 +52,7 @@ export const updateComparisonKeys = (value) => ({
   },
 });
 
-export const activateMyCoverCropListTile = ({
-  myCoverCropActivationFlag,
-  speciesSelectorActivationFlag,
-}) => ({
+export const activateMyCoverCropListTile = ({ myCoverCropActivationFlag, speciesSelectorActivationFlag }) => ({
   type: 'ACTIVATE_MY_COVER_CROP_LIST_TILE',
   payload: {
     myCoverCropActivationFlag,
@@ -61,10 +60,7 @@ export const activateMyCoverCropListTile = ({
   },
 });
 
-export const activateSpeicesSelectorTile = ({
-  myCoverCropActivationFlag,
-  speciesSelectorActivationFlag,
-}) => ({
+export const activateSpeicesSelectorTile = ({ myCoverCropActivationFlag, speciesSelectorActivationFlag }) => ({
   type: 'ACTIVATE_SPECIES_SELECTOR_TILE',
   payload: {
     myCoverCropActivationFlag,
@@ -91,10 +87,6 @@ export const pullDictionaryData = (value) => ({
   payload: {
     value,
   },
-});
-
-export const resetSharedSlice = () => ({
-  type: 'RESET_SHARED_DATA',
 });
 
 const sharedReducer = (state = initialState, action = null) => {
@@ -164,10 +156,6 @@ const sharedReducer = (state = initialState, action = null) => {
         ...state,
         dataDictionary: action.payload.value,
       };
-    }
-
-    case 'RESET_SHARED_DATA': {
-      return initialState;
     }
 
     default:
