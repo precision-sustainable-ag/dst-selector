@@ -217,11 +217,6 @@ const WeatherConditions = () => {
       <Dialog
         aria-labelledby="transition-modal-title"
         aria-describedby="ransition-modal-description"
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
         open={open}
         onClose={handleModalClose}
         closeAfterTransition
@@ -252,9 +247,7 @@ const WeatherConditions = () => {
                       setValue={setFirstFrostMonth}
                       months={months}
                       compare={firstFrostMonth !== weatherDataShadow?.averageFrost?.firstFrostDate?.month}
-                      reset={() => setFirstFrostMonth(
-                        weatherDataShadow?.averageFrost?.firstFrostDate?.month,
-                      )}
+                      reset={() => setFirstFrostMonth(weatherDataShadow?.averageFrost?.firstFrostDate?.month)}
                     />
                   </div>
                   <div className="col-6">
