@@ -2,7 +2,6 @@ const initialState = {
   regions: [],
   regionId: null,
   regionShorthand: null,
-  regionLabel: null,
   stateId: null,
   stateLabel: null,
   councilShorthand: null,
