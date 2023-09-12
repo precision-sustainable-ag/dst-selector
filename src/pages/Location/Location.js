@@ -71,7 +71,7 @@ const LocationComponent = () => {
   const selectedFieldRedux = useSelector((stateRedux) => stateRedux.userData.selectedField);
 
   // useState vars
-  const [selectedRegion, setRelectedRegion] = useState();
+  const [selectedRegion, setSelectedRegion] = useState();
   const [handleConfirm, setHandleConfirm] = useState(false);
   const [locZipCode, setLocZipCode] = useState();
   // const [regionShorthand, setRegionShorthand] = useState();
@@ -159,9 +159,9 @@ const LocationComponent = () => {
 
   useEffect(() => {
     if (councilLabelRedux !== 'Midwest Cover Crop Council') {
-      setRelectedRegion(zoneRedux);
+      setSelectedRegion(zoneRedux);
     } else {
-      setRelectedRegion(countyRedux?.replace(' County', ''));
+      setSelectedRegion(countyRedux?.replace(' County', ''));
     }
   }, [zoneRedux, countyRedux]);
 
