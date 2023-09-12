@@ -74,8 +74,8 @@ const InformationSheetContent = ({ crop, modalData }) => {
                 <AccordionDetails>
                   {' '}
                   <Grid className="row">
-                    {cat.attributes.map((att) => ((att.label !== 'Comments' && !att.label.startsWith('Notes:')) ? (
-                      <Grid style={{ height: '40px' }} container item xs={6} direction="column">
+                    {cat.attributes.map((att, index) => ((att.label !== 'Comments' && !att.label.startsWith('Notes:')) ? (
+                      <Grid style={{ height: '40px', paddingBottom: '40px' }} container item xs={6} direction="column">
                         <Grid xs={6} s={12}>
                           <Tooltip
                             placement="top-end"
@@ -101,8 +101,8 @@ const InformationSheetContent = ({ crop, modalData }) => {
                       </Grid>
                     )
                       : (
-                        <div>
-                          <span>
+                        <Grid style={{ paddingTop: index === 0 ? '0px' : '25px' }} container item xs={12} direction="column">
+                          <Grid xs={12}>
                             <Tooltip
                               placement="top-end"
                               title={(
@@ -112,13 +112,13 @@ const InformationSheetContent = ({ crop, modalData }) => {
                           )}
                               arrow
                             >
-                              <Typography variant="body1">
+                              <Box xs={12} variant="body1">
                                 <Typography display="flex" justifyContent="center" sx={{ fontWeight: 'bold' }}>{att.label}</Typography>
-                                <span>{att.values[0]?.value}</span>
-                              </Typography>
+                                <Typography display="flex" justifyContent="center">{att.values[0]?.value}</Typography>
+                              </Box>
                             </Tooltip>
-                          </span>
-                        </div>
+                          </Grid>
+                        </Grid>
                       )))}
                   </Grid>
                 </AccordionDetails>
