@@ -1,14 +1,24 @@
 import {
   Modal, Box, Typography, Button, Grid,
 } from '@mui/material';
-import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { updateConsent } from '../../../reduxStore/userSlice';
+
+const localStorageKey = 'consent';
 
 const ConsentModal = () => {
   const [modalOpen, setModalOpen] = useState(true);
   const dispatchRedux = useDispatch();
-  const hideConsentRedux = useSelector((stateRedux) => stateRedux.userData.hideConsentModal);
+
+  useEffect(() => {
+    if (localStorage.getItem(localStorageKey) !== null) {
+      const { expiredAt } = JSON.parse(localStorage.getItem(localStorageKey));
+      if (new Date().getTime() < expiredAt) {
+        setModalOpen(false);
+      }
+    }
+  }, []);
 
   const style = {
     position: 'absolute',
@@ -23,11 +33,17 @@ const ConsentModal = () => {
   };
 
   const handleModal = (choice) => {
-    setModalOpen((o) => !o);
+    const consentObject = {
+      choice,
+      // set user consent selection time as 180 days
+      expiredAt: new Date().getTime() + 180 * 24 * 60 * 1000,
+    };
+    localStorage.setItem(localStorageKey, JSON.stringify(consentObject));
     dispatchRedux(updateConsent(choice));
+    setModalOpen((o) => !o);
   };
 
-  return !hideConsentRedux && !/crop=/.test(window.location.search) && (
+  return !/crop=/.test(window.location.search) && (
     <Modal
       open={modalOpen}
       //   onClose={toggleModalOpen}
