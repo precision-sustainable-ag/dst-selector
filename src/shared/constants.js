@@ -1,7 +1,6 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable max-len */
 /* eslint-disable no-nested-ternary */
-/* eslint-disable no-console */
 import React from 'react';
 import {
   Button,
