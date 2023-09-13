@@ -1,6 +1,5 @@
 const initialState = {
   selectedGoals: [],
-  allGoals: [],
   goalsOpen: false,
 };
 
@@ -18,12 +17,12 @@ export const addSelectedGoals = (value) => ({
   },
 });
 
-// export const addGoals = (value) => ({
-//   type: 'ADD_GOALS',
-//   payload: {
-//     value,
-//   },
-// });
+export const addGoals = (value) => ({
+  type: 'ADD_GOALS',
+  payload: {
+    value,
+  },
+});
 
 export const toggleGoalsOpen = () => ({
   type: 'TOGGLE_GOALS_OPEN',
@@ -42,12 +41,6 @@ const goalsReducer = (state = initialState, action = null) => {
         ...state,
         selectedGoals: [...state.selectedGoals, action.payload.value],
       };
-
-      // case 'ADD_GOALS':
-      //   return {
-      //     ...state,
-      //     allGoals: action.payload.value,
-      //   };
 
     case 'TOGGLE_GOALS_OPEN':
       return {

@@ -8,18 +8,19 @@ import {
   Typography,
 } from '@mui/material';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { CustomStyles } from '../../../shared/constants';
 import { updateProgress } from '../../../reduxStore/sharedSlice';
-import { toggleGoalsOpen } from '../../../reduxStore/goalSlice';
 
 const CoverCropGoals = () => {
   const dispatchRedux = useDispatch();
 
   // redux vars
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
-  const goalsOpenRedux = useSelector((stateRedux) => stateRedux.goalsData.goalsOpen);
+
+  // useState vars
+  const [goalsOpen, setGoalsOpen] = useState(false);
 
   const changeProgress = () => {
     dispatchRedux(updateProgress('DECREMENT'));
@@ -30,16 +31,16 @@ const CoverCropGoals = () => {
       {' '}
       <ListItem
         button
-        onClick={() => dispatchRedux(toggleGoalsOpen())}
+        onClick={() => setGoalsOpen(!goalsOpen)}
         style={{
-          backgroundColor: goalsOpenRedux ? CustomStyles().lightGreen : 'inherit',
+          backgroundColor: goalsOpen ? CustomStyles().lightGreen : 'inherit',
           borderTop: '4px solid white',
         }}
       >
         <ListItemText primary="COVER CROP GOALS" />
-        {goalsOpenRedux ? <ExpandLess /> : <ExpandMore />}
+        {goalsOpen ? <ExpandLess /> : <ExpandMore />}
       </ListItem>
-      <Collapse in={goalsOpenRedux} timeout="auto" unmountOnExit>
+      <Collapse in={goalsOpen} timeout="auto" unmountOnExit>
         {selectedGoalsRedux.length === 0 ? (
           <List component="div" disablePadding>
             <ListItem button sx={{ paddingLeft: 3 }}>
