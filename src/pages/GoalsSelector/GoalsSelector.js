@@ -25,7 +25,6 @@ const GoalsSelector = () => {
   const myCoverCropListLocationRedux = useSelector((stateRedux) => stateRedux.sharedData.myCoverCropListLocation);
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
   const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
-  const allGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.allGoals);
 
   // useState vars
   const [allGoals, setAllGoals] = useState([]);
@@ -45,7 +44,7 @@ const GoalsSelector = () => {
         setAllGoals(data.data);
       });
     }
-  }, [allGoalsRedux]);
+  }, []);
 
   return (
     <>

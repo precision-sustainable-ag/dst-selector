@@ -56,14 +56,17 @@ const LoadRelevantRoute = ({ progress, calcHeight }) => {
 
 const App = () => {
   const dispatchRedux = useDispatch();
-  const [calcHeight, setCalcHeight] = useState(0);
 
   // redux vars
   const snackOpenRedux = useSelector((stateRedux) => stateRedux.sharedData.snackOpen);
   const snackMessageRedux = useSelector((stateRedux) => stateRedux.sharedData.snackMessage);
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
-  const snackVerticalRedux = useSelector((stateRedux) => stateRedux.sharedData.snackVertical);
-  const snackHorizontalRedux = useSelector((stateRedux) => stateRedux.sharedData.snackHorizontal);
+
+  // useState vars
+  const [calcHeight, setCalcHeight] = useState(0);
+
+  const snackHorizontal = 'right';
+  const snackVertical = 'bottom';
 
   const handleSnackClose = () => {
     dispatchRedux(snackHandler({ snackOpen: false, snackMessage: '' }));
@@ -103,12 +106,12 @@ const App = () => {
       <div>
         <Snackbar
           anchorOrigin={{
-            vertical: snackVerticalRedux,
-            horizontal: snackHorizontalRedux,
+            vertical: snackVertical,
+            horizontal: snackHorizontal,
           }}
           key={{
-            vertical: snackVerticalRedux,
-            horizontal: snackHorizontalRedux,
+            vertical: snackVertical,
+            horizontal: snackHorizontal,
           }}
           autoHideDuration={3000}
           open={snackOpenRedux}

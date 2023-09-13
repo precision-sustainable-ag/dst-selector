@@ -55,8 +55,6 @@ const CoverCropExplorer = () => {
       }));
       dispatchRedux(updateRegion({
         regionId: urlRegionId[1],
-        regionLabel: null,
-        regionShorthand: null,
       }));
 
       // eslint-disable-next-line
