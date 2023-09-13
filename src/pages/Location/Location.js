@@ -60,20 +60,21 @@ const LocationComponent = () => {
   const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
   const markersRedux = useSelector((stateRedux) => stateRedux.addressData.markers);
   const regionsRedux = useSelector((stateRedux) => stateRedux.mapData.regions);
+  const regionShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.regionShorthand);
   const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
   const myCoverCropListLocationRedux = useSelector((stateRedux) => stateRedux.sharedData.myCoverCropListLocation);
-  const regionShorthand = useSelector((stateRedux) => stateRedux.mapData.regionShorthand);
   const accessTokenRedux = useSelector((stateRedux) => stateRedux.userData.accessToken);
   const userFieldRedux = useSelector((stateRedux) => stateRedux.userData.field);
   const selectedFieldRedux = useSelector((stateRedux) => stateRedux.userData.selectedField);
 
   // useState vars
+  const [selectedRegion, setSelectedRegion] = useState();
   const [handleConfirm, setHandleConfirm] = useState(false);
-  const [selectedZone, setselectedZone] = useState();
   const [locZipCode, setLocZipCode] = useState();
+  // const [regionShorthand, setRegionShorthand] = useState();
   const [selectedToEditSite, setSelectedToEditSite] = useState({});
   const [currentGeometry, setCurrentGeometry] = useState([]);
   const [fieldDialogState, setFieldDialogState] = useState(initFieldDialogState);
@@ -137,9 +138,9 @@ const LocationComponent = () => {
 
   const updateReg = (region) => {
     if (region !== undefined) {
+      // setRegionShorthand(region.shorthand);
       dispatchRedux(updateRegion({
         regionId: region.id ?? '',
-        regionLabel: region.label ?? '',
         regionShorthand: region.shorthand ?? '',
       }));
     }
@@ -151,16 +152,16 @@ const LocationComponent = () => {
 
   const handleMapChange = () => {
     // eslint-disable-next-line eqeqeq
-    const regionInfo = regionsRedux.filter((region) => region.shorthand == selectedZone);
+    const regionInfo = regionsRedux.filter((region) => region.shorthand == selectedRegion);
 
     updateReg(regionInfo[0]);
   };
 
   useEffect(() => {
     if (councilLabelRedux !== 'Midwest Cover Crop Council') {
-      setselectedZone(zoneRedux);
+      setSelectedRegion(zoneRedux);
     } else {
-      setselectedZone(countyRedux?.replace(' County', ''));
+      setSelectedRegion(countyRedux?.replace(' County', ''));
     }
   }, [zoneRedux, countyRedux]);
 
@@ -210,7 +211,7 @@ const LocationComponent = () => {
           },
         ));
       }
-      if (selectedZone) {
+      if (selectedRegion) {
         handleMapChange();
       }
     }
@@ -330,6 +331,7 @@ const LocationComponent = () => {
           });
         }
         if (councilShorthandRedux !== 'MCCC') {
+          // setRegionShorthand(zone);
           dispatchRedux(updateRegion({
             regionId: regionId ?? '',
             regionShorthand: zone ?? '',
@@ -455,7 +457,7 @@ const LocationComponent = () => {
               <div className="col-md-5 col-lg-6 col-sm-12 col-12">
                 <PlantHardinessZone
                   updateReg={updateReg}
-                  regionShorthand={regionShorthand}
+                  regionShorthand={regionShorthandRedux}
                   regionsRedux={regionsRedux}
                   councilLabelRedux={councilLabelRedux}
                 />
