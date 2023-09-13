@@ -42,7 +42,6 @@ const Landing = ({ height, title, bg }) => {
   const consentRedux = useSelector((stateRedux) => stateRedux.userData.consent);
   const myCoverCropListLocationRedux = useSelector((stateRedux) => stateRedux.sharedData.myCoverCropListLocation);
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
-  const hideConsentRedux = useSelector((stateRedux) => stateRedux.userData.hideConsentModal);
 
   // useState vars
   const [handleConfirm, setHandleConfirm] = useState(false);
@@ -218,7 +217,7 @@ const Landing = ({ height, title, bg }) => {
       }}
     >
       {(!authModalOpen || isAuthenticated) && <ConsentModal />}
-      {(!hideConsentRedux && !isAuthenticated) && <AuthModal modalOpen={authModalOpen} setModalOpen={setAuthModalOpen} />}
+      <AuthModal modalOpen={authModalOpen} setModalOpen={setAuthModalOpen} />
 
       <Grid container>
 
