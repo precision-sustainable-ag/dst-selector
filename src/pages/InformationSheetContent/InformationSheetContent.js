@@ -73,8 +73,8 @@ const InformationSheetContent = ({ crop, modalData }) => {
                 </AccordionSummary>
                 <AccordionDetails>
                   {' '}
-                  <Grid className="row">
-                    {cat.attributes.map((att, index) => ((att.label !== 'Comments' && !att.label.startsWith('Notes:')) ? (
+                  <Grid style={{ paddingLeft: '2rem' }} className="row">
+                    {cat.attributes.map((att, index) => ((att.label !== 'Comments' && !att.label.startsWith('Notes:') && cat.label !== 'Extended Comments') ? (
                       <Grid style={{ height: '40px', paddingBottom: '40px' }} container item xs={6} direction="column">
                         <Grid xs={6} s={12}>
                           <Tooltip
@@ -112,10 +112,19 @@ const InformationSheetContent = ({ crop, modalData }) => {
                           )}
                               arrow
                             >
-                              <Box xs={12} variant="body1">
-                                <Typography display="flex" justifyContent="center" sx={{ fontWeight: 'bold' }}>{att.label}</Typography>
-                                <Typography display="flex" justifyContent="center">{att.values[0]?.value}</Typography>
-                              </Box>
+                              {cat.label !== 'Extended Comments'
+                                ? (
+                                  <Box xs={12} variant="body1">
+                                    <Typography display="flex" justifyContent="center" sx={{ fontWeight: 'bold' }}>{att.label}</Typography>
+                                    <Typography display="flex" justifyContent="center">{att.values[0]?.value}</Typography>
+                                  </Box>
+                                )
+                                : (
+                                  <Box xs={12} variant="body1">
+                                    <Typography display="flex" justifyContent="left" sx={{ fontWeight: 'bold' }}>{att.label}</Typography>
+                                    <Typography display="flex" justifyContent="left">{att.values[0]?.value}</Typography>
+                                  </Box>
+                                )}
                             </Tooltip>
                           </Grid>
                         </Grid>
