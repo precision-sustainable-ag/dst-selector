@@ -18,9 +18,9 @@ export const updateField = (field) => ({
   payload: { field },
 });
 
-export const updateConsent = (status) => ({
+export const updateConsent = (choice) => ({
   type: 'UPDATE_CONSENT',
-  payload: { status, date: new Date().toISOString() },
+  payload: { status: choice, date: new Date().toISOString() },
 });
 
 export const setSelectField = (fieldName) => ({
@@ -39,7 +39,7 @@ const userReducer = (state = initialState, action = null) => {
         ...state,
         consent: {
           ...state.consent,
-          state: action.payload.status,
+          status: action.payload.status,
           date: action.payload.date,
         },
       };

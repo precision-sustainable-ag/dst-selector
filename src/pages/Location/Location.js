@@ -62,8 +62,8 @@ const LocationComponent = () => {
   const regionsRedux = useSelector((stateRedux) => stateRedux.mapData.regions);
   const regionShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.regionShorthand);
   const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
-  const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
+  const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
   const myCoverCropListLocationRedux = useSelector((stateRedux) => stateRedux.sharedData.myCoverCropListLocation);
   const accessTokenRedux = useSelector((stateRedux) => stateRedux.userData.accessToken);
@@ -157,6 +157,7 @@ const LocationComponent = () => {
     updateReg(regionInfo[0]);
   };
 
+  // FIXME: these lines only works once and set selectedRegion to "" if council is not mccc
   useEffect(() => {
     if (councilLabelRedux !== 'Midwest Cover Crop Council') {
       setSelectedRegion(zoneRedux);
