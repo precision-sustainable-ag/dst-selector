@@ -1,30 +1,62 @@
 import { Chip } from '@mui/material';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import '../../../../styles/soilConditions.scss';
 import { updateDrainageClass as updateDrainageClassRedux } from '../../../../reduxStore/soilSlice';
 
-const RenderDrainageClasses = ({ drainage = [''] }) => {
+const RenderDrainageClasses = ({ tilingCheck, drainage = [''] }) => {
   const dispatchRedux = useDispatch();
 
   // redux vars
   const soilDataRedux = useSelector((stateRedux) => stateRedux.soilData.soilData);
+  const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
 
   // functions
   const updateDrainageAction = (drainages) => {
     dispatchRedux(updateDrainageClassRedux(drainages));
   };
 
+  useEffect(() => {
+    let drainages = soilDataRedux.drainageClass ? [...soilDataRedux.drainageClass] : [];
+    if (tilingCheck) {
+      if (drainages.includes('Very poorly drained')) {
+        if (councilShorthandRedux === 'MCCC') {
+          drainages = ['Somewhat poorly drained'];
+        } else {
+          drainages = ['Poorly drained'];
+        }
+      } else if (drainages.includes('Poorly drained')) {
+        if (councilShorthandRedux === 'MCCC') {
+          drainages = ['Moderately well drained'];
+        } else {
+          drainages = ['Somewhat poorly drained'];
+        }
+      } else if (drainages.includes('Somewhat poorly drained')) {
+        drainages = ['Moderately well drained'];
+      }
+    } else if (drainages.includes('Poorly drained')) {
+      drainages = ['Very poorly drained'];
+    } else if (drainages.includes('Somewhat poorly drained')) {
+      if (councilShorthandRedux === 'MCCC') {
+        drainages = ['Very poorly drained'];
+      } else {
+        drainages = ['Poorly drained'];
+      }
+    } else if (drainages.includes('Moderately well drained')) {
+      if (councilShorthandRedux === 'MCCC') {
+        drainages = ['Poorly drained'];
+      } else {
+        drainages = ['Somewhat poorly drained'];
+      }
+    }
+    updateDrainageAction(drainages);
+  }, [tilingCheck]);
+
   const updateDrainageClass = (label = '') => {
-    const drainages = soilDataRedux.drainageClass ? [...soilDataRedux.drainageClass] : [];
+    let drainages = soilDataRedux.drainageClass ? [...soilDataRedux.drainageClass] : [];
     if (drainages.indexOf(label) === -1) {
       // does not exist, dispatch to state
-      drainages.push(label);
-      updateDrainageAction(drainages);
-    } else {
-      // exists, remove it from state
-      const index = drainages.indexOf(label);
-      drainages.splice(index, 1);
+      drainages = [label];
       updateDrainageAction(drainages);
     }
   };
