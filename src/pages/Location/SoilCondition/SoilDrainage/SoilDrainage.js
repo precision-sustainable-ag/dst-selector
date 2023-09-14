@@ -36,6 +36,10 @@ const SoilDrainage = () => {
     const checkArray = ['Very poorly drained', 'Poorly drained', 'Somewhat poorly drained'];
     if (checkArray.some((e) => soilDataRedux?.drainageClass.includes(e))) {
       setShowTiling(true);
+    } else if (soilDataRedux?.drainageClass.includes('Moderately well drained') && tilingCheck === true) {
+      setShowTiling(true);
+    } else {
+      setShowTiling(false);
     }
     window.localStorage.setItem('drainage', JSON.stringify(soilDataRedux?.drainageClass));
   }, [soilDataRedux?.drainageClass]);
@@ -108,7 +112,7 @@ const SoilDrainage = () => {
       </div>
       )}
       <div className="col-12">
-        <RenderDrainageClasses drainage={soilDataRedux?.drainageClass} />
+        <RenderDrainageClasses drainage={soilDataRedux?.drainageClass} tilingCheck={tilingCheck} />
       </div>
       <MyCoverCropReset handleConfirm={handleConfirm} setHandleConfirm={setHandleConfirm} />
       {showTiling && (
@@ -130,58 +134,7 @@ const SoilDrainage = () => {
               </Typography>
               <Switch
                 checked={tilingCheck}
-                onChange={(e) => {
-                  const soilDrainCopy = soilDataRedux?.drainageClass;
-
-                  const drainSet = new Set(soilDrainCopy);
-                  if (e.target.checked) {
-                    if (
-                      drainSet.has('Very poorly drained')
-                      && drainSet.has('Poorly drained')
-                      && drainSet.has('Somewhat poorly drained')
-                    ) {
-                      drainSet.delete('Very poorly drained');
-                      drainSet.add('Moderately well drained');
-                    } else if (drainSet.has('Very poorly drained') && drainSet.has('Poorly drained')) {
-                      drainSet.delete('Very poorly drained');
-                      drainSet.add('Somewhat poorly drained');
-                    } else if (
-                      drainSet.has('Poorly drained')
-                        && drainSet.has('Somewhat poorly drained')
-                    ) {
-                      drainSet.delete('Poorly drained');
-                      drainSet.add('Moderately well drained');
-                    } else if (
-                      drainSet.has('Very poorly drained')
-                        && drainSet.has('Somewhat poorly drained')
-                    ) {
-                      drainSet.delete('Very poorly drained');
-                      drainSet.delete('Somewhat poorly drained');
-                      drainSet.add('Poorly drained');
-                      drainSet.add('Moderately well drained');
-                    } else if (drainSet.has('Very poorly drained')) {
-                      drainSet.delete('Very poorly drained');
-                      drainSet.add('Poorly drained');
-                    } else if (drainSet.has('Poorly drained')) {
-                      drainSet.delete('Poorly drained');
-                      drainSet.add('Somewhat poorly drained');
-                    } else if (drainSet.has('Somewhat poorly drained')) {
-                      drainSet.delete('Somewhat poorly drained');
-                      drainSet.add('Moderately well drained');
-                    } else {
-                      drainSet.delete('Very poorly drained');
-                      drainSet.delete('Poorly drained');
-                      drainSet.delete('Somewhat poorly drained');
-                      drainSet.add('Moderately well drained');
-                    }
-                    window.localStorage.setItem('drainage', JSON.stringify([...drainSet]));
-                  } else {
-                    window.localStorage.setItem(
-                      'drainage',
-                      JSON.stringify(soilDataOriginalRedux?.drainageClass),
-                    );
-                  }
-
+                onChange={() => {
                   setTilingCheck(!tilingCheck);
                 }}
                 name="checkedC"
