@@ -894,10 +894,10 @@ export const cropDataFormatter = (cropData = [{}]) => {
   });
 };
 
-export const apiServerUrl = 'https://history.covercrop-data.org/v1/';
+export const apiServerUrl = 'https://history.covercrop-data.org/v1';
 
 export const getFields = async (accessToken = null) => {
-  const url = `${apiServerUrl}fields?page=1&perPage=200`;
+  const url = `${apiServerUrl}/fields?page=1&perPage=200`;
   const config = {
     method: 'GET',
     headers: {
@@ -911,7 +911,7 @@ export const getFields = async (accessToken = null) => {
 };
 
 export const postFields = async (accessToken = null, fieldsData = null) => {
-  const url = `${apiServerUrl}fields`;
+  const url = `${apiServerUrl}/fields`;
   const config = {
     method: 'POST',
     headers: {
@@ -926,7 +926,7 @@ export const postFields = async (accessToken = null, fieldsData = null) => {
 };
 
 export const deleteFields = async (accessToken = null, id = null) => {
-  const url = `${apiServerUrl}fields/${id}`;
+  const url = `${apiServerUrl}/fields/${id}`;
   const config = {
     method: 'DELETE',
     headers: {
@@ -972,3 +972,67 @@ export const buildGeometryCollection = (point, polygon, name = null) => {
 export const drawAreaFromGeoCollection = (geoCollection) => [
   { type: 'Feature', geometry: { ...geoCollection.geometry.geometries[1] } },
 ];
+
+export const getHistory = async (accessToken = null) => {
+  const url = `${apiServerUrl}/history?schema=1`;
+  const config = {
+    method: 'GET',
+    headers: {
+      'content-type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    },
+  };
+  return fetch(url, config)
+    .then((res) => res.json())
+    // eslint-disable-next-line no-console
+    .catch((err) => console.log(err));
+};
+
+export const buildHistory = (
+  stateId,
+  stateLabel,
+  regionId,
+  regionShorthand,
+  councilLabel,
+  councilShorthand,
+  consentStatus,
+  consentDate,
+  fieldId,
+) => ({
+  json: {
+    state: {
+      id: stateId,
+      label: stateLabel,
+    },
+    region: {
+      id: regionId,
+      shorthand: regionShorthand,
+    },
+    council: {
+      label: councilLabel,
+      shorthand: councilShorthand,
+    },
+    consent: {
+      status: consentStatus,
+      date: consentDate,
+    },
+  },
+  schemaId: 1,
+  fieldId,
+});
+
+export const postHistory = async (accessToken = null, historyData = null) => {
+  const url = `${apiServerUrl}/history`;
+  const config = {
+    method: 'POST',
+    headers: {
+      'content-type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify(historyData),
+  };
+  return fetch(url, config)
+    .then((res) => res.json())
+    // eslint-disable-next-line no-console
+    .catch((err) => console.log(err));
+};

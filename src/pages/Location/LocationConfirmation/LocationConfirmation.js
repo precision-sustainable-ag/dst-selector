@@ -3,12 +3,13 @@
   styled using CustomStyles from ../../shared/constants
 */
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
 import { Typography } from '@mui/material';
 import { Map } from '@psa/dst.ui.map';
-import { CustomStyles } from '../../../shared/constants';
+import { useAuth0 } from '@auth0/auth0-react';
+import { CustomStyles, buildHistory, postHistory } from '../../../shared/constants';
 import SoilCondition from '../SoilCondition/SoilCondition';
 import WeatherConditions from '../../../components/WeatherConditions/WeatherConditions';
 
@@ -17,9 +18,41 @@ const LocationConfirmation = () => {
   const addressRedux = useSelector((stateRedux) => stateRedux.addressData.address);
   const markersRedux = useSelector((stateRedux) => stateRedux.addressData.markers);
   const zoneRedux = useSelector((stateRedux) => stateRedux.addressData.zone);
-  const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   // const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
+
+  const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
+  const regionShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.regionShorthand);
+  const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
+  const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
+  const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
+  const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
+  const consentRedux = useSelector((stateRedux) => stateRedux.userData.consent);
+  const userFieldRedux = useSelector((stateRedux) => stateRedux.userData.field);
+  const selectedFieldRedux = useSelector((stateRedux) => stateRedux.userData.selectedField);
+  const accessTokenRedux = useSelector((stateRedux) => stateRedux.userData.accessToken);
+
+  const { isAuthenticated } = useAuth0();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      const fieldId = userFieldRedux.data.filter((field) => field.label === selectedFieldRedux).id;
+      const history = buildHistory(
+        stateIdRedux,
+        stateLabelRedux,
+        regionIdRedux,
+        regionShorthandRedux,
+        councilLabelRedux,
+        councilShorthandRedux,
+        consentRedux.status,
+        consentRedux.date,
+        fieldId,
+      );
+      console.log('save', history, selectedFieldRedux);
+
+      postHistory(accessTokenRedux, history);
+    }
+  }, []);
 
   return (
     <div

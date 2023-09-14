@@ -13,14 +13,13 @@ import HeaderLogoInfo from './HeaderLogoInfo/HeaderLogoInfo';
 import InformationBar from './InformationBar/InformationBar';
 import ToggleOptions from './ToggleOptions/ToggleOptions';
 import { updateAccessToken, updateField } from '../../reduxStore/userSlice';
-import { getFields } from '../../shared/constants';
+import { getFields, getHistory } from '../../shared/constants';
 import AuthButton from '../../components/Auth/AuthButton/AuthButton';
 
 const Header = () => {
   const dispatchRedux = useDispatch();
   const markersRedux = useSelector((stateRedux) => stateRedux.addressData.markers);
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
-  const consentRedux = useSelector((stateRedux) => stateRedux.userData.consent);
   const [isRoot, setIsRoot] = useState(false);
   const { isAuthenticated, getAccessTokenSilently } = useAuth0();
   const isActive = {};
@@ -31,9 +30,17 @@ const Header = () => {
       dispatchRedux(updateAccessToken(token));
       // Initially get user field data
       getFields(token).then((data) => dispatchRedux(updateField(data)));
+      getHistory(token).then((res) => {
+        console.log(res);
+        // FIXME: not sure if this is the best solution to detect if a user have history on backend
+        // if (!res.data) {
+        //   return;
+        // }
+        if (res.data) console.log(res.data);
+      });
     };
     if (isAuthenticated) getToken();
-  }, [isAuthenticated, getAccessTokenSilently, consentRedux]);
+  }, [isAuthenticated, getAccessTokenSilently]);
 
   useEffect(() => {
     if (window.location.pathname === '/explorer') {
