@@ -31,12 +31,11 @@ const Header = () => {
       // Initially get user field data
       getFields(token).then((data) => dispatchRedux(updateField(data)));
       getHistory(token).then((res) => {
-        console.log(res);
         // FIXME: not sure if this is the best solution to detect if a user have history on backend
         // if (!res.data) {
         //   return;
         // }
-        if (res.data) console.log(res.data);
+        if (res.data) console.log(res.data.json);
       });
     };
     if (isAuthenticated) getToken();

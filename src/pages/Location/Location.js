@@ -21,8 +21,8 @@ import mapboxgl from 'mapbox-gl';
 import { useAuth0 } from '@auth0/auth0-react';
 import statesLatLongDict from '../../shared/stateslatlongdict';
 import {
-  abbrRegion, reverseGEO, callCoverCropApi, postFields, getFields,
-  buildPoint, buildGeometryCollection, drawAreaFromGeoCollection, deleteFields,
+  abbrRegion, reverseGEO, callCoverCropApi, getFields,
+  buildPoint, drawAreaFromGeoCollection,
 } from '../../shared/constants';
 import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset';
 import PlantHardinessZone from '../CropSidebar/PlantHardinessZone/PlantHardinessZone';
@@ -357,82 +357,6 @@ const LocationComponent = () => {
     }
   };
 
-  const fieldNameValidation = (fieldName) => {
-    let errText = '';
-    if (fieldName === '') errText = 'You must input a valid name!';
-    if (userFields.filter((field) => field.label === fieldName).length > 0) errText = 'Input name existed!';
-    if (errText !== '') {
-      setFieldDialogState({ ...fieldDialogState, error: true, errorText: errText });
-      return false;
-    }
-    return true;
-  };
-
-  const handleClose = (save) => {
-    const { actionType, areaType, fieldName } = fieldDialogState;
-    if (save) {
-      if (actionType === 'add') {
-        if (!fieldNameValidation(fieldName)) return;
-        const { longitude, latitude } = selectedToEditSite;
-        const point = buildPoint(longitude, latitude, fieldName);
-        let geoCollection = null;
-        if (areaType === 'Polygon') {
-          const polygon = currentGeometry.features?.slice(-1)[0];
-          geoCollection = buildGeometryCollection(point.geometry, polygon?.geometry, fieldName);
-        }
-        postFields(accessTokenRedux, areaType === 'Polygon' ? geoCollection : point).then((newField) => {
-          setUserFields([...userFields, newField.data]);
-          setSelectedUserField(fieldName);
-        });
-      }
-      if (actionType === 'update') {
-        // Only supports polygon updates
-        const { longitude, latitude } = selectedToEditSite;
-        const point = buildPoint(longitude, latitude, selectedUserField);
-        const polygon = currentGeometry.features.slice(-1)[0];
-        const geoCollection = buildGeometryCollection(point.geometry, polygon.geometry, selectedUserField);
-        postFields(accessTokenRedux, geoCollection).then((newField) => {
-          setUserFields([...userFields.map((userField) => {
-            if (userField.label === selectedUserField) return newField.data;
-            return userField;
-          })]);
-        });
-      }
-      if (actionType === 'delete') {
-        const deletedField = userFields.filter((userField) => userField.label === selectedUserField);
-        deleteFields(accessTokenRedux, deletedField[0].id)
-          .then(() => {
-            const updatedUserFields = userFields.filter((userField) => userField.label !== selectedUserField);
-            setUserFields(updatedUserFields);
-            setSelectedUserField(updatedUserFields.length > 0 ? updatedUserFields[0].label : '');
-          });
-      }
-      if (actionType === 'updateName') {
-        if (!fieldNameValidation(fieldName)) return;
-        const { prevName } = fieldDialogState;
-        const newField = {
-          type: 'Feature',
-          geometry: userFields.filter((userField) => userField.label === prevName)[0].geometry,
-          label: fieldName,
-        };
-        const deletedField = userFields.filter((userField) => userField.label === prevName);
-        deleteFields(accessTokenRedux, deletedField[0].id)
-          .then(() => postFields(accessTokenRedux, newField))
-          .then((resField) => {
-            setSelectedUserField('');
-            setUserFields([...userFields.filter((userField) => userField.label !== prevName), resField.data]);
-            setSelectedUserField(fieldName);
-          });
-      }
-    } else {
-      // if the user select cancel
-      setMapFeatures(getFeatures());
-    }
-    setFieldDialogState(initFieldDialogState);
-    // reset isAddingPoint
-    setIsAddingPoint(true);
-  };
-
   return (
     <div className="container-fluid mt-5">
       <div className="row boxContainerRow mx-0 px-0 mx-lg-3 px-lg-3" style={{ minHeight: '520px' }}>
@@ -509,7 +433,15 @@ const LocationComponent = () => {
       <UserFieldDialog
         fieldDialogState={fieldDialogState}
         setFieldDialogState={setFieldDialogState}
-        handleClose={handleClose}
+        userFields={userFields}
+        selectedToEditSite={selectedToEditSite}
+        currentGeometry={currentGeometry}
+        selectedUserField={selectedUserField}
+        setUserFields={setUserFields}
+        setSelectedUserField={setSelectedUserField}
+        setMapFeatures={setMapFeatures}
+        getFeatures={getFeatures}
+        setIsAddingPoint={setIsAddingPoint}
       />
     </div>
   );
