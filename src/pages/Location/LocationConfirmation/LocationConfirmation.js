@@ -28,15 +28,13 @@ const LocationConfirmation = () => {
   const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const consentRedux = useSelector((stateRedux) => stateRedux.userData.consent);
-  const userFieldRedux = useSelector((stateRedux) => stateRedux.userData.field);
-  const selectedFieldRedux = useSelector((stateRedux) => stateRedux.userData.selectedField);
+  const selectedFieldIdRedux = useSelector((stateRedux) => stateRedux.userData.selectedFieldId);
   const accessTokenRedux = useSelector((stateRedux) => stateRedux.userData.accessToken);
 
   const { isAuthenticated } = useAuth0();
 
   useEffect(() => {
     if (isAuthenticated) {
-      const fieldId = userFieldRedux.data.filter((field) => field.label === selectedFieldRedux).id;
       const history = buildHistory(
         stateIdRedux,
         stateLabelRedux,
@@ -46,9 +44,9 @@ const LocationConfirmation = () => {
         councilShorthandRedux,
         consentRedux.status,
         consentRedux.date,
-        fieldId,
+        selectedFieldIdRedux,
       );
-      console.log('save', history, selectedFieldRedux);
+      console.log('save', history, selectedFieldIdRedux);
 
       postHistory(accessTokenRedux, history);
     }

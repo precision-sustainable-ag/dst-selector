@@ -12,9 +12,10 @@ import '../../styles/header.scss';
 import HeaderLogoInfo from './HeaderLogoInfo/HeaderLogoInfo';
 import InformationBar from './InformationBar/InformationBar';
 import ToggleOptions from './ToggleOptions/ToggleOptions';
-import { updateAccessToken, updateField } from '../../reduxStore/userSlice';
+import { updateAccessToken, updateConsent, updateField } from '../../reduxStore/userSlice';
 import { getFields, getHistory } from '../../shared/constants';
 import AuthButton from '../../components/Auth/AuthButton/AuthButton';
+import { updateRegion, updateStateInfo } from '../../reduxStore/mapSlice';
 
 const Header = () => {
   const dispatchRedux = useDispatch();
@@ -31,11 +32,21 @@ const Header = () => {
       // Initially get user field data
       getFields(token).then((data) => dispatchRedux(updateField(data)));
       getHistory(token).then((res) => {
-        // FIXME: not sure if this is the best solution to detect if a user have history on backend
-        // if (!res.data) {
-        //   return;
-        // }
-        if (res.data) console.log(res.data.json);
+        if (res.data) {
+          console.log('user history', res.data.json);
+          const {
+            state, region, council, consent,
+          } = res.data.json;
+          // TODO: change selectedField redux state from field name to field id
+          // const selectedFieldId = res.data.fieldId;
+
+          // set user history redux state
+          dispatchRedux(updateStateInfo({
+            stateLabel: state.label, stateId: state.id, councilShorthand: council.shorthand, councilLabel: council.label,
+          }));
+          dispatchRedux(updateRegion({ regionId: region.id, regionShorthand: region.shorthand }));
+          dispatchRedux(updateConsent(consent.status, consent.date));
+        }
       });
     };
     if (isAuthenticated) getToken();
