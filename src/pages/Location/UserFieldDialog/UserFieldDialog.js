@@ -12,11 +12,114 @@ import {
   TextField,
 } from '@mui/material';
 import React from 'react';
+import { useSelector } from 'react-redux';
+import {
+  postFields, buildPoint, buildGeometryCollection, deleteFields,
+} from '../../../shared/constants';
 
-const UserFieldDialog = ({ fieldDialogState, setFieldDialogState, handleClose }) => {
+const initFieldDialogState = {
+  open: false,
+  fieldName: '',
+  error: false,
+  errorText: '',
+  actionType: '',
+  areaType: '',
+  prevName: '',
+};
+
+const UserFieldDialog = ({
+  fieldDialogState,
+  setFieldDialogState,
+  userFields,
+  selectedToEditSite,
+  currentGeometry,
+  selectedUserField,
+  setUserFields,
+  setSelectedUserField,
+  setMapFeatures,
+  getFeatures,
+  setIsAddingPoint,
+}) => {
   const {
-    open, fieldName, error, errorText, actionType,
+    open, fieldName, error, errorText, actionType, areaType, prevName,
   } = fieldDialogState;
+
+  const accessTokenRedux = useSelector((stateRedux) => stateRedux.userData.accessToken);
+
+  const fieldNameValidation = (name) => {
+    let errText = '';
+    if (name === '') errText = 'You must input a valid name!';
+    if (userFields.filter((field) => field.label === name).length > 0) errText = 'Input name existed!';
+    if (errText !== '') {
+      setFieldDialogState({ ...fieldDialogState, error: true, errorText: errText });
+      return false;
+    }
+    return true;
+  };
+
+  const handleClose = (save) => {
+    if (save) {
+      if (actionType === 'add') {
+        if (!fieldNameValidation(fieldName)) return;
+        const { longitude, latitude } = selectedToEditSite;
+        const point = buildPoint(longitude, latitude, fieldName);
+        let geoCollection = null;
+        if (areaType === 'Polygon') {
+          const polygon = currentGeometry.features?.slice(-1)[0];
+          geoCollection = buildGeometryCollection(point.geometry, polygon?.geometry, fieldName);
+        }
+        postFields(accessTokenRedux, areaType === 'Polygon' ? geoCollection : point).then((newField) => {
+          setUserFields([...userFields, newField.data]);
+          setSelectedUserField(fieldName);
+        });
+      }
+      if (actionType === 'update') {
+        // Only supports polygon updates
+        const { longitude, latitude } = selectedToEditSite;
+        const point = buildPoint(longitude, latitude, selectedUserField);
+        const polygon = currentGeometry.features.slice(-1)[0];
+        const geoCollection = buildGeometryCollection(point.geometry, polygon.geometry, selectedUserField);
+        postFields(accessTokenRedux, geoCollection).then((newField) => {
+          setUserFields([...userFields.map((userField) => {
+            if (userField.label === selectedUserField) return newField.data;
+            return userField;
+          })]);
+        });
+      }
+      if (actionType === 'delete') {
+        const deletedField = userFields.filter((userField) => userField.label === selectedUserField);
+        deleteFields(accessTokenRedux, deletedField[0].id)
+          .then(() => {
+            const updatedUserFields = userFields.filter((userField) => userField.label !== selectedUserField);
+            setUserFields(updatedUserFields);
+            setSelectedUserField(updatedUserFields.length > 0 ? updatedUserFields[0].label : '');
+          });
+      }
+      if (actionType === 'updateName') {
+        if (!fieldNameValidation(fieldName)) return;
+        const newField = {
+          type: 'Feature',
+          geometry: userFields.filter((userField) => userField.label === prevName)[0].geometry,
+          label: fieldName,
+        };
+        const deletedField = userFields.filter((userField) => userField.label === prevName);
+        deleteFields(accessTokenRedux, deletedField[0].id)
+          .then(() => postFields(accessTokenRedux, newField))
+          .then((resField) => {
+            // setSelectedUserField('');
+            setUserFields([...userFields.filter((userField) => userField.label !== prevName), resField.data]);
+            setSelectedUserField(fieldName);
+          });
+      }
+    } else {
+      // if the user select cancel
+      setMapFeatures(getFeatures());
+    }
+    setFieldDialogState(initFieldDialogState);
+    // reset isAddingPoint
+    setIsAddingPoint(true);
+  };
+
   return (
     <Dialog sx={{ m: 0, p: 2 }} open={open} onKeyUp={(e) => { if (e.key === 'Enter') handleClose(true); }}>
       {(actionType === 'add' || actionType === 'updateName') && (
