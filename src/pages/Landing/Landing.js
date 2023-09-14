@@ -82,11 +82,12 @@ const Landing = ({ height, title, bg }) => {
         ? stateData.data
         : stateData.data.filter((state) => productionCouncils.includes(state.council.shorthand));
       setAllStates(states);
-      if (stateIdRedux) setSelectedState(stateData.data.filter((s) => s.id === stateIdRedux)[0]);
+      // if (stateIdRedux) setSelectedState(stateData.data.filter((s) => s.id === stateIdRedux)[0]);
     });
   }, []);
 
   useEffect(() => {
+    // FIXME: this should be changed since now the stateIdRedux may come with region, do not need to initialize
     if (regionsRedux?.length > 0) {
       dispatchRedux(updateRegion({
         regionId: regionsRedux[0]?.id ?? '',
@@ -97,6 +98,7 @@ const Landing = ({ height, title, bg }) => {
 
   useEffect(() => {
     if (stateIdRedux) {
+      setSelectedState(allStates.filter((s) => s.id === stateIdRedux)[0]);
       fetch(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/regions`)
         .then((res) => res.json())
         .then((data) => {

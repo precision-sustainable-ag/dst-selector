@@ -34,7 +34,7 @@ import { snackHandler } from '../../reduxStore/sharedSlice';
 import {
   updateAvgFrostDates, updateAvgPrecipAnnual, updateAvgPrecipCurrentMonth, updateFrostFreeDays,
 } from '../../reduxStore/weatherSlice';
-import { setSelectField, updateField } from '../../reduxStore/userSlice';
+import { setSelectFieldId, updateField } from '../../reduxStore/userSlice';
 import UserFieldList from './UserFieldList/UserFieldList';
 import UserFieldDialog from './UserFieldDialog/UserFieldDialog';
 
@@ -68,7 +68,7 @@ const LocationComponent = () => {
   const myCoverCropListLocationRedux = useSelector((stateRedux) => stateRedux.sharedData.myCoverCropListLocation);
   const accessTokenRedux = useSelector((stateRedux) => stateRedux.userData.accessToken);
   const userFieldRedux = useSelector((stateRedux) => stateRedux.userData.field);
-  const selectedFieldRedux = useSelector((stateRedux) => stateRedux.userData.selectedField);
+  const selectedFieldIdRedux = useSelector((stateRedux) => stateRedux.userData.selectedFieldId);
 
   // useState vars
   const [selectedRegion, setSelectedRegion] = useState();
@@ -79,9 +79,10 @@ const LocationComponent = () => {
   const [currentGeometry, setCurrentGeometry] = useState([]);
   const [fieldDialogState, setFieldDialogState] = useState(initFieldDialogState);
   const [selectedUserField, setSelectedUserField] = useState(
-    selectedFieldRedux || (userFieldRedux && userFieldRedux.data.length
-      ? userFieldRedux.data[userFieldRedux.data.length - 1].label
-      : ''),
+    userFieldRedux.data.filter((field) => field.id === selectedFieldIdRedux)[0]?.label
+     || (userFieldRedux && userFieldRedux.data.length
+       ? userFieldRedux.data[userFieldRedux.data.length - 1].label
+       : ''),
   );
   // use a state to control if currently is adding a point
   const [isAddingPoint, setIsAddingPoint] = useState(true);
@@ -102,7 +103,9 @@ const LocationComponent = () => {
 
   useEffect(() => {
     setMapFeatures(getFeatures());
-    if (selectedUserField !== '') dispatchRedux(setSelectField(selectedUserField));
+    if (selectedUserField !== '') {
+      dispatchRedux(setSelectFieldId(userFields.filter((field) => field.label === selectedUserField)[0].id));
+    }
   }, [selectedUserField]);
 
   const getLatLng = useCallback(() => {
@@ -116,7 +119,7 @@ const LocationComponent = () => {
       }
       return undefined;
     };
-    if (selectedFieldRedux !== null) {
+    if (selectedFieldIdRedux !== null) {
       const selectedField = userFields.find((userField) => userField.label === selectedUserField);
       return getFieldLatLng(selectedField);
     }
