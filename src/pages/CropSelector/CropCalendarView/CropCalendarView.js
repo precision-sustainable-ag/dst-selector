@@ -55,12 +55,6 @@ const CropCalendarView = ({ activeCropData }) => {
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const ajaxInProgressRedux = useSelector((stateRedux) => stateRedux.sharedData.ajaxInProgress);
   const [legendModal, setLegendModal] = useState(false);
-  // const [nameSortFlag, setNameSortFlag] = useState(true);
-  // const [goalsSortFlag, setGoalsSortFlag] = useState(true);
-  // const [selectedCropsSortFlag, setSelectedCropsFlag] = useState(true);
-  // const [plantingWindowSortFlag, setPlantingWindowSortFlag] = useState(true);
-  // const [cropGroupSortFlag, setCropGroupSortFlag] = useState(true);
-  // let cropGroupSortFlag = true;
   const [sortAlgo, setSortAlgo] = React.useState('');
   const [modalOpen, setModalOpen] = useState(false);
   const [modalData, setModalData] = useState([{}]);
@@ -127,10 +121,8 @@ const CropCalendarView = ({ activeCropData }) => {
       sortByPlantingWindow(true);
     } else if (sortingAlgo === 'plantingWindowDsc') {
       sortByPlantingWindow(false);
-    } else if (sortingAlgo === 'myListA-Z') {
+    } else if (sortingAlgo === 'myList') {
       sortBySelectedCrops(true);
-    } else if (sortingAlgo === 'myListZ-A') {
-      sortBySelectedCrops(false);
     }
   };
 
@@ -205,31 +197,10 @@ const CropCalendarView = ({ activeCropData }) => {
                               <MenuItem value="cropGroupZ-A">Crop Group Z-A</MenuItem>
                               <MenuItem value="plantingWindowAsc">Planting Window Ascending</MenuItem>
                               <MenuItem value="plantingWindowDsc">Planting Window Desceding</MenuItem>
-                              <MenuItem value="myListA-Z">Selected Cover Crops A-Z</MenuItem>
-                              <MenuItem value="myListZ-A">Selected Cover Crops Z-A</MenuItem>
+                              <MenuItem value="myList">Selected Cover Crops</MenuItem>
                             </Select>
                           </FormControl>
                         </div>
-                        {/* <div className="col-3">
-                          <Button
-                            onClick={sortByPlantingWindow}
-                            style={{ color: '#000' }}
-                          >
-                            <Typography variant="body1" component="span">
-                              <div style={sudoButtonStyleWithPadding}>SORT BY PLANTING WINDOW</div>
-                            </Typography>
-                          </Button>
-                        </div>
-                        <div className="col-3">
-                          <Button
-                            onClick={sortByCropGroup}
-                            style={{ color: '#000' }}
-                          >
-                            <Typography variant="body1" component="span">
-                              <div style={sudoButtonStyleWithPadding}>SORT BY CROP GROUP</div>
-                            </Typography>
-                          </Button>
-                        </div> */}
                       </div>
                     </div>
                   </TableCell>
