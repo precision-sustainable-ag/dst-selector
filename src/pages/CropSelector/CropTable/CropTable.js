@@ -47,11 +47,6 @@ const CropTableComponent = ({
   const [tbodyHeight, setTbodyHeight] = useState(0);
   const [theadHeight, setTheadHeight] = useState(0);
   const [sortAlgo, setSortAlgo] = React.useState('');
-  // const [nameSortFlag, setNameSortFlag] = useState(true);
-  // const [averageGoalsFlag, setAverageGoalsFlag] = useState(true);
-  // const [plantingWindowSortFlag, setPlantingWindowSortFlag] = useState(true);
-  // const [cropGroupSortFlag, setCropGroupSortFlag] = useState(true);
-  // const [selectedCropsSortFlag, setSelectedCropsSortFlag] = useState(true);
   const [goal1SortFlag, setGoal1SortFlag] = useState(true);
   const [goal2SortFlag, setGoal2SortFlag] = useState(true);
   const [goal3SortFlag, setGoal3SortFlag] = useState(true);
@@ -145,10 +140,8 @@ const CropTableComponent = ({
       sortByPlantingWindow(true);
     } else if (sortingAlgo === 'plantingWindowDsc') {
       sortByPlantingWindow(false);
-    } else if (sortingAlgo === 'myListA-Z') {
+    } else if (sortingAlgo === 'myList') {
       sortBySelectedCrops(true);
-    } else if (sortingAlgo === 'myListZ-A') {
-      sortBySelectedCrops(false);
     }
   };
 
@@ -261,8 +254,7 @@ const CropTableComponent = ({
                       <MenuItem value="cropGroupZ-A">Crop Group Z-A</MenuItem>
                       <MenuItem value="plantingWindowAsc">Planting Window Ascending</MenuItem>
                       <MenuItem value="plantingWindowDsc">Planting Window Desceding</MenuItem>
-                      <MenuItem value="myListA-Z">Selected Cover Crops A-Z</MenuItem>
-                      <MenuItem value="myListZ-A">Selected Cover Crops Z-A</MenuItem>
+                      <MenuItem value="myList">Selected Cover Crops</MenuItem>
                     </Select>
                   </FormControl>
                 </TableCell>
