@@ -20,13 +20,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import ReactGA from 'react-ga';
 import { RegionSelectorMap } from '@psa/dst.ui.region-selector-map';
-import { useAuth0 } from '@auth0/auth0-react';
+// import { useAuth0 } from '@auth0/auth0-react';
 import { callCoverCropApi } from '../../shared/constants';
 import '../../styles/landing.scss';
-import ConsentModal from '../CoverCropExplorer/ConsentModal/ConsentModal';
+// import ConsentModal from '../CoverCropExplorer/ConsentModal/ConsentModal';
 import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset';
 // import { updateZone } from '../../reduxStore/addressSlice';
-import AuthModal from './AuthModal/AuthModal';
+// import AuthModal from './AuthModal/AuthModal';
 import { updateRegions, updateRegion, updateStateInfo } from '../../reduxStore/mapSlice';
 
 const Landing = ({ height, title, bg }) => {
@@ -51,8 +51,6 @@ const Landing = ({ height, title, bg }) => {
   const [selectedState, setSelectedState] = useState({});
   // This is the obj map returns when you selected a state on map
   const [mapState, setMapState] = useState({});
-  const { isAuthenticated } = useAuth0();
-  const [authModalOpen, setAuthModalOpen] = useState(true);
 
   const availableStates = useMemo(() => allStates.map((state) => state.label), [allStates]);
 
@@ -82,7 +80,7 @@ const Landing = ({ height, title, bg }) => {
         ? stateData.data
         : stateData.data.filter((state) => productionCouncils.includes(state.council.shorthand));
       setAllStates(states);
-      // if (stateIdRedux) setSelectedState(stateData.data.filter((s) => s.id === stateIdRedux)[0]);
+      if (stateIdRedux) setSelectedState(stateData.data.filter((s) => s.id === stateIdRedux)[0]);
     });
   }, []);
 
@@ -155,7 +153,7 @@ const Landing = ({ height, title, bg }) => {
               textAlign: 'left',
             }}
             onChange={(e) => handleStateChange(e)}
-            value={selectedState.shorthand || ''}
+            value={selectedState?.shorthand || ''}
           >
 
             {allStates.length > 0 && allStates.map((st, i) => (
@@ -218,9 +216,6 @@ const Landing = ({ height, title, bg }) => {
         backgroundSize: 'cover',
       }}
     >
-      {(!authModalOpen || isAuthenticated) && <ConsentModal />}
-      <AuthModal modalOpen={authModalOpen} setModalOpen={setAuthModalOpen} />
-
       <Grid container>
 
         <Grid

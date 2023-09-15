@@ -79,7 +79,7 @@ const LocationComponent = () => {
   const [currentGeometry, setCurrentGeometry] = useState([]);
   const [fieldDialogState, setFieldDialogState] = useState(initFieldDialogState);
   const [selectedUserField, setSelectedUserField] = useState(
-    userFieldRedux.data.filter((field) => field.id === selectedFieldIdRedux)[0]?.label
+    userFieldRedux?.data.filter((field) => field.id === selectedFieldIdRedux)[0]?.label
      || (userFieldRedux && userFieldRedux.data.length
        ? userFieldRedux.data[userFieldRedux.data.length - 1].label
        : ''),

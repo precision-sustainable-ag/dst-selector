@@ -1,14 +1,12 @@
 import {
   Modal, Box, Typography, Button, Grid,
 } from '@mui/material';
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React from 'react';
+import { useDispatch } from 'react-redux';
 import { updateConsent } from '../../../reduxStore/userSlice';
 
-const ConsentModal = () => {
-  const [modalOpen, setModalOpen] = useState(true);
+const ConsentModal = ({ modalOpen, setModalOpen }) => {
   const dispatchRedux = useDispatch();
-  const consentRedux = useSelector((stateRedux) => stateRedux.userData.consent);
 
   const style = {
     position: 'absolute',
@@ -21,17 +19,6 @@ const ConsentModal = () => {
     boxShadow: 24,
     p: 4,
   };
-
-  useEffect(() => {
-    const { date } = consentRedux;
-    if (date) {
-      const createdAt = new Date(date).getTime();
-      // rememeber user consent selection for 180 days
-      if (new Date().getTime() - createdAt < 180 * 24 * 60 * 1000) {
-        setModalOpen(false);
-      }
-    }
-  }, [consentRedux]);
 
   const handleModal = (choice) => {
     dispatchRedux(updateConsent(choice, new Date().toISOString()));
