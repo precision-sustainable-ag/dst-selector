@@ -82,6 +82,7 @@ const ForecastComponent = () => {
               const address = res?.features?.filter((feature) => feature?.place_type?.includes('address'))[0]?.place_name;
 
               if (address) {
+                // FIXME: this line send an action on initial load on Landing page
                 dispatchRedux(changeAddress({ address }));
               }
             })
