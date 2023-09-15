@@ -12,18 +12,24 @@ import '../../styles/header.scss';
 import HeaderLogoInfo from './HeaderLogoInfo/HeaderLogoInfo';
 import InformationBar from './InformationBar/InformationBar';
 import ToggleOptions from './ToggleOptions/ToggleOptions';
-import { updateAccessToken, updateConsent, updateField } from '../../reduxStore/userSlice';
+import {
+  updateAccessToken, updateConsent, updateField, setSelectFieldId,
+} from '../../reduxStore/userSlice';
 import { getFields, getHistory } from '../../shared/constants';
 import AuthButton from '../../components/Auth/AuthButton/AuthButton';
 import { updateRegion, updateStateInfo } from '../../reduxStore/mapSlice';
+import ConsentModal from '../CoverCropExplorer/ConsentModal/ConsentModal';
+import AuthModal from '../Landing/AuthModal/AuthModal';
 
 const Header = () => {
   const dispatchRedux = useDispatch();
   const markersRedux = useSelector((stateRedux) => stateRedux.addressData.markers);
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
   const [isRoot, setIsRoot] = useState(false);
-  const { isAuthenticated, getAccessTokenSilently } = useAuth0();
+  const { isLoading, isAuthenticated, getAccessTokenSilently } = useAuth0();
   const isActive = {};
+  const [authModalOpen, setAuthModalOpen] = useState(true);
+  const [consentModalOpen, setConsentModalOpen] = useState(false);
 
   useEffect(() => {
     const getToken = async () => {
@@ -37,20 +43,20 @@ const Header = () => {
           const {
             state, region, council, consent,
           } = res.data.json;
-          // TODO: change selectedField redux state from field name to field id
-          // const selectedFieldId = res.data.fieldId;
-
           // set user history redux state
           dispatchRedux(updateStateInfo({
             stateLabel: state.label, stateId: state.id, councilShorthand: council.shorthand, councilLabel: council.label,
           }));
           dispatchRedux(updateRegion({ regionId: region.id, regionShorthand: region.shorthand }));
           dispatchRedux(updateConsent(consent.status, consent.date));
-        }
+          const selectedFieldId = res.data.fieldId;
+          dispatchRedux(setSelectFieldId(selectedFieldId));
+        } else setConsentModalOpen(true);
       });
     };
     if (isAuthenticated) getToken();
-  }, [isAuthenticated, getAccessTokenSilently]);
+    if (!isLoading && !isAuthenticated) setConsentModalOpen(true);
+  }, [isLoading, isAuthenticated, getAccessTokenSilently]);
 
   useEffect(() => {
     if (window.location.pathname === '/explorer') {
@@ -111,6 +117,10 @@ const Header = () => {
         || (progressRedux < 0 && (
           <div className="topBar" />
         ))}
+
+      {(!authModalOpen || isAuthenticated)
+      && <ConsentModal modalOpen={consentModalOpen} setModalOpen={setConsentModalOpen} />}
+      <AuthModal modalOpen={authModalOpen} setModalOpen={setAuthModalOpen} />
     </header>
   );
 };
