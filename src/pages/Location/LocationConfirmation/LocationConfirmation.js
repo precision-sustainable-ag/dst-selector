@@ -33,8 +33,6 @@ const LocationConfirmation = () => {
       <div className="row boxContainerRow" style={{ textAlign: 'left', minHeight: '520px' }}>
         <div className="col-xl-6 col-lg-12">
           <div className="container-fluid">
-            {councilShorthandRedux !== 'MCCC'
-            ?? (
             <div className="row">
               <div className="col-lg-6">
                 <Map
@@ -52,7 +50,7 @@ const LocationConfirmation = () => {
                   hasDrawing={false}
                   hasGeolocate={false}
                   hasFullScreen={false}
-                  hasMarkerPopup
+                  hasMarkerPopup={false}
                   hasMarkerMovable={false}
                   scrollZoom={false}
                   dragRotate={false}
@@ -87,7 +85,6 @@ const LocationConfirmation = () => {
                 </div>
               </div>
             </div>
-            )}
             <div className="row mt-3">
               <div className="col-lg-12" />
             </div>
