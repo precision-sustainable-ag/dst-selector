@@ -22,7 +22,6 @@ const GoalsSelector = () => {
   const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
   const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
-  const allGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.allGoals);
 
   // useState vars
   const [allGoals, setAllGoals] = useState([]);
@@ -35,7 +34,7 @@ const GoalsSelector = () => {
         setAllGoals(data.data);
       });
     }
-  }, [allGoalsRedux]);
+  }, []);
 
   return (
     <div className="goalsContainer" style={{ marginTop: '5%', width: '80%', marginLeft: '10%' }}>

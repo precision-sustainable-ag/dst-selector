@@ -7,8 +7,6 @@ const initialState = {
   speciesSelectorActivationFlag: true,
   comparisonKeys: [],
   myCoverCropListLocation: '',
-  snackVertical: 'bottom',
-  snackHorizontal: 'right',
   regionToggle: true,
   dataDictionary: {},
   apiBaseUrl: /(localhost|dev)/i.test(window.location)

@@ -8,11 +8,11 @@ import {
   FormControl,
   FormGroup,
   InputLabel,
-  Modal,
   Select,
   TextField,
   Typography,
   Box,
+  Dialog,
 } from '@mui/material';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
@@ -23,7 +23,7 @@ import WeatherFrostDates from './WeatherFrostDates/WeatherFrostDates';
 import WeatherFrostFreeDays from './WeatherFrostFreeDays/WeatherFrostFreeDays';
 import { updateWeatherConditions } from '../../reduxStore/weatherSlice';
 
-const WeatherConditions = ({ caller }) => {
+const WeatherConditions = () => {
   const dispatchRedux = useDispatch();
 
   // redux vars
@@ -122,7 +122,7 @@ const WeatherConditions = ({ caller }) => {
     });
 
     setFrostFreeDays(weatherDataRedux?.frostFreeDays);
-  }, [weatherDataRedux, caller]);
+  }, [weatherDataRedux]);
 
   const handleModalOpen = () => {
     setOpen(true);
@@ -203,14 +203,9 @@ const WeatherConditions = ({ caller }) => {
 
       <WeatherFrostFreeDays />
 
-      <Modal
+      <Dialog
         aria-labelledby="transition-modal-title"
         aria-describedby="ransition-modal-description"
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
         open={open}
         onClose={handleModalClose}
         closeAfterTransition
@@ -235,167 +230,72 @@ const WeatherConditions = ({ caller }) => {
                 </div>
                 <div className="row mt-4">
                   <div className="col-6">
-                    <FormControl style={{ width: '100%' }}>
-                      <InputLabel htmlFor="age-native-simple">First Frost Month</InputLabel>
-                      <Select
-                        label="First Frost Month"
-                        native
-                        value={firstFrostMonth}
-                        onChange={(event) => {
-                          setFirstFrostMonth(event.target.value);
-                        }}
-                        inputProps={{
-                          name: 'age',
-                          id: 'age-native-simple',
-                        }}
-                      >
-                        {months.map((val, key) => (
-                          <option value={moment(val, 'MMM').format('MMMM')} key={key}>
-                            {val}
-                          </option>
-                        ))}
-                      </Select>
-                      {firstFrostMonth !== weatherDataShadow?.averageFrost?.firstFrostDate?.month ? (
-                        <Button
-                          className="text-danger"
-                          size="small"
-                          onClick={() => setFirstFrostMonth(
-                            weatherDataShadow?.averageFrost?.firstFrostDate?.month,
-                          )}
-                        >
-                          Values changed, Reset?
-                        </Button>
-                      ) : (
-                        <Typography variant="body2">5 Year Average</Typography>
-                      )}
-                    </FormControl>
+                    <MonthSelect
+                      label="First Frost Month"
+                      value={firstFrostMonth}
+                      setValue={setFirstFrostMonth}
+                      months={months}
+                      compare={firstFrostMonth !== weatherDataShadow?.averageFrost?.firstFrostDate?.month}
+                      reset={() => setFirstFrostMonth(weatherDataShadow?.averageFrost?.firstFrostDate?.month)}
+                    />
                   </div>
                   <div className="col-6">
-                    <FormControl>
-                      <TextField
-                        label="First Frost Day"
-                        type="number"
-                        max="31"
-                        min="1"
-                        multiline
-                        helperText={firstFrostDayHelper}
-                        error={firstFrostDayError}
-                        maxLength={2}
-                        id="margin-none"
-                        value={firstFrostDay}
-                        onChange={(event) => {
-                          if (!Number.isNaN(event.target.value)) {
-                            if (event.target.value === '') {
-                              setFirstFrostDay('');
-                            } else setFirstFrostDay(parseInt(event.target.value, 10));
-                          } else {
-                            setFirstFrostDay(1);
-                          }
-                        }}
-                        sx={{
-                          marginLeft: 1,
-                          marginRight: 1,
-                          width: 200,
-                        }}
-                      />
-                      {parseInt(firstFrostDay, 10)
-                        !== parseInt(weatherDataShadow?.averageFrost?.firstFrostDate?.day, 10) ? (
-                          <Button
-                            className="text-danger"
-                            size="small"
-                            onClick={() => setFirstFrostDay(
-                              parseInt(weatherDataShadow?.averageFrost?.firstFrostDate?.day, 10),
-                            )}
-                          >
-                            Values changed, Reset?
-                          </Button>
-                        ) : (
-                          <Typography variant="body2" style={{ marginLeft: '8px' }}>
-                            5 Year Average
-                          </Typography>
-                        )}
-                    </FormControl>
+                    <InputField
+                      label="First Frost Day"
+                      inputProps={{ min: 1, max: 31 }}
+                      helperText={firstFrostDayHelper}
+                      error={firstFrostDayError}
+                      value={firstFrostDay}
+                      onChange={(event) => {
+                        if (!Number.isNaN(event.target.value)) {
+                          if (event.target.value === '') {
+                            setFirstFrostDay('');
+                          } else setFirstFrostDay(parseInt(event.target.value, 10));
+                        } else {
+                          setFirstFrostDay(1);
+                        }
+                      }}
+                      compare={parseInt(firstFrostDay, 10)
+                        !== parseInt(weatherDataShadow?.averageFrost?.firstFrostDate?.day, 10)}
+                      reset={() => setFirstFrostDay(
+                        parseInt(weatherDataShadow?.averageFrost?.firstFrostDate?.day, 10),
+                      )}
+                    />
                   </div>
                 </div>
                 <div className="row mt-4">
                   <div className="col-6">
-                    <FormControl style={{ width: '100%' }}>
-                      <InputLabel htmlFor="last-frost-month">Last Frost Month</InputLabel>
-                      <Select
-                        label="Last Frost Month"
-                        native
-                        value={lastFrostMonth}
-                        onChange={(event) => {
-                          setLastFrostMonth(event.target.value);
-                        }}
-                        inputProps={{
-                          name: 'last-frost-month',
-                          id: 'last-frost-month',
-                        }}
-                      >
-                        {months.map((val, key) => (
-                          <option value={moment(val, 'MMM').format('MMMM')} key={key}>
-                            {val}
-                          </option>
-                        ))}
-                      </Select>
-                      {lastFrostMonth !== weatherDataShadow?.averageFrost?.lastFrostDate?.month ? (
-                        <Button
-                          className="text-danger"
-                          size="small"
-                          onClick={() => setLastFrostMonth(weatherDataShadow?.averageFrost?.lastFrostDate?.month)}
-                        >
-                          Values changed, Reset?
-                        </Button>
-                      ) : (
-                        <Typography variant="body2">5 Year Average</Typography>
-                      )}
-                    </FormControl>
+                    <MonthSelect
+                      label="Last Frost Month"
+                      value={lastFrostMonth}
+                      setValue={setLastFrostMonth}
+                      months={months}
+                      compare={lastFrostMonth !== weatherDataShadow?.averageFrost?.lastFrostDate?.month}
+                      reset={() => setLastFrostMonth(weatherDataShadow?.averageFrost?.lastFrostDate?.month)}
+                    />
                   </div>
                   <div className="col-6">
-                    <FormControl>
-                      <TextField
-                        label="Last Frost Day"
-                        type="number"
-                        max="31"
-                        min="1"
-                        helperText={lastFrostDayHelper}
-                        error={lastFrostDayError}
-                        multiline
-                        maxLength={2}
-                        value={lastFrostDay}
-                        onChange={(event) => {
-                          if (!Number.isNaN(event.target.value)) {
-                            if (event.target.value === '') {
-                              setLastFrostDay('');
-                            } else setLastFrostDay(parseInt(event.target.value, 10));
-                          } else {
-                            setLastFrostDay(1);
-                          }
-                        }}
-                        sx={{
-                          marginLeft: 1,
-                          marginRight: 1,
-                          width: 200,
-                        }}
-                      />
-                      {parseInt(lastFrostDay, 10)
-                        !== parseInt(weatherDataShadow?.averageFrost?.lastFrostDate?.day, 10) ? (
-                          <Button
-                            className="text-danger"
-                            size="small"
-                            onClick={() => setLastFrostDay(
-                              parseInt(weatherDataShadow?.averageFrost?.lastFrostDate?.day, 10),
-                            )}
-                          >
-                            Values changed, Reset?
-                          </Button>
-                        ) : (
-                          <Typography variant="body2" style={{ marginLeft: '8px' }}>
-                            5 Year Average
-                          </Typography>
-                        )}
-                    </FormControl>
+                    <InputField
+                      label="Last Frost Day"
+                      inputProps={{ min: 1, max: 31 }}
+                      helperText={lastFrostDayHelper}
+                      error={lastFrostDayError}
+                      value={lastFrostDay}
+                      onChange={(event) => {
+                        if (!Number.isNaN(event.target.value)) {
+                          if (event.target.value === '') {
+                            setLastFrostDay('');
+                          } else setLastFrostDay(parseInt(event.target.value, 10));
+                        } else {
+                          setLastFrostDay(1);
+                        }
+                      }}
+                      compare={parseInt(lastFrostDay, 10)
+                        !== parseInt(weatherDataShadow?.averageFrost?.lastFrostDate?.day, 10)}
+                      reset={() => setLastFrostDay(
+                        parseInt(weatherDataShadow?.averageFrost?.lastFrostDate?.day, 10),
+                      )}
+                    />
                   </div>
                 </div>
                 <div className="row mt-4">
@@ -405,87 +305,47 @@ const WeatherConditions = ({ caller }) => {
                 </div>
                 <div className="row mt-4">
                   <div className="col-6">
-                    <FormControl>
-                      <TextField
-                        label={currentMonthFull}
-                        type="number"
-                        inputProps={{ min: '1', max: '100', step: '0.01' }}
-                        maxLength={4}
-                        helperText="Inches"
-                        value={averagePrecipitation?.thisMonth}
-                        onChange={(event) => {
-                          setAveragePrecipitation({
-                            ...averagePrecipitation,
-                            thisMonth: event.target.value === '' ? 0 : event.target.value,
-                          });
-                        }}
-                        sx={{
-                          marginLeft: 1,
-                          marginRight: 1,
-                          width: 200,
-                        }}
-                      />
-                      {parseFloat(averagePrecipitation?.thisMonth)
-                        !== parseFloat(weatherDataShadow?.averagePrecipitation?.thisMonth) ? (
-                          <Button
-                            className="text-danger"
-                            size="small"
-                            onClick={() => setAveragePrecipitation({
-                              thisMonth: parseFloat(
-                                weatherDataShadow?.averagePrecipitation?.thisMonth,
-                              ),
-                              annual: parseFloat(averagePrecipitation?.annual),
-                            })}
-                          >
-                            Values changed, Reset?
-                          </Button>
-                        ) : (
-                          <Typography variant="body2" style={{ marginLeft: '8px' }}>
-                            5 Year Average
-                          </Typography>
-                        )}
-                    </FormControl>
+                    <InputField
+                      label={currentMonthFull}
+                      inputProps={{ min: 1, max: 100, step: 0.01 }}
+                      helperText="Inches"
+                      value={averagePrecipitation?.thisMonth}
+                      onChange={(event) => {
+                        setAveragePrecipitation({
+                          ...averagePrecipitation,
+                          thisMonth: event.target.value === '' ? 0 : event.target.value,
+                        });
+                      }}
+                      compare={parseFloat(averagePrecipitation?.thisMonth)
+                        !== parseFloat(weatherDataShadow?.averagePrecipitation?.thisMonth)}
+                      reset={() => setAveragePrecipitation({
+                        thisMonth: parseFloat(
+                          weatherDataShadow?.averagePrecipitation?.thisMonth,
+                        ),
+                        annual: parseFloat(averagePrecipitation?.annual),
+                      })}
+                    />
                   </div>
                   <div className="col-6">
-                    <FormControl>
-                      <TextField
-                        label="Annual"
-                        type="number"
-                        inputProps={{ min: '1', max: '100', step: '0.01' }}
-                        maxLength={4}
-                        helperText="Inches"
-                        value={averagePrecipitation?.annual}
-                        onChange={(event) => {
-                          setAveragePrecipitation({
-                            ...averagePrecipitation,
-                            annual:
+                    <InputField
+                      label="Annual"
+                      inputProps={{ min: 1, max: 100, step: 0.01 }}
+                      helperText="Inches"
+                      value={averagePrecipitation?.annual}
+                      onChange={(event) => {
+                        setAveragePrecipitation({
+                          ...averagePrecipitation,
+                          annual:
                                 event.target.value === '' ? 0 : event.target.value,
-                          });
-                        }}
-                        sx={{
-                          marginLeft: 1,
-                          marginRight: 1,
-                          width: 200,
-                        }}
-                      />
-                      {parseFloat(averagePrecipitation?.annual)
-                        !== parseFloat(weatherDataShadow?.averagePrecipitation?.annual) ? (
-                          <Button
-                            className="text-danger"
-                            size="small"
-                            onClick={() => setAveragePrecipitation({
-                              thisMonth: parseFloat(averagePrecipitation?.thisMonth),
-                              annual: parseFloat(weatherDataShadow?.averagePrecipitation?.annual),
-                            })}
-                          >
-                            Values changed, Reset?
-                          </Button>
-                        ) : (
-                          <Typography variant="body2" style={{ marginLeft: '8px' }}>
-                            5 Year Average
-                          </Typography>
-                        )}
-                    </FormControl>
+                        });
+                      }}
+                      compare={parseFloat(averagePrecipitation?.annual)
+                        !== parseFloat(weatherDataShadow?.averagePrecipitation?.annual)}
+                      reset={() => setAveragePrecipitation({
+                        thisMonth: parseFloat(averagePrecipitation?.thisMonth),
+                        annual: parseFloat(weatherDataShadow?.averagePrecipitation?.annual),
+                      })}
+                    />
                   </div>
                 </div>
                 <div className="row mt-4">
@@ -495,43 +355,22 @@ const WeatherConditions = ({ caller }) => {
                 </div>
                 <div className="row mt-4">
                   <div className="col-6">
-                    <FormControl>
-                      <TextField
-                        label="Frost Free Days"
-                        type="number"
-                        step="0.01"
-                        multiline
-                        maxLength={4}
-                        value={frostFreeDays}
-                        onChange={(event) => {
-                          if (!Number.isNaN(event.target.value)) {
-                            if (event.target.value === '') {
-                              setFrostFreeDays(0);
-                            } else setFrostFreeDays(parseInt(event.target.value, 10));
-                          } else {
+                    <InputField
+                      label="Frost Free Days"
+                      inputProps={{ min: 1, max: 365 }}
+                      value={frostFreeDays}
+                      onChange={(event) => {
+                        if (!Number.isNaN(event.target.value)) {
+                          if (event.target.value === '') {
                             setFrostFreeDays(0);
-                          }
-                        }}
-                        sx={{
-                          marginLeft: 1,
-                          marginRight: 1,
-                          width: 200,
-                        }}
-                      />
-                      {parseInt(frostFreeDays, 10) !== parseInt(weatherDataShadow?.frostFreeDays, 10) ? (
-                        <Button
-                          className="text-danger"
-                          size="small"
-                          onClick={() => setFrostFreeDays(parseInt(weatherDataShadow?.frostFreeDays, 10))}
-                        >
-                          Values changed, Reset?
-                        </Button>
-                      ) : (
-                        <Typography variant="body2" style={{ marginLeft: '8px' }}>
-                          5 Year Average
-                        </Typography>
-                      )}
-                    </FormControl>
+                          } else setFrostFreeDays(parseInt(event.target.value, 10));
+                        } else {
+                          setFrostFreeDays(0);
+                        }
+                      }}
+                      compare={parseInt(frostFreeDays, 10) !== parseInt(weatherDataShadow?.frostFreeDays, 10)}
+                      reset={() => setFrostFreeDays(parseInt(weatherDataShadow?.frostFreeDays, 10))}
+                    />
                   </div>
                   <div className="col-6" />
                 </div>
@@ -547,9 +386,81 @@ const WeatherConditions = ({ caller }) => {
             </div>
           </div>
         </Box>
-      </Modal>
+      </Dialog>
     </div>
   );
 };
 
 export default WeatherConditions;
+
+const MonthSelect = ({
+  label, value, setValue, months, compare, reset,
+}) => {
+  const id = label.toLowerCase().replace(' ', '-');
+  return (
+    <FormControl style={{ width: '100%' }}>
+      <InputLabel htmlFor={id}>{label}</InputLabel>
+      <Select
+        label={label}
+        native
+        value={value}
+        onChange={(event) => {
+          setValue(event.target.value);
+        }}
+        inputProps={{
+          name: { id },
+          id: { id },
+        }}
+      >
+        {months.map((val, key) => (
+          <option value={moment(val, 'MMM').format('MMMM')} key={key}>
+            {val}
+          </option>
+        ))}
+      </Select>
+      {compare
+        ? (
+          <Button
+            className="text-danger"
+            size="small"
+            onClick={reset}
+          >
+            Values changed, Reset?
+          </Button>
+        )
+        : <Typography variant="body2">5 Year Average</Typography>}
+    </FormControl>
+  );
+};
+
+const InputField = ({
+  label, inputProps, helperText, error, value, onChange, compare, reset,
+}) => (
+  <FormControl>
+    <TextField
+      label={label}
+      type="number"
+      inputProps={inputProps}
+      helperText={helperText}
+      error={error}
+      value={value}
+      onChange={onChange}
+      sx={{
+        marginLeft: 1,
+        marginRight: 1,
+        width: 200,
+      }}
+    />
+    {compare
+      ? (
+        <Button
+          className="text-danger"
+          size="small"
+          onClick={reset}
+        >
+          Values changed, Reset?
+        </Button>
+      )
+      : <Typography variant="body2" style={{ marginLeft: '8px' }}>5 Year Average</Typography>}
+  </FormControl>
+);

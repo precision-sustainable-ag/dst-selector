@@ -228,8 +228,9 @@ const SnackbarComponent = () => {
   // redux vars
   const snackOpenRedux = useSelector((stateRedux) => stateRedux.sharedData.snackOpen);
   const snackMessageRedux = useSelector((stateRedux) => stateRedux.sharedData.snackMessage);
-  const snackVerticalRedux = useSelector((stateRedux) => stateRedux.sharedData.snackVertical);
-  const snackHorizontalRedux = useSelector((stateRedux) => stateRedux.sharedData.snackHorizontal);
+
+  const snackHorizontal = 'right';
+  const snackVertical = 'bottom';
 
   const handleSnackClose = () => {
     dispatchRedux(snackHandler({ snackOpen: false, snackMessage: '' }));
@@ -238,10 +239,10 @@ const SnackbarComponent = () => {
   return (
     <Snackbar
       anchorOrigin={{
-        vertical: snackVerticalRedux,
-        horizontal: snackHorizontalRedux,
+        vertical: snackVertical,
+        horizontal: snackHorizontal,
       }}
-      key={snackOpenRedux + snackMessageRedux}
+      key={snackVertical + snackHorizontal}
       autoHideDuration={3000}
       open={snackOpenRedux}
       onClose={handleSnackClose}
@@ -250,5 +251,6 @@ const SnackbarComponent = () => {
       }}
       message={snackMessageRedux}
     />
+
   );
 };

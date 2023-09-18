@@ -1,6 +1,5 @@
 const initialState = {
   selectedGoals: [],
-  allGoals: [],
   goalsOpen: false,
 };
 
@@ -41,12 +40,6 @@ const goalsReducer = (state = initialState, action = null) => {
       return {
         ...state,
         selectedGoals: [...state.selectedGoals, action.payload.value],
-      };
-
-    case 'ADD_GOALS':
-      return {
-        ...state,
-        allGoals: action.payload.value,
       };
 
     case 'TOGGLE_GOALS_OPEN':
