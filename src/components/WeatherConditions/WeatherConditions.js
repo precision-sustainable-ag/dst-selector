@@ -408,8 +408,8 @@ const MonthSelect = ({
           setValue(event.target.value);
         }}
         inputProps={{
-          name: { id },
-          id: { id },
+          name: id,
+          id,
         }}
       >
         {months.map((val, key) => (
