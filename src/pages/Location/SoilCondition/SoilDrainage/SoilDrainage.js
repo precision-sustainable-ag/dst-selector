@@ -112,7 +112,7 @@ const SoilDrainage = () => {
       </div>
       )}
       <div className="col-12">
-        <RenderDrainageClasses drainage={soilDataRedux?.drainageClass} tilingCheck={tilingCheck} />
+        <RenderDrainageClasses tilingCheck={tilingCheck} drainage={soilDataRedux?.drainageClass} />
       </div>
       <MyCoverCropReset handleConfirm={handleConfirm} setHandleConfirm={setHandleConfirm} />
       {showTiling && (
