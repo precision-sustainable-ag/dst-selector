@@ -537,13 +537,26 @@ export const sortCrops = (type = 'Average Goals', crops = [], sortFlag = '', sel
         const firstLength = a.data?.['Planting and Growth Windows']?.['Reliable Establishment']?.values.length;
         const secondLength = b.data?.['Planting and Growth Windows']?.['Reliable Establishment']?.values.length;
         if (firstLength && secondLength) {
-          firstDate = new Date(a.data?.['Planting and Growth Windows']?.['Reliable Establishment']?.values[firstLength - 1].split(' - ')[1]).toLocaleDateString('en-GB').split('/').reverse()
-            .join('');
-          secondDate = new Date(b.data?.['Planting and Growth Windows']?.['Reliable Establishment']?.values[secondLength - 1].split(' - ')[1]).toLocaleDateString('en-GB').split('/').reverse()
-            .join('');
+          // sorting by last reliable establishment date for descending and first for ascending
+          if (!sortFlag) {
+            firstDate = new Date(a.data?.['Planting and Growth Windows']?.['Reliable Establishment']?.values[firstLength - 1].split(' - ')[1]).toLocaleDateString('en-GB').split('/').reverse()
+              .join('');
+            secondDate = new Date(b.data?.['Planting and Growth Windows']?.['Reliable Establishment']?.values[secondLength - 1].split(' - ')[1]).toLocaleDateString('en-GB').split('/').reverse()
+              .join('');
+          } else {
+            firstDate = new Date(a.data?.['Planting and Growth Windows']?.['Reliable Establishment']?.values[firstLength - 1].split(' - ')[0]).toLocaleDateString('en-GB').split('/').reverse()
+              .join('');
+            secondDate = new Date(b.data?.['Planting and Growth Windows']?.['Reliable Establishment']?.values[secondLength - 1].split(' - ')[0]).toLocaleDateString('en-GB').split('/').reverse()
+              .join('');
+          }
           return firstDate.localeCompare(secondDate);
         }
-        return 1;
+        if (firstLength) {
+          return 1;
+        }
+        return -1;
+        // should there be other conditions here to accomodate if either firstLength or secondLength is 0 (have no planting data)
+        // return 1;
       });
     }
     if (!sortFlag) {
@@ -556,22 +569,12 @@ export const sortCrops = (type = 'Average Goals', crops = [], sortFlag = '', sel
       selectedItems.forEach((crop) => {
         selectedCropIds.push(crop.id);
       });
-      const newActiveShadow = crops.map((crop) => {
-        crop.inBasket = selectedCropIds.includes(crop.id);
-        return crop;
+      crops.sort((a, b) => {
+        if (selectedCropIds.includes(a.id)) return -1;
+        if (selectedCropIds.includes(b.id)) return 1;
+        return 0;
       });
-      if (newActiveShadow.length > 0) {
-        newActiveShadow.sort((a) => {
-          if (a.inBasket) {
-            return -1;
-          }
-          return 1;
-        });
-        if (!sortFlag) {
-          crops.reverse();
-        }
-        dispatchValue(newActiveShadow);
-      }
+      dispatchValue(crops);
     }
   }
   if (type === 'Crop Group') {
