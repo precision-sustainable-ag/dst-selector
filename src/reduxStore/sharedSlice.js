@@ -1,6 +1,5 @@
 const initialState = {
   progress: 0,
-  consent: false,
   snackOpen: false,
   snackMessage: '',
   ajaxInProgress: false,
@@ -8,8 +7,6 @@ const initialState = {
   speciesSelectorActivationFlag: true,
   comparisonKeys: [],
   myCoverCropListLocation: '',
-  snackVertical: 'bottom',
-  snackHorizontal: 'right',
   regionToggle: true,
   dataDictionary: {},
   apiBaseUrl: /(localhost|dev)/i.test(window.location)
@@ -19,13 +16,6 @@ const initialState = {
 
 export const updateProgress = (value) => ({
   type: 'UPDATE_PROGRESS',
-  payload: {
-    value,
-  },
-});
-
-export const updateConsent = (value) => ({
-  type: 'UPDATE_CONSENT',
   payload: {
     value,
   },
@@ -108,15 +98,6 @@ const sharedReducer = (state = initialState, action = null) => {
       }
       if (action.payload.value === 'HOME') {
         return { ...state, progress: 0 };
-      }
-      return { ...state };
-
-    case 'UPDATE_CONSENT':
-      if (action.payload.value === true) {
-        return { ...state, consent: true };
-      }
-      if (action.payload.value === false) {
-        return { ...state, consent: false };
       }
       return { ...state };
 

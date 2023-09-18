@@ -3,42 +3,37 @@ const initialState = {
     mapUnitName: '',
     drainageClass: [],
     floodingFrequency: [],
-    pondingFrequency: '',
     latLong: [],
   },
   soilDataOriginal: {
     mapUnitName: '',
     drainageClass: [],
     floodingFrequency: [],
-    pondingFrequency: '',
     latLong: [],
   },
-  isSoilDataLoading: false,
 };
 
 /* eslint-disable */
 export const updateSoilData = ({
-  mapUnitName, drainageClass, floodingFrequency, pondingFrequency, latLong,
+  mapUnitName, drainageClass, floodingFrequency, latLong,
 }) => ({
   type: 'UPDATE_SOIL_DATA',
   payload: {
     mapUnitName: mapUnitName,
     drainageClass: drainageClass,
     floodingFrequency: floodingFrequency,
-    pondingFrequency: pondingFrequency,
     latLong,
   },
 });
 
 export const updateSoilDataOriginal = ({
-  mapUnitName, drainageClass, floodingFrequency, pondingFrequency, latLong,
+  mapUnitName, drainageClass, floodingFrequency, latLong,
 }) => ({
   type: 'UPDATE_SOIL_DATA_ORIGINAL',
   payload: {
     mapUnitName: mapUnitName,
     drainageClass: drainageClass,
     floodingFrequency: floodingFrequency,
-    pondingFrequency: pondingFrequency,
     latLong,
   },
 });
@@ -75,7 +70,6 @@ const soilReducer = (state = initialState, action = null) => {
           mapUnitName: action.payload.mapUnitName,
           drainageClass: action.payload.drainageClass,
           floodingFrequency: action.payload.floodingFrequency,
-          pondingFrequency: action.payload.pondingFrequency,
           for: action.payload.latLong,
         },
       };
@@ -89,15 +83,8 @@ const soilReducer = (state = initialState, action = null) => {
           mapUnitName: action.payload.mapUnitName,
           drainageClass: action.payload.drainageClass,
           floodingFrequency: action.payload.floodingFrequency,
-          pondingFrequency: action.payload.pondingFrequency,
           for: action.payload.latLong,
         },
-      };
-
-    case 'TOGGLE_SOIL_LOADER':
-      return {
-        ...state,
-        isSoilDataLoading: action.payload.value, // unused
       };
 
     case 'UPDATE_DRAINAGE_CLASS':
