@@ -42,7 +42,7 @@ const Header = () => {
   // useState vars
   const [isRoot, setIsRoot] = useState(false);
   const [authModalOpen, setAuthModalOpen] = useState(true);
-  const [consentModalOpen, setConsentModalOpen] = useState(false);
+  const [consentModalOpen, setConsentModalOpen] = useState(true);
 
   const { isLoading, isAuthenticated, getAccessTokenSilently } = useAuth0();
   const isActive = {};
@@ -55,7 +55,7 @@ const Header = () => {
       getFields(token).then((data) => dispatchRedux(updateField(data)));
       getHistory(token).then((res) => {
         if (res.data) {
-          console.log('user history', res.data.json, res.data.fieldId);
+          console.log('load user history', res.data.json, res.data.fieldId);
           const {
             state, region, council, consent,
           } = res.data.json;
@@ -71,7 +71,7 @@ const Header = () => {
       });
     };
     if (isAuthenticated) getToken();
-    if (!isLoading && !isAuthenticated) setConsentModalOpen(true);
+    // if (!isLoading && !isAuthenticated) setConsentModalOpen(true);
   }, [isLoading, isAuthenticated, getAccessTokenSilently]);
 
   useEffect(() => {

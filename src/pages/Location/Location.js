@@ -99,7 +99,6 @@ const LocationComponent = () => {
 
   // update regionShorthandRef
   useEffect(() => {
-    console.log(regionShorthand)
     regionShorthandRef.current = regionShorthand;
   }, [regionShorthand]);
 
