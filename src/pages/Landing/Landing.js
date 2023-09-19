@@ -23,7 +23,7 @@ import { RegionSelectorMap } from '@psa/dst.ui.region-selector-map';
 import { callCoverCropApi } from '../../shared/constants';
 import '../../styles/landing.scss';
 import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset';
-import { updateRegions, updateRegion, updateStateInfo } from '../../reduxStore/mapSlice';
+import { updateRegions, updateStateInfo } from '../../reduxStore/mapSlice';
 
 const Landing = ({ height, title, bg }) => {
   const dispatchRedux = useDispatch();
@@ -59,7 +59,7 @@ const Landing = ({ height, title, bg }) => {
     // This was targeting the map object which didnt have a label or shorthand property.  Should be be getting done here?
   };
 
-  // Load map data based on current enviorment, set map selected state based on redux state
+  // Load map data based on current enviorment
   useEffect(() => {
     callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states`).then((stateData) => {
       const isDevEnvironment = /(localhost|dev)/i.test(window.location);
@@ -71,9 +71,9 @@ const Landing = ({ height, title, bg }) => {
     });
   }, []);
 
-  // set initial map state based on user history api, or when user click next and come back
+  // set initial map state based on stateIdRedux
+  // user history api/user click next and come back
   useEffect(() => {
-    // FIXME: I think this
     if (allStates.length && stateIdRedux) {
       const state = allStates.filter((s) => s.id === stateIdRedux);
       if (state.length > 0) {
@@ -110,14 +110,6 @@ const Landing = ({ height, title, bg }) => {
           }
 
           dispatchRedux(updateRegions(fetchedRegions));
-          // update region based on regions (selected region?)
-          // FIXME: this should be changed since now the stateIdRedux may come with region, do not need to initialize
-          if (fetchedRegions?.length > 0) {
-            dispatchRedux(updateRegion({
-              regionId: fetchedRegions[0]?.id ?? '',
-              regionShorthand: fetchedRegions[0]?.shorthand ?? '',
-            }));
-          }
         })
         .catch((err) => {
           // eslint-disable-next-line no-console

@@ -1,3 +1,4 @@
+/* eslint-disable  */
 /*
   This is the main location widget component
   styled using ../../styles/location.scss
@@ -26,9 +27,7 @@ import {
 } from '../../shared/constants';
 import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset';
 import PlantHardinessZone from '../CropSidebar/PlantHardinessZone/PlantHardinessZone';
-import {
-  changeAddressViaMap, updateLocation,
-} from '../../reduxStore/addressSlice';
+import { updateLocation } from '../../reduxStore/addressSlice';
 import { updateRegion } from '../../reduxStore/mapSlice';
 import { snackHandler } from '../../reduxStore/sharedSlice';
 import {
@@ -36,27 +35,16 @@ import {
 } from '../../reduxStore/weatherSlice';
 import { setSelectFieldId, updateField } from '../../reduxStore/userSlice';
 import UserFieldList from './UserFieldList/UserFieldList';
-import UserFieldDialog from './UserFieldDialog/UserFieldDialog';
+import UserFieldDialog, { initFieldDialogState } from './UserFieldDialog/UserFieldDialog';
 
 // eslint-disable-next-line import/no-webpack-loader-syntax, import/no-unresolved
 mapboxgl.workerClass = require('worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker').default;
-
-const initFieldDialogState = {
-  open: false,
-  fieldName: '',
-  error: false,
-  errorText: '',
-  actionType: '',
-  areaType: '',
-  prevName: '',
-};
 
 const LocationComponent = () => {
   const dispatchRedux = useDispatch();
 
   // redux vars
   const countyRedux = useSelector((stateRedux) => stateRedux.addressData.county);
-  const zoneRedux = useSelector((stateRedux) => stateRedux.addressData.zone);
   const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
   const markersRedux = useSelector((stateRedux) => stateRedux.addressData.markers);
   const regionsRedux = useSelector((stateRedux) => stateRedux.mapData.regions);
@@ -71,9 +59,7 @@ const LocationComponent = () => {
   const selectedFieldIdRedux = useSelector((stateRedux) => stateRedux.userData.selectedFieldId);
 
   // useState vars
-  const [selectedRegion, setSelectedRegion] = useState();
   const [handleConfirm, setHandleConfirm] = useState(false);
-  const [locZipCode, setLocZipCode] = useState();
   // const [regionShorthand, setRegionShorthand] = useState();
   const [selectedToEditSite, setSelectedToEditSite] = useState({});
   const [currentGeometry, setCurrentGeometry] = useState([]);
@@ -84,6 +70,7 @@ const LocationComponent = () => {
        ? userFieldRedux.data[userFieldRedux.data.length - 1].label
        : ''),
   );
+  console.log('selectedUserField', selectedUserField)
   // use a state to control if currently is adding a point
   const [isAddingPoint, setIsAddingPoint] = useState(true);
   const [mapFeatures, setMapFeatures] = useState([]);
@@ -91,6 +78,7 @@ const LocationComponent = () => {
 
   const { isAuthenticated } = useAuth0();
 
+  // calculate features shown on map
   const getFeatures = () => {
     if (userFields.length > 0 && selectedUserField !== '') {
       const selectedField = userFields.find((userField) => userField.label === selectedUserField);
@@ -101,6 +89,7 @@ const LocationComponent = () => {
     return [buildPoint(statesLatLongDict[stateLabelRedux][1], statesLatLongDict[stateLabelRedux][0])];
   };
 
+  // set map features, update selectedFieldIdRedux
   useEffect(() => {
     setMapFeatures(getFeatures());
     if (selectedUserField !== '') {
@@ -108,6 +97,7 @@ const LocationComponent = () => {
     }
   }, [selectedUserField]);
 
+  // set map initial lat lng
   const getLatLng = useCallback(() => {
     const getFieldLatLng = (field) => {
       if (field.geometry.type === 'Point') {
@@ -139,9 +129,9 @@ const LocationComponent = () => {
     }
   }, [selectedCropsRedux, myCoverCropListLocationRedux]);
 
-  const updateReg = (region) => {
+  // function for update region redux
+  const updateRegionRedux = (region) => {
     if (region !== undefined) {
-      // setRegionShorthand(region.shorthand);
       dispatchRedux(updateRegion({
         regionId: region.id ?? '',
         regionShorthand: region.shorthand ?? '',
@@ -149,26 +139,7 @@ const LocationComponent = () => {
     }
   };
 
-  useEffect(() => {
-    updateReg(regionsRedux[0]);
-  }, [regionsRedux]);
-
-  const handleMapChange = () => {
-    // eslint-disable-next-line eqeqeq
-    const regionInfo = regionsRedux.filter((region) => region.shorthand == selectedRegion);
-
-    updateReg(regionInfo[0]);
-  };
-
-  // FIXME: these lines only works once and set selectedRegion to "" if council is not mccc
-  useEffect(() => {
-    if (councilLabelRedux !== 'Midwest Cover Crop Council') {
-      setSelectedRegion(zoneRedux);
-    } else {
-      setSelectedRegion(countyRedux?.replace(' County', ''));
-    }
-  }, [zoneRedux, countyRedux]);
-
+  // when map marker changes, set addressRedux, update regionRedux based on zipcode
   useEffect(() => {
     const {
       latitude,
@@ -180,6 +151,7 @@ const LocationComponent = () => {
 
     if (latitude === markersRedux[0][0] && longitude === markersRedux[0][1]) { return; }
 
+    // if is adding a new point, open dialog
     if (isAuthenticated) {
       if (isAddingPoint && latitude) {
         const currentSelectedField = userFields.filter((userField) => userField.label === selectedUserField)[0]?.geometry;
@@ -195,154 +167,139 @@ const LocationComponent = () => {
     }
 
     if (Object.keys(selectedToEditSite).length > 0) {
-      setLocZipCode(zipCode);
       dispatchRedux(updateLocation(
         {
           address,
           markers: [[latitude, longitude]],
+          county,
         },
       ));
       dispatchRedux(snackHandler({
         snackOpen: true,
         snackMessage: 'Your location has been saved.',
       }));
+      callCoverCropApi(`https://phzmapi.org/${zipCode}.json`)
+        .then((response) => {
+          let { zone } = response;
 
-      if (selectedToEditSite.address) {
-        dispatchRedux(changeAddressViaMap(
-          {
-            address,
-            county,
-          },
-        ));
-      }
-      if (selectedRegion) {
-        handleMapChange();
-      }
+          let regionId = null;
+
+          if (zone !== '8a' && zone !== '8b') {
+            zone = zone.slice(0, -1);
+          }
+
+          if (regionsRedux?.length > 0) {
+            regionsRedux.forEach((region) => {
+              if (region.shorthand === zone) {
+                regionId = region.id;
+              }
+            });
+          }
+          if (councilShorthandRedux !== 'MCCC') {
+            dispatchRedux(updateRegion({
+              regionId: regionId ?? '',
+              regionShorthand: zone ?? '',
+            }));
+          } else {
+            // if council is MCCC, change selectedRegion based on county
+            const regionInfo = regionsRedux.filter((region) => region.shorthand === countyRedux?.replace(' County', ''));
+            updateRegionRedux(regionInfo[0]);
+          }
+        });
     }
   }, [selectedToEditSite]);
 
-  useEffect(() => {
-    // const { markers } = state;
-    const weatherApiURL = 'https://weather.covercrop-data.org';
+  // call cover crop api based on marker change
+  // useEffect(() => {
+  //   // const { markers } = state;
+  //   const weatherApiURL = 'https://weather.covercrop-data.org';
 
-    // update address on marker change
-    // ref forecastComponent
-    const lat = markersRedux[0][0];
-    const lon = markersRedux[0][1];
+  //   // update address on marker change
+  //   // ref forecastComponent
+  //   const lat = markersRedux[0][0];
+  //   const lon = markersRedux[0][1];
 
-    // since this updates with state; ideally, weather and soil info should be updated here
-    // get current lat long and get county, state and city
-    if (progressRedux >= 1 && markersRedux.length > 0) {
-      reverseGEO(lat, lon)
-        .then(async (resp) => {
-          const abbrState = abbrRegion(
-            resp?.features?.filter((feature) => feature?.place_type?.includes('region'))[0]?.text,
-            'abbr',
-          ).toLowerCase();
+  //   // since this updates with state; ideally, weather and soil info should be updated here
+  //   // get current lat long and get county, state and city
+  //   if (progressRedux >= 1 && markersRedux.length > 0) {
+  //     reverseGEO(lat, lon)
+  //       .then(async (resp) => {
+  //         const abbrState = abbrRegion(
+  //           resp?.features?.filter((feature) => feature?.place_type?.includes('region'))[0]?.text,
+  //           'abbr',
+  //         ).toLowerCase();
 
-          const city = resp?.features?.filter((feature) => feature?.place_type?.includes('place'))[0]?.text?.toLowerCase();
+  //         const city = resp?.features?.filter((feature) => feature?.place_type?.includes('place'))[0]?.text?.toLowerCase();
 
-          const currentMonthInt = moment().month() + 1;
-          // frost url
-          const frostUrl = `${weatherApiURL}/frost?lat=${lat}&lon=${lon}`;
-          // What was the 5-year average rainfall for city st during the month of currentMonthInt?
-          //  Dynamic dates ?
-          const averageRainUrl = `${weatherApiURL}/hourly?location=${city}%20${abbrState}&start=2015-01-01&end=2019-12-31`;
-          const averageRainForAMonthURL = `${averageRainUrl}&stats=sum(precipitation)/5&where=month=${currentMonthInt}&output=json`;
-          // What was the 5-year average annual rainfall for city st?
-          const fiveYearAvgRainURL = `${averageRainUrl}&stats=sum(precipitation)/5&output=json`;
-          // added "/" and do %100 to get them into correct format (want frost dates to look like 01/01/23)
-          const currYear = `/${(new Date().getFullYear() % 100).toString()}`;
-          const prevYear = `/${((new Date().getFullYear() % 100) - 1).toString()}`;
-          const oneDay = 24 * 60 * 60 * 1000; // milliseconds in a day
+  //         const currentMonthInt = moment().month() + 1;
+  //         // frost url
+  //         const frostUrl = `${weatherApiURL}/frost?lat=${lat}&lon=${lon}`;
+  //         // What was the 5-year average rainfall for city st during the month of currentMonthInt?
+  //         //  Dynamic dates ?
+  //         const averageRainUrl = `${weatherApiURL}/hourly?location=${city}%20${abbrState}&start=2015-01-01&end=2019-12-31`;
+  //         const averageRainForAMonthURL = `${averageRainUrl}&stats=sum(precipitation)/5&where=month=${currentMonthInt}&output=json`;
+  //         // What was the 5-year average annual rainfall for city st?
+  //         const fiveYearAvgRainURL = `${averageRainUrl}&stats=sum(precipitation)/5&output=json`;
+  //         // added "/" and do %100 to get them into correct format (want frost dates to look like 01/01/23)
+  //         const currYear = `/${(new Date().getFullYear() % 100).toString()}`;
+  //         const prevYear = `/${((new Date().getFullYear() % 100) - 1).toString()}`;
+  //         const oneDay = 24 * 60 * 60 * 1000; // milliseconds in a day
 
-          // call the frost url and then set frostFreeDays, averageFrostObject in store
-          callCoverCropApi(frostUrl)
-            .then(((frostResp) => {
-              const firstFrost = new Date(frostResp.firstfrost + prevYear);
-              const lastFrost = new Date(frostResp.lastfrost + currYear);
-              const frostFreeDays = Math.round(Math.abs((firstFrost.valueOf() - lastFrost.valueOf()) / oneDay));
+  //         // call the frost url and then set frostFreeDays, averageFrostObject in store
+  //         callCoverCropApi(frostUrl)
+  //           .then(((frostResp) => {
+  //             const firstFrost = new Date(frostResp.firstfrost + prevYear);
+  //             const lastFrost = new Date(frostResp.lastfrost + currYear);
+  //             const frostFreeDays = Math.round(Math.abs((firstFrost.valueOf() - lastFrost.valueOf()) / oneDay));
 
-              dispatchRedux(updateFrostFreeDays(frostFreeDays));
-              dispatchRedux(updateAvgFrostDates({
-                firstFrostDate: {
-                  month: firstFrost.toLocaleString('en-US', { month: 'long' }),
-                  day: firstFrost.getDate().toString(),
-                },
-                lastFrostDate: {
-                  month: lastFrost.toLocaleString('en-US', { month: 'long' }),
-                  day: lastFrost.getDate().toString(),
-                },
-              }));
-            })).catch((error) => {
-              // eslint-disable-next-line
-              console.log(`Weather API error code: ${error?.response?.status} for getting 5 year average rainfall for this month`);
-            });
+  //             dispatchRedux(updateFrostFreeDays(frostFreeDays));
+  //             dispatchRedux(updateAvgFrostDates({
+  //               firstFrostDate: {
+  //                 month: firstFrost.toLocaleString('en-US', { month: 'long' }),
+  //                 day: firstFrost.getDate().toString(),
+  //               },
+  //               lastFrostDate: {
+  //                 month: lastFrost.toLocaleString('en-US', { month: 'long' }),
+  //                 day: lastFrost.getDate().toString(),
+  //               },
+  //             }));
+  //           })).catch((error) => {
+  //             // eslint-disable-next-line
+  //             console.log(`Weather API error code: ${error?.response?.status} for getting 5 year average rainfall for this month`);
+  //           });
 
-          // call the frost url and then set averagePrecipitationForCurrentMonth in store
-          callCoverCropApi(averageRainForAMonthURL)
-            .then((rainResp) => {
-              let averagePrecipitationForCurrentMonth = rainResp[0]['sum(precipitation)/5'];
+  //         // call the frost url and then set averagePrecipitationForCurrentMonth in store
+  //         callCoverCropApi(averageRainForAMonthURL)
+  //           .then((rainResp) => {
+  //             let averagePrecipitationForCurrentMonth = rainResp[0]['sum(precipitation)/5'];
 
-              averagePrecipitationForCurrentMonth = parseFloat(
-                averagePrecipitationForCurrentMonth * 0.03937,
-              ).toFixed(2);
+  //             averagePrecipitationForCurrentMonth = parseFloat(
+  //               averagePrecipitationForCurrentMonth * 0.03937,
+  //             ).toFixed(2);
 
-              dispatchRedux(updateAvgPrecipCurrentMonth(averagePrecipitationForCurrentMonth));
-            })
-            .catch((error) => {
-              // eslint-disable-next-line
-              console.log(`Weather API error code: ${error?.response?.status} for getting 5 year average rainfall for this month`);
-            });
+  //             dispatchRedux(updateAvgPrecipCurrentMonth(averagePrecipitationForCurrentMonth));
+  //           })
+  //           .catch((error) => {
+  //             // eslint-disable-next-line
+  //             console.log(`Weather API error code: ${error?.response?.status} for getting 5 year average rainfall for this month`);
+  //           });
 
-          // call the frost url and then set fiveYearAvgRainAnnual in store
-          callCoverCropApi(fiveYearAvgRainURL)
-            .then((rainResp) => {
-              let fiveYearAvgRainAnnual = rainResp[0]['sum(precipitation)/5'];
-              fiveYearAvgRainAnnual = parseFloat(fiveYearAvgRainAnnual * 0.03937).toFixed(
-                2,
-              );
-              dispatchRedux(updateAvgPrecipAnnual(fiveYearAvgRainAnnual));
-            })
-            .catch((error) => {
-              // eslint-disable-next-line
-              console.log(`Weather API error code: ${error?.response?.status} for getting 5 year average rainfall for this month`);
-            });
-        });
-    }
-  }, [markersRedux]);
-
-  useEffect(() => {
-    if (!locZipCode) {
-      return;
-    }
-
-    callCoverCropApi(`https://phzmapi.org/${locZipCode}.json`)
-      .then((response) => {
-        let { zone } = response;
-
-        let regionId = null;
-
-        if (zone !== '8a' && zone !== '8b') {
-          zone = zone.slice(0, -1);
-        }
-
-        if (regionsRedux?.length > 0) {
-          regionsRedux.forEach((region) => {
-            if (region.shorthand === zone) {
-              regionId = region.id;
-            }
-          });
-        }
-        if (councilShorthandRedux !== 'MCCC') {
-          // setRegionShorthand(zone);
-          dispatchRedux(updateRegion({
-            regionId: regionId ?? '',
-            regionShorthand: zone ?? '',
-          }));
-        }
-      });
-  }, [locZipCode]);
+  //         // call the frost url and then set fiveYearAvgRainAnnual in store
+  //         callCoverCropApi(fiveYearAvgRainURL)
+  //           .then((rainResp) => {
+  //             let fiveYearAvgRainAnnual = rainResp[0]['sum(precipitation)/5'];
+  //             fiveYearAvgRainAnnual = parseFloat(fiveYearAvgRainAnnual * 0.03937).toFixed(
+  //               2,
+  //             );
+  //             dispatchRedux(updateAvgPrecipAnnual(fiveYearAvgRainAnnual));
+  //           })
+  //           .catch((error) => {
+  //             // eslint-disable-next-line
+  //             console.log(`Weather API error code: ${error?.response?.status} for getting 5 year average rainfall for this month`);
+  //           });
+  //       });
+  //   }
+  // }, [markersRedux]);
 
   // update userFieldRedux when component will unmount
   useEffect(() => () => {
@@ -351,6 +308,7 @@ const LocationComponent = () => {
     }
   }, []);
 
+  // map onDraw function
   const onDraw = (draw) => {
     if (isAuthenticated && draw.mode !== 'select') {
       setIsAddingPoint(false);
@@ -384,8 +342,8 @@ const LocationComponent = () => {
             <div className="row py-3 my-4 ">
               <div className="col-md-5 col-lg-6 col-sm-12 col-12">
                 <PlantHardinessZone
-                  updateReg={updateReg}
-                  regionShorthand={regionShorthandRedux}
+                  updateRegionRedux={updateRegionRedux}
+                  regionShorthandRedux={regionShorthandRedux}
                   regionsRedux={regionsRedux}
                   councilLabelRedux={councilLabelRedux}
                 />
