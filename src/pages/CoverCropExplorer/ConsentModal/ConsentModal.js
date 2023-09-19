@@ -1,9 +1,11 @@
 import {
   Modal, Box, Typography, Button, Grid,
 } from '@mui/material';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { updateConsent } from '../../../reduxStore/userSlice';
+
+const localStorageKey = 'consent';
 
 const ConsentModal = ({ modalOpen, setModalOpen }) => {
   const dispatchRedux = useDispatch();
@@ -20,7 +22,22 @@ const ConsentModal = ({ modalOpen, setModalOpen }) => {
     p: 4,
   };
 
+  useEffect(() => {
+    if (localStorage.getItem(localStorageKey) !== null) {
+      const { expiredAt } = JSON.parse(localStorage.getItem(localStorageKey));
+      if (new Date().getTime() < expiredAt) {
+        setModalOpen(false);
+      }
+    }
+  }, []);
+
   const handleModal = (choice) => {
+    const consentObject = {
+      choice,
+      // set user consent selection time as 180 days
+      expiredAt: new Date().getTime() + 180 * 24 * 60 * 1000,
+    };
+    localStorage.setItem(localStorageKey, JSON.stringify(consentObject));
     dispatchRedux(updateConsent(choice, new Date().toISOString()));
     setModalOpen((o) => !o);
   };
