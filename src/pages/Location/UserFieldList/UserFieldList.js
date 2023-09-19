@@ -14,11 +14,11 @@ const UserFieldList = ({
   userFields, field, setField, setFieldDialogState,
 }) => {
   const handleChange = (e) => {
-    setField(e.target.value);
+    setField(userFields.filter((userField) => userField.label === e.target.value)[0]);
   };
   const handleEdit = () => {
     setFieldDialogState((prev) => ({
-      ...prev, open: true, actionType: 'updateName', fieldName: field, prevName: field,
+      ...prev, open: true, actionType: 'updateName', fieldName: field.label, prevName: field.label,
     }));
   };
   const handleDelete = () => {
@@ -39,7 +39,7 @@ const UserFieldList = ({
               width: '100%',
               textAlign: 'left',
             }}
-            value={field}
+            value={Object.keys(field) === 0 ? '' : field.label}
             onChange={handleChange}
           >
             {userFields.map((userField, index) => {

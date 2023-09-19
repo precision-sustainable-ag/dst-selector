@@ -3,13 +3,12 @@
   styled using CustomStyles from ../../shared/constants
 */
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
 
 import { Typography } from '@mui/material';
 import { Map } from '@psa/dst.ui.map';
-import { useAuth0 } from '@auth0/auth0-react';
-import { CustomStyles, buildHistory, postHistory } from '../../../shared/constants';
+import { CustomStyles } from '../../../shared/constants';
 import SoilCondition from '../SoilCondition/SoilCondition';
 import WeatherConditions from '../../../components/WeatherConditions/WeatherConditions';
 
@@ -20,37 +19,7 @@ const LocationConfirmation = () => {
   const zoneRedux = useSelector((stateRedux) => stateRedux.addressData.zone);
   // const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
-
-  const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
-  const regionShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.regionShorthand);
-  const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
-  const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
-  const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
-  const consentRedux = useSelector((stateRedux) => stateRedux.userData.consent);
-  const selectedFieldIdRedux = useSelector((stateRedux) => stateRedux.userData.selectedFieldId);
-  const accessTokenRedux = useSelector((stateRedux) => stateRedux.userData.accessToken);
-
-  const { isAuthenticated } = useAuth0();
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      const history = buildHistory(
-        stateIdRedux,
-        stateLabelRedux,
-        regionIdRedux,
-        regionShorthandRedux,
-        councilLabelRedux,
-        councilShorthandRedux,
-        consentRedux.status,
-        consentRedux.date,
-        selectedFieldIdRedux,
-      );
-      console.log('save', history, selectedFieldIdRedux);
-
-      postHistory(accessTokenRedux, history);
-    }
-  }, []);
 
   return (
     <div

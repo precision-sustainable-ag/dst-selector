@@ -70,29 +70,28 @@ const UserFieldDialog = ({
         }
         postFields(accessTokenRedux, areaType === 'Polygon' ? geoCollection : point).then((newField) => {
           setUserFields([...userFields, newField.data]);
-          setSelectedUserField(fieldName);
+          setSelectedUserField(newField.data);
         });
       }
       if (actionType === 'update') {
         // Only supports polygon updates
         const { longitude, latitude } = selectedToEditSite;
-        const point = buildPoint(longitude, latitude, selectedUserField);
+        const point = buildPoint(longitude, latitude, selectedUserField.label);
         const polygon = currentGeometry.features.slice(-1)[0];
-        const geoCollection = buildGeometryCollection(point.geometry, polygon.geometry, selectedUserField);
+        const geoCollection = buildGeometryCollection(point.geometry, polygon.geometry, selectedUserField.label);
         postFields(accessTokenRedux, geoCollection).then((newField) => {
           setUserFields([...userFields.map((userField) => {
-            if (userField.label === selectedUserField) return newField.data;
+            if (userField.label === selectedUserField.label) return newField.data;
             return userField;
           })]);
         });
       }
       if (actionType === 'delete') {
-        const deletedField = userFields.filter((userField) => userField.label === selectedUserField);
-        deleteFields(accessTokenRedux, deletedField[0].id)
+        deleteFields(accessTokenRedux, selectedUserField.id)
           .then(() => {
-            const updatedUserFields = userFields.filter((userField) => userField.label !== selectedUserField);
+            const updatedUserFields = userFields.filter((userField) => userField.label !== selectedUserField.label);
             setUserFields(updatedUserFields);
-            setSelectedUserField(updatedUserFields.length > 0 ? updatedUserFields[0].label : '');
+            setSelectedUserField(updatedUserFields.length > 0 ? updatedUserFields[0] : {});
           });
       }
       if (actionType === 'updateName') {
@@ -106,9 +105,8 @@ const UserFieldDialog = ({
         deleteFields(accessTokenRedux, deletedField[0].id)
           .then(() => postFields(accessTokenRedux, newField))
           .then((resField) => {
-            // setSelectedUserField('');
             setUserFields([...userFields.filter((userField) => userField.label !== prevName), resField.data]);
-            setSelectedUserField(fieldName);
+            setSelectedUserField(resField.data);
           });
       }
     } else {
