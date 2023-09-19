@@ -49,6 +49,8 @@ const Header = () => {
 
   useEffect(() => {
     const getToken = async () => {
+      // firstly hide consent modal, decide whether to show based on user history api call result
+      setConsentModalOpen(false);
       const token = await getAccessTokenSilently();
       dispatchRedux(updateAccessToken(token));
       // Initially get user field data
