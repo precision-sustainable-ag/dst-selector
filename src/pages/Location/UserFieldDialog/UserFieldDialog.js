@@ -17,7 +17,7 @@ import {
   postFields, buildPoint, buildGeometryCollection, deleteFields,
 } from '../../../shared/constants';
 
-const initFieldDialogState = {
+export const initFieldDialogState = {
   open: false,
   fieldName: '',
   error: false,
