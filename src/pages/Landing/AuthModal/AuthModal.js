@@ -38,7 +38,7 @@ const AuthModal = ({ modalOpen, setModalOpen }) => {
   const handleModal = () => {
     const authObject = {
       // set not show auth modal time as 14 days
-      expiredAt: new Date().getTime() + 14 * 24 * 60 * 1000,
+      expiredAt: new Date().getTime() + 14 * 24 * 60 * 60 * 1000,
     };
     localStorage.setItem(localStorageKey, JSON.stringify(authObject));
     setModalOpen((open) => !open);

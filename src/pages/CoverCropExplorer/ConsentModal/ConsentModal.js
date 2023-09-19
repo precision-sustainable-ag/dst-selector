@@ -35,7 +35,7 @@ const ConsentModal = ({ modalOpen, setModalOpen }) => {
     const consentObject = {
       choice,
       // set user consent selection time as 180 days
-      expiredAt: new Date().getTime() + 180 * 24 * 60 * 1000,
+      expiredAt: new Date().getTime() + 180 * 24 * 60 * 60 * 1000,
     };
     localStorage.setItem(localStorageKey, JSON.stringify(consentObject));
     dispatchRedux(updateConsent(choice, new Date().toISOString()));
