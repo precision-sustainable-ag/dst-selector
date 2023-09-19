@@ -15,7 +15,9 @@ import ToggleOptions from './ToggleOptions/ToggleOptions';
 import {
   updateAccessToken, updateConsent, updateField, setSelectFieldId,
 } from '../../reduxStore/userSlice';
-import { getFields, getHistory } from '../../shared/constants';
+import {
+  getFields, getHistory, buildHistory, postHistory,
+} from '../../shared/constants';
 import AuthButton from '../../components/Auth/AuthButton/AuthButton';
 import { updateRegion, updateStateInfo } from '../../reduxStore/mapSlice';
 import ConsentModal from '../CoverCropExplorer/ConsentModal/ConsentModal';
@@ -23,13 +25,27 @@ import AuthModal from '../Landing/AuthModal/AuthModal';
 
 const Header = () => {
   const dispatchRedux = useDispatch();
+
+  // redux vars
   const markersRedux = useSelector((stateRedux) => stateRedux.addressData.markers);
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
+  const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
+  const regionShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.regionShorthand);
+  const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
+  const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
+  const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
+  const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
+  const consentRedux = useSelector((stateRedux) => stateRedux.userData.consent);
+  const selectedFieldIdRedux = useSelector((stateRedux) => stateRedux.userData.selectedFieldId);
+  const accessTokenRedux = useSelector((stateRedux) => stateRedux.userData.accessToken);
+
+  // useState vars
   const [isRoot, setIsRoot] = useState(false);
-  const { isLoading, isAuthenticated, getAccessTokenSilently } = useAuth0();
-  const isActive = {};
   const [authModalOpen, setAuthModalOpen] = useState(true);
   const [consentModalOpen, setConsentModalOpen] = useState(false);
+
+  const { isLoading, isAuthenticated, getAccessTokenSilently } = useAuth0();
+  const isActive = {};
 
   useEffect(() => {
     const getToken = async () => {
@@ -39,7 +55,7 @@ const Header = () => {
       getFields(token).then((data) => dispatchRedux(updateField(data)));
       getHistory(token).then((res) => {
         if (res.data) {
-          console.log('user history', res.data.json);
+          console.log('user history', res.data.json, res.data.fieldId);
           const {
             state, region, council, consent,
           } = res.data.json;
@@ -57,6 +73,25 @@ const Header = () => {
     if (isAuthenticated) getToken();
     if (!isLoading && !isAuthenticated) setConsentModalOpen(true);
   }, [isLoading, isAuthenticated, getAccessTokenSilently]);
+
+  useEffect(() => {
+    if (isAuthenticated && (progressRedux === 1 || progressRedux === 2)) {
+      const history = buildHistory(
+        stateIdRedux,
+        stateLabelRedux,
+        regionIdRedux,
+        regionShorthandRedux,
+        councilLabelRedux,
+        councilShorthandRedux,
+        consentRedux.status,
+        consentRedux.date,
+        selectedFieldIdRedux,
+      );
+      console.log('save', history, selectedFieldIdRedux);
+      postHistory(accessTokenRedux, history);
+    }
+    // have to add regionShorthandRedux to dependency since Location cleanup is slower than this function
+  }, [progressRedux, regionShorthandRedux]);
 
   useEffect(() => {
     if (window.location.pathname === '/explorer') {

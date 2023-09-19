@@ -12,6 +12,7 @@ import React, {
   useEffect,
   useState,
   useCallback,
+  useRef,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Search } from '@mui/icons-material';
@@ -60,30 +61,31 @@ const LocationComponent = () => {
 
   // useState vars
   const [handleConfirm, setHandleConfirm] = useState(false);
-  // const [regionShorthand, setRegionShorthand] = useState();
+  const [regionShorthand, setRegionShorthand] = useState(regionShorthandRedux);
   const [selectedToEditSite, setSelectedToEditSite] = useState({});
   const [currentGeometry, setCurrentGeometry] = useState([]);
   const [fieldDialogState, setFieldDialogState] = useState(initFieldDialogState);
   const [selectedUserField, setSelectedUserField] = useState(
-    userFieldRedux?.data.filter((field) => field.id === selectedFieldIdRedux)[0]?.label
+    userFieldRedux?.data.filter((field) => field.id === selectedFieldIdRedux)[0]
      || (userFieldRedux && userFieldRedux.data.length
-       ? userFieldRedux.data[userFieldRedux.data.length - 1].label
-       : ''),
+       ? userFieldRedux.data[userFieldRedux.data.length - 1]
+       : {}),
   );
-  console.log('selectedUserField', selectedUserField)
   // use a state to control if currently is adding a point
   const [isAddingPoint, setIsAddingPoint] = useState(true);
   const [mapFeatures, setMapFeatures] = useState([]);
   const [userFields, setUserFields] = useState(userFieldRedux ? [...userFieldRedux.data] : []);
 
+  const selectedUserFieldRef = useRef(selectedUserField);
+  const regionShorthandRef = useRef(regionShorthand);
+
   const { isAuthenticated } = useAuth0();
 
   // calculate features shown on map
   const getFeatures = () => {
-    if (userFields.length > 0 && selectedUserField !== '') {
-      const selectedField = userFields.find((userField) => userField.label === selectedUserField);
-      if (selectedField.geometry.type === 'Point') return [selectedField];
-      if (selectedField.geometry.type === 'GeometryCollection') return drawAreaFromGeoCollection(selectedField);
+    if (userFields.length > 0 && Object.keys(selectedUserField) !== 0) {
+      if (selectedUserField.geometry.type === 'Point') return [selectedUserField];
+      if (selectedUserField.geometry.type === 'GeometryCollection') return drawAreaFromGeoCollection(selectedUserField);
     }
     // reset default field to state capitol
     return [buildPoint(statesLatLongDict[stateLabelRedux][1], statesLatLongDict[stateLabelRedux][0])];
@@ -92,10 +94,14 @@ const LocationComponent = () => {
   // set map features, update selectedFieldIdRedux
   useEffect(() => {
     setMapFeatures(getFeatures());
-    if (selectedUserField !== '') {
-      dispatchRedux(setSelectFieldId(userFields.filter((field) => field.label === selectedUserField)[0].id));
-    }
+    selectedUserFieldRef.current = selectedUserField;
   }, [selectedUserField]);
+
+  // update regionShorthandRef
+  useEffect(() => {
+    console.log(regionShorthand)
+    regionShorthandRef.current = regionShorthand;
+  }, [regionShorthand]);
 
   // set map initial lat lng
   const getLatLng = useCallback(() => {
@@ -110,8 +116,7 @@ const LocationComponent = () => {
       return undefined;
     };
     if (selectedFieldIdRedux !== null) {
-      const selectedField = userFields.find((userField) => userField.label === selectedUserField);
-      return getFieldLatLng(selectedField);
+      return getFieldLatLng(selectedUserField);
     }
     if (userFieldRedux && userFieldRedux.data.length > 0) {
       const currentField = userFieldRedux.data[userFieldRedux.data.length - 1];
@@ -129,16 +134,6 @@ const LocationComponent = () => {
     }
   }, [selectedCropsRedux, myCoverCropListLocationRedux]);
 
-  // function for update region redux
-  const updateRegionRedux = (region) => {
-    if (region !== undefined) {
-      dispatchRedux(updateRegion({
-        regionId: region.id ?? '',
-        regionShorthand: region.shorthand ?? '',
-      }));
-    }
-  };
-
   // when map marker changes, set addressRedux, update regionRedux based on zipcode
   useEffect(() => {
     const {
@@ -152,9 +147,8 @@ const LocationComponent = () => {
     if (latitude === markersRedux[0][0] && longitude === markersRedux[0][1]) { return; }
 
     // if is adding a new point, open dialog
-    if (isAuthenticated) {
-      if (isAddingPoint && latitude) {
-        const currentSelectedField = userFields.filter((userField) => userField.label === selectedUserField)[0]?.geometry;
+    if (isAuthenticated && isAddingPoint && latitude) {
+        const currentSelectedField = selectedUserField?.geometry;
         if ((!currentSelectedField && latitude !== statesLatLongDict[stateLabelRedux][0])
           || (currentSelectedField?.type === 'Point' && latitude !== currentSelectedField?.coordinates[1])
           || (currentSelectedField?.type === 'GeometryCollection' && latitude !== currentSelectedField?.geometries[0].coordinates[1])
@@ -163,7 +157,6 @@ const LocationComponent = () => {
             ...fieldDialogState, open: true, actionType: 'add', areaType: 'Point',
           });
         }
-      }
     }
 
     if (Object.keys(selectedToEditSite).length > 0) {
@@ -179,33 +172,44 @@ const LocationComponent = () => {
         snackMessage: 'Your location has been saved.',
       }));
       callCoverCropApi(`https://phzmapi.org/${zipCode}.json`)
-        .then((response) => {
-          let { zone } = response;
+      .then((response) => {
+        let { zone } = response;
 
-          let regionId = null;
+        let regionId = null;
 
-          if (zone !== '8a' && zone !== '8b') {
-            zone = zone.slice(0, -1);
-          }
+        if (zone !== '8a' && zone !== '8b') {
+          zone = zone.slice(0, -1);
+        }
 
-          if (regionsRedux?.length > 0) {
-            regionsRedux.forEach((region) => {
-              if (region.shorthand === zone) {
-                regionId = region.id;
-              }
-            });
-          }
+        if (regionsRedux?.length > 0) {
+          regionsRedux.forEach((region) => {
+            if (region.shorthand === zone) {
+              regionId = region.id;
+            }
+          });
+        }
+        if (selectedUserField.id === selectedFieldIdRedux && regionShorthandRedux !== null) {
+          // if there exists available region from user history api, set it as user history value
+          setRegionShorthand(regionShorthandRedux);
+        }
+        else {
           if (councilShorthandRedux !== 'MCCC') {
-            dispatchRedux(updateRegion({
-              regionId: regionId ?? '',
-              regionShorthand: zone ?? '',
-            }));
+            setRegionShorthand(zone);
+            // dispatchRedux(updateRegion({
+            //   regionId: regionId ?? '',
+            //   regionShorthand: zone ?? '',
+            // }));
           } else {
             // if council is MCCC, change selectedRegion based on county
-            const regionInfo = regionsRedux.filter((region) => region.shorthand === countyRedux?.replace(' County', ''));
-            updateRegionRedux(regionInfo[0]);
+            setRegionShorthand(countyRedux.replace(' County', ''));
+            // const regionInfo = regionsRedux.filter((region) => region.shorthand === countyRedux?.replace(' County', ''));
+            // updateRegionRedux(regionInfo[0]);
           }
-        });
+        }
+        
+      });
+      
+      
     }
   }, [selectedToEditSite]);
 
@@ -303,8 +307,15 @@ const LocationComponent = () => {
 
   // update userFieldRedux when component will unmount
   useEffect(() => () => {
+    const selectedRegion = regionsRedux.filter((region) => region.shorthand === regionShorthandRef.current)[0];
+    console.log('selectedRegion', selectedRegion, regionShorthandRef.current);
+    dispatchRedux(updateRegion({
+      regionId: selectedRegion.id ?? '',
+      regionShorthand: selectedRegion.shorthand ?? '',
+    }));
     if (isAuthenticated) {
       getFields(accessTokenRedux).then((fields) => dispatchRedux(updateField(fields)));
+      dispatchRedux(setSelectFieldId(selectedUserFieldRef.current.id));
     }
   }, []);
 
@@ -342,8 +353,8 @@ const LocationComponent = () => {
             <div className="row py-3 my-4 ">
               <div className="col-md-5 col-lg-6 col-sm-12 col-12">
                 <PlantHardinessZone
-                  updateRegionRedux={updateRegionRedux}
-                  regionShorthandRedux={regionShorthandRedux}
+                  regionShorthand={regionShorthand}
+                  setRegionShorthand={setRegionShorthand}
                   regionsRedux={regionsRedux}
                   councilLabelRedux={councilLabelRedux}
                 />
