@@ -23,7 +23,7 @@ import { RegionSelectorMap } from '@psa/dst.ui.region-selector-map';
 import { callCoverCropApi } from '../../shared/constants';
 import '../../styles/landing.scss';
 import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset';
-import { updateRegions, updateStateInfo, updateRegion } from '../../reduxStore/mapSlice';
+import { updateRegions, updateStateInfo } from '../../reduxStore/mapSlice';
 
 const Landing = ({ height, title, bg }) => {
   const dispatchRedux = useDispatch();
@@ -37,7 +37,6 @@ const Landing = ({ height, title, bg }) => {
   const consentRedux = useSelector((stateRedux) => stateRedux.userData.consent);
   const myCoverCropListLocationRedux = useSelector((stateRedux) => stateRedux.sharedData.myCoverCropListLocation);
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
-  const regionShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.regionShorthand);
 
   // useState vars
   const [handleConfirm, setHandleConfirm] = useState(false);
@@ -111,13 +110,6 @@ const Landing = ({ height, title, bg }) => {
           }
 
           dispatchRedux(updateRegions(fetchedRegions));
-          // if no initialized region(from user history), initialize the region
-          if (regionShorthandRedux === null && fetchedRegions?.length > 0) {
-            dispatchRedux(updateRegion({
-              regionId: fetchedRegions[0]?.id ?? '',
-              regionShorthand: fetchedRegions[0]?.shorthand ?? '',
-            }));
-          }
         })
         .catch((err) => {
           // eslint-disable-next-line no-console
