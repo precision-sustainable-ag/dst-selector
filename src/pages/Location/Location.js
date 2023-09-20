@@ -275,7 +275,6 @@ const LocationComponent = () => {
   // update region and userFieldRedux when component will unmount
   useEffect(() => () => {
     const selectedRegion = regionsRedux.filter((region) => region.shorthand === regionShorthandRef.current)[0];
-    // console.log('selectedRegion', selectedRegion, regionShorthandRef.current);
     dispatchRedux(updateRegion({
       regionId: selectedRegion.id ?? '',
       regionShorthand: selectedRegion.shorthand ?? '',
