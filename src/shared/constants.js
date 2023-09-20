@@ -286,12 +286,6 @@ export const getRating = (ratng) => {
 
 export const allMonths = moment().localeData().monthsShort();
 
-export const greenBarExpansionPanelHeight = {
-  large: '600px',
-  medium: '600px',
-  small: '600px',
-};
-
 export const trimString = (stringFull, size) => {
   if (!Number.isNaN(size)) {
     return `${stringFull.substring(0, size)}${stringFull.length > 25 ? '...' : ''}`;
@@ -910,6 +904,7 @@ export const getFields = async (accessToken = null) => {
   };
   return fetch(url, config)
     .then((res) => res.json())
+    // eslint-disable-next-line no-console
     .catch((err) => console.log(err));
 };
 
@@ -925,6 +920,7 @@ export const postFields = async (accessToken = null, fieldsData = null) => {
   };
   return fetch(url, config)
     .then((res) => res.json())
+    // eslint-disable-next-line no-console
     .catch((err) => console.log(err));
 };
 
@@ -939,6 +935,7 @@ export const deleteFields = async (accessToken = null, id = null) => {
   };
   return fetch(url, config)
     .then((res) => res.json())
+    // eslint-disable-next-line no-console
     .catch((err) => console.log(err));
 };
 
