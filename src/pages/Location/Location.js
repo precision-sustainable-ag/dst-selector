@@ -44,7 +44,6 @@ const LocationComponent = () => {
 
   // redux vars
   const countyRedux = useSelector((stateRedux) => stateRedux.addressData.county);
-  const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
   const markersRedux = useSelector((stateRedux) => stateRedux.addressData.markers);
   const regionsRedux = useSelector((stateRedux) => stateRedux.mapData.regions);
   const regionShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.regionShorthand);
