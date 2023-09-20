@@ -5,7 +5,6 @@
 
 import { Grid } from '@mui/material';
 import React, { useEffect } from 'react';
-import Header from '../Header/Header';
 import MITLicenseText from './MITLicenseText/MITLicenseText';
 import AgInformaticsLicenseText from './AgInformaticsLicenseText/AgInformaticsLicenseText';
 
@@ -24,15 +23,12 @@ const License = ({ licenseType = 'MIT' }) => {
     }
   }, [licenseType]);
   return (
-    <div className="contentWrapper" id="mainContentWrapper">
-      <Header logo="neccc_wide_logo_color_web.jpg" />
-      <div className="container-fluid mt-5">
-        <Grid container>
-          <Grid item>
-            {licenseType === 'AgInformatics' ? <AgInformaticsLicenseText /> : <MITLicenseText />}
-          </Grid>
+    <div className="container-fluid mt-5">
+      <Grid container>
+        <Grid item>
+          {licenseType === 'AgInformatics' ? <AgInformaticsLicenseText /> : <MITLicenseText />}
         </Grid>
-      </div>
+      </Grid>
     </div>
   );
 };

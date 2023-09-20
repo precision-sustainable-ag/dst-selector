@@ -11,11 +11,9 @@ import { useHistory } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import ReactGA from 'react-ga';
-import Header from '../Header/Header';
 import ExplorerCardView from './ExplorerCardView/ExplorerCardView';
 import ConsentModal from './ConsentModal/ConsentModal';
 import CropSidebar from '../CropSidebar/CropSidebar';
-import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset';
 import { updateRegion, updateStateInfo } from '../../reduxStore/mapSlice';
 
 const CoverCropExplorer = () => {
@@ -26,12 +24,9 @@ const CoverCropExplorer = () => {
   const sfilters = filterStateRedux[section];
   const activeCropDataRedux = useSelector((stateRedux) => stateRedux.cropData.activeCropData);
   const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
-  const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
   const consentRedux = useSelector((stateRedux) => stateRedux.userData.consent);
-  const myCoverCropListLocationRedux = useSelector((stateRedux) => stateRedux.sharedData.myCoverCropListLocation);
   const [updatedActiveCropData, setUpdatedActiveCropData] = useState([]);
   // const { activeCropData } = state;
-  const [handleConfirm, setHandleConfirm] = useState(false);
   const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
 
   // open crop if url exists
@@ -81,17 +76,9 @@ const CoverCropExplorer = () => {
     }
   }, [stateIdRedux]);
 
-  useEffect(() => {
-    if (myCoverCropListLocationRedux !== 'explorer' && selectedCropsRedux?.length > 0) {
-      // document.title = 'Cover Crop Explorer';
-      setHandleConfirm(true);
-    }
-  }, [selectedCropsRedux, myCoverCropListLocationRedux]);
-
   return (
-    <div className="contentWrapper">
+    <>
       <ConsentModal />
-      <Header logo="neccc_wide_logo_color_web.jpg" />
       <div className="container-fluid mt-4 mb-4">
         <div className="row mt-3">
           <div className="col-md-12 col-lg-3 col-xl-2 col-12">
@@ -119,8 +106,7 @@ const CoverCropExplorer = () => {
           </div>
         </div>
       </div>
-      <MyCoverCropReset handleConfirm={handleConfirm} setHandleConfirm={setHandleConfirm} />
-    </div>
+    </>
   );
 };
 
