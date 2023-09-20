@@ -22,7 +22,6 @@ import ReactGA from 'react-ga';
 import { RegionSelectorMap } from '@psa/dst.ui.region-selector-map';
 import { callCoverCropApi } from '../../shared/constants';
 import '../../styles/landing.scss';
-import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset';
 import { updateRegions, updateStateInfo } from '../../reduxStore/mapSlice';
 
 const Landing = ({ height, title, bg }) => {
@@ -33,13 +32,10 @@ const Landing = ({ height, title, bg }) => {
   // redux vars
   const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
   const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
-  const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
   const consentRedux = useSelector((stateRedux) => stateRedux.userData.consent);
-  const myCoverCropListLocationRedux = useSelector((stateRedux) => stateRedux.sharedData.myCoverCropListLocation);
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
 
   // useState vars
-  const [handleConfirm, setHandleConfirm] = useState(false);
   const [containerHeight, setContainerHeight] = useState(height);
   const [allStates, setAllStates] = useState([]);
   // This is the state obj mapped by mapState(filtered from allStates, these 2 objs are not same)
@@ -190,9 +186,6 @@ const Landing = ({ height, title, bg }) => {
 
   useEffect(() => {
     document.title = 'Cover Crop Selector';
-    if (myCoverCropListLocationRedux !== 'selector' && selectedCropsRedux.length > 0) {
-      setHandleConfirm(true);
-    }
   }, []);
 
   return (
@@ -329,7 +322,6 @@ const Landing = ({ height, title, bg }) => {
           </Grid>
         </Grid>
       </Grid>
-      <MyCoverCropReset handleConfirm={handleConfirm} setHandleConfirm={setHandleConfirm} />
     </div>
   );
 };

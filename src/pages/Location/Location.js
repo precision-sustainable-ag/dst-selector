@@ -25,7 +25,6 @@ import {
   abbrRegion, reverseGEO, callCoverCropApi, getFields,
   buildPoint, drawAreaFromGeoCollection,
 } from '../../shared/constants';
-import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset';
 import PlantHardinessZone from '../CropSidebar/PlantHardinessZone/PlantHardinessZone';
 import { updateLocation } from '../../reduxStore/addressSlice';
 import { updateRegion } from '../../reduxStore/mapSlice';
@@ -53,13 +52,11 @@ const LocationComponent = () => {
   const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
-  const myCoverCropListLocationRedux = useSelector((stateRedux) => stateRedux.sharedData.myCoverCropListLocation);
   const accessTokenRedux = useSelector((stateRedux) => stateRedux.userData.accessToken);
   const userFieldRedux = useSelector((stateRedux) => stateRedux.userData.field);
   const selectedFieldIdRedux = useSelector((stateRedux) => stateRedux.userData.selectedFieldId);
 
   // useState vars
-  const [handleConfirm, setHandleConfirm] = useState(false);
   const [regionShorthand, setRegionShorthand] = useState(regionShorthandRedux || regionsRedux[0].shorthand);
   const [selectedToEditSite, setSelectedToEditSite] = useState({});
   const [currentGeometry, setCurrentGeometry] = useState([]);
@@ -125,12 +122,6 @@ const LocationComponent = () => {
     }
     return [47, -122];
   }, [stateLabelRedux]);
-
-  useEffect(() => {
-    if (selectedCropsRedux.length > 0) {
-      setHandleConfirm(true);
-    }
-  }, [selectedCropsRedux, myCoverCropListLocationRedux]);
 
   // when map marker changes, set addressRedux, update regionRedux based on zipcode
   useEffect(() => {
@@ -380,7 +371,6 @@ const LocationComponent = () => {
           </div>
         </div>
       </div>
-      <MyCoverCropReset handleConfirm={handleConfirm} setHandleConfirm={setHandleConfirm} from="selector" />
       <UserFieldDialog
         fieldDialogState={fieldDialogState}
         setFieldDialogState={setFieldDialogState}

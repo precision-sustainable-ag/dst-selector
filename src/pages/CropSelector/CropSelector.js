@@ -21,7 +21,6 @@ import MyCoverCropList from '../MyCoverCropList/MyCoverCropList';
 import CropCalendarView from './CropCalendarView/CropCalendarView';
 import CropSidebar from '../CropSidebar/CropSidebar';
 import CropTableComponent from './CropTable/CropTable';
-import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset';
 import { sortCrops } from '../../shared/constants';
 import { updateActiveCropData } from '../../reduxStore/cropSlice';
 import { updateProgress } from '../../reduxStore/sharedSlice';
@@ -60,11 +59,9 @@ const CropSelector = (props) => {
   // redux vars
   const activeCropDataRedux = useSelector((stateRedux) => stateRedux.cropData.activeCropData);
   const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
-  const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const consentRedux = useSelector((stateRedux) => stateRedux.userData.consent);
   const speciesSelectorActivationFlagRedux = useSelector((stateRedux) => stateRedux.sharedData.speciesSelectorActivationFlag);
-  const myCoverCropListLocationRedux = useSelector((stateRedux) => stateRedux.sharedData.myCoverCropListLocation);
 
   // useState vars
   const [showGrowthWindow, setShowGrowthWindow] = useState(true);
@@ -73,7 +70,6 @@ const CropSelector = (props) => {
   const [comparisonView, setComparisonView] = useState(false);
   const [cropData, setCropData] = useState([]);
   const [updatedActiveCropData, setUpdatedActiveCropData] = useState([]);
-  const [handleConfirm, setHandleConfirm] = useState(false);
 
   const sortCropsBy = (flag) => {
     const dispatchValue = (updatedCropData) => dispatchRedux(updateActiveCropData(updatedCropData));
@@ -86,12 +82,6 @@ const CropSelector = (props) => {
       dispatchValue(activeCropDataShadow);
     }
   };
-
-  useEffect(() => {
-    if (myCoverCropListLocationRedux !== 'selector' && selectedCropsRedux.length > 0) {
-      setHandleConfirm(true);
-    }
-  }, [selectedCropsRedux, myCoverCropListLocationRedux]);
 
   useEffect(() => {
     sortCropsBy(true);
@@ -243,7 +233,6 @@ const CropSelector = (props) => {
           <KeyboardArrowUp />
         </Fab>
       </ScrollTop>
-      <MyCoverCropReset handleConfirm={handleConfirm} setHandleConfirm={setHandleConfirm} />
     </Grid>
   );
 };
