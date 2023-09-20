@@ -58,14 +58,13 @@ const Header = () => {
   }, [history]);
 
   useEffect(() => {
-    const getToken = async () => {
+    const fetchUserData = async () => {
       const token = await getAccessTokenSilently();
       dispatchRedux(updateAccessToken(token));
       // Initially get user field data
       getFields(token).then((data) => dispatchRedux(updateField(data)));
       getHistory(token).then((res) => {
         if (res.data) {
-          console.log('load user history', res.data.json, res.data.fieldId);
           const {
             state, region, council, consent,
           } = res.data.json;
@@ -97,7 +96,7 @@ const Header = () => {
         }
       });
     };
-    if (isAuthenticated) getToken();
+    if (isAuthenticated) fetchUserData();
   }, [isAuthenticated, getAccessTokenSilently]);
 
   useEffect(() => {
@@ -113,7 +112,6 @@ const Header = () => {
         consentRedux.date,
         selectedFieldIdRedux,
       );
-      console.log('save', userHistory, selectedFieldIdRedux);
       postHistory(accessTokenRedux, userHistory);
     }
     // have to add regionShorthandRedux to dependency since Location cleanup is slower than this function
