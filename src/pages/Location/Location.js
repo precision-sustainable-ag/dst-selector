@@ -1,4 +1,3 @@
-// /* eslint-disable  */
 /*
   This is the main location widget component
   styled using ../../styles/location.scss
@@ -115,7 +114,6 @@ const LocationComponent = () => {
       return undefined;
     };
     if (selectedFieldIdRedux !== null) {
-      console.log(1, selectedFieldIdRedux);
       return getFieldLatLng(selectedUserField);
     }
     if (userFieldRedux && userFieldRedux.data.length > 0) {
@@ -284,7 +282,7 @@ const LocationComponent = () => {
     }
   }, [markersRedux]);
 
-  // update userFieldRedux when component will unmount
+  // update region and userFieldRedux when component will unmount
   useEffect(() => () => {
     const selectedRegion = regionsRedux.filter((region) => region.shorthand === regionShorthandRef.current)[0];
     // console.log('selectedRegion', selectedRegion, regionShorthandRef.current);

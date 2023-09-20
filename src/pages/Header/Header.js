@@ -42,15 +42,13 @@ const Header = () => {
   // useState vars
   const [isRoot, setIsRoot] = useState(false);
   const [authModalOpen, setAuthModalOpen] = useState(true);
-  const [consentModalOpen, setConsentModalOpen] = useState(true);
+  const [consentModalOpen, setConsentModalOpen] = useState(false);
 
-  const { isLoading, isAuthenticated, getAccessTokenSilently } = useAuth0();
+  const { isAuthenticated, getAccessTokenSilently } = useAuth0();
   const isActive = {};
 
   useEffect(() => {
     const getToken = async () => {
-      // firstly hide consent modal, decide whether to show based on user history api call result
-      setConsentModalOpen(false);
       const token = await getAccessTokenSilently();
       dispatchRedux(updateAccessToken(token));
       // Initially get user field data
@@ -67,14 +65,25 @@ const Header = () => {
           }));
           dispatchRedux(updateRegion({ regionId: region.id, regionShorthand: region.shorthand }));
           dispatchRedux(updateConsent(consent.status, consent.date));
+          // The consent is mainly use localstorage to test is expired, use history to update localStorage
+          const consentKey = 'consent';
+          if (localStorage.getItem(consentKey) === null) {
+            const consentObject = {
+              choice: consent.status,
+              // set user consent selection time as 180 days
+              expiredAt: new Date(consent.date).getTime() + 180 * 24 * 60 * 60 * 1000,
+            };
+            localStorage.setItem(consentKey, JSON.stringify(consentObject));
+          }
           const selectedFieldId = res.data.fieldId;
           dispatchRedux(setSelectFieldId(selectedFieldId));
-        } else setConsentModalOpen(true);
+        } else {
+          setConsentModalOpen(true);
+        }
       });
     };
     if (isAuthenticated) getToken();
-    // if (!isLoading && !isAuthenticated) setConsentModalOpen(true);
-  }, [isLoading, isAuthenticated, getAccessTokenSilently]);
+  }, [isAuthenticated, getAccessTokenSilently]);
 
   useEffect(() => {
     if (isAuthenticated && (progressRedux === 1 || progressRedux === 2)) {
@@ -157,7 +166,7 @@ const Header = () => {
 
       {(!authModalOpen || isAuthenticated)
       && <ConsentModal modalOpen={consentModalOpen} setModalOpen={setConsentModalOpen} />}
-      <AuthModal modalOpen={authModalOpen} setModalOpen={setAuthModalOpen} />
+      <AuthModal modalOpen={authModalOpen} setModalOpen={setAuthModalOpen} setConsentModalOpen={setConsentModalOpen} />
     </header>
   );
 };

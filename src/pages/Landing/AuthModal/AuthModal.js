@@ -11,7 +11,7 @@ import AuthButton from '../../../components/Auth/AuthButton/AuthButton';
 
 const localStorageKey = 'notShowAuth';
 
-const AuthModal = ({ modalOpen, setModalOpen }) => {
+const AuthModal = ({ modalOpen, setModalOpen, setConsentModalOpen }) => {
   const { isLoading, isAuthenticated } = useAuth0();
 
   useEffect(() => {
@@ -42,6 +42,7 @@ const AuthModal = ({ modalOpen, setModalOpen }) => {
     };
     localStorage.setItem(localStorageKey, JSON.stringify(authObject));
     setModalOpen((open) => !open);
+    setConsentModalOpen(true);
   };
 
   return (
