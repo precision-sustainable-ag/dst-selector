@@ -6,14 +6,18 @@
 
 import { useDispatch, useSelector } from 'react-redux';
 import React, { useEffect, useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useHistory } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
 import '../../styles/header.scss';
 import HeaderLogoInfo from './HeaderLogoInfo/HeaderLogoInfo';
 import InformationBar from './InformationBar/InformationBar';
 import ToggleOptions from './ToggleOptions/ToggleOptions';
+import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset';
 import {
-  updateAccessToken, updateConsent, updateField, setSelectFieldId,
+  updateAccessToken,
+  updateConsent,
+  updateField,
+  setSelectFieldId,
 } from '../../reduxStore/userSlice';
 import {
   getFields, getHistory, buildHistory, postHistory,
@@ -24,10 +28,11 @@ import ConsentModal from '../CoverCropExplorer/ConsentModal/ConsentModal';
 import AuthModal from '../Landing/AuthModal/AuthModal';
 
 const Header = () => {
+  const [pathname, setPathname] = useState('/');
+  const history = useHistory();
   const dispatchRedux = useDispatch();
 
   // redux vars
-  const markersRedux = useSelector((stateRedux) => stateRedux.addressData.markers);
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
   const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
   const regionShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.regionShorthand);
@@ -40,12 +45,17 @@ const Header = () => {
   const accessTokenRedux = useSelector((stateRedux) => stateRedux.userData.accessToken);
 
   // useState vars
-  const [isRoot, setIsRoot] = useState(false);
   const [authModalOpen, setAuthModalOpen] = useState(true);
   const [consentModalOpen, setConsentModalOpen] = useState(false);
 
   const { isAuthenticated, getAccessTokenSilently } = useAuth0();
-  const isActive = {};
+
+  useEffect(() => {
+    // detect current pathname
+    history.listen((location) => {
+      setPathname(location.pathname);
+    });
+  }, [history]);
 
   useEffect(() => {
     const getToken = async () => {
@@ -60,9 +70,14 @@ const Header = () => {
             state, region, council, consent,
           } = res.data.json;
           // set user history redux state
-          dispatchRedux(updateStateInfo({
-            stateLabel: state.label, stateId: state.id, councilShorthand: council.shorthand, councilLabel: council.label,
-          }));
+          dispatchRedux(
+            updateStateInfo({
+              stateLabel: state.label,
+              stateId: state.id,
+              councilShorthand: council.shorthand,
+              councilLabel: council.label,
+            }),
+          );
           dispatchRedux(updateRegion({ regionId: region.id, regionShorthand: region.shorthand }));
           dispatchRedux(updateConsent(consent.status, consent.date));
           // The consent is mainly use localstorage to test is expired, use history to update localStorage
@@ -87,7 +102,7 @@ const Header = () => {
 
   useEffect(() => {
     if (isAuthenticated && (progressRedux === 1 || progressRedux === 2)) {
-      const history = buildHistory(
+      const userHistory = buildHistory(
         stateIdRedux,
         stateLabelRedux,
         regionIdRedux,
@@ -98,27 +113,11 @@ const Header = () => {
         consentRedux.date,
         selectedFieldIdRedux,
       );
-      console.log('save', history, selectedFieldIdRedux);
-      postHistory(accessTokenRedux, history);
+      console.log('save', userHistory, selectedFieldIdRedux);
+      postHistory(accessTokenRedux, userHistory);
     }
     // have to add regionShorthandRedux to dependency since Location cleanup is slower than this function
   }, [progressRedux, regionShorthandRedux]);
-
-  useEffect(() => {
-    if (window.location.pathname === '/explorer') {
-      setIsRoot(true);
-    } else {
-      setIsRoot(false);
-    }
-
-    switch (progressRedux) {
-      case 0:
-        isActive.val = 0;
-        break;
-      default:
-        break;
-    }
-  }, [markersRedux]);
 
   return (
     <header className="d-print-none">
@@ -146,27 +145,22 @@ const Header = () => {
       </div>
 
       <div className="container-fluid">
-        <HeaderLogoInfo logo />
+        <HeaderLogoInfo />
       </div>
       <div className="bottomHeader">
-        <ToggleOptions
-          isRoot={isRoot}
-        />
+        <ToggleOptions pathname={pathname} />
       </div>
+      <InformationBar pathname={pathname} />
+      <MyCoverCropReset />
 
-      <InformationBar />
-
-      {window.location.pathname === '/about'
-        || window.location.pathname === '/help'
-        || (window.location.pathname === '/feedback'
-          && window.location.pathname !== '/cover-crop-explorer')
-        || (progressRedux < 0 && (
-          <div className="topBar" />
-        ))}
-
-      {(!authModalOpen || isAuthenticated)
-      && <ConsentModal modalOpen={consentModalOpen} setModalOpen={setConsentModalOpen} />}
-      <AuthModal modalOpen={authModalOpen} setModalOpen={setAuthModalOpen} setConsentModalOpen={setConsentModalOpen} />
+      {(!authModalOpen || isAuthenticated) && (
+        <ConsentModal modalOpen={consentModalOpen} setModalOpen={setConsentModalOpen} />
+      )}
+      <AuthModal
+        modalOpen={authModalOpen}
+        setModalOpen={setAuthModalOpen}
+        setConsentModalOpen={setConsentModalOpen}
+      />
     </header>
   );
 };

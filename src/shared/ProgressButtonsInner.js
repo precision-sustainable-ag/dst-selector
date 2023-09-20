@@ -9,10 +9,10 @@ import { Stack } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
 import { LightButton } from './constants';
 import { reset } from '../reduxStore/store';
-import { updateProgress } from '../reduxStore/sharedSlice';
+import { updateProgress, setMyCoverCropReset } from '../reduxStore/sharedSlice';
 
 const ProgressButtonsInner = ({
-  isDisabledBack, isDisabledNext, isDisabledRefresh, closeExpansionPanel, setConfirmationOpen,
+  isDisabledBack, isDisabledNext, isDisabledRefresh,
 }) => {
   const dispatchRedux = useDispatch();
   const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
@@ -80,9 +80,9 @@ const ProgressButtonsInner = ({
           marginLeft: '3%',
         }}
         onClick={() => {
-          closeExpansionPanel();
-          if (selectedCropsRedux.length > 0) setConfirmationOpen(true);
-          else {
+          if (selectedCropsRedux.length > 0) {
+            dispatchRedux(setMyCoverCropReset(true, false));
+          } else {
             dispatchRedux(reset());
           }
         }}

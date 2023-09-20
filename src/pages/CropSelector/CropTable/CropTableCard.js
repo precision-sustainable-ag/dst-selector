@@ -1,7 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, TableCell, Tooltip } from '@mui/material';
-import { useSnackbar } from 'notistack';
 import { CustomStyles, getRating, LightButton } from '../../../shared/constants';
 import '../../../styles/cropCalendarViewComponent.scss';
 import '../../../styles/cropTable.scss';
@@ -13,7 +12,6 @@ const CropTableCard = ({
   crop, indexKey, showGrowthWindow, handleModalOpen,
 }) => {
   const dispatchRedux = useDispatch();
-  const { enqueueSnackbar } = useSnackbar();
   const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
 
@@ -21,8 +19,7 @@ const CropTableCard = ({
 
   const cropModifierAction = (selectedCrops, message) => {
     dispatchRedux(selectedCropsModifier(selectedCrops));
-    dispatchRedux(snackHandler({ snackOpen: false, snackMessage: message }));
-    enqueueSnackbar(message);
+    dispatchRedux(snackHandler({ snackOpen: true, snackMessage: message }));
   };
 
   const addCropToBasket = (cropId, cropName, btnId, cropData) => {

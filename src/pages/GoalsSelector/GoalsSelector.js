@@ -7,7 +7,6 @@
 import { Typography, Grid } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset';
 import '../../styles/goalsSelector.scss';
 import GoalTag from './GoalTag/GoalTag';
 import { callCoverCropApi } from '../../shared/constants';
@@ -22,20 +21,11 @@ const GoalsSelector = () => {
   // redux vars
   const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
   const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
-  const myCoverCropListLocationRedux = useSelector((stateRedux) => stateRedux.sharedData.myCoverCropListLocation);
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
-  const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
 
   // useState vars
   const [allGoals, setAllGoals] = useState([]);
-  const [handleConfirm, setHandleConfirm] = useState(false);
 
-  useEffect(() => {
-    if (myCoverCropListLocationRedux !== 'selector' && selectedCropsRedux?.length > 0) {
-      // document.title = 'Cover Crop Selector';
-      setHandleConfirm(true);
-    }
-  }, [selectedCropsRedux, myCoverCropListLocationRedux]);
   const query = `${encodeURIComponent('regions')}=${encodeURIComponent(regionIdRedux)}`;
 
   useEffect(() => {
@@ -47,18 +37,17 @@ const GoalsSelector = () => {
   }, []);
 
   return (
-    <>
-      <div className="goalsContainer" style={{ marginTop: '5%', width: '80%', marginLeft: '10%' }}>
-        <div className="goalsBoxContainer">
-          <Typography variant="h4" gutterBottom align="center">
-            What are your cover cropping goals?
-          </Typography>
-          <Typography variant="body2" align="center" color="secondary" gutterBottom>
-            Select up to three. The order in which you select your goals will determine the sorting of
-            cover crops. The first goal you select will have the highest priority in sorting and then
-            decrease for each additional goal. Hover on a goal for more information.
-          </Typography>
-          {allGoals?.length > 0 && (
+    <div className="goalsContainer" style={{ marginTop: '5%', width: '80%', marginLeft: '10%' }}>
+      <div className="goalsBoxContainer">
+        <Typography variant="h4" gutterBottom align="center">
+          What are your cover cropping goals?
+        </Typography>
+        <Typography variant="body2" align="center" color="secondary" gutterBottom>
+          Select up to three. The order in which you select your goals will determine the sorting of
+          cover crops. The first goal you select will have the highest priority in sorting and then
+          decrease for each additional goal. Hover on a goal for more information.
+        </Typography>
+        {allGoals?.length > 0 && (
           <Grid container spacing={4} className="goals" style={{ justifyContent: 'center' }}>
             {
                 allGoals.map((goal, key) => (
@@ -74,11 +63,9 @@ const GoalsSelector = () => {
                 ))
               }
           </Grid>
-          )}
-        </div>
+        )}
       </div>
-      <MyCoverCropReset handleConfirm={handleConfirm} setHandleConfirm={setHandleConfirm} />
-    </>
+    </div>
   );
 };
 

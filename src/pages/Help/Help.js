@@ -15,7 +15,6 @@ import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import ReactGA from 'react-ga';
 import { CustomStyles } from '../../shared/constants';
-import Header from '../Header/Header';
 import InformationSheetDictionary from './InformationSheetDictionary/InformationSheetDictionary';
 
 const Help = () => {
@@ -386,61 +385,58 @@ const Help = () => {
   };
 
   return (
-    <div className="contentWrapper">
-      <Header />
-      <Box sx={{ border: 0.5, borderColor: 'grey.300' }} ml={2} mr={2} mt={5}>
-        <Grid container spacing={0} justifyContent="center" mt={4} mb={5} pt={3}>
-          <Grid item xs={12} sm={12} md={3.4} lg={3.4} xl={3.4}>
-            <div
-              style={{
-                border: `1px solid ${CustomStyles().darkGreen}`,
-                borderRight: '0px',
-              }}
-            >
-              {pageSections.map((section) => (
-                <Button
-                  key={section.id}
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'flex-start',
-                    borderRadius: '0px',
-                    width: '100%',
-                  }}
-                  onClick={() => handleChange(section.id)}
-                  variant={value === section.id ? 'contained' : 'text'}
-                >
-                  {section.menuOption}
-                </Button>
-              ))}
-            </div>
-          </Grid>
-
-          <Grid
-            item
-            xs={12}
-            sm={12}
-            md={8}
-            lg={8}
-            xl={8}
-            mt={{
-              xs: 3, sm: 3, md: 0, lg: 0, xl: 0,
+    <Box sx={{ border: 0.5, borderColor: 'grey.300' }} ml={2} mr={2} mt={5}>
+      <Grid container spacing={0} justifyContent="center" mt={4} mb={5} pt={3}>
+        <Grid item xs={12} sm={12} md={3.4} lg={3.4} xl={3.4}>
+          <div
+            style={{
+              border: `1px solid ${CustomStyles().darkGreen}`,
+              borderRight: '0px',
             }}
           >
-            <div style={{ border: `1px solid ${CustomStyles().darkGreen}`, minHeight: '320px' }}>
-              <Stack pl={3} pr={3} pb={4}>
-                <center>
-                  <Typography variant="h4" gutterBottom>
-                    {pageSections.filter((section) => section.id === value)[0].title}
-                  </Typography>
-                </center>
-                {getContent()}
-              </Stack>
-            </div>
-          </Grid>
+            {pageSections.map((section) => (
+              <Button
+                key={section.id}
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'flex-start',
+                  borderRadius: '0px',
+                  width: '100%',
+                }}
+                onClick={() => handleChange(section.id)}
+                variant={value === section.id ? 'contained' : 'text'}
+              >
+                {section.menuOption}
+              </Button>
+            ))}
+          </div>
         </Grid>
-      </Box>
-    </div>
+
+        <Grid
+          item
+          xs={12}
+          sm={12}
+          md={8}
+          lg={8}
+          xl={8}
+          mt={{
+            xs: 3, sm: 3, md: 0, lg: 0, xl: 0,
+          }}
+        >
+          <div style={{ border: `1px solid ${CustomStyles().darkGreen}`, minHeight: '320px' }}>
+            <Stack pl={3} pr={3} pb={4}>
+              <center>
+                <Typography variant="h4" gutterBottom>
+                  {pageSections.filter((section) => section.id === value)[0].title}
+                </Typography>
+              </center>
+              {getContent()}
+            </Stack>
+          </div>
+        </Grid>
+      </Grid>
+    </Box>
   );
 };
 
