@@ -12,10 +12,6 @@ const PlantHardinessZone = ({
   councilLabelRedux,
   regionToggleRedux = true,
 }) => {
-  const handleRegionChange = (event) => {
-    setRegionShorthand(event.target.value);
-  };
-
   const plantHardinessZone = () => (
     <Select
       variant="filled"
@@ -25,7 +21,7 @@ const PlantHardinessZone = ({
         width: '100%',
         textAlign: 'left',
       }}
-      onChange={(e) => handleRegionChange(e)}
+      onChange={(e) => setRegionShorthand(e.target.value)}
       value={regionShorthand || ''}
     >
 
