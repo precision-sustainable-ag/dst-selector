@@ -39,7 +39,7 @@ const UserFieldList = ({
               width: '100%',
               textAlign: 'left',
             }}
-            value={Object.keys(field) === 0 ? '' : field.label}
+            value={Object.keys(field).length === 0 ? '' : field.label}
             onChange={handleChange}
           >
             {userFields.map((userField, index) => {
