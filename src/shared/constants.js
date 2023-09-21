@@ -998,28 +998,42 @@ export const buildHistory = (
   consentStatus,
   consentDate,
   fieldId,
-) => ({
-  json: {
-    state: {
-      id: stateId,
-      label: stateLabel,
-    },
-    region: {
-      id: regionId,
-      shorthand: regionShorthand,
-    },
-    council: {
-      label: councilLabel,
-      shorthand: councilShorthand,
-    },
-    consent: {
-      status: consentStatus,
-      date: consentDate,
-    },
-  },
-  schemaId: 1,
-  fieldId,
-});
+) => {
+  const history = () => {
+    const historyWithoutRegion = {
+      json: {
+        state: {
+          id: stateId,
+          label: stateLabel,
+        },
+        council: {
+          label: councilLabel,
+          shorthand: councilShorthand,
+        },
+        consent: {
+          status: consentStatus,
+          date: consentDate,
+        },
+      },
+      schemaId: 1,
+    };
+    if (regionId) {
+      return {
+        ...historyWithoutRegion,
+        region: {
+          id: regionId,
+          shorthand: regionShorthand,
+        },
+      };
+    }
+    return historyWithoutRegion;
+  };
+
+  if (fieldId) {
+    return { ...history(), fieldId };
+  }
+  return history();
+};
 
 export const postHistory = async (accessToken = null, historyData = null) => {
   const url = `${apiServerUrl}/history`;
