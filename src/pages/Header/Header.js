@@ -100,7 +100,8 @@ const Header = () => {
   }, [isAuthenticated, getAccessTokenSilently]);
 
   useEffect(() => {
-    if (isAuthenticated && (progressRedux === 1 || progressRedux === 2)) {
+    // save user history when user click next in Landing & Location page, change zone in explorer
+    if (isAuthenticated && (progressRedux === 1 || progressRedux === 2 || pathname === '/explorer')) {
       const userHistory = buildHistory(
         stateIdRedux,
         stateLabelRedux,
@@ -114,7 +115,6 @@ const Header = () => {
       );
       postHistory(accessTokenRedux, userHistory);
     }
-    // have to add regionShorthandRedux to dependency since Location cleanup is slower than this function
   }, [progressRedux, regionShorthandRedux]);
 
   return (
