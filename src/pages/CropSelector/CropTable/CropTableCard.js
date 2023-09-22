@@ -53,39 +53,6 @@ const CropTableCard = ({
     }
   };
 
-  // const cropModifierAction = (selectedCrops, message) => {
-  //   dispatchRedux(selectedCropsModifier(selectedCrops));
-  //   dispatchRedux(snackHandler({ snackOpen: false, snackMessage: message }));
-  //   enqueueSnackbar(message);
-  // };
-
-  // // same function in ExplorerCardView move to constants
-  // const addCropToBasket = (cropId, cropName) => {
-  //   const selectedCrops = cropId;
-  //   let cropArray = [];
-  //   cropArray = selectedCrops;
-  //   // check if crop id exists inside state, if yes then remove it
-  //   if (selectedCropsRedux.length > 0) {
-  //     let removeIndex = -1;
-  //     selectedCropsRedux.forEach((item, i) => {
-  //       if (item === cropId) {
-  //         removeIndex = i;
-  //       }
-  //     });
-  //     if (removeIndex === -1) {
-  //       cropModifierAction([...selectedCropsRedux, selectedCrops], `${cropName} Added`);
-  //     } else {
-  //       // element exists, remove
-  //       const selectedCropsCopy = selectedCropsRedux;
-  //       selectedCropsCopy.splice(removeIndex, 1);
-  //       cropModifierAction(selectedCropsCopy, `${cropName} Removed`);
-  //     }
-  //   } else {
-  //     dispatchRedux(myCropListLocation({ from: 'selector' }));
-  //     cropModifierAction([cropArray], `${cropName} Added`);
-  //   }
-  // };
-
   return (
     <>
       {selectedGoalsRedux.length > 0
