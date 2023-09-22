@@ -1,7 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, TableCell, Tooltip } from '@mui/material';
-import { useSnackbar } from 'notistack';
 import {
   addCropToBasket, CustomStyles, getRating, LightButton,
 } from '../../../shared/constants';
@@ -15,7 +14,6 @@ const CropTableCard = ({
   crop, indexKey, showGrowthWindow, handleModalOpen,
 }) => {
   const dispatchRedux = useDispatch();
-  const { enqueueSnackbar } = useSnackbar();
   const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
 
@@ -68,7 +66,6 @@ const CropTableCard = ({
                 crop.id,
                 crop.label,
                 dispatchRedux,
-                enqueueSnackbar,
                 snackHandler,
                 selectedCropsModifier,
                 selectedCropsRedux,

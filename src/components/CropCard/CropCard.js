@@ -12,7 +12,7 @@ import { myCropListLocation, snackHandler } from '../../reduxStore/sharedSlice';
 import { selectedCropsModifier } from '../../reduxStore/cropSlice';
 
 const CropCard = ({
-  crop, handleModalOpen, index, type, comparisonKeys, lightBG, GetAverageGoalRating, dispatchRedux, enqueueSnackbar,
+  crop, handleModalOpen, index, type, comparisonKeys, lightBG, GetAverageGoalRating, dispatchRedux,
 }) => {
   // redux vars
   const zoneRedux = useSelector((stateRedux) => stateRedux.addressData.zone);
@@ -55,7 +55,7 @@ const CropCard = ({
   }, [comparisonKeys]);
 
   async function addToBasket(cropId, name) {
-    addCropToBasket(cropId, name, dispatchRedux, enqueueSnackbar, snackHandler, selectedCropsModifier, selectedCropsRedux, myCropListLocation);
+    addCropToBasket(cropId, name, dispatchRedux, snackHandler, selectedCropsModifier, selectedCropsRedux, myCropListLocation);
     await updateBtns();
   }
   const getRenderData = () => (

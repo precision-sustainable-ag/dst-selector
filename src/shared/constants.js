@@ -978,7 +978,6 @@ export const addCropToBasket = (
   cropId,
   cropName,
   dispatchRedux,
-  enqueueSnackbar,
   snackHandler,
   selectedCropsModifier,
   selectedCropsRedux,
@@ -988,8 +987,7 @@ export const addCropToBasket = (
 
   const buildDispatch = (action, crops) => {
     dispatchRedux(selectedCropsModifier(crops));
-    dispatchRedux(snackHandler({ snackOpen: false, snackMessage: `${cropName} ${action}` }));
-    enqueueSnackbar(`${cropName} ${action}`);
+    dispatchRedux(snackHandler({ snackOpen: true, snackMessage: `${cropName} ${action}` }));
   };
 
   if (selectedCropsRedux?.length > 0) {

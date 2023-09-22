@@ -1,7 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, TableCell, TableRow } from '@mui/material';
-import { useSnackbar } from 'notistack';
 import {
   CropImage,
   flipCoverCropName,
@@ -19,7 +18,6 @@ const RenderCrops = ({
   cropData, active, setModalOpen, modalOpen, setModalData,
 }) => {
   const dispatchRedux = useDispatch();
-  const { enqueueSnackbar } = useSnackbar();
   const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const selectedBtns = selectedCropsRedux;
@@ -127,7 +125,6 @@ const RenderCrops = ({
                   crop.id,
                   crop.label,
                   dispatchRedux,
-                  enqueueSnackbar,
                   snackHandler,
                   selectedCropsModifier,
                   selectedCropsRedux,

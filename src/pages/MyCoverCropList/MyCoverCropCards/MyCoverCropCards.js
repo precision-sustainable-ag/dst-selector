@@ -6,7 +6,6 @@
 */
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { useSnackbar } from 'notistack';
 import CropCard from '../../../components/CropCard/CropCard';
 import CropDetailsModal from '../../../components/CropDetailsModal/CropDetailsModal';
 
@@ -15,7 +14,6 @@ const MyCoverCropCards = ({ crop, cardNo }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalData, setModalData] = useState({});
   const dispatchRedux = useDispatch();
-  const { enqueueSnackbar } = useSnackbar();
 
   const handleModalOpen = () => {
     setModalData(crop.data);
@@ -30,7 +28,6 @@ const MyCoverCropCards = ({ crop, cardNo }) => {
         type="cropList"
         handleModalOpen={handleModalOpen}
         dispatchRedux={dispatchRedux}
-        enqueueSnackbar={enqueueSnackbar}
       />
 
       <CropDetailsModal

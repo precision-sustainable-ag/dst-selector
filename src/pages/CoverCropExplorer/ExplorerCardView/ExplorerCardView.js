@@ -7,7 +7,6 @@
 import {
   Grid, Typography, CircularProgress,
 } from '@mui/material';
-import { useSnackbar } from 'notistack';
 import React, {
   useEffect, useState,
 } from 'react';
@@ -37,8 +36,6 @@ const ExplorerCardView = ({ activeCropData }) => {
     setSelectedBtns(newSelectedBtns);
   }, [sfilters.zone, selectedCropsRedux]);
 
-  const { enqueueSnackbar } = useSnackbar();
-
   const handleModalOpen = (crop) => {
     // put data inside modal;
     setModalData(crop);
@@ -62,7 +59,6 @@ const ExplorerCardView = ({ activeCropData }) => {
                   index={index}
                   type="explorer"
                   dispatchRedux={dispatchRedux}
-                  enqueueSnackbar={enqueueSnackbar}
                 />
               </Grid>
             ))
