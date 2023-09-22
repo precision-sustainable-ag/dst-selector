@@ -78,7 +78,7 @@ const LocationComponent = () => {
 
   // calculate features shown on map
   const getFeatures = () => {
-    if (userFields.length > 0 && Object.keys(selectedUserField) !== 0) {
+    if (userFields.length > 0 && Object.keys(selectedUserField).length !== 0) {
       if (selectedUserField.geometry.type === 'Point') return [selectedUserField];
       if (selectedUserField.geometry.type === 'GeometryCollection') return drawAreaFromGeoCollection(selectedUserField);
     }
