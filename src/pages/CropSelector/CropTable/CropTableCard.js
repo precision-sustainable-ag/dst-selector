@@ -17,45 +17,74 @@ const CropTableCard = ({
   const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
 
-  const selectedBtns = selectedCropsRedux.map((cropId) => cropId.id);
+  const selectedBtns = selectedCropsRedux;
 
-  const cropModifierAction = (selectedCrops, message) => {
-    dispatchRedux(selectedCropsModifier(selectedCrops));
-    dispatchRedux(snackHandler({ snackOpen: false, snackMessage: message }));
-    enqueueSnackbar(message);
-  };
+  // TODO: Update SelectedCropsRedux
 
-  const addCropToBasket = (cropId, cropName, btnId, cropData) => {
-    const selectedCrops = {};
-    let cropArray = [];
-    selectedCrops.id = cropId;
-    selectedCrops.cropName = cropName;
-    selectedCrops.btnId = btnId;
-    selectedCrops.data = cropData;
-    cropArray = selectedCrops;
+  const addCropToBasket = (cropId, cropName) => {
+    const selectedCrops = cropId;
 
-    // check if crop id exists inside state, if yes then remove it
-    if (selectedCropsRedux.length > 0) {
+    const buildDispatch = (action, crops) => {
+      dispatchRedux(selectedCropsModifier(crops));
+      dispatchRedux(snackHandler({ snackOpen: false, snackMessage: `${cropName} ${action}` }));
+      enqueueSnackbar(`${cropName} ${action}`);
+    };
+
+    if (selectedCropsRedux?.length > 0) {
+      // DONE: Remove crop from basket
       let removeIndex = -1;
       selectedCropsRedux.forEach((item, i) => {
-        if (item.id === cropId) {
+        if (item === cropId) {
           removeIndex = i;
         }
       });
       if (removeIndex === -1) {
-        cropModifierAction([...selectedCropsRedux, selectedCrops], `${cropName} Added`);
+        // element not in array
+        buildDispatch('added', [...selectedCropsRedux, selectedCrops]);
       } else {
-        // element exists, remove
         const selectedCropsCopy = selectedCropsRedux;
         selectedCropsCopy.splice(removeIndex, 1);
-        cropModifierAction(selectedCropsCopy, `${cropName} Removed`);
+
+        buildDispatch('Removed', selectedCropsCopy);
       }
     } else {
       dispatchRedux(myCropListLocation({ from: 'selector' }));
-
-      cropModifierAction([cropArray], `${cropName} Added`);
+      buildDispatch('Added', [selectedCrops]);
     }
   };
+
+  // const cropModifierAction = (selectedCrops, message) => {
+  //   dispatchRedux(selectedCropsModifier(selectedCrops));
+  //   dispatchRedux(snackHandler({ snackOpen: false, snackMessage: message }));
+  //   enqueueSnackbar(message);
+  // };
+
+  // // same function in ExplorerCardView move to constants
+  // const addCropToBasket = (cropId, cropName) => {
+  //   const selectedCrops = cropId;
+  //   let cropArray = [];
+  //   cropArray = selectedCrops;
+  //   // check if crop id exists inside state, if yes then remove it
+  //   if (selectedCropsRedux.length > 0) {
+  //     let removeIndex = -1;
+  //     selectedCropsRedux.forEach((item, i) => {
+  //       if (item === cropId) {
+  //         removeIndex = i;
+  //       }
+  //     });
+  //     if (removeIndex === -1) {
+  //       cropModifierAction([...selectedCropsRedux, selectedCrops], `${cropName} Added`);
+  //     } else {
+  //       // element exists, remove
+  //       const selectedCropsCopy = selectedCropsRedux;
+  //       selectedCropsCopy.splice(removeIndex, 1);
+  //       cropModifierAction(selectedCropsCopy, `${cropName} Removed`);
+  //     }
+  //   } else {
+  //     dispatchRedux(myCropListLocation({ from: 'selector' }));
+  //     cropModifierAction([cropArray], `${cropName} Added`);
+  //   }
+  // };
 
   return (
     <>

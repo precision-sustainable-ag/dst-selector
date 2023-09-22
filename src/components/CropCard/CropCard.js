@@ -6,11 +6,13 @@ import React, {
   useEffect, useState,
 } from 'react';
 import { useSelector } from 'react-redux';
-import { trimString } from '../../shared/constants';
+import { addCropToBasket, trimString } from '../../shared/constants';
 import RenderRelevantData from './RenderRelevantData/RenderRelevantData';
+import { myCropListLocation, snackHandler } from '../../reduxStore/sharedSlice';
+import { selectedCropsModifier } from '../../reduxStore/cropSlice';
 
 const CropCard = ({
-  crop, handleModalOpen, addCropToBasket, removeCrop, index, type, comparisonKeys, lightBG, GetAverageGoalRating,
+  crop, handleModalOpen, index, type, comparisonKeys, lightBG, GetAverageGoalRating, dispatchRedux, enqueueSnackbar,
 }) => {
   // redux vars
   const zoneRedux = useSelector((stateRedux) => stateRedux.addressData.zone);
@@ -25,12 +27,12 @@ const CropCard = ({
   const [allfilters, setAllFilters] = useState([]);
   const allData = [];
 
-  const [selectedBtns, setSelectedBtns] = useState(
-    selectedCropsRedux.map((crp) => crp.id),
-  );
+  const [selectedBtns, setSelectedBtns] = useState(selectedCropsRedux);
+
+  // TODO: Update SelectedCropsRedux
 
   async function updateBtns() {
-    await setSelectedBtns(selectedCropsRedux.map((crp) => crp.id));
+    await setSelectedBtns(selectedCropsRedux);
   }
 
   async function setDataDict() {
@@ -52,8 +54,8 @@ const CropCard = ({
     setDataDict();
   }, [comparisonKeys]);
 
-  async function addToBasket(cropId, name, i, c) {
-    addCropToBasket(cropId, name, i, c);
+  async function addToBasket(cropId, name) {
+    addCropToBasket(cropId, name, dispatchRedux, enqueueSnackbar, snackHandler, selectedCropsModifier, selectedCropsRedux, myCropListLocation);
     await updateBtns();
   }
   const getRenderData = () => (
@@ -156,24 +158,12 @@ const CropCard = ({
               ? 'activeCartBtn'
               : 'inactiveCartBtn'
           }
-        onClick={() => {
-          if (selectedBtns.includes(crop.id) && type !== 'explorer') {
-            return (
-              removeCrop(
-                crop.label,
-                crop.id,
-              )
-            );
-          }
-          return (
-            addToBasket(
-              crop.id,
-              crop.label,
-              `cartBtn${index}`,
-              crop,
-            )
-          );
-        }}
+        onClick={() => (
+          addToBasket(
+            crop.id,
+            crop.label,
+          )
+        )}
       >
         <Typography
           variant="body2"
