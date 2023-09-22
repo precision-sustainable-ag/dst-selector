@@ -2,7 +2,9 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, TableCell, Tooltip } from '@mui/material';
 import { useSnackbar } from 'notistack';
-import { CustomStyles, getRating, LightButton } from '../../../shared/constants';
+import {
+  addCropToBasket, CustomStyles, getRating, LightButton,
+} from '../../../shared/constants';
 import '../../../styles/cropCalendarViewComponent.scss';
 import '../../../styles/cropTable.scss';
 import CropSelectorCalendarView from '../../../components/CropSelectorCalendarView/CropSelectorCalendarView';
@@ -20,38 +22,6 @@ const CropTableCard = ({
   const selectedBtns = selectedCropsRedux;
 
   // TODO: Update SelectedCropsRedux
-
-  const addCropToBasket = (cropId, cropName) => {
-    const selectedCrops = cropId;
-
-    const buildDispatch = (action, crops) => {
-      dispatchRedux(selectedCropsModifier(crops));
-      dispatchRedux(snackHandler({ snackOpen: false, snackMessage: `${cropName} ${action}` }));
-      enqueueSnackbar(`${cropName} ${action}`);
-    };
-
-    if (selectedCropsRedux?.length > 0) {
-      // DONE: Remove crop from basket
-      let removeIndex = -1;
-      selectedCropsRedux.forEach((item, i) => {
-        if (item === cropId) {
-          removeIndex = i;
-        }
-      });
-      if (removeIndex === -1) {
-        // element not in array
-        buildDispatch('added', [...selectedCropsRedux, selectedCrops]);
-      } else {
-        const selectedCropsCopy = selectedCropsRedux;
-        selectedCropsCopy.splice(removeIndex, 1);
-
-        buildDispatch('Removed', selectedCropsCopy);
-      }
-    } else {
-      dispatchRedux(myCropListLocation({ from: 'selector' }));
-      buildDispatch('Added', [selectedCrops]);
-    }
-  };
 
   return (
     <>
@@ -97,8 +67,12 @@ const CropTableCard = ({
               addCropToBasket(
                 crop.id,
                 crop.label,
-                `cartBtn${indexKey}`,
-                crop,
+                dispatchRedux,
+                enqueueSnackbar,
+                snackHandler,
+                selectedCropsModifier,
+                selectedCropsRedux,
+                myCropListLocation,
               );
             }}
           >
