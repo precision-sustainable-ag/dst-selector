@@ -77,7 +77,7 @@ const Header = () => {
               councilLabel: council.label,
             }),
           );
-          dispatchRedux(updateRegion({ regionId: region.id, regionShorthand: region.shorthand }));
+          if (region) dispatchRedux(updateRegion({ regionId: region.id, regionShorthand: region.shorthand }));
           dispatchRedux(updateConsent(consent.status, consent.date));
           // The consent is mainly use localstorage to test is expired, use history to update localStorage
           const consentKey = 'consent';
