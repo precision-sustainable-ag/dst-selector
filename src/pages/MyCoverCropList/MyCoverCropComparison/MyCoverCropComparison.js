@@ -18,7 +18,6 @@ import {
 import { KeyboardArrowLeft, KeyboardArrowRight } from '@mui/icons-material';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useSnackbar } from 'notistack';
 import {
   DataTooltip,
   callCoverCropApi,
@@ -65,7 +64,6 @@ const GetAverageGoalRating = ({ crop }) => {
 
 const MyCoverCropComparison = ({ selectedCrops }) => {
   const dispatchRedux = useDispatch();
-  const { enqueueSnackbar } = useSnackbar();
 
   // redux vars
   const activeCropDataRedux = useSelector((stateRedux) => stateRedux.cropData.activeCropData);
@@ -123,27 +121,6 @@ const MyCoverCropComparison = ({ selectedCrops }) => {
       });
     setSidebarDefs(allData);
   }, [zoneRedux, dataDictionary]);
-
-  // const removeCrop = (cropName, id) => {
-  //   let removeIndex = -1;
-  //   selectedCropsRedux.forEach((item, i) => {
-  //     if (item.id === id) {
-  //       removeIndex = i;
-  //     }
-  //   });
-
-  //   if (removeIndex === -1) {
-  //     // element not in array
-  //     // not possible ?
-  //   } else {
-  //     const selectedCropsCopy = selectedCropsRedux;
-
-  //     selectedCropsCopy.splice(removeIndex, 1);
-  //     dispatchRedux(selectedCropsModifier(selectedCropsCopy));
-  //     dispatchRedux(snackHandler({ snackOpen: false, snackMessage: 'Removed' }));
-  //     enqueueSnackbar(`${cropName} Removed`);
-  //   }
-  // };
 
   const getTooltipData = (keyName = '') => {
     const exactObject = sidebarDefs.find((keys) => keys.label === keyName);
@@ -287,7 +264,6 @@ const MyCoverCropComparison = ({ selectedCrops }) => {
                   lightBG={lightBG}
                   GetAverageGoalRating={GetAverageGoalRating}
                   dispatchRedux={dispatchRedux}
-                  enqueueSnackbar={enqueueSnackbar}
                 />
               </div>
             ))}
