@@ -1020,9 +1020,12 @@ export const buildHistory = (
     if (regionId) {
       return {
         ...historyWithoutRegion,
-        region: {
-          id: regionId,
-          shorthand: regionShorthand,
+        json: {
+          ...historyWithoutRegion.json,
+          region: {
+            id: regionId,
+            shorthand: regionShorthand,
+          },
         },
       };
     }
