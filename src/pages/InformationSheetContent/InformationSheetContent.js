@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /*
   Contains the top level information sheet popup
   BasicCrop contains the default crop
@@ -9,7 +10,7 @@ import React, {
   useEffect, useState,
 } from 'react';
 import {
-  Accordion, AccordionDetails, AccordionSummary, Typography, Tooltip,
+  Accordion, AccordionDetails, AccordionSummary, Typography, Tooltip, Box, Grid,
 } from '@mui/material';
 import { ExpandMore } from '@mui/icons-material';
 import { useSelector } from 'react-redux';
@@ -54,9 +55,9 @@ const InformationSheetContent = ({ crop, modalData }) => {
         crop={crop}
       />
       {modalData && modalData.data.map((cat) => (
-        <div key={cat.id} className="row mt-2 coverCropGoalsWrapper avoidPage">
-          <div className="col-12 basicAgWrapper">
-            <div className="col-12 p-0">
+        <Box key={cat.id} className="coverCropGoalsWrapper avoidPage">
+          <Grid className="basicAgWrapper">
+            <Grid>
               <Accordion defaultExpanded>
                 <AccordionSummary
                   expandIcon={<ExpandMore />}
@@ -66,45 +67,74 @@ const InformationSheetContent = ({ crop, modalData }) => {
                     },
                   }}
                 >
-                  <Typography variant="h6" className="text-uppercase px-3 py-2">
+                  <Typography variant="h6" style={{ padding: '3px' }} className="text-uppercase">
                     {cat.label}
                   </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
                   {' '}
-                  <div className="row col-12 text-left">
-                    {cat.attributes.map((att) => (
-                      <div className="col-6 mb-2 ml-1 row">
-                        <span className="col">
+                  <Grid style={{ paddingLeft: '2rem' }} className="row">
+                    {cat.attributes.map((att, index) => ((att.label !== 'Comments' && !att.label.startsWith('Notes:') && cat.label !== 'Extended Comments') ? (
+                      <Grid style={{ height: '40px', paddingBottom: '40px' }} container item xs={6} direction="column">
+                        <Grid xs={6} s={12}>
                           <Tooltip
                             placement="top-end"
                             title={(
                               <div className="filterTooltip">
                                 <p>{att.description}</p>
                               </div>
-                          )}
+                            )}
                             arrow
                           >
-                            <Typography sx={{ fontWeight: 'bold' }} variant="body1">
+                            <Typography container item sx={{ fontWeight: 'bold' }} variant="body1">
                               {att.label}
                             </Typography>
                           </Tooltip>
-                        </span>
+                        </Grid>
                         { att.values[0]?.dataType !== 'number' ? (
                           <Typography variant="body1">
-                            <span>{att.values[0]?.value}</span>
+                            <Typography style={{ paddingRight: '2rem' }} display="flex" justifyContent="right">{att.values[0]?.value}</Typography>
                           </Typography>
                         ) : (
-                          <span>{getRating(att.values[0]?.value)}</span>
+                          <Typography style={{ paddingRight: '2rem' }} display="flex" justifyContent="right">{getRating(att.values[0]?.value)}</Typography>
                         )}
-                      </div>
-                    ))}
-                  </div>
+                      </Grid>
+                    )
+                      : (
+                        <Grid style={{ paddingTop: index === 0 ? '0px' : '25px' }} container item xs={12} direction="column">
+                          <Grid xs={12}>
+                            <Tooltip
+                              placement="top-end"
+                              title={(
+                                <div className="filterTooltip">
+                                  <p>{att.description}</p>
+                                </div>
+                          )}
+                              arrow
+                            >
+                              {cat.label !== 'Extended Comments'
+                                ? (
+                                  <Box xs={12} variant="body1">
+                                    <Typography display="flex" justifyContent="center" sx={{ fontWeight: 'bold' }}>{att.label}</Typography>
+                                    <Typography display="flex" justifyContent="center">{att.values[0]?.value}</Typography>
+                                  </Box>
+                                )
+                                : (
+                                  <Box xs={12} variant="body1">
+                                    <Typography display="flex" justifyContent="left" sx={{ fontWeight: 'bold' }}>{att.label}</Typography>
+                                    <Typography display="flex" justifyContent="left">{att.values[0]?.value}</Typography>
+                                  </Box>
+                                )}
+                            </Tooltip>
+                          </Grid>
+                        </Grid>
+                      )))}
+                  </Grid>
                 </AccordionDetails>
               </Accordion>
-            </div>
-          </div>
-        </div>
+            </Grid>
+          </Grid>
+        </Box>
       ))}
 
       <InformationSheetReferences currentSources={currentSources} />
