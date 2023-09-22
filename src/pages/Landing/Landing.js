@@ -70,11 +70,12 @@ const Landing = ({ height, title, bg }) => {
   // set initial map state based on stateIdRedux
   // user history api/user click next and come back
   useEffect(() => {
-    if (allStates.length && stateIdRedux) {
+    if (allStates.length) {
       const state = allStates.filter((s) => s.id === stateIdRedux);
+      // handle stateIdRedux is null(click headerlogo in landing page)
       if (state.length > 0) {
         setSelectedState(state[0]);
-      }
+      } else setSelectedState({});
     }
   }, [stateIdRedux, allStates]);
 

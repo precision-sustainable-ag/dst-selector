@@ -115,7 +115,7 @@ const Header = () => {
       );
       postHistory(accessTokenRedux, userHistory);
     }
-  }, [progressRedux, regionShorthandRedux]);
+  }, [progressRedux, regionShorthandRedux, selectedFieldIdRedux]);
 
   return (
     <header className="d-print-none">
