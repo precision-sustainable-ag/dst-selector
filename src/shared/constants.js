@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable max-len */
 /* eslint-disable no-nested-ternary */
@@ -975,3 +976,44 @@ export const buildGeometryCollection = (point, polygon, name = null) => {
 export const drawAreaFromGeoCollection = (geoCollection) => [
   { type: 'Feature', geometry: { ...geoCollection.geometry.geometries[1] } },
 ];
+
+export const addCropToBasket = (
+  cropId,
+  cropName,
+  dispatchRedux,
+  enqueueSnackbar,
+  snackHandler,
+  selectedCropsModifier,
+  selectedCropsRedux,
+  myCropListLocation,
+) => {
+  const selectedCrops = cropId;
+
+  const buildDispatch = (action, crops) => {
+    dispatchRedux(selectedCropsModifier(crops));
+    dispatchRedux(snackHandler({ snackOpen: false, snackMessage: `${cropName} ${action}` }));
+    enqueueSnackbar(`${cropName} ${action}`);
+  };
+
+  if (selectedCropsRedux?.length > 0) {
+    // DONE: Remove crop from basket
+    let removeIndex = -1;
+    selectedCropsRedux.forEach((item, i) => {
+      if (item === cropId) {
+        removeIndex = i;
+      }
+    });
+    if (removeIndex === -1) {
+      // element not in array
+      buildDispatch('added', [...selectedCropsRedux, selectedCrops]);
+    } else {
+      const selectedCropsCopy = selectedCropsRedux;
+      selectedCropsCopy.splice(removeIndex, 1);
+
+      buildDispatch('Removed', selectedCropsCopy);
+    }
+  } else {
+    dispatchRedux(myCropListLocation({ from: 'explorer' }));
+    buildDispatch('Added', [selectedCrops]);
+  }
+};

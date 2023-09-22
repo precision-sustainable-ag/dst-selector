@@ -16,9 +16,9 @@ import {
   Typography,
 } from '@mui/material';
 import { KeyboardArrowLeft, KeyboardArrowRight } from '@mui/icons-material';
-import { useSnackbar } from 'notistack';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useSnackbar } from 'notistack';
 import {
   DataTooltip,
   callCoverCropApi,
@@ -28,8 +28,7 @@ import '../../../styles/cropComparisonView.scss';
 import '../../../styles/MyCoverCropComparisonComponent.scss';
 import CropDetailsModal from '../../../components/CropDetailsModal/CropDetailsModal';
 import CropCard from '../../../components/CropCard/CropCard';
-import { selectedCropsModifier } from '../../../reduxStore/cropSlice';
-import { snackHandler, setAjaxInProgress } from '../../../reduxStore/sharedSlice';
+import { setAjaxInProgress } from '../../../reduxStore/sharedSlice';
 
 const lightBorder = {
   border: '1px solid #35999b',
@@ -69,6 +68,7 @@ const MyCoverCropComparison = ({ selectedCrops }) => {
   const { enqueueSnackbar } = useSnackbar();
 
   // redux vars
+  const activeCropDataRedux = useSelector((stateRedux) => stateRedux.cropData.activeCropData);
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const comparisonKeysRedux = useSelector((stateRedux) => stateRedux.sharedData.comparisonKeys);
   const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
@@ -83,6 +83,8 @@ const MyCoverCropComparison = ({ selectedCrops }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalData, setModalData] = useState({});
   const [dataDictionary, setDataDictionary] = useState([]);
+
+  // TODO: Update SelectedCropsRedux
 
   const allData = [];
   const query = `${encodeURIComponent('regions')}=${encodeURIComponent(regionIdRedux)}`;
@@ -122,26 +124,26 @@ const MyCoverCropComparison = ({ selectedCrops }) => {
     setSidebarDefs(allData);
   }, [zoneRedux, dataDictionary]);
 
-  const removeCrop = (cropName, id) => {
-    let removeIndex = -1;
-    selectedCropsRedux.forEach((item, i) => {
-      if (item.id === id) {
-        removeIndex = i;
-      }
-    });
+  // const removeCrop = (cropName, id) => {
+  //   let removeIndex = -1;
+  //   selectedCropsRedux.forEach((item, i) => {
+  //     if (item.id === id) {
+  //       removeIndex = i;
+  //     }
+  //   });
 
-    if (removeIndex === -1) {
-      // element not in array
-      // not possible ?
-    } else {
-      const selectedCropsCopy = selectedCropsRedux;
+  //   if (removeIndex === -1) {
+  //     // element not in array
+  //     // not possible ?
+  //   } else {
+  //     const selectedCropsCopy = selectedCropsRedux;
 
-      selectedCropsCopy.splice(removeIndex, 1);
-      dispatchRedux(selectedCropsModifier(selectedCropsCopy));
-      dispatchRedux(snackHandler({ snackOpen: false, snackMessage: 'Removed' }));
-      enqueueSnackbar(`${cropName} Removed`);
-    }
-  };
+  //     selectedCropsCopy.splice(removeIndex, 1);
+  //     dispatchRedux(selectedCropsModifier(selectedCropsCopy));
+  //     dispatchRedux(snackHandler({ snackOpen: false, snackMessage: 'Removed' }));
+  //     enqueueSnackbar(`${cropName} Removed`);
+  //   }
+  // };
 
   const getTooltipData = (keyName = '') => {
     const exactObject = sidebarDefs.find((keys) => keys.label === keyName);
@@ -274,17 +276,18 @@ const MyCoverCropComparison = ({ selectedCrops }) => {
               }
             }}
           >
-            {selectedCrops.map((crop, index) => (
+            {activeCropDataRedux.filter((crop) => selectedCropsRedux.includes(crop.id)).map((crop, index) => (
               <div className="col-xl-3 col-lg-5 col-md-6" style={{ paddingLeft: '5px' }} key={index}>
                 <CropCard
-                  crop={crop.data}
-                  removeCrop={removeCrop}
+                  crop={crop}
                   handleModalOpen={handleModalOpen}
                   index={index}
                   type="myListCompare"
                   comparisonKeys={comparisonKeysRedux}
                   lightBG={lightBG}
                   GetAverageGoalRating={GetAverageGoalRating}
+                  dispatchRedux={dispatchRedux}
+                  enqueueSnackbar={enqueueSnackbar}
                 />
               </div>
             ))}
