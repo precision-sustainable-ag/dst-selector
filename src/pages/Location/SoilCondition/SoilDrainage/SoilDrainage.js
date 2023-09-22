@@ -1,3 +1,4 @@
+
 /* eslint-disable max-len */
 
 import React, { useEffect, useState } from 'react';
@@ -8,7 +9,6 @@ import { ReferenceTooltip } from '../../../../shared/constants';
 import arrayEquals from '../../../../shared/functions';
 import '../../../../styles/soilConditions.scss';
 import RenderDrainageClasses from './RenderDrainageClasses';
-import MyCoverCropReset from '../../../../components/MyCoverCropReset/MyCoverCropReset';
 import { updateDrainageClass as updateDrainageClassRedux } from '../../../../reduxStore/soilSlice';
 
 const SoilDrainage = () => {
@@ -31,6 +31,7 @@ const SoilDrainage = () => {
       setHandleConfirm(true);
     }
   }, [selectedCropsRedux, myCoverCropListLocationRedux]);
+
 
   useEffect(() => {
     const checkArray = ['Very poorly drained', 'Poorly drained', 'Somewhat poorly drained'];

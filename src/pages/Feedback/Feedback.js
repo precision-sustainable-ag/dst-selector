@@ -11,7 +11,6 @@ import {
   FormGroup,
   FormControlLabel,
 } from '@mui/material';
-import Header from '../Header/Header';
 
 const FeedbackComponent = () => {
   const consentRedux = useSelector((stateRedux) => stateRedux.userData.consent);
@@ -144,101 +143,99 @@ const FeedbackComponent = () => {
   };
 
   return (
-    <>
-      <Header />
-      <Grid
-        container
-        rowSpacing={5}
-        style={{
-          paddingLeft: '10%',
-          paddingRight: '10%',
-          paddingTop: '3%',
-          paddingBottom: '3%',
-        }}
-      >
-        {/* Title */}
-        <Grid container item spacing={1} justifyContent="center">
-          <Grid item xs={12}>
-            <Typography variant="h3">Cover Crop Species Selector Feedback</Typography>
-          </Grid>
+    <Grid
+      container
+      rowSpacing={5}
+      style={{
+        paddingLeft: '10%',
+        paddingRight: '10%',
+        paddingTop: '3%',
+        paddingBottom: '3%',
+      }}
+    >
+      {/* Title */}
+      <Grid container item spacing={1} justifyContent="center">
+        <Grid item xs={12}>
+          <Typography variant="h3">Cover Crop Species Selector Feedback</Typography>
         </Grid>
+      </Grid>
 
-        {/* Feedback Title */}
-        <Grid container item spacing={1} justifyContent="flex-start" alignItems="flex-start">
-          <Grid item xs={12}>
-            <Typography variant="h6" display="inline-block">Title</Typography>
-            <Typography variant="h6" display="inline-block" style={{ color: 'red' }}>
-              *
-            </Typography>
-          </Grid>
-          <Grid item xs={12}>
-            <Typography variant="body1">Give your feedback a short descriptive title.</Typography>
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              placeholder="Enter Your Title"
-              variant="outlined"
-              onChange={(event) => handleTextInputChange(event, 'title')}
+      {/* Feedback Title */}
+      <Grid container item spacing={1} justifyContent="flex-start" alignItems="flex-start">
+        <Grid item xs={12}>
+          <Typography variant="h6" display="inline-block">Title</Typography>
+          <Typography variant="h6" display="inline-block" style={{ color: 'red' }}>
+            *
+          </Typography>
+        </Grid>
+        <Grid item xs={12}>
+          <Typography variant="body1">Give your feedback a short descriptive title.</Typography>
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            placeholder="Enter Your Title"
+            variant="outlined"
+            onChange={(event) => handleTextInputChange(event, 'title')}
+          />
+        </Grid>
+      </Grid>
+
+      {/* Feedback Messsage */}
+      <Grid container item spacing={1} justifyContent="flex-start" alignItems="flex-start">
+        <Grid item xs={12}>
+          <Typography variant="h6" display="inline-block">Message </Typography>
+          <Typography variant="h6" display="inline-block" style={{ color: 'red' }}>
+            *
+          </Typography>
+        </Grid>
+        <Grid item xs={12}>
+          <Typography variant="body1">
+            Explain your feedback as thoroughly as you can. Your feedback will help us improve the
+            species selection experience. You can attach a screenshot of your feedback below.
+          </Typography>
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            placeholder="Enter Your Feedback"
+            multiline
+            variant="outlined"
+            fullWidth
+            minRows={3}
+            onChange={(event) => handleTextInputChange(event, 'comments')}
+          />
+        </Grid>
+      </Grid>
+
+      {/* Feedback Topic */}
+      <Grid container item spacing={1} justifyContent="flex-start" alignItems="flex-start">
+        <Grid item xs={12}>
+          <Typography variant="h6" display="inline-block">Topic </Typography>
+          <Typography variant="h6" display="inline-block" style={{ color: 'red' }}>
+            *
+          </Typography>
+        </Grid>
+        <Grid item xs={12}>
+          <Typography variant="body1">What is this feedback about?</Typography>
+        </Grid>
+        <Grid item xs={12}>
+          <FormGroup>
+            <FormControlLabel
+              control={<Checkbox onChange={handleCheckboxChange} name="About the Cover Crop Data" />}
+              label="About the Cover Crop Data"
             />
-          </Grid>
-        </Grid>
-
-        {/* Feedback Messsage */}
-        <Grid container item spacing={1} justifyContent="flex-start" alignItems="flex-start">
-          <Grid item xs={12}>
-            <Typography variant="h6" display="inline-block">Message </Typography>
-            <Typography variant="h6" display="inline-block" style={{ color: 'red' }}>
-              *
-            </Typography>
-          </Grid>
-          <Grid item xs={12}>
-            <Typography variant="body1">
-              Explain your feedback as thoroughly as you can. Your feedback will help us improve the
-              species selection experience. You can attach a screenshot of your feedback below.
-            </Typography>
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              placeholder="Enter Your Feedback"
-              multiline
-              variant="outlined"
-              fullWidth
-              minRows={3}
-              onChange={(event) => handleTextInputChange(event, 'comments')}
+            <FormControlLabel
+              control={<Checkbox onChange={handleCheckboxChange} name="About the Website" />}
+              label="About the Website"
             />
-          </Grid>
+            <FormControlLabel
+              control={<Checkbox onChange={handleCheckboxChange} name="Other" />}
+              label="Other"
+            />
+          </FormGroup>
         </Grid>
+      </Grid>
 
-        {/* Feedback Topic */}
-        <Grid container item spacing={1} justifyContent="flex-start" alignItems="flex-start">
-          <Grid item xs={12}>
-            <Typography variant="h6" display="inline-block">Topic </Typography>
-            <Typography variant="h6" display="inline-block" style={{ color: 'red' }}>
-              *
-            </Typography>
-          </Grid>
-          <Grid item xs={12}>
-            <Typography variant="body1">What is this feedback about?</Typography>
-          </Grid>
-          <Grid item xs={12}>
-            <FormGroup>
-              <FormControlLabel
-                control={<Checkbox onChange={handleCheckboxChange} name="About the Cover Crop Data" />}
-                label="About the Cover Crop Data"
-              />
-              <FormControlLabel
-                control={<Checkbox onChange={handleCheckboxChange} name="About the Website" />}
-                label="About the Website"
-              />
-              <FormControlLabel
-                control={<Checkbox onChange={handleCheckboxChange} name="Other" />}
-                label="Other"
-              />
-            </FormGroup>
-          </Grid>
-        </Grid>
-
-        {/* //Screenshot
+      {/* //Screenshot
         <Grid container item spacing={1} justifyContent="flex-start" alignItems="flex-start">
           <Grid item xs={12}>
             <Typography variant="h6">Screen Shot Upload</Typography>
@@ -259,60 +256,59 @@ const FeedbackComponent = () => {
           </Grid>
         </Grid> */}
 
-        {/* Name */}
-        <Grid container item spacing={1} justifyContent="flex-start" alignItems="flex-start">
-          <Grid item xs={12}>
-            <Typography variant="h6">Name </Typography>
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              placeholder="Enter Name"
-              variant="outlined"
-              onChange={(event) => handleTextInputChange(event, 'name')}
-            />
-          </Grid>
+      {/* Name */}
+      <Grid container item spacing={1} justifyContent="flex-start" alignItems="flex-start">
+        <Grid item xs={12}>
+          <Typography variant="h6">Name </Typography>
         </Grid>
-
-        {/* Email */}
-        <Grid container item spacing={1} justifyContent="flex-start" alignItems="flex-start">
-          <Grid item xs={12}>
-            <Typography variant="h6">Email </Typography>
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              placeholder="Enter Email"
-              variant="outlined"
-              onChange={(event) => handleTextInputChange(event, 'email')}
-            />
-          </Grid>
+        <Grid item xs={12}>
+          <TextField
+            placeholder="Enter Name"
+            variant="outlined"
+            onChange={(event) => handleTextInputChange(event, 'name')}
+          />
         </Grid>
-
-        {/* Submit */}
-        <Grid container item spacing={1} justifyContent="flex-start" alignItems="flex-start">
-          {checkDisabled().state && (
-            <Grid item xs={12}>
-              <Typography variant="body1" style={{ color: 'red' }}>
-                {checkDisabled().message}
-                . Please fill all required fields before submitting.
-              </Typography>
-            </Grid>
-          )}
-          <Grid item xs={12}>
-            <Button disabled={checkDisabled().state} onClick={handleSubmit} size="large" variant="outlined">
-              Submit
-            </Button>
-          </Grid>
-        </Grid>
-        <Snackbar
-          open={snackbarData.open}
-          autoHideDuration={5000}
-          onClose={handleSnackbarClose}
-          message={snackbarData.message}
-          anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-          color={snackbarData.color}
-        />
       </Grid>
-    </>
+
+      {/* Email */}
+      <Grid container item spacing={1} justifyContent="flex-start" alignItems="flex-start">
+        <Grid item xs={12}>
+          <Typography variant="h6">Email </Typography>
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            placeholder="Enter Email"
+            variant="outlined"
+            onChange={(event) => handleTextInputChange(event, 'email')}
+          />
+        </Grid>
+      </Grid>
+
+      {/* Submit */}
+      <Grid container item spacing={1} justifyContent="flex-start" alignItems="flex-start">
+        {checkDisabled().state && (
+        <Grid item xs={12}>
+          <Typography variant="body1" style={{ color: 'red' }}>
+            {checkDisabled().message}
+            . Please fill all required fields before submitting.
+          </Typography>
+        </Grid>
+        )}
+        <Grid item xs={12}>
+          <Button disabled={checkDisabled().state} onClick={handleSubmit} size="large" variant="outlined">
+            Submit
+          </Button>
+        </Grid>
+      </Grid>
+      <Snackbar
+        open={snackbarData.open}
+        autoHideDuration={5000}
+        onClose={handleSnackbarClose}
+        message={snackbarData.message}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        color={snackbarData.color}
+      />
+    </Grid>
   );
 };
 

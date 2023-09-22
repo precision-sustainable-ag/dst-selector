@@ -12,7 +12,7 @@ import '../../../styles/soilConditions.scss';
 import SoilComposition from './SoilComposition/SoilComposition';
 import SoilDrainage from './SoilDrainage/SoilDrainage';
 import SoilFloodingFrequency from './SoilFloodingFrequency/SoilFloodingFrequency';
-import { toggleSoilLoader, updateSoilData, updateSoilDataOriginal } from '../../../reduxStore/soilSlice';
+import { updateSoilData, updateSoilDataOriginal } from '../../../reduxStore/soilSlice';
 
 const SoilCondition = () => {
   const dispatchRedux = useDispatch();
@@ -73,15 +73,10 @@ const SoilCondition = () => {
         redirect: 'follow',
       };
 
-      dispatchRedux(toggleSoilLoader({
-        isSoilDataLoading: true,
-      }));
-
       fetch('https://sdmdataaccess.sc.egov.usda.gov/Tabular/post.rest', requestOptions)
         .then((response) => response.json())
         .then((result) => {
           if (result !== {}) {
-            const pondingFrequency = result.Table[1][4];
             let mapUnitString = '';
 
             const stringSplit = [];
@@ -120,21 +115,15 @@ const SoilCondition = () => {
               mapUnitName: mapUnitString,
               drainageClass: drainageClasses,
               floodingFrequency: floodingClasses,
-              pondingFrequency,
               latLong: { lat, lon },
             }));
             dispatchRedux(updateSoilDataOriginal({
               mapUnitName: mapUnitString,
               drainageClass: drainageClasses,
               floodingFrequency: floodingClasses,
-              pondingFrequency,
               latLong: { lat, lon },
             }));
           }
-
-          dispatchRedux(toggleSoilLoader({
-            isSoilDataLoading: false,
-          }));
         })
         // eslint-disable-next-line no-console
         .catch((error) => console.error('SSURGO FETCH ERROR', error));
