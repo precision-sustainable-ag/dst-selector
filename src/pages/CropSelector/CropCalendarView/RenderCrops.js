@@ -2,13 +2,13 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, TableCell, TableRow } from '@mui/material';
 import { useSnackbar } from 'notistack';
-
 import {
   CropImage,
   flipCoverCropName,
   LightButton,
   trimString,
   getRating,
+  addCropToBasket,
 } from '../../../shared/constants';
 import CropSelectorCalendarView from '../../../components/CropSelectorCalendarView/CropSelectorCalendarView';
 import '../../../styles/cropCalendarViewComponent.scss';
@@ -21,18 +21,9 @@ const RenderCrops = ({
   const dispatchRedux = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
   const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
-
-  // const dispatchValue = ({ selectedCrops, snackOpen, snackMessage }) => {
-  //   dispatchRedux(selectedCropsModifier(selectedCrops));
-  //   dispatchRedux(snackHandler({ snackOpen, snackMessage }));
-  // };
-
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
-
   const selectedBtns = selectedCropsRedux;
-
   const hasGoalRatingTwoOrLess = (crop = []) => crop.inactive || selectedGoalsRedux.every((rating) => crop[rating] <= 2);
-
   const getAverageGoalRating = (selectedGoals, crop) => {
     let goalRating = 0;
     selectedGoals.forEach((goal) => {
@@ -41,38 +32,6 @@ const RenderCrops = ({
       }
     });
     return getRating(goalRating / selectedGoals.length);
-  };
-
-  const addCropToBasket = (cropId, cropName) => {
-    const selectedCrops = cropId;
-
-    const buildDispatch = (action, crops) => {
-      dispatchRedux(selectedCropsModifier(crops));
-      dispatchRedux(snackHandler({ snackOpen: false, snackMessage: `${cropName} ${action}` }));
-      enqueueSnackbar(`${cropName} ${action}`);
-    };
-
-    if (selectedCropsRedux?.length > 0) {
-      // DONE: Remove crop from basket
-      let removeIndex = -1;
-      selectedCropsRedux.forEach((item, i) => {
-        if (item === cropId) {
-          removeIndex = i;
-        }
-      });
-      if (removeIndex === -1) {
-        // element not in array
-        buildDispatch('added', [...selectedCropsRedux, selectedCrops]);
-      } else {
-        const selectedCropsCopy = selectedCropsRedux;
-        selectedCropsCopy.splice(removeIndex, 1);
-
-        buildDispatch('Removed', selectedCropsCopy);
-      }
-    } else {
-      dispatchRedux(myCropListLocation({ from: 'selector' }));
-      buildDispatch('Added', [selectedCrops]);
-    }
   };
 
   return cropData
@@ -167,8 +126,12 @@ const RenderCrops = ({
                 addCropToBasket(
                   crop.id,
                   crop.label,
-                  `cartBtn${index}`,
-                  crop,
+                  dispatchRedux,
+                  enqueueSnackbar,
+                  snackHandler,
+                  selectedCropsModifier,
+                  selectedCropsRedux,
+                  myCropListLocation,
                 );
               }}
             >

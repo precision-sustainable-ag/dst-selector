@@ -1,7 +1,5 @@
 /*
   This file contains the CropTable component
-  The CropTable is the
-  addCropToBasket manages adding crops to cart
 */
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
