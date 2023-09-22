@@ -21,17 +21,14 @@ import { LightButton } from '../../shared/constants';
 import WeatherPrecipitation from './WeatherPrecipitation/WeatherPrecipitation';
 import WeatherFrostDates from './WeatherFrostDates/WeatherFrostDates';
 import WeatherFrostFreeDays from './WeatherFrostFreeDays/WeatherFrostFreeDays';
-import MyCoverCropReset from '../MyCoverCropReset/MyCoverCropReset';
 import { updateWeatherConditions } from '../../reduxStore/weatherSlice';
 
 const WeatherConditions = () => {
   const dispatchRedux = useDispatch();
 
   // redux vars
-  const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
   const weatherDataRedux = useSelector((stateRedux) => stateRedux.weatherData.weatherData);
   const ajaxInProgressRedux = useSelector((stateRedux) => stateRedux.sharedData.ajaxInProgress);
-  const myCoverCropListLocationRedux = useSelector((stateRedux) => stateRedux.sharedData.myCoverCropListLocation);
 
   // useState vars
   const [months, setMonths] = useState([]);
@@ -42,7 +39,6 @@ const WeatherConditions = () => {
   const [firstFrostDayHelper, setFirstFrostDayHelper] = useState('');
   const [firstFrostDayError, setFirstFrostDayError] = useState(false);
   const [lastFrostDayError, setLastFrostDayError] = useState(false);
-  const [handleConfirm, setHandleConfirm] = useState(false);
 
   const [firstFrostMonth, setFirstFrostMonth] = useState(
     weatherDataRedux?.averageFrost?.firstFrostDate?.month,
@@ -108,13 +104,6 @@ const WeatherConditions = () => {
     // data incorrect
     // show error on modal
   };
-
-  useEffect(() => {
-    if (myCoverCropListLocationRedux !== 'selector' && selectedCropsRedux.length > 0) {
-      // document.title = 'Cover Crop Selector';
-      setHandleConfirm(true);
-    }
-  }, [selectedCropsRedux, myCoverCropListLocationRedux]);
 
   useEffect(() => {
     // get current month in long form
@@ -398,7 +387,6 @@ const WeatherConditions = () => {
           </div>
         </Box>
       </Dialog>
-      <MyCoverCropReset handleConfirm={handleConfirm} setHandleConfirm={setHandleConfirm} />
     </div>
   );
 };
@@ -420,8 +408,8 @@ const MonthSelect = ({
           setValue(event.target.value);
         }}
         inputProps={{
-          name: { id },
-          id: { id },
+          name: id,
+          id,
         }}
       >
         {months.map((val, key) => (

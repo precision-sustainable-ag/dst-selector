@@ -1,29 +1,27 @@
 import {
   Typography, Box, Grid,
 } from '@mui/material';
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { reset } from '../../../reduxStore/store';
 import '../../../styles/header.scss';
 import DateComponent from '../DateComponent/DateComponent';
 import ForecastComponent from '../ForecastComponent/ForecastComponent';
-import MyCoverCropReset from '../../../components/MyCoverCropReset/MyCoverCropReset';
+import { setMyCoverCropReset } from '../../../reduxStore/sharedSlice';
 
 const HeaderLogoInfo = () => {
   const dispatchRedux = useDispatch();
   const history = useHistory();
   const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
-  const [handleConfirm, setHandleConfirm] = useState(false);
   const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
 
   const handleClick = () => {
     if (selectedCropsRedux.length === 0) {
-      if (window.location.pathname === '/') {
-        dispatchRedux(reset());
-      } else history.replace('/');
+      dispatchRedux(reset());
+      history.replace('/');
     } else {
-      setHandleConfirm(true);
+      dispatchRedux(setMyCoverCropReset(true, false));
     }
   };
 
@@ -119,7 +117,6 @@ const HeaderLogoInfo = () => {
         </div>
       </Grid>
 
-      <MyCoverCropReset handleConfirm={handleConfirm} setHandleConfirm={setHandleConfirm} goBack={false} returnToHome />
     </Grid>
   );
 };

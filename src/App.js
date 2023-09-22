@@ -4,21 +4,188 @@
 */
 
 import {
-  Snackbar, Box, Container, Grid, Typography,
+  Snackbar, Box, Container, Grid, ThemeProvider,
+  StyledEngineProvider,
+  responsiveFontSizes,
+  adaptV4Theme,
 } from '@mui/material';
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { createTheme } from '@mui/material/styles';
+import React, { useEffect, useState, Suspense } from 'react';
+import { useDispatch, useSelector, Provider } from 'react-redux';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
+
+import configureStore from './reduxStore/store';
+import { CustomStyles } from './shared/constants';
+
 import CropSelector from './pages/CropSelector/CropSelector';
 import GoalsSelector from './pages/GoalsSelector/GoalsSelector';
 import Header from './pages/Header/Header';
 import Landing from './pages/Landing/Landing';
 import LocationComponent from './pages/Location/Location';
 import LocationConfirmation from './pages/Location/LocationConfirmation/LocationConfirmation';
-import './styles/App.scss';
 import { snackHandler } from './reduxStore/sharedSlice';
+import RouteNotFound from './pages/RouteNotFound/RouteNotFound';
+import Auth0ProviderWithHistory from './components/Auth/Auth0ProviderWithHistory/Auth0ProviderWithHistory';
+import Footer from './pages/Footer/Footer';
+import About from './pages/About/About';
+import SeedingRateCalculator from './pages/SeedingRateCalculator/SeedingRateCalculator';
+import MixMaker from './pages/MixMaker/MixMaker';
+import CoverCropExplorer from './pages/CoverCropExplorer/CoverCropExplorer';
+import FeedbackComponent from './pages/Feedback/Feedback';
+import InformationSheetDictionary from './pages/Help/InformationSheetDictionary/InformationSheetDictionary';
+import License from './pages/License/License';
+import MyCoverCropListWrapper from './pages/MyCoverCropList/MyCoverCropListWrapper/MyCoverCropListWrapper';
+import Help from './pages/Help/Help';
+import Profile from './pages/Profile/Profile';
 
-const LoadRelevantRoute = ({ progress, calcHeight }) => {
-  switch (progress) {
+import './styles/App.scss';
+import './styles/parent.scss';
+import 'mdbreact/dist/css/mdb.css';
+import './styles/progressBar.css';
+
+const store = configureStore();
+
+// AdaptV4Theme has been depreciated and v5 is the new version.  TODO: look into update
+const theme = createTheme(
+  adaptV4Theme({
+    palette: {
+      primary: {
+        main: CustomStyles().lightGreen,
+      },
+      secondary: {
+        main: CustomStyles().lighterGreen,
+      },
+    },
+    overrides: {
+      MuiTooltip: {
+        tooltip: {
+          fontWeight: 'normal',
+          fontSize: CustomStyles().defaultFontSize,
+          backgroundColor: CustomStyles().secondaryProgressBtnColor,
+          color: 'black',
+          borderRadius: CustomStyles().mildlyRoundedRadius,
+        },
+        arrow: {},
+      },
+      MuiChip: {
+        root: {
+          '&&:hover': {
+            boxShadow: '0 0 3px 0 black',
+          },
+          border: '1px solid #777',
+        },
+        colorSecondary: {
+          '&, &&:hover, &&:focus': {
+            backgroundColor: CustomStyles().greenishWhite,
+            color: 'rgba(0,0,0,0.9)',
+            fontWeight: 'normal',
+          },
+        },
+        colorPrimary: {
+          '&, &&:hover, &&:focus': {
+            backgroundColor: CustomStyles().darkGreen,
+            color: 'white',
+            fontWeight: 'normal',
+          },
+        },
+        sizeSmall: {
+          fontSize: '1.2rem',
+        },
+      },
+      MuiDialog: {
+        root: {
+          zIndex: 1000003,
+        },
+      },
+    },
+  }),
+);
+
+const csTheme = responsiveFontSizes(theme, {
+  breakpoints: ['xs', 'sm', 'md', 'lg', 'xl'],
+});
+
+const App = () => (
+  <StyledEngineProvider injectFirst>
+    <ThemeProvider theme={csTheme}>
+      <Provider store={store}>
+        <BrowserRouter>
+          <Auth0ProviderWithHistory>
+            <Suspense fallback={<div>Loading..</div>}>
+              <Box className="contentWrapper" id="mainContentWrapper">
+                <Header />
+                <Container disableGutters maxWidth={false}>
+                  <Box className="contentContainer">
+
+                    <Switch>
+                      <Route
+                        path="/"
+                        render={() => (
+                          <Grid container item xs={12} style={{ paddingLeft: 0, paddingRight: 0 }}>
+                            <LoadRelevantRoute />
+                          </Grid>
+                        )}
+                        exact
+                      />
+                      <Route path="/explorer" component={CoverCropExplorer} exact />
+                      <Route path="/about" component={About} exact />
+                      <Route path="/help" component={Help} exact />
+                      <Route path="/feedback" component={FeedbackComponent} exact />
+                      <Route path="/profile" component={Profile} exact />
+                      <Route path="/my-cover-crop-list" component={MyCoverCropListWrapper} exact />
+                      <Route path="/seeding-rate-calculator" component={SeedingRateCalculator} exact />
+                      <Route path="/data-dictionary" component={InformationSheetDictionary} exact />
+                      <Route path="/license" render={() => <License licenseType="MIT" />} exact />
+                      <Route
+                        path="/ag-informatics-license"
+                        render={() => <License licenseType="AgInformatics" />}
+                        exact
+                      />
+                      <Route path="/mix-maker" component={MixMaker} exact />
+
+                      <Route component={RouteNotFound} />
+                    </Switch>
+                  </Box>
+                </Container>
+              </Box>
+              <SnackbarComponent />
+              <Footer />
+            </Suspense>
+          </Auth0ProviderWithHistory>
+        </BrowserRouter>
+      </Provider>
+    </ThemeProvider>
+  </StyledEngineProvider>
+
+);
+
+export default App;
+
+const LoadRelevantRoute = () => {
+  const [calcHeight, setCalcHeight] = useState(0);
+
+  const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
+
+  useEffect(() => {
+    const parentDocHeight = document
+      .getElementById('mainContentWrapper')
+      .getBoundingClientRect().height;
+    const headerHeight = document.querySelector('header').getBoundingClientRect().height;
+
+    const calculatedHeight = parentDocHeight - headerHeight;
+
+    setCalcHeight(calculatedHeight);
+  }, []);
+
+  switch (progressRedux) {
+    case 0:
+      return (
+        <Landing
+          title="Decision Support Tool"
+          height={calcHeight}
+          bg="/images/cover-crop-field.png"
+        />
+      );
     case 1:
       return (
         <LocationComponent
@@ -54,16 +221,13 @@ const LoadRelevantRoute = ({ progress, calcHeight }) => {
   }
 };
 
-const App = () => {
+// eslint-disable-next-line no-unused-vars
+const SnackbarComponent = () => {
   const dispatchRedux = useDispatch();
 
   // redux vars
   const snackOpenRedux = useSelector((stateRedux) => stateRedux.sharedData.snackOpen);
   const snackMessageRedux = useSelector((stateRedux) => stateRedux.sharedData.snackMessage);
-  const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
-
-  // useState vars
-  const [calcHeight, setCalcHeight] = useState(0);
 
   const snackHorizontal = 'right';
   const snackVertical = 'bottom';
@@ -72,70 +236,21 @@ const App = () => {
     dispatchRedux(snackHandler({ snackOpen: false, snackMessage: '' }));
   };
 
-  useEffect(() => {
-    const parentDocHeight = document
-      .getElementById('mainContentWrapper')
-      .getBoundingClientRect().height;
-    const headerHeight = document.querySelector('header').getBoundingClientRect().height;
-
-    const calculatedHeight = parentDocHeight - headerHeight;
-
-    setCalcHeight(calculatedHeight);
-  }, []);
-
   return (
-    <Box className="contentWrapper" id="mainContentWrapper">
-      <Header logo="neccc_wide_logo_color_web.jpg" />
+    <Snackbar
+      anchorOrigin={{
+        vertical: snackVertical,
+        horizontal: snackHorizontal,
+      }}
+      key={snackVertical + snackHorizontal}
+      autoHideDuration={3000}
+      open={snackOpenRedux}
+      onClose={handleSnackClose}
+      ContentProps={{
+        'aria-describedby': 'message-id',
+      }}
+      message={snackMessageRedux}
+    />
 
-      <Container disableGutters maxWidth={false}>
-        <Box className="contentContainer">
-          {progressRedux === 0 ? (
-            <Landing
-              title="Decision Support Tool"
-              height={calcHeight}
-              bg="/images/cover-crop-field.png"
-            />
-          ) : (
-            <Grid container item xs={12} style={{ paddingLeft: 0, paddingRight: 0 }}>
-              <LoadRelevantRoute progress={progressRedux} calcHeight={calcHeight} />
-            </Grid>
-          )}
-        </Box>
-      </Container>
-
-      <div>
-        <Snackbar
-          anchorOrigin={{
-            vertical: snackVertical,
-            horizontal: snackHorizontal,
-          }}
-          key={{
-            vertical: snackVertical,
-            horizontal: snackHorizontal,
-          }}
-          autoHideDuration={3000}
-          open={snackOpenRedux}
-          onClose={handleSnackClose}
-          ContentProps={{
-            'aria-describedby': 'message-id',
-          }}
-          message={snackMessageRedux}
-        />
-      </div>
-    </Box>
   );
 };
-
-export default App;
-
-const RouteNotFound = () => (
-  <Container>
-    <Grid container justifyContent="center" alignItems="center" spacing={3}>
-      <Grid item xs={4}>
-        <Typography variant="h3" align="center">
-          Unknown Route
-        </Typography>
-      </Grid>
-    </Grid>
-  </Container>
-);

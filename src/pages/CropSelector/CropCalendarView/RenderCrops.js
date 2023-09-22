@@ -43,40 +43,6 @@ const RenderCrops = ({
     return getRating(goalRating / selectedGoals.length);
   };
 
-  // same function in ExplorerCardView move to constants
-  // const addCropToBasket = (cropId, cropName, btnId) => {
-  //   const selectedCrops = cropId;
-  //   let cropArray = [];
-  //   cropArray = selectedCrops;
-
-  //   if (selectedCropsRedux.length > 0) {
-  //     const removeIndex = selectedCropsRedux.map((item) => item.btnId).indexOf(`${btnId}`);
-  //     if (removeIndex === -1) {
-  //       dispatchValue({
-  //         selectedCrops: [...selectedCropsRedux, selectedCrops],
-  //         snackOpen: true,
-  //         snackMessage: `${cropName} Added`,
-  //       });
-  //     } else {
-  //       const selectedCropsCopy = selectedCropsRedux;
-  //       selectedCropsCopy.splice(removeIndex, 1);
-  //       dispatchValue({
-  //         selectedCrops: selectedCropsCopy,
-  //         snackOpen: true,
-  //         snackMessage: `${cropName} Removed`,
-  //       });
-  //     }
-  //   } else {
-  //     dispatchRedux(myCropListLocation({ from: 'selector' }));
-
-  //     dispatchValue({
-  //       selectedCrops: [cropArray],
-  //       snackOpen: true,
-  //       snackMessage: `${cropName} Added`,
-  //     });
-  //   }
-  // };
-
   const addCropToBasket = (cropId, cropName) => {
     const selectedCrops = cropId;
 
