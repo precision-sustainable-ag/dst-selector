@@ -49,7 +49,7 @@ const UserFieldDialog = ({
   const fieldNameValidation = (name) => {
     let errText = '';
     if (name === '') errText = 'You must input a valid name!';
-    if (userFields.filter((field) => field.label === name).length > 0) errText = 'Input name existed!';
+    if (userFields.filter((field) => field.label === name).length > 0) errText = 'Field name already exists!';
     if (errText !== '') {
       setFieldDialogState({ ...fieldDialogState, error: true, errorText: errText });
       return false;

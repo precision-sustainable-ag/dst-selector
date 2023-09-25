@@ -46,7 +46,7 @@ const AuthModal = ({ modalOpen, setModalOpen, setConsentModalOpen }) => {
   };
 
   return (
-    !isAuthenticated && !isLoading
+    (!isAuthenticated && !isLoading)
     && (
     <Modal
       open={modalOpen}

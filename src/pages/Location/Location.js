@@ -43,7 +43,6 @@ const LocationComponent = () => {
   const dispatchRedux = useDispatch();
 
   // redux vars
-  const countyRedux = useSelector((stateRedux) => stateRedux.addressData.county);
   const markersRedux = useSelector((stateRedux) => stateRedux.addressData.markers);
   const regionsRedux = useSelector((stateRedux) => stateRedux.mapData.regions);
   const regionShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.regionShorthand);
@@ -56,7 +55,7 @@ const LocationComponent = () => {
   const selectedFieldIdRedux = useSelector((stateRedux) => stateRedux.userData.selectedFieldId);
 
   // useState vars
-  const [regionShorthand, setRegionShorthand] = useState(regionShorthandRedux || regionsRedux[0].shorthand);
+  const [regionShorthand, setRegionShorthand] = useState('');
   const [selectedToEditSite, setSelectedToEditSite] = useState({});
   const [currentGeometry, setCurrentGeometry] = useState([]);
   const [fieldDialogState, setFieldDialogState] = useState(initFieldDialogState);
@@ -132,8 +131,6 @@ const LocationComponent = () => {
       county,
     } = selectedToEditSite;
 
-    if (latitude === markersRedux[0][0] && longitude === markersRedux[0][1]) { return; }
-
     // if is adding a new point, open dialog
     if (isAuthenticated && isAddingPoint && latitude) {
       const currentSelectedField = selectedUserField?.geometry;
@@ -174,8 +171,14 @@ const LocationComponent = () => {
             setRegionShorthand(zone);
           } else {
             // if council is MCCC, change selectedRegion based on county
-            setRegionShorthand(countyRedux.replace(' County', ''));
+            setRegionShorthand(county.replace(' County', ''));
           }
+        })
+        .catch((err) => {
+          // eslint-disable-next-line no-console
+          console.log(err);
+          // for places where api didn't work, set region to default.
+          setRegionShorthand(regionsRedux[0].shorthand);
         });
     }
   }, [selectedToEditSite]);
