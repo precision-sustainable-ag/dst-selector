@@ -16,7 +16,7 @@ const MyCoverCropCards = ({ crop, cardNo }) => {
   const dispatchRedux = useDispatch();
 
   const handleModalOpen = () => {
-    setModalData(crop.data);
+    setModalData(crop);
     setModalOpen(true);
   };
 
