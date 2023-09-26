@@ -53,13 +53,15 @@ const CropCalendarView = ({ activeCropData }) => {
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const ajaxInProgressRedux = useSelector((stateRedux) => stateRedux.sharedData.ajaxInProgress);
+  const activeCropDataRedux = useSelector((stateRedux) => stateRedux.cropData.activeCropData);
+  const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
+
+  // useState vars
   const [legendModal, setLegendModal] = useState(false);
   const [sortAlgo, setSortAlgo] = React.useState('');
   const [modalOpen, setModalOpen] = useState(false);
   const [modalData, setModalData] = useState([{}]);
-
-  // useState vars
-  const { activeGrowthPeriod, selectedCrops } = cropDataStateRedux;
+  const { activeGrowthPeriod } = cropDataStateRedux;
   const activeCropDataShadow = activeCropData;
   const legendData = getLegendDataBasedOnCouncil(councilShorthandRedux);
 
@@ -96,7 +98,7 @@ const CropCalendarView = ({ activeCropData }) => {
   };
 
   const sortBySelectedCrops = (selectedCropsSortFlag) => {
-    const selectedCropsShadow = selectedCrops;
+    const selectedCropsShadow = activeCropDataRedux.filter((crop) => selectedCropsRedux.includes(crop.id));
     sortCrops('Selected Crops', activeCropDataShadow, selectedCropsSortFlag, selectedCropsShadow, dispatchValue);
   };
   // sorting function drop down selection
