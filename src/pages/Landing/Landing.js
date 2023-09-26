@@ -24,7 +24,6 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { callCoverCropApi } from '../../shared/constants';
 import '../../styles/landing.scss';
 import ConsentModal from '../CoverCropExplorer/ConsentModal/ConsentModal';
-import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset';
 // import { updateZone } from '../../reduxStore/addressSlice';
 import AuthModal from './AuthModal/AuthModal';
 import { updateRegions, updateRegion, updateStateInfo } from '../../reduxStore/mapSlice';
@@ -38,14 +37,11 @@ const Landing = ({ height, title, bg }) => {
   const regionsRedux = useSelector((stateRedux) => stateRedux.mapData.regions);
   const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
   const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
-  const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
   const consentRedux = useSelector((stateRedux) => stateRedux.userData.consent);
-  const myCoverCropListLocationRedux = useSelector((stateRedux) => stateRedux.sharedData.myCoverCropListLocation);
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
   const hideConsentRedux = useSelector((stateRedux) => stateRedux.userData.hideConsentModal);
 
   // useState vars
-  const [handleConfirm, setHandleConfirm] = useState(false);
   const [containerHeight, setContainerHeight] = useState(height);
   const [allStates, setAllStates] = useState([]);
   // This is the state obj mapped by mapState
@@ -91,7 +87,6 @@ const Landing = ({ height, title, bg }) => {
     if (regionsRedux?.length > 0) {
       dispatchRedux(updateRegion({
         regionId: regionsRedux[0]?.id ?? '',
-        regionLabel: regionsRedux[0]?.label ?? '',
         regionShorthand: regionsRedux[0]?.shorthand ?? '',
       }));
     }
@@ -203,9 +198,6 @@ const Landing = ({ height, title, bg }) => {
 
   useEffect(() => {
     document.title = 'Cover Crop Selector';
-    if (myCoverCropListLocationRedux !== 'selector' && selectedCropsRedux.length > 0) {
-      setHandleConfirm(true);
-    }
   }, []);
 
   return (
@@ -345,7 +337,6 @@ const Landing = ({ height, title, bg }) => {
           </Grid>
         </Grid>
       </Grid>
-      <MyCoverCropReset handleConfirm={handleConfirm} setHandleConfirm={setHandleConfirm} />
     </div>
   );
 };
