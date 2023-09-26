@@ -6,24 +6,30 @@
 
 import { useDispatch, useSelector } from 'react-redux';
 import React, { useEffect, useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useHistory } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
 import '../../styles/header.scss';
 import HeaderLogoInfo from './HeaderLogoInfo/HeaderLogoInfo';
 import InformationBar from './InformationBar/InformationBar';
 import ToggleOptions from './ToggleOptions/ToggleOptions';
+import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset';
 import { updateAccessToken, updateField } from '../../reduxStore/userSlice';
 import { getFields } from '../../shared/constants';
 import AuthButton from '../../components/Auth/AuthButton/AuthButton';
 
 const Header = () => {
+  const [pathname, setPathname] = useState('/');
+  const history = useHistory();
   const dispatchRedux = useDispatch();
-  const markersRedux = useSelector((stateRedux) => stateRedux.addressData.markers);
-  const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
   const consentRedux = useSelector((stateRedux) => stateRedux.userData.consent);
-  const [isRoot, setIsRoot] = useState(false);
   const { isAuthenticated, getAccessTokenSilently } = useAuth0();
-  const isActive = {};
+
+  useEffect(() => {
+    // detect current pathname
+    history.listen((location) => {
+      setPathname(location.pathname);
+    });
+  }, [history]);
 
   useEffect(() => {
     const getToken = async () => {
@@ -34,22 +40,6 @@ const Header = () => {
     };
     if (isAuthenticated) getToken();
   }, [isAuthenticated, getAccessTokenSilently, consentRedux]);
-
-  useEffect(() => {
-    if (window.location.pathname === '/explorer') {
-      setIsRoot(true);
-    } else {
-      setIsRoot(false);
-    }
-
-    switch (progressRedux) {
-      case 0:
-        isActive.val = 0;
-        break;
-      default:
-        break;
-    }
-  }, [markersRedux]);
 
   return (
     <header className="d-print-none">
@@ -77,23 +67,13 @@ const Header = () => {
       </div>
 
       <div className="container-fluid">
-        <HeaderLogoInfo logo />
+        <HeaderLogoInfo />
       </div>
       <div className="bottomHeader">
-        <ToggleOptions
-          isRoot={isRoot}
-        />
+        <ToggleOptions pathname={pathname} />
       </div>
-
-      <InformationBar />
-
-      {window.location.pathname === '/about'
-        || window.location.pathname === '/help'
-        || (window.location.pathname === '/feedback'
-          && window.location.pathname !== '/cover-crop-explorer')
-        || (progressRedux < 0 && (
-          <div className="topBar" />
-        ))}
+      <InformationBar pathname={pathname} />
+      <MyCoverCropReset />
     </header>
   );
 };

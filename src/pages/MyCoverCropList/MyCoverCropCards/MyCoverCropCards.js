@@ -32,7 +32,7 @@ const MyCoverCropCards = ({ data, cardNo }) => {
 
       selectedCropsCopy.splice(removeIndex, 1);
       dispatchRedux(selectedCropsModifier(selectedCropsCopy));
-      dispatchRedux(snackHandler({ snackOpen: false, snackMessage: 'Removed' }));
+      dispatchRedux(snackHandler({ snackOpen: true, snackMessage: `${cropName} Removed` }));
     }
   };
 

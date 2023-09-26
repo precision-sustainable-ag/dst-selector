@@ -49,7 +49,7 @@ const ExplorerCardView = ({ activeCropData }) => {
 
     const buildDispatch = (action, crops) => {
       dispatchRedux(selectedCropsModifier(crops));
-      dispatchRedux(snackHandler({ snackOpen: false, snackMessage: `${cropName} ${action}` }));
+      dispatchRedux(snackHandler({ snackOpen: true, snackMessage: `${cropName} ${action}` }));
     };
 
     if (selectedCropsRedux?.length > 0) {

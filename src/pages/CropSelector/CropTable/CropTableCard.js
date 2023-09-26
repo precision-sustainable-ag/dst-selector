@@ -19,7 +19,7 @@ const CropTableCard = ({
 
   const cropModifierAction = (selectedCrops, message) => {
     dispatchRedux(selectedCropsModifier(selectedCrops));
-    dispatchRedux(snackHandler({ snackOpen: false, snackMessage: message }));
+    dispatchRedux(snackHandler({ snackOpen: true, snackMessage: message }));
   };
 
   const addCropToBasket = (cropId, cropName, btnId, cropData) => {
