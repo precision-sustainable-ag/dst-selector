@@ -7,6 +7,7 @@ import {
   LightButton,
   trimString,
   getRating,
+  addCropToBasket,
 } from '../../../shared/constants';
 import CropSelectorCalendarView from '../../../components/CropSelectorCalendarView/CropSelectorCalendarView';
 import '../../../styles/cropCalendarViewComponent.scss';
@@ -18,18 +19,9 @@ const RenderCrops = ({
 }) => {
   const dispatchRedux = useDispatch();
   const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
-
-  const dispatchValue = ({ selectedCrops, snackOpen, snackMessage }) => {
-    dispatchRedux(selectedCropsModifier(selectedCrops));
-    dispatchRedux(snackHandler({ snackOpen, snackMessage }));
-  };
-
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
-
-  const selectedBtns = selectedCropsRedux.map((crop) => crop.id);
-
+  const selectedBtns = selectedCropsRedux;
   const hasGoalRatingTwoOrLess = (crop = []) => crop.inactive || selectedGoalsRedux.every((rating) => crop[rating] <= 2);
-
   const getAverageGoalRating = (selectedGoals, crop) => {
     let goalRating = 0;
     selectedGoals.forEach((goal) => {
@@ -38,43 +30,6 @@ const RenderCrops = ({
       }
     });
     return getRating(goalRating / selectedGoals.length);
-  };
-
-  const addCropToBasket = (cropId, cropName, btnId, cData) => {
-    const selectedCrops = {};
-    let cropArray = [];
-    selectedCrops.id = cropId;
-    selectedCrops.cropName = cropName;
-    selectedCrops.btnId = btnId;
-    selectedCrops.data = cData;
-    cropArray = selectedCrops;
-
-    if (selectedCropsRedux.length > 0) {
-      const removeIndex = selectedCropsRedux.map((item) => item.btnId).indexOf(`${btnId}`);
-      if (removeIndex === -1) {
-        dispatchValue({
-          selectedCrops: [...selectedCropsRedux, selectedCrops],
-          snackOpen: true,
-          snackMessage: `${cropName} Added`,
-        });
-      } else {
-        const selectedCropsCopy = selectedCropsRedux;
-        selectedCropsCopy.splice(removeIndex, 1);
-        dispatchValue({
-          selectedCrops: selectedCropsCopy,
-          snackOpen: true,
-          snackMessage: `${cropName} Removed`,
-        });
-      }
-    } else {
-      dispatchRedux(myCropListLocation({ from: 'selector' }));
-
-      dispatchValue({
-        selectedCrops: [cropArray],
-        snackOpen: true,
-        snackMessage: `${cropName} Added`,
-      });
-    }
   };
 
   return cropData
@@ -169,8 +124,11 @@ const RenderCrops = ({
                 addCropToBasket(
                   crop.id,
                   crop.label,
-                  `cartBtn${index}`,
-                  crop,
+                  dispatchRedux,
+                  snackHandler,
+                  selectedCropsModifier,
+                  selectedCropsRedux,
+                  myCropListLocation,
                 );
               }}
             >
