@@ -20,10 +20,13 @@ const MyCoverCropList = ({ comparisonView, from }) => {
   const comparison = comparisonView || false;
   const history = useHistory();
   const [updatedSelectedCrops, setUpdatedSelectedCrops] = useState([]);
+  const activeCropDataRedux = useSelector((stateRedux) => stateRedux.cropData.activeCropData);
   const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
   const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
   const consentRedux = useSelector((stateRedux) => stateRedux.userData.consent);
   // const { selectedCrops } = state;
+
+  // TODO: Update SelectedCropsRedux
 
   useEffect(() => {
     setUpdatedSelectedCrops(selectedCropsRedux);
@@ -129,11 +132,11 @@ const MyCoverCropList = ({ comparisonView, from }) => {
             <TopBar view={comparison} />
             <div className="row">
               <div className="d-flex flex-wrap mt-2">
-                {updatedSelectedCrops.map((crop, index) => (
+                {activeCropDataRedux.filter((crop) => selectedCropsRedux.includes(crop.id)).map((crop, index) => (
                   <MyCoverCropCards
                     key={index}
                     cardNo={index + 1}
-                    data={crop.data}
+                    crop={crop}
                     btnId={crop.id}
                     itemNo={index}
                   />
