@@ -1,7 +1,5 @@
 /*
   This file contains the CropTable component
-  The CropTable is the
-  addCropToBasket manages adding crops to cart
 */
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -38,8 +36,13 @@ const CropTableComponent = ({
   cropData, activeCropData, showGrowthWindow,
 }) => {
   const dispatchRedux = useDispatch();
+
+  // redux vars
   const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
+  const activeCropDataRedux = useSelector((stateRedux) => stateRedux.cropData.activeCropData);
+
+  // useState vars
   const [modalOpen, setModalOpen] = useState(false);
   const [modalData, setModalData] = useState({});
   const [legendModal, setLegendModal] = useState(false);
@@ -99,7 +102,7 @@ const CropTableComponent = ({
   };
 
   const sortBySelectedCrops = (selectedCropsSortFlag) => {
-    const selectedCropsShadow = selectedCropsRedux;
+    const selectedCropsShadow = activeCropDataRedux.filter((crop) => selectedCropsRedux.includes(crop.id));
     sortCrops('Selected Crops', activeCropDataShadow, selectedCropsSortFlag, selectedCropsShadow, updateActiveCropDataAction);
     // setSelectedCropsSortFlag(!selectedCropsSortFlag);
   };

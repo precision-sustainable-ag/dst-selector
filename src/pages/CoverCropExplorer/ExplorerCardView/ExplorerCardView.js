@@ -13,8 +13,6 @@ import React, {
 import { useDispatch, useSelector } from 'react-redux';
 import CropCard from '../../../components/CropCard/CropCard';
 import CropDetailsModal from '../../../components/CropDetailsModal/CropDetailsModal';
-import { selectedCropsModifier } from '../../../reduxStore/cropSlice';
-import { myCropListLocation, snackHandler } from '../../../reduxStore/sharedSlice';
 
 const ExplorerCardView = ({ activeCropData }) => {
   const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
@@ -30,8 +28,11 @@ const ExplorerCardView = ({ activeCropData }) => {
   const [selectedBtns, setSelectedBtns] = useState(
     selectedCropsRedux.map((crop) => crop.id),
   );
+
+  // TODO: Update SelectedCropsRedux
+
   useEffect(() => {
-    const newSelectedBtns = selectedCropsRedux.map((crop) => crop.id);
+    const newSelectedBtns = selectedCropsRedux;
     setSelectedBtns(newSelectedBtns);
   }, [sfilters.zone, selectedCropsRedux]);
 
@@ -39,40 +40,6 @@ const ExplorerCardView = ({ activeCropData }) => {
     // put data inside modal;
     setModalData(crop);
     setModalOpen(true);
-  };
-
-  const addCropToBasket = (cropId, cropName, btnId, cropData) => {
-    const selectedCrops = {};
-    selectedCrops.id = cropId;
-    selectedCrops.cropName = cropName;
-    selectedCrops.data = cropData;
-
-    const buildDispatch = (action, crops) => {
-      dispatchRedux(selectedCropsModifier(crops));
-      dispatchRedux(snackHandler({ snackOpen: true, snackMessage: `${cropName} ${action}` }));
-    };
-
-    if (selectedCropsRedux?.length > 0) {
-      // DONE: Remove crop from basket
-      let removeIndex = -1;
-      selectedCropsRedux.forEach((item, i) => {
-        if (item.id === cropId) {
-          removeIndex = i;
-        }
-      });
-      if (removeIndex === -1) {
-        // element not in array
-        buildDispatch('added', [...selectedCropsRedux, selectedCrops]);
-      } else {
-        const selectedCropsCopy = selectedCropsRedux;
-        selectedCropsCopy.splice(removeIndex, 1);
-
-        buildDispatch('Removed', selectedCropsCopy);
-      }
-    } else {
-      dispatchRedux(myCropListLocation({ from: 'explorer' }));
-      buildDispatch('Added', [selectedCrops]);
-    }
   };
 
   return (
@@ -88,11 +55,10 @@ const ExplorerCardView = ({ activeCropData }) => {
                 <CropCard
                   crop={crop}
                   handleModalOpen={handleModalOpen}
-                  addCropToBasket={addCropToBasket}
                   selectedBtns={selectedBtns}
                   index={index}
-                  removeCrop={addCropToBasket}
                   type="explorer"
+                  dispatchRedux={dispatchRedux}
                 />
               </Grid>
             ))
