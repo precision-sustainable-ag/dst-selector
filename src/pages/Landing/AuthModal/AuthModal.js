@@ -5,10 +5,24 @@
 import {
   Modal, Box, Typography, Grid,
 } from '@mui/material';
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useAuth0 } from '@auth0/auth0-react';
 import AuthButton from '../../../components/Auth/AuthButton/AuthButton';
 
-const AuthModal = ({ modalOpen, setModalOpen }) => {
+const localStorageKey = 'notShowAuth';
+
+const AuthModal = ({ modalOpen, setModalOpen, setConsentModalOpen }) => {
+  const { isLoading, isAuthenticated } = useAuth0();
+
+  useEffect(() => {
+    if (localStorage.getItem(localStorageKey) !== null) {
+      const { expiredAt } = JSON.parse(localStorage.getItem(localStorageKey));
+      if (new Date().getTime() < expiredAt) {
+        setModalOpen(false);
+      }
+    }
+  }, []);
+
   const style = {
     position: 'absolute',
     top: '50%',
@@ -22,10 +36,18 @@ const AuthModal = ({ modalOpen, setModalOpen }) => {
   };
 
   const handleModal = () => {
-    setModalOpen((o) => !o);
+    const authObject = {
+      // set not show auth modal time as 14 days
+      expiredAt: new Date().getTime() + 14 * 24 * 60 * 60 * 1000,
+    };
+    localStorage.setItem(localStorageKey, JSON.stringify(authObject));
+    setModalOpen((open) => !open);
+    setConsentModalOpen(true);
   };
 
   return (
+    (!isAuthenticated && !isLoading)
+    && (
     <Modal
       open={modalOpen}
       aria-labelledby="modal-modal-title"
@@ -53,6 +75,7 @@ const AuthModal = ({ modalOpen, setModalOpen }) => {
         </Grid>
       </Box>
     </Modal>
+    )
   );
 };
 export default AuthModal;

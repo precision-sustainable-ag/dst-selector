@@ -357,14 +357,12 @@ const CropSidebar = ({
     </Button>
   );
 
-  const updateReg = (region) => {
-    if (region !== undefined) {
-      // setRegionShorthand(region.shorthand);
-      dispatchRedux(updateRegion({
-        regionId: region.id ?? '',
-        regionShorthand: region.shorthand ?? '',
-      }));
-    }
+  const updateRegionRedux = (regionName) => {
+    const selectedRegion = regionsRedux.filter((region) => region.shorthand === regionName)[0];
+    dispatchRedux(updateRegion({
+      regionId: selectedRegion.id ?? '',
+      regionShorthand: selectedRegion.shorthand ?? '',
+    }));
   };
 
   return !loading && (from === 'myCoverCropListStatic') ? (
@@ -458,8 +456,8 @@ const CropSidebar = ({
                       </ListItemButton>
                     </List>
                     <PlantHardinessZone
-                      updateReg={updateReg}
                       regionShorthand={regionShorthandRedux}
+                      setRegionShorthand={updateRegionRedux}
                       regionsRedux={regionsRedux}
                       councilLabelRedux={councilLabelRedux}
                       regionToggleRedux={regionToggleRedux}

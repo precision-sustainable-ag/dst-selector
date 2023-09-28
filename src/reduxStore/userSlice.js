@@ -1,9 +1,11 @@
 const initialState = {
   accessToken: null,
   field: null,
-  consent: false,
-  hideConsentModal: false,
-  selectedField: null,
+  consent: {
+    status: null,
+    date: null,
+  },
+  selectedFieldId: null,
 };
 
 export const updateAccessToken = (token) => ({
@@ -16,14 +18,14 @@ export const updateField = (field) => ({
   payload: { field },
 });
 
-export const updateConsent = (consent) => ({
+export const updateConsent = (status, date) => ({
   type: 'UPDATE_CONSENT',
-  payload: { consent },
+  payload: { status, date },
 });
 
-export const setSelectField = (fieldName) => ({
+export const setSelectFieldId = (fieldId) => ({
   type: 'SELECT_FIELD',
-  payload: { fieldName },
+  payload: { fieldId },
 });
 
 const userReducer = (state = initialState, action = null) => {
@@ -33,9 +35,16 @@ const userReducer = (state = initialState, action = null) => {
     case 'UPDATE_FIELD':
       return { ...state, field: action.payload.field };
     case 'UPDATE_CONSENT':
-      return { ...state, consent: action.payload.consent, hideConsentModal: true };
+      return {
+        ...state,
+        consent: {
+          ...state.consent,
+          status: action.payload.status,
+          date: action.payload.date,
+        },
+      };
     case 'SELECT_FIELD':
-      return { ...state, selectedField: action.payload.fieldName };
+      return { ...state, selectedFieldId: action.payload.fieldId };
     default:
       return { ...state };
   }

@@ -30,6 +30,9 @@ const Auth0ProviderWithHistory = ({ children }) => {
         redirect_uri: redirectUri,
       }}
       onRedirectCallback={onRedirectCallback}
+      useRefreshTokens
+      // solve the problem that Firefox is not auto login
+      cacheLocation="localstorage"
     >
       {children}
     </Auth0Provider>

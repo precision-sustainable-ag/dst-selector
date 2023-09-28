@@ -11,6 +11,7 @@ import React, {
   useEffect,
   useState,
   useCallback,
+  useRef,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Search } from '@mui/icons-material';
@@ -21,86 +22,81 @@ import mapboxgl from 'mapbox-gl';
 import { useAuth0 } from '@auth0/auth0-react';
 import statesLatLongDict from '../../shared/stateslatlongdict';
 import {
-  abbrRegion, reverseGEO, callCoverCropApi, postFields, getFields,
-  buildPoint, buildGeometryCollection, drawAreaFromGeoCollection, deleteFields,
+  abbrRegion, reverseGEO, callCoverCropApi, getFields,
+  buildPoint, drawAreaFromGeoCollection,
 } from '../../shared/constants';
 import PlantHardinessZone from '../CropSidebar/PlantHardinessZone/PlantHardinessZone';
-import {
-  changeAddressViaMap, updateLocation,
-} from '../../reduxStore/addressSlice';
+import { updateLocation } from '../../reduxStore/addressSlice';
 import { updateRegion } from '../../reduxStore/mapSlice';
 import { snackHandler } from '../../reduxStore/sharedSlice';
 import {
   updateAvgFrostDates, updateAvgPrecipAnnual, updateAvgPrecipCurrentMonth, updateFrostFreeDays,
 } from '../../reduxStore/weatherSlice';
-import { setSelectField, updateField } from '../../reduxStore/userSlice';
+import { setSelectFieldId, updateField } from '../../reduxStore/userSlice';
 import UserFieldList from './UserFieldList/UserFieldList';
-import UserFieldDialog from './UserFieldDialog/UserFieldDialog';
+import UserFieldDialog, { initFieldDialogState } from './UserFieldDialog/UserFieldDialog';
 
 // eslint-disable-next-line import/no-webpack-loader-syntax, import/no-unresolved
 mapboxgl.workerClass = require('worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker').default;
-
-const initFieldDialogState = {
-  open: false,
-  fieldName: '',
-  error: false,
-  errorText: '',
-  actionType: '',
-  areaType: '',
-  prevName: '',
-};
 
 const LocationComponent = () => {
   const dispatchRedux = useDispatch();
 
   // redux vars
-  const countyRedux = useSelector((stateRedux) => stateRedux.addressData.county);
-  const zoneRedux = useSelector((stateRedux) => stateRedux.addressData.zone);
   const markersRedux = useSelector((stateRedux) => stateRedux.addressData.markers);
   const regionsRedux = useSelector((stateRedux) => stateRedux.mapData.regions);
   const regionShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.regionShorthand);
   const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
-  const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
+  const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
   const accessTokenRedux = useSelector((stateRedux) => stateRedux.userData.accessToken);
   const userFieldRedux = useSelector((stateRedux) => stateRedux.userData.field);
-  const selectedFieldRedux = useSelector((stateRedux) => stateRedux.userData.selectedField);
+  const selectedFieldIdRedux = useSelector((stateRedux) => stateRedux.userData.selectedFieldId);
 
   // useState vars
-  const [selectedRegion, setSelectedRegion] = useState();
-  const [locZipCode, setLocZipCode] = useState();
-  // const [regionShorthand, setRegionShorthand] = useState();
+  const [regionShorthand, setRegionShorthand] = useState('');
   const [selectedToEditSite, setSelectedToEditSite] = useState({});
   const [currentGeometry, setCurrentGeometry] = useState([]);
   const [fieldDialogState, setFieldDialogState] = useState(initFieldDialogState);
   const [selectedUserField, setSelectedUserField] = useState(
-    selectedFieldRedux || (userFieldRedux && userFieldRedux.data.length
-      ? userFieldRedux.data[userFieldRedux.data.length - 1].label
-      : ''),
+    userFieldRedux?.data.filter((field) => field.id === selectedFieldIdRedux)[0]
+     || (userFieldRedux && userFieldRedux.data.length
+       ? userFieldRedux.data[userFieldRedux.data.length - 1]
+       : {}),
   );
   // use a state to control if currently is adding a point
   const [isAddingPoint, setIsAddingPoint] = useState(true);
   const [mapFeatures, setMapFeatures] = useState([]);
   const [userFields, setUserFields] = useState(userFieldRedux ? [...userFieldRedux.data] : []);
 
+  const selectedUserFieldRef = useRef(selectedUserField);
+  const regionShorthandRef = useRef(regionShorthand);
+
   const { isAuthenticated } = useAuth0();
 
+  // calculate features shown on map
   const getFeatures = () => {
-    if (userFields.length > 0 && selectedUserField !== '') {
-      const selectedField = userFields.find((userField) => userField.label === selectedUserField);
-      if (selectedField.geometry.type === 'Point') return [selectedField];
-      if (selectedField.geometry.type === 'GeometryCollection') return drawAreaFromGeoCollection(selectedField);
+    if (userFields.length > 0 && Object.keys(selectedUserField).length !== 0) {
+      if (selectedUserField.geometry.type === 'Point') return [selectedUserField];
+      if (selectedUserField.geometry.type === 'GeometryCollection') return drawAreaFromGeoCollection(selectedUserField);
     }
     // reset default field to state capitol
     return [buildPoint(statesLatLongDict[stateLabelRedux][1], statesLatLongDict[stateLabelRedux][0])];
   };
 
+  // set map features, update selectedFieldIdRedux
   useEffect(() => {
     setMapFeatures(getFeatures());
-    if (selectedUserField !== '') dispatchRedux(setSelectField(selectedUserField));
+    selectedUserFieldRef.current = selectedUserField;
   }, [selectedUserField]);
 
+  // update regionShorthandRef
+  useEffect(() => {
+    regionShorthandRef.current = regionShorthand;
+  }, [regionShorthand]);
+
+  // set map initial lat lng
   const getLatLng = useCallback(() => {
     const getFieldLatLng = (field) => {
       if (field.geometry.type === 'Point') {
@@ -112,9 +108,8 @@ const LocationComponent = () => {
       }
       return undefined;
     };
-    if (selectedFieldRedux !== null) {
-      const selectedField = userFields.find((userField) => userField.label === selectedUserField);
-      return getFieldLatLng(selectedField);
+    if (selectedFieldIdRedux !== null) {
+      if (Object.keys(selectedUserField) > 0) return getFieldLatLng(selectedUserField);
     }
     if (userFieldRedux && userFieldRedux.data.length > 0) {
       const currentField = userFieldRedux.data[userFieldRedux.data.length - 1];
@@ -126,35 +121,7 @@ const LocationComponent = () => {
     return [47, -122];
   }, [stateLabelRedux]);
 
-  const updateReg = (region) => {
-    if (region !== undefined) {
-      // setRegionShorthand(region.shorthand);
-      dispatchRedux(updateRegion({
-        regionId: region.id ?? '',
-        regionShorthand: region.shorthand ?? '',
-      }));
-    }
-  };
-
-  useEffect(() => {
-    updateReg(regionsRedux[0]);
-  }, [regionsRedux]);
-
-  const handleMapChange = () => {
-    // eslint-disable-next-line eqeqeq
-    const regionInfo = regionsRedux.filter((region) => region.shorthand == selectedRegion);
-
-    updateReg(regionInfo[0]);
-  };
-
-  useEffect(() => {
-    if (councilLabelRedux !== 'Midwest Cover Crop Council') {
-      setSelectedRegion(zoneRedux);
-    } else {
-      setSelectedRegion(countyRedux?.replace(' County', ''));
-    }
-  }, [zoneRedux, countyRedux]);
-
+  // when map marker changes, set addressRedux, update regionRedux based on zipcode
   useEffect(() => {
     const {
       latitude,
@@ -164,49 +131,59 @@ const LocationComponent = () => {
       county,
     } = selectedToEditSite;
 
-    if (latitude === markersRedux[0][0] && longitude === markersRedux[0][1]) { return; }
-
-    if (isAuthenticated) {
-      if (isAddingPoint && latitude) {
-        const currentSelectedField = userFields.filter((userField) => userField.label === selectedUserField)[0]?.geometry;
-        if ((!currentSelectedField && latitude !== statesLatLongDict[stateLabelRedux][0])
+    // if is adding a new point, open dialog
+    if (isAuthenticated && isAddingPoint && latitude) {
+      const currentSelectedField = selectedUserField?.geometry;
+      if ((!currentSelectedField && latitude !== statesLatLongDict[stateLabelRedux][0])
           || (currentSelectedField?.type === 'Point' && latitude !== currentSelectedField?.coordinates[1])
           || (currentSelectedField?.type === 'GeometryCollection' && latitude !== currentSelectedField?.geometries[0].coordinates[1])
-        ) {
-          setFieldDialogState({
-            ...fieldDialogState, open: true, actionType: 'add', areaType: 'Point',
-          });
-        }
+      ) {
+        setFieldDialogState({
+          ...fieldDialogState, open: true, actionType: 'add', areaType: 'Point',
+        });
       }
     }
 
     if (Object.keys(selectedToEditSite).length > 0) {
-      setLocZipCode(zipCode);
       dispatchRedux(updateLocation(
         {
           address,
           markers: [[latitude, longitude]],
+          county,
         },
       ));
       dispatchRedux(snackHandler({
         snackOpen: true,
         snackMessage: 'Your location has been saved.',
       }));
+      callCoverCropApi(`https://phzmapi.org/${zipCode}.json`)
+        .then((response) => {
+          let { zone } = response;
 
-      if (selectedToEditSite.address) {
-        dispatchRedux(changeAddressViaMap(
-          {
-            address,
-            county,
-          },
-        ));
-      }
-      if (selectedRegion) {
-        handleMapChange();
-      }
+          if (zone !== '8a' && zone !== '8b') {
+            zone = zone.slice(0, -1);
+          }
+
+          if (selectedFieldIdRedux && selectedUserField.id === selectedFieldIdRedux && regionShorthandRedux) {
+            // if there exists available region from user history api, set it as user history value
+            setRegionShorthand(regionShorthandRedux);
+          } else if (councilShorthandRedux !== 'MCCC') {
+            setRegionShorthand(zone);
+          } else {
+            // if council is MCCC, change selectedRegion based on county
+            setRegionShorthand(county.replace(' County', ''));
+          }
+        })
+        .catch((err) => {
+          // eslint-disable-next-line no-console
+          console.log(err);
+          // for places where api didn't work, set region to default.
+          setRegionShorthand(regionsRedux[0].shorthand);
+        });
     }
   }, [selectedToEditSite]);
 
+  // call cover crop api based on marker change
   useEffect(() => {
     // const { markers } = state;
     const weatherApiURL = 'https://weather.covercrop-data.org';
@@ -298,45 +275,24 @@ const LocationComponent = () => {
     }
   }, [markersRedux]);
 
-  useEffect(() => {
-    if (!locZipCode) {
-      return;
-    }
-
-    callCoverCropApi(`https://phzmapi.org/${locZipCode}.json`)
-      .then((response) => {
-        let { zone } = response;
-
-        let regionId = null;
-
-        if (zone !== '8a' && zone !== '8b') {
-          zone = zone.slice(0, -1);
-        }
-
-        if (regionsRedux?.length > 0) {
-          regionsRedux.forEach((region) => {
-            if (region.shorthand === zone) {
-              regionId = region.id;
-            }
-          });
-        }
-        if (councilShorthandRedux !== 'MCCC') {
-          // setRegionShorthand(zone);
-          dispatchRedux(updateRegion({
-            regionId: regionId ?? '',
-            regionShorthand: zone ?? '',
-          }));
-        }
-      });
-  }, [locZipCode]);
-
-  // update userFieldRedux when component will unmount
+  // update region and userFieldRedux when component will unmount
   useEffect(() => () => {
+    const selectedRegion = regionsRedux.filter((region) => region.shorthand === regionShorthandRef.current)[0];
+    dispatchRedux(updateRegion({
+      regionId: selectedRegion.id,
+      regionShorthand: selectedRegion.shorthand,
+    }));
     if (isAuthenticated) {
       getFields(accessTokenRedux).then((fields) => dispatchRedux(updateField(fields)));
+      if (Object.keys(selectedUserFieldRef.current).length > 0) {
+        dispatchRedux(setSelectFieldId(selectedUserFieldRef.current.id));
+      } else {
+        dispatchRedux(setSelectFieldId(null));
+      }
     }
   }, []);
 
+  // map onDraw function
   const onDraw = (draw) => {
     if (isAuthenticated && draw.mode !== 'select') {
       setIsAddingPoint(false);
@@ -344,82 +300,6 @@ const LocationComponent = () => {
         ...fieldDialogState, open: true, actionType: draw.mode, areaType: 'Polygon',
       });
     }
-  };
-
-  const fieldNameValidation = (fieldName) => {
-    let errText = '';
-    if (fieldName === '') errText = 'You must input a valid name!';
-    if (userFields.filter((field) => field.label === fieldName).length > 0) errText = 'Input name existed!';
-    if (errText !== '') {
-      setFieldDialogState({ ...fieldDialogState, error: true, errorText: errText });
-      return false;
-    }
-    return true;
-  };
-
-  const handleClose = (save) => {
-    const { actionType, areaType, fieldName } = fieldDialogState;
-    if (save) {
-      if (actionType === 'add') {
-        if (!fieldNameValidation(fieldName)) return;
-        const { longitude, latitude } = selectedToEditSite;
-        const point = buildPoint(longitude, latitude, fieldName);
-        let geoCollection = null;
-        if (areaType === 'Polygon') {
-          const polygon = currentGeometry.features?.slice(-1)[0];
-          geoCollection = buildGeometryCollection(point.geometry, polygon?.geometry, fieldName);
-        }
-        postFields(accessTokenRedux, areaType === 'Polygon' ? geoCollection : point).then((newField) => {
-          setUserFields([...userFields, newField.data]);
-          setSelectedUserField(fieldName);
-        });
-      }
-      if (actionType === 'update') {
-        // Only supports polygon updates
-        const { longitude, latitude } = selectedToEditSite;
-        const point = buildPoint(longitude, latitude, selectedUserField);
-        const polygon = currentGeometry.features.slice(-1)[0];
-        const geoCollection = buildGeometryCollection(point.geometry, polygon.geometry, selectedUserField);
-        postFields(accessTokenRedux, geoCollection).then((newField) => {
-          setUserFields([...userFields.map((userField) => {
-            if (userField.label === selectedUserField) return newField.data;
-            return userField;
-          })]);
-        });
-      }
-      if (actionType === 'delete') {
-        const deletedField = userFields.filter((userField) => userField.label === selectedUserField);
-        deleteFields(accessTokenRedux, deletedField[0].id)
-          .then(() => {
-            const updatedUserFields = userFields.filter((userField) => userField.label !== selectedUserField);
-            setUserFields(updatedUserFields);
-            setSelectedUserField(updatedUserFields.length > 0 ? updatedUserFields[0].label : '');
-          });
-      }
-      if (actionType === 'updateName') {
-        if (!fieldNameValidation(fieldName)) return;
-        const { prevName } = fieldDialogState;
-        const newField = {
-          type: 'Feature',
-          geometry: userFields.filter((userField) => userField.label === prevName)[0].geometry,
-          label: fieldName,
-        };
-        const deletedField = userFields.filter((userField) => userField.label === prevName);
-        deleteFields(accessTokenRedux, deletedField[0].id)
-          .then(() => postFields(accessTokenRedux, newField))
-          .then((resField) => {
-            setSelectedUserField('');
-            setUserFields([...userFields.filter((userField) => userField.label !== prevName), resField.data]);
-            setSelectedUserField(fieldName);
-          });
-      }
-    } else {
-      // if the user select cancel
-      setMapFeatures(getFeatures());
-    }
-    setFieldDialogState(initFieldDialogState);
-    // reset isAddingPoint
-    setIsAddingPoint(true);
   };
 
   return (
@@ -446,8 +326,8 @@ const LocationComponent = () => {
             <div className="row py-3 my-4 ">
               <div className="col-md-5 col-lg-6 col-sm-12 col-12">
                 <PlantHardinessZone
-                  updateReg={updateReg}
-                  regionShorthand={regionShorthandRedux}
+                  regionShorthand={regionShorthand}
+                  setRegionShorthand={setRegionShorthand}
                   regionsRedux={regionsRedux}
                   councilLabelRedux={councilLabelRedux}
                 />
@@ -497,7 +377,15 @@ const LocationComponent = () => {
       <UserFieldDialog
         fieldDialogState={fieldDialogState}
         setFieldDialogState={setFieldDialogState}
-        handleClose={handleClose}
+        userFields={userFields}
+        selectedToEditSite={selectedToEditSite}
+        currentGeometry={currentGeometry}
+        selectedUserField={selectedUserField}
+        setUserFields={setUserFields}
+        setSelectedUserField={setSelectedUserField}
+        setMapFeatures={setMapFeatures}
+        getFeatures={getFeatures}
+        setIsAddingPoint={setIsAddingPoint}
       />
     </div>
   );

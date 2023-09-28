@@ -17,9 +17,9 @@ const LocationConfirmation = () => {
   const addressRedux = useSelector((stateRedux) => stateRedux.addressData.address);
   const markersRedux = useSelector((stateRedux) => stateRedux.addressData.markers);
   const zoneRedux = useSelector((stateRedux) => stateRedux.addressData.zone);
-  const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   // const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
+  const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
 
   return (
     <div
