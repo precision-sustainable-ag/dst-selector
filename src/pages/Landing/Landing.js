@@ -20,13 +20,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import ReactGA from 'react-ga';
 import { RegionSelectorMap } from '@psa/dst.ui.region-selector-map';
-import { useAuth0 } from '@auth0/auth0-react';
 import { callCoverCropApi } from '../../shared/constants';
 import '../../styles/landing.scss';
-import ConsentModal from '../CoverCropExplorer/ConsentModal/ConsentModal';
-// import { updateZone } from '../../reduxStore/addressSlice';
-import AuthModal from './AuthModal/AuthModal';
-import { updateRegions, updateRegion, updateStateInfo } from '../../reduxStore/mapSlice';
+import { updateRegions, updateStateInfo } from '../../reduxStore/mapSlice';
 
 const Landing = ({ height, title, bg }) => {
   const dispatchRedux = useDispatch();
@@ -34,22 +30,18 @@ const Landing = ({ height, title, bg }) => {
   const mapRef = useRef(null);
 
   // redux vars
-  const regionsRedux = useSelector((stateRedux) => stateRedux.mapData.regions);
   const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
   const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
   const consentRedux = useSelector((stateRedux) => stateRedux.userData.consent);
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
-  const hideConsentRedux = useSelector((stateRedux) => stateRedux.userData.hideConsentModal);
 
   // useState vars
   const [containerHeight, setContainerHeight] = useState(height);
   const [allStates, setAllStates] = useState([]);
-  // This is the state obj mapped by mapState
+  // This is the state obj mapped by mapState(filtered from allStates, these 2 objs are not same)
   const [selectedState, setSelectedState] = useState({});
   // This is the obj map returns when you selected a state on map
   const [mapState, setMapState] = useState({});
-  const { isAuthenticated } = useAuth0();
-  const [authModalOpen, setAuthModalOpen] = useState(true);
 
   const availableStates = useMemo(() => allStates.map((state) => state.label), [allStates]);
 
@@ -63,38 +55,47 @@ const Landing = ({ height, title, bg }) => {
     // This was targeting the map object which didnt have a label or shorthand property.  Should be be getting done here?
   };
 
-  const handleStateChange = (e) => {
-    const selState = allStates.filter((s) => s.shorthand === e.target.value);
-    setSelectedState(selState[0]);
-    updateStateRedux(selState[0]);
-  };
-
+  // Load map data based on current enviorment
   useEffect(() => {
-    // Load map data based on current enviorment, set map selected state based on redux state
     callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states`).then((stateData) => {
-      // true signifies we are on dev, false signifies we are on prod
       const isDevEnvironment = /(localhost|dev)/i.test(window.location);
       const productionCouncils = ['NECCC', 'SCCC'];
       const states = isDevEnvironment
         ? stateData.data
         : stateData.data.filter((state) => productionCouncils.includes(state.council.shorthand));
       setAllStates(states);
-      if (stateIdRedux) setSelectedState(stateData.data.filter((s) => s.id === stateIdRedux)[0]);
     });
   }, []);
 
+  // set initial map state based on stateIdRedux
+  // user history api/user click next and come back
   useEffect(() => {
-    if (regionsRedux?.length > 0) {
-      dispatchRedux(updateRegion({
-        regionId: regionsRedux[0]?.id ?? '',
-        regionShorthand: regionsRedux[0]?.shorthand ?? '',
-      }));
+    if (allStates.length) {
+      const state = allStates.filter((s) => s.id === stateIdRedux);
+      // handle stateIdRedux is null(click headerlogo in landing page)
+      if (state.length > 0) {
+        setSelectedState(state[0]);
+      } else setSelectedState({});
     }
-  }, [regionsRedux]);
+  }, [stateIdRedux, allStates]);
 
+  // handle map change, use mapState to filter allStates and get selectedState
   useEffect(() => {
-    if (stateIdRedux) {
-      fetch(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/regions`)
+    if (Object.keys(mapState).length !== 0) {
+      const st = allStates.filter((s) => s.label === mapState.properties.STATE_NAME);
+      if (st.length > 0) {
+        setSelectedState(st[0]);
+      }
+    }
+  }, [mapState]);
+
+  // update stateRedux and regionsRedux based on selectState change
+  useEffect(() => {
+    // is there a chance selectedState is {} ?
+    if (Object.keys(selectedState).length !== 0) {
+      updateStateRedux(selectedState);
+      const { id } = selectedState;
+      fetch(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${id}/regions`)
         .then((res) => res.json())
         .then((data) => {
           let fetchedRegions;
@@ -111,26 +112,14 @@ const Landing = ({ height, title, bg }) => {
           // eslint-disable-next-line no-console
           console.log(err.message);
         });
-    } else {
-      // if no stateIdredux, set selectedState to empty (When you hit logo button after selected state in map)
-      setSelectedState({});
-    }
-  }, [stateIdRedux]);
-
-  useEffect(() => {
-    if (Object.keys(mapState).length !== 0) {
-      const st = allStates.filter((s) => s.label === mapState.properties.STATE_NAME);
-      if (st.length > 0) {
-        setSelectedState(st[0]);
-      }
-    }
-  }, [mapState]);
-
-  useEffect(() => {
-    if (Object.keys(selectedState).length !== 0) {
-      updateStateRedux(selectedState);
     }
   }, [selectedState]);
+
+  // handler function for stateSelect list
+  const handleStateChange = (e) => {
+    const selState = allStates.filter((s) => s.shorthand === e.target.value);
+    setSelectedState(selState[0]);
+  };
 
   const stateSelect = () => (
     <List component="div" disablePadding>
@@ -150,7 +139,7 @@ const Landing = ({ height, title, bg }) => {
               textAlign: 'left',
             }}
             onChange={(e) => handleStateChange(e)}
-            value={selectedState.shorthand || ''}
+            value={selectedState?.shorthand || ''}
           >
 
             {allStates.length > 0 && allStates.map((st, i) => (
@@ -210,9 +199,6 @@ const Landing = ({ height, title, bg }) => {
         backgroundSize: 'cover',
       }}
     >
-      {(!authModalOpen || isAuthenticated) && <ConsentModal />}
-      {(!hideConsentRedux && !isAuthenticated) && <AuthModal modalOpen={authModalOpen} setModalOpen={setAuthModalOpen} />}
-
       <Grid container>
 
         <Grid

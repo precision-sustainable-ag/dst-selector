@@ -12,7 +12,6 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import ReactGA from 'react-ga';
 import ExplorerCardView from './ExplorerCardView/ExplorerCardView';
-import ConsentModal from './ConsentModal/ConsentModal';
 import CropSidebar from '../CropSidebar/CropSidebar';
 import { updateRegion, updateStateInfo } from '../../reduxStore/mapSlice';
 
@@ -77,36 +76,33 @@ const CoverCropExplorer = () => {
   }, [stateIdRedux]);
 
   return (
-    <>
-      <ConsentModal />
-      <div className="container-fluid mt-4 mb-4">
-        <div className="row mt-3">
-          <div className="col-md-12 col-lg-3 col-xl-2 col-12">
-            <CropSidebar
-              from="explorer"
-              activeCropData={activeCropDataRedux?.length > 0 ? activeCropDataRedux : cropDataRedux}
-              isListView
-            />
-          </div>
-          <div className="col-md-12 col-lg-8 col-xl-9 col-10">
-            {sfilters.zone === '' || sfilters.zone === undefined ? (
-              <Grid container alignItems="center" justifyContent="center">
-                <Grid item xs={12}>
-                  <Typography variant="h5" align="center">
-                    Please choose a zone from the sidebar
-                  </Typography>
-                </Grid>
+    <div className="container-fluid mt-4 mb-4">
+      <div className="row mt-3">
+        <div className="col-md-12 col-lg-3 col-xl-2 col-12">
+          <CropSidebar
+            from="explorer"
+            activeCropData={activeCropDataRedux?.length > 0 ? activeCropDataRedux : cropDataRedux}
+            isListView
+          />
+        </div>
+        <div className="col-md-12 col-lg-8 col-xl-9 col-10">
+          {sfilters.zone === '' || sfilters.zone === undefined ? (
+            <Grid container alignItems="center" justifyContent="center">
+              <Grid item xs={12}>
+                <Typography variant="h5" align="center">
+                  Please choose a zone from the sidebar
+                </Typography>
               </Grid>
-            ) : (
-              <ExplorerCardView
-                cropData={cropDataRedux}
-                activeCropData={updatedActiveCropData}
-              />
-            )}
-          </div>
+            </Grid>
+          ) : (
+            <ExplorerCardView
+              cropData={cropDataRedux}
+              activeCropData={updatedActiveCropData}
+            />
+          )}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

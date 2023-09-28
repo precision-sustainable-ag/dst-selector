@@ -6,18 +6,12 @@ import React from 'react';
 // import { useSelector } from 'react-redux';
 
 const PlantHardinessZone = ({
-  updateReg,
   regionShorthand,
+  setRegionShorthand,
   regionsRedux,
   councilLabelRedux,
   regionToggleRedux = true,
 }) => {
-  const handleRegionChange = (event) => {
-    // eslint-disable-next-line eqeqeq
-    const regionInfo = regionsRedux.filter((region) => region.shorthand == event.target.value);
-    updateReg(regionInfo[0]);
-  };
-
   const plantHardinessZone = () => (
     <Select
       variant="filled"
@@ -27,7 +21,7 @@ const PlantHardinessZone = ({
         width: '100%',
         textAlign: 'left',
       }}
-      onChange={(e) => handleRegionChange(e)}
+      onChange={(e) => setRegionShorthand(e.target.value)}
       value={regionShorthand || ''}
     >
 
