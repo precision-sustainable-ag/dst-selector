@@ -5,11 +5,9 @@
   styled using ../../styles/soilConditions.scss
 */
 
-import { Switch, Typography } from '@mui/material';
-import { InvertColors } from '@mui/icons-material';
-import React, { useEffect, useState } from 'react';
+import { Typography } from '@mui/material';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { ReferenceTooltip } from '../../../shared/constants';
 import '../../../styles/soilConditions.scss';
 import SoilComposition from './SoilComposition/SoilComposition';
 import SoilDrainage from './SoilDrainage/SoilDrainage';
@@ -21,12 +19,9 @@ const SoilCondition = () => {
 
   // redux vars
   const markersRedux = useSelector((stateRedux) => stateRedux.addressData.markers);
-  const soilDataRedux = useSelector((stateRedux) => stateRedux.soilData.soilData);
   const soilDataOriginalRedux = useSelector((stateRedux) => stateRedux.soilData.soilDataOriginal);
 
   // useState vars
-  const [tilingCheck, setTilingCheck] = useState(false);
-  const [showTiling, setShowTiling] = useState(false);
 
   useEffect(() => {
     const getSSURGOData = (lat, lon) => {
@@ -146,14 +141,6 @@ const SoilCondition = () => {
     }
   }, [markersRedux, soilDataOriginalRedux?.latLong]);
 
-  useEffect(() => {
-    const checkArray = ['Very poorly drained', 'Poorly drained', 'Somewhat poorly drained'];
-    if (checkArray.some((e) => soilDataRedux?.drainageClass.includes(e))) {
-      setShowTiling(true);
-    }
-    window.localStorage.setItem('drainage', JSON.stringify(soilDataRedux?.drainageClass));
-  }, [soilDataRedux?.drainageClass]);
-
   return (
     <div className="row">
       <div className="col-12">
@@ -161,93 +148,8 @@ const SoilCondition = () => {
           Soil Conditions?
         </Typography>
       </div>
-
       <SoilComposition />
-
-      <SoilDrainage setTilingCheck={setTilingCheck} />
-
-      {showTiling && (
-        <div className="col-12 pt-2 mt-2 row">
-          <div className="col-12">
-            <Typography variant="body1" className="soilConditionSubHeader">
-              <InvertColors />
-              &nbsp;TILING &nbsp;
-              <ReferenceTooltip
-                type="text"
-                content="Indicate if the field of interest has tile installed. If you have selected very poorly to somewhat poorly drained soils, selecting “yes” will increase your drainage class by one factor."
-              />
-            </Typography>
-          </div>
-          <div className="col-12 pt-2">
-            <div className="pl-1 text-left">
-              <Typography variant="body1" display="inline">
-                NO
-              </Typography>
-              <Switch
-                checked={tilingCheck}
-                onChange={(e) => {
-                  const soilDrainCopy = soilDataRedux?.drainageClass;
-
-                  const drainSet = new Set(soilDrainCopy);
-                  if (e.target.checked) {
-                    if (
-                      drainSet.has('Very poorly drained')
-                      && drainSet.has('Poorly drained')
-                      && drainSet.has('Somewhat poorly drained')
-                    ) {
-                      drainSet.delete('Very poorly drained');
-                      drainSet.add('Moderately well drained');
-                    } else if (drainSet.has('Very poorly drained') && drainSet.has('Poorly drained')) {
-                      drainSet.delete('Very poorly drained');
-                      drainSet.add('Somewhat poorly drained');
-                    } else if (
-                      drainSet.has('Poorly drained')
-                        && drainSet.has('Somewhat poorly drained')
-                    ) {
-                      drainSet.delete('Poorly drained');
-                      drainSet.add('Moderately well drained');
-                    } else if (
-                      drainSet.has('Very poorly drained')
-                        && drainSet.has('Somewhat poorly drained')
-                    ) {
-                      drainSet.delete('Very poorly drained');
-                      drainSet.delete('Somewhat poorly drained');
-                      drainSet.add('Poorly drained');
-                      drainSet.add('Moderately well drained');
-                    } else if (drainSet.has('Very poorly drained')) {
-                      drainSet.delete('Very poorly drained');
-                      drainSet.add('Poorly drained');
-                    } else if (drainSet.has('Poorly drained')) {
-                      drainSet.delete('Poorly drained');
-                      drainSet.add('Somewhat poorly drained');
-                    } else if (drainSet.has('Somewhat poorly drained')) {
-                      drainSet.delete('Somewhat poorly drained');
-                      drainSet.add('Moderately well drained');
-                    } else {
-                      drainSet.delete('Very poorly drained');
-                      drainSet.delete('Poorly drained');
-                      drainSet.delete('Somewhat poorly drained');
-                      drainSet.add('Moderately well drained');
-                    }
-                    window.localStorage.setItem('drainage', JSON.stringify([...drainSet]));
-                  } else {
-                    window.localStorage.setItem(
-                      'drainage',
-                      JSON.stringify(soilDataOriginalRedux?.drainageClass),
-                    );
-                  }
-
-                  setTilingCheck(!tilingCheck);
-                }}
-                name="checkedC"
-              />
-              <Typography variant="body1" display="inline">
-                YES
-              </Typography>
-            </div>
-          </div>
-        </div>
-      )}
+      <SoilDrainage />
       <SoilFloodingFrequency />
     </div>
   );
