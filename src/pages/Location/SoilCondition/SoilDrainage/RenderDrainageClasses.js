@@ -1,5 +1,5 @@
 import { Chip } from '@mui/material';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import '../../../../styles/soilConditions.scss';
 import { updateDrainageClass as updateDrainageClassRedux } from '../../../../reduxStore/soilSlice';
@@ -10,6 +10,7 @@ const RenderDrainageClasses = ({ tilingCheck, drainage = [] }) => {
   // redux vars
   const soilDataRedux = useSelector((stateRedux) => stateRedux.soilData.soilData);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
+  const [previousDrainage, setPreviousDrainage] = useState(0);
 
   const drainageArray = [
     'Very poorly drained',
@@ -20,6 +21,8 @@ const RenderDrainageClasses = ({ tilingCheck, drainage = [] }) => {
     'Somewhat excessively drained',
     'Excessively drained',
   ];
+
+  const drainageVal = [drainageArray.indexOf(drainage[0])];
 
   // functions
   const updateDrainageAction = (drainages) => {
@@ -35,6 +38,7 @@ const RenderDrainageClasses = ({ tilingCheck, drainage = [] }) => {
   useEffect(() => {
     let drainages = soilDataRedux.drainageClass ? drainageArray.indexOf(soilDataRedux.drainageClass[0]) : -1;
     if (tilingCheck) {
+      setPreviousDrainage(drainages);
       if (drainages === 2) {
         drainages += 1;
       } else if (drainages <= 1) {
@@ -43,8 +47,9 @@ const RenderDrainageClasses = ({ tilingCheck, drainage = [] }) => {
     } else if (drainages === 1) {
       drainages -= 1;
     } else if (drainages >= 2) {
-      drainages = councilShorthandRedux === 'MCCC' ? drainages - 2 : drainages - 1;
+      drainages = councilShorthandRedux === 'MCCC' && previousDrainage !== 2 ? drainages - 2 : drainages - 1;
     }
+
     updateDrainageAction([drainages]);
   }, [tilingCheck]);
 
@@ -61,7 +66,7 @@ const RenderDrainageClasses = ({ tilingCheck, drainage = [] }) => {
     <div className="text-left">
       <Chip
         label="Very Poorly Drained"
-        color={drainage.includes(0) || drainage.includes('Very poorly drained') ? 'primary' : 'secondary'}
+        color={drainageVal.includes(0) ? 'primary' : 'secondary'}
         className="m-2 drainageTag"
         onClick={() => {
           updateDrainageClass(0);
@@ -69,7 +74,7 @@ const RenderDrainageClasses = ({ tilingCheck, drainage = [] }) => {
       />
       <Chip
         label="Poorly Drained"
-        color={drainage.includes(1) || drainage.includes('Poorly drained') ? 'primary' : 'secondary'}
+        color={drainageVal.includes(1) ? 'primary' : 'secondary'}
         className="m-2 drainageTag"
         onClick={() => {
           updateDrainageClass(1);
@@ -77,7 +82,7 @@ const RenderDrainageClasses = ({ tilingCheck, drainage = [] }) => {
       />
       <Chip
         label="Somewhat Poorly Drained"
-        color={drainage.includes(2) || drainage.includes('Somewhat poorly drained') ? 'primary' : 'secondary'}
+        color={drainageVal.includes(2) ? 'primary' : 'secondary'}
         className="m-2 drainageTag"
         onClick={() => {
           updateDrainageClass(2);
@@ -85,7 +90,7 @@ const RenderDrainageClasses = ({ tilingCheck, drainage = [] }) => {
       />
       <Chip
         label="Moderately Well Drained"
-        color={drainage.includes(3) || drainage.includes('Moderately well drained') ? 'primary' : 'secondary'}
+        color={drainageVal.includes(3) ? 'primary' : 'secondary'}
         className="m-2 drainageTag"
         onClick={() => {
           updateDrainageClass(3);
@@ -93,7 +98,7 @@ const RenderDrainageClasses = ({ tilingCheck, drainage = [] }) => {
       />
       <Chip
         label="Well Drained"
-        color={drainage.includes(4) || drainage.includes('Well drained') ? 'primary' : 'secondary'}
+        color={drainageVal.includes(4) ? 'primary' : 'secondary'}
         className="m-2 drainageTag"
         onClick={() => {
           updateDrainageClass(4);
@@ -101,7 +106,7 @@ const RenderDrainageClasses = ({ tilingCheck, drainage = [] }) => {
       />
       <Chip
         label="Somewhat Excessively Drained"
-        color={drainage.includes(5) || drainage.includes('Somewhat excessively drained') ? 'primary' : 'secondary'}
+        color={drainageVal.includes(5) ? 'primary' : 'secondary'}
         className="m-2 drainageTag"
         onClick={() => {
           updateDrainageClass(5);
@@ -109,7 +114,7 @@ const RenderDrainageClasses = ({ tilingCheck, drainage = [] }) => {
       />
       <Chip
         label="Excessively Drained"
-        color={drainage.includes(6) || drainage.includes('Excessively drained') ? 'primary' : 'secondary'}
+        color={drainageVal.includes(6) ? 'primary' : 'secondary'}
         className="m-2 drainageTag"
         onClick={() => {
           updateDrainageClass(6);
