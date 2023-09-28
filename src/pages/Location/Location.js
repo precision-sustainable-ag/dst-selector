@@ -109,7 +109,7 @@ const LocationComponent = () => {
       return undefined;
     };
     if (selectedFieldIdRedux !== null) {
-      return getFieldLatLng(selectedUserField);
+      if (Object.keys(selectedUserField) > 0) return getFieldLatLng(selectedUserField);
     }
     if (userFieldRedux && userFieldRedux.data.length > 0) {
       const currentField = userFieldRedux.data[userFieldRedux.data.length - 1];
@@ -164,7 +164,7 @@ const LocationComponent = () => {
             zone = zone.slice(0, -1);
           }
 
-          if (selectedUserField.id === selectedFieldIdRedux && regionShorthandRedux !== null) {
+          if (selectedFieldIdRedux && selectedUserField.id === selectedFieldIdRedux && regionShorthandRedux) {
             // if there exists available region from user history api, set it as user history value
             setRegionShorthand(regionShorthandRedux);
           } else if (councilShorthandRedux !== 'MCCC') {
@@ -286,6 +286,8 @@ const LocationComponent = () => {
       getFields(accessTokenRedux).then((fields) => dispatchRedux(updateField(fields)));
       if (Object.keys(selectedUserFieldRef.current).length > 0) {
         dispatchRedux(setSelectFieldId(selectedUserFieldRef.current.id));
+      } else {
+        dispatchRedux(setSelectFieldId(null));
       }
     }
   }, []);

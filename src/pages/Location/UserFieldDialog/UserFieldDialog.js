@@ -57,8 +57,8 @@ const UserFieldDialog = ({
     return true;
   };
 
-  const handleClose = (save) => {
-    if (save) {
+  const handleClose = (option) => {
+    if (option === 'YES') {
       if (actionType === 'add') {
         if (!fieldNameValidation(fieldName)) return;
         const { longitude, latitude } = selectedToEditSite;
@@ -74,6 +74,11 @@ const UserFieldDialog = ({
         });
       }
       if (actionType === 'update') {
+        // handle temp field with no label
+        if (selectedUserField.label === '') {
+          setFieldDialogState({ ...fieldDialogState, actionType: 'add' });
+          return;
+        }
         // Only supports polygon updates
         const { longitude, latitude } = selectedToEditSite;
         const point = buildPoint(longitude, latitude, selectedUserField.label);
@@ -109,7 +114,18 @@ const UserFieldDialog = ({
             setSelectedUserField(resField.data);
           });
       }
-    } else {
+    } else if (option === 'NO') {
+      // create a temp field without a name
+      const { longitude, latitude } = selectedToEditSite;
+      const point = buildPoint(longitude, latitude, '');
+      let geoCollection = null;
+      if (areaType === 'Polygon') {
+        const polygon = currentGeometry.features?.slice(-1)[0];
+        geoCollection = buildGeometryCollection(point.geometry, polygon?.geometry, '');
+      }
+      setUserFields([...userFields, areaType === 'Polygon' ? geoCollection : point]);
+      setSelectedUserField(areaType === 'Polygon' ? geoCollection : point);
+    } else if (option === 'CANCEL') {
       // if the user select cancel
       setMapFeatures(getFeatures());
     }
@@ -123,7 +139,7 @@ const UserFieldDialog = ({
       {(actionType === 'add' || actionType === 'updateName') && (
       <>
         <DialogTitle>
-          {actionType === 'add' && 'You need to give this field a nickname'}
+          {actionType === 'add' && 'Would you like to save this field?'}
           {actionType === 'updateName' && 'Change the nickname for this field'}
         </DialogTitle>
         <DialogContent>
@@ -150,8 +166,9 @@ const UserFieldDialog = ({
         </DialogTitle>
       )}
       <DialogActions>
-        <Button onClick={() => handleClose(true)}>OK</Button>
-        <Button onClick={() => handleClose(false)}>Cancel</Button>
+        <Button onClick={() => handleClose('YES')}>Yes</Button>
+        {actionType === 'add' && <Button onClick={() => handleClose('NO')}>No</Button>}
+        <Button onClick={() => handleClose('CANCEL')}>Cancel</Button>
       </DialogActions>
     </Dialog>
   );
