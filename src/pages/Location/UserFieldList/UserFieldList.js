@@ -43,7 +43,7 @@ const UserFieldList = ({
             onChange={handleChange}
           >
             {userFields.map((userField, index) => {
-              if (userField.delete === true) return null;
+              if (userField.label === '') return null;
               return (
                 <MenuItem key={`userField-${index}`} value={userField.label === null ? 'null' : userField.label}>
                   {userField.label === null ? 'null' : userField.label}

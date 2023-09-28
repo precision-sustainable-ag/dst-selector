@@ -279,8 +279,8 @@ const LocationComponent = () => {
   useEffect(() => () => {
     const selectedRegion = regionsRedux.filter((region) => region.shorthand === regionShorthandRef.current)[0];
     dispatchRedux(updateRegion({
-      regionId: selectedRegion.id ?? '',
-      regionShorthand: selectedRegion.shorthand ?? '',
+      regionId: selectedRegion.id,
+      regionShorthand: selectedRegion.shorthand,
     }));
     if (isAuthenticated) {
       getFields(accessTokenRedux).then((fields) => dispatchRedux(updateField(fields)));
