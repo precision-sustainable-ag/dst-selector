@@ -1,30 +1,63 @@
 import { Chip } from '@mui/material';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import '../../../../styles/soilConditions.scss';
 import { updateDrainageClass as updateDrainageClassRedux } from '../../../../reduxStore/soilSlice';
 
-const RenderDrainageClasses = ({ drainage = [''] }) => {
+const RenderDrainageClasses = ({ tilingCheck, drainage = [] }) => {
   const dispatchRedux = useDispatch();
 
   // redux vars
   const soilDataRedux = useSelector((stateRedux) => stateRedux.soilData.soilData);
+  const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
+  const [previousDrainage, setPreviousDrainage] = useState(0);
+
+  const drainageArray = [
+    'Very poorly drained',
+    'Poorly drained',
+    'Somewhat poorly drained',
+    'Moderately well drained',
+    'Well drained',
+    'Somewhat excessively drained',
+    'Excessively drained',
+  ];
+
+  const drainageVal = [drainageArray.indexOf(drainage[0])];
 
   // functions
   const updateDrainageAction = (drainages) => {
-    dispatchRedux(updateDrainageClassRedux(drainages));
+    let dispatchPackage = '';
+    for (let i = 0; i < drainageArray.length; i++) {
+      if (drainages[0] === i) {
+        dispatchPackage = drainageArray[i];
+      }
+    }
+    dispatchRedux(updateDrainageClassRedux([dispatchPackage]));
   };
 
+  useEffect(() => {
+    let drainages = soilDataRedux.drainageClass ? drainageArray.indexOf(soilDataRedux.drainageClass[0]) : -1;
+    if (tilingCheck) {
+      setPreviousDrainage(drainages);
+      if (drainages === 2) {
+        drainages += 1;
+      } else if (drainages <= 1) {
+        drainages = councilShorthandRedux === 'MCCC' ? drainages + 2 : drainages + 1;
+      }
+    } else if (drainages === 1) {
+      drainages -= 1;
+    } else if (drainages >= 2) {
+      drainages = councilShorthandRedux === 'MCCC' && previousDrainage !== 2 ? drainages - 2 : drainages - 1;
+    }
+
+    updateDrainageAction([drainages]);
+  }, [tilingCheck]);
+
   const updateDrainageClass = (label = '') => {
-    const drainages = soilDataRedux.drainageClass ? [...soilDataRedux.drainageClass] : [];
+    let drainages = soilDataRedux.drainageClass ? [...soilDataRedux.drainageClass] : [];
     if (drainages.indexOf(label) === -1) {
       // does not exist, dispatch to state
-      drainages.push(label);
-      updateDrainageAction(drainages);
-    } else {
-      // exists, remove it from state
-      const index = drainages.indexOf(label);
-      drainages.splice(index, 1);
+      drainages = [label];
       updateDrainageAction(drainages);
     }
   };
@@ -33,58 +66,58 @@ const RenderDrainageClasses = ({ drainage = [''] }) => {
     <div className="text-left">
       <Chip
         label="Very Poorly Drained"
-        color={drainage.includes('Very poorly drained') ? 'primary' : 'secondary'}
+        color={drainageVal.includes(0) ? 'primary' : 'secondary'}
         className="m-2 drainageTag"
         onClick={() => {
-          updateDrainageClass('Very poorly drained');
+          updateDrainageClass(0);
         }}
       />
       <Chip
         label="Poorly Drained"
-        color={drainage.includes('Poorly drained') ? 'primary' : 'secondary'}
+        color={drainageVal.includes(1) ? 'primary' : 'secondary'}
         className="m-2 drainageTag"
         onClick={() => {
-          updateDrainageClass('Poorly drained');
+          updateDrainageClass(1);
         }}
       />
       <Chip
         label="Somewhat Poorly Drained"
-        color={drainage.includes('Somewhat poorly drained') ? 'primary' : 'secondary'}
+        color={drainageVal.includes(2) ? 'primary' : 'secondary'}
         className="m-2 drainageTag"
         onClick={() => {
-          updateDrainageClass('Somewhat poorly drained');
+          updateDrainageClass(2);
         }}
       />
       <Chip
         label="Moderately Well Drained"
-        color={drainage.includes('Moderately well drained') ? 'primary' : 'secondary'}
+        color={drainageVal.includes(3) ? 'primary' : 'secondary'}
         className="m-2 drainageTag"
         onClick={() => {
-          updateDrainageClass('Moderately well drained');
+          updateDrainageClass(3);
         }}
       />
       <Chip
         label="Well Drained"
-        color={drainage.includes('Well drained') ? 'primary' : 'secondary'}
+        color={drainageVal.includes(4) ? 'primary' : 'secondary'}
         className="m-2 drainageTag"
         onClick={() => {
-          updateDrainageClass('Well drained');
+          updateDrainageClass(4);
         }}
       />
       <Chip
         label="Somewhat Excessively Drained"
-        color={drainage.includes('Somewhat excessively drained') ? 'primary' : 'secondary'}
+        color={drainageVal.includes(5) ? 'primary' : 'secondary'}
         className="m-2 drainageTag"
         onClick={() => {
-          updateDrainageClass('Somewhat excessively drained');
+          updateDrainageClass(5);
         }}
       />
       <Chip
         label="Excessively Drained"
-        color={drainage.includes('Excessively drained') ? 'primary' : 'secondary'}
+        color={drainageVal.includes(6) ? 'primary' : 'secondary'}
         className="m-2 drainageTag"
         onClick={() => {
-          updateDrainageClass('Excessively drained');
+          updateDrainageClass(6);
         }}
       />
     </div>

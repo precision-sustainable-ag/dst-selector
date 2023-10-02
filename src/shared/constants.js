@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable max-len */
 /* eslint-disable no-nested-ternary */
@@ -286,12 +287,6 @@ export const getRating = (ratng) => {
 
 export const allMonths = moment().localeData().monthsShort();
 
-export const greenBarExpansionPanelHeight = {
-  large: '600px',
-  medium: '600px',
-  small: '600px',
-};
-
 export const trimString = (stringFull, size) => {
   if (!Number.isNaN(size)) {
     return `${stringFull.substring(0, size)}${stringFull.length > 25 ? '...' : ''}`;
@@ -543,13 +538,26 @@ export const sortCrops = (type = 'Average Goals', crops = [], sortFlag = '', sel
         const firstLength = a.data?.['Planting and Growth Windows']?.['Reliable Establishment']?.values.length;
         const secondLength = b.data?.['Planting and Growth Windows']?.['Reliable Establishment']?.values.length;
         if (firstLength && secondLength) {
-          firstDate = new Date(a.data?.['Planting and Growth Windows']?.['Reliable Establishment']?.values[firstLength - 1].split(' - ')[1]).toLocaleDateString('en-GB').split('/').reverse()
-            .join('');
-          secondDate = new Date(b.data?.['Planting and Growth Windows']?.['Reliable Establishment']?.values[secondLength - 1].split(' - ')[1]).toLocaleDateString('en-GB').split('/').reverse()
-            .join('');
+          // sorting by last reliable establishment date for descending and first for ascending
+          if (!sortFlag) {
+            firstDate = new Date(a.data?.['Planting and Growth Windows']?.['Reliable Establishment']?.values[firstLength - 1].split(' - ')[1]).toLocaleDateString('en-GB').split('/').reverse()
+              .join('');
+            secondDate = new Date(b.data?.['Planting and Growth Windows']?.['Reliable Establishment']?.values[secondLength - 1].split(' - ')[1]).toLocaleDateString('en-GB').split('/').reverse()
+              .join('');
+          } else {
+            firstDate = new Date(a.data?.['Planting and Growth Windows']?.['Reliable Establishment']?.values[firstLength - 1].split(' - ')[0]).toLocaleDateString('en-GB').split('/').reverse()
+              .join('');
+            secondDate = new Date(b.data?.['Planting and Growth Windows']?.['Reliable Establishment']?.values[secondLength - 1].split(' - ')[0]).toLocaleDateString('en-GB').split('/').reverse()
+              .join('');
+          }
           return firstDate.localeCompare(secondDate);
         }
-        return 1;
+        if (firstLength) {
+          return 1;
+        }
+        return -1;
+        // should there be other conditions here to accomodate if either firstLength or secondLength is 0 (have no planting data)
+        // return 1;
       });
     }
     if (!sortFlag) {
@@ -562,22 +570,12 @@ export const sortCrops = (type = 'Average Goals', crops = [], sortFlag = '', sel
       selectedItems.forEach((crop) => {
         selectedCropIds.push(crop.id);
       });
-      const newActiveShadow = crops.map((crop) => {
-        crop.inBasket = selectedCropIds.includes(crop.id);
-        return crop;
+      crops.sort((a, b) => {
+        if (selectedCropIds.includes(a.id)) return -1;
+        if (selectedCropIds.includes(b.id)) return 1;
+        return 0;
       });
-      if (newActiveShadow.length > 0) {
-        newActiveShadow.sort((a) => {
-          if (a.inBasket) {
-            return -1;
-          }
-          return 1;
-        });
-        if (!sortFlag) {
-          crops.reverse();
-        }
-        dispatchValue(newActiveShadow);
-      }
+      dispatchValue(crops);
     }
   }
   if (type === 'Crop Group') {
@@ -894,10 +892,10 @@ export const cropDataFormatter = (cropData = [{}]) => {
   });
 };
 
-export const apiServerUrl = 'https://history.covercrop-data.org/v1/';
+export const apiServerUrl = 'https://history.covercrop-data.org/v1';
 
 export const getFields = async (accessToken = null) => {
-  const url = `${apiServerUrl}fields?page=1&perPage=200`;
+  const url = `${apiServerUrl}/fields?page=1&perPage=200`;
   const config = {
     method: 'GET',
     headers: {
@@ -907,11 +905,12 @@ export const getFields = async (accessToken = null) => {
   };
   return fetch(url, config)
     .then((res) => res.json())
+    // eslint-disable-next-line no-console
     .catch((err) => console.log(err));
 };
 
 export const postFields = async (accessToken = null, fieldsData = null) => {
-  const url = `${apiServerUrl}fields`;
+  const url = `${apiServerUrl}/fields`;
   const config = {
     method: 'POST',
     headers: {
@@ -922,11 +921,12 @@ export const postFields = async (accessToken = null, fieldsData = null) => {
   };
   return fetch(url, config)
     .then((res) => res.json())
+    // eslint-disable-next-line no-console
     .catch((err) => console.log(err));
 };
 
 export const deleteFields = async (accessToken = null, id = null) => {
-  const url = `${apiServerUrl}fields/${id}`;
+  const url = `${apiServerUrl}/fields/${id}`;
   const config = {
     method: 'DELETE',
     headers: {
@@ -936,6 +936,7 @@ export const deleteFields = async (accessToken = null, id = null) => {
   };
   return fetch(url, config)
     .then((res) => res.json())
+    // eslint-disable-next-line no-console
     .catch((err) => console.log(err));
 };
 
@@ -972,3 +973,123 @@ export const buildGeometryCollection = (point, polygon, name = null) => {
 export const drawAreaFromGeoCollection = (geoCollection) => [
   { type: 'Feature', geometry: { ...geoCollection.geometry.geometries[1] } },
 ];
+
+export const addCropToBasket = (
+  cropId,
+  cropName,
+  dispatchRedux,
+  snackHandler,
+  selectedCropsModifier,
+  selectedCropsRedux,
+  myCropListLocation,
+) => {
+  const selectedCrops = cropId;
+
+  const buildDispatch = (action, crops) => {
+    dispatchRedux(selectedCropsModifier(crops));
+    dispatchRedux(snackHandler({ snackOpen: true, snackMessage: `${cropName} ${action}` }));
+  };
+
+  if (selectedCropsRedux?.length > 0) {
+    // DONE: Remove crop from basket
+    let removeIndex = -1;
+    selectedCropsRedux.forEach((item, i) => {
+      if (item === cropId) {
+        removeIndex = i;
+      }
+    });
+    if (removeIndex === -1) {
+      // element not in array
+      buildDispatch('added', [...selectedCropsRedux, selectedCrops]);
+    } else {
+      const selectedCropsCopy = selectedCropsRedux;
+      selectedCropsCopy.splice(removeIndex, 1);
+
+      buildDispatch('Removed', selectedCropsCopy);
+    }
+  } else {
+    dispatchRedux(myCropListLocation({ from: 'explorer' }));
+    buildDispatch('Added', [selectedCrops]);
+  }
+};
+
+export const getHistory = async (accessToken = null) => {
+  const url = `${apiServerUrl}/history?schema=1`;
+  const config = {
+    method: 'GET',
+    headers: {
+      'content-type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    },
+  };
+  return fetch(url, config)
+    .then((res) => res.json())
+    // eslint-disable-next-line no-console
+    .catch((err) => console.log(err));
+};
+
+export const buildHistory = (
+  stateId,
+  stateLabel,
+  regionId,
+  regionShorthand,
+  councilLabel,
+  councilShorthand,
+  consentStatus,
+  consentDate,
+  fieldId,
+) => {
+  const history = () => {
+    const historyWithoutRegion = {
+      json: {
+        state: {
+          id: stateId,
+          label: stateLabel,
+        },
+        council: {
+          label: councilLabel,
+          shorthand: councilShorthand,
+        },
+        consent: {
+          status: consentStatus,
+          date: consentDate,
+        },
+      },
+      schemaId: 1,
+    };
+    if (regionId) {
+      return {
+        ...historyWithoutRegion,
+        json: {
+          ...historyWithoutRegion.json,
+          region: {
+            id: regionId,
+            shorthand: regionShorthand,
+          },
+        },
+      };
+    }
+    return historyWithoutRegion;
+  };
+
+  if (fieldId) {
+    return { ...history(), fieldId };
+  }
+  return history();
+};
+
+export const postHistory = async (accessToken = null, historyData = null) => {
+  const url = `${apiServerUrl}/history`;
+  const config = {
+    method: 'POST',
+    headers: {
+      'content-type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify(historyData),
+  };
+  return fetch(url, config)
+    .then((res) => res.json())
+    // eslint-disable-next-line no-console
+    .catch((err) => console.log(err));
+};

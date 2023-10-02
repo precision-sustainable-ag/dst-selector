@@ -1,15 +1,17 @@
+/* eslint-disable max-len */
+
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Button, Typography } from '@mui/material';
-import { LocalDrinkOutlined } from '@mui/icons-material';
+import { Button, Typography, Switch } from '@mui/material';
+import { LocalDrinkOutlined, InvertColors } from '@mui/icons-material';
 import { ReferenceTooltip } from '../../../../shared/constants';
 import arrayEquals from '../../../../shared/functions';
 import '../../../../styles/soilConditions.scss';
 import RenderDrainageClasses from './RenderDrainageClasses';
-import MyCoverCropReset from '../../../../components/MyCoverCropReset/MyCoverCropReset';
 import { updateDrainageClass as updateDrainageClassRedux } from '../../../../reduxStore/soilSlice';
+import MyCoverCropReset from '../../../../components/MyCoverCropReset/MyCoverCropReset';
 
-const SoilDrainage = ({ setTilingCheck }) => {
+const SoilDrainage = () => {
   const dispatchRedux = useDispatch();
 
   // redux vars
@@ -19,7 +21,9 @@ const SoilDrainage = ({ setTilingCheck }) => {
   const myCoverCropListLocationRedux = useSelector((stateRedux) => stateRedux.sharedData.myCoverCropListLocation);
 
   // useState vars
+  const [showTiling, setShowTiling] = useState(false);
   const [handleConfirm, setHandleConfirm] = useState(false);
+  const [tilingCheck, setTilingCheck] = useState(false);
 
   useEffect(() => {
     if (myCoverCropListLocationRedux !== 'selector' && selectedCropsRedux.length > 0) {
@@ -27,6 +31,18 @@ const SoilDrainage = ({ setTilingCheck }) => {
       setHandleConfirm(true);
     }
   }, [selectedCropsRedux, myCoverCropListLocationRedux]);
+
+  useEffect(() => {
+    const checkArray = ['Very poorly drained', 'Poorly drained', 'Somewhat poorly drained'];
+    if (checkArray.some((e) => soilDataRedux?.drainageClass.includes(e))) {
+      setShowTiling(true);
+    } else if (soilDataRedux?.drainageClass.includes('Moderately well drained') && tilingCheck === true) {
+      setShowTiling(true);
+    } else {
+      setShowTiling(false);
+    }
+    window.localStorage.setItem('drainage', JSON.stringify(soilDataRedux?.drainageClass));
+  }, [soilDataRedux?.drainageClass]);
 
   const resetDrainageClasses = () => {
     dispatchRedux(updateDrainageClassRedux(soilDataOriginalRedux?.drainageClass));
@@ -96,9 +112,40 @@ const SoilDrainage = ({ setTilingCheck }) => {
       </div>
       )}
       <div className="col-12">
-        <RenderDrainageClasses drainage={soilDataRedux?.drainageClass} />
+        <RenderDrainageClasses tilingCheck={tilingCheck} drainage={soilDataRedux?.drainageClass} />
       </div>
       <MyCoverCropReset handleConfirm={handleConfirm} setHandleConfirm={setHandleConfirm} />
+      {showTiling && (
+        <div className="col-12 pt-2 mt-2 row">
+          <div className="col-12">
+            <Typography variant="body1" className="soilConditionSubHeader">
+              <InvertColors />
+              &nbsp;TILING &nbsp;
+              <ReferenceTooltip
+                type="text"
+                content="Indicate if the field of interest has tile installed. If you have selected very poorly to somewhat poorly drained soils, selecting “yes” will increase your drainage class by one factor."
+              />
+            </Typography>
+          </div>
+          <div className="col-12 pt-2">
+            <div className="pl-1 text-left">
+              <Typography variant="body1" display="inline">
+                NO
+              </Typography>
+              <Switch
+                checked={tilingCheck}
+                onChange={() => {
+                  setTilingCheck(!tilingCheck);
+                }}
+                name="checkedC"
+              />
+              <Typography variant="body1" display="inline">
+                YES
+              </Typography>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

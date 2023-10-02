@@ -16,7 +16,6 @@ const initialState = {
     },
     frostFreeDays: 173,
   },
-  weatherDataReset: false, // unused
 };
 
 export const updateWeatherConditions = (value) => ({
