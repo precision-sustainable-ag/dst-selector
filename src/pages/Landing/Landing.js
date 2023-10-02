@@ -93,7 +93,6 @@ const Landing = ({ height, title, bg }) => {
   // update stateRedux and regionsRedux based on selectState change
   useEffect(() => {
     // is there a chance selectedState is {} ?
-    console.log(regionIdRedux);
     if (Object.keys(selectedState).length !== 0) {
       updateStateRedux(selectedState);
       const { id } = selectedState;
