@@ -16,19 +16,18 @@ import {
   Typography,
 } from '@mui/material';
 import { KeyboardArrowLeft, KeyboardArrowRight } from '@mui/icons-material';
-import { useSnackbar } from 'notistack';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   DataTooltip,
+  callCoverCropApi,
   getRating,
 } from '../../../shared/constants';
 import '../../../styles/cropComparisonView.scss';
 import '../../../styles/MyCoverCropComparisonComponent.scss';
 import CropDetailsModal from '../../../components/CropDetailsModal/CropDetailsModal';
 import CropCard from '../../../components/CropCard/CropCard';
-import { selectedCropsModifier } from '../../../reduxStore/cropSlice';
-import { snackHandler } from '../../../reduxStore/sharedSlice';
+import { setAjaxInProgress } from '../../../reduxStore/sharedSlice';
 
 const lightBorder = {
   border: '1px solid #35999b',
@@ -65,21 +64,29 @@ const GetAverageGoalRating = ({ crop }) => {
 
 const MyCoverCropComparison = ({ selectedCrops }) => {
   const dispatchRedux = useDispatch();
-  const { enqueueSnackbar } = useSnackbar();
 
   // redux vars
+  const activeCropDataRedux = useSelector((stateRedux) => stateRedux.cropData.activeCropData);
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const comparisonKeysRedux = useSelector((stateRedux) => stateRedux.sharedData.comparisonKeys);
   const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
-  const dataDictionaryRedux = useSelector((stateRedux) => stateRedux.sharedData.dataDictionary);
+  const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
+  const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
   const zoneRedux = useSelector((stateRedux) => stateRedux.addressData.zone);
+  const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
 
   // useState vars
-  // const [formattedDictData, setFormattedDictData] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [sidebarDefs, setSidebarDefs] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalData, setModalData] = useState({});
+  const [dataDictionary, setDataDictionary] = useState([]);
+
+  // TODO: Update SelectedCropsRedux
+
   const allData = [];
+  const query = `${encodeURIComponent('regions')}=${encodeURIComponent(regionIdRedux)}`;
+
   selectedCrops = selectedCrops || selectedCropsRedux;
 
   const handleModalOpen = (crop) => {
@@ -88,37 +95,32 @@ const MyCoverCropComparison = ({ selectedCrops }) => {
     setModalOpen(true);
   };
 
-  async function setDataDict() {
-    await dataDictionaryRedux.forEach((item) => {
+  useEffect(() => {
+    if (stateIdRedux && regionIdRedux) {
+      dispatchRedux(setAjaxInProgress(true));
+
+      setLoading(true);
+      callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/dictionary?${query}`).then((data) => {
+        setDataDictionary(data.data);
+      });
+    }
+  }, [stateIdRedux, regionIdRedux]);
+
+  const setDataDict = async () => {
+    await dataDictionary.forEach((item) => {
       item.attributes.map((i) => allData.push(i));
     });
-  }
+  };
 
   useEffect(() => {
-    setDataDict();
+    setDataDict()
+      .then(() => { setLoading(false); })
+      .catch((err) => {
+      // eslint-disable-next-line no-console
+        console.log(err.message);
+      });
     setSidebarDefs(allData);
-  }, [zoneRedux, dataDictionaryRedux]);
-
-  const removeCrop = (cropName, id) => {
-    let removeIndex = -1;
-    selectedCropsRedux.forEach((item, i) => {
-      if (item.id === id) {
-        removeIndex = i;
-      }
-    });
-
-    if (removeIndex === -1) {
-      // element not in array
-      // not possible ?
-    } else {
-      const selectedCropsCopy = selectedCropsRedux;
-
-      selectedCropsCopy.splice(removeIndex, 1);
-      dispatchRedux(selectedCropsModifier(selectedCropsCopy));
-      dispatchRedux(snackHandler({ snackOpen: false, snackMessage: 'Removed' }));
-      enqueueSnackbar(`${cropName} Removed`);
-    }
-  };
+  }, [zoneRedux, dataDictionary]);
 
   const getTooltipData = (keyName = '') => {
     const exactObject = sidebarDefs.find((keys) => keys.label === keyName);
@@ -138,7 +140,7 @@ const MyCoverCropComparison = ({ selectedCrops }) => {
       parent.scrollLeft -= amount;
     }
   };
-  return (
+  return !loading && (
     <div className="container-fluid">
       <div className="row">
         <div className="col-xl-3 col-lg-4 col-md-4">
@@ -251,17 +253,17 @@ const MyCoverCropComparison = ({ selectedCrops }) => {
               }
             }}
           >
-            {selectedCrops.map((crop, index) => (
+            {activeCropDataRedux.filter((crop) => selectedCropsRedux.includes(crop.id)).map((crop, index) => (
               <div className="col-xl-3 col-lg-5 col-md-6" style={{ paddingLeft: '5px' }} key={index}>
                 <CropCard
-                  crop={crop.data}
-                  removeCrop={removeCrop}
+                  crop={crop}
                   handleModalOpen={handleModalOpen}
                   index={index}
                   type="myListCompare"
                   comparisonKeys={comparisonKeysRedux}
                   lightBG={lightBG}
                   GetAverageGoalRating={GetAverageGoalRating}
+                  dispatchRedux={dispatchRedux}
                 />
               </div>
             ))}

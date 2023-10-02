@@ -11,11 +11,8 @@ import { useHistory } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import ReactGA from 'react-ga';
-import Header from '../Header/Header';
 import ExplorerCardView from './ExplorerCardView/ExplorerCardView';
-import ConsentModal from './ConsentModal/ConsentModal';
 import CropSidebar from '../CropSidebar/CropSidebar';
-import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset';
 import { updateRegion, updateStateInfo } from '../../reduxStore/mapSlice';
 
 const CoverCropExplorer = () => {
@@ -26,12 +23,9 @@ const CoverCropExplorer = () => {
   const sfilters = filterStateRedux[section];
   const activeCropDataRedux = useSelector((stateRedux) => stateRedux.cropData.activeCropData);
   const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
-  const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
   const consentRedux = useSelector((stateRedux) => stateRedux.userData.consent);
-  const myCoverCropListLocationRedux = useSelector((stateRedux) => stateRedux.sharedData.myCoverCropListLocation);
   const [updatedActiveCropData, setUpdatedActiveCropData] = useState([]);
   // const { activeCropData } = state;
-  const [handleConfirm, setHandleConfirm] = useState(false);
   const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
 
   // open crop if url exists
@@ -55,8 +49,6 @@ const CoverCropExplorer = () => {
       }));
       dispatchRedux(updateRegion({
         regionId: urlRegionId[1],
-        regionLabel: null,
-        regionShorthand: null,
       }));
 
       // eslint-disable-next-line
@@ -83,45 +75,33 @@ const CoverCropExplorer = () => {
     }
   }, [stateIdRedux]);
 
-  useEffect(() => {
-    if (myCoverCropListLocationRedux !== 'explorer' && selectedCropsRedux?.length > 0) {
-      // document.title = 'Cover Crop Explorer';
-      setHandleConfirm(true);
-    }
-  }, [selectedCropsRedux, myCoverCropListLocationRedux]);
-
   return (
-    <div className="contentWrapper">
-      <ConsentModal />
-      <Header logo="neccc_wide_logo_color_web.jpg" />
-      <div className="container-fluid mt-4 mb-4">
-        <div className="row mt-3">
-          <div className="col-md-12 col-lg-3 col-xl-2 col-12">
-            <CropSidebar
-              from="explorer"
-              activeCropData={activeCropDataRedux?.length > 0 ? activeCropDataRedux : cropDataRedux}
-              isListView
-            />
-          </div>
-          <div className="col-md-12 col-lg-8 col-xl-9 col-10">
-            {sfilters.zone === '' || sfilters.zone === undefined ? (
-              <Grid container alignItems="center" justifyContent="center">
-                <Grid item xs={12}>
-                  <Typography variant="h5" align="center">
-                    Please choose a zone from the sidebar
-                  </Typography>
-                </Grid>
+    <div className="container-fluid mt-4 mb-4">
+      <div className="row mt-3">
+        <div className="col-md-12 col-lg-3 col-xl-2 col-12">
+          <CropSidebar
+            from="explorer"
+            activeCropData={activeCropDataRedux?.length > 0 ? activeCropDataRedux : cropDataRedux}
+            isListView
+          />
+        </div>
+        <div className="col-md-12 col-lg-8 col-xl-9 col-10">
+          {sfilters.zone === '' || sfilters.zone === undefined ? (
+            <Grid container alignItems="center" justifyContent="center">
+              <Grid item xs={12}>
+                <Typography variant="h5" align="center">
+                  Please choose a zone from the sidebar
+                </Typography>
               </Grid>
-            ) : (
-              <ExplorerCardView
-                cropData={cropDataRedux}
-                activeCropData={updatedActiveCropData}
-              />
-            )}
-          </div>
+            </Grid>
+          ) : (
+            <ExplorerCardView
+              cropData={cropDataRedux}
+              activeCropData={updatedActiveCropData}
+            />
+          )}
         </div>
       </div>
-      <MyCoverCropReset handleConfirm={handleConfirm} setHandleConfirm={setHandleConfirm} />
     </div>
   );
 };

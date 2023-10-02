@@ -5,11 +5,12 @@ const initialState = {
   county: null,
 };
 
-export const updateLocation = ({ address, markers }) => ({
+export const updateLocation = ({ address, markers, county }) => ({
   type: 'UPDATE_LOCATION',
   payload: {
     address,
     markers,
+    county,
   },
 });
 
@@ -17,17 +18,6 @@ export const changeAddress = ({ address }) => ({
   type: 'CHANGE_ADDRESS',
   payload: {
     address,
-  },
-});
-
-export const changeAddressViaMap = ({
-  address,
-  county,
-}) => ({
-  type: 'CHANGE_ADDRESS_VIA_MAP',
-  payload: {
-    address,
-    county,
   },
 });
 
@@ -47,19 +37,13 @@ const addressReducer = (state = initialState, action = null) => {
         ...state,
         address: action.payload.address,
         markers: action.payload.markers,
+        county: action.payload.county,
       };
 
     case 'CHANGE_ADDRESS':
       return {
         ...state,
         address: action.payload.address,
-      };
-
-    case 'CHANGE_ADDRESS_VIA_MAP':
-      return {
-        ...state,
-        address: action.payload.address,
-        county: action.payload.county,
       };
 
     default:

@@ -7,13 +7,15 @@ const initialState = {
   speciesSelectorActivationFlag: true,
   comparisonKeys: [],
   myCoverCropListLocation: '',
-  snackVertical: 'bottom',
-  snackHorizontal: 'right',
   regionToggle: true,
   dataDictionary: {},
   apiBaseUrl: /(localhost|dev)/i.test(window.location)
     ? 'developapi'
     : 'api',
+  openMyCoverCropReset: {
+    open: false,
+    goBack: true,
+  },
 };
 
 export const updateProgress = (value) => ({
@@ -89,6 +91,14 @@ export const pullDictionaryData = (value) => ({
   },
 });
 
+export const setMyCoverCropReset = (open, goBack = true) => ({
+  type: 'SET_MY_COVER_CROP_RESET',
+  payload: {
+    open,
+    goBack,
+  },
+});
+
 const sharedReducer = (state = initialState, action = null) => {
   switch (action.type) {
     case 'UPDATE_PROGRESS':
@@ -157,6 +167,15 @@ const sharedReducer = (state = initialState, action = null) => {
         dataDictionary: action.payload.value,
       };
     }
+
+    case 'SET_MY_COVER_CROP_RESET':
+      return {
+        ...state,
+        openMyCoverCropReset: {
+          open: action.payload.open,
+          goBack: action.payload.goBack,
+        },
+      };
 
     default:
       return { ...state };
