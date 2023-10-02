@@ -34,6 +34,7 @@ const Landing = ({ height, title, bg }) => {
   const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
   const consentRedux = useSelector((stateRedux) => stateRedux.userData.consent);
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
+  const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
 
   // useState vars
   const [containerHeight, setContainerHeight] = useState(height);
@@ -92,6 +93,7 @@ const Landing = ({ height, title, bg }) => {
   // update stateRedux and regionsRedux based on selectState change
   useEffect(() => {
     // is there a chance selectedState is {} ?
+    console.log(regionIdRedux);
     if (Object.keys(selectedState).length !== 0) {
       updateStateRedux(selectedState);
       const { id } = selectedState;
@@ -107,10 +109,13 @@ const Landing = ({ height, title, bg }) => {
           }
 
           dispatchRedux(updateRegions(fetchedRegions));
-          dispatchRedux(updateRegion({
-            regionId: fetchedRegions[0].id ?? '',
-            regionShorthand: fetchedRegions[0].shorthand ?? '',
-          }));
+
+          if (!regionIdRedux) {
+            dispatchRedux(updateRegion({
+              regionId: fetchedRegions[0].id ?? '',
+              regionShorthand: fetchedRegions[0].shorthand ?? '',
+            }));
+          }
         })
         .catch((err) => {
           // eslint-disable-next-line no-console
