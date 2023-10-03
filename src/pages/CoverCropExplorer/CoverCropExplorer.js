@@ -76,33 +76,31 @@ const CoverCropExplorer = () => {
   }, [stateIdRedux]);
 
   return (
-    <div className="container-fluid mt-4 mb-4">
-      <div className="row mt-3">
-        <div className="col-md-12 col-lg-3 col-xl-2 col-12">
-          <CropSidebar
-            from="explorer"
-            activeCropData={activeCropDataRedux?.length > 0 ? activeCropDataRedux : cropDataRedux}
-            isListView
-          />
-        </div>
-        <div className="col-md-12 col-lg-8 col-xl-9 col-10">
-          {sfilters.zone === '' || sfilters.zone === undefined ? (
-            <Grid container alignItems="center" justifyContent="center">
-              <Grid item xs={12}>
-                <Typography variant="h5" align="center">
-                  Please choose a zone from the sidebar
-                </Typography>
-              </Grid>
+    <Grid container>
+      <Grid item xl={3} lg={3} md={3} sm={12} xs={12} mt={4}>
+        <CropSidebar
+          from="explorer"
+          activeCropData={activeCropDataRedux?.length > 0 ? activeCropDataRedux : cropDataRedux}
+          isListView
+        />
+      </Grid>
+      <Grid item xl={9} lg={9} md={9} sm={12} xs={12} mt={4}>
+        {sfilters.zone === '' || sfilters.zone === undefined ? (
+          <Grid container alignItems="center" justifyContent="center">
+            <Grid item xs={12}>
+              <Typography variant="h5" align="center">
+                Please choose a zone from the sidebar
+              </Typography>
             </Grid>
-          ) : (
-            <ExplorerCardView
-              cropData={cropDataRedux}
-              activeCropData={updatedActiveCropData}
-            />
-          )}
-        </div>
-      </div>
-    </div>
+          </Grid>
+        ) : (
+          <ExplorerCardView
+            cropData={cropDataRedux}
+            activeCropData={updatedActiveCropData}
+          />
+        )}
+      </Grid>
+    </Grid>
   );
 };
 

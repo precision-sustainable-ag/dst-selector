@@ -171,9 +171,6 @@ const CropSelector = (props) => {
   return (
     <Grid
       container
-      mt={{
-        xs: '1%', sm: '1%', md: '2%', lg: '2%', xl: '2%',
-      }}
     >
 
       <Grid
@@ -181,6 +178,8 @@ const CropSelector = (props) => {
         xl={12}
         lg={12}
         md={12}
+        sm={12}
+        xs={12}
       >
         {(size.width < 1680) && (
         <Button
@@ -194,7 +193,7 @@ const CropSelector = (props) => {
         )}
       </Grid>
 
-      <Grid item xl={3} lg={3} md={3} mt={4}>
+      <Grid item xl={3} lg={3} md={3} sm={12} xs={12} mt={4}>
         {showSidebar && (
         <CropSidebar
           setGrowthWindow={setShowGrowthWindow}
@@ -209,7 +208,7 @@ const CropSelector = (props) => {
         )}
       </Grid>
 
-      <Grid item xl={showSidebar ? 8 : 12} lg={showSidebar ? 8 : 12} md={showSidebar ? 8 : 12} mt={4} ml={4}>
+      <Grid item xl={showSidebar ? 8 : 12} lg={showSidebar ? 8 : 12} md={showSidebar ? 8 : 12} sm={12} xs={12} mt={4}>
         {/* we need a spinner or loading icon for when the length isnt yet determined */}
         {speciesSelectorActivationFlagRedux ? (
           isListView ? (
