@@ -14,6 +14,7 @@ import {
   ListItemText,
   // ListSubheader,
   Typography,
+  Grid,
 } from '@mui/material';
 import {
   CalendarToday, Compare, ExpandLess, ExpandMore,
@@ -69,7 +70,7 @@ const CropSidebar = ({
   const [showFilters, setShowFilters] = useState('');
   const [sidebarCategoriesData, setSidebarCategoriesData] = useState([]);
   const [sidebarFiltersData, setSidebarFiltersData] = useState([]);
-  const [tableHeight, setTableHeight] = useState(0);
+  // const [tableHeight, setTableHeight] = useState(0);
   const [cropFiltersOpen, setCropFiltersOpen] = useState(true);
   const [dateRange, setDateRange] = useState({
     startDate: null,
@@ -269,22 +270,6 @@ const CropSidebar = ({
     }
   }, [dateRange, from, setGrowthWindow]);
 
-  useEffect(() => {
-    if (document.querySelector('.MuiTableRow-root.theadFirst.MuiTableRow-head')) {
-      // TODO:  When is this true?
-      // NOTE: could never get alert to show up.  can we delete?
-      // alert('Its true');
-      const totalHt = document
-        .querySelector('.MuiTableRow-root.theadFirst.MuiTableRow-head')
-        .getBoundingClientRect().height;
-      const btnHt = document.querySelector('.dynamicToggleBtn').getBoundingClientRect().height;
-
-      const ht = totalHt - btnHt;
-
-      setTableHeight(ht);
-    }
-  }, []);
-
   // TODO: Can we use Reducer instead of localStorage?
   useEffect(() => {
     if (cashCropDataRedux.dateRange.startDate) {
@@ -337,26 +322,6 @@ const CropSidebar = ({
     filtersList();
   }, [sidebarFilters]);
 
-  const comparisonButton = (
-    <Button
-      className="dynamicToggleBtn"
-      fullWidth
-      variant="contained"
-      onClick={toggleComparisonView}
-      size="large"
-      color="secondary"
-      startIcon={
-        comparisonView ? (
-          <ListIcon style={{ fontSize: 'larger' }} />
-        ) : (
-          <Compare style={{ fontSize: 'larger' }} />
-        )
-      }
-    >
-      {comparisonView ? 'LIST VIEW' : 'COMPARISON VIEW'}
-    </Button>
-  );
-
   const updateRegionRedux = (regionName) => {
     const selectedRegion = regionsRedux.filter((region) => region.shorthand === regionName)[0];
     dispatchRedux(updateRegion({
@@ -366,28 +331,37 @@ const CropSidebar = ({
   };
 
   return !loading && (from === 'myCoverCropListStatic') ? (
-    <div className="row">
-      <div className="col-12 mb-3">{comparisonButton}</div>
-      {comparisonView && (
-        <div className="col-12">
-          <ComparisonBar
-            filterData={sidebarFilters}
-            goals={selectedGoalsRedux?.length > 0 ? selectedGoalsRedux : []}
-            comparisonKeys={comparisonKeysRedux}
-            comparisonView={comparisonView}
-          />
-        </div>
-      )}
-    </div>
-  ) : (
-    <div className="row">
-      {from === 'table' && (
-        <div
-          className="col-12"
-          style={{
-            paddingBottom: tableHeight,
-          }}
+    <Grid container spacing={3}>
+      <Grid item>
+        <Button
+          className="dynamicToggleBtn"
+          fullWidth
+          variant="contained"
+          onClick={toggleComparisonView}
+          size="large"
+          color="secondary"
+          startIcon={
+          comparisonView ? (
+            <ListIcon style={{ fontSize: 'larger' }} />
+          ) : (
+            <Compare style={{ fontSize: 'larger' }} />
+          )
+        }
         >
+          {comparisonView ? 'LIST VIEW' : 'COMPARISON VIEW'}
+        </Button>
+        <ComparisonBar
+          filterData={sidebarFilters}
+          goals={selectedGoalsRedux?.length > 0 ? selectedGoalsRedux : []}
+          comparisonKeys={comparisonKeysRedux}
+          comparisonView={comparisonView}
+        />
+      </Grid>
+    </Grid>
+  ) : (
+    <Grid container>
+      <Grid item>
+        {from === 'table' && (
           <Button
             className="dynamicToggleBtn"
             fullWidth
@@ -397,34 +371,32 @@ const CropSidebar = ({
             color="secondary"
             style={{ marginBottom: '15px' }}
             startIcon={
-              isListView ? (
-                <ListIcon style={{ fontSize: 'larger' }} />
-              ) : (
-                <CalendarToday style={{ fontSize: 'larger' }} />
-              )
-            }
+                isListView ? (
+                  <ListIcon style={{ fontSize: 'larger' }} />
+                ) : (
+                  <CalendarToday style={{ fontSize: 'larger' }} />
+                )
+              }
           >
             {isListView ? 'LIST VIEW' : 'CALENDAR VIEW'}
           </Button>
-        </div>
-      )}
-
-      {speciesSelectorActivationFlagRedux || from === 'explorer' ? (
-        <Box
+        )}
+        {speciesSelectorActivationFlagRedux || from === 'explorer' ? (
+          <Box
           // className="col-"
-          sx={{
-            width: {
-              lg: '280px',
-              xl: '280px',
-            },
-          }}
-          id="Filters"
-        >
-          <List
-            component="nav"
-            aria-labelledby="nested-list-subheader"
+            sx={{
+              width: {
+                lg: '280px',
+                xl: '280px',
+              },
+            }}
+            id="Filters"
           >
-            {from === 'table' && (
+            <List
+              component="nav"
+              aria-labelledby="nested-list-subheader"
+            >
+              {from === 'table' && (
               <>
                 {showFilters && speciesSelectorActivationFlagRedux && !isListView && (
                   <CoverCropSearch sfilters={sfilters} />
@@ -438,8 +410,8 @@ const CropSidebar = ({
                   setDateRange={setDateRange}
                 />
               </>
-            )}
-            {showFilters && (
+              )}
+              {showFilters && (
               <>
                 {from === 'explorer' && (
                   <>
@@ -499,20 +471,22 @@ const CropSidebar = ({
                   {filtersList()}
                 </Collapse>
               </>
-            )}
-          </List>
-        </Box>
-      ) : (
-        <div className="col-12">
-          <ComparisonBar
-            filterData={sidebarFilters}
-            goals={selectedGoalsRedux?.length > 0 ? selectedGoalsRedux : []}
-            comparisonKeys={comparisonKeysRedux}
-            comparisonView={comparisonView}
-          />
-        </div>
-      )}
-    </div>
+              )}
+            </List>
+          </Box>
+        ) : (
+          <Grid>
+            <ComparisonBar
+              filterData={sidebarFilters}
+              goals={selectedGoalsRedux?.length > 0 ? selectedGoalsRedux : []}
+              comparisonKeys={comparisonKeysRedux}
+              comparisonView={comparisonView}
+            />
+          </Grid>
+        )}
+      </Grid>
+
+    </Grid>
   );
 };
 
