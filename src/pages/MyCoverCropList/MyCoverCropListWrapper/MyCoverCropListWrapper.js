@@ -14,39 +14,18 @@ const MyCoverCropListWrapper = () => {
     setComparisonView(!comparisonView);
   };
   return (
-    <Grid container spacing={5}>
-
+    <Grid container spacing={3}>
       {/* <Grid container spacing={5}> */}
-      <Grid item xl={3} lg={3} md={3}>
+      <Grid item xl={3} lg={3} md={3} sm={12} xs={12}>
         <CropSidebar
           comparisonView={comparisonView}
           toggleComparisonView={toggleComparisonView}
           from="myCoverCropListStatic"
         />
       </Grid>
-      <Grid item xl={9} lg={9} md={9}>
+      <Grid item xl={9} lg={9} md={9} sm={12} xs={12}>
         <MyCoverCropList from="myCoverCropListStatic" comparisonView={comparisonView} />
       </Grid>
-      {/* </Grid> */}
-
-      {/* <div className="container-fluid mt-2">
-        <div className="row">
-          <div className="col-sm-12  col-md-2">
-            <div className="row">
-              <div className="col-12">
-                <CropSidebar
-                  comparisonView={comparisonView}
-                  toggleComparisonView={toggleComparisonView}
-                  from="myCoverCropListStatic"
-                />
-              </div>
-            </div>
-          </div>
-          <div className="col-sm-12 col-md-10">
-            <MyCoverCropList from="myCoverCropListStatic" comparisonView={comparisonView} />
-          </div>
-        </div>
-      </div> */}
     </Grid>
   );
 };
