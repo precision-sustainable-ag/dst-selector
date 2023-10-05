@@ -79,7 +79,7 @@ const ImageCarousel = ({ images }) => {
 
   return (
     maxSteps > 0 && (
-    <Box sx={{ flexGrow: 1, mt: -25 }}>
+    <Box>
       <AutoPlaySwipeableViews
         axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
         index={activeStep}
@@ -115,7 +115,7 @@ const ImageCarousel = ({ images }) => {
               )}
             </div>
 
-            <Typography style={{ paddingLeft: '35%', fontSize: '8pt' }}>{imagesData[activeStep]?.label}</Typography>
+            <Typography style={{ alignContent: 'center', fontSize: '8pt' }}>{imagesData[activeStep]?.label}</Typography>
           </div>
         ))}
       </AutoPlaySwipeableViews>

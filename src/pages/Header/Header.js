@@ -118,33 +118,27 @@ const Header = () => {
   }, [progressRedux, regionShorthandRedux, selectedFieldIdRedux]);
 
   return (
-    <header className="d-print-none">
+    <header>
       <div className="topHeader">
         <NavLink to="/profile" activeClassName="active">
           PROFILE
         </NavLink>
-        <span className="line" />
         <NavLink to="/about" activeClassName="active">
           ABOUT
         </NavLink>
-        <span className="line" />
         <NavLink to="/help" activeClassName="active">
           HELP
         </NavLink>
-        <span className="line" />
         <NavLink to="/feedback" activeClassName="active">
           FEEDBACK
         </NavLink>
-        <span className="line" />
         <AuthButton
           type={isAuthenticated ? 'Logout' : 'Login'}
           color={isAuthenticated ? 'error' : 'primary'}
         />
       </div>
 
-      <div className="container-fluid">
-        <HeaderLogoInfo />
-      </div>
+      <HeaderLogoInfo />
       <div className="bottomHeader">
         <ToggleOptions pathname={pathname} />
       </div>

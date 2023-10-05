@@ -30,7 +30,6 @@ const ExplorerCardView = ({ activeCropData }) => {
   );
 
   // TODO: Update SelectedCropsRedux
-
   useEffect(() => {
     const newSelectedBtns = selectedCropsRedux;
     setSelectedBtns(newSelectedBtns);
@@ -47,11 +46,11 @@ const ExplorerCardView = ({ activeCropData }) => {
       <CircularProgress style={{ marginLeft: '60px' }} size="6em" />
     ) : (
       <>
-        <Grid style={{ marginLeft: '40px' }} container spacing={2}>
+        <Grid container spacing={2} justifyContent="center">
           {/* eslint-disable-next-line no-nested-ternary */}
           {activeCropData?.length > 0 ? (
             activeCropData.map((crop, index) => (
-              <Grid style={{ width: '260px' }} item key={index}>
+              <Grid item key={index}>
                 <CropCard
                   crop={crop}
                   handleModalOpen={handleModalOpen}

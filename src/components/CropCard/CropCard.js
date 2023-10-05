@@ -2,6 +2,8 @@ import {
   Button,
   Card, CardActionArea, CardContent, CardMedia, Typography,
 } from '@mui/material';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { useTheme } from '@mui/material/styles';
 import React, {
   useEffect, useState,
 } from 'react';
@@ -14,6 +16,10 @@ import { selectedCropsModifier } from '../../reduxStore/cropSlice';
 const CropCard = ({
   crop, handleModalOpen, index, type, comparisonKeys, lightBG, GetAverageGoalRating, dispatchRedux,
 }) => {
+  // used to know if the user is in mobile mode
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
   // redux vars
   const zoneRedux = useSelector((stateRedux) => stateRedux.addressData.zone);
   const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
@@ -89,14 +95,7 @@ const CropCard = ({
   }, [allfilters, comparisonKeys]);
 
   return (
-    <Card
-      sx={{
-        position: 'center',
-        width: '100%',
-        maxWidth: 345,
-        marginRight: 10,
-      }}
-    >
+    <Card style={{ width: isMobile ? '160px' : '260px' }}>
       <CardActionArea onClick={() => handleModalOpen(crop)}>
         <CardMedia
           image={
