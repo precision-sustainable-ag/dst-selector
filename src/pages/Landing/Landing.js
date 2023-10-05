@@ -22,7 +22,7 @@ import ReactGA from 'react-ga';
 import { RegionSelectorMap } from '@psa/dst.ui.region-selector-map';
 import { callCoverCropApi } from '../../shared/constants';
 import '../../styles/landing.scss';
-import { updateRegions, updateStateInfo } from '../../reduxStore/mapSlice';
+import { updateRegions, updateRegion, updateStateInfo } from '../../reduxStore/mapSlice';
 
 const Landing = ({ height, title, bg }) => {
   const dispatchRedux = useDispatch();
@@ -34,6 +34,7 @@ const Landing = ({ height, title, bg }) => {
   const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
   const consentRedux = useSelector((stateRedux) => stateRedux.userData.consent);
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
+  const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
 
   // useState vars
   const [containerHeight, setContainerHeight] = useState(height);
@@ -107,6 +108,13 @@ const Landing = ({ height, title, bg }) => {
           }
 
           dispatchRedux(updateRegions(fetchedRegions));
+
+          if (!regionIdRedux) {
+            dispatchRedux(updateRegion({
+              regionId: fetchedRegions[0].id ?? '',
+              regionShorthand: fetchedRegions[0].shorthand ?? '',
+            }));
+          }
         })
         .catch((err) => {
           // eslint-disable-next-line no-console
