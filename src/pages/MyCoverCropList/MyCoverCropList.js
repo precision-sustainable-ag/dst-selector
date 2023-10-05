@@ -5,13 +5,15 @@
   TopBar contains the blue bar for adding crops
 */
 
-import { Button, Typography } from '@mui/material';
+import {
+  Button, Typography, Grid, Box,
+} from '@mui/material';
 import { Add } from '@mui/icons-material';
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import ReactGA from 'react-ga';
-import MyCoverCropComparison from './MyCoverCropComparison/MyCoverCropComparison';
+import MyCoverCropComparisonTable from './MyCoverCropComparison/MyCoverCropComparisonTable';
 import MyCoverCropCards from './MyCoverCropCards/MyCoverCropCards';
 import { activateSpeicesSelectorTile } from '../../reduxStore/sharedSlice';
 
@@ -123,16 +125,19 @@ const MyCoverCropList = ({ comparisonView, from }) => {
         ) : comparison ? (
           <>
             <TopBar view={comparison} />
-            <div className="row mt-2">
-              <MyCoverCropComparison selectedCrops={updatedSelectedCrops} />
-            </div>
+            <Box flexDirection="column" display="flex" height="100%">
+              <Grid container spacing={2} mt={1}>
+                <MyCoverCropComparisonTable />
+              </Grid>
+            </Box>
+
           </>
         ) : (
           <>
             <TopBar view={comparison} />
-            <div className="row">
-              <div className="d-flex flex-wrap mt-2">
-                {activeCropDataRedux.filter((crop) => selectedCropsRedux.includes(crop.id)).map((crop, index) => (
+            <Grid container spacing={2} mt={1}>
+              {activeCropDataRedux.filter((crop) => selectedCropsRedux.includes(crop.id)).map((crop, index) => (
+                <Grid item>
                   <MyCoverCropCards
                     key={index}
                     cardNo={index + 1}
@@ -140,9 +145,9 @@ const MyCoverCropList = ({ comparisonView, from }) => {
                     btnId={crop.id}
                     itemNo={index}
                   />
-                ))}
-              </div>
-            </div>
+                </Grid>
+              ))}
+            </Grid>
           </>
         )}
     </div>

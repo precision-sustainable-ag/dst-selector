@@ -14,6 +14,7 @@ import {
   CardMedia,
   IconButton,
   Typography,
+  Grid,
 } from '@mui/material';
 import { KeyboardArrowLeft, KeyboardArrowRight } from '@mui/icons-material';
 import React, { useEffect, useState } from 'react';
@@ -141,73 +142,110 @@ const MyCoverCropComparison = ({ selectedCrops }) => {
     }
   };
   return !loading && (
-    <div className="container-fluid">
-      <div className="row">
-        <div className="col-xl-3 col-lg-4 col-md-4">
-          <div className="row pt-3">
-            <div className="col-12">
-              {/* placeholder space before the first crop card */}
-              <Card style={{ width: 'calc(100%)', boxShadow: 'none' }}>
-                <CardMedia style={{ width: 'calc(100%)', height: '292px' }}>
-                  <img
-                    src="https://via.placeholder.com/10/FFFFFF/FFFFFF"
-                    style={{ opacity: 0 }}
-                    alt="placeholder"
-                  />
-                </CardMedia>
-                <hr
-                  style={{
-                    borderTop: '1px solid rgba(0,0,0,0)',
-                    visibility: 'hidden',
-                  }}
-                />
-                <CardContent style={{ paddingRight: '0px', paddingLeft: '0px', width: 'calc(100%)' }}>
-                  {comparisonKeysRedux.map((keys, index) => (
-                    <div
-                      style={lightBorder}
-                      key={index}
-                      id={`comparisonLabel-${keys.split(' ').join('')}`}
-                    >
-                      <span style={{ width: 'calc(10%)' }}>
-                        <DataTooltip
-                          data={getTooltipData(keys)}
-                          disableInteractive
-                          placement="top-start"
-                        />
-                      </span>
-                      <span style={{ width: 'calc(90%)' }}>
-                        <Typography variant="body2" className="text-capitalize" noWrap>
-                          {keys === 'Cover Crop Group' ? 'Cover Crop Type' : keys}
-                        </Typography>
-                      </span>
-                    </div>
-                  ))}
+    <>
+      {/* <Grid container direction="row"> */}
 
-                  {/* Average Goal Rating: Show only if goals are selected */}
-                  {selectedGoalsRedux.length > 0 ? (
-                    <div style={lightBorder}>
-                      <span>
-                        <DataTooltip
-                          data="Average rating of all selected goals"
-                          disableInteractive
-                          placement="top-start"
-                        />
-                      </span>
-                      <span>
-                        <Typography variant="body2">Average Goal Rating</Typography>
-                      </span>
-                    </div>
-                  ) : (
-                    ''
-                  )}
-                </CardContent>
-              </Card>
-            </div>
-          </div>
-        </div>
-        {/* Actual crops show up from here */}
-        <div className="col-xl-9 col-lg-8 col-md-8 comparisonContainer">
-          {showScrollArrows || selectedCrops.length > 4 ? (
+        {/* <Grid xl={3} lg={5} md={6} item>
+          {activeCropDataRedux.filter((crop) => selectedCropsRedux.includes(crop.id)).map((crop, index) => (
+            // <div className="col-xl-3 col-lg-5 col-md-6" style={{ paddingLeft: '5px' }} key={index}>
+            // <div className="col-xl-3 col-lg-5 col-md-6" style={{ paddingLeft: '5px' }} key={index}>
+            <CropCard
+              crop={crop}
+              handleModalOpen={handleModalOpen}
+              index={index}
+              type="myListCompare"
+              comparisonKeys={comparisonKeysRedux}
+              lightBG={lightBG}
+              GetAverageGoalRating={GetAverageGoalRating}
+              dispatchRedux={dispatchRedux}
+            />
+            // </div>
+            // </div>
+          ))}
+        </Grid> */}
+      <Grid item>
+        {/* placeholder space before the first crop card */}
+        <Card style={{ width: 'calc(100%)', boxShadow: 'none' }}>
+          <CardMedia style={{ width: 'calc(100%)', height: '292px' }}>
+            <img
+              src="https://via.placeholder.com/10/FFFFFF/FFFFFF"
+              style={{ opacity: 0 }}
+              alt="placeholder"
+            />
+          </CardMedia>
+          <hr
+            style={{
+              borderTop: '1px solid rgba(0,0,0,0)',
+              visibility: 'hidden',
+            }}
+          />
+          <CardContent style={{ paddingRight: '0px', paddingLeft: '0px', width: 'calc(100%)' }}>
+            {comparisonKeysRedux.map((keys, index) => (
+              <div
+                style={lightBorder}
+                key={index}
+                id={`comparisonLabel-${keys.split(' ').join('')}`}
+              >
+                <span style={{ width: 'calc(10%)' }}>
+                  <DataTooltip
+                    data={getTooltipData(keys)}
+                    disableInteractive
+                    placement="top-start"
+                  />
+                </span>
+                <span style={{ width: 'calc(90%)' }}>
+                  <Typography variant="body2" className="text-capitalize" noWrap>
+                    {keys === 'Cover Crop Group' ? 'Cover Crop Type' : keys}
+                  </Typography>
+                </span>
+              </div>
+            ))}
+
+            {/* Average Goal Rating: Show only if goals are selected */}
+            {selectedGoalsRedux.length > 0 ? (
+              <div style={lightBorder}>
+                <span>
+                  <DataTooltip
+                    data="Average rating of all selected goals"
+                    disableInteractive
+                    placement="top-start"
+                  />
+                </span>
+                <span>
+                  <Typography variant="body2">Average Goal Rating</Typography>
+                </span>
+              </div>
+            ) : (
+              ''
+            )}
+          </CardContent>
+        </Card>
+      </Grid>
+        {activeCropDataRedux.filter((crop) => selectedCropsRedux.includes(crop.id)).map((crop, index) => (
+          // <div className="col-xl-3 col-lg-5 col-md-6" style={{ paddingLeft: '5px' }} key={index}>
+          // <div className="col-xl-3 col-lg-5 col-md-6" style={{ paddingLeft: '5px' }} key={index}>
+          <Grid item>
+            <CropCard
+              crop={crop}
+              handleModalOpen={handleModalOpen}
+              index={index}
+              type="myListCompare"
+              comparisonKeys={comparisonKeysRedux}
+              lightBG={lightBG}
+              GetAverageGoalRating={GetAverageGoalRating}
+              dispatchRedux={dispatchRedux}
+            />
+            <CropDetailsModal
+              modalOpen={modalOpen}
+              setModalOpen={setModalOpen}
+              crop={modalData}
+            />
+          </Grid>
+
+          // </div>
+          // </div>
+        ))}
+        {/* {showScrollArrows || selectedCrops.length > 4 ? (
             <>
               {showLeftScrollArrow ? (
                 <div className="arrowLeftContainer">
@@ -237,9 +275,9 @@ const MyCoverCropComparison = ({ selectedCrops }) => {
             </>
           ) : (
             ''
-          )}
+          )} */}
 
-          <div
+        {/* <div
             className="row pt-3"
             id="scrollContainer"
             onScroll={() => {
@@ -267,15 +305,10 @@ const MyCoverCropComparison = ({ selectedCrops }) => {
                 />
               </div>
             ))}
-          </div>
-        </div>
-      </div>
-      <CropDetailsModal
-        modalOpen={modalOpen}
-        setModalOpen={setModalOpen}
-        crop={modalData}
-      />
-    </div>
+          </div> */}
+      {/* </Grid> */}
+
+    </>
   );
 };
 
