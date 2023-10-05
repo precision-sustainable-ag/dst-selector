@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /*
   This file contains the CropCalendarViewComponent
   The CropCalendarViewComponent shows the crops in calendar format
@@ -25,7 +26,7 @@ import {
   AcUnit, AddCircle, LocalFlorist, WbSunny,
 } from '@mui/icons-material';
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import {
   allMonths,
   CustomStyles,
@@ -35,25 +36,22 @@ import {
   getLegendDataBasedOnCouncil,
 } from '../../../shared/constants';
 import '../../../styles/cropCalendarViewComponent.scss';
-// import CropLegendModal from '../../../components/CropLegendModal/CropLegendModal';
 import RenderCrops from './RenderCrops';
 import CropDetailsModal from '../../../components/CropDetailsModal/CropDetailsModal';
 import Legend from '../../../components/Legend/Legend';
-import { updateActiveCropData } from '../../../reduxStore/cropSlice';
 
 const growthIcon = {
   color: 'white',
 };
 
 const CropCalendarView = ({ activeCropData }) => {
-  const dispatchRedux = useDispatch();
-
   // redux vars
   const cropDataStateRedux = useSelector((stateRedux) => stateRedux.cropData);
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const ajaxInProgressRedux = useSelector((stateRedux) => stateRedux.sharedData.ajaxInProgress);
   const activeCropDataRedux = useSelector((stateRedux) => stateRedux.cropData.activeCropData);
+  const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
   const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
 
   // useState vars
@@ -64,8 +62,6 @@ const CropCalendarView = ({ activeCropData }) => {
   const { activeGrowthPeriod } = cropDataStateRedux;
   const activeCropDataShadow = activeCropData;
   const legendData = getLegendDataBasedOnCouncil(councilShorthandRedux);
-
-  const dispatchValue = (value) => dispatchRedux(updateActiveCropData(value));
 
   const handleLegendModal = () => {
     setLegendModal(!legendModal);
@@ -81,7 +77,6 @@ const CropCalendarView = ({ activeCropData }) => {
 
   const sortByAverageGoals = (averageGoalsFlag) => {
     sortCrops('Average Goals', activeCropDataShadow, averageGoalsFlag, selectedGoalsRedux);
-    dispatchValue(activeCropDataShadow);
   };
 
   const sortCropsByName = (nameSortFlag) => {
@@ -98,8 +93,8 @@ const CropCalendarView = ({ activeCropData }) => {
   };
 
   const sortBySelectedCrops = (selectedCropsSortFlag) => {
-    const selectedCropsShadow = activeCropDataRedux.filter((crop) => selectedCropsRedux.includes(crop.id));
-    sortCrops('Selected Crops', activeCropDataShadow, selectedCropsSortFlag, selectedCropsShadow, dispatchValue);
+    const selectedCropsShadow = cropDataRedux.filter((crop) => activeCropDataRedux.includes(crop.id)).filter((crop) => selectedCropsRedux.includes(crop.id));
+    sortCrops('Selected Crops', activeCropDataShadow, selectedCropsSortFlag, selectedCropsShadow);
   };
   // sorting function drop down selection
   const selectSortingAlgo = (event) => {
@@ -323,17 +318,13 @@ const CropCalendarView = ({ activeCropData }) => {
               </TableRow>
               <TableRow className="calSecondHeadRow">
                 <TableCell style={{ width: '17%', borderRight: '5px solid white' }}>
-                  {/* <Button style={{ color: '#000' }} onClick={sortCropsByName}> */}
                   <Typography variant="body2"> COVER CROPS </Typography>
-                  {/* </Button> */}
                 </TableCell>
                 {selectedGoalsRedux.length > 0 && (
                   <TableCell style={{ width: '13%', borderRight: '5px solid white' }}>
                     <div className="col-12">
                       <Typography variant="body1">
-                        {/* <Button style={{ color: '#000' }} onClick={sortReset}> */}
                         <Typography variant="body2"> AVERAGE GOAL RATING</Typography>
-                        {/* </Button> */}
                       </Typography>
                     </div>
 
@@ -359,9 +350,7 @@ const CropCalendarView = ({ activeCropData }) => {
                   );
                 })}
                 <TableCell style={{ width: '10%', borderLeft: '5px solid white' }}>
-                  {/* <Button style={{ color: '#000' }} onClick={sortBySelectedCrops}> */}
                   <Typography variant="body2"> MY LIST </Typography>
-                  {/* </Button> */}
                 </TableCell>
               </TableRow>
             </TableHead>
@@ -410,11 +399,6 @@ const CropCalendarView = ({ activeCropData }) => {
         </Box>
 
       </Modal>
-      {/* <CropLegendModal
-        legendModal={legendModal}
-        handleLegendModal={handleLegendModal}
-        disableBackdropClick={false}
-      /> */}
       <CropDetailsModal
         modalOpen={modalOpen}
         setModalOpen={setModalOpen}
