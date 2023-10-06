@@ -676,12 +676,14 @@ export const getLegendDataBasedOnCouncil = (councilShorthand = '') => {
     { className: 'frostPossible', label: 'Frost Seeding Possible' },
     { className: 'multiple', label: 'Multiple' },
     { className: 'cashCrop', label: 'Previous Cash Crop Growth Window' },
+    { className: 'hessianFlyFree', label: 'Hessian Fly Free Date' },
   ];
   const MCCClegendData = [
     { className: 'reliable', label: 'Reliable Establishment' },
     { className: 'temperatureRisk', label: 'Freeze/Moisture Risk to Establishment' },
     { className: 'multiple', label: 'Multiple' },
     { className: 'cashCrop', label: 'Previous Cash Crop Growth Window' },
+    { className: 'hessianFlyFree', label: 'Hessian Fly Free Date' },
   ];
   const SCCClegendData = [
     { className: 'reliable', label: 'Reliable Establishment' },
