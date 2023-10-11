@@ -676,12 +676,14 @@ export const getLegendDataBasedOnCouncil = (councilShorthand = '') => {
     { className: 'frostPossible', label: 'Frost Seeding Possible' },
     { className: 'multiple', label: 'Multiple' },
     { className: 'cashCrop', label: 'Previous Cash Crop Growth Window' },
+    { className: 'hessianFlyFree', label: 'Hessian Fly Free Date' },
   ];
   const MCCClegendData = [
     { className: 'reliable', label: 'Reliable Establishment' },
     { className: 'temperatureRisk', label: 'Freeze/Moisture Risk to Establishment' },
     { className: 'multiple', label: 'Multiple' },
     { className: 'cashCrop', label: 'Previous Cash Crop Growth Window' },
+    { className: 'hessianFlyFree', label: 'Hessian Fly Free Date' },
   ];
   const SCCClegendData = [
     { className: 'reliable', label: 'Reliable Establishment' },
@@ -789,6 +791,7 @@ export const cropDataFormatter = (cropData = [{}]) => {
       'Summer Seeding Rate',
       'Can Interseed',
       'Average Frost',
+      'Hessian Fly Free Date',
     ];
     const val = vals;
     let halfMonthArr = Array.from({ length: 24 }, (_, i) => ({
@@ -797,16 +800,36 @@ export const cropDataFormatter = (cropData = [{}]) => {
       start: '',
       end: '',
     }));
-
+    // values for testing hessian fly free dates
+    // val.data['Planting and Growth Windows']['Hessian Fly Free Date'] = {
+    //   id: 749,
+    //   label: 'Hessian Fly Free Date',
+    //   description: null,
+    //   units: '',
+    //   details: '',
+    //   values: [
+    //     '10/1/2009',
+    //   ],
+    //   dataType: 'datetime',
+    //   isArray: false,
+    //   isGoal: false,
+    //   isStrict: false,
+    // };
     params.forEach((param) => {
       if (val.data['Planting and Growth Windows']?.[`${param}`]) {
         val.data['Planting and Growth Windows']?.[`${param}`].values.forEach((dateArray) => {
           const datesArr = dateArray.split('-');
-          // const valStart = moment(datesArr[0], 'YYYY-MM-DD');
-          const valStart = moment(datesArr[0], 'MM/DD/YYYY').format('MM/DD');
-          const valEnd = moment(datesArr[1], 'MM/DD/YYYY').format('MM/DD');
-
-          if (moment(valStart, 'MM/DD').isSameOrAfter(moment(valEnd, 'MM/DD'))) {
+          let valStart;
+          let valEnd;
+          if (datesArr.length > 1) {
+            valStart = moment(datesArr[0], 'MM/DD/YYYY').format('MM/DD');
+            valEnd = moment(datesArr[1], 'MM/DD/YYYY').format('MM/DD');
+          } else {
+            valStart = moment(datesArr[0], 'MM/DD/YYYY').format('MM/DD');
+            valEnd = valStart;
+          }
+          // hessian fly dates are an exception to this condition because it has only one date and not a range
+          if (moment(valStart, 'MM/DD').isSameOrAfter(moment(valEnd, 'MM/DD')) && (param !== 'Hessian Fly Free Date')) {
             const tempStart = '01/01';
             const tempEnd = '12/31';
             halfMonthArr = formatTimeToHalfMonthData(valStart, tempEnd, param, halfMonthArr);
