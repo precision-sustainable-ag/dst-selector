@@ -9,12 +9,7 @@
 */
 
 import {
-  Card,
-  CardContent,
-  CardMedia,
-  IconButton,
   Typography,
-  Grid,
   TableContainer,
   Table,
   TableHead,
@@ -22,11 +17,11 @@ import {
   TableCell,
   TableBody,
 } from '@mui/material';
-import { KeyboardArrowLeft, KeyboardArrowRight } from '@mui/icons-material';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   DataTooltip,
+  RenderSeedPriceIcons,
   callCoverCropApi,
   getRating,
 } from '../../../shared/constants';
@@ -36,16 +31,6 @@ import CropDetailsModal from '../../../components/CropDetailsModal/CropDetailsMo
 import CropCard from '../../../components/CropCard/CropCard';
 import { setAjaxInProgress } from '../../../reduxStore/sharedSlice';
 
-const lightBorder = {
-  border: '1px solid #35999b',
-  padding: '5px',
-  marginBottom: '5px',
-  borderTopLeftRadius: '10px',
-  borderBottomLeftRadius: '10px',
-  display: 'flex',
-  justifyContent: 'space-between',
-  width: 'calc(100%)',
-};
 const lightBG = {
   border: '1px solid white',
   backgroundColor: '#f1f7eb',
@@ -123,49 +108,44 @@ const MyCoverCropComparison = ({ selectedCrops }) => {
     setSidebarDefs(allData);
   }, [zoneRedux, dataDictionary]);
 
-  // const getTooltipData = (keyName = '') => {
-  //   const exactObject = sidebarDefs.find((keys) => keys.label === keyName);
-
-  //   if (exactObject) {
+  // const getTooltipData = (data) => {
+  //   if (data) {
   //     return exactObject.description;
   //   }
   //   return 'No Data';
   // };
 
   const [rows, setRows] = useState([]);
-  const [tableHeaderCells, setCropNames] = useState([]);
-  const tempCropNames = [];
   const tempRows = [];
 
   const buildTable = async () => {
-    console.log('building');
+    // console.log('building');
     await comparisonKeysRedux.forEach((key) => {
-      console.log(key);
+      // console.log(key);
       const newRow = { comparisonKey: key };
       // let allData;
 
       activeCropDataRedux.filter((crop) => selectedCropsRedux.includes(crop.id)).forEach((crop, index) => {
       // rows[`crop${index}`] = crop
-        console.log(comparisonKeysRedux, crop);
-        if (!tempCropNames.includes(crop.label)) { tempCropNames.push(crop.label); }
+        // console.log(comparisonKeysRedux, crop);
 
         // iterate ove all crop.data keys
         Object.keys(crop.data).forEach((dataKey) => {
         // iterate over all crop.data.dataKey keys
           Object.keys(crop?.data?.[dataKey]).forEach((nestedKey) => {
-            if (crop.data[dataKey][nestedKey].label === key) {
-              console.log(crop.data[dataKey][nestedKey]);
+            if (crop.data[dataKey][nestedKey]?.label === key) {
+              // console.log(crop.data[dataKey][nestedKey]);
               // allData.push(crop.data?.[key]?.[k].label);
-              newRow[`crop${index}`] = crop.data[dataKey][nestedKey].values;
+              newRow[`crop${index}`] = crop.data[dataKey][nestedKey];
             }
           });
         });
       });
 
       tempRows.push(newRow);
-      console.log(tempRows);
+      // console.log(tempRows);
     });
-    console.log('built');
+    // console.log('built');
   };
 
   const buildTableHeaders = () => activeCropDataRedux.filter((crop) => selectedCropsRedux.includes(crop.id)).map((crop, index) => (
@@ -189,20 +169,93 @@ const MyCoverCropComparison = ({ selectedCrops }) => {
 
   ));
 
-  const buildTableRows = (row) => {
-    console.log(row);
-    return Object.keys(row).map((key, i) => {
-      console.log(i);
-      return <TableCell align="center">{row[`crop${i}`]}</TableCell>;
-    });
-  };
+  // const buildTableCell = (key, attribute) => {
 
-  console.log(comparisonKeysRedux, tableHeaderCells);
+  // };
+
+  const buildTableRows = (row) => Object.keys(row).map((key, i) => {
+    // <TableCell align="center">{buildTableCell(key, row[`crop${i}`])}</TableCell>;
+
+    console.log(row);
+
+    const attribute = row[`crop${i - 1}`];
+
+    // handles the key name
+    if (key === 'comparisonKey') {
+      return (
+        <TableCell
+          component="th"
+          scope="row"
+          sx={{
+            position: 'sticky', left: 0, background: 'white',
+          }}
+        >
+          <DataTooltip
+            data={row?.crop0?.description ? row?.crop0?.description : 'No Data'}
+            disableInteractive
+            placement="top-start"
+          />
+          <Typography variant="body1" sx={{ fontStyle: 'bold' }}>
+            {row.comparisonKey}
+          </Typography>
+        </TableCell>
+      );
+    }
+
+    // handles no data
+    if (!attribute) {
+      return (
+        <TableCell align="center">
+          <Typography variant="body2">No Data</Typography>
+        </TableCell>
+
+      );
+    }
+
+    // handles pillbox data
+    if (attribute?.values?.length > 0 && attribute?.dataType === 'pillbox') {
+      return (
+        <TableCell align="center">
+          {getRating(attribute.values[0])}
+        </TableCell>
+      );
+    }
+
+    // handle currency
+    if (attribute?.values?.length > 0 && attribute?.dataType === 'currency') {
+      return (
+        <TableCell align="center">
+          <RenderSeedPriceIcons val={attribute.values[0]} />
+        </TableCell>
+      );
+    }
+
+    // handles the true false keys
+    if ((attribute.label === 'Frost Seeding' || (attribute.label === 'Can Aerial Seed?' || attribute.label === 'Aerial Seeding'))) {
+      return (
+        <TableCell align="center">
+          <Typography variant="body2">
+            {attribute?.values[0] ? 'Yes' : 'N/A'}
+          </Typography>
+        </TableCell>
+      );
+    }
+
+    return (
+      <TableCell align="center">
+        <Typography variant="body2">{attribute.values[0].toString()}</Typography>
+      </TableCell>
+    );
+  });
+
+  // console.log(comparisonKeysRedux, tableHeaderCells);
 
   // console.log(buildTable());
   useEffect(() => {
-    buildTable().then(() => { console.log(tempRows); setRows(tempRows); setCropNames(tempCropNames); });
+    buildTable().then(() => { console.log(tempRows); setRows(tempRows); });
   }, [comparisonKeysRedux, selectedCrops]);
+
+  console.log(rows);
 
   return (!loading) && (
   <TableContainer style={{ overflowX: 'initial' }}>
@@ -218,17 +271,6 @@ const MyCoverCropComparison = ({ selectedCrops }) => {
           <TableRow
             key={row.name}
           >
-            <TableCell
-              component="th"
-              scope="row"
-              sx={{
-                position: 'sticky', left: 0, background: 'white',
-              }}
-            >
-              <Typography variant="body1" sx={{ fontStyle: 'bold' }}>
-                {row.comparisonKey}
-              </Typography>
-            </TableCell>
             {buildTableRows(row)}
           </TableRow>
         ))}
