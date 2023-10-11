@@ -176,7 +176,6 @@ const CropSidebar = ({
 
       return true;
     });
-    console.log('HERE 1', filtered.map((filter) => filter.id));
     dispatchRedux(updateActiveCropData(filtered.map((filter) => filter.id)));
   }, [sfilters.cropSearch, cropDataRedux, dispatchRedux, sfilters]);
 
