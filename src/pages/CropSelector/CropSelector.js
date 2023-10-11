@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable no-nested-ternary */
 /*
   This file contains the CropSelector and its styles.
@@ -72,10 +73,13 @@ const CropSelector = (props) => {
   const [updatedActiveCropData, setUpdatedActiveCropData] = useState([]);
 
   const sortCropsBy = (flag) => {
-    const dispatchValue = (updatedCropData) => dispatchRedux(updateActiveCropData(updatedCropData));
+    const dispatchValue = (updatedCropData) => {
+      setUpdatedActiveCropData(updatedCropData.map((crop) => crop.id));
+      dispatchRedux(updateActiveCropData(updatedCropData.map((crop) => crop.id)));
+    };
 
-    if (selectedGoalsRedux?.length > 0) {
-      const activeCropDataShadow = activeCropDataRedux?.length > 0 ? activeCropDataRedux : cropDataRedux;
+    if (selectedGoalsRedux?.length > 0 && activeCropDataRedux?.length > 0) {
+      const activeCropDataShadow = cropDataRedux.filter((crop) => activeCropDataRedux.includes(crop.id));
 
       sortCrops('Average Goals', activeCropDataShadow, flag || goalsSortFlag, selectedGoalsRedux, dispatchValue);
       setGoalsSortFlag(!goalsSortFlag);
@@ -85,11 +89,7 @@ const CropSelector = (props) => {
 
   useEffect(() => {
     sortCropsBy(true);
-  }, [activeCropDataRedux]);
-
-  useEffect(() => {
-    setUpdatedActiveCropData(activeCropDataRedux);
-  }, [activeCropDataRedux]);
+  }, []);
 
   useEffect(() => {
     if (consentRedux === true) {
@@ -193,14 +193,13 @@ const CropSelector = (props) => {
         </Button>
         )}
       </Grid>
-
       <Grid item xl={3} lg={3} md={3} mt={4}>
         {showSidebar && (
         <CropSidebar
           setGrowthWindow={setShowGrowthWindow}
           isListView={isListView}
           cropData={cropData}
-          activeCropData={updatedActiveCropData?.length > 0 ? updatedActiveCropData : cropData}
+          activeCropData={updatedActiveCropData?.length > 0 ? cropDataRedux.filter((crop) => activeCropDataRedux.includes(crop.id)) : cropData}
           comparisonView={comparisonView}
           toggleComparisonView={() => { setComparisonView(!comparisonView); }}
           toggleListView={() => { setIsListView(!isListView); }}
@@ -208,19 +207,18 @@ const CropSelector = (props) => {
         />
         )}
       </Grid>
-
       <Grid item xl={showSidebar ? 8 : 12} lg={showSidebar ? 8 : 12} md={showSidebar ? 8 : 12} mt={4} ml={4}>
         {/* we need a spinner or loading icon for when the length isnt yet determined */}
         {speciesSelectorActivationFlagRedux ? (
           isListView ? (
             <CropCalendarView
-              activeCropData={updatedActiveCropData}
+              activeCropData={cropDataRedux.filter((crop) => activeCropDataRedux.includes(crop.id))}
             />
           ) : (
             <CropTableComponent
               cropData={cropData}
               setCropData={setCropData}
-              activeCropData={updatedActiveCropData}
+              activeCropData={cropDataRedux.filter((crop) => activeCropDataRedux.includes(crop.id))}
               showGrowthWindow={showGrowthWindow}
             />
           )

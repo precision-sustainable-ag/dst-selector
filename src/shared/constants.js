@@ -469,7 +469,7 @@ export const BinaryButton = ({ action }) => (
   </>
 );
 
-export const sortCrops = (type = 'Average Goals', crops = [], sortFlag = '', selectedItems = [], dispatchValue = {}, goal = '') => {
+export const sortCrops = (type = 'Average Goals', crops = [], sortFlag = '', selectedItems = [], goal = '') => {
   if (type === 'Average Goals') {
     crops.sort((a, b) => {
       let aAvg = 0;
@@ -485,10 +485,8 @@ export const sortCrops = (type = 'Average Goals', crops = [], sortFlag = '', sel
             aAvg = +a.data.Goals[g].values[0] + aAvg;
           }
         });
-
       aAvg /= selectedItems.length;
       bAvg /= selectedItems.length;
-
       if (aAvg > bAvg) {
         return -1;
       } if (aAvg === bAvg) {
@@ -575,7 +573,6 @@ export const sortCrops = (type = 'Average Goals', crops = [], sortFlag = '', sel
         if (selectedCropIds.includes(b.id)) return 1;
         return 0;
       });
-      dispatchValue(crops);
     }
   }
   if (type === 'Crop Group') {
