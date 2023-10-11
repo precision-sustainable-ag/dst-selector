@@ -60,8 +60,6 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
     window.open(`https://selectorimages.blob.core.windows.net/selectorimages/pdf/${document.title}.pdf`, '_blank');
   }; // print
 
-  console.log(crop);
-
   return dataDone === true && (
     <Modal // `disableBackdropClick` is removed by codemod.
       // You can find more details about this breaking change in
