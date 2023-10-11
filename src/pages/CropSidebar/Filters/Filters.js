@@ -10,7 +10,7 @@ const DollarsAndRatings = ({ filter, handleChange }) => {
   const dispatchRedux = useDispatch();
   const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
   const sfilters = window.location.href.includes('species-selector') ? filterStateRedux.selector : filterStateRedux.explorer;
-
+  const units = filter.units === 'rating 1-3' ? 3 : 5;
   const style = {
     transform: 'scale(0.8)',
     transformOrigin: 'top left',
@@ -19,7 +19,7 @@ const DollarsAndRatings = ({ filter, handleChange }) => {
 
   return (
     <div style={style}>
-      {new Array(5)
+      {new Array(units)
         .fill(0)
         .map((_, i) => i + 1)
         .map((i) => {
@@ -143,7 +143,7 @@ const Filters = ({ filters }) => {
   return (
     <Grid container spacing={2}>
       {filters.values.map((filter, i) => {
-        if (filter.type === 'string') {
+        if (filter.dataType === 'string') {
           return (
             <Grid item key={i}>
               <>
