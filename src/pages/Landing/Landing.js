@@ -21,7 +21,7 @@ import { Link } from 'react-router-dom';
 import ReactGA from 'react-ga';
 import { RegionSelectorMap } from '@psa/dst.ui.region-selector-map';
 import { callCoverCropApi } from '../../shared/constants';
-import '../../styles/landing.scss';
+// import '../../styles/landing.scss';
 import { updateRegions, updateStateInfo } from '../../reduxStore/mapSlice';
 
 const Landing = ({ height, title, bg }) => {

@@ -16,7 +16,7 @@ import { ArrowBack, ArrowForward, KeyboardArrowUp } from '@mui/icons-material';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import ReactGA from 'react-ga';
-import '../../styles/cropSelector.scss';
+// import '../../styles/cropSelector.scss';
 import MyCoverCropList from '../MyCoverCropList/MyCoverCropList';
 import CropCalendarView from './CropCalendarView/CropCalendarView';
 import CropSidebar from '../CropSidebar/CropSidebar';

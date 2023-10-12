@@ -175,26 +175,26 @@ header {
   }
 }
 
-.ham-navWrapper {
-  display: none;
-}
+// .ham-navWrapper {
+//   display: none;
+// }
 
-.ham-nav {
-  padding: 1em;
-  li {
-    font-size: 1em;
-    font-weight: 400;
-    padding: 0.3em;
-    &.active {
-      background-color: #598443;
-      color: white;
-    }
-  }
-}
+// .ham-nav {
+//   padding: 1em;
+//   li {
+//     font-size: 1em;
+//     font-weight: 400;
+//     padding: 0.3em;
+//     &.active {
+//       background-color: #598443;
+//       color: white;
+//     }
+//   }
+// }
 
-.navbar {
-  box-shadow: none !important;
-}
+// .navbar {
+//   box-shadow: none !important;
+// }
 
 @include mq($max-width: 1200px) {
   .boxContainerRow {
