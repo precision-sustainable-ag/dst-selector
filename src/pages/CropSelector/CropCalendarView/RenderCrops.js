@@ -20,7 +20,10 @@ const RenderCrops = ({
   const dispatchRedux = useDispatch();
   const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
+  // const activeCropDataRedux = useSelector((stateRedux) => stateRedux.cropData.activeCropData);
+  // const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
   const selectedBtns = selectedCropsRedux;
+
   const hasGoalRatingTwoOrLess = (crop = []) => crop.inactive || selectedGoalsRedux.every((rating) => crop[rating] <= 2);
   const getAverageGoalRating = (selectedGoals, crop) => {
     let goalRating = 0;
@@ -32,6 +35,7 @@ const RenderCrops = ({
     return getRating(goalRating / selectedGoals.length);
   };
 
+  // return cropDataRedux.filter((crop) => activeCropDataRedux.includes(crop.id))
   return cropData
     .filter((crop) => (active ? !hasGoalRatingTwoOrLess(crop) : hasGoalRatingTwoOrLess(crop)))
     .map(
