@@ -303,7 +303,6 @@ const CropSidebar = ({
             primary={(
               <Typography
                 variant="button"
-                className="text-uppercase text-left text-danger font-weight-bold"
                 onClick={resetAllFilters}
                 style={{ cursor: 'pointer' }}
               >
@@ -383,7 +382,6 @@ const CropSidebar = ({
         )}
         {speciesSelectorActivationFlagRedux || from === 'explorer' ? (
           <Box
-          // className="col-"
             sx={{
               width: {
                 lg: '280px',
@@ -419,8 +417,8 @@ const CropSidebar = ({
                       <ListItemButton onClick={() => dispatchRedux(regionToggleHandler())}>
                         <ListItemText
                           primary={(
-                            <Typography variant="body2" className="text-uppercase">
-                              Plant Hardiness Zone
+                            <Typography variant="body2">
+                              PLANT HARDINESS ZONE
                             </Typography>
             )}
                         />

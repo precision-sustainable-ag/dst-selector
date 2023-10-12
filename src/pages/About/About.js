@@ -288,7 +288,7 @@ const About = () => {
       );
       case 3:
         return (
-          <Typography variant="body1" align="left" className="pb-4">
+          <Typography variant="body1" align="left">
             This material is based upon work supported by the Northeast Sustainable Agriculture
             Research and Education program (subaward # ENE 16-144), a USDA NIFA postdoctoral
             fellowship (grant # 2016-67012-24711), a NIFA SAS CAP grant (project # NC09873), a
@@ -307,7 +307,7 @@ const About = () => {
       );
       case 5: return (
         <>
-          <Typography variant="body1" align="left" className="pb-4">
+          <Typography variant="body1" align="left">
             The cover crop data in the Species Selector are brought to you by the following
             experts in Zones 4 through 7. The Species Selector and the data verification process
             are brought to you by the Development Team.

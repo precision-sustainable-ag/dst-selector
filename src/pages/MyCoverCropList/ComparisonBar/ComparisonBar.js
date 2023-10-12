@@ -138,7 +138,6 @@ const ComparisonBar = ({
               <Button
                 size="small"
                 style={{ marginBottom: '-15px' }}
-                className="text-uppercase text-left text-danger font-weight-bold"
                 onClick={resetAllFilters}
               >
                 Clear Variables
@@ -151,7 +150,7 @@ const ComparisonBar = ({
       <ListItem>
         <ListItemText
           primary={(
-            <Button size="small" className="text-uppercase text-left" onClick={showAllVariables}>
+            <Button size="small" onClick={showAllVariables}>
               Show All
             </Button>
           )}

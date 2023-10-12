@@ -15,7 +15,7 @@ const WeatherFrostFreeDays = () => {
   return (
     <Grid style={{ marginTop: '1rem', marginLeft: '1rem' }}>
       <Grid item>
-        <Typography variant="body1" className="font-weight-bold text-uppercase text-left">
+        <Typography variant="body1">
           <WbSunnyOutlined />
             &nbsp; Average Frost Free Days &nbsp;
           {' '}
@@ -38,7 +38,7 @@ const WeatherFrostFreeDays = () => {
       </Grid>
 
       <Grid item>
-        <Typography variant="body1" className="text-left">
+        <Typography variant="body1">
           <Opacity style={{ color: 'transparent' }} />
             &nbsp;
           {' '}
