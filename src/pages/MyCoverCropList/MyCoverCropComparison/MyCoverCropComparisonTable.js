@@ -26,7 +26,7 @@ import {
   getRating,
 } from '../../../shared/constants';
 import '../../../styles/cropComparisonView.scss';
-import '../../../styles/MyCoverCropComparisonComponent.scss';
+// import '../../../styles/MyCoverCropComparisonComponent.scss';
 import CropDetailsModal from '../../../components/CropDetailsModal/CropDetailsModal';
 import CropCard from '../../../components/CropCard/CropCard';
 import { setAjaxInProgress } from '../../../reduxStore/sharedSlice';
