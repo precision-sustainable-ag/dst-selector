@@ -54,7 +54,6 @@ const ExplorerCardView = ({ activeCropData }) => {
                 <CropCard
                   crop={crop}
                   handleModalOpen={handleModalOpen}
-                  selectedBtns={selectedBtns}
                   index={index}
                   type="explorer"
                   dispatchRedux={dispatchRedux}

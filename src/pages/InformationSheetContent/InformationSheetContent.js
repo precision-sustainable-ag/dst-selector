@@ -90,7 +90,7 @@ const InformationSheetContent = ({ crop, modalData }) => {
                             )}
                         arrow
                       >
-                        <Typography container item sx={{ fontWeight: 'bold' }} variant="body1">
+                        <Typography item sx={{ fontWeight: 'bold' }} variant="body1">
                           {att.label}
                         </Typography>
                       </Tooltip>

@@ -9,12 +9,11 @@ import React, {
 } from 'react';
 import { useSelector } from 'react-redux';
 import { addCropToBasket, trimString } from '../../shared/constants';
-import RenderRelevantData from './RenderRelevantData/RenderRelevantData';
 import { myCropListLocation, snackHandler } from '../../reduxStore/sharedSlice';
 import { selectedCropsModifier } from '../../reduxStore/cropSlice';
 
 const CropCard = ({
-  crop, handleModalOpen, index, type, comparisonKeys, lightBG, GetAverageGoalRating, dispatchRedux,
+  crop, handleModalOpen, index, type, dispatchRedux,
 }) => {
   // used to know if the user is in mobile mode
   const theme = useTheme();
@@ -24,14 +23,9 @@ const CropCard = ({
   const zoneRedux = useSelector((stateRedux) => stateRedux.addressData.zone);
   const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
   const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
-  const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
 
   const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
   const sfilters = filterStateRedux[section];
-
-  // useState vars
-  const [allfilters, setAllFilters] = useState([]);
-  const allData = [];
 
   const [selectedBtns, setSelectedBtns] = useState(selectedCropsRedux);
 
@@ -41,58 +35,14 @@ const CropCard = ({
     await setSelectedBtns(selectedCropsRedux);
   }
 
-  async function setDataDict() {
-    await Object.keys(crop.data).forEach((key) => {
-      Object.keys(crop?.data?.[key]).forEach((k) => {
-        if (crop.data[key][k] !== null && !k.startsWith('Notes:') && typeof crop?.data?.[key]?.[k] === 'object') {
-          allData.push(crop.data?.[key]?.[k]);
-        }
-      });
-    });
-    await setAllFilters(allData);
-  }
-
   useEffect(() => {
     updateBtns();
   }, [sfilters.zone, selectedCropsRedux]);
-
-  useEffect(() => {
-    setDataDict();
-  }, [comparisonKeys]);
 
   async function addToBasket(cropId, name) {
     addCropToBasket(cropId, name, dispatchRedux, snackHandler, selectedCropsModifier, selectedCropsRedux, myCropListLocation);
     await updateBtns();
   }
-  const getRenderData = () => (
-    <CardContent
-      style={{
-        paddingRight: '0px',
-        paddingLeft: '0px',
-        paddingBottom: '0px',
-      }}
-    >
-      {comparisonKeys.map((filterKey, i) => (
-        <RenderRelevantData
-          key={i}
-          filterKey={filterKey}
-          data={allfilters}
-        />
-      ))}
-      {/* Show Goal Rating Only IF Goals > 0 */}
-      {selectedGoalsRedux.length > 0 && (
-      <div style={lightBG}>
-        <GetAverageGoalRating crop={crop} />
-      </div>
-      )}
-    </CardContent>
-  );
-
-  useEffect(() => {
-    if (allfilters.length > 0 && comparisonKeys?.length > 0) {
-      getRenderData();
-    }
-  }, [allfilters, comparisonKeys]);
 
   return (
     <Card style={{ width: isMobile ? '160px' : '260px' }}>
@@ -181,10 +131,6 @@ const CropCard = ({
             : 'ADD TO LIST'}
         </Typography>
       </CardActionArea>
-      {type === 'myListCompare'
-        && (
-          getRenderData()
-        )}
     </Card>
   );
 };

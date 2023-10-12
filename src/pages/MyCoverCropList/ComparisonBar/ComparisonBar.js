@@ -67,7 +67,6 @@ const ComparisonBar = ({
   const showAllVariables = () => {
     setGoalsOpen(true);
     const theGoals = [];
-    theGoals.push('Cover Crop Group');
     const filteredGoals = goals.map((goal) => ({
       name: goal,
       selected: true,

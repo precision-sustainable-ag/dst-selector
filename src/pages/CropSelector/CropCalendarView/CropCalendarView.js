@@ -158,16 +158,14 @@ const CropCalendarView = ({ activeCropData }) => {
                     <div className="container-fluid">
                       <div className="row">
                         <div className="col-4">
-                          <Typography variant="body1">
-                            <Button
-                              startIcon={<AddCircle />}
-                              onClick={handleLegendModal}
-                              style={{ color: '#000' }}
-                            >
-                              {' '}
-                              <Typography variant="body2">LEGEND</Typography>
-                            </Button>
-                          </Typography>
+                          <Button
+                            startIcon={<AddCircle />}
+                            onClick={handleLegendModal}
+                            style={{ color: '#000' }}
+                          >
+                            {' '}
+                            <Typography variant="body2">LEGEND</Typography>
+                          </Button>
                         </div>
                         <div className="col-4">
                           <Typography variant="body1" component="span">
@@ -305,11 +303,9 @@ const CropCalendarView = ({ activeCropData }) => {
                     }}
                   >
                     <div className="col-12">
-                      <Typography variant="body1">
-                        <Button startIcon={<AddCircle />} onClick={handleLegendModal}>
-                          <Typography variant="body2"> Legend</Typography>
-                        </Button>
-                      </Typography>
+                      <Button startIcon={<AddCircle />} onClick={handleLegendModal}>
+                        <Typography variant="body2"> Legend</Typography>
+                      </Button>
                     </div>
                   </TableCell>
                 ) : (
@@ -323,9 +319,7 @@ const CropCalendarView = ({ activeCropData }) => {
                 {selectedGoalsRedux.length > 0 && (
                   <TableCell style={{ width: '13%', borderRight: '5px solid white' }}>
                     <div className="col-12">
-                      <Typography variant="body1">
-                        <Typography variant="body2"> AVERAGE GOAL RATING</Typography>
-                      </Typography>
+                      <Typography variant="body2"> AVERAGE GOAL RATING</Typography>
                     </div>
 
                   </TableCell>
