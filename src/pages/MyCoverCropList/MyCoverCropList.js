@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable react/no-unstable-nested-components */
 /*
   Contains the list of crops that the user selected
@@ -21,6 +22,7 @@ const MyCoverCropList = ({ comparisonView, from }) => {
   const history = useHistory();
   const [updatedSelectedCrops, setUpdatedSelectedCrops] = useState([]);
   const activeCropDataRedux = useSelector((stateRedux) => stateRedux.cropData.activeCropData);
+  const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
   const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
   const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
   const consentRedux = useSelector((stateRedux) => stateRedux.userData.consent);
@@ -132,7 +134,7 @@ const MyCoverCropList = ({ comparisonView, from }) => {
             <TopBar view={comparison} />
             <div className="row">
               <div className="d-flex flex-wrap mt-2">
-                {activeCropDataRedux.filter((crop) => selectedCropsRedux.includes(crop.id)).map((crop, index) => (
+                {cropDataRedux.filter((crop) => activeCropDataRedux.includes(crop.id)).filter((crop) => selectedCropsRedux.includes(crop.id)).map((crop, index) => (
                   <MyCoverCropCards
                     key={index}
                     cardNo={index + 1}
