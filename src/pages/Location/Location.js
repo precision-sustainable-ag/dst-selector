@@ -3,9 +3,8 @@
   styled using ../../styles/location.scss
 */
 
-import '../../styles/location.scss';
 import {
-  Typography,
+  Typography, Grid, Container,
 } from '@mui/material';
 import React, {
   useEffect,
@@ -17,7 +16,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Search } from '@mui/icons-material';
 import moment from 'moment';
 import { Map } from '@psa/dst.ui.map';
-// import centroid from '@turf/centroid';
 import mapboxgl from 'mapbox-gl';
 import { useAuth0 } from '@auth0/auth0-react';
 import statesLatLongDict from '../../shared/stateslatlongdict';
@@ -303,77 +301,77 @@ const LocationComponent = () => {
   };
 
   return (
-    <div className="container-fluid mt-5">
-      <div className="row boxContainerRow mx-0 px-0 mx-lg-3 px-lg-3" style={{ minHeight: '520px' }}>
-        <div className="col-xl-4 col-sm-12">
-          <div className="container-fluid">
-            <Typography variant="h4" align="left">
-              Where is your field located?
-            </Typography>
-            {councilLabelRedux === 'Midwest Cover Crop Council'
-              ? (
-                <Typography variant="body1" align="left" justifyContent="center" className="pt-5 pb-2">
-                  Please Select A County.
-                </Typography>
-              )
-              : (
-                <Typography variant="body1" align="left" justifyContent="center" className="pt-5 pb-2">
-                  Find your address or ZIP code using the search bar on the map and hit
-                  <Search fontSize="inherit" />
-                  to determine your location. If needed, adjust your USDA Plant Hardiness Zone in the dropdown.
-                </Typography>
-              )}
-            <div className="row py-3 my-4 ">
-              <div className="col-md-5 col-lg-6 col-sm-12 col-12">
-                <PlantHardinessZone
-                  regionShorthand={regionShorthand}
-                  setRegionShorthand={setRegionShorthand}
-                  regionsRedux={regionsRedux}
-                  councilLabelRedux={councilLabelRedux}
-                />
-              </div>
-            </div>
-            {isAuthenticated && (
-              <div className="row py-3 my-4">
-                <div className="col-md-5 col-lg-6 col-sm-12 col-12">
-                  <UserFieldList
-                    userFields={userFields}
-                    field={selectedUserField}
-                    setField={setSelectedUserField}
-                    setFieldDialogState={setFieldDialogState}
-                  />
-                </div>
-              </div>
+    <Grid container spacing={2} mt={1} ml={2} mr={2}>
+      <Grid container item md={3} xs={12} justifyContent="center">
+        <Grid item>
+          <Typography variant="h4">
+            Where is your field located?
+          </Typography>
+        </Grid>
+
+        <Grid item>
+          {councilLabelRedux === 'Midwest Cover Crop Council'
+            ? (
+              <Typography variant="body1">
+                Please Select A County.
+              </Typography>
+            )
+            : (
+              <Typography variant="body1">
+                Find your address or ZIP code using the search bar on the map and hit
+                <Search fontSize="inherit" />
+                to determine your location. If needed, adjust your USDA Plant Hardiness Zone in the dropdown.
+              </Typography>
             )}
-          </div>
-        </div>
-        <div className="col-xl-8 col-sm-12">
-          <div className="container-fluid">
-            <Map
-              setAddress={setSelectedToEditSite}
-              setFeatures={setCurrentGeometry}
-              onDraw={onDraw}
-              initWidth="100%"
-              initHeight="600px"
-              initLat={getLatLng()[0]}
-              initLon={getLatLng()[1]}
-              initFeatures={mapFeatures}
-              initStartZoom={12}
-              initMinZoom={4}
-              initMaxZoom={18}
-              hasSearchBar
-              hasMarker
-              hasNavigation
-              hasCoordBar
-              hasDrawing
-              hasGeolocate
-              hasFullScreen
-              hasMarkerPopup
-              hasMarkerMovable
+        </Grid>
+
+        <Grid item xs={12}>
+          <PlantHardinessZone
+            regionShorthand={regionShorthand}
+            setRegionShorthand={setRegionShorthand}
+            regionsRedux={regionsRedux}
+            councilLabelRedux={councilLabelRedux}
+          />
+        </Grid>
+
+        <Grid item xs={12}>
+          {isAuthenticated && (
+            <UserFieldList
+              userFields={userFields}
+              field={selectedUserField}
+              setField={setSelectedUserField}
+              setFieldDialogState={setFieldDialogState}
             />
-          </div>
-        </div>
-      </div>
+          )}
+        </Grid>
+      </Grid>
+      <Grid item md={9} xs={12}>
+        <Container maxWidth="md">
+          <Map
+            setAddress={setSelectedToEditSite}
+            setFeatures={setCurrentGeometry}
+            onDraw={onDraw}
+            initWidth="100%"
+            initHeight="500px"
+            initLat={getLatLng()[0]}
+            initLon={getLatLng()[1]}
+            initFeatures={mapFeatures}
+            initStartZoom={12}
+            initMinZoom={4}
+            initMaxZoom={18}
+            hasSearchBar
+            hasMarker
+            hasNavigation
+            hasCoordBar
+            hasDrawing
+            hasGeolocate
+            hasFullScreen
+            hasMarkerPopup
+            hasMarkerMovable
+          />
+        </Container>
+
+      </Grid>
       <UserFieldDialog
         fieldDialogState={fieldDialogState}
         setFieldDialogState={setFieldDialogState}
@@ -387,7 +385,7 @@ const LocationComponent = () => {
         getFeatures={getFeatures}
         setIsAddingPoint={setIsAddingPoint}
       />
-    </div>
+    </Grid>
   );
 };
 

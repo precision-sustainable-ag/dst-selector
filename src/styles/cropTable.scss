@@ -1,38 +1,38 @@
 @import '../../node_modules/sass-mediaqueries/media-queries';
 @import '../styles/constants.scss';
 
-.cropDetailsText {
-  display: flex;
-  flex-basis: 60%;
-  flex-direction: column;
-  padding-left: 2em;
-  justify-content: space-between;
-  div.part1_ut {
-    display: flex;
-    flex-direction: column;
-    text-align: left;
-    word-wrap: break-word;
-    font-weight: 700;
-    span {
-      &.cropCategory {
-        color: #919191;
-      }
-      &.cropName {
-        font-size: 15pt;
-      }
-      &.cropScientificName {
-        color: #c2c2c2;
-        font-style: italic;
-      }
-    }
+// .cropDetailsText {
+//   display: flex;
+//   flex-basis: 60%;
+//   flex-direction: column;
+//   padding-left: 2em;
+//   justify-content: space-between;
+//   div.part1_ut {
+//     display: flex;
+//     flex-direction: column;
+//     text-align: left;
+//     word-wrap: break-word;
+//     font-weight: 700;
+//     span {
+//       &.cropCategory {
+//         color: #919191;
+//       }
+//       &.cropName {
+//         font-size: 15pt;
+//       }
+//       &.cropScientificName {
+//         color: #c2c2c2;
+//         font-style: italic;
+//       }
+//     }
 
-    // &.cropDuration {
+//     // &.cropDuration {
 
-    // }
-  }
-  // div.part2_lt {
-  // }
-}
+//     // }
+//   }
+//   // div.part2_lt {
+//   // }
+// }
 
 .activeCartBtn {
   background-color: $progressColor !important;

@@ -10,7 +10,7 @@ import { Close, Print } from '@mui/icons-material';
 import React, { useEffect, useState } from 'react';
 import ReactGA from 'react-ga';
 import { useSelector } from 'react-redux';
-import '../../styles/cropDetailsModal.scss';
+// import '../../styles/cropDetailsModal.scss';
 import InformationSheetContent from '../../pages/InformationSheetContent/InformationSheetContent';
 import { callCoverCropApi } from '../../shared/constants';
 
