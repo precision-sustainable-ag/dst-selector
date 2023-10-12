@@ -6,8 +6,8 @@
 */
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import useMediaQuery from '@mui/material/useMediaQuery';
-import { useTheme } from '@mui/material/styles';
+// import useMediaQuery from '@mui/material/useMediaQuery';
+// import { useTheme } from '@mui/material/styles';
 import CropCard from '../../../components/CropCard/CropCard';
 import CropDetailsModal from '../../../components/CropDetailsModal/CropDetailsModal';
 
@@ -18,8 +18,8 @@ const MyCoverCropCards = ({ crop, cardNo }) => {
   const dispatchRedux = useDispatch();
 
   // used to know if the user is in mobile mode
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  // const theme = useTheme();
+  // const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const handleModalOpen = () => {
     setModalData(crop);
