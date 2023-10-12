@@ -98,12 +98,8 @@ const ImageCarousel = ({ images }) => {
               // <img src={step.imgPath} alt={step.label} style={{ width: '100px', height:  }} />
               <Box
                 component="img"
-                objectFit="contain"
                 sx={{
-                  // height: 1 / 2,
-                  // display: 'block',
                   maxWidth: 400,
-                  overflow: 'hidden',
                   width: '100%',
                   fontSize: '8pt',
                 }}

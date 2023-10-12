@@ -18,7 +18,7 @@ import { ExpandMore } from '@mui/icons-material';
 import { useSelector } from 'react-redux';
 import CoverCropInformation from './CoverCropInformation/CoverCropInformation';
 import InformationSheetReferences from './InformationSheetReferences/InformationSheetReferences';
-import { callCoverCropApi, getRating } from '../../shared/constants';
+import { callCoverCropApi, extractData } from '../../shared/constants';
 
 const InformationSheetContent = ({ crop, modalData }) => {
   // used to know if the user is in mobile mode
@@ -60,8 +60,8 @@ const InformationSheetContent = ({ crop, modalData }) => {
         allThumbs={allThumbs}
         crop={crop}
       />
-      {modalData && modalData.data.map((cat) => (
-        <Grid item xs={12}>
+      {modalData && modalData.data.map((cat, index) => (
+        <Grid item key={index} xs={12}>
           <Accordion defaultExpanded>
             <AccordionSummary
               expandIcon={<ExpandMore />}
@@ -71,49 +71,37 @@ const InformationSheetContent = ({ crop, modalData }) => {
                 },
               }}
             >
-              <Typography variant="h6" style={{ padding: '3px' }}>
+              <Typography variant="h4" style={{ padding: '3px' }}>
                 {cat.label}
               </Typography>
             </AccordionSummary>
             <AccordionDetails>
               {' '}
               <Grid container>
-                {cat.attributes.map((att) => ((att.label !== 'Comments' && !att.label.startsWith('Notes:') && cat.label !== 'Extended Comments') ? (
-                  <Grid container item md={6} sm={12} direction={isMobile ? 'row' : 'column'}>
+                {cat.attributes.map((att, catIndex) => ((att.label !== 'Comments' && !att.label.startsWith('Notes:') && cat.label !== 'Extended Comments') ? (
+                  <Grid container key={catIndex} item md={6} sm={12} direction={isMobile ? 'row' : 'column'}>
                     <Grid item xs={12}>
                       <Tooltip
                         placement="top-end"
-                        title={(
-                          <div className="filterTooltip">
-                            <p>{att.description}</p>
-                          </div>
-                            )}
+                        title={
+                            att.description
+                            }
                         arrow
                       >
-                        <Typography item sx={{ fontWeight: 'bold' }} variant="body1">
+                        <Typography sx={{ fontWeight: 'bold' }} variant="body1">
                           {att.label}
                         </Typography>
                       </Tooltip>
                     </Grid>
                     <Grid item xs={12}>
-                      { att.values[0]?.dataType !== 'number' ? (
-                        <Typography variant="body1">
-                          <Typography style={{ paddingRight: '2rem' }} display="flex" justifyContent={isMobile ? 'left' : 'right'}>{att.values[0]?.value}</Typography>
-                        </Typography>
-                      ) : (
-                        <Typography style={{ paddingRight: '2rem' }} display="flex" justifyContent={isMobile ? 'left' : 'right'}>{getRating(att.values[0]?.value)}</Typography>
-                      )}
+                      <Typography style={{ paddingRight: '2rem' }} display="flex" justifyContent={isMobile ? 'left' : 'right'}>{extractData(att, 'infoSheet')}</Typography>
                     </Grid>
                   </Grid>
                 ) : (
-                  <Grid item xs={12}>
+                  <Grid item key={catIndex} xs={12}>
                     <Tooltip
                       placement="top-end"
-                      title={(
-                        <div className="filterTooltip">
-                          <p>{att.description}</p>
-                        </div>
-                          )}
+                      title={att.description}
                       arrow
                     >
                       {cat.label !== 'Extended Comments'
