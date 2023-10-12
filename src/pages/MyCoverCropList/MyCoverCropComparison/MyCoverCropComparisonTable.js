@@ -21,8 +21,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   DataTooltip,
-  RenderSeedPriceIcons,
-  getRating,
+  extractData,
 } from '../../../shared/constants';
 import CropDetailsModal from '../../../components/CropDetailsModal/CropDetailsModal';
 import CropCard from '../../../components/CropCard/CropCard';
@@ -156,49 +155,9 @@ const MyCoverCropComparison = () => {
       );
     }
 
-    // handles no data
-    if (!attribute) {
-      return (
-        <TableCell key={index} align="center">
-          <Typography variant="body2">No Data</Typography>
-        </TableCell>
-
-      );
-    }
-
-    // handles pillbox data
-    if (attribute?.values?.length > 0 && attribute?.dataType === 'pillbox') {
-      return (
-        <TableCell align="center">
-          {getRating(attribute.values[0])}
-        </TableCell>
-      );
-    }
-
-    // handle currency
-    if (attribute?.values?.length > 0 && attribute?.dataType === 'currency') {
-      return (
-        <TableCell align="center">
-          <RenderSeedPriceIcons val={attribute.values[0]} />
-        </TableCell>
-      );
-    }
-
-    // handles the true false keys
-    if ((attribute.label === 'Frost Seeding' || (attribute.label === 'Can Aerial Seed?' || attribute.label === 'Aerial Seeding'))) {
-      return (
-        <TableCell align="center">
-          <Typography variant="body2">
-            {attribute?.values[0] ? 'Yes' : 'N/A'}
-          </Typography>
-        </TableCell>
-      );
-    }
-
-    // handles default
     return (
       <TableCell align="center">
-        <Typography variant="body2">{attribute.values[0].toString()}</Typography>
+        {extractData(attribute, 'comparisonTable')}
       </TableCell>
     );
   });

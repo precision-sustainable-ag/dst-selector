@@ -1113,3 +1113,51 @@ export const postHistory = async (accessToken = null, historyData = null) => {
     // eslint-disable-next-line no-console
     .catch((err) => console.log(err));
 };
+
+export const extractData = (attribute, from) => {
+  // handles no data
+  if (!attribute) {
+    return (
+      <Typography variant="body2">No Data</Typography>
+    );
+  }
+
+  // extract data
+  let data;
+  let dataType;
+  if (from === 'infoSheet') {
+    data = attribute?.values[0]?.label ? attribute?.values[0]?.label : attribute?.values[0]?.value;
+    dataType = attribute?.dataType.label;
+  } else {
+    data = attribute?.values[0];
+    dataType = attribute?.dataType;
+  }
+
+  // handles pillbox data
+  if (data && dataType === 'pillbox') {
+    return (
+      getRating(data)
+    );
+  }
+
+  // handle currency
+  if (data && dataType === 'currency') {
+    return (
+      <RenderSeedPriceIcons val={data} />
+    );
+  }
+
+  // handles the true false keys
+  if ((data === 'Frost Seeding' || (data === 'Can Aerial Seed?' || data === 'Aerial Seeding'))) {
+    return (
+      <Typography variant="body2">
+        {data ? 'Yes' : 'N/A'}
+      </Typography>
+    );
+  }
+
+  // handles default
+  return (
+    <Typography variant="body2">{data.toString()}</Typography>
+  );
+};
