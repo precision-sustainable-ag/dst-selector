@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /*
   This file contains the CropTable component
 */
@@ -41,6 +42,7 @@ const CropTableComponent = ({
   const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const activeCropDataRedux = useSelector((stateRedux) => stateRedux.cropData.activeCropData);
+  const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
 
   // useState vars
   const [modalOpen, setModalOpen] = useState(false);
@@ -54,7 +56,6 @@ const CropTableComponent = ({
   const [goal3SortFlag, setGoal3SortFlag] = useState(true);
   const activeCropDataShadow = activeCropData;
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
-
   const legendData = getLegendDataBasedOnCouncil(councilShorthandRedux);
 
   useEffect(() => {
@@ -78,33 +79,27 @@ const CropTableComponent = ({
   };
 
   const updateActiveCropDataAction = (activeShadowValue) => {
-    dispatchRedux(updateActiveCropData(activeShadowValue));
+    dispatchRedux(updateActiveCropData(activeShadowValue.map((shadow) => shadow.id)));
   };
 
   const sortByName = (nameSortFlag) => {
     sortCrops('Crop Name', activeCropDataShadow, nameSortFlag);
-    // setNameSortFlag(!nameSortFlag);
   };
 
   const sortByAverageGoals = (averageGoalsFlag) => {
     sortCrops('Average Goals', activeCropDataShadow, averageGoalsFlag, selectedGoalsRedux);
-    // setAverageGoalsFlag(!averageGoalsFlag);
-    updateActiveCropDataAction(activeCropDataShadow);
   };
   const sortByPlantingWindow = (plantingWindowSortFlag) => {
     sortCrops('Planting Window', activeCropDataShadow, plantingWindowSortFlag);
-    // setPlantingWindowSortFlag(!plantingWindowSortFlag);
   };
 
   const sortByCropGroup = (cropGroupSortFlag) => {
     sortCrops('Crop Group', activeCropDataShadow, cropGroupSortFlag);
-    // setCropGroupSortFlag(!cropGroupSortFlag);
   };
 
   const sortBySelectedCrops = (selectedCropsSortFlag) => {
-    const selectedCropsShadow = activeCropDataRedux.filter((crop) => selectedCropsRedux.includes(crop.id));
-    sortCrops('Selected Crops', activeCropDataShadow, selectedCropsSortFlag, selectedCropsShadow, updateActiveCropDataAction);
-    // setSelectedCropsSortFlag(!selectedCropsSortFlag);
+    const selectedCropsShadow = cropDataRedux.filter((crop) => activeCropDataRedux.includes(crop.id)).filter((crop) => selectedCropsRedux.includes(crop.id));
+    sortCrops('Selected Crops', activeCropDataShadow, selectedCropsSortFlag, selectedCropsShadow);
   };
 
   const sortByGoal = (goal, index) => {

@@ -114,6 +114,9 @@
       &.multiple {
         color: $multipleColor;
       }
+      &.hessianFlyFree {
+        color: $hessianFlyFreeColor;
+      }
     }
     // font-weight: 800;
   }

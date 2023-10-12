@@ -177,7 +177,7 @@ const CropSidebar = ({
 
       return true;
     });
-    dispatchRedux(updateActiveCropData(filtered));
+    dispatchRedux(updateActiveCropData(filtered.map((filter) => filter.id)));
   }, [sfilters.cropSearch, cropDataRedux, dispatchRedux, sfilters]);
 
   const filtersSelected = Object.keys(sfilters)?.filter((key) => sfilters[key])?.length > 1;

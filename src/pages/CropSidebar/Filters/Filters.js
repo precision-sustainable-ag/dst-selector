@@ -10,7 +10,7 @@ const DollarsAndRatings = ({ filter, handleChange }) => {
   const dispatchRedux = useDispatch();
   const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
   const sfilters = window.location.href.includes('species-selector') ? filterStateRedux.selector : filterStateRedux.explorer;
-
+  const units = filter.units === 'rating 1-3' ? 3 : 5;
   const style = {
     transform: 'scale(0.8)',
     transformOrigin: 'top left',
@@ -19,7 +19,7 @@ const DollarsAndRatings = ({ filter, handleChange }) => {
 
   return (
     <div style={style}>
-      {new Array(filter.values.length)
+      {new Array(units)
         .fill(0)
         .map((_, i) => i + 1)
         .map((i) => {
@@ -27,11 +27,11 @@ const DollarsAndRatings = ({ filter, handleChange }) => {
           const selected = sfilters[filterKey];
           const filterOn = (key = filterKey) => dispatchRedux(filterOnRedux(key));
           const filterOff = (key = filterKey) => dispatchRedux(filterOffRedux(key));
-
           return (
             <Chip
               key={filter.name + i}
-              label={filter.dataType === 'currency' ? '$'.repeat(i) : filter.values[i - 1].value}
+              // label={filter.dataType === 'currency' ? '$'.repeat(i) : filter.values[i - 1].value}
+              label={filter.dataType === 'currency' ? '$'.repeat(i) : i}
               style={{
                 fontSize: '1.2rem',
                 marginRight: 2,
@@ -73,10 +73,8 @@ const DollarsAndRatings = ({ filter, handleChange }) => {
 const Chips = ({ filter, handleChange }) => {
   const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
   const sfilters = window.location.href.includes('species-selector') ? filterStateRedux.selector : filterStateRedux.explorer;
-
   return filter.values.map((val, i) => {
     const selected = sfilters[`${filter.name}: ${val.value}`];
-
     return (
       <Chip
         key={filter.name + val.value + i}
@@ -145,7 +143,7 @@ const Filters = ({ filters }) => {
   return (
     <Grid container spacing={2}>
       {filters.values.map((filter, i) => {
-        if (filter.type === 'string') {
+        if (filter.dataType === 'string') {
           return (
             <Grid item key={i}>
               <>
