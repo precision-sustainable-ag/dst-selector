@@ -208,7 +208,8 @@ const MyCoverCropComparison = () => {
   }, [comparisonKeysRedux, selectedCrops]);
 
   return (
-    <TableContainer style={{ overflowX: 'initial' }}>
+    // <TableContainer style={{ overflowX: 'initial' }}>
+    <TableContainer>
       <Table stickyHeader aria-label="sticky table">
         <TableHead>
           <TableRow>
