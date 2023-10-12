@@ -57,7 +57,6 @@ const cropDataReducer = (state = initialState, action = null) => {
       return {
         ...state,
         cropData: [...action.payload.value],
-        activeCropData: action.payload.value,
       };
 
     case 'SELECTED_CROPS_MODIFIER':

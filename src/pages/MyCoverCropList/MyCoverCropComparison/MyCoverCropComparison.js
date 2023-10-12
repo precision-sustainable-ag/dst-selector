@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /*
   Contains the comparison tool for my cover crop list
   removeCrop handles removing a crop from the list
@@ -69,6 +70,7 @@ const MyCoverCropComparison = ({ selectedCrops }) => {
   // redux vars
   const activeCropDataRedux = useSelector((stateRedux) => stateRedux.cropData.activeCropData);
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
+  const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
   const comparisonKeysRedux = useSelector((stateRedux) => stateRedux.sharedData.comparisonKeys);
   const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
   const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
@@ -291,7 +293,7 @@ const MyCoverCropComparison = ({ selectedCrops }) => {
               }
             }}
           >
-            {activeCropDataRedux.filter((crop) => selectedCropsRedux.includes(crop.id)).map((crop, index) => (
+            {cropDataRedux.filter((crop) => activeCropDataRedux.includes(crop.id)).filter((crop) => selectedCropsRedux.includes(crop.id)).map((crop, index) => (
               <div className="col-xl-3 col-lg-5 col-md-6" style={{ paddingLeft: '5px' }} key={index}>
                 <CropCard
                   crop={crop}

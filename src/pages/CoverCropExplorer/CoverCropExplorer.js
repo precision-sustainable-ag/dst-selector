@@ -37,7 +37,7 @@ const CoverCropExplorer = () => {
   const urlRegionId = window.location.search.match(/region=([^\^]+)/); // for automating Information Sheet PDFs
 
   useEffect(() => {
-    const filteredActiveCropData = activeCropDataRedux?.filter((a) => !a.inactive);
+    const filteredActiveCropData = cropDataRedux.filter((crop) => activeCropDataRedux.includes(crop.id))?.filter((a) => !a.inactive);
     setUpdatedActiveCropData(filteredActiveCropData);
 
     if (urlCrop && urlParamStateId && urlRegionId) {
@@ -80,7 +80,7 @@ const CoverCropExplorer = () => {
       <Grid item xl={3} lg={3} md={3} sm={12} xs={12} mt={4}>
         <CropSidebar
           from="explorer"
-          activeCropData={activeCropDataRedux?.length > 0 ? activeCropDataRedux : cropDataRedux}
+          activeCropData={activeCropDataRedux?.length > 0 ? cropDataRedux.filter((crop) => activeCropDataRedux.includes(crop.id)) : cropDataRedux}
           isListView
         />
       </Grid>

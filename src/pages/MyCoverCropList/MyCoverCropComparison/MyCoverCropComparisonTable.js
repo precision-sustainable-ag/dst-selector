@@ -52,11 +52,12 @@ const GetAverageGoalRating = ({ crop }) => {
   return getRating(goalRating / selectedGoalsRedux.length);
 };
 
-const MyCoverCropComparison = ({ selectedCrops }) => {
+const MyCoverCropComparison = () => {
   const dispatchRedux = useDispatch();
 
   // redux vars
   const activeCropDataRedux = useSelector((stateRedux) => stateRedux.cropData.activeCropData);
+  const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const comparisonKeysRedux = useSelector((stateRedux) => stateRedux.sharedData.comparisonKeys);
   const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
@@ -71,13 +72,14 @@ const MyCoverCropComparison = ({ selectedCrops }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalData, setModalData] = useState({});
   const [dataDictionary, setDataDictionary] = useState([]);
+  const [selectedCrops, setSelectedCrops] = useState([]);
 
   // TODO: Update SelectedCropsRedux
 
   const allData = [];
   const query = `${encodeURIComponent('regions')}=${encodeURIComponent(regionIdRedux)}`;
 
-  selectedCrops = selectedCrops || selectedCropsRedux;
+  // selectedCrops = selectedCrops || selectedCropsRedux;
 
   useEffect(() => {
     if (stateIdRedux && regionIdRedux) {
@@ -106,34 +108,23 @@ const MyCoverCropComparison = ({ selectedCrops }) => {
     setSidebarDefs(allData);
   }, [zoneRedux, dataDictionary]);
 
-  // const getTooltipData = (data) => {
-  //   if (data) {
-  //     return exactObject.description;
-  //   }
-  //   return 'No Data';
-  // };
+  useEffect(() => {
+    setSelectedCrops(cropDataRedux.filter((crop) => activeCropDataRedux.includes(crop.id)).filter((crop) => selectedCropsRedux.includes(crop.id)));
+  }, [cropDataRedux, activeCropDataRedux, selectedCropsRedux]);
 
   const [rows, setRows] = useState([]);
   const tempRows = [];
 
   const buildTable = async () => {
-    // console.log('building');
     await comparisonKeysRedux.forEach((key) => {
-      // console.log(key);
       const newRow = { comparisonKey: key };
-      // let allData;
 
-      activeCropDataRedux.filter((crop) => selectedCropsRedux.includes(crop.id)).forEach((crop, index) => {
-      // rows[`crop${index}`] = crop
-        // console.log(comparisonKeysRedux, crop);
-
+      selectedCrops.forEach((crop, index) => {
         // iterate ove all crop.data keys
         Object.keys(crop.data).forEach((dataKey) => {
         // iterate over all crop.data.dataKey keys
           Object.keys(crop?.data?.[dataKey]).forEach((nestedKey) => {
             if (crop.data[dataKey][nestedKey]?.label === key) {
-              // console.log(crop.data[dataKey][nestedKey]);
-              // allData.push(crop.data?.[key]?.[k].label);
               newRow[`crop${index}`] = crop.data[dataKey][nestedKey];
             }
           });
@@ -141,21 +132,16 @@ const MyCoverCropComparison = ({ selectedCrops }) => {
       });
 
       tempRows.push(newRow);
-      // console.log(tempRows);
     });
-    // console.log('built');
   };
 
-  const buildTableHeaders = () => activeCropDataRedux.filter((crop) => selectedCropsRedux.includes(crop.id)).map((crop, index) => (
+  const buildTableHeaders = () => selectedCrops.map((crop, index) => (
     <TableCell align="center">
       <CropCard
         crop={crop}
-        // handleModalOpen={handleModalOpen}
         index={index}
         type="cropList"
-        // comparisonKeys={comparisonKeysRedux}
         lightBG={lightBG}
-        // GetAverageGoalRating={GetAverageGoalRating}
         dispatchRedux={dispatchRedux}
       />
       <CropDetailsModal
@@ -167,15 +153,7 @@ const MyCoverCropComparison = ({ selectedCrops }) => {
 
   ));
 
-  // const buildTableCell = (key, attribute) => {
-
-  // };
-
   const buildTableRows = (row) => Object.keys(row).map((key, i) => {
-    // <TableCell align="center">{buildTableCell(key, row[`crop${i}`])}</TableCell>;
-
-    console.log(row);
-
     const attribute = row[`crop${i - 1}`];
 
     // handles the key name
@@ -239,6 +217,7 @@ const MyCoverCropComparison = ({ selectedCrops }) => {
       );
     }
 
+    // handles default
     return (
       <TableCell align="center">
         <Typography variant="body2">{attribute.values[0].toString()}</Typography>
@@ -246,14 +225,9 @@ const MyCoverCropComparison = ({ selectedCrops }) => {
     );
   });
 
-  // console.log(comparisonKeysRedux, tableHeaderCells);
-
-  // console.log(buildTable());
   useEffect(() => {
     buildTable().then(() => { console.log(tempRows); setRows(tempRows); });
   }, [comparisonKeysRedux, selectedCrops]);
-
-  console.log(rows);
 
   return (!loading) && (
   <TableContainer style={{ overflowX: 'initial' }}>
