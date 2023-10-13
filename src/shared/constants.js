@@ -25,6 +25,7 @@ export const ReferenceTooltip = ({
   const link = hasLink;
   return sourceType === 'link' ? (
     <Tooltip
+      enterTouchDelay={0}
       title={(
         <div>
           Source
@@ -39,16 +40,17 @@ export const ReferenceTooltip = ({
       <Info fontSize="small" />
     </Tooltip>
   ) : sourceType === 'html' ? (
-    <Tooltip arrow dangerouslySetInnerHTML={content}>
+    <Tooltip arrow dangerouslySetInnerHTML={content} enterTouchDelay={0}>
       {' '}
       <Info fontSize="small" />
     </Tooltip>
   ) : link ? (
-    <Tooltip title={title} placement="right" arrow>
+    <Tooltip title={title} placement="right" arrow enterTouchDelay={0}>
       <Info fontSize="small" />
     </Tooltip>
   ) : (
     <Tooltip
+      enterTouchDelay={0}
       title={(
         <div>
           <Typography variant="body1">{sourceContent}</Typography>
@@ -63,7 +65,7 @@ export const ReferenceTooltip = ({
 };
 
 export const DataTooltip = ({ data, placement = 'top-start' }) => (
-  <Tooltip title={<div className="text-center">{data}</div>} placement={placement} arrow>
+  <Tooltip title={<div className="text-center">{data}</div>} placement={placement} arrow enterTouchDelay={0}>
     <Info fontSize="small" />
   </Tooltip>
 );

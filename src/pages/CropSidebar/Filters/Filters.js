@@ -97,7 +97,7 @@ const Tip = ({ filter }) => (
     arrow
     placement="right"
     disableFocusListener
-    disableTouchListener
+    enterTouchDelay={0}
     title={(
       <div className="filterTooltip">
         <p>{filter.description}</p>

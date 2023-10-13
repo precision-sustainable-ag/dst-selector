@@ -16,6 +16,7 @@ import {
   TableRow,
   TableCell,
   TableBody,
+  Grid,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -143,14 +144,20 @@ const MyCoverCropComparison = () => {
             position: 'sticky', left: 0, background: 'white',
           }}
         >
-          <DataTooltip
-            data={row?.crop0?.description ? row?.crop0?.description : 'No Data'}
-            disableInteractive
-            placement="top-start"
-          />
-          <Typography variant="body1" sx={{ fontStyle: 'bold' }}>
-            {row.comparisonKey}
-          </Typography>
+          <Grid container direction="row" spacing={1}>
+            <Grid item>
+              <DataTooltip
+                data={row?.crop0?.description ? row?.crop0?.description : 'No Data'}
+                disableInteractive
+                placement="top-start"
+              />
+            </Grid>
+            <Grid item>
+              <Typography variant="body1" sx={{ fontStyle: 'bold' }}>
+                {row.comparisonKey}
+              </Typography>
+            </Grid>
+          </Grid>
         </TableCell>
       );
     }

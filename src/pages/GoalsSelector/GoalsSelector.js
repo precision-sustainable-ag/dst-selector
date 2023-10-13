@@ -37,21 +37,29 @@ const GoalsSelector = () => {
   }, []);
 
   return (
-    <div className="goalsContainer" style={{ marginTop: '5%', width: '80%', marginLeft: '10%' }}>
-      <div className="goalsBoxContainer">
+    <Grid container mt={4}>
+      <Grid item xs={12}>
         <Typography variant="h4" gutterBottom align="center">
           What are your cover cropping goals?
         </Typography>
+      </Grid>
+      <Grid item xs={12}>
         <Typography variant="body2" align="center" color="secondary" gutterBottom>
           Select up to three. The order in which you select your goals will determine the sorting of
           cover crops. The first goal you select will have the highest priority in sorting and then
-          decrease for each additional goal. Hover on a goal for more information.
+          decrease for each additional goal.
         </Typography>
-        {allGoals?.length > 0 && (
-          <Grid container spacing={4} className="goals" style={{ justifyContent: 'center' }}>
-            {
+      </Grid>
+      <Grid item xs={12}>
+        <Typography variant="body2" align="center" color="secondary" gutterBottom>
+          Hover, or tap and hold for more information.
+        </Typography>
+      </Grid>
+      {allGoals?.length > 0 && (
+      <Grid container spacing={4} className="goals" style={{ justifyContent: 'center' }}>
+        {
                 allGoals.map((goal, key) => (
-                  <Grid key={key} item>
+                  <Grid item key={key}>
                     <GoalTag
                       key={key}
                       goal={goal}
@@ -62,10 +70,9 @@ const GoalsSelector = () => {
                   </Grid>
                 ))
               }
-          </Grid>
-        )}
-      </div>
-    </div>
+      </Grid>
+      )}
+    </Grid>
   );
 };
 
