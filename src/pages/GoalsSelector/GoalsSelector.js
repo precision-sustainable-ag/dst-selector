@@ -7,15 +7,8 @@
 import { Typography, Grid } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import '../../styles/goalsSelector.scss';
 import GoalTag from './GoalTag/GoalTag';
 import { callCoverCropApi } from '../../shared/constants';
-
-// const goalSkeletonStyle = {
-//   height: '50px',
-//   width: '100%',
-//   borderRadius: '10px',
-// };
 
 const GoalsSelector = () => {
   // redux vars
@@ -37,7 +30,7 @@ const GoalsSelector = () => {
   }, []);
 
   return (
-    <Grid container mt={2} mb={2} ml={2} mr={2}>
+    <Grid container mt={2} mb={2} mr={2}>
       <Grid item xs={12}>
         <Typography variant="h4" gutterBottom align="center">
           Select Cover Cropping Goals
@@ -55,20 +48,18 @@ const GoalsSelector = () => {
         </Typography>
       </Grid>
       {allGoals?.length > 0 && (
-      <Grid container spacing={2} className="goals" style={{ justifyContent: 'center' }}>
-        {
-                allGoals.map((goal, key) => (
-                  <Grid item key={key}>
-                    <GoalTag
-                      key={key}
-                      goal={goal}
-                      id={key}
-                      goaltTitle={goal.label}
-                      goalDescription={goal.description}
-                    />
-                  </Grid>
-                ))
-              }
+      <Grid container spacing={2} style={{ justifyContent: 'center' }}>
+        {allGoals.map((goal, key) => (
+          <Grid item key={key}>
+            <GoalTag
+              key={key}
+              goal={goal}
+              id={key}
+              goaltTitle={goal.label}
+              goalDescription={goal.description}
+            />
+          </Grid>
+        ))}
       </Grid>
       )}
     </Grid>

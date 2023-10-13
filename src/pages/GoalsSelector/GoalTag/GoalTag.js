@@ -75,14 +75,12 @@ const GoalTag = ({
             <Avatar className="d-none" />
           )
         }
-        // style={{ textAlign: "left" }}
           label={goalTitle.toUpperCase()}
           onClick={() => updateSelectedGoals(goal, key)}
           key={`chip${key}`}
           id={`chip${key}`}
           size="medium"
           variant="outlined"
-        // color={"primary"}
           className={`goal enabled ${goalTitle.toUpperCase()}`}
         />
       </span>
