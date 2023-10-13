@@ -82,10 +82,6 @@ const Chips = ({ filter, handleChange }) => {
         component="li"
         size="medium"
         label={val.value}
-        style={{
-          marginRight: 3,
-          marginBottom: 3,
-        }}
         color={selected ? 'primary' : 'secondary'}
       />
     );
@@ -94,9 +90,6 @@ const Chips = ({ filter, handleChange }) => {
 
 const Tip = ({ filter }) => (
   <Tooltip
-    arrow
-    placement="right"
-    disableFocusListener
     enterTouchDelay={0}
     title={(
       <div className="filterTooltip">
@@ -105,10 +98,8 @@ const Tip = ({ filter }) => (
       </div>
       )}
   >
-    <small style={{ whiteSpace: 'nowrap' }}>
-      {filter.name}
-      <HelpOutlineIcon style={{ cursor: 'pointer', transform: 'scale(0.7)' }} />
-    </small>
+    {filter.name}
+    <HelpOutlineIcon style={{ cursor: 'pointer', transform: 'scale(0.7)' }} />
   </Tooltip>
 ); // Tip
 
@@ -145,23 +136,27 @@ const Filters = ({ filters }) => {
       {filters.values.map((filter, i) => {
         if (filter.dataType === 'string') {
           return (
-            <Grid item key={i}>
-              <>
+            <Grid container item spacing={1}>
+              <Grid item key={i} xs={12}>
                 <Tip filter={filter} />
-                <br />
-              </>
-              <Chips key={i} filter={filter} handleChange={chipChange} />
+              </Grid>
+              <Grid item xs={12}>
+                <Chips key={i} filter={filter} handleChange={chipChange} />
+              </Grid>
             </Grid>
           );
         }
         return (
-          <Grid key={i} item xs={12}>
-            <Tip filter={filter} />
-            <br />
-            <DollarsAndRatings
-              filter={filter}
-              handleChange={dollarsAndRatingsChange}
-            />
+          <Grid container item spacing={1}>
+            <Grid item key={i} xs={12}>
+              <Tip filter={filter} />
+            </Grid>
+            <Grid item xs={12}>
+              <DollarsAndRatings
+                filter={filter}
+                handleChange={dollarsAndRatingsChange}
+              />
+            </Grid>
           </Grid>
         );
       })}
