@@ -301,7 +301,7 @@ const LocationComponent = () => {
   };
 
   return (
-    <Grid container spacing={2} mt={1} ml={2} mr={2}>
+    <Grid container spacing={2} mt={1} mr={2} mb={2}>
       <Grid container item md={3} xs={12} justifyContent="center">
         <Grid item>
           <Typography variant="h4">
