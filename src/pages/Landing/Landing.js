@@ -224,7 +224,16 @@ const Landing = () => {
         </Grid>
 
         <Grid item>
-          <Box style={{ position: 'relative', width: '80%', marginLeft: '10%' }}>
+          <Box style={{
+            position: 'relative',
+            width: '80%',
+            maxWidth: '500px',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            marginTop: '15px',
+            marginBottom: '15px',
+          }}
+          >
             <RegionSelectorMap
               selectorFunction={setMapState}
               selectedState={selectedState.label}
