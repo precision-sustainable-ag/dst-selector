@@ -22,6 +22,7 @@ const WeatherFrostFreeDays = () => {
           <Tooltip
             arrow
             placement="right"
+            enterTouchDelay={0}
             title={(
               <div>
                 Number of days in your growing season, based on the PSA Weather API using data from the

@@ -170,6 +170,7 @@ const CropTableComponent = ({
                   <Tooltip
                     arrow
                     placement="top"
+                    enterTouchDelay={0}
                     title={(
                       <div className="filterTooltip">
                         <p>See filter bar for cover cropping goals.</p>
@@ -308,6 +309,7 @@ const CropTableComponent = ({
                         <Tooltip
                           placement="bottom"
                           arrow
+                          enterTouchDelay={0}
                           title={(
                             <div className="filterTooltip text-capitalize">
                               <p>{goal}</p>

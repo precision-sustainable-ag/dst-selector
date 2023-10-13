@@ -83,6 +83,7 @@ const InformationSheetContent = ({ crop, modalData }) => {
                     <Grid item xs={12}>
                       <Tooltip
                         placement="top-end"
+                        enterTouchDelay={0}
                         title={
                             att.description
                             }
@@ -101,6 +102,7 @@ const InformationSheetContent = ({ crop, modalData }) => {
                   <Grid item key={catIndex} xs={12}>
                     <Tooltip
                       placement="top-end"
+                      enterTouchDelay={0}
                       title={att.description}
                       arrow
                     >

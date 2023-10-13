@@ -24,6 +24,7 @@ const SidebarFilter = ({
         <Tooltip
           arrow
           placement="right-start"
+          enterTouchDelay={0}
           title={(
             <div className="filterTooltip">
               <p>{filter.description}</p>

@@ -30,6 +30,7 @@ const CropTableCard = ({
               <Tooltip
                 arrow
                 placement="bottom"
+                enterTouchDelay={0}
                 title={(
                   <div className="filterTooltip text-capitalize">
                     <p>

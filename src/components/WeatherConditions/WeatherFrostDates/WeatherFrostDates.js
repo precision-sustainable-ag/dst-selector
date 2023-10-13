@@ -21,6 +21,7 @@ const WeatherFrostDates = () => {
           <Tooltip
             arrow
             placement="right"
+            enterTouchDelay={0}
             title={(
               <div>
                 Average dates of the first and last frosts for your location, based on frost dates

@@ -60,10 +60,14 @@ const GoalTag = ({
       <span>
         <Chip
           disabled={
-          selectedGoalsRedux.length >= 3
-            ? !selectedGoalsRedux.includes(goalTitle)
-            : false
-        }
+            selectedGoalsRedux.length >= 3
+              ? !selectedGoalsRedux.includes(goalTitle)
+              : false
+          }
+          sx={{
+            backgroundColor: selectedGoalsRedux.includes(goalTitle) ? '#598444' : '#f0f7eb',
+            fontWeight: 600,
+          }}
           avatar={
           selectedGoalsRedux.length !== 0 && selectedGoalsRedux.includes(goalTitle) ? (
             <Avatar id={`avatar${key}`}>{selectedGoalsRedux.indexOf(goalTitle) + 1}</Avatar>

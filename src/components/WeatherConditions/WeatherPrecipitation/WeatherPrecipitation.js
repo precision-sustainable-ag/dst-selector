@@ -21,6 +21,7 @@ const WeatherPrecipitation = ({ currentMonthFull }) => {
           <Tooltip
             arrow
             placement="right"
+            enterTouchDelay={0}
             title={(
               <div>
                 Five-year average monthly and annual precipitation from the Precision Sustainable

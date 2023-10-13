@@ -51,6 +51,7 @@ const RenderFilters = ({
           <Tooltip
             arrow
             placement="right-start"
+            enterTouchDelay={0}
             title={(
               <div className="filterTooltip">
                 <p>{filter.description}</p>
@@ -119,6 +120,7 @@ const RenderFilters = ({
                       <Tooltip
                         arrow
                         placement="right"
+                        enterTouchDelay={0}
                         title={(
                           <div className="filterTooltip">
                             <p>{val.description}</p>

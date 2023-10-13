@@ -208,7 +208,7 @@ const CropCalendarView = ({ activeCropData }) => {
                       <div style={sudoButtonStyleWithPadding}>ACTIVE GROWTH PERIOD</div>
                     </TableCell>
                     {activeGrowthPeriod.includes('Jan') ? (
-                      <Tooltip placement="top" title="Winter">
+                      <Tooltip placement="top" title="Winter" enterTouchDelay={0}>
                         <TableCell
                           className="activeGrowthMonth growthMonthSeparator"
                           style={{
@@ -225,7 +225,7 @@ const CropCalendarView = ({ activeCropData }) => {
                       <TableCell style={{ borderBottom: '5px solid white' }} colSpan="2" />
                     )}
                     {activeGrowthPeriod.includes('Mar') ? (
-                      <Tooltip placement="top" title="Spring">
+                      <Tooltip placement="top" title="Spring" enterTouchDelay={0}>
                         <TableCell
                           className="activeGrowthMonth growthMonthSeparator"
                           style={{
@@ -242,7 +242,7 @@ const CropCalendarView = ({ activeCropData }) => {
                       <TableCell style={{ borderBottom: '5px solid white' }} colSpan="3" />
                     )}
                     {activeGrowthPeriod.includes('Jun') ? (
-                      <Tooltip placement="top" title="Summer">
+                      <Tooltip placement="top" title="Summer" enterTouchDelay={0}>
                         <TableCell
                           className="activeGrowthMonth growthMonthSeparator"
                           style={{
@@ -259,7 +259,7 @@ const CropCalendarView = ({ activeCropData }) => {
                       <TableCell style={{ borderBottom: '5px solid white' }} colSpan="3" />
                     )}
                     {activeGrowthPeriod.includes('Sep') ? (
-                      <Tooltip placement="top" title="Fall">
+                      <Tooltip placement="top" title="Fall" enterTouchDelay={0}>
                         <TableCell
                           className="activeGrowthMonth growthMonthSeparator"
                           style={{
@@ -276,7 +276,7 @@ const CropCalendarView = ({ activeCropData }) => {
                       <TableCell style={{ borderBottom: '5px solid white' }} colSpan="3" />
                     )}
                     {activeGrowthPeriod.includes('Dec') ? (
-                      <Tooltip placement="top" title="Winter">
+                      <Tooltip placement="top" title="Winter" enterTouchDelay={0}>
                         <TableCell
                           className="activeGrowthMonth growthMonthSeparator"
                           style={{
