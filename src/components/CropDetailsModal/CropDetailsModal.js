@@ -61,14 +61,13 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
 
   return dataDone === true && (
     <Modal
-      aria-labelledby="cover-crop-modal-title"
-      aria-describedby="cover-crop-modal-description"
       sx={{
         overflow: 'scroll',
         marginTop: '2%',
+        marginBottom: '1%',
       }}
       open={modalOpen}
-      style={{ maxWidth: '80%', marginLeft: '10%' }}
+      style={{ maxWidth: '70%', marginLeft: '15%' }}
       onClose={handleModalClose}
       closeAfterTransition
       disableEscapeKeyDown={false}
@@ -76,8 +75,6 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
       <Box
         sx={{
           backgroundColor: 'white',
-          border: '2px solid #000',
-          padding: '0px',
         }}
         id={`cropDetailModal-${modalData.id}`}
       >

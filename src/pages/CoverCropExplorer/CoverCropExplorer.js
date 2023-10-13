@@ -76,15 +76,15 @@ const CoverCropExplorer = () => {
   }, [stateIdRedux]);
 
   return (
-    <Grid container>
-      <Grid item xl={3} lg={3} md={3} sm={12} xs={12} mt={4}>
+    <Grid container mt={4}>
+      <Grid item xl={3} lg={3} md={3} sm={12} xs={12}>
         <CropSidebar
           from="explorer"
           activeCropData={activeCropDataRedux?.length > 0 ? cropDataRedux.filter((crop) => activeCropDataRedux.includes(crop.id)) : cropDataRedux}
           isListView
         />
       </Grid>
-      <Grid item xl={9} lg={9} md={9} sm={12} xs={12} mt={4}>
+      <Grid item xl={9} lg={9} md={9} sm={12} xs={12}>
         {sfilters.zone === '' || sfilters.zone === undefined ? (
           <Grid container alignItems="center" justifyContent="center">
             <Grid item xs={12}>
