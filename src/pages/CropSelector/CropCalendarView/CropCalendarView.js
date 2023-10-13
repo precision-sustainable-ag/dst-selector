@@ -134,7 +134,6 @@ const CropCalendarView = ({ activeCropData }) => {
       ) : (
         <TableContainer
           component="div"
-          className="table-responsive calendarTableViewWrapper"
           style={{ lineHeight: '0.5' }}
         >
           <Table
