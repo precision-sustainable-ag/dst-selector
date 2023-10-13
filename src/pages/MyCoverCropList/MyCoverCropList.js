@@ -9,7 +9,6 @@
 import {
   Button, Typography, Grid, Box,
 } from '@mui/material';
-import { Add } from '@mui/icons-material';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
@@ -51,20 +50,6 @@ const MyCoverCropList = ({ comparisonView, from }) => {
     }
   }, [consentRedux]);
 
-  const TopBar = () => (
-    <Button
-      // style={{ color: 'white' }}
-      onClick={
-        from === 'myCoverCropListStatic'
-          ? redirectToExplorer
-          : redirectToSpeciesSelector
-      }
-    >
-      <Add />
-      {' '}
-      ADD A CROP
-    </Button>
-  );
   return (
     <>
       {/* eslint-disable-next-line no-nested-ternary */}
@@ -82,15 +67,11 @@ const MyCoverCropList = ({ comparisonView, from }) => {
            </Button>
          </Typography>
         ) : comparison ? (
-          <>
-
-            <Box flexDirection="column" display="flex" height="100%">
-              <Grid container spacing={2} mt={1}>
-                <MyCoverCropComparisonTable />
-              </Grid>
-            </Box>
-            <TopBar view={comparison} />
-          </>
+          <Box flexDirection="column" display="flex" height="100%">
+            <Grid container spacing={2} mt={1}>
+              <MyCoverCropComparisonTable />
+            </Grid>
+          </Box>
         ) : (
           <Grid container spacing={2} mt={1}>
             {cropDataRedux.filter((crop) => activeCropDataRedux.includes(crop.id)).filter((crop) => selectedCropsRedux.includes(crop.id)).map((crop, index) => (
@@ -104,7 +85,6 @@ const MyCoverCropList = ({ comparisonView, from }) => {
                 />
               </Grid>
             ))}
-            <TopBar view={comparison} />
           </Grid>
         )}
     </>

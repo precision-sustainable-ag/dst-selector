@@ -444,27 +444,27 @@ const CropSidebar = ({
                         : CustomStyles().lightGreen,
                   }}
                 >
-                  <ListItemText primary="COVER CROP PROPERTIES" />
+                  <ListItemText primary="COVER CROP FILTERS" />
 
                   {cropFiltersOpen ? <ExpandLess /> : <ExpandMore />}
                   {' '}
                   {/* // why is this here */}
                 </ListItemButton>
-                <Box
-                  sx={{
-                    backgroundColor: 'background.paper',
-                    border: '1px solid lightgrey',
-                    paddingLeft: '1em',
-                    margin: '1em',
-
-                  }}
-                >
-                  <Legend
-                    legendData={legendData}
-                    modal={false}
-                  />
-                </Box>
                 <Collapse in={cropFiltersOpen} timeout="auto">
+                  <Box
+                    sx={{
+                      backgroundColor: 'background.paper',
+                      border: '1px solid lightgrey',
+                      paddingLeft: '1em',
+                      margin: '1em',
+
+                    }}
+                  >
+                    <Legend
+                      legendData={legendData}
+                      modal={false}
+                    />
+                  </Box>
                   {filtersList()}
                 </Collapse>
               </>
