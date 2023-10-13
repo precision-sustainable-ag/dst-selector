@@ -180,6 +180,11 @@ const WeatherConditions = () => {
           Climate Conditions
         </Typography>
       </div>
+      <div className="col-12">
+        <Typography variant="body1" align="left">
+          This information is based on your location, please update it if needed.
+        </Typography>
+      </div>
       <div className="mt-2 col-12 text-left">
         <Typography
           variant="button"

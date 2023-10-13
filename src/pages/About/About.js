@@ -95,6 +95,46 @@ const About = () => {
             formation of a Species Selector product team consisting of agronomists, informatics
             researchers, and developers, as well as four Cover Crop Data Verification teams,
             consisting of approximately 35 NECCC members.
+
+            <br />
+            <br />
+
+            Disclaimer: Cover crop recommendations are based on expert opinions. Your cover
+            crop performance and seeding rates will vary based on location, management,
+            cultivars, and many other variables. Consult your local
+            {' '}
+            <a
+              href="https://www.nrcs.usda.gov/wps/portal/nrcs/detailfull/national/programs/financial/csp/?&cid=nrcsdev11_000242"
+              title="click to consult your local nrcs service center"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              NRCS Service Center
+            </a>
+            ,
+            {' '}
+            <a
+              href="https://nifa.usda.gov/land-grant-colleges-and-universities-partner-website-directory"
+              title="Link to Cooperative Extension Service office"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Cooperative Extension Service office
+            </a>
+            ,
+            or
+            {' '}
+            <a
+              href="https://www.nacdnet.org/general-resources/conservation-district-directory/"
+              target="_blank"
+              rel="noreferrer noopener"
+            >
+              Conservation District
+            </a>
+            {' '}
+            for detailed guidance. Cover crop incentive programs may dictate seeding rate
+            ranges and methods, and planting and termination dates. Consult your program
+            contact to ensure your plans comply.
           </Typography>
         );
       case 1:

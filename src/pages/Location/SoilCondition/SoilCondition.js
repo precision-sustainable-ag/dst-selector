@@ -5,7 +5,7 @@
   styled using ../../styles/soilConditions.scss
 */
 
-import { Typography } from '@mui/material';
+import { Typography, Grid } from '@mui/material';
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import '../../../styles/soilConditions.scss';
@@ -142,16 +142,35 @@ const SoilCondition = () => {
   }, [markersRedux, soilDataOriginalRedux?.latLong]);
 
   return (
-    <div className="row">
-      <div className="col-12">
-        <Typography variant="h4" align="left">
-          Soil Conditions?
+    <Grid
+      item
+      container
+      md={6}
+      // direction="column"
+      // display="flex"
+      // justifyContent="center"
+      // alignItems="center"
+    >
+      <Grid item xs={12}>
+        <Typography variant="h4">
+          Soil Conditions
         </Typography>
-      </div>
-      <SoilComposition />
-      <SoilDrainage />
-      <SoilFloodingFrequency />
-    </div>
+      </Grid>
+      <Grid item xs={12}>
+        <Typography variant="body1">
+          This information is based on your location, please update it if needed.
+        </Typography>
+      </Grid>
+      <Grid item xs={12}>
+        <SoilComposition />
+      </Grid>
+      <Grid item xs={12}>
+        <SoilDrainage />
+      </Grid>
+      <Grid item xs={12}>
+        <SoilFloodingFrequency />
+      </Grid>
+    </Grid>
   );
 };
 
