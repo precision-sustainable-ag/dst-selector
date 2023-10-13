@@ -301,13 +301,12 @@ const CropSidebar = ({
         <ListItem>
           <ListItemText
             primary={(
-              <Typography
-                variant="button"
+              <Button
                 onClick={resetAllFilters}
-                style={{ cursor: 'pointer' }}
+                style={{ cursor: 'pointer', color: 'red' }}
               >
                 Clear Filters
-              </Typography>
+              </Button>
             )}
           />
         </ListItem>

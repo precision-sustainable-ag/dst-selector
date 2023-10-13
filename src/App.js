@@ -4,13 +4,13 @@
 */
 
 import {
-  Snackbar, Box, Container, Grid, ThemeProvider,
+  Snackbar, Box, Container, ThemeProvider,
   StyledEngineProvider,
   responsiveFontSizes,
   adaptV4Theme,
 } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
-import React, { useEffect, useState, Suspense } from 'react';
+import React, { Suspense } from 'react';
 import { useDispatch, useSelector, Provider } from 'react-redux';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
@@ -112,18 +112,15 @@ const App = () => (
         <BrowserRouter>
           <Auth0ProviderWithHistory>
             <Suspense fallback={<div>Loading..</div>}>
-              <Box className="contentWrapper" id="mainContentWrapper">
+              <Box>
                 <Header />
                 <Container disableGutters maxWidth={false}>
-                  <Box className="contentContainer">
-
+                  <Box>
                     <Switch>
                       <Route
                         path="/"
                         render={() => (
-                          <Grid container item xs={12} style={{ paddingLeft: 0, paddingRight: 0 }}>
-                            <LoadRelevantRoute />
-                          </Grid>
+                          <LoadRelevantRoute />
                         )}
                         exact
                       />
@@ -162,62 +159,36 @@ const App = () => (
 export default App;
 
 const LoadRelevantRoute = () => {
-  const [calcHeight, setCalcHeight] = useState(0);
-
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
-
-  useEffect(() => {
-    const parentDocHeight = document
-      .getElementById('mainContentWrapper')
-      .getBoundingClientRect().height;
-    const headerHeight = document.querySelector('header').getBoundingClientRect().height;
-
-    const calculatedHeight = parentDocHeight - headerHeight;
-
-    setCalcHeight(calculatedHeight);
-  }, []);
 
   switch (progressRedux) {
     case 0:
       return (
-        <Landing
-          title="Decision Support Tool"
-          height={calcHeight}
-          bg="/images/cover-crop-field.png"
-        />
+        <Landing />
       );
     case 1:
       return (
-        <LocationComponent
-          height={calcHeight}
-          title="Species Selector Tool | Decision Support Tool"
-        />
+        <LocationComponent />
       );
     case 2:
       return (
-        <LocationConfirmation
-          height={calcHeight}
-          title="Species Selector Tool | Decision Support Tool"
-        />
+        <LocationConfirmation />
       );
     case 3:
       return (
-        <LocationConfirmation
-          height={calcHeight}
-          title="Species Selector Tool | Decision Support Tool"
-        />
+        <LocationConfirmation />
       );
     case 4:
       return (
-        <GoalsSelector height={calcHeight} title="Species Selector Tool | Decision Support Tool" />
+        <GoalsSelector />
       );
     case 5:
       return (
-        <CropSelector height={calcHeight} title="Species Selector Tool | Decision Support Tool" />
+        <CropSelector />
       );
 
     default:
-      return <RouteNotFound height={calcHeight} />;
+      return <RouteNotFound />;
   }
 };
 
