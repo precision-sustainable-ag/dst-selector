@@ -8,7 +8,7 @@
 */
 
 import {
-  Button, List, ListItem, ListItemText, ListSubheader,
+  Button, List, ListItem, ListItemText,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -113,20 +113,6 @@ const ComparisonBar = ({
     <List
       component="nav"
       aria-labelledby="nested-list-subheader"
-      subheader={(
-        <ListSubheader
-          sx={{
-            backgroundColor: '#add08f',
-            color: 'black',
-            textAlign: 'center',
-            height: '50px',
-          }}
-          component="div"
-          id="nested-list-subheader"
-        >
-          COMPARE BY
-        </ListSubheader>
-      )}
       sx={{
         width: '100%',
       }}
@@ -137,7 +123,7 @@ const ComparisonBar = ({
             primary={(
               <Button
                 size="small"
-                style={{ marginBottom: '-15px' }}
+                style={{ marginBottom: '-15px', color: 'red' }}
                 onClick={resetAllFilters}
               >
                 Clear Variables
