@@ -4,7 +4,7 @@
 */
 
 // TODO: Goal tags are not responsive!
-import { Typography, Grid } from '@mui/material';
+import { Typography, Grid, Box } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import GoalTag from './GoalTag/GoalTag';
@@ -30,39 +30,41 @@ const GoalsSelector = () => {
   }, []);
 
   return (
-    <Grid container mt={2} mb={2} mr={2}>
-      <Grid item xs={12}>
-        <Typography variant="h4" gutterBottom align="center">
-          Select Cover Cropping Goals
-        </Typography>
+    <Box mt={2} mb={2} mr={2} ml={2}>
+      <Grid container mt={2} mb={2} mr={2}>
+        <Grid item xs={12}>
+          <Typography variant="h4" gutterBottom align="center">
+            Select Cover Cropping Goals
+          </Typography>
+        </Grid>
+        <Grid item xs={12}>
+          <Typography variant="body2" align="center" color="secondary" gutterBottom>
+            Select up to three. The order in which you select your goals will determine the sorting of
+            cover crops.
+          </Typography>
+        </Grid>
+        <Grid item xs={12}>
+          <Typography variant="body2" align="center" color="secondary" gutterBottom>
+            Hover, or tap and hold for more information.
+          </Typography>
+        </Grid>
+        {allGoals?.length > 0 && (
+        <Grid container spacing={2} style={{ justifyContent: 'center' }}>
+          {allGoals.map((goal, key) => (
+            <Grid item key={key}>
+              <GoalTag
+                key={key}
+                goal={goal}
+                id={key}
+                goaltTitle={goal.label}
+                goalDescription={goal.description}
+              />
+            </Grid>
+          ))}
+        </Grid>
+        )}
       </Grid>
-      <Grid item xs={12}>
-        <Typography variant="body2" align="center" color="secondary" gutterBottom>
-          Select up to three. The order in which you select your goals will determine the sorting of
-          cover crops.
-        </Typography>
-      </Grid>
-      <Grid item xs={12}>
-        <Typography variant="body2" align="center" color="secondary" gutterBottom>
-          Hover, or tap and hold for more information.
-        </Typography>
-      </Grid>
-      {allGoals?.length > 0 && (
-      <Grid container spacing={2} style={{ justifyContent: 'center' }}>
-        {allGoals.map((goal, key) => (
-          <Grid item key={key}>
-            <GoalTag
-              key={key}
-              goal={goal}
-              id={key}
-              goaltTitle={goal.label}
-              goalDescription={goal.description}
-            />
-          </Grid>
-        ))}
-      </Grid>
-      )}
-    </Grid>
+    </Box>
   );
 };
 
