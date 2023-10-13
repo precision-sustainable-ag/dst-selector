@@ -169,7 +169,7 @@ const CropSelector = (props) => {
   const [showSidebar, setShowSidebar] = useState(true);
 
   return (
-    <Grid container mt={4}>
+    <Grid container mt={2} mr={2} mb={2}>
       <Grid
         item
         xl={12}
