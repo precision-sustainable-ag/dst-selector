@@ -145,6 +145,7 @@ const SoilCondition = () => {
       item
       container
       md={6}
+      spacing={1}
       // direction="column"
       // display="flex"
       // justifyContent="center"
