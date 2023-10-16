@@ -1,7 +1,6 @@
 import React from 'react';
 import { Chip } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import '../../../../styles/soilConditions.scss';
 import { updateFloodingFrequency as updateFloodingFrequencyRedux } from '../../../../reduxStore/soilSlice';
 
 const RenderFloodingOptions = ({ flooding = [''] }) => {
