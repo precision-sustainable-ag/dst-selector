@@ -25,7 +25,6 @@ import React, {
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { CustomStyles, callCoverCropApi, cropDataFormatter } from '../../shared/constants';
-import '../../styles/cropSidebar.scss';
 import ComparisonBar from '../MyCoverCropList/ComparisonBar/ComparisonBar';
 import CoverCropSearch from './CoverCropSearch/CoverCropSearch';
 import SidebarFilter from './SidebarFilter/SidebarFilter';

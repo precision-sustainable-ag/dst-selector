@@ -172,9 +172,7 @@ const CropTableComponent = ({
                     placement="top"
                     enterTouchDelay={0}
                     title={(
-                      <div className="filterTooltip">
-                        <p>See filter bar for cover cropping goals.</p>
-                      </div>
+                      <p>See filter bar for cover cropping goals.</p>
                     )}
                   >
                     <Typography variant="body1" style={sudoButtonStyle}>
@@ -311,9 +309,7 @@ const CropTableComponent = ({
                           arrow
                           enterTouchDelay={0}
                           title={(
-                            <div className="filterTooltip text-capitalize">
-                              <p>{goal}</p>
-                            </div>
+                            <p>{goal}</p>
                           )}
                         >
                           <Button

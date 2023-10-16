@@ -50,10 +50,7 @@ const GoalTag = ({
       placement="top"
       arrow
       title={(
-        <div className="filterTooltip">
-          {/* <p>{`${goalDescription} ${valuesDescriptions}`}</p> */}
-          <p>{`${goalDescription}`}</p>
-        </div>
+        <p>{`${goalDescription}`}</p>
       )}
       key={`tooltip${key}`}
     >

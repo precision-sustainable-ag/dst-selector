@@ -19,22 +19,20 @@ const SidebarFilter = ({
   const filterDataRedux = useSelector((stateRedux) => stateRedux.filterData);
 
   return (
-    <Fragment key={index}>
+    <>
       {filter.description !== null ? (
         <Tooltip
           arrow
           placement="right-start"
           enterTouchDelay={0}
           title={(
-            <div className="filterTooltip">
-              <p>{filter.description}</p>
-            </div>
+            <p>{filter.description}</p>
           )}
           key={`tooltip${index}`}
         >
           <ListItem
             key={index}
-            className={filterDataRedux[sectionFilter] ? 'filterOpen' : 'filterClose'}
+            sx={{ backgroundColor: filterDataRedux[sectionFilter] ? '#add08f' : 'white' }}
             component="div"
             onClick={() => dispatchRedux(toggleFilterValue(sectionFilter))}
           >
@@ -47,7 +45,7 @@ const SidebarFilter = ({
       ) : (
         <ListItem
           key={index}
-          className={filterDataRedux[sectionFilter] ? 'filterOpen' : 'filterClose'}
+          sx={{ backgroundColor: filterDataRedux[sectionFilter] ? '#add08f' : 'white' }}
           component="div"
           onClick={() => dispatchRedux(toggleFilterValue(sectionFilter))}
         >
@@ -70,7 +68,7 @@ const SidebarFilter = ({
           </ListItem>
         </List>
       </Collapse>
-    </Fragment>
+    </>
   );
 };
 
