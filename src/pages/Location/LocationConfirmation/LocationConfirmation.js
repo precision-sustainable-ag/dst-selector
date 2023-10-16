@@ -6,7 +6,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-import { Typography } from '@mui/material';
+import { Grid, Typography } from '@mui/material';
 import { Map } from '@psa/dst.ui.map';
 import { CustomStyles } from '../../../shared/constants';
 import SoilCondition from '../SoilCondition/SoilCondition';
@@ -20,127 +20,119 @@ const LocationConfirmation = () => {
   // const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
-
   return (
-    <div
-      className="container-fluid mt-5"
-      style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
-    >
-      <div className="row boxContainerRow" style={{ textAlign: 'left', minHeight: '520px' }}>
-        <div className="col-xl-6 col-lg-12">
-          <div className="container-fluid">
-            <div className="row">
-              <div className="col-lg-6">
-                <Map
-                  initWidth="100%"
-                  initHeight="200px"
-                  initLon={markersRedux && markersRedux.length > 0 ? markersRedux[0][1] : -122}
-                  initLat={markersRedux && markersRedux.length > 0 ? markersRedux[0][0] : 47}
-                  initMinZoom={4}
-                  initMaxZoom={18}
-                  initStartZoom={12}
-                  hasSearchBar={false}
-                  hasMarker
-                  hasNavigation={false}
-                  hasCoordBar={false}
-                  hasDrawing={false}
-                  hasGeolocate={false}
-                  hasFullScreen={false}
-                  hasMarkerPopup={false}
-                  hasMarkerMovable={false}
-                  scrollZoom={false}
-                  dragRotate={false}
-                  dragPan={false}
-                  keyboard={false}
-                  doubleClickZoom={false}
-                  touchZoomRotate={false}
-                />
-              </div>
-              <div className="col-lg-6">
-                <div className="col-12">
+    <>
+      <Grid
+        container
+        direction="row"
+        className="boxContainerRow"
+        style={{
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginTop: '3rem',
+        }}
+      >
+        <Grid item lg={6} textAlign="left" style={{ padding: '0px 30px', alignItems: 'center' }}>
+          <Grid container direction="row">
+            <Grid item xs={12} lg={6} style={{ paddingRight: '15px' }}>
+              <Map
+                initWidth="100%"
+                initHeight="200px"
+                initLon={markersRedux && markersRedux.length > 0 ? markersRedux[0][1] : -122}
+                initLat={markersRedux && markersRedux.length > 0 ? markersRedux[0][0] : 47}
+                initMinZoom={4}
+                initMaxZoom={18}
+                initStartZoom={12}
+                hasSearchBar={false}
+                hasMarker
+                hasNavigation={false}
+                hasCoordBar={false}
+                hasDrawing={false}
+                hasGeolocate={false}
+                hasFullScreen={false}
+                hasMarkerPopup={false}
+                hasMarkerMovable={false}
+                scrollZoom={false}
+                dragRotate={false}
+                dragPan={false}
+                keyboard={false}
+                doubleClickZoom={false}
+                touchZoomRotate={false}
+              />
+            </Grid>
+
+            <Grid item lg={6} style={{ paddingLeft: '30px', paddingRight: '15px' }}>
+              <Grid container direction="column">
+                <Grid item>
                   <Typography variant="h4">Location Details</Typography>
-                </div>
-                <div className="col-12 pt-2">
+                </Grid>
+                <Grid item style={{ paddingTop: '8px' }}>
                   <Typography variant="body1">
                     Your cover crop recommendations will come from the Plant Hardiness Zone
                     {` ${zoneRedux} ${councilShorthandRedux} dataset`}
                   </Typography>
-                </div>
-                <div className="col-12">
+                </Grid>
+                <Grid item>
                   <Typography
                     variant="body1"
-                    className="pt-2 font-weight-bold"
                     style={{
                       color: CustomStyles().lighterGreen,
+                      paddingTop: '8px',
+                      fontWeight: 'bold',
                     }}
                   >
                     {addressRedux?.length > 0
                       ? `${addressRedux.toString().substring(0, 35)}...`
                       : 'Loading...'}
                   </Typography>
-                </div>
-              </div>
-            </div>
-            <div className="row mt-3">
-              <div className="col-lg-12" />
-            </div>
-            <div className="row mt-3">
-              <div className="col-lg-12">
-                <Typography variant="body1">
-                  Disclaimer: Cover crop recommendations are based on expert opinions. Your cover
-                  crop performance and seeding rates will vary based on location, management,
-                  cultivars, and many other variables. Consult your local
-                  {' '}
-                  <a
-                    href="https://www.nrcs.usda.gov/wps/portal/nrcs/detailfull/national/programs/financial/csp/?&cid=nrcsdev11_000242"
-                    title="click to consult your local nrcs service center"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    NRCS Service Center
-                  </a>
-                  ,
-                  {' '}
-                  <a
-                    href="https://nifa.usda.gov/land-grant-colleges-and-universities-partner-website-directory"
-                    title="Link to Cooperative Extension Service office"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Cooperative Extension Service office
-                  </a>
-                  ,
-                  or
-                  {' '}
-                  <a
-                    href="https://www.nacdnet.org/general-resources/conservation-district-directory/"
-                    target="_blank"
-                    rel="noreferrer noopener"
-                  >
-                    Conservation District
-                  </a>
-                  {' '}
-                  for detailed guidance. Cover crop incentive programs may dictate seeding rate
-                  ranges and methods, and planting and termination dates. Consult your program
-                  contact to ensure your plans comply.
-                </Typography>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="col-xl-5 offset-xl-1 col-lg-12">
-          <div className="container-fluid">
-            {progressRedux === 2 && <SoilCondition />}
-            {progressRedux === 3 && <WeatherConditions />}
-          </div>
-        </div>
-      </div>
-    </div>
+                </Grid>
+              </Grid>
+            </Grid>
+          </Grid>
+          <Grid item style={{ marginTop: '2rem' }}>
+            <Typography variant="body1">
+              Disclaimer: Cover crop recommendations are based on expert opinions. Your cover crop
+              performance and seeding rates will vary based on location, management, cultivars, and
+              many other variables. Consult your local{' '}
+              <a
+                href="https://www.nrcs.usda.gov/wps/portal/nrcs/detailfull/national/programs/financial/csp/?&cid=nrcsdev11_000242"
+                title="click to consult your local nrcs service center"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                NRCS Service Center
+              </a>
+              ,{' '}
+              <a
+                href="https://nifa.usda.gov/land-grant-colleges-and-universities-partner-website-directory"
+                title="Link to Cooperative Extension Service office"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Cooperative Extension Service office
+              </a>
+              , or{' '}
+              <a
+                href="https://www.nacdnet.org/general-resources/conservation-district-directory/"
+                target="_blank"
+                rel="noreferrer noopener"
+              >
+                Conservation District
+              </a>{' '}
+              for detailed guidance. Cover crop incentive programs may dictate seeding rate ranges
+              and methods, and planting and termination dates. Consult your program contact to
+              ensure your plans comply.
+            </Typography>
+          </Grid>
+        </Grid>
+        <Grid item lg={5} style={{ padding: '0px 30px', alignItems: 'center' }}>
+          {progressRedux === 2 && <SoilCondition />}
+          {progressRedux === 3 && <WeatherConditions />}
+        </Grid>
+      </Grid>
+    </>
   );
+  // );
 };
 
 export default LocationConfirmation;
