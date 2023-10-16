@@ -92,10 +92,10 @@ const Tip = ({ filter }) => (
   <Tooltip
     enterTouchDelay={0}
     title={(
-      <div className="filterTooltip">
+      <>
         <p>{filter.description}</p>
         <p>{filter.details}</p>
-      </div>
+      </>
       )}
   >
     {filter.name}

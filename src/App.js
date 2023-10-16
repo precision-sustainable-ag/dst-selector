@@ -39,7 +39,6 @@ import Help from './pages/Help/Help';
 import Profile from './pages/Profile/Profile';
 
 import './styles/App.scss';
-import './styles/parent.scss';
 // bootstrap import
 import 'mdbreact/dist/css/mdb.css';
 
