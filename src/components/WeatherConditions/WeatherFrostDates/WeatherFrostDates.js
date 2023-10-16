@@ -1,6 +1,7 @@
 import {
   Tooltip,
   Typography,
+  Grid,
 } from '@mui/material';
 import {
   AcUnit, Info, Opacity,
@@ -12,9 +13,9 @@ const WeatherFrostDates = () => {
   const weatherDataRedux = useSelector((stateRedux) => stateRedux.weatherData.weatherData);
 
   return (
-    <div className="mt-3 col-12 row">
-      <div className="col-12">
-        <Typography variant="body1" className="font-weight-bold text-uppercase text-left">
+    <Grid container item>
+      <Grid item xs={12}>
+        <Typography variant="body1">
           <AcUnit />
             &nbsp; Average Frost Dates &nbsp;
           {' '}
@@ -54,10 +55,10 @@ const WeatherFrostDates = () => {
             <Info fontSize="small" />
           </Tooltip>
         </Typography>
-      </div>
+      </Grid>
 
-      <div className="col-12">
-        <Typography variant="body1" className="text-left">
+      <Grid item xs={12}>
+        <Typography variant="body1">
           <Opacity style={{ color: 'transparent' }} />
             &nbsp;
           {' '}
@@ -69,7 +70,7 @@ const WeatherFrostDates = () => {
 &nbsp;
           {`${weatherDataRedux?.averageFrost?.firstFrostDate?.month} ${weatherDataRedux?.averageFrost?.firstFrostDate?.day}`}
         </Typography>
-        <Typography variant="body1" className="text-left">
+        <Typography variant="body1">
           <Opacity style={{ color: 'transparent' }} />
             &nbsp;
           {' '}
@@ -81,8 +82,8 @@ const WeatherFrostDates = () => {
 &nbsp;
           {`${weatherDataRedux?.averageFrost?.lastFrostDate?.month} ${weatherDataRedux?.averageFrost?.lastFrostDate?.day}`}
         </Typography>
-      </div>
-    </div>
+      </Grid>
+    </Grid>
   );
 };
 

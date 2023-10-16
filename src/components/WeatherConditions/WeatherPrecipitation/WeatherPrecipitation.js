@@ -1,6 +1,7 @@
 import {
   Tooltip,
   Typography,
+  Grid,
 } from '@mui/material';
 import {
   Info, Opacity,
@@ -12,9 +13,9 @@ const WeatherPrecipitation = ({ currentMonthFull }) => {
   const weatherDataRedux = useSelector((stateRedux) => stateRedux.weatherData.weatherData);
 
   return (
-    <div className="mt-3 col-12 row">
-      <div className="col-12">
-        <Typography variant="body1" className="font-weight-bold text-uppercase text-left">
+    <Grid container item>
+      <Grid item xs={12}>
+        <Typography variant="body1">
           <Opacity />
             &nbsp; Average Precipitation &nbsp;
           {' '}
@@ -48,9 +49,9 @@ const WeatherPrecipitation = ({ currentMonthFull }) => {
             <Info fontSize="small" />
           </Tooltip>
         </Typography>
-      </div>
-      <div className="col-12">
-        <Typography variant="body1" className="text-left">
+      </Grid>
+      <Grid item xs={12}>
+        <Typography variant="body1">
           <Opacity style={{ color: 'transparent' }} />
             &nbsp;
           {' '}
@@ -64,7 +65,7 @@ const WeatherPrecipitation = ({ currentMonthFull }) => {
           {' '}
           inches
         </Typography>
-        <Typography variant="body1" className="text-left">
+        <Typography variant="body1">
           <Opacity style={{ color: 'transparent' }} />
             &nbsp;
           {' '}
@@ -78,8 +79,8 @@ const WeatherPrecipitation = ({ currentMonthFull }) => {
           {' '}
           inches
         </Typography>
-      </div>
-    </div>
+      </Grid>
+    </Grid>
   );
 };
 

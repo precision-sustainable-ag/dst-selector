@@ -13,8 +13,8 @@ const WeatherFrostFreeDays = () => {
   const weatherDataRedux = useSelector((stateRedux) => stateRedux.weatherData.weatherData);
 
   return (
-    <Grid style={{ marginTop: '1rem', marginLeft: '1rem' }}>
-      <Grid item>
+    <Grid container item>
+      <Grid item xs={12}>
         <Typography variant="body1">
           <WbSunnyOutlined />
             &nbsp; Average Frost Free Days &nbsp;
