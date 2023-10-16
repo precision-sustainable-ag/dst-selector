@@ -13,14 +13,13 @@ import { myCropListLocation, snackHandler } from '../../reduxStore/sharedSlice';
 import { selectedCropsModifier } from '../../reduxStore/cropSlice';
 
 const CropCard = ({
-  crop, handleModalOpen, index, type, dispatchRedux,
+  crop, handleModalOpen, index, dispatchRedux,
 }) => {
   // used to know if the user is in mobile mode
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   // redux vars
-  const zoneRedux = useSelector((stateRedux) => stateRedux.addressData.zone);
   const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
   const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
 
@@ -44,6 +43,7 @@ const CropCard = ({
     await updateBtns();
   }
 
+  // height: isMobile ? '350px' : '350px'
   return (
     <Card style={{ width: isMobile ? '160px' : '260px' }}>
       <CardActionArea onClick={() => handleModalOpen(crop)}>
@@ -58,55 +58,38 @@ const CropCard = ({
         />
       </CardActionArea>
       <CardContent>
-        {type === 'cropList'
-        && (
-        <div className="font-weight-bold text-muted text-uppercase" style={{ fontSize: '10pt', marginLeft: '-10px' }}>
-            {`Zone ${zoneRedux}`}
-        </div>
-        )}
-        <div
-          className="font-weight-bold text-muted text-uppercase"
-          style={{ fontSize: '10pt', marginLeft: '-10px' }}
+        <Typography
+          sx={{ color: 'grey', textTransform: 'uppercase' }}
         >
           {crop.group}
-        </div>
-        <div className="font-weight-bold " style={{ fontSize: '16pt', marginLeft: '-10px' }}>
-          <Typography variant="subtitle1" className="font-weight-bold text-truncate">
-            {crop.label}
-          </Typography>
-        </div>
-        <small className="font-italic text-muted d-inline-block text-truncate" style={{ marginLeft: '-10px' }}>
-          {crop.family.scientific ? trimString(crop.family.scientific, 25) : null}
-        </small>
-        <div>
-          <small className="text-muted">
-            <Button
-              style={{
-                fontSize: '10pt',
-                left: -15,
-                textDecoration: 'underline',
-                color: 'rgb(53, 153, 155)',
-              }}
-              target="_blank"
-              onClick={() => handleModalOpen(crop)}
-            >
-              View Crop Details
-            </Button>
-          </small>
-        </div>
+        </Typography>
+        <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>
+          {crop.label}
+        </Typography>
+        <Typography sx={{ fontStyle: 'italic' }}>
+          {crop.family.scientific ? trimString(crop.family.scientific, 25) : <br />}
+        </Typography>
+        <Button
+          style={{
+            fontSize: '10pt',
+            left: -5,
+            textDecoration: 'underline',
+            color: 'rgb(53, 153, 155)',
+          }}
+          target="_blank"
+          onClick={() => handleModalOpen(crop)}
+        >
+          View Crop Details
+        </Button>
       </CardContent>
       <CardActionArea
         id={`cartBtn${index}`}
         style={{
-          backgroundColor: '#e3f2f4',
+          backgroundColor: selectedBtns.includes(crop.id) ? '#2b7b79' : '#e3f2f4',
+          color: selectedBtns.includes(crop.id) ? 'white' : 'black',
           textAlign: 'center',
           padding: '0.5em',
         }}
-        className={
-            selectedBtns.includes(crop.id)
-              ? 'activeCartBtn'
-              : 'inactiveCartBtn'
-          }
         onClick={() => (
           addToBasket(
             crop.id,
@@ -116,15 +99,7 @@ const CropCard = ({
       >
         <Typography
           variant="body2"
-          className={`text-uppercase ${
-            selectedBtns.includes(crop.id)
-              ? 'text-white'
-              : ''
-          }`}
-          style={{
-            color: 'black',
-            fontWeight: 'bold',
-          }}
+          sx={{ color: selectedBtns.includes(crop.id) ? 'white' : '', fontWeight: 'bold' }}
         >
           {selectedBtns.includes(crop.id)
             ? 'REMOVE'

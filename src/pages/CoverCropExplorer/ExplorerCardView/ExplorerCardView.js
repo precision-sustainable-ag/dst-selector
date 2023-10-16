@@ -41,7 +41,6 @@ const ExplorerCardView = ({ activeCropData }) => {
                   crop={crop}
                   handleModalOpen={handleModalOpen}
                   index={index}
-                  type="explorer"
                   dispatchRedux={dispatchRedux}
                 />
               </Grid>

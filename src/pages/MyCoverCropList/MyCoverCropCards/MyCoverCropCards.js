@@ -31,7 +31,6 @@ const MyCoverCropCards = ({ crop, cardNo }) => {
       <CropCard
         crop={crop}
         index={cardNo}
-        type="cropList"
         handleModalOpen={handleModalOpen}
         dispatchRedux={dispatchRedux}
       />

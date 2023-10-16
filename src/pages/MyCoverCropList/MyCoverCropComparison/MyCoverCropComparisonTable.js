@@ -117,7 +117,6 @@ const MyCoverCropComparison = () => {
       <CropCard
         crop={crop}
         index={index}
-        type="cropList"
         dispatchRedux={dispatchRedux}
         handleModalOpen={handleModalOpen}
       />
