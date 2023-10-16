@@ -67,7 +67,7 @@ const CropCard = ({
           {crop.label}
         </Typography>
         <Typography sx={{ fontStyle: 'italic' }}>
-          {crop.family.scientific ? trimString(crop.family.scientific, 25) : <br />}
+          {crop.family.scientific ? trimString(crop.family.scientific, 25) : 'No Data'}
         </Typography>
         <Button
           style={{
