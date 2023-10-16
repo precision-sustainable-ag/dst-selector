@@ -6,13 +6,13 @@
 import {
   Button,
   FormControl,
-  FormGroup,
   InputLabel,
   Select,
   TextField,
   Typography,
   Box,
-  Dialog,
+  Modal,
+  Grid,
 } from '@mui/material';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
@@ -174,33 +174,30 @@ const WeatherConditions = () => {
   }, [ajaxInProgressRedux, weatherDataRedux]);
 
   return (
-    <div className="row">
-      <div className="col-12">
+    <Grid container>
+      <Grid item xs={12}>
         <Typography variant="h4" align="left">
           Climate Conditions
         </Typography>
-      </div>
-      <div className="col-12">
+      </Grid>
+      <Grid item xs={12}>
         <Typography variant="body1" align="left">
           This information is based on your location, please update it if needed.
         </Typography>
-      </div>
-      <div className="mt-2 col-12 text-left">
+      </Grid>
+      <Grid item xs={12}>
         <Typography
           variant="button"
-          className={`font-weight-bold text-uppercase text-left ${
-            anyValuesChanged ? 'text-danger' : ''
-          }`}
-          onClick={handleModalOpen}
-          style={{
+          sx={{
+            color: anyValuesChanged ? 'red' : 'blue',
             cursor: 'pointer',
-            color: 'blue',
           }}
+          onClick={handleModalOpen}
         >
           <u>Click To Edit </u>
           {anyValuesChanged ? ', values changed' : ''}
         </Typography>
-      </div>
+      </Grid>
 
       <WeatherFrostDates />
 
@@ -208,33 +205,47 @@ const WeatherConditions = () => {
 
       <WeatherFrostFreeDays />
 
-      <Dialog
-        aria-labelledby="transition-modal-title"
-        aria-describedby="ransition-modal-description"
+      <Modal
+        sx={{
+          overflow: 'scroll',
+        }}
         open={open}
         onClose={handleModalClose}
         closeAfterTransition
+        disableEscapeKeyDown={false}
       >
         <Box
-          className="modalContainer"
           sx={{
-            backgroundColor: 'background.paper',
-            border: '2px solid #000',
-            boxShadow: 5,
-            padding: (theme) => theme.spacing(2, 4, 3),
+            backgroundColor: 'white',
+            position: 'relative',
+            width: '80%',
+            maxWidth: '450px',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            marginTop: '2%',
+            marginBottom: '1%',
           }}
         >
-          <h2 id="transition-modal-title">Edit Climate Data</h2>
-          <div id="transition-modal-description">
-            <div className="container-fluid">
-              <FormGroup>
-                <div className="row mt-4">
-                  <div className="col-12">
-                    <Typography variant="h6">Average Frost Dates</Typography>
-                  </div>
-                </div>
-                <div className="row mt-4">
-                  <div className="col-6">
+          <Box ml={3} mr={3} mt={3} mb={3}>
+            <Grid
+              container
+              spacing={3}
+              direction="column"
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+            >
+              <Grid item xs={12}>
+                <Typography variant="h4">Edit Climate Data</Typography>
+              </Grid>
+
+              <Grid container item xs={12} spacing={2}>
+                <Grid item xs={12}>
+                  <Typography variant="h6">Average Frost Dates</Typography>
+                </Grid>
+
+                <Grid container item xs={12} spacing={3}>
+                  <Grid item>
                     <MonthSelect
                       label="First Frost Month"
                       value={firstFrostMonth}
@@ -243,8 +254,9 @@ const WeatherConditions = () => {
                       compare={firstFrostMonth !== weatherDataShadow?.averageFrost?.firstFrostDate?.month}
                       reset={() => setFirstFrostMonth(weatherDataShadow?.averageFrost?.firstFrostDate?.month)}
                     />
-                  </div>
-                  <div className="col-6">
+                  </Grid>
+
+                  <Grid item>
                     <InputField
                       label="First Frost Day"
                       inputProps={{ min: 1, max: 31 }}
@@ -266,10 +278,11 @@ const WeatherConditions = () => {
                         parseInt(weatherDataShadow?.averageFrost?.firstFrostDate?.day, 10),
                       )}
                     />
-                  </div>
-                </div>
-                <div className="row mt-4">
-                  <div className="col-6">
+                  </Grid>
+                </Grid>
+
+                <Grid container item xs={12} spacing={3}>
+                  <Grid item>
                     <MonthSelect
                       label="Last Frost Month"
                       value={lastFrostMonth}
@@ -278,8 +291,10 @@ const WeatherConditions = () => {
                       compare={lastFrostMonth !== weatherDataShadow?.averageFrost?.lastFrostDate?.month}
                       reset={() => setLastFrostMonth(weatherDataShadow?.averageFrost?.lastFrostDate?.month)}
                     />
-                  </div>
-                  <div className="col-6">
+
+                  </Grid>
+
+                  <Grid item>
                     <InputField
                       label="Last Frost Day"
                       inputProps={{ min: 1, max: 31 }}
@@ -301,98 +316,99 @@ const WeatherConditions = () => {
                         parseInt(weatherDataShadow?.averageFrost?.lastFrostDate?.day, 10),
                       )}
                     />
-                  </div>
-                </div>
-                <div className="row mt-4">
-                  <div className="col-12">
-                    <Typography variant="h6">Average Precipitation</Typography>
-                  </div>
-                </div>
-                <div className="row mt-4">
-                  <div className="col-6">
-                    <InputField
-                      label={currentMonthFull}
-                      inputProps={{ min: 1, max: 100, step: 0.01 }}
-                      helperText="Inches"
-                      value={averagePrecipitation?.thisMonth}
-                      onChange={(event) => {
-                        setAveragePrecipitation({
-                          ...averagePrecipitation,
-                          thisMonth: event.target.value === '' ? 0 : event.target.value,
-                        });
-                      }}
-                      compare={parseFloat(averagePrecipitation?.thisMonth)
+                  </Grid>
+                </Grid>
+
+              </Grid>
+
+              <Grid container item xs={12} spacing={3}>
+                <Grid item xs={12}>
+                  <Typography variant="h6">Average Precipitation</Typography>
+                </Grid>
+
+                <Grid item>
+                  <InputField
+                    label={currentMonthFull}
+                    inputProps={{ min: 1, max: 100, step: 0.01 }}
+                    helperText="Inches"
+                    value={averagePrecipitation?.thisMonth}
+                    onChange={(event) => {
+                      setAveragePrecipitation({
+                        ...averagePrecipitation,
+                        thisMonth: event.target.value === '' ? 0 : event.target.value,
+                      });
+                    }}
+                    compare={parseFloat(averagePrecipitation?.thisMonth)
                         !== parseFloat(weatherDataShadow?.averagePrecipitation?.thisMonth)}
-                      reset={() => setAveragePrecipitation({
-                        thisMonth: parseFloat(
-                          weatherDataShadow?.averagePrecipitation?.thisMonth,
-                        ),
-                        annual: parseFloat(averagePrecipitation?.annual),
-                      })}
-                    />
-                  </div>
-                  <div className="col-6">
-                    <InputField
-                      label="Annual"
-                      inputProps={{ min: 1, max: 100, step: 0.01 }}
-                      helperText="Inches"
-                      value={averagePrecipitation?.annual}
-                      onChange={(event) => {
-                        setAveragePrecipitation({
-                          ...averagePrecipitation,
-                          annual:
+                    reset={() => setAveragePrecipitation({
+                      thisMonth: parseFloat(
+                        weatherDataShadow?.averagePrecipitation?.thisMonth,
+                      ),
+                      annual: parseFloat(averagePrecipitation?.annual),
+                    })}
+                  />
+                </Grid>
+
+                <Grid item>
+                  <InputField
+                    label="Annual"
+                    inputProps={{ min: 1, max: 100, step: 0.01 }}
+                    helperText="Inches"
+                    value={averagePrecipitation?.annual}
+                    onChange={(event) => {
+                      setAveragePrecipitation({
+                        ...averagePrecipitation,
+                        annual:
                                 event.target.value === '' ? 0 : event.target.value,
-                        });
-                      }}
-                      compare={parseFloat(averagePrecipitation?.annual)
+                      });
+                    }}
+                    compare={parseFloat(averagePrecipitation?.annual)
                         !== parseFloat(weatherDataShadow?.averagePrecipitation?.annual)}
-                      reset={() => setAveragePrecipitation({
-                        thisMonth: parseFloat(averagePrecipitation?.thisMonth),
-                        annual: parseFloat(weatherDataShadow?.averagePrecipitation?.annual),
-                      })}
-                    />
-                  </div>
-                </div>
-                <div className="row mt-4">
-                  <div className="col-12">
-                    <Typography variant="h6">Frost Free Days</Typography>
-                  </div>
-                </div>
-                <div className="row mt-4">
-                  <div className="col-6">
-                    <InputField
-                      label="Frost Free Days"
-                      inputProps={{ min: 1, max: 365 }}
-                      value={frostFreeDays}
-                      onChange={(event) => {
-                        if (!Number.isNaN(event.target.value)) {
-                          if (event.target.value === '') {
-                            setFrostFreeDays(0);
-                          } else setFrostFreeDays(parseInt(event.target.value, 10));
-                        } else {
+                    reset={() => setAveragePrecipitation({
+                      thisMonth: parseFloat(averagePrecipitation?.thisMonth),
+                      annual: parseFloat(weatherDataShadow?.averagePrecipitation?.annual),
+                    })}
+                  />
+                </Grid>
+
+              </Grid>
+
+              <Grid container item xs={12} spacing={2}>
+                <Grid item xs={12}>
+                  <Typography variant="h6">Frost Free Days</Typography>
+                </Grid>
+                <Grid item>
+                  <InputField
+                    label="Frost Free Days"
+                    inputProps={{ min: 1, max: 365 }}
+                    value={frostFreeDays}
+                    onChange={(event) => {
+                      if (!Number.isNaN(event.target.value)) {
+                        if (event.target.value === '') {
                           setFrostFreeDays(0);
-                        }
-                      }}
-                      compare={parseInt(frostFreeDays, 10) !== parseInt(weatherDataShadow?.frostFreeDays, 10)}
-                      reset={() => setFrostFreeDays(parseInt(weatherDataShadow?.frostFreeDays, 10))}
-                    />
-                  </div>
-                  <div className="col-6" />
-                </div>
-                <div className="row mt-4">
-                  <div className="col-6">
-                    <LightButton onClick={validateAndBroadcastModalData}>
-                      update
-                    </LightButton>
-                    <Button onClick={() => setOpen(false)}>cancel</Button>
-                  </div>
-                </div>
-              </FormGroup>
-            </div>
-          </div>
+                        } else setFrostFreeDays(parseInt(event.target.value, 10));
+                      } else {
+                        setFrostFreeDays(0);
+                      }
+                    }}
+                    compare={parseInt(frostFreeDays, 10) !== parseInt(weatherDataShadow?.frostFreeDays, 10)}
+                    reset={() => setFrostFreeDays(parseInt(weatherDataShadow?.frostFreeDays, 10))}
+                  />
+                </Grid>
+              </Grid>
+
+              <Grid item xs={12} mb={3}>
+                <LightButton onClick={validateAndBroadcastModalData}>
+                  update
+                </LightButton>
+                <Button onClick={() => setOpen(false)}>cancel</Button>
+              </Grid>
+            </Grid>
+          </Box>
+
         </Box>
-      </Dialog>
-    </div>
+      </Modal>
+    </Grid>
   );
 };
 
@@ -403,7 +419,7 @@ const MonthSelect = ({
 }) => {
   const id = label.toLowerCase().replace(' ', '-');
   return (
-    <FormControl style={{ width: '100%' }}>
+    <FormControl>
       <InputLabel htmlFor={id}>{label}</InputLabel>
       <Select
         label={label}
@@ -416,6 +432,7 @@ const MonthSelect = ({
           name: id,
           id,
         }}
+        sx={{ width: '150px' }}
       >
         {months.map((val, key) => (
           <option value={moment(val, 'MMM').format('MMMM')} key={key}>
@@ -426,7 +443,7 @@ const MonthSelect = ({
       {compare
         ? (
           <Button
-            className="text-danger"
+            sx={{ color: 'red' }}
             size="small"
             onClick={reset}
           >
@@ -441,31 +458,32 @@ const MonthSelect = ({
 const InputField = ({
   label, inputProps, helperText, error, value, onChange, compare, reset,
 }) => (
-  <FormControl>
-    <TextField
-      label={label}
-      type="number"
-      inputProps={inputProps}
-      helperText={helperText}
-      error={error}
-      value={value}
-      onChange={onChange}
-      sx={{
-        marginLeft: 1,
-        marginRight: 1,
-        width: 200,
-      }}
-    />
+  <Grid item container direction="column">
+    <Grid item>
+      <TextField
+        label={label}
+        type="number"
+        inputProps={inputProps}
+        helperText={helperText}
+        error={error}
+        value={value}
+        onChange={onChange}
+        sx={{ width: '150px' }}
+      />
+    </Grid>
+
     {compare
-      ? (
-        <Button
-          className="text-danger"
-          size="small"
-          onClick={reset}
-        >
-          Values changed, Reset?
-        </Button>
-      )
-      : <Typography variant="body2" style={{ marginLeft: '8px' }}>5 Year Average</Typography>}
-  </FormControl>
+      && (
+        <Grid item>
+          <Button
+            sx={{ color: 'red' }}
+            size="small"
+            onClick={reset}
+          >
+            Values changed, Reset?
+          </Button>
+        </Grid>
+
+      )}
+  </Grid>
 );

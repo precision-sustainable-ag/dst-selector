@@ -64,7 +64,7 @@ const RenderDrainageClasses = ({ tilingCheck, drainage = [] }) => {
   return (
     <Grid container item spacing={2}>
       {drainageArray.map((d, index) => (
-        <Grid item>
+        <Grid item key={index}>
           <Chip
             label={d}
             color={drainageVal.includes(index) ? 'primary' : 'secondary'}

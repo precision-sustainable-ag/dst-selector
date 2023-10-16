@@ -35,8 +35,8 @@ const RenderFloodingOptions = ({ flooding = [''] }) => {
   };
   return (
     <Grid container spacing={2}>
-      {floodingOptions.map((f) => (
-        <Grid item>
+      {floodingOptions.map((f, index) => (
+        <Grid item key={index}>
           <Chip
             label={f}
             color={flooding.includes(f) ? 'primary' : 'secondary'}
