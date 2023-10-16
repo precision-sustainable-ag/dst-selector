@@ -24,7 +24,9 @@ import React, {
   useEffect, useState,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { CustomStyles, callCoverCropApi, cropDataFormatter } from '../../shared/constants';
+import {
+  CustomStyles, LightButton, callCoverCropApi, cropDataFormatter,
+} from '../../shared/constants';
 import ComparisonBar from '../MyCoverCropList/ComparisonBar/ComparisonBar';
 import CoverCropSearch from './CoverCropSearch/CoverCropSearch';
 import SidebarFilter from './SidebarFilter/SidebarFilter';
@@ -330,23 +332,19 @@ const CropSidebar = ({
   return !loading && (from === 'myCoverCropListStatic') ? (
     <Grid container spacing={3}>
       <Grid item>
-        <Button
-          className="dynamicToggleBtn"
-          fullWidth
-          variant="contained"
+        <LightButton
           onClick={toggleComparisonView}
-          size="large"
           color="secondary"
           startIcon={
-          comparisonView ? (
-            <ListIcon style={{ fontSize: 'larger' }} />
-          ) : (
-            <Compare style={{ fontSize: 'larger' }} />
-          )
-        }
+            comparisonView ? (
+              <ListIcon style={{ fontSize: 'larger' }} />
+            ) : (
+              <Compare style={{ fontSize: 'larger' }} />
+            )
+          }
         >
           {comparisonView ? 'LIST VIEW' : 'COMPARISON VIEW'}
-        </Button>
+        </LightButton>
         <ComparisonBar
           filterData={sidebarFilters}
           goals={selectedGoalsRedux?.length > 0 ? selectedGoalsRedux : []}
@@ -359,14 +357,9 @@ const CropSidebar = ({
     <Grid container>
       <Grid item>
         {from === 'table' && (
-          <Button
-            className="dynamicToggleBtn"
-            fullWidth
-            variant="contained"
+          <LightButton
             onClick={toggleListView}
-            size="large"
             color="secondary"
-            style={{ marginBottom: '15px' }}
             startIcon={
                 isListView ? (
                   <ListIcon style={{ fontSize: 'larger' }} />
@@ -376,7 +369,7 @@ const CropSidebar = ({
               }
           >
             {isListView ? 'LIST VIEW' : 'CALENDAR VIEW'}
-          </Button>
+          </LightButton>
         )}
         {speciesSelectorActivationFlagRedux || from === 'explorer' ? (
           <Box

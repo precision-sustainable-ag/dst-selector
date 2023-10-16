@@ -8,7 +8,15 @@ const SoilComposition = () => {
   const soilDataRedux = useSelector((stateRedux) => stateRedux.soilData.soilData);
 
   return (
-    <Grid item container xs={12}>
+    <Grid
+      item
+      container
+      xs={12}
+      direction="column"
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+    >
       <Grid item xs={12}>
         <Typography variant="body1">
           <Terrain />

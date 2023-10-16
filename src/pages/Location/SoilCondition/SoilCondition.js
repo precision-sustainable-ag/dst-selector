@@ -19,6 +19,7 @@ const SoilCondition = () => {
   // redux vars
   const markersRedux = useSelector((stateRedux) => stateRedux.addressData.markers);
   const soilDataOriginalRedux = useSelector((stateRedux) => stateRedux.soilData.soilDataOriginal);
+  const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
 
   // useState vars
 
@@ -75,54 +76,52 @@ const SoilCondition = () => {
       fetch('https://sdmdataaccess.sc.egov.usda.gov/Tabular/post.rest', requestOptions)
         .then((response) => response.json())
         .then((result) => {
-          if (result !== {}) {
-            let mapUnitString = '';
+          let mapUnitString = '';
 
-            const stringSplit = [];
+          const stringSplit = [];
 
-            result.Table.forEach((el, index) => {
-              if (index !== 0) {
-                if (stringSplit.indexOf(el[1].split(',')[0]) === -1) {
-                  stringSplit.push(el[1].split(',')[0]);
-                }
+          result.Table.forEach((el, index) => {
+            if (index !== 0) {
+              if (stringSplit.indexOf(el[1].split(',')[0]) === -1) {
+                stringSplit.push(el[1].split(',')[0]);
               }
-            });
+            }
+          });
 
-            const filteredArr = stringSplit.filter((elm) => elm);
-            mapUnitString = filteredArr.join(', ');
+          const filteredArr = stringSplit.filter((elm) => elm);
+          mapUnitString = filteredArr.join(', ');
 
-            const floodingClasses = [];
-            result.Table.forEach((el, index) => {
-              // eslint-disable-next-line no-empty
-              if (index === 0 || el.indexOf('Water') === 1) {
-              } else if (floodingClasses.indexOf(el[3]) === -1) {
-                floodingClasses.push(el[3]);
+          const floodingClasses = [];
+          result.Table.forEach((el, index) => {
+            // eslint-disable-next-line no-empty
+            if (index === 0 || el.indexOf('Water') === 1) {
+            } else if (floodingClasses.indexOf(el[3]) === -1) {
+              floodingClasses.push(el[3]);
+            }
+          });
+
+          let drainageClasses = [];
+          result.Table.forEach((el, index) => {
+            if (index !== 0) {
+              if (drainageClasses.indexOf(el[2]) === -1) {
+                drainageClasses.push(el[2]);
               }
-            });
+            }
+          });
+          drainageClasses = drainageClasses.filter((el) => el != null);
 
-            let drainageClasses = [];
-            result.Table.forEach((el, index) => {
-              if (index !== 0) {
-                if (drainageClasses.indexOf(el[2]) === -1) {
-                  drainageClasses.push(el[2]);
-                }
-              }
-            });
-            drainageClasses = drainageClasses.filter((el) => el != null);
-
-            dispatchRedux(updateSoilData({
-              mapUnitName: mapUnitString,
-              drainageClass: drainageClasses,
-              floodingFrequency: floodingClasses,
-              latLong: { lat, lon },
-            }));
-            dispatchRedux(updateSoilDataOriginal({
-              mapUnitName: mapUnitString,
-              drainageClass: drainageClasses,
-              floodingFrequency: floodingClasses,
-              latLong: { lat, lon },
-            }));
-          }
+          dispatchRedux(updateSoilData({
+            mapUnitName: mapUnitString,
+            drainageClass: drainageClasses,
+            floodingFrequency: floodingClasses,
+            latLong: { lat, lon },
+          }));
+          dispatchRedux(updateSoilDataOriginal({
+            mapUnitName: mapUnitString,
+            drainageClass: drainageClasses,
+            floodingFrequency: floodingClasses,
+            latLong: { lat, lon },
+          }));
         })
         // eslint-disable-next-line no-console
         .catch((error) => console.error('SSURGO FETCH ERROR', error));
@@ -144,12 +143,11 @@ const SoilCondition = () => {
     <Grid
       item
       container
-      md={6}
       spacing={1}
-      // direction="column"
-      // display="flex"
-      // justifyContent="center"
-      // alignItems="center"
+      direction="column"
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
     >
       <Grid item xs={12}>
         <Typography variant="h4">
@@ -158,7 +156,10 @@ const SoilCondition = () => {
       </Grid>
       <Grid item xs={12}>
         <Typography variant="body1">
-          This information is based on your location, please update it if needed.
+          This information is based on your location and the
+          {' '}
+          {` ${councilShorthandRedux} dataset`}
+          , update only as needed
         </Typography>
       </Grid>
       <Grid item xs={12}>

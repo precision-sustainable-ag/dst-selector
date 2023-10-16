@@ -13,14 +13,10 @@ import React from 'react';
 const Legend = ({ legendData, modal }) => (
   <Grid
     container
-    direction="column"
-    alignItems="center"
-    justifyContent="center"
   >
     {legendData.length > 0
       && (
-      <Grid container item>
-        {legendData.map((item, key) => (
+        legendData.map((item, key) => (
           <Grid item className="legendModalRow" key={`gird index ${key}`} xs={12}>
             <Typography variant="body1">
               {
@@ -48,8 +44,7 @@ const Legend = ({ legendData, modal }) => (
               <span style={{ paddingLeft: '1px' }}>{`${item.label}`}</span>
             </Typography>
           </Grid>
-        ))}
-      </Grid>
+        ))
       )}
   </Grid>
 );

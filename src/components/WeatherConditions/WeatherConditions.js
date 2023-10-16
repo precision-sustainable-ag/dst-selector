@@ -29,6 +29,7 @@ const WeatherConditions = () => {
   // redux vars
   const weatherDataRedux = useSelector((stateRedux) => stateRedux.weatherData.weatherData);
   const ajaxInProgressRedux = useSelector((stateRedux) => stateRedux.sharedData.ajaxInProgress);
+  const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
 
   // useState vars
   const [months, setMonths] = useState([]);
@@ -174,15 +175,25 @@ const WeatherConditions = () => {
   }, [ajaxInProgressRedux, weatherDataRedux]);
 
   return (
-    <Grid container spacing={1}>
+    <Grid
+      container
+      spacing={1}
+      direction="column"
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+    >
       <Grid item xs={12}>
         <Typography variant="h4" align="left">
           Climate Conditions
         </Typography>
       </Grid>
       <Grid item xs={12}>
-        <Typography variant="body1" align="left">
-          This information is based on your location, please update it if needed.
+        <Typography variant="body1">
+          This information is based on your location and the
+          {' '}
+          {` ${councilShorthandRedux} dataset`}
+          , update only as needed.
         </Typography>
       </Grid>
       <Grid item xs={12}>

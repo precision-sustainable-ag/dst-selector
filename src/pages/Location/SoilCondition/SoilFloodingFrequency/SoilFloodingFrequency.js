@@ -19,7 +19,14 @@ const SoilFloodingFrequency = () => {
   };
 
   return (
-    <Grid item container>
+    <Grid
+      item
+      container
+      direction="column"
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+    >
       <Grid item xs={12}>
         <Typography variant="body1">
           <WavesOutlined />

@@ -34,7 +34,14 @@ const RenderFloodingOptions = ({ flooding = [''] }) => {
     }
   };
   return (
-    <Grid container spacing={2}>
+    <Grid
+      container
+      spacing={2}
+      // direction="column"
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+    >
       {floodingOptions.map((f, index) => (
         <Grid item key={index}>
           <Chip

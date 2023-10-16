@@ -7,7 +7,6 @@ import { useHistory } from 'react-router-dom';
 import { reset } from '../../../reduxStore/store';
 import '../../../styles/header.scss';
 import DateComponent from '../DateComponent/DateComponent';
-import ForecastComponent from '../ForecastComponent/ForecastComponent';
 import { setMyCoverCropReset } from '../../../reduxStore/sharedSlice';
 
 const HeaderLogoInfo = () => {
@@ -107,11 +106,6 @@ const HeaderLogoInfo = () => {
           <DateComponent />
         </Typography>
       </Grid>
-
-      <Grid item lg={3} md={4} sm={6} xs={12} sx={{ marginLeft: '120px', marginBottom: '30px' }}>
-        <ForecastComponent />
-      </Grid>
-
     </Grid>
   );
 };
