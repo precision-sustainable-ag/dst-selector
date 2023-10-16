@@ -5,13 +5,11 @@
 */
 
 import {
-  Box,
   Button,
   CircularProgress,
   FormControl,
   InputLabel,
   MenuItem,
-  Modal,
   Select,
   Table,
   TableBody,
@@ -143,10 +141,12 @@ const CropCalendarView = ({ activeCropData }) => {
           >
             <TableHead className="tableHeadWrapper">
               <TableRow className="calFirstHeadRow">
-                <TableCell
-                  colSpan={activeGrowthPeriod.length === 0 ? 2 : 1}
-                  style={{ backgroundColor: 'white' }}
-                />
+                <TableCell style={{ backgroundColor: 'white' }} colSpan={activeGrowthPeriod.length === 0 ? 2 : 1}>
+                  <Legend
+                    legendData={legendData}
+                    modal
+                  />
+                </TableCell>
                 {activeGrowthPeriod.length === 0 ? (
                   <TableCell
                     colSpan="12"
@@ -156,16 +156,6 @@ const CropCalendarView = ({ activeCropData }) => {
                   >
                     <div className="container-fluid">
                       <div className="row">
-                        <div className="col-4">
-                          <Button
-                            startIcon={<AddCircle />}
-                            onClick={handleLegendModal}
-                            style={{ color: '#000' }}
-                          >
-                            {' '}
-                            <Typography variant="body2">LEGEND</Typography>
-                          </Button>
-                        </div>
                         <div className="col-4">
                           <Typography variant="body1" component="span">
                             <div style={sudoButtonStyleWithPadding}>COVER CROP GROWTH WINDOW</div>
@@ -365,33 +355,6 @@ const CropCalendarView = ({ activeCropData }) => {
           </Table>
         </TableContainer>
       )}
-      <Modal
-        open={legendModal}
-        onClose={handleLegendModal}
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <Box
-          className="modalLegendPaper"
-          sx={{
-            backgroundColor: 'background.paper',
-            border: '2px solid #000',
-            boxShadow: 5,
-            padding: '1em',
-            width: '30%',
-          }}
-        >
-          <Legend
-            handleLegendModal={handleLegendModal}
-            legendData={legendData}
-            modal
-          />
-        </Box>
-
-      </Modal>
       <CropDetailsModal
         modalOpen={modalOpen}
         setModalOpen={setModalOpen}
