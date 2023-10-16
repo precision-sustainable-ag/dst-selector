@@ -674,21 +674,21 @@ export const getLegendDataBasedOnCouncil = (councilShorthand = '') => {
     { className: 'temperatureRisk', label: 'Temperature Risk To Establishment' },
     { className: 'frostPossible', label: 'Frost Seeding Possible' },
     { className: 'multiple', label: 'Multiple' },
-    { className: 'cashCrop', label: 'Previous Cash Crop Growth Window' },
+    { className: 'cashCrop', label: 'Cash Crop Growing Window' },
     { className: 'hessianFlyFree', label: 'Hessian Fly Free Date' },
   ];
   const MCCClegendData = [
     { className: 'reliable', label: 'Reliable Establishment' },
     { className: 'temperatureRisk', label: 'Freeze/Moisture Risk to Establishment' },
     { className: 'multiple', label: 'Multiple' },
-    { className: 'cashCrop', label: 'Previous Cash Crop Growth Window' },
+    { className: 'cashCrop', label: 'Cash Crop Growing Window' },
     { className: 'hessianFlyFree', label: 'Hessian Fly Free Date' },
   ];
   const SCCClegendData = [
     { className: 'reliable', label: 'Reliable Establishment' },
     { className: 'frostPossible', label: 'Average Frost' },
     { className: 'multiple', label: 'Multiple' },
-    { className: 'cashCrop', label: 'Previous Cash Crop Growth Window' },
+    { className: 'cashCrop', label: 'Cash Crop Growing Window' },
   ];
   switch (councilShorthand) {
     case 'MCCC':
