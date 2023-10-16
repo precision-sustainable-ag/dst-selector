@@ -37,7 +37,7 @@ const RenderFloodingOptions = ({ flooding = [''] }) => {
       <Chip
         label="None"
         color={flooding.includes('None') ? 'primary' : 'secondary'}
-        className="m-2 drainageTag"
+        className="m-2"
         onClick={() => {
           updateFloodingFrequency('None');
         }}
@@ -45,7 +45,7 @@ const RenderFloodingOptions = ({ flooding = [''] }) => {
       <Chip
         label="Very Rare"
         color={flooding.includes('Very rare') ? 'primary' : 'secondary'}
-        className="m-2 drainageTag"
+        className="m-2"
         onClick={() => {
           updateFloodingFrequency('Very rare');
         }}
@@ -53,7 +53,7 @@ const RenderFloodingOptions = ({ flooding = [''] }) => {
       <Chip
         label="Rare"
         color={flooding.includes('Rare') ? 'primary' : 'secondary'}
-        className="m-2 drainageTag"
+        className="m-2"
         onClick={() => {
           updateFloodingFrequency('Rare');
         }}
@@ -61,7 +61,7 @@ const RenderFloodingOptions = ({ flooding = [''] }) => {
       <Chip
         label="Occasional"
         color={flooding.includes('Occasional') ? 'primary' : 'secondary'}
-        className="m-2 drainageTag"
+        className="m-2"
         onClick={() => {
           updateFloodingFrequency('Occasional');
         }}
@@ -69,7 +69,7 @@ const RenderFloodingOptions = ({ flooding = [''] }) => {
       <Chip
         label="Frequent"
         color={flooding.includes('Frequent') ? 'primary' : 'secondary'}
-        className="m-2 drainageTag"
+        className="m-2"
         onClick={() => {
           updateFloodingFrequency('Frequent');
         }}
@@ -77,7 +77,7 @@ const RenderFloodingOptions = ({ flooding = [''] }) => {
       <Chip
         label="Very Frequent"
         color={flooding.includes('Very frequent') ? 'primary' : 'secondary'}
-        className="m-2 drainageTag"
+        className="m-2"
         onClick={() => {
           updateFloodingFrequency('Very frequent');
         }}

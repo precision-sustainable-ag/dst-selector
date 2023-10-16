@@ -67,7 +67,7 @@ const RenderDrainageClasses = ({ tilingCheck, drainage = [] }) => {
       <Chip
         label="Very Poorly Drained"
         color={drainageVal.includes(0) ? 'primary' : 'secondary'}
-        className="m-2 drainageTag"
+        className="m-2"
         onClick={() => {
           updateDrainageClass(0);
         }}
@@ -75,7 +75,7 @@ const RenderDrainageClasses = ({ tilingCheck, drainage = [] }) => {
       <Chip
         label="Poorly Drained"
         color={drainageVal.includes(1) ? 'primary' : 'secondary'}
-        className="m-2 drainageTag"
+        className="m-2"
         onClick={() => {
           updateDrainageClass(1);
         }}
@@ -83,7 +83,7 @@ const RenderDrainageClasses = ({ tilingCheck, drainage = [] }) => {
       <Chip
         label="Somewhat Poorly Drained"
         color={drainageVal.includes(2) ? 'primary' : 'secondary'}
-        className="m-2 drainageTag"
+        className="m-2"
         onClick={() => {
           updateDrainageClass(2);
         }}
@@ -91,7 +91,7 @@ const RenderDrainageClasses = ({ tilingCheck, drainage = [] }) => {
       <Chip
         label="Moderately Well Drained"
         color={drainageVal.includes(3) ? 'primary' : 'secondary'}
-        className="m-2 drainageTag"
+        className="m-2"
         onClick={() => {
           updateDrainageClass(3);
         }}
@@ -99,7 +99,7 @@ const RenderDrainageClasses = ({ tilingCheck, drainage = [] }) => {
       <Chip
         label="Well Drained"
         color={drainageVal.includes(4) ? 'primary' : 'secondary'}
-        className="m-2 drainageTag"
+        className="m-2"
         onClick={() => {
           updateDrainageClass(4);
         }}
@@ -107,7 +107,7 @@ const RenderDrainageClasses = ({ tilingCheck, drainage = [] }) => {
       <Chip
         label="Somewhat Excessively Drained"
         color={drainageVal.includes(5) ? 'primary' : 'secondary'}
-        className="m-2 drainageTag"
+        className="m-2"
         onClick={() => {
           updateDrainageClass(5);
         }}
@@ -115,7 +115,7 @@ const RenderDrainageClasses = ({ tilingCheck, drainage = [] }) => {
       <Chip
         label="Excessively Drained"
         color={drainageVal.includes(6) ? 'primary' : 'secondary'}
-        className="m-2 drainageTag"
+        className="m-2"
         onClick={() => {
           updateDrainageClass(6);
         }}
