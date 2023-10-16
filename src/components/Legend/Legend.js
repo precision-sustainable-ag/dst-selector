@@ -45,7 +45,6 @@ const Legend = ({ legendData, modal }) => (
                 : <FiberManualRecord style={{ marginLeft: '9px' }} className={`${item.className}`} />
               )
             }
-              {/* {modal && <FiberManualRecord style={{ marginLeft: '9px' }} className={`${item.className}`} />} */}
               <span style={{ paddingLeft: '1px' }}>{`${item.label}`}</span>
             </Typography>
           </Grid>
