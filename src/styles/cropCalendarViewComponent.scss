@@ -1,23 +1,6 @@
 @import '../../node_modules/sass-mediaqueries/media-queries';
 @import '../styles/constants.scss';
 
-// $cashCropGrowthWindowColorOLD: rgba(255, 12, 62, 0.5);
-// $cashCropGrowthWindowColor: linear-gradient(
-//   to bottom,
-//   rgba(240, 247, 235, 1) 4%,
-//   rgba(255, 12, 62, 0.5) 37%,
-//   rgba(255, 12, 62, 0.5) 37%,
-//   rgba(255, 12, 62, 0.5) 46%,
-//   rgba(255, 12, 62, 0.5) 53%,
-//   rgba(255, 12, 62, 0.5) 58%,
-//   rgba(255, 12, 62, 0.5) 64%,
-//   rgba(240, 247, 235, 1) 97%
-// );
-// $frostSeedingPossibleColor: #2f80ed;
-// $temperatureRiskToEstablishmentColor: #f2c94c;
-// $reliableEstablishmentColor: #2d7b7b;
-// $defaultLegendColor: #f0f7eb;
-
 .calendarViewTable {
   border-collapse: separate;
   border-spacing: 0;
@@ -26,59 +9,20 @@
 .calendarViewTable {
   tr {
     width: 100%;
-    // td:first-child {
-    //   border-right: 10px solid white;
-    // }
-    // border-top-left-radius: 10px;
-    // border-bottom-left-radius: 10px;
-    // border-radius: 10px;
-    // td:nth-child(1),
-    // td:nth-child(2) {
-    //   // border-right: 5px solid transparent;
-    // }
-    // td:nth-child(1) {
-    //   // width: 100vw !important;
-    //   // border-top-left-radius: 15px;
-    //   // border-bottom-left-radius: 15px;
-    // }
-    // td:last-child {
-    //   // border-left: 10px solid white;
-    //   // border-top-right-radius: 15px;
-    //   // border-bottom-right-radius: 15px;
-    // }
-    // td:nth-child(3),
-    // td:nth-child(4),
-    // td:nth-child(5),
-    // td:nth-child(6),
-    // td:nth-child(7),
-    // td:nth-child(8),
-    // td:nth-child(9),
-    // td:nth-child(10),
-    // td:nth-child(11),
-    // td:nth-child(12),
-    // td:nth-child(13) {
-    //   // border-right: 5px solid transparent;
-    // }
   }
 
   tbody {
     tr {
       max-height: 3em;
       td.calendarTableCell {
-        // max-height: 30px;
         padding-left: 0px;
         padding-bottom: 0px;
         padding-right: 0px;
         margin: 0;
-        // display: flex;
-        // flex-direction: row;
-        // align-items: center;
-        // justify-content: space-between;
         .tdContainer {
           max-height: 3em;
           overflow: hidden;
           border: 1px solid transparent;
-          // border-radius: 10px;
         }
         button {
           > span {
@@ -86,9 +30,6 @@
           }
         }
       }
-      //   td.legendColor {
-      //     background-color: $defaultLegendColor;
-      //   }
     }
   }
 }
@@ -118,152 +59,6 @@
         color: $hessianFlyFreeColor;
       }
     }
-    // font-weight: 800;
-  }
-}
-
-// td.overlayGrowthWindowCell {
-//   width: calc(100% / 12);
-//   &.overlayGrowthCell.cashCropLegendContainer {
-//     padding-top: 0px;
-//     padding-bottom: 0px;
-//     position: ABSOLUTE;
-//     z-index: 999;
-//     background: $cashCropGrowthWindowColor;
-//     width: calc(100% / 24);
-//     height: 100%;
-//     opacity: 0.3;
-//   }
-// }
-tr.overlay {
-  td.overlayGrowthWindowCell {
-    border-right: 0px;
-    position: absolute;
-  }
-}
-
-td.growthWindowCell {
-  position: relative;
-  &.cashCropLegendContainer {
-    &.linear {
-      div.legendContainer {
-        div.Reliable:after {
-          // background-color: transparent !important;
-          // opacity: 0.4;
-          z-index: -1;
-        }
-        div.Frost:after {
-          z-index: -1;
-        }
-        div.Temperature\/moisture:after {
-          z-index: -1;
-        }
-        div:after {
-          position: absolute;
-          content: '';
-          // top: 0;
-          // left: 0;
-          // width: 100%;
-          // height: 100%;
-          // background-image: url("/images/icons/window-point.jpg");
-          // opacity: 0.4;
-          background-size: cover;
-          background-repeat: no-repeat;
-          // height: 20px;
-          height: 147px;
-          width: 50%;
-
-          background-color: $cashCropGrowthWindowColor;
-          &.lastOfType {
-            height: 20px;
-          }
-        }
-      }
-    }
-    div.legendContainer {
-      div.Reliable:after {
-        // background-color: transparent !important;
-        // opacity: 0.4;
-        z-index: -1;
-      }
-      div.Frost:after {
-        z-index: -1;
-      }
-      div.Temperature\/moisture:after {
-        z-index: -1;
-      }
-      div:after {
-        position: absolute;
-        content: '';
-        // top: 0;
-        // left: 0;
-        // width: 100%;
-        height: 100%;
-        // background-image: url("/images/icons/window-point.jpg");
-        // opacity: 0.4;
-        background-size: cover;
-        background-repeat: no-repeat;
-        // height: 30px;
-        width: 50%;
-
-        background-color: $cashCropGrowthWindowColor;
-      }
-    }
-  }
-}
-// td {
-//   &.growthWindowCell {
-//     div.legendContainer.cashCropLegendContainer::after {
-//       content: "";
-//       position: absolute;
-//       top: 0;
-//       left: 0;
-//       width: 100%;
-//       height: 100%;
-//       background-color: rgba(0, 0, 0, 0.25);
-//     }
-//   }
-// }
-
-td.growthWindowCell {
-  // width: calc(100% / 12);
-  &.noBorderRightCond {
-    border-right: 2px solid white !important;
-  }
-  border-right: 0px !important;
-  //   background-color: $defaultLegendColor;
-  padding-right: 0px !important;
-  padding-left: 0px !important;
-  .legendContainer {
-    &.cashCropLegendContainer {
-      div {
-        //   BUG: check
-        // background: $cashCropGrowthWindowColor !important;
-        border-right: 1px solid white !important;
-      }
-    }
-    .earlyPart,
-    .midPart {
-      background-color: $defaultLegendColor;
-      &.Reliable {
-        background-color: $reliableEstablishmentColor !important;
-        border-right: 0px !important;
-      }
-      &.Frost {
-        background-color: $frostSeedingPossibleColor !important;
-        border-right: 0px !important;
-      }
-      &.Temperature\/moisture {
-        background-color: $temperatureRiskToEstablishmentColor !important;
-        border-right: 0px !important;
-      }
-    }
-    // .midPart {
-    //   background-color: $defaultLegendColor;
-    //   &.Reliable {
-    //     background-color: $reliableEstablishmentColor !important;
-    //   }
-    // }
   }
 }
 
@@ -277,22 +72,6 @@ td.growthWindowCell {
   // table
   table.table.calendarViewTable {
     margin-top: 2em;
-    // thead.tableHeadWrapper {
-    //   // > tr {
-    //   //   td:nth-child(1) {
-    //   //     width: 25% !important;
-    //   //   }
-    //   //   // td:nth-child(2) {
-    //   //   //   width: 15%;
-    //   //   // }
-    //   //   // td:nth-child(3) {
-
-    //   //   // }
-    //   //   td:last-of-type {
-    //   //     width: 10% !important;
-    //   //     max-width: 10% !important;
-    //   //   }
-    // }
     tbody {
       tr {
         td.calendarTableCell {
@@ -325,11 +104,6 @@ table.table th {
 
 tbody.calendarTableBodyWrapper {
   tr {
-    // &:first-child {
-    //   td {
-    //     // padding-top: 5px;
-    //   }
-    // }
     td {
       padding-bottom: 0px !important;
       vertical-align: middle;
@@ -347,8 +121,6 @@ thead.tableHeadWrapper {
         font-weight: 400;
       }
     }
-    // td {
-    // }
   }
 }
 
@@ -361,7 +133,6 @@ table.calendarViewTable {
             border-right: 5px solid white;
             border-bottom: 5px solid white;
             background-color: $darkGreen;
-            // border-right: 1px solid black;
           }
           &:nth-last-child(2) {
             &::after {
@@ -379,7 +150,6 @@ table.calendarViewTable {
           background-repeat: no-repeat;
           width: 100%;
 
-          // opacity: 0.8;
           z-index: -99;
         }
       }
@@ -389,10 +159,8 @@ table.calendarViewTable {
 
 th.calendarSecondHeadMonth.activeGrowthMonth {
   &.growthMonthSeparator {
-    // border-top: 5px solid white;
     &::after {
       border-right: 5px solid white;
-      // border-right: 1px solid black;
     }
   }
   &::after {
@@ -405,34 +173,6 @@ th.calendarSecondHeadMonth.activeGrowthMonth {
     background-repeat: no-repeat;
     width: 100%;
     background-color: $darkGreen;
-    // opacity: 0.8;
     z-index: -99;
   }
 }
-
-// .growthGradientEnd {
-//   background: linear-gradient(
-//     90deg,
-//     rgba(89, 132, 69, 1) 0%,
-//     rgba(171, 208, 128, 1) 50%,
-//     rgba(171, 208, 128, 1) 100%
-//   );
-// }
-
-// .growthGradientStart {
-//   background: linear-gradient(
-//     90deg,
-//     rgba(89, 132, 69, 1) 0%,
-//     rgba(171, 208, 128, 1) 50%,
-//     rgba(171, 208, 128, 1) 100%
-//   );
-// }
-// .growthGradientFull {
-//   background: linear-gradient(
-//     90deg,
-//     rgba(89, 132, 69, 1) 0%,
-//     rgba(89, 132, 69, 1) 50%,
-//     rgba(89, 132, 69, 1) 100%
-//   );
-//   // background: rgb(89, 132, 69);
-// }
