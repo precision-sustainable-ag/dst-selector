@@ -181,71 +181,71 @@ const Landing = () => {
           // backgroundSize: 'cover',
         }}
         mt={2}
-        mb={2}
       >
-        <Grid
-          container
-          item
-          direction="column"
-          alignItems="center"
-          justifyContent="center"
-          spacing={1}
-        >
-          <Grid item xs={12}>
-            <Typography variant="h4" gutterBottom align="center">
-              {`Welcome to the${councilLabelRedux ? ` ${councilLabelRedux}` : ''} Species Selector Tool`}
-            </Typography>
-          </Grid>
-          <Grid item xs={12}>
-            <Typography variant="h6">
-              Choose your state from the dropdown or the map. Then click next to enter the Species Selector or the Cover Crop Explorer
-            </Typography>
-          </Grid>
-          <Grid item xs={12}>
-            <FormControl
-              variant="filled"
-              sx={{ minWidth: 120 }}
-            >
-              <InputLabel>State</InputLabel>
-              <Select
-                variant="filled"
-                onChange={(e) => handleStateChange(e)}
-                value={selectedState?.shorthand || ''}
-              >
-
-                {allStates.length > 0 && allStates.map((st, i) => (
-                  <MenuItem value={st.shorthand} key={`Region${st}${i}`}>
-                    {st.label?.toUpperCase()}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid>
-        </Grid>
-
-        <Grid item>
-          <Box style={{
-            position: 'relative',
-            width: '80%',
-            maxWidth: '500px',
-            left: '50%',
-            transform: 'translateX(-50%)',
-            marginTop: '15px',
-            marginBottom: '15px',
-          }}
+        <Box mr={2} ml={2} mb={2} mt={2}>
+          <Grid
+            container
+            item
+            direction="column"
+            alignItems="center"
+            justifyContent="center"
+            spacing={1}
           >
-            <RegionSelectorMap
-              selectorFunction={setMapState}
-              selectedState={selectedState.label}
-              availableStates={availableStates}
-              initWidth="100%"
-              initHeight="350px"
-              initLon={-98}
-              initLat={43}
-              initStartZoom={2.3}
-            />
-          </Box>
-        </Grid>
+            <Grid item xs={12}>
+              <Typography variant="h4" gutterBottom align="center">
+                {`Welcome to the${councilLabelRedux ? ` ${councilLabelRedux}` : ''} Species Selector Tool`}
+              </Typography>
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant="h6">
+                Choose your state from the dropdown or the map
+              </Typography>
+            </Grid>
+            <Grid item xs={12} mb={2}>
+              <FormControl
+                variant="filled"
+                sx={{ minWidth: 120 }}
+              >
+                <InputLabel>State</InputLabel>
+                <Select
+                  variant="filled"
+                  onChange={(e) => handleStateChange(e)}
+                  value={selectedState?.shorthand || ''}
+                >
+
+                  {allStates.length > 0 && allStates.map((st, i) => (
+                    <MenuItem value={st.shorthand} key={`Region${st}${i}`}>
+                      {st.label?.toUpperCase()}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+          </Grid>
+        </Box>
+      </Grid>
+      <Grid item>
+        <Box style={{
+          position: 'relative',
+          width: '80%',
+          maxWidth: '500px',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          marginTop: '15px',
+          marginBottom: '15px',
+        }}
+        >
+          <RegionSelectorMap
+            selectorFunction={setMapState}
+            selectedState={selectedState.label}
+            availableStates={availableStates}
+            initWidth="100%"
+            initHeight="350px"
+            initLon={-98}
+            initLat={43}
+            initStartZoom={2.3}
+          />
+        </Box>
       </Grid>
     </Box>
   );

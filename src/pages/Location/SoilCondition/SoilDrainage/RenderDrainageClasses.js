@@ -62,7 +62,14 @@ const RenderDrainageClasses = ({ tilingCheck, drainage = [] }) => {
   };
 
   return (
-    <Grid container item spacing={2}>
+    <Grid
+      container
+      item
+      spacing={2}
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+    >
       {drainageArray.map((d, index) => (
         <Grid item key={index}>
           <Chip

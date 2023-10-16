@@ -3,7 +3,6 @@ import {
   List,
   ListItem,
   ListItemText,
-  Typography,
 } from '@mui/material';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -37,13 +36,10 @@ const PreviousCashCrop = () => {
         style={{ backgroundColor: cashCropOpen ? CustomStyles().lightGreen : 'inherit' }}
       >
 
-        <ListItemText primary="Cash Crop Growing Window" />
+        <ListItemText primary="CASH CROP GROWING WINDOW" />
         {cashCropOpen ? <ExpandLess /> : <ExpandMore />}
       </ListItem>
       <Collapse in={cashCropOpen} timeout="auto" unmountOnExit>
-        <Typography variant="body1" sx={{ paddingLeft: 3 }}>
-          Specify growing window by entering planting and harvest date.
-        </Typography>
         <List component="div">
           <ListItem sx={{ paddingLeft: 3 }}>
             <LocalizationProvider dateAdapter={AdapterDayjs}>

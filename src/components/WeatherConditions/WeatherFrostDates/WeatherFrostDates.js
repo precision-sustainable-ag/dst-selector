@@ -13,7 +13,14 @@ const WeatherFrostDates = () => {
   const weatherDataRedux = useSelector((stateRedux) => stateRedux.weatherData.weatherData);
 
   return (
-    <Grid container item>
+    <Grid
+      container
+      item
+      direction="column"
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+    >
       <Grid item xs={12}>
         <Typography variant="body1">
           <AcUnit />

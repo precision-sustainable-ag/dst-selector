@@ -307,7 +307,7 @@ const LocationComponent = () => {
         <Grid container item md={3} xs={12} justifyContent="center">
           <Grid item>
             <Typography variant="h4">
-              Where is your field located?
+              Field Location
             </Typography>
           </Grid>
 
