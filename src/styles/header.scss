@@ -1,24 +1,8 @@
 @import '../../node_modules/sass-mediaqueries/media-queries';
 @import '../styles/constants.scss';
 // General sizing
-$topHeaderMax: 16px;
-$bottomHeaderMax: 45px;
 $greenBarHeight: 50px;
 $greenBarSmallHeight: 30px;
-
-/*
-Logo components
-*/
-
-// $maxLogoWidth: 215px;
-$maxLogoWidth: 14em;
-$maxLogoHeight: 65px;
-
-/*
-Header Data components, which include date and weather data
-*/
-$dataComponentMaxWidth: 490px;
-$dataComponentMaxHeight: 50px;
 
 body,
 html {
@@ -26,24 +10,18 @@ html {
 }
 
 header {
-  // max-height: 25vh;
   .topHeader {
     padding: 2px;
     padding-top: 0;
-    // width: 574px;
-    // max-height: $topHeaderMax;
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-end;
-    // overflow: hidden;
     span.line {
       border-right: 1px solid black;
       margin-left: 1em;
       margin-right: 1em;
       position: relative;
       margin-top: 2px;
-      /* height: 100%; */
-      /* width: 100%; */
       width: 5px;
     }
     a {
@@ -65,54 +43,6 @@ header {
       }
       &:last-of-type::after {
         border-right: none;
-      }
-    }
-  }
-  .midHeader {
-    display: flex;
-    align-items: center;
-    padding-left: 10px;
-    .logoContainer {
-      background-image: url('~/public/images/neccc_wide_logo_color_web.jpg');
-      background-size: cover;
-      width: 319px;
-      height: 80px;
-      // overflow: hidden;
-    }
-    .dataComponents {
-      // max-width: $dataComponentMaxWidth;
-      width: 100%;
-      // max-height: $dataComponentMaxHeight;
-      // height: $dataComponentMaxHeight;
-      // width: $dataComponentMaxWidth;
-      padding-left: 9px;
-      display: flex;
-      justify-content: space-between;
-      span {
-        font-size: 16px;
-        padding-left: 7px;
-        padding-top: 4px;
-        padding-bottom: 2px;
-        font-weight: 400;
-        &:first-child {
-          letter-spacing: 0.15px;
-          font-size: 16px;
-          line-height: 24px;
-        }
-      }
-      div {
-        &.firstData {
-          display: flex;
-          flex-direction: column;
-          justify-content: flex-start;
-        }
-        &:first-child {
-          flex: 1 1 auto;
-          // padding-top: 10px;
-        }
-        &:last-of-type {
-          flex: 2 1 auto;
-        }
       }
     }
   }
@@ -170,58 +100,12 @@ header {
           color: white;
         }
       }
-      // font-weight: bold;
-    }
-  }
-}
-
-// .ham-navWrapper {
-//   display: none;
-// }
-
-// .ham-nav {
-//   padding: 1em;
-//   li {
-//     font-size: 1em;
-//     font-weight: 400;
-//     padding: 0.3em;
-//     &.active {
-//       background-color: #598443;
-//       color: white;
-//     }
-//   }
-// }
-
-// .navbar {
-//   box-shadow: none !important;
-// }
-
-@include mq($max-width: 1200px) {
-  .boxContainerRow {
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-    flex-direction: column;
-    div {
-      &:last-of-type {
-        div.leaflet-container {
-          height: 400px !important;
-        }
-      }
     }
   }
 }
 
 @include screen(641px, 1366px) {
   header {
-    div.midHeader {
-      div.dataComponents {
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        div {
-        }
-      }
-    }
     div.greenBarParent {
       div.greenBarWrapper {
         height: auto;
