@@ -1,3 +1,4 @@
+/* eslint-disable no-alert */
 /*
   This is the main location widget component
   styled using ../../styles/location.scss
@@ -94,6 +95,11 @@ const LocationComponent = () => {
   // update regionShorthandRef
   useEffect(() => {
     regionShorthandRef.current = regionShorthand;
+    if (regionShorthand) {
+      dispatchRedux(updateRegion({
+        regionShorthand,
+      }));
+    }
   }, [regionShorthand]);
 
   // set map initial lat lng
@@ -156,30 +162,33 @@ const LocationComponent = () => {
         snackOpen: true,
         snackMessage: 'Your location has been saved.',
       }));
-      callCoverCropApi(`https://phzmapi.org/${zipCode}.json`)
-        .then((response) => {
-          let { zone } = response;
+      if (councilShorthandRedux === 'MCCC') {
+        // if council is MCCC, change selectedRegion based on county
+        setRegionShorthand(county.replace(' County', ''));
+      } else {
+        callCoverCropApi(`https://phzmapi.org/${zipCode}.json`)
+          .then((response) => {
+            let { zone } = response;
 
-          if (zone !== '8a' && zone !== '8b') {
-            zone = zone.slice(0, -1);
-          }
+            if (zone !== '8a' && zone !== '8b') {
+              zone = zone.slice(0, -1);
+            }
 
-          if (selectedFieldIdRedux && selectedUserField.id === selectedFieldIdRedux && regionShorthandRedux) {
-            // if there exists available region from user history api, set it as user history value
-            setRegionShorthand(regionShorthandRedux);
-          } else if (councilShorthandRedux !== 'MCCC') {
-            setRegionShorthand(zone);
-          } else {
-            // if council is MCCC, change selectedRegion based on county
-            setRegionShorthand(county.replace(' County', ''));
-          }
-        })
-        .catch((err) => {
-          // eslint-disable-next-line no-console
-          console.log(err);
-          // for places where api didn't work, set region to default.
-          setRegionShorthand(regionsRedux[0].shorthand);
-        });
+            if (selectedFieldIdRedux && selectedUserField.id === selectedFieldIdRedux && regionShorthandRedux) {
+              // if there exists available region from user history api, set it as user history value
+              setRegionShorthand(regionShorthandRedux);
+            } else if (councilShorthandRedux !== 'MCCC') {
+              setRegionShorthand(zone);
+            }
+          })
+          .catch((err) => {
+            // eslint-disable-next-line max-len
+            alert(`Your location was not found. Please select a ${councilShorthandRedux === 'MCCC' ? 'county ' : 'zone '}or use the map to select a location.`);
+            // eslint-disable-next-line no-console
+            console.log(err);
+            // for places where api didn't work, set region to default.
+          });
+      }
     }
   }, [selectedToEditSite]);
 
@@ -278,10 +287,13 @@ const LocationComponent = () => {
   // update region and userFieldRedux when component will unmount
   useEffect(() => () => {
     const selectedRegion = regionsRedux.filter((region) => region.shorthand === regionShorthandRef.current)[0];
-    dispatchRedux(updateRegion({
-      regionId: selectedRegion.id,
-      regionShorthand: selectedRegion.shorthand,
-    }));
+
+    if (selectedRegion) {
+      dispatchRedux(updateRegion({
+        regionId: selectedRegion.id,
+        regionShorthand: selectedRegion.shorthand,
+      }));
+    }
     if (isAuthenticated) {
       getFields(accessTokenRedux).then((fields) => dispatchRedux(updateField(fields)));
       if (Object.keys(selectedUserFieldRef.current).length > 0) {

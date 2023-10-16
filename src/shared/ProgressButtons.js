@@ -11,6 +11,7 @@ const ProgressButtons = () => {
   const addressRedux = useSelector((stateRedux) => stateRedux.addressData.address);
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
+  const regionShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.regionShorthand);
   const [isDisabledBack, setIsDisabledBack] = useState(false);
   const [isDisabledNext, setIsDisabledNext] = useState(true);
   const [isDisabledRefresh, setIsDisabledRefresh] = useState(false);
@@ -18,7 +19,7 @@ const ProgressButtons = () => {
   const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
 
-  const disableLogic = (progress, goalsLength, sfilters) => {
+  const disableLogic = (progress, goalsLength, sfilters, regionShorthand) => {
     switch (parseInt(progress, 10)) {
       case 0:
         setIsDisabledBack(true);
@@ -28,7 +29,7 @@ const ProgressButtons = () => {
       case 1:
         // location selection state
         // TODO: discuss should sfilter be used here or state.lastZone
-        setIsDisabledNext(sfilters.zone === 0 || addressRedux === '');
+        setIsDisabledNext(sfilters.zone === 0 || addressRedux === '' || regionShorthand === '');
 
         setIsDisabledBack(false);
         setIsDisabledRefresh(false);
@@ -51,8 +52,8 @@ const ProgressButtons = () => {
   useEffect(() => {
     const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
     const sfilters = filterStateRedux[section];
-    disableLogic(progressRedux, selectedGoalsRedux.length, sfilters);
-  }, [filterStateRedux, selectedGoalsRedux, stateLabelRedux]);
+    disableLogic(progressRedux, selectedGoalsRedux.length, sfilters, regionShorthandRedux);
+  }, [filterStateRedux, selectedGoalsRedux, stateLabelRedux, regionShorthandRedux]);
 
   const renderProgressButtons = (progress, disabledBack, disabledNext, disabledRefresh) => {
     if (progress < 0) return '';

@@ -111,8 +111,8 @@ const Landing = ({ height, title, bg }) => {
 
           if (!regionIdRedux) {
             dispatchRedux(updateRegion({
-              regionId: fetchedRegions[0].id ?? '',
-              regionShorthand: fetchedRegions[0].shorthand ?? '',
+              regionId: '',
+              regionShorthand: '',
             }));
           }
         })
