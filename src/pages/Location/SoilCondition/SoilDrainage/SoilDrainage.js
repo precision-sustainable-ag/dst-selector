@@ -6,7 +6,6 @@ import { Button, Typography, Switch } from '@mui/material';
 import { LocalDrinkOutlined, InvertColors } from '@mui/icons-material';
 import { ReferenceTooltip } from '../../../../shared/constants';
 import arrayEquals from '../../../../shared/functions';
-import '../../../../styles/soilConditions.scss';
 import RenderDrainageClasses from './RenderDrainageClasses';
 import { updateDrainageClass as updateDrainageClassRedux } from '../../../../reduxStore/soilSlice';
 import MyCoverCropReset from '../../../../components/MyCoverCropReset/MyCoverCropReset';

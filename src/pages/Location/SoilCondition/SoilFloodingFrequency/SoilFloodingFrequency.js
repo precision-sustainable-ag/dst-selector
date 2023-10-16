@@ -4,7 +4,6 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { ReferenceTooltip } from '../../../../shared/constants';
 import arrayEquals from '../../../../shared/functions';
-import '../../../../styles/soilConditions.scss';
 import RenderFloodingOptions from './RenderFloodingOptions';
 import { updateFloodingFrequency } from '../../../../reduxStore/soilSlice';
 

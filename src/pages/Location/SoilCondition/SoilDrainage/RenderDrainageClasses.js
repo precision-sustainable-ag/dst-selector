@@ -1,7 +1,6 @@
 import { Chip } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import '../../../../styles/soilConditions.scss';
 import { updateDrainageClass as updateDrainageClassRedux } from '../../../../reduxStore/soilSlice';
 
 const RenderDrainageClasses = ({ tilingCheck, drainage = [] }) => {
