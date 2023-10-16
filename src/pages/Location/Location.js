@@ -241,6 +241,7 @@ const LocationComponent = () => {
             });
 
           // call the frost url and then set averagePrecipitationForCurrentMonth in store
+          // TODO annual and monthly are the same
           callCoverCropApi(averageRainForAMonthURL)
             .then((rainResp) => {
               let averagePrecipitationForCurrentMonth = rainResp[0]['sum(precipitation)/5'];
