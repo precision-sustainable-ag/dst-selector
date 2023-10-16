@@ -27,7 +27,7 @@ import {
 import CropDetailsModal from '../../../components/CropDetailsModal/CropDetailsModal';
 import CropCard from '../../../components/CropCard/CropCard';
 
-const MyCoverCropComparison = () => {
+const MyCoverCropComparisonTable = () => {
   const dispatchRedux = useDispatch();
 
   // redux vars
@@ -162,7 +162,7 @@ const MyCoverCropComparison = () => {
     }
 
     return (
-      <TableCell align="center">
+      <TableCell align="center" key={index}>
         {extractData(attribute, 'comparisonTable')}
       </TableCell>
     );
@@ -183,9 +183,9 @@ const MyCoverCropComparison = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
+          {rows.map((row, index) => (
             <TableRow
-              key={row.name}
+              key={`${row.comparisonKey} ${index}`}
             >
               {buildTableRows(row)}
             </TableRow>
@@ -196,4 +196,4 @@ const MyCoverCropComparison = () => {
   );
 };
 
-export default MyCoverCropComparison;
+export default MyCoverCropComparisonTable;

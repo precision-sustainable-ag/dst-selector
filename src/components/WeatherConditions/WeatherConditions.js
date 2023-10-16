@@ -233,7 +233,7 @@ const WeatherConditions = () => {
             maxWidth: '450px',
             left: '50%',
             transform: 'translateX(-50%)',
-            marginTop: '5%',
+            marginTop: '10%',
             marginBottom: '1%',
           }}
         >
