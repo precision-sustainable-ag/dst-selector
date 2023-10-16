@@ -98,8 +98,10 @@ const Tip = ({ filter }) => (
       </>
       )}
   >
-    {filter.name}
-    <HelpOutlineIcon style={{ cursor: 'pointer', transform: 'scale(0.7)' }} />
+    <>
+      {filter.name}
+      <HelpOutlineIcon style={{ cursor: 'pointer', transform: 'scale(0.7)' }} />
+    </>
   </Tooltip>
 ); // Tip
 
@@ -136,7 +138,7 @@ const Filters = ({ filters }) => {
       {filters.values.map((filter, i) => {
         if (filter.dataType === 'string') {
           return (
-            <Grid container item spacing={1}>
+            <Grid container item spacing={1} key={i}>
               <Grid item key={i} xs={12}>
                 <Tip filter={filter} />
               </Grid>
@@ -147,8 +149,8 @@ const Filters = ({ filters }) => {
           );
         }
         return (
-          <Grid container item spacing={1}>
-            <Grid item key={i} xs={12}>
+          <Grid container item spacing={1} key={i}>
+            <Grid item xs={12}>
               <Tip filter={filter} />
             </Grid>
             <Grid item xs={12}>

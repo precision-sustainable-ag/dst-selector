@@ -28,7 +28,9 @@ const AuthModal = ({ modalOpen, setModalOpen, setConsentModalOpen }) => {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 400,
+    maxWidth: '80%',
+    marginTop: '15px',
+    marginBottom: '15px',
     bgcolor: 'background.paper',
     border: '2px solid #000',
     boxShadow: 24,
@@ -50,17 +52,15 @@ const AuthModal = ({ modalOpen, setModalOpen, setConsentModalOpen }) => {
     && (
     <Modal
       open={modalOpen}
-      aria-labelledby="modal-modal-title"
-      aria-describedby="modal-modal-description"
+      closeAfterTransition
+      onClose={handleModal}
     >
       <Box sx={style}>
-        <Typography id="modal-modal-title" variant="h6" component="h2">
+        <Typography variant="h6" component="h2">
           Login to try out our new user history feature?
         </Typography>
         <Typography variant="body">
-          <p>
-            We will not share your data.
-          </p>
+          We will not share your data.
         </Typography>
         <Grid container spacing={1}>
           <Grid item>
