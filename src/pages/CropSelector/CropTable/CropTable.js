@@ -5,13 +5,11 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  Box,
   Button,
   CircularProgress,
   FormControl,
   InputLabel,
   MenuItem,
-  Modal,
   Select,
   Table,
   TableBody,
@@ -22,7 +20,7 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material';
-import { AddCircle, Sort } from '@mui/icons-material';
+import { Sort } from '@mui/icons-material';
 import {
   CustomStyles, sortCrops, sudoButtonStyle, getLegendDataBasedOnCouncil,
 } from '../../../shared/constants';
@@ -47,7 +45,6 @@ const CropTableComponent = ({
   // useState vars
   const [modalOpen, setModalOpen] = useState(false);
   const [modalData, setModalData] = useState({});
-  const [legendModal, setLegendModal] = useState(false);
   const [tbodyHeight, setTbodyHeight] = useState(0);
   const [theadHeight, setTheadHeight] = useState(0);
   const [sortAlgo, setSortAlgo] = React.useState('');
@@ -72,10 +69,6 @@ const CropTableComponent = ({
   const handleModalOpen = (crop) => {
     setModalData(crop);
     setModalOpen(true);
-  };
-
-  const handleLegendModal = () => {
-    setLegendModal(!legendModal);
   };
 
   const updateActiveCropDataAction = (activeShadowValue) => {
@@ -151,12 +144,13 @@ const CropTableComponent = ({
               <TableCell
                 style={{
                   backgroundColor: 'white',
-                  color: 'white',
-                  visibility: 'hidden',
                 }}
                 colSpan="2"
               >
-                blank
+                <Legend
+                  legendData={legendData}
+                  modal
+                />
               </TableCell>
 
               {selectedGoalsRedux.length > 0 && (
@@ -188,43 +182,7 @@ const CropTableComponent = ({
                   textAlign: 'center',
                   borderRight: '5px solid white',
                 }}
-              >
-                <Button
-                  startIcon={<AddCircle />}
-                  onClick={handleLegendModal}
-                  style={{ color: '#000' }}
-                >
-                  {' '}
-                  <Typography variant="body2">LEGEND</Typography>
-                </Button>
-                <Modal
-                  open={legendModal}
-                  onClose={handleLegendModal}
-                  sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <Box
-                    className="modalLegendPaper"
-                    sx={{
-                      backgroundColor: 'background.paper',
-                      border: '2px solid #000',
-                      boxShadow: 5,
-                      padding: '1em',
-                      width: '30%',
-                    }}
-                  >
-                    <Legend
-                      handleLegendModal={handleLegendModal}
-                      legendData={legendData}
-                      modal
-                    />
-                  </Box>
-
-                </Modal>
-              </TableCell>
+              />
               {selectedGoalsRedux.length > 0 && (
                 <TableCell
                   colSpan={selectedGoalsRedux.length}
