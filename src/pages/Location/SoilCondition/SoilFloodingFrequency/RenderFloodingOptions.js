@@ -37,7 +37,6 @@ const RenderFloodingOptions = ({ flooding = [''] }) => {
     <Grid
       container
       spacing={2}
-      // direction="column"
       display="flex"
       justifyContent="center"
       alignItems="center"
