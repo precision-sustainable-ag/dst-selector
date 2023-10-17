@@ -50,38 +50,7 @@ const RenderCrops = ({
               paddingBottom: '0px',
             }}
           >
-            <div className="tdContainer d-flex justify-content-between flex-nowrap">
-              {crop ? (
-                <Button
-                  size="small"
-                  onClick={() => {
-                    setModalData(crop);
-                    setModalOpen(!modalOpen);
-                  }}
-                >
-                  <CropImage
-                    view="calendar"
-                    present
-                    src={
-                          crop.thumbnail
-                            ? crop.thumbnail
-                            : 'https://placehold.it/100x100'
-                        }
-                    alt={crop.label}
-                  />
-                </Button>
-              ) : (
-                <Button
-                  size="small"
-                  onClick={() => {
-                    setModalData(crop);
-                    setModalOpen(!modalOpen);
-                  }}
-                >
-                  <CropImage view="calendar" present={false} />
-                </Button>
-              )}
-
+            {crop ? (
               <Button
                 size="small"
                 onClick={() => {
@@ -89,11 +58,40 @@ const RenderCrops = ({
                   setModalOpen(!modalOpen);
                 }}
               >
-                {crop.label !== 'Sorghum-sudangrass'
-                  ? flipCoverCropName(crop.label)
-                  : trimString(flipCoverCropName(crop.label), 15)}
+                <CropImage
+                  view="calendar"
+                  present
+                  src={
+                          crop.thumbnail
+                            ? crop.thumbnail
+                            : 'https://placehold.it/100x100'
+                        }
+                  alt={crop.label}
+                />
               </Button>
-            </div>
+            ) : (
+              <Button
+                size="small"
+                onClick={() => {
+                  setModalData(crop);
+                  setModalOpen(!modalOpen);
+                }}
+              >
+                <CropImage view="calendar" present={false} />
+              </Button>
+            )}
+
+            <Button
+              size="small"
+              onClick={() => {
+                setModalData(crop);
+                setModalOpen(!modalOpen);
+              }}
+            >
+              {crop.label !== 'Sorghum-sudangrass'
+                ? flipCoverCropName(crop.label)
+                : trimString(flipCoverCropName(crop.label), 15)}
+            </Button>
           </TableCell>
           {selectedGoalsRedux.length > 0 && (
           <TableCell

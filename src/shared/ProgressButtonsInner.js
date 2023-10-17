@@ -34,16 +34,6 @@ const ProgressButtonsInner = ({
   return (
     <Stack
       direction="row"
-      ml={
-        progressRedux === 0
-          ? {
-            xs: '13%', sm: '30%', md: '30%', lg: '375%', xl: '380%',
-          }
-          : {
-            xs: '13%', sm: '30%', md: '33%', lg: '10%',
-          }
-      }
-      // container
       style={{ width: '100%' }}
     >
       <LightButton

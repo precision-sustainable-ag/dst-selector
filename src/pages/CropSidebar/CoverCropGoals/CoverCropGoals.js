@@ -79,7 +79,7 @@ const CoverCropGoals = () => {
               <ListItemText disableTypography>
                 <Typography
                   variant="button"
-                  className="text-uppercase text-left text-danger font-weight-bold"
+                  sx={{ color: 'red' }}
                   onClick={() => changeProgress()}
                   style={{ cursor: 'pointer' }}
                 >

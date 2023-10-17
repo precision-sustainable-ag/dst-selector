@@ -8,7 +8,7 @@
 */
 
 import {
-  Button, List, ListItem, ListItemText, ListSubheader,
+  Button, List, ListItem, ListItemText,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -67,7 +67,6 @@ const ComparisonBar = ({
   const showAllVariables = () => {
     setGoalsOpen(true);
     const theGoals = [];
-    theGoals.push('Cover Crop Group');
     const filteredGoals = goals.map((goal) => ({
       name: goal,
       selected: true,
@@ -114,20 +113,6 @@ const ComparisonBar = ({
     <List
       component="nav"
       aria-labelledby="nested-list-subheader"
-      subheader={(
-        <ListSubheader
-          sx={{
-            backgroundColor: '#add08f',
-            color: 'black',
-            textAlign: 'center',
-            height: '50px',
-          }}
-          component="div"
-          id="nested-list-subheader"
-        >
-          COMPARE BY
-        </ListSubheader>
-      )}
       sx={{
         width: '100%',
       }}
@@ -138,8 +123,7 @@ const ComparisonBar = ({
             primary={(
               <Button
                 size="small"
-                style={{ marginBottom: '-15px' }}
-                className="text-uppercase text-left text-danger font-weight-bold"
+                style={{ marginBottom: '-15px', color: 'red' }}
                 onClick={resetAllFilters}
               >
                 Clear Variables
@@ -152,7 +136,7 @@ const ComparisonBar = ({
       <ListItem>
         <ListItemText
           primary={(
-            <Button size="small" className="text-uppercase text-left" onClick={showAllVariables}>
+            <Button size="small" onClick={showAllVariables}>
               Show All
             </Button>
           )}

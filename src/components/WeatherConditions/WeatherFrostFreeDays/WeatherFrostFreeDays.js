@@ -13,15 +13,23 @@ const WeatherFrostFreeDays = () => {
   const weatherDataRedux = useSelector((stateRedux) => stateRedux.weatherData.weatherData);
 
   return (
-    <Grid style={{ marginTop: '1rem', marginLeft: '1rem' }}>
-      <Grid item>
-        <Typography variant="body1" className="font-weight-bold text-uppercase text-left">
+    <Grid
+      container
+      item
+      direction="column"
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+    >
+      <Grid item xs={12}>
+        <Typography variant="body1">
           <WbSunnyOutlined />
             &nbsp; Average Frost Free Days &nbsp;
           {' '}
           <Tooltip
             arrow
             placement="right"
+            enterTouchDelay={0}
             title={(
               <div>
                 Number of days in your growing season, based on the PSA Weather API using data from the
@@ -38,7 +46,7 @@ const WeatherFrostFreeDays = () => {
       </Grid>
 
       <Grid item>
-        <Typography variant="body1" className="text-left">
+        <Typography variant="body1">
           <Opacity style={{ color: 'transparent' }} />
             &nbsp;
           {' '}

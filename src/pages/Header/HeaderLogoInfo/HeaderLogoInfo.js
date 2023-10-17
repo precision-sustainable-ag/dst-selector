@@ -7,7 +7,6 @@ import { useHistory } from 'react-router-dom';
 import { reset } from '../../../reduxStore/store';
 import '../../../styles/header.scss';
 import DateComponent from '../DateComponent/DateComponent';
-import ForecastComponent from '../ForecastComponent/ForecastComponent';
 import { setMyCoverCropReset } from '../../../reduxStore/sharedSlice';
 
 const HeaderLogoInfo = () => {
@@ -52,20 +51,22 @@ const HeaderLogoInfo = () => {
   }, [councilLabelRedux]);
 
   return (
-    <Grid lg={12} item container alignItems="center" sx={{ height: '150px', padding: '0', margin: '0' }}>
+    <Grid item container alignItems="center" sx={{ height: '150px' }} mb={2}>
 
-      <Grid item lg={1} md={1} sm={12} xs={12}>
-
+      <Grid item lg={1} md={1} sm={1} xs={1}>
         <Box
           padding={0}
           margin={0}
           component="div"
+          direction="column"
+          alignItems="center"
+          justifyContent="center"
           sx={{
             position: 'relative',
             height: 'auto',
             marginRight: '10px',
             '@media (max-width: 768px)': {
-              width: '80px', /* small screens */
+              width: '120px', /* small screens */
             },
             '@media (min-width: 769px) and (max-width: 1024px)': {
               width: '120px', /*  medium screens */
@@ -96,27 +97,15 @@ const HeaderLogoInfo = () => {
           </button>
         </Box>
       </Grid>
-      <Grid item lg={4} md={4} sm={12} xs={12} sx={{ marginLeft: '120px' }}>
-        <div className="d-flex align-items-center text-left">
-          <div>
-            <Typography variant="body1" className="font-weight-bold">
-              Cover Crop Decision Support Tools
-            </Typography>
-            <Typography variant="body1">
-              <DateComponent />
-            </Typography>
-          </div>
-        </div>
-      </Grid>
 
-      <Grid item lg={3} md={4} sm={12} xs={12}>
-        <div className="d-flex align-items-center">
-          <div>
-            <ForecastComponent />
-          </div>
-        </div>
+      <Grid item lg={4} md={4} sm={6} xs={12} sx={{ marginLeft: '120px' }}>
+        <Typography variant="h5">
+          Cover Crop Decision Support Tools
+        </Typography>
+        <Typography variant="body1">
+          <DateComponent />
+        </Typography>
       </Grid>
-
     </Grid>
   );
 };

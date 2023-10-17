@@ -126,9 +126,7 @@ const ForecastComponent = () => {
         {Number(temp.min.toFixed(1))}
         &nbsp;
         {temp.unit}
-        <span className="ml-2">
-          <ReferenceTooltip source="openweathermap.org" url="https://openweathermap.org/" />
-        </span>
+        <ReferenceTooltip source="openweathermap.org" url="https://openweathermap.org/" />
       </>
     );
   }

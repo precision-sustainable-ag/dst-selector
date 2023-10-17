@@ -1,7 +1,6 @@
-import { Chip } from '@mui/material';
+import { Chip, Grid } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import '../../../../styles/soilConditions.scss';
 import { updateDrainageClass as updateDrainageClassRedux } from '../../../../reduxStore/soilSlice';
 
 const RenderDrainageClasses = ({ tilingCheck, drainage = [] }) => {
@@ -63,64 +62,26 @@ const RenderDrainageClasses = ({ tilingCheck, drainage = [] }) => {
   };
 
   return (
-    <div className="text-left">
-      <Chip
-        label="Very Poorly Drained"
-        color={drainageVal.includes(0) ? 'primary' : 'secondary'}
-        className="m-2 drainageTag"
-        onClick={() => {
-          updateDrainageClass(0);
-        }}
-      />
-      <Chip
-        label="Poorly Drained"
-        color={drainageVal.includes(1) ? 'primary' : 'secondary'}
-        className="m-2 drainageTag"
-        onClick={() => {
-          updateDrainageClass(1);
-        }}
-      />
-      <Chip
-        label="Somewhat Poorly Drained"
-        color={drainageVal.includes(2) ? 'primary' : 'secondary'}
-        className="m-2 drainageTag"
-        onClick={() => {
-          updateDrainageClass(2);
-        }}
-      />
-      <Chip
-        label="Moderately Well Drained"
-        color={drainageVal.includes(3) ? 'primary' : 'secondary'}
-        className="m-2 drainageTag"
-        onClick={() => {
-          updateDrainageClass(3);
-        }}
-      />
-      <Chip
-        label="Well Drained"
-        color={drainageVal.includes(4) ? 'primary' : 'secondary'}
-        className="m-2 drainageTag"
-        onClick={() => {
-          updateDrainageClass(4);
-        }}
-      />
-      <Chip
-        label="Somewhat Excessively Drained"
-        color={drainageVal.includes(5) ? 'primary' : 'secondary'}
-        className="m-2 drainageTag"
-        onClick={() => {
-          updateDrainageClass(5);
-        }}
-      />
-      <Chip
-        label="Excessively Drained"
-        color={drainageVal.includes(6) ? 'primary' : 'secondary'}
-        className="m-2 drainageTag"
-        onClick={() => {
-          updateDrainageClass(6);
-        }}
-      />
-    </div>
+    <Grid
+      container
+      item
+      spacing={2}
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+    >
+      {drainageArray.map((d, index) => (
+        <Grid item key={index}>
+          <Chip
+            label={d}
+            color={drainageVal.includes(index) ? 'primary' : 'secondary'}
+            onClick={() => {
+              updateDrainageClass(index);
+            }}
+          />
+        </Grid>
+      ))}
+    </Grid>
   );
 };
 
