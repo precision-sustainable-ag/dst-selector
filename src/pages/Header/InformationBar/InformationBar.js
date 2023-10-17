@@ -8,6 +8,8 @@ import {
   Button, Grid,
 } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { useTheme } from '@mui/material/styles';
 import { LocationOn } from '@mui/icons-material';
 import CloudIcon from '@mui/icons-material/Cloud';
 import CheckIcon from '@mui/icons-material/Check';
@@ -21,6 +23,12 @@ const speciesSelectorToolName = '/';
 
 const InformationBar = ({ pathname }) => {
   const dispatchRedux = useDispatch();
+
+  // used to know if the user is in mobile mode
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
+  // redux vars
   const addressRedux = useSelector((stateRedux) => stateRedux.addressData.address);
   const zoneRedux = useSelector((stateRedux) => stateRedux.addressData.zone);
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
@@ -147,7 +155,7 @@ const InformationBar = ({ pathname }) => {
           container
         >
           {
-            progressRedux > 0
+            (progressRedux > 0 && !isMobile)
             && (
             <Grid item container xs={12} sm={12} md={12} lg={9.5}>
               <Grid item xs={12} sm={6} md={6} lg={2.5}>

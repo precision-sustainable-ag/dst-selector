@@ -44,7 +44,7 @@ const ToggleOptions = ({ pathname }) => {
       <Button size="large" component={NavLink} onClick={() => openMyCoverCropReset('selector')} exact to="/" activeClassName="active">
         SPECIES SELECTOR TOOL
       </Button>
-      <Tooltip title={(stateLabelRedux === null) ? 'You must select a state before using the Cover Crop Explorer' : ''}>
+      <Tooltip title={(stateLabelRedux === null) ? 'You must select a state before using the Cover Crop Explorer' : ''} enterTouchDelay={0}>
         <span>
           <Button
             className={(pathname === '/explorer' && speciesSelectorActivationFlagRedux) ? 'active' : ''}
