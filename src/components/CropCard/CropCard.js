@@ -84,7 +84,7 @@ const CropCard = ({
       </CardContent>
       <CardActionArea
         id={`cartBtn${index}`}
-        style={{
+        sx={{
           backgroundColor: selectedBtns.includes(crop.id) ? '#2b7b79' : '#e3f2f4',
           color: selectedBtns.includes(crop.id) ? 'white' : 'black',
           textAlign: 'center',
