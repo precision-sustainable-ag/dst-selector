@@ -33,7 +33,6 @@ import { setMyCoverCropReset } from '../../reduxStore/sharedSlice';
 import { reset } from '../../reduxStore/store';
 
 const Header = () => {
-  const [pathname, setPathname] = useState('/');
   const history = useHistory();
   const dispatchRedux = useDispatch();
   const { isAuthenticated, getAccessTokenSilently } = useAuth0();
@@ -62,6 +61,7 @@ const Header = () => {
   // useState vars
   const [authModalOpen, setAuthModalOpen] = useState(true);
   const [consentModalOpen, setConsentModalOpen] = useState(false);
+  const [pathname, setPathname] = useState('/');
 
   // height var
   let headerHeight = '100px';
