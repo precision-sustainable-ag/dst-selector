@@ -15,7 +15,6 @@ import CloudIcon from '@mui/icons-material/Cloud';
 import CheckIcon from '@mui/icons-material/Check';
 import FilterHdrIcon from '@mui/icons-material/FilterHdr';
 import React from 'react';
-import '../../../styles/greenBar.scss';
 import ProgressButtons from '../../../shared/ProgressButtons';
 import { gotoProgress } from '../../../reduxStore/sharedSlice';
 
@@ -121,14 +120,11 @@ const InformationBar = ({ pathname }) => {
 
     return (
       <Button
-        className={((type === 'location' && progressRedux > 0)
-        || (type === 'soil' && progressRedux > 1)
-        || (type === 'weather' && progressRedux > 2)
-        || (type === 'goals' && progressRedux > 3)) ? 'greenbarBtn' : 'greenbarBtn2'}
         onClick={() => handleBtnClick(type)}
         style={{
           borderRadius: '200px',
-          margin: '5px',
+          color: 'black',
+          width: '100%',
           background:
             ((type === 'location' && progressRedux > 0)
             || (type === 'soil' && progressRedux > 1)
@@ -136,28 +132,29 @@ const InformationBar = ({ pathname }) => {
             || (type === 'goals' && progressRedux > 3)) && '#e3f2f4',
         }}
       >
-        <span
-          style={{
-            color: 'black',
-          }}
-        >
-          {getIconInfo(type)}
-        </span>
+        {getIconInfo(type)}
       </Button>
     );
   };
 
   return (
-    <div className="greenBarParent" id="greenBarParent">
-      <div className="greenBarWrapper">
-        {pathname === speciesSelectorToolName && (
-        <Grid
-          container
-        >
-          {
+    pathname === speciesSelectorToolName && (
+    <Grid
+      container
+      item
+      sx={{
+        backgroundColor: '#598445',
+        marginTop: '7px',
+        marginBottom: '7px',
+      }}
+      alignItems="center"
+      justifyContent="center"
+      xs={12}
+    >
+      {
             (progressRedux > 0 && !isMobile)
             && (
-            <Grid item container xs={12} sm={12} md={12} lg={9.5}>
+            <Grid item container xs={12} sm={12} md={12} lg={9.5} spacing={1}>
               <Grid item xs={12} sm={6} md={6} lg={2.5}>
                 {getData('location')}
               </Grid>
@@ -174,19 +171,21 @@ const InformationBar = ({ pathname }) => {
             )
           }
 
-          <Grid
-            item
-            xs={12}
-            sm={12}
-            md={12}
-            lg={2.5}
-          >
-            <ProgressButtons />
-          </Grid>
-        </Grid>
-        )}
-      </div>
-    </div>
+      <Grid
+        container
+        item
+        sx={{
+          backgroundColor: '#598445',
+        }}
+        alignItems="center"
+        justifyContent="center"
+        xs={12}
+        lg={2.5}
+      >
+        <ProgressButtons />
+      </Grid>
+    </Grid>
+    )
   );
 };
 

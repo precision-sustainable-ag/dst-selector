@@ -116,12 +116,11 @@ const RenderCrops = ({
             <LightButton
               id={`cartBtn${index}`}
               style={{
+                backgroundColor: selectedBtns.includes(crop.id) ? '#2b7b79' : '#e3f2f4',
+                color: selectedBtns.includes(crop.id) ? 'white' : 'black',
                 borderRadius: '0px',
                 width: '130px',
               }}
-              className={
-                    selectedBtns.includes(crop.id) ? 'activeCartBtn' : 'inactiveCartBtn'
-                  }
               onClick={() => {
                 addCropToBasket(
                   crop.id,
@@ -134,7 +133,7 @@ const RenderCrops = ({
                 );
               }}
             >
-              {selectedBtns.includes(crop.id) ? 'ADDED' : 'ADD TO LIST'}
+              {selectedBtns.includes(crop.id) ? 'REMOVE' : 'ADD TO LIST'}
             </LightButton>
           </TableCell>
         </TableRow>
