@@ -6,6 +6,8 @@
 */
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
+// import useMediaQuery from '@mui/material/useMediaQuery';
+// import { useTheme } from '@mui/material/styles';
 import CropCard from '../../../components/CropCard/CropCard';
 import CropDetailsModal from '../../../components/CropDetailsModal/CropDetailsModal';
 
@@ -15,17 +17,20 @@ const MyCoverCropCards = ({ crop, cardNo }) => {
   const [modalData, setModalData] = useState({});
   const dispatchRedux = useDispatch();
 
+  // used to know if the user is in mobile mode
+  // const theme = useTheme();
+  // const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
   const handleModalOpen = () => {
     setModalData(crop);
     setModalOpen(true);
   };
 
   return (
-    <div className={`${cardNo === 1 ? 'pl-0 pr-2 pt-2 pb-2' : 'p-2'}`}>
+    <>
       <CropCard
         crop={crop}
         index={cardNo}
-        type="cropList"
         handleModalOpen={handleModalOpen}
         dispatchRedux={dispatchRedux}
       />
@@ -35,7 +40,7 @@ const MyCoverCropCards = ({ crop, cardNo }) => {
         setModalOpen={setModalOpen}
         crop={modalData}
       />
-    </div>
+    </>
   );
 };
 

@@ -2,11 +2,12 @@
 
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Button, Typography, Switch } from '@mui/material';
+import {
+  Button, Typography, Switch, Grid,
+} from '@mui/material';
 import { LocalDrinkOutlined, InvertColors } from '@mui/icons-material';
 import { ReferenceTooltip } from '../../../../shared/constants';
 import arrayEquals from '../../../../shared/functions';
-import '../../../../styles/soilConditions.scss';
 import RenderDrainageClasses from './RenderDrainageClasses';
 import { updateDrainageClass as updateDrainageClassRedux } from '../../../../reduxStore/soilSlice';
 import MyCoverCropReset from '../../../../components/MyCoverCropReset/MyCoverCropReset';
@@ -51,9 +52,16 @@ const SoilDrainage = () => {
   };
 
   return (
-    <div className="col-12 pt-2 mt-2 row">
-      <div className="col-12">
-        <Typography variant="body1" className="soilConditionSubHeader">
+    <Grid
+      container
+      item
+      direction="column"
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+    >
+      <Grid item xs={12}>
+        <Typography variant="body1">
           <LocalDrinkOutlined />
             &nbsp;DRAINAGE CLASS &nbsp;
           <ReferenceTooltip
@@ -89,11 +97,10 @@ const SoilDrainage = () => {
               )}
           />
         </Typography>
-      </div>
-      {!arrayEquals(soilDataOriginalRedux?.drainageClass, soilDataRedux?.drainageClass) && (
-      <div className="col-12 pt-2">
-        <div className="col-12 row">
-          <div className="col text-left">
+      </Grid>
+      <Grid item xs={12}>
+        {!arrayEquals(soilDataOriginalRedux?.drainageClass, soilDataRedux?.drainageClass) && (
+          <Grid item xs={12}>
             <Button
               size="small"
               onClick={() => {
@@ -101,24 +108,25 @@ const SoilDrainage = () => {
               }}
             >
               <Typography
-                className="text-danger text-uppercase font-weight-bold"
+                sx={{
+                  color: 'red',
+                }}
                 variant="button"
               >
                 Values changed, reset?
               </Typography>
             </Button>
-          </div>
-        </div>
-      </div>
-      )}
-      <div className="col-12">
-        <RenderDrainageClasses tilingCheck={tilingCheck} drainage={soilDataRedux?.drainageClass} />
-      </div>
-      <MyCoverCropReset handleConfirm={handleConfirm} setHandleConfirm={setHandleConfirm} />
-      {showTiling && (
-        <div className="col-12 pt-2 mt-2 row">
-          <div className="col-12">
-            <Typography variant="body1" className="soilConditionSubHeader">
+          </Grid>
+        )}
+        <Grid item xs={12}>
+          <RenderDrainageClasses tilingCheck={tilingCheck} drainage={soilDataRedux?.drainageClass} />
+        </Grid>
+        <MyCoverCropReset handleConfirm={handleConfirm} setHandleConfirm={setHandleConfirm} />
+
+        {showTiling && (
+        <Grid item container>
+          <Grid item xs={12}>
+            <Typography variant="body1">
               <InvertColors />
               &nbsp;TILING &nbsp;
               <ReferenceTooltip
@@ -126,27 +134,26 @@ const SoilDrainage = () => {
                 content="Indicate if the field of interest has tile installed. If you have selected very poorly to somewhat poorly drained soils, selecting “yes” will increase your drainage class by one factor."
               />
             </Typography>
-          </div>
-          <div className="col-12 pt-2">
-            <div className="pl-1 text-left">
-              <Typography variant="body1" display="inline">
-                NO
-              </Typography>
-              <Switch
-                checked={tilingCheck}
-                onChange={() => {
-                  setTilingCheck(!tilingCheck);
-                }}
-                name="checkedC"
-              />
-              <Typography variant="body1" display="inline">
-                YES
-              </Typography>
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
+          </Grid>
+          <Grid item>
+            <Typography variant="body1" display="inline">
+              NO
+            </Typography>
+            <Switch
+              checked={tilingCheck}
+              onChange={() => {
+                setTilingCheck(!tilingCheck);
+              }}
+              name="checkedC"
+            />
+            <Typography variant="body1" display="inline">
+              YES
+            </Typography>
+          </Grid>
+        </Grid>
+        )}
+      </Grid>
+    </Grid>
   );
 };
 

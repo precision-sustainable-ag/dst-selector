@@ -23,13 +23,11 @@ const License = ({ licenseType = 'MIT' }) => {
     }
   }, [licenseType]);
   return (
-    <div className="container-fluid mt-5">
-      <Grid container>
-        <Grid item>
-          {licenseType === 'AgInformatics' ? <AgInformaticsLicenseText /> : <MITLicenseText />}
-        </Grid>
+    <Grid container>
+      <Grid item>
+        {licenseType === 'AgInformatics' ? <AgInformaticsLicenseText /> : <MITLicenseText />}
       </Grid>
-    </div>
+    </Grid>
   );
 };
 

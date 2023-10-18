@@ -49,6 +49,7 @@ const CropPaintGrowthChart = ({
               </div>
                   )}
             key={index}
+            enterTouchDelay={0}
           >
             <div className="d-flex flex-row" style={{ flex: l }}>
               {item.months.map((month, i) => (

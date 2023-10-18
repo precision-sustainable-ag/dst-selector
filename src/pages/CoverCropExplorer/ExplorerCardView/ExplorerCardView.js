@@ -8,33 +8,18 @@ import {
   Grid, Typography, CircularProgress,
 } from '@mui/material';
 import React, {
-  useEffect, useState,
+  useState,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import CropCard from '../../../components/CropCard/CropCard';
 import CropDetailsModal from '../../../components/CropDetailsModal/CropDetailsModal';
 
 const ExplorerCardView = ({ activeCropData }) => {
-  const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
-  const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
-  const sfilters = filterStateRedux[section];
   const ajaxInProgressRedux = useSelector((stateRedux) => stateRedux.sharedData.ajaxInProgress);
   const dispatchRedux = useDispatch();
   const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
-  const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalData, setModalData] = useState({});
-
-  const [selectedBtns, setSelectedBtns] = useState(
-    selectedCropsRedux.map((crop) => crop.id),
-  );
-
-  // TODO: Update SelectedCropsRedux
-
-  useEffect(() => {
-    const newSelectedBtns = selectedCropsRedux;
-    setSelectedBtns(newSelectedBtns);
-  }, [sfilters.zone, selectedCropsRedux]);
 
   const handleModalOpen = (crop) => {
     // put data inside modal;
@@ -47,17 +32,15 @@ const ExplorerCardView = ({ activeCropData }) => {
       <CircularProgress style={{ marginLeft: '60px' }} size="6em" />
     ) : (
       <>
-        <Grid style={{ marginLeft: '40px' }} container spacing={2}>
+        <Grid container spacing={2} justifyContent="center">
           {/* eslint-disable-next-line no-nested-ternary */}
           {activeCropData?.length > 0 ? (
             activeCropData.map((crop, index) => (
-              <Grid style={{ width: '260px' }} item key={index}>
+              <Grid item key={index}>
                 <CropCard
                   crop={crop}
                   handleModalOpen={handleModalOpen}
-                  selectedBtns={selectedBtns}
                   index={index}
-                  type="explorer"
                   dispatchRedux={dispatchRedux}
                 />
               </Grid>
