@@ -1,10 +1,9 @@
 import {
-  Badge, Button, Tooltip,
+  Badge, Button, Tooltip, Typography,
 } from '@mui/material';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useHistory } from 'react-router-dom';
-import '../../../styles/header.scss';
 import { activateMyCoverCropListTile, activateSpeicesSelectorTile, setMyCoverCropReset } from '../../../reduxStore/sharedSlice';
 
 const ToggleOptions = ({ pathname }) => {
@@ -14,7 +13,7 @@ const ToggleOptions = ({ pathname }) => {
   const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
   const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
-  const speciesSelectorActivationFlagRedux = useSelector((stateRedux) => stateRedux.sharedData.speciesSelectorActivationFlag);
+
   const setMyCoverCropActivationFlag = () => {
     history.push('/my-cover-crop-list');
     // FIXME: the following codes will not work?
@@ -41,18 +40,40 @@ const ToggleOptions = ({ pathname }) => {
 
   return (
     <>
-      <Button size="large" component={NavLink} onClick={() => openMyCoverCropReset('selector')} exact to="/" activeClassName="active">
-        SPECIES SELECTOR TOOL
+      <Button
+        size="large"
+        component={NavLink}
+        onClick={() => openMyCoverCropReset('selector')}
+        exact
+        to="/"
+        sx={{
+          backgroundColor: (pathname === '/') ? '#598444' : 'white',
+          color: (pathname === '/') ? 'white' : '#8abc62',
+          border: '10px',
+          '&:hover': { backgroundColor: (pathname === '/') ? '#598444' : 'white', color: (pathname === '/') ? 'white' : '#8abc62' },
+        }}
+      >
+        <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
+          Get A Recommendation
+        </Typography>
+
       </Button>
       <Tooltip title={(stateLabelRedux === null) ? 'You must select a state before using the Cover Crop Explorer' : ''} enterTouchDelay={0}>
         <span>
           <Button
-            className={(pathname === '/explorer' && speciesSelectorActivationFlagRedux) ? 'active' : ''}
             onClick={setSpeciesSelectorActivationFlag}
             size="large"
             disabled={stateLabelRedux === null}
+            sx={{
+              backgroundColor: (pathname === '/explorer') ? '#598444' : 'white',
+              color: (pathname === '/explorer') ? 'white' : '#8abc62',
+              '&:hover': { backgroundColor: (pathname === '/explorer') ? '#598444' : 'white' },
+            }}
           >
-            COVER CROP EXPLORER
+
+            <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
+              BROWSE COVER CROPS
+            </Typography>
           </Button>
         </span>
       </Tooltip>
@@ -64,11 +85,19 @@ const ToggleOptions = ({ pathname }) => {
           color="error"
         >
           <Button
-            className={pathname === '/my-cover-crop-list' ? 'active' : ''}
+            sx={{
+              backgroundColor: (pathname === '/my-cover-crop-list') ? '#598444' : 'white',
+              color: (pathname === '/my-cover-crop-list') ? 'white' : '#8abc62',
+              borderBottomLeftRadius: '0px',
+              borderBottomRightRadius: '0px',
+              '&:hover': { backgroundColor: (pathname === '/my-cover-crop-list') ? '#598444' : 'white' },
+            }}
             size="large"
             onClick={setMyCoverCropActivationFlag}
           >
-            MY COVER CROP LIST
+            <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
+              VIEW MY LIST
+            </Typography>
           </Button>
         </Badge>
         )}
