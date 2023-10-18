@@ -25,20 +25,15 @@ const UserFieldList = ({
     setFieldDialogState((prev) => ({ ...prev, open: true, actionType: 'delete' }));
   };
   return (
-    <List component="div" disablePadding>
+    <List component="div">
       <ListItem component="div">
         <FormControl
           variant="filled"
-          style={{ width: '100%' }}
           sx={{ minWidth: 200 }}
         >
           <InputLabel>Your Fields</InputLabel>
           <Select
             variant="filled"
-            style={{
-              width: '100%',
-              textAlign: 'left',
-            }}
             value={Object.keys(field).length === 0 ? '' : field.label}
             onChange={handleChange}
           >
