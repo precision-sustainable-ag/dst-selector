@@ -1,7 +1,7 @@
 import {
-  IconButton, InputAdornment, ListItem, ListItemText, TextField,
+  IconButton, InputAdornment, ListItem, ListItemText, TextField, Typography,
 } from '@mui/material';
-import { Clear } from '@mui/icons-material';
+import { Clear, Search } from '@mui/icons-material';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { cropSearch } from '../../../reduxStore/filterSlice';
@@ -18,8 +18,12 @@ const CoverCropSearch = ({ sfilters }) => {
         <TextField
           fullWidth
           color="secondary"
-          label="Cover Crop Name"
-          helperText="Search by cover crop name"
+          label={(
+            <Typography>
+              <Search />
+              Cover Crop Name
+            </Typography>
+          )}
           value={sfilters.cropSearch}
           onChangeCapture={(e) => dispatchRedux(cropSearch(e.target.value))}
           InputProps={{

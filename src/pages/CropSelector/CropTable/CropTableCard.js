@@ -30,14 +30,13 @@ const CropTableCard = ({
               <Tooltip
                 arrow
                 placement="bottom"
+                enterTouchDelay={0}
                 title={(
-                  <div className="filterTooltip text-capitalize">
-                    <p>
-                      {`Goal ${index + 1}`}
-                      {': '}
-                      {goal}
-                    </p>
-                  </div>
+                  <p>
+                    {`Goal ${index + 1}`}
+                    {': '}
+                    {goal}
+                  </p>
                 )}
               >
                 {getRating(crop.data.Goals[goal]?.values[0])}

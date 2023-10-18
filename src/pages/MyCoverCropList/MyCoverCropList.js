@@ -6,13 +6,14 @@
   TopBar contains the blue bar for adding crops
 */
 
-import { Button, Typography } from '@mui/material';
-import { Add } from '@mui/icons-material';
-import React, { useState, useEffect } from 'react';
+import {
+  Button, Typography, Grid, Box,
+} from '@mui/material';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import ReactGA from 'react-ga';
-import MyCoverCropComparison from './MyCoverCropComparison/MyCoverCropComparison';
+import MyCoverCropComparisonTable from './MyCoverCropComparison/MyCoverCropComparisonTable';
 import MyCoverCropCards from './MyCoverCropCards/MyCoverCropCards';
 import { activateSpeicesSelectorTile } from '../../reduxStore/sharedSlice';
 
@@ -20,19 +21,11 @@ const MyCoverCropList = ({ comparisonView, from }) => {
   const dispatchRedux = useDispatch();
   const comparison = comparisonView || false;
   const history = useHistory();
-  const [updatedSelectedCrops, setUpdatedSelectedCrops] = useState([]);
   const activeCropDataRedux = useSelector((stateRedux) => stateRedux.cropData.activeCropData);
   const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
   const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
   const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
   const consentRedux = useSelector((stateRedux) => stateRedux.userData.consent);
-  // const { selectedCrops } = state;
-
-  // TODO: Update SelectedCropsRedux
-
-  useEffect(() => {
-    setUpdatedSelectedCrops(selectedCropsRedux);
-  }, [selectedCropsRedux]);
 
   useEffect(() => {
     if (stateLabelRedux === null) {
@@ -57,60 +50,11 @@ const MyCoverCropList = ({ comparisonView, from }) => {
     }
   }, [consentRedux]);
 
-  const TopBar = ({ view }) => (
-    <div className="row">
-      <div
-        className="col-12 myCoverCropsBlueBar"
-        style={{
-          backgroundColor: '#35999b',
-          height: '40px',
-          borderTopLeftRadius: '5px',
-          borderTopRightRadius: '5px',
-        }}
-      >
-        <div className="row">
-          {view ? (
-            <div className="col-8">
-              <Button
-                style={{ color: 'white' }}
-                onClick={
-                    from === 'myCoverCropListStatic'
-                      ? redirectToExplorer
-                      : redirectToSpeciesSelector
-                  }
-              >
-                <Add />
-                {' '}
-                <span className="pl-2">ADD A CROP</span>
-              </Button>
-            </div>
-          ) : (
-            <div className="col-8">
-              <Button
-                style={{ color: 'white' }}
-                onClick={
-                    from === 'myCoverCropListStatic'
-                      ? redirectToExplorer
-                      : redirectToSpeciesSelector
-                  }
-              >
-                <Add />
-                {' '}
-                <span className="pl-2">ADD A CROP</span>
-              </Button>
-            </div>
-          )}
-
-          <div className="col-6" />
-        </div>
-      </div>
-    </div>
-  );
   return (
-    <div className="container-fluid">
+    <>
       {/* eslint-disable-next-line no-nested-ternary */}
-      {updatedSelectedCrops.length > 0
-       && updatedSelectedCrops.length === 0 ? (
+      {selectedCropsRedux.length > 0
+       && selectedCropsRedux.length === 0 ? (
          <Typography variant="body1">
            Your list is empty.
            {' '}
@@ -123,31 +67,27 @@ const MyCoverCropList = ({ comparisonView, from }) => {
            </Button>
          </Typography>
         ) : comparison ? (
-          <>
-            <TopBar view={comparison} />
-            <div className="row mt-2">
-              <MyCoverCropComparison selectedCrops={updatedSelectedCrops} />
-            </div>
-          </>
+          <Box flexDirection="column" display="flex" height="100%">
+            <Grid container spacing={2} mt={1}>
+              <MyCoverCropComparisonTable />
+            </Grid>
+          </Box>
         ) : (
-          <>
-            <TopBar view={comparison} />
-            <div className="row">
-              <div className="d-flex flex-wrap mt-2">
-                {cropDataRedux.filter((crop) => activeCropDataRedux.includes(crop.id)).filter((crop) => selectedCropsRedux.includes(crop.id)).map((crop, index) => (
-                  <MyCoverCropCards
-                    key={index}
-                    cardNo={index + 1}
-                    crop={crop}
-                    btnId={crop.id}
-                    itemNo={index}
-                  />
-                ))}
-              </div>
-            </div>
-          </>
+          <Grid container spacing={2} mt={1}>
+            {cropDataRedux.filter((crop) => activeCropDataRedux.includes(crop.id)).filter((crop) => selectedCropsRedux.includes(crop.id)).map((crop, index) => (
+              <Grid item key={index}>
+                <MyCoverCropCards
+                  key={index}
+                  cardNo={index + 1}
+                  crop={crop}
+                  btnId={crop.id}
+                  itemNo={index}
+                />
+              </Grid>
+            ))}
+          </Grid>
         )}
-    </div>
+    </>
   );
 };
 

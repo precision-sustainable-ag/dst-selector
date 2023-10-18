@@ -6,131 +6,30 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-import { Grid, Typography } from '@mui/material';
-import { Map } from '@psa/dst.ui.map';
-import { CustomStyles } from '../../../shared/constants';
+import { Grid, Box } from '@mui/material';
 import SoilCondition from '../SoilCondition/SoilCondition';
 import WeatherConditions from '../../../components/WeatherConditions/WeatherConditions';
 
 const LocationConfirmation = () => {
   // redux vars
-  const addressRedux = useSelector((stateRedux) => stateRedux.addressData.address);
-  const markersRedux = useSelector((stateRedux) => stateRedux.addressData.markers);
-  const zoneRedux = useSelector((stateRedux) => stateRedux.addressData.zone);
-  // const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
-  const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
+
   return (
-    <>
+    <Box mt={2} mb={2} mr={2} ml={2}>
       <Grid
         container
-        direction="row"
-        className="boxContainerRow"
-        style={{
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          marginTop: '3rem',
-        }}
+        spacing={2}
+        direction="column"
+        alignItems="center"
+        justifyContent="center"
       >
-        <Grid item lg={6} textAlign="left" style={{ padding: '0px 30px', alignItems: 'center' }}>
-          <Grid container direction="row">
-            <Grid item xs={12} lg={6} style={{ paddingRight: '15px' }}>
-              <Map
-                initWidth="100%"
-                initHeight="200px"
-                initLon={markersRedux && markersRedux.length > 0 ? markersRedux[0][1] : -122}
-                initLat={markersRedux && markersRedux.length > 0 ? markersRedux[0][0] : 47}
-                initMinZoom={4}
-                initMaxZoom={18}
-                initStartZoom={12}
-                hasSearchBar={false}
-                hasMarker
-                hasNavigation={false}
-                hasCoordBar={false}
-                hasDrawing={false}
-                hasGeolocate={false}
-                hasFullScreen={false}
-                hasMarkerPopup={false}
-                hasMarkerMovable={false}
-                scrollZoom={false}
-                dragRotate={false}
-                dragPan={false}
-                keyboard={false}
-                doubleClickZoom={false}
-                touchZoomRotate={false}
-              />
-            </Grid>
-
-            <Grid item lg={6} style={{ paddingLeft: '30px', paddingRight: '15px' }}>
-              <Grid container direction="column">
-                <Grid item>
-                  <Typography variant="h4">Location Details</Typography>
-                </Grid>
-                <Grid item style={{ paddingTop: '8px' }}>
-                  <Typography variant="body1">
-                    Your cover crop recommendations will come from the Plant Hardiness Zone
-                    {` ${zoneRedux} ${councilShorthandRedux} dataset`}
-                  </Typography>
-                </Grid>
-                <Grid item>
-                  <Typography
-                    variant="body1"
-                    style={{
-                      color: CustomStyles().lighterGreen,
-                      paddingTop: '8px',
-                      fontWeight: 'bold',
-                    }}
-                  >
-                    {addressRedux?.length > 0
-                      ? `${addressRedux.toString().substring(0, 35)}...`
-                      : 'Loading...'}
-                  </Typography>
-                </Grid>
-              </Grid>
-            </Grid>
-          </Grid>
-          <Grid item style={{ marginTop: '2rem' }}>
-            <Typography variant="body1">
-              Disclaimer: Cover crop recommendations are based on expert opinions. Your cover crop
-              performance and seeding rates will vary based on location, management, cultivars, and
-              many other variables. Consult your local{' '}
-              <a
-                href="https://www.nrcs.usda.gov/wps/portal/nrcs/detailfull/national/programs/financial/csp/?&cid=nrcsdev11_000242"
-                title="click to consult your local nrcs service center"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                NRCS Service Center
-              </a>
-              ,{' '}
-              <a
-                href="https://nifa.usda.gov/land-grant-colleges-and-universities-partner-website-directory"
-                title="Link to Cooperative Extension Service office"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Cooperative Extension Service office
-              </a>
-              , or{' '}
-              <a
-                href="https://www.nacdnet.org/general-resources/conservation-district-directory/"
-                target="_blank"
-                rel="noreferrer noopener"
-              >
-                Conservation District
-              </a>{' '}
-              for detailed guidance. Cover crop incentive programs may dictate seeding rate ranges
-              and methods, and planting and termination dates. Consult your program contact to
-              ensure your plans comply.
-            </Typography>
-          </Grid>
-        </Grid>
-        <Grid item lg={5} style={{ padding: '0px 30px', alignItems: 'center' }}>
+        <Grid item>
           {progressRedux === 2 && <SoilCondition />}
           {progressRedux === 3 && <WeatherConditions />}
         </Grid>
       </Grid>
-    </>
+    </Box>
+
   );
   // );
 };

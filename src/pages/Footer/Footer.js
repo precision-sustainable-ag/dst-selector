@@ -4,49 +4,51 @@
   styles are made in ../../styles/footer.scss
 */
 
-import { Typography } from '@mui/material';
-import React from 'react';
-import '../../styles/footer.scss';
+import React, { useState, useEffect } from 'react';
+import { Box, Grid } from '@mui/material';
+import { useHistory } from 'react-router-dom';
+import ProgressButtons from '../../shared/ProgressButtons';
 
-const Footer = () => (
-  <footer className="primaryFooter">
-    <div className="leftSideText">
-      <Typography variant="body2" style={{ color: 'black' }}>
-        Disclaimer: Consult your local
-        {' '}
-        <a
-          className="footerLink"
-          href="https://www.nrcs.usda.gov/wps/portal/nrcs/detailfull/national/programs/financial/csp/?&cid=nrcsdev11_000242"
-          target="_blank"
-          rel="noopener noreferrer"
+const Footer = () => {
+  const history = useHistory();
+
+  // useState vars
+  const [pathname, setPathname] = useState('/');
+
+  useEffect(() => {
+    // detect current pathname
+    history.listen((location) => {
+      setPathname(location.pathname);
+    });
+  }, [history]);
+
+  return (
+    <Box
+      sx={{
+        backgroundColor: '#598445',
+      }}
+      className="primaryFooter"
+    >
+      <Grid
+        container
+        direction="column"
+        alignItems="center"
+        justifyContent="center"
+        height={pathname !== '/' ? '50px' : 'auto'}
+      >
+        {pathname === '/' && (
+        <Grid
+          item
+          xs={12}
+          mt={0.6}
+          mb={0.6}
         >
-          NRCS Service Center
-        </a>
-        ,
-        {' '}
-        <a
-          href="https://nifa.usda.gov/land-grant-colleges-and-universities-partner-website-directory"
-          className="footerLink"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Cooperative Extension Service office
-        </a>
-        , or
-        {' '}
-        <a
-          href="https://www.nacdnet.org/general-resources/conservation-district-directory/"
-          className="footerLink"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Conservation District
-        </a>
-        {' '}
-        for detailed guidance.
-      </Typography>
-    </div>
-  </footer>
-);
+          <ProgressButtons />
+        </Grid>
+        )}
+      </Grid>
+    </Box>
+  );
+};
 
 export default Footer;
