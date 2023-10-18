@@ -164,7 +164,9 @@ const LocationComponent = () => {
       }));
       if (councilShorthandRedux === 'MCCC') {
         // if council is MCCC, change selectedRegion based on county
-        setRegionShorthand(county.replace(' County', ''));
+        if (county && county.includes(' County')) {
+          setRegionShorthand(county.replace(' County', ''));
+        }
       } else {
         callCoverCropApi(`https://phzmapi.org/${zipCode}.json`)
           .then((response) => {
@@ -182,8 +184,10 @@ const LocationComponent = () => {
             }
           })
           .catch((err) => {
-            // eslint-disable-next-line max-len
-            alert(`Your location was not found. Please select a ${councilShorthandRedux === 'MCCC' ? 'county ' : 'zone '}or use the map to select a location.`);
+            dispatchRedux(snackHandler({
+              snackOpen: true,
+              snackMessage: 'No data available for your location, Please try again.',
+            }));
             // eslint-disable-next-line no-console
             console.log(err);
             // for places where api didn't work, set region to default.
