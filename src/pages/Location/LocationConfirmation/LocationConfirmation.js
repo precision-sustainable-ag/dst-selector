@@ -31,7 +31,6 @@ const LocationConfirmation = () => {
     </Box>
 
   );
-  // );
 };
 
 export default LocationConfirmation;
