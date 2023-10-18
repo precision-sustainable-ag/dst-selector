@@ -21,6 +21,7 @@ const PlantHardinessZone = ({
         width: '100%',
         textAlign: 'left',
       }}
+      sx={{ minWidth: 100 }}
       onChange={(e) => setRegionShorthand(e.target.value)}
       value={regionShorthand || ''}
     >
