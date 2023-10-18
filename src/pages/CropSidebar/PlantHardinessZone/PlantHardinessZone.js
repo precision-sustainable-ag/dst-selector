@@ -36,12 +36,10 @@ const PlantHardinessZone = ({
 
   return (
     <Collapse in={regionToggleRedux}>
-      <List component="div" disablePadding>
+      <List component="div">
         <ListItem component="div">
           <FormControl
             variant="filled"
-            style={{ width: '100%' }}
-            sx={{ minWidth: 120 }}
           >
             <InputLabel>{councilLabelRedux === 'Midwest Cover Crop Council' ? 'COUNTY' : 'ZONE'}</InputLabel>
             {plantHardinessZone()}

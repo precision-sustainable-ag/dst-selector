@@ -14,6 +14,7 @@ import {
   ListItemText,
   // ListSubheader,
   Typography,
+  Grid,
 } from '@mui/material';
 import {
   CalendarToday, Compare, ExpandLess, ExpandMore,
@@ -23,8 +24,9 @@ import React, {
   useEffect, useState,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { CustomStyles, callCoverCropApi, cropDataFormatter } from '../../shared/constants';
-import '../../styles/cropSidebar.scss';
+import {
+  CustomStyles, LightButton, callCoverCropApi, cropDataFormatter,
+} from '../../shared/constants';
 import ComparisonBar from '../MyCoverCropList/ComparisonBar/ComparisonBar';
 import CoverCropSearch from './CoverCropSearch/CoverCropSearch';
 import SidebarFilter from './SidebarFilter/SidebarFilter';
@@ -69,7 +71,7 @@ const CropSidebar = ({
   const [showFilters, setShowFilters] = useState('');
   const [sidebarCategoriesData, setSidebarCategoriesData] = useState([]);
   const [sidebarFiltersData, setSidebarFiltersData] = useState([]);
-  const [tableHeight, setTableHeight] = useState(0);
+  // const [tableHeight, setTableHeight] = useState(0);
   const [cropFiltersOpen, setCropFiltersOpen] = useState(true);
   const [dateRange, setDateRange] = useState({
     startDate: null,
@@ -269,22 +271,6 @@ const CropSidebar = ({
     }
   }, [dateRange, from, setGrowthWindow]);
 
-  useEffect(() => {
-    if (document.querySelector('.MuiTableRow-root.theadFirst.MuiTableRow-head')) {
-      // TODO:  When is this true?
-      // NOTE: could never get alert to show up.  can we delete?
-      // alert('Its true');
-      const totalHt = document
-        .querySelector('.MuiTableRow-root.theadFirst.MuiTableRow-head')
-        .getBoundingClientRect().height;
-      const btnHt = document.querySelector('.dynamicToggleBtn').getBoundingClientRect().height;
-
-      const ht = totalHt - btnHt;
-
-      setTableHeight(ht);
-    }
-  }, []);
-
   // TODO: Can we use Reducer instead of localStorage?
   useEffect(() => {
     if (cashCropDataRedux.dateRange.startDate) {
@@ -316,14 +302,12 @@ const CropSidebar = ({
         <ListItem>
           <ListItemText
             primary={(
-              <Typography
-                variant="button"
-                className="text-uppercase text-left text-danger font-weight-bold"
+              <Button
                 onClick={resetAllFilters}
-                style={{ cursor: 'pointer' }}
+                style={{ cursor: 'pointer', color: 'red' }}
               >
                 Clear Filters
-              </Typography>
+              </Button>
             )}
           />
         </ListItem>
@@ -337,26 +321,6 @@ const CropSidebar = ({
     filtersList();
   }, [sidebarFilters]);
 
-  const comparisonButton = (
-    <Button
-      className="dynamicToggleBtn"
-      fullWidth
-      variant="contained"
-      onClick={toggleComparisonView}
-      size="large"
-      color="secondary"
-      startIcon={
-        comparisonView ? (
-          <ListIcon style={{ fontSize: 'larger' }} />
-        ) : (
-          <Compare style={{ fontSize: 'larger' }} />
-        )
-      }
-    >
-      {comparisonView ? 'LIST VIEW' : 'COMPARISON VIEW'}
-    </Button>
-  );
-
   const updateRegionRedux = (regionName) => {
     const selectedRegion = regionsRedux.filter((region) => region.shorthand === regionName)[0];
     dispatchRedux(updateRegion({
@@ -366,65 +330,62 @@ const CropSidebar = ({
   };
 
   return !loading && (from === 'myCoverCropListStatic') ? (
-    <div className="row">
-      <div className="col-12 mb-3">{comparisonButton}</div>
-      {comparisonView && (
-        <div className="col-12">
-          <ComparisonBar
-            filterData={sidebarFilters}
-            goals={selectedGoalsRedux?.length > 0 ? selectedGoalsRedux : []}
-            comparisonKeys={comparisonKeysRedux}
-            comparisonView={comparisonView}
-          />
-        </div>
-      )}
-    </div>
-  ) : (
-    <div className="row">
-      {from === 'table' && (
-        <div
-          className="col-12"
-          style={{
-            paddingBottom: tableHeight,
-          }}
+    <Grid container spacing={3}>
+      <Grid item>
+        <LightButton
+          onClick={toggleComparisonView}
+          color="secondary"
+          startIcon={
+            comparisonView ? (
+              <ListIcon style={{ fontSize: 'larger' }} />
+            ) : (
+              <Compare style={{ fontSize: 'larger' }} />
+            )
+          }
         >
-          <Button
-            className="dynamicToggleBtn"
-            fullWidth
-            variant="contained"
+          {comparisonView ? 'LIST VIEW' : 'COMPARISON VIEW'}
+        </LightButton>
+        <ComparisonBar
+          filterData={sidebarFilters}
+          goals={selectedGoalsRedux?.length > 0 ? selectedGoalsRedux : []}
+          comparisonKeys={comparisonKeysRedux}
+          comparisonView={comparisonView}
+        />
+      </Grid>
+    </Grid>
+  ) : (
+    <Grid container>
+      <Grid item>
+        {from === 'table' && (
+          <LightButton
             onClick={toggleListView}
-            size="large"
             color="secondary"
-            style={{ marginBottom: '15px' }}
             startIcon={
-              isListView ? (
-                <ListIcon style={{ fontSize: 'larger' }} />
-              ) : (
-                <CalendarToday style={{ fontSize: 'larger' }} />
-              )
-            }
+                isListView ? (
+                  <ListIcon style={{ fontSize: 'larger' }} />
+                ) : (
+                  <CalendarToday style={{ fontSize: 'larger' }} />
+                )
+              }
           >
             {isListView ? 'LIST VIEW' : 'CALENDAR VIEW'}
-          </Button>
-        </div>
-      )}
-
-      {speciesSelectorActivationFlagRedux || from === 'explorer' ? (
-        <Box
-          // className="col-"
-          sx={{
-            width: {
-              lg: '280px',
-              xl: '280px',
-            },
-          }}
-          id="Filters"
-        >
-          <List
-            component="nav"
-            aria-labelledby="nested-list-subheader"
+          </LightButton>
+        )}
+        {speciesSelectorActivationFlagRedux || from === 'explorer' ? (
+          <Box
+            sx={{
+              width: {
+                lg: '280px',
+                xl: '280px',
+              },
+            }}
+            id="Filters"
           >
-            {from === 'table' && (
+            <List
+              component="nav"
+              aria-labelledby="nested-list-subheader"
+            >
+              {from === 'table' && (
               <>
                 {showFilters && speciesSelectorActivationFlagRedux && !isListView && (
                   <CoverCropSearch sfilters={sfilters} />
@@ -438,8 +399,8 @@ const CropSidebar = ({
                   setDateRange={setDateRange}
                 />
               </>
-            )}
-            {showFilters && (
+              )}
+              {showFilters && (
               <>
                 {from === 'explorer' && (
                   <>
@@ -447,8 +408,8 @@ const CropSidebar = ({
                       <ListItemButton onClick={() => dispatchRedux(regionToggleHandler())}>
                         <ListItemText
                           primary={(
-                            <Typography variant="body2" className="text-uppercase">
-                              Plant Hardiness Zone
+                            <Typography variant="body2">
+                              PLANT HARDINESS ZONE
                             </Typography>
             )}
                         />
@@ -475,44 +436,46 @@ const CropSidebar = ({
                         : CustomStyles().lightGreen,
                   }}
                 >
-                  <ListItemText primary="COVER CROP PROPERTIES" />
+                  <ListItemText primary="COVER CROP FILTERS" />
 
                   {cropFiltersOpen ? <ExpandLess /> : <ExpandMore />}
                   {' '}
                   {/* // why is this here */}
                 </ListItemButton>
-                <Box
-                  sx={{
-                    backgroundColor: 'background.paper',
-                    border: '1px solid lightgrey',
-                    paddingLeft: '1em',
-                    margin: '1em',
-
-                  }}
-                >
-                  <Legend
-                    legendData={legendData}
-                    modal={false}
-                  />
-                </Box>
                 <Collapse in={cropFiltersOpen} timeout="auto">
+                  <Box
+                    sx={{
+                      backgroundColor: 'background.paper',
+                      border: '1px solid lightgrey',
+                      paddingLeft: '1em',
+                      margin: '1em',
+
+                    }}
+                  >
+                    <Legend
+                      legendData={legendData}
+                      modal={false}
+                    />
+                  </Box>
                   {filtersList()}
                 </Collapse>
               </>
-            )}
-          </List>
-        </Box>
-      ) : (
-        <div className="col-12">
-          <ComparisonBar
-            filterData={sidebarFilters}
-            goals={selectedGoalsRedux?.length > 0 ? selectedGoalsRedux : []}
-            comparisonKeys={comparisonKeysRedux}
-            comparisonView={comparisonView}
-          />
-        </div>
-      )}
-    </div>
+              )}
+            </List>
+          </Box>
+        ) : (
+          <Grid>
+            <ComparisonBar
+              filterData={sidebarFilters}
+              goals={selectedGoalsRedux?.length > 0 ? selectedGoalsRedux : []}
+              comparisonKeys={comparisonKeysRedux}
+              comparisonView={comparisonView}
+            />
+          </Grid>
+        )}
+      </Grid>
+
+    </Grid>
   );
 };
 
