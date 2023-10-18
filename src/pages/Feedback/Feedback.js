@@ -106,7 +106,7 @@ const FeedbackComponent = () => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ ...feedbackData, labels: ['cc-selecotor', ...feedbackData.labels] }),
+      body: JSON.stringify({ ...feedbackData, labels: ['cc-selector', ...feedbackData.labels] }),
     })
       .then((response) => {
         if (response.status === 201) {

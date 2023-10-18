@@ -175,10 +175,11 @@ const Landing = () => {
           backgroundColor: 'rgba(240,247,235,.5)',
           borderRadius: '10px',
           border: '1px solid #598445',
-          maxWidth: '80%',
-          marginLeft: '10%',
-          // background: 'url(/images/cover-crop-field.png)',
-          // backgroundSize: 'cover',
+          position: 'relative',
+          width: '80%',
+          maxWidth: '500px',
+          left: '50%',
+          transform: 'translateX(-50%)',
         }}
         mt={2}
       >
@@ -193,11 +194,11 @@ const Landing = () => {
           >
             <Grid item xs={12}>
               <Typography variant="h4" gutterBottom align="center">
-                {`Welcome to the${councilLabelRedux ? ` ${councilLabelRedux}` : ''} Species Selector Tool`}
+                {`Welcome to the${councilLabelRedux ? ` ${councilLabelRedux}` : ' Cover Crop'} Species Selector`}
               </Typography>
             </Grid>
             <Grid item xs={12}>
-              <Typography variant="h6">
+              <Typography variant="body1">
                 Choose your state from the dropdown or the map
               </Typography>
             </Grid>
