@@ -67,8 +67,6 @@ const ToggleOptions = ({ pathname }) => {
             sx={{
               backgroundColor: (pathname === '/explorer') ? '#598444' : 'white',
               color: (pathname === '/explorer') ? 'white' : '#8abc62',
-              borderBottomLeftRadius: '0px',
-              borderBottomRightRadius: '0px',
               '&:hover': { backgroundColor: (pathname === '/explorer') ? '#598444' : 'white' },
             }}
           >
