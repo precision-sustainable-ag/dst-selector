@@ -7,27 +7,22 @@
 
 import {
   FormControl,
-  Grid, InputLabel, List, ListItem, MenuItem, Select, Typography,
+  Grid, InputLabel, MenuItem, Select, Typography, Box,
 } from '@mui/material';
 // import SelectUSState from 'react-select-us-states';
 import React, {
   useEffect,
   useState,
-  useRef,
   useMemo,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
 import ReactGA from 'react-ga';
 import { RegionSelectorMap } from '@psa/dst.ui.region-selector-map';
 import { callCoverCropApi } from '../../shared/constants';
-import '../../styles/landing.scss';
 import { updateRegions, updateRegion, updateStateInfo } from '../../reduxStore/mapSlice';
 
-const Landing = ({ height, title, bg }) => {
+const Landing = () => {
   const dispatchRedux = useDispatch();
-
-  const mapRef = useRef(null);
 
   // redux vars
   const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
@@ -37,7 +32,7 @@ const Landing = ({ height, title, bg }) => {
   const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
 
   // useState vars
-  const [containerHeight, setContainerHeight] = useState(height);
+  // const [containerHeight, setContainerHeight] = useState(height);
   const [allStates, setAllStates] = useState([]);
   // This is the state obj mapped by mapState(filtered from allStates, these 2 objs are not same)
   const [selectedState, setSelectedState] = useState({});
@@ -129,38 +124,6 @@ const Landing = ({ height, title, bg }) => {
     setSelectedState(selState[0]);
   };
 
-  const stateSelect = () => (
-    <List component="div" disablePadding>
-      <ListItem component="div">
-        <FormControl
-          variant="filled"
-          style={{ width: '100%' }}
-          sx={{ minWidth: 120 }}
-        >
-          <InputLabel>State</InputLabel>
-          <Select
-            variant="filled"
-            labelId="plant-hardiness-zone-dropdown-select"
-            id="plant-hardiness-zone-dropdown-select"
-            style={{
-              width: '100%',
-              textAlign: 'left',
-            }}
-            onChange={(e) => handleStateChange(e)}
-            value={selectedState?.shorthand || ''}
-          >
-
-            {allStates.length > 0 && allStates.map((st, i) => (
-              <MenuItem value={st.shorthand} key={`Region${st}${i}`}>
-                {st.label?.toUpperCase()}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-      </ListItem>
-    </List>
-  );
-
   useEffect(() => {
     if (consentRedux) {
       ReactGA.initialize('UA-181903489-1');
@@ -168,8 +131,9 @@ const Landing = ({ height, title, bg }) => {
     }
   }, [consentRedux]);
 
+  const [containerHeight, setContainerHeight] = useState();
+
   useEffect(() => {
-    document.title = title;
     function updateSize() {
       const documentHeight = document
         .getElementsByTagName('html')[0]
@@ -183,7 +147,7 @@ const Landing = ({ height, title, bg }) => {
         .getElementsByClassName('primaryFooter')[0]
         .getBoundingClientRect().height;
 
-      const contHeight = documentHeight - (headerHeight + footerHeight) + 7;
+      const contHeight = documentHeight - (headerHeight + footerHeight);
       document.getElementById('landingWrapper').style.minHeight = `${contHeight}px`;
       setContainerHeight(contHeight);
     }
@@ -191,147 +155,100 @@ const Landing = ({ height, title, bg }) => {
     updateSize();
 
     return () => window.removeEventListener('resize', updateSize);
-  }, [title]);
-
-  useEffect(() => {
-    document.title = 'Cover Crop Selector';
   }, []);
 
   return (
-
-    <div
-      id="landingWrapper"
+    <Box
       style={{
-        minHeight: containerHeight,
-        background: `url(${bg})`,
+        background: 'url(/images/cover-crop-field.png)',
         backgroundSize: 'cover',
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        minHeight: containerHeight,
+        // height: '100vh',
       }}
+      id="landingWrapper"
     >
-      <Grid container>
-
-        <Grid
-          className="p-2"
-          item
-          lg={6}
-          xs={12}
-          container
-          justifyContent="center"
-          alignItems="center"
-          style={{
-            height: '100%',
-            margin: '2rem',
-            backgroundColor: 'rgba(240,247,235,.8)',
-            borderRadius: '10px',
-            border: '1px solid #598445',
-          }}
-        >
-          <Grid item>
-            <Typography variant="h4" gutterBottom align="center">
-              {`Welcome to the${councilLabelRedux ? ` ${councilLabelRedux}` : ''} Species Selector Tool`}
-            </Typography>
-          </Grid>
-          <Grid item>
-            <Typography variant="body1" gutterBottom align="left">
-              {`You are currently interacting with the${councilLabelRedux ? ` ${councilLabelRedux}` : ''} Species Selector Tool. We
-            seek feedback about the usability and usefulness of this tool. Our goal is to encourage
-            and support the use of cover crops in your area. You can learn more about the
-            cover crop data and design of this tool`}
-              {' '}
-              <Link to="/about"> here</Link>
-              . If you need
-              assistance, consult the
-              {' '}
-              <Link to="/help">help page</Link>
-              .
-            </Typography>
-          </Grid>
-          <Grid item>
-            <Typography align="left" variant="body1" gutterBottom style={{ paddingBottom: '1em' }}>
-              In the future, this platform will host a variety of tools including a cover crop mixture
-              and seeding rate calculator and an economics calculator. Our ultimate goal is to provide
-              a suite of interconnected tools that function together seamlessly.
-            </Typography>
-            {stateSelect()}
-            <Typography
-              variant="body1"
-              style={{ fontWeight: 'bold', paddingBottom: '1em' }}
-              align="left"
-              gutterBottom
-            >
-              Thank you for your time and consideration. You may provide input by visiting our
-              {' '}
-              <Link to="/feedback">Feedback</Link>
-              {' '}
-              page. We look forward to your hearing about your experience.
-            </Typography>
-            <Typography variant="body1" gutterBottom align="left" className="font-weight-bold">
-              Click Next to enter the Species Selector.
-            </Typography>
-          </Grid>
-        </Grid>
-        <Grid
-          item
-          xs
-          style={{
-            height: '100%',
-            padding: '1rem',
-            marginRight: '2rem',
-            marginLeft: '2rem',
-            marginTop: '1rem',
-            backgroundColor: 'rgba(240,247,235,.8)',
-            borderRadius: '10px',
-            border: '1px solid #598445',
-          }}
-          container
-          direction="column"
-          ref={mapRef}
-          alignItems="space-between"
-        >
+      <Grid
+        style={{
+          backgroundColor: 'rgba(240,247,235,.5)',
+          borderRadius: '10px',
+          border: '1px solid #598445',
+          position: 'relative',
+          width: '80%',
+          maxWidth: '500px',
+          left: '50%',
+          transform: 'translateX(-50%)',
+        }}
+        mt={2}
+      >
+        <Box mr={2} ml={2} mb={2} mt={2}>
           <Grid
-            item
             container
-            direction="row"
-            sx={{
-              marginBottom: '0rem',
-              marginLeft: '10%',
-            }}
+            item
+            direction="column"
+            alignItems="center"
+            justifyContent="center"
+            spacing={1}
           >
-            <Typography variant="h5" gutterBottom align="left" className="font-weight-bold">
-              Select your State
-            </Typography>
-            {Object.keys(selectedState).length !== 0 && (
-              <Typography
-                variant="h6"
-                gutterBottom
-                align="left"
-                className="font-weight-bold"
-                style={{ color: 'blue', marginLeft: '1rem' }}
-              >
-                {selectedState.label}
-                {' '}
-                (
-                  { selectedState.shorthand }
-                )
+            <Grid item xs={12}>
+              <Typography variant="h4" gutterBottom align="center">
+                {`Welcome to the${councilLabelRedux ? ` ${councilLabelRedux}` : ' Cover Crop'} Species Selector`}
               </Typography>
-            )}
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant="body1">
+                Choose your state from the dropdown or the map
+              </Typography>
+            </Grid>
+            <Grid item xs={12} mb={2}>
+              <FormControl
+                variant="filled"
+                sx={{ minWidth: 120 }}
+              >
+                <InputLabel>State</InputLabel>
+                <Select
+                  variant="filled"
+                  onChange={(e) => handleStateChange(e)}
+                  value={selectedState?.shorthand || ''}
+                >
+
+                  {allStates.length > 0 && allStates.map((st, i) => (
+                    <MenuItem value={st.shorthand} key={`Region${st}${i}`}>
+                      {st.label?.toUpperCase()}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
           </Grid>
-          <Grid item>
-            <div style={{ position: 'relative', width: '100%', paddingRight: '10%' }}>
-              <RegionSelectorMap
-                selectorFunction={setMapState}
-                selectedState={selectedState.label}
-                availableStates={availableStates}
-                initWidth="100%"
-                initHeight="350px"
-                initLon={-98}
-                initLat={43}
-                initStartZoom={2.3}
-              />
-            </div>
-          </Grid>
-        </Grid>
+        </Box>
       </Grid>
-    </div>
+      <Grid item>
+        <Box style={{
+          position: 'relative',
+          width: '80%',
+          maxWidth: '500px',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          marginTop: '15px',
+          marginBottom: '15px',
+        }}
+        >
+          <RegionSelectorMap
+            selectorFunction={setMapState}
+            selectedState={selectedState.label}
+            availableStates={availableStates}
+            initWidth="100%"
+            initHeight="350px"
+            initLon={-98}
+            initLat={43}
+            initStartZoom={2.3}
+          />
+        </Box>
+      </Grid>
+    </Box>
   );
 };
 

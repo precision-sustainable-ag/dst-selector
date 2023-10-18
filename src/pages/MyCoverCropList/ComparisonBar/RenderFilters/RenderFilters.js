@@ -51,16 +51,14 @@ const RenderFilters = ({
           <Tooltip
             arrow
             placement="right-start"
+            enterTouchDelay={0}
             title={(
-              <div className="filterTooltip">
-                <p>{filter.description}</p>
-              </div>
+              <p>{filter.description}</p>
               )}
             key={`tooltip-outer-${index}`}
           >
             <ListItem
-              button
-              className={filterValues[index].open ? 'filterOpen' : 'filterClose'}
+              sx={{ backgroundColor: filterValues[index].open ? '#add08f' : 'white' }}
               component="div"
               onClick={() => toggleSidebarFilterItems(index)}
             >
@@ -72,8 +70,7 @@ const RenderFilters = ({
           </Tooltip>
         ) : (
           <ListItem
-            button
-            className={filterValues[index].open ? 'filterOpen' : 'filterClose'}
+            sx={{ backgroundColor: filterValues[index].open ? '#add08f' : 'white' }}
             component="div"
             onClick={() => toggleSidebarFilterItems(index)}
           >
@@ -119,11 +116,10 @@ const RenderFilters = ({
                       <Tooltip
                         arrow
                         placement="right"
+                        enterTouchDelay={0}
                         title={(
-                          <div className="filterTooltip">
-                            <p>{val.description}</p>
-                          </div>
-                            )}
+                          <p>{val.description}</p>
+                        )}
                         key={`tooltip${index}`}
                       >
                         <FormControlLabel

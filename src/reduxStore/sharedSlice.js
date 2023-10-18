@@ -8,7 +8,6 @@ const initialState = {
   comparisonKeys: [],
   myCoverCropListLocation: '',
   regionToggle: true,
-  dataDictionary: {},
   apiBaseUrl: /(localhost|dev)/i.test(window.location)
     ? 'developapi'
     : 'api',
@@ -84,13 +83,6 @@ export const regionToggleHandler = (value) => ({
   },
 });
 
-export const pullDictionaryData = (value) => ({
-  type: 'PULL_DICTIONARY_DATA',
-  payload: {
-    value,
-  },
-});
-
 export const setMyCoverCropReset = (open, goBack = true) => ({
   type: 'SET_MY_COVER_CROP_RESET',
   payload: {
@@ -160,13 +152,6 @@ const sharedReducer = (state = initialState, action = null) => {
 
     case 'REGION_TOGGLE':
       return { ...state, regionToggle: !state.regionToggle };
-
-    case 'PULL_DICTIONARY_DATA': {
-      return {
-        ...state,
-        dataDictionary: action.payload.value,
-      };
-    }
 
     case 'SET_MY_COVER_CROP_RESET':
       return {
