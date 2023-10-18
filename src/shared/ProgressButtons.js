@@ -5,6 +5,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { Grid } from '@mui/material';
 import ProgressButtonsInner from './ProgressButtonsInner';
 
 const ProgressButtons = () => {
@@ -59,11 +60,13 @@ const ProgressButtons = () => {
     if (progress < 0) return '';
 
     return (
-      <ProgressButtonsInner
-        isDisabledBack={disabledBack}
-        isDisabledNext={disabledNext}
-        isDisabledRefresh={disabledRefresh}
-      />
+      <Grid item>
+        <ProgressButtonsInner
+          isDisabledBack={disabledBack}
+          isDisabledNext={disabledNext}
+          isDisabledRefresh={disabledRefresh}
+        />
+      </Grid>
     );
   };
 

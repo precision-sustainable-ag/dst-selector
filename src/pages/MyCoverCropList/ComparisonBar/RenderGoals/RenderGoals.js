@@ -27,8 +27,7 @@ const RenderGoals = ({
   return (
     <>
       <ListItem
-        button
-        className={goalsOpen ? 'filterOpen' : 'filterClose'}
+        sx={{ backgroundColor: goalsOpen ? '#add08f' : 'white' }}
         component="div"
         onClick={() => setGoalsOpen(!goalsOpen)}
       >

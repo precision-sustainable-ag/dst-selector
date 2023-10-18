@@ -1,10 +1,9 @@
-import { Button, Typography } from '@mui/material';
+import { Button, Typography, Grid } from '@mui/material';
 import { WavesOutlined } from '@mui/icons-material';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { ReferenceTooltip } from '../../../../shared/constants';
 import arrayEquals from '../../../../shared/functions';
-import '../../../../styles/soilConditions.scss';
 import RenderFloodingOptions from './RenderFloodingOptions';
 import { updateFloodingFrequency } from '../../../../reduxStore/soilSlice';
 
@@ -20,9 +19,16 @@ const SoilFloodingFrequency = () => {
   };
 
   return (
-    <div className="col-12 pt-2 mt-2 row">
-      <div className="col-12">
-        <Typography variant="body1" className="soilConditionSubHeader">
+    <Grid
+      item
+      container
+      direction="column"
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+    >
+      <Grid item xs={12}>
+        <Typography variant="body1">
           <WavesOutlined />
             &nbsp;FLOODING FREQUENCY &nbsp;
           <ReferenceTooltip
@@ -58,33 +64,31 @@ const SoilFloodingFrequency = () => {
               )}
           />
         </Typography>
-      </div>
+      </Grid>
 
       {!arrayEquals(soilDataRedux?.floodingFrequency, soilDataOriginalRedux?.floodingFrequency) && (
-      <div className="col-12 pt-2">
-        <div className="col-12 row">
-          <div className="col text-left">
-            <Button
-              size="small"
-              onClick={() => {
-                resetFloodingOptions();
-              }}
-            >
-              <Typography
-                className="text-danger text-uppercase font-weight-bold"
-                variant="button"
-              >
-                Values changed, reset?
-              </Typography>
-            </Button>
-          </div>
-        </div>
-      </div>
+      <Grid item>
+        <Button
+          size="small"
+          onClick={() => {
+            resetFloodingOptions();
+          }}
+        >
+          <Typography
+            sx={{
+              color: 'red',
+            }}
+            variant="button"
+          >
+            Values changed, reset?
+          </Typography>
+        </Button>
+      </Grid>
       )}
-      <div className="col-12">
+      <Grid item>
         <RenderFloodingOptions flooding={soilDataRedux?.floodingFrequency} />
-      </div>
-    </div>
+      </Grid>
+    </Grid>
   );
 };
 

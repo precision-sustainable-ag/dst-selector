@@ -1,5 +1,5 @@
 import React from 'react';
-import { Typography } from '@mui/material';
+import { Typography, Grid } from '@mui/material';
 import { Terrain } from '@mui/icons-material';
 import { useSelector } from 'react-redux';
 import { ReferenceTooltip } from '../../../../shared/constants';
@@ -8,11 +8,19 @@ const SoilComposition = () => {
   const soilDataRedux = useSelector((stateRedux) => stateRedux.soilData.soilData);
 
   return (
-    <div className="col-12 pt-2 row">
-      <div className="col-12">
-        <Typography variant="body1" className="soilConditionSubHeader">
+    <Grid
+      item
+      container
+      xs={12}
+      direction="column"
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+    >
+      <Grid item xs={12}>
+        <Typography variant="body1">
           <Terrain />
-            &nbsp;SOILS COMPOSITION &nbsp;
+            &nbsp;SOIL COMPOSITION &nbsp;
           <ReferenceTooltip
             type="text"
             hasLink
@@ -35,20 +43,17 @@ const SoilComposition = () => {
               )}
           />
         </Typography>
-      </div>
-      <div className="col-12 pt-2 row">
-        <div className="col-12">
-          <Typography
-            variant="body1"
-            className="font-weight-bold"
-            style={{ color: 'rgb(89, 132, 69)' }}
-            align="left"
-          >
-            {soilDataRedux?.mapUnitName}
-          </Typography>
-        </div>
-      </div>
-    </div>
+      </Grid>
+      <Grid item xs={12}>
+        <Typography
+          variant="body1"
+          style={{ color: 'rgb(89, 132, 69)' }}
+          align="left"
+        >
+          {soilDataRedux?.mapUnitName}
+        </Typography>
+      </Grid>
+    </Grid>
   );
 };
 

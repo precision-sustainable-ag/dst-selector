@@ -1,48 +1,4 @@
-@import '../../node_modules/sass-mediaqueries/media-queries';
 @import '../styles/constants.scss';
-
-.cropDetailsText {
-  display: flex;
-  flex-basis: 60%;
-  flex-direction: column;
-  padding-left: 2em;
-  justify-content: space-between;
-  div.part1_ut {
-    display: flex;
-    flex-direction: column;
-    text-align: left;
-    word-wrap: break-word;
-    font-weight: 700;
-    span {
-      &.cropCategory {
-        color: #919191;
-      }
-      &.cropName {
-        font-size: 15pt;
-      }
-      &.cropScientificName {
-        color: #c2c2c2;
-        font-style: italic;
-      }
-    }
-
-    // &.cropDuration {
-
-    // }
-  }
-  // div.part2_lt {
-  // }
-}
-
-.activeCartBtn {
-  background-color: $progressColor !important;
-  color: white !important;
-}
-
-.inactiveCartBtn {
-  background-color: #e3f2f4 !important;
-  color: black;
-}
 
 .rating,
 .rating-0,
@@ -52,12 +8,7 @@
 .rating-4 {
   display: inline-block;
   background: url('~/public/images/rating_sprite.png') no-repeat;
-  overflow: hidden;
   text-indent: -9999px;
-  text-align: left;
-  position: relative;
-  // box-shadow: inset 0px 0px 0 3px white;
-  // box-shadow: inset 0px 0px 0 1px #e3f2f4;
   width: 100px;
   height: 20px;
   border-radius: 10px;
@@ -83,7 +34,6 @@
 
 .tableHeadWrapper {
   background-color: #abd08f;
-  text-align: center;
   word-wrap: break-word;
   border-top-left-radius: 5px;
   border-bottom-left-radius: 5px;
