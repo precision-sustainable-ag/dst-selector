@@ -25,6 +25,7 @@ export const ReferenceTooltip = ({
   const link = hasLink;
   return sourceType === 'link' ? (
     <Tooltip
+      enterTouchDelay={0}
       title={(
         <div>
           Source
@@ -39,16 +40,17 @@ export const ReferenceTooltip = ({
       <Info fontSize="small" />
     </Tooltip>
   ) : sourceType === 'html' ? (
-    <Tooltip arrow dangerouslySetInnerHTML={content}>
+    <Tooltip arrow dangerouslySetInnerHTML={content} enterTouchDelay={0}>
       {' '}
       <Info fontSize="small" />
     </Tooltip>
   ) : link ? (
-    <Tooltip title={title} placement="right" arrow>
+    <Tooltip title={title} placement="right" arrow enterTouchDelay={0}>
       <Info fontSize="small" />
     </Tooltip>
   ) : (
     <Tooltip
+      enterTouchDelay={0}
       title={(
         <div>
           <Typography variant="body1">{sourceContent}</Typography>
@@ -63,7 +65,7 @@ export const ReferenceTooltip = ({
 };
 
 export const DataTooltip = ({ data, placement = 'top-start' }) => (
-  <Tooltip title={<div className="text-center">{data}</div>} placement={placement} arrow>
+  <Tooltip title={<div className="text-center">{data}</div>} placement={placement} arrow enterTouchDelay={0}>
     <Info fontSize="small" />
   </Tooltip>
 );
@@ -672,21 +674,21 @@ export const getLegendDataBasedOnCouncil = (councilShorthand = '') => {
     { className: 'temperatureRisk', label: 'Temperature Risk To Establishment' },
     { className: 'frostPossible', label: 'Frost Seeding Possible' },
     { className: 'multiple', label: 'Multiple' },
-    { className: 'cashCrop', label: 'Previous Cash Crop Growth Window' },
+    { className: 'cashCrop', label: 'Cash Crop Growing Window' },
     { className: 'hessianFlyFree', label: 'Hessian Fly Free Date' },
   ];
   const MCCClegendData = [
     { className: 'reliable', label: 'Reliable Establishment' },
     { className: 'temperatureRisk', label: 'Freeze/Moisture Risk to Establishment' },
     { className: 'multiple', label: 'Multiple' },
-    { className: 'cashCrop', label: 'Previous Cash Crop Growth Window' },
+    { className: 'cashCrop', label: 'Cash Crop Growing Window' },
     { className: 'hessianFlyFree', label: 'Hessian Fly Free Date' },
   ];
   const SCCClegendData = [
     { className: 'reliable', label: 'Reliable Establishment' },
     { className: 'frostPossible', label: 'Average Frost' },
     { className: 'multiple', label: 'Multiple' },
-    { className: 'cashCrop', label: 'Previous Cash Crop Growth Window' },
+    { className: 'cashCrop', label: 'Cash Crop Growing Window' },
   ];
   switch (councilShorthand) {
     case 'MCCC':
@@ -1112,4 +1114,52 @@ export const postHistory = async (accessToken = null, historyData = null) => {
     .then((res) => res.json())
     // eslint-disable-next-line no-console
     .catch((err) => console.log(err));
+};
+
+export const extractData = (attribute, from) => {
+  // handles no data
+  if (!attribute) {
+    return (
+      <Typography variant="body2">No Data</Typography>
+    );
+  }
+
+  // extract data
+  let data;
+  let dataType;
+  if (from === 'infoSheet') {
+    data = attribute?.values[0]?.label ? attribute?.values[0]?.label : attribute?.values[0]?.value;
+    dataType = attribute?.dataType.label;
+  } else {
+    data = attribute?.values[0];
+    dataType = attribute?.dataType;
+  }
+
+  // handles pillbox data
+  if (data && dataType === 'pillbox') {
+    return (
+      getRating(data)
+    );
+  }
+
+  // handle currency
+  if (data && dataType === 'currency') {
+    return (
+      <RenderSeedPriceIcons val={data} />
+    );
+  }
+
+  // handles the true false keys
+  if ((data === 'Frost Seeding' || (data === 'Can Aerial Seed?' || data === 'Aerial Seeding'))) {
+    return (
+      <Typography variant="body2">
+        {data ? 'Yes' : 'N/A'}
+      </Typography>
+    );
+  }
+
+  // handles default
+  return (
+    <Typography variant="body2">{data.toString()}</Typography>
+  );
 };

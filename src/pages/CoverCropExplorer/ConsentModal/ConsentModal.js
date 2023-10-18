@@ -15,7 +15,7 @@ const ConsentModal = ({ modalOpen, setModalOpen }) => {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 400,
+    maxWidth: '80%',
     bgcolor: 'background.paper',
     border: '2px solid #000',
     boxShadow: 24,
@@ -45,9 +45,7 @@ const ConsentModal = ({ modalOpen, setModalOpen }) => {
   return !/crop=/.test(window.location.search) && (
     <Modal
       open={modalOpen}
-      //   onClose={toggleModalOpen}
-      aria-labelledby="modal-modal-title"
-      aria-describedby="modal-modal-description"
+      closeAfterTransition
     >
       <Box sx={style}>
         <Typography id="modal-modal-title" variant="h6" component="h2">

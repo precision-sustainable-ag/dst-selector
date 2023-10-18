@@ -17,7 +17,7 @@ import { ArrowBack, ArrowForward, KeyboardArrowUp } from '@mui/icons-material';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import ReactGA from 'react-ga';
-import '../../styles/cropSelector.scss';
+// import '../../styles/cropSelector.scss';
 import MyCoverCropList from '../MyCoverCropList/MyCoverCropList';
 import CropCalendarView from './CropCalendarView/CropCalendarView';
 import CropSidebar from '../CropSidebar/CropSidebar';
@@ -169,18 +169,14 @@ const CropSelector = (props) => {
   const [showSidebar, setShowSidebar] = useState(true);
 
   return (
-    <Grid
-      container
-      mt={{
-        xs: '1%', sm: '1%', md: '2%', lg: '2%', xl: '2%',
-      }}
-    >
-
+    <Grid container mt={2} mr={2} mb={2}>
       <Grid
         item
         xl={12}
         lg={12}
         md={12}
+        sm={12}
+        xs={12}
       >
         {(size.width < 1680) && (
         <Button
@@ -193,7 +189,8 @@ const CropSelector = (props) => {
         </Button>
         )}
       </Grid>
-      <Grid item xl={3} lg={3} md={3} mt={4}>
+
+      <Grid item xl={3} lg={3} md={3} sm={12} xs={12}>
         {showSidebar && (
         <CropSidebar
           setGrowthWindow={setShowGrowthWindow}
@@ -207,7 +204,8 @@ const CropSelector = (props) => {
         />
         )}
       </Grid>
-      <Grid item xl={showSidebar ? 8 : 12} lg={showSidebar ? 8 : 12} md={showSidebar ? 8 : 12} mt={4} ml={4}>
+
+      <Grid item xl={showSidebar ? 9 : 12} lg={showSidebar ? 9 : 12} md={showSidebar ? 9 : 12} sm={12} xs={12}>
         {/* we need a spinner or loading icon for when the length isnt yet determined */}
         {speciesSelectorActivationFlagRedux ? (
           isListView ? (
