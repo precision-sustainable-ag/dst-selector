@@ -5,13 +5,11 @@
 */
 
 import {
-  Box,
   Button,
   CircularProgress,
   FormControl,
   InputLabel,
   MenuItem,
-  Modal,
   Select,
   Table,
   TableBody,
@@ -134,7 +132,6 @@ const CropCalendarView = ({ activeCropData }) => {
       ) : (
         <TableContainer
           component="div"
-          className="table-responsive calendarTableViewWrapper"
           style={{ lineHeight: '0.5' }}
         >
           <Table
@@ -144,10 +141,12 @@ const CropCalendarView = ({ activeCropData }) => {
           >
             <TableHead className="tableHeadWrapper">
               <TableRow className="calFirstHeadRow">
-                <TableCell
-                  colSpan={activeGrowthPeriod.length === 0 ? 2 : 1}
-                  style={{ backgroundColor: 'white' }}
-                />
+                <TableCell style={{ backgroundColor: 'white' }} colSpan={activeGrowthPeriod.length === 0 ? 2 : 1}>
+                  <Legend
+                    legendData={legendData}
+                    modal
+                  />
+                </TableCell>
                 {activeGrowthPeriod.length === 0 ? (
                   <TableCell
                     colSpan="12"
@@ -157,18 +156,6 @@ const CropCalendarView = ({ activeCropData }) => {
                   >
                     <div className="container-fluid">
                       <div className="row">
-                        <div className="col-4">
-                          <Typography variant="body1">
-                            <Button
-                              startIcon={<AddCircle />}
-                              onClick={handleLegendModal}
-                              style={{ color: '#000' }}
-                            >
-                              {' '}
-                              <Typography variant="body2">LEGEND</Typography>
-                            </Button>
-                          </Typography>
-                        </div>
                         <div className="col-4">
                           <Typography variant="body1" component="span">
                             <div style={sudoButtonStyleWithPadding}>COVER CROP GROWTH WINDOW</div>
@@ -211,7 +198,7 @@ const CropCalendarView = ({ activeCropData }) => {
                       <div style={sudoButtonStyleWithPadding}>ACTIVE GROWTH PERIOD</div>
                     </TableCell>
                     {activeGrowthPeriod.includes('Jan') ? (
-                      <Tooltip placement="top" title="Winter">
+                      <Tooltip placement="top" title="Winter" enterTouchDelay={0}>
                         <TableCell
                           className="activeGrowthMonth growthMonthSeparator"
                           style={{
@@ -228,7 +215,7 @@ const CropCalendarView = ({ activeCropData }) => {
                       <TableCell style={{ borderBottom: '5px solid white' }} colSpan="2" />
                     )}
                     {activeGrowthPeriod.includes('Mar') ? (
-                      <Tooltip placement="top" title="Spring">
+                      <Tooltip placement="top" title="Spring" enterTouchDelay={0}>
                         <TableCell
                           className="activeGrowthMonth growthMonthSeparator"
                           style={{
@@ -245,7 +232,7 @@ const CropCalendarView = ({ activeCropData }) => {
                       <TableCell style={{ borderBottom: '5px solid white' }} colSpan="3" />
                     )}
                     {activeGrowthPeriod.includes('Jun') ? (
-                      <Tooltip placement="top" title="Summer">
+                      <Tooltip placement="top" title="Summer" enterTouchDelay={0}>
                         <TableCell
                           className="activeGrowthMonth growthMonthSeparator"
                           style={{
@@ -262,7 +249,7 @@ const CropCalendarView = ({ activeCropData }) => {
                       <TableCell style={{ borderBottom: '5px solid white' }} colSpan="3" />
                     )}
                     {activeGrowthPeriod.includes('Sep') ? (
-                      <Tooltip placement="top" title="Fall">
+                      <Tooltip placement="top" title="Fall" enterTouchDelay={0}>
                         <TableCell
                           className="activeGrowthMonth growthMonthSeparator"
                           style={{
@@ -279,7 +266,7 @@ const CropCalendarView = ({ activeCropData }) => {
                       <TableCell style={{ borderBottom: '5px solid white' }} colSpan="3" />
                     )}
                     {activeGrowthPeriod.includes('Dec') ? (
-                      <Tooltip placement="top" title="Winter">
+                      <Tooltip placement="top" title="Winter" enterTouchDelay={0}>
                         <TableCell
                           className="activeGrowthMonth growthMonthSeparator"
                           style={{
@@ -305,11 +292,9 @@ const CropCalendarView = ({ activeCropData }) => {
                     }}
                   >
                     <div className="col-12">
-                      <Typography variant="body1">
-                        <Button startIcon={<AddCircle />} onClick={handleLegendModal}>
-                          <Typography variant="body2"> Legend</Typography>
-                        </Button>
-                      </Typography>
+                      <Button startIcon={<AddCircle />} onClick={handleLegendModal}>
+                        <Typography variant="body2"> Legend</Typography>
+                      </Button>
                     </div>
                   </TableCell>
                 ) : (
@@ -323,9 +308,7 @@ const CropCalendarView = ({ activeCropData }) => {
                 {selectedGoalsRedux.length > 0 && (
                   <TableCell style={{ width: '13%', borderRight: '5px solid white' }}>
                     <div className="col-12">
-                      <Typography variant="body1">
-                        <Typography variant="body2"> AVERAGE GOAL RATING</Typography>
-                      </Typography>
+                      <Typography variant="body2"> AVERAGE GOAL RATING</Typography>
                     </div>
 
                   </TableCell>
@@ -372,33 +355,6 @@ const CropCalendarView = ({ activeCropData }) => {
           </Table>
         </TableContainer>
       )}
-      <Modal
-        open={legendModal}
-        onClose={handleLegendModal}
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <Box
-          className="modalLegendPaper"
-          sx={{
-            backgroundColor: 'background.paper',
-            border: '2px solid #000',
-            boxShadow: 5,
-            padding: '1em',
-            width: '30%',
-          }}
-        >
-          <Legend
-            handleLegendModal={handleLegendModal}
-            legendData={legendData}
-            modal
-          />
-        </Box>
-
-      </Modal>
       <CropDetailsModal
         modalOpen={modalOpen}
         setModalOpen={setModalOpen}

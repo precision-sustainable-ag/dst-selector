@@ -15,12 +15,6 @@ const PlantHardinessZone = ({
   const plantHardinessZone = () => (
     <Select
       variant="filled"
-      labelId="plant-hardiness-zone-dropdown-select"
-      id="plant-hardiness-zone-dropdown-select"
-      style={{
-        width: '100%',
-        textAlign: 'left',
-      }}
       onChange={(e) => setRegionShorthand(e.target.value)}
       value={regionShorthand || ''}
     >
@@ -35,12 +29,10 @@ const PlantHardinessZone = ({
 
   return (
     <Collapse in={regionToggleRedux}>
-      <List component="div" disablePadding>
+      <List component="div">
         <ListItem component="div">
           <FormControl
             variant="filled"
-            style={{ width: '100%' }}
-            sx={{ minWidth: 120 }}
           >
             <InputLabel>{councilLabelRedux === 'Midwest Cover Crop Council' ? 'COUNTY' : 'ZONE'}</InputLabel>
             {plantHardinessZone()}

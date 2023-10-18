@@ -50,20 +50,21 @@ const GoalTag = ({
       placement="top"
       arrow
       title={(
-        <div className="filterTooltip">
-          {/* <p>{`${goalDescription} ${valuesDescriptions}`}</p> */}
-          <p>{`${goalDescription}`}</p>
-        </div>
+        <p>{`${goalDescription}`}</p>
       )}
       key={`tooltip${key}`}
     >
       <span>
         <Chip
           disabled={
-          selectedGoalsRedux.length >= 3
-            ? !selectedGoalsRedux.includes(goalTitle)
-            : false
-        }
+            selectedGoalsRedux.length >= 3
+              ? !selectedGoalsRedux.includes(goalTitle)
+              : false
+          }
+          sx={{
+            backgroundColor: selectedGoalsRedux.includes(goalTitle) ? '#598444' : '#f0f7eb',
+            fontWeight: 600,
+          }}
           avatar={
           selectedGoalsRedux.length !== 0 && selectedGoalsRedux.includes(goalTitle) ? (
             <Avatar id={`avatar${key}`}>{selectedGoalsRedux.indexOf(goalTitle) + 1}</Avatar>
@@ -71,14 +72,12 @@ const GoalTag = ({
             <Avatar className="d-none" />
           )
         }
-        // style={{ textAlign: "left" }}
           label={goalTitle.toUpperCase()}
           onClick={() => updateSelectedGoals(goal, key)}
           key={`chip${key}`}
           id={`chip${key}`}
           size="medium"
           variant="outlined"
-        // color={"primary"}
           className={`goal enabled ${goalTitle.toUpperCase()}`}
         />
       </span>

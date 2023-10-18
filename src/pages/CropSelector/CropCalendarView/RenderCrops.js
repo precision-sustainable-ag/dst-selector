@@ -50,38 +50,7 @@ const RenderCrops = ({
               paddingBottom: '0px',
             }}
           >
-            <div className="tdContainer d-flex justify-content-between flex-nowrap">
-              {crop ? (
-                <Button
-                  size="small"
-                  onClick={() => {
-                    setModalData(crop);
-                    setModalOpen(!modalOpen);
-                  }}
-                >
-                  <CropImage
-                    view="calendar"
-                    present
-                    src={
-                          crop.thumbnail
-                            ? crop.thumbnail
-                            : 'https://placehold.it/100x100'
-                        }
-                    alt={crop.label}
-                  />
-                </Button>
-              ) : (
-                <Button
-                  size="small"
-                  onClick={() => {
-                    setModalData(crop);
-                    setModalOpen(!modalOpen);
-                  }}
-                >
-                  <CropImage view="calendar" present={false} />
-                </Button>
-              )}
-
+            {crop ? (
               <Button
                 size="small"
                 onClick={() => {
@@ -89,11 +58,40 @@ const RenderCrops = ({
                   setModalOpen(!modalOpen);
                 }}
               >
-                {crop.label !== 'Sorghum-sudangrass'
-                  ? flipCoverCropName(crop.label)
-                  : trimString(flipCoverCropName(crop.label), 15)}
+                <CropImage
+                  view="calendar"
+                  present
+                  src={
+                          crop.thumbnail
+                            ? crop.thumbnail
+                            : 'https://placehold.it/100x100'
+                        }
+                  alt={crop.label}
+                />
               </Button>
-            </div>
+            ) : (
+              <Button
+                size="small"
+                onClick={() => {
+                  setModalData(crop);
+                  setModalOpen(!modalOpen);
+                }}
+              >
+                <CropImage view="calendar" present={false} />
+              </Button>
+            )}
+
+            <Button
+              size="small"
+              onClick={() => {
+                setModalData(crop);
+                setModalOpen(!modalOpen);
+              }}
+            >
+              {crop.label !== 'Sorghum-sudangrass'
+                ? flipCoverCropName(crop.label)
+                : trimString(flipCoverCropName(crop.label), 15)}
+            </Button>
           </TableCell>
           {selectedGoalsRedux.length > 0 && (
           <TableCell
@@ -118,12 +116,11 @@ const RenderCrops = ({
             <LightButton
               id={`cartBtn${index}`}
               style={{
+                backgroundColor: selectedBtns.includes(crop.id) ? '#2b7b79' : '#e3f2f4',
+                color: selectedBtns.includes(crop.id) ? 'white' : 'black',
                 borderRadius: '0px',
                 width: '130px',
               }}
-              className={
-                    selectedBtns.includes(crop.id) ? 'activeCartBtn' : 'inactiveCartBtn'
-                  }
               onClick={() => {
                 addCropToBasket(
                   crop.id,
@@ -136,7 +133,7 @@ const RenderCrops = ({
                 );
               }}
             >
-              {selectedBtns.includes(crop.id) ? 'ADDED' : 'ADD TO LIST'}
+              {selectedBtns.includes(crop.id) ? 'REMOVE' : 'ADD TO LIST'}
             </LightButton>
           </TableCell>
         </TableRow>

@@ -1,6 +1,5 @@
 /*
   Index.js is the top level component
-  styled using ./styles/parent.scss, ./styles/progressBar.css, CustomStyles from ./shared/constants
 */
 
 import React from 'react';
