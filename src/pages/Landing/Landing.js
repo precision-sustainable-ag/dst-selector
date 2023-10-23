@@ -42,6 +42,7 @@ const Landing = () => {
   const availableStates = useMemo(() => allStates.map((state) => state.label), [allStates]);
 
   const updateStateRedux = (selState) => {
+    localStorage.setItem('stateId', selState.id);
     dispatchRedux(updateStateInfo({
       stateLabel: selState.label,
       stateId: selState.id,
