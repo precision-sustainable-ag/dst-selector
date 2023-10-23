@@ -39,7 +39,6 @@ const CoverCropExplorer = () => {
   useEffect(() => {
     const filteredActiveCropData = cropDataRedux.filter((crop) => activeCropDataRedux.includes(crop.id))?.filter((a) => !a.inactive);
     setUpdatedActiveCropData(filteredActiveCropData);
-
     if (urlCrop && urlParamStateId && urlRegionId) {
       dispatchRedux(updateStateInfo({
         stateLabel: null,

@@ -72,7 +72,6 @@ const LocationComponent = () => {
   const regionShorthandRef = useRef(regionShorthand);
 
   const { isAuthenticated } = useAuth0();
-
   // calculate features shown on map
   const getFeatures = () => {
     if (userFields.length > 0 && Object.keys(selectedUserField).length !== 0) {
