@@ -31,7 +31,6 @@ import ComparisonBar from '../MyCoverCropList/ComparisonBar/ComparisonBar';
 import CoverCropSearch from './CoverCropSearch/CoverCropSearch';
 import SidebarFilter from './SidebarFilter/SidebarFilter';
 import CoverCropGoals from './CoverCropGoals/CoverCropGoals';
-import PreviousCashCrop from './PreviousCashCrop/PreviousCashCrop';
 import PlantHardinessZone from './PlantHardinessZone/PlantHardinessZone';
 import Legend from '../../components/Legend/Legend';
 import { updateRegion } from '../../reduxStore/mapSlice';
@@ -73,10 +72,10 @@ const CropSidebar = ({
   const [sidebarFiltersData, setSidebarFiltersData] = useState([]);
   // const [tableHeight, setTableHeight] = useState(0);
   const [cropFiltersOpen, setCropFiltersOpen] = useState(true);
-  const [dateRange, setDateRange] = useState({
-    startDate: null,
-    endDate: null,
-  });
+  // const [dateRange, setDateRange] = useState({
+  //   startDate: null,
+  //   endDate: null,
+  // });
 
   // make an exhaustive array of all params in array e.g. cover crop group and use includes in linq
   const [sidebarFilterOptions, setSidebarFilterOptions] = useState(() => {
@@ -258,18 +257,17 @@ const CropSidebar = ({
     regionIdRedux,
   ]);
 
-  useEffect(() => {
-    if (from === 'table') {
-      if (dateRange.startDate !== null && dateRange.endDate !== null) {
-        dispatchRedux(updateDateRange({
-          startDate: dateRange.startDate.toISOString().substring(0, 10),
-          endDate: dateRange.endDate.toISOString().substring(0, 10),
-        }));
-      }
+  // useEffect(() => {
+  //   if (from === 'table') {
+  //     if (dateRange.startDate !== null && dateRange.endDate !== null) {
+  //       dispatchRedux(updateDateRange({
+  //         startDate: dateRange.startDate.toISOString().substring(0, 10),
+  //         endDate: dateRange.endDate.toISOString().substring(0, 10),
+  //       }));
+  //     }
 
-      setGrowthWindow(true);
-    }
-  }, [dateRange, from, setGrowthWindow]);
+  //   }
+  // }, [dateRange, from, setGrowthWindow]);
 
   // TODO: Can we use Reducer instead of localStorage?
   useEffect(() => {
@@ -279,6 +277,7 @@ const CropSidebar = ({
         JSON.stringify(cashCropDataRedux.dateRange),
       );
     }
+    setGrowthWindow(true);
   }, [cashCropDataRedux.dateRange]);
 
   const filters = () => sidebarFilters.map((filter, index) => {
@@ -395,9 +394,6 @@ const CropSidebar = ({
                   <CoverCropGoals style={style} />
                 )}
 
-                <PreviousCashCrop
-                  setDateRange={setDateRange}
-                />
               </>
               )}
               {showFilters && (

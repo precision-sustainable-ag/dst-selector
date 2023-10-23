@@ -6,9 +6,11 @@
 // TODO: Goal tags are not responsive!
 import { Typography, Grid, Box } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import GoalTag from './GoalTag/GoalTag';
 import { callCoverCropApi } from '../../shared/constants';
+import PreviousCashCrop from '../CropSidebar/PreviousCashCrop/PreviousCashCrop';
+import { updateDateRange } from '../../reduxStore/cropSlice';
 
 const GoalsSelector = () => {
   // redux vars
@@ -18,6 +20,23 @@ const GoalsSelector = () => {
 
   // useState vars
   const [allGoals, setAllGoals] = useState([]);
+  const [dateRange, setDateRange] = useState({
+    startDate: null,
+    endDate: null,
+  });
+
+  const dispatchRedux = useDispatch();
+
+  useEffect(() => {
+    // if (from === 'table') {
+    if (dateRange.startDate !== null && dateRange.endDate !== null) {
+      dispatchRedux(updateDateRange({
+        startDate: dateRange.startDate.toISOString().substring(0, 10),
+        endDate: dateRange.endDate.toISOString().substring(0, 10),
+      }));
+    }
+    // }
+  }, [dateRange]);
 
   const query = `${encodeURIComponent('regions')}=${encodeURIComponent(regionIdRedux)}`;
 
@@ -57,6 +76,11 @@ const GoalsSelector = () => {
           ))}
         </Grid>
         )}
+      </Grid>
+      <Grid container mt={2} mb={2} mr={2}>
+        <PreviousCashCrop
+          setDateRange={setDateRange}
+        />
       </Grid>
     </Box>
   );
