@@ -79,10 +79,7 @@ const DictionaryContent = ({ dictData = [{}], from = '' }) => {
   ));
 
   return (
-    <div className={`${from === 'help' ? '' : 'dictionaryContentWrapper'}`}>
-      {Object.keys(groupedCats).length > 0 ? <RenderCats /> : ''}
-    </div>
-
+    Object.keys(groupedCats).length > 0 ? <RenderCats /> : null
   );
 };
 

@@ -1,39 +1,6 @@
 @import '../../node_modules/sass-mediaqueries/media-queries';
 @import '../styles/constants.scss';
 
-.calendarViewTable {
-  border-collapse: separate;
-  border-spacing: 0;
-}
-
-.calendarViewTable {
-  tr {
-    width: 100%;
-  }
-
-  tbody {
-    tr {
-      max-height: 3em;
-      td.calendarTableCell {
-        padding-left: 0px;
-        padding-bottom: 0px;
-        padding-right: 0px;
-        margin: 0;
-        .tdContainer {
-          max-height: 3em;
-          overflow: hidden;
-          border: 1px solid transparent;
-        }
-        button {
-          > span {
-            text-transform: capitalize;
-          }
-        }
-      }
-    }
-  }
-}
-
 .legendModalRow {
   p {
     > svg {
@@ -62,63 +29,10 @@
   }
 }
 
-@include mq($max-width: 1200px) {
-  // modalLegendPaper
-
-  .modalLegendPaper {
-    width: 80vw !important;
-  }
-
-  // table
-  table.table.calendarViewTable {
-    margin-top: 2em;
-    tbody {
-      tr {
-        td.calendarTableCell {
-          div.tdContainer {
-            max-height: inherit;
-            > img {
-              display: none;
-              visibility: hidden;
-            }
-          }
-        }
-      }
-    }
-  }
-}
-
-div.calendarViewTableWrapper.table-responsive {
-  .circularCentered {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-}
-
-table.table td,
-table.table th {
-  padding-top: 0.2rem;
-  padding-bottom: 0.2rem;
-}
-
-tbody.calendarTableBodyWrapper {
-  tr {
-    td {
-      padding-bottom: 0px !important;
-      vertical-align: middle;
-    }
-  }
-}
-
 thead.tableHeadWrapper {
   tr {
     th {
       background-color: rgb(171, 208, 143);
-      vertical-align: middle;
-      p {
-        font-weight: 400;
-      }
     }
   }
 }

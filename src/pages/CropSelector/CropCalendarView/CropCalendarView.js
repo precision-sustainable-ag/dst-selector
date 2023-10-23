@@ -19,9 +19,9 @@ import {
   TableRow,
   Tooltip,
   Typography,
-  Grid,
   Box,
 } from '@mui/material';
+import { tableCellClasses } from '@mui/material/TableCell';
 import {
   AcUnit, AddCircle, LocalFlorist, WbSunny,
 } from '@mui/icons-material';
@@ -130,69 +130,84 @@ const CropCalendarView = ({ activeCropData }) => {
   return (
     <>
       {ajaxInProgressRedux ? (
-        <Box className="circularCentered">
+        <Box>
           <CircularProgress size="6em" />
         </Box>
       ) : (
         <TableContainer component="div" style={{ lineHeight: '0.5' }}>
           <Table
             stickyHeader
-            className="table calendarViewTable table-sm table-borderless"
+            sx={{
+              [`& .${tableCellClasses.root}`]: {
+                borderBottom: 'none',
+              },
+            }}
             style={{}}
           >
             <TableHead className="tableHeadWrapper">
-              <TableRow className="calFirstHeadRow">
+              <TableRow>
                 <TableCell
+                  size="small"
                   style={{ backgroundColor: 'white' }}
                   colSpan={activeGrowthPeriod.length === 0 ? 2 : 1}
                 >
                   <Legend legendData={legendData} modal />
                 </TableCell>
                 {activeGrowthPeriod.length === 0 ? (
-                  <TableCell
-                    colSpan="12"
-                    style={{
-                      borderBottom: '5px solid white',
-                    }}
-                  >
-                    <Grid container direction="row">
-                      <Grid item xs={4} alignItems="center">
-                        <Typography
-                          variant="body1"
-                          component="div"
-                          align="left"
-                          style={sudoButtonStyleWithPadding}
+                  <>
+
+                    <TableCell
+                      size="small"
+                      colSpan="12"
+                      style={{
+                        borderBottom: '5px solid white',
+                      }}
+                    >
+
+                      <Typography
+                        variant="body1"
+                        component="div"
+                        align="left"
+                        style={sudoButtonStyleWithPadding}
+                      >
+                        COVER CROP GROWTH WINDOW
+                      </Typography>
+
+                    </TableCell>
+
+                    <TableCell
+                      size="small"
+                      style={{
+                        borderBottom: '5px solid white',
+                        borderLeft: '5px solid white',
+                      }}
+                    >
+                      <FormControl fullWidth>
+                        <InputLabel id="select-sorting">Sort by</InputLabel>
+                        <Select
+                          labelId="sorting-selector-label"
+                          id="sorting-selector"
+                          value={sortAlgo}
+                          label="Select"
+                          onChange={selectSortingAlgo}
                         >
-                          COVER CROP GROWTH WINDOW
-                        </Typography>
-                      </Grid>
-                      <Grid item xs={4}>
-                        <FormControl fullWidth>
-                          <InputLabel id="select-sorting">Sort by</InputLabel>
-                          <Select
-                            labelId="sorting-selector-label"
-                            id="sorting-selector"
-                            value={sortAlgo}
-                            label="Select"
-                            onChange={selectSortingAlgo}
-                          >
-                            <MenuItem value="goalsDsc">Average Goal Rating Highest-Least</MenuItem>
-                            <MenuItem value="goalsAsc">Average Goal Rating Least-Highest</MenuItem>
-                            <MenuItem value="cropNameA-Z">Crop Name A-Z</MenuItem>
-                            <MenuItem value="cropNameZ-A">Crop Name Z-A</MenuItem>
-                            <MenuItem value="cropGroupA-Z">Crop Group A-Z</MenuItem>
-                            <MenuItem value="cropGroupZ-A">Crop Group Z-A</MenuItem>
-                            <MenuItem value="plantingWindowAsc">Planting Window Ascending</MenuItem>
-                            <MenuItem value="plantingWindowDsc">Planting Window Desceding</MenuItem>
-                            <MenuItem value="myList">Selected Cover Crops</MenuItem>
-                          </Select>
-                        </FormControl>
-                      </Grid>
-                    </Grid>
-                  </TableCell>
+                          <MenuItem value="goalsDsc">Average Goal Rating Highest-Least</MenuItem>
+                          <MenuItem value="goalsAsc">Average Goal Rating Least-Highest</MenuItem>
+                          <MenuItem value="cropNameA-Z">Crop Name A-Z</MenuItem>
+                          <MenuItem value="cropNameZ-A">Crop Name Z-A</MenuItem>
+                          <MenuItem value="cropGroupA-Z">Crop Group A-Z</MenuItem>
+                          <MenuItem value="cropGroupZ-A">Crop Group Z-A</MenuItem>
+                          <MenuItem value="plantingWindowAsc">Planting Window Ascending</MenuItem>
+                          <MenuItem value="plantingWindowDsc">Planting Window Desceding</MenuItem>
+                          <MenuItem value="myList">Selected Cover Crops</MenuItem>
+                        </Select>
+                      </FormControl>
+                    </TableCell>
+                  </>
                 ) : (
                   <>
                     <TableCell
+                      size="small"
                       colSpan="1"
                       style={{
                         borderBottom: '5px solid white',
@@ -204,7 +219,7 @@ const CropCalendarView = ({ activeCropData }) => {
                     {activeGrowthPeriod.includes('Jan') ? (
                       <Tooltip placement="top" title="Winter" enterTouchDelay={0}>
                         <TableCell
-                          className="activeGrowthMonth growthMonthSeparator"
+                          size="small"
                           style={{
                             backgroundColor: CustomStyles().darkGreen,
                           }}
@@ -216,12 +231,12 @@ const CropCalendarView = ({ activeCropData }) => {
                         </TableCell>
                       </Tooltip>
                     ) : (
-                      <TableCell style={{ borderBottom: '5px solid white' }} colSpan="2" />
+                      <TableCell size="small" style={{ borderBottom: '5px solid white' }} colSpan="2" />
                     )}
                     {activeGrowthPeriod.includes('Mar') ? (
                       <Tooltip placement="top" title="Spring" enterTouchDelay={0}>
                         <TableCell
-                          className="activeGrowthMonth growthMonthSeparator"
+                          size="small"
                           style={{
                             backgroundColor: CustomStyles().darkGreen,
                           }}
@@ -233,12 +248,12 @@ const CropCalendarView = ({ activeCropData }) => {
                         </TableCell>
                       </Tooltip>
                     ) : (
-                      <TableCell style={{ borderBottom: '5px solid white' }} colSpan="3" />
+                      <TableCell size="small" style={{ borderBottom: '5px solid white' }} colSpan="3" />
                     )}
                     {activeGrowthPeriod.includes('Jun') ? (
                       <Tooltip placement="top" title="Summer" enterTouchDelay={0}>
                         <TableCell
-                          className="activeGrowthMonth growthMonthSeparator"
+                          size="small"
                           style={{
                             backgroundColor: CustomStyles().darkGreen,
                           }}
@@ -250,12 +265,12 @@ const CropCalendarView = ({ activeCropData }) => {
                         </TableCell>
                       </Tooltip>
                     ) : (
-                      <TableCell style={{ borderBottom: '5px solid white' }} colSpan="3" />
+                      <TableCell size="small" style={{ borderBottom: '5px solid white' }} colSpan="3" />
                     )}
                     {activeGrowthPeriod.includes('Sep') ? (
                       <Tooltip placement="top" title="Fall" enterTouchDelay={0}>
                         <TableCell
-                          className="activeGrowthMonth growthMonthSeparator"
+                          size="small"
                           style={{
                             backgroundColor: CustomStyles().darkGreen,
                           }}
@@ -267,12 +282,12 @@ const CropCalendarView = ({ activeCropData }) => {
                         </TableCell>
                       </Tooltip>
                     ) : (
-                      <TableCell style={{ borderBottom: '5px solid white' }} colSpan="3" />
+                      <TableCell size="small" style={{ borderBottom: '5px solid white' }} colSpan="3" />
                     )}
                     {activeGrowthPeriod.includes('Dec') ? (
                       <Tooltip placement="top" title="Winter" enterTouchDelay={0}>
                         <TableCell
-                          className="activeGrowthMonth growthMonthSeparator"
+                          size="small"
                           style={{
                             backgroundColor: CustomStyles().darkGreen,
                           }}
@@ -284,12 +299,13 @@ const CropCalendarView = ({ activeCropData }) => {
                         </TableCell>
                       </Tooltip>
                     ) : (
-                      <TableCell style={{ borderBottom: '5px solid white' }} colSpan="1" />
+                      <TableCell size="small" style={{ borderBottom: '5px solid white' }} colSpan="1" />
                     )}
                   </>
                 )}
                 {activeGrowthPeriod.length > 0 ? (
                   <TableCell
+                    size="small"
                     style={{
                       borderLeft: '5px solid white',
                       borderBottom: '5px solid white',
@@ -302,17 +318,17 @@ const CropCalendarView = ({ activeCropData }) => {
                     </Box>
                   </TableCell>
                 ) : (
-                  <TableCell style={{ backgroundColor: 'white' }} />
+                  <TableCell size="small" style={{ backgroundColor: 'white' }} />
                 )}
               </TableRow>
-              <TableRow className="calSecondHeadRow">
-                <TableCell style={{ width: '17%', borderRight: '5px solid white' }}>
-                  <Typography variant="body2"> COVER CROPS </Typography>
+              <TableRow>
+                <TableCell size="small" style={{ width: '17%', borderRight: '5px solid white' }}>
+                  <Typography variant="body2" style={sudoButtonStyle}> COVER CROPS </Typography>
                 </TableCell>
                 {selectedGoalsRedux.length > 0 && (
-                  <TableCell style={{ width: '13%', borderRight: '5px solid white' }}>
+                  <TableCell size="small" style={{ width: '13%', borderRight: '5px solid white' }}>
                     <Box>
-                      <Typography variant="body2"> AVERAGE GOAL RATING</Typography>
+                      <Typography variant="body2" style={sudoButtonStyle}> AVERAGE GOAL RATING</Typography>
                     </Box>
                   </TableCell>
                 )}
@@ -321,9 +337,9 @@ const CropCalendarView = ({ activeCropData }) => {
                   const growthMonthSeparator = growthMonth
                     ? !!(month === 'Feb' || month === 'May' || month === 'Aug' || month === 'Nov')
                     : false;
-
                   return (
                     <TableCell
+                      size="small"
                       key={`monthskey${index}`}
                       style={{ cursor: 'pointer' }}
                       className={`calendarSecondHeadMonth ${
@@ -335,13 +351,13 @@ const CropCalendarView = ({ activeCropData }) => {
                     </TableCell>
                   );
                 })}
-                <TableCell style={{ width: '10%', borderLeft: '5px solid white' }}>
-                  <Typography variant="body2"> MY LIST </Typography>
+                <TableCell size="small" style={{ width: '10%', borderLeft: '5px solid white' }}>
+                  <Typography variant="body2" style={sudoButtonStyle}> MY LIST </Typography>
                 </TableCell>
               </TableRow>
             </TableHead>
 
-            <TableBody className="calendarTableBodyWrapper">
+            <TableBody>
               {activeCropData.length > 0 && (
                 <>
                   <RenderCrops

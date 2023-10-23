@@ -9,11 +9,12 @@ div.growthCellsWrapper {
       &::after {
         position: absolute;
         width: 100%;
-        height: 53px;
-        top: 0;
+        height: 100%;
+        // margin-top: -50%;
         content: '';
         background-color: $cashCropGrowthWindowColor;
-        z-index: -1;
+        // opacity: 100%;
+        z-index: 1000;
       }
     }
   }
@@ -24,27 +25,21 @@ div.growthCellsWrapper {
   // will be shown on the basic bars will not affecting others
   .growthCell-30.Frost.Seeding {
     background-color: $frostSeedingPossibleColor;
-    z-index: auto;
   }
   .growthCell-30.Reliable {
     background-color: $reliableEstablishmentColor;
-    z-index: auto;
   }
   .growthCell-30.Average {
     background-color: $frostSeedingPossibleColor;
-    z-index: auto;
   }
   .growthCell-30.Multiple{
     background-color: $multipleColor;
-    z-index: auto;
   }
   .growthCell-30.Freeze\/Moisture.Risk.to.Establishment {
     background-color: $temperatureRiskToEstablishmentColor;
-    z-index: auto;
   }
   .growthCell-30.Spring, .basic, .Fall\/Winter, .Can, .Summer, .Spring, .Average  {
     background-color: $defaultLegendColor;
-    z-index: 2;
   }
 
   .growthCell-20 {
@@ -55,37 +50,29 @@ div.growthCellsWrapper {
       &::after {
         position: absolute;
         width: 100%;
-        height: 20px;
-        top: 0;
+        height: 100%;
         content: '';
         background-color: $cashCropGrowthWindowColor;
-        z-index: 1;
       }
     }
   }
 
   .growthCell-20.Frost.Seeding {
     background-color: $frostSeedingPossibleColor;
-    z-index: 2;
   }
   .growthCell-20.Reliable {
     background-color: $reliableEstablishmentColor;
-    z-index: 2;
   }
   .growthCell-20.Average {
     background-color: $frostSeedingPossibleColor;
-    z-index: 2;
   }
   .growthCell-20.Multiple{
     background-color: $multipleColor;
-    z-index: 2;
   }
   .growthCell-20.Freeze\/Moisture.Risk.to.Establishment {
     background-color: $temperatureRiskToEstablishmentColor;
-    z-index: 2;
   }
   .growthCell-20.Spring, .basic, .Fall\/Winter, .Can, .Summer, .Spring, .Average  {
     background-color: $defaultLegendColor;
-    // z-index: 2;
   }
 }
