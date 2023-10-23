@@ -45,9 +45,9 @@ const RenderCrops = ({
           style={hasGoalRatingTwoOrLess(crop) ? { opacity: '0.2' } : {}}
         >
           <TableCell
-            className="calendarTableCell"
             style={{
               paddingBottom: '0px',
+              paddingTop: '0px',
             }}
           >
             {crop ? (

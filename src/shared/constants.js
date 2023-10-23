@@ -609,6 +609,7 @@ export const sudoButtonStyle = {
   letterSpacing: '0.02857em',
   textTransform: 'uppercase',
   fontSize: '0.875rem',
+  textAlign: 'center',
 };
 
 export const sudoButtonStyleWithPadding = {
@@ -618,6 +619,7 @@ export const sudoButtonStyleWithPadding = {
   letterSpacing: '0.02857em',
   textTransform: 'uppercase',
   fontSize: '0.875rem',
+  textAlign: 'center',
 };
 
 export const getMonthDayString = (type = '', date = '') => {

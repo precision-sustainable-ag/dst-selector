@@ -1,5 +1,3 @@
-@import '../styles/constants.scss';
-
 .rating,
 .rating-0,
 .rating-1,
@@ -34,13 +32,10 @@
 
 .tableHeadWrapper {
   background-color: #abd08f;
-  word-wrap: break-word;
-  border-top-left-radius: 5px;
-  border-bottom-left-radius: 5px;
 }
 
 table#primaryCropTable {
-  border-spacing: 0 8px;
+  border-spacing: 0 7px;
 
   th {
     padding: 0;
@@ -69,17 +64,12 @@ table#primaryCropTable {
 
         &:first-child {
           border-left: 2px solid #598344;
-          vertical-align: auto;
-        }
-
-        &:nth-child(2) {
-          vertical-align: top;
         }
 
         &:last-child {
           border-right: 2px solid #598344;
           // remove line below to vertically align!
-          vertical-align: top;
+          // vertical-align: top;
         }
       }
     }
@@ -87,9 +77,6 @@ table#primaryCropTable {
 }
 
 #primaryCropTable thead {
-  tr.theadSecond {
-    height: 54px;
-  }
   th {
     vertical-align: middle;
   }
@@ -99,9 +86,4 @@ table#primaryCropTable {
   color: #999;
   margin-left: 0.5em;
   font-size: 90%;
-}
-
-table.w-100 ~ table {
-  /* clunky fix to get Dec right-aligned (rh) */
-  width: 100%;
 }

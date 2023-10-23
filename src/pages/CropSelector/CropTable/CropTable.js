@@ -187,8 +187,8 @@ const CropTableComponent = ({
                 <TableCell
                   colSpan={selectedGoalsRedux.length}
                   style={{
-                    backgroundColor: '#abd08f',
-                    textAlign: 'center',
+                    // backgroundColor: '#abd08f',
+                    // textAlign: 'center',
                   }}
                 >
                   <FormControl fullWidth>
