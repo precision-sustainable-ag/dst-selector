@@ -156,10 +156,6 @@ const LocationComponent = () => {
           county,
         },
       ));
-      dispatchRedux(snackHandler({
-        snackOpen: true,
-        snackMessage: 'Your location has been saved.',
-      }));
       if (councilShorthandRedux === 'MCCC') {
         // if council is MCCC, change selectedRegion based on county
         if (county && county.includes(' County')) {
@@ -180,6 +176,10 @@ const LocationComponent = () => {
             } else if (councilShorthandRedux !== 'MCCC') {
               setRegionShorthand(zone);
             }
+            dispatchRedux(snackHandler({
+              snackOpen: true,
+              snackMessage: 'Your location has been saved.',
+            }));
           })
           .catch((err) => {
             dispatchRedux(snackHandler({
