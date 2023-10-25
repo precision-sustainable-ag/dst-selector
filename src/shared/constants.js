@@ -244,45 +244,69 @@ export const getRating = (ratng) => {
   switch (rating) {
     case 0:
       return (
-        <div className="rating-0">
-          <span />
-        </div>
+        <svg width="30px" height="30px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#2d7b7b" strokeWidth="1" strokeLinecap="round" strokeLinejoin="miter">
+          <line x1="22" y1="3" x2="22" y2="21" stroke="#d3d3d3" strokeWidth={3} />
+          <line x1="17" y1="7" x2="17" y2="21" stroke="#d3d3d3" strokeWidth={3} />
+          <line x1="12" y1="11" x2="12" y2="21" stroke="#d3d3d3" strokeWidth={3} />
+          <line x1="7" y1="14" x2="7" y2="21" stroke="#d3d3d3" strokeWidth={3} />
+          <line x1="2" y1="17" x2="2" y2="21" stroke="#d3d3d3" strokeWidth={3} />
+        </svg>
       );
     case 1:
       return (
-        <div className="rating-1">
-          <span />
-        </div>
+        <svg width="30px" height="30px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#2d7b7b" strokeWidth="1" strokeLinecap="round" strokeLinejoin="miter">
+          <line x1="22" y1="3" x2="22" y2="21" stroke="#d3d3d3" strokeWidth={3} />
+          <line x1="17" y1="7" x2="17" y2="21" stroke="#d3d3d3" strokeWidth={3} />
+          <line x1="12" y1="11" x2="12" y2="21" stroke="#d3d3d3" strokeWidth={3} />
+          <line x1="7" y1="14" x2="7" y2="21" stroke="#d3d3d3" strokeWidth={3} />
+          <line x1="2" y1="17" x2="2" y2="21" stroke="#2d7b7b" strokeWidth={3} />
+        </svg>
       );
     case 2:
       return (
-        <div className="rating-2">
-          <span />
-        </div>
+        <svg width="30px" height="30px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#2d7b7b" strokeWidth="1" strokeLinecap="round" strokeLinejoin="miter">
+          <line x1="22" y1="3" x2="22" y2="21" stroke="#d3d3d3" strokeWidth={3} />
+          <line x1="17" y1="7" x2="17" y2="21" stroke="#d3d3d3" strokeWidth={3} />
+          <line x1="12" y1="11" x2="12" y2="21" stroke="#d3d3d3" strokeWidth={3} />
+          <line x1="7" y1="14" x2="7" y2="21" stroke="#2d7b7b" strokeWidth={3} />
+          <line x1="2" y1="17" x2="2" y2="21" stroke="#2d7b7b" strokeWidth={3} />
+        </svg>
       );
     case 3:
       return (
-        <div className="rating-3">
-          <span />
-        </div>
+        <svg width="30px" height="30px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#2d7b7b" strokeWidth="1" strokeLinecap="round" strokeLinejoin="miter">
+          <line x1="22" y1="3" x2="22" y2="21" stroke="#d3d3d3" strokeWidth={3} />
+          <line x1="17" y1="7" x2="17" y2="21" stroke="#d3d3d3" strokeWidth={3} />
+          <line x1="12" y1="11" x2="12" y2="21" stroke="#2d7b7b" strokeWidth={3} />
+          <line x1="7" y1="14" x2="7" y2="21" stroke="#2d7b7b" strokeWidth={3} />
+          <line x1="2" y1="17" x2="2" y2="21" stroke="#2d7b7b" strokeWidth={3} />
+        </svg>
       );
     case 4:
       return (
-        <div className="rating-4">
-          <span />
-        </div>
+        <svg width="30px" height="30px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#2d7b7b" strokeWidth="1" strokeLinecap="round" strokeLinejoin="miter">
+          <line x1="22" y1="3" x2="22" y2="21" stroke="#d3d3d3" strokeWidth={3} />
+          <line x1="17" y1="7" x2="17" y2="21" stroke="#2d7b7b" strokeWidth={3} />
+          <line x1="12" y1="11" x2="12" y2="21" stroke="#2d7b7b" strokeWidth={3} />
+          <line x1="7" y1="14" x2="7" y2="21" stroke="#2d7b7b" strokeWidth={3} />
+          <line x1="2" y1="17" x2="2" y2="21" stroke="#2d7b7b" strokeWidth={3} />
+        </svg>
       );
     case 5:
       return (
-        <div className="rating">
-          <span />
-        </div>
+        <svg width="30px" height="30px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" strokeWidth="1" strokeLinecap="round" strokeLinejoin="miter">
+          <line x1="22" y1="3" x2="22" y2="21" stroke="#2d7b7b" strokeWidth={3} />
+          <line x1="17" y1="7" x2="17" y2="21" stroke="#2d7b7b" strokeWidth={3} />
+          <line x1="12" y1="11" x2="12" y2="21" stroke="#2d7b7b" strokeWidth={3} />
+          <line x1="7" y1="14" x2="7" y2="21" stroke="#2d7b7b" strokeWidth={3} />
+          <line x1="2" y1="17" x2="2" y2="21" stroke="#2d7b7b" strokeWidth={3} />
+        </svg>
       );
     default:
       return (
-        <div className="rating-0">
-          <span />
-        </div>
+        <Typography variant="body1" fontSize="small">
+          No Data
+        </Typography>
       );
   }
 };
@@ -378,9 +402,8 @@ export const CropImage = ({
       break;
     default:
       imageStyle = {
-        width: '100px',
-        height: '100px',
-        maxWidth: '200px',
+        width: '75px',
+        height: '75px',
         // maxHeight: "100px",
       };
   }
@@ -408,8 +431,10 @@ export const flipCoverCropName = (cropName = '') => {
   }
   const cropNames = cropName.split(',');
 
+  const flipedCropName = `${cropNames[1]} ${cropNames[0]}`;
+
   if (cropNames.length > 1) {
-    return `${cropNames[1]} ${cropNames[0]}`;
+    return `${flipedCropName.substring(0, 20)} ${flipedCropName.length > 20 ? '...' : ''}`;
   }
   return cropName;
 };
@@ -490,29 +515,25 @@ export const sortCrops = (type = 'Average Goals', crops = [], sortFlag = '', sel
       aAvg /= selectedItems.length;
       bAvg /= selectedItems.length;
       if (aAvg > bAvg) {
-        return -1;
+        return sortFlag ? -1 : 1;
       } if (aAvg === bAvg) {
         return 0;
       }
-      return 1;
+      return sortFlag ? 1 : -1;
     });
-    if (!sortFlag) {
-      crops.reverse();
-    }
   }
   if (type === 'Goal') {
     crops.sort((a, b) => {
       if (a.data.Goals[goal] && b.data.Goals[goal]) {
-        if (a.data.Goals[goal].values[0] > b.data.Goals[goal].values[0]) {
-          return -1;
+        if (parseInt(a.data.Goals[goal].values[0], 10) > parseInt(b.data.Goals[goal].values[0], 10)) {
+          return sortFlag ? -1 : 1;
         }
-        return 1;
+        return sortFlag ? 1 : -1;
+      } if (a.data.Goals[goal]) {
+        return sortFlag ? -1 : 1;
       }
-      return 0;
+      return sortFlag ? 1 : -1;
     });
-    if (!sortFlag) {
-      crops.reverse();
-    }
   }
   if (type === 'Crop Name') {
     if (crops.length > 0) {
@@ -523,11 +544,8 @@ export const sortCrops = (type = 'Average Goals', crops = [], sortFlag = '', sel
         const secondCropName = flipCoverCropName(
           b.label.toLowerCase(),
         ).replace(/\s+/g, '');
-        return firstCropName.localeCompare(secondCropName);
+        return sortFlag ? secondCropName.localeCompare(firstCropName) : firstCropName.localeCompare(secondCropName);
       });
-    }
-    if (!sortFlag) {
-      crops.reverse();
     }
   }
   if (type === 'Planting Window') {
@@ -550,29 +568,22 @@ export const sortCrops = (type = 'Average Goals', crops = [], sortFlag = '', sel
             secondDate = new Date(b.data?.['Planting and Growth Windows']?.['Reliable Establishment']?.values[secondLength - 1].split(' - ')[0]).toLocaleDateString('en-GB').split('/').reverse()
               .join('');
           }
-          return firstDate.localeCompare(secondDate);
+          return sortFlag ? secondDate.localeCompare(firstDate) : firstDate.localeCompare(secondDate);
         }
         if (firstLength) {
-          return 1;
+          return sortFlag ? -1 : 1;
         }
-        return -1;
+        return sortFlag ? 1 : -1;
         // should there be other conditions here to accomodate if either firstLength or secondLength is 0 (have no planting data)
         // return 1;
       });
     }
-    if (!sortFlag) {
-      crops.reverse();
-    }
   }
   if (type === 'Selected Crops') {
     if (selectedItems.length > 0) {
-      const selectedCropIds = [];
-      selectedItems.forEach((crop) => {
-        selectedCropIds.push(crop.id);
-      });
       crops.sort((a, b) => {
-        if (selectedCropIds.includes(a.id)) return -1;
-        if (selectedCropIds.includes(b.id)) return 1;
+        if (selectedItems.includes(a.id)) return sortFlag ? -1 : 1;
+        if (selectedItems.includes(b.id)) return sortFlag ? 1 : -1;
         return 0;
       });
     }
@@ -592,13 +603,10 @@ export const sortCrops = (type = 'Average Goals', crops = [], sortFlag = '', sel
           const secondCropName = flipCoverCropName(
             b.label.toLowerCase(),
           ).replace(/\s+/g, '');
-          return firstCropName.localeCompare(secondCropName);
+          return sortFlag ? secondCropName.localeCompare(firstCropName) : firstCropName.localeCompare(secondCropName);
         }
         return groupStringComparsion;
       });
-    }
-    if (!sortFlag) {
-      crops.reverse();
     }
   }
 };
@@ -607,7 +615,6 @@ export const sudoButtonStyle = {
   fontWeight: '500',
   lineHeight: '1.75',
   letterSpacing: '0.02857em',
-  textTransform: 'uppercase',
   fontSize: '0.875rem',
   textAlign: 'center',
 };
@@ -801,21 +808,7 @@ export const cropDataFormatter = (cropData = [{}]) => {
       start: '',
       end: '',
     }));
-    // values for testing hessian fly free dates
-    // val.data['Planting and Growth Windows']['Hessian Fly Free Date'] = {
-    //   id: 749,
-    //   label: 'Hessian Fly Free Date',
-    //   description: null,
-    //   units: '',
-    //   details: '',
-    //   values: [
-    //     '10/1/2009',
-    //   ],
-    //   dataType: 'datetime',
-    //   isArray: false,
-    //   isGoal: false,
-    //   isStrict: false,
-    // };
+
     params.forEach((param) => {
       if (val.data['Planting and Growth Windows']?.[`${param}`]) {
         val.data['Planting and Growth Windows']?.[`${param}`].values.forEach((dateArray) => {
@@ -856,61 +849,9 @@ export const cropDataFormatter = (cropData = [{}]) => {
   };
 
   return tjson.map((crop) => {
-    // remove open discussion row and zone decision !== include
-
-    // let val = { fields: crop };
     const val = monthStringBuilder(crop);
 
     val.inBasket = false;
-
-    // if (!val['Nitrogen Fixation']) {
-    //   val['Nitrogen Fixation'] = 0;
-    // }
-
-    // if (!val['Early Spring Growth']) {
-    //   val['Early Spring Growth'] = 0;
-    // }
-
-    // val['Discourages Nematodes'] = val['Disoucrages Nematodes'];
-    // // TODO: do we want the __id value to be apart of the object maybe as altId we need the ID from the API to be unaltered
-    // // val.id = val.__id;
-    // val.Drought = val['Drought Tolerance'];
-    // val.Flood = val['Flood Tolerance'];
-    // val.Heat = val['Heat Tolerance'];
-    // val['Low Fertility'] = val['Low Fertility Tolerance'];
-    // val.Salinity = val['Salinity Tolerance'];
-    // val.Shade = val['Shade Tolerance'];
-    // val['Tillage at Vegetative'] = val['Tillage Termination at Vegetative'];
-    // val['Tillage at Flowering'] = val['Tillage Termination at Flowering'];
-
-    // val['Freezing at Flowering'] = val['Freezing Termination at Flowering'];
-
-    // val['Freezing at Vegetative'] = val['Freezing Termination at Vegetative'];
-    // val['Chemical at Vegetative'] = val['Chemical Termination at Vegetative'];
-    // val['Chemical at Flowering'] = val['Chemical Termination at Flowering'];
-
-    // val['Mow at Flowering'] = val['Mow Termination at Flowering'];
-    // val['Roller Crimp at Flowering'] = val['Roller Crimp Termination at Flowering'];
-
-    // if (!val['Frost Seeding']) {
-    //   val['Frost Seeding'] = false;
-    // } else {
-    //   val['Frost Seeding'] = true;
-    // }
-    // if (!val['Can Aerial Seed']) {
-    //   val['Aerial Seeding'] = false;
-    // } else {
-    //   val['Aerial Seeding'] = true;
-    // }
-
-    // // TODO: not using anymore
-    // if (!val['Pollinator Habitat']) {
-    //   val['Pollinator Habitat'] = 0;
-    // }
-
-    // if (!val['Pollinator Food']) {
-    //   val['Pollinator Food'] = 0;
-    // }
 
     return val;
   });

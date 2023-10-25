@@ -21,7 +21,7 @@ import ReactGA from 'react-ga';
 import MyCoverCropList from '../MyCoverCropList/MyCoverCropList';
 import CropCalendarView from './CropCalendarView/CropCalendarView';
 import CropSidebar from '../CropSidebar/CropSidebar';
-import CropTableComponent from './CropTable/CropTable';
+import CropTable from './CropTable/CropTable';
 import { sortCrops } from '../../shared/constants';
 import { updateActiveCropData } from '../../reduxStore/cropSlice';
 import { updateProgress } from '../../reduxStore/sharedSlice';
@@ -169,67 +169,60 @@ const CropSelector = (props) => {
   const [showSidebar, setShowSidebar] = useState(true);
 
   return (
-    <Grid container mt={2} mr={2} mb={2}>
-      <Grid
-        item
-        xl={12}
-        lg={12}
-        md={12}
-        sm={12}
-        xs={12}
-      >
-        {(size.width < 1680) && (
-        <Button
-          startIcon={!showSidebar ? <ArrowForward /> : <ArrowBack />}
-          title="Toggle Sidebar"
-          aria-label="toggle-sidebar"
-          onClick={() => setShowSidebar(!showSidebar)}
-        >
-          {!showSidebar ? 'Show Sidebar' : 'Hide Sidebar'}
-        </Button>
-        )}
-      </Grid>
+    <Box mt={1} mb={1} mr={1} ml={1}>
+      <Grid container spacing={3}>
+        <Grid item xl={3} lg={3} md={3} sm={12} xs={12}>
+          {(size.width < 1680) && (
+          <Button
+            startIcon={!showSidebar ? <ArrowForward /> : <ArrowBack />}
+            title="Toggle Sidebar"
+            aria-label="toggle-sidebar"
+            onClick={() => setShowSidebar(!showSidebar)}
+          >
+            {!showSidebar ? 'Show Sidebar' : 'Hide Sidebar'}
+          </Button>
+          )}
+          {showSidebar && (
+          <CropSidebar
+            setGrowthWindow={setShowGrowthWindow}
+            isListView={isListView}
+            cropData={cropData}
+            activeCropData={updatedActiveCropData?.length > 0 ? cropDataRedux.filter((crop) => activeCropDataRedux.includes(crop.id)) : cropData}
+            comparisonView={comparisonView}
+            toggleComparisonView={() => { setComparisonView(!comparisonView); }}
+            toggleListView={() => { setIsListView(!isListView); }}
+            from="table"
+          />
+          )}
+        </Grid>
 
-      <Grid item xl={3} lg={3} md={3} sm={12} xs={12}>
-        {showSidebar && (
-        <CropSidebar
-          setGrowthWindow={setShowGrowthWindow}
-          isListView={isListView}
-          cropData={cropData}
-          activeCropData={updatedActiveCropData?.length > 0 ? cropDataRedux.filter((crop) => activeCropDataRedux.includes(crop.id)) : cropData}
-          comparisonView={comparisonView}
-          toggleComparisonView={() => { setComparisonView(!comparisonView); }}
-          toggleListView={() => { setIsListView(!isListView); }}
-          from="table"
-        />
-        )}
-      </Grid>
-
-      <Grid item xl={showSidebar ? 9 : 12} lg={showSidebar ? 9 : 12} md={showSidebar ? 9 : 12} sm={12} xs={12}>
-        {/* we need a spinner or loading icon for when the length isnt yet determined */}
-        {speciesSelectorActivationFlagRedux ? (
-          isListView ? (
-            <CropCalendarView
-              activeCropData={cropDataRedux.filter((crop) => activeCropDataRedux.includes(crop.id))}
-            />
+        <Grid item xl={showSidebar ? 9 : 12} lg={showSidebar ? 9 : 12} md={showSidebar ? 9 : 12} sm={12} xs={12}>
+          {/* we need a spinner or loading icon for when the length isnt yet determined */}
+          {speciesSelectorActivationFlagRedux ? (
+            isListView ? (
+              <CropCalendarView
+                activeCropData={cropDataRedux.filter((crop) => activeCropDataRedux.includes(crop.id))}
+              />
+            ) : (
+              <CropTable
+                cropData={cropData}
+                setCropData={setCropData}
+                activeCropData={cropDataRedux.filter((crop) => activeCropDataRedux.includes(crop.id))}
+                showGrowthWindow={showGrowthWindow}
+              />
+            )
           ) : (
-            <CropTableComponent
-              cropData={cropData}
-              setCropData={setCropData}
-              activeCropData={cropDataRedux.filter((crop) => activeCropDataRedux.includes(crop.id))}
-              showGrowthWindow={showGrowthWindow}
-            />
-          )
-        ) : (
-          <MyCoverCropList comparisonView={comparisonView} />
-        )}
+            <MyCoverCropList comparisonView={comparisonView} />
+          )}
+        </Grid>
+        <ScrollTop {...props}>
+          <Fab color="secondary" size="medium" aria-label="scroll back to top">
+            <KeyboardArrowUp />
+          </Fab>
+        </ScrollTop>
       </Grid>
-      <ScrollTop {...props}>
-        <Fab color="secondary" size="medium" aria-label="scroll back to top">
-          <KeyboardArrowUp />
-        </Fab>
-      </ScrollTop>
-    </Grid>
+    </Box>
+
   );
 };
 
