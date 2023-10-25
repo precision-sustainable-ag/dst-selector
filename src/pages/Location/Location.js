@@ -302,7 +302,7 @@ const LocationComponent = () => {
   };
 
   return (
-    <Box mt={2} mb={2} mr={2} ml={2}>
+    <Box mt={1} mb={1} mr={1} ml={1}>
       <Grid container spacing={2}>
         <Grid container item md={3} xs={12} justifyContent="center">
           <Grid item>

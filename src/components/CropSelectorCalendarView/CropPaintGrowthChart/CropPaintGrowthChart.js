@@ -24,7 +24,7 @@ const CropPaintGrowthChart = ({
   data = [],
   isCashCropMonth = () => {},
 }) => (
-  <Box className="growthCellsWrapper" sx={{ display: 'flex' }}>
+  <Box className="growthCellsWrapper" sx={{ display: 'flex', width: from === 'calendar' ? 'auto' : '200px' }}>
     {data['Half Month Data'].map((item, index) => {
       const l = item.months.length;
       if (item.info.length > 0) {
@@ -80,7 +80,7 @@ const CropPaintGrowthChart = ({
             <div
               className={
                 `${from === 'listView' ? 'growthCell-20' : 'growthCell-30'} \
-                ${item.info.length > 1 ? 'Multiple' : item.info[0]}\
+                ${item.info.length > 1 ? 'Multiple' : item.info[0] || 'Can Interseed'}\
                 ${isCashCropMonth(month) ? 'cashCropMonth' : ''}`
               }
               key={`${index}-${i}`}

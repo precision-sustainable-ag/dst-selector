@@ -182,7 +182,16 @@ const Header = () => {
   const chooseTopBar = (option) => {
     if (option) {
       return (
-        <Grid item container spacing={1} md={isMdOrSmaller ? 12 : 6} xs={12} alignItems="center" justifyContent={isMdOrSmaller ? 'center' : 'right'}>
+        <Grid
+          item
+          container
+          spacing={1}
+          md={isMdOrSmaller ? 12 : 6}
+          xs={12}
+          alignItems="center"
+          justifyContent={isMdOrSmaller ? 'center' : 'right'}
+          className="topHeader"
+        >
           {headerTabs.map((tab, index) => (
             <Grid item key={index}>
               <Button>

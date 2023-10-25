@@ -15,7 +15,7 @@ const LocationConfirmation = () => {
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
 
   return (
-    <Box mt={2} mb={2} mr={2} ml={2}>
+    <Box mb={1} mr={1} ml={1}>
       <Grid
         container
         spacing={2}
