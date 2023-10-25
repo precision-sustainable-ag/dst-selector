@@ -76,12 +76,13 @@ const GoalsSelector = () => {
           ))}
         </Grid>
         )}
-      </Grid>
-      <Grid container mt={2} mb={2} mr={2}>
+        {/* <Grid container mt={2} mb={2} mr={2}> */}
         <PreviousCashCrop
           setDateRange={setDateRange}
         />
+        {/* </Grid> */}
       </Grid>
+
     </Box>
   );
 };
