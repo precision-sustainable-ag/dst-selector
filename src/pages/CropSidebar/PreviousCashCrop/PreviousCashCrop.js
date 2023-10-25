@@ -1,67 +1,68 @@
 import {
-  Collapse,
-  List,
-  ListItem,
-  ListItemText,
+  Grid,
+  Typography,
 } from '@mui/material';
-import React, { useState } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-// import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
-import { CustomStyles } from '../../../shared/constants';
 import { updateDateRange } from '../../../reduxStore/cropSlice';
 
 const PreviousCashCrop = () => {
   const dispatchRedux = useDispatch();
   const cashCropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cashCropData);
 
-  const [cashCropOpen, setCashCropOpen] = useState(true);
-
   const handleDispatch = (start = '', end = '') => {
     dispatchRedux(updateDateRange({ startDate: start, endDate: end }));
   };
 
-  const toggleCashCrop = () => {
-    setCashCropOpen(!cashCropOpen);
-  };
-
   return (
     <>
-
-      <ListItem
-        button
-        onClick={toggleCashCrop}
-        style={{ backgroundColor: cashCropOpen ? CustomStyles().lightGreen : 'inherit' }}
+      <Grid
+        item
+        xs={12}
+        style={{ paddingTop: '2rem' }}
       >
-
-        <ListItemText primary="CASH CROP GROWING WINDOW" />
-        {cashCropOpen ? <ExpandLess /> : <ExpandMore />}
-      </ListItem>
-      <Collapse in={cashCropOpen} timeout="auto" unmountOnExit>
-        <List component="div">
-          <ListItem sx={{ paddingLeft: 3 }}>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DatePicker
-                label="Planting Date"
-                value={cashCropDataRedux.dateRange.startDate}
-                onChange={(newDate) => handleDispatch(newDate, cashCropDataRedux.dateRange.endDate)}
-              />
-            </LocalizationProvider>
-          </ListItem>
-
-          <ListItem sx={{ paddingLeft: 3 }}>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DatePicker
-                label="Harvest Date"
-                value={cashCropDataRedux.dateRange.endDate}
-                onChange={(newDate) => handleDispatch(cashCropDataRedux.dateRange.startDate, newDate)}
-              />
-            </LocalizationProvider>
-          </ListItem>
-        </List>
-      </Collapse>
+        <Typography variant="body2" align="center" color="secondary" gutterBottom>
+          CASH CROP GROWING WINDOW
+        </Typography>
+      </Grid>
+      <Grid
+        container
+        spacing={2}
+        style={{
+          justifyContent: 'center',
+        }}
+      >
+        <Grid item>
+          <LocalizationProvider sx={{ padding: 3 }} dateAdapter={AdapterDayjs}>
+            <DatePicker
+              slotProps={{
+                textField: {
+                  error: false,
+                },
+              }}
+              label="Planting Date"
+              value={cashCropDataRedux.dateRange.startDate}
+              onChange={(newDate) => handleDispatch(newDate, cashCropDataRedux.dateRange.endDate)}
+            />
+          </LocalizationProvider>
+        </Grid>
+        <Grid item>
+          <LocalizationProvider sx={{ padding: 3 }} dateAdapter={AdapterDayjs}>
+            <DatePicker
+              slotProps={{
+                textField: {
+                  error: false,
+                },
+              }}
+              label="Harvest Date"
+              value={cashCropDataRedux.dateRange.endDate}
+              onChange={(newDate) => handleDispatch(cashCropDataRedux.dateRange.startDate, newDate)}
+            />
+          </LocalizationProvider>
+        </Grid>
+      </Grid>
     </>
   );
 };
