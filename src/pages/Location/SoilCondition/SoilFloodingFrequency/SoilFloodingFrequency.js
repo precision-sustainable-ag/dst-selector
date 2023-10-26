@@ -30,7 +30,7 @@ const SoilFloodingFrequency = () => {
       <Grid item xs={12}>
         <Typography variant="body1">
           <WavesOutlined />
-            &nbsp;FLOODING FREQUENCY &nbsp;
+            &nbsp;Flooding Frequency&nbsp;
           <ReferenceTooltip
             type="text"
             hasLink
