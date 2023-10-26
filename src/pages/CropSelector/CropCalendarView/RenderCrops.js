@@ -1,11 +1,14 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Button, TableCell, TableRow } from '@mui/material';
+import {
+  Button, TableCell, TableRow, Grid,
+} from '@mui/material';
+import { AddCircleOutline, DeleteForever } from '@mui/icons-material';
 import {
   CropImage,
   flipCoverCropName,
   LightButton,
-  trimString,
+  // trimString,
   getRating,
   addCropToBasket,
 } from '../../../shared/constants';
@@ -44,82 +47,79 @@ const RenderCrops = ({
           key={`cropRow${index}`}
           style={hasGoalRatingTwoOrLess(crop) ? { opacity: '0.2' } : {}}
         >
-          <TableCell
-            className="calendarTableCell"
-            style={{
-              paddingBottom: '0px',
-            }}
-          >
-            {crop ? (
-              <Button
-                size="small"
-                onClick={() => {
-                  setModalData(crop);
-                  setModalOpen(!modalOpen);
-                }}
-              >
-                <CropImage
-                  view="calendar"
-                  present
-                  src={
+          <TableCell sx={{ padding: 0 }}>
+            <Grid container>
+              <Grid item>
+                {crop ? (
+                  <Button
+                    size="small"
+                    onClick={() => {
+                      setModalData(crop);
+                      setModalOpen(!modalOpen);
+                    }}
+                  >
+                    <CropImage
+                      view="calendar"
+                      present
+                      src={
                           crop.thumbnail
                             ? crop.thumbnail
                             : 'https://placehold.it/100x100'
                         }
-                  alt={crop.label}
-                />
-              </Button>
-            ) : (
-              <Button
-                size="small"
-                onClick={() => {
-                  setModalData(crop);
-                  setModalOpen(!modalOpen);
-                }}
-              >
-                <CropImage view="calendar" present={false} />
-              </Button>
-            )}
+                      alt={crop.label}
+                    />
+                  </Button>
+                ) : (
+                  <Button
+                    size="small"
+                    onClick={() => {
+                      setModalData(crop);
+                      setModalOpen(!modalOpen);
+                    }}
+                  >
+                    <CropImage view="calendar" present={false} />
+                  </Button>
+                )}
+              </Grid>
+              <Grid item>
+                <Button
+                  size="small"
+                  onClick={() => {
+                    setModalData(crop);
+                    setModalOpen(!modalOpen);
+                  }}
+                >
+                  {flipCoverCropName(crop.label)}
+                </Button>
+              </Grid>
+            </Grid>
 
-            <Button
-              size="small"
-              onClick={() => {
-                setModalData(crop);
-                setModalOpen(!modalOpen);
-              }}
-            >
-              {crop.label !== 'Sorghum-sudangrass'
-                ? flipCoverCropName(crop.label)
-                : trimString(flipCoverCropName(crop.label), 15)}
-            </Button>
           </TableCell>
           {selectedGoalsRedux.length > 0 && (
           <TableCell
-            style={{
-              paddingBottom: '0px',
+            sx={{
+              padding: 0,
               textAlign: 'center',
             }}
           >
             {getAverageGoalRating(selectedGoalsRedux, crop)}
           </TableCell>
           )}
-          <TableCell colSpan="12">
+          <TableCell sx={{ padding: 0 }} colSpan="12">
             <CropSelectorCalendarView from="calendar" data={crop} />
           </TableCell>
 
           <TableCell
-            style={{
-              paddingBottom: '0px',
+            sx={{
+              padding: 0,
             }}
           >
             {' '}
             <LightButton
               id={`cartBtn${index}`}
               style={{
-                backgroundColor: selectedBtns.includes(crop.id) ? '#2b7b79' : '#e3f2f4',
-                color: selectedBtns.includes(crop.id) ? 'white' : 'black',
-                borderRadius: '0px',
-                width: '130px',
+                backgroundColor: 'white',
+                color: selectedBtns.includes(crop.id) ? '#d32f2f' : '#2d7b7b',
               }}
               onClick={() => {
                 addCropToBasket(
@@ -133,7 +133,7 @@ const RenderCrops = ({
                 );
               }}
             >
-              {selectedBtns.includes(crop.id) ? 'REMOVE' : 'ADD TO LIST'}
+              {selectedBtns.includes(crop.id) ? <DeleteForever /> : <AddCircleOutline />}
             </LightButton>
           </TableCell>
         </TableRow>

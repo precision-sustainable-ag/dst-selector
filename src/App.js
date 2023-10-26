@@ -114,7 +114,7 @@ const App = () => (
               <Box>
                 <Header />
                 <Container disableGutters maxWidth={false}>
-                  <Box>
+                  <Box mr={1} ml={1} mt={1} mb={1}>
                     <Switch>
                       <Route
                         path="/"
