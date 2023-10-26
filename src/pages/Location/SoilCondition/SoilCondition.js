@@ -162,7 +162,7 @@ const SoilCondition = () => {
           This information is based on your location and the
           {' '}
           {` ${councilShorthandRedux} dataset`}
-          , update only as needed
+          , update only as needed.
         </Typography>
       </Grid>
       <Grid item xs={12}>

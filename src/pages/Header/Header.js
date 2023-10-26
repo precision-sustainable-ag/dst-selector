@@ -244,33 +244,36 @@ const Header = () => {
 
   return (
     <header>
-      <Grid container>
-        <Grid item container alignItems="center" mt={1} sx={{ height: headerHeight }}>
-          {chooseTopBar(isMdOrSmaller)}
-          {chooseTopBar(!isMdOrSmaller)}
+      <Box>
+        <Grid container>
+          <Grid item container alignItems="center" sx={{ height: headerHeight }}>
+            {chooseTopBar(isMdOrSmaller)}
+            {chooseTopBar(!isMdOrSmaller)}
+          </Grid>
+
+          <Grid
+            item
+            xs={12}
+            height={pathname !== '/' ? '50px' : 'auto'}
+            sx={{
+              backgroundColor: '#598445',
+            }}
+          >
+            <InformationBar pathname={pathname} />
+            <MyCoverCropReset />
+          </Grid>
         </Grid>
 
-        <Grid
-          item
-          xs={12}
-          height={pathname !== '/' ? '50px' : 'auto'}
-          sx={{
-            backgroundColor: '#598445',
-          }}
-        >
-          <InformationBar pathname={pathname} />
-          <MyCoverCropReset />
-        </Grid>
-      </Grid>
-
-      {(!authModalOpen || isAuthenticated) && (
+        {(!authModalOpen || isAuthenticated) && (
         <ConsentModal modalOpen={consentModalOpen} setModalOpen={setConsentModalOpen} />
-      )}
-      <AuthModal
-        modalOpen={authModalOpen}
-        setModalOpen={setAuthModalOpen}
-        setConsentModalOpen={setConsentModalOpen}
-      />
+        )}
+        <AuthModal
+          modalOpen={authModalOpen}
+          setModalOpen={setAuthModalOpen}
+          setConsentModalOpen={setConsentModalOpen}
+        />
+      </Box>
+
     </header>
   );
 };
