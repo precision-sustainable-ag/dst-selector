@@ -35,7 +35,7 @@ import PlantHardinessZone from './PlantHardinessZone/PlantHardinessZone';
 import Legend from '../../components/Legend/Legend';
 import { updateRegion } from '../../reduxStore/mapSlice';
 import { clearFilters } from '../../reduxStore/filterSlice';
-import { pullCropData, updateActiveCropData, updateDateRange } from '../../reduxStore/cropSlice';
+import { pullCropData, updateActiveCropData } from '../../reduxStore/cropSlice';
 import { setAjaxInProgress, regionToggleHandler } from '../../reduxStore/sharedSlice';
 
 const CropSidebar = ({

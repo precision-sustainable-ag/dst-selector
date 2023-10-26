@@ -24,7 +24,7 @@ const PreviousCashCrop = () => {
         style={{ paddingTop: '2rem' }}
       >
         <Typography variant="body2" align="center" color="secondary" gutterBottom>
-          CASH CROP GROWING WINDOW
+          Enter your cash crop growing window if you would like to see it displayed on the calendar.
         </Typography>
       </Grid>
       <Grid
