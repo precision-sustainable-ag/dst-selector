@@ -21,7 +21,7 @@ const PreviousCashCrop = () => {
       <Grid
         item
         xs={12}
-        style={{ paddingTop: '2rem' }}
+        style={{ paddingTop: '2rem', paddingBottom: '7px' }}
       >
         <Typography variant="body2" align="center" color="secondary" gutterBottom>
           Enter your cash crop growing window if you would like to see it displayed on the calendar.
