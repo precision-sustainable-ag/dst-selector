@@ -15,6 +15,7 @@ const ProgressButtons = () => {
   const regionShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.regionShorthand);
   const [isDisabledBack, setIsDisabledBack] = useState(false);
   const [isDisabledNext, setIsDisabledNext] = useState(true);
+  const [toolTip, setToolTip] = useState(true);
   const [isDisabledRefresh, setIsDisabledRefresh] = useState(false);
   const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
   const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
@@ -23,6 +24,7 @@ const ProgressButtons = () => {
   const disableLogic = (progress, goalsLength, sfilters, regionShorthand) => {
     switch (parseInt(progress, 10)) {
       case 0:
+        setToolTip(false);
         setIsDisabledBack(true);
         setIsDisabledRefresh(true);
         setIsDisabledNext(councilLabelRedux === null);
@@ -31,18 +33,19 @@ const ProgressButtons = () => {
         // location selection state
         // TODO: discuss should sfilter be used here or state.lastZone
         setIsDisabledNext(sfilters.zone === 0 || addressRedux === '' || regionShorthand === '');
-
+        setToolTip(true);
         setIsDisabledBack(false);
         setIsDisabledRefresh(false);
         break;
       case 4:
         // goals selection state
         setIsDisabledNext(goalsLength > 3 || goalsLength < 1);
-
+        setToolTip(false);
         setIsDisabledBack(false);
         setIsDisabledRefresh(false);
         break;
       default:
+        setToolTip(false);
         setIsDisabledNext(false);
         setIsDisabledBack(false);
         setIsDisabledRefresh(false);
@@ -62,6 +65,7 @@ const ProgressButtons = () => {
     return (
       <Grid item>
         <ProgressButtonsInner
+          toolTip={toolTip}
           isDisabledBack={disabledBack}
           isDisabledNext={disabledNext}
           isDisabledRefresh={disabledRefresh}
