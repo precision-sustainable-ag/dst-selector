@@ -20,7 +20,7 @@ const SoilComposition = () => {
       <Grid item xs={12}>
         <Typography variant="body1">
           <Terrain />
-            &nbsp;SOIL COMPOSITION &nbsp;
+            &nbsp;Soil Composition&nbsp;
           <ReferenceTooltip
             type="text"
             hasLink

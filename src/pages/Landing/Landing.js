@@ -199,7 +199,7 @@ const Landing = () => {
             </Grid>
             <Grid item xs={12}>
               <Typography variant="body1">
-                Choose your state from the dropdown or the map
+                Choose your state from the dropdown or the map.
               </Typography>
             </Grid>
             <Grid item xs={12} mb={2}>
