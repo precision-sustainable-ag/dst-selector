@@ -169,6 +169,7 @@ const Landing = () => {
         // height: '100vh',
       }}
       id="landingWrapper"
+      margin={-1}
     >
       <Grid
         style={{
