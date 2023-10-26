@@ -373,12 +373,6 @@ const CropSidebar = ({
         )}
         {speciesSelectorActivationFlagRedux || from === 'explorer' ? (
           <Box
-            // sx={{
-            //   width: {
-            //     lg: '280px',
-            //     xl: '280px',
-            //   },
-            // }}
             id="Filters"
           >
             <List
