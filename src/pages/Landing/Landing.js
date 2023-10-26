@@ -169,6 +169,7 @@ const Landing = () => {
         // height: '100vh',
       }}
       id="landingWrapper"
+      margin={-1}
     >
       <Grid
         style={{
@@ -181,9 +182,9 @@ const Landing = () => {
           left: '50%',
           transform: 'translateX(-50%)',
         }}
-        mt={2}
+        mt={1}
       >
-        <Box mr={2} ml={2} mb={2} mt={2}>
+        <Box mr={1} ml={1} mb={1} mt={1}>
           <Grid
             container
             item

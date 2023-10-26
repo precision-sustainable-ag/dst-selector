@@ -1,6 +1,8 @@
 import React, { Fragment } from 'react';
 import { useSelector } from 'react-redux';
-import { TableCell, Typography, TableRow } from '@mui/material';
+import {
+  TableCell, Typography, TableRow, Button,
+} from '@mui/material';
 import { CropImage, flipCoverCropName, trimString } from '../../../shared/constants';
 import '../../../styles/cropCalendarViewComponent.scss';
 import '../../../styles/cropTable.scss';
@@ -38,18 +40,16 @@ const CropTableListItem = ({
         }
 
         return (
-          <Fragment key={index}>
-
-            <TableRow
-              className={hasGoalRatingTwoOrLess(crop) && 'inactiveCropRow'}
-              key={`croprow${index}`}
-              id={crop.id}
-              style={{ opacity: hasGoalRatingTwoOrLess(crop) && '0.2' }}
-            >
-              <TableCell style={{ height: 'auto' }}>
-                <div className="container-fluid">
-                  <div className="row">
-                    <div className="col-auto pl-md-0">
+          <TableRow
+            key={`${crop.id} index`}
+            id={crop.id}
+            style={{ opacity: hasGoalRatingTwoOrLess(crop) && '0.2', outline: '2px solid #598344' }}
+          >
+            <TableCell size="small" sx={{ maxWidth: 150 }}>
+              <div className="container-fluid">
+                <div className="row">
+                  <div className="col-auto pl-md-0">
+                    <Button onClick={() => handleModalOpen(crop)}>
                       <CropImage
                         present={!!crop.thumbnail}
                         src={
@@ -59,97 +59,96 @@ const CropTableListItem = ({
                         }
                         alt={crop.label}
                       />
+                    </Button>
+                  </div>
+                  <div className="col-auto pl-md-0">
+                    <div className="col-12 p-md-0">
+                      <Typography variant="h7" sx={{ fontWeight: 'bold' }}>
+                        {flipCoverCropName(crop.label)}
+                      </Typography>
                     </div>
-                    <div className="col-auto pl-md-0">
-                      <div className="col-12 p-md-0">
-                        <Typography variant="h6">
-                          {flipCoverCropName(crop.label)}
-                        </Typography>
-                      </div>
-                      <div className="col-12 p-md-0">
-                        <Typography
-                          variant="body1"
-                          style={{
-                            color: 'gray',
-                            fontWeight: 'normal',
-                            fontStyle: 'italic',
-                            fontSize: 'small',
-                          }}
-                        >
-                          {trimString(crop.family.scientific, 25)}
-                        </Typography>
-                      </div>
-                      <div className="col-12 p-md-0">
-                        <Typography
-                          variant="subtitle2"
-                          className="text-uppercase"
-                          style={{ color: 'gray' }}
-                        >
-                          {crop.group}
-                        </Typography>
-                      </div>
+                    <div className="col-12 p-md-0">
+                      <Typography
+                        variant="body1"
+                        style={{
+                          color: 'gray',
+                          fontWeight: 'normal',
+                          fontStyle: 'italic',
+                          fontSize: 'small',
+                        }}
+                      >
+                        {trimString(crop.family.scientific, 25)}
+                      </Typography>
+                    </div>
+                    <div className="col-12 p-md-0">
+                      <Typography
+                        variant="body1"
+                        style={{ color: 'gray', fontSize: 'small' }}
+                      >
+                        {crop.group}
+                      </Typography>
                     </div>
                   </div>
                 </div>
-              </TableCell>
-              <TableCell style={{ textAlign: 'left', verticalAlign: 'middle' }}>
-                <table>
-                  <tbody>
-                    {crop.group.toLowerCase() === 'legume' && (
+              </div>
+            </TableCell>
+            <TableCell size="small" style={{ textAlign: 'left', verticalAlign: 'middle' }}>
+              <table>
+                <tbody>
+                  {crop.group.toLowerCase() === 'legume' && (
                     <tr>
                       <td>
-                        <Typography variant="subtitle2" component="b" className="">
-                          TOTAL N:
+                        <Typography variant="body1" component="b" style={{ fontSize: 'small' }}>
+                          Total N:
                         </Typography>
                       </td>
                       <td>
-                        <Typography variant="subtitle2" component="b">
+                        <Typography variant="body1" component="b" style={{ fontSize: 'small' }}>
                           {totalN}
                           <span className="units">lbs/A/y</span>
                         </Typography>
                       </td>
                     </tr>
-                    )}
+                  )}
 
-                    <tr>
-                      <td>
-                        {' '}
-                        <Typography variant="subtitle2" component="b" className="">
-                          DRY MATTER:
-                        </Typography>
-                      </td>
-                      <td>
-                        <Typography variant="subtitle2" component="b">
-                          {dryMatter}
-                          {/* -
+                  <tr>
+                    <td>
+                      {' '}
+                      <Typography variant="body1" component="b" style={{ fontSize: 'small' }}>
+                        Dry Matter:
+                      </Typography>
+                    </td>
+                    <td>
+                      <Typography variant="body1" component="b" style={{ fontSize: 'small' }}>
+                        {dryMatter}
+                        {/* -
                           {dryMatter} */}
-                          <span className="units">lbs/A/y</span>
-                        </Typography>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <Typography variant="subtitle2" component="b" className="">
-                          DURATION:
-                        </Typography>
-                      </td>
-                      <td>
-                        <Typography variant="subtitle2" component="b" className="text-uppercase">
-                          {duration}
-                        </Typography>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </TableCell>
-              <CropTableCard
-                crop={crop}
-                indexKey={index}
-                showGrowthWindow={showGrowthWindow}
-                handleModalOpen={handleModalOpen}
-              />
-            </TableRow>
-          </Fragment>
+                        <span className="units">lbs/A/y</span>
+                      </Typography>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <Typography variant="body1" component="b" style={{ fontSize: 'small' }}>
+                        Duration:
+                      </Typography>
+                    </td>
+                    <td>
+                      <Typography variant="body1" component="b" style={{ fontSize: 'small' }}>
+                        {duration}
+                      </Typography>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </TableCell>
+            <CropTableCard
+              crop={crop}
+              indexKey={index}
+              showGrowthWindow={showGrowthWindow}
+              handleModalOpen={handleModalOpen}
+            />
+          </TableRow>
         );
       }
       return (
