@@ -6,7 +6,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-import { Grid, Box } from '@mui/material';
+import { Grid } from '@mui/material';
 import SoilCondition from '../SoilCondition/SoilCondition';
 import WeatherConditions from '../../../components/WeatherConditions/WeatherConditions';
 
@@ -15,21 +15,18 @@ const LocationConfirmation = () => {
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
 
   return (
-    <Box mb={1} mr={1} ml={1}>
-      <Grid
-        container
-        spacing={2}
-        direction="column"
-        alignItems="center"
-        justifyContent="center"
-      >
-        <Grid item>
-          {progressRedux === 2 && <SoilCondition />}
-          {progressRedux === 3 && <WeatherConditions />}
-        </Grid>
+    <Grid
+      container
+      spacing={2}
+      direction="column"
+      alignItems="center"
+      justifyContent="center"
+    >
+      <Grid item>
+        {progressRedux === 2 && <SoilCondition />}
+        {progressRedux === 3 && <WeatherConditions />}
       </Grid>
-    </Box>
-
+    </Grid>
   );
 };
 

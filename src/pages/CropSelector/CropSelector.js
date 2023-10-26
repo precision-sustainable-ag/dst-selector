@@ -162,10 +162,9 @@ const CropSelector = (props) => {
   const [showSidebar, setShowSidebar] = useState(true);
 
   return (
-    <Box mt={1} mb={1} mr={1} ml={1}>
-      <Grid container spacing={3}>
-        <Grid item xl={3} lg={3} md={3} sm={12} xs={12}>
-          {(size.width < 1680) && (
+    <Grid container spacing={3}>
+      <Grid item xl={3} lg={3} md={3} sm={12} xs={12}>
+        {(size.width < 1680) && (
           <Button
             startIcon={!showSidebar ? <ArrowForward /> : <ArrowBack />}
             title="Toggle Sidebar"
@@ -174,8 +173,8 @@ const CropSelector = (props) => {
           >
             {!showSidebar ? 'Show Sidebar' : 'Hide Sidebar'}
           </Button>
-          )}
-          {showSidebar && (
+        )}
+        {showSidebar && (
           <CropSidebar
             setGrowthWindow={setShowGrowthWindow}
             isListView={isListView}
@@ -186,36 +185,34 @@ const CropSelector = (props) => {
             toggleListView={() => { setIsListView(!isListView); }}
             from="table"
           />
-          )}
-        </Grid>
-
-        <Grid item xl={showSidebar ? 9 : 12} lg={showSidebar ? 9 : 12} md={showSidebar ? 9 : 12} sm={12} xs={12}>
-          {/* we need a spinner or loading icon for when the length isnt yet determined */}
-          {speciesSelectorActivationFlagRedux ? (
-            isListView ? (
-              <CropCalendarView
-                activeCropData={cropDataRedux.filter((crop) => activeCropDataRedux.includes(crop.id))}
-              />
-            ) : (
-              <CropTable
-                cropData={cropData}
-                setCropData={setCropData}
-                activeCropData={cropDataRedux.filter((crop) => activeCropDataRedux.includes(crop.id))}
-                showGrowthWindow={showGrowthWindow}
-              />
-            )
-          ) : (
-            <MyCoverCropList comparisonView={comparisonView} />
-          )}
-        </Grid>
-        <ScrollTop {...props}>
-          <Fab color="secondary" size="medium" aria-label="scroll back to top">
-            <KeyboardArrowUp />
-          </Fab>
-        </ScrollTop>
+        )}
       </Grid>
-    </Box>
 
+      <Grid item xl={showSidebar ? 9 : 12} lg={showSidebar ? 9 : 12} md={showSidebar ? 9 : 12} sm={12} xs={12}>
+        {/* we need a spinner or loading icon for when the length isnt yet determined */}
+        {speciesSelectorActivationFlagRedux ? (
+          isListView ? (
+            <CropCalendarView
+              activeCropData={cropDataRedux.filter((crop) => activeCropDataRedux.includes(crop.id))}
+            />
+          ) : (
+            <CropTable
+              cropData={cropData}
+              setCropData={setCropData}
+              activeCropData={cropDataRedux.filter((crop) => activeCropDataRedux.includes(crop.id))}
+              showGrowthWindow={showGrowthWindow}
+            />
+          )
+        ) : (
+          <MyCoverCropList comparisonView={comparisonView} />
+        )}
+      </Grid>
+      <ScrollTop {...props}>
+        <Fab color="secondary" size="medium" aria-label="scroll back to top">
+          <KeyboardArrowUp />
+        </Fab>
+      </ScrollTop>
+    </Grid>
   );
 };
 

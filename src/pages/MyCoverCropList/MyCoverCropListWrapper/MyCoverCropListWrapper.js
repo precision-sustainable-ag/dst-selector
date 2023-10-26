@@ -14,7 +14,7 @@ const MyCoverCropListWrapper = () => {
     setComparisonView(!comparisonView);
   };
   return (
-    <Grid container spacing={3} mt={1} mr={1} ml={1} mb={1}>
+    <Grid container spacing={5}>
       {/* <Grid container spacing={5}> */}
       <Grid item xl={3} lg={3} md={3} sm={12} xs={12}>
         <CropSidebar
