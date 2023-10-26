@@ -1106,3 +1106,9 @@ export const extractData = (attribute, from) => {
     <Typography variant="body2">{data.toString()}</Typography>
   );
 };
+
+export const hasGoalRatingTwoOrLess = (selectedGoals, crop = []) => {
+  if (selectedGoals.length === 0) return crop.inactive;
+
+  return crop.inactive || selectedGoals.every((rating) => crop[rating] <= 2);
+};

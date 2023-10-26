@@ -24,7 +24,6 @@ import CropSidebar from '../CropSidebar/CropSidebar';
 import CropTable from './CropTable/CropTable';
 import { sortCrops } from '../../shared/constants';
 import { updateActiveCropData } from '../../reduxStore/cropSlice';
-import { updateProgress } from '../../reduxStore/sharedSlice';
 
 const ScrollTop = ({ children }) => {
   const trigger = useScrollTrigger({
@@ -98,12 +97,6 @@ const CropSelector = (props) => {
       ReactGA.pageview('cover crop selector');
     }
   }, [consentRedux]);
-
-  useEffect(() => {
-    if (selectedGoalsRedux?.length === 0) {
-      dispatchRedux(updateProgress('DECREMENT'));
-    }
-  }, [selectedGoalsRedux, dispatchRedux]);
 
   useEffect(() => {
     if (cropDataRedux) {

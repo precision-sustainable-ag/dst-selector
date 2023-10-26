@@ -17,6 +17,7 @@ const PlantHardinessZone = ({
       variant="filled"
       onChange={(e) => setRegionShorthand(e.target.value)}
       value={regionShorthand || ''}
+      sx={{ minWidth: '150px' }}
     >
 
       {regionsRedux?.length > 0 && regionsRedux.map((region, i) => (
