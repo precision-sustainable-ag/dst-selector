@@ -16,8 +16,6 @@ const DictionaryContent = ({ dictData = [{}], from = '' }) => {
           <Typography
             variant="body1"
             key={index2}
-            ml={4}
-            mt={3}
           >
             <b>
               {att.label}
@@ -33,7 +31,7 @@ const DictionaryContent = ({ dictData = [{}], from = '' }) => {
   };
 
   const RenderCats = () => dictData.map((catData, index) => (
-    <Grid container key={index} xs={12} sm={12} md={12} lg={12} xl={12} mt={2}>
+    <Grid container key={index} xs={12} sm={12} md={12} lg={12} xl={12}>
       <Typography
         variant="h6"
         style={from === 'help' ? { border: '0px', borderBottom: '1px solid gray', width: '100%' } : { width: '100%' }}
@@ -49,10 +47,7 @@ const DictionaryContent = ({ dictData = [{}], from = '' }) => {
   ));
 
   return (
-    <div className={`${from === 'help' ? '' : 'dictionaryContentWrapper'}`}>
-      {dictData.length > 0 ? <RenderCats /> : ''}
-    </div>
-
+    dictData.length > 0 ? <RenderCats /> : ''
   );
 };
 

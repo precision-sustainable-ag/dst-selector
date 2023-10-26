@@ -21,7 +21,7 @@ import ReactGA from 'react-ga';
 import MyCoverCropList from '../MyCoverCropList/MyCoverCropList';
 import CropCalendarView from './CropCalendarView/CropCalendarView';
 import CropSidebar from '../CropSidebar/CropSidebar';
-import CropTableComponent from './CropTable/CropTable';
+import CropTable from './CropTable/CropTable';
 import { sortCrops } from '../../shared/constants';
 import { updateActiveCropData } from '../../reduxStore/cropSlice';
 import { updateProgress } from '../../reduxStore/sharedSlice';
@@ -169,39 +169,29 @@ const CropSelector = (props) => {
   const [showSidebar, setShowSidebar] = useState(true);
 
   return (
-    <Grid container mt={2} mr={2} mb={2}>
-      <Grid
-        item
-        xl={12}
-        lg={12}
-        md={12}
-        sm={12}
-        xs={12}
-      >
-        {(size.width < 1680) && (
-        <Button
-          startIcon={!showSidebar ? <ArrowForward /> : <ArrowBack />}
-          title="Toggle Sidebar"
-          aria-label="toggle-sidebar"
-          onClick={() => setShowSidebar(!showSidebar)}
-        >
-          {!showSidebar ? 'Show Sidebar' : 'Hide Sidebar'}
-        </Button>
-        )}
-      </Grid>
-
+    <Grid container spacing={3}>
       <Grid item xl={3} lg={3} md={3} sm={12} xs={12}>
+        {(size.width < 1680) && (
+          <Button
+            startIcon={!showSidebar ? <ArrowForward /> : <ArrowBack />}
+            title="Toggle Sidebar"
+            aria-label="toggle-sidebar"
+            onClick={() => setShowSidebar(!showSidebar)}
+          >
+            {!showSidebar ? 'Show Sidebar' : 'Hide Sidebar'}
+          </Button>
+        )}
         {showSidebar && (
-        <CropSidebar
-          setGrowthWindow={setShowGrowthWindow}
-          isListView={isListView}
-          cropData={cropData}
-          activeCropData={updatedActiveCropData?.length > 0 ? cropDataRedux.filter((crop) => activeCropDataRedux.includes(crop.id)) : cropData}
-          comparisonView={comparisonView}
-          toggleComparisonView={() => { setComparisonView(!comparisonView); }}
-          toggleListView={() => { setIsListView(!isListView); }}
-          from="table"
-        />
+          <CropSidebar
+            setGrowthWindow={setShowGrowthWindow}
+            isListView={isListView}
+            cropData={cropData}
+            activeCropData={updatedActiveCropData?.length > 0 ? cropDataRedux.filter((crop) => activeCropDataRedux.includes(crop.id)) : cropData}
+            comparisonView={comparisonView}
+            toggleComparisonView={() => { setComparisonView(!comparisonView); }}
+            toggleListView={() => { setIsListView(!isListView); }}
+            from="table"
+          />
         )}
       </Grid>
 
@@ -213,7 +203,7 @@ const CropSelector = (props) => {
               activeCropData={cropDataRedux.filter((crop) => activeCropDataRedux.includes(crop.id))}
             />
           ) : (
-            <CropTableComponent
+            <CropTable
               cropData={cropData}
               setCropData={setCropData}
               activeCropData={cropDataRedux.filter((crop) => activeCropDataRedux.includes(crop.id))}

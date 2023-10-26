@@ -4,7 +4,7 @@
 */
 
 // TODO: Goal tags are not responsive!
-import { Typography, Grid, Box } from '@mui/material';
+import { Typography, Grid } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import GoalTag from './GoalTag/GoalTag';
@@ -30,19 +30,18 @@ const GoalsSelector = () => {
   }, []);
 
   return (
-    <Box mt={2} mb={2} mr={2} ml={2}>
-      <Grid container mt={2} mb={2} mr={2}>
-        <Grid item xs={12}>
-          <Typography variant="body2" align="center" color="secondary" gutterBottom>
-            Select 1 to 3 goals in order of importance.
-          </Typography>
-        </Grid>
-        <Grid item xs={12}>
-          <Typography variant="body2" align="center" color="secondary" gutterBottom>
-            Tap and hold for more information.
-          </Typography>
-        </Grid>
-        {allGoals?.length > 0 && (
+    <Grid container>
+      <Grid item xs={12}>
+        <Typography variant="body2" align="center" color="secondary" gutterBottom>
+          Select 1 to 3 goals in order of importance.
+        </Typography>
+      </Grid>
+      <Grid item xs={12}>
+        <Typography variant="body2" align="center" color="secondary" gutterBottom>
+          Tap and hold for more information.
+        </Typography>
+      </Grid>
+      {allGoals?.length > 0 && (
         <Grid container spacing={2} style={{ justifyContent: 'center' }}>
           {allGoals.map((goal, key) => (
             <Grid item key={key}>
@@ -56,9 +55,8 @@ const GoalsSelector = () => {
             </Grid>
           ))}
         </Grid>
-        )}
-      </Grid>
-    </Box>
+      )}
+    </Grid>
   );
 };
 

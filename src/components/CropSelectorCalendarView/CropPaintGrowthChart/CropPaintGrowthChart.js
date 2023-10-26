@@ -1,4 +1,4 @@
-import { Tooltip, Typography } from '@mui/material';
+import { Tooltip, Typography, Box } from '@mui/material';
 import React from 'react';
 import '../../../styles/cropSelectorCalendarView.scss';
 
@@ -24,7 +24,7 @@ const CropPaintGrowthChart = ({
   data = [],
   isCashCropMonth = () => {},
 }) => (
-  <div className="d-flex flex-row w-100 growthCellsWrapper">
+  <Box className="growthCellsWrapper" sx={{ display: 'flex', width: from === 'calendar' ? 'auto' : '200px' }}>
     {data['Half Month Data'].map((item, index) => {
       const l = item.months.length;
       if (item.info.length > 0) {
@@ -51,13 +51,14 @@ const CropPaintGrowthChart = ({
             key={index}
             enterTouchDelay={0}
           >
-            <div className="d-flex flex-row" style={{ flex: l }}>
+            <Box sx={{ display: 'flex', flex: l }}>
               {item.months.map((month, i) => (
                 <div
-                  className={`basic\
-                  ${from === 'listView' ? 'growthCell-20' : 'growthCell-30'}\
-                  ${item.info.length > 1 && !isHessianDate(item) ? 'Multiple' : item.info[0]}\
-                  ${isCashCropMonth(month) && (!isHessianDate(item)) ? 'cashCropMonth' : ''}`}
+                  className={
+                    `${from === 'listView' ? 'growthCell-20' : 'growthCell-30'}\
+                    ${item.info.length > 1 && !isHessianDate(item) ? 'Multiple' : item.info[0]}\
+                    ${isCashCropMonth(month) && (!isHessianDate(item)) ? 'cashCropMonth' : ''}`
+                  }
                   key={`${index}-${i}`}
                 >
                   {isHessianDate(item) && from !== 'listView'
@@ -69,24 +70,25 @@ const CropPaintGrowthChart = ({
                     : null}
                 </div>
               ))}
-            </div>
+            </Box>
           </Tooltip>
         );
       }
       return (
-        <div className="d-flex flex-row" style={{ flex: l }} key={index}>
+        <Box sx={{ display: 'flex', flex: l }} key={index}>
           {item.months.map((month, i) => (
             <div
-              className={`basic\
-              ${from === 'listView' ? 'growthCell-20' : 'growthCell-30'} \
-              ${item.info.length > 1 ? 'Multiple' : item.info[0]}\
-              ${isCashCropMonth(month) ? 'cashCropMonth' : ''}`}
+              className={
+                `${from === 'listView' ? 'growthCell-20' : 'growthCell-30'} \
+                ${item.info.length > 1 ? 'Multiple' : item.info[0] || 'Can Interseed'}\
+                ${isCashCropMonth(month) ? 'cashCropMonth' : ''}`
+              }
               key={`${index}-${i}`}
             />
           ))}
-        </div>
+        </Box>
       );
     })}
-  </div>
+  </Box>
 );
 export default CropPaintGrowthChart;
