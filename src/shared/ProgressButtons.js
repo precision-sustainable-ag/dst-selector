@@ -9,7 +9,6 @@ import { Grid } from '@mui/material';
 import ProgressButtonsInner from './ProgressButtonsInner';
 
 const ProgressButtons = () => {
-  const addressRedux = useSelector((stateRedux) => stateRedux.addressData.address);
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
   const [isDisabledBack, setIsDisabledBack] = useState(false);
@@ -17,6 +16,7 @@ const ProgressButtons = () => {
   const [isDisabledRefresh, setIsDisabledRefresh] = useState(false);
   const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
   const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
+  const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
 
   const disableLogic = (progress, goalsLength, sfilters) => {
@@ -29,14 +29,14 @@ const ProgressButtons = () => {
       case 1:
         // location selection state
         // TODO: discuss should sfilter be used here or state.lastZone
-        setIsDisabledNext(sfilters.zone === 0 || addressRedux === '');
+        setIsDisabledNext(sfilters.zone === 0 || !regionIdRedux);
 
         setIsDisabledBack(false);
         setIsDisabledRefresh(false);
         break;
       case 4:
         // goals selection state
-        setIsDisabledNext(goalsLength > 3 || goalsLength < 1);
+        setIsDisabledNext(goalsLength > 3);
 
         setIsDisabledBack(false);
         setIsDisabledRefresh(false);
