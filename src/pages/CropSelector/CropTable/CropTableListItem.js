@@ -3,7 +3,9 @@ import { useSelector } from 'react-redux';
 import {
   TableCell, Typography, TableRow, Button,
 } from '@mui/material';
-import { CropImage, flipCoverCropName, trimString } from '../../../shared/constants';
+import {
+  CropImage, flipCoverCropName, trimString, hasGoalRatingTwoOrLess,
+} from '../../../shared/constants';
 import '../../../styles/cropCalendarViewComponent.scss';
 import '../../../styles/cropTable.scss';
 import CropTableCard from './CropTableCard';
@@ -12,12 +14,11 @@ const CropTableListItem = ({
   activeCropData, matchGoals, showGrowthWindow, handleModalOpen,
 }) => {
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
-  const hasGoalRatingTwoOrLess = (crop = []) => crop.inactive || selectedGoalsRedux.every((rating) => crop[rating] <= 2);
 
   return (
     activeCropData.map((crop, index) => {
       if (
-        ((matchGoals ? !hasGoalRatingTwoOrLess(crop) : hasGoalRatingTwoOrLess(crop)))
+        ((matchGoals ? !hasGoalRatingTwoOrLess(selectedGoalsRedux, crop) : hasGoalRatingTwoOrLess(selectedGoalsRedux, crop)))
       ) {
         const searchCategory = crop.data['Basic Agronomics'] ? 'Basic Agronomics' : 'Growth Traits';
 
@@ -43,7 +44,7 @@ const CropTableListItem = ({
           <TableRow
             key={`${crop.id} index`}
             id={crop.id}
-            style={{ opacity: hasGoalRatingTwoOrLess(crop) && '0.2', outline: '2px solid #598344' }}
+            style={{ opacity: hasGoalRatingTwoOrLess(selectedGoalsRedux, crop) && '0.3', outline: '2px solid #598344' }}
           >
             <TableCell size="small" sx={{ maxWidth: 150 }}>
               <div className="container-fluid">
