@@ -220,6 +220,7 @@ const SnackbarComponent = () => {
         'aria-describedby': 'message-id',
       }}
       message={snackMessageRedux}
+      sx={{ marginBottom: '40px' }}
     />
 
   );

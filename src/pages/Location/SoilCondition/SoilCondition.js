@@ -20,6 +20,7 @@ const SoilCondition = () => {
   const markersRedux = useSelector((stateRedux) => stateRedux.addressData.markers);
   const soilDataOriginalRedux = useSelector((stateRedux) => stateRedux.soilData.soilDataOriginal);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
+  const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
 
   // useState vars
 
@@ -129,6 +130,8 @@ const SoilCondition = () => {
 
     const lat = markersRedux[0][0];
     const lon = markersRedux[0][1];
+
+    if (stateLabelRedux === 'Ontario') return;
 
     if (soilDataOriginalRedux?.latLong) {
       if (!(soilDataOriginalRedux.latLong?.lat === lat && soilDataOriginalRedux.latLong?.lon === lon)) {

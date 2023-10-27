@@ -75,7 +75,7 @@ const CoverCropExplorer = () => {
   }, [stateIdRedux]);
 
   return (
-    <Grid container>
+    <Grid container spacing={3}>
       <Grid item xl={3} lg={3} md={3} sm={12} xs={12}>
         <CropSidebar
           from="explorer"
