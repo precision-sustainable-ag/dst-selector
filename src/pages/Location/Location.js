@@ -293,8 +293,8 @@ const LocationComponent = () => {
 
     if (selectedRegion) {
       dispatchRedux(updateRegion({
-        regionId: selectedRegion.id,
-        regionShorthand: selectedRegion.shorthand,
+        regionId: selectedRegion?.id,
+        regionShorthand: selectedRegion?.shorthand,
       }));
     }
     if (isAuthenticated) {
