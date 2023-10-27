@@ -29,11 +29,12 @@ const InformationBar = ({ pathname }) => {
 
   // redux vars
   const addressRedux = useSelector((stateRedux) => stateRedux.addressData.address);
-  const zoneRedux = useSelector((stateRedux) => stateRedux.addressData.zone);
+  const regionRedux = useSelector((stateRedux) => stateRedux.mapData.regionShorthand);
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const weatherDataRedux = useSelector((stateRedux) => stateRedux.weatherData.weatherData);
   const soilDataRedux = useSelector((stateRedux) => stateRedux.soilData.soilData);
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
+  const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
 
   // functions
   const handleBtnClick = (type) => {
@@ -52,7 +53,7 @@ const InformationBar = ({ pathname }) => {
   const getSelectedValues = (type) => {
     switch (type) {
       case 'location':
-        return `Zone ${zoneRedux}`;
+        return councilShorthandRedux === 'MCCC' ? `${regionRedux} County` : `Zone ${regionRedux}`;
       case 'soil':
         return soilDataRedux?.drainageClass
           .toString()
@@ -144,12 +145,11 @@ const InformationBar = ({ pathname }) => {
       item
       sx={{
         backgroundColor: '#598445',
-        marginTop: '7px',
         marginBottom: '7px',
       }}
-      alignItems="center"
-      justifyContent="center"
+      justifyContent="right"
       xs={12}
+      spacing={1}
     >
       {
             (progressRedux > 0 && !isMobile)
@@ -177,7 +177,6 @@ const InformationBar = ({ pathname }) => {
         sx={{
           backgroundColor: '#598445',
         }}
-        alignItems="center"
         justifyContent="center"
         xs={12}
         lg={2.5}

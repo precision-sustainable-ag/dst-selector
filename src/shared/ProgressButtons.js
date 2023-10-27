@@ -9,7 +9,6 @@ import { Grid } from '@mui/material';
 import ProgressButtonsInner from './ProgressButtonsInner';
 
 const ProgressButtons = () => {
-  const addressRedux = useSelector((stateRedux) => stateRedux.addressData.address);
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
   const regionShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.regionShorthand);
@@ -17,6 +16,7 @@ const ProgressButtons = () => {
   const [isDisabledNext, setIsDisabledNext] = useState(true);
   const [toolTip, setToolTip] = useState(true);
   const [isDisabledRefresh, setIsDisabledRefresh] = useState(false);
+  const addressRedux = useSelector((stateRedux) => stateRedux.addressData.address);
   const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
   const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);

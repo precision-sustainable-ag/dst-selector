@@ -63,7 +63,7 @@ const SoilDrainage = () => {
       <Grid item xs={12}>
         <Typography variant="body1">
           <LocalDrinkOutlined />
-            &nbsp;DRAINAGE CLASS &nbsp;
+            &nbsp;Drainage Class&nbsp;
           <ReferenceTooltip
             type="text"
             hasLink
@@ -98,7 +98,7 @@ const SoilDrainage = () => {
           />
         </Typography>
       </Grid>
-      <Grid item xs={12}>
+      <Grid item container xs={12} direction="column" justifyContent="center" alignItems="center">
         {!arrayEquals(soilDataOriginalRedux?.drainageClass, soilDataRedux?.drainageClass) && (
           <Grid item xs={12}>
             <Button
@@ -110,6 +110,7 @@ const SoilDrainage = () => {
               <Typography
                 sx={{
                   color: 'red',
+                  textTransform: 'none',
                 }}
                 variant="button"
               >
@@ -124,11 +125,11 @@ const SoilDrainage = () => {
         <MyCoverCropReset handleConfirm={handleConfirm} setHandleConfirm={setHandleConfirm} />
 
         {showTiling && (
-        <Grid item container>
-          <Grid item xs={12}>
+        <Grid item container direction="column" justifyContent="center" alignItems="center">
+          <Grid item>
             <Typography variant="body1">
               <InvertColors />
-              &nbsp;TILING &nbsp;
+              &nbsp;Tile Drainage &nbsp;
               <ReferenceTooltip
                 type="text"
                 content="Indicate if the field of interest has tile installed. If you have selected very poorly to somewhat poorly drained soils, selecting “yes” will increase your drainage class by one factor."
@@ -137,7 +138,7 @@ const SoilDrainage = () => {
           </Grid>
           <Grid item>
             <Typography variant="body1" display="inline">
-              NO
+              No
             </Typography>
             <Switch
               checked={tilingCheck}
@@ -147,7 +148,7 @@ const SoilDrainage = () => {
               name="checkedC"
             />
             <Typography variant="body1" display="inline">
-              YES
+              Yes
             </Typography>
           </Grid>
         </Grid>

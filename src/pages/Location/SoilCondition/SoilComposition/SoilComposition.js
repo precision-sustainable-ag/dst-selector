@@ -6,8 +6,9 @@ import { ReferenceTooltip } from '../../../../shared/constants';
 
 const SoilComposition = () => {
   const soilDataRedux = useSelector((stateRedux) => stateRedux.soilData.soilData);
+  const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
 
-  return (
+  return stateLabelRedux !== 'Ontario' ? (
     <Grid
       item
       container
@@ -20,7 +21,7 @@ const SoilComposition = () => {
       <Grid item xs={12}>
         <Typography variant="body1">
           <Terrain />
-            &nbsp;SOIL COMPOSITION &nbsp;
+            &nbsp;Soil Composition&nbsp;
           <ReferenceTooltip
             type="text"
             hasLink
@@ -54,7 +55,7 @@ const SoilComposition = () => {
         </Typography>
       </Grid>
     </Grid>
-  );
+  ) : null;
 };
 
 export default SoilComposition;
