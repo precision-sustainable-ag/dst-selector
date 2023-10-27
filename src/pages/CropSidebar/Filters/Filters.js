@@ -76,14 +76,16 @@ const Chips = ({ filter, handleChange }) => {
   return filter.values.map((val, i) => {
     const selected = sfilters[`${filter.name}: ${val.value}`];
     return (
-      <Chip
-        key={filter.name + val.value + i}
-        onClick={() => handleChange(filter.name, val.value)}
-        component="li"
-        size="medium"
-        label={val.value}
-        color={selected ? 'primary' : 'secondary'}
-      />
+      <Grid item>
+        <Chip
+          key={filter.name + val.value + i}
+          onClick={() => handleChange(filter.name, val.value)}
+          component="li"
+          size="medium"
+          label={val.value}
+          color={selected ? 'primary' : 'secondary'}
+        />
+      </Grid>
     );
   });
 }; // Chips
@@ -142,7 +144,7 @@ const Filters = ({ filters }) => {
               <Grid item key={i} xs={12}>
                 <Tip filter={filter} />
               </Grid>
-              <Grid item xs={12}>
+              <Grid item container xs={12} spacing={0.3}>
                 <Chips key={i} filter={filter} handleChange={chipChange} />
               </Grid>
             </Grid>

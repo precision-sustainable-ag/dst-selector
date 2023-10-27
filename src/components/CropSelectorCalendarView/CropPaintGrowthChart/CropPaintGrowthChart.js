@@ -1,4 +1,6 @@
-import { Tooltip, Typography, Box } from '@mui/material';
+import {
+  Tooltip, Typography, Grid, Box,
+} from '@mui/material';
 import React from 'react';
 import '../../../styles/cropSelectorCalendarView.scss';
 
@@ -56,16 +58,26 @@ const CropPaintGrowthChart = ({
                 <div
                   className={
                     `${from === 'listView' ? 'growthCell-20' : 'growthCell-30'}\
-                    ${item.info.length > 1 && !isHessianDate(item) ? 'Multiple' : item.info[0]}\
+                    ${item.info.length > 1 && !isHessianDate(item) ? 'Multiple' : item.info[0] || 'Can Interseed'}\
                     ${isCashCropMonth(month) && (!isHessianDate(item)) ? 'cashCropMonth' : ''}`
                   }
                   key={`${index}-${i}`}
                 >
                   {isHessianDate(item) && from !== 'listView'
                     ? (
-                      <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none">
-                        <polygon points="50,0 100,50 50,100 0,50" fill="green" strokeWidth={0} />
-                      </svg>
+                      <Grid
+                        item
+                        container
+                        direction="column"
+                        alignItems="center"
+                        justifyContent="center"
+                        height="100%"
+                      >
+                        <svg width="20px" height="20px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+                          <polygon points="50,0 100,50 50,100 0,50" fill="green" strokeWidth={0} />
+                        </svg>
+                      </Grid>
+
                     )
                     : null}
                 </div>
