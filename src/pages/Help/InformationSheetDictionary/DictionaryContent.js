@@ -26,7 +26,7 @@ const DictionaryContent = ({ dictData = [{}], from = '' }) => {
   }, [allCats]);
 
   const RenderCats = () => Object.keys(groupedCats).map((key, index) => (
-    <Grid container key={index} xs={12} sm={12} md={12} lg={12} xl={12} mt={2}>
+    <Grid container key={index} xs={12} sm={12} md={12} lg={12} xl={12}>
       <Typography
         variant="h6"
         style={from === 'help' ? { border: '0px', borderBottom: '1px solid gray', width: '100%' } : { width: '100%' }}
@@ -79,10 +79,7 @@ const DictionaryContent = ({ dictData = [{}], from = '' }) => {
   ));
 
   return (
-    <div className={`${from === 'help' ? '' : 'dictionaryContentWrapper'}`}>
-      {Object.keys(groupedCats).length > 0 ? <RenderCats /> : ''}
-    </div>
-
+    Object.keys(groupedCats).length > 0 ? <RenderCats /> : null
   );
 };
 

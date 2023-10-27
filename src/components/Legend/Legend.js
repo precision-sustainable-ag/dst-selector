@@ -17,7 +17,7 @@ const Legend = ({ legendData, modal }) => (
     {legendData.length > 0
       && (
         legendData.map((item, key) => (
-          <Grid item className="legendModalRow" key={`gird index ${key}`} xs={12}>
+          <Grid item className="legendModalRow" key={`gird index ${key}`}>
             <Typography variant="body1">
               {
               modal && ((item.className === 'hessianFlyFree')

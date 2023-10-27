@@ -1,8 +1,9 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Button, TableCell, Tooltip } from '@mui/material';
+import { TableCell, Tooltip } from '@mui/material';
+import { AddCircleOutline, DeleteForever } from '@mui/icons-material';
 import {
-  addCropToBasket, CustomStyles, getRating, LightButton,
+  addCropToBasket, getRating, LightButton,
 } from '../../../shared/constants';
 import '../../../styles/cropCalendarViewComponent.scss';
 import '../../../styles/cropTable.scss';
@@ -11,7 +12,7 @@ import { selectedCropsModifier } from '../../../reduxStore/cropSlice';
 import { myCropListLocation, snackHandler } from '../../../reduxStore/sharedSlice';
 
 const CropTableCard = ({
-  crop, indexKey, showGrowthWindow, handleModalOpen,
+  crop, indexKey, showGrowthWindow,
 }) => {
   const dispatchRedux = useDispatch();
   const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
@@ -25,7 +26,7 @@ const CropTableCard = ({
     <>
       {selectedGoalsRedux.length > 0
         && selectedGoalsRedux.map((goal, index) => (
-          <TableCell style={{ textAlign: 'center' }} key={index} className="goalCells">
+          <TableCell size="small" style={{ textAlign: 'center' }} key={index} className="goalCells">
             <div>
               <Tooltip
                 arrow
@@ -46,18 +47,18 @@ const CropTableCard = ({
         ))}
 
       {showGrowthWindow && (
-        <TableCell style={{ width: selectedGoalsRedux.length === 0 && '50%' }}>
+        <TableCell size="small" style={{ width: 200 }}>
           <CropSelectorCalendarView data={crop} from="listView" />
         </TableCell>
       )}
 
-      <TableCell style={{ maxWidth: '150px', textAlign: 'center' }}>
+      <TableCell size="small" style={{ maxWidth: '150px', textAlign: 'center' }}>
         <div className="d-flex w-100 justify-content-center align-items-center flex-column">
           <LightButton
             id={`cartBtn${indexKey}`}
             style={{
-              borderRadius: CustomStyles().nonRoundedRadius,
-              width: '150px',
+              backgroundColor: 'white',
+              color: selectedBtns.includes(crop.id) ? '#d32f2f' : '#2d7b7b',
             }}
             className={selectedBtns.includes(crop.id) ? 'activeCartBtn' : 'inactiveCartBtn'}
             onClick={() => {
@@ -72,12 +73,8 @@ const CropTableCard = ({
               );
             }}
           >
-            {selectedBtns.includes(crop.id) ? 'REMOVE' : 'ADD TO LIST'}
+            {selectedBtns.includes(crop.id) ? <DeleteForever /> : <AddCircleOutline />}
           </LightButton>
-          {' '}
-          <Button size="small" onClick={() => handleModalOpen(crop)}>
-            View Details
-          </Button>
         </div>
       </TableCell>
     </>
