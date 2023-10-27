@@ -67,13 +67,13 @@ const MyCoverCropList = ({ comparisonView, from }) => {
            </Button>
          </Typography>
         ) : comparison ? (
-          <Box flexDirection="column" display="flex" height="100%">
-            <Grid container spacing={2} mt={1}>
+          <Box flexDirection="column" display="flex" height="100%" mt={1}>
+            <Grid container spacing={2}>
               <MyCoverCropComparisonTable />
             </Grid>
           </Box>
         ) : (
-          <Grid container spacing={2} mt={1}>
+          <Grid container spacing={2}>
             {cropDataRedux.filter((crop) => activeCropDataRedux.includes(crop.id)).filter((crop) => selectedCropsRedux.includes(crop.id)).map((crop, index) => (
               <Grid item key={index}>
                 <MyCoverCropCards

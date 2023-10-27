@@ -4,7 +4,7 @@
 */
 
 import {
-  Typography, Grid, Container, Box,
+  Typography, Grid, Container,
 } from '@mui/material';
 import React, {
   useEffect,
@@ -302,93 +302,91 @@ const LocationComponent = () => {
   };
 
   return (
-    <Box mt={2} mb={2} mr={2} ml={2}>
-      <Grid container spacing={2}>
-        <Grid container item md={3} xs={12} justifyContent="center">
-          <Grid item>
-            <Typography variant="h4">
-              Field Location
-            </Typography>
-          </Grid>
+    <Grid container spacing={2}>
+      <Grid container item md={3} xs={12} justifyContent="center">
+        <Grid item>
+          <Typography variant="h4">
+            Field Location
+          </Typography>
+        </Grid>
 
-          <Grid item>
-            {councilLabelRedux === 'Midwest Cover Crop Council'
-              ? (
-                <Typography variant="body1">
-                  Please Select A County.
-                </Typography>
-              )
-              : (
-                <Typography variant="body1">
-                  Find your address or ZIP code using the search bar on the map and hit
-                  <Search fontSize="inherit" />
-                  to determine your location. If needed, adjust your USDA Plant Hardiness Zone in the dropdown.
-                </Typography>
-              )}
-          </Grid>
+        <Grid item>
+          {councilLabelRedux === 'Midwest Cover Crop Council'
+            ? (
+              <Typography variant="body1">
+                Please Select A County.
+              </Typography>
+            )
+            : (
+              <Typography variant="body1">
+                Find your address or ZIP code using the search bar on the map and hit
+                <Search fontSize="inherit" />
+                to determine your location. If needed, adjust your USDA Plant Hardiness Zone in the dropdown.
+              </Typography>
+            )}
+        </Grid>
 
-          <Grid item xs={12}>
-            <PlantHardinessZone
-              regionShorthand={regionShorthand}
-              setRegionShorthand={setRegionShorthand}
-              regionsRedux={regionsRedux}
-              councilLabelRedux={councilLabelRedux}
-            />
-          </Grid>
+        <Grid item xs={12}>
+          <PlantHardinessZone
+            regionShorthand={regionShorthand}
+            setRegionShorthand={setRegionShorthand}
+            regionsRedux={regionsRedux}
+            councilLabelRedux={councilLabelRedux}
+          />
+        </Grid>
 
-          <Grid item xs={12}>
-            {isAuthenticated && (
+        <Grid item xs={12}>
+          {isAuthenticated && (
             <UserFieldList
               userFields={userFields}
               field={selectedUserField}
               setField={setSelectedUserField}
               setFieldDialogState={setFieldDialogState}
             />
-            )}
-          </Grid>
+          )}
         </Grid>
-        <Grid item md={9} xs={12}>
-          <Container maxWidth="md">
-            <Map
-              setAddress={setSelectedToEditSite}
-              setFeatures={setCurrentGeometry}
-              onDraw={onDraw}
-              initWidth="100%"
-              initHeight="500px"
-              initLat={getLatLng()[0]}
-              initLon={getLatLng()[1]}
-              initFeatures={mapFeatures}
-              initStartZoom={12}
-              initMinZoom={4}
-              initMaxZoom={18}
-              hasSearchBar
-              hasMarker
-              hasNavigation
-              hasCoordBar
-              hasDrawing
-              hasGeolocate
-              hasFullScreen
-              hasMarkerPopup
-              hasMarkerMovable
-            />
-          </Container>
-
-        </Grid>
-        <UserFieldDialog
-          fieldDialogState={fieldDialogState}
-          setFieldDialogState={setFieldDialogState}
-          userFields={userFields}
-          selectedToEditSite={selectedToEditSite}
-          currentGeometry={currentGeometry}
-          selectedUserField={selectedUserField}
-          setUserFields={setUserFields}
-          setSelectedUserField={setSelectedUserField}
-          setMapFeatures={setMapFeatures}
-          getFeatures={getFeatures}
-          setIsAddingPoint={setIsAddingPoint}
-        />
       </Grid>
-    </Box>
+      <Grid item md={9} xs={12}>
+        <Container maxWidth="md">
+          <Map
+            setAddress={setSelectedToEditSite}
+            setFeatures={setCurrentGeometry}
+            onDraw={onDraw}
+            initWidth="100%"
+            initHeight="500px"
+            initLat={getLatLng()[0]}
+            initLon={getLatLng()[1]}
+            initFeatures={mapFeatures}
+            initStartZoom={12}
+            initMinZoom={4}
+            initMaxZoom={18}
+            hasSearchBar
+            hasMarker
+            hasNavigation
+            hasCoordBar
+            hasDrawing
+            hasGeolocate
+            hasFullScreen
+            hasMarkerPopup
+            hasMarkerMovable
+          />
+        </Container>
+
+      </Grid>
+      <UserFieldDialog
+        fieldDialogState={fieldDialogState}
+        setFieldDialogState={setFieldDialogState}
+        userFields={userFields}
+        selectedToEditSite={selectedToEditSite}
+        currentGeometry={currentGeometry}
+        selectedUserField={selectedUserField}
+        setUserFields={setUserFields}
+        setSelectedUserField={setSelectedUserField}
+        setMapFeatures={setMapFeatures}
+        getFeatures={getFeatures}
+        setIsAddingPoint={setIsAddingPoint}
+      />
+    </Grid>
 
   );
 };
