@@ -254,14 +254,16 @@ const CropSidebar = ({
 
   // TODO: Can we use Reducer instead of localStorage?
   useEffect(() => {
-    if (cashCropDataRedux.dateRange.startDate) {
-      window.localStorage.setItem(
-        'cashCropDateRange',
-        JSON.stringify(cashCropDataRedux.dateRange),
-      );
+    if (from === 'table') {
+      if (cashCropDataRedux.dateRange.startDate) {
+        window.localStorage.setItem(
+          'cashCropDateRange',
+          JSON.stringify(cashCropDataRedux.dateRange),
+        );
+      }
+      setGrowthWindow(true);
     }
-    setGrowthWindow(true);
-  }, [cashCropDataRedux.dateRange]);
+  }, [cashCropDataRedux.dateRange, setGrowthWindow]);
 
   const filters = () => sidebarFilters.map((filter, index) => {
     const sectionFilter = `${section}${filter.name}`;
