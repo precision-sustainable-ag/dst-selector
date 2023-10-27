@@ -106,8 +106,8 @@ const Landing = () => {
 
           if (!regionIdRedux) {
             dispatchRedux(updateRegion({
-              regionId: '',
-              regionShorthand: '',
+              regionId: fetchedRegions[0].id ?? '',
+              regionShorthand: fetchedRegions[0].shorthand ?? '',
             }));
           }
         })
