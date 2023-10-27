@@ -109,6 +109,10 @@ const LocationComponent = () => {
   // update regionShorthandRef
   useEffect(() => {
     regionShorthandRef.current = regionShorthand;
+    dispatchRedux(updateRegion({
+      regionId: regionsRedux.filter((region) => region.shorthand === regionShorthand)[0]?.id,
+      regionShorthand,
+    }));
   }, [regionShorthand]);
 
   // set map initial lat lng
@@ -200,103 +204,100 @@ const LocationComponent = () => {
 
   // call cover crop api based on marker change
   useEffect(() => {
-    // const { markers } = state;
-    const weatherApiURL = 'https://weather.covercrop-data.org';
+    const getDetails = async () => {
+      // const { markers } = state;
+      const weatherApiURL = 'https://weather.covercrop-data.org';
 
-    // update address on marker change
-    // ref forecastComponent
-    const lat = markersRedux[0][0];
-    const lon = markersRedux[0][1];
+      // update address on marker change
+      // ref forecastComponent
+      const lat = markersRedux[0][0];
+      const lon = markersRedux[0][1];
 
-    // since this updates with state; ideally, weather and soil info should be updated here
-    // get current lat long and get county, state and city
-    if (progressRedux >= 1 && markersRedux.length > 0) {
-      reverseGEO(lat, lon)
-        .then(async (resp) => {
-          const abbrState = abbrRegion(
-            resp?.features?.filter((feature) => feature?.place_type?.includes('region'))[0]?.text,
-            'abbr',
-          ).toLowerCase();
+      // since this updates with state; ideally, weather and soil info should be updated here
+      // get current lat long and get county, state and city
+      if (progressRedux >= 1 && markersRedux.length > 0) {
+        const reverseGEOresult = await reverseGEO(lat, lon);
+        const abbrState = abbrRegion(
+          reverseGEOresult?.features?.filter((feature) => feature?.place_type?.includes('region'))[0]?.text,
+          'abbr',
+        ).toLowerCase();
 
-          const city = resp?.features?.filter((feature) => feature?.place_type?.includes('place'))[0]?.text?.toLowerCase();
+        const city = reverseGEOresult?.features?.filter((feature) => feature?.place_type?.includes('place'))[0]?.text?.toLowerCase();
 
-          const currentMonthInt = moment().month() + 1;
-          // frost url
-          const frostUrl = `${weatherApiURL}/frost?lat=${lat}&lon=${lon}`;
-          // What was the 5-year average rainfall for city st during the month of currentMonthInt?
-          //  Dynamic dates ?
-          const averageRainUrl = `${weatherApiURL}/hourly?location=${city}%20${abbrState}&start=2015-01-01&end=2019-12-31`;
-          const averageRainForAMonthURL = `${averageRainUrl}&stats=sum(precipitation)/5&where=month=${currentMonthInt}&output=json`;
-          // What was the 5-year average annual rainfall for city st?
-          const fiveYearAvgRainURL = `${averageRainUrl}&stats=sum(precipitation)/5&output=json`;
-          // added "/" and do %100 to get them into correct format (want frost dates to look like 01/01/23)
-          const currYear = `/${(new Date().getFullYear() % 100).toString()}`;
-          const prevYear = `/${((new Date().getFullYear() % 100) - 1).toString()}`;
-          const oneDay = 24 * 60 * 60 * 1000; // milliseconds in a day
+        const currentMonthInt = moment().month() + 1;
 
-          // call the frost url and then set frostFreeDays, averageFrostObject in store
-          callCoverCropApi(frostUrl)
-            .then(((frostResp) => {
-              const firstFrost = new Date(frostResp.firstfrost + prevYear);
-              const lastFrost = new Date(frostResp.lastfrost + currYear);
-              const frostFreeDays = Math.round(Math.abs((firstFrost.valueOf() - lastFrost.valueOf()) / oneDay));
+        // frost url
+        const frostUrl = `${weatherApiURL}/frost?lat=${lat}&lon=${lon}`;
+        // What was the 5-year average rainfall for city st during the month of currentMonthInt?
+        //  Dynamic dates ?
+        const averageRainUrl = `${weatherApiURL}/hourly?location=${city} ${abbrState}&start=2015-01-01&end=2019-12-31`;
+        const averageRainForAMonthURL = `${averageRainUrl}&where=month=${currentMonthInt}&stats=sum(precipitation)/5&output=json`;
+        // What was the 5-year average annual rainfall for city st?
+        const fiveYearAvgRainURL = `${averageRainUrl}&stats=sum(precipitation)/5&output=json`;
+        // added "/" and do %100 to get them into correct format (want frost dates to look like 01/01/23)
+        const currYear = `/${(new Date().getFullYear() % 100).toString()}`;
+        const prevYear = `/${((new Date().getFullYear() % 100) - 1).toString()}`;
+        const oneDay = 24 * 60 * 60 * 1000; // milliseconds in a day
 
-              dispatchRedux(updateFrostFreeDays(frostFreeDays));
-              dispatchRedux(updateAvgFrostDates({
-                firstFrostDate: {
-                  month: firstFrost.toLocaleString('en-US', { month: 'long' }),
-                  day: firstFrost.getDate().toString(),
-                },
-                lastFrostDate: {
-                  month: lastFrost.toLocaleString('en-US', { month: 'long' }),
-                  day: lastFrost.getDate().toString(),
-                },
-              }));
-            })).catch((error) => {
-              // eslint-disable-next-line
-              console.log(`Weather API error code: ${error?.response?.status} for getting 5 year average rainfall for this month`);
-            });
+        // call the frost url and then set frostFreeDays, averageFrostObject in store
+        try {
+          const frostResponse = await callCoverCropApi(frostUrl);
+          const firstFrost = new Date(frostResponse.firstfrost + prevYear);
+          const lastFrost = new Date(frostResponse.lastfrost + currYear);
+          const frostFreeDays = Math.round(Math.abs((firstFrost.valueOf() - lastFrost.valueOf()) / oneDay));
+          dispatchRedux(updateFrostFreeDays(frostFreeDays));
+          dispatchRedux(updateAvgFrostDates({
+            firstFrostDate: {
+              month: firstFrost.toLocaleString('en-US', { month: 'long' }),
+              day: firstFrost.getDate().toString(),
+            },
+            lastFrostDate: {
+              month: lastFrost.toLocaleString('en-US', { month: 'long' }),
+              day: lastFrost.getDate().toString(),
+            },
+          }));
+        } catch (error) {
+          // eslint-disable-next-line
+          console.log(`Weather API error code: ${error?.response?.status} for getting 5 year average rainfall for this month`);
+        }
 
-          // call the frost url and then set averagePrecipitationForCurrentMonth in store
-          // TODO annual and monthly are the same
-          callCoverCropApi(averageRainForAMonthURL)
-            .then((rainResp) => {
-              let averagePrecipitationForCurrentMonth = rainResp[0]['sum(precipitation)/5'];
+        // call the frost url and then set averagePrecipitationForCurrentMonth in store
+        // TODO annual and monthly are the same
+        try {
+          const rainForAMonthResponse = await callCoverCropApi(averageRainForAMonthURL);
+          let averagePrecipitationForCurrentMonth = rainForAMonthResponse[0]['sum(precipitation)/5'];
+          averagePrecipitationForCurrentMonth = parseFloat(
+            averagePrecipitationForCurrentMonth * 0.03937,
+          ).toFixed(2);
 
-              averagePrecipitationForCurrentMonth = parseFloat(
-                averagePrecipitationForCurrentMonth * 0.03937,
-              ).toFixed(2);
+          dispatchRedux(updateAvgPrecipCurrentMonth(averagePrecipitationForCurrentMonth));
+        } catch (error) {
+          // eslint-disable-next-line no-console
+          console.log(`Weather API error code: ${error?.response?.status} for getting 5 year average rainfall for this month`);
+        }
 
-              dispatchRedux(updateAvgPrecipCurrentMonth(averagePrecipitationForCurrentMonth));
-            })
-            .catch((error) => {
-              // eslint-disable-next-line
-              console.log(`Weather API error code: ${error?.response?.status} for getting 5 year average rainfall for this month`);
-            });
+        // call the frost url and then set fiveYearAvgRainAnnual in store
+        try {
+          const fiveYearAvgRainResponse = await callCoverCropApi(fiveYearAvgRainURL);
+          let fiveYearAvgRainAnnual = fiveYearAvgRainResponse[0]['sum(precipitation)/5'];
+          fiveYearAvgRainAnnual = parseFloat(fiveYearAvgRainAnnual * 0.03937).toFixed(2);
+          dispatchRedux(updateAvgPrecipAnnual(fiveYearAvgRainAnnual));
+        } catch (error) {
+          // eslint-disable-next-line no-console
+          console.log(`Weather API error code: ${error?.response?.status} for getting 5 year average rainfall for this month`);
+        }
+      }
+    };
 
-          // call the frost url and then set fiveYearAvgRainAnnual in store
-          callCoverCropApi(fiveYearAvgRainURL)
-            .then((rainResp) => {
-              let fiveYearAvgRainAnnual = rainResp[0]['sum(precipitation)/5'];
-              fiveYearAvgRainAnnual = parseFloat(fiveYearAvgRainAnnual * 0.03937).toFixed(
-                2,
-              );
-              dispatchRedux(updateAvgPrecipAnnual(fiveYearAvgRainAnnual));
-            })
-            .catch((error) => {
-              // eslint-disable-next-line
-              console.log(`Weather API error code: ${error?.response?.status} for getting 5 year average rainfall for this month`);
-            });
-        });
-    }
+    getDetails();
   }, [markersRedux]);
 
   // update region and userFieldRedux when component will unmount
   useEffect(() => () => {
-    const selectedRegion = regionsRedux.filter((region) => region.shorthand === regionShorthandRef.current)[0];
+    const selectedRegion = regionsRedux.filter((region) => region.shorthand === regionShorthandRef.current);
     dispatchRedux(updateRegion({
-      regionId: selectedRegion.id,
-      regionShorthand: selectedRegion.shorthand,
+      regionId: selectedRegion[0]?.id,
+      regionShorthand: selectedRegion[0]?.shorthand,
     }));
     if (isAuthenticated) {
       getFields(accessTokenRedux).then((fields) => dispatchRedux(updateField(fields)));
@@ -320,27 +321,20 @@ const LocationComponent = () => {
 
   return (
     <Grid container spacing={2}>
-      <Grid container item md={3} xs={12} justifyContent="center">
-        <Grid item>
+      <Grid container item md={stateLabelRedux === 'Ontario' ? 12 : 3} xs={12}>
+        <Grid item xs={12}>
           <Typography variant="h4">
             Field Location
           </Typography>
-        </Grid>
-
-        <Grid item>
-          {councilLabelRedux === 'Midwest Cover Crop Council'
-            ? (
-              <Typography variant="body1">
-                Please Select A County.
-              </Typography>
-            )
-            : (
-              <Typography variant="body1">
-                Find your address or ZIP code using the search bar on the map and hit
-                <Search fontSize="inherit" />
-                to determine your location. If needed, adjust your USDA Plant Hardiness Zone in the dropdown.
-              </Typography>
-            )}
+          <Typography variant="body1">
+            Find your address or ZIP code using the search bar on the map and hit
+            <Search fontSize="inherit" />
+            to determine your location. If needed, adjust your
+            {' '}
+            {councilShorthandRedux === 'MCCC' ? 'county' : 'USDA Plant Hardiness Zone'}
+            {' '}
+            in the dropdown.
+          </Typography>
         </Grid>
 
         <Grid item xs={12}>
@@ -356,7 +350,7 @@ const LocationComponent = () => {
         </Grid>
 
         <Grid item xs={12}>
-          {isAuthenticated && (
+          {(isAuthenticated && stateLabelRedux !== 'Ontario') && (
             <UserFieldList
               userFields={userFields}
               field={selectedUserField}
@@ -366,6 +360,7 @@ const LocationComponent = () => {
           )}
         </Grid>
       </Grid>
+      {stateLabelRedux !== 'Ontario' && (
       <Grid item md={9} xs={12}>
         <Container maxWidth="md">
           <Map
@@ -393,6 +388,8 @@ const LocationComponent = () => {
         </Container>
 
       </Grid>
+      )}
+
       <UserFieldDialog
         fieldDialogState={fieldDialogState}
         setFieldDialogState={setFieldDialogState}
@@ -407,7 +404,6 @@ const LocationComponent = () => {
         setIsAddingPoint={setIsAddingPoint}
       />
     </Grid>
-
   );
 };
 

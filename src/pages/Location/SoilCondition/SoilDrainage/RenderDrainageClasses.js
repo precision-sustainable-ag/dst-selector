@@ -31,7 +31,7 @@ const RenderDrainageClasses = ({ tilingCheck, drainage = [] }) => {
         dispatchPackage = drainageArray[i];
       }
     }
-    dispatchRedux(updateDrainageClassRedux([dispatchPackage]));
+    if (dispatchPackage !== '') dispatchRedux(updateDrainageClassRedux([dispatchPackage]));
   };
 
   useEffect(() => {
