@@ -42,19 +42,28 @@ const GoalsSelector = () => {
         </Typography>
       </Grid>
       {allGoals?.length > 0 && (
-        <Grid container spacing={2} style={{ justifyContent: 'center' }}>
-          {allGoals.map((goal, key) => (
-            <Grid item key={key}>
-              <GoalTag
-                key={key}
-                goal={goal}
-                id={key}
-                goaltTitle={goal.label}
-                goalDescription={goal.description}
-              />
-            </Grid>
-          ))}
+        <Grid
+          item
+          container
+          direction="column"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <Grid container spacing={2} sx={{ justifyContent: 'center', maxWidth: '800px' }}>
+            {allGoals.map((goal, key) => (
+              <Grid item key={key}>
+                <GoalTag
+                  key={key}
+                  goal={goal}
+                  id={key}
+                  goaltTitle={goal.label}
+                  goalDescription={goal.description}
+                />
+              </Grid>
+            ))}
+          </Grid>
         </Grid>
+
       )}
     </Grid>
   );
