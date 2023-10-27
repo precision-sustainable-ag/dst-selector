@@ -7,10 +7,6 @@
 import {
   Button,
   CircularProgress,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
   Table,
   TableBody,
   TableCell,
@@ -19,7 +15,9 @@ import {
   TableRow,
   Tooltip,
   Typography,
+  Box,
 } from '@mui/material';
+import { tableCellClasses } from '@mui/material/TableCell';
 import {
   AcUnit, AddCircle, LocalFlorist, WbSunny,
 } from '@mui/icons-material';
@@ -29,7 +27,6 @@ import {
   allMonths,
   CustomStyles,
   sortCrops,
-  sudoButtonStyle,
   sudoButtonStyleWithPadding,
   getLegendDataBasedOnCouncil,
 } from '../../../shared/constants';
@@ -48,18 +45,19 @@ const CropCalendarView = ({ activeCropData }) => {
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const ajaxInProgressRedux = useSelector((stateRedux) => stateRedux.sharedData.ajaxInProgress);
-  const activeCropDataRedux = useSelector((stateRedux) => stateRedux.cropData.activeCropData);
-  const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
   const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
 
   // useState vars
   const [legendModal, setLegendModal] = useState(false);
-  const [sortAlgo, setSortAlgo] = React.useState('');
   const [modalOpen, setModalOpen] = useState(false);
   const [modalData, setModalData] = useState([{}]);
   const { activeGrowthPeriod } = cropDataStateRedux;
   const activeCropDataShadow = activeCropData;
   const legendData = getLegendDataBasedOnCouncil(councilShorthandRedux);
+
+  // sorting flags
+  const [nameSortFlag, setNameSortFlag] = useState(true);
+  const [plantingSortFlag, setPlantingSortFlag] = useState(true);
 
   const handleLegendModal = () => {
     setLegendModal(!legendModal);
@@ -73,50 +71,24 @@ const CropCalendarView = ({ activeCropData }) => {
     return false;
   };
 
-  const sortByAverageGoals = (averageGoalsFlag) => {
-    sortCrops('Average Goals', activeCropDataShadow, averageGoalsFlag, selectedGoalsRedux);
-  };
-
-  const sortCropsByName = (nameSortFlag) => {
+  const sortByName = () => {
     sortCrops('Crop Name', activeCropDataShadow, nameSortFlag);
+    setNameSortFlag(!nameSortFlag);
   };
 
-  const sortByPlantingWindow = (plantingWindowSortFlag) => {
-    sortCrops('Planting Window', activeCropDataShadow, plantingWindowSortFlag);
-    // setPlantingWindowSortFlag(!plantingWindowSortFlag);
+  const sortByAverageGoals = () => {
+    sortCrops('Average Goals', activeCropDataShadow, nameSortFlag, selectedGoalsRedux);
+    setNameSortFlag(!nameSortFlag);
   };
 
-  const sortByCropGroup = (cropGroupSortFlag) => {
-    sortCrops('Crop Group', activeCropDataShadow, cropGroupSortFlag);
+  const sortByPlantingWindow = () => {
+    sortCrops('Planting Window', activeCropDataShadow, plantingSortFlag);
+    setPlantingSortFlag(!plantingSortFlag);
   };
 
-  const sortBySelectedCrops = (selectedCropsSortFlag) => {
-    const selectedCropsShadow = cropDataRedux.filter((crop) => activeCropDataRedux.includes(crop.id)).filter((crop) => selectedCropsRedux.includes(crop.id));
-    sortCrops('Selected Crops', activeCropDataShadow, selectedCropsSortFlag, selectedCropsShadow);
-  };
-  // sorting function drop down selection
-  const selectSortingAlgo = (event) => {
-    const sortingAlgo = event.target.value;
-    setSortAlgo(sortingAlgo);
-    if (sortingAlgo === 'goalsAsc') {
-      sortByAverageGoals(false);
-    } else if (sortingAlgo === 'goalsDsc') {
-      sortByAverageGoals(true);
-    } else if (sortingAlgo === 'cropNameA-Z') {
-      sortCropsByName(true);
-    } else if (sortingAlgo === 'cropNameZ-A') {
-      sortCropsByName(false);
-    } else if (sortingAlgo === 'cropGroupA-Z') {
-      sortByCropGroup(true);
-    } else if (sortingAlgo === 'cropGroupZ-A') {
-      sortByCropGroup(false);
-    } else if (sortingAlgo === 'plantingWindowAsc') {
-      sortByPlantingWindow(true);
-    } else if (sortingAlgo === 'plantingWindowDsc') {
-      sortByPlantingWindow(false);
-    } else if (sortingAlgo === 'myList') {
-      sortBySelectedCrops(true);
-    }
+  const sortBySelectedCrops = () => {
+    sortCrops('Selected Crops', activeCropDataShadow, true, selectedCropsRedux);
+    setNameSortFlag(!nameSortFlag);
   };
 
   useEffect(() => {
@@ -126,134 +98,115 @@ const CropCalendarView = ({ activeCropData }) => {
   return (
     <>
       {ajaxInProgressRedux ? (
-        <div className="circularCentered">
+        <Box>
           <CircularProgress size="6em" />
-        </div>
+        </Box>
       ) : (
-        <TableContainer
-          component="div"
-          style={{ lineHeight: '0.5' }}
-        >
+        <TableContainer component="div" sx={{ lineHeight: '0.5' }}>
           <Table
             stickyHeader
-            className="table calendarViewTable table-sm table-borderless"
-            style={{}}
+            sx={{
+              [`& .${tableCellClasses.root}`]: {
+                borderBottom: 'none',
+              },
+            }}
           >
-            <TableHead className="tableHeadWrapper">
-              <TableRow className="calFirstHeadRow">
-                <TableCell style={{ backgroundColor: 'white' }} colSpan={activeGrowthPeriod.length === 0 ? 2 : 1}>
-                  <Legend
-                    legendData={legendData}
-                    modal
-                  />
+            <TableHead sx={{ zIndex: -1 }}>
+              <TableRow>
+                <TableCell
+                  sx={{ backgroundColor: 'white', padding: 0 }}
+                  colSpan={activeGrowthPeriod.length === 0 ? 2 : 1}
+                >
+                  <Legend legendData={legendData} modal />
                 </TableCell>
                 {activeGrowthPeriod.length === 0 ? (
                   <TableCell
                     colSpan="12"
                     style={{
                       borderBottom: '5px solid white',
+                      backgroundColor: '#abd08f',
+                      padding: 0,
+                      textAlign: 'center',
+
                     }}
                   >
-                    <div className="container-fluid">
-                      <div className="row">
-                        <div className="col-4">
-                          <Typography variant="body1" component="span">
-                            <div style={sudoButtonStyleWithPadding}>COVER CROP GROWTH WINDOW</div>
-                          </Typography>
-                        </div>
-                        <div className="col-4">
-                          <FormControl fullWidth>
-                            <InputLabel id="select-sorting">Sort by</InputLabel>
-                            <Select
-                              labelId="sorting-selector-label"
-                              id="sorting-selector"
-                              value={sortAlgo}
-                              label="Select"
-                              onChange={selectSortingAlgo}
-                            >
-                              <MenuItem value="goalsDsc">Average Goal Rating Highest-Least</MenuItem>
-                              <MenuItem value="goalsAsc">Average Goal Rating Least-Highest</MenuItem>
-                              <MenuItem value="cropNameA-Z">Crop Name A-Z</MenuItem>
-                              <MenuItem value="cropNameZ-A">Crop Name Z-A</MenuItem>
-                              <MenuItem value="cropGroupA-Z">Crop Group A-Z</MenuItem>
-                              <MenuItem value="cropGroupZ-A">Crop Group Z-A</MenuItem>
-                              <MenuItem value="plantingWindowAsc">Planting Window Ascending</MenuItem>
-                              <MenuItem value="plantingWindowDsc">Planting Window Desceding</MenuItem>
-                              <MenuItem value="myList">Selected Cover Crops</MenuItem>
-                            </Select>
-                          </FormControl>
-                        </div>
-                      </div>
-                    </div>
+
+                    <Button sx={{ color: 'black', textTransform: 'none' }} onClick={() => sortByPlantingWindow()}>
+                      Cover Crop Growing Window
+                    </Button>
+
                   </TableCell>
                 ) : (
                   <>
                     <TableCell
                       colSpan="1"
-                      style={{
+                      sx={{
                         borderBottom: '5px solid white',
                         borderRight: '5px solid white',
+                        backgroundColor: '#abd08f',
+                        padding: 0,
+
                       }}
                     >
-                      <div style={sudoButtonStyleWithPadding}>ACTIVE GROWTH PERIOD</div>
+                      <Box sx={sudoButtonStyleWithPadding}>ACTIVE GROWTH PERIOD</Box>
                     </TableCell>
                     {activeGrowthPeriod.includes('Jan') ? (
                       <Tooltip placement="top" title="Winter" enterTouchDelay={0}>
                         <TableCell
-                          className="activeGrowthMonth growthMonthSeparator"
-                          style={{
+                          sx={{
                             backgroundColor: CustomStyles().darkGreen,
+                            padding: 0,
                           }}
                           colSpan="2"
                         >
                           <Typography variant="body1">
-                            <AcUnit style={growthIcon} />
+                            <AcUnit sx={growthIcon} />
                           </Typography>
                         </TableCell>
                       </Tooltip>
                     ) : (
-                      <TableCell style={{ borderBottom: '5px solid white' }} colSpan="2" />
+                      <TableCell sx={{ borderBottom: '5px solid white', padding: 0 }} colSpan="2" />
                     )}
                     {activeGrowthPeriod.includes('Mar') ? (
                       <Tooltip placement="top" title="Spring" enterTouchDelay={0}>
                         <TableCell
-                          className="activeGrowthMonth growthMonthSeparator"
-                          style={{
+                          sx={{
                             backgroundColor: CustomStyles().darkGreen,
+                            padding: 0,
                           }}
                           colSpan="3"
                         >
                           <Typography variant="body1">
-                            <LocalFlorist style={growthIcon} />
+                            <LocalFlorist sx={growthIcon} />
                           </Typography>
                         </TableCell>
                       </Tooltip>
                     ) : (
-                      <TableCell style={{ borderBottom: '5px solid white' }} colSpan="3" />
+                      <TableCell sx={{ borderBottom: '5px solid white', padding: 0 }} colSpan="3" />
                     )}
                     {activeGrowthPeriod.includes('Jun') ? (
                       <Tooltip placement="top" title="Summer" enterTouchDelay={0}>
                         <TableCell
-                          className="activeGrowthMonth growthMonthSeparator"
-                          style={{
+                          sx={{
                             backgroundColor: CustomStyles().darkGreen,
+                            padding: 0,
                           }}
                           colSpan="3"
                         >
                           <Typography variant="body1">
-                            <WbSunny style={growthIcon} />
+                            <WbSunny sx={growthIcon} />
                           </Typography>
                         </TableCell>
                       </Tooltip>
                     ) : (
-                      <TableCell style={{ borderBottom: '5px solid white' }} colSpan="3" />
+                      <TableCell sx={{ borderBottom: '5px solid white', padding: 0 }} colSpan="3" />
                     )}
                     {activeGrowthPeriod.includes('Sep') ? (
                       <Tooltip placement="top" title="Fall" enterTouchDelay={0}>
                         <TableCell
-                          className="activeGrowthMonth growthMonthSeparator"
-                          style={{
+                          sx={{
                             backgroundColor: CustomStyles().darkGreen,
+                            padding: 0,
                           }}
                           colSpan="3"
                         >
@@ -263,54 +216,74 @@ const CropCalendarView = ({ activeCropData }) => {
                         </TableCell>
                       </Tooltip>
                     ) : (
-                      <TableCell style={{ borderBottom: '5px solid white' }} colSpan="3" />
+                      <TableCell sx={{ borderBottom: '5px solid white', padding: 0 }} colSpan="3" />
                     )}
                     {activeGrowthPeriod.includes('Dec') ? (
                       <Tooltip placement="top" title="Winter" enterTouchDelay={0}>
                         <TableCell
-                          className="activeGrowthMonth growthMonthSeparator"
-                          style={{
+                          sx={{
                             backgroundColor: CustomStyles().darkGreen,
+                            padding: 0,
                           }}
                           colSpan="1"
                         >
                           <Typography variant="body1">
-                            <AcUnit style={growthIcon} />
+                            <AcUnit sx={growthIcon} />
                           </Typography>
                         </TableCell>
                       </Tooltip>
                     ) : (
-                      <TableCell style={{ borderBottom: '5px solid white' }} colSpan="1" />
+                      <TableCell sx={{ borderBottom: '5px solid white', padding: 0 }} colSpan="1" />
                     )}
                   </>
                 )}
+                <TableCell
+                  style={{
+                    borderBottom: '5px solid white',
+                    padding: 0,
+                    textAlign: 'center',
+
+                  }}
+                />
                 {activeGrowthPeriod.length > 0 ? (
                   <TableCell
-                    style={{
-                      borderLeft: '5px solid white',
-                      borderBottom: '5px solid white',
+                    sx={{
+                      padding: 0,
                     }}
                   >
-                    <div className="col-12">
+                    <Box>
                       <Button startIcon={<AddCircle />} onClick={handleLegendModal}>
                         <Typography variant="body2"> Legend</Typography>
                       </Button>
-                    </div>
+                    </Box>
                   </TableCell>
                 ) : (
-                  <TableCell style={{ backgroundColor: 'white' }} />
+                  <TableCell sx={{ backgroundColor: 'white', padding: 0 }} />
                 )}
               </TableRow>
-              <TableRow className="calSecondHeadRow">
-                <TableCell style={{ width: '17%', borderRight: '5px solid white' }}>
-                  <Typography variant="body2"> COVER CROPS </Typography>
+              <TableRow>
+                <TableCell sx={{
+                  borderRight: '5px solid white', backgroundColor: '#abd08f', padding: 0, width: '250px', textAlign: 'center',
+                }}
+                >
+                  <Button
+                    sx={{
+                      textAlign: 'center', color: 'black', textTransform: 'none',
+                    }}
+                    onClick={() => sortByName()}
+                  >
+                    {' '}
+                    Crop Name
+                  </Button>
                 </TableCell>
                 {selectedGoalsRedux.length > 0 && (
-                  <TableCell style={{ width: '13%', borderRight: '5px solid white' }}>
-                    <div className="col-12">
-                      <Typography variant="body2"> AVERAGE GOAL RATING</Typography>
-                    </div>
-
+                  <TableCell sx={{
+                    borderRight: '5px solid white', backgroundColor: '#abd08f', padding: 0, width: '75px', textAlign: 'center',
+                  }}
+                  >
+                    <Button sx={{ color: 'black', textTransform: 'none' }} onClick={() => sortByAverageGoals()}>
+                      Average Rating
+                    </Button>
                   </TableCell>
                 )}
                 {allMonths.map((month, index) => {
@@ -318,27 +291,29 @@ const CropCalendarView = ({ activeCropData }) => {
                   const growthMonthSeparator = growthMonth
                     ? !!(month === 'Feb' || month === 'May' || month === 'Aug' || month === 'Nov')
                     : false;
-
                   return (
                     <TableCell
+                      sx={{ padding: 1, backgroundColor: '#abd08f', zIndex: -1 }}
                       key={`monthskey${index}`}
-                      style={{ cursor: 'pointer' }}
                       className={`calendarSecondHeadMonth ${
                         growthMonth ? 'activeGrowthMonth' : ''
                       } ${growthMonthSeparator ? 'growthMonthSeparator' : ''}`}
                       onClick={sortByPlantingWindow}
                     >
-                      <div style={sudoButtonStyle}>{month}</div>
+                      <Box>{month}</Box>
                     </TableCell>
                   );
                 })}
-                <TableCell style={{ width: '10%', borderLeft: '5px solid white' }}>
-                  <Typography variant="body2"> MY LIST </Typography>
+                <TableCell sx={{
+                  borderLeft: '5px solid white', backgroundColor: '#abd08f', padding: 0, width: '75px', textAlign: 'center',
+                }}
+                >
+                  <Button sx={{ textAlign: 'center', color: 'black', textTransform: 'none' }} onClick={() => sortBySelectedCrops()}> My List </Button>
                 </TableCell>
               </TableRow>
             </TableHead>
 
-            <TableBody className="calendarTableBodyWrapper">
+            <TableBody>
               {activeCropData.length > 0 && (
                 <>
                   <RenderCrops
@@ -355,11 +330,7 @@ const CropCalendarView = ({ activeCropData }) => {
           </Table>
         </TableContainer>
       )}
-      <CropDetailsModal
-        modalOpen={modalOpen}
-        setModalOpen={setModalOpen}
-        crop={modalData}
-      />
+      <CropDetailsModal modalOpen={modalOpen} setModalOpen={setModalOpen} crop={modalData} />
     </>
   );
 };
