@@ -169,6 +169,7 @@ const Landing = () => {
         // height: '100vh',
       }}
       id="landingWrapper"
+      margin={-1}
     >
       <Grid
         style={{
@@ -181,9 +182,9 @@ const Landing = () => {
           left: '50%',
           transform: 'translateX(-50%)',
         }}
-        mt={2}
+        mt={1}
       >
-        <Box mr={2} ml={2} mb={2} mt={2}>
+        <Box mr={1} ml={1} mb={1} mt={1}>
           <Grid
             container
             item
@@ -197,9 +198,9 @@ const Landing = () => {
                 {`Welcome to the${councilLabelRedux ? ` ${councilLabelRedux}` : ' Cover Crop'} Species Selector`}
               </Typography>
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={12} align="center">
               <Typography variant="body1">
-                Choose your state from the dropdown or the map
+                Choose your state from the dropdown or the map. You can zoom by scrolling or pinching on mobile.
               </Typography>
             </Grid>
             <Grid item xs={12} mb={2}>
@@ -242,9 +243,9 @@ const Landing = () => {
             availableStates={availableStates}
             initWidth="100%"
             initHeight="350px"
-            initLon={-98}
-            initLat={43}
-            initStartZoom={2.3}
+            initLon={-90}
+            initLat={41}
+            initStartZoom={2.5}
           />
         </Box>
       </Grid>
