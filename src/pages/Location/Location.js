@@ -33,8 +33,6 @@ import {
 import { setSelectFieldId, updateField } from '../../reduxStore/userSlice';
 import UserFieldList from './UserFieldList/UserFieldList';
 import UserFieldDialog, { initFieldDialogState } from './UserFieldDialog/UserFieldDialog';
-import { updateDateRange } from '../../reduxStore/cropSlice';
-import PreviousCashCrop from '../CropSidebar/PreviousCashCrop/PreviousCashCrop';
 
 // eslint-disable-next-line import/no-webpack-loader-syntax, import/no-unresolved
 mapboxgl.workerClass = require('worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker').default;
@@ -74,21 +72,6 @@ const LocationComponent = () => {
   const regionShorthandRef = useRef(regionShorthand);
 
   const { isAuthenticated } = useAuth0();
-  const [dateRange, setDateRange] = useState({
-    startDate: null,
-    endDate: null,
-  });
-
-  useEffect(() => {
-    // if (from === 'table') {
-    if (dateRange.startDate !== null && dateRange.endDate !== null) {
-      dispatchRedux(updateDateRange({
-        startDate: dateRange.startDate.toISOString().substring(0, 10),
-        endDate: dateRange.endDate.toISOString().substring(0, 10),
-      }));
-    }
-    // }
-  }, [dateRange]);
 
   // calculate features shown on map
   const getFeatures = () => {
@@ -343,9 +326,6 @@ const LocationComponent = () => {
             setRegionShorthand={setRegionShorthand}
             regionsRedux={regionsRedux}
             councilLabelRedux={councilLabelRedux}
-          />
-          <PreviousCashCrop
-            setDateRange={setDateRange}
           />
         </Grid>
 
