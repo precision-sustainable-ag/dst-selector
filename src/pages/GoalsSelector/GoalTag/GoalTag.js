@@ -72,7 +72,7 @@ const GoalTag = ({
             <Avatar className="d-none" />
           )
         }
-          label={goalTitle.toUpperCase()}
+          label={goalTitle}
           onClick={() => updateSelectedGoals(goal, key)}
           key={`chip${key}`}
           id={`chip${key}`}
