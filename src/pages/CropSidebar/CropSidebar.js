@@ -70,12 +70,7 @@ const CropSidebar = ({
   const [showFilters, setShowFilters] = useState('');
   const [sidebarCategoriesData, setSidebarCategoriesData] = useState([]);
   const [sidebarFiltersData, setSidebarFiltersData] = useState([]);
-  // const [tableHeight, setTableHeight] = useState(0);
   const [cropFiltersOpen, setCropFiltersOpen] = useState(true);
-  // const [dateRange, setDateRange] = useState({
-  //   startDate: null,
-  //   endDate: null,
-  // });
 
   // make an exhaustive array of all params in array e.g. cover crop group and use includes in linq
   const [sidebarFilterOptions, setSidebarFilterOptions] = useState(() => {
@@ -256,18 +251,6 @@ const CropSidebar = ({
   }, [
     regionIdRedux,
   ]);
-
-  // useEffect(() => {
-  //   if (from === 'table') {
-  //     if (dateRange.startDate !== null && dateRange.endDate !== null) {
-  //       dispatchRedux(updateDateRange({
-  //         startDate: dateRange.startDate.toISOString().substring(0, 10),
-  //         endDate: dateRange.endDate.toISOString().substring(0, 10),
-  //       }));
-  //     }
-
-  //   }
-  // }, [dateRange, from, setGrowthWindow]);
 
   // TODO: Can we use Reducer instead of localStorage?
   useEffect(() => {
