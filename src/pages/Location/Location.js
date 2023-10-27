@@ -93,11 +93,10 @@ const LocationComponent = () => {
   // update regionShorthandRef
   useEffect(() => {
     regionShorthandRef.current = regionShorthand;
-    if (regionShorthand) {
-      dispatchRedux(updateRegion({
-        regionShorthand,
-      }));
-    }
+    dispatchRedux(updateRegion({
+      regionId: regionsRedux.filter((region) => region.shorthand === regionShorthand)[0]?.id,
+      regionShorthand,
+    }));
   }, [regionShorthand]);
 
   // set map initial lat lng
@@ -185,6 +184,10 @@ const LocationComponent = () => {
             dispatchRedux(snackHandler({
               snackOpen: true,
               snackMessage: 'No data available for your location, Please try again.',
+            }));
+            dispatchRedux(updateRegion({
+              regionId: '',
+              regionShorthand: '',
             }));
             // eslint-disable-next-line no-console
             console.log(err);
