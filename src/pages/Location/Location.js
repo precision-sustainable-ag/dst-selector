@@ -92,6 +92,7 @@ const LocationComponent = () => {
   // update regionShorthandRef
   useEffect(() => {
     regionShorthandRef.current = regionShorthand;
+    localStorage.setItem('regionId', regionsRedux.filter((region) => region.shorthand === regionShorthand)[0]?.id);
     dispatchRedux(updateRegion({
       regionId: regionsRedux.filter((region) => region.shorthand === regionShorthand)[0]?.id,
       regionShorthand,
@@ -184,6 +185,7 @@ const LocationComponent = () => {
               snackOpen: true,
               snackMessage: 'No data available for your location, Please try again.',
             }));
+            localStorage.setItem('regionId', '');
             dispatchRedux(updateRegion({
               regionId: '',
               regionShorthand: '',
@@ -291,6 +293,7 @@ const LocationComponent = () => {
     const selectedRegion = regionsRedux.filter((region) => region.shorthand === regionShorthandRef.current)[0];
 
     if (selectedRegion) {
+      localStorage.setItem('regionId', selectedRegion?.id);
       dispatchRedux(updateRegion({
         regionId: selectedRegion?.id,
         regionShorthand: selectedRegion?.shorthand,

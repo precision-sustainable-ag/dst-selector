@@ -19,17 +19,18 @@ const InformationSheetDictionary = ({ zone, from }) => {
   // useState vars
   const [dictionary, setDictionary] = useState([]);
   const stateId = +localStorage.getItem('stateId');
-  const region = +localStorage.getItem('region');
+  const regionId = +localStorage.getItem('regionId');
+  const query = `${encodeURIComponent('regions')}=${encodeURIComponent(regionId)}`;
 
   useEffect(() => {
     document.title = 'Data Dictionary';
-    if (stateId && region) {
-      callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateId}/dictionary?regions=${region}`)
+    if (stateId && regionId) {
+      callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateId}/dictionary?${query}`)
         .then((data) => {
           setDictionary(data.data);
         });
     }
-  }, [region, stateId, zone]);
+  }, [regionId, stateId, zone]);
 
   return from === 'help' ? (
     <DictionaryContent dictData={dictionary} from="help" />
