@@ -106,6 +106,7 @@ const Landing = () => {
           dispatchRedux(updateRegions(fetchedRegions));
 
           if (regionIdRedux) {
+            localStorage.setItem('regionId', fetchedRegions[0].id ?? '');
             dispatchRedux(updateRegion({
               regionId: fetchedRegions[0].id ?? '',
               regionShorthand: fetchedRegions[0].shorthand ?? '',
