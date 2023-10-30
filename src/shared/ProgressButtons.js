@@ -11,17 +11,20 @@ import ProgressButtonsInner from './ProgressButtonsInner';
 const ProgressButtons = () => {
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
+  const regionShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.regionShorthand);
   const [isDisabledBack, setIsDisabledBack] = useState(false);
   const [isDisabledNext, setIsDisabledNext] = useState(true);
+  const [toolTip, setToolTip] = useState(true);
   const [isDisabledRefresh, setIsDisabledRefresh] = useState(false);
+  const addressRedux = useSelector((stateRedux) => stateRedux.addressData.address);
   const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
   const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
-  const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
 
-  const disableLogic = (progress, goalsLength, sfilters) => {
+  const disableLogic = (progress, goalsLength, sfilters, regionShorthand) => {
     switch (parseInt(progress, 10)) {
       case 0:
+        setToolTip(false);
         setIsDisabledBack(true);
         setIsDisabledRefresh(true);
         setIsDisabledNext(councilLabelRedux === null);
@@ -29,19 +32,20 @@ const ProgressButtons = () => {
       case 1:
         // location selection state
         // TODO: discuss should sfilter be used here or state.lastZone
-        setIsDisabledNext(sfilters.zone === 0 || !regionIdRedux);
-
+        setIsDisabledNext(sfilters.zone === 0 || addressRedux === '' || regionShorthand === '');
+        setToolTip(true);
         setIsDisabledBack(false);
         setIsDisabledRefresh(false);
         break;
       case 4:
         // goals selection state
-        setIsDisabledNext(goalsLength > 3);
-
+        setIsDisabledNext(goalsLength > 3 || goalsLength < 1);
+        setToolTip(false);
         setIsDisabledBack(false);
         setIsDisabledRefresh(false);
         break;
       default:
+        setToolTip(false);
         setIsDisabledNext(false);
         setIsDisabledBack(false);
         setIsDisabledRefresh(false);
@@ -52,8 +56,8 @@ const ProgressButtons = () => {
   useEffect(() => {
     const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
     const sfilters = filterStateRedux[section];
-    disableLogic(progressRedux, selectedGoalsRedux.length, sfilters);
-  }, [filterStateRedux, selectedGoalsRedux, stateLabelRedux]);
+    disableLogic(progressRedux, selectedGoalsRedux.length, sfilters, regionShorthandRedux);
+  }, [filterStateRedux, selectedGoalsRedux, stateLabelRedux, regionShorthandRedux]);
 
   const renderProgressButtons = (progress, disabledBack, disabledNext, disabledRefresh) => {
     if (progress < 0) return '';
@@ -61,6 +65,7 @@ const ProgressButtons = () => {
     return (
       <Grid item>
         <ProgressButtonsInner
+          toolTip={toolTip}
           isDisabledBack={disabledBack}
           isDisabledNext={disabledNext}
           isDisabledRefresh={disabledRefresh}

@@ -31,12 +31,11 @@ import ComparisonBar from '../MyCoverCropList/ComparisonBar/ComparisonBar';
 import CoverCropSearch from './CoverCropSearch/CoverCropSearch';
 import SidebarFilter from './SidebarFilter/SidebarFilter';
 import CoverCropGoals from './CoverCropGoals/CoverCropGoals';
-import PreviousCashCrop from './PreviousCashCrop/PreviousCashCrop';
 import PlantHardinessZone from './PlantHardinessZone/PlantHardinessZone';
 import Legend from '../../components/Legend/Legend';
 import { updateRegion } from '../../reduxStore/mapSlice';
 import { clearFilters } from '../../reduxStore/filterSlice';
-import { pullCropData, updateActiveCropData, updateDateRange } from '../../reduxStore/cropSlice';
+import { pullCropData, updateActiveCropData } from '../../reduxStore/cropSlice';
 import { setAjaxInProgress, regionToggleHandler } from '../../reduxStore/sharedSlice';
 
 const CropSidebar = ({
@@ -71,12 +70,7 @@ const CropSidebar = ({
   const [showFilters, setShowFilters] = useState('');
   const [sidebarCategoriesData, setSidebarCategoriesData] = useState([]);
   const [sidebarFiltersData, setSidebarFiltersData] = useState([]);
-  // const [tableHeight, setTableHeight] = useState(0);
   const [cropFiltersOpen, setCropFiltersOpen] = useState(true);
-  const [dateRange, setDateRange] = useState({
-    startDate: null,
-    endDate: null,
-  });
 
   // make an exhaustive array of all params in array e.g. cover crop group and use includes in linq
   const [sidebarFilterOptions, setSidebarFilterOptions] = useState(() => {
@@ -258,28 +252,18 @@ const CropSidebar = ({
     regionIdRedux,
   ]);
 
-  useEffect(() => {
-    if (from === 'table') {
-      if (dateRange.startDate !== null && dateRange.endDate !== null) {
-        dispatchRedux(updateDateRange({
-          startDate: dateRange.startDate.toISOString().substring(0, 10),
-          endDate: dateRange.endDate.toISOString().substring(0, 10),
-        }));
-      }
-
-      setGrowthWindow(true);
-    }
-  }, [dateRange, from, setGrowthWindow]);
-
   // TODO: Can we use Reducer instead of localStorage?
   useEffect(() => {
-    if (cashCropDataRedux.dateRange.startDate) {
-      window.localStorage.setItem(
-        'cashCropDateRange',
-        JSON.stringify(cashCropDataRedux.dateRange),
-      );
+    if (from === 'table') {
+      if (cashCropDataRedux.dateRange.startDate) {
+        window.localStorage.setItem(
+          'cashCropDateRange',
+          JSON.stringify(cashCropDataRedux.dateRange),
+        );
+      }
+      setGrowthWindow(true);
     }
-  }, [cashCropDataRedux.dateRange]);
+  }, [cashCropDataRedux.dateRange, setGrowthWindow]);
 
   const filters = () => sidebarFilters.map((filter, index) => {
     const sectionFilter = `${section}${filter.name}`;
@@ -390,9 +374,6 @@ const CropSidebar = ({
                   <CoverCropGoals style={style} />
                 )}
 
-                <PreviousCashCrop
-                  setDateRange={setDateRange}
-                />
               </>
               )}
               {showFilters && (

@@ -5,20 +5,19 @@
 
 import React from 'react';
 import { Refresh } from '@mui/icons-material';
-import { Stack } from '@mui/material';
+import { Stack, Tooltip } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
 import { LightButton } from './constants';
 import { reset } from '../reduxStore/store';
 import { updateProgress, setMyCoverCropReset } from '../reduxStore/sharedSlice';
 
 const ProgressButtonsInner = ({
-  isDisabledBack, isDisabledNext, isDisabledRefresh,
+  isDisabledBack, isDisabledNext, isDisabledRefresh, toolTip,
 }) => {
   const dispatchRedux = useDispatch();
   const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
-
-  // const [crement, setCrement] = useState('');
+  const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
 
   const changeProgress = (type) => {
     // setCrement(type);
@@ -48,19 +47,45 @@ const ProgressButtonsInner = ({
       >
         BACK
       </LightButton>
-      <LightButton
-        style={{
-          maxWidth: '90px',
-          maxHeight: '35px',
-          minWidth: '70px',
-          fontSize: '13px',
-          marginLeft: '3%',
-        }}
-        onClick={() => changeProgress('increment')}
-        disabled={isDisabledNext || progressRedux === 5}
-      >
-        NEXT
-      </LightButton>
+      {toolTip && isDisabledNext
+        ? (
+          <Tooltip
+            enterTouchDelay={0}
+            title={(<p>{`Please Select a ${councilShorthandRedux === 'MCCC' ? 'County' : 'Zone'}.`}</p>)}
+          >
+            <span>
+              <LightButton
+                style={{
+                  maxWidth: '90px',
+                  maxHeight: '35px',
+                  minWidth: '70px',
+                  fontSize: '13px',
+                  marginLeft: '3%',
+                }}
+                onClick={() => changeProgress('increment')}
+                disabled={isDisabledNext || progressRedux === 5}
+              >
+                NEXT
+              </LightButton>
+            </span>
+          </Tooltip>
+        )
+        : (
+          <LightButton
+            style={{
+              maxWidth: '90px',
+              maxHeight: '35px',
+              minWidth: '70px',
+              fontSize: '13px',
+              marginLeft: '3%',
+            }}
+            onClick={() => changeProgress('increment')}
+            disabled={isDisabledNext || progressRedux === 5}
+          >
+            NEXT
+          </LightButton>
+        )}
+
       <LightButton
         style={{
           maxWidth: '90px',
