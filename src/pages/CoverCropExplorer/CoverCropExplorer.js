@@ -18,9 +18,6 @@ import { updateRegion, updateStateInfo } from '../../reduxStore/mapSlice';
 const CoverCropExplorer = () => {
   const history = useHistory();
   const dispatchRedux = useDispatch();
-  const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
-  const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
-  const sfilters = filterStateRedux[section];
   const activeCropDataRedux = useSelector((stateRedux) => stateRedux.cropData.activeCropData);
   const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
   const consentRedux = useSelector((stateRedux) => stateRedux.userData.consent);
@@ -85,7 +82,7 @@ const CoverCropExplorer = () => {
         />
       </Grid>
       <Grid item xl={9} lg={9} md={9} sm={12} xs={12}>
-        {sfilters.zone === '' || sfilters.zone === undefined ? (
+        {updatedActiveCropData.length === 0 ? (
           <Grid container alignItems="center" justifyContent="center">
             <Grid item xs={12}>
               <Typography variant="h5" align="center">
@@ -95,7 +92,6 @@ const CoverCropExplorer = () => {
           </Grid>
         ) : (
           <ExplorerCardView
-            cropData={cropDataRedux}
             activeCropData={updatedActiveCropData}
           />
         )}

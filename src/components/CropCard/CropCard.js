@@ -20,12 +20,7 @@ const CropCard = ({
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   // redux vars
-  const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
   const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
-
-  const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
-  const sfilters = filterStateRedux[section];
-
   const [selectedBtns, setSelectedBtns] = useState(selectedCropsRedux);
 
   // TODO: Update SelectedCropsRedux
@@ -36,7 +31,7 @@ const CropCard = ({
 
   useEffect(() => {
     updateBtns();
-  }, [sfilters.zone, selectedCropsRedux]);
+  }, [selectedCropsRedux]);
 
   async function addToBasket(cropId, name) {
     addCropToBasket(cropId, name, dispatchRedux, snackHandler, selectedCropsModifier, selectedCropsRedux, myCropListLocation);
