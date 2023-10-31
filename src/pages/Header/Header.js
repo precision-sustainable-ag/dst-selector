@@ -10,7 +10,9 @@ import { NavLink, useHistory } from 'react-router-dom';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
 import { useAuth0 } from '@auth0/auth0-react';
-import { Grid, Box, Button, Typography } from '@mui/material';
+import {
+  Grid, Box, Button, Typography,
+} from '@mui/material';
 import InformationBar from './InformationBar/InformationBar';
 import ToggleOptions from './ToggleOptions/ToggleOptions';
 import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset';
@@ -20,7 +22,9 @@ import {
   updateField,
   setSelectFieldId,
 } from '../../reduxStore/userSlice';
-import { getFields, getHistory, buildHistory, postHistory } from '../../shared/constants';
+import {
+  getFields, getHistory, buildHistory, postHistory,
+} from '../../shared/constants';
 import AuthButton from '../../components/Auth/AuthButton/AuthButton';
 import { updateRegion, updateStateInfo } from '../../reduxStore/mapSlice';
 import ConsentModal from '../CoverCropExplorer/ConsentModal/ConsentModal';
@@ -87,12 +91,12 @@ const Header = () => {
     }
   };
 
-  //useEffect to set the favicon for the first time
+  // useEffect to set the favicon for the first time
   // useEffect(() => {
   //   faviconRef.current = document.getElementById('favicon');
   // }, []);
 
-  //useEffect to update favicon
+  // useEffect to update favicon
   useEffect(() => {
     switch (councilShorthandRedux) {
       case 'NECCC':
@@ -112,7 +116,7 @@ const Header = () => {
     }
   }, [councilShorthandRedux]);
 
-  //useEffect to update logo image
+  // useEffect to update logo image
   useEffect(() => {
     switch (councilShorthandRedux) {
       case 'NECCC':
@@ -147,7 +151,9 @@ const Header = () => {
       getFields(token).then((data) => dispatchRedux(updateField(data)));
       getHistory(token).then((res) => {
         if (res.data) {
-          const { state, region, council, consent } = res.data.json;
+          const {
+            state, region, council, consent,
+          } = res.data.json;
           // set user history redux state
           dispatchRedux(
             updateStateInfo({
@@ -157,8 +163,7 @@ const Header = () => {
               councilLabel: council.label,
             }),
           );
-          if (region)
-            dispatchRedux(updateRegion({ regionId: region.id, regionShorthand: region.shorthand }));
+          if (region) dispatchRedux(updateRegion({ regionId: region.id, regionShorthand: region.shorthand }));
           dispatchRedux(updateConsent(consent.status, consent.date));
           // The consent is mainly use localstorage to test is expired, use history to update localStorage
           const consentKey = 'consent';
@@ -183,8 +188,8 @@ const Header = () => {
   useEffect(() => {
     // save user history when user click next in Landing & Location page, change zone in explorer
     if (
-      isAuthenticated &&
-      (progressRedux === 1 || progressRedux === 2 || pathname === '/explorer')
+      isAuthenticated
+      && (progressRedux === 1 || progressRedux === 2 || pathname === '/explorer')
     ) {
       const userHistory = buildHistory(
         stateIdRedux,
