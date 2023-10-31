@@ -5,14 +5,12 @@
 */
 
 import { useDispatch, useSelector } from 'react-redux';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { NavLink, useHistory } from 'react-router-dom';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
 import { useAuth0 } from '@auth0/auth0-react';
-import {
-  Grid, Box, Button, Typography,
-} from '@mui/material';
+import { Grid, Box, Button, Typography } from '@mui/material';
 import InformationBar from './InformationBar/InformationBar';
 import ToggleOptions from './ToggleOptions/ToggleOptions';
 import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset';
@@ -22,20 +20,23 @@ import {
   updateField,
   setSelectFieldId,
 } from '../../reduxStore/userSlice';
-import {
-  getFields, getHistory, buildHistory, postHistory,
-} from '../../shared/constants';
+import { getFields, getHistory, buildHistory, postHistory } from '../../shared/constants';
 import AuthButton from '../../components/Auth/AuthButton/AuthButton';
 import { updateRegion, updateStateInfo } from '../../reduxStore/mapSlice';
 import ConsentModal from '../CoverCropExplorer/ConsentModal/ConsentModal';
 import AuthModal from '../Landing/AuthModal/AuthModal';
 import { setMyCoverCropReset } from '../../reduxStore/sharedSlice';
 import { reset } from '../../reduxStore/store';
+// import logoImage from '../../../public/images/PSAlogo-text.png';
 
 const Header = () => {
   const history = useHistory();
   const dispatchRedux = useDispatch();
   const { isAuthenticated, getAccessTokenSilently } = useAuth0();
+
+  // useRef vars
+  const logoRef = useRef(null);
+  const faviconRef = useRef(document.getElementById('favicon'));
 
   // used to know if the user is in mobile mode
   const theme = useTheme();
@@ -86,31 +87,50 @@ const Header = () => {
     }
   };
 
-  useEffect(() => {
-    let imageSrc;
-    const favicon = document.getElementById('favicon');
-    if (councilLabelRedux === 'Northeast Cover Crop Council') {
-      imageSrc = '../images/neccc_wide_logo_color_web.jpg';
-      favicon.href = 'favicons/neccc-favicon.ico';
-    } else if (councilLabelRedux === 'Southern Cover Crop Council') {
-      imageSrc = '../images/sccc_logo.png';
-      favicon.href = 'favicons/sccc-favicon.ico';
-    } else if (councilLabelRedux === 'Midwest Cover Crop Council') {
-      imageSrc = '../images/mwccc_logo.png';
-      favicon.href = 'favicons/mccc-favicon.ico';
-    } else if (councilLabelRedux === 'Western Cover Crop Council') {
-      imageSrc = '../images/wccc_logo.png';
-      favicon.href = 'favicons/psa-favicon.ico';
-    } else {
-      imageSrc = '../images/PSAlogo-text.png';
-      favicon.href = 'favicons/psa-favicon.ico';
-    }
+  //useEffect to set the favicon for the first time
+  // useEffect(() => {
+  //   faviconRef.current = document.getElementById('favicon');
+  // }, []);
 
-    const imageElement = document.getElementById('logoImage');
-    if (imageElement) {
-      imageElement.src = imageSrc;
+  //useEffect to update favicon
+  useEffect(() => {
+    switch (councilShorthandRedux) {
+      case 'NECCC':
+        faviconRef.current.href = '/favicons/neccc-favicon.ico';
+        break;
+      case 'SCCC':
+        faviconRef.current.href = '/favicons/sccc-favicon.ico';
+        break;
+      case 'MCCC':
+        faviconRef.current.href = '/favicons/mccc-favicon.ico';
+        break;
+
+      default:
+        faviconRef.current.href = '/favicons/psa-favicon.ico';
+
+        break;
     }
-  }, [councilLabelRedux]);
+  }, [councilShorthandRedux]);
+
+  //useEffect to update logo image
+  useEffect(() => {
+    switch (councilShorthandRedux) {
+      case 'NECCC':
+        logoRef.current.src = '/images/neccc_wide_logo_color_web.jpg';
+        break;
+      case 'SCCC':
+        logoRef.current.src = '/images/sccc_logo.png';
+        break;
+      case 'MCCC':
+        logoRef.current.src = '/images/mwccc_logo.png';
+        break;
+
+      default:
+        logoRef.current.src = '/images/PSAlogo-text.png';
+
+        break;
+    }
+  }, [councilShorthandRedux]);
 
   useEffect(() => {
     // detect current pathname
@@ -127,9 +147,7 @@ const Header = () => {
       getFields(token).then((data) => dispatchRedux(updateField(data)));
       getHistory(token).then((res) => {
         if (res.data) {
-          const {
-            state, region, council, consent,
-          } = res.data.json;
+          const { state, region, council, consent } = res.data.json;
           // set user history redux state
           dispatchRedux(
             updateStateInfo({
@@ -139,7 +157,8 @@ const Header = () => {
               councilLabel: council.label,
             }),
           );
-          if (region) dispatchRedux(updateRegion({ regionId: region.id, regionShorthand: region.shorthand }));
+          if (region)
+            dispatchRedux(updateRegion({ regionId: region.id, regionShorthand: region.shorthand }));
           dispatchRedux(updateConsent(consent.status, consent.date));
           // The consent is mainly use localstorage to test is expired, use history to update localStorage
           const consentKey = 'consent';
@@ -163,7 +182,10 @@ const Header = () => {
 
   useEffect(() => {
     // save user history when user click next in Landing & Location page, change zone in explorer
-    if (isAuthenticated && (progressRedux === 1 || progressRedux === 2 || pathname === '/explorer')) {
+    if (
+      isAuthenticated &&
+      (progressRedux === 1 || progressRedux === 2 || pathname === '/explorer')
+    ) {
       const userHistory = buildHistory(
         stateIdRedux,
         stateLabelRedux,
@@ -212,31 +234,33 @@ const Header = () => {
           <Grid item>
             <Box
               sx={{
-              // position: 'relative',
+                // position: 'relative',
                 height: 'auto',
                 marginRight: '10px',
                 width: '120px',
               }}
             >
-              <Button
-                type="button"
-                onClick={handleClick}
-              >
+              <Button type="button" onClick={handleClick}>
                 <img
                   id="logoImage" // id to the img element to reference it in useEffect
                   className="img-fluid"
-                  src="../images/neccc_wide_logo_color_web.jpg"
+                  ref={logoRef}
                   alt=""
                 />
               </Button>
             </Box>
           </Grid>
-
         </Grid>
       );
     }
     return (
-      <Grid item container md={isMdOrSmaller ? 12 : 6} justifyContent={isMdOrSmaller ? 'center' : 'left'} xs={12}>
+      <Grid
+        item
+        container
+        md={isMdOrSmaller ? 12 : 6}
+        justifyContent={isMdOrSmaller ? 'center' : 'left'}
+        xs={12}
+      >
         <ToggleOptions pathname={pathname} />
       </Grid>
     );
@@ -265,7 +289,7 @@ const Header = () => {
         </Grid>
 
         {(!authModalOpen || isAuthenticated) && (
-        <ConsentModal modalOpen={consentModalOpen} setModalOpen={setConsentModalOpen} />
+          <ConsentModal modalOpen={consentModalOpen} setModalOpen={setConsentModalOpen} />
         )}
         <AuthModal
           modalOpen={authModalOpen}
@@ -273,7 +297,6 @@ const Header = () => {
           setConsentModalOpen={setConsentModalOpen}
         />
       </Box>
-
     </header>
   );
 };
