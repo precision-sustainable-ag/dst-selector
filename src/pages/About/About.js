@@ -90,7 +90,7 @@ const About = () => {
             management into recommendation systems. Therefore, we first targeted the development
             of a species selection tool. This tool provides cover crop species recommendations
             based on grower USDA hardiness zone and cropping system specifics. Our species
-            selection tool was adapted from the Midwest Cover Crop Council and modified and
+            selection tool was adapted from the Midwest Cover Crops Council and modified and
             expanded to target needs of producers in the Northeast. This initiative led to the
             formation of a Species Selector product team consisting of agronomists, informatics
             researchers, and developers, as well as four Cover Crop Data Verification teams,
