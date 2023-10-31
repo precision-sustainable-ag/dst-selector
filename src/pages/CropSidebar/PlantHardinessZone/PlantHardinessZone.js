@@ -29,7 +29,7 @@ const PlantHardinessZone = ({
 
       {regionsRedux?.length > 0 && regionsRedux.map((region, i) => (
         <MenuItem value={region.shorthand} key={`Region${region}${i}`}>
-          {councilLabelRedux !== 'Midwest Cover Crop Council' ? `Zone ${region.shorthand?.toUpperCase()}` : `${region.shorthand?.toUpperCase()}`}
+          {councilLabelRedux !== 'Midwest Cover Crops Council' ? `Zone ${region.shorthand?.toUpperCase()}` : `${region.shorthand?.toUpperCase()}`}
         </MenuItem>
       ))}
     </Select>
@@ -42,12 +42,12 @@ const PlantHardinessZone = ({
           <FormControl
             variant="filled"
           >
-            <InputLabel>{councilLabelRedux === 'Midwest Cover Crop Council' ? 'COUNTY' : 'ZONE'}</InputLabel>
+            <InputLabel>{councilLabelRedux === 'Midwest Cover Crops Council' ? 'COUNTY' : 'ZONE'}</InputLabel>
             {plantHardinessZone()}
             {!regionShorthand
             && (
             <Typography variant="body2" align="center" color="error" gutterBottom>
-              {`Please Select a ${councilLabelRedux === 'Midwest Cover Crop Council' ? 'County' : 'Zone'}`}
+              {`Please Select a ${councilLabelRedux === 'Midwest Cover Crops Council' ? 'County' : 'Zone'}`}
             </Typography>
             )}
           </FormControl>

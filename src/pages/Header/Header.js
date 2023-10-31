@@ -91,11 +91,6 @@ const Header = () => {
     }
   };
 
-  // useEffect to set the favicon for the first time
-  // useEffect(() => {
-  //   faviconRef.current = document.getElementById('favicon');
-  // }, []);
-
   // useEffect to update favicon
   useEffect(() => {
     switch (councilShorthandRedux) {
@@ -108,10 +103,8 @@ const Header = () => {
       case 'MCCC':
         faviconRef.current.href = '/favicons/mccc-favicon.ico';
         break;
-
       default:
         faviconRef.current.href = '/favicons/psa-favicon.ico';
-
         break;
     }
   }, [councilShorthandRedux]);
