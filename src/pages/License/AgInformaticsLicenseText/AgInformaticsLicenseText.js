@@ -19,7 +19,7 @@ const AgInformaticsLicenseText = ({ styles = true, aboutPage = false, footerPage
             {currentYear}
             {' '}
             <a href="http://northeastcovercrops.com/" target="_blank" rel="noopener noreferrer">
-              Northeast Cover Crop Council
+              Northeast Cover Crops Council
             </a>
             ,
             {' '}
