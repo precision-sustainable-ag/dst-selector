@@ -89,16 +89,16 @@ const Header = () => {
   useEffect(() => {
     let imageSrc;
     const favicon = document.getElementById('favicon');
-    if (councilLabelRedux === 'Northeast Cover Crop Council') {
+    if (councilLabelRedux === 'Northeast Cover Crops Council') {
       imageSrc = '../images/neccc_wide_logo_color_web.jpg';
       favicon.href = 'favicons/neccc-favicon.ico';
-    } else if (councilLabelRedux === 'Southern Cover Crop Council') {
+    } else if (councilLabelRedux === 'Southern Cover Crops Council') {
       imageSrc = '../images/sccc_logo.png';
       favicon.href = 'favicons/sccc-favicon.ico';
-    } else if (councilLabelRedux === 'Midwest Cover Crop Council') {
+    } else if (councilLabelRedux === 'Midwest Cover Crops Council') {
       imageSrc = '../images/mwccc_logo.png';
       favicon.href = 'favicons/mccc-favicon.ico';
-    } else if (councilLabelRedux === 'Western Cover Crop Council') {
+    } else if (councilLabelRedux === 'Western Cover Crops Council') {
       imageSrc = '../images/wccc_logo.png';
       favicon.href = 'favicons/psa-favicon.ico';
     } else {
