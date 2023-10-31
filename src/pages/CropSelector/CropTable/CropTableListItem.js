@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
 import {
   TableCell, Typography, TableRow, Button,
@@ -164,7 +164,7 @@ const CropTableListItem = ({
         </TableRow>
       );
     }
-    return <></>;
+    return null;
   });
 };
 
