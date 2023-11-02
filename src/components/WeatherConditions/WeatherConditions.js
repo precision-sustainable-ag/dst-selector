@@ -15,7 +15,6 @@ const WeatherConditions = () => {
   // redux vars
   const weatherDataRedux = useSelector((stateRedux) => stateRedux.weatherData.weatherData);
   const ajaxInProgressRedux = useSelector((stateRedux) => stateRedux.sharedData.ajaxInProgress);
-  const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
 
   // useState vars
   const [currentMonthFull, setCurrentMonthFull] = useState('NOVEMBER');
@@ -114,11 +113,7 @@ const WeatherConditions = () => {
       </Grid>
       <Grid item xs={12}>
         <Typography variant="body1">
-          This information is based on your location and the
-          {' '}
-          {` ${councilShorthandRedux} dataset`}
-          ,
-          update only as needed.
+          This information is based on your location and average weather data, it is not used to filter recommended crops.
         </Typography>
       </Grid>
 
