@@ -111,18 +111,22 @@ const SoilCondition = () => {
           });
           drainageClasses = drainageClasses.filter((el) => el != null);
 
-          dispatchRedux(updateSoilData({
-            mapUnitName: mapUnitString,
-            drainageClass: drainageClasses,
-            floodingFrequency: floodingClasses,
-            latLong: { lat, lon },
-          }));
-          dispatchRedux(updateSoilDataOriginal({
-            mapUnitName: mapUnitString,
-            drainageClass: drainageClasses,
-            floodingFrequency: floodingClasses,
-            latLong: { lat, lon },
-          }));
+          dispatchRedux(
+            updateSoilData({
+              mapUnitName: mapUnitString,
+              drainageClass: drainageClasses,
+              floodingFrequency: floodingClasses,
+              latLong: { lat, lon },
+            }),
+          );
+          dispatchRedux(
+            updateSoilDataOriginal({
+              mapUnitName: mapUnitString,
+              drainageClass: drainageClasses,
+              floodingFrequency: floodingClasses,
+              latLong: { lat, lon },
+            }),
+          );
         })
         // eslint-disable-next-line no-console
         .catch((error) => console.error('SSURGO FETCH ERROR', error));
@@ -134,7 +138,9 @@ const SoilCondition = () => {
     if (stateLabelRedux === 'Ontario') return;
 
     if (soilDataOriginalRedux?.latLong) {
-      if (!(soilDataOriginalRedux.latLong?.lat === lat && soilDataOriginalRedux.latLong?.lon === lon)) {
+      if (
+        !(soilDataOriginalRedux.latLong?.lat === lat && soilDataOriginalRedux.latLong?.lon === lon)
+      ) {
         getSSURGOData(lat, lon);
       }
     } else {
@@ -144,35 +150,32 @@ const SoilCondition = () => {
 
   return (
     <Grid
-      item
       container
-      spacing={1}
       direction="column"
       display="flex"
-      justifyContent="center"
       alignItems="center"
+      style={{
+        border: '5px solid #f5f5f5',
+        borderRadius: '15px',
+        padding: '15px',
+        backgroundColor: 'white',
+      }}
     >
       <Grid item xs={12}>
-        <Typography variant="h4">
+        <Typography variant="body1" style={{ fontWeight: 'bold', fontSize: '2rem' }}>
           Soil Conditions
         </Typography>
       </Grid>
-      <Grid item xs={12}>
-        <Typography variant="body1">
-          This information is based on your location and the
-          {' '}
-          {` ${councilShorthandRedux} dataset`}
-          , update only as needed.
-        </Typography>
-      </Grid>
-      <Grid item xs={12}>
-        <SoilComposition />
-      </Grid>
-      <Grid item xs={12}>
-        <SoilDrainage />
-      </Grid>
-      <Grid item xs={12}>
-        <SoilFloodingFrequency />
+      <Grid item direction="column" display="flex">
+        <Grid item xs={12} style={{ margin: '1rem 0' }}>
+          <SoilComposition />
+        </Grid>
+        <Grid item xs={12} style={{ marginBottom: '1rem' }}>
+          <SoilDrainage />
+        </Grid>
+        <Grid item xs={12} style={{ marginBottom: '1rem' }}>
+          <SoilFloodingFrequency />
+        </Grid>
       </Grid>
     </Grid>
   );

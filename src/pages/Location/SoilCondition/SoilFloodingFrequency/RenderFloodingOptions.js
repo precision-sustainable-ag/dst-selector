@@ -34,13 +34,7 @@ const RenderFloodingOptions = ({ flooding = [''] }) => {
     }
   };
   return (
-    <Grid
-      container
-      spacing={2}
-      display="flex"
-      justifyContent="center"
-      alignItems="center"
-    >
+    <Grid Grid item display="flex" flexWrap="wrap" style={{ margin: '1rem 0' }}>
       {floodingOptions.map((f, index) => (
         <Grid item key={index}>
           <Chip
@@ -49,6 +43,7 @@ const RenderFloodingOptions = ({ flooding = [''] }) => {
             onClick={() => {
               updateFloodingFrequency(f);
             }}
+            style={{ margin: '0.3rem' }}
           />
         </Grid>
       ))}
