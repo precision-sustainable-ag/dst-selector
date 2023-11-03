@@ -1,4 +1,6 @@
-import { Tooltip, Typography, Grid, Box } from '@mui/material';
+import {
+  Tooltip, Typography, Grid, Box,
+} from '@mui/material';
 import { Info, Opacity } from '@mui/icons-material';
 import React from 'react';
 import { useSelector } from 'react-redux';
@@ -37,29 +39,34 @@ const WeatherPrecipitation = ({ currentMonthFull }) => {
         <Grid item>
           <Typography variant="body1">
             <span style={{ fontWeight: 'bold', fontSize: '1rem' }}>Average Precipitation</span>
-            &nbsp;{' '}
+            &nbsp;
+            {' '}
             <Tooltip
               arrow
               placement="right"
               enterTouchDelay={0}
-              title={
+              title={(
                 <div>
                   Five-year average monthly and annual precipitation from the Precision Sustainable
-                  Agriculture Weather API powered by{' '}
+                  Agriculture Weather API powered by
+                  {' '}
                   <a
                     href="https://www.nssl.noaa.gov/projects/mrms/"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
                     NSSL MRMS
-                  </a>{' '}
-                  and{' '}
+                  </a>
+                  {' '}
+                  and
+                  {' '}
                   <a target="_blank" rel="noopener noreferrer" href="/#">
                     NASA NLDAS-2
-                  </a>{' '}
+                  </a>
+                  {' '}
                   weather data.
                 </div>
-              }
+              )}
             >
               <Info fontSize="small" />
             </Tooltip>
@@ -83,7 +90,8 @@ const WeatherPrecipitation = ({ currentMonthFull }) => {
             </Grid>
             <Grid item>
               <Typography variant="body1" style={{ fontWeight: 'bold', fontSize: '1rem' }}>
-                {weatherDataRedux?.averagePrecipitation?.thisMonth}{' '}
+                {weatherDataRedux?.averagePrecipitation?.thisMonth}
+                {' '}
                 <span style={{ fontWeight: 'bold', fontSize: '0.6rem', color: '#abaeb4' }}>
                   inches
                 </span>
@@ -102,7 +110,8 @@ const WeatherPrecipitation = ({ currentMonthFull }) => {
             </Grid>
             <Grid item>
               <Typography variant="body1" style={{ fontWeight: 'bold', fontSize: '1rem' }}>
-                {weatherDataRedux?.averagePrecipitation?.annual}{' '}
+                {weatherDataRedux?.averagePrecipitation?.annual}
+                {' '}
                 <span style={{ fontWeight: 'bold', fontSize: '0.6rem', color: '#abaeb4' }}>
                   inches
                 </span>

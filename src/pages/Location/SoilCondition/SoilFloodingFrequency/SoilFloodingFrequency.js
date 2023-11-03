@@ -1,4 +1,6 @@
-import { Button, Typography, Grid, Box, useMediaQuery, useTheme } from '@mui/material';
+import {
+  Button, Typography, Grid, Box, useMediaQuery, useTheme,
+} from '@mui/material';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import { WavesOutlined } from '@mui/icons-material';
 import React from 'react';
@@ -11,7 +13,7 @@ import { updateFloodingFrequency } from '../../../../reduxStore/soilSlice';
 const SoilFloodingFrequency = () => {
   const dispatchRedux = useDispatch();
 
-  //theme
+  // theme
   const uiTheme = useTheme();
   const isMobile = useMediaQuery(uiTheme.breakpoints.down('sm'));
 
@@ -61,14 +63,16 @@ const SoilFloodingFrequency = () => {
         <Grid item style={{ flexGrow: 1 }}>
           <Typography variant="body1">
             <span style={{ fontWeight: 'bold' }}>Flooding Frequency</span>
-            &nbsp;{' '}
+            &nbsp;
+            {' '}
             <ReferenceTooltip
               type="text"
               hasLink
-              title={
+              title={(
                 <div>
                   <Typography variant="body1">
-                    The annual probability of a flood event based on the{' '}
+                    The annual probability of a flood event based on the
+                    {' '}
                     <a
                       href="https://websoilsurvey.sc.egov.usda.gov/App/HomePage.htm"
                       target="_blank"
@@ -78,7 +82,8 @@ const SoilFloodingFrequency = () => {
                     </a>
                     , where “flood” refers to the temporary inundation of an area caused by
                     overflowing streams, by runoff from adjacent slopes, or by tides. You may modify
-                    your flooding frequency by clicking below.{' '}
+                    your flooding frequency by clicking below.
+                    {' '}
                     <a
                       href="https://www.nrcs.usda.gov/wps/portal/nrcs/detail/soils/ref/?cid=nrcs142p2_054253"
                       target="_blank"
@@ -90,7 +95,7 @@ const SoilFloodingFrequency = () => {
                     .
                   </Typography>
                 </div>
-              }
+              )}
             />
           </Typography>
         </Grid>

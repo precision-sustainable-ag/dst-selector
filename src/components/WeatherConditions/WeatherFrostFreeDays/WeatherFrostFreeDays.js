@@ -1,4 +1,6 @@
-import { Tooltip, Typography, Grid, Box } from '@mui/material';
+import {
+  Tooltip, Typography, Grid, Box,
+} from '@mui/material';
 import { WbSunnyOutlined, Info } from '@mui/icons-material';
 import React from 'react';
 import { useSelector } from 'react-redux';
@@ -37,15 +39,17 @@ const WeatherFrostFreeDays = () => {
         <Grid item>
           <Typography variant="body1">
             <span style={{ fontWeight: 'bold', fontSize: '1rem' }}>Average Frost Free Days</span>
-            &nbsp;{' '}
+            &nbsp;
+            {' '}
             <Tooltip
               arrow
               placement="right"
               enterTouchDelay={0}
-              title={
+              title={(
                 <div>
                   Number of days in your growing season, based on the PSA Weather API using data
-                  from the{' '}
+                  from the
+                  {' '}
                   <a
                     href="https://www.ncei.noaa.gov/products/land-based-station/us-climate-normals"
                     rel="noopener noreferrer"
@@ -53,7 +57,7 @@ const WeatherFrostFreeDays = () => {
                     NOAA 30-Year Climate Normals.
                   </a>
                 </div>
-              }
+              )}
             >
               <Info fontSize="small" />
             </Tooltip>
