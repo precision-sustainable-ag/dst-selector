@@ -1,4 +1,6 @@
-import { Tooltip, Typography, Grid, Box } from '@mui/material';
+import {
+  Tooltip, Typography, Grid, Box,
+} from '@mui/material';
 import { AcUnit, Info } from '@mui/icons-material';
 import React from 'react';
 import { useSelector } from 'react-redux';
@@ -37,34 +39,40 @@ const WeatherFrostDates = () => {
         <Grid item>
           <Typography variant="body1">
             <span style={{ fontWeight: 'bold', fontSize: '1rem' }}>Average Frost Dates</span>
-            &nbsp;{' '}
+            &nbsp;
+            {' '}
             <Tooltip
               arrow
               placement="right"
               enterTouchDelay={0}
-              title={
+              title={(
                 <div>
                   Average dates of the first and last frosts for your location, based on frost dates
                   for the last five years from the Precision Sustainable Agriculture Weather API
-                  powered by{' '}
+                  powered by
+                  {' '}
                   <a
                     href="https://www.nssl.noaa.gov/projects/mrms/"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    NSSL MRMS{' '}
-                  </a>{' '}
-                  and{' '}
+                    NSSL MRMS
+                    {' '}
+                  </a>
+                  {' '}
+                  and
+                  {' '}
                   <a
                     href="https://ldas.gsfc.nasa.gov/nldas/"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
                     NASA NLDAS-2
-                  </a>{' '}
+                  </a>
+                  {' '}
                   weather data; you may manually change this input.
                 </div>
-              }
+              )}
             >
               <Info fontSize="small" />
             </Tooltip>

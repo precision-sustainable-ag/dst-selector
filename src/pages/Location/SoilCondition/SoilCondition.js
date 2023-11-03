@@ -19,7 +19,7 @@ const SoilCondition = () => {
   // redux vars
   const markersRedux = useSelector((stateRedux) => stateRedux.addressData.markers);
   const soilDataOriginalRedux = useSelector((stateRedux) => stateRedux.soilData.soilDataOriginal);
-  const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
+  // const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
 
   // useState vars
