@@ -34,7 +34,7 @@ const RenderFloodingOptions = ({ flooding = [''] }) => {
     }
   };
   return (
-    <Grid Grid item display="flex" flexWrap="wrap" style={{ margin: '1rem 0' }}>
+    <Grid Grid item display="flex" flexWrap="wrap" style={{ marginRight: '1rem' }} flexBasis="0">
       {floodingOptions.map((f, index) => (
         <Grid item key={index}>
           <Chip

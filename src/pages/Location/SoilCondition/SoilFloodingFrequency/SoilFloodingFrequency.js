@@ -1,6 +1,5 @@
-import {
-  Button, Typography, Grid, Box,
-} from '@mui/material';
+import { Button, Typography, Grid, Box, useMediaQuery, useTheme } from '@mui/material';
+import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import { WavesOutlined } from '@mui/icons-material';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -11,6 +10,10 @@ import { updateFloodingFrequency } from '../../../../reduxStore/soilSlice';
 
 const SoilFloodingFrequency = () => {
   const dispatchRedux = useDispatch();
+
+  //theme
+  const uiTheme = useTheme();
+  const isMobile = useMediaQuery(uiTheme.breakpoints.down('sm'));
 
   // redux vars
   const soilDataRedux = useSelector((stateRedux) => stateRedux.soilData.soilData);
@@ -34,12 +37,19 @@ const SoilFloodingFrequency = () => {
       alignItems="center"
       justifyContent="space-between"
     >
-      <Grid item direction="row" display="flex" alignItems="center" padding="0 4.8px">
+      <Grid
+        item
+        direction="row"
+        display="flex"
+        alignItems="center"
+        padding="0 4.8px"
+        style={{ marginBottom: '10px' }}
+      >
         <Grid item>
           <Box
             style={{
               backgroundColor: 'rgba(176, 236, 130, 0.8)',
-              padding: '10px',
+              padding: '1rem',
               borderRadius: '10px',
               marginRight: '10px',
             }}
@@ -51,16 +61,14 @@ const SoilFloodingFrequency = () => {
         <Grid item style={{ flexGrow: 1 }}>
           <Typography variant="body1">
             <span style={{ fontWeight: 'bold' }}>Flooding Frequency</span>
-            &nbsp;
-            {' '}
+            &nbsp;{' '}
             <ReferenceTooltip
               type="text"
               hasLink
-              title={(
+              title={
                 <div>
                   <Typography variant="body1">
-                    The annual probability of a flood event based on the
-                    {' '}
+                    The annual probability of a flood event based on the{' '}
                     <a
                       href="https://websoilsurvey.sc.egov.usda.gov/App/HomePage.htm"
                       target="_blank"
@@ -70,8 +78,7 @@ const SoilFloodingFrequency = () => {
                     </a>
                     , where “flood” refers to the temporary inundation of an area caused by
                     overflowing streams, by runoff from adjacent slopes, or by tides. You may modify
-                    your flooding frequency by clicking below.
-                    {' '}
+                    your flooding frequency by clicking below.{' '}
                     <a
                       href="https://www.nrcs.usda.gov/wps/portal/nrcs/detail/soils/ref/?cid=nrcs142p2_054253"
                       target="_blank"
@@ -83,7 +90,7 @@ const SoilFloodingFrequency = () => {
                     .
                   </Typography>
                 </div>
-              )}
+              }
             />
           </Typography>
         </Grid>
@@ -93,26 +100,42 @@ const SoilFloodingFrequency = () => {
         ) && (
           <Grid item>
             <Button
-              style={{
+              sx={{
                 backgroundColor: 'rgba(255, 150, 28, 0.2)',
                 borderRadius: '999px',
-                padding: '14.8px',
+                padding: '0.5rem',
+
+                '&:hover': {
+                  backgroundColor: 'rgba(255, 150, 28, 0.3)',
+                },
+
+                '@media (max-width:600px)': {
+                  padding: '0.5rem',
+                  borderRadius: '999px',
+                  '& .MuiTypography-root': {
+                    fontSize: '0.7rem',
+                  },
+                },
               }}
               size="small"
               onClick={() => {
                 resetFloodingOptions();
               }}
             >
-              <Typography
-                sx={{
-                  color: '#ff961c',
-                  fontSize: '0.8rem',
-                  textTransform: 'none',
-                }}
-                variant="button"
-              >
-                Values changed, reset?
-              </Typography>
+              {isMobile ? (
+                <RestartAltIcon sx={{ color: '#ff961c' }} />
+              ) : (
+                <Typography
+                  sx={{
+                    color: '#ff961c',
+                    fontSize: '0.8rem',
+                    textTransform: 'none',
+                  }}
+                  variant="button"
+                >
+                  Values changed, reset?
+                </Typography>
+              )}
             </Button>
           </Grid>
         )}

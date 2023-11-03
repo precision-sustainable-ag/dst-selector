@@ -13,18 +13,18 @@ const WeatherFrostFreeDays = () => {
       style={{
         backgroundColor: 'white',
         borderRadius: '15px',
-        padding: '0.5rem',
+        padding: '0.8rem',
         width: 'auto',
         border: '2px solid #598445',
       }}
-      alignItems="start"
+      alignItems="center"
       justifyContent="space-between"
     >
       <Grid item>
         <Box
           style={{
             backgroundColor: 'rgba(176, 236, 130, 0.8)',
-            padding: '30px',
+            padding: '1rem',
             borderRadius: '15px',
             marginRight: '10px',
           }}
@@ -59,7 +59,7 @@ const WeatherFrostFreeDays = () => {
             </Tooltip>
           </Typography>
         </Grid>
-        <Grid item direction="column">
+        <Grid item direction="column" sx={{ mt: ' 5px' }}>
           <Grid item>
             <Typography
               variant="body1"
@@ -69,7 +69,7 @@ const WeatherFrostFreeDays = () => {
             </Typography>
           </Grid>
           <Grid item>
-            <Typography variant="body1" style={{ fontWeight: 'bold', fontSize: '0.8rem' }}>
+            <Typography variant="body1" style={{ fontWeight: 'bold', fontSize: '1rem' }}>
               {weatherDataRedux?.frostFreeDays}
             </Typography>
           </Grid>

@@ -21,10 +21,10 @@ const LocationConfirmation = () => {
         filter recommended crops.
       </Typography>
       <Grid container direction="row" justifyContent="space-evenly" alignItems="flex-start">
-        <Grid item lg={4}>
+        <Grid item lg={4} sx={{ mt: '1rem' }}>
           {progressRedux === 2 && <SoilCondition />}
         </Grid>
-        <Grid item lg={4}>
+        <Grid item lg={4} sx={{ mt: '1rem' }}>
           {progressRedux === 2 && <WeatherConditions />}
         </Grid>
       </Grid>
