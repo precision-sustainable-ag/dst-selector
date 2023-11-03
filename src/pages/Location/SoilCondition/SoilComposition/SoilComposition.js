@@ -14,31 +14,19 @@ const SoilComposition = () => {
       container
       direction="row"
       style={{
-        backgroundColor: 'white',
+        backgroundColor: 'rgba(176, 236, 130, 0.3)',
         borderRadius: '15px',
-        padding: '0.5rem 0.8rem',
-        border: '2px solid #598445',
+        padding: '1rem',
+        // border: '2px solid #598445',
         width: 'auto',
       }}
       alignItems="center"
+      justifyContent="space-between"
     >
-      <Grid item>
-        <Box
-          style={{
-            backgroundColor: 'rgba(176, 236, 130, 0.8)',
-            padding: '1rem',
-            borderRadius: '10px',
-            marginRight: '10px',
-          }}
-        >
-          <Terrain />
-        </Box>
-      </Grid>
-
       <Grid item direction="column">
         <Grid item>
           <Typography variant="body1">
-            <span style={{ fontWeight: 'bold', fontSize: '0.8rem' }}>Soil Composition</span>
+            <span style={{ fontWeight: 'bold', fontSize: '1rem' }}>Soil Composition</span>
             &nbsp;
             {' '}
             <ReferenceTooltip
@@ -68,12 +56,17 @@ const SoilComposition = () => {
           <Grid item>
             <Typography
               variant="body1"
-              style={{ fontWeight: 'bold', fontSize: '1.2rem', color: '#598445' }}
+              style={{ fontWeight: 'bold', fontSize: '1.3rem', color: '#598445' }}
             >
               {soilDataRedux?.mapUnitName}
             </Typography>
           </Grid>
         </Grid>
+      </Grid>
+      <Grid item alignSelf="start">
+        <Box>
+          <Terrain />
+        </Box>
       </Grid>
     </Grid>
   ) : null;
