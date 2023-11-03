@@ -52,12 +52,14 @@ const RenderDrainageClasses = ({ tilingCheck, drainage = [] }) => {
     updateDrainageAction([drainages]);
   }, [tilingCheck]);
 
-  const updateDrainageClass = (label = '') => {
+  const updateDrainageClass = (index = '') => {
     let drainages = soilDataRedux.drainageClass ? [...soilDataRedux.drainageClass] : [];
-    if (drainages.indexOf(label) === -1) {
+    if (drainages.indexOf(drainageArray[index]) === -1) {
       // does not exist, dispatch to state
-      drainages = [label];
+      drainages = [index];
       updateDrainageAction(drainages);
+    } else {
+      dispatchRedux(updateDrainageClassRedux([]));
     }
   };
 
