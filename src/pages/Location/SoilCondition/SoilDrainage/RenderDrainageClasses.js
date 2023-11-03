@@ -48,7 +48,8 @@ const RenderDrainageClasses = ({ tilingCheck, drainage = [] }) => {
     } else if (drainages === 1) {
       drainages -= 1;
     } else if (drainages >= 2) {
-      drainages = councilShorthandRedux === 'MCCC' && previousDrainage !== 2 ? drainages - 2 : drainages - 1;
+      drainages =
+        councilShorthandRedux === 'MCCC' && previousDrainage !== 2 ? drainages - 2 : drainages - 1;
     }
 
     updateDrainageAction([drainages]);
@@ -64,7 +65,7 @@ const RenderDrainageClasses = ({ tilingCheck, drainage = [] }) => {
   };
 
   return (
-    <Grid item display="flex" flexWrap="wrap" style={{ margin: '1rem 0' }}>
+    <Grid item display="flex" flexWrap="wrap" style={{ marginRight: '1rem' }} flexBasis="0">
       {drainageArray.map((d, index) => (
         <Box key={index}>
           <Chip

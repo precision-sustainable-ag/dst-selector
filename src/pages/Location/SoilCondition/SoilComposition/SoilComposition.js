@@ -26,7 +26,7 @@ const SoilComposition = () => {
         <Box
           style={{
             backgroundColor: 'rgba(176, 236, 130, 0.8)',
-            padding: '10px',
+            padding: '1rem',
             borderRadius: '10px',
             marginRight: '10px',
           }}
