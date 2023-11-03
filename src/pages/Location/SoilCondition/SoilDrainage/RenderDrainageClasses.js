@@ -1,10 +1,16 @@
-import { Chip, Grid, Box } from '@mui/material';
+import {
+  Chip, Grid, Box, useTheme, useMediaQuery,
+} from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateDrainageClass as updateDrainageClassRedux } from '../../../../reduxStore/soilSlice';
 
 const RenderDrainageClasses = ({ tilingCheck, drainage = [] }) => {
   const dispatchRedux = useDispatch();
+
+  // theme
+  const uiTheme = useTheme();
+  const isMobile = useMediaQuery(uiTheme.breakpoints.down('sm'));
 
   // redux vars
   const soilDataRedux = useSelector((stateRedux) => stateRedux.soilData.soilData);
@@ -64,9 +70,18 @@ const RenderDrainageClasses = ({ tilingCheck, drainage = [] }) => {
   };
 
   return (
-    <Grid item display="flex" flexWrap="wrap" style={{ marginRight: '1rem' }} flexBasis="0">
+    <Grid
+      item
+      display="flex"
+      flexDirection={isMobile ? 'column' : 'row'}
+      flexWrap="wrap"
+      justifyContent="center"
+      alignItems={isMobile ? 'center' : 'flex-start'}
+      style={{ marginRight: '1rem' }}
+      flexBasis="0"
+    >
       {drainageArray.map((d, index) => (
-        <Box key={index}>
+        <Box key={index} sx={{ width: isMobile ? '100%' : 'auto' }}>
           <Chip
             label={d}
             color={drainageVal.includes(index) ? 'primary' : 'secondary'}

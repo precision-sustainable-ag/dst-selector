@@ -3,7 +3,9 @@
   validateAndBroadcastModalData validates that the day is between 1 and 31
 */
 
-import { Typography, Grid } from '@mui/material';
+import {
+  Typography, Grid, useTheme, useMediaQuery,
+} from '@mui/material';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -12,6 +14,10 @@ import WeatherFrostDates from './WeatherFrostDates/WeatherFrostDates';
 import WeatherFrostFreeDays from './WeatherFrostFreeDays/WeatherFrostFreeDays';
 
 const WeatherConditions = () => {
+  // theme
+  const uiTheme = useTheme();
+  const isMobile = useMediaQuery(uiTheme.breakpoints.down('sm'));
+
   // redux vars
   const weatherDataRedux = useSelector((stateRedux) => stateRedux.weatherData.weatherData);
   const ajaxInProgressRedux = useSelector((stateRedux) => stateRedux.sharedData.ajaxInProgress);
@@ -102,28 +108,29 @@ const WeatherConditions = () => {
       container
       direction="column"
       display="flex"
-      alignItems="center"
+      justifyContent="center"
+      alignItems="stretch"
       style={{
         border: '5px solid #f5f5f5',
         borderRadius: '15px',
-        padding: '15px',
+        padding: '5px',
         backgroundColor: 'white',
       }}
     >
-      <Grid item xs={12}>
+      <Grid item xs={12} alignSelf="center">
         <Typography variant="body1" style={{ fontWeight: 'bold', fontSize: '2rem' }}>
           Climate Conditions
         </Typography>
       </Grid>
 
-      <Grid item direction="column" display="flex">
-        <Grid item xs={12} style={{ margin: '1rem 0' }}>
+      <Grid item direction={isMobile ? 'column' : 'row'} display="flex" alignItems="stretch">
+        <Grid item xs={12} style={{ margin: '0.5rem' }}>
           <WeatherFrostDates />
         </Grid>
-        <Grid item xs={12} style={{ marginBottom: '1rem' }}>
+        <Grid item xs={12} style={{ margin: '0.5rem' }}>
           <WeatherPrecipitation currentMonthFull={currentMonthFull} />
         </Grid>
-        <Grid item xs={12} style={{ marginBottom: '1rem' }}>
+        <Grid item xs={12} style={{ margin: '0.5rem' }}>
           {' '}
           <WeatherFrostFreeDays />
         </Grid>

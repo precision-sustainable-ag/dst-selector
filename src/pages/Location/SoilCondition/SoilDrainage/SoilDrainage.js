@@ -198,9 +198,9 @@ const SoilDrainage = () => {
             direction="row"
             style={{
               backgroundColor: 'white',
-              borderRadius: '15px',
+              // borderRadius: '15px',
               padding: '0.5rem',
-              border: '2px solid #598445',
+              // border: '2px solid #598445',
               width: 'auto',
               marginTop: '10px',
             }}
