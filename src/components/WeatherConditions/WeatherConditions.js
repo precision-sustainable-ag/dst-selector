@@ -100,28 +100,34 @@ const WeatherConditions = () => {
   return (
     <Grid
       container
-      spacing={1}
       direction="column"
       display="flex"
-      justifyContent="center"
       alignItems="center"
+      style={{
+        border: '5px solid #f5f5f5',
+        borderRadius: '15px',
+        padding: '15px',
+        backgroundColor: 'white',
+      }}
     >
       <Grid item xs={12}>
-        <Typography variant="h4" align="left">
+        <Typography variant="body1" style={{ fontWeight: 'bold', fontSize: '2rem' }}>
           Climate Conditions
         </Typography>
       </Grid>
-      <Grid item xs={12}>
-        <Typography variant="body1">
-          This information is based on your location and average weather data, it is not used to filter recommended crops.
-        </Typography>
+
+      <Grid item direction="column" display="flex">
+        <Grid item xs={12} style={{ margin: '1rem 0' }}>
+          <WeatherFrostDates />
+        </Grid>
+        <Grid item xs={12} style={{ marginBottom: '1rem' }}>
+          <WeatherPrecipitation currentMonthFull={currentMonthFull} />
+        </Grid>
+        <Grid item xs={12} style={{ marginBottom: '1rem' }}>
+          {' '}
+          <WeatherFrostFreeDays />
+        </Grid>
       </Grid>
-
-      <WeatherFrostDates />
-
-      <WeatherPrecipitation currentMonthFull={currentMonthFull} />
-
-      <WeatherFrostFreeDays />
     </Grid>
   );
 };

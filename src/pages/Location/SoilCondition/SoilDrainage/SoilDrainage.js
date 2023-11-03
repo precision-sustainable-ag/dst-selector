@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
-  Button, Typography, Switch, Grid,
+  Button, Typography, Switch, Grid, Box,
 } from '@mui/material';
 import { LocalDrinkOutlined, InvertColors } from '@mui/icons-material';
 import { ReferenceTooltip } from '../../../../shared/constants';
@@ -19,7 +19,9 @@ const SoilDrainage = () => {
   const soilDataRedux = useSelector((stateRedux) => stateRedux.soilData.soilData);
   const soilDataOriginalRedux = useSelector((stateRedux) => stateRedux.soilData.soilDataOriginal);
   const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
-  const myCoverCropListLocationRedux = useSelector((stateRedux) => stateRedux.sharedData.myCoverCropListLocation);
+  const myCoverCropListLocationRedux = useSelector(
+    (stateRedux) => stateRedux.sharedData.myCoverCropListLocation,
+  );
 
   // useState vars
   const [showTiling, setShowTiling] = useState(false);
@@ -37,7 +39,10 @@ const SoilDrainage = () => {
     const checkArray = ['Very poorly drained', 'Poorly drained', 'Somewhat poorly drained'];
     if (checkArray.some((e) => soilDataRedux?.drainageClass.includes(e))) {
       setShowTiling(true);
-    } else if (soilDataRedux?.drainageClass.includes('Moderately well drained') && tilingCheck === true) {
+    } else if (
+      soilDataRedux?.drainageClass.includes('Moderately well drained')
+      && tilingCheck === true
+    ) {
       setShowTiling(true);
     } else {
       setShowTiling(false);
@@ -53,103 +58,161 @@ const SoilDrainage = () => {
 
   return (
     <Grid
-      container
       item
       direction="column"
-      display="flex"
-      justifyContent="center"
+      style={{
+        backgroundColor: 'white',
+        borderRadius: '15px',
+        padding: '0.5rem',
+        width: 'auto',
+        border: '2px solid #598445',
+      }}
       alignItems="center"
+      justifyContent="space-between"
     >
-      <Grid item xs={12}>
-        <Typography variant="body1">
-          <LocalDrinkOutlined />
-            &nbsp;Drainage Class&nbsp;
-          <ReferenceTooltip
-            type="text"
-            hasLink
-            title={(
-              <div>
-                <Typography variant="body1">
-                  {' '}
-                  Indicates your soil drainage based on the
-                  {' '}
-                  <a
-                    href="https://websoilsurvey.sc.egov.usda.gov/App/HomePage.htm"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    USDA NRCS Web Soil Survey
-                  </a>
-                  {' '}
-                  drainage classes; you may modify your soil drainage by clicking below.
-                  {' '}
-                  <a
-                    href="https://www.nrcs.usda.gov/wps/portal/nrcs/detail/soils/ref/?cid=nrcs142p2_054253"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
+      <Grid item direction="row" display="flex" alignItems="center" padding="0 4.8px">
+        <Grid item>
+          <Box
+            style={{
+              backgroundColor: 'rgba(176, 236, 130, 0.8)',
+              padding: '10px',
+              borderRadius: '10px',
+              marginRight: '10px',
+            }}
+          >
+            <LocalDrinkOutlined />
+          </Box>
+        </Grid>
+
+        <Grid item style={{ flexGrow: 1 }}>
+          <Typography variant="body1">
+            <span style={{ fontWeight: 'bold' }}>Drainage Class</span>
+              &nbsp;
+            {' '}
+            <ReferenceTooltip
+              type="text"
+              hasLink
+              title={(
+                <div>
+                  <Typography variant="body1">
                     {' '}
-                    Definitions of values found here
-                  </a>
-                  .
-                </Typography>
-              </div>
-              )}
-          />
-        </Typography>
-      </Grid>
-      <Grid item container xs={12} direction="column" justifyContent="center" alignItems="center">
+                    Indicates your soil drainage based on the
+                    {' '}
+                    <a
+                      href="https://websoilsurvey.sc.egov.usda.gov/App/HomePage.htm"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                        USDA NRCS Web Soil Survey
+                    </a>
+                    {' '}
+                    drainage classes; you may modify your soil drainage by clicking below.
+                    {' '}
+                    <a
+                      href="https://www.nrcs.usda.gov/wps/portal/nrcs/detail/soils/ref/?cid=nrcs142p2_054253"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {' '}
+                      Definitions of values found here
+                      </a>
+                    .
+                  </Typography>
+                </div>
+                )}
+            />
+          </Typography>
+        </Grid>
         {!arrayEquals(soilDataOriginalRedux?.drainageClass, soilDataRedux?.drainageClass) && (
-          <Grid item xs={12}>
-            <Button
-              size="small"
-              onClick={() => {
-                resetDrainageClasses();
+        <Grid item>
+          <Button
+            style={{
+              backgroundColor: 'rgba(255, 150, 28, 0.2)',
+              borderRadius: '999px',
+              padding: '14.8px',
+            }}
+            size="small"
+            onClick={() => {
+              resetDrainageClasses();
+            }}
+          >
+            <Typography
+              sx={{
+                color: '#ff961c',
+                fontSize: '0.8rem',
+                textTransform: 'none',
               }}
+              variant="button"
             >
-              <Typography
-                sx={{
-                  color: 'red',
-                  textTransform: 'none',
-                }}
-                variant="button"
-              >
-                Values changed, reset?
-              </Typography>
-            </Button>
-          </Grid>
+              Values changed, reset?
+            </Typography>
+          </Button>
+        </Grid>
         )}
-        <Grid item xs={12}>
-          <RenderDrainageClasses tilingCheck={tilingCheck} drainage={soilDataRedux?.drainageClass} />
+      </Grid>
+
+      <Grid item direction="column">
+        <Grid item>
+          <RenderDrainageClasses
+            tilingCheck={tilingCheck}
+            drainage={soilDataRedux?.drainageClass}
+          />
         </Grid>
         <MyCoverCropReset handleConfirm={handleConfirm} setHandleConfirm={setHandleConfirm} />
-
         {showTiling && (
-        <Grid item container direction="column" justifyContent="center" alignItems="center">
+        <Grid
+          item
+          direction="row"
+          style={{
+            backgroundColor: 'white',
+            borderRadius: '15px',
+            padding: '0.5rem',
+            border: '2px solid #598445',
+            width: 'auto',
+          }}
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+        >
           <Grid item>
-            <Typography variant="body1">
-              <InvertColors />
-              &nbsp;Tile Drainage &nbsp;
-              <ReferenceTooltip
-                type="text"
-                content="Indicate if the field of interest has tile installed. If you have selected very poorly to somewhat poorly drained soils, selecting “yes” will increase your drainage class by one factor."
-              />
-            </Typography>
-          </Grid>
-          <Grid item>
-            <Typography variant="body1" display="inline">
-              No
-            </Typography>
-            <Switch
-              checked={tilingCheck}
-              onChange={() => {
-                setTilingCheck(!tilingCheck);
+            <Box
+              style={{
+                backgroundColor: 'rgba(176, 236, 130, 0.8)',
+                padding: '10px',
+                borderRadius: '10px',
+                marginRight: '10px',
               }}
-              name="checkedC"
-            />
-            <Typography variant="body1" display="inline">
-              Yes
-            </Typography>
+            >
+              <InvertColors />
+            </Box>
+          </Grid>
+          <Grid item direction="column">
+            <Grid item>
+              <Typography variant="body1">
+                <span style={{ fontWeight: 'bold', fontSize: '1rem' }}>Tile Drainage</span>
+                    &nbsp;
+                {' '}
+                <ReferenceTooltip
+                  type="text"
+                  content="Indicate if the field of interest has tile installed. If you have selected very poorly to somewhat poorly drained soils, selecting “yes” will increase your drainage class by one factor."
+                />
+              </Typography>
+            </Grid>
+            <Grid item>
+              <Typography variant="body1" display="inline">
+                No
+              </Typography>
+              <Switch
+                checked={tilingCheck}
+                onChange={() => {
+                  setTilingCheck(!tilingCheck);
+                }}
+                name="checkedC"
+              />
+              <Typography variant="body1" display="inline">
+                Yes
+              </Typography>
+            </Grid>
           </Grid>
         </Grid>
         )}

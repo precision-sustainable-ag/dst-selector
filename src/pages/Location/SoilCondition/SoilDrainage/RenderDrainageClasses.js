@@ -1,4 +1,4 @@
-import { Chip, Grid } from '@mui/material';
+import { Chip, Grid, Box } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateDrainageClass as updateDrainageClassRedux } from '../../../../reduxStore/soilSlice';
@@ -35,7 +35,9 @@ const RenderDrainageClasses = ({ tilingCheck, drainage = [] }) => {
   };
 
   useEffect(() => {
-    let drainages = soilDataRedux.drainageClass ? drainageArray.indexOf(soilDataRedux.drainageClass[0]) : -1;
+    let drainages = soilDataRedux.drainageClass
+      ? drainageArray.indexOf(soilDataRedux.drainageClass[0])
+      : -1;
     if (tilingCheck) {
       setPreviousDrainage(drainages);
       if (drainages === 2) {
@@ -62,24 +64,18 @@ const RenderDrainageClasses = ({ tilingCheck, drainage = [] }) => {
   };
 
   return (
-    <Grid
-      container
-      item
-      spacing={2}
-      display="flex"
-      justifyContent="center"
-      alignItems="center"
-    >
+    <Grid item display="flex" flexWrap="wrap" style={{ margin: '1rem 0' }}>
       {drainageArray.map((d, index) => (
-        <Grid item key={index}>
+        <Box key={index}>
           <Chip
             label={d}
             color={drainageVal.includes(index) ? 'primary' : 'secondary'}
+            style={{ margin: '0.3rem' }}
             onClick={() => {
               updateDrainageClass(index);
             }}
           />
-        </Grid>
+        </Box>
       ))}
     </Grid>
   );
