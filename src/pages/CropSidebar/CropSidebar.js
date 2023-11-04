@@ -81,8 +81,7 @@ const CropSidebar = ({
     return sidebarStarter;
   });
   const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
-  const sfilters = filterStateRedux[section];
-  // const dictionary = [];
+  const filters = filterStateRedux[section];
   const legendData = [
     { className: 'sideBar', label: '0 = Least, 5 = Most' },
   ];
@@ -102,8 +101,8 @@ const CropSidebar = ({
   useEffect(() => {
     const sfo = {};
 
-    Object.keys(sfilters).forEach((key) => {
-      if (sfilters[key]) {
+    Object.keys(filters).forEach((key) => {
+      if (filters[key]) {
         const [k, value] = key.split(': ');
         if (value) {
           sfo[k] = sfo[k] || [];
@@ -114,7 +113,7 @@ const CropSidebar = ({
 
     let cropData = cropDataRedux?.filter((crop) => crop['Zone Decision'] === 'Include');
 
-    const search = sfilters.cropSearch?.toLowerCase().match(/\w+/g);
+    const search = filters.cropSearch?.toLowerCase().match(/\w+/g);
 
     cropData = cropDataRedux?.filter((crop) => {
       let m;
@@ -156,11 +155,6 @@ const CropSidebar = ({
               if (intersection()?.length > 0) {
                 i += 1;
               }
-            // } else if (areCommonElements(booleanKeys, key)) {
-            // //  Handle boolean types
-            //   if (crop.data[category][key].values[0]) {
-            //     i += 1;
-            //   }
             } else if (vals.includes(crop.data[category][key].values[0])) {
               i += 1;
             }
@@ -173,9 +167,9 @@ const CropSidebar = ({
       return true;
     });
     dispatchRedux(updateActiveCropData(filtered.map((filter) => filter.id)));
-  }, [sfilters.cropSearch, cropDataRedux, dispatchRedux, sfilters]);
+  }, [filters.cropSearch, cropDataRedux, dispatchRedux, filters]);
 
-  const filtersSelected = Object.keys(sfilters)?.filter((key) => sfilters[key])?.length > 1;
+  const filtersSelected = Object.keys(filters)?.filter((key) => filters[key])?.length > 1;
 
   const resetAllFilters = () => {
     dispatchRedux(clearFilters());
@@ -265,7 +259,7 @@ const CropSidebar = ({
     }
   }, [cashCropDataRedux.dateRange, setGrowthWindow]);
 
-  const filters = () => sidebarFilters.map((filter, index) => {
+  const getFilters = () => sidebarFilters.map((filter, index) => {
     const sectionFilter = `${section}${filter.name}`;
     return (
       <SidebarFilter
@@ -296,7 +290,7 @@ const CropSidebar = ({
           />
         </ListItem>
       )}
-      {filters()}
+      {getFilters()}
     </List>
   ); // filterList
 
@@ -366,7 +360,7 @@ const CropSidebar = ({
               {from === 'table' && (
               <>
                 {showFilters && speciesSelectorActivationFlagRedux && !isListView && (
-                  <CoverCropSearch sfilters={sfilters} />
+                  <CoverCropSearch />
                 )}
 
                 {!isListView && (
@@ -398,7 +392,7 @@ const CropSidebar = ({
                       councilLabelRedux={councilLabelRedux}
                       regionToggleRedux={regionToggleRedux}
                     />
-                    <CoverCropSearch sfilters={sfilters} />
+                    <CoverCropSearch />
                   </>
                 )}
                 <ListItemButton

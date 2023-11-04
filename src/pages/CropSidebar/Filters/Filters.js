@@ -9,7 +9,7 @@ import { filterOffRedux, filterOnRedux, filterToggle } from '../../../reduxStore
 const DollarsAndRatings = ({ filter, handleChange }) => {
   const dispatchRedux = useDispatch();
   const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
-  const sfilters = window.location.href.includes('species-selector') ? filterStateRedux.selector : filterStateRedux.explorer;
+  const filters = window.location.href.includes('species-selector') ? filterStateRedux.selector : filterStateRedux.explorer;
   const units = filter.units === 'rating 1-3' ? 3 : 5;
   const style = {
     transform: 'scale(0.8)',
@@ -24,7 +24,7 @@ const DollarsAndRatings = ({ filter, handleChange }) => {
         .map((_, i) => i + 1)
         .map((i) => {
           const filterKey = `${filter.name}: ${i}`;
-          const selected = sfilters[filterKey];
+          const selected = filters[filterKey];
           const filterOn = (key = filterKey) => dispatchRedux(filterOnRedux(key));
           const filterOff = (key = filterKey) => dispatchRedux(filterOffRedux(key));
           return (
@@ -72,9 +72,9 @@ const DollarsAndRatings = ({ filter, handleChange }) => {
 
 const Chips = ({ filter, handleChange }) => {
   const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
-  const sfilters = window.location.href.includes('species-selector') ? filterStateRedux.selector : filterStateRedux.explorer;
+  const filters = window.location.href.includes('species-selector') ? filterStateRedux.selector : filterStateRedux.explorer;
   return filter.values.map((val, i) => {
-    const selected = sfilters[`${filter.name}: ${val.value}`];
+    const selected = filters[`${filter.name}: ${val.value}`];
     return (
       <Grid item>
         <Chip
