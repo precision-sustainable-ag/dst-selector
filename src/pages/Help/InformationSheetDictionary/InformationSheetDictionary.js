@@ -14,21 +14,19 @@ import { callCoverCropApi } from '../../../shared/constants';
 
 const InformationSheetDictionary = ({ zone, from }) => {
   // redux vars
-  const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
 
   // useState vars
   const [dictionary, setDictionary] = useState([]);
-  const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
-  const sfilters = filterStateRedux[section];
 
-  const currentZone = zone || sfilters.zone;
-
+  const currentZone = zone;
   useEffect(() => {
     document.title = 'Data Dictionary';
     if (currentZone) {
       callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/legacy/data-dictionary?zone=zone${currentZone}`)
-        .then((data) => { setDictionary(data); });
+        .then((data) => { setDictionary(data); })
+        // eslint-disable-next-line no-console
+        .catch((error) => console.error('Data Dictionary could not fetch', error));
     }
   }, [zone]);
 
