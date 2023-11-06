@@ -113,14 +113,10 @@ const CropSidebar = ({
       }
     });
 
-    // let cropData = cropDataRedux?.filter((crop) => crop?.data['Soil Conditions']?.values?.includes(drainageClassRedux));
-
     const search = sfilters.cropSearch?.toLowerCase().match(/\w+/g);
 
     const cropData = cropDataRedux?.filter((crop) => {
       let m;
-
-      // console.log(crop, drainageClassRedux);
 
       const match = (parm) => {
         if (parm === 'label') {
@@ -171,7 +167,8 @@ const CropSidebar = ({
         });
       });
 
-      cd[n].inactive = (i !== totalActiveFilters) || !crop?.data['Soil Conditions']['Soil Drainage']?.values?.includes(drainageClassRedux);
+      cd[n].inactive = (i !== totalActiveFilters)
+      || (drainageClassRedux && !crop?.data['Soil Conditions']['Soil Drainage']?.values?.includes(drainageClassRedux));
 
       return true;
     });
