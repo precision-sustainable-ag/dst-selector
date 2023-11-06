@@ -24,7 +24,7 @@ const WeatherPrecipitation = ({ currentMonthFull }) => {
           justifyContent="space-between"
           sx={{ mb: '1.5rem' }}
         >
-          <Grid item>
+          <Grid item display="flex" justifyContent="center" flexGrow={1}>
             <Typography variant="body1">
               <span style={{ fontWeight: 'bold', fontSize: '1rem' }}>Precipitation</span>
               &nbsp;
@@ -75,17 +75,17 @@ const WeatherPrecipitation = ({ currentMonthFull }) => {
           <Grid item sx={{ mr: '1rem' }}>
             <Typography
               variant="body1"
-              style={{ fontWeight: 'bold', fontSize: '0.6rem', color: '#abaeb4' }}
+              style={{ fontWeight: 'bold', fontSize: '0.8rem', color: '#abaeb4' }}
             >
               {currentMonthFull}
             </Typography>
           </Grid>
 
           <Grid item>
-            <Typography variant="body1" style={{ fontWeight: 'bold', fontSize: '1rem' }}>
+            <Typography variant="body1" style={{ fontWeight: 'bold', fontSize: '1.2rem' }}>
               {weatherDataRedux?.averagePrecipitation?.thisMonth}
               {' '}
-              <span style={{ fontWeight: 'bold', fontSize: '0.6rem' }}>inches</span>
+              <span style={{ fontWeight: 'bold', fontSize: '0.8rem' }}>inches</span>
             </Typography>
           </Grid>
         </Grid>
@@ -100,17 +100,17 @@ const WeatherPrecipitation = ({ currentMonthFull }) => {
           <Grid item sx={{ mr: '1rem' }}>
             <Typography
               variant="body1"
-              style={{ fontWeight: 'bold', fontSize: '0.6rem', color: '#abaeb4' }}
+              style={{ fontWeight: 'bold', fontSize: '0.8rem', color: '#abaeb4' }}
             >
               Annual
             </Typography>
           </Grid>
 
           <Grid item>
-            <Typography variant="body1" style={{ fontWeight: 'bold', fontSize: '1rem' }}>
+            <Typography variant="body1" style={{ fontWeight: 'bold', fontSize: '1.2rem' }}>
               {weatherDataRedux?.averagePrecipitation?.annual}
               {' '}
-              <span style={{ fontWeight: 'bold', fontSize: '0.6rem' }}>inches</span>
+              <span style={{ fontWeight: 'bold', fontSize: '0.8rem' }}>inches</span>
             </Typography>
           </Grid>
         </Grid>

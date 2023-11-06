@@ -8,7 +8,7 @@ const WeatherFrostDates = () => {
 
   return (
     <Grid
-      container
+      item
       direction="column"
       style={{
         backgroundColor: 'rgba(176, 236, 130, 0.3)',
@@ -23,7 +23,7 @@ const WeatherFrostDates = () => {
         justifyContent="space-between"
         sx={{ mb: '1.5rem' }}
       >
-        <Grid item>
+        <Grid item display="flex" justifyContent="center" flexGrow={1}>
           <Typography variant="body1">
             <span style={{ fontWeight: 'bold', fontSize: '1rem' }}>Frost Dates</span>
             &nbsp;
@@ -80,14 +80,14 @@ const WeatherFrostDates = () => {
         <Grid item sx={{ mr: '1rem' }}>
           <Typography
             variant="body1"
-            style={{ fontWeight: 'bold', fontSize: '0.6rem', color: '#abaeb4' }}
+            style={{ fontWeight: 'bold', fontSize: '0.8rem', color: '#abaeb4' }}
           >
             First Frost Date
           </Typography>
         </Grid>
 
         <Grid item>
-          <Typography variant="body1" style={{ fontWeight: 'bold', fontSize: '1rem' }}>
+          <Typography variant="body1" style={{ fontWeight: 'bold', fontSize: '1.2rem' }}>
             {`${weatherDataRedux?.averageFrost?.firstFrostDate?.month} ${weatherDataRedux?.averageFrost?.firstFrostDate?.day}`}
           </Typography>
         </Grid>
@@ -99,19 +99,42 @@ const WeatherFrostDates = () => {
         display="flex"
         alignItems="baseline"
         justifyContent="space-between"
+        sx={{ mb: '0.5rem' }}
       >
         <Grid item sx={{ mr: '1rem' }}>
           <Typography
             variant="body1"
-            style={{ fontWeight: 'bold', fontSize: '0.6rem', color: '#abaeb4' }}
+            style={{ fontWeight: 'bold', fontSize: '0.8rem', color: '#abaeb4' }}
           >
             Last Frost Date
           </Typography>
         </Grid>
 
         <Grid item>
-          <Typography variant="body1" style={{ fontWeight: 'bold', fontSize: '1rem' }}>
+          <Typography variant="body1" style={{ fontWeight: 'bold', fontSize: '1.2rem' }}>
             {`${weatherDataRedux?.averageFrost?.lastFrostDate?.month} ${weatherDataRedux?.averageFrost?.lastFrostDate?.day}`}
+          </Typography>
+        </Grid>
+      </Grid>
+      <Grid
+        item
+        direction="row"
+        display="flex"
+        alignItems="baseline"
+        justifyContent="space-between"
+      >
+        <Grid item sx={{ mr: '1rem' }}>
+          <Typography
+            variant="body1"
+            style={{ fontWeight: 'bold', fontSize: '0.8rem', color: '#abaeb4' }}
+          >
+            Frost Free Days
+          </Typography>
+        </Grid>
+
+        <Grid item>
+          <Typography variant="body1" style={{ fontWeight: 'bold', fontSize: '1.2rem' }}>
+            {weatherDataRedux?.frostFreeDays}
           </Typography>
         </Grid>
       </Grid>

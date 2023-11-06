@@ -150,30 +150,25 @@ const SoilCondition = () => {
 
   return (
     <Grid
-      container
+      item
       direction="column"
       display="flex"
+      justifyContent="space-between"
       alignItems="center"
-      style={{
-        border: '5px solid #f5f5f5',
-        borderRadius: '15px',
-        padding: '15px',
-        backgroundColor: 'white',
-      }}
     >
-      <Grid item xs={12}>
+      <Grid item margin="1rem 5rem 1rem 5rem">
         <Typography variant="body1" style={{ fontWeight: 'bold', fontSize: '2rem' }}>
           Soil Conditions
         </Typography>
       </Grid>
       <Grid item direction="column" display="flex">
-        <Grid item xs={12} style={{ margin: '1rem 0' }}>
+        <Grid item style={{ margin: '0 3rem 1rem 3rem' }}>
           <SoilComposition />
         </Grid>
-        <Grid item xs={12} style={{ marginBottom: '1rem' }}>
+        <Grid item style={{ margin: '0 3rem 1rem 3rem' }}>
           <SoilDrainage />
         </Grid>
-        <Grid item xs={12} style={{ marginBottom: '1rem' }}>
+        <Grid item style={{ margin: '0 3rem 1rem 3rem' }}>
           <SoilFloodingFrequency />
         </Grid>
       </Grid>
