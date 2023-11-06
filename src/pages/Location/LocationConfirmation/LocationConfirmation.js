@@ -15,20 +15,67 @@ const LocationConfirmation = () => {
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
 
   return (
-    <>
-      <Typography variant="body1" style={{ color: '#abaeb4', fontWeight: 'bold' }}>
-        This information is based on your location and average weather data, it is not used to
-        filter recommended crops.
-      </Typography>
-      <Grid container direction="row" justifyContent="space-evenly" alignItems="flex-start">
-        <Grid item lg={5.5} sx={{ mt: '1rem' }}>
+    <Grid
+      container
+      direction="column"
+      alignItems="center"
+      display="flex"
+      style={{
+        boxSizing: 'border-box',
+        border: '4px solid #f5f5f5',
+        borderRadius: '10px',
+      }}
+    >
+      <Grid item>
+        <Typography variant="body1" style={{ fontWeight: 'bold', fontSize: '2rem' }}>
+          Site Conditions
+        </Typography>
+      </Grid>
+      <Grid
+        item
+        style={{
+          padding: '1rem',
+          margin: '0', // Removed margin to fill the entire screen
+          boxSizing: 'border-box', // Include padding in the width and height
+          borderRadius: '10px',
+        }}
+        display="flex"
+        direction="row"
+        justifyContent="space-around"
+        alignItems="center"
+      >
+        <Grid
+          item
+          lg={5.5}
+            // sx={{ mt: '1rem', p: '1rem' }}
+          xs={12}
+          style={{
+            border: '4px solid #f5f5f5',
+            boxSizing: 'border-box',
+            // backgroundColor: "yellow"
+            borderRadius: '10px',
+          }}
+          alignSelf="stretch"
+        >
           {progressRedux === 2 && <SoilCondition />}
         </Grid>
-        <Grid item lg={5.5} sx={{ mt: '1rem' }}>
+        <Grid
+          item
+          lg={5.5}
+            // sx={{ mt: '1rem', p: '1rem' }}
+          xs={12}
+          style={{
+            border: '4px solid #f5f5f5',
+            boxSizing: 'border-box',
+            // backgroundColor: "yellow"
+            borderRadius: '10px',
+          }}
+          alignSelf="stretch"
+        >
           {progressRedux === 2 && <WeatherConditions />}
         </Grid>
       </Grid>
-    </>
+    </Grid>
   );
 };
 

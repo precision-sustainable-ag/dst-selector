@@ -3,20 +3,18 @@
   validateAndBroadcastModalData validates that the day is between 1 and 31
 */
 
-import {
-  Typography, Grid, useTheme, useMediaQuery,
-} from '@mui/material';
+import { Typography, Grid, Box } from '@mui/material';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import WeatherPrecipitation from './WeatherPrecipitation/WeatherPrecipitation';
 import WeatherFrostDates from './WeatherFrostDates/WeatherFrostDates';
-import WeatherFrostFreeDays from './WeatherFrostFreeDays/WeatherFrostFreeDays';
+// import WeatherFrostFreeDays from './WeatherFrostFreeDays/WeatherFrostFreeDays';
 
 const WeatherConditions = () => {
   // theme
-  const uiTheme = useTheme();
-  const isMobile = useMediaQuery(uiTheme.breakpoints.down('sm'));
+  // const uiTheme = useTheme();
+  // const isMobile = useMediaQuery(uiTheme.breakpoints.down('sm'));
 
   // redux vars
   const weatherDataRedux = useSelector((stateRedux) => stateRedux.weatherData.weatherData);
@@ -105,28 +103,42 @@ const WeatherConditions = () => {
 
   return (
     <Grid
-      container
+      item
       direction="column"
       display="flex"
-      justifyContent="center"
+      justifyContent="space-between"
       alignItems="stretch"
-      style={{
-        border: '5px solid #f5f5f5',
-        borderRadius: '15px',
-        padding: '5px',
-        backgroundColor: 'white',
-      }}
     >
-      <Grid item xs={12} alignSelf="center">
+      <Grid item margin="1rem 5rem 1rem 5rem" display="flex" alignSelf="center">
         <Typography variant="body1" style={{ fontWeight: 'bold', fontSize: '2rem' }}>
           Climate Conditions
         </Typography>
       </Grid>
-
-      <Grid item direction={isMobile ? 'column' : 'row'} display="flex" alignItems="stretch">
-        <Grid item xs={12} style={{ margin: '0.5rem' }}>
-          <WeatherFrostDates />
+      <Grid item direction="column" display="flex ">
+        <Grid item style={{ margin: '0 5rem 1rem 5rem' }}>
+          <Box
+            style={{
+              boxSizing: 'border-box', // Include border in the height calculation
+              // margin: '1rem',
+            }}
+          >
+            <WeatherFrostDates />
+          </Box>
         </Grid>
+        <Grid item style={{ margin: '0 5rem 1rem 5rem' }}>
+          <Box
+            style={{
+              boxSizing: 'border-box', // Include border in the height calculation
+              // margin: '1rem',
+            }}
+          >
+            <WeatherPrecipitation currentMonthFull={currentMonthFull} />
+          </Box>
+        </Grid>
+      </Grid>
+
+      {/* <Grid item direction={isMobile ? 'column' : 'column'} display="flex" alignItems="stretch">
+        <Grid item xs={12} style={{ margin: '0.5rem' }}></Grid>
         <Grid item xs={12} style={{ margin: '0.5rem' }}>
           <WeatherPrecipitation currentMonthFull={currentMonthFull} />
         </Grid>
@@ -134,7 +146,7 @@ const WeatherConditions = () => {
           {' '}
           <WeatherFrostFreeDays />
         </Grid>
-      </Grid>
+      </Grid> */}
     </Grid>
   );
 };
