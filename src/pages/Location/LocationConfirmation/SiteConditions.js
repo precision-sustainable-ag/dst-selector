@@ -10,7 +10,7 @@ import { Grid, Typography, Box } from '@mui/material';
 import SoilCondition from '../SoilCondition/SoilCondition';
 import WeatherConditions from '../../../components/WeatherConditions/WeatherConditions';
 
-const LocationConfirmation = () => {
+const SiteConditions = () => {
   // redux vars
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
 
@@ -20,19 +20,13 @@ const LocationConfirmation = () => {
   }
 
   return (
-    <Box
-      sx={{
-        boxSizing: 'border-box',
-        border: '4px solid #f5f5f5',
-        borderRadius: '10px',
-        marginTop: '1rem',
-        flexGrow: 1,
-        p: '1rem',
-      }}
-    >
+    <Box>
       <Grid container spacing={4}>
         <Grid item sx={{ flexGrow: 1, textAlign: 'center' }}>
-          <Typography variant="body1" style={{ fontWeight: 'bold', fontSize: '2rem' }}>
+          {/* <Typography variant="body1" style={{ fontWeight: 'bold', fontSize: '2rem' }}>
+            Site Conditions
+          </Typography> */}
+          <Typography align="center" variant="h4">
             Site Conditions
           </Typography>
         </Grid>
@@ -51,4 +45,4 @@ const LocationConfirmation = () => {
   );
 };
 
-export default LocationConfirmation;
+export default SiteConditions;
