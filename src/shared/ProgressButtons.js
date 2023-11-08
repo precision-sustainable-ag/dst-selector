@@ -53,8 +53,7 @@ const ProgressButtons = () => {
   };
 
   useEffect(() => {
-    const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
-    const filters = filterStateRedux[section];
+    const { filters } = filterStateRedux;
     disableLogic(progressRedux, selectedGoalsRedux.length, filters, regionShorthandRedux);
   }, [filterStateRedux, selectedGoalsRedux, stateLabelRedux, regionShorthandRedux]);
 
