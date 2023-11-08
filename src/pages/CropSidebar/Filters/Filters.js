@@ -9,7 +9,7 @@ import { filterOffRedux, filterOnRedux, filterToggle } from '../../../reduxStore
 const DollarsAndRatings = ({ filter, handleChange }) => {
   const dispatchRedux = useDispatch();
   const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
-  const filters = window.location.href.includes('species-selector') ? filterStateRedux.selector : filterStateRedux.explorer;
+  const { filters } = filterStateRedux;
   const units = filter.units === 'rating 1-3' ? 3 : 5;
   const style = {
     transform: 'scale(0.8)',
@@ -72,7 +72,7 @@ const DollarsAndRatings = ({ filter, handleChange }) => {
 
 const Chips = ({ filter, handleChange }) => {
   const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
-  const filters = window.location.href.includes('species-selector') ? filterStateRedux.selector : filterStateRedux.explorer;
+  const { filters } = filterStateRedux;
   return filter.values.map((val, i) => {
     const selected = filters[`${filter.name}: ${val.value}`];
     return (

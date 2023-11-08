@@ -25,14 +25,12 @@ const InformationSheetContent = ({ crop, modalData }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
-  const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
-
   // redux vars
   const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
   const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
   const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
-  const { zone } = filterStateRedux[section];
+  const { zone } = filterStateRedux.filters;
 
   // useState vars
   const [currentSources, setCurrentSources] = useState([{}]);

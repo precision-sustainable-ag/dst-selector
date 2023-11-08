@@ -80,8 +80,7 @@ const CropSidebar = ({
     });
     return sidebarStarter;
   });
-  const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
-  const filters = filterStateRedux[section];
+  const { filters } = filterStateRedux;
   const legendData = [
     { className: 'sideBar', label: '0 = Least, 5 = Most' },
   ];
@@ -260,7 +259,7 @@ const CropSidebar = ({
   }, [cashCropDataRedux.dateRange, setGrowthWindow]);
 
   const getFilters = () => sidebarFilters.map((filter, index) => {
-    const sectionFilter = `${section}${filter.name}`;
+    const sectionFilter = `${filter.name}`;
     return (
       <SidebarFilter
         key={index}
