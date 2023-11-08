@@ -39,20 +39,19 @@ const growthIcon = {
   color: 'white',
 };
 
-const CropCalendarView = ({ activeCropData }) => {
+const CropCalendarView = () => {
   // redux vars
-  const cropDataStateRedux = useSelector((stateRedux) => stateRedux.cropData);
+  const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const ajaxInProgressRedux = useSelector((stateRedux) => stateRedux.sharedData.ajaxInProgress);
   const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
+  const activeGrowthPeriodRedux = useSelector((stateRedux) => stateRedux.cropData.activeGrowthPeriod);
 
   // useState vars
   const [legendModal, setLegendModal] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalData, setModalData] = useState([{}]);
-  const { activeGrowthPeriod } = cropDataStateRedux;
-  const activeCropDataShadow = activeCropData;
   const legendData = getLegendDataBasedOnCouncil(councilShorthandRedux);
 
   // sorting flags
@@ -64,36 +63,36 @@ const CropCalendarView = ({ activeCropData }) => {
   };
 
   const checkIfGrowthMonth = (month) => {
-    if (activeGrowthPeriod.length !== 0) {
-      if (activeGrowthPeriod.includes(month)) return true;
+    if (activeGrowthPeriodRedux.length !== 0) {
+      if (activeGrowthPeriodRedux.includes(month)) return true;
       return false;
     }
     return false;
   };
 
   const sortByName = () => {
-    sortCrops('Crop Name', activeCropDataShadow, nameSortFlag);
+    sortCrops('Crop Name', cropDataRedux, nameSortFlag);
     setNameSortFlag(!nameSortFlag);
   };
 
   const sortByAverageGoals = () => {
-    sortCrops('Average Goals', activeCropDataShadow, nameSortFlag, selectedGoalsRedux);
+    sortCrops('Average Goals', cropDataRedux, nameSortFlag, selectedGoalsRedux);
     setNameSortFlag(!nameSortFlag);
   };
 
   const sortByPlantingWindow = () => {
-    sortCrops('Planting Window', activeCropDataShadow, plantingSortFlag);
+    sortCrops('Planting Window', cropDataRedux, plantingSortFlag);
     setPlantingSortFlag(!plantingSortFlag);
   };
 
   const sortBySelectedCrops = () => {
-    sortCrops('Selected Crops', activeCropDataShadow, true, selectedCropsRedux);
+    sortCrops('Selected Crops', cropDataRedux, true, selectedCropsRedux);
     setNameSortFlag(!nameSortFlag);
   };
 
   useEffect(() => {
-    sortByAverageGoals(true);
-  }, []);
+    if (cropDataRedux.length !== 0) sortByAverageGoals();
+  }, [cropDataRedux]);
 
   return (
     <>
@@ -115,11 +114,11 @@ const CropCalendarView = ({ activeCropData }) => {
               <TableRow>
                 <TableCell
                   sx={{ backgroundColor: 'white', padding: 0 }}
-                  colSpan={activeGrowthPeriod.length === 0 ? 2 : 1}
+                  colSpan={activeGrowthPeriodRedux.length === 0 ? 2 : 1}
                 >
                   <Legend legendData={legendData} modal />
                 </TableCell>
-                {activeGrowthPeriod.length === 0 ? (
+                {activeGrowthPeriodRedux.length === 0 ? (
                   <TableCell
                     colSpan="12"
                     style={{
@@ -150,7 +149,7 @@ const CropCalendarView = ({ activeCropData }) => {
                     >
                       <Box sx={sudoButtonStyleWithPadding}>ACTIVE GROWTH PERIOD</Box>
                     </TableCell>
-                    {activeGrowthPeriod.includes('Jan') ? (
+                    {activeGrowthPeriodRedux.includes('Jan') ? (
                       <Tooltip placement="top" title="Winter" enterTouchDelay={0}>
                         <TableCell
                           sx={{
@@ -167,7 +166,7 @@ const CropCalendarView = ({ activeCropData }) => {
                     ) : (
                       <TableCell sx={{ borderBottom: '5px solid white', padding: 0 }} colSpan="2" />
                     )}
-                    {activeGrowthPeriod.includes('Mar') ? (
+                    {activeGrowthPeriodRedux.includes('Mar') ? (
                       <Tooltip placement="top" title="Spring" enterTouchDelay={0}>
                         <TableCell
                           sx={{
@@ -184,7 +183,7 @@ const CropCalendarView = ({ activeCropData }) => {
                     ) : (
                       <TableCell sx={{ borderBottom: '5px solid white', padding: 0 }} colSpan="3" />
                     )}
-                    {activeGrowthPeriod.includes('Jun') ? (
+                    {activeGrowthPeriodRedux.includes('Jun') ? (
                       <Tooltip placement="top" title="Summer" enterTouchDelay={0}>
                         <TableCell
                           sx={{
@@ -201,7 +200,7 @@ const CropCalendarView = ({ activeCropData }) => {
                     ) : (
                       <TableCell sx={{ borderBottom: '5px solid white', padding: 0 }} colSpan="3" />
                     )}
-                    {activeGrowthPeriod.includes('Sep') ? (
+                    {activeGrowthPeriodRedux.includes('Sep') ? (
                       <Tooltip placement="top" title="Fall" enterTouchDelay={0}>
                         <TableCell
                           sx={{
@@ -218,7 +217,7 @@ const CropCalendarView = ({ activeCropData }) => {
                     ) : (
                       <TableCell sx={{ borderBottom: '5px solid white', padding: 0 }} colSpan="3" />
                     )}
-                    {activeGrowthPeriod.includes('Dec') ? (
+                    {activeGrowthPeriodRedux.includes('Dec') ? (
                       <Tooltip placement="top" title="Winter" enterTouchDelay={0}>
                         <TableCell
                           sx={{
@@ -245,7 +244,7 @@ const CropCalendarView = ({ activeCropData }) => {
 
                   }}
                 />
-                {activeGrowthPeriod.length > 0 ? (
+                {activeGrowthPeriodRedux.length > 0 ? (
                   <TableCell
                     sx={{
                       padding: 0,
@@ -314,17 +313,12 @@ const CropCalendarView = ({ activeCropData }) => {
             </TableHead>
 
             <TableBody>
-              {activeCropData.length > 0 && (
-                <>
-                  <RenderCrops
-                    active
-                    cropData={activeCropData}
-                    setModalOpen={setModalOpen}
-                    modalOpen={modalOpen}
-                    setModalData={setModalData}
-                  />
-                  <RenderCrops active={false} cropData={activeCropData} />
-                </>
+              {cropDataRedux.length > 0 && (
+                <RenderCrops
+                  setModalOpen={setModalOpen}
+                  modalOpen={modalOpen}
+                  setModalData={setModalData}
+                />
               )}
             </TableBody>
           </Table>

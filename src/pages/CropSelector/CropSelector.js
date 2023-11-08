@@ -15,15 +15,13 @@ import {
 } from '@mui/material';
 import { ArrowBack, ArrowForward, KeyboardArrowUp } from '@mui/icons-material';
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import ReactGA from 'react-ga';
 // import '../../styles/cropSelector.scss';
 import MyCoverCropList from '../MyCoverCropList/MyCoverCropList';
 import CropCalendarView from './CropCalendarView/CropCalendarView';
 import CropSidebar from '../CropSidebar/CropSidebar';
 import CropTable from './CropTable/CropTable';
-import { sortCrops } from '../../shared/constants';
-import { updateActiveCropData } from '../../reduxStore/cropSlice';
 
 const ScrollTop = ({ children }) => {
   const trigger = useScrollTrigger({
@@ -54,8 +52,6 @@ const ScrollTop = ({ children }) => {
 };
 
 const CropSelector = (props) => {
-  const dispatchRedux = useDispatch();
-
   // redux vars
   const activeCropDataRedux = useSelector((stateRedux) => stateRedux.cropData.activeCropData);
   const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
@@ -65,30 +61,9 @@ const CropSelector = (props) => {
 
   // useState vars
   const [showGrowthWindow, setShowGrowthWindow] = useState(true);
-  const [goalsSortFlag, setGoalsSortFlag] = useState(true);
   const [isListView, setIsListView] = useState(true);
   const [comparisonView, setComparisonView] = useState(false);
   const [cropData, setCropData] = useState([]);
-  const [updatedActiveCropData, setUpdatedActiveCropData] = useState([]);
-
-  const sortCropsBy = (flag) => {
-    const dispatchValue = (updatedCropData) => {
-      setUpdatedActiveCropData(updatedCropData.map((crop) => crop.id));
-      dispatchRedux(updateActiveCropData(updatedCropData.map((crop) => crop.id)));
-    };
-
-    if (selectedGoalsRedux?.length > 0 && activeCropDataRedux?.length > 0) {
-      const activeCropDataShadow = cropDataRedux.filter((crop) => activeCropDataRedux.includes(crop.id));
-
-      sortCrops('Average Goals', activeCropDataShadow, flag || goalsSortFlag, selectedGoalsRedux, dispatchValue);
-      setGoalsSortFlag(!goalsSortFlag);
-      dispatchValue(activeCropDataShadow);
-    }
-  };
-
-  useEffect(() => {
-    sortCropsBy(true);
-  }, []);
 
   useEffect(() => {
     if (consentRedux === true) {
@@ -179,7 +154,7 @@ const CropSelector = (props) => {
             setGrowthWindow={setShowGrowthWindow}
             isListView={isListView}
             cropData={cropData}
-            activeCropData={updatedActiveCropData?.length > 0 ? cropDataRedux.filter((crop) => activeCropDataRedux.includes(crop.id)) : cropData}
+            activeCropData={cropDataRedux.filter((crop) => activeCropDataRedux.includes(crop.id))}
             comparisonView={comparisonView}
             toggleComparisonView={() => { setComparisonView(!comparisonView); }}
             toggleListView={() => { setIsListView(!isListView); }}
@@ -192,9 +167,7 @@ const CropSelector = (props) => {
         {/* we need a spinner or loading icon for when the length isnt yet determined */}
         {speciesSelectorActivationFlagRedux ? (
           isListView ? (
-            <CropCalendarView
-              activeCropData={cropDataRedux.filter((crop) => activeCropDataRedux.includes(crop.id))}
-            />
+            <CropCalendarView />
           ) : (
             <CropTable
               cropData={cropData}

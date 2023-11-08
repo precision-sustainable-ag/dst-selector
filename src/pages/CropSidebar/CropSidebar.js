@@ -35,7 +35,7 @@ import PlantHardinessZone from './PlantHardinessZone/PlantHardinessZone';
 import Legend from '../../components/Legend/Legend';
 import { updateRegion } from '../../reduxStore/mapSlice';
 import { clearFilters } from '../../reduxStore/filterSlice';
-import { pullCropData, updateActiveCropData } from '../../reduxStore/cropSlice';
+import { pullCropData, updateActiveCropIds } from '../../reduxStore/cropSlice';
 import { setAjaxInProgress, regionToggleHandler } from '../../reduxStore/sharedSlice';
 
 const CropSidebar = ({
@@ -172,7 +172,7 @@ const CropSidebar = ({
 
       return true;
     });
-    dispatchRedux(updateActiveCropData(filtered.map((filter) => filter.id)));
+    dispatchRedux(updateActiveCropIds(filtered.filter((crop) => !crop.inactive).map((crop) => crop.id)));
   }, [sfilters.cropSearch, cropDataRedux, dispatchRedux, sfilters]);
 
   const filtersSelected = Object.keys(sfilters)?.filter((key) => sfilters[key])?.length > 1;

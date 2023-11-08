@@ -19,13 +19,12 @@ import { selectedCropsModifier } from '../../../reduxStore/cropSlice';
 import { myCropListLocation, snackHandler } from '../../../reduxStore/sharedSlice';
 
 const RenderCrops = ({
-  cropData, active, setModalOpen, modalOpen, setModalData,
+  setModalOpen, modalOpen, setModalData,
 }) => {
   const dispatchRedux = useDispatch();
   const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
-  // const activeCropDataRedux = useSelector((stateRedux) => stateRedux.cropData.activeCropData);
-  // const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
+  const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
   const selectedBtns = selectedCropsRedux;
 
   const getAverageGoalRating = (selectedGoals, crop) => {
@@ -38,9 +37,9 @@ const RenderCrops = ({
     return getRating(goalRating / selectedGoals.length);
   };
 
-  // return cropDataRedux.filter((crop) => activeCropDataRedux.includes(crop.id))
-  return cropData
-    .filter((crop) => (active ? !hasGoalRatingTwoOrLess(selectedGoalsRedux, crop) : hasGoalRatingTwoOrLess(selectedGoalsRedux, crop)))
+  return cropDataRedux
+    .filter((crop) => (!crop.inactive ? !hasGoalRatingTwoOrLess(selectedGoalsRedux, crop) : hasGoalRatingTwoOrLess(selectedGoalsRedux, crop)))
+    .sort((a, b) => (a.inactive - b.inactive))
     .map(
       (crop, index) => (
         <TableRow

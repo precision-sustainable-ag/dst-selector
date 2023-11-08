@@ -15,8 +15,8 @@ const initialState = {
 // additional related functions
 
 // actions
-export const updateActiveCropData = (value) => ({
-  type: 'UPDATE_ACTIVE_CROP_DATA',
+export const updateActiveCropIds = (value) => ({
+  type: 'UPDATE_ACTIVE_CROP_IDS',
   payload: {
     value,
   },
@@ -47,7 +47,7 @@ export const updateDateRange = ({ startDate, endDate }) => ({
 // reducer
 const cropDataReducer = (state = initialState, action = null) => {
   switch (action.type) {
-    case 'UPDATE_ACTIVE_CROP_DATA':
+    case 'UPDATE_ACTIVE_CROP_IDS':
       return {
         ...state,
         activeCropData: action.payload.value,
