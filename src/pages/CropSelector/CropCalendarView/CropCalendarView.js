@@ -57,6 +57,9 @@ const CropCalendarView = () => {
   // sorting flags
   const [nameSortFlag, setNameSortFlag] = useState(true);
   const [plantingSortFlag, setPlantingSortFlag] = useState(true);
+  const [goal1SortFlag, setGoal1SortFlag] = useState(true);
+  const [goal2SortFlag, setGoal2SortFlag] = useState(true);
+  const [goal3SortFlag, setGoal3SortFlag] = useState(true);
 
   const handleLegendModal = () => {
     setLegendModal(!legendModal);
@@ -90,6 +93,23 @@ const CropCalendarView = () => {
     setNameSortFlag(!nameSortFlag);
   };
 
+  const sortByGoal = (goal, index) => {
+    let flag = '';
+
+    if (index === 0) {
+      flag = goal1SortFlag;
+      setGoal1SortFlag(!goal1SortFlag);
+    } else if (index === 1) {
+      flag = goal2SortFlag;
+      setGoal2SortFlag(!goal2SortFlag);
+    } else {
+      flag = goal3SortFlag;
+      setGoal3SortFlag(!goal3SortFlag);
+    }
+
+    sortCrops('Goal', cropDataRedux, flag, selectedGoalsRedux, goal);
+  };
+
   useEffect(() => {
     if (cropDataRedux.length !== 0) sortByAverageGoals();
   }, [cropDataRedux]);
@@ -114,7 +134,7 @@ const CropCalendarView = () => {
               <TableRow>
                 <TableCell
                   sx={{ backgroundColor: 'white', padding: 0 }}
-                  colSpan={activeGrowthPeriodRedux.length === 0 ? 2 : 1}
+                  colSpan={activeGrowthPeriodRedux.length === 0 ? 1 + selectedGoalsRedux.length : 1}
                 >
                   <Legend legendData={legendData} modal />
                 </TableCell>
@@ -275,16 +295,38 @@ const CropCalendarView = () => {
                     Crop Name
                   </Button>
                 </TableCell>
-                {selectedGoalsRedux.length > 0 && (
-                  <TableCell sx={{
-                    borderRight: '5px solid white', backgroundColor: '#abd08f', padding: 0, width: '75px', textAlign: 'center',
-                  }}
+                {selectedGoalsRedux.length > 0
+                && selectedGoalsRedux.map((goal, index) => (
+                  <TableCell
+                    key={index}
+                    style={{
+                      wordBreak: 'break-word',
+                      backgroundColor: '#abd08f',
+                      textAlign: 'center',
+                      borderRight: '5px solid white',
+                      padding: 0,
+                      width: '75px',
+                    }}
                   >
-                    <Button sx={{ color: 'black', textTransform: 'none' }} onClick={() => sortByAverageGoals()}>
-                      Average Rating
-                    </Button>
+                    <Tooltip
+                      placement="bottom"
+                      arrow
+                      enterTouchDelay={0}
+                      title={(
+                        <p>{goal}</p>
+                          )}
+                    >
+                      <Button
+                        onClick={() => sortByGoal(goal, index)}
+                        variant="body1"
+                        sx={{ textTransform: 'none' }}
+                      >
+                        {`Goal ${index + 1}`}
+                      </Button>
+
+                    </Tooltip>
                   </TableCell>
-                )}
+                ))}
                 {allMonths.map((month, index) => {
                   const growthMonth = checkIfGrowthMonth(month);
                   const growthMonthSeparator = growthMonth
