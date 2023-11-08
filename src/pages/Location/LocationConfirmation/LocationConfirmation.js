@@ -14,65 +14,35 @@ const LocationConfirmation = () => {
   // redux vars
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
 
+  // If progressRedux is not 2, do not render anything
+  if (progressRedux !== 2) {
+    return null;
+  }
+
   return (
     <Grid
       container
-      direction="column"
-      alignItems="center"
-      display="flex"
       style={{
         boxSizing: 'border-box',
         border: '4px solid #f5f5f5',
         borderRadius: '10px',
+        marginTop: '1rem',
       }}
+      spacing={2}
     >
-      <Grid item>
+      <Grid item sx={{ flexGrow: 1, textAlign: 'center' }}>
         <Typography variant="body1" style={{ fontWeight: 'bold', fontSize: '2rem' }}>
           Site Conditions
         </Typography>
       </Grid>
-      <Grid
-        item
-        style={{
-          padding: '1rem',
-          margin: '0', // Removed margin to fill the entire screen
-          boxSizing: 'border-box', // Include padding in the width and height
-          borderRadius: '10px',
-        }}
-        display="flex"
-        direction="row"
-        justifyContent="space-around"
-        alignItems="center"
-      >
-        <Grid
-          item
-          lg={5.5}
-            // sx={{ mt: '1rem', p: '1rem' }}
-          xs={12}
-          style={{
-            border: '4px solid #f5f5f5',
-            boxSizing: 'border-box',
-            // backgroundColor: "yellow"
-            borderRadius: '10px',
-          }}
-          alignSelf="stretch"
-        >
-          {progressRedux === 2 && <SoilCondition />}
-        </Grid>
-        <Grid
-          item
-          lg={5.5}
-            // sx={{ mt: '1rem', p: '1rem' }}
-          xs={12}
-          style={{
-            border: '4px solid #f5f5f5',
-            boxSizing: 'border-box',
-            // backgroundColor: "yellow"
-            borderRadius: '10px',
-          }}
-          alignSelf="stretch"
-        >
-          {progressRedux === 2 && <WeatherConditions />}
+      <Grid item container>
+        <Grid item container spacing={5} justifyContent="center">
+          <Grid item lg={6}>
+            <SoilCondition />
+          </Grid>
+          <Grid item lg={4}>
+            <WeatherConditions />
+          </Grid>
         </Grid>
       </Grid>
     </Grid>
