@@ -10,7 +10,7 @@ import React, {
 import { useSelector } from 'react-redux';
 import { addCropToBasket, trimString } from '../../shared/constants';
 import { myCropListLocation, snackHandler } from '../../reduxStore/sharedSlice';
-import { selectedCropsModifier } from '../../reduxStore/cropSlice';
+import { updateSelectedCropIds } from '../../reduxStore/cropSlice';
 
 const CropCard = ({
   crop, handleModalOpen, index, dispatchRedux,
@@ -21,25 +21,25 @@ const CropCard = ({
 
   // redux vars
   const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
-  const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
+  const selectedCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCropIds);
 
   const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
   const sfilters = filterStateRedux[section];
 
-  const [selectedBtns, setSelectedBtns] = useState(selectedCropsRedux);
+  const [selectedBtns, setSelectedBtns] = useState(selectedCropIdsRedux);
 
   // TODO: Update SelectedCropsRedux
 
   async function updateBtns() {
-    await setSelectedBtns(selectedCropsRedux);
+    await setSelectedBtns(selectedCropIdsRedux);
   }
 
   useEffect(() => {
     updateBtns();
-  }, [sfilters.zone, selectedCropsRedux]);
+  }, [sfilters.zone, selectedCropIdsRedux]);
 
   async function addToBasket(cropId, name) {
-    addCropToBasket(cropId, name, dispatchRedux, snackHandler, selectedCropsModifier, selectedCropsRedux, myCropListLocation);
+    addCropToBasket(cropId, name, dispatchRedux, snackHandler, updateSelectedCropIds, selectedCropIdsRedux, myCropListLocation);
     await updateBtns();
   }
 

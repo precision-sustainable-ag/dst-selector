@@ -53,7 +53,7 @@ const ScrollTop = ({ children }) => {
 
 const CropSelector = (props) => {
   // redux vars
-  const activeCropDataRedux = useSelector((stateRedux) => stateRedux.cropData.activeCropData);
+  const activeCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.activeCropIds);
   const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const consentRedux = useSelector((stateRedux) => stateRedux.userData.consent);
@@ -154,7 +154,7 @@ const CropSelector = (props) => {
             setGrowthWindow={setShowGrowthWindow}
             isListView={isListView}
             cropData={cropData}
-            activeCropData={cropDataRedux.filter((crop) => activeCropDataRedux.includes(crop.id))}
+            activeCropData={cropDataRedux.filter((crop) => activeCropIdsRedux.includes(crop.id))}
             comparisonView={comparisonView}
             toggleComparisonView={() => { setComparisonView(!comparisonView); }}
             toggleListView={() => { setIsListView(!isListView); }}
@@ -170,9 +170,6 @@ const CropSelector = (props) => {
             <CropCalendarView />
           ) : (
             <CropTable
-              cropData={cropData}
-              setCropData={setCropData}
-              activeCropData={cropDataRedux.filter((crop) => activeCropDataRedux.includes(crop.id))}
               showGrowthWindow={showGrowthWindow}
             />
           )

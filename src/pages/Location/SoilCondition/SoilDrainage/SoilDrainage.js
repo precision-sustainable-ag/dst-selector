@@ -18,7 +18,7 @@ const SoilDrainage = () => {
   // redux vars
   const soilDataRedux = useSelector((stateRedux) => stateRedux.soilData.soilData);
   const soilDataOriginalRedux = useSelector((stateRedux) => stateRedux.soilData.soilDataOriginal);
-  const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
+  const selectedCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCropIds);
   const myCoverCropListLocationRedux = useSelector((stateRedux) => stateRedux.sharedData.myCoverCropListLocation);
 
   // useState vars
@@ -27,11 +27,11 @@ const SoilDrainage = () => {
   const [tilingCheck, setTilingCheck] = useState(false);
 
   useEffect(() => {
-    if (myCoverCropListLocationRedux !== 'selector' && selectedCropsRedux.length > 0) {
+    if (myCoverCropListLocationRedux !== 'selector' && selectedCropIdsRedux.length > 0) {
       // document.title = 'Cover Crop Selector';
       setHandleConfirm(true);
     }
-  }, [selectedCropsRedux, myCoverCropListLocationRedux]);
+  }, [selectedCropIdsRedux, myCoverCropListLocationRedux]);
 
   useEffect(() => {
     const checkArray = ['Very poorly drained', 'Poorly drained', 'Somewhat poorly drained'];

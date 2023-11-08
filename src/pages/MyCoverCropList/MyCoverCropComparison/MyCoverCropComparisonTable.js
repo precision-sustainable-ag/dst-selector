@@ -31,11 +31,11 @@ const MyCoverCropComparisonTable = () => {
   const dispatchRedux = useDispatch();
 
   // redux vars
-  const activeCropDataRedux = useSelector((stateRedux) => stateRedux.cropData.activeCropData);
+  const activeCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.activeCropIds);
   const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const comparisonKeysRedux = useSelector((stateRedux) => stateRedux.sharedData.comparisonKeys);
-  const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
+  const selectedCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCropIds);
 
   // useState vars
   const [modalOpen, setModalOpen] = useState(false);
@@ -47,8 +47,8 @@ const MyCoverCropComparisonTable = () => {
   // TODO: Update SelectedCropsRedux
 
   useEffect(() => {
-    setSelectedCrops(cropDataRedux.filter((crop) => activeCropDataRedux.includes(crop.id)).filter((crop) => selectedCropsRedux.includes(crop.id)));
-  }, [cropDataRedux, activeCropDataRedux, selectedCropsRedux]);
+    setSelectedCrops(cropDataRedux.filter((crop) => activeCropIdsRedux.includes(crop.id)).filter((crop) => selectedCropIdsRedux.includes(crop.id)));
+  }, [cropDataRedux, activeCropIdsRedux, selectedCropIdsRedux]);
 
   const handleModalOpen = (crop) => {
     // put data inside modal
