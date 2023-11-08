@@ -944,30 +944,30 @@ export const addCropToBasket = (
   cropName,
   dispatchRedux,
   snackHandler,
-  selectedCropsModifier,
-  selectedCropsRedux,
+  updateSelectedCropIds,
+  selectedCropIdsRedux,
   myCropListLocation,
 ) => {
   const selectedCrops = cropId;
 
   const buildDispatch = (action, crops) => {
-    dispatchRedux(selectedCropsModifier(crops));
+    dispatchRedux(updateSelectedCropIds(crops));
     dispatchRedux(snackHandler({ snackOpen: true, snackMessage: `${cropName} ${action}` }));
   };
 
-  if (selectedCropsRedux?.length > 0) {
+  if (selectedCropIdsRedux?.length > 0) {
     // DONE: Remove crop from basket
     let removeIndex = -1;
-    selectedCropsRedux.forEach((item, i) => {
+    selectedCropIdsRedux.forEach((item, i) => {
       if (item === cropId) {
         removeIndex = i;
       }
     });
     if (removeIndex === -1) {
       // element not in array
-      buildDispatch('added', [...selectedCropsRedux, selectedCrops]);
+      buildDispatch('added', [...selectedCropIdsRedux, selectedCrops]);
     } else {
-      const selectedCropsCopy = selectedCropsRedux;
+      const selectedCropsCopy = selectedCropIdsRedux;
       selectedCropsCopy.splice(removeIndex, 1);
 
       buildDispatch('Removed', selectedCropsCopy);

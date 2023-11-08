@@ -1,7 +1,7 @@
 const initialState = {
-  activeCropData: [],
+  activeCropIds: [],
   cropData: [],
-  selectedCrops: [],
+  selectedCropIds: [],
   cashCropData: {
     name: '',
     dateRange: {
@@ -22,15 +22,15 @@ export const updateActiveCropIds = (value) => ({
   },
 });
 
-export const pullCropData = (value) => ({
-  type: 'PULL_CROP_DATA',
+export const updateCropData = (value) => ({
+  type: 'UPDATE_CROP_DATA',
   payload: {
     value,
   },
 });
 
-export const selectedCropsModifier = (value) => ({
-  type: 'SELECTED_CROPS_MODIFIER',
+export const updateSelectedCropIds = (value) => ({
+  type: 'UPDATE_SELECTED_CROP_IDS',
   payload: {
     value,
   },
@@ -50,19 +50,19 @@ const cropDataReducer = (state = initialState, action = null) => {
     case 'UPDATE_ACTIVE_CROP_IDS':
       return {
         ...state,
-        activeCropData: action.payload.value,
+        activeCropIds: action.payload.value,
       };
 
-    case 'PULL_CROP_DATA':
+    case 'UPDATE_CROP_DATA':
       return {
         ...state,
         cropData: [...action.payload.value],
       };
 
-    case 'SELECTED_CROPS_MODIFIER':
+    case 'UPDATE_SELECTED_CROP_IDS':
       return {
         ...state,
-        selectedCrops: [...action.payload.value],
+        selectedCropIds: [...action.payload.value],
       };
 
     case 'UPDATE_DATE_RANGE': {

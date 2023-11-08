@@ -15,17 +15,17 @@ import {
 } from '../../../shared/constants';
 import CropSelectorCalendarView from '../../../components/CropSelectorCalendarView/CropSelectorCalendarView';
 import '../../../styles/cropCalendarViewComponent.scss';
-import { selectedCropsModifier } from '../../../reduxStore/cropSlice';
+import { updateSelectedCropIds } from '../../../reduxStore/cropSlice';
 import { myCropListLocation, snackHandler } from '../../../reduxStore/sharedSlice';
 
 const RenderCrops = ({
   setModalOpen, modalOpen, setModalData,
 }) => {
   const dispatchRedux = useDispatch();
-  const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
+  const selectedCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCropIds);
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
-  const selectedBtns = selectedCropsRedux;
+  const selectedBtns = selectedCropIdsRedux;
 
   const getAverageGoalRating = (selectedGoals, crop) => {
     let goalRating = 0;
@@ -38,7 +38,7 @@ const RenderCrops = ({
   };
 
   return cropDataRedux
-    .filter((crop) => (!crop.inactive ? !hasGoalRatingTwoOrLess(selectedGoalsRedux, crop) : hasGoalRatingTwoOrLess(selectedGoalsRedux, crop)))
+    // .filter((crop) => (!crop.inactive ? !hasGoalRatingTwoOrLess(selectedGoalsRedux, crop) : hasGoalRatingTwoOrLess(selectedGoalsRedux, crop)))
     .sort((a, b) => (a.inactive - b.inactive))
     .map(
       (crop, index) => (
@@ -142,8 +142,8 @@ const RenderCrops = ({
                   crop.label,
                   dispatchRedux,
                   snackHandler,
-                  selectedCropsModifier,
-                  selectedCropsRedux,
+                  updateSelectedCropIds,
+                  selectedCropIdsRedux,
                   myCropListLocation,
                 );
               }}

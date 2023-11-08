@@ -45,7 +45,7 @@ const CropCalendarView = () => {
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const ajaxInProgressRedux = useSelector((stateRedux) => stateRedux.sharedData.ajaxInProgress);
-  const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
+  const selectedCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCropIds);
   const activeGrowthPeriodRedux = useSelector((stateRedux) => stateRedux.cropData.activeGrowthPeriod);
 
   // useState vars
@@ -86,7 +86,7 @@ const CropCalendarView = () => {
   };
 
   const sortBySelectedCrops = () => {
-    sortCrops('Selected Crops', cropDataRedux, true, selectedCropsRedux);
+    sortCrops('Selected Crops', cropDataRedux, true, selectedCropIdsRedux);
     setNameSortFlag(!nameSortFlag);
   };
 
