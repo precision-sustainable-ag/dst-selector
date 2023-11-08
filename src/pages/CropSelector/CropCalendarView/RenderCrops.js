@@ -38,7 +38,6 @@ const RenderCrops = ({
   };
 
   return cropDataRedux
-    // .filter((crop) => (!crop.inactive ? !hasGoalRatingTwoOrLess(selectedGoalsRedux, crop) : hasGoalRatingTwoOrLess(selectedGoalsRedux, crop)))
     .sort((a, b) => (a.inactive - b.inactive))
     .map(
       (crop, index) => (
