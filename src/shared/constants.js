@@ -724,17 +724,6 @@ export const callCoverCropApi = async (url) => fetch(url)
   });
 
 export const cropDataFormatter = (cropData = [{}]) => {
-  const excludedCropZoneDecisionKeys = ['Exclude', 'Up and Coming', 'Discuss'];
-  // Filter unwanted rows
-  const tjson = cropData.filter((crop) => {
-    if (
-      excludedCropZoneDecisionKeys.includes(crop['Zone Decision'])
-      || crop['Cover Crop Name'] === '__Open Discussion Row'
-    ) {
-      return false;
-    } return true;
-  });
-
   const formatHalfMonthData = (halfMonthData = []) => {
     const result = [];
     let index = 0;
@@ -789,7 +778,7 @@ export const cropDataFormatter = (cropData = [{}]) => {
     return halfMonthData;
   };
 
-  const monthStringBuilder = (vals) => {
+  const monthStringBuilder = (crop) => {
     const params = [
       'Reliable Establishment',
       'Freeze/Moisture Risk to Establishment',
@@ -801,7 +790,8 @@ export const cropDataFormatter = (cropData = [{}]) => {
       'Average Frost',
       'Hessian Fly Free Date',
     ];
-    const val = vals;
+
+    // create a 24 item array of half months ex: [{month: '1', info: [], start: '', end: ''}, ...]
     let halfMonthArr = Array.from({ length: 24 }, (_, i) => ({
       month: moment().month(Math.floor(i / 2)).format('M'),
       info: [],
@@ -809,9 +799,11 @@ export const cropDataFormatter = (cropData = [{}]) => {
       end: '',
     }));
 
+    // iterate over each crop and create crop['Half Month Data']
     params.forEach((param) => {
-      if (val.data['Planting and Growth Windows']?.[`${param}`]) {
-        val.data['Planting and Growth Windows']?.[`${param}`].values.forEach((dateArray) => {
+      if (crop.data['Planting and Growth Windows']?.[`${param}`]) {
+        crop.data['Planting and Growth Windows']?.[`${param}`].values.forEach((dateArray) => {
+          // get start and end date of each param for each crop
           const datesArr = dateArray.split('-');
           let valStart;
           let valEnd;
@@ -823,7 +815,7 @@ export const cropDataFormatter = (cropData = [{}]) => {
             valEnd = valStart;
           }
           // hessian fly dates are an exception to this condition because it has only one date and not a range
-          if (moment(valStart, 'MM/DD').isSameOrAfter(moment(valEnd, 'MM/DD')) && (param !== 'Hessian Fly Free Date')) {
+          if (param === 'Average Frost') {
             const tempStart = '01/01';
             const tempEnd = '12/31';
             halfMonthArr = formatTimeToHalfMonthData(valStart, tempEnd, param, halfMonthArr);
@@ -835,26 +827,20 @@ export const cropDataFormatter = (cropData = [{}]) => {
       }
     });
     const halfMonthData = formatHalfMonthData(halfMonthArr);
-    val['Half Month Data'] = halfMonthData;
+    crop['Half Month Data'] = halfMonthData;
 
     // this is temporary, needs to be replaced with wither a fix to calendar growth window component or exporting of json from airtable
-    Object.keys(val).forEach((item) => {
+    Object.keys(crop).forEach((item) => {
       if (item.endsWith('Early') || item.endsWith('Mid')) {
-        const uniq = [...new Set(val[item])];
+        const uniq = [...new Set(crop[item])];
         const removedOldVals = uniq.filter((u) => !u.endsWith('growth'));
-        val[item] = removedOldVals;
+        crop[item] = removedOldVals;
       }
     });
-    return val;
+    return crop;
   };
 
-  return tjson.map((crop) => {
-    const val = monthStringBuilder(crop);
-
-    val.inBasket = false;
-
-    return val;
-  });
+  return cropData.map((crop) => monthStringBuilder(crop));
 };
 
 export const apiServerUrl = 'https://history.covercrop-data.org/v1';
