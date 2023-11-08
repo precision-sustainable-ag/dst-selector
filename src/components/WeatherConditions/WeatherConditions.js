@@ -3,7 +3,7 @@
   validateAndBroadcastModalData validates that the day is between 1 and 31
 */
 
-import { Typography, Grid, Box } from '@mui/material';
+import { Grid, Box } from '@mui/material';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -109,11 +109,11 @@ const WeatherConditions = () => {
       justifyContent="space-between"
       alignItems="stretch"
     >
-      <Grid item margin="1rem 5rem 1rem 5rem" display="flex" alignSelf="center">
+      {/* <Grid item margin="1rem 5rem 1rem 5rem" display="flex" alignSelf="center">
         <Typography variant="body1" style={{ fontWeight: 'bold', fontSize: '2rem' }}>
           Climate Conditions
         </Typography>
-      </Grid>
+      </Grid> */}
       <Grid item direction="column" display="flex ">
         <Grid item style={{ margin: '0 5rem 1rem 5rem' }}>
           <Box

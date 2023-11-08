@@ -5,7 +5,7 @@
   styled using ../../styles/soilConditions.scss
 */
 
-import { Typography, Grid } from '@mui/material';
+import { Grid } from '@mui/material';
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import SoilComposition from './SoilComposition/SoilComposition';
@@ -149,18 +149,12 @@ const SoilCondition = () => {
   }, [markersRedux, soilDataOriginalRedux?.latLong]);
 
   return (
-    <Grid
-      item
-      direction="column"
-      display="flex"
-      justifyContent="space-between"
-      alignItems="center"
-    >
-      <Grid item margin="1rem 5rem 1rem 5rem">
+    <Grid item direction="column" display="flex" justifyContent="space-between" alignItems="center">
+      {/* <Grid item margin="1rem 5rem 1rem 5rem">
         <Typography variant="body1" style={{ fontWeight: 'bold', fontSize: '2rem' }}>
           Soil Conditions
         </Typography>
-      </Grid>
+      </Grid> */}
       <Grid item direction="column" display="flex">
         <Grid item style={{ margin: '0 3rem 1rem 3rem' }}>
           <SoilComposition />
