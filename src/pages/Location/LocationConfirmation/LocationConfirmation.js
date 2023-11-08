@@ -6,7 +6,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-import { Grid, Typography } from '@mui/material';
+import { Grid, Typography, Box } from '@mui/material';
 import SoilCondition from '../SoilCondition/SoilCondition';
 import WeatherConditions from '../../../components/WeatherConditions/WeatherConditions';
 
@@ -20,32 +20,34 @@ const LocationConfirmation = () => {
   }
 
   return (
-    <Grid
-      container
-      style={{
+    <Box
+      sx={{
         boxSizing: 'border-box',
         border: '4px solid #f5f5f5',
         borderRadius: '10px',
         marginTop: '1rem',
+        flexGrow: 1,
+        p: '1rem',
       }}
-      spacing={2}
     >
-      <Grid item sx={{ flexGrow: 1, textAlign: 'center' }}>
-        <Typography variant="body1" style={{ fontWeight: 'bold', fontSize: '2rem' }}>
-          Site Conditions
-        </Typography>
-      </Grid>
-      <Grid item container>
-        <Grid item container spacing={5} justifyContent="center">
-          <Grid item lg={6}>
+      <Grid container spacing={4}>
+        <Grid item sx={{ flexGrow: 1, textAlign: 'center' }}>
+          <Typography variant="body1" style={{ fontWeight: 'bold', fontSize: '2rem' }}>
+            Site Conditions
+          </Typography>
+        </Grid>
+        <Grid item container spacing={3}>
+          <Grid item container lg={6} spacing={3} justifyContent="flex-end">
             <SoilCondition />
           </Grid>
-          <Grid item lg={4}>
-            <WeatherConditions />
+          <Grid item container lg={6} justifyContent="center">
+            <Grid item container spacing={3} lg={6} justifyContent="center">
+              <WeatherConditions />
+            </Grid>
           </Grid>
         </Grid>
       </Grid>
-    </Grid>
+    </Box>
   );
 };
 
