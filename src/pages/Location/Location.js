@@ -38,13 +38,12 @@ import UserFieldDialog, { initFieldDialogState } from './UserFieldDialog/UserFie
 // eslint-disable-next-line import/no-webpack-loader-syntax, import/no-unresolved
 mapboxgl.workerClass = require('worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker').default;
 
-const LocationComponent = () => {
+const Location = () => {
   const dispatchRedux = useDispatch();
 
   // redux vars
   const markersRedux = useSelector((stateRedux) => stateRedux.addressData.markers);
   const regionsRedux = useSelector((stateRedux) => stateRedux.mapData.regions);
-  const regionShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.regionShorthand);
   const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
   const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
@@ -70,7 +69,6 @@ const LocationComponent = () => {
   const [userFields, setUserFields] = useState(userFieldRedux ? [...userFieldRedux.data] : []);
 
   const selectedUserFieldRef = useRef(selectedUserField);
-  const regionShorthandRef = useRef(regionShorthand);
 
   const { isAuthenticated } = useAuth0();
 
@@ -92,7 +90,6 @@ const LocationComponent = () => {
 
   // update regionShorthandRef
   useEffect(() => {
-    regionShorthandRef.current = regionShorthand;
     dispatchRedux(updateRegion({
       regionId: regionsRedux.filter((region) => region.shorthand === regionShorthand)[0]?.id,
       regionShorthand,
@@ -112,7 +109,7 @@ const LocationComponent = () => {
       return undefined;
     };
     if (selectedFieldIdRedux !== null) {
-      if (Object.keys(selectedUserField) > 0) return getFieldLatLng(selectedUserField);
+      if (Object.keys(selectedUserField).length > 0) return getFieldLatLng(selectedUserField);
     }
     if (userFieldRedux && userFieldRedux.data.length > 0) {
       const currentField = userFieldRedux.data[userFieldRedux.data.length - 1];
@@ -169,10 +166,7 @@ const LocationComponent = () => {
               zone = zone.slice(0, -1);
             }
 
-            if (selectedFieldIdRedux && selectedUserField.id === selectedFieldIdRedux && regionShorthandRedux) {
-              // if there exists available region from user history api, set it as user history value
-              setRegionShorthand(regionShorthandRedux);
-            } else if (councilShorthandRedux !== 'MCCC') {
+            if (councilShorthandRedux !== 'MCCC') {
               setRegionShorthand(zone);
             }
             dispatchRedux(snackHandler({
@@ -287,16 +281,8 @@ const LocationComponent = () => {
     getDetails();
   }, [markersRedux]);
 
-  // update region and userFieldRedux when component will unmount
+  // update userFieldRedux and selectedField when component will unmount
   useEffect(() => () => {
-    const selectedRegion = regionsRedux.filter((region) => region.shorthand === regionShorthandRef.current)[0];
-
-    if (selectedRegion) {
-      dispatchRedux(updateRegion({
-        regionId: selectedRegion?.id,
-        regionShorthand: selectedRegion?.shorthand,
-      }));
-    }
     if (isAuthenticated) {
       getFields(accessTokenRedux).then((fields) => dispatchRedux(updateField(fields)));
       if (Object.keys(selectedUserFieldRef.current).length > 0) {
@@ -402,4 +388,4 @@ const LocationComponent = () => {
   );
 };
 
-export default LocationComponent;
+export default Location;

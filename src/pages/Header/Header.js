@@ -26,7 +26,7 @@ import {
   getFields, getHistory, buildHistory, postHistory,
 } from '../../shared/constants';
 import AuthButton from '../../components/Auth/AuthButton/AuthButton';
-import { updateRegion, updateStateInfo } from '../../reduxStore/mapSlice';
+import { updateStateInfo } from '../../reduxStore/mapSlice';
 import ConsentModal from '../CoverCropExplorer/ConsentModal/ConsentModal';
 import AuthModal from '../Landing/AuthModal/AuthModal';
 import { setMyCoverCropReset } from '../../reduxStore/sharedSlice';
@@ -145,7 +145,7 @@ const Header = () => {
       getHistory(token).then((res) => {
         if (res.data) {
           const {
-            state, region, council, consent,
+            state, council, consent,
           } = res.data.json;
           // set user history redux state
           dispatchRedux(
@@ -156,7 +156,6 @@ const Header = () => {
               councilLabel: council.label,
             }),
           );
-          if (region) dispatchRedux(updateRegion({ regionId: region.id, regionShorthand: region.shorthand }));
           dispatchRedux(updateConsent(consent.status, consent.date));
           // The consent is mainly use localstorage to test is expired, use history to update localStorage
           const consentKey = 'consent';

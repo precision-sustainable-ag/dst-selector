@@ -42,6 +42,7 @@ const GoalsSelector = () => {
 
   useEffect(() => {
     if (stateIdRedux && regionIdRedux) {
+      console.log('call api');
       callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/goals?${query}`).then((data) => {
         setAllGoals(data.data);
       });
