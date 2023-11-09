@@ -17,7 +17,7 @@ const MITLicenseText = ({ styles = true, aboutPage = false }) => {
           {' '}
           {currentYear}
           {' '}
-          Northeast Cover Crop Council,&nbsp;
+          Northeast Cover Crops Council,&nbsp;
           <a href="http://northeastcovercrops.com/" target="_blank" rel="noopener noreferrer">
             northeastcovercrops.com
           </a>
