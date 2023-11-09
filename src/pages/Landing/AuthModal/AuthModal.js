@@ -34,7 +34,6 @@ const AuthModal = ({ modalOpen, setModalOpen, setConsentModalOpen }) => {
     bgcolor: 'background.paper',
     border: '2px solid #000',
     boxShadow: 24,
-    p: 4,
   };
 
   const handleModal = () => {
@@ -55,7 +54,12 @@ const AuthModal = ({ modalOpen, setModalOpen, setConsentModalOpen }) => {
       closeAfterTransition
       onClose={handleModal}
     >
-      <Box sx={style}>
+      <Box
+        sx={style}
+        p={{
+          xs: 2, sm: 2, md: 3, lg: 4, xl: 4,
+        }}
+      >
         <Typography variant="h6" component="h2">
           Login to try out our new user history feature?
         </Typography>
