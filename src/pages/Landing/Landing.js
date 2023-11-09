@@ -104,6 +104,7 @@ const Landing = () => {
 
           dispatchRedux(updateRegions(fetchedRegions));
 
+          // TODO: delete this
           if (!regionIdRedux) {
             dispatchRedux(updateRegion({
               regionId: fetchedRegions[0].id ?? '',
