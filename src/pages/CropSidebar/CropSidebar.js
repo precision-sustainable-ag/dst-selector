@@ -63,6 +63,7 @@ const CropSidebar = ({
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
   const regionsRedux = useSelector((stateRedux) => stateRedux.mapData.regions);
   const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
+  const drainageClassRedux = useSelector((stateRedux) => stateRedux.soilData.soilData.drainageClass[0]);
 
   // useState vars
   const [loading, setLoading] = useState(false);
@@ -112,11 +113,9 @@ const CropSidebar = ({
       }
     });
 
-    let cropData = cropDataRedux?.filter((crop) => crop['Zone Decision'] === 'Include');
-
     const search = sfilters.cropSearch?.toLowerCase().match(/\w+/g);
 
-    cropData = cropDataRedux?.filter((crop) => {
+    const cropData = cropDataRedux?.filter((crop) => {
       let m;
 
       const match = (parm) => {
@@ -168,7 +167,8 @@ const CropSidebar = ({
         });
       });
 
-      cd[n].inactive = (i !== totalActiveFilters);
+      cd[n].inactive = (i !== totalActiveFilters)
+      || (drainageClassRedux && !crop?.data['Soil Conditions']['Soil Drainage']?.values?.includes(drainageClassRedux));
 
       return true;
     });

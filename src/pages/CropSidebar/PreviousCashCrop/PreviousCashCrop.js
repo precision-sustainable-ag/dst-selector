@@ -25,7 +25,7 @@ const PreviousCashCrop = () => {
         <hr />
         <Grid item xs={12}>
           <Typography align="center" variant="h4">
-            Cover Crop Growing Window
+            Cash Crop Growing Window
           </Typography>
         </Grid>
         <Typography style={{ paddingTop: '1rem', paddingBottom: '7px' }} variant="body2" align="center" color="secondary" gutterBottom>
