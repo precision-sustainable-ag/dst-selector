@@ -5,8 +5,9 @@
 
 import React from 'react';
 import { Refresh } from '@mui/icons-material';
-import { Stack, Tooltip } from '@mui/material';
+import { Stack, Tooltip, Badge } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { LightButton } from './constants';
 import { reset } from '../reduxStore/store';
 import { updateProgress, setMyCoverCropReset } from '../reduxStore/sharedSlice';
@@ -16,6 +17,7 @@ const ProgressButtonsInner = ({
 }) => {
   const dispatchRedux = useDispatch();
   const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
+  const history = useHistory();
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
 
@@ -30,6 +32,10 @@ const ProgressButtonsInner = ({
     }
   };
 
+  const setMyCoverCropActivationFlag = () => {
+    history.push('/my-cover-crop-list');
+  };
+
   return (
     <Stack
       direction="row"
@@ -41,6 +47,7 @@ const ProgressButtonsInner = ({
           maxHeight: '35px',
           minWidth: '70px',
           fontSize: '13px',
+          marginLeft: progressRedux === 5 ? '-25px' : '0px',
         }}
         onClick={() => changeProgress('decrement')}
         disabled={isDisabledBack}
@@ -71,19 +78,28 @@ const ProgressButtonsInner = ({
           </Tooltip>
         )
         : (
-          <LightButton
-            style={{
-              maxWidth: '90px',
-              maxHeight: '35px',
-              minWidth: '70px',
-              fontSize: '13px',
-              marginLeft: '3%',
-            }}
-            onClick={() => changeProgress('increment')}
-            disabled={isDisabledNext || progressRedux === 5}
+          <Badge
+            badgeContent={selectedCropsRedux.length}
+            color="error"
           >
-            NEXT
-          </LightButton>
+            <LightButton
+              style={{
+                maxWidth: '90px',
+                maxHeight: '35px',
+                minWidth: progressRedux === 5 ? '130px' : '70px',
+                fontSize: '13px',
+                marginLeft: '3%',
+              }}
+              onClick={() => (progressRedux === 5 ? setMyCoverCropActivationFlag() : changeProgress('increment'))}
+              disabled={isDisabledNext || (progressRedux === 5 && selectedCropsRedux.length === 0)}
+            >
+              {
+              progressRedux === 5
+                ? 'VIEW MY LIST'
+                : 'NEXT'
+            }
+            </LightButton>
+          </Badge>
         )}
 
       <LightButton
