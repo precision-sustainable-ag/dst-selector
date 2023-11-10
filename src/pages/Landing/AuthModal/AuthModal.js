@@ -28,13 +28,20 @@ const AuthModal = ({ modalOpen, setModalOpen, setConsentModalOpen }) => {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    maxWidth: '80%',
+    maxWidth: {
+      xs: '90%', sm: '80%', md: '80%', lg: '80%', xl: '80%',
+    },
+    minWidth: {
+      xs: '90%', sm: 'auto', md: 'auto', lg: 'auto', xl: 'auto',
+    },
     marginTop: '15px',
     marginBottom: '15px',
     bgcolor: 'background.paper',
     border: '2px solid #000',
     boxShadow: 24,
-    p: 4,
+    p: {
+      xs: 2, sm: 2, md: 3, lg: 4, xl: 4,
+    },
   };
 
   const handleModal = () => {
@@ -55,7 +62,9 @@ const AuthModal = ({ modalOpen, setModalOpen, setConsentModalOpen }) => {
       closeAfterTransition
       onClose={handleModal}
     >
-      <Box sx={style}>
+      <Box
+        sx={style}
+      >
         <Typography variant="h6" component="h2">
           Login to try out our new user history feature?
         </Typography>
