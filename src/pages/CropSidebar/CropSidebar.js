@@ -81,7 +81,6 @@ const CropSidebar = ({
     });
     return sidebarStarter;
   });
-  const { filters } = filterStateRedux;
   const legendData = [
     { className: 'sideBar', label: '0 = Least, 5 = Most' },
   ];
@@ -101,8 +100,8 @@ const CropSidebar = ({
   useEffect(() => {
     const sfo = {};
 
-    Object.keys(filters).forEach((key) => {
-      if (filters[key]) {
+    Object.keys(filterStateRedux.filters).forEach((key) => {
+      if (filterStateRedux.filters[key]) {
         const [k, value] = key.split(': ');
         if (value) {
           sfo[k] = sfo[k] || [];
@@ -111,7 +110,7 @@ const CropSidebar = ({
       }
     });
 
-    const search = filters.cropSearch?.toLowerCase().match(/\w+/g);
+    const search = filterStateRedux.filters.cropSearch?.toLowerCase().match(/\w+/g);
 
     const cropData = cropDataRedux?.filter((crop) => {
       let m;
@@ -166,9 +165,9 @@ const CropSidebar = ({
       return true;
     });
     dispatchRedux(updateActiveCropData(filtered.map((filter) => filter.id)));
-  }, [filters.cropSearch, cropDataRedux, dispatchRedux, filters]);
+  }, [cropDataRedux, dispatchRedux, filterStateRedux.filters]);
 
-  const filtersSelected = Object.keys(filters)?.filter((key) => filters[key])?.length > 0;
+  const filtersSelected = Object.keys(filterStateRedux.filters)?.filter((key) => filterStateRedux.filters[key])?.length > 0;
 
   const resetAllFilters = () => {
     dispatchRedux(clearFilters());
