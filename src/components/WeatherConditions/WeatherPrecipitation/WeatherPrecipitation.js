@@ -24,7 +24,7 @@ const WeatherPrecipitation = ({ currentMonthFull }) => {
           justifyContent="space-between"
           sx={{ mb: '1.5rem' }}
         >
-          <Grid item display="flex" justifyContent="center" flexGrow={1}>
+          <Grid item>
             <Typography variant="body1">
               <span style={{ fontWeight: 'bold', fontSize: '1rem' }}>Precipitation</span>
               &nbsp;

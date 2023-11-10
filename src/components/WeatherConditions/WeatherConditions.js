@@ -9,6 +9,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import WeatherPrecipitation from './WeatherPrecipitation/WeatherPrecipitation';
 import WeatherFrostDates from './WeatherFrostDates/WeatherFrostDates';
+import SoilComposition from '../../pages/Location/SoilCondition/SoilComposition/SoilComposition';
 
 const WeatherConditions = () => {
   // redux vars
@@ -98,10 +99,13 @@ const WeatherConditions = () => {
 
   return (
     <>
-      <Grid item xs={12} md={6} lg={12}>
+      <Grid item xs={12} lg={10}>
+        <SoilComposition />
+      </Grid>
+      <Grid item xs={12} lg={10}>
         <WeatherFrostDates />
       </Grid>
-      <Grid item xs={12} md={6} lg={12}>
+      <Grid item xs={12} lg={10}>
         <WeatherPrecipitation currentMonthFull={currentMonthFull} />
       </Grid>
     </>
