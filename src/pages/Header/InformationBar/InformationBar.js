@@ -29,8 +29,6 @@ const InformationBar = ({ pathname }) => {
   const addressRedux = useSelector((stateRedux) => stateRedux.addressData.address);
   const regionRedux = useSelector((stateRedux) => stateRedux.mapData.regionShorthand);
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
-  const weatherDataRedux = useSelector((stateRedux) => stateRedux.weatherData.weatherData);
-  const soilDataRedux = useSelector((stateRedux) => stateRedux.soilData.soilData);
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
 
@@ -38,9 +36,8 @@ const InformationBar = ({ pathname }) => {
   const handleBtnClick = (type) => {
     const options = {
       location: 1,
-      soil: 2,
-      weather: 3,
-      goals: 4,
+      site: 2,
+      goals: 3,
     };
 
     const progress = options[type];
@@ -52,10 +49,7 @@ const InformationBar = ({ pathname }) => {
     switch (type) {
       case 'location':
         return councilShorthandRedux === 'MCCC' ? `${regionRedux} County` : `Zone ${regionRedux}`;
-      case 'soil':
-        return soilDataRedux?.drainageClass.toString().split(',').join(', ');
-      case 'weather':
-        return `${weatherDataRedux?.averageFrost?.firstFrostDate?.month} ${weatherDataRedux?.averageFrost?.firstFrostDate?.day}`;
+      // TODO: is goals needed?
       case 'goals':
         return selectedGoalsRedux.toString().split(',').join(', ');
       default:
@@ -69,29 +63,14 @@ const InformationBar = ({ pathname }) => {
         return (
           <>
             <LocationOn />
-            &nbsp;Location:
-            {' '}
-            {getSelectedValues('location')}
+            &nbsp;Location: {getSelectedValues('location')}
           </>
         );
-      case 'soil':
+      case 'site':
         return (
           <>
             <FilterHdrIcon />
-            &nbsp;
-            {' '}
-            {/* {`Soils: Map Unit Name (${soilDataRedux?.mapUnitName}%), Drainage Class: ${soilDataRedux?.drainageClass}})`} */}
-            {/* {`Soil Drainage: ${getSelectedValues('soil')}`} */}
-            Site Conditions
-          </>
-        );
-      case 'weather':
-        return (
-          <>
-            <CloudIcon fontSize="small" />
-            &nbsp;
-            {' '}
-            {`First Frost: ${getSelectedValues('weather')}`}
+            &nbsp; Site Conditions
           </>
         );
       case 'goals':
@@ -107,11 +86,8 @@ const InformationBar = ({ pathname }) => {
   };
 
   const getData = (type) => {
-    if (
-      (soilDataRedux?.floodingFrequency === null && type === 'soil')
-      || (type === 'address' && addressRedux === '')
-      || (type === 'weather' && weatherDataRedux.length === 0)
-    ) {
+    // TODO: is the if block needed?
+    if (type === 'address' && addressRedux === '') {
       return '';
     }
 
@@ -123,11 +99,10 @@ const InformationBar = ({ pathname }) => {
           color: 'black',
           width: '100%',
           background:
-            ((type === 'location' && progressRedux > 0)
-              || (type === 'soil' && progressRedux > 1)
-              || (type === 'weather' && progressRedux > 2)
-              || (type === 'goals' && progressRedux > 3))
-            && '#e3f2f4',
+            ((type === 'location' && progressRedux > 0) ||
+              (type === 'site' && progressRedux > 1) ||
+              (type === 'goals' && progressRedux > 2)) &&
+            '#e3f2f4',
         }}
       >
         {getIconInfo(type)}
@@ -154,11 +129,8 @@ const InformationBar = ({ pathname }) => {
               {getData('location')}
             </Grid>
             <Grid item xs={12} sm={6} md={6} lg={3.5}>
-              {getData('soil')}
+              {getData('site')}
             </Grid>
-            {/* <Grid item xs={12} sm={6} md={6} lg={2.5}>
-              {getData('weather')}
-            </Grid> */}
             <Grid item xs={12} sm={6} md={6} lg={2.5}>
               {getData('goals')}
             </Grid>
