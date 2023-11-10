@@ -5,7 +5,7 @@
   styled using ../../styles/soilConditions.scss
 */
 
-import { Grid } from '@mui/material';
+import { Grid, useTheme, useMediaQuery } from '@mui/material';
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import SoilDrainage from './SoilDrainage/SoilDrainage';
@@ -13,6 +13,10 @@ import SoilFloodingFrequency from './SoilFloodingFrequency/SoilFloodingFrequency
 import { updateSoilData, updateSoilDataOriginal } from '../../../reduxStore/soilSlice';
 
 const SoilCondition = () => {
+  // theme
+  const uiTheme = useTheme();
+  const isLargeScreen = useMediaQuery(uiTheme.breakpoints.up('lg'));
+
   const dispatchRedux = useDispatch();
 
   // redux vars
@@ -148,11 +152,11 @@ const SoilCondition = () => {
   }, [markersRedux, soilDataOriginalRedux?.latLong]);
 
   return (
-    <Grid item container lg={10}>
-      <Grid item xs={12} sx={{ mb: '1rem' }}>
+    <Grid item container justifyContent={isLargeScreen ? 'flex-start' : 'center'}>
+      <Grid item xs={12} md={10} sx={{ mb: '1rem' }}>
         <SoilDrainage />
       </Grid>
-      <Grid item xs={12}>
+      <Grid item xs={12} md={10}>
         <SoilFloodingFrequency />
       </Grid>
     </Grid>

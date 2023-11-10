@@ -99,13 +99,13 @@ const WeatherConditions = () => {
 
   return (
     <>
-      <Grid item xs={12} lg={10}>
+      <Grid item xs={12} md={10} lg={10}>
         <SoilComposition />
       </Grid>
-      <Grid item xs={12} lg={10}>
+      <Grid item xs={12} md={10} lg={10}>
         <WeatherFrostDates />
       </Grid>
-      <Grid item xs={12} lg={10}>
+      <Grid item xs={12} md={10} lg={10}>
         <WeatherPrecipitation currentMonthFull={currentMonthFull} />
       </Grid>
     </>

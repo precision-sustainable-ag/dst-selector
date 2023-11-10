@@ -37,7 +37,7 @@ const ProgressButtons = () => {
         setIsDisabledBack(false);
         setIsDisabledRefresh(false);
         break;
-      case 4:
+      case 3:
         // goals selection state
         setIsDisabledNext(goalsLength > 3 || goalsLength < 1);
         setToolTip(false);
