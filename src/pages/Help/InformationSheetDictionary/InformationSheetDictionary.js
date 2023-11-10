@@ -14,23 +14,23 @@ import { callCoverCropApi } from '../../../shared/constants';
 
 const InformationSheetDictionary = ({ zone, from }) => {
   // redux vars
-  const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
 
   // useState vars
   const [dictionary, setDictionary] = useState([]);
-  const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
-  const sfilters = filterStateRedux[section];
-
-  const currentZone = zone || sfilters.zone;
+  const stateId = +localStorage.getItem('stateId');
+  const regionId = +localStorage.getItem('regionId');
+  const query = `${encodeURIComponent('regions')}=${encodeURIComponent(regionId)}`;
 
   useEffect(() => {
     document.title = 'Data Dictionary';
-    if (currentZone) {
-      callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/legacy/data-dictionary?zone=zone${currentZone}`)
-        .then((data) => { setDictionary(data); });
+    if (stateId && regionId) {
+      callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateId}/dictionary?${query}`)
+        .then((data) => {
+          setDictionary(data.data);
+        });
     }
-  }, [zone]);
+  }, [regionId, stateId, zone]);
 
   return from === 'help' ? (
     <DictionaryContent dictData={dictionary} from="help" />
