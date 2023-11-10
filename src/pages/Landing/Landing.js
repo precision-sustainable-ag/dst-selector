@@ -29,7 +29,7 @@ const Landing = () => {
   const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
   const consentRedux = useSelector((stateRedux) => stateRedux.userData.consent);
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
-  const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
+  // const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
 
   // useState vars
   // const [containerHeight, setContainerHeight] = useState(height);
@@ -42,6 +42,7 @@ const Landing = () => {
   const availableStates = useMemo(() => allStates.map((state) => state.label), [allStates]);
 
   const updateStateRedux = (selState) => {
+    localStorage.setItem('stateId', selState.id);
     dispatchRedux(updateStateInfo({
       stateLabel: selState.label,
       stateId: selState.id,
@@ -104,12 +105,13 @@ const Landing = () => {
 
           dispatchRedux(updateRegions(fetchedRegions));
 
-          if (!regionIdRedux) {
-            dispatchRedux(updateRegion({
-              regionId: fetchedRegions[0].id ?? '',
-              regionShorthand: fetchedRegions[0].shorthand ?? '',
-            }));
-          }
+          // if (regionIdRedux) {
+          localStorage.setItem('regionId', fetchedRegions[0].id ?? '');
+          dispatchRedux(updateRegion({
+            regionId: fetchedRegions[0].id ?? '',
+            regionShorthand: fetchedRegions[0].shorthand ?? '',
+          }));
+          // }
         })
         .catch((err) => {
           // eslint-disable-next-line no-console
