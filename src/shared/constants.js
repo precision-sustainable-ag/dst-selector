@@ -800,11 +800,20 @@ export const getLegendDataBasedOnCouncil = (councilShorthand = '') => {
     { className: 'multiple', label: 'Multiple' },
     { className: 'cashCrop', label: 'Cash Crop Growing Window' },
   ];
+  const NECCClegendData = [
+    { className: 'reliable', label: 'Reliable Establishment' },
+    { className: 'temperatureRisk', label: 'Temperature Risk To Establishment' },
+    { className: 'frostPossible', label: 'Frost Seeding Possible' },
+    { className: 'multiple', label: 'Multiple' },
+    { className: 'cashCrop', label: 'Cash Crop Growing Window' },
+  ];
   switch (councilShorthand) {
     case 'MCCC':
       return MCCClegendData;
     case 'SCCC':
       return SCCClegendData;
+    case 'NECCC':
+      return NECCClegendData;
     default:
       return legendData;
   }

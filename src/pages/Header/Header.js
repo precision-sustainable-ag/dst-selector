@@ -148,6 +148,7 @@ const Header = () => {
             state, region, council, consent,
           } = res.data.json;
           // set user history redux state
+          localStorage.setItem('stateId', state.id);
           dispatchRedux(
             updateStateInfo({
               stateLabel: state.label,
@@ -156,7 +157,10 @@ const Header = () => {
               councilLabel: council.label,
             }),
           );
-          if (region) dispatchRedux(updateRegion({ regionId: region.id, regionShorthand: region.shorthand }));
+          if (region) {
+            localStorage.setItem('regionId', region.id);
+            dispatchRedux(updateRegion({ regionId: region.id, regionShorthand: region.shorthand }));
+          }
           dispatchRedux(updateConsent(consent.status, consent.date));
           // The consent is mainly use localstorage to test is expired, use history to update localStorage
           const consentKey = 'consent';
