@@ -39,14 +39,15 @@ const CoverCropExplorer = () => {
   useEffect(() => {
     const filteredActiveCropData = cropDataRedux.filter((crop) => activeCropDataRedux.includes(crop.id))?.filter((a) => !a.inactive);
     setUpdatedActiveCropData(filteredActiveCropData);
-
     if (urlCrop && urlParamStateId && urlRegionId) {
+      localStorage.setItem('stateId', urlParamStateId[1]);
       dispatchRedux(updateStateInfo({
         stateLabel: null,
         stateId: urlParamStateId[1],
         councilShorthand: null,
         councilLabel: null,
       }));
+      localStorage.setItem('regionId', urlRegionId[1]);
       dispatchRedux(updateRegion({
         regionId: urlRegionId[1],
       }));
