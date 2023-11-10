@@ -8,7 +8,6 @@
 import { Grid } from '@mui/material';
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import SoilComposition from './SoilComposition/SoilComposition';
 import SoilDrainage from './SoilDrainage/SoilDrainage';
 import SoilFloodingFrequency from './SoilFloodingFrequency/SoilFloodingFrequency';
 import { updateSoilData, updateSoilDataOriginal } from '../../../reduxStore/soilSlice';
@@ -149,17 +148,14 @@ const SoilCondition = () => {
   }, [markersRedux, soilDataOriginalRedux?.latLong]);
 
   return (
-    <>
-      <Grid item xs={12} lg={10}>
-        <SoilComposition />
-      </Grid>
-      <Grid item xs={12} lg={10}>
+    <Grid item container lg={10}>
+      <Grid item xs={12} sx={{ mb: '1rem' }}>
         <SoilDrainage />
       </Grid>
-      <Grid item xs={12} lg={10}>
+      <Grid item xs={12}>
         <SoilFloodingFrequency />
       </Grid>
-    </>
+    </Grid>
   );
 };
 
