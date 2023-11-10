@@ -71,7 +71,6 @@ const Location = () => {
   const selectedUserFieldRef = useRef(selectedUserField);
 
   const { isAuthenticated } = useAuth0();
-
   // calculate features shown on map
   const getFeatures = () => {
     if (userFields.length > 0 && Object.keys(selectedUserField).length !== 0) {
@@ -90,6 +89,7 @@ const Location = () => {
 
   // update regionShorthandRef
   useEffect(() => {
+    localStorage.setItem('regionId', regionsRedux.filter((region) => region.shorthand === regionShorthand)[0]?.id);
     dispatchRedux(updateRegion({
       regionId: regionsRedux.filter((region) => region.shorthand === regionShorthand)[0]?.id,
       regionShorthand,
@@ -179,6 +179,7 @@ const Location = () => {
               snackOpen: true,
               snackMessage: 'No data available for your location, Please try again.',
             }));
+            localStorage.setItem('regionId', '');
             dispatchRedux(updateRegion({
               regionId: '',
               regionShorthand: '',
