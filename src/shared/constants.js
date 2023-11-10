@@ -3,14 +3,18 @@
 /* eslint-disable max-len */
 /* eslint-disable no-nested-ternary */
 import React from 'react';
-import { Button, Grid, Typography, Tooltip } from '@mui/material';
+import {
+  Button, Grid, Typography, Tooltip,
+} from '@mui/material';
 import styled from 'styled-components';
 import moment from 'moment';
 import { Info, MonetizationOn } from '@mui/icons-material';
 import { MapboxApiKey } from './keys';
 import arrayEquals from './functions';
 
-export const ReferenceTooltip = ({ url, source, type, content, hasLink, title }) => {
+export const ReferenceTooltip = ({
+  url, source, type, content, hasLink, title,
+}) => {
   const sourceURL = url;
   const sourceName = source;
   const sourceType = type || 'link';
@@ -19,7 +23,7 @@ export const ReferenceTooltip = ({ url, source, type, content, hasLink, title })
   return sourceType === 'link' ? (
     <Tooltip
       enterTouchDelay={0}
-      title={
+      title={(
         <div>
           Source
           {': '}
@@ -27,7 +31,7 @@ export const ReferenceTooltip = ({ url, source, type, content, hasLink, title })
             {sourceName}
           </a>
         </div>
-      }
+      )}
       arrow
     >
       <Info sx={{ fontSize: '1rem' }} />
@@ -44,11 +48,11 @@ export const ReferenceTooltip = ({ url, source, type, content, hasLink, title })
   ) : (
     <Tooltip
       enterTouchDelay={0}
-      title={
+      title={(
         <div>
           <Typography variant="body1">{sourceContent}</Typography>
         </div>
-      }
+      )}
       placement="right"
       arrow
     >
@@ -480,12 +484,11 @@ export const CropImage = ({
     />
   );
 };
-export const ucFirst = (text = '') =>
-  text
-    .toLowerCase()
-    .split(' ')
-    .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
-    .join(' ');
+export const ucFirst = (text = '') => text
+  .toLowerCase()
+  .split(' ')
+  .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
+  .join(' ');
 
 export const flipCoverCropName = (cropName = '') => {
   if (cropName.toLowerCase() === 'Sorghum-sudangrass'.toLowerCase()) {
@@ -623,10 +626,8 @@ export const sortCrops = (
       crops.sort((a, b) => {
         let firstDate;
         let secondDate;
-        const firstLength =
-          a.data?.['Planting and Growth Windows']?.['Reliable Establishment']?.values.length;
-        const secondLength =
-          b.data?.['Planting and Growth Windows']?.['Reliable Establishment']?.values.length;
+        const firstLength = a.data?.['Planting and Growth Windows']?.['Reliable Establishment']?.values.length;
+        const secondLength = b.data?.['Planting and Growth Windows']?.['Reliable Establishment']?.values.length;
         if (firstLength && secondLength) {
           // sorting by last reliable establishment date for descending and first for ascending
           if (!sortFlag) {
@@ -816,21 +817,20 @@ export const reverseGEO = async (lat, lng) => {
   return data;
 };
 
-export const callCoverCropApi = async (url) =>
-  fetch(url)
-    .then((res) => res.json())
-    .catch((err) => {
-      // eslint-disable-next-line no-console
-      console.log(err.message);
-    });
+export const callCoverCropApi = async (url) => fetch(url)
+  .then((res) => res.json())
+  .catch((err) => {
+    // eslint-disable-next-line no-console
+    console.log(err.message);
+  });
 
 export const cropDataFormatter = (cropData = [{}]) => {
   const excludedCropZoneDecisionKeys = ['Exclude', 'Up and Coming', 'Discuss'];
   // Filter unwanted rows
   const tjson = cropData.filter((crop) => {
     if (
-      excludedCropZoneDecisionKeys.includes(crop['Zone Decision']) ||
-      crop['Cover Crop Name'] === '__Open Discussion Row'
+      excludedCropZoneDecisionKeys.includes(crop['Zone Decision'])
+      || crop['Cover Crop Name'] === '__Open Discussion Row'
     ) {
       return false;
     }
@@ -857,9 +857,9 @@ export const cropDataFormatter = (cropData = [{}]) => {
         index += 1;
       }
       while (
-        index > 0 &&
-        index < halfMonthData.length &&
-        arrayEquals(halfMonthData[index].info, halfMonthData[index - 1].info)
+        index > 0
+        && index < halfMonthData.length
+        && arrayEquals(halfMonthData[index].info, halfMonthData[index - 1].info)
       ) {
         timePeriod.months.push(halfMonthData[index].month);
         index += 1;
@@ -876,25 +876,25 @@ export const cropDataFormatter = (cropData = [{}]) => {
     param = '',
     halfMonthData = [],
   ) => {
-    const startIndex =
-      moment(startTime, 'MM/DD').month() * 2 + (moment(startTime, 'MM/DD').date() >= 15 ? 1 : 0);
-    const endIndex =
-      moment(endTime, 'MM/DD').month() * 2 + (moment(endTime, 'MM/DD').date() >= 15 ? 1 : 0);
+    const startIndex = moment(startTime, 'MM/DD').month() * 2 + (moment(startTime, 'MM/DD').date() >= 15 ? 1 : 0);
+    const endIndex = moment(endTime, 'MM/DD').month() * 2 + (moment(endTime, 'MM/DD').date() >= 15 ? 1 : 0);
     halfMonthData = halfMonthData.map((data, index) => {
       if (index >= startIndex && index <= endIndex) {
         const info = [...data.info, param];
         let start = '';
         let end = '';
         if (data.start === '') start = startTime;
-        else
+        else {
           start = moment(data.start, 'MM/DD').isSameOrBefore(moment(startTime, 'MM/DD'))
             ? startTime
             : data.start;
+        }
         if (data.end === '') end = endTime;
-        else
+        else {
           end = moment(data.end, 'MM/DD').isSameOrBefore(moment(endTime, 'MM/DD'))
             ? data.end
             : endTime;
+        }
         return {
           ...data,
           start,
@@ -944,8 +944,8 @@ export const cropDataFormatter = (cropData = [{}]) => {
           }
           // hessian fly dates are an exception to this condition because it has only one date and not a range
           if (
-            moment(valStart, 'MM/DD').isSameOrAfter(moment(valEnd, 'MM/DD')) &&
-            param !== 'Hessian Fly Free Date'
+            moment(valStart, 'MM/DD').isSameOrAfter(moment(valEnd, 'MM/DD'))
+            && param !== 'Hessian Fly Free Date'
           ) {
             const tempStart = '01/01';
             const tempEnd = '12/31';

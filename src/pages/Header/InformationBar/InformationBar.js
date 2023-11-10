@@ -9,7 +9,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
 import { LocationOn } from '@mui/icons-material';
-import CloudIcon from '@mui/icons-material/Cloud';
 import CheckIcon from '@mui/icons-material/Check';
 import FilterHdrIcon from '@mui/icons-material/FilterHdr';
 import React from 'react';
@@ -63,7 +62,9 @@ const InformationBar = ({ pathname }) => {
         return (
           <>
             <LocationOn />
-            &nbsp;Location: {getSelectedValues('location')}
+            &nbsp;Location:
+            {' '}
+            {getSelectedValues('location')}
           </>
         );
       case 'site':
@@ -99,10 +100,10 @@ const InformationBar = ({ pathname }) => {
           color: 'black',
           width: '100%',
           background:
-            ((type === 'location' && progressRedux > 0) ||
-              (type === 'site' && progressRedux > 1) ||
-              (type === 'goals' && progressRedux > 2)) &&
-            '#e3f2f4',
+            ((type === 'location' && progressRedux > 0)
+              || (type === 'site' && progressRedux > 1)
+              || (type === 'goals' && progressRedux > 2))
+            && '#e3f2f4',
         }}
       >
         {getIconInfo(type)}
