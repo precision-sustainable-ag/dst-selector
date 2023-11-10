@@ -3,21 +3,14 @@
 /* eslint-disable max-len */
 /* eslint-disable no-nested-ternary */
 import React from 'react';
-import {
-  Button,
-  Grid,
-  Typography,
-  Tooltip,
-} from '@mui/material';
+import { Button, Grid, Typography, Tooltip } from '@mui/material';
 import styled from 'styled-components';
 import moment from 'moment';
 import { Info, MonetizationOn } from '@mui/icons-material';
 import { MapboxApiKey } from './keys';
 import arrayEquals from './functions';
 
-export const ReferenceTooltip = ({
-  url, source, type, content, hasLink, title,
-}) => {
+export const ReferenceTooltip = ({ url, source, type, content, hasLink, title }) => {
   const sourceURL = url;
   const sourceName = source;
   const sourceType = type || 'link';
@@ -26,7 +19,7 @@ export const ReferenceTooltip = ({
   return sourceType === 'link' ? (
     <Tooltip
       enterTouchDelay={0}
-      title={(
+      title={
         <div>
           Source
           {': '}
@@ -34,38 +27,43 @@ export const ReferenceTooltip = ({
             {sourceName}
           </a>
         </div>
-      )}
+      }
       arrow
     >
-      <Info fontSize="small" />
+      <Info sx={{ fontSize: '1rem' }} />
     </Tooltip>
   ) : sourceType === 'html' ? (
     <Tooltip arrow dangerouslySetInnerHTML={content} enterTouchDelay={0}>
       {' '}
-      <Info fontSize="small" />
+      <Info sx={{ fontSize: '1rem' }} />
     </Tooltip>
   ) : link ? (
     <Tooltip title={title} placement="right" arrow enterTouchDelay={0}>
-      <Info fontSize="small" />
+      <Info sx={{ fontSize: '1rem' }} />
     </Tooltip>
   ) : (
     <Tooltip
       enterTouchDelay={0}
-      title={(
+      title={
         <div>
           <Typography variant="body1">{sourceContent}</Typography>
         </div>
-      )}
+      }
       placement="right"
       arrow
     >
-      <Info fontSize="small" />
+      <Info sx={{ fontSize: '1rem' }} />
     </Tooltip>
   );
 };
 
 export const DataTooltip = ({ data, placement = 'top-start' }) => (
-  <Tooltip title={<div className="text-center">{data}</div>} placement={placement} arrow enterTouchDelay={0}>
+  <Tooltip
+    title={<div className="text-center">{data}</div>}
+    placement={placement}
+    arrow
+    enterTouchDelay={0}
+  >
     <Info fontSize="small" />
   </Tooltip>
 );
@@ -189,7 +187,10 @@ export const abbrRegion = (input, to) => {
 
   let i; // Reusable loop variable
   if (to === 'abbr') {
-    input = input.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
+    input = input.replace(
+      /\w\S*/g,
+      (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase(),
+    );
     for (i = 0; i < regions.length; i++) {
       if (regions[i][0] === input) {
         return regions[i][1];
@@ -244,7 +245,17 @@ export const getRating = (ratng) => {
   switch (rating) {
     case 0:
       return (
-        <svg width="30px" height="30px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#2d7b7b" strokeWidth="1" strokeLinecap="round" strokeLinejoin="miter">
+        <svg
+          width="30px"
+          height="30px"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          stroke="#2d7b7b"
+          strokeWidth="1"
+          strokeLinecap="round"
+          strokeLinejoin="miter"
+        >
           <line x1="22" y1="3" x2="22" y2="21" stroke="#d3d3d3" strokeWidth={3} />
           <line x1="17" y1="7" x2="17" y2="21" stroke="#d3d3d3" strokeWidth={3} />
           <line x1="12" y1="11" x2="12" y2="21" stroke="#d3d3d3" strokeWidth={3} />
@@ -254,7 +265,17 @@ export const getRating = (ratng) => {
       );
     case 1:
       return (
-        <svg width="30px" height="30px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#2d7b7b" strokeWidth="1" strokeLinecap="round" strokeLinejoin="miter">
+        <svg
+          width="30px"
+          height="30px"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          stroke="#2d7b7b"
+          strokeWidth="1"
+          strokeLinecap="round"
+          strokeLinejoin="miter"
+        >
           <line x1="22" y1="3" x2="22" y2="21" stroke="#d3d3d3" strokeWidth={3} />
           <line x1="17" y1="7" x2="17" y2="21" stroke="#d3d3d3" strokeWidth={3} />
           <line x1="12" y1="11" x2="12" y2="21" stroke="#d3d3d3" strokeWidth={3} />
@@ -264,7 +285,17 @@ export const getRating = (ratng) => {
       );
     case 2:
       return (
-        <svg width="30px" height="30px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#2d7b7b" strokeWidth="1" strokeLinecap="round" strokeLinejoin="miter">
+        <svg
+          width="30px"
+          height="30px"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          stroke="#2d7b7b"
+          strokeWidth="1"
+          strokeLinecap="round"
+          strokeLinejoin="miter"
+        >
           <line x1="22" y1="3" x2="22" y2="21" stroke="#d3d3d3" strokeWidth={3} />
           <line x1="17" y1="7" x2="17" y2="21" stroke="#d3d3d3" strokeWidth={3} />
           <line x1="12" y1="11" x2="12" y2="21" stroke="#d3d3d3" strokeWidth={3} />
@@ -274,7 +305,17 @@ export const getRating = (ratng) => {
       );
     case 3:
       return (
-        <svg width="30px" height="30px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#2d7b7b" strokeWidth="1" strokeLinecap="round" strokeLinejoin="miter">
+        <svg
+          width="30px"
+          height="30px"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          stroke="#2d7b7b"
+          strokeWidth="1"
+          strokeLinecap="round"
+          strokeLinejoin="miter"
+        >
           <line x1="22" y1="3" x2="22" y2="21" stroke="#d3d3d3" strokeWidth={3} />
           <line x1="17" y1="7" x2="17" y2="21" stroke="#d3d3d3" strokeWidth={3} />
           <line x1="12" y1="11" x2="12" y2="21" stroke="#2d7b7b" strokeWidth={3} />
@@ -284,7 +325,17 @@ export const getRating = (ratng) => {
       );
     case 4:
       return (
-        <svg width="30px" height="30px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#2d7b7b" strokeWidth="1" strokeLinecap="round" strokeLinejoin="miter">
+        <svg
+          width="30px"
+          height="30px"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          stroke="#2d7b7b"
+          strokeWidth="1"
+          strokeLinecap="round"
+          strokeLinejoin="miter"
+        >
           <line x1="22" y1="3" x2="22" y2="21" stroke="#d3d3d3" strokeWidth={3} />
           <line x1="17" y1="7" x2="17" y2="21" stroke="#2d7b7b" strokeWidth={3} />
           <line x1="12" y1="11" x2="12" y2="21" stroke="#2d7b7b" strokeWidth={3} />
@@ -294,7 +345,16 @@ export const getRating = (ratng) => {
       );
     case 5:
       return (
-        <svg width="30px" height="30px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" strokeWidth="1" strokeLinecap="round" strokeLinejoin="miter">
+        <svg
+          width="30px"
+          height="30px"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          strokeWidth="1"
+          strokeLinecap="round"
+          strokeLinejoin="miter"
+        >
           <line x1="22" y1="3" x2="22" y2="21" stroke="#2d7b7b" strokeWidth={3} />
           <line x1="17" y1="7" x2="17" y2="21" stroke="#2d7b7b" strokeWidth={3} />
           <line x1="12" y1="11" x2="12" y2="21" stroke="#2d7b7b" strokeWidth={3} />
@@ -316,7 +376,8 @@ export const allMonths = moment().localeData().monthsShort();
 export const trimString = (stringFull, size) => {
   if (!Number.isNaN(size)) {
     return `${stringFull.substring(0, size)}${stringFull.length > 25 ? '...' : ''}`;
-  } return stringFull;
+  }
+  return stringFull;
 };
 
 export const RenderSeedPriceIcons = ({ val }) => {
@@ -419,11 +480,12 @@ export const CropImage = ({
     />
   );
 };
-export const ucFirst = (text = '') => text
-  .toLowerCase()
-  .split(' ')
-  .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
-  .join(' ');
+export const ucFirst = (text = '') =>
+  text
+    .toLowerCase()
+    .split(' ')
+    .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
+    .join(' ');
 
 export const flipCoverCropName = (cropName = '') => {
   if (cropName.toLowerCase() === 'Sorghum-sudangrass'.toLowerCase()) {
@@ -496,7 +558,13 @@ export const BinaryButton = ({ action }) => (
   </>
 );
 
-export const sortCrops = (type = 'Average Goals', crops = [], sortFlag = '', selectedItems = [], goal = '') => {
+export const sortCrops = (
+  type = 'Average Goals',
+  crops = [],
+  sortFlag = '',
+  selectedItems = [],
+  goal = '',
+) => {
   if (type === 'Average Goals') {
     crops.sort((a, b) => {
       let aAvg = 0;
@@ -516,7 +584,8 @@ export const sortCrops = (type = 'Average Goals', crops = [], sortFlag = '', sel
       bAvg /= selectedItems.length;
       if (aAvg > bAvg) {
         return sortFlag ? -1 : 1;
-      } if (aAvg === bAvg) {
+      }
+      if (aAvg === bAvg) {
         return 0;
       }
       return sortFlag ? 1 : -1;
@@ -525,11 +594,14 @@ export const sortCrops = (type = 'Average Goals', crops = [], sortFlag = '', sel
   if (type === 'Goal') {
     crops.sort((a, b) => {
       if (a.data.Goals[goal] && b.data.Goals[goal]) {
-        if (parseInt(a.data.Goals[goal].values[0], 10) > parseInt(b.data.Goals[goal].values[0], 10)) {
+        if (
+          parseInt(a.data.Goals[goal].values[0], 10) > parseInt(b.data.Goals[goal].values[0], 10)
+        ) {
           return sortFlag ? -1 : 1;
         }
         return sortFlag ? 1 : -1;
-      } if (a.data.Goals[goal]) {
+      }
+      if (a.data.Goals[goal]) {
         return sortFlag ? -1 : 1;
       }
       return sortFlag ? 1 : -1;
@@ -538,13 +610,11 @@ export const sortCrops = (type = 'Average Goals', crops = [], sortFlag = '', sel
   if (type === 'Crop Name') {
     if (crops.length > 0) {
       crops.sort((a, b) => {
-        const firstCropName = flipCoverCropName(
-          a.label.toLowerCase(),
-        ).replace(/\s+/g, '');
-        const secondCropName = flipCoverCropName(
-          b.label.toLowerCase(),
-        ).replace(/\s+/g, '');
-        return sortFlag ? secondCropName.localeCompare(firstCropName) : firstCropName.localeCompare(secondCropName);
+        const firstCropName = flipCoverCropName(a.label.toLowerCase()).replace(/\s+/g, '');
+        const secondCropName = flipCoverCropName(b.label.toLowerCase()).replace(/\s+/g, '');
+        return sortFlag
+          ? secondCropName.localeCompare(firstCropName)
+          : firstCropName.localeCompare(secondCropName);
       });
     }
   }
@@ -553,22 +623,54 @@ export const sortCrops = (type = 'Average Goals', crops = [], sortFlag = '', sel
       crops.sort((a, b) => {
         let firstDate;
         let secondDate;
-        const firstLength = a.data?.['Planting and Growth Windows']?.['Reliable Establishment']?.values.length;
-        const secondLength = b.data?.['Planting and Growth Windows']?.['Reliable Establishment']?.values.length;
+        const firstLength =
+          a.data?.['Planting and Growth Windows']?.['Reliable Establishment']?.values.length;
+        const secondLength =
+          b.data?.['Planting and Growth Windows']?.['Reliable Establishment']?.values.length;
         if (firstLength && secondLength) {
           // sorting by last reliable establishment date for descending and first for ascending
           if (!sortFlag) {
-            firstDate = new Date(a.data?.['Planting and Growth Windows']?.['Reliable Establishment']?.values[firstLength - 1].split(' - ')[1]).toLocaleDateString('en-GB').split('/').reverse()
+            firstDate = new Date(
+              a.data?.['Planting and Growth Windows']?.['Reliable Establishment']?.values[
+                firstLength - 1
+              ].split(' - ')[1],
+            )
+              .toLocaleDateString('en-GB')
+              .split('/')
+              .reverse()
               .join('');
-            secondDate = new Date(b.data?.['Planting and Growth Windows']?.['Reliable Establishment']?.values[secondLength - 1].split(' - ')[1]).toLocaleDateString('en-GB').split('/').reverse()
+            secondDate = new Date(
+              b.data?.['Planting and Growth Windows']?.['Reliable Establishment']?.values[
+                secondLength - 1
+              ].split(' - ')[1],
+            )
+              .toLocaleDateString('en-GB')
+              .split('/')
+              .reverse()
               .join('');
           } else {
-            firstDate = new Date(a.data?.['Planting and Growth Windows']?.['Reliable Establishment']?.values[firstLength - 1].split(' - ')[0]).toLocaleDateString('en-GB').split('/').reverse()
+            firstDate = new Date(
+              a.data?.['Planting and Growth Windows']?.['Reliable Establishment']?.values[
+                firstLength - 1
+              ].split(' - ')[0],
+            )
+              .toLocaleDateString('en-GB')
+              .split('/')
+              .reverse()
               .join('');
-            secondDate = new Date(b.data?.['Planting and Growth Windows']?.['Reliable Establishment']?.values[secondLength - 1].split(' - ')[0]).toLocaleDateString('en-GB').split('/').reverse()
+            secondDate = new Date(
+              b.data?.['Planting and Growth Windows']?.['Reliable Establishment']?.values[
+                secondLength - 1
+              ].split(' - ')[0],
+            )
+              .toLocaleDateString('en-GB')
+              .split('/')
+              .reverse()
               .join('');
           }
-          return sortFlag ? secondDate.localeCompare(firstDate) : firstDate.localeCompare(secondDate);
+          return sortFlag
+            ? secondDate.localeCompare(firstDate)
+            : firstDate.localeCompare(secondDate);
         }
         if (firstLength) {
           return sortFlag ? -1 : 1;
@@ -597,13 +699,11 @@ export const sortCrops = (type = 'Average Goals', crops = [], sortFlag = '', sel
         // to ensure same order every time, if the group names are same then sort by crop name
         if (groupStringComparsion === 0) {
           // reused code piece
-          const firstCropName = flipCoverCropName(
-            a.label.toLowerCase(),
-          ).replace(/\s+/g, '');
-          const secondCropName = flipCoverCropName(
-            b.label.toLowerCase(),
-          ).replace(/\s+/g, '');
-          return sortFlag ? secondCropName.localeCompare(firstCropName) : firstCropName.localeCompare(secondCropName);
+          const firstCropName = flipCoverCropName(a.label.toLowerCase()).replace(/\s+/g, '');
+          const secondCropName = flipCoverCropName(b.label.toLowerCase()).replace(/\s+/g, '');
+          return sortFlag
+            ? secondCropName.localeCompare(firstCropName)
+            : firstCropName.localeCompare(secondCropName);
         }
         return groupStringComparsion;
       });
@@ -716,23 +816,25 @@ export const reverseGEO = async (lat, lng) => {
   return data;
 };
 
-export const callCoverCropApi = async (url) => fetch(url)
-  .then((res) => res.json())
-  .catch((err) => {
-    // eslint-disable-next-line no-console
-    console.log(err.message);
-  });
+export const callCoverCropApi = async (url) =>
+  fetch(url)
+    .then((res) => res.json())
+    .catch((err) => {
+      // eslint-disable-next-line no-console
+      console.log(err.message);
+    });
 
 export const cropDataFormatter = (cropData = [{}]) => {
   const excludedCropZoneDecisionKeys = ['Exclude', 'Up and Coming', 'Discuss'];
   // Filter unwanted rows
   const tjson = cropData.filter((crop) => {
     if (
-      excludedCropZoneDecisionKeys.includes(crop['Zone Decision'])
-      || crop['Cover Crop Name'] === '__Open Discussion Row'
+      excludedCropZoneDecisionKeys.includes(crop['Zone Decision']) ||
+      crop['Cover Crop Name'] === '__Open Discussion Row'
     ) {
       return false;
-    } return true;
+    }
+    return true;
   });
 
   const formatHalfMonthData = (halfMonthData = []) => {
@@ -755,9 +857,9 @@ export const cropDataFormatter = (cropData = [{}]) => {
         index += 1;
       }
       while (
-        index > 0
-        && index < halfMonthData.length
-        && arrayEquals(halfMonthData[index].info, halfMonthData[index - 1].info)
+        index > 0 &&
+        index < halfMonthData.length &&
+        arrayEquals(halfMonthData[index].info, halfMonthData[index - 1].info)
       ) {
         timePeriod.months.push(halfMonthData[index].month);
         index += 1;
@@ -768,20 +870,36 @@ export const cropDataFormatter = (cropData = [{}]) => {
     return result;
   };
 
-  const formatTimeToHalfMonthData = (startTime = '', endTime = '', param = '', halfMonthData = []) => {
-    const startIndex = moment(startTime, 'MM/DD').month() * 2 + (moment(startTime, 'MM/DD').date() >= 15 ? 1 : 0);
-    const endIndex = moment(endTime, 'MM/DD').month() * 2 + (moment(endTime, 'MM/DD').date() >= 15 ? 1 : 0);
+  const formatTimeToHalfMonthData = (
+    startTime = '',
+    endTime = '',
+    param = '',
+    halfMonthData = [],
+  ) => {
+    const startIndex =
+      moment(startTime, 'MM/DD').month() * 2 + (moment(startTime, 'MM/DD').date() >= 15 ? 1 : 0);
+    const endIndex =
+      moment(endTime, 'MM/DD').month() * 2 + (moment(endTime, 'MM/DD').date() >= 15 ? 1 : 0);
     halfMonthData = halfMonthData.map((data, index) => {
       if (index >= startIndex && index <= endIndex) {
         const info = [...data.info, param];
         let start = '';
         let end = '';
         if (data.start === '') start = startTime;
-        else start = moment(data.start, 'MM/DD').isSameOrBefore(moment(startTime, 'MM/DD')) ? startTime : data.start;
+        else
+          start = moment(data.start, 'MM/DD').isSameOrBefore(moment(startTime, 'MM/DD'))
+            ? startTime
+            : data.start;
         if (data.end === '') end = endTime;
-        else end = moment(data.end, 'MM/DD').isSameOrBefore(moment(endTime, 'MM/DD')) ? data.end : endTime;
+        else
+          end = moment(data.end, 'MM/DD').isSameOrBefore(moment(endTime, 'MM/DD'))
+            ? data.end
+            : endTime;
         return {
-          ...data, start, end, info,
+          ...data,
+          start,
+          end,
+          info,
         };
       }
       return data;
@@ -803,7 +921,9 @@ export const cropDataFormatter = (cropData = [{}]) => {
     ];
     const val = vals;
     let halfMonthArr = Array.from({ length: 24 }, (_, i) => ({
-      month: moment().month(Math.floor(i / 2)).format('M'),
+      month: moment()
+        .month(Math.floor(i / 2))
+        .format('M'),
       info: [],
       start: '',
       end: '',
@@ -823,7 +943,10 @@ export const cropDataFormatter = (cropData = [{}]) => {
             valEnd = valStart;
           }
           // hessian fly dates are an exception to this condition because it has only one date and not a range
-          if (moment(valStart, 'MM/DD').isSameOrAfter(moment(valEnd, 'MM/DD')) && (param !== 'Hessian Fly Free Date')) {
+          if (
+            moment(valStart, 'MM/DD').isSameOrAfter(moment(valEnd, 'MM/DD')) &&
+            param !== 'Hessian Fly Free Date'
+          ) {
             const tempStart = '01/01';
             const tempEnd = '12/31';
             halfMonthArr = formatTimeToHalfMonthData(valStart, tempEnd, param, halfMonthArr);
@@ -868,10 +991,12 @@ export const getFields = async (accessToken = null) => {
       Authorization: `Bearer ${accessToken}`,
     },
   };
-  return fetch(url, config)
-    .then((res) => res.json())
-    // eslint-disable-next-line no-console
-    .catch((err) => console.log(err));
+  return (
+    fetch(url, config)
+      .then((res) => res.json())
+      // eslint-disable-next-line no-console
+      .catch((err) => console.log(err))
+  );
 };
 
 export const postFields = async (accessToken = null, fieldsData = null) => {
@@ -884,10 +1009,12 @@ export const postFields = async (accessToken = null, fieldsData = null) => {
     },
     body: JSON.stringify(fieldsData),
   };
-  return fetch(url, config)
-    .then((res) => res.json())
-    // eslint-disable-next-line no-console
-    .catch((err) => console.log(err));
+  return (
+    fetch(url, config)
+      .then((res) => res.json())
+      // eslint-disable-next-line no-console
+      .catch((err) => console.log(err))
+  );
 };
 
 export const deleteFields = async (accessToken = null, id = null) => {
@@ -899,19 +1026,19 @@ export const deleteFields = async (accessToken = null, id = null) => {
       Authorization: `Bearer ${accessToken}`,
     },
   };
-  return fetch(url, config)
-    .then((res) => res.json())
-    // eslint-disable-next-line no-console
-    .catch((err) => console.log(err));
+  return (
+    fetch(url, config)
+      .then((res) => res.json())
+      // eslint-disable-next-line no-console
+      .catch((err) => console.log(err))
+  );
 };
 
 export const buildPoint = (lng, lat, name = null) => ({
   type: 'Feature',
   label: name,
   geometry: {
-    coordinates: [
-      lng, lat,
-    ],
+    coordinates: [lng, lat],
     type: 'Point',
   },
 });
@@ -924,13 +1051,16 @@ export const buildGeometryCollection = (point, polygon, name = null) => {
     label: name,
     geometry: {
       type: 'GeometryCollection',
-      geometries: [{
-        type: 'Point',
-        coordinates: pointCoordinates,
-      }, {
-        type: 'Polygon',
-        coordinates: polygonCoordinates,
-      }],
+      geometries: [
+        {
+          type: 'Point',
+          coordinates: pointCoordinates,
+        },
+        {
+          type: 'Polygon',
+          coordinates: polygonCoordinates,
+        },
+      ],
     },
   };
 };
@@ -987,10 +1117,12 @@ export const getHistory = async (accessToken = null) => {
       Authorization: `Bearer ${accessToken}`,
     },
   };
-  return fetch(url, config)
-    .then((res) => res.json())
-    // eslint-disable-next-line no-console
-    .catch((err) => console.log(err));
+  return (
+    fetch(url, config)
+      .then((res) => res.json())
+      // eslint-disable-next-line no-console
+      .catch((err) => console.log(err))
+  );
 };
 
 export const buildHistory = (
@@ -1053,18 +1185,18 @@ export const postHistory = async (accessToken = null, historyData = null) => {
     },
     body: JSON.stringify(historyData),
   };
-  return fetch(url, config)
-    .then((res) => res.json())
-    // eslint-disable-next-line no-console
-    .catch((err) => console.log(err));
+  return (
+    fetch(url, config)
+      .then((res) => res.json())
+      // eslint-disable-next-line no-console
+      .catch((err) => console.log(err))
+  );
 };
 
 export const extractData = (attribute, from) => {
   // handles no data
   if (!attribute) {
-    return (
-      <Typography variant="body2">No Data</Typography>
-    );
+    return <Typography variant="body2">No Data</Typography>;
   }
 
   // extract data
@@ -1080,31 +1212,21 @@ export const extractData = (attribute, from) => {
 
   // handles pillbox data
   if (data && dataType === 'pillbox') {
-    return (
-      getRating(data)
-    );
+    return getRating(data);
   }
 
   // handle currency
   if (data && dataType === 'currency') {
-    return (
-      <RenderSeedPriceIcons val={data} />
-    );
+    return <RenderSeedPriceIcons val={data} />;
   }
 
   // handles the true false keys
-  if ((data === 'Frost Seeding' || (data === 'Can Aerial Seed?' || data === 'Aerial Seeding'))) {
-    return (
-      <Typography variant="body2">
-        {data ? 'Yes' : 'N/A'}
-      </Typography>
-    );
+  if (data === 'Frost Seeding' || data === 'Can Aerial Seed?' || data === 'Aerial Seeding') {
+    return <Typography variant="body2">{data ? 'Yes' : 'N/A'}</Typography>;
   }
 
   // handles default
-  return (
-    <Typography variant="body2">{data.toString()}</Typography>
-  );
+  return <Typography variant="body2">{data.toString()}</Typography>;
 };
 
 export const hasGoalRatingTwoOrLess = (selectedGoals, crop = []) => {

@@ -2,9 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import {
-  Button, Typography, Switch, Grid, Box, useMediaQuery, useTheme,
-} from '@mui/material';
+import { Button, Typography, Switch, Grid, Box, useMediaQuery, useTheme } from '@mui/material';
 import { LocalDrinkOutlined, InvertColors } from '@mui/icons-material';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import { ReferenceTooltip } from '../../../../shared/constants';
@@ -45,8 +43,8 @@ const SoilDrainage = () => {
     if (checkArray.some((e) => soilDataRedux?.drainageClass.includes(e))) {
       setShowTiling(true);
     } else if (
-      soilDataRedux?.drainageClass.includes('Moderately well drained')
-      && tilingCheck === true
+      soilDataRedux?.drainageClass.includes('Moderately well drained') &&
+      tilingCheck === true
     ) {
       setShowTiling(true);
     } else {
@@ -91,27 +89,23 @@ const SoilDrainage = () => {
           <Grid item flexGrow={1}>
             <Typography variant="body1">
               <span style={{ fontWeight: 'bold' }}>Drainage Class</span>
-              &nbsp;
-              {' '}
+              &nbsp;{' '}
               <ReferenceTooltip
                 type="text"
                 hasLink
-                title={(
+                title={
                   <div>
                     <Typography variant="body1">
                       {' '}
-                      Indicates your soil drainage based on the
-                      {' '}
+                      Indicates your soil drainage based on the{' '}
                       <a
                         href="https://websoilsurvey.sc.egov.usda.gov/App/HomePage.htm"
                         target="_blank"
                         rel="noopener noreferrer"
                       >
                         USDA NRCS Web Soil Survey
-                      </a>
-                      {' '}
-                      drainage classes; you may modify your soil drainage by clicking below.
-                      {' '}
+                      </a>{' '}
+                      drainage classes; you may modify your soil drainage by clicking below.{' '}
                       <a
                         href="https://www.nrcs.usda.gov/wps/portal/nrcs/detail/soils/ref/?cid=nrcs142p2_054253"
                         target="_blank"
@@ -123,7 +117,7 @@ const SoilDrainage = () => {
                       .
                     </Typography>
                   </div>
-                )}
+                }
               />
             </Typography>
           </Grid>
@@ -197,12 +191,11 @@ const SoilDrainage = () => {
                   <InvertColors />
                 </Box>
               </Grid>
-              <Grid item container direction="column" xs={6}>
+              <Grid item container direction="column" xs={6} lg={3}>
                 <Grid item>
                   <Typography variant="body1">
                     <span style={{ fontWeight: 'bold', fontSize: '1rem' }}>Tile Drainage</span>
-                    &nbsp;
-                    {' '}
+                    &nbsp;{' '}
                     <ReferenceTooltip
                       type="text"
                       content="Indicate if the field of interest has tile installed. If you have selected very poorly to somewhat poorly drained soils, selecting “yes” will increase your drainage class by one factor."

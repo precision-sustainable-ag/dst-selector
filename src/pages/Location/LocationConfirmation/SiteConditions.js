@@ -11,27 +11,24 @@ import SoilCondition from '../SoilCondition/SoilCondition';
 import WeatherConditions from '../../../components/WeatherConditions/WeatherConditions';
 
 const SiteConditions = () => {
-  // redux vars
-  const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
-
-  // If progressRedux is not 2, do not render anything
-  if (progressRedux !== 2) {
-    return null;
-  }
-
   return (
     <Box
-      sx={{
-        boxSizing: 'border-box',
-        border: '4px solid #f5f5f5',
-        borderRadius: '10px',
-        p: '1rem',
-      }}
+    // sx={{
+    //   boxSizing: 'border-box',
+    //   border: '4px solid #f5f5f5',
+    //   borderRadius: '10px',
+    //   p: '1rem',
+    // }}
     >
       <Grid container spacing={4}>
         <Grid item sx={{ flexGrow: 1, textAlign: 'center' }}>
-          <Typography variant="body1" style={{ fontWeight: 'bold', fontSize: '2rem' }}>
+          {/* <Typography variant="body1" style={{ fontWeight: 'bold', fontSize: '2rem' }}>
             Site Conditions
+          </Typography> */}
+          <Typography variant="h4">Site Conditions</Typography>
+          <Typography variant="body1">
+            This information is based on your location. Drainage class and Flooding frequency are
+            used to recommended cover crops. Update only as needed
           </Typography>
         </Grid>
         <Grid item container spacing={3}>
