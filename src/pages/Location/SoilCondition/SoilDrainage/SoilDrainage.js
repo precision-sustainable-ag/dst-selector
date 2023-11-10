@@ -75,7 +75,7 @@ const SoilDrainage = () => {
           item
           container
           sx={{
-            bgcolor: 'rgba(176, 236, 130, 0.3)',
+            // bgcolor: 'rgba(176, 236, 130, 0.3)',
             p: '1rem',
             mb: '1rem',
             borderTopLeftRadius: '15px', // Top left corner
