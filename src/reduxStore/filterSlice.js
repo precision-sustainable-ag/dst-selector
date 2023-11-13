@@ -46,7 +46,7 @@ export const toggleFilterValue = (value) => ({
 const filterReducer = (state = initialState, action = null) => {
   let filters = { ...state.filters };
   const value = action && action.payload && action.payload.value;
-
+  console.log(filters);
   switch (action.type) {
     case 'CLEAR_FILTERS':
       filters = {

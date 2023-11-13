@@ -31,7 +31,7 @@ const ProgressButtons = () => {
         break;
       case 1:
         // location selection state
-        setIsDisabledNext(filters.zone === 0 || addressRedux === '' || regionShorthand === '');
+        setIsDisabledNext(addressRedux === '' || regionShorthand === '');
         setToolTip(true);
         setIsDisabledBack(false);
         setIsDisabledRefresh(false);
