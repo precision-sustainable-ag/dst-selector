@@ -128,7 +128,6 @@ const Filters = ({ filters }) => {
   };
 
   const chipChange = (filterName, val) => {
-    console.log(filterName, val);
     dispatchRedux(filterToggle({ value: `${filterName}: ${val}` }));
     setSelected({ ...selected, whatever: 'rerender' });
   };
