@@ -299,6 +299,7 @@ const CropSidebar = ({
 
   const updateRegionRedux = (regionName) => {
     const selectedRegion = regionsRedux.filter((region) => region.shorthand === regionName)[0];
+    localStorage.setItem('regionId', selectedRegion.id);
     dispatchRedux(updateRegion({
       regionId: selectedRegion.id ?? '',
       regionShorthand: selectedRegion.shorthand ?? '',
