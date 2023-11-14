@@ -3,13 +3,13 @@
   validateAndBroadcastModalData validates that the day is between 1 and 31
 */
 
-import { Typography, Grid } from '@mui/material';
+import { Grid } from '@mui/material';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import WeatherPrecipitation from './WeatherPrecipitation/WeatherPrecipitation';
 import WeatherFrostDates from './WeatherFrostDates/WeatherFrostDates';
-import WeatherFrostFreeDays from './WeatherFrostFreeDays/WeatherFrostFreeDays';
+import SoilComposition from '../../pages/Location/SoilCondition/SoilComposition/SoilComposition';
 
 const WeatherConditions = () => {
   // redux vars
@@ -98,31 +98,17 @@ const WeatherConditions = () => {
   }, [ajaxInProgressRedux, weatherDataRedux]);
 
   return (
-    <Grid
-      container
-      spacing={1}
-      direction="column"
-      display="flex"
-      justifyContent="center"
-      alignItems="center"
-    >
-      <Grid item xs={12}>
-        <Typography variant="h4" align="left">
-          Climate Conditions
-        </Typography>
+    <>
+      <Grid item xs={12} md={10} lg={10}>
+        <SoilComposition />
       </Grid>
-      <Grid item xs={12}>
-        <Typography variant="body1">
-          This information is based on your location and average weather data, it is not used to filter recommended crops.
-        </Typography>
+      <Grid item xs={12} md={10} lg={10}>
+        <WeatherFrostDates />
       </Grid>
-
-      <WeatherFrostDates />
-
-      <WeatherPrecipitation currentMonthFull={currentMonthFull} />
-
-      <WeatherFrostFreeDays />
-    </Grid>
+      <Grid item xs={12} md={10} lg={10}>
+        <WeatherPrecipitation currentMonthFull={currentMonthFull} />
+      </Grid>
+    </>
   );
 };
 
