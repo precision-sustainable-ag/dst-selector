@@ -1080,7 +1080,12 @@ export const extractData = (attribute, from) => {
   let data;
   let dataType;
   if (from === 'infoSheet') {
-    data = attribute?.values[0]?.label ? attribute?.values[0]?.label : attribute?.values[0]?.value;
+    if (attribute?.values[0]?.label) {
+      return (
+        <Typography variant="body2">{attribute?.values[0]?.label}</Typography>
+      );
+    }
+    data = attribute?.values[0]?.value;
     dataType = attribute?.dataType.label;
   } else {
     data = attribute?.values[0];
