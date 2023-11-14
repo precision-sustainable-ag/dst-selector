@@ -110,7 +110,7 @@ const SoilDrainage = () => {
                         USDA NRCS Web Soil Survey
                       </a>
                       {' '}
-                      drainage classes; you may modify your soil drainage by clicking below.
+                      drainage classes.
                       {' '}
                       <a
                         href="https://www.nrcs.usda.gov/wps/portal/nrcs/detail/soils/ref/?cid=nrcs142p2_054253"

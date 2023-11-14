@@ -57,7 +57,7 @@ const WeatherFrostDates = () => {
                     NASA NLDAS-2
                   </a>
                   {' '}
-                  weather data; you may manually change this input.
+                  weather data.
                 </div>
               )}
             >
