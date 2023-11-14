@@ -50,7 +50,6 @@ const filterReducer = (state = initialState, action = null) => {
     case 'CLEAR_FILTERS':
       filters = {
         cropSearch: '',
-        zone: filters.zone,
       };
 
       return {
