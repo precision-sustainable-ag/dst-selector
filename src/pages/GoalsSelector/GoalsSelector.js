@@ -32,17 +32,21 @@ const GoalsSelector = () => {
   useEffect(() => {
     // if (from === 'table') {
     if (dateRange.startDate !== null && dateRange.endDate !== null) {
-      dispatchRedux(updateDateRange({
-        startDate: dateRange.startDate.toISOString().substring(0, 10),
-        endDate: dateRange.endDate.toISOString().substring(0, 10),
-      }));
+      dispatchRedux(
+        updateDateRange({
+          startDate: dateRange.startDate.toISOString().substring(0, 10),
+          endDate: dateRange.endDate.toISOString().substring(0, 10),
+        }),
+      );
     }
     // }
   }, [dateRange]);
 
   useEffect(() => {
     if (stateIdRedux && regionIdRedux) {
-      callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/goals?${query}`).then((data) => {
+      callCoverCropApi(
+        `https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/goals?${query}`,
+      ).then((data) => {
         setAllGoals(data.data);
       });
     }
@@ -57,35 +61,32 @@ const GoalsSelector = () => {
           </Typography>
         </Grid>
         <Grid item xs={12}>
-          <Typography variant="body2" align="center" color="secondary" gutterBottom>
+          <Typography variant="body1" align="center" gutterBottom>
             Select 1 to 3 goals in order of importance.
           </Typography>
         </Grid>
         <Grid item xs={12}>
-          <Typography variant="body2" align="center" color="secondary" gutterBottom>
+          <Typography variant="body1" align="center" gutterBottom>
             Tap and hold for more information.
           </Typography>
         </Grid>
         {allGoals?.length > 0 && (
-        <Grid container spacing={2} style={{ justifyContent: 'center' }}>
-          {allGoals.map((goal, key) => (
-            <Grid item key={key}>
-              <GoalTag
-                key={key}
-                goal={goal}
-                id={key}
-                goaltTitle={goal.label}
-                goalDescription={goal.description}
-              />
-            </Grid>
-          ))}
-        </Grid>
+          <Grid container spacing={2} style={{ justifyContent: 'center' }}>
+            {allGoals.map((goal, key) => (
+              <Grid item key={key}>
+                <GoalTag
+                  key={key}
+                  goal={goal}
+                  id={key}
+                  goaltTitle={goal.label}
+                  goalDescription={goal.description}
+                />
+              </Grid>
+            ))}
+          </Grid>
         )}
-        <PreviousCashCrop
-          setDateRange={setDateRange}
-        />
+        <PreviousCashCrop setDateRange={setDateRange} />
       </Grid>
-
     </Box>
   );
 };
