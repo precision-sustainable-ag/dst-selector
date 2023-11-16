@@ -26,7 +26,7 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
   const selectedBtns = selectedCropIdsRedux;
 
   return cropDataRedux
-    .sort((a, b) => a.inactive - b.inactive)
+    .sort((a, b) => (a.inactive || false) - (b.inactive || false))
     .map((crop, index) => (
       <TableRow
         key={`cropRow${index}`}

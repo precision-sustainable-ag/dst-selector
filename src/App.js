@@ -4,7 +4,10 @@
 */
 
 import {
-  Snackbar, Box, Container, ThemeProvider,
+  Snackbar,
+  Box,
+  Container,
+  ThemeProvider,
   StyledEngineProvider,
   responsiveFontSizes,
   adaptV4Theme,
@@ -22,7 +25,7 @@ import GoalsSelector from './pages/GoalsSelector/GoalsSelector';
 import Header from './pages/Header/Header';
 import Landing from './pages/Landing/Landing';
 import LocationComponent from './pages/Location/Location';
-import LocationConfirmation from './pages/Location/LocationConfirmation/LocationConfirmation';
+// import LocationConfirmation from './pages/Location/LocationConfirmation/SiteConditions';
 import { snackHandler } from './reduxStore/sharedSlice';
 import RouteNotFound from './pages/RouteNotFound/RouteNotFound';
 import Auth0ProviderWithHistory from './components/Auth/Auth0ProviderWithHistory/Auth0ProviderWithHistory';
@@ -41,6 +44,7 @@ import Profile from './pages/Profile/Profile';
 import './styles/App.scss';
 // bootstrap import
 import 'mdbreact/dist/css/mdb.css';
+import SiteConditions from './pages/Location/LocationConfirmation/SiteConditions';
 
 const store = configureStore();
 
@@ -116,20 +120,18 @@ const App = () => (
                 <Container disableGutters maxWidth={false}>
                   <Box mr={1} ml={1} mt={1} mb={1}>
                     <Switch>
-                      <Route
-                        path="/"
-                        render={() => (
-                          <LoadRelevantRoute />
-                        )}
-                        exact
-                      />
+                      <Route path="/" render={() => <LoadRelevantRoute />} exact />
                       <Route path="/explorer" component={CoverCropExplorer} exact />
                       <Route path="/about" component={About} exact />
                       <Route path="/help" component={Help} exact />
                       <Route path="/feedback" component={FeedbackComponent} exact />
                       <Route path="/profile" component={Profile} exact />
                       <Route path="/my-cover-crop-list" component={MyCoverCropListWrapper} exact />
-                      <Route path="/seeding-rate-calculator" component={SeedingRateCalculator} exact />
+                      <Route
+                        path="/seeding-rate-calculator"
+                        component={SeedingRateCalculator}
+                        exact
+                      />
                       <Route path="/data-dictionary" component={InformationSheetDictionary} exact />
                       <Route path="/license" render={() => <License licenseType="MIT" />} exact />
                       <Route
@@ -152,7 +154,6 @@ const App = () => (
       </Provider>
     </ThemeProvider>
   </StyledEngineProvider>
-
 );
 
 export default App;
@@ -162,29 +163,17 @@ const LoadRelevantRoute = () => {
 
   switch (progressRedux) {
     case 0:
-      return (
-        <Landing />
-      );
+      return <Landing />;
     case 1:
-      return (
-        <LocationComponent />
-      );
+      return <LocationComponent />;
     case 2:
-      return (
-        <LocationConfirmation />
-      );
+      return <SiteConditions />;
     case 3:
-      return (
-        <LocationConfirmation />
-      );
+      return null;
     case 4:
-      return (
-        <GoalsSelector />
-      );
+      return <GoalsSelector />;
     case 5:
-      return (
-        <CropSelector />
-      );
+      return <CropSelector />;
 
     default:
       return <RouteNotFound />;
@@ -222,6 +211,5 @@ const SnackbarComponent = () => {
       message={snackMessageRedux}
       sx={{ marginBottom: '40px' }}
     />
-
   );
 };

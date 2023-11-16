@@ -1,10 +1,16 @@
-import { Chip, Grid } from '@mui/material';
+import {
+  Chip, Grid, Box, useTheme, useMediaQuery,
+} from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateDrainageClass as updateDrainageClassRedux } from '../../../../reduxStore/soilSlice';
 
 const RenderDrainageClasses = ({ tilingCheck, drainage = [] }) => {
   const dispatchRedux = useDispatch();
+
+  // theme
+  const uiTheme = useTheme();
+  const isMobile = useMediaQuery(uiTheme.breakpoints.down('sm'));
 
   // redux vars
   const soilDataRedux = useSelector((stateRedux) => stateRedux.soilData.soilData);
@@ -35,7 +41,9 @@ const RenderDrainageClasses = ({ tilingCheck, drainage = [] }) => {
   };
 
   useEffect(() => {
-    let drainages = soilDataRedux.drainageClass ? drainageArray.indexOf(soilDataRedux.drainageClass[0]) : -1;
+    let drainages = soilDataRedux.drainageClass
+      ? drainageArray.indexOf(soilDataRedux.drainageClass[0])
+      : -1;
     if (tilingCheck) {
       setPreviousDrainage(drainages);
       if (drainages === 2) {
@@ -65,23 +73,26 @@ const RenderDrainageClasses = ({ tilingCheck, drainage = [] }) => {
 
   return (
     <Grid
-      container
       item
-      spacing={2}
       display="flex"
+      flexDirection={isMobile ? 'column' : 'row'}
+      flexWrap="wrap"
       justifyContent="center"
-      alignItems="center"
+      alignItems={isMobile ? 'center' : 'flex-start'}
+      style={{ marginRight: '1rem' }}
+      flexBasis="0"
     >
       {drainageArray.map((d, index) => (
-        <Grid item key={index}>
+        <Box key={index} sx={{ width: isMobile ? '100%' : 'auto' }}>
           <Chip
             label={d}
             color={drainageVal.includes(index) ? 'primary' : 'secondary'}
+            style={{ margin: '0.3rem' }}
             onClick={() => {
               updateDrainageClass(index);
             }}
           />
-        </Grid>
+        </Box>
       ))}
     </Grid>
   );
