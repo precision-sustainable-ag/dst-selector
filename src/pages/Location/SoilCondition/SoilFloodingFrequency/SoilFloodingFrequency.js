@@ -39,7 +39,6 @@ const SoilFloodingFrequency = () => {
           item
           container
           sx={{
-            bgcolor: 'rgba(176, 236, 130, 0.3)',
             p: '1rem',
             mb: '1rem',
             height: '100%',
@@ -74,8 +73,7 @@ const SoilFloodingFrequency = () => {
                         USDA NRCS Web Soil Survey
                       </a>
                       , where “flood” refers to the temporary inundation of an area caused by
-                      overflowing streams, by runoff from adjacent slopes, or by tides. You may
-                      modify your flooding frequency by clicking below.
+                      overflowing streams, by runoff from adjacent slopes, or by tides.
                       {' '}
                       <a
                         href="https://www.nrcs.usda.gov/wps/portal/nrcs/detail/soils/ref/?cid=nrcs142p2_054253"

@@ -35,7 +35,7 @@ const WeatherFrostDates = () => {
               title={(
                 <div>
                   Average dates of the first and last frosts for your location, based on frost dates
-                  for the last five years from the Precision Sustainable Agriculture Weather API
+                  for the last thirty years from the Precision Sustainable Agriculture Weather API
                   powered by
                   {' '}
                   <a
@@ -57,7 +57,7 @@ const WeatherFrostDates = () => {
                     NASA NLDAS-2
                   </a>
                   {' '}
-                  weather data; you may manually change this input.
+                  weather data.
                 </div>
               )}
             >

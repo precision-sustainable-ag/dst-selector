@@ -37,70 +37,60 @@ const ProgressButtonsInner = ({
   };
 
   return (
-    <Stack
-      direction="row"
-      style={{ width: '100%' }}
-    >
+    <Stack direction="row" style={{ width: '100%' }}>
       <LightButton
         style={{
           maxWidth: '90px',
           maxHeight: '35px',
           minWidth: '70px',
           fontSize: '13px',
-          marginLeft: progressRedux === 5 ? '-25px' : '0px',
+          marginLeft: progressRedux === 4 ? '-25px' : '0px',
         }}
         onClick={() => changeProgress('decrement')}
         disabled={isDisabledBack}
       >
         BACK
       </LightButton>
-      {toolTip && isDisabledNext
-        ? (
-          <Tooltip
-            enterTouchDelay={0}
-            title={(<p>{`Please Select a ${councilShorthandRedux === 'MCCC' ? 'County' : 'Zone'}.`}</p>)}
-          >
-            <span>
-              <LightButton
-                style={{
-                  maxWidth: '90px',
-                  maxHeight: '35px',
-                  minWidth: '70px',
-                  fontSize: '13px',
-                  marginLeft: '3%',
-                }}
-                onClick={() => changeProgress('increment')}
-                disabled={isDisabledNext || progressRedux === 5}
-              >
-                NEXT
-              </LightButton>
-            </span>
-          </Tooltip>
-        )
-        : (
-          <Badge
-            badgeContent={selectedCropIdsRedux.length}
-            color="error"
-          >
+      {toolTip && isDisabledNext ? (
+        <Tooltip
+          enterTouchDelay={0}
+          title={
+            <p>{`Please Select a ${councilShorthandRedux === 'MCCC' ? 'County' : 'Zone'}.`}</p>
+          }
+        >
+          <span>
             <LightButton
               style={{
                 maxWidth: '90px',
                 maxHeight: '35px',
-                minWidth: progressRedux === 5 ? '130px' : '70px',
+                minWidth: '70px',
                 fontSize: '13px',
                 marginLeft: '3%',
               }}
-              onClick={() => (progressRedux === 5 ? setMyCoverCropActivationFlag() : changeProgress('increment'))}
-              disabled={isDisabledNext || (progressRedux === 5 && selectedCropIdsRedux.length === 0)}
+              onClick={() => changeProgress('increment')}
+              disabled={isDisabledNext || progressRedux === 4}
             >
-              {
-              progressRedux === 5
-                ? 'VIEW MY LIST'
-                : 'NEXT'
-            }
+              NEXT
             </LightButton>
-          </Badge>
-        )}
+          </span>
+        </Tooltip>
+      ) : (
+        <Badge badgeContent={selectedCropIdsRedux.length} color="error">
+          <LightButton
+            style={{
+              maxWidth: '90px',
+              maxHeight: '35px',
+              minWidth: progressRedux === 4 ? '130px' : '70px',
+              fontSize: '13px',
+              marginLeft: '3%',
+            }}
+            onClick={() => (progressRedux === 4 ? setMyCoverCropActivationFlag() : changeProgress('increment'))}
+            disabled={isDisabledNext || (progressRedux === 4 && selectedCropIdsRedux.length === 0)}
+          >
+            {progressRedux === 4 ? 'VIEW MY LIST' : 'NEXT'}
+          </LightButton>
+        </Badge>
+      )}
 
       <LightButton
         style={{

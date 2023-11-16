@@ -24,7 +24,9 @@ const SoilDrainage = () => {
   const soilDataRedux = useSelector((stateRedux) => stateRedux.soilData.soilData);
   const soilDataOriginalRedux = useSelector((stateRedux) => stateRedux.soilData.soilDataOriginal);
   const selectedCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCropIds);
-  const myCoverCropListLocationRedux = useSelector((stateRedux) => stateRedux.sharedData.myCoverCropListLocation);
+  const myCoverCropListLocationRedux = useSelector(
+    (stateRedux) => stateRedux.sharedData.myCoverCropListLocation,
+  );
 
   // useState vars
   const [showTiling, setShowTiling] = useState(false);
@@ -73,7 +75,6 @@ const SoilDrainage = () => {
           item
           container
           sx={{
-            bgcolor: 'rgba(176, 236, 130, 0.3)',
             p: '1rem',
             mb: '1rem',
             borderTopLeftRadius: '15px', // Top left corner
@@ -108,7 +109,7 @@ const SoilDrainage = () => {
                         USDA NRCS Web Soil Survey
                       </a>
                       {' '}
-                      drainage classes; you may modify your soil drainage by clicking below.
+                      drainage classes.
                       {' '}
                       <a
                         href="https://www.nrcs.usda.gov/wps/portal/nrcs/detail/soils/ref/?cid=nrcs142p2_054253"
@@ -195,7 +196,7 @@ const SoilDrainage = () => {
                   <InvertColors />
                 </Box>
               </Grid>
-              <Grid item container direction="column" xs={6}>
+              <Grid item container direction="column" xs={6} lg={3}>
                 <Grid item>
                   <Typography variant="body1">
                     <span style={{ fontWeight: 'bold', fontSize: '1rem' }}>Tile Drainage</span>
