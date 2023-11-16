@@ -1,4 +1,4 @@
-/* eslint-disable */
+/* eslint-disable no-alert */
 /*
   This is the main location widget component
   styled using ../../styles/location.scss
@@ -10,7 +10,6 @@ import {
 import React, {
   useEffect,
   useState,
-  useCallback,
   useRef,
   useMemo,
 } from 'react';
@@ -32,7 +31,7 @@ import { snackHandler } from '../../reduxStore/sharedSlice';
 import {
   updateAvgFrostDates, updateAvgPrecipAnnual, updateAvgPrecipCurrentMonth, updateFrostFreeDays,
 } from '../../reduxStore/weatherSlice';
-import { setSelectFieldId, updateField, updateUserMarker } from '../../reduxStore/userSlice';
+import { setSelectFieldId, updateField } from '../../reduxStore/userSlice';
 import UserFieldList from './UserFieldList/UserFieldList';
 import UserFieldDialog, { initFieldDialogState } from './UserFieldDialog/UserFieldDialog';
 
@@ -45,6 +44,7 @@ const Location = () => {
   // redux vars
   const markersRedux = useSelector((stateRedux) => stateRedux.addressData.markers);
   const regionsRedux = useSelector((stateRedux) => stateRedux.mapData.regions);
+  const regionShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.regionShorthand);
   const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
   const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
@@ -52,11 +52,9 @@ const Location = () => {
   const accessTokenRedux = useSelector((stateRedux) => stateRedux.userData.accessToken);
   const userFieldRedux = useSelector((stateRedux) => stateRedux.userData.field);
   const selectedFieldIdRedux = useSelector((stateRedux) => stateRedux.userData.selectedFieldId);
-  const userMarkerRedux = useSelector((stateRedux) => stateRedux.userData.userMarker);
-
 
   // useState vars
-  const [regionShorthand, setRegionShorthand] = useState('');
+  const [regionShorthand, setRegionShorthand] = useState(regionShorthandRedux);
   const [selectedToEditSite, setSelectedToEditSite] = useState({});
   const [currentGeometry, setCurrentGeometry] = useState([]);
   const [fieldDialogState, setFieldDialogState] = useState(initFieldDialogState);
@@ -81,7 +79,6 @@ const Location = () => {
       if (selectedUserField.geometry.type === 'GeometryCollection') return drawAreaFromGeoCollection(selectedUserField);
     }
     // reset default field to state capitol
-    // FIXME: WARNING: this might cause the map to reset to capitol
     return [buildPoint(statesLatLongDict[stateLabelRedux][1], statesLatLongDict[stateLabelRedux][0])];
   };
 
@@ -121,17 +118,17 @@ const Location = () => {
       const currentField = userFieldRedux.data[userFieldRedux.data.length - 1];
       return getFieldLatLng(currentField);
     }
-      if (userMarkerRedux) {
-        return [userMarkerRedux[0], userMarkerRedux[1]];
-      }
-      if (stateLabelRedux) {
-        return [statesLatLongDict[stateLabelRedux][0], statesLatLongDict[stateLabelRedux][1]];
-      }
-      return [47, -122];
+    if (markersRedux) {
+      return [markersRedux[0][0], markersRedux[0][1]];
+    }
+    if (stateLabelRedux) {
+      return [statesLatLongDict[stateLabelRedux][0], statesLatLongDict[stateLabelRedux][1]];
+    }
+    return [47, -122];
   }, [stateLabelRedux]);
 
   // when map marker changes, set addressRedux, update regionRedux based on zipcode
-  useEffect(() => {    
+  useEffect(() => {
     if (Object.keys(selectedToEditSite).length > 0) {
       const {
         latitude,
@@ -141,11 +138,8 @@ const Location = () => {
         county,
       } = selectedToEditSite;
 
-      // if user not logged in save marker in redux
-      if (!isAuthenticated) {
-        dispatchRedux(updateUserMarker([latitude, longitude]));
-      }
-  
+      if (markersRedux && latitude === markersRedux[0][0] && longitude === markersRedux[0][1]) return;
+
       // if is adding a new point, open dialog
       if (isAuthenticated && isAddingPoint && latitude) {
         const currentSelectedField = selectedUserField?.geometry;
@@ -293,8 +287,9 @@ const Location = () => {
         }
       }
     };
-
-    getDetails();
+    if (markersRedux) {
+      getDetails();
+    }
   }, [markersRedux]);
 
   // update userFieldRedux and selectedField when component will unmount

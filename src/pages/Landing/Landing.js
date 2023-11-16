@@ -20,7 +20,7 @@ import ReactGA from 'react-ga';
 import { RegionSelectorMap } from '@psa/dst.ui.region-selector-map';
 import { callCoverCropApi } from '../../shared/constants';
 import { updateRegions, updateStateInfo } from '../../reduxStore/mapSlice';
-import { updateUserMarker } from '../../reduxStore/userSlice';
+// import { updateLocation } from '../../reduxStore/addressSlice';
 
 const Landing = () => {
   const dispatchRedux = useDispatch();
@@ -89,10 +89,10 @@ const Landing = () => {
   // update stateRedux and regionsRedux based on selectState change
   useEffect(() => {
     // is there a chance selectedState is {} ?
-    if (Object.keys(selectedState).length !== 0 && stateIdRedux !== selectedState.id) {
+    if (Object.keys(selectedState).length !== 0) {
       updateStateRedux(selectedState);
-      // reset user marker here
-      dispatchRedux(updateUserMarker(null));
+      // TODO: reset user marker here
+      // if (stateIdRedux !== selectedState.id) { dispatchRedux(updateLocation({ address: '', markers: null, county: null })); }
       const { id } = selectedState;
       fetch(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${id}/regions`)
         .then((res) => res.json())
