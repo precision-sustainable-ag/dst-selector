@@ -19,8 +19,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import ReactGA from 'react-ga';
 import { RegionSelectorMap } from '@psa/dst.ui.region-selector-map';
 import { callCoverCropApi } from '../../shared/constants';
-import { updateRegions, updateStateInfo } from '../../reduxStore/mapSlice';
-// import { updateLocation } from '../../reduxStore/addressSlice';
+import { updateRegion, updateRegions, updateStateInfo } from '../../reduxStore/mapSlice';
+import { updateLocation } from '../../reduxStore/addressSlice';
 
 const Landing = () => {
   const dispatchRedux = useDispatch();
@@ -91,8 +91,11 @@ const Landing = () => {
     // is there a chance selectedState is {} ?
     if (Object.keys(selectedState).length !== 0) {
       updateStateRedux(selectedState);
-      // TODO: reset user marker here
-      // if (stateIdRedux !== selectedState.id) { dispatchRedux(updateLocation({ address: '', markers: null, county: null })); }
+      // TODO: reset user marker for history fields?
+      if (stateIdRedux !== selectedState.id) {
+        dispatchRedux(updateLocation({ address: '', markers: null, county: null }));
+        dispatchRedux(updateRegion({ regionId: null, regionShorthand: null }));
+      }
       const { id } = selectedState;
       fetch(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${id}/regions`)
         .then((res) => res.json())
