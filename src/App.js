@@ -169,10 +169,8 @@ const LoadRelevantRoute = () => {
     case 2:
       return <SiteConditions />;
     case 3:
-      return null;
-    case 4:
       return <GoalsSelector />;
-    case 5:
+    case 4:
       return <CropSelector />;
 
     default:
