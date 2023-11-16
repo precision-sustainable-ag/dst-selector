@@ -5,10 +5,9 @@
   styled using ../../styles/soilConditions.scss
 */
 
-import { Typography, Grid } from '@mui/material';
+import { Grid } from '@mui/material';
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import SoilComposition from './SoilComposition/SoilComposition';
 import SoilDrainage from './SoilDrainage/SoilDrainage';
 import SoilFloodingFrequency from './SoilFloodingFrequency/SoilFloodingFrequency';
 import { updateSoilData, updateSoilDataOriginal } from '../../../reduxStore/soilSlice';
@@ -19,7 +18,7 @@ const SoilCondition = () => {
   // redux vars
   const markersRedux = useSelector((stateRedux) => stateRedux.addressData.markers);
   const soilDataOriginalRedux = useSelector((stateRedux) => stateRedux.soilData.soilDataOriginal);
-  const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
+  // const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
 
   // useState vars
@@ -111,18 +110,22 @@ const SoilCondition = () => {
           });
           drainageClasses = drainageClasses.filter((el) => el != null);
 
-          dispatchRedux(updateSoilData({
-            mapUnitName: mapUnitString,
-            drainageClass: drainageClasses,
-            floodingFrequency: floodingClasses,
-            latLong: { lat, lon },
-          }));
-          dispatchRedux(updateSoilDataOriginal({
-            mapUnitName: mapUnitString,
-            drainageClass: drainageClasses,
-            floodingFrequency: floodingClasses,
-            latLong: { lat, lon },
-          }));
+          dispatchRedux(
+            updateSoilData({
+              mapUnitName: mapUnitString,
+              drainageClass: drainageClasses,
+              floodingFrequency: floodingClasses,
+              latLong: { lat, lon },
+            }),
+          );
+          dispatchRedux(
+            updateSoilDataOriginal({
+              mapUnitName: mapUnitString,
+              drainageClass: drainageClasses,
+              floodingFrequency: floodingClasses,
+              latLong: { lat, lon },
+            }),
+          );
         })
         // eslint-disable-next-line no-console
         .catch((error) => console.error('SSURGO FETCH ERROR', error));
@@ -134,7 +137,9 @@ const SoilCondition = () => {
     if (stateLabelRedux === 'Ontario') return;
 
     if (soilDataOriginalRedux?.latLong) {
-      if (!(soilDataOriginalRedux.latLong?.lat === lat && soilDataOriginalRedux.latLong?.lon === lon)) {
+      if (
+        !(soilDataOriginalRedux.latLong?.lat === lat && soilDataOriginalRedux.latLong?.lon === lon)
+      ) {
         getSSURGOData(lat, lon);
       }
     } else {
@@ -143,32 +148,8 @@ const SoilCondition = () => {
   }, [markersRedux, soilDataOriginalRedux?.latLong]);
 
   return (
-    <Grid
-      item
-      container
-      spacing={1}
-      direction="column"
-      display="flex"
-      justifyContent="center"
-      alignItems="center"
-    >
-      <Grid item xs={12}>
-        <Typography variant="h4">
-          Soil Conditions
-        </Typography>
-      </Grid>
-      <Grid item xs={12}>
-        <Typography variant="body1">
-          This information is based on your location and the
-          {' '}
-          {` ${councilShorthandRedux} dataset`}
-          , update only as needed.
-        </Typography>
-      </Grid>
-      <Grid item xs={12}>
-        <SoilComposition />
-      </Grid>
-      <Grid item xs={12}>
+    <Grid item container lg={10}>
+      <Grid item xs={12} sx={{ mb: '1rem' }}>
         <SoilDrainage />
       </Grid>
       <Grid item xs={12}>

@@ -1,10 +1,16 @@
 import React from 'react';
-import { Chip, Grid } from '@mui/material';
+import {
+  Chip, Grid, useTheme, useMediaQuery, Box,
+} from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateFloodingFrequency as updateFloodingFrequencyRedux } from '../../../../reduxStore/soilSlice';
 
 const RenderFloodingOptions = ({ flooding = [''] }) => {
   const dispatchRedux = useDispatch();
+
+  // theme
+  const uiTheme = useTheme();
+  const isMobile = useMediaQuery(uiTheme.breakpoints.down('sm'));
 
   // redux vars
   const soilDataRedux = useSelector((stateRedux) => stateRedux.soilData.soilData);
@@ -35,22 +41,26 @@ const RenderFloodingOptions = ({ flooding = [''] }) => {
   };
   return (
     <Grid
-      container
-      spacing={2}
+      item
       display="flex"
+      flexDirection={isMobile ? 'column' : 'row'}
+      flexWrap="wrap"
       justifyContent="center"
-      alignItems="center"
+      alignItems={isMobile ? 'center' : 'flex-start'}
+      style={{ marginRight: '1rem' }}
+      flexBasis="0"
     >
       {floodingOptions.map((f, index) => (
-        <Grid item key={index}>
+        <Box key={index} sx={{ width: isMobile ? '100%' : 'auto' }}>
           <Chip
             label={f}
             color={flooding.includes(f) ? 'primary' : 'secondary'}
             onClick={() => {
               updateFloodingFrequency(f);
             }}
+            style={{ margin: '0.3rem' }}
           />
-        </Grid>
+        </Box>
       ))}
     </Grid>
   );
