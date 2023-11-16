@@ -6,6 +6,8 @@ const initialState = {
     date: null,
   },
   selectedFieldId: null,
+  userMarker: null,
+  userRegion: null,
 };
 
 export const updateAccessToken = (token) => ({
@@ -28,6 +30,16 @@ export const setSelectFieldId = (fieldId) => ({
   payload: { fieldId },
 });
 
+export const updateUserMarker = (marker) => ({
+  type: 'UPDATE_USER_MARKER',
+  payload: { marker },
+});
+
+export const updateUserRegion = (region) => ({
+  type: 'UPDATE_USER_REGION',
+  payload: { region },
+});
+
 const userReducer = (state = initialState, action = null) => {
   switch (action.type) {
     case 'UPDATE_ACCESSTOKEN':
@@ -45,6 +57,10 @@ const userReducer = (state = initialState, action = null) => {
       };
     case 'SELECT_FIELD':
       return { ...state, selectedFieldId: action.payload.fieldId };
+    case 'UPDATE_USER_MARKER':
+      return { ...state, userMarker: action.payload.marker };
+    case 'UPDATE_USER_REGION':
+      return { ...state, userRegion: action.payload.region };
     default:
       return { ...state };
   }
