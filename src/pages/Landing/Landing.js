@@ -109,6 +109,13 @@ const Landing = () => {
           }
 
           dispatchRedux(updateRegions(fetchedRegions));
+
+          // set default region for Selector and Explorer
+          localStorage.setItem('regionId', fetchedRegions[0].id ?? '');
+          dispatchRedux(updateRegion({
+            regionId: fetchedRegions[0].id ?? '',
+            regionShorthand: fetchedRegions[0].shorthand ?? '',
+          }));
         })
         .catch((err) => {
           // eslint-disable-next-line no-console
