@@ -3,11 +3,12 @@ import {
 } from '@mui/material';
 import { Clear, Search } from '@mui/icons-material';
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { cropSearch } from '../../../reduxStore/filterSlice';
 
-const CoverCropSearch = ({ sfilters }) => {
+const CoverCropSearch = () => {
   const dispatchRedux = useDispatch();
+  const cropSearchRedux = useSelector((stateRedux) => stateRedux.filterData.cropSearch);
   const clearCoverCropSearch = (value = '') => {
     dispatchRedux(cropSearch(value));
   };
@@ -24,13 +25,13 @@ const CoverCropSearch = ({ sfilters }) => {
               Cover Crop Name
             </Typography>
           )}
-          value={sfilters.cropSearch}
+          value={cropSearchRedux}
           onChangeCapture={(e) => dispatchRedux(cropSearch(e.target.value))}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
                 <IconButton onClick={() => clearCoverCropSearch()} size="small">
-                  {sfilters.cropSearch.length > 0 && <Clear fontSize="inherit" />}
+                  {cropSearchRedux?.length > 0 && <Clear fontSize="inherit" />}
                 </IconButton>
               </InputAdornment>
             ),

@@ -20,7 +20,7 @@ const SidebarFilter = ({
 
   return (
     <>
-      {filter.description !== null ? (
+      {filter.description !== '' ? (
         <Tooltip
           arrow
           placement="right-start"
