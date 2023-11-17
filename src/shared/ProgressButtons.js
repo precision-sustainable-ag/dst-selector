@@ -32,6 +32,7 @@ const ProgressButtons = () => {
       case 1:
         // location selection state
         // TODO: discuss should sfilter be used here or state.lastZone
+        // FIXME: in Ontario since there's no addressRedux the next would always be disabled
         setIsDisabledNext(sfilters.zone === 0 || addressRedux === '' || regionShorthand === '');
         setToolTip(true);
         setIsDisabledBack(false);
