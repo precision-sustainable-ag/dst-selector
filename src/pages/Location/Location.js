@@ -413,12 +413,12 @@ const LocationComponent = () => {
               item
               xs={12}
               container
-              spacing={2}
+              spacing={1}
               direction={isMobile ? 'column' : 'row'}
               alignItems="center"
               height="auto"
             >
-              <Grid item xs={12} lg={6}>
+              <Grid item xs={12} lg={6} alignSelf={isMobile ? 'flex-start' : 'center'}>
                 <PlantHardinessZone
                   regionShorthand={regionShorthand}
                   setRegionShorthand={setRegionShorthand}
@@ -443,7 +443,7 @@ const LocationComponent = () => {
         <Grid
           item
           container
-          lg={8}
+          lg={7}
           md={6}
           sm={12}
           justifyContent="center"
