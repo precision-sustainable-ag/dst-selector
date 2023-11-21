@@ -24,7 +24,7 @@ import CropSelector from './pages/CropSelector/CropSelector';
 import GoalsSelector from './pages/GoalsSelector/GoalsSelector';
 import Header from './pages/Header/Header';
 import Landing from './pages/Landing/Landing';
-import LocationComponent from './pages/Location/Location';
+import Location from './pages/Location/Location';
 // import LocationConfirmation from './pages/Location/LocationConfirmation/SiteConditions';
 import { snackHandler } from './reduxStore/sharedSlice';
 import RouteNotFound from './pages/RouteNotFound/RouteNotFound';
@@ -165,7 +165,9 @@ const LoadRelevantRoute = () => {
     case 0:
       return <Landing />;
     case 1:
-      return <LocationComponent />;
+      return (
+        <Location />
+      );
     case 2:
       return <SiteConditions />;
     case 3:
