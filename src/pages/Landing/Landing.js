@@ -19,7 +19,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import ReactGA from 'react-ga';
 import { RegionSelectorMap } from '@psa/dst.ui.region-selector-map';
 import { callCoverCropApi } from '../../shared/constants';
-import { updateRegions, updateRegion, updateStateInfo } from '../../reduxStore/mapSlice';
+import { updateRegion, updateRegions, updateStateInfo } from '../../reduxStore/mapSlice';
+import { updateLocation } from '../../reduxStore/addressSlice';
 
 const Landing = () => {
   const dispatchRedux = useDispatch();
@@ -29,7 +30,7 @@ const Landing = () => {
   const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
   const consentRedux = useSelector((stateRedux) => stateRedux.userData.consent);
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
-  // const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
+  const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
 
   // useState vars
   // const [containerHeight, setContainerHeight] = useState(height);
@@ -91,6 +92,11 @@ const Landing = () => {
     // is there a chance selectedState is {} ?
     if (Object.keys(selectedState).length !== 0) {
       updateStateRedux(selectedState);
+      // TODO: reset user marker for history fields?
+      if (stateIdRedux !== selectedState.id) {
+        dispatchRedux(updateLocation({ address: '', markers: null, county: null }));
+        dispatchRedux(updateRegion({ regionId: null, regionShorthand: null }));
+      }
       const { id } = selectedState;
       fetch(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${id}/regions`)
         .then((res) => res.json())
@@ -105,13 +111,14 @@ const Landing = () => {
 
           dispatchRedux(updateRegions(fetchedRegions));
 
-          // if (regionIdRedux) {
-          localStorage.setItem('regionId', fetchedRegions[0].id ?? '');
-          dispatchRedux(updateRegion({
-            regionId: fetchedRegions[0].id ?? '',
-            regionShorthand: fetchedRegions[0].shorthand ?? '',
-          }));
-          // }
+          // set default region for Selector and Explorer
+          if (!regionIdRedux) {
+            localStorage.setItem('regionId', fetchedRegions[0].id ?? '');
+            dispatchRedux(updateRegion({
+              regionId: fetchedRegions[0].id ?? '',
+              regionShorthand: fetchedRegions[0].shorthand ?? '',
+            }));
+          }
         })
         .catch((err) => {
           // eslint-disable-next-line no-console

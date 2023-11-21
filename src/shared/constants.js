@@ -1146,6 +1146,7 @@ export const buildHistory = (
   fieldId,
 ) => {
   const history = () => {
+    // temporarily we don't save region in user history
     const historyWithoutRegion = {
       json: {
         state: {
@@ -1163,18 +1164,6 @@ export const buildHistory = (
       },
       schemaId: 1,
     };
-    if (regionId) {
-      return {
-        ...historyWithoutRegion,
-        json: {
-          ...historyWithoutRegion.json,
-          region: {
-            id: regionId,
-            shorthand: regionShorthand,
-          },
-        },
-      };
-    }
     return historyWithoutRegion;
   };
 
