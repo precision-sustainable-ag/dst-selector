@@ -4,15 +4,8 @@
   styled using ../../styles/location.scss
 */
 
-import {
-  Typography, Grid, Container,
-} from '@mui/material';
-import React, {
-  useEffect,
-  useState,
-  useRef,
-  useMemo,
-} from 'react';
+import { Typography, Grid, Box } from '@mui/material';
+import React, { useEffect, useState, useRef, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Search } from '@mui/icons-material';
 import moment from 'moment';
@@ -21,15 +14,22 @@ import mapboxgl from 'mapbox-gl';
 import { useAuth0 } from '@auth0/auth0-react';
 import statesLatLongDict from '../../shared/stateslatlongdict';
 import {
-  abbrRegion, reverseGEO, callCoverCropApi, getFields,
-  buildPoint, drawAreaFromGeoCollection,
+  abbrRegion,
+  reverseGEO,
+  callCoverCropApi,
+  getFields,
+  buildPoint,
+  drawAreaFromGeoCollection,
 } from '../../shared/constants';
 import PlantHardinessZone from '../CropSidebar/PlantHardinessZone/PlantHardinessZone';
 import { updateLocation } from '../../reduxStore/addressSlice';
 import { updateRegion } from '../../reduxStore/mapSlice';
 import { snackHandler } from '../../reduxStore/sharedSlice';
 import {
-  updateAvgFrostDates, updateAvgPrecipAnnual, updateAvgPrecipCurrentMonth, updateFrostFreeDays,
+  updateAvgFrostDates,
+  updateAvgPrecipAnnual,
+  updateAvgPrecipCurrentMonth,
+  updateFrostFreeDays,
 } from '../../reduxStore/weatherSlice';
 import { setSelectFieldId, updateField } from '../../reduxStore/userSlice';
 import UserFieldList from './UserFieldList/UserFieldList';
@@ -59,10 +59,10 @@ const Location = () => {
   const [currentGeometry, setCurrentGeometry] = useState([]);
   const [fieldDialogState, setFieldDialogState] = useState(initFieldDialogState);
   const [selectedUserField, setSelectedUserField] = useState(
-    userFieldRedux?.data.filter((field) => field.id === selectedFieldIdRedux)[0]
-     || (userFieldRedux && userFieldRedux.data.length
-       ? userFieldRedux.data[userFieldRedux.data.length - 1]
-       : {}),
+    userFieldRedux?.data.filter((field) => field.id === selectedFieldIdRedux)[0] ||
+      (userFieldRedux && userFieldRedux.data.length
+        ? userFieldRedux.data[userFieldRedux.data.length - 1]
+        : {}),
   );
   // use a state to control if currently is adding a point
   const [isAddingPoint, setIsAddingPoint] = useState(true);
@@ -76,10 +76,13 @@ const Location = () => {
   const getFeatures = () => {
     if (userFields.length > 0 && Object.keys(selectedUserField).length !== 0) {
       if (selectedUserField.geometry.type === 'Point') return [selectedUserField];
-      if (selectedUserField.geometry.type === 'GeometryCollection') return drawAreaFromGeoCollection(selectedUserField);
+      if (selectedUserField.geometry.type === 'GeometryCollection')
+        return drawAreaFromGeoCollection(selectedUserField);
     }
     // reset default field to state capitol
-    return [buildPoint(statesLatLongDict[stateLabelRedux][1], statesLatLongDict[stateLabelRedux][0])];
+    return [
+      buildPoint(statesLatLongDict[stateLabelRedux][1], statesLatLongDict[stateLabelRedux][0]),
+    ];
   };
 
   // set map features, update selectedFieldIdRedux
@@ -92,11 +95,16 @@ const Location = () => {
 
   // update regionShorthandRef
   useEffect(() => {
-    localStorage.setItem('regionId', regionsRedux.filter((region) => region.shorthand === regionShorthand)[0]?.id);
-    dispatchRedux(updateRegion({
-      regionId: regionsRedux.filter((region) => region.shorthand === regionShorthand)[0]?.id,
-      regionShorthand,
-    }));
+    localStorage.setItem(
+      'regionId',
+      regionsRedux.filter((region) => region.shorthand === regionShorthand)[0]?.id,
+    );
+    dispatchRedux(
+      updateRegion({
+        regionId: regionsRedux.filter((region) => region.shorthand === regionShorthand)[0]?.id,
+        regionShorthand,
+      }),
+    );
   }, [regionShorthand]);
 
   // set map initial lat lng
@@ -130,36 +138,37 @@ const Location = () => {
   // when map marker changes, set addressRedux, update regionRedux based on zipcode
   useEffect(() => {
     if (Object.keys(selectedToEditSite).length > 0) {
-      const {
-        latitude,
-        longitude,
-        address,
-        zipCode,
-        county,
-      } = selectedToEditSite;
+      const { latitude, longitude, address, zipCode, county } = selectedToEditSite;
 
-      if (markersRedux && latitude === markersRedux[0][0] && longitude === markersRedux[0][1]) return;
+      if (markersRedux && latitude === markersRedux[0][0] && longitude === markersRedux[0][1])
+        return;
 
       // if is adding a new point, open dialog
       if (isAuthenticated && isAddingPoint && latitude) {
         const currentSelectedField = selectedUserField?.geometry;
-        if ((!currentSelectedField && latitude !== statesLatLongDict[stateLabelRedux][0])
-            || (currentSelectedField?.type === 'Point' && latitude !== currentSelectedField?.coordinates[1])
-            || (currentSelectedField?.type === 'GeometryCollection' && latitude !== currentSelectedField?.geometries[0].coordinates[1])
+        if (
+          (!currentSelectedField && latitude !== statesLatLongDict[stateLabelRedux][0]) ||
+          (currentSelectedField?.type === 'Point' &&
+            latitude !== currentSelectedField?.coordinates[1]) ||
+          (currentSelectedField?.type === 'GeometryCollection' &&
+            latitude !== currentSelectedField?.geometries[0].coordinates[1])
         ) {
           setFieldDialogState({
-            ...fieldDialogState, open: true, actionType: 'add', areaType: 'Point',
+            ...fieldDialogState,
+            open: true,
+            actionType: 'add',
+            areaType: 'Point',
           });
         }
       }
 
-      dispatchRedux(updateLocation(
-        {
+      dispatchRedux(
+        updateLocation({
           address,
           markers: [[latitude, longitude]],
           county,
-        },
-      ));
+        }),
+      );
 
       if (councilShorthandRedux === 'MCCC') {
         // if council is MCCC, change selectedRegion based on county
@@ -178,21 +187,27 @@ const Location = () => {
             if (councilShorthandRedux !== 'MCCC') {
               setRegionShorthand(zone);
             }
-            dispatchRedux(snackHandler({
-              snackOpen: true,
-              snackMessage: 'Your location has been saved.',
-            }));
+            dispatchRedux(
+              snackHandler({
+                snackOpen: true,
+                snackMessage: 'Your location has been saved.',
+              }),
+            );
           })
           .catch((err) => {
-            dispatchRedux(snackHandler({
-              snackOpen: true,
-              snackMessage: 'No data available for your location, Please try again.',
-            }));
+            dispatchRedux(
+              snackHandler({
+                snackOpen: true,
+                snackMessage: 'No data available for your location, Please try again.',
+              }),
+            );
             localStorage.setItem('regionId', '');
-            dispatchRedux(updateRegion({
-              regionId: '',
-              regionShorthand: '',
-            }));
+            dispatchRedux(
+              updateRegion({
+                regionId: '',
+                regionShorthand: '',
+              }),
+            );
             // eslint-disable-next-line no-console
             console.log(err);
             // for places where api didn't work, set region to default.
@@ -217,11 +232,15 @@ const Location = () => {
       if (progressRedux >= 1 && markersRedux.length > 0) {
         const reverseGEOresult = await reverseGEO(lat, lon);
         const abbrState = abbrRegion(
-          reverseGEOresult?.features?.filter((feature) => feature?.place_type?.includes('region'))[0]?.text,
+          reverseGEOresult?.features?.filter((feature) =>
+            feature?.place_type?.includes('region'),
+          )[0]?.text,
           'abbr',
         ).toLowerCase();
 
-        const city = reverseGEOresult?.features?.filter((feature) => feature?.place_type?.includes('place'))[0]?.text?.toLowerCase();
+        const city = reverseGEOresult?.features
+          ?.filter((feature) => feature?.place_type?.includes('place'))[0]
+          ?.text?.toLowerCase();
 
         const currentMonthInt = moment().month() + 1;
 
@@ -243,28 +262,35 @@ const Location = () => {
           const frostResponse = await callCoverCropApi(frostUrl);
           const firstFrost = new Date(frostResponse.firstfrost + prevYear);
           const lastFrost = new Date(frostResponse.lastfrost + currYear);
-          const frostFreeDays = Math.round(Math.abs((firstFrost.valueOf() - lastFrost.valueOf()) / oneDay));
+          const frostFreeDays = Math.round(
+            Math.abs((firstFrost.valueOf() - lastFrost.valueOf()) / oneDay),
+          );
           dispatchRedux(updateFrostFreeDays(frostFreeDays));
-          dispatchRedux(updateAvgFrostDates({
-            firstFrostDate: {
-              month: firstFrost.toLocaleString('en-US', { month: 'long' }),
-              day: firstFrost.getDate().toString(),
-            },
-            lastFrostDate: {
-              month: lastFrost.toLocaleString('en-US', { month: 'long' }),
-              day: lastFrost.getDate().toString(),
-            },
-          }));
+          dispatchRedux(
+            updateAvgFrostDates({
+              firstFrostDate: {
+                month: firstFrost.toLocaleString('en-US', { month: 'long' }),
+                day: firstFrost.getDate().toString(),
+              },
+              lastFrostDate: {
+                month: lastFrost.toLocaleString('en-US', { month: 'long' }),
+                day: lastFrost.getDate().toString(),
+              },
+            }),
+          );
         } catch (error) {
           // eslint-disable-next-line
-          console.log(`Weather API error code: ${error?.response?.status} for getting 5 year average rainfall for this month`);
+          console.log(
+            `Weather API error code: ${error?.response?.status} for getting 5 year average rainfall for this month`,
+          );
         }
 
         // call the frost url and then set averagePrecipitationForCurrentMonth in store
         // TODO annual and monthly are the same
         try {
           const rainForAMonthResponse = await callCoverCropApi(averageRainForAMonthURL);
-          let averagePrecipitationForCurrentMonth = rainForAMonthResponse[0]['sum(precipitation)/5'];
+          let averagePrecipitationForCurrentMonth =
+            rainForAMonthResponse[0]['sum(precipitation)/5'];
           averagePrecipitationForCurrentMonth = parseFloat(
             averagePrecipitationForCurrentMonth * 0.03937,
           ).toFixed(2);
@@ -272,7 +298,9 @@ const Location = () => {
           dispatchRedux(updateAvgPrecipCurrentMonth(averagePrecipitationForCurrentMonth));
         } catch (error) {
           // eslint-disable-next-line no-console
-          console.log(`Weather API error code: ${error?.response?.status} for getting 5 year average rainfall for this month`);
+          console.log(
+            `Weather API error code: ${error?.response?.status} for getting 5 year average rainfall for this month`,
+          );
         }
 
         // call the frost url and then set fiveYearAvgRainAnnual in store
@@ -283,7 +311,9 @@ const Location = () => {
           dispatchRedux(updateAvgPrecipAnnual(fiveYearAvgRainAnnual));
         } catch (error) {
           // eslint-disable-next-line no-console
-          console.log(`Weather API error code: ${error?.response?.status} for getting 5 year average rainfall for this month`);
+          console.log(
+            `Weather API error code: ${error?.response?.status} for getting 5 year average rainfall for this month`,
+          );
         }
       }
     };
@@ -293,109 +323,125 @@ const Location = () => {
   }, [markersRedux]);
 
   // update userFieldRedux and selectedField when component will unmount
-  useEffect(() => () => {
-    if (isAuthenticated) {
-      getFields(accessTokenRedux).then((fields) => dispatchRedux(updateField(fields)));
-      if (Object.keys(selectedUserFieldRef.current).length > 0) {
-        dispatchRedux(setSelectFieldId(selectedUserFieldRef.current.id));
-      } else {
-        dispatchRedux(setSelectFieldId(null));
+  useEffect(
+    () => () => {
+      if (isAuthenticated) {
+        getFields(accessTokenRedux).then((fields) => dispatchRedux(updateField(fields)));
+        if (Object.keys(selectedUserFieldRef.current).length > 0) {
+          dispatchRedux(setSelectFieldId(selectedUserFieldRef.current.id));
+        } else {
+          dispatchRedux(setSelectFieldId(null));
+        }
       }
-    }
-  }, []);
+    },
+    [],
+  );
 
   // map onDraw function
   const onDraw = (draw) => {
     if (isAuthenticated && draw.mode !== 'select') {
       setIsAddingPoint(false);
       setFieldDialogState({
-        ...fieldDialogState, open: true, actionType: draw.mode, areaType: 'Polygon',
+        ...fieldDialogState,
+        open: true,
+        actionType: draw.mode,
+        areaType: 'Polygon',
       });
     }
   };
 
   return (
-    <Grid container spacing={2}>
-      <Grid container item md={stateLabelRedux === 'Ontario' ? 12 : 3} xs={12}>
-        <Grid item xs={12}>
-          <Typography variant="h4">
-            Field Location
-          </Typography>
-          <Typography variant="body1">
-            Find your address or ZIP code using the search bar on the map and hit
-            <Search fontSize="inherit" />
-            to determine your location. If needed, adjust your
-            {' '}
-            {councilShorthandRedux === 'MCCC' ? 'county' : 'USDA Plant Hardiness Zone'}
-            {' '}
-            in the dropdown.
-          </Typography>
+    <Box>
+      <Grid container justifyContent="center" spacing={4}>
+        {/* holds all location text and select menu */}
+        <Grid item lg={4}>
+          {/* holds the title and subtitle */}
+          <Grid item container direction="column">
+            <Grid item>
+              <Typography variant="h4" style={{ textAlign: 'center' }}>
+                Field Location
+              </Typography>
+            </Grid>
+            <Grid item>
+              <Typography variant="body1">
+                Find your address or ZIP code using the search bar on the map and hit
+                <Search fontSize="inherit" />
+                to determine your location. If needed, adjust your{' '}
+                {councilShorthandRedux === 'MCCC' ? 'county' : 'USDA Plant Hardiness Zone'} in the
+                dropdown.
+              </Typography>
+            </Grid>
+            {/* hold the row for PlantHardinessZone and userfieldlist */}
+            <Grid item container sx={{ mt: '1rem' }}>
+              <Grid item container spacing={2}>
+                {/* PlantHardinessZone */}
+                <Grid item>
+                  <PlantHardinessZone
+                    regionShorthand={regionShorthand}
+                    setRegionShorthand={setRegionShorthand}
+                    regionsRedux={regionsRedux}
+                    councilLabelRedux={councilLabelRedux}
+                  />
+                </Grid>
+                {/* userfieldlist */}
+                <Grid item>
+                  {isAuthenticated && stateLabelRedux !== 'Ontario' && (
+                    <UserFieldList
+                      userFields={userFields}
+                      field={selectedUserField}
+                      setField={setSelectedUserField}
+                      setFieldDialogState={setFieldDialogState}
+                    />
+                  )}
+                </Grid>
+              </Grid>
+            </Grid>
+          </Grid>
         </Grid>
-
-        <Grid item xs={12}>
-          <PlantHardinessZone
-            regionShorthand={regionShorthand}
-            setRegionShorthand={setRegionShorthand}
-            regionsRedux={regionsRedux}
-            councilLabelRedux={councilLabelRedux}
-          />
-        </Grid>
-
-        <Grid item xs={12}>
-          {(isAuthenticated && stateLabelRedux !== 'Ontario') && (
-            <UserFieldList
-              userFields={userFields}
-              field={selectedUserField}
-              setField={setSelectedUserField}
-              setFieldDialogState={setFieldDialogState}
-            />
+        {/* holds the map component */}
+        <Grid item container lg={6} justifyContent="center">
+          {stateLabelRedux !== 'Ontario' && (
+            <Grid item xs={12} sx={{ p: 0, m: 0, maxWidth: { lg: 'md', xs: '100%' } }}>
+              <Map
+                setAddress={setSelectedToEditSite}
+                setFeatures={setCurrentGeometry}
+                onDraw={onDraw}
+                initWidth="100%"
+                initHeight="500px"
+                initLat={getLatLng[0]}
+                initLon={getLatLng[1]}
+                initFeatures={mapFeatures}
+                initStartZoom={12}
+                initMinZoom={4}
+                initMaxZoom={18}
+                hasSearchBar
+                hasMarker
+                hasNavigation
+                hasCoordBar
+                hasDrawing
+                hasGeolocate
+                hasFullScreen
+                hasMarkerPopup
+                hasMarkerMovable
+              />
+            </Grid>
           )}
+          <UserFieldDialog
+            fieldDialogState={fieldDialogState}
+            setFieldDialogState={setFieldDialogState}
+            userFields={userFields}
+            selectedToEditSite={selectedToEditSite}
+            currentGeometry={currentGeometry}
+            selectedUserField={selectedUserField}
+            setUserFields={setUserFields}
+            setSelectedUserField={setSelectedUserField}
+            setMapFeatures={setMapFeatures}
+            getFeatures={getFeatures}
+            setIsAddingPoint={setIsAddingPoint}
+          />
         </Grid>
       </Grid>
-      {stateLabelRedux !== 'Ontario' && (
-      <Grid item md={9} xs={12}>
-        <Container maxWidth="md">
-          <Map
-            setAddress={setSelectedToEditSite}
-            setFeatures={setCurrentGeometry}
-            onDraw={onDraw}
-            initWidth="100%"
-            initHeight="500px"
-            initLat={getLatLng[0]}
-            initLon={getLatLng[1]}
-            initFeatures={mapFeatures}
-            initStartZoom={12}
-            initMinZoom={4}
-            initMaxZoom={18}
-            hasSearchBar
-            hasMarker
-            hasNavigation
-            hasCoordBar
-            hasDrawing
-            hasGeolocate
-            hasFullScreen
-            hasMarkerPopup
-            hasMarkerMovable
-          />
-        </Container>
-
-      </Grid>
-      )}
-
-      <UserFieldDialog
-        fieldDialogState={fieldDialogState}
-        setFieldDialogState={setFieldDialogState}
-        userFields={userFields}
-        selectedToEditSite={selectedToEditSite}
-        currentGeometry={currentGeometry}
-        selectedUserField={selectedUserField}
-        setUserFields={setUserFields}
-        setSelectedUserField={setSelectedUserField}
-        setMapFeatures={setMapFeatures}
-        getFeatures={getFeatures}
-        setIsAddingPoint={setIsAddingPoint}
-      />
-    </Grid>
+    </Box>
   );
 };
 

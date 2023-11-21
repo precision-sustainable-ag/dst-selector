@@ -4,21 +4,51 @@
 */
 
 import {
-  FormControl, InputLabel, MenuItem, Select, List, ListItem, IconButton,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  List,
+  ListItem,
+  IconButton,
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import React from 'react';
 
-const UserFieldList = ({
-  userFields, field, setField, setFieldDialogState,
-}) => {
+const UserFieldList = ({ userFields, field, setField, setFieldDialogState }) => {
+  // Styles for the menu items
+  const menuProps = {
+    PaperProps: {
+      sx: {
+        '.MuiMenuItem-root': {
+          '&.Mui-selected': {
+            backgroundColor: '#598445',
+            color: 'white',
+          },
+          '&.Mui-selected:hover': {
+            backgroundColor: '#598445',
+            color: 'white',
+          },
+          '&:hover': {
+            backgroundColor: 'rgba(176, 236, 130, 0.3)',
+            color: 'black',
+          },
+        },
+      },
+    },
+  };
+
   const handleChange = (e) => {
     setField(userFields.filter((userField) => userField.label === e.target.value)[0]);
   };
   const handleEdit = () => {
     setFieldDialogState((prev) => ({
-      ...prev, open: true, actionType: 'updateName', fieldName: field.label, prevName: field.label,
+      ...prev,
+      open: true,
+      actionType: 'updateName',
+      fieldName: field.label,
+      prevName: field.label,
     }));
   };
   const handleDelete = () => {
@@ -26,21 +56,41 @@ const UserFieldList = ({
   };
   return (
     <List component="div">
-      <ListItem component="div">
-        <FormControl
-          variant="filled"
-          sx={{ minWidth: 200 }}
-        >
-          <InputLabel>Your Fields</InputLabel>
+      <ListItem component="div" style={{ padding: 0 }}>
+        <FormControl sx={{ minWidth: 200 }}>
+          <InputLabel id="user-field-list-dropdown-label" sx={{ fontWeight: 'medium' }}>
+            Your Fields
+          </InputLabel>
           <Select
-            variant="filled"
+            labelId="user-field-list-dropdown-label"
+            label="YOUR FIELDS"
             value={Object.keys(field).length === 0 ? '' : field.label}
             onChange={handleChange}
+            sx={{
+              fontWeight: 'bold',
+              minWidth: 200,
+              '& .MuiOutlinedInput-notchedOutline': {
+                borderColor: '#598445', // Set your custom color for the notched outline
+                borderWidth: '2px', // Set your custom border width
+                borderRadius: '4px', // Custom border radius
+              },
+              '&:hover .MuiOutlinedInput-notchedOutline': {
+                borderColor: '#598445', // Custom color on hover
+                borderWidth: '2.5px',
+              },
+              '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                borderColor: '#598445', // Custom color when the Select is focused
+                borderWidth: '2.5px', // Custom border width when the Select is focused
+              },
+            }}
           >
             {userFields.map((userField, index) => {
               if (userField.label === '') return null;
               return (
-                <MenuItem key={`userField-${index}`} value={userField.label === null ? 'null' : userField.label}>
+                <MenuItem
+                  key={`userField-${index}`}
+                  value={userField.label === null ? 'null' : userField.label}
+                >
                   {userField.label === null ? 'null' : userField.label}
                 </MenuItem>
               );
@@ -55,9 +105,7 @@ const UserFieldList = ({
           <DeleteIcon />
         </IconButton>
       </ListItem>
-
     </List>
-
   );
 };
 
