@@ -4,9 +4,7 @@
   styled using ../../styles/location.scss
 */
 
-import {
-  Typography, Grid, useTheme, useMediaQuery, Box,
-} from '@mui/material';
+import { Typography, Grid, Box } from '@mui/material';
 import React, {
   useEffect, useState, useCallback, useRef,
 } from 'react';
@@ -72,10 +70,6 @@ const LocationComponent = () => {
   const [isAddingPoint, setIsAddingPoint] = useState(true);
   const [mapFeatures, setMapFeatures] = useState([]);
   const [userFields, setUserFields] = useState(userFieldRedux ? [...userFieldRedux.data] : []);
-
-  // ui hook vars
-  const uiTheme = useTheme();
-  const isMobile = useMediaQuery(uiTheme.breakpoints.down('md'));
 
   const selectedUserFieldRef = useRef(selectedUserField);
   const regionShorthandRef = useRef(regionShorthand);
@@ -370,13 +364,17 @@ const LocationComponent = () => {
 
   return (
     <Box>
-      <Grid container justifyContent="space-between">
-        <Grid item container lg={4} md={6} sm={12} sx={{ p: '1rem' }}>
-          <Grid item container>
+      <Grid container justifyContent="center" spacing={4}>
+        {/* holds all location text and select menu */}
+        <Grid item lg={4}>
+          {/* holds the title and subtitle */}
+          <Grid item container direction="column">
             <Grid item>
               <Typography variant="h4" style={{ textAlign: 'center' }}>
                 Field Location
               </Typography>
+            </Grid>
+            <Grid item>
               <Typography variant="body1">
                 Find your address or ZIP code using the search bar on the map and hit
                 <Search fontSize="inherit" />
@@ -388,70 +386,37 @@ const LocationComponent = () => {
                 dropdown.
               </Typography>
             </Grid>
-          </Grid>
-          <Grid
-            item
-            container
-            justifyContent="space-between"
-            height="5rem"
-            sx={{
-              ...(isMobile && {
-                overflowX: 'scroll',
-                whiteSpace: 'nowrap',
-                scrollbarWidth: 'none',
-                '&::-webkit-scrollbar': {
-                  display: 'none',
-                },
-                '& > .MuiGrid-item': {
-                  flex: '0 0 auto',
-                },
-              }),
-              mt: '1rem',
-            }}
-          >
-            <Grid
-              item
-              xs={12}
-              container
-              spacing={1}
-              direction={isMobile ? 'column' : 'row'}
-              alignItems="center"
-              height="auto"
-            >
-              <Grid item xs={12} lg={6} alignSelf={isMobile ? 'flex-start' : 'center'}>
-                <PlantHardinessZone
-                  regionShorthand={regionShorthand}
-                  setRegionShorthand={setRegionShorthand}
-                  regionsRedux={regionsRedux}
-                  councilLabelRedux={councilLabelRedux}
-                />
-              </Grid>
-
-              <Grid item xs={12} lg={6}>
-                {isAuthenticated && stateLabelRedux !== 'Ontario' && (
+            {/* hold the row for PlantHardinessZone and userfieldlist */}
+            <Grid item container sx={{ mt: '1rem' }}>
+              <Grid item container spacing={2}>
+                {/* PlantHardinessZone */}
+                <Grid item>
+                  <PlantHardinessZone
+                    regionShorthand={regionShorthand}
+                    setRegionShorthand={setRegionShorthand}
+                    regionsRedux={regionsRedux}
+                    councilLabelRedux={councilLabelRedux}
+                  />
+                </Grid>
+                {/* userfieldlist */}
+                <Grid item>
+                  {/* {isAuthenticated && stateLabelRedux !== 'Ontario' && ( */}
                   <UserFieldList
                     userFields={userFields}
                     field={selectedUserField}
                     setField={setSelectedUserField}
                     setFieldDialogState={setFieldDialogState}
                   />
-                )}
+                  {/* )} */}
+                </Grid>
               </Grid>
             </Grid>
           </Grid>
         </Grid>
-        <Grid
-          item
-          container
-          lg={7}
-          md={6}
-          sm={12}
-          justifyContent="center"
-          alignItems="center"
-          sx={{ p: '1rem' }}
-        >
+        {/* holds the map component */}
+        <Grid item container lg={6}>
           {stateLabelRedux !== 'Ontario' && (
-            <Grid item xs={12}>
+            <Grid item xs={12} sx={{ p: 0, m: 0, maxWidth: { lg: 'md', xs: '100%' } }}>
               <Map
                 setAddress={setSelectedToEditSite}
                 setFeatures={setCurrentGeometry}
