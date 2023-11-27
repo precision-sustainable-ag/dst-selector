@@ -16,7 +16,9 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import React from 'react';
 
-const UserFieldList = ({ userFields, field, setField, setFieldDialogState }) => {
+const UserFieldList = ({
+  userFields, field, setField, setFieldDialogState,
+}) => {
   // Styles for the menu items
   const menuProps = {
     PaperProps: {
@@ -83,6 +85,7 @@ const UserFieldList = ({ userFields, field, setField, setFieldDialogState }) => 
                 borderWidth: '2.5px', // Custom border width when the Select is focused
               },
             }}
+            MenuProps={menuProps}
           >
             {userFields.map((userField, index) => {
               if (userField.label === '') return null;

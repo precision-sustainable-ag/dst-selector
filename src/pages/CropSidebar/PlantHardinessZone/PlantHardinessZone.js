@@ -72,8 +72,8 @@ const PlantHardinessZone = ({
       value={regionShorthand || ''}
       error={!regionShorthand}
     >
-      {regionsRedux?.length > 0 &&
-        regionsRedux.map((region, i) => (
+      {regionsRedux?.length > 0
+        && regionsRedux.map((region, i) => (
           <MenuItem value={region.shorthand} key={`Region${region}${i}`}>
             {councilLabelRedux !== 'Midwest Cover Crops Council'
               ? `Zone ${region.shorthand?.toUpperCase()}`
