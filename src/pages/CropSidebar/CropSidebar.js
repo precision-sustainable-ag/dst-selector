@@ -35,7 +35,7 @@ import PlantHardinessZone from './PlantHardinessZone/PlantHardinessZone';
 import Legend from '../../components/Legend/Legend';
 import { updateRegion } from '../../reduxStore/mapSlice';
 import { clearFilters } from '../../reduxStore/filterSlice';
-import { pullCropData, updateActiveCropData } from '../../reduxStore/cropSlice';
+import { updateCropData, updateActiveCropIds } from '../../reduxStore/cropSlice';
 import { setAjaxInProgress, regionToggleHandler } from '../../reduxStore/sharedSlice';
 
 const CropSidebar = ({
@@ -164,7 +164,7 @@ const CropSidebar = ({
 
       return true;
     });
-    dispatchRedux(updateActiveCropData(filtered.map((filter) => filter.id)));
+    dispatchRedux(updateActiveCropIds(filtered.filter((crop) => !crop.inactive).map((crop) => crop.id)));
   }, [cropDataRedux, dispatchRedux, filterStateRedux.filters]);
 
   const filtersSelected = Object.keys(filterStateRedux.filters)?.filter((key) => filterStateRedux.filters[key])?.length > 0;
@@ -236,7 +236,7 @@ const CropSidebar = ({
 
       callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/crops?${query}`).then((data) => {
         cropDataFormatter(data.data);
-        dispatchRedux(pullCropData(data.data));
+        dispatchRedux(updateCropData(data.data));
         dispatchRedux(setAjaxInProgress(false));
       });
     }

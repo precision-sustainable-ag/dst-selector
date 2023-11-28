@@ -21,10 +21,10 @@ const MyCoverCropList = ({ comparisonView, from }) => {
   const dispatchRedux = useDispatch();
   const comparison = comparisonView || false;
   const history = useHistory();
-  const activeCropDataRedux = useSelector((stateRedux) => stateRedux.cropData.activeCropData);
+  const activeCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.activeCropIds);
   const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
   const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
-  const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
+  const selectedCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCropIds);
   const consentRedux = useSelector((stateRedux) => stateRedux.userData.consent);
 
   useEffect(() => {
@@ -53,8 +53,8 @@ const MyCoverCropList = ({ comparisonView, from }) => {
   return (
     <>
       {/* eslint-disable-next-line no-nested-ternary */}
-      {selectedCropsRedux.length > 0
-       && selectedCropsRedux.length === 0 ? (
+      {selectedCropIdsRedux.length > 0
+       && selectedCropIdsRedux.length === 0 ? (
          <Typography variant="body1">
            Your list is empty.
            {' '}
@@ -74,7 +74,7 @@ const MyCoverCropList = ({ comparisonView, from }) => {
           </Box>
         ) : (
           <Grid container spacing={2}>
-            {cropDataRedux.filter((crop) => activeCropDataRedux.includes(crop.id)).filter((crop) => selectedCropsRedux.includes(crop.id)).map((crop, index) => (
+            {cropDataRedux.filter((crop) => activeCropIdsRedux.includes(crop.id)).filter((crop) => selectedCropIdsRedux.includes(crop.id)).map((crop, index) => (
               <Grid item key={index}>
                 <MyCoverCropCards
                   key={index}
