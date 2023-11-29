@@ -245,7 +245,6 @@ export const LightButton = styled(Button)({
 
 export const getRating = (ratng) => {
   const rating = parseInt(ratng, 10);
-
   switch (rating) {
     case 0:
       return (
@@ -576,11 +575,11 @@ export const sortCrops = (
         .slice()
         .reverse()
         .forEach((g) => {
-          if (b.data.Goals[g]) {
-            bAvg = +b.data.Goals[g].values[0] + bAvg;
+          if (b.goals.filter((data) => data.label === g)) {
+            bAvg = +b.goals.filter((data) => data.label === g).values[0] + bAvg;
           }
-          if (a.data.Goals[g]) {
-            aAvg = +a.data.Goals[g].values[0] + aAvg;
+          if (a.goals.filter((data) => data.label === g)) {
+            aAvg = +a.goals.filter((data) => data.label === g).values[0] + aAvg;
           }
         });
       aAvg /= selectedItems.length;
@@ -596,15 +595,13 @@ export const sortCrops = (
   }
   if (type === 'Goal') {
     crops.sort((a, b) => {
-      if (a.data.Goals[goal] && b.data.Goals[goal]) {
-        if (
-          parseInt(a.data.Goals[goal].values[0], 10) > parseInt(b.data.Goals[goal].values[0], 10)
-        ) {
+      if (a.goals.filter((data) => data.label === goal) && b.goals.filter((data) => data.label === goal)) {
+        if (parseInt(a.goals.filter((data) => data.label === goal).values[0], 10) > parseInt(b.goals.filter((data) => data.label === goal).values[0], 10)) {
           return sortFlag ? -1 : 1;
         }
         return sortFlag ? 1 : -1;
       }
-      if (a.data.Goals[goal]) {
+      if (a.goals.filter((data) => data.label === goal)) {
         return sortFlag ? -1 : 1;
       }
       return sortFlag ? 1 : -1;
@@ -904,20 +901,8 @@ export const cropDataFormatter = (cropData = [{}]) => {
     return halfMonthData;
   };
 
-  const monthStringBuilder = (crop) => {
-    const params = [
-      'Reliable Establishment',
-      'Freeze/Moisture Risk to Establishment',
-      'Frost Seeding',
-      'Fall/Winter Seeding Rate',
-      'Spring Seeding Rate',
-      'Summer Seeding Rate',
-      'Can Interseed',
-      'Average Frost',
-      'Hessian Fly Free Date',
-    ];
-
-    // create a 24 item array of half months ex: [{month: '1', info: [], start: '', end: ''}, ...]
+  const monthStringBuilder = (vals) => {
+    const val = vals;
     let halfMonthArr = Array.from({ length: 24 }, (_, i) => ({
       month: moment()
         .month(Math.floor(i / 2))
@@ -927,45 +912,44 @@ export const cropDataFormatter = (cropData = [{}]) => {
       end: '',
     }));
 
-    // iterate over each crop and create crop['Half Month Data']
-    params.forEach((param) => {
-      if (crop.data['Planting and Growth Windows']?.[`${param}`]) {
-        crop.data['Planting and Growth Windows']?.[`${param}`].values.forEach((dateArray) => {
-          // get start and end date of each param for each crop
-          const datesArr = dateArray.split('-');
-          let valStart;
-          let valEnd;
-          if (datesArr.length > 1) {
-            valStart = moment(datesArr[0], 'MM/DD/YYYY').format('MM/DD');
-            valEnd = moment(datesArr[1], 'MM/DD/YYYY').format('MM/DD');
-          } else {
-            valStart = moment(datesArr[0], 'MM/DD/YYYY').format('MM/DD');
-            valEnd = valStart;
-          }
-          // hessian fly dates are an exception to this condition because it has only one date and not a range
-          if (param === 'Average Frost') {
-            const tempStart = '01/01';
-            const tempEnd = '12/31';
-            halfMonthArr = formatTimeToHalfMonthData(valStart, tempEnd, param, halfMonthArr);
-            halfMonthArr = formatTimeToHalfMonthData(tempStart, valEnd, param, halfMonthArr);
-          } else {
-            halfMonthArr = formatTimeToHalfMonthData(valStart, valEnd, param, halfMonthArr);
-          }
-        });
-      }
+    val.plantingDates.forEach((date) => {
+      date.values.forEach((dateArray) => {
+        const datesArr = dateArray.split('-');
+        let valStart;
+        let valEnd;
+        if (datesArr.length > 1) {
+          valStart = moment(datesArr[0], 'MM/DD/YYYY').format('MM/DD');
+          valEnd = moment(datesArr[1], 'MM/DD/YYYY').format('MM/DD');
+        } else {
+          valStart = moment(datesArr[0], 'MM/DD/YYYY').format('MM/DD');
+          valEnd = valStart;
+        }
+        // hessian fly dates are an exception to this condition because it has only one date and not a range
+        if (
+          moment(valStart, 'MM/DD').isSameOrAfter(moment(valEnd, 'MM/DD'))
+              && date.label !== 'Hessian Fly Free Date'
+        ) {
+          const tempStart = '01/01';
+          const tempEnd = '12/31';
+          halfMonthArr = formatTimeToHalfMonthData(valStart, tempEnd, date.label, halfMonthArr);
+          halfMonthArr = formatTimeToHalfMonthData(tempStart, valEnd, date.label, halfMonthArr);
+        } else {
+          halfMonthArr = formatTimeToHalfMonthData(valStart, valEnd, date.label, halfMonthArr);
+        }
+      });
     });
     const halfMonthData = formatHalfMonthData(halfMonthArr);
-    crop['Half Month Data'] = halfMonthData;
+    vals['Half Month Data'] = halfMonthData;
 
     // this is temporary, needs to be replaced with wither a fix to calendar growth window component or exporting of json from airtable
-    Object.keys(crop).forEach((item) => {
+    Object.keys(vals).forEach((item) => {
       if (item.endsWith('Early') || item.endsWith('Mid')) {
-        const uniq = [...new Set(crop[item])];
+        const uniq = [...new Set(vals[item])];
         const removedOldVals = uniq.filter((u) => !u.endsWith('growth'));
-        crop[item] = removedOldVals;
+        vals[item] = removedOldVals;
       }
     });
-    return crop;
+    return vals;
   };
 
   return cropData.map((crop) => monthStringBuilder(crop));

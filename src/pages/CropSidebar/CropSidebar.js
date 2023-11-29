@@ -235,6 +235,14 @@ const CropSidebar = ({
       });
 
       callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/crops?${query}`).then((data) => {
+        console.log('data 1', data);
+        // cropDataFormatter(data.data);
+        // dispatchRedux(pullCropData(data.data));
+        // dispatchRedux(setAjaxInProgress(false));
+      });
+
+      callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/crops?minimal=true&${query}`).then((data) => {
+        console.log('data 2', data);
         cropDataFormatter(data.data);
         dispatchRedux(updateCropData(data.data));
         dispatchRedux(setAjaxInProgress(false));

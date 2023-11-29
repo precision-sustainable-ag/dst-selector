@@ -74,7 +74,7 @@ const Chips = ({ filter, handleChange }) => {
   return filter.values.map((val, i) => {
     const selected = filterStateRedux.filters[`${filter.name}: ${val.value}`];
     return (
-      <Grid item>
+      <Grid key={filter.name + val.value + i} item>
         <Chip
           key={filter.name + val.value + i}
           onClick={() => handleChange(filter.name, val.value)}
