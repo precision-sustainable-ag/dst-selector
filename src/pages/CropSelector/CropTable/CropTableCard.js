@@ -40,7 +40,7 @@ const CropTableCard = ({
                   </p>
                 )}
               >
-                {getRating(crop.data.Goals[goal]?.values[0])}
+                {getRating(crop.goals.filter((a) => a.label === goal)[0].values[0])}
               </Tooltip>
             </div>
           </TableCell>

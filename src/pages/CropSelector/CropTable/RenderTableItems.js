@@ -25,28 +25,31 @@ const RenderTableItems = ({
         ? !hasGoalRatingTwoOrLess(selectedGoalsRedux, crop)
         : hasGoalRatingTwoOrLess(selectedGoalsRedux, crop)
     ) {
-      const searchCategory = crop.data['Basic Agronomics'] ? 'Basic Agronomics' : 'Growth Traits';
-
-      const duration = (crop.data[searchCategory]?.Duration.values[0].toString().toLowerCase()
-        === 'short-lived perennial'
-        ? 'Perennial'
-        : crop.data[searchCategory]?.Duration.values[0]) || 'No Data';
-
-      const maxN = crop.data[searchCategory]?.['Nitrogen Accumulation Min, Legumes (lbs/A/y)']?.values[0];
-      const minN = crop.data[searchCategory]?.['Nitrogen Accumulation Max, Legumes (lbs/A/y)']?.values[0];
-      const totalN = minN && maxN ? `${minN} - ${maxN}` : 'No Data';
-
+      let duration;
+      let totalN;
       let dryMatter;
 
-      if (crop.data[searchCategory]?.['Dry Matter']) {
-        dryMatter = crop.data[searchCategory]?.['Dry Matter']?.values[0] || 'No Data';
-      } else {
-        const dryMatterMax = crop.data[searchCategory]?.['Dry Matter Max (lbs/A/y)']?.values[0];
-        const dryMatterMin = crop.data[searchCategory]?.['Dry Matter Min (lbs/A/y)']?.values[0];
+      // const searchCategory = crop.data['Basic Agronomics'] ? 'Basic Agronomics' : 'Growth Traits';
 
-        dryMatter = dryMatterMin && dryMatterMax ? `${dryMatterMin} - ${dryMatterMax}` : 'No Data';
-      }
+      crop.attributes.forEach((att) => {
+        duration = (att.label.Duration?.values[0].toString().toLowerCase()
+        === 'short-lived perennial'
+          ? 'Perennial'
+          : att.label.Duration?.values[0]) || 'No Data';
 
+        const maxN = att.label['Nitrogen Accumulation Min, Legumes (lbs/A/y)']?.values[0];
+        const minN = att.label['Nitrogen Accumulation Max, Legumes (lbs/A/y)']?.values[0];
+        totalN = minN && maxN ? `${minN} - ${maxN}` : 'No Data';
+
+        if (att.label['Dry Matter']) {
+          dryMatter = att.label['Dry Matter']?.values[0] || 'No Data';
+        } else {
+          const dryMatterMax = att.label['Dry Matter Max (lbs/A/y)']?.values[0];
+          const dryMatterMin = att.label['Dry Matter Min (lbs/A/y)']?.values[0];
+
+          dryMatter = dryMatterMin && dryMatterMax ? `${dryMatterMin} - ${dryMatterMax}` : 'No Data';
+        }
+      });
       return (
         <TableRow
           key={`${crop.id} index`}
@@ -93,7 +96,7 @@ const RenderTableItems = ({
                         textAlign: 'left',
                       }}
                     >
-                      {trimString(crop.family.scientific, 25)}
+                      {crop.scientificName && trimString(crop.scientificName, 25)}
                     </Typography>
                   </div>
                   {/* <div className="col-12 p-md-0"> */}
@@ -109,7 +112,7 @@ const RenderTableItems = ({
           <TableCell size="small" style={{ textAlign: 'left', verticalAlign: 'middle' }}>
             <table>
               <tbody>
-                {crop.group.toLowerCase() === 'legume' && (
+                {crop.attributes.filter((a) => a.label === 'Cover Crop Group')[0]?.values[0].toLowerCase() === 'legume' && (
                   <tr>
                     <td>
                       <Typography variant="body1" component="b" style={{ fontSize: 'small' }}>

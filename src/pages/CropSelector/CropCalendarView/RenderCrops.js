@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   Button, TableCell, TableRow, Grid, Tooltip,
 } from '@mui/material';
-import { AddCircleOutline, DeleteForever, AcUnit } from '@mui/icons-material';
+import { AcUnit, AddCircleOutline, DeleteForever } from '@mui/icons-material';
 import {
   CropImage,
   flipCoverCropName,
@@ -75,7 +75,7 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                 </Button>
               </Grid>
 
-              {crop.data['Planting Information']
+              {/* {crop.data['Planting Information']
                 && crop.data['Planting Information']['Frost Seeding']?.values[0] === 'Yes' && (
                   <Grid item>
                     <Tooltip
@@ -89,7 +89,7 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                       />
                     </Tooltip>
                   </Grid>
-              )}
+              )} */}
             </Grid>
           </Grid>
         </TableCell>
@@ -109,7 +109,7 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                     </p>
                   )}
                 >
-                  {getRating(crop.data.Goals[goal]?.values[0])}
+                  {getRating(crop.goals.filter((a) => a.label === goal)[0].values[0])}
                 </Tooltip>
               </div>
             </TableCell>
