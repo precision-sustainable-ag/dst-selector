@@ -66,6 +66,7 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
               <Grid item>
                 <Button
                   size="small"
+                  sx={{ color: 'black', justifyContent: 'left' }}
                   onClick={() => {
                     setModalData(crop);
                     setModalOpen(!modalOpen);
