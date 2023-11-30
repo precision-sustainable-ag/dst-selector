@@ -386,14 +386,14 @@ const Location = () => {
                 </Grid>
                 {/* userfieldlist */}
                 <Grid item>
-                  {/* {isAuthenticated && stateLabelRedux !== 'Ontario' && ( */}
-                  <UserFieldList
-                    userFields={userFields}
-                    field={selectedUserField}
-                    setField={setSelectedUserField}
-                    setFieldDialogState={setFieldDialogState}
-                  />
-                  {/* )} */}
+                  {isAuthenticated && stateLabelRedux !== 'Ontario' && (
+                    <UserFieldList
+                      userFields={userFields}
+                      field={selectedUserField}
+                      setField={setSelectedUserField}
+                      setFieldDialogState={setFieldDialogState}
+                    />
+                  )}
                 </Grid>
               </Grid>
             </Grid>
