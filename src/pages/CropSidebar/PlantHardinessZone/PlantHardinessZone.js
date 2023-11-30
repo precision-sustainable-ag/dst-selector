@@ -16,7 +16,7 @@ const PlantHardinessZone = ({
   regionShorthand,
   setRegionShorthand,
   regionsRedux,
-  councilLabelRedux,
+  councilShorthand,
   regionToggleRedux = true,
 }) => {
   // Styles for the menu items
@@ -45,13 +45,12 @@ const PlantHardinessZone = ({
     <Select
       labelId="plant-hardiness-zone-dropdown-select"
       id="plant-hardiness-zone-dropdown-select"
-      label="ZONE"
+      label={councilShorthand === 'MCCC' ? 'COUNTY' : 'ZONE'}
       style={{
         width: '100%',
         textAlign: 'left',
       }}
       sx={{
-        fontWeight: 'bold',
         minWidth: 200,
         '& .MuiOutlinedInput-notchedOutline': {
           borderColor: '#598445', // Set your custom color for the notched outline
@@ -75,7 +74,7 @@ const PlantHardinessZone = ({
       {regionsRedux?.length > 0
         && regionsRedux.map((region, i) => (
           <MenuItem value={region.shorthand} key={`Region${region}${i}`}>
-            {councilLabelRedux !== 'Midwest Cover Crops Council'
+            {councilShorthand !== 'MCCC'
               ? `Zone ${region.shorthand?.toUpperCase()}`
               : `${region.shorthand?.toUpperCase()}`}
           </MenuItem>
@@ -89,14 +88,12 @@ const PlantHardinessZone = ({
         <ListItem component="div" style={{ padding: 0 }}>
           <FormControl>
             <InputLabel id="plant-hardiness-zone-dropdown-label" sx={{ fontWeight: 'medium' }}>
-              {councilLabelRedux === 'Midwest Cover Crops Council' ? 'COUNTY' : 'ZONE'}
+              {councilShorthand === 'MCCC' ? 'COUNTY' : 'ZONE'}
             </InputLabel>
             {plantHardinessZone()}
             {!regionShorthand && (
               <Typography variant="body2" align="center" color="error" gutterBottom>
-                {`Please Select a ${
-                  councilLabelRedux === 'Midwest Cover Crops Council' ? 'County' : 'Zone'
-                }`}
+                {`Please Select a ${councilShorthand === 'MCCC' ? 'County' : 'Zone'}`}
               </Typography>
             )}
           </FormControl>

@@ -61,7 +61,7 @@ const UserFieldList = ({
       <ListItem component="div" style={{ padding: 0 }}>
         <FormControl sx={{ minWidth: 200 }}>
           <InputLabel id="user-field-list-dropdown-label" sx={{ fontWeight: 'medium' }}>
-            Your Fields
+            YOUR FIELDS
           </InputLabel>
           <Select
             labelId="user-field-list-dropdown-label"
@@ -69,7 +69,6 @@ const UserFieldList = ({
             value={Object.keys(field).length === 0 ? '' : field.label}
             onChange={handleChange}
             sx={{
-              fontWeight: 'bold',
               minWidth: 200,
               '& .MuiOutlinedInput-notchedOutline': {
                 borderColor: '#598445', // Set your custom color for the notched outline

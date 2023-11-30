@@ -48,7 +48,6 @@ const Location = () => {
   const regionsRedux = useSelector((stateRedux) => stateRedux.mapData.regions);
   const regionShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.regionShorthand);
   const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
-  const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
   const accessTokenRedux = useSelector((stateRedux) => stateRedux.userData.accessToken);
@@ -382,19 +381,19 @@ const Location = () => {
                     regionShorthand={regionShorthand}
                     setRegionShorthand={setRegionShorthand}
                     regionsRedux={regionsRedux}
-                    councilLabelRedux={councilLabelRedux}
+                    councilShorthand={councilShorthandRedux}
                   />
                 </Grid>
                 {/* userfieldlist */}
                 <Grid item>
-                  {isAuthenticated && stateLabelRedux !== 'Ontario' && (
-                    <UserFieldList
-                      userFields={userFields}
-                      field={selectedUserField}
-                      setField={setSelectedUserField}
-                      setFieldDialogState={setFieldDialogState}
-                    />
-                  )}
+                  {/* {isAuthenticated && stateLabelRedux !== 'Ontario' && ( */}
+                  <UserFieldList
+                    userFields={userFields}
+                    field={selectedUserField}
+                    setField={setSelectedUserField}
+                    setFieldDialogState={setFieldDialogState}
+                  />
+                  {/* )} */}
                 </Grid>
               </Grid>
             </Grid>
