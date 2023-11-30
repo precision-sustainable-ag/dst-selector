@@ -74,22 +74,20 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                   {flipCoverCropName(crop.label)}
                 </Button>
               </Grid>
-
-              {/* {crop.data['Planting Information']
-                && crop.data['Planting Information']['Frost Seeding']?.values[0] === 'Yes' && (
-                  <Grid item>
-                    <Tooltip
-                      placement="top-end"
-                      enterTouchDelay={0}
-                      title={`${flipCoverCropName(crop.label)} is suitable for frost seeding.`}
-                      arrow
-                    >
-                      <AcUnit
-                        sx={{ color: 'white', backgroundColor: '#80D0FF', borderRadius: '5px' }}
-                      />
-                    </Tooltip>
-                  </Grid>
-              )} */}
+              {crop.attributes.filter((a) => a.label === 'Frost Seeding')[0]?.values[0] === 'Yes' && (
+                <Grid item>
+                  <Tooltip
+                    placement="top-end"
+                    enterTouchDelay={0}
+                    title={`${flipCoverCropName(crop.label)} is suitable for frost seeding.`}
+                    arrow
+                  >
+                    <AcUnit
+                      sx={{ color: 'white', backgroundColor: '#80D0FF', borderRadius: '5px' }}
+                    />
+                  </Tooltip>
+                </Grid>
+              )}
             </Grid>
           </Grid>
         </TableCell>
