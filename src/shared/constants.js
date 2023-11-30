@@ -576,10 +576,10 @@ export const sortCrops = (
         .reverse()
         .forEach((g) => {
           if (b.goals.filter((data) => data.label === g)) {
-            bAvg = +b.goals.filter((data) => data.label === g).values[0] + bAvg;
+            bAvg = +b.goals.filter((data) => data.label === g)[0].values[0] + bAvg;
           }
           if (a.goals.filter((data) => data.label === g)) {
-            aAvg = +a.goals.filter((data) => data.label === g).values[0] + aAvg;
+            aAvg = +a.goals.filter((data) => data.label === g)[0].values[0] + aAvg;
           }
         });
       aAvg /= selectedItems.length;
@@ -596,7 +596,7 @@ export const sortCrops = (
   if (type === 'Goal') {
     crops.sort((a, b) => {
       if (a.goals.filter((data) => data.label === goal) && b.goals.filter((data) => data.label === goal)) {
-        if (parseInt(a.goals.filter((data) => data.label === goal).values[0], 10) > parseInt(b.goals.filter((data) => data.label === goal).values[0], 10)) {
+        if (parseInt(a.goals.filter((data) => data.label === goal)[0].values[0], 10) > parseInt(b.goals.filter((data) => data.label === goal)[0].values[0], 10)) {
           return sortFlag ? -1 : 1;
         }
         return sortFlag ? 1 : -1;
@@ -623,13 +623,13 @@ export const sortCrops = (
       crops.sort((a, b) => {
         let firstDate;
         let secondDate;
-        const firstLength = a.data?.['Planting and Growth Windows']?.['Reliable Establishment']?.values.length;
-        const secondLength = b.data?.['Planting and Growth Windows']?.['Reliable Establishment']?.values.length;
+        const firstLength = a.plantingDates.filter((date) => date.label === 'Reliable Establishment')[0].values.length;
+        const secondLength = b.plantingDates.filter((date) => date.label === 'Reliable Establishment')[0].values.length;
         if (firstLength && secondLength) {
           // sorting by last reliable establishment date for descending and first for ascending
           if (!sortFlag) {
             firstDate = new Date(
-              a.data?.['Planting and Growth Windows']?.['Reliable Establishment']?.values[
+              a.plantingDates.filter((date) => date.label === 'Reliable Establishment')[0].values?.[
                 firstLength - 1
               ].split(' - ')[1],
             )
@@ -638,7 +638,7 @@ export const sortCrops = (
               .reverse()
               .join('');
             secondDate = new Date(
-              b.data?.['Planting and Growth Windows']?.['Reliable Establishment']?.values[
+              b.plantingDates.filter((date) => date.label === 'Reliable Establishment')[0].values?.[
                 secondLength - 1
               ].split(' - ')[1],
             )
@@ -648,7 +648,7 @@ export const sortCrops = (
               .join('');
           } else {
             firstDate = new Date(
-              a.data?.['Planting and Growth Windows']?.['Reliable Establishment']?.values[
+              a.plantingDates.filter((date) => date.label === 'Reliable Establishment')[0].values?.[
                 firstLength - 1
               ].split(' - ')[0],
             )
@@ -657,7 +657,7 @@ export const sortCrops = (
               .reverse()
               .join('');
             secondDate = new Date(
-              b.data?.['Planting and Growth Windows']?.['Reliable Establishment']?.values[
+              b.plantingDates.filter((date) => date.label === 'Reliable Establishment')[0].values?.[
                 secondLength - 1
               ].split(' - ')[0],
             )
