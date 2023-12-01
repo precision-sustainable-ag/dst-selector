@@ -8,17 +8,17 @@ import {
 import '../../../styles/cropCalendarViewComponent.scss';
 import '../../../styles/cropTable.scss';
 import CropSelectorCalendarView from '../../../components/CropSelectorCalendarView/CropSelectorCalendarView';
-import { selectedCropsModifier } from '../../../reduxStore/cropSlice';
+import { updateSelectedCropIds } from '../../../reduxStore/cropSlice';
 import { myCropListLocation, snackHandler } from '../../../reduxStore/sharedSlice';
 
 const CropTableCard = ({
   crop, indexKey, showGrowthWindow,
 }) => {
   const dispatchRedux = useDispatch();
-  const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
+  const selectedCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCropIds);
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
 
-  const selectedBtns = selectedCropsRedux;
+  const selectedBtns = selectedCropIdsRedux;
 
   // TODO: Update SelectedCropsRedux
 
@@ -67,8 +67,8 @@ const CropTableCard = ({
                 crop.label,
                 dispatchRedux,
                 snackHandler,
-                selectedCropsModifier,
-                selectedCropsRedux,
+                updateSelectedCropIds,
+                selectedCropIdsRedux,
                 myCropListLocation,
               );
             }}

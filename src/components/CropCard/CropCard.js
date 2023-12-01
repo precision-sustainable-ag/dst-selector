@@ -10,7 +10,7 @@ import React, {
 import { useSelector } from 'react-redux';
 import { addCropToBasket, trimString } from '../../shared/constants';
 import { myCropListLocation, snackHandler } from '../../reduxStore/sharedSlice';
-import { selectedCropsModifier } from '../../reduxStore/cropSlice';
+import { updateSelectedCropIds } from '../../reduxStore/cropSlice';
 
 const CropCard = ({
   crop, handleModalOpen, index, dispatchRedux,
@@ -20,21 +20,23 @@ const CropCard = ({
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   // redux vars
-  const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
-  const [selectedBtns, setSelectedBtns] = useState(selectedCropsRedux);
+  const selectedCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCropIds);
+
+  // useState vars
+  const [selectedBtns, setSelectedBtns] = useState(selectedCropIdsRedux);
 
   // TODO: Update SelectedCropsRedux
 
   async function updateBtns() {
-    await setSelectedBtns(selectedCropsRedux);
+    await setSelectedBtns(selectedCropIdsRedux);
   }
 
   useEffect(() => {
     updateBtns();
-  }, [selectedCropsRedux]);
+  }, [selectedCropIdsRedux]);
 
   async function addToBasket(cropId, name) {
-    addCropToBasket(cropId, name, dispatchRedux, snackHandler, selectedCropsModifier, selectedCropsRedux, myCropListLocation);
+    addCropToBasket(cropId, name, dispatchRedux, snackHandler, updateSelectedCropIds, selectedCropIdsRedux, myCropListLocation);
     await updateBtns();
   }
 
