@@ -1,4 +1,6 @@
-import { Grid, Typography, useMediaQuery, useTheme } from '@mui/material';
+import {
+  Grid, Typography, useMediaQuery, useTheme,
+} from '@mui/material';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
@@ -18,13 +20,13 @@ const PreviousCashCrop = () => {
 
   return (
     <div>
-      <Grid item container xs={12} alignItems={'center'} justifyContent={'center'}>
-        <Typography align="center" variant={'h4'}>
+      <Grid item container xs={12} alignItems="center" justifyContent="center">
+        <Typography align="center" variant="h4">
           Cash Crop Growing Window
         </Typography>
       </Grid>
       <Grid item container xs={12} mb={isMobile ? 4 : 7}>
-        <Typography variant={'subtitle1'} align="center" gutterBottom>
+        <Typography variant="subtitle1" align="center" gutterBottom>
           Enter your cash crop growing window if you would like to see it displayed on the calendar.
         </Typography>
       </Grid>
@@ -36,7 +38,7 @@ const PreviousCashCrop = () => {
           alignItems="center"
           xs={12}
           spacing={isMobile ? 2 : 3}
-          display={'flex'}
+          display="flex"
         >
           <Grid item md={6}>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -64,9 +66,7 @@ const PreviousCashCrop = () => {
                 sx={{ width: 1 }}
                 label="Harvest Date"
                 value={cashCropDataRedux.dateRange.endDate}
-                onChange={(newDate) =>
-                  handleDispatch(cashCropDataRedux.dateRange.startDate, newDate)
-                }
+                onChange={(newDate) => handleDispatch(cashCropDataRedux.dateRange.startDate, newDate)}
               />
             </LocalizationProvider>
           </Grid>
