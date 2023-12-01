@@ -3,13 +3,16 @@
   The GoalsSelector is the window where the user selects their goals
 */
 // TODO: Goal tags are not responsive!
-import { Typography, Grid, Box, useMediaQuery, useTheme } from '@mui/material';
+import {
+  Typography, Grid, Box, useMediaQuery, useTheme,
+} from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import GoalTag from './GoalTag/GoalTag';
 import { callCoverCropApi } from '../../shared/constants';
 import { updateDateRange } from '../../reduxStore/cropSlice';
 import PreviousCashCrop from '../CropSidebar/PreviousCashCrop/PreviousCashCrop';
+
 const GoalsSelector = () => {
   const dispatchRedux = useDispatch();
 
@@ -17,7 +20,6 @@ const GoalsSelector = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const isLargeScreen = useMediaQuery(theme.breakpoints.up('lg'));
-  const isMediumOrLargeScreen = useMediaQuery(theme.breakpoints.between('sm', 'lg'));
 
   // redux vars
   const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
@@ -53,7 +55,7 @@ const GoalsSelector = () => {
   }, []);
   return (
     <Box>
-      <Grid container spacing={3}>
+      <Grid container spacing={isLargeScreen ? 4 : 1}>
         {/* holds goal selector */}
         <Grid item container lg={6} justifyContent={isLargeScreen ? 'flex-end' : 'center'}>
           <Grid
@@ -65,12 +67,12 @@ const GoalsSelector = () => {
               borderRadius: '15px',
               border: '2px solid #598445',
               p: '1rem',
-              margin: isMediumOrLargeScreen ? '1rem' : '0',
+              margin: !isLargeScreen ? '1rem' : '0',
             }}
           >
             {/* title */}
             <Grid item xs={12}>
-              <Typography variant={'h4'} align="center">
+              <Typography variant="h4" align="center">
                 Goals
               </Typography>
             </Grid>
@@ -85,7 +87,7 @@ const GoalsSelector = () => {
               </Typography>
             </Grid>
             <Grid item xs={12} mb={2}>
-              <Typography variant={'subtitle2'} gutterBottom align="center">
+              <Typography variant="subtitle2" gutterBottom align="center">
                 Tap and hold for more information
               </Typography>
             </Grid>
@@ -96,10 +98,10 @@ const GoalsSelector = () => {
                   <Grid
                     item
                     key={key}
-                    display={'flex'}
+                    display="flex"
                     xs={isMobile ? 12 : 'auto'}
-                    justifyContent={'center'}
-                    alignItems={'center'}
+                    justifyContent="center"
+                    alignItems="center"
                   >
                     <GoalTag
                       key={key}
@@ -125,9 +127,11 @@ const GoalsSelector = () => {
               borderRadius: '15px',
               border: '2px solid #598445',
               p: '1rem',
-              margin: isMediumOrLargeScreen ? '1rem' : '0',
+              mr: !isLargeScreen ? '1rem' : '0',
+              ml: !isLargeScreen ? '1rem' : '0',
+              mb: !isLargeScreen ? '1rem' : '0,',
             }}
-            justifyContent={'center'}
+            justifyContent="center"
           >
             <PreviousCashCrop setDateRange={setDateRange} />
           </Grid>
