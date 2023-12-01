@@ -16,7 +16,7 @@ const ProgressButtonsInner = ({
   isDisabledBack, isDisabledNext, isDisabledRefresh, toolTip,
 }) => {
   const dispatchRedux = useDispatch();
-  const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
+  const selectedCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCropIds);
   const history = useHistory();
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
@@ -75,7 +75,7 @@ const ProgressButtonsInner = ({
           </span>
         </Tooltip>
       ) : (
-        <Badge badgeContent={selectedCropsRedux.length} color="error">
+        <Badge badgeContent={selectedCropIdsRedux.length} color="error">
           <LightButton
             style={{
               maxWidth: '90px',
@@ -85,7 +85,7 @@ const ProgressButtonsInner = ({
               marginLeft: '3%',
             }}
             onClick={() => (progressRedux === 4 ? setMyCoverCropActivationFlag() : changeProgress('increment'))}
-            disabled={isDisabledNext || (progressRedux === 4 && selectedCropsRedux.length === 0)}
+            disabled={isDisabledNext || (progressRedux === 4 && selectedCropIdsRedux.length === 0)}
           >
             {progressRedux === 4 ? 'VIEW MY LIST' : 'NEXT'}
           </LightButton>
@@ -101,7 +101,7 @@ const ProgressButtonsInner = ({
           marginLeft: '3%',
         }}
         onClick={() => {
-          if (selectedCropsRedux.length > 0) {
+          if (selectedCropIdsRedux.length > 0) {
             dispatchRedux(setMyCoverCropReset(true, false));
           } else {
             dispatchRedux(reset());

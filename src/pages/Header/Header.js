@@ -61,7 +61,7 @@ const Header = () => {
   const consentRedux = useSelector((stateRedux) => stateRedux.userData.consent);
   const selectedFieldIdRedux = useSelector((stateRedux) => stateRedux.userData.selectedFieldId);
   const accessTokenRedux = useSelector((stateRedux) => stateRedux.userData.accessToken);
-  const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
+  const selectedCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCropIds);
 
   // useState vars
   const [authModalOpen, setAuthModalOpen] = useState(true);
@@ -83,7 +83,7 @@ const Header = () => {
   const headerTabs = ['profile', 'about', 'help', 'feedback'];
 
   const handleClick = () => {
-    if (selectedCropsRedux.length === 0) {
+    if (selectedCropIdsRedux.length === 0) {
       dispatchRedux(reset());
       history.replace('/');
     } else {

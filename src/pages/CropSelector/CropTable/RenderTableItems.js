@@ -13,14 +13,15 @@ import '../../../styles/cropCalendarViewComponent.scss';
 import '../../../styles/cropTable.scss';
 import CropTableCard from './CropTableCard';
 
-const CropTableListItem = ({
-  activeCropData, matchGoals, showGrowthWindow, handleModalOpen,
+const RenderTableItems = ({
+  showGrowthWindow, handleModalOpen,
 }) => {
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
+  const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
 
-  return activeCropData.map((crop, index) => {
+  return cropDataRedux.sort((a, b) => (a.inactive - b.inactive)).map((crop, index) => {
     if (
-      matchGoals
+      !crop.inactive
         ? !hasGoalRatingTwoOrLess(selectedGoalsRedux, crop)
         : hasGoalRatingTwoOrLess(selectedGoalsRedux, crop)
     ) {
@@ -168,4 +169,4 @@ const CropTableListItem = ({
   });
 };
 
-export default CropTableListItem;
+export default RenderTableItems;
