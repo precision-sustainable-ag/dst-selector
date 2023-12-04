@@ -1166,6 +1166,7 @@ export const extractData = (attribute, from) => {
   // extract data
   let data;
   let dataType;
+
   if (from === 'infoSheet') {
     if (attribute?.values[0]?.label) {
       return (
