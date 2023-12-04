@@ -58,13 +58,13 @@ const CropCard = ({
         <Typography
           sx={{ color: 'grey', textTransform: 'uppercase' }}
         >
-          {crop.group}
+          {crop.attributes.filter((a) => a.label === 'Cover Crop Group')[0]?.values[0]}
         </Typography>
         <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>
           {crop.label}
         </Typography>
         <Typography sx={{ fontStyle: 'italic' }}>
-          {crop.family.scientific ? trimString(crop.family.scientific, 25) : 'No Data'}
+          {crop.scientificName ? trimString(crop.scientificName, 25) : 'No Data'}
         </Typography>
         <Button
           style={{

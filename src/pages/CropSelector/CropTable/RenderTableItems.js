@@ -25,31 +25,38 @@ const RenderTableItems = ({
         ? !hasGoalRatingTwoOrLess(selectedGoalsRedux, crop)
         : hasGoalRatingTwoOrLess(selectedGoalsRedux, crop)
     ) {
-      let duration;
-      let totalN;
-      let dryMatter;
+      const duration = (crop.attributes.filter((attr) => attr.label === 'Duration')[0].values[0].toString().toLowerCase()
+      === 'short-lived perennial'
+        ? 'Perennial'
+        : crop.attributes.filter((attr) => attr.label === 'Duration')[0].values[0]) || 'No Data';
+      const maxN = crop.attributes.filter((attr) => attr.label === 'Nitrogen Accumulation Min, Legumes (lbs/A/y)')[0]?.values[0];
+      const minN = crop.attributes.filter((attr) => attr.label === 'Nitrogen Accumulation Max, Legumes (lbs/A/y)')[0]?.values[0];
+      const totalN = minN && maxN ? `${minN} - ${maxN}` : 'No Data';
+      const dryMatterMax = crop.attributes.filter((attr) => attr.label === 'Dry Matter Max (lbs/A/y)')[0]?.values[0];
+      const dryMatterMin = crop.attributes.filter((attr) => attr.label === 'Dry Matter Min (lbs/A/y)')[0]?.values[0];
+      const dryMatter = crop.attributes.filter((attr) => attr.label === 'Dry Matter')[0]?.values[0]
+      || ((dryMatterMin && dryMatterMax) && `${dryMatterMin} - ${dryMatterMax}`)
+      || 'No Data';
 
       // const searchCategory = crop.data['Basic Agronomics'] ? 'Basic Agronomics' : 'Growth Traits';
 
-      crop.attributes.forEach((att) => {
-        duration = (att.label.Duration?.values[0].toString().toLowerCase()
-        === 'short-lived perennial'
-          ? 'Perennial'
-          : att.label.Duration?.values[0]) || 'No Data';
+      // crop.attributes.forEach((att) => {
+      //   console.log('att', att);
+      //   const maxN = att.label['Nitrogen Accumulation Min, Legumes (lbs/A/y)']?.values[0];
+      //   const minN = att.label['Nitrogen Accumulation Max, Legumes (lbs/A/y)']?.values[0];
+      //   totalN = minN && maxN ? `${minN} - ${maxN}` : 'No Data';
 
-        const maxN = att.label['Nitrogen Accumulation Min, Legumes (lbs/A/y)']?.values[0];
-        const minN = att.label['Nitrogen Accumulation Max, Legumes (lbs/A/y)']?.values[0];
-        totalN = minN && maxN ? `${minN} - ${maxN}` : 'No Data';
+      //   if (att.label['Dry Matter']) {
+      //     dryMatter = att.label['Dry Matter']?.values[0] || 'No Data';
+      //   } else {
+      //     const dryMatterMax = att.label['Dry Matter Max (lbs/A/y)']?.values[0];
+      //     const dryMatterMin = att.label['Dry Matter Min (lbs/A/y)']?.values[0];
 
-        if (att.label['Dry Matter']) {
-          dryMatter = att.label['Dry Matter']?.values[0] || 'No Data';
-        } else {
-          const dryMatterMax = att.label['Dry Matter Max (lbs/A/y)']?.values[0];
-          const dryMatterMin = att.label['Dry Matter Min (lbs/A/y)']?.values[0];
+      //     dryMatter = dryMatterMin && dryMatterMax ? `${dryMatterMin} - ${dryMatterMax}` : 'No Data';
+      //   }
+      // });
+      console.log('duration', duration);
 
-          dryMatter = dryMatterMin && dryMatterMax ? `${dryMatterMin} - ${dryMatterMax}` : 'No Data';
-        }
-      });
       return (
         <TableRow
           key={`${crop.id} index`}
