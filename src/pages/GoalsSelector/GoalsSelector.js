@@ -93,7 +93,7 @@ const GoalsSelector = () => {
             </Grid>
             {/* chips */}
             {allGoals?.length > 0 && (
-              <Grid item container spacing={2} justifyContent="center" alignItems="center">
+              <Grid item container spacing={1} justifyContent="center" alignItems="center">
                 {allGoals.map((goal, key) => (
                   <Grid
                     item
