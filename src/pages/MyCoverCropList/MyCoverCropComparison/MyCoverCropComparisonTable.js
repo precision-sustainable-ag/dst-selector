@@ -95,7 +95,6 @@ const MyCoverCropComparisonTable = () => {
 
     await comparisonKeysRedux.forEach((key) => {
       const newRow = { comparisonKey: key };
-      console.log('selectedCrops', selectedCrops);
       selectedCrops.forEach((crop, index) => {
         crop?.attributes?.forEach((attribute) => {
           if (attribute.label === key) {

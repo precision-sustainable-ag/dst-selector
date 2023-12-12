@@ -38,25 +38,6 @@ const RenderTableItems = ({
       || ((dryMatterMin && dryMatterMax) && `${dryMatterMin} - ${dryMatterMax}`)
       || 'No Data';
 
-      // const searchCategory = crop.data['Basic Agronomics'] ? 'Basic Agronomics' : 'Growth Traits';
-
-      // crop.attributes.forEach((att) => {
-      //   console.log('att', att);
-      //   const maxN = att.label['Nitrogen Accumulation Min, Legumes (lbs/A/y)']?.values[0];
-      //   const minN = att.label['Nitrogen Accumulation Max, Legumes (lbs/A/y)']?.values[0];
-      //   totalN = minN && maxN ? `${minN} - ${maxN}` : 'No Data';
-
-      //   if (att.label['Dry Matter']) {
-      //     dryMatter = att.label['Dry Matter']?.values[0] || 'No Data';
-      //   } else {
-      //     const dryMatterMax = att.label['Dry Matter Max (lbs/A/y)']?.values[0];
-      //     const dryMatterMin = att.label['Dry Matter Min (lbs/A/y)']?.values[0];
-
-      //     dryMatter = dryMatterMin && dryMatterMax ? `${dryMatterMin} - ${dryMatterMax}` : 'No Data';
-      //   }
-      // });
-      console.log('duration', duration);
-
       return (
         <TableRow
           key={`${crop.id} index`}

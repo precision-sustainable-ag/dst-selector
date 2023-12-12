@@ -135,28 +135,23 @@ const CropSidebar = ({
       return '';
     });
 
-    // const booleanKeys = ['Aerial Seeding', 'Frost Seeding'];
     const filtered = cropData?.filter((crop, n, cd) => {
       const totalActiveFilters = Object.keys(nonZeroKeys2)?.length;
       let i = 0;
       nonZeroKeys2.forEach((keyObject) => {
         const key = Object.keys(keyObject);
         const vals = keyObject[key];
-        // if (areCommonElements(arrayKeys, key)) {
-        // Handle array type havlues
-        Object.keys(crop.data).forEach((category) => {
-          if (Object.keys(crop.data[category]).includes(key[0])) {
-            if (crop.data[category][key].values[0] !== undefined) {
-              const intersection = (arrays = [vals, crop.data[category][key].values[0]]) => arrays.reduce((a, b) => a.filter((c) => b.includes(c)));
+        if (crop.attributes.filter((att) => att.label === key[0]).length > 0) {
+          const intersection = (arrays = [vals, crop.attributes.filter((att) => att.label === key[0])[0]?.values[0]]) => {
+            arrays.reduce((a, b) => a.filter((c) => b.includes(c)));
+          };
 
-              if (intersection()?.length > 0) {
-                i += 1;
-              }
-            } else if (vals.includes(crop.data[category][key].values[0])) {
-              i += 1;
-            }
+          if (intersection()?.length > 0) {
+            i += 1;
           }
-        });
+        } else if (vals.includes(crop.attributes.filter((att) => att.label === key[0])[0]?.values[0])) {
+          i += 1;
+        }
       });
 
       cd[n].inactive = (i !== totalActiveFilters)
@@ -233,16 +228,7 @@ const CropSidebar = ({
         setSidebarFiltersData(allFilters);
         setSidebarCategoriesData(data.data);
       });
-
-      callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/crops?${query}`).then((data) => {
-        console.log('data 1', data);
-        // cropDataFormatter(data.data);
-        // dispatchRedux(pullCropData(data.data));
-        // dispatchRedux(setAjaxInProgress(false));
-      });
-
       callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/crops?minimal=true&${query}`).then((data) => {
-        // console.log('data 2', data);
         cropDataFormatter(data.data);
         dispatchRedux(updateCropData(data.data));
         dispatchRedux(setAjaxInProgress(false));
