@@ -5,8 +5,9 @@
 
 import React from 'react';
 import { Refresh } from '@mui/icons-material';
-import { Stack, Tooltip } from '@mui/material';
+import { Stack, Tooltip, Badge } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { LightButton } from './constants';
 import { reset } from '../reduxStore/store';
 import { updateProgress, setMyCoverCropReset } from '../reduxStore/sharedSlice';
@@ -15,7 +16,8 @@ const ProgressButtonsInner = ({
   isDisabledBack, isDisabledNext, isDisabledRefresh, toolTip,
 }) => {
   const dispatchRedux = useDispatch();
-  const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
+  const selectedCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCropIds);
+  const history = useHistory();
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
 
@@ -30,61 +32,65 @@ const ProgressButtonsInner = ({
     }
   };
 
+  const setMyCoverCropActivationFlag = () => {
+    history.push('/my-cover-crop-list');
+  };
+
   return (
-    <Stack
-      direction="row"
-      style={{ width: '100%' }}
-    >
+    <Stack direction="row" style={{ width: '100%' }}>
       <LightButton
         style={{
           maxWidth: '90px',
           maxHeight: '35px',
           minWidth: '70px',
           fontSize: '13px',
+          marginLeft: progressRedux === 4 ? '-25px' : '0px',
         }}
         onClick={() => changeProgress('decrement')}
         disabled={isDisabledBack}
       >
         BACK
       </LightButton>
-      {toolTip && isDisabledNext
-        ? (
-          <Tooltip
-            enterTouchDelay={0}
-            title={(<p>{`Please Select a ${councilShorthandRedux === 'MCCC' ? 'County' : 'Zone'}.`}</p>)}
-          >
-            <span>
-              <LightButton
-                style={{
-                  maxWidth: '90px',
-                  maxHeight: '35px',
-                  minWidth: '70px',
-                  fontSize: '13px',
-                  marginLeft: '3%',
-                }}
-                onClick={() => changeProgress('increment')}
-                disabled={isDisabledNext || progressRedux === 5}
-              >
-                NEXT
-              </LightButton>
-            </span>
-          </Tooltip>
-        )
-        : (
+      {toolTip && isDisabledNext ? (
+        <Tooltip
+          enterTouchDelay={0}
+          title={
+            <p>{`Please Select a ${councilShorthandRedux === 'MCCC' ? 'County' : 'Zone'}.`}</p>
+          }
+        >
+          <span>
+            <LightButton
+              style={{
+                maxWidth: '90px',
+                maxHeight: '35px',
+                minWidth: '70px',
+                fontSize: '13px',
+                marginLeft: '3%',
+              }}
+              onClick={() => changeProgress('increment')}
+              disabled={isDisabledNext || progressRedux === 4}
+            >
+              NEXT
+            </LightButton>
+          </span>
+        </Tooltip>
+      ) : (
+        <Badge badgeContent={selectedCropIdsRedux.length} color="error">
           <LightButton
             style={{
               maxWidth: '90px',
               maxHeight: '35px',
-              minWidth: '70px',
+              minWidth: progressRedux === 4 ? '130px' : '70px',
               fontSize: '13px',
               marginLeft: '3%',
             }}
-            onClick={() => changeProgress('increment')}
-            disabled={isDisabledNext || progressRedux === 5}
+            onClick={() => (progressRedux === 4 ? setMyCoverCropActivationFlag() : changeProgress('increment'))}
+            disabled={isDisabledNext || (progressRedux === 4 && selectedCropIdsRedux.length === 0)}
           >
-            NEXT
+            {progressRedux === 4 ? 'VIEW MY LIST' : 'NEXT'}
           </LightButton>
-        )}
+        </Badge>
+      )}
 
       <LightButton
         style={{
@@ -95,7 +101,7 @@ const ProgressButtonsInner = ({
           marginLeft: '3%',
         }}
         onClick={() => {
-          if (selectedCropsRedux.length > 0) {
+          if (selectedCropIdsRedux.length > 0) {
             dispatchRedux(setMyCoverCropReset(true, false));
           } else {
             dispatchRedux(reset());

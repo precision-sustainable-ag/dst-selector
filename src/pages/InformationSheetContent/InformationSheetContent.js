@@ -25,14 +25,13 @@ const InformationSheetContent = ({ crop, modalData }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
-  const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
-
   // redux vars
   const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
   const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
   const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
-  const { zone } = filterStateRedux[section];
+  const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
+  const regionShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.regionShorthand);
 
   // useState vars
   const [currentSources, setCurrentSources] = useState([{}]);
@@ -42,7 +41,7 @@ const InformationSheetContent = ({ crop, modalData }) => {
   const query = `${encodeURIComponent('regions')}=${encodeURIComponent(regionIdRedux)}`;
 
   useEffect(() => {
-    document.title = `${crop.label} Zone ${zone}`;
+    document.title = `${crop.label} ${councilShorthandRedux === 'MCCC' ? 'County' : 'Zone'} ${regionShorthandRedux}`;
     if (stateIdRedux && regionIdRedux) {
       callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/crops/${crop?.id}/resources?${query}`)
         .then((data) => setCurrentSources(data.data));
@@ -52,7 +51,7 @@ const InformationSheetContent = ({ crop, modalData }) => {
           setDataDone(true);
         });
     }
-  }, [crop, zone]);
+  }, [crop, filterStateRedux]);
 
   return dataDone === true && (
     <>
@@ -78,7 +77,7 @@ const InformationSheetContent = ({ crop, modalData }) => {
             <AccordionDetails>
               {' '}
               <Grid container>
-                {cat.attributes.map((att, catIndex) => ((att.label !== 'Comments' && !att.label.startsWith('Notes:') && cat.label !== 'Extended Comments') ? (
+                {cat.attributes.map((att, catIndex) => ((!att.label.startsWith('Comments') && !att.label.startsWith('Notes:') && cat.label !== 'Extended Comments') ? (
                   <Grid container key={catIndex} item md={6} sm={12} direction={isMobile ? 'row' : 'column'}>
                     <Grid item xs={12}>
                       <Tooltip

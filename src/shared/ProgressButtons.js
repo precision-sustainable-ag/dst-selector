@@ -21,7 +21,7 @@ const ProgressButtons = () => {
   const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
 
-  const disableLogic = (progress, goalsLength, sfilters, regionShorthand) => {
+  const disableLogic = (progress, goalsLength, filters, regionShorthand) => {
     switch (parseInt(progress, 10)) {
       case 0:
         setToolTip(false);
@@ -31,15 +31,13 @@ const ProgressButtons = () => {
         break;
       case 1:
         // location selection state
-        // TODO: discuss should sfilter be used here or state.lastZone
-        setIsDisabledNext(sfilters.zone === 0 || addressRedux === '' || regionShorthand === '');
+        setIsDisabledNext(addressRedux === '' || regionShorthand === '');
         setToolTip(true);
         setIsDisabledBack(false);
         setIsDisabledRefresh(false);
         break;
-      case 4:
+      case 3:
         // goals selection state
-        setIsDisabledNext(goalsLength > 3 || goalsLength < 1);
         setToolTip(false);
         setIsDisabledBack(false);
         setIsDisabledRefresh(false);
@@ -54,9 +52,8 @@ const ProgressButtons = () => {
   };
 
   useEffect(() => {
-    const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
-    const sfilters = filterStateRedux[section];
-    disableLogic(progressRedux, selectedGoalsRedux.length, sfilters, regionShorthandRedux);
+    const { filters } = filterStateRedux;
+    disableLogic(progressRedux, selectedGoalsRedux.length, filters, regionShorthandRedux);
   }, [filterStateRedux, selectedGoalsRedux, stateLabelRedux, regionShorthandRedux]);
 
   const renderProgressButtons = (progress, disabledBack, disabledNext, disabledRefresh) => {
