@@ -1158,7 +1158,7 @@ export const postHistory = async (accessToken = null, historyData = null) => {
 };
 
 export const extractData = (attribute, from) => {
-  // handles no data
+  // handles no attribute
   if (!attribute) {
     return <Typography variant="body2">No Data</Typography>;
   }
@@ -1178,6 +1178,11 @@ export const extractData = (attribute, from) => {
   } else {
     data = attribute?.values[0];
     dataType = attribute?.dataType;
+  }
+
+  // handles no data
+  if (!data) {
+    return <Typography variant="body2">No Data</Typography>;
   }
 
   // handles pillbox data
