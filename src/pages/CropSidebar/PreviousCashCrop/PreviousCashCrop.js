@@ -19,7 +19,7 @@ const PreviousCashCrop = () => {
   };
 
   return (
-    <div>
+    <>
       <Grid item container xs={12} alignItems="center" justifyContent="center">
         <Typography align="center" variant="h4">
           Cash Crop Growing Window
@@ -72,7 +72,7 @@ const PreviousCashCrop = () => {
           </Grid>
         </Grid>
       </Grid>
-    </div>
+    </>
   );
 };
 
