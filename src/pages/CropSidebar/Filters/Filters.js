@@ -1,15 +1,24 @@
 import { Chip, Grid, Tooltip } from '@mui/material';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
-import React, {
-  useEffect, useState,
-} from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { filterOffRedux, filterOnRedux, filterToggle } from '../../../reduxStore/filterSlice';
 
-const DollarsAndRatings = ({ filter, handleChange }) => {
+// this file handles setting all of the filters in the redux state
+
+// handles dollars and ratings
+const DollarsAndRatings = ({ filter }) => {
   const dispatchRedux = useDispatch();
   const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
-  const units = filter.units === 'rating 1-3' ? 3 : 5;
+  const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
+  let unitsArray = null;
+
+  if (councilShorthandRedux === 'MCCC') {
+    unitsArray = filter.units === 'rating 1-3' ? ['1', '2', '3'] : ['0', '1', '2', '3', '4'];
+  } else {
+    unitsArray = filter.units === 'rating 1-3' ? ['1', '2', '3'] : ['1', '2', '3', '4', '5'];
+  }
+
   const style = {
     transform: 'scale(0.8)',
     transformOrigin: 'top left',
@@ -18,9 +27,7 @@ const DollarsAndRatings = ({ filter, handleChange }) => {
 
   return (
     <div style={style}>
-      {new Array(units)
-        .fill(0)
-        .map((_, i) => i + 1)
+      {unitsArray
         .map((i) => {
           const filterKey = `${filter.name}: ${i}`;
           const selected = filterStateRedux.filters[filterKey];
@@ -44,21 +51,17 @@ const DollarsAndRatings = ({ filter, handleChange }) => {
                   } else {
                     filterOn();
                   }
-                  handleChange(filter.name || filter.alternateName);
+                } else if (selected) {
+                  filterOff();
                 } else {
-                  if (selected) {
-                    filterOff();
-                  } else {
-                    for (let j = 1; j <= filter.maxSize; j++) {
-                      const filterKey2 = `${filter.name}: ${j}`;
-                      if (j < i) {
-                        filterOff(filterKey2);
-                      } else {
-                        filterOn(filterKey2);
-                      }
+                  for (let j = councilShorthandRedux === 'MCCC' ? 0 : 1; j <= filter.maxSize; j++) {
+                    const filterKey2 = `${filter.name}: ${j}`;
+                    if (j < i) {
+                      filterOff(filterKey2);
+                    } else {
+                      filterOn(filterKey2);
                     }
                   }
-                  handleChange(filter.name || filter.alternateName);
                 }
               }}
             />
@@ -69,7 +72,14 @@ const DollarsAndRatings = ({ filter, handleChange }) => {
   );
 }; // DollarsAndRatings
 
-const Chips = ({ filter, handleChange }) => {
+// handles text based chips
+const Chips = ({ filter }) => {
+  const dispatchRedux = useDispatch();
+
+  const chipChange = (filterName, val) => {
+    dispatchRedux(filterToggle({ value: `${filterName}: ${val}` }));
+  };
+
   const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
   return filter.values.map((val, i) => {
     const selected = filterStateRedux.filters[`${filter.name}: ${val.value}`];
@@ -77,7 +87,7 @@ const Chips = ({ filter, handleChange }) => {
       <Grid item>
         <Chip
           key={filter.name + val.value + i}
-          onClick={() => handleChange(filter.name, val.value)}
+          onClick={() => chipChange(filter.name, val.value)}
           component="li"
           size="medium"
           label={val.value}
@@ -88,6 +98,7 @@ const Chips = ({ filter, handleChange }) => {
   });
 }; // Chips
 
+// handles making the tooltips in sidebar
 const Tip = ({ filter }) => (
   <Tooltip
     enterTouchDelay={0}
@@ -105,64 +116,36 @@ const Tip = ({ filter }) => (
   </Tooltip>
 ); // Tip
 
-// added ref prop to remove error. TODO: look into if forwardRef is needed here since ref isnt used
-const Filters = ({ filters }) => {
-  const dispatchRedux = useDispatch();
-  const [selected, setSelected] = useState({});
-  const [sidebarFilterOptions, setSidebarFilterOptions] = useState({});
-  // eslint-disable-next-line no-unused-vars
-
-  const setProps = (selectedItem) => {
-    setSidebarFilterOptions({
-      ...sidebarFilterOptions,
-      ...selectedItem,
-    });
-  };
-
-  useEffect(() => {
-    setProps(selected);
-  }, [selected]);
-
-  const dollarsAndRatingsChange = () => {
-    setSelected({ ...selected, whatever: 'rerender' });
-  };
-
-  const chipChange = (filterName, val) => {
-    dispatchRedux(filterToggle({ value: `${filterName}: ${val}` }));
-    setSelected({ ...selected, whatever: 'rerender' });
-  };
-
-  return (
-    <Grid container spacing={2}>
-      {filters.values.map((filter, i) => {
-        if (filter.dataType === 'string') {
-          return (
-            <Grid container item spacing={1} key={i}>
-              <Grid item key={i} xs={12}>
-                <Tip filter={filter} />
-              </Grid>
-              <Grid item container xs={12} spacing={0.3}>
-                <Chips key={i} filter={filter} handleChange={chipChange} />
-              </Grid>
-            </Grid>
-          );
-        }
+// renders sidebar
+const Filters = ({ filters }) => (
+  <Grid container spacing={2}>
+    {filters.values.map((filter, i) => {
+      if (filter.dataType === 'string') {
         return (
           <Grid container item spacing={1} key={i}>
-            <Grid item xs={12}>
+            <Grid item key={i} xs={12}>
               <Tip filter={filter} />
             </Grid>
-            <Grid item xs={12}>
-              <DollarsAndRatings
-                filter={filter}
-                handleChange={dollarsAndRatingsChange}
-              />
+            <Grid item container xs={12} spacing={0.3}>
+              <Chips key={i} filter={filter} />
             </Grid>
           </Grid>
         );
-      })}
-    </Grid>
-  );
-}; // Filters
+      }
+      return (
+        <Grid container item spacing={1} key={i}>
+          <Grid item xs={12}>
+            <Tip filter={filter} />
+          </Grid>
+          <Grid item xs={12}>
+            <DollarsAndRatings
+              filter={filter}
+            />
+          </Grid>
+        </Grid>
+      );
+    })}
+  </Grid>
+); // Filters
 
 export default Filters;
