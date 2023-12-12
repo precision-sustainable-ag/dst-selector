@@ -1,6 +1,6 @@
 const initialState = {
   address: '',
-  markers: [[40.78489145, -74.80733626930342]],
+  markers: null,
   zone: '',
   county: null,
 };

@@ -19,7 +19,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import ReactGA from 'react-ga';
 import { RegionSelectorMap } from '@psa/dst.ui.region-selector-map';
 import { callCoverCropApi } from '../../shared/constants';
-import { updateRegions, updateRegion, updateStateInfo } from '../../reduxStore/mapSlice';
+import { updateRegion, updateRegions, updateStateInfo } from '../../reduxStore/mapSlice';
+import { updateLocation } from '../../reduxStore/addressSlice';
 
 const Landing = () => {
   const dispatchRedux = useDispatch();
@@ -42,6 +43,7 @@ const Landing = () => {
   const availableStates = useMemo(() => allStates.map((state) => state.label), [allStates]);
 
   const updateStateRedux = (selState) => {
+    localStorage.setItem('stateId', selState.id);
     dispatchRedux(updateStateInfo({
       stateLabel: selState.label,
       stateId: selState.id,
@@ -90,6 +92,11 @@ const Landing = () => {
     // is there a chance selectedState is {} ?
     if (Object.keys(selectedState).length !== 0) {
       updateStateRedux(selectedState);
+      // TODO: reset user marker for history fields?
+      if (stateIdRedux !== selectedState.id) {
+        dispatchRedux(updateLocation({ address: '', markers: null, county: null }));
+        dispatchRedux(updateRegion({ regionId: null, regionShorthand: null }));
+      }
       const { id } = selectedState;
       fetch(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${id}/regions`)
         .then((res) => res.json())
@@ -104,7 +111,9 @@ const Landing = () => {
 
           dispatchRedux(updateRegions(fetchedRegions));
 
+          // set default region for Selector and Explorer
           if (!regionIdRedux) {
+            localStorage.setItem('regionId', fetchedRegions[0].id ?? '');
             dispatchRedux(updateRegion({
               regionId: fetchedRegions[0].id ?? '',
               regionShorthand: fetchedRegions[0].shorthand ?? '',

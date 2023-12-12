@@ -1,12 +1,5 @@
 const initialState = {
-  explorer: {
-    // filters for explorer
-    cropSearch: '',
-    zone: 6, // needs a default so the filters will populate when starting with species-selector
-  },
-
-  selector: {
-    // filters for selector
+  filters: {
     cropSearch: '',
   },
 };
@@ -51,53 +44,50 @@ export const toggleFilterValue = (value) => ({
 });
 
 const filterReducer = (state = initialState, action = null) => {
-  const section = window.location.href.includes('species-selector') ? 'selector' : 'explorer';
-  let sfilters = { ...state[section] };
+  let filters = { ...state.filters };
   const value = action && action.payload && action.payload.value;
-
   switch (action.type) {
     case 'CLEAR_FILTERS':
-      sfilters = {
+      filters = {
         cropSearch: '',
-        zone: sfilters.zone,
       };
 
       return {
         ...state,
-        [section]: sfilters,
+        filters,
       };
 
     case 'FILTER_TOGGLE':
-      sfilters[value] = !sfilters[value];
+      filters[value] = !filters[value];
 
       return {
         ...state,
-        [section]: sfilters,
+        filters,
       };
 
     case 'FILTER_ON':
-      sfilters[value] = true;
+      filters[value] = true;
 
       return {
         ...state,
-        [section]: sfilters,
+        filters,
       };
 
     case 'FILTER_OFF':
-      sfilters[value] = false;
+      filters[value] = false;
 
       return {
         ...state,
-        [section]: sfilters,
+        filters,
       };
 
     case 'CROP_SEARCH':
-      sfilters.cropSearch = action.payload.value;
+      filters.cropSearch = action.payload.value;
 
       return {
         ...state,
         cropSearch: action.payload.value,
-        [section]: sfilters,
+        filters,
       };
 
     case 'TOGGLE_FILTER_VALUE':
