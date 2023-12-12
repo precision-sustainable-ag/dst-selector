@@ -5,7 +5,7 @@
 */
 
 import {
-  Grid, Typography,
+  Grid,
 } from '@mui/material';
 import { useHistory } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
@@ -83,19 +83,9 @@ const CoverCropExplorer = () => {
         />
       </Grid>
       <Grid item xl={9} lg={9} md={9} sm={12} xs={12}>
-        {updatedActiveCropData.length === 0 ? (
-          <Grid container alignItems="center" justifyContent="center">
-            <Grid item xs={12}>
-              <Typography variant="h5" align="center">
-                Please choose a zone from the sidebar
-              </Typography>
-            </Grid>
-          </Grid>
-        ) : (
-          <ExplorerCardView
-            activeCropData={updatedActiveCropData}
-          />
-        )}
+        <ExplorerCardView
+          activeCropData={updatedActiveCropData}
+        />
       </Grid>
     </Grid>
   );
