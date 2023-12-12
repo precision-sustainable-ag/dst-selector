@@ -77,7 +77,7 @@ const InformationSheetContent = ({ crop, modalData }) => {
             <AccordionDetails>
               {' '}
               <Grid container>
-                {cat.attributes.map((att, catIndex) => ((att.label !== 'Comments' && !att.label.startsWith('Notes:') && cat.label !== 'Extended Comments') ? (
+                {cat.attributes.map((att, catIndex) => ((!att.label.startsWith('Comments') && !att.label.startsWith('Notes:') && cat.label !== 'Extended Comments') ? (
                   <Grid container key={catIndex} item md={6} sm={12} direction={isMobile ? 'row' : 'column'}>
                     <Grid item xs={12}>
                       <Tooltip
