@@ -154,7 +154,7 @@ const CropSidebar = ({
         }
       });
       cd[n].inactive = (!match)
-      || (drainageClassRedux && !crop.attributes.filter((att) => att.label === 'Soil Drainage')[0]?.values?.includes(drainageClassRedux));
+      || (drainageClassRedux && !crop.soilDrainage.values?.includes(drainageClassRedux));
 
       return true;
     });
