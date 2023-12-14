@@ -25,7 +25,7 @@ const RenderTableItems = ({
         ? !hasGoalRatingTwoOrLess(selectedGoalsRedux, crop)
         : hasGoalRatingTwoOrLess(selectedGoalsRedux, crop)
     ) {
-      const duration = (crop.attributes.filter((attr) => attr.label === 'Duration')[0].values[0].toString().toLowerCase()
+      const duration = (crop.attributes.filter((attr) => attr.label === 'Duration')[0]?.values[0].toString().toLowerCase()
       === 'short-lived perennial'
         ? 'Perennial'
         : crop.attributes.filter((attr) => attr.label === 'Duration')[0].values[0]) || 'No Data';

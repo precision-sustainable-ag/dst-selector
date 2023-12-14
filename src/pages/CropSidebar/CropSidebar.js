@@ -146,16 +146,15 @@ const CropSidebar = ({
         const key = Object.keys(keyObject)[0];
         // get filter values ex. [1,2,3]
         const vals = keyObject[key];
-        if (crop.attributes.filter((att) => att.label === key).length > 0) {
+        if (crop.attributes.filter((att) => att.label === key)[0].length > 0) {
           // if there is not an intersection, match = false
           if (!crop.attributes.filter((att) => att.label === key)[0]?.values.some((item) => vals.includes(item))) {
             match = false;
           }
         }
       });
-
       cd[n].inactive = (!match)
-      || (drainageClassRedux && !crop?.data['Soil Conditions']['Soil Drainage']?.values?.includes(drainageClassRedux));
+      || (drainageClassRedux && !crop.attributes.filter((att) => att.label === 'Soil Drainage')[0]?.values?.includes(drainageClassRedux));
 
       return true;
     });
