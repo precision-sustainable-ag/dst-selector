@@ -6,6 +6,7 @@ const initialState = {
     date: null,
   },
   selectedFieldId: null,
+  userSelectRegion: false,
 };
 
 export const updateAccessToken = (token) => ({
@@ -28,6 +29,12 @@ export const setSelectFieldId = (fieldId) => ({
   payload: { fieldId },
 });
 
+// eslint-disable-next-line no-shadow
+export const userSelectRegion = (userSelectRegion) => ({
+  type: 'USER_SELECT_REGION',
+  payload: { userSelectRegion },
+});
+
 const userReducer = (state = initialState, action = null) => {
   switch (action.type) {
     case 'UPDATE_ACCESSTOKEN':
@@ -45,6 +52,8 @@ const userReducer = (state = initialState, action = null) => {
       };
     case 'SELECT_FIELD':
       return { ...state, selectedFieldId: action.payload.fieldId };
+    case 'USER_SELECT_REGION':
+      return { ...state, userSelectRegion: action.payload.userSelectRegion };
     default:
       return { ...state };
   }
