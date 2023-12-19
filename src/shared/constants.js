@@ -939,10 +939,10 @@ export const cropDataFormatter = (cropData = [{}]) => {
             valStart = moment(datesArr[0], 'MM/DD/YYYY').format('MM/DD');
             valEnd = moment(datesArr[1], 'MM/DD/YYYY').format('MM/DD');
           } else {
+            // hessian fly dates are an exception to this condition because it has only one date and not a range
             valStart = moment(datesArr[0], 'MM/DD/YYYY').format('MM/DD');
             valEnd = valStart;
           }
-          // hessian fly dates are an exception to this condition because it has only one date and not a range
           if (param === 'Average Frost') {
             const tempStart = '01/01';
             const tempEnd = '12/31';
