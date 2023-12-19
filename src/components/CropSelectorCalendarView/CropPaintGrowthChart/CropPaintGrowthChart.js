@@ -57,9 +57,9 @@ const CropPaintGrowthChart = ({
               {item.months.map((month, i) => (
                 <div
                   className={
-                    `${from === 'listView' ? 'growthCell-20' : 'growthCell-30'}\
-                    ${item.info.length > 1 && !isHessianDate(item) ? 'Multiple' : item.info[0] || 'Can Interseed'}\
-                    ${isCashCropMonth(month) && (!isHessianDate(item)) ? 'cashCropMonth' : ''}`
+                    `${from === 'listView' ? 'growthCell-20' : 'growthCell-30'
+                    } ${item.info.length > 1 && !isHessianDate(item) ? 'Multiple' : item.info[0] || 'Can Interseed'
+                    } ${isCashCropMonth(month) && (!isHessianDate(item)) ? 'cashCropMonth' : ''}`
                   }
                   key={`${index}-${i}`}
                 >
@@ -91,9 +91,8 @@ const CropPaintGrowthChart = ({
           {item.months.map((month, i) => (
             <div
               className={
-                `${from === 'listView' ? 'growthCell-20' : 'growthCell-30'} \
-                ${item.info.length > 1 ? 'Multiple' : item.info[0] || 'Can Interseed'}\
-                ${isCashCropMonth(month) ? 'cashCropMonth' : ''}`
+                `${from === 'listView' ? 'growthCell-20' : 'growthCell-30'
+                } ${isCashCropMonth(month) ? ' cashCropMonth' : ''}`
               }
               key={`${index}-${i}`}
             />
