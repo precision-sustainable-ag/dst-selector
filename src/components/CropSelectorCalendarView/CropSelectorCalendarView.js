@@ -24,6 +24,7 @@ const generateToolTipText = (item) => {
 
 const CropSelectorCalendarView = ({ from = 'calendar', data = [] }) => (
   <Box className="growthCellsWrapper" sx={{ display: 'flex', width: from === 'calendar' ? 'auto' : '200px' }}>
+
     {/* {data['Half Month Data'].map((item, index) => {
       const l = item.months.length;
       if (item.info.length > 0) {
@@ -80,17 +81,18 @@ const CropSelectorCalendarView = ({ from = 'calendar', data = [] }) => (
         );
       }
       return null;
-    })}
-    <hr /> */}
+    })} */}
+
     {data.cropGrowthWindow.map((growthWindow, index) => {
       const {
         startTime, endTime, info, length,
       } = growthWindow;
       const hessianDate = isHessianDate(growthWindow);
-      const isMultiple = info.indexOf('Cash Crop Growing') > -1 ? info.length > 2 : info.length > 1;
+      const isCashCropTime = info.indexOf('Cash Crop Growing') > -1;
+      const isMultiple = isCashCropTime ? info.length > 2 : info.length > 1;
       const classNames = `${from === 'listView' ? 'growthCell-20' : 'growthCell-30'
       } ${isMultiple && !hessianDate ? 'Multiple' : info.join(' ')
-      } `;
+      } ${isCashCropTime ? 'cashCropMonth' : ''}`;
       return (
         <Box flex={length}>
           <Tooltip
@@ -99,13 +101,11 @@ const CropSelectorCalendarView = ({ from = 'calendar', data = [] }) => (
             title={
             info.length > 0 ? (
               <Box style={{ textAlign: 'center' }}>
-                {/* time period */}
                 <Typography color="secondary">
                   {hessianDate
                     ? `${startTime}`
                     : `${startTime} - ${endTime}`}
                 </Typography>
-                {/* caption */}
                 <Typography variant="body1" gutterBottom>
                   {generateToolTipText(growthWindow)}
                 </Typography>
