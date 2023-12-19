@@ -35,6 +35,7 @@ const GoalsSelector = () => {
   useEffect(() => {
     // if (from === 'table') {
     if (dateRange.startDate !== null && dateRange.endDate !== null) {
+      // FIXME: this code are not working
       dispatchRedux(
         updateDateRange({
           startDate: dateRange.startDate.toISOString().substring(0, 10),

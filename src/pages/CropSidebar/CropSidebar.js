@@ -242,18 +242,22 @@ const CropSidebar = ({
       });
 
       callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/crops?${query}`).then((data) => {
-        cropDataFormatter(data.data);
+        const {startDate, endDate} = cashCropDataRedux.dateRange;
+        console.log(startDate, endDate)
+        const start = startDate ? moment(startDate.toISOString()).format('MM/DD') : '';
+        const end = endDate ? moment(endDate.toISOString()).format('MM/DD') : '';
+        cropDataFormatter(data.data, start, end);
         dispatchRedux(updateCropData(data.data));
         dispatchRedux(setAjaxInProgress(false));
       });
     }
   }, [
-    regionIdRedux,
+    cashCropDataRedux, regionIdRedux,
   ]);
 
   // console.log(moment().dayOfYear(1).format('MM/DD'))
 
-  const cropDataFormatter = (cropData = [{}]) => {
+  const cropDataFormatter = (cropData = [{}], cashCropStartDate, cashCropEndDate) => {
     const formatHalfMonthData = (halfMonthData = []) => {
       const result = [];
       let index = 0;
@@ -412,6 +416,14 @@ const CropSidebar = ({
           });
         }
       });
+
+      // add cash crop dates dates
+      if (cashCropStartDate !== '' && cashCropEndDate !== '') {
+        const start = moment(cashCropStartDate).format('MM/DD');
+        const end = moment(cashCropEndDate).format('MM/DD');
+        yearArr = formatTimeToYearArr(start, end, 'Cash Crop Growing', yearArr);
+      }
+
       const halfMonthData = formatHalfMonthData(halfMonthArr);
       crop['Half Month Data'] = halfMonthData;
       const yearData = formatYearArr(yearArr);
