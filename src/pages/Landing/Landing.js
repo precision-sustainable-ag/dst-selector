@@ -248,8 +248,8 @@ const Landing = () => {
                   onChange={(e) => handleStateChange(e)}
                   value={selectedState?.shorthand || ''}
                 >
-                  {allStates.length > 0 &&
-                    allStates.map((st, i) => (
+                  {allStates.length > 0
+                    && allStates.map((st, i) => (
                       <MenuItem value={st.shorthand} key={`Region${st}${i}`}>
                         {st.label?.toUpperCase()}
                       </MenuItem>

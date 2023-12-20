@@ -1,4 +1,6 @@
-import { Grid, Typography, useMediaQuery, useTheme } from '@mui/material';
+import {
+  Grid, Typography, useMediaQuery, useTheme,
+} from '@mui/material';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
@@ -73,9 +75,7 @@ const PreviousCashCrop = () => {
                 sx={{ width: 1 }}
                 label="Harvest Date"
                 value={cashCropDataRedux.dateRange.endDate}
-                onChange={(newDate) =>
-                  handleDispatch(cashCropDataRedux.dateRange.startDate, newDate)
-                }
+                onChange={(newDate) => handleDispatch(cashCropDataRedux.dateRange.startDate, newDate)}
               />
             </LocalizationProvider>
           </Grid>

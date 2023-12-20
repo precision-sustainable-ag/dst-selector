@@ -3,7 +3,9 @@
   The GoalsSelector is the window where the user selects their goals
 */
 // TODO: Goal tags are not responsive!
-import { Typography, Grid, Box, useMediaQuery, useTheme } from '@mui/material';
+import {
+  Typography, Grid, Box, useMediaQuery, useTheme,
+} from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import GoalTag from './GoalTag/GoalTag';
