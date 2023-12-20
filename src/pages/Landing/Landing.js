@@ -7,14 +7,17 @@
 
 import {
   FormControl,
-  Grid, InputLabel, MenuItem, Select, Typography, Box,
+  Grid,
+  InputLabel,
+  MenuItem,
+  Select,
+  Typography,
+  Box,
+  useTheme,
+  useMediaQuery,
 } from '@mui/material';
 // import SelectUSState from 'react-select-us-states';
-import React, {
-  useEffect,
-  useState,
-  useMemo,
-} from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import ReactGA from 'react-ga';
 import { RegionSelectorMap } from '@psa/dst.ui.region-selector-map';
@@ -24,6 +27,10 @@ import { updateLocation } from '../../reduxStore/addressSlice';
 
 const Landing = () => {
   const dispatchRedux = useDispatch();
+
+  // theme vars
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   // redux vars
   const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
@@ -44,25 +51,29 @@ const Landing = () => {
 
   const updateStateRedux = (selState) => {
     localStorage.setItem('stateId', selState.id);
-    dispatchRedux(updateStateInfo({
-      stateLabel: selState.label,
-      stateId: selState.id,
-      councilShorthand: selState.council.shorthand,
-      councilLabel: selState.council.label,
-    }));
+    dispatchRedux(
+      updateStateInfo({
+        stateLabel: selState.label,
+        stateId: selState.id,
+        councilShorthand: selState.council.shorthand,
+        councilLabel: selState.council.label,
+      }),
+    );
     // This was targeting the map object which didnt have a label or shorthand property.  Should be be getting done here?
   };
 
   // Load map data based on current enviorment
   useEffect(() => {
-    callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states`).then((stateData) => {
-      const isDevEnvironment = /(localhost|dev)/i.test(window.location);
-      const productionCouncils = ['NECCC', 'SCCC'];
-      const states = isDevEnvironment
-        ? stateData.data
-        : stateData.data.filter((state) => productionCouncils.includes(state.council.shorthand));
-      setAllStates(states);
-    });
+    callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states`).then(
+      (stateData) => {
+        const isDevEnvironment = /(localhost|dev)/i.test(window.location);
+        const productionCouncils = ['NECCC', 'SCCC'];
+        const states = isDevEnvironment
+          ? stateData.data
+          : stateData.data.filter((state) => productionCouncils.includes(state.council.shorthand));
+        setAllStates(states);
+      },
+    );
   }, []);
 
   // set initial map state based on stateIdRedux
@@ -114,10 +125,12 @@ const Landing = () => {
           // set default region for Selector and Explorer
           if (!regionIdRedux) {
             localStorage.setItem('regionId', fetchedRegions[0].id ?? '');
-            dispatchRedux(updateRegion({
-              regionId: fetchedRegions[0].id ?? '',
-              regionShorthand: fetchedRegions[0].shorthand ?? '',
-            }));
+            dispatchRedux(
+              updateRegion({
+                regionId: fetchedRegions[0].id ?? '',
+                regionShorthand: fetchedRegions[0].shorthand ?? '',
+              }),
+            );
           }
         })
         .catch((err) => {
@@ -166,6 +179,21 @@ const Landing = () => {
     return () => window.removeEventListener('resize', updateSize);
   }, []);
 
+  const styles = {
+    frostedGlassEffect: {
+      backdropFilter: 'blur(5px)', // This creates the frosted glass effect
+      backgroundColor: 'rgba(255, 255, 255, 0.4)', // Adjust the alpha value for more or less transparency
+      border: '1px solid rgba(255, 255, 255, 0.2)', // Optional: adds a subtle border
+      borderRadius: '10px', // Optional: rounds the corners
+      position: 'relative',
+      width: '80%',
+      maxWidth: '500px',
+      left: '50%',
+      transform: 'translateX(-50%)',
+      boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Optional: adds a shadow for depth
+    },
+  };
+
   return (
     <Box
       style={{
@@ -180,19 +208,7 @@ const Landing = () => {
       id="landingWrapper"
       margin={-1}
     >
-      <Grid
-        style={{
-          backgroundColor: 'rgba(240,247,235,.5)',
-          borderRadius: '10px',
-          border: '1px solid #598445',
-          position: 'relative',
-          width: '80%',
-          maxWidth: '500px',
-          left: '50%',
-          transform: 'translateX(-50%)',
-        }}
-        mt={1}
-      >
+      <Grid sx={styles.frostedGlassEffect} mt={1}>
         <Box mr={1} ml={1} mb={1} mt={1}>
           <Grid
             container
@@ -203,32 +219,41 @@ const Landing = () => {
             spacing={1}
           >
             <Grid item xs={12}>
-              <Typography variant="h4" gutterBottom align="center">
-                {`Welcome to the${councilLabelRedux ? ` ${councilLabelRedux}` : ' Cover Crop'} Species Selector`}
+              <Typography
+                variant="h2"
+                style={{ fontWeight: 500, fontSize: '2rem', textAlign: 'center' }}
+              >
+                {`Welcome to the${
+                  councilLabelRedux ? ` ${councilLabelRedux}` : ' Cover Crop'
+                } Species Selector`}
               </Typography>
             </Grid>
             <Grid item xs={12} align="center">
-              <Typography variant="body1">
-                Choose your state from the dropdown or the map. You can zoom by scrolling or pinching on mobile.
+              <Typography
+                variant={isMobile ? 'subtitle2' : 'subtitle1'}
+                sx={{
+                  fontWeight: 'medium',
+                  color: '#4A4A4A',
+                }}
+              >
+                Choose your state from the dropdown or the map. You can zoom by scrolling or
+                pinching on mobile.
               </Typography>
             </Grid>
             <Grid item xs={12} mb={2}>
-              <FormControl
-                variant="filled"
-                sx={{ minWidth: 120 }}
-              >
+              <FormControl variant="filled" sx={{ minWidth: 120 }}>
                 <InputLabel>State</InputLabel>
                 <Select
                   variant="filled"
                   onChange={(e) => handleStateChange(e)}
                   value={selectedState?.shorthand || ''}
                 >
-
-                  {allStates.length > 0 && allStates.map((st, i) => (
-                    <MenuItem value={st.shorthand} key={`Region${st}${i}`}>
-                      {st.label?.toUpperCase()}
-                    </MenuItem>
-                  ))}
+                  {allStates.length > 0 &&
+                    allStates.map((st, i) => (
+                      <MenuItem value={st.shorthand} key={`Region${st}${i}`}>
+                        {st.label?.toUpperCase()}
+                      </MenuItem>
+                    ))}
                 </Select>
               </FormControl>
             </Grid>
@@ -236,15 +261,16 @@ const Landing = () => {
         </Box>
       </Grid>
       <Grid item>
-        <Box style={{
-          position: 'relative',
-          width: '80%',
-          maxWidth: '500px',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          marginTop: '15px',
-          marginBottom: '15px',
-        }}
+        <Box
+          style={{
+            position: 'relative',
+            width: '80%',
+            maxWidth: '500px',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            marginTop: '15px',
+            marginBottom: '15px',
+          }}
         >
           <RegionSelectorMap
             selectorFunction={setMapState}

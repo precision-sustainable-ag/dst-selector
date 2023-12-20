@@ -1,6 +1,4 @@
-import {
-  Grid, Typography, useMediaQuery, useTheme,
-} from '@mui/material';
+import { Grid, Typography, useMediaQuery, useTheme } from '@mui/material';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
@@ -13,6 +11,7 @@ const PreviousCashCrop = () => {
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  // const isLargeScreen = useMediaQuery(theme.breakpoints.up('md'));
 
   const handleDispatch = (start = '', end = '') => {
     dispatchRedux(updateDateRange({ startDate: start, endDate: end }));
@@ -20,17 +19,25 @@ const PreviousCashCrop = () => {
 
   return (
     <>
-      <Grid item container xs={12} alignItems="center" justifyContent="center">
-        <Typography align="center" variant="h4">
+      <Grid item xs={12} alignItems="center" justifyContent="center" sx={{ mb: !isMobile ? 4 : 2 }}>
+        <Typography
+          variant="h4"
+          style={{ fontWeight: 'bold', fontSize: '1.8rem', textAlign: 'center' }}
+        >
           Cash Crop Growing Window
         </Typography>
-      </Grid>
-      <Grid item container xs={12} mb={isMobile ? 4 : 7}>
-        <Typography variant="subtitle1" align="center" gutterBottom>
+        <Typography
+          variant={isMobile ? 'subtitle2' : 'subtitle1'}
+          sx={{
+            fontWeight: 'medium',
+            color: '#4A4A4A',
+            textAlign: 'center',
+          }}
+        >
           Enter your cash crop growing window if you would like to see it displayed on the calendar.
         </Typography>
       </Grid>
-      <Grid item container>
+      <Grid item>
         <Grid
           item
           container
@@ -66,7 +73,9 @@ const PreviousCashCrop = () => {
                 sx={{ width: 1 }}
                 label="Harvest Date"
                 value={cashCropDataRedux.dateRange.endDate}
-                onChange={(newDate) => handleDispatch(cashCropDataRedux.dateRange.startDate, newDate)}
+                onChange={(newDate) =>
+                  handleDispatch(cashCropDataRedux.dateRange.startDate, newDate)
+                }
               />
             </LocalizationProvider>
           </Grid>

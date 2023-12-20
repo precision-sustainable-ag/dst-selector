@@ -4,14 +4,13 @@
 */
 
 import React from 'react';
-import {
-  Grid, Typography, Box, useTheme, useMediaQuery,
-} from '@mui/material';
+import { Grid, Typography, Box, useTheme, useMediaQuery } from '@mui/material';
 import SoilCondition from '../SoilCondition/SoilCondition';
 import WeatherConditions from '../../../components/WeatherConditions/WeatherConditions';
 
 const SiteConditions = () => {
   const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const isLargeScreen = useMediaQuery(theme.breakpoints.up('lg'));
   return (
     <Box>
@@ -20,8 +19,20 @@ const SiteConditions = () => {
           {/* <Typography variant="body1" style={{ fontWeight: 'bold', fontSize: '2rem' }}>
             Site Conditions
           </Typography> */}
-          <Typography variant="h4">Site Conditions</Typography>
-          <Typography variant="body1">
+          <Typography
+            variant="h4"
+            style={{ fontWeight: 'bold', fontSize: '1.8rem', textAlign: 'center' }}
+          >
+            Site Conditions
+          </Typography>
+          <Typography
+            variant={isMobile ? 'subtitle2' : 'subtitle1'}
+            sx={{
+              fontWeight: 'medium',
+              color: '#4A4A4A',
+              textAlign: 'center',
+            }}
+          >
             This information is based on your location. Drainage Class and Flooding Frequency are
             used to recommended cover crops. Update only as needed.
           </Typography>
