@@ -408,7 +408,7 @@ const Location = () => {
                 setFeatures={setCurrentGeometry}
                 onDraw={onDraw}
                 initWidth="100%"
-                initHeight="500px"
+                initHeight="400px"
                 initLat={getLatLng[0]}
                 initLon={getLatLng[1]}
                 initFeatures={mapFeatures}
