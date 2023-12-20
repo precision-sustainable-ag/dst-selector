@@ -94,7 +94,7 @@ const CropSelectorCalendarView = ({ from = 'calendar', data = [] }) => (
       } ${isMultiple && !hessianDate ? 'Multiple' : info.join(' ')
       } ${isCashCropTime ? 'cashCropMonth' : ''}`;
       return (
-        <Box flex={length}>
+        <Box flex={length} key={index}>
           <Tooltip
             sx={{ flex: length }}
             arrow
@@ -112,7 +112,6 @@ const CropSelectorCalendarView = ({ from = 'calendar', data = [] }) => (
               </Box>
             ) : null
           }
-            key={index}
             enterTouchDelay={0}
           >
             <Box

@@ -1,4 +1,3 @@
-/* eslint-disable */
 /* eslint-disable no-underscore-dangle */
 /*
   This file contains the CropSidebar and its styles
@@ -27,7 +26,7 @@ import React, {
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
 import {
-  CustomStyles, LightButton, callCoverCropApi,
+  CustomStyles, LightButton, callCoverCropApi, cropDataFormatter,
 } from '../../shared/constants';
 import ComparisonBar from '../MyCoverCropList/ComparisonBar/ComparisonBar';
 import CoverCropSearch from './CoverCropSearch/CoverCropSearch';
@@ -39,7 +38,6 @@ import { updateRegion } from '../../reduxStore/mapSlice';
 import { clearFilters } from '../../reduxStore/filterSlice';
 import { updateCropData, updateActiveCropIds } from '../../reduxStore/cropSlice';
 import { setAjaxInProgress, regionToggleHandler } from '../../reduxStore/sharedSlice';
-import arrayEquals from '../../shared/functions';
 
 const CropSidebar = ({
   comparisonView,
@@ -242,8 +240,7 @@ const CropSidebar = ({
       });
 
       callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/crops?${query}`).then((data) => {
-        const {startDate, endDate} = cashCropDataRedux.dateRange;
-        console.log(startDate, endDate)
+        const { startDate, endDate } = cashCropDataRedux.dateRange;
         const start = startDate ? moment(startDate.toISOString()).format('MM/DD') : '';
         const end = endDate ? moment(endDate.toISOString()).format('MM/DD') : '';
         cropDataFormatter(data.data, start, end);
@@ -254,195 +251,6 @@ const CropSidebar = ({
   }, [
     cashCropDataRedux, regionIdRedux,
   ]);
-
-  // console.log(moment().dayOfYear(1).format('MM/DD'))
-
-  const cropDataFormatter = (cropData = [{}], cashCropStartDate, cashCropEndDate) => {
-    const formatHalfMonthData = (halfMonthData = []) => {
-      const result = [];
-      let index = 0;
-      while (index < halfMonthData.length) {
-        const timePeriod = {
-          startTime: '',
-          endTime: '',
-          months: [],
-          info: [],
-        };
-        if (timePeriod.months.length === 0) {
-          if (halfMonthData[index].start !== '') {
-            timePeriod.startTime = halfMonthData[index].start;
-            timePeriod.endTime = halfMonthData[index].end;
-            timePeriod.info = [...halfMonthData[index].info];
-          }
-          timePeriod.months.push(halfMonthData[index].month);
-          index += 1;
-        }
-        while (
-          index > 0
-          && index < halfMonthData.length
-          && arrayEquals(halfMonthData[index].info, halfMonthData[index - 1].info)
-        ) {
-          timePeriod.months.push(halfMonthData[index].month);
-          index += 1;
-        }
-        if (timePeriod.months.length > 0) result.push(timePeriod);
-        else index += 1;
-      }
-      return result;
-    };
-
-    const formatYearArr = (yearArr = []) => {
-      const result = [];
-      let i = 0, j = 0;
-      while (i < yearArr.length) {        
-        while (j < yearArr.length && arrayEquals(yearArr[i].info, yearArr[j].info)) {
-          j += 1;
-        }
-        result.push({
-          startTime: moment().dayOfYear(i + 1).format('MM/DD'),
-          endTime: moment().dayOfYear(j).format('MM/DD'),
-          info: yearArr[i].info,
-          length: j - i,
-        })
-        i = j;
-      }
-      return result;
-    }
-
-    const formatTimeToHalfMonthData = (
-      startTime = '',
-      endTime = '',
-      param = '',
-      halfMonthData = [],
-    ) => {
-      const startIndex = moment(startTime, 'MM/DD').month() * 2 + (moment(startTime, 'MM/DD').date() >= 15 ? 1 : 0);
-      const endIndex = moment(endTime, 'MM/DD').month() * 2 + (moment(endTime, 'MM/DD').date() >= 15 ? 1 : 0);
-      halfMonthData = halfMonthData.map((data, index) => {
-        if (index >= startIndex && index <= endIndex) {
-          const info = [...data.info, param];
-          let start = '';
-          let end = '';
-          if (data.start === '') start = startTime;
-          else {
-            start = moment(data.start, 'MM/DD').isSameOrBefore(moment(startTime, 'MM/DD'))
-              ? startTime
-              : data.start;
-          }
-          if (data.end === '') end = endTime;
-          else {
-            end = moment(data.end, 'MM/DD').isSameOrBefore(moment(endTime, 'MM/DD'))
-              ? data.end
-              : endTime;
-          }
-          return {
-            ...data,
-            start,
-            end,
-            info,
-          };
-        }
-        return data;
-      });
-      return halfMonthData;
-    };
-
-    const formatTimeToYearArr = (startTime, endTime, param, yearArr = []) => {
-      const startIndex = moment(startTime, 'MM/DD').dayOfYear() - 1;
-      const endIndex  = moment(endTime, 'MM/DD').dayOfYear() - 1;
-      yearArr = yearArr.map((day, index) => {
-        if (index >= startIndex && index <= endIndex) {
-          return {info: [...day.info, param]};
-        }
-        return day;
-      })
-      return yearArr;
-    }
-
-    const monthStringBuilder = (crop) => {
-      const params = [
-        'Reliable Establishment',
-        'Freeze/Moisture Risk to Establishment',
-        'Frost Seeding',
-        'Fall/Winter Seeding Rate',
-        'Spring Seeding Rate',
-        'Summer Seeding Rate',
-        'Can Interseed',
-        'Average Frost',
-        'Hessian Fly Free Date',
-      ];
-
-      // create a 24 item array of half months ex: [{month: '1', info: [], start: '', end: ''}, ...]
-      let halfMonthArr = Array.from({ length: 24 }, (_, i) => ({
-        month: moment()
-          .month(Math.floor(i / 2))
-          .format('M'),
-        info: [],
-        start: '',
-        end: '',
-      }));
-
-      let yearArr = Array.from({ length: 365 }, (_, i) => ({
-        info: [],
-      }));
-
-      // iterate over each crop and create crop['Half Month Data']
-      params.forEach((param) => {
-        if (crop.data['Planting and Growth Windows']?.[`${param}`]) {
-          crop.data['Planting and Growth Windows']?.[`${param}`].values.forEach((dateArray) => {
-            // get start and end date of each param for each crop
-            const datesArr = dateArray.split('-');
-            let valStart;
-            let valEnd;
-            if (datesArr.length > 1) {
-              valStart = moment(datesArr[0], 'MM/DD/YYYY').format('MM/DD');
-              valEnd = moment(datesArr[1], 'MM/DD/YYYY').format('MM/DD');
-            } else {
-              // hessian fly dates are an exception to this condition because it has only one date and not a range
-              valStart = moment(datesArr[0], 'MM/DD/YYYY').format('MM/DD');
-              valEnd = valStart;
-            }
-            // Average Frost date should be divided into two years
-            if (param === 'Average Frost') {
-              const tempStart = '01/01';
-              const tempEnd = '12/31';
-              halfMonthArr = formatTimeToHalfMonthData(valStart, tempEnd, param, halfMonthArr);
-              halfMonthArr = formatTimeToHalfMonthData(tempStart, valEnd, param, halfMonthArr);
-              yearArr = formatTimeToYearArr(valStart, tempEnd, param, yearArr);
-              yearArr = formatTimeToYearArr(tempStart, valEnd, param, yearArr);
-            } else {
-              halfMonthArr = formatTimeToHalfMonthData(valStart, valEnd, param, halfMonthArr);
-              yearArr = formatTimeToYearArr(valStart, valEnd, param, yearArr);
-            }
-          });
-        }
-      });
-
-      // add cash crop dates dates
-      if (cashCropStartDate !== '' && cashCropEndDate !== '') {
-        const start = moment(cashCropStartDate).format('MM/DD');
-        const end = moment(cashCropEndDate).format('MM/DD');
-        yearArr = formatTimeToYearArr(start, end, 'Cash Crop Growing', yearArr);
-      }
-
-      const halfMonthData = formatHalfMonthData(halfMonthArr);
-      crop['Half Month Data'] = halfMonthData;
-      const yearData = formatYearArr(yearArr);
-      crop.cropGrowthWindow = yearData;
-      console.log(crop.label, yearData, crop.data['Planting and Growth Windows']);
-
-      // this is temporary, needs to be replaced with wither a fix to calendar growth window component or exporting of json from airtable
-      Object.keys(crop).forEach((item) => {
-        if (item.endsWith('Early') || item.endsWith('Mid')) {
-          const uniq = [...new Set(crop[item])];
-          const removedOldVals = uniq.filter((u) => !u.endsWith('growth'));
-          crop[item] = removedOldVals;
-        }
-      });
-      return crop;
-    };
-
-    return cropData.map((crop) => monthStringBuilder(crop));
-  };
 
   // TODO: Can we use Reducer instead of localStorage?
   useEffect(() => {
