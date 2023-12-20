@@ -12,7 +12,7 @@ const ToggleOptions = ({ pathname }) => {
   const history = useHistory();
   const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
-  const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
+  const selectedCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCropIds);
 
   const setMyCoverCropActivationFlag = () => {
     history.push('/my-cover-crop-list');
@@ -25,7 +25,7 @@ const ToggleOptions = ({ pathname }) => {
   };
 
   const openMyCoverCropReset = (to) => {
-    if (selectedCropsRedux.length > 0 && prevRoute !== to) {
+    if (selectedCropIdsRedux.length > 0 && prevRoute !== to) {
       dispatchRedux(setMyCoverCropReset(true));
     } else setPrevRoute(to);
   };
@@ -78,10 +78,10 @@ const ToggleOptions = ({ pathname }) => {
         </span>
       </Tooltip>
 
-      {selectedCropsRedux.length > 0
+      {selectedCropIdsRedux.length > 0
         && (
         <Badge
-          badgeContent={selectedCropsRedux.length}
+          badgeContent={selectedCropIdsRedux.length}
           color="error"
         >
           <Button

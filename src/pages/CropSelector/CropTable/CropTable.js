@@ -22,16 +22,18 @@ import {
 } from '../../../shared/constants';
 import '../../../styles/cropCalendarViewComponent.scss';
 import '../../../styles/cropTable.scss';
-import CropDataRender from './CropDataRender';
 import CropDetailsModal from '../../../components/CropDetailsModal/CropDetailsModal';
 import Legend from '../../../components/Legend/Legend';
+import RenderTableItems from './RenderTableItems';
 
 const CropTable = ({
-  cropData, activeCropData, showGrowthWindow,
+  showGrowthWindow,
 }) => {
   // redux vars
-  const selectedCropsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCrops);
+  const selectedCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCropIds);
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
+  const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
+  const activeCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.activeCropIds);
 
   // useState vars
   const [modalOpen, setModalOpen] = useState(false);
@@ -43,7 +45,6 @@ const CropTable = ({
   const [goal1SortFlag, setGoal1SortFlag] = useState(true);
   const [goal2SortFlag, setGoal2SortFlag] = useState(true);
   const [goal3SortFlag, setGoal3SortFlag] = useState(true);
-  const activeCropDataShadow = activeCropData;
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const legendData = getLegendDataBasedOnCouncil(councilShorthandRedux);
 
@@ -53,22 +54,22 @@ const CropTable = ({
   };
 
   const sortByName = () => {
-    sortCrops('Crop Name', activeCropDataShadow, nameSortFlag);
+    sortCrops('Crop Name', cropDataRedux, nameSortFlag);
     setNameSortFlag(!nameSortFlag);
   };
 
   const sortByAverageGoals = () => {
-    sortCrops('Average Goals', activeCropDataShadow, true, selectedGoalsRedux);
+    sortCrops('Average Goals', cropDataRedux, true, selectedGoalsRedux);
     setNameSortFlag(!nameSortFlag);
   };
 
   const sortByPlantingWindow = () => {
-    sortCrops('Planting Window', activeCropDataShadow, plantingSortFlag);
+    sortCrops('Planting Window', cropDataRedux, plantingSortFlag);
     setPlantingSortFlag(!plantingSortFlag);
   };
 
   const sortBySelectedCrops = () => {
-    sortCrops('Selected Crops', activeCropDataShadow, true, selectedCropsRedux);
+    sortCrops('Selected Crops', cropDataRedux, true, selectedCropIdsRedux);
     setNameSortFlag(!nameSortFlag);
   };
 
@@ -86,14 +87,14 @@ const CropTable = ({
       setGoal3SortFlag(!goal3SortFlag);
     }
 
-    sortCrops('Goal', activeCropDataShadow, flag, selectedGoalsRedux, goal);
+    sortCrops('Goal', cropDataRedux, flag, selectedGoalsRedux, goal);
   };
 
   useEffect(() => {
     sortByAverageGoals();
   }, []);
 
-  return cropData.length !== 0 ? (
+  return cropDataRedux.length !== 0 ? (
     <>
       <TableContainer component="div">
         <Table stickyHeader sx={{ borderSpacing: '7px', padding: 0 }}>
@@ -199,9 +200,8 @@ const CropTable = ({
           </TableHead>
 
           <TableBody>
-            {activeCropData.length > 0 ? (
-              <CropDataRender
-                activeCropData={activeCropData}
+            {activeCropIdsRedux.length > 0 ? (
+              <RenderTableItems
                 showGrowthWindow={showGrowthWindow}
                 handleModalOpen={handleModalOpen}
               />

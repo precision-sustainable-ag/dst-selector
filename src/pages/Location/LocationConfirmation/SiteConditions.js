@@ -45,4 +45,5 @@ const SiteConditions = () => {
     </Box>
   );
 };
+
 export default SiteConditions;

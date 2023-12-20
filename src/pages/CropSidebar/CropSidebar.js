@@ -35,7 +35,7 @@ import PlantHardinessZone from './PlantHardinessZone/PlantHardinessZone';
 import Legend from '../../components/Legend/Legend';
 import { updateRegion } from '../../reduxStore/mapSlice';
 import { clearFilters } from '../../reduxStore/filterSlice';
-import { pullCropData, updateActiveCropData } from '../../reduxStore/cropSlice';
+import { updateCropData, updateActiveCropIds } from '../../reduxStore/cropSlice';
 import { setAjaxInProgress, regionToggleHandler } from '../../reduxStore/sharedSlice';
 
 const CropSidebar = ({
@@ -63,10 +63,11 @@ const CropSidebar = ({
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
   const regionsRedux = useSelector((stateRedux) => stateRedux.mapData.regions);
   const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
+  const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const drainageClassRedux = useSelector((stateRedux) => stateRedux.soilData.soilData.drainageClass[0]);
 
   // useState vars
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [sidebarFilters, setSidebarFilters] = useState([]);
   const [showFilters, setShowFilters] = useState('');
   const [sidebarCategoriesData, setSidebarCategoriesData] = useState([]);
@@ -98,20 +99,21 @@ const CropSidebar = ({
   }, [speciesSelectorActivationFlagRedux, from, comparisonView]);
 
   useEffect(() => {
-    const sfo = {};
+    // ex { "Heat Tolerance": [1,2,3,4,5] }
+    const selectedFilterObject = {};
 
     Object.keys(filterStateRedux.filters).forEach((key) => {
       if (filterStateRedux.filters[key]) {
         const [k, value] = key.split(': ');
         if (value) {
-          sfo[k] = sfo[k] || [];
-          sfo[k].push(+value || value);
+          selectedFilterObject[k] = selectedFilterObject[k] || [];
+          selectedFilterObject[k].push(+value || value);
         }
       }
     });
 
+    // handles crop search
     const search = filterStateRedux.filters.cropSearch?.toLowerCase().match(/\w+/g);
-
     const cropData = cropDataRedux?.filter((crop) => {
       let m;
 
@@ -128,43 +130,45 @@ const CropSidebar = ({
       return match('label') || match('scientific') || match('common');
     });
 
-    const nonZeroKeys2 = Object.keys(sfo).map((key) => {
-      if (sfo[key]?.length !== 0) {
-        return { [key]: sfo[key] };
+    // transforms selectedFilterObject into an array
+    const nonZeroKeys2 = Object.keys(selectedFilterObject).map((key) => {
+      if (selectedFilterObject[key]?.length !== 0) {
+        return { [key]: selectedFilterObject[key].map((item) => item.toString()) };
       }
       return '';
     });
 
-    // const booleanKeys = ['Aerial Seeding', 'Frost Seeding'];
     const filtered = cropData?.filter((crop, n, cd) => {
-      const totalActiveFilters = Object.keys(nonZeroKeys2)?.length;
-      let i = 0;
+      let match = true;
+      // iterate over all active filters
       nonZeroKeys2.forEach((keyObject) => {
-        const key = Object.keys(keyObject);
+        // get filter name ex. Drought Tolerance
+        const key = Object.keys(keyObject)[0];
+        // get filter values ex. [1,2,3]
         const vals = keyObject[key];
-        // if (areCommonElements(arrayKeys, key)) {
-        // Handle array type havlues
-        Object.keys(crop.data).forEach((category) => {
-          if (Object.keys(crop.data[category]).includes(key[0])) {
-            if (crop.data[category][key].values[0] !== undefined) {
-              const intersection = (arrays = [vals, crop.data[category][key].values[0]]) => arrays.reduce((a, b) => a.filter((c) => b.includes(c)));
 
-              if (intersection()?.length > 0) {
-                i += 1;
+        // iterate over all crop.data categories
+        Object.keys(crop.data).forEach((category) => {
+          // check if crop.data[category] includes key
+          if (Object.keys(crop.data[category]).includes(key)) {
+            // make sure crop.data[category][key].values[0] exists
+            if (crop.data[category][key].values[0] !== undefined) {
+              // if there is not an intersection, match = false
+              if (!crop.data[category][key].values.some((item) => vals.includes(item))) {
+                match = false;
               }
-            } else if (vals.includes(crop.data[category][key].values[0])) {
-              i += 1;
             }
           }
         });
       });
 
-      cd[n].inactive = (i !== totalActiveFilters)
+      cd[n].inactive = (!match)
       || (drainageClassRedux && !crop?.data['Soil Conditions']['Soil Drainage']?.values?.includes(drainageClassRedux));
 
       return true;
     });
-    dispatchRedux(updateActiveCropData(filtered.map((filter) => filter.id)));
+
+    dispatchRedux(updateActiveCropIds(filtered.filter((crop) => !crop.inactive).map((crop) => crop.id)));
   }, [cropDataRedux, dispatchRedux, filterStateRedux.filters]);
 
   const filtersSelected = Object.keys(filterStateRedux.filters)?.filter((key) => filterStateRedux.filters[key])?.length > 0;
@@ -196,7 +200,7 @@ const CropSidebar = ({
           };
           if (type === 'number') {
             obj.values = filter.values;
-            obj.maxSize = 5;
+            obj.maxSize = councilShorthandRedux === 'MCCC' ? 4 : 5;
           } else {
             obj.values = filter.values;
           }
@@ -236,7 +240,7 @@ const CropSidebar = ({
 
       callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/crops?${query}`).then((data) => {
         cropDataFormatter(data.data);
-        dispatchRedux(pullCropData(data.data));
+        dispatchRedux(updateCropData(data.data));
         dispatchRedux(setAjaxInProgress(false));
       });
     }

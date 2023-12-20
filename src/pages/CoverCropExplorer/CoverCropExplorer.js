@@ -5,7 +5,7 @@
 */
 
 import {
-  Grid, Typography,
+  Grid,
 } from '@mui/material';
 import { useHistory } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
@@ -18,7 +18,7 @@ import { updateRegion, updateStateInfo } from '../../reduxStore/mapSlice';
 const CoverCropExplorer = () => {
   const history = useHistory();
   const dispatchRedux = useDispatch();
-  const activeCropDataRedux = useSelector((stateRedux) => stateRedux.cropData.activeCropData);
+  const activeCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.activeCropIds);
   const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
   const consentRedux = useSelector((stateRedux) => stateRedux.userData.consent);
   const [updatedActiveCropData, setUpdatedActiveCropData] = useState([]);
@@ -34,7 +34,7 @@ const CoverCropExplorer = () => {
   const urlRegionId = window.location.search.match(/region=([^\^]+)/); // for automating Information Sheet PDFs
 
   useEffect(() => {
-    const filteredActiveCropData = cropDataRedux.filter((crop) => activeCropDataRedux.includes(crop.id))?.filter((a) => !a.inactive);
+    const filteredActiveCropData = cropDataRedux.filter((crop) => activeCropIdsRedux.includes(crop.id))?.filter((a) => !a.inactive);
     setUpdatedActiveCropData(filteredActiveCropData);
     if (urlCrop && urlParamStateId && urlRegionId) {
       localStorage.setItem('stateId', urlParamStateId[1]);
@@ -57,7 +57,7 @@ const CoverCropExplorer = () => {
         }
       }
     }
-  }, [activeCropDataRedux]);
+  }, [activeCropIdsRedux]);
 
   useEffect(() => {
     if (consentRedux === true) {
@@ -78,24 +78,14 @@ const CoverCropExplorer = () => {
       <Grid item xl={3} lg={3} md={3} sm={12} xs={12}>
         <CropSidebar
           from="explorer"
-          activeCropData={activeCropDataRedux?.length > 0 ? cropDataRedux.filter((crop) => activeCropDataRedux.includes(crop.id)) : cropDataRedux}
+          activeCropData={activeCropIdsRedux?.length > 0 ? cropDataRedux.filter((crop) => activeCropIdsRedux.includes(crop.id)) : cropDataRedux}
           isListView
         />
       </Grid>
       <Grid item xl={9} lg={9} md={9} sm={12} xs={12}>
-        {updatedActiveCropData.length === 0 ? (
-          <Grid container alignItems="center" justifyContent="center">
-            <Grid item xs={12}>
-              <Typography variant="h5" align="center">
-                Please choose a zone from the sidebar
-              </Typography>
-            </Grid>
-          </Grid>
-        ) : (
-          <ExplorerCardView
-            activeCropData={updatedActiveCropData}
-          />
-        )}
+        <ExplorerCardView
+          activeCropData={updatedActiveCropData}
+        />
       </Grid>
     </Grid>
   );
