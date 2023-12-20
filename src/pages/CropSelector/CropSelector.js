@@ -157,6 +157,7 @@ const CropSelector = (props) => {
             activeCropData={cropDataRedux.filter((crop) => activeCropIdsRedux.includes(crop.id))}
             comparisonView={comparisonView}
             toggleComparisonView={() => { setComparisonView(!comparisonView); }}
+            setIsListView={setIsListView}
             toggleListView={() => { setIsListView(!isListView); }}
             from="table"
           />

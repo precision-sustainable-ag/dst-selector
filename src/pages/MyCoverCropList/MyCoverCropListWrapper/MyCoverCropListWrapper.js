@@ -19,6 +19,7 @@ const MyCoverCropListWrapper = () => {
       <Grid item xl={3} lg={3} md={3} sm={12} xs={12}>
         <CropSidebar
           comparisonView={comparisonView}
+          setComparisonView={setComparisonView}
           toggleComparisonView={toggleComparisonView}
           from="myCoverCropListStatic"
         />

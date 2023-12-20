@@ -44,7 +44,8 @@ const CropSidebar = ({
   from,
   setGrowthWindow,
   toggleComparisonView,
-  toggleListView,
+  setIsListView,
+  // toggleListView,
   style,
 }) => {
   const dispatchRedux = useDispatch();
@@ -338,19 +339,24 @@ const CropSidebar = ({
     <Grid container>
       <Grid item>
         {from === 'table' && (
-          <LightButton
-            onClick={toggleListView}
-            color="secondary"
-            startIcon={
-                isListView ? (
-                  <ListIcon style={{ fontSize: 'larger' }} />
-                ) : (
-                  <CalendarToday style={{ fontSize: 'larger' }} />
-                )
-              }
-          >
-            {isListView ? 'LIST VIEW' : 'CALENDAR VIEW'}
-          </LightButton>
+          <>
+            <LightButton
+              onClick={() => setIsListView(true)}
+              color="secondary"
+              style={{ background: isListView ? '#49a8ab' : '#e3f2f4' }}
+              startIcon={<ListIcon style={{ fontSize: 'larger' }} />}
+            >
+              LIST VIEW
+            </LightButton>
+            <LightButton
+              onClick={() => setIsListView(false)}
+              color="secondary"
+              style={{ background: !isListView ? '#49a8ab' : '#e3f2f4' }}
+              startIcon={<CalendarToday style={{ fontSize: 'larger' }} />}
+            >
+              COMPARISON VIEW
+            </LightButton>
+          </>
         )}
         {speciesSelectorActivationFlagRedux || from === 'explorer' ? (
           <Box
