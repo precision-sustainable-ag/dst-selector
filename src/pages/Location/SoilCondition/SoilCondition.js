@@ -24,6 +24,7 @@ const SoilCondition = () => {
   const soilDataOriginalRedux = useSelector((stateRedux) => stateRedux.soilData.soilDataOriginal);
   // const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
+  const userSelectRegionRedux = useSelector((stateRedux) => stateRedux.userData.userSelectRegion);
 
   // useState vars
 
@@ -138,6 +139,8 @@ const SoilCondition = () => {
     const lat = markersRedux[0][0];
     const lon = markersRedux[0][1];
 
+    // if the user selected another region, not run the function
+    if (userSelectRegionRedux) return;
     if (stateLabelRedux === 'Ontario') return;
 
     if (soilDataOriginalRedux?.latLong) {
