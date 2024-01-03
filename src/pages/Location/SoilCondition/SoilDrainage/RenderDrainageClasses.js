@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateDrainageClass as updateDrainageClassRedux } from '../../../../reduxStore/soilSlice';
 
-const RenderDrainageClasses = ({ tilingCheck, drainage = [] }) => {
+const RenderDrainageClasses = ({ tilingCheck, setTilingCheck, drainage = [] }) => {
   const dispatchRedux = useDispatch();
 
   // theme
@@ -15,7 +15,7 @@ const RenderDrainageClasses = ({ tilingCheck, drainage = [] }) => {
   // redux vars
   const soilDataRedux = useSelector((stateRedux) => stateRedux.soilData.soilData);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
-  const [previousDrainage, setPreviousDrainage] = useState(0);
+  const [previousDrainage, setPreviousDrainage] = useState(-1);
 
   const drainageArray = [
     'Very poorly drained',
@@ -26,8 +26,7 @@ const RenderDrainageClasses = ({ tilingCheck, drainage = [] }) => {
     'Somewhat excessively drained',
     'Excessively drained',
   ];
-
-  const drainageVal = [drainageArray.indexOf(drainage[0])];
+  const drainageVal = [tilingCheck && previousDrainage >= 0 ? previousDrainage : drainageArray.indexOf(drainage[0])];
 
   // functions
   const updateDrainageAction = (drainages) => {
@@ -62,6 +61,7 @@ const RenderDrainageClasses = ({ tilingCheck, drainage = [] }) => {
 
   const updateDrainageClass = (index = '') => {
     let drainages = soilDataRedux.drainageClass ? [...soilDataRedux.drainageClass] : [];
+    setTilingCheck(false);
     if (drainages.indexOf(drainageArray[index]) === -1) {
       // does not exist, dispatch to state
       drainages = [index];

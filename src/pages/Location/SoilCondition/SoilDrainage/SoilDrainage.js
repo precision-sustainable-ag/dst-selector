@@ -61,6 +61,20 @@ const SoilDrainage = () => {
     setTilingCheck(false);
   };
 
+  const drainageClass = () => {
+    const drainageString = ` ${soilDataRedux.drainageClass[0]}`;
+    return (
+      <Grid align="center" item xs={12} mb={2}>
+        <Typography display="inline" variant="subtitle2" gutterBottom>
+          Your improved drainage class is
+          <Typography display="inline" variant="subtitle2" gutterBottom sx={{ fontWeight: 'bold' }}>
+            {drainageString}
+          </Typography>
+        </Typography>
+      </Grid>
+    );
+  };
+
   return (
     <Box
       sx={{
@@ -178,12 +192,13 @@ const SoilDrainage = () => {
           <Grid item xs={12} alignSelf="center" justifySelf="center">
             <RenderDrainageClasses
               tilingCheck={tilingCheck}
+              setTilingCheck={setTilingCheck}
               drainage={soilDataRedux?.drainageClass}
             />
           </Grid>
           <MyCoverCropReset handleConfirm={handleConfirm} setHandleConfirm={setHandleConfirm} />
           {showTiling && (
-            <Grid item container justifyContent="center" alignItems="center">
+            <Grid container justifyContent="center" alignItems="center">
               <Grid item>
                 <Box
                   sx={{
@@ -224,6 +239,7 @@ const SoilDrainage = () => {
                   </Typography>
                 </Grid>
               </Grid>
+              {tilingCheck && drainageClass()}
             </Grid>
           )}
         </Grid>
