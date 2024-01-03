@@ -72,7 +72,10 @@ const GoalsSelector = () => {
           >
             {/* title */}
             <Grid item xs={12}>
-              <Typography variant="h4" align="center">
+              <Typography
+                variant="h4"
+                style={{ fontWeight: 'bold', fontSize: '1.8rem', textAlign: 'center' }}
+              >
                 Goals
               </Typography>
             </Grid>
@@ -80,14 +83,24 @@ const GoalsSelector = () => {
             <Grid item xs={12}>
               <Typography
                 variant={isMobile ? 'subtitle2' : 'subtitle1'}
-                align="center"
-                gutterBottom
+                sx={{
+                  fontWeight: 'medium',
+                  color: '#4A4A4A',
+                  textAlign: 'center',
+                }}
               >
                 Select 1 to 3 goals in order of importance.
               </Typography>
             </Grid>
             <Grid item xs={12} mb={2}>
-              <Typography variant="subtitle2" gutterBottom align="center">
+              <Typography
+                variant={isMobile ? 'subtitle2' : 'subtitle1'}
+                sx={{
+                  fontWeight: 'medium',
+                  color: '#4A4A4A',
+                  textAlign: 'center',
+                }}
+              >
                 Tap and hold for more information
               </Typography>
             </Grid>

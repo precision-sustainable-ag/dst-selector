@@ -4,10 +4,8 @@
   styled using ../../styles/location.scss
 */
 
-import { Typography, Grid, Box } from '@mui/material';
-import React, {
-  useEffect, useState, useRef, useMemo,
-} from 'react';
+import { Typography, Grid, Container, useMediaQuery, useTheme } from '@mui/material';
+import React, { useEffect, useState, useRef, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Search } from '@mui/icons-material';
 import moment from 'moment';
@@ -43,6 +41,10 @@ mapboxgl.workerClass = require('worker-loader!mapbox-gl/dist/mapbox-gl-csp-worke
 const Location = () => {
   const dispatchRedux = useDispatch();
 
+  // theme vars
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
   // redux vars
   const markersRedux = useSelector((stateRedux) => stateRedux.addressData.markers);
   const regionsRedux = useSelector((stateRedux) => stateRedux.mapData.regions);
@@ -60,8 +62,8 @@ const Location = () => {
   const [currentGeometry, setCurrentGeometry] = useState([]);
   const [fieldDialogState, setFieldDialogState] = useState(initFieldDialogState);
   const [selectedUserField, setSelectedUserField] = useState(
-    userFieldRedux?.data.filter((field) => field.id === selectedFieldIdRedux)[0]
-      || (userFieldRedux && userFieldRedux.data.length
+    userFieldRedux?.data.filter((field) => field.id === selectedFieldIdRedux)[0] ||
+      (userFieldRedux && userFieldRedux.data.length
         ? userFieldRedux.data[userFieldRedux.data.length - 1]
         : {}),
   );
@@ -77,7 +79,8 @@ const Location = () => {
   const getFeatures = () => {
     if (userFields.length > 0 && Object.keys(selectedUserField).length !== 0) {
       if (selectedUserField.geometry.type === 'Point') return [selectedUserField];
-      if (selectedUserField.geometry.type === 'GeometryCollection') return drawAreaFromGeoCollection(selectedUserField);
+      if (selectedUserField.geometry.type === 'GeometryCollection')
+        return drawAreaFromGeoCollection(selectedUserField);
     }
     // reset default field to state capitol
     return [
@@ -138,21 +141,20 @@ const Location = () => {
   // when map marker changes, set addressRedux, update regionRedux based on zipcode
   useEffect(() => {
     if (Object.keys(selectedToEditSite).length > 0) {
-      const {
-        latitude, longitude, address, zipCode, county,
-      } = selectedToEditSite;
+      const { latitude, longitude, address, zipCode, county } = selectedToEditSite;
 
-      if (markersRedux && latitude === markersRedux[0][0] && longitude === markersRedux[0][1]) return;
+      if (markersRedux && latitude === markersRedux[0][0] && longitude === markersRedux[0][1])
+        return;
 
       // if is adding a new point, open dialog
       if (isAuthenticated && isAddingPoint && latitude) {
         const currentSelectedField = selectedUserField?.geometry;
         if (
-          (!currentSelectedField && latitude !== statesLatLongDict[stateLabelRedux][0])
-          || (currentSelectedField?.type === 'Point'
-            && latitude !== currentSelectedField?.coordinates[1])
-          || (currentSelectedField?.type === 'GeometryCollection'
-            && latitude !== currentSelectedField?.geometries[0].coordinates[1])
+          (!currentSelectedField && latitude !== statesLatLongDict[stateLabelRedux][0]) ||
+          (currentSelectedField?.type === 'Point' &&
+            latitude !== currentSelectedField?.coordinates[1]) ||
+          (currentSelectedField?.type === 'GeometryCollection' &&
+            latitude !== currentSelectedField?.geometries[0].coordinates[1])
         ) {
           setFieldDialogState({
             ...fieldDialogState,
@@ -233,7 +235,9 @@ const Location = () => {
       if (progressRedux >= 1 && markersRedux.length > 0) {
         const reverseGEOresult = await reverseGEO(lat, lon);
         const abbrState = abbrRegion(
-          reverseGEOresult?.features?.filter((feature) => feature?.place_type?.includes('region'))[0]?.text,
+          reverseGEOresult?.features?.filter((feature) =>
+            feature?.place_type?.includes('region'),
+          )[0]?.text,
           'abbr',
         ).toLowerCase();
 
@@ -288,7 +292,8 @@ const Location = () => {
         // TODO annual and monthly are the same
         try {
           const rainForAMonthResponse = await callCoverCropApi(averageRainForAMonthURL);
-          let averagePrecipitationForCurrentMonth = rainForAMonthResponse[0]['sum(precipitation)/5'];
+          let averagePrecipitationForCurrentMonth =
+            rainForAMonthResponse[0]['sum(precipitation)/5'];
           averagePrecipitationForCurrentMonth = parseFloat(
             averagePrecipitationForCurrentMonth * 0.03937,
           ).toFixed(2);
@@ -349,100 +354,94 @@ const Location = () => {
   };
 
   return (
-    <Box>
-      <Grid container justifyContent="center" spacing={4}>
-        {/* holds all location text and select menu */}
-        <Grid item lg={4}>
-          {/* holds the title and subtitle */}
-          <Grid item container direction="column">
-            <Grid item>
-              <Typography variant="h4" style={{ textAlign: 'center' }}>
-                Field Location
-              </Typography>
-            </Grid>
-            <Grid item>
-              <Typography variant="body1">
-                Find your address or ZIP code using the search bar on the map and hit
-                <Search fontSize="inherit" />
-                to determine your location. If needed, adjust your
-                {' '}
-                {councilShorthandRedux === 'MCCC' ? 'county' : 'USDA Plant Hardiness Zone'}
-                {' '}
-                in the
-                dropdown.
-              </Typography>
-            </Grid>
-            {/* hold the row for PlantHardinessZone and userfieldlist */}
-            <Grid item container sx={{ mt: '1rem' }}>
-              <Grid item container spacing={2}>
-                {/* PlantHardinessZone */}
-                <Grid item>
-                  <PlantHardinessZone
-                    regionShorthand={regionShorthand}
-                    setRegionShorthand={setRegionShorthand}
-                    regionsRedux={regionsRedux}
-                    councilShorthand={councilShorthandRedux}
-                  />
-                </Grid>
-                {/* userfieldlist */}
-                <Grid item>
-                  {isAuthenticated && stateLabelRedux !== 'Ontario' && (
-                    <UserFieldList
-                      userFields={userFields}
-                      field={selectedUserField}
-                      setField={setSelectedUserField}
-                      setFieldDialogState={setFieldDialogState}
-                    />
-                  )}
-                </Grid>
-              </Grid>
-            </Grid>
-          </Grid>
+    <Grid container spacing={2}>
+      <Grid container item md={stateLabelRedux === 'Ontario' ? 12 : 3} xs={12}>
+        <Grid item xs={12}>
+          <Typography
+            variant="h4"
+            style={{ fontWeight: 'bold', fontSize: '1.8rem', textAlign: 'center' }}
+          >
+            Field Location
+          </Typography>
+          <Typography
+            variant={isMobile ? 'subtitle2' : 'subtitle1'}
+            sx={{
+              fontWeight: 'medium',
+              color: '#4A4A4A',
+              textAlign: 'center',
+            }}
+          >
+            Find your address or ZIP code using the search bar on the map and hit
+            <Search fontSize="inherit" />
+            to determine your location. If needed, adjust your{' '}
+            {councilShorthandRedux === 'MCCC' ? 'county' : 'USDA Plant Hardiness Zone'} in the
+            dropdown.
+          </Typography>
         </Grid>
-        {/* holds the map component */}
-        <Grid item container lg={6} justifyContent="center">
-          {stateLabelRedux !== 'Ontario' && (
-            <Grid item xs={12} sx={{ p: 0, m: 0, maxWidth: { lg: 'md', xs: '100%' } }}>
-              <Map
-                setAddress={setSelectedToEditSite}
-                setFeatures={setCurrentGeometry}
-                onDraw={onDraw}
-                initWidth="100%"
-                initHeight="400px"
-                initLat={getLatLng[0]}
-                initLon={getLatLng[1]}
-                initFeatures={mapFeatures}
-                initStartZoom={12}
-                initMinZoom={4}
-                initMaxZoom={18}
-                hasSearchBar
-                hasMarker
-                hasNavigation
-                hasCoordBar
-                hasDrawing
-                hasGeolocate
-                hasFullScreen
-                hasMarkerPopup
-                hasMarkerMovable
-              />
-            </Grid>
-          )}
-          <UserFieldDialog
-            fieldDialogState={fieldDialogState}
-            setFieldDialogState={setFieldDialogState}
-            userFields={userFields}
-            selectedToEditSite={selectedToEditSite}
-            currentGeometry={currentGeometry}
-            selectedUserField={selectedUserField}
-            setUserFields={setUserFields}
-            setSelectedUserField={setSelectedUserField}
-            setMapFeatures={setMapFeatures}
-            getFeatures={getFeatures}
-            setIsAddingPoint={setIsAddingPoint}
+
+        <Grid item xs={12}>
+          <PlantHardinessZone
+            regionShorthand={regionShorthand}
+            setRegionShorthand={setRegionShorthand}
+            regionsRedux={regionsRedux}
+            councilLabelRedux={councilLabelRedux}
           />
         </Grid>
+
+        <Grid item xs={12}>
+          {isAuthenticated && stateLabelRedux !== 'Ontario' && (
+            <UserFieldList
+              userFields={userFields}
+              field={selectedUserField}
+              setField={setSelectedUserField}
+              setFieldDialogState={setFieldDialogState}
+            />
+          )}
+        </Grid>
       </Grid>
-    </Box>
+      {stateLabelRedux !== 'Ontario' && (
+        <Grid item md={9} xs={12}>
+          <Container maxWidth="md">
+            <Map
+              setAddress={setSelectedToEditSite}
+              setFeatures={setCurrentGeometry}
+              onDraw={onDraw}
+              initWidth="100%"
+              initHeight="500px"
+              initLat={getLatLng[0]}
+              initLon={getLatLng[1]}
+              initFeatures={mapFeatures}
+              initStartZoom={12}
+              initMinZoom={4}
+              initMaxZoom={18}
+              hasSearchBar
+              hasMarker
+              hasNavigation
+              hasCoordBar
+              hasDrawing
+              hasGeolocate
+              hasFullScreen
+              hasMarkerPopup
+              hasMarkerMovable
+            />
+          </Container>
+        </Grid>
+      )}
+
+      <UserFieldDialog
+        fieldDialogState={fieldDialogState}
+        setFieldDialogState={setFieldDialogState}
+        userFields={userFields}
+        selectedToEditSite={selectedToEditSite}
+        currentGeometry={currentGeometry}
+        selectedUserField={selectedUserField}
+        setUserFields={setUserFields}
+        setSelectedUserField={setSelectedUserField}
+        setMapFeatures={setMapFeatures}
+        getFeatures={getFeatures}
+        setIsAddingPoint={setIsAddingPoint}
+      />
+    </Grid>
   );
 };
 
