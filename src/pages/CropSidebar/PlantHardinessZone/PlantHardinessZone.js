@@ -3,6 +3,9 @@ import {
   Collapse, FormControl, InputLabel, List, ListItem, MenuItem, Select, Typography,
 } from '@mui/material';
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { userSelectRegion } from '../../../reduxStore/userSlice';
+import statesLatLongDict from '../../../shared/stateslatlongdict';
 // import { useSelector } from 'react-redux';
 
 const PlantHardinessZone = ({
@@ -12,6 +15,10 @@ const PlantHardinessZone = ({
   councilLabelRedux,
   regionToggleRedux = true,
 }) => {
+  const dispatchRedux = useDispatch();
+  const markersRedux = useSelector((stateRedux) => stateRedux.addressData.markers);
+  const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
+
   const plantHardinessZone = () => (
     <Select
       variant="filled"
@@ -22,7 +29,18 @@ const PlantHardinessZone = ({
         textAlign: 'left',
       }}
       sx={{ minWidth: 200 }}
-      onChange={(e) => setRegionShorthand(e.target.value)}
+      onChange={(e) => {
+        setRegionShorthand(e.target.value);
+        if (markersRedux
+          && (markersRedux[0][1] === statesLatLongDict[stateLabelRedux][1]
+         && markersRedux[0][0] === statesLatLongDict[stateLabelRedux][0])) {
+          // set redux to true (means user select another region while didn't change address)
+          dispatchRedux(userSelectRegion(true));
+        } else {
+          // if user changed marker, not set redux
+          dispatchRedux(userSelectRegion(false));
+        }
+      }}
       value={regionShorthand || ''}
       error={!regionShorthand}
     >
