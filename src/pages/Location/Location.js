@@ -4,8 +4,12 @@
   styled using ../../styles/location.scss
 */
 
-import { Typography, Grid, Container, useMediaQuery, useTheme, Box } from '@mui/material';
-import React, { useEffect, useState, useRef, useMemo } from 'react';
+import {
+  Typography, Grid, Container, useMediaQuery, useTheme, Box,
+} from '@mui/material';
+import React, {
+  useEffect, useState, useRef, useMemo,
+} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Search } from '@mui/icons-material';
 import moment from 'moment';
@@ -64,8 +68,8 @@ const Location = () => {
   const [currentGeometry, setCurrentGeometry] = useState([]);
   const [fieldDialogState, setFieldDialogState] = useState(initFieldDialogState);
   const [selectedUserField, setSelectedUserField] = useState(
-    userFieldRedux?.data.filter((field) => field.id === selectedFieldIdRedux)[0] ||
-      (userFieldRedux && userFieldRedux.data.length
+    userFieldRedux?.data.filter((field) => field.id === selectedFieldIdRedux)[0]
+      || (userFieldRedux && userFieldRedux.data.length
         ? userFieldRedux.data[userFieldRedux.data.length - 1]
         : {}),
   );
@@ -81,8 +85,7 @@ const Location = () => {
   const getFeatures = () => {
     if (userFields.length > 0 && Object.keys(selectedUserField).length !== 0) {
       if (selectedUserField.geometry.type === 'Point') return [selectedUserField];
-      if (selectedUserField.geometry.type === 'GeometryCollection')
-        return drawAreaFromGeoCollection(selectedUserField);
+      if (selectedUserField.geometry.type === 'GeometryCollection') return drawAreaFromGeoCollection(selectedUserField);
     }
     // reset default field to state capitol
     return [
@@ -156,15 +159,16 @@ const Location = () => {
   // when map marker changes, set addressRedux, update regionRedux based on zipcode
   useEffect(() => {
     if (Object.keys(selectedToEditSite).length > 0) {
-      const { latitude, longitude, address, zipCode, county } = selectedToEditSite;
+      const {
+        latitude, longitude, address, zipCode, county,
+      } = selectedToEditSite;
 
-      if (markersRedux && latitude === markersRedux[0][0] && longitude === markersRedux[0][1])
-        return;
+      if (markersRedux && latitude === markersRedux[0][0] && longitude === markersRedux[0][1]) return;
 
       // if user address differenct than capitol, set userSelectRegion to false
       if (
-        latitude !== statesLatLongDict[stateLabelRedux][0] ||
-        longitude !== statesLatLongDict[stateLabelRedux][1]
+        latitude !== statesLatLongDict[stateLabelRedux][0]
+        || longitude !== statesLatLongDict[stateLabelRedux][1]
       ) {
         dispatchRedux(userSelectRegion(false));
       }
@@ -173,11 +177,11 @@ const Location = () => {
       if (isAuthenticated && isAddingPoint && latitude) {
         const currentSelectedField = selectedUserField?.geometry;
         if (
-          (!currentSelectedField && latitude !== statesLatLongDict[stateLabelRedux][0]) ||
-          (currentSelectedField?.type === 'Point' &&
-            latitude !== currentSelectedField?.coordinates[1]) ||
-          (currentSelectedField?.type === 'GeometryCollection' &&
-            latitude !== currentSelectedField?.geometries[0].coordinates[1])
+          (!currentSelectedField && latitude !== statesLatLongDict[stateLabelRedux][0])
+          || (currentSelectedField?.type === 'Point'
+            && latitude !== currentSelectedField?.coordinates[1])
+          || (currentSelectedField?.type === 'GeometryCollection'
+            && latitude !== currentSelectedField?.geometries[0].coordinates[1])
         ) {
           setFieldDialogState({
             ...fieldDialogState,
@@ -258,9 +262,7 @@ const Location = () => {
       if (progressRedux >= 1 && markersRedux.length > 0) {
         const reverseGEOresult = await reverseGEO(lat, lon);
         const abbrState = abbrRegion(
-          reverseGEOresult?.features?.filter((feature) =>
-            feature?.place_type?.includes('region'),
-          )[0]?.text,
+          reverseGEOresult?.features?.filter((feature) => feature?.place_type?.includes('region'))[0]?.text,
           'abbr',
         ).toLowerCase();
 
@@ -315,8 +317,7 @@ const Location = () => {
         // TODO annual and monthly are the same
         try {
           const rainForAMonthResponse = await callCoverCropApi(averageRainForAMonthURL);
-          let averagePrecipitationForCurrentMonth =
-            rainForAMonthResponse[0]['sum(precipitation)/5'];
+          let averagePrecipitationForCurrentMonth = rainForAMonthResponse[0]['sum(precipitation)/5'];
           averagePrecipitationForCurrentMonth = parseFloat(
             averagePrecipitationForCurrentMonth * 0.03937,
           ).toFixed(2);
@@ -394,8 +395,11 @@ const Location = () => {
             >
               Find your address or ZIP code using the search bar on the map and hit
               <Search fontSize="inherit" />
-              to determine your location. If needed, adjust your{' '}
-              {councilShorthandRedux === 'MCCC' ? 'county' : 'USDA Plant Hardiness Zone'} in the
+              to determine your location. If needed, adjust your
+              {' '}
+              {councilShorthandRedux === 'MCCC' ? 'county' : 'USDA Plant Hardiness Zone'}
+              {' '}
+              in the
               dropdown.
             </Typography>
           </Grid>

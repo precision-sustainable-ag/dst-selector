@@ -77,9 +77,9 @@ const PlantHardinessZone = ({
       onChange={(e) => {
         setRegionShorthand(e.target.value);
         if (
-          markersRedux &&
-          markersRedux[0][1] === statesLatLongDict[stateLabelRedux][1] &&
-          markersRedux[0][0] === statesLatLongDict[stateLabelRedux][0]
+          markersRedux
+          && markersRedux[0][1] === statesLatLongDict[stateLabelRedux][1]
+          && markersRedux[0][0] === statesLatLongDict[stateLabelRedux][0]
         ) {
           // set redux to true (means user select another region while didn't change address)
           dispatchRedux(userSelectRegion(true));
@@ -91,8 +91,8 @@ const PlantHardinessZone = ({
       value={regionShorthand || ''}
       error={!regionShorthand}
     >
-      {regionsRedux?.length > 0 &&
-        regionsRedux.map((region, i) => (
+      {regionsRedux?.length > 0
+        && regionsRedux.map((region, i) => (
           <MenuItem value={region.shorthand} key={`Region${region}${i}`}>
             {councilShorthand !== 'MCCC'
               ? `Zone ${region.shorthand?.toUpperCase()}`
