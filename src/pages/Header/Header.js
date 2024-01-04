@@ -278,6 +278,7 @@ const Header = () => {
 
           <Grid
             item
+            container
             xs={12}
             height={pathname !== '/' ? '50px' : 'auto'}
             sx={{

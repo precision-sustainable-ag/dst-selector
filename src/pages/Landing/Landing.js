@@ -49,6 +49,36 @@ const Landing = () => {
 
   const availableStates = useMemo(() => allStates.map((state) => state.label), [allStates]);
 
+  // Styles for the menu items
+  const menuProps = {
+    PaperProps: {
+      style: {
+        maxHeight: 224, // You can adjust this value to control the height of the dropdown
+      },
+      sx: {
+        '.MuiMenuItem-root': {
+          '&.Mui-selected': {
+            backgroundColor: '#598445',
+            color: 'white',
+          },
+          '&.Mui-selected:hover': {
+            backgroundColor: '#598445',
+            color: 'white',
+          },
+          '&:hover': {
+            backgroundColor: 'rgba(176, 236, 130, 0.3)',
+            color: 'black',
+          },
+        },
+        // Additional styles to remove the scrollbar
+        '::-webkit-scrollbar': {
+          display: 'none',
+        },
+        '-ms-overflow-style': 'none', // IE and Edge
+        'scrollbar-width': 'none', // Firefox
+      },
+    },
+  };
   const updateStateRedux = (selState) => {
     localStorage.setItem('stateId', selState.id);
     dispatchRedux(
@@ -241,12 +271,30 @@ const Landing = () => {
               </Typography>
             </Grid>
             <Grid item xs={12} mb={2}>
-              <FormControl variant="filled" sx={{ minWidth: 120 }}>
-                <InputLabel>State</InputLabel>
+              <FormControl sx={{ minWidth: 120 }}>
+                <InputLabel id="state-dropdown-label">STATE</InputLabel>
                 <Select
-                  variant="filled"
                   onChange={(e) => handleStateChange(e)}
                   value={selectedState?.shorthand || ''}
+                  labelId="state-dropdown-label"
+                  label="STATE"
+                  sx={{
+                    minWidth: 200,
+                    '& .MuiOutlinedInput-notchedOutline': {
+                      borderColor: '#598445', // Set your custom color for the notched outline
+                      borderWidth: '2px', // Set your custom border width
+                      borderRadius: '4px', // Custom border radius
+                    },
+                    '&:hover .MuiOutlinedInput-notchedOutline': {
+                      borderColor: '#598445', // Custom color on hover
+                      borderWidth: '2.5px',
+                    },
+                    '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                      borderColor: '#598445', // Custom color when the Select is focused
+                      borderWidth: '2.5px', // Custom border width when the Select is focused
+                    },
+                  }}
+                  MenuProps={menuProps}
                 >
                   {allStates.length > 0
                     && allStates.map((st, i) => (

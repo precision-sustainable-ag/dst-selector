@@ -43,7 +43,7 @@ const PlantHardinessZone = ({
 
   const plantHardinessZone = () => (
     <Select
-      labelId="plant-hardiness-zone-dropdown-select"
+      labelId="plant-hardiness-zone-dropdown-select-label-id"
       id="plant-hardiness-zone-dropdown-select"
       label={councilShorthand === 'MCCC' ? 'COUNTY' : 'ZONE'}
       style={{
@@ -87,7 +87,10 @@ const PlantHardinessZone = ({
       <List component="div">
         <ListItem component="div" style={{ padding: 0 }}>
           <FormControl>
-            <InputLabel id="plant-hardiness-zone-dropdown-label" sx={{ fontWeight: 'medium' }}>
+            <InputLabel
+              id="plant-hardiness-zone-dropdown-select-label-id"
+              sx={{ fontWeight: 'medium' }}
+            >
               {councilShorthand === 'MCCC' ? 'COUNTY' : 'ZONE'}
             </InputLabel>
             {plantHardinessZone()}
