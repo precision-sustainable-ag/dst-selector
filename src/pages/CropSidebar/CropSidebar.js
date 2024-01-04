@@ -154,7 +154,7 @@ const CropSidebar = ({
         }
       });
       cd[n].inactive = (!match)
-      || (drainageClassRedux && !crop.soilDrainage.values?.includes(drainageClassRedux));
+      || (drainageClassRedux && !crop.soilDrainage?.includes(drainageClassRedux));
 
       return true;
     });
