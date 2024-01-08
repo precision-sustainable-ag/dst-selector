@@ -43,7 +43,7 @@ const CropSidebar = ({
   isListView,
   from,
   setGrowthWindow,
-  toggleComparisonView,
+  setComparisonView,
   setIsListView,
   // toggleListView,
   style,
@@ -315,18 +315,22 @@ const CropSidebar = ({
     <Grid container spacing={3}>
       <Grid item>
         <LightButton
-          onClick={toggleComparisonView}
+          onClick={() => setComparisonView(true)}
           color="secondary"
-          startIcon={
-            comparisonView ? (
-              <ListIcon style={{ fontSize: 'larger' }} />
-            ) : (
-              <Compare style={{ fontSize: 'larger' }} />
-            )
-          }
+          style={{ background: comparisonView ? '#49a8ab' : '#e3f2f4' }}
+          startIcon={<ListIcon style={{ fontSize: 'larger' }} />}
         >
-          {comparisonView ? 'LIST VIEW' : 'COMPARISON VIEW'}
+          LIST VIEW
         </LightButton>
+        <LightButton
+          onClick={() => setComparisonView(false)}
+          color="secondary"
+          style={{ background: !comparisonView ? '#49a8ab' : '#e3f2f4' }}
+          startIcon={<Compare style={{ fontSize: 'larger' }} />}
+        >
+          COMPARISON VIEW
+        </LightButton>
+        {/* </LightButton> */}
         <ComparisonBar
           filterData={sidebarFilters}
           goals={selectedGoalsRedux?.length > 0 ? selectedGoalsRedux : []}
