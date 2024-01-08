@@ -102,7 +102,6 @@ const RenderTableItems = ({
               <TableCell size="small" style={{ textAlign: 'left', verticalAlign: 'middle' }}>
                 <table>
                   <tbody>
-                    {console.log(crop)}
                     {crop.keyTraits.map((trait) => (
                       <tr>
                         <td>
