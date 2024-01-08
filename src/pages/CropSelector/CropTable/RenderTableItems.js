@@ -25,10 +25,10 @@ const RenderTableItems = ({
         ? !hasGoalRatingTwoOrLess(selectedGoalsRedux, crop)
         : hasGoalRatingTwoOrLess(selectedGoalsRedux, crop)
     ) {
-      const duration = (crop.attributes.filter((attr) => attr.label === 'Duration')[0]?.values[0].toString().toLowerCase()
+      const duration = (crop.attributes?.filter((attr) => attr.label === 'Duration')[0]?.values[0]?.toString().toLowerCase()
       === 'short-lived perennial'
         ? 'Perennial'
-        : crop.attributes.filter((attr) => attr.label === 'Duration')[0].values[0]) || 'No Data';
+        : crop.attributes.filter((attr) => attr.label === 'Duration')[0]?.values[0]) || 'No Data';
       const maxN = crop.attributes.filter((attr) => attr.label === 'Nitrogen Accumulation Min, Legumes (lbs/A/y)')[0]?.values[0];
       const minN = crop.attributes.filter((attr) => attr.label === 'Nitrogen Accumulation Max, Legumes (lbs/A/y)')[0]?.values[0];
       const totalN = minN && maxN ? `${minN} - ${maxN}` : 'No Data';
@@ -97,56 +97,59 @@ const RenderTableItems = ({
               </div>
             </div>
           </TableCell>
-          <TableCell size="small" style={{ textAlign: 'left', verticalAlign: 'middle' }}>
-            <table>
-              <tbody>
-                {crop.attributes.filter((a) => a.label === 'Cover Crop Group')[0]?.values[0].toLowerCase() === 'legume' && (
-                  <tr>
-                    <td>
-                      <Typography variant="body1" component="b" style={{ fontSize: 'small' }}>
-                        Total N:
-                      </Typography>
-                    </td>
-                    <td>
-                      <Typography variant="body1" component="b" style={{ fontSize: 'small' }}>
-                        {totalN}
-                        <span className="units">lbs/A/y</span>
-                      </Typography>
-                    </td>
-                  </tr>
-                )}
+          {cropDataRedux[0].keyTraits.length > 0
+              && (
+              <TableCell size="small" style={{ textAlign: 'left', verticalAlign: 'middle' }}>
+                <table>
+                  <tbody>
+                    {crop.attributes.filter((a) => a.label === 'Cover Crop Group')[0]?.values[0].toLowerCase() === 'legume' && (
+                    <tr>
+                      <td>
+                        <Typography variant="body1" component="b" style={{ fontSize: 'small' }}>
+                          Total N:
+                        </Typography>
+                      </td>
+                      <td>
+                        <Typography variant="body1" component="b" style={{ fontSize: 'small' }}>
+                          {totalN}
+                          <span className="units">lbs/A/y</span>
+                        </Typography>
+                      </td>
+                    </tr>
+                    )}
 
-                <tr>
-                  <td>
-                    {' '}
-                    <Typography variant="body1" component="b" style={{ fontSize: 'small' }}>
-                      Dry Matter:
-                    </Typography>
-                  </td>
-                  <td>
-                    <Typography variant="body1" component="b" style={{ fontSize: 'small' }}>
-                      {dryMatter}
-                      {/* -
+                    <tr>
+                      <td>
+                        {' '}
+                        <Typography variant="body1" component="b" style={{ fontSize: 'small' }}>
+                          Dry Matter:
+                        </Typography>
+                      </td>
+                      <td>
+                        <Typography variant="body1" component="b" style={{ fontSize: 'small' }}>
+                          {dryMatter}
+                          {/* -
                           {dryMatter} */}
-                      <span className="units">lbs/A/y</span>
-                    </Typography>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <Typography variant="body1" component="b" style={{ fontSize: 'small' }}>
-                      Duration:
-                    </Typography>
-                  </td>
-                  <td>
-                    <Typography variant="body1" component="b" style={{ fontSize: 'small' }}>
-                      {duration}
-                    </Typography>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </TableCell>
+                          <span className="units">lbs/A/y</span>
+                        </Typography>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <Typography variant="body1" component="b" style={{ fontSize: 'small' }}>
+                          Duration:
+                        </Typography>
+                      </td>
+                      <td>
+                        <Typography variant="body1" component="b" style={{ fontSize: 'small' }}>
+                          {duration}
+                        </Typography>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </TableCell>
+              )}
           <CropTableCard
             crop={crop}
             indexKey={index}

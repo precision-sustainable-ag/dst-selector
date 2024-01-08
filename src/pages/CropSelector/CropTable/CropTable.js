@@ -124,6 +124,8 @@ const CropTable = ({
                   Cover Crops
                 </Button>
               </TableCell>
+              {cropDataRedux[0].keyTraits.length > 0
+              && (
               <TableCell
                 sx={{ padding: 0 }}
                 style={{
@@ -131,9 +133,10 @@ const CropTable = ({
                 }}
               >
                 <Typography variant="body1" style={sudoButtonStyle}>
-                  Growth Traits
+                  Key Traits
                 </Typography>
               </TableCell>
+              )}
               {selectedGoalsRedux.length > 0
                 && selectedGoalsRedux.map((goal, index) => (
                   <TableCell
