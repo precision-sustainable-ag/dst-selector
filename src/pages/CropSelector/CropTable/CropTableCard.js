@@ -47,7 +47,7 @@ const CropTableCard = ({
         ))}
 
       {showGrowthWindow && (
-        <TableCell size="small" style={{ width: 200 }}>
+        <TableCell size="small" style={{ maxWidth: 200 }}>
           <CropSelectorCalendarView data={crop} from="listView" />
         </TableCell>
       )}
