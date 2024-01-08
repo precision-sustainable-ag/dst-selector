@@ -25,18 +25,18 @@ const RenderTableItems = ({
         ? !hasGoalRatingTwoOrLess(selectedGoalsRedux, crop)
         : hasGoalRatingTwoOrLess(selectedGoalsRedux, crop)
     ) {
-      const duration = (crop.attributes?.filter((attr) => attr.label === 'Duration')[0]?.values[0]?.toString().toLowerCase()
-      === 'short-lived perennial'
-        ? 'Perennial'
-        : crop.attributes.filter((attr) => attr.label === 'Duration')[0]?.values[0]) || 'No Data';
-      const maxN = crop.attributes.filter((attr) => attr.label === 'Nitrogen Accumulation Min, Legumes (lbs/A/y)')[0]?.values[0];
-      const minN = crop.attributes.filter((attr) => attr.label === 'Nitrogen Accumulation Max, Legumes (lbs/A/y)')[0]?.values[0];
-      const totalN = minN && maxN ? `${minN} - ${maxN}` : 'No Data';
-      const dryMatterMax = crop.attributes.filter((attr) => attr.label === 'Dry Matter Max (lbs/A/y)')[0]?.values[0];
-      const dryMatterMin = crop.attributes.filter((attr) => attr.label === 'Dry Matter Min (lbs/A/y)')[0]?.values[0];
-      const dryMatter = crop.attributes.filter((attr) => attr.label === 'Dry Matter')[0]?.values[0]
-      || ((dryMatterMin && dryMatterMax) && `${dryMatterMin} - ${dryMatterMax}`)
-      || 'No Data';
+      // const duration = (crop.attributes?.filter((attr) => attr.label === 'Duration')[0]?.values[0]?.toString().toLowerCase()
+      // === 'short-lived perennial'
+      //   ? 'Perennial'
+      //   : crop.attributes.filter((attr) => attr.label === 'Duration')[0]?.values[0]) || 'No Data';
+      // const maxN = crop.attributes.filter((attr) => attr.label === 'Nitrogen Accumulation Min, Legumes (lbs/A/y)')[0]?.values[0];
+      // const minN = crop.attributes.filter((attr) => attr.label === 'Nitrogen Accumulation Max, Legumes (lbs/A/y)')[0]?.values[0];
+      // const totalN = minN && maxN ? `${minN} - ${maxN}` : 'No Data';
+      // const dryMatterMax = crop.attributes.filter((attr) => attr.label === 'Dry Matter Max (lbs/A/y)')[0]?.values[0];
+      // const dryMatterMin = crop.attributes.filter((attr) => attr.label === 'Dry Matter Min (lbs/A/y)')[0]?.values[0];
+      // const dryMatter = crop.attributes.filter((attr) => attr.label === 'Dry Matter')[0]?.values[0]
+      // || ((dryMatterMin && dryMatterMax) && `${dryMatterMin} - ${dryMatterMax}`)
+      // || 'No Data';
 
       return (
         <TableRow
@@ -102,50 +102,23 @@ const RenderTableItems = ({
               <TableCell size="small" style={{ textAlign: 'left', verticalAlign: 'middle' }}>
                 <table>
                   <tbody>
-                    {crop.attributes.filter((a) => a.label === 'Cover Crop Group')[0]?.values[0].toLowerCase() === 'legume' && (
-                    <tr>
-                      <td>
-                        <Typography variant="body1" component="b" style={{ fontSize: 'small' }}>
-                          Total N:
-                        </Typography>
-                      </td>
-                      <td>
-                        <Typography variant="body1" component="b" style={{ fontSize: 'small' }}>
-                          {totalN}
-                          <span className="units">lbs/A/y</span>
-                        </Typography>
-                      </td>
-                    </tr>
-                    )}
+                    {console.log(crop)}
+                    {crop.keyTraits.map((trait) => (
+                      <tr>
+                        <td>
+                          {' '}
+                          <Typography variant="body1" component="b" style={{ fontSize: 'small' }}>
+                            {`${trait.label}: `}
+                          </Typography>
+                        </td>
+                        <td>
+                          <Typography variant="body1" component="b" style={{ fontSize: 'small', paddingLeft: '2px' }}>
+                            {trait.values.map((val) => (val))}
+                          </Typography>
+                        </td>
+                      </tr>
+                    ))}
 
-                    <tr>
-                      <td>
-                        {' '}
-                        <Typography variant="body1" component="b" style={{ fontSize: 'small' }}>
-                          Dry Matter:
-                        </Typography>
-                      </td>
-                      <td>
-                        <Typography variant="body1" component="b" style={{ fontSize: 'small' }}>
-                          {dryMatter}
-                          {/* -
-                          {dryMatter} */}
-                          <span className="units">lbs/A/y</span>
-                        </Typography>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <Typography variant="body1" component="b" style={{ fontSize: 'small' }}>
-                          Duration:
-                        </Typography>
-                      </td>
-                      <td>
-                        <Typography variant="body1" component="b" style={{ fontSize: 'small' }}>
-                          {duration}
-                        </Typography>
-                      </td>
-                    </tr>
                   </tbody>
                 </table>
               </TableCell>
