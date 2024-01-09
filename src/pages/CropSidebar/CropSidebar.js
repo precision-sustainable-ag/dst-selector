@@ -45,7 +45,6 @@ const CropSidebar = ({
   setGrowthWindow,
   setComparisonView,
   setIsListView,
-  // toggleListView,
   style,
 }) => {
   const dispatchRedux = useDispatch();
@@ -330,7 +329,6 @@ const CropSidebar = ({
         >
           COMPARISON VIEW
         </LightButton>
-        {/* </LightButton> */}
         <ComparisonBar
           filterData={sidebarFilters}
           goals={selectedGoalsRedux?.length > 0 ? selectedGoalsRedux : []}
