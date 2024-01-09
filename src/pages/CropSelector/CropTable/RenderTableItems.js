@@ -25,19 +25,6 @@ const RenderTableItems = ({
         ? !hasGoalRatingTwoOrLess(selectedGoalsRedux, crop)
         : hasGoalRatingTwoOrLess(selectedGoalsRedux, crop)
     ) {
-      // const duration = (crop.attributes?.filter((attr) => attr.label === 'Duration')[0]?.values[0]?.toString().toLowerCase()
-      // === 'short-lived perennial'
-      //   ? 'Perennial'
-      //   : crop.attributes.filter((attr) => attr.label === 'Duration')[0]?.values[0]) || 'No Data';
-      // const maxN = crop.attributes.filter((attr) => attr.label === 'Nitrogen Accumulation Min, Legumes (lbs/A/y)')[0]?.values[0];
-      // const minN = crop.attributes.filter((attr) => attr.label === 'Nitrogen Accumulation Max, Legumes (lbs/A/y)')[0]?.values[0];
-      // const totalN = minN && maxN ? `${minN} - ${maxN}` : 'No Data';
-      // const dryMatterMax = crop.attributes.filter((attr) => attr.label === 'Dry Matter Max (lbs/A/y)')[0]?.values[0];
-      // const dryMatterMin = crop.attributes.filter((attr) => attr.label === 'Dry Matter Min (lbs/A/y)')[0]?.values[0];
-      // const dryMatter = crop.attributes.filter((attr) => attr.label === 'Dry Matter')[0]?.values[0]
-      // || ((dryMatterMin && dryMatterMax) && `${dryMatterMin} - ${dryMatterMax}`)
-      // || 'No Data';
-
       return (
         <TableRow
           key={`${crop.id} index`}
@@ -113,6 +100,8 @@ const RenderTableItems = ({
                         <td>
                           <Typography variant="body1" component="b" style={{ fontSize: 'small', paddingLeft: '2px' }}>
                             {trait.values.map((val) => (val))}
+                            {' '}
+                            {trait.units}
                           </Typography>
                         </td>
                       </tr>
