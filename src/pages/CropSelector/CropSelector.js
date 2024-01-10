@@ -61,7 +61,7 @@ const CropSelector = (props) => {
 
   // useState vars
   const [showGrowthWindow, setShowGrowthWindow] = useState(true);
-  const [listView, setlistView] = useState(true);
+  const [listView, setListView] = useState(true);
   const [comparisonView, setComparisonView] = useState(false);
   const [cropData, setCropData] = useState([]);
 
@@ -157,7 +157,7 @@ const CropSelector = (props) => {
             activeCropData={cropDataRedux.filter((crop) => activeCropIdsRedux.includes(crop.id))}
             comparisonView={comparisonView}
             setComparisonView={setComparisonView}
-            setlistView={setlistView}
+            setListView={setListView}
             from="table"
           />
         )}
