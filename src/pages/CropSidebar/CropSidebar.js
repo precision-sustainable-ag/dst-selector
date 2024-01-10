@@ -44,7 +44,7 @@ const CropSidebar = ({
   from,
   setGrowthWindow,
   setComparisonView,
-  setlistView,
+  setListView,
   style,
 }) => {
   const dispatchRedux = useDispatch();
@@ -343,7 +343,7 @@ const CropSidebar = ({
         {from === 'table' && (
           <>
             <LightButton
-              onClick={() => setlistView(true)}
+              onClick={() => setListView(true)}
               color="secondary"
               style={{ background: listView ? '#49a8ab' : '#e3f2f4' }}
               startIcon={<ListIcon style={{ fontSize: 'larger' }} />}
@@ -351,7 +351,7 @@ const CropSidebar = ({
               LIST VIEW
             </LightButton>
             <LightButton
-              onClick={() => setlistView(false)}
+              onClick={() => setListView(false)}
               color="secondary"
               style={{ background: !listView ? '#49a8ab' : '#e3f2f4' }}
               startIcon={<CalendarToday style={{ fontSize: 'larger' }} />}
