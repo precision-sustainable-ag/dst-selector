@@ -40,11 +40,11 @@ import { setAjaxInProgress, regionToggleHandler } from '../../reduxStore/sharedS
 
 const CropSidebar = ({
   comparisonView,
-  isListView,
+  listView,
   from,
   setGrowthWindow,
   setComparisonView,
-  setIsListView,
+  setlistView,
   style,
 }) => {
   const dispatchRedux = useDispatch();
@@ -343,17 +343,17 @@ const CropSidebar = ({
         {from === 'table' && (
           <>
             <LightButton
-              onClick={() => setIsListView(true)}
+              onClick={() => setlistView(true)}
               color="secondary"
-              style={{ background: isListView ? '#49a8ab' : '#e3f2f4' }}
+              style={{ background: listView ? '#49a8ab' : '#e3f2f4' }}
               startIcon={<ListIcon style={{ fontSize: 'larger' }} />}
             >
               LIST VIEW
             </LightButton>
             <LightButton
-              onClick={() => setIsListView(false)}
+              onClick={() => setlistView(false)}
               color="secondary"
-              style={{ background: !isListView ? '#49a8ab' : '#e3f2f4' }}
+              style={{ background: !listView ? '#49a8ab' : '#e3f2f4' }}
               startIcon={<CalendarToday style={{ fontSize: 'larger' }} />}
             >
               COMPARISON VIEW
@@ -370,11 +370,11 @@ const CropSidebar = ({
             >
               {from === 'table' && (
               <>
-                {showFilters && speciesSelectorActivationFlagRedux && !isListView && (
+                {showFilters && speciesSelectorActivationFlagRedux && !listView && (
                   <CoverCropSearch />
                 )}
 
-                {!isListView && (
+                {!listView && (
                   <CoverCropGoals style={style} />
                 )}
 
