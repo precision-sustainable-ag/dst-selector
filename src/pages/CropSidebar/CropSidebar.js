@@ -40,11 +40,11 @@ import { setAjaxInProgress, regionToggleHandler } from '../../reduxStore/sharedS
 
 const CropSidebar = ({
   comparisonView,
-  isListView,
+  listView,
   from,
   setGrowthWindow,
-  toggleComparisonView,
-  toggleListView,
+  setComparisonView,
+  setListView,
   style,
 }) => {
   const dispatchRedux = useDispatch();
@@ -304,17 +304,20 @@ const CropSidebar = ({
     <Grid container spacing={3}>
       <Grid item>
         <LightButton
-          onClick={toggleComparisonView}
+          onClick={() => setComparisonView(true)}
           color="secondary"
-          startIcon={
-            comparisonView ? (
-              <ListIcon style={{ fontSize: 'larger' }} />
-            ) : (
-              <Compare style={{ fontSize: 'larger' }} />
-            )
-          }
+          style={{ background: comparisonView ? '#49a8ab' : '#e3f2f4' }}
+          startIcon={<ListIcon style={{ fontSize: 'larger' }} />}
         >
-          {comparisonView ? 'LIST VIEW' : 'COMPARISON VIEW'}
+          LIST VIEW
+        </LightButton>
+        <LightButton
+          onClick={() => setComparisonView(false)}
+          color="secondary"
+          style={{ background: !comparisonView ? '#49a8ab' : '#e3f2f4' }}
+          startIcon={<Compare style={{ fontSize: 'larger' }} />}
+        >
+          COMPARISON VIEW
         </LightButton>
         <ComparisonBar
           filterData={sidebarFilters}
@@ -328,19 +331,24 @@ const CropSidebar = ({
     <Grid container>
       <Grid item>
         {from === 'table' && (
-          <LightButton
-            onClick={toggleListView}
-            color="secondary"
-            startIcon={
-                isListView ? (
-                  <ListIcon style={{ fontSize: 'larger' }} />
-                ) : (
-                  <CalendarToday style={{ fontSize: 'larger' }} />
-                )
-              }
-          >
-            {isListView ? 'LIST VIEW' : 'CALENDAR VIEW'}
-          </LightButton>
+          <>
+            <LightButton
+              onClick={() => setListView(true)}
+              color="secondary"
+              style={{ background: listView ? '#49a8ab' : '#e3f2f4' }}
+              startIcon={<ListIcon style={{ fontSize: 'larger' }} />}
+            >
+              LIST VIEW
+            </LightButton>
+            <LightButton
+              onClick={() => setListView(false)}
+              color="secondary"
+              style={{ background: !listView ? '#49a8ab' : '#e3f2f4' }}
+              startIcon={<CalendarToday style={{ fontSize: 'larger' }} />}
+            >
+              COMPARISON VIEW
+            </LightButton>
+          </>
         )}
         {speciesSelectorActivationFlagRedux || from === 'explorer' ? (
           <Box
@@ -352,11 +360,11 @@ const CropSidebar = ({
             >
               {from === 'table' && (
               <>
-                {showFilters && speciesSelectorActivationFlagRedux && !isListView && (
+                {showFilters && speciesSelectorActivationFlagRedux && !listView && (
                   <CoverCropSearch />
                 )}
 
-                {!isListView && (
+                {!listView && (
                   <CoverCropGoals style={style} />
                 )}
 
