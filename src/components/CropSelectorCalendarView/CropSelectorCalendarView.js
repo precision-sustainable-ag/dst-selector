@@ -6,7 +6,7 @@ import '../../styles/cropSelectorCalendarView.scss';
 
 // FIXME: current api don't have hessian fly date, this feature will hold temprorarily
 const isHessianDate = (item) => {
-  if (item.info.includes('Hessian Fly Free Date')) {
+  if (item.info.includes('Fly Free Date')) {
     return true;
   }
   return false;
@@ -17,7 +17,7 @@ const generateToolTipText = (item) => {
     return item.info.join(', ');
   }
   const textArr = item.info.slice(0);
-  textArr.splice(textArr.indexOf('Hessian Fly Free Date'));
+  textArr.splice(textArr.indexOf('Fly Free Date'));
   textArr.push(`Plant after ${item.startTime} to avoid Hessian flies`);
   return textArr.join(', ');
 };

@@ -21,6 +21,7 @@ const generateToolTipText = (item) => {
   return textArr.join(', ');
 };
 
+// TODO: this component could be deleted, all functions were moved to CropSelectorCalendarView.js
 const CropPaintGrowthChart = ({
   from = 'calendar',
   data = [],
