@@ -203,6 +203,7 @@ const CropTable = ({
           </TableHead>
 
           <TableBody>
+
             {activeCropIdsRedux.length > 0 ? (
               <RenderTableItems
                 showGrowthWindow={showGrowthWindow}

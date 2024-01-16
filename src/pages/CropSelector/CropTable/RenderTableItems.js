@@ -18,8 +18,9 @@ const RenderTableItems = ({
 }) => {
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
+  const activeCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.activeCropIds);
 
-  return cropDataRedux.sort((a, b) => (a.inactive - b.inactive)).map((crop, index) => {
+  return cropDataRedux.filter((crop) => activeCropIdsRedux.includes(crop.id)).sort((a, b) => (a.inactive - b.inactive)).map((crop, index) => {
     if (
       !crop.inactive
         ? !hasGoalRatingTwoOrLess(selectedGoalsRedux, crop)
@@ -101,7 +102,7 @@ const RenderTableItems = ({
                           <Typography variant="body1" component="b" style={{ fontSize: 'small', paddingLeft: '2px' }}>
                             {trait.values.map((val) => (val))}
                             {' '}
-                            {trait.units}
+                            <span className="units">{trait.units}</span>
                           </Typography>
                         </td>
                       </tr>
