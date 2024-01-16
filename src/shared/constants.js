@@ -910,6 +910,11 @@ export const cropDataFormatter = (cropData = [{}], cashCropStartDate = '', cashC
         });
       }
     });
+    // FIXME: temporary for fly free date, the lines in the upper function should also work after the minified crop pr
+    const flyFreeDate = moment('2009-09-30', 'YYYY-MM-DD').format('MM/DD');
+    const flyFreeDateStart = flyFreeDate;
+    const flyFreeDateEnd = flyFreeDate;
+    yearArr = formatTimeToYearArr(flyFreeDateStart, flyFreeDateEnd, 'Fly Free Date', yearArr);
 
     // add cash crop dates dates
     if (cashCropStartDate !== '' && cashCropEndDate !== '') {
