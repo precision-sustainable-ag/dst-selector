@@ -582,6 +582,7 @@ export const sortCrops = (
             aAvg = +a.goals.filter((data) => data.label === g)[0].values[0] + aAvg;
           }
         });
+      console.log(aAvg, bAvg);
       aAvg /= selectedItems.length;
       bAvg /= selectedItems.length;
       if (aAvg > bAvg) {
@@ -595,8 +596,8 @@ export const sortCrops = (
   }
   if (type === 'Goal') {
     crops.sort((a, b) => {
-      if (a.goals.filter((data) => data.label === goal)[0]?.length > 0 && b.goals.filter((data) => data.label === goal)[0]?.length > 0) {
-        if (parseInt(a.goals.filter((data) => data.label === goal)[0].values[0], 10) > parseInt(b.goals.filter((data) => data.label === goal)[0].values[0], 10)) {
+      if (a.goals.filter((data) => data.label === goal)[0]?.values.length > 0 && b.goals.filter((data) => data.label === goal)[0]?.values.length > 0) {
+        if (a.goals.filter((data) => data.label === goal)[0].values[0] > b.goals.filter((data) => data.label === goal)[0].values[0]) {
           return sortFlag ? -1 : 1;
         }
         return sortFlag ? 1 : -1;
