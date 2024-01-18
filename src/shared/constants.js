@@ -575,10 +575,10 @@ export const sortCrops = (
         .slice()
         .reverse()
         .forEach((g) => {
-          if (b.goals.filter((data) => data.label === g)[0]?.length > 0) {
+          if (b.goals.filter((data) => data.label === g)[0]?.values.length > 0) {
             bAvg = +b.goals.filter((data) => data.label === g)[0].values[0] + bAvg;
           }
-          if (a.goals.filter((data) => data.label === g)[0]?.length > 0) {
+          if (a.goals.filter((data) => data.label === g)[0]?.values.length > 0) {
             aAvg = +a.goals.filter((data) => data.label === g)[0].values[0] + aAvg;
           }
         });
