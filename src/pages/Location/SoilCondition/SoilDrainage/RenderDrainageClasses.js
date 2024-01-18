@@ -16,6 +16,7 @@ const RenderDrainageClasses = ({ tilingCheck, setTilingCheck, drainage = [] }) =
   const soilDataRedux = useSelector((stateRedux) => stateRedux.soilData.soilData);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const [previousDrainage, setPreviousDrainage] = useState(-1);
+  const [updateTileCheck, setUpdateTileCheck] = useState(true);
 
   const drainageArray = [
     'Very poorly drained',
@@ -43,25 +44,27 @@ const RenderDrainageClasses = ({ tilingCheck, setTilingCheck, drainage = [] }) =
     let drainages = soilDataRedux.drainageClass
       ? drainageArray.indexOf(soilDataRedux.drainageClass[0])
       : -1;
-    if (tilingCheck) {
-      setPreviousDrainage(drainages);
-      if (drainages === 2) {
-        drainages += 1;
-      } else if (drainages <= 1) {
-        drainages = councilShorthandRedux === 'MCCC' ? drainages + 2 : drainages + 1;
+    if (updateTileCheck) {
+      if (tilingCheck) {
+        setPreviousDrainage(drainages);
+        if (drainages === 2) {
+          drainages += 1;
+        } else if (drainages <= 1) {
+          drainages = councilShorthandRedux === 'MCCC' ? drainages + 2 : drainages + 1;
+        }
+      } else if (drainages === 1) {
+        drainages -= 1;
+      } else if (drainages >= 2) {
+        drainages = councilShorthandRedux === 'MCCC' && previousDrainage !== 2 ? drainages - 2 : drainages - 1;
       }
-    } else if (drainages === 1) {
-      drainages -= 1;
-    } else if (drainages >= 2) {
-      drainages = councilShorthandRedux === 'MCCC' && previousDrainage !== 2 ? drainages - 2 : drainages - 1;
     }
 
     updateDrainageAction([drainages]);
+    setUpdateTileCheck(true);
   }, [tilingCheck]);
 
   const updateDrainageClass = (index = '') => {
     let drainages = soilDataRedux.drainageClass ? [...soilDataRedux.drainageClass] : [];
-    setTilingCheck(false);
     if (drainages.indexOf(drainageArray[index]) === -1) {
       // does not exist, dispatch to state
       drainages = [index];
@@ -69,6 +72,8 @@ const RenderDrainageClasses = ({ tilingCheck, setTilingCheck, drainage = [] }) =
     } else {
       dispatchRedux(updateDrainageClassRedux([]));
     }
+    setUpdateTileCheck(false);
+    setTilingCheck(false);
   };
 
   return (
