@@ -335,17 +335,17 @@ const CropSidebar = ({
         {from === 'table' && (
           <>
             <LightButton
-              onClick={() => setListView(true)}
+              onClick={() => setListView(false)}
               color="secondary"
-              style={{ background: listView ? '#49a8ab' : '#e3f2f4' }}
+              style={{ background: !listView ? '#49a8ab' : '#e3f2f4' }}
               startIcon={<ListIcon style={{ fontSize: 'larger' }} />}
             >
               LIST VIEW
             </LightButton>
             <LightButton
-              onClick={() => setListView(false)}
+              onClick={() => setListView(true)}
               color="secondary"
-              style={{ background: !listView ? '#49a8ab' : '#e3f2f4' }}
+              style={{ background: listView ? '#49a8ab' : '#e3f2f4' }}
               startIcon={<CalendarToday style={{ fontSize: 'larger' }} />}
             >
               CALENDAR VIEW
