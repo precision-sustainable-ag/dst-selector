@@ -582,7 +582,6 @@ export const sortCrops = (
             aAvg = +a.goals.filter((data) => data.label === g)[0].values[0] + aAvg;
           }
         });
-      console.log(aAvg, bAvg);
       aAvg /= selectedItems.length;
       bAvg /= selectedItems.length;
       if (aAvg > bAvg) {
