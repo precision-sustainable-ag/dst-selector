@@ -127,7 +127,6 @@ const CropSidebar = ({
         } else {
           m = crop[parm]?.toLowerCase().match(/\w+/g);
         }
-        // console.log(search, m !== null && search.every((s) => m?.some((t) => t.includes(s))), m);
         return !search || (m !== null && search.every((s) => m?.some((t) => t.includes(s))));
       };
 
