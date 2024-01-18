@@ -18,74 +18,75 @@ const RenderTableItems = ({
 }) => {
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
-  const activeCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.activeCropIds);
 
-  return cropDataRedux.filter((crop) => activeCropIdsRedux.includes(crop.id)).sort((a, b) => (a.inactive - b.inactive)).map((crop, index) => {
-    if (
-      !crop.inactive
-        ? !hasGoalRatingTwoOrLess(selectedGoalsRedux, crop)
-        : hasGoalRatingTwoOrLess(selectedGoalsRedux, crop)
-    ) {
-      return (
-        <TableRow
-          key={`${crop.id} index`}
-          id={crop.id}
-          style={{
-            opacity: hasGoalRatingTwoOrLess(selectedGoalsRedux, crop) && '0.3',
-            outline: '2px solid #598344',
-          }}
-        >
-          <TableCell size="small" sx={{ maxWidth: 150 }}>
-            <div className="container-fluid">
-              <div className="row">
-                <div className="col-auto pl-md-0">
-                  <Button onClick={() => handleModalOpen(crop)}>
-                    <CropImage
-                      present={!!crop.thumbnail}
-                      src={crop.thumbnail ? crop.thumbnail : 'https://placehold.it/100x100'}
-                      alt={crop.label}
-                    />
-                  </Button>
-                </div>
-                <div
-                  className="col-auto pl-md-0 text-left"
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'flex-start',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <div>
-                    <Typography variant="h7" sx={{ fontWeight: 'bold', textAlign: 'left' }}>
-                      {flipCoverCropName(crop.label)}
-                    </Typography>
+  return cropDataRedux
+    .sort((a, b) => (a.inactive || false) - (b.inactive || false))
+    .map((crop, index) => {
+      if (
+        !crop.inactive
+          ? !hasGoalRatingTwoOrLess(selectedGoalsRedux, crop)
+          : hasGoalRatingTwoOrLess(selectedGoalsRedux, crop)
+      ) {
+        return (
+          <TableRow
+            key={`${crop.id} index`}
+            id={crop.id}
+            style={{
+              opacity: hasGoalRatingTwoOrLess(selectedGoalsRedux, crop) && '0.3',
+              outline: '2px solid #598344',
+            }}
+          >
+            <TableCell size="small" sx={{ maxWidth: 150 }}>
+              <div className="container-fluid">
+                <div className="row">
+                  <div className="col-auto pl-md-0">
+                    <Button onClick={() => handleModalOpen(crop)}>
+                      <CropImage
+                        present={!!crop.thumbnail}
+                        src={crop.thumbnail ? crop.thumbnail : 'https://placehold.it/100x100'}
+                        alt={crop.label}
+                      />
+                    </Button>
                   </div>
-                  <div>
-                    <Typography
-                      variant="body1"
-                      style={{
-                        color: 'gray',
-                        fontWeight: 'normal',
-                        fontStyle: 'italic',
-                        fontSize: 'small',
-                        textAlign: 'left',
-                      }}
-                    >
-                      {crop.scientificName && trimString(crop.scientificName, 25)}
-                    </Typography>
-                  </div>
-                  {/* <div className="col-12 p-md-0"> */}
-                  <div>
-                    <Typography variant="body1" style={{ color: 'gray', fontSize: 'small' }}>
-                      {crop.group}
-                    </Typography>
+                  <div
+                    className="col-auto pl-md-0 text-left"
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'flex-start',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <div>
+                      <Typography variant="h7" sx={{ fontWeight: 'bold', textAlign: 'left' }}>
+                        {flipCoverCropName(crop.label)}
+                      </Typography>
+                    </div>
+                    <div>
+                      <Typography
+                        variant="body1"
+                        style={{
+                          color: 'gray',
+                          fontWeight: 'normal',
+                          fontStyle: 'italic',
+                          fontSize: 'small',
+                          textAlign: 'left',
+                        }}
+                      >
+                        {crop.scientificName && trimString(crop.scientificName, 25)}
+                      </Typography>
+                    </div>
+                    {/* <div className="col-12 p-md-0"> */}
+                    <div>
+                      <Typography variant="body1" style={{ color: 'gray', fontSize: 'small' }}>
+                        {crop.group}
+                      </Typography>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </TableCell>
-          {cropDataRedux[0].keyTraits.length > 0
+            </TableCell>
+            {cropDataRedux[0].keyTraits.length > 0
               && (
               <TableCell size="small" style={{ textAlign: 'left', verticalAlign: 'middle' }}>
                 <table>
@@ -112,17 +113,17 @@ const RenderTableItems = ({
                 </table>
               </TableCell>
               )}
-          <CropTableCard
-            crop={crop}
-            indexKey={index}
-            showGrowthWindow={showGrowthWindow}
-            handleModalOpen={handleModalOpen}
-          />
-        </TableRow>
-      );
-    }
-    return null;
-  });
+            <CropTableCard
+              crop={crop}
+              indexKey={index}
+              showGrowthWindow={showGrowthWindow}
+              handleModalOpen={handleModalOpen}
+            />
+          </TableRow>
+        );
+      }
+      return null;
+    });
 };
 
 export default RenderTableItems;
