@@ -1,4 +1,7 @@
-import React from 'react';
+import React, {
+  useEffect,
+  useState,
+} from 'react';
 import {
   Chip, Grid, useTheme, useMediaQuery, Box,
 } from '@mui/material';
@@ -6,18 +9,39 @@ import { useDispatch, useSelector } from 'react-redux';
 import { updateFloodingFrequency as updateFloodingFrequencyRedux } from '../../../../reduxStore/soilSlice';
 
 const RenderFloodingOptions = ({ flooding = [''] }) => {
+  const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
+  const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
+  const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
   const dispatchRedux = useDispatch();
 
   // theme
   const uiTheme = useTheme();
   const isMobile = useMediaQuery(uiTheme.breakpoints.down('sm'));
 
+  // state vars
+  const [floodingOptions, setFloodingOptions] = useState([]);
+
   // redux vars
   const soilDataRedux = useSelector((stateRedux) => stateRedux.soilData.soilData);
+  console.log('region Id', regionIdRedux, 'state ID', stateIdRedux);
+  const query1 = `${encodeURIComponent('regions')}=${encodeURIComponent(regionIdRedux)}`;
+  const query2 = `${encodeURIComponent('regions')}=${encodeURIComponent(stateIdRedux)}`;
 
-  const floodingOptions = ['None', 'Very Rare', 'Rare', 'Occasional', 'Frequent', 'Very Frequent'];
+  useEffect(() => {
+    fetch(`https://${apiBaseUrlRedux}.covercrop-selector.org/v2/attribute?label=flooding frequency&${query2}&${query1}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setFloodingOptions(data.data.values);
+      })
+      .catch((err) => {
+        // eslint-disable-next-line no-console
+        console.log(err.message);
+      });
+  }, []);
 
+  console.log('floodingOptions', floodingOptions);
   const updateFloodingFrequency = (label = '') => {
+    console.log('HERE IN UPDATE');
     let floodings = soilDataRedux?.floodingFrequency ? [...soilDataRedux.floodingFrequency] : [];
     if (floodings.indexOf('None') !== -1) {
       // does exist, remove none because something else was selected
@@ -53,10 +77,10 @@ const RenderFloodingOptions = ({ flooding = [''] }) => {
       {floodingOptions.map((f, index) => (
         <Box key={index} sx={{ width: isMobile ? '100%' : 'auto' }}>
           <Chip
-            label={f}
-            color={flooding.includes(f) ? 'primary' : 'secondary'}
+            label={f.label}
+            color={flooding.includes(f.value) ? 'primary' : 'secondary'}
             onClick={() => {
-              updateFloodingFrequency(f);
+              updateFloodingFrequency(f.value);
             }}
             style={{ margin: '0.3rem' }}
           />
