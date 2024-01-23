@@ -585,12 +585,12 @@ export const sortCrops = (
       aAvg /= selectedItems.length;
       bAvg /= selectedItems.length;
       if (aAvg > bAvg) {
-        return sortFlag ? -1 : 1;
+        return -1;
       }
       if (aAvg === bAvg) {
         return 0;
       }
-      return sortFlag ? 1 : -1;
+      return 1;
     });
   }
   if (type === 'Goal') {
