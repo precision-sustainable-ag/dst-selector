@@ -16,7 +16,7 @@ const RenderDrainageClasses = ({ tilingCheck, setTilingCheck, drainage = [] }) =
   const soilDataRedux = useSelector((stateRedux) => stateRedux.soilData.soilData);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const [previousDrainage, setPreviousDrainage] = useState(-1);
-  const [updateTilingCheck, setUpdateTilingCheck] = useState(true);
+  const [updatedTilingCheck, setUpdatedTilingCheck] = useState(true);
 
   const drainageArray = [
     'Very poorly drained',
@@ -44,7 +44,7 @@ const RenderDrainageClasses = ({ tilingCheck, setTilingCheck, drainage = [] }) =
     let drainages = soilDataRedux.drainageClass
       ? drainageArray.indexOf(soilDataRedux.drainageClass[0])
       : -1;
-    if (updateTilingCheck) {
+    if (updatedTilingCheck) {
       if (tilingCheck) {
         setPreviousDrainage(drainages);
         if (drainages === 2) {
@@ -60,7 +60,7 @@ const RenderDrainageClasses = ({ tilingCheck, setTilingCheck, drainage = [] }) =
     }
 
     updateDrainageAction([drainages]);
-    setUpdateTilingCheck(true);
+    setUpdatedTilingCheck(true);
   }, [tilingCheck]);
 
   const updateDrainageClass = (index = '') => {
@@ -72,7 +72,7 @@ const RenderDrainageClasses = ({ tilingCheck, setTilingCheck, drainage = [] }) =
     } else {
       dispatchRedux(updateDrainageClassRedux([]));
     }
-    setUpdateTilingCheck(false);
+    setUpdatedTilingCheck(false);
     setTilingCheck(false);
   };
 
