@@ -243,7 +243,7 @@ const Header = () => {
             >
               <Button type="button" onClick={handleClick}>
                 <img
-                  id="logoImage" 
+                  id="logoImage"
                   style={{
                     maxWidth: '100%',
                     height: 'auto',
