@@ -243,8 +243,11 @@ const Header = () => {
             >
               <Button type="button" onClick={handleClick}>
                 <img
-                  id="logoImage" // id to the img element to reference it in useEffect
-                  className="img-fluid"
+                  id="logoImage"
+                  style={{
+                    maxWidth: '100%',
+                    height: 'auto',
+                  }}
                   ref={logoRef}
                   alt=""
                 />
