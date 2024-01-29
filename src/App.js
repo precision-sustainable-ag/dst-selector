@@ -45,6 +45,7 @@ import './styles/App.scss';
 // bootstrap import
 import 'mdbreact/dist/css/mdb.css';
 import SiteConditions from './pages/Location/LocationConfirmation/SiteConditions';
+import InfoSheet from './pages/PDF/InfoSheet';
 
 const store = configureStore();
 
@@ -139,8 +140,9 @@ const App = () => (
                       exact
                     />
                     <Route path="/mix-maker" component={MixMaker} exact />
-
+                    <Route path="/pdf/info-sheet" exact component={InfoSheet} />
                     <Route component={RouteNotFound} />
+
                   </Switch>
                 </Box>
               </Container>
