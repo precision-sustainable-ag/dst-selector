@@ -72,6 +72,8 @@ const RenderDrainageClasses = ({
     drainages = [index];
     setNewDrainage(drainageArray[drainages[0]]);
     updateDrainageAction(drainages);
+    setUpdateTilingCheck(false);
+    setTilingCheck(false);
   };
 
   return (
