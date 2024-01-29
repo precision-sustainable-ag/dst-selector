@@ -32,6 +32,7 @@ const SoilDrainage = () => {
   const [showTiling, setShowTiling] = useState(false);
   const [handleConfirm, setHandleConfirm] = useState(false);
   const [tilingCheck, setTilingCheck] = useState(false);
+  const [newDrainage, setNewDrainage] = useState(soilDataOriginalRedux);
 
   useEffect(() => {
     if (myCoverCropListLocationRedux !== 'selector' && selectedCropIdsRedux.length > 0) {
@@ -193,7 +194,8 @@ const SoilDrainage = () => {
             <RenderDrainageClasses
               tilingCheck={tilingCheck}
               setTilingCheck={setTilingCheck}
-              drainage={soilDataRedux?.drainageClass}
+              setNewDrainage={setNewDrainage}
+              drainage={newDrainage}
             />
           </Grid>
           <MyCoverCropReset handleConfirm={handleConfirm} setHandleConfirm={setHandleConfirm} />
