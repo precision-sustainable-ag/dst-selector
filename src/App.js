@@ -114,42 +114,45 @@ const App = () => (
     <ThemeProvider theme={csTheme}>
       <Provider store={store}>
         <BrowserRouter>
-          <Auth0ProviderWithHistory>
-            <Suspense fallback={<div>Loading..</div>}>
-              <Header />
-              <Container disableGutters maxWidth={false}>
-                <Box mr={1} ml={1} mt={1} mb={1}>
-                  <Switch>
-                    <Route path="/" render={() => <LoadRelevantRoute />} exact />
-                    <Route path="/explorer" component={CoverCropExplorer} exact />
-                    <Route path="/about" component={About} exact />
-                    <Route path="/help" component={Help} exact />
-                    <Route path="/feedback" component={FeedbackComponent} exact />
-                    <Route path="/profile" component={Profile} exact />
-                    <Route path="/my-cover-crop-list" component={MyCoverCropListWrapper} exact />
-                    <Route
-                      path="/seeding-rate-calculator"
-                      component={SeedingRateCalculator}
-                      exact
-                    />
-                    <Route path="/data-dictionary" component={InformationSheetDictionary} exact />
-                    <Route path="/license" render={() => <License licenseType="MIT" />} exact />
-                    <Route
-                      path="/ag-informatics-license"
-                      render={() => <License licenseType="AgInformatics" />}
-                      exact
-                    />
-                    <Route path="/mix-maker" component={MixMaker} exact />
-                    <Route path="/pdf/info-sheet" exact component={InfoSheet} />
-                    <Route component={RouteNotFound} />
-
-                  </Switch>
-                </Box>
-              </Container>
-              <SnackbarComponent />
-              <Footer />
-            </Suspense>
-          </Auth0ProviderWithHistory>
+          <Switch>
+            <Route path="/pdf/info-sheet" exact component={InfoSheet} />
+            <Route>
+              <Auth0ProviderWithHistory>
+                <Suspense fallback={<div>Loading..</div>}>
+                  <Header />
+                  <Container disableGutters maxWidth={false}>
+                    <Box mr={1} ml={1} mt={1} mb={1}>
+                      <Switch>
+                        <Route path="/" render={() => <LoadRelevantRoute />} exact />
+                        <Route path="/explorer" component={CoverCropExplorer} exact />
+                        <Route path="/about" component={About} exact />
+                        <Route path="/help" component={Help} exact />
+                        <Route path="/feedback" component={FeedbackComponent} exact />
+                        <Route path="/profile" component={Profile} exact />
+                        <Route path="/my-cover-crop-list" component={MyCoverCropListWrapper} exact />
+                        <Route
+                          path="/seeding-rate-calculator"
+                          component={SeedingRateCalculator}
+                          exact
+                        />
+                        <Route path="/data-dictionary" component={InformationSheetDictionary} exact />
+                        <Route path="/license" render={() => <License licenseType="MIT" />} exact />
+                        <Route
+                          path="/ag-informatics-license"
+                          render={() => <License licenseType="AgInformatics" />}
+                          exact
+                        />
+                        <Route path="/mix-maker" component={MixMaker} exact />
+                        <Route component={RouteNotFound} />
+                      </Switch>
+                    </Box>
+                  </Container>
+                  <SnackbarComponent />
+                  <Footer />
+                </Suspense>
+              </Auth0ProviderWithHistory>
+            </Route>
+          </Switch>
         </BrowserRouter>
       </Provider>
     </ThemeProvider>
