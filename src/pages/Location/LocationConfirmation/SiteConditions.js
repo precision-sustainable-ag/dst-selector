@@ -22,8 +22,7 @@ const SiteConditions = () => {
           </Typography> */}
           <Typography variant="h4">Site Conditions</Typography>
           <Typography variant="body1">
-            This information is based on your location. Drainage Class and Flooding Frequency are
-            used to recommended cover crops. Update only as needed.
+            This information is based on your location. Crops that do not meet these site conditions will be grayed out. Update only as needed.
           </Typography>
         </Grid>
         <Grid item container spacing={3}>

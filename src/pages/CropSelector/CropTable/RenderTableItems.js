@@ -13,9 +13,8 @@ import '../../../styles/cropCalendarViewComponent.scss';
 import '../../../styles/cropTable.scss';
 import CropTableCard from './CropTableCard';
 
-const RenderTableItems = ({
-  showGrowthWindow, handleModalOpen,
-}) => {
+const RenderTableItems = ({ showGrowthWindow, handleModalOpen }) => {
+  // redux vars
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
 
