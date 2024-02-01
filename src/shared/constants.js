@@ -63,7 +63,7 @@ export const ReferenceTooltip = ({
 
 export const DataTooltip = ({ data, placement = 'top-start' }) => (
   <Tooltip
-    title={<div className="text-center">{data}</div>}
+    title={<div style={{ textAlign: 'center' }}>{data}</div>}
     placement={placement}
     arrow
     enterTouchDelay={0}

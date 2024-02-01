@@ -305,17 +305,17 @@ const CropSidebar = ({
     <Grid container spacing={3}>
       <Grid item>
         <LightButton
-          onClick={() => setComparisonView(true)}
+          onClick={() => setComparisonView(false)}
           color="secondary"
-          style={{ background: comparisonView ? '#49a8ab' : '#e3f2f4' }}
+          style={{ background: !comparisonView ? '#49a8ab' : '#e3f2f4' }}
           startIcon={<ListIcon style={{ fontSize: 'larger' }} />}
         >
           LIST VIEW
         </LightButton>
         <LightButton
-          onClick={() => setComparisonView(false)}
+          onClick={() => setComparisonView(true)}
           color="secondary"
-          style={{ background: !comparisonView ? '#49a8ab' : '#e3f2f4' }}
+          style={{ background: comparisonView ? '#49a8ab' : '#e3f2f4' }}
           startIcon={<Compare style={{ fontSize: 'larger' }} />}
         >
           COMPARISON VIEW
