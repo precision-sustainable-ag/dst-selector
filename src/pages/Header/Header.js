@@ -218,7 +218,7 @@ const Header = () => {
         >
           {headerTabs.map((tab, index) => (
             <Grid item key={index}>
-              <Tooltip title={tab === 'help' && (stateLabelRedux === null) ? 'You must select a state before using the Cover Crop Explorer' : ''} enterTouchDelay={0}>
+              <Tooltip title={tab === 'help' && (stateLabelRedux === null) ? 'You must select a state before viewing the help page' : ''} enterTouchDelay={0}>
                 <span>
                   <Button
                     disabled={tab === 'help' && (stateLabelRedux === null)}
