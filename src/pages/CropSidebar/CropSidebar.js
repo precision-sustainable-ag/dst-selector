@@ -116,7 +116,6 @@ const CropSidebar = ({
     const search = filterStateRedux.filters.cropSearch?.toLowerCase().match(/\w+/g);
     const cropData = cropDataRedux?.filter((crop) => {
       let m;
-
       const match = (parm) => {
         // console.log(parm, crop);
 
@@ -127,11 +126,15 @@ const CropSidebar = ({
         } else {
           m = crop[parm]?.toLowerCase().match(/\w+/g);
         }
+        // console.log(m);
         return !search || (m !== null && search.every((s) => m?.some((t) => t.includes(s))));
       };
-
+      // console.log(match('label'));
       return match('label') || match('scientificName') || match('common');
     });
+
+    console.log(cropData);
+
     // transforms selectedFilterObject into an array
     const nonZeroKeys2 = Object.keys(selectedFilterObject).map((key) => {
       if (selectedFilterObject[key]?.length !== 0) {
@@ -141,6 +144,7 @@ const CropSidebar = ({
     });
 
     const filtered = cropData?.filter((crop, n, cd) => {
+      console.log(crop);
       let match = true;
       // iterate over all active filters
       nonZeroKeys2.forEach((keyObject) => {
@@ -160,6 +164,8 @@ const CropSidebar = ({
 
       return true;
     });
+
+    console.log(filtered.filter((crop) => !crop.inactive).map((crop) => crop.id));
     dispatchRedux(updateActiveCropIds(filtered.filter((crop) => !crop.inactive).map((crop) => crop.id)));
   }, [cropDataRedux, dispatchRedux, filterStateRedux.filters]);
 
