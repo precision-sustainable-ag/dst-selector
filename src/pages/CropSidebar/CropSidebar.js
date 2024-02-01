@@ -117,8 +117,6 @@ const CropSidebar = ({
     const cropData = cropDataRedux?.filter((crop, n, cd) => {
       let m;
       const match = (parm) => {
-        // console.log(parm, crop);
-
         if (parm === 'label') {
           m = crop[parm]?.toLowerCase().match(/\w+/g);
         } else if (parm === 'common') {
@@ -126,7 +124,6 @@ const CropSidebar = ({
         } else {
           m = crop[parm]?.toLowerCase().match(/\w+/g);
         }
-        // console.log(m);
         return !search || (m !== null && search.every((s) => m?.some((t) => t.includes(s))));
       };
       cd[n].inactive = true;
