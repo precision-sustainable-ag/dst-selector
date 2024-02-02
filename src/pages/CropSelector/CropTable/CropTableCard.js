@@ -1,19 +1,15 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { TableCell, Tooltip } from '@mui/material';
+import { TableCell, Tooltip, Box } from '@mui/material';
 import { AddCircleOutline, DeleteForever } from '@mui/icons-material';
-import {
-  addCropToBasket, getRating, LightButton,
-} from '../../../shared/constants';
+import { addCropToBasket, getRating, LightButton } from '../../../shared/constants';
 import '../../../styles/cropCalendarViewComponent.scss';
 import '../../../styles/cropTable.scss';
 import CropSelectorCalendarView from '../../../components/CropSelectorCalendarView/CropSelectorCalendarView';
 import { updateSelectedCropIds } from '../../../reduxStore/cropSlice';
 import { myCropListLocation, snackHandler } from '../../../reduxStore/sharedSlice';
 
-const CropTableCard = ({
-  crop, indexKey, showGrowthWindow,
-}) => {
+const CropTableCard = ({ crop, indexKey, showGrowthWindow }) => {
   const dispatchRedux = useDispatch();
   const selectedCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCropIds);
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
@@ -53,7 +49,15 @@ const CropTableCard = ({
       )}
 
       <TableCell size="small" style={{ maxWidth: '150px', textAlign: 'center' }}>
-        <div className="d-flex w-100 justify-content-center align-items-center flex-column">
+        <Box
+          sx={{
+            display: 'flex',
+            width: '100%',
+            justifyContent: 'center',
+            alignItems: 'center',
+            flexDirection: 'column',
+          }}
+        >
           <LightButton
             id={`cartBtn${indexKey}`}
             style={{
@@ -75,7 +79,7 @@ const CropTableCard = ({
           >
             {selectedBtns.includes(crop.id) ? <DeleteForever /> : <AddCircleOutline />}
           </LightButton>
-        </div>
+        </Box>
       </TableCell>
     </>
   );
