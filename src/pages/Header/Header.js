@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /*
   This file contains the Header component, helper functions
   The Header shows the header for all the pages
@@ -11,7 +12,7 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
 import { useAuth0 } from '@auth0/auth0-react';
 import {
-  Grid, Box, Button, Typography,
+  Grid, Box, Button, Typography, Tooltip,
 } from '@mui/material';
 import InformationBar from './InformationBar/InformationBar';
 import ToggleOptions from './ToggleOptions/ToggleOptions';
@@ -217,13 +218,19 @@ const Header = () => {
         >
           {headerTabs.map((tab, index) => (
             <Grid item key={index}>
-              <Button>
-                <NavLink to={`/${tab}`}>
-                  <Typography variant="body2" sx={{ color: 'black', fontWeight: 'bold' }}>
-                    {tab}
-                  </Typography>
-                </NavLink>
-              </Button>
+              <Tooltip title={tab === 'help' && (stateLabelRedux === null) ? 'You must select a state before viewing the help page' : ''} enterTouchDelay={0}>
+                <span>
+                  <Button
+                    disabled={tab === 'help' && (stateLabelRedux === null)}
+                  >
+                    <NavLink to={`/${tab}`}>
+                      <Typography variant="body2" sx={{ color: (tab === 'help' && stateLabelRedux === null) ? 'lightgrey' : 'black', fontWeight: 'bold' }}>
+                        {tab}
+                      </Typography>
+                    </NavLink>
+                  </Button>
+                </span>
+              </Tooltip>
             </Grid>
           ))}
           <Grid item>
