@@ -23,12 +23,11 @@ const RenderFloodingOptions = ({ flooding = [''] }) => {
 
   // redux vars
   const soilDataRedux = useSelector((stateRedux) => stateRedux.soilData.soilData);
-  console.log('region Id', regionIdRedux, 'state ID', stateIdRedux);
   const query1 = `${encodeURIComponent('regions')}=${encodeURIComponent(regionIdRedux)}`;
   const query2 = `${encodeURIComponent('regions')}=${encodeURIComponent(stateIdRedux)}`;
 
   useEffect(() => {
-    fetch(`https://${apiBaseUrlRedux}.covercrop-selector.org/v2/attribute?label=flooding frequency&${query2}&${query1}`)
+    fetch(`https://${apiBaseUrlRedux}.covercrop-selector.org/v2/attribute?filtered=false&slug=flooding_frequency&${query2}&${query1}`)
       .then((res) => res.json())
       .then((data) => {
         setFloodingOptions(data.data.values);
@@ -39,9 +38,7 @@ const RenderFloodingOptions = ({ flooding = [''] }) => {
       });
   }, []);
 
-  console.log('floodingOptions', floodingOptions);
   const updateFloodingFrequency = (label = '') => {
-    console.log('HERE IN UPDATE');
     let floodings = soilDataRedux?.floodingFrequency ? [...soilDataRedux.floodingFrequency] : [];
     if (floodings.indexOf('None') !== -1) {
       // does exist, remove none because something else was selected

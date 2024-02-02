@@ -118,8 +118,6 @@ const CropSidebar = ({
       let m;
 
       const match = (parm) => {
-        // console.log(parm, crop);
-
         if (parm === 'label') {
           m = crop[parm]?.toLowerCase().match(/\w+/g);
         } else if (parm === 'common') {
@@ -219,7 +217,6 @@ const CropSidebar = ({
   useEffect(() => {
     if (stateIdRedux && regionIdRedux) {
       dispatchRedux(setAjaxInProgress(true));
-      console.log('query2', query);
       setLoading(true);
       callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/filters?${query}`).then((data) => {
         const allFilters = [];
