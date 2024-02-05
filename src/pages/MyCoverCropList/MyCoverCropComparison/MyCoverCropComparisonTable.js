@@ -69,14 +69,14 @@ const MyCoverCropComparisonTable = () => {
       // same thing here but it also specifies it should be a pillbox
       goalRow[`crop${index}`] = { values: [], dataType: 'pillbox' };
       // push crop group
-      groupRow[`crop${index}`].values.push(crop.group);
+      groupRow[`crop${index}`].values.push(crop.attributes.filter((a) => a.label === 'Cover Crop Group')[0]?.values[0]);
 
       // if selected goals > 1 calculate average goal rating
       if (selectedGoalsRedux.length > 0) {
         let goalRating = 0;
         selectedGoalsRedux.forEach((goal) => {
-          if (crop.data.Goals[goal]) {
-            goalRating = +crop.data.Goals[goal].values[0] + goalRating;
+          if (crop.goals.filter((a) => a.label === goal)[0]?.length > 0) {
+            goalRating = +crop.goals.filter((a) => a.label === goal)[0].values[0] + goalRating;
           }
         });
 
@@ -95,17 +95,13 @@ const MyCoverCropComparisonTable = () => {
 
     await comparisonKeysRedux.forEach((key) => {
       const newRow = { comparisonKey: key };
-
       selectedCrops.forEach((crop, index) => {
-        // iterate ove all crop.data keys
-        Object.keys(crop.data).forEach((dataKey) => {
-          // iterate over all crop.data.dataKey keys
-          Object.keys(crop?.data?.[dataKey]).forEach((nestedKey) => {
-            if (crop.data[dataKey][nestedKey]?.label === key) {
-              newRow[`crop${index}`] = crop.data[dataKey][nestedKey];
-            }
-          });
+        crop?.attributes?.forEach((attribute) => {
+          if (attribute.label === key) {
+            newRow[`crop${index}`] = attribute;
+          }
         });
+        // });
       });
 
       tempRows.push(newRow);
