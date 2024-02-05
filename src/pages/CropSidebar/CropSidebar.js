@@ -114,20 +114,20 @@ const CropSidebar = ({
 
     // handles crop search
     const search = filterStateRedux.filters.cropSearch?.toLowerCase().match(/\w+/g);
-    const cropData = cropDataRedux?.filter((crop) => {
+    const cropData = cropDataRedux?.filter((crop, n, cd) => {
       let m;
-
       const match = (parm) => {
         if (parm === 'label') {
           m = crop[parm]?.toLowerCase().match(/\w+/g);
+        } else if (parm === 'common') {
+          m = crop.attributes.filter((c) => c.label === 'Cover Crop Group')[0].values[0]?.toLowerCase().match(/\w+/g);
         } else {
-          m = crop.family[parm]?.toLowerCase().match(/\w+/g);
+          m = crop[parm]?.toLowerCase().match(/\w+/g);
         }
-
         return !search || (m !== null && search.every((s) => m?.some((t) => t.includes(s))));
       };
-
-      return match('label') || match('scientific') || match('common');
+      cd[n].inactive = true;
+      return match('label') || match('scientificName') || match('common');
     });
 
     // transforms selectedFilterObject into an array
@@ -146,24 +146,15 @@ const CropSidebar = ({
         const key = Object.keys(keyObject)[0];
         // get filter values ex. [1,2,3]
         const vals = keyObject[key];
-
-        // iterate over all crop.data categories
-        Object.keys(crop.data).forEach((category) => {
-          // check if crop.data[category] includes key
-          if (Object.keys(crop.data[category]).includes(key)) {
-            // make sure crop.data[category][key].values[0] exists
-            if (crop.data[category][key].values[0] !== undefined) {
-              // if there is not an intersection, match = false
-              if (!crop.data[category][key].values.some((item) => vals.includes(item))) {
-                match = false;
-              }
-            }
+        if (crop.attributes.filter((att) => att.label === key)?.length > 0) {
+          // if there is not an intersection, match = false
+          if (!crop.attributes.filter((att) => att.label === key)[0]?.values.some((item) => vals.includes(item))) {
+            match = false;
           }
-        });
+        }
       });
-
       cd[n].inactive = (!match)
-      || (drainageClassRedux && !crop?.data['Soil Conditions']['Soil Drainage']?.values?.includes(drainageClassRedux));
+      || (drainageClassRedux && !crop.soilDrainage?.includes(drainageClassRedux));
 
       return true;
     });
@@ -237,8 +228,7 @@ const CropSidebar = ({
         setSidebarFiltersData(allFilters);
         setSidebarCategoriesData(data.data);
       });
-
-      callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/crops?${query}`).then((data) => {
+      callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/crops?minimal=true&${query}`).then((data) => {
         cropDataFormatter(data.data);
         dispatchRedux(updateCropData(data.data));
         dispatchRedux(setAjaxInProgress(false));
@@ -314,17 +304,17 @@ const CropSidebar = ({
     <Grid container spacing={3}>
       <Grid item>
         <LightButton
-          onClick={() => setComparisonView(true)}
+          onClick={() => setComparisonView(false)}
           color="secondary"
-          style={{ background: comparisonView ? '#49a8ab' : '#e3f2f4' }}
+          style={{ background: !comparisonView ? '#49a8ab' : '#e3f2f4' }}
           startIcon={<ListIcon style={{ fontSize: 'larger' }} />}
         >
           LIST VIEW
         </LightButton>
         <LightButton
-          onClick={() => setComparisonView(false)}
+          onClick={() => setComparisonView(true)}
           color="secondary"
-          style={{ background: !comparisonView ? '#49a8ab' : '#e3f2f4' }}
+          style={{ background: comparisonView ? '#49a8ab' : '#e3f2f4' }}
           startIcon={<Compare style={{ fontSize: 'larger' }} />}
         >
           COMPARISON VIEW
@@ -343,20 +333,20 @@ const CropSidebar = ({
         {from === 'table' && (
           <>
             <LightButton
-              onClick={() => setListView(true)}
+              onClick={() => setListView(false)}
               color="secondary"
-              style={{ background: listView ? '#49a8ab' : '#e3f2f4' }}
+              style={{ background: !listView ? '#49a8ab' : '#e3f2f4' }}
               startIcon={<ListIcon style={{ fontSize: 'larger' }} />}
             >
               LIST VIEW
             </LightButton>
             <LightButton
-              onClick={() => setListView(false)}
+              onClick={() => setListView(true)}
               color="secondary"
-              style={{ background: !listView ? '#49a8ab' : '#e3f2f4' }}
+              style={{ background: listView ? '#49a8ab' : '#e3f2f4' }}
               startIcon={<CalendarToday style={{ fontSize: 'larger' }} />}
             >
-              COMPARISON VIEW
+              CALENDAR VIEW
             </LightButton>
           </>
         )}
