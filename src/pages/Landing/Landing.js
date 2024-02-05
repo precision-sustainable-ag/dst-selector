@@ -164,6 +164,21 @@ const Landing = () => {
     return () => window.removeEventListener('resize', updateSize);
   }, []);
 
+  const backgroundSyles = {
+    frostedGlassEffect: {
+      backdropFilter: 'blur(5px)', 
+      backgroundColor: 'rgba(255, 255, 255, 0.4)', 
+      border: '1px solid rgba(255, 255, 255, 0.2)', 
+      borderRadius: '10px', 
+      position: 'relative',
+      width: '80%',
+      maxWidth: '500px',
+      left: '50%',
+      transform: 'translateX(-50%)',
+      boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', 
+    },
+  };
+
   return (
     <Box
       style={{
@@ -179,16 +194,7 @@ const Landing = () => {
       margin={-1}
     >
       <Grid
-        style={{
-          backgroundColor: 'rgba(240,247,235,.5)',
-          borderRadius: '10px',
-          border: '1px solid #598445',
-          position: 'relative',
-          width: '80%',
-          maxWidth: '500px',
-          left: '50%',
-          transform: 'translateX(-50%)',
-        }}
+        style={backgroundSyles.frostedGlassEffect}
         mt={1}
       >
         <Box mr={1} ml={1} mb={1} mt={1}>
