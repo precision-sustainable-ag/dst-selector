@@ -928,6 +928,7 @@ export const cropDataFormatter = (cropData = [{}]) => {
     }));
 
     // iterate over each crop and create crop['Half Month Data']
+    console.log(crop);
     params.forEach((param) => {
       if (crop.data['Planting and Growth Windows']?.[`${param}`]) {
         crop.data['Planting and Growth Windows']?.[`${param}`].values.forEach((dateArray) => {
@@ -967,7 +968,7 @@ export const cropDataFormatter = (cropData = [{}]) => {
     });
     return crop;
   };
-
+  console.log(cropData);
   return cropData.map((crop) => monthStringBuilder(crop));
 };
 
