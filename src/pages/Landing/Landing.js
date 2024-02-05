@@ -166,16 +166,16 @@ const Landing = () => {
 
   const backgroundSyles = {
     frostedGlassEffect: {
-      backdropFilter: 'blur(5px)', 
-      backgroundColor: 'rgba(255, 255, 255, 0.4)', 
-      border: '1px solid rgba(255, 255, 255, 0.2)', 
-      borderRadius: '10px', 
+      backdropFilter: 'blur(5px)',
+      backgroundColor: 'rgba(255, 255, 255, 0.4)',
+      border: '1px solid rgba(255, 255, 255, 0.2)',
+      borderRadius: '10px',
       position: 'relative',
       width: '80%',
       maxWidth: '500px',
       left: '50%',
       transform: 'translateX(-50%)',
-      boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', 
+      boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
     },
   };
 
@@ -195,10 +195,10 @@ const Landing = () => {
             backgroundColor: 'rgba(176, 236, 130, 0.3)',
             color: 'black',
           },
-        }
-      }
-    }
-  }
+        },
+      },
+    },
+  };
 
   return (
     <Box
@@ -251,7 +251,8 @@ const Landing = () => {
                     },
                   }}
                 >
-                 STATE</InputLabel>
+                  STATE
+                </InputLabel>
                 <Select
                   labelId="state-dropdown-label"
                   label="STATE"
@@ -260,17 +261,17 @@ const Landing = () => {
                   sx={{
                     minWidth: 100,
                     '& .MuiOutlinedInput-notchedOutline': {
-                      borderColor: '#598445', 
-                      borderWidth: '1px', 
-                      borderRadius: '4px', 
+                      borderColor: '#598445',
+                      borderWidth: '1px',
+                      borderRadius: '4px',
                     },
                     '&:hover .MuiOutlinedInput-notchedOutline': {
-                      borderColor: '#598445', 
-                      borderWidth: '2px'
+                      borderColor: '#598445',
+                      borderWidth: '2px',
                     },
                     '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                      borderColor: '#598445', 
-                      borderWidth: '2.5px', 
+                      borderColor: '#598445',
+                      borderWidth: '2.5px',
                     },
                   }}
                   MenuProps={menuProps}

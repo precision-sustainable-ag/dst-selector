@@ -35,10 +35,10 @@ const PlantHardinessZone = ({
             backgroundColor: 'rgba(176, 236, 130, 0.3)',
             color: 'black',
           },
-        }
-      }
-    }
-  }
+        },
+      },
+    },
+  };
 
   const plantHardinessZone = () => (
     <Select
@@ -53,17 +53,17 @@ const PlantHardinessZone = ({
       sx={{
         minWidth: 200,
         '& .MuiOutlinedInput-notchedOutline': {
-          borderColor: '#598445', 
-          borderWidth: '1px', 
-          borderRadius: '4px', 
+          borderColor: '#598445',
+          borderWidth: '1px',
+          borderRadius: '4px',
         },
         '&:hover .MuiOutlinedInput-notchedOutline': {
-          borderColor: '#598445', 
-          borderWidth: '2px'
+          borderColor: '#598445',
+          borderWidth: '2px',
         },
         '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-          borderColor: '#598445', 
-          borderWidth: '2.5px', 
+          borderColor: '#598445',
+          borderWidth: '2.5px',
         },
       }}
       MenuProps={menuProps}
@@ -95,9 +95,7 @@ const PlantHardinessZone = ({
     <Collapse in={regionToggleRedux}>
       <List component="div">
         <ListItem component="div">
-          <FormControl
-            // variant="filled"
-          >
+          <FormControl>
             <InputLabel
               id="plant-hardiness-zone-dropdown-label"
               sx={{
