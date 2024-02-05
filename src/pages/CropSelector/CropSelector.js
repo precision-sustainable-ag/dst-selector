@@ -61,7 +61,7 @@ const CropSelector = (props) => {
 
   // useState vars
   const [showGrowthWindow, setShowGrowthWindow] = useState(true);
-  const [isListView, setIsListView] = useState(true);
+  const [listView, setListView] = useState(true);
   const [comparisonView, setComparisonView] = useState(false);
   const [cropData, setCropData] = useState([]);
 
@@ -152,12 +152,12 @@ const CropSelector = (props) => {
         {showSidebar && (
           <CropSidebar
             setGrowthWindow={setShowGrowthWindow}
-            isListView={isListView}
+            listView={listView}
             cropData={cropData}
             activeCropData={cropDataRedux.filter((crop) => activeCropIdsRedux.includes(crop.id))}
             comparisonView={comparisonView}
-            toggleComparisonView={() => { setComparisonView(!comparisonView); }}
-            toggleListView={() => { setIsListView(!isListView); }}
+            setComparisonView={setComparisonView}
+            setListView={setListView}
             from="table"
           />
         )}
@@ -166,7 +166,7 @@ const CropSelector = (props) => {
       <Grid item xl={showSidebar ? 9 : 12} lg={showSidebar ? 9 : 12} md={showSidebar ? 9 : 12} sm={12} xs={12}>
         {/* we need a spinner or loading icon for when the length isnt yet determined */}
         {speciesSelectorActivationFlagRedux ? (
-          isListView ? (
+          listView ? (
             <CropCalendarView />
           ) : (
             <CropTable

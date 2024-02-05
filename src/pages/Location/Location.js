@@ -31,7 +31,7 @@ import { snackHandler } from '../../reduxStore/sharedSlice';
 import {
   updateAvgFrostDates, updateAvgPrecipAnnual, updateAvgPrecipCurrentMonth, updateFrostFreeDays,
 } from '../../reduxStore/weatherSlice';
-import { setSelectFieldId, updateField } from '../../reduxStore/userSlice';
+import { setSelectFieldId, updateField, userSelectRegion } from '../../reduxStore/userSlice';
 import UserFieldList from './UserFieldList/UserFieldList';
 import UserFieldDialog, { initFieldDialogState } from './UserFieldDialog/UserFieldDialog';
 
@@ -52,6 +52,7 @@ const Location = () => {
   const accessTokenRedux = useSelector((stateRedux) => stateRedux.userData.accessToken);
   const userFieldRedux = useSelector((stateRedux) => stateRedux.userData.field);
   const selectedFieldIdRedux = useSelector((stateRedux) => stateRedux.userData.selectedFieldId);
+  const userSelectRegionRedux = useSelector((stateRedux) => stateRedux.userData.userSelectRegion);
 
   // useState vars
   const [regionShorthand, setRegionShorthand] = useState(regionShorthandRedux);
@@ -97,6 +98,16 @@ const Location = () => {
       regionId: regionsRedux.filter((region) => region.shorthand === regionShorthand)[0]?.id,
       regionShorthand,
     }));
+
+    // if userSelectRegionRedux = true, remove weather redux value
+    if (userSelectRegionRedux) {
+      dispatchRedux(updateFrostFreeDays(0));
+      dispatchRedux(updateAvgFrostDates(
+        { firstFrostDate: { month: '', day: '' }, lastFrostDate: { month: '', day: '' } },
+      ));
+      dispatchRedux(updateAvgPrecipCurrentMonth(0));
+      dispatchRedux(updateAvgPrecipAnnual(0));
+    }
   }, [regionShorthand]);
 
   // set map initial lat lng
@@ -139,6 +150,12 @@ const Location = () => {
       } = selectedToEditSite;
 
       if (markersRedux && latitude === markersRedux[0][0] && longitude === markersRedux[0][1]) return;
+
+      // if user address differenct than capitol, set userSelectRegion to false
+      if (latitude !== statesLatLongDict[stateLabelRedux][0]
+         || longitude !== statesLatLongDict[stateLabelRedux][1]) {
+        dispatchRedux(userSelectRegion(false));
+      }
 
       // if is adding a new point, open dialog
       if (isAuthenticated && isAddingPoint && latitude) {
@@ -287,7 +304,8 @@ const Location = () => {
         }
       }
     };
-    if (markersRedux) {
+    // if user select another region, do not call weather api
+    if (markersRedux && !userSelectRegionRedux) {
       getDetails();
     }
   }, [markersRedux]);
