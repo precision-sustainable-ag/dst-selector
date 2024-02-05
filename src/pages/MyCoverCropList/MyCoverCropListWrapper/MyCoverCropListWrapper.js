@@ -10,16 +10,13 @@ import MyCoverCropList from '../MyCoverCropList';
 
 const MyCoverCropListWrapper = () => {
   const [comparisonView, setComparisonView] = useState(false);
-  const toggleComparisonView = () => {
-    setComparisonView(!comparisonView);
-  };
+
   return (
     <Grid container spacing={5}>
-      {/* <Grid container spacing={5}> */}
       <Grid item xl={3} lg={3} md={3} sm={12} xs={12}>
         <CropSidebar
           comparisonView={comparisonView}
-          toggleComparisonView={toggleComparisonView}
+          setComparisonView={setComparisonView}
           from="myCoverCropListStatic"
         />
       </Grid>
