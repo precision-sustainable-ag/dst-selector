@@ -38,7 +38,7 @@ div.growthCellsWrapper {
   .growthCell-30.Freeze\/Moisture.Risk.to.Establishment {
     background-color: $temperatureRiskToEstablishmentColor;
   }
-  .growthCell-30, .basic, .Fall\/Winter, .Can, .Summer, .Spring, .Average  {
+  .growthCell-30, .basic, .Fall\/Winter, .Can, .Summer, .Spring, .Average, .Hessian  {
     background-color: $defaultLegendColor;
   }
 
@@ -75,7 +75,7 @@ div.growthCellsWrapper {
   .growthCell-20.Freeze\/Moisture.Risk.to.Establishment {
     background-color: $temperatureRiskToEstablishmentColor;
   }
-  .growthCell-20, .basic, .Fall\/Winter, .Can, .Summer, .Spring, .Average, .Fly  {
+  .growthCell-20, .basic, .Fall\/Winter, .Can, .Summer, .Spring, .Average, .Hessian  {
     background-color: $defaultLegendColor;
   }
 }

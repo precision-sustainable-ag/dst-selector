@@ -870,16 +870,18 @@ export const cropDataFormatter = (cropData = [{}], cashCropStartDate = '', cashC
 
     val.plantingDates.forEach((date) => {
       date.values.forEach((dateArray) => {
-        const datesArr = dateArray.split('-');
         let valStart;
         let valEnd;
-        if (datesArr.length > 1) {
+        // hessian fly dates are an exception to this condition because it has only one date and not a range
+        if (date.label === 'Hessian Fly Free Date') {
+          valStart = moment(dateArray, 'YYYY-MM-DD').format('MM/DD');
+          valEnd = valStart;
+        }
+
+        const datesArr = dateArray.split('-');
+        if (datesArr.length > 1 && date.label !== 'Hessian Fly Free Date') {
           valStart = moment(datesArr[0], 'MM/DD/YYYY').format('MM/DD');
           valEnd = moment(datesArr[1], 'MM/DD/YYYY').format('MM/DD');
-        } else {
-          // hessian fly dates are an exception to this condition because it has only one date and not a range
-          valStart = moment(datesArr[0], 'MM/DD/YYYY').format('MM/DD');
-          valEnd = valStart;
         }
         if (
           moment(valStart, 'MM/DD').isSameOrAfter(moment(valEnd, 'MM/DD'))
@@ -895,12 +897,6 @@ export const cropDataFormatter = (cropData = [{}], cashCropStartDate = '', cashC
         }
       });
     });
-    // // FIXME: temporary for fly free date, the lines in the upper function should also work after the minified crop pr
-    // const flyFreeDate = moment('2009-09-30', 'YYYY-MM-DD').format('MM/DD');
-    // const flyFreeDateStart = flyFreeDate;
-    // const flyFreeDateEnd = flyFreeDate;
-    // yearArr = formatTimeToYearArr(flyFreeDateStart, flyFreeDateEnd, 'Fly Free Date', yearArr);
-
     // add cash crop dates dates
     if (cashCropStartDate !== '' && cashCropEndDate !== '') {
       const start = moment(cashCropStartDate).format('MM/DD');
