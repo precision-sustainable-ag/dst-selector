@@ -114,9 +114,8 @@ const CropSidebar = ({
 
     // handles crop search
     const search = filterStateRedux.filters.cropSearch?.toLowerCase().match(/\w+/g);
-    const cropData = cropDataRedux?.filter((crop) => {
+    const cropData = cropDataRedux?.filter((crop, n, cd) => {
       let m;
-
       const match = (parm) => {
         if (parm === 'label') {
           m = crop[parm]?.toLowerCase().match(/\w+/g);
@@ -127,7 +126,7 @@ const CropSidebar = ({
         }
         return !search || (m !== null && search.every((s) => m?.some((t) => t.includes(s))));
       };
-
+      cd[n].inactive = true;
       return match('label') || match('scientificName') || match('common');
     });
     // transforms selectedFilterObject into an array
@@ -153,7 +152,7 @@ const CropSidebar = ({
           }
         }
       });
-      console.log(cropData);
+      // console.log(cropData);
       cd[n].inactive = (!match)
       || (drainageClassRedux && !crop.soilDrainage?.includes(drainageClassRedux));
 
@@ -303,17 +302,17 @@ const CropSidebar = ({
     <Grid container spacing={3}>
       <Grid item>
         <LightButton
-          onClick={() => setComparisonView(true)}
+          onClick={() => setComparisonView(false)}
           color="secondary"
-          style={{ background: comparisonView ? '#49a8ab' : '#e3f2f4' }}
+          style={{ background: !comparisonView ? '#49a8ab' : '#e3f2f4' }}
           startIcon={<ListIcon style={{ fontSize: 'larger' }} />}
         >
           LIST VIEW
         </LightButton>
         <LightButton
-          onClick={() => setComparisonView(false)}
+          onClick={() => setComparisonView(true)}
           color="secondary"
-          style={{ background: !comparisonView ? '#49a8ab' : '#e3f2f4' }}
+          style={{ background: comparisonView ? '#49a8ab' : '#e3f2f4' }}
           startIcon={<Compare style={{ fontSize: 'larger' }} />}
         >
           COMPARISON VIEW
