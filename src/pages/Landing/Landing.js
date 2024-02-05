@@ -179,6 +179,27 @@ const Landing = () => {
     },
   };
 
+  const menuProps = {
+    PaperProps: {
+      style: {
+        maxHeight: 224,
+        marginTop: '5px',
+      },
+      sx: {
+        '.MuiMenuItem-root': {
+          '&.Mui-selected': {
+            backgroundColor: '#598445',
+            color: 'white',
+          },
+          '&:hover': {
+            backgroundColor: 'rgba(176, 236, 130, 0.3)',
+            color: 'black',
+          },
+        }
+      }
+    }
+  }
+
   return (
     <Box
       style={{
@@ -218,14 +239,41 @@ const Landing = () => {
             </Grid>
             <Grid item xs={12} mb={2}>
               <FormControl
-                variant="filled"
                 sx={{ minWidth: 120 }}
               >
-                <InputLabel>State</InputLabel>
+                <InputLabel
+                  id="state-dropdown-label"
+                  sx={{
+                    color: '#598445',
+                    '&.Mui-focused': {
+                      color: '#598445',
+                      fontWeight: 'medium',
+                    },
+                  }}
+                >
+                 STATE</InputLabel>
                 <Select
-                  variant="filled"
+                  labelId="state-dropdown-label"
+                  label="STATE"
                   onChange={(e) => handleStateChange(e)}
                   value={selectedState?.shorthand || ''}
+                  sx={{
+                    minWidth: 100,
+                    '& .MuiOutlinedInput-notchedOutline': {
+                      borderColor: '#598445', 
+                      borderWidth: '1px', 
+                      borderRadius: '4px', 
+                    },
+                    '&:hover .MuiOutlinedInput-notchedOutline': {
+                      borderColor: '#598445', 
+                      borderWidth: '2px'
+                    },
+                    '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                      borderColor: '#598445', 
+                      borderWidth: '2.5px', 
+                    },
+                  }}
+                  MenuProps={menuProps}
                 >
 
                   {allStates.length > 0 && allStates.map((st, i) => (
