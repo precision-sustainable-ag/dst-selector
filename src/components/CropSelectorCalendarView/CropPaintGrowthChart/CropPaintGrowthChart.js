@@ -26,7 +26,7 @@ const CropPaintGrowthChart = ({
   data = [],
   isCashCropMonth = () => {},
 }) => (
-  <Box className="growthCellsWrapper" sx={{ display: 'flex', width: from === 'calendar' ? 'auto' : '200px' }}>
+  <Box className="growthCellsWrapper" sx={{ display: 'flex', width: 'auto' }}>
     {data['Half Month Data'].map((item, index) => {
       const l = item.months.length;
       if (item.info.length > 0) {
