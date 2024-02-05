@@ -65,6 +65,7 @@ const CropSidebar = ({
   const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const drainageClassRedux = useSelector((stateRedux) => stateRedux.soilData.soilData.drainageClass[0]);
+  const floodingFrequencyRedux = useSelector((stateRedux) => stateRedux.soilData.soilData.floodingFrequency[0]);
 
   // useState vars
   const [loading, setLoading] = useState(true);
@@ -152,9 +153,10 @@ const CropSidebar = ({
           }
         }
       });
-      // console.log(cropData);
       cd[n].inactive = (!match)
-      || (drainageClassRedux && !crop.soilDrainage?.includes(drainageClassRedux));
+      || (drainageClassRedux && !crop.soilDrainage?.includes(drainageClassRedux))
+      || (floodingFrequencyRedux && councilShorthandRedux === 'MCCC'
+        ? crop.attributes.filter((a) => a.label === 'Flood Tolerance')[0]?.values[0] < floodingFrequencyRedux : console.log('Not yet ready'));
 
       return true;
     });
