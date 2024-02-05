@@ -153,7 +153,7 @@ const CropSidebar = ({
           }
         }
       });
-      console.log(crop);
+      console.log(cropData);
       cd[n].inactive = (!match)
       || (drainageClassRedux && !crop.soilDrainage?.includes(drainageClassRedux));
 
