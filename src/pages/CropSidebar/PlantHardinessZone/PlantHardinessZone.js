@@ -19,16 +19,54 @@ const PlantHardinessZone = ({
   const markersRedux = useSelector((stateRedux) => stateRedux.addressData.markers);
   const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
 
+  const menuProps = {
+    PaperProps: {
+      style: {
+        maxHeight: 224,
+        marginTop: '5px',
+      },
+      sx: {
+        '.MuiMenuItem-root': {
+          '&.Mui-selected': {
+            backgroundColor: '#598445',
+            color: 'white',
+          },
+          '&:hover': {
+            backgroundColor: 'rgba(176, 236, 130, 0.3)',
+            color: 'black',
+          },
+        }
+      }
+    }
+  }
+
   const plantHardinessZone = () => (
     <Select
-      variant="filled"
-      labelId="plant-hardiness-zone-dropdown-select"
+      // variant="filled"
+      labelId="plant-hardiness-zone-dropdown-label"
+      label={councilLabelRedux === 'Midwest Cover Crops Council' ? 'COUNTY' : 'ZONE'}
       id="plant-hardiness-zone-dropdown-select"
       style={{
         width: '100%',
         textAlign: 'left',
       }}
-      sx={{ minWidth: 200 }}
+      sx={{
+        minWidth: 200,
+        '& .MuiOutlinedInput-notchedOutline': {
+          borderColor: '#598445', 
+          borderWidth: '1px', 
+          borderRadius: '4px', 
+        },
+        '&:hover .MuiOutlinedInput-notchedOutline': {
+          borderColor: '#598445', 
+          borderWidth: '2px'
+        },
+        '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+          borderColor: '#598445', 
+          borderWidth: '2.5px', 
+        },
+      }}
+      MenuProps={menuProps}
       onChange={(e) => {
         setRegionShorthand(e.target.value);
         if (markersRedux
@@ -58,9 +96,20 @@ const PlantHardinessZone = ({
       <List component="div">
         <ListItem component="div">
           <FormControl
-            variant="filled"
+            // variant="filled"
           >
-            <InputLabel>{councilLabelRedux === 'Midwest Cover Crops Council' ? 'COUNTY' : 'ZONE'}</InputLabel>
+            <InputLabel
+              id="plant-hardiness-zone-dropdown-label"
+              sx={{
+                color: '#598445',
+                '&.Mui-focused': {
+                  color: '#598445',
+                  fontWeight: 'medium',
+                },
+              }}
+            >
+              {councilLabelRedux === 'Midwest Cover Crops Council' ? 'COUNTY' : 'ZONE'}
+            </InputLabel>
             {plantHardinessZone()}
             {!regionShorthand
             && (
