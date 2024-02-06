@@ -163,7 +163,8 @@ const CropSidebar = ({
       });
 
       cd[n].inactive = (!match)
-      || (drainageClassRedux && !crop?.data['Soil Conditions']['Soil Drainage']?.values?.includes(drainageClassRedux));
+      || (drainageClassRedux && !crop?.data['Soil Conditions']['Soil Drainage']?.values
+        ?.map((d) => d.toLowerCase())?.includes(drainageClassRedux.toLowerCase()));
 
       return true;
     });
