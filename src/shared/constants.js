@@ -63,7 +63,7 @@ export const ReferenceTooltip = ({
 
 export const DataTooltip = ({ data, placement = 'top-start' }) => (
   <Tooltip
-    title={<div className="text-center">{data}</div>}
+    title={<div style={{ textAlign: 'center' }}>{data}</div>}
     placement={placement}
     arrow
     enterTouchDelay={0}
@@ -245,7 +245,6 @@ export const LightButton = styled(Button)({
 
 export const getRating = (ratng) => {
   const rating = parseInt(ratng, 10);
-
   switch (rating) {
     case 0:
       return (
@@ -576,35 +575,33 @@ export const sortCrops = (
         .slice()
         .reverse()
         .forEach((g) => {
-          if (b.data.Goals[g]) {
-            bAvg = +b.data.Goals[g].values[0] + bAvg;
+          if (b.goals.filter((data) => data.label === g)[0]?.values.length > 0) {
+            bAvg = +b.goals.filter((data) => data.label === g)[0].values[0] + bAvg;
           }
-          if (a.data.Goals[g]) {
-            aAvg = +a.data.Goals[g].values[0] + aAvg;
+          if (a.goals.filter((data) => data.label === g)[0]?.values.length > 0) {
+            aAvg = +a.goals.filter((data) => data.label === g)[0].values[0] + aAvg;
           }
         });
       aAvg /= selectedItems.length;
       bAvg /= selectedItems.length;
       if (aAvg > bAvg) {
-        return sortFlag ? -1 : 1;
+        return -1;
       }
       if (aAvg === bAvg) {
         return 0;
       }
-      return sortFlag ? 1 : -1;
+      return 1;
     });
   }
   if (type === 'Goal') {
     crops.sort((a, b) => {
-      if (a.data.Goals[goal] && b.data.Goals[goal]) {
-        if (
-          parseInt(a.data.Goals[goal].values[0], 10) > parseInt(b.data.Goals[goal].values[0], 10)
-        ) {
+      if (a.goals.filter((data) => data.label === goal)[0]?.values.length > 0 && b.goals.filter((data) => data.label === goal)[0]?.values.length > 0) {
+        if (a.goals.filter((data) => data.label === goal)[0].values[0] > b.goals.filter((data) => data.label === goal)[0].values[0]) {
           return sortFlag ? -1 : 1;
         }
         return sortFlag ? 1 : -1;
       }
-      if (a.data.Goals[goal]) {
+      if (a.goals.filter((data) => data.label === goal).length > 0) {
         return sortFlag ? -1 : 1;
       }
       return sortFlag ? 1 : -1;
@@ -626,13 +623,13 @@ export const sortCrops = (
       crops.sort((a, b) => {
         let firstDate;
         let secondDate;
-        const firstLength = a.data?.['Planting and Growth Windows']?.['Reliable Establishment']?.values.length;
-        const secondLength = b.data?.['Planting and Growth Windows']?.['Reliable Establishment']?.values.length;
+        const firstLength = a.plantingDates.filter((date) => date.label === 'Reliable Establishment')[0]?.values.length;
+        const secondLength = b.plantingDates.filter((date) => date.label === 'Reliable Establishment')[0]?.values.length;
         if (firstLength && secondLength) {
           // sorting by last reliable establishment date for descending and first for ascending
           if (!sortFlag) {
             firstDate = new Date(
-              a.data?.['Planting and Growth Windows']?.['Reliable Establishment']?.values[
+              a.plantingDates.filter((date) => date.label === 'Reliable Establishment')[0]?.values?.[
                 firstLength - 1
               ].split(' - ')[1],
             )
@@ -641,7 +638,7 @@ export const sortCrops = (
               .reverse()
               .join('');
             secondDate = new Date(
-              b.data?.['Planting and Growth Windows']?.['Reliable Establishment']?.values[
+              b.plantingDates.filter((date) => date.label === 'Reliable Establishment')[0]?.values?.[
                 secondLength - 1
               ].split(' - ')[1],
             )
@@ -651,7 +648,7 @@ export const sortCrops = (
               .join('');
           } else {
             firstDate = new Date(
-              a.data?.['Planting and Growth Windows']?.['Reliable Establishment']?.values[
+              a.plantingDates.filter((date) => date.label === 'Reliable Establishment')[0]?.values?.[
                 firstLength - 1
               ].split(' - ')[0],
             )
@@ -660,7 +657,7 @@ export const sortCrops = (
               .reverse()
               .join('');
             secondDate = new Date(
-              b.data?.['Planting and Growth Windows']?.['Reliable Establishment']?.values[
+              b.plantingDates.filter((date) => date.label === 'Reliable Establishment')[0]?.values?.[
                 secondLength - 1
               ].split(' - ')[0],
             )
@@ -833,139 +830,93 @@ export const callCoverCropApi = async (url) => fetch(url)
     console.log(err.message);
   });
 
-export const cropDataFormatter = (cropData = [{}]) => {
-  const formatHalfMonthData = (halfMonthData = []) => {
+export const cropDataFormatter = (cropData = [{}], cashCropStartDate = '', cashCropEndDate = '') => {
+  const formatYearArr = (yearArr = []) => {
     const result = [];
-    let index = 0;
-    while (index < halfMonthData.length) {
-      const timePeriod = {
-        startTime: '',
-        endTime: '',
-        months: [],
-        info: [],
-      };
-      if (timePeriod.months.length === 0) {
-        if (halfMonthData[index].start !== '') {
-          timePeriod.startTime = halfMonthData[index].start;
-          timePeriod.endTime = halfMonthData[index].end;
-          timePeriod.info = [...halfMonthData[index].info];
-        }
-        timePeriod.months.push(halfMonthData[index].month);
-        index += 1;
+    let i = 0; let
+      j = 0;
+    while (i < yearArr.length) {
+      while (j < yearArr.length && arrayEquals(yearArr[i].info, yearArr[j].info)) {
+        j += 1;
       }
-      while (
-        index > 0
-        && index < halfMonthData.length
-        && arrayEquals(halfMonthData[index].info, halfMonthData[index - 1].info)
-      ) {
-        timePeriod.months.push(halfMonthData[index].month);
-        index += 1;
-      }
-      if (timePeriod.months.length > 0) result.push(timePeriod);
-      else index += 1;
+      result.push({
+        startTime: moment().dayOfYear(i + 1).format('MM/DD'),
+        endTime: moment().dayOfYear(j).format('MM/DD'),
+        info: yearArr[i].info,
+        length: j - i,
+      });
+      i = j;
     }
     return result;
   };
 
-  const formatTimeToHalfMonthData = (
-    startTime = '',
-    endTime = '',
-    param = '',
-    halfMonthData = [],
-  ) => {
-    const startIndex = moment(startTime, 'MM/DD').month() * 2 + (moment(startTime, 'MM/DD').date() >= 15 ? 1 : 0);
-    const endIndex = moment(endTime, 'MM/DD').month() * 2 + (moment(endTime, 'MM/DD').date() >= 15 ? 1 : 0);
-    halfMonthData = halfMonthData.map((data, index) => {
+  const formatTimeToYearArr = (startTime, endTime, param, yearArr = []) => {
+    const startIndex = moment(startTime, 'MM/DD').dayOfYear() - 1;
+    const endIndex = moment(endTime, 'MM/DD').dayOfYear() - 1;
+    yearArr = yearArr.map((day, index) => {
       if (index >= startIndex && index <= endIndex) {
-        const info = [...data.info, param];
-        let start = '';
-        let end = '';
-        if (data.start === '') start = startTime;
-        else {
-          start = moment(data.start, 'MM/DD').isSameOrBefore(moment(startTime, 'MM/DD'))
-            ? startTime
-            : data.start;
-        }
-        if (data.end === '') end = endTime;
-        else {
-          end = moment(data.end, 'MM/DD').isSameOrBefore(moment(endTime, 'MM/DD'))
-            ? data.end
-            : endTime;
-        }
-        return {
-          ...data,
-          start,
-          end,
-          info,
-        };
+        return { info: [...day.info, param] };
       }
-      return data;
+      return day;
     });
-    return halfMonthData;
+    return yearArr;
   };
 
-  const monthStringBuilder = (crop) => {
-    const params = [
-      'Reliable Establishment',
-      'Freeze/Moisture Risk to Establishment',
-      'Frost Seeding',
-      'Fall/Winter Seeding Rate',
-      'Spring Seeding Rate',
-      'Summer Seeding Rate',
-      'Can Interseed',
-      'Average Frost',
-      'Hessian Fly Free Date',
-    ];
-
-    // create a 24 item array of half months ex: [{month: '1', info: [], start: '', end: ''}, ...]
-    let halfMonthArr = Array.from({ length: 24 }, (_, i) => ({
-      month: moment()
-        .month(Math.floor(i / 2))
-        .format('M'),
+  const monthStringBuilder = (vals) => {
+    const val = vals;
+    let yearArr = Array.from({ length: 365 }, () => ({
       info: [],
-      start: '',
-      end: '',
     }));
 
-    // iterate over each crop and create crop['Half Month Data']
-    params.forEach((param) => {
-      if (crop.data['Planting and Growth Windows']?.[`${param}`]) {
-        crop.data['Planting and Growth Windows']?.[`${param}`].values.forEach((dateArray) => {
-          // get start and end date of each param for each crop
-          const datesArr = dateArray.split('-');
-          let valStart;
-          let valEnd;
-          if (datesArr.length > 1) {
-            valStart = moment(datesArr[0], 'MM/DD/YYYY').format('MM/DD');
-            valEnd = moment(datesArr[1], 'MM/DD/YYYY').format('MM/DD');
-          } else {
-            valStart = moment(datesArr[0], 'MM/DD/YYYY').format('MM/DD');
-            valEnd = valStart;
-          }
-          // hessian fly dates are an exception to this condition because it has only one date and not a range
-          if (param === 'Average Frost') {
-            const tempStart = '01/01';
-            const tempEnd = '12/31';
-            halfMonthArr = formatTimeToHalfMonthData(valStart, tempEnd, param, halfMonthArr);
-            halfMonthArr = formatTimeToHalfMonthData(tempStart, valEnd, param, halfMonthArr);
-          } else {
-            halfMonthArr = formatTimeToHalfMonthData(valStart, valEnd, param, halfMonthArr);
-          }
-        });
-      }
+    val.plantingDates.forEach((date) => {
+      date.values.forEach((dateArray) => {
+        let valStart;
+        let valEnd;
+        // hessian fly dates are an exception to this condition because it has only one date and not a range
+        if (date.label === 'Hessian Fly Free Date') {
+          valStart = moment(dateArray, 'YYYY-MM-DD').format('MM/DD');
+          valEnd = valStart;
+        }
+
+        const datesArr = dateArray.split('-');
+        if (datesArr.length > 1 && date.label !== 'Hessian Fly Free Date') {
+          valStart = moment(datesArr[0], 'MM/DD/YYYY').format('MM/DD');
+          valEnd = moment(datesArr[1], 'MM/DD/YYYY').format('MM/DD');
+        }
+        if (
+          moment(valStart, 'MM/DD').isSameOrAfter(moment(valEnd, 'MM/DD'))
+              && date.label !== 'Hessian Fly Free Date'
+        ) {
+          // Average Frost date should be divided into two years
+          const tempStart = '01/01';
+          const tempEnd = '12/31';
+          yearArr = formatTimeToYearArr(valStart, tempEnd, date.label, yearArr);
+          yearArr = formatTimeToYearArr(tempStart, valEnd, date.label, yearArr);
+        } else {
+          yearArr = formatTimeToYearArr(valStart, valEnd, date.label, yearArr);
+        }
+      });
     });
-    const halfMonthData = formatHalfMonthData(halfMonthArr);
-    crop['Half Month Data'] = halfMonthData;
+    // add cash crop dates dates
+    if (cashCropStartDate !== '' && cashCropEndDate !== '') {
+      const start = moment(cashCropStartDate).format('MM/DD');
+      const end = moment(cashCropEndDate).format('MM/DD');
+      yearArr = formatTimeToYearArr(start, end, 'Cash Crop Growing', yearArr);
+    }
+
+    const yearData = formatYearArr(yearArr);
+    vals.cropGrowthWindow = yearData;
+    // console.log(crop.label, yearData, crop.data['Planting and Growth Windows']);
 
     // this is temporary, needs to be replaced with wither a fix to calendar growth window component or exporting of json from airtable
-    Object.keys(crop).forEach((item) => {
+    Object.keys(vals).forEach((item) => {
       if (item.endsWith('Early') || item.endsWith('Mid')) {
-        const uniq = [...new Set(crop[item])];
+        const uniq = [...new Set(vals[item])];
         const removedOldVals = uniq.filter((u) => !u.endsWith('growth'));
-        crop[item] = removedOldVals;
+        vals[item] = removedOldVals;
       }
     });
-    return crop;
+    return vals;
   };
 
   return cropData.map((crop) => monthStringBuilder(crop));
@@ -1182,6 +1133,7 @@ export const extractData = (attribute, from) => {
   // extract data
   let data;
   let dataType;
+
   if (from === 'infoSheet') {
     if (attribute?.values[0]?.label) {
       return (

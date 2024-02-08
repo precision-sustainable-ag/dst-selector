@@ -17,7 +17,6 @@
     "@psa/dst.ui.region-selector-map": "^0.0.16",
     "@turf/area": "^6.5.0",
     "@turf/centroid": "^6.5.0",
-    "bootstrap": "^4.6.2",
     "dayjs": "^1.11.8",
     "mapbox-gl": "^2.10.0",
     "mdbreact": "^4.24.0",
