@@ -55,7 +55,7 @@ const GoalTag = ({
             selectedGoalsRedux.length !== 0 && selectedGoalsRedux.includes(goalTitle) ? (
               <Avatar id={`avatar${key}`}>{selectedGoalsRedux.indexOf(goalTitle) + 1}</Avatar>
             ) : (
-              <Avatar className="d-none" />
+              null
             )
           }
           label={goalTitle}

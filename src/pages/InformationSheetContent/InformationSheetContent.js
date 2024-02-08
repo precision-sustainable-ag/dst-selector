@@ -6,11 +6,15 @@
   RenderExtendedComments returns the extended notes for a crop if they exist
 */
 
-import React, {
-  useEffect, useState,
-} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
-  Accordion, AccordionDetails, AccordionSummary, Typography, Tooltip, Box, Grid,
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Typography,
+  Tooltip,
+  Box,
+  Grid,
 } from '@mui/material';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
@@ -41,94 +45,125 @@ const InformationSheetContent = ({ crop, modalData }) => {
   const query = `${encodeURIComponent('regions')}=${encodeURIComponent(regionIdRedux)}`;
 
   useEffect(() => {
-    document.title = `${crop.label} ${councilShorthandRedux === 'MCCC' ? 'County' : 'Zone'} ${regionShorthandRedux}`;
+    document.title = `${crop.label} ${
+      councilShorthandRedux === 'MCCC' ? 'County' : 'Zone'
+    } ${regionShorthandRedux}`;
     if (stateIdRedux && regionIdRedux) {
-      callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/crops/${crop?.id}/resources?${query}`)
-        .then((data) => setCurrentSources(data.data));
-      callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/crops/${crop?.id}/images?${query}`)
-        .then((data) => {
-          setAllThumbs(data.data);
-          setDataDone(true);
-        });
+      callCoverCropApi(
+        `https://${apiBaseUrlRedux}.covercrop-selector.org/v1/crops/${crop?.id}/resources?${query}`,
+      ).then((data) => setCurrentSources(data.data));
+      callCoverCropApi(
+        `https://${apiBaseUrlRedux}.covercrop-selector.org/v1/crops/${crop?.id}/images?${query}`,
+      ).then((data) => {
+        setAllThumbs(data.data);
+        setDataDone(true);
+      });
     }
   }, [crop, filterStateRedux]);
 
-  return dataDone === true && (
-    <>
-      <CoverCropInformation
-        allThumbs={allThumbs}
-        crop={crop}
-      />
-      {modalData && modalData.data.map((cat, index) => (
-        <Grid item key={index} xs={12}>
-          <Accordion defaultExpanded>
-            <AccordionSummary
-              expandIcon={<ExpandMore />}
-              sx={{
-                '&$expanded': {
-                  margin: '4px 0',
-                },
-              }}
-            >
-              <Typography variant="h4" style={{ padding: '3px' }}>
-                {cat.label}
-              </Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              {' '}
-              <Grid container>
-                {cat.attributes.map((att, catIndex) => ((!att.label.startsWith('Comments') && !att.label.startsWith('Notes:') && cat.label !== 'Extended Comments') ? (
-                  <Grid container key={catIndex} item md={6} sm={12} direction={isMobile ? 'row' : 'column'}>
-                    <Grid item xs={12}>
-                      <Tooltip
-                        placement="top-end"
-                        enterTouchDelay={0}
-                        title={
-                            att.description
-                            }
-                        arrow
-                      >
-                        <Typography sx={{ fontWeight: 'bold' }} variant="body1">
-                          {att.label}
-                        </Typography>
-                      </Tooltip>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <Typography style={{ paddingRight: '2rem' }} display="flex" justifyContent={isMobile ? 'left' : 'right'}>{extractData(att, 'infoSheet')}</Typography>
-                    </Grid>
+  return (
+    dataDone === true && (
+      <>
+        <CoverCropInformation allThumbs={allThumbs} crop={crop} />
+        {modalData
+          && modalData.data.map((cat, index) => (
+            <Grid item key={index} xs={12}>
+              <Accordion defaultExpanded>
+                <AccordionSummary
+                  expandIcon={<ExpandMore />}
+                  sx={{
+                    '&$expanded': {
+                      margin: '4px 0',
+                    },
+                  }}
+                >
+                  <Typography variant="h4" style={{ padding: '3px' }}>
+                    {cat.label}
+                  </Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  {' '}
+                  <Grid container>
+                    {cat.attributes.map((att, catIndex) => (!att.label.startsWith('Comments')
+                      && !att.label.startsWith('Notes:')
+                      && cat.label !== 'Extended Comments' ? (
+                        <Grid
+                          container
+                          key={catIndex}
+                          item
+                          md={6}
+                          sm={12}
+                          direction={isMobile ? 'row' : 'column'}
+                        >
+                          <Grid item xs={12}>
+                            <Tooltip
+                              placement="top-end"
+                              enterTouchDelay={0}
+                              title={att.description}
+                              arrow
+                            >
+                              <Typography sx={{ fontWeight: 'bold' }} variant="body1">
+                                {att.label}
+                              </Typography>
+                            </Tooltip>
+                          </Grid>
+                          <Grid item xs={12}>
+                            <Typography
+                              style={{ paddingRight: '2rem' }}
+                              display="flex"
+                              justifyContent={isMobile ? 'left' : 'right'}
+                            >
+                              {extractData(att, 'infoSheet')}
+                            </Typography>
+                          </Grid>
+                        </Grid>
+                      ) : (
+                        <Grid item key={catIndex} xs={12}>
+                          <Tooltip
+                            placement="top-end"
+                            enterTouchDelay={0}
+                            title={att.description}
+                            arrow
+                          >
+                            {cat.label !== 'Extended Comments' ? (
+                              <Box xs={12} variant="body1">
+                                <Typography
+                                  display="flex"
+                                  justifyContent="center"
+                                  sx={{ fontWeight: 'bold' }}
+                                >
+                                  {att.label}
+                                </Typography>
+                                <Typography display="flex" justifyContent="center">
+                                  {att.values[0]?.value}
+                                </Typography>
+                              </Box>
+                            ) : (
+                              <Box xs={12} variant="body1">
+                                <Typography
+                                  display="flex"
+                                  justifyContent="left"
+                                  sx={{ fontWeight: 'bold' }}
+                                >
+                                  {att.label}
+                                </Typography>
+                                <Typography display="flex" justifyContent="left">
+                                  {att.values[0]?.value}
+                                </Typography>
+                              </Box>
+                            )}
+                          </Tooltip>
+                        </Grid>
+                      )))}
                   </Grid>
-                ) : (
-                  <Grid item key={catIndex} xs={12}>
-                    <Tooltip
-                      placement="top-end"
-                      enterTouchDelay={0}
-                      title={att.description}
-                      arrow
-                    >
-                      {cat.label !== 'Extended Comments'
-                        ? (
-                          <Box xs={12} variant="body1">
-                            <Typography display="flex" justifyContent="center" sx={{ fontWeight: 'bold' }}>{att.label}</Typography>
-                            <Typography display="flex" justifyContent="center">{att.values[0]?.value}</Typography>
-                          </Box>
-                        )
-                        : (
-                          <Box xs={12} variant="body1">
-                            <Typography display="flex" justifyContent="left" sx={{ fontWeight: 'bold' }}>{att.label}</Typography>
-                            <Typography display="flex" justifyContent="left">{att.values[0]?.value}</Typography>
-                          </Box>
-                        )}
-                    </Tooltip>
-                  </Grid>
-                )))}
-              </Grid>
-            </AccordionDetails>
-          </Accordion>
-        </Grid>
-      ))}
+                </AccordionDetails>
+              </Accordion>
+            </Grid>
+          ))}
 
-      <InformationSheetReferences currentSources={currentSources} />
-    </>
+        <InformationSheetReferences currentSources={currentSources} />
+      </>
+    )
   );
 };
 
