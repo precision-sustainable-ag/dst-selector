@@ -9,7 +9,7 @@
 import {
   Button, Typography, Grid, Box,
 } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import ReactGA from 'react-ga';
@@ -21,7 +21,6 @@ const MyCoverCropList = ({ comparisonView, from }) => {
   const dispatchRedux = useDispatch();
   const comparison = comparisonView || false;
   const history = useHistory();
-  const [containerHeight, setContainerHeight] = useState();
   const activeCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.activeCropIds);
   const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
   const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
@@ -51,32 +50,8 @@ const MyCoverCropList = ({ comparisonView, from }) => {
     }
   }, [consentRedux]);
 
-  useEffect(() => {
-    function updateSize() {
-      const documentHeight = document
-        .getElementsByTagName('html')[0]
-        .getBoundingClientRect().height;
-
-      const headerHeight = document
-        .getElementsByTagName('header')[0]
-        .getBoundingClientRect().height;
-
-      const footerHeight = document
-        .getElementsByClassName('primaryFooter')[0]
-        .getBoundingClientRect().height;
-
-      const contHeight = documentHeight - (headerHeight + footerHeight);
-      document.getElementById('myCoverCropListSection').style.minHeight = `${contHeight}px`;
-      setContainerHeight(contHeight);
-    }
-    window.addEventListener('resize', updateSize);
-    updateSize();
-
-    return () => window.removeEventListener('resize', updateSize);
-  }, []);
-
   return (
-    <Box component="div" sx={{ minHeight: containerHeight }} id="myCoverCropListSection">
+    <>
       {/* eslint-disable-next-line no-nested-ternary */}
       {selectedCropIdsRedux.length > 0
        && selectedCropIdsRedux.length === 0 ? (
@@ -112,7 +87,7 @@ const MyCoverCropList = ({ comparisonView, from }) => {
             ))}
           </Grid>
         )}
-    </Box>
+    </>
   );
 };
 
