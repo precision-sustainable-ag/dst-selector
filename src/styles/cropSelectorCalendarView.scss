@@ -9,12 +9,12 @@ div.growthCellsWrapper {
       &::after {
         position: absolute;
         width: 100%;
-        height: 150%;
-        margin-top: -7px;
+        height: 100%;
+        // margin-top: -7px;
         content: '';
         background-color: $cashCropGrowthWindowColor;
-        // opacity: 100%;
-        z-index: -1;
+        opacity: 80%;
+        // z-index: -1;
       }
     }
   }
@@ -38,9 +38,10 @@ div.growthCellsWrapper {
   .growthCell-30.Freeze\/Moisture.Risk.to.Establishment {
     background-color: $temperatureRiskToEstablishmentColor;
   }
-  .growthCell-30.Spring, .basic, .Fall\/Winter, .Can, .Summer, .Spring, .Average  {
+  .growthCell-30, .basic, .Fall\/Winter, .Can, .Summer, .Spring, .Average, .Hessian  {
     background-color: $defaultLegendColor;
   }
+
 
   .growthCell-20 {
     flex: 1;
@@ -50,11 +51,11 @@ div.growthCellsWrapper {
       &::after {
         position: absolute;
         width: 100%;
-        height: 150%;
-        margin-top: -5px;
+        height: 100%;
+        // margin-top: -5px;
         content: '';
         background-color: $cashCropGrowthWindowColor;
-        z-index: -1;
+        // z-index: -1;
       }
     }
   }
@@ -74,7 +75,7 @@ div.growthCellsWrapper {
   .growthCell-20.Freeze\/Moisture.Risk.to.Establishment {
     background-color: $temperatureRiskToEstablishmentColor;
   }
-  .growthCell-20.Spring, .basic, .Fall\/Winter, .Can, .Summer, .Spring, .Average, .Fly  {
+  .growthCell-20, .basic, .Fall\/Winter, .Can, .Summer, .Spring, .Average, .Hessian  {
     background-color: $defaultLegendColor;
   }
 }

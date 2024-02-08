@@ -24,6 +24,7 @@ import React, {
   useEffect, useState,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import moment from 'moment';
 import {
   CustomStyles, LightButton, callCoverCropApi, cropDataFormatter,
 } from '../../shared/constants';
@@ -229,13 +230,16 @@ const CropSidebar = ({
         setSidebarCategoriesData(data.data);
       });
       callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/crops?minimal=true&${query}`).then((data) => {
-        cropDataFormatter(data.data);
+        const { startDate, endDate } = cashCropDataRedux.dateRange;
+        const start = startDate ? moment(startDate.toISOString()).format('MM/DD') : '';
+        const end = endDate ? moment(endDate.toISOString()).format('MM/DD') : '';
+        cropDataFormatter(data.data, start, end);
         dispatchRedux(updateCropData(data.data));
         dispatchRedux(setAjaxInProgress(false));
       });
     }
   }, [
-    regionIdRedux,
+    cashCropDataRedux, regionIdRedux,
   ]);
 
   // TODO: Can we use Reducer instead of localStorage?
