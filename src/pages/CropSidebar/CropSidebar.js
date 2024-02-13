@@ -168,7 +168,6 @@ const CropSidebar = ({
           }
         }
       });
-      console.log('here', floodingFrequencyRedux, crop);
       cd[n].inactive = (!match)
       || (drainageClassRedux && !crop.soilDrainage?.includes(drainageClassRedux))
       || (floodingFrequencyRedux && councilShorthandRedux === 'MCCC'
