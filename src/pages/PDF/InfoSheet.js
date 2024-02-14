@@ -7,6 +7,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 // import { Typography } from '@mui/material';
+import { Grid } from '@mui/material';
 import { useLocation } from 'react-router-dom';
 import { callCoverCropApi } from '../../shared/constants';
 import InformationSheetContent from '../InformationSheetContent/InformationSheetContent';
@@ -51,6 +52,7 @@ async function getCropDataFromApi(urlPrefix, state, crop, regions) {
 }
 
 const InfoSheet = () => {
+  const isPDF = true;
   const [crop, setCrop] = useState(null);
   const [stateData, setStateData] = useState(null);
   const [regionsData, setRegionsData] = useState(null);
@@ -95,13 +97,49 @@ const InfoSheet = () => {
     }
   }, [query]);
 
+  const styles = {
+
+    container: {
+      maxWidth: '100vw',
+    },
+    banner: {
+      span: {
+        width: '16px',
+      },
+      width: '100%',
+      paddingTop: '16px',
+      paddingBottom: '16px',
+      backgroundColor: '#2D7B7B',
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'flex-start',
+      gap: '8px',
+      fontSize: '24px',
+      color: 'white',
+      fontWeight: 'bold',
+      marginBottom: '16px',
+    },
+  };
+
   if (loading) {
     return <div>Loading...</div>;
   }
 
   return (
-    <div>
-      <InformationSheetContent crop={crop} modalData={crop} region={regionsData} state={stateData} />
+    <div style={styles.container}>
+      {/* head bar */}
+      <div style={styles.banner}>
+        <span style={styles.banner.span} />
+        <div>{stateData.label}</div>
+        <div> - </div>
+        <div>{regionsData.label}</div>
+      </div>
+      {/* end head bar */}
+      <div style={styles.container}>
+        <Grid container item xs={12}>
+          <InformationSheetContent crop={crop} modalData={crop} region={regionsData} state={stateData} isPDF={isPDF} />
+        </Grid>
+      </div>
     </div>
   );
 };

@@ -25,11 +25,13 @@ import InformationSheetReferences from './InformationSheetReferences/Information
 import { callCoverCropApi, extractData } from '../../shared/constants';
 
 const InformationSheetContent = ({
-  crop, modalData, region, state,
+  crop, modalData, region, state, isPDF = false,
 }) => {
   // used to know if the user is in mobile mode
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
+  console.log('IS MOBILE?', isMobile);
 
   // useState vars
   const [currentSources, setCurrentSources] = useState([{}]);
@@ -38,7 +40,22 @@ const InformationSheetContent = ({
 
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
 
-  if (!region && !state) {
+  if (isPDF) {
+    const query = `${encodeURIComponent('regions')}=${encodeURIComponent(region.id)}&${encodeURIComponent('regions')}=${encodeURIComponent(state.id)}`;
+    useEffect(() => {
+      if (!dataDone) {
+        callCoverCropApi(
+          `https://${apiBaseUrlRedux}.covercrop-selector.org/v1/crops/${crop?.id}/resources?${query}`,
+        ).then((data) => setCurrentSources(data.data));
+        callCoverCropApi(
+          `https://${apiBaseUrlRedux}.covercrop-selector.org/v1/crops/${crop?.id}/images?${query}`,
+        ).then((data) => {
+          setAllThumbs(data.data);
+          setDataDone(true);
+        });
+      }
+    });
+  } else {
     // redux vars
     const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
     const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
@@ -64,28 +81,13 @@ const InformationSheetContent = ({
         });
       }
     }, [crop, filterStateRedux]);
-  } else {
-    const query = `${encodeURIComponent('regions')}=${encodeURIComponent(region.id)}&${encodeURIComponent('regions')}=${encodeURIComponent(state.id)}`;
-    useEffect(() => {
-      if (!dataDone) {
-        callCoverCropApi(
-          `https://${apiBaseUrlRedux}.covercrop-selector.org/v1/crops/${crop?.id}/resources?${query}`,
-        ).then((data) => setCurrentSources(data.data));
-        callCoverCropApi(
-          `https://${apiBaseUrlRedux}.covercrop-selector.org/v1/crops/${crop?.id}/images?${query}`,
-        ).then((data) => {
-          setAllThumbs(data.data);
-          setDataDone(true);
-        });
-      }
-    });
   }
 
   return (
     dataDone === true && (
       <>
-        <CoverCropInformation allThumbs={allThumbs} crop={crop} />
-        <div id="pdf-content-container">
+        <CoverCropInformation allThumbs={allThumbs} crop={crop} isPDF={isPDF} />
+        <div id="pdf-content-container" style={isPDF ? { marginTop: '48px' } : {}}>
           {modalData
             && modalData.data.map((cat, index) => (
               <Grid item key={index} xs={12}>
@@ -113,8 +115,8 @@ const InformationSheetContent = ({
                             key={catIndex}
                             item
                             md={6}
-                            sm={12}
-                            direction={isMobile ? 'row' : 'column'}
+                            sm={isPDF ? 6 : 12}
+                            direction={(isMobile && !isPDF) ? 'row' : 'column'}
                           >
                             <Grid item xs={12}>
                               <Tooltip

@@ -3,10 +3,10 @@ import { Typography, Grid } from '@mui/material';
 import ImageCarousel from '../../../components/ImageCarousel/ImageCarousel';
 
 const CoverCropInformation = ({
-  crop, allThumbs,
+  crop, allThumbs, isPDF = false,
 }) => (
   <Grid container spacing={3} ml="1%" mr="1%">
-    <Grid item md={6} sm={12}>
+    <Grid item md={6} sm={isPDF ? 6 : 12}>
       <Grid item>
         <Typography variant="h5">
           {`${crop?.group?.label ?? crop.group}`}
@@ -21,7 +21,7 @@ const CoverCropInformation = ({
         <Typography variant="h5">
           Cover Crop Description
         </Typography>
-        <Grid item sm={12} />
+        <Grid item sm={isPDF ? 6 : 12} />
         <Grid item>
           <Typography variant="body1">
             {crop.description ? crop.description : ''}
@@ -30,8 +30,11 @@ const CoverCropInformation = ({
       </Grid>
     </Grid>
 
-    <Grid item md={6} sm={12}>
-      <ImageCarousel images={allThumbs} />
+    <Grid item md={6} sm={isPDF ? 6 : 12}>
+      {/* <ImageCarousel images={allThumbs} /> */}
+      {isPDF && allThumbs.length >= 1
+        ? <img src={allThumbs[0].thumbnail} alt="crop_image" />
+        : <ImageCarousel images={allThumbs} />}
     </Grid>
   </Grid>
 
