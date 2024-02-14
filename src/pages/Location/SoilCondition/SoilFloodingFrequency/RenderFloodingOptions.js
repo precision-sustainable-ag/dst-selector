@@ -50,7 +50,7 @@ const RenderFloodingOptions = ({ flooding = [''] }) => {
     }
     if (floodings.indexOf(label) === -1) {
       // does not exist, dispatch to state
-      floodings.push(label);
+      floodings = [label];
       dispatchRedux(updateFloodingFrequencyRedux(floodings));
     } else {
       // exists, remove it from state
