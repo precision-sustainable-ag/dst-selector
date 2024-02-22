@@ -141,19 +141,6 @@ const CropSidebar = ({
 
     const filtered = cropData?.filter((crop, n, cd) => {
       const floodingFrequencyValue = crop.attributes.filter((a) => a.label === 'Flooding Frequency Tolerance')[0]?.values[0];
-      const getFloodingFrequency = () => {
-        if (floodingFrequencyValue === 'Poor') {
-          return (1);
-        }
-        if (floodingFrequencyValue === 'Moderate') {
-          return (3);
-        }
-        if (floodingFrequencyValue === 'Good') {
-          return (5);
-        }
-
-        return (6);
-      };
       let match = true;
       // iterate over all active filters
       nonZeroKeys2.forEach((keyObject) => {
@@ -169,10 +156,8 @@ const CropSidebar = ({
         }
       });
       cd[n].inactive = (!match)
-      || (drainageClassRedux && !crop.soilDrainage?.includes(drainageClassRedux))
-      || (floodingFrequencyRedux && councilShorthandRedux === 'MCCC'
-        ? crop.attributes.filter((a) => a.label === 'Flood Tolerance')[0]?.values[0] < floodingFrequencyRedux
-        : getFloodingFrequency() < floodingFrequencyRedux);
+      || (drainageClassRedux && !crop.soilDrainage?.map((d) => d.toLowerCase())?.includes(drainageClassRedux.toLowerCase()))
+      || (floodingFrequencyRedux && floodingFrequencyValue < floodingFrequencyRedux);
 
       return true;
     });
