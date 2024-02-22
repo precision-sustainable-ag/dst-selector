@@ -136,12 +136,12 @@ const SoilCondition = () => {
         .catch((error) => console.error('SSURGO FETCH ERROR', error));
     };
 
-    const lat = markersRedux[0][0];
-    const lon = markersRedux[0][1];
-
     // if the user selected another region, not run the function
     if (userSelectRegionRedux) return;
     if (stateLabelRedux === 'Ontario') return;
+
+    const lat = markersRedux[0][0];
+    const lon = markersRedux[0][1];
 
     if (soilDataOriginalRedux?.latLong) {
       if (
