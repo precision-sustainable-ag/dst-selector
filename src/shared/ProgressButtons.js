@@ -31,7 +31,14 @@ const ProgressButtons = () => {
         break;
       case 1:
         // location selection state
-        setIsDisabledNext(addressRedux === '' || regionShorthand === '');
+
+        // handle logic separately for Ontario
+        if (stateLabelRedux === 'Ontario') {
+          setIsDisabledNext(regionShorthand === '');
+        } else {
+          setIsDisabledNext(addressRedux === '' || regionShorthand === '');
+        }
+
         setToolTip(true);
         setIsDisabledBack(false);
         setIsDisabledRefresh(false);
