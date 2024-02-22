@@ -1,42 +1,18 @@
-import React, {
-  useEffect,
-  useState,
-} from 'react';
+import React from 'react';
 import {
   Chip, Grid, useTheme, useMediaQuery, Box,
 } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateFloodingFrequency as updateFloodingFrequencyRedux } from '../../../../reduxStore/soilSlice';
 
-const RenderFloodingOptions = ({ flooding = [''] }) => {
-  const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
-  const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
-  const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
+const RenderFloodingOptions = ({ floodingOptions, flooding = [''] }) => {
   const dispatchRedux = useDispatch();
 
   // theme
   const uiTheme = useTheme();
   const isMobile = useMediaQuery(uiTheme.breakpoints.down('sm'));
-
-  // state vars
-  const [floodingOptions, setFloodingOptions] = useState([]);
-
   // redux vars
   const soilDataRedux = useSelector((stateRedux) => stateRedux.soilData.soilData);
-  const query1 = `${encodeURIComponent('regions')}=${encodeURIComponent(regionIdRedux)}`;
-  const query2 = `${encodeURIComponent('regions')}=${encodeURIComponent(stateIdRedux)}`;
-
-  useEffect(() => {
-    fetch(`https://${apiBaseUrlRedux}.covercrop-selector.org/v2/attribute?filtered=false&slug=flooding_frequency&${query2}&${query1}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setFloodingOptions(data.data.values);
-      })
-      .catch((err) => {
-        // eslint-disable-next-line no-console
-        console.log(err.message);
-      });
-  }, []);
 
   const updateFloodingFrequency = (label = '') => {
     let floodings = soilDataRedux?.floodingFrequency ? [...soilDataRedux.floodingFrequency] : [];
@@ -71,7 +47,7 @@ const RenderFloodingOptions = ({ flooding = [''] }) => {
       style={{ marginRight: '1rem' }}
       flexBasis="0"
     >
-      {floodingOptions.map((f, index) => (
+      {floodingOptions.floodingOptions.map((f, index) => (
         <Box key={index} sx={{ width: isMobile ? '100%' : 'auto' }}>
           <Chip
             label={f.label}

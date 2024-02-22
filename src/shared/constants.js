@@ -810,7 +810,6 @@ export const cropDataFormatter = (cropData = [{}], cashCropStartDate = '', cashC
     });
     return vals;
   };
-  console.log(cropData);
   return cropData.map((crop) => monthStringBuilder(crop));
 };
 
