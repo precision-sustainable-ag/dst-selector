@@ -5,17 +5,14 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { updateFloodingFrequency as updateFloodingFrequencyRedux } from '../../../../reduxStore/soilSlice';
 
-const RenderFloodingOptions = ({ flooding = [''] }) => {
+const RenderFloodingOptions = ({ floodingOptions, flooding = [''] }) => {
   const dispatchRedux = useDispatch();
 
   // theme
   const uiTheme = useTheme();
   const isMobile = useMediaQuery(uiTheme.breakpoints.down('sm'));
-
   // redux vars
   const soilDataRedux = useSelector((stateRedux) => stateRedux.soilData.soilData);
-
-  const floodingOptions = ['None', 'Very Rare', 'Rare', 'Occasional', 'Frequent', 'Very Frequent'];
 
   const updateFloodingFrequency = (label = '') => {
     let floodings = soilDataRedux?.floodingFrequency ? [...soilDataRedux.floodingFrequency] : [];
@@ -29,7 +26,7 @@ const RenderFloodingOptions = ({ flooding = [''] }) => {
     }
     if (floodings.indexOf(label) === -1) {
       // does not exist, dispatch to state
-      floodings.push(label);
+      floodings = [label];
       dispatchRedux(updateFloodingFrequencyRedux(floodings));
     } else {
       // exists, remove it from state
@@ -50,13 +47,13 @@ const RenderFloodingOptions = ({ flooding = [''] }) => {
       style={{ marginRight: '1rem' }}
       flexBasis="0"
     >
-      {floodingOptions.map((f, index) => (
+      {floodingOptions.floodingOptions.map((f, index) => (
         <Box key={index} sx={{ width: isMobile ? '100%' : 'auto' }}>
           <Chip
-            label={f}
-            color={flooding.includes(f) ? 'primary' : 'secondary'}
+            label={f.label}
+            color={flooding.includes(f.value) ? 'primary' : 'secondary'}
             onClick={() => {
-              updateFloodingFrequency(f);
+              updateFloodingFrequency(f.value);
             }}
             style={{ margin: '0.3rem' }}
           />

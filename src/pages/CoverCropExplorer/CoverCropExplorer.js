@@ -79,7 +79,7 @@ const CoverCropExplorer = () => {
         <CropSidebar
           from="explorer"
           activeCropData={activeCropIdsRedux?.length > 0 ? cropDataRedux.filter((crop) => activeCropIdsRedux.includes(crop.id)) : cropDataRedux}
-          isListView
+          listView
         />
       </Grid>
       <Grid item xl={9} lg={9} md={9} sm={12} xs={12}>

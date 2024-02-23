@@ -30,7 +30,6 @@ const Landing = () => {
   const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
   const consentRedux = useSelector((stateRedux) => stateRedux.userData.consent);
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
-  const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
 
   // useState vars
   // const [containerHeight, setContainerHeight] = useState(height);
@@ -112,13 +111,12 @@ const Landing = () => {
           dispatchRedux(updateRegions(fetchedRegions));
 
           // set default region for Selector and Explorer
-          if (!regionIdRedux) {
-            localStorage.setItem('regionId', fetchedRegions[0].id ?? '');
-            dispatchRedux(updateRegion({
-              regionId: fetchedRegions[0].id ?? '',
-              regionShorthand: fetchedRegions[0].shorthand ?? '',
-            }));
-          }
+
+          localStorage.setItem('regionId', fetchedRegions[0].id ?? '');
+          dispatchRedux(updateRegion({
+            regionId: fetchedRegions[0].id ?? '',
+            regionShorthand: fetchedRegions[0].shorthand ?? '',
+          }));
         })
         .catch((err) => {
           // eslint-disable-next-line no-console
@@ -166,6 +164,42 @@ const Landing = () => {
     return () => window.removeEventListener('resize', updateSize);
   }, []);
 
+  const backgroundSyles = {
+    frostedGlassEffect: {
+      backdropFilter: 'blur(5px)',
+      backgroundColor: 'rgba(255, 255, 255, 0.4)',
+      border: '1px solid rgba(255, 255, 255, 0.2)',
+      borderRadius: '10px',
+      position: 'relative',
+      width: '80%',
+      maxWidth: '500px',
+      left: '50%',
+      transform: 'translateX(-50%)',
+      boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+    },
+  };
+
+  const menuProps = {
+    PaperProps: {
+      style: {
+        maxHeight: 224,
+        marginTop: '5px',
+      },
+      sx: {
+        '.MuiMenuItem-root': {
+          '&.Mui-selected': {
+            backgroundColor: '#598445',
+            color: 'white',
+          },
+          '&:hover': {
+            backgroundColor: 'rgba(176, 236, 130, 0.3)',
+            color: 'black',
+          },
+        },
+      },
+    },
+  };
+
   return (
     <Box
       style={{
@@ -181,16 +215,7 @@ const Landing = () => {
       margin={-1}
     >
       <Grid
-        style={{
-          backgroundColor: 'rgba(240,247,235,.5)',
-          borderRadius: '10px',
-          border: '1px solid #598445',
-          position: 'relative',
-          width: '80%',
-          maxWidth: '500px',
-          left: '50%',
-          transform: 'translateX(-50%)',
-        }}
+        style={backgroundSyles.frostedGlassEffect}
         mt={1}
       >
         <Box mr={1} ml={1} mb={1} mt={1}>
@@ -214,14 +239,42 @@ const Landing = () => {
             </Grid>
             <Grid item xs={12} mb={2}>
               <FormControl
-                variant="filled"
                 sx={{ minWidth: 120 }}
               >
-                <InputLabel>State</InputLabel>
+                <InputLabel
+                  id="state-dropdown-label"
+                  sx={{
+                    color: '#598445',
+                    '&.Mui-focused': {
+                      color: '#598445',
+                      fontWeight: 'medium',
+                    },
+                  }}
+                >
+                  STATE
+                </InputLabel>
                 <Select
-                  variant="filled"
+                  labelId="state-dropdown-label"
+                  label="STATE"
                   onChange={(e) => handleStateChange(e)}
                   value={selectedState?.shorthand || ''}
+                  sx={{
+                    minWidth: 100,
+                    '& .MuiOutlinedInput-notchedOutline': {
+                      borderColor: '#598445',
+                      borderWidth: '1px',
+                      borderRadius: '4px',
+                    },
+                    '&:hover .MuiOutlinedInput-notchedOutline': {
+                      borderColor: '#598445',
+                      borderWidth: '2px',
+                    },
+                    '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                      borderColor: '#598445',
+                      borderWidth: '2.5px',
+                    },
+                  }}
+                  MenuProps={menuProps}
                 >
 
                   {allStates.length > 0 && allStates.map((st, i) => (
