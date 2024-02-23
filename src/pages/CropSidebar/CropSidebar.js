@@ -156,9 +156,12 @@ const CropSidebar = ({
         }
       });
 
-      cd[n].inactive = (!match)
-      || (drainageClassRedux && !crop.soilDrainage?.map((d) => d.toLowerCase())?.includes(drainageClassRedux.toLowerCase()))
-      || !(floodingFrequencyRedux && floodingFrequencyRedux <= floodingFrequencyValue);
+      const matchesDrainageClass = (!drainageClassRedux ? true : crop.soilDrainage?.map((d) => d.toLowerCase())
+        ?.includes(drainageClassRedux.toLowerCase()));
+
+      const cropFloodingValueIsHigher = (!floodingFrequencyRedux ? true : floodingFrequencyRedux <= floodingFrequencyValue);
+
+      cd[n].inactive = (!match) || !(matchesDrainageClass && cropFloodingValueIsHigher);
 
       return true;
     });
