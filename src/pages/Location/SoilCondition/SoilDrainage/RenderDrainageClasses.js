@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { updateDrainageClass as updateDrainageClassRedux } from '../../../../reduxStore/soilSlice';
 
 const RenderDrainageClasses = ({
-  tilingCheck, setTilingCheck, setNewDrainage, drainage = [],
+  tilingCheck, setTilingCheck, setNewDrainage, setShowTiling, drainage = [],
 }) => {
   const dispatchRedux = useDispatch();
 
@@ -69,10 +69,18 @@ const RenderDrainageClasses = ({
       setUpdateTilingCheck(false);
     }
     let drainages = soilDataRedux.drainageClass ? [...soilDataRedux.drainageClass] : [];
-    drainages = [index];
-    setNewDrainage(drainageArray[drainages[0]]);
-    updateDrainageAction(drainages);
-    setTilingCheck(false);
+
+    if (!drainageVal.includes(index)) {
+      drainages = [index];
+      setNewDrainage(drainageArray[drainages[0]]);
+      updateDrainageAction(drainages);
+      setTilingCheck(false);
+    } else {
+      setNewDrainage([]);
+      updateDrainageAction([]);
+      setTilingCheck(false);
+      setShowTiling(false);
+    }
   };
 
   return (

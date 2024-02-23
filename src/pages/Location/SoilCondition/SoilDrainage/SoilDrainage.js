@@ -203,6 +203,7 @@ const SoilDrainage = () => {
               tilingCheck={tilingCheck}
               setTilingCheck={setTilingCheck}
               setNewDrainage={setNewDrainage}
+              setShowTiling={setShowTiling}
               drainage={newDrainage}
             />
             )}
