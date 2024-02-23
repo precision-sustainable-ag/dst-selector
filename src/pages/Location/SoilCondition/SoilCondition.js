@@ -6,7 +6,7 @@
 */
 
 import { Grid, useTheme, useMediaQuery } from '@mui/material';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import SoilDrainage from './SoilDrainage/SoilDrainage';
 import SoilFloodingFrequency from './SoilFloodingFrequency/SoilFloodingFrequency';
@@ -22,11 +22,28 @@ const SoilCondition = () => {
   // redux vars
   const markersRedux = useSelector((stateRedux) => stateRedux.addressData.markers);
   const soilDataOriginalRedux = useSelector((stateRedux) => stateRedux.soilData.soilDataOriginal);
-  // const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
+  const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
   const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
   const userSelectRegionRedux = useSelector((stateRedux) => stateRedux.userData.userSelectRegion);
+  const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
+  const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
 
   // useState vars
+  const [floodingOptions, setFloodingOptions] = useState([]);
+  const query1 = `${encodeURIComponent('regions')}=${encodeURIComponent(regionIdRedux)}`;
+  const query2 = `${encodeURIComponent('regions')}=${encodeURIComponent(stateIdRedux)}`;
+
+  useEffect(() => {
+    fetch(`https://${apiBaseUrlRedux}.covercrop-selector.org/v2/attribute?filtered=false&slug=flooding_frequency&${query2}&${query1}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setFloodingOptions(data.data.values);
+      })
+      .catch((err) => {
+        // eslint-disable-next-line no-console
+        console.log(err.message);
+      });
+  }, []);
 
   useEffect(() => {
     const getSSURGOData = (lat, lon) => {
@@ -82,7 +99,6 @@ const SoilCondition = () => {
         .then((response) => response.json())
         .then((result) => {
           let mapUnitString = '';
-
           const stringSplit = [];
 
           result.Table.forEach((el, index) => {
@@ -114,22 +130,25 @@ const SoilCondition = () => {
             }
           });
           drainageClasses = drainageClasses.filter((el) => el != null);
+          const floodingOptionsList = floodingOptions.map((option) => option.label);
+          let selectedOption;
+          floodingOptions.forEach((opt) => {
+            if (opt.label === floodingClasses[0]) {
+              selectedOption = [opt.value.toString()];
+            }
+          });
+          const payload = {
+            mapUnitName: mapUnitString,
+            drainageClass: drainageClasses,
+            floodingFrequency: floodingOptionsList.includes(floodingClasses[0]) ? selectedOption : [],
+            latLong: { lat, lon },
+          };
 
           dispatchRedux(
-            updateSoilData({
-              mapUnitName: mapUnitString,
-              drainageClass: drainageClasses,
-              floodingFrequency: floodingClasses,
-              latLong: { lat, lon },
-            }),
+            updateSoilData(payload),
           );
           dispatchRedux(
-            updateSoilDataOriginal({
-              mapUnitName: mapUnitString,
-              drainageClass: drainageClasses,
-              floodingFrequency: floodingClasses,
-              latLong: { lat, lon },
-            }),
+            updateSoilDataOriginal(payload),
           );
         })
         // eslint-disable-next-line no-console
@@ -152,7 +171,7 @@ const SoilCondition = () => {
     } else {
       getSSURGOData(lat, lon);
     }
-  }, [markersRedux, soilDataOriginalRedux?.latLong]);
+  }, [markersRedux, soilDataOriginalRedux?.latLong, floodingOptions]);
 
   return (
     <Grid item container justifyContent={isLargeScreen ? 'flex-start' : 'center'}>
@@ -160,7 +179,7 @@ const SoilCondition = () => {
         <SoilDrainage />
       </Grid>
       <Grid item xs={12} md={10}>
-        <SoilFloodingFrequency />
+        {floodingOptions.length > 0 && <SoilFloodingFrequency floodingOptions={floodingOptions} /> }
       </Grid>
     </Grid>
   );

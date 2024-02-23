@@ -13,6 +13,7 @@ const CropTableCard = ({ crop, indexKey, showGrowthWindow }) => {
   const dispatchRedux = useDispatch();
   const selectedCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCropIds);
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
+  const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
 
   const selectedBtns = selectedCropIdsRedux;
 
@@ -36,7 +37,7 @@ const CropTableCard = ({ crop, indexKey, showGrowthWindow }) => {
                   </p>
                 )}
               >
-                {getRating(crop.goals.filter((a) => a.label === goal)[0].values[0])}
+                {getRating(crop.goals.filter((a) => a.label === goal)[0].values[0], councilShorthandRedux)}
               </Tooltip>
             </div>
           </TableCell>
