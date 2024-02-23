@@ -10,9 +10,8 @@ import arrayEquals from '../../../../shared/functions';
 import RenderFloodingOptions from './RenderFloodingOptions';
 import { updateFloodingFrequency } from '../../../../reduxStore/soilSlice';
 
-const SoilFloodingFrequency = () => {
+const SoilFloodingFrequency = (floodingOptions) => {
   const dispatchRedux = useDispatch();
-
   // theme
   const uiTheme = useTheme();
   const isMobile = useMediaQuery(uiTheme.breakpoints.down('sm'));
@@ -136,7 +135,7 @@ const SoilFloodingFrequency = () => {
         </Grid>
         <Grid item container spacing={1} sx={{ mb: '1rem' }}>
           <Grid item xs={12}>
-            <RenderFloodingOptions flooding={soilDataRedux?.floodingFrequency} />
+            <RenderFloodingOptions floodingOptions={floodingOptions} flooding={soilDataRedux?.floodingFrequency} />
           </Grid>
         </Grid>
       </Grid>
