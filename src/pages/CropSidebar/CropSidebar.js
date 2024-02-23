@@ -155,9 +155,10 @@ const CropSidebar = ({
           }
         }
       });
+
       cd[n].inactive = (!match)
       || (drainageClassRedux && !crop.soilDrainage?.map((d) => d.toLowerCase())?.includes(drainageClassRedux.toLowerCase()))
-      || (floodingFrequencyRedux && floodingFrequencyRedux <= floodingFrequencyValue);
+      || !(floodingFrequencyRedux && floodingFrequencyRedux <= floodingFrequencyValue);
 
       return true;
     });
