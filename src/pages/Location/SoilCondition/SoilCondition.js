@@ -99,7 +99,6 @@ const SoilCondition = () => {
         .then((response) => response.json())
         .then((result) => {
           let mapUnitString = '';
-
           const stringSplit = [];
 
           result.Table.forEach((el, index) => {
