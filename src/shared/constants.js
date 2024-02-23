@@ -4,7 +4,7 @@
 /* eslint-disable no-nested-ternary */
 import React from 'react';
 import {
-  Button, Grid, Typography, Tooltip, Box,
+  Button, Grid, Typography, Tooltip,
 } from '@mui/material';
 import styled from 'styled-components';
 import moment from 'moment';
@@ -1024,18 +1024,15 @@ export const extractData = (attribute, from) => {
   // extract data
   let data;
   let dataType;
-  const values = [];
 
   if (from === 'infoSheet') {
     if (attribute?.values[0]?.label) {
-      return <Typography variant="body2">{attribute?.values[0]?.label}</Typography>;
-    } if (Object.keys(attribute?.values).length > 0) {
-      attribute?.values.forEach((value) => {
-        values.push(value.value);
-      });
-      data = values;
-      dataType = attribute?.dataType.label;
+      return (
+        <Typography variant="body2">{attribute?.values[0]?.label}</Typography>
+      );
     }
+    data = attribute?.values[0]?.value;
+    dataType = attribute?.dataType.label;
   } else {
     data = attribute?.values[0];
     dataType = attribute?.dataType;
@@ -1062,13 +1059,7 @@ export const extractData = (attribute, from) => {
   }
 
   // handles default
-  return (
-    <Box>
-      {data.map((element, index) => (
-        <Typography key={index} variant="body2" textAlign="right">{element.toString()}</Typography>
-      ))}
-    </Box>
-  );
+  return <Typography variant="body2">{data.toString()}</Typography>;
 };
 
 export const hasGoalRatingTwoOrLess = (selectedGoals, crop = []) => {
