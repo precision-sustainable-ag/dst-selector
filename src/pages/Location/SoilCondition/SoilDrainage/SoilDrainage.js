@@ -32,14 +32,19 @@ const SoilDrainage = () => {
   const [showTiling, setShowTiling] = useState(false);
   const [handleConfirm, setHandleConfirm] = useState(false);
   const [tilingCheck, setTilingCheck] = useState(false);
-  const [newDrainage, setNewDrainage] = useState(soilDataOriginalRedux);
+  const [newDrainage, setNewDrainage] = useState([]);
+  const [drainageInitialLoad, setDrainageInitialLoad] = useState(false);
 
   useEffect(() => {
     if (myCoverCropListLocationRedux !== 'selector' && selectedCropIdsRedux.length > 0) {
-      // document.title = 'Cover Crop Selector';
       setHandleConfirm(true);
     }
   }, [selectedCropIdsRedux, myCoverCropListLocationRedux]);
+
+  useEffect(() => {
+    setNewDrainage(soilDataOriginalRedux.drainageClass[0]);
+    setDrainageInitialLoad(true);
+  }, [soilDataOriginalRedux]);
 
   useEffect(() => {
     const checkArray = ['Very poorly drained', 'Poorly drained', 'Somewhat poorly drained'];
@@ -58,6 +63,7 @@ const SoilDrainage = () => {
 
   const resetDrainageClasses = () => {
     dispatchRedux(updateDrainageClassRedux(soilDataOriginalRedux?.drainageClass));
+    setNewDrainage(soilDataOriginalRedux.drainageClass[0]);
     window.localStorage.setItem('drainage', JSON.stringify(soilDataOriginalRedux?.drainageClass));
     setTilingCheck(false);
   };
@@ -191,12 +197,16 @@ const SoilDrainage = () => {
           justifyContent="center"
         >
           <Grid item xs={12} alignSelf="center" justifySelf="center">
+            {drainageInitialLoad
+            && (
             <RenderDrainageClasses
               tilingCheck={tilingCheck}
               setTilingCheck={setTilingCheck}
               setNewDrainage={setNewDrainage}
+              setShowTiling={setShowTiling}
               drainage={newDrainage}
             />
+            )}
           </Grid>
           <MyCoverCropReset handleConfirm={handleConfirm} setHandleConfirm={setHandleConfirm} />
           {showTiling && (

@@ -243,135 +243,27 @@ export const LightButton = styled(Button)({
   },
 });
 
-export const getRating = (ratng) => {
+export const getRating = (ratng, councilShorthand) => {
   const rating = parseInt(ratng, 10);
-  switch (rating) {
-    case 0:
-      return (
-        <svg
-          width="30px"
-          height="30px"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          stroke="#2d7b7b"
-          strokeWidth="1"
-          strokeLinecap="round"
-          strokeLinejoin="miter"
-        >
-          <line x1="22" y1="3" x2="22" y2="21" stroke="#d3d3d3" strokeWidth={3} />
-          <line x1="17" y1="7" x2="17" y2="21" stroke="#d3d3d3" strokeWidth={3} />
-          <line x1="12" y1="11" x2="12" y2="21" stroke="#d3d3d3" strokeWidth={3} />
-          <line x1="7" y1="14" x2="7" y2="21" stroke="#d3d3d3" strokeWidth={3} />
-          <line x1="2" y1="17" x2="2" y2="21" stroke="#d3d3d3" strokeWidth={3} />
-        </svg>
-      );
-    case 1:
-      return (
-        <svg
-          width="30px"
-          height="30px"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          stroke="#2d7b7b"
-          strokeWidth="1"
-          strokeLinecap="round"
-          strokeLinejoin="miter"
-        >
-          <line x1="22" y1="3" x2="22" y2="21" stroke="#d3d3d3" strokeWidth={3} />
-          <line x1="17" y1="7" x2="17" y2="21" stroke="#d3d3d3" strokeWidth={3} />
-          <line x1="12" y1="11" x2="12" y2="21" stroke="#d3d3d3" strokeWidth={3} />
-          <line x1="7" y1="14" x2="7" y2="21" stroke="#d3d3d3" strokeWidth={3} />
-          <line x1="2" y1="17" x2="2" y2="21" stroke="#2d7b7b" strokeWidth={3} />
-        </svg>
-      );
-    case 2:
-      return (
-        <svg
-          width="30px"
-          height="30px"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          stroke="#2d7b7b"
-          strokeWidth="1"
-          strokeLinecap="round"
-          strokeLinejoin="miter"
-        >
-          <line x1="22" y1="3" x2="22" y2="21" stroke="#d3d3d3" strokeWidth={3} />
-          <line x1="17" y1="7" x2="17" y2="21" stroke="#d3d3d3" strokeWidth={3} />
-          <line x1="12" y1="11" x2="12" y2="21" stroke="#d3d3d3" strokeWidth={3} />
-          <line x1="7" y1="14" x2="7" y2="21" stroke="#2d7b7b" strokeWidth={3} />
-          <line x1="2" y1="17" x2="2" y2="21" stroke="#2d7b7b" strokeWidth={3} />
-        </svg>
-      );
-    case 3:
-      return (
-        <svg
-          width="30px"
-          height="30px"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          stroke="#2d7b7b"
-          strokeWidth="1"
-          strokeLinecap="round"
-          strokeLinejoin="miter"
-        >
-          <line x1="22" y1="3" x2="22" y2="21" stroke="#d3d3d3" strokeWidth={3} />
-          <line x1="17" y1="7" x2="17" y2="21" stroke="#d3d3d3" strokeWidth={3} />
-          <line x1="12" y1="11" x2="12" y2="21" stroke="#2d7b7b" strokeWidth={3} />
-          <line x1="7" y1="14" x2="7" y2="21" stroke="#2d7b7b" strokeWidth={3} />
-          <line x1="2" y1="17" x2="2" y2="21" stroke="#2d7b7b" strokeWidth={3} />
-        </svg>
-      );
-    case 4:
-      return (
-        <svg
-          width="30px"
-          height="30px"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          stroke="#2d7b7b"
-          strokeWidth="1"
-          strokeLinecap="round"
-          strokeLinejoin="miter"
-        >
-          <line x1="22" y1="3" x2="22" y2="21" stroke="#d3d3d3" strokeWidth={3} />
-          <line x1="17" y1="7" x2="17" y2="21" stroke="#2d7b7b" strokeWidth={3} />
-          <line x1="12" y1="11" x2="12" y2="21" stroke="#2d7b7b" strokeWidth={3} />
-          <line x1="7" y1="14" x2="7" y2="21" stroke="#2d7b7b" strokeWidth={3} />
-          <line x1="2" y1="17" x2="2" y2="21" stroke="#2d7b7b" strokeWidth={3} />
-        </svg>
-      );
-    case 5:
-      return (
-        <svg
-          width="30px"
-          height="30px"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          strokeWidth="1"
-          strokeLinecap="round"
-          strokeLinejoin="miter"
-        >
-          <line x1="22" y1="3" x2="22" y2="21" stroke="#2d7b7b" strokeWidth={3} />
-          <line x1="17" y1="7" x2="17" y2="21" stroke="#2d7b7b" strokeWidth={3} />
-          <line x1="12" y1="11" x2="12" y2="21" stroke="#2d7b7b" strokeWidth={3} />
-          <line x1="7" y1="14" x2="7" y2="21" stroke="#2d7b7b" strokeWidth={3} />
-          <line x1="2" y1="17" x2="2" y2="21" stroke="#2d7b7b" strokeWidth={3} />
-        </svg>
-      );
-    default:
-      return (
-        <Typography variant="body1" fontSize="small">
-          No Data
-        </Typography>
-      );
-  }
+  return (
+    <svg
+      width="30px"
+      height="30px"
+      viewBox="0 0 24 24"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      stroke="#2d7b7b"
+      strokeWidth="1"
+      strokeLinecap="round"
+      strokeLinejoin="miter"
+    >
+      {councilShorthand !== 'MCCC' && <line x1="22" y1="3" x2="22" y2="21" stroke={rating >= 5 ? '#2d7b7b' : '#d3d3d3'} strokeWidth={3} />}
+      <line x1="17" y1="7" x2="17" y2="21" stroke={rating >= 4 ? '#2d7b7b' : '#d3d3d3'} strokeWidth={3} />
+      <line x1="12" y1="11" x2="12" y2="21" stroke={rating >= 3 ? '#2d7b7b' : '#d3d3d3'} strokeWidth={3} />
+      <line x1="7" y1="14" x2="7" y2="21" stroke={rating >= 2 ? '#2d7b7b' : '#d3d3d3'} strokeWidth={3} />
+      <line x1="2" y1="17" x2="2" y2="21" stroke={rating >= 1 ? '#2d7b7b' : '#d3d3d3'} strokeWidth={3} />
+    </svg>
+  );
 };
 
 export const allMonths = moment().localeData().monthsShort();
@@ -918,7 +810,6 @@ export const cropDataFormatter = (cropData = [{}], cashCropStartDate = '', cashC
     });
     return vals;
   };
-
   return cropData.map((crop) => monthStringBuilder(crop));
 };
 

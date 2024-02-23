@@ -66,6 +66,7 @@ const CropSidebar = ({
   const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const drainageClassRedux = useSelector((stateRedux) => stateRedux.soilData.soilData.drainageClass[0]);
+  const floodingFrequencyRedux = useSelector((stateRedux) => stateRedux.soilData.soilData.floodingFrequency[0]);
 
   // useState vars
   const [loading, setLoading] = useState(true);
@@ -130,7 +131,6 @@ const CropSidebar = ({
       cd[n].inactive = true;
       return match('label') || match('scientificName') || match('common');
     });
-
     // transforms selectedFilterObject into an array
     const nonZeroKeys2 = Object.keys(selectedFilterObject).map((key) => {
       if (selectedFilterObject[key]?.length !== 0) {
@@ -140,6 +140,7 @@ const CropSidebar = ({
     });
 
     const filtered = cropData?.filter((crop, n, cd) => {
+      const floodingFrequencyValue = crop.attributes.filter((a) => a.label === 'Flooding Frequency Tolerance')[0]?.values[0];
       let match = true;
       // iterate over all active filters
       nonZeroKeys2.forEach((keyObject) => {
@@ -154,12 +155,13 @@ const CropSidebar = ({
           }
         }
       });
+
       cd[n].inactive = (!match)
-      || (drainageClassRedux && !crop.soilDrainage?.includes(drainageClassRedux));
+      || (drainageClassRedux && !crop.soilDrainage?.map((d) => d.toLowerCase())?.includes(drainageClassRedux.toLowerCase()))
+      || !(floodingFrequencyRedux && floodingFrequencyRedux <= floodingFrequencyValue);
 
       return true;
     });
-
     dispatchRedux(updateActiveCropIds(filtered.filter((crop) => !crop.inactive).map((crop) => crop.id)));
   }, [cropDataRedux, dispatchRedux, filterStateRedux.filters]);
 
@@ -219,7 +221,6 @@ const CropSidebar = ({
   useEffect(() => {
     if (stateIdRedux && regionIdRedux) {
       dispatchRedux(setAjaxInProgress(true));
-
       setLoading(true);
       callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/filters?${query}`).then((data) => {
         const allFilters = [];
