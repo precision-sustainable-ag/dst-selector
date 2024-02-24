@@ -109,10 +109,10 @@ const Tip = ({ filter }) => (
       </>
       )}
   >
-    <>
+    <span>
       {filter.name}
       <HelpOutlineIcon style={{ cursor: 'pointer', transform: 'scale(0.7)' }} />
-    </>
+    </span>
   </Tooltip>
 ); // Tip
 
