@@ -791,9 +791,7 @@ export const cropDataFormatter = (cropData = [{}], cashCropStartDate = '', cashC
     });
     // add cash crop dates dates
     if (cashCropStartDate !== '' && cashCropEndDate !== '') {
-      const start = moment(cashCropStartDate).format('MM/DD');
-      const end = moment(cashCropEndDate).format('MM/DD');
-      yearArr = formatTimeToYearArr(start, end, 'Cash Crop Growing', yearArr);
+      yearArr = formatTimeToYearArr(cashCropStartDate, cashCropEndDate, 'Cash Crop Growing', yearArr);
     }
 
     const yearData = formatYearArr(yearArr);
