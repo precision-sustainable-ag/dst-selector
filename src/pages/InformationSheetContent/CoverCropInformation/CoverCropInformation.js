@@ -9,7 +9,7 @@ const CoverCropInformation = ({
     <Grid item md={6} sm={12}>
       <Grid item>
         <Typography variant="h5">
-          {`${crop.attributes.filter((a) => a.label === 'Cover Crop Group')[0]?.values[0]}`}
+          {crop['Cover Crop Group']}
         </Typography>
         <Typography variant="h4">
           {`${crop.label}`}
