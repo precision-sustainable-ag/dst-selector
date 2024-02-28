@@ -64,7 +64,7 @@ const InformationSheetContent = ({ crop, modalData }) => {
   return (
     dataDone === true && (
       <>
-        <CoverCropInformation allThumbs={allThumbs} crop={crop} />
+        <CoverCropInformation allThumbs={allThumbs} crop={modalData} />
         {modalData
           && modalData.data.map((cat, index) => (
             <Grid item key={index} xs={12}>
