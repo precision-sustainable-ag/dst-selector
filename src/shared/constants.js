@@ -4,7 +4,7 @@
 /* eslint-disable no-nested-ternary */
 import React from 'react';
 import {
-  Button, Grid, Typography, Tooltip,
+  Button, Grid, Typography, Tooltip, Box,
 } from '@mui/material';
 import styled from 'styled-components';
 import moment from 'moment';
@@ -270,7 +270,7 @@ export const allMonths = moment().localeData().monthsShort();
 
 export const trimString = (stringFull, size) => {
   if (!Number.isNaN(size)) {
-    return `${stringFull.substring(0, size)}${stringFull.length > 25 ? '...' : ''}`;
+    return `${stringFull.substring(0, size)}${stringFull.length > size ? '...' : ''}`;
   }
   return stringFull;
 };
@@ -1029,7 +1029,11 @@ export const extractData = (attribute, from) => {
         <Typography variant="body2">{attribute?.values[0]?.label}</Typography>
       );
     }
-    data = attribute?.values[0]?.value;
+    const attributeValues = [];
+    attribute?.values.forEach((ele) => {
+      attributeValues.push(ele.value);
+    });
+    data = attributeValues;
     dataType = attribute?.dataType.label;
   } else {
     data = attribute?.values[0];
@@ -1057,7 +1061,16 @@ export const extractData = (attribute, from) => {
   }
 
   // handles default
-  return <Typography variant="body2">{data.toString()}</Typography>;
+  return (
+    typeof data === 'object'
+      ? (
+        <Box>
+          {data.map((element, index) => <Typography key={index} variant="body2" textAlign="right">{element.toString()}</Typography>)}
+        </Box>
+      ) : (
+        <Typography variant="body2">{data.toString()}</Typography>
+      )
+  );
 };
 
 export const hasGoalRatingTwoOrLess = (selectedGoals, crop = []) => {

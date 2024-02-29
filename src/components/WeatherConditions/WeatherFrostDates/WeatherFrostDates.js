@@ -25,7 +25,7 @@ const WeatherFrostDates = () => {
       >
         <Grid item>
           <Typography variant="body1">
-            <span style={{ fontWeight: 'bold', fontSize: '1rem' }}>Frost Dates</span>
+            <span style={{ fontWeight: 'bold', fontSize: '1.2rem' }}>Frost Dates</span>
             &nbsp;
             {' '}
             <Tooltip
@@ -80,14 +80,14 @@ const WeatherFrostDates = () => {
         <Grid item sx={{ mr: '1rem' }}>
           <Typography
             variant="body1"
-            style={{ fontWeight: 'bold', fontSize: '0.8rem', color: '#abaeb4' }}
+            sx={{ fontWeight: 'bold', fontSize: '0.9rem' }}
           >
             First Frost Date
           </Typography>
         </Grid>
 
         <Grid item>
-          <Typography variant="body1" style={{ fontWeight: 'bold', fontSize: '1.2rem' }}>
+          <Typography variant="body1" sx={{ fontWeight: 'bold', fontSize: '0.9rem' }}>
             {`${weatherDataRedux?.averageFrost?.firstFrostDate?.month} ${weatherDataRedux?.averageFrost?.firstFrostDate?.day}`}
           </Typography>
         </Grid>
@@ -104,14 +104,14 @@ const WeatherFrostDates = () => {
         <Grid item sx={{ mr: '1rem' }}>
           <Typography
             variant="body1"
-            style={{ fontWeight: 'bold', fontSize: '0.8rem', color: '#abaeb4' }}
+            sx={{ fontWeight: 'bold', fontSize: '0.9rem' }}
           >
             Last Frost Date
           </Typography>
         </Grid>
 
         <Grid item>
-          <Typography variant="body1" style={{ fontWeight: 'bold', fontSize: '1.2rem' }}>
+          <Typography variant="body1" sx={{ fontWeight: 'bold', fontSize: '0.9rem' }}>
             {`${weatherDataRedux?.averageFrost?.lastFrostDate?.month} ${weatherDataRedux?.averageFrost?.lastFrostDate?.day}`}
           </Typography>
         </Grid>
@@ -126,14 +126,14 @@ const WeatherFrostDates = () => {
         <Grid item sx={{ mr: '1rem' }}>
           <Typography
             variant="body1"
-            style={{ fontWeight: 'bold', fontSize: '0.8rem', color: '#abaeb4' }}
+            sx={{ fontWeight: 'bold', fontSize: '0.9rem' }}
           >
             Frost Free Days
           </Typography>
         </Grid>
 
         <Grid item>
-          <Typography variant="body1" style={{ fontWeight: 'bold', fontSize: '1.2rem' }}>
+          <Typography variant="body1" style={{ fontWeight: 'bold', fontSize: '0.9rem' }}>
             {weatherDataRedux?.frostFreeDays}
           </Typography>
         </Grid>
