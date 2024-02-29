@@ -67,6 +67,7 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
               <Grid item>
                 <Button
                   size="small"
+                  variant="text"
                   sx={{
                     justifyContent: 'center',
                     textDecoration: 'underline',
