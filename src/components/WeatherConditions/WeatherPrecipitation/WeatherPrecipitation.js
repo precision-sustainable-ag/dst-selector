@@ -25,7 +25,7 @@ const WeatherPrecipitation = ({ currentMonthFull }) => {
       >
         <Grid item>
           <Typography variant="body1">
-            <span style={{ fontWeight: 'bold', fontSize: '1rem' }}>Precipitation</span>
+            <span style={{ fontWeight: 'bold', fontSize: '1.2rem' }}>Precipitation</span>
             &nbsp;
             {' '}
             <Tooltip
@@ -74,14 +74,14 @@ const WeatherPrecipitation = ({ currentMonthFull }) => {
         <Grid item sx={{ mr: '1rem' }}>
           <Typography
             variant="body1"
-            style={{ fontWeight: 'bold', fontSize: '0.8rem', color: '#abaeb4' }}
+            style={{ fontWeight: 'bold', fontSize: '0.9rem' }}
           >
             {currentMonthFull}
           </Typography>
         </Grid>
 
         <Grid item>
-          <Typography variant="body1" style={{ fontWeight: 'bold', fontSize: '1.2rem' }}>
+          <Typography variant="body1" style={{ fontWeight: 'bold', fontSize: '0.9rem' }}>
             {weatherDataRedux?.averagePrecipitation?.thisMonth}
             {' '}
             <span style={{ fontWeight: 'bold', fontSize: '0.8rem' }}>inches</span>
@@ -99,14 +99,14 @@ const WeatherPrecipitation = ({ currentMonthFull }) => {
         <Grid item sx={{ mr: '1rem' }}>
           <Typography
             variant="body1"
-            style={{ fontWeight: 'bold', fontSize: '0.8rem', color: '#abaeb4' }}
+            style={{ fontWeight: 'bold', fontSize: '0.9rem' }}
           >
             Annual
           </Typography>
         </Grid>
 
         <Grid item>
-          <Typography variant="body1" style={{ fontWeight: 'bold', fontSize: '1.2rem' }}>
+          <Typography variant="body1" style={{ fontWeight: 'bold', fontSize: '0.9rem' }}>
             {weatherDataRedux?.averagePrecipitation?.annual}
             {' '}
             <span style={{ fontWeight: 'bold', fontSize: '0.8rem' }}>inches</span>
