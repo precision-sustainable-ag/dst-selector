@@ -270,7 +270,7 @@ export const allMonths = moment().localeData().monthsShort();
 
 export const trimString = (stringFull, size) => {
   if (!Number.isNaN(size)) {
-    return `${stringFull.substring(0, size)}${stringFull.length > 25 ? '...' : ''}`;
+    return `${stringFull.substring(0, size)}${stringFull.length > size ? '...' : ''}`;
   }
   return stringFull;
 };
