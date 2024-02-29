@@ -21,7 +21,7 @@ const SoilComposition = () => {
           <Grid item container direction="column">
             <Grid item>
               <Typography variant="body1">
-                <span style={{ fontWeight: 'bold', fontSize: '1rem' }}>Soil Composition</span>
+                <span style={{ fontWeight: 'bold', fontSize: '1.2rem' }}>Soil Composition</span>
                 &nbsp;
                 {' '}
                 <ReferenceTooltip
@@ -50,7 +50,7 @@ const SoilComposition = () => {
             <Grid item>
               <Typography
                 variant="body1"
-                style={{ fontWeight: 'bold', fontSize: '1.3rem', color: '#598445' }}
+                style={{ fontWeight: 'bold', fontSize: '0.9rem', color: '#598445' }}
               >
                 {soilDataRedux?.mapUnitName}
               </Typography>
