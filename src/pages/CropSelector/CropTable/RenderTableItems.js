@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import {
-  TableCell, Typography, TableRow, Button,
+  TableCell, Typography, TableRow, Button, Grid,
 } from '@mui/material';
 import {
   CropImage,
@@ -36,54 +36,48 @@ const RenderTableItems = ({ showGrowthWindow, handleModalOpen }) => {
             }}
           >
             <TableCell size="small" sx={{ maxWidth: 150 }}>
-              <div className="container-fluid">
-                <div className="row">
-                  <div className="col-auto pl-md-0">
-                    <Button onClick={() => handleModalOpen(crop)}>
-                      <CropImage
-                        present={!!crop.thumbnail}
-                        src={crop.thumbnail ? crop.thumbnail : 'https://placehold.it/100x100'}
-                        alt={crop.label}
-                      />
-                    </Button>
-                  </div>
-                  <div
-                    className="col-auto pl-md-0 text-left"
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'flex-start',
-                      justifyContent: 'center',
+              <Grid
+                container
+                direction="column"
+                alignItems="center"
+                justifyContent="center"
+                height="100%"
+                spacing={0}
+              >
+                <Grid item xs={12}>
+                  <Button onClick={() => handleModalOpen(crop)}>
+                    <CropImage
+                      present={!!crop.thumbnail}
+                      src={crop.thumbnail ? crop.thumbnail : 'https://placehold.it/100x100'}
+                      alt={crop.label}
+                    />
+                  </Button>
+                </Grid>
+                <Grid item xs={12}>
+                  <Button
+                    variant="text"
+                    sx={{
+                      fontWeight: 'bold',
+                      textDecoration: 'underline',
+                      color: 'black',
+                      fontSize: '0.rem',
+                    }}
+                    onClick={() => {
+                      handleModalOpen(crop);
                     }}
                   >
-                    <div>
-                      <Typography variant="h7" sx={{ fontWeight: 'bold', textAlign: 'left' }}>
-                        {flipCoverCropName(crop.label)}
-                      </Typography>
-                    </div>
-                    <div>
-                      <Typography
-                        variant="body1"
-                        style={{
-                          color: 'gray',
-                          fontWeight: 'normal',
-                          fontStyle: 'italic',
-                          fontSize: 'small',
-                          textAlign: 'left',
-                        }}
-                      >
-                        {crop.scientificName && trimString(crop.scientificName, 25)}
-                      </Typography>
-                    </div>
-                    {/* <div className="col-12 p-md-0"> */}
-                    <div>
-                      <Typography variant="body1" style={{ color: 'gray', fontSize: 'small' }}>
-                        {crop.group}
-                      </Typography>
-                    </div>
-                  </div>
-                </div>
-              </div>
+                    {flipCoverCropName(crop.label)}
+                  </Button>
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography sx={{ fontSize: '0.9rem' }}>
+                    {crop.scientificName && trimString(crop.scientificName, 20)}
+                  </Typography>
+                  <Typography variant="body1" style={{ color: 'gray', fontSize: '0.9rem' }}>
+                    {crop.group}
+                  </Typography>
+                </Grid>
+              </Grid>
             </TableCell>
             {cropDataRedux[0].keyTraits.length > 0
               && (
