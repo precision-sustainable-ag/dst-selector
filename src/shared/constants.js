@@ -1020,8 +1020,8 @@ export const extractData = (attribute, from) => {
   }
 
   // extract data
-  let data;
   let dataType;
+  const attributeValues = [];
 
   if (from === 'infoSheet') {
     if (attribute?.values[0]?.label) {
@@ -1029,16 +1029,18 @@ export const extractData = (attribute, from) => {
         <Typography variant="body2">{attribute?.values[0]?.label}</Typography>
       );
     }
-    const attributeValues = [];
     attribute?.values.forEach((ele) => {
       attributeValues.push(ele.value);
     });
-    data = attributeValues;
     dataType = attribute?.dataType.label;
   } else {
-    data = attribute?.values[0];
+    for (let i = 0; i < attribute?.values.length; i++) {
+      attributeValues.push(attribute?.values[i]);
+    }
     dataType = attribute?.dataType;
   }
+
+  const data = attributeValues;
 
   // handles no data
   if (!data) {
@@ -1062,14 +1064,9 @@ export const extractData = (attribute, from) => {
 
   // handles default
   return (
-    typeof data === 'object'
-      ? (
-        <Box>
-          {data.map((element, index) => <Typography key={index} variant="body2" textAlign="right">{element.toString()}</Typography>)}
-        </Box>
-      ) : (
-        <Typography variant="body2">{data.toString()}</Typography>
-      )
+    <Box>
+      {data.map((element, index) => <Typography key={index} variant="body2">{element.toString()}</Typography>)}
+    </Box>
   );
 };
 
