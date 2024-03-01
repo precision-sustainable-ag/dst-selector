@@ -112,6 +112,7 @@ const InformationSheetContent = ({ crop, modalData }) => {
                               style={{ paddingRight: '2rem' }}
                               display="flex"
                               justifyContent={isMobile ? 'left' : 'right'}
+                              textAlign="right"
                             >
                               {extractData(att, 'infoSheet')}
                             </Typography>
