@@ -101,7 +101,7 @@ const MyCoverCropComparisonTable = () => {
             newRow[`crop${index}`] = attribute;
           }
         });
-        // });
+        if (newRow[`crop${index}`] === undefined) newRow[`crop${index}`] = null;
       });
 
       tempRows.push(newRow);
