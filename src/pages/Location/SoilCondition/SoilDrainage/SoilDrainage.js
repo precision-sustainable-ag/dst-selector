@@ -13,9 +13,8 @@ import RenderDrainageClasses from './RenderDrainageClasses';
 import { updateDrainageClass as updateDrainageClassRedux } from '../../../../reduxStore/soilSlice';
 import MyCoverCropReset from '../../../../components/MyCoverCropReset/MyCoverCropReset';
 
-const SoilDrainage = () => {
+const SoilDrainage = ({ drainageOptions }) => {
   const dispatchRedux = useDispatch();
-
   // theme
   const uiTheme = useTheme();
   const isMobile = useMediaQuery(uiTheme.breakpoints.down('sm'));
@@ -47,11 +46,10 @@ const SoilDrainage = () => {
   }, [soilDataOriginalRedux]);
 
   useEffect(() => {
-    const checkArray = ['Very poorly drained', 'Poorly drained', 'Somewhat poorly drained'];
-    if (checkArray.some((e) => soilDataRedux?.drainageClass.includes(e))) {
+    if (drainageOptions.map((option) => option.value).indexOf(soilDataRedux?.drainageClass[0]) < 3) {
       setShowTiling(true);
     } else if (
-      soilDataRedux?.drainageClass.includes('Moderately well drained')
+      soilDataRedux?.drainageClass.includes(drainageOptions[3].value)
       && tilingCheck === true
     ) {
       setShowTiling(true);
@@ -205,6 +203,7 @@ const SoilDrainage = () => {
               setNewDrainage={setNewDrainage}
               setShowTiling={setShowTiling}
               drainage={newDrainage}
+              drainageOptions={drainageOptions}
             />
             )}
           </Grid>

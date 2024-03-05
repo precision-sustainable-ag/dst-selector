@@ -47,7 +47,7 @@ const RenderFloodingOptions = ({ floodingOptions, flooding = [''] }) => {
       style={{ marginRight: '1rem' }}
       flexBasis="0"
     >
-      {floodingOptions.floodingOptions.map((f, index) => (
+      {floodingOptions.map((f, index) => (
         <Box key={index} sx={{ width: isMobile ? '100%' : 'auto' }}>
           <Chip
             label={f.label}

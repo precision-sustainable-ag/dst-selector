@@ -30,6 +30,7 @@ const SoilCondition = () => {
 
   // useState vars
   const [floodingOptions, setFloodingOptions] = useState([]);
+  const [drainageOptions, setDrainageOptions] = useState([]);
   const query1 = `${encodeURIComponent('regions')}=${encodeURIComponent(regionIdRedux)}`;
   const query2 = `${encodeURIComponent('regions')}=${encodeURIComponent(stateIdRedux)}`;
 
@@ -38,6 +39,15 @@ const SoilCondition = () => {
       .then((res) => res.json())
       .then((data) => {
         setFloodingOptions(data.data.values);
+      })
+      .catch((err) => {
+        // eslint-disable-next-line no-console
+        console.log(err.message);
+      });
+    fetch(`https://${apiBaseUrlRedux}.covercrop-selector.org/v2/attribute?filtered=false&slug=soil_drainage&${query2}&${query1}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setDrainageOptions(data.data.values);
       })
       .catch((err) => {
         // eslint-disable-next-line no-console
@@ -176,7 +186,7 @@ const SoilCondition = () => {
   return (
     <Grid item container justifyContent={isLargeScreen ? 'flex-start' : 'center'}>
       <Grid item xs={12} md={10} sx={{ mb: '1rem' }}>
-        <SoilDrainage />
+        {drainageOptions.length > 0 && <SoilDrainage drainageOptions={drainageOptions} />}
       </Grid>
       <Grid item xs={12} md={10}>
         {floodingOptions.length > 0 && <SoilFloodingFrequency floodingOptions={floodingOptions} /> }

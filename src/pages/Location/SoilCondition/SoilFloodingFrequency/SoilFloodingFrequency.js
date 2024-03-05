@@ -10,7 +10,7 @@ import arrayEquals from '../../../../shared/functions';
 import RenderFloodingOptions from './RenderFloodingOptions';
 import { updateFloodingFrequency } from '../../../../reduxStore/soilSlice';
 
-const SoilFloodingFrequency = (floodingOptions) => {
+const SoilFloodingFrequency = ({ floodingOptions }) => {
   const dispatchRedux = useDispatch();
   // theme
   const uiTheme = useTheme();
