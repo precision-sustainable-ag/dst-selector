@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { updateDrainageClass as updateDrainageClassRedux } from '../../../../reduxStore/soilSlice';
 
 const RenderDrainageClasses = ({
-  tilingCheck, setTilingCheck, setNewDrainage, setShowTiling, drainage = [],
+  tilingCheck, setTilingCheck, setNewDrainage, setShowTiling, drainageOptions, drainage = [],
 }) => {
   const dispatchRedux = useDispatch();
 
@@ -19,15 +19,7 @@ const RenderDrainageClasses = ({
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const [previousDrainage, setPreviousDrainage] = useState(-1);
   const [updateTilingCheck, setUpdateTilingCheck] = useState(true);
-  const drainageArray = [
-    'Very poorly drained',
-    'Poorly drained',
-    'Somewhat poorly drained',
-    'Moderately well drained',
-    'Well drained',
-    'Somewhat excessively drained',
-    'Excessively drained',
-  ];
+  const drainageArray = drainageOptions.map((option) => option.value);
   const drainageVal = [drainageArray.indexOf(drainage)];
 
   // functions
