@@ -188,9 +188,7 @@ const Location = () => {
           .then((response) => {
             let { zone } = response;
 
-            if (zone !== '8a' && zone !== '8b') {
-              zone = zone.slice(0, -1);
-            }
+            zone = zone.slice(0, -1);
 
             if (councilShorthandRedux !== 'MCCC') {
               setRegionShorthand(zone);
