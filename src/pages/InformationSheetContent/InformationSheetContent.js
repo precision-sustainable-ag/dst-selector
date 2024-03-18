@@ -113,7 +113,7 @@ const InformationSheetContent = ({ crop, modalData }) => {
                               display="flex"
                               justifyContent={isMobile ? 'left' : 'right'}
                             >
-                              {extractData(att, 'infoSheet')}
+                              {extractData(att, 'infoSheet', councilShorthandRedux)}
                             </Typography>
                           </Grid>
                         </Grid>
