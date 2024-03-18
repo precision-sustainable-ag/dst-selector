@@ -2,14 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import MobileStepper from '@mui/material/MobileStepper';
-// import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import SwipeableViews from 'react-swipeable-views-react-18-fix';
 import { autoPlay } from 'react-swipeable-views-utils';
-// import { ucFirst } from '../../shared/constants';
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
@@ -19,43 +17,12 @@ const ImageCarousel = ({ images }) => {
   const maxSteps = images.length;
   const [imagesData, setImagesData] = useState([]);
 
-  // const baseName = (path = '') => {
-  //   let separator = '/';
-  //   const windowsSeparator = '\\';
-  //   if (path.includes(windowsSeparator)) {
-  //     separator = windowsSeparator;
-  //   }
-  //   return path.slice(path.lastIndexOf(separator) + 1);
-  // };
-
-  // const getPhotoCredits = (image = '') => {
-  //   // get base file name
-  //   const fileName = baseName(image.url);
-
-  //   const fileNameArray = fileName.split('_');
-
-  //   // get last value of array
-  //   const {
-  //     length,
-  //     [length - 1]: last,
-  //     [length - 2]: secondLast,
-  //     [length - 3]: thirdLast,
-  //   } = fileNameArray;
-  //   const year = parseInt(last, 10) ? `[${parseInt(last, 10)}]` : '';
-  //   if (thirdLast?.toLowerCase().includes('mirsky')) {
-  //     const mirskyLabString = ucFirst(`${thirdLast} ${secondLast}`);
-  //     return `Credit ${mirskyLabString} [${year}]`;
-  //   }
-  //   return `Credit ${secondLast ? `- ${secondLast}` : ''} ${year}`;
-  // };
-
   useEffect(() => {
     const imgsData = [];
     async function makeImages() {
       await images.forEach((image) => {
         const imgData = { label: '', imgPath: '' };
-        // imgData.label = getPhotoCredits(image);
-        imgData.label = 'Need Source Data';
+        imgData.label = `Source: ${image.source ? image.source : ''}, ${image.year_taken ? image.year_taken : ''}`;
         imgData.imgPath = image.url;
         imgsData.push(imgData);
       });
@@ -95,7 +62,6 @@ const ImageCarousel = ({ images }) => {
               }}
             >
               {Math.abs(activeStep - index) <= 2 && (
-              // <img src={step.imgPath} alt={step.label} style={{ width: '100px', height:  }} />
               <Box
                 component="img"
                 sx={{
