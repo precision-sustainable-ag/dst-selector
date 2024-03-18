@@ -80,14 +80,10 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
       >
         <Grid container>
           <Grid container item xs={12} sx={{ backgroundColor: '#2D7B7B' }}>
-            <Grid container item xs={11}>
+            <Grid container display="flex" alignItems="center" item xs={11}>
               <Grid item>
-                <Typography color="white">
-                  PLANT HARDINESS ZONE
-                  {' '}
-                  {crop.Zone}
-                  {' '}
-                  DATASET
+                <Typography color="white" sx={{ marginLeft: '2em' }}>
+                  Cover Crop Information Sheet
                 </Typography>
               </Grid>
               <Grid item>
@@ -103,7 +99,7 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
                     window.open('/data-dictionary', '_blank');
                   }}
                 >
-                  Data Dictionary
+                  Terminology Definitions
                 </Button>
               </Grid>
               <Grid item>
