@@ -18,6 +18,7 @@ const CropTableCard = ({ crop, indexKey, showGrowthWindow }) => {
   const selectedBtns = selectedCropIdsRedux;
 
   // TODO: Update SelectedCropsRedux
+  console.log(councilShorthandRedux);
 
   return (
     <>

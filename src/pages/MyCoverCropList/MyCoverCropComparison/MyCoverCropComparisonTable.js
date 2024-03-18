@@ -36,6 +36,7 @@ const MyCoverCropComparisonTable = () => {
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const comparisonKeysRedux = useSelector((stateRedux) => stateRedux.sharedData.comparisonKeys);
   const selectedCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCropIds);
+  const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
 
   // useState vars
   const [modalOpen, setModalOpen] = useState(false);
@@ -159,7 +160,7 @@ const MyCoverCropComparisonTable = () => {
 
     return (
       <TableCell align="center" key={index}>
-        {extractData(attribute, 'comparisonTable')}
+        {extractData(attribute, 'comparisonTable', councilShorthandRedux)}
       </TableCell>
     );
   });
