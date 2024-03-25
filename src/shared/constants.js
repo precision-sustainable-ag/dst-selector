@@ -687,8 +687,6 @@ export const getLegendDataBasedOnCouncil = (councilShorthand = '') => {
   ];
   const SCCClegendData = [
     { className: 'reliable', label: 'Reliable Establishment' },
-    { className: 'frostPossible', label: 'Average Frost' },
-    { className: 'multiple', label: 'Multiple' },
     { className: 'cashCrop', label: 'Cash Crop Growing Window' },
   ];
   const NECCClegendData = [
