@@ -11,7 +11,7 @@ import React from 'react';
 const NortheastCoverCropExperts = () => (
   <>
     <Typography style={{ paddingTop: '15px' }} variant="body1" align="left">
-      The MCCC verifies cover crop data at a state level with cover crop experts from diverse state geographies and a breadth of experience.
+      The MCCC verifies cover crop data at the state level with cover crop experts from diverse state geographies and a breadth of experience.
       These experts include University Extension, Government Agencies, seed industry, and farmers.
     </Typography>
     <br />
