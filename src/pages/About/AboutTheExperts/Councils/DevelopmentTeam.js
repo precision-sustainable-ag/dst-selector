@@ -39,28 +39,32 @@ const NortheastCoverCropExperts = () => (
       <span>, USDA-ARS</span>
     </p>
     <p>
+      <strong>Heather Darby</strong>
+      <span>, University of Vermont</span>
+    </p>
+    <p>
       <strong>Brian Davis</strong>
       <span>, North Carolina State University</span>
     </p>
     <p>
       <strong>Mikah Pinegar</strong>
-      <span>, North Carolina State University</span>
+      <span>, Web Development Team Lead</span>
     </p>
     <p>
       <strong>Rick Hitchcock</strong>
-      <span>, University of Georgia</span>
+      <span>, Web Development Team</span>
     </p>
     <p>
       <strong>Adam Smith</strong>
-      <span>, North Carolina State University</span>
+      <span>, Web Development Team</span>
     </p>
     <p>
       <strong>Trevor Puckett</strong>
-      <span>, North Carolina State University</span>
+      <span>, Web Development Team</span>
     </p>
     <p>
       <strong>Milad Agamohammadnia</strong>
-      <span>, North Carolina State University</span>
+      <span>, Web Development Team</span>
     </p>
     <p>
       <strong>Jingtong Xu</strong>
@@ -68,11 +72,15 @@ const NortheastCoverCropExperts = () => (
     </p>
     <p>
       <strong>Vyshnavi Adusumelli</strong>
-      <span>, North Carolina State University</span>
+      <span>, Web Development Team</span>
     </p>
     <p>
-      <strong>Heather Darby</strong>
-      <span>, University of Vermont</span>
+      <strong>Ameya Chavan</strong>
+      <span>, Web Development Team</span>
+    </p>
+    <p>
+      <strong>Boscosylvester John</strong>
+      <span>, Web Development Team</span>
     </p>
   </Typography>
 );
