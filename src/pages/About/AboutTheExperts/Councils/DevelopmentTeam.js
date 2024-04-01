@@ -79,7 +79,7 @@ const NortheastCoverCropExperts = () => (
       <span>, Web Development Team</span>
     </p>
     <p>
-      <strong>Boscosylvester John</strong>
+      <strong>Boscosylvester John Chittilapilly</strong>
       <span>, Web Development Team</span>
     </p>
   </Typography>
