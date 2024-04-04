@@ -11,11 +11,12 @@ import {
   Box, Button,
 } from '@mui/material';
 import React, { useState } from 'react';
-import NortheastCoverCropExperts from './Councils/NortheastCoverCropExperts';
-import MidwestCoverCropExperts from './Councils/MidwestCoverCropExperts';
+import NortheastCoverCropsExperts from './Councils/NortheastCoverCropsExperts';
+import MidwestCoverCropsExperts from './Councils/MidwestCoverCropsExperts';
 import DevelopmentTeam from './Councils/DevelopmentTeam';
-import SouthernCoverCropExperts from './Councils/SouthernCoverCropExperts';
-import WesternCoverCropExperts from './Councils/WesternCoverCropExperts';
+import SouthernCoverCropsExperts from './Councils/SouthernCoverCropsExperts';
+import WesternCoverCropsExperts from './Councils/WesternCoverCropsExperts';
+import TestingTeam from './Councils/TestingTeam';
 
 const AboutTheExperts = () => {
   const [value, setValue] = useState(0);
@@ -28,22 +29,27 @@ const AboutTheExperts = () => {
     },
     {
       id: 1,
-      menuOption: 'Midwest Cover Crop Council',
-      title: 'Midwest Cover Crop Council',
+      menuOption: 'Testing Team',
+      title: 'Testing Team',
     },
     {
       id: 2,
-      menuOption: 'Northeast Cover Crop Council',
-      title: 'Northeast Cover Crop Council',
+      menuOption: 'Midwest Cover Crops Council',
+      title: 'Midwest Cover Crop Council',
     },
     {
       id: 3,
-      menuOption: 'Southern Cover Crop Council',
-      title: 'Southern Cover Crop Council',
+      menuOption: 'Northeast Cover Crops Council',
+      title: 'Northeast Cover Crop Council',
     },
     {
       id: 4,
-      menuOption: 'Western Cover Crop Council',
+      menuOption: 'Southern Cover Crops Council',
+      title: 'Southern Cover Crop Council',
+    },
+    {
+      id: 5,
+      menuOption: 'Western Cover Crops Council',
       title: 'Western Cover Crop Council',
     },
   ];
@@ -51,13 +57,15 @@ const AboutTheExperts = () => {
   const showExperts = () => {
     switch (value) {
       case 1:
-        return <MidwestCoverCropExperts />;
+        return <TestingTeam />;
       case 2:
-        return <NortheastCoverCropExperts />;
+        return <MidwestCoverCropsExperts />;
       case 3:
-        return <SouthernCoverCropExperts />;
+        return <NortheastCoverCropsExperts />;
       case 4:
-        return <WesternCoverCropExperts />;
+        return <SouthernCoverCropsExperts />;
+      case 5:
+        return <WesternCoverCropsExperts />;
       default:
         return <DevelopmentTeam />;
     }
@@ -74,7 +82,7 @@ const AboutTheExperts = () => {
           key={council.id}
           size="Small"
           sx={{
-            width: '20%',
+            width: '16.6%',
             minHeight: '61px',
             backgroundColor: (council.id === value) ? '#598444' : 'white',
             color: (council.id === value) ? 'white' : '#8abc62',
