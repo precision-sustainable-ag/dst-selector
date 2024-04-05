@@ -109,6 +109,19 @@ const LicenseAndCopyright = () => (
       <br />
     </Typography>
     <MITLicenseText styles={false} aboutPage />
+    <br />
+    <br />
+    <Typography>
+      <a
+        target="_blank"
+        href="https://www.nrcs.usda.gov/contact/find-a-service-center"
+        rel="noopener noreferrer"
+      >
+        Click here
+      </a>
+      {' '}
+      to find an NRCS Service Center
+    </Typography>
   </Box>
 );
 export default LicenseAndCopyright;
