@@ -11,7 +11,7 @@ import {
   Box, Button, Typography,
 } from '@mui/material';
 import React, { useState } from 'react';
-import { getExperts } from '../../../shared/constants';
+import { getExpertsData } from '../../../shared/constants';
 
 const AboutTheExperts = () => {
   const [value, setValue] = useState(0);
@@ -50,13 +50,16 @@ const AboutTheExperts = () => {
 
       ))}
       <Typography style={{ paddingTop: '15px' }} variant="body1" align="left">
-        {value !== 2 && value !== 5 ? getExperts(value).map((expert) => (
-          <p>
-            <strong>{`${expert.lastName}, ${expert.firstName}; `}</strong>
-            <span>{expert.Affiliation}</span>
-          </p>
-        ))
-          : getExperts(value)}
+        {Array.isArray(getExpertsData(value))
+          ? getExpertsData(value)
+            .sort((a, b) => (a.lastName.localeCompare(b.lastName)))
+            .map((expert) => (
+              <p>
+                <strong>{`${expert.lastName}, ${expert.firstName}; `}</strong>
+                <span>{expert.Affiliation}</span>
+              </p>
+            ))
+          : getExpertsData(value)}
       </Typography>
     </Box>
   );
