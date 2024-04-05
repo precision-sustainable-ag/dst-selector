@@ -8,68 +8,22 @@
 */
 
 import {
-  Box, Button,
+  Box, Button, Typography,
 } from '@mui/material';
 import React, { useState } from 'react';
-import NortheastCoverCropsExperts from './Councils/NortheastCoverCropsExperts';
-import MidwestCoverCropsExperts from './Councils/MidwestCoverCropsExperts';
-import DevelopmentTeam from './Councils/DevelopmentTeam';
-import SouthernCoverCropsExperts from './Councils/SouthernCoverCropsExperts';
-import WesternCoverCropsExperts from './Councils/WesternCoverCropsExperts';
-import TestingTeam from './Councils/TestingTeam';
+import { getExperts } from '../../../shared/constants';
 
 const AboutTheExperts = () => {
   const [value, setValue] = useState(0);
 
   const councils = [
-    {
-      id: 0,
-      menuOption: 'Development Team',
-      title: 'Development Team',
-    },
-    {
-      id: 1,
-      menuOption: 'Testing Team',
-      title: 'Testing Team',
-    },
-    {
-      id: 2,
-      menuOption: 'Midwest Cover Crops Council',
-      title: 'Midwest Cover Crop Council',
-    },
-    {
-      id: 3,
-      menuOption: 'Northeast Cover Crops Council',
-      title: 'Northeast Cover Crop Council',
-    },
-    {
-      id: 4,
-      menuOption: 'Southern Cover Crops Council',
-      title: 'Southern Cover Crop Council',
-    },
-    {
-      id: 5,
-      menuOption: 'Western Cover Crops Council',
-      title: 'Western Cover Crop Council',
-    },
+    { id: 0, menuOption: 'Development Team' },
+    { id: 1, menuOption: 'Testing Team' },
+    { id: 2, menuOption: 'Midwest Cover Crops Council' },
+    { id: 3, menuOption: 'Northeast Cover Crops Council' },
+    { id: 4, menuOption: 'Southern Cover Crops Council' },
+    { id: 5, menuOption: 'Western Cover Crops Council' },
   ];
-
-  const showExperts = () => {
-    switch (value) {
-      case 1:
-        return <TestingTeam />;
-      case 2:
-        return <MidwestCoverCropsExperts />;
-      case 3:
-        return <NortheastCoverCropsExperts />;
-      case 4:
-        return <SouthernCoverCropsExperts />;
-      case 5:
-        return <WesternCoverCropsExperts />;
-      default:
-        return <DevelopmentTeam />;
-    }
-  };
 
   const handleChange = (newValue) => {
     setValue(newValue);
@@ -95,7 +49,15 @@ const AboutTheExperts = () => {
         </Button>
 
       ))}
-      {showExperts()}
+      <Typography style={{ paddingTop: '15px' }} variant="body1" align="left">
+        {value !== 2 && value !== 5 ? getExperts(value).map((expert) => (
+          <p>
+            <strong>{`${expert.lastName}, ${expert.firstName}; `}</strong>
+            <span>{expert.Affiliation}</span>
+          </p>
+        ))
+          : getExperts(value)}
+      </Typography>
     </Box>
   );
 };
