@@ -1177,7 +1177,7 @@ export const hasGoalRatingTwoOrLess = (selectedGoals, crop = []) => {
   return crop.inactive || selectedGoals.every((rating) => crop[rating] <= 2);
 };
 
-export const getExperts = (councilId) => {
+export const getExpertsData = (councilId) => {
   switch (councilId) {
     case 1:
       return [
