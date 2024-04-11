@@ -14,9 +14,9 @@ const DollarsAndRatings = ({ filter }) => {
   let unitsArray = null;
 
   if (councilShorthandRedux === 'MCCC') {
-    unitsArray = filter.units === 'rating 1-3' ? ['1', '2', '3'] : ['0', '1', '2', '3', '4'];
+    unitsArray = filter?.unitRange?.max === 3 ? ['1', '2', '3'] : ['0', '1', '2', '3', '4'];
   } else {
-    unitsArray = filter.units === 'rating 1-3' ? ['1', '2', '3'] : ['1', '2', '3', '4', '5'];
+    unitsArray = filter?.unitRange?.max === 3 ? ['1', '2', '3'] : ['1', '2', '3', '4', '5'];
   }
 
   const style = {
