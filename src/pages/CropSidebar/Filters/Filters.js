@@ -11,12 +11,10 @@ const DollarsAndRatings = ({ filter }) => {
   const dispatchRedux = useDispatch();
   const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
-  let unitsArray = null;
+  let unitsArray = councilShorthandRedux === 'MCCC' ? ['0', '1', '2', '3', '4'] : ['1', '2', '3', '4', '5'];
 
-  if (councilShorthandRedux === 'MCCC') {
-    unitsArray = filter?.unitRange?.max === 3 ? ['1', '2', '3'] : ['0', '1', '2', '3', '4'];
-  } else {
-    unitsArray = filter?.unitRange?.max === 3 ? ['1', '2', '3'] : ['1', '2', '3', '4', '5'];
+  if (filter?.unitRange?.max && filter?.unitRange?.min) {
+    unitsArray = Array(filter.unitRange.max - filter.unitRange.min + 1).fill(0).map((_, i) => filter.unitRange.min + i);
   }
 
   const style = {
