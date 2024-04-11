@@ -99,6 +99,7 @@ const MyCoverCropComparisonTable = () => {
       selectedCrops.forEach((crop, index) => {
         crop?.attributes?.forEach((attribute) => {
           if (attribute.label === key) {
+            console.log(attribute, crop.attributes);
             newRow[`crop${index}`] = attribute;
           }
         });
@@ -126,8 +127,11 @@ const MyCoverCropComparisonTable = () => {
 
   ));
 
+  // console.log(comparisonKeysRedux);
+
   const buildTableRows = (row) => Object.keys(row).map((key, index) => {
     const attribute = row[`crop${index - 1}`];
+    // console.log(row);
     // handles the key name
     if (key === 'comparisonKey') {
       return (
