@@ -194,6 +194,7 @@ const CropSidebar = ({
             description: filter.description,
             details: filter.details,
             units: filter.units,
+            unitRange: filter.unitRange,
           };
           if (type === 'number') {
             obj.values = filter.values;
