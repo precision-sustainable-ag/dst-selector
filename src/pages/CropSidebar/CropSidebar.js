@@ -85,7 +85,7 @@ const CropSidebar = ({
     return sidebarStarter;
   });
   const legendData = [
-    { className: 'sideBar', label: '0 = Least, 5 = Most' },
+    { className: 'sideBar', label: councilShorthandRedux === 'MCCC' ? '0 = Least, 4 = Most' : '1 = Least, 5 = Most' },
   ];
 
   const query = `${encodeURIComponent('regions')}=${encodeURIComponent(regionIdRedux)}`;
