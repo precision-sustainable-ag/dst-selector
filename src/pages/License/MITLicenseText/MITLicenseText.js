@@ -22,6 +22,40 @@ const MITLicenseText = ({ styles = true, aboutPage = false }) => {
             northeastcovercrops.com
           </a>
         </Typography>
+        {aboutPage && (
+          <>
+            <Typography variant="body1" gutterBottom>
+              Copyright ©
+              {' '}
+              {currentYear}
+              {' '}
+              Midwest Cover Crops Council,&nbsp;
+              <a href="http://midwestcovercrops.org/" target="_blank" rel="noopener noreferrer">
+                midwestcovercrops.org
+              </a>
+            </Typography>
+            <Typography variant="body1" gutterBottom>
+              Copyright ©
+              {' '}
+              {currentYear}
+              {' '}
+              Southern Cover Crops Council,&nbsp;
+              <a href="http://southerncovercrops.org/" target="_blank" rel="noopener noreferrer">
+                southerncovercrops.org
+              </a>
+            </Typography>
+            <Typography variant="body1" gutterBottom>
+              Copyright ©
+              {' '}
+              {currentYear}
+              {' '}
+              Western  Cover Crops Council,&nbsp;
+              <a href="http://westerncovercrops.org/" target="_blank" rel="noopener noreferrer">
+                westerncovercrops.org
+              </a>
+            </Typography>
+          </>
+        )}
       </Grid>
       {aboutPage ? (
         <Grid item xs={12}>
