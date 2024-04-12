@@ -236,7 +236,7 @@ const Header = () => {
           <Grid item>
             <AuthButton
               type={isAuthenticated ? 'Logout' : 'Login'}
-              color={isAuthenticated ? 'error' : 'primary'}
+              color={isAuthenticated ? 'error' : 'secondary'}
             />
           </Grid>
           <Grid item>
