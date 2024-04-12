@@ -22,7 +22,7 @@ const ImageCarousel = ({ images }) => {
     async function makeImages() {
       await images.forEach((image) => {
         const imgData = { label: '', imgPath: '' };
-        imgData.label = `Source: ${image.source ? image.source : ''}, ${image.year_taken ? image.year_taken : ''}`;
+        imgData.label = `Source: ${image.source ? image.source : ''}, ${image.year_taken ? image.year_taken : ''}, CC-BY-ND 4.0 License`;
         imgData.imgPath = image.url;
         imgsData.push(imgData);
       });
