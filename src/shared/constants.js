@@ -1030,12 +1030,12 @@ export const extractData = (attribute, from, councilShorthand) => {
       );
     }
     attribute?.values.forEach((ele) => {
-      attributeValues.push(`${ele.value} ${attribute?.units}`);
+      attributeValues.push(`${ele.value} ${attribute?.units ? attribute?.units : ''}`);
     });
     dataType = attribute?.dataType.label;
   } else {
     for (let i = 0; i < attribute?.values.length; i++) {
-      attributeValues.push(`${attribute?.values[i]} ${attribute?.units}`);
+      attributeValues.push(`${attribute?.values[i]} ${attribute?.units ? attribute?.units : ''}`);
     }
     dataType = attribute?.dataType;
   }
