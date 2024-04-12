@@ -145,7 +145,7 @@ const Location = () => {
         latitude,
         longitude,
         address,
-        zipCode,
+        // zipCode,
         county,
       } = selectedToEditSite;
 
@@ -184,7 +184,7 @@ const Location = () => {
           setRegionShorthand(county.replace(' County', ''));
         }
       } else {
-        callCoverCropApi(`https://phzmapi.org/${zipCode}.json`)
+        callCoverCropApi(`https://weather.covercrop-data.org/hardinesszone?lat=${latitude}&lon=${longitude}`)
           .then((response) => {
             let { zone } = response;
 
