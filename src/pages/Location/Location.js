@@ -174,7 +174,6 @@ const Location = () => {
         {
           address,
           markers: [[latitude, longitude]],
-          county,
         },
       ));
 

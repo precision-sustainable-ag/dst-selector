@@ -19,7 +19,7 @@ const ToggleOptions = ({ pathname }) => {
     // FIXME: the following codes will not work?
     if (pathname === '/explorer') {
       if (progressRedux > 4) {
-        dispatchRedux(activateMyCoverCropListTile({ myCoverCropActivationFlag: true, speciesSelectorActivationFlag: false }));
+        dispatchRedux(activateMyCoverCropListTile({ speciesSelectorActivationFlag: false }));
       }
     }
   };
@@ -32,7 +32,7 @@ const ToggleOptions = ({ pathname }) => {
 
   const setSpeciesSelectorActivationFlag = () => {
     openMyCoverCropReset('explorer');
-    dispatchRedux(activateSpeicesSelectorTile({ speciesSelectorActivationFlag: true, myCoverCropActivationFlag: false }));
+    dispatchRedux(activateSpeicesSelectorTile({ speciesSelectorActivationFlag: true }));
     if (pathname !== '/explorer') {
       history.push('/explorer');
     }

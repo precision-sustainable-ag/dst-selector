@@ -93,7 +93,7 @@ const Landing = () => {
       updateStateRedux(selectedState);
       // TODO: reset user marker for history fields?
       if (stateIdRedux !== selectedState.id) {
-        dispatchRedux(updateLocation({ address: '', markers: null, county: null }));
+        dispatchRedux(updateLocation({ address: '', markers: null }));
         dispatchRedux(updateRegion({ regionId: null, regionShorthand: null }));
       }
       const { id } = selectedState;

@@ -35,7 +35,7 @@ const MyCoverCropList = ({ comparisonView, from }) => {
 
   const redirectToSpeciesSelector = () => {
     history.replace('/');
-    dispatchRedux(activateSpeicesSelectorTile({ speciesSelectorActivationFlag: true, myCoverCropActivationFlag: false }));
+    dispatchRedux(activateSpeicesSelectorTile({ speciesSelectorActivationFlag: true }));
   };
 
   const redirectToExplorer = () => {

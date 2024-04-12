@@ -3,7 +3,6 @@ const initialState = {
   snackOpen: false,
   snackMessage: '',
   ajaxInProgress: false,
-  myCoverCropActivationFlag: false,
   speciesSelectorActivationFlag: true,
   comparisonKeys: [],
   myCoverCropListLocation: '',
@@ -53,18 +52,16 @@ export const updateComparisonKeys = (value) => ({
   },
 });
 
-export const activateMyCoverCropListTile = ({ myCoverCropActivationFlag, speciesSelectorActivationFlag }) => ({
+export const activateMyCoverCropListTile = ({ speciesSelectorActivationFlag }) => ({
   type: 'ACTIVATE_MY_COVER_CROP_LIST_TILE',
   payload: {
-    myCoverCropActivationFlag,
     speciesSelectorActivationFlag,
   },
 });
 
-export const activateSpeicesSelectorTile = ({ myCoverCropActivationFlag, speciesSelectorActivationFlag }) => ({
+export const activateSpeicesSelectorTile = ({ speciesSelectorActivationFlag }) => ({
   type: 'ACTIVATE_SPECIES_SELECTOR_TILE',
   payload: {
-    myCoverCropActivationFlag,
     speciesSelectorActivationFlag,
   },
 });
@@ -127,14 +124,12 @@ const sharedReducer = (state = initialState, action = null) => {
     case 'ACTIVATE_MY_COVER_CROP_LIST_TILE':
       return {
         ...state,
-        myCoverCropActivationFlag: action.payload.myCoverCropActivationFlag,
         speciesSelectorActivationFlag: action.payload.speciesSelectorActivationFlag,
       };
 
     case 'ACTIVATE_SPECIES_SELECTOR_TILE':
       return {
         ...state,
-        myCoverCropActivationFlag: action.payload.myCoverCropActivationFlag,
         speciesSelectorActivationFlag: action.payload.speciesSelectorActivationFlag,
       };
 
