@@ -35,29 +35,38 @@ export const updateStateInfo = ({
   },
 });
 
+export const setMapRedux = ({ mapData }) => ({
+  type: 'SET_MAP_REDUX',
+  payload: { mapData },
+});
+
 const mapReducer = (state = initialState, action = null) => {
-  switch (action.type) {
+  const { type, payload } = action;
+  switch (type) {
     case 'UPDATE_REGIONS':
       return {
         ...state,
-        regions: [...action.payload.value],
+        regions: [...payload.value],
       };
 
     case 'UPDATE_REGION':
       return {
         ...state,
-        regionId: action.payload.regionId,
-        regionShorthand: action.payload.regionShorthand,
+        regionId: payload.regionId,
+        regionShorthand: payload.regionShorthand,
       };
 
     case 'UPDATE_STATE_INFO':
       return {
         ...state,
-        stateLabel: action.payload.stateLabel,
-        councilLabel: action.payload.councilLabel,
-        councilShorthand: action.payload.councilShorthand,
-        stateId: action.payload.stateId,
+        stateLabel: payload.stateLabel,
+        councilLabel: payload.councilLabel,
+        councilShorthand: payload.councilShorthand,
+        stateId: payload.stateId,
       };
+
+    case 'SET_MAP_REDUX':
+      return { ...state, ...payload.mapData };
 
     default:
       return { ...state };
