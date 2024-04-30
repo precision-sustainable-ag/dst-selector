@@ -3,9 +3,10 @@ import React, { useState } from 'react';
 import {
   FormControl, InputLabel, Select, MenuItem, Grid, Button,
 } from '@mui/material';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getAuthToken } from '../../shared/authToken';
 import { loadHistory } from '../../shared/api';
+import { setSelectedHistory } from '../../reduxStore/userSlice';
 
 const menuProps = {
   PaperProps: {
@@ -57,9 +58,13 @@ const HistorySelect = () => {
   const [value, setValue] = useState('');
   const { userHistoryList } = useSelector((state) => state.userData);
 
+  const dispatch = useDispatch();
+
   const handleLoadHistory = () => {
+    dispatch(setSelectedHistory(value));
     const token = getAuthToken();
     loadHistory(token, value).then((res) => {
+      // TODO: loaded history here
       console.log('res', res);
     })
   }
