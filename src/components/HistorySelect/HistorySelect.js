@@ -1,8 +1,11 @@
+/* eslint-disable */
 import React, { useState } from 'react';
 import {
   FormControl, InputLabel, Select, MenuItem, Grid, Button,
 } from '@mui/material';
 import { useSelector } from 'react-redux';
+import { getAuthToken } from '../../shared/authToken';
+import { loadHistory } from '../../shared/api';
 
 const menuProps = {
   PaperProps: {
@@ -53,26 +56,36 @@ const selectStyles = {
 const HistorySelect = () => {
   const [value, setValue] = useState('');
   const { userHistoryList } = useSelector((state) => state.userData);
+
+  const handleLoadHistory = () => {
+    const token = getAuthToken();
+    loadHistory(token, value).then((res) => {
+      console.log('res', res);
+    })
+  }
+
   return (
     <Grid container>
       <Grid item xs={12} md={6} display="flex" justifyContent="center" alignItems="center">
         <FormControl sx={{ minWidth: '80%' }}>
           <InputLabel sx={inputLabelStyles}>
-            Select saved history:
+            Select History
           </InputLabel>
           <Select
             value={value}
-            label="12344"
+            label="Select History"
             onChange={(e) => setValue(e.target.value)}
             sx={selectStyles}
             MenuProps={menuProps}
           >
-            {userHistoryList.map((history) => (<MenuItem value={history.label}>{history.label}</MenuItem>))}
+            {userHistoryList.map((history, i) => (
+              <MenuItem value={history.label} key={i}>{history.label}</MenuItem>
+            ))}
           </Select>
         </FormControl>
       </Grid>
       <Grid item xs={12} md={6} display="flex" justifyContent="center" alignItems="center">
-        <Button>Confirm</Button>
+        <Button onClick={handleLoadHistory}>Load</Button>
         <Button>Add</Button>
       </Grid>
     </Grid>

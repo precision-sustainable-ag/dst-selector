@@ -103,7 +103,7 @@ export const loadHistory = async (token = null, name = null) => {
         if (history !== undefined) {
           console.log('loaded history', name, history);
           // return object since sometime ID property is needed
-          return history[0];
+          return history;
         }
         throw new Error('History name not available!');
       } else {
@@ -130,8 +130,7 @@ export const loadHistory = async (token = null, name = null) => {
 * @param {string} name - The name of history to update, default to `null`.
 * @param {object} data - The data of history to save, default to `null`.
 */
-// eslint-disable-next-line default-param-last
-export const saveHistory = async (token = null, id = null, name = null, data) => {
+export const saveHistory = async (name, data, token = null, id = null) => {
   try {
     if (!token) throw new Error('Access token not available!');
     if (id !== null) {
