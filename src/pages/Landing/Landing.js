@@ -1,3 +1,4 @@
+// /* eslint-disable */
 /* eslint-disable no-alert */
 /*
   This file contains the Landing component, helper functions, and styles
@@ -21,6 +22,7 @@ import { RegionSelectorMap } from '@psa/dst.ui.region-selector-map';
 import { callCoverCropApi } from '../../shared/constants';
 import { updateRegion, updateRegions, updateStateInfo } from '../../reduxStore/mapSlice';
 import { updateLocation } from '../../reduxStore/addressSlice';
+import HistorySelect from '../../components/HistorySelect/HistorySelect';
 
 const Landing = () => {
   const dispatchRedux = useDispatch();
@@ -219,25 +221,18 @@ const Landing = () => {
         mt={1}
       >
         <Box mr={1} ml={1} mb={1} mt={1}>
-          <Grid
-            container
-            item
-            direction="column"
-            alignItems="center"
-            justifyContent="center"
-            spacing={1}
-          >
+          <Grid container spacing={1}>
             <Grid item xs={12}>
               <Typography variant="h4" gutterBottom align="center">
                 {`Welcome to the${councilLabelRedux ? ` ${councilLabelRedux}` : ' Cover Crop'} Species Selector`}
               </Typography>
             </Grid>
-            <Grid item xs={12} align="center">
-              <Typography variant="body1">
+            <Grid item xs={12}>
+              <Typography variant="body1" align="center">
                 Choose your state from the dropdown or the map. You can zoom by scrolling or pinching on mobile.
               </Typography>
             </Grid>
-            <Grid item xs={12} mb={2}>
+            <Grid item xs={12} display="flex" justifyContent="center">
               <FormControl
                 sx={{ minWidth: 120 }}
               >
@@ -284,6 +279,9 @@ const Landing = () => {
                   ))}
                 </Select>
               </FormControl>
+            </Grid>
+            <Grid item xs={12}>
+              <HistorySelect />
             </Grid>
           </Grid>
         </Box>

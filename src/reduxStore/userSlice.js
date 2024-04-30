@@ -6,6 +6,8 @@ const initialState = {
   },
   selectedFieldId: null,
   userSelectRegion: false,
+  userHistoryList: [],
+  selectedHistory: null,
 };
 
 export const updateField = (field) => ({
@@ -29,6 +31,16 @@ export const userSelectRegion = (userSelectRegion) => ({
   payload: { userSelectRegion },
 });
 
+export const setUserHistoryList = (userHistoryList) => ({
+  type: 'SET_USER_HISTORY_LIST',
+  payload: { userHistoryList },
+});
+
+export const setSelectedHistory = (selectedHistory) => ({
+  type: 'SET_SELECTED_HISTORY',
+  payload: { selectedHistory },
+});
+
 const userReducer = (state = initialState, action = null) => {
   switch (action.type) {
     case 'UPDATE_FIELD':
@@ -46,6 +58,10 @@ const userReducer = (state = initialState, action = null) => {
       return { ...state, selectedFieldId: action.payload.fieldId };
     case 'USER_SELECT_REGION':
       return { ...state, userSelectRegion: action.payload.userSelectRegion };
+    case 'SET_USER_HISTORY_LIST':
+      return { ...state, userHistoryList: action.payload.userHistoryList };
+    case 'SET_SELECTED_HISTORY':
+      return { ...state, selectedHistory: action.payload.selectedHistory };
     default:
       return { ...state };
   }

@@ -21,6 +21,7 @@ import {
   updateConsent,
   updateField,
   setSelectFieldId,
+  setUserHistoryList,
 } from '../../reduxStore/userSlice';
 import {
   getFields, getHistory, buildHistory, postHistory,
@@ -32,6 +33,7 @@ import AuthModal from '../Landing/AuthModal/AuthModal';
 import { setMyCoverCropReset } from '../../reduxStore/sharedSlice';
 import { reset } from '../../reduxStore/store';
 import { getAuthToken, setAuthToken } from '../../shared/authToken';
+import { loadHistory } from '../../shared/api';
 // import logoImage from '../../../public/images/PSAlogo-text.png';
 
 const Header = () => {
@@ -177,6 +179,8 @@ const Header = () => {
           setConsentModalOpen(true);
         }
       });
+      // TODO: get new user histories here
+      loadHistory(token).then((res) => dispatchRedux(setUserHistoryList(res)));
     };
     if (isAuthenticated) fetchUserData();
   }, [isAuthenticated, getAccessTokenSilently]);
