@@ -6,7 +6,8 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { getAuthToken } from '../../shared/authToken';
 import { loadHistory } from '../../shared/api';
-import { setSelectedHistory } from '../../reduxStore/userSlice';
+import { setSelectedHistory, updateConsent } from '../../reduxStore/userSlice';
+import { setMapRedux } from '../../reduxStore/mapSlice';
 
 const menuProps = {
   PaperProps: {
@@ -61,13 +62,21 @@ const HistorySelect = () => {
   const dispatch = useDispatch();
 
   const handleLoadHistory = () => {
-    dispatch(setSelectedHistory(value));
+    const selectedHistory = userHistoryList.find((history) => history.label === value);
+    if (selectedHistory) dispatch(setSelectedHistory(selectedHistory));
     const token = getAuthToken();
     loadHistory(token, value).then((res) => {
-      // TODO: loaded history here
+      if (res) {
+        // TODO: temporary schema for user history
+        const { field, mapData, userData } = res.json;
+        const { date, status } = userData.consent;
+        // update mapData and consent
+        dispatch(setMapRedux({ mapData }));
+        dispatch(updateConsent(date, status));
+      }
       console.log('res', res);
-    })
-  }
+    });
+  };
 
   return (
     <Grid container>

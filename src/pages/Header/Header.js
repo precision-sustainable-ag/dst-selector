@@ -144,47 +144,48 @@ const Header = () => {
       setAuthToken(token);
       // Initially get user field data
       getFields(token).then((data) => dispatchRedux(updateField(data)));
-      getHistory(token).then((res) => {
-        if (res.data) {
-          const {
-            state, region, council, consent,
-          } = res.data.json;
-          // set user history redux state
-          localStorage.setItem('stateId', state.id);
-          dispatchRedux(
-            updateStateInfo({
-              stateLabel: state.label,
-              stateId: state.id,
-              councilShorthand: council.shorthand,
-              councilLabel: council.label,
-            }),
-          );
-          if (region) {
-            localStorage.setItem('regionId', region.id);
-          }
-          dispatchRedux(updateConsent(consent.status, consent.date));
-          // The consent is mainly use localstorage to test is expired, use history to update localStorage
-          const consentKey = 'consent';
-          if (localStorage.getItem(consentKey) === null) {
-            const consentObject = {
-              choice: consent.status,
-              // set user consent selection time as 180 days
-              expiredAt: new Date(consent.date).getTime() + 180 * 24 * 60 * 60 * 1000,
-            };
-            localStorage.setItem(consentKey, JSON.stringify(consentObject));
-          }
-          const selectedFieldId = res.data.fieldId;
-          dispatchRedux(setSelectFieldId(selectedFieldId));
-        } else {
-          setConsentModalOpen(true);
-        }
-      });
+      // getHistory(token).then((res) => {
+      //   if (res.data) {
+      //     const {
+      //       state, region, council, consent,
+      //     } = res.data.json;
+      //     // set user history redux state
+      //     localStorage.setItem('stateId', state.id);
+      //     dispatchRedux(
+      //       updateStateInfo({
+      //         stateLabel: state.label,
+      //         stateId: state.id,
+      //         councilShorthand: council.shorthand,
+      //         councilLabel: council.label,
+      //       }),
+      //     );
+      //     if (region) {
+      //       localStorage.setItem('regionId', region.id);
+      //     }
+      //     dispatchRedux(updateConsent(consent.status, consent.date));
+      //     // The consent is mainly use localstorage to test is expired, use history to update localStorage
+      //     const consentKey = 'consent';
+      //     if (localStorage.getItem(consentKey) === null) {
+      //       const consentObject = {
+      //         choice: consent.status,
+      //         // set user consent selection time as 180 days
+      //         expiredAt: new Date(consent.date).getTime() + 180 * 24 * 60 * 60 * 1000,
+      //       };
+      //       localStorage.setItem(consentKey, JSON.stringify(consentObject));
+      //     }
+      //     const selectedFieldId = res.data.fieldId;
+      //     dispatchRedux(setSelectFieldId(selectedFieldId));
+      //   } else {
+      //     setConsentModalOpen(true);
+      //   }
+      // });
       // TODO: get new user histories here
       loadHistory(token).then((res) => dispatchRedux(setUserHistoryList(res)));
     };
     if (isAuthenticated) fetchUserData();
   }, [isAuthenticated, getAccessTokenSilently]);
 
+  // TODO: remove this
   useEffect(() => {
     // save user history when user click next in Landing & Location page, change zone in explorer
     if (
@@ -203,7 +204,7 @@ const Header = () => {
         selectedFieldIdRedux,
       );
       const accessToken = getAuthToken();
-      postHistory(accessToken, userHistory);
+      // postHistory(accessToken, userHistory);
     }
   }, [progressRedux, regionShorthandRedux, selectedFieldIdRedux]);
 

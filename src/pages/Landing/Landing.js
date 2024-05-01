@@ -54,6 +54,12 @@ const Landing = () => {
     // This was targeting the map object which didnt have a label or shorthand property.  Should be be getting done here?
   };
 
+  // handler function for stateSelect list
+  const handleStateChange = (e) => {
+    const selState = allStates.filter((s) => s.shorthand === e.target.value);
+    setSelectedState(selState[0]);
+  };
+
   // Load map data based on current enviorment
   useEffect(() => {
     callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states`).then((stateData) => {
@@ -88,7 +94,7 @@ const Landing = () => {
     }
   }, [mapState]);
 
-  // update stateRedux and regionsRedux based on selectState change
+  // update state and regions redux based on state change(from dropdown or map)
   useEffect(() => {
     // is there a chance selectedState is {} ?
     if (Object.keys(selectedState).length !== 0) {
@@ -112,13 +118,16 @@ const Landing = () => {
 
           dispatchRedux(updateRegions(fetchedRegions));
 
-          // set default region for Selector and Explorer
-
-          localStorage.setItem('regionId', fetchedRegions[0].id ?? '');
-          dispatchRedux(updateRegion({
-            regionId: fetchedRegions[0].id ?? '',
-            regionShorthand: fetchedRegions[0].shorthand ?? '',
-          }));
+          // if the state is imported from redux(stateId already existed and is equal to selectedState.id)
+          // , skip set default since there already exist region selection
+          if (stateIdRedux !== selectedState.id) {
+            // set default region for Selector and Explorer
+            localStorage.setItem('regionId', fetchedRegions[0].id ?? '');
+            dispatchRedux(updateRegion({
+              regionId: fetchedRegions[0].id ?? '',
+              regionShorthand: fetchedRegions[0].shorthand ?? '',
+            }));
+          }
         })
         .catch((err) => {
           // eslint-disable-next-line no-console
@@ -126,12 +135,6 @@ const Landing = () => {
         });
     }
   }, [selectedState]);
-
-  // handler function for stateSelect list
-  const handleStateChange = (e) => {
-    const selState = allStates.filter((s) => s.shorthand === e.target.value);
-    setSelectedState(selState[0]);
-  };
 
   useEffect(() => {
     if (consentRedux) {
