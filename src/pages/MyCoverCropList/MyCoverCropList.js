@@ -21,7 +21,6 @@ const MyCoverCropList = ({ comparisonView, from }) => {
   const dispatchRedux = useDispatch();
   const comparison = comparisonView || false;
   const history = useHistory();
-  const activeCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.activeCropIds);
   const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
   const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
   const selectedCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCropIds);
@@ -74,7 +73,7 @@ const MyCoverCropList = ({ comparisonView, from }) => {
           </Box>
         ) : (
           <Grid container spacing={2}>
-            {cropDataRedux.filter((crop) => activeCropIdsRedux.includes(crop.id)).filter((crop) => selectedCropIdsRedux.includes(crop.id)).map((crop, index) => (
+            {cropDataRedux.filter((crop) => selectedCropIdsRedux.includes(crop.id)).map((crop, index) => (
               <Grid item key={index}>
                 <MyCoverCropCards
                   key={index}
