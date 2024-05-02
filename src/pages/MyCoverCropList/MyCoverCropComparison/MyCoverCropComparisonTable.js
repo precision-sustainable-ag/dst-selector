@@ -76,7 +76,7 @@ const MyCoverCropComparisonTable = () => {
       if (selectedGoalsRedux.length > 0) {
         let goalRating = 0;
         selectedGoalsRedux.forEach((goal) => {
-          if (crop.goals.filter((a) => a.label === goal)[0]?.length > 0) {
+          if (crop.goals.filter((a) => a.label === goal)?.length > 0) {
             goalRating = +crop.goals.filter((a) => a.label === goal)[0].values[0] + goalRating;
           }
         });
