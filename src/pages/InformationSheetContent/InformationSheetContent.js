@@ -35,7 +35,6 @@ const InformationSheetContent = ({ crop, modalData }) => {
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
   const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
-  const regionShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.regionShorthand);
 
   // useState vars
   const [currentSources, setCurrentSources] = useState([{}]);
@@ -45,9 +44,6 @@ const InformationSheetContent = ({ crop, modalData }) => {
   const query = `${encodeURIComponent('regions')}=${encodeURIComponent(regionIdRedux)}`;
 
   useEffect(() => {
-    document.title = `${crop.label} ${
-      councilShorthandRedux === 'MCCC' ? 'County' : 'Zone'
-    } ${regionShorthandRedux}`;
     if (stateIdRedux && regionIdRedux) {
       callCoverCropApi(
         `https://${apiBaseUrlRedux}.covercrop-selector.org/v1/crops/${crop?.id}/resources?${query}`,
