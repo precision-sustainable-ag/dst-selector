@@ -12,10 +12,10 @@ import {
   TextField,
 } from '@mui/material';
 import React from 'react';
-import { useSelector } from 'react-redux';
 import {
   postFields, buildPoint, buildGeometryCollection, deleteFields,
 } from '../../../shared/constants';
+import { getAuthToken } from '../../../shared/authToken';
 
 export const initFieldDialogState = {
   open: false,
@@ -44,7 +44,7 @@ const UserFieldDialog = ({
     open, fieldName, error, errorText, actionType, areaType, prevName,
   } = fieldDialogState;
 
-  const accessTokenRedux = useSelector((stateRedux) => stateRedux.userData.accessToken);
+  const accessToken = getAuthToken();
 
   const fieldNameValidation = (name) => {
     let errText = '';
@@ -68,7 +68,7 @@ const UserFieldDialog = ({
           const polygon = currentGeometry.features?.slice(-1)[0];
           geoCollection = buildGeometryCollection(point.geometry, polygon?.geometry, fieldName);
         }
-        postFields(accessTokenRedux, areaType === 'Polygon' ? geoCollection : point).then((newField) => {
+        postFields(accessToken, areaType === 'Polygon' ? geoCollection : point).then((newField) => {
           setUserFields([...userFields, newField.data]);
           setSelectedUserField(newField.data);
         });
@@ -84,7 +84,7 @@ const UserFieldDialog = ({
         const point = buildPoint(longitude, latitude, selectedUserField.label);
         const polygon = currentGeometry.features.slice(-1)[0];
         const geoCollection = buildGeometryCollection(point.geometry, polygon.geometry, selectedUserField.label);
-        postFields(accessTokenRedux, geoCollection).then((newField) => {
+        postFields(accessToken, geoCollection).then((newField) => {
           setUserFields([...userFields.map((userField) => {
             if (userField.label === selectedUserField.label) return newField.data;
             return userField;
@@ -92,7 +92,7 @@ const UserFieldDialog = ({
         });
       }
       if (actionType === 'delete') {
-        deleteFields(accessTokenRedux, selectedUserField.id)
+        deleteFields(accessToken, selectedUserField.id)
           .then(() => {
             const updatedUserFields = userFields.filter((userField) => userField.label !== selectedUserField.label);
             setUserFields(updatedUserFields);
@@ -107,8 +107,8 @@ const UserFieldDialog = ({
           label: fieldName,
         };
         const deletedField = userFields.filter((userField) => userField.label === prevName);
-        deleteFields(accessTokenRedux, deletedField[0].id)
-          .then(() => postFields(accessTokenRedux, newField))
+        deleteFields(accessToken, deletedField[0].id)
+          .then(() => postFields(accessToken, newField))
           .then((resField) => {
             setUserFields([...userFields.filter((userField) => userField.label !== prevName), resField.data]);
             setSelectedUserField(resField.data);

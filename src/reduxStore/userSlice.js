@@ -1,5 +1,4 @@
 const initialState = {
-  accessToken: null,
   field: null,
   consent: {
     status: null,
@@ -8,11 +7,6 @@ const initialState = {
   selectedFieldId: null,
   userSelectRegion: false,
 };
-
-export const updateAccessToken = (token) => ({
-  type: 'UPDATE_ACCESSTOKEN',
-  payload: { token },
-});
 
 export const updateField = (field) => ({
   type: 'UPDATE_FIELD',
@@ -37,8 +31,6 @@ export const userSelectRegion = (userSelectRegion) => ({
 
 const userReducer = (state = initialState, action = null) => {
   switch (action.type) {
-    case 'UPDATE_ACCESSTOKEN':
-      return { ...state, accessToken: action.payload.token };
     case 'UPDATE_FIELD':
       return { ...state, field: action.payload.field };
     case 'UPDATE_CONSENT':
