@@ -18,7 +18,6 @@ import InformationBar from './InformationBar/InformationBar';
 import ToggleOptions from './ToggleOptions/ToggleOptions';
 import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset';
 import {
-  updateAccessToken,
   updateConsent,
   updateField,
   setSelectFieldId,
@@ -32,6 +31,7 @@ import ConsentModal from '../CoverCropExplorer/ConsentModal/ConsentModal';
 import AuthModal from '../Landing/AuthModal/AuthModal';
 import { setMyCoverCropReset } from '../../reduxStore/sharedSlice';
 import { reset } from '../../reduxStore/store';
+import { getAuthToken, setAuthToken } from '../../shared/authToken';
 // import logoImage from '../../../public/images/PSAlogo-text.png';
 
 const Header = () => {
@@ -61,7 +61,6 @@ const Header = () => {
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const consentRedux = useSelector((stateRedux) => stateRedux.userData.consent);
   const selectedFieldIdRedux = useSelector((stateRedux) => stateRedux.userData.selectedFieldId);
-  const accessTokenRedux = useSelector((stateRedux) => stateRedux.userData.accessToken);
   const selectedCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCropIds);
 
   // useState vars
@@ -140,7 +139,7 @@ const Header = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       const token = await getAccessTokenSilently();
-      dispatchRedux(updateAccessToken(token));
+      setAuthToken(token);
       // Initially get user field data
       getFields(token).then((data) => dispatchRedux(updateField(data)));
       getHistory(token).then((res) => {
@@ -199,7 +198,8 @@ const Header = () => {
         consentRedux.date,
         selectedFieldIdRedux,
       );
-      postHistory(accessTokenRedux, userHistory);
+      const accessToken = getAuthToken();
+      postHistory(accessToken, userHistory);
     }
   }, [progressRedux, regionShorthandRedux, selectedFieldIdRedux]);
 

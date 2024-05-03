@@ -34,6 +34,7 @@ import {
 import { setSelectFieldId, updateField, userSelectRegion } from '../../reduxStore/userSlice';
 import UserFieldList from './UserFieldList/UserFieldList';
 import UserFieldDialog, { initFieldDialogState } from './UserFieldDialog/UserFieldDialog';
+import { getAuthToken } from '../../shared/authToken';
 
 // eslint-disable-next-line import/no-webpack-loader-syntax, import/no-unresolved
 mapboxgl.workerClass = require('worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker').default;
@@ -49,7 +50,6 @@ const Location = () => {
   const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
-  const accessTokenRedux = useSelector((stateRedux) => stateRedux.userData.accessToken);
   const userFieldRedux = useSelector((stateRedux) => stateRedux.userData.field);
   const selectedFieldIdRedux = useSelector((stateRedux) => stateRedux.userData.selectedFieldId);
   const userSelectRegionRedux = useSelector((stateRedux) => stateRedux.userData.userSelectRegion);
@@ -311,7 +311,8 @@ const Location = () => {
   // update userFieldRedux and selectedField when component will unmount
   useEffect(() => () => {
     if (isAuthenticated) {
-      getFields(accessTokenRedux).then((fields) => dispatchRedux(updateField(fields)));
+      const accessToken = getAuthToken();
+      getFields(accessToken).then((fields) => dispatchRedux(updateField(fields)));
       if (Object.keys(selectedUserFieldRef.current).length > 0) {
         dispatchRedux(setSelectFieldId(selectedUserFieldRef.current.id));
       } else {
