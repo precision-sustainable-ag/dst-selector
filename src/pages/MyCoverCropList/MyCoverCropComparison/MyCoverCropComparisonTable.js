@@ -46,9 +46,8 @@ const MyCoverCropComparisonTable = () => {
   const tempRows = [];
 
   // TODO: Update SelectedCropsRedux
-
   useEffect(() => {
-    setSelectedCrops(cropDataRedux.filter((crop) => activeCropIdsRedux.includes(crop.id)).filter((crop) => selectedCropIdsRedux.includes(crop.id)));
+    setSelectedCrops(cropDataRedux.filter((crop) => selectedCropIdsRedux.includes(crop.id)));
   }, [cropDataRedux, activeCropIdsRedux, selectedCropIdsRedux]);
 
   const handleModalOpen = (crop) => {
