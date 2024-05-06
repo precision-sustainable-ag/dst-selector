@@ -1,4 +1,5 @@
-/* eslint-disable */
+/* eslint-disable no-unused-vars */
+// /* eslint-disable */
 import React, { useState } from 'react';
 import {
   FormControl, InputLabel, Select, MenuItem, Grid, Button,
@@ -6,7 +7,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { getAuthToken } from '../../shared/authToken';
 import { loadHistory } from '../../shared/api';
-import { setSelectedHistory, updateConsent } from '../../reduxStore/userSlice';
+import { setSelectedHistory, updateConsent, updateField } from '../../reduxStore/userSlice';
 import { setMapRedux } from '../../reduxStore/mapSlice';
 
 const menuProps = {
@@ -70,9 +71,10 @@ const HistorySelect = () => {
         // TODO: temporary schema for user history
         const { field, mapData, userData } = res.json;
         const { date, status } = userData.consent;
-        // update mapData and consent
+        // update mapData, consent and field
         dispatch(setMapRedux({ mapData }));
         dispatch(updateConsent(date, status));
+        dispatch(updateField(field));
       }
       console.log('res', res);
     });
