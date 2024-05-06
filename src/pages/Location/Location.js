@@ -56,6 +56,7 @@ const Location = () => {
 
   const mapData = useSelector((state) => state.mapData);
   const consent = useSelector((state) => state.userData.consent);
+  const addressData = useSelector((state) => state.addressData);
 
   // useState vars
   const [selectedToEditSite, setSelectedToEditSite] = useState({});

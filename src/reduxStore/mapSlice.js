@@ -35,7 +35,7 @@ export const updateStateInfo = ({
   },
 });
 
-export const setMapRedux = ({ mapData }) => ({
+export const setMapRedux = (mapData) => ({
   type: 'SET_MAP_REDUX',
   payload: { mapData },
 });
