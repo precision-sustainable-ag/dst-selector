@@ -9,6 +9,7 @@ import { getAuthToken } from '../../shared/authToken';
 import { loadHistory } from '../../shared/api';
 import { setSelectedHistory, updateConsent, updateField } from '../../reduxStore/userSlice';
 import { setMapRedux } from '../../reduxStore/mapSlice';
+import { setAddressRedux } from '../../reduxStore/addressSlice';
 
 const menuProps = {
   PaperProps: {
@@ -69,14 +70,17 @@ const HistorySelect = () => {
     loadHistory(token, value).then((res) => {
       if (res) {
         // TODO: temporary schema for user history
-        const { field, mapData, userData } = res.json;
+        const {
+          field, mapData, userData, addressData,
+        } = res.json;
         const { date, status } = userData.consent;
         // update mapData, consent and field
-        dispatch(setMapRedux({ mapData }));
+        dispatch(setMapRedux(mapData));
         dispatch(updateConsent(date, status));
         dispatch(updateField(field));
+        dispatch(setAddressRedux(addressData));
       }
-      console.log('res', res);
+      // console.log('res', res);
     });
   };
 

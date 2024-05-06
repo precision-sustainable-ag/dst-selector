@@ -1,7 +1,7 @@
+// TODO: move address redux into mapData
 const initialState = {
   address: '',
   markers: null,
-  zone: '',
   county: null,
 };
 
@@ -14,21 +14,10 @@ export const updateLocation = ({ address, markers, county }) => ({
   },
 });
 
-export const changeAddress = ({ address }) => ({
-  type: 'CHANGE_ADDRESS',
-  payload: {
-    address,
-  },
+export const setAddressRedux = (addressData) => ({
+  type: 'SET_ADDRESS_REDUX',
+  payload: { addressData },
 });
-
-// export const updateMarker = (value) => {
-//     return {
-//         type: 'UPDATE_MARKER',
-//         payload: {
-//             value,
-//         },
-//     };
-// };
 
 const addressReducer = (state = initialState, action = null) => {
   switch (action.type) {
@@ -39,13 +28,8 @@ const addressReducer = (state = initialState, action = null) => {
         markers: action.payload.markers,
         county: action.payload.county,
       };
-
-    case 'CHANGE_ADDRESS':
-      return {
-        ...state,
-        address: action.payload.address,
-      };
-
+    case 'SET_ADDRESS_REDUX':
+      return { ...state, ...action.payload.addressData };
     default:
       return { ...state };
   }
