@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable max-len */
 /*
   This file contains the Header component, helper functions
@@ -143,7 +144,7 @@ const Header = () => {
       const token = await getAccessTokenSilently();
       setAuthToken(token);
       // Initially get user field data
-      getFields(token).then((data) => dispatchRedux(updateField(data)));
+      // getFields(token).then((data) => dispatchRedux(updateField(data)));
       // getHistory(token).then((res) => {
       //   if (res.data) {
       //     const {

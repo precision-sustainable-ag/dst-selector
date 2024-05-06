@@ -1,3 +1,7 @@
+// TODO: debug use
+/* eslint-disable no-unused-vars */
+// /* eslint-disable */
+
 /* eslint-disable no-alert */
 /*
   This is the main location widget component
@@ -22,7 +26,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 import statesLatLongDict from '../../shared/stateslatlongdict';
 import {
   abbrRegion, reverseGEO, callCoverCropApi, getFields,
-  buildPoint, drawAreaFromGeoCollection,
+  buildPoint, drawAreaFromGeoCollection, buildGeometryCollection,
 } from '../../shared/constants';
 import PlantHardinessZone from '../CropSidebar/PlantHardinessZone/PlantHardinessZone';
 import { updateLocation } from '../../reduxStore/addressSlice';
@@ -35,6 +39,7 @@ import { setSelectFieldId, updateField, userSelectRegion } from '../../reduxStor
 import UserFieldList from './UserFieldList/UserFieldList';
 import UserFieldDialog, { initFieldDialogState } from './UserFieldDialog/UserFieldDialog';
 import { getAuthToken } from '../../shared/authToken';
+import { saveHistory } from '../../shared/api';
 
 // eslint-disable-next-line import/no-webpack-loader-syntax, import/no-unresolved
 mapboxgl.workerClass = require('worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker').default;
@@ -51,48 +56,39 @@ const Location = () => {
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
   const userFieldRedux = useSelector((stateRedux) => stateRedux.userData.field);
-  const selectedFieldIdRedux = useSelector((stateRedux) => stateRedux.userData.selectedFieldId);
   const userSelectRegionRedux = useSelector((stateRedux) => stateRedux.userData.userSelectRegion);
+
+  const mapData = useSelector((state) => state.mapData);
+  const consent = useSelector((state) => state.userData.consent);
 
   // useState vars
   const [regionShorthand, setRegionShorthand] = useState(regionShorthandRedux);
   const [selectedToEditSite, setSelectedToEditSite] = useState({});
-  const [currentGeometry, setCurrentGeometry] = useState([]);
-  const [fieldDialogState, setFieldDialogState] = useState(initFieldDialogState);
-  const [selectedUserField, setSelectedUserField] = useState(
-    userFieldRedux?.data.filter((field) => field.id === selectedFieldIdRedux)[0]
-     || (userFieldRedux && userFieldRedux.data.length
-       ? userFieldRedux.data[userFieldRedux.data.length - 1]
-       : {}),
-  );
-  // use a state to control if currently is adding a point
-  const [isAddingPoint, setIsAddingPoint] = useState(true);
+  const [currentGeometry, setCurrentGeometry] = useState({});
   const [mapFeatures, setMapFeatures] = useState([]);
-  const [userFields, setUserFields] = useState(userFieldRedux ? [...userFieldRedux.data] : []);
-
-  const selectedUserFieldRef = useRef(selectedUserField);
 
   const { isAuthenticated } = useAuth0();
-  // calculate features shown on map
+
+  // if user field exists, return field, else return state capitol
   const getFeatures = () => {
-    if (userFields.length > 0 && Object.keys(selectedUserField).length !== 0) {
-      if (selectedUserField.geometry.type === 'Point') return [selectedUserField];
-      if (selectedUserField.geometry.type === 'GeometryCollection') return drawAreaFromGeoCollection(selectedUserField);
+    if (userFieldRedux !== null) {
+      const { geometry } = userFieldRedux;
+      if (geometry.type === 'Point') return [userFieldRedux];
+      if (geometry.type === 'GeometryCollection') return drawAreaFromGeoCollection(userFieldRedux);
     }
-    // reset default field to state capitol
     return [buildPoint(statesLatLongDict[stateLabelRedux][1], statesLatLongDict[stateLabelRedux][0])];
   };
 
   // set map features, update selectedFieldIdRedux
   useEffect(() => {
-    if (isAuthenticated) {
-      setMapFeatures(getFeatures());
-      selectedUserFieldRef.current = selectedUserField;
-    }
-  }, [selectedUserField]);
+    // load map features here
+    setMapFeatures(getFeatures());
+  }, []);
 
   // update regionShorthandRef
   useEffect(() => {
+    // TODO: these useEffect might could be refactored, by rebuilding redux for region,
+    //  force to update both regionId and regionShorthand when region changes
     localStorage.setItem('regionId', regionsRedux.filter((region) => region.shorthand === regionShorthand)[0]?.id);
     dispatchRedux(updateRegion({
       regionId: regionsRedux.filter((region) => region.shorthand === regionShorthand)[0]?.id,
@@ -112,23 +108,6 @@ const Location = () => {
 
   // set map initial lat lng
   const getLatLng = useMemo(() => {
-    const getFieldLatLng = (field) => {
-      if (field.geometry.type === 'Point') {
-        return [field.geometry.coordinates[1], field.geometry.coordinates[0]];
-      }
-      if (field.geometry.type === 'GeometryCollection') {
-        const { coordinates } = field.geometry.geometries[0];
-        return [coordinates[1], coordinates[0]];
-      }
-      return undefined;
-    };
-    if (selectedFieldIdRedux !== null) {
-      if (Object.keys(selectedUserField).length > 0) return getFieldLatLng(selectedUserField);
-    }
-    if (userFieldRedux && userFieldRedux.data.length > 0) {
-      const currentField = userFieldRedux.data[userFieldRedux.data.length - 1];
-      return getFieldLatLng(currentField);
-    }
     if (markersRedux) {
       return [markersRedux[0][0], markersRedux[0][1]];
     }
@@ -151,6 +130,15 @@ const Location = () => {
 
       if (markersRedux && latitude === markersRedux[0][0] && longitude === markersRedux[0][1]) return;
 
+      // save field in redux
+      const point = buildPoint(longitude, latitude);
+      let geoCollection = null;
+      if (Object.keys(currentGeometry).length > 0) {
+        const polygon = currentGeometry.features?.slice(-1)[0];
+        geoCollection = buildGeometryCollection(point.geometry, polygon?.geometry);
+        dispatchRedux(updateField(geoCollection));
+      }
+
       // if user address differenct than capitol, set userSelectRegion to false
       if (latitude !== statesLatLongDict[stateLabelRedux][0]
          || longitude !== statesLatLongDict[stateLabelRedux][1]) {
@@ -158,17 +146,17 @@ const Location = () => {
       }
 
       // if is adding a new point, open dialog
-      if (isAuthenticated && isAddingPoint && latitude) {
-        const currentSelectedField = selectedUserField?.geometry;
-        if ((!currentSelectedField && latitude !== statesLatLongDict[stateLabelRedux][0])
-            || (currentSelectedField?.type === 'Point' && latitude !== currentSelectedField?.coordinates[1])
-            || (currentSelectedField?.type === 'GeometryCollection' && latitude !== currentSelectedField?.geometries[0].coordinates[1])
-        ) {
-          setFieldDialogState({
-            ...fieldDialogState, open: true, actionType: 'add', areaType: 'Point',
-          });
-        }
-      }
+      // if (isAuthenticated && isAddingPoint && latitude) {
+      // const currentSelectedField = selectedUserField?.geometry;
+      // if ((!currentSelectedField && latitude !== statesLatLongDict[stateLabelRedux][0])
+      //     || (currentSelectedField?.type === 'Point' && latitude !== currentSelectedField?.coordinates[1])
+      //     || (currentSelectedField?.type === 'GeometryCollection' && latitude !== currentSelectedField?.geometries[0].coordinates[1])
+      // ) {
+      //   setFieldDialogState({
+      //     ...fieldDialogState, open: true, actionType: 'add', areaType: 'Point',
+      //   });
+      // }
+      // }
 
       dispatchRedux(updateLocation(
         {
@@ -308,28 +296,40 @@ const Location = () => {
     }
   }, [markersRedux]);
 
-  // update userFieldRedux and selectedField when component will unmount
-  useEffect(() => () => {
-    if (isAuthenticated) {
-      const accessToken = getAuthToken();
-      getFields(accessToken).then((fields) => dispatchRedux(updateField(fields)));
-      if (Object.keys(selectedUserFieldRef.current).length > 0) {
-        dispatchRedux(setSelectFieldId(selectedUserFieldRef.current.id));
-      } else {
-        dispatchRedux(setSelectFieldId(null));
-      }
-    }
-  }, []);
-
   // map onDraw function
   const onDraw = (draw) => {
+    console.log('draw', draw);
     if (isAuthenticated && draw.mode !== 'select') {
-      setIsAddingPoint(false);
-      setFieldDialogState({
-        ...fieldDialogState, open: true, actionType: draw.mode, areaType: 'Polygon',
-      });
+      // setFieldDialogState({
+      //   ...fieldDialogState, open: true, actionType: draw.mode, areaType: 'Polygon',
+      // });
+    }
+    // TODO: temporary change for unlogged user, build a field obj and save it to redux
+    if (!isAuthenticated && draw.mode !== 'select') {
+      // FIXME: the following code doesn't work, maybe still need a state like fieldDialogState to deal with types
+
     }
   };
+
+  const handleSave = () => {
+    const token = getAuthToken();
+
+    const { longitude, latitude } = selectedToEditSite;
+    const point = buildPoint(longitude, latitude, 'test');
+    let geoCollection = null;
+    const polygon = currentGeometry.features?.slice(-1)[0];
+    geoCollection = buildGeometryCollection(point.geometry, polygon?.geometry, 'test');
+    console.log(point);
+
+    const data = {
+      mapData,
+      userData: { consent },
+      field: point,
+    };
+    console.log(data, token);
+    // saveHistory('test1', data, token);
+  };
+  // console.log('currentGeometry', currentGeometry);
 
   return (
     <Box
@@ -366,14 +366,15 @@ const Location = () => {
           </Grid>
 
           <Grid item xs={12}>
-            {(isAuthenticated && stateLabelRedux !== 'Ontario') && (
+            {/* {(isAuthenticated && stateLabelRedux !== 'Ontario') && (
             <UserFieldList
               userFields={userFields}
               field={selectedUserField}
               setField={setSelectedUserField}
               setFieldDialogState={setFieldDialogState}
             />
-            )}
+            )} */}
+            <button type="button" onClick={handleSave}>save</button>
           </Grid>
         </Grid>
         {stateLabelRedux !== 'Ontario' && (
@@ -406,19 +407,6 @@ const Location = () => {
         </Grid>
         )}
 
-        <UserFieldDialog
-          fieldDialogState={fieldDialogState}
-          setFieldDialogState={setFieldDialogState}
-          userFields={userFields}
-          selectedToEditSite={selectedToEditSite}
-          currentGeometry={currentGeometry}
-          selectedUserField={selectedUserField}
-          setUserFields={setUserFields}
-          setSelectedUserField={setSelectedUserField}
-          setMapFeatures={setMapFeatures}
-          getFeatures={getFeatures}
-          setIsAddingPoint={setIsAddingPoint}
-        />
       </Grid>
     </Box>
   );
