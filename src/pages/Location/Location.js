@@ -14,7 +14,6 @@ import {
 import React, {
   useEffect,
   useState,
-  useRef,
   useMemo,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -35,9 +34,7 @@ import { snackHandler } from '../../reduxStore/sharedSlice';
 import {
   updateAvgFrostDates, updateAvgPrecipAnnual, updateAvgPrecipCurrentMonth, updateFrostFreeDays,
 } from '../../reduxStore/weatherSlice';
-import { setSelectFieldId, updateField, userSelectRegion } from '../../reduxStore/userSlice';
-import UserFieldList from './UserFieldList/UserFieldList';
-import UserFieldDialog, { initFieldDialogState } from './UserFieldDialog/UserFieldDialog';
+import { updateField } from '../../reduxStore/userSlice';
 import { getAuthToken } from '../../shared/authToken';
 import { saveHistory } from '../../shared/api';
 
@@ -56,13 +53,11 @@ const Location = () => {
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
   const userFieldRedux = useSelector((stateRedux) => stateRedux.userData.field);
-  const userSelectRegionRedux = useSelector((stateRedux) => stateRedux.userData.userSelectRegion);
 
   const mapData = useSelector((state) => state.mapData);
   const consent = useSelector((state) => state.userData.consent);
 
   // useState vars
-  const [regionShorthand, setRegionShorthand] = useState(regionShorthandRedux);
   const [selectedToEditSite, setSelectedToEditSite] = useState({});
   const [currentGeometry, setCurrentGeometry] = useState({});
   const [mapFeatures, setMapFeatures] = useState([]);
@@ -85,29 +80,22 @@ const Location = () => {
     setMapFeatures(getFeatures());
   }, []);
 
-  // update regionShorthandRef
-  useEffect(() => {
-    // TODO: these useEffect might could be refactored, by rebuilding redux for region,
-    //  force to update both regionId and regionShorthand when region changes
-    localStorage.setItem('regionId', regionsRedux.filter((region) => region.shorthand === regionShorthand)[0]?.id);
+  const updateRegionRedux = (regionName) => {
+    const selectedRegion = regionsRedux.filter((region) => region.shorthand === regionName)[0];
+    localStorage.setItem('regionId', selectedRegion.id);
     dispatchRedux(updateRegion({
-      regionId: regionsRedux.filter((region) => region.shorthand === regionShorthand)[0]?.id,
-      regionShorthand,
+      regionId: selectedRegion.id ?? '',
+      regionShorthand: selectedRegion.shorthand ?? '',
     }));
-
-    // if userSelectRegionRedux = true, remove weather redux value
-    if (userSelectRegionRedux) {
-      dispatchRedux(updateFrostFreeDays(0));
-      dispatchRedux(updateAvgFrostDates(
-        { firstFrostDate: { month: '', day: '' }, lastFrostDate: { month: '', day: '' } },
-      ));
-      dispatchRedux(updateAvgPrecipCurrentMonth(0));
-      dispatchRedux(updateAvgPrecipAnnual(0));
-    }
-  }, [regionShorthand]);
+  };
 
   // set map initial lat lng
   const getLatLng = useMemo(() => {
+    if (userFieldRedux !== null) {
+      const { type, coordinates, geometries } = userFieldRedux.geometry;
+      if (type === 'Point') return [coordinates[1], coordinates[0]];
+      if (type === 'GeometryCollection') return [geometries[0].coordinates[1], geometries[0].coordinates[0]];
+    }
     if (markersRedux) {
       return [markersRedux[0][0], markersRedux[0][1]];
     }
@@ -127,6 +115,7 @@ const Location = () => {
         // zipCode,
         county,
       } = selectedToEditSite;
+      console.log('selectedToEditSite', selectedToEditSite);
 
       if (markersRedux && latitude === markersRedux[0][0] && longitude === markersRedux[0][1]) return;
 
@@ -137,13 +126,7 @@ const Location = () => {
         const polygon = currentGeometry.features?.slice(-1)[0];
         geoCollection = buildGeometryCollection(point.geometry, polygon?.geometry);
         dispatchRedux(updateField(geoCollection));
-      }
-
-      // if user address differenct than capitol, set userSelectRegion to false
-      if (latitude !== statesLatLongDict[stateLabelRedux][0]
-         || longitude !== statesLatLongDict[stateLabelRedux][1]) {
-        dispatchRedux(userSelectRegion(false));
-      }
+      } else { dispatchRedux(updateField(point)); }
 
       // if is adding a new point, open dialog
       // if (isAuthenticated && isAddingPoint && latitude) {
@@ -169,7 +152,7 @@ const Location = () => {
       if (councilShorthandRedux === 'MCCC') {
         // if council is MCCC, change selectedRegion based on county
         if (county && county.includes(' County')) {
-          setRegionShorthand(county.replace(' County', ''));
+          updateRegionRedux(county.replace(' County', ''));
         }
       } else {
         callCoverCropApi(`https://weather.covercrop-data.org/hardinesszone?lat=${latitude}&lon=${longitude}`)
@@ -179,7 +162,7 @@ const Location = () => {
             zone = zone.slice(0, -1);
 
             if (councilShorthandRedux !== 'MCCC') {
-              setRegionShorthand(zone);
+              updateRegionRedux(zone);
             }
             dispatchRedux(snackHandler({
               snackOpen: true,
@@ -206,6 +189,8 @@ const Location = () => {
 
   // call cover crop api based on marker change
   useEffect(() => {
+    // FIXME: this useEffect will also run if click next and click back to return to this page
+    // TODO: possible solution: move this into above, since the dependency also applies when selectedToEditSite changes
     const getDetails = async () => {
       // const { markers } = state;
       const weatherApiURL = 'https://weather.covercrop-data.org';
@@ -291,7 +276,7 @@ const Location = () => {
       }
     };
     // if user select another region, do not call weather api
-    if (markersRedux && !userSelectRegionRedux) {
+    if (markersRedux) {
       getDetails();
     }
   }, [markersRedux]);
@@ -339,7 +324,7 @@ const Location = () => {
         alignItems: 'center',
       }}
     >
-      <Grid lg={10} container spacing={2}>
+      <Grid container spacing={2}>
         <Grid container item md={stateLabelRedux === 'Ontario' ? 12 : 3} xs={12}>
           <Grid item xs={12}>
             <Typography variant="h4">
@@ -357,12 +342,7 @@ const Location = () => {
           </Grid>
 
           <Grid item xs={12}>
-            <PlantHardinessZone
-              regionShorthand={regionShorthand}
-              setRegionShorthand={setRegionShorthand}
-              regionsRedux={regionsRedux}
-              councilLabelRedux={councilLabelRedux}
-            />
+            <PlantHardinessZone />
           </Grid>
 
           <Grid item xs={12}>
