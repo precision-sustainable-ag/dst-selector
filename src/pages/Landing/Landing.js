@@ -43,17 +43,6 @@ const Landing = () => {
 
   const availableStates = useMemo(() => allStates.map((state) => state.label), [allStates]);
 
-  const updateStateRedux = (selState) => {
-    localStorage.setItem('stateId', selState.id);
-    dispatchRedux(updateStateInfo({
-      stateLabel: selState.label,
-      stateId: selState.id,
-      councilShorthand: selState.council.shorthand,
-      councilLabel: selState.council.label,
-    }));
-    // This was targeting the map object which didnt have a label or shorthand property.  Should be be getting done here?
-  };
-
   // handler function for stateSelect list
   const handleStateChange = (e) => {
     const selState = allStates.filter((s) => s.shorthand === e.target.value);
@@ -98,8 +87,17 @@ const Landing = () => {
   useEffect(() => {
     // is there a chance selectedState is {} ?
     if (Object.keys(selectedState).length !== 0) {
-      updateStateRedux(selectedState);
-      // TODO: reset user marker for history fields?
+      // update state
+      localStorage.setItem('stateId', selectedState.id);
+      if (stateIdRedux !== selectedState.id) {
+        dispatchRedux(updateStateInfo({
+          stateLabel: selectedState.label,
+          stateId: selectedState.id,
+          councilShorthand: selectedState.council.shorthand,
+          councilLabel: selectedState.council.label,
+        }));
+      // This was targeting the map object which didnt have a label or shorthand property.  Should be be getting done here?
+      }
       if (stateIdRedux !== selectedState.id) {
         dispatchRedux(updateLocation({ address: '', markers: null, county: null }));
         dispatchRedux(updateRegion({ regionId: null, regionShorthand: null }));
