@@ -24,7 +24,6 @@ const SoilCondition = () => {
   const soilDataOriginalRedux = useSelector((stateRedux) => stateRedux.soilData.soilDataOriginal);
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
   const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
-  const userSelectRegionRedux = useSelector((stateRedux) => stateRedux.userData.userSelectRegion);
   const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
   const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
 
@@ -155,8 +154,6 @@ const SoilCondition = () => {
         .catch((error) => console.error('SSURGO FETCH ERROR', error));
     };
 
-    // if the user selected another region, not run the function
-    if (userSelectRegionRedux) return;
     if (stateLabelRedux === 'Ontario') return;
 
     const lat = markersRedux[0][0];

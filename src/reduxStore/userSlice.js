@@ -25,6 +25,7 @@ export const setSelectFieldId = (fieldId) => ({
   payload: { fieldId },
 });
 
+// TODO: remove this since it's not used now
 // eslint-disable-next-line no-shadow
 export const userSelectRegion = (userSelectRegion) => ({
   type: 'USER_SELECT_REGION',

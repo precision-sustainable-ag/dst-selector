@@ -34,7 +34,6 @@ import SidebarFilter from './SidebarFilter/SidebarFilter';
 import CoverCropGoals from './CoverCropGoals/CoverCropGoals';
 import PlantHardinessZone from './PlantHardinessZone/PlantHardinessZone';
 import Legend from '../../components/Legend/Legend';
-import { updateRegion } from '../../reduxStore/mapSlice';
 import { clearFilters } from '../../reduxStore/filterSlice';
 import { updateCropData, updateActiveCropIds } from '../../reduxStore/cropSlice';
 import { setAjaxInProgress, regionToggleHandler } from '../../reduxStore/sharedSlice';
@@ -56,14 +55,11 @@ const CropSidebar = ({
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
   const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
-  const regionShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.regionShorthand);
   const regionToggleRedux = useSelector((stateRedux) => stateRedux.sharedData.regionToggle);
   const speciesSelectorActivationFlagRedux = useSelector((stateRedux) => stateRedux.sharedData.speciesSelectorActivationFlag);
   const comparisonKeysRedux = useSelector((stateRedux) => stateRedux.sharedData.comparisonKeys);
   const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
-  const regionsRedux = useSelector((stateRedux) => stateRedux.mapData.regions);
-  const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const drainageClassRedux = useSelector((stateRedux) => stateRedux.soilData.soilData.drainageClass[0]);
   const floodingFrequencyRedux = useSelector((stateRedux) => stateRedux.soilData.soilData.floodingFrequency[0]);
@@ -300,15 +296,6 @@ const CropSidebar = ({
     filtersList();
   }, [sidebarFilters]);
 
-  const updateRegionRedux = (regionName) => {
-    const selectedRegion = regionsRedux.filter((region) => region.shorthand === regionName)[0];
-    localStorage.setItem('regionId', selectedRegion.id);
-    dispatchRedux(updateRegion({
-      regionId: selectedRegion.id ?? '',
-      regionShorthand: selectedRegion.shorthand ?? '',
-    }));
-  };
-
   return !loading && (from === 'myCoverCropListStatic') ? (
     <Grid container spacing={3}>
       <Grid item>
@@ -395,13 +382,7 @@ const CropSidebar = ({
                         {regionToggleRedux ? <ExpandLess /> : <ExpandMore />}
                       </ListItemButton>
                     </List>
-                    <PlantHardinessZone
-                      regionShorthand={regionShorthandRedux}
-                      setRegionShorthand={updateRegionRedux}
-                      regionsRedux={regionsRedux}
-                      councilLabelRedux={councilLabelRedux}
-                      regionToggleRedux={regionToggleRedux}
-                    />
+                    <PlantHardinessZone />
                     <CoverCropSearch />
                   </>
                 )}
