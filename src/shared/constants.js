@@ -811,6 +811,7 @@ export const cropDataFormatter = (cropData = [{}], cashCropStartDate = '', cashC
   return cropData.map((crop) => monthStringBuilder(crop));
 };
 
+// TODO: not used below
 export const apiServerUrl = 'https://history.covercrop-data.org/v1';
 
 export const getFields = async (accessToken = null) => {
@@ -864,6 +865,7 @@ export const deleteFields = async (accessToken = null, id = null) => {
       .catch((err) => console.log(err))
   );
 };
+// TODO: not used above
 
 export const buildPoint = (lng, lat, name = null) => ({
   type: 'Feature',
@@ -939,6 +941,7 @@ export const addCropToBasket = (
   }
 };
 
+// TODO: not used below
 export const getHistory = async (accessToken = null) => {
   const url = `${apiServerUrl}/history?schema=1`;
   const config = {
@@ -1012,6 +1015,7 @@ export const postHistory = async (accessToken = null, historyData = null) => {
       .catch((err) => console.log(err))
   );
 };
+// TODO: not used above
 
 export const extractData = (attribute, from, councilShorthand) => {
   // handles no attribute
