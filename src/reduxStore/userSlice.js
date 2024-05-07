@@ -4,8 +4,6 @@ const initialState = {
     status: null,
     date: null,
   },
-  selectedFieldId: null,
-  userSelectRegion: false,
   userHistoryList: [],
   selectedHistory: null,
   historyDialogState: {
@@ -22,18 +20,6 @@ export const updateField = (field) => ({
 export const updateConsent = (status, date) => ({
   type: 'UPDATE_CONSENT',
   payload: { status, date },
-});
-
-export const setSelectFieldId = (fieldId) => ({
-  type: 'SELECT_FIELD',
-  payload: { fieldId },
-});
-
-// TODO: remove this since it's not used now
-// eslint-disable-next-line no-shadow
-export const userSelectRegion = (userSelectRegion) => ({
-  type: 'USER_SELECT_REGION',
-  payload: { userSelectRegion },
 });
 
 export const setUserHistoryList = (userHistoryList) => ({
@@ -64,10 +50,6 @@ const userReducer = (state = initialState, action = null) => {
           date: action.payload.date,
         },
       };
-    case 'SELECT_FIELD':
-      return { ...state, selectedFieldId: action.payload.fieldId };
-    case 'USER_SELECT_REGION':
-      return { ...state, userSelectRegion: action.payload.userSelectRegion };
     case 'SET_USER_HISTORY_LIST':
       return { ...state, userHistoryList: action.payload.userHistoryList };
     case 'SET_SELECTED_HISTORY':

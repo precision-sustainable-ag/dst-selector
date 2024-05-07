@@ -18,22 +18,13 @@ import {
 import InformationBar from './InformationBar/InformationBar';
 import ToggleOptions from './ToggleOptions/ToggleOptions';
 import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset';
-import {
-  updateConsent,
-  updateField,
-  setSelectFieldId,
-  setUserHistoryList,
-} from '../../reduxStore/userSlice';
-import {
-  getFields, getHistory, buildHistory, postHistory,
-} from '../../shared/constants';
+import { setUserHistoryList } from '../../reduxStore/userSlice';
 import AuthButton from '../../components/Auth/AuthButton/AuthButton';
-import { updateStateInfo } from '../../reduxStore/mapSlice';
 import ConsentModal from '../CoverCropExplorer/ConsentModal/ConsentModal';
 import AuthModal from '../Landing/AuthModal/AuthModal';
 import { setMyCoverCropReset } from '../../reduxStore/sharedSlice';
 import { reset } from '../../reduxStore/store';
-import { getAuthToken, setAuthToken } from '../../shared/authToken';
+import { setAuthToken } from '../../shared/authToken';
 import { loadHistory } from '../../shared/api';
 import HistoryDialog from '../../components/HistoryDialog/HistoryDialog';
 // import logoImage from '../../../public/images/PSAlogo-text.png';
@@ -188,27 +179,27 @@ const Header = () => {
   }, [isAuthenticated, getAccessTokenSilently]);
 
   // TODO: remove this
-  useEffect(() => {
-    // save user history when user click next in Landing & Location page, change zone in explorer
-    if (
-      isAuthenticated
-      && (progressRedux === 1 || progressRedux === 2 || pathname === '/explorer')
-    ) {
-      const userHistory = buildHistory(
-        stateIdRedux,
-        stateLabelRedux,
-        regionIdRedux,
-        regionShorthandRedux,
-        councilLabelRedux,
-        councilShorthandRedux,
-        consentRedux.status,
-        consentRedux.date,
-        selectedFieldIdRedux,
-      );
-      const accessToken = getAuthToken();
-      // postHistory(accessToken, userHistory);
-    }
-  }, [progressRedux, regionShorthandRedux, selectedFieldIdRedux]);
+  // useEffect(() => {
+  //   // save user history when user click next in Landing & Location page, change zone in explorer
+  //   if (
+  //     isAuthenticated
+  //     && (progressRedux === 1 || progressRedux === 2 || pathname === '/explorer')
+  //   ) {
+  //     const userHistory = buildHistory(
+  //       stateIdRedux,
+  //       stateLabelRedux,
+  //       regionIdRedux,
+  //       regionShorthandRedux,
+  //       councilLabelRedux,
+  //       councilShorthandRedux,
+  //       consentRedux.status,
+  //       consentRedux.date,
+  //       selectedFieldIdRedux,
+  //     );
+  //     const accessToken = getAuthToken();
+  //     // postHistory(accessToken, userHistory);
+  //   }
+  // }, [progressRedux, regionShorthandRedux, selectedFieldIdRedux]);
 
   const chooseTopBar = (option) => {
     if (option) {
