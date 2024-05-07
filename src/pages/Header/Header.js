@@ -35,6 +35,7 @@ import { setMyCoverCropReset } from '../../reduxStore/sharedSlice';
 import { reset } from '../../reduxStore/store';
 import { getAuthToken, setAuthToken } from '../../shared/authToken';
 import { loadHistory } from '../../shared/api';
+import HistoryDialog from '../../components/HistoryDialog/HistoryDialog';
 // import logoImage from '../../../public/images/PSAlogo-text.png';
 
 const Header = () => {
@@ -313,6 +314,7 @@ const Header = () => {
           setModalOpen={setAuthModalOpen}
           setConsentModalOpen={setConsentModalOpen}
         />
+        <HistoryDialog />
       </Box>
     </header>
   );

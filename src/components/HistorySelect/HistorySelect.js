@@ -7,7 +7,9 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { getAuthToken } from '../../shared/authToken';
 import { loadHistory } from '../../shared/api';
-import { setSelectedHistory, updateConsent, updateField } from '../../reduxStore/userSlice';
+import {
+  setSelectedHistory, updateConsent, updateField, setHistoryDialogState,
+} from '../../reduxStore/userSlice';
 import { setMapRedux } from '../../reduxStore/mapSlice';
 import { setAddressRedux } from '../../reduxStore/addressSlice';
 
@@ -59,7 +61,7 @@ const selectStyles = {
 
 const HistorySelect = () => {
   const [value, setValue] = useState('');
-  const { userHistoryList } = useSelector((state) => state.userData);
+  const { userHistoryList, historyDialogState } = useSelector((state) => state.userData);
 
   const dispatch = useDispatch();
 
@@ -84,6 +86,10 @@ const HistorySelect = () => {
     });
   };
 
+  const handleAddHistory = () => {
+    dispatch(setHistoryDialogState({ ...historyDialogState, open: true }));
+  };
+
   return (
     <Grid container>
       <Grid item xs={12} md={6} display="flex" justifyContent="center" alignItems="center">
@@ -106,7 +112,7 @@ const HistorySelect = () => {
       </Grid>
       <Grid item xs={12} md={6} display="flex" justifyContent="center" alignItems="center">
         <Button onClick={handleLoadHistory}>Load</Button>
-        <Button>Add</Button>
+        <Button onClick={handleAddHistory}>Add</Button>
       </Grid>
     </Grid>
   );
