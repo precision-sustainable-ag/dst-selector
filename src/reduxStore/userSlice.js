@@ -8,6 +8,10 @@ const initialState = {
   userSelectRegion: false,
   userHistoryList: [],
   selectedHistory: null,
+  historyDialogState: {
+    open: false,
+    type: 'add',
+  },
 };
 
 export const updateField = (field) => ({
@@ -42,6 +46,11 @@ export const setSelectedHistory = (selectedHistory) => ({
   payload: { selectedHistory },
 });
 
+export const setHistoryDialogState = (historyDialogState) => ({
+  type: 'SET_HISTORY_DIALOG_STATE',
+  payload: { historyDialogState },
+});
+
 const userReducer = (state = initialState, action = null) => {
   switch (action.type) {
     case 'UPDATE_FIELD':
@@ -63,6 +72,11 @@ const userReducer = (state = initialState, action = null) => {
       return { ...state, userHistoryList: action.payload.userHistoryList };
     case 'SET_SELECTED_HISTORY':
       return { ...state, selectedHistory: action.payload.selectedHistory };
+    case 'SET_HISTORY_DIALOG_STATE':
+      return {
+        ...state,
+        historyDialogState: action.payload.historyDialogState,
+      };
     default:
       return { ...state };
   }
