@@ -1,3 +1,10 @@
+export const historyState = {
+  none: 'none',
+  new: 'new',
+  imported: 'imported',
+  updated: 'updated',
+};
+
 const initialState = {
   field: null,
   consent: {
@@ -10,6 +17,7 @@ const initialState = {
     open: false,
     type: 'add',
   },
+  historyState: historyState.none,
 };
 
 export const updateField = (field) => ({
@@ -37,6 +45,12 @@ export const setHistoryDialogState = (historyDialogState) => ({
   payload: { historyDialogState },
 });
 
+// eslint-disable-next-line no-shadow
+export const setHistoryState = (historyState) => ({
+  type: 'SET_HISTORY_STATE',
+  payload: { historyState },
+});
+
 const userReducer = (state = initialState, action = null) => {
   switch (action.type) {
     case 'UPDATE_FIELD':
@@ -59,6 +73,8 @@ const userReducer = (state = initialState, action = null) => {
         ...state,
         historyDialogState: action.payload.historyDialogState,
       };
+    case 'SET_HISTORY_STATE':
+      return { ...state, historyState: action.payload.historyState };
     default:
       return { ...state };
   }

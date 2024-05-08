@@ -35,7 +35,6 @@ import {
   updateAvgFrostDates, updateAvgPrecipAnnual, updateAvgPrecipCurrentMonth, updateFrostFreeDays,
 } from '../../reduxStore/weatherSlice';
 import { updateField } from '../../reduxStore/userSlice';
-import { getAuthToken } from '../../shared/authToken';
 import { saveHistory } from '../../shared/api';
 
 // eslint-disable-next-line import/no-webpack-loader-syntax, import/no-unresolved
@@ -297,26 +296,6 @@ const Location = () => {
     }
   };
 
-  const handleSave = () => {
-    const token = getAuthToken();
-
-    const { longitude, latitude } = selectedToEditSite;
-    const point = buildPoint(longitude, latitude, 'test');
-    let geoCollection = null;
-    const polygon = currentGeometry.features?.slice(-1)[0];
-    geoCollection = buildGeometryCollection(point.geometry, polygon?.geometry, 'test');
-    console.log(point);
-
-    const data = {
-      mapData,
-      userData: { consent },
-      field: point,
-    };
-    console.log(data, token);
-    // saveHistory('test1', data, token);
-  };
-  // console.log('currentGeometry', currentGeometry);
-
   return (
     <Box
       sx={{
@@ -355,7 +334,6 @@ const Location = () => {
               setFieldDialogState={setFieldDialogState}
             />
             )} */}
-            <button type="button" onClick={handleSave}>save</button>
           </Grid>
         </Grid>
         {stateLabelRedux !== 'Ontario' && (

@@ -5,7 +5,7 @@ import {
   TextField,
 } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import { setHistoryDialogState } from '../../reduxStore/userSlice';
+import { historyState, setHistoryDialogState, setHistoryState } from '../../reduxStore/userSlice';
 
 export const historyDialogDefaultState = {
   open: false,
@@ -50,6 +50,7 @@ const HistoryDialog = () => {
     if (result) {
       // TODO: add historyname
       console.log('created field', fieldName);
+      dispatch(setHistoryState(historyState.new));
     } else {
       setError(true);
       setHelperText('Name already exists!');

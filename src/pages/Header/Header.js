@@ -24,7 +24,7 @@ import ConsentModal from '../CoverCropExplorer/ConsentModal/ConsentModal';
 import AuthModal from '../Landing/AuthModal/AuthModal';
 import { setMyCoverCropReset } from '../../reduxStore/sharedSlice';
 import { reset } from '../../reduxStore/store';
-import { setAuthToken } from '../../shared/authToken';
+import { setAuthToken, getAuthToken } from '../../shared/authToken';
 import { loadHistory } from '../../shared/api';
 import HistoryDialog from '../../components/HistoryDialog/HistoryDialog';
 // import logoImage from '../../../public/images/PSAlogo-text.png';
@@ -58,6 +58,9 @@ const Header = () => {
   const selectedFieldIdRedux = useSelector((stateRedux) => stateRedux.userData.selectedFieldId);
   const selectedCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCropIds);
 
+  const fieldRedux = useSelector((stateRedux) => stateRedux.userData.field);
+  const mapDataRedux = useSelector((state) => state.mapData);
+
   // useState vars
   const [authModalOpen, setAuthModalOpen] = useState(true);
   const [consentModalOpen, setConsentModalOpen] = useState(false);
@@ -84,6 +87,20 @@ const Header = () => {
     } else {
       dispatchRedux(setMyCoverCropReset(true, false));
     }
+  };
+
+  // TODO: save function here
+  const handleSave = () => {
+    const token = getAuthToken();
+    // remove regions from mapDataRedux
+    const { regions, ...mapData } = mapDataRedux;
+    const data = {
+      mapData,
+      userData: { consent: consentRedux },
+      field: fieldRedux,
+    };
+    console.log(data, token);
+    // saveHistory('test1', data, token);
   };
 
   // useEffect to update favicon
@@ -178,7 +195,7 @@ const Header = () => {
     if (isAuthenticated) fetchUserData();
   }, [isAuthenticated, getAccessTokenSilently]);
 
-  // TODO: remove this
+  // TODO: remove this, logic for saving at every step
   // useEffect(() => {
   //   // save user history when user click next in Landing & Location page, change zone in explorer
   //   if (
@@ -294,6 +311,8 @@ const Header = () => {
           >
             <InformationBar pathname={pathname} />
             <MyCoverCropReset />
+            {/* FIXME: temporary button for saving history here */}
+            <Button onClick={handleSave}>save history</Button>
           </Grid>
         </Grid>
 
