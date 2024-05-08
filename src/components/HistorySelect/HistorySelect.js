@@ -9,6 +9,8 @@ import { getAuthToken } from '../../shared/authToken';
 import { loadHistory } from '../../shared/api';
 import {
   setSelectedHistory, updateConsent, updateField, setHistoryDialogState,
+  setHistoryState,
+  historyState,
 } from '../../reduxStore/userSlice';
 import { setMapRedux } from '../../reduxStore/mapSlice';
 import { setAddressRedux } from '../../reduxStore/addressSlice';
@@ -60,12 +62,14 @@ const selectStyles = {
 };
 
 const HistorySelect = () => {
-  const [value, setValue] = useState('');
-  const { userHistoryList, historyDialogState } = useSelector((state) => state.userData);
+  const { userHistoryList, selectedHistory, historyDialogState } = useSelector((state) => state.userData);
+
+  const [value, setValue] = useState(selectedHistory?.label ?? '');
 
   const dispatch = useDispatch();
 
   const handleLoadHistory = () => {
+    // eslint-disable-next-line no-shadow
     const selectedHistory = userHistoryList.find((history) => history.label === value);
     if (selectedHistory) dispatch(setSelectedHistory(selectedHistory));
     const token = getAuthToken();
@@ -81,6 +85,7 @@ const HistorySelect = () => {
         dispatch(updateConsent(date, status));
         dispatch(updateField(field));
         dispatch(setAddressRedux(addressData));
+        dispatch(setHistoryState(historyState.imported));
       }
       // console.log('res', res);
     });
