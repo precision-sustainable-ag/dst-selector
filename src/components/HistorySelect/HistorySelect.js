@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 // /* eslint-disable */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   FormControl, InputLabel, Select, MenuItem, Grid, Button,
 } from '@mui/material';
@@ -62,9 +62,11 @@ const selectStyles = {
 };
 
 const HistorySelect = () => {
-  const { userHistoryList, selectedHistory, historyDialogState } = useSelector((state) => state.userData);
+  const {
+    userHistoryList, selectedHistory, historyDialogState,
+  } = useSelector((state) => state.userData);
 
-  const [value, setValue] = useState(selectedHistory?.label ?? '');
+  const [value, setValue] = useState('');
 
   const dispatch = useDispatch();
 
@@ -94,6 +96,14 @@ const HistorySelect = () => {
   const handleAddHistory = () => {
     dispatch(setHistoryDialogState({ ...historyDialogState, open: true }));
   };
+
+  useEffect(() => {
+    if (selectedHistory?.label) {
+      if (userHistoryList.find((history) => history.label === selectedHistory.label)) {
+        setValue(selectedHistory.label);
+      } else setValue('');
+    }
+  }, [selectedHistory, userHistoryList]);
 
   return (
     <Grid container>
