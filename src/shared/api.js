@@ -1,3 +1,5 @@
+/* eslint-disable consistent-return */
+/* eslint-disable no-else-return */
 /* eslint-disable no-console */
 import { userHistoryApiUrl, userHistorySchema } from './keys';
 
@@ -137,10 +139,12 @@ export const saveHistory = async (name, data, token = null, id = null) => {
       // if id is not null, update history with id
       const res = await updateHistory(token, data, name, id);
       console.log('updated history', res);
+      return res;
     } else {
       // if id is null, create a new history
       const res = await createHistory(token, data, name);
       console.log('created history', res);
+      return res;
     }
   } catch (err) {
     console.error('Error when saving history: ', err);

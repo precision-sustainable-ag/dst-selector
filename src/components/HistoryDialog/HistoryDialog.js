@@ -5,7 +5,9 @@ import {
   TextField,
 } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import { historyState, setHistoryDialogState, setHistoryState } from '../../reduxStore/userSlice';
+import {
+  historyState, setHistoryDialogState, setHistoryState, setSelectedHistory,
+} from '../../reduxStore/userSlice';
 
 export const historyDialogDefaultState = {
   open: false,
@@ -29,6 +31,7 @@ const HistoryDialog = () => {
   };
 
   const fieldNameValidation = (name) => {
+    if (name === '') return false;
     const result = userHistoryListRedux.find((history) => history.label === name);
     if (result === undefined) return true;
     return false;
@@ -46,14 +49,15 @@ const HistoryDialog = () => {
   };
 
   const handleAdd = () => {
+    // FIXME: if history already exists, need to clear current history redux
     const result = fieldNameValidation(fieldName);
     if (result) {
-      // TODO: add historyname
       console.log('created field', fieldName);
+      dispatch(setSelectedHistory({ label: fieldName, id: null }));
       dispatch(setHistoryState(historyState.new));
     } else {
       setError(true);
-      setHelperText('Name already exists!');
+      setHelperText('Name invalid or already exists!');
       return;
     }
     resetDialogState();

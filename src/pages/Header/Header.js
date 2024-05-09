@@ -18,14 +18,16 @@ import {
 import InformationBar from './InformationBar/InformationBar';
 import ToggleOptions from './ToggleOptions/ToggleOptions';
 import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset';
-import { setUserHistoryList } from '../../reduxStore/userSlice';
+import {
+  historyState, setHistoryState, setSelectedHistory, setUserHistoryList,
+} from '../../reduxStore/userSlice';
 import AuthButton from '../../components/Auth/AuthButton/AuthButton';
 import ConsentModal from '../CoverCropExplorer/ConsentModal/ConsentModal';
 import AuthModal from '../Landing/AuthModal/AuthModal';
 import { setMyCoverCropReset } from '../../reduxStore/sharedSlice';
 import { reset } from '../../reduxStore/store';
 import { setAuthToken, getAuthToken } from '../../shared/authToken';
-import { loadHistory } from '../../shared/api';
+import { loadHistory, saveHistory } from '../../shared/api';
 import HistoryDialog from '../../components/HistoryDialog/HistoryDialog';
 // import logoImage from '../../../public/images/PSAlogo-text.png';
 
@@ -59,7 +61,9 @@ const Header = () => {
   const selectedCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCropIds);
 
   const fieldRedux = useSelector((stateRedux) => stateRedux.userData.field);
-  const mapDataRedux = useSelector((state) => state.mapData);
+  const mapDataRedux = useSelector((stateRedux) => stateRedux.mapData);
+  const addressDataRedux = useSelector((stateRedux) => stateRedux.addressData);
+  const selectedHistoryRedux = useSelector((stateRedux) => stateRedux.userData.selectedHistory);
 
   // useState vars
   const [authModalOpen, setAuthModalOpen] = useState(true);
@@ -97,10 +101,21 @@ const Header = () => {
     const data = {
       mapData,
       userData: { consent: consentRedux },
+      addressData: addressDataRedux,
       field: fieldRedux,
     };
-    console.log(data, token);
-    // saveHistory('test1', data, token);
+    const { label, id } = selectedHistoryRedux;
+    saveHistory(label, data, token, id).then((res) => {
+      console.log('saved history', res);
+      dispatchRedux(setHistoryState(historyState.imported));
+      // set history id
+      dispatchRedux(setSelectedHistory({ ...selectedHistoryRedux, id: res.data.id }));
+      // if id is null, it means a new history record is created, load history list again to get the new history
+      if (!id) {
+        // eslint-disable-next-line no-shadow
+        loadHistory(token).then((res) => dispatchRedux(setUserHistoryList(res)));
+      }
+    });
   };
 
   // useEffect to update favicon
