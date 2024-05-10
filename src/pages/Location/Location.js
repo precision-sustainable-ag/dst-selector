@@ -1,5 +1,4 @@
 // TODO: debug use
-/* eslint-disable no-unused-vars */
 // /* eslint-disable */
 
 /* eslint-disable no-alert */
@@ -125,19 +124,6 @@ const Location = () => {
         geoCollection = buildGeometryCollection(point.geometry, polygon?.geometry);
         dispatchRedux(updateField(geoCollection));
       } else { dispatchRedux(updateField(point)); }
-
-      // if is adding a new point, open dialog
-      // if (isAuthenticated && isAddingPoint && latitude) {
-      // const currentSelectedField = selectedUserField?.geometry;
-      // if ((!currentSelectedField && latitude !== statesLatLongDict[stateLabelRedux][0])
-      //     || (currentSelectedField?.type === 'Point' && latitude !== currentSelectedField?.coordinates[1])
-      //     || (currentSelectedField?.type === 'GeometryCollection' && latitude !== currentSelectedField?.geometries[0].coordinates[1])
-      // ) {
-      //   setFieldDialogState({
-      //     ...fieldDialogState, open: true, actionType: 'add', areaType: 'Point',
-      //   });
-      // }
-      // }
 
       dispatchRedux(updateLocation(
         {

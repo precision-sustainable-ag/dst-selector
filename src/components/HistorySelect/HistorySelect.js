@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-vars */
-// /* eslint-disable */
 import React, { useEffect, useState } from 'react';
 import {
   FormControl, InputLabel, Select, MenuItem, Grid, Button,
@@ -89,7 +87,6 @@ const HistorySelect = () => {
         dispatch(setAddressRedux(addressData));
         dispatch(setHistoryState(historyState.imported));
       }
-      // console.log('res', res);
     });
   };
 
