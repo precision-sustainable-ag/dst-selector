@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable max-len */
 /*
   This file contains the Header component, helper functions
@@ -49,15 +48,9 @@ const Header = () => {
   const isMdOrSmaller = useMediaQuery(theme.breakpoints.down('md'));
 
   // redux vars
-  const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
-  const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
-  const regionShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.regionShorthand);
-  const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
   const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
-  const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const consentRedux = useSelector((stateRedux) => stateRedux.userData.consent);
-  const selectedFieldIdRedux = useSelector((stateRedux) => stateRedux.userData.selectedFieldId);
   const selectedCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCropIds);
 
   const fieldRedux = useSelector((stateRedux) => stateRedux.userData.field);
@@ -106,7 +99,7 @@ const Header = () => {
     };
     const { label, id } = selectedHistoryRedux;
     saveHistory(label, data, token, id).then((res) => {
-      console.log('saved history', res);
+      // console.log('saved history', res);
       dispatchRedux(setHistoryState(historyState.imported));
       // set history id
       dispatchRedux(setSelectedHistory({ ...selectedHistoryRedux, id: res.data.id }));
@@ -167,50 +160,13 @@ const Header = () => {
     const fetchUserData = async () => {
       const token = await getAccessTokenSilently();
       setAuthToken(token);
-      // Initially get user field data
-      // getFields(token).then((data) => dispatchRedux(updateField(data)));
-      // getHistory(token).then((res) => {
-      //   if (res.data) {
-      //     const {
-      //       state, region, council, consent,
-      //     } = res.data.json;
-      //     // set user history redux state
-      //     localStorage.setItem('stateId', state.id);
-      //     dispatchRedux(
-      //       updateStateInfo({
-      //         stateLabel: state.label,
-      //         stateId: state.id,
-      //         councilShorthand: council.shorthand,
-      //         councilLabel: council.label,
-      //       }),
-      //     );
-      //     if (region) {
-      //       localStorage.setItem('regionId', region.id);
-      //     }
-      //     dispatchRedux(updateConsent(consent.status, consent.date));
-      //     // The consent is mainly use localstorage to test is expired, use history to update localStorage
-      //     const consentKey = 'consent';
-      //     if (localStorage.getItem(consentKey) === null) {
-      //       const consentObject = {
-      //         choice: consent.status,
-      //         // set user consent selection time as 180 days
-      //         expiredAt: new Date(consent.date).getTime() + 180 * 24 * 60 * 60 * 1000,
-      //       };
-      //       localStorage.setItem(consentKey, JSON.stringify(consentObject));
-      //     }
-      //     const selectedFieldId = res.data.fieldId;
-      //     dispatchRedux(setSelectFieldId(selectedFieldId));
-      //   } else {
-      //     setConsentModalOpen(true);
-      //   }
-      // });
       // TODO: get new user histories here
       loadHistory(token).then((res) => dispatchRedux(setUserHistoryList(res)));
     };
     if (isAuthenticated) fetchUserData();
   }, [isAuthenticated, getAccessTokenSilently]);
 
-  // TODO: remove this, logic for saving at every step
+  // TODO: logic for saving at every step
   // useEffect(() => {
   //   // save user history when user click next in Landing & Location page, change zone in explorer
   //   if (

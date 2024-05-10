@@ -51,10 +51,12 @@ const HistoryDialog = () => {
   };
 
   const handleAdd = () => {
-    // FIXME: if history already exists, need to clear current history redux
     const result = fieldNameValidation(fieldName);
     if (result) {
-      console.log('created field', fieldName);
+      // reset current redux
+      dispatch(reset());
+      dispatch(updateField(null));
+      // set addde history
       dispatch(setSelectedHistory({ label: fieldName, id: null }));
       dispatch(setHistoryState(historyState.new));
     } else {
