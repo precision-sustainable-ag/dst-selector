@@ -22,6 +22,7 @@ import { RegionSelectorMap } from '@psa/dst.ui.region-selector-map';
 import { callCoverCropApi } from '../../shared/constants';
 import { updateRegion, updateRegions, updateStateInfo } from '../../reduxStore/mapSlice';
 import { updateLocation } from '../../reduxStore/addressSlice';
+import { historyState, setHistoryDialogState } from '../../reduxStore/userSlice';
 import HistorySelect from '../../components/HistorySelect/HistorySelect';
 
 const Landing = () => {
@@ -32,6 +33,7 @@ const Landing = () => {
   const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
   const consentRedux = useSelector((stateRedux) => stateRedux.userData.consent);
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
+  const historyStateRedux = useSelector((stateRedux) => stateRedux.userData.historyState);
 
   // useState vars
   // const [containerHeight, setContainerHeight] = useState(height);
@@ -87,6 +89,14 @@ const Landing = () => {
   useEffect(() => {
     // is there a chance selectedState is {} ?
     if (Object.keys(selectedState).length !== 0) {
+      if (historyStateRedux === historyState.imported && stateIdRedux !== selectedState.id) {
+        dispatchRedux(setHistoryDialogState({ open: true, type: 'update' }));
+        // reset state to previous state in redux
+        const state = allStates.filter((s) => s.id === stateIdRedux);
+        if (state.length > 0) setSelectedState(state[0]);
+        // if historyState is imported, return and not set new history
+        return;
+      }
       // update state
       localStorage.setItem('stateId', selectedState.id);
       if (stateIdRedux !== selectedState.id) {
