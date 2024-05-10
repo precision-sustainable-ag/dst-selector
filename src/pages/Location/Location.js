@@ -21,10 +21,9 @@ import { Search } from '@mui/icons-material';
 import moment from 'moment';
 import { Map } from '@psa/dst.ui.map';
 import mapboxgl from 'mapbox-gl';
-import { useAuth0 } from '@auth0/auth0-react';
 import statesLatLongDict from '../../shared/stateslatlongdict';
 import {
-  abbrRegion, reverseGEO, callCoverCropApi, getFields,
+  abbrRegion, reverseGEO, callCoverCropApi,
   buildPoint, drawAreaFromGeoCollection, buildGeometryCollection,
 } from '../../shared/constants';
 import PlantHardinessZone from '../CropSidebar/PlantHardinessZone/PlantHardinessZone';
@@ -34,8 +33,7 @@ import { snackHandler } from '../../reduxStore/sharedSlice';
 import {
   updateAvgFrostDates, updateAvgPrecipAnnual, updateAvgPrecipCurrentMonth, updateFrostFreeDays,
 } from '../../reduxStore/weatherSlice';
-import { updateField } from '../../reduxStore/userSlice';
-import { saveHistory } from '../../shared/api';
+import { historyState, setHistoryDialogState, updateField } from '../../reduxStore/userSlice';
 
 // eslint-disable-next-line import/no-webpack-loader-syntax, import/no-unresolved
 mapboxgl.workerClass = require('worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker').default;
@@ -46,23 +44,16 @@ const Location = () => {
   // redux vars
   const markersRedux = useSelector((stateRedux) => stateRedux.addressData.markers);
   const regionsRedux = useSelector((stateRedux) => stateRedux.mapData.regions);
-  const regionShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.regionShorthand);
   const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
-  const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
   const userFieldRedux = useSelector((stateRedux) => stateRedux.userData.field);
-
-  const mapData = useSelector((state) => state.mapData);
-  const consent = useSelector((state) => state.userData.consent);
-  const addressData = useSelector((state) => state.addressData);
+  const historyStateRedux = useSelector((stateRedux) => stateRedux.userData.historyState);
 
   // useState vars
   const [selectedToEditSite, setSelectedToEditSite] = useState({});
   const [currentGeometry, setCurrentGeometry] = useState({});
   const [mapFeatures, setMapFeatures] = useState([]);
-
-  const { isAuthenticated } = useAuth0();
 
   // if user field exists, return field, else return state capitol
   const getFeatures = () => {
@@ -118,6 +109,13 @@ const Location = () => {
       console.log('selectedToEditSite', selectedToEditSite);
 
       if (markersRedux && latitude === markersRedux[0][0] && longitude === markersRedux[0][1]) return;
+
+      // FIXME: if user imported a history without a field, this will prevent them creating one
+      if (historyStateRedux === historyState.imported) {
+        dispatchRedux(setHistoryDialogState({ open: true, type: 'update' }));
+        setMapFeatures(getFeatures());
+        return;
+      }
 
       // save field in redux
       const point = buildPoint(longitude, latitude);
@@ -281,21 +279,6 @@ const Location = () => {
     }
   }, [markersRedux]);
 
-  // map onDraw function
-  const onDraw = (draw) => {
-    console.log('draw', draw);
-    if (isAuthenticated && draw.mode !== 'select') {
-      // setFieldDialogState({
-      //   ...fieldDialogState, open: true, actionType: draw.mode, areaType: 'Polygon',
-      // });
-    }
-    // TODO: temporary change for unlogged user, build a field obj and save it to redux
-    if (!isAuthenticated && draw.mode !== 'select') {
-      // FIXME: the following code doesn't work, maybe still need a state like fieldDialogState to deal with types
-
-    }
-  };
-
   return (
     <Box
       sx={{
@@ -325,16 +308,6 @@ const Location = () => {
             <PlantHardinessZone />
           </Grid>
 
-          <Grid item xs={12}>
-            {/* {(isAuthenticated && stateLabelRedux !== 'Ontario') && (
-            <UserFieldList
-              userFields={userFields}
-              field={selectedUserField}
-              setField={setSelectedUserField}
-              setFieldDialogState={setFieldDialogState}
-            />
-            )} */}
-          </Grid>
         </Grid>
         {stateLabelRedux !== 'Ontario' && (
         <Grid item md={9} xs={12}>
@@ -342,7 +315,6 @@ const Location = () => {
             <Map
               setAddress={setSelectedToEditSite}
               setFeatures={setCurrentGeometry}
-              onDraw={onDraw}
               initWidth="100%"
               initHeight="500px"
               initLat={getLatLng[0]}
@@ -362,10 +334,8 @@ const Location = () => {
               hasMarkerMovable
             />
           </Container>
-
         </Grid>
         )}
-
       </Grid>
     </Box>
   );
