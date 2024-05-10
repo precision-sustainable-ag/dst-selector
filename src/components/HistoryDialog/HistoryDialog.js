@@ -7,7 +7,9 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import {
   historyState, setHistoryDialogState, setHistoryState, setSelectedHistory,
+  updateField,
 } from '../../reduxStore/userSlice';
+import { reset } from '../../reduxStore/store';
 
 export const historyDialogDefaultState = {
   open: false,
@@ -26,8 +28,8 @@ const HistoryDialog = () => {
   const { open, type } = historyDialogStateRedux;
 
   // eslint-disable-next-line no-shadow
-  const setOpen = (open) => {
-    dispatch(setHistoryDialogState({ ...historyDialogStateRedux, open }));
+  const setOpen = (open, type = 'add') => {
+    dispatch(setHistoryDialogState({ ...historyDialogStateRedux, open, type }));
   };
 
   const fieldNameValidation = (name) => {
@@ -64,7 +66,14 @@ const HistoryDialog = () => {
   };
 
   const handleUpdate = () => {
-    resetDialogState();
+    dispatch(reset());
+    // need to reset some fields in userData
+    dispatch(updateField(null));
+    dispatch(setSelectedHistory(null));
+    dispatch(setHistoryState('none'));
+    // open dialog and set dialog state as add
+    setOpen(true, 'add');
+    // resetDialogState();
   };
 
   const handleCancel = () => {
@@ -99,11 +108,9 @@ const HistoryDialog = () => {
         {type === 'update'
           && (
           <DialogContentText>
-            Warning:
-            {' '}
-            <br />
+            <span style={{ color: 'red' }}>Warning: </span>
             Making changes may affect the results of subsequent steps
-            that you have saved. Please review your saved steps before proceeding.
+            that you have saved. Please create a new record instead.
           </DialogContentText>
           )}
 
@@ -112,7 +119,7 @@ const HistoryDialog = () => {
         {type === 'add'
           && <Button onClick={handleAdd}>Create</Button>}
         {type === 'update'
-          && <Button onClick={handleUpdate}>Update</Button>}
+          && <Button onClick={handleUpdate}>Create a new record</Button>}
         <Button onClick={handleCancel}>Cancel</Button>
       </DialogActions>
     </Dialog>

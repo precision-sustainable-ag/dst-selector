@@ -102,7 +102,7 @@ const HistorySelect = () => {
       if (userHistoryList.find((history) => history.label === selectedHistory.label)) {
         setValue(selectedHistory.label);
       } else setValue('');
-    }
+    } else setValue('');
   }, [selectedHistory, userHistoryList]);
 
   return (
