@@ -11,6 +11,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import SoilDrainage from './SoilDrainage/SoilDrainage';
 import SoilFloodingFrequency from './SoilFloodingFrequency/SoilFloodingFrequency';
 import { updateSoilData, updateSoilDataOriginal } from '../../../reduxStore/soilSlice';
+import { historyState } from '../../../reduxStore/userSlice';
 
 const SoilCondition = () => {
   // theme
@@ -26,6 +27,7 @@ const SoilCondition = () => {
   const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
   const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
   const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
+  const historyStateRedux = useSelector((stateRedux) => stateRedux.userData.historyState);
 
   // useState vars
   const [floodingOptions, setFloodingOptions] = useState([]);
@@ -45,6 +47,11 @@ const SoilCondition = () => {
   }, []);
 
   useEffect(() => {
+    if (historyStateRedux === historyState.imported) {
+      // not call api if it's imported
+      return;
+    }
+
     const getSSURGOData = (lat, lon) => {
       const markersCopy = markersRedux;
 

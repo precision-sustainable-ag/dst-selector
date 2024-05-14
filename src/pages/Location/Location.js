@@ -259,6 +259,10 @@ const Location = () => {
         }
       }
     };
+    if (historyStateRedux === historyState.imported) {
+      // FIXME: if imported history don't have these weather info, it'll not be loaded.
+      return;
+    }
     // if user select another region, do not call weather api
     if (markersRedux) {
       getDetails();
