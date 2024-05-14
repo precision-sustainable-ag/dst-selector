@@ -5,6 +5,7 @@ import {
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateRegion } from '../../../reduxStore/mapSlice';
+import { historyState, setHistoryDialogState } from '../../../reduxStore/userSlice';
 
 const PlantHardinessZone = () => {
   const dispatchRedux = useDispatch();
@@ -12,8 +13,14 @@ const PlantHardinessZone = () => {
   const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
   const regionToggleRedux = useSelector((stateRedux) => stateRedux.sharedData.regionToggle);
   const regionShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.regionShorthand);
+  const historyStateRedux = useSelector((stateRedux) => stateRedux.userData.historyState);
 
   const updateRegionRedux = (e) => {
+    // if update region, show history dialog to create a new history
+    if (historyStateRedux === historyState.imported) {
+      dispatchRedux(setHistoryDialogState({ open: true, type: 'update' }));
+      return;
+    }
     const selectedRegion = regionsRedux.filter((region) => region.shorthand === e.target.value)[0];
     localStorage.setItem('regionId', selectedRegion.id);
     dispatchRedux(updateRegion({
@@ -74,7 +81,6 @@ const PlantHardinessZone = () => {
       value={regionShorthandRedux || ''}
       error={!regionShorthandRedux}
     >
-
       {regionsRedux?.length > 0 && regionsRedux.map((region, i) => (
         <MenuItem value={region.shorthand} key={`Region${region}${i}`}>
           {councilLabelRedux !== 'Midwest Cover Crops Council' ? `Zone ${region.shorthand?.toUpperCase()}` : `${region.shorthand?.toUpperCase()}`}
