@@ -12,6 +12,8 @@ import {
 } from '../../reduxStore/userSlice';
 import { setMapRedux } from '../../reduxStore/mapSlice';
 import { setAddressRedux } from '../../reduxStore/addressSlice';
+import { setWeatherRedux } from '../../reduxStore/weatherSlice';
+import { setSoilRedux } from '../../reduxStore/soilSlice';
 
 const menuProps = {
   PaperProps: {
@@ -81,14 +83,16 @@ const HistorySelect = () => {
           soilData, addressData, userData,
         } = res.json;
         // TODO: set these redux values
-        console.log(cropData, weatherData, goalsData, sharedData, soilData);
+        console.log(cropData, goalsData, sharedData);
         const { field } = userData;
         const { date, status } = userData.consent;
         // update mapData, consent and field
         dispatch(setMapRedux(mapData));
+        dispatch(setWeatherRedux(weatherData));
+        dispatch(setSoilRedux(soilData));
+        dispatch(setAddressRedux(addressData));
         dispatch(updateConsent(date, status));
         dispatch(updateField(field));
-        dispatch(setAddressRedux(addressData));
         dispatch(setHistoryState(historyState.imported));
       }
     });
