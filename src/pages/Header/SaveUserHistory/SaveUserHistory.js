@@ -12,21 +12,33 @@ import {
 const SaveUserHistory = () => {
   const dispatchRedux = useDispatch();
 
-  const fieldRedux = useSelector((stateRedux) => stateRedux.userData.field);
-  const mapDataRedux = useSelector((stateRedux) => stateRedux.mapData);
-  const addressDataRedux = useSelector((stateRedux) => stateRedux.addressData);
-  const selectedHistoryRedux = useSelector((stateRedux) => stateRedux.userData.selectedHistory);
   const consentRedux = useSelector((stateRedux) => stateRedux.userData.consent);
+  const fieldRedux = useSelector((stateRedux) => stateRedux.userData.field);
+  const selectedHistoryRedux = useSelector((stateRedux) => stateRedux.userData.selectedHistory);
+
+  const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData);
+  const mapDataRedux = useSelector((stateRedux) => stateRedux.mapData);
+  const weatherDataRedux = useSelector((stateRedux) => stateRedux.weatherData);
+  const goalsDataRedux = useSelector((stateRedux) => stateRedux.goalsData);
+  const sharedDataRedux = useSelector((stateRedux) => stateRedux.sharedData);
+  const soilDataRedux = useSelector((stateRedux) => stateRedux.soilData);
+  const addressDataRedux = useSelector((stateRedux) => stateRedux.addressData);
 
   const handleSave = () => {
     const token = getAuthToken();
+    // remove cropData from cropDataRedux
+    const { cropData: cropsData, ...cropData } = cropDataRedux;
     // remove regions from mapDataRedux
     const { regions, ...mapData } = mapDataRedux;
     const data = {
+      cropData,
       mapData,
-      userData: { consent: consentRedux },
+      weatherData: weatherDataRedux,
+      goalsData: goalsDataRedux,
+      sharedData: sharedDataRedux,
+      soilData: soilDataRedux,
+      userData: { consent: consentRedux, field: fieldRedux },
       addressData: addressDataRedux,
-      field: fieldRedux,
     };
     const { label, id } = selectedHistoryRedux;
     saveHistory(label, data, token, id).then((res) => {

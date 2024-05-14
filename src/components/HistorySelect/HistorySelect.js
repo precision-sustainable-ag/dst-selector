@@ -77,8 +77,12 @@ const HistorySelect = () => {
       if (res) {
         // TODO: temporary schema for user history
         const {
-          field, mapData, userData, addressData,
+          cropData, mapData, weatherData, goalsData, sharedData,
+          soilData, addressData, userData,
         } = res.json;
+        // TODO: set these redux values
+        console.log(cropData, weatherData, goalsData, sharedData, soilData);
+        const { field } = userData;
         const { date, status } = userData.consent;
         // update mapData, consent and field
         dispatch(setMapRedux(mapData));
