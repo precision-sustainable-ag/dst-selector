@@ -3,13 +3,11 @@ const initialState = {
   cropData: [],
   selectedCropIds: [],
   cashCropData: {
-    name: '',
     dateRange: {
       startDate: '',
       endDate: '',
     },
   },
-  activeGrowthPeriod: [],
 };
 
 // additional related functions
