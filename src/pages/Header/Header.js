@@ -17,17 +17,16 @@ import {
 import InformationBar from './InformationBar/InformationBar';
 import ToggleOptions from './ToggleOptions/ToggleOptions';
 import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset';
-import {
-  historyState, setHistoryState, setSelectedHistory, setUserHistoryList,
-} from '../../reduxStore/userSlice';
+import { setUserHistoryList } from '../../reduxStore/userSlice';
 import AuthButton from '../../components/Auth/AuthButton/AuthButton';
 import ConsentModal from '../CoverCropExplorer/ConsentModal/ConsentModal';
 import AuthModal from '../Landing/AuthModal/AuthModal';
 import { setMyCoverCropReset } from '../../reduxStore/sharedSlice';
 import { reset } from '../../reduxStore/store';
-import { setAuthToken, getAuthToken } from '../../shared/authToken';
-import { loadHistory, saveHistory } from '../../shared/api';
+import { setAuthToken } from '../../shared/authToken';
+import { loadHistory } from '../../shared/api';
 import HistoryDialog from '../../components/HistoryDialog/HistoryDialog';
+import SaveUserHistory from './SaveUserHistory/SaveUserHistory';
 // import logoImage from '../../../public/images/PSAlogo-text.png';
 
 const Header = () => {
@@ -50,13 +49,7 @@ const Header = () => {
   // redux vars
   const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
-  const consentRedux = useSelector((stateRedux) => stateRedux.userData.consent);
   const selectedCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCropIds);
-
-  const fieldRedux = useSelector((stateRedux) => stateRedux.userData.field);
-  const mapDataRedux = useSelector((stateRedux) => stateRedux.mapData);
-  const addressDataRedux = useSelector((stateRedux) => stateRedux.addressData);
-  const selectedHistoryRedux = useSelector((stateRedux) => stateRedux.userData.selectedHistory);
 
   // useState vars
   const [authModalOpen, setAuthModalOpen] = useState(true);
@@ -84,31 +77,6 @@ const Header = () => {
     } else {
       dispatchRedux(setMyCoverCropReset(true, false));
     }
-  };
-
-  // TODO: save function here
-  const handleSave = () => {
-    const token = getAuthToken();
-    // remove regions from mapDataRedux
-    const { regions, ...mapData } = mapDataRedux;
-    const data = {
-      mapData,
-      userData: { consent: consentRedux },
-      addressData: addressDataRedux,
-      field: fieldRedux,
-    };
-    const { label, id } = selectedHistoryRedux;
-    saveHistory(label, data, token, id).then((res) => {
-      // console.log('saved history', res);
-      dispatchRedux(setHistoryState(historyState.imported));
-      // set history id
-      dispatchRedux(setSelectedHistory({ ...selectedHistoryRedux, id: res.data.id }));
-      // if id is null, it means a new history record is created, load history list again to get the new history
-      if (!id) {
-        // eslint-disable-next-line no-shadow
-        loadHistory(token).then((res) => dispatchRedux(setUserHistoryList(res)));
-      }
-    });
   };
 
   // useEffect to update favicon
@@ -283,7 +251,7 @@ const Header = () => {
             <InformationBar pathname={pathname} />
             <MyCoverCropReset />
             {/* FIXME: temporary button for saving history here */}
-            <Button onClick={handleSave}>save history</Button>
+            <SaveUserHistory />
           </Grid>
         </Grid>
 
