@@ -6,9 +6,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getAuthToken } from '../../shared/authToken';
 import { loadHistory } from '../../shared/api';
 import {
-  setSelectedHistory, updateConsent, updateField, setHistoryDialogState,
-  setHistoryState,
-  historyState,
+  setSelectedHistory, setHistoryDialogState, setHistoryState,
+  historyState, setUserRedux,
 } from '../../reduxStore/userSlice';
 import { setMapRedux } from '../../reduxStore/mapSlice';
 import { setAddressRedux } from '../../reduxStore/addressSlice';
@@ -84,15 +83,12 @@ const HistorySelect = () => {
         } = res.json;
         // TODO: set these redux values
         console.log(cropData, goalsData, sharedData);
-        const { field } = userData;
-        const { date, status } = userData.consent;
-        // update mapData, consent and field
+        // update redux
         dispatch(setMapRedux(mapData));
         dispatch(setWeatherRedux(weatherData));
         dispatch(setSoilRedux(soilData));
         dispatch(setAddressRedux(addressData));
-        dispatch(updateConsent(date, status));
-        dispatch(updateField(field));
+        dispatch(setUserRedux(userData));
         dispatch(setHistoryState(historyState.imported));
       }
     });
