@@ -46,9 +46,8 @@ const MyCoverCropComparisonTable = () => {
   const tempRows = [];
 
   // TODO: Update SelectedCropsRedux
-
   useEffect(() => {
-    setSelectedCrops(cropDataRedux.filter((crop) => activeCropIdsRedux.includes(crop.id)).filter((crop) => selectedCropIdsRedux.includes(crop.id)));
+    setSelectedCrops(cropDataRedux.filter((crop) => selectedCropIdsRedux.includes(crop.id)));
   }, [cropDataRedux, activeCropIdsRedux, selectedCropIdsRedux]);
 
   const handleModalOpen = (crop) => {
@@ -76,7 +75,7 @@ const MyCoverCropComparisonTable = () => {
       if (selectedGoalsRedux.length > 0) {
         let goalRating = 0;
         selectedGoalsRedux.forEach((goal) => {
-          if (crop.goals.filter((a) => a.label === goal)[0]?.length > 0) {
+          if (crop.goals.filter((a) => a.label === goal)?.length > 0) {
             goalRating = +crop.goals.filter((a) => a.label === goal)[0].values[0] + goalRating;
           }
         });
