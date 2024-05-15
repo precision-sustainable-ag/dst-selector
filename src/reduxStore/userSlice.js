@@ -51,6 +51,11 @@ export const setHistoryState = (historyState) => ({
   payload: { historyState },
 });
 
+export const setUserRedux = (userData) => ({
+  type: 'SET_USER_REDUX',
+  payload: { userData },
+});
+
 const userReducer = (state = initialState, action = null) => {
   switch (action.type) {
     case 'UPDATE_FIELD':
@@ -75,6 +80,8 @@ const userReducer = (state = initialState, action = null) => {
       };
     case 'SET_HISTORY_STATE':
       return { ...state, historyState: action.payload.historyState };
+    case 'SET_USER_REDUX':
+      return { ...state, ...action.payload.userData };
     default:
       return { ...state };
   }

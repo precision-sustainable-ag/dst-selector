@@ -8,6 +8,8 @@ const initialState = {
       endDate: '',
     },
   },
+  // FIXME: not used now
+  activeGrowthPeriod: [],
 };
 
 // additional related functions
