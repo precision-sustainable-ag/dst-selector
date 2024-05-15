@@ -44,6 +44,11 @@ export const updateDateRange = ({ startDate, endDate }) => ({
   },
 });
 
+export const setCropRedux = (cropData) => ({
+  type: 'SET_CROP_REDUX',
+  payload: { cropData },
+});
+
 // reducer
 const cropDataReducer = (state = initialState, action = null) => {
   switch (action.type) {
@@ -77,6 +82,9 @@ const cropDataReducer = (state = initialState, action = null) => {
         },
       };
     }
+
+    case 'SET_CROP_REDUX':
+      return { ...state, ...action.payload.cropData };
 
     default:
       return { ...state };

@@ -7,15 +7,12 @@ import {
   Typography, Grid, Box, useMediaQuery, useTheme,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import GoalTag from './GoalTag/GoalTag';
 import { callCoverCropApi } from '../../shared/constants';
-import { updateDateRange } from '../../reduxStore/cropSlice';
 import PreviousCashCrop from '../CropSidebar/PreviousCashCrop/PreviousCashCrop';
 
 const GoalsSelector = () => {
-  const dispatchRedux = useDispatch();
-
   // theme vars
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -25,26 +22,11 @@ const GoalsSelector = () => {
   const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
   const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
+
   // useState vars
   const [allGoals, setAllGoals] = useState([]);
   const query = `${encodeURIComponent('regions')}=${encodeURIComponent(regionIdRedux)}`;
-  const [dateRange, setDateRange] = useState({
-    startDate: null,
-    endDate: null,
-  });
-  useEffect(() => {
-    // if (from === 'table') {
-    if (dateRange.startDate !== null && dateRange.endDate !== null) {
-      // FIXME: this code are not working
-      dispatchRedux(
-        updateDateRange({
-          startDate: dateRange.startDate.toISOString().substring(0, 10),
-          endDate: dateRange.endDate.toISOString().substring(0, 10),
-        }),
-      );
-    }
-    // }
-  }, [dateRange]);
+
   useEffect(() => {
     if (stateIdRedux && regionIdRedux) {
       callCoverCropApi(
@@ -54,6 +36,7 @@ const GoalsSelector = () => {
       });
     }
   }, []);
+
   return (
     <Box>
       <Grid container spacing={isLargeScreen ? 4 : 1}>
@@ -134,7 +117,7 @@ const GoalsSelector = () => {
             }}
             justifyContent="center"
           >
-            <PreviousCashCrop setDateRange={setDateRange} />
+            <PreviousCashCrop />
           </Grid>
         </Grid>
       </Grid>
