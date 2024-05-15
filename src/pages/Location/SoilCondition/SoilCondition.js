@@ -34,6 +34,7 @@ const SoilCondition = () => {
   const query1 = `${encodeURIComponent('regions')}=${encodeURIComponent(regionIdRedux)}`;
   const query2 = `${encodeURIComponent('regions')}=${encodeURIComponent(stateIdRedux)}`;
 
+  // retrieving flooding frequency values(not exact value)
   useEffect(() => {
     fetch(`https://${apiBaseUrlRedux}.covercrop-selector.org/v2/attribute?filtered=false&slug=flooding_frequency&${query2}&${query1}`)
       .then((res) => res.json())
@@ -46,6 +47,7 @@ const SoilCondition = () => {
       });
   }, []);
 
+  // retrieving drainage class and flooding frequency
   useEffect(() => {
     if (historyStateRedux === historyState.imported) {
       // not call api if it's imported
