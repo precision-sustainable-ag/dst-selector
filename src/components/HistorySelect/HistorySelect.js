@@ -13,6 +13,7 @@ import { setMapRedux } from '../../reduxStore/mapSlice';
 import { setAddressRedux } from '../../reduxStore/addressSlice';
 import { setWeatherRedux } from '../../reduxStore/weatherSlice';
 import { setSoilRedux } from '../../reduxStore/soilSlice';
+import { setGoalsRedux } from '../../reduxStore/goalSlice';
 
 const menuProps = {
   PaperProps: {
@@ -82,10 +83,11 @@ const HistorySelect = () => {
           soilData, addressData, userData,
         } = res.json;
         // TODO: set these redux values
-        console.log(cropData, goalsData, sharedData);
+        console.log(cropData, sharedData);
         // update redux
         dispatch(setMapRedux(mapData));
         dispatch(setWeatherRedux(weatherData));
+        dispatch(setGoalsRedux(goalsData));
         dispatch(setSoilRedux(soilData));
         dispatch(setAddressRedux(addressData));
         dispatch(setUserRedux(userData));
