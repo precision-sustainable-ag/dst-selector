@@ -2,6 +2,7 @@ import {
   Grid, Typography, useMediaQuery, useTheme,
 } from '@mui/material';
 import React from 'react';
+import dayjs from 'dayjs';
 import { useDispatch, useSelector } from 'react-redux';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -50,7 +51,7 @@ const PreviousCashCrop = () => {
                 }}
                 sx={{ width: 1 }}
                 label="Planting Date"
-                value={cashCropDataRedux.dateRange.startDate}
+                value={dayjs(cashCropDataRedux.dateRange.startDate)}
                 onChange={(newDate) => handleDispatch(newDate, cashCropDataRedux.dateRange.endDate)}
               />
             </LocalizationProvider>
@@ -65,7 +66,7 @@ const PreviousCashCrop = () => {
                 }}
                 sx={{ width: 1 }}
                 label="Harvest Date"
-                value={cashCropDataRedux.dateRange.endDate}
+                value={dayjs(cashCropDataRedux.dateRange.endDate)}
                 onChange={(newDate) => handleDispatch(cashCropDataRedux.dateRange.startDate, newDate)}
               />
             </LocalizationProvider>
