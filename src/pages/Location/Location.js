@@ -105,11 +105,11 @@ const Location = () => {
         // zipCode,
         county,
       } = selectedToEditSite;
-      console.log('selectedToEditSite', selectedToEditSite);
 
       if (markersRedux && latitude === markersRedux[0][0] && longitude === markersRedux[0][1]) return;
 
       // FIXME: if user imported a history without a field, this will prevent them creating one
+      // might add field !== null to prevent this
       if (historyStateRedux === historyState.imported) {
         dispatchRedux(setHistoryDialogState({ open: true, type: 'update' }));
         setMapFeatures(getFeatures());
