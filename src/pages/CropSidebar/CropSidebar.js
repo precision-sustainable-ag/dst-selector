@@ -232,8 +232,9 @@ const CropSidebar = ({
       });
       callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/crops?minimal=true&${query}`).then((data) => {
         const { startDate, endDate } = cashCropDataRedux.dateRange;
-        const start = startDate ? moment(startDate.toISOString()).format('MM/DD') : '';
-        const end = endDate ? moment(endDate.toISOString()).format('MM/DD') : '';
+
+        const start = startDate ? moment(startDate).format('MM/DD') : '';
+        const end = endDate ? moment(endDate).format('MM/DD') : '';
         cropDataFormatter(data.data, start, end);
         dispatchRedux(updateCropData(data.data));
         dispatchRedux(setAjaxInProgress(false));
