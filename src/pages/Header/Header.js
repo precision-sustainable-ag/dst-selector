@@ -251,7 +251,7 @@ const Header = () => {
             <InformationBar pathname={pathname} />
             <MyCoverCropReset />
             {/* FIXME: temporary button for saving history here */}
-            <SaveUserHistory />
+            <SaveUserHistory pathname={pathname} />
           </Grid>
         </Grid>
 

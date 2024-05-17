@@ -109,8 +109,7 @@ const Location = () => {
       if (markersRedux && latitude === markersRedux[0][0] && longitude === markersRedux[0][1]) return;
 
       // FIXME: if user imported a history without a field, this will prevent them creating one
-      // might add field !== null to prevent this
-      if (historyStateRedux === historyState.imported) {
+      if (historyStateRedux === historyState.imported && userFieldRedux !== null) {
         dispatchRedux(setHistoryDialogState({ open: true, type: 'update' }));
         setMapFeatures(getFeatures());
         return;
@@ -173,8 +172,6 @@ const Location = () => {
 
   // call cover crop api based on marker change
   useEffect(() => {
-    // FIXME: this useEffect will also run if click next and click back to return to this page
-    // TODO: possible solution: move this into above, since the dependency also applies when selectedToEditSite changes
     const getDetails = async () => {
       // const { markers } = state;
       const weatherApiURL = 'https://weather.covercrop-data.org';
@@ -261,6 +258,7 @@ const Location = () => {
     };
     if (historyStateRedux === historyState.imported) {
       // FIXME: if imported history don't have these weather info, it'll not be loaded.
+      // TODO: reset redux default value to test if the value have changed, or use progress redux to reference current step
       return;
     }
     // if user select another region, do not call weather api
