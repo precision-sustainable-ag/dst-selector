@@ -1,5 +1,5 @@
 import { Button } from '@mui/material';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAuthToken } from '../../../shared/authToken';
 import { saveHistory, loadHistory } from '../../../shared/api';
@@ -9,12 +9,13 @@ import {
 
 // FIXME: temporary use a button to save user history,
 // might change to a dummy component to avoid performance issues(need to import all redux states)
-const SaveUserHistory = () => {
+const SaveUserHistory = ({ pathname }) => {
   const dispatchRedux = useDispatch();
 
   const consentRedux = useSelector((stateRedux) => stateRedux.userData.consent);
   const fieldRedux = useSelector((stateRedux) => stateRedux.userData.field);
   const selectedHistoryRedux = useSelector((stateRedux) => stateRedux.userData.selectedHistory);
+  const historyStateRedux = useSelector((stateRedux) => stateRedux.userData.historyState);
 
   const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData);
   const mapDataRedux = useSelector((stateRedux) => stateRedux.mapData);
@@ -23,6 +24,8 @@ const SaveUserHistory = () => {
   const sharedDataRedux = useSelector((stateRedux) => stateRedux.sharedData);
   const soilDataRedux = useSelector((stateRedux) => stateRedux.soilData);
   const addressDataRedux = useSelector((stateRedux) => stateRedux.addressData);
+
+  const { progress: progressRedux } = sharedDataRedux;
 
   const handleSave = () => {
     const token = getAuthToken();
@@ -53,6 +56,16 @@ const SaveUserHistory = () => {
       }
     });
   };
+
+  // useEffect to save user history
+  useEffect(() => {
+    // not saving history when switch from landing to location since it'll not let location selection available
+    if (historyStateRedux !== historyState.none && progressRedux !== 1) {
+      console.log('save history');
+      handleSave();
+    }
+  }, [progressRedux, pathname]);
+
   return (
     <Button onClick={handleSave}>save history</Button>
   );

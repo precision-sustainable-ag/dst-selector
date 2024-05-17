@@ -94,6 +94,7 @@ const Landing = () => {
         // reset state to previous state in redux
         const state = allStates.filter((s) => s.id === stateIdRedux);
         if (state.length > 0) setSelectedState(state[0]);
+        else setSelectedState({});
         // if historyState is imported, return and not set new history
         return;
       }
