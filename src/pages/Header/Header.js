@@ -134,29 +134,6 @@ const Header = () => {
     if (isAuthenticated) fetchUserData();
   }, [isAuthenticated, getAccessTokenSilently]);
 
-  // TODO: logic for saving at every step
-  // useEffect(() => {
-  //   // save user history when user click next in Landing & Location page, change zone in explorer
-  //   if (
-  //     isAuthenticated
-  //     && (progressRedux === 1 || progressRedux === 2 || pathname === '/explorer')
-  //   ) {
-  //     const userHistory = buildHistory(
-  //       stateIdRedux,
-  //       stateLabelRedux,
-  //       regionIdRedux,
-  //       regionShorthandRedux,
-  //       councilLabelRedux,
-  //       councilShorthandRedux,
-  //       consentRedux.status,
-  //       consentRedux.date,
-  //       selectedFieldIdRedux,
-  //     );
-  //     const accessToken = getAuthToken();
-  //     // postHistory(accessToken, userHistory);
-  //   }
-  // }, [progressRedux, regionShorthandRedux, selectedFieldIdRedux]);
-
   const chooseTopBar = (option) => {
     if (option) {
       return (

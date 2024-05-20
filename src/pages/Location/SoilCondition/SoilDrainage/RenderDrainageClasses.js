@@ -4,6 +4,7 @@ import {
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateDrainageClass as updateDrainageClassRedux } from '../../../../reduxStore/soilSlice';
+import { historyState, setHistoryState } from '../../../../reduxStore/userSlice';
 
 const RenderDrainageClasses = ({
   tilingCheck, setTilingCheck, setNewDrainage, setShowTiling, drainage = [],
@@ -17,6 +18,8 @@ const RenderDrainageClasses = ({
   // redux vars
   const soilDataRedux = useSelector((stateRedux) => stateRedux.soilData.soilData);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
+  const historyStateRedux = useSelector((stateRedux) => stateRedux.userData.historyState);
+
   const [previousDrainage, setPreviousDrainage] = useState(-1);
   const [updateTilingCheck, setUpdateTilingCheck] = useState(true);
   const drainageArray = [
@@ -64,6 +67,9 @@ const RenderDrainageClasses = ({
   }, [tilingCheck]);
 
   const updateDrainageClass = (index = '') => {
+    // update history state here
+    if (historyStateRedux === historyState.imported) dispatchRedux(setHistoryState(historyState.updated));
+
     if (tilingCheck) {
       setTilingCheck(false);
       setUpdateTilingCheck(false);

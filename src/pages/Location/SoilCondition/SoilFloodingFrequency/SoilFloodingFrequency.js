@@ -9,6 +9,7 @@ import { ReferenceTooltip } from '../../../../shared/constants';
 import arrayEquals from '../../../../shared/functions';
 import RenderFloodingOptions from './RenderFloodingOptions';
 import { updateFloodingFrequency } from '../../../../reduxStore/soilSlice';
+import { historyState, setHistoryState } from '../../../../reduxStore/userSlice';
 
 const SoilFloodingFrequency = (floodingOptions) => {
   const dispatchRedux = useDispatch();
@@ -19,8 +20,11 @@ const SoilFloodingFrequency = (floodingOptions) => {
   // redux vars
   const soilDataRedux = useSelector((stateRedux) => stateRedux.soilData.soilData);
   const soilDataOriginalRedux = useSelector((stateRedux) => stateRedux.soilData.soilDataOriginal);
+  const historyStateRedux = useSelector((stateRedux) => stateRedux.userData.historyState);
 
   const resetFloodingOptions = () => {
+    // update history state here
+    if (historyStateRedux === historyState.imported) dispatchRedux(setHistoryState(historyState.updated));
     dispatchRedux(updateFloodingFrequency(soilDataOriginalRedux?.floodingFrequency));
   };
 
