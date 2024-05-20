@@ -769,8 +769,7 @@ export const cropDataFormatter = (cropData = [{}], cashCropStartDate = '', cashC
           valStart = moment(dateArray, 'YYYY-MM-DD').format('MM/DD');
           valEnd = valStart;
         }
-
-        const datesArr = dateArray.split('-');
+        const datesArr = dateArray.value.split('-');
         if (datesArr.length > 1 && date.label !== 'Hessian Fly Free Date') {
           valStart = moment(datesArr[0], 'MM/DD/YYYY').format('MM/DD');
           valEnd = moment(datesArr[1], 'MM/DD/YYYY').format('MM/DD');
@@ -1035,7 +1034,7 @@ export const extractData = (attribute, from, councilShorthand) => {
     dataType = attribute?.dataType.label;
   } else {
     for (let i = 0; i < attribute?.values.length; i++) {
-      attributeValues.push(`${attribute?.values[i]} ${attribute?.units ? attribute?.units : ''}`);
+      attributeValues.push(`${attribute?.values[i].value} ${attribute?.units ? attribute?.units : ''}`);
     }
     dataType = attribute?.dataType;
   }
