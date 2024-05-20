@@ -4,6 +4,7 @@ import {
 } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateFloodingFrequency as updateFloodingFrequencyRedux } from '../../../../reduxStore/soilSlice';
+import { historyState, setHistoryState } from '../../../../reduxStore/userSlice';
 
 const RenderFloodingOptions = ({ floodingOptions, flooding = [''] }) => {
   const dispatchRedux = useDispatch();
@@ -13,8 +14,11 @@ const RenderFloodingOptions = ({ floodingOptions, flooding = [''] }) => {
   const isMobile = useMediaQuery(uiTheme.breakpoints.down('sm'));
   // redux vars
   const soilDataRedux = useSelector((stateRedux) => stateRedux.soilData.soilData);
+  const historyStateRedux = useSelector((stateRedux) => stateRedux.userData.historyState);
 
   const updateFloodingFrequency = (label = '') => {
+    // update history state here
+    if (historyStateRedux === historyState.imported) dispatchRedux(setHistoryState(historyState.updated));
     let floodings = soilDataRedux?.floodingFrequency ? [...soilDataRedux.floodingFrequency] : [];
     if (floodings.indexOf('None') !== -1) {
       // does exist, remove none because something else was selected

@@ -57,10 +57,14 @@ const SaveUserHistory = ({ pathname }) => {
     });
   };
 
-  // useEffect to save user history
+  // useEffect to save user history when switching pages
   useEffect(() => {
+    // only save history when history state is new or updated
     // not saving history when switch from landing to location since it'll not let location selection available
-    if (historyStateRedux !== historyState.none && progressRedux !== 1) {
+    if (
+      (historyStateRedux === historyState.new || historyStateRedux === historyState.updated)
+       && progressRedux !== 1
+    ) {
       console.log('save history');
       handleSave();
     }

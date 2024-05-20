@@ -6,15 +6,20 @@ import { useDispatch, useSelector } from 'react-redux';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { updateDateRange } from '../../../reduxStore/cropSlice';
+import { historyState, setHistoryState } from '../../../reduxStore/userSlice';
 
 const PreviousCashCrop = () => {
   const dispatchRedux = useDispatch();
   const cashCropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cashCropData);
+  const historyStateRedux = useSelector((stateRedux) => stateRedux.userData.historyState);
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const handleDispatch = (start = '', end = '') => {
+    console.log(start, end, typeof start);
+    // update history state here
+    if (historyStateRedux === historyState.imported) dispatchRedux(setHistoryState(historyState.updated));
     dispatchRedux(updateDateRange({ startDate: start, endDate: end }));
   };
 
