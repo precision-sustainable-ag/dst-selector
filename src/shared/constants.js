@@ -246,7 +246,6 @@ export const LightButton = styled(Button)({
 export const getRating = (rating, councilShorthand) => {
   const ratingInt = parseInt(rating, 10);
 
-  console.log(councilShorthand);
   return (
     <svg
       width="30px"
@@ -470,10 +469,10 @@ export const sortCrops = (
         .reverse()
         .forEach((g) => {
           if (b.goals.filter((data) => data.label === g)[0]?.values.length > 0) {
-            bAvg = +b.goals.filter((data) => data.label === g)[0].values[0] + bAvg;
+            bAvg = +b.goals.filter((data) => data.label === g)[0].values[0].value + bAvg;
           }
           if (a.goals.filter((data) => data.label === g)[0]?.values.length > 0) {
-            aAvg = +a.goals.filter((data) => data.label === g)[0].values[0] + aAvg;
+            aAvg = +a.goals.filter((data) => data.label === g)[0].values[0].value + aAvg;
           }
         });
       aAvg /= selectedItems.length;
@@ -490,7 +489,7 @@ export const sortCrops = (
   if (type === 'Goal') {
     crops.sort((a, b) => {
       if (a.goals.filter((data) => data.label === goal)[0]?.values.length > 0 && b.goals.filter((data) => data.label === goal)[0]?.values.length > 0) {
-        if (a.goals.filter((data) => data.label === goal)[0].values[0] > b.goals.filter((data) => data.label === goal)[0].values[0]) {
+        if (a.goals.filter((data) => data.label === goal)[0].values[0].value > b.goals.filter((data) => data.label === goal)[0].values[0].value) {
           return sortFlag ? -1 : 1;
         }
         return sortFlag ? 1 : -1;
@@ -1033,8 +1032,9 @@ export const extractData = (attribute, from, councilShorthand) => {
     });
     dataType = attribute?.dataType.label;
   } else {
+    // from myCoverCropComparison
     for (let i = 0; i < attribute?.values.length; i++) {
-      attributeValues.push(`${attribute?.values[i].value} ${attribute?.units ? attribute?.units : ''}`);
+      attributeValues.push(`${attribute?.values[i]} ${attribute?.units ? attribute?.units : ''}`);
     }
     dataType = attribute?.dataType;
   }
