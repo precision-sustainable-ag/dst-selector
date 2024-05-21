@@ -81,8 +81,7 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                   {flipCoverCropName(crop.label)}
                 </Button>
               </Grid>
-              {/* FIXME: there's only 'Frost Seed' property for crops in NC, also this need to be changed to values[0].label */}
-              {crop.attributes.filter((a) => a.label === 'Frost Seeding')[0]?.values[0] === 'Yes' && (
+              {crop.attributes.filter((a) => a.label === 'Frost Seed')[0]?.values[0].label === 'Yes' && (
                 <Grid item>
                   <Tooltip
                     placement="top-end"
