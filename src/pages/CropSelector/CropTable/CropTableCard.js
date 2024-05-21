@@ -35,7 +35,7 @@ const CropTableCard = ({ crop, indexKey, showGrowthWindow }) => {
                   </p>
                 )}
               >
-                {getRating(crop.goals.filter((a) => a.label === goal)[0].values[0], councilShorthandRedux)}
+                {getRating(crop.goals.filter((a) => a.label === goal)[0].values[0].value, councilShorthandRedux)}
               </Tooltip>
             </div>
           </TableCell>
