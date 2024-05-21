@@ -524,7 +524,7 @@ export const sortCrops = (
             firstDate = new Date(
               a.plantingDates.filter((date) => date.label === 'Reliable Establishment')[0]?.values?.[
                 firstLength - 1
-              ].split(' - ')[1],
+              ].value.split(' - ')[1],
             )
               .toLocaleDateString('en-GB')
               .split('/')
@@ -533,7 +533,7 @@ export const sortCrops = (
             secondDate = new Date(
               b.plantingDates.filter((date) => date.label === 'Reliable Establishment')[0]?.values?.[
                 secondLength - 1
-              ].split(' - ')[1],
+              ].value.split(' - ')[1],
             )
               .toLocaleDateString('en-GB')
               .split('/')
@@ -543,7 +543,7 @@ export const sortCrops = (
             firstDate = new Date(
               a.plantingDates.filter((date) => date.label === 'Reliable Establishment')[0]?.values?.[
                 firstLength - 1
-              ].split(' - ')[0],
+              ].value.split(' - ')[0],
             )
               .toLocaleDateString('en-GB')
               .split('/')
@@ -552,7 +552,7 @@ export const sortCrops = (
             secondDate = new Date(
               b.plantingDates.filter((date) => date.label === 'Reliable Establishment')[0]?.values?.[
                 secondLength - 1
-              ].split(' - ')[0],
+              ].value.split(' - ')[0],
             )
               .toLocaleDateString('en-GB')
               .split('/')
