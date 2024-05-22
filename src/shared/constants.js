@@ -246,7 +246,6 @@ export const LightButton = styled(Button)({
 export const getRating = (rating, councilShorthand) => {
   const ratingInt = parseInt(rating, 10);
 
-  console.log(councilShorthand);
   return (
     <svg
       width="30px"
@@ -470,10 +469,10 @@ export const sortCrops = (
         .reverse()
         .forEach((g) => {
           if (b.goals.filter((data) => data.label === g)[0]?.values.length > 0) {
-            bAvg = +b.goals.filter((data) => data.label === g)[0].values[0] + bAvg;
+            bAvg = +b.goals.filter((data) => data.label === g)[0].values[0].value + bAvg;
           }
           if (a.goals.filter((data) => data.label === g)[0]?.values.length > 0) {
-            aAvg = +a.goals.filter((data) => data.label === g)[0].values[0] + aAvg;
+            aAvg = +a.goals.filter((data) => data.label === g)[0].values[0].value + aAvg;
           }
         });
       aAvg /= selectedItems.length;
@@ -490,7 +489,7 @@ export const sortCrops = (
   if (type === 'Goal') {
     crops.sort((a, b) => {
       if (a.goals.filter((data) => data.label === goal)[0]?.values.length > 0 && b.goals.filter((data) => data.label === goal)[0]?.values.length > 0) {
-        if (a.goals.filter((data) => data.label === goal)[0].values[0] > b.goals.filter((data) => data.label === goal)[0].values[0]) {
+        if (a.goals.filter((data) => data.label === goal)[0].values[0].value > b.goals.filter((data) => data.label === goal)[0].values[0].value) {
           return sortFlag ? -1 : 1;
         }
         return sortFlag ? 1 : -1;
@@ -525,7 +524,7 @@ export const sortCrops = (
             firstDate = new Date(
               a.plantingDates.filter((date) => date.label === 'Reliable Establishment')[0]?.values?.[
                 firstLength - 1
-              ].split(' - ')[1],
+              ].value.split(' - ')[1],
             )
               .toLocaleDateString('en-GB')
               .split('/')
@@ -534,7 +533,7 @@ export const sortCrops = (
             secondDate = new Date(
               b.plantingDates.filter((date) => date.label === 'Reliable Establishment')[0]?.values?.[
                 secondLength - 1
-              ].split(' - ')[1],
+              ].value.split(' - ')[1],
             )
               .toLocaleDateString('en-GB')
               .split('/')
@@ -544,7 +543,7 @@ export const sortCrops = (
             firstDate = new Date(
               a.plantingDates.filter((date) => date.label === 'Reliable Establishment')[0]?.values?.[
                 firstLength - 1
-              ].split(' - ')[0],
+              ].value.split(' - ')[0],
             )
               .toLocaleDateString('en-GB')
               .split('/')
@@ -553,7 +552,7 @@ export const sortCrops = (
             secondDate = new Date(
               b.plantingDates.filter((date) => date.label === 'Reliable Establishment')[0]?.values?.[
                 secondLength - 1
-              ].split(' - ')[0],
+              ].value.split(' - ')[0],
             )
               .toLocaleDateString('en-GB')
               .split('/')
@@ -769,8 +768,7 @@ export const cropDataFormatter = (cropData = [{}], cashCropStartDate = '', cashC
           valStart = moment(dateArray, 'YYYY-MM-DD').format('MM/DD');
           valEnd = valStart;
         }
-
-        const datesArr = dateArray.split('-');
+        const datesArr = dateArray.value.split('-');
         if (datesArr.length > 1 && date.label !== 'Hessian Fly Free Date') {
           valStart = moment(datesArr[0], 'MM/DD/YYYY').format('MM/DD');
           valEnd = moment(datesArr[1], 'MM/DD/YYYY').format('MM/DD');
@@ -1038,6 +1036,7 @@ export const extractData = (attribute, from, councilShorthand) => {
     });
     dataType = attribute?.dataType.label;
   } else {
+    // from myCoverCropComparison
     for (let i = 0; i < attribute?.values.length; i++) {
       attributeValues.push(`${attribute?.values[i]} ${attribute?.units ? attribute?.units : ''}`);
     }

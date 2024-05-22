@@ -81,7 +81,7 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                   {flipCoverCropName(crop.label)}
                 </Button>
               </Grid>
-              {crop.attributes.filter((a) => a.label === 'Frost Seeding')[0]?.values[0] === 'Yes' && (
+              {crop.attributes.filter((a) => a.label === 'Frost Seed')[0]?.values[0].label === 'Yes' && (
                 <Grid item>
                   <Tooltip
                     placement="top-end"
@@ -114,7 +114,7 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                     </p>
                   )}
                 >
-                  {getRating(crop.goals.filter((a) => a.label === goal)[0].values[0], councilShorthandRedux)}
+                  {getRating(crop.goals.filter((a) => a.label === goal)[0].values[0].value, councilShorthandRedux)}
                 </Tooltip>
               </div>
             </TableCell>
