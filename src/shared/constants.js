@@ -11,6 +11,7 @@ import moment from 'moment';
 import { Info, MonetizationOn } from '@mui/icons-material';
 import { MapboxApiKey } from './keys';
 import arrayEquals from './functions';
+import { historyState, setHistoryState } from '../reduxStore/userSlice';
 
 export const ReferenceTooltip = ({
   url, source, type, content, hasLink, title,
@@ -908,6 +909,7 @@ export const addCropToBasket = (
   updateSelectedCropIds,
   selectedCropIdsRedux,
   myCropListLocation,
+  historyStateRedux,
 ) => {
   const selectedCrops = cropId;
 
@@ -915,6 +917,9 @@ export const addCropToBasket = (
     dispatchRedux(updateSelectedCropIds(crops));
     dispatchRedux(snackHandler({ snackOpen: true, snackMessage: `${cropName} ${action}` }));
   };
+
+  // update history state
+  if (historyStateRedux === historyState.imported) dispatchRedux(setHistoryState(historyState.updated));
 
   if (selectedCropIdsRedux?.length > 0) {
     // DONE: Remove crop from basket

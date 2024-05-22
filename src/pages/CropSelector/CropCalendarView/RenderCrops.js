@@ -25,6 +25,7 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
   const selectedBtns = selectedCropIdsRedux;
+  const historyStateRedux = useSelector((stateRedux) => stateRedux.userData.historyState);
 
   return cropDataRedux
     .sort((a, b) => (a.inactive || false) - (b.inactive || false))
@@ -144,6 +145,7 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                 updateSelectedCropIds,
                 selectedCropIdsRedux,
                 myCropListLocation,
+                historyStateRedux,
               );
             }}
           >
