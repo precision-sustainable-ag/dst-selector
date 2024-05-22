@@ -16,6 +16,7 @@ const CropTableCard = ({ crop, indexKey, showGrowthWindow }) => {
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
 
   const selectedBtns = selectedCropIdsRedux;
+  const historyStateRedux = useSelector((stateRedux) => stateRedux.userData.historyState);
 
   return (
     <>
@@ -73,6 +74,7 @@ const CropTableCard = ({ crop, indexKey, showGrowthWindow }) => {
                 updateSelectedCropIds,
                 selectedCropIdsRedux,
                 myCropListLocation,
+                historyStateRedux,
               );
             }}
           >

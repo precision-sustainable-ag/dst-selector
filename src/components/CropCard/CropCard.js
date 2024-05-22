@@ -21,6 +21,7 @@ const CropCard = ({
 
   // redux vars
   const selectedCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCropIds);
+  const historyStateRedux = useSelector((stateRedux) => stateRedux.userData.historyState);
 
   // useState vars
   const [selectedBtns, setSelectedBtns] = useState(selectedCropIdsRedux);
@@ -36,7 +37,16 @@ const CropCard = ({
   }, [selectedCropIdsRedux]);
 
   async function addToBasket(cropId, name) {
-    addCropToBasket(cropId, name, dispatchRedux, snackHandler, updateSelectedCropIds, selectedCropIdsRedux, myCropListLocation);
+    addCropToBasket(
+      cropId,
+      name,
+      dispatchRedux,
+      snackHandler,
+      updateSelectedCropIds,
+      selectedCropIdsRedux,
+      myCropListLocation,
+      historyStateRedux,
+    );
     await updateBtns();
   }
 
