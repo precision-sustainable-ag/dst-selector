@@ -58,7 +58,7 @@ const CropCard = ({
         <Typography
           sx={{ color: 'grey', textTransform: 'uppercase' }}
         >
-          {crop.attributes.filter((a) => a.label === 'Cover Crop Group')[0]?.values[0]}
+          {crop.attributes.filter((a) => a.label === 'Cover Crop Group')[0]?.values[0].value}
         </Typography>
         <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>
           {crop.label}

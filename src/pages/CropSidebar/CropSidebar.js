@@ -118,7 +118,7 @@ const CropSidebar = ({
         if (parm === 'label') {
           m = crop[parm]?.toLowerCase().match(/\w+/g);
         } else if (parm === 'common') {
-          m = crop.attributes.filter((c) => c.label === 'Cover Crop Group')[0].values[0]?.toLowerCase().match(/\w+/g);
+          m = crop.attributes.filter((c) => c.label === 'Cover Crop Group')[0].values[0]?.value.toLowerCase().match(/\w+/g);
         } else {
           m = crop[parm]?.toLowerCase().match(/\w+/g);
         }
@@ -136,7 +136,7 @@ const CropSidebar = ({
     });
 
     const filtered = cropData?.filter((crop, n, cd) => {
-      const floodingFrequencyValue = crop.attributes.filter((a) => a.label === 'Flooding Frequency Tolerance')[0]?.values[0];
+      const floodingFrequencyValue = crop.attributes.filter((a) => a.label === 'Flooding Frequency Tolerance')[0]?.values[0].value;
       let match = true;
       // iterate over all active filters
       nonZeroKeys2.forEach((keyObject) => {
