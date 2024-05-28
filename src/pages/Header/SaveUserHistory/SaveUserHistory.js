@@ -1,5 +1,4 @@
-import { Button } from '@mui/material';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAuthToken } from '../../../shared/authToken';
 import { saveHistory, loadHistory } from '../../../shared/api';
@@ -7,8 +6,6 @@ import {
   setHistoryState, setSelectedHistory, historyState, setUserHistoryList,
 } from '../../../reduxStore/userSlice';
 
-// FIXME: temporary use a button to save user history,
-// might change to a dummy component to avoid performance issues(need to import all redux states)
 const SaveUserHistory = ({ pathname }) => {
   const dispatchRedux = useDispatch();
 
@@ -65,13 +62,10 @@ const SaveUserHistory = ({ pathname }) => {
       (historyStateRedux === historyState.new || historyStateRedux === historyState.updated)
        && progressRedux !== 1
     ) {
-      console.log('save history');
       handleSave();
     }
   }, [progressRedux, pathname]);
 
-  return (
-    <Button onClick={handleSave}>save history</Button>
-  );
+  return null;
 };
 export default SaveUserHistory;

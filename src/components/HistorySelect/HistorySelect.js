@@ -78,13 +78,11 @@ const HistorySelect = () => {
     const token = getAuthToken();
     loadHistory(token, value).then((res) => {
       if (res) {
-        // TODO: temporary schema for user history
+        // TODO: temporary schema for user history, sharedData is not used now
         const {
-          cropData, mapData, weatherData, goalsData, sharedData,
+          cropData, mapData, weatherData, goalsData,
           soilData, addressData, userData,
         } = res.json;
-        // TODO: set these redux values
-        console.log(sharedData);
         // update redux
         dispatch(setCropRedux(cropData));
         dispatch(setMapRedux(mapData));
