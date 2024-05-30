@@ -35,9 +35,6 @@ const GoalsSelector = () => {
     endDate: null,
   });
 
-  // const sortedGoals = [];
-
-  console.log(selectedGoalsRedux);
   useEffect(() => {
     // if (from === 'table') {
     if (dateRange.startDate !== null && dateRange.endDate !== null) {
@@ -60,18 +57,6 @@ const GoalsSelector = () => {
       });
     }
   }, []);
-
-  // useEffect(() => {
-  //   allGoals.forEach((goal, i) => {
-  //     if (selectedGoalsRedux?.indexOf(goal.label) > -1) {
-  //       console.log('HERE1');
-  //       sortedGoals.splice(i, 0, allGoals[i]);
-  //     } else {
-  //       console.log('HERE2', goal, sortedGoals);
-  //       sortedGoals.push(goal);
-  //     }
-  //   });
-  // }, [selectedGoalsRedux, allGoals]);
 
   return (
     <Box>
