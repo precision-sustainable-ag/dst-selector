@@ -146,7 +146,7 @@ const CropSidebar = ({
         const vals = keyObject[key];
         if (crop.attributes.filter((att) => att.label === key)?.length > 0) {
           // if there is not an intersection, match = false
-          if (!crop.attributes.filter((att) => att.label === key)[0]?.values.some((item) => vals.includes(item))) {
+          if (!crop.attributes.filter((att) => att.label === key)[0]?.values.some((item) => vals.includes(item.value))) {
             match = false;
           }
         }

@@ -69,7 +69,7 @@ const MyCoverCropComparisonTable = () => {
       // same thing here but it also specifies it should be a pillbox
       goalRow[`crop${index}`] = { values: [], dataType: 'pillbox' };
       // push crop group
-      groupRow[`crop${index}`].values.push(crop.group);
+      groupRow[`crop${index}`].values.push({ value: crop.group });
 
       // if selected goals > 1 calculate average goal rating
       if (selectedGoalsRedux.length > 0) {
