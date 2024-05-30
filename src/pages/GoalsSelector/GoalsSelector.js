@@ -25,6 +25,8 @@ const GoalsSelector = () => {
   const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
   const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
+  const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals).reverse();
+
   // useState vars
   const [allGoals, setAllGoals] = useState([]);
   const query = `${encodeURIComponent('regions')}=${encodeURIComponent(regionIdRedux)}`;
@@ -32,6 +34,10 @@ const GoalsSelector = () => {
     startDate: null,
     endDate: null,
   });
+
+  // const sortedGoals = [];
+
+  console.log(selectedGoalsRedux);
   useEffect(() => {
     // if (from === 'table') {
     if (dateRange.startDate !== null && dateRange.endDate !== null) {
@@ -54,6 +60,19 @@ const GoalsSelector = () => {
       });
     }
   }, []);
+
+  // useEffect(() => {
+  //   allGoals.forEach((goal, i) => {
+  //     if (selectedGoalsRedux?.indexOf(goal.label) > -1) {
+  //       console.log('HERE1');
+  //       sortedGoals.splice(i, 0, allGoals[i]);
+  //     } else {
+  //       console.log('HERE2', goal, sortedGoals);
+  //       sortedGoals.push(goal);
+  //     }
+  //   });
+  // }, [selectedGoalsRedux, allGoals]);
+
   return (
     <Box>
       <Grid container spacing={isLargeScreen ? 4 : 1}>
@@ -95,24 +114,29 @@ const GoalsSelector = () => {
             {/* chips */}
             {allGoals?.length > 0 && (
               <Grid item container spacing={1} justifyContent="center" alignItems="center">
-                {allGoals.map((goal, key) => (
-                  <Grid
-                    item
-                    key={key}
-                    display="flex"
-                    xs={isMobile ? 12 : 'auto'}
-                    justifyContent="center"
-                    alignItems="center"
-                  >
-                    <GoalTag
+                {allGoals
+                  .slice()
+                  // Transforming the indexOf -1 from a non selected item to 3 allows the index 0-2 to be avaliable for the selected goals
+                  .sort((a, b) => (selectedGoalsRedux.indexOf(a.label) === -1 ? 3 : selectedGoalsRedux.indexOf(a.label))
+                      - (selectedGoalsRedux.indexOf(b.label) === -1 ? 3 : selectedGoalsRedux.indexOf(b.label)))
+                  .map((goal, key) => (
+                    <Grid
+                      item
                       key={key}
-                      goal={goal}
-                      id={key}
-                      goaltTitle={goal.label}
-                      goalDescription={goal.description}
-                    />
-                  </Grid>
-                ))}
+                      display="flex"
+                      xs={isMobile ? 12 : 'auto'}
+                      justifyContent="center"
+                      alignItems="center"
+                    >
+                      <GoalTag
+                        key={key}
+                        goal={goal}
+                        id={key}
+                        goaltTitle={goal.label}
+                        goalDescription={goal.description}
+                      />
+                    </Grid>
+                  ))}
               </Grid>
             )}
           </Grid>
