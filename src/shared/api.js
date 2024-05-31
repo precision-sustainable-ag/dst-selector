@@ -103,7 +103,6 @@ export const loadHistory = async (token = null, name = null) => {
         // name is not null, find match history record and return it
         const history = histories.find((h) => h.label === name);
         if (history !== undefined) {
-          console.log('loaded history', name, history);
           // return object since sometime ID property is needed
           return history;
         }
@@ -111,7 +110,6 @@ export const loadHistory = async (token = null, name = null) => {
       } else {
         // name is null, return a list of history name and id
         const historyList = histories.map((history) => ({ label: history.label, id: history.id }));
-        console.log('history list', historyList);
         return historyList;
       }
     }
@@ -138,12 +136,10 @@ export const saveHistory = async (name, data, token = null, id = null) => {
     if (id !== null) {
       // if id is not null, update history with id
       const res = await updateHistory(token, data, name, id);
-      console.log('updated history', res);
       return res;
     } else {
       // if id is null, create a new history
       const res = await createHistory(token, data, name);
-      console.log('created history', res);
       return res;
     }
   } catch (err) {

@@ -42,7 +42,6 @@ const SaveUserHistory = ({ pathname }) => {
     };
     const { label, id } = selectedHistoryRedux;
     saveHistory(label, data, token, id).then((res) => {
-      // console.log('saved history', res);
       dispatchRedux(setHistoryState(historyState.imported));
       // set history id
       dispatchRedux(setSelectedHistory({ ...selectedHistoryRedux, id: res.data.id }));
