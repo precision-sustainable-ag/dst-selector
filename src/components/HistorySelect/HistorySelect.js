@@ -161,7 +161,7 @@ const HistorySelect = () => {
             </Grid>
 
             <Grid item xs={12} md={3} display="flex" justifyContent="center" alignItems="center">
-              <Button onClick={handleLoadHistory} variant="contained" disabled={value === ''}>Load</Button>
+              <Button onClick={handleLoadHistory} variant="contained" disabled={value === ''}>Import</Button>
             </Grid>
 
             <Grid item xs={12} display="flex" justifyContent="center" alignItems="center">
