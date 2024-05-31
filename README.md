@@ -34,13 +34,6 @@ To see development progress, visit [http://covercrop.tools](http://covercrop.too
 1. Node and NPM [Download Here](https://nodejs.org/en/download/)
 2. Git [Download Here](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 3. A code editor (we recommend vs code) [Download Here](https://code.visualstudio.com/docs/setup/setup-overview)
-4. VS Code extension: Prettier - esbenp.prettier-vscode
-   - once installed use ctrl + shift + p to open Preferences: open user settings (JSON)
-   - inside the JSON object add these lines
-     - "editor.formatOnSave": true,
-     - "[javascript]": {
-       "editor.defaultFormatter": "esbenp.prettier-vscode"
-       }
 
 **Steps:**
 
