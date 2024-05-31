@@ -295,6 +295,12 @@ const Landing = () => {
                 </Select>
               </FormControl>
             </Grid>
+            {isAuthenticated
+            && (
+            <Grid item xs={12}>
+              <HistorySelect />
+            </Grid>
+            )}
           </Grid>
         </Box>
       </Grid>
@@ -321,12 +327,6 @@ const Landing = () => {
           />
         </Box>
       </Grid>
-      {isAuthenticated
-      && (
-      <Grid item style={backgroundSyles.frostedGlassEffect}>
-        <HistorySelect />
-      </Grid>
-      )}
     </Box>
   );
 };
