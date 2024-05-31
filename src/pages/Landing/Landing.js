@@ -19,6 +19,7 @@ import React, {
 import { useDispatch, useSelector } from 'react-redux';
 import ReactGA from 'react-ga';
 import { RegionSelectorMap } from '@psa/dst.ui.region-selector-map';
+import { useAuth0 } from '@auth0/auth0-react';
 import { callCoverCropApi } from '../../shared/constants';
 import { updateRegion, updateRegions, updateStateInfo } from '../../reduxStore/mapSlice';
 import { updateLocation } from '../../reduxStore/addressSlice';
@@ -42,6 +43,8 @@ const Landing = () => {
   const [selectedState, setSelectedState] = useState({});
   // This is the obj map returns when you selected a state on map
   const [mapState, setMapState] = useState({});
+
+  const { isAuthenticated } = useAuth0();
 
   const availableStates = useMemo(() => allStates.map((state) => state.label), [allStates]);
 
@@ -292,9 +295,6 @@ const Landing = () => {
                 </Select>
               </FormControl>
             </Grid>
-            <Grid item xs={12}>
-              <HistorySelect />
-            </Grid>
           </Grid>
         </Box>
       </Grid>
@@ -321,6 +321,12 @@ const Landing = () => {
           />
         </Box>
       </Grid>
+      {isAuthenticated
+      && (
+      <Grid item style={backgroundSyles.frostedGlassEffect}>
+        <HistorySelect />
+      </Grid>
+      )}
     </Box>
   );
 };
