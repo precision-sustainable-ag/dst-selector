@@ -295,12 +295,19 @@ const Landing = () => {
                 </Select>
               </FormControl>
             </Grid>
-            {isAuthenticated
-            && (
-            <Grid item xs={12}>
-              <HistorySelect />
+            <Grid item xs={12} display="flex" justifyContent="center">
+              <Typography>
+                {isAuthenticated
+                  ? 'Try out our new user history feature below:'
+                  : 'Log in to try out our new user history feature!'}
+              </Typography>
             </Grid>
-            )}
+            {isAuthenticated
+              && (
+                <Grid item xs={12}>
+                  <HistorySelect />
+                </Grid>
+              )}
           </Grid>
         </Box>
       </Grid>
