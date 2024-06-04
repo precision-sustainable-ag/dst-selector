@@ -184,7 +184,7 @@ const Location = () => {
           setRegionShorthand(county.replace(' County', ''));
         }
       } else {
-        callCoverCropApi(`https://weather.covercrop-data.org/hardinesszone?lat=${latitude}&lon=${longitude}&email=selector@cctools.org`)
+        callCoverCropApi(`https://weather.covercrop-data.org/hardinesszone?lat=${latitude}&lon=${longitude}&email=selector@psa.org`)
           .then((response) => {
             let { zone } = response;
 
@@ -241,10 +241,10 @@ const Location = () => {
         const currentMonthInt = moment().month() + 1;
 
         // frost url
-        const frostUrl = `${weatherApiURL}/frost?lat=${lat}&lon=${lon}&email=selector@cctools.org`;
+        const frostUrl = `${weatherApiURL}/frost?lat=${lat}&lon=${lon}&email=selector@psa.org`;
         // What was the 5-year average rainfall for city st during the month of currentMonthInt?
         //  Dynamic dates ?
-        const averageRainUrl = `${weatherApiURL}/hourly?location=${city} ${abbrState}&start=2015-01-01&end=2019-12-31&email=selector@cctools.org`;
+        const averageRainUrl = `${weatherApiURL}/hourly?location=${city} ${abbrState}&start=2015-01-01&end=2019-12-31&email=selector@psa.org`;
         const averageRainForAMonthURL = `${averageRainUrl}&where=month=${currentMonthInt}&stats=sum(precipitation)/5&output=json`;
         // What was the 5-year average annual rainfall for city st?
         const fiveYearAvgRainURL = `${averageRainUrl}&stats=sum(precipitation)/5&output=json`;
