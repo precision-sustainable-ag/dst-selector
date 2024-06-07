@@ -87,7 +87,7 @@ const ProgressButtonsInner = ({
             onClick={() => (progressRedux === 4 ? setMyCoverCropActivationFlag() : changeProgress('increment'))}
             disabled={isDisabledNext || (progressRedux === 4 && selectedCropIdsRedux.length === 0)}
           >
-            {progressRedux === 4 ? 'VIEW MY LIST' : 'NEXT'}
+            {progressRedux === 4 ? 'MY SELECTED CROPS' : 'NEXT'}
           </LightButton>
         </Badge>
       )}

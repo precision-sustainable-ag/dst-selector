@@ -96,7 +96,7 @@ const ToggleOptions = ({ pathname }) => {
             onClick={setMyCoverCropActivationFlag}
           >
             <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
-              VIEW MY LIST
+              MY SELECTED CROPS
             </Typography>
           </Button>
         </Badge>

@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 /*
   This file contains the CropSidebar and its styles
-  The CropSidebar is the sidebar which contains the filtering and calendar view components
+  The CropSidebar is the sidebar which contains the filtering and calendar view (crop calendar) components
 */
 
 import {
@@ -306,7 +306,7 @@ const CropSidebar = ({
           style={{ background: !comparisonView ? '#49a8ab' : '#e3f2f4' }}
           startIcon={<ListIcon style={{ fontSize: 'larger' }} />}
         >
-          LIST VIEW
+          CROP LIST
         </LightButton>
         <LightButton
           onClick={() => setComparisonView(true)}
@@ -335,7 +335,7 @@ const CropSidebar = ({
               style={{ background: !listView ? '#49a8ab' : '#e3f2f4' }}
               startIcon={<ListIcon style={{ fontSize: 'larger' }} />}
             >
-              LIST VIEW
+              CROP LIST
             </LightButton>
             <LightButton
               onClick={() => setListView(true)}
@@ -343,7 +343,7 @@ const CropSidebar = ({
               style={{ background: listView ? '#49a8ab' : '#e3f2f4' }}
               startIcon={<CalendarToday style={{ fontSize: 'larger' }} />}
             >
-              CALENDAR VIEW
+              CROP CALENDAR
             </LightButton>
           </>
         )}
