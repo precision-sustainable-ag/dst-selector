@@ -3,7 +3,9 @@
   The GoalsSelector is the window where the user selects their goals
 */
 // TODO: Goal tags are not responsive!
-import { Typography, Grid, Box, useMediaQuery, useTheme } from '@mui/material';
+import {
+  Typography, Grid, Box, useMediaQuery, useTheme,
+} from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import GoalTag from './GoalTag/GoalTag';
@@ -83,11 +85,10 @@ const GoalsSelector = () => {
                   .slice()
                   // Transforming the indexOf -1 from a non selected item to 3 allows the index 0-2 to be avaliable for the selected goals
                   .sort(
-                    (a, b) =>
-                      (selectedGoalsRedux.indexOf(a.label) === -1
-                        ? 3
-                        : selectedGoalsRedux.indexOf(a.label)) -
-                      (selectedGoalsRedux.indexOf(b.label) === -1
+                    (a, b) => (selectedGoalsRedux.indexOf(a.label) === -1
+                      ? 3
+                      : selectedGoalsRedux.indexOf(a.label))
+                      - (selectedGoalsRedux.indexOf(b.label) === -1
                         ? 3
                         : selectedGoalsRedux.indexOf(b.label)),
                   )
