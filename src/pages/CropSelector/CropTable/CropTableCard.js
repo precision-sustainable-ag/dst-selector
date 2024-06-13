@@ -75,6 +75,7 @@ const CropTableCard = ({ crop, indexKey, showGrowthWindow }) => {
                 selectedCropIdsRedux,
                 myCropListLocation,
                 historyStateRedux,
+                'selector',
               );
             }}
           >

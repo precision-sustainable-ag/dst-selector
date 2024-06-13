@@ -910,6 +910,7 @@ export const addCropToBasket = (
   selectedCropIdsRedux,
   myCropListLocation,
   historyStateRedux,
+  from,
 ) => {
   const selectedCrops = cropId;
 
@@ -935,13 +936,17 @@ export const addCropToBasket = (
     } else {
       const selectedCropsCopy = selectedCropIdsRedux;
       selectedCropsCopy.splice(removeIndex, 1);
-
       buildDispatch('Removed', selectedCropsCopy);
+      if (selectedCropsCopy.length === 0) {
+        dispatchRedux(myCropListLocation({ from: '' }));
+      }
+      console.log(selectedCropsCopy);
     }
   } else {
-    dispatchRedux(myCropListLocation({ from: 'explorer' }));
+    dispatchRedux(myCropListLocation({ from }));
     buildDispatch('Added', [selectedCrops]);
   }
+  console.log('from', from);
 };
 
 // TODO: not used below

@@ -46,6 +46,7 @@ const CropCard = ({
       selectedCropIdsRedux,
       myCropListLocation,
       historyStateRedux,
+      'explorer',
     );
     await updateBtns();
   }
