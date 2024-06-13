@@ -146,6 +146,7 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                 selectedCropIdsRedux,
                 myCropListLocation,
                 historyStateRedux,
+                'selector',
               );
             }}
           >

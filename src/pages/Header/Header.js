@@ -50,6 +50,7 @@ const Header = () => {
   const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const selectedCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCropIds);
+  const fieldRedux = useSelector((stateRedux) => stateRedux.userData.field);
 
   // useState vars
   const [authModalOpen, setAuthModalOpen] = useState(true);
@@ -132,7 +133,8 @@ const Header = () => {
       loadHistory(token).then((res) => dispatchRedux(setUserHistoryList(res)));
     };
     if (isAuthenticated) fetchUserData();
-  }, [isAuthenticated, getAccessTokenSilently]);
+    // TODO: fieldRedux here is for re-import userHistoryList when the app is reset
+  }, [isAuthenticated, getAccessTokenSilently, fieldRedux]);
 
   const chooseTopBar = (option) => {
     if (option) {
@@ -227,7 +229,7 @@ const Header = () => {
           >
             <InformationBar pathname={pathname} />
             <MyCoverCropReset />
-            {/* FIXME: temporary button for saving history here */}
+            {/* saving history here */}
             <SaveUserHistory pathname={pathname} />
           </Grid>
         </Grid>

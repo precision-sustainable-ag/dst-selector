@@ -39,8 +39,7 @@ const configureStore = () => {
         soilData: soilReducer(undefined, action),
         filterData: filterReducer(undefined, action),
         addressData: addressReducer(undefined, action),
-        // keep the userData as the same
-        userData: state.userData,
+        userData: userReducer(undefined, action),
       };
     }
 

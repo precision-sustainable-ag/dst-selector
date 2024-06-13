@@ -16,6 +16,7 @@ import { setWeatherRedux } from '../../reduxStore/weatherSlice';
 import { setSoilRedux } from '../../reduxStore/soilSlice';
 import { setGoalsRedux } from '../../reduxStore/goalSlice';
 import { setCropRedux } from '../../reduxStore/cropSlice';
+import { myCropListLocation } from '../../reduxStore/sharedSlice';
 
 const menuProps = {
   PaperProps: {
@@ -101,16 +102,18 @@ const HistorySelect = () => {
     const token = getAuthToken();
     loadHistory(token, value).then((res) => {
       if (res) {
-        // TODO: temporary schema for user history, sharedData is not used now
         const {
           cropData, mapData, weatherData, goalsData,
-          soilData, addressData, userData,
+          sharedData, soilData, addressData, userData,
         } = res.json;
+        // this is used to specify where the crop from (selector/ explorer)
+        const { myCoverCropListLocation } = sharedData;
         // update redux
         dispatch(setCropRedux(cropData));
         dispatch(setMapRedux(mapData));
         dispatch(setWeatherRedux(weatherData));
         dispatch(setGoalsRedux(goalsData));
+        dispatch(myCropListLocation({ from: myCoverCropListLocation }));
         dispatch(setSoilRedux(soilData));
         dispatch(setAddressRedux(addressData));
         dispatch(setUserRedux(userData));
