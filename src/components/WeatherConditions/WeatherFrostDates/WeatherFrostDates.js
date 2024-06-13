@@ -9,7 +9,6 @@ const WeatherFrostDates = () => {
   return (
     <Grid
       item
-      direction="column"
       style={{
         backgroundColor: 'rgba(176, 236, 130, 0.3)',
         padding: '1rem',
@@ -18,7 +17,6 @@ const WeatherFrostDates = () => {
     >
       <Grid
         item
-        direction="row"
         display="flex"
         justifyContent="space-between"
         sx={{ mb: '1.5rem' }}
@@ -71,7 +69,6 @@ const WeatherFrostDates = () => {
       </Grid>
       <Grid
         item
-        direction="row"
         display="flex"
         alignItems="baseline"
         sx={{ mb: '0.5rem' }}
@@ -95,7 +92,6 @@ const WeatherFrostDates = () => {
 
       <Grid
         item
-        direction="row"
         display="flex"
         alignItems="baseline"
         justifyContent="space-between"
@@ -118,7 +114,6 @@ const WeatherFrostDates = () => {
       </Grid>
       <Grid
         item
-        direction="row"
         display="flex"
         alignItems="baseline"
         justifyContent="space-between"

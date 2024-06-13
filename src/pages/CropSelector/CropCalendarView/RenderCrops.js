@@ -25,6 +25,7 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
   const selectedBtns = selectedCropIdsRedux;
+  const historyStateRedux = useSelector((stateRedux) => stateRedux.userData.historyState);
 
   return cropDataRedux
     .sort((a, b) => (a.inactive || false) - (b.inactive || false))
@@ -81,7 +82,7 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                   {flipCoverCropName(crop.label)}
                 </Button>
               </Grid>
-              {crop.attributes.filter((a) => a.label === 'Frost Seeding')[0]?.values[0] === 'Yes' && (
+              {crop.attributes.filter((a) => a.label === 'Frost Seed')[0]?.values[0].label === 'Yes' && (
                 <Grid item>
                   <Tooltip
                     placement="top-end"
@@ -114,7 +115,7 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                     </p>
                   )}
                 >
-                  {getRating(crop.goals.filter((a) => a.label === goal)[0].values[0], councilShorthandRedux)}
+                  {getRating(crop.goals.filter((a) => a.label === goal)[0].values[0].value, councilShorthandRedux)}
                 </Tooltip>
               </div>
             </TableCell>
@@ -144,6 +145,8 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                 updateSelectedCropIds,
                 selectedCropIdsRedux,
                 myCropListLocation,
+                historyStateRedux,
+                'selector',
               );
             }}
           >

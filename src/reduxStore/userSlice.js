@@ -1,11 +1,23 @@
+export const historyState = {
+  none: 'none',
+  new: 'new',
+  imported: 'imported',
+  updated: 'updated',
+};
+
 const initialState = {
   field: null,
   consent: {
     status: null,
     date: null,
   },
-  selectedFieldId: null,
-  userSelectRegion: false,
+  userHistoryList: [],
+  selectedHistory: null,
+  historyDialogState: {
+    open: false,
+    type: 'add',
+  },
+  historyState: historyState.none,
 };
 
 export const updateField = (field) => ({
@@ -18,15 +30,30 @@ export const updateConsent = (status, date) => ({
   payload: { status, date },
 });
 
-export const setSelectFieldId = (fieldId) => ({
-  type: 'SELECT_FIELD',
-  payload: { fieldId },
+export const setUserHistoryList = (userHistoryList) => ({
+  type: 'SET_USER_HISTORY_LIST',
+  payload: { userHistoryList },
+});
+
+export const setSelectedHistory = (selectedHistory) => ({
+  type: 'SET_SELECTED_HISTORY',
+  payload: { selectedHistory },
+});
+
+export const setHistoryDialogState = (historyDialogState) => ({
+  type: 'SET_HISTORY_DIALOG_STATE',
+  payload: { historyDialogState },
 });
 
 // eslint-disable-next-line no-shadow
-export const userSelectRegion = (userSelectRegion) => ({
-  type: 'USER_SELECT_REGION',
-  payload: { userSelectRegion },
+export const setHistoryState = (historyState) => ({
+  type: 'SET_HISTORY_STATE',
+  payload: { historyState },
+});
+
+export const setUserRedux = (userData) => ({
+  type: 'SET_USER_REDUX',
+  payload: { userData },
 });
 
 const userReducer = (state = initialState, action = null) => {
@@ -42,10 +69,19 @@ const userReducer = (state = initialState, action = null) => {
           date: action.payload.date,
         },
       };
-    case 'SELECT_FIELD':
-      return { ...state, selectedFieldId: action.payload.fieldId };
-    case 'USER_SELECT_REGION':
-      return { ...state, userSelectRegion: action.payload.userSelectRegion };
+    case 'SET_USER_HISTORY_LIST':
+      return { ...state, userHistoryList: action.payload.userHistoryList };
+    case 'SET_SELECTED_HISTORY':
+      return { ...state, selectedHistory: action.payload.selectedHistory };
+    case 'SET_HISTORY_DIALOG_STATE':
+      return {
+        ...state,
+        historyDialogState: action.payload.historyDialogState,
+      };
+    case 'SET_HISTORY_STATE':
+      return { ...state, historyState: action.payload.historyState };
+    case 'SET_USER_REDUX':
+      return { ...state, ...action.payload.userData };
     default:
       return { ...state };
   }

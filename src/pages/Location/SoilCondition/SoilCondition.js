@@ -11,6 +11,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import SoilDrainage from './SoilDrainage/SoilDrainage';
 import SoilFloodingFrequency from './SoilFloodingFrequency/SoilFloodingFrequency';
 import { updateSoilData, updateSoilDataOriginal } from '../../../reduxStore/soilSlice';
+import { historyState } from '../../../reduxStore/userSlice';
 
 const SoilCondition = () => {
   // theme
@@ -24,15 +25,16 @@ const SoilCondition = () => {
   const soilDataOriginalRedux = useSelector((stateRedux) => stateRedux.soilData.soilDataOriginal);
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
   const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
-  const userSelectRegionRedux = useSelector((stateRedux) => stateRedux.userData.userSelectRegion);
   const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
   const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
+  const historyStateRedux = useSelector((stateRedux) => stateRedux.userData.historyState);
 
   // useState vars
   const [floodingOptions, setFloodingOptions] = useState([]);
   const query1 = `${encodeURIComponent('regions')}=${encodeURIComponent(regionIdRedux)}`;
   const query2 = `${encodeURIComponent('regions')}=${encodeURIComponent(stateIdRedux)}`;
 
+  // retrieving flooding frequency values(not exact value)
   useEffect(() => {
     fetch(`https://${apiBaseUrlRedux}.covercrop-selector.org/v2/attribute?filtered=false&slug=flooding_frequency&${query2}&${query1}`)
       .then((res) => res.json())
@@ -45,7 +47,13 @@ const SoilCondition = () => {
       });
   }, []);
 
+  // retrieving drainage class and flooding frequency
   useEffect(() => {
+    if (historyStateRedux === historyState.imported) {
+      // not call api if it's imported
+      return;
+    }
+
     const getSSURGOData = (lat, lon) => {
       const markersCopy = markersRedux;
 
@@ -155,8 +163,6 @@ const SoilCondition = () => {
         .catch((error) => console.error('SSURGO FETCH ERROR', error));
     };
 
-    // if the user selected another region, not run the function
-    if (userSelectRegionRedux) return;
     if (stateLabelRedux === 'Ontario') return;
 
     const lat = markersRedux[0][0];

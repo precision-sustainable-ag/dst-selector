@@ -18,7 +18,6 @@ const WeatherPrecipitation = ({ currentMonthFull }) => {
     >
       <Grid
         item
-        direction="row"
         display="flex"
         justifyContent="space-between"
         sx={{ mb: '1.5rem' }}
@@ -65,7 +64,6 @@ const WeatherPrecipitation = ({ currentMonthFull }) => {
       </Grid>
       <Grid
         item
-        direction="row"
         display="flex"
         alignItems="baseline"
         sx={{ mb: '0.5rem' }}
@@ -91,7 +89,6 @@ const WeatherPrecipitation = ({ currentMonthFull }) => {
 
       <Grid
         item
-        direction="row"
         display="flex"
         alignItems="baseline"
         justifyContent="space-between"

@@ -34,7 +34,6 @@ import SidebarFilter from './SidebarFilter/SidebarFilter';
 import CoverCropGoals from './CoverCropGoals/CoverCropGoals';
 import PlantHardinessZone from './PlantHardinessZone/PlantHardinessZone';
 import Legend from '../../components/Legend/Legend';
-import { updateRegion } from '../../reduxStore/mapSlice';
 import { clearFilters } from '../../reduxStore/filterSlice';
 import { updateCropData, updateActiveCropIds } from '../../reduxStore/cropSlice';
 import { setAjaxInProgress, regionToggleHandler } from '../../reduxStore/sharedSlice';
@@ -56,14 +55,11 @@ const CropSidebar = ({
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
   const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
-  const regionShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.regionShorthand);
   const regionToggleRedux = useSelector((stateRedux) => stateRedux.sharedData.regionToggle);
   const speciesSelectorActivationFlagRedux = useSelector((stateRedux) => stateRedux.sharedData.speciesSelectorActivationFlag);
   const comparisonKeysRedux = useSelector((stateRedux) => stateRedux.sharedData.comparisonKeys);
   const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
-  const regionsRedux = useSelector((stateRedux) => stateRedux.mapData.regions);
-  const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const drainageClassRedux = useSelector((stateRedux) => stateRedux.soilData.soilData.drainageClass[0]);
   const floodingFrequencyRedux = useSelector((stateRedux) => stateRedux.soilData.soilData.floodingFrequency[0]);
@@ -122,7 +118,7 @@ const CropSidebar = ({
         if (parm === 'label') {
           m = crop[parm]?.toLowerCase().match(/\w+/g);
         } else if (parm === 'common') {
-          m = crop.attributes.filter((c) => c.label === 'Cover Crop Group')[0].values[0]?.toLowerCase().match(/\w+/g);
+          m = crop.attributes.filter((c) => c.label === 'Cover Crop Group')[0].values[0]?.value.toLowerCase().match(/\w+/g);
         } else {
           m = crop[parm]?.toLowerCase().match(/\w+/g);
         }
@@ -140,7 +136,7 @@ const CropSidebar = ({
     });
 
     const filtered = cropData?.filter((crop, n, cd) => {
-      const floodingFrequencyValue = crop.attributes.filter((a) => a.label === 'Flooding Frequency Tolerance')[0]?.values[0];
+      const floodingFrequencyValue = crop.attributes.filter((a) => a.label === 'Flooding Frequency Tolerance')[0]?.values[0].value;
       let match = true;
       // iterate over all active filters
       nonZeroKeys2.forEach((keyObject) => {
@@ -150,7 +146,7 @@ const CropSidebar = ({
         const vals = keyObject[key];
         if (crop.attributes.filter((att) => att.label === key)?.length > 0) {
           // if there is not an intersection, match = false
-          if (!crop.attributes.filter((att) => att.label === key)[0]?.values.some((item) => vals.includes(item))) {
+          if (!crop.attributes.filter((att) => att.label === key)[0]?.values.some((item) => vals.includes(item.value))) {
             match = false;
           }
         }
@@ -236,8 +232,9 @@ const CropSidebar = ({
       });
       callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/crops?minimal=true&${query}`).then((data) => {
         const { startDate, endDate } = cashCropDataRedux.dateRange;
-        const start = startDate ? moment(startDate.toISOString()).format('MM/DD') : '';
-        const end = endDate ? moment(endDate.toISOString()).format('MM/DD') : '';
+
+        const start = startDate ? moment(startDate).format('MM/DD') : '';
+        const end = endDate ? moment(endDate).format('MM/DD') : '';
         cropDataFormatter(data.data, start, end);
         dispatchRedux(updateCropData(data.data));
         dispatchRedux(setAjaxInProgress(false));
@@ -299,15 +296,6 @@ const CropSidebar = ({
     // FIXME: this function returns a compoennt in useEffect, not sure why doing that
     filtersList();
   }, [sidebarFilters]);
-
-  const updateRegionRedux = (regionName) => {
-    const selectedRegion = regionsRedux.filter((region) => region.shorthand === regionName)[0];
-    localStorage.setItem('regionId', selectedRegion.id);
-    dispatchRedux(updateRegion({
-      regionId: selectedRegion.id ?? '',
-      regionShorthand: selectedRegion.shorthand ?? '',
-    }));
-  };
 
   return !loading && (from === 'myCoverCropListStatic') ? (
     <Grid container spacing={3}>
@@ -395,13 +383,7 @@ const CropSidebar = ({
                         {regionToggleRedux ? <ExpandLess /> : <ExpandMore />}
                       </ListItemButton>
                     </List>
-                    <PlantHardinessZone
-                      regionShorthand={regionShorthandRedux}
-                      setRegionShorthand={updateRegionRedux}
-                      regionsRedux={regionsRedux}
-                      councilLabelRedux={councilLabelRedux}
-                      regionToggleRedux={regionToggleRedux}
-                    />
+                    <PlantHardinessZone />
                     <CoverCropSearch />
                   </>
                 )}
