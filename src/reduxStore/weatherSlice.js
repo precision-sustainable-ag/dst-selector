@@ -53,6 +53,11 @@ export const updateAvgPrecipAnnual = (value) => ({
   },
 });
 
+export const setWeatherRedux = (weatherData) => ({
+  type: 'SET_WEATHER_REDUX',
+  payload: { weatherData },
+});
+
 const weatherReducer = (state = initialState, action = null) => {
   switch (action.type) {
     case 'UPDATE_WEATHER_CONDITIONS':
@@ -102,6 +107,9 @@ const weatherReducer = (state = initialState, action = null) => {
           },
         },
       };
+
+    case 'SET_WEATHER_REDUX':
+      return { ...state, ...action.payload.weatherData };
 
     default:
       return { ...state };

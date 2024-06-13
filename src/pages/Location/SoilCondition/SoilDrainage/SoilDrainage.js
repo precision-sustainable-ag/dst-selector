@@ -12,6 +12,7 @@ import arrayEquals from '../../../../shared/functions';
 import RenderDrainageClasses from './RenderDrainageClasses';
 import { updateDrainageClass as updateDrainageClassRedux } from '../../../../reduxStore/soilSlice';
 import MyCoverCropReset from '../../../../components/MyCoverCropReset/MyCoverCropReset';
+import { historyState, setHistoryState } from '../../../../reduxStore/userSlice';
 
 const SoilDrainage = () => {
   const dispatchRedux = useDispatch();
@@ -27,6 +28,7 @@ const SoilDrainage = () => {
   const myCoverCropListLocationRedux = useSelector(
     (stateRedux) => stateRedux.sharedData.myCoverCropListLocation,
   );
+  const historyStateRedux = useSelector((stateRedux) => stateRedux.userData.historyState);
 
   // useState vars
   const [showTiling, setShowTiling] = useState(false);
@@ -42,7 +44,9 @@ const SoilDrainage = () => {
   }, [selectedCropIdsRedux, myCoverCropListLocationRedux]);
 
   useEffect(() => {
-    setNewDrainage(soilDataOriginalRedux.drainageClass[0]);
+    // set new drainage value
+    if (historyStateRedux === historyState.imported) setNewDrainage(soilDataRedux.drainageClass[0]);
+    else setNewDrainage(soilDataOriginalRedux.drainageClass[0]);
     setDrainageInitialLoad(true);
   }, [soilDataOriginalRedux]);
 
@@ -62,6 +66,8 @@ const SoilDrainage = () => {
   }, [soilDataRedux?.drainageClass]);
 
   const resetDrainageClasses = () => {
+    // update history state here
+    if (historyStateRedux === historyState.imported) dispatchRedux(setHistoryState(historyState.updated));
     dispatchRedux(updateDrainageClassRedux(soilDataOriginalRedux?.drainageClass));
     setNewDrainage(soilDataOriginalRedux.drainageClass[0]);
     window.localStorage.setItem('drainage', JSON.stringify(soilDataOriginalRedux?.drainageClass));

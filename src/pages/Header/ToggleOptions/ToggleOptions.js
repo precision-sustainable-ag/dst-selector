@@ -1,18 +1,18 @@
 import {
   Badge, Button, Tooltip, Typography,
 } from '@mui/material';
-import React, { useState } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useHistory } from 'react-router-dom';
 import { activateMyCoverCropListTile, activateSpeicesSelectorTile, setMyCoverCropReset } from '../../../reduxStore/sharedSlice';
 
 const ToggleOptions = ({ pathname }) => {
-  const [prevRoute, setPrevRoute] = useState('selector');
   const dispatchRedux = useDispatch();
   const history = useHistory();
   const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
   const selectedCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCropIds);
+  const myCoverCropListLocationRedux = useSelector((stateRedux) => stateRedux.sharedData.myCoverCropListLocation);
 
   const setMyCoverCropActivationFlag = () => {
     history.push('/my-cover-crop-list');
@@ -25,9 +25,9 @@ const ToggleOptions = ({ pathname }) => {
   };
 
   const openMyCoverCropReset = (to) => {
-    if (selectedCropIdsRedux.length > 0 && prevRoute !== to) {
+    if (selectedCropIdsRedux.length > 0 && myCoverCropListLocationRedux !== to) {
       dispatchRedux(setMyCoverCropReset(true));
-    } else setPrevRoute(to);
+    }
   };
 
   const setSpeciesSelectorActivationFlag = () => {
