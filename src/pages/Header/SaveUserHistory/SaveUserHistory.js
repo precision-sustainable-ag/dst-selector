@@ -5,6 +5,7 @@ import { saveHistory, loadHistory } from '../../../shared/api';
 import {
   setHistoryState, setSelectedHistory, historyState, setUserHistoryList,
 } from '../../../reduxStore/userSlice';
+import { snackHandler } from '../../../reduxStore/sharedSlice';
 
 const SaveUserHistory = ({ pathname }) => {
   const dispatchRedux = useDispatch();
@@ -42,6 +43,7 @@ const SaveUserHistory = ({ pathname }) => {
     };
     const { label, id } = selectedHistoryRedux;
     saveHistory(label, data, token, id).then((res) => {
+      dispatchRedux(snackHandler({ snackOpen: true, snackMessage: 'History Updated.' }));
       dispatchRedux(setHistoryState(historyState.imported));
       // set history id
       dispatchRedux(setSelectedHistory({ ...selectedHistoryRedux, id: res.data.id }));
@@ -50,6 +52,8 @@ const SaveUserHistory = ({ pathname }) => {
         // eslint-disable-next-line no-shadow
         loadHistory(token).then((res) => dispatchRedux(setUserHistoryList(res)));
       }
+    }).catch((err) => {
+      dispatchRedux(snackHandler({ snackOpen: true, snackMessage: `Error saving history: ${err}` }));
     });
   };
 
