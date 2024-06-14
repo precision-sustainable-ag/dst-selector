@@ -946,7 +946,6 @@ export const addCropToBasket = (
     dispatchRedux(myCropListLocation({ from }));
     buildDispatch('Added', [selectedCrops]);
   }
-  console.log('from', from);
 };
 
 // TODO: not used below
