@@ -44,7 +44,7 @@ const ProgressButtonsInner = ({
           maxHeight: '35px',
           minWidth: '70px',
           fontSize: '13px',
-          marginLeft: progressRedux === 4 ? '-25px' : '0px',
+          marginLeft: progressRedux === 4 ? '-75px' : '0px',
         }}
         onClick={() => changeProgress('decrement')}
         disabled={isDisabledBack}
@@ -80,7 +80,7 @@ const ProgressButtonsInner = ({
             style={{
               maxWidth: '90px',
               maxHeight: '35px',
-              minWidth: progressRedux === 4 ? '130px' : '70px',
+              minWidth: progressRedux === 4 ? 'max-content' : '70px',
               fontSize: '13px',
               marginLeft: '3%',
             }}
