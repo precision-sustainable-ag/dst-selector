@@ -8,6 +8,7 @@ import '../../../styles/cropTable.scss';
 import CropSelectorCalendarView from '../../../components/CropSelectorCalendarView/CropSelectorCalendarView';
 import { updateSelectedCropIds } from '../../../reduxStore/cropSlice';
 import { myCropListLocation, snackHandler } from '../../../reduxStore/sharedSlice';
+import { setSaveHistory } from '../../../reduxStore/userSlice';
 
 const CropTableCard = ({ crop, indexKey, showGrowthWindow }) => {
   const dispatchRedux = useDispatch();
@@ -76,6 +77,7 @@ const CropTableCard = ({ crop, indexKey, showGrowthWindow }) => {
                 myCropListLocation,
                 historyStateRedux,
                 'selector',
+                setSaveHistory,
               );
             }}
           >

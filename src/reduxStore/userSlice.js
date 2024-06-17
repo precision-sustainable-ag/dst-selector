@@ -18,6 +18,7 @@ const initialState = {
     type: 'add',
   },
   historyState: historyState.none,
+  saveHistory: false,
 };
 
 export const updateField = (field) => ({
@@ -56,6 +57,12 @@ export const setUserRedux = (userData) => ({
   payload: { userData },
 });
 
+// eslint-disable-next-line no-shadow
+export const setSaveHistory = (saveHistory) => ({
+  type: 'SAVE_HISTORY',
+  payload: { saveHistory },
+});
+
 const userReducer = (state = initialState, action = null) => {
   switch (action.type) {
     case 'UPDATE_FIELD':
@@ -80,6 +87,8 @@ const userReducer = (state = initialState, action = null) => {
       };
     case 'SET_HISTORY_STATE':
       return { ...state, historyState: action.payload.historyState };
+    case 'SAVE_HISTORY':
+      return { ...state, saveHistory: action.payload.saveHistory };
     case 'SET_USER_REDUX':
       return { ...state, ...action.payload.userData };
     default:

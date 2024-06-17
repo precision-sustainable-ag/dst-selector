@@ -911,12 +911,14 @@ export const addCropToBasket = (
   myCropListLocation,
   historyStateRedux,
   from,
+  setSaveHistory,
 ) => {
   const selectedCrops = cropId;
 
   const buildDispatch = (action, crops) => {
     dispatchRedux(updateSelectedCropIds(crops));
     dispatchRedux(snackHandler({ snackOpen: true, snackMessage: `${cropName} ${action}` }));
+    dispatchRedux(setSaveHistory(true));
   };
 
   // update history state
@@ -940,7 +942,6 @@ export const addCropToBasket = (
       if (selectedCropsCopy.length === 0) {
         dispatchRedux(myCropListLocation({ from: '' }));
       }
-      console.log(selectedCropsCopy);
     }
   } else {
     dispatchRedux(myCropListLocation({ from }));

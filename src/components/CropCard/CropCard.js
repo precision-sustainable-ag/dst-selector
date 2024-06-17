@@ -11,6 +11,7 @@ import { useSelector } from 'react-redux';
 import { addCropToBasket, trimString } from '../../shared/constants';
 import { myCropListLocation, snackHandler } from '../../reduxStore/sharedSlice';
 import { updateSelectedCropIds } from '../../reduxStore/cropSlice';
+import { setSaveHistory } from '../../reduxStore/userSlice';
 
 const CropCard = ({
   crop, handleModalOpen, index, dispatchRedux,
@@ -47,6 +48,7 @@ const CropCard = ({
       myCropListLocation,
       historyStateRedux,
       'explorer',
+      setSaveHistory,
     );
     await updateBtns();
   }
