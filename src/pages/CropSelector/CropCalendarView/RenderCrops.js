@@ -17,6 +17,7 @@ import CropSelectorCalendarView from '../../../components/CropSelectorCalendarVi
 import '../../../styles/cropCalendarViewComponent.scss';
 import { updateSelectedCropIds } from '../../../reduxStore/cropSlice';
 import { myCropListLocation, snackHandler } from '../../../reduxStore/sharedSlice';
+import { setSaveHistory } from '../../../reduxStore/userSlice';
 
 const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
   const dispatchRedux = useDispatch();
@@ -147,6 +148,7 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                 myCropListLocation,
                 historyStateRedux,
                 'selector',
+                setSaveHistory,
               );
             }}
           >

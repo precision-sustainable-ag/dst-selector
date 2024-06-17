@@ -4,7 +4,9 @@ import { getAuthToken } from '../../../shared/authToken';
 import { saveHistory, loadHistory } from '../../../shared/api';
 import {
   setHistoryState, setSelectedHistory, historyState, setUserHistoryList,
+  setSaveHistory,
 } from '../../../reduxStore/userSlice';
+import { snackHandler } from '../../../reduxStore/sharedSlice';
 
 const SaveUserHistory = ({ pathname }) => {
   const dispatchRedux = useDispatch();
@@ -13,6 +15,7 @@ const SaveUserHistory = ({ pathname }) => {
   const fieldRedux = useSelector((stateRedux) => stateRedux.userData.field);
   const selectedHistoryRedux = useSelector((stateRedux) => stateRedux.userData.selectedHistory);
   const historyStateRedux = useSelector((stateRedux) => stateRedux.userData.historyState);
+  const saveHistoryRedux = useSelector((stateRedux) => stateRedux.userData.saveHistory);
 
   const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData);
   const mapDataRedux = useSelector((stateRedux) => stateRedux.mapData);
@@ -21,6 +24,8 @@ const SaveUserHistory = ({ pathname }) => {
   const sharedDataRedux = useSelector((stateRedux) => stateRedux.sharedData);
   const soilDataRedux = useSelector((stateRedux) => stateRedux.soilData);
   const addressDataRedux = useSelector((stateRedux) => stateRedux.addressData);
+
+  const snackMessageRedux = sharedDataRedux.snackMessage;
 
   const { progress: progressRedux } = sharedDataRedux;
 
@@ -42,6 +47,7 @@ const SaveUserHistory = ({ pathname }) => {
     };
     const { label, id } = selectedHistoryRedux;
     saveHistory(label, data, token, id).then((res) => {
+      if (snackMessageRedux === '') dispatchRedux(snackHandler({ snackOpen: true, snackMessage: 'History Updated.' }));
       dispatchRedux(setHistoryState(historyState.imported));
       // set history id
       dispatchRedux(setSelectedHistory({ ...selectedHistoryRedux, id: res.data.id }));
@@ -50,6 +56,8 @@ const SaveUserHistory = ({ pathname }) => {
         // eslint-disable-next-line no-shadow
         loadHistory(token).then((res) => dispatchRedux(setUserHistoryList(res)));
       }
+    }).catch((err) => {
+      dispatchRedux(snackHandler({ snackOpen: true, snackMessage: `Error saving history: ${err}` }));
     });
   };
 
@@ -64,6 +72,13 @@ const SaveUserHistory = ({ pathname }) => {
       handleSave();
     }
   }, [progressRedux, pathname]);
+
+  useEffect(() => {
+    if (saveHistoryRedux === true) {
+      handleSave();
+      dispatchRedux(setSaveHistory(false));
+    }
+  }, [saveHistoryRedux]);
 
   return null;
 };

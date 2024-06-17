@@ -911,6 +911,7 @@ export const addCropToBasket = (
   myCropListLocation,
   historyStateRedux,
   from,
+  setSaveHistory,
 ) => {
   const selectedCrops = cropId;
 
@@ -940,13 +941,13 @@ export const addCropToBasket = (
       if (selectedCropsCopy.length === 0) {
         dispatchRedux(myCropListLocation({ from: '' }));
       }
-      console.log(selectedCropsCopy);
     }
   } else {
     dispatchRedux(myCropListLocation({ from }));
     buildDispatch('Added', [selectedCrops]);
   }
-  console.log('from', from);
+  // save history after added crop
+  if (historyStateRedux !== historyState.none) dispatchRedux(setSaveHistory(true));
 };
 
 // TODO: not used below

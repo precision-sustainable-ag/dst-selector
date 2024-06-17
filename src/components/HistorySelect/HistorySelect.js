@@ -16,7 +16,7 @@ import { setWeatherRedux } from '../../reduxStore/weatherSlice';
 import { setSoilRedux } from '../../reduxStore/soilSlice';
 import { setGoalsRedux } from '../../reduxStore/goalSlice';
 import { setCropRedux } from '../../reduxStore/cropSlice';
-import { myCropListLocation } from '../../reduxStore/sharedSlice';
+import { myCropListLocation, snackHandler } from '../../reduxStore/sharedSlice';
 
 const menuProps = {
   PaperProps: {
@@ -102,6 +102,7 @@ const HistorySelect = () => {
     const token = getAuthToken();
     loadHistory(token, value).then((res) => {
       if (res) {
+        dispatch(snackHandler({ snackOpen: true, snackMessage: 'History Loaded.' }));
         const {
           cropData, mapData, weatherData, goalsData,
           sharedData, soilData, addressData, userData,
@@ -120,6 +121,8 @@ const HistorySelect = () => {
         dispatch(setHistoryState(historyState.imported));
         setOpen(false);
       }
+    }).catch((err) => {
+      dispatch(snackHandler({ snackOpen: true, snackMessage: `Error loading history: ${err}` }));
     });
   };
 
