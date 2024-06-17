@@ -75,7 +75,7 @@ const ProgressButtonsInner = ({
           </span>
         </Tooltip>
       ) : (
-        <Badge badgeContent={selectedCropIdsRedux.length} color="error">
+        <Badge badgeContent={progressRedux === 4 ? selectedCropIdsRedux.length : null} color="error">
           <LightButton
             style={{
               maxWidth: '90px',
