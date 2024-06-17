@@ -21,7 +21,7 @@ import { setUserHistoryList } from '../../reduxStore/userSlice';
 import AuthButton from '../../components/Auth/AuthButton/AuthButton';
 import ConsentModal from '../CoverCropExplorer/ConsentModal/ConsentModal';
 import AuthModal from '../Landing/AuthModal/AuthModal';
-import { setMyCoverCropReset } from '../../reduxStore/sharedSlice';
+import { setMyCoverCropReset, snackHandler } from '../../reduxStore/sharedSlice';
 import { reset } from '../../reduxStore/store';
 import { setAuthToken } from '../../shared/authToken';
 import { loadHistory } from '../../shared/api';
@@ -50,7 +50,6 @@ const Header = () => {
   const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const selectedCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCropIds);
-  const fieldRedux = useSelector((stateRedux) => stateRedux.userData.field);
 
   // useState vars
   const [authModalOpen, setAuthModalOpen] = useState(true);
@@ -129,12 +128,16 @@ const Header = () => {
     const fetchUserData = async () => {
       const token = await getAccessTokenSilently();
       setAuthToken(token);
-      // TODO: get new user histories here
-      loadHistory(token).then((res) => dispatchRedux(setUserHistoryList(res)));
+      // get new user histories here
+      loadHistory(token).then((res) => {
+        dispatchRedux(setUserHistoryList(res));
+      }).catch((err) => {
+        dispatchRedux(snackHandler({ snackOpen: true, snackMessage: `Error loading history: ${err}` }));
+      });
     };
     if (isAuthenticated) fetchUserData();
-    // TODO: fieldRedux here is for re-import userHistoryList when the app is reset
-  }, [isAuthenticated, getAccessTokenSilently, fieldRedux]);
+    // TODO: councilShorthandRedux here is for re-import userHistoryList when the app is reset
+  }, [isAuthenticated, getAccessTokenSilently, councilShorthandRedux]);
 
   const chooseTopBar = (option) => {
     if (option) {
