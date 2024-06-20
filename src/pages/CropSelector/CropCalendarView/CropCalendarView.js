@@ -17,9 +17,10 @@ import {
   Typography,
   Box,
 } from '@mui/material';
+import ListIcon from '@mui/icons-material/List';
 import { tableCellClasses } from '@mui/material/TableCell';
 import {
-  AcUnit, AddCircle, LocalFlorist, WbSunny,
+  AcUnit, AddCircle, CalendarToday, LocalFlorist, WbSunny,
 } from '@mui/icons-material';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -29,6 +30,7 @@ import {
   sortCrops,
   sudoButtonStyleWithPadding,
   getLegendDataBasedOnCouncil,
+  LightButton,
 } from '../../../shared/constants';
 import '../../../styles/cropCalendarViewComponent.scss';
 import RenderCrops from './RenderCrops';
@@ -39,7 +41,10 @@ const growthIcon = {
   color: 'white',
 };
 
-const CropCalendarView = () => {
+const CropCalendarView = ({
+  listView,
+  setListView,
+}) => {
   // redux vars
   const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
@@ -131,33 +136,26 @@ const CropCalendarView = () => {
             }}
           >
             <TableHead sx={{ zIndex: -1 }}>
-              <TableRow>
-                <TableCell
-                  sx={{ backgroundColor: 'white', padding: 0 }}
-                  colSpan={activeGrowthPeriodRedux.length === 0 ? 1 + selectedGoalsRedux.length : 1}
+              <TableRow style={{ whiteSpace: 'nowrap' }}>
+                <LightButton
+                  onClick={() => setListView(false)}
+                  color="secondary"
+                  style={{ background: !listView ? '#49a8ab' : '#e3f2f4' }}
+                  startIcon={<ListIcon style={{ fontSize: 'larger' }} />}
                 >
-                  <Legend legendData={legendData} modal />
-                </TableCell>
-                {activeGrowthPeriodRedux.length === 0 ? (
-                  <TableCell
-                    colSpan="12"
-                    style={{
-                      borderBottom: '5px solid white',
-                      backgroundColor: '#abd08f',
-                      padding: 0,
-                      textAlign: 'center',
-
-                    }}
-                  >
-
-                    <Button sx={{ color: 'black', textTransform: 'none' }} onClick={() => sortByPlantingWindow()}>
-                      Cover Crop Growing Window
-                    </Button>
-
-                  </TableCell>
-                ) : (
+                  CROP LIST
+                </LightButton>
+                <LightButton
+                  onClick={() => setListView(true)}
+                  color="secondary"
+                  style={{ background: listView ? '#49a8ab' : '#e3f2f4' }}
+                  startIcon={<CalendarToday style={{ fontSize: 'larger' }} />}
+                >
+                  CROP CALENDAR
+                </LightButton>
+                {activeGrowthPeriodRedux.length === 0 && (
                   <>
-                    <TableCell
+                    {/* <TableCell
                       colSpan="1"
                       sx={{
                         borderBottom: '5px solid white',
@@ -168,7 +166,7 @@ const CropCalendarView = () => {
                       }}
                     >
                       <Box sx={sudoButtonStyleWithPadding}>ACTIVE GROWTH PERIOD</Box>
-                    </TableCell>
+                    </TableCell> */}
                     {activeGrowthPeriodRedux.includes('Jan') ? (
                       <Tooltip placement="top" title="Winter" enterTouchDelay={0}>
                         <TableCell
