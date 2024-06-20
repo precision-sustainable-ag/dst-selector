@@ -1,5 +1,6 @@
 // eslint-disable react/jsx-one-expression-per-line
 import {
+  Box,
   Button,
   Collapse,
   List,
@@ -10,7 +11,6 @@ import {
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { CustomStyles } from '../../../shared/constants';
 import { updateProgress } from '../../../reduxStore/sharedSlice';
 
 const CoverCropGoals = () => {
@@ -27,17 +27,21 @@ const CoverCropGoals = () => {
   }; // changeProgress
 
   return (
-    <>
+    <Box
+      sx={{
+        border: 0.5, borderRadius: 2, borderColor: 'black', mb: 2, overflow: 'hidden',
+      }}
+    >
       {' '}
       <ListItem
         button
         onClick={() => setGoalsOpen(!goalsOpen)}
         style={{
-          backgroundColor: goalsOpen ? CustomStyles().lightGreen : 'inherit',
+          backgroundColor: 'inherit',
           borderTop: '4px solid white',
         }}
       >
-        <ListItemText primary="COVER CROP GOALS" />
+        <ListItemText primary="GOALS" sx={{ fontWeight: 'bold' }} />
         {goalsOpen ? <ExpandLess /> : <ExpandMore />}
       </ListItem>
       <Collapse in={goalsOpen} timeout="auto" unmountOnExit>
@@ -90,7 +94,7 @@ const CoverCropGoals = () => {
           </>
         )}
       </Collapse>
-    </>
+    </Box>
   );
 };
 

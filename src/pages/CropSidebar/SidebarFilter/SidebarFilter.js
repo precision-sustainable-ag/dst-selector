@@ -32,7 +32,7 @@ const SidebarFilter = ({
         >
           <ListItem
             key={index}
-            sx={{ backgroundColor: filterDataRedux[sectionFilter] ? '#add08f' : 'white' }}
+            sx={{ paddingLeft: 3, backgroundColor: filterDataRedux[sectionFilter] ? '#add08f' : 'white' }}
             component="div"
             onClick={() => dispatchRedux(toggleFilterValue(sectionFilter))}
           >

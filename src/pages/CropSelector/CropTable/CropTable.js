@@ -17,16 +17,19 @@ import {
   Typography,
   Box,
 } from '@mui/material';
+import ListIcon from '@mui/icons-material/List';
+import { CalendarToday } from '@mui/icons-material';
 import {
-  sortCrops, sudoButtonStyle, getLegendDataBasedOnCouncil,
+  sortCrops, sudoButtonStyle, LightButton,
 } from '../../../shared/constants';
 import '../../../styles/cropCalendarViewComponent.scss';
 import '../../../styles/cropTable.scss';
 import CropDetailsModal from '../../../components/CropDetailsModal/CropDetailsModal';
-import Legend from '../../../components/Legend/Legend';
 import RenderTableItems from './RenderTableItems';
 
 const CropTable = ({
+  listView,
+  setListView,
   showGrowthWindow,
 }) => {
   // redux vars
@@ -45,8 +48,6 @@ const CropTable = ({
   const [goal1SortFlag, setGoal1SortFlag] = useState(true);
   const [goal2SortFlag, setGoal2SortFlag] = useState(true);
   const [goal3SortFlag, setGoal3SortFlag] = useState(true);
-  const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
-  const legendData = getLegendDataBasedOnCouncil(councilShorthandRedux);
 
   const handleModalOpen = (crop) => {
     setModalData(crop);
@@ -99,17 +100,23 @@ const CropTable = ({
       <TableContainer component="div">
         <Table stickyHeader sx={{ borderSpacing: '7px', padding: 0 }}>
           <TableHead>
-            <TableRow>
-              <TableCell
-                sx={{ padding: 0 }}
-                colSpan={7}
+            <TableRow style={{ whiteSpace: 'nowrap' }}>
+              <LightButton
+                onClick={() => setListView(false)}
+                color="secondary"
+                style={{ background: !listView ? '#49a8ab' : '#e3f2f4' }}
+                startIcon={<ListIcon style={{ fontSize: 'larger' }} />}
               >
-                <Legend
-                  legendData={legendData}
-                  modal
-                />
-              </TableCell>
-
+                CROP LIST
+              </LightButton>
+              <LightButton
+                onClick={() => setListView(true)}
+                color="secondary"
+                style={{ background: listView ? '#49a8ab' : '#e3f2f4' }}
+                startIcon={<CalendarToday style={{ fontSize: 'larger' }} />}
+              >
+                CROP CALENDAR
+              </LightButton>
             </TableRow>
             <TableRow>
               <TableCell
