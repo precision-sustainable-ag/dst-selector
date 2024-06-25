@@ -52,6 +52,7 @@ const ToggleOptions = ({ pathname }) => {
           border: '10px',
           '&:hover': { backgroundColor: (pathname === '/') ? '#598444' : 'white', color: (pathname === '/') ? 'white' : '#8abc62' },
         }}
+        data-cy="get-recommendation-btn"
       >
         <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
           Get A Recommendation
@@ -69,6 +70,7 @@ const ToggleOptions = ({ pathname }) => {
               color: (pathname === '/explorer') ? 'white' : '#8abc62',
               '&:hover': { backgroundColor: (pathname === '/explorer') ? '#598444' : 'white' },
             }}
+            data-cy="browse-covercrops-btn"
           >
 
             <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
