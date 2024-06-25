@@ -24,18 +24,17 @@ import {
 } from '@mui/icons-material';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import StraightIcon from '@mui/icons-material/Straight';
 import {
   allMonths,
   CustomStyles,
   sortCrops,
-  sudoButtonStyleWithPadding,
-  getLegendDataBasedOnCouncil,
   LightButton,
 } from '../../../shared/constants';
+
 import '../../../styles/cropCalendarViewComponent.scss';
 import RenderCrops from './RenderCrops';
 import CropDetailsModal from '../../../components/CropDetailsModal/CropDetailsModal';
-import Legend from '../../../components/Legend/Legend';
 
 const growthIcon = {
   color: 'white',
@@ -48,7 +47,6 @@ const CropCalendarView = ({
   // redux vars
   const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
-  const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const ajaxInProgressRedux = useSelector((stateRedux) => stateRedux.sharedData.ajaxInProgress);
   const selectedCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCropIds);
   const activeGrowthPeriodRedux = useSelector((stateRedux) => stateRedux.cropData.activeGrowthPeriod);
@@ -57,7 +55,7 @@ const CropCalendarView = ({
   const [legendModal, setLegendModal] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalData, setModalData] = useState([{}]);
-  const legendData = getLegendDataBasedOnCouncil(councilShorthandRedux);
+  const [columnSort, setColumnSort] = useState('');
 
   // sorting flags
   const [nameSortFlag, setNameSortFlag] = useState(true);
@@ -65,6 +63,8 @@ const CropCalendarView = ({
   const [goal1SortFlag, setGoal1SortFlag] = useState(true);
   const [goal2SortFlag, setGoal2SortFlag] = useState(true);
   const [goal3SortFlag, setGoal3SortFlag] = useState(true);
+  const [myListSortFlag, setMyListSortFlag] = useState(true);
+  const [currentGoalSortFlag, setCurrentGoalSortFlag] = useState(true);
 
   const handleLegendModal = () => {
     setLegendModal(!legendModal);
@@ -79,8 +79,11 @@ const CropCalendarView = ({
   };
 
   const sortByName = () => {
+    setColumnSort('');
     sortCrops('Crop Name', cropDataRedux, nameSortFlag);
     setNameSortFlag(!nameSortFlag);
+
+    setColumnSort('name');
   };
 
   const sortByAverageGoals = () => {
@@ -88,31 +91,46 @@ const CropCalendarView = ({
     setNameSortFlag(!nameSortFlag);
   };
 
-  const sortByPlantingWindow = () => {
+  const sortByPlantingWindow = (column) => {
+    setColumnSort('');
     sortCrops('Planting Window', cropDataRedux, plantingSortFlag);
     setPlantingSortFlag(!plantingSortFlag);
+    if (column.length > 0) {
+      setColumnSort(column);
+    }
   };
 
-  const sortBySelectedCrops = () => {
+  const sortBySelectedCrops = (column) => {
+    setColumnSort('');
     sortCrops('Selected Crops', cropDataRedux, true, selectedCropIdsRedux);
-    setNameSortFlag(!nameSortFlag);
+    setMyListSortFlag(!myListSortFlag);
+    if (column.length > 0) {
+      setColumnSort(column);
+    }
   };
 
-  const sortByGoal = (goal, index) => {
+  const sortByGoal = (goal, index, column) => {
+    setColumnSort('');
     let flag = '';
 
     if (index === 0) {
       flag = goal1SortFlag;
       setGoal1SortFlag(!goal1SortFlag);
+      setCurrentGoalSortFlag(!goal1SortFlag);
     } else if (index === 1) {
       flag = goal2SortFlag;
       setGoal2SortFlag(!goal2SortFlag);
+      setCurrentGoalSortFlag(!goal2SortFlag);
     } else {
       flag = goal3SortFlag;
       setGoal3SortFlag(!goal3SortFlag);
+      setCurrentGoalSortFlag(!goal3SortFlag);
     }
 
     sortCrops('Goal', cropDataRedux, flag, selectedGoalsRedux, goal);
+    if (column.length > 0) {
+      setColumnSort(column);
+    }
   };
 
   useEffect(() => {
@@ -280,7 +298,7 @@ const CropCalendarView = ({
               </TableRow>
               <TableRow>
                 <TableCell sx={{
-                  borderRight: '5px solid white', backgroundColor: '#abd08f', padding: 0, width: '250px', textAlign: 'center',
+                  borderRight: '5px solid white', backgroundColor: columnSort === 'name' ? '#49a8ab' : '#abd08f', padding: 0, width: '250px', textAlign: 'center',
                 }}
                 >
                   <Button
@@ -291,6 +309,7 @@ const CropCalendarView = ({
                   >
                     {' '}
                     Crop Name
+                    {columnSort === 'name' && <StraightIcon className={nameSortFlag ? 'rotate180' : ''} />}
                   </Button>
                 </TableCell>
                 {selectedGoalsRedux.length > 0
@@ -299,7 +318,7 @@ const CropCalendarView = ({
                     key={index}
                     style={{
                       wordBreak: 'break-word',
-                      backgroundColor: '#abd08f',
+                      backgroundColor: columnSort === `goal${index}` ? '#49a8ab' : '#abd08f',
                       textAlign: 'center',
                       borderRight: '5px solid white',
                       padding: 0,
@@ -315,11 +334,15 @@ const CropCalendarView = ({
                           )}
                     >
                       <Button
-                        onClick={() => sortByGoal(goal, index)}
+                        onClick={() => sortByGoal(goal, index, `goal${index}`)}
                         variant="body1"
-                        sx={{ textTransform: 'none' }}
+                        sx={{
+                          textTransform: 'none',
+                          padding: '0px',
+                        }}
                       >
                         {`Goal ${index + 1}`}
+                        {columnSort === `goal${index}` && <StraightIcon style={{ margin: '0px' }} className={currentGoalSortFlag ? 'rotate180' : ''} />}
                       </Button>
 
                     </Tooltip>
@@ -337,17 +360,26 @@ const CropCalendarView = ({
                       className={`calendarSecondHeadMonth ${
                         growthMonth ? 'activeGrowthMonth' : ''
                       } ${growthMonthSeparator ? 'growthMonthSeparator' : ''}`}
-                      onClick={sortByPlantingWindow}
+                      onClick={() => sortByPlantingWindow('plantingWindow')}
                     >
                       <Box>{month}</Box>
                     </TableCell>
                   );
                 })}
                 <TableCell sx={{
-                  borderLeft: '5px solid white', backgroundColor: '#abd08f', padding: 0, width: '75px', textAlign: 'center',
+                  borderLeft: '5px solid white', backgroundColor: columnSort === 'myList' ? '#49a8ab' : '#abd08f', padding: 0, width: '75px', textAlign: 'center',
                 }}
                 >
-                  <Button sx={{ textAlign: 'center', color: 'black', textTransform: 'none' }} onClick={() => sortBySelectedCrops()}> My List </Button>
+                  <Button
+                    sx={{
+                      textAlign: 'center', color: 'black', textTransform: 'none', padding: '0px',
+                    }}
+                    onClick={() => sortBySelectedCrops('myList')}
+                  >
+                    My List
+                    {columnSort === 'myList' && <StraightIcon style={{ margin: '0px' }} className={myListSortFlag ? 'rotate180' : ''} />}
+                  </Button>
+
                 </TableCell>
               </TableRow>
             </TableHead>
