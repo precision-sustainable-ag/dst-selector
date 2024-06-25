@@ -48,6 +48,7 @@ const ProgressButtonsInner = ({
         }}
         onClick={() => changeProgress('decrement')}
         disabled={isDisabledBack}
+        data-cy="back-prgs-btn"
       >
         BACK
       </LightButton>
@@ -69,6 +70,7 @@ const ProgressButtonsInner = ({
               }}
               onClick={() => changeProgress('increment')}
               disabled={isDisabledNext || progressRedux === 4}
+              data-cy="next-prgs-btn"
             >
               NEXT
             </LightButton>
@@ -86,6 +88,7 @@ const ProgressButtonsInner = ({
             }}
             onClick={() => (progressRedux === 4 ? setMyCoverCropActivationFlag() : changeProgress('increment'))}
             disabled={isDisabledNext || (progressRedux === 4 && selectedCropIdsRedux.length === 0)}
+            data-cy="next-prgs-btn"
           >
             {progressRedux === 4 ? 'MY SELECTED CROPS' : 'NEXT'}
           </LightButton>
@@ -108,6 +111,7 @@ const ProgressButtonsInner = ({
           }
         }}
         disabled={isDisabledRefresh}
+        data-cy="refresh-prgs-btn"
       >
         <Refresh />
         Restart
