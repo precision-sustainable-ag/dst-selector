@@ -21,7 +21,7 @@ const RenderDrainageClasses = ({
   const historyStateRedux = useSelector((stateRedux) => stateRedux.userData.historyState);
 
   const [previousDrainage, setPreviousDrainage] = useState(-1);
-  const [updateTilingCheck, setUpdateTilingCheck] = useState(true);
+  const [updateTilingCheck, setUpdateTilingCheck] = useState(false);
   const drainageArray = [
     'Very poorly drained',
     'Poorly drained',

@@ -46,7 +46,7 @@ const SoilDrainage = () => {
   useEffect(() => {
     // set new drainage value
     if (historyStateRedux === historyState.imported) setNewDrainage(soilDataRedux.drainageClass[0]);
-    else setNewDrainage(soilDataOriginalRedux.drainageClass[0]);
+    else setNewDrainage(soilDataRedux.drainageClass[0]);
     setDrainageInitialLoad(true);
   }, [soilDataOriginalRedux]);
 
