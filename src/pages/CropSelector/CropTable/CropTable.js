@@ -19,6 +19,7 @@ import {
 } from '@mui/material';
 import ListIcon from '@mui/icons-material/List';
 import { CalendarToday } from '@mui/icons-material';
+import StraightIcon from '@mui/icons-material/Straight';
 import {
   sortCrops, sudoButtonStyle, LightButton,
 } from '../../../shared/constants';
@@ -41,6 +42,7 @@ const CropTable = ({
   // useState vars
   const [modalOpen, setModalOpen] = useState(false);
   const [modalData, setModalData] = useState({});
+  const [columnSort, setColumnSort] = useState('');
 
   // sorting flags
   const [nameSortFlag, setNameSortFlag] = useState(true);
@@ -48,6 +50,8 @@ const CropTable = ({
   const [goal1SortFlag, setGoal1SortFlag] = useState(true);
   const [goal2SortFlag, setGoal2SortFlag] = useState(true);
   const [goal3SortFlag, setGoal3SortFlag] = useState(true);
+  const [myListSortFlag, setMyListSortFlag] = useState(true);
+  const [currentGoalSortFlag, setCurrentGoalSortFlag] = useState(true);
 
   const handleModalOpen = (crop) => {
     setModalData(crop);
@@ -55,8 +59,10 @@ const CropTable = ({
   };
 
   const sortByName = () => {
+    setColumnSort('');
     sortCrops('Crop Name', cropDataRedux, nameSortFlag);
     setNameSortFlag(!nameSortFlag);
+    setColumnSort('name');
   };
 
   const sortByAverageGoals = () => {
@@ -65,30 +71,41 @@ const CropTable = ({
   };
 
   const sortByPlantingWindow = () => {
+    setColumnSort('');
     sortCrops('Planting Window', cropDataRedux, plantingSortFlag);
     setPlantingSortFlag(!plantingSortFlag);
+    setColumnSort('plantingWindow');
   };
 
   const sortBySelectedCrops = () => {
+    setColumnSort('');
     sortCrops('Selected Crops', cropDataRedux, true, selectedCropIdsRedux);
-    setNameSortFlag(!nameSortFlag);
+    setMyListSortFlag(!myListSortFlag);
+    setColumnSort('myList');
   };
 
-  const sortByGoal = (goal, index) => {
+  const sortByGoal = (goal, index, column) => {
+    setColumnSort('');
     let flag = '';
 
     if (index === 0) {
       flag = goal1SortFlag;
       setGoal1SortFlag(!goal1SortFlag);
+      setCurrentGoalSortFlag(!goal1SortFlag);
     } else if (index === 1) {
       flag = goal2SortFlag;
       setGoal2SortFlag(!goal2SortFlag);
+      setCurrentGoalSortFlag(!goal2SortFlag);
     } else {
       flag = goal3SortFlag;
       setGoal3SortFlag(!goal3SortFlag);
+      setCurrentGoalSortFlag(!goal3SortFlag);
     }
 
     sortCrops('Goal', cropDataRedux, flag, selectedGoalsRedux, goal);
+    if (column.length > 0) {
+      setColumnSort(column);
+    }
   };
 
   useEffect(() => {
@@ -122,13 +139,14 @@ const CropTable = ({
               <TableCell
                 sx={{
                   padding: 0,
-                  backgroundColor: '#abd08f',
+                  backgroundColor: columnSort === 'name' ? '#49a8ab' : '#abd08f',
                   width: 300,
                   textAlign: 'center',
                 }}
               >
                 <Button onClick={() => sortByName()} sx={{ color: 'black', textTransform: 'none' }} variant="body1">
                   Cover Crops
+                  {columnSort === 'name' && <StraightIcon className={nameSortFlag ? 'rotate180' : ''} />}
                 </Button>
               </TableCell>
               {cropDataRedux[0].keyTraits.length > 0
@@ -151,7 +169,7 @@ const CropTable = ({
                     key={index}
                     style={{
                       wordBreak: 'break-word',
-                      backgroundColor: '#abd08f',
+                      backgroundColor: columnSort === `goal${index}` ? '#49a8ab' : '#abd08f',
                       textAlign: 'center',
                     }}
                   >
@@ -164,11 +182,12 @@ const CropTable = ({
                           )}
                     >
                       <Button
-                        onClick={() => sortByGoal(goal, index)}
+                        onClick={() => sortByGoal(goal, index, `goal${index}`)}
                         variant="body1"
                         sx={{ textTransform: 'none' }}
                       >
                         {`Goal ${index + 1}`}
+                        {columnSort === `goal${index}` && <StraightIcon style={{ margin: '0px' }} className={currentGoalSortFlag ? 'rotate180' : ''} />}
                       </Button>
 
                     </Tooltip>
@@ -179,7 +198,7 @@ const CropTable = ({
                 <TableCell
                   sx={{ padding: 0 }}
                   style={{
-                    backgroundColor: '#abd08f',
+                    backgroundColor: columnSort === 'plantingWindow' ? '#49a8ab' : '#abd08f',
                     textAlign: 'center',
                   }}
                 >
@@ -191,6 +210,7 @@ const CropTable = ({
                     onClick={() => sortByPlantingWindow()}
                   >
                     Planting Window
+                    {columnSort === 'plantingWindow' && <StraightIcon style={{ margin: '0px' }} className={plantingSortFlag ? 'rotate180' : ''} />}
                   </Button>
                 </TableCell>
               )}
@@ -198,12 +218,13 @@ const CropTable = ({
               <TableCell
                 sx={{ padding: 0 }}
                 style={{
-                  backgroundColor: '#abd08f',
+                  backgroundColor: columnSort === 'myList' ? '#49a8ab' : '#abd08f',
                   textAlign: 'center',
                 }}
               >
                 <Button variant="body1" style={{ textTransform: 'none' }} onClick={() => sortBySelectedCrops()}>
                   My List
+                  {columnSort === 'myList' && <StraightIcon style={{ margin: '0px' }} className={myListSortFlag ? 'rotate180' : ''} />}
                 </Button>
               </TableCell>
             </TableRow>
