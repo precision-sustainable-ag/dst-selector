@@ -173,18 +173,6 @@ const CropCalendarView = ({
                 </LightButton>
                 {activeGrowthPeriodRedux.length === 0 && (
                   <>
-                    {/* <TableCell
-                      colSpan="1"
-                      sx={{
-                        borderBottom: '5px solid white',
-                        borderRight: '5px solid white',
-                        backgroundColor: '#abd08f',
-                        padding: 0,
-
-                      }}
-                    >
-                      <Box sx={sudoButtonStyleWithPadding}>ACTIVE GROWTH PERIOD</Box>
-                    </TableCell> */}
                     {activeGrowthPeriodRedux.includes('Jan') ? (
                       <Tooltip placement="top" title="Winter" enterTouchDelay={0}>
                         <TableCell
