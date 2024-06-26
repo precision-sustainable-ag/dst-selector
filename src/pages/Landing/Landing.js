@@ -57,8 +57,6 @@ const Landing = () => {
   // Load map data based on current enviorment
   useEffect(() => {
     callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states`).then((stateData) => {
-      console.log('api', `https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states`);
-      console.log('state data => ', stateData);
       const isDevEnvironment = /(localhost|dev)/i.test(window.location);
       const productionCouncils = ['NECCC', 'SCCC'];
       const states = isDevEnvironment
@@ -123,8 +121,6 @@ const Landing = () => {
         .then((res) => res.json())
         .then((data) => {
           let fetchedRegions;
-          console.log('url', `https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${id}/regions`);
-          console.log('data', data);
           if (data.data.Counties) {
             fetchedRegions = data.data.Counties;
           } else {

@@ -1,13 +1,15 @@
-import React from 'react'
-import Header from './Header'
+import React from 'react';
+import Header from './Header';
+
+/* eslint-disable no-undef */
 
 describe('Header Component', () => {
   beforeEach(() => {
-    cy.mount(<Header/>);
+    cy.mount(<Header />);
   });
 
   it('should have a GET A RECOMMENDATION button', () => {
-    cy.assertByTestId("get-recommendation-btn").should('have.text', 'Get A Recommendation');
+    cy.assertByTestId('get-recommendation-btn').should('have.text', 'Get A Recommendation');
   });
 
   it('should have a BROWSE COVER CROPS button', () => {
@@ -17,14 +19,14 @@ describe('Header Component', () => {
   it('should have correct navigation tabs and links', () => {
     const headerTabs = ['profile', 'about', 'help', 'feedback'];
 
-    headerTabs.forEach(tab => {
+    headerTabs.forEach((tab) => {
       cy.contains(new RegExp(`${tab}`, 'i'));
       cy.log(`Checking tab: ${tab}`);
       if (tab === 'help') {
         cy.assertByTestId(tab).should('be.disabled').find('a').should('have.attr', 'href', `/${tab}`);
       } else {
-          // Click on the tab except for 'help'
-          cy.assertByTestId(tab)
+        // Click on the tab except for 'help'
+        cy.assertByTestId(tab)
           .find('a').should('have.attr', 'href', `/${tab}`);
       }
     });
@@ -36,6 +38,5 @@ describe('Header Component', () => {
 
   it('should initially display PSA logo', () => {
     cy.assertByTestId('logo-image').invoke('attr', 'src').should('equal', '/images/PSAlogo-text.png');
-  })
-
-})
+  });
+});
