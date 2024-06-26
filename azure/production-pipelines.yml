@@ -40,6 +40,8 @@ stages:
         echo REACT_APP_AUTH0_DOMAIN="$(REACT_APP_AUTH0_DOMAIN)" >> /home/vsts/work/1/s/.env
         echo REACT_APP_AUTH0_CLIENT_ID="$(REACT_APP_AUTH0_CLIENT_ID)" >> /home/vsts/work/1/s/.env
         echo REACT_APP_AUTH0_AUDIENCE="$(REACT_APP_AUTH0_AUDIENCE)" >> /home/vsts/work/1/s/.env
+        echo REACT_APP_USER_HISTORY_API_UR="$(REACT_APP_USER_HISTORY_API_UR)" >> /home/vsts/work/1/s/.env
+        echo REACT_APP_USER_HISTORY_SCHEMA="$(REACT_APP_USER_HISTORY_SCHEMA)" >> /home/vsts/work/1/s/.env
       displayName: "Create .env"
     - script: |
         chmod +x ./npm-ci.sh
