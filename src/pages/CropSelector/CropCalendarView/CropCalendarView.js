@@ -91,22 +91,18 @@ const CropCalendarView = ({
     setNameSortFlag(!nameSortFlag);
   };
 
-  const sortByPlantingWindow = (column) => {
+  const sortByPlantingWindow = () => {
     setColumnSort('');
     sortCrops('Planting Window', cropDataRedux, plantingSortFlag);
     setPlantingSortFlag(!plantingSortFlag);
-    if (column.length > 0) {
-      setColumnSort(column);
-    }
+    setColumnSort('plantingWindow');
   };
 
-  const sortBySelectedCrops = (column) => {
+  const sortBySelectedCrops = () => {
     setColumnSort('');
     sortCrops('Selected Crops', cropDataRedux, true, selectedCropIdsRedux);
     setMyListSortFlag(!myListSortFlag);
-    if (column.length > 0) {
-      setColumnSort(column);
-    }
+    setColumnSort('myList');
   };
 
   const sortByGoal = (goal, index, column) => {
@@ -348,7 +344,7 @@ const CropCalendarView = ({
                       className={`calendarSecondHeadMonth ${
                         growthMonth ? 'activeGrowthMonth' : ''
                       } ${growthMonthSeparator ? 'growthMonthSeparator' : ''}`}
-                      onClick={() => sortByPlantingWindow('plantingWindow')}
+                      onClick={() => sortByPlantingWindow()}
                     >
                       <Box>{month}</Box>
                     </TableCell>
@@ -362,7 +358,7 @@ const CropCalendarView = ({
                     sx={{
                       textAlign: 'center', color: 'black', textTransform: 'none', padding: '0px',
                     }}
-                    onClick={() => sortBySelectedCrops('myList')}
+                    onClick={() => sortBySelectedCrops()}
                   >
                     My List
                     {columnSort === 'myList' && <StraightIcon style={{ margin: '0px' }} className={myListSortFlag ? 'rotate180' : ''} />}
