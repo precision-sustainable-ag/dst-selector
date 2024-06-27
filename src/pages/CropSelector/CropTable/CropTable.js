@@ -17,16 +17,20 @@ import {
   Typography,
   Box,
 } from '@mui/material';
+import ListIcon from '@mui/icons-material/List';
+import { CalendarToday } from '@mui/icons-material';
+import StraightIcon from '@mui/icons-material/Straight';
 import {
-  sortCrops, sudoButtonStyle, getLegendDataBasedOnCouncil,
+  sortCrops, sudoButtonStyle, LightButton,
 } from '../../../shared/constants';
 import '../../../styles/cropCalendarViewComponent.scss';
 import '../../../styles/cropTable.scss';
 import CropDetailsModal from '../../../components/CropDetailsModal/CropDetailsModal';
-import Legend from '../../../components/Legend/Legend';
 import RenderTableItems from './RenderTableItems';
 
 const CropTable = ({
+  listView,
+  setListView,
   showGrowthWindow,
 }) => {
   // redux vars
@@ -38,6 +42,7 @@ const CropTable = ({
   // useState vars
   const [modalOpen, setModalOpen] = useState(false);
   const [modalData, setModalData] = useState({});
+  const [columnSort, setColumnSort] = useState('');
 
   // sorting flags
   const [nameSortFlag, setNameSortFlag] = useState(true);
@@ -45,8 +50,8 @@ const CropTable = ({
   const [goal1SortFlag, setGoal1SortFlag] = useState(true);
   const [goal2SortFlag, setGoal2SortFlag] = useState(true);
   const [goal3SortFlag, setGoal3SortFlag] = useState(true);
-  const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
-  const legendData = getLegendDataBasedOnCouncil(councilShorthandRedux);
+  const [myListSortFlag, setMyListSortFlag] = useState(true);
+  const [currentGoalSortFlag, setCurrentGoalSortFlag] = useState(true);
 
   const handleModalOpen = (crop) => {
     setModalData(crop);
@@ -54,8 +59,10 @@ const CropTable = ({
   };
 
   const sortByName = () => {
+    setColumnSort('');
     sortCrops('Crop Name', cropDataRedux, nameSortFlag);
     setNameSortFlag(!nameSortFlag);
+    setColumnSort('name');
   };
 
   const sortByAverageGoals = () => {
@@ -64,30 +71,41 @@ const CropTable = ({
   };
 
   const sortByPlantingWindow = () => {
+    setColumnSort('');
     sortCrops('Planting Window', cropDataRedux, plantingSortFlag);
     setPlantingSortFlag(!plantingSortFlag);
+    setColumnSort('plantingWindow');
   };
 
   const sortBySelectedCrops = () => {
+    setColumnSort('');
     sortCrops('Selected Crops', cropDataRedux, true, selectedCropIdsRedux);
-    setNameSortFlag(!nameSortFlag);
+    setMyListSortFlag(!myListSortFlag);
+    setColumnSort('myList');
   };
 
-  const sortByGoal = (goal, index) => {
+  const sortByGoal = (goal, index, column) => {
+    setColumnSort('');
     let flag = '';
 
     if (index === 0) {
       flag = goal1SortFlag;
       setGoal1SortFlag(!goal1SortFlag);
+      setCurrentGoalSortFlag(!goal1SortFlag);
     } else if (index === 1) {
       flag = goal2SortFlag;
       setGoal2SortFlag(!goal2SortFlag);
+      setCurrentGoalSortFlag(!goal2SortFlag);
     } else {
       flag = goal3SortFlag;
       setGoal3SortFlag(!goal3SortFlag);
+      setCurrentGoalSortFlag(!goal3SortFlag);
     }
 
     sortCrops('Goal', cropDataRedux, flag, selectedGoalsRedux, goal);
+    if (column.length > 0) {
+      setColumnSort(column);
+    }
   };
 
   useEffect(() => {
@@ -99,29 +117,36 @@ const CropTable = ({
       <TableContainer component="div">
         <Table stickyHeader sx={{ borderSpacing: '7px', padding: 0 }}>
           <TableHead>
-            <TableRow>
-              <TableCell
-                sx={{ padding: 0 }}
-                colSpan={7}
+            <TableRow style={{ paddingBottom: '5px', whiteSpace: 'nowrap' }}>
+              <LightButton
+                onClick={() => setListView(false)}
+                color="secondary"
+                style={{ background: !listView ? '#49a8ab' : '#e3f2f4' }}
+                startIcon={<ListIcon style={{ fontSize: 'larger' }} />}
               >
-                <Legend
-                  legendData={legendData}
-                  modal
-                />
-              </TableCell>
-
+                CROP LIST
+              </LightButton>
+              <LightButton
+                onClick={() => setListView(true)}
+                color="secondary"
+                style={{ background: listView ? '#49a8ab' : '#e3f2f4' }}
+                startIcon={<CalendarToday style={{ fontSize: 'larger' }} />}
+              >
+                CROP CALENDAR
+              </LightButton>
             </TableRow>
             <TableRow>
               <TableCell
                 sx={{
                   padding: 0,
-                  backgroundColor: '#abd08f',
+                  backgroundColor: columnSort === 'name' ? '#49a8ab' : '#abd08f',
                   width: 300,
                   textAlign: 'center',
                 }}
               >
                 <Button onClick={() => sortByName()} sx={{ color: 'black', textTransform: 'none' }} variant="body1">
                   Cover Crops
+                  {columnSort === 'name' && <StraightIcon className={nameSortFlag ? '' : 'rotate180'} />}
                 </Button>
               </TableCell>
               {cropDataRedux[0].keyTraits.length > 0
@@ -144,7 +169,7 @@ const CropTable = ({
                     key={index}
                     style={{
                       wordBreak: 'break-word',
-                      backgroundColor: '#abd08f',
+                      backgroundColor: columnSort === `goal${index}` ? '#49a8ab' : '#abd08f',
                       textAlign: 'center',
                     }}
                   >
@@ -157,11 +182,12 @@ const CropTable = ({
                           )}
                     >
                       <Button
-                        onClick={() => sortByGoal(goal, index)}
+                        onClick={() => sortByGoal(goal, index, `goal${index}`)}
                         variant="body1"
                         sx={{ textTransform: 'none' }}
                       >
                         {`Goal ${index + 1}`}
+                        {columnSort === `goal${index}` && <StraightIcon style={{ margin: '0px' }} className={currentGoalSortFlag ? '' : 'rotate180'} />}
                       </Button>
 
                     </Tooltip>
@@ -172,7 +198,7 @@ const CropTable = ({
                 <TableCell
                   sx={{ padding: 0 }}
                   style={{
-                    backgroundColor: '#abd08f',
+                    backgroundColor: columnSort === 'plantingWindow' ? '#49a8ab' : '#abd08f',
                     textAlign: 'center',
                   }}
                 >
@@ -184,6 +210,7 @@ const CropTable = ({
                     onClick={() => sortByPlantingWindow()}
                   >
                     Planting Window
+                    {columnSort === 'plantingWindow' && <StraightIcon style={{ margin: '0px' }} className={plantingSortFlag ? '' : 'rotate180'} />}
                   </Button>
                 </TableCell>
               )}
@@ -191,12 +218,13 @@ const CropTable = ({
               <TableCell
                 sx={{ padding: 0 }}
                 style={{
-                  backgroundColor: '#abd08f',
+                  backgroundColor: columnSort === 'myList' ? '#49a8ab' : '#abd08f',
                   textAlign: 'center',
                 }}
               >
                 <Button variant="body1" style={{ textTransform: 'none' }} onClick={() => sortBySelectedCrops()}>
                   My List
+                  {columnSort === 'myList' && <StraightIcon style={{ margin: '0px' }} className={myListSortFlag ? '' : 'rotate180'} />}
                 </Button>
               </TableCell>
             </TableRow>
