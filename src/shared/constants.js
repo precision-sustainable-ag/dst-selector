@@ -1049,7 +1049,11 @@ export const extractData = (attribute, from, councilShorthand) => {
   } else {
     // from myCoverCropComparison
     for (let i = 0; i < attribute?.values.length; i++) {
-      attributeValues.push(`${attribute?.values[i].value} ${attribute?.units ? attribute?.units : ''}`);
+      if (attribute?.values[i].value) {
+        attributeValues.push(`${attribute?.values[i].value} ${attribute?.units ? attribute?.units : ''}`);
+      } else {
+        attributeValues.push(attribute?.values[i]);
+      }
     }
     dataType = attribute?.dataType;
   }
