@@ -146,7 +146,7 @@ const CropTable = ({
               >
                 <Button onClick={() => sortByName()} sx={{ color: 'black', textTransform: 'none' }} variant="body1">
                   Cover Crops
-                  {columnSort === 'name' && <StraightIcon className={nameSortFlag ? 'rotate180' : ''} />}
+                  {columnSort === 'name' && <StraightIcon className={nameSortFlag ? '' : 'rotate180'} />}
                 </Button>
               </TableCell>
               {cropDataRedux[0].keyTraits.length > 0
@@ -187,7 +187,7 @@ const CropTable = ({
                         sx={{ textTransform: 'none' }}
                       >
                         {`Goal ${index + 1}`}
-                        {columnSort === `goal${index}` && <StraightIcon style={{ margin: '0px' }} className={currentGoalSortFlag ? 'rotate180' : ''} />}
+                        {columnSort === `goal${index}` && <StraightIcon style={{ margin: '0px' }} className={currentGoalSortFlag ? '' : 'rotate180'} />}
                       </Button>
 
                     </Tooltip>
@@ -210,7 +210,7 @@ const CropTable = ({
                     onClick={() => sortByPlantingWindow()}
                   >
                     Planting Window
-                    {columnSort === 'plantingWindow' && <StraightIcon style={{ margin: '0px' }} className={plantingSortFlag ? 'rotate180' : ''} />}
+                    {columnSort === 'plantingWindow' && <StraightIcon style={{ margin: '0px' }} className={plantingSortFlag ? '' : 'rotate180'} />}
                   </Button>
                 </TableCell>
               )}
@@ -224,7 +224,7 @@ const CropTable = ({
               >
                 <Button variant="body1" style={{ textTransform: 'none' }} onClick={() => sortBySelectedCrops()}>
                   My List
-                  {columnSort === 'myList' && <StraightIcon style={{ margin: '0px' }} className={myListSortFlag ? 'rotate180' : ''} />}
+                  {columnSort === 'myList' && <StraightIcon style={{ margin: '0px' }} className={myListSortFlag ? '' : 'rotate180'} />}
                 </Button>
               </TableCell>
             </TableRow>
