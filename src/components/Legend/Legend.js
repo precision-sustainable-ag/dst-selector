@@ -4,21 +4,42 @@
 */
 
 import {
-  Typography,
   Grid,
+  ListItem,
+  ListItemText,
+  Collapse,
+  List,
 } from '@mui/material';
-import { FiberManualRecord } from '@mui/icons-material';
-import React from 'react';
+import { ExpandLess, ExpandMore, FiberManualRecord } from '@mui/icons-material';
+import React, { useState } from 'react';
 
-const Legend = ({ legendData, modal }) => (
-  <Grid
-    container
-  >
-    {legendData.length > 0
+const Legend = ({ legendData, modal }) => {
+  const [legendOpen, setLegendOpen] = useState(false);
+
+  return (
+    <Grid
+      container
+    >
+      <ListItem
+        onClick={() => setLegendOpen(!legendOpen)}
+        style={{
+          marginBottom: '15px',
+          backgroundColor: 'inherit',
+
+        }}
+      >
+        <ListItemText primary="LEGEND" />
+
+        {legendOpen ? <ExpandLess /> : <ExpandMore />}
+      </ListItem>
+      <Collapse in={legendOpen} timeout="auto" unmountOnExit>
+
+        {legendData.length > 0
       && (
         legendData.map((item, key) => (
-          <Grid item className="legendModalRow" key={`gird index ${key}`}>
-            <Typography variant="body1">
+          <List disablePadding className="legendModalRow" key={`gird index ${key}`}>
+            <ListItem>
+              <ListItemText style={{ paddingLeft: '1rem' }}>{`${item.label}`}</ListItemText>
               {
               modal && ((item.className === 'hessianFlyFree')
                 ? (
@@ -38,15 +59,17 @@ const Legend = ({ legendData, modal }) => (
                     />
                   </svg>
                 )
-                : <FiberManualRecord style={{ marginLeft: '9px' }} className={`${item.className}`} />
+                : <FiberManualRecord style={{ marginLeft: '9px', color: item.color }} className={`${item.className}`} />
               )
             }
-              <span style={{ paddingLeft: '1px' }}>{`${item.label}`}</span>
-            </Typography>
-          </Grid>
+            </ListItem>
+          </List>
         ))
       )}
-  </Grid>
-);
+      </Collapse>
+
+    </Grid>
+  );
+};
 
 export default Legend;

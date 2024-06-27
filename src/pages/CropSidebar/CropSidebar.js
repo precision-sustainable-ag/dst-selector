@@ -17,7 +17,7 @@ import {
   Grid,
 } from '@mui/material';
 import {
-  CalendarToday, Compare, ExpandLess, ExpandMore,
+  Compare, ExpandLess, ExpandMore,
 } from '@mui/icons-material';
 import ListIcon from '@mui/icons-material/List';
 import React, {
@@ -26,7 +26,7 @@ import React, {
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
 import {
-  CustomStyles, LightButton, callCoverCropApi, cropDataFormatter,
+  LightButton, callCoverCropApi, cropDataFormatter, getLegendDataBasedOnCouncil,
 } from '../../shared/constants';
 import ComparisonBar from '../MyCoverCropList/ComparisonBar/ComparisonBar';
 import CoverCropSearch from './CoverCropSearch/CoverCropSearch';
@@ -44,7 +44,6 @@ const CropSidebar = ({
   from,
   setGrowthWindow,
   setComparisonView,
-  setListView,
   style,
 }) => {
   const dispatchRedux = useDispatch();
@@ -80,9 +79,8 @@ const CropSidebar = ({
     });
     return sidebarStarter;
   });
-  const legendData = [
-    { className: 'sideBar', label: councilShorthandRedux === 'MCCC' ? '0 = Least, 4 = Most' : '1 = Least, 5 = Most' },
-  ];
+
+  const legendData = getLegendDataBasedOnCouncil(councilShorthandRedux);
 
   const query = `${encodeURIComponent('regions')}=${encodeURIComponent(regionIdRedux)}`;
 
@@ -327,26 +325,6 @@ const CropSidebar = ({
   ) : (
     <Grid container>
       <Grid item>
-        {from === 'table' && (
-          <>
-            <LightButton
-              onClick={() => setListView(false)}
-              color="secondary"
-              style={{ background: !listView ? '#49a8ab' : '#e3f2f4' }}
-              startIcon={<ListIcon style={{ fontSize: 'larger' }} />}
-            >
-              CROP LIST
-            </LightButton>
-            <LightButton
-              onClick={() => setListView(true)}
-              color="secondary"
-              style={{ background: listView ? '#49a8ab' : '#e3f2f4' }}
-              startIcon={<CalendarToday style={{ fontSize: 'larger' }} />}
-            >
-              CROP CALENDAR
-            </LightButton>
-          </>
-        )}
         {speciesSelectorActivationFlagRedux || from === 'explorer' ? (
           <Box
             id="Filters"
@@ -387,39 +365,37 @@ const CropSidebar = ({
                     <CoverCropSearch />
                   </>
                 )}
-                <ListItemButton
-                  onClick={() => setCropFiltersOpen(!cropFiltersOpen)}
-                  style={{
-                    marginBottom: '15px',
-                    backgroundColor:
-                      from === 'table' && !cropFiltersOpen
-                        ? 'inherit'
-                        : CustomStyles().lightGreen,
+                <Box
+                  sx={{
+                    border: 0.5, borderRadius: 2, borderColor: 'black', mb: 2, overflow: 'hidden',
                   }}
                 >
-                  <ListItemText primary="COVER CROP FILTERS" />
-
-                  {cropFiltersOpen ? <ExpandLess /> : <ExpandMore />}
-                  {' '}
-                  {/* // why is this here */}
-                </ListItemButton>
-                <Collapse in={cropFiltersOpen} timeout="auto">
-                  <Box
-                    sx={{
-                      backgroundColor: 'background.paper',
-                      border: '1px solid lightgrey',
-                      paddingLeft: '1em',
-                      margin: '1em',
+                  <ListItem
+                    onClick={() => setCropFiltersOpen(!cropFiltersOpen)}
+                    style={{
+                      marginBottom: '15px',
+                      backgroundColor: 'inherit',
 
                     }}
                   >
-                    <Legend
-                      legendData={legendData}
-                      modal={false}
-                    />
-                  </Box>
-                  {filtersList()}
-                </Collapse>
+                    <ListItemText primary="FILTERS" />
+
+                    {cropFiltersOpen ? <ExpandLess /> : <ExpandMore />}
+                  </ListItem>
+                  <Collapse in={cropFiltersOpen} timeout="auto">
+                    {filtersList()}
+                  </Collapse>
+                </Box>
+                {from !== 'explorer'
+                && (
+                <Box
+                  sx={{
+                    border: 0.5, borderRadius: 2, borderColor: 'black', mb: 2, overflow: 'hidden',
+                  }}
+                >
+                  <Legend legendData={legendData} modal />
+                </Box>
+                )}
               </>
               )}
             </List>
