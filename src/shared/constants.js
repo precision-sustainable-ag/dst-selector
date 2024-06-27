@@ -1072,7 +1072,6 @@ export const extractData = (attribute, from, councilShorthand) => {
   }
 
   if (data && dataType === 'boolean') {
-    console.log(data, attribute);
     return <Typography variant="body2">{attribute.values[0].label}</Typography>;
   }
 
