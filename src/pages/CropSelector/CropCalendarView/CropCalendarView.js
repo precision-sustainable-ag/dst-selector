@@ -293,7 +293,7 @@ const CropCalendarView = ({
                   >
                     {' '}
                     Crop Name
-                    {columnSort === 'name' && <StraightIcon className={nameSortFlag ? 'rotate180' : ''} />}
+                    {columnSort === 'name' && <StraightIcon className={nameSortFlag ? '' : 'rotate180'} />}
                   </Button>
                 </TableCell>
                 {selectedGoalsRedux.length > 0
@@ -326,7 +326,7 @@ const CropCalendarView = ({
                         }}
                       >
                         {`Goal ${index + 1}`}
-                        {columnSort === `goal${index}` && <StraightIcon style={{ margin: '0px' }} className={currentGoalSortFlag ? 'rotate180' : ''} />}
+                        {columnSort === `goal${index}` && <StraightIcon style={{ margin: '0px' }} className={currentGoalSortFlag ? '' : 'rotate180'} />}
                       </Button>
 
                     </Tooltip>
@@ -361,7 +361,7 @@ const CropCalendarView = ({
                     onClick={() => sortBySelectedCrops()}
                   >
                     My List
-                    {columnSort === 'myList' && <StraightIcon style={{ margin: '0px' }} className={myListSortFlag ? 'rotate180' : ''} />}
+                    {columnSort === 'myList' && <StraightIcon style={{ margin: '0px' }} className={myListSortFlag ? '' : 'rotate180'} />}
                   </Button>
 
                 </TableCell>
