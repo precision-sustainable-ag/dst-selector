@@ -22,6 +22,7 @@ const SoilCondition = () => {
 
   // redux vars
   const markersRedux = useSelector((stateRedux) => stateRedux.addressData.markers);
+  const soilDataRedux = useSelector((stateRedux) => stateRedux.soilData.soilData);
   const soilDataOriginalRedux = useSelector((stateRedux) => stateRedux.soilData.soilDataOriginal);
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
   const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
@@ -49,8 +50,8 @@ const SoilCondition = () => {
 
   // retrieving drainage class and flooding frequency
   useEffect(() => {
-    if (historyStateRedux === historyState.imported) {
-      // not call api if it's imported
+    if (soilDataRedux.drainageClass.length > 0 || historyStateRedux === historyState.imported) {
+      // not call api if selected any drainage class or it's imported
       return;
     }
 
@@ -168,6 +169,7 @@ const SoilCondition = () => {
     const lat = markersRedux[0][0];
     const lon = markersRedux[0][1];
 
+    // FIXME: the latLong property is always []
     if (soilDataOriginalRedux?.latLong) {
       if (
         !(soilDataOriginalRedux.latLong?.lat === lat && soilDataOriginalRedux.latLong?.lon === lon)
