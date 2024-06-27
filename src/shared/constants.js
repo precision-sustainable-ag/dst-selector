@@ -1071,9 +1071,8 @@ export const extractData = (attribute, from, councilShorthand) => {
     return <RenderSeedPriceIcons val={data} />;
   }
 
-  // handles the true false keys
-  if (data === 'Frost Seeding' || data === 'Can Aerial Seed?' || data === 'Aerial Seeding') {
-    return <Typography variant="body2">{data ? 'Yes' : 'N/A'}</Typography>;
+  if (data && dataType === 'boolean') {
+    return <Typography variant="body2">{attribute.values[0].label}</Typography>;
   }
 
   // handles default
