@@ -117,7 +117,7 @@ const CropTable = ({
       <TableContainer component="div">
         <Table stickyHeader sx={{ borderSpacing: '7px', padding: 0 }}>
           <TableHead>
-            <TableRow style={{ whiteSpace: 'nowrap' }}>
+            <TableRow style={{ paddingBottom: '5px', whiteSpace: 'nowrap' }}>
               <LightButton
                 onClick={() => setListView(false)}
                 color="secondary"

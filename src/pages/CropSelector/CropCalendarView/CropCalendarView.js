@@ -150,11 +150,11 @@ const CropCalendarView = ({
             }}
           >
             <TableHead sx={{ zIndex: -1 }}>
-              <TableRow style={{ whiteSpace: 'nowrap' }}>
+              <TableRow style={{ paddingBottom: '5px', whiteSpace: 'nowrap' }}>
                 <LightButton
                   onClick={() => setListView(false)}
                   color="secondary"
-                  style={{ background: !listView ? '#49a8ab' : '#e3f2f4' }}
+                  style={{ marginBottom: '7px', background: !listView ? '#49a8ab' : '#e3f2f4' }}
                   startIcon={<ListIcon style={{ fontSize: 'larger' }} />}
                 >
                   CROP LIST
@@ -162,7 +162,7 @@ const CropCalendarView = ({
                 <LightButton
                   onClick={() => setListView(true)}
                   color="secondary"
-                  style={{ background: listView ? '#49a8ab' : '#e3f2f4' }}
+                  style={{ marginBottom: '7px', background: listView ? '#49a8ab' : '#e3f2f4' }}
                   startIcon={<CalendarToday style={{ fontSize: 'larger' }} />}
                 >
                   CROP CALENDAR
@@ -280,7 +280,7 @@ const CropCalendarView = ({
                   <TableCell sx={{ backgroundColor: 'white', padding: 0 }} />
                 )}
               </TableRow>
-              <TableRow>
+              <TableRow style={{ marginTop: '5px' }}>
                 <TableCell sx={{
                   borderRight: '5px solid white', backgroundColor: columnSort === 'name' ? '#49a8ab' : '#abd08f', padding: 0, width: '250px', textAlign: 'center',
                 }}
