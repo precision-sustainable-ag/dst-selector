@@ -339,7 +339,7 @@ const CropCalendarView = ({
                     : false;
                   return (
                     <TableCell
-                      sx={{ padding: 1, backgroundColor: '#abd08f', zIndex: -1 }}
+                      sx={{ padding: 1, backgroundColor: '#abd08f', cursor: 'pointer' }}
                       key={`monthskey${index}`}
                       className={`calendarSecondHeadMonth ${
                         growthMonth ? 'activeGrowthMonth' : ''
