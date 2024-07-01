@@ -4,12 +4,16 @@ const initialState = {
     drainageClass: [],
     floodingFrequency: [],
     latLong: [],
+    tileDrainage: false,
+    prevDrainageClass: [],
   },
   soilDataOriginal: {
     mapUnitName: '',
     drainageClass: [],
     floodingFrequency: [],
     latLong: [],
+    tileDrainage: false,
+    prevDrainageClass: [],
   },
 };
 
@@ -65,6 +69,11 @@ export const setSoilRedux = (soilData) => ({
   payload: { soilData },
 });
 
+export const setTileDrainage = (tileDrainage) => ({
+  type: 'SET_TILE_DRAINAGE',
+  payload: { tileDrainage },
+});
+
 const soilReducer = (state = initialState, action = null) => {
   switch (action.type) {
     case 'UPDATE_SOIL_DATA':
@@ -112,6 +121,16 @@ const soilReducer = (state = initialState, action = null) => {
 
     case 'SET_SOIL_REDUX':
       return { ...state, ...action.payload.soilData };
+
+    case 'SET_TILE_DRAINAGE':
+      return {
+        ...state,
+        soilData: {
+          ...state.soilData,
+          tileDrainage: action.payload.tileDrainage,
+          prevDrainageClass: action.payload.tileDrainage ? state.soilData.drainageClass : [],
+        },
+      };
 
     default:
       return { ...state };
