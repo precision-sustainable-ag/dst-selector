@@ -122,7 +122,6 @@ const Landing = () => {
         .then((res) => res.json())
         .then((data) => {
           let fetchedRegions;
-
           if (data.data.Counties) {
             fetchedRegions = data.data.Counties;
           } else {
@@ -286,10 +285,11 @@ const Landing = () => {
                     },
                   }}
                   MenuProps={menuProps}
+                  data-cy="state-selector-dropdown"
                 >
 
                   {allStates.length > 0 && allStates.map((st, i) => (
-                    <MenuItem value={st.shorthand} key={`Region${st}${i}`}>
+                    <MenuItem value={st.shorthand} key={`Region${st}${i}`} data-cy={`state-dropdown-item-${i}`}>
                       {st.label?.toUpperCase()}
                     </MenuItem>
                   ))}
@@ -332,6 +332,7 @@ const Landing = () => {
             initLon={-90}
             initLat={41}
             initStartZoom={2.5}
+            data-cy="state-map"
           />
         </Box>
       </Grid>
