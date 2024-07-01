@@ -3,11 +3,11 @@ import {
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateDrainageClass as updateDrainageClassRedux } from '../../../../reduxStore/soilSlice';
+import { setTileDrainage, updateDrainageClass as updateDrainageClassRedux } from '../../../../reduxStore/soilSlice';
 import { historyState, setHistoryState } from '../../../../reduxStore/userSlice';
 
 const RenderDrainageClasses = ({
-  tilingCheck, setTilingCheck, setNewDrainage, setShowTiling, drainage = [],
+  setNewDrainage, setShowTiling, drainage = [],
 }) => {
   const dispatchRedux = useDispatch();
 
@@ -19,6 +19,7 @@ const RenderDrainageClasses = ({
   const soilDataRedux = useSelector((stateRedux) => stateRedux.soilData.soilData);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const historyStateRedux = useSelector((stateRedux) => stateRedux.userData.historyState);
+  const tileDrainageRedux = useSelector((stateRedux) => stateRedux.soilData.soilData.tileDrainage);
 
   const [previousDrainage, setPreviousDrainage] = useState(-1);
   const [updateTilingCheck, setUpdateTilingCheck] = useState(false);
@@ -49,7 +50,7 @@ const RenderDrainageClasses = ({
       ? drainageArray.indexOf(soilDataRedux.drainageClass[0])
       : -1;
     if (updateTilingCheck) {
-      if (tilingCheck) {
+      if (tileDrainageRedux) {
         setPreviousDrainage(drainages);
         if (drainages === 2) {
           drainages += 1;
@@ -64,14 +65,14 @@ const RenderDrainageClasses = ({
     }
     updateDrainageAction([drainages]);
     setUpdateTilingCheck(true);
-  }, [tilingCheck]);
+  }, [tileDrainageRedux]);
 
   const updateDrainageClass = (index = '') => {
     // update history state here
     if (historyStateRedux === historyState.imported) dispatchRedux(setHistoryState(historyState.updated));
 
-    if (tilingCheck) {
-      setTilingCheck(false);
+    if (tileDrainageRedux) {
+      dispatchRedux(setTileDrainage(false));
       setUpdateTilingCheck(false);
     }
     let drainages = soilDataRedux.drainageClass ? [...soilDataRedux.drainageClass] : [];
@@ -80,11 +81,11 @@ const RenderDrainageClasses = ({
       drainages = [index];
       setNewDrainage(drainageArray[drainages[0]]);
       updateDrainageAction(drainages);
-      setTilingCheck(false);
+      dispatchRedux(setTileDrainage(false));
     } else {
       setNewDrainage([]);
       updateDrainageAction([]);
-      setTilingCheck(false);
+      dispatchRedux(setTileDrainage(false));
       setShowTiling(false);
     }
   };
