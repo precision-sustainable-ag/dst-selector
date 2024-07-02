@@ -1,3 +1,4 @@
+// /* eslint-disable */
 /* eslint-disable no-alert */
 /*
   This file contains the Landing component, helper functions, and styles
@@ -18,9 +19,12 @@ import React, {
 import { useDispatch, useSelector } from 'react-redux';
 import ReactGA from 'react-ga';
 import { RegionSelectorMap } from '@psa/dst.ui.region-selector-map';
+import { useAuth0 } from '@auth0/auth0-react';
 import { callCoverCropApi } from '../../shared/constants';
 import { updateRegion, updateRegions, updateStateInfo } from '../../reduxStore/mapSlice';
 import { updateLocation } from '../../reduxStore/addressSlice';
+import { historyState, setHistoryDialogState, updateField } from '../../reduxStore/userSlice';
+import HistorySelect from '../../components/HistorySelect/HistorySelect';
 
 const Landing = () => {
   const dispatchRedux = useDispatch();
@@ -30,6 +34,7 @@ const Landing = () => {
   const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
   const consentRedux = useSelector((stateRedux) => stateRedux.userData.consent);
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
+  const historyStateRedux = useSelector((stateRedux) => stateRedux.userData.historyState);
 
   // useState vars
   // const [containerHeight, setContainerHeight] = useState(height);
@@ -39,17 +44,14 @@ const Landing = () => {
   // This is the obj map returns when you selected a state on map
   const [mapState, setMapState] = useState({});
 
+  const { isAuthenticated } = useAuth0();
+
   const availableStates = useMemo(() => allStates.map((state) => state.label), [allStates]);
 
-  const updateStateRedux = (selState) => {
-    localStorage.setItem('stateId', selState.id);
-    dispatchRedux(updateStateInfo({
-      stateLabel: selState.label,
-      stateId: selState.id,
-      councilShorthand: selState.council.shorthand,
-      councilLabel: selState.council.label,
-    }));
-    // This was targeting the map object which didnt have a label or shorthand property.  Should be be getting done here?
+  // handler function for stateSelect list
+  const handleStateChange = (e) => {
+    const selState = allStates.filter((s) => s.shorthand === e.target.value);
+    setSelectedState(selState[0]);
   };
 
   // Load map data based on current enviorment
@@ -86,15 +88,34 @@ const Landing = () => {
     }
   }, [mapState]);
 
-  // update stateRedux and regionsRedux based on selectState change
+  // update state and regions redux based on state change(from dropdown or map)
   useEffect(() => {
     // is there a chance selectedState is {} ?
     if (Object.keys(selectedState).length !== 0) {
-      updateStateRedux(selectedState);
-      // TODO: reset user marker for history fields?
+      if (historyStateRedux === historyState.imported && stateIdRedux !== selectedState.id) {
+        dispatchRedux(setHistoryDialogState({ open: true, type: 'update' }));
+        // reset state to previous state in redux
+        const state = allStates.filter((s) => s.id === stateIdRedux);
+        if (state.length > 0) setSelectedState(state[0]);
+        else setSelectedState({});
+        // if historyState is imported, return and not set new history
+        return;
+      }
+      // update state
+      localStorage.setItem('stateId', selectedState.id);
+      if (stateIdRedux !== selectedState.id) {
+        dispatchRedux(updateStateInfo({
+          stateLabel: selectedState.label,
+          stateId: selectedState.id,
+          councilShorthand: selectedState.council.shorthand,
+          councilLabel: selectedState.council.label,
+        }));
+      // This was targeting the map object which didnt have a label or shorthand property.  Should be be getting done here?
+      }
       if (stateIdRedux !== selectedState.id) {
         dispatchRedux(updateLocation({ address: '', markers: null, county: null }));
         dispatchRedux(updateRegion({ regionId: null, regionShorthand: null }));
+        dispatchRedux(updateField(null));
       }
       const { id } = selectedState;
       fetch(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${id}/regions`)
@@ -110,13 +131,16 @@ const Landing = () => {
 
           dispatchRedux(updateRegions(fetchedRegions));
 
-          // set default region for Selector and Explorer
-
-          localStorage.setItem('regionId', fetchedRegions[0].id ?? '');
-          dispatchRedux(updateRegion({
-            regionId: fetchedRegions[0].id ?? '',
-            regionShorthand: fetchedRegions[0].shorthand ?? '',
-          }));
+          // if the state is imported from redux(stateId already existed and is equal to selectedState.id)
+          // , skip set default since there already exist region selection
+          if (stateIdRedux !== selectedState.id) {
+            // set default region for Selector and Explorer
+            localStorage.setItem('regionId', fetchedRegions[0].id ?? '');
+            dispatchRedux(updateRegion({
+              regionId: fetchedRegions[0].id ?? '',
+              regionShorthand: fetchedRegions[0].shorthand ?? '',
+            }));
+          }
         })
         .catch((err) => {
           // eslint-disable-next-line no-console
@@ -124,12 +148,6 @@ const Landing = () => {
         });
     }
   }, [selectedState]);
-
-  // handler function for stateSelect list
-  const handleStateChange = (e) => {
-    const selState = allStates.filter((s) => s.shorthand === e.target.value);
-    setSelectedState(selState[0]);
-  };
 
   useEffect(() => {
     if (consentRedux) {
@@ -219,25 +237,18 @@ const Landing = () => {
         mt={1}
       >
         <Box mr={1} ml={1} mb={1} mt={1}>
-          <Grid
-            container
-            item
-            direction="column"
-            alignItems="center"
-            justifyContent="center"
-            spacing={1}
-          >
+          <Grid container spacing={1}>
             <Grid item xs={12}>
               <Typography variant="h4" gutterBottom align="center">
                 {`Welcome to the${councilLabelRedux ? ` ${councilLabelRedux}` : ' Cover Crop'} Species Selector`}
               </Typography>
             </Grid>
-            <Grid item xs={12} align="center">
-              <Typography variant="body1">
+            <Grid item xs={12}>
+              <Typography variant="body1" align="center">
                 Choose your state from the dropdown or the map. You can zoom by scrolling or pinching on mobile.
               </Typography>
             </Grid>
-            <Grid item xs={12} mb={2}>
+            <Grid item xs={12} display="flex" justifyContent="center">
               <FormControl
                 sx={{ minWidth: 120 }}
               >
@@ -285,6 +296,19 @@ const Landing = () => {
                 </Select>
               </FormControl>
             </Grid>
+            <Grid item xs={12} display="flex" justifyContent="center">
+              <Typography>
+                {isAuthenticated
+                  ? 'Try out our new user history feature below:'
+                  : 'Log in to try out our new user history feature!'}
+              </Typography>
+            </Grid>
+            {isAuthenticated
+              && (
+                <Grid item xs={12}>
+                  <HistorySelect />
+                </Grid>
+              )}
           </Grid>
         </Box>
       </Grid>

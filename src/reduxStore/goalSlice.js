@@ -1,6 +1,5 @@
 const initialState = {
   selectedGoals: [],
-  goalsOpen: false,
 };
 
 export const updateSelectedGoal = (value) => ({
@@ -24,8 +23,9 @@ export const addGoals = (value) => ({
   },
 });
 
-export const toggleGoalsOpen = () => ({
-  type: 'TOGGLE_GOALS_OPEN',
+export const setGoalsRedux = (goalsData) => ({
+  type: 'SET_GOALS_REDUX',
+  payload: { goalsData },
 });
 
 const goalsReducer = (state = initialState, action = null) => {
@@ -39,14 +39,11 @@ const goalsReducer = (state = initialState, action = null) => {
     case 'ADD_SELECTED_GOALS':
       return {
         ...state,
-        selectedGoals: [...state.selectedGoals, action.payload.value],
+        selectedGoals: [action.payload.value, ...state.selectedGoals],
       };
 
-    case 'TOGGLE_GOALS_OPEN':
-      return {
-        ...state,
-        goalsOpen: !state.goalsOpen,
-      };
+    case 'SET_GOALS_REDUX':
+      return { ...state, ...action.payload.goalsData };
 
     default:
       return { ...state };

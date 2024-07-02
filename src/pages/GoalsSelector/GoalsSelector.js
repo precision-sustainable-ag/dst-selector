@@ -7,15 +7,12 @@ import {
   Typography, Grid, Box, useMediaQuery, useTheme,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import GoalTag from './GoalTag/GoalTag';
 import { callCoverCropApi } from '../../shared/constants';
-import { updateDateRange } from '../../reduxStore/cropSlice';
 import PreviousCashCrop from '../CropSidebar/PreviousCashCrop/PreviousCashCrop';
 
 const GoalsSelector = () => {
-  const dispatchRedux = useDispatch();
-
   // theme vars
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -25,26 +22,14 @@ const GoalsSelector = () => {
   const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
   const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
+  const selectedGoalsRedux = useSelector(
+    (stateRedux) => stateRedux.goalsData.selectedGoals,
+  ).reverse();
+
   // useState vars
   const [allGoals, setAllGoals] = useState([]);
   const query = `${encodeURIComponent('regions')}=${encodeURIComponent(regionIdRedux)}`;
-  const [dateRange, setDateRange] = useState({
-    startDate: null,
-    endDate: null,
-  });
-  useEffect(() => {
-    // if (from === 'table') {
-    if (dateRange.startDate !== null && dateRange.endDate !== null) {
-      // FIXME: this code are not working
-      dispatchRedux(
-        updateDateRange({
-          startDate: dateRange.startDate.toISOString().substring(0, 10),
-          endDate: dateRange.endDate.toISOString().substring(0, 10),
-        }),
-      );
-    }
-    // }
-  }, [dateRange]);
+
   useEffect(() => {
     if (stateIdRedux && regionIdRedux) {
       callCoverCropApi(
@@ -54,6 +39,7 @@ const GoalsSelector = () => {
       });
     }
   }, []);
+
   return (
     <Box>
       <Grid container spacing={isLargeScreen ? 4 : 1}>
@@ -95,24 +81,35 @@ const GoalsSelector = () => {
             {/* chips */}
             {allGoals?.length > 0 && (
               <Grid item container spacing={1} justifyContent="center" alignItems="center">
-                {allGoals.map((goal, key) => (
-                  <Grid
-                    item
-                    key={key}
-                    display="flex"
-                    xs={isMobile ? 12 : 'auto'}
-                    justifyContent="center"
-                    alignItems="center"
-                  >
-                    <GoalTag
+                {allGoals
+                  .slice()
+                  // Transforming the indexOf -1 from a non selected item to 3 allows the index 0-2 to be avaliable for the selected goals
+                  .sort(
+                    (a, b) => (selectedGoalsRedux.indexOf(a.label) === -1
+                      ? 3
+                      : selectedGoalsRedux.indexOf(a.label))
+                      - (selectedGoalsRedux.indexOf(b.label) === -1
+                        ? 3
+                        : selectedGoalsRedux.indexOf(b.label)),
+                  )
+                  .map((goal, key) => (
+                    <Grid
+                      item
                       key={key}
-                      goal={goal}
-                      id={key}
-                      goaltTitle={goal.label}
-                      goalDescription={goal.description}
-                    />
-                  </Grid>
-                ))}
+                      display="flex"
+                      xs={isMobile ? 12 : 'auto'}
+                      justifyContent="center"
+                      alignItems="center"
+                    >
+                      <GoalTag
+                        key={key}
+                        goal={goal}
+                        id={key}
+                        goaltTitle={goal.label}
+                        goalDescription={goal.description}
+                      />
+                    </Grid>
+                  ))}
               </Grid>
             )}
           </Grid>
@@ -134,7 +131,7 @@ const GoalsSelector = () => {
             }}
             justifyContent="center"
           >
-            <PreviousCashCrop setDateRange={setDateRange} />
+            <PreviousCashCrop />
           </Grid>
         </Grid>
       </Grid>

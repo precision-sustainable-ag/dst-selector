@@ -10,8 +10,9 @@ import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import { ReferenceTooltip } from '../../../../shared/constants';
 import arrayEquals from '../../../../shared/functions';
 import RenderDrainageClasses from './RenderDrainageClasses';
-import { updateDrainageClass as updateDrainageClassRedux } from '../../../../reduxStore/soilSlice';
+import { setTileDrainage, updateDrainageClass as updateDrainageClassRedux } from '../../../../reduxStore/soilSlice';
 import MyCoverCropReset from '../../../../components/MyCoverCropReset/MyCoverCropReset';
+import { historyState, setHistoryState } from '../../../../reduxStore/userSlice';
 
 const SoilDrainage = () => {
   const dispatchRedux = useDispatch();
@@ -27,11 +28,12 @@ const SoilDrainage = () => {
   const myCoverCropListLocationRedux = useSelector(
     (stateRedux) => stateRedux.sharedData.myCoverCropListLocation,
   );
+  const historyStateRedux = useSelector((stateRedux) => stateRedux.userData.historyState);
+  const tileDrainageRedux = useSelector((stateRedux) => stateRedux.soilData.soilData.tileDrainage);
 
   // useState vars
   const [showTiling, setShowTiling] = useState(false);
   const [handleConfirm, setHandleConfirm] = useState(false);
-  const [tilingCheck, setTilingCheck] = useState(false);
   const [newDrainage, setNewDrainage] = useState([]);
   const [drainageInitialLoad, setDrainageInitialLoad] = useState(false);
 
@@ -42,7 +44,12 @@ const SoilDrainage = () => {
   }, [selectedCropIdsRedux, myCoverCropListLocationRedux]);
 
   useEffect(() => {
-    setNewDrainage(soilDataOriginalRedux.drainageClass[0]);
+    // set new drainage value
+    if (tileDrainageRedux) {
+      setNewDrainage(soilDataRedux.prevDrainageClass[0]);
+    } else {
+      setNewDrainage(soilDataRedux.drainageClass[0]);
+    }
     setDrainageInitialLoad(true);
   }, [soilDataOriginalRedux]);
 
@@ -52,7 +59,7 @@ const SoilDrainage = () => {
       setShowTiling(true);
     } else if (
       soilDataRedux?.drainageClass.includes('Moderately well drained')
-      && tilingCheck === true
+      && tileDrainageRedux === true
     ) {
       setShowTiling(true);
     } else {
@@ -62,10 +69,17 @@ const SoilDrainage = () => {
   }, [soilDataRedux?.drainageClass]);
 
   const resetDrainageClasses = () => {
+    // update history state here
+    if (historyStateRedux === historyState.imported) dispatchRedux(setHistoryState(historyState.updated));
     dispatchRedux(updateDrainageClassRedux(soilDataOriginalRedux?.drainageClass));
     setNewDrainage(soilDataOriginalRedux.drainageClass[0]);
     window.localStorage.setItem('drainage', JSON.stringify(soilDataOriginalRedux?.drainageClass));
-    setTilingCheck(false);
+    dispatchRedux(setTileDrainage(false));
+  };
+
+  const handleTileDrainage = () => {
+    if (historyStateRedux === historyState.imported) dispatchRedux(setHistoryState(historyState.updated));
+    dispatchRedux(setTileDrainage(!tileDrainageRedux));
   };
 
   const drainageClass = () => {
@@ -74,9 +88,9 @@ const SoilDrainage = () => {
       <Grid align="center" item xs={12} mb={2}>
         <Typography display="inline" variant="subtitle2" gutterBottom>
           Your improved drainage class is
-          <Typography display="inline" variant="subtitle2" gutterBottom sx={{ fontWeight: 'bold' }}>
+          <span style={{ fontWeight: 'bold' }}>
             {drainageString}
-          </Typography>
+          </span>
         </Typography>
       </Grid>
     );
@@ -200,8 +214,6 @@ const SoilDrainage = () => {
             {drainageInitialLoad
             && (
             <RenderDrainageClasses
-              tilingCheck={tilingCheck}
-              setTilingCheck={setTilingCheck}
               setNewDrainage={setNewDrainage}
               setShowTiling={setShowTiling}
               drainage={newDrainage}
@@ -240,10 +252,8 @@ const SoilDrainage = () => {
                     No
                   </Typography>
                   <Switch
-                    checked={tilingCheck}
-                    onChange={() => {
-                      setTilingCheck(!tilingCheck);
-                    }}
+                    checked={tileDrainageRedux}
+                    onChange={handleTileDrainage}
                     name="checkedC"
                   />
                   <Typography variant="body1" display="inline">
@@ -251,7 +261,7 @@ const SoilDrainage = () => {
                   </Typography>
                 </Grid>
               </Grid>
-              {tilingCheck && drainageClass()}
+              {tileDrainageRedux && drainageClass()}
             </Grid>
           )}
         </Grid>
