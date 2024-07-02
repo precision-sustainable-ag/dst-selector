@@ -17,21 +17,16 @@ import {
 import InformationBar from './InformationBar/InformationBar';
 import ToggleOptions from './ToggleOptions/ToggleOptions';
 import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset';
-import {
-  updateConsent,
-  updateField,
-  setSelectFieldId,
-} from '../../reduxStore/userSlice';
-import {
-  getFields, getHistory, buildHistory, postHistory,
-} from '../../shared/constants';
+import { setUserHistoryList } from '../../reduxStore/userSlice';
 import AuthButton from '../../components/Auth/AuthButton/AuthButton';
-import { updateStateInfo } from '../../reduxStore/mapSlice';
 import ConsentModal from '../CoverCropExplorer/ConsentModal/ConsentModal';
 import AuthModal from '../Landing/AuthModal/AuthModal';
-import { setMyCoverCropReset } from '../../reduxStore/sharedSlice';
+import { setMyCoverCropReset, snackHandler } from '../../reduxStore/sharedSlice';
 import { reset } from '../../reduxStore/store';
-import { getAuthToken, setAuthToken } from '../../shared/authToken';
+import { setAuthToken } from '../../shared/authToken';
+import { loadHistory } from '../../shared/api';
+import HistoryDialog from '../../components/HistoryDialog/HistoryDialog';
+import SaveUserHistory from './SaveUserHistory/SaveUserHistory';
 // import logoImage from '../../../public/images/PSAlogo-text.png';
 
 const Header = () => {
@@ -52,15 +47,8 @@ const Header = () => {
   const isMdOrSmaller = useMediaQuery(theme.breakpoints.down('md'));
 
   // redux vars
-  const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
-  const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
-  const regionShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.regionShorthand);
-  const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
   const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
-  const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
-  const consentRedux = useSelector((stateRedux) => stateRedux.userData.consent);
-  const selectedFieldIdRedux = useSelector((stateRedux) => stateRedux.userData.selectedFieldId);
   const selectedCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCropIds);
 
   // useState vars
@@ -140,68 +128,16 @@ const Header = () => {
     const fetchUserData = async () => {
       const token = await getAccessTokenSilently();
       setAuthToken(token);
-      // Initially get user field data
-      getFields(token).then((data) => dispatchRedux(updateField(data)));
-      getHistory(token).then((res) => {
-        if (res.data) {
-          const {
-            state, region, council, consent,
-          } = res.data.json;
-          // set user history redux state
-          localStorage.setItem('stateId', state.id);
-          dispatchRedux(
-            updateStateInfo({
-              stateLabel: state.label,
-              stateId: state.id,
-              councilShorthand: council.shorthand,
-              councilLabel: council.label,
-            }),
-          );
-          if (region) {
-            localStorage.setItem('regionId', region.id);
-          }
-          dispatchRedux(updateConsent(consent.status, consent.date));
-          // The consent is mainly use localstorage to test is expired, use history to update localStorage
-          const consentKey = 'consent';
-          if (localStorage.getItem(consentKey) === null) {
-            const consentObject = {
-              choice: consent.status,
-              // set user consent selection time as 180 days
-              expiredAt: new Date(consent.date).getTime() + 180 * 24 * 60 * 60 * 1000,
-            };
-            localStorage.setItem(consentKey, JSON.stringify(consentObject));
-          }
-          const selectedFieldId = res.data.fieldId;
-          dispatchRedux(setSelectFieldId(selectedFieldId));
-        } else {
-          setConsentModalOpen(true);
-        }
+      // get new user histories here
+      loadHistory(token).then((res) => {
+        dispatchRedux(setUserHistoryList(res));
+      }).catch((err) => {
+        dispatchRedux(snackHandler({ snackOpen: true, snackMessage: `Error loading history: ${err}` }));
       });
     };
     if (isAuthenticated) fetchUserData();
-  }, [isAuthenticated, getAccessTokenSilently]);
-
-  useEffect(() => {
-    // save user history when user click next in Landing & Location page, change zone in explorer
-    if (
-      isAuthenticated
-      && (progressRedux === 1 || progressRedux === 2 || pathname === '/explorer')
-    ) {
-      const userHistory = buildHistory(
-        stateIdRedux,
-        stateLabelRedux,
-        regionIdRedux,
-        regionShorthandRedux,
-        councilLabelRedux,
-        councilShorthandRedux,
-        consentRedux.status,
-        consentRedux.date,
-        selectedFieldIdRedux,
-      );
-      const accessToken = getAuthToken();
-      postHistory(accessToken, userHistory);
-    }
-  }, [progressRedux, regionShorthandRedux, selectedFieldIdRedux]);
+    // TODO: councilShorthandRedux here is for re-import userHistoryList when the app is reset
+  }, [isAuthenticated, getAccessTokenSilently, councilShorthandRedux]);
 
   const chooseTopBar = (option) => {
     if (option) {
@@ -296,6 +232,8 @@ const Header = () => {
           >
             <InformationBar pathname={pathname} />
             <MyCoverCropReset />
+            {/* saving history here */}
+            <SaveUserHistory pathname={pathname} />
           </Grid>
         </Grid>
 
@@ -307,6 +245,7 @@ const Header = () => {
           setModalOpen={setAuthModalOpen}
           setConsentModalOpen={setConsentModalOpen}
         />
+        <HistoryDialog />
       </Box>
     </header>
   );

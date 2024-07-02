@@ -5,17 +5,22 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import dayjs from 'dayjs';
 import { updateDateRange } from '../../../reduxStore/cropSlice';
+import { historyState, setHistoryState } from '../../../reduxStore/userSlice';
 
 const PreviousCashCrop = () => {
   const dispatchRedux = useDispatch();
   const cashCropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cashCropData);
+  const historyStateRedux = useSelector((stateRedux) => stateRedux.userData.historyState);
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const handleDispatch = (start = '', end = '') => {
-    dispatchRedux(updateDateRange({ startDate: start, endDate: end }));
+    // update history state here
+    if (historyStateRedux === historyState.imported) dispatchRedux(setHistoryState(historyState.updated));
+    dispatchRedux(updateDateRange({ startDate: start.toString(), endDate: end.toString() }));
   };
 
   return (
@@ -50,7 +55,7 @@ const PreviousCashCrop = () => {
                 }}
                 sx={{ width: 1 }}
                 label="Planting Date"
-                value={cashCropDataRedux.dateRange.startDate}
+                value={dayjs(cashCropDataRedux.dateRange.startDate)}
                 onChange={(newDate) => handleDispatch(newDate, cashCropDataRedux.dateRange.endDate)}
               />
             </LocalizationProvider>
@@ -65,7 +70,7 @@ const PreviousCashCrop = () => {
                 }}
                 sx={{ width: 1 }}
                 label="Harvest Date"
-                value={cashCropDataRedux.dateRange.endDate}
+                value={dayjs(cashCropDataRedux.dateRange.endDate)}
                 onChange={(newDate) => handleDispatch(cashCropDataRedux.dateRange.startDate, newDate)}
               />
             </LocalizationProvider>

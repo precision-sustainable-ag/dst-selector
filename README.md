@@ -2,7 +2,7 @@
 
 **Date Created:** 8/18/22
 
-**Date Last Modified:** 03/20/2024
+**Date Last Modified:** 05/31/2024
 
 The species selector DST is used to help farmers select a cover crop that fits their goals and constraints. The user can either input specifics about their field location and cover cropping goals or explore cover crops without entering those details. The tool is mainly used to explore expert reccomendations and ratings for cover crops in the farmer's USDA Plant Hardiness Zone. This allows farmers to make educated decisions that are best suited for their specific goals and can save time as opposed to calling the extension office.
 
@@ -24,7 +24,8 @@ To see development progress, visit [http://covercrop.tools](http://covercrop.too
 ## Tech stack
 
 - Single page application made in React.js
-- Ratings and zone info hosted in Airtable (in the process of being refactored)
+- Ratings and zone info verified via Airtable and then ingested into a PostgreSQL database and served up using a Node.js API
+- 
 
 ## Local Installation Steps
 
@@ -33,13 +34,6 @@ To see development progress, visit [http://covercrop.tools](http://covercrop.too
 1. Node and NPM [Download Here](https://nodejs.org/en/download/)
 2. Git [Download Here](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 3. A code editor (we recommend vs code) [Download Here](https://code.visualstudio.com/docs/setup/setup-overview)
-4. VS Code extention: Prettier - esbenp.prettier-vscode
-   - once installed use ctrl + shift + p to open Preferences: open user settings (JSON)
-   - inside the JSON object add these lines
-     - "editor.formatOnSave": true,
-     - "[javascript]": {
-       "editor.defaultFormatter": "esbenp.prettier-vscode"
-       }
 
 **Steps:**
 
@@ -55,6 +49,11 @@ To see development progress, visit [http://covercrop.tools](http://covercrop.too
 REACT_APP_GOOGLE_API_KEY="<google key>"
 REACT_APP_OPEN_WEATHER_API_KEY="<open weather key>"
 REACT_APP_MAPBOX_API_KEY="<mapbox token key>"
+REACT_APP_AUTH0_DOMAIN="<auth0 domain>"
+REACT_APP_AUTH0_CLIENT_ID="<auth0 client id>"
+REACT_APP_AUTH0_AUDIENCE="<auth0 audience>"
+REACT_APP_USER_HISTORY_API_URL="<user history url>"
+REACT_APP_USER_HISTORY_SCHEMA="<schema>"
 ```
 
 7. After the dependencies have been installed and the .env file has been created, run `npm start` to run the code locally. If you run into any issues take a look in the [Runbook](#runbook) for previous issues and solutions. This will compile the JSX code into Javascript and open up a new browser window with the current version of the covercrops project!
@@ -71,7 +70,7 @@ For in depth documentation see [the wiki pages](https://precision-sustainable-ag
 ## Runbook
 
 **Symptom:**
-Node sass not suported on Mac OS `Error: Node Sass does not yet support your current environment: OS X 64-bit with Unsupported runtime (88)`
+Node sass not supported on Mac OS `Error: Node Sass does not yet support your current environment: OS X 64-bit with Unsupported runtime (88)`
 
 **Solution:**
 `npm rebuild node-sass`

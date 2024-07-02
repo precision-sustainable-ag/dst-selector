@@ -11,6 +11,7 @@ import moment from 'moment';
 import { Info, MonetizationOn } from '@mui/icons-material';
 import { MapboxApiKey } from './keys';
 import arrayEquals from './functions';
+import { historyState, setHistoryState } from '../reduxStore/userSlice';
 
 export const ReferenceTooltip = ({
   url, source, type, content, hasLink, title,
@@ -246,7 +247,6 @@ export const LightButton = styled(Button)({
 export const getRating = (rating, councilShorthand) => {
   const ratingInt = parseInt(rating, 10);
 
-  console.log(councilShorthand);
   return (
     <svg
       width="30px"
@@ -470,10 +470,10 @@ export const sortCrops = (
         .reverse()
         .forEach((g) => {
           if (b.goals.filter((data) => data.label === g)[0]?.values.length > 0) {
-            bAvg = +b.goals.filter((data) => data.label === g)[0].values[0] + bAvg;
+            bAvg = +b.goals.filter((data) => data.label === g)[0].values[0].value + bAvg;
           }
           if (a.goals.filter((data) => data.label === g)[0]?.values.length > 0) {
-            aAvg = +a.goals.filter((data) => data.label === g)[0].values[0] + aAvg;
+            aAvg = +a.goals.filter((data) => data.label === g)[0].values[0].value + aAvg;
           }
         });
       aAvg /= selectedItems.length;
@@ -490,7 +490,7 @@ export const sortCrops = (
   if (type === 'Goal') {
     crops.sort((a, b) => {
       if (a.goals.filter((data) => data.label === goal)[0]?.values.length > 0 && b.goals.filter((data) => data.label === goal)[0]?.values.length > 0) {
-        if (a.goals.filter((data) => data.label === goal)[0].values[0] > b.goals.filter((data) => data.label === goal)[0].values[0]) {
+        if (a.goals.filter((data) => data.label === goal)[0].values[0].value > b.goals.filter((data) => data.label === goal)[0].values[0].value) {
           return sortFlag ? -1 : 1;
         }
         return sortFlag ? 1 : -1;
@@ -525,7 +525,7 @@ export const sortCrops = (
             firstDate = new Date(
               a.plantingDates.filter((date) => date.label === 'Reliable Establishment')[0]?.values?.[
                 firstLength - 1
-              ].split(' - ')[1],
+              ].value.split(' - ')[1],
             )
               .toLocaleDateString('en-GB')
               .split('/')
@@ -534,7 +534,7 @@ export const sortCrops = (
             secondDate = new Date(
               b.plantingDates.filter((date) => date.label === 'Reliable Establishment')[0]?.values?.[
                 secondLength - 1
-              ].split(' - ')[1],
+              ].value.split(' - ')[1],
             )
               .toLocaleDateString('en-GB')
               .split('/')
@@ -544,7 +544,7 @@ export const sortCrops = (
             firstDate = new Date(
               a.plantingDates.filter((date) => date.label === 'Reliable Establishment')[0]?.values?.[
                 firstLength - 1
-              ].split(' - ')[0],
+              ].value.split(' - ')[0],
             )
               .toLocaleDateString('en-GB')
               .split('/')
@@ -553,7 +553,7 @@ export const sortCrops = (
             secondDate = new Date(
               b.plantingDates.filter((date) => date.label === 'Reliable Establishment')[0]?.values?.[
                 secondLength - 1
-              ].split(' - ')[0],
+              ].value.split(' - ')[0],
             )
               .toLocaleDateString('en-GB')
               .split('/')
@@ -671,30 +671,30 @@ export const getMonthDayString = (type = '', date = '') => {
 
 export const getLegendDataBasedOnCouncil = (councilShorthand = '') => {
   const legendData = [
-    { className: 'reliable', label: 'Reliable Establishment' },
-    { className: 'temperatureRisk', label: 'Temperature Risk To Establishment' },
-    { className: 'frostPossible', label: 'Frost Seeding Possible' },
-    { className: 'multiple', label: 'Multiple' },
-    { className: 'cashCrop', label: 'Cash Crop Growing Window' },
-    { className: 'hessianFlyFree', label: 'Hessian Fly Free Date' },
+    { className: 'reliable', label: 'Reliable Establishment', color: '#2d7b7b' },
+    { className: 'temperatureRisk', label: 'Temperature Risk To Establishment', color: '#f2c94c' },
+    { className: 'frostPossible', label: 'Frost Seeding Possible', color: '#2f80ed' },
+    { className: 'multiple', label: 'Multiple', color: '#c5c6c7' },
+    { className: 'cashCrop', label: 'Cash Crop Growing Window', color: 'rgba(255, 12, 62, 0.2)' },
+    { className: 'hessianFlyFree', label: 'Hessian Fly Free Date', color: '#008000' },
   ];
   const MCCClegendData = [
-    { className: 'reliable', label: 'Reliable Establishment' },
-    { className: 'temperatureRisk', label: 'Freeze/Moisture Risk to Establishment' },
-    { className: 'multiple', label: 'Multiple' },
-    { className: 'cashCrop', label: 'Cash Crop Growing Window' },
-    { className: 'hessianFlyFree', label: 'Hessian Fly Free Date' },
+    { className: 'reliable', label: 'Reliable Establishment', color: '#2d7b7b' },
+    { className: 'temperatureRisk', label: 'Freeze/Moisture Risk to Establishment', color: '#f2c94c' },
+    { className: 'multiple', label: 'Multiple', color: '#c5c6c7' },
+    { className: 'cashCrop', label: 'Cash Crop Growing Window', color: 'rgba(255, 12, 62, 0.2)' },
+    { className: 'hessianFlyFree', label: 'Hessian Fly Free Date', color: '#008000' },
   ];
   const SCCClegendData = [
-    { className: 'reliable', label: 'Reliable Establishment' },
-    { className: 'cashCrop', label: 'Cash Crop Growing Window' },
+    { className: 'reliable', label: 'Reliable Establishment', color: '#2d7b7b' },
+    { className: 'cashCrop', label: 'Cash Crop Growing Window', color: 'rgba(255, 12, 62, 0.2)' },
   ];
   const NECCClegendData = [
-    { className: 'reliable', label: 'Reliable Establishment' },
-    { className: 'temperatureRisk', label: 'Temperature Risk To Establishment' },
-    { className: 'frostPossible', label: 'Frost Seeding Possible' },
-    { className: 'multiple', label: 'Multiple' },
-    { className: 'cashCrop', label: 'Cash Crop Growing Window' },
+    { className: 'reliable', label: 'Reliable Establishment', color: '#2d7b7b' },
+    { className: 'temperatureRisk', label: 'Temperature Risk To Establishment', color: '#f2c94c' },
+    { className: 'frostPossible', label: 'Frost Seeding Possible', color: '#2f80ed' },
+    { className: 'multiple', label: 'Multiple', color: '#c5c6c7' },
+    { className: 'cashCrop', label: 'Cash Crop Growing Window', color: 'rgba(255, 12, 62, 0.2)' },
   ];
   switch (councilShorthand) {
     case 'MCCC':
@@ -769,8 +769,7 @@ export const cropDataFormatter = (cropData = [{}], cashCropStartDate = '', cashC
           valStart = moment(dateArray, 'YYYY-MM-DD').format('MM/DD');
           valEnd = valStart;
         }
-
-        const datesArr = dateArray.split('-');
+        const datesArr = dateArray.value.split('-');
         if (datesArr.length > 1 && date.label !== 'Hessian Fly Free Date') {
           valStart = moment(datesArr[0], 'MM/DD/YYYY').format('MM/DD');
           valEnd = moment(datesArr[1], 'MM/DD/YYYY').format('MM/DD');
@@ -811,6 +810,7 @@ export const cropDataFormatter = (cropData = [{}], cashCropStartDate = '', cashC
   return cropData.map((crop) => monthStringBuilder(crop));
 };
 
+// TODO: not used below
 export const apiServerUrl = 'https://history.covercrop-data.org/v1';
 
 export const getFields = async (accessToken = null) => {
@@ -864,6 +864,7 @@ export const deleteFields = async (accessToken = null, id = null) => {
       .catch((err) => console.log(err))
   );
 };
+// TODO: not used above
 
 export const buildPoint = (lng, lat, name = null) => ({
   type: 'Feature',
@@ -908,6 +909,9 @@ export const addCropToBasket = (
   updateSelectedCropIds,
   selectedCropIdsRedux,
   myCropListLocation,
+  historyStateRedux,
+  from,
+  setSaveHistory,
 ) => {
   const selectedCrops = cropId;
 
@@ -915,6 +919,9 @@ export const addCropToBasket = (
     dispatchRedux(updateSelectedCropIds(crops));
     dispatchRedux(snackHandler({ snackOpen: true, snackMessage: `${cropName} ${action}` }));
   };
+
+  // update history state
+  if (historyStateRedux === historyState.imported) dispatchRedux(setHistoryState(historyState.updated));
 
   if (selectedCropIdsRedux?.length > 0) {
     // DONE: Remove crop from basket
@@ -930,15 +937,20 @@ export const addCropToBasket = (
     } else {
       const selectedCropsCopy = selectedCropIdsRedux;
       selectedCropsCopy.splice(removeIndex, 1);
-
       buildDispatch('Removed', selectedCropsCopy);
+      if (selectedCropsCopy.length === 0) {
+        dispatchRedux(myCropListLocation({ from: '' }));
+      }
     }
   } else {
-    dispatchRedux(myCropListLocation({ from: 'explorer' }));
+    dispatchRedux(myCropListLocation({ from }));
     buildDispatch('Added', [selectedCrops]);
   }
+  // save history after added crop
+  if (historyStateRedux !== historyState.none) dispatchRedux(setSaveHistory(true));
 };
 
+// TODO: not used below
 export const getHistory = async (accessToken = null) => {
   const url = `${apiServerUrl}/history?schema=1`;
   const config = {
@@ -1012,6 +1024,7 @@ export const postHistory = async (accessToken = null, historyData = null) => {
       .catch((err) => console.log(err))
   );
 };
+// TODO: not used above
 
 export const extractData = (attribute, from, councilShorthand) => {
   // handles no attribute
@@ -1034,8 +1047,13 @@ export const extractData = (attribute, from, councilShorthand) => {
     });
     dataType = attribute?.dataType.label;
   } else {
+    // from myCoverCropComparison
     for (let i = 0; i < attribute?.values.length; i++) {
-      attributeValues.push(`${attribute?.values[i]} ${attribute?.units ? attribute?.units : ''}`);
+      if (attribute?.values[i].value) {
+        attributeValues.push(`${attribute?.values[i].value} ${attribute?.units ? attribute?.units : ''}`);
+      } else {
+        attributeValues.push(attribute?.values[i]);
+      }
     }
     dataType = attribute?.dataType;
   }
@@ -1057,9 +1075,8 @@ export const extractData = (attribute, from, councilShorthand) => {
     return <RenderSeedPriceIcons val={data} />;
   }
 
-  // handles the true false keys
-  if (data === 'Frost Seeding' || data === 'Can Aerial Seed?' || data === 'Aerial Seeding') {
-    return <Typography variant="body2">{data ? 'Yes' : 'N/A'}</Typography>;
+  if (data && dataType === 'boolean') {
+    return <Typography variant="body2">{attribute.values[0].label}</Typography>;
   }
 
   // handles default

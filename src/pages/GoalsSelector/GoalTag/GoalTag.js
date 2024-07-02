@@ -7,16 +7,22 @@ import { Avatar, Chip, Tooltip } from '@mui/material';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addSelectedGoals, updateSelectedGoal } from '../../../reduxStore/goalSlice';
+import { historyState, setHistoryState } from '../../../reduxStore/userSlice';
+
 // TODO: Whats up with goalt?? we need to look into fixing this.
 const GoalTag = ({
   goaltTitle, goalDescription, goal, id,
 }) => {
   const dispatchRedux = useDispatch();
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
+  const historyStateRedux = useSelector((stateRedux) => stateRedux.userData.historyState);
+
   const key = id;
   const goalTitle = goaltTitle;
 
   const updateSelectedGoals = (item) => {
+    // update history state here
+    if (historyStateRedux === historyState.imported) dispatchRedux(setHistoryState(historyState.updated));
     const goals = [...selectedGoalsRedux];
 
     if (goals.indexOf(item.label) === -1) {

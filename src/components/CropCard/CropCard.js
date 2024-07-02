@@ -11,6 +11,7 @@ import { useSelector } from 'react-redux';
 import { addCropToBasket, trimString } from '../../shared/constants';
 import { myCropListLocation, snackHandler } from '../../reduxStore/sharedSlice';
 import { updateSelectedCropIds } from '../../reduxStore/cropSlice';
+import { setSaveHistory } from '../../reduxStore/userSlice';
 
 const CropCard = ({
   crop, handleModalOpen, index, dispatchRedux,
@@ -21,6 +22,7 @@ const CropCard = ({
 
   // redux vars
   const selectedCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCropIds);
+  const historyStateRedux = useSelector((stateRedux) => stateRedux.userData.historyState);
 
   // useState vars
   const [selectedBtns, setSelectedBtns] = useState(selectedCropIdsRedux);
@@ -36,7 +38,18 @@ const CropCard = ({
   }, [selectedCropIdsRedux]);
 
   async function addToBasket(cropId, name) {
-    addCropToBasket(cropId, name, dispatchRedux, snackHandler, updateSelectedCropIds, selectedCropIdsRedux, myCropListLocation);
+    addCropToBasket(
+      cropId,
+      name,
+      dispatchRedux,
+      snackHandler,
+      updateSelectedCropIds,
+      selectedCropIdsRedux,
+      myCropListLocation,
+      historyStateRedux,
+      'explorer',
+      setSaveHistory,
+    );
     await updateBtns();
   }
 
@@ -58,7 +71,7 @@ const CropCard = ({
         <Typography
           sx={{ color: 'grey', textTransform: 'uppercase' }}
         >
-          {crop.attributes.filter((a) => a.label === 'Cover Crop Group')[0]?.values[0]}
+          {crop.attributes.filter((a) => a.label === 'Cover Crop Group')[0]?.values[0].value}
         </Typography>
         <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>
           {crop.label}

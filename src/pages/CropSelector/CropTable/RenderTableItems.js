@@ -94,7 +94,7 @@ const RenderTableItems = ({ showGrowthWindow, handleModalOpen }) => {
                         </td>
                         <td>
                           <Typography variant="body1" component="b" style={{ fontSize: 'small', paddingLeft: '2px' }}>
-                            {trait.values.map((val) => (val))}
+                            {trait.values.map((val) => (val.value))}
                             {' '}
                             <span className="units">{trait.units}</span>
                           </Typography>

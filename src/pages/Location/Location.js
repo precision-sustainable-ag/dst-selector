@@ -1,3 +1,6 @@
+// TODO: debug use
+// /* eslint-disable */
+
 /* eslint-disable no-alert */
 /*
   This is the main location widget component
@@ -10,7 +13,6 @@ import {
 import React, {
   useEffect,
   useState,
-  useRef,
   useMemo,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -18,11 +20,10 @@ import { Search } from '@mui/icons-material';
 import moment from 'moment';
 import { Map } from '@psa/dst.ui.map';
 import mapboxgl from 'mapbox-gl';
-import { useAuth0 } from '@auth0/auth0-react';
 import statesLatLongDict from '../../shared/stateslatlongdict';
 import {
-  abbrRegion, reverseGEO, callCoverCropApi, getFields,
-  buildPoint, drawAreaFromGeoCollection,
+  abbrRegion, reverseGEO, callCoverCropApi,
+  buildPoint, drawAreaFromGeoCollection, buildGeometryCollection,
 } from '../../shared/constants';
 import PlantHardinessZone from '../CropSidebar/PlantHardinessZone/PlantHardinessZone';
 import { updateLocation } from '../../reduxStore/addressSlice';
@@ -31,10 +32,7 @@ import { snackHandler } from '../../reduxStore/sharedSlice';
 import {
   updateAvgFrostDates, updateAvgPrecipAnnual, updateAvgPrecipCurrentMonth, updateFrostFreeDays,
 } from '../../reduxStore/weatherSlice';
-import { setSelectFieldId, updateField, userSelectRegion } from '../../reduxStore/userSlice';
-import UserFieldList from './UserFieldList/UserFieldList';
-import UserFieldDialog, { initFieldDialogState } from './UserFieldDialog/UserFieldDialog';
-import { getAuthToken } from '../../shared/authToken';
+import { historyState, setHistoryDialogState, updateField } from '../../reduxStore/userSlice';
 
 // eslint-disable-next-line import/no-webpack-loader-syntax, import/no-unresolved
 mapboxgl.workerClass = require('worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker').default;
@@ -45,89 +43,48 @@ const Location = () => {
   // redux vars
   const markersRedux = useSelector((stateRedux) => stateRedux.addressData.markers);
   const regionsRedux = useSelector((stateRedux) => stateRedux.mapData.regions);
-  const regionShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.regionShorthand);
   const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
-  const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const progressRedux = useSelector((stateRedux) => stateRedux.sharedData.progress);
   const userFieldRedux = useSelector((stateRedux) => stateRedux.userData.field);
-  const selectedFieldIdRedux = useSelector((stateRedux) => stateRedux.userData.selectedFieldId);
-  const userSelectRegionRedux = useSelector((stateRedux) => stateRedux.userData.userSelectRegion);
+  const historyStateRedux = useSelector((stateRedux) => stateRedux.userData.historyState);
 
   // useState vars
-  const [regionShorthand, setRegionShorthand] = useState(regionShorthandRedux);
   const [selectedToEditSite, setSelectedToEditSite] = useState({});
-  const [currentGeometry, setCurrentGeometry] = useState([]);
-  const [fieldDialogState, setFieldDialogState] = useState(initFieldDialogState);
-  const [selectedUserField, setSelectedUserField] = useState(
-    userFieldRedux?.data.filter((field) => field.id === selectedFieldIdRedux)[0]
-     || (userFieldRedux && userFieldRedux.data.length
-       ? userFieldRedux.data[userFieldRedux.data.length - 1]
-       : {}),
-  );
-  // use a state to control if currently is adding a point
-  const [isAddingPoint, setIsAddingPoint] = useState(true);
+  const [currentGeometry, setCurrentGeometry] = useState({});
   const [mapFeatures, setMapFeatures] = useState([]);
-  const [userFields, setUserFields] = useState(userFieldRedux ? [...userFieldRedux.data] : []);
 
-  const selectedUserFieldRef = useRef(selectedUserField);
-
-  const { isAuthenticated } = useAuth0();
-  // calculate features shown on map
+  // if user field exists, return field, else return state capitol
   const getFeatures = () => {
-    if (userFields.length > 0 && Object.keys(selectedUserField).length !== 0) {
-      if (selectedUserField.geometry.type === 'Point') return [selectedUserField];
-      if (selectedUserField.geometry.type === 'GeometryCollection') return drawAreaFromGeoCollection(selectedUserField);
+    if (userFieldRedux !== null) {
+      const { geometry } = userFieldRedux;
+      if (geometry.type === 'Point') return [userFieldRedux];
+      if (geometry.type === 'GeometryCollection') return drawAreaFromGeoCollection(userFieldRedux);
     }
-    // reset default field to state capitol
     return [buildPoint(statesLatLongDict[stateLabelRedux][1], statesLatLongDict[stateLabelRedux][0])];
   };
 
   // set map features, update selectedFieldIdRedux
   useEffect(() => {
-    if (isAuthenticated) {
-      setMapFeatures(getFeatures());
-      selectedUserFieldRef.current = selectedUserField;
-    }
-  }, [selectedUserField]);
+    // load map features here
+    setMapFeatures(getFeatures());
+  }, []);
 
-  // update regionShorthandRef
-  useEffect(() => {
-    localStorage.setItem('regionId', regionsRedux.filter((region) => region.shorthand === regionShorthand)[0]?.id);
+  const updateRegionRedux = (regionName) => {
+    const selectedRegion = regionsRedux.filter((region) => region.shorthand === regionName)[0];
+    localStorage.setItem('regionId', selectedRegion.id);
     dispatchRedux(updateRegion({
-      regionId: regionsRedux.filter((region) => region.shorthand === regionShorthand)[0]?.id,
-      regionShorthand,
+      regionId: selectedRegion.id ?? '',
+      regionShorthand: selectedRegion.shorthand ?? '',
     }));
-
-    // if userSelectRegionRedux = true, remove weather redux value
-    if (userSelectRegionRedux) {
-      dispatchRedux(updateFrostFreeDays(0));
-      dispatchRedux(updateAvgFrostDates(
-        { firstFrostDate: { month: '', day: '' }, lastFrostDate: { month: '', day: '' } },
-      ));
-      dispatchRedux(updateAvgPrecipCurrentMonth(0));
-      dispatchRedux(updateAvgPrecipAnnual(0));
-    }
-  }, [regionShorthand]);
+  };
 
   // set map initial lat lng
   const getLatLng = useMemo(() => {
-    const getFieldLatLng = (field) => {
-      if (field.geometry.type === 'Point') {
-        return [field.geometry.coordinates[1], field.geometry.coordinates[0]];
-      }
-      if (field.geometry.type === 'GeometryCollection') {
-        const { coordinates } = field.geometry.geometries[0];
-        return [coordinates[1], coordinates[0]];
-      }
-      return undefined;
-    };
-    if (selectedFieldIdRedux !== null) {
-      if (Object.keys(selectedUserField).length > 0) return getFieldLatLng(selectedUserField);
-    }
-    if (userFieldRedux && userFieldRedux.data.length > 0) {
-      const currentField = userFieldRedux.data[userFieldRedux.data.length - 1];
-      return getFieldLatLng(currentField);
+    if (userFieldRedux !== null) {
+      const { type, coordinates, geometries } = userFieldRedux.geometry;
+      if (type === 'Point') return [coordinates[1], coordinates[0]];
+      if (type === 'GeometryCollection') return [geometries[0].coordinates[1], geometries[0].coordinates[0]];
     }
     if (markersRedux) {
       return [markersRedux[0][0], markersRedux[0][1]];
@@ -151,24 +108,21 @@ const Location = () => {
 
       if (markersRedux && latitude === markersRedux[0][0] && longitude === markersRedux[0][1]) return;
 
-      // if user address differenct than capitol, set userSelectRegion to false
-      if (latitude !== statesLatLongDict[stateLabelRedux][0]
-         || longitude !== statesLatLongDict[stateLabelRedux][1]) {
-        dispatchRedux(userSelectRegion(false));
+      // FIXME: if user imported a history without a field, this will prevent them creating one
+      if (historyStateRedux === historyState.imported && userFieldRedux !== null) {
+        dispatchRedux(setHistoryDialogState({ open: true, type: 'update' }));
+        setMapFeatures(getFeatures());
+        return;
       }
 
-      // if is adding a new point, open dialog
-      if (isAuthenticated && isAddingPoint && latitude) {
-        const currentSelectedField = selectedUserField?.geometry;
-        if ((!currentSelectedField && latitude !== statesLatLongDict[stateLabelRedux][0])
-            || (currentSelectedField?.type === 'Point' && latitude !== currentSelectedField?.coordinates[1])
-            || (currentSelectedField?.type === 'GeometryCollection' && latitude !== currentSelectedField?.geometries[0].coordinates[1])
-        ) {
-          setFieldDialogState({
-            ...fieldDialogState, open: true, actionType: 'add', areaType: 'Point',
-          });
-        }
-      }
+      // save field in redux
+      const point = buildPoint(longitude, latitude);
+      let geoCollection = null;
+      if (Object.keys(currentGeometry).length > 0) {
+        const polygon = currentGeometry.features?.slice(-1)[0];
+        geoCollection = buildGeometryCollection(point.geometry, polygon?.geometry);
+        dispatchRedux(updateField(geoCollection));
+      } else { dispatchRedux(updateField(point)); }
 
       dispatchRedux(updateLocation(
         {
@@ -181,17 +135,17 @@ const Location = () => {
       if (councilShorthandRedux === 'MCCC') {
         // if council is MCCC, change selectedRegion based on county
         if (county && county.includes(' County')) {
-          setRegionShorthand(county.replace(' County', ''));
+          updateRegionRedux(county.replace(' County', ''));
         }
       } else {
-        callCoverCropApi(`https://weather.covercrop-data.org/hardinesszone?lat=${latitude}&lon=${longitude}`)
+        callCoverCropApi(`https://weather.covercrop-data.org/hardinesszone?lat=${latitude}&lon=${longitude}&email=selector@psa.org`)
           .then((response) => {
             let { zone } = response;
 
             zone = zone.slice(0, -1);
 
             if (councilShorthandRedux !== 'MCCC') {
-              setRegionShorthand(zone);
+              updateRegionRedux(zone);
             }
             dispatchRedux(snackHandler({
               snackOpen: true,
@@ -241,10 +195,10 @@ const Location = () => {
         const currentMonthInt = moment().month() + 1;
 
         // frost url
-        const frostUrl = `${weatherApiURL}/frost?lat=${lat}&lon=${lon}`;
+        const frostUrl = `${weatherApiURL}/frost?lat=${lat}&lon=${lon}&email=selector@psa.org`;
         // What was the 5-year average rainfall for city st during the month of currentMonthInt?
         //  Dynamic dates ?
-        const averageRainUrl = `${weatherApiURL}/hourly?location=${city} ${abbrState}&start=2015-01-01&end=2019-12-31`;
+        const averageRainUrl = `${weatherApiURL}/hourly?location=${city} ${abbrState}&start=2015-01-01&end=2019-12-31&email=selector@psa.org`;
         const averageRainForAMonthURL = `${averageRainUrl}&where=month=${currentMonthInt}&stats=sum(precipitation)/5&output=json`;
         // What was the 5-year average annual rainfall for city st?
         const fiveYearAvgRainURL = `${averageRainUrl}&stats=sum(precipitation)/5&output=json`;
@@ -302,34 +256,15 @@ const Location = () => {
         }
       }
     };
+    if (historyStateRedux === historyState.imported) {
+      // not load weather data if a history is already imported
+      return;
+    }
     // if user select another region, do not call weather api
-    if (markersRedux && !userSelectRegionRedux) {
+    if (markersRedux) {
       getDetails();
     }
   }, [markersRedux]);
-
-  // update userFieldRedux and selectedField when component will unmount
-  useEffect(() => () => {
-    if (isAuthenticated) {
-      const accessToken = getAuthToken();
-      getFields(accessToken).then((fields) => dispatchRedux(updateField(fields)));
-      if (Object.keys(selectedUserFieldRef.current).length > 0) {
-        dispatchRedux(setSelectFieldId(selectedUserFieldRef.current.id));
-      } else {
-        dispatchRedux(setSelectFieldId(null));
-      }
-    }
-  }, []);
-
-  // map onDraw function
-  const onDraw = (draw) => {
-    if (isAuthenticated && draw.mode !== 'select') {
-      setIsAddingPoint(false);
-      setFieldDialogState({
-        ...fieldDialogState, open: true, actionType: draw.mode, areaType: 'Polygon',
-      });
-    }
-  };
 
   return (
     <Box
@@ -339,7 +274,7 @@ const Location = () => {
         alignItems: 'center',
       }}
     >
-      <Grid lg={10} container spacing={2}>
+      <Grid container spacing={2}>
         <Grid container item md={stateLabelRedux === 'Ontario' ? 12 : 3} xs={12}>
           <Grid item xs={12}>
             <Typography variant="h4">
@@ -357,24 +292,9 @@ const Location = () => {
           </Grid>
 
           <Grid item xs={12}>
-            <PlantHardinessZone
-              regionShorthand={regionShorthand}
-              setRegionShorthand={setRegionShorthand}
-              regionsRedux={regionsRedux}
-              councilLabelRedux={councilLabelRedux}
-            />
+            <PlantHardinessZone />
           </Grid>
 
-          <Grid item xs={12}>
-            {(isAuthenticated && stateLabelRedux !== 'Ontario') && (
-            <UserFieldList
-              userFields={userFields}
-              field={selectedUserField}
-              setField={setSelectedUserField}
-              setFieldDialogState={setFieldDialogState}
-            />
-            )}
-          </Grid>
         </Grid>
         {stateLabelRedux !== 'Ontario' && (
         <Grid item md={9} xs={12}>
@@ -382,7 +302,6 @@ const Location = () => {
             <Map
               setAddress={setSelectedToEditSite}
               setFeatures={setCurrentGeometry}
-              onDraw={onDraw}
               initWidth="100%"
               initHeight="500px"
               initLat={getLatLng[0]}
@@ -402,23 +321,8 @@ const Location = () => {
               hasMarkerMovable
             />
           </Container>
-
         </Grid>
         )}
-
-        <UserFieldDialog
-          fieldDialogState={fieldDialogState}
-          setFieldDialogState={setFieldDialogState}
-          userFields={userFields}
-          selectedToEditSite={selectedToEditSite}
-          currentGeometry={currentGeometry}
-          selectedUserField={selectedUserField}
-          setUserFields={setUserFields}
-          setSelectedUserField={setSelectedUserField}
-          setMapFeatures={setMapFeatures}
-          getFeatures={getFeatures}
-          setIsAddingPoint={setIsAddingPoint}
-        />
       </Grid>
     </Box>
   );
