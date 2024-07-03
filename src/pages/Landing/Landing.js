@@ -189,8 +189,8 @@ const Landing = () => {
       border: '1px solid rgba(255, 255, 255, 0.2)',
       borderRadius: '10px',
       position: 'relative',
-      width: '80%',
-      maxWidth: '500px',
+      width: '100%',
+
       left: '50%',
       transform: 'translateX(-50%)',
       boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
@@ -235,6 +235,11 @@ const Landing = () => {
       <Grid
         style={backgroundSyles.frostedGlassEffect}
         mt={1}
+        sx={{
+          maxWidth: {
+            xl: '500px', lg: '800px', md: '800px', sm: '800px', sx: '500px',
+          },
+        }}
       >
         <Box mr={1} ml={1} mb={1} mt={1}>
           <Grid container spacing={1}>
@@ -313,15 +318,20 @@ const Landing = () => {
         </Box>
       </Grid>
       <Grid item>
-        <Box style={{
-          position: 'relative',
-          width: '80%',
-          maxWidth: '500px',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          marginTop: '15px',
-          marginBottom: '15px',
-        }}
+        <Box
+          style={{
+            position: 'relative',
+            width: '100%',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            marginTop: '15px',
+            marginBottom: '15px',
+          }}
+          sx={{
+            maxWidth: {
+              xl: '500px', lg: '800px', md: '800px', sm: '800px', sx: '500px',
+            },
+          }}
         >
           <RegionSelectorMap
             selectorFunction={setMapState}
