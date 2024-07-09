@@ -48,6 +48,10 @@ import SiteConditions from './pages/Location/LocationConfirmation/SiteConditions
 
 const store = configureStore();
 
+if (window.Storage) {
+  window.Storage = store;
+}
+
 // AdaptV4Theme has been depreciated and v5 is the new version.  TODO: look into update
 const theme = createTheme(
   adaptV4Theme({

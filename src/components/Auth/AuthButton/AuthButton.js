@@ -46,7 +46,7 @@ const AuthButton = ({
   };
 
   return (
-    <Button variant={variant} onClick={handleClick} color={color}>
+    <Button variant={variant} onClick={handleClick} color={color} data-cy="auth-btn">
       <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
         {type}
       </Typography>
