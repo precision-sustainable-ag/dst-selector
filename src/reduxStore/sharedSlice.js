@@ -91,6 +91,11 @@ export const setMyCoverCropReset = (open, goBack = true) => ({
   },
 });
 
+export const setSharedRedux = (sharedData) => ({
+  type: 'SET_SHARED_REDUX',
+  payload: { sharedData },
+});
+
 const sharedReducer = (state = initialState, action = null) => {
   switch (action.type) {
     case 'UPDATE_PROGRESS':
@@ -160,6 +165,11 @@ const sharedReducer = (state = initialState, action = null) => {
           open: action.payload.open,
           goBack: action.payload.goBack,
         },
+      };
+    case 'SET_SHARED_REDUX':
+      return {
+        ...state,
+        ...action.payload.sharedData,
       };
 
     default:
