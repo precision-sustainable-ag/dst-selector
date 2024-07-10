@@ -20,6 +20,7 @@ To see development progress, visit [http://covercrop.tools](http://covercrop.too
 - [Running in docker:](#running-in-docker)
 - [Documentation](#documentation)
 - [Runbook](#runbook)
+- [Unit Testing](#unit-testing)
 
 ## Tech stack
 
@@ -88,6 +89,10 @@ Set Line spacing (CRLF -> LF)
 `git config core.autocrlf false`
 `git rm --cached -r .`
 `git reset --hard`
+
+## Unit Testing
+To run the Cypress client
+`npx cypress open --config-file=dev.config.js`
 
 
 
