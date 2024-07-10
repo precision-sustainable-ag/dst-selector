@@ -140,7 +140,7 @@ const CropCalendarView = ({
           <CircularProgress size="6em" />
         </Box>
       ) : (
-        <TableContainer component="div" sx={{ lineHeight: '0.5' }}>
+        <TableContainer component="div" sx={{ lineHeight: '0.5', overflowX: 'initial' }}>
           <Table
             stickyHeader
             sx={{

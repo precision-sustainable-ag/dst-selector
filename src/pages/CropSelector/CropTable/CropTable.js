@@ -114,7 +114,7 @@ const CropTable = ({
 
   return cropDataRedux.length !== 0 ? (
     <>
-      <TableContainer component="div">
+      <TableContainer component="div" sx={{ overflowX: 'initial' }}>
         <Table stickyHeader sx={{ borderSpacing: '7px', padding: 0 }}>
           <TableHead>
             <TableRow style={{ paddingBottom: '5px', whiteSpace: 'nowrap' }}>
