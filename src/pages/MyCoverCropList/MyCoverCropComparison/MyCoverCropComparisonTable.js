@@ -10,15 +10,15 @@
 
 import {
   Typography,
-  TableContainer,
   Table,
   TableHead,
   TableRow,
   TableCell,
   TableBody,
   Grid,
+  TableContainer,
 } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   DataTooltip,
@@ -108,19 +108,49 @@ const MyCoverCropComparisonTable = () => {
     });
   };
 
+  const [isScrolled, setIsScrolled] = useState(false);
+  const tableRef = useRef(null);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (tableRef.current) {
+        setIsScrolled(tableRef.current.scrollTop > 0);
+      }
+    };
+
+    const tableElement = tableRef.current;
+    if (tableElement) {
+      tableElement.addEventListener('scroll', handleScroll);
+    }
+
+    return () => {
+      if (tableElement) {
+        tableElement.removeEventListener('scroll', handleScroll);
+      }
+    };
+  }, []);
+
   const buildTableHeaders = () => selectedCrops.map((crop, index) => (
     <TableCell key={index} align="center">
-      <CropCard
-        crop={crop}
-        index={index}
-        dispatchRedux={dispatchRedux}
-        handleModalOpen={handleModalOpen}
-      />
-      <CropDetailsModal
-        modalOpen={modalOpen}
-        setModalOpen={setModalOpen}
-        crop={modalData}
-      />
+      {isScrolled ? (
+        <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>
+          {crop.label}
+        </Typography>
+      ) : (
+        <>
+          <CropCard
+            crop={crop}
+            index={index}
+            dispatchRedux={dispatchRedux}
+            handleModalOpen={handleModalOpen}
+          />
+          <CropDetailsModal
+            modalOpen={modalOpen}
+            setModalOpen={setModalOpen}
+            crop={modalData}
+          />
+        </>
+      )}
     </TableCell>
 
   ));
@@ -169,7 +199,7 @@ const MyCoverCropComparisonTable = () => {
 
   return (
     // <TableContainer style={{ overflowX: 'initial' }}>
-    <TableContainer>
+    <TableContainer component="div" sx={{ maxHeight: '100vh' }} ref={tableRef}>
       <Table stickyHeader aria-label="sticky table">
         <TableHead>
           <TableRow>
