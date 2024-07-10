@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 
-describe('template spec', () => {
+describe('Testing interactions on location screen', () => {
   beforeEach(() => {
     cy.beforeEachVisitBaseUrl();
     cy.assertByTestId('state-selector-dropdown').first().click();
@@ -8,7 +8,15 @@ describe('template spec', () => {
     cy.assertByTestId('next-prgs-btn').first().click();
   });
 
-  it('should run', () => {
-    cy.contains(/location/i).should('exist');
+  it('checks if plant-hardiness-dropdown has items equal to mapData.regions array', () => {
+    cy.window().its('Storage').invoke('getState').its('mapData')
+      .its('regions')
+      .then((regions) => {
+        const numberOfRegions = regions.length;
+        cy.assertByTestId('plant-hardiness-zone-dropdown').click();
+        cy.get('[role="listbox"]')
+          .children()
+          .should('have.length', numberOfRegions);
+      });
   });
 });
