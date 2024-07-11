@@ -11,6 +11,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import SoilDrainage from './SoilDrainage/SoilDrainage';
 import SoilFloodingFrequency from './SoilFloodingFrequency/SoilFloodingFrequency';
 import { updateSoilData, updateSoilDataOriginal } from '../../../reduxStore/soilSlice';
+import { historyState } from '../../../reduxStore/userSlice';
 
 const SoilCondition = () => {
   // theme
@@ -21,12 +22,13 @@ const SoilCondition = () => {
 
   // redux vars
   const markersRedux = useSelector((stateRedux) => stateRedux.addressData.markers);
+  const soilDataRedux = useSelector((stateRedux) => stateRedux.soilData.soilData);
   const soilDataOriginalRedux = useSelector((stateRedux) => stateRedux.soilData.soilDataOriginal);
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
   const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
-  const userSelectRegionRedux = useSelector((stateRedux) => stateRedux.userData.userSelectRegion);
   const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
   const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
+  const historyStateRedux = useSelector((stateRedux) => stateRedux.userData.historyState);
 
   // useState vars
   const [floodingOptions, setFloodingOptions] = useState([]);
@@ -34,6 +36,7 @@ const SoilCondition = () => {
   const query1 = `${encodeURIComponent('regions')}=${encodeURIComponent(regionIdRedux)}`;
   const query2 = `${encodeURIComponent('regions')}=${encodeURIComponent(stateIdRedux)}`;
 
+  // retrieving flooding frequency values(not exact value)
   useEffect(() => {
     fetch(`https://${apiBaseUrlRedux}.covercrop-selector.org/v2/attribute?filtered=false&slug=flooding_frequency&${query2}&${query1}`)
       .then((res) => res.json())
@@ -44,10 +47,11 @@ const SoilCondition = () => {
         // eslint-disable-next-line no-console
         console.log(err.message);
       });
-    fetch(`https://${apiBaseUrlRedux}.covercrop-selector.org/v2/attribute?filtered=false&slug=soil_drainage&${query2}&${query1}`)
+    fetch(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/attribute-values?slug=soil_drainage&regions=${regionIdRedux}`)
       .then((res) => res.json())
       .then((data) => {
-        setDrainageOptions(data.data.values);
+        console.log(data.data);
+        setDrainageOptions(data.data);
       })
       .catch((err) => {
         // eslint-disable-next-line no-console
@@ -55,7 +59,13 @@ const SoilCondition = () => {
       });
   }, []);
 
+  // retrieving drainage class and flooding frequency
   useEffect(() => {
+    if (soilDataRedux.drainageClass.length > 0 || historyStateRedux === historyState.imported) {
+      // not call api if selected any drainage class or it's imported
+      return;
+    }
+
     const getSSURGOData = (lat, lon) => {
       const markersCopy = markersRedux;
 
@@ -165,13 +175,12 @@ const SoilCondition = () => {
         .catch((error) => console.error('SSURGO FETCH ERROR', error));
     };
 
-    // if the user selected another region, not run the function
-    if (userSelectRegionRedux) return;
     if (stateLabelRedux === 'Ontario') return;
 
     const lat = markersRedux[0][0];
     const lon = markersRedux[0][1];
 
+    // FIXME: the latLong property is always []
     if (soilDataOriginalRedux?.latLong) {
       if (
         !(soilDataOriginalRedux.latLong?.lat === lat && soilDataOriginalRedux.latLong?.lon === lon)

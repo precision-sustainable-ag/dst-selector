@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 /*
   This file contains the CropSidebar and its styles
-  The CropSidebar is the sidebar which contains the filtering and calendar view components
+  The CropSidebar is the sidebar which contains the filtering and calendar view (crop calendar) components
 */
 
 import {
@@ -17,7 +17,7 @@ import {
   Grid,
 } from '@mui/material';
 import {
-  CalendarToday, Compare, ExpandLess, ExpandMore,
+  Compare, ExpandLess, ExpandMore,
 } from '@mui/icons-material';
 import ListIcon from '@mui/icons-material/List';
 import React, {
@@ -26,7 +26,7 @@ import React, {
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
 import {
-  CustomStyles, LightButton, callCoverCropApi, cropDataFormatter,
+  LightButton, callCoverCropApi, cropDataFormatter, getLegendDataBasedOnCouncil,
 } from '../../shared/constants';
 import ComparisonBar from '../MyCoverCropList/ComparisonBar/ComparisonBar';
 import CoverCropSearch from './CoverCropSearch/CoverCropSearch';
@@ -34,7 +34,6 @@ import SidebarFilter from './SidebarFilter/SidebarFilter';
 import CoverCropGoals from './CoverCropGoals/CoverCropGoals';
 import PlantHardinessZone from './PlantHardinessZone/PlantHardinessZone';
 import Legend from '../../components/Legend/Legend';
-import { updateRegion } from '../../reduxStore/mapSlice';
 import { clearFilters } from '../../reduxStore/filterSlice';
 import { updateCropData, updateActiveCropIds } from '../../reduxStore/cropSlice';
 import { setAjaxInProgress, regionToggleHandler } from '../../reduxStore/sharedSlice';
@@ -45,7 +44,6 @@ const CropSidebar = ({
   from,
   setGrowthWindow,
   setComparisonView,
-  setListView,
   style,
 }) => {
   const dispatchRedux = useDispatch();
@@ -56,14 +54,11 @@ const CropSidebar = ({
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
   const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
-  const regionShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.regionShorthand);
   const regionToggleRedux = useSelector((stateRedux) => stateRedux.sharedData.regionToggle);
   const speciesSelectorActivationFlagRedux = useSelector((stateRedux) => stateRedux.sharedData.speciesSelectorActivationFlag);
   const comparisonKeysRedux = useSelector((stateRedux) => stateRedux.sharedData.comparisonKeys);
   const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
-  const regionsRedux = useSelector((stateRedux) => stateRedux.mapData.regions);
-  const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const drainageClassRedux = useSelector((stateRedux) => stateRedux.soilData.soilData.drainageClass[0]);
   const floodingFrequencyRedux = useSelector((stateRedux) => stateRedux.soilData.soilData.floodingFrequency[0]);
@@ -84,9 +79,8 @@ const CropSidebar = ({
     });
     return sidebarStarter;
   });
-  const legendData = [
-    { className: 'sideBar', label: '0 = Least, 5 = Most' },
-  ];
+
+  const legendData = getLegendDataBasedOnCouncil(councilShorthandRedux);
 
   const query = `${encodeURIComponent('regions')}=${encodeURIComponent(regionIdRedux)}`;
 
@@ -122,7 +116,7 @@ const CropSidebar = ({
         if (parm === 'label') {
           m = crop[parm]?.toLowerCase().match(/\w+/g);
         } else if (parm === 'common') {
-          m = crop.attributes.filter((c) => c.label === 'Cover Crop Group')[0].values[0]?.toLowerCase().match(/\w+/g);
+          m = crop.attributes.filter((c) => c.label === 'Cover Crop Group')[0].values[0]?.value.toLowerCase().match(/\w+/g);
         } else {
           m = crop[parm]?.toLowerCase().match(/\w+/g);
         }
@@ -140,7 +134,7 @@ const CropSidebar = ({
     });
 
     const filtered = cropData?.filter((crop, n, cd) => {
-      const floodingFrequencyValue = crop.attributes.filter((a) => a.label === 'Flooding Frequency Tolerance')[0]?.values[0];
+      const floodingFrequencyValue = crop.attributes.filter((a) => a.label === 'Flooding Frequency Tolerance')[0]?.values[0].value;
       let match = true;
       // iterate over all active filters
       nonZeroKeys2.forEach((keyObject) => {
@@ -150,7 +144,7 @@ const CropSidebar = ({
         const vals = keyObject[key];
         if (crop.attributes.filter((att) => att.label === key)?.length > 0) {
           // if there is not an intersection, match = false
-          if (!crop.attributes.filter((att) => att.label === key)[0]?.values.some((item) => vals.includes(item))) {
+          if (!crop.attributes.filter((att) => att.label === key)[0]?.values.some((item) => vals.includes(item.value))) {
             match = false;
           }
         }
@@ -194,6 +188,7 @@ const CropSidebar = ({
             description: filter.description,
             details: filter.details,
             units: filter.units,
+            unitRange: filter.unitRange,
           };
           if (type === 'number') {
             obj.values = filter.values;
@@ -235,8 +230,9 @@ const CropSidebar = ({
       });
       callCoverCropApi(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/states/${stateIdRedux}/crops?minimal=true&${query}`).then((data) => {
         const { startDate, endDate } = cashCropDataRedux.dateRange;
-        const start = startDate ? moment(startDate.toISOString()).format('MM/DD') : '';
-        const end = endDate ? moment(endDate.toISOString()).format('MM/DD') : '';
+
+        const start = startDate ? moment(startDate).format('MM/DD') : '';
+        const end = endDate ? moment(endDate).format('MM/DD') : '';
         cropDataFormatter(data.data, start, end);
         dispatchRedux(updateCropData(data.data));
         dispatchRedux(setAjaxInProgress(false));
@@ -299,15 +295,6 @@ const CropSidebar = ({
     filtersList();
   }, [sidebarFilters]);
 
-  const updateRegionRedux = (regionName) => {
-    const selectedRegion = regionsRedux.filter((region) => region.shorthand === regionName)[0];
-    localStorage.setItem('regionId', selectedRegion.id);
-    dispatchRedux(updateRegion({
-      regionId: selectedRegion.id ?? '',
-      regionShorthand: selectedRegion.shorthand ?? '',
-    }));
-  };
-
   return !loading && (from === 'myCoverCropListStatic') ? (
     <Grid container spacing={3}>
       <Grid item>
@@ -317,7 +304,7 @@ const CropSidebar = ({
           style={{ background: !comparisonView ? '#49a8ab' : '#e3f2f4' }}
           startIcon={<ListIcon style={{ fontSize: 'larger' }} />}
         >
-          LIST VIEW
+          CROP LIST
         </LightButton>
         <LightButton
           onClick={() => setComparisonView(true)}
@@ -338,26 +325,6 @@ const CropSidebar = ({
   ) : (
     <Grid container>
       <Grid item>
-        {from === 'table' && (
-          <>
-            <LightButton
-              onClick={() => setListView(false)}
-              color="secondary"
-              style={{ background: !listView ? '#49a8ab' : '#e3f2f4' }}
-              startIcon={<ListIcon style={{ fontSize: 'larger' }} />}
-            >
-              LIST VIEW
-            </LightButton>
-            <LightButton
-              onClick={() => setListView(true)}
-              color="secondary"
-              style={{ background: listView ? '#49a8ab' : '#e3f2f4' }}
-              startIcon={<CalendarToday style={{ fontSize: 'larger' }} />}
-            >
-              CALENDAR VIEW
-            </LightButton>
-          </>
-        )}
         {speciesSelectorActivationFlagRedux || from === 'explorer' ? (
           <Box
             id="Filters"
@@ -394,49 +361,41 @@ const CropSidebar = ({
                         {regionToggleRedux ? <ExpandLess /> : <ExpandMore />}
                       </ListItemButton>
                     </List>
-                    <PlantHardinessZone
-                      regionShorthand={regionShorthandRedux}
-                      setRegionShorthand={updateRegionRedux}
-                      regionsRedux={regionsRedux}
-                      councilLabelRedux={councilLabelRedux}
-                      regionToggleRedux={regionToggleRedux}
-                    />
+                    <PlantHardinessZone />
                     <CoverCropSearch />
                   </>
                 )}
-                <ListItemButton
-                  onClick={() => setCropFiltersOpen(!cropFiltersOpen)}
-                  style={{
-                    marginBottom: '15px',
-                    backgroundColor:
-                      from === 'table' && !cropFiltersOpen
-                        ? 'inherit'
-                        : CustomStyles().lightGreen,
+                <Box
+                  sx={{
+                    border: 0.5, borderRadius: 2, borderColor: 'black', mb: 2, overflow: 'hidden',
                   }}
                 >
-                  <ListItemText primary="COVER CROP FILTERS" />
-
-                  {cropFiltersOpen ? <ExpandLess /> : <ExpandMore />}
-                  {' '}
-                  {/* // why is this here */}
-                </ListItemButton>
-                <Collapse in={cropFiltersOpen} timeout="auto">
-                  <Box
-                    sx={{
-                      backgroundColor: 'background.paper',
-                      border: '1px solid lightgrey',
-                      paddingLeft: '1em',
-                      margin: '1em',
+                  <ListItem
+                    onClick={() => setCropFiltersOpen(!cropFiltersOpen)}
+                    style={{
+                      marginBottom: '15px',
+                      backgroundColor: 'inherit',
 
                     }}
                   >
-                    <Legend
-                      legendData={legendData}
-                      modal={false}
-                    />
-                  </Box>
-                  {filtersList()}
-                </Collapse>
+                    <ListItemText primary="FILTERS" />
+
+                    {cropFiltersOpen ? <ExpandLess /> : <ExpandMore />}
+                  </ListItem>
+                  <Collapse in={cropFiltersOpen} timeout="auto">
+                    {filtersList()}
+                  </Collapse>
+                </Box>
+                {from !== 'explorer'
+                && (
+                <Box
+                  sx={{
+                    border: 0.5, borderRadius: 2, borderColor: 'black', mb: 2, overflow: 'hidden',
+                  }}
+                >
+                  <Legend legendData={legendData} modal />
+                </Box>
+                )}
               </>
               )}
             </List>

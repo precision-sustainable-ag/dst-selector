@@ -49,7 +49,7 @@ const InformationSheetDictionary = ({ zone, from }) => {
         variant="h4"
         style={{ marginLeft: '1.5%', marginTop: '4%', width: '100%' }}
       >
-        Information Sheet Dictionary
+        Terminology Definitions
       </Typography>
       <Typography
         variant="body2"
