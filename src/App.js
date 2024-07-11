@@ -58,6 +58,9 @@ const theme = createTheme(
       secondary: {
         main: CustomStyles().lighterGreen,
       },
+      dark: {
+        main: '#000',
+      },
     },
     overrides: {
       MuiTooltip: {

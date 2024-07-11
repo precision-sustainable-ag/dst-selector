@@ -67,6 +67,16 @@ export const updateFloodingFrequency = (value) => ({
   },
 });
 
+export const setSoilRedux = (soilData) => ({
+  type: 'SET_SOIL_REDUX',
+  payload: { soilData },
+});
+
+export const setTileDrainage = (tileDrainage) => ({
+  type: 'SET_TILE_DRAINAGE',
+  payload: { tileDrainage },
+});
+
 const soilReducer = (state = initialState, action = null) => {
   switch (action.type) {
     case 'UPDATE_SOIL_DATA':
@@ -113,6 +123,19 @@ const soilReducer = (state = initialState, action = null) => {
         soilData: {
           ...state.soilData,
           floodingFrequency: action.payload.value,
+        },
+      };
+
+    case 'SET_SOIL_REDUX':
+      return { ...state, ...action.payload.soilData };
+
+    case 'SET_TILE_DRAINAGE':
+      return {
+        ...state,
+        soilData: {
+          ...state.soilData,
+          tileDrainage: action.payload.tileDrainage,
+          prevDrainageClass: action.payload.tileDrainage ? state.soilData.drainageClass : [],
         },
       };
 

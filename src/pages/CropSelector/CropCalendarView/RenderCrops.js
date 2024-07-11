@@ -2,8 +2,11 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   Button, TableCell, TableRow, Grid, Tooltip,
+  Box,
 } from '@mui/material';
-import { AcUnit, AddCircleOutline, DeleteForever } from '@mui/icons-material';
+import {
+  AcUnit, AddCircleOutline, CheckRounded, DeleteForever,
+} from '@mui/icons-material';
 import {
   CropImage,
   flipCoverCropName,
@@ -17,6 +20,19 @@ import CropSelectorCalendarView from '../../../components/CropSelectorCalendarVi
 import '../../../styles/cropCalendarViewComponent.scss';
 import { updateSelectedCropIds } from '../../../reduxStore/cropSlice';
 import { myCropListLocation, snackHandler } from '../../../reduxStore/sharedSlice';
+import { setSaveHistory } from '../../../reduxStore/userSlice';
+
+const CheckBoxIcon = ({ style }) => (
+  <Box sx={style}>
+    <CheckRounded style={{
+      color: '#FFFFFF',
+      width: '15',
+      height: '15',
+    }}
+    />
+
+  </Box>
+);
 
 const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
   const dispatchRedux = useDispatch();
@@ -25,6 +41,7 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
   const selectedBtns = selectedCropIdsRedux;
+  const historyStateRedux = useSelector((stateRedux) => stateRedux.userData.historyState);
 
   return cropDataRedux
     .sort((a, b) => (a.inactive || false) - (b.inactive || false))
@@ -43,7 +60,27 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                     setModalData(crop);
                     setModalOpen(!modalOpen);
                   }}
+                  style={{
+                    outlineOffset: '-7px',
+                    ...selectedCropIdsRedux.includes(crop.id) && {
+                      outline: '4px solid #5992E6',
+
+                    },
+                  }}
                 >
+                  { selectedCropIdsRedux.includes(crop.id) && (
+                  <CheckBoxIcon
+                    style={{
+                      position: 'absolute',
+                      right: '7px',
+                      top: '4px',
+                      height: '15px',
+                      zIndex: 1,
+                      backgroundColor: '#5992E6',
+
+                    }}
+                  />
+                  )}
                   <CropImage
                     view="calendar"
                     present
@@ -81,7 +118,7 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                   {flipCoverCropName(crop.label)}
                 </Button>
               </Grid>
-              {crop.attributes.filter((a) => a.label === 'Frost Seeding')[0]?.values[0] === 'Yes' && (
+              {crop.attributes.filter((a) => a.label === 'Frost Seed')[0]?.values[0].label === 'Yes' && (
                 <Grid item>
                   <Tooltip
                     placement="top-end"
@@ -114,7 +151,7 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                     </p>
                   )}
                 >
-                  {getRating(crop.goals.filter((a) => a.label === goal)[0].values[0], councilShorthandRedux)}
+                  {getRating(crop.goals.filter((a) => a.label === goal)[0].values[0].value, councilShorthandRedux)}
                 </Tooltip>
               </div>
             </TableCell>
@@ -144,6 +181,9 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                 updateSelectedCropIds,
                 selectedCropIdsRedux,
                 myCropListLocation,
+                historyStateRedux,
+                'selector',
+                setSaveHistory,
               );
             }}
           >

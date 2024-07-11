@@ -8,6 +8,7 @@ import '../../../styles/cropTable.scss';
 import CropSelectorCalendarView from '../../../components/CropSelectorCalendarView/CropSelectorCalendarView';
 import { updateSelectedCropIds } from '../../../reduxStore/cropSlice';
 import { myCropListLocation, snackHandler } from '../../../reduxStore/sharedSlice';
+import { setSaveHistory } from '../../../reduxStore/userSlice';
 
 const CropTableCard = ({ crop, indexKey, showGrowthWindow }) => {
   const dispatchRedux = useDispatch();
@@ -16,8 +17,7 @@ const CropTableCard = ({ crop, indexKey, showGrowthWindow }) => {
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
 
   const selectedBtns = selectedCropIdsRedux;
-
-  // TODO: Update SelectedCropsRedux
+  const historyStateRedux = useSelector((stateRedux) => stateRedux.userData.historyState);
 
   return (
     <>
@@ -37,7 +37,7 @@ const CropTableCard = ({ crop, indexKey, showGrowthWindow }) => {
                   </p>
                 )}
               >
-                {getRating(crop.goals.filter((a) => a.label === goal)[0].values[0], councilShorthandRedux)}
+                {getRating(crop.goals.filter((a) => a.label === goal)[0].values[0].value, councilShorthandRedux)}
               </Tooltip>
             </div>
           </TableCell>
@@ -75,6 +75,9 @@ const CropTableCard = ({ crop, indexKey, showGrowthWindow }) => {
                 updateSelectedCropIds,
                 selectedCropIdsRedux,
                 myCropListLocation,
+                historyStateRedux,
+                'selector',
+                setSaveHistory,
               );
             }}
           >
