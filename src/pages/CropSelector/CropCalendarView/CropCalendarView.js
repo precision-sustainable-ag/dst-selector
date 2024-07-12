@@ -132,7 +132,6 @@ const CropCalendarView = ({
   useEffect(() => {
     if (cropDataRedux.length !== 0) sortByAverageGoals();
   }, [cropDataRedux]);
-
   return (
     <>
       {ajaxInProgressRedux ? (
@@ -154,14 +153,20 @@ const CropCalendarView = ({
                 <LightButton
                   onClick={() => setListView(false)}
                   color="secondary"
-                  style={{ marginBottom: '7px', background: !listView ? '#49a8ab' : undefined }}
+                  style={{ marginBottom: '7px', background: listView ? undefined : '#49a8ab' }}
                   startIcon={<ListIcon style={{ fontSize: 'larger' }} />}
                 >
                   CROP LIST
                 </LightButton>
                 <LightButton
-                  onClick={() => setListView(true)} //= ================================================================================================
+                  onClick={() => setListView(true)} //= ================================================================================================  '#49a8ab'
                   color="secondary"
+                  // sx={{
+                  //   '&:hover': {
+                  //     borderColor: '#62b8bc',
+                  //     backgroundColor: '#49a8ab',
+                  //   },
+                  // }}
                   style={{ marginBottom: '7px', background: listView ? '#49a8ab' : undefined }}
                   startIcon={<CalendarToday style={{ fontSize: 'larger' }} />}
                 >
