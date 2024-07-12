@@ -154,15 +154,15 @@ const CropCalendarView = ({
                 <LightButton
                   onClick={() => setListView(false)}
                   color="secondary"
-                  style={{ marginBottom: '7px', background: !listView ? '#49a8ab' : '#e3f2f4' }}
+                  style={{ marginBottom: '7px', background: !listView ? '#49a8ab' : undefined }}
                   startIcon={<ListIcon style={{ fontSize: 'larger' }} />}
                 >
                   CROP LIST
                 </LightButton>
                 <LightButton
-                  onClick={() => setListView(true)}
+                  onClick={() => setListView(true)} //= ================================================================================================
                   color="secondary"
-                  style={{ marginBottom: '7px', background: listView ? '#49a8ab' : '#e3f2f4' }}
+                  style={{ marginBottom: '7px', background: listView ? '#49a8ab' : undefined }}
                   startIcon={<CalendarToday style={{ fontSize: 'larger' }} />}
                 >
                   CROP CALENDAR
