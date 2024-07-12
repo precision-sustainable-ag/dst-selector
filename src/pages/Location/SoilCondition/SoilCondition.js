@@ -50,7 +50,6 @@ const SoilCondition = () => {
     fetch(`https://${apiBaseUrlRedux}.covercrop-selector.org/v1/attribute-values?slug=soil_drainage&regions=${regionIdRedux}`)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data.data);
         setDrainageOptions(data.data);
       })
       .catch((err) => {

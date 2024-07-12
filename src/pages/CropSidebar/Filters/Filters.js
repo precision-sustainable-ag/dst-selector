@@ -77,8 +77,24 @@ const Chips = ({ filter }) => {
   const chipChange = (filterName, val) => {
     dispatchRedux(filterToggle({ value: `${filterName}: ${val}` }));
   };
-
   const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
+  if (filter.dataType === 'boolean') {
+    return filter.values.map((val, i) => {
+      const selected = filterStateRedux.filters[`${filter.name}: ${val.value}`];
+      return (
+        <Grid key={filter.name + val.value + i} item>
+          <Chip
+            key={filter.name + val.value + i}
+            onClick={() => chipChange(filter.name, val.value)}
+            component="li"
+            size="medium"
+            label={val.value === '0' ? 'No' : 'Yes'}
+            color={selected ? 'primary' : 'secondary'}
+          />
+        </Grid>
+      );
+    });
+  }
   return filter.values.map((val, i) => {
     const selected = filterStateRedux.filters[`${filter.name}: ${val.value}`];
     return (
@@ -119,6 +135,18 @@ const Filters = ({ filters }) => (
   <Grid container spacing={2}>
     {filters.values.map((filter, i) => {
       if (filter.dataType === 'string') {
+        return (
+          <Grid container item spacing={1} key={i}>
+            <Grid item key={i} xs={12}>
+              <Tip filter={filter} />
+            </Grid>
+            <Grid item container xs={12} spacing={0.3}>
+              <Chips key={i} filter={filter} />
+            </Grid>
+          </Grid>
+        );
+      }
+      if (filter.dataType === 'boolean') {
         return (
           <Grid container item spacing={1} key={i}>
             <Grid item key={i} xs={12}>
