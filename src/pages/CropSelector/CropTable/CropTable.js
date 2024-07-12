@@ -121,7 +121,8 @@ const CropTable = ({
               <LightButton
                 onClick={() => setListView(false)}
                 color="secondary"
-                style={{ background: !listView ? '#49a8ab' : '#e3f2f4' }}
+                // style={{ background: !listView ? '#49a8ab' : '#e3f2f4' }}
+                style={{ marginBottom: '7px', background: listView ? undefined : '#49a8ab' }}
                 startIcon={<ListIcon style={{ fontSize: 'larger' }} />}
               >
                 CROP LIST
@@ -129,7 +130,8 @@ const CropTable = ({
               <LightButton
                 onClick={() => setListView(true)}
                 color="secondary"
-                style={{ background: listView ? '#49a8ab' : '#e3f2f4' }}
+                // style={{ background: listView ? '#49a8ab' : '#e3f2f4' }}
+                style={{ marginBottom: '7px', background: listView ? '#49a8ab' : undefined }}
                 startIcon={<CalendarToday style={{ fontSize: 'larger' }} />}
               >
                 CROP CALENDAR
