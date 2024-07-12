@@ -53,7 +53,8 @@ const SoilDrainage = ({ drainageOptions }) => {
   }, [soilDataOriginalRedux]);
 
   useEffect(() => {
-    if (drainageOptions.map((option) => option.value).indexOf(soilDataRedux?.drainageClass[0]) < 3) {
+    if (soilDataRedux?.drainageClass[0] !== undefined
+      && drainageOptions.map((option) => option.value).indexOf(soilDataRedux?.drainageClass[0]) < 3) {
       setShowTiling(true);
     } else if (
       soilDataRedux?.drainageClass.includes(drainageOptions[3].value)
