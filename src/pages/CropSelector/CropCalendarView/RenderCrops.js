@@ -50,7 +50,7 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
         key={`cropRow${index}`}
         style={hasGoalRatingTwoOrLess(selectedGoalsRedux, crop) ? { opacity: '0.3' } : {}}
       >
-        <TableCell sx={{ padding: 0 }}>
+        <TableCell sx={{ padding: 0, backgroundColor: selectedCropIdsRedux.includes(crop.id) && '#EAEAEA' }}>
           <Grid container>
             <Grid item md={4} xs={12}>
               {crop ? (
@@ -137,7 +137,15 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
         </TableCell>
         {selectedGoalsRedux.length > 0
           && selectedGoalsRedux.map((goal, i) => (
-            <TableCell size="small" style={{ textAlign: 'center' }} key={i} className="goalCells">
+            <TableCell
+              size="small"
+              style={{
+                textAlign: 'center',
+                backgroundColor: selectedCropIdsRedux.includes(crop.id) && '#EAEAEA',
+              }}
+              key={i}
+              className="goalCells"
+            >
               <div>
                 <Tooltip
                   arrow
@@ -156,7 +164,7 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
               </div>
             </TableCell>
           ))}
-        <TableCell sx={{ padding: 0 }} colSpan="12">
+        <TableCell sx={{ padding: 0 }} colSpan="12" style={{ backgroundColor: selectedCropIdsRedux.includes(crop.id) && '#EAEAEA' }}>
           <CropSelectorCalendarView from="calendar" data={crop} />
         </TableCell>
 
@@ -164,12 +172,13 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
           sx={{
             padding: 0,
           }}
+          style={{ backgroundColor: selectedCropIdsRedux.includes(crop.id) && '#EAEAEA' }}
         >
           {' '}
           <LightButton
             id={`cartBtn${index}`}
             style={{
-              backgroundColor: 'white',
+              backgroundColor: selectedCropIdsRedux.includes(crop.id) ? '#EAEAEA' : 'white',
               color: selectedBtns.includes(crop.id) ? '#d32f2f' : '#2d7b7b',
             }}
             onClick={() => {
