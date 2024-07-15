@@ -22,8 +22,8 @@ import { tableCellClasses } from '@mui/material/TableCell';
 import {
   AcUnit, AddCircle, CalendarToday, LocalFlorist, WbSunny,
 } from '@mui/icons-material';
-import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect, useRef, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import StraightIcon from '@mui/icons-material/Straight';
 import {
   allMonths,
@@ -35,6 +35,7 @@ import {
 import '../../../styles/cropCalendarViewComponent.scss';
 import RenderCrops from './RenderCrops';
 import CropDetailsModal from '../../../components/CropDetailsModal/CropDetailsModal';
+import { setTableWidth } from '../../../reduxStore/pageSlice';
 
 const growthIcon = {
   color: 'white',
@@ -133,6 +134,18 @@ const CropCalendarView = ({
     if (cropDataRedux.length !== 0) sortByAverageGoals();
   }, [cropDataRedux]);
 
+  const tableRef = useRef(null);
+  const dispatchRedux = useDispatch();
+  useEffect(() => {
+    if (tableRef.current) {
+      // let tableWidth = tableRef.current.offsetWidth;
+      const tableWidth = tableRef.current.scrollWidth;
+      // tableWidth += 1000;
+      // console.log('table width in page', tableWidth, typeof (tableWidth));
+      dispatchRedux(setTableWidth(tableWidth));
+    }
+  }, [dispatchRedux, tableRef]);
+
   return (
     <>
       {ajaxInProgressRedux ? (
@@ -148,6 +161,7 @@ const CropCalendarView = ({
                 borderBottom: 'none',
               },
             }}
+            ref={tableRef}
           >
             <TableHead sx={{ zIndex: -1 }}>
               <TableRow style={{ paddingBottom: '5px', whiteSpace: 'nowrap' }}>

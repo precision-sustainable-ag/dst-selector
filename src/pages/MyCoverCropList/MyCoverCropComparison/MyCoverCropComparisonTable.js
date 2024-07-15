@@ -23,9 +23,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   DataTooltip,
   extractData,
+  trimString,
 } from '../../../shared/constants';
+import { setTableWidth } from '../../../reduxStore/pageSlice';
 import CropDetailsModal from '../../../components/CropDetailsModal/CropDetailsModal';
-import CropCard from '../../../components/CropCard/CropCard';
 
 const MyCoverCropComparisonTable = () => {
   const dispatchRedux = useDispatch();
@@ -61,16 +62,18 @@ const MyCoverCropComparisonTable = () => {
     const groupRow = { comparisonKey: 'Cover Crop Group' };
     // used to add average goal rating
     const goalRow = { comparisonKey: 'Average Goal Rating' };
-
+    const sciNameRow = { comparisonKey: 'Scientific Name' };
     // iterate over each crop and get group and average goal rating if selectedgoals.length > 0
     selectedCrops.forEach((crop, index) => {
       // this is needed to format it like the other attributes
       groupRow[`crop${index}`] = { values: [] };
+      sciNameRow[`crop${index}`] = { values: [] };
       // same thing here but it also specifies it should be a pillbox
       goalRow[`crop${index}`] = { values: [], dataType: 'pillbox' };
       // push crop group
       groupRow[`crop${index}`].values.push({ value: crop.group });
-
+      // push crop scientific name
+      sciNameRow[`crop${index}`].values.push({ value: crop?.scientificName ? trimString(crop?.scientificName, 25) : 'No Data' });
       // if selected goals > 1 calculate average goal rating
       if (selectedGoalsRedux.length > 0) {
         let goalRating = 0;
@@ -87,6 +90,7 @@ const MyCoverCropComparisonTable = () => {
 
     // push group
     tempRows.push(groupRow);
+    tempRows.push(sciNameRow);
 
     // if selected goals > 1 push average goal rating
     if (selectedGoalsRedux.length > 0) {
@@ -107,52 +111,33 @@ const MyCoverCropComparisonTable = () => {
       tempRows.push(newRow);
     });
   };
-
-  const [isScrolled, setIsScrolled] = useState(false);
   const tableRef = useRef(null);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (tableRef.current) {
-        setIsScrolled(tableRef.current.scrollTop > 0);
-      }
-    };
-
-    const tableElement = tableRef.current;
-    if (tableElement) {
-      tableElement.addEventListener('scroll', handleScroll);
-    }
-
-    return () => {
-      if (tableElement) {
-        tableElement.removeEventListener('scroll', handleScroll);
-      }
-    };
-  }, []);
 
   const buildTableHeaders = () => selectedCrops.map((crop, index) => (
     <TableCell key={index} align="center">
-      {isScrolled ? (
-        <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>
-          {crop.label}
-        </Typography>
-      ) : (
-        <>
-          <CropCard
-            crop={crop}
-            index={index}
-            dispatchRedux={dispatchRedux}
-            handleModalOpen={handleModalOpen}
-          />
-          <CropDetailsModal
-            modalOpen={modalOpen}
-            setModalOpen={setModalOpen}
-            crop={modalData}
-          />
-        </>
-      )}
+      <Typography
+        variant="subtitle1"
+        sx={{
+          fontWeight: 'bold',
+          color: 'primary.main',
+          cursor: 'pointer',
+          textDecoration: 'none',
+          '&:hover': {
+            textDecoration: 'underline',
+            color: 'primary.dark',
+          },
+          transition: 'color 0.3s ease',
+        }}
+        onClick={() => handleModalOpen(crop)}
+      >
+        {crop.label}
+      </Typography>
+      <CropDetailsModal
+        modalOpen={modalOpen}
+        setModalOpen={setModalOpen}
+        crop={modalData}
+      />
     </TableCell>
-
   ));
 
   const buildTableRows = (row) => Object.keys(row).map((key, index) => {
@@ -185,7 +170,6 @@ const MyCoverCropComparisonTable = () => {
         </TableCell>
       );
     }
-
     return (
       <TableCell align="center" key={index}>
         {extractData(attribute, 'comparisonTable', councilShorthandRedux)}
@@ -197,10 +181,15 @@ const MyCoverCropComparisonTable = () => {
     buildTable().then(() => { setRows(tempRows); });
   }, [comparisonKeysRedux, selectedCrops]);
 
+  useEffect(() => {
+    if (tableRef.current) {
+      dispatchRedux(setTableWidth(tableRef.current.scrollWidth));
+    }
+  }, [rows, dispatchRedux, tableRef]);
   return (
     // <TableContainer style={{ overflowX: 'initial' }}>
-    <TableContainer component="div" sx={{ maxHeight: '100vh' }} ref={tableRef}>
-      <Table stickyHeader aria-label="sticky table">
+    <TableContainer component="div" sx={{ overflowX: 'initial' }}>
+      <Table stickyHeader aria-label="sticky table" ref={tableRef}>
         <TableHead>
           <TableRow>
             <TableCell />
