@@ -17,6 +17,7 @@ const RenderTableItems = ({ showGrowthWindow, handleModalOpen }) => {
   // redux vars
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
+  const selectedCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCropIds);
 
   return cropDataRedux
     .sort((a, b) => (a.inactive || false) - (b.inactive || false))
@@ -33,6 +34,7 @@ const RenderTableItems = ({ showGrowthWindow, handleModalOpen }) => {
             style={{
               opacity: hasGoalRatingTwoOrLess(selectedGoalsRedux, crop) && '0.3',
               outline: '2px solid #598344',
+              backgroundColor: selectedCropIdsRedux.includes(crop.id) && '#EAEAEA',
             }}
           >
             <TableCell size="small" sx={{ maxWidth: 150 }}>
