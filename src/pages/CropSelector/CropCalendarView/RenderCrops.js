@@ -48,9 +48,12 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
     .map((crop, index) => (
       <TableRow
         key={`cropRow${index}`}
-        style={hasGoalRatingTwoOrLess(selectedGoalsRedux, crop) ? { opacity: '0.3' } : {}}
+        style={{
+          opacity: hasGoalRatingTwoOrLess(selectedGoalsRedux, crop) && '0.3',
+          backgroundColor: selectedCropIdsRedux.includes(crop.id) && '#EAEAEA',
+        }}
       >
-        <TableCell sx={{ padding: 0, backgroundColor: selectedCropIdsRedux.includes(crop.id) && '#EAEAEA' }}>
+        <TableCell sx={{ padding: 0 }}>
           <Grid container>
             <Grid item md={4} xs={12}>
               {crop ? (
@@ -141,7 +144,6 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
               size="small"
               style={{
                 textAlign: 'center',
-                backgroundColor: selectedCropIdsRedux.includes(crop.id) && '#EAEAEA',
               }}
               key={i}
               className="goalCells"
@@ -164,7 +166,7 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
               </div>
             </TableCell>
           ))}
-        <TableCell sx={{ padding: 0 }} colSpan="12" style={{ backgroundColor: selectedCropIdsRedux.includes(crop.id) && '#EAEAEA' }}>
+        <TableCell sx={{ padding: 0 }} colSpan="12">
           <CropSelectorCalendarView from="calendar" data={crop} />
         </TableCell>
 
@@ -172,7 +174,6 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
           sx={{
             padding: 0,
           }}
-          style={{ backgroundColor: selectedCropIdsRedux.includes(crop.id) && '#EAEAEA' }}
         >
           {' '}
           <LightButton
