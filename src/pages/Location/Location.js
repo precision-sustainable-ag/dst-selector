@@ -275,11 +275,28 @@ const Location = () => {
       }}
     >
       <Grid container spacing={2}>
-        <Grid container item md={stateLabelRedux === 'Ontario' ? 12 : 3} xs={12}>
-          <Grid item xs={12}>
+        <Grid item xs={12} xl={12}>
+          <Grid
+            item
+            xs={12}
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
             <Typography variant="h4">
               Field Location
             </Typography>
+          </Grid>
+          <Grid
+            item
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
             <Typography variant="body1">
               Find your address or ZIP code using the search bar on the map and hit
               <Search fontSize="inherit" />
@@ -291,13 +308,21 @@ const Location = () => {
             </Typography>
           </Grid>
 
-          <Grid item xs={12}>
+          <Grid
+            item
+            xs={12}
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
             <PlantHardinessZone />
           </Grid>
 
         </Grid>
         {stateLabelRedux !== 'Ontario' && (
-        <Grid item md={9} xs={12}>
+        <Grid item s={9} xs={12}>
           <Container maxWidth="md">
             <Map
               setAddress={setSelectedToEditSite}
