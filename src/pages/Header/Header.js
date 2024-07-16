@@ -170,6 +170,15 @@ const Header = () => {
             </Grid>
           ))}
           <Grid item>
+            <a href="https://precision-sustainable-ag.atlassian.net/wiki/spaces/DST/pages/277413889/Species+Selector+Patch+Notes" target="_blank" rel="noreferrer">
+              <Button>
+                <Typography variant="body2" sx={{ color: 'black', fontWeight: 'bold' }}>
+                  Release Notes
+                </Typography>
+              </Button>
+            </a>
+          </Grid>
+          <Grid item>
             <AuthButton
               type={isAuthenticated ? 'Logout' : 'Login'}
               color={isAuthenticated ? 'error' : 'secondary'}
