@@ -33,6 +33,7 @@ const Header = () => {
   const history = useHistory();
   const dispatchRedux = useDispatch();
   const { isAuthenticated, getAccessTokenSilently } = useAuth0();
+  const releaseNotesURL = 'https://precision-sustainable-ag.atlassian.net/wiki/spaces/DST/pages/277413889/Species+Selector+Patch+Notes';
 
   // useRef vars
   const logoRef = useRef(null);
@@ -170,13 +171,11 @@ const Header = () => {
             </Grid>
           ))}
           <Grid item>
-            <a href="https://precision-sustainable-ag.atlassian.net/wiki/spaces/DST/pages/277413889/Species+Selector+Patch+Notes" target="_blank" rel="noreferrer">
-              <Button>
-                <Typography variant="body2" sx={{ color: 'black', fontWeight: 'bold' }}>
-                  Release Notes
-                </Typography>
-              </Button>
-            </a>
+            <Button onClick={() => window.open(releaseNotesURL)}>
+              <Typography variant="body2" sx={{ color: 'black', fontWeight: 'bold' }}>
+                Release Notes
+              </Typography>
+            </Button>
           </Grid>
           <Grid item>
             <AuthButton
