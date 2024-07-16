@@ -28,7 +28,6 @@ const CropTableCard = ({ crop, indexKey, showGrowthWindow }) => {
             size="small"
             style={{
               textAlign: 'center',
-              backgroundColor: selectedCropIdsRedux.includes(crop.id) && '#EAEAEA',
             }}
             key={index}
             className="goalCells"
@@ -53,7 +52,7 @@ const CropTableCard = ({ crop, indexKey, showGrowthWindow }) => {
         ))}
 
       {showGrowthWindow && (
-        <TableCell size="small" style={{ maxWidth: 200, backgroundColor: selectedCropIdsRedux.includes(crop.id) && '#EAEAEA' }}>
+        <TableCell size="small" style={{ maxWidth: 200 }}>
           <CropSelectorCalendarView data={crop} from="listView" />
         </TableCell>
       )}
