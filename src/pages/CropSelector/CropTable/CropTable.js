@@ -2,8 +2,8 @@
 /*
   This file contains the CropTable component
 */
-import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useState, useEffect, useRef } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   Button,
   CircularProgress,
@@ -27,6 +27,7 @@ import '../../../styles/cropCalendarViewComponent.scss';
 import '../../../styles/cropTable.scss';
 import CropDetailsModal from '../../../components/CropDetailsModal/CropDetailsModal';
 import RenderTableItems from './RenderTableItems';
+import { setTableWidth } from '../../../reduxStore/pageSlice';
 
 const CropTable = ({
   listView,
@@ -112,10 +113,21 @@ const CropTable = ({
     sortByAverageGoals();
   }, []);
 
+  const tableRef = useRef(null);
+  const dispatchRedux = useDispatch();
+  useEffect(() => {
+    if (tableRef.current) {
+      // const tableWidth = tableRef.current.offsetWidth;
+      const tableWidth = tableRef.current.scrollWidth;
+      // tableWidth += 1000;
+      // console.log('table width in page', tableWidth, typeof (tableWidth));
+      dispatchRedux(setTableWidth(tableWidth));
+    }
+  }, [dispatchRedux, tableRef]);
   return cropDataRedux.length !== 0 ? (
     <>
-      <TableContainer component="div">
-        <Table stickyHeader sx={{ borderSpacing: '7px', padding: 0 }}>
+      <TableContainer component="div" sx={{ overflowX: 'initial' }}>
+        <Table stickyHeader sx={{ borderSpacing: '7px', padding: 0 }} ref={tableRef}>
           <TableHead>
             <TableRow style={{ paddingBottom: '5px', whiteSpace: 'nowrap' }}>
               <LightButton

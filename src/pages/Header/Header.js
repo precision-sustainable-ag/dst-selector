@@ -139,6 +139,14 @@ const Header = () => {
     // TODO: councilShorthandRedux here is for re-import userHistoryList when the app is reset
   }, [isAuthenticated, getAccessTokenSilently, councilShorthandRedux]);
 
+  const [headerWidth, setHeaderWidth] = useState('100%');
+  const tableWidth = useSelector((stateRedux) => stateRedux.pageData.tableWidth);
+  const sidebarWidth = useSelector((stateRedux) => stateRedux.pageData.sidebarWidth);
+  useEffect(() => {
+    const windowSize = window.innerWidth;
+    setHeaderWidth(`${Math.max(windowSize, tableWidth + sidebarWidth)}px`);
+  }, [tableWidth, sidebarWidth]);
+
   const chooseTopBar = (option) => {
     if (option) {
       return (
@@ -214,7 +222,7 @@ const Header = () => {
   };
 
   return (
-    <header>
+    <header style={{ width: headerWidth }}>
       <Box>
         <Grid container>
           <Grid item container alignItems="center" sx={{ height: headerHeight }}>
