@@ -294,7 +294,6 @@ const CropSidebar = ({
     // FIXME: this function returns a compoennt in useEffect, not sure why doing that
     filtersList();
   }, [sidebarFilters]);
-
   return !loading && (from === 'myCoverCropListStatic') ? (
     <Grid container spacing={3}>
       <Grid item>
