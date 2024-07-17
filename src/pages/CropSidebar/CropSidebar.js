@@ -294,15 +294,6 @@ const CropSidebar = ({
     // FIXME: this function returns a compoennt in useEffect, not sure why doing that
     filtersList();
   }, [sidebarFilters]);
-
-  // const sidebarRef = useRef(null);
-  // useEffect(() => {
-  //   if (sidebarRef.current) {
-  //     const sidebarWidth = sidebarRef.current.offsetWidth;
-  //     // console.log('got sidebar width', sidebarWidth);
-  //     dispatchRedux(setSidebarWidth(sidebarWidth));
-  //   }
-  // }, [dispatchRedux, sidebarRef]);
   return !loading && (from === 'myCoverCropListStatic') ? (
     <Grid container spacing={3}>
       <Grid item>

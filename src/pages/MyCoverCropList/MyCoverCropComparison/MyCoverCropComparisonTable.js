@@ -56,7 +56,6 @@ const MyCoverCropComparisonTable = () => {
     setModalData(crop);
     setModalOpen(true);
   };
-
   const buildTable = async () => {
     // used to add cover crop group
     const groupRow = { comparisonKey: 'Cover Crop Group' };
@@ -132,11 +131,6 @@ const MyCoverCropComparisonTable = () => {
       >
         {crop.label}
       </Typography>
-      <CropDetailsModal
-        modalOpen={modalOpen}
-        setModalOpen={setModalOpen}
-        crop={modalData}
-      />
     </TableCell>
   ));
 
@@ -191,6 +185,13 @@ const MyCoverCropComparisonTable = () => {
     <TableContainer component="div" sx={{ overflowX: 'initial' }}>
       <Table stickyHeader aria-label="sticky table" ref={tableRef}>
         <TableHead>
+          {modalOpen && (
+            <CropDetailsModal
+              modalOpen={modalOpen}
+              setModalOpen={setModalOpen}
+              crop={modalData}
+            />
+          )}
           <TableRow>
             <TableCell />
             {buildTableHeaders()}
