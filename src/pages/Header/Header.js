@@ -27,13 +27,13 @@ import { setAuthToken } from '../../shared/authToken';
 import { loadHistory } from '../../shared/api';
 import HistoryDialog from '../../components/HistoryDialog/HistoryDialog';
 import SaveUserHistory from './SaveUserHistory/SaveUserHistory';
+import { releaseNotesURL } from '../../shared/keys';
 // import logoImage from '../../../public/images/PSAlogo-text.png';
 
 const Header = () => {
   const history = useHistory();
   const dispatchRedux = useDispatch();
   const { isAuthenticated, getAccessTokenSilently } = useAuth0();
-  const releaseNotesURL = 'https://precision-sustainable-ag.atlassian.net/wiki/spaces/DST/pages/277413889/Species+Selector+Patch+Notes';
 
   // useRef vars
   const logoRef = useRef(null);
