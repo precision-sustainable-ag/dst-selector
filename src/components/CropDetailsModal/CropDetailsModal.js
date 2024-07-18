@@ -17,6 +17,7 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
   // redux vars
   const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
   const regionShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.regionShorthand);
+  const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
   const consentRedux = useSelector((stateRedux) => stateRedux.userData.consent);
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
@@ -103,20 +104,22 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
                   Terminology Definitions
                 </Button>
               </Grid>
-              <Grid item>
-                <Button
-                  startIcon={<Print />}
-                  style={{
-                    color: 'white',
-                    textTransform: 'none',
-                    marginLeft: '2em',
-                    textDecoration: 'underline',
-                  }}
-                  onClick={print}
-                >
-                  Print
-                </Button>
-              </Grid>
+              {councilShorthandRedux === 'NECCC' && (
+                <Grid item>
+                  <Button
+                    startIcon={<Print />}
+                    style={{
+                      color: 'white',
+                      textTransform: 'none',
+                      marginLeft: '2em',
+                      textDecoration: 'underline',
+                    }}
+                    onClick={print}
+                  >
+                    Print
+                  </Button>
+                </Grid>
+              )}
             </Grid>
 
             <Grid item xs={1}>
