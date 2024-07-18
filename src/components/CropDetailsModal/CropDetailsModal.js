@@ -17,7 +17,6 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
   // redux vars
   const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
   const regionShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.regionShorthand);
-  const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
   const consentRedux = useSelector((stateRedux) => stateRedux.userData.consent);
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
@@ -25,6 +24,7 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
   // useState vars
   const [dataDone, setDataDone] = useState(false);
   const [modalData, setModalData] = useState([]);
+  const [printEnabled, setPrintEnabled] = useState(false);
 
   useEffect(() => {
     const regionQuery = `${encodeURIComponent('regions')}=${encodeURIComponent(regionIdRedux)}`;
@@ -37,6 +37,14 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
           setDataDone(true);
         });
     }
+
+    // fetch the pdf properties to verify it exists in blob storage. if yes, enable printing
+    fetch(`https://selectorimages.blob.core.windows.net/selectorimages/pdf/${crop.label}%20Zone%20${regionShorthandRedux}.pdf`, { method: 'HEAD' })
+      .then((res) => {
+        if (res.status !== 404) {
+          setPrintEnabled(true);
+        }
+      });
   }, [crop]);
 
   useEffect(() => {
@@ -104,7 +112,7 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
                   Terminology Definitions
                 </Button>
               </Grid>
-              {councilShorthandRedux === 'NECCC' && (
+              {printEnabled && (
                 <Grid item>
                   <Button
                     startIcon={<Print />}
