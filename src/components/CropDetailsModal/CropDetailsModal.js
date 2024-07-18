@@ -16,6 +16,7 @@ import { callCoverCropApi } from '../../shared/constants';
 const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
   // redux vars
   const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
+  const regionShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.regionShorthand);
   const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
   const consentRedux = useSelector((stateRedux) => stateRedux.userData.consent);
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
@@ -56,7 +57,7 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
         label: document.title,
       });
     }
-    window.open(`https://selectorimages.blob.core.windows.net/selectorimages/pdf/${document.title}.pdf`, '_blank');
+    window.open(`https://selectorimages.blob.core.windows.net/selectorimages/pdf/${crop.label}%20Zone%20${regionShorthandRedux}.pdf`, '_blank');
   }; // print
 
   return dataDone === true && (
