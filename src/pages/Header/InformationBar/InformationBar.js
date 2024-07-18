@@ -4,7 +4,7 @@
   Styles are created using CustomStyles from ../../../shared/constants and ../../../styles/greenBar.scss
 */
 
-import { Button, Grid } from '@mui/material';
+import { Grid } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
@@ -14,6 +14,7 @@ import FilterHdrIcon from '@mui/icons-material/FilterHdr';
 import React from 'react';
 import ProgressButtons from '../../../shared/ProgressButtons';
 import { gotoProgress } from '../../../reduxStore/sharedSlice';
+import PSAButton from '../../../shared/PSAButton';
 
 const speciesSelectorToolName = '/';
 
@@ -93,27 +94,25 @@ const InformationBar = ({ pathname }) => {
     }
 
     return (
-      <Button
+      <PSAButton
         onClick={() => handleBtnClick(type)}
         sx={{
-          '&:hover': {
-            borderColor: '#62b8bc',
-            backgroundColor: '#49a8ab',
-          },
+          // '&:hover': {
+          //   borderColor: '#62b8bc',
+          //   backgroundColor: '#49a8ab',
+          // },
           borderRadius: '200px',
           color: 'black',
           width: '100%',
-          background:
+          backgroundColor:
             ((type === 'location' && progressRedux > 0)
               || (type === 'site' && progressRedux > 1)
               || (type === 'goals' && progressRedux > 2))
             && '#e3f2f4',
 
         }}
-
-      >
-        {getIconInfo(type)}
-      </Button>
+        data={getIconInfo(type)}
+      />
     );
   };
 
@@ -162,23 +161,3 @@ const InformationBar = ({ pathname }) => {
 };
 
 export default InformationBar;
-
-//     <Button
-//       onClick={() => handleBtnClick(type)}
-//       style={{
-//         borderRadius: '200px',
-//         color: 'black',
-//         width: '100%',
-//         background:
-//           ((type === 'location' && progressRedux > 0)
-//             || (type === 'site' && progressRedux > 1)
-//             || (type === 'goals' && progressRedux > 2))
-//           && '#e3f2f4',
-
-//       }}
-
-//     >
-//       {getIconInfo(type)}
-//     </Button>
-//   );
-// };
