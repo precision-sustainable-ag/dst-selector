@@ -43,6 +43,8 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
       .then((res) => {
         if (res.status !== 404) {
           setPrintEnabled(true);
+        } else {
+          setPrintEnabled(false);
         }
       });
   }, [crop]);
