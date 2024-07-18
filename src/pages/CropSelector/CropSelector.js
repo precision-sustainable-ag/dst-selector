@@ -16,13 +16,13 @@ import {
 import { ArrowBack, ArrowForward, KeyboardArrowUp } from '@mui/icons-material';
 import React, { useEffect, useState, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import ReactGA from 'react-ga';
 // import '../../styles/cropSelector.scss';
 import MyCoverCropList from '../MyCoverCropList/MyCoverCropList';
 import CropCalendarView from './CropCalendarView/CropCalendarView';
 import CropSidebar from '../CropSidebar/CropSidebar';
 import CropTable from './CropTable/CropTable';
 import { setSidebarWidth } from '../../reduxStore/pageSlice';
+import pirschAnalytics from '../../shared/analytics';
 
 const ScrollTop = ({ children }) => {
   const trigger = useScrollTrigger({
@@ -67,11 +67,7 @@ const CropSelector = (props) => {
   const [cropData, setCropData] = useState([]);
 
   useEffect(() => {
-    if (consentRedux === true) {
-      ReactGA.initialize('UA-181903489-1');
-
-      ReactGA.pageview('cover crop selector');
-    }
+    pirschAnalytics('Get A Recommendation');
   }, [consentRedux]);
 
   useEffect(() => {
