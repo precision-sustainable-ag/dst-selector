@@ -29,12 +29,12 @@ import {
   allMonths,
   CustomStyles,
   sortCrops,
-  LightButton,
 } from '../../../shared/constants';
 
 import '../../../styles/cropCalendarViewComponent.scss';
 import RenderCrops from './RenderCrops';
 import CropDetailsModal from '../../../components/CropDetailsModal/CropDetailsModal';
+import PSAButton from '../../../shared/PSAButton';
 
 const growthIcon = {
   color: 'white',
@@ -150,28 +150,18 @@ const CropCalendarView = ({
           >
             <TableHead sx={{ zIndex: -1 }}>
               <TableRow style={{ paddingBottom: '5px', whiteSpace: 'nowrap' }}>
-                <LightButton
+                <PSAButton
                   onClick={() => setListView(false)}
-                  color="secondary"
                   style={{ marginBottom: '7px', background: listView ? undefined : '#49a8ab' }}
                   startIcon={<ListIcon style={{ fontSize: 'larger' }} />}
-                >
-                  CROP LIST
-                </LightButton>
-                <LightButton
-                  onClick={() => setListView(true)} //= ================================================================================================  '#49a8ab'
-                  color="secondary"
-                  // sx={{
-                  //   '&:hover': {
-                  //     borderColor: '#62b8bc',
-                  //     backgroundColor: '#49a8ab',
-                  //   },
-                  // }}
+                  data="CROP LIST"
+                />
+                <PSAButton
+                  onClick={() => setListView(true)}
                   style={{ marginBottom: '7px', background: listView ? '#49a8ab' : undefined }}
                   startIcon={<CalendarToday style={{ fontSize: 'larger' }} />}
-                >
-                  CROP CALENDAR
-                </LightButton>
+                  data="CROP CALENDAR"
+                />
                 {activeGrowthPeriodRedux.length === 0 && (
                   <>
                     {activeGrowthPeriodRedux.includes('Jan') ? (
