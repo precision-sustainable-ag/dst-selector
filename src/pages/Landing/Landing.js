@@ -17,7 +17,6 @@ import React, {
   useMemo,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import ReactGA from 'react-ga';
 import { RegionSelectorMap } from '@psa/dst.ui.region-selector-map';
 import { useAuth0 } from '@auth0/auth0-react';
 import { callCoverCropApi } from '../../shared/constants';
@@ -25,6 +24,7 @@ import { updateRegion, updateRegions, updateStateInfo } from '../../reduxStore/m
 import { updateLocation } from '../../reduxStore/addressSlice';
 import { historyState, setHistoryDialogState, updateField } from '../../reduxStore/userSlice';
 import HistorySelect from '../../components/HistorySelect/HistorySelect';
+import pirschAnalytics from '../../shared/analytics';
 
 const Landing = () => {
   const dispatchRedux = useDispatch();
@@ -150,10 +150,7 @@ const Landing = () => {
   }, [selectedState]);
 
   useEffect(() => {
-    if (consentRedux) {
-      ReactGA.initialize('UA-181903489-1');
-      ReactGA.pageview('cover crop selector');
-    }
+    pirschAnalytics('Landing');
   }, [consentRedux]);
 
   const [containerHeight, setContainerHeight] = useState();
