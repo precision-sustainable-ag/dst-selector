@@ -27,6 +27,7 @@ import { setAuthToken } from '../../shared/authToken';
 import { loadHistory } from '../../shared/api';
 import HistoryDialog from '../../components/HistoryDialog/HistoryDialog';
 import SaveUserHistory from './SaveUserHistory/SaveUserHistory';
+import { releaseNotesURL } from '../../shared/keys';
 // import logoImage from '../../../public/images/PSAlogo-text.png';
 
 const Header = () => {
@@ -177,6 +178,13 @@ const Header = () => {
               </Tooltip>
             </Grid>
           ))}
+          <Grid item>
+            <Button onClick={() => window.open(releaseNotesURL)}>
+              <Typography variant="body2" sx={{ color: 'black', fontWeight: 'bold' }}>
+                Release Notes
+              </Typography>
+            </Button>
+          </Grid>
           <Grid item>
             <AuthButton
               type={isAuthenticated ? 'Logout' : 'Login'}
