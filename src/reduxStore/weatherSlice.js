@@ -58,6 +58,11 @@ export const setWeatherRedux = (weatherData) => ({
   payload: { weatherData },
 });
 
+export const setWeatherReduxForTest = (weatherData) => ({
+  type: 'SET_WEATHER_REDUX_TEST',
+  payload: { weatherData },
+});
+
 const weatherReducer = (state = initialState, action = null) => {
   switch (action.type) {
     case 'UPDATE_WEATHER_CONDITIONS':
@@ -110,6 +115,12 @@ const weatherReducer = (state = initialState, action = null) => {
 
     case 'SET_WEATHER_REDUX':
       return { ...state, ...action.payload.weatherData };
+
+    case 'SET_WEATHER_REDUX_TEST':
+      return {
+        ...state,
+        weatherData: { ...action.payload.weatherData },
+      };
 
     default:
       return { ...state };

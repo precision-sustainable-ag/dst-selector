@@ -37,14 +37,17 @@
     "redux-devtools-extension": "^2.13.9",
     "sass-mediaqueries": "^1.6.1",
     "styled-components": "^5.3.6",
-    "worker-loader": "^3.0.8"
+    "worker-loader": "^3.0.8",
+    "cypress": "^13.13.0"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "cypress:e2e:dev": "npx cypress run --config-file dev.config.js",
+    "cypress:comp:dev": "npx cypress run --component --config-file=dev.config.js"
   },
   "eslintConfig": {
     "extends": "react-app"

@@ -2,7 +2,7 @@
 
 **Date Created:** 8/18/22
 
-**Date Last Modified:** 05/31/2024
+**Date Last Modified:** 07/10/2024
 
 The species selector DST is used to help farmers select a cover crop that fits their goals and constraints. The user can either input specifics about their field location and cover cropping goals or explore cover crops without entering those details. The tool is mainly used to explore expert reccomendations and ratings for cover crops in the farmer's USDA Plant Hardiness Zone. This allows farmers to make educated decisions that are best suited for their specific goals and can save time as opposed to calling the extension office.
 
@@ -20,6 +20,7 @@ To see development progress, visit [http://covercrop.tools](http://covercrop.too
 - [Running in docker:](#running-in-docker)
 - [Documentation](#documentation)
 - [Runbook](#runbook)
+- [Unit Testing](#unit-testing)
 
 ## Tech stack
 
@@ -88,6 +89,10 @@ Set Line spacing (CRLF -> LF)
 `git config core.autocrlf false`
 `git rm --cached -r .`
 `git reset --hard`
+
+## Unit Testing
+To run the Cypress client
+`npx cypress open --config-file=dev.config.js`
 
 
 

@@ -80,9 +80,10 @@ const PlantHardinessZone = () => {
       onChange={updateRegionRedux}
       value={regionShorthandRedux || ''}
       error={!regionShorthandRedux}
+      data-cy="plant-hardiness-zone-dropdown"
     >
       {regionsRedux?.length > 0 && regionsRedux.map((region, i) => (
-        <MenuItem value={region.shorthand} key={`Region${region}${i}`}>
+        <MenuItem value={region.shorthand} key={`Region${region}${i}`} data-cy={`plant-hardiness-zone-dropdown-item-${i}`}>
           {councilLabelRedux !== 'Midwest Cover Crops Council' ? `Zone ${region.shorthand?.toUpperCase()}` : `${region.shorthand?.toUpperCase()}`}
         </MenuItem>
       ))}

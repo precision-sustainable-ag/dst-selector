@@ -1,0 +1,133 @@
+{
+    "type": "array",
+    "data": [
+      {
+        "id": 5,
+        "label": "Alabama",
+        "shorthand": "AL",
+        "councilId": 57,
+        "localityId": 1,
+        "council": {
+          "id": 57,
+          "label": "Southern Cover Crops Council",
+          "shorthand": "SCCC"
+        }
+      },
+      {
+        "id": 8,
+        "label": "Arkansas",
+        "shorthand": "AR",
+        "councilId": 57,
+        "localityId": 1,
+        "council": {
+          "id": 57,
+          "label": "Southern Cover Crops Council",
+          "shorthand": "SCCC"
+        }
+      },
+      {
+        "id": 11,
+        "label": "Connecticut",
+        "shorthand": "CT",
+        "councilId": 55,
+        "localityId": 1,
+        "council": {
+          "id": 55,
+          "label": "Northeast Cover Crops Council",
+          "shorthand": "NECCC"
+        }
+      },
+      {
+        "id": 12,
+        "label": "Delaware",
+        "shorthand": "DE",
+        "councilId": 55,
+        "localityId": 1,
+        "council": {
+          "id": 55,
+          "label": "Northeast Cover Crops Council",
+          "shorthand": "NECCC"
+        }
+      },
+      {
+        "id": 13,
+        "label": "Florida",
+        "shorthand": "FL",
+        "councilId": 57,
+        "localityId": 1,
+        "council": {
+          "id": 57,
+          "label": "Southern Cover Crops Council",
+          "shorthand": "SCCC"
+        }
+      },
+      {
+        "id": 14,
+        "label": "Georgia",
+        "shorthand": "GA",
+        "councilId": 57,
+        "localityId": 1,
+        "council": {
+          "id": 57,
+          "label": "Southern Cover Crops Council",
+          "shorthand": "SCCC"
+        }
+      },
+      {
+        "id": 17,
+        "label": "Illinois",
+        "shorthand": "IL",
+        "councilId": 56,
+        "localityId": 1,
+        "council": {
+          "id": 56,
+          "label": "Midwest Cover Crops Council",
+          "shorthand": "MCCC"
+        }
+      },
+      {
+        "id": 18,
+        "label": "Indiana",
+        "shorthand": "IN",
+        "councilId": 56,
+        "localityId": 1,
+        "council": {
+          "id": 56,
+          "label": "Midwest Cover Crops Council",
+          "shorthand": "MCCC"
+        }
+      },
+      {
+        "id": 19,
+        "label": "Iowa",
+        "shorthand": "IA",
+        "councilId": 56,
+        "localityId": 1,
+        "council": {
+          "id": 56,
+          "label": "Midwest Cover Crops Council",
+          "shorthand": "MCCC"
+        }
+      },
+      {
+        "id": 20,
+        "label": "Kansas",
+        "shorthand": "KS",
+        "councilId": 56,
+        "localityId": 1,
+        "council": {
+          "id": 56,
+          "label": "Midwest Cover Crops Council",
+          "shorthand": "MCCC"
+        }
+      }
+    ],
+    "meta": {
+      "page": 1,
+      "perPage": 200,
+      "limit": 200,
+      "offset": 0,
+      "records": 10
+    }
+  }
+  
