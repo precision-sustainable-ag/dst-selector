@@ -7,7 +7,7 @@ import { Button } from '@mui/material';
 import { CustomStyles } from './constants';
 
 const PSAButton = ({
-  data, onClick, disabled, style, sx,
+  data, onClick, disabled, style, sx, icon,
 }) => {
   const buttonProps = {
     backgroundColor: CustomStyles().secondaryProgressBtnBorderColor,
@@ -24,6 +24,7 @@ const PSAButton = ({
 
   return (
     <Button style={style} onClick={onClick} disabled={disabled} sx={{ ...buttonProps, ...sx }}>
+      {icon}
       {data}
     </Button>
   );

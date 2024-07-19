@@ -8,7 +8,6 @@ import { Refresh } from '@mui/icons-material';
 import { Stack, Tooltip, Badge } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { LightButton } from './constants';
 import { reset } from '../reduxStore/store';
 import { updateProgress, setMyCoverCropReset } from '../reduxStore/sharedSlice';
 import PSAButton from './PSAButton';
@@ -76,7 +75,7 @@ const ProgressButtonsInner = ({
         </Tooltip>
       ) : (
         <Badge badgeContent={progressRedux === 4 ? selectedCropIdsRedux.length : null} color="error">
-          <LightButton
+          <PSAButton
             style={{
               maxWidth: '90px',
               maxHeight: '35px',
@@ -86,13 +85,12 @@ const ProgressButtonsInner = ({
             }}
             onClick={() => (progressRedux === 4 ? setMyCoverCropActivationFlag() : changeProgress('increment'))}
             disabled={isDisabledNext || (progressRedux === 4 && selectedCropIdsRedux.length === 0)}
-          >
-            {progressRedux === 4 ? 'MY SELECTED CROPS' : 'NEXT'}
-          </LightButton>
+            data={progressRedux === 4 ? 'MY SELECTED CROPS' : 'NEXT'}
+          />
         </Badge>
       )}
 
-      <LightButton
+      <PSAButton
         style={{
           maxWidth: '90px',
           maxHeight: '35px',
@@ -108,10 +106,9 @@ const ProgressButtonsInner = ({
           }
         }}
         disabled={isDisabledRefresh}
-      >
-        <Refresh />
-        Restart
-      </LightButton>
+        data="Restart"
+        icon={<Refresh />}
+      />
     </Stack>
   );
 };
