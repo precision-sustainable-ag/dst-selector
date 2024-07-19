@@ -26,11 +26,11 @@ const PreviousCashCrop = () => {
   return (
     <>
       <Grid item container xs={12} alignItems="center" justifyContent="center">
-        <Typography align="center" variant="h4">
+        <Typography align="center" variant="h4" data-cy="title-growing-window">
           Cash Crop Growing Window
         </Typography>
       </Grid>
-      <Grid item container xs={12} mb={isMobile ? 4 : 7}>
+      <Grid item container xs={12} mb={isMobile ? 4 : 7} justifyContent="center">
         <Typography variant="subtitle1" align="center" gutterBottom>
           Enter your cash crop growing window if you would like to see it displayed on the calendar.
         </Typography>
@@ -46,7 +46,7 @@ const PreviousCashCrop = () => {
           display="flex"
         >
           <Grid item md={6}>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <LocalizationProvider dateAdapter={AdapterDayjs} data-cy="planting-date-picker">
               <DatePicker
                 slotProps={{
                   textField: {
@@ -57,6 +57,7 @@ const PreviousCashCrop = () => {
                 label="Planting Date"
                 value={dayjs(cashCropDataRedux.dateRange.startDate)}
                 onChange={(newDate) => handleDispatch(newDate, cashCropDataRedux.dateRange.endDate)}
+                data-cy="planting-date-picker"
               />
             </LocalizationProvider>
           </Grid>

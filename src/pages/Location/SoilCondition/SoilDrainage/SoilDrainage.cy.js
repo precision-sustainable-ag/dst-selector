@@ -17,7 +17,7 @@ describe('<SoilDrainage />', () => {
     );
   });
 
-  it('should render the soil drainage card', () => {    
+  it('should render the soil drainage card', () => {
     cy.assertByTestId('soil-drainage-card');
     cy.get('[datay-cy="drainage-reset-button"]').should('not.exist');
     cy.get('[data-cy="tiling-check-switch"]').should('not.exist');
@@ -29,6 +29,5 @@ describe('<SoilDrainage />', () => {
       cy.assertByTestId('tiling-check-switch');
       cy.assertByTestId('drainage-reset-button');
     }
-
   });
 });
