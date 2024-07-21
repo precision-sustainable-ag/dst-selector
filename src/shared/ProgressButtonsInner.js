@@ -41,9 +41,7 @@ const ProgressButtonsInner = ({
       <PSAButton
         style={{
           maxWidth: '90px',
-          maxHeight: '35px',
           minWidth: '70px',
-          fontSize: '13px',
           marginLeft: progressRedux === 4 ? '-75px' : '0px',
         }}
         onClick={() => changeProgress('decrement')}
@@ -61,9 +59,7 @@ const ProgressButtonsInner = ({
             <PSAButton
               style={{
                 maxWidth: '90px',
-                maxHeight: '35px',
                 minWidth: '70px',
-                fontSize: '13px',
                 marginLeft: progressRedux === 4 ? '-75px' : '0px',
               }}
               onClick={() => changeProgress('increment')}
@@ -78,9 +74,7 @@ const ProgressButtonsInner = ({
           <PSAButton
             style={{
               maxWidth: '90px',
-              maxHeight: '35px',
               minWidth: progressRedux === 4 ? 'max-content' : '70px',
-              fontSize: '13px',
               marginLeft: '3%',
             }}
             onClick={() => (progressRedux === 4 ? setMyCoverCropActivationFlag() : changeProgress('increment'))}
@@ -93,9 +87,7 @@ const ProgressButtonsInner = ({
       <PSAButton
         style={{
           maxWidth: '90px',
-          maxHeight: '35px',
           minWidth: '90px',
-          fontSize: '13px',
           marginLeft: '3%',
         }}
         onClick={() => {
@@ -107,7 +99,7 @@ const ProgressButtonsInner = ({
         }}
         disabled={isDisabledRefresh}
         data="Restart"
-        icon={<Refresh />}
+        startIcon={<Refresh />}
       />
     </Stack>
   );

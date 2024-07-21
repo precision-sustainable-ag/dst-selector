@@ -121,13 +121,15 @@ const CropTable = ({
             <TableRow style={{ paddingBottom: '5px', whiteSpace: 'nowrap' }}>
               <PSAButton
                 onClick={() => setListView(false)}
-                style={{ marginBottom: '7px', background: listView ? undefined : '#49a8ab' }}
+                selected={!listView}
+                style={{ marginBottom: '7px' }}
                 startIcon={<ListIcon style={{ fontSize: 'larger' }} />}
                 data="CROP LIST"
               />
               <PSAButton
                 onClick={() => setListView(true)}
-                style={{ marginBottom: '7px', background: listView ? '#49a8ab' : undefined }}
+                selected={listView}
+                style={{ marginBottom: '7px' }}
                 startIcon={<CalendarToday style={{ fontSize: 'larger' }} />}
                 data="CROP CALENDAR"
               />
