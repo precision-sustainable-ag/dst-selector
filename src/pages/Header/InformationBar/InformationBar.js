@@ -97,10 +97,6 @@ const InformationBar = ({ pathname }) => {
       <PSAButton
         onClick={() => handleBtnClick(type)}
         sx={{
-          // '&:hover': {
-          //   borderColor: '#62b8bc',
-          //   backgroundColor: '#49a8ab',
-          // },
           borderRadius: '200px',
           color: 'black',
           width: '100%',
