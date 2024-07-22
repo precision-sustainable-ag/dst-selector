@@ -23,7 +23,15 @@ const CropTableCard = ({ crop, indexKey, showGrowthWindow }) => {
     <>
       {selectedGoalsRedux.length > 0
         && selectedGoalsRedux.map((goal, index) => (
-          <TableCell size="small" style={{ textAlign: 'center' }} key={index} className="goalCells">
+
+          <TableCell
+            size="small"
+            style={{
+              textAlign: 'center',
+            }}
+            key={index}
+            className="goalCells"
+          >
             <div>
               <Tooltip
                 arrow
@@ -49,7 +57,14 @@ const CropTableCard = ({ crop, indexKey, showGrowthWindow }) => {
         </TableCell>
       )}
 
-      <TableCell size="small" style={{ maxWidth: '150px', textAlign: 'center' }}>
+      <TableCell
+        size="small"
+        style={{
+          maxWidth: '150px',
+          textAlign: 'center',
+          backgroundColor: selectedCropIdsRedux.includes(crop.id) && '#EAEAEA',
+        }}
+      >
         <Box
           sx={{
             display: 'flex',
@@ -62,7 +77,7 @@ const CropTableCard = ({ crop, indexKey, showGrowthWindow }) => {
           <LightButton
             id={`cartBtn${indexKey}`}
             style={{
-              backgroundColor: 'white',
+              backgroundColor: selectedCropIdsRedux.includes(crop.id) ? '#EAEAEA' : 'white',
               color: selectedBtns.includes(crop.id) ? '#d32f2f' : '#2d7b7b',
             }}
             className={selectedBtns.includes(crop.id) ? 'activeCartBtn' : 'inactiveCartBtn'}

@@ -7,7 +7,7 @@ import { setTileDrainage, updateDrainageClass as updateDrainageClassRedux } from
 import { historyState, setHistoryState } from '../../../../reduxStore/userSlice';
 
 const RenderDrainageClasses = ({
-  setNewDrainage, setShowTiling, drainage = [],
+  setNewDrainage, setShowTiling, drainageOptions, drainage = [],
 }) => {
   const dispatchRedux = useDispatch();
 
@@ -23,15 +23,7 @@ const RenderDrainageClasses = ({
 
   const [previousDrainage, setPreviousDrainage] = useState(-1);
   const [updateTilingCheck, setUpdateTilingCheck] = useState(false);
-  const drainageArray = [
-    'Very poorly drained',
-    'Poorly drained',
-    'Somewhat poorly drained',
-    'Moderately well drained',
-    'Well drained',
-    'Somewhat excessively drained',
-    'Excessively drained',
-  ];
+  const drainageArray = drainageOptions.map((option) => option.value);
   const drainageVal = [drainageArray.indexOf(drainage)];
 
   // functions

@@ -14,9 +14,8 @@ import { setTileDrainage, updateDrainageClass as updateDrainageClassRedux } from
 import MyCoverCropReset from '../../../../components/MyCoverCropReset/MyCoverCropReset';
 import { historyState, setHistoryState } from '../../../../reduxStore/userSlice';
 
-const SoilDrainage = () => {
+const SoilDrainage = ({ drainageOptions }) => {
   const dispatchRedux = useDispatch();
-
   // theme
   const uiTheme = useTheme();
   const isMobile = useMediaQuery(uiTheme.breakpoints.down('sm'));
@@ -54,11 +53,11 @@ const SoilDrainage = () => {
   }, [soilDataOriginalRedux]);
 
   useEffect(() => {
-    const checkArray = ['Very poorly drained', 'Poorly drained', 'Somewhat poorly drained'];
-    if (checkArray.some((e) => soilDataRedux?.drainageClass.includes(e))) {
+    if (soilDataRedux?.drainageClass[0] !== undefined
+      && drainageOptions.map((option) => option.value).indexOf(soilDataRedux?.drainageClass[0]) < 3) {
       setShowTiling(true);
     } else if (
-      soilDataRedux?.drainageClass.includes('Moderately well drained')
+      soilDataRedux?.drainageClass.includes(drainageOptions[3].value)
       && tileDrainageRedux === true
     ) {
       setShowTiling(true);
@@ -217,6 +216,7 @@ const SoilDrainage = () => {
               setNewDrainage={setNewDrainage}
               setShowTiling={setShowTiling}
               drainage={newDrainage}
+              drainageOptions={drainageOptions}
             />
             )}
           </Grid>
