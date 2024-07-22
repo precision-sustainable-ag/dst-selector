@@ -301,13 +301,13 @@ const CropSidebar = ({
       <Grid item>
         <PSAButton
           onClick={() => setComparisonView(false)}
-          style={{ background: !comparisonView ? '#49a8ab' : undefined }}
+          selected={!comparisonView}
           startIcon={<ListIcon style={{ fontSize: 'larger' }} />}
           data="CROP LIST"
         />
         <PSAButton
           onClick={() => setComparisonView(true)}
-          style={{ background: comparisonView ? '#49a8ab' : undefined }}
+          selected={comparisonView}
           startIcon={<Compare style={{ fontSize: 'larger' }} />}
           data="COMPARISON VIEW"
         />
