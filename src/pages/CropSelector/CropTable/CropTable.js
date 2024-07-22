@@ -21,12 +21,13 @@ import ListIcon from '@mui/icons-material/List';
 import { CalendarToday } from '@mui/icons-material';
 import StraightIcon from '@mui/icons-material/Straight';
 import {
-  sortCrops, sudoButtonStyle, LightButton,
+  sortCrops, sudoButtonStyle,
 } from '../../../shared/constants';
 import '../../../styles/cropCalendarViewComponent.scss';
 import '../../../styles/cropTable.scss';
 import CropDetailsModal from '../../../components/CropDetailsModal/CropDetailsModal';
 import RenderTableItems from './RenderTableItems';
+import PSAButton from '../../../shared/PSAButton';
 import { setTableWidth } from '../../../reduxStore/pageSlice';
 
 const CropTable = ({
@@ -130,22 +131,20 @@ const CropTable = ({
         <Table stickyHeader sx={{ borderSpacing: '7px', padding: 0 }} ref={tableRef}>
           <TableHead>
             <TableRow style={{ paddingBottom: '5px', whiteSpace: 'nowrap' }}>
-              <LightButton
+              <PSAButton
                 onClick={() => setListView(false)}
-                color="secondary"
-                style={{ background: !listView ? '#49a8ab' : '#e3f2f4' }}
+                selected={!listView}
+                style={{ marginBottom: '7px' }}
                 startIcon={<ListIcon style={{ fontSize: 'larger' }} />}
-              >
-                CROP LIST
-              </LightButton>
-              <LightButton
+                data="CROP LIST"
+              />
+              <PSAButton
                 onClick={() => setListView(true)}
-                color="secondary"
-                style={{ background: listView ? '#49a8ab' : '#e3f2f4' }}
+                selected={listView}
+                style={{ marginBottom: '7px' }}
                 startIcon={<CalendarToday style={{ fontSize: 'larger' }} />}
-              >
-                CROP CALENDAR
-              </LightButton>
+                data="CROP CALENDAR"
+              />
             </TableRow>
             <TableRow>
               <TableCell
