@@ -14,14 +14,15 @@ import {
   Grid,
 } from '@mui/material';
 import { ArrowBack, ArrowForward, KeyboardArrowUp } from '@mui/icons-material';
-import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect, useState, useRef } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import ReactGA from 'react-ga';
 // import '../../styles/cropSelector.scss';
 import MyCoverCropList from '../MyCoverCropList/MyCoverCropList';
 import CropCalendarView from './CropCalendarView/CropCalendarView';
 import CropSidebar from '../CropSidebar/CropSidebar';
 import CropTable from './CropTable/CropTable';
+import { setSidebarWidth } from '../../reduxStore/pageSlice';
 
 const ScrollTop = ({ children }) => {
   const trigger = useScrollTrigger({
@@ -136,9 +137,17 @@ const CropSelector = (props) => {
   const size = useWindowSize();
   const [showSidebar, setShowSidebar] = useState(true);
 
+  const sidebarRef = useRef(null);
+  const dispatchRedux = useDispatch();
+  useEffect(() => {
+    if (sidebarRef.current) {
+      const sidebarWidth = sidebarRef.current.offsetWidth;
+      dispatchRedux(setSidebarWidth(sidebarWidth));
+    }
+  }, [dispatchRedux, sidebarRef]);
   return (
     <Grid container spacing={3}>
-      <Grid item xl={3} lg={3} md={3} sm={12} xs={12}>
+      <Grid item xl={3} lg={3} md={3} sm={12} xs={12} ref={sidebarRef}>
         {(size.width < 1680) && (
           <Button
             startIcon={!showSidebar ? <ArrowForward /> : <ArrowBack />}

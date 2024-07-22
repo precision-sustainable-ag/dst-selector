@@ -2,7 +2,7 @@
 
 **Date Created:** 8/18/22
 
-**Date Last Modified:** 05/31/2024
+**Date Last Modified:** 07/17/2024
 
 The species selector DST is used to help farmers select a cover crop that fits their goals and constraints. The user can either input specifics about their field location and cover cropping goals or explore cover crops without entering those details. The tool is mainly used to explore expert reccomendations and ratings for cover crops in the farmer's USDA Plant Hardiness Zone. This allows farmers to make educated decisions that are best suited for their specific goals and can save time as opposed to calling the extension office.
 
@@ -54,6 +54,7 @@ REACT_APP_AUTH0_CLIENT_ID="<auth0 client id>"
 REACT_APP_AUTH0_AUDIENCE="<auth0 audience>"
 REACT_APP_USER_HISTORY_API_URL="<user history url>"
 REACT_APP_USER_HISTORY_SCHEMA="<schema>"
+REACT_APP_RELEASE_NOTES="<Release Notes URL>"
 ```
 
 7. After the dependencies have been installed and the .env file has been created, run `npm start` to run the code locally. If you run into any issues take a look in the [Runbook](#runbook) for previous issues and solutions. This will compile the JSX code into Javascript and open up a new browser window with the current version of the covercrops project!
