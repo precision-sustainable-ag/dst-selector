@@ -74,6 +74,7 @@ const Landing = () => {
       // handle stateIdRedux is null(click headerlogo in landing page)
       if (state.length > 0) {
         setSelectedState(state[0]);
+        pirschAnalytics('Landing', { meta: { state: state[0].label } });
       } else setSelectedState({});
     }
   }, [stateIdRedux, allStates]);
