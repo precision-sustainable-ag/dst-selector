@@ -240,7 +240,7 @@ export const LightButton = styled(Button)({
   '&:hover': {
     borderColor: CustomStyles().primaryProgressBtnBorderColor,
     backgroundColor: CustomStyles().primaryProgressBtnColor,
-    color: '#fff',
+    color: '#000',
   },
 });
 

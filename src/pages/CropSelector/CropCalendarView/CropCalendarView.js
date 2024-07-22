@@ -29,12 +29,12 @@ import {
   allMonths,
   CustomStyles,
   sortCrops,
-  LightButton,
 } from '../../../shared/constants';
 
 import '../../../styles/cropCalendarViewComponent.scss';
 import RenderCrops from './RenderCrops';
 import CropDetailsModal from '../../../components/CropDetailsModal/CropDetailsModal';
+import PSAButton from '../../../shared/PSAButton';
 import { setTableWidth } from '../../../reduxStore/pageSlice';
 
 const growthIcon = {
@@ -162,22 +162,20 @@ const CropCalendarView = ({
           >
             <TableHead sx={{ zIndex: -1 }}>
               <TableRow style={{ paddingBottom: '5px', whiteSpace: 'nowrap' }}>
-                <LightButton
+                <PSAButton
                   onClick={() => setListView(false)}
-                  color="secondary"
-                  style={{ marginBottom: '7px', background: !listView ? '#49a8ab' : '#e3f2f4' }}
+                  selected={!listView}
+                  style={{ marginBottom: '7px' }}
                   startIcon={<ListIcon style={{ fontSize: 'larger' }} />}
-                >
-                  CROP LIST
-                </LightButton>
-                <LightButton
+                  data="CROP LIST"
+                />
+                <PSAButton
                   onClick={() => setListView(true)}
-                  color="secondary"
-                  style={{ marginBottom: '7px', background: listView ? '#49a8ab' : '#e3f2f4' }}
+                  selected={listView}
+                  style={{ marginBottom: '7px' }}
                   startIcon={<CalendarToday style={{ fontSize: 'larger' }} />}
-                >
-                  CROP CALENDAR
-                </LightButton>
+                  data="CROP CALENDAR"
+                />
                 {activeGrowthPeriodRedux.length === 0 && (
                   <>
                     {activeGrowthPeriodRedux.includes('Jan') ? (
