@@ -3,16 +3,22 @@
   styled using CustomStyles from ../../shared/constants
 */
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Grid, Typography, Box, useTheme, useMediaQuery,
 } from '@mui/material';
 import SoilCondition from '../SoilCondition/SoilCondition';
 import WeatherConditions from '../../../components/WeatherConditions/WeatherConditions';
+import pirschAnalytics from '../../../shared/analytics';
 
 const SiteConditions = () => {
   const theme = useTheme();
   const isLargeScreen = useMediaQuery(theme.breakpoints.up('lg'));
+
+  useEffect(() => {
+    pirschAnalytics('Site Conditions');
+  }, []);
+
   return (
     <Box>
       <Grid container spacing={4}>
