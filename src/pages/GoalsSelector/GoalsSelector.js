@@ -11,6 +11,7 @@ import { useSelector } from 'react-redux';
 import GoalTag from './GoalTag/GoalTag';
 import { callCoverCropApi } from '../../shared/constants';
 import PreviousCashCrop from '../CropSidebar/PreviousCashCrop/PreviousCashCrop';
+import pirschAnalytics from '../../shared/analytics';
 
 const GoalsSelector = () => {
   // theme vars
@@ -38,6 +39,7 @@ const GoalsSelector = () => {
         setAllGoals(data.data);
       });
     }
+    pirschAnalytics('Goals');
   }, []);
 
   return (
