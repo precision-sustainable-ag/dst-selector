@@ -360,7 +360,7 @@ const CropSidebar = ({
                         {regionToggleRedux ? <ExpandLess /> : <ExpandMore />}
                       </ListItemButton>
                     </List>
-                    <PlantHardinessZone />
+                    <PlantHardinessZone from="Browse Cover Crops" />
                     <CoverCropSearch />
                   </>
                 )}
