@@ -57,7 +57,6 @@ const CropSelector = (props) => {
   const activeCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.activeCropIds);
   const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
-  const consentRedux = useSelector((stateRedux) => stateRedux.userData.consent);
   const speciesSelectorActivationFlagRedux = useSelector((stateRedux) => stateRedux.sharedData.speciesSelectorActivationFlag);
 
   // useState vars
@@ -68,7 +67,11 @@ const CropSelector = (props) => {
 
   useEffect(() => {
     pirschAnalytics('Get A Recommendation');
-  }, [consentRedux]);
+  }, []);
+
+  useEffect(() => {
+    pirschAnalytics(listView ? 'Calendar View' : 'List View');
+  }, [listView]);
 
   useEffect(() => {
     if (cropDataRedux) {

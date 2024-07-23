@@ -23,6 +23,7 @@ import { useSelector } from 'react-redux';
 import CoverCropInformation from './CoverCropInformation/CoverCropInformation';
 import InformationSheetReferences from './InformationSheetReferences/InformationSheetReferences';
 import { callCoverCropApi, extractData } from '../../shared/constants';
+import pirschAnalytics from '../../shared/analytics';
 
 const InformationSheetContent = ({ crop, modalData }) => {
   // used to know if the user is in mobile mode
@@ -56,6 +57,10 @@ const InformationSheetContent = ({ crop, modalData }) => {
       });
     }
   }, [crop, filterStateRedux]);
+
+  useEffect(() => {
+    pirschAnalytics('Information Sheet');
+  }, []);
 
   return (
     dataDone === true && (

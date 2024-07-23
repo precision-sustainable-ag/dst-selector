@@ -37,10 +37,6 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
     }
   }, [crop]);
 
-  useEffect(() => {
-    pirschAnalytics('Information Sheet');
-  }, [consentRedux]);
-
   const handleModalClose = () => {
     setModalOpen(!modalOpen);
   };
