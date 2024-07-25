@@ -796,7 +796,6 @@ export const cropDataFormatter = (cropData = [{}], cashCropStartDate = '', cashC
 
     const yearData = formatYearArr(yearArr);
     vals.cropGrowthWindow = yearData;
-    // console.log(crop.label, yearData, crop.data['Planting and Growth Windows']);
 
     // this is temporary, needs to be replaced with wither a fix to calendar growth window component or exporting of json from airtable
     Object.keys(vals).forEach((item) => {

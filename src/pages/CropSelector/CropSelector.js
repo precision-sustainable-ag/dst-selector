@@ -70,7 +70,7 @@ const CropSelector = (props) => {
   }, []);
 
   useEffect(() => {
-    pirschAnalytics(listView ? 'Calendar View' : 'List View');
+    pirschAnalytics(listView ? 'Recommendation: Calendar View' : 'Recommendation: List View');
   }, [listView]);
 
   useEffect(() => {
