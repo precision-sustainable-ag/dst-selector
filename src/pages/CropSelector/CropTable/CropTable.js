@@ -120,7 +120,6 @@ const CropTable = ({
       // const tableWidth = tableRef.current.offsetWidth;
       const tableWidth = tableRef.current.scrollWidth;
       // tableWidth += 1000;
-      // console.log('table width in page', tableWidth, typeof (tableWidth));
       dispatchRedux(setTableWidth(tableWidth));
     }
   }, [dispatchRedux, tableRef]);
