@@ -39,7 +39,10 @@ const GoalsSelector = () => {
         setAllGoals(data.data);
       });
     }
-    pirschAnalytics('Goals');
+  }, []);
+
+  useEffect(() => {
+    pirschAnalytics('Visited Page', { meta: { visited: 'Goals' } });
   }, []);
 
   return (

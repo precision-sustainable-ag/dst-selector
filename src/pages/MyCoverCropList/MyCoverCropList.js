@@ -24,7 +24,6 @@ const MyCoverCropList = ({ comparisonView, from }) => {
   const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
   const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
   const selectedCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCropIds);
-  const consentRedux = useSelector((stateRedux) => stateRedux.userData.consent);
 
   useEffect(() => {
     if (stateLabelRedux === null) {
@@ -42,8 +41,8 @@ const MyCoverCropList = ({ comparisonView, from }) => {
   };
 
   useEffect(() => {
-    pirschAnalytics('My Cover Crop List');
-  }, [consentRedux]);
+    pirschAnalytics('Visited Page', { meta: { visited: 'My Cover Crop List' } });
+  }, []);
 
   return (
     <>

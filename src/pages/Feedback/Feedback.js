@@ -61,7 +61,7 @@ const FeedbackComponent = () => {
   };
 
   useEffect(() => {
-    pirschAnalytics('Feedback');
+    pirschAnalytics('Visited Page', { meta: { visited: 'Feedback' } });
   }, [consentRedux]);
 
   useEffect(() => {
