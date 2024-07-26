@@ -59,7 +59,7 @@ const InformationSheetContent = ({ crop, modalData }) => {
   }, [crop, filterStateRedux]);
 
   useEffect(() => {
-    pirschAnalytics('Information Sheet');
+    pirschAnalytics('Visited Page', { meta: { visited: 'Information Sheet' } });
   }, []);
 
   return (

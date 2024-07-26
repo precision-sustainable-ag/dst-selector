@@ -68,8 +68,9 @@ const Location = () => {
   // set map features, update selectedFieldIdRedux
   useEffect(() => {
     // load map features here
-    pirschAnalytics('Location');
     setMapFeatures(getFeatures());
+    // analytics
+    pirschAnalytics('Visited Page', { meta: { visited: 'Location' } });
   }, []);
 
   const updateRegionRedux = (regionName) => {

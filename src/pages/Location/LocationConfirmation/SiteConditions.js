@@ -16,7 +16,7 @@ const SiteConditions = () => {
   const isLargeScreen = useMediaQuery(theme.breakpoints.up('lg'));
 
   useEffect(() => {
-    pirschAnalytics('Site Conditions');
+    pirschAnalytics('Visited Page', { meta: { visited: 'Site Conditions' } });
   }, []);
 
   return (

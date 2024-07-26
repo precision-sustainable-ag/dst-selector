@@ -25,7 +25,7 @@ const About = () => {
   };
 
   useEffect(() => {
-    pirschAnalytics('About');
+    pirschAnalytics('Visited Page', { meta: { visited: 'About' } });
   }, [consentRedux]);
 
   const pageSections = [

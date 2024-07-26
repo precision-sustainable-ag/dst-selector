@@ -66,11 +66,11 @@ const CropSelector = (props) => {
   const [cropData, setCropData] = useState([]);
 
   useEffect(() => {
-    pirschAnalytics('Get A Recommendation');
+    pirschAnalytics('Visited Page', { meta: { visited: 'Get A Recommendation' } });
   }, []);
 
   useEffect(() => {
-    pirschAnalytics(listView ? 'Recommendation: Calendar View' : 'Recommendation: List View');
+    pirschAnalytics('Get A Recommendation', { meta: { view: listView ? 'Calendar View' : 'List View' } });
   }, [listView]);
 
   useEffect(() => {

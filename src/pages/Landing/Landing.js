@@ -32,7 +32,6 @@ const Landing = () => {
   // redux vars
   const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
   const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
-  const consentRedux = useSelector((stateRedux) => stateRedux.userData.consent);
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
   const historyStateRedux = useSelector((stateRedux) => stateRedux.userData.historyState);
 
@@ -151,8 +150,8 @@ const Landing = () => {
   }, [selectedState]);
 
   useEffect(() => {
-    pirschAnalytics('Landing');
-  }, [consentRedux]);
+    pirschAnalytics('Visited Page', { meta: { visited: 'Landing' } });
+  }, []);
 
   const [containerHeight, setContainerHeight] = useState();
 

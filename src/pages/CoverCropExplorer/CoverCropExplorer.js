@@ -60,7 +60,7 @@ const CoverCropExplorer = () => {
   }, [activeCropIdsRedux]);
 
   useEffect(() => {
-    pirschAnalytics('Browse Cover Crops');
+    pirschAnalytics('Visited Page', { meta: { visited: 'Browse Cover Crops' } });
   }, [consentRedux]);
 
   useEffect(() => {

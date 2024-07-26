@@ -20,7 +20,6 @@ import InfoSheets from './InfoSheets/InfoSheets';
 import pirschAnalytics from '../../shared/analytics';
 
 const Help = () => {
-  const consentRedux = useSelector((stateRedux) => stateRedux.userData.consent);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
 
   // only used till new videos are made for How to Use section
@@ -32,8 +31,8 @@ const Help = () => {
   }, []);
 
   useEffect(() => {
-    pirschAnalytics('Help');
-  }, [consentRedux]);
+    pirschAnalytics('Visited Page', { meta: { visited: 'Help' } });
+  }, []);
 
   const [value, setValue] = useState(0);
 
