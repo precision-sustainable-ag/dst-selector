@@ -16,13 +16,13 @@ import {
 import { ArrowBack, ArrowForward, KeyboardArrowUp } from '@mui/icons-material';
 import React, { useEffect, useState, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import ReactGA from 'react-ga';
 // import '../../styles/cropSelector.scss';
 import MyCoverCropList from '../MyCoverCropList/MyCoverCropList';
 import CropCalendarView from './CropCalendarView/CropCalendarView';
 import CropSidebar from '../CropSidebar/CropSidebar';
 import CropTable from './CropTable/CropTable';
 import { setSidebarWidth } from '../../reduxStore/pageSlice';
+import pirschAnalytics from '../../shared/analytics';
 
 const ScrollTop = ({ children }) => {
   const trigger = useScrollTrigger({
@@ -57,7 +57,6 @@ const CropSelector = (props) => {
   const activeCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.activeCropIds);
   const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
-  const consentRedux = useSelector((stateRedux) => stateRedux.userData.consent);
   const speciesSelectorActivationFlagRedux = useSelector((stateRedux) => stateRedux.sharedData.speciesSelectorActivationFlag);
 
   // useState vars
@@ -67,12 +66,12 @@ const CropSelector = (props) => {
   const [cropData, setCropData] = useState([]);
 
   useEffect(() => {
-    if (consentRedux === true) {
-      ReactGA.initialize('UA-181903489-1');
+    pirschAnalytics('Visited Page', { meta: { visited: 'Get A Recommendation' } });
+  }, []);
 
-      ReactGA.pageview('cover crop selector');
-    }
-  }, [consentRedux]);
+  useEffect(() => {
+    pirschAnalytics('Get A Recommendation', { meta: { view: listView ? 'Calendar View' : 'List View' } });
+  }, [listView]);
 
   useEffect(() => {
     if (cropDataRedux) {

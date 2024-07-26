@@ -6,8 +6,9 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateRegion } from '../../../reduxStore/mapSlice';
 import { historyState, setHistoryDialogState } from '../../../reduxStore/userSlice';
+import pirschAnalytics from '../../../shared/analytics';
 
-const PlantHardinessZone = () => {
+const PlantHardinessZone = ({ from }) => {
   const dispatchRedux = useDispatch();
   const regionsRedux = useSelector((stateRedux) => stateRedux.mapData.regions);
   const councilLabelRedux = useSelector((stateRedux) => stateRedux.mapData.councilLabel);
@@ -27,6 +28,7 @@ const PlantHardinessZone = () => {
       regionId: selectedRegion.id ?? '',
       regionShorthand: selectedRegion.shorthand ?? '',
     }));
+    pirschAnalytics(from, { meta: { dropdownUpdate: true } });
   };
 
   const menuProps = {

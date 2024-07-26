@@ -9,9 +9,14 @@ import { useDispatch } from 'react-redux';
 import CropSidebar from '../../CropSidebar/CropSidebar';
 import MyCoverCropList from '../MyCoverCropList';
 import { setSidebarWidth } from '../../../reduxStore/pageSlice';
+import pirschAnalytics from '../../../shared/analytics';
 
 const MyCoverCropListWrapper = () => {
   const [comparisonView, setComparisonView] = useState(false);
+
+  useEffect(() => {
+    pirschAnalytics(comparisonView ? 'Selected Crops: Comparison View' : 'Selected Crops: Crop List');
+  }, [comparisonView]);
 
   const sidebarRef = useRef(null);
   const dispatchRedux = useDispatch();

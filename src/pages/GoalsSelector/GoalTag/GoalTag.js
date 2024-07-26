@@ -8,6 +8,7 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addSelectedGoals, updateSelectedGoal } from '../../../reduxStore/goalSlice';
 import { historyState, setHistoryState } from '../../../reduxStore/userSlice';
+import pirschAnalytics from '../../../shared/analytics';
 
 // TODO: Whats up with goalt?? we need to look into fixing this.
 const GoalTag = ({
@@ -28,6 +29,7 @@ const GoalTag = ({
     if (goals.indexOf(item.label) === -1) {
       // does not exist, dispatch to state and add to local state
       dispatchRedux(addSelectedGoals(item.label));
+      pirschAnalytics('Goals', { meta: { goal: item.label } });
     } else {
       // exists, remove it from the state and update the state
       const index = goals.indexOf(item.label);

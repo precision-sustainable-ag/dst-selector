@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setTileDrainage, updateDrainageClass as updateDrainageClassRedux } from '../../../../reduxStore/soilSlice';
 import { historyState, setHistoryState } from '../../../../reduxStore/userSlice';
+import pirschAnalytics from '../../../../shared/analytics';
 
 const RenderDrainageClasses = ({
   setNewDrainage, setShowTiling, drainageOptions, drainage = [],
@@ -74,6 +75,7 @@ const RenderDrainageClasses = ({
       setNewDrainage(drainageArray[drainages[0]]);
       updateDrainageAction(drainages);
       dispatchRedux(setTileDrainage(false));
+      pirschAnalytics('Site Conditions', { meta: { drainageClass: drainageArray[drainages[0]] } });
     } else {
       setNewDrainage([]);
       updateDrainageAction([]);

@@ -10,11 +10,11 @@ import {
 } from '@mui/material';
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import ReactGA from 'react-ga';
 import { CustomStyles } from '../../shared/constants';
 import LicenseAndCopyright from './LicenseAndCopyright/LicenseAndCopyright';
 import FundingAndAcknowledgements from './FundingAndAcknowledgements/FundingAndAcknowledgements';
 import AboutTheExperts from './AboutTheExperts/AboutTheExperts';
+import pirschAnalytics from '../../shared/analytics';
 
 const About = () => {
   const [value, setValue] = React.useState(0);
@@ -25,11 +25,7 @@ const About = () => {
   };
 
   useEffect(() => {
-    if (consentRedux === true) {
-      ReactGA.initialize('UA-181903489-1');
-
-      ReactGA.pageview('about');
-    }
+    pirschAnalytics('Visited Page', { meta: { visited: 'About' } });
   }, [consentRedux]);
 
   const pageSections = [
