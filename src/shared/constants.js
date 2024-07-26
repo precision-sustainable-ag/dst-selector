@@ -12,6 +12,7 @@ import { Info, MonetizationOn } from '@mui/icons-material';
 import { MapboxApiKey } from './keys';
 import arrayEquals from './functions';
 import { historyState, setHistoryState } from '../reduxStore/userSlice';
+import pirschAnalytics from './analytics';
 
 export const ReferenceTooltip = ({
   url, source, type, content, hasLink, title,
@@ -795,7 +796,6 @@ export const cropDataFormatter = (cropData = [{}], cashCropStartDate = '', cashC
 
     const yearData = formatYearArr(yearArr);
     vals.cropGrowthWindow = yearData;
-    // console.log(crop.label, yearData, crop.data['Planting and Growth Windows']);
 
     // this is temporary, needs to be replaced with wither a fix to calendar growth window component or exporting of json from airtable
     Object.keys(vals).forEach((item) => {
@@ -948,6 +948,8 @@ export const addCropToBasket = (
   }
   // save history after added crop
   if (historyStateRedux !== historyState.none) dispatchRedux(setSaveHistory(true));
+  // analytics
+  pirschAnalytics(from === 'selector' ? 'Get A Recommendation' : 'Browse Cover Crops', { meta: { addedToMyList: true } });
 };
 
 // TODO: not used below

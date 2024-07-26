@@ -33,6 +33,7 @@ import {
   updateAvgFrostDates, updateAvgPrecipAnnual, updateAvgPrecipCurrentMonth, updateFrostFreeDays,
 } from '../../reduxStore/weatherSlice';
 import { historyState, setHistoryDialogState, updateField } from '../../reduxStore/userSlice';
+import pirschAnalytics from '../../shared/analytics';
 
 // eslint-disable-next-line import/no-webpack-loader-syntax, import/no-unresolved
 mapboxgl.workerClass = require('worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker').default;
@@ -68,6 +69,8 @@ const Location = () => {
   useEffect(() => {
     // load map features here
     setMapFeatures(getFeatures());
+    // analytics
+    pirschAnalytics('Visited Page', { meta: { visited: 'Location' } });
   }, []);
 
   const updateRegionRedux = (regionName) => {
@@ -77,6 +80,7 @@ const Location = () => {
       regionId: selectedRegion.id ?? '',
       regionShorthand: selectedRegion.shorthand ?? '',
     }));
+    pirschAnalytics('Location', { meta: { mapUpdate: true } });
   };
 
   // set map initial lat lng
@@ -317,7 +321,7 @@ const Location = () => {
               alignItems: 'center',
             }}
           >
-            <PlantHardinessZone />
+            <PlantHardinessZone from="Location" />
           </Grid>
 
         </Grid>

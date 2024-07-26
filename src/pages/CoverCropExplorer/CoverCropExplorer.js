@@ -10,10 +10,10 @@ import {
 import { useHistory } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import ReactGA from 'react-ga';
 import ExplorerCardView from './ExplorerCardView/ExplorerCardView';
 import CropSidebar from '../CropSidebar/CropSidebar';
 import { updateRegion, updateStateInfo } from '../../reduxStore/mapSlice';
+import pirschAnalytics from '../../shared/analytics';
 
 const CoverCropExplorer = () => {
   const history = useHistory();
@@ -60,11 +60,7 @@ const CoverCropExplorer = () => {
   }, [activeCropIdsRedux]);
 
   useEffect(() => {
-    if (consentRedux === true) {
-      ReactGA.initialize('UA-181903489-1');
-
-      ReactGA.pageview('cover crop explorer');
-    }
+    pirschAnalytics('Visited Page', { meta: { visited: 'Browse Cover Crops' } });
   }, [consentRedux]);
 
   useEffect(() => {

@@ -12,15 +12,14 @@ import {
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import ReactGA from 'react-ga';
 import { CustomStyles } from '../../shared/constants';
 import InformationSheetDictionary from './InformationSheetDictionary/InformationSheetDictionary';
 import HowTo from './HowTo/HowTo';
 import FAQ from './FAQ/FAQ';
 import InfoSheets from './InfoSheets/InfoSheets';
+import pirschAnalytics from '../../shared/analytics';
 
 const Help = () => {
-  const consentRedux = useSelector((stateRedux) => stateRedux.userData.consent);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
 
   // only used till new videos are made for How to Use section
@@ -32,12 +31,8 @@ const Help = () => {
   }, []);
 
   useEffect(() => {
-    if (consentRedux === true) {
-      ReactGA.initialize('UA-181903489-1');
-
-      ReactGA.pageview('help');
-    }
-  }, [consentRedux]);
+    pirschAnalytics('Visited Page', { meta: { visited: 'Help' } });
+  }, []);
 
   const [value, setValue] = useState(0);
 

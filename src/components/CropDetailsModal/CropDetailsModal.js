@@ -8,10 +8,10 @@ import {
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { Close, Print } from '@mui/icons-material';
 import React, { useEffect, useState } from 'react';
-import ReactGA from 'react-ga';
 import { useSelector } from 'react-redux';
 import InformationSheetContent from '../../pages/InformationSheetContent/InformationSheetContent';
 import { callCoverCropApi } from '../../shared/constants';
+import pirschAnalytics from '../../shared/analytics';
 
 const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
   // redux vars
@@ -49,23 +49,18 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
       });
   }, [crop]);
 
-  useEffect(() => {
-    if (consentRedux === true) {
-      ReactGA.initialize('UA-181903489-1');
-      ReactGA.pageview('information sheet');
-    }
-  }, [consentRedux]);
-
   const handleModalClose = () => {
     setModalOpen(!modalOpen);
   };
 
   const print = () => {
     if (consentRedux === true) {
-      ReactGA.event({
-        category: 'Information Sheet',
-        action: 'Print',
-        label: document.title,
+      pirschAnalytics('Information Sheet', {
+        meta: {
+          category: 'Information Sheet',
+          action: 'Print',
+          label: document.title,
+        },
       });
     }
     window.open(`https://selectorimages.blob.core.windows.net/selectorimages/pdf/${crop.label}%20Zone%20${regionShorthandRedux}.pdf`, '_blank');

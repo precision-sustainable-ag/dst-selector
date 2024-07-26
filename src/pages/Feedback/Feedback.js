@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import ReactGA from 'react-ga';
 import {
   Grid,
   Typography,
@@ -11,6 +10,7 @@ import {
   FormGroup,
   FormControlLabel,
 } from '@mui/material';
+import pirschAnalytics from '../../shared/analytics';
 
 const FeedbackComponent = () => {
   const consentRedux = useSelector((stateRedux) => stateRedux.userData.consent);
@@ -61,11 +61,7 @@ const FeedbackComponent = () => {
   };
 
   useEffect(() => {
-    if (consentRedux === true) {
-      ReactGA.initialize('UA-181903489-1');
-
-      ReactGA.pageview('feedback');
-    }
+    pirschAnalytics('Visited Page', { meta: { visited: 'Feedback' } });
   }, [consentRedux]);
 
   useEffect(() => {
