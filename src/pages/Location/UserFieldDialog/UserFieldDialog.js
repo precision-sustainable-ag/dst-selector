@@ -9,13 +9,13 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  TextField,
 } from '@mui/material';
 import React from 'react';
 import {
   postFields, buildPoint, buildGeometryCollection, deleteFields,
 } from '../../../shared/constants';
 import { getAuthToken } from '../../../shared/authToken';
+import PSATextField from '../../../shared/PSATextField';
 
 export const initFieldDialogState = {
   open: false,
@@ -143,7 +143,7 @@ const UserFieldDialog = ({
           {actionType === 'updateName' && 'Change the nickname for this field'}
         </DialogTitle>
         <DialogContent>
-          <TextField
+          <PSATextField
             autoFocus
             error={error}
             helperText={errorText}
