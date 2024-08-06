@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import {
   Button,
   Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle,
-  TextField,
 } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -10,6 +9,7 @@ import {
   updateField,
 } from '../../reduxStore/userSlice';
 import { reset } from '../../reduxStore/store';
+import PSATextField from '../../shared/PSATextField';
 
 export const historyDialogDefaultState = {
   open: false,
@@ -95,7 +95,7 @@ const HistoryDialog = () => {
               <DialogContentText>
                 Please input the name for your record below.
               </DialogContentText>
-              <TextField
+              <PSATextField
                 variant="standard"
                 autoFocus
                 fullWidth
