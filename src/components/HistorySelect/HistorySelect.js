@@ -17,6 +17,7 @@ import { setSoilRedux } from '../../reduxStore/soilSlice';
 import { setGoalsRedux } from '../../reduxStore/goalSlice';
 import { setCropRedux } from '../../reduxStore/cropSlice';
 import { myCropListLocation, snackHandler } from '../../reduxStore/sharedSlice';
+import pirschAnalytics from '../../shared/analytics';
 
 const menuProps = {
   PaperProps: {
@@ -128,6 +129,12 @@ const HistorySelect = () => {
 
   const handleAddHistory = () => {
     dispatch(setHistoryDialogState({ ...historyDialogState, open: true }));
+    pirschAnalytics('History', { meta: { history: 'Create New' } });
+  };
+
+  const handleHistoryImport = () => {
+    setOpen(true);
+    pirschAnalytics('History', { meta: { history: 'Import' } });
   };
 
   useEffect(() => {
@@ -179,7 +186,7 @@ const HistorySelect = () => {
 
       <Box sx={{ display: 'flex', justifyContent: 'space-around' }}>
         <Button onClick={handleAddHistory} variant="contained">Create New History</Button>
-        <Button variant="contained" onClick={() => setOpen(true)}>Import previous history</Button>
+        <Button variant="contained" onClick={handleHistoryImport}>Import previous history</Button>
       </Box>
 
     </>

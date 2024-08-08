@@ -22,19 +22,20 @@ import { tableCellClasses } from '@mui/material/TableCell';
 import {
   AcUnit, AddCircle, CalendarToday, LocalFlorist, WbSunny,
 } from '@mui/icons-material';
-import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect, useRef, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import StraightIcon from '@mui/icons-material/Straight';
 import {
   allMonths,
   CustomStyles,
   sortCrops,
-  LightButton,
 } from '../../../shared/constants';
 
 import '../../../styles/cropCalendarViewComponent.scss';
 import RenderCrops from './RenderCrops';
 import CropDetailsModal from '../../../components/CropDetailsModal/CropDetailsModal';
+import PSAButton from '../../../shared/PSAButton';
+import { setTableWidth } from '../../../reduxStore/pageSlice';
 
 const growthIcon = {
   color: 'white',
@@ -133,6 +134,15 @@ const CropCalendarView = ({
     if (cropDataRedux.length !== 0) sortByAverageGoals();
   }, [cropDataRedux]);
 
+  const tableRef = useRef(null);
+  const dispatchRedux = useDispatch();
+  useEffect(() => {
+    if (tableRef.current) {
+      const tableWidth = tableRef.current.scrollWidth;
+      dispatchRedux(setTableWidth(tableWidth));
+    }
+  }, [dispatchRedux, tableRef]);
+
   return (
     <>
       {ajaxInProgressRedux ? (
@@ -140,7 +150,7 @@ const CropCalendarView = ({
           <CircularProgress size="6em" />
         </Box>
       ) : (
-        <TableContainer component="div" sx={{ lineHeight: '0.5' }}>
+        <TableContainer component="div" sx={{ lineHeight: '0.5', overflowX: 'initial' }}>
           <Table
             stickyHeader
             sx={{
@@ -148,25 +158,24 @@ const CropCalendarView = ({
                 borderBottom: 'none',
               },
             }}
+            ref={tableRef}
           >
             <TableHead sx={{ zIndex: -1 }}>
               <TableRow style={{ paddingBottom: '5px', whiteSpace: 'nowrap' }}>
-                <LightButton
+                <PSAButton
                   onClick={() => setListView(false)}
-                  color="secondary"
-                  style={{ marginBottom: '7px', background: !listView ? '#49a8ab' : '#e3f2f4' }}
+                  selected={!listView}
+                  style={{ marginBottom: '7px' }}
                   startIcon={<ListIcon style={{ fontSize: 'larger' }} />}
-                >
-                  CROP LIST
-                </LightButton>
-                <LightButton
+                  data="CROP LIST"
+                />
+                <PSAButton
                   onClick={() => setListView(true)}
-                  color="secondary"
-                  style={{ marginBottom: '7px', background: listView ? '#49a8ab' : '#e3f2f4' }}
+                  selected={listView}
+                  style={{ marginBottom: '7px' }}
                   startIcon={<CalendarToday style={{ fontSize: 'larger' }} />}
-                >
-                  CROP CALENDAR
-                </LightButton>
+                  data="CROP CALENDAR"
+                />
                 {activeGrowthPeriodRedux.length === 0 && (
                   <>
                     {activeGrowthPeriodRedux.includes('Jan') ? (

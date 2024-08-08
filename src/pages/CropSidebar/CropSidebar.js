@@ -26,7 +26,7 @@ import React, {
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
 import {
-  LightButton, callCoverCropApi, cropDataFormatter, getLegendDataBasedOnCouncil,
+  callCoverCropApi, cropDataFormatter, getLegendDataBasedOnCouncil,
 } from '../../shared/constants';
 import ComparisonBar from '../MyCoverCropList/ComparisonBar/ComparisonBar';
 import CoverCropSearch from './CoverCropSearch/CoverCropSearch';
@@ -37,6 +37,7 @@ import Legend from '../../components/Legend/Legend';
 import { clearFilters } from '../../reduxStore/filterSlice';
 import { updateCropData, updateActiveCropIds } from '../../reduxStore/cropSlice';
 import { setAjaxInProgress, regionToggleHandler } from '../../reduxStore/sharedSlice';
+import PSAButton from '../../shared/PSAButton';
 
 const CropSidebar = ({
   comparisonView,
@@ -294,26 +295,21 @@ const CropSidebar = ({
     // FIXME: this function returns a compoennt in useEffect, not sure why doing that
     filtersList();
   }, [sidebarFilters]);
-
   return !loading && (from === 'myCoverCropListStatic') ? (
     <Grid container spacing={3}>
       <Grid item>
-        <LightButton
+        <PSAButton
           onClick={() => setComparisonView(false)}
-          color="secondary"
-          style={{ background: !comparisonView ? '#49a8ab' : '#e3f2f4' }}
+          selected={!comparisonView}
           startIcon={<ListIcon style={{ fontSize: 'larger' }} />}
-        >
-          CROP LIST
-        </LightButton>
-        <LightButton
+          data="CROP LIST"
+        />
+        <PSAButton
           onClick={() => setComparisonView(true)}
-          color="secondary"
-          style={{ background: comparisonView ? '#49a8ab' : '#e3f2f4' }}
+          selected={comparisonView}
           startIcon={<Compare style={{ fontSize: 'larger' }} />}
-        >
-          COMPARISON VIEW
-        </LightButton>
+          data="COMPARISON VIEW"
+        />
         <ComparisonBar
           filterData={sidebarFilters}
           goals={selectedGoalsRedux?.length > 0 ? selectedGoalsRedux : []}
@@ -361,7 +357,7 @@ const CropSidebar = ({
                         {regionToggleRedux ? <ExpandLess /> : <ExpandMore />}
                       </ListItemButton>
                     </List>
-                    <PlantHardinessZone />
+                    <PlantHardinessZone from="Browse Cover Crops" />
                     <CoverCropSearch />
                   </>
                 )}

@@ -14,10 +14,10 @@ const CoverCropSearch = () => {
   };
 
   return (
-    <ListItem>
+    <ListItem style={{ padding: '0px' }}>
       <ListItemText>
         <TextField
-          fullWidth
+          style={{ width: '100%' }}
           color="secondary"
           label={(
             <Typography>
