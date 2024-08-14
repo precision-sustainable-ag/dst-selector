@@ -3,7 +3,7 @@
 */
 
 import {
-  Button, Modal, Box, Grid, Typography,
+  Button, Box, Grid, Typography,
 } from '@mui/material';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { Close, Print } from '@mui/icons-material';
@@ -12,6 +12,7 @@ import { useSelector } from 'react-redux';
 import InformationSheetContent from '../../pages/InformationSheetContent/InformationSheetContent';
 import { callCoverCropApi } from '../../shared/constants';
 import pirschAnalytics from '../../shared/analytics';
+import PSAModal from '../../shared/PSAModal';
 
 const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
   // redux vars
@@ -67,7 +68,7 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
   }; // print
 
   return dataDone === true && (
-    <Modal
+    <PSAModal
       sx={{
         overflow: 'scroll',
         marginTop: '2%',
@@ -78,68 +79,69 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
       onClose={handleModalClose}
       closeAfterTransition
       disableEscapeKeyDown={false}
-    >
-      <Box
-        sx={{
-          backgroundColor: 'white',
-        }}
-        id={`cropDetailModal-${modalData.id}`}
-      >
-        <Grid container>
-          <Grid container item xs={12} sx={{ backgroundColor: '#2D7B7B' }}>
-            <Grid container display="flex" alignItems="center" item xs={11}>
-              <Grid item>
-                <Typography color="white" sx={{ marginLeft: '2em' }}>
-                  Cover Crop Information Sheet
-                </Typography>
-              </Grid>
-              <Grid item>
-                <Button
-                  startIcon={<OpenInNewIcon />}
-                  style={{
-                    color: 'white',
-                    textTransform: 'none',
-                    marginLeft: '2em',
-                    textDecoration: 'underline',
-                  }}
-                  onClick={() => {
-                    window.open('/data-dictionary', '_blank');
-                  }}
-                >
-                  Terminology Definitions
-                </Button>
-              </Grid>
-              {(printEnabled && councilShorthandRedux === 'NECCC') && (
+      data={(
+        <Box
+          sx={{
+            backgroundColor: 'white',
+          }}
+          id={`cropDetailModal-${modalData.id}`}
+        >
+          <Grid container>
+            <Grid container item xs={12} sx={{ backgroundColor: '#2D7B7B' }}>
+              <Grid container display="flex" alignItems="center" item xs={11}>
+                <Grid item>
+                  <Typography color="white" sx={{ marginLeft: '2em' }}>
+                    Cover Crop Information Sheet
+                  </Typography>
+                </Grid>
                 <Grid item>
                   <Button
-                    startIcon={<Print />}
+                    startIcon={<OpenInNewIcon />}
                     style={{
                       color: 'white',
                       textTransform: 'none',
                       marginLeft: '2em',
                       textDecoration: 'underline',
                     }}
-                    onClick={print}
+                    onClick={() => {
+                      window.open('/data-dictionary', '_blank');
+                    }}
                   >
-                    Print
+                    Terminology Definitions
                   </Button>
                 </Grid>
-              )}
+                {(printEnabled && councilShorthandRedux === 'NECCC') && (
+                  <Grid item>
+                    <Button
+                      startIcon={<Print />}
+                      style={{
+                        color: 'white',
+                        textTransform: 'none',
+                        marginLeft: '2em',
+                        textDecoration: 'underline',
+                      }}
+                      onClick={print}
+                    >
+                      Print
+                    </Button>
+                  </Grid>
+                )}
+              </Grid>
+
+              <Grid item xs={1}>
+                <Button style={{ color: 'white', float: 'right', paddingTop: '13px' }} onClick={handleModalClose}>
+                  <Close />
+                </Button>
+              </Grid>
             </Grid>
 
-            <Grid item xs={1}>
-              <Button style={{ color: 'white', float: 'right', paddingTop: '13px' }} onClick={handleModalClose}>
-                <Close />
-              </Button>
+            <Grid container item xs={12}>
+              <InformationSheetContent crop={crop} modalData={modalData.data} from="modal" />
             </Grid>
           </Grid>
-
-          <Grid container item xs={12}>
-            <InformationSheetContent crop={crop} modalData={modalData.data} from="modal" />
-          </Grid>
-        </Grid>
-      </Box>
-    </Modal>
+        </Box>
+      )}
+    />
   );
 };
 

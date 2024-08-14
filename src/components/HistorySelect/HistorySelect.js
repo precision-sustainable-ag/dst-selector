@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
-  FormControl, InputLabel, Select, MenuItem, Grid, Button, Modal, Box,
+  FormControl, InputLabel, Select, MenuItem, Grid, Button, Box,
   Typography,
 } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
@@ -18,6 +18,7 @@ import { setGoalsRedux } from '../../reduxStore/goalSlice';
 import { setCropRedux } from '../../reduxStore/cropSlice';
 import { myCropListLocation, snackHandler } from '../../reduxStore/sharedSlice';
 import pirschAnalytics from '../../shared/analytics';
+import PSAModal from '../../shared/PSAModal';
 
 const menuProps = {
   PaperProps: {
@@ -147,42 +148,45 @@ const HistorySelect = () => {
 
   return (
     <>
-      <Modal open={open}>
-        <Box sx={modalStyles}>
-          <Grid container spacing={2}>
-            <Grid item xs={12} display="flex" justifyContent="center" alignItems="center">
-              <Typography>Select your history</Typography>
-            </Grid>
+      <PSAModal
+        open={open}
+        data={(
+          <Box sx={modalStyles}>
+            <Grid container spacing={2}>
+              <Grid item xs={12} display="flex" justifyContent="center" alignItems="center">
+                <Typography>Select your history</Typography>
+              </Grid>
 
-            <Grid item xs={12} md={9} display="flex" justifyContent="center" alignItems="center">
-              <FormControl sx={{ minWidth: '80%' }}>
-                <InputLabel sx={inputLabelStyles}>
-                  Select History
-                </InputLabel>
-                <Select
-                  value={value}
-                  label="Select History"
-                  onChange={(e) => setValue(e.target.value)}
-                  sx={selectStyles}
-                  MenuProps={menuProps}
-                >
-                  {userHistoryList.map((history, i) => (
-                    <MenuItem value={history.label} key={i}>{history.label}</MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Grid>
+              <Grid item xs={12} md={9} display="flex" justifyContent="center" alignItems="center">
+                <FormControl sx={{ minWidth: '80%' }}>
+                  <InputLabel sx={inputLabelStyles}>
+                    Select History
+                  </InputLabel>
+                  <Select
+                    value={value}
+                    label="Select History"
+                    onChange={(e) => setValue(e.target.value)}
+                    sx={selectStyles}
+                    MenuProps={menuProps}
+                  >
+                    {userHistoryList.map((history, i) => (
+                      <MenuItem value={history.label} key={i}>{history.label}</MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Grid>
 
-            <Grid item xs={12} md={3} display="flex" justifyContent="center" alignItems="center">
-              <Button onClick={handleLoadHistory} variant="contained" disabled={value === ''}>Import</Button>
-            </Grid>
+              <Grid item xs={12} md={3} display="flex" justifyContent="center" alignItems="center">
+                <Button onClick={handleLoadHistory} variant="contained" disabled={value === ''}>Import</Button>
+              </Grid>
 
-            <Grid item xs={12} display="flex" justifyContent="center" alignItems="center">
-              <Button onClick={() => setOpen(false)} variant="contained">Cancel</Button>
+              <Grid item xs={12} display="flex" justifyContent="center" alignItems="center">
+                <Button onClick={() => setOpen(false)} variant="contained">Cancel</Button>
+              </Grid>
             </Grid>
-          </Grid>
-        </Box>
-      </Modal>
+          </Box>
+        )}
+      />
 
       <Box sx={{ display: 'flex', justifyContent: 'space-around' }}>
         <Button onClick={handleAddHistory} variant="contained">Create New History</Button>

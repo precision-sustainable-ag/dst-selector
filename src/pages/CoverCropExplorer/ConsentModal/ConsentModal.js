@@ -1,9 +1,10 @@
 import {
-  Modal, Box, Typography, Button, Grid,
+  Box, Typography, Button, Grid,
 } from '@mui/material';
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { updateConsent } from '../../../reduxStore/userSlice';
+import PSAModal from '../../../shared/PSAModal';
 
 const localStorageKey = 'consent';
 
@@ -50,47 +51,48 @@ const ConsentModal = ({ modalOpen, setModalOpen }) => {
   };
 
   return !/crop=/.test(window.location.search) && (
-    <Modal
+    <PSAModal
       open={modalOpen}
       closeAfterTransition
-    >
-      <Box sx={style}>
-        <Typography id="modal-modal-title" variant="h6" component="h2">
-          Your Privacy
-        </Typography>
-        <Typography variant="body">
-          <p>
-            This site uses cookies for Google Analytics to improve user experience and analyze
-            website traffic. No personally identifiable data is collected.
-          </p>
-          <p>
-            {/* eslint-disable-next-line react/no-unescaped-entities */}
-            By clicking "Accept", you agree to our website's cookie use as described in our
-            {' '}
-            <a
-              href="https://northeastcovercrops.com/privacy-policy/"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              Privacy Policy
-            </a>
-            .
-          </p>
-        </Typography>
-        <Grid container spacing={1}>
-          <Grid item>
-            <Button variant="outlined" onClick={() => handleModal(true)}>
-              Accept
-            </Button>
+      data={(
+        <Box sx={style}>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            Your Privacy
+          </Typography>
+          <Typography variant="body">
+            <p>
+              This site uses cookies for Google Analytics to improve user experience and analyze
+              website traffic. No personally identifiable data is collected.
+            </p>
+            <p>
+              {/* eslint-disable-next-line react/no-unescaped-entities */}
+              By clicking "Accept", you agree to our website's cookie use as described in our
+              {' '}
+              <a
+                href="https://northeastcovercrops.com/privacy-policy/"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                Privacy Policy
+              </a>
+              .
+            </p>
+          </Typography>
+          <Grid container spacing={1}>
+            <Grid item>
+              <Button variant="outlined" onClick={() => handleModal(true)}>
+                Accept
+              </Button>
+            </Grid>
+            <Grid item>
+              <Button variant="outlined" onClick={() => handleModal(false)}>
+                Decline
+              </Button>
+            </Grid>
           </Grid>
-          <Grid item>
-            <Button variant="outlined" onClick={() => handleModal(false)}>
-              Decline
-            </Button>
-          </Grid>
-        </Grid>
-      </Box>
-    </Modal>
+        </Box>
+      )}
+    />
   );
 };
 
