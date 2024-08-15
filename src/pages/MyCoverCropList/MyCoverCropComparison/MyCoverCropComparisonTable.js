@@ -10,22 +10,23 @@
 
 import {
   Typography,
-  TableContainer,
   Table,
   TableHead,
   TableRow,
   TableCell,
   TableBody,
   Grid,
+  TableContainer,
 } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   DataTooltip,
   extractData,
+  trimString,
 } from '../../../shared/constants';
+import { setTableWidth } from '../../../reduxStore/pageSlice';
 import CropDetailsModal from '../../../components/CropDetailsModal/CropDetailsModal';
-import CropCard from '../../../components/CropCard/CropCard';
 
 const MyCoverCropComparisonTable = () => {
   const dispatchRedux = useDispatch();
@@ -55,22 +56,23 @@ const MyCoverCropComparisonTable = () => {
     setModalData(crop);
     setModalOpen(true);
   };
-
   const buildTable = async () => {
     // used to add cover crop group
     const groupRow = { comparisonKey: 'Cover Crop Group' };
     // used to add average goal rating
     const goalRow = { comparisonKey: 'Average Goal Rating' };
-
+    const sciNameRow = { comparisonKey: 'Scientific Name' };
     // iterate over each crop and get group and average goal rating if selectedgoals.length > 0
     selectedCrops.forEach((crop, index) => {
       // this is needed to format it like the other attributes
       groupRow[`crop${index}`] = { values: [] };
+      sciNameRow[`crop${index}`] = { values: [] };
       // same thing here but it also specifies it should be a pillbox
       goalRow[`crop${index}`] = { values: [], dataType: 'pillbox' };
       // push crop group
       groupRow[`crop${index}`].values.push({ value: crop.group });
-
+      // push crop scientific name
+      sciNameRow[`crop${index}`].values.push({ value: crop?.scientificName ? trimString(crop?.scientificName, 25) : 'No Data' });
       // if selected goals > 1 calculate average goal rating
       if (selectedGoalsRedux.length > 0) {
         let goalRating = 0;
@@ -87,6 +89,7 @@ const MyCoverCropComparisonTable = () => {
 
     // push group
     tempRows.push(groupRow);
+    tempRows.push(sciNameRow);
 
     // if selected goals > 1 push average goal rating
     if (selectedGoalsRedux.length > 0) {
@@ -107,22 +110,28 @@ const MyCoverCropComparisonTable = () => {
       tempRows.push(newRow);
     });
   };
+  const tableRef = useRef(null);
 
   const buildTableHeaders = () => selectedCrops.map((crop, index) => (
     <TableCell key={index} align="center">
-      <CropCard
-        crop={crop}
-        index={index}
-        dispatchRedux={dispatchRedux}
-        handleModalOpen={handleModalOpen}
-      />
-      <CropDetailsModal
-        modalOpen={modalOpen}
-        setModalOpen={setModalOpen}
-        crop={modalData}
-      />
+      <Typography
+        variant="subtitle1"
+        sx={{
+          fontWeight: 'bold',
+          color: 'primary.main',
+          cursor: 'pointer',
+          textDecoration: 'none',
+          '&:hover': {
+            textDecoration: 'underline',
+            color: 'primary.dark',
+          },
+          transition: 'color 0.3s ease',
+        }}
+        onClick={() => handleModalOpen(crop)}
+      >
+        {crop.label}
+      </Typography>
     </TableCell>
-
   ));
 
   const buildTableRows = (row) => Object.keys(row).map((key, index) => {
@@ -155,7 +164,6 @@ const MyCoverCropComparisonTable = () => {
         </TableCell>
       );
     }
-
     return (
       <TableCell align="center" key={index}>
         {extractData(attribute, 'comparisonTable', councilShorthandRedux)}
@@ -167,11 +175,23 @@ const MyCoverCropComparisonTable = () => {
     buildTable().then(() => { setRows(tempRows); });
   }, [comparisonKeysRedux, selectedCrops]);
 
+  useEffect(() => {
+    if (tableRef.current) {
+      dispatchRedux(setTableWidth(tableRef.current.scrollWidth));
+    }
+  }, [rows, dispatchRedux, tableRef]);
   return (
     // <TableContainer style={{ overflowX: 'initial' }}>
-    <TableContainer>
-      <Table stickyHeader aria-label="sticky table">
+    <TableContainer component="div" sx={{ overflowX: 'initial' }}>
+      <Table stickyHeader aria-label="sticky table" ref={tableRef}>
         <TableHead>
+          {modalOpen && (
+            <CropDetailsModal
+              modalOpen={modalOpen}
+              setModalOpen={setModalOpen}
+              crop={modalData}
+            />
+          )}
           <TableRow>
             <TableCell />
             {buildTableHeaders()}

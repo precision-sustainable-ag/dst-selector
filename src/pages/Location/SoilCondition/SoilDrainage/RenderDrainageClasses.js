@@ -5,9 +5,10 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setTileDrainage, updateDrainageClass as updateDrainageClassRedux } from '../../../../reduxStore/soilSlice';
 import { historyState, setHistoryState } from '../../../../reduxStore/userSlice';
+import pirschAnalytics from '../../../../shared/analytics';
 
 const RenderDrainageClasses = ({
-  setNewDrainage, setShowTiling, drainage = [],
+  setNewDrainage, setShowTiling, drainageOptions, drainage = [],
 }) => {
   const dispatchRedux = useDispatch();
 
@@ -23,15 +24,7 @@ const RenderDrainageClasses = ({
 
   const [previousDrainage, setPreviousDrainage] = useState(-1);
   const [updateTilingCheck, setUpdateTilingCheck] = useState(false);
-  const drainageArray = [
-    'Very poorly drained',
-    'Poorly drained',
-    'Somewhat poorly drained',
-    'Moderately well drained',
-    'Well drained',
-    'Somewhat excessively drained',
-    'Excessively drained',
-  ];
+  const drainageArray = drainageOptions.map((option) => option.value);
   const drainageVal = [drainageArray.indexOf(drainage)];
 
   // functions
@@ -82,6 +75,7 @@ const RenderDrainageClasses = ({
       setNewDrainage(drainageArray[drainages[0]]);
       updateDrainageAction(drainages);
       dispatchRedux(setTileDrainage(false));
+      pirschAnalytics('Site Conditions', { meta: { drainageClass: drainageArray[drainages[0]] } });
     } else {
       setNewDrainage([]);
       updateDrainageAction([]);
