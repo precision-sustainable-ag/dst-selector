@@ -8,9 +8,9 @@ import { Refresh } from '@mui/icons-material';
 import { Stack, Tooltip, Badge } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { LightButton } from './constants';
 import { reset } from '../reduxStore/store';
 import { updateProgress, setMyCoverCropReset } from '../reduxStore/sharedSlice';
+import PSAButton from './PSAButton';
 
 const ProgressButtonsInner = ({
   isDisabledBack, isDisabledNext, isDisabledRefresh, toolTip,
@@ -38,20 +38,16 @@ const ProgressButtonsInner = ({
 
   return (
     <Stack direction="row" style={{ width: '100%' }}>
-      <LightButton
+      <PSAButton
         style={{
           maxWidth: '90px',
-          maxHeight: '35px',
           minWidth: '70px',
-          fontSize: '13px',
           marginLeft: progressRedux === 4 ? '-75px' : '0px',
         }}
         onClick={() => changeProgress('decrement')}
         disabled={isDisabledBack}
-        data-cy="back-prgs-btn"
-      >
-        BACK
-      </LightButton>
+        data="BACK"
+      />
       {toolTip && isDisabledNext ? (
         <Tooltip
           enterTouchDelay={0}
@@ -60,47 +56,38 @@ const ProgressButtonsInner = ({
           }
         >
           <span>
-            <LightButton
+            <PSAButton
               style={{
                 maxWidth: '90px',
-                maxHeight: '35px',
                 minWidth: '70px',
-                fontSize: '13px',
-                marginLeft: '3%',
+                marginLeft: progressRedux === 4 ? '-75px' : '0px',
               }}
               onClick={() => changeProgress('increment')}
               disabled={isDisabledNext || progressRedux === 4}
-              data-cy="next-prgs-btn"
-            >
-              NEXT
-            </LightButton>
+              data="Next"
+            />
+
           </span>
         </Tooltip>
       ) : (
         <Badge badgeContent={progressRedux === 4 ? selectedCropIdsRedux.length : null} color="error">
-          <LightButton
+          <PSAButton
             style={{
               maxWidth: '90px',
-              maxHeight: '35px',
               minWidth: progressRedux === 4 ? 'max-content' : '70px',
-              fontSize: '13px',
               marginLeft: '3%',
             }}
             onClick={() => (progressRedux === 4 ? setMyCoverCropActivationFlag() : changeProgress('increment'))}
             disabled={isDisabledNext || (progressRedux === 4 && selectedCropIdsRedux.length === 0)}
-            data-cy="next-prgs-btn"
-          >
-            {progressRedux === 4 ? 'MY SELECTED CROPS' : 'NEXT'}
-          </LightButton>
+            data={progressRedux === 4 ? 'MY SELECTED CROPS' : 'NEXT'}
+          />
         </Badge>
       )}
 
-      <LightButton
+      <PSAButton
         style={{
           maxWidth: '90px',
-          maxHeight: '35px',
           minWidth: '90px',
-          fontSize: '13px',
           marginLeft: '3%',
         }}
         onClick={() => {
@@ -111,11 +98,9 @@ const ProgressButtonsInner = ({
           }
         }}
         disabled={isDisabledRefresh}
-        data-cy="refresh-prgs-btn"
-      >
-        <Refresh />
-        Restart
-      </LightButton>
+        data="Restart"
+        startIcon={<Refresh />}
+      />
     </Stack>
   );
 };

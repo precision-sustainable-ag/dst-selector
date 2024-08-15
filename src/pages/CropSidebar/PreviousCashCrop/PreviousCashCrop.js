@@ -8,6 +8,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
 import { updateDateRange } from '../../../reduxStore/cropSlice';
 import { historyState, setHistoryState } from '../../../reduxStore/userSlice';
+import pirschAnalytics from '../../../shared/analytics';
 
 const PreviousCashCrop = () => {
   const dispatchRedux = useDispatch();
@@ -21,6 +22,7 @@ const PreviousCashCrop = () => {
     // update history state here
     if (historyStateRedux === historyState.imported) dispatchRedux(setHistoryState(historyState.updated));
     dispatchRedux(updateDateRange({ startDate: start.toString(), endDate: end.toString() }));
+    pirschAnalytics('Previous Cash Crop', { meta: { updated: true } });
   };
 
   return (

@@ -8,14 +8,16 @@ import {
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { Close, Print } from '@mui/icons-material';
 import React, { useEffect, useState } from 'react';
-import ReactGA from 'react-ga';
 import { useSelector } from 'react-redux';
 import InformationSheetContent from '../../pages/InformationSheetContent/InformationSheetContent';
 import { callCoverCropApi } from '../../shared/constants';
+import pirschAnalytics from '../../shared/analytics';
 
 const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
   // redux vars
   const regionIdRedux = useSelector((stateRedux) => stateRedux.mapData.regionId);
+  const regionShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.regionShorthand);
+  const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const stateIdRedux = useSelector((stateRedux) => stateRedux.mapData.stateId);
   const consentRedux = useSelector((stateRedux) => stateRedux.userData.consent);
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
@@ -23,6 +25,7 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
   // useState vars
   const [dataDone, setDataDone] = useState(false);
   const [modalData, setModalData] = useState([]);
+  const [printEnabled, setPrintEnabled] = useState(false);
 
   useEffect(() => {
     const regionQuery = `${encodeURIComponent('regions')}=${encodeURIComponent(regionIdRedux)}`;
@@ -35,14 +38,16 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
           setDataDone(true);
         });
     }
-  }, [crop]);
 
-  useEffect(() => {
-    if (consentRedux === true) {
-      ReactGA.initialize('UA-181903489-1');
-      ReactGA.pageview('information sheet');
-    }
-  }, [consentRedux]);
+    fetch(`https://selectorimages.blob.core.windows.net/selectorimages/pdf/${crop.label}%20Zone%20${regionShorthandRedux}.pdf`, { method: 'HEAD' })
+      .then((res) => {
+        if (res.status !== 404) {
+          setPrintEnabled(true);
+        } else {
+          setPrintEnabled(false);
+        }
+      });
+  }, [crop]);
 
   const handleModalClose = () => {
     setModalOpen(!modalOpen);
@@ -50,13 +55,15 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
 
   const print = () => {
     if (consentRedux === true) {
-      ReactGA.event({
-        category: 'Information Sheet',
-        action: 'Print',
-        label: document.title,
+      pirschAnalytics('Information Sheet', {
+        meta: {
+          category: 'Information Sheet',
+          action: 'Print',
+          label: document.title,
+        },
       });
     }
-    window.open(`https://selectorimages.blob.core.windows.net/selectorimages/pdf/${document.title}.pdf`, '_blank');
+    window.open(`https://selectorimages.blob.core.windows.net/selectorimages/pdf/${crop.label}%20Zone%20${regionShorthandRedux}.pdf`, '_blank');
   }; // print
 
   return dataDone === true && (
@@ -102,20 +109,22 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
                   Terminology Definitions
                 </Button>
               </Grid>
-              <Grid item>
-                <Button
-                  startIcon={<Print />}
-                  style={{
-                    color: 'white',
-                    textTransform: 'none',
-                    marginLeft: '2em',
-                    textDecoration: 'underline',
-                  }}
-                  onClick={print}
-                >
-                  Print
-                </Button>
-              </Grid>
+              {(printEnabled && councilShorthandRedux === 'NECCC') && (
+                <Grid item>
+                  <Button
+                    startIcon={<Print />}
+                    style={{
+                      color: 'white',
+                      textTransform: 'none',
+                      marginLeft: '2em',
+                      textDecoration: 'underline',
+                    }}
+                    onClick={print}
+                  >
+                    Print
+                  </Button>
+                </Grid>
+              )}
             </Grid>
 
             <Grid item xs={1}>

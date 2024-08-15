@@ -5,6 +5,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { updateFloodingFrequency as updateFloodingFrequencyRedux } from '../../../../reduxStore/soilSlice';
 import { historyState, setHistoryState } from '../../../../reduxStore/userSlice';
+import pirschAnalytics from '../../../../shared/analytics';
 
 const RenderFloodingOptions = ({ floodingOptions, flooding = [''] }) => {
   const dispatchRedux = useDispatch();
@@ -32,6 +33,10 @@ const RenderFloodingOptions = ({ floodingOptions, flooding = [''] }) => {
       // does not exist, dispatch to state
       floodings = [label];
       dispatchRedux(updateFloodingFrequencyRedux(floodings));
+      pirschAnalytics('Site Conditions', {
+        meta:
+        { floodingFrequency: floodingOptions.filter((floodClass) => floodClass.value === floodings[0])[0].label },
+      });
     } else {
       // exists, remove it from state
       const index = floodings.indexOf(label);
@@ -51,7 +56,7 @@ const RenderFloodingOptions = ({ floodingOptions, flooding = [''] }) => {
       style={{ marginRight: '1rem' }}
       flexBasis="0"
     >
-      {floodingOptions.floodingOptions.map((f, index) => (
+      {floodingOptions.map((f, index) => (
         <Box key={index} sx={{ width: isMobile ? '100%' : 'auto' }}>
           <Chip
             label={f.label}

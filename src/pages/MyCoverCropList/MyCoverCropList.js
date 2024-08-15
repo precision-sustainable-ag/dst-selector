@@ -12,10 +12,10 @@ import {
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import ReactGA from 'react-ga';
 import MyCoverCropComparisonTable from './MyCoverCropComparison/MyCoverCropComparisonTable';
 import MyCoverCropCards from './MyCoverCropCards/MyCoverCropCards';
 import { activateSpeicesSelectorTile } from '../../reduxStore/sharedSlice';
+import pirschAnalytics from '../../shared/analytics';
 
 const MyCoverCropList = ({ comparisonView, from }) => {
   const dispatchRedux = useDispatch();
@@ -24,7 +24,6 @@ const MyCoverCropList = ({ comparisonView, from }) => {
   const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
   const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
   const selectedCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCropIds);
-  const consentRedux = useSelector((stateRedux) => stateRedux.userData.consent);
 
   useEffect(() => {
     if (stateLabelRedux === null) {
@@ -42,12 +41,8 @@ const MyCoverCropList = ({ comparisonView, from }) => {
   };
 
   useEffect(() => {
-    if (consentRedux === true) {
-      ReactGA.initialize('UA-181903489-1');
-
-      ReactGA.pageview('cover crop list');
-    }
-  }, [consentRedux]);
+    pirschAnalytics('Visited Page', { meta: { visited: 'My Cover Crop List' } });
+  }, []);
 
   return (
     <>

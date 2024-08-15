@@ -27,6 +27,7 @@ import { setAuthToken } from '../../shared/authToken';
 import { loadHistory } from '../../shared/api';
 import HistoryDialog from '../../components/HistoryDialog/HistoryDialog';
 import SaveUserHistory from './SaveUserHistory/SaveUserHistory';
+import { releaseNotesURL } from '../../shared/keys';
 // import logoImage from '../../../public/images/PSAlogo-text.png';
 
 const Header = () => {
@@ -139,6 +140,14 @@ const Header = () => {
     // TODO: councilShorthandRedux here is for re-import userHistoryList when the app is reset
   }, [isAuthenticated, getAccessTokenSilently, councilShorthandRedux]);
 
+  const [headerWidth, setHeaderWidth] = useState('100%');
+  const tableWidth = useSelector((stateRedux) => stateRedux.pageData.tableWidth);
+  const sidebarWidth = useSelector((stateRedux) => stateRedux.pageData.sidebarWidth);
+  useEffect(() => {
+    const windowSize = window.innerWidth;
+    setHeaderWidth(`${Math.max(windowSize, tableWidth + sidebarWidth)}px`);
+  }, [tableWidth, sidebarWidth]);
+
   const chooseTopBar = (option) => {
     if (option) {
       return (
@@ -170,6 +179,13 @@ const Header = () => {
               </Tooltip>
             </Grid>
           ))}
+          <Grid item>
+            <Button onClick={() => window.open(releaseNotesURL)}>
+              <Typography variant="body2" sx={{ color: 'black', fontWeight: 'bold' }}>
+                Release Notes
+              </Typography>
+            </Button>
+          </Grid>
           <Grid item>
             <AuthButton
               type={isAuthenticated ? 'Logout' : 'Login'}
@@ -216,7 +232,7 @@ const Header = () => {
   };
 
   return (
-    <header>
+    <header style={{ width: headerWidth }}>
       <Box>
         <Grid container>
           <Grid item container alignItems="center" sx={{ height: headerHeight }}>

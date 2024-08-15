@@ -48,7 +48,10 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
     .map((crop, index) => (
       <TableRow
         key={`cropRow${index}`}
-        style={hasGoalRatingTwoOrLess(selectedGoalsRedux, crop) ? { opacity: '0.3' } : {}}
+        style={{
+          opacity: hasGoalRatingTwoOrLess(selectedGoalsRedux, crop) && '0.3',
+          backgroundColor: selectedCropIdsRedux.includes(crop.id) && '#EAEAEA',
+        }}
       >
         <TableCell sx={{ padding: 0 }}>
           <Grid container>
@@ -137,7 +140,14 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
         </TableCell>
         {selectedGoalsRedux.length > 0
           && selectedGoalsRedux.map((goal, i) => (
-            <TableCell size="small" style={{ textAlign: 'center' }} key={i} className="goalCells">
+            <TableCell
+              size="small"
+              style={{
+                textAlign: 'center',
+              }}
+              key={i}
+              className="goalCells"
+            >
               <div>
                 <Tooltip
                   arrow
@@ -169,7 +179,7 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
           <LightButton
             id={`cartBtn${index}`}
             style={{
-              backgroundColor: 'white',
+              backgroundColor: selectedCropIdsRedux.includes(crop.id) ? '#EAEAEA' : 'white',
               color: selectedBtns.includes(crop.id) ? '#d32f2f' : '#2d7b7b',
             }}
             onClick={() => {

@@ -2,8 +2,8 @@
 /*
   This file contains the CropTable component
 */
-import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useState, useEffect, useRef } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   Button,
   CircularProgress,
@@ -21,12 +21,14 @@ import ListIcon from '@mui/icons-material/List';
 import { CalendarToday } from '@mui/icons-material';
 import StraightIcon from '@mui/icons-material/Straight';
 import {
-  sortCrops, sudoButtonStyle, LightButton,
+  sortCrops, sudoButtonStyle,
 } from '../../../shared/constants';
 import '../../../styles/cropCalendarViewComponent.scss';
 import '../../../styles/cropTable.scss';
 import CropDetailsModal from '../../../components/CropDetailsModal/CropDetailsModal';
 import RenderTableItems from './RenderTableItems';
+import PSAButton from '../../../shared/PSAButton';
+import { setTableWidth } from '../../../reduxStore/pageSlice';
 
 const CropTable = ({
   listView,
@@ -112,28 +114,36 @@ const CropTable = ({
     sortByAverageGoals();
   }, []);
 
+  const tableRef = useRef(null);
+  const dispatchRedux = useDispatch();
+  useEffect(() => {
+    if (tableRef.current) {
+      // const tableWidth = tableRef.current.offsetWidth;
+      const tableWidth = tableRef.current.scrollWidth;
+      // tableWidth += 1000;
+      dispatchRedux(setTableWidth(tableWidth));
+    }
+  }, [dispatchRedux, tableRef]);
   return cropDataRedux.length !== 0 ? (
     <>
-      <TableContainer component="div">
-        <Table stickyHeader sx={{ borderSpacing: '7px', padding: 0 }}>
+      <TableContainer component="div" sx={{ overflowX: 'initial' }}>
+        <Table stickyHeader sx={{ borderSpacing: '7px', padding: 0 }} ref={tableRef}>
           <TableHead>
             <TableRow style={{ paddingBottom: '5px', whiteSpace: 'nowrap' }}>
-              <LightButton
+              <PSAButton
                 onClick={() => setListView(false)}
-                color="secondary"
-                style={{ background: !listView ? '#49a8ab' : '#e3f2f4' }}
+                selected={!listView}
+                style={{ marginBottom: '7px' }}
                 startIcon={<ListIcon style={{ fontSize: 'larger' }} />}
-              >
-                CROP LIST
-              </LightButton>
-              <LightButton
+                data="CROP LIST"
+              />
+              <PSAButton
                 onClick={() => setListView(true)}
-                color="secondary"
-                style={{ background: listView ? '#49a8ab' : '#e3f2f4' }}
+                selected={listView}
+                style={{ marginBottom: '7px' }}
                 startIcon={<CalendarToday style={{ fontSize: 'larger' }} />}
-              >
-                CROP CALENDAR
-              </LightButton>
+                data="CROP CALENDAR"
+              />
             </TableRow>
             <TableRow>
               <TableCell
