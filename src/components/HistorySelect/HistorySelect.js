@@ -150,7 +150,7 @@ const HistorySelect = () => {
     <>
       <PSAModal
         open={open}
-        data={(
+        modalContent={(
           <Box sx={modalStyles}>
             <Grid container spacing={2}>
               <Grid item xs={12} display="flex" justifyContent="center" alignItems="center">

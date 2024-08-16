@@ -62,7 +62,7 @@ const AuthModal = ({ modalOpen, setModalOpen, setConsentModalOpen }) => {
       open={modalOpen}
       closeAfterTransition
       onClose={handleModal}
-      data={(
+      modalContent={(
         <Box
           sx={style}
         >

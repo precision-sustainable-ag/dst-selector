@@ -54,7 +54,7 @@ const ConsentModal = ({ modalOpen, setModalOpen }) => {
     <PSAModal
       open={modalOpen}
       closeAfterTransition
-      data={(
+      modalContent={(
         <Box sx={style}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
             Your Privacy
