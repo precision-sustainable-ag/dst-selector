@@ -85,6 +85,7 @@ const ToggleOptions = ({ pathname }) => {
         <Badge
           badgeContent={selectedCropIdsRedux.length}
           color="error"
+          data-cy="badge"
         >
           <Button
             sx={{

@@ -136,7 +136,7 @@ const ComparisonBar = ({
       <ListItem>
         <ListItemText
           primary={(
-            <Button size="small" onClick={showAllVariables}>
+            <Button size="small" onClick={showAllVariables} data-cy="show-all-btn">
               Show All
             </Button>
           )}

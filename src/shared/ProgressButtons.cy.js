@@ -38,9 +38,9 @@ describe('<ProgressButtonsInner />', () => {
   });
 
   it('renders correct state of Progress buttons when progress is 0', () => {
-    cy.assertByTestId('back-prgs-btn').should('be.disabled');
-    cy.assertByTestId('next-prgs-btn').should('be.disabled');
-    cy.assertByTestId('refresh-prgs-btn').should('be.disabled');
+    cy.assertByTestId('back-btn').should('be.disabled');
+    cy.assertByTestId('next-btn').should('be.disabled');
+    cy.assertByTestId('restart-btn').should('be.disabled');
   });
 
   it('should enable next button when a state is selected and progress is 0', () => {
@@ -91,9 +91,9 @@ describe('<ProgressButtonsInner />', () => {
       councilLabel: 'Northeast Cover Crops Council',
     };
     reduxStore.dispatch(setMapRedux(mapData));
-    cy.assertByTestId('back-prgs-btn').should('be.disabled');
-    cy.assertByTestId('next-prgs-btn').should('not.be.disabled');
-    cy.assertByTestId('refresh-prgs-btn').should('be.disabled');
+    cy.assertByTestId('back-btn').should('be.disabled');
+    cy.assertByTestId('next-btn').should('not.be.disabled');
+    cy.assertByTestId('restart-btn').should('be.disabled');
   });
 
   it('renders correct state of Progress buttons when progress is 1', () => {
@@ -102,9 +102,9 @@ describe('<ProgressButtonsInner />', () => {
     };
     reduxStore.dispatch(setAddressRedux(addressData));
     reduxStore.dispatch(gotoProgress(1));
-    cy.assertByTestId('back-prgs-btn').should('not.be.disabled');
-    cy.assertByTestId('next-prgs-btn').should('not.be.disabled');
-    cy.assertByTestId('refresh-prgs-btn').should('not.be.disabled');
+    cy.assertByTestId('back-btn').should('not.be.disabled');
+    cy.assertByTestId('next-btn').should('not.be.disabled');
+    cy.assertByTestId('restart-btn').should('not.be.disabled');
   });
 
   it('renders correct state of Progress buttons when progress is 2', () => {
@@ -119,8 +119,8 @@ describe('<ProgressButtonsInner />', () => {
 
   it('renders correct state of Progress buttons when progress is 4', () => {
     reduxStore.dispatch(gotoProgress(4));
-    cy.assertByTestId('back-prgs-btn').should('not.be.disabled');
-    cy.assertByTestId('next-prgs-btn').should('have.text', 'MY SELECTED CROPS').should('be.disabled');
-    cy.assertByTestId('refresh-prgs-btn').should('not.be.disabled');
+    cy.assertByTestId('back-btn').should('not.be.disabled');
+    cy.assertByTestId('"my selected crops-btn"').should('have.text', 'MY SELECTED CROPS').should('be.disabled');
+    cy.assertByTestId('restart-btn').should('not.be.disabled');
   });
 });

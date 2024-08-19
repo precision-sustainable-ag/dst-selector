@@ -5,7 +5,7 @@ describe('Testing interactions on location screen', () => {
     cy.beforeEachVisitBaseUrl();
     cy.assertByTestId('state-selector-dropdown').first().click();
     cy.assertByTestId('state-dropdown-item-0').click();
-    cy.assertByTestId('next-prgs-btn').first().click();
+    cy.assertByTestId('next-btn').first().click();
   });
 
   it('checks if plant-hardiness-dropdown has items equal to mapData.regions array', () => {

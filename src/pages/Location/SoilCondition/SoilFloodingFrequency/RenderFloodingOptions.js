@@ -9,7 +9,6 @@ import pirschAnalytics from '../../../../shared/analytics';
 
 const RenderFloodingOptions = ({ floodingOptions, flooding = [''] }) => {
   const dispatchRedux = useDispatch();
-
   // theme
   const uiTheme = useTheme();
   const isMobile = useMediaQuery(uiTheme.breakpoints.down('sm'));

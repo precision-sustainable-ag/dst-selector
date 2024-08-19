@@ -52,9 +52,9 @@ describe('Test all possible interactions on the Landing Page after a state is se
   it('should have correct states for the progress buttons after a state is selected', () => {
     cy.assertByTestId('state-selector-dropdown').first().click();
     cy.assertByTestId('state-dropdown-item-0').click();
-    cy.assertByTestId('next-prgs-btn').should('not.be.disabled');
-    cy.assertByTestId('back-prgs-btn').should('be.disabled');
-    cy.assertByTestId('refresh-prgs-btn').should('be.disabled');
+    cy.assertByTestId('next-btn').should('not.be.disabled');
+    cy.assertByTestId('back-btn').should('be.disabled');
+    cy.assertByTestId('restart-btn').should('be.disabled');
   });
 
   it('should display correct logo when council changes', () => {

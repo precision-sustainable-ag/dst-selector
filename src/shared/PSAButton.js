@@ -9,6 +9,8 @@ import { CustomStyles } from './constants';
 const PSAButton = ({
   data, onClick, disabled, style, sx, startIcon, selected,
 }) => {
+  const buttonData = typeof data === 'string' ? data.toLowerCase() : '';
+
   const buttonProps = {
     backgroundColor: selected ? CustomStyles().primaryProgressBtnColor : CustomStyles().secondaryProgressBtnBorderColor,
     borderRadius: CustomStyles().fullyRoundedRadius,
@@ -23,7 +25,7 @@ const PSAButton = ({
   };
 
   return (
-    <Button style={style} onClick={onClick} disabled={disabled} sx={{ ...buttonProps, ...sx }}>
+    <Button style={style} onClick={onClick} disabled={disabled} sx={{ ...buttonProps, ...sx }} data-cy={`${buttonData}-btn`}>
       {startIcon}
       {data}
     </Button>
