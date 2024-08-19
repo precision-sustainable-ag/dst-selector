@@ -1,10 +1,12 @@
 import {
-  IconButton, InputAdornment, ListItem, ListItemText, TextField, Typography,
+  IconButton, InputAdornment, ListItem, ListItemText, Typography,
 } from '@mui/material';
 import { Clear, Search } from '@mui/icons-material';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { cropSearch } from '../../../reduxStore/filterSlice';
+import PSATextField from '../../../shared/PSATextField';
+// import PSATextField from '../../../shared/PSATextField';
 
 const CoverCropSearch = () => {
   const dispatchRedux = useDispatch();
@@ -16,7 +18,7 @@ const CoverCropSearch = () => {
   return (
     <ListItem style={{ padding: '0px' }}>
       <ListItemText>
-        <TextField
+        <PSATextField
           style={{ width: '100%' }}
           color="secondary"
           label={(

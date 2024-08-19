@@ -3,7 +3,6 @@ import { useSelector } from 'react-redux';
 import {
   Grid,
   Typography,
-  TextField,
   Button,
   Snackbar,
   Checkbox,
@@ -11,6 +10,7 @@ import {
   FormControlLabel,
 } from '@mui/material';
 import pirschAnalytics from '../../shared/analytics';
+import PSATextField from '../../shared/PSATextField';
 
 const FeedbackComponent = () => {
   const consentRedux = useSelector((stateRedux) => stateRedux.userData.consent);
@@ -168,7 +168,7 @@ const FeedbackComponent = () => {
           <Typography variant="body1">Give your feedback a short descriptive title.</Typography>
         </Grid>
         <Grid item xs={12}>
-          <TextField
+          <PSATextField
             placeholder="Enter Your Title"
             variant="outlined"
             onChange={(event) => handleTextInputChange(event, 'title')}
@@ -191,7 +191,7 @@ const FeedbackComponent = () => {
           </Typography>
         </Grid>
         <Grid item xs={12}>
-          <TextField
+          <PSATextField
             placeholder="Enter Your Feedback"
             multiline
             variant="outlined"
@@ -258,7 +258,7 @@ const FeedbackComponent = () => {
           <Typography variant="h6">Name </Typography>
         </Grid>
         <Grid item xs={12}>
-          <TextField
+          <PSATextField
             placeholder="Enter Name"
             variant="outlined"
             onChange={(event) => handleTextInputChange(event, 'name')}
@@ -272,7 +272,7 @@ const FeedbackComponent = () => {
           <Typography variant="h6">Email </Typography>
         </Grid>
         <Grid item xs={12}>
-          <TextField
+          <PSATextField
             placeholder="Enter Email"
             variant="outlined"
             onChange={(event) => handleTextInputChange(event, 'email')}
