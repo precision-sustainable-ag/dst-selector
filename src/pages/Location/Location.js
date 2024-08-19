@@ -289,7 +289,7 @@ const Location = () => {
               alignItems: 'center',
             }}
           >
-            <Typography variant="h4">
+            <Typography variant="h4" data-cy="field-location-title">
               Field Location
             </Typography>
           </Grid>

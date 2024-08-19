@@ -13,6 +13,7 @@ describe('<GoalsSelector />', () => {
     { label: 'Forage Harvest Value' },
     { label: 'Good Grazing' },
     { label: 'Growing Window' },
+    { label: 'Lasting Residue' },
   ];
   beforeEach(() => {
     reduxStore = configureStore({});

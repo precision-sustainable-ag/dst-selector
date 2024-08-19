@@ -15,22 +15,188 @@ describe('<SiteConditions />', () => {
   beforeEach(() => {
     reduxStore = configureStore({});
 
-    cy.intercept('GET', '**/*', {
+    cy.intercept('GET', '**/v2/attribute?filtered=false&slug=flooding_frequency*', {
       statusCode: 200,
       body: {
         type: 'object',
         data: {
+          id: 950,
+          label: 'Flooding Frequency',
+          slug: 'flooding_frequency',
+          description: 'Options for Flooding Frequency in Site Conditions section.',
+          units: '',
+          details: '',
+          order: 1,
+          isArray: false,
+          isKeyTrait: false,
+          isFilter: false,
+          isMinimal: false,
+          isGoal: false,
+          dataTypeId: 1,
+          unitRangeId: null,
+          categoryId: 3,
+          createdAt: null,
+          updatedAt: null,
+          deletedAt: null,
           values: [
             {
+              id: 35982,
+              value: '0',
               label: 'None',
+              dataType: 'string',
+              attributeId: 950,
+              order: 1,
+              createdAt: '2024-02-20T20:22:03.911Z',
+              updatedAt: '2024-02-20T20:22:03.911Z',
+              deletedAt: null,
             },
             {
+              id: 35983,
+              value: '1',
               label: 'Very rare',
+              dataType: 'string',
+              attributeId: 950,
+              order: 1,
+              createdAt: '2024-02-20T20:22:03.911Z',
+              updatedAt: '2024-02-20T20:22:03.911Z',
+              deletedAt: null,
+            },
+            {
+              id: 35984,
+              value: '2',
+              label: 'Rare',
+              dataType: 'string',
+              attributeId: 950,
+              order: 1,
+              createdAt: '2024-02-20T20:22:03.911Z',
+              updatedAt: '2024-02-20T20:22:03.911Z',
+              deletedAt: null,
+            },
+            {
+              id: 35985,
+              value: '3',
+              label: 'Occasional',
+              dataType: 'string',
+              attributeId: 950,
+              order: 1,
+              createdAt: '2024-02-20T20:22:03.911Z',
+              updatedAt: '2024-02-20T20:22:03.911Z',
+              deletedAt: null,
+            },
+            {
+              id: 35986,
+              value: '4',
+              label: 'Frequent',
+              dataType: 'string',
+              attributeId: 950,
+              order: 1,
+              createdAt: '2024-02-20T20:22:03.911Z',
+              updatedAt: '2024-02-20T20:22:03.911Z',
+              deletedAt: null,
+            },
+            {
+              id: 35987,
+              value: '5',
+              label: 'Very frequent',
+              dataType: 'string',
+              attributeId: 950,
+              order: 1,
+              createdAt: '2024-02-20T20:22:03.911Z',
+              updatedAt: '2024-02-20T20:22:03.911Z',
+              deletedAt: null,
             },
           ],
         },
+        attributions: {},
       },
     }).as('getFloodingFrequency');
+
+    cy.intercept('GET', '**/v1/attribute-values?slug=soil_drainage&regions*', {
+      statusCode: 200,
+      body: {
+        type: 'object',
+        data: [
+          {
+            id: 1496,
+            value: 'Very poorly drained',
+            label: null,
+            dataType: 'string',
+            attributeId: 140,
+            order: 1,
+            createdAt: '2022-10-28T17:00:49.666Z',
+            updatedAt: '2022-10-28T17:00:49.666Z',
+            deletedAt: null,
+          },
+          {
+            id: 1499,
+            value: 'Poorly drained',
+            label: null,
+            dataType: 'string',
+            attributeId: 140,
+            order: 2,
+            createdAt: '2022-10-28T17:00:49.666Z',
+            updatedAt: '2022-10-28T17:00:49.666Z',
+            deletedAt: null,
+          },
+          {
+            id: 1501,
+            value: 'Somewhat poorly drained',
+            label: null,
+            dataType: 'string',
+            attributeId: 140,
+            order: 3,
+            createdAt: '2022-10-28T17:00:49.666Z',
+            updatedAt: '2022-10-28T17:00:49.666Z',
+            deletedAt: null,
+          },
+          {
+            id: 1500,
+            value: 'Moderately well drained',
+            label: null,
+            dataType: 'string',
+            attributeId: 140,
+            order: 4,
+            createdAt: '2022-10-28T17:00:49.666Z',
+            updatedAt: '2022-10-28T17:00:49.666Z',
+            deletedAt: null,
+          },
+          {
+            id: 1498,
+            value: 'Well drained',
+            label: null,
+            dataType: 'string',
+            attributeId: 140,
+            order: 5,
+            createdAt: '2022-10-28T17:00:49.666Z',
+            updatedAt: '2022-10-28T17:00:49.666Z',
+            deletedAt: null,
+          },
+          {
+            id: 1495,
+            value: 'Somewhat excessively drained',
+            label: null,
+            dataType: 'string',
+            attributeId: 140,
+            order: 6,
+            createdAt: '2022-10-28T17:00:49.666Z',
+            updatedAt: '2022-10-28T17:00:49.666Z',
+            deletedAt: null,
+          },
+          {
+            id: 1502,
+            value: 'Excessively drained',
+            label: null,
+            dataType: 'string',
+            attributeId: 140,
+            order: 7,
+            createdAt: '2022-10-28T17:00:49.666Z',
+            updatedAt: '2022-10-28T17:00:49.666Z',
+            deletedAt: null,
+          },
+        ],
+        attributions: {},
+      },
+    }).as('getDrainageOptions');
 
     // Mock POST requests
     cy.intercept('POST', '**/*', (req) => {
@@ -124,7 +290,7 @@ describe('<SiteConditions />', () => {
       </Provider>,
     );
     // Wait for all blocked requests to be intercepted
-    cy.wait(['@getFloodingFrequency', '@blockPostRequests']);
+    cy.wait(['@getDrainageOptions', '@getFloodingFrequency', '@blockPostRequests']);
 
     cy.assertByTestId('soil-composition-card');
     cy.assertByTestId('frost-dates-card');

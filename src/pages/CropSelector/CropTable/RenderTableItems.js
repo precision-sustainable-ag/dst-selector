@@ -67,6 +67,7 @@ const RenderTableItems = ({ showGrowthWindow, handleModalOpen }) => {
                     onClick={() => {
                       handleModalOpen(crop);
                     }}
+                    data-cy="crop-calendar-crop-name"
                   >
                     {flipCoverCropName(crop.label)}
                   </Button>

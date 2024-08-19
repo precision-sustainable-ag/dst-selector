@@ -72,17 +72,17 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                   }}
                 >
                   { selectedCropIdsRedux.includes(crop.id) && (
-                  <CheckBoxIcon
-                    style={{
-                      position: 'absolute',
-                      right: '7px',
-                      top: '4px',
-                      height: '15px',
-                      zIndex: 1,
-                      backgroundColor: '#5992E6',
+                    <CheckBoxIcon
+                      style={{
+                        position: 'absolute',
+                        right: '7px',
+                        top: '4px',
+                        height: '15px',
+                        zIndex: 1,
+                        backgroundColor: '#5992E6',
 
-                    }}
-                  />
+                      }}
+                    />
                   )}
                   <CropImage
                     view="calendar"
@@ -117,6 +117,7 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                     setModalData(crop);
                     setModalOpen(!modalOpen);
                   }}
+                  data-cy="crop-calendar-crop-name"
                 >
                   {flipCoverCropName(crop.label)}
                 </Button>
@@ -196,8 +197,11 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                 setSaveHistory,
               );
             }}
+            data-cy={`cart-btn-${index}`}
           >
-            {selectedBtns.includes(crop.id) ? <DeleteForever /> : <AddCircleOutline />}
+            {selectedBtns.includes(crop.id)
+              ? <DeleteForever data-cy={`delete-forever-icon-${index}`} />
+              : <AddCircleOutline data-cy={`add-circle-outline-icon-${index}`} />}
           </LightButton>
         </TableCell>
       </TableRow>

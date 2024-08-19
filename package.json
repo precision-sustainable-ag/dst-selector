@@ -47,7 +47,8 @@
     "eject": "react-scripts eject",
     "format": "prettier --write .",
     "cypress:e2e:dev": "npx cypress run --config-file dev.config.js",
-    "cypress:comp:dev": "npx cypress run --component --config-file=dev.config.js"
+    "cypress:comp:dev": "npx cypress run --component --config-file=dev.config.js",
+    "cypress:cli": "npx cypress open --config-file=dev.config.js"
   },
   "eslintConfig": {
     "extends": "react-app"
