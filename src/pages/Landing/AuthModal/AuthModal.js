@@ -3,11 +3,12 @@
 */
 
 import {
-  Modal, Box, Typography, Grid,
+  Box, Typography, Grid,
 } from '@mui/material';
 import React, { useEffect } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 import AuthButton from '../../../components/Auth/AuthButton/AuthButton';
+import PSAModal from '../../../shared/PSAModal';
 
 const localStorageKey = 'notShowAuth';
 
@@ -57,33 +58,34 @@ const AuthModal = ({ modalOpen, setModalOpen, setConsentModalOpen }) => {
   return (
     (!isAuthenticated && !isLoading)
     && (
-    <Modal
+    <PSAModal
       open={modalOpen}
       closeAfterTransition
       onClose={handleModal}
-    >
-      <Box
-        sx={style}
-      >
-        <Typography variant="h6" component="h2">
-          Login to try out our new user history feature?
-        </Typography>
-        <Typography variant="body">
-          We will not share your data.
-        </Typography>
-        <Grid container spacing={1}>
-          <Grid item>
-            <AuthButton variant="outlined" type="Login" />
+      modalContent={(
+        <Box
+          sx={style}
+        >
+          <Typography variant="h6" component="h2">
+            Login to try out our new user history feature?
+          </Typography>
+          <Typography variant="body">
+            We will not share your data.
+          </Typography>
+          <Grid container spacing={1}>
+            <Grid item>
+              <AuthButton variant="outlined" type="Login" />
+            </Grid>
+            <Grid item>
+              <AuthButton variant="outlined" type="Signup" />
+            </Grid>
+            <Grid item>
+              <AuthButton variant="outlined" type="Not now" color="dark" onClickCallback={handleModal} />
+            </Grid>
           </Grid>
-          <Grid item>
-            <AuthButton variant="outlined" type="Signup" />
-          </Grid>
-          <Grid item>
-            <AuthButton variant="outlined" type="Not now" color="dark" onClickCallback={handleModal} />
-          </Grid>
-        </Grid>
-      </Box>
-    </Modal>
+        </Box>
+      )}
+    />
     )
   );
 };
