@@ -5,7 +5,6 @@
 */
 
 import {
-  Button,
   CircularProgress,
   Table,
   TableBody,
@@ -168,6 +167,7 @@ const CropCalendarView = ({
                   style={{ marginBottom: '7px' }}
                   startIcon={<ListIcon style={{ fontSize: 'larger' }} />}
                   data="CROP LIST"
+                  pillButton
                 />
                 <PSAButton
                   onClick={() => setListView(true)}
@@ -175,6 +175,7 @@ const CropCalendarView = ({
                   style={{ marginBottom: '7px' }}
                   startIcon={<CalendarToday style={{ fontSize: 'larger' }} />}
                   data="CROP CALENDAR"
+                  pillButton
                 />
                 {activeGrowthPeriodRedux.length === 0 && (
                   <>
@@ -280,9 +281,13 @@ const CropCalendarView = ({
                     }}
                   >
                     <Box>
-                      <Button startIcon={<AddCircle />} onClick={handleLegendModal}>
-                        <Typography variant="body2"> Legend</Typography>
-                      </Button>
+                      <PSAButton
+                        startIcon={<AddCircle />}
+                        onClick={handleLegendModal}
+                        data={
+                          <Typography variant="body2"> Legend</Typography>
+                      }
+                      />
                     </Box>
                   </TableCell>
                 ) : (
@@ -294,16 +299,19 @@ const CropCalendarView = ({
                   borderRight: '5px solid white', backgroundColor: columnSort === 'name' ? '#49a8ab' : '#abd08f', padding: 0, width: '250px', textAlign: 'center',
                 }}
                 >
-                  <Button
+                  <PSAButton
                     sx={{
                       textAlign: 'center', color: 'black', textTransform: 'none',
                     }}
                     onClick={() => sortByName()}
-                  >
-                    {' '}
-                    Crop Name
-                    {columnSort === 'name' && <StraightIcon className={nameSortFlag ? '' : 'rotate180'} />}
-                  </Button>
+                    data={(
+                      <>
+                        {' '}
+                        Crop Name
+                        {columnSort === 'name' && <StraightIcon className={nameSortFlag ? '' : 'rotate180'} />}
+                      </>
+                  )}
+                  />
                 </TableCell>
                 {selectedGoalsRedux.length > 0
                 && selectedGoalsRedux.map((goal, index) => (
@@ -326,17 +334,20 @@ const CropCalendarView = ({
                         <p>{goal}</p>
                           )}
                     >
-                      <Button
+                      <PSAButton
                         onClick={() => sortByGoal(goal, index, `goal${index}`)}
                         variant="body1"
                         sx={{
                           textTransform: 'none',
                           padding: '0px',
                         }}
-                      >
-                        {`Goal ${index + 1}`}
-                        {columnSort === `goal${index}` && <StraightIcon style={{ margin: '0px' }} className={currentGoalSortFlag ? '' : 'rotate180'} />}
-                      </Button>
+                        data={(
+                          <>
+                            {`Goal ${index + 1}`}
+                            {columnSort === `goal${index}` && <StraightIcon style={{ margin: '0px' }} className={currentGoalSortFlag ? '' : 'rotate180'} />}
+                          </>
+                        )}
+                      />
 
                     </Tooltip>
                   </TableCell>
@@ -363,15 +374,18 @@ const CropCalendarView = ({
                   borderLeft: '5px solid white', backgroundColor: columnSort === 'myList' ? '#49a8ab' : '#abd08f', padding: 0, width: '75px', textAlign: 'center',
                 }}
                 >
-                  <Button
+                  <PSAButton
                     sx={{
                       textAlign: 'center', color: 'black', textTransform: 'none', padding: '0px',
                     }}
                     onClick={() => sortBySelectedCrops()}
-                  >
-                    My List
-                    {columnSort === 'myList' && <StraightIcon style={{ margin: '0px' }} className={myListSortFlag ? '' : 'rotate180'} />}
-                  </Button>
+                    data={(
+                      <>
+                        My List
+                        {columnSort === 'myList' && <StraightIcon style={{ margin: '0px' }} className={myListSortFlag ? '' : 'rotate180'} />}
+                      </>
+                      )}
+                  />
 
                 </TableCell>
               </TableRow>

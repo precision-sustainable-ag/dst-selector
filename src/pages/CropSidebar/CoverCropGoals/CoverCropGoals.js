@@ -1,7 +1,6 @@
 // eslint-disable react/jsx-one-expression-per-line
 import {
   Box,
-  Button,
   Collapse,
   List,
   ListItem,
@@ -12,6 +11,7 @@ import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateProgress } from '../../../reduxStore/sharedSlice';
+import PSAButton from '../../../shared/PSAButton';
 
 const CoverCropGoals = () => {
   const dispatchRedux = useDispatch();
@@ -51,7 +51,7 @@ const CoverCropGoals = () => {
               <ListItemText primary="No Goals Selected" />
             </ListItem>
             <ListItem sx={{ paddingLeft: 3 }}>
-              <Button onClick={() => changeProgress()}>click to edit</Button>
+              <PSAButton onClick={() => changeProgress()} data="click to edit" />
             </ListItem>
           </List>
         ) : (

@@ -8,7 +8,7 @@
 */
 
 import {
-  Box, Button, Grid, Stack, Typography,
+  Box, Grid, Stack, Typography,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -18,6 +18,7 @@ import HowTo from './HowTo/HowTo';
 import FAQ from './FAQ/FAQ';
 import InfoSheets from './InfoSheets/InfoSheets';
 import pirschAnalytics from '../../shared/analytics';
+import PSAButton from '../../shared/PSAButton';
 
 const Help = () => {
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
@@ -92,7 +93,7 @@ const Help = () => {
             }}
           >
             {pageSections.map((section) => (
-              <Button
+              <PSAButton
                 key={section.id}
                 style={{
                   display: 'flex',
@@ -103,9 +104,8 @@ const Help = () => {
                 }}
                 onClick={() => handleChange(section.id)}
                 variant={value === section.id ? 'contained' : 'text'}
-              >
-                {section.menuOption}
-              </Button>
+                data={section.menuOption}
+              />
             ))}
           </div>
         </Grid>

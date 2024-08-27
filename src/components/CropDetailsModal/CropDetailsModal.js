@@ -3,7 +3,7 @@
 */
 
 import {
-  Button, Box, Grid, Typography,
+  Box, Grid, Typography,
 } from '@mui/material';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { Close, Print } from '@mui/icons-material';
@@ -13,6 +13,7 @@ import InformationSheetContent from '../../pages/InformationSheetContent/Informa
 import { callCoverCropApi } from '../../shared/constants';
 import pirschAnalytics from '../../shared/analytics';
 import PSAModal from '../../shared/PSAModal';
+import PSAButton from '../../shared/PSAButton';
 
 const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
   // redux vars
@@ -95,7 +96,7 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
                   </Typography>
                 </Grid>
                 <Grid item>
-                  <Button
+                  <PSAButton
                     startIcon={<OpenInNewIcon />}
                     style={{
                       color: 'white',
@@ -106,13 +107,12 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
                     onClick={() => {
                       window.open('/data-dictionary', '_blank');
                     }}
-                  >
-                    Terminology Definitions
-                  </Button>
+                    data="Terminology Definitions"
+                  />
                 </Grid>
                 {(printEnabled && councilShorthandRedux === 'NECCC') && (
                   <Grid item>
-                    <Button
+                    <PSAButton
                       startIcon={<Print />}
                       style={{
                         color: 'white',
@@ -121,17 +121,18 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
                         textDecoration: 'underline',
                       }}
                       onClick={print}
-                    >
-                      Print
-                    </Button>
+                      data="Print"
+                    />
                   </Grid>
                 )}
               </Grid>
 
               <Grid item xs={1}>
-                <Button style={{ color: 'white', float: 'right', paddingTop: '13px' }} onClick={handleModalClose}>
-                  <Close />
-                </Button>
+                <PSAButton
+                  style={{ color: 'white', float: 'right', paddingTop: '13px' }}
+                  onClick={handleModalClose}
+                  startIcon={<Close />}
+                />
               </Grid>
             </Grid>
 

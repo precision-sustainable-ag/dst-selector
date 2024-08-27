@@ -13,6 +13,7 @@ import { MapboxApiKey } from './keys';
 import arrayEquals from './functions';
 import { historyState, setHistoryState } from '../reduxStore/userSlice';
 import pirschAnalytics from './analytics';
+import PSAButton from './PSAButton';
 
 export const ReferenceTooltip = ({
   url, source, type, content, hasLink, title,
@@ -427,31 +428,28 @@ export const getActiveCropMonths = (crop = {}) => {
 
 export const BinaryButton = ({ action }) => (
   <>
-    <Button
+    <PSAButton
       onClick={() => {
         action(true);
       }}
       color="secondary"
-    >
-      Yes
-    </Button>
-    <Button
+      data="Yes"
+    />
+    <PSAButton
       onClick={() => {
         action(false);
       }}
       color="secondary"
-    >
-      No
-    </Button>
-    <Button
+      data="No"
+    />
+    <PSAButton
       autoFocus
       onClick={() => {
         action(null);
       }}
       color="primary"
-    >
-      Cancel
-    </Button>
+      data="Cancel"
+    />
   </>
 );
 

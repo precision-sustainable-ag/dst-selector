@@ -7,7 +7,7 @@
 */
 
 import {
-  Button, Typography, Grid, Box,
+  Typography, Grid, Box,
 } from '@mui/material';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -16,6 +16,7 @@ import MyCoverCropComparisonTable from './MyCoverCropComparison/MyCoverCropCompa
 import MyCoverCropCards from './MyCoverCropCards/MyCoverCropCards';
 import { activateSpeicesSelectorTile } from '../../reduxStore/sharedSlice';
 import pirschAnalytics from '../../shared/analytics';
+import PSAButton from '../../shared/PSAButton';
 
 const MyCoverCropList = ({ comparisonView, from }) => {
   const dispatchRedux = useDispatch();
@@ -52,13 +53,12 @@ const MyCoverCropList = ({ comparisonView, from }) => {
          <Typography variant="body1">
            Your list is empty.
            {' '}
-           <Button
+           <PSAButton
              onClick={
               from === 'myCoverCropListStatic' ? redirectToExplorer : redirectToSpeciesSelector
             }
-           >
-             Add Crops
-           </Button>
+             data="Add Crops"
+           />
          </Typography>
         ) : comparison ? (
           <Box flexDirection="column" display="flex" height="100%" mt={1}>
