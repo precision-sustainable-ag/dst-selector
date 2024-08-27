@@ -98,12 +98,7 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
                 <Grid item>
                   <PSAButton
                     startIcon={<OpenInNewIcon />}
-                    style={{
-                      color: 'white',
-                      textTransform: 'none',
-                      marginLeft: '2em',
-                      textDecoration: 'underline',
-                    }}
+                    modalLink
                     onClick={() => {
                       window.open('/data-dictionary', '_blank');
                     }}
@@ -114,12 +109,7 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
                   <Grid item>
                     <PSAButton
                       startIcon={<Print />}
-                      style={{
-                        color: 'white',
-                        textTransform: 'none',
-                        marginLeft: '2em',
-                        textDecoration: 'underline',
-                      }}
+                      modalLink
                       onClick={print}
                       data="Print"
                     />

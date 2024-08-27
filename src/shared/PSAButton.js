@@ -7,7 +7,27 @@ import { Button } from '@mui/material';
 // import { CustomStyles } from './constants';
 
 const PSAButton = ({
-  data, onClick, disabled, style, sx, startIcon, selected, pillButton, id, variant, size, color, to, exact, component, autoFocus,
+  data,
+  onClick,
+  disabled,
+  style,
+  sx,
+  startIcon,
+  selected,
+  id,
+  variant,
+  size,
+  color,
+  to,
+  exact,
+  component,
+  autoFocus,
+  pillButton,
+  valuesChanged,
+  modalLink,
+  toggleOptions,
+  currentPathname,
+  buttonPathname,
 }) => {
   const pillButtonProps = {
     backgroundColor: selected ? '#49a8ab' : '#e3f2f4',
@@ -21,12 +41,51 @@ const PSAButton = ({
       color: '#000',
     },
   };
+  const valuesChangedProps = {
+    backgroundColor: 'rgba(255, 150, 28, 0.2)',
+    borderRadius: '999px',
+    padding: '0.5rem',
+    '&:hover': {
+      backgroundColor: 'rgba(255, 150, 28, 0.3)',
+    },
+    '@media (max-width:600px)': {
+      padding: '0.5rem',
+      borderRadius: '999px',
+      '& .MuiTypography-root': {
+        fontSize: '0.7rem',
+      },
+    },
+    size: 'small',
+
+  };
+  const modalLinkProps = {
+    color: 'white',
+    textTransform: 'none',
+    marginLeft: '2em',
+    textDecoration: 'underline',
+  };
+  const toggleOptionsProps = {
+    backgroundColor: (currentPathname === buttonPathname) ? '#598444' : 'white',
+    color: (currentPathname === buttonPathname) ? 'white' : '#8abc62',
+    border: '10px',
+    '&:hover': {
+      backgroundColor: (currentPathname === buttonPathname) ? '#598444' : 'white',
+      color: (currentPathname === buttonPathname) ? 'white' : '#8abc62',
+    },
+
+  };
   return (
     <Button
       style={style}
       onClick={onClick}
       disabled={disabled}
-      sx={{ ...(pillButton && pillButtonProps), ...sx }}
+      sx={{
+        ...(pillButton && pillButtonProps),
+        ...(valuesChanged && valuesChangedProps),
+        ...(modalLink && modalLinkProps),
+        ...(toggleOptions && toggleOptionsProps),
+        ...sx,
+      }}
       key={id}
       to={to}
       variant={variant}

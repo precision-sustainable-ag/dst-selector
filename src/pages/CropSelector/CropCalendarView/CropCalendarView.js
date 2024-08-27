@@ -310,7 +310,7 @@ const CropCalendarView = ({
                         Crop Name
                         {columnSort === 'name' && <StraightIcon className={nameSortFlag ? '' : 'rotate180'} />}
                       </>
-                  )}
+                    )}
                   />
                 </TableCell>
                 {selectedGoalsRedux.length > 0
