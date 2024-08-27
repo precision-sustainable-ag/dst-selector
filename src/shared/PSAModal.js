@@ -6,7 +6,7 @@ import React from 'react';
 import { Modal } from '@mui/material';
 
 const PSAModal = ({
-  data, sx, style, open, onClose, closeAfterTransition, disableEscapeKeyDown,
+  modalContent, sx, style, open, onClose, closeAfterTransition, disableEscapeKeyDown,
 }) => (
   <Modal
     sx={sx}
@@ -16,7 +16,7 @@ const PSAModal = ({
     closeAfterTrantion={closeAfterTransition}
     disableEscapeKeyDown={disableEscapeKeyDown}
   >
-    {data}
+    {modalContent}
 
   </Modal>
 );
