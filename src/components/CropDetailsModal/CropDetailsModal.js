@@ -80,7 +80,7 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
       onClose={handleModalClose}
       closeAfterTransition
       disableEscapeKeyDown={false}
-      data={(
+      modalContent={(
         <Box
           sx={{
             backgroundColor: 'white',
