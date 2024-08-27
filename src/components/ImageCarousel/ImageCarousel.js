@@ -3,11 +3,11 @@ import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import MobileStepper from '@mui/material/MobileStepper';
 import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import SwipeableViews from 'react-swipeable-views-react-18-fix';
 import { autoPlay } from 'react-swipeable-views-utils';
+import PSAButton from '../../shared/PSAButton';
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
@@ -86,28 +86,38 @@ const ImageCarousel = ({ images }) => {
         position="static"
         activeStep={activeStep}
         nextButton={(
-          <Button
+          <PSAButton
             size="small"
             onClick={handleNext}
             disabled={activeStep === maxSteps - 1}
-          >
-            Next
-            {theme.direction === 'rtl' ? (
-              <KeyboardArrowLeft />
-            ) : (
-              <KeyboardArrowRight />
-            )}
-          </Button>
+            data={(
+              <>
+                Next
+                {theme.direction === 'rtl' ? (
+                  <KeyboardArrowLeft />
+                ) : (
+                  <KeyboardArrowRight />
+                )}
+              </>
+              )}
+          />
         )}
         backButton={(
-          <Button size="small" onClick={handleBack} disabled={activeStep === 0}>
-            {theme.direction === 'rtl' ? (
-              <KeyboardArrowRight />
-            ) : (
-              <KeyboardArrowLeft />
-            )}
-            Back
-          </Button>
+          <PSAButton
+            size="small"
+            onClick={handleBack}
+            disabled={activeStep === 0}
+            data={(
+              <>
+                {theme.direction === 'rtl' ? (
+                  <KeyboardArrowRight />
+                ) : (
+                  <KeyboardArrowLeft />
+                )}
+                Back
+              </>
+              )}
+          />
         )}
       />
     </Box>

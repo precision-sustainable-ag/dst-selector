@@ -8,13 +8,14 @@
 */
 
 import {
-  Button, List, ListItem, ListItemText,
+  List, ListItem, ListItemText,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import RenderFilters from './RenderFilters/RenderFilters';
 import RenderGoals from './RenderGoals/RenderGoals';
 import { updateComparisonKeys } from '../../../reduxStore/sharedSlice';
+import PSAButton from '../../../shared/PSAButton';
 
 const ComparisonBar = ({
   filterData, goals, comparisonKeys, comparisonView, classes,
@@ -121,13 +122,12 @@ const ComparisonBar = ({
         <ListItem onClick={() => {}}>
           <ListItemText
             primary={(
-              <Button
+              <PSAButton
                 size="small"
                 style={{ marginBottom: '-15px', color: 'red' }}
                 onClick={resetAllFilters}
-              >
-                Clear Variables
-              </Button>
+                data="Clear Variables"
+              />
             )}
           />
         </ListItem>
@@ -136,9 +136,11 @@ const ComparisonBar = ({
       <ListItem>
         <ListItemText
           primary={(
-            <Button size="small" onClick={showAllVariables}>
-              Show All
-            </Button>
+            <PSAButton
+              size="small"
+              onClick={showAllVariables}
+              data="Show All"
+            />
           )}
         />
       </ListItem>

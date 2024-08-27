@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
-  Button, Typography, Switch, Grid, Box, useMediaQuery, useTheme,
+  Typography, Switch, Grid, Box, useMediaQuery, useTheme,
 } from '@mui/material';
 import { LocalDrinkOutlined, InvertColors } from '@mui/icons-material';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
@@ -13,6 +13,7 @@ import RenderDrainageClasses from './RenderDrainageClasses';
 import { setTileDrainage, updateDrainageClass as updateDrainageClassRedux } from '../../../../reduxStore/soilSlice';
 import MyCoverCropReset from '../../../../components/MyCoverCropReset/MyCoverCropReset';
 import { historyState, setHistoryState } from '../../../../reduxStore/userSlice';
+import PSAButton from '../../../../shared/PSAButton';
 
 const SoilDrainage = ({ drainageOptions }) => {
   const dispatchRedux = useDispatch();
@@ -162,7 +163,7 @@ const SoilDrainage = ({ drainageOptions }) => {
           </Grid>
           {!arrayEquals(soilDataOriginalRedux?.drainageClass, soilDataRedux?.drainageClass) && (
             <Grid item>
-              <Button
+              <PSAButton
                 sx={{
                   backgroundColor: 'rgba(255, 150, 28, 0.2)',
                   borderRadius: '999px',
@@ -182,8 +183,7 @@ const SoilDrainage = ({ drainageOptions }) => {
                 onClick={() => {
                   resetDrainageClasses();
                 }}
-              >
-                {isMobile ? (
+                data={isMobile ? (
                   <RestartAltIcon sx={{ color: '#ff961c' }} />
                 ) : (
                   <Typography
@@ -197,7 +197,7 @@ const SoilDrainage = ({ drainageOptions }) => {
                     Values changed, reset?
                   </Typography>
                 )}
-              </Button>
+              />
             </Grid>
           )}
         </Grid>

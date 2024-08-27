@@ -6,7 +6,6 @@
 
 import {
   Box,
-  Button,
   Collapse,
   List,
   ListItem,
@@ -277,12 +276,11 @@ const CropSidebar = ({
         <ListItem>
           <ListItemText
             primary={(
-              <Button
+              <PSAButton
                 onClick={resetAllFilters}
                 style={{ cursor: 'pointer', color: 'red' }}
-              >
-                Clear Filters
-              </Button>
+                data="Clear Filters"
+              />
             )}
           />
         </ListItem>
@@ -303,12 +301,14 @@ const CropSidebar = ({
           selected={!comparisonView}
           startIcon={<ListIcon style={{ fontSize: 'larger' }} />}
           data="CROP LIST"
+          pillButton
         />
         <PSAButton
           onClick={() => setComparisonView(true)}
           selected={comparisonView}
           startIcon={<Compare style={{ fontSize: 'larger' }} />}
           data="COMPARISON VIEW"
+          pillButton
         />
         <ComparisonBar
           filterData={sidebarFilters}

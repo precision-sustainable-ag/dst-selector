@@ -108,6 +108,7 @@ const InformationBar = ({ pathname }) => {
 
         }}
         data={getIconInfo(type)}
+        pillButton
       />
     );
   };

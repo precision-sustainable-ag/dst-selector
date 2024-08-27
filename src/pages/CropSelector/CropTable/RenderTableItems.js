@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import {
-  TableCell, Typography, TableRow, Button, Grid,
+  TableCell, Typography, TableRow, Grid,
 } from '@mui/material';
 import {
   CropImage,
@@ -12,6 +12,7 @@ import {
 import '../../../styles/cropCalendarViewComponent.scss';
 import '../../../styles/cropTable.scss';
 import CropTableCard from './CropTableCard';
+import PSAButton from '../../../shared/PSAButton';
 
 const RenderTableItems = ({ showGrowthWindow, handleModalOpen }) => {
   // redux vars
@@ -47,16 +48,19 @@ const RenderTableItems = ({ showGrowthWindow, handleModalOpen }) => {
                 spacing={0}
               >
                 <Grid item xs={12}>
-                  <Button onClick={() => handleModalOpen(crop)}>
-                    <CropImage
-                      present={!!crop.thumbnail}
-                      src={crop.thumbnail ? crop.thumbnail : 'https://placehold.it/100x100'}
-                      alt={crop.label}
-                    />
-                  </Button>
+                  <PSAButton
+                    onClick={() => handleModalOpen(crop)}
+                    data={(
+                      <CropImage
+                        present={!!crop.thumbnail}
+                        src={crop.thumbnail ? crop.thumbnail : 'https://placehold.it/100x100'}
+                        alt={crop.label}
+                      />
+                  )}
+                  />
                 </Grid>
                 <Grid item xs={12}>
-                  <Button
+                  <PSAButton
                     variant="text"
                     sx={{
                       fontWeight: 'bold',
@@ -67,9 +71,8 @@ const RenderTableItems = ({ showGrowthWindow, handleModalOpen }) => {
                     onClick={() => {
                       handleModalOpen(crop);
                     }}
-                  >
-                    {flipCoverCropName(crop.label)}
-                  </Button>
+                    data={flipCoverCropName(crop.label)}
+                  />
                 </Grid>
                 <Grid item xs={12}>
                   <Typography sx={{ fontSize: '0.9rem' }}>

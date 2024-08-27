@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import {
-  Button,
   Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle,
 } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,6 +9,7 @@ import {
 } from '../../reduxStore/userSlice';
 import { reset } from '../../reduxStore/store';
 import PSATextField from '../../shared/PSATextField';
+import PSAButton from '../../shared/PSAButton';
 
 export const historyDialogDefaultState = {
   open: false,
@@ -119,10 +119,10 @@ const HistoryDialog = () => {
       </DialogContent>
       <DialogActions>
         {type === 'add'
-          && <Button onClick={handleAdd}>Create</Button>}
+          && <PSAButton onClick={handleAdd} data="Create" />}
         {type === 'update'
-          && <Button onClick={handleUpdate}>Create a new record</Button>}
-        <Button onClick={handleCancel}>Cancel</Button>
+          && <PSAButton onClick={handleUpdate} data="Create a new record" />}
+        <PSAButton onClick={handleCancel} data="Cancel" />
       </DialogActions>
     </Dialog>
   );

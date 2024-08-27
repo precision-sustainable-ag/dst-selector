@@ -6,7 +6,7 @@
 */
 
 import {
-  Box, Button, Grid, Stack, Typography,
+  Box, Grid, Stack, Typography,
 } from '@mui/material';
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
@@ -15,6 +15,7 @@ import LicenseAndCopyright from './LicenseAndCopyright/LicenseAndCopyright';
 import FundingAndAcknowledgements from './FundingAndAcknowledgements/FundingAndAcknowledgements';
 import AboutTheExperts from './AboutTheExperts/AboutTheExperts';
 import pirschAnalytics from '../../shared/analytics';
+import PSAButton from '../../shared/PSAButton';
 
 const About = () => {
   const [value, setValue] = React.useState(0);
@@ -74,8 +75,8 @@ const About = () => {
             }}
           >
             {pageSections.map((section) => (
-              <Button
-                key={section.id}
+              <PSAButton
+                key={section.d} // what does this do?
                 style={{
                   display: 'flex',
                   flexDirection: 'row',
@@ -85,9 +86,8 @@ const About = () => {
                 }}
                 onClick={() => handleChange(section.id)}
                 variant={value === section.id ? 'contained' : 'text'}
-              >
-                {section.menuOption}
-              </Button>
+                data={section.menuOption}
+              />
             ))}
           </div>
         </Grid>

@@ -47,6 +47,7 @@ const ProgressButtonsInner = ({
         onClick={() => changeProgress('decrement')}
         disabled={isDisabledBack}
         data="BACK"
+        pillButton
       />
       {toolTip && isDisabledNext ? (
         <Tooltip
@@ -65,6 +66,7 @@ const ProgressButtonsInner = ({
               onClick={() => changeProgress('increment')}
               disabled={isDisabledNext || progressRedux === 4}
               data="Next"
+              pillButton
             />
 
           </span>
@@ -80,6 +82,7 @@ const ProgressButtonsInner = ({
             onClick={() => (progressRedux === 4 ? setMyCoverCropActivationFlag() : changeProgress('increment'))}
             disabled={isDisabledNext || (progressRedux === 4 && selectedCropIdsRedux.length === 0)}
             data={progressRedux === 4 ? 'MY SELECTED CROPS' : 'NEXT'}
+            pillButton
           />
         </Badge>
       )}
@@ -100,6 +103,7 @@ const ProgressButtonsInner = ({
         disabled={isDisabledRefresh}
         data="Restart"
         startIcon={<Refresh />}
+        pillButton
       />
     </Stack>
   );

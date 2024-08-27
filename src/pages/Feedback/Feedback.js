@@ -3,7 +3,6 @@ import { useSelector } from 'react-redux';
 import {
   Grid,
   Typography,
-  Button,
   Snackbar,
   Checkbox,
   FormGroup,
@@ -11,6 +10,7 @@ import {
 } from '@mui/material';
 import pirschAnalytics from '../../shared/analytics';
 import PSATextField from '../../shared/PSATextField';
+import PSAButton from '../../shared/PSAButton';
 
 const FeedbackComponent = () => {
   const consentRedux = useSelector((stateRedux) => stateRedux.userData.consent);
@@ -291,9 +291,13 @@ const FeedbackComponent = () => {
         </Grid>
         )}
         <Grid item xs={12}>
-          <Button disabled={checkDisabled().state} onClick={handleSubmit} size="large" variant="outlined">
-            Submit
-          </Button>
+          <PSAButton
+            disabled={checkDisabled().state}
+            onClick={handleSubmit}
+            size="large"
+            variant="outlined"
+            data="Submit"
+          />
         </Grid>
       </Grid>
       <Snackbar

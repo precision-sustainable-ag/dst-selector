@@ -1,5 +1,5 @@
 import {
-  Button, Typography, Grid, Box, useMediaQuery, useTheme,
+  Typography, Grid, Box, useMediaQuery, useTheme,
 } from '@mui/material';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import { WavesOutlined } from '@mui/icons-material';
@@ -10,6 +10,7 @@ import arrayEquals from '../../../../shared/functions';
 import RenderFloodingOptions from './RenderFloodingOptions';
 import { updateFloodingFrequency } from '../../../../reduxStore/soilSlice';
 import { historyState, setHistoryState } from '../../../../reduxStore/userSlice';
+import PSAButton from '../../../../shared/PSAButton';
 
 const SoilFloodingFrequency = ({ floodingOptions }) => {
   const dispatchRedux = useDispatch();
@@ -98,7 +99,7 @@ const SoilFloodingFrequency = ({ floodingOptions }) => {
             soilDataOriginalRedux?.floodingFrequency,
           ) && (
             <Grid item>
-              <Button
+              <PSAButton
                 sx={{
                   backgroundColor: 'rgba(255, 150, 28, 0.2)',
                   borderRadius: '999px',
@@ -118,8 +119,7 @@ const SoilFloodingFrequency = ({ floodingOptions }) => {
                 onClick={() => {
                   resetFloodingOptions();
                 }}
-              >
-                {isMobile ? (
+                data={isMobile ? (
                   <RestartAltIcon sx={{ color: '#ff961c' }} />
                 ) : (
                   <Typography
@@ -133,7 +133,7 @@ const SoilFloodingFrequency = ({ floodingOptions }) => {
                     Values changed, reset?
                   </Typography>
                 )}
-              </Button>
+              />
             </Grid>
           )}
         </Grid>
