@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
-  FormControl, InputLabel, Select, MenuItem, Grid, Button, Box,
+  FormControl, InputLabel, Select, MenuItem, Grid, Box,
   Typography,
 } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
@@ -19,6 +19,7 @@ import { setCropRedux } from '../../reduxStore/cropSlice';
 import { myCropListLocation, snackHandler } from '../../reduxStore/sharedSlice';
 import pirschAnalytics from '../../shared/analytics';
 import PSAModal from '../../shared/PSAModal';
+import PSAButton from '../../shared/PSAButton';
 
 const menuProps = {
   PaperProps: {
@@ -177,11 +178,11 @@ const HistorySelect = () => {
               </Grid>
 
               <Grid item xs={12} md={3} display="flex" justifyContent="center" alignItems="center">
-                <Button onClick={handleLoadHistory} variant="contained" disabled={value === ''}>Import</Button>
+                <PSAButton onClick={handleLoadHistory} variant="contained" disabled={value === ''} data="Import" />
               </Grid>
 
               <Grid item xs={12} display="flex" justifyContent="center" alignItems="center">
-                <Button onClick={() => setOpen(false)} variant="contained">Cancel</Button>
+                <PSAButton onClick={() => setOpen(false)} variant="contained" data="Cancel" />
               </Grid>
             </Grid>
           </Box>
@@ -189,8 +190,8 @@ const HistorySelect = () => {
       />
 
       <Box sx={{ display: 'flex', justifyContent: 'space-around' }}>
-        <Button onClick={handleAddHistory} variant="contained">Create New History</Button>
-        <Button variant="contained" onClick={handleHistoryImport}>Import previous history</Button>
+        <PSAButton onClick={handleAddHistory} variant="contained" data="Create New History" />
+        <PSAButton variant="contained" onClick={handleHistoryImport} data="Import previous history" />
       </Box>
 
     </>

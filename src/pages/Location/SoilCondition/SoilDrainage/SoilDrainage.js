@@ -164,22 +164,7 @@ const SoilDrainage = ({ drainageOptions }) => {
           {!arrayEquals(soilDataOriginalRedux?.drainageClass, soilDataRedux?.drainageClass) && (
             <Grid item>
               <PSAButton
-                sx={{
-                  backgroundColor: 'rgba(255, 150, 28, 0.2)',
-                  borderRadius: '999px',
-                  padding: '0.5rem',
-                  '&:hover': {
-                    backgroundColor: 'rgba(255, 150, 28, 0.3)',
-                  },
-                  '@media (max-width:600px)': {
-                    padding: '0.5rem',
-                    borderRadius: '999px',
-                    '& .MuiTypography-root': {
-                      fontSize: '0.7rem',
-                    },
-                  },
-                }}
-                size="small"
+                valuesChanged
                 onClick={() => {
                   resetDrainageClasses();
                 }}
