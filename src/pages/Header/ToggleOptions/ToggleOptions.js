@@ -42,17 +42,12 @@ const ToggleOptions = ({ pathname }) => {
   return (
     <>
       <PSAButton
-        size="large"
         component={NavLink}
         onClick={() => openMyCoverCropReset('selector')}
         exact
         to="/"
-        sx={{
-          backgroundColor: (pathname === '/') ? '#598444' : 'white',
-          color: (pathname === '/') ? 'white' : '#8abc62',
-          border: '10px',
-          '&:hover': { backgroundColor: (pathname === '/') ? '#598444' : 'white', color: (pathname === '/') ? 'white' : '#8abc62' },
-        }}
+        selected={pathname === '/'}
+        toggleOptions
         data={(
           <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
             Get A Recommendation
@@ -64,13 +59,9 @@ const ToggleOptions = ({ pathname }) => {
         <span>
           <PSAButton
             onClick={setSpeciesSelectorActivationFlag}
-            size="large"
             disabled={stateLabelRedux === null}
-            sx={{
-              backgroundColor: (pathname === '/explorer') ? '#598444' : 'white',
-              color: (pathname === '/explorer') ? 'white' : '#8abc62',
-              '&:hover': { backgroundColor: (pathname === '/explorer') ? '#598444' : 'white' },
-            }}
+            selected={pathname === '/explorer'}
+            toggleOptions
             data={(
               <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
                 BROWSE COVER CROPS
@@ -87,14 +78,8 @@ const ToggleOptions = ({ pathname }) => {
           color="error"
         >
           <PSAButton
-            sx={{
-              backgroundColor: (pathname === '/my-cover-crop-list') ? '#598444' : 'white',
-              color: (pathname === '/my-cover-crop-list') ? 'white' : '#8abc62',
-              borderBottomLeftRadius: '0px',
-              borderBottomRightRadius: '0px',
-              '&:hover': { backgroundColor: (pathname === '/my-cover-crop-list') ? '#598444' : 'white' },
-            }}
-            size="large"
+            selected={pathname === '/my-cover-crop-list'}
+            toggleOptions
             onClick={setMyCoverCropActivationFlag}
             data={(
               <Typography variant="body2" sx={{ fontWeight: 'bold' }}>

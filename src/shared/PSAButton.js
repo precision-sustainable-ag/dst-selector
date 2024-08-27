@@ -26,8 +26,6 @@ const PSAButton = ({
   valuesChanged,
   modalLink,
   toggleOptions,
-  currentPathname,
-  buttonPathname,
 }) => {
   const pillButtonProps = {
     backgroundColor: selected ? '#49a8ab' : '#e3f2f4',
@@ -65,13 +63,14 @@ const PSAButton = ({
     textDecoration: 'underline',
   };
   const toggleOptionsProps = {
-    backgroundColor: (currentPathname === buttonPathname) ? '#598444' : 'white',
-    color: (currentPathname === buttonPathname) ? 'white' : '#8abc62',
+    backgroundColor: (selected) ? '#598444' : 'white',
+    color: (selected) ? 'white' : '#8abc62',
     border: '10px',
     '&:hover': {
-      backgroundColor: (currentPathname === buttonPathname) ? '#598444' : 'white',
-      color: (currentPathname === buttonPathname) ? 'white' : '#8abc62',
+      backgroundColor: (selected) ? '#598444' : 'white',
+      color: (selected) ? 'white' : '#8abc62',
     },
+    size: 'large',
 
   };
   return (
