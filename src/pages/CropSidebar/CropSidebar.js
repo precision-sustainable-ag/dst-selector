@@ -301,14 +301,14 @@ const CropSidebar = ({
           selected={!comparisonView}
           startIcon={<ListIcon style={{ fontSize: 'larger' }} />}
           data="CROP LIST"
-          pillButton
+          buttonStyle="PillButton"
         />
         <PSAButton
           onClick={() => setComparisonView(true)}
           selected={comparisonView}
           startIcon={<Compare style={{ fontSize: 'larger' }} />}
           data="COMPARISON VIEW"
-          pillButton
+          buttonStyle="PillButton"
         />
         <ComparisonBar
           filterData={sidebarFilters}

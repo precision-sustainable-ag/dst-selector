@@ -98,7 +98,7 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
                 <Grid item>
                   <PSAButton
                     startIcon={<OpenInNewIcon />}
-                    modalLink
+                    buttonStyle="ModalLink"
                     onClick={() => {
                       window.open('/data-dictionary', '_blank');
                     }}
@@ -109,7 +109,7 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
                   <Grid item>
                     <PSAButton
                       startIcon={<Print />}
-                      modalLink
+                      buttonStyle="ModalLink"
                       onClick={print}
                       data="Print"
                     />

@@ -47,7 +47,7 @@ const ToggleOptions = ({ pathname }) => {
         exact
         to="/"
         selected={pathname === '/'}
-        toggleOptions
+        buttonStyle="ToggleOptions"
         data={(
           <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
             Get A Recommendation
@@ -61,7 +61,7 @@ const ToggleOptions = ({ pathname }) => {
             onClick={setSpeciesSelectorActivationFlag}
             disabled={stateLabelRedux === null}
             selected={pathname === '/explorer'}
-            toggleOptions
+            buttonStyle="ToggleOptions"
             data={(
               <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
                 BROWSE COVER CROPS
@@ -79,7 +79,7 @@ const ToggleOptions = ({ pathname }) => {
         >
           <PSAButton
             selected={pathname === '/my-cover-crop-list'}
-            toggleOptions
+            buttonStyle="ToggleOptions"
             onClick={setMyCoverCropActivationFlag}
             data={(
               <Typography variant="body2" sx={{ fontWeight: 'bold' }}>

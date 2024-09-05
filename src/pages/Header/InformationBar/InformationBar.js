@@ -107,8 +107,8 @@ const InformationBar = ({ pathname }) => {
             && '#e3f2f4',
 
         }}
+        buttonStyle="PillButton"
         data={getIconInfo(type)}
-        pillButton
       />
     );
   };

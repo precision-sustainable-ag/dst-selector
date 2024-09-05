@@ -164,7 +164,7 @@ const SoilDrainage = ({ drainageOptions }) => {
           {!arrayEquals(soilDataOriginalRedux?.drainageClass, soilDataRedux?.drainageClass) && (
             <Grid item>
               <PSAButton
-                valuesChanged
+                buttonStyle="ValuesChanged"
                 onClick={() => {
                   resetDrainageClasses();
                 }}
