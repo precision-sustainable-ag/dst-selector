@@ -4,11 +4,12 @@
 
 import React from 'react';
 import { Button } from '@mui/material';
+// import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import styled from 'styled-components';
 
 // Light Button
-const LightButton = styled(Button)({
+const LightButton = styled(Button)(({ style, sx }) => ({
   backgroundColor: '#e3f2f4',
   borderRadius: '200px',
   color: '#000',
@@ -19,10 +20,12 @@ const LightButton = styled(Button)({
     backgroundColor: '#49a8ab',
     color: '#000',
   },
-});
+  ...style,
+  ...sx,
+}));
 
 // Pill Button
-const PillButton = styled(Button)(({ selected }) => ({
+const PillButton = styled(Button)(({ selected, style, sx }) => ({
   backgroundColor: selected ? '#49a8ab' : '#e3f2f4',
   borderRadius: '200px',
   color: '#000',
@@ -33,11 +36,13 @@ const PillButton = styled(Button)(({ selected }) => ({
     backgroundColor: '#49a8ab',
     color: '#000',
   },
+  ...style,
+  ...sx,
 
 }));
 
 // Values Changed Button
-const ValuesChangedButton = styled(Button)({
+const ValuesChangedButton = styled(Button)(({ style, sx }) => ({
   backgroundColor: 'rgba(255, 150, 28, 0.2)',
   borderRadius: '999px',
   padding: '0.5rem',
@@ -52,19 +57,22 @@ const ValuesChangedButton = styled(Button)({
     },
   },
   size: 'small',
-
-});
+  ...style,
+  ...sx,
+}));
 
 // Modal Link Button
-const ModalLinkButton = styled(Button)({
+const ModalLinkButton = styled(Button)(({ style, sx }) => ({
   color: 'white',
   textTransform: 'none',
   marginLeft: '2em',
   textDecoration: 'underline',
-});
+  ...style,
+  ...sx,
+}));
 
 // Toggle Options Button
-const ToggleOptionsButton = styled(Button)(({ selected }) => ({
+const ToggleOptionsButton = styled(Button)(({ selected, style, sx }) => ({
   backgroundColor: (selected) ? '#598444' : 'white',
   color: (selected) ? 'white' : '#8abc62',
   border: '10px',
@@ -73,7 +81,8 @@ const ToggleOptionsButton = styled(Button)(({ selected }) => ({
     color: (selected) ? 'white' : '#8abc62',
   },
   size: 'large',
-
+  ...style,
+  ...sx,
 }));
 
 const PSAButton = ({
@@ -93,11 +102,9 @@ const PSAButton = ({
   component,
   autoFocus,
   buttonStyle,
-//   pillButton,
-//   valuesChanged,
-//   modalLink,
-//   toggleOptions,
 }) => {
+  // Button properties
+
   const ButtonProps = {
     style,
     onClick,
@@ -112,12 +119,15 @@ const PSAButton = ({
     exact,
     autoFocus,
   };
+
   switch (buttonStyle) {
     case 'LightButton':
       return (
         <LightButton
           {...ButtonProps}
           selected={selected}
+          style={style}
+          sx={sx}
         >
           {startIcon}
           {data}
@@ -127,8 +137,10 @@ const PSAButton = ({
     case 'PillButton':
       return (
         <PillButton
-          {...ButtonProps}
           selected={selected}
+          {...ButtonProps}
+          style={style}
+          sx={sx}
         >
           {startIcon}
           {data}
@@ -140,6 +152,8 @@ const PSAButton = ({
         <ValuesChangedButton
           {...ButtonProps}
           selected={selected}
+          style={style}
+          sx={sx}
         >
           {startIcon}
           {data}
@@ -152,6 +166,8 @@ const PSAButton = ({
         <ModalLinkButton
           {...ButtonProps}
           selected={selected}
+          style={style}
+          sx={sx}
         >
           {startIcon}
           {data}
@@ -163,6 +179,8 @@ const PSAButton = ({
         <ToggleOptionsButton
           {...ButtonProps}
           selected={selected}
+          style={style}
+          sx={sx}
         >
           {startIcon}
           {data}
@@ -174,6 +192,8 @@ const PSAButton = ({
         <Button
           {...ButtonProps}
           selected={selected}
+          style={style}
+          sx={sx}
         >
           {startIcon}
           {data}
