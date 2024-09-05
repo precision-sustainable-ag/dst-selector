@@ -167,7 +167,7 @@ const CropCalendarView = ({
                   style={{ marginBottom: '7px' }}
                   startIcon={<ListIcon style={{ fontSize: 'larger' }} />}
                   data="CROP LIST"
-                  pillButton
+                  buttonStyle="PillButton"
                 />
                 <PSAButton
                   onClick={() => setListView(true)}
@@ -175,7 +175,7 @@ const CropCalendarView = ({
                   style={{ marginBottom: '7px' }}
                   startIcon={<CalendarToday style={{ fontSize: 'larger' }} />}
                   data="CROP CALENDAR"
-                  pillButton
+                  buttonStyle="PillButton"
                 />
                 {activeGrowthPeriodRedux.length === 0 && (
                   <>

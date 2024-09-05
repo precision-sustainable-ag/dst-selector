@@ -100,7 +100,7 @@ const SoilFloodingFrequency = ({ floodingOptions }) => {
           ) && (
             <Grid item>
               <PSAButton
-                valuesChanged
+                buttonStyle="ValuesChanged"
                 onClick={() => {
                   resetFloodingOptions();
                 }}

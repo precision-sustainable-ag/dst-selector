@@ -4,9 +4,8 @@
 /* eslint-disable no-nested-ternary */
 import React from 'react';
 import {
-  Button, Grid, Typography, Tooltip, Box,
+  Grid, Typography, Tooltip, Box,
 } from '@mui/material';
-import styled from 'styled-components';
 import moment from 'moment';
 import { Info, MonetizationOn } from '@mui/icons-material';
 import { MapboxApiKey } from './keys';
@@ -231,19 +230,6 @@ export const CustomStyles = () => ({
   mildlyRoundedRadius: '5px',
   nonRoundedRadius: '0px',
   defaultButtonPadding: '10px 20px 10px 20px',
-});
-
-export const LightButton = styled(Button)({
-  backgroundColor: CustomStyles().secondaryProgressBtnBorderColor,
-  borderRadius: CustomStyles().fullyRoundedRadius,
-  color: '#000',
-  padding: CustomStyles().defaultButtonPadding,
-  borderColor: CustomStyles().secondaryProgressBtnBorderColor,
-  '&:hover': {
-    borderColor: CustomStyles().primaryProgressBtnBorderColor,
-    backgroundColor: CustomStyles().primaryProgressBtnColor,
-    color: '#000',
-  },
 });
 
 export const getRating = (rating, councilShorthand) => {

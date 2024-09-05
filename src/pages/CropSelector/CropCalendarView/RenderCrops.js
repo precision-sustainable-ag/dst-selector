@@ -10,7 +10,6 @@ import {
 import {
   CropImage,
   flipCoverCropName,
-  LightButton,
   // trimString,
   getRating,
   addCropToBasket,
@@ -179,7 +178,7 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
           }}
         >
           {' '}
-          <LightButton
+          <PSAButton
             id={`cartBtn${index}`}
             style={{
               backgroundColor: selectedCropIdsRedux.includes(crop.id) ? '#EAEAEA' : 'white',
@@ -199,9 +198,9 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                 setSaveHistory,
               );
             }}
-          >
-            {selectedBtns.includes(crop.id) ? <DeleteForever /> : <AddCircleOutline />}
-          </LightButton>
+            buttonStyle="LightButton"
+            data={selectedBtns.includes(crop.id) ? <DeleteForever /> : <AddCircleOutline />}
+          />
         </TableCell>
       </TableRow>
     ));
