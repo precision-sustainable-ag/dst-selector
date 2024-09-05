@@ -102,7 +102,6 @@ const CropSidebar = ({
   };
 
   useEffect(() => {
-    console.log('Use Effect', irrigationFilterRedux);
   }, [irrigationFilterRedux]);
 
   useEffect(() => {
