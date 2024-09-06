@@ -23,13 +23,46 @@ const Footer = () => {
     });
   }, [history]);
 
+  const useWindowSize = () => {
+    // Initialize state with undefined width/height so server and client renders match
+    // Learn more here: https://joshwcomeau.com/react/the-perils-of-rehydration/
+    const [windowSize, setWindowSize] = useState({
+      width: undefined,
+      height: undefined,
+    });
+
+    useEffect(() => {
+      // Handler to call on window resize
+      function handleResize() {
+        // Set window width/height to state to state while taking out the width of the horizontal scrollbar
+        setWindowSize({
+          width: window.innerWidth - (window.innerWidth - document.documentElement.clientWidth),
+          height: document.documentElement.clientHeight,
+        });
+      }
+
+      // Add event listener
+      window.addEventListener('resize', handleResize);
+
+      // Call handler right away so state gets updated with initial window size
+      handleResize();
+
+      // Remove event listener on cleanup
+      return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    return windowSize;
+  };
+
+  const windowSize = useWindowSize().width;
+
   const [footerWidth, setFooterWidth] = useState('100%');
   const tableWidth = useSelector((stateRedux) => stateRedux.pageData.tableWidth);
   const sidebarWidth = useSelector((stateRedux) => stateRedux.pageData.sidebarWidth);
+
   useEffect(() => {
-    const windowSize = window.innerWidth;
     setFooterWidth(`${Math.max(windowSize, tableWidth + sidebarWidth)}px`);
-  }, [tableWidth, sidebarWidth]);
+  }, [tableWidth, sidebarWidth, windowSize]);
   return (
     <Box
       sx={{
