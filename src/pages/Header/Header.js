@@ -140,13 +140,45 @@ const Header = () => {
     // TODO: councilShorthandRedux here is for re-import userHistoryList when the app is reset
   }, [isAuthenticated, getAccessTokenSilently, councilShorthandRedux]);
 
+  function useWindowSize() {
+    // Initialize state with undefined width/height so server and client renders match
+    // Learn more here: https://joshwcomeau.com/react/the-perils-of-rehydration/
+    const [windowSize, setWindowSize] = useState({
+      width: undefined,
+      height: undefined,
+    });
+
+    useEffect(() => {
+      // Handler to call on window resize
+      function handleResize() {
+        // Set window width/height to state while taking out the width of the horizontal scrollbar
+        setWindowSize({
+          width: window.innerWidth - (window.innerWidth - document.documentElement.clientWidth),
+          height: document.documentElement.clientHeight,
+        });
+      }
+
+      // Add event listener
+      window.addEventListener('resize', handleResize);
+
+      // Call handler right away so state gets updated with initial window size
+      handleResize();
+
+      // Remove event listener on cleanup
+      return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    return windowSize;
+  }
+
+  const windowSize = useWindowSize().width;
+
   const [headerWidth, setHeaderWidth] = useState('100%');
   const tableWidth = useSelector((stateRedux) => stateRedux.pageData.tableWidth);
   const sidebarWidth = useSelector((stateRedux) => stateRedux.pageData.sidebarWidth);
   useEffect(() => {
-    const windowSize = window.innerWidth;
     setHeaderWidth(`${Math.max(windowSize, tableWidth + sidebarWidth)}px`);
-  }, [tableWidth, sidebarWidth]);
+  }, [tableWidth, sidebarWidth, windowSize]);
 
   const chooseTopBar = (option) => {
     if (option) {
@@ -198,6 +230,7 @@ const Header = () => {
                 height: 'auto',
                 marginRight: '10px',
                 width: '120px',
+                overflow: 'hidden',
               }}
             >
               <Button type="button" onClick={handleClick}>
@@ -205,7 +238,7 @@ const Header = () => {
                   id="logoImage"
                   style={{
                     maxWidth: '100%',
-                    height: 'auto',
+                    maxHeight: '100%',
                   }}
                   ref={logoRef}
                   alt=""
