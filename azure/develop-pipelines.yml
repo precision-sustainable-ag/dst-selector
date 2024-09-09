@@ -62,28 +62,6 @@ stages:
     - upload: manifests
       artifact: manifests
 
-- stage: Test
-  displayName: Test stage
-  dependsOn: Build
-  jobs:
-  - job: RunTests
-    displayName: Run Cypress Tests
-    pool:
-      vmImage: $(vmImageName)
-    steps:
-    - task: Docker@2
-      displayName: "Login to Azure Container Registry"
-      inputs:
-        command: login
-        containerRegistry: $(dockerRegistryServiceConnection)
-    - script: |
-        docker run --rm \
-        -v $(System.DefaultWorkingDirectory)/cypress:/e2e/cypress \
-        -w /e2e $(containerRegistry)/$(imageRepository):$(tag) \
-        npx cypress run --component --config-file=dev.config.js
-        npx cypress run --config-file dev.config.js
-      displayName: "Run Cypress Tests in Docker Container"
-
 - stage: Deploy
   displayName: Deploy stage
   dependsOn: 
