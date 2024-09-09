@@ -1,0 +1,113 @@
+name: Add Issue to Project
+# This workflow runs whenever a new issue is opened in the repository.
+on:
+  issues:
+    types:
+      - opened
+
+jobs:
+  track_issue:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate token
+        id: generate-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+          
+      - name: Get project data
+        env:
+          GH_TOKEN: ${{ steps.generate-token.outputs.token }}
+          ORGANIZATION: precision-sustainable-ag
+          PROJECT_NUMBER: 5
+        run: |
+          gh api graphql -f query='
+            query($org: String!, $number: Int!) {
+              organization(login: $org) {
+                projectV2(number: $number) {
+                  id
+                  fields(first: 20) {
+                    nodes {
+                      ... on ProjectV2Field {
+                        id
+                        name
+                      }
+                      ... on ProjectV2SingleSelectField {
+                        id
+                        name
+                        options {
+                          id
+                          name
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }' -f org=$ORGANIZATION -F number=$PROJECT_NUMBER > project_data.json
+          echo 'PROJECT_ID='$(jq -r '.data.organization.projectV2.id' project_data.json) >> $GITHUB_ENV
+          echo 'TEAM_FIELD_ID='$(jq -r '.data.organization.projectV2.fields.nodes[] | select(.name== "Team") | .id' project_data.json) >> $GITHUB_ENV
+          echo 'PROJECT_FIELD_ID='$(jq -r '.data.organization.projectV2.fields.nodes[] | select(.name== "Project") | .id' project_data.json) >> $GITHUB_ENV
+          
+      - name: Add Issue to project
+        env:
+          GH_TOKEN: ${{ steps.generate-token.outputs.token }}
+          ISSUE_ID: ${{ github.event.issue.node_id }}
+        run: |
+          item_id=$(gh api graphql -f query='
+            mutation($project: ID!, $issue: ID!) {
+              addProjectV2ItemById(input: {projectId: $project, contentId: $issue}) {
+                item {
+                  id
+                }
+              }
+            }' -f project=$PROJECT_ID -f issue=$ISSUE_ID --jq '.data.addProjectV2ItemById.item.id')
+          echo "ITEM_ID=$item_id" >> $GITHUB_ENV
+
+      - name: Set fields based on labels
+        env:
+          GH_TOKEN: ${{ steps.generate-token.outputs.token }}
+          LABELS_JSON: ${{ toJson(github.event.issue.labels) }}
+        run: |
+          # Function to get option ID from project_data.json
+          get_option_id() {
+            local label_name="$1"
+            local field_name="$2"
+            # Extract option ID using jq
+            jq -r --arg field_name "$field_name" --arg label_name "$label_name" '.data.organization.projectV2.fields.nodes[] | select(.name == $field_name) | '.options[]' | select(.name == $label_name) | .id' project_data.json
+          }
+          
+          TEAM_OPTION_ID=$(get_option_id "dst" "Team")
+          if [ -n "$TEAM_OPTION_ID" ]; then
+            gh api graphql -f query='
+              mutation($project: ID!, $item: ID!, $field: ID!, $value: String!) {
+                updateProjectV2ItemFieldValue(input: {
+                  projectId: $project
+                  itemId: $item
+                  fieldId: $field
+                  value: { singleSelectOptionId: $value }
+                }) {
+                  projectV2Item { id }
+                }
+              }' -f project="$PROJECT_ID" -f item="$ITEM_ID" -f field="$TEAM_FIELD_ID" -f value="$TEAM_OPTION_ID"
+          else
+            echo "Error: Unable to find Team Option ID."
+          fi
+          
+          PROJECT_OPTION_ID=$(get_option_id "cc-selector" "Project")
+          if [ -n "$PROJECT_OPTION_ID" ]; then
+            gh api graphql -f query='
+              mutation($project: ID!, $item: ID!, $field: ID!, $value: String!) {
+                updateProjectV2ItemFieldValue(input: {
+                  projectId: $project
+                  itemId: $item
+                  fieldId: $field
+                  value: { singleSelectOptionId: $value }
+                }) {
+                  projectV2Item { id }
+                }
+              }' -f project="$PROJECT_ID" -f item="$ITEM_ID" -f field="$PROJECT_FIELD_ID" -f value="$PROJECT_OPTION_ID"
+          else
+            echo "Error: Unable to find Project Option ID."
+          fi
