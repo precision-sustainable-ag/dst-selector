@@ -63,21 +63,21 @@ stages:
       artifact: manifests
 
 - stage: Test
-displayName: Test stage
-dependsOn: Build
-jobs:
-- job: RunTests
-  displayName: Run Cypress Tests
-  pool:
-    vmImage: $(vmImageName)
-  steps:
-  - script: |
-      docker run --rm \
-      -v $(System.DefaultWorkingDirectory)/cypress:/e2e/cypress \
-      -w /e2e $(containerRegistry)/$(imageRepository):$(tag) \
-      cypress:comp:dev
-      npm run cypress:e2e:dev
-    displayName: "Run Cypress Tests in Docker Container"
+  displayName: Test stage
+  dependsOn: Build
+  jobs:
+  - job: RunTests
+    displayName: Run Cypress Tests
+    pool:
+      vmImage: $(vmImageName)
+    steps:
+    - script: |
+        docker run --rm \
+        -v $(System.DefaultWorkingDirectory)/cypress:/e2e/cypress \
+        -w /e2e $(containerRegistry)/$(imageRepository):$(tag) \
+        cypress:comp:dev
+        npm run cypress:e2e:dev
+      displayName: "Run Cypress Tests in Docker Container"
 
 - stage: Deploy
   displayName: Deploy stage
