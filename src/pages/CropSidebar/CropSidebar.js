@@ -26,6 +26,7 @@ import React, {
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
+import styled from 'styled-components';
 import {
   callCoverCropApi, cropDataFormatter, getLegendDataBasedOnCouncil,
 } from '../../shared/constants';
@@ -73,6 +74,10 @@ const CropSidebar = ({
   const [sidebarCategoriesData, setSidebarCategoriesData] = useState([]);
   const [sidebarFiltersData, setSidebarFiltersData] = useState([]);
   const [cropFiltersOpen, setCropFiltersOpen] = useState(true);
+
+  const SoloFilter = styled(ListItem)({
+    paddingLeft: '25px',
+  });
 
   // make an exhaustive array of all params in array e.g. cover crop group and use includes in linq
   const [sidebarFilterOptions, setSidebarFilterOptions] = useState(() => {
@@ -296,9 +301,9 @@ const CropSidebar = ({
           />
         </ListItem>
       )}
-      <ListItem>
+      <SoloFilter>
         <ListItemText>
-          Colorado Irrigation Filter
+          Irrigation Dates Filter
         </ListItemText>
         <ListItemText
           display="block"
@@ -318,7 +323,7 @@ const CropSidebar = ({
             </Grid>
                   )}
         />
-      </ListItem>
+      </SoloFilter>
       {getFilters()}
     </List>
   ); // filterList
