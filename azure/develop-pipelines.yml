@@ -75,8 +75,8 @@ stages:
         docker run --rm \
         -v $(System.DefaultWorkingDirectory)/cypress:/e2e/cypress \
         -w /e2e $(containerRegistry)/$(imageRepository):$(tag) \
-        cypress:comp:dev
-        npm run cypress:e2e:dev
+        npx cypress run --component --config-file=dev.config.js
+        npx cypress run --config-file dev.config.js
       displayName: "Run Cypress Tests in Docker Container"
 
 - stage: Deploy
