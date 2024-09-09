@@ -62,6 +62,28 @@ stages:
     - upload: manifests
       artifact: manifests
 
+  - job: Test
+    displayName: Run Cypress Tests
+    pool:
+      vmImage: $(vmImageName)
+    steps:
+    - script: npm install
+      displayName: "Install dependencies"
+
+    - script: npm run start &
+      displayName: "Start React App"
+      env:
+        CI: true
+
+    - script: npx wait-on http://localhost:3000
+      displayName: "Wait for React App to be ready"
+
+    - script: npm run cypress:e2e:dev
+      displayName: "Run Cypress e2e Tests"
+
+    - script: npm run cypress:comp:dev
+      displayName: "Run Cypress Component Tests"
+
 - stage: Deploy
   displayName: Deploy stage
   dependsOn: Build
