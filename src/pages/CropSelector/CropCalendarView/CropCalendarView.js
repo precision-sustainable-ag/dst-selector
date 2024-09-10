@@ -33,7 +33,7 @@ import {
 import '../../../styles/cropCalendarViewComponent.scss';
 import RenderCrops from './RenderCrops';
 import CropDetailsModal from '../../../components/CropDetailsModal/CropDetailsModal';
-import PSAButton from '../../../shared/PSAButton';
+import PSAButton from '../../../components/PSAComponents/PSAButton';
 import { setTableWidth } from '../../../reduxStore/pageSlice';
 
 const growthIcon = {

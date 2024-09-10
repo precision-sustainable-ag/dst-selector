@@ -28,7 +28,7 @@ import { loadHistory } from '../../shared/api';
 import HistoryDialog from '../../components/HistoryDialog/HistoryDialog';
 import SaveUserHistory from './SaveUserHistory/SaveUserHistory';
 import { releaseNotesURL } from '../../shared/keys';
-import PSAButton from '../../shared/PSAButton';
+import PSAButton from '../../components/PSAComponents/PSAButton';
 // import logoImage from '../../../public/images/PSAlogo-text.png';
 
 const Header = () => {

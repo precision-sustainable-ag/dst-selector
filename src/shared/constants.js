@@ -12,7 +12,7 @@ import { MapboxApiKey } from './keys';
 import arrayEquals from './functions';
 import { historyState, setHistoryState } from '../reduxStore/userSlice';
 import pirschAnalytics from './analytics';
-import PSAButton from './PSAButton';
+import PSAButton from '../components/PSAComponents/PSAButton';
 
 export const ReferenceTooltip = ({
   url, source, type, content, hasLink, title,

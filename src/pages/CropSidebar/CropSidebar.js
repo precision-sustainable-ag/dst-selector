@@ -36,7 +36,7 @@ import Legend from '../../components/Legend/Legend';
 import { clearFilters } from '../../reduxStore/filterSlice';
 import { updateCropData, updateActiveCropIds } from '../../reduxStore/cropSlice';
 import { setAjaxInProgress, regionToggleHandler } from '../../reduxStore/sharedSlice';
-import PSAButton from '../../shared/PSAButton';
+import PSAButton from '../../components/PSAComponents/PSAButton';
 
 const CropSidebar = ({
   comparisonView,

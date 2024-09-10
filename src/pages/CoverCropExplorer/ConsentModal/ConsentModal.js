@@ -4,8 +4,8 @@ import {
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { updateConsent } from '../../../reduxStore/userSlice';
-import PSAModal from '../../../shared/PSAModal';
-import PSAButton from '../../../shared/PSAButton';
+import PSAModal from '../../../components/PSAComponents/PSAModal';
+import PSAButton from '../../../components/PSAComponents/PSAButton';
 
 const localStorageKey = 'consent';
 

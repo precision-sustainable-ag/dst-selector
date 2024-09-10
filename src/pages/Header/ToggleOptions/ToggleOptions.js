@@ -5,7 +5,7 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useHistory } from 'react-router-dom';
 import { activateMyCoverCropListTile, activateSpeicesSelectorTile, setMyCoverCropReset } from '../../../reduxStore/sharedSlice';
-import PSAButton from '../../../shared/PSAButton';
+import PSAButton from '../../../components/PSAComponents/PSAButton';
 
 const ToggleOptions = ({ pathname }) => {
   const dispatchRedux = useDispatch();

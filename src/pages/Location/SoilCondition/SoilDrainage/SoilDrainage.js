@@ -13,7 +13,7 @@ import RenderDrainageClasses from './RenderDrainageClasses';
 import { setTileDrainage, updateDrainageClass as updateDrainageClassRedux } from '../../../../reduxStore/soilSlice';
 import MyCoverCropReset from '../../../../components/MyCoverCropReset/MyCoverCropReset';
 import { historyState, setHistoryState } from '../../../../reduxStore/userSlice';
-import PSAButton from '../../../../shared/PSAButton';
+import PSAButton from '../../../../components/PSAComponents/PSAButton';
 
 const SoilDrainage = ({ drainageOptions }) => {
   const dispatchRedux = useDispatch();

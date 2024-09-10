@@ -10,7 +10,7 @@ import arrayEquals from '../../../../shared/functions';
 import RenderFloodingOptions from './RenderFloodingOptions';
 import { updateFloodingFrequency } from '../../../../reduxStore/soilSlice';
 import { historyState, setHistoryState } from '../../../../reduxStore/userSlice';
-import PSAButton from '../../../../shared/PSAButton';
+import PSAButton from '../../../../components/PSAComponents/PSAButton';
 
 const SoilFloodingFrequency = ({ floodingOptions }) => {
   const dispatchRedux = useDispatch();

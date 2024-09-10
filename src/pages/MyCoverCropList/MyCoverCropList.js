@@ -16,7 +16,7 @@ import MyCoverCropComparisonTable from './MyCoverCropComparison/MyCoverCropCompa
 import MyCoverCropCards from './MyCoverCropCards/MyCoverCropCards';
 import { activateSpeicesSelectorTile } from '../../reduxStore/sharedSlice';
 import pirschAnalytics from '../../shared/analytics';
-import PSAButton from '../../shared/PSAButton';
+import PSAButton from '../../components/PSAComponents/PSAButton';
 
 const MyCoverCropList = ({ comparisonView, from }) => {
   const dispatchRedux = useDispatch();

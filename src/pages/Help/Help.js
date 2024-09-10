@@ -18,7 +18,7 @@ import HowTo from './HowTo/HowTo';
 import FAQ from './FAQ/FAQ';
 import InfoSheets from './InfoSheets/InfoSheets';
 import pirschAnalytics from '../../shared/analytics';
-import PSAButton from '../../shared/PSAButton';
+import PSAButton from '../../components/PSAComponents/PSAButton';
 
 const Help = () => {
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);

@@ -11,7 +11,7 @@ import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateProgress } from '../../../reduxStore/sharedSlice';
-import PSAButton from '../../../shared/PSAButton';
+import PSAButton from '../../../components/PSAComponents/PSAButton';
 
 const CoverCropGoals = () => {
   const dispatchRedux = useDispatch();

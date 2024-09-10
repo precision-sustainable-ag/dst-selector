@@ -18,8 +18,8 @@ import { setGoalsRedux } from '../../reduxStore/goalSlice';
 import { setCropRedux } from '../../reduxStore/cropSlice';
 import { myCropListLocation, snackHandler } from '../../reduxStore/sharedSlice';
 import pirschAnalytics from '../../shared/analytics';
-import PSAModal from '../../shared/PSAModal';
-import PSAButton from '../../shared/PSAButton';
+import PSAButton from '../PSAComponents/PSAButton';
+import PSAModal from '../PSAComponents/PSAModal';
 
 const menuProps = {
   PaperProps: {

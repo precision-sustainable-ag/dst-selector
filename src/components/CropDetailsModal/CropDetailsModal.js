@@ -12,8 +12,8 @@ import { useSelector } from 'react-redux';
 import InformationSheetContent from '../../pages/InformationSheetContent/InformationSheetContent';
 import { callCoverCropApi } from '../../shared/constants';
 import pirschAnalytics from '../../shared/analytics';
-import PSAModal from '../../shared/PSAModal';
-import PSAButton from '../../shared/PSAButton';
+import PSAModal from '../PSAComponents/PSAModal';
+import PSAButton from '../PSAComponents/PSAButton';
 
 const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
   // redux vars
