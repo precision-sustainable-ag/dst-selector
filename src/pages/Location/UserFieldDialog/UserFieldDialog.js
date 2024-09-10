@@ -14,8 +14,8 @@ import {
   postFields, buildPoint, buildGeometryCollection, deleteFields,
 } from '../../../shared/constants';
 import { getAuthToken } from '../../../shared/authToken';
-import PSATextField from '../../../shared/PSATextField';
-import PSAButton from '../../../shared/PSAButton';
+import PSATextField from '../../../components/PSAComponents/PSATextField';
+import PSAButton from '../../../components/PSAComponents/PSAButton';
 
 export const initFieldDialogState = {
   open: false,

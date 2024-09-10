@@ -14,7 +14,7 @@ import FilterHdrIcon from '@mui/icons-material/FilterHdr';
 import React from 'react';
 import ProgressButtons from '../../../shared/ProgressButtons';
 import { gotoProgress } from '../../../reduxStore/sharedSlice';
-import PSAButton from '../../../shared/PSAButton';
+import PSAButton from '../../../components/PSAComponents/PSAButton';
 
 const speciesSelectorToolName = '/';
 

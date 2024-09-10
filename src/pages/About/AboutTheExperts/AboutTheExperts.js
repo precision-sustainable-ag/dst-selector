@@ -12,7 +12,7 @@ import {
 } from '@mui/material';
 import React, { useState } from 'react';
 import { getExpertsData } from '../../../shared/constants';
-import PSAButton from '../../../shared/PSAButton';
+import PSAButton from '../../../components/PSAComponents/PSAButton';
 
 const AboutTheExperts = () => {
   const [value, setValue] = useState(0);

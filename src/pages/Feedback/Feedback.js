@@ -9,8 +9,8 @@ import {
   FormControlLabel,
 } from '@mui/material';
 import pirschAnalytics from '../../shared/analytics';
-import PSATextField from '../../shared/PSATextField';
-import PSAButton from '../../shared/PSAButton';
+import PSATextField from '../../components/PSAComponents/PSATextField';
+import PSAButton from '../../components/PSAComponents/PSAButton';
 
 const FeedbackComponent = () => {
   const consentRedux = useSelector((stateRedux) => stateRedux.userData.consent);

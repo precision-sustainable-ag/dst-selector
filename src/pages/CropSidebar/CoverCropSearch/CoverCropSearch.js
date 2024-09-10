@@ -5,8 +5,8 @@ import { Clear, Search } from '@mui/icons-material';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { cropSearch } from '../../../reduxStore/filterSlice';
-import PSATextField from '../../../shared/PSATextField';
-// import PSATextField from '../../../shared/PSATextField';
+import PSATextField from '../../../components/PSAComponents/PSATextField';
+// import PSATextField from '../../../components/PSAComponents/PSATextField';
 
 const CoverCropSearch = () => {
   const dispatchRedux = useDispatch();

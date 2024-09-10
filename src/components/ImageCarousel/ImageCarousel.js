@@ -7,7 +7,7 @@ import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import SwipeableViews from 'react-swipeable-views-react-18-fix';
 import { autoPlay } from 'react-swipeable-views-utils';
-import PSAButton from '../../shared/PSAButton';
+import PSAButton from '../PSAComponents/PSAButton';
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 

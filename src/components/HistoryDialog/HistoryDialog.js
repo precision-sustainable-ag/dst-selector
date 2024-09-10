@@ -8,8 +8,8 @@ import {
   updateField,
 } from '../../reduxStore/userSlice';
 import { reset } from '../../reduxStore/store';
-import PSATextField from '../../shared/PSATextField';
-import PSAButton from '../../shared/PSAButton';
+import PSATextField from '../PSAComponents/PSATextField';
+import PSAButton from '../PSAComponents/PSAButton';
 
 export const historyDialogDefaultState = {
   open: false,

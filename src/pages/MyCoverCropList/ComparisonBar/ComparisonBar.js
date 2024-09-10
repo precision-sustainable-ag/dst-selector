@@ -15,7 +15,7 @@ import { useDispatch } from 'react-redux';
 import RenderFilters from './RenderFilters/RenderFilters';
 import RenderGoals from './RenderGoals/RenderGoals';
 import { updateComparisonKeys } from '../../../reduxStore/sharedSlice';
-import PSAButton from '../../../shared/PSAButton';
+import PSAButton from '../../../components/PSAComponents/PSAButton';
 
 const ComparisonBar = ({
   filterData, goals, comparisonKeys, comparisonView, classes,

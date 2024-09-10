@@ -22,7 +22,7 @@ import CropSidebar from '../CropSidebar/CropSidebar';
 import CropTable from './CropTable/CropTable';
 import { setSidebarWidth } from '../../reduxStore/pageSlice';
 import pirschAnalytics from '../../shared/analytics';
-import PSAButton from '../../shared/PSAButton';
+import PSAButton from '../../components/PSAComponents/PSAButton';
 
 const ScrollTop = ({ children }) => {
   const trigger = useScrollTrigger({

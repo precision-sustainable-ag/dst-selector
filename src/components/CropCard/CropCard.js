@@ -11,7 +11,7 @@ import { addCropToBasket, trimString } from '../../shared/constants';
 import { myCropListLocation, snackHandler } from '../../reduxStore/sharedSlice';
 import { updateSelectedCropIds } from '../../reduxStore/cropSlice';
 import { setSaveHistory } from '../../reduxStore/userSlice';
-import PSAButton from '../../shared/PSAButton';
+import PSAButton from '../PSAComponents/PSAButton';
 
 const CropCard = ({
   crop, handleModalOpen, index, dispatchRedux,
