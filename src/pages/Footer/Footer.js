@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux';
 import { Box, Grid } from '@mui/material';
 import { useHistory } from 'react-router-dom';
 import ProgressButtons from '../../shared/ProgressButtons';
+import useWindowSize from '../../shared/constants';
 
 const Footer = () => {
   const history = useHistory();
@@ -23,13 +24,15 @@ const Footer = () => {
     });
   }, [history]);
 
+  const windowSize = useWindowSize().width;
+
   const [footerWidth, setFooterWidth] = useState('100%');
   const tableWidth = useSelector((stateRedux) => stateRedux.pageData.tableWidth);
   const sidebarWidth = useSelector((stateRedux) => stateRedux.pageData.sidebarWidth);
+
   useEffect(() => {
-    const windowSize = window.innerWidth;
     setFooterWidth(`${Math.max(windowSize, tableWidth + sidebarWidth)}px`);
-  }, [tableWidth, sidebarWidth]);
+  }, [tableWidth, sidebarWidth, windowSize]);
   return (
     <Box
       sx={{
