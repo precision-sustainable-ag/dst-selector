@@ -78,7 +78,7 @@ jobs:
             jq -r --arg field_name "$field_name" --arg label_name "$label_name" '.data.organization.projectV2.fields.nodes[] | select(.name == $field_name) | '.options[]' | select(.name == $label_name) | .id' project_data.json
           }
           
-          TEAM_OPTION_ID=$(get_option_id "dst" "Team")
+          TEAM_OPTION_ID=$(get_option_id "DST" "Team")
           if [ -n "$TEAM_OPTION_ID" ]; then
             gh api graphql -f query='
               mutation($project: ID!, $item: ID!, $field: ID!, $value: String!) {
@@ -95,7 +95,7 @@ jobs:
             echo "Error: Unable to find Team Option ID."
           fi
           
-          PROJECT_OPTION_ID=$(get_option_id "cc-selector" "Project")
+          PROJECT_OPTION_ID=$(get_option_id "DST-selector" "Project")
           if [ -n "$PROJECT_OPTION_ID" ]; then
             gh api graphql -f query='
               mutation($project: ID!, $item: ID!, $field: ID!, $value: String!) {
