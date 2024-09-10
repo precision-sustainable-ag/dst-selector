@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux';
 import { Box, Grid } from '@mui/material';
 import { useHistory } from 'react-router-dom';
 import ProgressButtons from '../../shared/ProgressButtons';
+import useWindowSize from '../../shared/constants';
 
 const Footer = () => {
   const history = useHistory();
@@ -22,37 +23,6 @@ const Footer = () => {
       setPathname(location.pathname);
     });
   }, [history]);
-
-  const useWindowSize = () => {
-    // Initialize state with undefined width/height so server and client renders match
-    // Learn more here: https://joshwcomeau.com/react/the-perils-of-rehydration/
-    const [windowSize, setWindowSize] = useState({
-      width: undefined,
-      height: undefined,
-    });
-
-    useEffect(() => {
-      // Handler to call on window resize
-      function handleResize() {
-        // Set window width/height to state to state while taking out the width of the horizontal scrollbar
-        setWindowSize({
-          width: window.innerWidth - (window.innerWidth - document.documentElement.clientWidth),
-          height: document.documentElement.clientHeight,
-        });
-      }
-
-      // Add event listener
-      window.addEventListener('resize', handleResize);
-
-      // Call handler right away so state gets updated with initial window size
-      handleResize();
-
-      // Remove event listener on cleanup
-      return () => window.removeEventListener('resize', handleResize);
-    }, []);
-
-    return windowSize;
-  };
 
   const windowSize = useWindowSize().width;
 
