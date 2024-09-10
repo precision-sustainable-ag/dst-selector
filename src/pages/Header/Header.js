@@ -28,6 +28,7 @@ import { loadHistory } from '../../shared/api';
 import HistoryDialog from '../../components/HistoryDialog/HistoryDialog';
 import SaveUserHistory from './SaveUserHistory/SaveUserHistory';
 import { releaseNotesURL } from '../../shared/keys';
+import useWindowSize from '../../shared/constants';
 // import logoImage from '../../../public/images/PSAlogo-text.png';
 
 const Header = () => {
@@ -140,13 +141,14 @@ const Header = () => {
     // TODO: councilShorthandRedux here is for re-import userHistoryList when the app is reset
   }, [isAuthenticated, getAccessTokenSilently, councilShorthandRedux]);
 
+  const windowSize = useWindowSize().width;
+
   const [headerWidth, setHeaderWidth] = useState('100%');
   const tableWidth = useSelector((stateRedux) => stateRedux.pageData.tableWidth);
   const sidebarWidth = useSelector((stateRedux) => stateRedux.pageData.sidebarWidth);
   useEffect(() => {
-    const windowSize = window.innerWidth;
     setHeaderWidth(`${Math.max(windowSize, tableWidth + sidebarWidth)}px`);
-  }, [tableWidth, sidebarWidth]);
+  }, [tableWidth, sidebarWidth, windowSize]);
 
   const chooseTopBar = (option) => {
     if (option) {
@@ -198,6 +200,7 @@ const Header = () => {
                 height: 'auto',
                 marginRight: '10px',
                 width: '120px',
+                overflow: 'hidden',
               }}
             >
               <Button type="button" onClick={handleClick}>
@@ -205,7 +208,7 @@ const Header = () => {
                   id="logoImage"
                   style={{
                     maxWidth: '100%',
-                    height: 'auto',
+                    maxHeight: '100%',
                   }}
                   ref={logoRef}
                   alt=""
