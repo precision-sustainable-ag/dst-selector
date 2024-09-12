@@ -285,11 +285,7 @@ const CropSidebar = ({
   const filtersList = () => (
     <List component="div" disablePadding className="cropFilters">
       {filtersSelected && (
-        <ListItem style={{
-          textAlign: 'center',
-          height: '100px',
-        }}
-        >
+        <ListItem>
           <ListItemText
             primary={(
               <Button
