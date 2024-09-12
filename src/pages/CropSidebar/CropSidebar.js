@@ -284,8 +284,12 @@ const CropSidebar = ({
 
   const filtersList = () => (
     <List component="div" disablePadding className="cropFilters">
-      {filtersSelected && (
-        <ListItem>
+      <div style={{ height: '53px' }}>
+        {filtersSelected && (
+        <ListItem style={{
+          textAlign: 'center',
+        }}
+        >
           <ListItemText
             primary={(
               <Button
@@ -297,7 +301,8 @@ const CropSidebar = ({
             )}
           />
         </ListItem>
-      )}
+        )}
+      </div>
       <SoloFilter>
         <ListItemText>
           Soil Drainage Filter
