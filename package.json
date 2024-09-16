@@ -14,7 +14,6 @@
     "@mui/material": "^5.14.11",
     "@mui/x-date-pickers": "^6.1.0",
     "@psa/dst.ui.map": "^0.0.61",
-    "@psa/dst.ui.region-selector-map": "^0.0.20",
     "@turf/area": "^6.5.0",
     "@turf/centroid": "^6.5.0",
     "dayjs": "^1.11.8",
@@ -30,20 +29,21 @@
     "react-map-gl-geocoder": "^2.2.0",
     "react-redux": "^8.1.1",
     "react-router-dom": "^5.1.2",
-    "react-scripts": "^5.0.1",
     "react-swipeable-views-react-18-fix": "^0.14.1",
     "react-swipeable-views-utils": "^0.14.0",
     "redux": "^4.2.1",
     "redux-devtools-extension": "^2.13.9",
     "sass-mediaqueries": "^1.6.1",
+    "shared-react-components": "github:precision-sustainable-ag/shared-react-components",
     "styled-components": "^5.3.6",
-    "worker-loader": "^3.0.8"
+    "worker-loader": "^3.0.8",
+    "xlsx": "^0.18.5"
   },
+  "type": "module",
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
+    "start": "vite",
+    "build": "vite build",
+    "serve": "vite preview",
     "format": "prettier --write ."
   },
   "eslintConfig": {
@@ -64,6 +64,7 @@
   "devDependencies": {
     "@babel/plugin-proposal-export-default-from": "^7.18.10",
     "@types/react-leaflet": "^2.8.2",
+    "@vitejs/plugin-react": "^4.3.1",
     "eslint": "^8.23.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-plugin-import": "^2.26.0",
@@ -72,6 +73,11 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "sass": "^1.54.0",
     "sass-loader": "^13.0.2",
+    "vite": "^5.4.4",
+    "vite-plugin-commonjs": "^0.10.1",
+    "vite-plugin-eslint": "^1.8.1",
+    "vite-plugin-svgr": "^4.2.0",
+    "vite-tsconfig-paths": "^5.0.1",
     "webpack": "^5.74.0"
   }
 }
