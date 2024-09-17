@@ -45,8 +45,9 @@ const AboutTheExperts = () => {
           }}
           onClick={() => handleChange(group.id)}
           variant="contained"
-          data={group.menuOption}
-        />
+        >
+          {group.menuOption}
+        </PSAButton>
 
       ))}
       <Typography style={{ paddingTop: '15px' }} variant="body1" align="left">

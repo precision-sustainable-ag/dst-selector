@@ -46,9 +46,10 @@ const ProgressButtonsInner = ({
         }}
         onClick={() => changeProgress('decrement')}
         disabled={isDisabledBack}
-        data="BACK"
-        buttonStyle="PillButton"
-      />
+        buttonType="PillButton"
+      >
+        BACK
+      </PSAButton>
       {toolTip && isDisabledNext ? (
         <Tooltip
           enterTouchDelay={0}
@@ -65,9 +66,10 @@ const ProgressButtonsInner = ({
               }}
               onClick={() => changeProgress('increment')}
               disabled={isDisabledNext || progressRedux === 4}
-              data="Next"
-              buttonStyle="PillButton"
-            />
+              buttonType="PillButton"
+            >
+              Next
+            </PSAButton>
 
           </span>
         </Tooltip>
@@ -81,9 +83,10 @@ const ProgressButtonsInner = ({
             }}
             onClick={() => (progressRedux === 4 ? setMyCoverCropActivationFlag() : changeProgress('increment'))}
             disabled={isDisabledNext || (progressRedux === 4 && selectedCropIdsRedux.length === 0)}
-            data={progressRedux === 4 ? 'MY SELECTED CROPS' : 'NEXT'}
-            buttonStyle="PillButton"
-          />
+            buttonType="PillButton"
+          >
+            {progressRedux === 4 ? 'MY SELECTED CROPS' : 'NEXT'}
+          </PSAButton>
         </Badge>
       )}
 
@@ -101,10 +104,11 @@ const ProgressButtonsInner = ({
           }
         }}
         disabled={isDisabledRefresh}
-        data="Restart"
         startIcon={<Refresh />}
-        buttonStyle="PillButton"
-      />
+        buttonType="PillButton"
+      >
+        Restart
+      </PSAButton>
     </Stack>
   );
 };

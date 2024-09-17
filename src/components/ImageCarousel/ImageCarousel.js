@@ -90,34 +90,30 @@ const ImageCarousel = ({ images }) => {
             size="small"
             onClick={handleNext}
             disabled={activeStep === maxSteps - 1}
-            data={(
-              <>
-                Next
-                {theme.direction === 'rtl' ? (
-                  <KeyboardArrowLeft />
-                ) : (
-                  <KeyboardArrowRight />
-                )}
-              </>
-              )}
-          />
+          >
+            Next
+            {theme.direction === 'rtl' ? (
+              <KeyboardArrowLeft />
+            ) : (
+              <KeyboardArrowRight />
+            )}
+
+          </PSAButton>
         )}
         backButton={(
           <PSAButton
             size="small"
             onClick={handleBack}
             disabled={activeStep === 0}
-            data={(
-              <>
-                {theme.direction === 'rtl' ? (
-                  <KeyboardArrowRight />
-                ) : (
-                  <KeyboardArrowLeft />
-                )}
-                Back
-              </>
-              )}
-          />
+          >
+            {theme.direction === 'rtl' ? (
+              <KeyboardArrowRight />
+            ) : (
+              <KeyboardArrowLeft />
+            )}
+            Back
+
+          </PSAButton>
         )}
       />
     </Box>

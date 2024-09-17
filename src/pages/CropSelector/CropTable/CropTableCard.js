@@ -96,9 +96,10 @@ const CropTableCard = ({ crop, indexKey, showGrowthWindow }) => {
                 setSaveHistory,
               );
             }}
-            buttonStyle="LightButton"
-            data={selectedBtns.includes(crop.id) ? <DeleteForever /> : <AddCircleOutline />}
-          />
+            buttonType="LightButton"
+          >
+            {selectedBtns.includes(crop.id) ? <DeleteForever /> : <AddCircleOutline />}
+          </PSAButton>
         </Box>
       </TableCell>
     </>

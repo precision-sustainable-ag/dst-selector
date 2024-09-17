@@ -20,14 +20,14 @@ import ListIcon from '@mui/icons-material/List';
 import { CalendarToday } from '@mui/icons-material';
 import StraightIcon from '@mui/icons-material/Straight';
 import {
-  sortCrops, sudoButtonStyle,
+  sortCrops, sudotype,
 } from '../../../shared/constants';
 import '../../../styles/cropCalendarViewComponent.scss';
 import '../../../styles/cropTable.scss';
 import CropDetailsModal from '../../../components/CropDetailsModal/CropDetailsModal';
 import RenderTableItems from './RenderTableItems';
-import PSAButton from '../../../components/PSAComponents/PSAButton';
 import { setTableWidth } from '../../../reduxStore/pageSlice';
+import PSAButton from '../../../components/PSAComponents/PSAButton';
 
 const CropTable = ({
   listView,
@@ -39,7 +39,6 @@ const CropTable = ({
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const cropDataRedux = useSelector((stateRedux) => stateRedux.cropData.cropData);
   const activeCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.activeCropIds);
-
   // useState vars
   const [modalOpen, setModalOpen] = useState(false);
   const [modalData, setModalData] = useState({});
@@ -134,17 +133,19 @@ const CropTable = ({
                 selected={!listView}
                 style={{ marginBottom: '7px' }}
                 startIcon={<ListIcon style={{ fontSize: 'larger' }} />}
-                data="CROP LIST"
-                buttonStyle="PillButton"
-              />
+                type="PillButton"
+              >
+                CROP LIST
+              </PSAButton>
               <PSAButton
                 onClick={() => setListView(true)}
                 selected={listView}
                 style={{ marginBottom: '7px' }}
                 startIcon={<CalendarToday style={{ fontSize: 'larger' }} />}
-                data="CROP CALENDAR"
-                buttonStyle="PillButton"
-              />
+                type="PillButton"
+              >
+                CROP CALENDAR
+              </PSAButton>
             </TableRow>
             <TableRow>
               <TableCell
@@ -159,13 +160,10 @@ const CropTable = ({
                   onClick={() => sortByName()}
                   sx={{ color: 'black', textTransform: 'none' }}
                   variant="body1"
-                  data={(
-                    <>
-                      Cover Crops
-                      {columnSort === 'name' && <StraightIcon className={nameSortFlag ? '' : 'rotate180'} />}
-                    </>
-                  )}
-                />
+                >
+                  Cover Crops
+                  {columnSort === 'name' && <StraightIcon className={nameSortFlag ? '' : 'rotate180'} />}
+                </PSAButton>
               </TableCell>
               {cropDataRedux[0].keyTraits.length > 0
               && (
@@ -175,7 +173,7 @@ const CropTable = ({
                   backgroundColor: '#abd08f',
                 }}
               >
-                <Typography variant="body1" style={sudoButtonStyle}>
+                <Typography variant="body1" style={sudotype}>
                   Key Traits
                 </Typography>
               </TableCell>
@@ -203,13 +201,10 @@ const CropTable = ({
                         onClick={() => sortByGoal(goal, index, `goal${index}`)}
                         variant="body1"
                         sx={{ textTransform: 'none' }}
-                        data={(
-                          <>
-                            {`Goal ${index + 1}`}
-                            {columnSort === `goal${index}` && <StraightIcon style={{ margin: '0px' }} className={currentGoalSortFlag ? '' : 'rotate180'} />}
-                          </>
-                          )}
-                      />
+                      >
+                        {`Goal ${index + 1}`}
+                        {columnSort === `goal${index}` && <StraightIcon style={{ margin: '0px' }} className={currentGoalSortFlag ? '' : 'rotate180'} />}
+                      </PSAButton>
 
                     </Tooltip>
                   </TableCell>
@@ -229,13 +224,11 @@ const CropTable = ({
                       textTransform: 'none',
                     }}
                     onClick={() => sortByPlantingWindow()}
-                    data={(
-                      <>
-                        Planting Window
-                        {columnSort === 'plantingWindow' && <StraightIcon style={{ margin: '0px' }} className={plantingSortFlag ? '' : 'rotate180'} />}
-                      </>
-                      )}
-                  />
+                  >
+                    Planting Window
+                    {columnSort === 'plantingWindow' && <StraightIcon style={{ margin: '0px' }} className={plantingSortFlag ? '' : 'rotate180'} />}
+
+                  </PSAButton>
                 </TableCell>
               )}
 
@@ -250,13 +243,10 @@ const CropTable = ({
                   variant="body1"
                   style={{ textTransform: 'none' }}
                   onClick={() => sortBySelectedCrops()}
-                  data={(
-                    <>
-                      My List
-                      {columnSort === 'myList' && <StraightIcon style={{ margin: '0px' }} className={myListSortFlag ? '' : 'rotate180'} />}
-                    </>
-                      )}
-                />
+                >
+                  My List
+                  {columnSort === 'myList' && <StraightIcon style={{ margin: '0px' }} className={myListSortFlag ? '' : 'rotate180'} />}
+                </PSAButton>
               </TableCell>
             </TableRow>
           </TableHead>

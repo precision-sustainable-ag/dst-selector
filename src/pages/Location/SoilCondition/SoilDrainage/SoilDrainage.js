@@ -164,11 +164,12 @@ const SoilDrainage = ({ drainageOptions }) => {
           {!arrayEquals(soilDataOriginalRedux?.drainageClass, soilDataRedux?.drainageClass) && (
             <Grid item>
               <PSAButton
-                buttonStyle="ValuesChanged"
+                buttonType="ValuesChanged"
                 onClick={() => {
                   resetDrainageClasses();
                 }}
-                data={isMobile ? (
+              >
+                {isMobile ? (
                   <RestartAltIcon sx={{ color: '#ff961c' }} />
                 ) : (
                   <Typography
@@ -182,7 +183,7 @@ const SoilDrainage = ({ drainageOptions }) => {
                     Values changed, reset?
                   </Typography>
                 )}
-              />
+              </PSAButton>
             </Grid>
           )}
         </Grid>

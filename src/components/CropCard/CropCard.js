@@ -89,9 +89,9 @@ const CropCard = ({
           }}
           target="_blank"
           onClick={() => handleModalOpen(crop)}
-          data="View Crop Details"
-
-        />
+        >
+          View Crop Details
+        </PSAButton>
       </CardContent>
       <CardActionArea
         id={`cartBtn${index}`}

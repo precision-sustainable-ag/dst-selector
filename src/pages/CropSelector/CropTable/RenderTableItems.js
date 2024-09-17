@@ -50,14 +50,14 @@ const RenderTableItems = ({ showGrowthWindow, handleModalOpen }) => {
                 <Grid item xs={12}>
                   <PSAButton
                     onClick={() => handleModalOpen(crop)}
-                    data={(
-                      <CropImage
-                        present={!!crop.thumbnail}
-                        src={crop.thumbnail ? crop.thumbnail : 'https://placehold.it/100x100'}
-                        alt={crop.label}
-                      />
-                  )}
-                  />
+                  >
+                    <CropImage
+                      present={!!crop.thumbnail}
+                      src={crop.thumbnail ? crop.thumbnail : 'https://placehold.it/100x100'}
+                      alt={crop.label}
+                    />
+
+                  </PSAButton>
                 </Grid>
                 <Grid item xs={12}>
                   <PSAButton
@@ -71,8 +71,9 @@ const RenderTableItems = ({ showGrowthWindow, handleModalOpen }) => {
                     onClick={() => {
                       handleModalOpen(crop);
                     }}
-                    data={flipCoverCropName(crop.label)}
-                  />
+                  >
+                    {flipCoverCropName(crop.label)}
+                  </PSAButton>
                 </Grid>
                 <Grid item xs={12}>
                   <Typography sx={{ fontSize: '0.9rem' }}>

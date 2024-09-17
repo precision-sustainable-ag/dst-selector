@@ -126,8 +126,9 @@ const ComparisonBar = ({
                 size="small"
                 style={{ marginBottom: '-15px', color: 'red' }}
                 onClick={resetAllFilters}
-                data="Clear Variables"
-              />
+              >
+                Clear Variables
+              </PSAButton>
             )}
           />
         </ListItem>
@@ -139,8 +140,9 @@ const ComparisonBar = ({
             <PSAButton
               size="small"
               onClick={showAllVariables}
-              data="Show All"
-            />
+            >
+              Show All
+            </PSAButton>
           )}
         />
       </ListItem>

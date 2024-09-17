@@ -119,10 +119,10 @@ const HistoryDialog = () => {
       </DialogContent>
       <DialogActions>
         {type === 'add'
-          && <PSAButton onClick={handleAdd} data="Create" />}
+          && <PSAButton onClick={handleAdd}>Create</PSAButton>}
         {type === 'update'
-          && <PSAButton onClick={handleUpdate} data="Create a new record" />}
-        <PSAButton onClick={handleCancel} data="Cancel" />
+          && <PSAButton onClick={handleUpdate}>Create a new record</PSAButton>}
+        <PSAButton onClick={handleCancel}>Cancel</PSAButton>
       </DialogActions>
     </Dialog>
   );

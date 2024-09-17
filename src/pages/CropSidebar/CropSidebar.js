@@ -279,8 +279,9 @@ const CropSidebar = ({
               <PSAButton
                 onClick={resetAllFilters}
                 style={{ cursor: 'pointer', color: 'red' }}
-                data="Clear Filters"
-              />
+              >
+                Clear Filters
+              </PSAButton>
             )}
           />
         </ListItem>
@@ -300,16 +301,18 @@ const CropSidebar = ({
           onClick={() => setComparisonView(false)}
           selected={!comparisonView}
           startIcon={<ListIcon style={{ fontSize: 'larger' }} />}
-          data="CROP LIST"
-          buttonStyle="PillButton"
-        />
+          type="PillButton"
+        >
+          CROP LIST
+        </PSAButton>
         <PSAButton
           onClick={() => setComparisonView(true)}
           selected={comparisonView}
           startIcon={<Compare style={{ fontSize: 'larger' }} />}
-          data="COMPARISON VIEW"
-          buttonStyle="PillButton"
-        />
+          type="PillButton"
+        >
+          COMPARISON VIEW
+        </PSAButton>
         <ComparisonBar
           filterData={sidebarFilters}
           goals={selectedGoalsRedux?.length > 0 ? selectedGoalsRedux : []}

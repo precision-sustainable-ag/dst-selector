@@ -104,8 +104,9 @@ const Help = () => {
                 }}
                 onClick={() => handleChange(section.id)}
                 variant={value === section.id ? 'contained' : 'text'}
-                data={section.menuOption}
-              />
+              >
+                {section.menuOption}
+              </PSAButton>
             ))}
           </div>
         </Grid>
