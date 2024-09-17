@@ -76,7 +76,7 @@ const About = () => {
           >
             {pageSections.map((section) => (
               <PSAButton
-                key={section.d}
+                key={section.id}
                 style={{
                   display: 'flex',
                   flexDirection: 'row',

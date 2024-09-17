@@ -133,7 +133,7 @@ const CropTable = ({
                 selected={!listView}
                 style={{ marginBottom: '7px' }}
                 startIcon={<ListIcon style={{ fontSize: 'larger' }} />}
-                type="PillButton"
+                buttonType="PillButton"
               >
                 CROP LIST
               </PSAButton>
@@ -142,7 +142,7 @@ const CropTable = ({
                 selected={listView}
                 style={{ marginBottom: '7px' }}
                 startIcon={<CalendarToday style={{ fontSize: 'larger' }} />}
-                type="PillButton"
+                buttonType="PillButton"
               >
                 CROP CALENDAR
               </PSAButton>
