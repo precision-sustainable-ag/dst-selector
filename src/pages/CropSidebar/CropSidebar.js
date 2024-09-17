@@ -301,7 +301,7 @@ const CropSidebar = ({
           onClick={() => setComparisonView(false)}
           selected={!comparisonView}
           startIcon={<ListIcon style={{ fontSize: 'larger' }} />}
-          type="PillButton"
+          buttonType="PillButton"
         >
           CROP LIST
         </PSAButton>
@@ -309,7 +309,7 @@ const CropSidebar = ({
           onClick={() => setComparisonView(true)}
           selected={comparisonView}
           startIcon={<Compare style={{ fontSize: 'larger' }} />}
-          type="PillButton"
+          buttonType="PillButton"
         >
           COMPARISON VIEW
         </PSAButton>
