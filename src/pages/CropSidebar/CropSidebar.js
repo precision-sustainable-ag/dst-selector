@@ -36,7 +36,7 @@ import SidebarFilter from './SidebarFilter/SidebarFilter';
 import CoverCropGoals from './CoverCropGoals/CoverCropGoals';
 import PlantHardinessZone from './PlantHardinessZone/PlantHardinessZone';
 import Legend from '../../components/Legend/Legend';
-import { clearFilters, setSoilDrainageFilter } from '../../reduxStore/filterSlice';
+import { clearFilters, setSoilDrainageFilter, setIrrigationFilter } from '../../reduxStore/filterSlice';
 import { updateCropData, updateActiveCropIds } from '../../reduxStore/cropSlice';
 import { setAjaxInProgress, regionToggleHandler } from '../../reduxStore/sharedSlice';
 import PSAButton from '../../shared/PSAButton';
@@ -62,6 +62,7 @@ const CropSidebar = ({
   const comparisonKeysRedux = useSelector((stateRedux) => stateRedux.sharedData.comparisonKeys);
   const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
   const soilDrainageFilterRedux = useSelector((stateRedux) => stateRedux.filterData.filters.soilDrainageFilter);
+  const irrigationFilterRedux = useSelector((stateRedux) => stateRedux.filterData.filters.irrigationFilter);
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const drainageClassRedux = useSelector((stateRedux) => stateRedux.soilData.soilData.drainageClass[0]);
@@ -104,6 +105,10 @@ const CropSidebar = ({
 
   const handleSoilDrainageFilter = () => {
     dispatchRedux(setSoilDrainageFilter(!soilDrainageFilterRedux));
+  };
+
+  const handleIrrigationFilter = () => {
+    dispatchRedux(setIrrigationFilter(!irrigationFilterRedux));
   };
 
   useEffect(() => {
@@ -326,6 +331,29 @@ const CropSidebar = ({
                   )}
         />
       </SoloFilter>
+      <SoloFilter>
+        <ListItemText>
+          Irrigation Dates Filter
+        </ListItemText>
+        <ListItemText
+          display="block"
+          primary={(
+            <Grid item>
+              <Typography variant="body1" display="inline">
+                No
+              </Typography>
+              <Switch
+                checked={irrigationFilterRedux}
+                onChange={handleIrrigationFilter}
+                name="checkedC"
+              />
+              <Typography variant="body1" display="inline">
+                Yes
+              </Typography>
+            </Grid>
+                  )}
+        />
+      </SoloFilter>
       {getFilters()}
     </List>
   ); // filterList
@@ -334,6 +362,7 @@ const CropSidebar = ({
     // FIXME: this function returns a compoennt in useEffect, not sure why doing that
     filtersList();
   }, [sidebarFilters]);
+
   return !loading && (from === 'myCoverCropListStatic') ? (
     <Grid container spacing={3}>
       <Grid item>
