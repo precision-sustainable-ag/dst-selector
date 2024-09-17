@@ -427,8 +427,9 @@ export const BinaryButton = ({ action }) => (
         action(false);
       }}
       color="secondary"
-      data="No"
-    />
+    >
+      No
+    </PSAButton>
     <PSAButton
       autoFocus
       onClick={() => {
