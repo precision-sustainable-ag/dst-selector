@@ -2,6 +2,7 @@ const initialState = {
   filters: {
     cropSearch: '',
     soilDrainageFilter: false,
+    irrigationFilter: false,
   },
 };
 
@@ -49,6 +50,11 @@ export const setSoilDrainageFilter = (soilDrainageFilter) => ({
   payload: { soilDrainageFilter },
 });
 
+export const setIrrigationFilter = (irrigationFilter) => ({
+  type: 'SET_IRRIGATION_FILTER',
+  payload: { irrigationFilter },
+});
+
 const filterReducer = (state = initialState, action = null) => {
   let filters = { ...state.filters };
   const value = action && action.payload && action.payload.value;
@@ -57,6 +63,7 @@ const filterReducer = (state = initialState, action = null) => {
       filters = {
         cropSearch: '',
         soilDrainageFilter: false,
+        irrigationFilter: false,
       };
 
       return {
@@ -109,6 +116,15 @@ const filterReducer = (state = initialState, action = null) => {
         filters: {
           ...filters,
           soilDrainageFilter: action.payload.soilDrainageFilter,
+        },
+      };
+
+    case 'SET_IRRIGATION_FILTER':
+      return {
+        ...state,
+        filters: {
+          ...filters,
+          irrigationFilter: action.payload.irrigationFilter,
         },
       };
 
