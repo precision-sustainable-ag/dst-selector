@@ -1,6 +1,7 @@
 const initialState = {
   filters: {
     cropSearch: '',
+    irrigationFilter: false,
   },
 };
 
@@ -43,6 +44,11 @@ export const toggleFilterValue = (value) => ({
   },
 });
 
+export const setIrrigationFilter = (irrigationFilter) => ({
+  type: 'SET_IRRIGATION_FILTER',
+  payload: { irrigationFilter },
+});
+
 const filterReducer = (state = initialState, action = null) => {
   let filters = { ...state.filters };
   const value = action && action.payload && action.payload.value;
@@ -50,6 +56,7 @@ const filterReducer = (state = initialState, action = null) => {
     case 'CLEAR_FILTERS':
       filters = {
         cropSearch: '',
+        irrigationFilter: false,
       };
 
       return {
@@ -96,6 +103,14 @@ const filterReducer = (state = initialState, action = null) => {
         [value]: !state[value],
       };
 
+    case 'SET_IRRIGATION_FILTER':
+      return {
+        ...state,
+        filters: {
+          ...filters,
+          irrigationFilter: action.payload.irrigationFilter,
+        },
+      };
     default:
       return { ...state };
   }
