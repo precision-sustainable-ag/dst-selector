@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
-  Button, Typography, Switch, Grid, Box, useMediaQuery, useTheme,
+  Typography, Switch, Grid, Box, useMediaQuery, useTheme,
 } from '@mui/material';
 import { LocalDrinkOutlined, InvertColors } from '@mui/icons-material';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
@@ -13,6 +13,7 @@ import RenderDrainageClasses from './RenderDrainageClasses';
 import { setTileDrainage, updateDrainageClass as updateDrainageClassRedux } from '../../../../reduxStore/soilSlice';
 import MyCoverCropReset from '../../../../components/MyCoverCropReset/MyCoverCropReset';
 import { historyState, setHistoryState } from '../../../../reduxStore/userSlice';
+import PSAButton from '../../../../components/PSAComponents/PSAButton';
 
 const SoilDrainage = ({ drainageOptions }) => {
   const dispatchRedux = useDispatch();
@@ -162,23 +163,8 @@ const SoilDrainage = ({ drainageOptions }) => {
           </Grid>
           {!arrayEquals(soilDataOriginalRedux?.drainageClass, soilDataRedux?.drainageClass) && (
             <Grid item>
-              <Button
-                sx={{
-                  backgroundColor: 'rgba(255, 150, 28, 0.2)',
-                  borderRadius: '999px',
-                  padding: '0.5rem',
-                  '&:hover': {
-                    backgroundColor: 'rgba(255, 150, 28, 0.3)',
-                  },
-                  '@media (max-width:600px)': {
-                    padding: '0.5rem',
-                    borderRadius: '999px',
-                    '& .MuiTypography-root': {
-                      fontSize: '0.7rem',
-                    },
-                  },
-                }}
-                size="small"
+              <PSAButton
+                buttonType="ValuesChanged"
                 onClick={() => {
                   resetDrainageClasses();
                 }}
@@ -197,7 +183,7 @@ const SoilDrainage = ({ drainageOptions }) => {
                     Values changed, reset?
                   </Typography>
                 )}
-              </Button>
+              </PSAButton>
             </Grid>
           )}
         </Grid>

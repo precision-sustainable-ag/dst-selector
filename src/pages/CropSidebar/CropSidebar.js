@@ -6,7 +6,6 @@
 
 import {
   Box,
-  Button,
   Collapse,
   List,
   ListItem,
@@ -39,7 +38,7 @@ import Legend from '../../components/Legend/Legend';
 import { clearFilters, setSoilDrainageFilter, setIrrigationFilter } from '../../reduxStore/filterSlice';
 import { updateCropData, updateActiveCropIds } from '../../reduxStore/cropSlice';
 import { setAjaxInProgress, regionToggleHandler } from '../../reduxStore/sharedSlice';
-import PSAButton from '../../shared/PSAButton';
+import PSAButton from '../../components/PSAComponents/PSAButton';
 
 const CropSidebar = ({
   comparisonView,
@@ -297,12 +296,12 @@ const CropSidebar = ({
         >
           <ListItemText
             primary={(
-              <Button
+              <PSAButton
                 onClick={resetAllFilters}
                 style={{ cursor: 'pointer', color: 'red' }}
               >
                 Clear Filters
-              </Button>
+              </PSAButton>
             )}
           />
         </ListItem>
@@ -370,14 +369,18 @@ const CropSidebar = ({
           onClick={() => setComparisonView(false)}
           selected={!comparisonView}
           startIcon={<ListIcon style={{ fontSize: 'larger' }} />}
-          data="CROP LIST"
-        />
+          buttonType="PillButton"
+        >
+          CROP LIST
+        </PSAButton>
         <PSAButton
           onClick={() => setComparisonView(true)}
           selected={comparisonView}
           startIcon={<Compare style={{ fontSize: 'larger' }} />}
-          data="COMPARISON VIEW"
-        />
+          buttonType="PillButton"
+        >
+          COMPARISON VIEW
+        </PSAButton>
         <ComparisonBar
           filterData={sidebarFilters}
           goals={selectedGoalsRedux?.length > 0 ? selectedGoalsRedux : []}

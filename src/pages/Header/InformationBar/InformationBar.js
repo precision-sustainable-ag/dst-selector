@@ -14,7 +14,7 @@ import FilterHdrIcon from '@mui/icons-material/FilterHdr';
 import React from 'react';
 import ProgressButtons from '../../../shared/ProgressButtons';
 import { gotoProgress } from '../../../reduxStore/sharedSlice';
-import PSAButton from '../../../shared/PSAButton';
+import PSAButton from '../../../components/PSAComponents/PSAButton';
 
 const speciesSelectorToolName = '/';
 
@@ -96,19 +96,20 @@ const InformationBar = ({ pathname }) => {
     return (
       <PSAButton
         onClick={() => handleBtnClick(type)}
-        sx={{
+        buttonType="PillButton"
+        style={{
           borderRadius: '200px',
           color: 'black',
           width: '100%',
-          backgroundColor:
-            ((type === 'location' && progressRedux > 0)
-              || (type === 'site' && progressRedux > 1)
-              || (type === 'goals' && progressRedux > 2))
-            && '#e3f2f4',
 
         }}
-        data={getIconInfo(type)}
-      />
+        transparent={!((type === 'location' && progressRedux > 0)
+        || (type === 'site' && progressRedux > 1)
+        || (type === 'goals' && progressRedux > 2))}
+
+      >
+        {getIconInfo(type)}
+      </PSAButton>
     );
   };
 

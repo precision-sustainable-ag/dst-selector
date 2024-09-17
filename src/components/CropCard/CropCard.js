@@ -1,5 +1,4 @@
 import {
-  Button,
   Card, CardActionArea, CardContent, CardMedia, Typography,
 } from '@mui/material';
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -12,6 +11,7 @@ import { addCropToBasket, trimString } from '../../shared/constants';
 import { myCropListLocation, snackHandler } from '../../reduxStore/sharedSlice';
 import { updateSelectedCropIds } from '../../reduxStore/cropSlice';
 import { setSaveHistory } from '../../reduxStore/userSlice';
+import PSAButton from '../PSAComponents/PSAButton';
 
 const CropCard = ({
   crop, handleModalOpen, index, dispatchRedux,
@@ -79,18 +79,19 @@ const CropCard = ({
         <Typography sx={{ fontStyle: 'italic' }}>
           {crop.scientificName ? trimString(crop.scientificName, 25) : 'No Data'}
         </Typography>
-        <Button
+        <PSAButton
           style={{
             fontSize: '10pt',
             left: -5,
             textDecoration: 'underline',
             color: 'rgb(53, 153, 155)',
+            backgroundColor: 'transparent',
           }}
           target="_blank"
           onClick={() => handleModalOpen(crop)}
         >
           View Crop Details
-        </Button>
+        </PSAButton>
       </CardContent>
       <CardActionArea
         id={`cartBtn${index}`}

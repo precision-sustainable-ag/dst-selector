@@ -5,7 +5,6 @@
 
 import {
   Dialog,
-  Button,
   DialogTitle,
   DialogContent,
   DialogActions,
@@ -15,7 +14,8 @@ import {
   postFields, buildPoint, buildGeometryCollection, deleteFields,
 } from '../../../shared/constants';
 import { getAuthToken } from '../../../shared/authToken';
-import PSATextField from '../../../shared/PSATextField';
+import PSATextField from '../../../components/PSAComponents/PSATextField';
+import PSAButton from '../../../components/PSAComponents/PSAButton';
 
 export const initFieldDialogState = {
   open: false,
@@ -166,9 +166,9 @@ const UserFieldDialog = ({
         </DialogTitle>
       )}
       <DialogActions>
-        <Button onClick={() => handleClose('YES')}>Yes</Button>
-        {actionType === 'add' && <Button onClick={() => handleClose('NO')}>No</Button>}
-        <Button onClick={() => handleClose('CANCEL')}>Cancel</Button>
+        <PSAButton onClick={() => handleClose('YES')}>Yes </PSAButton>
+        {actionType === 'add' && <PSAButton onClick={() => handleClose('NO')}>No </PSAButton>}
+        <PSAButton onClick={() => handleClose('CANCEL')}>Cancel </PSAButton>
       </DialogActions>
     </Dialog>
   );
