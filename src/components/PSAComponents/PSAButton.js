@@ -1,9 +1,7 @@
 /*
   This file contains the Button component
 */
-import { Button } from '@mui/material';
-
-import styled from 'styled-components';
+import { Button, styled } from '@mui/material';
 
 // Handle the backround color the for the pill button
 const pillBackgroundColor = (selected, transparent) => {
@@ -16,7 +14,9 @@ const pillBackgroundColor = (selected, transparent) => {
   return '#e3f2f4';
 };
 
-const PSAButton = styled(Button)(({ buttonType, selected, transparent }) => ({
+const PSAButton = styled(Button, {
+  shouldForwardProp: (props) => props !== 'buttonType',
+})(({ buttonType, selected, transparent }) => ({
   // Button properties
   ...(buttonType === 'LightButton' && {
     backgroundColor: '#e3f2f4',
