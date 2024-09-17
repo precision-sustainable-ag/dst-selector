@@ -15,6 +15,7 @@ import {
   // ListSubheader,
   Typography,
   Grid,
+  Switch,
 } from '@mui/material';
 import {
   Compare, ExpandLess, ExpandMore,
@@ -25,6 +26,7 @@ import React, {
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
+import styled from 'styled-components';
 import {
   callCoverCropApi, cropDataFormatter, getLegendDataBasedOnCouncil,
 } from '../../shared/constants';
@@ -34,7 +36,7 @@ import SidebarFilter from './SidebarFilter/SidebarFilter';
 import CoverCropGoals from './CoverCropGoals/CoverCropGoals';
 import PlantHardinessZone from './PlantHardinessZone/PlantHardinessZone';
 import Legend from '../../components/Legend/Legend';
-import { clearFilters } from '../../reduxStore/filterSlice';
+import { clearFilters, setIrrigationFilter } from '../../reduxStore/filterSlice';
 import { updateCropData, updateActiveCropIds } from '../../reduxStore/cropSlice';
 import { setAjaxInProgress, regionToggleHandler } from '../../reduxStore/sharedSlice';
 import PSAButton from '../../shared/PSAButton';
@@ -59,6 +61,7 @@ const CropSidebar = ({
   const speciesSelectorActivationFlagRedux = useSelector((stateRedux) => stateRedux.sharedData.speciesSelectorActivationFlag);
   const comparisonKeysRedux = useSelector((stateRedux) => stateRedux.sharedData.comparisonKeys);
   const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
+  const irrigationFilterRedux = useSelector((stateRedux) => stateRedux.filterData.filters.irrigationFilter);
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const drainageClassRedux = useSelector((stateRedux) => stateRedux.soilData.soilData.drainageClass[0]);
@@ -71,6 +74,10 @@ const CropSidebar = ({
   const [sidebarCategoriesData, setSidebarCategoriesData] = useState([]);
   const [sidebarFiltersData, setSidebarFiltersData] = useState([]);
   const [cropFiltersOpen, setCropFiltersOpen] = useState(true);
+
+  const SoloFilter = styled(ListItem)({
+    paddingLeft: '25px',
+  });
 
   // make an exhaustive array of all params in array e.g. cover crop group and use includes in linq
   const [sidebarFilterOptions, setSidebarFilterOptions] = useState(() => {
@@ -94,6 +101,10 @@ const CropSidebar = ({
       && !comparisonView);
     setShowFilters(value);
   }, [speciesSelectorActivationFlagRedux, from, comparisonView]);
+
+  const handleIrrigationFilter = () => {
+    dispatchRedux(setIrrigationFilter(!irrigationFilterRedux));
+  };
 
   useEffect(() => {
     // ex { "Heat Tolerance": [1,2,3,4,5] }
@@ -287,6 +298,29 @@ const CropSidebar = ({
           />
         </ListItem>
       )}
+      <SoloFilter>
+        <ListItemText>
+          Irrigation Dates Filter
+        </ListItemText>
+        <ListItemText
+          display="block"
+          primary={(
+            <Grid item>
+              <Typography variant="body1" display="inline">
+                No
+              </Typography>
+              <Switch
+                checked={irrigationFilterRedux}
+                onChange={handleIrrigationFilter}
+                name="checkedC"
+              />
+              <Typography variant="body1" display="inline">
+                Yes
+              </Typography>
+            </Grid>
+                  )}
+        />
+      </SoloFilter>
       {getFilters()}
     </List>
   ); // filterList
@@ -295,6 +329,7 @@ const CropSidebar = ({
     // FIXME: this function returns a compoennt in useEffect, not sure why doing that
     filtersList();
   }, [sidebarFilters]);
+
   return !loading && (from === 'myCoverCropListStatic') ? (
     <Grid container spacing={3}>
       <Grid item>
