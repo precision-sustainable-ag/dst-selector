@@ -80,12 +80,11 @@ const ToggleOptions = ({ pathname }) => {
             selected={pathname === '/my-cover-crop-list'}
             buttonType="ToggleOptions"
             onClick={setMyCoverCropActivationFlag}
-            data={(
-              <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
-                MY SELECTED CROPS
-              </Typography>
-          )}
-          />
+          >
+            <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
+              MY SELECTED CROPS
+            </Typography>
+          </PSAButton>
         </Badge>
         )}
     </>
