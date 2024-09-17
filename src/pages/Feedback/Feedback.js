@@ -296,8 +296,9 @@ const FeedbackComponent = () => {
             onClick={handleSubmit}
             size="large"
             variant="outlined"
-            data="Submit"
-          />
+          >
+            Submit
+          </PSAButton>
         </Grid>
       </Grid>
       <Snackbar

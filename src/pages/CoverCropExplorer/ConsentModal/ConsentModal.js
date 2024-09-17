@@ -84,15 +84,17 @@ const ConsentModal = ({ modalOpen, setModalOpen }) => {
               <PSAButton
                 variant="outlined"
                 onClick={() => handleModal(true)}
-                data="Accept"
-              />
+              >
+                Accept
+              </PSAButton>
             </Grid>
             <Grid item>
               <PSAButton
                 variant="outlined"
                 onClick={() => handleModal(false)}
-                data="Decline"
-              />
+              >
+                Decline
+              </PSAButton>
             </Grid>
           </Grid>
         </Box>

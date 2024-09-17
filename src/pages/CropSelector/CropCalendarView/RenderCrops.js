@@ -70,31 +70,30 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
 
                     },
                   }}
-                  data={(
-                    <>
-                      { selectedCropIdsRedux.includes(crop.id) && (
-                      <CheckBoxIcon
-                        style={{
-                          position: 'absolute',
-                          right: '7px',
-                          top: '4px',
-                          height: '15px',
-                          zIndex: 1,
-                          backgroundColor: '#5992E6',
+                >
 
-                        }}
-                      />
+                  { selectedCropIdsRedux.includes(crop.id) && (
+                  <CheckBoxIcon
+                    style={{
+                      position: 'absolute',
+                      right: '7px',
+                      top: '4px',
+                      height: '15px',
+                      zIndex: 1,
+                      backgroundColor: '#5992E6',
 
-                      )}
-                      <CropImage
-                        view="calendar"
-                        present
-                        src={crop.thumbnail ? crop.thumbnail : 'https://placehold.it/100x100'}
-                        alt={crop.label}
-                      />
-                    </>
+                    }}
+                  />
+
                   )}
-                />
+                  <CropImage
+                    view="calendar"
+                    present
+                    src={crop.thumbnail ? crop.thumbnail : 'https://placehold.it/100x100'}
+                    alt={crop.label}
+                  />
+
+                </PSAButton>
               ) : (
                 <PSAButton
                   size="small"
@@ -102,8 +101,9 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                     setModalData(crop);
                     setModalOpen(!modalOpen);
                   }}
-                  data={<CropImage view="calendar" present={false} />}
-                />
+                >
+                  <CropImage view="calendar" present={false} />
+                </PSAButton>
               )}
             </Grid>
             <Grid container item md={8} xs={12} alignItems="center">
@@ -120,8 +120,9 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                     setModalData(crop);
                     setModalOpen(!modalOpen);
                   }}
-                  data={flipCoverCropName(crop.label)}
-                />
+                >
+                  {flipCoverCropName(crop.label)}
+                </PSAButton>
               </Grid>
               {crop.attributes.filter((a) => a.label === 'Frost Seed')[0]?.values[0].label === 'Yes' && (
                 <Grid item>
@@ -198,9 +199,10 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                 setSaveHistory,
               );
             }}
-            buttonStyle="LightButton"
-            data={selectedBtns.includes(crop.id) ? <DeleteForever /> : <AddCircleOutline />}
-          />
+            buttonType="LightButton"
+          >
+            {selectedBtns.includes(crop.id) ? <DeleteForever /> : <AddCircleOutline />}
+          </PSAButton>
         </TableCell>
       </TableRow>
     ));

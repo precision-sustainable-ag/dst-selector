@@ -51,7 +51,7 @@ const CoverCropGoals = () => {
               <ListItemText primary="No Goals Selected" />
             </ListItem>
             <ListItem sx={{ paddingLeft: 3 }}>
-              <PSAButton onClick={() => changeProgress()} data="click to edit" />
+              <PSAButton onClick={() => changeProgress()}>click to edit </PSAButton>
             </ListItem>
           </List>
         ) : (

@@ -178,11 +178,11 @@ const HistorySelect = () => {
               </Grid>
 
               <Grid item xs={12} md={3} display="flex" justifyContent="center" alignItems="center">
-                <PSAButton onClick={handleLoadHistory} variant="contained" disabled={value === ''} data="Import" />
+                <PSAButton onClick={handleLoadHistory} variant="contained" disabled={value === ''}>Import</PSAButton>
               </Grid>
 
               <Grid item xs={12} display="flex" justifyContent="center" alignItems="center">
-                <PSAButton onClick={() => setOpen(false)} variant="contained" data="Cancel" />
+                <PSAButton onClick={() => setOpen(false)} variant="contained">Cancel</PSAButton>
               </Grid>
             </Grid>
           </Box>
@@ -190,8 +190,8 @@ const HistorySelect = () => {
       />
 
       <Box sx={{ display: 'flex', justifyContent: 'space-around' }}>
-        <PSAButton onClick={handleAddHistory} variant="contained" data="Create New History" />
-        <PSAButton variant="contained" onClick={handleHistoryImport} data="Import previous history" />
+        <PSAButton onClick={handleAddHistory} variant="contained">Create New History </PSAButton>
+        <PSAButton variant="contained" onClick={handleHistoryImport}>Import previous history</PSAButton>
       </Box>
 
     </>

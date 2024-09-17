@@ -96,20 +96,20 @@ const InformationBar = ({ pathname }) => {
     return (
       <PSAButton
         onClick={() => handleBtnClick(type)}
-        sx={{
+        buttonType="PillButton"
+        style={{
           borderRadius: '200px',
           color: 'black',
           width: '100%',
-          backgroundColor:
-            ((type === 'location' && progressRedux > 0)
-              || (type === 'site' && progressRedux > 1)
-              || (type === 'goals' && progressRedux > 2))
-            && '#e3f2f4',
 
         }}
-        buttonStyle="PillButton"
-        data={getIconInfo(type)}
-      />
+        transparent={!((type === 'location' && progressRedux > 0)
+        || (type === 'site' && progressRedux > 1)
+        || (type === 'goals' && progressRedux > 2))}
+
+      >
+        {getIconInfo(type)}
+      </PSAButton>
     );
   };
 

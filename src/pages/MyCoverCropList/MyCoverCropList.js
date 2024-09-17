@@ -57,8 +57,9 @@ const MyCoverCropList = ({ comparisonView, from }) => {
              onClick={
               from === 'myCoverCropListStatic' ? redirectToExplorer : redirectToSpeciesSelector
             }
-             data="Add Crops"
-           />
+           >
+             Add Crops
+           </PSAButton>
          </Typography>
         ) : comparison ? (
           <Box flexDirection="column" display="flex" height="100%" mt={1}>

@@ -166,17 +166,19 @@ const CropCalendarView = ({
                   selected={!listView}
                   style={{ marginBottom: '7px' }}
                   startIcon={<ListIcon style={{ fontSize: 'larger' }} />}
-                  data="CROP LIST"
-                  buttonStyle="PillButton"
-                />
+                  type="PillButton"
+                >
+                  CROP LIST
+                </PSAButton>
                 <PSAButton
                   onClick={() => setListView(true)}
                   selected={listView}
                   style={{ marginBottom: '7px' }}
                   startIcon={<CalendarToday style={{ fontSize: 'larger' }} />}
-                  data="CROP CALENDAR"
-                  buttonStyle="PillButton"
-                />
+                  type="PillButton"
+                >
+                  CROP CALENDAR
+                </PSAButton>
                 {activeGrowthPeriodRedux.length === 0 && (
                   <>
                     {activeGrowthPeriodRedux.includes('Jan') ? (
@@ -284,10 +286,10 @@ const CropCalendarView = ({
                       <PSAButton
                         startIcon={<AddCircle />}
                         onClick={handleLegendModal}
-                        data={
-                          <Typography variant="body2"> Legend</Typography>
-                      }
-                      />
+                      >
+                        <Typography variant="body2"> Legend</Typography>
+
+                      </PSAButton>
                     </Box>
                   </TableCell>
                 ) : (
@@ -304,14 +306,12 @@ const CropCalendarView = ({
                       textAlign: 'center', color: 'black', textTransform: 'none',
                     }}
                     onClick={() => sortByName()}
-                    data={(
-                      <>
-                        {' '}
-                        Crop Name
-                        {columnSort === 'name' && <StraightIcon className={nameSortFlag ? '' : 'rotate180'} />}
-                      </>
-                    )}
-                  />
+                  >
+                    {' '}
+                    Crop Name
+                    {columnSort === 'name' && <StraightIcon className={nameSortFlag ? '' : 'rotate180'} />}
+
+                  </PSAButton>
                 </TableCell>
                 {selectedGoalsRedux.length > 0
                 && selectedGoalsRedux.map((goal, index) => (
@@ -341,13 +341,11 @@ const CropCalendarView = ({
                           textTransform: 'none',
                           padding: '0px',
                         }}
-                        data={(
-                          <>
-                            {`Goal ${index + 1}`}
-                            {columnSort === `goal${index}` && <StraightIcon style={{ margin: '0px' }} className={currentGoalSortFlag ? '' : 'rotate180'} />}
-                          </>
-                        )}
-                      />
+                      >
+                        {`Goal ${index + 1}`}
+                        {columnSort === `goal${index}` && <StraightIcon style={{ margin: '0px' }} className={currentGoalSortFlag ? '' : 'rotate180'} />}
+
+                      </PSAButton>
 
                     </Tooltip>
                   </TableCell>
@@ -379,13 +377,11 @@ const CropCalendarView = ({
                       textAlign: 'center', color: 'black', textTransform: 'none', padding: '0px',
                     }}
                     onClick={() => sortBySelectedCrops()}
-                    data={(
-                      <>
-                        My List
-                        {columnSort === 'myList' && <StraightIcon style={{ margin: '0px' }} className={myListSortFlag ? '' : 'rotate180'} />}
-                      </>
-                      )}
-                  />
+                  >
+                    My List
+                    {columnSort === 'myList' && <StraightIcon style={{ margin: '0px' }} className={myListSortFlag ? '' : 'rotate180'} />}
+
+                  </PSAButton>
 
                 </TableCell>
               </TableRow>

@@ -170,14 +170,14 @@ const Header = () => {
                 <span>
                   <PSAButton
                     disabled={tab === 'help' && (stateLabelRedux === null)}
-                    data={(
-                      <NavLink to={`/${tab}`}>
-                        <Typography variant="body2" sx={{ color: (tab === 'help' && stateLabelRedux === null) ? 'lightgrey' : 'black', fontWeight: 'bold' }}>
-                          {tab}
-                        </Typography>
-                      </NavLink>
-                  )}
-                  />
+                  >
+                    <NavLink to={`/${tab}`}>
+                      <Typography variant="body2" sx={{ color: (tab === 'help' && stateLabelRedux === null) ? 'lightgrey' : 'black', fontWeight: 'bold' }}>
+                        {tab}
+                      </Typography>
+                    </NavLink>
+
+                  </PSAButton>
                 </span>
               </Tooltip>
             </Grid>
@@ -185,12 +185,12 @@ const Header = () => {
           <Grid item>
             <PSAButton
               onClick={() => window.open(releaseNotesURL)}
-              data={(
-                <Typography variant="body2" sx={{ color: 'black', fontWeight: 'bold' }}>
-                  Release Notes
-                </Typography>
-            )}
-            />
+            >
+              <Typography variant="body2" sx={{ color: 'black', fontWeight: 'bold' }}>
+                Release Notes
+              </Typography>
+
+            </PSAButton>
           </Grid>
           <Grid item>
             <AuthButton
@@ -211,18 +211,18 @@ const Header = () => {
               <PSAButton
                 type="button"
                 onClick={handleClick}
-                data={(
-                  <img
-                    id="logoImage"
-                    style={{
-                      maxWidth: '100%',
-                      height: 'auto',
-                    }}
-                    ref={logoRef}
-                    alt=""
-                  />
-              )}
-              />
+              >
+                <img
+                  id="logoImage"
+                  style={{
+                    maxWidth: '100%',
+                    height: 'auto',
+                  }}
+                  ref={logoRef}
+                  alt=""
+                />
+
+              </PSAButton>
 
             </Box>
           </Grid>

@@ -419,8 +419,9 @@ export const BinaryButton = ({ action }) => (
         action(true);
       }}
       color="secondary"
-      data="Yes"
-    />
+    >
+      Yes
+    </PSAButton>
     <PSAButton
       onClick={() => {
         action(false);
@@ -434,8 +435,9 @@ export const BinaryButton = ({ action }) => (
         action(null);
       }}
       color="primary"
-      data="Cancel"
-    />
+    >
+      Cancel
+    </PSAButton>
   </>
 );
 
@@ -588,7 +590,7 @@ export const sortCrops = (
   }
 };
 
-export const sudoButtonStyle = {
+export const sudotype = {
   fontWeight: '500',
   lineHeight: '1.75',
   letterSpacing: '0.02857em',
@@ -596,7 +598,7 @@ export const sudoButtonStyle = {
   textAlign: 'center',
 };
 
-export const sudoButtonStyleWithPadding = {
+export const sudotypeWithPadding = {
   padding: '6px 8px',
   fontWeight: '500',
   lineHeight: '1.75',

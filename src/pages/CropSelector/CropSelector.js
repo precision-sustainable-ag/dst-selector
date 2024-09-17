@@ -124,8 +124,9 @@ const CropSelector = (props) => {
             title="Toggle Sidebar"
             aria-label="toggle-sidebar"
             onClick={() => setShowSidebar(!showSidebar)}
-            data={!showSidebar ? 'Show Sidebar' : 'Hide Sidebar'}
-          />
+          >
+            {!showSidebar ? 'Show Sidebar' : 'Hide Sidebar'}
+          </PSAButton>
         )}
         {showSidebar && (
           <CropSidebar

@@ -98,21 +98,23 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
                 <Grid item>
                   <PSAButton
                     startIcon={<OpenInNewIcon />}
-                    buttonStyle="ModalLink"
+                    buttonType="ModalLink"
                     onClick={() => {
                       window.open('/data-dictionary', '_blank');
                     }}
-                    data="Terminology Definitions"
-                  />
+                  >
+                    Terminology Definitions
+                  </PSAButton>
                 </Grid>
                 {(printEnabled && councilShorthandRedux === 'NECCC') && (
                   <Grid item>
                     <PSAButton
                       startIcon={<Print />}
-                      buttonStyle="ModalLink"
+                      buttonType="ModalLink"
                       onClick={print}
-                      data="Print"
-                    />
+                    >
+                      Print
+                    </PSAButton>
                   </Grid>
                 )}
               </Grid>

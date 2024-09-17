@@ -47,27 +47,26 @@ const ToggleOptions = ({ pathname }) => {
         exact
         to="/"
         selected={pathname === '/'}
-        buttonStyle="ToggleOptions"
-        data={(
-          <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
-            Get A Recommendation
-          </Typography>
-      )}
+        buttonType="ToggleOptions"
+      >
+        <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
+          Get A Recommendation
+        </Typography>
 
-      />
+      </PSAButton>
       <Tooltip title={(stateLabelRedux === null) ? 'You must select a state before using the Cover Crop Explorer' : ''} enterTouchDelay={0}>
         <span>
           <PSAButton
             onClick={setSpeciesSelectorActivationFlag}
             disabled={stateLabelRedux === null}
             selected={pathname === '/explorer'}
-            buttonStyle="ToggleOptions"
-            data={(
-              <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
-                BROWSE COVER CROPS
-              </Typography>
-          )}
-          />
+            buttonType="ToggleOptions"
+          >
+            <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
+              BROWSE COVER CROPS
+            </Typography>
+
+          </PSAButton>
         </span>
       </Tooltip>
 
@@ -79,7 +78,7 @@ const ToggleOptions = ({ pathname }) => {
         >
           <PSAButton
             selected={pathname === '/my-cover-crop-list'}
-            buttonStyle="ToggleOptions"
+            buttonType="ToggleOptions"
             onClick={setMyCoverCropActivationFlag}
             data={(
               <Typography variant="body2" sx={{ fontWeight: 'bold' }}>

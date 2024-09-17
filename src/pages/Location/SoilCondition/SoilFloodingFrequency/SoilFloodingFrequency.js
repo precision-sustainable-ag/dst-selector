@@ -100,11 +100,12 @@ const SoilFloodingFrequency = ({ floodingOptions }) => {
           ) && (
             <Grid item>
               <PSAButton
-                buttonStyle="ValuesChanged"
+                buttonType="ValuesChanged"
                 onClick={() => {
                   resetFloodingOptions();
                 }}
-                data={isMobile ? (
+              >
+                {isMobile ? (
                   <RestartAltIcon sx={{ color: '#ff961c' }} />
                 ) : (
                   <Typography
@@ -118,7 +119,7 @@ const SoilFloodingFrequency = ({ floodingOptions }) => {
                     Values changed, reset?
                   </Typography>
                 )}
-              />
+              </PSAButton>
             </Grid>
           )}
         </Grid>
