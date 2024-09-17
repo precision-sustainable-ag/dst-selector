@@ -6,7 +6,6 @@
 */
 
 import {
-  Button,
   Fab,
   useScrollTrigger,
   Zoom,
@@ -23,6 +22,7 @@ import CropSidebar from '../CropSidebar/CropSidebar';
 import CropTable from './CropTable/CropTable';
 import { setSidebarWidth } from '../../reduxStore/pageSlice';
 import pirschAnalytics from '../../shared/analytics';
+import PSAButton from '../../components/PSAComponents/PSAButton';
 import useWindowSize from '../../shared/constants';
 
 const ScrollTop = ({ children }) => {
@@ -119,14 +119,14 @@ const CropSelector = (props) => {
     <Grid container spacing={3}>
       <Grid item xl={3} lg={3} md={3} sm={12} xs={12} ref={sidebarRef}>
         {(size.width < 1680) && (
-          <Button
+          <PSAButton
             startIcon={!showSidebar ? <ArrowForward /> : <ArrowBack />}
             title="Toggle Sidebar"
             aria-label="toggle-sidebar"
             onClick={() => setShowSidebar(!showSidebar)}
           >
             {!showSidebar ? 'Show Sidebar' : 'Hide Sidebar'}
-          </Button>
+          </PSAButton>
         )}
         {showSidebar && (
           <CropSidebar
