@@ -36,7 +36,7 @@ import SidebarFilter from './SidebarFilter/SidebarFilter';
 import CoverCropGoals from './CoverCropGoals/CoverCropGoals';
 import PlantHardinessZone from './PlantHardinessZone/PlantHardinessZone';
 import Legend from '../../components/Legend/Legend';
-import { clearFilters, setIrrigationFilter } from '../../reduxStore/filterSlice';
+import { clearFilters, setSoilDrainageFilter, setIrrigationFilter } from '../../reduxStore/filterSlice';
 import { updateCropData, updateActiveCropIds } from '../../reduxStore/cropSlice';
 import { setAjaxInProgress, regionToggleHandler } from '../../reduxStore/sharedSlice';
 import PSAButton from '../../shared/PSAButton';
@@ -61,6 +61,7 @@ const CropSidebar = ({
   const speciesSelectorActivationFlagRedux = useSelector((stateRedux) => stateRedux.sharedData.speciesSelectorActivationFlag);
   const comparisonKeysRedux = useSelector((stateRedux) => stateRedux.sharedData.comparisonKeys);
   const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
+  const soilDrainageFilterRedux = useSelector((stateRedux) => stateRedux.filterData.filters.soilDrainageFilter);
   const irrigationFilterRedux = useSelector((stateRedux) => stateRedux.filterData.filters.irrigationFilter);
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
@@ -101,6 +102,10 @@ const CropSidebar = ({
       && !comparisonView);
     setShowFilters(value);
   }, [speciesSelectorActivationFlagRedux, from, comparisonView]);
+
+  const handleSoilDrainageFilter = () => {
+    dispatchRedux(setSoilDrainageFilter(!soilDrainageFilterRedux));
+  };
 
   const handleIrrigationFilter = () => {
     dispatchRedux(setIrrigationFilter(!irrigationFilterRedux));
@@ -284,8 +289,12 @@ const CropSidebar = ({
 
   const filtersList = () => (
     <List component="div" disablePadding className="cropFilters">
-      {filtersSelected && (
-        <ListItem>
+      <div style={{ height: '53px' }}>
+        {filtersSelected && (
+        <ListItem style={{
+          textAlign: 'center',
+        }}
+        >
           <ListItemText
             primary={(
               <Button
@@ -297,7 +306,31 @@ const CropSidebar = ({
             )}
           />
         </ListItem>
-      )}
+        )}
+      </div>
+      <SoloFilter>
+        <ListItemText>
+          Soil Drainage Filter
+        </ListItemText>
+        <ListItemText
+          display="block"
+          primary={(
+            <Grid item>
+              <Typography variant="body1" display="inline">
+                No
+              </Typography>
+              <Switch
+                checked={soilDrainageFilterRedux}
+                onChange={handleSoilDrainageFilter}
+                name="soilDrainageFilter"
+              />
+              <Typography variant="body1" display="inline">
+                Yes
+              </Typography>
+            </Grid>
+                  )}
+        />
+      </SoloFilter>
       <SoloFilter>
         <ListItemText>
           Irrigation Dates Filter
