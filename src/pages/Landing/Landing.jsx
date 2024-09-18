@@ -25,7 +25,7 @@ import { updateLocation } from '../../reduxStore/addressSlice';
 import { historyState, setHistoryDialogState, updateField } from '../../reduxStore/userSlice';
 import HistorySelect from '../../components/HistorySelect/HistorySelect';
 import pirschAnalytics from '../../shared/analytics';
-import { mapBoxToken } from '../../shared/keys';
+import { mapboxToken } from '../../shared/keys';
 
 const Landing = () => {
   const dispatchRedux = useDispatch();
@@ -340,7 +340,7 @@ const Landing = () => {
             initLon={-90}
             initLat={41}
             initStartZoom={2.5}
-            mapBoxToken={mapBoxToken}
+            mapboxToken={mapboxToken}
           />
         </Box>
       </Grid>
