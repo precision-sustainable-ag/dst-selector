@@ -36,7 +36,6 @@
     "sass-mediaqueries": "^1.6.1",
     "shared-react-components": "github:precision-sustainable-ag/shared-react-components",
     "styled-components": "^5.3.6",
-    "worker-loader": "^3.0.8",
     "xlsx": "^0.18.5"
   },
   "type": "module",

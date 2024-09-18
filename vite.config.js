@@ -9,6 +9,9 @@ export default defineConfig(() => ({
   plugins: [
     react(), eslint(),
   ],
+  server: {
+    open: true,
+  },
   // // setup for Kubernetes
   // server: {
   //   open: true,
