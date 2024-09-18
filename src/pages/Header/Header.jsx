@@ -12,7 +12,7 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
 import { useAuth0 } from '@auth0/auth0-react';
 import {
-  Grid, Box, Button, Typography, Tooltip,
+  Grid, Box, Typography, Tooltip,
 } from '@mui/material';
 import InformationBar from './InformationBar/InformationBar';
 import ToggleOptions from './ToggleOptions/ToggleOptions';
@@ -28,6 +28,7 @@ import { loadHistory } from '../../shared/api';
 import HistoryDialog from '../../components/HistoryDialog/HistoryDialog';
 import SaveUserHistory from './SaveUserHistory/SaveUserHistory';
 import { releaseNotesURL } from '../../shared/keys';
+import PSAButton from '../../components/PSAComponents/PSAButton';
 import useWindowSize from '../../shared/constants';
 // import logoImage from '../../../public/images/PSAlogo-text.png';
 
@@ -167,7 +168,7 @@ const Header = () => {
             <Grid item key={index}>
               <Tooltip title={tab === 'help' && (stateLabelRedux === null) ? 'You must select a state before viewing the help page' : ''} enterTouchDelay={0}>
                 <span>
-                  <Button
+                  <PSAButton
                     disabled={tab === 'help' && (stateLabelRedux === null)}
                   >
                     <NavLink to={`/${tab}`}>
@@ -175,17 +176,21 @@ const Header = () => {
                         {tab}
                       </Typography>
                     </NavLink>
-                  </Button>
+
+                  </PSAButton>
                 </span>
               </Tooltip>
             </Grid>
           ))}
           <Grid item>
-            <Button onClick={() => window.open(releaseNotesURL)}>
+            <PSAButton
+              onClick={() => window.open(releaseNotesURL)}
+            >
               <Typography variant="body2" sx={{ color: 'black', fontWeight: 'bold' }}>
                 Release Notes
               </Typography>
-            </Button>
+
+            </PSAButton>
           </Grid>
           <Grid item>
             <AuthButton
@@ -203,17 +208,22 @@ const Header = () => {
                 overflow: 'hidden',
               }}
             >
-              <Button type="button" onClick={handleClick}>
+              <PSAButton
+                type="button"
+                onClick={handleClick}
+              >
                 <img
                   id="logoImage"
                   style={{
                     maxWidth: '100%',
-                    maxHeight: '100%',
+                    height: 'auto',
                   }}
                   ref={logoRef}
                   alt=""
                 />
-              </Button>
+
+              </PSAButton>
+
             </Box>
           </Grid>
         </Grid>

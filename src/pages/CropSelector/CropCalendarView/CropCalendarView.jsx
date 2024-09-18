@@ -5,7 +5,6 @@
 */
 
 import {
-  Button,
   CircularProgress,
   Table,
   TableBody,
@@ -34,7 +33,7 @@ import {
 import '../../../styles/cropCalendarViewComponent.scss';
 import RenderCrops from './RenderCrops';
 import CropDetailsModal from '../../../components/CropDetailsModal/CropDetailsModal';
-import PSAButton from '../../../shared/PSAButton';
+import PSAButton from '../../../components/PSAComponents/PSAButton';
 import { setTableWidth } from '../../../reduxStore/pageSlice';
 
 const growthIcon = {
@@ -167,15 +166,19 @@ const CropCalendarView = ({
                   selected={!listView}
                   style={{ marginBottom: '7px' }}
                   startIcon={<ListIcon style={{ fontSize: 'larger' }} />}
-                  data="CROP LIST"
-                />
+                  buttonType="PillButton"
+                >
+                  CROP LIST
+                </PSAButton>
                 <PSAButton
                   onClick={() => setListView(true)}
                   selected={listView}
                   style={{ marginBottom: '7px' }}
                   startIcon={<CalendarToday style={{ fontSize: 'larger' }} />}
-                  data="CROP CALENDAR"
-                />
+                  buttonType="PillButton"
+                >
+                  CROP CALENDAR
+                </PSAButton>
                 {activeGrowthPeriodRedux.length === 0 && (
                   <>
                     {activeGrowthPeriodRedux.includes('Jan') ? (
@@ -280,9 +283,13 @@ const CropCalendarView = ({
                     }}
                   >
                     <Box>
-                      <Button startIcon={<AddCircle />} onClick={handleLegendModal}>
+                      <PSAButton
+                        startIcon={<AddCircle />}
+                        onClick={handleLegendModal}
+                      >
                         <Typography variant="body2"> Legend</Typography>
-                      </Button>
+
+                      </PSAButton>
                     </Box>
                   </TableCell>
                 ) : (
@@ -294,7 +301,7 @@ const CropCalendarView = ({
                   borderRight: '5px solid white', backgroundColor: columnSort === 'name' ? '#49a8ab' : '#abd08f', padding: 0, width: '250px', textAlign: 'center',
                 }}
                 >
-                  <Button
+                  <PSAButton
                     sx={{
                       textAlign: 'center', color: 'black', textTransform: 'none',
                     }}
@@ -303,7 +310,8 @@ const CropCalendarView = ({
                     {' '}
                     Crop Name
                     {columnSort === 'name' && <StraightIcon className={nameSortFlag ? '' : 'rotate180'} />}
-                  </Button>
+
+                  </PSAButton>
                 </TableCell>
                 {selectedGoalsRedux.length > 0
                 && selectedGoalsRedux.map((goal, index) => (
@@ -326,7 +334,7 @@ const CropCalendarView = ({
                         <p>{goal}</p>
                           )}
                     >
-                      <Button
+                      <PSAButton
                         onClick={() => sortByGoal(goal, index, `goal${index}`)}
                         variant="body1"
                         sx={{
@@ -336,7 +344,8 @@ const CropCalendarView = ({
                       >
                         {`Goal ${index + 1}`}
                         {columnSort === `goal${index}` && <StraightIcon style={{ margin: '0px' }} className={currentGoalSortFlag ? '' : 'rotate180'} />}
-                      </Button>
+
+                      </PSAButton>
 
                     </Tooltip>
                   </TableCell>
@@ -363,7 +372,7 @@ const CropCalendarView = ({
                   borderLeft: '5px solid white', backgroundColor: columnSort === 'myList' ? '#49a8ab' : '#abd08f', padding: 0, width: '75px', textAlign: 'center',
                 }}
                 >
-                  <Button
+                  <PSAButton
                     sx={{
                       textAlign: 'center', color: 'black', textTransform: 'none', padding: '0px',
                     }}
@@ -371,7 +380,8 @@ const CropCalendarView = ({
                   >
                     My List
                     {columnSort === 'myList' && <StraightIcon style={{ margin: '0px' }} className={myListSortFlag ? '' : 'rotate180'} />}
-                  </Button>
+
+                  </PSAButton>
 
                 </TableCell>
               </TableRow>

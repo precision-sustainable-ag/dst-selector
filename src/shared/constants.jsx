@@ -4,15 +4,15 @@
 /* eslint-disable no-nested-ternary */
 import React, { useEffect, useState } from 'react';
 import {
-  Button, Grid, Typography, Tooltip, Box,
+  Grid, Typography, Tooltip, Box,
 } from '@mui/material';
-import styled from 'styled-components';
 import moment from 'moment';
 import { Info, MonetizationOn } from '@mui/icons-material';
 import { MapboxApiKey } from './keys';
 import arrayEquals from './functions';
 import { historyState, setHistoryState } from '../reduxStore/userSlice';
 import pirschAnalytics from './analytics';
+import PSAButton from '../components/PSAComponents/PSAButton';
 
 export const ReferenceTooltip = ({
   url, source, type, content, hasLink, title,
@@ -232,19 +232,6 @@ export const CustomStyles = () => ({
   defaultButtonPadding: '10px 20px 10px 20px',
 });
 
-export const LightButton = styled(Button)({
-  backgroundColor: CustomStyles().secondaryProgressBtnBorderColor,
-  borderRadius: CustomStyles().fullyRoundedRadius,
-  color: '#000',
-  padding: CustomStyles().defaultButtonPadding,
-  borderColor: CustomStyles().secondaryProgressBtnBorderColor,
-  '&:hover': {
-    borderColor: CustomStyles().primaryProgressBtnBorderColor,
-    backgroundColor: CustomStyles().primaryProgressBtnColor,
-    color: '#000',
-  },
-});
-
 export const getRating = (rating, councilShorthand) => {
   const ratingInt = parseInt(rating, 10);
 
@@ -427,23 +414,23 @@ export const getActiveCropMonths = (crop = {}) => {
 
 export const BinaryButton = ({ action }) => (
   <>
-    <Button
+    <PSAButton
       onClick={() => {
         action(true);
       }}
       color="secondary"
     >
       Yes
-    </Button>
-    <Button
+    </PSAButton>
+    <PSAButton
       onClick={() => {
         action(false);
       }}
       color="secondary"
     >
       No
-    </Button>
-    <Button
+    </PSAButton>
+    <PSAButton
       autoFocus
       onClick={() => {
         action(null);
@@ -451,7 +438,7 @@ export const BinaryButton = ({ action }) => (
       color="primary"
     >
       Cancel
-    </Button>
+    </PSAButton>
   </>
 );
 
@@ -604,7 +591,7 @@ export const sortCrops = (
   }
 };
 
-export const sudoButtonStyle = {
+export const sudotype = {
   fontWeight: '500',
   lineHeight: '1.75',
   letterSpacing: '0.02857em',
@@ -612,7 +599,7 @@ export const sudoButtonStyle = {
   textAlign: 'center',
 };
 
-export const sudoButtonStyleWithPadding = {
+export const sudotypeWithPadding = {
   padding: '6px 8px',
   fontWeight: '500',
   lineHeight: '1.75',

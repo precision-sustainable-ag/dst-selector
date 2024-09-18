@@ -6,7 +6,6 @@
 
 import {
   Box,
-  Button,
   Collapse,
   List,
   ListItem,
@@ -36,10 +35,10 @@ import SidebarFilter from './SidebarFilter/SidebarFilter';
 import CoverCropGoals from './CoverCropGoals/CoverCropGoals';
 import PlantHardinessZone from './PlantHardinessZone/PlantHardinessZone';
 import Legend from '../../components/Legend/Legend';
-import { clearFilters, setIrrigationFilter } from '../../reduxStore/filterSlice';
+import { clearFilters, setSoilDrainageFilter, setIrrigationFilter } from '../../reduxStore/filterSlice';
 import { updateCropData, updateActiveCropIds } from '../../reduxStore/cropSlice';
 import { setAjaxInProgress, regionToggleHandler } from '../../reduxStore/sharedSlice';
-import PSAButton from '../../shared/PSAButton';
+import PSAButton from '../../components/PSAComponents/PSAButton';
 
 const CropSidebar = ({
   comparisonView,
@@ -61,6 +60,7 @@ const CropSidebar = ({
   const speciesSelectorActivationFlagRedux = useSelector((stateRedux) => stateRedux.sharedData.speciesSelectorActivationFlag);
   const comparisonKeysRedux = useSelector((stateRedux) => stateRedux.sharedData.comparisonKeys);
   const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
+  const soilDrainageFilterRedux = useSelector((stateRedux) => stateRedux.filterData.filters.soilDrainageFilter);
   const irrigationFilterRedux = useSelector((stateRedux) => stateRedux.filterData.filters.irrigationFilter);
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
@@ -101,6 +101,10 @@ const CropSidebar = ({
       && !comparisonView);
     setShowFilters(value);
   }, [speciesSelectorActivationFlagRedux, from, comparisonView]);
+
+  const handleSoilDrainageFilter = () => {
+    dispatchRedux(setSoilDrainageFilter(!soilDrainageFilterRedux));
+  };
 
   const handleIrrigationFilter = () => {
     dispatchRedux(setIrrigationFilter(!irrigationFilterRedux));
@@ -284,20 +288,48 @@ const CropSidebar = ({
 
   const filtersList = () => (
     <List component="div" disablePadding className="cropFilters">
-      {filtersSelected && (
-        <ListItem>
+      <div style={{ height: '53px' }}>
+        {filtersSelected && (
+        <ListItem style={{
+          textAlign: 'center',
+        }}
+        >
           <ListItemText
             primary={(
-              <Button
+              <PSAButton
                 onClick={resetAllFilters}
                 style={{ cursor: 'pointer', color: 'red' }}
               >
                 Clear Filters
-              </Button>
+              </PSAButton>
             )}
           />
         </ListItem>
-      )}
+        )}
+      </div>
+      <SoloFilter>
+        <ListItemText>
+          Soil Drainage Filter
+        </ListItemText>
+        <ListItemText
+          display="block"
+          primary={(
+            <Grid item>
+              <Typography variant="body1" display="inline">
+                No
+              </Typography>
+              <Switch
+                checked={soilDrainageFilterRedux}
+                onChange={handleSoilDrainageFilter}
+                name="soilDrainageFilter"
+              />
+              <Typography variant="body1" display="inline">
+                Yes
+              </Typography>
+            </Grid>
+                  )}
+        />
+      </SoloFilter>
       <SoloFilter>
         <ListItemText>
           Irrigation Dates Filter
@@ -337,14 +369,18 @@ const CropSidebar = ({
           onClick={() => setComparisonView(false)}
           selected={!comparisonView}
           startIcon={<ListIcon style={{ fontSize: 'larger' }} />}
-          data="CROP LIST"
-        />
+          buttonType="PillButton"
+        >
+          CROP LIST
+        </PSAButton>
         <PSAButton
           onClick={() => setComparisonView(true)}
           selected={comparisonView}
           startIcon={<Compare style={{ fontSize: 'larger' }} />}
-          data="COMPARISON VIEW"
-        />
+          buttonType="PillButton"
+        >
+          COMPARISON VIEW
+        </PSAButton>
         <ComparisonBar
           filterData={sidebarFilters}
           goals={selectedGoalsRedux?.length > 0 ? selectedGoalsRedux : []}

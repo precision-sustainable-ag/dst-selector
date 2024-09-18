@@ -10,7 +10,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { reset } from '../reduxStore/store';
 import { updateProgress, setMyCoverCropReset } from '../reduxStore/sharedSlice';
-import PSAButton from './PSAButton';
+import PSAButton from '../components/PSAComponents/PSAButton';
 
 const ProgressButtonsInner = ({
   isDisabledBack, isDisabledNext, isDisabledRefresh, toolTip,
@@ -46,8 +46,10 @@ const ProgressButtonsInner = ({
         }}
         onClick={() => changeProgress('decrement')}
         disabled={isDisabledBack}
-        data="BACK"
-      />
+        buttonType="PillButton"
+      >
+        BACK
+      </PSAButton>
       {toolTip && isDisabledNext ? (
         <Tooltip
           enterTouchDelay={0}
@@ -64,8 +66,10 @@ const ProgressButtonsInner = ({
               }}
               onClick={() => changeProgress('increment')}
               disabled={isDisabledNext || progressRedux === 4}
-              data="Next"
-            />
+              buttonType="PillButton"
+            >
+              Next
+            </PSAButton>
 
           </span>
         </Tooltip>
@@ -79,8 +83,10 @@ const ProgressButtonsInner = ({
             }}
             onClick={() => (progressRedux === 4 ? setMyCoverCropActivationFlag() : changeProgress('increment'))}
             disabled={isDisabledNext || (progressRedux === 4 && selectedCropIdsRedux.length === 0)}
-            data={progressRedux === 4 ? 'MY SELECTED CROPS' : 'NEXT'}
-          />
+            buttonType="PillButton"
+          >
+            {progressRedux === 4 ? 'MY SELECTED CROPS' : 'NEXT'}
+          </PSAButton>
         </Badge>
       )}
 
@@ -98,9 +104,11 @@ const ProgressButtonsInner = ({
           }
         }}
         disabled={isDisabledRefresh}
-        data="Restart"
         startIcon={<Refresh />}
-      />
+        buttonType="PillButton"
+      >
+        Restart
+      </PSAButton>
     </Stack>
   );
 };
