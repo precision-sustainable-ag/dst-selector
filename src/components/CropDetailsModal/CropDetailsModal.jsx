@@ -3,7 +3,7 @@
 */
 
 import {
-  Button, Box, Grid, Typography,
+  Box, Grid, Typography,
 } from '@mui/material';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { Close, Print } from '@mui/icons-material';
@@ -12,7 +12,8 @@ import { useSelector } from 'react-redux';
 import InformationSheetContent from '../../pages/InformationSheetContent/InformationSheetContent';
 import { callCoverCropApi } from '../../shared/constants';
 import pirschAnalytics from '../../shared/analytics';
-import PSAModal from '../../shared/PSAModal';
+import PSAModal from '../PSAComponents/PSAModal';
+import PSAButton from '../PSAComponents/PSAButton';
 
 const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
   // redux vars
@@ -95,43 +96,35 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
                   </Typography>
                 </Grid>
                 <Grid item>
-                  <Button
+                  <PSAButton
                     startIcon={<OpenInNewIcon />}
-                    style={{
-                      color: 'white',
-                      textTransform: 'none',
-                      marginLeft: '2em',
-                      textDecoration: 'underline',
-                    }}
+                    buttonType="ModalLink"
                     onClick={() => {
                       window.open('/data-dictionary', '_blank');
                     }}
                   >
                     Terminology Definitions
-                  </Button>
+                  </PSAButton>
                 </Grid>
                 {(printEnabled && councilShorthandRedux === 'NECCC') && (
                   <Grid item>
-                    <Button
+                    <PSAButton
                       startIcon={<Print />}
-                      style={{
-                        color: 'white',
-                        textTransform: 'none',
-                        marginLeft: '2em',
-                        textDecoration: 'underline',
-                      }}
+                      buttonType="ModalLink"
                       onClick={print}
                     >
                       Print
-                    </Button>
+                    </PSAButton>
                   </Grid>
                 )}
               </Grid>
 
               <Grid item xs={1}>
-                <Button style={{ color: 'white', float: 'right', paddingTop: '13px' }} onClick={handleModalClose}>
-                  <Close />
-                </Button>
+                <PSAButton
+                  style={{ color: 'white', float: 'right', paddingTop: '13px' }}
+                  onClick={handleModalClose}
+                  startIcon={<Close />}
+                />
               </Grid>
             </Grid>
 

@@ -1,10 +1,11 @@
 import {
-  Badge, Button, Tooltip, Typography,
+  Badge, Tooltip, Typography,
 } from '@mui/material';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useHistory } from 'react-router-dom';
 import { activateMyCoverCropListTile, activateSpeicesSelectorTile, setMyCoverCropReset } from '../../../reduxStore/sharedSlice';
+import PSAButton from '../../../components/PSAComponents/PSAButton';
 
 const ToggleOptions = ({ pathname }) => {
   const dispatchRedux = useDispatch();
@@ -40,41 +41,32 @@ const ToggleOptions = ({ pathname }) => {
 
   return (
     <>
-      <Button
-        size="large"
+      <PSAButton
         component={NavLink}
         onClick={() => openMyCoverCropReset('selector')}
         exact
         to="/"
-        sx={{
-          backgroundColor: (pathname === '/') ? '#598444' : 'white',
-          color: (pathname === '/') ? 'white' : '#8abc62',
-          border: '10px',
-          '&:hover': { backgroundColor: (pathname === '/') ? '#598444' : 'white', color: (pathname === '/') ? 'white' : '#8abc62' },
-        }}
+        selected={pathname === '/'}
+        buttonType="ToggleOptions"
       >
         <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
           Get A Recommendation
         </Typography>
 
-      </Button>
+      </PSAButton>
       <Tooltip title={(stateLabelRedux === null) ? 'You must select a state before using the Cover Crop Explorer' : ''} enterTouchDelay={0}>
         <span>
-          <Button
+          <PSAButton
             onClick={setSpeciesSelectorActivationFlag}
-            size="large"
             disabled={stateLabelRedux === null}
-            sx={{
-              backgroundColor: (pathname === '/explorer') ? '#598444' : 'white',
-              color: (pathname === '/explorer') ? 'white' : '#8abc62',
-              '&:hover': { backgroundColor: (pathname === '/explorer') ? '#598444' : 'white' },
-            }}
+            selected={pathname === '/explorer'}
+            buttonType="ToggleOptions"
           >
-
             <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
               BROWSE COVER CROPS
             </Typography>
-          </Button>
+
+          </PSAButton>
         </span>
       </Tooltip>
 
@@ -84,21 +76,15 @@ const ToggleOptions = ({ pathname }) => {
           badgeContent={selectedCropIdsRedux.length}
           color="error"
         >
-          <Button
-            sx={{
-              backgroundColor: (pathname === '/my-cover-crop-list') ? '#598444' : 'white',
-              color: (pathname === '/my-cover-crop-list') ? 'white' : '#8abc62',
-              borderBottomLeftRadius: '0px',
-              borderBottomRightRadius: '0px',
-              '&:hover': { backgroundColor: (pathname === '/my-cover-crop-list') ? '#598444' : 'white' },
-            }}
-            size="large"
+          <PSAButton
+            selected={pathname === '/my-cover-crop-list'}
+            buttonType="ToggleOptions"
             onClick={setMyCoverCropActivationFlag}
           >
             <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
               MY SELECTED CROPS
             </Typography>
-          </Button>
+          </PSAButton>
         </Badge>
         )}
     </>

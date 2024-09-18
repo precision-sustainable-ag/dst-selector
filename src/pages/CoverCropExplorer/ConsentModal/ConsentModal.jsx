@@ -1,10 +1,11 @@
 import {
-  Box, Typography, Button, Grid,
+  Box, Typography, Grid,
 } from '@mui/material';
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { updateConsent } from '../../../reduxStore/userSlice';
-import PSAModal from '../../../shared/PSAModal';
+import PSAModal from '../../../components/PSAComponents/PSAModal';
+import PSAButton from '../../../components/PSAComponents/PSAButton';
 
 const localStorageKey = 'consent';
 
@@ -80,14 +81,20 @@ const ConsentModal = ({ modalOpen, setModalOpen }) => {
           </Typography>
           <Grid container spacing={1}>
             <Grid item>
-              <Button variant="outlined" onClick={() => handleModal(true)}>
+              <PSAButton
+                variant="outlined"
+                onClick={() => handleModal(true)}
+              >
                 Accept
-              </Button>
+              </PSAButton>
             </Grid>
             <Grid item>
-              <Button variant="outlined" onClick={() => handleModal(false)}>
+              <PSAButton
+                variant="outlined"
+                onClick={() => handleModal(false)}
+              >
                 Decline
-              </Button>
+              </PSAButton>
             </Grid>
           </Grid>
         </Box>

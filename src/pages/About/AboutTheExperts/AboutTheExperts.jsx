@@ -8,10 +8,11 @@
 */
 
 import {
-  Box, Button, Typography,
+  Box, Typography,
 } from '@mui/material';
 import React, { useState } from 'react';
 import { getExpertsData } from '../../../shared/constants';
+import PSAButton from '../../../components/PSAComponents/PSAButton';
 
 const AboutTheExperts = () => {
   const [value, setValue] = useState(0);
@@ -32,7 +33,7 @@ const AboutTheExperts = () => {
   return (
     <Box sx={{ border: 0.5, borderColor: 'grey.300' }} ml={2} mr={2} mt={5}>
       {expertGroups.map((group) => (
-        <Button
+        <PSAButton
           key={group.id}
           size="Small"
           sx={{
@@ -46,7 +47,7 @@ const AboutTheExperts = () => {
           variant="contained"
         >
           {group.menuOption}
-        </Button>
+        </PSAButton>
 
       ))}
       <Typography style={{ paddingTop: '15px' }} variant="body1" align="left">

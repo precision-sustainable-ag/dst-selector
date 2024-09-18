@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  Button, TableCell, TableRow, Grid, Tooltip,
+  TableCell, TableRow, Grid, Tooltip,
   Box,
 } from '@mui/material';
 import {
@@ -10,7 +10,6 @@ import {
 import {
   CropImage,
   flipCoverCropName,
-  LightButton,
   // trimString,
   getRating,
   addCropToBasket,
@@ -21,6 +20,7 @@ import '../../../styles/cropCalendarViewComponent.scss';
 import { updateSelectedCropIds } from '../../../reduxStore/cropSlice';
 import { myCropListLocation, snackHandler } from '../../../reduxStore/sharedSlice';
 import { setSaveHistory } from '../../../reduxStore/userSlice';
+import PSAButton from '../../../components/PSAComponents/PSAButton';
 
 const CheckBoxIcon = ({ style }) => (
   <Box sx={style}>
@@ -57,7 +57,7 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
           <Grid container>
             <Grid item md={4} xs={12}>
               {crop ? (
-                <Button
+                <PSAButton
                   size="small"
                   onClick={() => {
                     setModalData(crop);
@@ -71,6 +71,7 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                     },
                   }}
                 >
+
                   { selectedCropIdsRedux.includes(crop.id) && (
                   <CheckBoxIcon
                     style={{
@@ -83,6 +84,7 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
 
                     }}
                   />
+
                   )}
                   <CropImage
                     view="calendar"
@@ -90,9 +92,10 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                     src={crop.thumbnail ? crop.thumbnail : 'https://placehold.it/100x100'}
                     alt={crop.label}
                   />
-                </Button>
+
+                </PSAButton>
               ) : (
-                <Button
+                <PSAButton
                   size="small"
                   onClick={() => {
                     setModalData(crop);
@@ -100,12 +103,12 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                   }}
                 >
                   <CropImage view="calendar" present={false} />
-                </Button>
+                </PSAButton>
               )}
             </Grid>
             <Grid container item md={8} xs={12} alignItems="center">
               <Grid item>
-                <Button
+                <PSAButton
                   size="small"
                   variant="text"
                   sx={{
@@ -119,7 +122,7 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                   }}
                 >
                   {flipCoverCropName(crop.label)}
-                </Button>
+                </PSAButton>
               </Grid>
               {crop.attributes.filter((a) => a.label === 'Frost Seed')[0]?.values[0].label === 'Yes' && (
                 <Grid item>
@@ -176,7 +179,7 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
           }}
         >
           {' '}
-          <LightButton
+          <PSAButton
             id={`cartBtn${index}`}
             style={{
               backgroundColor: selectedCropIdsRedux.includes(crop.id) ? '#EAEAEA' : 'white',
@@ -196,9 +199,10 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                 setSaveHistory,
               );
             }}
+            buttonType="LightButton"
           >
             {selectedBtns.includes(crop.id) ? <DeleteForever /> : <AddCircleOutline />}
-          </LightButton>
+          </PSAButton>
         </TableCell>
       </TableRow>
     ));
