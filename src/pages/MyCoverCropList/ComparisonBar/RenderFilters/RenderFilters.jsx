@@ -77,7 +77,7 @@ const RenderFilters = ({
             onClick={() => toggleSidebarFilterItems(index)}
           >
             <ListItemText
-              primary={<Typography variant="body2">{filter.name.toUpperCase()}</Typography>}
+              primary={<Typography variant="body2" data-cy={`${filter.name.toUpperCase()}`}>{filter.name.toUpperCase()}</Typography>}
             />
             {filterValues[index].open
               ? <ExpandLess data-cy={`${filter.name.toUpperCase()}-expandless-icon`} />
