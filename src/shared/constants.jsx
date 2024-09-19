@@ -8,7 +8,7 @@ import {
 } from '@mui/material';
 import moment from 'moment';
 import { Info, MonetizationOn } from '@mui/icons-material';
-import { MapboxApiKey } from './keys';
+import { mapboxToken } from './keys';
 import arrayEquals from './functions';
 import { historyState, setHistoryState } from '../reduxStore/userSlice';
 import pirschAnalytics from './analytics';
@@ -697,7 +697,7 @@ export const getLegendDataBasedOnCouncil = (councilShorthand = '') => {
 };
 
 export const reverseGEO = async (lat, lng) => {
-  const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${lng},${lat}.json?access_token=${MapboxApiKey}`;
+  const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${lng},${lat}.json?access_token=${mapboxToken}`;
   let data = await fetch(url);
   data = data.json();
   return data;

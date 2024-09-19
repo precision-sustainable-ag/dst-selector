@@ -8,7 +8,6 @@ const getEnv = (key) => {
   return '';
 };
 
-export const MapboxApiKey = getEnv('VITE_API_MAPBOX_API_KEY');
 export const auth0Domain = getEnv('VITE_API_AUTH0_DOMAIN');
 export const auth0ClientId = getEnv('VITE_API_AUTH0_CLIENT_ID');
 export const auth0Audience = getEnv('VITE_API_AUTH0_AUDIENCE');
