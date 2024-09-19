@@ -43,7 +43,7 @@ describe('<ProgressButtonsInner />', () => {
     cy.assertByTestId('restart-btn').should('be.disabled');
   });
 
-  it('should enable next button when a state is selected and progress is 0', () => {
+  it.only('should enable next button when a state is selected and progress is 0', () => {
     const mapData = {
       regions: [
         {

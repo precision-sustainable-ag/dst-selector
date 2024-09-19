@@ -16,6 +16,7 @@
     "@psa/dst.ui.map": "^0.0.61",
     "@turf/area": "^6.5.0",
     "@turf/centroid": "^6.5.0",
+    "cypress": "^13.13.0",
     "dayjs": "^1.11.8",
     "mapbox-gl": "^2.10.0",
     "mdbreact": "^4.24.0",
@@ -36,14 +37,13 @@
     "sass-mediaqueries": "^1.6.1",
     "shared-react-components": "github:precision-sustainable-ag/shared-react-components",
     "styled-components": "^5.3.6",
-    "worker-loader": "^3.0.8",
-    "cypress": "^13.13.0"
+    "worker-loader": "^3.0.8"
   },
   "type": "module",
   "scripts": {
     "cypress:e2e:dev": "npx cypress run --config-file dev.config.js",
     "cypress:comp:dev": "npx cypress run --component --config-file=dev.config.js",
-    "cypress:cli": "npx cypress open --config-file=dev.config.js",
+    "cy:open": "npx cypress open cross-env NODE_OPTIONS=--max_old_space_size=8192 webpack --config-file dev.cypress.config.mjs",
     "e2e:chrome": "npx cypress run --e2e --browser chrome",
     "dev:e2e:chrome": "npx cypress run --e2e --browser chrome --config-file dev.cypress.config.mjs",
     "component:chrome": "npx cypress run --component --browser chrome",
@@ -72,8 +72,10 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-export-default-from": "^7.18.10",
+    "@cypress/code-coverage": "^3.12.45",
     "@types/react-leaflet": "^2.8.2",
     "@vitejs/plugin-react": "^4.3.1",
+    "dotenv": "^16.4.5",
     "eslint": "^8.23.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-plugin-import": "^2.26.0",
@@ -88,5 +90,8 @@
     "vite-plugin-svgr": "^4.2.0",
     "vite-tsconfig-paths": "^5.0.1",
     "webpack": "^5.74.0"
+  },
+  "optionalDependencies": {
+    "@rollup/rollup-linux-x64-gnu": "4.9.5"
   }
 }
