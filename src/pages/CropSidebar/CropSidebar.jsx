@@ -378,6 +378,7 @@ const CropSidebar = ({
           selected={comparisonView}
           startIcon={<Compare style={{ fontSize: 'larger' }} />}
           buttonType="PillButton"
+          data-cy="comparison-view-btn"
         >
           COMPARISON VIEW
         </PSAButton>

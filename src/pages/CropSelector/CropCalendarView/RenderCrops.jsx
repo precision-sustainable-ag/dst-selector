@@ -52,6 +52,7 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
           opacity: hasGoalRatingTwoOrLess(selectedGoalsRedux, crop) && '0.3',
           backgroundColor: selectedCropIdsRedux.includes(crop.id) && '#EAEAEA',
         }}
+        data-cy={`crop-row-${index}`}
       >
         <TableCell sx={{ padding: 0 }}>
           <Grid container>

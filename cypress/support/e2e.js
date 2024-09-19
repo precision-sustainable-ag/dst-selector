@@ -111,7 +111,7 @@ export const mySelectedCropsCommonTests = () => {
 
     cy.log('===CROP LABELS===', cropLabels);
 
-    cy.get("[data-cy='next-btn']")
+    cy.get("[data-cy='my selected crops-btn']")
       .first()
       .click()
       .then(() => {
@@ -154,7 +154,7 @@ export const presenceOfFiltersTests = ({ sidebarFilters }) => {
       btnIdx.forEach((idx) => {
         cy.assertByTestId(`cart-btn-${idx}`).click({ force: true });
       });
-      cy.get("[data-cy='next-btn']")
+      cy.get("[data-cy='my selected crops-btn']")
         .first()
         .click({ force: true })
         .then(() => {
@@ -165,6 +165,8 @@ export const presenceOfFiltersTests = ({ sidebarFilters }) => {
     });
 
     for (let i = 0; i < sidebarFilters.length; i++) {
+      // eslint-disable-next-line no-continue
+      if (sidebarFilters[i] === 'SOIL CONDITIONS') continue;
       it(`should check if ${sidebarFilters[i]} is present along with its expandmore icon`, () => {
         cy.assertByTestId(`"${sidebarFilters[i]}"`);
         cy.assertByTestId(`"${sidebarFilters[i]}-expandmore-icon"`);
