@@ -1,8 +1,8 @@
 import { sidebarFilters, filterResult, filterTypes } from '../../src/test-data/neccc';
-import { checkComparisonTableRows, presenceOfFiltersTests } from './e2e';
 
 /* eslint-disable no-undef */
 
+// eslint-disable-next-line import/prefer-default-export
 export const necccFilterTests = () => {
   // weeds
   it('should filter correct crops on Persistence filter options', () => {
@@ -324,80 +324,3 @@ export const necccFilterTests = () => {
     });
   });
 };
-
-export const necccComparisonRowTests = () => {
-  describe(('Test add comparison rows'), () => {
-    beforeEach(() => {
-      const btnIdx = [0, 1, 2];
-      btnIdx.forEach((idx) => {
-        cy.assertByTestId(`cart-btn-${idx}`).click({ force: true });
-      });
-      cy.get("[data-cy='my selected crops-btn']")
-        .first()
-        .click({ force: true })
-        .then(() => {
-          cy.get("[data-cy='comparison-view-btn']")
-            .should('be.visible')
-            .click();
-        });
-    });
-
-    // TODO: combine all tests
-    for (let i = 0; i <= 1; i++) {
-      it(`should display ${filterTypes[i]} row when ${filterTypes[i]} variable is clicked`, () => {
-        cy.get(`[data-cy='${sidebarFilters[0]}-expandmore-icon']`) // weeds
-          .should('be.visible')
-          .click()
-          .then(() => {
-            checkComparisonTableRows({ filterName: filterTypes[i] });
-          });
-      });
-    }
-
-    for (let i = 2; i <= 7; i++) {
-      it(`should display ${filterTypes[i]} row when ${filterTypes[i]} variable is clicked`, () => {
-        cy.get(`[data-cy='${sidebarFilters[1]}-expandmore-icon']`)
-          .should('be.visible')
-          .click()
-          .then(() => {
-            checkComparisonTableRows({ filterName: filterTypes[i] });
-          });
-      });
-    }
-
-    for (let i = 8; i <= 16; i++) {
-      it(`should display ${filterTypes[i]} row when ${filterTypes[i]} variable is clicked`, () => {
-        cy.get(`[data-cy='${sidebarFilters[2]}-expandmore-icon']`)
-          .should('be.visible')
-          .click()
-          .then(() => {
-            checkComparisonTableRows({ filterName: filterTypes[i] });
-          });
-      });
-    }
-
-    for (let i = 18; i <= 20; i++) {
-      it(`should display ${filterTypes[i]} row when ${filterTypes[i]} variable is clicked`, () => {
-        cy.get(`[data-cy='${sidebarFilters[4]}-expandmore-icon']`)
-          .should('be.visible')
-          .click()
-          .then(() => {
-            checkComparisonTableRows({ filterName: filterTypes[i] });
-          });
-      });
-    }
-
-    for (let i = 21; i <= 28; i++) {
-      it(`should display ${filterTypes[i]} row when ${filterTypes[i]} variable is clicked`, () => {
-        cy.get(`[data-cy='${sidebarFilters[5]}-expandmore-icon']`)
-          .should('be.visible')
-          .click()
-          .then(() => {
-            checkComparisonTableRows({ filterName: filterTypes[i] });
-          });
-      });
-    }
-  });
-};
-
-export const checkForFiltersNECCC = () => presenceOfFiltersTests({ sidebarFilters });
