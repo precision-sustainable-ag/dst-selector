@@ -17,14 +17,15 @@ import React, {
   useMemo,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { RegionSelectorMap } from '@psa/dst.ui.region-selector-map';
 import { useAuth0 } from '@auth0/auth0-react';
+import { RegionSelectorMap } from 'shared-react-components/src';
 import { callCoverCropApi } from '../../shared/constants';
 import { updateRegion, updateRegions, updateStateInfo } from '../../reduxStore/mapSlice';
 import { updateLocation } from '../../reduxStore/addressSlice';
 import { historyState, setHistoryDialogState, updateField } from '../../reduxStore/userSlice';
 import HistorySelect from '../../components/HistorySelect/HistorySelect';
 import pirschAnalytics from '../../shared/analytics';
+import { mapboxToken } from '../../shared/keys';
 
 const Landing = () => {
   const dispatchRedux = useDispatch();
@@ -339,6 +340,7 @@ const Landing = () => {
             initLon={-90}
             initLat={41}
             initStartZoom={2.5}
+            mapboxToken={mapboxToken}
           />
         </Box>
       </Grid>

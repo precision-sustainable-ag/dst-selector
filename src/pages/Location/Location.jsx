@@ -19,7 +19,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Search } from '@mui/icons-material';
 import moment from 'moment';
 import { Map } from '@psa/dst.ui.map';
-import mapboxgl from 'mapbox-gl';
+// import mapboxgl from 'mapbox-gl';
 import statesLatLongDict from '../../shared/stateslatlongdict';
 import {
   abbrRegion, reverseGEO, callCoverCropApi,
@@ -34,9 +34,6 @@ import {
 } from '../../reduxStore/weatherSlice';
 import { historyState, setHistoryDialogState, updateField } from '../../reduxStore/userSlice';
 import pirschAnalytics from '../../shared/analytics';
-
-// eslint-disable-next-line import/no-webpack-loader-syntax, import/no-unresolved
-mapboxgl.workerClass = require('worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker').default;
 
 const Location = () => {
   const dispatchRedux = useDispatch();
