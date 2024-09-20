@@ -167,6 +167,7 @@ const CropCalendarView = ({
                   style={{ marginBottom: '7px' }}
                   startIcon={<ListIcon style={{ fontSize: 'larger' }} />}
                   buttonType="PillButton"
+                  data-cy="crop-list-btn"
                 >
                   CROP LIST
                 </PSAButton>
