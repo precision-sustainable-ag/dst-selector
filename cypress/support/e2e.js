@@ -41,7 +41,7 @@ const checkRows = (filterType, filterIndex, filterResult) => {
           }
         }
         cy.get('[data-cy="crop-list-tbody"]').within(() => {
-          cy.get('[data-cy="crop-list-tr"]').then((allRows) => {
+          cy.get('[data-cy^="crop-list-tr"]').then((allRows) => {
             cy.log(`Total rows found: ${allRows.length}`);
             if (allRows.length === 1) {
               // eslint-disable-next-line no-console
@@ -109,7 +109,7 @@ export const mySelectedCropsCommonTests = () => {
 
     btnIdx.forEach((idx) => {
       cy.assertByTestId(`cart-btn-${idx}`).click({ force: true });
-      cy.get(`[data-cy=crop-row-${idx}]`).then(($row) => {
+      cy.get(`[data-cy=crop-list-tr-${idx}]`).then(($row) => {
         cy.wrap($row)
           .find('[data-cy=crop-calendar-crop-name]')
           .should('be.visible')

@@ -388,7 +388,7 @@ const CropCalendarView = ({
               </TableRow>
             </TableHead>
 
-            <TableBody>
+            <TableBody data-cy="crop-list-tbody">
               {cropDataRedux.length > 0 && (
                 <RenderCrops
                   setModalOpen={setModalOpen}
