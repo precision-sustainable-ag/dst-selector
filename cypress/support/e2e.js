@@ -13,6 +13,15 @@ Cypress.Commands.add('beforeEachVisitBaseUrl', () => {
   cy.contains(/decline/i).click({ multiple: true, force: true });
 });
 
+Cypress.Commands.add('testFilters', ({
+  sidebarFilter, filterType, filterIndex, filterResult,
+}) => {
+  // const sidebarFilter = sidebarFilters[sideBarFilterIndex];
+  // const filterType = filterTypes[filterTypeIndex];
+  cy.assertByTestId(`"${sidebarFilter.toUpperCase()}-expandmore-icon"`).click({ force: true });
+  checkRows(filterType, filterIndex, filterResult);
+});
+
 const checkRows = (filterType, filterIndex, filterResult) => {
   const filterValType = typeof filterIndex[0];
 
@@ -25,13 +34,14 @@ const checkRows = (filterType, filterIndex, filterResult) => {
           cy.assertByTestId(`"${filterType}-${filterIndex[option]}"`).click({ force: true });
         } else if (filterValType === 'number') {
           option = filterIdx + 1;
+          // click on rest of the chips to unselect them
           while (option <= filterIndex.length && option <= filterIndex.at(-1)) {
             cy.assertByTestId(`"${filterType}-${option}"`).click({ force: true });
             option += 1;
           }
         }
-        cy.get('tbody').within(() => {
-          cy.get('tr').then((allRows) => {
+        cy.get('[data-cy="crop-list-tbody"]').within(() => {
+          cy.get('[data-cy="crop-list-tr"]').then((allRows) => {
             cy.log(`Total rows found: ${allRows.length}`);
             if (allRows.length === 1) {
               // eslint-disable-next-line no-console
@@ -137,15 +147,6 @@ export const mySelectedCropsCommonTests = () => {
       });
   });
 };
-
-Cypress.Commands.add('testFilters', ({
-  sidebarFilter, filterType, filterIndex, filterResult,
-}) => {
-  // const sidebarFilter = sidebarFilters[sideBarFilterIndex];
-  // const filterType = filterTypes[filterTypeIndex];
-  cy.assertByTestId(`"${sidebarFilter.toUpperCase()}-expandmore-icon"`).click({ force: true });
-  checkRows(filterType, filterIndex, filterResult);
-});
 
 export const presenceOfFiltersTests = ({ sidebarFilters }) => {
   describe('Test for the presence of filters', () => {
