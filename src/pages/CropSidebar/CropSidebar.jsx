@@ -299,6 +299,7 @@ const CropSidebar = ({
               <PSAButton
                 onClick={resetAllFilters}
                 style={{ cursor: 'pointer', color: 'red' }}
+                data-cy="crop-side-bar-clear-filters"
               >
                 Clear Filters
               </PSAButton>
