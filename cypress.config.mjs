@@ -6,7 +6,7 @@ dotenv.config();
 
 export default defineConfig({
   e2e: {
-    baseUrl: 'http://localhost:3000/',
+    baseUrl: 'http://localhost/',
     experimentalRunAllSpecs: true,
     trashAssetsBeforeRuns: true,
     setupNodeEvents(on, config) {

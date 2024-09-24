@@ -20,7 +20,7 @@ describe('Test all possible interactions on the NECCC Crop List View', () => {
     cy.get("[data-cy='next-btn']").first().click().then(() => {
       cy.wait('@apiRequest');
     });
-    cy.get("[data-cy='crop list-btn']").first().click();
+    cy.get("[data-cy='crop-list-btn']").first().click();
   });
 
   necccFilterTests();

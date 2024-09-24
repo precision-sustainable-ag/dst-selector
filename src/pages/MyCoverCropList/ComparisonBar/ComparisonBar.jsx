@@ -125,6 +125,7 @@ const ComparisonBar = ({
                 size="small"
                 style={{ marginBottom: '-15px', color: 'red' }}
                 onClick={resetAllFilters}
+                data-cy="my-selected-crops-clear-variables"
               >
                 Clear Variables
               </PSAButton>
@@ -139,7 +140,7 @@ const ComparisonBar = ({
               <PSAButton
                 size="small"
                 onClick={showAllVariables}
-                data-cy="show-all-btn"
+                data-cy="my-selected-crops-show-all"
               >
                 Show All
               </PSAButton>
