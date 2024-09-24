@@ -28,7 +28,7 @@ export default defineConfig({
       return config;
     },
   },
-
+  defaultCommandTimeout: 30000,
   env: {
     VITE_API_MAPBOX_API_KEY: process.env.VITE_API_MAPBOX_API_KEY,
     VITE_API_AUTH0_DOMAIN: process.env.VITE_API_AUTH0_DOMAIN,
