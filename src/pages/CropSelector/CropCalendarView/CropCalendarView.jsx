@@ -167,7 +167,6 @@ const CropCalendarView = ({
                   style={{ marginBottom: '7px' }}
                   startIcon={<ListIcon style={{ fontSize: 'larger' }} />}
                   buttonType="PillButton"
-                  data-cy="crop-list-btn"
                 >
                   CROP LIST
                 </PSAButton>
@@ -388,7 +387,7 @@ const CropCalendarView = ({
               </TableRow>
             </TableHead>
 
-            <TableBody data-cy="crop-list-tbody">
+            <TableBody>
               {cropDataRedux.length > 0 && (
                 <RenderCrops
                   setModalOpen={setModalOpen}
