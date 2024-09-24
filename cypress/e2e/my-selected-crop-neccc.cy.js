@@ -10,9 +10,9 @@ describe('Test for adding a crop to cart and viewing the crop in "My Selected Cr
     cy.beforeEachVisitBaseUrl();
     cy.assertByTestId('state-selector-dropdown').first().click();
     cy.assertByTestId('state-dropdown-item-22').click();
-    cy.assertByTestId('next-btn').first().click();
+    cy.assertByTestId('next-btn').first().should('not.be.disabled').click();
     cy.assertByTestId('field-location-title');
-    cy.get("[data-cy='next-btn']").first().click();
+    cy.get("[data-cy='next-btn']").first().should('not.be.disabled').click();
     cy.assertByTestId('site-conditions-title');
     cy.get("[data-cy='next-btn']").first().click();
     cy.assertByTestId('title-goals');
