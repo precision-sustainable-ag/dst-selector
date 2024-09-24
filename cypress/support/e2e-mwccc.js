@@ -309,7 +309,7 @@ export const mwcccComparisonRowTests = () => {
       btnIdx.forEach((idx) => {
         cy.assertByTestId(`cart-btn-${idx}`).click({ force: true });
       });
-      cy.get("[data-cy='next-btn']")
+      cy.get("[data-cy='my selected crops-btn']")
         .first()
         .click({ force: true })
         .then(() => {
@@ -319,6 +319,7 @@ export const mwcccComparisonRowTests = () => {
         });
     });
 
+    // TODO: combine all tests
     for (let i = 0; i <= 1; i++) {
       it(`should display ${filterTypes[i]} row when ${filterTypes[i]} variable is clicked`, () => {
         cy.get(`[data-cy='${sidebarFilters[0]}-expandmore-icon']`) // weeds

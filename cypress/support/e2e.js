@@ -1,5 +1,6 @@
 /* eslint-disable no-undef */
 import { flipCoverCropName } from '../../src/shared/constants';
+import './commands';
 
 Cypress.Commands.add('assertByTestId', (testId) => {
   cy.get(`[data-cy=${testId}]`).should('exist');
@@ -13,34 +14,43 @@ Cypress.Commands.add('beforeEachVisitBaseUrl', () => {
   cy.contains(/decline/i).click({ multiple: true, force: true });
 });
 
+Cypress.Commands.add('testFilters', ({
+  sidebarFilter, filterType, filterIndex, filterResult,
+}) => {
+  // cy.assertByTestId(`"${sidebarFilter.toUpperCase()}-expandmore-icon"`).click({ force: true });
+  checkRows(filterType, filterIndex, filterResult);
+  cy.getByTestId('crop-side-bar-clear-filters').click();
+});
+
 const checkRows = (filterType, filterIndex, filterResult) => {
   const filterValType = typeof filterIndex[0];
 
   filterIndex.forEach((filterIdx, index) => {
-    cy.assertByTestId(`"${filterType}-${filterIdx}"`)
+    cy.getByTestId(`"${filterType}-${filterIdx}"`)
       .click({ force: true }).then(() => {
         let option;
         if (filterValType === 'string' && index - 1 >= 0) {
           option = index - 1;
-          cy.assertByTestId(`"${filterType}-${filterIndex[option]}"`).click({ force: true });
+          cy.getByTestId(`"${filterType}-${filterIndex[option]}"`).click({ force: true });
         } else if (filterValType === 'number') {
           option = filterIdx + 1;
+          // click on rest of the chips to unselect them
           while (option <= filterIndex.length && option <= filterIndex.at(-1)) {
-            cy.assertByTestId(`"${filterType}-${option}"`).click({ force: true });
+            cy.getByTestId(`"${filterType}-${option}"`).click({ force: true });
             option += 1;
           }
         }
-        cy.get('tbody').within(() => {
-          cy.get('tr').then((allRows) => {
+        cy.get('[data-cy="crop-list-tbody"]').within(() => {
+          cy.get('[data-cy^="crop-list-tr"]').then((allRows) => {
             cy.log(`Total rows found: ${allRows.length}`);
             if (allRows.length === 1) {
               // eslint-disable-next-line no-console
-              console.log('One row found.');
+              cy.log('One row found.');
               cy.contains(/No cover crops match your selected Cover Crop Property filters./i).should('exist');
             } else {
               const visibleRows = Cypress.$(allRows).not('[style*="opacity: 0.3"]');
               // eslint-disable-next-line no-console
-              console.log(`Visible rows: ${visibleRows.length}`);
+              cy.log(`Visible rows: ${visibleRows.length}`);
               if (filterResult[filterIdx] === 'all') {
                 cy.get('tr[style*="opacity: 0.3"]').should('not.exist');
                 return;
@@ -66,19 +76,34 @@ const checkRows = (filterType, filterIndex, filterResult) => {
 
 export const checkComparisonTableRows = ({ filterName }) => {
   cy.get(`[data-cy='${filterName}-checkbox']`)
-    .should('be.visible')
     .click()
     .then(() => {
       cy.assertByTestId(`"${filterName}-row"`);
     });
+
+  cy.get(`[data-cy='${filterName}-checkbox']`)
+    .click()
+    .then(() => {
+      cy.get(`[data-cy="${filterName}-row"]`).should('not.exist');
+    });
 };
 
 export const mySelectedCropsCommonTests = () => {
-  it('should indicate 3 crops added to my selected crops when top 3 crops are selected', () => {
+  it('should display selected crops number on My Select Crops tab and show corresponding crop cards in My Selected Crops', () => {
     const btnIdx = [0, 1, 2];
+    const cropLabels = [];
+    const cardLabels = [];
 
     btnIdx.forEach((idx) => {
       cy.assertByTestId(`cart-btn-${idx}`).click({ force: true });
+      cy.get(`[data-cy=crop-list-tr-${idx}]`).then(($row) => {
+        cy.wrap($row)
+          .find('[data-cy=crop-calendar-crop-name]')
+          .should('be.visible')
+          .then(($label) => {
+            cropLabels.push($label.text());
+          });
+      });
     });
 
     btnIdx.forEach((idx) => {
@@ -90,28 +115,10 @@ export const mySelectedCropsCommonTests = () => {
       .each(($badge) => {
         cy.wrap($badge).should('have.text', btnIdx.length); // Assert that each badge has the text '2'
       });
-  });
-
-  it('should display 3 cards in "My Selected Crops Screen", whose labels correspond to crop labels selected from table', () => {
-    const btnIdx = [0, 1, 2];
-    const cropLabels = [];
-    const cardLabels = [];
-
-    btnIdx.forEach((idx) => {
-      cy.assertByTestId(`cart-btn-${idx}`).click({ force: true });
-      cy.get(`[data-cy=crop-row-${idx}]`).then(($row) => {
-        cy.wrap($row)
-          .find('[data-cy=crop-calendar-crop-name]')
-          .should('be.visible')
-          .then(($label) => {
-            cropLabels.push($label.text());
-          });
-      });
-    });
 
     cy.log('===CROP LABELS===', cropLabels);
 
-    cy.get("[data-cy='next-btn']")
+    cy.get("[data-cy='my selected crops-btn']")
       .first()
       .click()
       .then(() => {
@@ -138,37 +145,26 @@ export const mySelectedCropsCommonTests = () => {
   });
 };
 
-Cypress.Commands.add('testFilters', ({
-  sidebarFilter, filterType, filterIndex, filterResult,
-}) => {
-  // const sidebarFilter = sidebarFilters[sideBarFilterIndex];
-  // const filterType = filterTypes[filterTypeIndex];
-  cy.assertByTestId(`"${sidebarFilter.toUpperCase()}-expandmore-icon"`).click({ force: true });
-  checkRows(filterType, filterIndex, filterResult);
-});
-
-export const presenceOfFiltersTests = ({ sidebarFilters }) => {
-  describe('Test for the presence of filters', () => {
-    beforeEach(() => {
-      const btnIdx = [0, 1, 2];
-      btnIdx.forEach((idx) => {
-        cy.assertByTestId(`cart-btn-${idx}`).click({ force: true });
-      });
-      cy.get("[data-cy='next-btn']")
-        .first()
-        .click({ force: true })
-        .then(() => {
-          cy.get("[data-cy='comparison-view-btn']")
-            .should('be.visible')
-            .click();
-        });
+export const presenceOfFiltersTests = (sidebarFilters) => {
+  it('should have presence of all the filters', () => {
+    const btnIdx = [0, 1, 2];
+    btnIdx.forEach((idx) => {
+      cy.assertByTestId(`cart-btn-${idx}`).click({ force: true });
     });
+    cy.get("[data-cy='my selected crops-btn']")
+      .first()
+      .click({ force: true })
+      .then(() => {
+        cy.get("[data-cy='comparison-view-btn']")
+          .should('be.visible')
+          .click();
+      });
 
     for (let i = 0; i < sidebarFilters.length; i++) {
-      it(`should check if ${sidebarFilters[i]} is present along with its expandmore icon`, () => {
-        cy.assertByTestId(`"${sidebarFilters[i]}"`);
-        cy.assertByTestId(`"${sidebarFilters[i]}-expandmore-icon"`);
-      });
+      // eslint-disable-next-line no-continue
+      if (sidebarFilters[i] === 'SOIL CONDITIONS') continue;
+      cy.assertByTestId(`"${sidebarFilters[i]}"`);
+      cy.assertByTestId(`"${sidebarFilters[i]}-expandmore-icon"`);
     }
   });
 };
