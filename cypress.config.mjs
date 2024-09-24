@@ -1,5 +1,5 @@
 import { defineConfig } from 'cypress';
-import coverageTask from '@cypress/code-coverage/task.js';
+// import coverageTask from '@cypress/code-coverage/task.js';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -10,8 +10,8 @@ export default defineConfig({
     experimentalRunAllSpecs: true,
     trashAssetsBeforeRuns: true,
     setupNodeEvents(on, config) {
-      coverageTask(on, config);
-      return config;
+      // coverageTask(on, config);
+      // return config;
     },
   },
 
@@ -24,8 +24,8 @@ export default defineConfig({
     numTestsKeptInMemory: 1,
     experimentalMemoryManagement: true,
     setupNodeEvents(on, config) {
-      coverageTask(on, config);
-      return config;
+      // coverageTask(on, config);
+      // return config;
     },
   },
   defaultCommandTimeout: 30000,
