@@ -11,9 +11,9 @@ describe('Test for adding a crop to cart and viewing the crop in "My Selected Cr
     cy.assertByTestId('state-selector-dropdown').first().click();
     cy.assertByTestId('state-dropdown-item-22').click();
     cy.getByTestId('state-selector-dropdown').first().find('input').should('have.value', 'NY');
-    cy.getByTestId('next-btn').first().should('not.be.disabled').click();
+    cy.getByTestId('next-btn').first().click();
     cy.assertByTestId('field-location-title');
-    cy.getByTestId('next-btn').first().should('not.be.disabled', { timeout: 40000 }).click();
+    cy.getByTestId('next-btn').first().should('not.be.disabled', { timeout: 20000 }).click();
     cy.assertByTestId('site-conditions-title');
     cy.get("[data-cy='next-btn']").first().click();
     cy.assertByTestId('title-goals');
