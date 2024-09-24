@@ -10,6 +10,12 @@ export default defineConfig({
     experimentalRunAllSpecs: true,
     trashAssetsBeforeRuns: true,
     setupNodeEvents(on, config) {
+      on('before:browser:launch', (browser, launchOptions) => {
+        if (['chrome', 'edge'].includes(browser.name)) {
+          launchOptions.args.push('--js-flags=--max-old-space-size=4096');
+        }
+        return launchOptions;
+      });
       // coverageTask(on, config);
       return config;
     },

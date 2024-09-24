@@ -17,27 +17,26 @@ Cypress.Commands.add('beforeEachVisitBaseUrl', () => {
 Cypress.Commands.add('testFilters', ({
   sidebarFilter, filterType, filterIndex, filterResult,
 }) => {
-  // const sidebarFilter = sidebarFilters[sideBarFilterIndex];
-  // const filterType = filterTypes[filterTypeIndex];
-  cy.assertByTestId(`"${sidebarFilter.toUpperCase()}-expandmore-icon"`).click({ force: true });
+  // cy.assertByTestId(`"${sidebarFilter.toUpperCase()}-expandmore-icon"`).click({ force: true });
   checkRows(filterType, filterIndex, filterResult);
+  cy.getByTestId('crop-side-bar-clear-filters').click();
 });
 
 const checkRows = (filterType, filterIndex, filterResult) => {
   const filterValType = typeof filterIndex[0];
 
   filterIndex.forEach((filterIdx, index) => {
-    cy.assertByTestId(`"${filterType}-${filterIdx}"`)
+    cy.getByTestId(`"${filterType}-${filterIdx}"`)
       .click({ force: true }).then(() => {
         let option;
         if (filterValType === 'string' && index - 1 >= 0) {
           option = index - 1;
-          cy.assertByTestId(`"${filterType}-${filterIndex[option]}"`).click({ force: true });
+          cy.getByTestId(`"${filterType}-${filterIndex[option]}"`).click({ force: true });
         } else if (filterValType === 'number') {
           option = filterIdx + 1;
           // click on rest of the chips to unselect them
           while (option <= filterIndex.length && option <= filterIndex.at(-1)) {
-            cy.assertByTestId(`"${filterType}-${option}"`).click({ force: true });
+            cy.getByTestId(`"${filterType}-${option}"`).click({ force: true });
             option += 1;
           }
         }
@@ -46,12 +45,12 @@ const checkRows = (filterType, filterIndex, filterResult) => {
             cy.log(`Total rows found: ${allRows.length}`);
             if (allRows.length === 1) {
               // eslint-disable-next-line no-console
-              console.log('One row found.');
+              cy.log('One row found.');
               cy.contains(/No cover crops match your selected Cover Crop Property filters./i).should('exist');
             } else {
               const visibleRows = Cypress.$(allRows).not('[style*="opacity: 0.3"]');
               // eslint-disable-next-line no-console
-              console.log(`Visible rows: ${visibleRows.length}`);
+              cy.log(`Visible rows: ${visibleRows.length}`);
               if (filterResult[filterIdx] === 'all') {
                 cy.get('tr[style*="opacity: 0.3"]').should('not.exist');
                 return;
