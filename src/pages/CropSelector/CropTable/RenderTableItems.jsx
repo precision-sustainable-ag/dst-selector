@@ -37,7 +37,6 @@ const RenderTableItems = ({ showGrowthWindow, handleModalOpen }) => {
               outline: '2px solid #598344',
               backgroundColor: selectedCropIdsRedux.includes(crop.id) && '#EAEAEA',
             }}
-            data-cy="crop-list-tr"
           >
             <TableCell size="small" sx={{ maxWidth: 150 }}>
               <Grid
