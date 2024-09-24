@@ -1,3 +1,4 @@
+import path from 'path';
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import eslint from 'vite-plugin-eslint';
@@ -15,7 +16,7 @@ export default defineConfig(() => ({
   },
   resolve: {
     alias: {
-      '@babel/runtime': require.resolve('@babel/runtime'),
+      '@babel/runtime': path.resolve(__dirname, 'node_modules/@babel/runtime'),
     },
   },
 }));
