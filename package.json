@@ -33,6 +33,7 @@
     "sass-mediaqueries": "^1.6.1",
     "shared-react-components": "github:precision-sustainable-ag/shared-react-components",
     "styled-components": "^5.3.6",
+    "@babel/runtime": "^7.25.6",
     "vite": "^5.4.4"
   },
   "type": "module",
@@ -69,7 +70,6 @@
   "devDependencies": {
     "@babel/plugin-proposal-export-default-from": "^7.18.10",
     "@babel/plugin-transform-runtime": "^7.25.4",
-    "@babel/runtime": "^7.25.6",
     "@cypress/code-coverage": "^3.12.45",
     "@types/react-leaflet": "^2.8.2",
     "@vitejs/plugin-react": "^4.3.1",
