@@ -15,18 +15,15 @@
     "@mui/x-date-pickers": "^6.1.0",
     "@turf/area": "^6.5.0",
     "@turf/centroid": "^6.5.0",
+    "@vitejs/plugin-react": "^4.3.1",
     "cypress": "^13.13.0",
     "dayjs": "^1.11.8",
     "mapbox-gl": "^2.10.0",
     "mdbreact": "^4.24.0",
     "moment": "^2.24.0",
-    "moment-timezone": "^0.5.28",
     "prop-types": "^15.7.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-ga": "^3.3.0",
-    "react-map-gl": "^7.0.19",
-    "react-map-gl-geocoder": "^2.2.0",
     "react-redux": "^8.1.1",
     "react-router-dom": "^5.1.2",
     "react-swipeable-views-react-18-fix": "^0.14.1",
@@ -36,7 +33,7 @@
     "sass-mediaqueries": "^1.6.1",
     "shared-react-components": "github:precision-sustainable-ag/shared-react-components",
     "styled-components": "^5.3.6",
-    "worker-loader": "^3.0.8"
+    "vite": "^5.4.4"
   },
   "type": "module",
   "scripts": {
@@ -71,6 +68,7 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-export-default-from": "^7.18.10",
+    "@babel/plugin-transform-runtime": "^7.25.4",
     "@babel/runtime": "^7.25.6",
     "@cypress/code-coverage": "^3.12.45",
     "@types/react-leaflet": "^2.8.2",
