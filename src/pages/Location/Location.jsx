@@ -1,5 +1,5 @@
 // TODO: debug use
-/* eslint-disable */
+// /* eslint-disable */
 
 /* eslint-disable no-alert */
 /*
@@ -326,7 +326,7 @@ const Location = () => {
         {stateLabelRedux !== 'Ontario' && (
         <Grid item s={9} xs={12}>
           <Container maxWidth="md">
-            {/* <Map
+            <Map
               setAddress={setSelectedToEditSite}
               setFeatures={setCurrentGeometry}
               initWidth="100%"
@@ -347,7 +347,7 @@ const Location = () => {
               hasMarkerPopup
               hasMarkerMovable
               mapboxToken={mapboxToken}
-            /> */}
+            />
           </Container>
         </Grid>
         )}
