@@ -8,8 +8,14 @@ describe('Test all possible interactions on the NECCC Crop Calendar Page', () =>
     cy.beforeEachVisitBaseUrl();
     cy.assertByTestId('state-selector-dropdown').first().click();
     cy.assertByTestId('state-dropdown-item-22').click();
+    cy.getByTestId('state-selector-dropdown').first().find('input').should('have.value', 'NY');
     cy.assertByTestId('next-btn').first().click();
     cy.assertByTestId('field-location-title');
+
+    cy.window().its('store').invoke('dispatch', {
+      type: 'UPDATE_LOCATION',
+      payload: { address: '170 State Street', markers: [[42.652843, -73.757874]], county: 'Albany County' },
+    });
     cy.get("[data-cy='next-btn']").first().click();
     cy.assertByTestId('site-conditions-title');
     cy.get("[data-cy='next-btn']").first().click();
