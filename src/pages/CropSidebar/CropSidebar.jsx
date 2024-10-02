@@ -15,10 +15,13 @@ import {
   Typography,
   Grid,
   Switch,
+  Chip,
+  Tooltip,
 } from '@mui/material';
 import {
   Compare, ExpandLess, ExpandMore,
 } from '@mui/icons-material';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import ListIcon from '@mui/icons-material/List';
 import React, {
   useEffect, useState,
@@ -35,7 +38,9 @@ import SidebarFilter from './SidebarFilter/SidebarFilter';
 import CoverCropGoals from './CoverCropGoals/CoverCropGoals';
 import PlantHardinessZone from './PlantHardinessZone/PlantHardinessZone';
 import Legend from '../../components/Legend/Legend';
-import { clearFilters, setSoilDrainageFilter, setIrrigationFilter } from '../../reduxStore/filterSlice';
+import {
+  clearFilters, setSoilDrainageFilter, setIrrigationFilter, setCropGroupFilter,
+} from '../../reduxStore/filterSlice';
 import { updateCropData, updateActiveCropIds } from '../../reduxStore/cropSlice';
 import { setAjaxInProgress, regionToggleHandler } from '../../reduxStore/sharedSlice';
 import PSAButton from '../../components/PSAComponents/PSAButton';
@@ -62,6 +67,7 @@ const CropSidebar = ({
   const filterStateRedux = useSelector((stateRedux) => stateRedux.filterData);
   const soilDrainageFilterRedux = useSelector((stateRedux) => stateRedux.filterData.filters.soilDrainageFilter);
   const irrigationFilterRedux = useSelector((stateRedux) => stateRedux.filterData.filters.irrigationFilter);
+  const cropGroupFilterRedux = useSelector((stateRedux) => stateRedux.filterData.filters.cropGroupFilter);
   const apiBaseUrlRedux = useSelector((stateRedux) => stateRedux.sharedData.apiBaseUrl);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const drainageClassRedux = useSelector((stateRedux) => stateRedux.soilData.soilData.drainageClass[0]);
@@ -74,6 +80,8 @@ const CropSidebar = ({
   const [sidebarCategoriesData, setSidebarCategoriesData] = useState([]);
   const [sidebarFiltersData, setSidebarFiltersData] = useState([]);
   const [cropFiltersOpen, setCropFiltersOpen] = useState(true);
+
+  const coverCropGroup = [{ label: 'Brassica' }, { label: 'Legume' }, { label: 'Grass' }, { label: 'Broadleaf' }];
 
   const SoloFilter = styled(ListItem)({
     paddingLeft: '25px',
@@ -108,6 +116,10 @@ const CropSidebar = ({
 
   const handleIrrigationFilter = () => {
     dispatchRedux(setIrrigationFilter(!irrigationFilterRedux));
+  };
+
+  const handleCropGroupFilter = (val) => {
+    dispatchRedux(cropGroupFilterRedux === val ? setCropGroupFilter('') : setCropGroupFilter(val));
   };
 
   useEffect(() => {
@@ -171,7 +183,9 @@ const CropSidebar = ({
 
       const cropFloodingValueIsHigher = (!floodingFrequencyRedux ? true : floodingFrequencyRedux <= floodingFrequencyValue);
 
-      cd[n].inactive = (!match) || !(matchesDrainageClass && cropFloodingValueIsHigher);
+      cd[n].inactive = (!match)
+      || !(matchesDrainageClass && cropFloodingValueIsHigher)
+      || cropGroupFilterRedux?.length < 0 ? false : !(crop?.group?.includes(cropGroupFilterRedux));
 
       return true;
     });
@@ -288,7 +302,7 @@ const CropSidebar = ({
 
   const filtersList = () => (
     <List component="div" disablePadding className="cropFilters">
-      <div style={{ height: '53px' }}>
+      <div>
         {filtersSelected && (
         <ListItem style={{
           textAlign: 'center',
@@ -353,6 +367,38 @@ const CropSidebar = ({
                   )}
         />
       </SoloFilter>
+      <ListItem
+        component="div"
+      >
+        <Tooltip
+          enterTouchDelay={0}
+          title={(
+            <p>Use the Cover Crop Group Filter to select specific cover crop groups to filter by.</p>
+        )}
+        >
+          <span>
+            Cover Crop Group Filter
+            <HelpOutlineIcon style={{ cursor: 'pointer', transform: 'scale(0.7)' }} />
+          </span>
+        </Tooltip>
+      </ListItem>
+      <ListItem>
+        {coverCropGroup.map((val) => {
+          const selected = cropGroupFilterRedux === val.label;
+          return (
+            <Grid key={val.label} item>
+              <Chip
+                key={val.label}
+                onClick={() => handleCropGroupFilter(val.label)}
+                component="li"
+                size="medium"
+                label={val.label}
+                color={selected ? 'primary' : 'secondary'}
+              />
+            </Grid>
+          );
+        })}
+      </ListItem>
       {getFilters()}
     </List>
   ); // filterList
@@ -440,7 +486,6 @@ const CropSidebar = ({
                   <ListItem
                     onClick={() => setCropFiltersOpen(!cropFiltersOpen)}
                     style={{
-                      marginBottom: '15px',
                       backgroundColor: 'inherit',
 
                     }}
