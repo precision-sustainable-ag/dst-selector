@@ -188,8 +188,7 @@ const Location = () => {
       if (progressRedux >= 1 && markersRedux.length > 0) {
         const reverseGEOresult = await reverseGEO(lat, lon);
         const abbrState = abbrRegion(
-          // reverseGEOresult?.features?.filter((feature) => feature?.place_type?.includes('region'))[0]?.text,
-          'New York',
+          reverseGEOresult?.features?.filter((feature) => feature?.place_type?.includes('region'))[0]?.text,
           'abbr',
         ).toLowerCase();
 
