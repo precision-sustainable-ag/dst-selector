@@ -16,6 +16,11 @@ describe('Test all possible interactions on the NECCC Crop Calendar Page', () =>
       type: 'UPDATE_LOCATION',
       payload: { address: '170 State Street', markers: [[42.652843, -73.757874]], county: 'Albany County' },
     });
+    cy.window().its('store').invoke('dispatch', {
+      type: 'UPDATE_REGION',
+      payload: { regionId: 3, regionShorthand: '6' },
+    });
+
     cy.get("[data-cy='next-btn']").first().click();
     cy.assertByTestId('site-conditions-title');
     cy.get("[data-cy='next-btn']").first().click();
