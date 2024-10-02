@@ -3,6 +3,7 @@ const initialState = {
     cropSearch: '',
     soilDrainageFilter: false,
     irrigationFilter: false,
+    cropGroupFilter: '',
   },
 };
 
@@ -55,6 +56,11 @@ export const setIrrigationFilter = (irrigationFilter) => ({
   payload: { irrigationFilter },
 });
 
+export const setCropGroupFilter = (cropGroupFilter) => ({
+  type: 'SET_CROP_GROUP_FILTER',
+  payload: { cropGroupFilter },
+});
+
 const filterReducer = (state = initialState, action = null) => {
   let filters = { ...state.filters };
   const value = action && action.payload && action.payload.value;
@@ -64,6 +70,7 @@ const filterReducer = (state = initialState, action = null) => {
         cropSearch: '',
         soilDrainageFilter: false,
         irrigationFilter: false,
+        cropGroupFilter: '',
       };
 
       return {
@@ -125,6 +132,15 @@ const filterReducer = (state = initialState, action = null) => {
         filters: {
           ...filters,
           irrigationFilter: action.payload.irrigationFilter,
+        },
+      };
+
+    case 'SET_CROP_GROUP_FILTER':
+      return {
+        ...state,
+        filters: {
+          ...filters,
+          cropGroupFilter: action.payload.cropGroupFilter,
         },
       };
 
