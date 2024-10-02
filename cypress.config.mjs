@@ -29,13 +29,9 @@ export default defineConfig({
     },
   },
   defaultCommandTimeout: 30000,
-  requestTimeout: 30000,
   env: {
-    VITE_API_MAPBOX_API_KEY: process.env.VITE_API_MAPBOX_API_KEY,
-    VITE_API_AUTH0_DOMAIN: process.env.VITE_API_AUTH0_DOMAIN,
-    VITE_API_AUTH0_CLIENT_ID: process.env.VITE_API_AUTH0_CLIENT_ID,
-    VITE_API_AUTH0_AUDIENCE: process.env.VITE_API_AUTH0_AUDIENCE,
-    VITE_API_USER_HISTORY_API_URL: process.env.VITE_API_USER_HISTORY_API_URL,
-    VITE_API_USER_HISTORY_SCHEMA: process.env.VITE_API_USER_HISTORY_SCHEMA,
+    auth0_username: process.env.VITE_AUTH0_USERNAME,
+    auth0_password: process.env.VITE_AUTH0_PASSWORD,
+    auth0_domain: process.env.VITE_API_AUTH0_DOMAIN,
   },
 });
