@@ -44,6 +44,8 @@ stages:
         echo VITE_API_USER_HISTORY_SCHEMA="$(VITE_API_USER_HISTORY_SCHEMA)" >> /home/vsts/work/1/s/.env
         echo VITE_API_RELEASE_NOTES="$(VITE_API_RELEASE_NOTES)" >> /home/vsts/work/1/s/.env
         echo VITE_API_MAPBOX_TOKEN="$(VITE_API_MAPBOX_TOKEN)" >> /home/vsts/work/1/s/.env
+        echo VITE_AUTH0_USERNAME="$(VITE_AUTH0_USERNAME)" >> /home/vsts/work/1/s/.env
+        echo VITE_AUTH0_PASSWORD="$(VITE_AUTH0_PASSWORD)" >> /home/vsts/work/1/s/.env
       displayName: "Create .env"
     - task: Docker@2
       displayName: Build and push an image to container registry
