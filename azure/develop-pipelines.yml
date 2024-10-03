@@ -64,18 +64,10 @@ stages:
         docker run --network="host" --rm cypress-tester
       displayName: "Run Cypress Tests"
 
-    # Publish Cypress test results
-    - task: PublishTestResults@2
-      inputs:
-        testResultsFiles: '**/cypress/results/*.xml'
-        testRunTitle: 'Cypress Tests'
-        publishRunAttachments: true
-      condition: always()
-
     # Publish Cypress screenshots as artifacts
     - task: PublishPipelineArtifact@1
       inputs:
-        targetPath: 'cypress/screenshots'  # The folder where Cypress stores screenshots
+        targetPath: 'e2e/cypress/screenshots'  # The folder where Cypress stores screenshots
         artifact: 'cypress-screenshots'
       condition: always()
 
