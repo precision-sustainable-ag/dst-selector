@@ -15,6 +15,10 @@ export default defineConfig({
     },
   },
 
+  video: true,
+  screenshotsFolder: 'cypress/screenshots',
+  videosFolder: 'cypress/videos',
+
   component: {
     devServer: {
       framework: 'react',

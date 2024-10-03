@@ -67,8 +67,14 @@ stages:
     # Publish Cypress screenshots as artifacts
     - task: PublishPipelineArtifact@1
       inputs:
-        targetPath: 'e2e/cypress/screenshots'  # The folder where Cypress stores screenshots
+        targetPath: 'cypress/screenshots'  # The folder where Cypress stores screenshots
         artifact: 'cypress-screenshots'
+      condition: always()
+    
+    - task: PublishPipelineArtifact@1
+      inputs:
+        targetPath: 'cypress/videos'  # Publish videos as artifacts
+        artifact: 'cypress-videos'
       condition: always()
 
     - upload: manifests
