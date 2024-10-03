@@ -70,12 +70,14 @@ stages:
         testResultsFiles: '**/cypress/results/*.xml'
         testRunTitle: 'Cypress Tests'
         publishRunAttachments: true
+      condition: always()
 
     # Publish Cypress screenshots as artifacts
     - task: PublishPipelineArtifact@1
       inputs:
         targetPath: 'cypress/screenshots'  # The folder where Cypress stores screenshots
         artifact: 'cypress-screenshots'
+      condition: always()
 
     - upload: manifests
       artifact: manifests
