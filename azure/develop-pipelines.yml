@@ -62,10 +62,12 @@ stages:
         docker run -d --name test-app --network="host" $(containerRegistry)/$(imageRepository):$(tag)
         docker build -f Dockerfile.tester -t cypress-tester .
 
-        docker run --network="host" --name cypress-runner --rm cypress-tester
+        docker run --network="host" --name cypress-runner cypress-tester
         
         docker cp cypress-runner:/e2e/cypress/screenshots ./cypress/e2e/screenshots
         docker cp cypress-runner:/e2e/cypress/videos ./cypress/e2e/videos
+
+        docker rm cypress-runner
       displayName: "Run Cypress Tests"
 
     - script: |
