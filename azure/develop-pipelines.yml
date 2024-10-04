@@ -64,8 +64,8 @@ stages:
 
         docker run --network="host" --name cypress-runner --rm cypress-tester
         
-        docker cp cypress-runner:/e2e/cypress/screenshots ./e2e/cypress/screenshots
-        docker cp cypress-runner:/e2e/cypress/videos ./e2e/cypress/videos
+        docker cp cypress-runner:/e2e/cypress/screenshots ./cypress/e2e/screenshots
+        docker cp cypress-runner:/e2e/cypress/videos ./cypress/e2e/videos
       displayName: "Run Cypress Tests"
 
     - script: |
@@ -76,13 +76,13 @@ stages:
     # Publish Cypress screenshots as artifacts
     - task: PublishPipelineArtifact@1
       inputs:
-        targetPath: 'e2e/cypress/screenshots/user-history.cy.js/'  # The folder where Cypress stores screenshots
+        targetPath: 'cypress/screenshots/'  # The folder where Cypress stores screenshots
         artifact: 'cypress-screenshots'
       condition: always()
     
     - task: PublishPipelineArtifact@1
       inputs:
-        targetPath: 'e2e/cypress/videos'  # Publish videos as artifacts
+        targetPath: 'cypress/videos'  # Publish videos as artifacts
         artifact: 'cypress-videos'
       condition: always()
 
