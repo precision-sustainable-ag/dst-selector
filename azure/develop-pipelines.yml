@@ -64,8 +64,8 @@ stages:
 
         docker run --network="host" --name cypress-runner cypress-tester
         
-        docker cp cypress-runner:/e2e/cypress/screenshots ./cypress/e2e/screenshots
-        docker cp cypress-runner:/e2e/cypress/videos ./cypress/e2e/videos
+        docker cp cypress-runner:/e2e/cypress/screenshots ./cypress/screenshots
+        docker cp cypress-runner:/e2e/cypress/videos ./cypress/videos
 
         docker rm cypress-runner
       displayName: "Run Cypress Tests"
