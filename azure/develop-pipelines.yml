@@ -67,6 +67,7 @@ stages:
     - script: |
         ls -R /home/vsts/work/1/s
       displayName: 'List workspace files'
+      condition: always()
 
     # Publish Cypress screenshots as artifacts
     - task: PublishPipelineArtifact@1
