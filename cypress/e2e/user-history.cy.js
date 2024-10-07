@@ -43,6 +43,16 @@ describe('Test create and import user history records', () => {
       cy.log(historyState);
       expect(historyState).to.equal('new');
     });
+
+    cy.window().its('store').invoke('dispatch', {
+      type: 'UPDATE_LOCATION',
+      payload: { address: '170 State Street', markers: [[42.652843, -73.757874]], county: 'Albany County' },
+    });
+    cy.window().its('store').invoke('dispatch', {
+      type: 'UPDATE_REGION',
+      payload: { regionId: 3, regionShorthand: '6' },
+    });
+
     cy.getByTestId('next-btn').first().click();
     // api call when reach Site Condition page
     cy.wait('@createHistory').its('response.statusCode').should('equal', 200);
