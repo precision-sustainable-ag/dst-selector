@@ -30,6 +30,7 @@ import SaveUserHistory from './SaveUserHistory/SaveUserHistory';
 import { releaseNotesURL } from '../../shared/keys';
 import PSAButton from '../../components/PSAComponents/PSAButton';
 import useWindowSize from '../../shared/constants';
+import PSACoverCropCouncil from '../../components/PSAComponents/PSACoverCropCouncil';
 // import logoImage from '../../../public/images/PSAlogo-text.png';
 
 const Header = () => {
@@ -208,22 +209,15 @@ const Header = () => {
                 overflow: 'hidden',
               }}
             >
-              <PSAButton
-                type="button"
-                onClick={handleClick}
-              >
-                <img
-                  id="logoImage"
-                  style={{
-                    maxWidth: '100%',
-                    height: 'auto',
-                  }}
-                  ref={logoRef}
-                  alt=""
-                />
-
-              </PSAButton>
-
+              <PSACoverCropCouncil
+                handleClick={handleClick}
+                src={logoRef}
+                alt=""
+                style={{
+                  maxWidth: '100%',
+                  height: 'auto',
+                }}
+              />
             </Box>
           </Grid>
         </Grid>
