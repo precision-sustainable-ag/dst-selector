@@ -75,7 +75,7 @@ stages:
       inputs:
         targetPath: 'cypress/screenshots/'
         artifact: 'cypress-screenshots'
-      condition: fail()
+      condition: failed()
     
     - task: PublishPipelineArtifact@1
       inputs:
