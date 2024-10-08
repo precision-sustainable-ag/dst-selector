@@ -70,21 +70,16 @@ stages:
         docker rm cypress-runner
       displayName: "Run Cypress Tests"
 
-    - script: |
-        ls -R /home/vsts/work/1/s
-      displayName: 'List workspace files'
-      condition: always()
-
     # Publish Cypress screenshots as artifacts
     - task: PublishPipelineArtifact@1
       inputs:
-        targetPath: 'cypress/screenshots/'  # The folder where Cypress stores screenshots
+        targetPath: 'cypress/screenshots/'
         artifact: 'cypress-screenshots'
-      condition: always()
+      condition: fail()
     
     - task: PublishPipelineArtifact@1
       inputs:
-        targetPath: 'cypress/videos'  # Publish videos as artifacts
+        targetPath: 'cypress/videos'
         artifact: 'cypress-videos'
       condition: always()
 
