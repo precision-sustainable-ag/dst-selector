@@ -47,6 +47,7 @@ const ProgressButtonsInner = ({
         onClick={() => changeProgress('decrement')}
         disabled={isDisabledBack}
         buttonType="PillButton"
+        data-cy="back-btn"
       >
         BACK
       </PSAButton>
@@ -57,21 +58,19 @@ const ProgressButtonsInner = ({
             <p>{`Please Select a ${councilShorthandRedux === 'MCCC' ? 'County' : 'Zone'}.`}</p>
           }
         >
-          <span>
-            <PSAButton
-              style={{
-                maxWidth: '90px',
-                minWidth: '70px',
-                marginLeft: progressRedux === 4 ? '-75px' : '0px',
-              }}
-              onClick={() => changeProgress('increment')}
-              disabled={isDisabledNext || progressRedux === 4}
-              buttonType="PillButton"
-            >
-              Next
-            </PSAButton>
-
-          </span>
+          <PSAButton
+            style={{
+              maxWidth: '90px',
+              minWidth: '70px',
+              marginLeft: progressRedux === 4 ? '-75px' : '0px',
+            }}
+            onClick={() => changeProgress('increment')}
+            disabled={isDisabledNext || progressRedux === 4}
+            buttonType="PillButton"
+            data-cy="next-btn"
+          >
+            Next
+          </PSAButton>
         </Tooltip>
       ) : (
         <Badge badgeContent={progressRedux === 4 ? selectedCropIdsRedux.length : null} color="error">
@@ -84,6 +83,7 @@ const ProgressButtonsInner = ({
             onClick={() => (progressRedux === 4 ? setMyCoverCropActivationFlag() : changeProgress('increment'))}
             disabled={isDisabledNext || (progressRedux === 4 && selectedCropIdsRedux.length === 0)}
             buttonType="PillButton"
+            data-cy={progressRedux === 4 ? 'my selected crops-btn' : 'next-btn'}
           >
             {progressRedux === 4 ? 'MY SELECTED CROPS' : 'NEXT'}
           </PSAButton>
@@ -106,6 +106,7 @@ const ProgressButtonsInner = ({
         disabled={isDisabledRefresh}
         startIcon={<Refresh />}
         buttonType="PillButton"
+        data-cy="restart-btn"
       >
         Restart
       </PSAButton>

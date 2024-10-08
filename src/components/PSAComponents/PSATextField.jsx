@@ -7,7 +7,7 @@ import { TextField } from '@mui/material';
 
 const PSATextField = ({
   style, placeholder, multiline, variant, fullWidth, minRows,
-  onChange, autoFocus, error, value, InputProps, color, label, onChangeCapture,
+  onChange, autoFocus, error, value, InputProps, color, label, onChangeCapture, testId,
 }) => (
   <TextField
     style={style}
@@ -24,6 +24,7 @@ const PSATextField = ({
     color={color}
     label={label}
     onChangeCapture={onChangeCapture}
+    data-cy={testId}
   />
 );
 

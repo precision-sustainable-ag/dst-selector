@@ -170,6 +170,7 @@ const Header = () => {
                 <span>
                   <PSAButton
                     disabled={tab === 'help' && (stateLabelRedux === null)}
+                    data-cy={tab}
                   >
                     <NavLink to={`/${tab}`}>
                       <Typography variant="body2" sx={{ color: (tab === 'help' && stateLabelRedux === null) ? 'lightgrey' : 'black', fontWeight: 'bold' }}>
@@ -220,6 +221,7 @@ const Header = () => {
                   }}
                   ref={logoRef}
                   alt=""
+                  data-cy="logo-image"
                 />
 
               </PSAButton>
