@@ -14,6 +14,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 import {
   Grid, Box, Typography, Tooltip,
 } from '@mui/material';
+import { PSALogoDisplayer } from 'shared-react-components/src';
 import InformationBar from './InformationBar/InformationBar';
 import ToggleOptions from './ToggleOptions/ToggleOptions';
 import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset';
@@ -30,7 +31,6 @@ import SaveUserHistory from './SaveUserHistory/SaveUserHistory';
 import { releaseNotesURL } from '../../shared/keys';
 import PSAButton from '../../components/PSAComponents/PSAButton';
 import useWindowSize from '../../shared/constants';
-import PSACoverCropCouncil from '../../components/PSAComponents/PSACoverCropCouncil';
 // import logoImage from '../../../public/images/PSAlogo-text.png';
 
 const Header = () => {
@@ -167,15 +167,19 @@ const Header = () => {
                 overflow: 'hidden',
               }}
             >
-              <PSACoverCropCouncil
-                handleClick={handleClick}
-                councilShorthandRedux={councilShorthandRedux}
-                alt="Council Logo"
-                style={{
-                  maxWidth: '100%',
-                  height: 'auto',
-                }}
-              />
+              <PSAButton
+                type="button"
+                onClick={handleClick}
+              >
+                <PSALogoDisplayer
+                  council={councilShorthandRedux}
+                  alt={councilShorthandRedux}
+                  style={{
+                    maxWidth: '100%',
+                    height: 'auto',
+                  }}
+                />
+              </PSAButton>
             </Box>
           </Grid>
         </Grid>
