@@ -389,6 +389,10 @@ const CropSidebar = ({
             <Grid key={val.label} item>
               <Chip
                 key={val.label}
+                style={{
+                  marginRight: 2,
+                  marginBottom: 3,
+                }}
                 onClick={() => handleCropGroupFilter(val.label)}
                 component="li"
                 size="medium"
