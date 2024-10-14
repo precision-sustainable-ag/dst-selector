@@ -8,7 +8,7 @@
 import {
   Box, Grid, Stack, Typography,
 } from '@mui/material';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { CustomStyles } from '../../shared/constants';
 import LicenseAndCopyright from './LicenseAndCopyright/LicenseAndCopyright';
@@ -19,7 +19,10 @@ import PSAButton from '../../components/PSAComponents/PSAButton';
 
 const About = () => {
   const [value, setValue] = React.useState(0);
+  const [attribution, setAttribution] = useState(null);
   const consentRedux = useSelector((stateRedux) => stateRedux.userData.consent);
+
+  const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
 
   const handleChange = (newValue) => {
     setValue(newValue);
@@ -63,6 +66,19 @@ const About = () => {
       default: return null;
     }
   };
+
+  useEffect(() => {
+    const url = `https://${
+      /(localhost|dev)/i.test(window.location) ? 'developapi' : 'api'
+    }.covercrop-selector.org/v2/regions?locality=state&context=seed_calc`;
+    fetch(url)
+      .then((res) => res.json())
+      .then((data) => {
+        setAttribution(councilShorthandRedux === null
+          ? data.attributions.generalStatement
+          : data.attributions[councilShorthandRedux].withoutModifications);
+      });
+  }, [councilShorthandRedux]);
 
   return (
     <Box sx={{ border: 0.5, borderColor: 'grey.300' }} ml={2} mr={2} mt={5}>
@@ -112,6 +128,9 @@ const About = () => {
                 </Typography>
               </center>
               {getContent()}
+              <br />
+              <br />
+              <Typography fontSize="12px">{attribution}</Typography>
             </Stack>
           </div>
         </Grid>
