@@ -128,6 +128,8 @@ const About = () => {
                 </Typography>
               </center>
               {getContent()}
+              <br />
+              <br />
               <Typography fontSize="12px">{attribution}</Typography>
             </Stack>
           </div>
