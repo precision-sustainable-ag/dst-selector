@@ -6,7 +6,7 @@
 */
 
 import { useDispatch, useSelector } from 'react-redux';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { NavLink, useHistory } from 'react-router-dom';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
@@ -14,7 +14,6 @@ import { useAuth0 } from '@auth0/auth0-react';
 import {
   Grid, Box, Typography, Tooltip,
 } from '@mui/material';
-import { PSALogoDisplayer } from 'shared-react-components/src';
 import InformationBar from './InformationBar/InformationBar';
 import ToggleOptions from './ToggleOptions/ToggleOptions';
 import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset';
@@ -37,6 +36,10 @@ const Header = () => {
   const history = useHistory();
   const dispatchRedux = useDispatch();
   const { isAuthenticated, getAccessTokenSilently } = useAuth0();
+
+  // useRef vars
+  const logoRef = useRef(null);
+  const faviconRef = useRef(document.getElementById('favicon'));
 
   // used to know if the user is in mobile mode
   const theme = useTheme();
@@ -78,6 +81,44 @@ const Header = () => {
       dispatchRedux(setMyCoverCropReset(true, false));
     }
   };
+
+  // useEffect to update favicon
+  useEffect(() => {
+    switch (councilShorthandRedux) {
+      case 'NECCC':
+        faviconRef.current.href = '/favicons/neccc-favicon.ico';
+        break;
+      case 'SCCC':
+        faviconRef.current.href = '/favicons/sccc-favicon.ico';
+        break;
+      case 'MCCC':
+        faviconRef.current.href = '/favicons/mccc-favicon.ico';
+        break;
+      default:
+        faviconRef.current.href = '/favicons/psa-favicon.ico';
+        break;
+    }
+  }, [councilShorthandRedux]);
+
+  // useEffect to update logo image
+  useEffect(() => {
+    switch (councilShorthandRedux) {
+      case 'NECCC':
+        logoRef.current.src = '/images/neccc_wide_logo_color_web.jpg';
+        break;
+      case 'SCCC':
+        logoRef.current.src = '/images/sccc_logo.png';
+        break;
+      case 'MCCC':
+        logoRef.current.src = '/images/mwccc_logo.png';
+        break;
+
+      default:
+        logoRef.current.src = '/images/PSAlogo-text.png';
+
+        break;
+    }
+  }, [councilShorthandRedux]);
 
   useEffect(() => {
     // detect current pathname
@@ -171,15 +212,18 @@ const Header = () => {
                 type="button"
                 onClick={handleClick}
               >
-                <PSALogoDisplayer
-                  council={councilShorthandRedux}
-                  alt={councilShorthandRedux}
+                <img
+                  id="logoImage"
                   style={{
                     maxWidth: '100%',
                     height: 'auto',
                   }}
+                  ref={logoRef}
+                  alt=""
                 />
+
               </PSAButton>
+
             </Box>
           </Grid>
         </Grid>

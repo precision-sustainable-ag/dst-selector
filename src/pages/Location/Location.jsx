@@ -18,7 +18,7 @@ import React, {
 import { useDispatch, useSelector } from 'react-redux';
 import { Search } from '@mui/icons-material';
 import moment from 'moment';
-import { Map } from 'shared-react-components/src';
+import { Map } from '@psa/dst.ui.map';
 // import mapboxgl from 'mapbox-gl';
 import statesLatLongDict from '../../shared/stateslatlongdict';
 import {
@@ -34,7 +34,6 @@ import {
 } from '../../reduxStore/weatherSlice';
 import { historyState, setHistoryDialogState, updateField } from '../../reduxStore/userSlice';
 import pirschAnalytics from '../../shared/analytics';
-import { mapboxToken } from '../../shared/keys';
 
 const Location = () => {
   const dispatchRedux = useDispatch();
@@ -346,7 +345,6 @@ const Location = () => {
               hasFullScreen
               hasMarkerPopup
               hasMarkerMovable
-              mapboxToken={mapboxToken}
             />
           </Container>
         </Grid>

@@ -13,6 +13,7 @@
     "@mui/lab": "^5.0.0-alpha.93",
     "@mui/material": "^5.16.7",
     "@mui/x-date-pickers": "^6.1.0",
+    "@psa/dst.ui.map": "^0.0.61",
     "@turf/area": "^6.5.0",
     "@turf/centroid": "^6.5.0",
     "dayjs": "^1.11.8",
