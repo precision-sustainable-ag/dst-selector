@@ -313,7 +313,11 @@ const Landing = () => {
                 </Grid>
               )}
           </Grid>
-          <p style={{ textAlign: 'center', fontSize: '12px' }}>*More states coming soon!</p>
+          <Grid item xs={12}>
+            <Typography variant="body2" align="center">
+              *More states coming soon!
+            </Typography>
+          </Grid>
         </Box>
       </Grid>
       <Grid item>
