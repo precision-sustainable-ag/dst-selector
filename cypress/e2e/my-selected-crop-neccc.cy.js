@@ -5,6 +5,7 @@ import { mySelectedCropsCommonTests } from '../support/e2e';
 
 describe('Test for adding a crop to cart and viewing the crop in "My Selected Crops" screen for NECCC region', () => {
   beforeEach(() => {
+    cy.viewport(1920, 1080);
     cy.intercept({ url: 'https://api.mapbox.com/**' }, { log: false });
     cy.intercept({ url: 'https://events.mapbox.com/**' }, { log: false });
     cy.beforeEachVisitBaseUrl();

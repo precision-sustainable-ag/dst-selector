@@ -5,6 +5,9 @@ import { necccFilterTests } from '../support/e2e-neccc';
 describe('Test all possible interactions on the NECCC Crop Calendar Page', () => {
   // before each test
   beforeEach(() => {
+    cy.viewport(1920, 1080);
+    cy.intercept({ url: 'https://api.mapbox.com/**' }, { log: false });
+    cy.intercept({ url: 'https://events.mapbox.com/**' }, { log: false });
     cy.beforeEachVisitBaseUrl();
     cy.assertByTestId('state-selector-dropdown').first().click();
     cy.assertByTestId('state-dropdown-item-22').click();
