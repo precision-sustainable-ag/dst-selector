@@ -63,7 +63,7 @@ describe('Test all possible interactions on the Landing Page after a state is se
     let councilShorthand = '';
     cy.window().its('Storage').invoke('getState').then((state) => {
       councilShorthand = state.mapData.councilShorthand;
-      cy.getByTestId('header-logo').find('img').invoke('attr', 'src').should('equal', `/images/${councilShorthand.toLowerCase()}_logo.png`);
+      cy.getByTestId('header-logo').find('img').invoke('attr', 'src').should('equal', `images/${councilShorthand.toLowerCase()}_logo.png`);
     });
   });
 
