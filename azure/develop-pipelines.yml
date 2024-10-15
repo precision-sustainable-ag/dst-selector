@@ -64,10 +64,11 @@ stages:
 
         docker run --network="host" --name cypress-runner cypress-tester
         
-        docker cp cypress-runner:/e2e/cypress/screenshots ./cypress/screenshots
-        docker cp cypress-runner:/e2e/cypress/videos ./cypress/videos
+        docker cp cypress-runner:/e2e/cypress/screenshots ./cypress/screenshots || true
+        docker cp cypress-runner:/e2e/cypress/videos ./cypress/videos || true
 
         docker rm cypress-runner
+        exit $TEST_EXIT_CODE
       displayName: "Run Cypress Tests"
 
     # Publish Cypress screenshots as artifacts

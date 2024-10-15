@@ -171,6 +171,7 @@ const Header = () => {
               <PSAButton
                 type="button"
                 onClick={handleClick}
+                data-cy="header-logo"
               >
                 <PSALogoDisplayer
                   council={councilShorthandRedux}
