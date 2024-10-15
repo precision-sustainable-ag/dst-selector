@@ -37,9 +37,15 @@ const SidebarFilter = ({
             onClick={() => dispatchRedux(toggleFilterValue(sectionFilter))}
           >
             <ListItemText
-              primary={<Typography variant="body2">{filter.name.toUpperCase()}</Typography>}
+              primary={
+                <Typography variant="body2">{filter.name.toUpperCase()}</Typography>
+              }
             />
-            {filterDataRedux[sectionFilter] ? <ExpandLess /> : <ExpandMore />}
+            {
+              filterDataRedux[sectionFilter]
+                ? <ExpandLess data-cy={`${filter.name.toUpperCase()}-expandless-icon`} />
+                : <ExpandMore data-cy={`${filter.name.toUpperCase()}-expandmore-icon`} />
+            }
           </ListItem>
         </Tooltip>
       ) : (
@@ -50,9 +56,15 @@ const SidebarFilter = ({
           onClick={() => dispatchRedux(toggleFilterValue(sectionFilter))}
         >
           <ListItemText
-            primary={<Typography variant="body2">{filter.name.toUpperCase()}</Typography>}
+            primary={
+              <Typography variant="body2" data-cy={filter.name.toUpperCase()}>{filter.name.toUpperCase()}</Typography>
+            }
           />
-          {filterDataRedux[sectionFilter] ? <ExpandLess /> : <ExpandMore />}
+          {
+            filterDataRedux[sectionFilter]
+              ? <ExpandLess data-cy={`${filter.name.toUpperCase()}-expandless-icon`} />
+              : <ExpandMore data-cy={`${filter.name.toUpperCase()}-expandmore-icon`} />
+          }
         </ListItem>
       )}
 

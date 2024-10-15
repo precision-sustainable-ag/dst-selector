@@ -55,7 +55,7 @@ const CropCard = ({
 
   // height: isMobile ? '350px' : '350px'
   return (
-    <Card style={{ width: isMobile ? '160px' : '260px' }}>
+    <Card style={{ width: isMobile ? '160px' : '260px' }} data-cy={`crop-card-${index - 1}`}>
       <CardActionArea onClick={() => handleModalOpen(crop)}>
         <CardMedia
           image={
@@ -73,7 +73,7 @@ const CropCard = ({
         >
           {crop.attributes.filter((a) => a.label === 'Cover Crop Group')[0]?.values[0].value}
         </Typography>
-        <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>
+        <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }} data-cy={`crop-card-label-${index - 1}`}>
           {crop.label}
         </Typography>
         <Typography sx={{ fontStyle: 'italic' }}>
