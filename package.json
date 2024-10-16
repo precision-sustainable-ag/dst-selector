@@ -15,6 +15,7 @@
     "@mui/x-date-pickers": "^6.1.0",
     "@turf/area": "^6.5.0",
     "@turf/centroid": "^6.5.0",
+    "@vitejs/plugin-react": "^4.3.1",
     "dayjs": "^1.11.8",
     "mapbox-gl": "^2.10.0",
     "mdbreact": "^4.24.0",
@@ -31,8 +32,7 @@
     "sass-mediaqueries": "^1.6.1",
     "shared-react-components": "github:precision-sustainable-ag/shared-react-components",
     "styled-components": "^5.3.6",
-    "vite": "^5.4.4",
-    "@vitejs/plugin-react": "^4.3.1"
+    "vite": "^5.4.4"
   },
   "type": "module",
   "scripts": {
