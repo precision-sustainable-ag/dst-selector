@@ -19,7 +19,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Search } from '@mui/icons-material';
 import moment from 'moment';
 import { Map } from 'shared-react-components/src';
-// import mapboxgl from 'mapbox-gl';
 import statesLatLongDict from '../../shared/stateslatlongdict';
 import {
   abbrRegion, reverseGEO, callCoverCropApi,
