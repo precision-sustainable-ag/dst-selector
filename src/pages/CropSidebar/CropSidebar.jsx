@@ -185,7 +185,7 @@ const CropSidebar = ({
 
       cd[n].inactive = (!match)
       || !(matchesDrainageClass && cropFloodingValueIsHigher)
-      || cropGroupFilterRedux?.length < 0 ? false : !(crop?.group?.includes(cropGroupFilterRedux));
+      || cropGroupFilterRedux?.length < 0 ? cd[n].inactive : !(crop?.group?.includes(cropGroupFilterRedux));
 
       return true;
     });
