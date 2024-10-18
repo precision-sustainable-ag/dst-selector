@@ -186,6 +186,8 @@ const Location = () => {
       // get current lat long and get county, state and city
       if (progressRedux >= 1 && markersRedux.length > 0) {
         const reverseGEOresult = await reverseGEO(lat, lon);
+        console.log('reverseGEOresult', reverseGEOresult);
+        if (reverseGEOresult?.features?.filter((feature) => feature?.place_type?.includes('region'))[0]?.text === undefined) return;
         const abbrState = abbrRegion(
           reverseGEOresult?.features?.filter((feature) => feature?.place_type?.includes('region'))[0]?.text,
           'abbr',
@@ -286,7 +288,7 @@ const Location = () => {
               alignItems: 'center',
             }}
           >
-            <Typography variant="h4">
+            <Typography variant="h4" data-cy="field-location-title">
               Field Location
             </Typography>
           </Grid>

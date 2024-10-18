@@ -44,12 +44,9 @@ stages:
         echo VITE_API_USER_HISTORY_SCHEMA="$(VITE_API_USER_HISTORY_SCHEMA)" >> /home/vsts/work/1/s/.env
         echo VITE_API_RELEASE_NOTES="$(VITE_API_RELEASE_NOTES)" >> /home/vsts/work/1/s/.env
         echo VITE_API_MAPBOX_TOKEN="$(VITE_API_MAPBOX_TOKEN)" >> /home/vsts/work/1/s/.env
+        echo VITE_AUTH0_USERNAME="$(VITE_AUTH0_USERNAME)" >> /home/vsts/work/1/s/.env
+        echo VITE_AUTH0_PASSWORD="$(VITE_AUTH0_PASSWORD)" >> /home/vsts/work/1/s/.env
       displayName: "Create .env"
-    - script: |
-        chmod +x ./npm-ci.sh
-        npm config set '@psa:registry' https://node.bit.cloud
-        ./npm-ci.sh
-      displayName: "Install bit"
     - task: Docker@2
       displayName: Build and push an image to container registry
       inputs:
@@ -59,6 +56,33 @@ stages:
         containerRegistry: $(dockerRegistryServiceConnection)
         tags: |
           $(tag)
+
+    - script: |
+        docker pull $(containerRegistry)/$(imageRepository):$(tag)
+        docker run -d --name test-app --network="host" $(containerRegistry)/$(imageRepository):$(tag)
+        docker build -f Dockerfile.tester -t cypress-tester .
+
+        docker run --network="host" --name cypress-runner cypress-tester || TEST_EXIT_CODE=$?
+        
+        docker cp cypress-runner:/e2e/cypress/screenshots ./cypress/screenshots || true
+        docker cp cypress-runner:/e2e/cypress/videos ./cypress/videos || true
+
+        docker rm cypress-runner
+        exit $TEST_EXIT_CODE
+      displayName: "Run Cypress Tests"
+
+    # Publish Cypress screenshots as artifacts
+    - task: PublishPipelineArtifact@1
+      inputs:
+        targetPath: 'cypress/screenshots/'
+        artifact: 'cypress-screenshots'
+      condition: failed()
+    
+    - task: PublishPipelineArtifact@1
+      inputs:
+        targetPath: 'cypress/videos'
+        artifact: 'cypress-videos'
+      condition: always()
 
     - upload: manifests
       artifact: manifests
