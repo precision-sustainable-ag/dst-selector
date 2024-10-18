@@ -94,11 +94,13 @@ const RenderDrainageClasses = ({
       alignItems={isMobile ? 'center' : 'flex-start'}
       style={{ marginRight: '1rem' }}
       flexBasis="0"
+      data-cy="drainage-class-chip-box"
     >
       {drainageArray.map((d, index) => (
         <Box key={index} sx={{ width: isMobile ? '100%' : 'auto' }}>
           <Chip
             label={d}
+            data-cy={`drainage-class-chip-${index}`}
             color={drainageVal.includes(index) ? 'primary' : 'secondary'}
             style={{ margin: '0.3rem' }}
             onClick={() => {

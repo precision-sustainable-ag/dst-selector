@@ -29,3 +29,6 @@ package-lock.json
 IP2LOCATION-LITE-DB11.CSV
 LICENSE_LITE.TXT
 README_LITE.TXT
+
+/cypress/snapshots
+/cypress/screenshots
