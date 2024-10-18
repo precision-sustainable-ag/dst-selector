@@ -6,7 +6,6 @@
   resetAllFilters resets all selected items in the sidebar
   showAllVariables selects all filters
 */
-
 import {
   List, ListItem, ListItemText,
 } from '@mui/material';
@@ -126,6 +125,7 @@ const ComparisonBar = ({
                 size="small"
                 style={{ marginBottom: '-15px', color: 'red' }}
                 onClick={resetAllFilters}
+                data-cy="my-selected-crops-clear-variables"
               >
                 Clear Variables
               </PSAButton>
@@ -134,18 +134,19 @@ const ComparisonBar = ({
         </ListItem>
       )}
       {((comparisonKeys.length - allGoals.length) + 1) !== filtersTotal && (
-      <ListItem>
-        <ListItemText
-          primary={(
-            <PSAButton
-              size="small"
-              onClick={showAllVariables}
-            >
-              Show All
-            </PSAButton>
-          )}
-        />
-      </ListItem>
+        <ListItem>
+          <ListItemText
+            primary={(
+              <PSAButton
+                size="small"
+                onClick={showAllVariables}
+                data-cy="my-selected-crops-show-all"
+              >
+                Show All
+              </PSAButton>
+            )}
+          />
+        </ListItem>
       )}
       {allGoals.length > 0 && (
         <RenderGoals

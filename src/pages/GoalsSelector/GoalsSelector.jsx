@@ -61,10 +61,11 @@ const GoalsSelector = () => {
               p: '1rem',
               margin: !isLargeScreen ? '1rem' : '0',
             }}
+            data-cy="goals-card"
           >
             {/* title */}
             <Grid item xs={12}>
-              <Typography variant="h4" align="center">
+              <Typography variant="h4" align="center" data-cy="title-goals">
                 Goals
               </Typography>
             </Grid>
@@ -135,6 +136,7 @@ const GoalsSelector = () => {
               mb: !isLargeScreen ? '1rem' : '0,',
             }}
             justifyContent="center"
+            data-cy="cashcrop-window"
           >
             <PreviousCashCrop />
           </Grid>

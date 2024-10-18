@@ -169,16 +169,30 @@ const HistorySelect = () => {
                     onChange={(e) => setValue(e.target.value)}
                     sx={selectStyles}
                     MenuProps={menuProps}
+                    data-cy="select-history"
                   >
                     {userHistoryList.map((history, i) => (
-                      <MenuItem value={history.label} key={i}>{history.label}</MenuItem>
+                      <MenuItem
+                        value={history.label}
+                        key={i}
+                        data-cy={`history-${history.label}`}
+                      >
+                        {history.label}
+                      </MenuItem>
                     ))}
                   </Select>
                 </FormControl>
               </Grid>
 
               <Grid item xs={12} md={3} display="flex" justifyContent="center" alignItems="center">
-                <PSAButton onClick={handleLoadHistory} variant="contained" disabled={value === ''}>Import</PSAButton>
+                <PSAButton
+                  onClick={handleLoadHistory}
+                  variant="contained"
+                  disabled={value === ''}
+                  data-cy="import-history"
+                >
+                  Import
+                </PSAButton>
               </Grid>
 
               <Grid item xs={12} display="flex" justifyContent="center" alignItems="center">
@@ -190,8 +204,8 @@ const HistorySelect = () => {
       />
 
       <Box sx={{ display: 'flex', justifyContent: 'space-around' }}>
-        <PSAButton onClick={handleAddHistory} variant="contained">Create New History </PSAButton>
-        <PSAButton variant="contained" onClick={handleHistoryImport}>Import previous history</PSAButton>
+        <PSAButton variant="contained" onClick={handleAddHistory} data-cy="create-new-history">Create New History</PSAButton>
+        <PSAButton variant="contained" onClick={handleHistoryImport} data-cy="import-previous-history">Import previous history</PSAButton>
       </Box>
 
     </>
