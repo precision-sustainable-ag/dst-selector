@@ -1,11 +1,12 @@
 import {
-  Collapse, List, ListItem, ListItemText, Tooltip, Typography,
+  Collapse, List, ListItem, ListItemText, Typography,
 } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import React, { Fragment } from 'react';
 import Filters from '../Filters/Filters';
 import { toggleFilterValue } from '../../../reduxStore/filterSlice';
+import PSATooltip from '../../../components/PSAComponents/PSATooltip';
 
 const SidebarFilter = ({
   filter,
@@ -21,7 +22,7 @@ const SidebarFilter = ({
   return (
     <>
       {filter.description !== '' ? (
-        <Tooltip
+        <PSATooltip
           arrow
           placement="right-start"
           enterTouchDelay={0}
@@ -41,7 +42,7 @@ const SidebarFilter = ({
             />
             {filterDataRedux[sectionFilter] ? <ExpandLess /> : <ExpandMore />}
           </ListItem>
-        </Tooltip>
+        </PSATooltip>
       ) : (
         <ListItem
           key={index}

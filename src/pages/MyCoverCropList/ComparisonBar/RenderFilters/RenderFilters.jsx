@@ -10,13 +10,13 @@ import {
   List,
   ListItem,
   ListItemText,
-  Tooltip,
   Typography,
 } from '@mui/material';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import React, { Fragment } from 'react';
 import { useDispatch } from 'react-redux';
 import { updateComparisonKeys } from '../../../../reduxStore/sharedSlice';
+import PSATooltip from '../../../../components/PSAComponents/PSATooltip';
 
 const RenderFilters = ({
   filterValues = [],
@@ -48,7 +48,7 @@ const RenderFilters = ({
     return (
       <Fragment key={`filters-outer-${index}`}>
         {filter.description !== null ? (
-          <Tooltip
+          <PSATooltip
             arrow
             placement="right-start"
             enterTouchDelay={0}
@@ -67,7 +67,7 @@ const RenderFilters = ({
               />
               {filterValues[index].open ? <ExpandLess /> : <ExpandMore />}
             </ListItem>
-          </Tooltip>
+          </PSATooltip>
         ) : (
           <ListItem
             sx={{ backgroundColor: filterValues[index].open ? '#add08f' : 'white' }}
@@ -113,7 +113,7 @@ const RenderFilters = ({
                 ) : (
                   filter.values.map((val, index2) => (val.name !== 'Roller Crimp at Flowering' ? (
                     <Grid item xs={12} key={`filter-inner-${index2}`}>
-                      <Tooltip
+                      <PSATooltip
                         arrow
                         placement="right"
                         enterTouchDelay={0}
@@ -139,7 +139,7 @@ const RenderFilters = ({
                               )}
                           label={<small>{val.name}</small>}
                         />
-                      </Tooltip>
+                      </PSATooltip>
                     </Grid>
                   ) : (
                     ''

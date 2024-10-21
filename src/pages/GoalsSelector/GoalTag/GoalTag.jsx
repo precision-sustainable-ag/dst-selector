@@ -3,12 +3,13 @@
   The GoalTag is individual goal tag inside the goal selector window
 */
 
-import { Avatar, Chip, Tooltip } from '@mui/material';
+import { Avatar, Chip } from '@mui/material';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addSelectedGoals, updateSelectedGoal } from '../../../reduxStore/goalSlice';
 import { historyState, setHistoryState } from '../../../reduxStore/userSlice';
 import pirschAnalytics from '../../../shared/analytics';
+import PSATooltip from '../../../components/PSAComponents/PSATooltip';
 
 // TODO: Whats up with goalt?? we need to look into fixing this.
 const GoalTag = ({
@@ -40,7 +41,7 @@ const GoalTag = ({
     }
   };
   return (
-    <Tooltip
+    <PSATooltip
       enterDelay={1000}
       enterNextDelay={1000}
       id={`tooltip-${id}`}
@@ -74,7 +75,7 @@ const GoalTag = ({
           variant="outlined"
         />
       </span>
-    </Tooltip>
+    </PSATooltip>
   );
 };
 

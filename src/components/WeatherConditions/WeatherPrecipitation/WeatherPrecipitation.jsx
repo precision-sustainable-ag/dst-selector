@@ -1,7 +1,8 @@
-import { Tooltip, Typography, Grid } from '@mui/material';
+import { Typography, Grid } from '@mui/material';
 import { Info, Opacity } from '@mui/icons-material';
 import React from 'react';
 import { useSelector } from 'react-redux';
+import PSATooltip from '../../PSAComponents/PSATooltip';
 
 const WeatherPrecipitation = ({ currentMonthFull }) => {
   const weatherDataRedux = useSelector((stateRedux) => stateRedux.weatherData.weatherData);
@@ -27,7 +28,7 @@ const WeatherPrecipitation = ({ currentMonthFull }) => {
             <span style={{ fontWeight: 'bold', fontSize: '1.2rem' }}>Precipitation</span>
             &nbsp;
             {' '}
-            <Tooltip
+            <PSATooltip
               arrow
               placement="right"
               enterTouchDelay={0}
@@ -55,7 +56,7 @@ const WeatherPrecipitation = ({ currentMonthFull }) => {
               )}
             >
               <Info sx={{ fontSize: '1rem' }} />
-            </Tooltip>
+            </PSATooltip>
           </Typography>
         </Grid>
         <Grid item>

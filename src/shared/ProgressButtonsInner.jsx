@@ -5,12 +5,13 @@
 
 import React from 'react';
 import { Refresh } from '@mui/icons-material';
-import { Stack, Tooltip, Badge } from '@mui/material';
+import { Stack, Badge } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { reset } from '../reduxStore/store';
 import { updateProgress, setMyCoverCropReset } from '../reduxStore/sharedSlice';
 import PSAButton from '../components/PSAComponents/PSAButton';
+import PSATooltip from '../components/PSAComponents/PSATooltip';
 
 const ProgressButtonsInner = ({
   isDisabledBack, isDisabledNext, isDisabledRefresh, toolTip,
@@ -51,7 +52,7 @@ const ProgressButtonsInner = ({
         BACK
       </PSAButton>
       {toolTip && isDisabledNext ? (
-        <Tooltip
+        <PSATooltip
           enterTouchDelay={0}
           title={
             <p>{`Please Select a ${councilShorthandRedux === 'MCCC' ? 'County' : 'Zone'}.`}</p>
@@ -72,7 +73,7 @@ const ProgressButtonsInner = ({
             </PSAButton>
 
           </span>
-        </Tooltip>
+        </PSATooltip>
       ) : (
         <Badge badgeContent={progressRedux === 4 ? selectedCropIdsRedux.length : null} color="error">
           <PSAButton
