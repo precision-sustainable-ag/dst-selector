@@ -12,7 +12,6 @@ import {
   AccordionDetails,
   AccordionSummary,
   Typography,
-  Tooltip,
   Box,
   Grid,
 } from '@mui/material';
@@ -24,6 +23,7 @@ import CoverCropInformation from './CoverCropInformation/CoverCropInformation';
 import InformationSheetReferences from './InformationSheetReferences/InformationSheetReferences';
 import { callCoverCropApi, extractData } from '../../shared/constants';
 import pirschAnalytics from '../../shared/analytics';
+import PSATooltip from '../../components/PSAComponents/PSATooltip';
 
 const InformationSheetContent = ({ crop, modalData }) => {
   // used to know if the user is in mobile mode
@@ -97,7 +97,7 @@ const InformationSheetContent = ({ crop, modalData }) => {
                           direction={isMobile ? 'row' : 'column'}
                         >
                           <Grid item xs={12}>
-                            <Tooltip
+                            <PSATooltip
                               placement="top-end"
                               enterTouchDelay={0}
                               title={att.description}
@@ -106,7 +106,7 @@ const InformationSheetContent = ({ crop, modalData }) => {
                               <Typography sx={{ fontWeight: 'bold' }} variant="body1">
                                 {att.label}
                               </Typography>
-                            </Tooltip>
+                            </PSATooltip>
                           </Grid>
                           <Grid item xs={12}>
                             <Typography
@@ -121,7 +121,7 @@ const InformationSheetContent = ({ crop, modalData }) => {
                         </Grid>
                       ) : (
                         <Grid item key={catIndex} xs={12}>
-                          <Tooltip
+                          <PSATooltip
                             placement="top-end"
                             enterTouchDelay={0}
                             title={att.description}
@@ -154,7 +154,7 @@ const InformationSheetContent = ({ crop, modalData }) => {
                                 </Typography>
                               </Box>
                             )}
-                          </Tooltip>
+                          </PSATooltip>
                         </Grid>
                       )))}
                   </Grid>

@@ -1,8 +1,9 @@
 import React from 'react';
 import {
-  Tooltip, Typography, Grid, Box,
+  Typography, Grid, Box,
 } from '@mui/material';
 import '../../styles/cropSelectorCalendarView.scss';
+import PSATooltip from '../PSAComponents/PSATooltip';
 
 const isHessianDate = (item) => {
   if (item.info.includes('Hessian Fly Free Date')) {
@@ -35,7 +36,7 @@ const CropSelectorCalendarView = ({ from = 'calendar', data = [] }) => (
       } ${isCashCropTime ? 'cashCropMonth' : ''}`;
       return (
         <Box flex={length} key={index}>
-          <Tooltip
+          <PSATooltip
             sx={{ flex: length }}
             arrow
             title={
@@ -77,7 +78,7 @@ const CropSelectorCalendarView = ({ from = 'calendar', data = [] }) => (
                 : null}
 
             </Box>
-          </Tooltip>
+          </PSATooltip>
         </Box>
 
       );

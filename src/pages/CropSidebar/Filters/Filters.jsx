@@ -1,8 +1,9 @@
-import { Chip, Grid, Tooltip } from '@mui/material';
+import { Chip, Grid } from '@mui/material';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { filterOffRedux, filterOnRedux, filterToggle } from '../../../reduxStore/filterSlice';
+import PSATooltip from '../../../components/PSAComponents/PSATooltip';
 
 // this file handles setting all of the filters in the redux state
 
@@ -114,7 +115,7 @@ const Chips = ({ filter }) => {
 
 // handles making the tooltips in sidebar
 const Tip = ({ filter }) => (
-  <Tooltip
+  <PSATooltip
     enterTouchDelay={0}
     title={(
       <>
@@ -127,7 +128,7 @@ const Tip = ({ filter }) => (
       {filter.name}
       <HelpOutlineIcon style={{ cursor: 'pointer', transform: 'scale(0.7)' }} />
     </span>
-  </Tooltip>
+  </PSATooltip>
 ); // Tip
 
 // renders sidebar

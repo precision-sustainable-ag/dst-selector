@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  TableCell, TableRow, Grid, Tooltip,
+  TableCell, TableRow, Grid,
   Box,
 } from '@mui/material';
 import {
@@ -21,6 +21,7 @@ import { updateSelectedCropIds } from '../../../reduxStore/cropSlice';
 import { myCropListLocation, snackHandler } from '../../../reduxStore/sharedSlice';
 import { setSaveHistory } from '../../../reduxStore/userSlice';
 import PSAButton from '../../../components/PSAComponents/PSAButton';
+import PSATooltip from '../../../components/PSAComponents/PSATooltip';
 
 const CheckBoxIcon = ({ style }) => (
   <Box sx={style}>
@@ -126,7 +127,7 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
               </Grid>
               {crop.attributes.filter((a) => a.label === 'Frost Seed')[0]?.values[0].label === 'Yes' && (
                 <Grid item>
-                  <Tooltip
+                  <PSATooltip
                     placement="top-end"
                     enterTouchDelay={0}
                     title={`${flipCoverCropName(crop.label)} is suitable for frost seeding.`}
@@ -135,7 +136,7 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                     <AcUnit
                       sx={{ color: 'white', backgroundColor: '#80D0FF', borderRadius: '5px' }}
                     />
-                  </Tooltip>
+                  </PSATooltip>
                 </Grid>
               )}
             </Grid>
@@ -152,7 +153,7 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
               className="goalCells"
             >
               <div>
-                <Tooltip
+                <PSATooltip
                   arrow
                   placement="bottom"
                   enterTouchDelay={0}
@@ -165,7 +166,7 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                   )}
                 >
                   {getRating(crop.goals.filter((a) => a.label === goal)[0].values[0].value, councilShorthandRedux)}
-                </Tooltip>
+                </PSATooltip>
               </div>
             </TableCell>
           ))}

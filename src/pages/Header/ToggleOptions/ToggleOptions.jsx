@@ -1,11 +1,12 @@
 import {
-  Badge, Tooltip, Typography,
+  Badge, Typography,
 } from '@mui/material';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useHistory } from 'react-router-dom';
 import { activateMyCoverCropListTile, activateSpeicesSelectorTile, setMyCoverCropReset } from '../../../reduxStore/sharedSlice';
 import PSAButton from '../../../components/PSAComponents/PSAButton';
+import PSATooltip from '../../../components/PSAComponents/PSATooltip';
 
 const ToggleOptions = ({ pathname }) => {
   const dispatchRedux = useDispatch();
@@ -54,7 +55,7 @@ const ToggleOptions = ({ pathname }) => {
         </Typography>
 
       </PSAButton>
-      <Tooltip title={(stateLabelRedux === null) ? 'You must select a state before using the Cover Crop Explorer' : ''} enterTouchDelay={0}>
+      <PSATooltip title={(stateLabelRedux === null) ? 'You must select a state before using the Cover Crop Explorer' : ''} enterTouchDelay={0}>
         <span>
           <PSAButton
             onClick={setSpeciesSelectorActivationFlag}
@@ -68,7 +69,7 @@ const ToggleOptions = ({ pathname }) => {
 
           </PSAButton>
         </span>
-      </Tooltip>
+      </PSATooltip>
 
       {selectedCropIdsRedux.length > 0
         && (
