@@ -5,22 +5,16 @@
   "homepage": "https://covercrop.tools/",
   "dependencies": {
     "@auth0/auth0-react": "^2.2.0",
-    "@emotion/react": "^11.13.0",
+    "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
-    "@mapbox/mapbox-gl-draw": "^1.3.0",
-    "@mapbox/mapbox-gl-geocoder": "^5.0.1",
-    "@mui/icons-material": "^5.8.4",
-    "@mui/lab": "^5.0.0-alpha.93",
+    "@mui/icons-material": "^5.16.7",
     "@mui/material": "^5.16.7",
     "@mui/x-date-pickers": "^6.1.0",
-    "@turf/area": "^6.5.0",
-    "@turf/centroid": "^6.5.0",
     "@vitejs/plugin-react": "^4.3.1",
+    "cypress": "^13.13.0",
     "dayjs": "^1.11.8",
-    "mapbox-gl": "^2.10.0",
     "mdbreact": "^4.24.0",
     "moment": "^2.24.0",
-    "prop-types": "^15.7.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-redux": "^8.1.1",
@@ -32,11 +26,21 @@
     "sass-mediaqueries": "^1.6.1",
     "shared-react-components": "github:precision-sustainable-ag/shared-react-components",
     "styled-components": "^5.3.6",
+    "@babel/runtime": "^7.25.6",
     "vite": "^5.4.4"
   },
   "type": "module",
   "scripts": {
-    "start": "vite",
+    "cypress:e2e:dev": "npx cypress run --config-file dev.config.js",
+    "cypress:comp:dev": "npx cypress run --component --config-file=dev.config.js",
+    "cy:open": "npx cypress open cross-env NODE_OPTIONS=--max_old_space_size=8192 webpack --config-file dev.cypress.config.mjs",
+    "e2e:chrome": "npx cypress run --e2e --browser chrome",
+    "dev:e2e:chrome": "npx cypress run --e2e --browser chrome --config-file dev.cypress.config.mjs",
+    "component:chrome": "npx cypress run --component --browser chrome",
+    "dev:component:chrome": "npx cypress run --component --browser chrome --config-file dev.cypress.config.mjs",
+    "test:all": "npm run component:chrome && npm run e2e:chrome",
+    "dev:test:all": "npm run dev:component:chrome && npm run dev:e2e:chrome",
+    "start": "vite --port 3000",
     "build": "vite build",
     "serve": "vite preview",
     "format": "prettier --write ."
@@ -58,8 +62,11 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-export-default-from": "^7.18.10",
+    "@babel/plugin-transform-runtime": "^7.25.4",
+    "@cypress/code-coverage": "^3.12.45",
     "@types/react-leaflet": "^2.8.2",
     "@vitejs/plugin-react": "^4.3.1",
+    "dotenv": "^16.4.5",
     "eslint": "^8.23.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-plugin-import": "^2.26.0",
@@ -74,5 +81,8 @@
     "vite-plugin-svgr": "^4.2.0",
     "vite-tsconfig-paths": "^5.0.1",
     "webpack": "^5.74.0"
+  },
+  "optionalDependencies": {
+    "@rollup/rollup-linux-x64-gnu": "4.9.5"
   }
 }

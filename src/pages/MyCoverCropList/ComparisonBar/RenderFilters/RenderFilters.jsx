@@ -63,9 +63,11 @@ const RenderFilters = ({
               onClick={() => toggleSidebarFilterItems(index)}
             >
               <ListItemText
-                primary={<Typography variant="body2">{filter.name.toUpperCase()}</Typography>}
+                primary={<Typography variant="body2" data-cy={`${filter.name.toUpperCase()}`}>{filter.name.toUpperCase()}</Typography>}
               />
-              {filterValues[index].open ? <ExpandLess /> : <ExpandMore />}
+              {filterValues[index].open
+                ? <ExpandLess data-cy={`${filter.name.toUpperCase()}-expandless-icon`} />
+                : <ExpandMore data-cy={`${filter.name.toUpperCase()}-expandmore-icon`} />}
             </ListItem>
           </PSATooltip>
         ) : (
@@ -75,9 +77,11 @@ const RenderFilters = ({
             onClick={() => toggleSidebarFilterItems(index)}
           >
             <ListItemText
-              primary={<Typography variant="body2">{filter.name.toUpperCase()}</Typography>}
+              primary={<Typography variant="body2" data-cy={`${filter.name.toUpperCase()}`}>{filter.name.toUpperCase()}</Typography>}
             />
-            {filterValues[index].open ? <ExpandLess /> : <ExpandMore />}
+            {filterValues[index].open
+              ? <ExpandLess data-cy={`${filter.name.toUpperCase()}-expandless-icon`} />
+              : <ExpandMore data-cy={`${filter.name.toUpperCase()}-expandmore-icon`} />}
           </ListItem>
         )}
 
@@ -106,6 +110,7 @@ const RenderFilters = ({
                         }}
                         name={filter.name}
                         color="primary"
+                        data-cy={`${filter.name}-checkbox`}
                       />
                       )}
                     label={<small>{filter.name}</small>}
@@ -135,6 +140,7 @@ const RenderFilters = ({
                               }}
                               name={val.name}
                               color="primary"
+                              data-cy={`${val.name}-checkbox`}
                             />
                               )}
                           label={<small>{val.name}</small>}

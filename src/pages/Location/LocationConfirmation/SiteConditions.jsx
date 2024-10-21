@@ -26,7 +26,7 @@ const SiteConditions = () => {
           {/* <Typography variant="body1" style={{ fontWeight: 'bold', fontSize: '2rem' }}>
             Site Conditions
           </Typography> */}
-          <Typography variant="h4">Site Conditions</Typography>
+          <Typography variant="h4" data-cy="site-conditions-title">Site Conditions</Typography>
           <Typography variant="body1">
             This information is based on your location. Crops that do not meet these site conditions will be grayed out. Update only as needed.
           </Typography>
