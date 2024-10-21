@@ -16,6 +16,7 @@ const WeatherPrecipitation = ({ currentMonthFull }) => {
         padding: '1rem',
         borderRadius: '15px',
       }}
+      data-cy="precipitation-card"
     >
       <Grid
         item

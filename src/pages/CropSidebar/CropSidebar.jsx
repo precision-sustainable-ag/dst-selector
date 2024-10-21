@@ -185,7 +185,7 @@ const CropSidebar = ({
 
       cd[n].inactive = (!match)
       || !(matchesDrainageClass && cropFloodingValueIsHigher)
-      || cropGroupFilterRedux?.length < 0 ? false : !(crop?.group?.includes(cropGroupFilterRedux));
+      || cropGroupFilterRedux?.length < 0 ? cd[n].inactive : !(crop?.group?.includes(cropGroupFilterRedux));
 
       return true;
     });
@@ -313,6 +313,7 @@ const CropSidebar = ({
               <PSAButton
                 onClick={resetAllFilters}
                 style={{ cursor: 'pointer', color: 'red' }}
+                data-cy="crop-side-bar-clear-filters"
               >
                 Clear Filters
               </PSAButton>
@@ -428,6 +429,7 @@ const CropSidebar = ({
           selected={comparisonView}
           startIcon={<Compare style={{ fontSize: 'larger' }} />}
           buttonType="PillButton"
+          data-cy="comparison-view-btn"
         >
           COMPARISON VIEW
         </PSAButton>

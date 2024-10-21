@@ -15,6 +15,7 @@ const WeatherFrostDates = () => {
         padding: '1rem',
         borderRadius: '15px',
       }}
+      data-cy="frost-dates-card"
     >
       <Grid
         item

@@ -258,7 +258,7 @@ const CropTable = ({
             </TableRow>
           </TableHead>
 
-          <TableBody>
+          <TableBody data-cy="crop-list-tbody">
 
             {activeCropIdsRedux.length > 0 ? (
               <RenderTableItems
@@ -266,7 +266,7 @@ const CropTable = ({
                 handleModalOpen={handleModalOpen}
               />
             ) : (
-              <TableRow>
+              <TableRow data-cy="crop-list-tr">
                 <TableCell
                   sx={{ padding: 0 }}
                 >
