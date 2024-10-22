@@ -94,7 +94,6 @@ const PlantHardinessZone = ({ from }) => {
         error: !regionShorthandRedux,
       }}
     />
-
   );
 
   return (
