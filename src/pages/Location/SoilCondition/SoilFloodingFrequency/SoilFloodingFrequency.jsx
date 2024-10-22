@@ -37,6 +37,7 @@ const SoilFloodingFrequency = ({ floodingOptions }) => {
         border: '2px solid #598445',
         height: '100%',
       }}
+      data-cy="flooding-frequency-card"
     >
       <Grid container>
         <Grid
@@ -101,6 +102,7 @@ const SoilFloodingFrequency = ({ floodingOptions }) => {
             <Grid item>
               <PSAButton
                 buttonType="ValuesChanged"
+                data-cy="values-changed-button"
                 onClick={() => {
                   resetFloodingOptions();
                 }}
