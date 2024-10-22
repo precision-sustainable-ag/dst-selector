@@ -1,9 +1,10 @@
 /* eslint-disable max-len */
 import {
-  Collapse, FormControl, InputLabel, List, ListItem, MenuItem, Select, Typography,
+  Collapse, List, ListItem, Typography,
 } from '@mui/material';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { PSADropdown } from 'shared-react-components/src';
 import { updateRegion } from '../../../reduxStore/mapSlice';
 import { historyState, setHistoryDialogState } from '../../../reduxStore/userSlice';
 import pirschAnalytics from '../../../shared/analytics';
@@ -53,69 +54,60 @@ const PlantHardinessZone = ({ from }) => {
   };
 
   const plantHardinessZone = () => (
-    <Select
-      // variant="filled"
-      labelId="plant-hardiness-zone-dropdown-label"
+    <PSADropdown
       label={councilLabelRedux === 'Midwest Cover Crops Council' ? 'COUNTY' : 'ZONE'}
-      id="plant-hardiness-zone-dropdown-select"
-      style={{
-        width: '100%',
-        textAlign: 'left',
-      }}
-      sx={{
-        minWidth: 200,
-        '& .MuiOutlinedInput-notchedOutline': {
-          borderColor: '#598445',
-          borderWidth: '1px',
-          borderRadius: '4px',
-        },
-        '&:hover .MuiOutlinedInput-notchedOutline': {
-          borderColor: '#598445',
-          borderWidth: '2px',
-        },
-        '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-          borderColor: '#598445',
-          borderWidth: '2.5px',
+      inputSx={{
+        color: '#598445',
+        '&.Mui-focused': {
+          color: '#598445',
+          fontWeight: 'medium',
         },
       }}
-      MenuProps={menuProps}
-      onChange={updateRegionRedux}
-      value={regionShorthandRedux || ''}
-      error={!regionShorthandRedux}
-    >
-      {regionsRedux?.length > 0 && regionsRedux.map((region, i) => (
-        <MenuItem value={region.shorthand} key={`Region${region}${i}`}>
-          {councilLabelRedux !== 'Midwest Cover Crops Council' ? `Zone ${region.shorthand?.toUpperCase()}` : `${region.shorthand?.toUpperCase()}`}
-        </MenuItem>
-      ))}
-    </Select>
+      items={regionsRedux.map((region) => ({
+        value: region.shorthand,
+        label: councilLabelRedux !== 'Midwest Cover Crops Council'
+          ? `Zone ${region.shorthand?.toUpperCase()}`
+          : `${region.shorthand?.toUpperCase()}`,
+      }))}
+      formSx={{ width: '100%' }}
+      SelectProps={{
+        value: regionShorthandRedux || '',
+        onChange: updateRegionRedux,
+        style: { textAlign: 'left' },
+        sx: {
+          minWidth: 200,
+          '& .MuiOutlinedInput-notchedOutline': {
+            borderColor: '#598445',
+            borderWidth: '1px',
+            borderRadius: '4px',
+          },
+          '&:hover .MuiOutlinedInput-notchedOutline': {
+            borderColor: '#598445',
+            borderWidth: '2px',
+          },
+          '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+            borderColor: '#598445',
+            borderWidth: '2.5px',
+          },
+        },
+        MenuProps: menuProps,
+        error: !regionShorthandRedux,
+      }}
+    />
+
   );
 
   return (
     <Collapse in={regionToggleRedux}>
       <List component="div">
         <ListItem component="div">
-          <FormControl>
-            <InputLabel
-              id="plant-hardiness-zone-dropdown-label"
-              sx={{
-                color: '#598445',
-                '&.Mui-focused': {
-                  color: '#598445',
-                  fontWeight: 'medium',
-                },
-              }}
-            >
-              {councilLabelRedux === 'Midwest Cover Crops Council' ? 'COUNTY' : 'ZONE'}
-            </InputLabel>
-            {plantHardinessZone()}
-            {!regionShorthandRedux
+          {plantHardinessZone()}
+          {!regionShorthandRedux
             && (
-            <Typography variant="body2" align="center" color="error" gutterBottom>
-              {`Please Select a ${councilLabelRedux === 'Midwest Cover Crops Council' ? 'County' : 'Zone'}`}
-            </Typography>
+              <Typography variant="body2" align="center" color="error" gutterBottom>
+                {`Please Select a ${councilLabelRedux === 'Midwest Cover Crops Council' ? 'County' : 'Zone'}`}
+              </Typography>
             )}
-          </FormControl>
         </ListItem>
       </List>
     </Collapse>
