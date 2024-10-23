@@ -41,7 +41,7 @@ describe('Test all possible interactions on the Landing Page after a state is se
 
   it('should display the correct welcome message when a state is selected from the state dropdown', () => {
     cy.assertByTestId('state-selector-dropdown').first().click();
-    cy.assertByTestId('state-dropdown-item-0').click();
+    cy.assertByTestId('state-selector-dropdown-0').click();
     let councilLabel = '';
     cy.window().its('Storage').invoke('getState').then((state) => {
       councilLabel = state.mapData.councilLabel;
@@ -51,7 +51,7 @@ describe('Test all possible interactions on the Landing Page after a state is se
 
   it('should have correct states for the progress buttons after a state is selected', () => {
     cy.assertByTestId('state-selector-dropdown').first().click();
-    cy.assertByTestId('state-dropdown-item-0').click();
+    cy.assertByTestId('state-selector-dropdown-0').click();
     cy.assertByTestId('next-btn').should('not.be.disabled');
     cy.assertByTestId('back-btn').should('be.disabled');
     cy.assertByTestId('restart-btn').should('be.disabled');
@@ -59,7 +59,7 @@ describe('Test all possible interactions on the Landing Page after a state is se
 
   it('should display correct logo when council changes', () => {
     cy.assertByTestId('state-selector-dropdown').first().click();
-    cy.assertByTestId('state-dropdown-item-0').click();
+    cy.assertByTestId('state-selector-dropdown-0').click();
     let councilShorthand = '';
     cy.window().its('Storage').invoke('getState').then((state) => {
       councilShorthand = state.mapData.councilShorthand;
@@ -69,14 +69,14 @@ describe('Test all possible interactions on the Landing Page after a state is se
 
   it('should enable help button once a state is selected', () => {
     cy.assertByTestId('state-selector-dropdown').first().click();
-    cy.assertByTestId('state-dropdown-item-0').click();
+    cy.assertByTestId('state-selector-dropdown-0').click();
     cy.assertByTestId('help').should('not.be.disabled').click();
     cy.url().should('include', 'help');
   });
 
   it('should navigate to explorer tab when a state is selected and browse cover crops button is clicked', () => {
     cy.assertByTestId('state-selector-dropdown').first().click();
-    cy.assertByTestId('state-dropdown-item-0').click();
+    cy.assertByTestId('state-selector-dropdown-0').click();
     cy.assertByTestId('browse-covercrops-btn').click();
     cy.url().should('include', 'explorer');
   });
