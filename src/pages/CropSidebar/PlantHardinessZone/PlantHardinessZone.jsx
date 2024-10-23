@@ -95,7 +95,6 @@ const PlantHardinessZone = ({ from }) => {
         'data-cy': 'plant-hardiness-zone-dropdown',
       }}
     />
-
   );
 
   return (
