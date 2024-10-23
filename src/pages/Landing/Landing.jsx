@@ -122,7 +122,6 @@ const Landing = () => {
         .then((res) => res.json())
         .then((data) => {
           let fetchedRegions;
-
           if (data.data.Counties) {
             fetchedRegions = data.data.Counties;
           } else {
@@ -287,7 +286,6 @@ const Landing = () => {
                   'data-cy': 'state-selector-dropdown',
                 }}
               />
-
             </Grid>
             <Grid item xs={12} display="flex" justifyContent="center">
               <Typography>
@@ -335,6 +333,7 @@ const Landing = () => {
             initLon={-90}
             initLat={41}
             initStartZoom={2.5}
+            data-cy="state-map"
             mapboxToken={mapboxToken}
           />
         </Box>
