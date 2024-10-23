@@ -170,6 +170,7 @@ const HistorySelect = () => {
                     onChange: (e) => setValue(e.target.value),
                     MenuProps: menuProps,
                     sx: selectStyles,
+                    'data-cy': 'select-history',
                   }}
                 />
 
