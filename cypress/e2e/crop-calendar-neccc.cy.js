@@ -10,7 +10,7 @@ describe('Test all possible interactions on the NECCC Crop Calendar Page', () =>
     cy.intercept({ url: 'https://events.mapbox.com/**' }, { log: false });
     cy.beforeEachVisitBaseUrl();
     cy.assertByTestId('state-selector-dropdown').first().click();
-    cy.assertByTestId('state-dropdown-item-22').click();
+    cy.assertByTestId('state-selector-dropdown-22').click();
     cy.getByTestId('state-selector-dropdown').first().find('input').should('have.value', 'NY');
     cy.assertByTestId('next-btn').first().click();
     cy.assertByTestId('field-location-title');
