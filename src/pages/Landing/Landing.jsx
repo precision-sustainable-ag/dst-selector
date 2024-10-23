@@ -284,6 +284,7 @@ const Landing = () => {
                     },
                   },
                   error: false,
+                  'data-cy': 'state-selector-dropdown',
                 }}
               />
 
