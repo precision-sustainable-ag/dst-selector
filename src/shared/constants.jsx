@@ -4,7 +4,7 @@
 /* eslint-disable no-nested-ternary */
 import React, { useEffect, useState } from 'react';
 import {
-  Grid, Typography, Tooltip, Box,
+  Grid, Typography, Box,
 } from '@mui/material';
 import moment from 'moment';
 import { Info, MonetizationOn } from '@mui/icons-material';
@@ -13,6 +13,7 @@ import arrayEquals from './functions';
 import { historyState, setHistoryState } from '../reduxStore/userSlice';
 import pirschAnalytics from './analytics';
 import PSAButton from '../components/PSAComponents/PSAButton';
+import PSATooltip from '../components/PSAComponents/PSATooltip';
 
 export const ReferenceTooltip = ({
   url, source, type, content, hasLink, title,
@@ -22,8 +23,13 @@ export const ReferenceTooltip = ({
   const sourceType = type || 'link';
   const sourceContent = content || '';
   const link = hasLink;
+
+  const tooltipContent = () => (
+    <Info sx={{ fontSize: '1rem' }} />
+  );
+
   return sourceType === 'link' ? (
-    <Tooltip
+    <PSATooltip
       enterTouchDelay={0}
       title={(
         <div>
@@ -35,20 +41,26 @@ export const ReferenceTooltip = ({
         </div>
       )}
       arrow
-    >
-      <Info sx={{ fontSize: '1rem' }} />
-    </Tooltip>
+      tooltipContent={tooltipContent()}
+    />
   ) : sourceType === 'html' ? (
-    <Tooltip arrow dangerouslySetInnerHTML={content} enterTouchDelay={0}>
-      {' '}
-      <Info sx={{ fontSize: '1rem' }} />
-    </Tooltip>
+    <PSATooltip
+      arrow
+      sourceType={sourceType}
+      dangerouslySetInnerHTML={{ content }}
+      enterTouchDelay={0}
+      tooltipContent={tooltipContent()}
+    />
   ) : link ? (
-    <Tooltip title={title} placement="right" arrow enterTouchDelay={0}>
-      <Info sx={{ fontSize: '1rem' }} />
-    </Tooltip>
+    <PSATooltip
+      title={title}
+      placement="right"
+      arrow
+      enterTouchDelay={0}
+      tooltipContent={tooltipContent()}
+    />
   ) : (
-    <Tooltip
+    <PSATooltip
       enterTouchDelay={0}
       title={(
         <div>
@@ -57,22 +69,23 @@ export const ReferenceTooltip = ({
       )}
       placement="right"
       arrow
-    >
-      <Info sx={{ fontSize: '1rem' }} />
-    </Tooltip>
+      tooltipContent={tooltipContent()}
+    />
   );
 };
 
-export const DataTooltip = ({ data, placement = 'top-start' }) => (
-  <Tooltip
-    title={<div style={{ textAlign: 'center' }}>{data}</div>}
-    placement={placement}
-    arrow
-    enterTouchDelay={0}
-  >
-    <Info fontSize="small" />
-  </Tooltip>
-);
+export const DataTooltip = ({ data, placement = 'top-start' }) => {
+  const tooltipContent = <Info fontSize="small" />;
+  return (
+    <PSATooltip
+      title={<div style={{ textAlign: 'center' }}>{data}</div>}
+      placement={placement}
+      arrow
+      enterTouchDelay={0}
+      tooltipContent={tooltipContent}
+    />
+  );
+};
 
 export const zoneIcon = (w, h) => (
   <svg height={h} width={w} viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">

@@ -5,12 +5,13 @@
 
 import React from 'react';
 import { Refresh } from '@mui/icons-material';
-import { Stack, Tooltip, Badge } from '@mui/material';
+import { Stack, Badge } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { reset } from '../reduxStore/store';
 import { updateProgress, setMyCoverCropReset } from '../reduxStore/sharedSlice';
 import PSAButton from '../components/PSAComponents/PSAButton';
+import PSATooltip from '../components/PSAComponents/PSATooltip';
 
 const ProgressButtonsInner = ({
   isDisabledBack, isDisabledNext, isDisabledRefresh, toolTip,
@@ -36,6 +37,22 @@ const ProgressButtonsInner = ({
     history.push('/my-cover-crop-list');
   };
 
+  const tooltipContent = () => (
+    <PSAButton
+      style={{
+        maxWidth: '90px',
+        minWidth: '70px',
+        marginLeft: progressRedux === 4 ? '-75px' : '0px',
+      }}
+      onClick={() => changeProgress('increment')}
+      disabled={isDisabledNext || progressRedux === 4}
+      buttonType="PillButton"
+      data-cy="next-btn"
+    >
+      Next
+    </PSAButton>
+  );
+
   return (
     <Stack direction="row" style={{ width: '100%' }}>
       <PSAButton
@@ -52,26 +69,13 @@ const ProgressButtonsInner = ({
         BACK
       </PSAButton>
       {toolTip && isDisabledNext ? (
-        <Tooltip
+        <PSATooltip
           enterTouchDelay={0}
           title={
             <p>{`Please Select a ${councilShorthandRedux === 'MCCC' ? 'County' : 'Zone'}.`}</p>
           }
-        >
-          <PSAButton
-            style={{
-              maxWidth: '90px',
-              minWidth: '70px',
-              marginLeft: progressRedux === 4 ? '-75px' : '0px',
-            }}
-            onClick={() => changeProgress('increment')}
-            disabled={isDisabledNext || progressRedux === 4}
-            buttonType="PillButton"
-            data-cy="next-btn"
-          >
-            Next
-          </PSAButton>
-        </Tooltip>
+          tooltipContent={tooltipContent()}
+        />
       ) : (
         <Badge badgeContent={progressRedux === 4 ? selectedCropIdsRedux.length : null} color="error">
           <PSAButton
