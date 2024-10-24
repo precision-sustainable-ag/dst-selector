@@ -14,4 +14,4 @@ RUN npm install
 ENV CYPRESS_baseUrl="http://localhost/"
 
 # Run the bash script
-ENTRYPOINT ["npm", "run", "e2e:chrome"]
+ENTRYPOINT ["npm", "run", "test:all"]

@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import {
-  FormControl, InputLabel, Select, MenuItem, Grid, Box,
+  Grid, Box,
   Typography,
 } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
+import { PSADropdown } from 'shared-react-components/src';
 import { getAuthToken } from '../../shared/authToken';
 import { loadHistory } from '../../shared/api';
 import {
@@ -159,29 +160,19 @@ const HistorySelect = () => {
               </Grid>
 
               <Grid item xs={12} md={9} display="flex" justifyContent="center" alignItems="center">
-                <FormControl sx={{ minWidth: '80%' }}>
-                  <InputLabel sx={inputLabelStyles}>
-                    Select History
-                  </InputLabel>
-                  <Select
-                    value={value}
-                    label="Select History"
-                    onChange={(e) => setValue(e.target.value)}
-                    sx={selectStyles}
-                    MenuProps={menuProps}
-                    data-cy="select-history"
-                  >
-                    {userHistoryList.map((history, i) => (
-                      <MenuItem
-                        value={history.label}
-                        key={i}
-                        data-cy={`history-${history.label}`}
-                      >
-                        {history.label}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
+                <PSADropdown
+                  formSx={{ minWidth: '80%' }}
+                  inputSx={inputLabelStyles}
+                  label="Select History"
+                  items={userHistoryList.map((history) => ({ value: history.label, label: history.label }))}
+                  SelectProps={{
+                    value: { value },
+                    onChange: (e) => setValue(e.target.value),
+                    MenuProps: menuProps,
+                    sx: selectStyles,
+                    'data-cy': 'select-history',
+                  }}
+                />
               </Grid>
 
               <Grid item xs={12} md={3} display="flex" justifyContent="center" alignItems="center">
