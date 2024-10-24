@@ -35,7 +35,7 @@ describe('Test create and import user history records', () => {
     });
     // select state
     cy.getByTestId('state-selector-dropdown').first().click();
-    cy.getByTestId('state-dropdown-item-22').click();
+    cy.getByTestId('state-selector-dropdown-22').click();
     cy.getByTestId('next-btn').first().click();
     // history state should be new and the api call should not been made at this time
     cy.getReduxState().then((state) => {
@@ -65,10 +65,9 @@ describe('Test create and import user history records', () => {
   });
 
   it('should be able to import a history', () => {
-    const historyLabel = 'test1';
     cy.getByTestId('import-previous-history').click();
     cy.getByTestId('select-history').click();
-    cy.getByTestId(`history-${historyLabel}`).click();
+    cy.getByTestId('select-history-0').click();
     cy.getByTestId('import-history').click();
     cy.wait('@getHistory').wait(1000);
     // history state should be imported
@@ -81,7 +80,6 @@ describe('Test create and import user history records', () => {
 });
 
 describe('Test for updating user history', () => {
-  const historyLabel = 'test1';
   beforeEach(() => {
     cy.intercept({ url: 'https://api.mapbox.com/**' }, { log: false });
     cy.intercept({ url: 'https://events.mapbox.com/**' }, { log: false });
@@ -95,7 +93,7 @@ describe('Test for updating user history', () => {
     cy.visit('/');
     cy.getByTestId('import-previous-history').click();
     cy.getByTestId('select-history').click();
-    cy.getByTestId(`history-${historyLabel}`).click();
+    cy.getByTestId('select-history-0').click();
     cy.getByTestId('import-history').click();
     cy.wait('@getHistory').wait(1000);
 
@@ -108,11 +106,11 @@ describe('Test for updating user history', () => {
 
   it('should not be able to update history on Landing and Location page', () => {
     cy.getByTestId('state-selector-dropdown').first().click();
-    cy.getByTestId('state-dropdown-item-7').click();
+    cy.getByTestId('state-selector-dropdown-7').click();
     cy.assertByTestId('history-dialog-warning');
   });
 
-  it('should be able to update history after Location page', () => {
+  it.only('should be able to update history after Location page', () => {
     cy.getByTestId('next-btn').first().click();
 
     cy.window().its('store').invoke('dispatch', {

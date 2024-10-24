@@ -4,7 +4,7 @@ describe('Testing interactions on location screen', () => {
   beforeEach(() => {
     cy.beforeEachVisitBaseUrl();
     cy.assertByTestId('state-selector-dropdown').first().click();
-    cy.assertByTestId('state-dropdown-item-0').click();
+    cy.assertByTestId('state-selector-dropdown-0').click();
     cy.assertByTestId('next-btn').first().click();
   });
 
