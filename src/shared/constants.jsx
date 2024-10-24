@@ -23,6 +23,11 @@ export const ReferenceTooltip = ({
   const sourceType = type || 'link';
   const sourceContent = content || '';
   const link = hasLink;
+
+  const tooltipContent = () => (
+    <Info sx={{ fontSize: '1rem' }} />
+  );
+
   return sourceType === 'link' ? (
     <PSATooltip
       enterTouchDelay={0}
@@ -36,18 +41,24 @@ export const ReferenceTooltip = ({
         </div>
       )}
       arrow
-    >
-      <Info sx={{ fontSize: '1rem' }} />
-    </PSATooltip>
+      tooltipContent={tooltipContent()}
+    />
   ) : sourceType === 'html' ? (
-    <PSATooltip arrow dangerouslySetInnerHTML={content} enterTouchDelay={0}>
-      {' '}
-      <Info sx={{ fontSize: '1rem' }} />
-    </PSATooltip>
+    <PSATooltip
+      arrow
+      sourceType={sourceType}
+      dangerouslySetInnerHTML={{ content }}
+      enterTouchDelay={0}
+      tooltipContent={tooltipContent()}
+    />
   ) : link ? (
-    <PSATooltip title={title} placement="right" arrow enterTouchDelay={0}>
-      <Info sx={{ fontSize: '1rem' }} />
-    </PSATooltip>
+    <PSATooltip
+      title={title}
+      placement="right"
+      arrow
+      enterTouchDelay={0}
+      tooltipContent={tooltipContent()}
+    />
   ) : (
     <PSATooltip
       enterTouchDelay={0}
@@ -58,22 +69,23 @@ export const ReferenceTooltip = ({
       )}
       placement="right"
       arrow
-    >
-      <Info sx={{ fontSize: '1rem' }} />
-    </PSATooltip>
+      tooltipContent={tooltipContent()}
+    />
   );
 };
 
-export const DataTooltip = ({ data, placement = 'top-start' }) => (
-  <PSATooltip
-    title={<div style={{ textAlign: 'center' }}>{data}</div>}
-    placement={placement}
-    arrow
-    enterTouchDelay={0}
-  >
-    <Info fontSize="small" />
-  </PSATooltip>
-);
+export const DataTooltip = ({ data, placement = 'top-start' }) => {
+  const tooltipContent = <Info fontSize="small" />;
+  return (
+    <PSATooltip
+      title={<div style={{ textAlign: 'center' }}>{data}</div>}
+      placement={placement}
+      arrow
+      enterTouchDelay={0}
+      tooltipContent={tooltipContent}
+    />
+  );
+};
 
 export const zoneIcon = (w, h) => (
   <svg height={h} width={w} viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">

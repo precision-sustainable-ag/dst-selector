@@ -23,6 +23,16 @@ import { setSaveHistory } from '../../../reduxStore/userSlice';
 import PSAButton from '../../../components/PSAComponents/PSAButton';
 import PSATooltip from '../../../components/PSAComponents/PSATooltip';
 
+const tooltipContent = () => (
+  <AcUnit
+    sx={{ color: 'white', backgroundColor: '#80D0FF', borderRadius: '5px' }}
+  />
+);
+
+const tooltipRatingContent = (crop, goal, councilShorthandRedux) => (
+  getRating(crop.goals.filter((a) => a.label === goal)[0].values[0].value, councilShorthandRedux)
+);
+
 const CheckBoxIcon = ({ style }) => (
   <Box sx={style}>
     <CheckRounded style={{
@@ -134,11 +144,8 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                     enterTouchDelay={0}
                     title={`${flipCoverCropName(crop.label)} is suitable for frost seeding.`}
                     arrow
-                  >
-                    <AcUnit
-                      sx={{ color: 'white', backgroundColor: '#80D0FF', borderRadius: '5px' }}
-                    />
-                  </PSATooltip>
+                    tooltipContent={tooltipContent()}
+                  />
                 </Grid>
               )}
             </Grid>
@@ -166,9 +173,8 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                       {goal}
                     </p>
                   )}
-                >
-                  {getRating(crop.goals.filter((a) => a.label === goal)[0].values[0].value, councilShorthandRedux)}
-                </PSATooltip>
+                  tooltipContent={tooltipRatingContent(crop, goal, councilShorthandRedux)}
+                />
               </div>
             </TableCell>
           ))}

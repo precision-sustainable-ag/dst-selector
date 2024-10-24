@@ -34,6 +34,22 @@ import useWindowSize from '../../shared/constants';
 import PSATooltip from '../../components/PSAComponents/PSATooltip';
 // import logoImage from '../../../public/images/PSAlogo-text.png';
 
+const tooltipContent = (tab, stateLabelRedux) => (
+  <span>
+    <PSAButton
+      disabled={tab === 'help' && (stateLabelRedux === null)}
+      data-cy={tab}
+    >
+      <NavLink to={`/${tab}`}>
+        <Typography variant="body2" sx={{ color: (tab === 'help' && stateLabelRedux === null) ? 'lightgrey' : 'black', fontWeight: 'bold' }}>
+          {tab}
+        </Typography>
+      </NavLink>
+
+    </PSAButton>
+  </span>
+);
+
 const Header = () => {
   const history = useHistory();
   const dispatchRedux = useDispatch();
@@ -126,21 +142,11 @@ const Header = () => {
         >
           {headerTabs.map((tab, index) => (
             <Grid item key={index}>
-              <PSATooltip title={tab === 'help' && (stateLabelRedux === null) ? 'You must select a state before viewing the help page' : ''} enterTouchDelay={0}>
-                <span>
-                  <PSAButton
-                    disabled={tab === 'help' && (stateLabelRedux === null)}
-                    data-cy={tab}
-                  >
-                    <NavLink to={`/${tab}`}>
-                      <Typography variant="body2" sx={{ color: (tab === 'help' && stateLabelRedux === null) ? 'lightgrey' : 'black', fontWeight: 'bold' }}>
-                        {tab}
-                      </Typography>
-                    </NavLink>
-
-                  </PSAButton>
-                </span>
-              </PSATooltip>
+              <PSATooltip
+                title={tab === 'help' && (stateLabelRedux === null) ? 'You must select a state before viewing the help page' : ''}
+                enterTouchDelay={0}
+                tooltipContent={tooltipContent(tab, stateLabelRedux)}
+              />
             </Grid>
           ))}
           <Grid item>

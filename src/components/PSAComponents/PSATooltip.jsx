@@ -9,11 +9,10 @@ const PSATooltip = ({
   title, placement, arrow, enterTouchDelay, dangerouslySetInnerHTML, tooltipContent, ...props
 }) => (
   <Tooltip
-    title={title}
+    title={dangerouslySetInnerHTML ? undefined : title}
     placement={placement}
     arrow={arrow}
     enterTouchDelay={enterTouchDelay}
-    dangerouslySetInnerHTML={dangerouslySetInnerHTML}
     {...props}
   >
     {tooltipContent}
