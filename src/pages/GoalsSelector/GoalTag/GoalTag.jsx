@@ -72,7 +72,7 @@ const GoalTag = ({
           id={`chip${key}`}
           size="medium"
           variant="outlined"
-          data-cy={`goal-tag-${key}`}
+          data-test={`goal-tag-${key}`}
         />
       </span>
     </Tooltip>

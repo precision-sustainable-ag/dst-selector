@@ -38,7 +38,7 @@ const CoverCropSearch = () => {
               </InputAdornment>
             ),
           }}
-          data-cy="crop-search-input"
+          data-test="crop-search-input"
         />
       </ListItemText>
     </ListItem>

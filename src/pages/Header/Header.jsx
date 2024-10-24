@@ -129,7 +129,7 @@ const Header = () => {
                 <span>
                   <PSAButton
                     disabled={tab === 'help' && (stateLabelRedux === null)}
-                    data-cy={tab}
+                    data-test={tab}
                   >
                     <NavLink to={`/${tab}`}>
                       <Typography variant="body2" sx={{ color: (tab === 'help' && stateLabelRedux === null) ? 'lightgrey' : 'black', fontWeight: 'bold' }}>
@@ -171,7 +171,7 @@ const Header = () => {
               <PSAButton
                 type="button"
                 onClick={handleClick}
-                data-cy="header-logo"
+                data-test="header-logo"
               >
                 <PSALogoDisplayer
                   council={councilShorthandRedux}

@@ -24,7 +24,7 @@ Cypress.Commands.add('mount', (component, options = {}) => {
 });
 
 Cypress.Commands.add('assertByTestId', (testId) => {
-  cy.get(`[data-cy=${testId}]`).should('exist');
+  cy.get(`[data-test=${testId}]`).should('exist');
 });
 
 // Example use:

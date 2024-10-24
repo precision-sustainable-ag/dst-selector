@@ -47,7 +47,7 @@ const ProgressButtonsInner = ({
         onClick={() => changeProgress('decrement')}
         disabled={isDisabledBack}
         buttonType="PillButton"
-        data-cy="back-btn"
+        data-test="back-btn"
       >
         BACK
       </PSAButton>
@@ -67,7 +67,7 @@ const ProgressButtonsInner = ({
             onClick={() => changeProgress('increment')}
             disabled={isDisabledNext || progressRedux === 4}
             buttonType="PillButton"
-            data-cy="next-btn"
+            data-test="next-btn"
           >
             Next
           </PSAButton>
@@ -83,7 +83,7 @@ const ProgressButtonsInner = ({
             onClick={() => (progressRedux === 4 ? setMyCoverCropActivationFlag() : changeProgress('increment'))}
             disabled={isDisabledNext || (progressRedux === 4 && selectedCropIdsRedux.length === 0)}
             buttonType="PillButton"
-            data-cy={progressRedux === 4 ? 'my selected crops-btn' : 'next-btn'}
+            data-test={progressRedux === 4 ? 'my selected crops-btn' : 'next-btn'}
           >
             {progressRedux === 4 ? 'MY SELECTED CROPS' : 'NEXT'}
           </PSAButton>
@@ -106,7 +106,7 @@ const ProgressButtonsInner = ({
         disabled={isDisabledRefresh}
         startIcon={<Refresh />}
         buttonType="PillButton"
-        data-cy="restart-btn"
+        data-test="restart-btn"
       >
         Restart
       </PSAButton>
