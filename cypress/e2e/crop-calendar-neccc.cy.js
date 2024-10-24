@@ -24,14 +24,14 @@ describe('Test all possible interactions on the NECCC Crop Calendar Page', () =>
       payload: { regionId: 3, regionShorthand: '6' },
     });
 
-    cy.get("[data-cy='next-btn']").first().click();
+    cy.get("[data-test='next-btn']").first().click();
     cy.assertByTestId('site-conditions-title');
-    cy.get("[data-cy='next-btn']").first().click();
+    cy.get("[data-test='next-btn']").first().click();
     cy.assertByTestId('title-goals');
     cy.intercept('GET', '**/v1/states/36/crops?minimal=true&regions=3', {
       fixture: 'cropData-NECCC.json',
     }).as('apiRequest');
-    cy.get("[data-cy='next-btn']").first().click().then(() => {
+    cy.get("[data-test='next-btn']").first().click().then(() => {
       cy.wait('@apiRequest');
     });
   });
