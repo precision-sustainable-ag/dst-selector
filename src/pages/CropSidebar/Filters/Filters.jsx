@@ -7,6 +7,13 @@ import PSATooltip from '../../../components/PSAComponents/PSATooltip';
 
 // this file handles setting all of the filters in the redux state
 
+const tooltipContent = (filter) => (
+  <span>
+    {filter.name}
+    <HelpOutlineIcon style={{ cursor: 'pointer', transform: 'scale(0.7)' }} />
+  </span>
+);
+
 // handles dollars and ratings
 const DollarsAndRatings = ({ filter }) => {
   const dispatchRedux = useDispatch();
@@ -126,12 +133,8 @@ const Tip = ({ filter }) => (
         <p>{filter.details}</p>
       </>
       )}
-  >
-    <span>
-      {filter.name}
-      <HelpOutlineIcon style={{ cursor: 'pointer', transform: 'scale(0.7)' }} />
-    </span>
-  </PSATooltip>
+    tooltipContent={tooltipContent(filter)}
+  />
 ); // Tip
 
 // renders sidebar

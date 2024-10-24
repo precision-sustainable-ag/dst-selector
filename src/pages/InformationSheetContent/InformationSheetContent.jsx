@@ -44,6 +44,42 @@ const InformationSheetContent = ({ crop, modalData }) => {
 
   const query = `${encodeURIComponent('regions')}=${encodeURIComponent(regionIdRedux)}`;
 
+  const tooltipContent = (att) => (
+    <Typography sx={{ fontWeight: 'bold' }} variant="body1">
+      {att.label}
+    </Typography>
+  );
+
+  const tooltipContentCategorize = (cat, att) => (
+    cat.label !== 'Extended Comments' ? (
+      <Box xs={12} variant="body1">
+        <Typography
+          display="flex"
+          justifyContent="center"
+          sx={{ fontWeight: 'bold' }}
+        >
+          {att.label}
+        </Typography>
+        <Typography display="flex" justifyContent="center">
+          {att.values[0]?.value}
+        </Typography>
+      </Box>
+    ) : (
+      <Box xs={12} variant="body1">
+        <Typography
+          display="flex"
+          justifyContent="left"
+          sx={{ fontWeight: 'bold' }}
+        >
+          {att.label}
+        </Typography>
+        <Typography display="flex" justifyContent="left">
+          {att.values[0]?.value}
+        </Typography>
+      </Box>
+    )
+  );
+
   useEffect(() => {
     if (stateIdRedux && regionIdRedux) {
       callCoverCropApi(
@@ -102,11 +138,8 @@ const InformationSheetContent = ({ crop, modalData }) => {
                               enterTouchDelay={0}
                               title={att.description}
                               arrow
-                            >
-                              <Typography sx={{ fontWeight: 'bold' }} variant="body1">
-                                {att.label}
-                              </Typography>
-                            </PSATooltip>
+                              tooltipContent={tooltipContent(att)}
+                            />
                           </Grid>
                           <Grid item xs={12}>
                             <Typography
@@ -126,35 +159,8 @@ const InformationSheetContent = ({ crop, modalData }) => {
                             enterTouchDelay={0}
                             title={att.description}
                             arrow
-                          >
-                            {cat.label !== 'Extended Comments' ? (
-                              <Box xs={12} variant="body1">
-                                <Typography
-                                  display="flex"
-                                  justifyContent="center"
-                                  sx={{ fontWeight: 'bold' }}
-                                >
-                                  {att.label}
-                                </Typography>
-                                <Typography display="flex" justifyContent="center">
-                                  {att.values[0]?.value}
-                                </Typography>
-                              </Box>
-                            ) : (
-                              <Box xs={12} variant="body1">
-                                <Typography
-                                  display="flex"
-                                  justifyContent="left"
-                                  sx={{ fontWeight: 'bold' }}
-                                >
-                                  {att.label}
-                                </Typography>
-                                <Typography display="flex" justifyContent="left">
-                                  {att.values[0]?.value}
-                                </Typography>
-                              </Box>
-                            )}
-                          </PSATooltip>
+                            tooltipContent={tooltipContentCategorize(cat, att)}
+                          />
                         </Grid>
                       )))}
                   </Grid>

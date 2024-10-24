@@ -37,6 +37,22 @@ const ProgressButtonsInner = ({
     history.push('/my-cover-crop-list');
   };
 
+  const tooltipContent = () => (
+    <PSAButton
+      style={{
+        maxWidth: '90px',
+        minWidth: '70px',
+        marginLeft: progressRedux === 4 ? '-75px' : '0px',
+      }}
+      onClick={() => changeProgress('increment')}
+      disabled={isDisabledNext || progressRedux === 4}
+      buttonType="PillButton"
+      data-cy="next-btn"
+    >
+      Next
+    </PSAButton>
+  );
+
   return (
     <Stack direction="row" style={{ width: '100%' }}>
       <PSAButton
@@ -58,21 +74,8 @@ const ProgressButtonsInner = ({
           title={
             <p>{`Please Select a ${councilShorthandRedux === 'MCCC' ? 'County' : 'Zone'}.`}</p>
           }
-        >
-          <PSAButton
-            style={{
-              maxWidth: '90px',
-              minWidth: '70px',
-              marginLeft: progressRedux === 4 ? '-75px' : '0px',
-            }}
-            onClick={() => changeProgress('increment')}
-            disabled={isDisabledNext || progressRedux === 4}
-            buttonType="PillButton"
-            data-cy="next-btn"
-          >
-            Next
-          </PSAButton>
-        </PSATooltip>
+          tooltipContent={tooltipContent()}
+        />
       ) : (
         <Badge badgeContent={progressRedux === 4 ? selectedCropIdsRedux.length : null} color="error">
           <PSAButton

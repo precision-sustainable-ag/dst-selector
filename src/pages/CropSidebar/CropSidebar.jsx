@@ -100,6 +100,12 @@ const CropSidebar = ({
 
   const query = `${encodeURIComponent('regions')}=${encodeURIComponent(regionIdRedux)}`;
 
+  const tooltipContent = () => (
+    <span>
+      Cover Crop Group Filter
+      <HelpOutlineIcon style={{ cursor: 'pointer', transform: 'scale(0.7)' }} />
+    </span>
+  );
   // // TODO: When is showFilters false?
   // NOTE: verify below when show filter is false.
   useEffect(() => {
@@ -376,12 +382,8 @@ const CropSidebar = ({
           title={(
             <p>Use the Cover Crop Group Filter to select specific cover crop groups to filter by.</p>
         )}
-        >
-          <span>
-            Cover Crop Group Filter
-            <HelpOutlineIcon style={{ cursor: 'pointer', transform: 'scale(0.7)' }} />
-          </span>
-        </PSATooltip>
+          tooltipContent={tooltipContent()}
+        />
       </ListItem>
       <ListItem>
         {coverCropGroup.map((val) => {

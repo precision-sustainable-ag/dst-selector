@@ -8,6 +8,22 @@ import { activateMyCoverCropListTile, activateSpeicesSelectorTile, setMyCoverCro
 import PSAButton from '../../../components/PSAComponents/PSAButton';
 import PSATooltip from '../../../components/PSAComponents/PSATooltip';
 
+const tooltipContent = (setSpeciesSelectorActivationFlag, stateLabelRedux, pathname) => (
+  <span>
+    <PSAButton
+      onClick={setSpeciesSelectorActivationFlag}
+      disabled={stateLabelRedux === null}
+      selected={pathname === '/explorer'}
+      buttonType="ToggleOptions"
+      data-cy="browse-covercrops-btn"
+    >
+      <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
+        BROWSE COVER CROPS
+      </Typography>
+    </PSAButton>
+  </span>
+);
+
 const ToggleOptions = ({ pathname }) => {
   const dispatchRedux = useDispatch();
   const history = useHistory();
@@ -60,22 +76,11 @@ const ToggleOptions = ({ pathname }) => {
         </Typography>
 
       </PSAButton>
-      <PSATooltip title={(stateLabelRedux === null) ? 'You must select a state before using the Cover Crop Explorer' : ''} enterTouchDelay={0}>
-        <span>
-          <PSAButton
-            onClick={setSpeciesSelectorActivationFlag}
-            disabled={stateLabelRedux === null}
-            selected={pathname === '/explorer'}
-            buttonType="ToggleOptions"
-            data-cy="browse-covercrops-btn"
-          >
-            <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
-              BROWSE COVER CROPS
-            </Typography>
-
-          </PSAButton>
-        </span>
-      </PSATooltip>
+      <PSATooltip
+        title={(stateLabelRedux === null) ? 'You must select a state before using the Cover Crop Explorer' : ''}
+        enterTouchDelay={0}
+        tooltipContent={tooltipContent(setSpeciesSelectorActivationFlag, stateLabelRedux, pathname)}
+      />
 
       {selectedCropIdsRedux.length > 0
         && (

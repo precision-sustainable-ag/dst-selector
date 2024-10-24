@@ -7,6 +7,10 @@ import PSATooltip from '../../PSAComponents/PSATooltip';
 const WeatherPrecipitation = ({ currentMonthFull }) => {
   const weatherDataRedux = useSelector((stateRedux) => stateRedux.weatherData.weatherData);
 
+  const tooltipContent = () => (
+    <Info sx={{ fontSize: '1rem' }} />
+  );
+
   return (
     <Grid
       container
@@ -55,9 +59,8 @@ const WeatherPrecipitation = ({ currentMonthFull }) => {
                   weather data.
                 </div>
               )}
-            >
-              <Info sx={{ fontSize: '1rem' }} />
-            </PSATooltip>
+              tooltipContent={tooltipContent()}
+            />
           </Typography>
         </Grid>
         <Grid item>

@@ -206,7 +206,7 @@ const CropTable = ({
                     }}
                   >
                     <PSATooltip
-                      placement="top"
+                      placement="bottom"
                       arrow
                       enterTouchDelay={0}
                       title={(
