@@ -16,7 +16,6 @@ import {
   Grid,
   Switch,
   Chip,
-  Tooltip,
 } from '@mui/material';
 import {
   Compare, ExpandLess, ExpandMore,
@@ -44,6 +43,7 @@ import {
 import { updateCropData, updateActiveCropIds } from '../../reduxStore/cropSlice';
 import { setAjaxInProgress, regionToggleHandler } from '../../reduxStore/sharedSlice';
 import PSAButton from '../../components/PSAComponents/PSAButton';
+import PSATooltip from '../../components/PSAComponents/PSATooltip';
 
 const CropSidebar = ({
   comparisonView,
@@ -100,6 +100,12 @@ const CropSidebar = ({
 
   const query = `${encodeURIComponent('regions')}=${encodeURIComponent(regionIdRedux)}`;
 
+  const tooltipContent = () => (
+    <span>
+      Cover Crop Group Filter
+      <HelpOutlineIcon style={{ cursor: 'pointer', transform: 'scale(0.7)' }} />
+    </span>
+  );
   // // TODO: When is showFilters false?
   // NOTE: verify below when show filter is false.
   useEffect(() => {
@@ -371,17 +377,13 @@ const CropSidebar = ({
       <ListItem
         component="div"
       >
-        <Tooltip
+        <PSATooltip
           enterTouchDelay={0}
           title={(
             <p>Use the Cover Crop Group Filter to select specific cover crop groups to filter by.</p>
         )}
-        >
-          <span>
-            Cover Crop Group Filter
-            <HelpOutlineIcon style={{ cursor: 'pointer', transform: 'scale(0.7)' }} />
-          </span>
-        </Tooltip>
+          tooltipContent={tooltipContent()}
+        />
       </ListItem>
       <ListItem>
         {coverCropGroup.map((val) => {

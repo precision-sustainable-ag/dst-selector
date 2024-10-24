@@ -1,11 +1,32 @@
 import {
-  Collapse, List, ListItem, ListItemText, Tooltip, Typography,
+  Collapse, List, ListItem, ListItemText, Typography,
 } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import React, { Fragment } from 'react';
 import Filters from '../Filters/Filters';
 import { toggleFilterValue } from '../../../reduxStore/filterSlice';
+import PSATooltip from '../../../components/PSAComponents/PSATooltip';
+
+const tooltipContent = (filter, index, filterDataRedux, sectionFilter, dispatchRedux) => (
+  <ListItem
+    key={index}
+    sx={{ paddingLeft: 3, backgroundColor: filterDataRedux[sectionFilter] ? '#add08f' : 'white' }}
+    component="div"
+    onClick={() => dispatchRedux(toggleFilterValue(sectionFilter))}
+  >
+    <ListItemText
+      primary={
+        <Typography variant="body2">{filter.name.toUpperCase()}</Typography>
+      }
+    />
+    {
+      filterDataRedux[sectionFilter]
+        ? <ExpandLess data-cy={`${filter.name.toUpperCase()}-expandless-icon`} />
+        : <ExpandMore data-cy={`${filter.name.toUpperCase()}-expandmore-icon`} />
+    }
+  </ListItem>
+);
 
 const SidebarFilter = ({
   filter,
@@ -21,7 +42,7 @@ const SidebarFilter = ({
   return (
     <>
       {filter.description !== '' ? (
-        <Tooltip
+        <PSATooltip
           arrow
           placement="right-start"
           enterTouchDelay={0}
@@ -29,25 +50,8 @@ const SidebarFilter = ({
             <p>{filter.description}</p>
           )}
           key={`tooltip${index}`}
-        >
-          <ListItem
-            key={index}
-            sx={{ paddingLeft: 3, backgroundColor: filterDataRedux[sectionFilter] ? '#add08f' : 'white' }}
-            component="div"
-            onClick={() => dispatchRedux(toggleFilterValue(sectionFilter))}
-          >
-            <ListItemText
-              primary={
-                <Typography variant="body2">{filter.name.toUpperCase()}</Typography>
-              }
-            />
-            {
-              filterDataRedux[sectionFilter]
-                ? <ExpandLess data-cy={`${filter.name.toUpperCase()}-expandless-icon`} />
-                : <ExpandMore data-cy={`${filter.name.toUpperCase()}-expandmore-icon`} />
-            }
-          </ListItem>
-        </Tooltip>
+          tooltipContent={tooltipContent(filter, index, filterDataRedux, sectionFilter, dispatchRedux)}
+        />
       ) : (
         <ListItem
           key={index}

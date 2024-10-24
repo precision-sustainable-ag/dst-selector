@@ -12,7 +12,7 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
 import { useAuth0 } from '@auth0/auth0-react';
 import {
-  Grid, Box, Typography, Tooltip,
+  Grid, Box, Typography,
 } from '@mui/material';
 import { PSALogoDisplayer } from 'shared-react-components/src';
 import InformationBar from './InformationBar/InformationBar';
@@ -31,7 +31,24 @@ import SaveUserHistory from './SaveUserHistory/SaveUserHistory';
 import { releaseNotesURL } from '../../shared/keys';
 import PSAButton from '../../components/PSAComponents/PSAButton';
 import useWindowSize from '../../shared/constants';
+import PSATooltip from '../../components/PSAComponents/PSATooltip';
 // import logoImage from '../../../public/images/PSAlogo-text.png';
+
+const tooltipContent = (tab, stateLabelRedux) => (
+  <span>
+    <PSAButton
+      disabled={tab === 'help' && (stateLabelRedux === null)}
+      data-cy={tab}
+    >
+      <NavLink to={`/${tab}`}>
+        <Typography variant="body2" sx={{ color: (tab === 'help' && stateLabelRedux === null) ? 'lightgrey' : 'black', fontWeight: 'bold' }}>
+          {tab}
+        </Typography>
+      </NavLink>
+
+    </PSAButton>
+  </span>
+);
 
 const Header = () => {
   const history = useHistory();
@@ -125,21 +142,11 @@ const Header = () => {
         >
           {headerTabs.map((tab, index) => (
             <Grid item key={index}>
-              <Tooltip title={tab === 'help' && (stateLabelRedux === null) ? 'You must select a state before viewing the help page' : ''} enterTouchDelay={0}>
-                <span>
-                  <PSAButton
-                    disabled={tab === 'help' && (stateLabelRedux === null)}
-                    data-cy={tab}
-                  >
-                    <NavLink to={`/${tab}`}>
-                      <Typography variant="body2" sx={{ color: (tab === 'help' && stateLabelRedux === null) ? 'lightgrey' : 'black', fontWeight: 'bold' }}>
-                        {tab}
-                      </Typography>
-                    </NavLink>
-
-                  </PSAButton>
-                </span>
-              </Tooltip>
+              <PSATooltip
+                title={tab === 'help' && (stateLabelRedux === null) ? 'You must select a state before viewing the help page' : ''}
+                enterTouchDelay={0}
+                tooltipContent={tooltipContent(tab, stateLabelRedux)}
+              />
             </Grid>
           ))}
           <Grid item>
