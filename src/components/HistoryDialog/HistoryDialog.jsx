@@ -110,7 +110,7 @@ const HistoryDialog = () => {
           )}
         {type === 'update'
           && (
-          <DialogContentText data-cy="history-dialog-warning">
+          <DialogContentText data-test="history-dialog-warning">
             <span style={{ color: 'red' }}>Warning: </span>
             Making changes may affect the results of subsequent steps
             that you have saved. Please create a new record instead.
@@ -120,10 +120,10 @@ const HistoryDialog = () => {
       </DialogContent>
       <DialogActions>
         {type === 'add'
-          && <PSAButton onClick={handleAdd} data-cy="history-dialog-create">Create</PSAButton>}
+          && <PSAButton onClick={handleAdd} data-test="history-dialog-create">Create</PSAButton>}
         {type === 'update'
           && <PSAButton onClick={handleUpdate}>Create a new record</PSAButton>}
-        <PSAButton onClick={handleCancel} data-cy="history-dialog-cancel">Cancel</PSAButton>
+        <PSAButton onClick={handleCancel} data-test="history-dialog-cancel">Cancel</PSAButton>
       </DialogActions>
     </Dialog>
   );

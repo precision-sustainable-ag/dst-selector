@@ -52,7 +52,7 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
           opacity: hasGoalRatingTwoOrLess(selectedGoalsRedux, crop) && '0.3',
           backgroundColor: selectedCropIdsRedux.includes(crop.id) && '#EAEAEA',
         }}
-        data-cy={`crop-list-tr-${index}`}
+        data-test={`crop-list-tr-${index}`}
       >
         <TableCell sx={{ padding: 0 }}>
           <Grid container>
@@ -121,7 +121,7 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                     setModalData(crop);
                     setModalOpen(!modalOpen);
                   }}
-                  data-cy="crop-calendar-crop-name"
+                  data-test="crop-calendar-crop-name"
                 >
                   {flipCoverCropName(crop.label)}
                 </PSAButton>
@@ -201,11 +201,11 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                 setSaveHistory,
               );
             }}
-            data-cy={`cart-btn-${index}`}
+            data-test={`cart-btn-${index}`}
           >
             {selectedBtns.includes(crop.id)
-              ? <DeleteForever data-cy={`delete-forever-icon-${index}`} />
-              : <AddCircleOutline data-cy={`add-circle-outline-icon-${index}`} />}
+              ? <DeleteForever data-test={`delete-forever-icon-${index}`} />
+              : <AddCircleOutline data-test={`add-circle-outline-icon-${index}`} />}
           </PSAButton>
         </TableCell>
       </TableRow>

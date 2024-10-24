@@ -52,7 +52,7 @@ const ToggleOptions = ({ pathname }) => {
           border: '10px',
           '&:hover': { backgroundColor: (pathname === '/') ? '#598444' : 'white', color: (pathname === '/') ? 'white' : '#8abc62' },
         }}
-        data-cy="get-recommendation-btn"
+        data-test="get-recommendation-btn"
       >
         <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
           Get A Recommendation
@@ -66,7 +66,7 @@ const ToggleOptions = ({ pathname }) => {
             disabled={stateLabelRedux === null}
             selected={pathname === '/explorer'}
             buttonType="ToggleOptions"
-            data-cy="browse-covercrops-btn"
+            data-test="browse-covercrops-btn"
           >
             <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
               BROWSE COVER CROPS
@@ -81,7 +81,7 @@ const ToggleOptions = ({ pathname }) => {
         <Badge
           badgeContent={selectedCropIdsRedux.length}
           color="error"
-          data-cy="badge"
+          data-test="badge"
         >
           <PSAButton
             selected={pathname === '/my-cover-crop-list'}

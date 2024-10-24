@@ -88,5 +88,5 @@ describe('<GoalsSelector />', () => {
     },
   );
 
-  // TODO: see how we can add data-cy to date pickers
+  // TODO: see how we can add data-test to date pickers
 });

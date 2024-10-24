@@ -37,7 +37,7 @@ const RenderTableItems = ({ showGrowthWindow, handleModalOpen }) => {
               outline: '2px solid #598344',
               backgroundColor: selectedCropIdsRedux.includes(crop.id) && '#EAEAEA',
             }}
-            data-cy="crop-list-tr"
+            data-test="crop-list-tr"
           >
             <TableCell size="small" sx={{ maxWidth: 150 }}>
               <Grid
@@ -72,7 +72,7 @@ const RenderTableItems = ({ showGrowthWindow, handleModalOpen }) => {
                     onClick={() => {
                       handleModalOpen(crop);
                     }}
-                    data-cy="crop-calendar-crop-name"
+                    data-test="crop-calendar-crop-name"
                   >
                     {flipCoverCropName(crop.label)}
                   </PSAButton>

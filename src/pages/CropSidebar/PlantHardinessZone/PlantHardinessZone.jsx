@@ -92,7 +92,7 @@ const PlantHardinessZone = ({ from }) => {
         },
         MenuProps: menuProps,
         error: !regionShorthandRedux,
-        'data-cy': 'plant-hardiness-zone-dropdown',
+        'data-test': 'plant-hardiness-zone-dropdown',
       }}
     />
   );

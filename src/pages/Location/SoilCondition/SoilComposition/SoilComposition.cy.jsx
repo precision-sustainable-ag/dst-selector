@@ -50,6 +50,6 @@ describe('<SoilComposition />', () => {
     };
     reduxStore.dispatch(setMapRedux(mapData));
 
-    cy.get("[data-cy='soil-composition-card']").should('not.exist');
+    cy.get("[data-test='soil-composition-card']").should('not.exist');
   });
 });

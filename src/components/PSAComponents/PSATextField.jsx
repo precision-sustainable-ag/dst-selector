@@ -24,7 +24,7 @@ const PSATextField = ({
     color={color}
     label={label}
     onChangeCapture={onChangeCapture}
-    data-cy={testId}
+    data-test={testId}
   />
 );
 

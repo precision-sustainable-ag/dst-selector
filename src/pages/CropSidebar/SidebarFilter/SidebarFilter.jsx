@@ -43,8 +43,8 @@ const SidebarFilter = ({
             />
             {
               filterDataRedux[sectionFilter]
-                ? <ExpandLess data-cy={`${filter.name.toUpperCase()}-expandless-icon`} />
-                : <ExpandMore data-cy={`${filter.name.toUpperCase()}-expandmore-icon`} />
+                ? <ExpandLess data-test={`${filter.name.toUpperCase()}-expandless-icon`} />
+                : <ExpandMore data-test={`${filter.name.toUpperCase()}-expandmore-icon`} />
             }
           </ListItem>
         </Tooltip>
@@ -57,13 +57,13 @@ const SidebarFilter = ({
         >
           <ListItemText
             primary={
-              <Typography variant="body2" data-cy={filter.name.toUpperCase()}>{filter.name.toUpperCase()}</Typography>
+              <Typography variant="body2" data-test={filter.name.toUpperCase()}>{filter.name.toUpperCase()}</Typography>
             }
           />
           {
             filterDataRedux[sectionFilter]
-              ? <ExpandLess data-cy={`${filter.name.toUpperCase()}-expandless-icon`} />
-              : <ExpandMore data-cy={`${filter.name.toUpperCase()}-expandmore-icon`} />
+              ? <ExpandLess data-test={`${filter.name.toUpperCase()}-expandless-icon`} />
+              : <ExpandMore data-test={`${filter.name.toUpperCase()}-expandmore-icon`} />
           }
         </ListItem>
       )}

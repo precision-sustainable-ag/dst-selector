@@ -25,7 +25,7 @@ const PSAButton = ({
   };
 
   return (
-    <Button style={style} onClick={onClick} disabled={disabled} sx={{ ...buttonProps, ...sx }} data-cy={`${buttonData}-btn`}>
+    <Button style={style} onClick={onClick} disabled={disabled} sx={{ ...buttonProps, ...sx }} data-test={`${buttonData}-btn`}>
       {startIcon}
       {data}
     </Button>

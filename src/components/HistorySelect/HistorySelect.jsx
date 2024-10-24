@@ -170,7 +170,7 @@ const HistorySelect = () => {
                     onChange: (e) => setValue(e.target.value),
                     MenuProps: menuProps,
                     sx: selectStyles,
-                    'data-cy': 'select-history',
+                    'data-test': 'select-history',
                   }}
                 />
               </Grid>
@@ -180,7 +180,7 @@ const HistorySelect = () => {
                   onClick={handleLoadHistory}
                   variant="contained"
                   disabled={value === ''}
-                  data-cy="import-history"
+                  data-test="import-history"
                 >
                   Import
                 </PSAButton>
@@ -195,8 +195,8 @@ const HistorySelect = () => {
       />
 
       <Box sx={{ display: 'flex', justifyContent: 'space-around' }}>
-        <PSAButton variant="contained" onClick={handleAddHistory} data-cy="create-new-history">Create New History</PSAButton>
-        <PSAButton variant="contained" onClick={handleHistoryImport} data-cy="import-previous-history">Import previous history</PSAButton>
+        <PSAButton variant="contained" onClick={handleAddHistory} data-test="create-new-history">Create New History</PSAButton>
+        <PSAButton variant="contained" onClick={handleHistoryImport} data-test="import-previous-history">Import previous history</PSAButton>
       </Box>
 
     </>
