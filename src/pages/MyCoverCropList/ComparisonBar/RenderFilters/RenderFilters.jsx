@@ -62,7 +62,7 @@ const RenderFilters = ({
     >
       <ListItemText
         primary={(
-          <Typography variant="body2" data-cy={`${filter.name.toUpperCase()}`}>
+          <Typography variant="body2" data-test={`${filter.name.toUpperCase()}`}>
             {filter.name.toUpperCase()}
           </Typography>
         )}
