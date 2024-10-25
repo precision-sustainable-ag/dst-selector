@@ -12,7 +12,6 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Tooltip,
   Typography,
   Box,
 } from '@mui/material';
@@ -34,6 +33,7 @@ import '../../../styles/cropCalendarViewComponent.scss';
 import RenderCrops from './RenderCrops';
 import CropDetailsModal from '../../../components/CropDetailsModal/CropDetailsModal';
 import PSAButton from '../../../components/PSAComponents/PSAButton';
+import PSATooltip from '../../../components/PSAComponents/PSATooltip';
 import { setTableWidth } from '../../../reduxStore/pageSlice';
 
 const growthIcon = {
@@ -129,6 +129,48 @@ const CropCalendarView = ({
     }
   };
 
+  const renderIcon = (typeOfIcon) => {
+    switch (typeOfIcon) {
+      case 'AcUnit':
+        return <AcUnit sx={growthIcon} />;
+      case 'LocalFlorist':
+        return <LocalFlorist sx={growthIcon} />;
+      case 'WbSunny':
+        return <WbSunny sx={growthIcon} />;
+      default:
+        return null; // Return null if no icon matches
+    }
+  };
+
+  const tooltipContent = (typeOfIcon, colSpan) => (
+    <TableCell
+      sx={{
+        backgroundColor: CustomStyles().darkGreen,
+        padding: 0,
+      }}
+      colSpan={colSpan}
+    >
+      <Typography variant="body1">
+        {renderIcon(typeOfIcon)}
+      </Typography>
+    </TableCell>
+  );
+
+  const tooltipContentSorted = (goal, index) => (
+    <PSAButton
+      onClick={() => sortByGoal(goal, index, `goal${index}`)}
+      variant="body1"
+      sx={{
+        textTransform: 'none',
+        padding: '0px',
+      }}
+    >
+      {`Goal ${index + 1}`}
+      {columnSort === `goal${index}` && <StraightIcon style={{ margin: '0px' }} className={currentGoalSortFlag ? '' : 'rotate180'} />}
+
+    </PSAButton>
+  );
+
   useEffect(() => {
     if (cropDataRedux.length !== 0) sortByAverageGoals();
   }, [cropDataRedux]);
@@ -183,87 +225,52 @@ const CropCalendarView = ({
                 {activeGrowthPeriodRedux.length === 0 && (
                   <>
                     {activeGrowthPeriodRedux.includes('Jan') ? (
-                      <Tooltip placement="top" title="Winter" enterTouchDelay={0}>
-                        <TableCell
-                          sx={{
-                            backgroundColor: CustomStyles().darkGreen,
-                            padding: 0,
-                          }}
-                          colSpan="2"
-                        >
-                          <Typography variant="body1">
-                            <AcUnit sx={growthIcon} />
-                          </Typography>
-                        </TableCell>
-                      </Tooltip>
+                      <PSATooltip
+                        placement="top"
+                        title="Winter"
+                        enterTouchDelay={0}
+                        tooltipContent={tooltipContent(AcUnit, 2)}
+                      />
                     ) : (
                       <TableCell sx={{ borderBottom: '5px solid white', padding: 0 }} colSpan="2" />
                     )}
                     {activeGrowthPeriodRedux.includes('Mar') ? (
-                      <Tooltip placement="top" title="Spring" enterTouchDelay={0}>
-                        <TableCell
-                          sx={{
-                            backgroundColor: CustomStyles().darkGreen,
-                            padding: 0,
-                          }}
-                          colSpan="3"
-                        >
-                          <Typography variant="body1">
-                            <LocalFlorist sx={growthIcon} />
-                          </Typography>
-                        </TableCell>
-                      </Tooltip>
+                      <PSATooltip
+                        placement="top"
+                        title="Spring"
+                        enterTouchDelay={0}
+                        tooltipContent={tooltipContent(LocalFlorist, 3)}
+                      />
                     ) : (
                       <TableCell sx={{ borderBottom: '5px solid white', padding: 0 }} colSpan="3" />
                     )}
                     {activeGrowthPeriodRedux.includes('Jun') ? (
-                      <Tooltip placement="top" title="Summer" enterTouchDelay={0}>
-                        <TableCell
-                          sx={{
-                            backgroundColor: CustomStyles().darkGreen,
-                            padding: 0,
-                          }}
-                          colSpan="3"
-                        >
-                          <Typography variant="body1">
-                            <WbSunny sx={growthIcon} />
-                          </Typography>
-                        </TableCell>
-                      </Tooltip>
+                      <PSATooltip
+                        placement="top"
+                        title="Summer"
+                        enterTouchDelay={0}
+                        tooltipContent={tooltipContent(WbSunny, 3)}
+                      />
                     ) : (
                       <TableCell sx={{ borderBottom: '5px solid white', padding: 0 }} colSpan="3" />
                     )}
                     {activeGrowthPeriodRedux.includes('Sep') ? (
-                      <Tooltip placement="top" title="Fall" enterTouchDelay={0}>
-                        <TableCell
-                          sx={{
-                            backgroundColor: CustomStyles().darkGreen,
-                            padding: 0,
-                          }}
-                          colSpan="3"
-                        >
-                          <Typography variant="body1">
-                            {/* <Eco style={growthIcon} /> */}
-                          </Typography>
-                        </TableCell>
-                      </Tooltip>
+                      <PSATooltip
+                        placement="top"
+                        title="Fall"
+                        enterTouchDelay={0}
+                        tooltipContent={tooltipContent('Eco', 3)}
+                      />
                     ) : (
                       <TableCell sx={{ borderBottom: '5px solid white', padding: 0 }} colSpan="3" />
                     )}
                     {activeGrowthPeriodRedux.includes('Dec') ? (
-                      <Tooltip placement="top" title="Winter" enterTouchDelay={0}>
-                        <TableCell
-                          sx={{
-                            backgroundColor: CustomStyles().darkGreen,
-                            padding: 0,
-                          }}
-                          colSpan="1"
-                        >
-                          <Typography variant="body1">
-                            <AcUnit sx={growthIcon} />
-                          </Typography>
-                        </TableCell>
-                      </Tooltip>
+                      <PSATooltip
+                        placement="top"
+                        title="Winter"
+                        enterTouchDelay={0}
+                        tooltipContent={tooltipContent('AcUnit', 1)}
+                      />
                     ) : (
                       <TableCell sx={{ borderBottom: '5px solid white', padding: 0 }} colSpan="1" />
                     )}
@@ -327,28 +334,15 @@ const CropCalendarView = ({
                       width: '75px',
                     }}
                   >
-                    <Tooltip
+                    <PSATooltip
                       placement="bottom"
                       arrow
                       enterTouchDelay={0}
                       title={(
                         <p>{goal}</p>
                           )}
-                    >
-                      <PSAButton
-                        onClick={() => sortByGoal(goal, index, `goal${index}`)}
-                        variant="body1"
-                        sx={{
-                          textTransform: 'none',
-                          padding: '0px',
-                        }}
-                      >
-                        {`Goal ${index + 1}`}
-                        {columnSort === `goal${index}` && <StraightIcon style={{ margin: '0px' }} className={currentGoalSortFlag ? '' : 'rotate180'} />}
-
-                      </PSAButton>
-
-                    </Tooltip>
+                      tooltipContent={tooltipContentSorted(goal, index)}
+                    />
                   </TableCell>
                 ))}
                 {allMonths.map((month, index) => {
