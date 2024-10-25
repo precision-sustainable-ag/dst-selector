@@ -39,7 +39,7 @@ const RenderFilters = ({
 
   const tooltipContentFormControl = (val) => (
     <FormControlLabel
-      control={
+      control={(
         <Checkbox
           checked={comparisonKeys.includes(val.alternateName ? val.alternateName : val.name)}
           onChange={() => {
@@ -49,7 +49,7 @@ const RenderFilters = ({
           color="primary"
           data-test={`${val.name}-checkbox`}
         />
-      }
+      )}
       label={<small>{val.name}</small>}
     />
   );
@@ -61,11 +61,11 @@ const RenderFilters = ({
       onClick={() => toggleSidebarFilterItems(index)}
     >
       <ListItemText
-        primary={
+        primary={(
           <Typography variant="body2" data-cy={`${filter.name.toUpperCase()}`}>
             {filter.name.toUpperCase()}
           </Typography>
-        }
+        )}
       />
       {filterValues[index].open ? (
         <ExpandLess data-test={`${filter.name.toUpperCase()}-expandless-icon`} />
@@ -77,9 +77,9 @@ const RenderFilters = ({
 
   return filterValues.map((filter, index) => {
     if (
-      filter.name === 'Soil Conditions' ||
-      filter.name === 'Disease & Non Weed Pests' ||
-      filter.name === 'Beneficials'
+      filter.name === 'Soil Conditions'
+      || filter.name === 'Disease & Non Weed Pests'
+      || filter.name === 'Beneficials'
     ) {
       return null;
     }
@@ -101,11 +101,11 @@ const RenderFilters = ({
             onClick={() => toggleSidebarFilterItems(index)}
           >
             <ListItemText
-              primary={
+              primary={(
                 <Typography variant="body2" data-test={`${filter.name.toUpperCase()}`}>
                   {filter.name.toUpperCase()}
                 </Typography>
-              }
+              )}
             />
             {filterValues[index].open ? (
               <ExpandLess data-test={`${filter.name.toUpperCase()}-expandless-icon`} />
@@ -121,7 +121,7 @@ const RenderFilters = ({
               <Grid container spacing={1}>
                 {filter.name === 'Cover Crop Type' ? (
                   <FormControlLabel
-                    control={
+                    control={(
                       <Checkbox
                         //   checked={checkIfSelected(val.name)}
                         checked={comparisonKeys.includes('Cover Crop Group')}
@@ -142,26 +142,24 @@ const RenderFilters = ({
                         color="primary"
                         data-test={`${filter.name}-checkbox`}
                       />
-                    }
+                    )}
                     label={<small>{filter.name}</small>}
                   />
                 ) : (
-                  filter.values.map((val, index2) =>
-                    val.name !== 'Roller Crimp at Flowering' ? (
-                      <Grid item xs={12} key={`filter-inner-${index2}`}>
-                        <PSATooltip
-                          arrow
-                          placement="right"
-                          enterTouchDelay={0}
-                          title={<p>{val.description}</p>}
-                          key={`tooltip${index}`}
-                          tooltipContent={tooltipContentFormControl(val)}
-                        />
-                      </Grid>
-                    ) : (
-                      ''
-                    ),
-                  )
+                  filter.values.map((val, index2) => (val.name !== 'Roller Crimp at Flowering' ? (
+                    <Grid item xs={12} key={`filter-inner-${index2}`}>
+                      <PSATooltip
+                        arrow
+                        placement="right"
+                        enterTouchDelay={0}
+                        title={<p>{val.description}</p>}
+                        key={`tooltip${index}`}
+                        tooltipContent={tooltipContentFormControl(val)}
+                      />
+                    </Grid>
+                  ) : (
+                    ''
+                  )))
                 )}
               </Grid>
             </ListItem>

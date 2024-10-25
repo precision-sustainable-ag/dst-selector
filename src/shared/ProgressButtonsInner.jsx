@@ -13,7 +13,9 @@ import { updateProgress, setMyCoverCropReset } from '../reduxStore/sharedSlice';
 import PSAButton from '../components/PSAComponents/PSAButton';
 import PSATooltip from '../components/PSAComponents/PSATooltip';
 
-const ProgressButtonsInner = ({ isDisabledBack, isDisabledNext, isDisabledRefresh, toolTip }) => {
+const ProgressButtonsInner = ({
+  isDisabledBack, isDisabledNext, isDisabledRefresh, toolTip,
+}) => {
   const dispatchRedux = useDispatch();
   const selectedCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCropIds);
   const history = useHistory();
@@ -85,9 +87,7 @@ const ProgressButtonsInner = ({ isDisabledBack, isDisabledNext, isDisabledRefres
               minWidth: progressRedux === 4 ? 'max-content' : '70px',
               marginLeft: '3%',
             }}
-            onClick={() =>
-              progressRedux === 4 ? setMyCoverCropActivationFlag() : changeProgress('increment')
-            }
+            onClick={() => (progressRedux === 4 ? setMyCoverCropActivationFlag() : changeProgress('increment'))}
             disabled={isDisabledNext || (progressRedux === 4 && selectedCropIdsRedux.length === 0)}
             buttonType="PillButton"
             data-test={progressRedux === 4 ? 'my selected crops-btn' : 'next-btn'}

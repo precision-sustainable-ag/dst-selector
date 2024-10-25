@@ -32,7 +32,9 @@ const tooltipContent = (selectedGoalsRedux, goalTitle, key, updateSelectedGoals,
   </span>
 );
 // TODO: Whats up with goalt?? we need to look into fixing this.
-const GoalTag = ({ goaltTitle, goalDescription, goal, id }) => {
+const GoalTag = ({
+  goaltTitle, goalDescription, goal, id,
+}) => {
   const dispatchRedux = useDispatch();
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const historyStateRedux = useSelector((stateRedux) => stateRedux.userData.historyState);
@@ -42,8 +44,7 @@ const GoalTag = ({ goaltTitle, goalDescription, goal, id }) => {
 
   const updateSelectedGoals = (item) => {
     // update history state here
-    if (historyStateRedux === historyState.imported)
-      dispatchRedux(setHistoryState(historyState.updated));
+    if (historyStateRedux === historyState.imported) dispatchRedux(setHistoryState(historyState.updated));
     const goals = [...selectedGoalsRedux];
 
     if (goals.indexOf(item.label) === -1) {
