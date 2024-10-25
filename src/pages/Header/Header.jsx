@@ -13,6 +13,11 @@ import { useTheme } from '@mui/material/styles';
 import { useAuth0 } from '@auth0/auth0-react';
 import { Grid, Box, Typography } from '@mui/material';
 import { PSALogoDisplayer } from 'shared-react-components/src';
+import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
+import TextSnippetOutlinedIcon from '@mui/icons-material/TextSnippetOutlined';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import AccountBoxOutlinedIcon from '@mui/icons-material/AccountBoxOutlined';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import InformationBar from './InformationBar/InformationBar';
 import ToggleOptions from './ToggleOptions/ToggleOptions';
 import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset';
@@ -31,6 +36,7 @@ import PSAButton from '../../components/PSAComponents/PSAButton';
 import useWindowSize from '../../shared/constants';
 import PSATooltip from '../../components/PSAComponents/PSATooltip';
 // import logoImage from '../../../public/images/PSAlogo-text.png';
+import PSAHeader from './psaheader';
 
 const tooltipContent = (tab, stateLabelRedux) => (
   <span>
@@ -87,7 +93,7 @@ const Header = () => {
   // used to create top tabs
   const headerTabs = ['profile', 'about', 'help', 'feedback'];
 
-  const handleClick = () => {
+  const handleLogoClick = () => {
     if (selectedCropIdsRedux.length === 0) {
       dispatchRedux(reset());
       history.replace('/');
@@ -130,6 +136,52 @@ const Header = () => {
   useEffect(() => {
     setHeaderWidth(`${Math.max(windowSize, tableWidth + sidebarWidth)}px`);
   }, [tableWidth, sidebarWidth, windowSize]);
+
+  const navButtons = [
+    {
+      variant: 'text',
+      text: 'Profile',
+      icon: <AccountBoxOutlinedIcon />,
+      rightIcon: true,
+      onClick: () => history.push('/profile'),
+      textSx: { fontSize: '1rem' },
+    },
+    {
+      variant: 'text',
+      text: 'About',
+      icon: <InfoOutlinedIcon />,
+      rightIcon: true,
+      onClick: () => history.push('/about'),
+      textSx: { fontSize: '1rem' },
+    },
+    {
+      variant: 'text',
+      text: 'Help',
+      icon: <HelpOutlineIcon />,
+      rightIcon: true,
+      onClick: () => history.push('/help'),
+      textSx: { fontSize: '1rem' },
+    },
+    {
+      variant: 'text',
+      text: 'Feedback',
+      icon: <ChatBubbleOutlineIcon />,
+      rightIcon: true,
+      onClick: () => history.push('/feedback'),
+      textSx: { fontSize: '1rem' },
+
+    },
+    {
+      variant: 'text',
+      text: 'Release Notes',
+      icon: <TextSnippetOutlinedIcon />,
+      rightIcon: true,
+      onClick: () => window.open(releaseNotesURL),
+      style: { fontSize: '1rem' },
+      textSx: { fontSize: '1rem' },
+    },
+
+  ];
 
   const chooseTopBar = (option) => {
     if (option) {
@@ -180,7 +232,7 @@ const Header = () => {
                 overflow: 'hidden',
               }}
             >
-              <PSAButton type="button" onClick={handleClick} data-test="header-logo">
+              <PSAButton type="button" onClick={handleLogoClick} data-test="header-logo">
                 <PSALogoDisplayer
                   council={councilShorthandRedux}
                   alt={councilShorthandRedux}
@@ -203,6 +255,7 @@ const Header = () => {
         justifyContent={isMdOrSmaller ? 'center' : 'left'}
         xs={12}
       >
+        {/* get a recommendation / browse cover crops */}
         <ToggleOptions pathname={pathname} />
       </Grid>
     );
@@ -212,9 +265,16 @@ const Header = () => {
     <header style={{ width: headerWidth }}>
       <Box>
         <Grid container>
+          <PSAHeader
+            title="Cover Crop Selector"
+            council={councilShorthandRedux}
+            navButtons={navButtons}
+            onLogoClick={handleLogoClick}
+          />
           <Grid item container alignItems="center" sx={{ height: headerHeight }}>
             {chooseTopBar(isMdOrSmaller)}
             {chooseTopBar(!isMdOrSmaller)}
+
           </Grid>
 
           <Grid
