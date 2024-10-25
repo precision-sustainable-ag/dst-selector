@@ -1,4 +1,6 @@
-import { Collapse, List, ListItem, ListItemText, Typography } from '@mui/material';
+import {
+  Collapse, List, ListItem, ListItemText, Typography,
+} from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import React, { Fragment } from 'react';
@@ -58,11 +60,11 @@ const SidebarFilter = ({
           onClick={() => dispatchRedux(toggleFilterValue(sectionFilter))}
         >
           <ListItemText
-            primary={
+            primary={(
               <Typography variant="body2" data-test={filter.name.toUpperCase()}>
                 {filter.name.toUpperCase()}
               </Typography>
-            }
+            )}
           />
           {filterDataRedux[sectionFilter] ? (
             <ExpandLess data-test={`${filter.name.toUpperCase()}-expandless-icon`} />
