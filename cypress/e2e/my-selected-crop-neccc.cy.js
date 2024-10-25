@@ -93,7 +93,7 @@ describe('Test for adding a crop to cart and viewing the crop in "My Selected Cr
       for (let i = 0; i <= 28; i++) {
         // eslint-disable-next-line no-continue
         if (i === 17) continue;
-        cy.getByTestId(`"${filterTypes[i]}-row"`).should('not.exist');
+        cy.getByTestId(`${filterTypes[i]}-row`).should('not.exist');
       }
     });
   });

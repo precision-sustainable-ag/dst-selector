@@ -124,7 +124,7 @@ const csTheme = responsiveFontSizes(theme, {
   breakpoints: ['xs', 'sm', 'md', 'lg', 'xl'],
 });
 
-const dstTheme = createTheme(deepmerge(PSATheme, csTheme));
+export const dstTheme = createTheme(deepmerge(PSATheme, csTheme));
 
 const App = () => (
   <StyledEngineProvider injectFirst>
