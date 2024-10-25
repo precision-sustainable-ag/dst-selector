@@ -3,17 +3,36 @@
   The GoalTag is individual goal tag inside the goal selector window
 */
 
-import { Avatar, Chip, Tooltip } from '@mui/material';
+import { Avatar, Chip } from '@mui/material';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addSelectedGoals, updateSelectedGoal } from '../../../reduxStore/goalSlice';
 import { historyState, setHistoryState } from '../../../reduxStore/userSlice';
 import pirschAnalytics from '../../../shared/analytics';
+import PSATooltip from '../../../components/PSAComponents/PSATooltip';
 
+const tooltipContent = (selectedGoalsRedux, goalTitle, key, updateSelectedGoals, goal) => (
+  <span>
+    <Chip
+      disabled={selectedGoalsRedux.length >= 3 ? !selectedGoalsRedux.includes(goalTitle) : false}
+      color={selectedGoalsRedux.includes(goalTitle) ? 'primary' : 'secondary'}
+      avatar={
+        selectedGoalsRedux.length !== 0 && selectedGoalsRedux.includes(goalTitle) ? (
+          <Avatar id={`avatar${key}`}>{selectedGoalsRedux.indexOf(goalTitle) + 1}</Avatar>
+        ) : null
+      }
+      label={goalTitle}
+      onClick={() => updateSelectedGoals(goal)}
+      key={`chip${key}`}
+      id={`chip${key}`}
+      size="medium"
+      variant="outlined"
+      data-test={`goal-tag-${key}`}
+    />
+  </span>
+);
 // TODO: Whats up with goalt?? we need to look into fixing this.
-const GoalTag = ({
-  goaltTitle, goalDescription, goal, id,
-}) => {
+const GoalTag = ({ goaltTitle, goalDescription, goal, id }) => {
   const dispatchRedux = useDispatch();
   const selectedGoalsRedux = useSelector((stateRedux) => stateRedux.goalsData.selectedGoals);
   const historyStateRedux = useSelector((stateRedux) => stateRedux.userData.historyState);
@@ -23,7 +42,8 @@ const GoalTag = ({
 
   const updateSelectedGoals = (item) => {
     // update history state here
-    if (historyStateRedux === historyState.imported) dispatchRedux(setHistoryState(historyState.updated));
+    if (historyStateRedux === historyState.imported)
+      dispatchRedux(setHistoryState(historyState.updated));
     const goals = [...selectedGoalsRedux];
 
     if (goals.indexOf(item.label) === -1) {
@@ -40,42 +60,16 @@ const GoalTag = ({
     }
   };
   return (
-    <Tooltip
+    <PSATooltip
       enterDelay={1000}
       enterNextDelay={1000}
       id={`tooltip-${id}`}
       placement="top"
       arrow
-      title={(
-        <p>{`${goalDescription}`}</p>
-      )}
+      title={<p>{`${goalDescription}`}</p>}
       key={`tooltip${key}`}
-    >
-      <span>
-        <Chip
-          disabled={
-            selectedGoalsRedux.length >= 3
-              ? !selectedGoalsRedux.includes(goalTitle)
-              : false
-          }
-          color={selectedGoalsRedux.includes(goalTitle) ? 'primary' : 'secondary'}
-          avatar={
-            selectedGoalsRedux.length !== 0 && selectedGoalsRedux.includes(goalTitle) ? (
-              <Avatar id={`avatar${key}`}>{selectedGoalsRedux.indexOf(goalTitle) + 1}</Avatar>
-            ) : (
-              null
-            )
-          }
-          label={goalTitle}
-          onClick={() => updateSelectedGoals(goal)}
-          key={`chip${key}`}
-          id={`chip${key}`}
-          size="medium"
-          variant="outlined"
-          data-test={`goal-tag-${key}`}
-        />
-      </span>
-    </Tooltip>
+      tooltipContent={tooltipContent(selectedGoalsRedux, goalTitle, key, updateSelectedGoals, goal)}
+    />
   );
 };
 
