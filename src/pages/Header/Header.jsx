@@ -12,7 +12,7 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
 import { useAuth0 } from '@auth0/auth0-react';
 import { Grid, Box, Typography } from '@mui/material';
-import { PSALogoDisplayer } from 'shared-react-components/src';
+import { PSAHeader, PSALogoDisplayer } from 'shared-react-components/src';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import TextSnippetOutlinedIcon from '@mui/icons-material/TextSnippetOutlined';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
@@ -35,8 +35,6 @@ import { releaseNotesURL } from '../../shared/keys';
 import PSAButton from '../../components/PSAComponents/PSAButton';
 import useWindowSize from '../../shared/constants';
 import PSATooltip from '../../components/PSAComponents/PSATooltip';
-// import logoImage from '../../../public/images/PSAlogo-text.png';
-import PSAHeader from './psaheader';
 
 const tooltipContent = (tab, stateLabelRedux) => (
   <span>
