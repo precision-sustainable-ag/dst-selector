@@ -27,7 +27,7 @@
 /* eslint-disable no-undef */
 
 Cypress.Commands.add('getByTestId', (testId, ...args) => {
-  cy.get(`[data-test=${testId}]`, ...args);
+  cy.get(`[data-test="${testId}"]`, ...args);
 });
 
 Cypress.Commands.add('loginToAuth0', () => {
