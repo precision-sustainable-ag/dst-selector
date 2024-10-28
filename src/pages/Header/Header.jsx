@@ -7,12 +7,12 @@
 
 import { useDispatch, useSelector } from 'react-redux';
 import React, { useEffect, useState } from 'react';
-import { NavLink, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
 import { useAuth0 } from '@auth0/auth0-react';
-import { Grid, Box, Typography } from '@mui/material';
-import { PSAHeader, PSALogoDisplayer } from 'shared-react-components/src';
+import { Grid, Box } from '@mui/material';
+import { PSAHeader } from 'shared-react-components/src';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import TextSnippetOutlinedIcon from '@mui/icons-material/TextSnippetOutlined';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
@@ -22,7 +22,6 @@ import InformationBar from './InformationBar/InformationBar';
 import ToggleOptions from './ToggleOptions/ToggleOptions';
 import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset';
 import { setUserHistoryList } from '../../reduxStore/userSlice';
-import AuthButton from '../../components/Auth/AuthButton/AuthButton';
 import ConsentModal from '../CoverCropExplorer/ConsentModal/ConsentModal';
 import AuthModal from '../Landing/AuthModal/AuthModal';
 import { setMyCoverCropReset, snackHandler } from '../../reduxStore/sharedSlice';
@@ -32,27 +31,7 @@ import { loadHistory } from '../../shared/api';
 import HistoryDialog from '../../components/HistoryDialog/HistoryDialog';
 import SaveUserHistory from './SaveUserHistory/SaveUserHistory';
 import { releaseNotesURL } from '../../shared/keys';
-import PSAButton from '../../components/PSAComponents/PSAButton';
 import useWindowSize from '../../shared/constants';
-import PSATooltip from '../../components/PSAComponents/PSATooltip';
-
-const tooltipContent = (tab, stateLabelRedux) => (
-  <span>
-    <PSAButton disabled={tab === 'help' && stateLabelRedux === null} data-test={tab}>
-      <NavLink to={`/${tab}`}>
-        <Typography
-          variant="body2"
-          sx={{
-            color: tab === 'help' && stateLabelRedux === null ? 'lightgrey' : 'black',
-            fontWeight: 'bold',
-          }}
-        >
-          {tab}
-        </Typography>
-      </NavLink>
-    </PSAButton>
-  </span>
-);
 
 const Header = () => {
   const history = useHistory();
@@ -63,12 +42,9 @@ const Header = () => {
   const theme = useTheme();
 
   // breakpoints
-  const isXsOrSmaller = useMediaQuery(theme.breakpoints.down('xs'));
-  const isSmOrSmaller = useMediaQuery(theme.breakpoints.down('sm'));
   const isMdOrSmaller = useMediaQuery(theme.breakpoints.down('md'));
 
   // redux vars
-  const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const selectedCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCropIds);
 
@@ -76,20 +52,6 @@ const Header = () => {
   const [authModalOpen, setAuthModalOpen] = useState(true);
   const [consentModalOpen, setConsentModalOpen] = useState(false);
   const [pathname, setPathname] = useState('/');
-
-  // height var
-  let headerHeight = '100px';
-
-  if (isXsOrSmaller) {
-    headerHeight = '250px';
-  } else if (isSmOrSmaller) {
-    headerHeight = '220px';
-  } else if (isMdOrSmaller) {
-    headerHeight = '150px';
-  }
-
-  // used to create top tabs
-  const headerTabs = ['profile', 'about', 'help', 'feedback'];
 
   const handleLogoClick = () => {
     if (selectedCropIdsRedux.length === 0) {
@@ -167,7 +129,6 @@ const Header = () => {
       rightIcon: true,
       onClick: () => history.push('/feedback'),
       textSx: { fontSize: '1rem' },
-
     },
     {
       variant: 'text',
@@ -178,86 +139,7 @@ const Header = () => {
       style: { fontSize: '1rem' },
       textSx: { fontSize: '1rem' },
     },
-
   ];
-
-  const chooseTopBar = (option) => {
-    if (option) {
-      return (
-        <Grid
-          item
-          container
-          spacing={1}
-          md={isMdOrSmaller ? 12 : 6}
-          xs={12}
-          alignItems="center"
-          justifyContent={isMdOrSmaller ? 'center' : 'right'}
-          className="topHeader"
-        >
-          {headerTabs.map((tab, index) => (
-            <Grid item key={index}>
-              <PSATooltip
-                title={
-                  tab === 'help' && stateLabelRedux === null
-                    ? 'You must select a state before viewing the help page'
-                    : ''
-                }
-                enterTouchDelay={0}
-                tooltipContent={tooltipContent(tab, stateLabelRedux)}
-              />
-            </Grid>
-          ))}
-          <Grid item>
-            <PSAButton onClick={() => window.open(releaseNotesURL)}>
-              <Typography variant="body2" sx={{ color: 'black', fontWeight: 'bold' }}>
-                Release Notes
-              </Typography>
-            </PSAButton>
-          </Grid>
-          <Grid item>
-            <AuthButton
-              type={isAuthenticated ? 'Logout' : 'Login'}
-              color={isAuthenticated ? 'error' : 'secondary'}
-            />
-          </Grid>
-          <Grid item>
-            <Box
-              sx={{
-                // position: 'relative',
-                height: 'auto',
-                marginRight: '10px',
-                width: '120px',
-                overflow: 'hidden',
-              }}
-            >
-              <PSAButton type="button" onClick={handleLogoClick} data-test="header-logo">
-                <PSALogoDisplayer
-                  council={councilShorthandRedux}
-                  alt={councilShorthandRedux}
-                  style={{
-                    maxWidth: '100%',
-                    height: 'auto',
-                  }}
-                />
-              </PSAButton>
-            </Box>
-          </Grid>
-        </Grid>
-      );
-    }
-    return (
-      <Grid
-        item
-        container
-        md={isMdOrSmaller ? 12 : 6}
-        justifyContent={isMdOrSmaller ? 'center' : 'left'}
-        xs={12}
-      >
-        {/* get a recommendation / browse cover crops */}
-        <ToggleOptions pathname={pathname} />
-      </Grid>
-    );
-  };
 
   return (
     <header style={{ width: headerWidth }}>
@@ -269,10 +151,17 @@ const Header = () => {
             navButtons={navButtons}
             onLogoClick={handleLogoClick}
           />
-          <Grid item container alignItems="center" sx={{ height: headerHeight }}>
-            {chooseTopBar(isMdOrSmaller)}
-            {chooseTopBar(!isMdOrSmaller)}
-
+          <Grid item container alignItems="center" sx={{ pb: '8px' }}>
+            <Grid
+              item
+              container
+              md={isMdOrSmaller ? 12 : 6}
+              justifyContent={isMdOrSmaller ? 'center' : 'left'}
+              xs={12}
+            >
+              {/* get a recommendation / browse cover crops */}
+              <ToggleOptions pathname={pathname} />
+            </Grid>
           </Grid>
 
           <Grid
