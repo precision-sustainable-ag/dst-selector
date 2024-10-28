@@ -11,9 +11,7 @@ import { NavLink, useHistory } from 'react-router-dom';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
 import { useAuth0 } from '@auth0/auth0-react';
-import {
-  Grid, Box, Typography,
-} from '@mui/material';
+import { Grid, Box, Typography } from '@mui/material';
 import { PSALogoDisplayer } from 'shared-react-components/src';
 import InformationBar from './InformationBar/InformationBar';
 import ToggleOptions from './ToggleOptions/ToggleOptions';
@@ -36,16 +34,18 @@ import PSATooltip from '../../components/PSAComponents/PSATooltip';
 
 const tooltipContent = (tab, stateLabelRedux) => (
   <span>
-    <PSAButton
-      disabled={tab === 'help' && (stateLabelRedux === null)}
-      data-cy={tab}
-    >
+    <PSAButton disabled={tab === 'help' && stateLabelRedux === null} data-test={tab}>
       <NavLink to={`/${tab}`}>
-        <Typography variant="body2" sx={{ color: (tab === 'help' && stateLabelRedux === null) ? 'lightgrey' : 'black', fontWeight: 'bold' }}>
+        <Typography
+          variant="body2"
+          sx={{
+            color: tab === 'help' && stateLabelRedux === null ? 'lightgrey' : 'black',
+            fontWeight: 'bold',
+          }}
+        >
           {tab}
         </Typography>
       </NavLink>
-
     </PSAButton>
   </span>
 );
@@ -108,11 +108,15 @@ const Header = () => {
       const token = await getAccessTokenSilently();
       setAuthToken(token);
       // get new user histories here
-      loadHistory(token).then((res) => {
-        dispatchRedux(setUserHistoryList(res));
-      }).catch((err) => {
-        dispatchRedux(snackHandler({ snackOpen: true, snackMessage: `Error loading history: ${err}` }));
-      });
+      loadHistory(token)
+        .then((res) => {
+          dispatchRedux(setUserHistoryList(res));
+        })
+        .catch((err) => {
+          dispatchRedux(
+            snackHandler({ snackOpen: true, snackMessage: `Error loading history: ${err}` }),
+          );
+        });
     };
     if (isAuthenticated) fetchUserData();
     // TODO: councilShorthandRedux here is for re-import userHistoryList when the app is reset
@@ -143,20 +147,21 @@ const Header = () => {
           {headerTabs.map((tab, index) => (
             <Grid item key={index}>
               <PSATooltip
-                title={tab === 'help' && (stateLabelRedux === null) ? 'You must select a state before viewing the help page' : ''}
+                title={
+                  tab === 'help' && stateLabelRedux === null
+                    ? 'You must select a state before viewing the help page'
+                    : ''
+                }
                 enterTouchDelay={0}
                 tooltipContent={tooltipContent(tab, stateLabelRedux)}
               />
             </Grid>
           ))}
           <Grid item>
-            <PSAButton
-              onClick={() => window.open(releaseNotesURL)}
-            >
+            <PSAButton onClick={() => window.open(releaseNotesURL)}>
               <Typography variant="body2" sx={{ color: 'black', fontWeight: 'bold' }}>
                 Release Notes
               </Typography>
-
             </PSAButton>
           </Grid>
           <Grid item>
@@ -175,11 +180,7 @@ const Header = () => {
                 overflow: 'hidden',
               }}
             >
-              <PSAButton
-                type="button"
-                onClick={handleClick}
-                data-cy="header-logo"
-              >
+              <PSAButton type="button" onClick={handleClick} data-test="header-logo">
                 <PSALogoDisplayer
                   council={councilShorthandRedux}
                   alt={councilShorthandRedux}
