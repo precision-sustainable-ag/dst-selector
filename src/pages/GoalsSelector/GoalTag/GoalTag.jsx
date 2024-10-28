@@ -14,18 +14,12 @@ import PSATooltip from '../../../components/PSAComponents/PSATooltip';
 const tooltipContent = (selectedGoalsRedux, goalTitle, key, updateSelectedGoals, goal) => (
   <span>
     <Chip
-      disabled={
-        selectedGoalsRedux.length >= 3
-          ? !selectedGoalsRedux.includes(goalTitle)
-          : false
-      }
+      disabled={selectedGoalsRedux.length >= 3 ? !selectedGoalsRedux.includes(goalTitle) : false}
       color={selectedGoalsRedux.includes(goalTitle) ? 'primary' : 'secondary'}
       avatar={
         selectedGoalsRedux.length !== 0 && selectedGoalsRedux.includes(goalTitle) ? (
           <Avatar id={`avatar${key}`}>{selectedGoalsRedux.indexOf(goalTitle) + 1}</Avatar>
-        ) : (
-          null
-        )
+        ) : null
       }
       label={goalTitle}
       onClick={() => updateSelectedGoals(goal)}
@@ -33,7 +27,7 @@ const tooltipContent = (selectedGoalsRedux, goalTitle, key, updateSelectedGoals,
       id={`chip${key}`}
       size="medium"
       variant="outlined"
-      data-cy={`goal-tag-${key}`}
+      data-test={`goal-tag-${key}`}
     />
   </span>
 );
@@ -73,9 +67,7 @@ const GoalTag = ({
       id={`tooltip-${id}`}
       placement="top"
       arrow
-      title={(
-        <p>{`${goalDescription}`}</p>
-      )}
+      title={<p>{`${goalDescription}`}</p>}
       key={`tooltip${key}`}
       tooltipContent={tooltipContent(selectedGoalsRedux, goalTitle, key, updateSelectedGoals, goal)}
     />

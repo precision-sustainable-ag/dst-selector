@@ -41,19 +41,15 @@ const RenderFilters = ({
     <FormControlLabel
       control={(
         <Checkbox
-          checked={comparisonKeys.includes(
-            val.alternateName ? val.alternateName : val.name,
-          )}
+          checked={comparisonKeys.includes(val.alternateName ? val.alternateName : val.name)}
           onChange={() => {
-            updateCheckboxStatus(
-              val.alternateName ? val.alternateName : val.name,
-            );
+            updateCheckboxStatus(val.alternateName ? val.alternateName : val.name);
           }}
           name={val.name}
           color="primary"
-          data-cy={`${val.name}-checkbox`}
+          data-test={`${val.name}-checkbox`}
         />
-          )}
+      )}
       label={<small>{val.name}</small>}
     />
   );
@@ -65,11 +61,17 @@ const RenderFilters = ({
       onClick={() => toggleSidebarFilterItems(index)}
     >
       <ListItemText
-        primary={<Typography variant="body2" data-cy={`${filter.name.toUpperCase()}`}>{filter.name.toUpperCase()}</Typography>}
+        primary={(
+          <Typography variant="body2" data-test={`${filter.name.toUpperCase()}`}>
+            {filter.name.toUpperCase()}
+          </Typography>
+        )}
       />
-      {filterValues[index].open
-        ? <ExpandLess data-cy={`${filter.name.toUpperCase()}-expandless-icon`} />
-        : <ExpandMore data-cy={`${filter.name.toUpperCase()}-expandmore-icon`} />}
+      {filterValues[index].open ? (
+        <ExpandLess data-test={`${filter.name.toUpperCase()}-expandless-icon`} />
+      ) : (
+        <ExpandMore data-test={`${filter.name.toUpperCase()}-expandmore-icon`} />
+      )}
     </ListItem>
   );
 
@@ -88,9 +90,7 @@ const RenderFilters = ({
             arrow
             placement="right-start"
             enterTouchDelay={0}
-            title={(
-              <p>{filter.description}</p>
-              )}
+            title={<p>{filter.description}</p>}
             key={`tooltip-outer-${index}`}
             tooltipContent={tooltipContent(filter, index)}
           />
@@ -101,11 +101,17 @@ const RenderFilters = ({
             onClick={() => toggleSidebarFilterItems(index)}
           >
             <ListItemText
-              primary={<Typography variant="body2" data-cy={`${filter.name.toUpperCase()}`}>{filter.name.toUpperCase()}</Typography>}
+              primary={(
+                <Typography variant="body2" data-test={`${filter.name.toUpperCase()}`}>
+                  {filter.name.toUpperCase()}
+                </Typography>
+              )}
             />
-            {filterValues[index].open
-              ? <ExpandLess data-cy={`${filter.name.toUpperCase()}-expandless-icon`} />
-              : <ExpandMore data-cy={`${filter.name.toUpperCase()}-expandmore-icon`} />}
+            {filterValues[index].open ? (
+              <ExpandLess data-test={`${filter.name.toUpperCase()}-expandless-icon`} />
+            ) : (
+              <ExpandMore data-test={`${filter.name.toUpperCase()}-expandmore-icon`} />
+            )}
           </ListItem>
         )}
 
@@ -117,9 +123,9 @@ const RenderFilters = ({
                   <FormControlLabel
                     control={(
                       <Checkbox
-                          //   checked={checkIfSelected(val.name)}
+                        //   checked={checkIfSelected(val.name)}
                         checked={comparisonKeys.includes('Cover Crop Group')}
-                          //   onChange={handleChange}
+                        //   onChange={handleChange}
                         onChange={() => {
                           const comparisonKeysCopy = comparisonKeys;
                           const indexOfValue = comparisonKeysCopy.indexOf('Cover Crop Group');
@@ -134,9 +140,9 @@ const RenderFilters = ({
                         }}
                         name={filter.name}
                         color="primary"
-                        data-cy={`${filter.name}-checkbox`}
+                        data-test={`${filter.name}-checkbox`}
                       />
-                      )}
+                    )}
                     label={<small>{filter.name}</small>}
                   />
                 ) : (
@@ -146,9 +152,7 @@ const RenderFilters = ({
                         arrow
                         placement="right"
                         enterTouchDelay={0}
-                        title={(
-                          <p>{val.description}</p>
-                        )}
+                        title={<p>{val.description}</p>}
                         key={`tooltip${index}`}
                         tooltipContent={tooltipContentFormControl(val)}
                       />

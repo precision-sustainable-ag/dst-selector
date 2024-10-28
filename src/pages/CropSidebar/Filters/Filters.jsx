@@ -42,7 +42,7 @@ const DollarsAndRatings = ({ filter }) => {
           return (
             <Chip
               key={filter.name + i}
-              data-cy={`${filter.name}-${i}`}
+              data-test={`${filter.name}-${i}`}
               // label={filter.dataType === 'currency' ? '$'.repeat(i) : filter.values[i - 1].value}
               label={filter.dataType === 'currency' ? '$'.repeat(i) : i}
               style={{
@@ -94,7 +94,7 @@ const Chips = ({ filter }) => {
         <Grid key={filter.name + val.value + i} item>
           <Chip
             key={filter.name + val.value + i}
-            data-cy={`${filter.name}-${val.value === '0' ? 'No' : 'Yes'}`}
+            data-test={`${filter.name}-${val.value === '0' ? 'No' : 'Yes'}`}
             onClick={() => chipChange(filter.name, val.value)}
             component="li"
             size="medium"
@@ -116,7 +116,7 @@ const Chips = ({ filter }) => {
           size="medium"
           label={val.value}
           color={selected ? 'primary' : 'secondary'}
-          data-cy={`${filter.name}-${val.value}`}
+          data-test={`${filter.name}-${val.value}`}
         />
       </Grid>
     );

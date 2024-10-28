@@ -15,16 +15,12 @@ const tooltipContent = (filter, index, filterDataRedux, sectionFilter, dispatchR
     component="div"
     onClick={() => dispatchRedux(toggleFilterValue(sectionFilter))}
   >
-    <ListItemText
-      primary={
-        <Typography variant="body2">{filter.name.toUpperCase()}</Typography>
-      }
-    />
-    {
-      filterDataRedux[sectionFilter]
-        ? <ExpandLess data-cy={`${filter.name.toUpperCase()}-expandless-icon`} />
-        : <ExpandMore data-cy={`${filter.name.toUpperCase()}-expandmore-icon`} />
-    }
+    <ListItemText primary={<Typography variant="body2">{filter.name.toUpperCase()}</Typography>} />
+    {filterDataRedux[sectionFilter] ? (
+      <ExpandLess data-test={`${filter.name.toUpperCase()}-expandless-icon`} />
+    ) : (
+      <ExpandMore data-test={`${filter.name.toUpperCase()}-expandmore-icon`} />
+    )}
   </ListItem>
 );
 
@@ -46,11 +42,15 @@ const SidebarFilter = ({
           arrow
           placement="right-start"
           enterTouchDelay={0}
-          title={(
-            <p>{filter.description}</p>
-          )}
+          title={<p>{filter.description}</p>}
           key={`tooltip${index}`}
-          tooltipContent={tooltipContent(filter, index, filterDataRedux, sectionFilter, dispatchRedux)}
+          tooltipContent={tooltipContent(
+            filter,
+            index,
+            filterDataRedux,
+            sectionFilter,
+            dispatchRedux,
+          )}
         />
       ) : (
         <ListItem
@@ -60,15 +60,17 @@ const SidebarFilter = ({
           onClick={() => dispatchRedux(toggleFilterValue(sectionFilter))}
         >
           <ListItemText
-            primary={
-              <Typography variant="body2" data-cy={filter.name.toUpperCase()}>{filter.name.toUpperCase()}</Typography>
-            }
+            primary={(
+              <Typography variant="body2" data-test={filter.name.toUpperCase()}>
+                {filter.name.toUpperCase()}
+              </Typography>
+            )}
           />
-          {
-            filterDataRedux[sectionFilter]
-              ? <ExpandLess data-cy={`${filter.name.toUpperCase()}-expandless-icon`} />
-              : <ExpandMore data-cy={`${filter.name.toUpperCase()}-expandmore-icon`} />
-          }
+          {filterDataRedux[sectionFilter] ? (
+            <ExpandLess data-test={`${filter.name.toUpperCase()}-expandless-icon`} />
+          ) : (
+            <ExpandMore data-test={`${filter.name.toUpperCase()}-expandmore-icon`} />
+          )}
         </ListItem>
       )}
 
