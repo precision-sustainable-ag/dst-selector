@@ -96,7 +96,7 @@ const HistoryDialog = () => {
                 Please input the name for your record below.
               </DialogContentText>
               <PSATextField
-                variant="standard"
+                variant="outlined"
                 autoFocus
                 fullWidth
                 error={error}
