@@ -45,6 +45,10 @@ import { setAjaxInProgress, regionToggleHandler } from '../../reduxStore/sharedS
 import PSAButton from '../../components/PSAComponents/PSAButton';
 import PSATooltip from '../../components/PSAComponents/PSATooltip';
 
+const SoloFilter = styled(ListItem)({
+  paddingLeft: '25px',
+});
+
 const CropSidebar = ({
   comparisonView,
   listView,
@@ -82,10 +86,6 @@ const CropSidebar = ({
   const [cropFiltersOpen, setCropFiltersOpen] = useState(true);
 
   const coverCropGroup = [{ label: 'Brassica' }, { label: 'Legume' }, { label: 'Grass' }, { label: 'Broadleaf' }];
-
-  const SoloFilter = styled(ListItem)({
-    paddingLeft: '25px',
-  });
 
   // make an exhaustive array of all params in array e.g. cover crop group and use includes in linq
   const [sidebarFilterOptions, setSidebarFilterOptions] = useState(() => {

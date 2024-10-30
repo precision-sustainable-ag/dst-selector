@@ -9,7 +9,8 @@ import { cropSearch } from '../../../reduxStore/filterSlice';
 
 const CoverCropSearch = () => {
   const dispatchRedux = useDispatch();
-  const cropSearchRedux = useSelector((stateRedux) => stateRedux.filterData.cropSearch);
+  const cropSearchRedux = useSelector((stateRedux) => stateRedux.filterData.filters.cropSearch);
+  console.log(cropSearchRedux);
   const clearCoverCropSearch = (value = '') => {
     dispatchRedux(cropSearch(value));
   };
