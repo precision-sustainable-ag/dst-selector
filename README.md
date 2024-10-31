@@ -2,14 +2,14 @@
 
 **Date Created:** 8/18/22
 
-**Date Last Modified:** 10/18/2024
+**Date Last Modified:** 10/31/2024
 
 The species selector DST is used to help farmers select a cover crop that fits their goals and constraints. The user can either input specifics about their field location and cover cropping goals or explore cover crops without entering those details. The tool is mainly used to explore expert reccomendations and ratings for cover crops in the farmer's USDA Plant Hardiness Zone. This allows farmers to make educated decisions that are best suited for their specific goals and can save time as opposed to calling the extension office.
 
 Support for this project is brought to us by [Agricultural Informatics Lab](https://sudokita.com), NE SARE, USDA NRCS, NECCC, and the [Precision Sustainable Agriculture](http://precisionsustainableag.org).
 
-To access the live tool, visit [covercrop.tools](http://covercrop.tools)
-To see development progress, visit [http://covercrop.tools](http://covercrop.tools)
+To access the live tool, visit [https://covercrop-selector.org/](https://covercrop-selector.org/)
+To see development progress, visit [https://develop.covercrop-selector.org/](https://develop.covercrop-selector.org/)
 
 ## Table of Contents:
 
@@ -20,6 +20,7 @@ To see development progress, visit [http://covercrop.tools](http://covercrop.too
 - [Running in docker:](#running-in-docker)
 - [Documentation](#documentation)
 - [Runbook](#runbook)
+- [Helpful Links](#helpful-links)
 
 ## Tech stack
 
@@ -91,5 +92,16 @@ Set Line spacing (CRLF -> LF)
 `git rm --cached -r .`
 `git reset --hard`
 
+## Helpful Links
+
+**Confluence Links**
+[Development Best Practices](https://precision-sustainable-ag.atlassian.net/wiki/spaces/ON/pages/381255706/Development+Best+Practices?atl_f=PAGETREE)
+[Design Best Practaces](https://precision-sustainable-ag.atlassian.net/wiki/spaces/DST/pages/582746142/Web+Content+Accessibility+Guidelines+Best+Practices)
+[ESLint](https://precision-sustainable-ag.atlassian.net/wiki/spaces/ON/pages/203915267/Linting+an+Application?atl_f=PAGETREE)
+[Release Notes](https://precision-sustainable-ag.atlassian.net/wiki/spaces/DST/pages/277413889/Species+Selector+Release+Notes)
+[User History](https://precision-sustainable-ag.atlassian.net/wiki/spaces/DST/pages/493584392/User+History+Introduction)
 
 
+**Recomended Development Tools**
+[VSCode](https://code.visualstudio.com/)
+[Cursor](https://www.cursor.com/)
