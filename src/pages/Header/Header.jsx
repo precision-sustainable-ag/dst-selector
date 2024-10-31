@@ -151,13 +151,13 @@ const Header = () => {
             navButtons={navButtons}
             onLogoClick={handleLogoClick}
           />
-          <Grid item container alignItems="center" sx={{ pb: '8px' }}>
+          <Grid container sx={{ pb: isMdOrSmaller ? '3rem' : '1rem' }}>
             <Grid
               item
-              container
-              md={isMdOrSmaller ? 12 : 6}
-              justifyContent={isMdOrSmaller ? 'center' : 'left'}
-              xs={12}
+              sx={{
+                position: 'absolute',
+                top: isMdOrSmaller ? '85px' : '120px',
+              }}
             >
               {/* get a recommendation / browse cover crops */}
               <ToggleOptions pathname={pathname} />
