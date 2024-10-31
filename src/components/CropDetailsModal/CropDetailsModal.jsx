@@ -9,11 +9,11 @@ import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { Close, Print } from '@mui/icons-material';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { PSAButton } from 'shared-react-components/src';
 import InformationSheetContent from '../../pages/InformationSheetContent/InformationSheetContent';
 import { callCoverCropApi } from '../../shared/constants';
 import pirschAnalytics from '../../shared/analytics';
 import PSAModal from '../PSAComponents/PSAModal';
-import PSAButton from '../PSAComponents/PSAButton';
 
 const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
   // redux vars
@@ -102,9 +102,8 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
                     onClick={() => {
                       window.open('/data-dictionary', '_blank');
                     }}
-                  >
-                    Terminology Definitions
-                  </PSAButton>
+                    title="Terminology Definitions"
+                  />
                 </Grid>
                 {(printEnabled && councilShorthandRedux === 'NECCC') && (
                   <Grid item>
@@ -112,9 +111,8 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
                       startIcon={<Print />}
                       buttonType="ModalLink"
                       onClick={print}
-                    >
-                      Print
-                    </PSAButton>
+                      title="Print"
+                    />
                   </Grid>
                 )}
               </Grid>

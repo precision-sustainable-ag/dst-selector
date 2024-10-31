@@ -28,6 +28,7 @@ import React, {
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
 import styled from 'styled-components';
+import { PSAButton } from 'shared-react-components/src';
 import {
   callCoverCropApi, cropDataFormatter, getLegendDataBasedOnCouncil,
 } from '../../shared/constants';
@@ -42,7 +43,6 @@ import {
 } from '../../reduxStore/filterSlice';
 import { updateCropData, updateActiveCropIds } from '../../reduxStore/cropSlice';
 import { setAjaxInProgress, regionToggleHandler } from '../../reduxStore/sharedSlice';
-import PSAButton from '../../components/PSAComponents/PSAButton';
 import PSATooltip from '../../components/PSAComponents/PSATooltip';
 
 const CropSidebar = ({
@@ -320,9 +320,8 @@ const CropSidebar = ({
                 onClick={resetAllFilters}
                 style={{ cursor: 'pointer', color: 'red' }}
                 data-test="crop-side-bar-clear-filters"
-              >
-                Clear Filters
-              </PSAButton>
+                title="Clear Filters"
+              />
             )}
           />
         </ListItem>
@@ -423,18 +422,16 @@ const CropSidebar = ({
           selected={!comparisonView}
           startIcon={<ListIcon style={{ fontSize: 'larger' }} />}
           buttonType="PillButton"
-        >
-          CROP LIST
-        </PSAButton>
+          title="CROP LIST"
+        />
         <PSAButton
           onClick={() => setComparisonView(true)}
           selected={comparisonView}
           startIcon={<Compare style={{ fontSize: 'larger' }} />}
           buttonType="PillButton"
           data-test="comparison-view-btn"
-        >
-          COMPARISON VIEW
-        </PSAButton>
+          title="COMPARISON VIEW"
+        />
         <ComparisonBar
           filterData={sidebarFilters}
           goals={selectedGoalsRedux?.length > 0 ? selectedGoalsRedux : []}

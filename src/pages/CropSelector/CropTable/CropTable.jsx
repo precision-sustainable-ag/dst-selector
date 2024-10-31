@@ -18,6 +18,7 @@ import {
 import ListIcon from '@mui/icons-material/List';
 import { CalendarToday } from '@mui/icons-material';
 import StraightIcon from '@mui/icons-material/Straight';
+import { PSAButton } from 'shared-react-components/src';
 import {
   sortCrops, sudotype,
 } from '../../../shared/constants';
@@ -26,7 +27,6 @@ import '../../../styles/cropTable.scss';
 import CropDetailsModal from '../../../components/CropDetailsModal/CropDetailsModal';
 import RenderTableItems from './RenderTableItems';
 import { setTableWidth } from '../../../reduxStore/pageSlice';
-import PSAButton from '../../../components/PSAComponents/PSAButton';
 import PSATooltip from '../../../components/PSAComponents/PSATooltip';
 
 const CropTable = ({
@@ -113,15 +113,18 @@ const CropTable = ({
       onClick={() => sortByGoal(goal, index, `goal${index}`)}
       variant="body1"
       sx={{ textTransform: 'none' }}
-    >
-      {`Goal ${index + 1}`}
-      {columnSort === `goal${index}` && (
-        <StraightIcon
-          style={{ margin: '0px' }}
-          className={currentGoalSortFlag ? '' : 'rotate180'}
-        />
-      )}
-    </PSAButton>
+      title={(
+        <>
+          {`Goal ${index + 1}`}
+          {columnSort === `goal${index}` && (
+          <StraightIcon
+            style={{ margin: '0px' }}
+            className={currentGoalSortFlag ? '' : 'rotate180'}
+          />
+          )}
+        </>
+)}
+    />
   );
 
   useEffect(() => {
@@ -150,18 +153,16 @@ const CropTable = ({
                 style={{ marginBottom: '7px' }}
                 startIcon={<ListIcon style={{ fontSize: 'larger' }} />}
                 buttonType="PillButton"
-              >
-                CROP LIST
-              </PSAButton>
+                title="CROP LIST"
+              />
               <PSAButton
                 onClick={() => setListView(true)}
                 selected={listView}
                 style={{ marginBottom: '7px' }}
                 startIcon={<CalendarToday style={{ fontSize: 'larger' }} />}
                 buttonType="PillButton"
-              >
-                CROP CALENDAR
-              </PSAButton>
+                title="CROP CALENDAR"
+              />
             </TableRow>
             <TableRow>
               <TableCell
@@ -176,10 +177,13 @@ const CropTable = ({
                   onClick={() => sortByName()}
                   sx={{ color: 'black', textTransform: 'none' }}
                   variant="body1"
-                >
-                  Cover Crops
-                  {columnSort === 'name' && <StraightIcon className={nameSortFlag ? '' : 'rotate180'} />}
-                </PSAButton>
+                  title={(
+                    <>
+                      Cover Crops
+                      {columnSort === 'name' && <StraightIcon className={nameSortFlag ? '' : 'rotate180'} />}
+                    </>
+                  )}
+                />
               </TableCell>
               {cropDataRedux[0].keyTraits.length > 0
               && (
@@ -231,11 +235,13 @@ const CropTable = ({
                       textTransform: 'none',
                     }}
                     onClick={() => sortByPlantingWindow()}
-                  >
-                    Planting Window
-                    {columnSort === 'plantingWindow' && <StraightIcon style={{ margin: '0px' }} className={plantingSortFlag ? '' : 'rotate180'} />}
-
-                  </PSAButton>
+                    title={(
+                      <>
+                        Planting Window
+                        {columnSort === 'plantingWindow' && <StraightIcon style={{ margin: '0px' }} className={plantingSortFlag ? '' : 'rotate180'} />}
+                      </>
+                    )}
+                  />
                 </TableCell>
               )}
 
@@ -250,10 +256,13 @@ const CropTable = ({
                   variant="body1"
                   style={{ textTransform: 'none' }}
                   onClick={() => sortBySelectedCrops()}
-                >
-                  My List
-                  {columnSort === 'myList' && <StraightIcon style={{ margin: '0px' }} className={myListSortFlag ? '' : 'rotate180'} />}
-                </PSAButton>
+                  title={(
+                    <>
+                      My List
+                      {columnSort === 'myList' && <StraightIcon style={{ margin: '0px' }} className={myListSortFlag ? '' : 'rotate180'} />}
+                    </>
+                  )}
+                />
               </TableCell>
             </TableRow>
           </TableHead>

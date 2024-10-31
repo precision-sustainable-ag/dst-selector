@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import SwipeableViews from 'react-swipeable-views-react-18-fix';
-import PSAButton from '../PSAComponents/PSAButton';
+import { PSAButton } from 'shared-react-components/src';
 
 const ImageCarousel = ({ images }) => {
   const theme = useTheme();
@@ -93,30 +93,34 @@ const ImageCarousel = ({ images }) => {
             size="small"
             onClick={handleNext}
             disabled={activeStep === maxSteps - 1}
-          >
-            Next
-            {theme.direction === 'rtl' ? (
-              <KeyboardArrowLeft />
-            ) : (
-              <KeyboardArrowRight />
+            title={(
+              <>
+                Next
+                {theme.direction === 'rtl' ? (
+                  <KeyboardArrowLeft />
+                ) : (
+                  <KeyboardArrowRight />
+                )}
+              </>
             )}
-
-          </PSAButton>
+          />
         )}
         backButton={(
           <PSAButton
             size="small"
             onClick={handleBack}
             disabled={activeStep === 0}
-          >
-            {theme.direction === 'rtl' ? (
-              <KeyboardArrowRight />
-            ) : (
-              <KeyboardArrowLeft />
+            title={(
+              <>
+                {theme.direction === 'rtl' ? (
+                  <KeyboardArrowRight />
+                ) : (
+                  <KeyboardArrowLeft />
+                )}
+                Back
+              </>
             )}
-            Back
-
-          </PSAButton>
+          />
         )}
       />
     </Box>

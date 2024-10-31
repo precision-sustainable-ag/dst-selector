@@ -12,7 +12,7 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
 import { useAuth0 } from '@auth0/auth0-react';
 import { Grid, Box, Typography } from '@mui/material';
-import { PSALogoDisplayer } from 'shared-react-components/src';
+import { PSAButton, PSALogoDisplayer } from 'shared-react-components/src';
 import InformationBar from './InformationBar/InformationBar';
 import ToggleOptions from './ToggleOptions/ToggleOptions';
 import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset';
@@ -27,26 +27,29 @@ import { loadHistory } from '../../shared/api';
 import HistoryDialog from '../../components/HistoryDialog/HistoryDialog';
 import SaveUserHistory from './SaveUserHistory/SaveUserHistory';
 import { releaseNotesURL } from '../../shared/keys';
-import PSAButton from '../../components/PSAComponents/PSAButton';
 import useWindowSize from '../../shared/constants';
 import PSATooltip from '../../components/PSAComponents/PSATooltip';
 // import logoImage from '../../../public/images/PSAlogo-text.png';
 
 const tooltipContent = (tab, stateLabelRedux) => (
   <span>
-    <PSAButton disabled={tab === 'help' && stateLabelRedux === null} data-test={tab}>
-      <NavLink to={`/${tab}`}>
-        <Typography
-          variant="body2"
-          sx={{
-            color: tab === 'help' && stateLabelRedux === null ? 'lightgrey' : 'black',
-            fontWeight: 'bold',
-          }}
-        >
-          {tab}
-        </Typography>
-      </NavLink>
-    </PSAButton>
+    <PSAButton
+      disabled={tab === 'help' && stateLabelRedux === null}
+      data-test={tab}
+      title={(
+        <NavLink to={`/${tab}`}>
+          <Typography
+            variant="body2"
+            sx={{
+              color: tab === 'help' && stateLabelRedux === null ? 'lightgrey' : 'black',
+              fontWeight: 'bold',
+            }}
+          >
+            {tab}
+          </Typography>
+        </NavLink>
+        )}
+    />
   </span>
 );
 
@@ -158,11 +161,14 @@ const Header = () => {
             </Grid>
           ))}
           <Grid item>
-            <PSAButton onClick={() => window.open(releaseNotesURL)}>
-              <Typography variant="body2" sx={{ color: 'black', fontWeight: 'bold' }}>
-                Release Notes
-              </Typography>
-            </PSAButton>
+            <PSAButton
+              onClick={() => window.open(releaseNotesURL)}
+              title={(
+                <Typography variant="body2" sx={{ color: 'black', fontWeight: 'bold' }}>
+                  Release Notes
+                </Typography>
+              )}
+            />
           </Grid>
           <Grid item>
             <AuthButton
@@ -180,16 +186,21 @@ const Header = () => {
                 overflow: 'hidden',
               }}
             >
-              <PSAButton type="button" onClick={handleClick} data-test="header-logo">
-                <PSALogoDisplayer
-                  council={councilShorthandRedux}
-                  alt={councilShorthandRedux}
-                  style={{
-                    maxWidth: '100%',
-                    height: 'auto',
-                  }}
-                />
-              </PSAButton>
+              <PSAButton
+                type="button"
+                onClick={handleClick}
+                data-test="header-logo"
+                title={(
+                  <PSALogoDisplayer
+                    council={councilShorthandRedux}
+                    alt={councilShorthandRedux}
+                    style={{
+                      maxWidth: '100%',
+                      height: 'auto',
+                    }}
+                  />
+              )}
+              />
             </Box>
           </Grid>
         </Grid>

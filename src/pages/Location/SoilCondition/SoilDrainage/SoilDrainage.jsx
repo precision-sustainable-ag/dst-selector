@@ -7,13 +7,13 @@ import {
 } from '@mui/material';
 import { LocalDrinkOutlined, InvertColors } from '@mui/icons-material';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
+import { PSAButton } from 'shared-react-components/src';
 import { ReferenceTooltip } from '../../../../shared/constants';
 import arrayEquals from '../../../../shared/functions';
 import RenderDrainageClasses from './RenderDrainageClasses';
 import { setTileDrainage, updateDrainageClass as updateDrainageClassRedux } from '../../../../reduxStore/soilSlice';
 import MyCoverCropReset from '../../../../components/MyCoverCropReset/MyCoverCropReset';
 import { historyState, setHistoryState } from '../../../../reduxStore/userSlice';
-import PSAButton from '../../../../components/PSAComponents/PSAButton';
 
 const SoilDrainage = ({ drainageOptions }) => {
   const dispatchRedux = useDispatch();
@@ -170,8 +170,7 @@ const SoilDrainage = ({ drainageOptions }) => {
                   resetDrainageClasses();
                 }}
                 data-test="drainage-reset-button"
-              >
-                {isMobile ? (
+                title={isMobile ? (
                   <RestartAltIcon sx={{ color: '#ff961c' }} />
                 ) : (
                   <Typography
@@ -185,7 +184,7 @@ const SoilDrainage = ({ drainageOptions }) => {
                     Values changed, reset?
                   </Typography>
                 )}
-              </PSAButton>
+              />
             </Grid>
           )}
         </Grid>

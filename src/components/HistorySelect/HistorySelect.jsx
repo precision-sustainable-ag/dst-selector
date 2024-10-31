@@ -4,7 +4,7 @@ import {
   Typography,
 } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import { PSADropdown } from 'shared-react-components/src';
+import { PSAButton, PSADropdown } from 'shared-react-components/src';
 import { getAuthToken } from '../../shared/authToken';
 import { loadHistory } from '../../shared/api';
 import {
@@ -19,7 +19,6 @@ import { setGoalsRedux } from '../../reduxStore/goalSlice';
 import { setCropRedux } from '../../reduxStore/cropSlice';
 import { myCropListLocation, snackHandler } from '../../reduxStore/sharedSlice';
 import pirschAnalytics from '../../shared/analytics';
-import PSAButton from '../PSAComponents/PSAButton';
 import PSAModal from '../PSAComponents/PSAModal';
 
 const menuProps = {
@@ -181,13 +180,12 @@ const HistorySelect = () => {
                   variant="contained"
                   disabled={value === ''}
                   data-test="import-history"
-                >
-                  Import
-                </PSAButton>
+                  title="Import"
+                />
               </Grid>
 
               <Grid item xs={12} display="flex" justifyContent="center" alignItems="center">
-                <PSAButton onClick={() => setOpen(false)} variant="contained">Cancel</PSAButton>
+                <PSAButton onClick={() => setOpen(false)} variant="contained" title="Cancel" />
               </Grid>
             </Grid>
           </Box>
@@ -195,8 +193,8 @@ const HistorySelect = () => {
       />
 
       <Box sx={{ display: 'flex', justifyContent: 'space-around' }}>
-        <PSAButton variant="contained" onClick={handleAddHistory} data-test="create-new-history">Create New History</PSAButton>
-        <PSAButton variant="contained" onClick={handleHistoryImport} data-test="import-previous-history">Import previous history</PSAButton>
+        <PSAButton variant="contained" onClick={handleAddHistory} data-test="create-new-history" title="Create New History" />
+        <PSAButton variant="contained" onClick={handleHistoryImport} data-test="import-previous-history" title="Import previous history" />
       </Box>
 
     </>
