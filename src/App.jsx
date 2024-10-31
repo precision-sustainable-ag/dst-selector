@@ -16,7 +16,7 @@ import { createTheme } from '@mui/material/styles';
 import React, { Suspense } from 'react';
 import { useDispatch, useSelector, Provider } from 'react-redux';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import { PSAFeedback } from 'shared-react-components/src';
+import { PSAForm } from 'shared-react-components/src';
 import pirschAnalytics from './shared/analytics';
 
 import configureStore from './reduxStore/store';
@@ -140,11 +140,98 @@ const App = () => (
                       <Route
                         path="/feedback"
                         render={() => (
-                          <PSAFeedback
-                            label="cc-selector"
-                            title="Cover Crop Species Selector Feedback"
+                          <PSAForm
+                            apiUrl="https://developfeedback.covercrop-data.org/v1/issues"
+                            submitMessage="Feedback submitted successfully"
+                            headerTitle="Cover Crop Species Selector Feedback"
+                            textFields={[
+                              {
+                                label: 'Title',
+                                description: 'Give your feedback a short descriptive title.',
+                                props: {
+                                  placeholder: 'Enter Your Title',
+                                  variant: 'outlined',
+                                  'data-test': 'feedback_title',
+                                },
+                                name: 'feedback_title',
+                                required: true,
+                              },
+                              {
+                                label: 'Message',
+                                description: 'Explain your feedback as thoroughly as you can. Your feedback will help us improve the experience.',
+                                props: {
+                                  placeholder: 'Enter Your Feedback',
+                                  multiline: true,
+                                  variant: 'outlined',
+                                  fullWidth: true,
+                                  minRows: 3,
+                                  'data-test': 'feedback_message',
+                                },
+                                name: 'feedback_message',
+                                required: true,
+                              },
+                              {
+                                label: 'Name',
+                                props: {
+                                  placeholder: 'Enter Name',
+                                  variant: 'outlined',
+                                  'data-test': 'feedback_name',
+                                },
+                                name: 'feedback_name',
+                              },
+                              {
+                                label: 'Email',
+                                props: {
+                                  placeholder: 'Enter Email',
+                                  variant: 'outlined',
+                                  'data-test': 'feedback_email',
+                                },
+                                name: 'feedback_email',
+                              },
+                            ]}
+                            checkboxes={[
+                              {
+                                title: 'Topic',
+                                required: true,
+                                options: [
+                                  {
+                                    label: 'About the Cover Crop Data',
+                                    props: {
+                                      name: 'feedback_data',
+                                      'data-test': 'feedback_data',
+                                    },
+                                  },
+                                  {
+                                    label: 'About the Website',
+                                    props: {
+                                      name: 'feedback_website',
+                                      'data-test': 'feedback_website',
+                                    },
+                                  },
+                                  {
+                                    label: 'Other',
+                                    props: {
+                                      name: 'feedback_other',
+                                      'data-test': 'feedback_other',
+                                    },
+                                  },
+                                ],
+                              },
+                            ]}
+                            buttons={[
+                              {
+                                props: {
+                                  title: 'Submit',
+                                  variant: 'contained',
+                                  color: 'primary',
+                                  children: 'Submit',
+                                },
+                                action: 'submit',
+                              },
+                            ]}
                             pirschAnalytics={pirschAnalytics}
                           />
+
                         )}
                         exact
                       />
