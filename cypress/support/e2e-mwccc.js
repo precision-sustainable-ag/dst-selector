@@ -309,11 +309,11 @@ export const mwcccComparisonRowTests = () => {
       btnIdx.forEach((idx) => {
         cy.assertByTestId(`cart-btn-${idx}`).click({ force: true });
       });
-      cy.get("[data-cy='my selected crops-btn']")
+      cy.get("[data-test='my selected crops-btn']")
         .first()
         .click({ force: true })
         .then(() => {
-          cy.get("[data-cy='comparison-view-btn']")
+          cy.get("[data-test='comparison-view-btn']")
             .should('be.visible')
             .click();
         });
@@ -322,7 +322,7 @@ export const mwcccComparisonRowTests = () => {
     // TODO: combine all tests
     for (let i = 0; i <= 1; i++) {
       it(`should display ${filterTypes[i]} row when ${filterTypes[i]} variable is clicked`, () => {
-        cy.get(`[data-cy='${sidebarFilters[0]}-expandmore-icon']`) // weeds
+        cy.get(`[data-test='${sidebarFilters[0]}-expandmore-icon']`) // weeds
           .should('be.visible')
           .click()
           .then(() => {
@@ -332,7 +332,7 @@ export const mwcccComparisonRowTests = () => {
     }
 
     it(`should display ${filterTypes[2]} row when ${filterTypes[2]} variable is clicked`, () => {
-      cy.get(`[data-cy='${sidebarFilters[1]}-expandmore-icon']`) // weeds
+      cy.get(`[data-test='${sidebarFilters[1]}-expandmore-icon']`) // weeds
         .should('be.visible')
         .click()
         .then(() => {
@@ -342,7 +342,7 @@ export const mwcccComparisonRowTests = () => {
 
     for (let i = 3; i <= 9; i++) {
       it(`should display ${filterTypes[i]} row when ${filterTypes[i]} variable is clicked`, () => {
-        cy.get(`[data-cy='${sidebarFilters[2]}-expandmore-icon']`) // weeds
+        cy.get(`[data-test='${sidebarFilters[2]}-expandmore-icon']`) // weeds
           .should('be.visible')
           .click()
           .then(() => {
@@ -353,7 +353,7 @@ export const mwcccComparisonRowTests = () => {
 
     for (let i = 10; i <= 19; i++) {
       it(`should display ${filterTypes[i]} row when ${filterTypes[i]} variable is clicked`, () => {
-        cy.get(`[data-cy='${sidebarFilters[3]}-expandmore-icon']`) // weeds
+        cy.get(`[data-test='${sidebarFilters[3]}-expandmore-icon']`) // weeds
           .should('be.visible')
           .click()
           .then(() => {
@@ -364,7 +364,7 @@ export const mwcccComparisonRowTests = () => {
 
     for (let i = 20; i <= 26; i++) {
       it(`should display ${filterTypes[i]} row when ${filterTypes[i]} variable is clicked`, () => {
-        cy.get(`[data-cy='${sidebarFilters[4]}-expandmore-icon']`) // weeds
+        cy.get(`[data-test='${sidebarFilters[4]}-expandmore-icon']`) // weeds
           .should('be.visible')
           .click()
           .then(() => {

@@ -64,7 +64,7 @@ const RenderFloodingOptions = ({ floodingOptions, flooding = [''] }) => {
               updateFloodingFrequency(f.value);
             }}
             style={{ margin: '0.3rem' }}
-            data-cy={`flooding-options-chip-${index}`}
+            data-test={`flooding-options-chip-${index}`}
           />
         </Box>
       ))}

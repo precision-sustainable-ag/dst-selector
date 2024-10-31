@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { TableCell, Tooltip, Box } from '@mui/material';
+import { TableCell, Box } from '@mui/material';
 import { AddCircleOutline, DeleteForever } from '@mui/icons-material';
 import { addCropToBasket, getRating } from '../../../shared/constants';
 import '../../../styles/cropCalendarViewComponent.scss';
@@ -10,6 +10,11 @@ import { updateSelectedCropIds } from '../../../reduxStore/cropSlice';
 import { myCropListLocation, snackHandler } from '../../../reduxStore/sharedSlice';
 import { setSaveHistory } from '../../../reduxStore/userSlice';
 import PSAButton from '../../../components/PSAComponents/PSAButton';
+import PSATooltip from '../../../components/PSAComponents/PSATooltip';
+
+const tooltipContent = (currCrop, goal, councilShorthandRedux) => (
+  getRating(currCrop.goals.filter((a) => a.label === goal)[0].values[0].value, councilShorthandRedux)
+);
 
 const CropTableCard = ({ crop, indexKey, showGrowthWindow }) => {
   const dispatchRedux = useDispatch();
@@ -34,7 +39,7 @@ const CropTableCard = ({ crop, indexKey, showGrowthWindow }) => {
             className="goalCells"
           >
             <div>
-              <Tooltip
+              <PSATooltip
                 arrow
                 placement="bottom"
                 enterTouchDelay={0}
@@ -45,9 +50,8 @@ const CropTableCard = ({ crop, indexKey, showGrowthWindow }) => {
                     {goal}
                   </p>
                 )}
-              >
-                {getRating(crop.goals.filter((a) => a.label === goal)[0].values[0].value, councilShorthandRedux)}
-              </Tooltip>
+                tooltipContent={tooltipContent(crop, goal, councilShorthandRedux)}
+              />
             </div>
           </TableCell>
         ))}

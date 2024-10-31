@@ -10,7 +10,7 @@ describe('Test all possible interactions on the NECCC Crop List View', () => {
     cy.intercept({ url: 'https://events.mapbox.com/**' }, { log: false });
     cy.beforeEachVisitBaseUrl();
     cy.assertByTestId('state-selector-dropdown').first().click();
-    cy.assertByTestId('state-selector-dropdown-22').click();
+    cy.get("[data-test='state-selector-dropdown-NEW YORK']").click();
     cy.assertByTestId('next-btn').first().click();
     cy.assertByTestId('field-location-title');
 
@@ -23,17 +23,17 @@ describe('Test all possible interactions on the NECCC Crop List View', () => {
       payload: { regionId: 3, regionShorthand: '6' },
     });
 
-    cy.get("[data-cy='next-btn']").first().click();
+    cy.get("[data-test='next-btn']").first().click();
     cy.assertByTestId('site-conditions-title');
-    cy.get("[data-cy='next-btn']").first().click();
+    cy.get("[data-test='next-btn']").first().click();
     cy.assertByTestId('title-goals');
     cy.intercept('GET', '**/v1/states/36/crops?minimal=true&regions=3', {
       fixture: 'cropData-NECCC.json',
     }).as('apiRequest');
-    cy.get("[data-cy='next-btn']").first().click().then(() => {
+    cy.get("[data-test='next-btn']").first().click().then(() => {
       cy.wait('@apiRequest');
     });
-    cy.get("[data-cy='crop-list-btn']").first().click();
+    cy.get("[data-test='crop-list-btn']").first().click();
   });
 
   necccFilterTests();
