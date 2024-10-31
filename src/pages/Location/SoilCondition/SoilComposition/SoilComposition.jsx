@@ -15,7 +15,7 @@ const SoilComposition = () => {
         borderRadius: '15px',
         padding: '1rem',
       }}
-      data-cy="soil-composition-card"
+      data-test="soil-composition-card"
     >
       <Grid container justifyContent="space-between">
         <Grid item container xs={10}>
@@ -52,7 +52,7 @@ const SoilComposition = () => {
               <Typography
                 variant="body1"
                 style={{ fontWeight: 'bold', fontSize: '0.9rem', color: '#598445' }}
-                data-cy="map-unit-name-text"
+                data-test="map-unit-name-text"
               >
                 {soilDataRedux?.mapUnitName}
               </Typography>

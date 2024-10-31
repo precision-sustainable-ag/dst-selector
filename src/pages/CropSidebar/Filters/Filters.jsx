@@ -1,10 +1,18 @@
-import { Chip, Grid, Tooltip } from '@mui/material';
+import { Chip, Grid } from '@mui/material';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { filterOffRedux, filterOnRedux, filterToggle } from '../../../reduxStore/filterSlice';
+import PSATooltip from '../../../components/PSAComponents/PSATooltip';
 
 // this file handles setting all of the filters in the redux state
+
+const tooltipContent = (filter) => (
+  <span>
+    {filter.name}
+    <HelpOutlineIcon style={{ cursor: 'pointer', transform: 'scale(0.7)' }} />
+  </span>
+);
 
 // handles dollars and ratings
 const DollarsAndRatings = ({ filter }) => {
@@ -34,7 +42,7 @@ const DollarsAndRatings = ({ filter }) => {
           return (
             <Chip
               key={filter.name + i}
-              data-cy={`${filter.name}-${i}`}
+              data-test={`${filter.name}-${i}`}
               // label={filter.dataType === 'currency' ? '$'.repeat(i) : filter.values[i - 1].value}
               label={filter.dataType === 'currency' ? '$'.repeat(i) : i}
               style={{
@@ -86,7 +94,7 @@ const Chips = ({ filter }) => {
         <Grid key={filter.name + val.value + i} item>
           <Chip
             key={filter.name + val.value + i}
-            data-cy={`${filter.name}-${val.value === '0' ? 'No' : 'Yes'}`}
+            data-test={`${filter.name}-${val.value === '0' ? 'No' : 'Yes'}`}
             onClick={() => chipChange(filter.name, val.value)}
             component="li"
             size="medium"
@@ -108,7 +116,7 @@ const Chips = ({ filter }) => {
           size="medium"
           label={val.value}
           color={selected ? 'primary' : 'secondary'}
-          data-cy={`${filter.name}-${val.value}`}
+          data-test={`${filter.name}-${val.value}`}
         />
       </Grid>
     );
@@ -117,7 +125,7 @@ const Chips = ({ filter }) => {
 
 // handles making the tooltips in sidebar
 const Tip = ({ filter }) => (
-  <Tooltip
+  <PSATooltip
     enterTouchDelay={0}
     title={(
       <>
@@ -125,12 +133,8 @@ const Tip = ({ filter }) => (
         <p>{filter.details}</p>
       </>
       )}
-  >
-    <span>
-      {filter.name}
-      <HelpOutlineIcon style={{ cursor: 'pointer', transform: 'scale(0.7)' }} />
-    </span>
-  </Tooltip>
+    tooltipContent={tooltipContent(filter)}
+  />
 ); // Tip
 
 // renders sidebar

@@ -107,7 +107,6 @@ const filterReducer = (state = initialState, action = null) => {
 
       return {
         ...state,
-        cropSearch: action.payload.value,
         filters,
       };
 

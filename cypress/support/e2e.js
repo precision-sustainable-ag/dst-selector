@@ -3,7 +3,7 @@ import { flipCoverCropName } from '../../src/shared/constants';
 import './commands';
 
 Cypress.Commands.add('assertByTestId', (testId) => {
-  cy.get(`[data-cy=${testId}]`).should('exist');
+  cy.get(`[data-test=${testId}]`).should('exist');
 });
 
 Cypress.Commands.add('beforeEachVisitBaseUrl', () => {
@@ -26,22 +26,22 @@ const checkRows = (filterType, filterIndex, filterResult) => {
   const filterValType = typeof filterIndex[0];
 
   filterIndex.forEach((filterIdx, index) => {
-    cy.getByTestId(`"${filterType}-${filterIdx}"`)
+    cy.getByTestId(`${filterType}-${filterIdx}`)
       .click({ force: true }).then(() => {
         let option;
         if (filterValType === 'string' && index - 1 >= 0) {
           option = index - 1;
-          cy.getByTestId(`"${filterType}-${filterIndex[option]}"`).click({ force: true });
+          cy.getByTestId(`${filterType}-${filterIndex[option]}`).click({ force: true });
         } else if (filterValType === 'number') {
           option = filterIdx + 1;
           // click on rest of the chips to unselect them
           while (option <= filterIndex.length && option <= filterIndex.at(-1)) {
-            cy.getByTestId(`"${filterType}-${option}"`).click({ force: true });
+            cy.getByTestId(`${filterType}-${option}`).click({ force: true });
             option += 1;
           }
         }
-        cy.get('[data-cy="crop-list-tbody"]').within(() => {
-          cy.get('[data-cy^="crop-list-tr"]').then((allRows) => {
+        cy.get('[data-test="crop-list-tbody"]').within(() => {
+          cy.get('[data-test^="crop-list-tr"]').then((allRows) => {
             cy.log(`Total rows found: ${allRows.length}`);
             if (allRows.length === 1) {
               // eslint-disable-next-line no-console
@@ -62,7 +62,7 @@ const checkRows = (filterType, filterIndex, filterResult) => {
               expect(filterResult[filterIdx].length).to.equal(visibleRows.length);
               cy.wrap(visibleRows).each((row) => {
                 cy.wrap(row)
-                  .find('[data-cy="crop-calendar-crop-name"]').should('exist')
+                  .find('[data-test="crop-calendar-crop-name"]').should('exist')
                   .then((label) => {
                     expect(filterResult[filterIdx]).to.include(label.text().trim().toLowerCase());
                   });
@@ -75,16 +75,16 @@ const checkRows = (filterType, filterIndex, filterResult) => {
 };
 
 export const checkComparisonTableRows = ({ filterName }) => {
-  cy.get(`[data-cy='${filterName}-checkbox']`)
+  cy.get(`[data-test='${filterName}-checkbox']`)
     .click()
     .then(() => {
       cy.assertByTestId(`"${filterName}-row"`);
     });
 
-  cy.get(`[data-cy='${filterName}-checkbox']`)
+  cy.get(`[data-test='${filterName}-checkbox']`)
     .click()
     .then(() => {
-      cy.get(`[data-cy="${filterName}-row"]`).should('not.exist');
+      cy.get(`[data-test="${filterName}-row"]`).should('not.exist');
     });
 };
 
@@ -96,9 +96,9 @@ export const mySelectedCropsCommonTests = () => {
 
     btnIdx.forEach((idx) => {
       cy.assertByTestId(`cart-btn-${idx}`).click({ force: true });
-      cy.get(`[data-cy=crop-list-tr-${idx}]`).then(($row) => {
+      cy.get(`[data-test=crop-list-tr-${idx}]`).then(($row) => {
         cy.wrap($row)
-          .find('[data-cy=crop-calendar-crop-name]')
+          .find('[data-test=crop-calendar-crop-name]')
           .should('be.visible')
           .then(($label) => {
             cropLabels.push($label.text());
@@ -107,25 +107,25 @@ export const mySelectedCropsCommonTests = () => {
     });
 
     btnIdx.forEach((idx) => {
-      cy.get(`[data-cy=delete-forever-icon-${idx}]`).should('exist');
-      cy.get(`[data-cy=add-circle-outline-icon-${idx}]`).should('not.exist');
+      cy.get(`[data-test=delete-forever-icon-${idx}]`).should('exist');
+      cy.get(`[data-test=add-circle-outline-icon-${idx}]`).should('not.exist');
     });
 
-    cy.get('[data-cy=badge] .MuiBadge-badge') // Select all badges
+    cy.get('[data-test=badge] .MuiBadge-badge') // Select all badges
       .each(($badge) => {
         cy.wrap($badge).should('have.text', btnIdx.length); // Assert that each badge has the text '2'
       });
 
     cy.log('===CROP LABELS===', cropLabels);
 
-    cy.get("[data-cy='my selected crops-btn']")
+    cy.get("[data-test='my selected crops-btn']")
       .first()
       .click()
       .then(() => {
         btnIdx.forEach((idx) => {
           cy.assertByTestId(`crop-card-${idx}`);
         });
-        cy.get('[data-cy^=crop-card-label-]').each(($label) => {
+        cy.get('[data-test^=crop-card-label-]').each(($label) => {
           // Ensure the label is visible
           cy.wrap($label).should('be.visible')
             .invoke('text')
@@ -151,11 +151,11 @@ export const presenceOfFiltersTests = (sidebarFilters) => {
     btnIdx.forEach((idx) => {
       cy.assertByTestId(`cart-btn-${idx}`).click({ force: true });
     });
-    cy.get("[data-cy='my selected crops-btn']")
+    cy.get("[data-test='my selected crops-btn']")
       .first()
       .click({ force: true })
       .then(() => {
-        cy.get("[data-cy='comparison-view-btn']")
+        cy.get("[data-test='comparison-view-btn']")
           .should('be.visible')
           .click();
       });
