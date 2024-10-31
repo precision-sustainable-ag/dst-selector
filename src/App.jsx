@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 /*
   App is the species selector tool
   styled using ./styles/App.scss
@@ -16,7 +17,8 @@ import { createTheme } from '@mui/material/styles';
 import React, { Suspense } from 'react';
 import { useDispatch, useSelector, Provider } from 'react-redux';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import { PSAFeedback } from 'shared-react-components/src';
+import { PSAFeedback, PSATheme } from 'shared-react-components/src';
+import { deepmerge } from '@mui/utils';
 import pirschAnalytics from './shared/analytics';
 
 import configureStore from './reduxStore/store';
@@ -46,6 +48,7 @@ import './styles/App.scss';
 // bootstrap import
 import 'mdbreact/dist/css/mdb.css';
 import SiteConditions from './pages/Location/LocationConfirmation/SiteConditions';
+import '@fontsource/ibm-plex-sans';
 
 const store = configureStore();
 
@@ -121,9 +124,11 @@ const csTheme = responsiveFontSizes(theme, {
   breakpoints: ['xs', 'sm', 'md', 'lg', 'xl'],
 });
 
+export const dstTheme = createTheme(deepmerge(PSATheme, csTheme));
+
 const App = () => (
   <StyledEngineProvider injectFirst>
-    <ThemeProvider theme={csTheme}>
+    <ThemeProvider theme={dstTheme}>
       <Provider store={store}>
         <BrowserRouter>
           <Auth0ProviderWithHistory>

@@ -27,7 +27,7 @@
 /* eslint-disable no-undef */
 
 Cypress.Commands.add('getByTestId', (testId, ...args) => {
-  cy.get(`[data-test=${testId}]`, ...args);
+  cy.get(`[data-test="${testId}"]`, ...args);
 });
 
 Cypress.Commands.add('loginToAuth0', () => {
@@ -40,26 +40,23 @@ Cypress.Commands.add('loginToAuth0', () => {
   });
   log.snapshot('before');
 
-  cy.session(
-    `auth0-${args.username}`,
-    () => {
-      // App landing page redirects to Auth0.
-      cy.visit('/');
-      cy.contains(/not now/i).click({ multiple: true, force: true });
-      cy.contains(/decline/i).click({ multiple: true, force: true });
-      cy.getByTestId('auth-btn').click();
+  cy.session(`auth0-${args.username}`, () => {
+    // App landing page redirects to Auth0.
+    cy.visit('/');
+    cy.contains(/not now/i).click({ multiple: true, force: true });
+    cy.contains(/decline/i).click({ multiple: true, force: true });
+    cy.getByTestId('auth_button').click();
 
-      // Login on Auth0.
-      cy.origin(Cypress.env('auth0_domain'), { args }, ({ username, password }) => {
-        cy.get('input#username').type(username);
-        cy.get('input#password').type(password);
-        cy.contains('button[value=default]', 'Continue').click();
-      });
+    // Login on Auth0.
+    cy.origin(Cypress.env('auth0_domain'), { args }, ({ username, password }) => {
+      cy.get('input#username').type(username);
+      cy.get('input#password').type(password);
+      cy.contains('button[value=default]', 'Continue').click();
+    });
 
-      // Ensure Auth0 has redirected us back to the RWA.
-      cy.url().should('equal', Cypress.config().baseUrl);
-    },
-  );
+    // Ensure Auth0 has redirected us back to the RWA.
+    cy.url().should('equal', Cypress.config().baseUrl);
+  });
 
   log.snapshot('after');
   log.end();

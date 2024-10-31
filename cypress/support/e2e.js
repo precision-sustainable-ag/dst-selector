@@ -26,17 +26,17 @@ const checkRows = (filterType, filterIndex, filterResult) => {
   const filterValType = typeof filterIndex[0];
 
   filterIndex.forEach((filterIdx, index) => {
-    cy.getByTestId(`"${filterType}-${filterIdx}"`)
+    cy.getByTestId(`${filterType}-${filterIdx}`)
       .click({ force: true }).then(() => {
         let option;
         if (filterValType === 'string' && index - 1 >= 0) {
           option = index - 1;
-          cy.getByTestId(`"${filterType}-${filterIndex[option]}"`).click({ force: true });
+          cy.getByTestId(`${filterType}-${filterIndex[option]}`).click({ force: true });
         } else if (filterValType === 'number') {
           option = filterIdx + 1;
           // click on rest of the chips to unselect them
           while (option <= filterIndex.length && option <= filterIndex.at(-1)) {
-            cy.getByTestId(`"${filterType}-${option}"`).click({ force: true });
+            cy.getByTestId(`${filterType}-${option}`).click({ force: true });
             option += 1;
           }
         }
