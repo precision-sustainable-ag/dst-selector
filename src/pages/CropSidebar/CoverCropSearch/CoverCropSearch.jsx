@@ -4,8 +4,8 @@ import {
 import { Clear, Search } from '@mui/icons-material';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { PSATextField } from 'shared-react-components/src';
 import { cropSearch } from '../../../reduxStore/filterSlice';
-import PSATextField from '../../../components/PSAComponents/PSATextField';
 // import PSATextField from '../../../components/PSAComponents/PSATextField';
 
 const CoverCropSearch = () => {
@@ -38,7 +38,6 @@ const CoverCropSearch = () => {
               </InputAdornment>
             ),
           }}
-          data-test="crop-search-input"
         />
       </ListItemText>
     </ListItem>

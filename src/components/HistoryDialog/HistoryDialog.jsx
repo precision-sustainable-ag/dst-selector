@@ -3,12 +3,12 @@ import {
   Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle,
 } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
+import { PSATextField } from 'shared-react-components/src';
 import {
   historyState, setHistoryDialogState, setHistoryState, setSelectedHistory,
   updateField,
 } from '../../reduxStore/userSlice';
 import { reset } from '../../reduxStore/store';
-import PSATextField from '../PSAComponents/PSATextField';
 import PSAButton from '../PSAComponents/PSAButton';
 
 export const historyDialogDefaultState = {
