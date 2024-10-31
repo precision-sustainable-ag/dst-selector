@@ -11,8 +11,8 @@ import {
   Box, Typography,
 } from '@mui/material';
 import React, { useState } from 'react';
+import { PSAButton } from 'shared-react-components/src';
 import { getExpertsData } from '../../../shared/constants';
-import PSAButton from '../../../components/PSAComponents/PSAButton';
 
 const AboutTheExperts = () => {
   const [value, setValue] = useState(0);

@@ -5,12 +5,12 @@ import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import { WavesOutlined } from '@mui/icons-material';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { PSAButton } from 'shared-react-components/src';
 import { ReferenceTooltip } from '../../../../shared/constants';
 import arrayEquals from '../../../../shared/functions';
 import RenderFloodingOptions from './RenderFloodingOptions';
 import { updateFloodingFrequency } from '../../../../reduxStore/soilSlice';
 import { historyState, setHistoryState } from '../../../../reduxStore/userSlice';
-import PSAButton from '../../../../components/PSAComponents/PSAButton';
 
 const SoilFloodingFrequency = ({ floodingOptions }) => {
   const dispatchRedux = useDispatch();
@@ -106,8 +106,7 @@ const SoilFloodingFrequency = ({ floodingOptions }) => {
                 onClick={() => {
                   resetFloodingOptions();
                 }}
-              >
-                {isMobile ? (
+                title={isMobile ? (
                   <RestartAltIcon sx={{ color: '#ff961c' }} />
                 ) : (
                   <Typography
@@ -121,7 +120,7 @@ const SoilFloodingFrequency = ({ floodingOptions }) => {
                     Values changed, reset?
                   </Typography>
                 )}
-              </PSAButton>
+              />
             </Grid>
           )}
         </Grid>

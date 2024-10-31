@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import {
   TableCell, Typography, TableRow, Grid,
 } from '@mui/material';
+import { PSAButton } from 'shared-react-components/src';
 import {
   CropImage,
   flipCoverCropName,
@@ -12,7 +13,6 @@ import {
 import '../../../styles/cropCalendarViewComponent.scss';
 import '../../../styles/cropTable.scss';
 import CropTableCard from './CropTableCard';
-import PSAButton from '../../../components/PSAComponents/PSAButton';
 
 const RenderTableItems = ({ showGrowthWindow, handleModalOpen }) => {
   // redux vars
@@ -51,14 +51,14 @@ const RenderTableItems = ({ showGrowthWindow, handleModalOpen }) => {
                 <Grid item xs={12}>
                   <PSAButton
                     onClick={() => handleModalOpen(crop)}
-                  >
-                    <CropImage
-                      present={!!crop.thumbnail}
-                      src={crop.thumbnail ? crop.thumbnail : 'https://placehold.it/100x100'}
-                      alt={crop.label}
-                    />
-
-                  </PSAButton>
+                    title={(
+                      <CropImage
+                        present={!!crop.thumbnail}
+                        src={crop.thumbnail ? crop.thumbnail : 'https://placehold.it/100x100'}
+                        alt={crop.label}
+                      />
+                    )}
+                  />
                 </Grid>
                 <Grid item xs={12}>
                   <PSAButton
@@ -73,9 +73,8 @@ const RenderTableItems = ({ showGrowthWindow, handleModalOpen }) => {
                       handleModalOpen(crop);
                     }}
                     data-test="crop-calendar-crop-name"
-                  >
-                    {flipCoverCropName(crop.label)}
-                  </PSAButton>
+                    title={flipCoverCropName(crop.label)}
+                  />
                 </Grid>
                 <Grid item xs={12}>
                   <Typography sx={{ fontSize: '0.9rem' }}>

@@ -3,9 +3,9 @@ import {
 } from '@mui/material';
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import { PSAButton } from 'shared-react-components/src';
 import { updateConsent } from '../../../reduxStore/userSlice';
 import PSAModal from '../../../components/PSAComponents/PSAModal';
-import PSAButton from '../../../components/PSAComponents/PSAButton';
 
 const localStorageKey = 'consent';
 
@@ -84,17 +84,15 @@ const ConsentModal = ({ modalOpen, setModalOpen }) => {
               <PSAButton
                 variant="outlined"
                 onClick={() => handleModal(true)}
-              >
-                Accept
-              </PSAButton>
+                title="Accept"
+              />
             </Grid>
             <Grid item>
               <PSAButton
                 variant="outlined"
                 onClick={() => handleModal(false)}
-              >
-                Decline
-              </PSAButton>
+                title="Decline"
+              />
             </Grid>
           </Grid>
         </Box>

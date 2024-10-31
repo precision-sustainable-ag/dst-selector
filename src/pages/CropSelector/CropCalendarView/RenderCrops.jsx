@@ -7,6 +7,7 @@ import {
 import {
   AcUnit, AddCircleOutline, CheckRounded, DeleteForever,
 } from '@mui/icons-material';
+import { PSAButton } from 'shared-react-components/src';
 import {
   CropImage,
   flipCoverCropName,
@@ -20,7 +21,6 @@ import '../../../styles/cropCalendarViewComponent.scss';
 import { updateSelectedCropIds } from '../../../reduxStore/cropSlice';
 import { myCropListLocation, snackHandler } from '../../../reduxStore/sharedSlice';
 import { setSaveHistory } from '../../../reduxStore/userSlice';
-import PSAButton from '../../../components/PSAComponents/PSAButton';
 import PSATooltip from '../../../components/PSAComponents/PSATooltip';
 
 const tooltipContent = () => (
@@ -82,30 +82,32 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
 
                     },
                   }}
-                >
+                  title={(
+                    <>
+                      { selectedCropIdsRedux.includes(crop.id) && (
+                      <CheckBoxIcon
+                        style={{
+                          position: 'absolute',
+                          right: '7px',
+                          top: '4px',
+                          height: '15px',
+                          zIndex: 1,
+                          backgroundColor: '#5992E6',
 
-                  { selectedCropIdsRedux.includes(crop.id) && (
-                    <CheckBoxIcon
-                      style={{
-                        position: 'absolute',
-                        right: '7px',
-                        top: '4px',
-                        height: '15px',
-                        zIndex: 1,
-                        backgroundColor: '#5992E6',
+                        }}
+                      />
 
-                      }}
-                    />
+                      )}
+                      <CropImage
+                        view="calendar"
+                        present
+                        src={crop.thumbnail ? crop.thumbnail : 'https://placehold.it/100x100'}
+                        alt={crop.label}
+                      />
 
+                    </>
                   )}
-                  <CropImage
-                    view="calendar"
-                    present
-                    src={crop.thumbnail ? crop.thumbnail : 'https://placehold.it/100x100'}
-                    alt={crop.label}
-                  />
-
-                </PSAButton>
+                />
               ) : (
                 <PSAButton
                   size="small"
@@ -113,9 +115,10 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                     setModalData(crop);
                     setModalOpen(!modalOpen);
                   }}
-                >
-                  <CropImage view="calendar" present={false} />
-                </PSAButton>
+                  title={
+                    <CropImage view="calendar" present={false} />
+                  }
+                />
               )}
             </Grid>
             <Grid container item md={8} xs={12} alignItems="center">
@@ -133,9 +136,8 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                     setModalOpen(!modalOpen);
                   }}
                   data-test="crop-calendar-crop-name"
-                >
-                  {flipCoverCropName(crop.label)}
-                </PSAButton>
+                  title={flipCoverCropName(crop.label)}
+                />
               </Grid>
               {crop.attributes.filter((a) => a.label === 'Frost Seed')[0]?.values[0].label === 'Yes' && (
                 <Grid item>
@@ -209,11 +211,10 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
               );
             }}
             data-test={`cart-btn-${index}`}
-          >
-            {selectedBtns.includes(crop.id)
+            title={selectedBtns.includes(crop.id)
               ? <DeleteForever data-test={`delete-forever-icon-${index}`} />
               : <AddCircleOutline data-test={`add-circle-outline-icon-${index}`} />}
-          </PSAButton>
+          />
         </TableCell>
       </TableRow>
     ));

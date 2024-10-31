@@ -2,12 +2,12 @@ import { Badge, Typography } from '@mui/material';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useHistory } from 'react-router-dom';
+import { PSAButton } from 'shared-react-components/src';
 import {
   activateMyCoverCropListTile,
   activateSpeicesSelectorTile,
   setMyCoverCropReset,
 } from '../../../reduxStore/sharedSlice';
-import PSAButton from '../../../components/PSAComponents/PSAButton';
 import PSATooltip from '../../../components/PSAComponents/PSATooltip';
 
 const tooltipContent = (setSpeciesSelectorActivationFlag, stateLabelRedux, pathname) => (
@@ -18,11 +18,12 @@ const tooltipContent = (setSpeciesSelectorActivationFlag, stateLabelRedux, pathn
       selected={pathname === '/explorer'}
       buttonType="ToggleOptions"
       data-test="browse-covercrops-btn"
-    >
-      <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
-        BROWSE COVER CROPS
-      </Typography>
-    </PSAButton>
+      title={(
+        <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
+          BROWSE COVER CROPS
+        </Typography>
+    )}
+    />
   </span>
 );
 
@@ -87,11 +88,12 @@ const ToggleOptions = ({ pathname }) => {
           },
         }}
         data-test="get-recommendation-btn"
-      >
-        <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
-          Get A Recommendation
-        </Typography>
-      </PSAButton>
+        title={(
+          <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
+            Get A Recommendation
+          </Typography>
+        )}
+      />
       <PSATooltip
         title={
           stateLabelRedux === null
@@ -108,11 +110,12 @@ const ToggleOptions = ({ pathname }) => {
             selected={pathname === '/my-cover-crop-list'}
             buttonType="ToggleOptions"
             onClick={setMyCoverCropActivationFlag}
-          >
-            <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
-              MY SELECTED CROPS
-            </Typography>
-          </PSAButton>
+            title={(
+              <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
+                MY SELECTED CROPS
+              </Typography>
+            )}
+          />
         </Badge>
       )}
     </>

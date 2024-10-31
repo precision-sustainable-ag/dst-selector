@@ -6,7 +6,7 @@
 import { Typography } from '@mui/material';
 import { useAuth0 } from '@auth0/auth0-react';
 import React from 'react';
-import PSAButton from '../../PSAComponents/PSAButton';
+import { PSAButton } from 'shared-react-components/src';
 
 const AuthButton = ({
   type, variant = 'text', onClickCallback = () => {}, color = 'secondary',
@@ -53,11 +53,12 @@ const AuthButton = ({
       onClick={handleClick}
       color={color}
       data-test="auth-btn"
-    >
-      <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
-        {type}
-      </Typography>
-    </PSAButton>
+      title={(
+        <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
+          {type}
+        </Typography>
+      )}
+    />
   );
 };
 
