@@ -10,12 +10,11 @@ import {
   DialogActions,
 } from '@mui/material';
 import React from 'react';
-import { PSAButton } from 'shared-react-components/src';
+import { PSATextField, PSAButton } from 'shared-react-components/src';
 import {
   postFields, buildPoint, buildGeometryCollection, deleteFields,
 } from '../../../shared/constants';
 import { getAuthToken } from '../../../shared/authToken';
-import PSATextField from '../../../components/PSAComponents/PSATextField';
 
 export const initFieldDialogState = {
   open: false,

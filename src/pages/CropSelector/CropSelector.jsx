@@ -121,12 +121,11 @@ const CropSelector = (props) => {
         {(size.width < 1680) && (
           <PSAButton
             startIcon={!showSidebar ? <ArrowForward /> : <ArrowBack />}
-            title="Toggle Sidebar"
+            hoverText="Toggle Sidebar"
             aria-label="toggle-sidebar"
             onClick={() => setShowSidebar(!showSidebar)}
-          >
-            {!showSidebar ? 'Show Sidebar' : 'Hide Sidebar'}
-          </PSAButton>
+            title={!showSidebar ? 'Show Sidebar' : 'Hide Sidebar'}
+          />
         )}
         {showSidebar && (
           <CropSidebar
