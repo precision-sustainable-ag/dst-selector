@@ -7,17 +7,26 @@
 
 import { useDispatch, useSelector } from 'react-redux';
 import React, { useEffect, useState } from 'react';
-import { NavLink, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
 import { useAuth0 } from '@auth0/auth0-react';
+<<<<<<< HEAD
 import { Grid, Box, Typography } from '@mui/material';
 import { PSAButton, PSALogoDisplayer } from 'shared-react-components/src';
+=======
+import { Grid, Box } from '@mui/material';
+import { PSAHeader } from 'shared-react-components/src';
+import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
+import TextSnippetOutlinedIcon from '@mui/icons-material/TextSnippetOutlined';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import AccountBoxOutlinedIcon from '@mui/icons-material/AccountBoxOutlined';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+>>>>>>> 9c9d06e9bdc025189fd3568bb306768f17b86215
 import InformationBar from './InformationBar/InformationBar';
 import ToggleOptions from './ToggleOptions/ToggleOptions';
 import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset';
 import { setUserHistoryList } from '../../reduxStore/userSlice';
-import AuthButton from '../../components/Auth/AuthButton/AuthButton';
 import ConsentModal from '../CoverCropExplorer/ConsentModal/ConsentModal';
 import AuthModal from '../Landing/AuthModal/AuthModal';
 import { setMyCoverCropReset, snackHandler } from '../../reduxStore/sharedSlice';
@@ -28,6 +37,7 @@ import HistoryDialog from '../../components/HistoryDialog/HistoryDialog';
 import SaveUserHistory from './SaveUserHistory/SaveUserHistory';
 import { releaseNotesURL } from '../../shared/keys';
 import useWindowSize from '../../shared/constants';
+<<<<<<< HEAD
 import PSATooltip from '../../components/PSAComponents/PSATooltip';
 // import logoImage from '../../../public/images/PSAlogo-text.png';
 
@@ -52,6 +62,8 @@ const tooltipContent = (tab, stateLabelRedux) => (
     />
   </span>
 );
+=======
+>>>>>>> 9c9d06e9bdc025189fd3568bb306768f17b86215
 
 const Header = () => {
   const history = useHistory();
@@ -62,12 +74,9 @@ const Header = () => {
   const theme = useTheme();
 
   // breakpoints
-  const isXsOrSmaller = useMediaQuery(theme.breakpoints.down('xs'));
-  const isSmOrSmaller = useMediaQuery(theme.breakpoints.down('sm'));
   const isMdOrSmaller = useMediaQuery(theme.breakpoints.down('md'));
 
   // redux vars
-  const stateLabelRedux = useSelector((stateRedux) => stateRedux.mapData.stateLabel);
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
   const selectedCropIdsRedux = useSelector((stateRedux) => stateRedux.cropData.selectedCropIds);
 
@@ -76,21 +85,7 @@ const Header = () => {
   const [consentModalOpen, setConsentModalOpen] = useState(false);
   const [pathname, setPathname] = useState('/');
 
-  // height var
-  let headerHeight = '100px';
-
-  if (isXsOrSmaller) {
-    headerHeight = '250px';
-  } else if (isSmOrSmaller) {
-    headerHeight = '220px';
-  } else if (isMdOrSmaller) {
-    headerHeight = '150px';
-  }
-
-  // used to create top tabs
-  const headerTabs = ['profile', 'about', 'help', 'feedback'];
-
-  const handleClick = () => {
+  const handleLogoClick = () => {
     if (selectedCropIdsRedux.length === 0) {
       dispatchRedux(reset());
       history.replace('/');
@@ -134,6 +129,7 @@ const Header = () => {
     setHeaderWidth(`${Math.max(windowSize, tableWidth + sidebarWidth)}px`);
   }, [tableWidth, sidebarWidth, windowSize]);
 
+<<<<<<< HEAD
   const chooseTopBar = (option) => {
     if (option) {
       return (
@@ -218,14 +214,73 @@ const Header = () => {
       </Grid>
     );
   };
+=======
+  const navButtons = [
+    {
+      variant: 'text',
+      text: 'Profile',
+      icon: <AccountBoxOutlinedIcon />,
+      rightIcon: true,
+      onClick: () => history.push('/profile'),
+      textSx: { fontSize: '1rem' },
+    },
+    {
+      variant: 'text',
+      text: 'About',
+      icon: <InfoOutlinedIcon />,
+      rightIcon: true,
+      onClick: () => history.push('/about'),
+      textSx: { fontSize: '1rem' },
+    },
+    {
+      variant: 'text',
+      text: 'Help',
+      icon: <HelpOutlineIcon />,
+      rightIcon: true,
+      onClick: () => history.push('/help'),
+      textSx: { fontSize: '1rem' },
+    },
+    {
+      variant: 'text',
+      text: 'Feedback',
+      icon: <ChatBubbleOutlineIcon />,
+      rightIcon: true,
+      onClick: () => history.push('/feedback'),
+      textSx: { fontSize: '1rem' },
+    },
+    {
+      variant: 'text',
+      text: 'Release Notes',
+      icon: <TextSnippetOutlinedIcon />,
+      rightIcon: true,
+      onClick: () => window.open(releaseNotesURL),
+      style: { fontSize: '1rem' },
+      textSx: { fontSize: '1rem' },
+    },
+  ];
+>>>>>>> 9c9d06e9bdc025189fd3568bb306768f17b86215
 
   return (
     <header style={{ width: headerWidth }}>
       <Box>
         <Grid container>
-          <Grid item container alignItems="center" sx={{ height: headerHeight }}>
-            {chooseTopBar(isMdOrSmaller)}
-            {chooseTopBar(!isMdOrSmaller)}
+          <PSAHeader
+            title="Cover Crop Selector"
+            council={councilShorthandRedux}
+            navButtons={navButtons}
+            onLogoClick={handleLogoClick}
+          />
+          <Grid container sx={{ pb: isMdOrSmaller ? '3rem' : '1rem' }}>
+            <Grid
+              item
+              sx={{
+                position: 'absolute',
+                top: isMdOrSmaller ? '85px' : '120px',
+              }}
+            >
+              {/* get a recommendation / browse cover crops */}
+              <ToggleOptions pathname={pathname} />
+            </Grid>
           </Grid>
 
           <Grid

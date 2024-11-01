@@ -3,13 +3,12 @@ import {
   Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle,
 } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import { PSAButton } from 'shared-react-components/src';
+import { PSATextField, PSAButton } from 'shared-react-components/src';
 import {
   historyState, setHistoryDialogState, setHistoryState, setSelectedHistory,
   updateField,
 } from '../../reduxStore/userSlice';
 import { reset } from '../../reduxStore/store';
-import PSATextField from '../PSAComponents/PSATextField';
 
 export const historyDialogDefaultState = {
   open: false,
@@ -92,11 +91,11 @@ const HistoryDialog = () => {
         {type === 'add'
           && (
             <>
-              <DialogContentText>
+              <DialogContentText sx={{ paddingBottom: '1rem' }}>
                 Please input the name for your record below.
               </DialogContentText>
               <PSATextField
-                variant="standard"
+                variant="outlined"
                 autoFocus
                 fullWidth
                 error={error}
