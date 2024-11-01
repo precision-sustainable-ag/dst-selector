@@ -15,7 +15,7 @@ import {
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
 import { useSelector } from 'react-redux';
-import PSAAccordion from 'shared-react-components/src';
+import { PSAAccordion } from 'shared-react-components/src';
 import CoverCropInformation from './CoverCropInformation/CoverCropInformation';
 import InformationSheetReferences from './InformationSheetReferences/InformationSheetReferences';
 import { callCoverCropApi, extractData } from '../../shared/constants';

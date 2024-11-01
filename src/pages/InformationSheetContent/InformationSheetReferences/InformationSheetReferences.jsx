@@ -1,6 +1,6 @@
 import React, { Fragment, useState } from 'react';
 import { Typography, Box } from '@mui/material';
-import PSAAccordion from 'shared-react-components/src';
+import { PSAAccordion } from 'shared-react-components/src';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 
 const InformationSheetReferences = ({ currentSources }) => {
