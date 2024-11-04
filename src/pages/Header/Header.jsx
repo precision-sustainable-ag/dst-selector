@@ -37,33 +37,6 @@ import HistoryDialog from '../../components/HistoryDialog/HistoryDialog';
 import SaveUserHistory from './SaveUserHistory/SaveUserHistory';
 import { releaseNotesURL } from '../../shared/keys';
 import useWindowSize from '../../shared/constants';
-<<<<<<< HEAD
-import PSATooltip from '../../components/PSAComponents/PSATooltip';
-// import logoImage from '../../../public/images/PSAlogo-text.png';
-
-const tooltipContent = (tab, stateLabelRedux) => (
-  <span>
-    <PSAButton
-      disabled={tab === 'help' && stateLabelRedux === null}
-      data-test={tab}
-      title={(
-        <NavLink to={`/${tab}`}>
-          <Typography
-            variant="body2"
-            sx={{
-              color: tab === 'help' && stateLabelRedux === null ? 'lightgrey' : 'black',
-              fontWeight: 'bold',
-            }}
-          >
-            {tab}
-          </Typography>
-        </NavLink>
-        )}
-    />
-  </span>
-);
-=======
->>>>>>> 9c9d06e9bdc025189fd3568bb306768f17b86215
 
 const Header = () => {
   const history = useHistory();
