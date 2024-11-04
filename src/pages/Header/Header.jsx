@@ -11,10 +11,6 @@ import { useHistory } from 'react-router-dom';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
 import { useAuth0 } from '@auth0/auth0-react';
-<<<<<<< HEAD
-import { Grid, Box, Typography } from '@mui/material';
-import { PSAButton, PSALogoDisplayer } from 'shared-react-components/src';
-=======
 import { Grid, Box } from '@mui/material';
 import { PSAHeader } from 'shared-react-components/src';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
@@ -22,7 +18,6 @@ import TextSnippetOutlinedIcon from '@mui/icons-material/TextSnippetOutlined';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import AccountBoxOutlinedIcon from '@mui/icons-material/AccountBoxOutlined';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
->>>>>>> 9c9d06e9bdc025189fd3568bb306768f17b86215
 import InformationBar from './InformationBar/InformationBar';
 import ToggleOptions from './ToggleOptions/ToggleOptions';
 import MyCoverCropReset from '../../components/MyCoverCropReset/MyCoverCropReset';
@@ -102,92 +97,6 @@ const Header = () => {
     setHeaderWidth(`${Math.max(windowSize, tableWidth + sidebarWidth)}px`);
   }, [tableWidth, sidebarWidth, windowSize]);
 
-<<<<<<< HEAD
-  const chooseTopBar = (option) => {
-    if (option) {
-      return (
-        <Grid
-          item
-          container
-          spacing={1}
-          md={isMdOrSmaller ? 12 : 6}
-          xs={12}
-          alignItems="center"
-          justifyContent={isMdOrSmaller ? 'center' : 'right'}
-          className="topHeader"
-        >
-          {headerTabs.map((tab, index) => (
-            <Grid item key={index}>
-              <PSATooltip
-                title={
-                  tab === 'help' && stateLabelRedux === null
-                    ? 'You must select a state before viewing the help page'
-                    : ''
-                }
-                enterTouchDelay={0}
-                tooltipContent={tooltipContent(tab, stateLabelRedux)}
-              />
-            </Grid>
-          ))}
-          <Grid item>
-            <PSAButton
-              onClick={() => window.open(releaseNotesURL)}
-              title={(
-                <Typography variant="body2" sx={{ color: 'black', fontWeight: 'bold' }}>
-                  Release Notes
-                </Typography>
-              )}
-            />
-          </Grid>
-          <Grid item>
-            <AuthButton
-              type={isAuthenticated ? 'Logout' : 'Login'}
-              color={isAuthenticated ? 'error' : 'secondary'}
-            />
-          </Grid>
-          <Grid item>
-            <Box
-              sx={{
-                // position: 'relative',
-                height: 'auto',
-                marginRight: '10px',
-                width: '120px',
-                overflow: 'hidden',
-              }}
-            >
-              <PSAButton
-                type="button"
-                onClick={handleClick}
-                data-test="header-logo"
-                title={(
-                  <PSALogoDisplayer
-                    council={councilShorthandRedux}
-                    alt={councilShorthandRedux}
-                    style={{
-                      maxWidth: '100%',
-                      height: 'auto',
-                    }}
-                  />
-              )}
-              />
-            </Box>
-          </Grid>
-        </Grid>
-      );
-    }
-    return (
-      <Grid
-        item
-        container
-        md={isMdOrSmaller ? 12 : 6}
-        justifyContent={isMdOrSmaller ? 'center' : 'left'}
-        xs={12}
-      >
-        <ToggleOptions pathname={pathname} />
-      </Grid>
-    );
-  };
-=======
   const navButtons = [
     {
       variant: 'text',
@@ -231,7 +140,6 @@ const Header = () => {
       textSx: { fontSize: '1rem' },
     },
   ];
->>>>>>> 9c9d06e9bdc025189fd3568bb306768f17b86215
 
   return (
     <header style={{ width: headerWidth }}>
