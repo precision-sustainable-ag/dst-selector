@@ -12,7 +12,6 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Tooltip,
   Typography,
   Box,
 } from '@mui/material';
@@ -28,6 +27,7 @@ import CropDetailsModal from '../../../components/CropDetailsModal/CropDetailsMo
 import RenderTableItems from './RenderTableItems';
 import { setTableWidth } from '../../../reduxStore/pageSlice';
 import PSAButton from '../../../components/PSAComponents/PSAButton';
+import PSATooltip from '../../../components/PSAComponents/PSATooltip';
 
 const CropTable = ({
   listView,
@@ -107,6 +107,22 @@ const CropTable = ({
       setColumnSort(column);
     }
   };
+
+  const tooltipContent = (goal, index) => (
+    <PSAButton
+      onClick={() => sortByGoal(goal, index, `goal${index}`)}
+      variant="body1"
+      sx={{ textTransform: 'none' }}
+    >
+      {`Goal ${index + 1}`}
+      {columnSort === `goal${index}` && (
+        <StraightIcon
+          style={{ margin: '0px' }}
+          className={currentGoalSortFlag ? '' : 'rotate180'}
+        />
+      )}
+    </PSAButton>
+  );
 
   useEffect(() => {
     sortByAverageGoals();
@@ -189,24 +205,15 @@ const CropTable = ({
                       textAlign: 'center',
                     }}
                   >
-                    <Tooltip
+                    <PSATooltip
                       placement="bottom"
                       arrow
                       enterTouchDelay={0}
                       title={(
                         <p>{goal}</p>
                           )}
-                    >
-                      <PSAButton
-                        onClick={() => sortByGoal(goal, index, `goal${index}`)}
-                        variant="body1"
-                        sx={{ textTransform: 'none' }}
-                      >
-                        {`Goal ${index + 1}`}
-                        {columnSort === `goal${index}` && <StraightIcon style={{ margin: '0px' }} className={currentGoalSortFlag ? '' : 'rotate180'} />}
-                      </PSAButton>
-
-                    </Tooltip>
+                      tooltipContent={tooltipContent(goal, index)}
+                    />
                   </TableCell>
                 ))}
 
@@ -251,7 +258,7 @@ const CropTable = ({
             </TableRow>
           </TableHead>
 
-          <TableBody>
+          <TableBody data-test="crop-list-tbody">
 
             {activeCropIdsRedux.length > 0 ? (
               <RenderTableItems
@@ -259,7 +266,7 @@ const CropTable = ({
                 handleModalOpen={handleModalOpen}
               />
             ) : (
-              <TableRow>
+              <TableRow data-test="crop-list-tr">
                 <TableCell
                   sx={{ padding: 0 }}
                 >

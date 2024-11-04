@@ -201,6 +201,7 @@ const MyCoverCropComparisonTable = () => {
           {rows.map((row, index) => (
             <TableRow
               key={`${row.comparisonKey} ${index}`}
+              data-test={`${row.comparisonKey}-row`}
             >
               {buildTableRows(row)}
             </TableRow>

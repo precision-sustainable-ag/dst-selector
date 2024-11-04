@@ -1,0 +1,17 @@
+# Use the official Cypress image with all dependencies included
+FROM cypress/included:latest
+
+# Set the working directory inside the container
+WORKDIR /e2e
+
+# Copy the entire project into the container
+COPY . .
+
+# Install any additional dependencies (if required)
+RUN npm install
+
+# Set the base URL for Cypress tests
+ENV CYPRESS_baseUrl="http://localhost/"
+
+# Run the bash script
+ENTRYPOINT ["npm", "run", "test:all"]

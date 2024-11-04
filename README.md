@@ -20,13 +20,14 @@ To see development progress, visit [https://develop.covercrop-selector.org/](htt
 - [Running in docker:](#running-in-docker)
 - [Documentation](#documentation)
 - [Runbook](#runbook)
+- [Unit Testing](#unit-testing)
 - [Helpful Links](#helpful-links)
 
 ## Tech stack
 
 - Single page application made in React.js
 - Ratings and zone info verified via Airtable and then ingested into a PostgreSQL database and served up using a Node.js API
-- 
+-
 
 ## Local Installation Steps
 
@@ -83,14 +84,20 @@ After running `npm install` you might run into an `Error E404 - Not Found - GET 
 
 **Solution:**
 Follow these steps:
+
 1. Install the `react-scripts` package using `npm install react-scripts --save`
-2. Run  `npm start`
+2. Run `npm start`
 
 **Line Spacing**
 Set Line spacing (CRLF -> LF)
 `git config core.autocrlf false`
 `git rm --cached -r .`
 `git reset --hard`
+
+## Unit Testing
+
+To run the Cypress client
+`npx cypress open --config-file=dev.config.js`
 
 ## Helpful Links
 
@@ -100,7 +107,6 @@ Set Line spacing (CRLF -> LF)
 [ESLint](https://precision-sustainable-ag.atlassian.net/wiki/spaces/ON/pages/203915267/Linting+an+Application?atl_f=PAGETREE)
 [Release Notes](https://precision-sustainable-ag.atlassian.net/wiki/spaces/DST/pages/277413889/Species+Selector+Release+Notes)
 [User History](https://precision-sustainable-ag.atlassian.net/wiki/spaces/DST/pages/493584392/User+History+Introduction)
-
 
 **Recomended Development Tools**
 [VSCode](https://code.visualstudio.com/)
