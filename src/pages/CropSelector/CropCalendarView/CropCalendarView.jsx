@@ -160,6 +160,7 @@ const CropCalendarView = ({
     <PSAButton
       onClick={() => sortByGoal(goal, index, `goal${index}`)}
       variant="body1"
+      buttonType=""
       sx={{
         textTransform: 'none',
         padding: '0px',
@@ -292,6 +293,7 @@ const CropCalendarView = ({
                   >
                     <Box>
                       <PSAButton
+                        buttonType=""
                         startIcon={<AddCircle />}
                         onClick={handleLegendModal}
                         title={
@@ -310,6 +312,7 @@ const CropCalendarView = ({
                 }}
                 >
                   <PSAButton
+                    buttonType=""
                     sx={{
                       textAlign: 'center', color: 'black', textTransform: 'none',
                     }}
@@ -380,6 +383,7 @@ const CropCalendarView = ({
                         {columnSort === 'myList' && <StraightIcon style={{ margin: '0px' }} className={myListSortFlag ? '' : 'rotate180'} />}
                       </>
                     )}
+                    buttonType=""
                   />
 
                 </TableCell>

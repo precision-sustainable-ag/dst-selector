@@ -165,9 +165,9 @@ const UserFieldDialog = ({
         </DialogTitle>
       )}
       <DialogActions>
-        <PSAButton onClick={() => handleClose('YES')} title="Yes" />
-        {actionType === 'add' && <PSAButton onClick={() => handleClose('NO')} title="No" />}
-        <PSAButton onClick={() => handleClose('CANCEL')} title="Cancel" />
+        <PSAButton onClick={() => handleClose('YES')} title="Yes" buttonType="" />
+        {actionType === 'add' && <PSAButton onClick={() => handleClose('NO')} title="No" buttonType="" />}
+        <PSAButton onClick={() => handleClose('CANCEL')} title="Cancel" buttonType="" />
       </DialogActions>
     </Dialog>
   );

@@ -53,6 +53,7 @@ const AuthButton = ({
       onClick={handleClick}
       color={color}
       data-test="auth-btn"
+      buttonType=""
       title={(
         <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
           {type}

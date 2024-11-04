@@ -87,6 +87,7 @@ const CropCard = ({
             color: 'rgb(53, 153, 155)',
             backgroundColor: 'transparent',
           }}
+          buttonType=""
           target="_blank"
           onClick={() => handleModalOpen(crop)}
           title="View Crop Details"

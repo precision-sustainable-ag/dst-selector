@@ -70,6 +70,7 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
             <Grid item md={4} xs={12}>
               {crop ? (
                 <PSAButton
+                  buttonType=""
                   size="small"
                   onClick={() => {
                     setModalData(crop);
@@ -110,6 +111,7 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                 />
               ) : (
                 <PSAButton
+                  buttonType=""
                   size="small"
                   onClick={() => {
                     setModalData(crop);
@@ -124,6 +126,7 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
             <Grid container item md={8} xs={12} alignItems="center">
               <Grid item>
                 <PSAButton
+                  buttonType=""
                   size="small"
                   variant="text"
                   sx={{
@@ -191,6 +194,7 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
         >
           {' '}
           <PSAButton
+            buttonType=""
             id={`cartBtn${index}`}
             style={{
               backgroundColor: selectedCropIdsRedux.includes(crop.id) ? '#EAEAEA' : 'white',

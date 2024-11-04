@@ -317,6 +317,7 @@ const CropSidebar = ({
           <ListItemText
             primary={(
               <PSAButton
+                buttonType=""
                 onClick={resetAllFilters}
                 style={{ cursor: 'pointer', color: 'red' }}
                 data-test="crop-side-bar-clear-filters"

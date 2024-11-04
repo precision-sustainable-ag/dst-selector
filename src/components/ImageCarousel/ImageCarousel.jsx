@@ -91,6 +91,7 @@ const ImageCarousel = ({ images }) => {
         nextButton={(
           <PSAButton
             size="small"
+            buttonType=""
             onClick={handleNext}
             disabled={activeStep === maxSteps - 1}
             title={(
@@ -108,6 +109,7 @@ const ImageCarousel = ({ images }) => {
         backButton={(
           <PSAButton
             size="small"
+            buttonType=""
             onClick={handleBack}
             disabled={activeStep === 0}
             title={(
