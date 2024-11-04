@@ -104,6 +104,7 @@ const SoilDrainage = ({ drainageOptions }) => {
         border: '2px solid #598445',
         height: '100%',
       }}
+      data-test="soil-drainage-card"
     >
       <Grid container>
         <Grid
@@ -168,6 +169,7 @@ const SoilDrainage = ({ drainageOptions }) => {
                 onClick={() => {
                   resetDrainageClasses();
                 }}
+                data-test="drainage-reset-button"
               >
                 {isMobile ? (
                   <RestartAltIcon sx={{ color: '#ff961c' }} />
@@ -241,6 +243,7 @@ const SoilDrainage = ({ drainageOptions }) => {
                     checked={tileDrainageRedux}
                     onChange={handleTileDrainage}
                     name="checkedC"
+                    data-test="tiling-check-switch"
                   />
                   <Typography variant="body1" display="inline">
                     Yes

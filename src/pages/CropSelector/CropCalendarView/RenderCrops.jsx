@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  TableCell, TableRow, Grid, Tooltip,
+  TableCell, TableRow, Grid,
   Box,
 } from '@mui/material';
 import {
@@ -21,6 +21,17 @@ import { updateSelectedCropIds } from '../../../reduxStore/cropSlice';
 import { myCropListLocation, snackHandler } from '../../../reduxStore/sharedSlice';
 import { setSaveHistory } from '../../../reduxStore/userSlice';
 import PSAButton from '../../../components/PSAComponents/PSAButton';
+import PSATooltip from '../../../components/PSAComponents/PSATooltip';
+
+const tooltipContent = () => (
+  <AcUnit
+    sx={{ color: 'white', backgroundColor: '#80D0FF', borderRadius: '5px' }}
+  />
+);
+
+const tooltipRatingContent = (crop, goal, councilShorthandRedux) => (
+  getRating(crop.goals.filter((a) => a.label === goal)[0].values[0].value, councilShorthandRedux)
+);
 
 const CheckBoxIcon = ({ style }) => (
   <Box sx={style}>
@@ -52,6 +63,7 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
           opacity: hasGoalRatingTwoOrLess(selectedGoalsRedux, crop) && '0.3',
           backgroundColor: selectedCropIdsRedux.includes(crop.id) && '#EAEAEA',
         }}
+        data-test={`crop-list-tr-${index}`}
       >
         <TableCell sx={{ padding: 0 }}>
           <Grid container>
@@ -73,17 +85,17 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                 >
 
                   { selectedCropIdsRedux.includes(crop.id) && (
-                  <CheckBoxIcon
-                    style={{
-                      position: 'absolute',
-                      right: '7px',
-                      top: '4px',
-                      height: '15px',
-                      zIndex: 1,
-                      backgroundColor: '#5992E6',
+                    <CheckBoxIcon
+                      style={{
+                        position: 'absolute',
+                        right: '7px',
+                        top: '4px',
+                        height: '15px',
+                        zIndex: 1,
+                        backgroundColor: '#5992E6',
 
-                    }}
-                  />
+                      }}
+                    />
 
                   )}
                   <CropImage
@@ -120,22 +132,20 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                     setModalData(crop);
                     setModalOpen(!modalOpen);
                   }}
+                  data-test="crop-calendar-crop-name"
                 >
                   {flipCoverCropName(crop.label)}
                 </PSAButton>
               </Grid>
               {crop.attributes.filter((a) => a.label === 'Frost Seed')[0]?.values[0].label === 'Yes' && (
                 <Grid item>
-                  <Tooltip
+                  <PSATooltip
                     placement="top-end"
                     enterTouchDelay={0}
                     title={`${flipCoverCropName(crop.label)} is suitable for frost seeding.`}
                     arrow
-                  >
-                    <AcUnit
-                      sx={{ color: 'white', backgroundColor: '#80D0FF', borderRadius: '5px' }}
-                    />
-                  </Tooltip>
+                    tooltipContent={tooltipContent()}
+                  />
                 </Grid>
               )}
             </Grid>
@@ -152,7 +162,7 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
               className="goalCells"
             >
               <div>
-                <Tooltip
+                <PSATooltip
                   arrow
                   placement="bottom"
                   enterTouchDelay={0}
@@ -163,9 +173,8 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                       {goal}
                     </p>
                   )}
-                >
-                  {getRating(crop.goals.filter((a) => a.label === goal)[0].values[0].value, councilShorthandRedux)}
-                </Tooltip>
+                  tooltipContent={tooltipRatingContent(crop, goal, councilShorthandRedux)}
+                />
               </div>
             </TableCell>
           ))}
@@ -199,9 +208,11 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                 setSaveHistory,
               );
             }}
-            buttonType="LightButton"
+            data-test={`cart-btn-${index}`}
           >
-            {selectedBtns.includes(crop.id) ? <DeleteForever /> : <AddCircleOutline />}
+            {selectedBtns.includes(crop.id)
+              ? <DeleteForever data-test={`delete-forever-icon-${index}`} />
+              : <AddCircleOutline data-test={`add-circle-outline-icon-${index}`} />}
           </PSAButton>
         </TableCell>
       </TableRow>

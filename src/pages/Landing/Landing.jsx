@@ -7,8 +7,7 @@
 */
 
 import {
-  FormControl,
-  Grid, InputLabel, MenuItem, Select, Typography, Box,
+  Grid, Typography, Box,
 } from '@mui/material';
 // import SelectUSState from 'react-select-us-states';
 import React, {
@@ -18,7 +17,7 @@ import React, {
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useAuth0 } from '@auth0/auth0-react';
-import { RegionSelectorMap } from 'shared-react-components/src';
+import { RegionSelectorMap, PSADropdown } from 'shared-react-components/src';
 import { callCoverCropApi } from '../../shared/constants';
 import { updateRegion, updateRegions, updateStateInfo } from '../../reduxStore/mapSlice';
 import { updateLocation } from '../../reduxStore/addressSlice';
@@ -111,7 +110,7 @@ const Landing = () => {
           councilShorthand: selectedState.council.shorthand,
           councilLabel: selectedState.council.label,
         }));
-      // This was targeting the map object which didnt have a label or shorthand property.  Should be be getting done here?
+        // This was targeting the map object which didnt have a label or shorthand property.  Should be be getting done here?
       }
       if (stateIdRedux !== selectedState.id) {
         dispatchRedux(updateLocation({ address: '', markers: null, county: null }));
@@ -123,7 +122,6 @@ const Landing = () => {
         .then((res) => res.json())
         .then((data) => {
           let fetchedRegions;
-
           if (data.data.Counties) {
             fetchedRegions = data.data.Counties;
           } else {
@@ -252,28 +250,24 @@ const Landing = () => {
               </Typography>
             </Grid>
             <Grid item xs={12} display="flex" justifyContent="center">
-              <FormControl
-                sx={{ minWidth: 120 }}
-              >
-                <InputLabel
-                  id="state-dropdown-label"
-                  sx={{
+              <PSADropdown
+                label="STATE"
+                items={allStates.map((state) => ({ value: state.shorthand, label: state.label?.toUpperCase() }))}
+                formSx={{ minWidth: 120 }}
+                inputSx={{
+                  color: '#598445',
+                  '&.Mui-focused': {
                     color: '#598445',
-                    '&.Mui-focused': {
-                      color: '#598445',
-                      fontWeight: 'medium',
-                    },
-                  }}
-                >
-                  STATE
-                </InputLabel>
-                <Select
-                  labelId="state-dropdown-label"
-                  label="STATE"
-                  onChange={(e) => handleStateChange(e)}
-                  value={selectedState?.shorthand || ''}
-                  sx={{
-                    minWidth: 100,
+                    fontWeight: 'medium',
+                  },
+                }}
+                SelectProps={{
+                  value: selectedState?.shorthand || '',
+                  onChange: handleStateChange,
+                  variant: 'outlined',
+                  MenuProps: menuProps,
+                  style: { minWidth: 100 },
+                  sx: {
                     '& .MuiOutlinedInput-notchedOutline': {
                       borderColor: '#598445',
                       borderWidth: '1px',
@@ -287,17 +281,11 @@ const Landing = () => {
                       borderColor: '#598445',
                       borderWidth: '2.5px',
                     },
-                  }}
-                  MenuProps={menuProps}
-                >
-
-                  {allStates.length > 0 && allStates.map((st, i) => (
-                    <MenuItem value={st.shorthand} key={`Region${st}${i}`}>
-                      {st.label?.toUpperCase()}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
+                  },
+                  error: false,
+                  'data-test': 'state-selector-dropdown',
+                }}
+              />
             </Grid>
             <Grid item xs={12} display="flex" justifyContent="center">
               <Typography>
@@ -345,6 +333,7 @@ const Landing = () => {
             initLon={-90}
             initLat={41}
             initStartZoom={2.5}
+            data-test="state-map"
             mapboxToken={mapboxToken}
           />
         </Box>

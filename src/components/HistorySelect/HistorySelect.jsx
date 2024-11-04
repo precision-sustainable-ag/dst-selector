@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import {
-  FormControl, InputLabel, Select, MenuItem, Grid, Box,
+  Grid, Box,
   Typography,
 } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
+import { PSADropdown } from 'shared-react-components/src';
 import { getAuthToken } from '../../shared/authToken';
 import { loadHistory } from '../../shared/api';
 import {
@@ -159,26 +160,30 @@ const HistorySelect = () => {
               </Grid>
 
               <Grid item xs={12} md={9} display="flex" justifyContent="center" alignItems="center">
-                <FormControl sx={{ minWidth: '80%' }}>
-                  <InputLabel sx={inputLabelStyles}>
-                    Select History
-                  </InputLabel>
-                  <Select
-                    value={value}
-                    label="Select History"
-                    onChange={(e) => setValue(e.target.value)}
-                    sx={selectStyles}
-                    MenuProps={menuProps}
-                  >
-                    {userHistoryList.map((history, i) => (
-                      <MenuItem value={history.label} key={i}>{history.label}</MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
+                <PSADropdown
+                  formSx={{ minWidth: '80%' }}
+                  inputSx={inputLabelStyles}
+                  label="Select History"
+                  items={userHistoryList.map((history) => ({ value: history.label, label: history.label }))}
+                  SelectProps={{
+                    value: { value },
+                    onChange: (e) => setValue(e.target.value),
+                    MenuProps: menuProps,
+                    sx: selectStyles,
+                    'data-test': 'select-history',
+                  }}
+                />
               </Grid>
 
               <Grid item xs={12} md={3} display="flex" justifyContent="center" alignItems="center">
-                <PSAButton onClick={handleLoadHistory} variant="contained" disabled={value === ''}>Import</PSAButton>
+                <PSAButton
+                  onClick={handleLoadHistory}
+                  variant="contained"
+                  disabled={value === ''}
+                  data-test="import-history"
+                >
+                  Import
+                </PSAButton>
               </Grid>
 
               <Grid item xs={12} display="flex" justifyContent="center" alignItems="center">
@@ -190,8 +195,8 @@ const HistorySelect = () => {
       />
 
       <Box sx={{ display: 'flex', justifyContent: 'space-around' }}>
-        <PSAButton onClick={handleAddHistory} variant="contained">Create New History </PSAButton>
-        <PSAButton variant="contained" onClick={handleHistoryImport}>Import previous history</PSAButton>
+        <PSAButton variant="contained" onClick={handleAddHistory} data-test="create-new-history">Create New History</PSAButton>
+        <PSAButton variant="contained" onClick={handleHistoryImport} data-test="import-previous-history">Import previous history</PSAButton>
       </Box>
 
     </>

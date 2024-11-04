@@ -1,10 +1,15 @@
-import { Tooltip, Typography, Grid } from '@mui/material';
+import { Typography, Grid } from '@mui/material';
 import { AcUnit, Info } from '@mui/icons-material';
 import React from 'react';
 import { useSelector } from 'react-redux';
+import PSATooltip from '../../PSAComponents/PSATooltip';
 
 const WeatherFrostDates = () => {
   const weatherDataRedux = useSelector((stateRedux) => stateRedux.weatherData.weatherData);
+
+  const tooltipContent = () => (
+    <Info sx={{ fontSize: '1rem' }} />
+  );
 
   return (
     <Grid
@@ -14,6 +19,7 @@ const WeatherFrostDates = () => {
         padding: '1rem',
         borderRadius: '15px',
       }}
+      data-test="frost-dates-card"
     >
       <Grid
         item
@@ -26,7 +32,7 @@ const WeatherFrostDates = () => {
             <span style={{ fontWeight: 'bold', fontSize: '1.2rem' }}>Frost Dates</span>
             &nbsp;
             {' '}
-            <Tooltip
+            <PSATooltip
               arrow
               placement="right"
               enterTouchDelay={0}
@@ -58,9 +64,8 @@ const WeatherFrostDates = () => {
                   weather data.
                 </div>
               )}
-            >
-              <Info sx={{ fontSize: '1em' }} />
-            </Tooltip>
+              tooltipContent={tooltipContent()}
+            />
           </Typography>
         </Grid>
         <Grid item>

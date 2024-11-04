@@ -6,10 +6,7 @@ import Typography from '@mui/material/Typography';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import SwipeableViews from 'react-swipeable-views-react-18-fix';
-import { autoPlay } from 'react-swipeable-views-utils';
 import PSAButton from '../PSAComponents/PSAButton';
-
-const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
 const ImageCarousel = ({ images }) => {
   const theme = useTheme();
@@ -44,10 +41,16 @@ const ImageCarousel = ({ images }) => {
     setActiveStep(step);
   };
 
+  setTimeout(() => {
+    setActiveStep(
+      activeStep === images.length - 1 ? 0 : activeStep + 1,
+    );
+  }, 2000);
+
   return (
     maxSteps > 0 && (
     <Box>
-      <AutoPlaySwipeableViews
+      <SwipeableViews
         axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
         index={activeStep}
         onChangeIndex={handleStepChange}
@@ -80,7 +83,7 @@ const ImageCarousel = ({ images }) => {
             <Typography style={{ alignContent: 'center', fontSize: '8pt' }}>{imagesData[activeStep]?.label}</Typography>
           </div>
         ))}
-      </AutoPlaySwipeableViews>
+      </SwipeableViews>
       <MobileStepper
         steps={maxSteps}
         position="static"

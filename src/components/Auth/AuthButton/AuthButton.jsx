@@ -11,10 +11,11 @@ import PSAButton from '../../PSAComponents/PSAButton';
 const AuthButton = ({
   type, variant = 'text', onClickCallback = () => {}, color = 'secondary',
 }) => {
-  const { loginWithRedirect, logout } = useAuth0();
+  const { loginWithRedirect, loginWithPopup, logout } = useAuth0();
 
   const handleLogin = async () => {
-    await loginWithRedirect();
+    if (window.Cypress) await loginWithRedirect();
+    else await loginWithPopup();
   };
 
   const handleSignUp = async () => {
@@ -51,6 +52,7 @@ const AuthButton = ({
       variant={variant}
       onClick={handleClick}
       color={color}
+      data-test="auth-btn"
     >
       <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
         {type}
