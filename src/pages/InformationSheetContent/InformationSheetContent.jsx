@@ -8,17 +8,14 @@
 
 import React, { useEffect, useState } from 'react';
 import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
   Typography,
   Box,
   Grid,
 } from '@mui/material';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
-import { ExpandMore } from '@mui/icons-material';
 import { useSelector } from 'react-redux';
+import { PSAAccordion } from 'shared-react-components/src';
 import CoverCropInformation from './CoverCropInformation/CoverCropInformation';
 import InformationSheetReferences from './InformationSheetReferences/InformationSheetReferences';
 import { callCoverCropApi, extractData } from '../../shared/constants';
@@ -41,6 +38,12 @@ const InformationSheetContent = ({ crop, modalData }) => {
   const [currentSources, setCurrentSources] = useState([{}]);
   const [allThumbs, setAllThumbs] = useState([]);
   const [dataDone, setDataDone] = useState(false);
+  const [accordionOpen, setAccordionOpen] = useState(
+    modalData.data.reduce((res, data) => {
+      res[data.label] = true;
+      return res;
+    }, {}),
+  );
 
   const query = `${encodeURIComponent('regions')}=${encodeURIComponent(regionIdRedux)}`;
 
@@ -98,6 +101,11 @@ const InformationSheetContent = ({ crop, modalData }) => {
     pirschAnalytics('Visited Page', { meta: { visited: 'Information Sheet' } });
   }, []);
 
+  const handleAccordion = (cat) => {
+    const open = accordionOpen[cat];
+    setAccordionOpen({ ...accordionOpen, [cat]: !open });
+  };
+
   return (
     dataDone === true && (
       <>
@@ -105,21 +113,15 @@ const InformationSheetContent = ({ crop, modalData }) => {
         {modalData
           && modalData.data.map((cat, index) => (
             <Grid item key={index} xs={12}>
-              <Accordion defaultExpanded>
-                <AccordionSummary
-                  expandIcon={<ExpandMore />}
-                  sx={{
-                    '&$expanded': {
-                      margin: '4px 0',
-                    },
-                  }}
-                >
+              <PSAAccordion
+                expanded={accordionOpen[cat.label]}
+                onChange={() => handleAccordion(cat.label)}
+                summaryContent={(
                   <Typography variant="h4" style={{ padding: '3px' }}>
                     {cat.label}
                   </Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                  {' '}
+                )}
+                detailsContent={(
                   <Grid container>
                     {cat.attributes.map((att, catIndex) => (!att.label.startsWith('Comments')
                       && !att.label.startsWith('Notes:')
@@ -164,8 +166,8 @@ const InformationSheetContent = ({ crop, modalData }) => {
                         </Grid>
                       )))}
                   </Grid>
-                </AccordionDetails>
-              </Accordion>
+                )}
+              />
             </Grid>
           ))}
 
