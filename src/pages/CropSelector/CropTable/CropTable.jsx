@@ -110,6 +110,7 @@ const CropTable = ({
 
   const tooltipContent = (goal, index) => (
     <PSAButton
+      buttonType=""
       onClick={() => sortByGoal(goal, index, `goal${index}`)}
       variant="body1"
       sx={{ textTransform: 'none' }}
@@ -175,6 +176,7 @@ const CropTable = ({
               >
                 <PSAButton
                   onClick={() => sortByName()}
+                  buttonType=""
                   sx={{ color: 'black', textTransform: 'none' }}
                   variant="body1"
                   title={(
@@ -230,6 +232,7 @@ const CropTable = ({
                   }}
                 >
                   <PSAButton
+                    buttonType=""
                     variant="body1"
                     style={{
                       textTransform: 'none',
@@ -253,6 +256,7 @@ const CropTable = ({
                 }}
               >
                 <PSAButton
+                  buttonType=""
                   variant="body1"
                   style={{ textTransform: 'none' }}
                   onClick={() => sortBySelectedCrops()}

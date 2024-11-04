@@ -94,6 +94,7 @@ const Help = () => {
           >
             {pageSections.map((section) => (
               <PSAButton
+                buttonType=""
                 key={section.id}
                 style={{
                   display: 'flex',

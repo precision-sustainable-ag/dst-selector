@@ -54,6 +54,7 @@ const MyCoverCropList = ({ comparisonView, from }) => {
            Your list is empty.
            {' '}
            <PSAButton
+             buttonType=""
              onClick={
               from === 'myCoverCropListStatic' ? redirectToExplorer : redirectToSpeciesSelector
             }

@@ -122,6 +122,7 @@ const ComparisonBar = ({
           <ListItemText
             primary={(
               <PSAButton
+                buttonType=""
                 size="small"
                 style={{ marginBottom: '-15px', color: 'red' }}
                 onClick={resetAllFilters}
@@ -137,6 +138,7 @@ const ComparisonBar = ({
           <ListItemText
             primary={(
               <PSAButton
+                buttonType=""
                 size="small"
                 onClick={showAllVariables}
                 data-test="my-selected-crops-show-all"

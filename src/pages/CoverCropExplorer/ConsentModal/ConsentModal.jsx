@@ -85,6 +85,7 @@ const ConsentModal = ({ modalOpen, setModalOpen }) => {
                 variant="outlined"
                 onClick={() => handleModal(true)}
                 title="Accept"
+                buttonType=""
               />
             </Grid>
             <Grid item>
@@ -92,6 +93,7 @@ const ConsentModal = ({ modalOpen, setModalOpen }) => {
                 variant="outlined"
                 onClick={() => handleModal(false)}
                 title="Decline"
+                buttonType=""
               />
             </Grid>
           </Grid>

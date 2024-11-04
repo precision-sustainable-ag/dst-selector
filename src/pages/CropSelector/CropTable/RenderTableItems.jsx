@@ -50,6 +50,7 @@ const RenderTableItems = ({ showGrowthWindow, handleModalOpen }) => {
               >
                 <Grid item xs={12}>
                   <PSAButton
+                    buttonType=""
                     onClick={() => handleModalOpen(crop)}
                     title={(
                       <CropImage
@@ -62,6 +63,7 @@ const RenderTableItems = ({ showGrowthWindow, handleModalOpen }) => {
                 </Grid>
                 <Grid item xs={12}>
                   <PSAButton
+                    buttonType=""
                     variant="text"
                     sx={{
                       fontWeight: 'bold',

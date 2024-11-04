@@ -75,6 +75,7 @@ const ToggleOptions = ({ pathname }) => {
     <>
       <PSAButton
         component={NavLink}
+        buttonType=""
         onClick={() => openMyCoverCropReset('selector')}
         exact
         to="/"

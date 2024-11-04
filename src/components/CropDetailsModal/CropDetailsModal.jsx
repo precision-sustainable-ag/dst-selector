@@ -122,6 +122,7 @@ const CropDetailsModal = ({ crop, setModalOpen, modalOpen }) => {
                   style={{ color: 'white', float: 'right', paddingTop: '13px' }}
                   onClick={handleModalClose}
                   startIcon={<Close />}
+                  buttonType=""
                 />
               </Grid>
             </Grid>

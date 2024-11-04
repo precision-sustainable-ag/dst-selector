@@ -428,6 +428,7 @@ export const getActiveCropMonths = (crop = {}) => {
 export const BinaryButton = ({ action }) => (
   <>
     <PSAButton
+      buttonType=""
       onClick={() => {
         action(true);
       }}
@@ -435,6 +436,7 @@ export const BinaryButton = ({ action }) => (
       title="Yes"
     />
     <PSAButton
+      buttonType=""
       onClick={() => {
         action(false);
       }}
@@ -443,6 +445,7 @@ export const BinaryButton = ({ action }) => (
     />
     <PSAButton
       autoFocus
+      buttonType=""
       onClick={() => {
         action(null);
       }}

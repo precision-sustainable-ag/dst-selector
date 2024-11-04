@@ -34,6 +34,7 @@ const AboutTheExperts = () => {
     <Box sx={{ border: 0.5, borderColor: 'grey.300' }} ml={2} mr={2} mt={5}>
       {expertGroups.map((group) => (
         <PSAButton
+          buttonType=""
           key={group.id}
           size="Small"
           sx={{
@@ -45,9 +46,8 @@ const AboutTheExperts = () => {
           }}
           onClick={() => handleChange(group.id)}
           variant="contained"
-        >
-          {group.menuOption}
-        </PSAButton>
+          title={group.menuOption}
+        />
 
       ))}
       <Typography style={{ paddingTop: '15px' }} variant="body1" align="left">
