@@ -15,9 +15,11 @@ Cypress.Commands.add('beforeEachVisitBaseUrl', () => {
 });
 
 Cypress.Commands.add('testFilters', ({
+  // eslint-disable-next-line no-unused-vars
   sidebarFilter, filterType, filterIndex, filterResult,
 }) => {
   // cy.assertByTestId(`"${sidebarFilter.toUpperCase()}-expandmore-icon"`).click({ force: true });
+  // eslint-disable-next-line no-use-before-define
   checkRows(filterType, filterIndex, filterResult);
   cy.getByTestId('crop-side-bar-clear-filters').click();
 });

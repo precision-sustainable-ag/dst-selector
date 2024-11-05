@@ -1,6 +1,7 @@
 import { defineConfig } from 'cypress';
 // import coverageTask from '@cypress/code-coverage/task.js';
 import dotenv from 'dotenv';
+import vitePreprocessor from 'cypress-vite';
 
 dotenv.config();
 
@@ -10,6 +11,7 @@ export default defineConfig({
     experimentalRunAllSpecs: true,
     trashAssetsBeforeRuns: true,
     setupNodeEvents(on, config) {
+      on('file:preprocessor', vitePreprocessor());
       // coverageTask(on, config);
       // return config;
     },
