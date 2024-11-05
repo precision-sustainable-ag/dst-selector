@@ -22,7 +22,7 @@ import {
 } from '@mui/icons-material';
 import React, { useEffect, useRef, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { PSAButton } from 'shared-react-components/src';
+import { PSAButton, PSATooltip } from 'shared-react-components/src';
 import StraightIcon from '@mui/icons-material/Straight';
 import {
   allMonths,
@@ -33,7 +33,6 @@ import {
 import '../../../styles/cropCalendarViewComponent.scss';
 import RenderCrops from './RenderCrops';
 import CropDetailsModal from '../../../components/CropDetailsModal/CropDetailsModal';
-import PSATooltip from '../../../components/PSAComponents/PSATooltip';
 import { setTableWidth } from '../../../reduxStore/pageSlice';
 
 const growthIcon = {

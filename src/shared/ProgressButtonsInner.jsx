@@ -8,10 +8,9 @@ import { Refresh } from '@mui/icons-material';
 import { Stack, Badge } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { PSAButton } from 'shared-react-components/src';
+import { PSAButton, PSATooltip } from 'shared-react-components/src';
 import { reset } from '../reduxStore/store';
 import { updateProgress, setMyCoverCropReset } from '../reduxStore/sharedSlice';
-import PSATooltip from '../components/PSAComponents/PSATooltip';
 
 const ProgressButtonsInner = ({
   isDisabledBack, isDisabledNext, isDisabledRefresh, toolTip,
@@ -37,21 +36,6 @@ const ProgressButtonsInner = ({
     history.push('/my-cover-crop-list');
   };
 
-  const tooltipContent = () => (
-    <PSAButton
-      style={{
-        maxWidth: '90px',
-        minWidth: '70px',
-        marginLeft: progressRedux === 4 ? '-75px' : '0px',
-      }}
-      onClick={() => changeProgress('increment')}
-      disabled={isDisabledNext || progressRedux === 4}
-      buttonType="PillButton"
-      data-test="next-btn"
-      title="Next"
-    />
-  );
-
   return (
     <Stack direction="row" style={{ width: '100%' }}>
       <PSAButton
@@ -72,7 +56,21 @@ const ProgressButtonsInner = ({
           title={
             <p>{`Please Select a ${councilShorthandRedux === 'MCCC' ? 'County' : 'Zone'}.`}</p>
           }
-          tooltipContent={tooltipContent()}
+          tooltipContent={(
+            <PSAButton
+              style={{
+                maxWidth: '90px',
+                minWidth: '70px',
+                marginLeft: progressRedux === 4 ? '-75px' : '0px',
+              }}
+              onClick={() => changeProgress('increment')}
+              disabled={isDisabledNext || progressRedux === 4}
+              buttonType="PillButton"
+              data-test="next-btn"
+            >
+              Next
+            </PSAButton>
+          )}
         />
       ) : (
         <Badge

@@ -2,13 +2,12 @@ import { Badge, Typography } from '@mui/material';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useHistory } from 'react-router-dom';
-import { PSAButton } from 'shared-react-components/src';
+import { PSAButton, PSATooltip } from 'shared-react-components/src';
 import {
   activateMyCoverCropListTile,
   activateSpeicesSelectorTile,
   setMyCoverCropReset,
 } from '../../../reduxStore/sharedSlice';
-import PSATooltip from '../../../components/PSAComponents/PSATooltip';
 
 const tooltipContent = (setSpeciesSelectorActivationFlag, stateLabelRedux, pathname) => (
   <span>
