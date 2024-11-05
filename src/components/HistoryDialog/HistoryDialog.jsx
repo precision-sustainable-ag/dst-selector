@@ -3,13 +3,12 @@ import {
   Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle,
 } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import { PSATextField } from 'shared-react-components/src';
+import { PSATextField, PSAButton } from 'shared-react-components/src';
 import {
   historyState, setHistoryDialogState, setHistoryState, setSelectedHistory,
   updateField,
 } from '../../reduxStore/userSlice';
 import { reset } from '../../reduxStore/store';
-import PSAButton from '../PSAComponents/PSAButton';
 
 export const historyDialogDefaultState = {
   open: false,
@@ -120,10 +119,10 @@ const HistoryDialog = () => {
       </DialogContent>
       <DialogActions>
         {type === 'add'
-          && <PSAButton onClick={handleAdd} data-test="history-dialog-create">Create</PSAButton>}
+          && <PSAButton onClick={handleAdd} data-test="history-dialog-create" title="Create" buttonType="" />}
         {type === 'update'
-          && <PSAButton onClick={handleUpdate}>Create a new record</PSAButton>}
-        <PSAButton onClick={handleCancel} data-test="history-dialog-cancel">Cancel</PSAButton>
+          && <PSAButton onClick={handleUpdate} title="Create a new record" buttonType="" />}
+        <PSAButton onClick={handleCancel} data-test="history-dialog-cancel" title="Cancel" buttonType="" />
       </DialogActions>
     </Dialog>
   );

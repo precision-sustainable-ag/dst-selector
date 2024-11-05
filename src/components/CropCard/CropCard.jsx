@@ -6,12 +6,12 @@ import { useTheme } from '@mui/material/styles';
 import React, {
   useEffect, useState,
 } from 'react';
+import { PSAButton } from 'shared-react-components/src';
 import { useSelector } from 'react-redux';
 import { addCropToBasket, trimString } from '../../shared/constants';
 import { myCropListLocation, snackHandler } from '../../reduxStore/sharedSlice';
 import { updateSelectedCropIds } from '../../reduxStore/cropSlice';
 import { setSaveHistory } from '../../reduxStore/userSlice';
-import PSAButton from '../PSAComponents/PSAButton';
 
 const CropCard = ({
   crop, handleModalOpen, index, dispatchRedux,
@@ -87,11 +87,11 @@ const CropCard = ({
             color: 'rgb(53, 153, 155)',
             backgroundColor: 'transparent',
           }}
+          buttonType=""
           target="_blank"
           onClick={() => handleModalOpen(crop)}
-        >
-          View Crop Details
-        </PSAButton>
+          title="View Crop Details"
+        />
       </CardContent>
       <CardActionArea
         id={`cartBtn${index}`}

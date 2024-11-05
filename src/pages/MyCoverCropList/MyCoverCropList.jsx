@@ -12,11 +12,11 @@ import {
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import { PSAButton } from 'shared-react-components/src';
 import MyCoverCropComparisonTable from './MyCoverCropComparison/MyCoverCropComparisonTable';
 import MyCoverCropCards from './MyCoverCropCards/MyCoverCropCards';
 import { activateSpeicesSelectorTile } from '../../reduxStore/sharedSlice';
 import pirschAnalytics from '../../shared/analytics';
-import PSAButton from '../../components/PSAComponents/PSAButton';
 
 const MyCoverCropList = ({ comparisonView, from }) => {
   const dispatchRedux = useDispatch();
@@ -54,12 +54,12 @@ const MyCoverCropList = ({ comparisonView, from }) => {
            Your list is empty.
            {' '}
            <PSAButton
+             buttonType=""
              onClick={
               from === 'myCoverCropListStatic' ? redirectToExplorer : redirectToSpeciesSelector
             }
-           >
-             Add Crops
-           </PSAButton>
+             title="Add Crops"
+           />
          </Typography>
         ) : comparison ? (
           <Box flexDirection="column" display="flex" height="100%" mt={1}>

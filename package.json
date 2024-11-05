@@ -67,6 +67,7 @@
     "@cypress/code-coverage": "^3.12.45",
     "@types/react-leaflet": "^2.8.2",
     "@vitejs/plugin-react": "^4.3.1",
+    "cypress-vite": "^1.5.0",
     "dotenv": "^16.4.5",
     "eslint": "^8.23.0",
     "eslint-config-airbnb": "^19.0.4",

@@ -11,10 +11,10 @@ import {
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { PSAButton } from 'shared-react-components/src';
 import RenderFilters from './RenderFilters/RenderFilters';
 import RenderGoals from './RenderGoals/RenderGoals';
 import { updateComparisonKeys } from '../../../reduxStore/sharedSlice';
-import PSAButton from '../../../components/PSAComponents/PSAButton';
 
 const ComparisonBar = ({
   filterData, goals, comparisonKeys, comparisonView, classes,
@@ -122,13 +122,13 @@ const ComparisonBar = ({
           <ListItemText
             primary={(
               <PSAButton
+                buttonType=""
                 size="small"
                 style={{ marginBottom: '-15px', color: 'red' }}
                 onClick={resetAllFilters}
                 data-test="my-selected-crops-clear-variables"
-              >
-                Clear Variables
-              </PSAButton>
+                title="Clear Variables"
+              />
             )}
           />
         </ListItem>
@@ -138,12 +138,12 @@ const ComparisonBar = ({
           <ListItemText
             primary={(
               <PSAButton
+                buttonType=""
                 size="small"
                 onClick={showAllVariables}
                 data-test="my-selected-crops-show-all"
-              >
-                Show All
-              </PSAButton>
+                title="Show All"
+              />
             )}
           />
         </ListItem>

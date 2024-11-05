@@ -15,6 +15,7 @@ import {
 import { ArrowBack, ArrowForward, KeyboardArrowUp } from '@mui/icons-material';
 import React, { useEffect, useState, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { PSAButton } from 'shared-react-components/src';
 // import '../../styles/cropSelector.scss';
 import MyCoverCropList from '../MyCoverCropList/MyCoverCropList';
 import CropCalendarView from './CropCalendarView/CropCalendarView';
@@ -22,7 +23,6 @@ import CropSidebar from '../CropSidebar/CropSidebar';
 import CropTable from './CropTable/CropTable';
 import { setSidebarWidth } from '../../reduxStore/pageSlice';
 import pirschAnalytics from '../../shared/analytics';
-import PSAButton from '../../components/PSAComponents/PSAButton';
 import useWindowSize from '../../shared/constants';
 
 const ScrollTop = ({ children }) => {
@@ -121,12 +121,12 @@ const CropSelector = (props) => {
         {(size.width < 1680) && (
           <PSAButton
             startIcon={!showSidebar ? <ArrowForward /> : <ArrowBack />}
-            title="Toggle Sidebar"
+            buttonType=""
+            hoverText="Toggle Sidebar"
             aria-label="toggle-sidebar"
             onClick={() => setShowSidebar(!showSidebar)}
-          >
-            {!showSidebar ? 'Show Sidebar' : 'Hide Sidebar'}
-          </PSAButton>
+            title={!showSidebar ? 'Show Sidebar' : 'Hide Sidebar'}
+          />
         )}
         {showSidebar && (
           <CropSidebar
