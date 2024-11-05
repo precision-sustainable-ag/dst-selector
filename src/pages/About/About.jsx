@@ -10,12 +10,12 @@ import {
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { PSAButton } from 'shared-react-components/src';
 import { CustomStyles } from '../../shared/constants';
 import LicenseAndCopyright from './LicenseAndCopyright/LicenseAndCopyright';
 import FundingAndAcknowledgements from './FundingAndAcknowledgements/FundingAndAcknowledgements';
 import AboutTheExperts from './AboutTheExperts/AboutTheExperts';
 import pirschAnalytics from '../../shared/analytics';
-import PSAButton from '../../components/PSAComponents/PSAButton';
 
 const About = () => {
   const [value, setValue] = React.useState(0);
@@ -92,6 +92,7 @@ const About = () => {
           >
             {pageSections.map((section) => (
               <PSAButton
+                buttonType=""
                 key={section.id}
                 style={{
                   display: 'flex',
@@ -102,9 +103,8 @@ const About = () => {
                 }}
                 onClick={() => handleChange(section.id)}
                 variant={value === section.id ? 'contained' : 'text'}
-              >
-                {section.menuOption}
-              </PSAButton>
+                title={section.menuOption}
+              />
             ))}
           </div>
         </Grid>

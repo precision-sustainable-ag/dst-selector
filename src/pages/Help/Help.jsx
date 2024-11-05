@@ -12,13 +12,13 @@ import {
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { PSAButton } from 'shared-react-components/src';
 import { CustomStyles } from '../../shared/constants';
 import InformationSheetDictionary from './InformationSheetDictionary/InformationSheetDictionary';
 import HowTo from './HowTo/HowTo';
 import FAQ from './FAQ/FAQ';
 import InfoSheets from './InfoSheets/InfoSheets';
 import pirschAnalytics from '../../shared/analytics';
-import PSAButton from '../../components/PSAComponents/PSAButton';
 
 const Help = () => {
   const councilShorthandRedux = useSelector((stateRedux) => stateRedux.mapData.councilShorthand);
@@ -94,6 +94,7 @@ const Help = () => {
           >
             {pageSections.map((section) => (
               <PSAButton
+                buttonType=""
                 key={section.id}
                 style={{
                   display: 'flex',
@@ -104,9 +105,8 @@ const Help = () => {
                 }}
                 onClick={() => handleChange(section.id)}
                 variant={value === section.id ? 'contained' : 'text'}
-              >
-                {section.menuOption}
-              </PSAButton>
+                title={section.menuOption}
+              />
             ))}
           </div>
         </Grid>

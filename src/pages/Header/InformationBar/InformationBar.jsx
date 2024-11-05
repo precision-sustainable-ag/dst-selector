@@ -12,9 +12,9 @@ import { LocationOn } from '@mui/icons-material';
 import CheckIcon from '@mui/icons-material/Check';
 import FilterHdrIcon from '@mui/icons-material/FilterHdr';
 import React from 'react';
+import { PSAButton } from 'shared-react-components/src';
 import ProgressButtons from '../../../shared/ProgressButtons';
 import { gotoProgress } from '../../../reduxStore/sharedSlice';
-import PSAButton from '../../../components/PSAComponents/PSAButton';
 
 const speciesSelectorToolName = '/';
 
@@ -106,10 +106,8 @@ const InformationBar = ({ pathname }) => {
         transparent={!((type === 'location' && progressRedux > 0)
         || (type === 'site' && progressRedux > 1)
         || (type === 'goals' && progressRedux > 2))}
-
-      >
-        {getIconInfo(type)}
-      </PSAButton>
+        title={getIconInfo(type)}
+      />
     );
   };
 

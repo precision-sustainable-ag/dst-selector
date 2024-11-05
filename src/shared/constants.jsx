@@ -8,11 +8,11 @@ import {
 } from '@mui/material';
 import moment from 'moment';
 import { Info, MonetizationOn } from '@mui/icons-material';
+import { PSAButton } from 'shared-react-components/src';
 import { mapboxToken } from './keys';
 import arrayEquals from './functions';
 import { historyState, setHistoryState } from '../reduxStore/userSlice';
 import pirschAnalytics from './analytics';
-import PSAButton from '../components/PSAComponents/PSAButton';
 import PSATooltip from '../components/PSAComponents/PSATooltip';
 
 export const ReferenceTooltip = ({
@@ -428,30 +428,30 @@ export const getActiveCropMonths = (crop = {}) => {
 export const BinaryButton = ({ action }) => (
   <>
     <PSAButton
+      buttonType=""
       onClick={() => {
         action(true);
       }}
       color="secondary"
-    >
-      Yes
-    </PSAButton>
+      title="Yes"
+    />
     <PSAButton
+      buttonType=""
       onClick={() => {
         action(false);
       }}
       color="secondary"
-    >
-      No
-    </PSAButton>
+      title="No"
+    />
     <PSAButton
       autoFocus
+      buttonType=""
       onClick={() => {
         action(null);
       }}
       color="primary"
-    >
-      Cancel
-    </PSAButton>
+      title="Cancel"
+    />
   </>
 );
 

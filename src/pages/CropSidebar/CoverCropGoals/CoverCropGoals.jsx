@@ -10,8 +10,8 @@ import {
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { PSAButton } from 'shared-react-components/src';
 import { updateProgress } from '../../../reduxStore/sharedSlice';
-import PSAButton from '../../../components/PSAComponents/PSAButton';
 
 const CoverCropGoals = () => {
   const dispatchRedux = useDispatch();
@@ -51,7 +51,7 @@ const CoverCropGoals = () => {
               <ListItemText primary="No Goals Selected" />
             </ListItem>
             <ListItem sx={{ paddingLeft: 3 }}>
-              <PSAButton onClick={() => changeProgress()}>click to edit </PSAButton>
+              <PSAButton onClick={() => changeProgress()} title="click to edit" buttonType="" />
             </ListItem>
           </List>
         ) : (
