@@ -2,14 +2,14 @@
 
 **Date Created:** 8/18/22
 
-**Date Last Modified:** 09/10/2024
+**Date Last Modified:** 10/31/2024
 
 The species selector DST is used to help farmers select a cover crop that fits their goals and constraints. The user can either input specifics about their field location and cover cropping goals or explore cover crops without entering those details. The tool is mainly used to explore expert reccomendations and ratings for cover crops in the farmer's USDA Plant Hardiness Zone. This allows farmers to make educated decisions that are best suited for their specific goals and can save time as opposed to calling the extension office.
 
 Support for this project is brought to us by [Agricultural Informatics Lab](https://sudokita.com), NE SARE, USDA NRCS, NECCC, and the [Precision Sustainable Agriculture](http://precisionsustainableag.org).
 
-To access the live tool, visit [covercrop.tools](http://covercrop.tools)
-To see development progress, visit [http://covercrop.tools](http://covercrop.tools)
+To access the live tool, visit [https://covercrop-selector.org/](https://covercrop-selector.org/)
+To see development progress, visit [https://develop.covercrop-selector.org/](https://develop.covercrop-selector.org/)
 
 ## Table of Contents:
 
@@ -21,12 +21,13 @@ To see development progress, visit [http://covercrop.tools](http://covercrop.too
 - [Documentation](#documentation)
 - [Runbook](#runbook)
 - [Unit Testing](#unit-testing)
+- [Helpful Links](#helpful-links)
 
 ## Tech stack
 
 - Single page application made in React.js
 - Ratings and zone info verified via Airtable and then ingested into a PostgreSQL database and served up using a Node.js API
-- 
+-
 
 ## Local Installation Steps
 
@@ -44,18 +45,19 @@ To see development progress, visit [http://covercrop.tools](http://covercrop.too
 4. From the Terminal/Command Prompt, move into the cloned directory `cd dst-selector`
 5. Run `npm config set '@psa:registry' https://node.bit.cloud`
 6. From the same command window, run `npm install` to install project dependencies. A full list of the dependencies can be found in package.json. If you are running on a windows machine delete package-lock.json prior to running the below command.
-7. Create a file called .env in `root` directory (dst-selector). The file will contain the below keys. This document is in the git ignore, so it (and your API keys) won't be pushed to the repository. Ask @mikahpinegar for the values of the keys
+7. Create a file called .env in `root` directory (dst-selector). The file will contain the below keys. This document is in the git ignore, so it (and your API keys) won't be pushed to the repository. Ask @mikahpinegar or Adam Smith for the values of the keys
 
 ```
-REACT_APP_GOOGLE_API_KEY="<google key>"
-REACT_APP_OPEN_WEATHER_API_KEY="<open weather key>"
-REACT_APP_MAPBOX_API_KEY="<mapbox token key>"
-REACT_APP_AUTH0_DOMAIN="<auth0 domain>"
-REACT_APP_AUTH0_CLIENT_ID="<auth0 client id>"
-REACT_APP_AUTH0_AUDIENCE="<auth0 audience>"
-REACT_APP_USER_HISTORY_API_URL="<user history url>"
-REACT_APP_USER_HISTORY_SCHEMA="<schema>"
-REACT_APP_RELEASE_NOTES="<Release Notes URL>"
+VITE_API_GOOGLE_API_KEY="<google key>"
+VITE_API_OPEN_WEATHER_API_KEY="<open weather key>"
+VITE_API_MAPBOX_API_KEY="<mapbox token key>"
+VITE_API_AUTH0_DOMAIN="<auth0 domain>"
+VITE_API_AUTH0_CLIENT_ID="<auth0 client id>"
+VITE_API_AUTH0_AUDIENCE="<auth0 audience>"
+VITE_API_USER_HISTORY_API_URL="<user history url>"
+VITE_API_USER_HISTORY_SCHEMA="<schema>"
+VITE_API_RELEASE_NOTES="<Release Notes URL>"
+VITE_API_MAPBOX_TOKEN="<mabox token>"
 ```
 
 8. After the dependencies have been installed and the .env file has been created, run `npm start` to run the code locally. If you run into any issues take a look in the [Runbook](#runbook) for previous issues and solutions. This will compile the JSX code into Javascript and open up a new browser window with the current version of the covercrops project!
@@ -82,8 +84,9 @@ After running `npm install` you might run into an `Error E404 - Not Found - GET 
 
 **Solution:**
 Follow these steps:
+
 1. Install the `react-scripts` package using `npm install react-scripts --save`
-2. Run  `npm start`
+2. Run `npm start`
 
 **Line Spacing**
 Set Line spacing (CRLF -> LF)
@@ -92,8 +95,19 @@ Set Line spacing (CRLF -> LF)
 `git reset --hard`
 
 ## Unit Testing
+
 To run the Cypress client
 `npx cypress open --config-file=dev.config.js`
 
+## Helpful Links
 
+**Confluence Links**
+[Development Best Practices](https://precision-sustainable-ag.atlassian.net/wiki/spaces/ON/pages/381255706/Development+Best+Practices?atl_f=PAGETREE)
+[Design Best Practaces](https://precision-sustainable-ag.atlassian.net/wiki/spaces/DST/pages/582746142/Web+Content+Accessibility+Guidelines+Best+Practices)
+[ESLint](https://precision-sustainable-ag.atlassian.net/wiki/spaces/ON/pages/203915267/Linting+an+Application?atl_f=PAGETREE)
+[Release Notes](https://precision-sustainable-ag.atlassian.net/wiki/spaces/DST/pages/277413889/Species+Selector+Release+Notes)
+[User History](https://precision-sustainable-ag.atlassian.net/wiki/spaces/DST/pages/493584392/User+History+Introduction)
 
+**Recomended Development Tools**
+[VSCode](https://code.visualstudio.com/)
+[Cursor](https://www.cursor.com/)
