@@ -36,7 +36,6 @@ const CoverCropSearch = () => {
               </InputAdornment>
             ),
           }}
-          data-test="crop-search-input"
         />
       </ListItemText>
     </ListItem>
