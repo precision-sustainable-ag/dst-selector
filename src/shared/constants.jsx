@@ -8,12 +8,11 @@ import {
 } from '@mui/material';
 import moment from 'moment';
 import { Info, MonetizationOn } from '@mui/icons-material';
-import { PSAButton } from 'shared-react-components/src';
+import { PSAButton, PSATooltip } from 'shared-react-components/src';
 import { mapboxToken } from './keys';
 import arrayEquals from './functions';
 import { historyState, setHistoryState } from '../reduxStore/userSlice';
 import pirschAnalytics from './analytics';
-import PSATooltip from '../components/PSAComponents/PSATooltip';
 
 export const ReferenceTooltip = ({
   url, source, type, content, hasLink, title,
@@ -23,10 +22,6 @@ export const ReferenceTooltip = ({
   const sourceType = type || 'link';
   const sourceContent = content || '';
   const link = hasLink;
-
-  const tooltipContent = () => (
-    <Info sx={{ fontSize: '1rem' }} />
-  );
 
   return sourceType === 'link' ? (
     <PSATooltip
@@ -41,7 +36,9 @@ export const ReferenceTooltip = ({
         </div>
       )}
       arrow
-      tooltipContent={tooltipContent()}
+      tooltipContent={(
+        <Info sx={{ fontSize: '1rem' }} />
+      )}
     />
   ) : sourceType === 'html' ? (
     <PSATooltip
@@ -49,7 +46,9 @@ export const ReferenceTooltip = ({
       sourceType={sourceType}
       dangerouslySetInnerHTML={{ content }}
       enterTouchDelay={0}
-      tooltipContent={tooltipContent()}
+      tooltipContent={(
+        <Info sx={{ fontSize: '1rem' }} />
+      )}
     />
   ) : link ? (
     <PSATooltip
@@ -57,7 +56,9 @@ export const ReferenceTooltip = ({
       placement="right"
       arrow
       enterTouchDelay={0}
-      tooltipContent={tooltipContent()}
+      tooltipContent={(
+        <Info sx={{ fontSize: '1rem' }} />
+      )}
     />
   ) : (
     <PSATooltip
@@ -69,23 +70,24 @@ export const ReferenceTooltip = ({
       )}
       placement="right"
       arrow
-      tooltipContent={tooltipContent()}
+      tooltipContent={(
+        <Info sx={{ fontSize: '1rem' }} />
+      )}
     />
   );
 };
 
-export const DataTooltip = ({ data, placement = 'top-start' }) => {
-  const tooltipContent = <Info fontSize="small" />;
-  return (
-    <PSATooltip
-      title={<div style={{ textAlign: 'center' }}>{data}</div>}
-      placement={placement}
-      arrow
-      enterTouchDelay={0}
-      tooltipContent={tooltipContent}
-    />
-  );
-};
+export const DataTooltip = ({ data, placement = 'top-start' }) => (
+  <PSATooltip
+    title={<div style={{ textAlign: 'center' }}>{data}</div>}
+    placement={placement}
+    arrow
+    enterTouchDelay={0}
+    tooltipContent={(
+      <Info sx={{ fontSize: '1rem' }} />
+    )}
+  />
+);
 
 export const zoneIcon = (w, h) => (
   <svg height={h} width={w} viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">

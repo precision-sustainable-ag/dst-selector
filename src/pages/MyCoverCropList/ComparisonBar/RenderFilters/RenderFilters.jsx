@@ -15,8 +15,8 @@ import {
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import React, { Fragment } from 'react';
 import { useDispatch } from 'react-redux';
+import { PSATooltip } from 'shared-react-components/src';
 import { updateComparisonKeys } from '../../../../reduxStore/sharedSlice';
-import PSATooltip from '../../../../components/PSAComponents/PSATooltip';
 
 const RenderFilters = ({
   filterValues = [],

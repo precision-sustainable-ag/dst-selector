@@ -3,7 +3,7 @@ import {
   Typography, Grid, Box,
 } from '@mui/material';
 import '../../styles/cropSelectorCalendarView.scss';
-import PSATooltip from '../PSAComponents/PSATooltip';
+import { PSATooltip } from 'shared-react-components/src';
 
 const tooltipContent = (classNames, index, hessianDate, from) => (
   <Box

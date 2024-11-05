@@ -6,10 +6,10 @@
 import { Avatar, Chip } from '@mui/material';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { PSATooltip } from 'shared-react-components/src';
 import { addSelectedGoals, updateSelectedGoal } from '../../../reduxStore/goalSlice';
 import { historyState, setHistoryState } from '../../../reduxStore/userSlice';
 import pirschAnalytics from '../../../shared/analytics';
-import PSATooltip from '../../../components/PSAComponents/PSATooltip';
 
 const tooltipContent = (selectedGoalsRedux, goalTitle, key, updateSelectedGoals, goal) => (
   <span>

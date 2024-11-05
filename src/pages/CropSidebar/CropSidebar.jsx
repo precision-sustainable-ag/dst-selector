@@ -28,7 +28,7 @@ import React, {
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
 import styled from 'styled-components';
-import { PSAButton } from 'shared-react-components/src';
+import { PSAButton, PSATooltip } from 'shared-react-components/src';
 import {
   callCoverCropApi, cropDataFormatter, getLegendDataBasedOnCouncil,
 } from '../../shared/constants';
@@ -43,7 +43,6 @@ import {
 } from '../../reduxStore/filterSlice';
 import { updateCropData, updateActiveCropIds } from '../../reduxStore/cropSlice';
 import { setAjaxInProgress, regionToggleHandler } from '../../reduxStore/sharedSlice';
-import PSATooltip from '../../components/PSAComponents/PSATooltip';
 
 const SoloFilter = styled(ListItem)({
   paddingLeft: '25px',
@@ -100,12 +99,6 @@ const CropSidebar = ({
 
   const query = `${encodeURIComponent('regions')}=${encodeURIComponent(regionIdRedux)}`;
 
-  const tooltipContent = () => (
-    <span>
-      Cover Crop Group Filter
-      <HelpOutlineIcon style={{ cursor: 'pointer', transform: 'scale(0.7)' }} />
-    </span>
-  );
   // // TODO: When is showFilters false?
   // NOTE: verify below when show filter is false.
   useEffect(() => {
@@ -382,7 +375,12 @@ const CropSidebar = ({
           title={(
             <p>Use the Cover Crop Group Filter to select specific cover crop groups to filter by.</p>
         )}
-          tooltipContent={tooltipContent()}
+          tooltipContent={(
+            <span>
+              Cover Crop Group Filter
+              <HelpOutlineIcon style={{ cursor: 'pointer', transform: 'scale(0.7)' }} />
+            </span>
+          )}
         />
       </ListItem>
       <ListItem>
