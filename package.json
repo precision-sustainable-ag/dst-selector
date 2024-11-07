@@ -5,8 +5,10 @@
   "homepage": "https://covercrop.tools/",
   "dependencies": {
     "@auth0/auth0-react": "^2.2.0",
+    "@babel/runtime": "^7.25.6",
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
+    "@fontsource/ibm-plex-sans": "^5.1.0",
     "@mui/icons-material": "^5.16.7",
     "@mui/material": "^5.16.7",
     "@mui/x-date-pickers": "^6.1.0",
@@ -24,9 +26,8 @@
     "redux": "^4.2.1",
     "redux-devtools-extension": "^2.13.9",
     "sass-mediaqueries": "^1.6.1",
-    "shared-react-components": "github:precision-sustainable-ag/shared-react-components",
+    "shared-react-components": "github:precision-sustainable-ag/shared-react-components#PSAForm",
     "styled-components": "^5.3.6",
-    "@babel/runtime": "^7.25.6",
     "vite": "^5.4.4"
   },
   "type": "module",
