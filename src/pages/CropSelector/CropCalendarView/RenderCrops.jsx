@@ -7,7 +7,7 @@ import {
 import {
   AcUnit, AddCircleOutline, CheckRounded, DeleteForever,
 } from '@mui/icons-material';
-import { PSAButton } from 'shared-react-components/src';
+import { PSAButton, PSATooltip } from 'shared-react-components/src';
 import {
   CropImage,
   flipCoverCropName,
@@ -21,17 +21,6 @@ import '../../../styles/cropCalendarViewComponent.scss';
 import { updateSelectedCropIds } from '../../../reduxStore/cropSlice';
 import { myCropListLocation, snackHandler } from '../../../reduxStore/sharedSlice';
 import { setSaveHistory } from '../../../reduxStore/userSlice';
-import PSATooltip from '../../../components/PSAComponents/PSATooltip';
-
-const tooltipContent = () => (
-  <AcUnit
-    sx={{ color: 'white', backgroundColor: '#80D0FF', borderRadius: '5px' }}
-  />
-);
-
-const tooltipRatingContent = (crop, goal, councilShorthandRedux) => (
-  getRating(crop.goals.filter((a) => a.label === goal)[0].values[0].value, councilShorthandRedux)
-);
 
 const CheckBoxIcon = ({ style }) => (
   <Box sx={style}>
@@ -149,7 +138,11 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                     enterTouchDelay={0}
                     title={`${flipCoverCropName(crop.label)} is suitable for frost seeding.`}
                     arrow
-                    tooltipContent={tooltipContent()}
+                    tooltipContent={(
+                      <AcUnit
+                        sx={{ color: 'white', backgroundColor: '#80D0FF', borderRadius: '5px' }}
+                      />
+                    )}
                   />
                 </Grid>
               )}
@@ -178,7 +171,9 @@ const RenderCrops = ({ setModalOpen, modalOpen, setModalData }) => {
                       {goal}
                     </p>
                   )}
-                  tooltipContent={tooltipRatingContent(crop, goal, councilShorthandRedux)}
+                  tooltipContent={(
+                    getRating(crop.goals.filter((a) => a.label === goal)[0].values[0].value, councilShorthandRedux)
+                  )}
                 />
               </div>
             </TableCell>

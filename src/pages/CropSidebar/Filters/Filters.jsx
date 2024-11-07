@@ -2,17 +2,10 @@ import { Chip, Grid } from '@mui/material';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { PSATooltip } from 'shared-react-components/src';
 import { filterOffRedux, filterOnRedux, filterToggle } from '../../../reduxStore/filterSlice';
-import PSATooltip from '../../../components/PSAComponents/PSATooltip';
 
 // this file handles setting all of the filters in the redux state
-
-const tooltipContent = (filter) => (
-  <span>
-    {filter.name}
-    <HelpOutlineIcon style={{ cursor: 'pointer', transform: 'scale(0.7)' }} />
-  </span>
-);
 
 // handles dollars and ratings
 const DollarsAndRatings = ({ filter }) => {
@@ -133,7 +126,12 @@ const Tip = ({ filter }) => (
         <p>{filter.details}</p>
       </>
       )}
-    tooltipContent={tooltipContent(filter)}
+    tooltipContent={(
+      <span>
+        {filter.name}
+        <HelpOutlineIcon style={{ cursor: 'pointer', transform: 'scale(0.7)' }} />
+      </span>
+    )}
   />
 ); // Tip
 

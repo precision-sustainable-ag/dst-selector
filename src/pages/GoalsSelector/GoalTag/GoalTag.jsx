@@ -6,31 +6,11 @@
 import { Avatar, Chip } from '@mui/material';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { PSATooltip } from 'shared-react-components/src';
 import { addSelectedGoals, updateSelectedGoal } from '../../../reduxStore/goalSlice';
 import { historyState, setHistoryState } from '../../../reduxStore/userSlice';
 import pirschAnalytics from '../../../shared/analytics';
-import PSATooltip from '../../../components/PSAComponents/PSATooltip';
 
-const tooltipContent = (selectedGoalsRedux, goalTitle, key, updateSelectedGoals, goal) => (
-  <span>
-    <Chip
-      disabled={selectedGoalsRedux.length >= 3 ? !selectedGoalsRedux.includes(goalTitle) : false}
-      color={selectedGoalsRedux.includes(goalTitle) ? 'primary' : 'secondary'}
-      avatar={
-        selectedGoalsRedux.length !== 0 && selectedGoalsRedux.includes(goalTitle) ? (
-          <Avatar id={`avatar${key}`}>{selectedGoalsRedux.indexOf(goalTitle) + 1}</Avatar>
-        ) : null
-      }
-      label={goalTitle}
-      onClick={() => updateSelectedGoals(goal)}
-      key={`chip${key}`}
-      id={`chip${key}`}
-      size="medium"
-      variant="outlined"
-      data-test={`goal-tag-${key}`}
-    />
-  </span>
-);
 // TODO: Whats up with goalt?? we need to look into fixing this.
 const GoalTag = ({
   goaltTitle, goalDescription, goal, id,
@@ -69,7 +49,26 @@ const GoalTag = ({
       arrow
       title={<p>{`${goalDescription}`}</p>}
       key={`tooltip${key}`}
-      tooltipContent={tooltipContent(selectedGoalsRedux, goalTitle, key, updateSelectedGoals, goal)}
+      tooltipContent={(
+        <span>
+          <Chip
+            disabled={selectedGoalsRedux.length >= 3 ? !selectedGoalsRedux.includes(goalTitle) : false}
+            color={selectedGoalsRedux.includes(goalTitle) ? 'primary' : 'secondary'}
+            avatar={
+              selectedGoalsRedux.length !== 0 && selectedGoalsRedux.includes(goalTitle) ? (
+                <Avatar id={`avatar${key}`}>{selectedGoalsRedux.indexOf(goalTitle) + 1}</Avatar>
+              ) : null
+            }
+            label={goalTitle}
+            onClick={() => updateSelectedGoals(goal)}
+            key={`chip${key}`}
+            id={`chip${key}`}
+            size="medium"
+            variant="outlined"
+            data-test={`goal-tag-${key}`}
+          />
+        </span>
+      )}
     />
   );
 };

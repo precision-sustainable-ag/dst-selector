@@ -2,14 +2,10 @@ import { Typography, Grid } from '@mui/material';
 import { AcUnit, Info } from '@mui/icons-material';
 import React from 'react';
 import { useSelector } from 'react-redux';
-import PSATooltip from '../../PSAComponents/PSATooltip';
+import { PSATooltip } from 'shared-react-components/src';
 
 const WeatherFrostDates = () => {
   const weatherDataRedux = useSelector((stateRedux) => stateRedux.weatherData.weatherData);
-
-  const tooltipContent = () => (
-    <Info sx={{ fontSize: '1rem' }} />
-  );
 
   return (
     <Grid
@@ -64,7 +60,9 @@ const WeatherFrostDates = () => {
                   weather data.
                 </div>
               )}
-              tooltipContent={tooltipContent()}
+              tooltipContent={(
+                <Info sx={{ fontSize: '1rem' }} />
+              )}
             />
           </Typography>
         </Grid>
