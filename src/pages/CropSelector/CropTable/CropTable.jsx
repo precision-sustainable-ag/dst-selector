@@ -18,7 +18,7 @@ import {
 import ListIcon from '@mui/icons-material/List';
 import { CalendarToday } from '@mui/icons-material';
 import StraightIcon from '@mui/icons-material/Straight';
-import { PSAButton } from 'shared-react-components/src';
+import { PSAButton, PSATooltip } from 'shared-react-components/src';
 import {
   sortCrops, sudotype,
 } from '../../../shared/constants';
@@ -27,7 +27,6 @@ import '../../../styles/cropTable.scss';
 import CropDetailsModal from '../../../components/CropDetailsModal/CropDetailsModal';
 import RenderTableItems from './RenderTableItems';
 import { setTableWidth } from '../../../reduxStore/pageSlice';
-import PSATooltip from '../../../components/PSAComponents/PSATooltip';
 
 const CropTable = ({
   listView,
@@ -107,26 +106,6 @@ const CropTable = ({
       setColumnSort(column);
     }
   };
-
-  const tooltipContent = (goal, index) => (
-    <PSAButton
-      buttonType=""
-      onClick={() => sortByGoal(goal, index, `goal${index}`)}
-      variant="body1"
-      sx={{ textTransform: 'none' }}
-      title={(
-        <>
-          {`Goal ${index + 1}`}
-          {columnSort === `goal${index}` && (
-          <StraightIcon
-            style={{ margin: '0px' }}
-            className={currentGoalSortFlag ? '' : 'rotate180'}
-          />
-          )}
-        </>
-)}
-    />
-  );
 
   useEffect(() => {
     sortByAverageGoals();
@@ -218,7 +197,25 @@ const CropTable = ({
                       title={(
                         <p>{goal}</p>
                           )}
-                      tooltipContent={tooltipContent(goal, index)}
+                      tooltipContent={(
+                        <PSAButton
+                          buttonType=""
+                          onClick={() => sortByGoal(goal, index, `goal${index}`)}
+                          variant="body1"
+                          sx={{ textTransform: 'none' }}
+                          title={(
+                            <>
+                              {`Goal ${index + 1}`}
+                              {columnSort === `goal${index}` && (
+                              <StraightIcon
+                                style={{ margin: '0px' }}
+                                className={currentGoalSortFlag ? '' : 'rotate180'}
+                              />
+                              )}
+                            </>
+                           )}
+                        />
+                      )}
                     />
                   </TableCell>
                 ))}

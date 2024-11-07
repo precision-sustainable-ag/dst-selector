@@ -4,25 +4,9 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import React, { Fragment } from 'react';
+import { PSATooltip } from 'shared-react-components/src';
 import Filters from '../Filters/Filters';
 import { toggleFilterValue } from '../../../reduxStore/filterSlice';
-import PSATooltip from '../../../components/PSAComponents/PSATooltip';
-
-const tooltipContent = (filter, index, filterDataRedux, sectionFilter, dispatchRedux) => (
-  <ListItem
-    key={index}
-    sx={{ paddingLeft: 3, backgroundColor: filterDataRedux[sectionFilter] ? '#add08f' : 'white' }}
-    component="div"
-    onClick={() => dispatchRedux(toggleFilterValue(sectionFilter))}
-  >
-    <ListItemText primary={<Typography variant="body2">{filter.name.toUpperCase()}</Typography>} />
-    {filterDataRedux[sectionFilter] ? (
-      <ExpandLess data-test={`${filter.name.toUpperCase()}-expandless-icon`} />
-    ) : (
-      <ExpandMore data-test={`${filter.name.toUpperCase()}-expandmore-icon`} />
-    )}
-  </ListItem>
-);
 
 const SidebarFilter = ({
   filter,
@@ -44,12 +28,20 @@ const SidebarFilter = ({
           enterTouchDelay={0}
           title={<p>{filter.description}</p>}
           key={`tooltip${index}`}
-          tooltipContent={tooltipContent(
-            filter,
-            index,
-            filterDataRedux,
-            sectionFilter,
-            dispatchRedux,
+          tooltipContent={(
+            <ListItem
+              key={index}
+              sx={{ paddingLeft: 3, backgroundColor: filterDataRedux[sectionFilter] ? '#add08f' : 'white' }}
+              component="div"
+              onClick={() => dispatchRedux(toggleFilterValue(sectionFilter))}
+            >
+              <ListItemText primary={<Typography variant="body2">{filter.name.toUpperCase()}</Typography>} />
+              {filterDataRedux[sectionFilter] ? (
+                <ExpandLess data-test={`${filter.name.toUpperCase()}-expandless-icon`} />
+              ) : (
+                <ExpandMore data-test={`${filter.name.toUpperCase()}-expandmore-icon`} />
+              )}
+            </ListItem>
           )}
         />
       ) : (
